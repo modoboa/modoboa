@@ -1,0 +1,45 @@
+{% extends "admin/layout.html" %}
+{% block html_head %}
+<script src="/static/js/domains.js" type="text/javascript"></script>
+{% endblock %}
+{% block mainframe %}
+<div class="header">
+  <h1>Available domains</h1>
+</div>
+
+<div id="domcontent">
+  {% if not domains %}
+  No domain defined.
+  {% else %}
+  <table>
+    <tr>
+      <th width="50px">Actions</th>
+      <th width="80px">Name</th>
+      <th width="50px">Mailboxes</th>
+      <th width="50px">Quota</th>
+      <th width="50px">Enabled</th>
+    </tr>
+    {% for dom in domains %}
+    <tr class="{% cycle 'odd' 'even' %}">
+      <td>
+        {% url admin.views.editdomain dom.id as edit_url %}
+        <a href="{{ edit_url }}" class="boxed"
+           rel="{handler:'iframe',size:{x:300,y:180}}">
+          <img src="/static/pics/edit.png" border="0" title="Edit domain"/>
+        </a>
+        {% url admin.views.deldomain dom.id as del_url %}
+        <a href="{{ del_url }}" name="deleteDom">
+          <img src="/static/pics/remove.png" border="0" title="Delete domain"/>
+        </a>
+      </td>
+      {% url admin.views.mailboxes dom.id as domurl %}
+      <td><a name="loadDom" href="{{ domurl }}">{{ dom.name }}</a></td>
+      <td>{{ dom.mboxcounter }}</td>
+      <td>{{ dom.quota }} MB</td>
+      <td>{{ dom.enabled|yesno }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+</div>
+{% endblock %}

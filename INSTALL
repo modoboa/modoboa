@@ -1,0 +1,29 @@
+Installation
+============
+
+Requirements
+------------
+
+- Python version 2.5+
+- Django version 1.0+ (http://docs.djangoproject.com/en/dev/intro/install/#intro-install)
+
+How to install
+--------------
+
+Download Mailng's tarball and extract it::
+  tar xzf mailng-<version>.tar.gz
+
+Enter the mailng repository, create a settings.py file (you can use settings-sample.py as a model). Specify database relative informations. You must choose between mysql and postgresql, other types are not supported by major email projects like postfix or dovecot.
+
+Initialise the database by running the following command::
+  python manage.py syncdb
+
+Create the super admin account (just follow the procedure).
+
+Testing installation
+--------------------
+
+As a typical Django application, Mailng can be tested using a simple web server. Just run this command to start it::
+  python manage.py runserver
+
+You will be able to play with mailng by looking at http://<youraddress>:8000/mailng/admin/

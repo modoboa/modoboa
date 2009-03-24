@@ -1,0 +1,18 @@
+{% extends "admin/layout_simple.html" %}
+{% block html_head %}
+<script src="/static/js/form.js" type="text/javascript"></script>
+{% endblock %}
+{% block content %}
+<div class="title"><h1>New mailbox</h1></div>
+
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+{% url admin.views.newmailbox domain.id as box_url %}
+<form action="{{ box_url }}" method="POST" id="mboxform" name="mboxform">
+  {% include "admin/genericform.html" %}
+  <div class="spacer"></div>
+  
+  <div class="lastrow" align="center">
+    <input type="submit" name="submit" value="Create" />
+  </div>
+</form>
+{% endblock %}

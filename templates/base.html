@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>MailNG - {%block pagetitle %}{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/basic.css" />
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/SqueezeBox.css" />
+  <script src="/static/js/mootools.js" type="text/javascript"></script>
+  <script src="/static/js/SqueezeBox.js" type="text/javascript"></script>
+  {%block html_head %}{% endblock %}
+</head>
+
+<body>
+  <div id="header" class="rounded">
+    <div id="logo"></div>
+    <div id="title">
+      <h1>MailNG</h1>
+      <h2>Simple web messaging solution</h2>
+
+      <div id="info"></div>
+    </div>
+  </div>
+
+  <div id="content">
+    {%block content %}{% endblock %}
+  </div>
+  
+  <div class="spacer"></div>
+  
+  <div id="footer">
+    &copy; Antoine Nguyen 2009
+  </div>
+</body>
+</html>
+

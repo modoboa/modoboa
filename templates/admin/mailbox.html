@@ -1,0 +1,22 @@
+{% extends "admin/layout.html" %}
+{% block html_head %}{% endblock %}
+{% block content %}
+<div class="header">
+  <h1>Mailbox {{ mbox.address }}@{{ mbox.domain.name }}</h1>
+</div>
+
+<div id="menubar" class="menu2">
+  {% block menu %}{% endblock %}
+</div>
+
+<div id="mboxcontent">
+  <div class="row">
+    <label>Name :</label><label>{{ mb.name }}</label>
+  </div>
+
+  <h2>Aliases</h2>
+  {% for alias in aliases %}
+  {{ alias.address }}
+  {% endfor %}
+</div>
+{% endblock %}

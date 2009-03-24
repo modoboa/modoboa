@@ -1,0 +1,27 @@
+{% url admin.views.editdomain domain_id as edit_url %}
+{% url admin.views.newmailbox domain_id as new_url %}
+{% url admin.views.mailboxes domain_id as mboxes_url %}
+{% url full-aliases domain_id as aliases_url %}
+<ul>
+  {% url admin.views.newmailbox domain.id as newmb_url %}
+  <li>
+    <a href="{{ new_url }}" 
+       class="boxed" rel="{handler:'iframe',size:{x:300,y:280}}">
+      <img src="/static/pics/add.png" border="0" />
+      New mailbox
+    </a>
+  </li>
+  <li {% ifequal selection "mailboxes" %}class="selected"{% endifequal %}>
+    <a href="{{ mboxes_url }}">
+      <img src="/static/pics/mailbox.png" border="0"/>
+      Mailboxes</a></li>
+  <li {% ifequal selection "aliases" %}class="selected"{% endifequal %}>
+    <a href="{{ aliases_url }}">
+      <img src="/static/pics/alias.png" border="0"/>
+      Aliases</a></li>
+  <li>
+    <a href="{{ edit_url }}" class="boxed"
+       rel="{handler:'iframe',size:{x:300,y:180}}">
+      <img src="/static/pics/edit.png" border="0"/>
+      Properties</a></li>
+</ul>

@@ -1,0 +1,38 @@
+{% extends "admin/domain_header.html" %}
+{% block menu %}
+{% load admin_extras %}
+{% domain_menu domain.id "aliases" %}
+{% endblock %}
+
+{% block domcontent %}
+{% if not aliases %}
+<p>No alias defined.</p>
+{% else %}
+<table>
+  <tr>
+    <th width="50px">Actions</th>
+    <th width="150px">Address</th>
+    <th width="200px">Mailbox</th>
+    <th width="75px">Enabled</th>
+  </tr>
+{% for alias in aliases %}
+  <tr>
+    <td>
+      {% url admin.views.editalias domain.id alias.id as edit_url %}
+      <a href="{{ edit_url }}" class="boxed"
+         rel="{handler:'iframe',size:{x:300,y:190}}">
+        <img src="/static/pics/edit.png" border="0" title="Edit alias"/>
+      </a>
+      <a href="{{ del_url }}" name="deleteAlias">
+        <img src="/static/pics/remove.png" border="0" title="Delete alias" />
+      </a>
+    </td>
+    <td>{{ alias.address }}@{{ alias.mbox.domain.name }}</td>
+    <td>{{ alias.mbox.address }}@{{ alias.mbox.domain.name }}</td>
+    <td>{{ alias.enabled|yesno }}</td
+    {% url admin.views.delalias domain.id alias.id as del_url %}
+  </tr>
+{% endfor %}
+</table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "admin/layout.html" %}
+{% block html_head %}
+<script src="/static/js/domains.js" type="text/javascript"></script>
+{% endblock %}
+{% block mainframe %}
+<div class="header">
+  <h1>Domain {{ domain.name }}</h1>
+</div>
+
+<div id="menubar" class="menu2">
+  {% block menu %}{% endblock %}
+</div>
+
+<div id="domcontent">
+{% block domcontent %}{% endblock %}
+</div>
+{% endblock %}

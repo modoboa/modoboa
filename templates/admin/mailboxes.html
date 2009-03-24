@@ -1,0 +1,50 @@
+{% extends "admin/domain_header.html" %}
+{% block menu %}
+{% load admin_extras %}
+{% domain_menu domain.id "mailboxes" %}
+{% endblock %}
+
+{% block domcontent %}
+{% if not mailboxes %}
+<p>No mailbox defined.</p>
+{% else %}
+<table>
+  <tr>
+    <th width="80px">Actions</th>
+    <th width="130px">Name</th>
+    <th width="170px">Address</th>
+    <th width="60px">Quota</th>
+    <th width="50px">Enabled</th>
+  </tr>
+  {% for mb in mailboxes %}
+  <tr class="{% cycle 'odd' 'even' %}">
+    <td>
+      {% url admin.views.editmailbox domain.id mb.id as edit_url %}
+      <a href="{{ edit_url }}" class="boxed"
+         rel="{handler:'iframe',size:{x:300,y:280}}">
+        <img src="/static/pics/edit.png" border="0" title="Edit mailbox"/>
+      </a>
+      {% url admin.views.delmailbox domain.id mb.id as del_url %}
+      <a href="{{ del_url }}" name="deleteMb">
+        <img src="/static/pics/remove.png" border="0"
+             title="Delete mailbox" />
+      </a>
+      {% url admin.views.newalias domain.id mb.id as alias_url %}
+      <a href="{{ alias_url }}" class="boxed"
+         rel="{handler:'iframe',size:{x:300,y:190}}">
+        <img src="/static/pics/add.png" border="0" title="Add new alias"/>
+      </a>
+      {% url mbox-aliases domain.id mb.id as aliases_url %}
+      <a href="{{ aliases_url }}">
+        <img src="/static/pics/alias.png" border="0" title="Mailbox aliases"/>
+      </a>
+    </td>
+    <td>{{ mb.name }}</td>
+    <td>{{ mb.address }}@{{ mb.domain.name }}</td>
+    <td>{{ mb.quota }} MB</td>
+    <td>{{ mb.user.is_active|yesno }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

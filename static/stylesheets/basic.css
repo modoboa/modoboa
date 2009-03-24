@@ -1,0 +1,275 @@
+body {
+    font-family: arial, helvetica, verdana, tahoma, sans-serif;
+    font-size: small;
+    background: #153F65;
+    width: 950px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#header {
+    width: 100%;
+    height: 120px;
+    background: #072342;
+    margin-top: 20px;
+    border: 1px solid #333;
+}
+
+#header h1 {
+    color: white;
+}
+
+#header h2 {
+    margin-left: 20px;
+    color: #6AB0C5;
+}
+
+#header h3 {
+    margin: 0 0 5px 0;
+    text-align: center;
+    font-size: small;
+}
+
+#logo {
+    float: left;
+    margin-top: 20px;
+    background: url(logo.png) left no-repeat;
+    height: 90px;
+    line-height: 90px;
+    min-width: 90px;
+    width: expression(document.body.clientWidth < 1280 ? "90px" : "15%");
+}
+
+#title {
+    float: left;
+    margin-left: 10px;
+}
+
+#info {
+    float: right;
+    text-align: center;
+    background: white;
+    width: 150px;
+    margin: 20px 20px;
+    padding: 10px;
+    border: 1px solid #333;
+}
+
+#body {
+    float: left;
+    width: 100%;
+    margin: 15px 0;
+    /*height: 600px;*/
+}
+
+#loginbox {
+    margin: 50px auto;
+    width: 300px;
+    padding-bottom: 15px;
+    border: 1px solid #ddd;
+    background: white;
+}
+
+#loginbox h3 {
+    font-size: small;
+    text-align: center;
+}
+
+#leftcol {
+    float: left;    
+}
+
+.leftbox {
+    border: 1px solid #333;
+    background: white;
+}
+
+#menubox {
+    width: 170px;
+}
+
+#userbox {
+    width: 170px;
+}
+
+.leftbox h3 {
+    font-size: small;
+    margin: 2px 0px 2px 0px;
+    text-align: center;
+}
+
+.leftbox ul {
+    list-style: none;
+    padding: 5px 5px;
+    margin: 0;
+}
+
+.leftbox li {
+    clear: both;
+    margin-bottom: 4px;
+}
+
+.leftbox a:link, .leftbox a:visited {
+    background: transparent;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.leftbox a:hover { 
+    color: #6AB0C5;
+    text-decoration: none;
+}
+
+.leftbox img {
+    float: left;
+    margin-right: 2px;
+}
+
+#content {
+    float: right;
+    width: 750px;
+    height: 400px;
+    background: white;
+    border: 1px solid #333;
+    padding: 5px;
+    margin: 0 0 0 15px;
+}
+
+#menubar {
+    margin-left: 20px;
+    display: table;
+    margin-bottom: 15px;
+}
+
+.menu2 { 
+    font-size: 95%;
+    white-space: nowrap;  
+}
+
+.menu2 ul { 
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    float: left;
+    width: 100%;
+}
+
+.menu2 li { 
+    float: left;
+    display: inline;
+    margin: 2px 5px;
+}
+
+.menu2 li.selected {
+/*    text-decoration: underline;*/
+    background: #ffffcc;
+}
+
+.menu2 a:link, .menu2 a:visited {
+    background: transparent;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.menu2 a:hover { 
+    color: #6AB0C5;
+}
+
+.menu2 img { 
+    float: left;
+    margin: 1px 3px;
+}
+
+#footer {
+    border-top: 1px solid #333;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.spacer { 
+    clear: both;  
+}
+
+.title {
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.title img {
+    float: left;
+    margin: 1px 3px;;
+}
+
+.title h1 {
+    float: left;
+    margin: 5px 10px;
+    font-size: medium;
+    font-weight: bold;
+}
+
+#body table {
+    margin: 0 auto;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 20px;
+}
+
+#body tr.odd {
+    background: #F7F9Fb;
+}
+
+#body tr.even {
+    background: white;
+}
+
+#body table th {
+    background: #CEDBEC;
+    text-align: left;
+    padding: 5px;
+}
+
+#body table th.right {
+    text-align: right;
+}
+
+#body table td {
+    border-bottom: 1px solid #C8D6E8;
+    padding: 5px;
+}
+
+#body a, a:visited {
+    color: #2a4069;
+    text-decoration: none;
+}
+
+#body a:hover {
+    text-decoration: underline;
+}
+
+#domcontent {
+    margin: 10px auto;
+    width: 90%;
+}
+
+
+.button {
+    margin-left: 35px;
+}
+
+.button img { 
+    float: left;
+    margin: 0px 3px;
+    border: 0;
+}
+
+.header {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: medium;
+}

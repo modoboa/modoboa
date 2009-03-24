@@ -1,0 +1,15 @@
+{% extends "admin/layout_simple.html" %}
+{% block html_head %}
+<script src="/static/js/form.js" type="text/javascript"></script>
+{% endblock %}
+{% block content %}
+<div class="title"><h1>Alias {{ alias.address }}</h1></div>
+{% url admin.views.editalias alias.mbox.domain.id alias.id as edit_url %}
+<form action="{{ edit_url }}" method="POST" id="aliasform" name="aliasform">
+  {% include "admin/genericform.html" %}
+  <div class="spacer"></div>
+  <div class="lastrow" align="center">
+    <input type="submit" name="submit" value="Update" />
+  </div>
+</form>
+{% endblock %}

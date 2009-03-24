@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+{% url admin.views.domains as dom_url %}
+<div id="body">
+  <div id="leftcol">
+    <div id="userbox" class="leftbox">
+      {% if user.first_name %}
+      <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+      {% else %}
+      <h3>{{ user.username }}</h3>
+      {% endif %}
+      <ul>
+        <li>
+          {% url django.contrib.auth.views.logout_then_login as logout_url %}
+          <a href="{{ logout_url }}">
+            <img src="/static/pics/logout.png" border="0" />Logout</a>
+        </li>
+      </ul>
+    </div>
+    <br/>
+    <div id="menubox" class="leftbox">
+      <ul>
+        <li>
+          {% url admin.views.newdomain as newdom_url %}
+          <a href="{{ newdom_url }}" class="boxed"
+             rel="{handler:'iframe',size:{x:300,y:200}}">
+            <img src="/static/pics/add.png" border="0"/>
+            New domain
+          </a>
+        </li>
+        <li>
+          <a name="loadContent" href="{{ dom_url }}">
+            <img src="/static/pics/domains.png" border="0"/>
+            Domains</a>
+        </li>
+        <li>
+          <a name="loadContent" href="">
+            <img src="/static/pics/settings.png" border="0"/>
+            Settings</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="content">
+    {%block mainframe %}{% endblock %}
+  </div>
+</div>
+{% endblock %}
