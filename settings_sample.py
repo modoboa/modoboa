@@ -80,3 +80,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'mailng.admin'
 )
+
+# Mailng specific options
+STORAGE_PATH = "/var/vmail"
+VIRTUAL_UID = "vmail"
+VIRTUAL_GID = "vmail"

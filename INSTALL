@@ -13,7 +13,10 @@ How to install
 Download Mailng's tarball and extract it::
   tar xzf mailng-<version>.tar.gz
 
-Enter the mailng repository, create a settings.py file (you can use settings-sample.py as a model). Specify database relative informations. You must choose between mysql and postgresql, other types are not supported by major email projects like postfix or dovecot.
+Enter the mailng directory, create a settings.py file (you can use 
+settings-sample.py as a model). Specify database relative informations. You 
+must choose between mysql and postgresql, other types are not supported by 
+major email projects like postfix or dovecot.
 
 Initialise the database by running the following command::
   python manage.py syncdb
@@ -23,7 +26,45 @@ Create the super admin account (just follow the procedure).
 Testing installation
 --------------------
 
-As a typical Django application, Mailng can be tested using a simple web server. Just run this command to start it::
+As a typical Django application, Mailng can be tested using a simple web 
+server. Just run this command to start it::
   python manage.py runserver
 
-You will be able to play with mailng by looking at http://<youraddress>:8000/mailng/admin/
+You will be able to play with mailng by looking at 
+http://<youraddress>:8000/mailng/admin/.
+
+Tips to link Mailng with postfix
+--------------------------------
+
+First, define following maps on your server::
+
+# /etc/postfix/sql-domains.cf
+  user = <user>
+  password = <password>
+  dbname = <database>
+  query = SELECT name FROM domains WHERE name='%s' AND enabled='1'
+
+# /etc/postfix/sql-mailboxes.cf
+  user = <user>
+  password = <password>
+  dbname = <database>
+  query = SELECT path FROM mailboxes WHERE address = '%s' AND enabled = '1'
+
+Then, use the following configuration in your /etc/postfix/main.cf file
+(this is one possible configuration)::
+
+  # Stuff before
+  mailbox_transport = virtual
+  home_mailbox = Maildir/
+  maildrop_destination_recipient_limit = 1
+  virtual_minimum_uid = 500
+  virtual_gid_maps = static:500
+  virtual_uid_maps = static:500
+  virtual_mailbox_base = /var/vmail
+
+  relay_domains = mysql:/etc/postfix/sql-domains.cf
+  virtual_mailbox_domains = mysql:/etc/postfix/sql-domains.cf
+  virtual_mailbox_maps = mysql:/etc/postfix/sql-mailboxes.cf
+  virtual_alias_domains =
+  # Stuff after
+

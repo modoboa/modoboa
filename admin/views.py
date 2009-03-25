@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from mailng import admin
+from mailng.lib.fsops import *
 from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm
 
@@ -40,9 +41,12 @@ def newdomain(request):
             if Domain.objects.filter(name=request.POST["name"]):
                 error = "Domain with this name already defined"
             else:
-                form.save()
-                ctx = _ctx_ok(reverse(admin.views.domains))
-                return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+                if create_domain(request.POST["name"]):
+                    form.save()
+                    ctx = _ctx_ok(reverse(admin.views.domains))
+                    return HttpResponse(simplejson.dumps(ctx), 
+                                        mimetype="application/json")
+                error = "Failed to initialise domain, check permissions"
         ctx = _ctx_ko("admin/newdomain.html", {
                 "form" : form, "error" : error
                 })
@@ -52,6 +56,7 @@ def newdomain(request):
     return render_to_response('admin/newdomain.html', {
             "form" : form
             })
+
 @login_required   
 def editdomain(request, dom_id):
     domain = Domain.objects.get(pk=dom_id)
@@ -74,6 +79,7 @@ def editdomain(request, dom_id):
 @login_required
 def deldomain(request, dom_id):
     domain = Domain.objects.get(pk=dom_id)
+    destroy_domain(domain.name)
     domain.delete()
     return HttpResponseRedirect('/mailng/admin/')
 
@@ -96,25 +102,27 @@ def newmailbox(request, dom_id=None):
                                       domain=dom_id):
                 error = "Mailbox with this address already exists"
             else:
-                mb = form.save(commit=False)
-                user = User()
-                user.username = user.email = "%s@%s" % (mb.address, domain.name)
-                user.set_password(request.POST["password1"])
-                user.is_active = request.POST.has_key("enabled") \
-                    and True or False
-                fname, lname = mb.name.split()
-                user.first_name = fname
-
-                user.last_name = lname
-                user.save()
-                mb.user = user
-
-                mb.uid = mb.gid = 500
-                mb.domain = domain
-                mb.save()
-                ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[domain.id]))
-                return HttpResponse(simplejson.dumps(ctx), 
-                                    mimetype="application/json")
+                if create_mailbox(domain.name, request.POST["address"]):
+                    mb = form.save(commit=False)
+                    user = User()
+                    user.username = user.email = "%s@%s" % (mb.address, domain.name)
+                    user.set_password(request.POST["password1"])
+                    user.is_active = request.POST.has_key("enabled") \
+                        and True or False
+                    fname, lname = mb.name.split()
+                    user.first_name = fname
+                    
+                    user.last_name = lname
+                    user.save()
+                    mb.user = user
+                    
+                    mb.uid = mb.gid = 500
+                    mb.domain = domain
+                    mb.save()
+                    ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[domain.id]))
+                    return HttpResponse(simplejson.dumps(ctx), 
+                                        mimetype="application/json")
+            error = "Failed to initialise mailbox, check permissions"
         ctx = _ctx_ko("admin/newmailbox.html", {
                 "form" : form, "domain" : domain, "error" : error
                 })
@@ -156,6 +164,7 @@ def editmailbox(request, dom_id, mbox_id=None):
 @login_required
 def delmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
+    destroy_mailbox(mb.domain.name, mb.address)
     mb.delete()
     return HttpResponseRedirect(reverse(admin.views.mailboxes, 
                                         args=[dom_id]))
