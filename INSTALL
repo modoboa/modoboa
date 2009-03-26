@@ -79,3 +79,32 @@ Then, use the following configuration in your /etc/postfix/main.cf file
 
 NB: Mailng only supports maildir format for now. Others will surely be
 added soon.
+
+Tips to link Mailng with dovecot
+--------------------------------
+
+Edit your main Dovecot config file (/etc/dovecot/dovecot.conf) and put the
+following inside::
+
+  auth default {
+    # ... stuff before
+
+    passdb sql {
+      # Path for SQL configuration file, see /etc/dovecot/dovecot-sql.conf  for
+      #  example
+      args = /etc/dovecot/dovecot-sql.conf
+    }
+    
+    # ... stuff after
+  }
+
+Be sure to activate only one backend inside your configuration
+(comment other ones).
+
+Then, edit your /etc/dovecot/dovecot-sql.conf and modify following lines::
+
+  driver = mysql
+  connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
+  default_pass_scheme = MD5
+  password_query = SELECT address as user, password FROM admin_mailbox WHERE full_address = '%u'
+  user_query = SELECT path as home, uid, gid FROM admin_mailbox WHERE full_address = '%u'
