@@ -23,6 +23,7 @@
          rel="{handler:'iframe',size:{x:300,y:190}}">
         <img src="/static/pics/edit.png" border="0" title="Edit alias"/>
       </a>
+      {% url admin.views.delalias domain.id alias.id as del_url %}
       <a href="{{ del_url }}" name="deleteAlias">
         <img src="/static/pics/remove.png" border="0" title="Delete alias" />
       </a>
@@ -30,7 +31,6 @@
     <td>{{ alias.address }}@{{ alias.mbox.domain.name }}</td>
     <td>{{ alias.mbox.address }}@{{ alias.mbox.domain.name }}</td>
     <td>{{ alias.enabled|yesno }}</td
-    {% url admin.views.delalias domain.id alias.id as del_url %}
   </tr>
 {% endfor %}
 </table>

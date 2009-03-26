@@ -36,19 +36,28 @@ http://<youraddress>:8000/mailng/admin/.
 Tips to link Mailng with postfix
 --------------------------------
 
-First, define following maps on your server::
+First, define following maps on your server (this should work with
+Postfix versions >= 2.2)::
 
 # /etc/postfix/sql-domains.cf
   user = <user>
   password = <password>
   dbname = <database>
-  query = SELECT name FROM domains WHERE name='%s' AND enabled='1'
+  query = SELECT name FROM admin_domain WHERE name='%s' AND enabled='1'
 
 # /etc/postfix/sql-mailboxes.cf
   user = <user>
   password = <password>
   dbname = <database>
-  query = SELECT path FROM mailboxes WHERE address = '%s' AND enabled = '1'
+  query = SELECT path FROM admin_mailbox WHERE full_address = '%s' AND enabled = '1'
+
+# /etc/postfix/sql-aliases.cf
+  user = <user>
+  password = <password>
+  dbname = <database>
+  query = SELECT t2.full_address FROM admin_alias AS t1, admin_mailbox AS t2
+          WHERE t1.full_address='%s' AND t1.mbox=t2.id 
+          AND t1.enabled='1'
 
 Then, use the following configuration in your /etc/postfix/main.cf file
 (this is one possible configuration)::
@@ -65,6 +74,8 @@ Then, use the following configuration in your /etc/postfix/main.cf file
   relay_domains = mysql:/etc/postfix/sql-domains.cf
   virtual_mailbox_domains = mysql:/etc/postfix/sql-domains.cf
   virtual_mailbox_maps = mysql:/etc/postfix/sql-mailboxes.cf
-  virtual_alias_domains =
+  virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf
   # Stuff after
 
+NB: Mailng only supports maildir format for now. Others will surely be
+added soon.

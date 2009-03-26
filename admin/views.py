@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from mailng import admin
-from mailng.lib.fsops import *
 from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm
 
@@ -41,7 +40,8 @@ def newdomain(request):
             if Domain.objects.filter(name=request.POST["name"]):
                 error = "Domain with this name already defined"
             else:
-                if create_domain(request.POST["name"]):
+                domain = form.save(commit=False)
+                if domain.create_dir():
                     form.save()
                     ctx = _ctx_ok(reverse(admin.views.domains))
                     return HttpResponse(simplejson.dumps(ctx), 
@@ -62,12 +62,20 @@ def editdomain(request, dom_id):
     domain = Domain.objects.get(pk=dom_id)
     if request.method == "POST":
         form = DomainForm(request.POST, instance=domain)
+        error = None
         if form.is_valid():
-            form.save()
-            ctx = _ctx_ok(reverse(admin.views.domains))
-            return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+            if domain.name != request.POST["name"]:
+                if Domain.objects.filter(name=request.POST["name"]):
+                    error = "Domain with this name already defined"
+                else:
+                    if not domain.rename_dir(request.POST["name"]):
+                        error = "Failed to rename domain, check permissions"
+            if not error:
+                form.save()
+                ctx = _ctx_ok(reverse(admin.views.domains))
+                return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
         ctx = _ctx_ko("admin/editdomain.html", {
-                "domain" : domain, "form" : form
+                "domain" : domain, "form" : form, "error" : error
                 })
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
@@ -79,7 +87,7 @@ def editdomain(request, dom_id):
 @login_required
 def deldomain(request, dom_id):
     domain = Domain.objects.get(pk=dom_id)
-    destroy_domain(domain.name)
+    domain.delete_dir()
     domain.delete()
     return HttpResponseRedirect('/mailng/admin/')
 
@@ -102,8 +110,8 @@ def newmailbox(request, dom_id=None):
                                       domain=dom_id):
                 error = "Mailbox with this address already exists"
             else:
-                if create_mailbox(domain.name, request.POST["address"]):
-                    mb = form.save(commit=False)
+                mb = form.save(commit=False)
+                if mb.create_dir(domain):
                     user = User()
                     user.username = user.email = "%s@%s" % (mb.address, domain.name)
                     user.set_password(request.POST["password1"])
@@ -111,13 +119,16 @@ def newmailbox(request, dom_id=None):
                         and True or False
                     fname, lname = mb.name.split()
                     user.first_name = fname
-                    
                     user.last_name = lname
                     user.save()
                     mb.user = user
-                    
+                 
                     mb.uid = mb.gid = 500
                     mb.domain = domain
+                    mb.quota = request.POST["quota"]
+                    if not mb.quota:
+                        mb.quota = domain.quota
+                    mb.full_address = "%s@%s" % (mb.address, domain.name)
                     mb.save()
                     ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[domain.id]))
                     return HttpResponse(simplejson.dumps(ctx), 
@@ -138,22 +149,39 @@ def editmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
     if request.method == "POST":
         form = MailboxForm(request.POST, instance=mb)
+        error = None
         if form.is_valid():
-            if request.POST["enabled"] != mb.user.is_active \
-                    or request.POST["password1"] != mb.user.password:
-                mb.user.is_active = request.POST["enabled"]
-                mb.user.password = request.POST["password1"]
-                mb.user.save()
-            form.save()
-            ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[dom_id]))
-        else:
-            ctx = _ctx_ko("admin/editmailbox.html", {
-                    "mbox" : mb, "form" : form
-                    })
-        json = simplejson.dumps(ctx)
-        return HttpResponse(json, mimetype="application/json")
+            if mb.address != request.POST["address"]:
+                if Mailbox.objects.filter(address=request.POST["address"],
+                                          domain=dom_id):
+                    error = "Mailbox with this address already exists"
+                else:
+                    if not mb.rename_dir(mb.domain.name, request.POST["address"]):
+                        error = "Failed to rename mailbox, check permissions"
+            if not error:
+                mb = form.save(commit=False)
+                enabled = request.POST.has_key("enabled") \
+                    and request.POST["enabled"] or False
+                if enabled != mb.user.is_active \
+                        or request.POST["password1"] != mb.user.password:
+                    mb.user.is_active = enabled
+                    mb.user.password = request.POST["password1"]
+                    mb.user.save()
+                mb.quota = request.POST["quota"]
+                if not mb.quota:
+                    mb.quota = mb.domain.quota
+                mb.full_address = "%s@%s" % (mb.address, mb.domain.name)
+                mb.save()
+                ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[dom_id]))
+                return HttpResponse(simplejson.dumps(ctx),
+                                    mimetype="application/json")
+        ctx = _ctx_ko("admin/editmailbox.html", {
+                "mbox" : mb, "form" : form, "error" : error
+                })
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = MailboxForm(instance=mb)
+    form.fields['quota'].initial = mb.quota
     form.fields['enabled'].initial = mb.user.is_active
     form.fields['password1'].initial = mb.user.password
     form.fields['password2'].initial = mb.user.password
@@ -164,7 +192,8 @@ def editmailbox(request, dom_id, mbox_id=None):
 @login_required
 def delmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
-    destroy_mailbox(mb.domain.name, mb.address)
+    mb.delete_dir()
+    mb.user.delete()
     mb.delete()
     return HttpResponseRedirect(reverse(admin.views.mailboxes, 
                                         args=[dom_id]))
@@ -188,15 +217,22 @@ def newalias(request, dom_id, mbox_id):
     mbox = Mailbox.objects.get(pk=mbox_id)
     if request.method == "POST":
         form = AliasForm(request.POST)
+        error = None
         if form.is_valid():
-            form.save()
-            ctx = _ctx_ok(reverse(admin.views.aliases, args=[mbox.domain.id]))
-        else:
-            ctx = _ctx_ko("admin/newalias.html", {
-                    "mbox" : mbox, "form" : form
-                    })
-        json = simplejson.dumps(ctx)
-        return HttpResponse(json, mimetype="application/json")
+            if Alias.objects.filter(address=request.POST["address"],
+                                    mbox=mbox_id):
+                error = "Alias with this address already exists"
+            else:
+                alias = form.save(commit=False)
+                alias.full_address = "%s@%s" % (alias.address, mbox.domain.name)
+                alias.save()
+                ctx = _ctx_ok(reverse(admin.views.aliases, args=[mbox.domain.id]))
+                return HttpResponse(simplejson.dumps(ctx),
+                                    mimetype="application/json")
+        ctx = _ctx_ko("admin/newalias.html", {
+                "mbox" : mbox, "form" : form, "error" : error
+                })
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = AliasForm({"mbox" : mbox_id}, domain=mbox.domain)
     return render_to_response('admin/newalias.html', {
@@ -208,15 +244,24 @@ def editalias(request, dom_id, alias_id):
     alias = Alias.objects.get(pk=alias_id)
     if request.method == "POST":
         form = AliasForm(request.POST, instance=alias)
+        error = None
         if form.is_valid():
-            form.save()
-            ctx = _ctx_ok(reverse(admin.views.aliases, args=[dom_id]))
-        else:
-            ctx = _ctx_ko("admin/editalias.html", {
-                    "alias" : alias, "form" : form
-                    })
-        json = simplejson.dumps(ctx)
-        return HttpResponse(json, mimetype="application/json")
+            if alias.address != request.POST["address"] \
+                    and Alias.objects.filter(address=request.POST["address"],
+                                             mbox=alias.mbox.id):
+                error = "Alias with this address already exists"
+            else:
+                alias = form.save(commit=False)
+                alias.full_address = "%s@%s" % (alias.address, 
+                                                alias.mbox.domain.name)
+                alias.save()
+                ctx = _ctx_ok(reverse(admin.views.aliases, args=[dom_id]))
+                return HttpResponse(simplejson.dumps(ctx), 
+                                    mimetype="application/json")
+        ctx = _ctx_ko("admin/editalias.html", {
+                "alias" : alias, "form" : form, "error" : error
+                })
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
     form = AliasForm(instance=alias)
     return _render(request, 'admin/editalias.html', {
             "form" : form, "alias" : alias

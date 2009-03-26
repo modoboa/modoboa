@@ -6,13 +6,14 @@ class DomainForm(forms.ModelForm):
         model = Domain
 
 class MailboxForm(forms.ModelForm):
+    quota = forms.IntegerField(label="Quota", required=False)
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Confirmation", widget=forms.PasswordInput)
     enabled = forms.BooleanField(label="Enabled", required=False)
 
     class Meta:
         model = Mailbox
-        fields = ('name', 'address', 'quota')
+        fields = ('name', 'address')
 
     def clean_password2(self):
         if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
@@ -31,4 +32,5 @@ class AliasForm(forms.ModelForm):
 
     class Meta:
         model = Alias
+        fields = ('address', 'mbox', 'enabled')
 

@@ -4,6 +4,7 @@
 {% endblock %}
 {% block content %}
 <div class="title"><h1>Alias {{ alias.address }}</h1></div>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
 {% url admin.views.editalias alias.mbox.domain.id alias.id as edit_url %}
 <form action="{{ edit_url }}" method="POST" id="aliasform" name="aliasform">
   {% include "admin/genericform.html" %}
