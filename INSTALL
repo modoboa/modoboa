@@ -13,6 +13,7 @@ How to install
 Download Mailng's tarball and extract it::
 
   tar xzf mailng-<version>.tar.gz
+  mv mailng-<version> mailng
 
 Enter the mailng directory, create a settings.py file (you can use 
 settings-sample.py as a model). Specify database relative informations. You 
