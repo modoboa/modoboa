@@ -11,6 +11,7 @@ How to install
 --------------
 
 Download Mailng's tarball and extract it::
+
   tar xzf mailng-<version>.tar.gz
 
 Enter the mailng directory, create a settings.py file (you can use 
@@ -19,15 +20,39 @@ must choose between mysql and postgresql, other types are not supported by
 major email projects like postfix or dovecot.
 
 Initialise the database by running the following command::
+
   python manage.py syncdb
 
 Create the super admin account (just follow the procedure).
+
+Host configuration
+------------------
+
+Before testing Mailng, you must create a group and a user that will be
+used to store mails on the host filesystem. There is only one
+group/user needed because we are in a virtual hosting configuration
+(ie. users with non-UNIX accounts).
+
+For example, create a vmail group::
+
+  groupadd vmail
+
+Then create a vmail user::
+
+  useradd -g vmail -d /var/vmail -m vmail
+
+At last, the system user used to run mailng will need permissions to
+manipulate directories in vmail's homedir. To do that, edit your /etc/sudoers
+file and add the following inside::
+
+  www-data ALL=(vmail) NOPASSWD: ALL
 
 Testing installation
 --------------------
 
 As a typical Django application, Mailng can be tested using a simple web 
 server. Just run this command to start it::
+
   python manage.py runserver
 
 You will be able to play with mailng by looking at 
@@ -105,6 +130,6 @@ Then, edit your /etc/dovecot/dovecot-sql.conf and modify following lines::
 
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
-  default_pass_scheme = MD5
+  default_pass_scheme = PLAIN-MD5
   password_query = SELECT address as user, password FROM admin_mailbox WHERE full_address = '%u'
   user_query = SELECT path as home, uid, gid FROM admin_mailbox WHERE full_address = '%u'

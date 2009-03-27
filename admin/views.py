@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from mailng import admin
 from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm
+import md5
 
 def _ctx_ok(url):
     return {"status" : "ok", "url" : url}
@@ -114,7 +115,8 @@ def newmailbox(request, dom_id=None):
                 if mb.create_dir(domain):
                     user = User()
                     user.username = user.email = "%s@%s" % (mb.address, domain.name)
-                    user.set_password(request.POST["password1"])
+#                    user.set_password(request.POST["password1"])
+                    user.set_unusable_password()
                     user.is_active = request.POST.has_key("enabled") \
                         and True or False
                     fname, lname = mb.name.split()
@@ -123,6 +125,7 @@ def newmailbox(request, dom_id=None):
                     user.save()
                     mb.user = user
                  
+                    mb.password = md5.new(request.POST["password1"]).hexdigest()
                     mb.uid = mb.gid = 500
                     mb.domain = domain
                     mb.quota = request.POST["quota"]

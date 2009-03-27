@@ -81,6 +81,11 @@ INSTALLED_APPS = (
     'mailng.admin'
 )
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'mailng.lib.authbackends.SimpleBackend'
+)
+
 # Mailng specific options
 STORAGE_PATH = "/var/vmail"
 VIRTUAL_UID = "vmail"

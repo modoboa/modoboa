@@ -40,6 +40,7 @@ class Mailbox(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     full_address = models.CharField(max_length=150)
+    password = models.CharField(max_length=100)
     quota = models.IntegerField()
     uid = models.IntegerField()
     gid = models.IntegerField()
