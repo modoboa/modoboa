@@ -68,35 +68,36 @@ Postfix versions >= 2.2)::
   user = <user>
   password = <password>
   dbname = <database>
+  hosts = 127.0.0.1
   query = SELECT name FROM admin_domain WHERE name='%s' AND enabled='1'
 
 # /etc/postfix/sql-mailboxes.cf
   user = <user>
   password = <password>
   dbname = <database>
-  query = SELECT path FROM admin_mailbox WHERE full_address = '%s' AND enabled = '1'
+  hosts = 127.0.0.1
+  query = SELECT path FROM admin_mailbox WHERE full_address = '%s'
 
 # /etc/postfix/sql-aliases.cf
   user = <user>
   password = <password>
   dbname = <database>
-  query = SELECT t2.full_address FROM admin_alias AS t1, admin_mailbox AS t2
-          WHERE t1.full_address='%s' AND t1.mbox=t2.id 
-          AND t1.enabled='1'
+  hosts = 127.0.0.1
+  query = SELECT t2.full_address FROM admin_alias AS t1, admin_mailbox AS t2 WHERE t1.full_address='%s' AND t1.mbox_id=t2.id AND t1.enabled='1'
 
 Then, use the following configuration in your /etc/postfix/main.cf file
 (this is one possible configuration)::
 
   # Stuff before
   mailbox_transport = virtual
-  home_mailbox = Maildir/
+  home_mailbox = .maildir/ 
   maildrop_destination_recipient_limit = 1
-  virtual_minimum_uid = 500
-  virtual_gid_maps = static:500
-  virtual_uid_maps = static:500
+  virtual_minimum_uid = <vmail user id> 
+  virtual_gid_maps = static:<vmail group id>
+  virtual_uid_maps = static:<vmail user id>
   virtual_mailbox_base = /var/vmail
 
-  relay_domains = mysql:/etc/postfix/sql-domains.cf
+  relay_domains = 
   virtual_mailbox_domains = mysql:/etc/postfix/sql-domains.cf
   virtual_mailbox_maps = mysql:/etc/postfix/sql-mailboxes.cf
   virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf
@@ -120,10 +121,15 @@ following inside::
       args = /etc/dovecot/dovecot-sql.conf
     }
     
+    userdb sql {
+      # Path for SQL configuration file
+      args = /etc/dovecot/dovecot-sql.conf
+    }
+
     # ... stuff after
   }
 
-Be sure to activate only one backend inside your configuration
+Be sure to activate only one backend (per type) inside your configuration
 (comment other ones).
 
 Then, edit your /etc/dovecot/dovecot-sql.conf and modify following lines::
@@ -131,5 +137,30 @@ Then, edit your /etc/dovecot/dovecot-sql.conf and modify following lines::
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
   default_pass_scheme = PLAIN-MD5
-  password_query = SELECT address as user, password FROM admin_mailbox WHERE full_address = '%u'
-  user_query = SELECT path as home, uid, gid FROM admin_mailbox WHERE full_address = '%u'
+  password_query = SELECT full_address AS user, password FROM admin_mailbox WHERE full_address = '%u'
+  user_query = SELECT path AS home, uid, gid FROM admin_mailbox WHERE full_address = '%u'
+
+Tips to server Mailng behind Apache2
+------------------------------------
+
+First, be sure to have apache2 and mod_python installed on your
+server.
+
+Create a new virtualhost in your Apache configuration and put the
+following inside::
+
+  <VirtualHost *:80>
+    <Location "/">
+      SetHandler mod_python
+      PythonHandler django.core.handlers.modpython
+      PythonPath "['<path to directory that contains mailng dir>'] + sys.path"
+      SetEnv DJANGO_SETTINGS_MODULE mailng.settings
+    </Location>
+    Alias "/static" "<path to mailng dir>/static"
+    <Location "/static/">
+      SetHandler None
+    </Location>
+  </VirtualHost>
+
+This is one possible configuration. Note that you will certainly need more
+configuration in order to launch Apache.

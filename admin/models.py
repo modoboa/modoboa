@@ -11,7 +11,8 @@ class Domain(models.Model):
 
     def create_dir(self):
         code, output = exec_pipe("sudo -u %s mkdir %s/%s" \
-                                     % (settings.VIRTUAL_UID, settings.STORAGE_PATH, 
+                                     % (settings.VIRTUAL_UID, 
+                                        settings.STORAGE_PATH, 
                                         self.name))
         if code:
             os.system("echo '%s' >> /tmp/vmail.log" % output)
@@ -30,7 +31,8 @@ class Domain(models.Model):
 
     def delete_dir(self):
         code, output = exec_pipe("sudo -u %s rm -r %s/%s" \
-                                     % (settings.VIRTUAL_UID, settings.STORAGE_PATH, 
+                                     % (settings.VIRTUAL_UID, 
+                                        settings.STORAGE_PATH, 
                                         self.name))
         if code:
             return False
@@ -58,7 +60,7 @@ class Mailbox(models.Model):
                                      % (settings.VIRTUAL_UID, path))
         if code:
             return False
-        self.path = "%s/.maildir/" % path
+        self.path = "%s/%s/.maildir/" % (domain.name, self.address)
         return True
 
     def rename_dir(self, domain, newaddress):
@@ -69,12 +71,13 @@ class Mailbox(models.Model):
         if code:
             os.system("echo '%s' >> /tmp/vmail.log" % output)
             return False
-        self.path = "%s/%s/.maildir/" % (path, newaddress)
+        self.path = "%s/%s/.maildir/" % (domain, newaddress)
         return True
 
     def delete_dir(self):
         code, output = exec_pipe("sudo -u %s rm -r %s/%s/%s" \
-                                     % (settings.VIRTUAL_UID, settings.STORAGE_PATH,
+                                     % (settings.VIRTUAL_UID, 
+                                        settings.STORAGE_PATH,
                                         self.domain.name, self.name))
         if code:
             return False
