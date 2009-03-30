@@ -15,7 +15,7 @@
     <th width="130px">{% trans "Name" %}</th>
     <th width="170px">{% trans "Address" %}</th>
     <th width="60px">{% trans "Quota" %}</th>
-    <th width="50px">{% trans "Enabled" %}</th>
+    <th width="50px">{{ "Enabled"|gender:"f" }}</th>
   </tr>
   {% for mb in mailboxes %}
   <tr class="{% cycle 'odd' 'even' %}">

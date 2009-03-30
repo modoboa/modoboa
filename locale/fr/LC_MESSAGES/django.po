@@ -1,0 +1,229 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-03-30 18:07+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin/forms.py:10 templates/admin/domains.html:20
+#: templates/admin/mailboxes.html:17
+msgid "Quota"
+msgstr ""
+
+#: admin/forms.py:11
+msgid "Password"
+msgstr "Mot de passe"
+
+#: admin/forms.py:12
+msgid "Confirmation"
+msgstr ""
+
+#: admin/forms.py:13 templates/admin/aliases.html:17
+#: templates/admin/domains.html:21
+msgid "Enabled"
+msgstr "Activé"
+
+#: admin/forms.py:21
+msgid "Passwords mismatch"
+msgstr "Les mots de passe diffèrent"
+
+#: admin/models.py:9 admin/models.py:43
+msgid "name"
+msgstr "Nom"
+
+#: admin/models.py:11 admin/models.py:91
+msgid "enabled"
+msgstr "Activé"
+
+#: admin/models.py:44 admin/models.py:88
+msgid "address"
+msgstr "Adresse"
+
+#: admin/models.py:46
+msgid "password"
+msgstr "Mot de passe"
+
+#: admin/models.py:90
+msgid "mailbox"
+msgstr "Boite aux lettres"
+
+#: admin/views.py:43 admin/views.py:71
+msgid "Domain with this name already defined"
+msgstr "Un domaine avec ce nom existe déjà"
+
+#: admin/views.py:51
+msgid "Failed to initialise domain, check permissions"
+msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
+
+#: admin/views.py:74
+msgid "Failed to rename domain, check permissions"
+msgstr "Impossible de renommer le domaine, vérifier les permissions"
+
+#: admin/views.py:113 admin/views.py:161
+msgid "Mailbox with this address already exists"
+msgstr "Une boite aux lettres pour cette adresse existe déjà"
+
+#: admin/views.py:140
+msgid "Failed to initialise mailbox, check permissions"
+msgstr ""
+"Impossible d'initialiser la boite aux lettres, vérifier les permissions"
+
+#: admin/views.py:164
+msgid "Failed to rename mailbox, check permissions"
+msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
+
+#: admin/views.py:228 admin/views.py:256
+msgid "Alias with this address already exists"
+msgstr "Un alias avec cette adresse existe déjà"
+
+#: admin/templatetags/admin_extras.py:7
+msgid "enabled_m"
+msgstr "Activé"
+
+#: admin/templatetags/admin_extras.py:7
+msgid "enabled_f"
+msgstr "Activée"
+
+#: templates/admin/aliases.html:10
+msgid "No alias defined."
+msgstr "Aucun alias défini."
+
+#: templates/admin/aliases.html:14 templates/admin/domains.html:17
+#: templates/admin/mailboxes.html:14
+msgid "Actions"
+msgstr ""
+
+#: templates/admin/aliases.html:15 templates/admin/mailboxes.html:16
+msgid "Address"
+msgstr "Adresse"
+
+#: templates/admin/aliases.html:16
+msgid "Mailbox"
+msgstr "Boite aux lettres"
+
+#: templates/admin/aliases.html:25
+msgid "Edit alias"
+msgstr "Editer cet alias"
+
+#: templates/admin/aliases.html:29
+msgid "Delete alias"
+msgstr "Supprimer cet alias"
+
+#: templates/admin/domain_header.html:8 templates/admin/editdomain.html:7
+msgid "Domain"
+msgstr "Domaine"
+
+#: templates/admin/domain_menu.html:12 templates/admin/newmailbox.html:7
+msgid "New mailbox"
+msgstr "Nouvelle boite aux lettres"
+
+#: templates/admin/domain_menu.html:18 templates/admin/domains.html:19
+msgid "Mailboxes"
+msgstr "Boites aux lettres"
+
+#: templates/admin/domain_menu.html:22
+msgid "Aliases"
+msgstr "Alias"
+
+#: templates/admin/domain_menu.html:27
+msgid "Properties"
+msgstr "Propriétés"
+
+#: templates/admin/domains.html:8
+msgid "Available domains"
+msgstr "Domaines disponibles"
+
+#: templates/admin/domains.html:13
+msgid "No domain defined."
+msgstr "Aucun alias défini."
+
+#: templates/admin/domains.html:18 templates/admin/mailboxes.html:15
+msgid "Name"
+msgstr "Nom"
+
+#: templates/admin/domains.html:29
+msgid "Edit domain"
+msgstr "Editer le domaine"
+
+#: templates/admin/domains.html:33
+msgid "Delete domain"
+msgstr "Supprimer le domaine"
+
+#: templates/admin/domains.html:39 templates/admin/mailboxes.html:45
+msgid "MB"
+msgstr "Mo"
+
+#: templates/admin/domains.html:40 templates/admin/mailboxes.html:46
+msgid "yes,no"
+msgstr "oui,non"
+
+#: templates/admin/editalias.html:14 templates/admin/editdomain.html:15
+#: templates/admin/editmailbox.html:16
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: templates/admin/layout.html:17
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: templates/admin/layout.html:29 templates/admin/newdomain.html:7
+msgid "New domain"
+msgstr "Nouveau domaine"
+
+#: templates/admin/layout.html:35
+msgid "Domains"
+msgstr "Domaines"
+
+#: templates/admin/layout.html:41
+msgid "Settings"
+msgstr "Paramètres"
+
+#: templates/admin/mailboxes.html:10
+msgid "No mailbox defined."
+msgstr "Aucune boite aux lettres définie."
+
+#: templates/admin/mailboxes.html:26
+msgid "Edit mailbox"
+msgstr "Editer la boite aux lettres"
+
+#: templates/admin/mailboxes.html:31
+msgid "Delete mailbox"
+msgstr "Supprimer la boite aux lettres"
+
+#: templates/admin/mailboxes.html:36
+msgid "Add new alias"
+msgstr "Ajouter un alias"
+
+#: templates/admin/mailboxes.html:40
+msgid "Mailbox aliases"
+msgstr "Alias de cette boite aux lettres"
+
+#: templates/admin/newalias.html:7
+msgid "New alias"
+msgstr "Nouvel alias"
+
+#: templates/admin/newalias.html:14 templates/admin/newdomain.html:15
+#: templates/admin/newmailbox.html:16
+msgid "Create"
+msgstr "Créer"
+
+#: templates/registration/login.html:8
+msgid "Welcome"
+msgstr "Bienvenue"
+
+#: templates/registration/login.html:11
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+"Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
+"réessayer."

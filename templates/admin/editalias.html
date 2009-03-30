@@ -3,6 +3,7 @@
 <script src="/static/js/form.js" type="text/javascript"></script>
 {% endblock %}
 {% block content %}
+{% load i18n %}
 <div class="title"><h1>Alias {{ alias.address }}</h1></div>
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
 {% url admin.views.editalias alias.mbox.domain.id alias.id as edit_url %}

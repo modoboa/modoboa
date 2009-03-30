@@ -1,6 +1,7 @@
 from django import forms
 from mailng.admin.models import Domain, Mailbox, Alias
 from django.utils.translation import ugettext as _
+from mailng.admin.templatetags.admin_extras import gender
 
 class DomainForm(forms.ModelForm):
     class Meta:
@@ -10,7 +11,7 @@ class MailboxForm(forms.ModelForm):
     quota = forms.IntegerField(label=_("Quota"), required=False)
     password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
     password2 = forms.CharField(label=_("Confirmation"), widget=forms.PasswordInput)
-    enabled = forms.BooleanField(label=_("Enabled"), required=False)
+    enabled = forms.BooleanField(label=gender("Enabled", "f"), required=False)
 
     class Meta:
         model = Mailbox
