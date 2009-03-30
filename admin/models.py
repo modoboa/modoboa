@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 from mailng.lib import exec_pipe
 import os
 
 class Domain(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(_('name'), max_length=100)
     quota = models.IntegerField()
-    enabled = models.BooleanField()
+    enabled = models.BooleanField(_('enabled'))
 
     def create_dir(self):
         code, output = exec_pipe("sudo -u %s mkdir %s/%s" \
@@ -39,10 +40,10 @@ class Domain(models.Model):
         return True
 
 class Mailbox(models.Model):
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=100)
+    name = models.CharField(_('name'), max_length=100)
+    address = models.CharField(_('address'), max_length=100)
     full_address = models.CharField(max_length=150)
-    password = models.CharField(max_length=100)
+    password = models.CharField(_('password'), max_length=100)
     quota = models.IntegerField()
     uid = models.IntegerField()
     gid = models.IntegerField()
@@ -84,7 +85,7 @@ class Mailbox(models.Model):
         return True
 
 class Alias(models.Model):
-    address = models.CharField(max_length=100)
+    address = models.CharField(_('address'), max_length=100)
     full_address = models.CharField(max_length=150)
-    mbox = models.ForeignKey(Mailbox)
-    enabled = models.BooleanField()
+    mbox = models.ForeignKey(Mailbox, verbose_name=_('mailbox'))
+    enabled = models.BooleanField(_('enabled'))

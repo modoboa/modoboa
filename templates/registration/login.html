@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
+{% load i18n %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
 {% endblock %}
 {% block content %}
 <div id="loginbox">
-  <h3>Welcome</h3>
+  <h3>{% trans "Welcome" %}</h3>
 {% if form.errors %}
   <div class="error">
-    <p>Your username and password didn't match. Please try again.</p>
+    <p>{% trans "Your username and password didn't match. Please try again." %}</p>
   </div>
 {% endif %}
   <form method="post" action=".">

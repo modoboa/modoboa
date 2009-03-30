@@ -13,26 +13,23 @@ window.addEvent('domready', function() {
 //     };   
 
     if ($$("a[name=deleteDom]"))
-        $$("a[name=deleteDom]").addEvent('click', function(event) {
-            if (!confirm("Delete this domain?"))
-                event.stop();
-        });
-
+      $$("a[name=deleteDom]").addEvent('click', function(event) {
+	  if (!confirm(gettext("Delete this domain?")))
+	    event.stop();
+	});
+    
     if ($$("a[name=deleteMb]"))
         $$("a[name=deleteMb]").addEvent('click', function(event) {
-            if (!confirm("Delete this mailbox?"))
+            if (!confirm(gettext("Delete this mailbox?")))
                 event.stop();
         });
 
     if ($$("a[name=deleteAlias]"))
         $$("a[name=deleteAlias]").addEvent('click', function(event) {
-            if (!confirm("Delete this alias?"))
+            if (!confirm(gettext("Delete this alias?")))
                 event.stop();
         });
 
-    handlers['deleteDom'] = function(obj, target) {
-        return confirm("Supprimer ce domaine?");
-    }
     
     $('body').addEvent('click', function(event) {
 	target = event.target;

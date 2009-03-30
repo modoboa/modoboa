@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block domcontent %}
+{% load i18n %}
 {% if not aliases %}
-<p>No alias defined.</p>
+<p>{% trans "No alias defined." %}</p>
 {% else %}
 <table>
   <tr>
@@ -21,11 +22,11 @@
       {% url admin.views.editalias domain.id alias.id as edit_url %}
       <a href="{{ edit_url }}" class="boxed"
          rel="{handler:'iframe',size:{x:300,y:190}}">
-        <img src="/static/pics/edit.png" border="0" title="Edit alias"/>
+        <img src="/static/pics/edit.png" border="0" title="{% trans 'Edit alias' %}"/>
       </a>
       {% url admin.views.delalias domain.id alias.id as del_url %}
       <a href="{{ del_url }}" name="deleteAlias">
-        <img src="/static/pics/remove.png" border="0" title="Delete alias" />
+        <img src="/static/pics/remove.png" border="0" title="{% trans 'Delete alias' %}" />
       </a>
     </td>
     <td>{{ alias.address }}@{{ alias.mbox.domain.name }}</td>

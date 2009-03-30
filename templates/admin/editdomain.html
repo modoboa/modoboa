@@ -3,7 +3,8 @@
 <script src="/static/js/form.js" type="text/javascript"></script>
 {% endblock %}
 {% block content %}
-<div class="title"><h1>Domain {{ domain.name }}</h1></div>
+{% load i18n %}
+<div class="title"><h1>{% trans "Domain" %} {{ domain.name }}</h1></div>
 
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
 {% url admin.views.editdomain domain.id as dom_url %}
@@ -11,7 +12,7 @@
   {% include "admin/genericform.html" %}
 
   <div class="lastrow" align="center">
-    <input type="submit" class="button" name="submit" value="Update" />
+    <input type="submit" class="button" name="submit" value="{% trans 'Update' %}" />
   </div>
 </form>
 {% endblock %}

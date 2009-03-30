@@ -3,6 +3,7 @@ from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
+from django.utils.translation import ugettext as _
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -39,7 +40,7 @@ def newdomain(request):
         error = None
         if form.is_valid():
             if Domain.objects.filter(name=request.POST["name"]):
-                error = "Domain with this name already defined"
+                error = _("Domain with this name already defined")
             else:
                 domain = form.save(commit=False)
                 if domain.create_dir():
@@ -47,7 +48,7 @@ def newdomain(request):
                     ctx = _ctx_ok(reverse(admin.views.domains))
                     return HttpResponse(simplejson.dumps(ctx), 
                                         mimetype="application/json")
-                error = "Failed to initialise domain, check permissions"
+                error = _("Failed to initialise domain, check permissions")
         ctx = _ctx_ko("admin/newdomain.html", {
                 "form" : form, "error" : error
                 })
@@ -67,10 +68,10 @@ def editdomain(request, dom_id):
         if form.is_valid():
             if domain.name != request.POST["name"]:
                 if Domain.objects.filter(name=request.POST["name"]):
-                    error = "Domain with this name already defined"
+                    error = _("Domain with this name already defined")
                 else:
                     if not domain.rename_dir(request.POST["name"]):
-                        error = "Failed to rename domain, check permissions"
+                        error = _("Failed to rename domain, check permissions")
             if not error:
                 form.save()
                 ctx = _ctx_ok(reverse(admin.views.domains))
@@ -109,7 +110,7 @@ def newmailbox(request, dom_id=None):
         if form.is_valid():
             if Mailbox.objects.filter(address=request.POST["address"],
                                       domain=dom_id):
-                error = "Mailbox with this address already exists"
+                error = _("Mailbox with this address already exists")
             else:
                 mb = form.save(commit=False)
                 if mb.create_dir(domain):
@@ -136,7 +137,7 @@ def newmailbox(request, dom_id=None):
                     ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[domain.id]))
                     return HttpResponse(simplejson.dumps(ctx), 
                                         mimetype="application/json")
-            error = "Failed to initialise mailbox, check permissions"
+            error = _("Failed to initialise mailbox, check permissions")
         ctx = _ctx_ko("admin/newmailbox.html", {
                 "form" : form, "domain" : domain, "error" : error
                 })
@@ -157,10 +158,10 @@ def editmailbox(request, dom_id, mbox_id=None):
             if mb.address != request.POST["address"]:
                 if Mailbox.objects.filter(address=request.POST["address"],
                                           domain=dom_id):
-                    error = "Mailbox with this address already exists"
+                    error = _("Mailbox with this address already exists")
                 else:
                     if not mb.rename_dir(mb.domain.name, request.POST["address"]):
-                        error = "Failed to rename mailbox, check permissions"
+                        error = _("Failed to rename mailbox, check permissions")
             if not error:
                 mb = form.save(commit=False)
                 enabled = request.POST.has_key("enabled") \
@@ -224,7 +225,7 @@ def newalias(request, dom_id, mbox_id):
         if form.is_valid():
             if Alias.objects.filter(address=request.POST["address"],
                                     mbox=mbox_id):
-                error = "Alias with this address already exists"
+                error = _("Alias with this address already exists")
             else:
                 alias = form.save(commit=False)
                 alias.full_address = "%s@%s" % (alias.address, mbox.domain.name)
@@ -252,7 +253,7 @@ def editalias(request, dom_id, alias_id):
             if alias.address != request.POST["address"] \
                     and Alias.objects.filter(address=request.POST["address"],
                                              mbox=alias.mbox.id):
-                error = "Alias with this address already exists"
+                error = _("Alias with this address already exists")
             else:
                 alias = form.save(commit=False)
                 alias.full_address = "%s@%s" % (alias.address, 

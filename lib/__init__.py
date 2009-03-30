@@ -32,3 +32,12 @@ def exec_pipe(cmd):
         else:
             code = -1
     return code, output
+
+def crypt_password(raw_password):
+    import md5
+    import random
+
+    salt = md5.new(str(random.random) + str(random.random)).hexdigest()
+    salt = salt[:5]
+    hash = md5.new(salt + raw_password).hexdigest()
+    return "%s$%s$%s" % ("md5", salt, hash)
