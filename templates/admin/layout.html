@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
 {% load i18n %}
-{% url admin.views.domains as dom_url %}
 <div id="body">
   <div id="leftcol">
     <div id="userbox" class="leftbox">
@@ -30,13 +29,15 @@
           </a>
         </li>
         <li>
-          <a name="loadContent" href="{{ dom_url }}">
+          {% url admin.views.domains as dom_url %}
+          <a href="{{ dom_url }}">
             <img src="/static/pics/domains.png" border="0"/>
             {% trans "Domains" %}
 	  </a>
         </li>
         <li>
-          <a name="loadContent" href="">
+          {% url admin.views.settings as settings_url %}
+          <a href="{{ settings_url }}">
             <img src="/static/pics/settings.png" border="0"/>
             {% trans "Settings" %}
 	  </a>

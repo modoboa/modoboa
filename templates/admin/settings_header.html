@@ -1,0 +1,17 @@
+{% extends "admin/layout.html" %}
+{% block html_head %}
+{% endblock %}
+{% block mainframe %}
+{% load i18n %}
+<div class="header">
+  <h1>{% trans "Settings" %}</h1>
+</div>
+
+<div id="menubar" class="menu2">
+  {% block menu %}{% endblock %}
+</div>
+
+<div id="setcontent">
+{% block setcontent %}{% endblock %}
+</div>
+{% endblock %}

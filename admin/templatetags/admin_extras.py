@@ -14,6 +14,11 @@ def domain_menu(domain_id, selection):
                             {"selection" : selection,
                              "domain_id" : domain_id})
 
+@register.simple_tag
+def settings_menu(selection):
+    return render_to_string('admin/settings_menu.html',
+                            {"selection" : selection})
+
 @register.filter
 def gender(value, target):
     if genders.has_key(value):

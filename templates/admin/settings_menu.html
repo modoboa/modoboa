@@ -1,0 +1,10 @@
+{% load i18n %}
+<ul>
+  {% url admin.views.permissions as perm_url %}
+  <li {% ifequal selection "permissions" %}class="selected"{% endifequal %}>
+    <a href="{{ perm_url }}">
+      <img src="/static/pics/permissions.png" border="0" />
+      {% trans "Permissions" %}
+    </a>
+  </li>
+</ul>

@@ -278,3 +278,6 @@ def delalias(request, dom_id, alias_id):
     return HttpResponseRedirect(reverse(admin.views.aliases, 
                                         args=[dom_id]))
 
+@login_required
+def settings(request):
+    return _render(request, 'admin/permissions.html', {})

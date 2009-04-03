@@ -26,6 +26,11 @@ Initialise the database by running the following command::
 
 Create the super admin account (just follow the procedure).
 
+Run the initialisation script. It will insert needed data into the database :
+
+  export PYTHONPATH=$PWD/..
+  DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/populate.py
+
 Host configuration
 ------------------
 
