@@ -146,7 +146,7 @@ msgstr "Domaines disponibles"
 
 #: templates/admin/domains.html:13
 msgid "No domain defined."
-msgstr "Aucun alias défini."
+msgstr "Aucun domaine défini."
 
 #: templates/admin/domains.html:18 templates/admin/mailboxes.html:15
 msgid "Name"

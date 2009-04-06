@@ -39,6 +39,9 @@ class Domain(models.Model):
             return False
         return True
 
+    def __str__(self):
+        return self.name
+
 class Mailbox(models.Model):
     name = models.CharField(_('name'), max_length=100)
     address = models.CharField(_('address'), max_length=100)

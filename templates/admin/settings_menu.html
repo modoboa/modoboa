@@ -7,4 +7,12 @@
       {% trans "Permissions" %}
     </a>
   </li>
+  {% url admin.views.addpermission as addperm_url %}
+  <li>
+    <a href="{{ addperm_url }}" class="boxed"
+       rel="{handler:'iframe',size:{x:320,y:210}}">
+      <img src="/static/pics/add.png" border="0" />
+      {% trans "Add permission" %}
+    </a>
+  </li>
 </ul>

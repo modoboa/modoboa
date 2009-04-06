@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from mailng import admin
 from mailng.admin.models import Domain, Mailbox, Alias
-from forms import MailboxForm, DomainForm, AliasForm
+from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 import md5
 
 def _ctx_ok(url):
@@ -280,4 +280,15 @@ def delalias(request, dom_id, alias_id):
 
 @login_required
 def settings(request):
-    return _render(request, 'admin/permissions.html', {})
+    admins = User.objects.filter(is_superuser=True)
+    domadmins = User.objects.filter(groups__name="DomainAdmins")
+    return _render(request, 'admin/permissions.html', {
+            "admins" : admins, "domadmins" : domadmins
+            })
+
+@login_required
+def addpermission(request):
+    form = PermissionForm()
+    return _render(request, 'admin/addpermission.html', {
+            "form" : form
+            })

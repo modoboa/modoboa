@@ -254,6 +254,10 @@ body {
     width: 90%;
 }
 
+#setcontent { 
+    margin: 0px auto;
+    width: 90%;
+}
 
 .button {
     margin-left: 35px;
@@ -272,4 +276,8 @@ body {
 
 .header h1 {
     font-size: medium;
+}
+
+#setcontent h4 { 
+    margin-top: 0;
 }

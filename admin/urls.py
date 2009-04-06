@@ -16,4 +16,5 @@ urlpatterns = patterns('mailng.admin.views',
                        url(r'^domains/(?P<dom_id>\d+)/aliases/(?P<mbox_id>\d+)/$', "aliases", name="mbox-aliases"),
                        (r'^domains/(?P<dom_id>\d+)/delalias/(?P<alias_id>\d+)/$', 'delalias'),
                        (r'^settings/$', 'settings'),
+                       (r'^settings/addperm/$', 'addpermission')
                        )

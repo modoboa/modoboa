@@ -36,3 +36,10 @@ class AliasForm(forms.ModelForm):
         model = Alias
         fields = ('address', 'mbox', 'enabled')
 
+class PermissionForm(forms.Form):
+    domain = forms.ModelChoiceField(queryset=Domain.objects.all(), label=_("Domain"), 
+                                    required=True)
+    user = forms.ChoiceField(label=_("User"), required=True)
+    role = forms.ChoiceField(label=_("Role"), required=True, 
+                             choices=(("SuperAdmin", _("Super administrator")),
+                                      ("DomainAdmin", _("Domain administrator"))))

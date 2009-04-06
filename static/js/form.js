@@ -37,4 +37,10 @@ window.addEvent("domready", function() {
 
     if ($("aliasform"))
         $("aliasform").addEvent("submit", alias_submit);
+
+    if ($("permform")) {
+        $("id_domain").addEvent("change", function(event) {
+
+        });
+    }
 });
