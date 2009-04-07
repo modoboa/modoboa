@@ -23,7 +23,7 @@
     </td>
     <td>{{ admin.first_name }} {{ admin.last_name }}</td>
     <td>{{ admin.username }}</td>
-    <td>{{ admin.is_active }}</td>
+    <td>{{ admin.is_active|yesno }}</td>
   </tr>
   {% endfor %}
 </table>
@@ -33,6 +33,23 @@
 {% if not domadmins %}
 <p>{% trans "No domain admin defined." %}</p>
 {% else %}
-
+<table>
+  <tr>
+    <th width="50px">{% trans "Actions" %}</th>
+    <th>{% trans "Domain" %}</th>
+    <th>{% trans "Name" %}</th>
+    <th>{% trans "Enabled" %}</th>
+  </tr>
+  {% for admin in domadmins %}
+  <tr class="{% cycle 'odd' 'even' %}">
+    <td>
+      <a href=""><img src="/static/pics/remove.png" border="0" title="{% trans 'Remove permission' %}" /></a>
+    </td>
+    <td>{{ admin.domain.name }}</td>
+    <td>{{ admin.first_name }} {{ admin.last_name }}</td>
+    <td>{{ admin.is_active|yesno }}</td>
+  </tr>
+  {% endfor %}
+</table>
 {% endif %}
 {% endblock %}

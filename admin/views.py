@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from mailng import admin
 from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
@@ -297,14 +297,18 @@ def settings(request):
 def addpermission(request):
     if request.method == "POST":
         form = PermissionForm(request.POST)
+        if request.POST.has_key('user'):
+            mboxid = request.POST['user']
+            form.fields["user"].choices = \
+                [(mboxid, Mailbox.objects.get(pk=mboxid)),]
         if form.is_valid():
             mb = Mailbox.objects.get(pk=request.POST["user"])
-            if request.POST["role"] == "SuperAdmin":
+            if request.POST["role"] == "SuperAdmins":
                 mb.user.is_superadmin = True
             else:
-                mb.user.groups.add("DomainAdmins")
+                mb.user.groups.add(Group.objects.get(name=request.POST["role"]))
             mb.user.save()
-            ctx = _ctx_ok(reverse(admin.views.permissions))
+            ctx = _ctx_ok(reverse(admin.views.settings))
             return HttpResponse(simplejson.dumps(ctx), 
                                 mimetype="application/json")
         ctx = _ctx_ko("admin/addpermission.html", {

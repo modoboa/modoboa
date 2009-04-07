@@ -41,5 +41,5 @@ class PermissionForm(forms.Form):
                                     required=True)
     user = forms.ChoiceField(label=_("User"), required=True)
     role = forms.ChoiceField(label=_("Role"), required=True, 
-                             choices=(("SuperAdmin", _("Super administrator")),
-                                      ("DomainAdmin", _("Domain administrator"))))
+                             choices=(("SuperAdmins", _("Super administrator")),
+                                      ("DomainAdmins", _("Domain administrator"))))
