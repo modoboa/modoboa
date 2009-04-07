@@ -28,6 +28,9 @@ window.addEvent("domready", function() {
     alias_submit = function(event) { 
         generic_submit(this, event, "aliasform", alias_submit); 
     }
+    permission_submit = function(event) {
+        generic_submit(this, event, "permform", permission_submit);
+    }
 
     if ($("domform"))
         $("domform").addEvent("submit", domain_submit);
@@ -38,9 +41,7 @@ window.addEvent("domready", function() {
     if ($("aliasform"))
         $("aliasform").addEvent("submit", alias_submit);
 
-    if ($("permform")) {
-        $("id_domain").addEvent("change", function(event) {
+    if ($("permform"))
+        $("permform").addEvent("submit", permission_submit);
 
-        });
-    }
 });

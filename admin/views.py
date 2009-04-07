@@ -102,6 +102,13 @@ def mailboxes(request, dom_id=None):
             })
 
 @login_required
+def mailboxes_raw(request, dom_id=None):
+    mailboxes = Mailbox.objects.filter(domain=dom_id)
+    return _render(request, 'admin/mailboxes_raw.html', {
+            "mailboxes" : mailboxes
+            })
+
+@login_required
 def newmailbox(request, dom_id=None):
     domain = Domain.objects.get(pk=dom_id)
     if request.method == "POST":
@@ -288,6 +295,23 @@ def settings(request):
 
 @login_required
 def addpermission(request):
+    if request.method == "POST":
+        form = PermissionForm(request.POST)
+        if form.is_valid():
+            mb = Mailbox.objects.get(pk=request.POST["user"])
+            if request.POST["role"] == "SuperAdmin":
+                mb.user.is_superadmin = True
+            else:
+                mb.user.groups.add("DomainAdmins")
+            mb.user.save()
+            ctx = _ctx_ok(reverse(admin.views.permissions))
+            return HttpResponse(simplejson.dumps(ctx), 
+                                mimetype="application/json")
+        ctx = _ctx_ko("admin/addpermission.html", {
+                "form" : form
+                })
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    
     form = PermissionForm()
     return _render(request, 'admin/addpermission.html', {
             "form" : form

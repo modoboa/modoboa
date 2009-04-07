@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('mailng.admin.views',
-                       (r'^$', 'domains'),
-                       (r'^domains/$', 'domains'),
+                       url(r'^$', 'domains', name="index"),
+                       url(r'^domains/$', 'domains', name="domains"),
                        (r'^domains/new/', 'newdomain'),
                        (r'^domains/(?P<dom_id>\d+)/edit/$', 'editdomain'),
                        (r'^domains/(?P<dom_id>\d+)/delete/$', 'deldomain'),
@@ -12,6 +12,7 @@ urlpatterns = patterns('mailng.admin.views',
                        (r'^domains/(?P<dom_id>\d+)/newalias/(?P<mbox_id>\d+)/$', 'newalias'),
                        (r'^domains/(?P<dom_id>\d+)/editalias/(?P<alias_id>\d+)/$', 'editalias'),
                        (r'^domains/(?P<dom_id>\d+)/$', 'mailboxes'),
+                       (r'^domains/(?P<dom_id>\d+)/raw/$', 'mailboxes_raw'),
                        url(r'^domains/(?P<dom_id>\d+)/aliases/$', "aliases", name="full-aliases"),
                        url(r'^domains/(?P<dom_id>\d+)/aliases/(?P<mbox_id>\d+)/$', "aliases", name="mbox-aliases"),
                        (r'^domains/(?P<dom_id>\d+)/delalias/(?P<alias_id>\d+)/$', 'delalias'),
