@@ -8,7 +8,7 @@
 {% if not admins %}
 <p>{% trans "No superuser defined?!" %}</p>
 {% else %}
-<h4>Super admins</h4>
+<h4>{% trans "Super administrators" %}</h4>
 <table>
   <tr>
     <th width="50px">{% trans "Actions" %}</th>
@@ -29,7 +29,7 @@
 </table>
 <br/><br/>
 {% endif %}
-<h4>Domain admins</h4>
+<h4>{% trans "Domain administrators" %}</h4>
 {% if not domadmins %}
 <p>{% trans "No domain admin defined." %}</p>
 {% else %}
@@ -47,7 +47,7 @@
     </td>
     <td>{{ admin.domain.name }}</td>
     <td>{{ admin.name }}</td>
-    <td>{{ admin.is_active|yesno }}</td>
+    <td>{{ admin.user.is_active|yesno }}</td>
   </tr>
   {% endfor %}
 </table>

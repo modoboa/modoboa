@@ -350,3 +350,6 @@ def addpermission(request):
     return _render(request, 'admin/addpermission.html', {
             "form" : form
             })
+
+def deletepermission(request):
+    pass

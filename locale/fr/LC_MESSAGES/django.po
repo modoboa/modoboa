@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-30 18:07+0200\n"
+"POT-Creation-Date: 2009-04-08 17:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,101 +16,136 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin/forms.py:10 templates/admin/domains.html:20
-#: templates/admin/mailboxes.html:17
+#: admin/forms.py:11 templates/admin/domains.html:20
+#: templates/admin/mailboxes.html:27
 msgid "Quota"
 msgstr ""
 
-#: admin/forms.py:11
+#: admin/forms.py:12
 msgid "Password"
 msgstr "Mot de passe"
 
-#: admin/forms.py:12
+#: admin/forms.py:13
 msgid "Confirmation"
 msgstr ""
 
-#: admin/forms.py:13 templates/admin/aliases.html:17
-#: templates/admin/domains.html:21
-msgid "Enabled"
-msgstr "Activé"
-
-#: admin/forms.py:21
+#: admin/forms.py:22
 msgid "Passwords mismatch"
 msgstr "Les mots de passe diffèrent"
 
-#: admin/models.py:9 admin/models.py:43
+#: admin/forms.py:40 templates/admin/domain_header.html:8
+#: templates/admin/editdomain.html:7 templates/admin/permissions.html:39
+msgid "Domain"
+msgstr "Domaine"
+
+#: admin/forms.py:42
+msgid "User"
+msgstr "Utilisateur"
+
+#: admin/forms.py:43
+msgid "Role"
+msgstr "Rôle"
+
+#: admin/forms.py:44
+msgid "Super administrator"
+msgstr "Super administrateur"
+
+#: admin/forms.py:45
+msgid "Domain administrator"
+msgstr "Admin. de domaine"
+
+#: admin/models.py:9 admin/models.py:52
 msgid "name"
 msgstr "Nom"
 
-#: admin/models.py:11 admin/models.py:91
+#: admin/models.py:11 admin/models.py:105
 msgid "enabled"
 msgstr "Activé"
 
-#: admin/models.py:44 admin/models.py:88
+#: admin/models.py:53 admin/models.py:102
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models.py:46
+#: admin/models.py:55
 msgid "password"
 msgstr "Mot de passe"
 
-#: admin/models.py:90
+#: admin/models.py:104
 msgid "mailbox"
 msgstr "Boite aux lettres"
 
-#: admin/views.py:43 admin/views.py:71
+#: admin/views.py:29
+msgid "Permission denied."
+msgstr "Permission refusée."
+
+#: admin/views.py:57 admin/views.py:88
 msgid "Domain with this name already defined"
 msgstr "Un domaine avec ce nom existe déjà"
 
-#: admin/views.py:51
+#: admin/views.py:65
 msgid "Failed to initialise domain, check permissions"
 msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
 
-#: admin/views.py:74
+#: admin/views.py:91
 msgid "Failed to rename domain, check permissions"
 msgstr "Impossible de renommer le domaine, vérifier les permissions"
 
-#: admin/views.py:113 admin/views.py:161
+#: admin/views.py:143 admin/views.py:191
 msgid "Mailbox with this address already exists"
 msgstr "Une boite aux lettres pour cette adresse existe déjà"
 
-#: admin/views.py:140
+#: admin/views.py:169
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Impossible d'initialiser la boite aux lettres, vérifier les permissions"
 
-#: admin/views.py:164
+#: admin/views.py:194
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
 
-#: admin/views.py:228 admin/views.py:256
+#: admin/views.py:261 admin/views.py:290
 msgid "Alias with this address already exists"
 msgstr "Un alias avec cette adresse existe déjà"
 
-#: admin/templatetags/admin_extras.py:7
+#: admin/templatetags/admin_extras.py:8
 msgid "enabled_m"
 msgstr "Activé"
 
-#: admin/templatetags/admin_extras.py:7
+#: admin/templatetags/admin_extras.py:8
 msgid "enabled_f"
 msgstr "Activée"
+
+#: templates/admin/addpermission.html:24 templates/admin/settings_menu.html:15
+msgid "Add permission"
+msgstr "Ajouter une permission"
+
+#: templates/admin/addpermission.html:33 templates/admin/newalias.html:14
+#: templates/admin/newdomain.html:15 templates/admin/newmailbox.html:16
+msgid "Create"
+msgstr "Créer"
 
 #: templates/admin/aliases.html:10
 msgid "No alias defined."
 msgstr "Aucun alias défini."
 
 #: templates/admin/aliases.html:14 templates/admin/domains.html:17
-#: templates/admin/mailboxes.html:14
+#: templates/admin/mailboxes.html:24 templates/admin/permissions.html:14
+#: templates/admin/permissions.html:38
 msgid "Actions"
 msgstr ""
 
-#: templates/admin/aliases.html:15 templates/admin/mailboxes.html:16
+#: templates/admin/aliases.html:15 templates/admin/mailboxes.html:26
 msgid "Address"
 msgstr "Adresse"
 
 #: templates/admin/aliases.html:16
 msgid "Mailbox"
 msgstr "Boite aux lettres"
+
+#: templates/admin/aliases.html:17 templates/admin/domains.html:21
+#: templates/admin/permissions.html:17 templates/admin/permissions.html:41
+msgid "Enabled"
+msgstr "Activé"
 
 #: templates/admin/aliases.html:25
 msgid "Edit alias"
@@ -119,10 +154,6 @@ msgstr "Editer cet alias"
 #: templates/admin/aliases.html:29
 msgid "Delete alias"
 msgstr "Supprimer cet alias"
-
-#: templates/admin/domain_header.html:8 templates/admin/editdomain.html:7
-msgid "Domain"
-msgstr "Domaine"
 
 #: templates/admin/domain_menu.html:12 templates/admin/newmailbox.html:7
 msgid "New mailbox"
@@ -136,7 +167,7 @@ msgstr "Boites aux lettres"
 msgid "Aliases"
 msgstr "Alias"
 
-#: templates/admin/domain_menu.html:27
+#: templates/admin/domain_menu.html:28
 msgid "Properties"
 msgstr "Propriétés"
 
@@ -148,7 +179,8 @@ msgstr "Domaines disponibles"
 msgid "No domain defined."
 msgstr "Aucun domaine défini."
 
-#: templates/admin/domains.html:18 templates/admin/mailboxes.html:15
+#: templates/admin/domains.html:18 templates/admin/mailboxes.html:25
+#: templates/admin/permissions.html:40
 msgid "Name"
 msgstr "Nom"
 
@@ -160,11 +192,11 @@ msgstr "Editer le domaine"
 msgid "Delete domain"
 msgstr "Supprimer le domaine"
 
-#: templates/admin/domains.html:39 templates/admin/mailboxes.html:45
+#: templates/admin/domains.html:39 templates/admin/mailboxes.html:55
 msgid "MB"
 msgstr "Mo"
 
-#: templates/admin/domains.html:40 templates/admin/mailboxes.html:46
+#: templates/admin/domains.html:40 templates/admin/mailboxes.html:56
 msgid "yes,no"
 msgstr "oui,non"
 
@@ -173,7 +205,7 @@ msgstr "oui,non"
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: templates/admin/layout.html:17
+#: templates/admin/layout.html:16
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -181,31 +213,31 @@ msgstr "Déconnexion"
 msgid "New domain"
 msgstr "Nouveau domaine"
 
-#: templates/admin/layout.html:35
+#: templates/admin/layout.html:36
 msgid "Domains"
 msgstr "Domaines"
 
-#: templates/admin/layout.html:41
+#: templates/admin/layout.html:43 templates/admin/settings_header.html:8
 msgid "Settings"
 msgstr "Paramètres"
 
-#: templates/admin/mailboxes.html:10
+#: templates/admin/mailboxes.html:20
 msgid "No mailbox defined."
 msgstr "Aucune boite aux lettres définie."
 
-#: templates/admin/mailboxes.html:26
+#: templates/admin/mailboxes.html:36
 msgid "Edit mailbox"
 msgstr "Editer la boite aux lettres"
 
-#: templates/admin/mailboxes.html:31
+#: templates/admin/mailboxes.html:41
 msgid "Delete mailbox"
 msgstr "Supprimer la boite aux lettres"
 
-#: templates/admin/mailboxes.html:36
+#: templates/admin/mailboxes.html:46
 msgid "Add new alias"
 msgstr "Ajouter un alias"
 
-#: templates/admin/mailboxes.html:40
+#: templates/admin/mailboxes.html:50
 msgid "Mailbox aliases"
 msgstr "Alias de cette boite aux lettres"
 
@@ -213,10 +245,37 @@ msgstr "Alias de cette boite aux lettres"
 msgid "New alias"
 msgstr "Nouvel alias"
 
-#: templates/admin/newalias.html:14 templates/admin/newdomain.html:15
-#: templates/admin/newmailbox.html:16
-msgid "Create"
-msgstr "Créer"
+#: templates/admin/permissions.html:9
+msgid "No superuser defined?!"
+msgstr "Aucun super utilisateur défini?!"
+
+#: templates/admin/permissions.html:11
+msgid "Super administrators"
+msgstr "Super administrateurs"
+
+#: templates/admin/permissions.html:15
+msgid "Full name"
+msgstr "Nom complet"
+
+#: templates/admin/permissions.html:16
+msgid "User name"
+msgstr "Nom d'utilisateur"
+
+#: templates/admin/permissions.html:22 templates/admin/permissions.html:46
+msgid "Remove permission"
+msgstr "Supprimer la permission"
+
+#: templates/admin/permissions.html:32
+msgid "Domain administrators"
+msgstr "Administrateurs de domaine"
+
+#: templates/admin/permissions.html:34
+msgid "No domain admin defined."
+msgstr "Aucun admin de domaine défini."
+
+#: templates/admin/settings_menu.html:7
+msgid "Permissions"
+msgstr ""
 
 #: templates/registration/login.html:8
 msgid "Welcome"
