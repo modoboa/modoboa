@@ -6,7 +6,8 @@ from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators \
+    import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from mailng import admin
 from mailng.admin.models import Domain, Mailbox, Alias
@@ -23,8 +24,18 @@ def _render(request, tpl, user_context):
     return render_to_response(tpl, user_context, 
                               context_instance=RequestContext(request))
 
+def is_superuser(user):
+    if not user.is_superuser:
+        user.message_set.create(message=_("Permission denied."))
+        return False
+    return True
+
 @login_required
 def domains(request):
+    if not request.user.has_perm("admin.view_domains"):
+        mb = Mailbox.objects.get(user=request.user.id)
+        return mailboxes(request, dom_id=mb.domain.id)
+
     domains = Domain.objects.all()
     counters = {}
     for dom in domains:
@@ -34,7 +45,10 @@ def domains(request):
             })
 
 @login_required
+@permission_required("admin.add_mailbox")
 def newdomain(request):
+    if not is_superuser(request.user):
+        return mailboxes(request, dom_id)
     if request.method == "POST":
         form = DomainForm(request.POST)
         error = None
@@ -59,8 +73,11 @@ def newdomain(request):
             "form" : form
             })
 
-@login_required   
+@login_required
+@permission_required("admin.change_mailbox")
 def editdomain(request, dom_id):
+    if not is_superuser(request.user):
+        return mailboxes(request, dom_id)
     domain = Domain.objects.get(pk=dom_id)
     if request.method == "POST":
         form = DomainForm(request.POST, instance=domain)
@@ -87,13 +104,17 @@ def editdomain(request, dom_id):
             })
 
 @login_required
+@permission_required("admin.delete_domain")
 def deldomain(request, dom_id):
+    if not is_superuser(request.user):
+        return mailboxes(request, dom_id)
     domain = Domain.objects.get(pk=dom_id)
     domain.delete_dir()
     domain.delete()
     return HttpResponseRedirect('/mailng/admin/')
 
 @login_required
+@permission_required("admin.view_mailboxes")
 def mailboxes(request, dom_id=None):
     domain = Domain.objects.get(pk=dom_id)
     mailboxes = Mailbox.objects.filter(domain=dom_id)
@@ -102,6 +123,7 @@ def mailboxes(request, dom_id=None):
             })
 
 @login_required
+@permission_required("admin.view_mailboxes")
 def mailboxes_raw(request, dom_id=None):
     mailboxes = Mailbox.objects.filter(domain=dom_id)
     return _render(request, 'admin/mailboxes_raw.html', {
@@ -109,6 +131,7 @@ def mailboxes_raw(request, dom_id=None):
             })
 
 @login_required
+@permission_required("admin.add_mailbox")
 def newmailbox(request, dom_id=None):
     domain = Domain.objects.get(pk=dom_id)
     if request.method == "POST":
@@ -123,7 +146,6 @@ def newmailbox(request, dom_id=None):
                 if mb.create_dir(domain):
                     user = User()
                     user.username = user.email = "%s@%s" % (mb.address, domain.name)
-#                    user.set_password(request.POST["password1"])
                     user.set_unusable_password()
                     user.is_active = request.POST.has_key("enabled") \
                         and True or False
@@ -156,6 +178,7 @@ def newmailbox(request, dom_id=None):
             })
 
 @login_required
+@permission_required("admin.change_mailbox")
 def editmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
     if request.method == "POST":
@@ -201,6 +224,7 @@ def editmailbox(request, dom_id, mbox_id=None):
             })
 
 @login_required
+@permission_required("admin.delete_mailbox")
 def delmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
     mb.delete_dir()
@@ -210,6 +234,7 @@ def delmailbox(request, dom_id, mbox_id=None):
                                         args=[dom_id]))
 
 @login_required
+@permission_required("admin.view_aliases")
 def aliases(request, dom_id=None, mbox_id=None):
     domain = Domain.objects.get(pk=dom_id)
     if not mbox_id:
@@ -224,6 +249,7 @@ def aliases(request, dom_id=None, mbox_id=None):
             })
 
 @login_required
+@permission_required("admin.add_alias")
 def newalias(request, dom_id, mbox_id):
     mbox = Mailbox.objects.get(pk=mbox_id)
     if request.method == "POST":
@@ -251,6 +277,7 @@ def newalias(request, dom_id, mbox_id):
             })
 
 @login_required
+@permission_required("admin.change_alias")
 def editalias(request, dom_id, alias_id):
     alias = Alias.objects.get(pk=alias_id)
     if request.method == "POST":
@@ -279,6 +306,7 @@ def editalias(request, dom_id, alias_id):
             })
 
 @login_required
+@permission_required("admin.delete_alias")
 def delalias(request, dom_id, alias_id):
     alias = Alias.objects.get(pk=alias_id)
     alias.delete()
@@ -286,14 +314,16 @@ def delalias(request, dom_id, alias_id):
                                         args=[dom_id]))
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser)
 def settings(request):
     admins = User.objects.filter(is_superuser=True)
-    domadmins = User.objects.filter(groups__name="DomainAdmins")
+    domadmins = Mailbox.objects.filter(user__groups__name="DomainAdmins")
     return _render(request, 'admin/permissions.html', {
             "admins" : admins, "domadmins" : domadmins
             })
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser)
 def addpermission(request):
     if request.method == "POST":
         form = PermissionForm(request.POST)
@@ -304,7 +334,7 @@ def addpermission(request):
         if form.is_valid():
             mb = Mailbox.objects.get(pk=request.POST["user"])
             if request.POST["role"] == "SuperAdmins":
-                mb.user.is_superadmin = True
+                mb.user.is_superuser = True
             else:
                 mb.user.groups.add(Group.objects.get(name=request.POST["role"]))
             mb.user.save()

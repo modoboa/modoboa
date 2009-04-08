@@ -18,6 +18,7 @@
       </ul>
     </div>
     <br/>
+    {% if user.is_superuser %}
     <div id="menubox" class="leftbox">
       <ul>
         <li>
@@ -44,6 +45,7 @@
         </li>
       </ul>
     </div>
+    {% endif %}
   </div>
   <div id="content">
     {%block mainframe %}{% endblock %}

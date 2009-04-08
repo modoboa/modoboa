@@ -20,9 +20,11 @@
     <a href="{{ aliases_url }}">
       <img src="/static/pics/alias.png" border="0"/>
       {% trans "Aliases" %}</a></li>
+  {% if perms.admin.change_domain %}
   <li>
     <a href="{{ edit_url }}" class="boxed"
        rel="{handler:'iframe',size:{x:300,y:180}}">
       <img src="/static/pics/edit.png" border="0"/>
       {% trans "Properties" %}</a></li>
+  {% endif %}
 </ul>

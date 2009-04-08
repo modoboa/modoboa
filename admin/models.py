@@ -10,6 +10,12 @@ class Domain(models.Model):
     quota = models.IntegerField()
     enabled = models.BooleanField(_('enabled'))
 
+    class Meta:
+        permissions = (
+            ("view_domain", "View domain"),
+            ("view_domains", "View domains"),
+            )
+
     def create_dir(self):
         code, output = exec_pipe("sudo -u %s mkdir %s/%s" \
                                      % (settings.VIRTUAL_UID, 
@@ -55,6 +61,11 @@ class Mailbox(models.Model):
     user = models.ForeignKey(User)
     path = models.CharField(max_length=255)
 
+    class Meta:
+        permissions = (
+            ("view_mailboxes", "View mailboxes"),
+            )
+
     def __str__(self):
         return "%s" % (self.address)
 
@@ -92,3 +103,8 @@ class Alias(models.Model):
     full_address = models.CharField(max_length=150)
     mbox = models.ForeignKey(Mailbox, verbose_name=_('mailbox'))
     enabled = models.BooleanField(_('enabled'))
+
+    class Meta:
+        permissions = (
+            ("view_aliases", "View aliases"),
+            )
