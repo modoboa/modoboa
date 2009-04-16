@@ -146,6 +146,41 @@ Then, edit your /etc/dovecot/dovecot-sql.conf and modify following lines::
   password_query = SELECT full_address AS user, password FROM admin_mailbox WHERE full_address = '%u'
   user_query = SELECT path AS home, uid, gid FROM admin_mailbox WHERE full_address = '%u'
 
+Enable quotas with Dovecot
+--------------------------
+
+Put the following lines inside your dovecot.conf file::
+
+    protocol imap {
+      mail_plugins = quota quota_imap
+    }
+
+If you use version prior to 1.1, add also the following configuration::
+
+  plugin {
+    # 10 MB default quota limit
+    quota = maildir:storage=10240
+  }
+
+Then modify the above user_query inside dovecot-sql.conf file like
+that to activate per user quotas::
+
+  user_query = SELECT path AS home, uid, gid, concat('maildir:storage=', quota / 1024) AS quota FROM admin_mailbox WHERE full_address = '%u'
+
+For version >= 1.1, put the following configuration inside dovecot.conf file::
+
+  plugin {
+    # Default 10M storage limit with an extra 5M limit when saving to Trash.
+    quota = maildir:User quota
+    quota_rule = *:storage=10M
+    quota_rule2 = Trash:storage=5M
+  }
+
+Then modify the above user_query inside dovecot-sql.conf to activate
+user quotas::
+
+  user_query = SELECT path AS home, uid, gid, concat('*:storage=', quota, 'M') AS quota_rule FROM admin_mailbox WHERE full_address = '%u'
+
 Tips to server Mailng behind Apache2
 ------------------------------------
 

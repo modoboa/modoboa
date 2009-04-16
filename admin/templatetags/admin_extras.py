@@ -9,10 +9,11 @@ genders = {
 }
 
 @register.simple_tag
-def domain_menu(domain_id, selection):
+def domain_menu(domain_id, selection, perms):
     return render_to_string('admin/domain_menu.html', 
                             {"selection" : selection,
-                             "domain_id" : domain_id})
+                             "domain_id" : domain_id,
+                             "perms" : perms})
 
 @register.simple_tag
 def settings_menu(selection):

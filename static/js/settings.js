@@ -3,4 +3,10 @@ window.addEvent('domready', function() {
         parse: 'rel',
         
     });
+
+    if ($$("a[name=deletePerm]"))
+        $$("a[name=deletePerm]").addEvent('click', function(event) {
+	    if (!confirm(gettext("Remove this permission?")))
+	        event.stop();
+	});
 });

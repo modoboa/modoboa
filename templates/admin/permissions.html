@@ -43,7 +43,11 @@
   {% for admin in domadmins %}
   <tr class="{% cycle 'odd' 'even' %}">
     <td>
-      <a href=""><img src="/static/pics/remove.png" border="0" title="{% trans 'Remove permission' %}" /></a>
+      {% url admin.views.deletepermission admin.id "DomainAdmins" as del_url %}
+      <a href="{{ del_url }}" name="deletePerm">
+        <img src="/static/pics/remove.png" border="0"
+             title="{% trans 'Remove permission' %}" />
+      </a>
     </td>
     <td>{{ admin.domain.name }}</td>
     <td>{{ admin.name }}</td>

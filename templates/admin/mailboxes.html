@@ -1,7 +1,7 @@
 {% extends "admin/domain_header.html" %}
 {% block menu %}
 {% load admin_extras %}
-{% domain_menu domain.id "mailboxes" %}
+{% domain_menu domain.id "mailboxes" perms %}
 {% endblock %}
 
 {% block domcontent %}

@@ -12,7 +12,7 @@ from django.contrib.auth.models import User, Group
 from mailng import admin
 from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
-import md5
+from mailng.lib.authbackends import crypt_password
 
 def _ctx_ok(url):
     return {"status" : "ok", "url" : url}
@@ -106,8 +106,6 @@ def editdomain(request, dom_id):
 @login_required
 @permission_required("admin.delete_domain")
 def deldomain(request, dom_id):
-    if not is_superuser(request.user):
-        return mailboxes(request, dom_id)
     domain = Domain.objects.get(pk=dom_id)
     domain.delete_dir()
     domain.delete()
@@ -155,7 +153,8 @@ def newmailbox(request, dom_id=None):
                     user.save()
                     mb.user = user
                  
-                    mb.password = md5.new(request.POST["password1"]).hexdigest()
+                    mb.password = crypt_password(request.POST["password1"])
+                    
                     mb.uid = mb.gid = 500
                     mb.domain = domain
                     mb.quota = request.POST["quota"]
@@ -351,5 +350,11 @@ def addpermission(request):
             "form" : form
             })
 
-def deletepermission(request):
-    pass
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def deletepermission(request, mbox_id, group):
+    mbox = Mailbox.objects.get(pk=mbox_id)
+    grp = Group.objects.get(name=group)
+    mbox.user.groups.remove(grp)
+    mbox.user.save()
+    return HttpResponseRedirect(reverse(admin.views.settings))
