@@ -2,6 +2,8 @@
 import popen2
 import os
 import time
+from django.template import RequestContext
+from django.shortcuts import render_to_response
 
 def exec_pipe(cmd):
     """Exécute une commande et récupère la sortie générée
@@ -41,3 +43,7 @@ def crypt_password(raw_password):
     salt = salt[:5]
     hash = md5.new(salt + raw_password).hexdigest()
     return "%s$%s$%s" % ("md5", salt, hash)
+
+def _render(request, tpl, user_context):
+    return render_to_response(tpl, user_context, 
+                              context_instance=RequestContext(request))

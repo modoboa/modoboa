@@ -13,16 +13,13 @@ from mailng import admin
 from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
+from mailng.lib import _render
 
 def _ctx_ok(url):
     return {"status" : "ok", "url" : url}
 
 def _ctx_ko(tpl, ctx):
     return {"status" : "ko", "content" : render_to_string(tpl, ctx)}
-
-def _render(request, tpl, user_context):
-    return render_to_response(tpl, user_context, 
-                              context_instance=RequestContext(request))
 
 def is_superuser(user):
     if not user.is_superuser:

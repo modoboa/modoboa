@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     # (r'^admin/(.*)', admin.site.root),
 
     (r'^mailng/admin/', include('mailng.admin.urls')),
+    (r'^mailng/main/', include('mailng.main.urls')),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
