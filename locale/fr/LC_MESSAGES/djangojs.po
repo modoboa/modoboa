@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-30 10:14+0200\n"
+"POT-Creation-Date: 2009-04-17 11:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,3 +27,7 @@ msgstr "Supprimer cette boite aux lettres?"
 #: static/js/domains.js:27
 msgid "Delete this alias?"
 msgstr "Supprimer cet alias?"
+
+#: static/js/settings.js:9
+msgid "Remove this permission?"
+msgstr "Supprimer cette permission?"
