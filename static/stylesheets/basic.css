@@ -254,6 +254,11 @@ body {
     width: 90%;
 }
 
+#subcontent {
+    margin: 10px auto;
+    width: 90%;
+}
+
 #setcontent { 
     margin: 0px auto;
     width: 90%;

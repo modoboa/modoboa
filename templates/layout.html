@@ -22,7 +22,59 @@
       <h2>Simple virtual domains</h2>
     </div>
   </div>
-  {% block content %}{% endblock %}
+
+  <div id="body">
+    <div id="leftcol">
+      <div id="userbox" class="leftbox">
+        {% if user.first_name %}
+        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+        {% else %}
+        <h3>{{ user.username }}</h3>
+        {% endif %}
+        <ul>
+          <li>
+          {% url django.contrib.auth.views.logout_then_login as logout_url %}
+          <a href="{{ logout_url }}">
+          <img src="/static/pics/logout.png" border="0" />{% trans "Logout" %}</a>
+          </li>
+        </ul>
+      </div>
+      <br/>
+      {% if user.is_superuser %}
+      <div id="menubox" class="leftbox">
+        <ul>
+          <li>
+          {% url admin.views.newdomain as newdom_url %}
+          <a href="{{ newdom_url }}" class="boxed"
+          rel="{handler:'iframe',size:{x:300,y:200}}">
+          <img src="/static/pics/add.png" border="0"/>
+          {% trans "New domain" %}
+          </a>
+          </li>
+          <li>
+          {% url admin.views.domains as dom_url %}
+          <a href="{{ dom_url }}">
+          <img src="/static/pics/domains.png" border="0"/>
+          {% trans "Domains" %}
+          </a>
+          </li>
+          <li>
+          {% url admin.views.settings as settings_url %}
+          <a href="{{ settings_url }}">
+          <img src="/static/pics/settings.png" border="0"/>
+          {% trans "Settings" %}
+          </a>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+    {% block leftmenu %}{% endblock %}
+    </div>
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+    
   <div class="spacer"></div>
   
   <div id="footer">

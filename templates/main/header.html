@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load i18n %}
+<div class="header">
+  <h1>{% trans "General" %}</h1>
+</div>
+
+<div id="menubar" class="menu2">
+  {% block menu %}{% endblock %}
+</div>
+
+<div id="subcontent">
+{% block subcontent %}{% endblock %}
+</div>
+{% endblock %}

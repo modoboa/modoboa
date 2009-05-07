@@ -78,7 +78,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'mailng.admin'
+    'mailng.admin',
+    'mailng.main'
 )
 
 AUTHENTICATION_BACKENDS = (

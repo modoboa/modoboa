@@ -1,0 +1,19 @@
+{% extends "main/header.html" %}
+{% load i18n %}
+{% block html_head %}
+<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
+{% endblock %}
+{% block menu %}
+{% load main_extras %}
+{% menu "autoreply" perms %}
+{% endblock %}
+{% block subcontent %}
+<form action="" method="POST" id="armform" name="armform">
+  {% include "genericform.html" %}
+  <div class="spacer"></div>
+  
+  <div class="lastrow" align="center">
+    <input type="submit" name="submit" value="{% trans 'Update' %}" />
+  </div>
+</form>
+{% endblock %}

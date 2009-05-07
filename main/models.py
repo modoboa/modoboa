@@ -6,3 +6,4 @@ class ARmessage(models.Model):
     last_sent = models.DateField()
     subject = models.CharField(max_length=255)
     content = models.TextField()
+    enabled = models.BooleanField()
