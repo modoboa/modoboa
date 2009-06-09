@@ -5,6 +5,8 @@ from django.contrib.auth.decorators \
     import login_required
 from mailng.lib import _render
 from forms import ARmessageForm
+from models import ARmessage
+from admin.models import Mailbox
 
 @login_required
 def index(request):
@@ -12,7 +14,24 @@ def index(request):
 
 @login_required
 def autoreply(request):
-    form = ARmessageForm()
+    mb = Mailbox.objects.get(user=request.user.id)
+    try:
+        arm = ARmessage.objects.get(mbox=mb.id)
+    except ARmessage.DoesNotExist:
+        arm = None
+    if request.method == "POST":
+        if arm:
+            form = ARmessageForm(request.POST, instance=arm)
+        else:
+            form = ARmessageForm(request.POST)
+        error = None
+        if form.is_valid():
+            arm = form.save(commit=False)
+            arm.mbox = mb
+            arm.save()
+            
+    form = ARmessageForm(instance=arm)
     return _render(request, "main/autoreply.html", {
             "form" : form
             })
+

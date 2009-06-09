@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from mailng.lib import exec_pipe
+from mailng.lib import exec_pipe, exec_as_vuser
 import os
 
 class Domain(models.Model):
@@ -17,12 +17,8 @@ class Domain(models.Model):
             )
 
     def create_dir(self):
-        code, output = exec_pipe("sudo -u %s mkdir %s/%s" \
-                                     % (settings.VIRTUAL_UID, 
-                                        settings.STORAGE_PATH, 
-                                        self.name))
-        if code:
-            os.system("echo '%s' >> /tmp/vmail.log" % output)
+        path = "%s/%s" % (settings.STORAGE_PATH, self.name)
+        if exec_as_vuser("mkdir %s" % path):
             return False
         return True
 
@@ -71,11 +67,22 @@ class Mailbox(models.Model):
 
     def create_dir(self, domain):
         path = "%s/%s/%s" % (settings.STORAGE_PATH, domain.name, self.address)
-        code, output = exec_pipe("sudo -u %s mkdir -p %s/.maildir" \
-                                     % (settings.VIRTUAL_UID, path))
-        if code:
+        if not exec_as_vuser("mkdir -p %s" % path):
             return False
-        self.path = "%s/%s/.maildir/" % (domain.name, self.address)
+        try:
+            mbtype = getattr(settings, "MAILBOX_TYPE")
+        except AttributeError:
+            mbtype = "maildir"
+        if mbtype == "mbox":
+            template = [".Drafts/", ".Sent/", ".Trash/", ".Junk/"]
+            for dir in template:
+                for sdir in ["cur", "new", "tmp"]:
+                    exec_as_vuser("mkdir -p %s/%s/%s" % (path, dir, sdir))
+                    
+            self.path = "%s/%s/" % (domain.name, self.address)
+        else:
+            exec_as_vuser("mkdir %s/.maildir/" % path)
+            self.path = "%s/%s/.maildir/" % (domain.name, self.address)
         return True
 
     def rename_dir(self, domain, newaddress):

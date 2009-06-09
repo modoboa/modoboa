@@ -3,7 +3,7 @@ from mailng.admin.models import Mailbox
 
 class ARmessage(models.Model):
     mbox = models.ForeignKey(Mailbox)
-    last_sent = models.DateField()
+    last_sent = models.DateField(auto_now=True)
     subject = models.CharField(max_length=255)
     content = models.TextField()
     enabled = models.BooleanField()

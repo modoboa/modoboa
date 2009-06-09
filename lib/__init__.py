@@ -2,6 +2,7 @@
 import popen2
 import os
 import time
+from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
@@ -47,3 +48,10 @@ def crypt_password(raw_password):
 def _render(request, tpl, user_context):
     return render_to_response(tpl, user_context, 
                               context_instance=RequestContext(request))
+
+def exec_as_vuser(cmd):
+    code, output = exec_pipe("sudo -u %s %s" % (settings.VIRTUAL_UID, cmd))
+    if code:
+        os.system("echo '%s' >> /tmp/vmail.log" % output)
+        return False
+    return True

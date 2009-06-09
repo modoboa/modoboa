@@ -91,3 +91,6 @@ AUTHENTICATION_BACKENDS = (
 STORAGE_PATH = "/var/vmail"
 VIRTUAL_UID = "vmail"
 VIRTUAL_GID = "vmail"
+
+# Mailboxes format: maildir (default) or mbox
+# MAILBOX_TYPE = ""

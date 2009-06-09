@@ -144,7 +144,11 @@ def newmailbox(request, dom_id=None):
                     user.set_unusable_password()
                     user.is_active = request.POST.has_key("enabled") \
                         and True or False
-                    fname, lname = mb.name.split()
+                    try:
+                        fname, lname = mb.name.split()
+                    except ValueError:
+                        fname = mb.name
+                        lname = ""
                     user.first_name = fname
                     user.last_name = lname
                     user.save()

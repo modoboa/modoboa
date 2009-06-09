@@ -24,6 +24,7 @@
   </div>
 
   <div id="body">
+    {% if user.is_authenticated %}
     <div id="leftcol">
       <div id="userbox" class="leftbox">
         {% if user.first_name %}
@@ -70,7 +71,11 @@
       {% endif %}
     {% block leftmenu %}{% endblock %}
     </div>
+    
     <div id="content">
+    {% else %}
+    <div id="content2">
+    {% endif %}
       {% block content %}{% endblock %}
     </div>
   </div>
