@@ -4,8 +4,9 @@
   <img src="/static/pics/edit.png" border="0"/>
   {% trans "Change password" %}</a>
   </li>
-  <li>
-  <a href=""><img src="/static/pics/auto-reply.png" border="0"/>
+  <li {% ifequal selection "autoreply" %}class="selected"{% endifequal %}>
+  {% url main.views.autoreply as ar_url %}
+  <a href="{{ ar_url }}"><img src="/static/pics/auto-reply.png" border="0"/>
   {% trans "Auto-reply message" %}
   </a>
   </li>

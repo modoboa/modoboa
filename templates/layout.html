@@ -33,6 +33,20 @@
         <h3>{{ user.username }}</h3>
         {% endif %}
         <ul>
+          {% if user.is_superuser or perms.admin.view_domain %}
+          <li>
+          {% url admin.views.domains as dom_url %}
+          <a href="{{ dom_url }}">
+          <img src="/static/pics/settings.png" border="0" />{% trans "Admin" %}</a>
+          </li>
+          {% endif %}
+          {% if not user.is_superuser %}
+          <li>
+          {% url main.views.index as index_url %}
+          <a href="{{ index_url }}">
+          <img src="/static/pics/user.png" border="0" />{% trans "Preferences" %}</a>
+          </li>
+          {% endif %}
           <li>
           {% url django.contrib.auth.views.logout_then_login as logout_url %}
           <a href="{{ logout_url }}">

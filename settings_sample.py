@@ -94,3 +94,6 @@ VIRTUAL_GID = "vmail"
 
 # Mailboxes format: maildir (default) or mbox
 # MAILBOX_TYPE = ""
+
+# Autoreplies sending timeout (default: 86400s)
+# AUTOREPLIES_TIMEOUT = 

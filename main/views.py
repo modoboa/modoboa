@@ -29,6 +29,9 @@ def autoreply(request):
             arm = form.save(commit=False)
             arm.mbox = mb
             arm.save()
+            request.user.message_set.create(
+                message="Auto reply message updated successfully."
+                )
             
     form = ARmessageForm(instance=arm)
     return _render(request, "main/autoreply.html", {

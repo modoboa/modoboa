@@ -23,7 +23,6 @@ form input {
     color: inherit;
     /*background-color: #e9e9e9;*/
     background-color: #eee;
-    width: 120px;
     padding: 2px;
 }
 
@@ -71,4 +70,12 @@ form input:hover {
     color: red;
     font-size: small;
     font-weight: bold;
+}
+
+#id_username { 
+  width: 120px;
+}
+
+#id_password { 
+  width: 120px;
 }

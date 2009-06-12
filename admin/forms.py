@@ -6,6 +6,11 @@ from mailng.admin.templatetags.admin_extras import gender
 class DomainForm(forms.ModelForm):
     class Meta:
         model = Domain
+        
+    def __init__(self, *args, **kwargs):
+        super(DomainForm, self).__init__(*args, **kwargs)
+        for f in ['name', 'quota']:
+            self.fields[f].widget.attrs['size'] = 14
 
 class MailboxForm(forms.ModelForm):
     quota = forms.IntegerField(label=_("Quota"), required=False)
@@ -16,6 +21,11 @@ class MailboxForm(forms.ModelForm):
     class Meta:
         model = Mailbox
         fields = ('name', 'address')
+
+    def __init__(self, *args, **kwargs):
+        super(MailboxForm, self).__init__(*args, **kwargs)
+        for f in ['name', 'address', 'quota', 'password1', 'password2']:
+            self.fields[f].widget.attrs['size'] = 14
 
     def clean_password2(self):
         if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
@@ -29,6 +39,7 @@ class AliasForm(forms.ModelForm):
             domain = kwargs["domain"]
             del kwargs["domain"]
         super(AliasForm, self).__init__(*args, **kwargs)
+        self.fields['address'].widget.attrs['size'] = 14
         if domain:
             self.fields['mbox'].queryset = Mailbox.objects.filter(domain=domain.id)
 

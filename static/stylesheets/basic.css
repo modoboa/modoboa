@@ -136,6 +136,11 @@ body {
     margin: 0 0 0 15px;
 }
 
+#content2 { 
+
+
+}
+
 #menubar {
     margin-left: 20px;
     display: table;
@@ -285,4 +290,11 @@ body {
 
 #setcontent h4 { 
     margin-top: 0;
+}
+
+#infos { 
+    float: right;
+    color: green;
+    font-weight: bold;
+    margin-right: 10px;
 }
