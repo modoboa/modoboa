@@ -8,7 +8,8 @@ window.addEvent("domready", function() {
                     $(id).addEvent("submit", callback);
                 } else {
                     parent.SqueezeBox.close();
-                    parent.location.href = response.url;
+                    if (response.url != "")
+                        parent.location.href = response.url;
                 }
             }
         });
@@ -31,6 +32,9 @@ window.addEvent("domready", function() {
     permission_submit = function(event) {
         generic_submit(this, event, "permform", permission_submit);
     }
+    chpassword_submit = function(event) {
+        generic_submit(this, event, "chpwdform", chpassword_submit);
+    }
 
     if ($("domform"))
         $("domform").addEvent("submit", domain_submit);
@@ -44,4 +48,6 @@ window.addEvent("domready", function() {
     if ($("permform"))
         $("permform").addEvent("submit", permission_submit);
 
+    if ($("chpwdform"))
+        $("chpwdform").addEvent("submit", chpassword_submit);
 });

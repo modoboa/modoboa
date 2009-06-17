@@ -1,6 +1,8 @@
 {% load i18n %}
 <ul>
-  <li><a href="">
+  {% url main.views.changepassword as chpwd_url %}
+  <li><a href="{{ chpwd_url }}"
+         class="boxed" rel="{handler:'iframe',size:{x:350,y:220}}">
   <img src="/static/pics/edit.png" border="0"/>
   {% trans "Change password" %}</a>
   </li>

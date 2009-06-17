@@ -5,6 +5,7 @@ import time
 from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from django.template.loader import render_to_string
 
 def exec_pipe(cmd):
     """Exécute une commande et récupère la sortie générée
@@ -55,3 +56,9 @@ def exec_as_vuser(cmd):
         os.system("echo '%s' >> /tmp/vmail.log" % output)
         return False
     return True
+
+def _ctx_ok(url):
+    return {"status" : "ok", "url" : url}
+
+def _ctx_ko(tpl, ctx):
+    return {"status" : "ko", "content" : render_to_string(tpl, ctx)}
