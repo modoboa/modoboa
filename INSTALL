@@ -1,4 +1,3 @@
-:q
 Installation
 ============
 
@@ -162,6 +161,10 @@ Then, create new map files with the following content::
   dbname = <database>
   hosts = 127.0.0.1
   query = SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'
+
+Finally, edit the shell script 'autoreply' located inside the
+'scripts' directory and change the value of BASEDIR. (just put absolute path
+of the directory where mailng is installed)
 
 NB: auto-reply messages are just sent one time per sender for a
 pre-defined time period. By default, this period is equal to 1 day
