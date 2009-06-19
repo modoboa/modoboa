@@ -43,6 +43,12 @@ current installation. Once done, go to MailNG repository and run::
 
 You must also modify 'settings.py' in order to activate new components.
 
+If you plan to use the 'Postfix autoreply' extension, you'll need to run
+the following script to make it work correctly::
+
+  export PYTHONPATH=$PWD/..
+  DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/upgrade_autoreply.py
+
 Host configuration
 ------------------
 
