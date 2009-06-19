@@ -13,11 +13,16 @@ from mailng.lib import _render, _ctx_ok, _ctx_ko
 from mailng.lib.authbackends import crypt_password
 from forms import ARmessageForm, ChangePasswordForm
 from models import ARmessage
-from admin.models import Mailbox
+from mailng.admin.models import Mailbox
 
 @login_required
 def index(request):
-    return _render(request, "main/index.html", {})
+    mb = Mailbox.objects.get(user=request.user.id)
+    try:
+        arm = ARmessage.objects.filter(mbox=mb.id, enabled=True)
+    except ARmessage.DoesNotExist:
+        arm = None
+    return _render(request, "main/index.html", {"arm" : arm})
 
 @login_required
 def autoreply(request):

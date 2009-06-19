@@ -5,6 +5,9 @@ from django.conf import settings
 # from django.contrib import admin
 # admin.autodiscover()
 
+from mailng.extensions import loadextensions
+loadextensions()
+
 urlpatterns = patterns('',
     # Example:
     # (r'^mailng/', include('mailng.foo.urls')),

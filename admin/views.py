@@ -14,6 +14,7 @@ from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
 from mailng.lib import _render, _ctx_ok, _ctx_ko
+from mailng.lib import events
 
 def is_superuser(user):
     if not user.is_superuser:
@@ -50,6 +51,7 @@ def newdomain(request):
                 domain = form.save(commit=False)
                 if domain.create_dir():
                     form.save()
+                    events.raiseEvent("CreateDomain", dom=domain)
                     ctx = _ctx_ok(reverse(admin.views.domains))
                     return HttpResponse(simplejson.dumps(ctx), 
                                         mimetype="application/json")
@@ -98,6 +100,7 @@ def editdomain(request, dom_id):
 @permission_required("admin.delete_domain")
 def deldomain(request, dom_id):
     domain = Domain.objects.get(pk=dom_id)
+    events.raiseEvent("DeleteDomain", dom=domain)
     domain.delete_dir()
     domain.delete()
     return HttpResponseRedirect('/mailng/admin/')
@@ -157,6 +160,9 @@ def newmailbox(request, dom_id=None):
                         mb.quota = domain.quota
                     mb.full_address = "%s@%s" % (mb.address, domain.name)
                     mb.save()
+                    
+                    events.raiseEvent("CreateMailbox", mbox=mb)
+
                     ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[domain.id]))
                     return HttpResponse(simplejson.dumps(ctx), 
                                         mimetype="application/json")
@@ -221,6 +227,7 @@ def editmailbox(request, dom_id, mbox_id=None):
 @permission_required("admin.delete_mailbox")
 def delmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
+    events.raiseEvent("DeleteMailbox", mbox=mb)
     mb.delete_dir()
     mb.user.delete()
     mb.delete()

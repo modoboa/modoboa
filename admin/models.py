@@ -18,9 +18,7 @@ class Domain(models.Model):
 
     def create_dir(self):
         path = "%s/%s" % (settings.STORAGE_PATH, self.name)
-        if exec_as_vuser("mkdir %s" % path):
-            return False
-        return True
+        return exec_as_vuser("mkdir %s" % path)
 
     def rename_dir(self, newname):
         code, output = exec_pipe("sudo -u %s mv %s/%s %s/%s" \
@@ -74,14 +72,16 @@ class Mailbox(models.Model):
         except AttributeError:
             mbtype = "maildir"
         if mbtype == "mbox":
+            template = ["Inbox", "Drafts", "Sent", "Trash", "Junk"]
+            for dir in template:
+                exec_as_vuser("touch %s/%s" % (path, dir))
+                    
+            self.path = "%s/%s/Inbox" % (domain.name, self.address)
+        else:
             template = [".Drafts/", ".Sent/", ".Trash/", ".Junk/"]
             for dir in template:
                 for sdir in ["cur", "new", "tmp"]:
-                    exec_as_vuser("mkdir -p %s/%s/%s" % (path, dir, sdir))
-                    
-            self.path = "%s/%s/" % (domain.name, self.address)
-        else:
-            exec_as_vuser("mkdir %s/.maildir/" % path)
+                    exec_as_vuser("mkdir -p %s/.maildir/%s/%s" % (path, dir, sdir))
             self.path = "%s/%s/.maildir/" % (domain.name, self.address)
         return True
 

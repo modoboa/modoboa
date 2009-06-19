@@ -5,5 +5,13 @@
 {% menu "" perms %}
 {% endblock %}
 {% block subcontent %}
-
+<div class="info">
+  <img src="/static/pics/info.png" border="0" />
+  {% if arm %}
+  {% trans "Your auto-reply message is activated." %}
+  {% else %}
+  {% trans "Your auto-reply message is not activated." %}
+  {% endif %}
+  
+</div>
 {% endblock %}

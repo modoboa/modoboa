@@ -1,15 +1,15 @@
 {% load i18n %}
 <ul>
-  {% url main.views.changepassword as chpwd_url %}
-  <li><a href="{{ chpwd_url }}"
-         class="boxed" rel="{handler:'iframe',size:{x:350,y:220}}">
-  <img src="/static/pics/edit.png" border="0"/>
-  {% trans "Change password" %}</a>
-  </li>
   <li {% ifequal selection "autoreply" %}class="selected"{% endifequal %}>
   {% url main.views.autoreply as ar_url %}
   <a href="{{ ar_url }}"><img src="/static/pics/auto-reply.png" border="0"/>
   {% trans "Auto-reply message" %}
   </a>
+  </li>
+  {% url main.views.changepassword as chpwd_url %}
+  <li><a href="{{ chpwd_url }}"
+         class="boxed" rel="{handler:'iframe',size:{x:350,y:220}}">
+  <img src="/static/pics/edit.png" border="0"/>
+  {% trans "Change password" %}</a>
   </li>
 </ul>

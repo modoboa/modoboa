@@ -1,0 +1,7 @@
+#!/bin/sh
+
+BASEDIR=/home/tonio
+export PYTHONPATH=$BASEDIR
+export DJANGO_SETTINGS_MODULE=mailng.settings
+
+$BASEDIR/mailng/scripts/autoreply.py $1 $2

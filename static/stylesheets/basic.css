@@ -298,3 +298,8 @@ body {
     font-weight: bold;
     margin-right: 10px;
 }
+
+.info { 
+    float: left;
+    font-style: italic;
+}

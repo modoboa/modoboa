@@ -1,3 +1,4 @@
+:q
 Installation
 ============
 
@@ -30,6 +31,17 @@ Run the initialisation script. It will insert needed data into the database :
 
   export PYTHONPATH=$PWD/..
   DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/populate.py
+
+How to upgrade
+--------------
+
+0.5 -> 0.6 : No modifications have been made to the core SQL schema so you
+just have to decompress the new tarball at the same location than your
+current installation. Once done, go to MailNG repository and run::
+
+  python manage.py syncdb
+
+You must also modify 'settings.py' in order to activate new components.
 
 Host configuration
 ------------------
@@ -109,20 +121,71 @@ Then, use the following configuration in your /etc/postfix/main.cf file
   virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf
   # Stuff after
 
-NB: Mailng only supports maildir format for now. Others will surely be
-added soon.
+NB: Mailng supports both maildir and mbox formats. You can specify
+which format to use by modifying the MAILBOX_TYPE variable located
+inside 'settings.py'.
+
+Tips to activate auto-reply messages in Postifx
+-----------------------------------------------
+
+Since version 0.6, mail users can define an auto-reply message with MailNG.
+To make Postfix understand this feature, you need to update your configuration
+files as follow::
+
+ # /etc/postfix/main.cf
+  transport_maps = mysql:/etc/postfix/maps/sql-transport.cf
+  virtual_alias_maps = mysql:/etc/postfix/maps/sql-aliases.cf
+          mysql:/etc/postfix/maps/sql-autoreplies.cf
+
+ # /etc/postfix/master.cf
+  autoreply unix        -       n       n       -       -       pipe
+            flags= user=nobody argv=<path_to_mailng>/scripts/autoreply $sender $mailbox
+
+Then, create new map files with the following content::
+
+ # /etc/postfix/maps/sql-transport.cf
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT method FROM postfix_autoreply_transport WHERE domain='%s'
+
+ # /etc/postfix/maps/sql-autoreplies.cf
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'
+
+NB: auto-reply messages are just sent one time per sender for a
+pre-defined time period. By default, this period is equal to 1 day
+(86400s), you can adjust this value by modifying the AUTOREPLY_TIMEOUT
+variable located inside 'settings.py'.
+
+NB: Be sure that both 'autoreply' and 'autoreply.py' scripts (located
+inside the 'scripts' directory) have good permissions (ie. 0755).
 
 Tips to link Mailng with dovecot
 --------------------------------
 
-Edit your main Dovecot config file (/etc/dovecot/dovecot.conf) and put the
+If you are using 'maildir' format to store mailboxes, add the
+following line inside your main Dovecot config file
+(/etc/dovecot/dovecot.conf)::
+
+  mail_location = maildir:<path_to_mailboxes>/%d/%n/.maildir
+
+If you are using 'mbox' format, put the following::
+  
+  mail_location = mbox:<path_to_mailboxes>/%d/%n/:INBOX=<path_to_mailboxes>/%d/%n/Inbox
+
+To make the authentication work, edit 'dovecot.conf' and add the
 following inside::
 
   auth default {
     # ... stuff before
 
     passdb sql {
-      # Path for SQL configuration file, see /etc/dovecot/dovecot-sql.conf  for
+      # Path for SQL configuration file, see /etc/dovecot/dovecot-sql.conf for
       #  example
       args = /etc/dovecot/dovecot-sql.conf
     }
@@ -155,23 +218,28 @@ Put the following lines inside your dovecot.conf file::
       mail_plugins = quota quota_imap
     }
 
+Before continuing, you need to know which quota backend must be user
+(function of mailboxes format):: 
+ * 'mbox' : backend=dirsize,
+ * 'maildir' : backend=maildir.
+
 If you use version prior to 1.1, add also the following configuration::
 
   plugin {
     # 10 MB default quota limit
-    quota = maildir:storage=10240
+    quota = <backend>:storage=10240
   }
 
 Then modify the above user_query inside dovecot-sql.conf file like
 that to activate per user quotas::
 
-  user_query = SELECT path AS home, uid, gid, concat('maildir:storage=', quota / 1024) AS quota FROM admin_mailbox WHERE full_address = '%u'
+  user_query = SELECT path AS home, uid, gid, concat('<backend>:storage=', quota / 1024) AS quota FROM admin_mailbox WHERE full_address = '%u'
 
 For version >= 1.1, put the following configuration inside dovecot.conf file::
 
   plugin {
     # Default 10M storage limit with an extra 5M limit when saving to Trash.
-    quota = maildir:User quota
+    quota = <backend>:User quota
     quota_rule = *:storage=10M
     quota_rule2 = Trash:storage=5M
   }

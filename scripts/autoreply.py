@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import smtplib
 from email.mime.text import MIMEText
 import datetime
 from django.conf import settings
@@ -38,7 +39,12 @@ if __name__ == "__main__":
     msg['Subject'] = armessage.subject
     msg['From'] = mailbox
     msg['To'] = sender
-    print msg
+    
+    s = smtplib.SMTP()
+    s.connect()
+    s.sendmail(mailbox, sender, msg.as_string())
+    s.quit()
+    
     lastar.last_sent = datetime.datetime.now()
     lastar.save()
     sys.exit(0)

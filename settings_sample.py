@@ -80,6 +80,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'mailng.admin',
     'mailng.main'
+
+    # MailNG extensions here.
+    # 'mailng.extensions.postfix_autoreply'
 )
 
 AUTHENTICATION_BACKENDS = (
