@@ -18,7 +18,7 @@ class Domain(models.Model):
 
     def create_dir(self):
         path = "%s/%s" % (settings.STORAGE_PATH, self.name)
-        return exec_as_vuser("mkdir %s" % path)
+        return exec_as_vuser("mkdir -p %s" % path)
 
     def rename_dir(self, newname):
         code, output = exec_pipe("sudo -u %s mv %s/%s %s/%s" \

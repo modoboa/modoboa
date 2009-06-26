@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load main_extras %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,6 +48,7 @@
           <img src="/static/pics/user.png" border="0" />{% trans "Preferences" %}</a>
           </li>
           {% endif %}
+          {% loadextmenu perms %}
           <li>
           {% url django.contrib.auth.views.logout_then_login as logout_url %}
           <a href="{{ logout_url }}">

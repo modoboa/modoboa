@@ -2,6 +2,8 @@
 import os
 import re
 
+extensions = []
+
 def loadextensions():
     from django.conf import settings
 
@@ -12,3 +14,10 @@ def loadextensions():
             continue
         module = __import__(m.group(1), globals(), locals(), ['main'])
         module.main.init()
+        globals()['extensions'] += [module]
+    
+def loadmenus():
+    result = ()
+    for mod in extensions:
+        result += mod.main.urls()
+    return result

@@ -5,7 +5,7 @@ from django.conf import settings
 # from django.contrib import admin
 # admin.autodiscover()
 
-from mailng.extensions import loadextensions
+from mailng.extensions import loadextensions, loadmenus
 loadextensions()
 
 urlpatterns = patterns('',
@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('mailng',),})
 )
+urlpatterns += patterns('', loadmenus())
 
 if settings.DEBUG:
     urlpatterns += patterns(

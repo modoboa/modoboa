@@ -16,6 +16,9 @@ def init():
     events.register("CreateMailbox", onCreateMailbox)
     events.register("DeleteMailbox", onDeleteMailbox)
 
+def urls():
+    return ()
+
 def onCreateDomain(**kwargs):
     dom = kwargs["dom"]
     transport = Transport()

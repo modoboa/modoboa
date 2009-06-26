@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% load i18n %}
+{% block html_head %}
+<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
+{% endblock %}
+{% block content %}
+<style type="text/css">
+#quarmenu {
+  float: left;
+  width: 100%;
+  margin: 5px 0;
+}
+
+#navbar {
+  float: right;
+}
+
+#actionbar {
+  float: left;
+}
+
+td {
+  font-size: smaller;
+  height: 40px;
+}
+</style>
+
+<div class="header">
+  <h1>{% trans "Quarantine" %}</h1>
+  {% if messages %}
+  <div id="infos">
+  {% for m in messages %}
+  {{ m }}
+  {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<div id="subcontent">
+<b> Il y a {{ count }} messages dans la quarantaine.</b>
+
+<div id="quarmenu">
+<div id="actionbar">
+  <input type="button" name="release" value="{% trans "Release" %}" />
+  <input type="button" name="delete" value="{% trans "Delete" %}" />
+  <input type="button" name="deleteall" value="{% trans "Delete all" %}" />
+</div>
+<div id="navbar">
+  {% if emails.has_previous %}
+  <a href="?page={{ emails.previous_page_number }}">{% trans "Previous" %}</a>
+  {% endif %}
+  {% if emails.has_next %}
+  <a href="?page={{ emails.next_page_number }}">{% trans "Next" %}</a>
+  {% endif %}
+</div>
+</div>
+<table>
+  <tr>
+    <th></th>
+    <th width="150px">{% trans "From" %}</th>
+    <th width="150px">{% trans "To" %}</th>
+    <th>{% trans "Subject" %}</th>
+  </tr>
+  {% for m in emails.object_list %}
+  <tr class="{% cycle 'odd' 'even' %}">
+    <td><input type="checkbox" name="selection" id="selection" /></td>
+    <td>{{ m.from }}</td><td>{{ m.to }}</td><td>{{ m.subject }}</td></tr>
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

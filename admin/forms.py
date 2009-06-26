@@ -16,7 +16,8 @@ class MailboxForm(forms.ModelForm):
     quota = forms.IntegerField(label=_("Quota"), required=False)
     password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
     password2 = forms.CharField(label=_("Confirmation"), widget=forms.PasswordInput)
-    enabled = forms.BooleanField(label=gender("Enabled", "f"), required=False)
+    enabled = forms.BooleanField(label=gender("Enabled", "f"), required=False, 
+                                 initial=True)
 
     class Meta:
         model = Mailbox

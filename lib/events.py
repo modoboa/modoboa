@@ -9,7 +9,9 @@ core application and additional components.
 events = ["CreateDomain",
           "DeleteDomain",
           "CreateMailbox",
-          "DeleteMailbox"]
+          "DeleteMailbox",
+
+          "UserMenuDisplay"]
 
 callbacks = {}
 
@@ -27,3 +29,11 @@ def raiseEvent(event, **kwargs):
     for callback in callbacks[event]:
         callback(**kwargs)
     return 1
+
+def raiseQueryEvent(event, **kwargs):
+    result = []
+    if not event in events or not event in callbacks.keys():
+        return result
+    for callback in callbacks[event]:
+        result += callback(**kwargs)
+    return result
