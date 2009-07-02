@@ -3,6 +3,9 @@
 """
 
 """
+import re
+import MySQLdb
+
 connections = {}
 
 def mysql_newconnection(host, dbname, login, password):
@@ -20,3 +23,13 @@ def getconnection(name):
         connections[name] = conn
     return connections[name]
         
+def execute(conn, query):
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        if re.search("INSERT|DELETE|UPDATE", query):
+            conn.commit()
+            return (True, None)
+        return (True, cursor)
+    except MySQLdb.Error, e:
+        return (False, "Error %d: %s" % (e.args[0], e.args[1]))

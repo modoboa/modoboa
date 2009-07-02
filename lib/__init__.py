@@ -62,3 +62,11 @@ def _ctx_ok(url):
 
 def _ctx_ko(tpl, ctx):
     return {"status" : "ko", "content" : render_to_string(tpl, ctx)}
+
+def decode(s, encodings=('ascii', 'utf8', 'latin1')):
+    for encoding in encodings:
+        try:
+            return s.decode(encoding)
+        except UnicodeDecodeError:
+            pass
+    return s.decode('ascii', 'ignore')

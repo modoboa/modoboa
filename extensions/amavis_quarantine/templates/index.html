@@ -19,6 +19,11 @@
   float: left;
 }
 
+#listing {
+  margin: 0 auto;
+  width: 98%;
+}
+
 td {
   font-size: smaller;
   height: 40px;
@@ -36,17 +41,19 @@ td {
   {% endif %}
 </div>
 
-<div id="subcontent">
+{% url extensions.amavis_quarantine.main.process as actionurl %}
+<form method="POST" action="{{ actionurl }}">
+<div id="listing">
 <b> Il y a {{ count }} messages dans la quarantaine.</b>
-
 <div id="quarmenu">
 <div id="actionbar">
-  <input type="button" name="release" value="{% trans "Release" %}" />
-  <input type="button" name="delete" value="{% trans "Delete" %}" />
-  <input type="button" name="deleteall" value="{% trans "Delete all" %}" />
+  <input type="submit" name="release" value="{% trans "Release" %}" />
+  <input type="submit" name="delete" value="{% trans "Delete" %}" />
+  <input type="submit" name="deleteall" value="{% trans "Delete all" %}" />
 </div>
 <div id="navbar">
   {% if emails.has_previous %}
+  <a href="?page=1">{% trans "First" %}</a>
   <a href="?page={{ emails.previous_page_number }}">{% trans "Previous" %}</a>
   {% endif %}
   {% if emails.has_next %}
@@ -57,15 +64,23 @@ td {
 <table>
   <tr>
     <th></th>
+    <th>{% trans "Type" %}</th>
     <th width="150px">{% trans "From" %}</th>
-    <th width="150px">{% trans "To" %}</th>
     <th>{% trans "Subject" %}</th>
+    <th width="100px">{% trans "Date" %}</th>
   </tr>
   {% for m in emails.object_list %}
   <tr class="{% cycle 'odd' 'even' %}">
-    <td><input type="checkbox" name="selection" id="selection" /></td>
-    <td>{{ m.from }}</td><td>{{ m.to }}</td><td>{{ m.subject }}</td></tr>
+    <td><input type="checkbox" name="selection" id="selection"
+               value="{{ m.mailid }}" /></td>
+    <td>{{ m.type }}</td>
+    {% if user.is_superuser %}<td>{{ m.to }}</td>{% endif %}
+    {% url extensions.amavis_quarantine.main.viewmail m.mailid as view_url %}
+    <td><a href="{{ view_url }}">{{ m.subject }}</a></td>
+    <td>{{ m.time }}</td>
+  </tr>
   {% endfor %}
 </table>
 </div>
+</form>
 {% endblock %}
