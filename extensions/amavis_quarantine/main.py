@@ -2,10 +2,11 @@
 
 """
 """
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.template import Template
+from django.utils import simplejson
 from django.conf.urls.defaults import *
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
@@ -69,7 +70,8 @@ ORDER BY msgs.time_num DESC
         pagenum = 1
     page = paginator.page(pagenum)
     return _render(request, 'amavis_quarantine/index.html', {
-            "count" : len(rows), "emails" : page
+            "count" : len(rows), "emails" : page, 
+            "current_page" : pagenum, "last_page" : paginator._get_num_pages()
             })
 
 @login_required
@@ -106,15 +108,30 @@ WHERE quarantine.mail_id='%s'
         body = decode(text_body)
         pre = True
 
-    
     return _render(request, 'amavis_quarantine/viewmail.html', {
-            "headers" : msg.items(),
-            "body" : body,
-            "pre" : pre
+            "headers" : msg, "alert" : msg.get("X-Amavis-Alert"),
+            "body" : body, "pre" : pre, "mail_id" : mail_id
+            })
+
+@login_required
+def viewheaders(request, mail_id):
+    conn = db.getconnection("amavis_quarantine")
+    status, cursor = db.execute(conn, """
+SELECT mail_text
+FROM quarantine
+WHERE quarantine.mail_id='%s'
+""" % mail_id)
+    content = ""
+    for part in cursor.fetchall():
+        content += part[0]
+    msg = email.message_from_string(content)
+    return _render(request, 'amavis_quarantine/viewheader.html', {
+            "headers" : msg.items()
             })
 
 @login_required
 def process(request):
+    print request
     if request.POST.has_key("deleteall"):
         return
     ids = ""
@@ -124,7 +141,7 @@ def process(request):
             ids += ","
         ids += "'%s'" % id
     if ids == "":
-        return
+        return HttpResponseRedirect(reverse(index))
     conn = db.getconnection("amavis_quarantine")
     if request.POST.has_key("release"):
         status, cursor = db.execute(conn, """
@@ -161,4 +178,10 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
         else:
             message = error
     request.user.message_set.create(message=message)
-    return HttpResponseRedirect(reverse(index))
+    try:
+        pagenum = int(request.POST.get('pagenum', '1'))
+    except ValueError:
+        pagenum = 1
+    ctx = _ctx_ok(reverse(index) + "?page=%s" % pagenum)
+    return HttpResponse(simplejson.dumps(ctx), 
+                        mimetype="application/json")

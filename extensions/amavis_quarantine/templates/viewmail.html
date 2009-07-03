@@ -10,7 +10,11 @@ window.addEvent("domready", function() {
     {% else %}
     doc.write("{{ body }}");
     {% endif %}
-    doc.close();       
+    doc.close();
+
+    SqueezeBox.assign($$('a.boxed'), {
+        parse: 'rel'
+    });
 });
 </script>
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
@@ -32,16 +36,24 @@ td.left {
 </style>
 {% endblock %}
 {% block content %}
+<div class="menu2">
+  {% load amextras %}
+  {% viewm_menu "headers" mail_id perms %}
+</div>
+
+<table border="0">
+  <tr>
+    <th colspan="2">{% trans "Message" %}</th>
+  </tr>
+  <tr><td class="left">X-Amavis-Alert</td><td>{{ alert }}</td></tr>
+  <tr><td class="left">From</td><td>{{ headers.from }}</td></tr>
+  <tr><td class="left">To</td><td>{{ headers.to }}</td></tr>
+  <tr><td class="left">Date</td><td>{{ headers.date }}</td></tr>
+  <tr><td class="left">Subject</td><td>{{ headers.subject }}</td></tr>
+</table>
+
 
 <iframe id="mailcontent"></iframe>
 
-<table border="0">
-  <tr><th colspan="2">{% trans "Message headers" %}</th></tr>
-{% for k, v in headers %}
-  <tr>
-    <td class="left">{{ k }}</td><td>{{ v }}</td>
-  </tr>
-{% endfor %}
-</table>
 
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends "layout_simple.html" %}
+{% load i18n %}
+{% block html_head %}
+<style type="text/css">
+table {
+    margin: 0 auto;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 20px;
+}
+
+table th {
+    background: #CEDBEC;
+    text-align: left;
+    padding: 5px;
+}
+
+table td {
+    border-bottom: 1px solid #C8D6E8;
+    padding: 5px;
+}
+
+td.odd {
+    background: #F7F9Fb;
+}
+
+td {
+    font-size: smaller;
+    height: 40px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<table border="0">
+<tr><th colspan="2">{% trans "Message headers" %}</th></tr>
+{% for k, v in headers %}
+<tr>
+  <td class="odd">{{ k }}</td><td>{{ v }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

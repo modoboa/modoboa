@@ -2,7 +2,7 @@
 <ul>
   {% for entry in entries %}
   <li {% ifequal selection entry.name %}class="selected"{% endifequal %}>
-  <a href="{{ entry.url }}"
+  <a href="{{ entry.url }}" name="{{ entry.name }}"
      {% if entry.class %}class={{ entry.class }}{% endif %}
      {% if entry.rel %}rel={{ entry.rel }}{% endif %}>
   <img src="{{ entry.img }}" border="0" />

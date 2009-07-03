@@ -1,27 +1,39 @@
 {% extends "layout.html" %}
 {% load i18n %}
+{% load amextras %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
-{% endblock %}
-{% block content %}
 <style type="text/css">
+form {
+  margin: 0 auto;
+  width: 98%;
+}
+
 #quarmenu {
   float: left;
   width: 100%;
   margin: 5px 0;
 }
 
+#listing {
+  float: left;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+#listheader {
+  float: left;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
 #navbar {
   float: right;
 }
 
-#actionbar {
+#counter {
   float: left;
-}
-
-#listing {
-  margin: 0 auto;
-  width: 98%;
+  font-weight: bold;
 }
 
 td {
@@ -30,6 +42,33 @@ td {
 }
 </style>
 
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  mysubmit = function(event, name) {
+    event.stop();
+    new Element('input', {
+      'type' : 'submit', 'name' : name, style: "display:none"
+    }).inject($("quarlistingform"));
+    $("quarlistingform").set("send", {
+      onSuccess : function(res) {
+        response = JSON.decode(res);
+        location.href = response.url;
+      }
+    });
+    $("quarlistingform").send();
+  }
+
+  $$("a[name=delete]").addEvent("click", function(event) {
+    mysubmit(event, "delete");
+  });
+  $$("a[name=release]").addEvent("click", function(event) {
+    mysubmit(event, "release");
+  });
+});
+</script>
+{% endblock %}
+
+{% block content %}
 <div class="header">
   <h1>{% trans "Quarantine" %}</h1>
   {% if messages %}
@@ -41,27 +80,40 @@ td {
   {% endif %}
 </div>
 
+<div id="menubar" class="menu2">
+  {% quar_menu "" perms %}
+</div>
+
 {% url extensions.amavis_quarantine.main.process as actionurl %}
-<form method="POST" action="{{ actionurl }}">
+<form method="POST" action="{{ actionurl }}" id="quarlistingform">
+<input type="hidden" name="pagenum" id="pagenum" value="{{ current_page }}" />
+
 <div id="listing">
-<b> Il y a {{ count }} messages dans la quarantaine.</b>
-<div id="quarmenu">
-<div id="actionbar">
-  <input type="submit" name="release" value="{% trans "Release" %}" />
-  <input type="submit" name="delete" value="{% trans "Delete" %}" />
-  <input type="submit" name="deleteall" value="{% trans "Delete all" %}" />
-</div>
-<div id="navbar">
-  {% if emails.has_previous %}
-  <a href="?page=1">{% trans "First" %}</a>
-  <a href="?page={{ emails.previous_page_number }}">{% trans "Previous" %}</a>
-  {% endif %}
-  {% if emails.has_next %}
-  <a href="?page={{ emails.next_page_number }}">{% trans "Next" %}</a>
-  {% endif %}
-</div>
-</div>
-<table>
+  <div id="listheader">
+    <div id="counter">
+      Messages {{ emails.start_index }} à {{ emails.end_index }} sur {{ count }}
+    </div>
+    <div id="navbar">
+      {% if emails.has_previous %}
+      <a href="?page=1">
+      <img src="/static/pics/first.png" border="0" title="{% trans "First" %}" />
+      </a>
+      <a href="?page={{ emails.previous_page_number }}">
+      <img src="/static/pics/back.png" border="0" title="{% trans "Previous" %}" />
+      </a>
+      {% endif %}
+      {% if emails.has_next %}
+      <a href="?page={{ emails.next_page_number }}">
+      <img src="/static/pics/next.png" border="0" title="{% trans "Next" %}" />
+      </a>
+      <a href="?page={{ last_page }}">
+      <img src="/static/pics/last.png" border="0" title="{% trans "Last" %}" />
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <table>
   <tr>
     <th></th>
     <th>{% trans "Type" %}</th>
@@ -74,7 +126,7 @@ td {
     <td><input type="checkbox" name="selection" id="selection"
                value="{{ m.mailid }}" /></td>
     <td>{{ m.type }}</td>
-    {% if user.is_superuser %}<td>{{ m.to }}</td>{% endif %}
+    <td>{{ m.from }}</td>
     {% url extensions.amavis_quarantine.main.viewmail m.mailid as view_url %}
     <td><a href="{{ view_url }}">{{ m.subject }}</a></td>
     <td>{{ m.time }}</td>
