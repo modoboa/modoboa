@@ -26,7 +26,9 @@ urlpatterns = patterns('',
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('mailng',),})
 )
-urlpatterns += patterns('', loadmenus())
+menus = loadmenus()
+if menus != ():
+    urlpatterns += patterns('', menus)
 
 if settings.DEBUG:
     urlpatterns += patterns(
