@@ -7,10 +7,10 @@ from mailng.extensions import amavis_quarantine
 register = template.Library()
 
 @register.simple_tag
-def viewm_menu(selection, mail_id, perms):
+def viewm_menu(selection, mail_id, page_id, perms):
     entries = [
         {"name" : "back",
-         "url" : reverse(amavis_quarantine.main.index),
+         "url" : reverse(amavis_quarantine.main.index) + "?page=%s" % page_id,
          "img" : "/static/pics/back.png",
          "label" : _("Back to list")},
         {"name" : "headers",
@@ -20,13 +20,17 @@ def viewm_menu(selection, mail_id, perms):
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:600,y:500}}"},
         {"name" : "release",
-         "url" : "",
+         "url" : reverse(amavis_quarantine.main.release, args=[mail_id])
+         + "?page=%s" % page_id,
          "img" : "/static/pics/release.png",
-         "label" : _("Release")},
+         "label" : _("Release"),
+         "confirm" : _("Release this message?")},
         {"name" : "delete",
-         "url" : "",
+         "url" : reverse(amavis_quarantine.main.delete, args=[mail_id])
+         + "?page=%s" % page_id,
          "img" : "/static/pics/remove.png",
-         "label" : _("Delete")}       
+         "label" : _("Delete"),
+         "confirm" : _("Delete this message?")}
         ]
 
     return render_to_string('main/menu.html', 
@@ -44,11 +48,6 @@ def quar_menu(selection, perms):
          "url" : "",
          "img" : "/static/pics/remove.png",
          "label" : _("Delete")},
-        {"name" : "deleteall",
-         "url" : "",
-         "img" : "/static/pics/remove.png",
-         "label" : _("Delete all")},
-         
         ]
 
     return render_to_string('main/menu.html', 

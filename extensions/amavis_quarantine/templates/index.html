@@ -58,11 +58,43 @@ window.addEvent("domready", function() {
     $("quarlistingform").send();
   }
 
+  checkSelection = function(text) {
+    var getout = $$("input[name=selection]").every(function(item, index) {
+      return item.checked == false;
+    });
+    if (getout) {
+      return false;
+    }
+    return confirm(text);
+  }
+
+  toggleSelection = function(value) {
+    $$("input[name=selection]").each(function(obj) {
+      obj.checked = value;
+    });
+  }
+
   $$("a[name=delete]").addEvent("click", function(event) {
+    if (!checkSelection("{% trans "Delete this selection?" %}")) {
+      event.stop();
+      return;
+    }
     mysubmit(event, "delete");
   });
   $$("a[name=release]").addEvent("click", function(event) {
+    if (!checkSelection("{% trans "Release this selection?" %}")) {
+      event.stop();
+      return;
+    }
     mysubmit(event, "release");
+  });
+
+  $("selectall").addEvent("click", function(event) {
+    if ($("selectall").checked) {
+      toggleSelection(true);
+    } else {
+      toggleSelection(false);
+    }
   });
 });
 </script>
@@ -115,7 +147,7 @@ window.addEvent("domready", function() {
 
   <table>
   <tr>
-    <th></th>
+    <th><input type="checkbox" name="selectall" id="selectall" /></th>
     <th>{% trans "Type" %}</th>
     <th width="150px">{% trans "From" %}</th>
     <th>{% trans "Subject" %}</th>
@@ -128,7 +160,7 @@ window.addEvent("domready", function() {
     <td>{{ m.type }}</td>
     <td>{{ m.from }}</td>
     {% url extensions.amavis_quarantine.main.viewmail m.mailid as view_url %}
-    <td><a href="{{ view_url }}">{{ m.subject }}</a></td>
+    <td><a href="{{ view_url }}?page={{ current_page }}">{{ m.subject }}</a></td>
     <td>{{ m.time }}</td>
   </tr>
   {% endfor %}

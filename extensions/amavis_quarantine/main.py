@@ -110,7 +110,8 @@ WHERE quarantine.mail_id='%s'
 
     return _render(request, 'amavis_quarantine/viewmail.html', {
             "headers" : msg, "alert" : msg.get("X-Amavis-Alert"),
-            "body" : body, "pre" : pre, "mail_id" : mail_id
+            "body" : body, "pre" : pre, "mail_id" : mail_id,
+            "page_id" : request.GET["page"]
             })
 
 @login_required
@@ -129,11 +130,67 @@ WHERE quarantine.mail_id='%s'
             "headers" : msg.items()
             })
 
+def _redirect_to_index(request, message, count):
+    request.user.message_set.create(message=message)
+    if count > 1:
+        return
+    page = request.GET.has_key("page") and request.GET["page"] or "1"
+    return HttpResponseRedirect(reverse(index) + "?page=%s" % page)
+
+@login_required
+def delete(request, mail_id, count=1):
+    conn = db.getconnection("amavis_quarantine")
+    if count == 1:
+        mail_id = "'%s'" % mail_id
+    status, error = db.execute(conn, 
+                               "DELETE FROM msgs WHERE mail_id IN (%s)" % mail_id)
+    if status:
+        message = _("%d message%s deleted successfully" \
+                        % (count, count > 1 and "s" or ""))
+    else:
+        message = error
+    return _redirect_to_index(request, message, count)
+
+@login_required
+def release(request, mail_id, count=1):
+    conn = db.getconnection("amavis_quarantine")
+    if count == 1:
+        mail_id = "'%s'" % mail_id
+    status, cursor = db.execute(conn, """
+SELECT msgs.mail_id,secret_id,quar_type,maddr.email FROM msgs, maddr, msgrcpt
+WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN (%s)
+""" % (mail_id))
+    emails = {}
+    for row in cursor.fetchall():
+        if not emails.has_key(row[0]):
+            emails[row[0]] = {}
+            emails[row[0]]["rcpts"] = []
+        emails[row[0]]["secret"] = row[1]
+        emails[row[0]]["rcpts"] += [row[3]]
+    count = 0
+    error = None
+    for k, values in emails.iteritems():
+        cmd = "/tmp/amavisd-release "
+        cmd += "%s %s" % (k, values["secret"])
+        for rcpt in values["rcpts"]:
+            cmd += " %s" % rcpt
+        cmd += "\n"
+        result = os.system(cmd)
+#            if re.search("250 [^\s]+ Ok", result):
+        if not result:
+            count += 1
+        else:
+            error = result
+            break
+    if not error:
+        message = _("%d message%s released successfully" \
+                        % (count, count > 1 and "s" or ""))
+    else:
+        message = error
+    _redirect_to_index(request, message, count)
+
 @login_required
 def process(request):
-    print request
-    if request.POST.has_key("deleteall"):
-        return
     ids = ""
     count = len(request.POST.getlist("selection"))
     for id in request.POST.getlist("selection"):
@@ -142,42 +199,12 @@ def process(request):
         ids += "'%s'" % id
     if ids == "":
         return HttpResponseRedirect(reverse(index))
-    conn = db.getconnection("amavis_quarantine")
     if request.POST.has_key("release"):
-        status, cursor = db.execute(conn, """
-SELECT msgs.mail_id,secret_id,quar_type,maddr.email FROM msgs, maddr, msgrcpt
-WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN (%s)
-""" % (ids))
-        emails = {}
-        for row in cursor.fetchall():
-            if not emails.has_key(row[0]):
-                emails[row[0]] = {}
-                emails[row[0]]["rcpts"] = []
-            emails[row[0]]["secret"] = row[1]
-            emails[row[0]]["rcpts"] += [row[3]]
-        count = 0
-        for k, values in emails.iteritems():
-            cmd = "/tmp/amavisd-release "
-            cmd += "%s %s" % (k, values["secret"])
-            for rcpt in values["rcpts"]:
-                cmd += " %s" % rcpt
-            cmd += "\n"
-            result = os.system(cmd)
-#            if re.search("250 [^\s]+ Ok", result):
-            if not result:
-                count += 1
-        message = _("%d message%s released successfully" \
-                        % (count, count > 1 and "s" or ""))
+        release(request, ids, count)
             
     if request.POST.has_key("delete"):
-        status, error = db.execute(conn, 
-                                   "DELETE FROM msgs WHERE mail_id IN (%s)" % ids)
-        if status:
-            message = _("%d message%s deleted successfully" \
-                             % (count, count > 1 and "s" or ""))
-        else:
-            message = error
-    request.user.message_set.create(message=message)
+        delete(request, ids, count)
+
     try:
         pagenum = int(request.POST.get('pagenum', '1'))
     except ValueError:
