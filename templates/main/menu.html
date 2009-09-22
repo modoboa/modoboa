@@ -1,14 +1,29 @@
 {% load i18n %}
 <ul>
   {% for entry in entries %}
+    {% if entry.menu %}
+  <li class="dropdown">
+    <img src="{{ entry.img }}" border="0" />
+    {{ entry.label }}
+    <ul class="links">
+      {% for sentry in entry.menu %}
+      <a href="{{ sentry.url }}" name="{{ sentry.name }}">
+      <li>{{ sentry.label }}</li>
+      </a>
+      {% endfor %}
+    </ul>
+  </li>
+    {% else %}
   <li {% ifequal selection entry.name %}class="selected"{% endifequal %}>
-  <a href="{{ entry.url }}" name="{{ entry.name }}"
+    <a href="{{ entry.url }}" name="{{ entry.name }}"
      {% if entry.class %}class={{ entry.class }}{% endif %}
      {% if entry.rel %}rel={{ entry.rel }}{% endif %}
      {% if entry.confirm %} onclick="return confirm('{{ entry.confirm }}')"{% endif %}>
-  <img src="{{ entry.img }}" border="0" />
-  {{ entry.label }}
-  </a>
+    
+    <img src="{{ entry.img }}" border="0" />
+    {{ entry.label }}
+    </a>
   </li>
+    {% endif %}
   {% endfor %}
 </ul>

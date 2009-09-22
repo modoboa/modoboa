@@ -21,7 +21,19 @@ from datetime import datetime
 import email
 import re
 import os
+import lxml.html
+from lxml.html.clean import Cleaner
 
+attached_map = {}
+
+def map_cid(url):
+    map = globals()["attached_map"]
+    m = re.match(".*cid:([^\"]+)", url)
+    if m:
+        if map.has_key(m.group(1)):
+            return map[m.group(1)]
+    return url
+    
 def init():
     events.register("UserMenuDisplay", menu)
 
@@ -75,6 +87,73 @@ ORDER BY msgs.time_num DESC
             })
 
 @login_required
+def viewmail_plain(request, content):
+    body = decode(content)
+    return (True, body)
+
+@login_required
+def viewmail_html(request, content):
+    links = request.GET.has_key("links") and request.GET["links"] or "0"
+    html = lxml.html.fromstring(content) 
+    if links == "0":
+        html.rewrite_links(lambda x: None)
+    else:
+        html.rewrite_links(map_cid)
+    body = lxml.html.tostring(html)
+    body = Template(decode(body)).render({})
+    return (False, body)
+
+@login_required
+def getmailcontent(request, mail_id):
+    conn = db.getconnection("amavis_quarantine")
+    status, cursor = db.execute(conn, """
+SELECT mail_text
+FROM quarantine
+WHERE quarantine.mail_id='%s'
+""" % mail_id)
+    content = ""
+    for part in cursor.fetchall():
+        content += part[0]
+    msg = email.message_from_string(content)
+    links = request.GET.has_key("links") and request.GET["links"] or "0"
+    mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
+    contents = {"html" : "", "plain" : ""}
+    for part in msg.walk():
+        print part.get_content_type()
+        if part.get_content_maintype() == 'multipart':
+            continue
+        if part.get_content_type() in ("text/html", "text/plain"):
+            contents[part.get_content_subtype()] += part.get_payload(decode=True)
+        if mode != "html" or links == "0":
+            continue
+
+        if part.get_content_maintype() == "image":
+            if part.has_key("Content-Location"):
+                fname = part["Content-Location"]
+                if re.match("^http:", fname):
+                    path = fname
+                else:
+                    path = "/%s" % os.path.join("static/tmp", fname)
+                    fp = open(path, "wb")
+                    fp.write(part.get_payload(decode=True))
+                    fp.close()
+                m = re.match("<(.+)>", part["Content-ID"])
+                if m:
+                    attached_map[m.group(1)] = path
+                else:
+                    attached_map[part["Content-ID"]] = path
+
+    if not contents.has_key(mode) or contents[mode] == "":
+        if mode == "html":
+            mode = "plain"
+        else:
+            mode = "html"
+    (pre, body) = globals()["viewmail_%s" % mode](request, contents[mode])
+    return _render(request, 'amavis_quarantine/getmailcontent.html', {
+            "body" : body, "pre" : pre
+            })
+    
+@login_required
 def viewmail(request, mail_id):
     conn = db.getconnection("amavis_quarantine")
     status, cursor = db.execute(conn, """
@@ -86,32 +165,10 @@ WHERE quarantine.mail_id='%s'
     for part in cursor.fetchall():
         content += part[0]
     msg = email.message_from_string(content)
-
-    html_body = ""
-    text_body = ""
-    for part in msg.walk():
-        print part.get_content_type()
-        if part.get_content_maintype() == 'multipart':
-            continue
-        if part.get_content_type() in ("text/html"):
-            html_body += part.get_payload()
-        if part.get_content_type() in ("text/plain"):
-            text_body += part.get_payload(decode=True)
-    pre = None
-    if html_body != "":
-        html_body = email.utils.quote(html_body)
-        html_body = re.sub('(\n|\r|\r\n)', '\\\\n', html_body)
-        body = Template(decode(html_body)).render({})
-    else:
-        text_body = email.utils.quote(text_body)
-        text_body = re.sub('(\n|\r|\r\n)', '\\\\n', text_body)
-        body = decode(text_body)
-        pre = True
-
     return _render(request, 'amavis_quarantine/viewmail.html', {
             "headers" : msg, "alert" : msg.get("X-Amavis-Alert"),
-            "body" : body, "pre" : pre, "mail_id" : mail_id,
-            "page_id" : request.GET["page"]
+            "mail_id" : mail_id, "page_id" : request.GET["page"],
+            "params" : request.GET
             })
 
 @login_required

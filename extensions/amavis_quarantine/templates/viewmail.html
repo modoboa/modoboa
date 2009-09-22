@@ -3,20 +3,14 @@
 {% block html_head %}
 <script type="text/javascript">
 window.addEvent("domready", function() {
-    doc = $("mailcontent").contentWindow.document;
-    doc.open();
-    {% if pre %}
-    doc.write("<pre>{{ body }}</pre>");
-    {% else %}
-    doc.write("{{ body }}");
-    {% endif %}
-    doc.close();
-
     SqueezeBox.assign($$('a.boxed'), {
         parse: 'rel'
     });
 });
 </script>
+<script src="/static/js/mootools-more.js" type="text/javascript"></script>
+<script src="/static/js/common.js" type="text/javascript"></script>
+
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
 <style type="text/css">
 td {
@@ -36,11 +30,12 @@ td.left {
 </style>
 {% endblock %}
 {% block content %}
-<div class="menu2">
+<div class="menu2" id="menu2">
   {% load amextras %}
-  {% viewm_menu "headers" mail_id page_id perms %}
+  {% viewm_menu "" mail_id page_id perms %}
 </div>
 
+<div id="table-container">
 <table border="0">
   <tr>
     <th colspan="2">{% trans "Message" %}</th>
@@ -51,9 +46,9 @@ td.left {
   <tr><td class="left">Date</td><td>{{ headers.date }}</td></tr>
   <tr><td class="left">Subject</td><td>{{ headers.subject }}</td></tr>
 </table>
+</div>
 
-
-<iframe id="mailcontent"></iframe>
-
+{% url extensions.amavis_quarantine.main.getmailcontent mail_id as geturl %}
+<iframe id="mailcontent" src="{{ geturl }}?mode={{ params.mode }}&links={{ params.links }}"></iframe>
 
 {% endblock %}

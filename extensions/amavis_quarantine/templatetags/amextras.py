@@ -8,6 +8,21 @@ register = template.Library()
 
 @register.simple_tag
 def viewm_menu(selection, mail_id, page_id, perms):
+    options_menu = [
+        {"name" : "plain", 
+         "label" : _("View as plain text"),
+         "url" : reverse(amavis_quarantine.main.viewmail, args=[mail_id])
+         + "?page=%s&mode=plain" % page_id},
+        {"name" : "html", 
+         "label" : _("View as HTML"),
+         "url" : reverse(amavis_quarantine.main.viewmail, args=[mail_id])
+         + "?page=%s&mode=html" % page_id},
+        {"name" : "links", 
+         "label" : _("Activate links"),
+         "url" : reverse(amavis_quarantine.main.viewmail, args=[mail_id])
+         + "?page=%s&mode=html&links=1" % page_id}
+        ]
+
     entries = [
         {"name" : "back",
          "url" : reverse(amavis_quarantine.main.index) + "?page=%s" % page_id,
@@ -30,7 +45,11 @@ def viewm_menu(selection, mail_id, page_id, perms):
          + "?page=%s" % page_id,
          "img" : "/static/pics/remove.png",
          "label" : _("Delete"),
-         "confirm" : _("Delete this message?")}
+         "confirm" : _("Delete this message?")},
+        {"name" : "options",
+         "label" : _("Options"),
+         "img" : "/static/pics/settings.png",
+         "menu" : options_menu}
         ]
 
     return render_to_string('main/menu.html', 

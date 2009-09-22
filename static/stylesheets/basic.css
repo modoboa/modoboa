@@ -146,23 +146,49 @@ body {
     margin-bottom: 15px;
 }
 
+#menu2 { 
+    position: absolute;
+    height: 30px;
+    clear: both;
+}
+
+#table-container { 
+    margin-top: 30px;
+}
+
 .menu2 { 
     font-size: 95%;
-    white-space: nowrap;  
+    white-space: nowrap;
 }
 
 .menu2 ul { 
     margin: 0;
     padding: 0;
     list-style: none;
-    float: left;
     width: 100%;
+    font-weight: bold;
+    color: #2a4069;
 }
 
 .menu2 li { 
     float: left;
     display: inline;
     margin: 2px 5px;
+}
+
+.dropdown ul { 
+    display: block;
+    background: #ffffcc;
+    width: 150px;
+    margin: 0px;
+    padding: 0px;
+    padding-top: 10px;
+}
+
+.menu2 li ul li { 
+    padding: 5px;
+    display: block;
+    float: none;
 }
 
 .menu2 li.selected {
