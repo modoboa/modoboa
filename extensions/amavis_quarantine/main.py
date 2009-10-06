@@ -48,13 +48,16 @@ def menu(**kwargs):
          "img" : "/static/pics/quarantine.png"}
         ]
 
-@login_required
-def index(request, message=None):
-    if not request.user.is_superuser:
-        mb = Mailbox.objects.get(user=request.user.id)
-        filter = "AND maddr.email='%s'" % mb.full_address
-    else:
-        filter = ""
+def lookup(*args):
+    filter = ""
+    for a in args:
+        if not a:
+            continue
+        if a[0] == "&":
+            filter += " AND "
+        else:
+            filter += " OR "
+        filter += a[1:]
     conn = db.getconnection("amavis_quarantine")
     status, cursor = db.execute(conn, """
 SELECT msgs.from_addr, maddr.email, msgs.subject, msgs.content, quarantine.mail_id,
@@ -66,7 +69,10 @@ AND msgrcpt.mail_id=msgs.mail_id
 AND quarantine.chunk_ind=1
 %s
 ORDER BY msgs.time_num DESC
-""" % filter)
+""" % filter)  
+    return cursor
+
+def render_listing(request, cursor):
     emails = []
     rows = cursor.fetchall()
     for row in rows:
@@ -81,9 +87,23 @@ ORDER BY msgs.time_num DESC
     except ValueError:
         pagenum = 1
     page = paginator.page(pagenum)
+    return render_to_string("amavis_quarantine/listing.html", {
+            "count" : len(rows), 
+            "emails" : page, "current_page" : pagenum, 
+            "last_page" : paginator._get_num_pages()
+            })
+
+@login_required
+def index(request, message=None):
+    if not request.user.is_superuser:
+        mb = Mailbox.objects.get(user=request.user.id)
+        filter = "&maddr.email='%s'" % mb.full_address
+    else:
+        filter = None
+    cursor = lookup(filter)
+
     return _render(request, 'amavis_quarantine/index.html', {
-            "count" : len(rows), "emails" : page, 
-            "current_page" : pagenum, "last_page" : paginator._get_num_pages()
+            "content" : render_listing(request, cursor)
             })
 
 @login_required
@@ -268,4 +288,14 @@ def process(request):
         pagenum = 1
     ctx = _ctx_ok(reverse(index) + "?page=%s" % pagenum)
     return HttpResponse(simplejson.dumps(ctx), 
+                        mimetype="application/json")
+
+@login_required
+def search(request):
+    if not request.GET.has_key("pattern"):
+        return
+    filter = "&msgs.from_addr LIKE '%%%s%%'" % request.GET["pattern"]
+    cursor = lookup(filter)
+    ctx = {"status" : "ok", "content" : render_listing(request, cursor)}
+    return HttpResponse(simplejson.dumps(ctx),
                         mimetype="application/json")

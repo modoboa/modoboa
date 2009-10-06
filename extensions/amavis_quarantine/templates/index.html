@@ -40,6 +40,11 @@ td {
   font-size: smaller;
   height: 40px;
 }
+
+#searchbox {
+  float: right;
+  margin-right: 10px;
+}
 </style>
 
 <script type="text/javascript">
@@ -96,6 +101,23 @@ window.addEvent("domready", function() {
       toggleSelection(false);
     }
   });
+
+  {% url extensions.amavis_quarantine.main.search as s_url %}
+  $("searchfield").addEvent("change", function(event) {
+    new Request.JSON({url: "{{ s_url }}", onSuccess: function(resp) {
+      $("listing").set("html", resp.content);
+    }}).get({"pattern" : $("searchfield").value});
+  });
+
+  $("searchfield").addEvent("click", function(event) {
+    $("searchfield").select();
+  });
+
+  $("searchfield").addEvent("blur", function(event) {
+    if ($("searchfield").value == "") {
+      $("searchfield").set("value", "{% trans "Search..." %}");
+    }
+  });
 });
 </script>
 {% endblock %}
@@ -110,6 +132,9 @@ window.addEvent("domready", function() {
   {% endfor %}
   </div>
   {% endif %}
+  <div id="searchbox">
+    <input type="text" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
+  </div>
 </div>
 
 <div id="menubar" class="menu2">
@@ -121,50 +146,7 @@ window.addEvent("domready", function() {
 <input type="hidden" name="pagenum" id="pagenum" value="{{ current_page }}" />
 
 <div id="listing">
-  <div id="listheader">
-    <div id="counter">
-      Messages {{ emails.start_index }} à {{ emails.end_index }} sur {{ count }}
-    </div>
-    <div id="navbar">
-      {% if emails.has_previous %}
-      <a href="?page=1">
-      <img src="/static/pics/first.png" border="0" title="{% trans "First" %}" />
-      </a>
-      <a href="?page={{ emails.previous_page_number }}">
-      <img src="/static/pics/back.png" border="0" title="{% trans "Previous" %}" />
-      </a>
-      {% endif %}
-      {% if emails.has_next %}
-      <a href="?page={{ emails.next_page_number }}">
-      <img src="/static/pics/next.png" border="0" title="{% trans "Next" %}" />
-      </a>
-      <a href="?page={{ last_page }}">
-      <img src="/static/pics/last.png" border="0" title="{% trans "Last" %}" />
-      </a>
-      {% endif %}
-    </div>
-  </div>
-
-  <table>
-  <tr>
-    <th><input type="checkbox" name="selectall" id="selectall" /></th>
-    <th>{% trans "Type" %}</th>
-    <th width="150px">{% trans "From" %}</th>
-    <th>{% trans "Subject" %}</th>
-    <th width="100px">{% trans "Date" %}</th>
-  </tr>
-  {% for m in emails.object_list %}
-  <tr class="{% cycle 'odd' 'even' %}">
-    <td><input type="checkbox" name="selection" id="selection"
-               value="{{ m.mailid }}" /></td>
-    <td>{{ m.type }}</td>
-    <td>{{ m.from }}</td>
-    {% url extensions.amavis_quarantine.main.viewmail m.mailid as view_url %}
-    <td><a href="{{ view_url }}?page={{ current_page }}">{{ m.subject }}</a></td>
-    <td>{{ m.time }}</td>
-  </tr>
-  {% endfor %}
-</table>
+  {{ content }}
 </div>
 </form>
 {% endblock %}

@@ -36,7 +36,7 @@ How to upgrade
 
 0.5 -> 0.6 : No modifications have been made to the core SQL schema so you
 just have to decompress the new tarball at the same location than your
-current installation. Once done, go to MailNG repository and run::
+current installation. Once done, go to MailNG directory and run::
 
   python manage.py syncdb
 
