@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load amextras %}
 {% block html_head %}
+<script src="/static/js/mootools-more.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
 <style type="text/css">
 form {
@@ -44,6 +45,17 @@ td {
 #searchbox {
   float: right;
   margin-right: 10px;
+}
+
+#searchbox img {
+  float: left;
+  margin-top: 4px;
+  margin-right: 5px;
+}
+
+#searchparams {
+  background: white;
+  padding: 5px;
 }
 </style>
 
@@ -104,9 +116,13 @@ window.addEvent("domready", function() {
 
   {% url extensions.amavis_quarantine.main.search as s_url %}
   $("searchfield").addEvent("change", function(event) {
+    var criteria = "";
+    $$("input[name=scriteria]:checked").each(function(obj) {
+      criteria = obj.value;
+    });
     new Request.JSON({url: "{{ s_url }}", onSuccess: function(resp) {
       $("listing").set("html", resp.content);
-    }}).get({"pattern" : $("searchfield").value});
+    }}).get({"pattern" : $("searchfield").value, "criteria" : criteria});
   });
 
   $("searchfield").addEvent("click", function(event) {
@@ -117,6 +133,16 @@ window.addEvent("domready", function() {
     if ($("searchfield").value == "") {
       $("searchfield").set("value", "{% trans "Search..." %}");
     }
+  });
+
+  var myFx = new Fx.Slide($("searchparams")).hide();
+  $("searchopts").addEvent("click", function(event) {
+    myFx.cancel();
+    myFx.toggle();
+  });
+  $$("input[name=scriteria]").addEvent("click", function(event) {
+    myFx.cancel();
+    myFx.toggle();
   });
 });
 </script>
@@ -132,15 +158,23 @@ window.addEvent("domready", function() {
   {% endfor %}
   </div>
   {% endif %}
-  <div id="searchbox">
-    <input type="text" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
-  </div>
 </div>
 
 <div id="menubar" class="menu2">
   {% quar_menu "" perms %}
+
+   <div id="searchbox">
+    <img src="/static/pics/search.png" id="searchopts" />
+    <input type="text" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
+    <div id="searchparams">
+      <input type="radio" name="scriteria" value="from_addr" checked>{% trans "From address" %}<br/>
+      <input type="radio" name="scriteria" value="subject">{% trans "Subject" %}<br/>
+      <input type="radio" name="scriteria" value="from_addr,subject">{% trans "Both" %}<br/>
+    </div>
+  </div>
 </div>
 
+<div id="form-container">
 {% url extensions.amavis_quarantine.main.process as actionurl %}
 <form method="POST" action="{{ actionurl }}" id="quarlistingform">
 <input type="hidden" name="pagenum" id="pagenum" value="{{ current_page }}" />
@@ -149,4 +183,5 @@ window.addEvent("domready", function() {
   {{ content }}
 </div>
 </form>
+</div>
 {% endblock %}

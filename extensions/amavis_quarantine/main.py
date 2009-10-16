@@ -294,7 +294,17 @@ def process(request):
 def search(request):
     if not request.GET.has_key("pattern"):
         return
-    filter = "&msgs.from_addr LIKE '%%%s%%'" % request.GET["pattern"]
+    if request.GET.has_key("criteria"):
+        criteria = request.GET["criteria"].split(',')
+    else:
+        criteria = ["from_addr"]
+    filter = ""
+    pattern = re.escape(request.GET["pattern"])
+    for c in criteria:
+        if filter != "":
+            filter += " OR "
+        filter += "msgs.%s LIKE '%%%s%%'" % (c, pattern)
+    filter = "&(%s)" % filter 
     cursor = lookup(filter)
     ctx = {"status" : "ok", "content" : render_listing(request, cursor)}
     return HttpResponse(simplejson.dumps(ctx),

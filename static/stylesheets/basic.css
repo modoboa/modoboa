@@ -136,14 +136,18 @@ body {
 }
 
 #content2 { 
-
-
 }
 
 #menubar {
     margin-left: 20px;
     display: table;
     margin-bottom: 15px;
+    width: 730px;
+    position: absolute;
+}
+
+#form-container { 
+    margin-top: 60px;
 }
 
 #menu2 { 
