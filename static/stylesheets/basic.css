@@ -284,7 +284,9 @@ body {
 }
 
 #domcontent {
-    margin: 10px auto;
+    margin: 0 auto;
+    margin-top: 60px;
+    margin-bottom: 10px;
     width: 90%;
 }
 
