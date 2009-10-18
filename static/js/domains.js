@@ -20,8 +20,11 @@ window.addEvent('domready', function() {
     
     if ($$("a[name=deleteMb]"))
         $$("a[name=deleteMb]").addEvent('click', function(event) {
-            if (!confirm(gettext("Delete this mailbox?")))
-                event.stop();
+		/*if (!confirm(gettext("Delete this mailbox?")))
+		  event.stop();*/
+		// the function also returns the object so you can tweak it from the outside:
+	    confirmation(gettext("Delete this mailbox?"));
+	    event.stop();
         });
 
     if ($$("a[name=deleteAlias]"))
@@ -67,7 +70,6 @@ window.addEvent('domready', function() {
 });
 
 newdom = function() {
-    alert("pouet");
     form = $("form[name=newdom]");
     var params = obj.toQueryString();
     form.set('send', {

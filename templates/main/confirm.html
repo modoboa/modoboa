@@ -1,0 +1,16 @@
+{% extends "layout_simple.html" %}
+{% block html_head %}
+<script src="/static/js/form.js" type="text/javascript"></script>
+{% endblock %}
+{% block content %}
+{% load i18n %}
+<b>{{ msg }}</b><br/>
+
+<p>
+<input type="checkbox" id="keepdir" value="" />{% trans "Do not delete mailbox directory" %}
+</p>
+
+<input type="button" id="ok" value="Ok" />
+<input type="button" id="cancel" value="Cancel" />
+{% endblock %}
+

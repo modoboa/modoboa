@@ -72,3 +72,9 @@ def changepassword(request):
             "form" : form
             })
 
+@login_required
+def confirm(request):
+    return render_to_response('main/confirm.html', {
+            "msg" : request.GET["question"]
+            })
+
