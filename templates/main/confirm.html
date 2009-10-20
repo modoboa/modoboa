@@ -1,16 +1,36 @@
 {% extends "layout_simple.html" %}
 {% block html_head %}
 <script src="/static/js/form.js" type="text/javascript"></script>
+<script type="text/javascript">
+window.addEvent('domready', function(){
+  $("ok").addEvent("click", function(event) {
+    $("result").value = "ok";
+    parent.SqueezeBox.close();
+  });
+  $("cancel").addEvent("click", function(event) {
+    parent.SqueezeBox.close();
+  });
+});
+
+</script>
 {% endblock %}
 {% block content %}
 {% load i18n %}
-<b>{{ msg }}</b><br/>
 
-<p>
-<input type="checkbox" id="keepdir" value="" />{% trans "Do not delete mailbox directory" %}
-</p>
+<div id="dlg-iconbox">
+  <img src="/static/pics/dialog-warning.png" alt="Warning" />
+</div>
+<div id="dlg-textbox">
+  <b>{{ msg }}</b><br/>
+  <p>
+  <input type="checkbox" name="keepdir" value="" />{% trans "Do not delete mailbox directory" %}
+  </p>
+</div>
 
-<input type="button" id="ok" value="Ok" />
-<input type="button" id="cancel" value="Cancel" />
+<div id="dlg-buttons">
+  <input type="button" name="ok" id="ok" value="Ok" />
+  <input type="button" id="cancel" value="Cancel" />
+</div>
+<input type="hidden" name="result" id="result" value="cancel" />
 {% endblock %}
 

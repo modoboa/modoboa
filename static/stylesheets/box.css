@@ -79,3 +79,26 @@ input:hover {
 #id_password { 
   width: 120px;
 }
+
+/* Dialog box */
+#dlg-buttons { 
+    clear: both;
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+}
+
+#dlg-iconbox { 
+    float: left;
+    margin-top: 20px;
+}
+
+#dlg-textbox {
+    float: left;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#dlg-buttons input { 
+    width: 90px;
+}

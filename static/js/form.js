@@ -2,14 +2,14 @@ window.addEvent("domready", function() {
     sqbsubmit = function(obj, dest, id, callback) {
         obj.set('send', {
             onSuccess: function(responseText) {
-                response = JSON.decode(responseText);
-                if (response.status == "ko") {
-                    $(dest).set("html", response.content);
+                var decode = JSON.decode(responseText);
+                if (decode.status == "ko") {
+                    $(dest).set("html", decode.content);
                     $(id).addEvent("submit", callback);
                 } else {
+                    if (decode.url != "")
+                        parent.location.href = decode.url;
                     parent.SqueezeBox.close();
-                    if (response.url != "")
-                        parent.location.href = response.url;
                 }
             }
         });

@@ -258,7 +258,7 @@ user quotas::
 
   user_query = SELECT path AS home, uid, gid, concat('*:storage=', quota, 'M') AS quota_rule FROM admin_mailbox WHERE full_address = '%u'
 
-Tips to server Mailng behind Apache2
+Tips to serve Mailng behind Apache2
 ------------------------------------
 
 First, be sure to have apache2 and mod_python installed on your

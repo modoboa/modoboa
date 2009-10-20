@@ -2,6 +2,9 @@ body {
     font-family: arial, helvetica, verdana, tahoma, sans-serif;
     font-size: small;
     background: #153F65;
+}
+
+#first-container { 
     width: 950px;
     margin: 0 auto;
     padding: 0;
@@ -297,6 +300,7 @@ body {
 
 #setcontent { 
     margin: 0px auto;
+    margin-top: 60px;
     width: 90%;
 }
 

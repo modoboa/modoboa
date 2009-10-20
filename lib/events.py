@@ -10,6 +10,7 @@ events = ["CreateDomain",
           "DeleteDomain",
           "CreateMailbox",
           "DeleteMailbox",
+          "ModifyMailbox",
 
           "UserMenuDisplay"]
 

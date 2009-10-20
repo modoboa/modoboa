@@ -15,6 +15,7 @@ from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
 from mailng.lib import _render, _ctx_ok, _ctx_ko
 from mailng.lib import events
+import copy
 
 def is_superuser(user):
     if not user.is_superuser:
@@ -182,6 +183,7 @@ def newmailbox(request, dom_id=None):
 def editmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
     if request.method == "POST":
+        oldmb = copy.deepcopy(mb)
         form = MailboxForm(request.POST, instance=mb)
         error = None
         if form.is_valid():
@@ -206,6 +208,7 @@ def editmailbox(request, dom_id, mbox_id=None):
                     mb.quota = mb.domain.quota
                 mb.full_address = "%s@%s" % (mb.address, mb.domain.name)
                 mb.save()
+                events.raiseEvent("ModifyMailbox", mbox=mb, oldmbox=oldmb)
                 ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[dom_id]))
                 return HttpResponse(simplejson.dumps(ctx),
                                     mimetype="application/json")
@@ -228,11 +231,15 @@ def editmailbox(request, dom_id, mbox_id=None):
 def delmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
     events.raiseEvent("DeleteMailbox", mbox=mb)
-    mb.delete_dir()
+    if not request.GET.has_key("keepdir") or request.GET["keepdir"] != "true":
+        mb.delete_dir()
     mb.user.delete()
     mb.delete()
-    return HttpResponseRedirect(reverse(admin.views.mailboxes, 
-                                        args=[dom_id]))
+    ctx = _ctx_ok("");
+    return HttpResponse(simplejson.dumps(ctx), 
+                        mimetype="application/json")
+#     return HttpResponseRedirect(reverse(admin.views.mailboxes, 
+#                                         args=[dom_id]))
 
 @login_required
 @permission_required("admin.view_aliases")

@@ -17,43 +17,48 @@ window.addEvent('domready', function(){
     }
 });
 
-var toggleModal = function(backgroundColour, options) {
-    // modal view for the whole screen
-    // ver 2.02 17/10/2008 03:42:06
-    if ($("modal")) {
-        $("modal").dispose();
-        return false;
+get_iframe_body = function(id) {
+    var saf = navigator.userAgent.match(/Safari/i);
+    var safver = (saf ? parseFloat(navigator.userAgent.match(/[\d\.]+Safari/i)) : 0);
+    var targetif = $(id);
+    var data;
+
+    if (targetif.contentDocument && (!saf || (saf && safver >= 3))) {
+        // NS6 & Gecko & Opera & IE7+
+        if (!saf || (saf && safver >= 3)) {
+            data = targetif.contentDocument.defaultView.document.body;
+        } else {
+            data = targetif.document.body;
+        }      
+    } else if (targetif.contentWindow && !saf) {
+        // IE 5.5 & 6.x
+        data = targetif.contentWindow.document.body;
     }
-    
-    var options = $merge({
-        zIndex: 10000000,
-        opacity: .8,
-        events: $empty()
-    }, options);
-
-    if (!$type(backgroundColour) && !$("modal"))
-        return false;
-
-    return new Element("div", {
-        id: "modal",
-        styles: {
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: window.getScrollWidth(),
-            height: window.getScrollHeight(),
-            background: backgroundColour,
-            "z-index": options.zIndex
-        },
-        opacity: options.opacity,
-        events: options.events
-    }).inject(document.body);
+    return (data);  
 }
 
-confirmation = function(question) {
+confirmation = function(question, action, callback) {
     SqueezeBox.initialize({
-        size: {x: 300, y: 150},
-	handler: 'iframe'
+        size: {x: 300, y: 130},
+	handler: 'iframe',
+        onClose: function(content) {
+            var ibody = get_iframe_body(this.asset);
+            var elt = ibody.getElement("input[name=result]");
+
+            if (elt.get("value") == "ok") {
+                params = ""
+                if (typeof callback != "undefined") {
+                    params = callback(ibody);
+                }
+                new Request({
+                    method: "get", 
+                    url: action.get("href"),
+                    onSuccess: function(res) {
+                        window.location.reload();
+                    }
+                }).send(params);
+            }
+        }
     });
     SqueezeBox.open("/mailng/main/confirm/?question=" + question);
 }

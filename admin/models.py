@@ -66,6 +66,8 @@ class Mailbox(models.Model):
 
     def create_dir(self, domain):
         path = "%s/%s/%s" % (settings.STORAGE_PATH, domain.name, self.address)
+        if os.path.exists(path):
+            return True
         if not exec_as_vuser("mkdir -p %s" % path):
             return False
         if self.mbtype == "mbox":

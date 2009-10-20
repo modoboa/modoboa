@@ -20,11 +20,17 @@ window.addEvent('domready', function() {
     
     if ($$("a[name=deleteMb]"))
         $$("a[name=deleteMb]").addEvent('click', function(event) {
-		/*if (!confirm(gettext("Delete this mailbox?")))
-		  event.stop();*/
-		// the function also returns the object so you can tweak it from the outside:
-	    confirmation(gettext("Delete this mailbox?"));
 	    event.stop();
+	    confirmation(gettext("Delete this mailbox?"), this, function(body) {
+                result = ""
+                body.getElements("input[type=checkbox]:checked").each(function(obj) {
+                    if (result != "") {
+                        result += "&";
+                    }
+                    result += obj.name + "=true";
+                });
+                return result;
+            });
         });
 
     if ($$("a[name=deleteAlias]"))
