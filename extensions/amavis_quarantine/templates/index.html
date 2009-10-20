@@ -135,7 +135,8 @@ window.addEvent("domready", function() {
     }
   });
 
-  var myFx = new Fx.Slide($("searchparams")).hide();
+  var myFx = new Fx.Slide($("searchparams"));
+  myFx.hide();
   $("searchopts").addEvent("click", function(event) {
     myFx.cancel();
     myFx.toggle();

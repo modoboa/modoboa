@@ -65,7 +65,8 @@ Fx.Slide = new Class({
 		this.parent(options);
 		var wrapper = this.element.retrieve('wrapper');
 		this.wrapper = wrapper || new Element('div', {
-			styles: this.element.getStyles('margin', 'position', 'overflow')
+                    styles: $extend(this.element.getStyles('margin', 'position'), {overflow: 'hidden'})
+		    /*styles: this.element.getStyles('margin', 'position', 'overflow', 'hidden')*/
 		}).wraps(this.element);
 		this.element.store('wrapper', this.wrapper).setStyle('margin', 0);
 		this.now = [];
