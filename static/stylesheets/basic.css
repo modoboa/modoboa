@@ -296,6 +296,7 @@ body {
 #subcontent {
     margin: 10px auto;
     width: 90%;
+    margin-top: 60px;
 }
 
 #setcontent { 
