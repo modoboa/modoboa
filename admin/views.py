@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
-from mailng import admin
+from mailng import admin, main
 from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
@@ -26,8 +26,11 @@ def is_superuser(user):
 @login_required
 def domains(request):
     if not request.user.has_perm("admin.view_domains"):
-        mb = Mailbox.objects.get(user=request.user.id)
-        return mailboxes(request, dom_id=mb.domain.id)
+        if request.user.has_perm("admin.view_mailboxes"):
+            mb = Mailbox.objects.get(user=request.user.id)
+            return mailboxes(request, dom_id=mb.domain.id)
+
+        return HttpResponseRedirect(reverse(main.views.index))
 
     domains = Domain.objects.all()
     counters = {}
@@ -362,8 +365,16 @@ def addpermission(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def deletepermission(request, mbox_id, group):
-    mbox = Mailbox.objects.get(pk=mbox_id)
-    grp = Group.objects.get(name=group)
-    mbox.user.groups.remove(grp)
-    mbox.user.save()
+    if group == "SuperAdmins":
+        user = User.objects.get(pk=mbox_id)
+        if user.username == "admin":
+            request.user.message_set.create(message=_("admin is intouchable!!"))
+        else:
+            user.is_superuser = False
+            user.save()
+    else:
+        mbox = Mailbox.objects.get(pk=mbox_id)
+        grp = Group.objects.get(name=group)
+        mbox.user.groups.remove(grp)
+        mbox.user.save()
     return HttpResponseRedirect(reverse(admin.views.settings))

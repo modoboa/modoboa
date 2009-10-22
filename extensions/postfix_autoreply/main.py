@@ -7,7 +7,10 @@ This module provides a way to integrate MailNG auto-reply
 functionality into Postfix.
 
 """
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 from mailng.lib import events
+from mailng import main
 from models import Transport, Alias
 
 def init():
@@ -17,8 +20,20 @@ def init():
     events.register("DeleteMailbox", onDeleteMailbox)
     events.register("ModifyMailbox", onModifyMailbox)
 
+    events.register("UserMenuDisplay", menu)
+
 def urls():
     return ()
+
+def menu(**kwargs):
+    if kwargs["target"] != "user_menu_bar":
+        return []
+    return [
+        {"name" : "autoreply",
+         "url" : reverse(main.views.autoreply),
+         "img" : "/static/pics/auto-reply.png",
+         "label" : _("Auto-reply message")}
+        ]
 
 def onCreateDomain(**kwargs):
     dom = kwargs["dom"]

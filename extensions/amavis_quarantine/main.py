@@ -42,6 +42,8 @@ def urls():
             include('mailng.extensions.amavis_quarantine.urls'))
 
 def menu(**kwargs):
+    if kwargs["target"] != "user_menu_box":
+        return []
     return [
         {"name" : _("Quarantine"),
          "url" : reverse(index),

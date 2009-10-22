@@ -10,10 +10,6 @@ register = template.Library()
 @register.simple_tag
 def menu(selection, perms):
     entries = [
-        {"name" : "autoreply",
-         "url" : reverse(main.views.autoreply),
-         "img" : "/static/pics/auto-reply.png",
-         "label" : _("Auto-reply message")},
         {"name" : "changepwd",
          "url" : reverse(main.views.changepassword),
          "img" : "/static/pics/edit.png",
@@ -21,6 +17,7 @@ def menu(selection, perms):
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:350,y:220}}"}
         ]
+    entries += events.raiseQueryEvent("UserMenuDisplay", target="user_menu_bar")
 
     return render_to_string('main/menu.html', 
                             {"selection" : selection, "entries" : entries, 
@@ -28,6 +25,6 @@ def menu(selection, perms):
 
 @register.simple_tag
 def loadextmenu(perms):
-    menu = events.raiseQueryEvent("UserMenuDisplay")
+    menu = events.raiseQueryEvent("UserMenuDisplay", target="user_menu_box")
     return render_to_string('main/menulist.html', 
                             {"menu" : menu, "perms" : perms})
