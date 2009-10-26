@@ -6,6 +6,13 @@
 {% load i18n %}
 <div class="header">
   <h1>{% trans "Settings" %}</h1>
+  {% if messages %}
+  <div id="infos">
+  {% for m in messages %}
+  {{ m }}
+  {% endfor %}
+  </div>
+  {% endif %}
 </div>
 
 <div id="menubar" class="menu2">
