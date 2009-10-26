@@ -346,7 +346,9 @@ def addpermission(request):
             mb = Mailbox.objects.get(pk=request.POST["user"])
             if request.POST["role"] == "SuperAdmins":
                 mb.user.is_superuser = True
+                mb.user.groups.clear()
             else:
+                mb.user.is_superuser = False
                 mb.user.groups.add(Group.objects.get(name=request.POST["role"]))
             mb.user.save()
             ctx = _ctx_ok(reverse(admin.views.settings))
