@@ -1,24 +1,10 @@
 {% extends "layout.html" %}
+{% load i18n %}
 {% block html_head %}
 <script src="/static/js/settings.js" type="text/javascript"></script>
 {% endblock %}
+{% block middletitle %}{% trans "Settings" %}{% endblock %}
 {% block content %}
-{% load i18n %}
-<div class="header">
-  <h1>{% trans "Settings" %}</h1>
-  {% if messages %}
-  <div id="infos">
-  {% for m in messages %}
-  {{ m }}
-  {% endfor %}
-  </div>
-  {% endif %}
-</div>
-
-<div id="menubar" class="menu2">
-  {% block menu %}{% endblock %}
-</div>
-
 <div id="setcontent">
 {% block setcontent %}{% endblock %}
 </div>

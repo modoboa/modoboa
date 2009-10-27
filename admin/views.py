@@ -167,6 +167,7 @@ def newmailbox(request, dom_id=None):
                     
                     events.raiseEvent("CreateMailbox", mbox=mb)
 
+                    request.user.message_set.create(message=_("Mailbox created."))
                     ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[domain.id]))
                     return HttpResponse(simplejson.dumps(ctx), 
                                         mimetype="application/json")

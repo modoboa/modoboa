@@ -148,23 +148,10 @@ window.addEvent("domready", function() {
 });
 </script>
 {% endblock %}
-
-{% block content %}
-<div class="header">
-  <h1>{% trans "Quarantine" %}</h1>
-  {% if messages %}
-  <div id="infos">
-  {% for m in messages %}
-  {{ m }}
-  {% endfor %}
-  </div>
-  {% endif %}
-</div>
-
-<div id="menubar" class="menu2">
+{% block middletitle %}{% trans "Quarantine" %}{% endblock %}
+{% block menu %}
   {% quar_menu "" perms %}
-
-   <div id="searchbox">
+  <div id="searchbox">
     <img src="/static/pics/search.png" id="searchopts" />
     <input type="text" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
     <div id="searchparams">
@@ -173,8 +160,8 @@ window.addEvent("domready", function() {
       <input type="radio" name="scriteria" value="from_addr,subject">{% trans "Both" %}<br/>
     </div>
   </div>
-</div>
-
+{% endblock %}
+{% block content %}
 <div id="form-container">
 {% url extensions.amavis_quarantine.main.process as actionurl %}
 <form method="POST" action="{{ actionurl }}" id="quarlistingform">

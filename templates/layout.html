@@ -93,6 +93,17 @@
     {% else %}
     <div id="content2">
     {% endif %}
+      <div class="header">
+        <h1>{% block middletitle %}{% endblock %}</h1>
+        {% if messages %}
+        <div id="infos">
+        {% for m in messages %}{{ m }}{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div id="menubar" class="menu2">
+      {% block menu %}{% endblock %}
+      </div>
       {% block content %}{% endblock %}
     </div>
   </div>

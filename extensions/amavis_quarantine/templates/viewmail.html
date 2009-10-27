@@ -29,12 +29,12 @@ td.left {
 }
 </style>
 {% endblock %}
-{% block content %}
-<div class="menu2" id="menu2">
+{% block middletitle %}{% trans "Mail content" %}{% endblock %}
+{% block menu %}
   {% load amextras %}
   {% viewm_menu "" mail_id page_id perms %}
-</div>
-
+{% endblock %}
+{% block content %}
 <div id="table-container">
 <table border="0">
   <tr>

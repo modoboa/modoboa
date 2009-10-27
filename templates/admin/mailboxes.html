@@ -7,16 +7,6 @@
 {% endblock %}
 {% block domcontent %}
 {% load i18n %}
-{% if messages %}
-<div class="error">
-<ul>
-  {% for msg in messages %}
-  <li>{{ msg }}</li>
-  {% endfor %}
-</ul>
-</div>
-{% endif %}
-
 {% if not mailboxes %}
 <p>{% trans "No mailbox defined." %}</p>
 {% else %}

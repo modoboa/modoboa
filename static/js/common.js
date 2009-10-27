@@ -1,6 +1,6 @@
 window.addEvent('domready', function(){
-    if ($('menu2')) {
-	$('menu2').getElements('li.dropdown').each( function( elem ){
+    if ($('menubar')) {
+	$('menubar').getElements('li.dropdown').each( function( elem ){
 	    var list = elem.getElement('ul.links');
 	    var myFx = new Fx.Slide(list).hide();
 	    elem.addEvents({

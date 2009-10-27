@@ -144,7 +144,6 @@ body {
 #menubar {
     margin-left: 20px;
     display: table;
-    margin-bottom: 15px;
     width: 730px;
     position: absolute;
 }
@@ -153,14 +152,8 @@ body {
     margin-top: 60px;
 }
 
-#menu2 { 
-    position: absolute;
-    height: 30px;
-    clear: both;
-}
-
 #table-container { 
-    margin-top: 30px;
+    margin-top: 60px;
 }
 
 .menu2 { 
@@ -288,7 +281,7 @@ body {
 
 #domcontent {
     margin: 0 auto;
-    margin-top: 60px;
+    margin-top: 25px;
     margin-bottom: 10px;
     width: 90%;
 }

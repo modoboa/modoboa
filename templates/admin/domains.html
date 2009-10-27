@@ -1,13 +1,10 @@
 {% extends "layout.html" %}
+{% load i18n %}
 {% block html_head %}
 <script src="/static/js/domains.js" type="text/javascript"></script>
 {% endblock %}
+{% block middletitle %}{% trans "Available domains" %}{% endblock %}
 {% block content %}
-{% load i18n %}
-<div class="header">
-  <h1>{% trans "Available domains" %}</h1>
-</div>
-
 <div id="domcontent">
   {% if not domains %}
   {% trans "No domain defined." %}
