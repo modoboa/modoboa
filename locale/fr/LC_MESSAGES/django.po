@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-19 10:29+0200\n"
+"POT-Creation-Date: 2009-10-27 15:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin/forms.py:16 templates/admin/domains.html:20
-#: templates/admin/mailboxes.html:28
+#: admin/forms.py:16 templates/admin/domains.html:17
+#: templates/admin/mailboxes.html:18
 msgid "Quota"
 msgstr ""
 
@@ -29,83 +29,91 @@ msgstr "Mot de passe"
 msgid "Confirmation"
 msgstr ""
 
-#: admin/forms.py:32 main/forms.py:36
+#: admin/forms.py:33 main/forms.py:36
 msgid "Passwords mismatch"
 msgstr "Les mots de passe diffèrent"
 
-#: admin/forms.py:51 templates/admin/domain_header.html:8
-#: templates/admin/editdomain.html:7 templates/admin/permissions.html:39
+#: admin/forms.py:52 templates/admin/domain_header.html:7
+#: templates/admin/editdomain.html:7 templates/admin/permissions.html:42
 msgid "Domain"
 msgstr "Domaine"
 
-#: admin/forms.py:53
+#: admin/forms.py:54
 msgid "User"
 msgstr "Utilisateur"
 
-#: admin/forms.py:54
+#: admin/forms.py:55
 msgid "Role"
 msgstr "Rôle"
 
-#: admin/forms.py:55
+#: admin/forms.py:56
 msgid "Super administrator"
 msgstr "Super administrateur"
 
-#: admin/forms.py:56
+#: admin/forms.py:57
 msgid "Domain administrator"
 msgstr "Admin. de domaine"
 
-#: admin/models.py:9 admin/models.py:46
+#: admin/models.py:9 admin/models.py:36
 msgid "name"
 msgstr "Nom"
 
-#: admin/models.py:11 admin/models.py:110 main/models.py:9
+#: admin/models.py:11 admin/models.py:105 main/models.py:9
 msgid "enabled"
 msgstr "Activé"
 
-#: admin/models.py:47 admin/models.py:107
+#: admin/models.py:37 admin/models.py:102
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models.py:49
+#: admin/models.py:39
 msgid "password"
 msgstr "Mot de passe"
 
-#: admin/models.py:109
+#: admin/models.py:104
 msgid "mailbox"
 msgstr "Boite aux lettres"
 
-#: admin/views.py:21
+#: admin/views.py:22
 msgid "Permission denied."
 msgstr "Permission refusée."
 
-#: admin/views.py:49 admin/views.py:81
+#: admin/views.py:53 admin/views.py:85
 msgid "Domain with this name already defined"
 msgstr "Un domaine avec ce nom existe déjà"
 
-#: admin/views.py:58
+#: admin/views.py:62
 msgid "Failed to initialise domain, check permissions"
 msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
 
-#: admin/views.py:84
+#: admin/views.py:88
 msgid "Failed to rename domain, check permissions"
 msgstr "Impossible de renommer le domaine, vérifier les permissions"
 
-#: admin/views.py:135 admin/views.py:191
+#: admin/views.py:139 admin/views.py:197
 msgid "Mailbox with this address already exists"
 msgstr "Une boite aux lettres pour cette adresse existe déjà"
 
-#: admin/views.py:169
+#: admin/views.py:170
+msgid "Mailbox created."
+msgstr "Boite aux lettres créé."
+
+#: admin/views.py:174
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Impossible d'initialiser la boite aux lettres, vérifier les permissions"
 
-#: admin/views.py:194
+#: admin/views.py:200
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
 
-#: admin/views.py:262 admin/views.py:291
+#: admin/views.py:273 admin/views.py:302
 msgid "Alias with this address already exists"
 msgstr "Un alias avec cette adresse existe déjà"
+
+#: admin/views.py:374
+msgid "admin is intouchable!!"
+msgstr "admin est intouchable!!"
 
 #: admin/templatetags/admin_extras.py:8
 msgid "enabled_m"
@@ -114,6 +122,140 @@ msgstr "Activé"
 #: admin/templatetags/admin_extras.py:8
 msgid "enabled_f"
 msgstr "Activée"
+
+#: extensions/amavis_quarantine/main.py:48
+#: extensions/amavis_quarantine/templates/index.html:151
+msgid "Quarantine"
+msgstr "Quarantaine"
+
+#: extensions/amavis_quarantine/main.py:227
+#, python-format
+msgid "%(count)d message%(plural)s deleted successfully"
+msgstr "%(count)d message%(plural)s supprimé correctement"
+
+#: extensions/amavis_quarantine/main.py:265
+#, fuzzy, python-format
+msgid "%(count)d message%(plural)s released successfully"
+msgstr "%(count)d messages relâché correctement"
+
+#: extensions/amavis_quarantine/templates/index.html:95
+msgid "Delete this selection?"
+msgstr "Supprimer cette sélection?"
+
+#: extensions/amavis_quarantine/templates/index.html:102
+msgid "Release this selection?"
+msgstr "Relâcher cette sélection?"
+
+#: extensions/amavis_quarantine/templates/index.html:134
+#: extensions/amavis_quarantine/templates/index.html:156
+msgid "Search..."
+msgstr "Chercher..."
+
+#: extensions/amavis_quarantine/templates/index.html:158
+#, fuzzy
+msgid "From address"
+msgstr "Emetteur"
+
+#: extensions/amavis_quarantine/templates/index.html:159
+#: extensions/amavis_quarantine/templates/listing.html:32
+msgid "Subject"
+msgstr "sujet"
+
+#: extensions/amavis_quarantine/templates/index.html:160
+msgid "Both"
+msgstr "Tous"
+
+#: extensions/amavis_quarantine/templates/listing.html:10
+msgid "First"
+msgstr "Première"
+
+#: extensions/amavis_quarantine/templates/listing.html:13
+msgid "Previous"
+msgstr "Précédente"
+
+#: extensions/amavis_quarantine/templates/listing.html:18
+msgid "Next"
+msgstr "Suivante"
+
+#: extensions/amavis_quarantine/templates/listing.html:21
+msgid "Last"
+msgstr "Dernière"
+
+#: extensions/amavis_quarantine/templates/listing.html:30
+msgid "Type"
+msgstr ""
+
+#: extensions/amavis_quarantine/templates/listing.html:31
+msgid "From"
+msgstr "De"
+
+#: extensions/amavis_quarantine/templates/listing.html:33
+#, fuzzy
+msgid "Date"
+msgstr "Supprimer"
+
+#: extensions/amavis_quarantine/templates/viewheader.html:36
+msgid "Message headers"
+msgstr "Entêtes du message"
+
+#: extensions/amavis_quarantine/templates/viewmail.html:32
+msgid "Mail content"
+msgstr "Contenu du message"
+
+#: extensions/amavis_quarantine/templates/viewmail.html:41
+#, fuzzy
+msgid "Message"
+msgstr "Entêtes du message"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:13
+msgid "View as plain text"
+msgstr "Afficher en texte"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:17
+msgid "View as HTML"
+msgstr "Afficher en HTML"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:21
+msgid "Activate links"
+msgstr "Activer les liens"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:30
+msgid "Back to list"
+msgstr "Retour à la liste"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:34
+msgid "View full headers"
+msgstr "Afficher tous les entêtes"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:41
+#: extensions/amavis_quarantine/templatetags/amextras.py:65
+msgid "Release"
+msgstr "Relâcher"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:42
+msgid "Release this message?"
+msgstr "Relâcher ce message?"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:47
+#: extensions/amavis_quarantine/templatetags/amextras.py:69
+msgid "Delete"
+msgstr "Supprimer"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:48
+msgid "Delete this message?"
+msgstr "Supprimer ce message?"
+
+#: extensions/amavis_quarantine/templatetags/amextras.py:50
+msgid "Options"
+msgstr ""
+
+#: extensions/dummy_plugin/main.py:17
+msgid "Dummy"
+msgstr ""
+
+#: extensions/postfix_autoreply/main.py:35
+msgid "Auto-reply message"
+msgstr "Message de réponse automatique"
 
 #: main/forms.py:17
 msgid "Old password"
@@ -139,27 +281,31 @@ msgstr "contenu"
 msgid "Auto reply message updated successfully."
 msgstr "Message de réponse auto. mis à jour."
 
-#: templates/layout.html:40
+#: main/templatetags/main_extras.py:16 templates/main/chpassword.html:7
+msgid "Change password"
+msgstr "Changer de mot de passe"
+
+#: templates/layout.html:42
 msgid "Admin"
 msgstr ""
 
-#: templates/layout.html:47
+#: templates/layout.html:49
 msgid "Preferences"
 msgstr "Préférences"
 
-#: templates/layout.html:53
+#: templates/layout.html:56
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/layout.html:66 templates/admin/newdomain.html:7
+#: templates/layout.html:69 templates/admin/newdomain.html:7
 msgid "New domain"
 msgstr "Nouveau domaine"
 
-#: templates/layout.html:73
+#: templates/layout.html:76
 msgid "Domains"
 msgstr "Domaines"
 
-#: templates/layout.html:80 templates/admin/settings_header.html:8
+#: templates/layout.html:83 templates/admin/settings_header.html:6
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -176,13 +322,13 @@ msgstr "Créer"
 msgid "No alias defined."
 msgstr "Aucun alias défini."
 
-#: templates/admin/aliases.html:14 templates/admin/domains.html:17
-#: templates/admin/mailboxes.html:25 templates/admin/permissions.html:14
-#: templates/admin/permissions.html:38
+#: templates/admin/aliases.html:14 templates/admin/domains.html:14
+#: templates/admin/mailboxes.html:15 templates/admin/permissions.html:14
+#: templates/admin/permissions.html:41
 msgid "Actions"
 msgstr ""
 
-#: templates/admin/aliases.html:15 templates/admin/mailboxes.html:27
+#: templates/admin/aliases.html:15 templates/admin/mailboxes.html:17
 msgid "Address"
 msgstr "Adresse"
 
@@ -190,8 +336,8 @@ msgstr "Adresse"
 msgid "Mailbox"
 msgstr "Boite aux lettres"
 
-#: templates/admin/aliases.html:17 templates/admin/domains.html:21
-#: templates/admin/permissions.html:17 templates/admin/permissions.html:41
+#: templates/admin/aliases.html:17 templates/admin/domains.html:18
+#: templates/admin/permissions.html:17 templates/admin/permissions.html:44
 msgid "Enabled"
 msgstr "Activé"
 
@@ -207,7 +353,7 @@ msgstr "Supprimer cet alias"
 msgid "New mailbox"
 msgstr "Nouvelle boite aux lettres"
 
-#: templates/admin/domain_menu.html:18 templates/admin/domains.html:19
+#: templates/admin/domain_menu.html:18 templates/admin/domains.html:16
 msgid "Mailboxes"
 msgstr "Boites aux lettres"
 
@@ -219,32 +365,32 @@ msgstr "Alias"
 msgid "Properties"
 msgstr "Propriétés"
 
-#: templates/admin/domains.html:8
+#: templates/admin/domains.html:6
 msgid "Available domains"
 msgstr "Domaines disponibles"
 
-#: templates/admin/domains.html:13
+#: templates/admin/domains.html:10
 msgid "No domain defined."
 msgstr "Aucun domaine défini."
 
-#: templates/admin/domains.html:18 templates/admin/mailboxes.html:26
-#: templates/admin/permissions.html:40
+#: templates/admin/domains.html:15 templates/admin/mailboxes.html:16
+#: templates/admin/permissions.html:43
 msgid "Name"
 msgstr "Nom"
 
-#: templates/admin/domains.html:29
+#: templates/admin/domains.html:26
 msgid "Edit domain"
 msgstr "Editer le domaine"
 
-#: templates/admin/domains.html:33
+#: templates/admin/domains.html:30
 msgid "Delete domain"
 msgstr "Supprimer le domaine"
 
-#: templates/admin/domains.html:39 templates/admin/mailboxes.html:56
+#: templates/admin/domains.html:36 templates/admin/mailboxes.html:46
 msgid "MB"
 msgstr "Mo"
 
-#: templates/admin/domains.html:40 templates/admin/mailboxes.html:57
+#: templates/admin/domains.html:37 templates/admin/mailboxes.html:47
 msgid "yes,no"
 msgstr "oui,non"
 
@@ -254,23 +400,23 @@ msgstr "oui,non"
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: templates/admin/mailboxes.html:21
+#: templates/admin/mailboxes.html:11
 msgid "No mailbox defined."
 msgstr "Aucune boite aux lettres définie."
 
-#: templates/admin/mailboxes.html:37
+#: templates/admin/mailboxes.html:27
 msgid "Edit mailbox"
 msgstr "Editer la boite aux lettres"
 
-#: templates/admin/mailboxes.html:42
+#: templates/admin/mailboxes.html:32
 msgid "Delete mailbox"
 msgstr "Supprimer la boite aux lettres"
 
-#: templates/admin/mailboxes.html:47
+#: templates/admin/mailboxes.html:37
 msgid "Add new alias"
 msgstr "Ajouter un alias"
 
-#: templates/admin/mailboxes.html:51
+#: templates/admin/mailboxes.html:41
 msgid "Mailbox aliases"
 msgstr "Alias de cette boite aux lettres"
 
@@ -294,27 +440,29 @@ msgstr "Nom complet"
 msgid "User name"
 msgstr "Nom d'utilisateur"
 
-#: templates/admin/permissions.html:22 templates/admin/permissions.html:49
+#: templates/admin/permissions.html:24 templates/admin/permissions.html:52
 msgid "Remove permission"
 msgstr "Supprimer la permission"
 
-#: templates/admin/permissions.html:32
+#: templates/admin/permissions.html:35
 msgid "Domain administrators"
 msgstr "Administrateurs de domaine"
 
-#: templates/admin/permissions.html:34
+#: templates/admin/permissions.html:37
 msgid "No domain admin defined."
 msgstr "Aucun admin de domaine défini."
 
 #: templates/admin/settings_menu.html:7
+#, fuzzy
 msgid "Permissions"
-msgstr ""
+msgstr "Ajouter une permission"
 
-#: templates/main/chpassword.html:7 templates/main/menu.html:13
-msgid "Change password"
-msgstr "Changer de mot de passe"
+#: templates/main/confirm.html:26
+#, fuzzy
+msgid "Do not delete mailbox directory"
+msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
-#: templates/main/header.html:8
+#: templates/main/header.html:6
 msgid "General"
 msgstr "Général"
 
@@ -325,10 +473,6 @@ msgstr "Votre réponse automatique est active."
 #: templates/main/index.html:13
 msgid "Your auto-reply message is not activated."
 msgstr "Votre réponse automatique n'est pas active."
-
-#: templates/main/menu.html:6
-msgid "Auto-reply message"
-msgstr "Message de réponse automatique"
 
 #: templates/registration/login.html:8
 msgid "Welcome"

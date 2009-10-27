@@ -33,3 +33,7 @@ def execute(conn, query):
         return (True, cursor)
     except MySQLdb.Error, e:
         return (False, "Error %d: %s" % (e.args[0], e.args[1]))
+
+def close(conn):
+    conn.close()
+    

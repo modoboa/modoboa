@@ -103,3 +103,8 @@ VIRTUAL_GID = "vmail"
 
 # Autoreplies sending timeout (default: 86400s)
 # AUTOREPLIES_TIMEOUT = 
+
+# Amavis quarantine options
+
+# Quarantine messages maximum age (in days) before deletion
+# MAX_MESSAGES_AGE = 14

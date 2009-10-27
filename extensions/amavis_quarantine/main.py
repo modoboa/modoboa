@@ -224,8 +224,8 @@ def delete(request, mail_id, count=1):
     status, error = db.execute(conn, 
                                "DELETE FROM msgs WHERE mail_id IN (%s)" % mail_id)
     if status:
-        message = _("%d message%s deleted successfully" \
-                        % (count, count > 1 and "s" or ""))
+        message = _("%(count)d message%(plural)s deleted successfully" \
+                        % ({"count" : count, "plural" : count > 1 and "s" or ""}))
     else:
         message = error
     return _redirect_to_index(request, message, count)
@@ -262,8 +262,8 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
             error = result
             break
     if not error:
-        message = _("%d message%s released successfully" \
-                        % (count, count > 1 and "s" or ""))
+        message = _("%(count)d message%(plural)s released successfully" \
+                        % {"count" : count, "plural" : count > 1 and "s" or ""})
     else:
         message = error
     _redirect_to_index(request, message, count)
