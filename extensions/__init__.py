@@ -17,7 +17,10 @@ def loadextensions():
         globals()['extensions'] += [module]
     
 def loadmenus():
-    result = ()
+    result = []
     for mod in extensions:
-        result += mod.main.urls()
+        u = mod.main.urls()
+        if u == ():
+            continue
+        result += (u,)
     return result

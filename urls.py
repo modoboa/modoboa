@@ -28,7 +28,7 @@ urlpatterns = patterns('',
 )
 menus = loadmenus()
 if menus != ():
-    urlpatterns += patterns('', menus)
+    urlpatterns += patterns('', *menus)
 
 if settings.DEBUG:
     urlpatterns += patterns(
