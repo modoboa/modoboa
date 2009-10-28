@@ -309,12 +309,15 @@ body {
 }
 
 .header {
-    margin-left: 20px;
-    margin-bottom: 20px;
+    margin: 10px 0px 20px 20px;
+    padding-bottom: 10px;
 }
 
 .header h1 {
     font-size: medium;
+    width: 50%;
+    float: left;
+    margin: 0;
 }
 
 #setcontent h4 { 
@@ -323,9 +326,11 @@ body {
 
 #infos { 
     float: right;
+    width: 40%;
     color: green;
     font-weight: bold;
     margin-right: 10px;
+    margin-bottom: 5px;
 }
 
 .info { 

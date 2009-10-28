@@ -17,6 +17,7 @@ from mailng.lib import events
 from mailng.lib import _render, _ctx_ok, _ctx_ko, decode
 from mailng.lib import db
 from mailng.admin.models import Mailbox
+from lib import AMrelease
 from datetime import datetime
 import email
 import re
@@ -219,8 +220,6 @@ def _redirect_to_index(request, message, count):
 @login_required
 def delete(request, mail_id, count=1):
     conn = db.getconnection("amavis_quarantine")
-    if count == 1:
-        mail_id = "'%s'" % mail_id
     status, error = db.execute(conn, 
                                "DELETE FROM msgs WHERE mail_id IN (%s)" % mail_id)
     if status:
@@ -233,13 +232,12 @@ def delete(request, mail_id, count=1):
 @login_required
 def release(request, mail_id, count=1):
     conn = db.getconnection("amavis_quarantine")
-    if count == 1:
-        mail_id = "'%s'" % mail_id
     status, cursor = db.execute(conn, """
 SELECT msgs.mail_id,secret_id,quar_type,maddr.email FROM msgs, maddr, msgrcpt
 WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN (%s)
 """ % (mail_id))
     emails = {}
+    amr = AMrelease()
     for row in cursor.fetchall():
         if not emails.has_key(row[0]):
             emails[row[0]] = {}
@@ -249,14 +247,15 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
     count = 0
     error = None
     for k, values in emails.iteritems():
-        cmd = "/tmp/amavisd-release "
-        cmd += "%s %s" % (k, values["secret"])
-        for rcpt in values["rcpts"]:
-            cmd += " %s" % rcpt
-        cmd += "\n"
-        result = os.system(cmd)
+        result = amr.sendreq(k, values["secret"], *values["rcpts"])
+#         cmd = "/tmp/amavisd-release "
+#         cmd += "%s %s" % (k, values["secret"])
+#         for rcpt in values["rcpts"]:
+#             cmd += " %s" % rcpt
+#         cmd += "\n"
+#         result = os.system(cmd)
 #            if re.search("250 [^\s]+ Ok", result):
-        if not result:
+        if result:
             count += 1
         else:
             error = result
@@ -278,10 +277,10 @@ def process(request):
         ids += "'%s'" % id
     if ids == "":
         return HttpResponseRedirect(reverse(index))
-    if request.POST.has_key("release"):
+    if request.POST["action"] == "release":
         release(request, ids, count)
             
-    if request.POST.has_key("delete"):
+    if request.POST["action"] == "delete":
         delete(request, ids, count)
 
     try:

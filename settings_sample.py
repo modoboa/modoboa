@@ -108,3 +108,13 @@ VIRTUAL_GID = "vmail"
 
 # Quarantine messages maximum age (in days) before deletion
 # MAX_MESSAGES_AGE = 14
+
+# AM.PDP daemon 
+# Modify above parameters if you want MailNG to be able
+# to release messages from the quarantine. Mode can be 
+# either "inet" or "unix".
+
+# AM_PDP_MODE = "inet" 
+# AM_PDP_HOST = "localhost"
+# AM_PDP_PORT = 9998
+# AM_PDP_SOCKET = "/var/amavis/amavisd.sock"

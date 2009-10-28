@@ -64,8 +64,8 @@ window.addEvent("domready", function() {
   mysubmit = function(event, name) {
     event.stop();
     new Element('input', {
-      'type' : 'submit', 'name' : name, style: "display:none"
-    }).inject($("quarlistingform"));
+      'type' : 'hidden', 'name' : "action", style: "display:none", 'value' : name
+    }).inject($("quarlistingform"), "top");
     $("quarlistingform").set("send", {
       onSuccess : function(res) {
         response = JSON.decode(res);
