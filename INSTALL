@@ -15,10 +15,16 @@ Download Mailng's tarball and extract it::
   tar xzf mailng-<version>.tar.gz
   mv mailng-<version> mailng
 
-Enter the mailng directory, create a settings.py file (you can use 
-settings-sample.py as a model). Specify database relative informations. You 
-must choose between mysql and postgresql, other types are not supported by 
-major email projects like postfix or dovecot.
+Settings file
+
+  Enter the mailng directory, create a settings.py file (you can use
+  settings-sample.py as a model).
+  Specify database relative informations.
+  You must choose between mysql and postgresql, other types are not supported by
+  major email projects like postfix or dovecot.
+  Create a database with the name you specified in settings.py.
+  you will probably need python database module backend like MySQLdb.
+  Modify TEMPLATE_DIRS.
 
 Initialise the database by running the following command::
 
@@ -379,3 +385,14 @@ Replace mailng_dir with the installation path of MailNG.
 By default, messages older than 14 days are automatically purged. You
 can modify this value by changing the variable MAX_MESSAGES_AGE inside
 settings.py.
+
+Statistics plugin setup
+-----------------------
+
+Early version of that plugin only support parsing of postfix log as syslog format.
+Please make sure you have a valid /var/log/maillog postfix log file.
+Don't forget to create a link from /templates/stats to extensions/stats/template
+FIXME : 
+Parsing for domain is not fully supported, soon in a next version.
+User priviledges are not handled properly. So you understand 
+it is a really eraly pluggin  version!! Enjoy

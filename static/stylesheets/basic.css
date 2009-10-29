@@ -193,7 +193,7 @@ body {
 
 .menu2 li.selected {
 /*    text-decoration: underline;*/
-    background: #ffffcc;
+    background: #ffff77;
 }
 
 .menu2 a:link, .menu2 a:visited {
@@ -248,11 +248,11 @@ body {
 }
 
 #body tr.odd {
-    background: #F7F9Fb;
+    background: white;
 }
 
 #body tr.even {
-    background: white;
+    background: #F4F6F8;
 }
 
 #body table th {

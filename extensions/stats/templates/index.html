@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% load i18n %}
+{% block html_head %}
+<script src="/static/js/mootools-more.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
+<style type="text/css">
+  form {
+  margin: 0 auto;
+  width: 98%;
+  }
+
+  td {
+  font-size: smaller;
+  height: 40px;
+  }
+
+  errors {
+  text-align: center;
+  width: 100%;
+  margin: 20px 20px;
+  color: red;
+  }
+
+  #graphcontent {
+  margin:60px auto 10px;
+  width:90%;
+  }
+
+</style>
+
+<script type="text/javascript">
+</script>
+{% endblock %}
+
+{% block middletitle %}
+  {{ page }}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+{% block content %}
+<div id="graphcontent">
+  <table>
+  {% if graph %}
+    {% for d in domains %}
+    {% for g in graph %}
+        {% for t in types %}
+        <tr>
+          <th class="{% cycle 'odd' 'even' %}">{{ d }} > {{ t|lower }} > {{ g }}</th>
+        </tr>
+        <tr>
+        <td>
+          <img src="/{{ tmp_path }}/{{ g }}_{{ t }}_{{ d }}_postfix.png" alt="/{{ tmp_path }}/{{ g }}_{{ t }}_{{ d }}_postfix.png"/>
+        </td>
+        </tr>
+        {% endfor %}
+    {% endfor %}
+    {% endfor %}
+  {% else %}
+  {% if domains %}
+    <tr>
+      <th width="50px">{% trans "Graph type" %}</th>
+      <th width="80px">{% trans "Domain name" %}</th>
+    </tr>
+
+    {% for dom in domains %}
+    <tr class="{% cycle 'odd' 'even' %}">
+      <td>
+        {% for t in types %}
+          {% url extensions.stats.main.graph_display dom.id,t as graphurl %}
+          <a name="loadGraph" href="{{ graphurl }}">{{ t|lower }} </a>
+        {% endfor %}
+      </td>
+        {% url extensions.stats.main.domain dom.id as domurl %}
+        <td><a name="loadDom" href="{{ domurl }}">{{ dom.name }}</a></td>
+    </tr>
+  {% endfor %}
+  {% endif %}
+  {% endif %}
+  </table>
+</div>
+{% endblock %}
