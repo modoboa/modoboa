@@ -82,8 +82,8 @@ def render_listing(request, cursor):
         emails.append({"from" : row[0], "to" : row[1], 
                        "subject" : row[2], "content" : row[3],
                        "mailid" : row[4], "time" : datetime.fromtimestamp(row[5]),
-                       "type" : row[6]})
-    
+                       "type" : row[6]}) 
+   
     paginator = Paginator(emails, 10)
     try:
         pagenum = int(request.GET.get('page', '1'))
@@ -220,6 +220,8 @@ def _redirect_to_index(request, message, count):
 @login_required
 def delete(request, mail_id, count=1):
     conn = db.getconnection("amavis_quarantine")
+    if mail_id[0] != "'":
+        mail_id = "'%s'" % mail_id
     status, error = db.execute(conn, 
                                "DELETE FROM msgs WHERE mail_id IN (%s)" % mail_id)
     if status:
@@ -232,6 +234,8 @@ def delete(request, mail_id, count=1):
 @login_required
 def release(request, mail_id, count=1):
     conn = db.getconnection("amavis_quarantine")
+    if mail_id[0] != "'":
+        mail_id = "'%s'" % mail_id
     status, cursor = db.execute(conn, """
 SELECT msgs.mail_id,secret_id,quar_type,maddr.email FROM msgs, maddr, msgrcpt
 WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN (%s)

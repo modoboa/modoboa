@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-27 15:48+0100\n"
+"POT-Creation-Date: 2009-10-29 14:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,25 +115,41 @@ msgstr "Un alias avec cette adresse existe déjà"
 msgid "admin is intouchable!!"
 msgstr "admin est intouchable!!"
 
-#: admin/templatetags/admin_extras.py:8
+#: admin/templatetags/admin_extras.py:11
 msgid "enabled_m"
 msgstr "Activé"
 
-#: admin/templatetags/admin_extras.py:8
+#: admin/templatetags/admin_extras.py:11
 msgid "enabled_f"
 msgstr "Activée"
 
-#: extensions/amavis_quarantine/main.py:48
+#: admin/templatetags/admin_extras.py:19 templates/admin/newmailbox.html:7
+msgid "New mailbox"
+msgstr "Nouvelle boite aux lettres"
+
+#: admin/templatetags/admin_extras.py:26 templates/admin/domains.html:16
+msgid "Mailboxes"
+msgstr "Boites aux lettres"
+
+#: admin/templatetags/admin_extras.py:30
+msgid "Aliases"
+msgstr "Alias"
+
+#: admin/templatetags/admin_extras.py:37
+msgid "Properties"
+msgstr "Propriétés"
+
+#: extensions/amavis_quarantine/main.py:49
 #: extensions/amavis_quarantine/templates/index.html:151
 msgid "Quarantine"
 msgstr "Quarantaine"
 
-#: extensions/amavis_quarantine/main.py:227
+#: extensions/amavis_quarantine/main.py:226
 #, python-format
 msgid "%(count)d message%(plural)s deleted successfully"
 msgstr "%(count)d message%(plural)s supprimé correctement"
 
-#: extensions/amavis_quarantine/main.py:265
+#: extensions/amavis_quarantine/main.py:264
 #, fuzzy, python-format
 msgid "%(count)d message%(plural)s released successfully"
 msgstr "%(count)d messages relâché correctement"
@@ -190,9 +206,8 @@ msgid "From"
 msgstr "De"
 
 #: extensions/amavis_quarantine/templates/listing.html:33
-#, fuzzy
 msgid "Date"
-msgstr "Supprimer"
+msgstr ""
 
 #: extensions/amavis_quarantine/templates/viewheader.html:36
 msgid "Message headers"
@@ -203,9 +218,8 @@ msgid "Mail content"
 msgstr "Contenu du message"
 
 #: extensions/amavis_quarantine/templates/viewmail.html:41
-#, fuzzy
 msgid "Message"
-msgstr "Entêtes du message"
+msgstr ""
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:13
 msgid "View as plain text"
@@ -277,6 +291,10 @@ msgstr "sujet"
 msgid "content"
 msgstr "contenu"
 
+#: main/models.py:10
+msgid "until"
+msgstr ""
+
 #: main/views.py:45
 msgid "Auto reply message updated successfully."
 msgstr "Message de réponse auto. mis à jour."
@@ -332,7 +350,7 @@ msgstr ""
 msgid "Address"
 msgstr "Adresse"
 
-#: templates/admin/aliases.html:16
+#: templates/admin/aliases.html:16 templates/admin/editmailbox.html:7
 msgid "Mailbox"
 msgstr "Boite aux lettres"
 
@@ -348,22 +366,6 @@ msgstr "Editer cet alias"
 #: templates/admin/aliases.html:29
 msgid "Delete alias"
 msgstr "Supprimer cet alias"
-
-#: templates/admin/domain_menu.html:12 templates/admin/newmailbox.html:7
-msgid "New mailbox"
-msgstr "Nouvelle boite aux lettres"
-
-#: templates/admin/domain_menu.html:18 templates/admin/domains.html:16
-msgid "Mailboxes"
-msgstr "Boites aux lettres"
-
-#: templates/admin/domain_menu.html:22
-msgid "Aliases"
-msgstr "Alias"
-
-#: templates/admin/domain_menu.html:28
-msgid "Properties"
-msgstr "Propriétés"
 
 #: templates/admin/domains.html:6
 msgid "Available domains"
@@ -395,7 +397,7 @@ msgid "yes,no"
 msgstr "oui,non"
 
 #: templates/admin/editalias.html:14 templates/admin/editdomain.html:15
-#: templates/admin/editmailbox.html:16 templates/main/autoreply.html:17
+#: templates/admin/editmailbox.html:16 templates/main/autoreply.html:19
 #: templates/main/chpassword.html:15
 msgid "Update"
 msgstr "Mettre à jour"
@@ -453,16 +455,15 @@ msgid "No domain admin defined."
 msgstr "Aucun admin de domaine défini."
 
 #: templates/admin/settings_menu.html:7
-#, fuzzy
 msgid "Permissions"
-msgstr "Ajouter une permission"
+msgstr ""
 
 #: templates/main/confirm.html:26
 #, fuzzy
 msgid "Do not delete mailbox directory"
 msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
-#: templates/main/header.html:6
+#: templates/main/header.html:8
 msgid "General"
 msgstr "Général"
 
