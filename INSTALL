@@ -34,19 +34,12 @@ Run the initialisation script. It will insert needed data into the database :
 How to upgrade
 --------------
 
-0.5 -> 0.6 : No modifications have been made to the core SQL schema so you
-just have to decompress the new tarball at the same location than your
-current installation. Once done, go to MailNG directory and run::
+0.6 -> 0.7 : no SQL modifications.
+0.5 -> 0.6 : no SQL modifications.
 
-  python manage.py syncdb
-
-You must also modify 'settings.py' in order to activate new components.
-
-If you plan to use the 'Postfix autoreply' extension, you'll need to run
-the following script to make it work correctly::
-
-  export PYTHONPATH=$PWD/..
-  DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/upgrade_autoreply.py
+If no modifications have been made to the core SQL schema, juste
+decompress the new tarball at the same location than your current
+installation.
 
 Host configuration
 ------------------
@@ -134,6 +127,18 @@ Tips to activate auto-reply messages in Postifx
 -----------------------------------------------
 
 Since version 0.6, mail users can define an auto-reply message with MailNG.
+
+To activate the extension, edit your settings.py and add the following
+line inside the INSTALLED_APPS variable::
+
+  'mailng.extensions.postfix_autoreply',
+
+Then run the following commands to update MailNG SQL schema and content::
+
+  # python manage.py syncdb
+  # export PYTHONPATH=$PWD/..
+  # DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/upgrade_autoreply.py
+
 To make Postfix understand this feature, you need to update your configuration
 files as follow::
 
@@ -282,3 +287,90 @@ following inside::
 
 This is one possible configuration. Note that you will certainly need more
 configuration in order to launch Apache.
+
+Using the amavisd-new quarantine plugin
+---------------------------------------
+
+This plugin allows you and your users to handle amavisd-new SQL
+quarantine. You can consult messages and/or release or delete them.
+
+If you plan to use it, first make sure to have those requirements
+installed on your server::
+
+- mysqldb python module (http://mysql-python.sourceforge.net/)
+- lxml python module (http://codespeak.net/lxml/)
+
+To activate the extension, edit your settings.py and add the following
+line inside the INSTALLED_APPS variable::
+
+  'mailng.extensions.amavis_quarantine',
+
+Just run the following command to update MailNG SQL schema::
+  
+  # python manage.py syncdb
+
+Then, you need to specify where is the database that contains the
+quarantine. Inside settings.py, add a new connection to the
+DB_CONNECTIONS variable like this::
+
+  DB_CONNECTIONS = (
+    {"amavis_quarantine" : {"driver"   : "mysql",
+                            "host"     : "<your_host>",
+                            "dbname"   : "<amavis_dbname>",
+                            "login"    : "<user>",
+                            "password" : "<password>"}
+     }
+    )
+
+Replace values between <> with yours.
+
+To be able to release messages, first take a look at this page::
+
+http://www.ijs.si/software/amavisd/amavisd-new-docs.html#quar-release
+
+It shows how to configure amavisd-new to listen somewhere for the
+AM.PDP protocol. This protocol is used to send release requests.
+
+Below is an example of a working configuration::
+
+  $interface_policy{'SOCK'} = 'AM.PDP-SOCK';
+  $interface_policy{'9998'} = 'AM.PDP-INET';
+
+  $policy_bank{'AM.PDP-SOCK'} = {
+    protocol => 'AM.PDP',
+    auth_required_release => 0,
+  };
+  $policy_bank{'AM.PDP-INET'} = {
+    protocol => 'AM.PDP',
+    inet_acl => [qw( 127.0.0.1 [::1] )],
+  };
+
+Don't forget to update the inet_acl list if you plan to release from
+the network.
+
+Once amavisd-new is configured, just tell MailNG where it can find the
+"release server" by modifying following variables inside settings.py::
+
+  # "unix" or "inet"
+  AM_PDP_MODE = "inet"
+
+  # "unix" mode only
+  AM_PDP_SOCKET = "/var/amavis/amavisd.sock"
+
+  # "inet" mode only
+  AM_PDP_HOST = "127.0.0.1"
+  AM_PDP_PORT = 9998
+
+Last point, MailNG provides a simple script that periodically purge
+the amavisd-new quarantine database. If you plan to use it, you can
+add the following line inside root's crontab::
+
+  0 0 * * * PYTHONPATH=<mailng_dir/..> \
+    DJANGO_SETTINGS_MODULE=mailng.settings \
+    <mailng_dir>/extensions/amavis_quarantine/cleanup.py
+
+Replace mailng_dir with the installation path of MailNG.
+
+By default, messages older than 14 days are automatically purged. You
+can modify this value by changing the variable MAX_MESSAGES_AGE inside
+settings.py.
