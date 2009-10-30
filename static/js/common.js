@@ -39,7 +39,7 @@ get_iframe_body = function(id) {
 
 confirmation = function(question, action, callback) {
     SqueezeBox.initialize({
-        size: {x: 300, y: 130},
+        size: {x: 350, y: 140},
 	handler: 'iframe',
         onClose: function(content) {
             var ibody = get_iframe_body(this.asset);

@@ -22,7 +22,7 @@ window.addEvent('domready', function() {
         $$("a[name=deleteMb]").addEvent('click', function(event) {
 	    event.stop();
 	    confirmation(gettext("Delete this mailbox?"), this, function(body) {
-                result = ""
+                result = "";
                 body.getElements("input[type=checkbox]:checked").each(function(obj) {
                     if (result != "") {
                         result += "&";
