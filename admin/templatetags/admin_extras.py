@@ -39,7 +39,7 @@ def domain_menu(domain_id, selection, perms):
              "class" : "boxed",
              "rel" : "{handler:'iframe',size:{x:300,y:180}}"}
             ]
-    entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_bar")
+    entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_bar" , domain=domain_id)
     return render_to_string('main/menu.html', 
                             {"selection" : selection, "entries" : entries,
                              "perms" : perms})

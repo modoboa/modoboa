@@ -64,9 +64,14 @@ class parser():
                  create=False,year=None,debug=False,verbose=False,graph=None):
         """constructor
         """
+        self.logfile = logfile
+        try:
+            self.f = open(logfile)
+        except IOError as (errno, strerror):
+            print "[rrd] I/O error({0}): {1} ".format(errno, strerror)+logfile
+            return None
         self.domain = str(domain) #.replace(".","_")
         self.enable_year_decrement = None
-        self.logfile = logfile
         self.rrdfile = tmp_path + self.domain+"_"+rrdfile
         self.create = create
         self.year = year
@@ -78,10 +83,7 @@ class parser():
         self.natures = ['sent_recv','boun_reje']
         self.legend = {'sent_recv' : ['sent messages','received messages'],
                        'boun_reje' : ['bounced messages','rejected messages']}
-        try:
-            self.f = open(logfile)
-        except IOError as (errno, strerror):
-            print "I/O error({0}): {1} ".format(errno, strerror)+logfile
+
         self.data = {}
         self.last_month = None
         if not self.year:
@@ -335,10 +337,7 @@ class parser():
                 path = '%s%s_%s_%s'%(tmp_path,n,t,os.path.basename(self.imgFile))
                 ds1 = n.split('_')[0]
                 ds2 = n.split('_')[1]
-                print 'DEF:%s=%s:%s:%s:' %(ds1,ds1, self.rrdfile,t)
-                print 'DEF:%s=%s:%s:%s:' %(ds2,ds2, self.rrdfile,t)
-                print 'LINE:%s%s:%s messages' %(ds1,color1,self.legend[n][0])
-                print 'LINE:%s%s:%s messages' %(ds2,color2,self.legend[n][1])
+
                 rrdtool.graph(
                     path,
                     '--imgformat','PNG',

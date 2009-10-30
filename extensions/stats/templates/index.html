@@ -32,12 +32,17 @@
 </script>
 {% endblock %}
 
+{% block menu %}
+{% if domain %}
+{% load admin_extras %}
+{% domain_menu domain.id "stats" perms %}
+{% endif %}
+{% endblock %}
+
 {% block middletitle %}
   {{ page }}
 {% endblock %}
 
-{% block menu %}
-{% endblock %}
 {% block content %}
 <div id="graphcontent">
   <table>
@@ -50,7 +55,7 @@
         </tr>
         <tr>
         <td>
-          <img src="/{{ tmp_path }}/{{ g }}_{{ t }}_{{ d }}_postfix.png" alt="/{{ tmp_path }}/{{ g }}_{{ t }}_{{ d }}_postfix.png"/>
+          <img src="/{{ tmp_path }}/{{ g }}_{{ t }}_{{ d }}_postfix.png" alt="No statistics available"/>
         </td>
         </tr>
         {% endfor %}

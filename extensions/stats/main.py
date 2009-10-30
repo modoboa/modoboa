@@ -16,7 +16,6 @@ from mailng.admin.models import Domain, Mailbox
 from mailng.extensions.stats.mailrrd import parser
 from django.contrib.auth.decorators \
     import login_required
-#from models import Stats
 import pdb
 
 graph_nature = ["sent_recv","boun_reje"]
@@ -24,7 +23,7 @@ graph_types  = ["AVERAGE","MAX"]
 tmp_path     = "static/tmp"
 
 def init():
-    events.register("UserMenuDisplay", menu)
+        events.register("AdminMenuDisplay", menu)
 
 def urls():
     return (r'^mailng/stats/', 
@@ -32,14 +31,18 @@ def urls():
 
 
 def menu(**kwargs):
-    if kwargs["target"] != "user_menu_box":
+    print kwargs
+    domain_id = kwargs['domain']
+    if kwargs["target"] == "admin_menu_bar":
+        return [
+            {"label" : _("Statistics"),
+             "name"  : "stats",
+             "url" : reverse('domindex', args=[domain_id]),
+             "img" : "/static/pics/graph.png"}
+            ]
+    else:
         return []
 
-    return [
-        {"name" : _("Statistics"),
-         "url" : reverse(index),
-         "img" : "/static/pics/graph.png"}
-        ]
 
 @login_required
 def domain(request,dom_id):
@@ -47,11 +50,12 @@ def domain(request,dom_id):
     errors = []
     return graph_display(request,dom_id,graph_types)
 
-#@login_required
-def graph_display(request,dom_id,graph_t):
+@login_required
+def graph_display(request,dom_id,graph_t=graph_types):
     domains = []
     errors = []
     graph_type = None
+    domain=None
     if type(graph_t) == type([]):
         graph_type = graph_t
     else :
@@ -68,26 +72,29 @@ def graph_display(request,dom_id,graph_t):
 
     for d in domains:
         P = parser(d.name)
-        P.plot_rrd()
+        if type(P) == type('err'):
+            errors.append(P)
+        else:
+            P.plot_rrd()
 
     return _render(request, 'stats/index.html', {
         "page" : "Domain statistics", "graph"   : graph_nature,
-        "domains" : domains, "messages" : "graph display" ,
+        "domain":domain,"domains" : domains, "messages" : errors ,
         "types" :  graph_type, "tmp_path" : tmp_path})
 
 
 @login_required
-def index(request, message=None):
+def index(request, dom_id=None):
     domains = []
     errors = []
+    domain = None
     if not is_superuser(request.user):
-        if not request.user.has_perm("admin.view_domains"):
-            if request.user.has_perm("admin.view_mailboxes"):
-                mb = Mailbox.objects.get(user=request.user.id)
-                dom_id=mb.domain.id
-                domain = Domain.objects.get(pk=dom_id)
-                if domain:
-                    domains.append(domain)
+        if request.user.has_perm("admin.view_mailboxes"):
+            domain = Domain.objects.get(pk=dom_id)
+            if domain:
+                domains.append(domain)
+            else:
+                print "pas de dom"
     else:
         domains = Domain.objects.all()
 
@@ -95,4 +102,4 @@ def index(request, message=None):
         errors.append(_("No Domain defined"))
     return _render(request, 'stats/index.html', {
         "page" : "Statistics",
-        "domains" : domains, "messages" : errors ,"types" : graph_types})
+        "domain" : domain, "domains": domains, "messages" : errors ,"types" : graph_types})
