@@ -66,12 +66,6 @@ window.addEvent('domready', function() {
 	    }
 	}
     });
-
-    SqueezeBox.assign($$('a.boxed'), {
-        //size: {x:300, y:180}
-        parse: 'rel',
-        
-    });
 });
 
 newdom = function() {

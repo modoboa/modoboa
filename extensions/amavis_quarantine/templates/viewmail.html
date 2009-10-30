@@ -1,16 +1,6 @@
 {% extends "layout.html" %}
 {% load i18n %}
 {% block html_head %}
-<script type="text/javascript">
-window.addEvent("domready", function() {
-    SqueezeBox.assign($$('a.boxed'), {
-        parse: 'rel'
-    });
-});
-</script>
-<script src="/static/js/mootools-more.js" type="text/javascript"></script>
-<script src="/static/js/common.js" type="text/javascript"></script>
-
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
 <style type="text/css">
 td {

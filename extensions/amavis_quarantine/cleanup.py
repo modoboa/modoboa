@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from mailng.lib import db
-from mailng.conf import settings
+from django.conf import settings
 
 if __name__ == "__main__":
     conn = db.getconnection("amavis_quarantine")

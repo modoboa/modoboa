@@ -1,26 +1,21 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
-Interface with rrdtool to generate appropriate postfix graph statistics
-sent, recv, bounced, rejected messages are tracked.
+Interface with rrdtool to generate appropriate postfix graph
+statistics sent, recv, bounced, rejected messages are tracked.
 """
-import sys, os, rrdtool, re, time
+import sys, os, re, time
+import rrdtool
 import pdb
 from optparse import OptionParser
-try:
-    import django.conf
-except:
-    print "[rrd] Warning no Django conf found"
+from django.conf import settings
+
 rrdstep           = 60
 xpoints           = 540
 points_per_sample = 3
 rrd_inited        = False
 this_minute       = 0
-
-rrd_file = "postfix.rrd"
-png_file = "postfix.png"
-log_file = "/var/log/maillog"
-tmp_path     = "static/tmp/" 
 
 months_map = {
     'Jan' : 0, 'Feb' : 1, 'Mar' : 2,
@@ -47,8 +42,8 @@ def str2Time(y,M,d,h,m,s):
     return int(time.mktime(local))
 
 
-class parser():
-    """parser
+class LogParser():
+    """LogParser
 
     Parse a mail log in syslog format:
     Month day HH:MM:SS host prog[pid]: log message...
@@ -60,29 +55,36 @@ class parser():
     parameters : logfile, and starting year
     
     """
-    def __init__(self,domain,logfile=log_file,rrdfile=rrd_file,imgFile=png_file,
-                 create=False,year=None,debug=False,verbose=False,graph=None):
+    def __init__(self, logfile, rrd_rootdir, img_rootdir,
+                 year=None, debug=False, verbose=False, graph=None):
         """constructor
         """
         self.logfile = logfile
         try:
             self.f = open(logfile)
-        except IOError as (errno, strerror):
-            print "[rrd] I/O error({0}): {1} ".format(errno, strerror)+logfile
-            return None
-        self.domain = str(domain) #.replace(".","_")
+        except IOError:
+            sys.exit(1)
+#         except (IOError, errno, strerror):
+#             print "[rrd] I/O error({0}): {1} ".format(errno, strerror)+logfile
+#             return None
         self.enable_year_decrement = None
-        self.rrdfile = tmp_path + self.domain+"_"+rrdfile
-        self.create = create
+        self.logfile = logfile
+        self.rrd_rootdir = rrd_rootdir
+        self.img_rootdir = img_rootdir
         self.year = year
         self.debug = debug
         self.verbose = verbose
-        self.graph = graph
-        self.imgFile = self.domain+"_"+imgFile
         self.types = ['AVERAGE','MAX']
         self.natures = ['sent_recv','boun_reje']
         self.legend = {'sent_recv' : ['sent messages','received messages'],
                        'boun_reje' : ['bounced messages','rejected messages']}
+        try:
+            self.f = open(logfile)
+        except IOError:
+            sys.exit(1)
+#         except (IOError, errno, strerror):
+#             print "I/O error({0}): {1} ".format(errno, strerror)+logfile
+#             sys.exit(1)
 
         self.data = {}
         self.last_month = None
@@ -90,19 +92,22 @@ class parser():
             self.year = time.localtime().tm_year
         self.first_minute = 0
         self.last_minute  = 0
+        self.domains = ["ngyn.org", "streamcore.com"]
+        for dom in self.domains:
+            self.data[dom] = {}
 
-        if self.create and os.path.exists(logfile):
-            print "[rrd] force new RRD"
-            os.system("rm -f %s" %rrdfile)
-
-        elif os.path.exists(self.rrdfile):
-            self.last_minute = rrdtool.last(self.rrdfile)
-            self.first_minute = rrdtool.first(self.rrdfile)
-            if self.debug:
-                print "[rrd] DEBUG updating rrd from %s"\
-                      %time.asctime(time.localtime(self.last_minute))
-
-
+#         if self.create and os.path.exists(logfile):
+#             print "[rrd] force new RRD"
+#             os.system("rm -f %s" % rrdfile)
+#         elif os.path.exists(self.rrdfile):
+#             self.last_minute = rrdtool.last(self.rrdfile)
+#             self.first_minute = rrdtool.first(self.rrdfile)
+#             if self.debug:
+#                 print "[rrd] DEBUG updating rrd from %s"\
+#                       %time.asctime(time.localtime(self.last_minute))
+                
+        self.line_expr = re.compile("(\w+)\s+(\d+)\s+(\d+):(\d+):(\d+)\s+(\w+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
+        self.workdict = {}
         self.process_log()
 
     def year_increment(self,month):
@@ -127,66 +132,63 @@ class parser():
         Parse a log line and look for
         'sent','received','bounced',rejected' messages event
 
-        Return True if data are up-to-date
-        else False
+        Return True if data are up-to-date else False
         """
         # get date
         ret = False
+        m = self.line_expr.match(text)
+        if not m:
+            return ret
 
-        m = re.match("(\w+)\s+(\d+)\s+(\d+):(\d+):(\d+)\s+(\w+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)",text)
-        if not m : return ret
-
-        mo = m.group(1)
-        da = m.group(2)
-        ho = m.group(3)
-        mi = m.group(4)
-        se = m.group(5)
-        host = m.group(6)
-        prog = m.group(7)
-        pid  = m.group(8)
-        log  = m.group(9)
-
-        sent = 0
-        recv = 0
-        boun  = 0
-        reje  = 0
+        (mo, da, ho, mi, se, host, prog, pid, log) = m.groups()
 
         self.year_increment(months_map[mo])
-        se = int(int(se)/rrdstep)            # rrd step is one-minute => se = 0
-        cur_t = str2Time(self.year,mo,da,ho,mi,se)
-
-        if not self.data.has_key(cur_t):
-            self.data[cur_t] = {'sent':0,'recv':0, 'boun':0,'reje':0}
+        se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
+        cur_t = str2Time(self.year, mo, da, ho, mi, se)
 
         # watch events
-        if re.match(".*\s+status=sent\s+.*",text):
-            sent = 1
-
-        elif re.match(".*\s+status=bounced\s+.*",text):
-            boun = 1
-
-        elif re.match(".*[0-9A-Z]+: client=(\S+).*",text):
-            recv = 1
-
-        elif re.match(".*(?:[0-9A-Z]+: |NOQUEUE: )?reject: .*",text):
-            reje = 1
-
-        elif re.match(".*(?:[0-9A-Z]+: |NOQUEUE: )?milter-reject: .*",text):
-            if not re.match(".*Blocked by SpamAssassin.*",text):
-                reje = 1
-            #else regiter spam
-
-        # register events
-        if sent or recv or boun or reje:
-            self.data[cur_t]['sent'] = self.data[cur_t]['sent'] + sent
-            self.data[cur_t]['recv'] = self.data[cur_t]['recv'] + recv
-            self.data[cur_t]['boun'] = self.data[cur_t]['boun'] + boun
-            self.data[cur_t]['reje'] = self.data[cur_t]['reje'] + reje
+        m = re.search("postfix\/qmgr.+(\w{10}): from=<(.*)>", text)
+        if m:
+            self.workdict[m.group(1)] = {'from' : m.group(2)}
             return True
 
-        return False
+        m = re.search("(\w{10}): to=<(.*)>.*status=(\S+)", text)
+        if m:
+            if not self.workdict.has_key(m.group(1)):
+                print "Inconsistent mail, skipping"
+                return False
+            
+            addrfrom = re.match("([^@]+)@(.+)", self.workdict[m.group(1)]['from'])
+            if addrfrom and addrfrom.group(2) in self.domains:
+                if not self.data[addrfrom.group(2)].has_key(cur_t):
+                    self.data[addrfrom.group(2)][cur_t] = \
+                        {'sent' : 0, 'recv' : 0, 'bounced' : 0, 'reje' : 0}
+                self.data[addrfrom.group(2)][cur_t]['sent'] += 1
+            addrto = re.match("([^@]+)@(.+)", m.group(2))
+            if addrto.group(2) in self.domains:
+                if not self.data[addrto.group(2)].has_key(cur_t):
+                    self.data[addrto.group(2)][cur_t] = \
+                        {'sent' : 0, 'recv' : 0, 'bounced' : 0, 'reje' : 0}
+                if m.group(3) == "sent":
+                    self.data[addrto.group(2)][cur_t]['recv'] += 1
+                else:
+                    self.data[addrto.group(2)][cur_t][m.group(3)] += 1
+            return True
+        
+#         elif re.match(".*[0-9A-Z]+: client=(\S+).*",text):
+#             self.data[cur_t]['recv'] += 1
 
-    def init_rrd(self,m):
+#         elif re.match(".*(?:[0-9A-Z]+: |NOQUEUE: )?reject: .*",text):
+#             self.data[cur_t]['reje'] += 1
+
+#         elif re.match(".*(?:[0-9A-Z]+: |NOQUEUE: )?milter-reject: .*",text):
+#             if not re.match(".*Blocked by SpamAssassin.*",text):
+#                 self.data[cur_t]['reje'] += 1
+            #else regiter spam
+
+        return True
+
+    def init_rrd(self, fname, m):
         """init_rrd
 
         Set-up Data Sources (DS)
@@ -199,45 +201,37 @@ class parser():
         """
         ds_type = 'ABSOLUTE'
         rows = xpoints / points_per_sample
-
         realrows = int(rows * 1.1)    # ensure that the full range is covered
-        day_steps = int(3600*24/(rrdstep * rows))
+        day_steps = int(3600 * 24 / (rrdstep * rows))
         week_steps = day_steps * 7
         month_steps = week_steps * 5
         year_steps = month_steps * 12
 
         # Set up data sources for our RRD
-        ds1 = 'DS:sent:%s:%s:0:U' %(ds_type,rrdstep*2)
-        ds2 = 'DS:recv:%s:%s:0:U' %(ds_type,rrdstep*2)
-        ds3 = 'DS:boun:%s:%s:0:U' %(ds_type,rrdstep*2)
-        ds4 = 'DS:reje:%s:%s:0:U' %(ds_type,rrdstep*2)
+        params = []
+        for v in ["sent", "recv", "bounced", "reje"]:
+            params += ['DS:%s:%s:%s:0:U' % (v, ds_type, rrdstep * 2)]
 
         # Set up RRD to archive data
-        rra1 = 'RRA:%s:0.5:%s:%s' %('AVERAGE',day_steps,realrows)   # day
-        rra2 = 'RRA:%s:0.5:%s:%s' %('AVERAGE',week_steps,realrows)  # week
-        rra3 = 'RRA:%s:0.5:%s:%s' %('AVERAGE',month_steps,realrows) # month
-        rra4 = 'RRA:%s:0.5:%s:%s' %('AVERAGE',year_steps,realrows)  # year
-        rra5 = 'RRA:%s:0.5:%s:%s' %('MAX',day_steps,realrows)
-        rra6 = 'RRA:%s:0.5:%s:%s' %('MAX',week_steps,realrows)
-        rra7 = 'RRA:%s:0.5:%s:%s' %('MAX',month_steps,realrows)
-        rra8 = 'RRA:%s:0.5:%s:%s' %('MAX',year_steps,realrows)
+        rras = []
+        for cf in ['AVERAGE', 'MAX']:
+            for step in [day_steps, month_steps, month_steps, year_steps]:
+                params += ['RRA:%s:0.5:%s:%s' % (cf, step, realrows)]
 
         # With those setup, we can now created the RRD
-        if not os.path.exists(self.rrdfile):
-            rrdtool.create(self.rrdfile,
+        if not os.path.exists(fname):
+            rrdtool.create(fname,
                            '--start',str(m),
                            '--step',str(rrdstep),
-                           ds1,ds2,ds3,ds4,
-                           rra1,rra2,rra3,rra4,
-                           rra5,rra6,rra7,rra8)
+                           *params)
             this_minute = m
         else:
-            this_minute = rrdtool.last(self.rrdfile) + rrdstep
+            this_minute = rrdtool.last(fname) + rrdstep
 
         return this_minute
 
 
-    def update_rrd(self,t):
+    def update_rrd(self, dom, t):
         """update_rrd
 
         Update RRD with records at t time.
@@ -246,40 +240,38 @@ class parser():
         False : syslog may have probably been already recorded
         or something wrong
         """
+        fname = "%s/%s.rrd" % (self.rrd_rootdir, dom)
         m = t - (t % rrdstep)
-
-        if not self.last_minute :
-            self.last_minute = self.init_rrd(m)
+        if not os.path.exists(fname):
+            self.last_minute = self.init_rrd(fname, m)
             print "[rrd] create new RRD file"
 
-        if m < self.last_minute :
+        if m < self.last_minute:
             if self.verbose:
                 print "[rrd] VERBOSE events at %s already recorded in RRD" %m
             return False
-        elif m == self.last_minute :
+        if m == self.last_minute:
             return True
 
         # Missing some RRD steps
         if m > self.last_minute + rrdstep:
-            for p in range(self.last_minute+rrdstep,m,rrdstep):
+            for p in range(self.last_minute + rrdstep, m, rrdstep):
                 if self.verbose:
                     print "[rrd] VERBOSE update %s:%s:%s:%s:%s (SKIP)" \
                           %(p,'0','0','0','0')
-                rrdtool.update(self.rrdfile,"%s:%s:%s:%s:%s" \
-                               %(p,'0','0','0','0'))
+                rrdtool.update(fname, "%s:%s:%s:%s:%s" \
+                                   % (p, '0', '0', '0', '0'))
 
         if self.verbose:
             print "[rrd] VERBOSE update %s:%s:%s:%s:%s" \
                   %(m,self.data[m]['sent'], self.data[m]['recv'],\
                     self.data[m]['boun'], self.data[m]['reje'])
 
-        rrdtool.update(self.rrdfile,"%s:%s:%s:%s:%s" \
-                       %(m,self.data[m]['sent'], self.data[m]['recv'],\
-                         self.data[m]['boun'], self.data[m]['reje']))
-
+        rrdtool.update(fname, "%s:%s:%s:%s:%s" \
+                           % (m, self.data[dom][m]['sent'], self.data[dom][m]['recv'],\
+                                  self.data[dom][m]['bounced'], self.data[dom][m]['reje']))
         self.last_minute = m
         return True
-
 
     def process_log(self):
         """process_log
@@ -290,18 +282,44 @@ class parser():
             evt = self.process_line(line)
 
         # Sort everything by time
-        sortedData = {}
-        sortedData = [ (i,self.data[i]) for i in sorted(self.data.keys()) ]
+        for dom, data in self.data.iteritems():
+            sortedData = {}
+            sortedData = [ (i, data[i]) for i in sorted(data.keys()) ]
+            for t, dict in sortedData:
+                if self.update_rrd(dom, t):
+                    if not self.first_minute:
+                        self.first_minute = t
+                    self.last_minute = t
 
-        for t, dict in sortedData:
-            if self.update_rrd(t):
-                if not self.first_minute:
-                    self.first_minute = t
-                self.last_minute = t
-
-
-    def plot_rrd(self,f=None,color1 = "#990033", color2 = "#330099",
+    def newgraph(self, target="global", color1 = "#990033", color2 = "#330099",
                  year = None, start = None, end = None, t =None, n = None):
+        rrdfile = "%s/%s.rrd" % (self.rrd_rootdir, target)
+        path = "%s/%s" % (self.img_rootdir, target)
+        ext = "png"
+        start = str(self.first_minute)
+        end = str(self.last_minute)
+        cfs = t and [t] or self.types
+        ds1 = "sent"
+        ds2 = "recv"
+        for cf in cfs:
+            fname = '%s_%s.%s' % (path, cf, ext)
+            rrdtool.graph(fname,
+                          '--imgformat', 'PNG',
+                          '--width', '540',
+                          '--height', '100',
+                          '--start', str(start),
+                          '--end', str(end),
+                          '--vertical-label', '%s message' % cf.lower(),
+                          '--title', '%s message flow per minute' % cf.lower(),
+                          '--lower-limit', '0',
+                          'DEF:%s=%s:%s:%s:' % (ds1, rrdfile, ds1, cf),
+                          'DEF:%s=%s:%s:%s:' % (ds2, rrdfile, ds2, cf),
+                          'LINE:%s%s:%s' % (ds1, color1, 'sent messages'),
+                          'LINE:%s%s:%s' % (ds2, color2, 'receive messages')
+                          )
+
+    def plot_rrd(self, f=None, color1 = "#990033", color2 = "#330099",
+                 year=None, start=None, end=None, t=None, n=None):
         """plot_rrd
 
         Graph rrd from start to end epoch
@@ -354,27 +372,34 @@ class parser():
                     'LINE:%s%s:%s' %(ds2,color2,self.legend[n][1])
                     )
 
+def getoption(name, default=None):
+    res = None
+    try:
+        res = getattr(settings, name)
+    except AttributeError:
+        res = default
+    return res
+
 if __name__ == "__main__":
+    log_file = getoption("LOGFILE", "/var/log/maillog")
+    rrd_rootdir = getoption("RRD_ROOTDIR", "/tmp")
+    img_rootdir = getoption("IMG_ROOTDIR", "/tmp")
+
     parser = OptionParser()
-
-    parser.add_option("-f","--file",dest="filename",default=rrdfile,
-                      help="write rrd data base to FILE",metavar="FILE")
-    parser.add_option("-i","--imgFile",default=png_file,
-                      help="graph rrd stats to FILE",metavar="FILE")
-    parser.add_option("-c","--create",default=False,action="store_true",dest="create",
-                      help="force creation of new RRD")
-    parser.add_option("-g","--graph",nargs=2,dest="graph",
-                      help="generate graph in between time period (y M d YY:MM:SS)", metavar="START STOP")
-    parser.parse_args(['--graph', 'start', 'stop'])
-    parser.add_option("-l","--logFile",default="maillog",
-                      help="postfix log in syslog format",metavar="FILE")
-    parser.add_option("-v","--verbose",default=False,action="store_true",dest="verbose",
-                      help="set verbose mode")
-    parser.add_option("-d","--debug",default=False,action="store_true",dest="debug",
-                      help="set debug mode")
-
-    (options,args) = parseOption()
-    P = parser(logfile=options.logFile,rrdfile=options.file,
-               debug=options.debug,verbose=options.verbose,
-               create=options.create,graph=options.graph,imgFile=options.imgFile)
-    P.plot_rrd()
+    parser.add_option("-t", "--target", default="all",
+                      help="Specify which target handled while parsing log file (default to all)")
+    parser.add_option("-g","--graph", nargs=2, dest="graph",
+                      help="generate graph in between time period (y M d YY:MM:SS)", 
+                      metavar="START STOP")
+    parser.add_option("-l","--logFile", default=log_file,
+                      help="postfix log in syslog format", metavar="FILE")
+    parser.add_option("-v","--verbose", default=False, action="store_true", 
+                      dest="verbose", help="set verbose mode")
+    parser.add_option("-d","--debug", default=False, action="store_true", 
+                      dest="debug", help="set debug mode")
+    (options, args) = parser.parse_args()
+  
+    P = LogParser(options.logFile, rrd_rootdir, img_rootdir,
+                  debug=options.debug, verbose=options.verbose,
+                  graph=options.graph)
+    P.newgraph("streamcore.com")

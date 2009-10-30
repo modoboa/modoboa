@@ -141,7 +141,7 @@ WHERE quarantine.mail_id='%s'
     mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
     contents = {"html" : "", "plain" : ""}
     for part in msg.walk():
-        print part.get_content_type()
+        #print part.get_content_type()
         if part.get_content_maintype() == 'multipart':
             continue
         if part.get_content_type() in ("text/html", "text/plain"):
@@ -268,7 +268,7 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
                         % {"count" : count, "plural" : count > 1 and "s" or ""})
     else:
         message = error
-    _redirect_to_index(request, message, count)
+    return _redirect_to_index(request, message, count)
 
 @login_required
 def process(request):

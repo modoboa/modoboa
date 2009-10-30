@@ -15,6 +15,9 @@ window.addEvent('domready', function(){
 	    });
 	});
     }
+    SqueezeBox.assign($$('a.boxed'), {
+        parse: 'rel',        
+    });
 });
 
 get_iframe_body = function(id) {
