@@ -106,13 +106,15 @@ window.addEvent("domready", function() {
     mysubmit(event, "release");
   });
 
-  $("selectall").addEvent("click", function(event) {
-    if ($("selectall").checked) {
-      toggleSelection(true);
-    } else {
-      toggleSelection(false);
-    }
-  });
+  if ($("selectall")) {
+    $("selectall").addEvent("click", function(event) {
+      if ($("selectall").checked) {
+        toggleSelection(true);
+      } else {
+        toggleSelection(false);
+      }
+    });
+  }
 
   {% url extensions.amavis_quarantine.main.search as s_url %}
   $("searchfield").addEvent("change", function(event) {

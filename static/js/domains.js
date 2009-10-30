@@ -55,7 +55,6 @@ window.addEvent('domready', function() {
     });
 
     $('body').addEvent('submit', function(event) {
-        alert("newodm submit");
 	target = event.target;
 	if (target.get('tag') == 'form') {
 	    name = target.get('name');

@@ -337,3 +337,8 @@ body {
     float: left;
     font-style: italic;
 }
+
+#notifybox {
+    margin: 20px;
+    font-weight: bold;
+}

@@ -14,10 +14,13 @@ class DomainForm(forms.ModelForm):
 
 class MailboxForm(forms.ModelForm):
     quota = forms.IntegerField(label=_("Quota"), required=False)
-    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_("Confirmation"), widget=forms.PasswordInput)
+    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput,
+                                help_text=_("Password used to log in"))
+    password2 = forms.CharField(label=_("Confirmation"), widget=forms.PasswordInput,
+                                help_text=_("Password confirmation"))
     enabled = forms.BooleanField(label=gender("Enabled", "f"), required=False, 
-                                 initial=True)
+                                 initial=True,
+                                 help_text=_("Check to activate this mailbox"))
 
     class Meta:
         model = Mailbox
@@ -50,8 +53,11 @@ class AliasForm(forms.ModelForm):
 
 class PermissionForm(forms.Form):
     domain = forms.ModelChoiceField(queryset=Domain.objects.all(), label=_("Domain"), 
-                                    required=True)
-    user = forms.ChoiceField(label=_("User"), required=True)
+                                    required=True,
+                                    help_text=_("Select a domain in the list"))
+    user = forms.ChoiceField(label=_("User"), required=True,
+                             help_text=_("Select a user in the list"))
     role = forms.ChoiceField(label=_("Role"), required=True, 
                              choices=(("SuperAdmins", _("Super administrator")),
-                                      ("DomainAdmins", _("Domain administrator"))))
+                                      ("DomainAdmins", _("Domain administrator"))),
+                             help_text=_("Select the role you want this user to have"))

@@ -83,13 +83,12 @@ def render_listing(request, cursor):
                        "subject" : row[2], "content" : row[3],
                        "mailid" : row[4], "time" : datetime.fromtimestamp(row[5]),
                        "type" : row[6]}) 
-   
     paginator = Paginator(emails, 10)
     try:
         pagenum = int(request.GET.get('page', '1'))
     except ValueError:
         pagenum = 1
-    page = paginator.page(pagenum)
+    page = paginator.page(pagenum)    
     return render_to_string("amavis_quarantine/listing.html", {
             "count" : len(rows), 
             "emails" : page, "current_page" : pagenum, 

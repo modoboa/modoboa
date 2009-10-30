@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
+from django.utils.http import urlquote
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
@@ -23,6 +24,21 @@ def is_superuser(user):
         return False
     return True
 
+def good_domain(f):
+    def dec(request, dom_id, **kwargs):
+        if request.user.is_superuser:
+            return f(request, dom_id, **kwargs)
+        mb = Mailbox.objects.get(user=request.user.id)
+        domid = isinstance(dom_id, str) and "%d" % dom_id or dom_id
+        if domid == mb.domain.id:
+            return f(request, domid, **kwargs)
+
+        from django.conf import settings
+        path = urlquote(request.get_full_path())
+        login_url = settings.LOGIN_URL
+        return HttpResponseRedirect("%s?next=%s" % (login_url, path))
+    return dec
+
 @login_required
 def domains(request):
     if not request.user.has_perm("admin.view_domains"):
@@ -41,10 +57,8 @@ def domains(request):
             })
 
 @login_required
-@permission_required("admin.add_mailbox")
+@permission_required("admin.add_domain")
 def newdomain(request):
-    if not is_superuser(request.user):
-        return mailboxes(request, dom_id)
     if request.method == "POST":
         form = DomainForm(request.POST)
         error = None
@@ -71,10 +85,8 @@ def newdomain(request):
             })
 
 @login_required
-@permission_required("admin.change_mailbox")
+@permission_required("admin.change_domain")
 def editdomain(request, dom_id):
-    if not is_superuser(request.user):
-        return mailboxes(request, dom_id)
     domain = Domain.objects.get(pk=dom_id)
     if request.method == "POST":
         form = DomainForm(request.POST, instance=domain)
@@ -110,6 +122,7 @@ def deldomain(request, dom_id):
     return HttpResponseRedirect('/mailng/admin/')
 
 @login_required
+@good_domain
 @permission_required("admin.view_mailboxes")
 def mailboxes(request, dom_id=None):
     domain = Domain.objects.get(pk=dom_id)
@@ -119,6 +132,7 @@ def mailboxes(request, dom_id=None):
             })
 
 @login_required
+@good_domain
 @permission_required("admin.view_mailboxes")
 def mailboxes_raw(request, dom_id=None):
     mailboxes = Mailbox.objects.filter(domain=dom_id)
@@ -127,6 +141,7 @@ def mailboxes_raw(request, dom_id=None):
             })
 
 @login_required
+@good_domain
 @permission_required("admin.add_mailbox")
 def newmailbox(request, dom_id=None):
     domain = Domain.objects.get(pk=dom_id)
@@ -183,6 +198,7 @@ def newmailbox(request, dom_id=None):
             })
 
 @login_required
+@good_domain
 @permission_required("admin.change_mailbox")
 def editmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
@@ -231,6 +247,7 @@ def editmailbox(request, dom_id, mbox_id=None):
             })
 
 @login_required
+@good_domain
 @permission_required("admin.delete_mailbox")
 def delmailbox(request, dom_id, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
@@ -246,6 +263,7 @@ def delmailbox(request, dom_id, mbox_id=None):
 #                                         args=[dom_id]))
 
 @login_required
+@good_domain
 @permission_required("admin.view_aliases")
 def aliases(request, dom_id=None, mbox_id=None):
     domain = Domain.objects.get(pk=dom_id)
@@ -261,6 +279,7 @@ def aliases(request, dom_id=None, mbox_id=None):
             })
 
 @login_required
+@good_domain
 @permission_required("admin.add_alias")
 def newalias(request, dom_id, mbox_id):
     mbox = Mailbox.objects.get(pk=mbox_id)
@@ -289,6 +308,7 @@ def newalias(request, dom_id, mbox_id):
             })
 
 @login_required
+@good_domain
 @permission_required("admin.change_alias")
 def editalias(request, dom_id, alias_id):
     alias = Alias.objects.get(pk=alias_id)
@@ -318,6 +338,7 @@ def editalias(request, dom_id, alias_id):
             })
 
 @login_required
+@good_domain
 @permission_required("admin.delete_alias")
 def delalias(request, dom_id, alias_id):
     alias = Alias.objects.get(pk=alias_id)

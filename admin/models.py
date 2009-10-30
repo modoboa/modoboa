@@ -6,9 +6,11 @@ from mailng.lib import exec_pipe, exec_as_vuser
 import os
 
 class Domain(models.Model):
-    name = models.CharField(_('name'), max_length=100)
-    quota = models.IntegerField()
-    enabled = models.BooleanField(_('enabled'))
+    name = models.CharField(_('name'), max_length=100,
+                            help_text=_("The domain name"))
+    quota = models.IntegerField(help_text=_("Default quota in MB applied to mailboxes"))
+    enabled = models.BooleanField(_('enabled'),
+                                  help_text=_("Check to activate this domain"))
 
     class Meta:
         permissions = (
@@ -33,11 +35,13 @@ class Domain(models.Model):
         return self.name
 
 class Mailbox(models.Model):
-    name = models.CharField(_('name'), max_length=100)
-    address = models.CharField(_('address'), max_length=100)
+    name = models.CharField(_('name'), max_length=100, 
+                            help_text=_("First name and last name of mailbox owner"))
+    address = models.CharField(_('address'), max_length=100,
+                               help_text=_("Mailbox address (without the @domain.tld part)"))
     full_address = models.CharField(max_length=150)
     password = models.CharField(_('password'), max_length=100)
-    quota = models.IntegerField()
+    quota = models.IntegerField(help_text=_("Mailbox quota in MB (default to domain quota if blank)"))
     uid = models.IntegerField()
     gid = models.IntegerField()
     path = models.CharField(max_length=200)
@@ -99,10 +103,13 @@ class Mailbox(models.Model):
                                         self.domain.name, self.address))
 
 class Alias(models.Model):
-    address = models.CharField(_('address'), max_length=100)
+    address = models.CharField(_('address'), max_length=100,
+                               help_text=_("The alias address (without the domain part)"))
     full_address = models.CharField(max_length=150)
-    mbox = models.ForeignKey(Mailbox, verbose_name=_('mailbox'))
-    enabled = models.BooleanField(_('enabled'))
+    mbox = models.ForeignKey(Mailbox, verbose_name=_('mailbox'),
+                             help_text=_("The mailbox this alias points to"))
+    enabled = models.BooleanField(_('enabled'),
+                                  help_text=_("Check to activate this alias"))
 
     class Meta:
         permissions = (

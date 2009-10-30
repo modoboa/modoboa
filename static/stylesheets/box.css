@@ -102,3 +102,27 @@ input:hover {
 #dlg-buttons input { 
     width: 90px;
 }
+
+/* Mootools tooltips */
+.tip {
+    color: #fff;
+    width: 139px;
+    z-index: 13000;
+    border: 1px solid #cccccc;
+}
+ 
+.tip-title {
+    font-weight: bold;
+    font-size: 11px;
+    margin: 0;
+    color: #9FD4FF;
+    padding: 8px 8px 4px;
+    background: #eee;
+}
+
+.tip-text {
+    font-size: 11px;
+    padding: 4px 8px 8px;
+    background: #eee;
+    color: black;
+}

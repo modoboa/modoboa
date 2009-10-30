@@ -50,4 +50,12 @@ window.addEvent("domready", function() {
 
     if ($("chpwdform"))
         $("chpwdform").addEvent("submit", chpassword_submit);
+
+    $$("input[type!=submit]", "select").each(function(elt) {
+        elt.store("tip:title", gettext("Help"));
+        if ($(elt.name + "_helptext")) {
+            elt.store("tip:text", $(elt.name + "_helptext").get("html"));
+        }
+    });
+    var tip = new Tips($$("input[type!=submit]", "select"));
 });

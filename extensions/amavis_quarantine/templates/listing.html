@@ -1,5 +1,8 @@
 {% load i18n %}
 
+{% if not count %}
+<div id="notifybox">{% trans "No messages in quarantine" %}</div>
+{% else %}
   <div id="listheader">
     <div id="counter">
       Messages {{ emails.start_index }} à {{ emails.end_index }} sur {{ count }}
@@ -43,4 +46,6 @@
     <td>{{ m.time }}</td>
   </tr>
   {% endfor %}
-</table>
+  </table>
+
+{% endif %}
