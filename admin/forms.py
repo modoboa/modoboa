@@ -13,7 +13,8 @@ class DomainForm(forms.ModelForm):
             self.fields[f].widget.attrs['size'] = 14
 
 class MailboxForm(forms.ModelForm):
-    quota = forms.IntegerField(label=_("Quota"), required=False)
+    quota = forms.IntegerField(label=_("Quota"), required=False,
+                               help_text=_("Mailbox quota in MB (default to domain quota if blank)"))
     password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput,
                                 help_text=_("Password used to log in"))
     password2 = forms.CharField(label=_("Confirmation"), widget=forms.PasswordInput,

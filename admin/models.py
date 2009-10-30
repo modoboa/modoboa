@@ -41,7 +41,7 @@ class Mailbox(models.Model):
                                help_text=_("Mailbox address (without the @domain.tld part)"))
     full_address = models.CharField(max_length=150)
     password = models.CharField(_('password'), max_length=100)
-    quota = models.IntegerField(help_text=_("Mailbox quota in MB (default to domain quota if blank)"))
+    quota = models.IntegerField()
     uid = models.IntegerField()
     gid = models.IntegerField()
     path = models.CharField(max_length=200)
