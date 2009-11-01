@@ -90,21 +90,10 @@ class LogParser():
         self.last_month = None
         if not self.year:
             self.year = time.localtime().tm_year
-        self.first_minute = 0
         self.last_minute  = 0
         self.domains = ["ngyn.org", "streamcore.com"]
         for dom in self.domains:
             self.data[dom] = {}
-
-#         if self.create and os.path.exists(logfile):
-#             print "[rrd] force new RRD"
-#             os.system("rm -f %s" % rrdfile)
-#         elif os.path.exists(self.rrdfile):
-#             self.last_minute = rrdtool.last(self.rrdfile)
-#             self.first_minute = rrdtool.first(self.rrdfile)
-#             if self.debug:
-#                 print "[rrd] DEBUG updating rrd from %s"\
-#                       %time.asctime(time.localtime(self.last_minute))
                 
         self.line_expr = re.compile("(\w+)\s+(\d+)\s+(\d+):(\d+):(\d+)\s+(\w+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
         self.workdict = {}
@@ -145,6 +134,7 @@ class LogParser():
         self.year_increment(months_map[mo])
         se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
         cur_t = str2Time(self.year, mo, da, ho, mi, se)
+        cur_t = cur_t - cur_t % rrdstep
 
         # watch events
         m = re.search("postfix\/qmgr.+(\w{10}): from=<(.*)>", text)
