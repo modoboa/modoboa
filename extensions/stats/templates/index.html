@@ -38,29 +38,24 @@
 {% domain_menu domain.id "stats" perms %}
 {% endif %}
 {% endblock %}
-
 {% block middletitle %}
-  {{ page }}
+{% if domain %}
+  {% trans "Statistics for" %} {{ domain.name }}
+{% else %}
+  {% trans "Global statistics" %}
+{% endif %}
 {% endblock %}
-
 {% block content %}
 <div id="graphcontent">
   <table>
-  {% if graph %}
-    {% for d in domains %}
-    {% for g in graph %}
-        {% for t in types %}
-        <tr>
-          <th class="{% cycle 'odd' 'even' %}">{{ d }} > {{ t|lower }} > {{ g }}</th>
-        </tr>
-        <tr>
-        <td>
-          <img src="/{{ tmp_path }}/{{ g }}_{{ t }}_{{ d }}_postfix.png" alt="No statistics available"/>
-        </td>
-        </tr>
-        {% endfor %}
-    {% endfor %}
-    {% endfor %}
+  {% if domain %}
+  {% for p in periods %}
+  <tr>
+    <td>
+      <img src="/static/graphs/{{ domain.name }}_AVERAGE_{{ p }}.png" alt="No statistics available" />
+    </td>
+  </tr>
+  {% endfor %}
   {% else %}
   {% if domains %}
     <tr>

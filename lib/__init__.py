@@ -70,3 +70,11 @@ def decode(s, encodings=('ascii', 'utf8', 'latin1')):
         except UnicodeDecodeError:
             pass
     return s.decode('ascii', 'ignore')
+
+def getoption(name, default=None):
+    res = None
+    try:
+        res = getattr(settings, name)
+    except AttributeError:
+        res = default
+    return res

@@ -13,7 +13,7 @@ from django.conf.urls.defaults import *
 from mailng.lib import events, _render
 from mailng.admin.views import is_superuser
 from mailng.admin.models import Domain, Mailbox
-from mailng.extensions.stats.mailrrd import parser
+#from mailng.extensions.stats.mailrrd import parser
 from django.contrib.auth.decorators \
     import login_required
 import pdb
@@ -88,7 +88,7 @@ def index(request, dom_id=None):
     domains = []
     errors = []
     domain = None
-    if not is_superuser(request.user):
+    if dom_id:
         if request.user.has_perm("admin.view_mailboxes"):
             domain = Domain.objects.get(pk=dom_id)
             if domain:
@@ -102,4 +102,6 @@ def index(request, dom_id=None):
         errors.append(_("No Domain defined"))
     return _render(request, 'stats/index.html', {
         "page" : "Statistics",
-        "domain" : domain, "domains": domains, "messages" : errors ,"types" : graph_types})
+        "domain" : domain, "domains": domains, "messages" : errors , 
+        "periods" : ["day", "week", "month", "year"]
+        })

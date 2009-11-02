@@ -6,8 +6,9 @@ import os
 import re
 import rrdtool
 from optparse import OptionParser
-from django.conf import settings
+from mailng.lib import getoption
 from mailng.admin.models import Domain
+import grapher
 
 """
 Postfix log parser.
@@ -85,7 +86,7 @@ class LogParser(object):
 
         # Set up data sources for our RRD
         params = []
-        for v in ["sent", "recv", "bounced", "reje"]:
+        for v in ["sent", "recv", "bounced", "reject"]:
             params += ['DS:%s:%s:%s:0:U' % (v, ds_type, rrdstep * 2)]
 
         # Set up RRD to archive data
@@ -137,25 +138,25 @@ class LogParser(object):
         if self.verbose:
             print "[rrd] VERBOSE update %s:%s:%s:%s:%s" \
                   %(m, self.data[dom][m]['sent'], self.data[dom][m]['recv'],\
-                    self.data[dom][m]['bounced'], self.data[dom][m]['reje'])
+                    self.data[dom][m]['bounced'], self.data[dom][m]['reject'])
 
         rrdtool.update(fname, "%s:%s:%s:%s:%s" \
                            % (m, self.data[dom][m]['sent'],  
                               self.data[dom][m]['recv'],
                               self.data[dom][m]['bounced'], 
-                              self.data[dom][m]['reje']))
+                              self.data[dom][m]['reject']))
         self.lupdates[fname] = m
         return True
 
     def inc_counter(self, dom, cur_t, counter):
         if not self.data[dom].has_key(cur_t):
             self.data[dom][cur_t] = \
-                {'sent' : 0, 'recv' : 0, 'bounced' : 0, 'reje' : 0}
+                {'sent' : 0, 'recv' : 0, 'bounced' : 0, 'reject' : 0}
         self.data[dom][cur_t][counter] += 1
 
         if not self.data["global"].has_key(cur_t):
             self.data["global"][cur_t] = \
-                {'sent' : 0, 'recv' : 0, 'bounced' : 0, 'reje' : 0}
+                {'sent' : 0, 'recv' : 0, 'bounced' : 0, 'reject' : 0}
         self.data["global"][cur_t][counter] += 1
 
     def process(self):
@@ -188,21 +189,23 @@ class LogParser(object):
                         self.inc_counter(addrto.group(2), cur_t, 'recv')
                     else:
                         self.inc_counter(addrto.group(2), cur_t, m.group(3))
+                continue
+            
+            m = re.search("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
+            if m:
+                addrto = re.match("([^@]+)@(.+)", m.group(2))
+                if addrto and addrto.group(2) in self.domains:
+                    self.inc_counter(addrto.group(2), cur_t, 'reject')
+                continue
         
         # Sort everything by time
+        G = grapher.Grapher()
         for dom, data in self.data.iteritems():
             sortedData = {}
             sortedData = [ (i, data[i]) for i in sorted(data.keys()) ]
             for t, dict in sortedData:
                 self.update_rrd(dom, t)
-
-def getoption(name, default=None):
-    res = None
-    try:
-        res = getattr(settings, name)
-    except AttributeError:
-        res = default
-    return res
+            G.make_defaults(dom)
 
 if __name__ == "__main__":
     log_file = getoption("LOGFILE", "/var/log/maillog")
