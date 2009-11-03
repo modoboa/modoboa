@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% load i18n %}
+{% load stats_extra %}
+{% block html_head %}
+<script src="/static/js/mootools-more.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
+<style type="text/css">
+  #graphcontent {
+    margin: 25px auto 10px;
+    width:90%;
+  }
+
+  #selectors {
+    float: right;
+  }
+</style>
+
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  $("period").addEvent("change", function(event) {
+    {% url extensions.stats.main.adminindex as stats_url %}
+    location.href = "{{ stats_url }}" + "?period=" + $("period").value;
+  });
+  $("domain").addEvent("change", function(event) {
+    {% url extensions.stats.main.adminindex as stats_url %}
+    location.href = "{{ stats_url }}" + "?domain=" + $("domain").value;
+  });
+});
+</script>
+{% endblock %}
+{% block middletitle %}{% trans "Global statistics" %}{% endblock %}
+{% block content %}
+<div id="graphcontent">
+  <div id="selectors">
+    <label for="domain">{% trans "Domain:" %}</label>
+    <select id="domain" name="domain">
+      <option value="global" {% ifequal domain "global" %}selected{% endifequal %}>{% trans "Global" %}</option>
+      {% for d in domains %}
+      <option value="{{ d.id }}" {% ifequal d.name domain %}selected{% endifequal %}>{{ d.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="period">{% trans "Period:" %}</label>
+    <select id="period" name="period">
+      {% for p in periods %}
+      <option value="{{ p }}" {% ifequal p period %}selected{% endifequal %}>{% getLabel p %}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% include "stats/graphs.html" %}
+</div>
+{% endblock %}

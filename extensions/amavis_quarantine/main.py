@@ -43,13 +43,13 @@ def urls():
             include('mailng.extensions.amavis_quarantine.urls'))
 
 def menu(**kwargs):
-    if kwargs["target"] != "user_menu_box":
-        return []
-    return [
-        {"name" : _("Quarantine"),
-         "url" : reverse(index),
-         "img" : "/static/pics/quarantine.png"}
-        ]
+    if kwargs["target"] == "user_menu_box":
+        return [
+            {"name" : _("Quarantine"),
+             "url" : reverse(index),
+             "img" : "/static/pics/quarantine.png"}
+            ]
+    return []
 
 def lookup(*args):
     filter = ""

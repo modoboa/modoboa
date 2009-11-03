@@ -4,19 +4,48 @@ import os
 import time
 import datetime
 import rrdtool
+from django.utils.translation import ugettext as _
 from mailng.lib import getoption
 
-default_avg_template = {
+traffic_avg_template = {
+    'name' : 'traffic',
     'width'  : '540',
     'height' : '100',
-    'title'  : 'average message flow per minute',
     'vertlabel' : 'msgs/min',
     'cf' : 'AVERAGE',
     'vars' : {
-        'sent' : { "type" : "AREA", "color" : "#00FF00", "legend" : "sent messages" },
-        'recv' : { "type" : "AREA", "color" : "#0000FF", "legend" : "received messages" },
-#         'bounced' : { "color" : "#FFFF00", "legend" : "bounced messages" },
-#         'reject' : { "color" : "#FF0000", "legend" : "rejected messages" },
+        'sent' : { "type" : "AREA", "color" : "#00FF00", 
+                   "legend" : _("sent messages") },
+        'recv' : { "type" : "AREA", "color" : "#0000FF", 
+                   "legend" : _("received messages") },
+        }
+}
+
+badtraffic_avg_template = {
+    'name' : 'badtraffic',
+    'width'  : '540',
+    'height' : '100',
+    'vertlabel' : _('msgs/min'),
+    'cf' : 'AVERAGE',
+    'vars' : {
+        'bounced' : { "type" : "AREA", "color" : "#FFFF00", 
+                      "legend" : _("bounced messages") },
+        'reject' : { "type" : "AREA", "color" : "#FF0000", 
+                     "legend" : _("rejected messages") },
+        }
+}
+
+size_avg_template = {
+    'name' : 'size',
+    'width'  : '540',
+    'height' : '100',
+    'vertlabel' : _('bytes/min'),
+    'cf' : 'AVERAGE',
+    'vars' : {
+        'size_recv' : { "type" : "AREA", "color" : "#FF9900", 
+                        "legend" : _("received size") },
+        'size_sent' : { "type" : "AREA", "color" : "#339999", 
+                        "legend" : _("sent size") },
         }
 }
 
@@ -25,12 +54,13 @@ class Grapher(object):
         self.rrd_rootdir = getoption("RRD_ROOTDIR", "/tmp")
         self.img_rootdir = getoption("IMG_ROOTDIR", "/tmp")
 
-    def process(self, target, suffix, start, end, tpl=default_avg_template):
+    def process(self, target, suffix, start, end, tpl=traffic_avg_template):
         rrdfile = "%s/%s.rrd" % (self.rrd_rootdir, target)
         if not os.path.exists(rrdfile):
             return
         ext = "png"
-        path = "%s/%s_%s_%s.%s" % (self.img_rootdir, target, tpl['cf'], suffix, ext)
+        path = "%s/%s_%s_%s_%s.%s" % (self.img_rootdir, tpl['name'], 
+                                      target, tpl['cf'], suffix, ext)
         start = str(start)
         end = str(end)
         defs = []
@@ -39,7 +69,8 @@ class Grapher(object):
             defs += ['DEF:%s=%s:%s:%s' % (v, rrdfile, v, tpl['cf']),
                      'CDEF:%spm=%s,60,*' % (v, v)]
             type = d.has_key("type") and d["type"] or "LINE"
-            lines += ["%s:%spm%s:%s" % (type, v, d["color"], d["legend"])]
+            lines += ["%s:%spm%s:%s" % (type, v, d["color"], 
+                                        d["legend"].encode("utf-8"))]
         params = defs + lines
         rrdtool.graph(path,
                       "--imgformat", "PNG",
@@ -47,30 +78,16 @@ class Grapher(object):
                       "--height", tpl["height"],
                       "--start", start,
                       "--end", end,
-                      "--vertical-label", tpl["vertlabel"],
-                      "--title", tpl["title"],
+                      "--vertical-label", tpl["vertlabel"].encode("utf-8"),
                       "--lower-limit", "0",
                       "--slope-mode",
                       *params)
 
-    def make_defaults(self, target):
-        #now = int(time.time())
-        #start = now - (now % 86400)
-        #end = start + 86400
+    def make_defaults(self, target, tpl=traffic_avg_template):
         end = "now"
-        self.process(target, "day", "-1day", end)
-
-        #today = datetime.date.today()
-        #day = today.day - today.weekday()
-        #weekbegin = datetime.date(today.year, today.month, day)
-        #start = weekbegin.strftime("%Y%m%d")
-        #end = "+1week"
-        self.process(target, "week", "-1week", end)
-
-#         monthbegin = datetime.date(today.year, today.month, 1)
-#         start = monthbegin.strftime("%Y%m%d")
-#         end = "+1month"
-        self.process(target, "month", "-1month", end)
-        self.process(target, "year", "-1year", end)
+        self.process(target, "day", "-1day", end, tpl)
+        self.process(target, "week", "-1week", end, tpl)
+        self.process(target, "month", "-1month", end, tpl)
+        self.process(target, "year", "-1year", end, tpl)
         
         

@@ -39,7 +39,8 @@ def domain_menu(domain_id, selection, perms):
              "class" : "boxed",
              "rel" : "{handler:'iframe',size:{x:300,y:180}}"}
             ]
-    entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_bar" , domain=domain_id)
+    entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_bar", 
+                                      perms=perms, domain=domain_id)
     return render_to_string('main/menu.html', 
                             {"selection" : selection, "entries" : entries,
                              "perms" : perms})
@@ -48,6 +49,13 @@ def domain_menu(domain_id, selection, perms):
 def settings_menu(selection):
     return render_to_string('admin/settings_menu.html',
                             {"selection" : selection})
+
+@register.simple_tag
+def loadadminextmenu(perms):
+    menu = events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box", 
+                                  perms=perms)
+    return render_to_string('main/menulist.html', 
+                            {"menu" : menu, "perms" : perms})
 
 @register.filter
 def gender(value, target):

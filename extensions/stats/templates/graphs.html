@@ -1,0 +1,6 @@
+{% load i18n %}
+{% for g, title in graphs.items %}
+<h3>{{ title }}</h3>
+<p><img src="/static/graphs/{{ g }}_{{ domain }}_AVERAGE_{{ period }}.png" 
+        alt="{% trans 'No statistics available' %}" /></p>
+{% endfor %}

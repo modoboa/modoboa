@@ -25,6 +25,7 @@ def menu(selection, perms):
 
 @register.simple_tag
 def loadextmenu(perms):
-    menu = events.raiseQueryEvent("UserMenuDisplay", target="user_menu_box")
+    menu = events.raiseQueryEvent("UserMenuDisplay", target="user_menu_box", 
+                                  perms=perms)
     return render_to_string('main/menulist.html', 
                             {"menu" : menu, "perms" : perms})

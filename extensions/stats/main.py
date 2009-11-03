@@ -11,38 +11,36 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf.urls.defaults import *
 from mailng.lib import events, _render
-from mailng.admin.views import is_superuser
+from mailng.admin.views import good_domain
 from mailng.admin.models import Domain, Mailbox
-#from mailng.extensions.stats.mailrrd import parser
 from django.contrib.auth.decorators \
-    import login_required
-import pdb
+    import login_required, user_passes_test, permission_required
 
-graph_nature = ["sent_recv","boun_reje"]
-graph_types  = ["AVERAGE","MAX"]
-tmp_path     = "static/tmp"
+graph_types = ['AVERAGE', 'MAX']
 
 def init():
-        events.register("AdminMenuDisplay", menu)
+    events.register("AdminMenuDisplay", menu)
 
 def urls():
     return (r'^mailng/stats/', 
             include('mailng.extensions.stats.urls'))
 
-
 def menu(**kwargs):
-    print kwargs
-    domain_id = kwargs['domain']
     if kwargs["target"] == "admin_menu_bar":
+        domain_id = kwargs['domain']
         return [
             {"label" : _("Statistics"),
              "name"  : "stats",
              "url" : reverse('domindex', args=[domain_id]),
              "img" : "/static/pics/graph.png"}
             ]
-    else:
-        return []
-
+    if kwargs["target"] == "admin_menu_box":
+        return [
+            {"name"  : _("Statistics"),
+             "url" : reverse('fullindex'),
+             "img" : "/static/pics/graph.png"}
+            ]
+    return []
 
 @login_required
 def domain(request,dom_id):
@@ -82,26 +80,38 @@ def graph_display(request,dom_id,graph_t=graph_types):
         "domain":domain,"domains" : domains, "messages" : errors ,
         "types" :  graph_type, "tmp_path" : tmp_path})
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def adminindex(request):
+    period = request.GET.has_key("period") and request.GET["period"] or "day"
+    domain = request.GET.has_key("domain") and request.GET["domain"] or "global"
+    if domain != "global":
+        domain = Domain.objects.get(pk=domain)
+        domain = domain.name
+    domains = Domain.objects.all()
+    return _render(request, 'stats/adminindex.html', {
+            "domains" : domains, "domain" : domain,
+            "graphs" : {"traffic" : _("Average normal traffic"),
+                        "badtraffic" : _("Average bad traffic"),
+                        "size" : _("Average normal traffic size")},
+            "periods" : ["day", "week", "month", "year"],
+            "period" : period
+            })
 
 @login_required
+@good_domain
+@permission_required("admin.view_mailboxes")
 def index(request, dom_id=None):
-    domains = []
-    errors = []
     domain = None
-    if dom_id:
-        if request.user.has_perm("admin.view_mailboxes"):
-            domain = Domain.objects.get(pk=dom_id)
-            if domain:
-                domains.append(domain)
-            else:
-                print "pas de dom"
-    else:
-        domains = Domain.objects.all()
+    period = request.GET.has_key("period") and request.GET["period"] or "day"
+    if request.user.has_perm("admin.view_mailboxes"):
+        domain = Domain.objects.get(pk=dom_id)
 
-    if domains == []:
-        errors.append(_("No Domain defined"))
     return _render(request, 'stats/index.html', {
-        "page" : "Statistics",
-        "domain" : domain, "domains": domains, "messages" : errors , 
-        "periods" : ["day", "week", "month", "year"]
-        })
+            "domain" : domain,
+            "graphs" : {"traffic" : _("Average normal traffic"),
+                        "badtraffic" : _("Average bad traffic"),
+                        "size" : _("Average normal traffic size")},
+            "periods" : ["day", "week", "month", "year"],
+            "period" : period
+            })

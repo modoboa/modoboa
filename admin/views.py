@@ -16,6 +16,7 @@ from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
 from mailng.lib import _render, _ctx_ok, _ctx_ko
 from mailng.lib import events
+import string
 import copy
 
 def is_superuser(user):
@@ -29,9 +30,10 @@ def good_domain(f):
         if request.user.is_superuser:
             return f(request, dom_id, **kwargs)
         mb = Mailbox.objects.get(user=request.user.id)
-        domid = isinstance(dom_id, str) and "%d" % dom_id or dom_id
-        if domid == mb.domain.id:
-            return f(request, domid, **kwargs)
+        if isinstance(dom_id, str) or isinstance(dom_id, unicode):
+            dom_id = string.atoi(dom_id)
+        if dom_id == mb.domain.id:
+            return f(request, dom_id, **kwargs)
 
         from django.conf import settings
         path = urlquote(request.get_full_path())

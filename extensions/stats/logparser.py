@@ -5,6 +5,7 @@ import sys
 import os
 import re
 import rrdtool
+import string
 from optparse import OptionParser
 from mailng.lib import getoption
 from mailng.admin.models import Domain
@@ -19,6 +20,8 @@ Postfix log parser.
 rrdstep = 60
 xpoints = 540
 points_per_sample = 3
+variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
+             "size_sent", "size_recv"]
 
 class LogParser(object):
     def __init__(self, logfile, workdir,
@@ -86,7 +89,7 @@ class LogParser(object):
 
         # Set up data sources for our RRD
         params = []
-        for v in ["sent", "recv", "bounced", "reject"]:
+        for v in variables:
             params += ['DS:%s:%s:%s:0:U' % (v, ds_type, rrdstep * 2)]
 
         # Set up RRD to archive data
@@ -125,39 +128,54 @@ class LogParser(object):
                 print "[rrd] VERBOSE events at %s already recorded in RRD" %m
             return False
 
+        tpl = ""
+        for v in variables:
+            if tpl != "":
+                tpl += ":"
+            tpl += v
         # Missing some RRD steps
         # Est ce vraiment nécessaire... ?
         if m > self.lupdates[fname] + rrdstep:
+            values = ""
+            for v in variables:
+                if values != "": values += ":"
+                values += "0"
             for p in range(self.lupdates[fname] + rrdstep, m, rrdstep):
                 if self.verbose:
                     print "[rrd] VERBOSE update %s:%s:%s:%s:%s (SKIP)" \
                           %(p,'0','0','0','0')
-                rrdtool.update(fname, "%s:%s:%s:%s:%s" \
-                                   % (p, '0', '0', '0', '0'))
+                rrdtool.update(fname, "-t", tpl, "%s:%s" % (p, values))
 
         if self.verbose:
             print "[rrd] VERBOSE update %s:%s:%s:%s:%s" \
                   %(m, self.data[dom][m]['sent'], self.data[dom][m]['recv'],\
                     self.data[dom][m]['bounced'], self.data[dom][m]['reject'])
 
-        rrdtool.update(fname, "%s:%s:%s:%s:%s" \
-                           % (m, self.data[dom][m]['sent'],  
-                              self.data[dom][m]['recv'],
-                              self.data[dom][m]['bounced'], 
-                              self.data[dom][m]['reject']))
+        values = "%s" % m
+        tpl = ""
+        for v in variables:
+            values += ":"
+            values += str(self.data[dom][m][v])
+            if tpl != "":
+                tpl += ":"
+            tpl += v
+        rrdtool.update(fname, "-t", tpl, values)
         self.lupdates[fname] = m
         return True
 
-    def inc_counter(self, dom, cur_t, counter):
+    def initcounters(self, dom, cur_t):
+        init = {}
+        for v in variables: init[v] = 0
+        self.data[dom][cur_t] = init
+
+    def inc_counter(self, dom, cur_t, counter, val=1):
         if not self.data[dom].has_key(cur_t):
-            self.data[dom][cur_t] = \
-                {'sent' : 0, 'recv' : 0, 'bounced' : 0, 'reject' : 0}
-        self.data[dom][cur_t][counter] += 1
+            self.initcounters(dom, cur_t)
+        self.data[dom][cur_t][counter] += val
 
         if not self.data["global"].has_key(cur_t):
-            self.data["global"][cur_t] = \
-                {'sent' : 0, 'recv' : 0, 'bounced' : 0, 'reject' : 0}
-        self.data["global"][cur_t][counter] += 1
+            self.initcounters("global", cur_t)
+        self.data["global"][cur_t][counter] += val
 
     def process(self):
         for line in self.f.readlines():
@@ -170,9 +188,10 @@ class LogParser(object):
             cur_t = self.str2Time(self.year, mo, da, ho, mi, se)
             cur_t = cur_t - cur_t % rrdstep
 
-            m = re.search("(\w{10}): from=<(.*)>", log)
+            m = re.search("(\w{10}): from=<(.*)>, size=(\d+)", log)
             if m:
-                self.workdict[m.group(1)] = {'from' : m.group(2)}
+                self.workdict[m.group(1)] = {'from' : m.group(2),
+                                             'size' : string.atoi(m.group(3))}
                 continue
 
             m = re.search("(\w{10}): to=<(.*)>.*status=(\S+)", log)
@@ -183,10 +202,14 @@ class LogParser(object):
                 addrfrom = re.match("([^@]+)@(.+)", self.workdict[m.group(1)]['from'])
                 if addrfrom and addrfrom.group(2) in self.domains:
                     self.inc_counter(addrfrom.group(2), cur_t, 'sent')
+                    self.inc_counter(addrfrom.group(2), cur_t, 'size_sent', 
+                                     self.workdict[m.group(1)]['size'])
                 addrto = re.match("([^@]+)@(.+)", m.group(2))
                 if addrto.group(2) in self.domains:
                     if m.group(3) == "sent":
                         self.inc_counter(addrto.group(2), cur_t, 'recv')
+                        self.inc_counter(addrto.group(2), cur_t, 'size_recv', 
+                                     self.workdict[m.group(1)]['size'])
                     else:
                         self.inc_counter(addrto.group(2), cur_t, m.group(3))
                 continue
@@ -205,7 +228,10 @@ class LogParser(object):
             sortedData = [ (i, data[i]) for i in sorted(data.keys()) ]
             for t, dict in sortedData:
                 self.update_rrd(dom, t)
-            G.make_defaults(dom)
+
+            G.make_defaults(dom, tpl=grapher.traffic_avg_template)
+            G.make_defaults(dom, tpl=grapher.badtraffic_avg_template)
+            G.make_defaults(dom, tpl=grapher.size_avg_template)
 
 if __name__ == "__main__":
     log_file = getoption("LOGFILE", "/var/log/maillog")
