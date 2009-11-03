@@ -142,14 +142,9 @@ class LogParser(object):
                 values += "0"
             for p in range(self.lupdates[fname] + rrdstep, m, rrdstep):
                 if self.verbose:
-                    print "[rrd] VERBOSE update %s:%s:%s:%s:%s (SKIP)" \
-                          %(p,'0','0','0','0')
+                    print "[rrd] VERBOSE update -t %s %s:%s (SKIP)" \
+                        % (tpl, p, values)
                 rrdtool.update(fname, "-t", tpl, "%s:%s" % (p, values))
-
-        if self.verbose:
-            print "[rrd] VERBOSE update %s:%s:%s:%s:%s" \
-                  %(m, self.data[dom][m]['sent'], self.data[dom][m]['recv'],\
-                    self.data[dom][m]['bounced'], self.data[dom][m]['reject'])
 
         values = "%s" % m
         tpl = ""
@@ -159,6 +154,9 @@ class LogParser(object):
             if tpl != "":
                 tpl += ":"
             tpl += v
+        if self.verbose:
+            print "[rrd] VERBOSE update -t %s %s" % (tpl, values)
+
         rrdtool.update(fname, "-t", tpl, values)
         self.lupdates[fname] = m
         return True
