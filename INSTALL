@@ -333,7 +333,8 @@ Replace values between <> with yours.
 Finally, create a symbolic link to the templates directory inside the
 main templates directory::
 
-  # ln -s extensions/amavis_quarantine/templates templates/amavis_quarantine
+  # ln -s <mailng_dir>/extensions/amavis_quarantine/templates \
+        templates/amavis_quarantine
 
 To be able to release messages, first take a look at this page::
 
@@ -386,13 +387,56 @@ By default, messages older than 14 days are automatically purged. You
 can modify this value by changing the variable MAX_MESSAGES_AGE inside
 settings.py.
 
-Statistics plugin setup
------------------------
+Using the statistics plugin
+---------------------------
 
-Early version of that plugin only support parsing of postfix log as syslog format.
-Please make sure you have a valid /var/log/maillog postfix log file.
-Don't forget to create a link from /templates/stats to extensions/stats/template
-FIXME : 
-Parsing for domain is not fully supported, soon in a next version.
-User priviledges are not handled properly. So you understand 
-it is a really eraly pluggin  version!! Enjoy
+This plugin allows you to collect various statistics about emails
+traffic on your server. It parses log file to collect information and
+then generates graphics in PNG format.
+
+If you plan to use it, first make sure to have those requirements
+installed on your server::
+
+- rrdtool python binding (http://oss.oetiker.ch/rrdtool/)
+
+To activate the extension, edit your settings.py and add the following
+line inside the INSTALLED_APPS variable::
+
+  'mailng.extensions.stats',
+
+Create a symbolic link to the templates directory inside the main
+templates directory::
+
+  # ln -s <mailng_dir>/extensions/stats/templates \
+       templates/stats
+
+Then, adapt following parameters (still in settings.py) to your
+environnement::
+
+  # Path to mail log file
+  LOGFILE = "/var/log/mail.log"
+
+  # Path to directory where rrd files are stored
+  RRD_ROOTDIR = "/tmp/mailng"
+
+  # Path to directory where png files are stored
+  IMG_ROOTDIR = "<mailng_dir>/static/graphs"
+
+Make sure the directories that will contain those files exist. If not,
+create them before going further. For example (according to previous
+parameters)::
+
+  $ mkdir /tmp/mailng
+  $ mkdir <mailng_dir>/static/graphs
+
+To finish, you need to collect information periodically in order to
+feed rrd files. To do so, just add the following lines into root's
+crontab::
+
+  */5 * * * * PYTHONPATH=<mailng_dir/..> \
+    DJANGO_SETTINGS_MODULE=mailng.settings \
+    <mailng_dir>/extensions/stats/logparser.py
+
+Replace mailng_dir with the installation path of MailNG.
+
+Graphics are automatically created after each new parsing.

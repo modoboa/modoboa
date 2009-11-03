@@ -120,3 +120,12 @@ VIRTUAL_GID = "vmail"
 # AM_PDP_HOST = "localhost"
 # AM_PDP_PORT = 9998
 # AM_PDP_SOCKET = "/var/amavis/amavisd.sock"
+
+# Statistics options
+
+# Path to mail log file
+#LOGFILE = "/tmp/maillog"
+# Path to directory where rrd files are stored
+#RRD_ROOTDIR = "/tmp/mailng"
+# Path to directory where png files are stored
+#IMG_ROOTDIR = "/home/tonio/projets/mailng/static/graphs"
