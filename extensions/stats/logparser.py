@@ -199,6 +199,10 @@ class LogParser(object):
                 if not self.workdict.has_key(m.group(1)):
                     print "Inconsistent mail, skipping"
                     continue
+                if not m.group(3) in variables:
+                    del self.workdict[m.group(1)]
+                    print "Unsupported status %s, skipping" % m.group(3)
+                    continue
                 addrfrom = re.match("([^@]+)@(.+)", self.workdict[m.group(1)]['from'])
                 if addrfrom and addrfrom.group(2) in self.domains:
                     self.inc_counter(addrfrom.group(2), cur_t, 'sent')
