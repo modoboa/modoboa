@@ -95,7 +95,7 @@ class LogParser(object):
         # Set up RRD to archive data
         rras = []
         for cf in ['AVERAGE', 'MAX']:
-            for step in [day_steps, month_steps, month_steps, year_steps]:
+            for step in [day_steps, week_steps, month_steps, year_steps]:
                 params += ['RRA:%s:0.5:%s:%s' % (cf, step, realrows)]
 
         # With those setup, we can now created the RRD
