@@ -335,14 +335,14 @@ Then, you need to specify where is the database that contains the
 quarantine. Inside settings.py, add a new connection to the
 DB_CONNECTIONS variable like this::
 
-  DB_CONNECTIONS = (
-    {"amavis_quarantine" : {"driver"   : "mysql",
+  DB_CONNECTIONS = {
+    "amavis_quarantine" : {"driver"   : "mysql",
                             "host"     : "<your_host>",
                             "dbname"   : "<amavis_dbname>",
                             "login"    : "<user>",
                             "password" : "<password>"}
-     }
-    )
+  }
+     
 
 Replace values between <> with yours.
 
@@ -455,9 +455,7 @@ To finish, you need to collect information periodically in order to
 feed rrd files. To do so, just add the following lines into root's
 crontab::
 
-  */5 * * * * PYTHONPATH=<mailng_dir/..> \
-    DJANGO_SETTINGS_MODULE=mailng.settings \
-    <mailng_dir>/extensions/stats/logparser.py
+  */5 * * * * PYTHONPATH=<mailng_dir/..> DJANGO_SETTINGS_MODULE=mailng.settings <mailng_dir>/extensions/stats/logparser.py
 
 Replace mailng_dir with the installation path of MailNG.
 
