@@ -47,6 +47,22 @@ If no modifications have been made to the core SQL schema, juste
 decompress the new tarball at the same location than your current
 installation.
 
+Time zone and language
+----------------------
+
+MailNG is available in english or in french. You can choose which
+language to use by modifying the LANGUAGE_CODE variable inside
+settings.py::
+
+  LANGUAGE_CODE = 'en-US' # English
+  # or
+  LANGUAGE_CODE = 'fr-FR' # Français
+
+You can also specify your time zone by modifying the TIME_ZONE
+variable. For example::
+
+  TIME_ZONE = 'Europe/Paris'
+
 Host configuration
 ------------------
 
