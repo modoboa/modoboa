@@ -91,9 +91,9 @@ def adminindex(request):
     domains = Domain.objects.all()
     return _render(request, 'stats/adminindex.html', {
             "domains" : domains, "domain" : domain,
-            "graphs" : {"traffic" : _("Average normal traffic"),
-                        "badtraffic" : _("Average bad traffic"),
-                        "size" : _("Average normal traffic size")},
+            "graphs" : [{"name" : "traffic", "label" : _("Average normal traffic")},
+                        {"name" : "badtraffic", "label" : _("Average bad traffic")},
+                        {"name" : "size", "label" : _("Average normal traffic size")}],
             "periods" : ["day", "week", "month", "year"],
             "period" : period
             })
@@ -109,9 +109,9 @@ def index(request, dom_id=None):
 
     return _render(request, 'stats/index.html', {
             "domain" : domain,
-            "graphs" : {"traffic" : _("Average normal traffic"),
-                        "badtraffic" : _("Average bad traffic"),
-                        "size" : _("Average normal traffic size")},
+            "graphs" : [{"name" : "traffic", "label" : _("Average normal traffic")},
+                        {"name" : "badtraffic", "label" : _("Average bad traffic")},
+                        {"name" : "size", "label" : _("Average normal traffic size")}],
             "periods" : ["day", "week", "month", "year"],
             "period" : period
             })

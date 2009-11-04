@@ -336,6 +336,12 @@ main templates directory::
   # ln -s <mailng_dir>/extensions/amavis_quarantine/templates \
         templates/amavis_quarantine
 
+When viewing messages, you can choose to display links (addresses,
+images). In order to display images correctly, you need to create a
+tmp directory under static/ for storing them. For example::
+
+  # mkdir <mailng_dir>/static/tmp
+
 To be able to release messages, first take a look at this page::
 
 http://www.ijs.si/software/amavisd/amavisd-new-docs.html#quar-release

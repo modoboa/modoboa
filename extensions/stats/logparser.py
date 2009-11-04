@@ -103,6 +103,7 @@ class LogParser(object):
                        '--start', str(m),
                        '--step', str(rrdstep),
                        *params)
+        sys.exit(1)
         return m
 
     def update_rrd(self, dom, t):

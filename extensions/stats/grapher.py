@@ -84,7 +84,7 @@ class Grapher(object):
                       *params)
 
     def make_defaults(self, target, tpl=traffic_avg_template):
-        end = "now"
+        end = "%d" % int(time.mktime(time.localtime()))
         self.process(target, "day", "-1day", end, tpl)
         self.process(target, "week", "-1week", end, tpl)
         self.process(target, "month", "-1month", end, tpl)

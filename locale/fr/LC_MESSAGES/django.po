@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-03 15:22+0100\n"
+"POT-Creation-Date: 2009-11-04 15:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -345,7 +345,7 @@ msgstr ""
 
 #: extensions/stats/grapher.py:32
 msgid "bounced messages"
-msgstr "messages ?"
+msgstr "messages non remis"
 
 #: extensions/stats/grapher.py:34
 msgid "rejected messages"
@@ -381,7 +381,7 @@ msgstr "Mauvais trafic moyen"
 
 #: extensions/stats/main.py:96 extensions/stats/main.py:114
 msgid "Average normal traffic size"
-msgstr "Taille moyenne du trafic moyen"
+msgstr "Taille moyenne du trafic normal"
 
 #: extensions/stats/templates/adminindex.html:31
 msgid "Global statistics"
@@ -628,6 +628,3 @@ msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
 "réessayer."
-
-#~ msgid "Domain name"
-#~ msgstr "Nom du domaine"
