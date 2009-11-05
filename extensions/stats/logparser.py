@@ -14,6 +14,18 @@ import grapher
 """
 Postfix log parser.
 
+This scripts parses a log file produced by postfix (or using the same
+format). It looks for predefined events and build statistics about
+their occurence rate.
+
+At the, somes default graphics are generated using the grapher module.
+(see grapher.py)
+
+Predefined events are:
+ * Per domain sent/received messages,
+ * Per domain received bad messages (bounced, reject for now),
+ * Per domain sent/received traffics size,
+ * Global consolidation of all previous events.
 
 """
 
@@ -29,11 +41,9 @@ class LogParser(object):
         self.logfile = logfile
         try:
             self.f = open(logfile)
-        except IOError:
+        except IOError, errno:
+            print "%s" % errno
             sys.exit(1)
-#         except (IOError, errno, strerror):
-#             print "[rrd] I/O error({0}): {1} ".format(errno, strerror)+logfile
-#             return None
         self.workdir = workdir
         self.year = year
         self.debug = debug
@@ -103,7 +113,6 @@ class LogParser(object):
                        '--start', str(m),
                        '--step', str(rrdstep),
                        *params)
-        sys.exit(1)
         return m
 
     def update_rrd(self, dom, t):
@@ -241,8 +250,6 @@ if __name__ == "__main__":
     rrd_rootdir = getoption("RRD_ROOTDIR", "/tmp")
 
     parser = OptionParser()
-    parser.add_option("-t", "--target", default="all",
-                      help="Specify which target handled while parsing log file (default to all)")
     parser.add_option("-l","--logFile", default=log_file,
                       help="postfix log in syslog format", metavar="FILE")
     parser.add_option("-v","--verbose", default=False, action="store_true", 
