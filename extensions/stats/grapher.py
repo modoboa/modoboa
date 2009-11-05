@@ -81,6 +81,7 @@ class Grapher(object):
                       "--vertical-label", tpl["vertlabel"].encode("utf-8"),
                       "--lower-limit", "0",
                       "--slope-mode",
+                      "--units-exponent", "0",
                       *params)
 
     def make_defaults(self, target, tpl=traffic_avg_template):
