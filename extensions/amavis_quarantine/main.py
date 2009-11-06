@@ -13,7 +13,7 @@ from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators \
     import login_required
-from mailng.lib import events
+from mailng.lib import events, parameters
 from mailng.lib import _render, _ctx_ok, _ctx_ko, decode
 from mailng.lib import db
 from mailng.admin.models import Mailbox
@@ -37,6 +37,8 @@ def map_cid(url):
     
 def init():
     events.register("UserMenuDisplay", menu)
+    parameters.register("amavis_quarantine", "MAX_MESSAGES_AGE", "int", 14,
+                        help=_("Quarantine messages maximum age (in days) before deletion"))
 
 def urls():
     return (r'^mailng/quarantine/', 

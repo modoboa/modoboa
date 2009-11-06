@@ -33,6 +33,6 @@ if menus != ():
 if settings.DEBUG:
     urlpatterns += patterns(
         '',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/tonio/projets/mailng/static'})
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/tonio/projets/devel/mailng/static'})
         )
                             

@@ -1,0 +1,42 @@
+{% extends "admin/settings_header.html" %}
+{% block html_head %}
+<script src="/static/js/settings.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
+{% endblock %}
+{% block menu %}
+{% load admin_extras %}
+{% settings_menu "parameters" perms %}
+{% endblock %}
+{% block setcontent %}
+{% load i18n %}
+{% url admin.views.saveparameters as action %}
+<form method="POST" action="{{ action }}">
+<table>
+  <tr>
+    <th width="50%">{% trans "Name" %}</th>
+    <th>{% trans "Value" %}</th>
+  </tr>
+  {% for app, ps in params.items %}
+    {% for name, def in ps.items %}
+  <tr>
+    <td class="odd">{{ app }}::{{ name }}</td>
+    <td class="even">
+      {% if def.value %}
+      <input type="text" name="{{ app }}.{{ name }}" id="{{ app }}.{{ name }}" value="{{ def.value }}" />
+      {% else %}
+      <input type="text" name="{{ app }}.{{ name}}" id="{{ app }}.{{ name }}" value="{{ def.default }}" />
+      {% endif %}
+      {% if def.help %}
+      <a href="{{ def.help }}" onclick="return false;" class="Tips" title="{% trans 'Help' %}">
+        <img src="/static/pics/info.png" border="0" />
+      </a>
+      {% endif %}
+    </td>
+  </tr>
+    {% endfor %}
+  {% endfor %}
+</table>
+
+  <p><input type="submit" name="update" value="{% trans 'Save' %}" /></p>
+</form>
+{% endblock %}

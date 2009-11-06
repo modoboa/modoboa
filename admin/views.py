@@ -11,11 +11,11 @@ from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from mailng import admin, main
-from mailng.admin.models import Domain, Mailbox, Alias
+from mailng.admin.models import Domain, Mailbox, Alias, Parameter
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
 from mailng.lib import _render, _ctx_ok, _ctx_ko
-from mailng.lib import events
+from mailng.lib import events, parameters
 import string
 import copy
 
@@ -404,3 +404,28 @@ def deletepermission(request, mbox_id, group):
         mbox.user.groups.remove(grp)
         mbox.user.save()
     return HttpResponseRedirect(reverse(admin.views.settings))
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def viewparameters(request):
+    params = {}
+    for app, app_params in parameters._params.iteritems():
+        params[app] = {}
+        for pname, pdef in app_params.iteritems():
+            params[app][pname] = pdef
+            params[app][pname]["value"] = parameters.get(app, pname)
+
+    return _render(request, 'admin/parameters.html', {
+            "params" : params
+            })
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def saveparameters(request):
+    for pname, v in request.POST.iteritems():
+        if pname == "update":
+            continue
+        app, name = pname.split('.')
+        parameters.save(app, name, v)
+    request.user.message_set.create(message=_("Configuration saved."))
+    return HttpResponseRedirect(reverse(admin.views.viewparameters))

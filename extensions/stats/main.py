@@ -10,7 +10,7 @@ from postfix log : sent, received, bounced, rejected
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf.urls.defaults import *
-from mailng.lib import events, _render
+from mailng.lib import events, parameters, _render
 from mailng.admin.views import good_domain
 from mailng.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
@@ -20,6 +20,12 @@ graph_types = ['AVERAGE', 'MAX']
 
 def init():
     events.register("AdminMenuDisplay", menu)
+    parameters.register("stats", "LOGFILE", "string", "/var/log/mail.log",
+                        help=_("Path to log file used to collect statistics"))
+    parameters.register("stats", "RRD_ROOTDIR", "string", "/tmp/mailng",
+                        help=_("Path to directory where RRD files are stored"))
+    parameters.register("stats", "IMG_ROOTDIR", "string", "/tmp/mailng",
+                        help=_("Path to directory where PNG files are stored"))
 
 def urls():
     return (r'^mailng/stats/', 

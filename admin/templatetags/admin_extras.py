@@ -46,9 +46,26 @@ def domain_menu(domain_id, selection, perms):
                              "perms" : perms})
 
 @register.simple_tag
-def settings_menu(selection):
-    return render_to_string('admin/settings_menu.html',
-                            {"selection" : selection})
+def settings_menu(selection, perms):
+    entries = [
+        {"name" : "permissions",
+         "url" : reverse(admin.views.settings),
+         "label" : _("Permissions"),
+         "img" : "/static/pics/permissions.png"},
+        {"name" : "addperm",
+         "url" : reverse(admin.views.addpermission),
+         "img" : "/static/pics/add.png",
+         "label" : _("Add permission"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:320,y:210}}"},
+        {"name" : "parameters",
+         "url" : reverse(admin.views.viewparameters),
+         "img" : "/static/pics/domains.png",
+         "label" : _("Parameters")},
+        ]
+    return render_to_string('main/menu.html', 
+                            {"selection" : selection, "entries" : entries,
+                             "perms" : perms})
 
 @register.simple_tag
 def loadadminextmenu(perms):

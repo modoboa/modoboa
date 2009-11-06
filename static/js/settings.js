@@ -9,4 +9,6 @@ window.addEvent('domready', function() {
 	    if (!confirm(gettext("Remove this permission?")))
 	        event.stop();
 	});
+
+    var tip = new Tips($$(".Tips"));
 });
