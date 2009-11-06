@@ -14,7 +14,7 @@
   <script src="/static/js/SqueezeBox.js" type="text/javascript"></script>
   <script src="/static/js/common.js" type="text/javascript"></script>
   {% url django.views.i18n.javascript_catalog as catalog_url %}
-  <script type="text/javascript" src="/jsi18n/"></script>
+  <script type="text/javascript" src="{{ catalog_url }}"></script>
   {%block html_head %}{% endblock %}
 </head>
 

@@ -196,19 +196,23 @@ class LogParser(object):
             cur_t = self.str2Time(self.year, mo, da, ho, mi, se)
             cur_t = cur_t - cur_t % rrdstep
 
-            m = re.search("(\w{10}): from=<(.*)>, size=(\d+)", log)
+            m = re.search("(\w{10}): message-id=<([^>]*)>", log)
+            if m:
+                self.workdict[m.group(1)] = {'from' : m.group(2), 'size' : 0}
+                continue
+
+            m = re.search("(\w{10}): from=<([^>]*)>, size=(\d+)", log)
             if m:
                 self.workdict[m.group(1)] = {'from' : m.group(2),
                                              'size' : string.atoi(m.group(3))}
                 continue
 
-            m = re.search("(\w{10}): to=<(.*)>.*status=(\S+)", log)
+            m = re.search("(\w{10}): to=<([^>]*)>.*status=(\S+)", log)
             if m:
                 if not self.workdict.has_key(m.group(1)):
-                    print "Inconsistent mail, skipping"
+                    print "Inconsistent mail (%s: %s), skipping" % (m.group(1), m.group(2))
                     continue
                 if not m.group(3) in variables:
-                    del self.workdict[m.group(1)]
                     print "Unsupported status %s, skipping" % m.group(3)
                     continue
                 addrfrom = re.match("([^@]+)@(.+)", self.workdict[m.group(1)]['from'])
