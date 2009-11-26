@@ -49,7 +49,7 @@ class LogParser(object):
         self.debug = debug
         self.verbose = verbose
         self.cfs = ['AVERAGE', 'MAX']
-        
+
         self.last_month = None
         if not self.year:
             self.year = time.localtime().tm_year
@@ -186,57 +186,69 @@ class LogParser(object):
         self.data["global"][cur_t][counter] += val
 
     def process(self):
+        id_expr = re.compile("(\w{9,18}): (.*)")
+        prev_se = -1
+        prev_mi = -1
+        prev_ho = -1
         for line in self.f.readlines():
             m = self.line_expr.match(line)
             if not m:
                 continue
             (mo, da, ho, mi, se, host, prog, pid, log) = m.groups()
-
             se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
-            cur_t = self.str2Time(self.year, mo, da, ho, mi, se)
-            cur_t = cur_t - cur_t % rrdstep
 
-            m = re.search("(\w{10}): message-id=<([^>]*)>", log)
+            if prev_se != se or prev_mi != mi or prev_ho != ho:
+                cur_t = self.str2Time(self.year, mo, da, ho, mi, se)
+                cur_t = cur_t - cur_t % rrdstep
+                prev_mi = mi
+                prev_ho = ho
+                prev_se = se
+            m = id_expr.search(log)
             if m:
-                self.workdict[m.group(1)] = {'from' : m.group(2), 'size' : 0}
-                continue
+                (line_id, line_log) = m.groups()
 
-            m = re.search("(\w{10}): from=<([^>]*)>, size=(\d+)", log)
-            if m:
-                self.workdict[m.group(1)] = {'from' : m.group(2),
-                                             'size' : string.atoi(m.group(3))}
-                continue
-
-            m = re.search("(\w{10}): to=<([^>]*)>.*status=(\S+)", log)
-            if m:
-                if not self.workdict.has_key(m.group(1)):
-                    print "Inconsistent mail (%s: %s), skipping" % (m.group(1), m.group(2))
+                m = re.search("message-id=<([^>]*)>", line_log)
+                if m:
+                    self.workdict[line_id] = {'from' : m.group(1), 'size' : 0}
                     continue
-                if not m.group(3) in variables:
-                    print "Unsupported status %s, skipping" % m.group(3)
+
+                m = re.search("from=<([^>]*)>, size=(\d+)", line_log)
+                if m:
+                    self.workdict[line_id] = {'from' : m.group(1),
+                                             'size' : string.atoi(m.group(2))}
                     continue
-                addrfrom = re.match("([^@]+)@(.+)", self.workdict[m.group(1)]['from'])
-                if addrfrom and addrfrom.group(2) in self.domains:
-                    self.inc_counter(addrfrom.group(2), cur_t, 'sent')
-                    self.inc_counter(addrfrom.group(2), cur_t, 'size_sent', 
-                                     self.workdict[m.group(1)]['size'])
-                addrto = re.match("([^@]+)@(.+)", m.group(2))
-                if addrto.group(2) in self.domains:
-                    if m.group(3) == "sent":
-                        self.inc_counter(addrto.group(2), cur_t, 'recv')
-                        self.inc_counter(addrto.group(2), cur_t, 'size_recv', 
-                                     self.workdict[m.group(1)]['size'])
-                    else:
-                        self.inc_counter(addrto.group(2), cur_t, m.group(3))
-                continue
-            
-            m = re.search("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
-            if m:
-                addrto = re.match("([^@]+)@(.+)", m.group(2))
-                if addrto and addrto.group(2) in self.domains:
-                    self.inc_counter(addrto.group(2), cur_t, 'reject')
-                continue
-        
+
+                m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
+                if m:
+                    if not self.workdict.has_key(line_id):
+                        print "Inconsistent mail (%s: %s), skipping" % (line_id, m.group(1))
+                        continue
+                    if not m.group(2) in variables:
+                        print "Unsupported status %s, skipping" % m.group(2)
+                        continue
+
+                    addrfrom = re.match("([^@]+)@(.+)", self.workdict[line_id]['from'])
+                    if addrfrom and addrfrom.group(2) in self.domains:
+                        self.inc_counter(addrfrom.group(2), cur_t, 'sent')
+                        self.inc_counter(addrfrom.group(2), cur_t, 'size_sent',
+                                         self.workdict[line_id]['size'])
+                    addrto = re.match("([^@]+)@(.+)", m.group(1))
+                    if addrto.group(2) in self.domains:
+                        if m.group(2) == "sent":
+                            self.inc_counter(addrto.group(2), cur_t, 'recv')
+                            self.inc_counter(addrto.group(2), cur_t, 'size_recv',
+                                         self.workdict[line_id]['size'])
+                        else:
+                            self.inc_counter(addrto.group(2), cur_t, m.group(2))
+                    continue
+            else:
+                m = re.search("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
+                if m:
+                    addrto = re.match("([^@]+)@(.+)", m.group(2))
+                    if addrto and addrto.group(2) in self.domains:
+                        self.inc_counter(addrto.group(2), cur_t, 'reject')
+                    continue
+
         # Sort everything by time
         G = grapher.Grapher()
         for dom, data in self.data.iteritems():
@@ -256,12 +268,12 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-l","--logFile", default=log_file,
                       help="postfix log in syslog format", metavar="FILE")
-    parser.add_option("-v","--verbose", default=False, action="store_true", 
+    parser.add_option("-v","--verbose", default=False, action="store_true",
                       dest="verbose", help="set verbose mode")
-    parser.add_option("-d","--debug", default=False, action="store_true", 
+    parser.add_option("-d","--debug", default=False, action="store_true",
                       dest="debug", help="set debug mode")
     (options, args) = parser.parse_args()
-  
+
     P = LogParser(options.logFile, rrd_rootdir,
                   debug=options.debug, verbose=options.verbose)
     P.process()
