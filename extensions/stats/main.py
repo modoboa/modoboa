@@ -7,6 +7,7 @@ This module provides rrdtool support to retreive statistics
 from postfix log : sent, received, bounced, rejected
 
 """
+import calendar
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf.urls.defaults import *
@@ -89,6 +90,8 @@ def graph_display(request,dom_id,graph_t=graph_types):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def adminindex(request):
+    CH = calendar.HTMLCalendar(calendar.MONDAY)
+    CH_print = CH.formatmonth(2009,11)
     period = request.GET.has_key("period") and request.GET["period"] or "day"
     domain = request.GET.has_key("domain") and request.GET["domain"] or "global"
     if domain != "global":
@@ -100,8 +103,25 @@ def adminindex(request):
             "graphs" : [{"name" : "traffic", "label" : _("Average normal traffic")},
                         {"name" : "badtraffic", "label" : _("Average bad traffic")},
                         {"name" : "size", "label" : _("Average normal traffic size")}],
-            "periods" : ["day", "week", "month", "year"],
-            "period" : period
+            "periods" : ["day", "week", "month", "year","Custom"],
+        "period" : period, "cal" : CH_print
+            })
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def custom_period(request):
+    print "[stats] json get"
+    start = request.GET.has_key("start")
+    if not start:
+        print "[stats] no start selected"
+        return
+    end = request.GET.has_key("end")
+    return _render(request, 'stats/graphs.html', {
+            "domain" : domain,
+            "graphs" : [{"name" : "traffic", "label" : _("Average normal traffic")},
+                        {"name" : "badtraffic", "label" : _("Average bad traffic")},
+                        {"name" : "size", "label" : _("Average normal traffic size")}],
+        "period" : "%s_%s" %(start,end)
             })
 
 @login_required
@@ -118,6 +138,6 @@ def index(request, dom_id=None):
             "graphs" : [{"name" : "traffic", "label" : _("Average normal traffic")},
                         {"name" : "badtraffic", "label" : _("Average bad traffic")},
                         {"name" : "size", "label" : _("Average normal traffic size")}],
-            "periods" : ["day", "week", "month", "year"],
+            "periods" : ["day", "week", "month", "year","Custom"],
             "period" : period
             })

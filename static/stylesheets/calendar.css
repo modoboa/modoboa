@@ -1,0 +1,99 @@
+/* 
+    Document   : calendar.css
+    Created on : 29.07.2009
+    Author     : jens klose
+    Description:
+        example styles for calendar
+*/
+.calendarForm{
+    float:right;
+}
+.calendar{
+    font-family:verdana,sans-serif;
+    font-size:10px;
+    float:None;
+}
+button.calendar{
+    position:relative;
+    top:-3px;
+    left:1px;
+    background-color:transparent;
+    background-image:url(../pics/calendar.gif);
+    border:none;
+    margin: 0px;
+    padding:0px;
+    margin-right:3px;
+    cursor:pointer;
+    width:16px;
+    height:16px;
+}
+input.calendar{
+    cursor:pointer;
+    border: 1px solid #87847F;
+    height:12px;
+    width:100px;
+    color: #87847F;
+}
+div.calendar{
+    background:white;
+    border: 1px solid #87847F;
+    width:180px
+}
+a.footer{
+    color:#474747;
+    padding:2px;
+}
+.calendar table{
+    width:100%;
+}
+.calendar th,
+.calendar td{
+    text-align:center;
+    font-size:10px;
+    padding: 0.1em 0.25em 0.1em 0.3em;
+}
+.calendar tbody td,
+.calendar .invalid{
+    color:silver;
+}
+.calendar .valid{
+    color:blue;
+    font-weight:bold;
+}
+.calendar .valid.hover{
+    background:#FFFF77;
+    cursor:pointer;
+    font-weight:bold;
+}
+.calendar caption a,
+.calendar .next{
+    color:blue;
+    font-weight:bold;
+    padding:2px;
+}
+.calendar .next.hover{
+    background:#FFFF77;
+    cursor:pointer;
+    font-weight:bold;
+}
+.calendar .prev{
+    color:blue;
+    font-weight:bold;
+    padding:2px;
+}
+.calendar .prev.hover{
+    background:#FFFF77;
+    cursor:pointer;
+    font-weight:bold;
+}
+.calendar .active,
+.calendar .hilite,
+.calendar .inactive{
+    color:white;
+    background-color:#BE3916;
+    font-weight:bold;
+}
+.calendar .active,
+.calendar .inactive{
+    background-color:red;
+}

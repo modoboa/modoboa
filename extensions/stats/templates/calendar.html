@@ -1,0 +1,38 @@
+{% load i18n %}
+<div id="periodSelector" style="border:1px solid #dddddd;float:right;padding:3px;margin-top:-3px;">
+<form class="calendarForm" method="post" action="" name="" onSubmit="change()">
+  {% trans "Start" %}: <input id="dateTravelStart" value="" type="text"/>
+  {% trans "End" %}: <input id="dateTravelEnd" value="" type="text" />
+  <input TYPE=SUBMIT VALUE="ok">
+</form>
+</div>
+<script type="text/javascript">
+function change() {
+  alert("New period : start = " + $("dateTravelStart").value + " end = " + $("dateTravelEnd").value);
+  {% url extensions.stats.main.custom_period as c_stats_url %}
+  alert("url for json : {{ c_stats_url}} ");
+
+  js = new Request.JSON({url: "{{ c_stats_url }}", onSuccess: function(resp) {
+    alert("html", resp.content);
+  }}).get({"start" : $("dateTravelStart").value, "end" : $("dateTravelEnd").value});
+};
+  myCal = new Calendar(
+  {
+        dateTravelStart: 'D, d/m/Y',
+        dateTravelEnd  : 'D, d/m/Y'
+  },
+        {
+                direction: 0, // -1 past, 0 past + future, 1 future
+                pad:1,
+                offset: 1, // first day of the week: 0 = sunday, 1 = monday, etc..
+                tweak: {x: -147, y: 18}, // tweak calendar positioning
+        }
+  );
+</script>
+
+<!--
+   <form name="calendar">
+     <textarea type="text" rows="0" cols="5">{{ sdate }}</textarea>
+     <textarea type="text" rows="0" cols="5">{{ edate }}</textarea>
+</select>
+-->
