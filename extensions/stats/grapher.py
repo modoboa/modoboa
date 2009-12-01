@@ -49,6 +49,10 @@ size_avg_template = {
         }
 }
 
+tpl = {'traffic':traffic_avg_template,
+       'badtraffic':badtraffic_avg_template,
+       'size':size_avg_template}
+
 class Grapher(object):
     def __init__(self):
         self.rrd_rootdir = getoption("RRD_ROOTDIR", "/tmp")
@@ -57,6 +61,7 @@ class Grapher(object):
     def process(self, target, suffix, start, end, tpl=traffic_avg_template):
         rrdfile = "%s/%s.rrd" % (self.rrd_rootdir, target)
         if not os.path.exists(rrdfile):
+            print "[graph] no rrd file detected"
             return
         ext = "png"
         path = "%s/%s_%s_%s_%s.%s" % (self.img_rootdir, tpl['name'], 
@@ -72,7 +77,7 @@ class Grapher(object):
             lines += ["%s:%spm%s:%s" % (type, v, d["color"], 
                                         d["legend"].encode("utf-8"))]
         params = defs + lines
-        rrdtool.graph(path,
+        rrdtool.graph(str(path),
                       "--imgformat", "PNG",
                       "--width", tpl["width"],
                       "--height", tpl["height"],

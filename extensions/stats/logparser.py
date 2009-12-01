@@ -35,6 +35,25 @@ points_per_sample = 3
 variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
              "size_sent", "size_recv"]
 
+def str2Time(y, M, d, h ="0", m ="0", s="0"):
+    """str2Time
+
+    return epoch time from Year Month Day Hour:Minute:Second time format
+    """
+    try:
+        local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
+                                  "%Y %b %d %H:%M:%S")
+    except:
+        # try with 01-12 month format
+        try:
+            local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
+                                  "%Y %m %d %H:%M:%S")
+        except:
+            print "[rrd] ERROR unrecognized %s time format" %(y, M, d, h, m, s)
+            return 0
+    return int(time.mktime(local))
+
+
 class LogParser(object):
     def __init__(self, logfile, workdir,
                  year=None, debug=False, verbose=False):
@@ -64,19 +83,6 @@ class LogParser(object):
         self.workdict = {}
         self.lupdates = {}
         self.line_expr = re.compile("(\w+)\s+(\d+)\s+(\d+):(\d+):(\d+)\s+(\w+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
-
-    def str2Time(self, y, M, d, h, m, s):
-        """str2Time
-
-        return epoch time from Year Month Day Hour:Minute:Second time format
-        """
-        try:
-            local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
-                                      "%Y %b %d %H:%M:%S")
-        except:
-            print "[rrd] ERROR unrecognized %s time format" %(y, M, d, h, m, s)
-            return 0
-        return int(time.mktime(local))
 
     def init_rrd(self, fname, m):
         """init_rrd
@@ -198,7 +204,7 @@ class LogParser(object):
             se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
 
             if prev_se != se or prev_mi != mi or prev_ho != ho:
-                cur_t = self.str2Time(self.year, mo, da, ho, mi, se)
+                cur_t = str2Time(self.year, mo, da, ho, mi, se)
                 cur_t = cur_t - cur_t % rrdstep
                 prev_mi = mi
                 prev_ho = ho

@@ -16,8 +16,15 @@ from mailng.admin.views import good_domain
 from mailng.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
+from extensions.stats.grapher import Grapher,tpl
+from extensions.stats.logparser import str2Time
 
 graph_types = ['AVERAGE', 'MAX']
+
+graph_list = [{"name" : "traffic", "label" : _("Average normal traffic")},
+              {"name" : "badtraffic", "label" : _("Average bad traffic")},
+              {"name" : "size", "label" : _("Average normal traffic size")}]
+
 
 def init():
     events.register("AdminMenuDisplay", menu)
@@ -100,9 +107,7 @@ def adminindex(request):
     domains = Domain.objects.all()
     return _render(request, 'stats/adminindex.html', {
             "domains" : domains, "domain" : domain,
-            "graphs" : [{"name" : "traffic", "label" : _("Average normal traffic")},
-                        {"name" : "badtraffic", "label" : _("Average bad traffic")},
-                        {"name" : "size", "label" : _("Average normal traffic size")}],
+            "graphs" : graph_list,
             "periods" : ["day", "week", "month", "year","Custom"],
         "period" : period, "cal" : CH_print
             })
@@ -110,18 +115,56 @@ def adminindex(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def custom_period(request):
-    print "[stats] json get"
-    start = request.GET.has_key("start")
-    if not start:
-        print "[stats] no start selected"
-        return
-    end = request.GET.has_key("end")
-    return _render(request, 'stats/graphs.html', {
-            "domain" : domain,
-            "graphs" : [{"name" : "traffic", "label" : _("Average normal traffic")},
-                        {"name" : "badtraffic", "label" : _("Average bad traffic")},
-                        {"name" : "size", "label" : _("Average normal traffic size")}],
-        "period" : "%s_%s" %(start,end)
+    start = None
+    end = None
+    start_ref = None
+    end_ref = None
+    domains = Domain.objects.all()
+    domain = request.GET.has_key("domain") and request.GET["domain"] or "global"
+    period = request.GET.has_key("period") and request.GET["period"] or "Custom"
+
+    if domain != "global":
+        domain = Domain.objects.get(pk=domain)
+        domain = domain.name
+    try:
+        start_ref = str(request.POST.get('start'))
+        start = start_ref.split(', ')[1]
+        end_ref = str(request.POST.get('end'))
+        end = end_ref.split(', ')[1]
+    except:
+        pass
+
+    if not end or not start:
+        return _render(request, 'stats/adminindex.html', {
+            "domains" : domains, "domain" : domain,
+            "graphs" : graph_list,
+            "period" : period,
+            "periods" : ["day", "week", "month", "year","Custom"],
+            "period_name":None,
+            "start" : start_ref,
+            "end" : end_ref,
+            "messages" : ["Custom period not selected"]
+            })
+
+    period_name = "%s_%s" %(start.replace('/',''),end.replace('/',''))
+    G = Grapher()
+    for tpl_name in graph_list:
+        G.process(domain,
+                  period_name,
+                  str2Time(*start.split('/')),
+                  str2Time(*end.split('/')),
+                  tpl[tpl_name['name']])
+
+    print "[stats] ", period
+    return _render(request, 'stats/adminindex.html', {
+            "domains" : domains, "domain" : domain,
+            "graphs" : graph_list,
+            "period" : period,
+            "periods" : ["day", "week", "month", "year","Custom"],
+            "period_name": period_name,
+            "start" : start_ref,
+            "end" : end_ref,
+            "messages" : None
             })
 
 @login_required
@@ -135,9 +178,7 @@ def index(request, dom_id=None):
 
     return _render(request, 'stats/index.html', {
             "domain" : domain,
-            "graphs" : [{"name" : "traffic", "label" : _("Average normal traffic")},
-                        {"name" : "badtraffic", "label" : _("Average bad traffic")},
-                        {"name" : "size", "label" : _("Average normal traffic size")}],
+            "graphs" : graph_list,
             "periods" : ["day", "week", "month", "year","Custom"],
             "period" : period
             })

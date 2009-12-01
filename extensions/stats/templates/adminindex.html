@@ -49,14 +49,14 @@ window.addEvent("domready", function() {
       {% endfor %}
     </select>
     {% ifequal period "Custom" %}
-    {% include "stats/calendar.html" %}
-    {% url extensions.stats.main.adminindex as c_stats_url %}
+      {% include "stats/calendar.html" %}
+      {% if start or end %}
+        <h3>{% trans "Custom period : from" %} {{ start }} {% trans "to" %} {{ end }}</h3>
+        {% include "stats/graphs.html" %}
+      {% endif %}
+    {% else %}
+      {% include "stats/graphs.html" %}
     {% endifequal %}
   </div>
-<!--
-  <h2>
-  {% trans "Period " %}{% trans period %}
-  </h2>-->
-  {% include "stats/graphs.html" %}</div>
 </div>
 {% endblock %}
