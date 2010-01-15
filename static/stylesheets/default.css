@@ -4,7 +4,7 @@ html, body {
     background: #153F65;
     margin: 0;
     padding: 0;
-
+    height: 100%;
 }
 
 #topmenubar { 

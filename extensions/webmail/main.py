@@ -41,7 +41,8 @@ def index(request):
 
 @login_required
 def folder(request, folder):
-    lst = ImapListing(folder=folder)
+    lst = ImapListing(request.user.username, request.session["password"],
+                      folder=folder)
     try:
         pageid = request.GET["page"]
     except KeyError:
@@ -55,3 +56,28 @@ def folder(request, folder):
         navbar = ""
     ctx = {"status" : "ok", "listing" : content, "navbar" : navbar}
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
+def fetchmail(request, mail_id, all=False):
+    mbc = IMAPconnector(parameters.get("webmail", "SERVER_ADDRESS"), 143)
+    mbc.login(request.user.username, request.session["password"])
+    res = mbc.fetch(start=mail_id, all=all)
+    if len(res):
+        return res[0]
+    return None
+
+@login_required
+def viewmail(request, mail_id):
+    header = fetchmail(request, mail_id)
+    pageid = request.GET.has_key("page") and request.GET["page"] or "1"
+    if header:
+        return _render(request, "webmail/viewmail.html", {
+                "header" : header, "pageid" : pageid
+                })
+
+@login_required
+def getmailcontent(request, mail_id):
+    from mailng.lib.email_listing import Email
+
+    msg = fetchmail(request, mail_id, True)
+    email = Email(msg)
+    return email.render(request)

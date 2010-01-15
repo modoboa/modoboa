@@ -1,0 +1,47 @@
+{% extends "nlayout.html" %}
+{% load i18n %}
+{% block html_head %}
+<style type="text/css">
+#mailcontent {
+  width: 100%;
+  border: 0;
+}
+td {
+  font-size: 1em;
+  height: 20px;
+  padding-left: 5px;
+}
+
+th {
+  background: #F7F9Fb;
+}
+</style>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  var spage = $("page").getSize();
+  var stable = $("table-container").getSize();
+  var slogo = $("header").getSize();
+  var iheight = spage.y - stable.y - slogo.y;
+
+  $("mailcontent").setStyle("height", iheight + "px");
+});
+</script>
+{% endblock %}
+{% block middletitle %}{% trans "Email content" %}{% endblock %}
+{% block menu %}
+  {% load webextras %}
+  {% viewm_menu "" header.imapid pageid perms %}
+{% endblock %}
+{% block content %}
+<div id="table-container">
+  <table id="headers">
+    <tr><th>{% trans "Subject" %}</th><td>{{ header.Subject }}</td></tr>
+    <tr><th>{% trans "From" %}</th><td>{{ header.From }}</td></tr>
+    <tr><th>{% trans "To" %}</th><td>{{ header.To }}</td></tr>
+    <tr><th>{% trans "Date" %}</th><td>{{ header.Date }}</td></tr>
+  </table>
+</div>
+
+{% url extensions.webmail.main.getmailcontent header.imapid as geturl %}
+<iframe id="mailcontent" src="{{ geturl }}"></iframe>
+{% endblock %}

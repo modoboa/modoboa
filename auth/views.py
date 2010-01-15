@@ -16,6 +16,7 @@ def dologin(request):
         if user:
             if user.is_active:
                 login(request, user)
+            
                 request.session["password"] = request.POST["password"]
                 next = request.POST["next"]
                 if next == "None":

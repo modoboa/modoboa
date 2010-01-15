@@ -57,6 +57,8 @@
       $("navbar").set("html", resp.navbar);
     }}).get();
   });
+  {% url extensions.webmail.main.viewmail as view_url %}
+  bindRows("{{ view_url }}", "{{ current_page }}");
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block menu %}

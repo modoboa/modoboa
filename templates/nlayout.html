@@ -22,8 +22,13 @@
   <div id="topmenubar" class="menubar">
     <div class="left">
       <ul>
+        <li>
+          {% url main.views.index as index_url %}
+          <a href="{{ index_url }}">
+          <img src="/static/pics/user.png" border="0" />{% trans "Preferences" %}</a>
+        </li>
         {% loadextmenu perms %}
-        {% if user.is_superuser or perms.admin.view_domain %}
+        {% if user.is_superuser or perms.admin.view_domains %}
         <li class="dropdown">
           <img src="/static/pics/settings.png" border="0" />
           <label>{% trans "Admin" %}</label>

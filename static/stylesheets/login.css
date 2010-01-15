@@ -10,8 +10,13 @@ html, body {
     margin: 100px auto;
     width: 610px;
     padding-bottom: 15px;
-    border: 5px solid #333;
     background: white;
+
+    border: 5px solid #333;
+    /*-moz-box-shadow: 0 10px 30px #222;*/
+    -webkit-box-shadow: 0 10px 30px #222;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 5px;
 }
 
 #loginbox h2 {

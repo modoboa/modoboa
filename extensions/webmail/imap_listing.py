@@ -82,20 +82,27 @@ class IMAPconnector(MBconnector):
                 result += [name]
         return sorted(result)
 
-    def fetch(self, start=None, stop=None, folder=None):
-        if not start or not stop:
+    def fetch(self, start=None, stop=None, folder=None, all=False):
+        if not start and not stop:
             return []
         result = []
         self.m.select(self._encodefolder(folder))
-        range = "%d:%d" % (start, stop)
-        typ, data = self.m.fetch(range, '(BODY[HEADER.FIELDS (DATE FROM SUBJECT)])')
-        imapid = start
+        if start and stop:
+            range = "%d:%d" % (start, stop)
+        else:
+            range = start
+        if not all:
+            query = '(BODY[HEADER.FIELDS (DATE FROM TO SUBJECT)])'
+        else:
+            query = '(RFC822)'
+        typ, data = self.m.fetch(range, query)
+        imapid = int(start)
         for response_part in data:
             if isinstance(response_part, tuple):
                 msg = email.message_from_string(response_part[1])
                 msg["imapid"] = imapid
                 result += [msg]
-            imapid += 1
+                imapid = imapid + 1
         return result
 
 class ImapListing(EmailListing):
