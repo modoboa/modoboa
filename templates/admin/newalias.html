@@ -8,7 +8,7 @@
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
 {% url admin.views.newalias mbox.domain_id mbox.id as box_url %}
 <form action="{{ box_url }}" method="POST" id="aliasform" name="aliasform">
-  {% include "admin/genericform.html" %}
+  {% include "common/genericform.html" %}
   <div class="spacer"></div>
   <div class="lastrow" align="center">
     <input type="submit" name="submit" value="{% trans 'Create' %}" />

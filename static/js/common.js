@@ -1,6 +1,14 @@
 window.addEvent('domready', function(){
-    if ($('menubar')) {
-	$('menubar').getElements('li.dropdown').each( function( elem ){
+    parse_menubar('topmenubar');
+    parse_menubar('menubar');
+    SqueezeBox.assign($$('a.boxed'), {
+        parse: 'rel',        
+    });
+});
+
+parse_menubar = function(id) {
+    if ($(id)) {
+	$(id).getElements('li.dropdown').each( function( elem ){
 	    var list = elem.getElement('ul.links');
 	    var myFx = new Fx.Slide(list).hide();
 	    elem.addEvents({
@@ -15,10 +23,7 @@ window.addEvent('domready', function(){
 	    });
 	});
     }
-    SqueezeBox.assign($$('a.boxed'), {
-        parse: 'rel',        
-    });
-});
+}
 
 get_iframe_body = function(id) {
     var saf = navigator.userAgent.match(/Safari/i);
@@ -64,4 +69,39 @@ confirmation = function(question, action, callback) {
         }
     });
     SqueezeBox.open("/mailng/main/confirm/?question=" + question);
+}
+
+setContentSize = function(cellsize) {
+    var contentsize = $(document.body).getSize().y - $("topmenubar").getSize().y
+        - $("header").getSize().y;
+
+    contentsize -= $("navbar").getSize().y * 2;
+    contentsize -= contentsize % cellsize;
+    $("listing").setStyle("height", contentsize + "px");
+}
+
+bindRows = function(rooturl, page) {
+    $$("tr").addEvent("click", function(event) {
+        if (event.target.parentNode.id) {
+            var url = rooturl + event.target.parentNode.id + "?page=" + page;
+            event.target.parentNode.setStyle("background", "#ffffcc");
+            location.href = url;
+        }
+    });
+}
+
+toggleSelection = function(id, value) {
+    $$("input[name=" + id + "]").each(function(obj) {
+        obj.checked = value;
+    });
+}
+
+checkSelection = function(id, text) {
+    var getout = $$("input[name=" + id + "]").every(function(item, index) {
+        return item.checked == false;
+    });
+    if (getout) {
+        return false;
+    }
+    return confirm(text);
 }

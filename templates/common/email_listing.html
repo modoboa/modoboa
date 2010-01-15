@@ -1,0 +1,57 @@
+{% extends "nlayout.html" %}
+{% load i18n %}
+{% block html_head %}
+<style type="text/css">
+#listing {
+  overflow: auto;
+  border-top: 1px solid #C8D6E8;
+}
+
+#navbar {
+  padding: 0;
+  margin: 0;
+  background: white;
+  height: 25px;
+  width: 100%;
+  text-align: right;
+  border-top: 1px solid #C8D6E8;
+}
+
+#navbar label {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+#navbar img {
+  margin-top: 5px;
+  margin-right: 5px;
+}
+{% block css %}{% endblock %}
+</style>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  if ($("selectall")) {
+    $("selectall").addEvent("click", function(event) {
+      if ($("selectall").checked) {
+        toggleSelection("selection", true);
+      } else {
+        toggleSelection("selection", false);
+      }
+    });
+  }
+  {% block js %}{% endblock %}
+  setContentSize(20);
+  var scroller = new Scroller("listing", {area: 150, velocity: 1});
+});
+</script>
+{% endblock %}
+{% block content %}
+{% block leftcol %}{% endblock %}
+
+<form method="POST" action="{{ actionurl }}" id="listingform">
+  <input type="hidden" name="pagenum" id="pagenum" value="{{ current_page }}" />
+  <div id="listing">{{ listing }}</div>
+</form>
+<div class="spacer"></div>
+<div id="navbar">{{ navbar }}</div>
+{% endblock %}

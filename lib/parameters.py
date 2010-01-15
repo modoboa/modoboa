@@ -24,14 +24,14 @@ class NotDefined(Exception):
         return "Application '%s' and/or parameter '%s' not defined" % (self.app,
                                                                        self.name)
 
-def register(app, name, type="string", default=None, help=None):
+def register(app, name, type="string", deflt=None, help=None):
     """Register a new parameter.
 
     app corresponds to a core component (admin, main) or an extension.
     """
     if not app in _params.keys():
         _params[app] = {}
-    _params[app][name] = {"type" : type, "default" : default, "help" : help}
+    _params[app][name] = {"type" : type, "default" : deflt, "help" : help}
 
 def save(app, name, value):
     if not app in _params.keys() or not name in _params[app].keys():
@@ -53,5 +53,5 @@ def get(app, name):
     try:
         p = Parameter.objects.get(name="%s.%s" % (app, name))
     except Parameter.DoesNotExist:
-        return _params[app][name]["defaut"]
+        return _params[app][name]["default"]
     return p.value

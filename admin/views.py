@@ -49,7 +49,7 @@ def domains(request):
             return mailboxes(request, dom_id=mb.domain.id)
 
         return HttpResponseRedirect(reverse(main.views.index))
-
+    
     domains = Domain.objects.all()
     counters = {}
     for dom in domains:

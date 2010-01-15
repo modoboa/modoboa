@@ -185,6 +185,101 @@ Element.implement({
 /*
 ---
 
+script: Scroller.js
+
+description: Class which scrolls the contents of any Element (including the window) when the mouse reaches the Element's boundaries.
+
+license: MIT-style license
+
+authors:
+- Valerio Proietti
+
+requires:
+- core:1.2.4/Events
+- core:1.2.4/Options
+- core:1.2.4/Element.Event
+- core:1.2.4/Element.Dimensions
+
+provides: [Scroller]
+
+...
+*/
+
+var Scroller = new Class({
+
+	Implements: [Events, Options],
+
+	options: {
+		area: 20,
+		velocity: 1,
+		onChange: function(x, y){
+			this.element.scrollTo(x, y);
+		},
+		fps: 50
+	},
+
+	initialize: function(element, options){
+		this.setOptions(options);
+		this.element = document.id(element);
+		this.listener = ($type(this.element) != 'element') ? document.id(this.element.getDocument().body) : this.element;
+		this.timer = null;
+		this.bound = {
+			attach: this.attach.bind(this),
+			detach: this.detach.bind(this),
+			getCoords: this.getCoords.bind(this)
+		};
+	},
+
+	start: function(){
+		this.listener.addEvents({
+			mouseover: this.bound.attach,
+			mouseout: this.bound.detach
+		});
+	},
+
+	stop: function(){
+		this.listener.removeEvents({
+			mouseover: this.bound.attach,
+			mouseout: this.bound.detach
+		});
+		this.detach();
+		this.timer = $clear(this.timer);
+	},
+
+	attach: function(){
+		this.listener.addEvent('mousemove', this.bound.getCoords);
+	},
+
+	detach: function(){
+		this.listener.removeEvent('mousemove', this.bound.getCoords);
+		this.timer = $clear(this.timer);
+	},
+
+	getCoords: function(event){
+		this.page = (this.listener.get('tag') == 'body') ? event.client : event.page;
+		if (!this.timer) this.timer = this.scroll.periodical(Math.round(1000 / this.options.fps), this);
+	},
+
+	scroll: function(){
+		var size = this.element.getSize(), 
+			scroll = this.element.getScroll(), 
+			pos = this.element.getOffsets(), 
+			scrollSize = this.element.getScrollSize(), 
+			change = {x: 0, y: 0};
+		for (var z in this.page){
+			if (this.page[z] < (this.options.area + pos[z]) && scroll[z] != 0)
+				change[z] = (this.page[z] - this.options.area - pos[z]) * this.options.velocity;
+			else if (this.page[z] + this.options.area > (size[z] + pos[z]) && scroll[z] + size[z] != scrollSize[z])
+				change[z] = (this.page[z] - size[z] + this.options.area - pos[z]) * this.options.velocity;
+		}
+		if (change.y || change.x) this.fireEvent('change', [scroll.x + change.x, scroll.y + change.y]);
+	}
+
+});
+
+/*
+---
+
 script: Tips.js
 
 description: Class for creating nice tips that follow the mouse cursor when hovering an element.
@@ -211,167 +306,159 @@ provides: [Tips]
 (function(){
 
 var read = function(option, element){
-    return (option) ? ($type(option) == 'function' ? option(element) : element.get(option)) : '';
+	return (option) ? ($type(option) == 'function' ? option(element) : element.get(option)) : '';
 };
 
 this.Tips = new Class({
 
-    Implements: [Events, Options],
+	Implements: [Events, Options],
 
-    options: {
-        /*
-        onAttach: $empty(element),
-        onDetach: $empty(element),
-        */
-        onShow: function(){
-            this.tip.setStyle('display', 'block');
-        },
-        onHide: function(){
-            this.tip.setStyle('display', 'none');
-        },
-        title: 'title',
-        text: function(element){
-            return element.get('rel') || element.get('href');
-        },
-        showDelay: 100,
-        hideDelay: 100,
-        className: 'tip-wrap',
-        offset: {x: 16, y: 16},
-        fixed: false
-    },
+	options: {
+		/*
+		onAttach: $empty(element),
+		onDetach: $empty(element),
+		*/
+		onShow: function(){
+			this.tip.setStyle('display', 'block');
+		},
+		onHide: function(){
+			this.tip.setStyle('display', 'none');
+		},
+		title: 'title',
+		text: function(element){
+			return element.get('rel') || element.get('href');
+		},
+		showDelay: 100,
+		hideDelay: 100,
+		className: 'tip-wrap',
+		offset: {x: 16, y: 16},
+		fixed: false
+	},
 
-    initialize: function(){
-        var params = Array.link(arguments, {options: Object.type, elements: $defined});
-        this.setOptions(params.options);
-        document.id(this);
-        
-        if (params.elements) this.attach(params.elements);
-    },
+	initialize: function(){
+		var params = Array.link(arguments, {options: Object.type, elements: $defined});
+		this.setOptions(params.options);
+		document.id(this);
+		
+		if (params.elements) this.attach(params.elements);
+	},
 
-    toElement: function(){
-        if (this.tip) return this.tip;
-        
-        this.container = new Element('div', {'class': 'tip'});
-        return this.tip = new Element('div', {
-            'class': this.options.className,
-            styles: {
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                visibility: 'hidden',
-                display: 'none'
-            }
-        }).adopt(
-            new Element('div', {'class': 'tip-top'}),
-            this.container,
-            new Element('div', {'class': 'tip-bottom'})
-        ).inject(document.body);
-    },
-    
-    attach: function(elements){
-        $$(elements).each(function(element){
-            var title = read(this.options.title, element),
-                text = read(this.options.text, element);
-            
-            element.erase('title').store('tip:native', title).retrieve('tip:title', title);
-            element.retrieve('tip:text', text);
-            this.fireEvent('attach', [element]);
-            
-            var events = ['enter', 'leave'];
-            if (!this.options.fixed) events.push('move');
+	toElement: function(){
+		if (this.tip) return this.tip;
+		
+		this.container = new Element('div', {'class': 'tip'});
+		return this.tip = new Element('div', {
+			'class': this.options.className,
+			styles: {
+				position: 'absolute',
+				top: 0,
+				left: 0
+			}
+		}).adopt(
+			new Element('div', {'class': 'tip-top'}),
+			this.container,
+			new Element('div', {'class': 'tip-bottom'})
+		).inject(document.body);
+	},
 
-            events.each(function(value){
-                var event = element.retrieve('tip:' + value);
-                if (!event) event = this['element' + value.capitalize()].bindWithEvent(this, element);
-                element.store('tip:' + value, event).addEvent('mouse' + value, event);
-            }, this);
-            
-            element.addEvent('mouseout', this.hide.bind(this, element)); // firefox doesn't handle mouseleave correct
-            
-        }, this);
-        
-        return this;
-    },
-    
-    detach: function(elements){
-        $$(elements).each(function(element){
-            ['enter', 'leave', 'move'].each(function(value){
-                element.removeEvent('mouse' + value, element.retrieve('tip:' + value)).eliminate('tip:' + value);
-            });
-            
-            this.fireEvent('detach', [element]);
-            
-            if (this.options.title == 'title'){ // This is necessary to check if we can revert the title
-                var original = element.retrieve('tip:native');
-                if (original) element.set('title', original);
-            }
-        }, this);
-        
-        return this;
-    },
-    
-    elementEnter: function(event, element){
-        this.container.empty();
-        
-        ['title', 'text'].each(function(value){
-            var content = element.retrieve('tip:' + value);
-            if (content) this.fill(new Element('div', {'class': 'tip-' + value}).inject(this.container), content);
-        }, this);
-        
-        $clear(this.timer);
-        this.timer = this.show.delay(this.options.showDelay, this, [element, event]);
-    },
-    
-    elementLeave: function(event, element){
-        this.tip.setStyle('visibility', 'hidden');
-        $clear(this.timer);
-        this.timer = this.hide.delay(this.options.hideDelay, this, element);
-        this.fireForParent(event, element);
-    },
-    
-    fireForParent: function(event, element){
-        var element = $(element);
-        if (!element) return;
-        parentNode = element.getParent();
-        if (parentNode == document.body) return;
-        if (parentNode.retrieve('tip:enter')) parentNode.fireEvent('mouseenter', event);
-        else this.fireForParent(event, parentNode);
-    },
-    
-    elementMove: function(event, element) {
-        this.position(event);
-    },
+	attach: function(elements){
+		$$(elements).each(function(element){
+			var title = read(this.options.title, element),
+				text = read(this.options.text, element);
+			
+			element.erase('title').store('tip:native', title).retrieve('tip:title', title);
+			element.retrieve('tip:text', text);
+			this.fireEvent('attach', [element]);
+			
+			var events = ['enter', 'leave'];
+			if (!this.options.fixed) events.push('move');
+			
+			events.each(function(value){
+				var event = element.retrieve('tip:' + value);
+				if (!event) event = this['element' + value.capitalize()].bindWithEvent(this, element);
+				
+				element.store('tip:' + value, event).addEvent('mouse' + value, event);
+			}, this);
+		}, this);
+		
+		return this;
+	},
 
-    position: function(event){
-        if (this.tip.getStyle('display') != 'block') return;
-        var size = window.getSize(), scroll = window.getScroll(),
-            tip = {x: this.tip.offsetWidth, y: this.tip.offsetHeight},
-            props = {x: 'left', y: 'top'},
-            obj = {};
-        
-        for (var z in props){
-            obj[props[z]] = event.page[z] + this.options.offset[z];
-            if ((obj[props[z]] + tip[z] - scroll[z]) > size[z]) obj[props[z]] = event.page[z] - this.options.offset[z] - tip[z];
-        }
-        
-        this.tip.setStyles(obj);
-        this.tip.setStyle('visibility', 'visible');
-    },
-    
-    fill: function(element, contents){
-        if(typeof contents == 'string') element.set('html', contents);
-        else element.adopt(contents);
-    },
-    
-    show: function(element, event) {
-        this.fireEvent('show', [this.tip, element]);
-        this.position((this.options.fixed) ? {page: element.getPosition()} : event);
-    },
-    
-    hide: function(element){
-        this.fireEvent('hide', [this.tip, element]);
-    }
-    
+	detach: function(elements){
+		$$(elements).each(function(element){
+			['enter', 'leave', 'move'].each(function(value){
+				element.removeEvent('mouse' + value, element.retrieve('tip:' + value)).eliminate('tip:' + value);
+			});
+			
+			this.fireEvent('detach', [element]);
+			
+			if (this.options.title == 'title'){ // This is necessary to check if we can revert the title
+				var original = element.retrieve('tip:native');
+				if (original) element.set('title', original);
+			}
+		}, this);
+		
+		return this;
+	},
+
+	elementEnter: function(event, element){
+		this.container.empty();
+		
+		['title', 'text'].each(function(value){
+			var content = element.retrieve('tip:' + value);
+			if (content) this.fill(new Element('div', {'class': 'tip-' + value}).inject(this.container), content);
+		}, this);
+		
+		$clear(this.timer);
+		this.timer = this.show.delay(this.options.showDelay, this, element);
+		this.position((this.options.fixed) ? {page: element.getPosition()} : event);
+	},
+
+	elementLeave: function(event, element){
+		$clear(this.timer);
+		this.timer = this.hide.delay(this.options.hideDelay, this, element);
+		this.fireForParent(event, element);
+	},
+
+	fireForParent: function(event, element){
+		if (!element) return;
+		parentNode = element.getParent();
+		if (parentNode == document.body) return;
+		if (parentNode.retrieve('tip:enter')) parentNode.fireEvent('mouseenter', event);
+		else this.fireForParent(parentNode, event);
+	},
+
+	elementMove: function(event, element){
+		this.position(event);
+	},
+
+	position: function(event){
+		var size = window.getSize(), scroll = window.getScroll(),
+			tip = {x: this.tip.offsetWidth, y: this.tip.offsetHeight},
+			props = {x: 'left', y: 'top'},
+			obj = {};
+		
+		for (var z in props){
+			obj[props[z]] = event.page[z] + this.options.offset[z];
+			if ((obj[props[z]] + tip[z] - scroll[z]) > size[z]) obj[props[z]] = event.page[z] - this.options.offset[z] - tip[z];
+		}
+		
+		this.tip.setStyles(obj);
+	},
+
+	fill: function(element, contents){
+		if(typeof contents == 'string') element.set('html', contents);
+		else element.adopt(contents);
+	},
+
+	show: function(element){
+		this.fireEvent('show', [this.tip, element]);
+	},
+
+	hide: function(element){
+		this.fireEvent('hide', [this.tip, element]);
+	}
+
 });
 
 })();

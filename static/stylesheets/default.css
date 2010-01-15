@@ -1,0 +1,254 @@
+html, body {
+    font-family: arial, helvetica, verdana, tahoma, sans-serif;
+    font-size: small;
+    background: #153F65;
+    margin: 0;
+    padding: 0;
+
+}
+
+#topmenubar { 
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    background: #072342;
+    border-bottom: 2px solid #333;
+    height: 30px;
+}
+
+#menubar {
+    margin: 5px;
+    display: table;
+    width: 700px;
+    margin-top: 35px;
+    /*position: absolute;*/
+}
+
+#topmenubar a, #topmenubar a:visited {
+    color: white;
+    font-weight: bold;
+}
+
+#topmenubar label {
+    color: white;
+    font-weight: bold;
+}
+
+#menubar a, #menubar a:visited {
+    color: black;
+    font-weight: bold;
+}
+
+#menubar label {
+    color: black;
+    font-weight: bold;
+}
+
+#page {
+    border: 2px solid #333;
+    background: white;
+    min-height: 92%;
+    margin: 0 15px;
+}
+
+#content {
+    overflow: auto;
+    padding: 5px;
+}
+
+#header {
+    width: 100%;
+    padding: 5px 0;
+}
+
+#header h1 {
+    font-size: medium;
+    width: 50%;
+    margin: 0 0 0 5px;
+}
+
+#loginbox {
+    margin: 100px auto;
+    width: 610px;
+    padding-bottom: 15px;
+    border: 2px solid #333;
+    background: white;
+}
+
+#loginbox h2 {
+    margin: 30px 10px 0 10px;
+    font-size: small;
+}
+
+#loginbox h3 {
+    font-size: small;
+    text-align: center;
+}
+
+#logo {
+    float: left;
+    text-align: center;
+    width: 300px;
+    margin-top: 10px;
+    border-right: 1px solid #ccc;
+}
+
+#logo img {
+    height: 90px;
+}
+
+#test {
+    float: right;
+    width: 300px;
+}
+
+.menubar a, .menubar a:visited {
+    text-decoration: none;
+}
+
+.menubar a:hover {
+    text-decoration: underline;
+}
+
+.menubar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    color: #2a4069;
+}
+
+.menubar li { 
+    float: left;
+    display: inline;
+    margin: 5px 5px;
+}
+
+.menubar li.selected {
+    background: #ffff77;
+}
+
+.menubar img {
+    float: left;
+    margin: 0px 3px;
+    border: 0;
+}
+
+.menubar .title {
+    color: white;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    float: right;
+}
+
+.logo {
+    float: right;
+    /*margin: 5px 0 0 5px;*/
+    height: 90px;
+}
+
+.dropdown {
+    position: absolute;
+}
+
+.dropdown ul { 
+    display: block;
+    background: #ffffcc;
+    width: 150px;
+    height: 90px;
+    margin: 0px;
+    padding: 0px;
+    padding-top: 10px;
+}
+
+.dropdown a, .dropdown a:visited {
+    color: black !important;
+}
+
+.spacer { 
+    clear: both;  
+}
+
+/* Mootools tooltips */
+.tip {
+    color: #fff;
+    width: 139px;
+    z-index: 13000;
+    border: 1px solid #cccccc;
+}
+ 
+.tip-title {
+    font-weight: bold;
+    font-size: 11px;
+    margin: 0;
+    color: #9FD4FF;
+    padding: 8px 8px 4px;
+    background: #eee;
+}
+
+.tip-text {
+    font-size: 11px;
+    padding: 4px 8px 8px;
+    background: #eee;
+    color: black;
+}
+
+table {
+    margin: 0 auto;
+    width: 100%;
+    border-collapse: collapse;
+    /*border-spacing: 20px;*/
+}
+
+tr.odd {
+    background: white;
+}
+
+tr.even {
+    background: #F4F6F8;
+}
+
+th, td {
+    height: 20px;
+}
+
+table th {
+    background: #CEDBEC;
+    text-align: left;
+    padding: 5px;
+}
+
+table th.right {
+    text-align: right;
+}
+
+table td {
+    border-bottom: 1px solid #C8D6E8;
+    /*padding: 5px;*/
+}
+
+input {
+    border: 1px solid #cccccc;
+    color: inherit;
+    /*background-color: #e9e9e9;*/
+    background-color: #eee;
+    padding: 2px;
+}
+
+input:hover {
+    color: inherit;
+    background-color: #ffffcc;
+}
+
+.hr td.odd {
+    background: #F7F9Fb;
+}
+
+.hr td.even {
+    
+}

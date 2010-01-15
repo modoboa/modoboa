@@ -2,15 +2,19 @@
 
 """
 """
+from datetime import datetime
+import time
+import email
+import re
+import os
+import lxml.html
+from lxml.html.clean import Cleaner
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import get_object_or_404, render_to_response
-from django.template.loader import render_to_string
 from django.template import Template
 from django.utils import simplejson
 from django.conf.urls.defaults import *
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator
 from django.contrib.auth.decorators \
     import login_required
 from mailng.lib import events, parameters
@@ -18,12 +22,7 @@ from mailng.lib import _render, _ctx_ok, _ctx_ko, decode
 from mailng.lib import db
 from mailng.admin.models import Mailbox
 from lib import AMrelease
-from datetime import datetime
-import email
-import re
-import os
-import lxml.html
-from lxml.html.clean import Cleaner
+from sql_listing import *
 
 attached_map = {}
 
@@ -53,62 +52,22 @@ def menu(**kwargs):
             ]
     return []
 
-def lookup(*args):
-    filter = ""
-    for a in args:
-        if not a:
-            continue
-        if a[0] == "&":
-            filter += " AND "
-        else:
-            filter += " OR "
-        filter += a[1:]
-    conn = db.getconnection("amavis_quarantine")
-    status, cursor = db.execute(conn, """
-SELECT msgs.from_addr, maddr.email, msgs.subject, msgs.content, quarantine.mail_id,
-       msgs.time_num, msgs.content
-FROM quarantine, maddr, msgrcpt, msgs
-WHERE quarantine.mail_id=msgrcpt.mail_id
-AND msgrcpt.rid=maddr.id
-AND msgrcpt.mail_id=msgs.mail_id
-AND quarantine.chunk_ind=1
-%s
-ORDER BY msgs.time_num DESC
-""" % filter)  
-    return cursor
-
-def render_listing(request, cursor):
-    emails = []
-    rows = cursor.fetchall()
-    for row in rows:
-        emails.append({"from" : row[0], "to" : row[1], 
-                       "subject" : row[2], "content" : row[3],
-                       "mailid" : row[4], "time" : datetime.fromtimestamp(row[5]),
-                       "type" : row[6]}) 
-    paginator = Paginator(emails, 10)
-    try:
-        pagenum = int(request.GET.get('page', '1'))
-    except ValueError:
-        pagenum = 1
-    page = paginator.page(pagenum)    
-    return render_to_string("amavis_quarantine/listing.html", {
-            "count" : len(rows), 
-            "emails" : page, "current_page" : pagenum, 
-            "last_page" : paginator._get_num_pages()
-            })
-
 @login_required
 def index(request, message=None):
+    start = time.time()
     if not request.user.is_superuser:
         mb = Mailbox.objects.get(user=request.user.id)
-        filter = "&maddr.email='%s'" % mb.full_address
+        filter = ["&maddr.email='%s'" % mb.full_address]
     else:
         filter = None
-    cursor = lookup(filter)
-
-    return _render(request, 'amavis_quarantine/index.html', {
-            "content" : render_listing(request, cursor)
-            })
+    try:
+        pageid = request.GET["page"]
+        if pageid == "":
+            pageid = 1
+    except KeyError:
+        pageid = 1
+    lst = SQLlisting(filter)
+    return lst.render(request, pageid=int(pageid), start=start)
 
 @login_required
 def viewmail_plain(request, content):
@@ -311,7 +270,19 @@ def search(request):
             filter += " OR "
         filter += "msgs.%s LIKE '%%%s%%'" % (c, pattern)
     filter = "&(%s)" % filter 
-    cursor = lookup(filter)
-    ctx = {"status" : "ok", "content" : render_listing(request, cursor)}
-    return HttpResponse(simplejson.dumps(ctx),
-                        mimetype="application/json")
+    lst = SQLlisting([filter])
+    try:
+        pageid = request.GET["page"]
+        if pageid == "":
+            pageid = 1
+    except KeyError:
+        pageid = 1
+    page = lst.paginator.getpage(pageid)
+    if page:
+        content = lst.fetch(page.id_start, page.id_stop).render(request)
+        navbar = lst.render_navbar(page)
+    else:
+        content = "Empty quarantine"
+        navbar = ""
+    ctx = {"status" : "ok", "listing" : content, "navbar" : navbar}
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

@@ -1,0 +1,18 @@
+<table>
+  <tr>
+    {% for c in table.columns %}
+    <th>{{ c|safe }}</th>
+    {% endfor %}
+  </tr>
+  {% for row in table.rows %}
+  <tr id="{{ row.id }}" class="{% cycle 'odd' 'even' %}">
+    {% for cell in row.cols %}
+      {% if cell.safe %}
+    <td>{{ cell.value|safe }}</td>
+      {% else %}
+    <td>{{ cell.value }}</td>
+      {% endif %}
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>

@@ -1,7 +1,8 @@
 {% for field in form %}
 <div class="row">
   {% if field.help_text %}
-  <div id="{{ field.name }}_helptext" style="display:none">{{ field.help_text}}</div>{% endif %}
+  <div id="{{ field.name }}_helptext" style="display:none">{{ field.help_text}}</div>
+  {% endif %}
   {{ field.label_tag }} {{ field }} {% ifequal noerrors False %}{{ field.errors }}{% endifequal %}
 </div>
 {% endfor %}

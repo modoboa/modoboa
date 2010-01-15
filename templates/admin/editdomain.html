@@ -9,7 +9,7 @@
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
 {% url admin.views.editdomain domain.id as dom_url %}
 <form action="{{ dom_url }}" method="post" name="domform" id="domform">
-  {% include "admin/genericform.html" %}
+  {% include "common/genericform.html" %}
 
   <div class="lastrow" align="center">
     <input type="submit" class="button" name="submit" value="{% trans 'Update' %}" />

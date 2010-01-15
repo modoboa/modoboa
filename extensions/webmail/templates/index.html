@@ -1,0 +1,85 @@
+{% extends "common/email_listing.html" %}
+{% load i18n %}
+{% block css %}
+#leftcol {
+  float: left;
+  width: 150px;
+}
+
+.box h3 {
+  font-size: small;
+  margin: 2px 0px 2px 0px;
+  text-align: center;
+}
+
+.box ul {
+  list-style: none;
+  padding: 5px 5px;
+  margin: 0;
+}
+
+.box li {
+  clear: both;
+  margin-bottom: 4px;
+}
+
+.box li.selected {
+  background: #ffffcc;
+}
+
+.box a:link, .box a:visited {
+  background: transparent;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.box a:hover { 
+  color: #6AB0C5;
+  text-decoration: none;
+}
+
+.box img {
+  float: left;
+  margin-right: 2px;
+  border: 0;
+}
+{% endblock %}
+{% block js %}
+  $$("a[name=loadfolder]").addEvent("click", function(event) {
+    event.stop();
+    $$("a[name=loadfolder]").each(function(item) {
+      item.setStyle("background", "white");
+    });
+    event.target.setStyle("background", "#FFFFCC");
+    new Request.JSON({url: event.target.get("href"), onSuccess: function(resp) {
+      $("listing").set("html", resp.listing);
+      $("navbar").set("html", resp.navbar);
+    }}).get();
+  });
+{% endblock %}
+{% block middletitle %}{% trans "Webmail" %}{% endblock %}
+{% block menu %}
+<ul>
+  <a href="">
+  <li><img src="/static/pics/edit.png" />{% trans "New message" %}</li>
+  </a>
+</ul>
+{% endblock %}
+{% block leftcol %}
+<div id="leftcol" class="box">
+  <h3>{% trans "Folders" %}</h3>
+  <ul>
+  {% for fd in folders %}
+  {% url extensions.webmail.main.folder fd.name as fdurl %}
+  <a href="{{ fdurl }}" name="loadfolder">
+    <li {% ifequal selection fd.name %}class="selected"{% endifequal %}>
+      {% if fd.icon %}<img src="/static/pics/{{ fd.icon }}" />
+      {% else %}<img src="/static/pics/folder.png" />
+      {% endif %}
+    {{ fd.name }}</li>
+  </a>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,26 +1,40 @@
-{% extends "layout.html" %}
 {% load i18n %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
-{% endblock %}
-{% block content %}
-<div id="loginbox">
-  <h3>{% trans "Welcome" %}</h3>
-{% if form.errors %}
-  <div class="error">
-    <p>{% trans "Your username and password didn't match. Please try again." %}</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://www.w3.org/2005/10/profile">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>{% trans "Welcome to MailNG" %}</title>
+  <link rel="icon" type="image/png" href="/static/stylesheets/logo-icon.png" />
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/login.css" />
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
+  <script src="/static/js/mootools.js" type="text/javascript"></script>
+  <script src="/static/js/mootools-more.js" type="text/javascript"></script>
+  {% url django.views.i18n.javascript_catalog as catalog_url %}
+  <script type="text/javascript" src="{{ catalog_url }}"></script>
+</head>
+
+<body>
+  <div id="loginbox">
+    <div id="logo">
+      <img src="/static/stylesheets/mailng.png" />
+       {% if error %}
+      <div class="error"><p>{{ error }}</p></div>
+      {% endif %}
+      <h2>Antoine Nguyen - 2010 - Version 0.7-dev</h2>
+    </div>
+    <div id="test">
+      <h3>{% trans "Welcome" %}</h3>
+      <form method="post" action="">
+        {% include "common/genericform.html" %}
+        
+        <div class="lastrow" align="center">
+          <input type="submit" value="login" />
+        </div>
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+    </div>
+    <div class="spacer"></div>
   </div>
-{% endif %}
-  <form method="post" action=".">
-    {% for field in form %}
-    <div class="row">
-      {{ field.label_tag }}{{ field }}
-    </div>
-    {% endfor %}
-    <div class="lastrow" align="center">
-      <input type="submit" value="login" />
-    </div>
-    <input type="hidden" name="next" value="{{ next }}" />
-  </form>
-</div>
-{% endblock %}
+</body>
+</html>

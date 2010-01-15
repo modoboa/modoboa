@@ -1,8 +1,4 @@
 {% extends "admin/settings_header.html" %}
-{% block html_head %}
-<script src="/static/js/settings.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
-{% endblock %}
 {% block menu %}
 {% load admin_extras %}
 {% settings_menu "parameters" perms %}
@@ -11,7 +7,7 @@
 {% load i18n %}
 {% url admin.views.saveparameters as action %}
 <form method="POST" action="{{ action }}">
-<table>
+<table class="hr">
   <tr>
     <th width="50%">{% trans "Name" %}</th>
     <th>{% trans "Value" %}</th>

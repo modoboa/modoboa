@@ -68,6 +68,20 @@ def settings_menu(selection, perms):
                              "perms" : perms})
 
 @register.simple_tag
+def domains_menu(selection, perms):
+    entries = [
+        {"name" : "domains",
+         "url" : reverse(admin.views.domains),
+         "label" : _("Domains"),
+         "img" : "/static/pics/domains.png"}
+        ]
+    entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box",
+                                      perms=perms)
+    return render_to_string('main/menulist.html', 
+                            {"menu" : entries, "selection" : selection,
+                             "perms" : perms})
+
+@register.simple_tag
 def loadadminextmenu(perms):
     menu = events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box", 
                                   perms=perms)

@@ -4,7 +4,7 @@
     {% if entry.menu %}
   <li class="dropdown">
     <img src="{{ entry.img }}" border="0" />
-    {{ entry.label }}
+    <label>{{ entry.label }}</label>
     <ul class="links">
       {% for sentry in entry.menu %}
       <a href="{{ sentry.url }}" name="{{ sentry.name }}">

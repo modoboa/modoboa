@@ -40,7 +40,7 @@ window.addEvent('domready', function() {
         });
 
     
-    $('body').addEvent('click', function(event) {
+    $(document.body).addEvent('click', function(event) {
 	target = event.target;
 	if (target.get('tag') == 'a') {
 	    name = target.get('name');
@@ -54,7 +54,7 @@ window.addEvent('domready', function() {
 	}
     });
 
-    $('body').addEvent('submit', function(event) {
+    $(document.body).addEvent('submit', function(event) {
 	target = event.target;
 	if (target.get('tag') == 'form') {
 	    name = target.get('name');

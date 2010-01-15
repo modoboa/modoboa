@@ -9,7 +9,7 @@
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
 {% url admin.views.newmailbox domain.id as box_url %}
 <form action="{{ box_url }}" method="POST" id="mboxform" name="mboxform">
-  {% include "admin/genericform.html" %}
+  {% include "common/genericform.html" %}
   <div class="spacer"></div>
   
   <div class="lastrow" align="center">
