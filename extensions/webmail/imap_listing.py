@@ -2,6 +2,7 @@
 
 import re
 import time
+import imaplib
 from datetime import datetime, timedelta
 from email.header import decode_header
 import email.utils
@@ -10,34 +11,69 @@ from mailng.lib import decode, tables, imap_utf7
 from mailng.lib.email_listing import MBconnector, EmailListing
 from mailng.lib import tables, imap_utf7, parameters
 
+
 class WMtable(tables.Table):
     idkey = "imapid"
     selection = tables.SelectionColumn("selection", first=True)
     subject = tables.Column("subject", label=_("Subject"))
     from_ = tables.Column("from", label=_("From"))
     date = tables.Column("date", label=_("Date"))
-    from_exp = re.compile("([^<]+)<([^>]+)>")
+    flags = tables.ImgColumn("flags")
+
+    def parse(self, header, value):
+        try:
+            return getattr(IMAPheader, "parse_%s" % header)(value)
+        except AttributeError:
+            return value
+
+class IMAPheader(object):
+    addr_exp = re.compile("([^<\(]+)<|\(([^>\)]+)>|\)")
     name_exp = re.compile("\"(.+)\"")
 
-    def parse_from(self, value):
-        m = self.from_exp.match(value)
+    @staticmethod
+    def parse_address(value):
+        m = IMAPheader.addr_exp.match(value)
         if m:
             name = m.group(1)
             name = name.strip()
-            m2 = self.name_exp.match(name)
+            m2 = IMAPheader.name_exp.match(name)
             if m2:
-                return m2.group(1)
-            return m.group(1)
+                return IMAPheader.parse_subject(m2.group(1))
+            return IMAPheader.parse_subject(name)
         return value
 
-    def parse_date(self, value):
+    @staticmethod
+    def parse_address_list(values):
+        lst = values.split(",")
+        result = ""
+        for addr in lst:
+            if result != "":
+                result += ", "
+            result += IMAPheader.parse_address(addr)
+        return result
+
+    @staticmethod
+    def parse_from(value):
+        return IMAPheader.parse_address(value)
+
+    @staticmethod
+    def parse_to(value):
+        return IMAPheader.parse_address_list(value)
+
+    @staticmethod
+    def parse_cc(value):
+        return IMAPheader.parse_address_list(value)
+
+    @staticmethod
+    def parse_date(value):
         ndate = datetime(*(email.utils.parsedate_tz(value))[:7])
         now = datetime.now()
         if now - ndate > timedelta(7):
             return ndate.strftime("%d.%m.%Y %H:%M")
         return ndate.strftime("%a %H:%M")
 
-    def parse_subject(self, value):
+    @staticmethod
+    def parse_subject(value):
         res = ""
         dcd = decode_header(value)
         for part in dcd:
@@ -45,8 +81,7 @@ class WMtable(tables.Table):
                 res += " "
             res += part[0].strip(" ")
         return decode(res)
-
-
+    
 class IMAPconnector(MBconnector):
     def login(self, user, passwd):
         import imaplib
@@ -65,7 +100,9 @@ class IMAPconnector(MBconnector):
 
     def messages_count(self, folder=None):
         (status, data) = self.m.select(self._encodefolder(folder))
-        return int(data[0])
+        (status, data) = self.m.sort("(REVERSE DATE)", "UTF-8", "(NOT DELETED)")
+        self.messages = data[0].split()
+        return len(self.messages)
 
     def listfolders(self, topfolder='INBOX', md_folders=[]):
         (status, data) = self.m.list()
@@ -86,34 +123,47 @@ class IMAPconnector(MBconnector):
         if not start and not stop:
             return []
         result = []
-        self.m.select(self._encodefolder(folder))
+        self.m.select(self._encodefolder(folder), True)
         if start and stop:
-            range = "%d:%d" % (start, stop)
+            submessages = self.messages[start - 1:stop]
+            range = ",".join(submessages)
         else:
+            submessages = [start]
             range = start
         if not all:
-            query = '(BODY[HEADER.FIELDS (DATE FROM TO SUBJECT)])'
+            query = '(FLAGS BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
         else:
             query = '(RFC822)'
         typ, data = self.m.fetch(range, query)
-        imapid = int(start)
+        if not folder:
+            folder = "INBOX"
+        tmpdict = {}
         for response_part in data:
             if isinstance(response_part, tuple):
+                imapid = response_part[0].split()[0]
+                flags = imaplib.ParseFlags(response_part[0])
                 msg = email.message_from_string(response_part[1])
-                msg["imapid"] = imapid
-                result += [msg]
-                imapid = imapid + 1
+                msg["imapid"] = "%s/%s" % (folder, imapid)
+                if not "\\Seen" in flags:
+                    msg["class"] = "unseen"
+                if "\\Answered" in flags:
+                    msg["img_flags"] = "/static/pics/answered.png"
+                tmpdict[imapid] = msg
+        for id in submessages:
+            result += [tmpdict[id]]
         return result
 
 class ImapListing(EmailListing):
     tpl = "webmail/index.html"
     
-    def __init__(self, user, password, **kwargs):
+    def __init__(self, user, password, baseurl=None, **kwargs):
         self.mbc = IMAPconnector(parameters.get("webmail", "SERVER_ADDRESS"), 143)
         status, text = self.mbc.login(user, password)
         if not status:
             print "Login error: %s" % text
         EmailListing.__init__(self, **kwargs)
+        if baseurl:
+            self.paginator.baseurl = baseurl
 
     def getfolders(self):
         md_folders = [{"name" : "INBOX", "icon" : "overview.png"},

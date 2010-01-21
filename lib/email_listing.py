@@ -14,7 +14,8 @@ class MBconnector(object):
 
 class Page(object):
     def __init__(self, pageid, id_start, id_stop, items, 
-                 items_per_page, has_previous, has_next):
+                 items_per_page, has_previous, has_next,
+                 baseurl=None):
         self.pageid = pageid
         self.id_start = id_start
         self.id_stop = id_stop
@@ -22,6 +23,7 @@ class Page(object):
         self.items_per_page = items_per_page
         self.has_previous = has_previous
         self.has_next = has_next
+        self.baseurl = baseurl
 
     def previous_page(self):
         if not self.has_previous:
@@ -45,6 +47,7 @@ class Paginator(object):
     def __init__(self, total, elems_per_page):
         self.total = total
         self.elems_per_page = elems_per_page
+        self.baseurl = None
 
     def _indexes(self, page):
         id_start = self.elems_per_page * page + 1
@@ -65,8 +68,11 @@ class Paginator(object):
                 id_stop = self.total
         else:
             return None
-        return Page(page, id_start, id_stop, self.total,
-                    self.elems_per_page, has_previous, has_next)
+        p = Page(page, id_start, id_stop, self.total,
+                 self.elems_per_page, has_previous, has_next)
+        if self.baseurl:
+            p.baseurl = self.baseurl
+        return p
 
 class EmailListing:
     def __init__(self, folder=None, elems_per_page=40, **kwargs):

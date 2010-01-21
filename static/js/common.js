@@ -71,13 +71,17 @@ confirmation = function(question, action, callback) {
     SqueezeBox.open("/mailng/main/confirm/?question=" + question);
 }
 
-setContentSize = function(cellsize) {
-    var contentsize = $(document.body).getSize().y - $("topmenubar").getSize().y
-        - $("header").getSize().y;
+setDivHeight = function(id, extrah, modulo) {
+    var contentsize = $(document.body).getSize().y 
+        - $("topmenubar").getSize().y
+        - $("header").getSize().y 
+        - ($("navbar").getSize().y)
+        - extrah;
 
-    contentsize -= $("navbar").getSize().y * 2;
-    contentsize -= contentsize % cellsize;
-    $("listing").setStyle("height", contentsize + "px");
+    if (modulo) {
+        contentsize -= contentsize % modulo;
+    }
+    $(id).setStyle("height", contentsize + "px");
 }
 
 bindRows = function(rooturl, page) {

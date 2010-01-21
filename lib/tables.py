@@ -24,6 +24,13 @@ class SelectionColumn(Column):
         return "<input type='checkbox' name='%s' value='%s' />" \
             % (self.name, value)
 
+class ImgColumn(Column):
+    def __str__(self):
+        return ""
+
+    def render(self, value):
+        return "<img src='%s' />" % value
+
 class Table(object):
     def __init__(self, rows={}):
         self.columns = []
@@ -41,16 +48,24 @@ class Table(object):
                 if isinstance(c, SelectionColumn):
                     nrow["cols"] += [{"value" : c.render(row[self.idkey]), "safe" : True}]
                     continue
+                if isinstance(c, ImgColumn):
+                    key = "img_%s" % c.name
+                    if key in row.keys():
+                        nrow["cols"] += [{"value" : c.render(row[key]), "safe" : True}]
+                    else:
+                        nrow["cols"] += ["."]
+                    continue
                 if row.has_key(c.name):
-                    try:
-                        nrow["cols"] += [{"value" : getattr(self, "parse_%s" % c.name)(row[c.name])}]
-                    except AttributeError:
-                        nrow["cols"] += [{"value" : row[c.name]}]
+                    if "class" in row.keys():
+                        cssclass = row["class"]
+                    else:
+                        cssclass = ""
+                    
+                    nrow["cols"] += [{"value" : self.parse(c.name, row[c.name]), 
+                                      "class" : cssclass}]
             self.rows += [nrow]
 
     def render(self, request):
         return render_to_string("common/tables.html", {
                 "table" : self
                 })
-
-                                 

@@ -47,7 +47,6 @@ html, body {
 #page {
     border: 2px solid #333;
     background: white;
-    min-height: 92%;
     margin: 0 15px;
 }
 
@@ -251,4 +250,8 @@ input:hover {
 
 .hr td.even {
     
+}
+
+.unseen {
+    font-weight: bold;
 }

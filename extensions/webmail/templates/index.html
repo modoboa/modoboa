@@ -46,27 +46,64 @@
 }
 {% endblock %}
 {% block js %}
-  $$("a[name=loadfolder]").addEvent("click", function(event) {
+  {% url extensions.webmail.main.folder as view_url %}
+  loadMail = function(event) {
     event.stop();
+    if (event.target.parentNode.id) {
+      var url = "{{ view_url }}" + event.target.parentNode.id + "?page=" 
+        + $("pagenum").value;
+      event.target.parentNode.setStyle("background", "#ffffcc");
+      new Request.JSON({url: url, onSuccess: function(resp) {
+        $("menubar").set("html", resp.menu);
+        $("listing").set("html", resp.mailcontent);
+        $("listing").setStyle("overflow", "hidden");
+        $$("a[name=back]").addEvent("click", loadfolder);
+        setDivHeight("mailcontent", $("table-container").getSize().y, 0);
+      }}).get();
+    }
+  }
+  updatelisting = function(resp) {
+    if (resp.menu != "") {
+      $("menubar").set("html", resp.menu);
+    }
+    $("pagenum").value = resp.current_page;
+    $("listing").set("html", resp.listing);
+    $("listing").setStyle("overflow", "auto");
+    $$("tr").addEvent("click", loadMail);
+    $("navbar").set("html", resp.navbar);
+    $("navbar").getChildren("a").addEvent("click", navbarcallback);
+  }
+  navbarcallback = function(event) {
+    event.stop();
+    new Request.JSON({url: event.target.getParent().get("href"), onSuccess: function(resp) {
+      updatelisting(resp);
+    }}).get({"mode" : "ajax"});
+  }
+  select = function(obj) {
     $$("a[name=loadfolder]").each(function(item) {
-      item.setStyle("background", "white");
+      item.getParent().setStyle("background", "white");
     });
-    event.target.setStyle("background", "#FFFFCC");
+    obj.getParent().setStyle("background", "#FFFFCC");
+  }
+  loadfolder = function(event) {
+    event.stop();
     new Request.JSON({url: event.target.get("href"), onSuccess: function(resp) {
-      $("listing").set("html", resp.listing);
-      $("navbar").set("html", resp.navbar);
-    }}).get();
-  });
-  {% url extensions.webmail.main.viewmail as view_url %}
-  bindRows("{{ view_url }}", "{{ current_page }}");
+      updatelisting(resp);
+    }}).get({"mode" : "ajax"});
+  }
+  foldercallback = function(event) {
+    select(event.target);
+    loadfolder(event);
+  }
+
+  $$("a[name=loadfolder]").addEvent("click", foldercallback);
+  $("navbar").getChildren("a").addEvent("click", navbarcallback);
+  $$("tr").addEvent("click", loadMail);
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block menu %}
-<ul>
-  <a href="">
-  <li><img src="/static/pics/edit.png" />{% trans "New message" %}</li>
-  </a>
-</ul>
+  {% load webextras %}
+  {% listing_menu "" perms %}
 {% endblock %}
 {% block leftcol %}
 <div id="leftcol" class="box">

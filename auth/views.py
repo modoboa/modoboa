@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from mailng.lib import events
 import mailng.admin
 from forms import LoginForm
 
@@ -17,7 +18,10 @@ def dologin(request):
             if user.is_active:
                 login(request, user)
             
-                request.session["password"] = request.POST["password"]
+                events.raiseEvent("UserLogin", request=request, 
+                                  username=request.POST["username"],
+                                  password=request.POST["password"])
+
                 next = request.POST["next"]
                 if next == "None":
                     next = reverse(mailng.admin.views.domains)

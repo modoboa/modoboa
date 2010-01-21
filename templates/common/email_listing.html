@@ -40,8 +40,7 @@ window.addEvent("domready", function() {
     });
   }
   {% block js %}{% endblock %}
-  setContentSize(20);
-  var scroller = new Scroller("listing", {area: 150, velocity: 1});
+  setDivHeight("listing", 0, 25);
 });
 </script>
 {% endblock %}
