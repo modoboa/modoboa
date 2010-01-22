@@ -46,59 +46,81 @@
 }
 {% endblock %}
 {% block js %}
+  updatelisting = function(resp, overflow) {
+    if ($defined(resp.menu)) {
+      $("menubar").set("html", resp.menu);
+    }
+    $("listing").set("html", resp.listing);
+    $("listing").setStyle("overflow", overflow);
+    if ($defined(resp.navbar)) {
+      $("navbar").set("html", resp.navbar);
+      $("navbar").getChildren("a").addEvent("click", navbarcallback);
+    }
+    $$("a[name=compose]").addEvent("click", loadCompose);
+  }
+
   {% url extensions.webmail.main.folder as view_url %}
   loadMail = function(event) {
     event.stop();
     if (event.target.parentNode.id) {
-      var url = "{{ view_url }}" + event.target.parentNode.id + "?page=" 
-        + $("pagenum").value;
+      var url = "{{ view_url }}" + event.target.parentNode.id;
       event.target.parentNode.setStyle("background", "#ffffcc");
       new Request.JSON({url: url, onSuccess: function(resp) {
-        $("menubar").set("html", resp.menu);
-        $("listing").set("html", resp.mailcontent);
-        $("listing").setStyle("overflow", "hidden");
-        $$("a[name=back]").addEvent("click", loadfolder);
+        updatelisting(resp, "hidden");
+        $$("a[name=back]").addEvent("click", loadFolder);
         setDivHeight("mailcontent", $("table-container").getSize().y, 0);
       }}).get();
     }
   }
-  updatelisting = function(resp) {
-    if (resp.menu != "") {
-      $("menubar").set("html", resp.menu);
-    }
-    $("pagenum").value = resp.current_page;
-    $("listing").set("html", resp.listing);
-    $("listing").setStyle("overflow", "auto");
-    $$("tr").addEvent("click", loadMail);
-    $("navbar").set("html", resp.navbar);
-    $("navbar").getChildren("a").addEvent("click", navbarcallback);
-  }
-  navbarcallback = function(event) {
+
+  loadCompose = function(event) {
     event.stop();
-    new Request.JSON({url: event.target.getParent().get("href"), onSuccess: function(resp) {
-      updatelisting(resp);
+    new Request.JSON({url: event.target, onSuccess: function(resp) {
+        updatelisting(resp, "hidden");
+        $$("a[name=back]").addEvent("click", loadFolder);
+        $$("a[name=sendmail]").addEvent("click", function(evt) {
+          evt.stop();
+          $("composemail").set("send", {
+            onSuccess: function(res) {
+              updatelisting(JSON.decode(res));
+              $$("tr").addEvent("click", loadMail);
+            }
+          });
+          $("composemail").send();
+        });
+        setDivHeight("id_body", $("mailheader").getSize().y + 20, 0);
+    }}).get();
+  }
+
+  loadFolder = function(event, obj) {
+    obj = typeof(obj) != "undefined" ? obj : event.target;
+    event.stop();
+    new Request.JSON({url: obj.get("href"), onSuccess: function(resp) {
+      updatelisting(resp, "auto");
+      $$("tr").addEvent("click", loadMail);
     }}).get({"mode" : "ajax"});
   }
+
+  navbarcallback = function(event) {
+    loadFolder(event, event.target.getParent());
+  }
+
   select = function(obj) {
     $$("a[name=loadfolder]").each(function(item) {
       item.getParent().setStyle("background", "white");
     });
     obj.getParent().setStyle("background", "#FFFFCC");
   }
-  loadfolder = function(event) {
-    event.stop();
-    new Request.JSON({url: event.target.get("href"), onSuccess: function(resp) {
-      updatelisting(resp);
-    }}).get({"mode" : "ajax"});
-  }
+
   foldercallback = function(event) {
     select(event.target);
-    loadfolder(event);
+    loadFolder(event, event.target);
   }
 
   $$("a[name=loadfolder]").addEvent("click", foldercallback);
   $("navbar").getChildren("a").addEvent("click", navbarcallback);
   $$("tr").addEvent("click", loadMail);
+  $$("a[name=compose]").addEvent("click", loadCompose);
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block menu %}

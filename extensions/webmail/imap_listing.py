@@ -119,6 +119,10 @@ class IMAPconnector(MBconnector):
                 result += [name]
         return sorted(result)
 
+    def msgseen(self, imapid):
+        folder, id = imapid.split("/")
+        self.m.store(id, "+FLAGS", "\\Seen")
+
     def fetch(self, start=None, stop=None, folder=None, all=False):
         if not start and not stop:
             return []
@@ -155,9 +159,10 @@ class IMAPconnector(MBconnector):
 
 class ImapListing(EmailListing):
     tpl = "webmail/index.html"
+    tbltype = WMtable
     
     def __init__(self, user, password, baseurl=None, **kwargs):
-        self.mbc = IMAPconnector(parameters.get("webmail", "SERVER_ADDRESS"), 143)
+        self.mbc = IMAPconnector(parameters.get("webmail", "IMAP_SERVER"), 143)
         status, text = self.mbc.login(user, password)
         if not status:
             print "Login error: %s" % text
@@ -175,7 +180,3 @@ class ImapListing(EmailListing):
         for fd in folders:
             md_folders += [{"name" : fd}]
         return md_folders
-
-    def fetch(self, id_start, id_stop):
-        return WMtable(self.mbc.fetch(start=id_start, stop=id_stop, 
-                                      folder=self.folder))

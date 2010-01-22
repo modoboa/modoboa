@@ -75,9 +75,11 @@ setDivHeight = function(id, extrah, modulo) {
     var contentsize = $(document.body).getSize().y 
         - $("topmenubar").getSize().y
         - $("header").getSize().y 
-        - ($("navbar").getSize().y)
         - extrah;
 
+    if ($("navbar")) {
+        contentsize -= $("navbar").getSize().y;
+    }
     if (modulo) {
         contentsize -= contentsize % modulo;
     }

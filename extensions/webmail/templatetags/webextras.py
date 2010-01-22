@@ -22,10 +22,27 @@ def viewm_menu(selection, folder, mail_id, page_id, perms):
                              "perms" : perms})
 
 @register.simple_tag
+def compose_menu(selection, folder, page_id, perms):
+    entries = [
+        {"name" : "back",
+         "url" : reverse(webmail.main.folder, args=[folder]) \
+             + "?page=%s" % page_id + "&menu=1",
+         "img" : "/static/pics/back.png",
+         "label" : _("Back to list")},
+        {"name" : "sendmail",
+         "url" : "",
+         "img" : "/static/pics/send-receive.png",
+         "label" : _("Send")},
+        ]
+    return render_to_string('main/menu.html', 
+                            {"selection" : selection, "entries" : entries, 
+                             "perms" : perms})
+
+@register.simple_tag
 def listing_menu(selection, perms):
     entries = [
-        {"name" : "newmail",
-         "url" : "",
+        {"name" : "compose",
+         "url" : reverse(webmail.main.compose),
          "img" : "/static/pics/edit.png",
          "label" : _("New message")}
         ]

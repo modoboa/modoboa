@@ -16,6 +16,12 @@ class Qtable(tables.Table):
     def parse_date(self, value):
         return datetime.fromtimestamp(value)
 
+    def parse(self, header, value):
+        try:
+            return getattr(self, "parse_%s" % header)(value)
+        except AttributeError:
+            return value
+
 class SQLconnector(MBconnector):
     def __init__(self, filter=None):
         self.conn = db.getconnection("amavis_quarantine")
@@ -76,10 +82,8 @@ LIMIT %d,%d
 
 class SQLlisting(EmailListing):
     tpl = "amavis_quarantine/index.html"
+    tbltype = Qtable
 
     def __init__(self, filter, **kwargs):
         self.mbc = SQLconnector(filter)
         EmailListing.__init__(self, **kwargs)
-
-    def fetch(self, id_start, id_stop):
-        return Qtable(self.mbc.fetch(start=id_start, stop=id_stop))

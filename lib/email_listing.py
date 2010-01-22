@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import time
+import re
 import lxml
+import lxml.html
 from django.template.loader import render_to_string
-from django.template import Template
+from django.template import Template, Context
 from mailng.lib import _render, decode
 
 attached_map = {}
@@ -89,12 +91,21 @@ class EmailListing:
     def getfolders(self):
         return None
 
+    def fetch(self, request, id_start, id_stop):
+        table = self.tbltype(self.mbc.fetch(start=id_start, stop=id_stop, 
+                                            folder=self.folder)).render(request)
+        tpl = Template("""
+<form method="POST" id="listingform">
+  {{ table }}
+</form>""")
+        return tpl.render(Context({"table" : table}))
+
     def render(self, request, pageid=1, **kwargs):
         page = self.paginator.getpage(pageid)
         if not page:
             listing = "Empty folder"
         else:
-            listing = self.fetch(page.id_start, page.id_stop).render(request)
+            listing = self.fetch(request, page.id_start, page.id_stop)
         elapsed = kwargs.has_key("start") and time.time() - kwargs["start"] or 0
         return _render(request, self.tpl, {
                 "listing" : listing, "elapsed" : elapsed,

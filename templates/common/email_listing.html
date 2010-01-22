@@ -46,11 +46,7 @@ window.addEvent("domready", function() {
 {% endblock %}
 {% block content %}
 {% block leftcol %}{% endblock %}
-
-<form method="POST" action="{{ actionurl }}" id="listingform">
-  <input type="hidden" name="pagenum" id="pagenum" value="{{ current_page }}" />
-  <div id="listing">{{ listing }}</div>
-</form>
+<div id="listing">{{ listing }}</div>
 <div class="spacer"></div>
 <div id="navbar">{{ navbar }}</div>
 {% endblock %}

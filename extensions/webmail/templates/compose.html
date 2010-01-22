@@ -1,0 +1,48 @@
+{% load i18n %}
+<style type="text/css">
+  #compose-container {
+    margin: 0 auto;
+    width: 95%;
+  }
+  div.row {
+    clear: both;
+    padding-top: 5px;
+  }
+  div.row label {
+    float: left;
+    width: 120px;
+    font-size: small;
+    padding: 3px 0;
+  }
+  textarea {
+    border: 1px solid #cccccc;
+    background-color: #eee;
+    width: 80%;
+    height: 40px;
+    font-size: medium;
+  }
+  textarea:hover {
+    background-color: #ffffcc;
+  }
+  #id_body {
+    background: white;
+    width: 100%;
+  }
+  input {
+    width: 80%;
+    padding: 0;
+  }
+  #mailheader {
+    padding-bottom: 10px;
+  }
+</style>
+
+{% url extensions.webmail.main.compose as compurl %}
+<form method="POST" action="{{ compurl }}" id="composemail">
+  <div id="compose-container">
+    <div id="mailheader">
+      {% include "common/genericform.html" %}
+    </div>
+    <textarea id="id_body" name="id_body"></textarea>
+  </div>
+</form>
