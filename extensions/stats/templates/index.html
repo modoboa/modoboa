@@ -2,11 +2,10 @@
 {% load i18n %}
 {% block html_head %}
 <script src="/static/js/mootools-more.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/calendar.css" />
 <style type="text/css">
   #selectors {
-    float: right;
+    float: none;
   }
 </style>
 
@@ -35,7 +34,15 @@ window.addEvent("domready", function() {
       <option value="{{ p }}" {% ifequal p period %}selected{% endifequal %}>{{ p }}</option>
       {% endfor %}
     </select>
+    {% ifequal period "Custom" %}
+    {% include "stats/calendar.html" %}
+    {% endifequal %}
   </div>
+  {% if start or end %}
+    <h3>{% trans "Custom period : from" %} {{ start }} {% trans "to" %} {{ end }}</h3>
+  {% endif %}
+  <div style="float:None;">
   {% include "stats/graphs.html" %}
+  </div>
 </div>
 {% endblock %}
