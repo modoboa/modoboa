@@ -5,7 +5,7 @@ import sys
 import os
 import re
 import rrdtool
-import string
+import string, pdb
 from optparse import OptionParser
 from mailng.lib import getoption
 from mailng.admin.models import Domain
@@ -61,7 +61,8 @@ class LogParser(object):
         try:
             self.f = open(logfile)
         except IOError, errno:
-            print "%s" % errno
+            if self.debug:
+                print "%s" % errno
             sys.exit(1)
         self.workdir = workdir
         self.year = year
@@ -72,6 +73,8 @@ class LogParser(object):
         self.last_month = None
         if not self.year:
             self.year = time.localtime().tm_year
+            if self.debug:
+                print "[rrd] Dealing with year %s" %self.year
         self.data = {}
         domains = Domain.objects.all()
         self.domains = []
@@ -134,7 +137,8 @@ class LogParser(object):
         m = t - (t % rrdstep)
         if not os.path.exists(fname):
             self.lupdates[fname] = self.init_rrd(fname, m)
-            print "[rrd] create new RRD file"
+            if self.debug:
+                print "[rrd] create new RRD file %s" %fname
         else:
             if not self.lupdates.has_key(fname):
                 self.lupdates[fname] = rrdtool.last(fname)
@@ -227,10 +231,12 @@ class LogParser(object):
                 m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
                 if m:
                     if not self.workdict.has_key(line_id):
-                        print "Inconsistent mail (%s: %s), skipping" % (line_id, m.group(1))
+                        if self.debug:
+                            print "Inconsistent mail (%s: %s), skipping" % (line_id, m.group(1))
                         continue
                     if not m.group(2) in variables:
-                        print "Unsupported status %s, skipping" % m.group(2)
+                        if self.debug:
+                            print "Unsupported status %s, skipping" % m.group(2)
                         continue
 
                     addrfrom = re.match("([^@]+)@(.+)", self.workdict[line_id]['from'])
@@ -258,6 +264,8 @@ class LogParser(object):
         # Sort everything by time
         G = grapher.Grapher()
         for dom, data in self.data.iteritems():
+            if self.debug:
+                print "[rrd] dealing with domain %s" %dom
             sortedData = {}
             sortedData = [ (i, data[i]) for i in sorted(data.keys()) ]
             for t, dict in sortedData:

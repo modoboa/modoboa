@@ -1,23 +1,13 @@
 {% load i18n %}
-<div id="periodSelector" style="border:1px solid #dddddd;float:right;padding:3px;margin-top:-3px;">
+<div style="border:1px solid #dddddd;float:right;padding:3px;margin-top:-3px;">
   {% url extensions.stats.main.custom_period as c_stats_url %}
 <form class="calendarForm" action="{{ c_stats_url }}" method="POST">
-<!--<form class="calendarForm" onsubmit="change()">-->
     {% trans "Start" %}: <input id="dateTravelStart" name="start" value="{{ start }}" type="text"/>
     {% trans "End" %}: <input id="dateTravelEnd" name="end" value="{{ end }}" type="text" />
     <input TYPE=SUBMIT VALUE="ok">
   </form>
 </div>
 <script type="text/javascript">
-function change() {
-  var dom_sel = $("domain").getElements("option.[selected]")[0].value;
-  var per_sel = $("period").getElements("option.[selected]")[0].value;
-  {% url extensions.stats.main.custom_period as c_stats_url %}
-  location.href = "{{ c_stats_url }}" + "?period=" + per_sel + "&domain=" +
-                dom_sel  + "&start=" + $("dateTravelStart").value +
-                "&end=" + $("dateTravelEnd").value;
-
-};
 myCal = new Calendar(
   {
     dateTravelStart: 'D, Y/m/d',
