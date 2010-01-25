@@ -16,15 +16,15 @@ from mailng.admin.views import good_domain
 from mailng.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
-from extensions.stats.grapher import Grapher,tpl
+from extensions.stats.grapher import Grapher, tpl
 from extensions.stats.logparser import str2Time
+from mailng.lib import getoption
 
 graph_types = ['AVERAGE', 'MAX']
 
 graph_list = [{"name" : "traffic", "label" : _("Average normal traffic")},
               {"name" : "badtraffic", "label" : _("Average bad traffic")},
               {"name" : "size", "label" : _("Average normal traffic size")}]
-
 
 def init():
     events.register("AdminMenuDisplay", menu)
@@ -91,8 +91,9 @@ def graph_display(request,dom_id,graph_t=graph_types):
 
     return _render(request, 'stats/index.html', {
         "page" : "Domain statistics", "graph"   : graph_nature,
-        "domain":domain,"domains" : domains, "messages" : errors ,
-        "types" :  graph_type, "tmp_path" : tmp_path})
+        "domain": domain, "domains" : domains, "messages" : errors,
+        "types" : graph_type, "tmp_path" : tmp_path,
+        "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -105,12 +106,16 @@ def adminindex(request):
         domain = Domain.objects.get(pk=domain)
         domain = domain.name
     domains = Domain.objects.all()
+    G = Grapher()
+    for name, t in tpl.iteritems():
+        G.make_defaults(domain, t)
+
     return _render(request, 'stats/adminindex.html', {
-            "domains" : domains, "domain" : domain,
-            "graphs" : graph_list,
-            "periods" : ["day", "week", "month", "year","Custom"],
-        "period" : period, "cal" : CH_print
-            })
+        "domains" : domains, "domain" : domain,
+        "graphs" : graph_list,
+        "periods" : ["day", "week", "month", "year","Custom"],
+        "period" : period, "cal" : CH_print,
+        "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -143,8 +148,8 @@ def custom_period(request):
             "period_name":None,
             "start" : start_ref,
             "end" : end_ref,
-            "messages" : ["Custom period not selected"]
-            })
+            "messages" : ["Custom period not selected"],
+            "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
 
     period_name = "%s_%s" %(start.replace('/',''),end.replace('/',''))
     G = Grapher()
@@ -157,15 +162,16 @@ def custom_period(request):
 
     print "[stats] ", period
     return _render(request, 'stats/adminindex.html', {
-            "domains" : domains, "domain" : domain,
-            "graphs" : graph_list,
-            "period" : period,
-            "periods" : ["day", "week", "month", "year","Custom"],
-            "period_name": period_name,
-            "start" : start_ref,
-            "end" : end_ref,
-            "messages" : None
-            })
+        "domains" : domains, "domain" : domain,
+        "graphs" : graph_list,
+        "period" : period,
+        "periods" : ["day", "week", "month", "year","Custom"],
+        "period_name": period_name,
+        "start" : start_ref,
+        "end" : end_ref,
+        "messages" : None,
+        "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
+
 
 @login_required
 @good_domain
@@ -177,8 +183,8 @@ def index(request, dom_id=None):
         domain = Domain.objects.get(pk=dom_id)
 
     return _render(request, 'stats/index.html', {
-            "domain" : domain,
-            "graphs" : graph_list,
-            "periods" : ["day", "week", "month", "year","Custom"],
-            "period" : period
-            })
+        "domain" : domain,
+        "graphs" : graph_list,
+        "periods" : ["day", "week", "month", "year","Custom"],
+        "period" : period,
+        "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
