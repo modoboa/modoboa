@@ -33,6 +33,15 @@ if menus != ():
 if settings.DEBUG:
     urlpatterns += patterns(
         '',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/tonio/projets/devel/mailng/static'})
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+         {'document_root': settings.STATIC_ROOTDIR})
         )
-                            
+    # Stats
+    if 'mailng.extensions.stats' in settings.INSTALLED_APPS:
+        urlpatterns += patterns(
+            '',
+            (r'^img/stats/(?P<path>.*)/$', 'django.views.static.serve',
+             {'document_root': settings.IMG_ROOTDIR})
+            )
+
+
