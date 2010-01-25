@@ -59,10 +59,10 @@ a.footer{
 .calendar .valid{
     color:blue;
     font-weight:bold;
+    cursor:pointer;
 }
 .calendar .valid.hover{
     background:#FFFF77;
-    cursor:pointer;
     font-weight:bold;
 }
 .calendar caption a,
@@ -70,21 +70,13 @@ a.footer{
     color:blue;
     font-weight:bold;
     padding:2px;
-}
-.calendar .next.hover{
-    background:#FFFF77;
     cursor:pointer;
-    font-weight:bold;
 }
+.calendar caption a,
 .calendar .prev{
     color:blue;
     font-weight:bold;
     padding:2px;
-}
-.calendar .prev.hover{
-    background:#FFFF77;
-    cursor:pointer;
-    font-weight:bold;
 }
 .calendar .active,
 .calendar .hilite,
