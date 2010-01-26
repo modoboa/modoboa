@@ -11,8 +11,7 @@ register = template.Library()
 def viewm_menu(selection, folder, mail_id, page_id, perms):   
     entries = [
         {"name" : "back",
-         "url" : reverse(webmail.main.folder, args=[folder]) \
-             + "?page=%s" % page_id + "&menu=1",
+         "url" : folder + "?page=%s" % page_id + "&menu=1",
          "img" : "/static/pics/back.png",
          "label" : _("Back to list")},
         ]
@@ -25,8 +24,7 @@ def viewm_menu(selection, folder, mail_id, page_id, perms):
 def compose_menu(selection, folder, page_id, perms):
     entries = [
         {"name" : "back",
-         "url" : reverse(webmail.main.folder, args=[folder]) \
-             + "?page=%s" % page_id + "&menu=1",
+         "url" : folder + "?page=%s" % page_id + "&menu=1",
          "img" : "/static/pics/back.png",
          "label" : _("Back to list")},
         {"name" : "sendmail",

@@ -6,6 +6,45 @@ window.addEvent('domready', function(){
     });
 });
 
+callbacks = {};
+
+register_callback = function(name, callback) {
+    callbacks[name] = callback;
+}
+
+current_anchor = null;
+
+check_anchor = function() {
+    if (current_anchor == document.location.hash) {
+        return;
+    }
+    current_anchor = document.location.hash;
+    if (!current_anchor) {
+        query = "INBOX/"; // Default location
+    } else {
+        var splits = current_anchor.substring(1).split('?');
+        var section = splits[0];
+        delete splits[0];
+        var params = splits.join('&');
+        if (section[section.length - 1] != '/') {
+            section += "/";
+        }
+        var query = section;
+        if (params != "") {
+            query += "?" + params;
+        }
+    }
+    new Request.JSON({url: query, onSuccess: function(resp) {
+        callback = ($defined(resp.callback)) ? resp.callback : "default";
+        callbacks[callback](resp);
+    }}).get();
+}
+
+ajaxListener = function(defcallback) {
+    register_callback("default", defcallback);
+    check_anchor.periodical(300);
+}
+
 parse_menubar = function(id) {
     if ($(id)) {
 	$(id).getElements('li.dropdown').each( function( elem ){

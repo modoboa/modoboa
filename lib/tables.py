@@ -32,6 +32,8 @@ class ImgColumn(Column):
         return "<img src='%s' />" % value
 
 class Table(object):
+    tableid = ""
+
     def __init__(self, rows={}):
         self.columns = []
         for m in inspect.getmembers(self):
@@ -67,5 +69,5 @@ class Table(object):
 
     def render(self, request):
         return render_to_string("common/tables.html", {
-                "table" : self
+                "table" : self, "tableid" : self.tableid
                 })

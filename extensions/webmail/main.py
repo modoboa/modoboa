@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
+import sys
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import simplejson
@@ -33,41 +34,46 @@ def menu(**kwargs):
         return []
     return [
         {"name" : _("Webmail"),
-         "url" : reverse(folder),
+         "url" : reverse(index),
          "img" : "/static/pics/webmail.png"}
         ]
 
 def userlogin(**kwargs):
     kwargs["request"].session["password"] = kwargs["password"]
 
-def folder_ajax(request, name, pageid, menu=False):
+def getctx(status, **kwargs):
+    callername = sys._getframe(1).f_code.co_name
+    ctx = {"status" : status, "callback" : callername}
+    for kw, v in kwargs.iteritems():
+        ctx[kw] = v
+    return ctx
+
+@login_required
+def folder(request, name, updatenav=True):
+    if not name:
+        name = "INBOX"
+    if updatenav:
+        pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
+        request.session["folder"] = name
+        request.session["page"] = pageid
     lst = ImapListing(request.user.username, request.session["password"],
-                      reverse(folder, args=[name]), folder=name)
-    page = lst.paginator.getpage(pageid)
+                      name, folder=name)
+    page = lst.paginator.getpage(request.session["page"])
     if page:
         content = lst.fetch(request, page.id_start, page.id_stop)
         navbar = lst.render_navbar(page)
     else:
         content = "Empty folder"
         navbar = ""
-    ctx = {"status" : "ok", "listing" : content, "navbar" : navbar}
-    if menu or "menu" in request.GET.keys():
-        from templatetags.webextras import listing_menu
-        ctx["menu"] = listing_menu("", request.user.get_all_permissions())
+    ctx = getctx("ok", listing=content, navbar=navbar,
+                 menu=listing_menu("", request.user.get_all_permissions()))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
-def folder(request, name=None):
-    if not name:
-        name = "INBOX"
-    pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
-    request.session["folder"] = name
-    request.session["page"] = pageid
-    if "mode" in request.GET.keys() and request.GET["mode"] == "ajax":
-        return folder_ajax(request, name, pageid)
+def index(request):
     lst = ImapListing(request.user.username, request.session["password"],
-                      reverse(folder, args=[name]), folder=name)
-    return lst.render(request, pageid=int(pageid))
+                      "INBOX", folder="INBOX")
+    return lst.render(request, empty=True)
 
 def fetchmail(request, folder, mail_id, all=False):
     global mbc
@@ -84,14 +90,14 @@ def viewmail(request, folder, mail_id=None):
     header = fetchmail(request, folder, mail_id)
     if header:
         from templatetags.webextras import viewm_menu
-        menu = viewm_menu("", request.session["folder"], mail_id, 
-                          request.session["page"],
+        pageid = request.session.has_key("page") and request.session["page"] or "1"
+        menu = viewm_menu("", folder, mail_id, pageid,
                           request.user.get_all_permissions())
         folder, imapid = header["imapid"].split("/")
         mailcontent = render_to_string("webmail/viewmail.html", {
                 "header" : header, "folder" : folder, "imapid" : imapid
                 })
-        ctx = {"status" : "ok", "menu" : menu, "listing" : mailcontent}
+        ctx = getctx("ok", menu=menu, listing=mailcontent)
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
@@ -122,8 +128,7 @@ def compose(request):
             s = smtplib.SMTP(parameters.get("webmail", "SMTP_SERVER"))
             s.sendmail(msg['From'], [msg['To']], msg.as_string())
             s.quit()
-            return folder_ajax(request, request.session["folder"],
-                               request.session["page"], True)
+            return folder(request, request.session["folder"], False)
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
@@ -132,5 +137,5 @@ def compose(request):
     content = render_to_string("webmail/compose.html", {
             "form" : form
             })
-    ctx = {"status" : "ok", "menu" : menu, "listing" : content}
+    ctx = getctx("ok", menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

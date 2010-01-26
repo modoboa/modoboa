@@ -102,10 +102,13 @@ class EmailListing:
 
     def render(self, request, pageid=1, **kwargs):
         page = self.paginator.getpage(pageid)
-        if not page:
-            listing = "Empty folder"
+        if "empty" in kwargs.keys() and not kwargs["empty"]:
+            if not page:
+                listing = "Empty folder"
+            else:
+                listing = self.fetch(request, page.id_start, page.id_stop)
         else:
-            listing = self.fetch(request, page.id_start, page.id_stop)
+            listing = ""
         elapsed = kwargs.has_key("start") and time.time() - kwargs["start"] or 0
         return _render(request, self.tpl, {
                 "listing" : listing, "elapsed" : elapsed,

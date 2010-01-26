@@ -44,9 +44,16 @@
   margin-right: 2px;
   border: 0;
 }
+
+tr.table-tr-selected {
+  background: red;
+}
 {% endblock %}
 {% block js %}
   updatelisting = function(resp, overflow) {
+    if (!$defined(overflow)) {
+      overflow = "auto";
+    }
     if ($defined(resp.menu)) {
       $("menubar").set("html", resp.menu);
     }
@@ -60,46 +67,68 @@
   }
 
   {% url extensions.webmail.main.folder as view_url %}
-  loadMail = function(event) {
+  viewmail = function(event) {
     event.stop();
     if (event.target.parentNode.id) {
-      var url = "{{ view_url }}" + event.target.parentNode.id;
+      var url = event.target.parentNode.id + "/";
       event.target.parentNode.setStyle("background", "#ffffcc");
-      new Request.JSON({url: url, onSuccess: function(resp) {
-        updatelisting(resp, "hidden");
-        $$("a[name=back]").addEvent("click", loadFolder);
-        setDivHeight("mailcontent", $("table-container").getSize().y, 0);
-      }}).get();
+      location.hash = url;
     }
   }
+  register_callback("viewmail", function(resp) {
+    updatelisting(resp, "hidden");
+    $$("a[name=back]").addEvent("click", loadFolder);
+    setDivHeight("mailcontent", $("table-container").getSize().y, 0);
+  });
 
   loadCompose = function(event) {
     event.stop();
-    new Request.JSON({url: event.target, onSuccess: function(resp) {
-        updatelisting(resp, "hidden");
-        $$("a[name=back]").addEvent("click", loadFolder);
-        $$("a[name=sendmail]").addEvent("click", function(evt) {
-          evt.stop();
-          $("composemail").set("send", {
-            onSuccess: function(res) {
-              updatelisting(JSON.decode(res));
-              $$("tr").addEvent("click", loadMail);
-            }
-          });
-          $("composemail").send();
-        });
-        setDivHeight("id_body", $("mailheader").getSize().y + 20, 0);
-    }}).get();
+    location.hash = "compose/";
   }
+  register_callback("compose", function(resp) {
+    updatelisting(resp, "hidden");
+    $$("a[name=back]").addEvent("click", loadFolder);
+    $$("a[name=sendmail]").addEvent("click", function(evt) {
+      evt.stop();
+      $("composemail").set("send", {
+        onSuccess: function(res) {
+          updatelisting(JSON.decode(res));
+          $$("tr").addEvent("click", viewmail);
+        }
+      });
+      $("composemail").send();
+    });
+    setDivHeight("id_body", $("mailheader").getSize().y + 20, 0);
+  });
 
   loadFolder = function(event, obj) {
-    obj = typeof(obj) != "undefined" ? obj : event.target;
+    if (!$defined(obj)) {
+      obj = event.target;
+    }
     event.stop();
-    new Request.JSON({url: obj.get("href"), onSuccess: function(resp) {
-      updatelisting(resp, "auto");
-      $$("tr").addEvent("click", loadMail);
-    }}).get({"mode" : "ajax"});
+    location.hash = obj.get("href");
   }
+  register_callback("folder", function(resp) {
+    updatelisting(resp, "auto");
+    var tbl = new HtmlTable($("emails"), {
+      selectable: true
+    });
+    var drag_group = new Drag.Group({ 
+    });
+    tbl.addEvent("rowFocus", function(obj) {
+      var clone = obj.clone()
+        .setStyles(obj.getCoordinates())
+        .setStyles({"opacity": 0.7, "position": "absolute"})
+        .inject(document.body);
+      drag_group.add(clone, {
+        onComplete: function(item) {
+          item.dispose();
+          delete(item);
+        }
+      });
+    });
+    $$("tr").addEvent("dblclick", viewmail);
+  });
 
   navbarcallback = function(event) {
     loadFolder(event, event.target.getParent());
@@ -117,9 +146,9 @@
     loadFolder(event, event.target);
   }
 
+  ajaxListener(updatelisting);
   $$("a[name=loadfolder]").addEvent("click", foldercallback);
   $("navbar").getChildren("a").addEvent("click", navbarcallback);
-  $$("tr").addEvent("click", loadMail);
   $$("a[name=compose]").addEvent("click", loadCompose);
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
@@ -133,7 +162,7 @@
   <ul>
   {% for fd in folders %}
   {% url extensions.webmail.main.folder fd.name as fdurl %}
-  <a href="{{ fdurl }}" name="loadfolder">
+  <a href="{{ fd.name }}" name="loadfolder">
     <li {% ifequal selection fd.name %}class="selected"{% endifequal %}>
       {% if fd.icon %}<img src="/static/pics/{{ fd.icon }}" />
       {% else %}<img src="/static/pics/folder.png" />
