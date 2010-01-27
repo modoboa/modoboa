@@ -45,8 +45,20 @@
   border: 0;
 }
 
-tr.table-tr-selected {
-  background: red;
+td {
+  position: relative;
+}
+
+.draggable {
+  cursor: move;
+}
+
+.dragging {
+  background: #6AB0C5;
+}
+
+tr {
+ cursor: pointer;
 }
 {% endblock %}
 {% block js %}
@@ -64,6 +76,22 @@ tr.table-tr-selected {
       $("navbar").getChildren("a").addEvent("click", navbarcallback);
     }
     $$("a[name=compose]").addEvent("click", loadCompose);
+    $$("a[name=empty]").addEvent("click", empty);
+  }
+  empty = function(event) {
+    event.stop();
+    new Request.JSON({url : event.target.get("href"), onSuccess : function(resp) {
+      updatelisting(resp);
+    }}).get();
+  }
+
+  select = function(obj) {
+    $$("a[name=loadfolder]").each(function(item) {
+      item.getParent().removeClass("selected");
+      item.getParent().addClass("droppable");
+    });
+    obj.getParent().removeClass("droppable");
+    obj.getParent().addClass("selected");
   }
 
   {% url extensions.webmail.main.folder as view_url %}
@@ -110,20 +138,62 @@ tr.table-tr-selected {
   }
   register_callback("folder", function(resp) {
     updatelisting(resp, "auto");
-    var tbl = new HtmlTable($("emails"), {
-      selectable: true
-    });
-    var drag_group = new Drag.Group({ 
-    });
-    tbl.addEvent("rowFocus", function(obj) {
-      var clone = obj.clone()
-        .setStyles(obj.getCoordinates())
-        .setStyles({"opacity": 0.7, "position": "absolute"})
-        .inject(document.body);
-      drag_group.add(clone, {
+    /*var drag_group = new Drag.Group({
+      filter: function(item) { return item.hasClass("active"); },
+      drag: {
         onComplete: function(item) {
           item.dispose();
           delete(item);
+        },
+        onEnter: function(item, droppable) {
+          alert(droppable);
+        }
+      }
+    });*/
+    $$("td[class*=draggable]").each(function(item) {
+      item.makeDraggable({
+        droppables: ".droppable",
+      }).addEvents({
+        "enter" : function(item, droppable) {
+          droppable.addClass("dragging");
+        },
+        "leave" : function(item, droppable) {
+          droppable.removeClass("dragging");
+        },
+        "drop" : function(item, droppable, event) {
+          item.dispose();
+          delete(item);
+          if (!droppable) {
+            this.element = this.oldelement;
+            return;
+          }
+          droppable.removeClass("dragging");
+          this.oldelement.getParent().dispose();
+          to = droppable.getFirst("a").get("href");
+          {% url extensions.webmail.main.move as moveurl %}
+          new Request.JSON({url: "{{ moveurl }}", onSuccess: function(resp) {
+            
+          }}).get({msgset : this.oldelement.getParent().get("id"),
+                   to : to});
+        },
+        "beforeStart": function(item) {
+          var clone = item.clone()
+            .setStyles({"position" : "absolute", 
+                        "opacity" : 0.6,
+                        "width" : "300px",
+                        "border" : "1px solid #333", 
+                        "background" : "white"})
+            .setStyles(item.getCoordinates())
+            .inject(document.body);
+          this.oldelement = this.element;
+          this.element = clone;
+        },
+        "cancel": function(item) {
+          if ($defined(this.oldelement)) {
+            item.dispose();
+            delete(item);
+            this.element = this.oldelement;
+          }
         }
       });
     });
@@ -132,13 +202,6 @@ tr.table-tr-selected {
 
   navbarcallback = function(event) {
     loadFolder(event, event.target.getParent());
-  }
-
-  select = function(obj) {
-    $$("a[name=loadfolder]").each(function(item) {
-      item.getParent().setStyle("background", "white");
-    });
-    obj.getParent().setStyle("background", "#FFFFCC");
   }
 
   foldercallback = function(event) {
@@ -154,7 +217,7 @@ tr.table-tr-selected {
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block menu %}
   {% load webextras %}
-  {% listing_menu "" perms %}
+  {% listing_menu "" "INBOX" perms %}
 {% endblock %}
 {% block leftcol %}
 <div id="leftcol" class="box">
@@ -162,13 +225,14 @@ tr.table-tr-selected {
   <ul>
   {% for fd in folders %}
   {% url extensions.webmail.main.folder fd.name as fdurl %}
-  <a href="{{ fd.name }}" name="loadfolder">
-    <li {% ifequal selection fd.name %}class="selected"{% endifequal %}>
+  <li class="droppable">
+    <a href="{{ fd.name }}" name="loadfolder">
       {% if fd.icon %}<img src="/static/pics/{{ fd.icon }}" />
       {% else %}<img src="/static/pics/folder.png" />
       {% endif %}
-    {{ fd.name }}</li>
-  </a>
+    {{ fd.name }}
+    </a>
+  </li>
   {% endfor %}
   </ul>
 </div>

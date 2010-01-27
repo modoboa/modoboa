@@ -58,10 +58,12 @@ class Table(object):
                         nrow["cols"] += ["."]
                     continue
                 if row.has_key(c.name):
-                    if "class" in row.keys():
-                        cssclass = row["class"]
-                    else:
+                    try:
+                        cssclass = getattr(c, "cssclass")
+                    except AttributeError:
                         cssclass = ""
+                    if "class" in row.keys():
+                        cssclass += (cssclass != "") and ", %s" % row["class"] or row["class"]
                     
                     nrow["cols"] += [{"value" : self.parse(c.name, row[c.name]), 
                                       "class" : cssclass}]

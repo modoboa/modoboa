@@ -15,8 +15,6 @@ from imap_listing import *
 from forms import *
 from templatetags.webextras import *
 
-mbc = None
-
 def init():
     events.register("UserMenuDisplay", menu)
     events.register("UserLogin", userlogin)
@@ -66,7 +64,7 @@ def folder(request, name, updatenav=True):
         content = "Empty folder"
         navbar = ""
     ctx = getctx("ok", listing=content, navbar=navbar,
-                 menu=listing_menu("", request.user.get_all_permissions()))
+                 menu=listing_menu("", name, request.user.get_all_permissions()))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
@@ -76,11 +74,7 @@ def index(request):
     return lst.render(request, empty=True)
 
 def fetchmail(request, folder, mail_id, all=False):
-    global mbc
-    if not mbc:
-        mbc = IMAPconnector(parameters.get("webmail", "IMAP_SERVER"), 143)
-        mbc.login(request.user.username, request.session["password"])
-    res = mbc.fetch(start=mail_id, folder=folder, all=all)
+    res = IMAPconnector(request).fetch(start=mail_id, folder=folder, all=all)
     if len(res):
         return res[0]
     return None
@@ -106,9 +100,7 @@ def getmailcontent(request, folder, mail_id):
 
     msg = fetchmail(request, folder, mail_id, True)
     if "class" in msg.keys() and msg["class"] == "unseen":
-        global mbc
-        mbc.msgseen(msg["imapid"])
-
+        IMAPconnector(request).msgseen(msg["imapid"])
     email = Email(msg, mode="html", links="1")
     return email.render(request)
 
@@ -139,3 +131,20 @@ def compose(request):
             })
     ctx = getctx("ok", menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
+@login_required
+def move(request):
+    for arg in ["msgset", "to"]:
+        if not request.GET.has_key(arg):
+            return
+    folder, id = request.GET["msgset"].split("/")
+    mbc = IMAPconnector(request)
+    mbc.move(id, folder, request.GET["to"])
+    return HttpResponse(simplejson.dumps({"status" : "ok"}),
+                        mimetype="application/json")
+
+@login_required
+def empty(request, name):
+    mbc = IMAPconnector(request)
+    mbc.empty(name)
+    return folder(request, name, False)

@@ -37,13 +37,20 @@ def compose_menu(selection, folder, page_id, perms):
                              "perms" : perms})
 
 @register.simple_tag
-def listing_menu(selection, perms):
+def listing_menu(selection, folder, perms):
     entries = [
         {"name" : "compose",
          "url" : reverse(webmail.main.compose),
          "img" : "/static/pics/edit.png",
          "label" : _("New message")}
         ]
+    if folder in ["Trash"]:
+        entries += [
+            {"name" : "empty",
+             "url" : reverse(webmail.main.empty, args=[folder]),
+             "img" : "/static/pics/clear.png",
+             "label" : _("Empty trash")}
+            ]
 
     return render_to_string("main/menu.html",
                             {"selection" : selection, "entries" : entries,

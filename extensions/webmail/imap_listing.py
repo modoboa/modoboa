@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from email.header import decode_header
 import email.utils
 from django.utils.translation import ugettext as _
-from mailng.lib import decode, tables, imap_utf7
+from mailng.lib import decode, tables, imap_utf7, Singleton
 from mailng.lib.email_listing import MBconnector, EmailListing
 from mailng.lib import tables, imap_utf7, parameters
 
@@ -17,7 +17,8 @@ class WMtable(tables.Table):
     idkey = "imapid"
     selection = tables.SelectionColumn("selection", width="20px", first=True)
     _1_flags = tables.ImgColumn("flags", width="40px")
-    _2_subject = tables.Column("subject", width="50%", label=_("Subject"))
+    _2_subject = tables.Column("subject", width="50%", label=_("Subject"), 
+                               cssclass="draggable")
     _3_from_ = tables.Column("from", width="20%", label=_("From"))
     _4_date = tables.Column("date", width="20%", label=_("Date"))
 
@@ -83,11 +84,23 @@ class IMAPheader(object):
                 res += " "
             res += part[0].strip(" ")
         return decode(res)
-    
-class IMAPconnector(MBconnector):
+
+class IMAPconnector(object):
+    __metaclass__ = Singleton
+
+    def __init__(self, request=None, user=None, password=None):
+        self.address = parameters.get("webmail", "IMAP_SERVER")
+        if request:
+            status, msg = self.login(request.user.username, 
+                                     request.session["password"])
+        else:
+            status, msg = self.login(user, password)
+        if not status:
+            # Gestion d'erreur
+            pass
+
     def login(self, user, passwd):
         import imaplib
-
         try:
             self.m = imaplib.IMAP4_SSL(self.address)
             self.m.login(user, passwd)
@@ -124,6 +137,18 @@ class IMAPconnector(MBconnector):
     def msgseen(self, imapid):
         folder, id = imapid.split("/")
         self.m.store(id, "+FLAGS", "\\Seen")
+
+    def move(self, msgset, oldfolder, newfolder):
+        self.m.select(self._encodefolder(oldfolder), True)
+        self.m.copy(msgset, newfolder)
+        self.m.store(msgset, "+FLAGS", "\\Deleted")
+
+    def empty(self, folder):
+        self.m.select(self._encodefolder(folder))
+        typ, data = self.m.search(None, 'ALL')
+        for num in data[0].split():
+            self.m.store(num, "+FLAGS", "\\Deleted")
+        self.m.expunge()
 
     def fetch(self, start=None, stop=None, folder=None, all=False):
         if not start and not stop:
@@ -164,10 +189,7 @@ class ImapListing(EmailListing):
     tbltype = WMtable
     
     def __init__(self, user, password, baseurl=None, **kwargs):
-        self.mbc = IMAPconnector(parameters.get("webmail", "IMAP_SERVER"), 143)
-        status, text = self.mbc.login(user, password)
-        if not status:
-            print "Login error: %s" % text
+        self.mbc = IMAPconnector(user=user, password=password)
         EmailListing.__init__(self, **kwargs)
         if baseurl:
             self.paginator.baseurl = baseurl
