@@ -106,14 +106,11 @@ tr {
   register_callback("viewmail", function(resp) {
     updatelisting(resp, "hidden");
     $$("a[name=back]").addEvent("click", loadFolder);
+    $$("a[name=reply]").addEvent("click", reply);
     setDivHeight("mailcontent", $("table-container").getSize().y, 0);
   });
 
-  loadCompose = function(event) {
-    event.stop();
-    location.hash = "compose/";
-  }
-  register_callback("compose", function(resp) {
+  compose_callback = function(resp) {
     updatelisting(resp, "hidden");
     $$("a[name=back]").addEvent("click", loadFolder);
     $$("a[name=sendmail]").addEvent("click", function(evt) {
@@ -127,7 +124,19 @@ tr {
       $("composemail").send();
     });
     setDivHeight("id_body", $("mailheader").getSize().y + 20, 0);
-  });
+  }
+
+  loadCompose = function(event) {
+    event.stop();
+    location.hash = "compose/";
+  }
+  register_callback("compose", compose_callback);
+
+  reply = function(event) {
+    event.stop();
+    location.hash += event.target.get("href");
+  }
+  register_callback("reply", compose_callback);
 
   loadFolder = function(event, obj) {
     if (!$defined(obj)) {

@@ -43,6 +43,8 @@
     <div id="mailheader">
       {% include "common/genericform.html" %}
     </div>
-    <textarea id="id_body" name="id_body"></textarea>
+    <textarea id="id_body" name="id_body">
+{% if bodyheader %}{{ bodyheader }}{% endif %}
+{% if body %}{{ body }}{% endif %}</textarea>
   </div>
 </form>

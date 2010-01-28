@@ -9,8 +9,8 @@ from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
 from django.contrib.auth.decorators import login_required
 from mailng.admin.models import Mailbox
-from mailng.lib import events, parameters
-from mailng.lib import _render
+from mailng.lib import events, parameters, _render
+from mailng.lib.email_listing import Email
 from imap_listing import *
 from forms import *
 from templatetags.webextras import *
@@ -39,8 +39,8 @@ def menu(**kwargs):
 def userlogin(**kwargs):
     kwargs["request"].session["password"] = kwargs["password"]
 
-def getctx(status, **kwargs):
-    callername = sys._getframe(1).f_code.co_name
+def getctx(status, level=1, **kwargs):
+    callername = sys._getframe(level).f_code.co_name
     ctx = {"status" : status, "callback" : callername}
     for kw, v in kwargs.iteritems():
         ctx[kw] = v
@@ -105,6 +105,32 @@ def getmailcontent(request, folder, mail_id):
     return email.render(request)
 
 @login_required
+def move(request):
+    for arg in ["msgset", "to"]:
+        if not request.GET.has_key(arg):
+            return
+    folder, id = request.GET["msgset"].split("/")
+    mbc = IMAPconnector(request)
+    mbc.move(id, folder, request.GET["to"])
+    return HttpResponse(simplejson.dumps({"status" : "ok"}),
+                        mimetype="application/json")
+
+@login_required
+def empty(request, name):
+    mbc = IMAPconnector(request)
+    mbc.empty(name)
+    return folder(request, name, False)
+
+def render_compose(request, form, bodyheader=None, body=None):
+    menu = compose_menu("", request.session["folder"], request.session["page"], 
+                        request.user.get_all_permissions())
+    content = render_to_string("webmail/compose.html", {
+            "form" : form, "bodyheader" : bodyheader, "body" : body
+            })
+    ctx = getctx("ok", level=2, menu=menu, listing=content)
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
+@login_required
 def compose(request):
     if request.method == "POST":
         form = ComposeMailForm(request.POST)
@@ -124,27 +150,27 @@ def compose(request):
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
-    menu = compose_menu("", request.session["folder"], request.session["page"], 
-                        request.user.get_all_permissions())
-    content = render_to_string("webmail/compose.html", {
-            "form" : form
-            })
-    ctx = getctx("ok", menu=menu, listing=content)
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return render_compose(request, form)
 
 @login_required
-def move(request):
-    for arg in ["msgset", "to"]:
-        if not request.GET.has_key(arg):
-            return
-    folder, id = request.GET["msgset"].split("/")
-    mbc = IMAPconnector(request)
-    mbc.move(id, folder, request.GET["to"])
-    return HttpResponse(simplejson.dumps({"status" : "ok"}),
-                        mimetype="application/json")
-
-@login_required
-def empty(request, name):
-    mbc = IMAPconnector(request)
-    mbc.empty(name)
-    return folder(request, name, False)
+def reply(request, folder, mail_id):
+    if request.method == "POST":
+        return
+    msg = fetchmail(request, folder, mail_id, True)
+    email = Email(msg)
+    lines = email.body.split('\n')
+    body = ""
+    for l in lines:
+        if body != "":
+            body += "\n"
+        body += ">%s" % l
+    form = ComposeMailForm()
+    form.fields["from_"].initial = request.user.username
+    form.fields["to"].initial = msg["From"]
+    m = re.match("re\s*:\s*.+", msg["Subject"].lower())
+    if m:
+        form.fields["subject"].initial = msg["Subject"]
+    else:
+        form.fields["subject"].initial = "Re: %s" % msg["Subject"]
+    textheader = msg["From"] + " " + _("wrote:")
+    return render_compose(request, form, textheader, body)
