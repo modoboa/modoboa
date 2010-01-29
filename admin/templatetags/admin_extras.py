@@ -88,6 +88,35 @@ def loadadminextmenu(perms):
     return render_to_string('main/menulist.html', 
                             {"menu" : menu, "perms" : perms})
 
+@register.simple_tag
+def param(app, definition):
+    print definition
+    result = """<div class='row'>
+  <label>%s</label>""" % definition["name"]
+    if definition["type"] in ["string", "int"]:
+        value = definition.has_key("value") \
+            and definition["value"] or definition["default"]
+        name = "%s.%s" % (app, definition["name"])
+        result += """
+  <input type='text' name='%s' id='%s' value='%s' />""" % (name, name, value)
+    if definition["type"] in ["list"]:
+        result += """
+<select name='' id=''>"""
+        
+        result += """
+</select>
+"""
+
+    if definition.has_key("help"):
+        result += """
+  <a href='%s' onclick='return false;' class='Tips' title='%s'>
+    <img src='/static/pics/info.png' border='0' />
+  </a>""" % (definition["help"], _("Help"))
+    result += """
+</div>
+"""
+    return result
+
 @register.filter
 def gender(value, target):
     if genders.has_key(value):

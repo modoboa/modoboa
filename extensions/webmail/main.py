@@ -20,8 +20,14 @@ def init():
     events.register("UserLogin", userlogin)
     parameters.register("webmail", "IMAP_SERVER", "string", "127.0.0.1",
                         help=_("Address of your IMAP server"))
+    parameters.register("webmail", "IMAP_SECURED", "list", "No",
+                        help=_("Use a secure connexion to access IMAP server"))
+    parameters.register("webmail", "IMAP_PORT", "int", "143",
+                        help=_("Listening port of your IMAP server"))
     parameters.register("webmail", "SMTP_SERVER", "string", "127.0.0.1",
                         help=_("Address of your SMTP server"))
+    parameters.register("webmail", "SMTP_PORT", "int", "25",
+                        help=_("Listening port of your SMTP server"))
 
 def urls():
     return (r'^mailng/webmail/',

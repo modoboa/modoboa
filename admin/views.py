@@ -408,15 +408,18 @@ def deletepermission(request, mbox_id, group):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewparameters(request):
-    params = {}
-    for app, app_params in parameters._params.iteritems():
-        params[app] = {}
-        for pname, pdef in app_params.iteritems():
-            params[app][pname] = pdef
-            params[app][pname]["value"] = parameters.get(app, pname)
+    apps = sorted(parameters._params.keys())
+    gparams = []
+    for app in apps:
+        tmp = {"name" : app, "params" : []}
+        for p in sorted(parameters._params[app]):
+            tmp["params"] += [{"name" : p, "value" : parameters.get(app, p),
+                               "help" : parameters._params[app][p]["help"],
+                               "type" : parameters._params[app][p]["type"]}]
+        gparams += [tmp]
 
     return _render(request, 'admin/parameters.html', {
-            "params" : params
+            "gparams" : gparams
             })
 
 @login_required

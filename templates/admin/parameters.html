@@ -8,23 +8,11 @@
 {% url admin.views.saveparameters as action %}
 <form method="POST" action="{{ action }}">
   <div id="accordion">
-    {% for app, ps in params.items %}
-    <h3 class="toggler atStart">{{ app }}</h3>
+    {% for app in gparams %}
+    <h3 class="toggler atStart">{{ app.name }}</h3>
     <div class="element atStart">
-      {% for name, def in ps.items %}
-      <div class="row">
-        <label>{{ name }}</label>
-        {% if def.value %}
-        <input type="text" name="{{ app }}.{{ name }}" id="{{ app }}.{{ name }}" value="{{ def.value }}" />
-        {% else %}
-        <input type="text" name="{{ app }}.{{ name}}" id="{{ app }}.{{ name }}" value="{{ def.default }}" />
-        {% endif %}
-        {% if def.help %}
-        <a href="{{ def.help }}" onclick="return false;" class="Tips" title="{% trans 'Help' %}">
-          <img src="/static/pics/info.png" border="0" />
-        </a>
-        {% endif %}
-      </div>
+      {% for p in app.params %}
+        {% param app.name p %}
       {% endfor %}
     </div>
     {% endfor %}
