@@ -244,6 +244,11 @@ input:hover {
     background-color: #ffffcc;
 }
 
+table.hr {
+    width: 80%;
+    margin: 10px auto;
+}
+
 .hr td.odd {
     background: #F7F9Fb;
 }
@@ -254,4 +259,31 @@ input:hover {
 
 .unseen {
     font-weight: bold;
+}
+
+.toggler {
+    color: #222;
+    margin: 0;
+    padding: 2px 5px;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #f5f5f5;
+    border-left: 1px solid #f5f5f5;
+    font-size: small;
+    font-weight: normal;
+}
+
+.element {
+    padding-left: 10px;
+}
+
+div.row {
+    margin: 10px;
+}
+
+div.row label {
+    float: left;
+    width: 200px;
+    padding: 3px 0;
 }

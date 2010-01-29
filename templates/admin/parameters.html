@@ -7,32 +7,28 @@
 {% load i18n %}
 {% url admin.views.saveparameters as action %}
 <form method="POST" action="{{ action }}">
-<table class="hr">
-  <tr>
-    <th width="50%">{% trans "Name" %}</th>
-    <th>{% trans "Value" %}</th>
-  </tr>
-  {% for app, ps in params.items %}
-    {% for name, def in ps.items %}
-  <tr>
-    <td class="odd">{{ app }}::{{ name }}</td>
-    <td class="even">
-      {% if def.value %}
-      <input type="text" name="{{ app }}.{{ name }}" id="{{ app }}.{{ name }}" value="{{ def.value }}" />
-      {% else %}
-      <input type="text" name="{{ app }}.{{ name}}" id="{{ app }}.{{ name }}" value="{{ def.default }}" />
-      {% endif %}
-      {% if def.help %}
-      <a href="{{ def.help }}" onclick="return false;" class="Tips" title="{% trans 'Help' %}">
-        <img src="/static/pics/info.png" border="0" />
-      </a>
-      {% endif %}
-    </td>
-  </tr>
+  <div id="accordion">
+    {% for app, ps in params.items %}
+    <h3 class="toggler atStart">{{ app }}</h3>
+    <div class="element atStart">
+      {% for name, def in ps.items %}
+      <div class="row">
+        <label>{{ name }}</label>
+        {% if def.value %}
+        <input type="text" name="{{ app }}.{{ name }}" id="{{ app }}.{{ name }}" value="{{ def.value }}" />
+        {% else %}
+        <input type="text" name="{{ app }}.{{ name}}" id="{{ app }}.{{ name }}" value="{{ def.default }}" />
+        {% endif %}
+        {% if def.help %}
+        <a href="{{ def.help }}" onclick="return false;" class="Tips" title="{% trans 'Help' %}">
+          <img src="/static/pics/info.png" border="0" />
+        </a>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
     {% endfor %}
-  {% endfor %}
-</table>
-
+  </div>
   <p><input type="submit" name="update" value="{% trans 'Save' %}" /></p>
 </form>
 {% endblock %}

@@ -15,12 +15,12 @@ from mailng.lib import tables, imap_utf7, parameters
 class WMtable(tables.Table):
     tableid = "emails"
     idkey = "imapid"
-    selection = tables.SelectionColumn("selection", width="20px", first=True)
-    _1_flags = tables.ImgColumn("flags", width="40px")
-    _2_subject = tables.Column("subject", width="50%", label=_("Subject"), 
+#    selection = tables.SelectionColumn("selection", width="20px", first=True)
+    _1_flags = tables.ImgColumn("flags", width="5%")
+    _2_subject = tables.Column("subject", label=_("Subject"), 
                                cssclass="draggable")
     _3_from_ = tables.Column("from", width="20%", label=_("From"))
-    _4_date = tables.Column("date", width="20%", label=_("Date"))
+    _4_date = tables.Column("date", width="10%", label=_("Date"))
 
 
     def parse(self, header, value):
