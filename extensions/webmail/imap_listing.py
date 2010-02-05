@@ -3,6 +3,7 @@
 import re
 import time
 import imaplib
+import ssl
 from datetime import datetime, timedelta
 from email.header import decode_header
 import email.utils
@@ -69,7 +70,10 @@ class IMAPheader(object):
 
     @staticmethod
     def parse_date(value):
-        ndate = datetime(*(email.utils.parsedate_tz(value))[:7])
+        tmp = email.utils.parsedate_tz(value)
+        if not tmp:
+            return value
+        ndate = datetime(*(tmp)[:7])
         now = datetime.now()
         if now - ndate > timedelta(7):
             return ndate.strftime("%d.%m.%Y %H:%M")
@@ -90,22 +94,30 @@ class IMAPconnector(object):
 
     def __init__(self, request=None, user=None, password=None):
         self.address = parameters.get("webmail", "IMAP_SERVER")
+        self.port = int(parameters.get("webmail", "IMAP_PORT"))
         if request:
             status, msg = self.login(request.user.username, 
                                      request.session["password"])
         else:
             status, msg = self.login(user, password)
         if not status:
-            # Gestion d'erreur
-            pass
+            raise Exception(msg)
 
     def login(self, user, passwd):
         import imaplib
         try:
-            self.m = imaplib.IMAP4_SSL(self.address)
+            secured = parameters.get("webmail", "IMAP_SECURED")
+            if secured == "yes":
+                self.m = imaplib.IMAP4_SSL(self.address, self.port)
+            else:
+                self.m = imaplib.IMAP4(self.address, self.port)
+        except (imaplib.IMAP4.error, ssl.SSLError), error:
+            return False, _("Connection to IMAP server failed, check your configuration")
+        try:
             self.m.login(user, passwd)
-        except imaplib.IMAP4.error, test:
-            return False, test
+        except (imaplib.IMAP4.error, ssl.SSLError), error:
+            return False, _("Authentication failed, check your configuration")
+            
         return True, None
 
     def _encodefolder(self, folder):
@@ -113,9 +125,18 @@ class IMAPconnector(object):
             return "INBOX"
         return folder.encode("imap4-utf-7")
 
-    def messages_count(self, folder=None):
+    def messages_count(self, folder=None, order=None):
+        if order:
+            sign = order[:1]
+            criterion = order[1:].upper()
+            if sign == '-':
+                criterion = "REVERSE %s" % criterion
+        else:
+            criterion = "REVERSE DATE"
+        print criterion
+
         (status, data) = self.m.select(self._encodefolder(folder))
-        (status, data) = self.m.sort("(REVERSE DATE)", "UTF-8", "(NOT DELETED)")
+        (status, data) = self.m.sort("(%s)" % criterion, "UTF-8", "(NOT DELETED)")
         self.messages = data[0].split()
         return len(self.messages)
 

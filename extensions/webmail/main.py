@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
 from django.contrib.auth.decorators import login_required
 from mailng.admin.models import Mailbox
-from mailng.lib import events, parameters, _render
+from mailng.lib import events, parameters, _render, _render_error
 from mailng.lib.email_listing import Email
 from imap_listing import *
 from forms import *
@@ -20,7 +20,7 @@ def init():
     events.register("UserLogin", userlogin)
     parameters.register("webmail", "IMAP_SERVER", "string", "127.0.0.1",
                         help=_("Address of your IMAP server"))
-    parameters.register("webmail", "IMAP_SECURED", "list", "No",
+    parameters.register("webmail", "IMAP_SECURED", "list_yesno", "no",
                         help=_("Use a secure connexion to access IMAP server"))
     parameters.register("webmail", "IMAP_PORT", "int", "143",
                         help=_("Listening port of your IMAP server"))
@@ -60,8 +60,9 @@ def folder(request, name, updatenav=True):
         pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
         request.session["folder"] = name
         request.session["page"] = pageid
+    order = request.GET.has_key("order") and request.GET["order"] or None
     lst = ImapListing(request.user.username, request.session["password"],
-                      name, folder=name)
+                      name, folder=name, order=order)
     page = lst.paginator.getpage(request.session["page"])
     if page:
         content = lst.fetch(request, page.id_start, page.id_stop)
@@ -75,8 +76,11 @@ def folder(request, name, updatenav=True):
 
 @login_required
 def index(request):
-    lst = ImapListing(request.user.username, request.session["password"],
-                      "INBOX", folder="INBOX")
+    try:
+        lst = ImapListing(request.user.username, request.session["password"],
+                          "INBOX", folder="INBOX")
+    except Exception as exp:
+        return _render_error(request, {"error" : exp})
     return lst.render(request, empty=True)
 
 def fetchmail(request, folder, mail_id, all=False):

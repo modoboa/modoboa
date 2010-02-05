@@ -90,19 +90,30 @@ def loadadminextmenu(perms):
 
 @register.simple_tag
 def param(app, definition):
-    print definition
     result = """<div class='row'>
   <label>%s</label>""" % definition["name"]
+    name = "%s.%s" % (app, definition["name"])
     if definition["type"] in ["string", "int"]:
         value = definition.has_key("value") \
             and definition["value"] or definition["default"]
-        name = "%s.%s" % (app, definition["name"])
         result += """
   <input type='text' name='%s' id='%s' value='%s' />""" % (name, name, value)
-    if definition["type"] in ["list"]:
+    if definition["type"] in ["list", "list_yesno"]:
         result += """
-<select name='' id=''>"""
-        
+<select name='%s' id='%s'>""" % (name, name)
+        values = []
+        if definition["type"] == "list_yesno":
+            values = [("yes", _("Yes")), ("no", _("No"))]
+        else:
+            if definition.has_key("values"):
+                values = definition["values"]
+        value = definition.has_key("value") \
+            and definition["value"] or definition["default"]
+        for v in values:
+            selected = ""
+            if value == v[0]:
+                selected = " selected='selected'"
+            result += "<option value='%s'%s>%s</option>\n" % (v[0], selected, v[1])
         result += """
 </select>
 """

@@ -207,6 +207,32 @@ tr {
       });
     });
     $$("tr").addEvent("dblclick", viewmail);
+    var sortOrder = "";
+    $$("th[class=sortable]").addEvent("click", function(evt) {
+        var tmp = "?";
+        
+        if (sortOrder == "") {
+            test = /order=([\+\-]\w+$|&)/.exec(location.hash);
+            if (test) {
+                sortOrder = test[1];
+            }
+        }
+        if (sortOrder.substring(1) == evt.target.id) {
+            var sign = (sortOrder.charAt(0) == '+') ? '-' : '+';
+            sortOrder = sign + evt.target.id;
+        } else {
+            sortOrder = "-" + evt.target.id;
+        }
+        if (location.hash.indexOf("?") != -1) {
+            if (location.hash.indexOf("order") != -1) {
+                location.hash = location.hash.replace(/order=[\+\-]\w+$|&/, 
+                                                      "order=" + sortOrder);
+                return;
+            }
+            tmp = "&";
+        }
+        location.hash += tmp + "order=" + sortOrder;
+    });
   });
 
   navbarcallback = function(event) {
@@ -224,10 +250,6 @@ tr {
   $$("a[name=compose]").addEvent("click", loadCompose);
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
-{% block menu %}
-  {% load webextras %}
-  {% listing_menu "" "INBOX" perms %}
-{% endblock %}
 {% block leftcol %}
 <div id="leftcol" class="box">
   <h3>{% trans "Folders" %}</h3>

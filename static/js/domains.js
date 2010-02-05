@@ -66,6 +66,7 @@ window.addEvent('domready', function() {
 	    }
 	}
     });
+    setDivHeight("content", 20, 0);
 });
 
 newdom = function() {

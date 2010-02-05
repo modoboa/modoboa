@@ -50,6 +50,10 @@ def _render(request, tpl, user_context):
     return render_to_response(tpl, user_context, 
                               context_instance=RequestContext(request))
 
+def _render_error(request, user_context):
+    return render_to_response("common/error.html", user_context,
+                              context_instance=RequestContext(request))
+
 def exec_as_vuser(cmd):
     code, output = exec_pipe("sudo -u %s %s" % (settings.VIRTUAL_UID, cmd))
     if code:

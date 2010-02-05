@@ -413,8 +413,10 @@ def viewparameters(request):
     for app in apps:
         tmp = {"name" : app, "params" : []}
         for p in sorted(parameters._params[app]):
-            tmp["params"] += [{"name" : p, "value" : parameters.get(app, p),
+            tmp["params"] += [{"name" : p, 
+                               "value" : parameters.get(app, p),
                                "help" : parameters._params[app][p]["help"],
+                               "default" : parameters._params[app][p]["default"],
                                "type" : parameters._params[app][p]["type"]}]
         gparams += [tmp]
 

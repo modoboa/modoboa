@@ -3,6 +3,7 @@ window.addEvent('domready', function() {
         parse: 'rel',
         
     });
+    setDivHeight("content", 20, 0);
 
     if ($$("a[name=deletePerm]"))
         $$("a[name=deletePerm]").addEvent('click', function(event) {

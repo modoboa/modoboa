@@ -80,7 +80,8 @@ class EmailListing:
     def __init__(self, folder=None, elems_per_page=40, **kwargs):
         self.folder = folder
         self.elems_per_page = elems_per_page
-        self.paginator = Paginator(self.mbc.messages_count(self.folder), 
+        order = "order" in kwargs.keys() and kwargs["order"] or None
+        self.paginator = Paginator(self.mbc.messages_count(self.folder, order), 
                                    elems_per_page)
 
     def render_navbar(self, page):

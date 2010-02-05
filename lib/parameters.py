@@ -24,7 +24,7 @@ class NotDefined(Exception):
         return "Application '%s' and/or parameter '%s' not defined" % (self.app,
                                                                        self.name)
 
-def register(app, name, type="string", deflt=None, help=None):
+def register(app, name, type="string", deflt=None, help=None, **kwargs):
     """Register a new parameter.
 
     app corresponds to a core component (admin, main) or an extension.

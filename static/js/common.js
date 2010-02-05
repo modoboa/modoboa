@@ -23,7 +23,7 @@ check_anchor = function() {
         query = "INBOX/"; // Default location
     } else {
         var splits = current_anchor.substring(1).split('?');
-        var section = splits[0];
+        var section = (splits[0] != "") ? splits[0] : "INBOX";
         delete splits[0];
         var params = splits.join('&');
         if (section[section.length - 1] != '/') {

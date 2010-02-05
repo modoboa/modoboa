@@ -262,16 +262,13 @@ table.hr {
 }
 
 .toggler {
-    color: #222;
-    margin: 0;
+    margin: 5px auto;
     padding: 2px 5px;
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-top: 1px solid #f5f5f5;
-    border-left: 1px solid #f5f5f5;
-    font-size: small;
-    font-weight: normal;
+    background: #CEDBEC;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    /*border: 1px solid #CCC;*/
+    font-size: 1.1em;
 }
 
 .element {
@@ -286,4 +283,15 @@ div.row label {
     float: left;
     width: 200px;
     padding: 3px 0;
+}
+
+.error {
+    margin: 0 auto;
+    padding: 5px;
+    background: red;
+    width: 500px;
+    text-align: center;
+    background-color: #F9D2D2;
+    border: 3px solid #FF2A2A;
+    color: #FF2A00;
 }
