@@ -116,6 +116,7 @@ class EmailListing:
                 "navbar" : self.render_navbar(page),
                 "folders" : self.getfolders(),
                 "selection" : self.folder,
+                "navparams" : self.navparams,
                 "current_page" : pageid
                 })
 

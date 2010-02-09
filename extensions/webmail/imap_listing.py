@@ -209,8 +209,9 @@ class ImapListing(EmailListing):
     tpl = "webmail/index.html"
     tbltype = WMtable
     
-    def __init__(self, user, password, baseurl=None, **kwargs):
+    def __init__(self, user, password, baseurl=None, navparams={}, **kwargs):
         self.mbc = IMAPconnector(user=user, password=password)
+        self.navparams = navparams
         EmailListing.__init__(self, **kwargs)
         if baseurl:
             self.paginator.baseurl = baseurl

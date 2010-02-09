@@ -2,7 +2,10 @@
   <thead>
     <tr>
       {% for c in table.columns %}
-      <th id="{{ c.name }}" class="sortable" width="{{ c.width }}">{{ c|safe }}</th>
+      <th id="{{ c.name }}" class="sortable" width="{{ c.width }}">
+        {{ c|safe }}
+        <span style="float: right"><img src="" /></span>
+      </th>
       {% endfor %}
     </tr>
   </thead>

@@ -49,6 +49,15 @@ td {
   position: relative;
 }
 
+th {
+  -moz-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;
+  -webkit-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;
+}
+
+th.selected {
+  background: #EEEEEE;
+}
+
 .draggable {
   cursor: move;
 }
@@ -62,6 +71,12 @@ tr {
 }
 {% endblock %}
 {% block js %}
+  navparams = new Hash({
+  {% for k, v in navparams.items %}
+  {{ k }} : "{{ v }}",
+  {% endfor %}
+  });
+
   updatelisting = function(resp, overflow) {
     if (!$defined(overflow)) {
       overflow = "auto";
@@ -100,7 +115,7 @@ tr {
     if (event.target.parentNode.id) {
       var url = event.target.parentNode.id + "/";
       event.target.parentNode.setStyle("background", "#ffffcc");
-      location.hash = url;
+      current_anchor.baseurl(url).update();
     }
   }
   register_callback("viewmail", function(resp) {
@@ -128,7 +143,7 @@ tr {
 
   loadCompose = function(event) {
     event.stop();
-    location.hash = "compose/";
+    current_anchor.baseurl("compose/").update();
   }
   register_callback("compose", compose_callback);
 
@@ -143,22 +158,17 @@ tr {
       obj = event.target;
     }
     event.stop();
-    location.hash = obj.get("href");
+    current_anchor.parse_string(obj.get("href"), true).setparams(navparams);
+    current_anchor.update();
   }
   register_callback("folder", function(resp) {
     updatelisting(resp, "auto");
-    /*var drag_group = new Drag.Group({
-      filter: function(item) { return item.hasClass("active"); },
-      drag: {
-        onComplete: function(item) {
-          item.dispose();
-          delete(item);
-        },
-        onEnter: function(item, droppable) {
-          alert(droppable);
-        }
-      }
-    });*/
+    if (navparams.has("order")) {
+      src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
+      th = $$("th[id=" + navparams.get("order").substring(1) + "]");
+      th.getElement("img").set("src", "/static/pics/" + src);
+      th.addClass("selected");
+    }
     $$("td[class*=draggable]").each(function(item) {
       item.makeDraggable({
         droppables: ".droppable",
@@ -207,36 +217,28 @@ tr {
       });
     });
     $$("tr").addEvent("dblclick", viewmail);
-    var sortOrder = "";
-    $$("th[class=sortable]").addEvent("click", function(evt) {
+    $$("th[class*=sortable]").addEvent("click", function(evt) {
         var tmp = "?";
-        
-        if (sortOrder == "") {
-            test = /order=([\+\-]\w+$|&)/.exec(location.hash);
-            if (test) {
-                sortOrder = test[1];
-            }
+        var order = (navparams.has("order")) ? navparams.get("order") : "";
+       
+        if (order == "") {
+            order = current_anchor.getparam("order");
         }
-        if (sortOrder.substring(1) == evt.target.id) {
-            var sign = (sortOrder.charAt(0) == '+') ? '-' : '+';
-            sortOrder = sign + evt.target.id;
+        if (order.substring(1) == evt.target.id) {
+            var sign = (order.charAt(0) == '+') ? '-' : '+';
+            order = sign + evt.target.id;
         } else {
-            sortOrder = "-" + evt.target.id;
+            order = "-" + evt.target.id;
         }
-        if (location.hash.indexOf("?") != -1) {
-            if (location.hash.indexOf("order") != -1) {
-                location.hash = location.hash.replace(/order=[\+\-]\w+$|&/, 
-                                                      "order=" + sortOrder);
-                return;
-            }
-            tmp = "&";
-        }
-        location.hash += tmp + "order=" + sortOrder;
+        navparams.set("order", order);
+        current_anchor.setparams(navparams).update();
     });
   });
 
   navbarcallback = function(event) {
-    loadFolder(event, event.target.getParent());
+   event.stop();
+   current_anchor.setparams(navparams);
+   current_anchor.parse_string(event.target.getParent().get("href")).update();
   }
 
   foldercallback = function(event) {
@@ -244,10 +246,9 @@ tr {
     loadFolder(event, event.target);
   }
 
-  ajaxListener(updatelisting);
+  ajaxListener("INBOX", updatelisting);
   $$("a[name=loadfolder]").addEvent("click", foldercallback);
   $("navbar").getChildren("a").addEvent("click", navbarcallback);
-  $$("a[name=compose]").addEvent("click", loadCompose);
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block leftcol %}

@@ -7,11 +7,27 @@ from mailng.extensions.webmail.imap_listing import IMAPheader
 
 register = template.Library()
 
+def backurl(session, **kwargs):
+    res = session["folder"]
+    params = ""
+    for key in ["page"]:
+        if key in session.keys():
+            if params != "":
+                params += "&"
+            params += "%s=%s" % (key, session[key])
+    for k, v in kwargs.iteritems():
+        if params != "":
+            params += "&"
+        params += "%s=%s" % (k, v)
+    if params != "":
+        res += "?%s" % params
+    return res
+
 @register.simple_tag
-def viewm_menu(selection, folder, mail_id, page_id, perms):   
+def viewm_menu(selection, session, mail_id, perms):   
     entries = [
         {"name" : "back",
-         "url" : folder + "?page=%s" % page_id + "&menu=1",
+         "url" : "%s?page=%s" % (session["folder"], session["page"]),
          "img" : "/static/pics/back.png",
          "label" : _("Back")},
         {"name" : "reply",
@@ -33,10 +49,10 @@ def viewm_menu(selection, folder, mail_id, page_id, perms):
                              "perms" : perms})
 
 @register.simple_tag
-def compose_menu(selection, folder, page_id, perms):
+def compose_menu(selection, session, perms):
     entries = [
         {"name" : "back",
-         "url" : folder + "?page=%s" % page_id + "&menu=1",
+         "url" : "%s?page=%s" % (session["folder"], session["page"]),
          "img" : "/static/pics/back.png",
          "label" : _("Back")},
         {"name" : "sendmail",

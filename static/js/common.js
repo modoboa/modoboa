@@ -15,24 +15,14 @@ register_callback = function(name, callback) {
 current_anchor = null;
 
 check_anchor = function() {
-    if (current_anchor == document.location.hash) {
+    if (current_anchor.serialized == document.location.hash) {
         return;
     }
-    current_anchor = document.location.hash;
-    if (!current_anchor) {
-        query = "INBOX/"; // Default location
+    current_anchor.from_string(document.location.hash);
+    if (!current_anchor.serialized) {
+        query = current_anchor.deflocation;
     } else {
-        var splits = current_anchor.substring(1).split('?');
-        var section = (splits[0] != "") ? splits[0] : "INBOX";
-        delete splits[0];
-        var params = splits.join('&');
-        if (section[section.length - 1] != '/') {
-            section += "/";
-        }
-        var query = section;
-        if (params != "") {
-            query += "?" + params;
-        }
+        query = current_anchor.serialized.substring(1);
     }
     new Request.JSON({url: query, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
@@ -40,10 +30,107 @@ check_anchor = function() {
     }}).get();
 }
 
-ajaxListener = function(defcallback) {
+ajaxListener = function(deflocation, defcallback) {
+    current_anchor = new HashWrapper(deflocation);
     register_callback("default", defcallback);
     check_anchor.periodical(300);
 }
+
+/*
+*
+*/
+function HashWrapper(deflocation) {
+    this.deflocation = deflocation;
+    this.params = $H();
+    this.base = '';
+    this.serialized = null;
+
+    this.reset = function() {
+        this.base = null;
+        this.params.empty();
+        return this;
+    };
+
+    this.parse_string = function(value, reset) {
+        var splits = (value.charAt(0) == '#') 
+            ? value.substring(1).split('?') : value.split('?');
+        
+        if (splits.length == 0) {
+            return this;
+        }
+        if (!$defined(reset)) {
+            reset = false;
+        }
+        if (reset) {
+            this.reset();
+        }
+        this.base = (splits[0] == "") ? this.deflocation : splits[0];
+        if (this.base[this.base.length - 1] != '/') {
+            this.base += '/';
+        }
+        if (splits.length > 1) {
+            params = splits[1].split('&');
+            for (var i = 0; i < params.length; i++) {
+                tmp = params[i].split('=');
+                this.setparam(tmp[0], tmp[1]);
+            }
+        }
+        return this;
+    };
+
+    this.from_string = function(value, reset) {
+        this.parse_string(value);
+        this.serialized = value;
+        return this;
+    };
+
+    this.serialize = function() {
+        var res = this.base;
+
+        if (this.params.getLength() != 0) {
+            res += "?" + this.params.toQueryString();
+        }
+        return res;
+    };
+
+    this.update = function() {
+        location.hash = this.serialize();
+    };
+
+    this.setparam = function(name, value) {
+        this.params.set(name, value);
+        return this;
+    };
+    
+    this.setparams = function(params) {
+        this.params.extend(params);
+        return this;
+    };
+
+    this.getparam = function(name) {
+        if (!this.params.has(name)) {
+            return "";
+        }
+        return this.params.get(name);
+    }
+
+    this.baseurl = function(value) {
+        this.reset();
+        this.base = value;
+        if (this.base[this.base.length - 1] != '/') {
+            this.base += '/';
+        }
+        return this;
+    };
+
+    this.delparam = function(name) {
+        if (!this.params.has(name)) {
+            return false;
+        }
+        this.params.erase(name);
+        return this;
+    };
+};
 
 parse_menubar = function(id) {
     if ($(id)) {

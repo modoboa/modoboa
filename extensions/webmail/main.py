@@ -56,11 +56,16 @@ def getctx(status, level=1, **kwargs):
 def folder(request, name, updatenav=True):
     if not name:
         name = "INBOX"
+    order = request.GET.has_key("order") and request.GET["order"] or None
     if updatenav:
         pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
+        if not "navparams" in request.session.keys():
+            request.session["navparams"] = {}
         request.session["folder"] = name
         request.session["page"] = pageid
-    order = request.GET.has_key("order") and request.GET["order"] or None
+        if order:
+            request.session["navparams"]["order"] = order
+
     lst = ImapListing(request.user.username, request.session["password"],
                       name, folder=name, order=order)
     page = lst.paginator.getpage(request.session["page"])
@@ -77,8 +82,10 @@ def folder(request, name, updatenav=True):
 @login_required
 def index(request):
     try:
+        navp = request.session.has_key("navparams") \
+            and request.session["navparams"] or {}
         lst = ImapListing(request.user.username, request.session["password"],
-                          "INBOX", folder="INBOX")
+                          "INBOX", navparams=navp, folder="INBOX")
     except Exception as exp:
         return _render_error(request, {"error" : exp})
     return lst.render(request, empty=True)
@@ -94,8 +101,11 @@ def viewmail(request, folder, mail_id=None):
     header = fetchmail(request, folder, mail_id)
     if header:
         from templatetags.webextras import viewm_menu
-        pageid = request.session.has_key("page") and request.session["page"] or "1"
-        menu = viewm_menu("", folder, mail_id, pageid,
+        try:
+            pageid = request.session["page"]
+        except KeyError:
+            pageid = "1"
+        menu = viewm_menu("", request.session, mail_id,
                           request.user.get_all_permissions())
         folder, imapid = header["imapid"].split("/")
         mailcontent = render_to_string("webmail/viewmail.html", {
@@ -132,8 +142,7 @@ def empty(request, name):
     return folder(request, name, False)
 
 def render_compose(request, form, bodyheader=None, body=None):
-    menu = compose_menu("", request.session["folder"], request.session["page"], 
-                        request.user.get_all_permissions())
+    menu = compose_menu("", request.session, request.user.get_all_permissions())
     content = render_to_string("webmail/compose.html", {
             "form" : form, "bodyheader" : bodyheader, "body" : body
             })
@@ -156,7 +165,7 @@ def compose(request):
             s = smtplib.SMTP(parameters.get("webmail", "SMTP_SERVER"))
             s.sendmail(msg['From'], [msg['To']], msg.as_string())
             s.quit()
-            return folder(request, request.session["folder"], False)
+            return folder(request, request.session["navparams"]["folder"], False)
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
