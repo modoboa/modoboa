@@ -1,0 +1,10 @@
+<thead>
+  <tr>
+    {% for c in table.columns %}
+    <th id="{{ c.name }}" class="sortable" width="{{ c.width }}">
+      {{ c|safe }}
+      <span style="float: right"><img src="" style="display:none" /></span>
+    </th>
+    {% endfor %}
+  </tr>
+</thead>

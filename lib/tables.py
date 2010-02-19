@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import inspect
 import lxml
+from django.template import Template, Context
 from django.template.loader import render_to_string
 
 class Column:
@@ -53,9 +54,9 @@ class Table(object):
                 if isinstance(c, ImgColumn):
                     key = "img_%s" % c.name
                     if key in row.keys():
-                        nrow["cols"] += [{"value" : c.render(row[key]), "safe" : True}]
+                        nrow["cols"] += [{"value" : c.render(row[key]), "safe" : True, "width" : c.width}]
                     else:
-                        nrow["cols"] += ["."]
+                        nrow["cols"] += [{"width" : c.width}]
                     continue
                 if row.has_key(c.name):
                     try:
@@ -66,10 +67,38 @@ class Table(object):
                         cssclass += (cssclass != "") and ", %s" % row["class"] or row["class"]
                     
                     nrow["cols"] += [{"value" : self.parse(c.name, row[c.name]), 
-                                      "class" : cssclass}]
+                                      "class" : cssclass,
+                                      "width" : c.width}]
             self.rows += [nrow]
 
     def render(self, request):
-        return render_to_string("common/tables.html", {
-                "table" : self, "tableid" : self.tableid
-                })
+        t = Template("""
+<table id="{{ tableid }}">
+  {% include "common/table_head.html" %}
+  {% include "common/table_body.html" %}
+</table>
+""")
+        return t.render(Context({
+                    "table" : self, "tableid" : self.tableid
+                    }))
+
+    def render_head(self, request):
+        t = Template("""
+<table id="{{ tableid }}">
+  {% include "common/table_head.html" %}
+</table>
+""")
+        return t.render(Context({
+                    "table" : self, "tableid" : "%s_head" % self.tableid
+                    }))
+    
+    def render_body(self, request):
+        t = Template("""
+<table id="{{ tableid }}">
+  {% include "common/table_body.html" %}
+</table>
+""")
+        return t.render(Context({
+                    "table" : self, "tableid" : "%s_body" % self.tableid
+                    }))
+                        

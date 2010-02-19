@@ -5,15 +5,35 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    overflow: hidden;
 }
 
-#topmenubar { 
-    width: 100%;
-    margin: 0 auto;
-    padding: 0;
-    background: #072342;
-    border-bottom: 2px solid #333;
+div#container {
+    height: auto !important;
+    height: 100%;
+    min-height: 100%;
+    position: relative;
+    background: white;
+}
+
+@media screen {
+    body > div#footer {
+        position: fixed;
+    }
+}
+
+div#topmenubar { 
+    position: fixed;
+    border-bottom: 5px solid #333;
     height: 30px;
+    bottom: auto;
+}
+
+div#footer {
+    position: absolute;
+    height: 30px;
+    bottom: 0px;
+    border-top: 5px solid #333;
 }
 
 #menubar {
@@ -45,14 +65,19 @@ html, body {
 }
 
 #page {
-    border: 2px solid #333;
-    background: white;
-    margin: 0 15px;
+    width: 100%;
+    top: 35px;
+    bottom: 35px;
+    position: absolute;
 }
 
 #content {
+    position: fixed;
     overflow: auto;
     padding: 5px;
+    top: 130px;
+    bottom: 35px;
+    width: 100%;
 }
 
 #header {
@@ -101,6 +126,13 @@ html, body {
     width: 300px;
 }
 
+.uibar {
+    background: #153F65;
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+}
+
 .menubar a, .menubar a:visited {
     text-decoration: none;
 }
@@ -138,7 +170,7 @@ html, body {
 }
 
 .left {
-    text-align: left;
+    float: left;
 }
 
 .right {
@@ -198,11 +230,11 @@ html, body {
 }
 
 table {
-    margin: 0 auto;
+    /*margin: 0 auto;*/
     width: 100%;
     border-collapse: collapse;
-    /*border-spacing: 20px;*/
 }
+
 
 tr.odd {
     background: white;

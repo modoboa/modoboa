@@ -20,79 +20,73 @@
 </head>
 
 <body>
-  <div id="topmenubar" class="menubar">
-    <div class="left">
-      <ul>
-        <li>
-          {% url main.views.index as index_url %}
-          <a href="{{ index_url }}">
-          <img src="/static/pics/user.png" border="0" />{% trans "Preferences" %}</a>
-        </li>
-        {% loadextmenu perms %}
-        {% if user.is_superuser or perms.admin.view_domains %}
-        <li class="dropdown">
-          <img src="/static/pics/settings.png" border="0" />
-          <label>{% trans "Admin" %}</label>
-          <ul class="links">
-            {% url admin.views.domains as dom_url %}
-            <a href="{{ dom_url }}">
-            <li><img src="/static/pics/domains.png" />{% trans "Domains" %}</li>
-            </a>
-            {% url admin.views.settings as settings_url %}
-            <a href="{{ settings_url }}">
-              <li>
-                <img src="/static/pics/settings.png" border="0"/>
-                {% trans "Settings" %}
-              </li>
-            </a>
-          </ul>
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-    <div class="right">
-      <ul>
-        <li class="title">
-          {% if user.first_name %}
-          {{ user.first_name }} {{ user.last_name }}
-          {% else %}
-          {{ user.username }}
+  <div id="container">
+    <div id="topmenubar" class="uibar menubar">
+      <div class="left" style="width: 50%">
+        <ul>
+          <li>
+            {% url main.views.index as index_url %}
+            <a href="{{ index_url }}">
+              <img src="/static/pics/user.png" border="0" />{% trans "Preferences" %}</a>
+          </li>
+          {% loadextmenu perms %}
+          {% if user.is_superuser or perms.admin.view_domains %}
+          <li class="dropdown">
+            <img src="/static/pics/settings.png" border="0" />
+            <label>{% trans "Admin" %}</label>
+            <ul class="links">
+              {% url admin.views.domains as dom_url %}
+              <a href="{{ dom_url }}">
+                <li><img src="/static/pics/domains.png" />{% trans "Domains" %}</li>
+              </a>
+              {% url admin.views.settings as settings_url %}
+              <a href="{{ settings_url }}">
+                <li>
+                  <img src="/static/pics/settings.png" border="0"/>
+                  {% trans "Settings" %}
+                </li>
+              </a>
+            </ul>
+          </li>
           {% endif %}
-          / 
-        </li>
-
-        <li>
-          {% url django.contrib.auth.views.logout_then_login as logout_url %}
-          <a href="{{ logout_url }}">
-            <img src="/static/pics/logout.png" border="0" />{% trans "Logout" %}</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div id="page">
-    <div id="header">
-      <img class="logo" src="/static/stylesheets/mailng.png" />
-      <h1>{% block middletitle %}{% endblock %}</h1>
-      <div id="menubar" class="menubar">
-        {% block menu %}{% endblock %}
+        </ul>
+      </div>
+      <div class="right">
+        <ul>
+          <li class="title">
+            {% if user.first_name %}
+            {{ user.first_name }} {{ user.last_name }}
+            {% else %}
+            {{ user.username }}
+            {% endif %}
+            / 
+          </li>
+          
+          <li>
+            {% url django.contrib.auth.views.logout_then_login as logout_url %}
+            <a href="{{ logout_url }}">
+              <img src="/static/pics/logout.png" border="0" />{% trans "Logout" %}</a>
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="spacer"></div>
-    <div id="content">
-      {% block content %}{% endblock %}
+    <div id="page">
+      <div id="header">
+        <img class="logo" src="/static/stylesheets/mailng.png" />
+        <h1>{% block middletitle %}{% endblock %}</h1>
+        <div id="menubar" class="menubar">
+          {% block menu %}{% endblock %}
+        </div>
+      </div>
+      
+      <div id="content">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+    
+    <div id="footer" class="uibar menubar">
+      &nbsp;
     </div>
   </div>
-
-<!--  <div id="header">
-    <img class="logo" src="/static/stylesheets/mailng.png" />
-    <div id="infos">
-      {% if messages %}
-      {% for m in messages %}{{ m }}{% endfor %}
-      {% endif %}
-    </div>
-
-   
-  </div>
--->
 </body>
 </html>

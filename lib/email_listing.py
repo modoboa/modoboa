@@ -94,25 +94,25 @@ class EmailListing:
 
     def fetch(self, request, id_start, id_stop):
         table = self.tbltype(self.mbc.fetch(start=id_start, stop=id_stop, 
-                                            folder=self.folder)).render(request)
+                                            folder=self.folder))
         tpl = Template("""
 <form method="POST" id="listingform">
   {{ table }}
 </form>""")
-        return tpl.render(Context({"table" : table}))
+        return tpl.render(Context({"table" : table.render(request)}))
 
     def render(self, request, pageid=1, **kwargs):
         page = self.paginator.getpage(pageid)
+        thead = listing = ""
         if "empty" in kwargs.keys() and not kwargs["empty"]:
             if not page:
                 listing = "Empty folder"
             else:
                 listing = self.fetch(request, page.id_start, page.id_stop)
-        else:
-            listing = ""
         elapsed = kwargs.has_key("start") and time.time() - kwargs["start"] or 0
         return _render(request, self.tpl, {
-                "listing" : listing, "elapsed" : elapsed,
+                "listing" : listing, 
+                "elapsed" : elapsed,
                 "navbar" : self.render_navbar(page),
                 "folders" : self.getfolders(),
                 "selection" : self.folder,

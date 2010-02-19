@@ -1,9 +1,9 @@
 window.addEvent('domready', function(){
     parse_menubar('topmenubar');
     parse_menubar('menubar');
-    SqueezeBox.assign($$('a.boxed'), {
+    /*SqueezeBox.assign($$('a.boxed'), {
         parse: 'rel',        
-    });
+    });*/
 });
 
 callbacks = {};
@@ -15,10 +15,10 @@ register_callback = function(name, callback) {
 current_anchor = null;
 
 check_anchor = function() {
-    if (current_anchor.serialized == document.location.hash) {
+    if (current_anchor.serialized == location.hash) {
         return;
     }
-    current_anchor.from_string(document.location.hash);
+    current_anchor.from_string(location.hash);
     if (!current_anchor.serialized) {
         query = current_anchor.deflocation;
     } else {
@@ -134,7 +134,7 @@ function HashWrapper(deflocation) {
 
 parse_menubar = function(id) {
     if ($(id)) {
-	$(id).getElements('li.dropdown').each( function( elem ){
+	$(id).getElements('li.dropdown').each(function( elem ){
 	    var list = elem.getElement('ul.links');
 	    var myFx = new Fx.Slide(list).hide();
 	    elem.addEvents({
@@ -205,6 +205,9 @@ setDivHeight = function(id, extrah, modulo) {
 
     if ($("navbar")) {
         contentsize -= $("navbar").getSize().y;
+    }
+    if ($("thead")) {
+        contentsize -= $("thead").getSize().y;
     }
     if (modulo) {
         contentsize -= contentsize % modulo;

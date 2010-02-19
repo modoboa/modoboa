@@ -6,6 +6,30 @@
   width: 150px;
 }
 
+thead tr {
+  position: relative;
+  top: expression(offsetParent.scrollTop); /*IE5+ only*/
+  z-index: 1;
+}
+
+table#emails > tbody {
+  position: fixed;
+  bottom: 35px;
+  top: 155px;
+  left: 155px;
+  right: 0px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#emails th {
+  text-align: center;
+}
+
+#emails tr {
+  width: 100%;
+}
+
 .box h3 {
   font-size: small;
   margin: 2px 0px 2px 0px;
@@ -78,21 +102,22 @@ tr {
   });
 
   updatelisting = function(resp, overflow) {
-    if (!$defined(overflow)) {
+    /*if (!$defined(overflow)) {
       overflow = "auto";
-    }
+    }*/
     if ($defined(resp.menu)) {
       $("menubar").set("html", resp.menu);
     }
     $("listing").set("html", resp.listing);
-    $("listing").setStyle("overflow", overflow);
-    if ($defined(resp.navbar)) {
+    /*if ($defined(resp.navbar)) {
       $("navbar").set("html", resp.navbar);
+      $("navbar").setStyle("display", "block");
       $("navbar").getChildren("a").addEvent("click", navbarcallback);
-    }
+    }*/
     $$("a[name=compose]").addEvent("click", loadCompose);
     $$("a[name=empty]").addEvent("click", empty);
   }
+
   empty = function(event) {
     event.stop();
     new Request.JSON({url : event.target.get("href"), onSuccess : function(resp) {
@@ -169,7 +194,7 @@ tr {
       th.getElement("img").set("src", "/static/pics/" + src);
       th.addClass("selected");
     }
-    $$("td[class*=draggable]").each(function(item) {
+    /*$$("td[class*=draggable]").each(function(item) {
       item.makeDraggable({
         droppables: ".droppable",
       }).addEvents({
@@ -215,7 +240,7 @@ tr {
           }
         }
       });
-    });
+    });*/
     $$("tr").addEvent("dblclick", viewmail);
     $$("th[class*=sortable]").addEvent("click", function(evt) {
         var tmp = "?";
@@ -235,20 +260,21 @@ tr {
     });
   });
 
-  navbarcallback = function(event) {
+  /*navbarcallback = function(event) {
    event.stop();
    current_anchor.setparams(navparams);
    current_anchor.parse_string(event.target.getParent().get("href")).update();
-  }
+  }*/
 
   foldercallback = function(event) {
     select(event.target);
     loadFolder(event, event.target);
   }
 
-  ajaxListener("INBOX", updatelisting);
+  ajaxListener("INBOX/", updatelisting);
   $$("a[name=loadfolder]").addEvent("click", foldercallback);
-  $("navbar").getChildren("a").addEvent("click", navbarcallback);
+  /*$("navbar").getChildren("a").addEvent("click", navbarcallback);*/
+
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block leftcol %}
