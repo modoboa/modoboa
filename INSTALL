@@ -50,13 +50,15 @@ installation.
 Time zone and language
 ----------------------
 
-MailNG is available in english or in french. You can choose which
-language to use by modifying the LANGUAGE_CODE variable inside
+MailNG is available in english, french and german. You can choose
+which language to use by modifying the LANGUAGE_CODE variable inside
 settings.py::
 
   LANGUAGE_CODE = 'en-US' # English
   # or
-  LANGUAGE_CODE = 'fr-FR' # Français
+  LANGUAGE_CODE = 'fr-FR' # French
+  # or
+  LANGUAGE_CODE = 'de-DE' # German
 
 You can also specify your time zone by modifying the TIME_ZONE
 variable. For example::
