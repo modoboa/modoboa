@@ -1,0 +1,22 @@
+{% extends "admin/settings_header.html" %}
+{% block menu %}
+{% load admin_extras %}
+{% settings_menu "parameters" perms %}
+{% endblock %}
+{% block setcontent %}
+{% load i18n %}
+{% url admin.views.saveparameters as action %}
+<form method="POST" action="{{ action }}">
+  <div id="accordion">
+    {% for app in gparams %}
+    <h3 class="toggler atStart">{{ app.name }}</h3>
+    <div class="element atStart">
+      {% for p in app.params %}
+        {% param app.name p %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  <p><input type="submit" name="update" value="{% trans 'Save' %}" /></p>
+</form>
+{% endblock %}

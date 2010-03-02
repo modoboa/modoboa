@@ -2,6 +2,7 @@ body {
     font-family: arial, helvetica, verdana, tahoma, sans-serif;
     font-size: small;
     background: #153F65;
+    margin: 0;
 }
 
 #first-container { 
@@ -341,4 +342,14 @@ body {
 #notifybox {
     margin: 20px;
     font-weight: bold;
+}
+
+/* nouveau style */
+#topmenubar { 
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    background: #072342;
+    border-bottom: 2px solid #333;
+    height: 30px;
 }

@@ -31,6 +31,14 @@ input:hover {
     background-color: #ffffcc;
 }
 
+td.odd {
+    background: #F7F9Fb;
+}
+
+td.even {
+
+}
+
 .title {
     float: left;
     width: 100%;

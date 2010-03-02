@@ -1,3 +1,4 @@
 .*~$
 ^[^\.]+\.pyc
 static/tmp
+static/ckeditor

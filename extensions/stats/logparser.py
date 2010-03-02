@@ -5,7 +5,7 @@ import sys
 import os
 import re
 import rrdtool
-import string
+import string, pdb
 from optparse import OptionParser
 from mailng.lib import getoption
 from mailng.admin.models import Domain
@@ -35,6 +35,25 @@ points_per_sample = 3
 variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
              "size_sent", "size_recv"]
 
+def str2Time(y, M, d, h ="0", m ="0", s="0"):
+    """str2Time
+
+    return epoch time from Year Month Day Hour:Minute:Second time format
+    """
+    try:
+        local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
+                                  "%Y %b %d %H:%M:%S")
+    except:
+        # try with 01-12 month format
+        try:
+            local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
+                                  "%Y %m %d %H:%M:%S")
+        except:
+            print "[rrd] ERROR unrecognized %s time format" %(y, M, d, h, m, s)
+            return 0
+    return int(time.mktime(local))
+
+
 class LogParser(object):
     def __init__(self, logfile, workdir,
                  year=None, debug=False, verbose=False):
@@ -42,17 +61,20 @@ class LogParser(object):
         try:
             self.f = open(logfile)
         except IOError, errno:
-            print "%s" % errno
+            if self.debug:
+                print "%s" % errno
             sys.exit(1)
         self.workdir = workdir
         self.year = year
         self.debug = debug
         self.verbose = verbose
         self.cfs = ['AVERAGE', 'MAX']
-        
+
         self.last_month = None
         if not self.year:
             self.year = time.localtime().tm_year
+            if self.debug:
+                print "[rrd] Dealing with year %s" %self.year
         self.data = {}
         domains = Domain.objects.all()
         self.domains = []
@@ -64,19 +86,6 @@ class LogParser(object):
         self.workdict = {}
         self.lupdates = {}
         self.line_expr = re.compile("(\w+)\s+(\d+)\s+(\d+):(\d+):(\d+)\s+(\w+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
-
-    def str2Time(self, y, M, d, h, m, s):
-        """str2Time
-
-        return epoch time from Year Month Day Hour:Minute:Second time format
-        """
-        try:
-            local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
-                                      "%Y %b %d %H:%M:%S")
-        except:
-            print "[rrd] ERROR unrecognized %s time format" %(y, M, d, h, m, s)
-            return 0
-        return int(time.mktime(local))
 
     def init_rrd(self, fname, m):
         """init_rrd
@@ -128,7 +137,8 @@ class LogParser(object):
         m = t - (t % rrdstep)
         if not os.path.exists(fname):
             self.lupdates[fname] = self.init_rrd(fname, m)
-            print "[rrd] create new RRD file"
+            if self.debug:
+                print "[rrd] create new RRD file %s" %fname
         else:
             if not self.lupdates.has_key(fname):
                 self.lupdates[fname] = rrdtool.last(fname)
@@ -186,60 +196,76 @@ class LogParser(object):
         self.data["global"][cur_t][counter] += val
 
     def process(self):
+        id_expr = re.compile("(\w{9,18}): (.*)")
+        prev_se = -1
+        prev_mi = -1
+        prev_ho = -1
         for line in self.f.readlines():
             m = self.line_expr.match(line)
             if not m:
                 continue
             (mo, da, ho, mi, se, host, prog, pid, log) = m.groups()
-
             se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
-            cur_t = self.str2Time(self.year, mo, da, ho, mi, se)
-            cur_t = cur_t - cur_t % rrdstep
 
-            m = re.search("(\w{10}): message-id=<([^>]*)>", log)
+            if prev_se != se or prev_mi != mi or prev_ho != ho:
+                cur_t = str2Time(self.year, mo, da, ho, mi, se)
+                cur_t = cur_t - cur_t % rrdstep
+                prev_mi = mi
+                prev_ho = ho
+                prev_se = se
+            m = id_expr.search(log)
             if m:
-                self.workdict[m.group(1)] = {'from' : m.group(2), 'size' : 0}
-                continue
+                (line_id, line_log) = m.groups()
 
-            m = re.search("(\w{10}): from=<([^>]*)>, size=(\d+)", log)
-            if m:
-                self.workdict[m.group(1)] = {'from' : m.group(2),
-                                             'size' : string.atoi(m.group(3))}
-                continue
-
-            m = re.search("(\w{10}): to=<([^>]*)>.*status=(\S+)", log)
-            if m:
-                if not self.workdict.has_key(m.group(1)):
-                    print "Inconsistent mail (%s: %s), skipping" % (m.group(1), m.group(2))
+                m = re.search("message-id=<([^>]*)>", line_log)
+                if m:
+                    self.workdict[line_id] = {'from' : m.group(1), 'size' : 0}
                     continue
-                if not m.group(3) in variables:
-                    print "Unsupported status %s, skipping" % m.group(3)
+
+                m = re.search("from=<([^>]*)>, size=(\d+)", line_log)
+                if m:
+                    self.workdict[line_id] = {'from' : m.group(1),
+                                             'size' : string.atoi(m.group(2))}
                     continue
-                addrfrom = re.match("([^@]+)@(.+)", self.workdict[m.group(1)]['from'])
-                if addrfrom and addrfrom.group(2) in self.domains:
-                    self.inc_counter(addrfrom.group(2), cur_t, 'sent')
-                    self.inc_counter(addrfrom.group(2), cur_t, 'size_sent', 
-                                     self.workdict[m.group(1)]['size'])
-                addrto = re.match("([^@]+)@(.+)", m.group(2))
-                if addrto.group(2) in self.domains:
-                    if m.group(3) == "sent":
-                        self.inc_counter(addrto.group(2), cur_t, 'recv')
-                        self.inc_counter(addrto.group(2), cur_t, 'size_recv', 
-                                     self.workdict[m.group(1)]['size'])
-                    else:
-                        self.inc_counter(addrto.group(2), cur_t, m.group(3))
-                continue
-            
-            m = re.search("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
-            if m:
-                addrto = re.match("([^@]+)@(.+)", m.group(2))
-                if addrto and addrto.group(2) in self.domains:
-                    self.inc_counter(addrto.group(2), cur_t, 'reject')
-                continue
-        
+
+                m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
+                if m:
+                    if not self.workdict.has_key(line_id):
+                        if self.debug:
+                            print "Inconsistent mail (%s: %s), skipping" % (line_id, m.group(1))
+                        continue
+                    if not m.group(2) in variables:
+                        if self.debug:
+                            print "Unsupported status %s, skipping" % m.group(2)
+                        continue
+
+                    addrfrom = re.match("([^@]+)@(.+)", self.workdict[line_id]['from'])
+                    if addrfrom and addrfrom.group(2) in self.domains:
+                        self.inc_counter(addrfrom.group(2), cur_t, 'sent')
+                        self.inc_counter(addrfrom.group(2), cur_t, 'size_sent',
+                                         self.workdict[line_id]['size'])
+                    addrto = re.match("([^@]+)@(.+)", m.group(1))
+                    if addrto.group(2) in self.domains:
+                        if m.group(2) == "sent":
+                            self.inc_counter(addrto.group(2), cur_t, 'recv')
+                            self.inc_counter(addrto.group(2), cur_t, 'size_recv',
+                                         self.workdict[line_id]['size'])
+                        else:
+                            self.inc_counter(addrto.group(2), cur_t, m.group(2))
+                    continue
+            else:
+                m = re.search("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
+                if m:
+                    addrto = re.match("([^@]+)@(.+)", m.group(2))
+                    if addrto and addrto.group(2) in self.domains:
+                        self.inc_counter(addrto.group(2), cur_t, 'reject')
+                    continue
+
         # Sort everything by time
         G = grapher.Grapher()
         for dom, data in self.data.iteritems():
+            if self.debug:
+                print "[rrd] dealing with domain %s" %dom
             sortedData = {}
             sortedData = [ (i, data[i]) for i in sorted(data.keys()) ]
             for t, dict in sortedData:
@@ -256,12 +282,12 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-l","--logFile", default=log_file,
                       help="postfix log in syslog format", metavar="FILE")
-    parser.add_option("-v","--verbose", default=False, action="store_true", 
+    parser.add_option("-v","--verbose", default=False, action="store_true",
                       dest="verbose", help="set verbose mode")
-    parser.add_option("-d","--debug", default=False, action="store_true", 
+    parser.add_option("-d","--debug", default=False, action="store_true",
                       dest="debug", help="set debug mode")
     (options, args) = parser.parse_args()
-  
+
     P = LogParser(options.logFile, rrd_rootdir,
                   debug=options.debug, verbose=options.verbose)
     P.process()

@@ -11,11 +11,11 @@ from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from mailng import admin, main
-from mailng.admin.models import Domain, Mailbox, Alias
+from mailng.admin.models import Domain, Mailbox, Alias, Parameter
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
 from mailng.lib import _render, _ctx_ok, _ctx_ko
-from mailng.lib import events
+from mailng.lib import events, parameters
 import string
 import copy
 
@@ -49,7 +49,7 @@ def domains(request):
             return mailboxes(request, dom_id=mb.domain.id)
 
         return HttpResponseRedirect(reverse(main.views.index))
-
+    
     domains = Domain.objects.all()
     counters = {}
     for dom in domains:
@@ -404,3 +404,33 @@ def deletepermission(request, mbox_id, group):
         mbox.user.groups.remove(grp)
         mbox.user.save()
     return HttpResponseRedirect(reverse(admin.views.settings))
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def viewparameters(request):
+    apps = sorted(parameters._params.keys())
+    gparams = []
+    for app in apps:
+        tmp = {"name" : app, "params" : []}
+        for p in sorted(parameters._params[app]):
+            tmp["params"] += [{"name" : p, 
+                               "value" : parameters.get(app, p),
+                               "help" : parameters._params[app][p]["help"],
+                               "default" : parameters._params[app][p]["default"],
+                               "type" : parameters._params[app][p]["type"]}]
+        gparams += [tmp]
+
+    return _render(request, 'admin/parameters.html', {
+            "gparams" : gparams
+            })
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def saveparameters(request):
+    for pname, v in request.POST.iteritems():
+        if pname == "update":
+            continue
+        app, name = pname.split('.')
+        parameters.save(app, name, v)
+    request.user.message_set.create(message=_("Configuration saved."))
+    return HttpResponseRedirect(reverse(admin.views.viewparameters))

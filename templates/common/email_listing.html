@@ -1,0 +1,61 @@
+{% extends "nlayout.html" %}
+{% load i18n %}
+{% block html_head %}
+<style type="text/css">
+#listing {
+  position: absolute;
+  left: 155px;
+  right: 0px;
+  top: 130px;
+  height: expression(document.body.clientHeight - 35 + "px");
+  overflow: auto;
+}
+
+html > body #listing {
+  position: fixed;
+  bottom: 35px;
+}
+
+#navbar {
+  padding: 0;
+  margin: 0;
+  background: white;
+  height: 40px;
+  width: 100%;
+  text-align: right;
+  /*border-top: 1px solid #C8D6E8;*/
+  display: none;
+}
+
+#navbar label {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+#navbar img {
+  margin-top: 5px;
+  margin-right: 5px;
+}
+{% block css %}{% endblock %}
+</style>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  if ($("selectall")) {
+    $("selectall").addEvent("click", function(event) {
+      if ($("selectall").checked) {
+        toggleSelection("selection", true);
+      } else {
+        toggleSelection("selection", false);
+      }
+    });
+  }
+  {% block js %}{% endblock %}
+});
+</script>
+{% endblock %}
+{% block content %}
+{% block leftcol %}{% endblock %}
+<div id="listing">{{ listing }}</div>
+<div class="spacer"></div>
+<div id="navbar"></div>
+{% endblock %}
