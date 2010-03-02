@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-02 15:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,93 +19,92 @@ msgstr ""
 #: admin/forms.py:16 templates/admin/domains.html:17
 #: templates/admin/mailboxes.html:17
 msgid "Quota"
-msgstr ""
+msgstr "Quota"
 
 #: admin/forms.py:17
 msgid "Mailbox quota in MB (default to domain quota if blank)"
-msgstr ""
-"Quota en Mo de la boite aux lettres (par défaut celui du domaine si vide)"
+msgstr "Mailbox-Quota in MB (standardmäßig Domain-Quota wenn leer)"
 
 #: admin/forms.py:18
 msgid "Password"
-msgstr "Mot de passe"
+msgstr "Passwort"
 
 #: admin/forms.py:19
 msgid "Password used to log in"
-msgstr "Mot de passe utilisé pour se connecter"
+msgstr "Login-Passwort"
 
 #: admin/forms.py:20 main/forms.py:21
 msgid "Confirmation"
-msgstr ""
+msgstr "Bestätigung"
 
 #: admin/forms.py:21
 msgid "Password confirmation"
-msgstr "Confirmation du mot de passe"
+msgstr "Passwort Bestätigung"
 
 #: admin/forms.py:24
 msgid "Check to activate this mailbox"
-msgstr "Cocher pour activer cette boite aux lettres"
+msgstr "Markieren, um die Mailbox zu aktivieren"
 
 #: admin/forms.py:37 main/forms.py:36
 msgid "Passwords mismatch"
-msgstr "Les mots de passe diffèrent"
+msgstr "Passwörter stimmen nicht überein"
 
 #: admin/forms.py:56 templates/admin/domain_header.html:6
 #: templates/admin/editdomain.html:7 templates/admin/permissions.html:42
 msgid "Domain"
-msgstr "Domaine"
+msgstr "Domäne"
 
 #: admin/forms.py:58
 msgid "Select a domain in the list"
-msgstr "Sélectionner un domaine dans la liste"
+msgstr "Wählen Sie eine Domäne aus der Liste"
 
 #: admin/forms.py:59
 msgid "User"
-msgstr "Utilisateur"
+msgstr "Nutzer"
 
 #: admin/forms.py:60
 msgid "Select a user in the list"
-msgstr "Sélectionner un utilisateur dans la liste"
+msgstr "Wählen Sie einen Nutzer aus der Liste"
 
 #: admin/forms.py:61
 msgid "Role"
-msgstr "Rôle"
+msgstr "Rolle"
 
 #: admin/forms.py:62
 msgid "Super administrator"
-msgstr "Super administrateur"
+msgstr "Administrator"
 
 #: admin/forms.py:63
 msgid "Domain administrator"
-msgstr "Admin. de domaine"
+msgstr "Domänen-Administrator"
 
 #: admin/forms.py:64
 msgid "Select the role you want this user to have"
-msgstr "Sélectionner le rôle souhaité pour cet utilisateur"
+msgstr "Wählen Sie die Rolle für diesen Nutzer"
 
 #: admin/models.py:9 admin/models.py:38
 msgid "name"
-msgstr "Nom"
+msgstr "Name"
 
 #: admin/models.py:10
 msgid "The domain name"
-msgstr "Le nom du domaine"
+msgstr "Name der Domäne"
 
 #: admin/models.py:11
 msgid "Default quota in MB applied to mailboxes"
-msgstr "Quota par défaut en Mo appliqué aux boites aux lettres"
+msgstr "Standard-Quota für Mailboxen (in MB)"
 
 #: admin/models.py:12 admin/models.py:111 main/models.py:9
 msgid "enabled"
-msgstr "Activé"
+msgstr "aktiviert"
 
 #: admin/models.py:13
 msgid "Check to activate this domain"
-msgstr "Cocher pour activer ce domaine"
+msgstr "Auswählen, um diese Domäne zu aktivieren"
 
 #: admin/models.py:39
 msgid "First name and last name of mailbox owner"
-msgstr "Prénom et nom du propriétaire de la boite aux lettres"
+msgstr "Vor- und Nachname des Mailbox-Besitzers"
 
 #: admin/models.py:40 admin/models.py:106
 msgid "address"
@@ -113,92 +112,93 @@ msgstr "Adresse"
 
 #: admin/models.py:41
 msgid "Mailbox address (without the @domain.tld part)"
-msgstr "Adresse de la boite aux lettres (sans la partie @domain.tld)"
+msgstr "Mailbox addresse (ohne den @domain.tld-Anteil)"
 
 #: admin/models.py:43
 msgid "password"
-msgstr "Mot de passe"
+msgstr "Passwort"
 
 #: admin/models.py:107
 msgid "The alias address (without the domain part)"
-msgstr "L'adresse de l'alias (sans la partie domaine)"
+msgstr "Die Alias-Adresse (ohne den @domain.tld-Anteil)"
 
 #: admin/models.py:109
 msgid "mailbox"
-msgstr "Boite aux lettres"
+msgstr "Mailbox"
 
 #: admin/models.py:110
 msgid "The mailbox this alias points to"
-msgstr "La boite aux lettres sur laquelle pointe cet alias"
+msgstr "Mailbox auf den dieser Alias verweist"
 
 #: admin/models.py:112
 msgid "Check to activate this alias"
-msgstr "Cocher pour activer cet alias"
+msgstr "Auswählen um den Alias zu aktivieren"
 
 #: admin/views.py:24
 msgid "Permission denied."
-msgstr "Permission refusée."
+msgstr "Zugriff verweigert."
 
 #: admin/views.py:69 admin/views.py:99
 msgid "Domain with this name already defined"
-msgstr "Un domaine avec ce nom existe déjà"
+msgstr "Es existiert bereits eine Domain mit diesem Namen"
 
 #: admin/views.py:78
 msgid "Failed to initialise domain, check permissions"
-msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
+msgstr ""
+"Domäne konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
 #: admin/views.py:102
 msgid "Failed to rename domain, check permissions"
-msgstr "Impossible de renommer le domaine, vérifier les permissions"
+msgstr "Domäne konnte nicht umbenannt werden. Prüfen Sie die Berechtigungen."
 
 #: admin/views.py:156 admin/views.py:215
 msgid "Mailbox with this address already exists"
-msgstr "Une boite aux lettres pour cette adresse existe déjà"
+msgstr "Eine Mailbox mit diesem Namen existiert bereits."
 
 #: admin/views.py:187
 msgid "Mailbox created."
-msgstr "Boite aux lettres créé."
+msgstr "Mailbox erstellt."
 
 #: admin/views.py:191
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
-"Impossible d'initialiser la boite aux lettres, vérifier les permissions"
+"Mailbox konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
 #: admin/views.py:218
 msgid "Failed to rename mailbox, check permissions"
-msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
+msgstr "Mailbox konnte nicht umbenannt werden. Prüfen Sie die Berechtigungen."
 
 #: admin/views.py:294 admin/views.py:324
 msgid "Alias with this address already exists"
-msgstr "Un alias avec cette adresse existe déjà"
+msgstr "Ein Alias mit dieser Adresse existiert bereits"
 
 #: admin/views.py:397
 msgid "admin is intouchable!!"
-msgstr "admin est intouchable!!"
+msgstr "admin ist unantastbar!!"
 
 #: admin/templatetags/admin_extras.py:11
 msgid "enabled_m"
-msgstr "Activé"
+msgstr "aktiviert_m"
 
 #: admin/templatetags/admin_extras.py:11
 msgid "enabled_f"
-msgstr "Activée"
+msgstr "aktiviert_f"
 
 #: admin/templatetags/admin_extras.py:19 templates/admin/newmailbox.html:7
 msgid "New mailbox"
-msgstr "Nouvelle boite aux lettres"
+msgstr "Neue Mailbox"
 
 #: admin/templatetags/admin_extras.py:26 templates/admin/domains.html:16
 msgid "Mailboxes"
-msgstr "Boites aux lettres"
+msgstr "Mailboxen"
 
 #: admin/templatetags/admin_extras.py:30
 msgid "Aliases"
-msgstr "Alias"
+msgstr "Aliase"
 
 #: admin/templatetags/admin_extras.py:37
 msgid "Properties"
-msgstr "Propriétés"
+msgstr "Eigenschaften"
 
 #: extensions/amavis_quarantine/main.py:27
 msgid "Quarantine messages maximum age (in days) before deletion"
@@ -207,145 +207,145 @@ msgstr ""
 #: extensions/amavis_quarantine/main.py:36
 #: extensions/amavis_quarantine/templates/index.html:152
 msgid "Quarantine"
-msgstr "Quarantaine"
+msgstr "Quarantäne"
 
 #: extensions/amavis_quarantine/main.py:127
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
-msgstr[0] "%(count)d message supprimé correctement"
-msgstr[1] "%(count)d messages supprimés correctement"
+msgstr[0] "%(count)d Nachricht erfolgreich gelöscht"
+msgstr[1] "%(count)d Nachrichten erfolgreich gelöscht"
 
 #: extensions/amavis_quarantine/main.py:168
-#, python-format
+#, fuzzy, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
-msgstr[0] "%(count)d message relâché correctement"
-msgstr[1] "%(count)d messages relâchés correctement"
+msgstr[0] "%(count)d Nachicht erfolgreich freigegeben"
+msgstr[1] "%(count)d Nachichten erfolgreich freigegeben"
 
 #: extensions/amavis_quarantine/templates/index.html:94
 msgid "Delete this selection?"
-msgstr "Supprimer cette sélection?"
+msgstr "Auswahl löschen?"
 
 #: extensions/amavis_quarantine/templates/index.html:101
 msgid "Release this selection?"
-msgstr "Relâcher cette sélection?"
+msgstr "Auswahl freigeben?"
 
 #: extensions/amavis_quarantine/templates/index.html:135
 #: extensions/amavis_quarantine/templates/index.html:157
 msgid "Search..."
-msgstr "Chercher..."
+msgstr "Suchen..."
 
 #: extensions/amavis_quarantine/templates/index.html:159
 msgid "From address"
-msgstr "Emetteur"
+msgstr "Absender"
 
 #: extensions/amavis_quarantine/templates/index.html:160
 #: extensions/amavis_quarantine/templates/listing.html:35
 msgid "Subject"
-msgstr "Sujet"
+msgstr "Betreff"
 
 #: extensions/amavis_quarantine/templates/index.html:161
 msgid "Both"
-msgstr "Tous"
+msgstr "Beide"
 
 #: extensions/amavis_quarantine/templates/listing.html:4
 msgid "No messages in quarantine"
-msgstr "Aucun message dans la quarantaine"
+msgstr "Keine Nachrichten in Quarantäne"
 
 #: extensions/amavis_quarantine/templates/listing.html:13
 msgid "First"
-msgstr "Première"
+msgstr "Erstes"
 
 #: extensions/amavis_quarantine/templates/listing.html:16
 msgid "Previous"
-msgstr "Précédente"
+msgstr "Vorheriges"
 
 #: extensions/amavis_quarantine/templates/listing.html:21
 msgid "Next"
-msgstr "Suivante"
+msgstr "Nächstes"
 
 #: extensions/amavis_quarantine/templates/listing.html:24
 msgid "Last"
-msgstr "Dernière"
+msgstr "Letztes"
 
 #: extensions/amavis_quarantine/templates/listing.html:33
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: extensions/amavis_quarantine/templates/listing.html:34
 msgid "From"
-msgstr "De"
+msgstr "Von"
 
 #: extensions/amavis_quarantine/templates/listing.html:36
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: extensions/amavis_quarantine/templates/viewheader.html:36
 msgid "Message headers"
-msgstr "Entêtes du message"
+msgstr "Nachrichten-Header"
 
 #: extensions/amavis_quarantine/templates/viewmail.html:22
 msgid "Mail content"
-msgstr "Contenu du message"
+msgstr "Inhalt der Mail"
 
 #: extensions/amavis_quarantine/templates/viewmail.html:31
 msgid "Message"
-msgstr ""
+msgstr "Nachricht"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:13
 msgid "View as plain text"
-msgstr "Afficher en texte"
+msgstr "In Text-Format betrachten"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:17
 msgid "View as HTML"
-msgstr "Afficher en HTML"
+msgstr "In HTML-Format betrachten"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:21
 msgid "Activate links"
-msgstr "Activer les liens"
+msgstr "Links aktivieren"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:30
 msgid "Back to list"
-msgstr "Retour à la liste"
+msgstr "Zurück zur Liste"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:34
 msgid "View full headers"
-msgstr "Afficher tous les entêtes"
+msgstr "Alle Header ansehen"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:41
 #: extensions/amavis_quarantine/templatetags/amextras.py:65
 msgid "Release"
-msgstr "Relâcher"
+msgstr "Freigeben"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:42
 msgid "Release this message?"
-msgstr "Relâcher ce message?"
+msgstr "Diese Nachricht freigeben?"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:47
 #: extensions/amavis_quarantine/templatetags/amextras.py:69
 msgid "Delete"
-msgstr "Supprimer"
+msgstr "Löschen"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:48
 msgid "Delete this message?"
-msgstr "Supprimer ce message?"
+msgstr "Diese Nachricht löschen?"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:50
 msgid "Options"
-msgstr ""
+msgstr "Optionen"
 
 #: extensions/postfix_autoreply/main.py:35
 msgid "Auto-reply message"
-msgstr "Message de réponse automatique"
+msgstr "Automatische Antwort"
 
 #: extensions/stats/grapher.py:18
 msgid "sent messages"
-msgstr "messages envoyés"
+msgstr "Gesendete Nachrichten"
 
 #: extensions/stats/grapher.py:20
 msgid "received messages"
-msgstr "messages reçus"
+msgstr "Empfangene Nachrichten"
 
 #: extensions/stats/grapher.py:28
 msgid "msgs/min"
@@ -353,151 +353,151 @@ msgstr ""
 
 #: extensions/stats/grapher.py:32
 msgid "bounced messages"
-msgstr "messages non remis"
+msgstr "Zurückgeworfene Nachrichten"
 
 #: extensions/stats/grapher.py:34
 msgid "rejected messages"
-msgstr "messages rejetés"
+msgstr "Abgewiesene Nachrichten"
 
 #: extensions/stats/grapher.py:42
 msgid "bytes/min"
-msgstr "octes/min"
+msgstr "Bytes/min"
 
 #: extensions/stats/grapher.py:46
 msgid "received size"
-msgstr "taille reçue"
+msgstr "Empfangsgrösse"
 
 #: extensions/stats/grapher.py:48
 msgid "sent size"
-msgstr "taille envoyée"
+msgstr "Versendegrösse"
 
 #: extensions/stats/main.py:32 extensions/stats/main.py:39
 msgid "Statistics"
-msgstr "Statistiques"
+msgstr "Statistiken"
 
 #: extensions/stats/main.py:68
 msgid "No Domain defined"
-msgstr "Aucun domaine défini."
+msgstr "Keine Domäne definiert."
 
 #: extensions/stats/main.py:94 extensions/stats/main.py:112
 msgid "Average normal traffic"
-msgstr "Trafic normal moyen"
+msgstr "Durchschnittlicher normaler Datenverkehr"
 
 #: extensions/stats/main.py:95 extensions/stats/main.py:113
 msgid "Average bad traffic"
-msgstr "Mauvais trafic moyen"
+msgstr "Durchschnittlicher schlechter Datenverkehr"
 
 #: extensions/stats/main.py:96 extensions/stats/main.py:114
 msgid "Average normal traffic size"
-msgstr "Taille moyenne du trafic normal"
+msgstr "Durchschnittliche Grösse normaler Datenverkehr"
 
 #: extensions/stats/templates/adminindex.html:31
 msgid "Global statistics"
-msgstr "Statistiques globales"
+msgstr "Globale Statistiken"
 
 #: extensions/stats/templates/adminindex.html:35
 msgid "Domain:"
-msgstr "Domaine :"
+msgstr "Domäne:"
 
 #: extensions/stats/templates/adminindex.html:37
 msgid "Global"
-msgstr ""
+msgstr "Global"
 
 #: extensions/stats/templates/adminindex.html:43
 #: extensions/stats/templates/index.html:30
 msgid "Period:"
-msgstr "Période :"
+msgstr "Zeitraum:"
 
 #: extensions/stats/templates/graphs.html:5
 msgid "No statistics available"
-msgstr "Aucune statistique disponible"
+msgstr "Keine Statistiken verfügbar"
 
 #: extensions/stats/templatetags/stats_extra.py:9
 msgid "Day"
-msgstr "Jour"
+msgstr "Tag"
 
 #: extensions/stats/templatetags/stats_extra.py:10
 msgid "Week"
-msgstr "Semaine"
+msgstr "Woche"
 
 #: extensions/stats/templatetags/stats_extra.py:11
 msgid "Month"
-msgstr "Mois"
+msgstr "Monat"
 
 #: extensions/stats/templatetags/stats_extra.py:12
 msgid "Year"
-msgstr "Année"
+msgstr "Jahr"
 
 #: main/forms.py:17
 msgid "Old password"
-msgstr "Ancien mot de passe"
+msgstr "Altes Passwort"
 
 #: main/forms.py:19
 msgid "New password"
-msgstr "Nouveau mot de passe"
+msgstr "Neues Passwort"
 
 #: main/forms.py:31
 msgid "Old password mismatchs"
-msgstr "L'ancien mot de passe est incorrect"
+msgstr "Altes Passwort stimmt nicht überein"
 
 #: main/models.py:7
 msgid "subject"
-msgstr "sujet"
+msgstr "Betreff"
 
 #: main/models.py:8
 msgid "content"
-msgstr "contenu"
+msgstr "Inhalt"
 
 #: main/views.py:45
 msgid "Auto reply message updated successfully."
-msgstr "Message de réponse auto. mis à jour."
+msgstr "Automatische Antwort erfolgreich aktualisiert."
 
 #: main/templatetags/main_extras.py:16 templates/main/chpassword.html:7
 msgid "Change password"
-msgstr "Changer de mot de passe"
+msgstr "Passwort ändern"
 
 #: templates/layout.html:45
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: templates/layout.html:52
 msgid "Preferences"
-msgstr "Préférences"
+msgstr "Einstellungen"
 
 #: templates/layout.html:59
 msgid "Logout"
-msgstr "Déconnexion"
+msgstr "Logout"
 
 #: templates/layout.html:73 templates/admin/newdomain.html:7
 msgid "New domain"
-msgstr "Nouveau domaine"
+msgstr "Neue Domäne"
 
 #: templates/layout.html:80
 msgid "Domains"
-msgstr "Domaines"
+msgstr "Domäne"
 
 #: templates/layout.html:87 templates/admin/settings_header.html:6
 msgid "Settings"
-msgstr "Paramètres"
+msgstr "Einstellungen"
 
 #: templates/admin/addpermission.html:24 templates/admin/settings_menu.html:15
 msgid "Add permission"
-msgstr "Ajouter une permission"
+msgstr "Berechtigung hinzufügen"
 
 #: templates/admin/addpermission.html:33 templates/admin/newalias.html:14
 #: templates/admin/newdomain.html:15 templates/admin/newmailbox.html:16
 msgid "Create"
-msgstr "Créer"
+msgstr "Erstellen"
 
 #: templates/admin/aliases.html:9
 msgid "No alias defined."
-msgstr "Aucun alias défini."
+msgstr "Kein Alias definiert."
 
 #: templates/admin/aliases.html:13 templates/admin/domains.html:14
 #: templates/admin/mailboxes.html:14 templates/admin/permissions.html:14
 #: templates/admin/permissions.html:41
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: templates/admin/aliases.html:14 templates/admin/mailboxes.html:16
 msgid "Address"
@@ -505,134 +505,134 @@ msgstr "Adresse"
 
 #: templates/admin/aliases.html:15 templates/admin/editmailbox.html:7
 msgid "Mailbox"
-msgstr "Boite aux lettres"
+msgstr "Mailbox"
 
 #: templates/admin/aliases.html:16 templates/admin/domains.html:18
 #: templates/admin/permissions.html:17 templates/admin/permissions.html:44
 msgid "Enabled"
-msgstr "Activé"
+msgstr "Aktiviert"
 
 #: templates/admin/aliases.html:24
 msgid "Edit alias"
-msgstr "Editer cet alias"
+msgstr "Alias bearbeiten"
 
 #: templates/admin/aliases.html:28
 msgid "Delete alias"
-msgstr "Supprimer cet alias"
+msgstr "Alias löschen"
 
 #: templates/admin/domains.html:6
 msgid "Available domains"
-msgstr "Domaines disponibles"
+msgstr "Verfügbare Domänen"
 
 #: templates/admin/domains.html:10
 msgid "No domain defined."
-msgstr "Aucun domaine défini."
+msgstr "Keine Domäne definiert."
 
 #: templates/admin/domains.html:15 templates/admin/mailboxes.html:15
 #: templates/admin/permissions.html:43
 msgid "Name"
-msgstr "Nom"
+msgstr "Name"
 
 #: templates/admin/domains.html:26
 msgid "Edit domain"
-msgstr "Editer le domaine"
+msgstr "Domäne bearbeiten"
 
 #: templates/admin/domains.html:30
 msgid "Delete domain"
-msgstr "Supprimer le domaine"
+msgstr "Domäne löschen"
 
 #: templates/admin/domains.html:36 templates/admin/mailboxes.html:45
 msgid "MB"
-msgstr "Mo"
+msgstr "MB"
 
 #: templates/admin/domains.html:37 templates/admin/mailboxes.html:46
 msgid "yes,no"
-msgstr "oui,non"
+msgstr "Ja,Nein"
 
 #: templates/admin/editalias.html:14 templates/admin/editdomain.html:15
 #: templates/admin/editmailbox.html:16 templates/main/autoreply.html:17
 #: templates/main/chpassword.html:15
 msgid "Update"
-msgstr "Mettre à jour"
+msgstr "Aktualisieren"
 
 #: templates/admin/mailboxes.html:10
 msgid "No mailbox defined."
-msgstr "Aucune boite aux lettres définie."
+msgstr "Keine Mailbox definiert."
 
 #: templates/admin/mailboxes.html:26
 msgid "Edit mailbox"
-msgstr "Editer la boite aux lettres"
+msgstr "Mailbox bearbeiten"
 
 #: templates/admin/mailboxes.html:31
 msgid "Delete mailbox"
-msgstr "Supprimer la boite aux lettres"
+msgstr "Mailbox löschen"
 
 #: templates/admin/mailboxes.html:36
 msgid "Add new alias"
-msgstr "Ajouter un alias"
+msgstr "Alias hinzufügen"
 
 #: templates/admin/mailboxes.html:40
 msgid "Mailbox aliases"
-msgstr "Alias de cette boite aux lettres"
+msgstr "Mailbox-Alias"
 
 #: templates/admin/newalias.html:7
 msgid "New alias"
-msgstr "Nouvel alias"
+msgstr "Neuer Alias"
 
 #: templates/admin/permissions.html:9
 msgid "No superuser defined?!"
-msgstr "Aucun super utilisateur défini?!"
+msgstr "Kein Administrator definiert?!"
 
 #: templates/admin/permissions.html:11
 msgid "Super administrators"
-msgstr "Super administrateurs"
+msgstr "Administrator"
 
 #: templates/admin/permissions.html:15
 msgid "Full name"
-msgstr "Nom complet"
+msgstr "Voller Name"
 
 #: templates/admin/permissions.html:16
 msgid "User name"
-msgstr "Nom d'utilisateur"
+msgstr "Benutzername"
 
 #: templates/admin/permissions.html:24 templates/admin/permissions.html:52
 msgid "Remove permission"
-msgstr "Supprimer la permission"
+msgstr "Berechtigung entziehen"
 
 #: templates/admin/permissions.html:35
 msgid "Domain administrators"
-msgstr "Administrateurs de domaine"
+msgstr "Domänen-Administrator"
 
 #: templates/admin/permissions.html:37
 msgid "No domain admin defined."
-msgstr "Aucun admin de domaine défini."
+msgstr "Kein Domänen-Administrator definiert."
 
 #: templates/admin/settings_menu.html:7
 msgid "Permissions"
-msgstr ""
+msgstr "Berechtigungen"
 
 #: templates/main/confirm.html:25
 msgid "Do not delete mailbox directory"
-msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
+msgstr "Mailbox-Verzeichnis nicht löschen"
 
 #: templates/main/header.html:6
 msgid "General"
-msgstr "Général"
+msgstr "Allgemein"
 
 #: templates/main/index.html:11
 msgid "Your auto-reply message is activated."
-msgstr "Votre réponse automatique est active."
+msgstr "Automatische Benachrichtigung ist aktiviert."
 
 #: templates/main/index.html:13
 msgid "Your auto-reply message is not activated."
-msgstr "Votre réponse automatique n'est pas active."
+msgstr "Automatische Benachrichtigung ist nicht aktiviert."
 
 #: templates/registration/login.html:8
 msgid "Welcome"
-msgstr "Bienvenue"
+msgstr "Willkommen"
 
 #: templates/registration/login.html:11
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
-"Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
-"réessayer."
+"Ihr Benutzername und Passwort stimmen nicht überein. Bitte versuchen Sie es "
+"noch einmal."
