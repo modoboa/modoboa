@@ -10,7 +10,7 @@ import os
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import simplejson
 from django.conf.urls.defaults import *
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required
@@ -124,8 +124,9 @@ def delete(request, mail_id, count=1):
     status, error = db.execute(conn, 
                                "DELETE FROM msgs WHERE mail_id IN (%s)" % mail_id)
     if status:
-        message = _("%(count)d message%(plural)s deleted successfully" \
-                        % ({"count" : count, "plural" : count > 1 and "s" or ""}))
+        message = ungettext("%(count)d message deleted successfully",
+                            "%(count)d messages deleted successfully",
+                            count) % {"count" : count}
     else:
         message = error
     return _redirect_to_index(request, message, count)
@@ -164,8 +165,9 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
             error = result
             break
     if not error:
-        message = _("%(count)d message%(plural)s released successfully" \
-                        % {"count" : count, "plural" : count > 1 and "s" or ""})
+        message = ungettext("%(count)d message released successfully",
+                            "%(count)d messages released successfully",
+                            count) % {"count" : count}
     else:
         message = error
     return _redirect_to_index(request, message, count)
