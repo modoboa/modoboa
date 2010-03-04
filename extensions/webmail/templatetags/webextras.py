@@ -70,7 +70,7 @@ def listing_menu(selection, folder, perms):
         {"name" : "compose",
          "url" : reverse(webmail.main.compose),
          "img" : "/static/pics/edit.png",
-         "label" : _("New message")}
+         "label" : _("New message")},
         ]
     if folder in ["Trash"]:
         entries += [
@@ -83,19 +83,3 @@ def listing_menu(selection, folder, perms):
     return render_to_string("main/menu.html",
                             {"selection" : selection, "entries" : entries,
                              "perms" : perms})
-
-@register.simple_tag
-def render_headers(headers):
-    fields = ["Subject", "From", "To", "Cc", "Date"]
-    result = []
-    for f in fields:
-        if not f in headers.keys():
-            continue
-        try:
-            result += [{"name" : f, "value" : getattr(IMAPheader, "parse_%s" % f.lower())(headers[f])}]
-        except AttributeError:
-            result += [{"name" : f, "value" : headers[f]}]
-    return render_to_string("webmail/headers.html", {
-            "headers" : result
-            })
-    

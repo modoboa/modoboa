@@ -169,6 +169,14 @@ div#footer {
     color: white;
 }
 
+.menubardropdown ul {
+    background: white;
+    width: 120px;
+    border-bottom: 5px solid #ccc;
+    border-right: 5px solid #ccc;
+    border-left: 5px solid #ccc;
+}
+
 .left {
     float: left;
 }
@@ -185,20 +193,32 @@ div#footer {
 
 .dropdown {
     position: absolute;
+    clear: both;
+    z-index: 2;
+    width: 250px;
+}
+
+.dropdown li {
+    padding: 5px;
+    width: 170px;
+    cursor: pointer;
 }
 
 .dropdown ul { 
-    display: block;
-    background: #ffffcc;
-    width: 150px;
-    height: 90px;
-    margin: 0px;
-    padding: 0px;
-    padding-top: 10px;
+    list-style-type: none;
 }
 
-.dropdown a, .dropdown a:visited {
-    color: black !important;
+.topdropdown ul {
+    background: #153F65;
+    border-bottom: 5px solid #333;
+    border-right: 5px solid #333;
+    border-left: 5px solid #333;
+    width: 150px;
+}
+
+.dropdown ul li {
+    display: block;
+    float: none;
 }
 
 .spacer { 
@@ -248,17 +268,17 @@ th, td {
     height: 20px;
 }
 
-table th {
+th {
     background: #CEDBEC;
     text-align: left;
     padding: 5px;
 }
 
-table th.right {
+th.right {
     text-align: right;
 }
 
-table td {
+td {
     border-bottom: 1px solid #C8D6E8;
     /*padding: 5px;*/
 }

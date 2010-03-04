@@ -1,15 +1,18 @@
 window.addEvent('domready', function(){
     parse_menubar('topmenubar');
-    parse_menubar('menubar');
-    /*SqueezeBox.assign($$('a.boxed'), {
+    SqueezeBox.assign($$('a.boxed'), {
         parse: 'rel',        
-    });*/
+    });
 });
 
 callbacks = {};
 
 register_callback = function(name, callback) {
     callbacks[name] = callback;
+}
+
+get_callback = function(name) {
+    return callbacks[name];
 }
 
 current_anchor = null;
@@ -134,9 +137,16 @@ function HashWrapper(deflocation) {
 
 parse_menubar = function(id) {
     if ($(id)) {
-	$(id).getElements('li.dropdown').each(function( elem ){
+	$(id).getElements('li.dropdown').each(function(elem){
 	    var list = elem.getElement('ul.links');
-	    var myFx = new Fx.Slide(list).hide();
+	    var myFx = new Fx.Slide(list, {
+                duration: 200
+            }).hide();
+
+            myFx.addEvent("start", function() {
+                this.wrapper.setStyle("clear", "both");
+            });
+
 	    elem.addEvents({
 		'mouseenter' : function(){
 		    myFx.cancel();

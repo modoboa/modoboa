@@ -31,21 +31,21 @@
           </li>
           {% loadextmenu perms %}
           {% if user.is_superuser or perms.admin.view_domains %}
-          <li class="dropdown">
+          <li class="dropdown topdropdown">
             <img src="/static/pics/settings.png" border="0" />
             <label>{% trans "Admin" %}</label>
             <ul class="links">
-              {% url admin.views.domains as dom_url %}
-              <a href="{{ dom_url }}">
-                <li><img src="/static/pics/domains.png" />{% trans "Domains" %}</li>
-              </a>
-              {% url admin.views.settings as settings_url %}
-              <a href="{{ settings_url }}">
-                <li>
+              <li>
+                <a href="{% url admin.views.domains  %}">
+                  <img src="/static/pics/domains.png" />{% trans "Domains" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url admin.views.settings %}">
                   <img src="/static/pics/settings.png" border="0"/>
                   {% trans "Settings" %}
-                </li>
-              </a>
+                </a>
+              </li>
             </ul>
           </li>
           {% endif %}
@@ -84,8 +84,9 @@
       </div>
     </div>
     
-    <div id="footer" class="uibar menubar">
+    <div id="footer" class="uibar">
       &nbsp;
+      {% block footer %}{% endblock %}
     </div>
   </div>
 </body>

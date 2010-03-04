@@ -9,7 +9,7 @@ from email.header import decode_header
 import email.utils
 from django.utils.translation import ugettext as _
 from mailng.lib import decode, tables, imap_utf7, Singleton
-from mailng.lib.email_listing import MBconnector, EmailListing
+from mailng.lib.email_listing import MBconnector, EmailListing, Email
 from mailng.lib import tables, imap_utf7, parameters
 
 
@@ -17,7 +17,8 @@ class WMtable(tables.Table):
     tableid = "emails"
     idkey = "imapid"
 #    selection = tables.SelectionColumn("selection", width="20px", first=True)
-    _1_flags = tables.ImgColumn("flags", width="6%")
+    _1_flags = tables.ImgColumn("flags", width="4%",
+                                header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
     _2_subject = tables.Column("subject", label=_("Subject"), 
                                cssclass="draggable", width="50%")
     _3_from_ = tables.Column("from", width="20%", label=_("From"))
@@ -226,3 +227,19 @@ class ImapListing(EmailListing):
         for fd in folders:
             md_folders += [{"name" : fd}]
         return md_folders
+
+class ImapEmail(Email):
+    def __init__(self, msg, **kwargs):
+        Email.__init__(self, msg, **kwargs)
+
+        fields = ["Subject", "From", "To", "Cc", "Date"]
+        for f in fields:
+            label = f
+            if not f in msg.keys():
+                f = f.upper()
+                if not f in msg.keys():
+                    continue
+            try:
+                self.headers += [{"name" : label, "value" : getattr(IMAPheader, "parse_%s" % f.lower())(msg[f])}]
+            except AttributeError:
+                self.headers += [{"name" : label, "value" : msg[f]}]

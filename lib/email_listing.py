@@ -3,6 +3,7 @@ import time
 import re
 import lxml
 import lxml.html
+from lxml import etree
 from django.template.loader import render_to_string
 from django.template import Template, Context
 from mailng.lib import _render, decode
@@ -124,6 +125,7 @@ class Email(object):
     def __init__(self, msg, mode="plain", links="0"):
         self.attached_map = {}
         contents = {"html" : "", "plain" : ""}
+        self.headers = []
         for part in msg.walk():
             if part.get_content_maintype() == 'multipart':
                 continue
@@ -166,6 +168,11 @@ class Email(object):
                 return map[m.group(1)]
         return url
 
+    def render_headers(self):
+        return render_to_string("webmail/headers.html", {
+                "headers" : self.headers
+                })
+        
     def render(self, request):
         return  _render(request, 'common/getmailcontent.html', {
                 "body" : self.body, "pre" : self.pre
@@ -182,6 +189,11 @@ class Email(object):
             html.rewrite_links(lambda x: None)
         else:
             html.rewrite_links(self.map_cid)
-        body = lxml.html.tostring(html)
+        body = html.find("body")
+        if not body:
+            body = lxml.html.tostring(html)
+        else:
+            body = lxml.html.tostring(body)
+            body = re.sub("<(/?)body", lambda m: "<%sdiv" % m.group(1), body)
         body = Template(decode(body)).render({})
         return (False, body)

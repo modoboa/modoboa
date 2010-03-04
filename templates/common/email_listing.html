@@ -17,22 +17,19 @@ html > body #listing {
 }
 
 #navbar {
+  float: right;
   padding: 0;
   margin: 0;
-  background: white;
-  height: 40px;
-  width: 100%;
   text-align: right;
-  /*border-top: 1px solid #C8D6E8;*/
-  display: none;
 }
 
 #navbar label {
+  color: white;
   margin-right: 5px;
   font-weight: bold;
 }
 
-#navbar img {
+#navbar img{
   margin-top: 5px;
   margin-right: 5px;
 }
@@ -57,5 +54,6 @@ window.addEvent("domready", function() {
 {% block leftcol %}{% endblock %}
 <div id="listing">{{ listing }}</div>
 <div class="spacer"></div>
-<div id="navbar"></div>
 {% endblock %}
+{% block footer %}<div id="navbar"></div>{% endblock %}
+

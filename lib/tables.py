@@ -5,6 +5,8 @@ from django.template import Template, Context
 from django.template.loader import render_to_string
 
 class Column:
+    sortable = True
+
     def __init__(self, name, **kwargs):
         self.name = name
         for k, v in kwargs.iteritems():
@@ -26,8 +28,13 @@ class SelectionColumn(Column):
             % (self.name, value)
 
 class ImgColumn(Column):
+    sortable = False
+
     def __str__(self):
-        return ""
+        try:
+            return getattr(self, "header")
+        except AttributeError:
+            return ""
 
     def render(self, value):
         return "<img src='%s' />" % value

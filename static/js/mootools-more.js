@@ -23,8 +23,8 @@ provides: [MooTools.More]
 */
 
 MooTools.More = {
-	'version': '1.2.4.2',
-	'build': 'bd5a93c0913cce25917c48cbdacde568e15e02ef'
+	'version': '1.2.4.4',
+	'build': '6f6057dc645fdb7547689183b2311063bd653ddf'
 };
 
 /*
@@ -207,7 +207,8 @@ provides: [Element.Delegation]
 
 ...
 */
-(function(){
+
+(function(addEvent, removeEvent){
 	
 	var match = /(.*?):relay\(([^)]+)\)$/,
 		combinators = /[+>~\s]/,
@@ -234,9 +235,6 @@ provides: [Element.Delegation]
 			return null;
 		};
 
-	var oldAddEvent = Element.prototype.addEvent,
-		oldRemoveEvent = Element.prototype.removeEvent;
-		
 	Element.implement({
 
 		addEvent: function(type, fn){
@@ -249,10 +247,10 @@ provides: [Element.Delegation]
 						if (el) this.fireEvent(type, [e, el], 0, el);
 					}.bind(this);
 					monitors[type] = monitor;
-					oldAddEvent.call(this, splitted.event, monitor);
+					addEvent.call(this, splitted.event, monitor);
 				}
 			}
-			return oldAddEvent.apply(this, arguments);
+			return addEvent.apply(this, arguments);
 		},
 
 		removeEvent: function(type, fn){
@@ -261,19 +259,18 @@ provides: [Element.Delegation]
 				var events = this.retrieve('events');
 				if (!events || !events[type] || (fn && !events[type].keys.contains(fn))) return this;
 
-				if (fn) oldRemoveEvent.apply(this, [type, fn]);
-				else oldRemoveEvent.apply(this, type);
+				if (fn) removeEvent.apply(this, [type, fn]);
+				else removeEvent.apply(this, type);
 
 				events = this.retrieve('events');
-				if (events && events[type] && events[type].length == 0){
+				if (events && events[type] && events[type].keys.length == 0){
 					var monitors = this.retrieve('$moo:delegateMonitors', {});
-					oldRemoveEvent.apply(this, [splitted.event, monitors[type]]);
+					removeEvent.apply(this, [splitted.event, monitors[type]]);
 					delete monitors[type];
 				}
 				return this;
 			}
-
-			return oldRemoveEvent.apply(this, arguments);
+			return removeEvent.apply(this, arguments);
 		},
 
 		fireEvent: function(type, args, delay, bind){
@@ -287,7 +284,7 @@ provides: [Element.Delegation]
 
 	});
 
-})();
+})(Element.prototype.addEvent, Element.prototype.removeEvent);
 
 /*
 ---
@@ -373,7 +370,7 @@ provides: [Fx.Accordion]
 ...
 */
 
-var Accordion = Fx.Accordion = new Class({
+Fx.Accordion = new Class({
 
 	Extends: Fx.Elements,
 
@@ -395,10 +392,14 @@ var Accordion = Fx.Accordion = new Class({
 	},
 
 	initialize: function(){
-		var params = Array.link(arguments, {'container': Element.type, 'options': Object.type, 'togglers': $defined, 'elements': $defined});
+		var params = Array.link(arguments, {
+			'container': Element.type, //deprecated
+			'options': Object.type,
+			'togglers': $defined,
+			'elements': $defined
+		});
 		this.parent(params.elements, params.options);
 		this.togglers = $$(params.togglers);
-		this.container = document.id(params.container);
 		this.previous = -1;
 		this.internalChain = new Chain();
 		if (this.options.alwaysHide) this.options.wait = true;
@@ -422,7 +423,8 @@ var Accordion = Fx.Accordion = new Class({
 				for (var fx in this.effects) el.setStyle(fx, 0);
 			}
 		}, this);
-		if ($chk(this.options.display)) this.display(this.options.display, this.options.initialDisplayFx);
+		if ($chk(this.options.display) || this.options.initialDisplayFx === false) this.display(this.options.display, this.options.initialDisplayFx);
+		if (this.options.fixedHeight !== false) this.options.returnHeightToAuto = false;
 		this.addEvent('complete', this.internalChain.callChain.bind(this.internalChain));
 	},
 
@@ -493,6 +495,37 @@ var Accordion = Fx.Accordion = new Class({
 });
 
 /*
+	Compatibility with 1.2.0
+*/
+var Accordion = new Class({
+
+	Extends: Fx.Accordion,
+
+	initialize: function(){
+		this.parent.apply(this, arguments);
+		var params = Array.link(arguments, {'container': Element.type});
+		this.container = params.container;
+	},
+
+	addSection: function(toggler, element, pos){
+		toggler = document.id(toggler);
+		element = document.id(element);
+		var test = this.togglers.contains(toggler);
+		var len = this.togglers.length;
+		if (len && (!test || pos)){
+			pos = $pick(pos, len - 1);
+			toggler.inject(this.togglers[pos], 'before');
+			element.inject(toggler, 'after');
+		} else if (this.container && !test){
+			toggler.inject(this.container);
+			element.inject(this.container);
+		}
+		return this.parent.apply(this, arguments);
+	}
+
+});
+
+/*
 ---
 
 script: Fx.Slide.js
@@ -519,12 +552,14 @@ Fx.Slide = new Class({
 
 	options: {
 		mode: 'vertical',
+		wrapper: false,
 		hideOverflow: true
 	},
 
 	initialize: function(element, options){
 		this.addEvent('complete', function(){
 			this.open = (this.wrapper['offset' + this.layout.capitalize()] != 0);
+			if (this.open) this.wrapper.setStyle('height', '');
 			if (this.open && Browser.Engine.webkit419) this.element.dispose().inject(this.wrapper);
 		}, true);
 		this.element = this.subject = document.id(element);
@@ -532,6 +567,7 @@ Fx.Slide = new Class({
 		var wrapper = this.element.retrieve('wrapper');
 		var styles = this.element.getStyles('margin', 'position', 'overflow');
 		if (this.options.hideOverflow) styles = $extend(styles, {overflow: 'hidden'});
+		if (this.options.wrapper) wrapper = document.id(this.options.wrapper).setStyles(styles);
 		this.wrapper = wrapper || new Element('div', {
 			styles: styles
 		}).wraps(this.element);
@@ -741,7 +777,8 @@ var Drag = new Class({
 			if (this.options.style) this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
 			else this.value.now[z] = this.element[this.options.modifiers[z]];
 			if (this.options.invert) this.value.now[z] *= -1;
-			this.mouse.pos[z] = event.page[z] - this.value.now[z];
+			/*this.mouse.pos[z] = event.page[z] - this.value.now[z];*/
+                    this.mouse.pos[z] = this.value.now[z];
 			if (limit && limit[z]){
 				for (var i = 2; i--; i){
 					if ($chk(limit[z][i])) this.limit[z][i] = $lambda(limit[z][i])();
@@ -871,7 +908,7 @@ Drag.Move = new Class({
 		if (this.container && $type(this.container) != 'element')
 			this.container = document.id(this.container.getDocument().body);
 		
-		var styles = element.getStyles('left', 'right', 'position');
+		var styles = element.getStyles('left', 'top', 'position');
 		if (styles.left == 'auto' || styles.top == 'auto')
 			element.setPosition(element.getPosition(element.getOffsetParent()));
 		
@@ -1096,12 +1133,20 @@ var Sortables = new Class({
 	getClone: function(event, element){
 		if (!this.options.clone) return new Element('div').inject(document.body);
 		if ($type(this.options.clone) == 'function') return this.options.clone.call(this, event, element, this.list);
-		return element.clone(true).setStyles({
+		var clone = element.clone(true).setStyles({
 			margin: '0px',
 			position: 'absolute',
 			visibility: 'hidden',
 			'width': element.getStyle('width')
-		}).inject(this.list).setPosition(element.getPosition(element.getOffsetParent()));
+		});
+		//prevent the duplicated radio inputs from unchecking the real one
+		if (clone.get('html').test('radio')) {
+			clone.getElements('input[type=radio]').each(function(input, i) {
+				input.set('name', 'clone_' + i);
+			});
+		}
+		
+		return clone.inject(this.list).setPosition(element.getPosition(element.getOffsetParent()));
 	},
 
 	getDroppables: function(){
@@ -1269,34 +1314,38 @@ var HtmlTable = new Class({
 		return this;
 	},
 
+	set: function(what, items) {
+		var target = (what == 'headers') ? 'tHead' : 'tFoot';
+		this[target.toLowerCase()] = (document.id(this.element[target]) || new Element(target.toLowerCase()).inject(this.element, 'top')).empty();
+		var data = this.push(items, {}, this[target.toLowerCase()], what == 'headers' ? 'th' : 'td');
+		if (what == 'headers') this.head = document.id(this.thead.rows[0]);
+		else this.foot = document.id(this.thead.rows[0]);
+		return data;
+	},
+
 	setHeaders: function(headers){
-		this.thead = (document.id(this.element.tHead) || new Element('thead').inject(this.element, 'top')).empty();
-		this.push(headers, this.thead, 'th');
-		this.head = document.id(this.thead.rows[0]);
+		this.set('headers', headers);
 		return this;
 	},
 
 	setFooters: function(footers){
-		this.tfoot = (document.id(this.element.tFoot) || new Element('tfoot').inject(this.element, 'top')).empty();
-		this.push(footers, this.tfoot);
-		this.foot = document.id(this.thead.rows[0]);
+		this.set('footers', footers);
 		return this;
 	},
 
-	push: function(row, target, tag){
+	push: function(row, rowProperties, target, tag){
 		var tds = row.map(function(data){
 			var td = new Element(tag || 'td', data.properties),
 				type = data.content || data || '',
 				element = document.id(type);
-
-			if(element) td.adopt(element);
+			if($type(type) != 'string' && element) td.adopt(element);
 			else td.set('html', type);
 
 			return td;
 		});
 
 		return {
-			tr: new Element('tr').inject(target || this.body).adopt(tds),
+			tr: new Element('tr', rowProperties).inject(target || this.body).adopt(tds),
 			tds: tds
 		};
 	}
@@ -1331,8 +1380,8 @@ provides: [HtmlTable.Select]
 HtmlTable = Class.refactor(HtmlTable, {
 
 	options: {
-		/*onRowSelect: $empty,
-		onRowUnselect: $empty,*/
+		/*onRowFocus: $empty,
+		onRowUnfocus: $empty,*/
 		useKeyboard: true,
 		classRowSelected: 'table-tr-selected',
 		classRowHovered: 'table-tr-hovered',
@@ -1481,6 +1530,7 @@ HtmlTable = Class.refactor(HtmlTable, {
 
 });
 
+
 /*
 ---
 
@@ -1507,37 +1557,8 @@ provides: [Keyboard]
 */
 
 (function(){
-
-	var parsed = {};
-	var modifiers = ['shift', 'control', 'alt', 'meta'];
-	var regex = /^(?:shift|control|ctrl|alt|meta)$/;
 	
-	var parse = function(type, eventType){
-		type = type.toLowerCase().replace(/^(keyup|keydown):/, function($0, $1){
-			eventType = $1;
-			return '';
-		});
-		
-		if (!parsed[type]){
-			var key = '', mods = {};
-			type.split('+').each(function(part){
-				if (regex.test(part)) mods[part] = true;
-				else key = part;
-			});
-		
-			mods.control = mods.control || mods.ctrl; // allow both control and ctrl
-			var match = '';
-			modifiers.each(function(mod){
-				if (mods[mod]) match += mod + '+';
-			});
-			
-			parsed[type] = match + key;
-		}
-		
-		return eventType + ':' + parsed[type];
-	};
-
-	this.Keyboard = new Class({
+	var Keyboard = this.Keyboard = new Class({
 
 		Extends: Events,
 
@@ -1550,24 +1571,24 @@ provides: [Keyboard]
 			*/
 			defaultEventType: 'keydown',
 			active: false,
-			events: {}
+			events: {},
+			nonParsedEvents: ['activate', 'deactivate', 'onactivate', 'ondeactivate', 'changed', 'onchanged']
 		},
 
 		initialize: function(options){
 			this.setOptions(options);
-			//if this is the root manager, nothing manages it
-			if (Keyboard.manager) Keyboard.manager.manage(this);
 			this.setup();
-		},
-
+		}, 
 		setup: function(){
 			this.addEvents(this.options.events);
+			//if this is the root manager, nothing manages it
+			if (Keyboard.manager && !this.manager) Keyboard.manager.manage(this);
 			if (this.options.active) this.activate();
 		},
 
 		handle: function(event, type){
 			//Keyboard.stop(event) prevents key propagation
-			if (!this.active || event.preventKeyboardPropagation) return;
+			if (event.preventKeyboardPropagation) return;
 			
 			var bubbles = !!this.manager;
 			if (bubbles && this.activeKB){
@@ -1579,59 +1600,64 @@ provides: [Keyboard]
 			if (!bubbles && this.activeKB) this.activeKB.handle(event, type);
 		},
 
-		addEvent: function(type, fn, internal) {
-			return this.parent(parse(type, this.options.defaultEventType), fn, internal);
+		addEvent: function(type, fn, internal){
+			return this.parent(Keyboard.parse(type, this.options.defaultEventType, this.options.nonParsedEvents), fn, internal);
 		},
 
-		removeEvent: function(type, fn) {
-			return this.parent(parse(type, this.options.defaultEventType), fn);
-		},
-
-		activate: function(){
-			this.active = true;
-			return this.enable();
-		},
-
-		deactivate: function(){
-			this.active = false;
-			return this.fireEvent('deactivate');
+		removeEvent: function(type, fn){
+			return this.parent(Keyboard.parse(type, this.options.defaultEventType, this.options.nonParsedEvents), fn);
 		},
 
 		toggleActive: function(){
 			return this[this.active ? 'deactivate' : 'activate']();
 		},
 
-		enable: function(instance){
+		activate: function(instance){
 			if (instance) {
 				//if we're stealing focus, store the last keyboard to have it so the relenquish command works
 				if (instance != this.activeKB) this.previous = this.activeKB;
 				//if we're enabling a child, assign it so that events are now passed to it
 				this.activeKB = instance.fireEvent('activate');
+				Keyboard.manager.fireEvent('changed');
 			} else if (this.manager) {
 				//else we're enabling ourselves, we must ask our parent to do it for us
-				this.manager.enable(this);
+				this.manager.activate(this);
+			}
+			return this;
+		},
+
+		deactivate: function(instance){
+			if (instance) {
+				if(instance === this.activeKB) {
+					this.activeKB = null;
+					instance.fireEvent('deactivate');
+					Keyboard.manager.fireEvent('changed');
+				}
+			}
+			else if (this.manager) {
+				this.manager.deactivate(this);
 			}
 			return this;
 		},
 
 		relenquish: function(){
-			if (this.previous) this.enable(this.previous);
+			if (this.previous) this.activate(this.previous);
 		},
 
 		//management logic
-		manage: function(instance) {
+		manage: function(instance){
 			if (instance.manager) instance.manager.drop(instance);
 			this.instances.push(instance);
 			instance.manager = this;
-			if (!this.activeKB) this.enable(instance);
+			if (!this.activeKB) this.activate(instance);
 			else this._disable(instance);
 		},
 
-		_disable: function(instance) {
+		_disable: function(instance){
 			if (this.activeKB == instance) this.activeKB = null;
 		},
 
-		drop: function(instance) {
+		drop: function(instance){
 			this._disable(instance);
 			this.instances.erase(instance);
 		},
@@ -1639,35 +1665,81 @@ provides: [Keyboard]
 		instances: [],
 
 		trace: function(){
-			this.enableLog();
-			var item = this;
-			this.log('the following items have focus: ');
-			while (item) {
-				this.log(document.id(item.widget) || item.widget || item, 'active: ' + this.active);
-				item = item.activeKB;
-			}
+			Keyboard.trace(this);
+		},
+
+		each: function(fn){
+			Keyboard.each(this, fn);
 		}
 
 	});
+	
+	var parsed = {};
+	var modifiers = ['shift', 'control', 'alt', 'meta'];
+	var regex = /^(?:shift|control|ctrl|alt|meta)$/;
+	
+	Keyboard.parse = function(type, eventType, ignore){
+		if (ignore && ignore.contains(type.toLowerCase())) return type;
+		
+		type = type.toLowerCase().replace(/^(keyup|keydown):/, function($0, $1){
+			eventType = $1;
+			return '';
+		});
 
-	Keyboard.stop = function(event) {
+		if (!parsed[type]){
+			var key, mods = {};
+			type.split('+').each(function(part){
+				if (regex.test(part)) mods[part] = true;
+				else key = part;
+			});
+
+			mods.control = mods.control || mods.ctrl; // allow both control and ctrl
+			
+			var keys = [];
+			modifiers.each(function(mod){
+				if (mods[mod]) keys.push(mod);
+			});
+			
+			if (key) keys.push(key);
+			parsed[type] = keys.join('+');
+		}
+
+		return eventType + ':' + parsed[type];
+	};
+
+	Keyboard.each = function(keyboard, fn){
+		var current = keyboard || Keyboard.manager;
+		while (current){
+			fn.run(current);
+			current = current.activeKB;
+		}
+	};
+
+	Keyboard.stop = function(event){
 		event.preventKeyboardPropagation = true;
 	};
 
-	Keyboard.manager = new this.Keyboard({
+	Keyboard.manager = new Keyboard({
 		active: true
 	});
 	
-	Keyboard.trace = function(){
-		Keyboard.manager.trace();
+	Keyboard.trace = function(keyboard){
+		keyboard = keyboard || Keyboard.manager;
+		keyboard.enableLog();
+		keyboard.log('the following items have focus: ');
+		Keyboard.each(keyboard, function(current){
+			keyboard.log(document.id(current.widget) || current.wiget || current);
+		});
 	};
 	
 	var handler = function(event){
-		var mods = '';
+		var keys = [];
 		modifiers.each(function(mod){
-			if (event[mod]) mods += mod + '+';
+			if (event[mod]) keys.push(mod);
 		});
-		Keyboard.manager.handle(event, event.type + ':' + mods + event.key);
+		
+		if (!regex.test(event.key)) keys.push(event.key);
+		Keyboard.manager.handle(event, event.type + ':' + keys.join('+'));
 	};
 	
 	document.addEvents({
@@ -1676,13 +1748,27 @@ provides: [Keyboard]
 	});
 
 	Event.Keys.extend({
+		'shift': 16,
+		'control': 17,
+		'alt': 18,
+		'capslock': 20,
 		'pageup': 33,
 		'pagedown': 34,
 		'end': 35,
 		'home': 36,
-		'capslock': 20,
 		'numlock': 144,
-		'scrolllock': 145
+		'scrolllock': 145,
+		';': 186,
+		'=': 187,
+		',': 188,
+		'-': Browser.Engine.Gecko ? 109 : 189,
+		'.': 190,
+		'/': 191,
+		'`': 192,
+		'[': 219,
+		'\\': 220,
+		']': 221,
+		"'": 222
 	});
 
 })();
@@ -1727,7 +1813,8 @@ var Scroller = new Class({
 	initialize: function(element, options){
 		this.setOptions(options);
 		this.element = document.id(element);
-		this.listener = ($type(this.element) != 'element') ? document.id(this.element.getDocument().body) : this.element;
+		this.docBody = document.id(this.element.getDocument().body);
+		this.listener = ($type(this.element) != 'element') ?  this.docBody : this.element;
 		this.timer = null;
 		this.bound = {
 			attach: this.attach.bind(this),
@@ -1769,14 +1856,15 @@ var Scroller = new Class({
 	scroll: function(){
 		var size = this.element.getSize(), 
 			scroll = this.element.getScroll(), 
-			pos = this.element.getOffsets(), 
+			pos = this.element != this.docBody ? this.element.getOffsets() : {x: 0, y:0}, 
 			scrollSize = this.element.getScrollSize(), 
 			change = {x: 0, y: 0};
 		for (var z in this.page){
-			if (this.page[z] < (this.options.area + pos[z]) && scroll[z] != 0)
+			if (this.page[z] < (this.options.area + pos[z]) && scroll[z] != 0) {
 				change[z] = (this.page[z] - this.options.area - pos[z]) * this.options.velocity;
-			else if (this.page[z] + this.options.area > (size[z] + pos[z]) && scroll[z] + size[z] != scrollSize[z])
+			} else if (this.page[z] + this.options.area > (size[z] + pos[z]) && scroll[z] + size[z] != scrollSize[z]) {
 				change[z] = (this.page[z] - size[z] + this.options.area - pos[z]) * this.options.velocity;
+			}
 		}
 		if (change.y || change.x) this.fireEvent('change', [scroll.x + change.x, scroll.y + change.y]);
 	}
@@ -1838,21 +1926,20 @@ this.Tips = new Class({
 		hideDelay: 100,
 		className: 'tip-wrap',
 		offset: {x: 16, y: 16},
+		windowPadding: {x:0, y:0},
 		fixed: false
 	},
 
 	initialize: function(){
 		var params = Array.link(arguments, {options: Object.type, elements: $defined});
 		this.setOptions(params.options);
-		document.id(this);
-		
 		if (params.elements) this.attach(params.elements);
+		this.container = new Element('div', {'class': 'tip'});
 	},
 
 	toElement: function(){
 		if (this.tip) return this.tip;
-		
-		this.container = new Element('div', {'class': 'tip'});
+
 		return this.tip = new Element('div', {
 			'class': this.options.className,
 			styles: {
@@ -1916,8 +2003,10 @@ this.Tips = new Class({
 		}, this);
 		
 		$clear(this.timer);
-		this.timer = this.show.delay(this.options.showDelay, this, element);
-		this.position((this.options.fixed) ? {page: element.getPosition()} : event);
+		this.timer = (function(){
+			this.show(this, element);
+			this.position((this.options.fixed) ? {page: element.getPosition()} : event);
+		}).delay(this.options.showDelay, this);
 	},
 
 	elementLeave: function(event, element){
@@ -1927,11 +2016,10 @@ this.Tips = new Class({
 	},
 
 	fireForParent: function(event, element){
-		if (!element) return;
-		parentNode = element.getParent();
-		if (parentNode == document.body) return;
-		if (parentNode.retrieve('tip:enter')) parentNode.fireEvent('mouseenter', event);
-		else this.fireForParent(parentNode, event);
+		element = element.getParent();
+		if (!element || element == document.body) return;
+		if (element.retrieve('tip:enter')) element.fireEvent('mouseenter', event);
+		else this.fireForParent(event, element);
 	},
 
 	elementMove: function(event, element){
@@ -1939,6 +2027,8 @@ this.Tips = new Class({
 	},
 
 	position: function(event){
+		if (!this.tip) document.id(this);
+
 		var size = window.getSize(), scroll = window.getScroll(),
 			tip = {x: this.tip.offsetWidth, y: this.tip.offsetHeight},
 			props = {x: 'left', y: 'top'},
@@ -1946,7 +2036,7 @@ this.Tips = new Class({
 		
 		for (var z in props){
 			obj[props[z]] = event.page[z] + this.options.offset[z];
-			if ((obj[props[z]] + tip[z] - scroll[z]) > size[z]) obj[props[z]] = event.page[z] - this.options.offset[z] - tip[z];
+			if ((obj[props[z]] + tip[z] - scroll[z]) > size[z] - this.options.windowPadding[z]) obj[props[z]] = event.page[z] - this.options.offset[z] - tip[z];
 		}
 		
 		this.tip.setStyles(obj);
@@ -1958,10 +2048,12 @@ this.Tips = new Class({
 	},
 
 	show: function(element){
+		if (!this.tip) document.id(this);
 		this.fireEvent('show', [this.tip, element]);
 	},
 
 	hide: function(element){
+		if (!this.tip) document.id(this);
 		this.fireEvent('hide', [this.tip, element]);
 	}
 

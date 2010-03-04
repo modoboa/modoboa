@@ -2,6 +2,7 @@
 import time
 import sys
 from django.http import HttpResponse
+from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
@@ -10,10 +11,10 @@ from django.conf.urls.defaults import include
 from django.contrib.auth.decorators import login_required
 from mailng.admin.models import Mailbox
 from mailng.lib import events, parameters, _render, _render_error
-from mailng.lib.email_listing import Email
 from imap_listing import *
 from forms import *
 from templatetags.webextras import *
+from imap_listing import ImapEmail
 
 def init():
     events.register("UserMenuDisplay", menu)
@@ -65,6 +66,9 @@ def folder(request, name, updatenav=True):
         request.session["page"] = pageid
         if order:
             request.session["navparams"]["order"] = order
+    else:
+        # Internal usage
+        order = request.session["navparams"]["order"]
 
     lst = ImapListing(request.user.username, request.session["password"],
                       name, folder=name, order=order)
@@ -98,42 +102,45 @@ def fetchmail(request, folder, mail_id, all=False):
 
 @login_required
 def viewmail(request, folder, mail_id=None):
-    header = fetchmail(request, folder, mail_id)
-    if header:
-        from templatetags.webextras import viewm_menu
-        try:
-            pageid = request.session["page"]
-        except KeyError:
-            pageid = "1"
-        menu = viewm_menu("", request.session, mail_id,
-                          request.user.get_all_permissions())
-        folder, imapid = header["imapid"].split("/")
-        mailcontent = render_to_string("webmail/viewmail.html", {
-                "header" : header, "folder" : folder, "imapid" : imapid
-                })
-        ctx = getctx("ok", menu=menu, listing=mailcontent)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    from templatetags.webextras import viewm_menu
+
+    content = Template("""
+<iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
+""").render(Context({"url" : reverse(getmailcontent, args=[folder, mail_id])}))
+    menu = viewm_menu("", request.session, mail_id,
+                      request.user.get_all_permissions())
+    ctx = getctx("ok", menu=menu, listing=content)
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 def getmailcontent(request, folder, mail_id):
-    from mailng.lib.email_listing import Email
-
-    msg = fetchmail(request, folder, mail_id, True)
-    if "class" in msg.keys() and msg["class"] == "unseen":
-        IMAPconnector(request).msgseen(msg["imapid"])
-    email = Email(msg, mode="html", links="1")
-    return email.render(request)
+   msg = fetchmail(request, folder, mail_id, True)
+   if "class" in msg.keys() and msg["class"] == "unseen":
+       IMAPconnector(request).msgseen(msg["imapid"])
+   email = ImapEmail(msg, mode="html", links="1")
+   try:
+       pageid = request.session["page"]
+   except KeyError:
+       pageid = "1"
+   folder, imapid = msg["imapid"].split("/")
+   return _render(request, "webmail/viewmail.html", {
+           "headers" : email.render_headers(), "folder" : folder, 
+           "imapid" : imapid, "mailbody" : email.body, "pre" : email.pre
+           })
 
 @login_required
 def move(request):
     for arg in ["msgset", "to"]:
         if not request.GET.has_key(arg):
             return
-    folder, id = request.GET["msgset"].split("/")
+    msgset = []
+    fdname = ""
+    for item in request.GET["msgset"].split(","):
+        fdname, id = item.split("/")
+        msgset += [id]
     mbc = IMAPconnector(request)
-    mbc.move(id, folder, request.GET["to"])
-    return HttpResponse(simplejson.dumps({"status" : "ok"}),
-                        mimetype="application/json")
+    mbc.move(",".join(msgset), fdname, request.GET["to"])
+    return folder(request, fdname, False)
 
 @login_required
 def empty(request, name):
@@ -176,7 +183,7 @@ def reply(request, folder, mail_id):
     if request.method == "POST":
         return
     msg = fetchmail(request, folder, mail_id, True)
-    email = Email(msg)
+    email = ImapEmail(msg)
     lines = email.body.split('\n')
     body = ""
     for l in lines:
