@@ -164,6 +164,12 @@ def move(request):
     return folder(request, fdname, False)
 
 @login_required
+def delete(request, fdname, mail_id):
+    mbc = IMAPconnector(request)
+    mbc.move(mail_id, fdname, "Trash")
+    return folder(request, fdname, False)
+
+@login_required
 def empty(request, name):
     mbc = IMAPconnector(request)
     mbc.empty(name)

@@ -42,6 +42,10 @@ def viewm_menu(selection, session, mail_id, perms):
          "url" : "",
          "img" : "/static/pics/alias.png",
          "label" : _("Forward")},
+        {"name" : "delete",
+         "img" : "/static/pics/remove.png",
+         "url" : reverse(webmail.main.delete, args=[session["folder"], mail_id]),
+         "label" : _("Delete")},
         ]
     
     return render_to_string('main/menu.html', 

@@ -210,15 +210,10 @@ confirmation = function(question, action, callback) {
 setDivHeight = function(id, extrah, modulo) {
     var contentsize = $(document.body).getSize().y 
         - $("topmenubar").getSize().y
-        - $("header").getSize().y 
+        - $("header").getSize().y
+        - $("footer").getSize().y
         - extrah;
 
-    if ($("navbar")) {
-        contentsize -= $("navbar").getSize().y;
-    }
-    if ($("thead")) {
-        contentsize -= $("thead").getSize().y;
-    }
     if (modulo) {
         contentsize -= contentsize % modulo;
     }

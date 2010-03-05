@@ -160,7 +160,14 @@ tr.selected {
     updatelisting(resp, "hidden");
     $$("a[name=back]").addEvent("click", loadFolder);
     $$("a[name=reply]").addEvent("click", reply);
-    setDivHeight("mailcontent", /*$("table-container").getSize().y*/0, 0);
+    $$("a[name=delete]").addEvent("click", function(event) {
+      var lnk = event.target;
+
+      event.stop();
+      new Request.JSON({url: lnk.get("href"),
+                        onSuccess: get_callback("folder")}).get();
+    });
+    setDivHeight("mailcontent", 5, 0);
   });
 
   compose_callback = function(resp) {
