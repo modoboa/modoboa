@@ -243,3 +243,4 @@ class ImapEmail(Email):
                 self.headers += [{"name" : label, "value" : getattr(IMAPheader, "parse_%s" % f.lower())(msg[f])}]
             except AttributeError:
                 self.headers += [{"name" : label, "value" : msg[f]}]
+

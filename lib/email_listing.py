@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 import time
 import re
+from email.header import decode_header
 import lxml
 import lxml.html
 from lxml import etree
 from django.template.loader import render_to_string
 from django.template import Template, Context
+from django.utils.translation import ugettext as _
 from mailng.lib import _render, decode
 
 attached_map = {}
@@ -126,9 +128,13 @@ class Email(object):
         self.attached_map = {}
         contents = {"html" : "", "plain" : ""}
         self.headers = []
+        self.attachments = []
         for part in msg.walk():
             if part.get_content_maintype() == 'multipart':
                 continue
+            if part.has_key("Content-Disposition"):
+                if re.match("^attachment", part["Content-Disposition"]):
+                    self.attachments += [part]
             if part.get_content_type() in ("text/html", "text/plain"):
                 contents[part.get_content_subtype()] += part.get_payload(decode=True)
             if mode != "html" or links == "0":
@@ -168,9 +174,18 @@ class Email(object):
                 return map[m.group(1)]
         return url
 
-    def render_headers(self):
+    def render_headers(self, folder, mail_id):
+        attachments = []
+        for part in self.attachments:
+            decoded = decode_header(part.get_filename())
+            if decoded[0][1] is None:
+                attachments += [decoded[0][0]]
+            else:
+                attachments += [unicode(decoded[0][0], decoded[0][1])]
         return render_to_string("webmail/headers.html", {
-                "headers" : self.headers
+                "headers" : self.headers,
+                "folder" : folder, "mail_id" : mail_id,
+                "attachments" : attachments != [] and attachments or None
                 })
         
     def render(self, request):
@@ -190,7 +205,7 @@ class Email(object):
         else:
             html.rewrite_links(self.map_cid)
         body = html.find("body")
-        if not body:
+        if body is None:
             body = lxml.html.tostring(html)
         else:
             body = lxml.html.tostring(body)

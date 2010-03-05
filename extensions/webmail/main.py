@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 import sys
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.utils import simplejson
@@ -114,19 +114,40 @@ def viewmail(request, folder, mail_id=None):
 
 @login_required
 def getmailcontent(request, folder, mail_id):
-   msg = fetchmail(request, folder, mail_id, True)
-   if "class" in msg.keys() and msg["class"] == "unseen":
-       IMAPconnector(request).msgseen(msg["imapid"])
-   email = ImapEmail(msg, mode="html", links="1")
-   try:
-       pageid = request.session["page"]
-   except KeyError:
-       pageid = "1"
-   folder, imapid = msg["imapid"].split("/")
-   return _render(request, "webmail/viewmail.html", {
-           "headers" : email.render_headers(), "folder" : folder, 
-           "imapid" : imapid, "mailbody" : email.body, "pre" : email.pre
-           })
+    msg = fetchmail(request, folder, mail_id, True)
+    if "class" in msg.keys() and msg["class"] == "unseen":
+        IMAPconnector(request).msgseen(msg["imapid"])
+        email = ImapEmail(msg, mode="html", links="1")
+    try:
+        pageid = request.session["page"]
+    except KeyError:
+        pageid = "1"
+    folder, imapid = msg["imapid"].split("/")
+    return _render(request, "webmail/viewmail.html", {
+            "headers" : email.render_headers(folder, mail_id), 
+            "folder" : folder, "imapid" : imapid, "mailbody" : email.body, 
+            "pre" : email.pre
+            })
+
+@login_required
+def getattachment(request, folder, mail_id):
+    msg = fetchmail(request, folder, mail_id, True)
+    for part in msg.walk():
+        fname = part.get_filename()
+        if fname is None:
+            continue
+        decoded = decode_header(fname)
+        if decoded[0][1] is None:
+            fname = unicode(decoded[0][0])
+        else:
+            fname = unicode(decoded[0][0], decoded[0][1])
+        if fname == request.GET["fname"]:
+            resp = HttpResponse(part.get_payload(decode=1))
+            for hdr in ["Content-Disposition", "Content-Type"]:
+                resp[hdr] = re.sub("\s", "", part[hdr])
+            resp["Content-Length"] = len(resp.content)
+            return resp
+    raise Http404
 
 @login_required
 def move(request):

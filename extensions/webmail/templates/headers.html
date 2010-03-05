@@ -1,5 +1,17 @@
+{% load i18n %}
 <table id="emailheaders">
   {% for hdr in headers %}
   <tr><th width="130px">{{ hdr.name }}</th><td>{{ hdr.value }}</td></tr>
   {% endfor %}
+  {% if attachments %}
+  <tr>
+    <th>{% trans "Attachments" %}</th>
+    <td>
+      {% url extensions.webmail.main.getattachment folder mail_id as test %}
+      {% for attachment in attachments %}
+      <a href="{{ test }}?fname={{ attachment }}">{{ attachment }}</a>
+      {% endfor %}
+    </td>
+  </tr>
+  {% endif %}
 </table>
