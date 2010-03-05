@@ -22,13 +22,18 @@ def init():
     parameters.register("webmail", "IMAP_SERVER", "string", "127.0.0.1",
                         help=_("Address of your IMAP server"))
     parameters.register("webmail", "IMAP_SECURED", "list_yesno", "no",
-                        help=_("Use a secure connexion to access IMAP server"))
+                        help=_("Use a secured connection to access IMAP server"))
     parameters.register("webmail", "IMAP_PORT", "int", "143",
                         help=_("Listening port of your IMAP server"))
     parameters.register("webmail", "SMTP_SERVER", "string", "127.0.0.1",
                         help=_("Address of your SMTP server"))
     parameters.register("webmail", "SMTP_PORT", "int", "25",
                         help=_("Listening port of your SMTP server"))
+    parameters.register("webmail", "SMTP_AUTHENTICATION", "list_yesno", "no",
+                        help=_("Server needs authentication"))
+    parameters.register("webmail", "SMTP_SECURED", "list_yesno", "no",
+                        help=_("Use a secured connection to access SMTP server"))
+
 
 def urls():
     return (r'^mailng/webmail/',
@@ -57,7 +62,7 @@ def getctx(status, level=1, **kwargs):
 def folder(request, name, updatenav=True):
     if not name:
         name = "INBOX"
-    order = request.GET.has_key("order") and request.GET["order"] or None
+    order = request.GET.has_key("order") and request.GET["order"] or "-date"
     if updatenav:
         pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
         if not "navparams" in request.session.keys():
@@ -183,23 +188,40 @@ def render_compose(request, form, bodyheader=None, body=None):
     ctx = getctx("ok", level=2, menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
+def send_mail(request):
+    form = ComposeMailForm(request.POST)
+    if form.is_valid():
+        from email.mime.text import MIMEText
+        import smtplib
+
+        msg = MIMEText(request.POST["id_body"].encode("utf-8"), 
+                       _charset="utf-8")
+        msg["Subject"] = request.POST["subject"]
+        msg["From"] = request.POST["from_"]
+        msg["To"] = request.POST["to"]
+        rcpts = msg['To'].split(',')
+        if "cc" in request.POST.keys():
+            msg["Cc"] = request.POST["cc"]
+            rcpts += msg["Cc"].split(",")
+        try:
+            s = smtplib.SMTP(parameters.get("webmail", "SMTP_SERVER"))
+            if parameters.get("webmail", "SMTP_SECURED") == "yes":
+                s.starttls()
+        except (smtplib.SMTPException, ssl.SSLError), error:
+            print error
+
+        if parameters.get("webmail", "SMTP_AUTHENTICATION") == "yes":
+            s.login(request.user.username, request.session["password"])
+        s.sendmail(msg['From'], rcpts, msg.as_string())
+        s.quit()
+        ctx = getctx("ok", url="%s?page=%s" % (request.session["folder"], 
+                                               request.session["page"]))
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
 @login_required
 def compose(request):
     if request.method == "POST":
-        form = ComposeMailForm(request.POST)
-        if form.is_valid():
-            from email.mime.text import MIMEText
-            import smtplib
-
-            msg = MIMEText(request.POST["id_body"].encode("utf-8"), 
-                           _charset="utf-8")
-            msg["Subject"] = request.POST["subject"]
-            msg["From"] = request.POST["from_"]
-            msg["to"] = request.POST["to"]
-            s = smtplib.SMTP(parameters.get("webmail", "SMTP_SERVER"))
-            s.sendmail(msg['From'], [msg['To']], msg.as_string())
-            s.quit()
-            return folder(request, request.session["navparams"]["folder"], False)
+        return send_mail(request)
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
@@ -208,7 +230,7 @@ def compose(request):
 @login_required
 def reply(request, folder, mail_id):
     if request.method == "POST":
-        return
+        return send_mail(request)
     msg = fetchmail(request, folder, mail_id, True)
     email = ImapEmail(msg)
     lines = email.body.split('\n')
@@ -219,11 +241,27 @@ def reply(request, folder, mail_id):
         body += ">%s" % l
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
-    form.fields["to"].initial = msg["From"]
-    m = re.match("re\s*:\s*.+", msg["Subject"].lower())
-    if m:
-        form.fields["subject"].initial = msg["Subject"]
+    if not "Reply-To" in msg.keys():
+        form.fields["to"].initial = msg["From"]
     else:
-        form.fields["subject"].initial = "Re: %s" % msg["Subject"]
-    textheader = msg["From"] + " " + _("wrote:")
+        form.fields["to"].initial = msg["Reply-To"]
+    if request.GET.has_key("all"):
+        form.fields["cc"].initial = ""
+        toparse = msg["To"].split(",")
+        if "Cc" in msg.keys():
+            toparse += msg["Cc"].split(",")
+        for addr in toparse:
+            tmp = EmailAddress(addr)
+            if tmp.address and tmp.address == request.user.username:
+                continue
+            if form.fields["cc"].initial != "":
+                form.fields["cc"].initial += ", "
+            form.fields["cc"].initial += tmp.fulladdress
+    subject = IMAPheader.parse_subject(msg["Subject"])
+    m = re.match("re\s*:\s*.+", subject.lower())
+    if m:
+        form.fields["subject"].initial = subject
+    else:
+        form.fields["subject"].initial = "Re: %s" % subject
+    textheader = EmailAddress(msg["From"]).fulladdress + " " + _("wrote:")
     return render_compose(request, form, textheader, body)

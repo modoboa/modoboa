@@ -57,7 +57,7 @@ AND quarantine.chunk_ind=1
 ORDER BY msgs.time_num DESC
 """ % self.filter
 
-    def messages_count(self, folder=None):
+    def messages_count(self, **kwargs):
         return self.count
 
     def fetch(self, start=None, stop=None, **kwargs):

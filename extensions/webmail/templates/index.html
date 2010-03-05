@@ -160,6 +160,7 @@ tr.selected {
     updatelisting(resp, "hidden");
     $$("a[name=back]").addEvent("click", loadFolder);
     $$("a[name=reply]").addEvent("click", reply);
+    $$("a[name=replyall]").addEvent("click", replyall);
     $$("a[name=delete]").addEvent("click", function(event) {
       var lnk = event.target;
 
@@ -173,16 +174,16 @@ tr.selected {
   compose_callback = function(resp) {
     updatelisting(resp);
     window.addEvent("resize", function(evt) {
-      var bodysize = $("listing").getSize().y - $("mailheader").getSize().y;
-      $("id_body").setStyle("height", bodysize + "px");
+      setDivHeight("id_body", $("mailheader").getSize().y, 0);
     });
     $$("a[name=back]").addEvent("click", loadFolder);
     $$("a[name=sendmail]").addEvent("click", function(evt) {
       evt.stop();
       $("composemail").set("send", {
-        onSuccess: function(res) {
-          updatelisting(JSON.decode(res));
-          $$("tr").addEvent("dblclick", viewmail);
+        onSuccess: function(resp) {
+          resp = JSON.decode(resp);
+          current_anchor.parse_string(resp.url, true).setparams(navparams);
+          current_anchor.update();
         }
       });
       $("composemail").send();
@@ -201,6 +202,11 @@ tr.selected {
     location.hash += event.target.get("href");
   }
   register_callback("reply", compose_callback);
+  replyall = function(event) {
+    event.stop();
+    location.hash += event.target.get("href") + "?all=1";
+  }
+  register_callback("replyall", compose_callback);
 
   loadFolder = function(event, obj) {
     if (!$defined(obj)) {

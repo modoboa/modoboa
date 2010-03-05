@@ -31,21 +31,36 @@ class WMtable(tables.Table):
         except AttributeError:
             return value
 
-class IMAPheader(object):
-    addr_exp = re.compile("([^<\(]+)<|\(([^>\)]+)>|\)")
-    name_exp = re.compile("\"(.+)\"")
+class EmailAddress(object):
+    addr_exp = re.compile("([^<\(]+)[<(]([^>)]+)[>)]")
+    name_exp = re.compile('"([^"]+)"')
 
+    def __init__(self, address):
+        self.fulladdress = address
+        self.name = self.address = None
+        m = EmailAddress.addr_exp.match(self.fulladdress)
+        if m is None:
+            return
+        name = m.group(1).strip()
+        self.address = m.group(2).strip()
+        m2 = EmailAddress.name_exp.match(name)
+        if m2:
+            name = m2.group(1)
+        self.name = ""
+        for part in decode_header(name):
+            if self.name != "":
+                self.name += " "
+            if part[1] is None:
+                self.name += part[0]
+            else:
+                self.name += unicode(part[0], part[1])
+        self.fulladdress = "%s <%s>" % (self.name, self.address)
+
+class IMAPheader(object):
     @staticmethod
     def parse_address(value):
-        m = IMAPheader.addr_exp.match(value)
-        if m:
-            name = m.group(1)
-            name = name.strip()
-            m2 = IMAPheader.name_exp.match(name)
-            if m2:
-                return IMAPheader.parse_subject(m2.group(1))
-            return IMAPheader.parse_subject(name)
-        return value
+        addr = EmailAddress(value)
+        return addr.name and addr.name or value
 
     @staticmethod
     def parse_address_list(values):
@@ -126,16 +141,27 @@ class IMAPconnector(object):
             return "INBOX"
         return folder.encode("imap4-utf-7")
 
-    def messages_count(self, folder=None, order=None):
-        if order:
-            sign = order[:1]
-            criterion = order[1:].upper()
+    def messages_count(self, **kwargs):
+        """An enhanced version of messages_count
+
+        With IMAP, to know how many messages a mailbox contains, we
+        have to make a request to the server. To avoid requests
+        multiplications, we sort messages in the same time. This will
+        be usefull for other methods.
+
+        :param order: sorting order
+        :param folder: mailbox to scan
+        """
+        if "order" in kwargs.keys() and kwargs["order"]:
+            sign = kwargs["order"][:1]
+            criterion = kwargs["order"][1:].upper()
             if sign == '-':
                 criterion = "REVERSE %s" % criterion
         else:
             criterion = "REVERSE DATE"
         print criterion
 
+        folder = kwargs.has_key("folder") and kwargs["folder"] or None
         (status, data) = self.m.select(self._encodefolder(folder))
         (status, data) = self.m.sort("(%s)" % criterion, "UTF-8", "(NOT DELETED)")
         self.messages = data[0].split()
@@ -210,9 +236,8 @@ class ImapListing(EmailListing):
     tpl = "webmail/index.html"
     tbltype = WMtable
     
-    def __init__(self, user, password, baseurl=None, navparams={}, **kwargs):
+    def __init__(self, user, password, baseurl=None, **kwargs):
         self.mbc = IMAPconnector(user=user, password=password)
-        self.navparams = navparams
         EmailListing.__init__(self, **kwargs)
         if baseurl:
             self.paginator.baseurl = baseurl
@@ -232,7 +257,7 @@ class ImapEmail(Email):
     def __init__(self, msg, **kwargs):
         Email.__init__(self, msg, **kwargs)
 
-        fields = ["Subject", "From", "To", "Cc", "Date"]
+        fields = ["Subject", "From", "To", "Reply-To", "Cc", "Date"]
         for f in fields:
             label = f
             if not f in msg.keys():

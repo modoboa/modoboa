@@ -17,6 +17,9 @@ class MBconnector(object):
         self.address = address
         self.port = port
 
+    def messages_count(self, **kwargs):
+        pass
+
 class Page(object):
     def __init__(self, pageid, id_start, id_stop, items, 
                  items_per_page, has_previous, has_next,
@@ -80,11 +83,13 @@ class Paginator(object):
         return p
 
 class EmailListing:
-    def __init__(self, folder=None, elems_per_page=40, **kwargs):
+    def __init__(self, folder=None, elems_per_page=40, navparams={}, **kwargs):
         self.folder = folder
         self.elems_per_page = elems_per_page
+        self.navparams = navparams
         order = "order" in kwargs.keys() and kwargs["order"] or None
-        self.paginator = Paginator(self.mbc.messages_count(self.folder, order), 
+        self.paginator = Paginator(self.mbc.messages_count(folder=self.folder, 
+                                                           order=order), 
                                    elems_per_page)
 
     def render_navbar(self, page):
@@ -212,3 +217,4 @@ class Email(object):
             body = re.sub("<(/?)body", lambda m: "<%sdiv" % m.group(1), body)
         body = Template(decode(body)).render({})
         return (False, body)
+
