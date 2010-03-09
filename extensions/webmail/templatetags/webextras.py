@@ -39,7 +39,7 @@ def viewm_menu(selection, session, mail_id, perms):
          "img" : "/static/pics/reply-all.png",
          "label" : _("Reply all")},
         {"name" : "forward",
-         "url" : "",
+         "url" : "forward/",
          "img" : "/static/pics/alias.png",
          "label" : _("Forward")},
         {"name" : "delete",

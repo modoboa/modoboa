@@ -37,8 +37,7 @@
   }
 </style>
 
-{% url extensions.webmail.main.compose as compurl %}
-<form method="POST" action="{{ compurl }}" id="composemail">
+<form method="POST" action="{{ posturl }}" id="composemail">
   <div id="compose-container">
     <div id="mailheader">
       {% include "common/genericform.html" %}

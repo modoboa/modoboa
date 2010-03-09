@@ -347,3 +347,15 @@ div.row label {
     border: 3px solid #FF2A2A;
     color: #FF2A00;
 }
+
+.errorlist ul {
+    float: left;
+    list-style: none;
+}
+
+.errorlist li { 
+    margin-left: 10px;
+    float: left;
+    display: inline;
+    color: red;
+}

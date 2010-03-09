@@ -180,15 +180,16 @@ def empty(request, name):
     mbc.empty(name)
     return folder(request, name, False)
 
-def render_compose(request, form, bodyheader=None, body=None):
+def render_compose(request, form, posturl, bodyheader=None, body=None):
     menu = compose_menu("", request.session, request.user.get_all_permissions())
     content = render_to_string("webmail/compose.html", {
-            "form" : form, "bodyheader" : bodyheader, "body" : body
+            "form" : form, "bodyheader" : bodyheader, "body" : body,
+            "posturl" : posturl
             })
     ctx = getctx("ok", level=2, menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
-def send_mail(request):
+def send_mail(request, withctx=False):
     form = ComposeMailForm(request.POST)
     if form.is_valid():
         from email.mime.text import MIMEText
@@ -209,6 +210,7 @@ def send_mail(request):
                 s.starttls()
         except (smtplib.SMTPException, ssl.SSLError), error:
             print error
+            # Prévoir la remontée de cette erreur au niveau du client!!
 
         if parameters.get("webmail", "SMTP_AUTHENTICATION") == "yes":
             s.login(request.user.username, request.session["password"])
@@ -216,7 +218,12 @@ def send_mail(request):
         s.quit()
         ctx = getctx("ok", url="%s?page=%s" % (request.session["folder"], 
                                                request.session["page"]))
+    else:
+        ctx = getctx("ko", level=2, listing=render_to_string("webmail/compose.html", 
+                                                    {"form" : form}))
+    if not withctx:
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return ctx, HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 def compose(request):
@@ -225,14 +232,14 @@ def compose(request):
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
-    return render_compose(request, form)
+    return render_compose(request, form, reverse(compose))
 
 @login_required
 def reply(request, folder, mail_id):
     if request.method == "POST":
         return send_mail(request)
     msg = fetchmail(request, folder, mail_id, True)
-    email = ImapEmail(msg)
+    email = ImapEmail(msg, True)
     lines = email.body.split('\n')
     body = ""
     for l in lines:
@@ -242,9 +249,9 @@ def reply(request, folder, mail_id):
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
     if not "Reply-To" in msg.keys():
-        form.fields["to"].initial = msg["From"]
+        form.fields["to"].initial = email.From
     else:
-        form.fields["to"].initial = msg["Reply-To"]
+        form.fields["to"].initial = email.Reply_To
     if request.GET.has_key("all"):
         form.fields["cc"].initial = ""
         toparse = msg["To"].split(",")
@@ -257,11 +264,39 @@ def reply(request, folder, mail_id):
             if form.fields["cc"].initial != "":
                 form.fields["cc"].initial += ", "
             form.fields["cc"].initial += tmp.fulladdress
-    subject = IMAPheader.parse_subject(msg["Subject"])
-    m = re.match("re\s*:\s*.+", subject.lower())
+    m = re.match("re\s*:\s*.+", email.Subject.lower())
     if m:
-        form.fields["subject"].initial = subject
+        form.fields["subject"].initial = email.Subject
     else:
-        form.fields["subject"].initial = "Re: %s" % subject
-    textheader = EmailAddress(msg["From"]).fulladdress + " " + _("wrote:")
-    return render_compose(request, form, textheader, body)
+        form.fields["subject"].initial = "Re: %s" % email.Subject
+    textheader = "%s %s" % (email.From, _("wrote:"))
+    return render_compose(request, form, reverse(reply, args[folder, mail_id]),
+                          textheader, body)
+
+@login_required
+def forward(request, folder, mail_id):
+    if request.method == "POST":
+        ctx, response = send_mail(request, True)
+        if ctx["status"] == "ok":
+            IMAPconnector(request).msgforwarded(folder, mail_id)
+        return response
+
+    msg = fetchmail(request, folder, mail_id, True)
+    email = ImapEmail(msg, True)
+    textheader = "----- %s -----" % _("Original message")
+    textheader += "\n%s: %s" % (_("Subject"), email.Subject)
+    textheader += "\n%s: %s" % (_("Date"), msg["Date"])
+    for hdr in ["From", "To", "Reply-To"]:
+        try:
+            key = re.sub("-", "_", hdr)
+            value = getattr(email, key)
+            textheader += "\n%s: %s" % (_(hdr), value)
+        except:
+            pass
+    textheader += "\n"
+
+    form = ComposeMailForm()
+    form.fields["from_"].initial = request.user.username
+    form.fields["subject"].initial = "Fwd: %s" % email.Subject
+    return render_compose(request, form, reverse(forward, args=[folder, mail_id]), 
+                          textheader, email.body)

@@ -56,36 +56,45 @@ class EmailAddress(object):
                 self.name += unicode(part[0], part[1])
         self.fulladdress = "%s <%s>" % (self.name, self.address)
 
+    def __str__(self):
+        return self.fulladdress
+
 class IMAPheader(object):
     @staticmethod
-    def parse_address(value):
+    def parse_address(value, **kwargs):
         addr = EmailAddress(value)
+        if "full" in kwargs.keys() and kwargs["full"]:
+            return addr.fulladdress
         return addr.name and addr.name or value
 
     @staticmethod
-    def parse_address_list(values):
+    def parse_address_list(values, **kwargs):
         lst = values.split(",")
         result = ""
         for addr in lst:
             if result != "":
                 result += ", "
-            result += IMAPheader.parse_address(addr)
+            result += IMAPheader.parse_address(addr, **kwargs)
         return result
 
     @staticmethod
-    def parse_from(value):
-        return IMAPheader.parse_address(value)
+    def parse_from(value, **kwargs):
+        return IMAPheader.parse_address(value, **kwargs)
 
     @staticmethod
-    def parse_to(value):
-        return IMAPheader.parse_address_list(value)
+    def parse_to(value, **kwargs):
+        return IMAPheader.parse_address_list(value, **kwargs)
 
     @staticmethod
-    def parse_cc(value):
-        return IMAPheader.parse_address_list(value)
+    def parse_cc(value, **kwargs):
+        return IMAPheader.parse_address_list(value, **kwargs)
 
     @staticmethod
-    def parse_date(value):
+    def parse_reply_to(value, **kwargs):
+        return IMAPheader.parse_address_list(value, **kwargs)
+
+    @staticmethod
+    def parse_date(value, **kwargs):
         tmp = email.utils.parsedate_tz(value)
         if not tmp:
             return value
@@ -96,7 +105,7 @@ class IMAPheader(object):
         return ndate.strftime("%a %H:%M")
 
     @staticmethod
-    def parse_subject(value):
+    def parse_subject(value, **kwargs):
         res = ""
         dcd = decode_header(value)
         for part in dcd:
@@ -186,6 +195,10 @@ class IMAPconnector(object):
         folder, id = imapid.split("/")
         self.m.store(id, "+FLAGS", "\\Seen")
 
+    def msgforwarded(self, folder, imapid):
+        self.m.select(self._encodefolder(folder), True)
+        self.m.store(imapid, "+FLAGS", "$Forwarded")
+
     def move(self, msgset, oldfolder, newfolder):
         self.m.select(self._encodefolder(oldfolder), True)
         self.m.copy(msgset, newfolder)
@@ -254,7 +267,7 @@ class ImapListing(EmailListing):
         return md_folders
 
 class ImapEmail(Email):
-    def __init__(self, msg, **kwargs):
+    def __init__(self, msg, addrfull=False, **kwargs):
         Email.__init__(self, msg, **kwargs)
 
         fields = ["Subject", "From", "To", "Reply-To", "Cc", "Date"]
@@ -265,7 +278,14 @@ class ImapEmail(Email):
                 if not f in msg.keys():
                     continue
             try:
-                self.headers += [{"name" : label, "value" : getattr(IMAPheader, "parse_%s" % f.lower())(msg[f])}]
+                key = re.sub("-", "_", f).lower()
+                value = getattr(IMAPheader, "parse_%s" % key)(msg[f], full=addrfull)
+                self.headers += [{"name" : label, "value" : value}]
             except AttributeError:
                 self.headers += [{"name" : label, "value" : msg[f]}]
+            try:
+                label = re.sub("-", "_", label)
+                setattr(self, label, value)
+            except:
+                pass
 

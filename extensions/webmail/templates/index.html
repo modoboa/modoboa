@@ -161,6 +161,7 @@ tr.selected {
     $$("a[name=back]").addEvent("click", loadFolder);
     $$("a[name=reply]").addEvent("click", reply);
     $$("a[name=replyall]").addEvent("click", replyall);
+    $$("a[name=forward]").addEvent("click", forward);
     $$("a[name=delete]").addEvent("click", function(event) {
       var lnk = event.target;
 
@@ -182,6 +183,11 @@ tr.selected {
       $("composemail").set("send", {
         onSuccess: function(resp) {
           resp = JSON.decode(resp);
+          if (resp.status == "ko") {
+            updatelisting(resp);
+            window.fireEvent("resize");
+            return;
+          }
           current_anchor.parse_string(resp.url, true).setparams(navparams);
           current_anchor.update();
         }
@@ -207,6 +213,11 @@ tr.selected {
     location.hash += event.target.get("href") + "?all=1";
   }
   register_callback("replyall", compose_callback);
+  forward = function(event) {
+    event.stop();
+    location.hash += event.target.get("href");
+  }
+  register_callback("forward", compose_callback);
 
   loadFolder = function(event, obj) {
     if (!$defined(obj)) {
