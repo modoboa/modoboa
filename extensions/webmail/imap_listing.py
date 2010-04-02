@@ -248,12 +248,12 @@ class IMAPconnector(object):
 class ImapListing(EmailListing):
     tpl = "webmail/index.html"
     tbltype = WMtable
+    deflocation = "INBOX/"
+    defcallback = "wm_updatelisting"
     
-    def __init__(self, user, password, baseurl=None, **kwargs):
+    def __init__(self, user, password, **kwargs):
         self.mbc = IMAPconnector(user=user, password=password)
-        EmailListing.__init__(self, **kwargs)
-        if baseurl:
-            self.paginator.baseurl = baseurl
+        EmailListing.__init__(self, **kwargs)  
 
     def getfolders(self):
         md_folders = [{"name" : "INBOX", "icon" : "overview.png"},

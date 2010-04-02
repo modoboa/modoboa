@@ -83,16 +83,23 @@ class Paginator(object):
         return p
 
 class EmailListing:
-    def __init__(self, folder=None, elems_per_page=40, navparams={}, **kwargs):
+    def __init__(self, baseurl=None, folder=None, elems_per_page=40, 
+                 navparams={}, **kwargs):
         self.folder = folder
         self.elems_per_page = elems_per_page
         self.navparams = navparams
         order = "order" in kwargs.keys() and kwargs["order"] or None
-        self.paginator = Paginator(self.mbc.messages_count(folder=self.folder, 
-                                                           order=order), 
-                                   elems_per_page)
+        self.empty = "empty" in kwargs.keys() and kwargs["empty"] or False
+        if not self.empty:
+            self.paginator = Paginator(self.mbc.messages_count(folder=self.folder, 
+                                                               order=order), 
+                                       elems_per_page)
+            if baseurl:
+                self.paginator.baseurl = baseurl
 
     def render_navbar(self, page):
+        if page is None:
+            return ""
         return render_to_string("common/navbar.html", {
                 "page" : page
                 })
@@ -110,9 +117,10 @@ class EmailListing:
         return tpl.render(Context({"table" : table.render(request)}))
 
     def render(self, request, pageid=1, **kwargs):
-        page = self.paginator.getpage(pageid)
-        thead = listing = ""
-        if "empty" in kwargs.keys() and not kwargs["empty"]:
+        listing = ""
+        page = None
+        if not self.empty:
+            page = self.paginator.getpage(pageid)
             if not page:
                 listing = "Empty folder"
             else:
@@ -125,7 +133,7 @@ class EmailListing:
                 "folders" : self.getfolders(),
                 "selection" : self.folder,
                 "navparams" : self.navparams,
-                "current_page" : pageid
+                "deflocation" : self.deflocation, "defcallback" : self.defcallback
                 })
 
 class Email(object):

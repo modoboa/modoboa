@@ -3,6 +3,12 @@ window.addEvent('domready', function(){
     SqueezeBox.assign($$('a.boxed'), {
         parse: 'rel',        
     });
+
+    
+    infobox = new InfoBox({
+        parent : $("menubar"),
+        message : "Loading"
+    });
 });
 
 callbacks = {};
@@ -18,18 +24,23 @@ get_callback = function(name) {
 current_anchor = null;
 
 check_anchor = function() {
-    if (current_anchor.serialized == location.hash) {
+    if (current_anchor.serialized == location.hash 
+        && !$defined(current_anchor.force)) {
         return;
     }
+    delete(current_anchor.force);
     current_anchor.from_string(location.hash);
     if (!current_anchor.serialized) {
         query = current_anchor.deflocation;
     } else {
         query = current_anchor.serialized.substring(1);
     }
+    infobox.show("Loading...", "gray");
     new Request.JSON({url: query, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
+        infobox.notice("Done");
+        infobox.hide(1);
     }}).get();
 }
 
@@ -96,8 +107,26 @@ function HashWrapper(deflocation) {
         return res;
     };
 
-    this.update = function() {
+    this.update = function(force) {
         location.hash = this.serialize();
+        if ($defined(force)) {
+            this.force = force;
+        }
+    };
+
+    this.updateparams = function(str) {
+        if (str.charAt(0) == '?') {
+            str = str.substring(1);
+        }
+        var elems = str.split('&');
+        for (var i = 0; i < elems.length; i++) {
+            this.setparamfromstring(elems[i]);
+        }
+    };
+
+    this.setparamfromstring = function(str) {
+        var def = str.split('=');
+        this.params.set(def[0], def[1]);
     };
 
     this.setparam = function(name, value) {
@@ -158,6 +187,9 @@ parse_menubar = function(id) {
 		}
 	    });
 	});
+        SqueezeBox.assign($$('a.boxed'), {
+            parse: 'rel',        
+        });
     }
 }
 

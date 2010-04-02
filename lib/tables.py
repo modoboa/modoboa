@@ -55,16 +55,21 @@ class Table(object):
         for row in rows:
             nrow = {"id" : row[self.idkey], "cols" : []}
             for c in self.columns:
+                newcol = {}
+                try:
+                    newcol["width"] = getattr(c, "width")
+                except AttributeError:
+                    pass
                 if isinstance(c, SelectionColumn):
-                    nrow["cols"] += [{"value" : c.render(row[self.idkey]), "safe" : True}]
-                    continue
+                    newcol["value"] = c.render(row[self.idkey])
+                    newcol["safe"] = True
+
                 if isinstance(c, ImgColumn):
                     key = "img_%s" % c.name
                     if key in row.keys():
-                        nrow["cols"] += [{"value" : c.render(row[key]), "safe" : True, "width" : c.width}]
-                    else:
-                        nrow["cols"] += [{"width" : c.width}]
-                    continue
+                        newcol["value"] = c.render(row[key])
+                        newcol["safe"] = True
+
                 if row.has_key(c.name):
                     try:
                         cssclass = getattr(c, "cssclass")
@@ -72,10 +77,9 @@ class Table(object):
                         cssclass = ""
                     if "class" in row.keys():
                         cssclass += (cssclass != "") and ", %s" % row["class"] or row["class"]
-                    
-                    nrow["cols"] += [{"value" : self.parse(c.name, row[c.name]), 
-                                      "class" : cssclass,
-                                      "width" : c.width}]
+                    newcol["value"] = self.parse(c.name, row[c.name])
+                    newcol["class"] = cssclass
+                nrow["cols"] += [newcol]
             self.rows += [nrow]
 
     def render(self, request):

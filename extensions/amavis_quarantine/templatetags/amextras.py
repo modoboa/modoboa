@@ -7,25 +7,22 @@ from mailng.extensions import amavis_quarantine
 register = template.Library()
 
 @register.simple_tag
-def viewm_menu(selection, mail_id, page_id, perms):
+def viewm_menu(selection, session, mail_id, perms):
     options_menu = [
-        {"name" : "plain", 
+        {"name" : "viewmode", 
          "label" : _("View as plain text"),
-         "url" : reverse(amavis_quarantine.main.viewmail, args=[mail_id])
-         + "?page=%s&mode=plain" % page_id},
-        {"name" : "html", 
+         "url" : "?mode=plain&links=0"},
+        {"name" : "viewmode", 
          "label" : _("View as HTML"),
-         "url" : reverse(amavis_quarantine.main.viewmail, args=[mail_id])
-         + "?page=%s&mode=html" % page_id},
-        {"name" : "links", 
+         "url" : "?mode=html&links=0"},
+        {"name" : "viewmode", 
          "label" : _("Activate links"),
-         "url" : reverse(amavis_quarantine.main.viewmail, args=[mail_id])
-         + "?page=%s&mode=html&links=1" % page_id}
+         "url" : "?mode=html&links=1"}
         ]
 
     entries = [
         {"name" : "back",
-         "url" : reverse(amavis_quarantine.main.index) + "?page=%s" % page_id,
+         "url" : "?page=%s" % session["page"],
          "img" : "/static/pics/back.png",
          "label" : _("Back to list")},
         {"name" : "headers",
@@ -35,20 +32,19 @@ def viewm_menu(selection, mail_id, page_id, perms):
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:600,y:500}}"},
         {"name" : "release",
-         "url" : reverse(amavis_quarantine.main.release, args=[mail_id])
-         + "?page=%s" % page_id,
+         "url" : reverse(amavis_quarantine.main.release, args=[mail_id]),
          "img" : "/static/pics/release.png",
          "label" : _("Release"),
          "confirm" : _("Release this message?")},
         {"name" : "delete",
-         "url" : reverse(amavis_quarantine.main.delete, args=[mail_id])
-         + "?page=%s" % page_id,
+         "url" : reverse(amavis_quarantine.main.delete, args=[mail_id]),
          "img" : "/static/pics/remove.png",
          "label" : _("Delete"),
          "confirm" : _("Delete this message?")},
         {"name" : "options",
          "label" : _("Options"),
          "img" : "/static/pics/settings.png",
+         "class" : "menubardropdown",
          "menu" : options_menu}
         ]
 
@@ -69,6 +65,8 @@ def quar_menu(selection, perms):
          "label" : _("Delete")},
         ]
 
-    return render_to_string('main/menu.html', 
+    menu = render_to_string('main/menu.html', 
                             {"selection" : selection, "entries" : entries, 
                              "perms" : perms})
+    searchbar = render_to_string('common/email_searchbar.html', {})
+    return menu + searchbar

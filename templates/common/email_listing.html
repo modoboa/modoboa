@@ -2,20 +2,6 @@
 {% load i18n %}
 {% block html_head %}
 <style type="text/css">
-#listing {
-  position: absolute;
-  left: 155px;
-  right: 0px;
-  top: 130px;
-  height: expression(document.body.clientHeight - 35 + "px");
-  overflow: auto;
-}
-
-html > body #listing {
-  position: fixed;
-  bottom: 35px;
-}
-
 #navbar {
   float: right;
   padding: 0;
@@ -37,6 +23,39 @@ html > body #listing {
 </style>
 <script type="text/javascript">
 window.addEvent("domready", function() {
+  navparams = new Hash({
+  {% for k, v in navparams.items %}
+    {{ k }} : "{{ v }}",
+  {% endfor %}
+  });
+
+  navbarcallback = function(event) {
+    event.stop();
+    current_anchor.setparams(navparams);
+    current_anchor.parse_string(event.target.getParent().get("href")).update();
+  }
+
+  viewmail = function(event) {
+    event.stop();
+    if (event.target.parentNode.id) {
+      var url = event.target.parentNode.id + "/";
+      event.target.parentNode.setStyle("background", "#ffffcc");
+      current_anchor.baseurl(url).update();
+    }
+  }
+
+  updatelisting = function(resp) {
+    if ($defined(resp.menu)) {
+      $("menubar").set("html", resp.menu);
+      parse_menubar("menubar");
+    }
+    $("listing").set("html", resp.listing);
+    if ($defined(resp.navbar)) {
+      $("navbar").set("html", resp.navbar);
+      $("navbar").getChildren("a").addEvent("click", navbarcallback);
+    }
+  }
+
   if ($("selectall")) {
     $("selectall").addEvent("click", function(event) {
       if ($("selectall").checked) {
@@ -47,6 +66,7 @@ window.addEvent("domready", function() {
     });
   }
   {% block js %}{% endblock %}
+  ajaxListener("{{ deflocation }}", {{ defcallback }});
 });
 </script>
 {% endblock %}
@@ -55,5 +75,5 @@ window.addEvent("domready", function() {
 <div id="listing">{{ listing }}</div>
 <div class="spacer"></div>
 {% endblock %}
-{% block footer %}<div id="navbar"></div>{% endblock %}
+{% block footer %}<div id="navbar">{{ navbar }}</div>{% endblock %}
 

@@ -6,6 +6,7 @@ from mailng.lib import tables, db
 from mailng.lib.email_listing import MBconnector, EmailListing
 
 class Qtable(tables.Table):
+    tableid = "emails"
     idkey = "mailid"
     selection = tables.SelectionColumn("selection", first=True)
     type = tables.Column("type", label=_("Type"))
@@ -83,6 +84,8 @@ LIMIT %d,%d
 class SQLlisting(EmailListing):
     tpl = "amavis_quarantine/index.html"
     tbltype = Qtable
+    deflocation = "listing/"
+    defcallback = "updatelisting"
 
     def __init__(self, filter, **kwargs):
         self.mbc = SQLconnector(filter)

@@ -8,6 +8,7 @@ import email
 import re
 import os
 from django.http import HttpResponseRedirect, HttpResponse
+from django.template import Template, Context
 from django.utils import simplejson
 from django.conf.urls.defaults import *
 from django.utils.translation import ugettext as _, ungettext
@@ -15,10 +16,11 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required
 from mailng.lib import events, parameters
-from mailng.lib import _render, _ctx_ok, _ctx_ko, decode
+from mailng.lib import _render, _ctx_ok, _ctx_ko, decode, getctx
 from mailng.lib import db
 from mailng.admin.models import Mailbox
 from lib import AMrelease
+from templatetags.amextras import *
 from sql_listing import *
 
 def init():
@@ -40,21 +42,71 @@ def menu(**kwargs):
     return []
 
 @login_required
-def index(request, message=None):
-    start = time.time()
+def _listing(request, internal=False, filter=None):
+    #start = time.time()
     if not request.user.is_superuser:
         mb = Mailbox.objects.get(user=request.user.id)
-        filter = ["&maddr.email='%s'" % mb.full_address]
+        if filter is None:
+            filter = ["&maddr.email='%s'" % mb.full_address]
+        else:
+            filter += ["&maddr.email='%s'" % mb.full_address]
+    pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
+    request.session["page"] = pageid # ?? nécessaire
+    lst = SQLlisting(filter, baseurl="listing/", empty=internal)
+    if internal:
+        return lst.render(request, pageid=int(pageid))
+    page = lst.paginator.getpage(pageid)
+    if page:
+        content = lst.fetch(request, page.id_start, page.id_stop)
+        navbar = lst.render_navbar(page)
     else:
-        filter = None
-    try:
-        pageid = request.GET["page"]
-        if pageid == "":
-            pageid = 1
-    except KeyError:
-        pageid = 1
-    lst = SQLlisting(filter)
-    return lst.render(request, pageid=int(pageid), start=start)
+        content = _("Empty quarantine")
+        navbar = ""
+    ctx = getctx("ok", listing=content, navbar=navbar,
+                 menu=quar_menu("", request.user.get_all_permissions()))
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
+@login_required
+def index(request, message=None):
+    return _listing(request, True)
+
+# @login_required
+# def getmailcontent(request, mail_id):
+#     from mailng.lib.email_listing import Email
+
+#     conn = db.getconnection("amavis_quarantine")
+#     status, cursor = db.execute(conn, """
+# SELECT mail_text
+# FROM quarantine
+# WHERE quarantine.mail_id='%s'
+# """ % mail_id)
+#     content = ""
+#     for part in cursor.fetchall():
+#         content += part[0]
+#     msg = email.message_from_string(content)
+#     links = request.GET.has_key("links") and request.GET["links"] or "0"
+#     mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
+#     mail = Email(msg, mode, links)
+#     return mail.render(request)
+    
+# @login_required
+# def viewmail(request, mail_id):
+#     conn = db.getconnection("amavis_quarantine")
+#     status, cursor = db.execute(conn, """
+# SELECT mail_text
+# FROM quarantine
+# WHERE quarantine.mail_id='%s'
+# """ % mail_id)
+#     content = ""
+#     for part in cursor.fetchall():
+#         content += part[0]
+#     msg = email.message_from_string(content)
+#     ctx = getctx("ok", )
+#     return _render(request, 'amavis_quarantine/viewmail.html', {
+#             "headers" : msg, "alert" : msg.get("X-Amavis-Alert"),
+#             "mail_id" : mail_id, "page_id" : request.session["page"],
+#             "params" : request.GET
+#             })
 
 @login_required
 def getmailcontent(request, mail_id):
@@ -73,25 +125,25 @@ WHERE quarantine.mail_id='%s'
     links = request.GET.has_key("links") and request.GET["links"] or "0"
     mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
     mail = Email(msg, mode, links)
-    return mail.render(request)
-    
+    return _render(request, "common/viewmail.html", {
+            "headers" : "", 
+            "mailbody" : mail.body, 
+            "pre" : mail.pre
+            })
+
 @login_required
 def viewmail(request, mail_id):
-    conn = db.getconnection("amavis_quarantine")
-    status, cursor = db.execute(conn, """
-SELECT mail_text
-FROM quarantine
-WHERE quarantine.mail_id='%s'
-""" % mail_id)
-    content = ""
-    for part in cursor.fetchall():
-        content += part[0]
-    msg = email.message_from_string(content)
-    return _render(request, 'amavis_quarantine/viewmail.html', {
-            "headers" : msg, "alert" : msg.get("X-Amavis-Alert"),
-            "mail_id" : mail_id, "page_id" : request.GET["page"],
-            "params" : request.GET
-            })
+    args = ""
+    for kw in ["mode", "links"]:
+        if kw in request.GET.keys():
+            args += args != "" and "&" or "?"
+            args += "%s=%s" % (kw, request.GET[kw])
+    content = Template("""
+<iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
+""").render(Context({"url" : reverse(getmailcontent, args=[mail_id]) + args}))
+    menu = viewm_menu("", request.session, mail_id, request.user.get_all_permissions())
+    ctx = getctx("ok", menu=menu, listing=content)
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 def viewheaders(request, mail_id):
@@ -129,7 +181,9 @@ def delete(request, mail_id, count=1):
                             count) % {"count" : count}
     else:
         message = error
-    return _redirect_to_index(request, message, count)
+    ctx = getctx("ok", url="?page=%s" % request.session["page"], message=message)
+    return HttpResponse(simplejson.dumps(ctx), 
+                        mimetype="application/json")
 
 @login_required
 def release(request, mail_id, count=1):
@@ -152,13 +206,6 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
     error = None
     for k, values in emails.iteritems():
         result = amr.sendreq(k, values["secret"], *values["rcpts"])
-#         cmd = "/tmp/amavisd-release "
-#         cmd += "%s %s" % (k, values["secret"])
-#         for rcpt in values["rcpts"]:
-#             cmd += " %s" % rcpt
-#         cmd += "\n"
-#         result = os.system(cmd)
-#            if re.search("250 [^\s]+ Ok", result):
         if result:
             count += 1
         else:
@@ -170,7 +217,9 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
                             count) % {"count" : count}
     else:
         message = error
-    return _redirect_to_index(request, message, count)
+    ctx = getctx("ok", url="?page=%s" % request.session["page"], message=message)
+    return HttpResponse(simplejson.dumps(ctx), 
+                        mimetype="application/json")
 
 @login_required
 def process(request):
@@ -182,19 +231,13 @@ def process(request):
         ids += "'%s'" % id
     if ids == "":
         return HttpResponseRedirect(reverse(index))
+
+    print "Ok c pas vide"
     if request.POST["action"] == "release":
-        release(request, ids, count)
+        return release(request, ids, count)
             
     if request.POST["action"] == "delete":
-        delete(request, ids, count)
-
-    try:
-        pagenum = int(request.POST.get('pagenum', '1'))
-    except ValueError:
-        pagenum = 1
-    ctx = _ctx_ok(reverse(index) + "?page=%s" % pagenum)
-    return HttpResponse(simplejson.dumps(ctx), 
-                        mimetype="application/json")
+        return delete(request, ids, count)
 
 @login_required
 def search(request):
@@ -211,19 +254,16 @@ def search(request):
             filter += " OR "
         filter += "msgs.%s LIKE '%%%s%%'" % (c, pattern)
     filter = "&(%s)" % filter 
-    lst = SQLlisting([filter])
-    try:
-        pageid = request.GET["page"]
-        if pageid == "":
-            pageid = 1
-    except KeyError:
-        pageid = 1
-    page = lst.paginator.getpage(pageid)
-    if page:
-        content = lst.fetch(page.id_start, page.id_stop).render(request)
-        navbar = lst.render_navbar(page)
-    else:
-        content = "Empty quarantine"
-        navbar = ""
-    ctx = {"status" : "ok", "listing" : content, "navbar" : navbar}
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return _listing(request, filter=filter)
+
+#     lst = SQLlisting([filter])
+
+#     page = lst.paginator.getpage(1)
+#     if page:
+#         content = lst.fetch(page.id_start, page.id_stop).render(request)
+#         navbar = lst.render_navbar(page)
+#     else:
+#         content = "Empty quarantine"
+#         navbar = ""
+#     ctx = {"status" : "ok", "listing" : content, "navbar" : navbar}
+#     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

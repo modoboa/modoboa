@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import popen2
 import os
+import sys
 import time
 from django.conf import settings
 from django.template import RequestContext
@@ -66,6 +67,16 @@ def _ctx_ok(url):
 
 def _ctx_ko(tpl, ctx):
     return {"status" : "ko", "content" : render_to_string(tpl, ctx)}
+
+def getctx(status, level=1, callback=None, **kwargs):
+    if not callback:
+        callername = sys._getframe(level).f_code.co_name
+    else:
+        callername = callback
+    ctx = {"status" : status, "callback" : callername}
+    for kw, v in kwargs.iteritems():
+        ctx[kw] = v
+    return ctx
 
 def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii')):
     for encoding in encodings:

@@ -75,6 +75,17 @@ def listing_menu(selection, folder, perms):
          "url" : reverse(webmail.main.compose),
          "img" : "/static/pics/edit.png",
          "label" : _("New message")},
+        {"name" : "actions",
+         "img" : "/static/pics/domains.png",
+         "label" : _("Mark messages"),
+         "class" : "menubardropdown",
+         "menu" : [
+                {"name" : "mark-read",
+                 "label" : _("As read")},
+                {"name" : "mark-unread",
+                 "label" : _("As unread")}
+                ]
+         }
         ]
     if folder in ["Trash"]:
         entries += [

@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
 from django.contrib.auth.decorators import login_required
 from mailng.admin.models import Mailbox
-from mailng.lib import events, parameters, _render, _render_error
+from mailng.lib import events, parameters, _render, _render_error, getctx
 from imap_listing import *
 from forms import *
 from templatetags.webextras import *
@@ -51,13 +51,6 @@ def menu(**kwargs):
 def userlogin(**kwargs):
     kwargs["request"].session["password"] = kwargs["password"]
 
-def getctx(status, level=1, **kwargs):
-    callername = sys._getframe(level).f_code.co_name
-    ctx = {"status" : status, "callback" : callername}
-    for kw, v in kwargs.iteritems():
-        ctx[kw] = v
-    return ctx
-
 @login_required
 def folder(request, name, updatenav=True):
     if not name:
@@ -76,7 +69,7 @@ def folder(request, name, updatenav=True):
         order = request.session["navparams"]["order"]
 
     lst = ImapListing(request.user.username, request.session["password"],
-                      name, folder=name, order=order)
+                      baseurl=name, folder=name, order=order)
     page = lst.paginator.getpage(request.session["page"])
     if page:
         content = lst.fetch(request, page.id_start, page.id_stop)
@@ -94,10 +87,11 @@ def index(request):
         navp = request.session.has_key("navparams") \
             and request.session["navparams"] or {}
         lst = ImapListing(request.user.username, request.session["password"],
-                          "INBOX", navparams=navp, folder="INBOX")
+                          baseurl="INBOX", navparams=navp, folder="INBOX",
+                          empty=True)
     except Exception as exp:
         return _render_error(request, {"error" : exp})
-    return lst.render(request, empty=True)
+    return lst.render(request)
 
 def fetchmail(request, folder, mail_id, all=False):
     res = IMAPconnector(request).fetch(start=mail_id, folder=folder, all=all)
@@ -128,7 +122,7 @@ def getmailcontent(request, folder, mail_id):
     except KeyError:
         pageid = "1"
     folder, imapid = msg["imapid"].split("/")
-    return _render(request, "webmail/viewmail.html", {
+    return _render(request, "common/viewmail.html", {
             "headers" : email.render_headers(folder, mail_id), 
             "folder" : folder, "imapid" : imapid, "mailbody" : email.body, 
             "pre" : email.pre
@@ -270,7 +264,7 @@ def reply(request, folder, mail_id):
     else:
         form.fields["subject"].initial = "Re: %s" % email.Subject
     textheader = "%s %s" % (email.From, _("wrote:"))
-    return render_compose(request, form, reverse(reply, args[folder, mail_id]),
+    return render_compose(request, form, reverse(reply, args=[folder, mail_id]),
                           textheader, body)
 
 @login_required
