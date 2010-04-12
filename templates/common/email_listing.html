@@ -1,0 +1,79 @@
+{% extends "nlayout.html" %}
+{% load i18n %}
+{% block html_head %}
+<style type="text/css">
+#navbar {
+  float: right;
+  padding: 0;
+  margin: 0;
+  text-align: right;
+}
+
+#navbar label {
+  color: white;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+#navbar img{
+  margin-top: 5px;
+  margin-right: 5px;
+}
+{% block css %}{% endblock %}
+</style>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  navparams = new Hash({
+  {% for k, v in navparams.items %}
+    {{ k }} : "{{ v }}",
+  {% endfor %}
+  });
+
+  navbarcallback = function(event) {
+    event.stop();
+    current_anchor.setparams(navparams);
+    current_anchor.parse_string(event.target.getParent().get("href")).update();
+  }
+
+  viewmail = function(event) {
+    event.stop();
+    if (event.target.parentNode.id) {
+      var url = event.target.parentNode.id + "/";
+      event.target.parentNode.setStyle("background", "#ffffcc");
+      current_anchor.baseurl(url).update();
+    }
+  }
+
+  updatelisting = function(resp) {
+    if ($defined(resp.menu)) {
+      $("menubar").set("html", resp.menu);
+      parse_menubar("menubar");
+    }
+    $("listing").set("html", resp.listing);
+    if ($defined(resp.navbar)) {
+      $("navbar").set("html", resp.navbar);
+      $("navbar").getChildren("a").addEvent("click", navbarcallback);
+    }
+  }
+
+  if ($("selectall")) {
+    $("selectall").addEvent("click", function(event) {
+      if ($("selectall").checked) {
+        toggleSelection("selection", true);
+      } else {
+        toggleSelection("selection", false);
+      }
+    });
+  }
+  {% block js %}{% endblock %}
+  ajaxListener("{{ deflocation }}", {{ defcallback }});
+});
+</script>
+{% endblock %}
+{% block content %}
+{% block leftcol %}{% endblock %}
+<div id="listing">{{ listing }}</div>
+<div class="spacer"></div>
+{% endblock %}
+{% block footer %}<div id="navbar">{{ navbar }}</div>{% endblock %}
+

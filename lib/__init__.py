@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import popen2
 import os
+import sys
 import time
 from django.conf import settings
 from django.template import RequestContext
@@ -41,6 +42,10 @@ def _render(request, tpl, user_context):
     return render_to_response(tpl, user_context, 
                               context_instance=RequestContext(request))
 
+def _render_error(request, user_context):
+    return render_to_response("common/error.html", user_context,
+                              context_instance=RequestContext(request))
+
 def exec_as_vuser(cmd):
     code, output = exec_pipe("sudo -u %s %s" % (settings.VIRTUAL_UID, cmd))
     if code:
@@ -54,7 +59,17 @@ def _ctx_ok(url):
 def _ctx_ko(tpl, ctx):
     return {"status" : "ko", "content" : render_to_string(tpl, ctx)}
 
-def decode(s, encodings=('ascii', 'utf8', 'latin1')):
+def getctx(status, level=1, callback=None, **kwargs):
+    if not callback:
+        callername = sys._getframe(level).f_code.co_name
+    else:
+        callername = callback
+    ctx = {"status" : status, "callback" : callername}
+    for kw, v in kwargs.iteritems():
+        ctx[kw] = v
+    return ctx
+
+def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii')):
     for encoding in encodings:
         try:
             return s.decode(encoding)
@@ -69,3 +84,14 @@ def getoption(name, default=None):
     except AttributeError:
         res = default
     return res
+
+
+class Singleton(type):
+    def __init__(cls, name, bases, dict):
+        super(Singleton, cls).__init__(name, bases, dict)
+        cls.instance = None
+
+    def __call__(cls, *args, **kwargs):
+        if cls.instance is None:
+            cls.instance = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls.instance

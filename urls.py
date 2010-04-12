@@ -21,7 +21,7 @@ urlpatterns = patterns('',
 
     (r'^mailng/admin/', include('mailng.admin.urls')),
     (r'^mailng/main/', include('mailng.main.urls')),
-    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/login/$', 'mailng.auth.views.dologin'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('mailng',),})
@@ -33,6 +33,15 @@ if menus != ():
 if settings.DEBUG:
     urlpatterns += patterns(
         '',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/tonio/projets/mailng/static'})
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+         {'document_root': settings.STATIC_ROOTDIR})
         )
-                            
+    # Stats
+    if 'mailng.extensions.stats' in settings.INSTALLED_APPS:
+        urlpatterns += patterns(
+            '',
+            (r'^img/stats/(?P<path>.*)/$', 'django.views.static.serve',
+             {'document_root': settings.IMG_ROOTDIR})
+            )
+
+

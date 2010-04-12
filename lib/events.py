@@ -13,7 +13,9 @@ events = ["CreateDomain",
           "ModifyMailbox",
 
           "UserMenuDisplay",
-          "AdminMenuDisplay"]
+          "AdminMenuDisplay",
+
+          "UserLogin"]
 
 callbacks = {}
 

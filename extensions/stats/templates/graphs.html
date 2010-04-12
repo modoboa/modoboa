@@ -1,6 +1,6 @@
 {% load i18n %}
 {% for elems in graphs %}
 <h3>{{ elems.label }}</h3>
-<p><img src="/static/graphs/{{ elems.name }}_{{ domain }}_AVERAGE_{{ period }}.png" 
+<p><img src="/img/stats/{{ elems.name }}_{{ domain }}_AVERAGE_{% ifequal period 'Custom' %}{{ period_name }}{% else %}{{ period }}{% endifequal %}.png" 
         alt="{% trans 'No statistics available' %}" /></p>
 {% endfor %}

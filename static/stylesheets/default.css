@@ -1,0 +1,361 @@
+html, body {
+    font-family: arial, helvetica, verdana, tahoma, sans-serif;
+    font-size: small;
+    background: #153F65;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+div#container {
+    height: auto !important;
+    height: 100%;
+    min-height: 100%;
+    position: relative;
+    background: white;
+}
+
+@media screen {
+    body > div#footer {
+        position: fixed;
+    }
+}
+
+div#topmenubar { 
+    position: fixed;
+    border-bottom: 5px solid #333;
+    height: 30px;
+    bottom: auto;
+}
+
+div#footer {
+    position: absolute;
+    height: 30px;
+    bottom: 0px;
+    border-top: 5px solid #333;
+}
+
+#menubar {
+    margin: 5px;
+    display: table;
+    width: 700px;
+    margin-top: 35px;
+    /*position: absolute;*/
+}
+
+#topmenubar a, #topmenubar a:visited {
+    color: white;
+    font-weight: bold;
+}
+
+#topmenubar label {
+    color: white;
+    font-weight: bold;
+}
+
+#menubar a, #menubar a:visited {
+    color: black;
+    font-weight: bold;
+}
+
+#menubar label {
+    color: black;
+    font-weight: bold;
+}
+
+#page {
+    width: 100%;
+    top: 35px;
+    bottom: 35px;
+    position: absolute;
+}
+
+#content {
+    position: fixed;
+    overflow: auto;
+    padding: 5px;
+    top: 130px;
+    bottom: 35px;
+    width: 100%;
+}
+
+#header {
+    width: 100%;
+    padding: 5px 0;
+}
+
+#header h1 {
+    font-size: medium;
+    width: 50%;
+    margin: 0 0 0 5px;
+}
+
+#loginbox {
+    margin: 100px auto;
+    width: 610px;
+    padding-bottom: 15px;
+    border: 2px solid #333;
+    background: white;
+}
+
+#loginbox h2 {
+    margin: 30px 10px 0 10px;
+    font-size: small;
+}
+
+#loginbox h3 {
+    font-size: small;
+    text-align: center;
+}
+
+#logo {
+    float: left;
+    text-align: center;
+    width: 300px;
+    margin-top: 10px;
+    border-right: 1px solid #ccc;
+}
+
+#logo img {
+    height: 90px;
+}
+
+#test {
+    float: right;
+    width: 300px;
+}
+
+.uibar {
+    background: #153F65;
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.menubar a, .menubar a:visited {
+    text-decoration: none;
+}
+
+.menubar a:hover {
+    text-decoration: underline;
+}
+
+.menubar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    color: #2a4069;
+}
+
+.menubar li { 
+    float: left;
+    display: inline;
+    margin: 5px 5px;
+}
+
+.menubar li.selected {
+    background: #ffff77;
+}
+
+.menubar img {
+    float: left;
+    margin: 0px 3px;
+    border: 0;
+}
+
+.menubar .title {
+    color: white;
+}
+
+.menubardropdown ul {
+    background: white;
+    width: 120px;
+    border-bottom: 5px solid #ccc;
+    border-right: 5px solid #ccc;
+    border-left: 5px solid #ccc;
+}
+
+div.left {
+    float: left;
+}
+
+div.right {
+    float: right;
+}
+
+.logo {
+    float: right;
+    /*margin: 5px 0 0 5px;*/
+    height: 90px;
+}
+
+.dropdown {
+    position: absolute;
+    clear: both;
+    z-index: 2;
+    width: 250px;
+}
+
+.dropdown li {
+    padding: 5px;
+    width: 170px;
+    cursor: pointer;
+}
+
+.dropdown ul { 
+    list-style-type: none;
+}
+
+.topdropdown ul {
+    background: #153F65;
+    border-bottom: 5px solid #333;
+    border-right: 5px solid #333;
+    border-left: 5px solid #333;
+    width: 150px;
+}
+
+.dropdown ul li {
+    display: block;
+    float: none;
+}
+
+.spacer { 
+    clear: both;  
+}
+
+/* Mootools tooltips */
+.tip {
+    color: #fff;
+    width: 139px;
+    z-index: 13000;
+    border: 1px solid #cccccc;
+}
+ 
+.tip-title {
+    font-weight: bold;
+    font-size: 11px;
+    margin: 0;
+    color: #9FD4FF;
+    padding: 8px 8px 4px;
+    background: #eee;
+}
+
+.tip-text {
+    font-size: 11px;
+    padding: 4px 8px 8px;
+    background: #eee;
+    color: black;
+}
+
+table {
+    /*margin: 0 auto;*/
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+tr.odd {
+    background: white;
+}
+
+tr.even {
+    background: #F4F6F8;
+}
+
+th, td {
+    height: 20px;
+}
+
+th {
+    background: #CEDBEC;
+    text-align: left;
+    padding: 5px;
+}
+
+th.right {
+    text-align: right;
+}
+
+td {
+    border-bottom: 1px solid #C8D6E8;
+    /*padding: 5px;*/
+}
+
+input {
+    border: 1px solid #cccccc;
+    color: inherit;
+    /*background-color: #e9e9e9;*/
+    background-color: #eee;
+    padding: 2px;
+}
+
+input:hover {
+    color: inherit;
+    background-color: #ffffcc;
+}
+
+table.hr {
+    width: 80%;
+    margin: 10px auto;
+}
+
+.hr td.odd {
+    background: #F7F9Fb;
+}
+
+.hr td.even {
+    
+}
+
+.unseen {
+    font-weight: bold;
+}
+
+.toggler {
+    margin: 5px auto;
+    padding: 2px 5px;
+    background: #CEDBEC;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    /*border: 1px solid #CCC;*/
+    font-size: 1.1em;
+}
+
+.element {
+    padding-left: 10px;
+}
+
+div.row {
+    margin: 10px;
+}
+
+div.row label {
+    float: left;
+    width: 200px;
+    padding: 3px 0;
+}
+
+.error {
+    margin: 0 auto;
+    padding: 5px;
+    background: red;
+    width: 500px;
+    text-align: center;
+    background-color: #F9D2D2;
+    border: 3px solid #FF2A2A;
+    color: #FF2A00;
+}
+
+.errorlist ul {
+    float: left;
+    list-style: none;
+}
+
+.errorlist li { 
+    margin-left: 10px;
+    float: left;
+    display: inline;
+    color: red;
+}

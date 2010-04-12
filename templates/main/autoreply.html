@@ -1,8 +1,10 @@
 {% extends "main/header.html" %}
 {% load i18n %}
 {% block html_head %}
-<script src="/static/js/main.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
+<link rel="stylesheet" type="text/css" href="/static/stylesheets/datepicker/vista.css" />
+<script src="/static/js/datepicker.js" type="text/javascript"></script>
+<script src="/static/js/main.js" type="text/javascript"></script>
 {% endblock %}
 {% block menu %}
 {% load main_extras %}
@@ -10,9 +12,9 @@
 {% endblock %}
 {% block subcontent %}
 <form action="" method="POST" id="armform" name="armform" class="simple">
-  {% include "genericform.html" %}
+  {% include "common/genericform.html" %}
   <div class="spacer"></div>
-  
+
   <div class="lastrow" align="center">
     <input type="submit" name="submit" value="{% trans 'Update' %}" />
   </div>

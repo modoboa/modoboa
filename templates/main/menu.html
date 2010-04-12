@@ -2,14 +2,14 @@
 <ul>
   {% for entry in entries %}
     {% if entry.menu %}
-  <li class="dropdown">
+  <li class="dropdown {{ entry.class }}">
     <img src="{{ entry.img }}" border="0" />
-    {{ entry.label }}
+    <label>{{ entry.label }}</label>
     <ul class="links">
       {% for sentry in entry.menu %}
-      <a href="{{ sentry.url }}" name="{{ sentry.name }}">
-      <li>{{ sentry.label }}</li>
-      </a>
+      <li>
+        <a href="{{ sentry.url }}" name="{{ sentry.name }}">{{ sentry.label }}</a>
+      </li>
       {% endfor %}
     </ul>
   </li>

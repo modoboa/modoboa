@@ -26,7 +26,7 @@ window.addEvent("domready", function() {
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
 {% url admin.views.addpermission as addperm_url %}
 <form action="{{ addperm_url }}" method="POST" id="permform" name="permform">
-  {% include "admin/genericform.html" %}
+  {% include "common/genericform.html" %}
   <div class="spacer"></div>
   
   <div class="lastrow" align="center">

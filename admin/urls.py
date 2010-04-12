@@ -18,5 +18,7 @@ urlpatterns = patterns('mailng.admin.views',
                        (r'^domains/(?P<dom_id>\d+)/delalias/(?P<alias_id>\d+)/$', 'delalias'),
                        (r'^settings/$', 'settings'),
                        (r'^settings/addperm/$', 'addpermission'),
-                       (r'^settings/delperm/(?P<mbox_id>\d+)/(?P<group>\w+)/$', 'deletepermission')
+                       (r'^settings/delperm/(?P<mbox_id>\d+)/(?P<group>\w+)/$', 'deletepermission'),
+                       (r'^settings/parameters/$', 'viewparameters'),
+                       (r'^settings/parameters/save/$', 'saveparameters'),
                        )

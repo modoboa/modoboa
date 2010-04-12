@@ -115,3 +115,7 @@ class Alias(models.Model):
         permissions = (
             ("view_aliases", "View aliases"),
             )
+
+class Parameter(models.Model):
+    name = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)

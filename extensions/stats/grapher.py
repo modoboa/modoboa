@@ -49,6 +49,10 @@ size_avg_template = {
         }
 }
 
+tpl = {'traffic':traffic_avg_template,
+       'badtraffic':badtraffic_avg_template,
+       'size':size_avg_template}
+
 class Grapher(object):
     def __init__(self):
         self.rrd_rootdir = getoption("RRD_ROOTDIR", "/tmp")
@@ -57,9 +61,10 @@ class Grapher(object):
     def process(self, target, suffix, start, end, tpl=traffic_avg_template):
         rrdfile = "%s/%s.rrd" % (self.rrd_rootdir, target)
         if not os.path.exists(rrdfile):
+            print "[graph] no rrd file %s detected" %rrdfile
             return
         ext = "png"
-        path = "%s/%s_%s_%s_%s.%s" % (self.img_rootdir, tpl['name'], 
+        path = "%s/%s_%s_%s_%s.%s" % (self.img_rootdir, tpl['name'],
                                       target, tpl['cf'], suffix, ext)
         start = str(start)
         end = str(end)
@@ -69,10 +74,10 @@ class Grapher(object):
             defs += ['DEF:%s=%s:%s:%s' % (v, rrdfile, v, tpl['cf']),
                      'CDEF:%spm=%s,60,*' % (v, v)]
             type = d.has_key("type") and d["type"] or "LINE"
-            lines += ["%s:%spm%s:%s" % (type, v, d["color"], 
+            lines += ["%s:%spm%s:%s" % (type, v, d["color"],
                                         d["legend"].encode("utf-8"))]
         params = defs + lines
-        rrdtool.graph(path,
+        rrdtool.graph(str(path),
                       "--imgformat", "PNG",
                       "--width", tpl["width"],
                       "--height", tpl["height"],
@@ -83,6 +88,11 @@ class Grapher(object):
                       "--slope-mode",
                       "--units-exponent", "0",
                       *params)
+
+        if not os.path.exists(path):
+            print "[graph] Impossible to create %s graph" %path
+        else:
+            print "[graph] %s graph created" %path
 
     def make_defaults(self, target, tpl=traffic_avg_template):
         end = "%d" % int(time.mktime(time.localtime()))

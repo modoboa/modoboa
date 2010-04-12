@@ -1,0 +1,6 @@
+{% extends "nlayout.html" %}
+{% load i18n %}
+{% block middletitle %}{% trans "Error" %}{% endblock %}
+{% block content %}
+<div class="error"><p>{{ error }}</p></div>
+{% endblock %}

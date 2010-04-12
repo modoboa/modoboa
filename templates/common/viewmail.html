@@ -1,0 +1,54 @@
+{% load i18n %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head profile="http://www.w3.org/2005/10/profile">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
+    
+    <style type="text/css">
+      body {
+          margin: 5px;
+      }
+      #mailcontent {
+          width: 100%;
+          border: 0px transparent none;
+          margin: 0;
+      }
+      table#emailheaders {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 10px;
+      }
+      #emailheaders td,
+      #emailheaders th {
+          height: 22px;
+          text-align: left;
+          padding-left: 10px;
+          border: 1px solid #ccc;
+      }
+      #emailheaders td {
+          font-size: 1em;
+      }
+      #emailheaders th {
+          background: #F7F9Fb;
+      }
+      #emailheaders a, #emailheaders a:visited {
+          color: blue;
+          text-decoration: none;
+      }
+      #emailheaders a:hover {
+          text-decoration: underline;
+      }
+      pre {
+          font-size: medium;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="table-container">
+      {{ headers }}
+    </div>
+    {% if pre %}<pre>{% endif %}{{ mailbody }}{% if pre %}</pre>{% endif %}
+  </body>
+</html>

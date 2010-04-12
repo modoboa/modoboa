@@ -478,7 +478,7 @@ msgstr "Domaines"
 
 #: templates/layout.html:87 templates/admin/settings_header.html:6
 msgid "Settings"
-msgstr "Paramètres"
+msgstr "Configuration"
 
 #: templates/admin/addpermission.html:24 templates/admin/settings_menu.html:15
 msgid "Add permission"

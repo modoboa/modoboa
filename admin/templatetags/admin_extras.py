@@ -46,9 +46,40 @@ def domain_menu(domain_id, selection, perms):
                              "perms" : perms})
 
 @register.simple_tag
-def settings_menu(selection):
-    return render_to_string('admin/settings_menu.html',
-                            {"selection" : selection})
+def settings_menu(selection, perms):
+    entries = [
+        {"name" : "permissions",
+         "url" : reverse(admin.views.settings),
+         "label" : _("Permissions"),
+         "img" : "/static/pics/permissions.png"},
+        {"name" : "addperm",
+         "url" : reverse(admin.views.addpermission),
+         "img" : "/static/pics/add.png",
+         "label" : _("Add permission"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:320,y:210}}"},
+        {"name" : "parameters",
+         "url" : reverse(admin.views.viewparameters),
+         "img" : "/static/pics/domains.png",
+         "label" : _("Parameters")},
+        ]
+    return render_to_string('main/menu.html', 
+                            {"selection" : selection, "entries" : entries,
+                             "perms" : perms})
+
+@register.simple_tag
+def domains_menu(selection, perms):
+    entries = [
+        {"name" : "domains",
+         "url" : reverse(admin.views.domains),
+         "label" : _("Domains"),
+         "img" : "/static/pics/domains.png"}
+        ]
+    entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box",
+                                      perms=perms)
+    return render_to_string('main/menulist.html', 
+                            {"menu" : entries, "selection" : selection,
+                             "perms" : perms})
 
 @register.simple_tag
 def loadadminextmenu(perms):
@@ -56,6 +87,46 @@ def loadadminextmenu(perms):
                                   perms=perms)
     return render_to_string('main/menulist.html', 
                             {"menu" : menu, "perms" : perms})
+
+@register.simple_tag
+def param(app, definition):
+    result = """<div class='row'>
+  <label>%s</label>""" % definition["name"]
+    name = "%s.%s" % (app, definition["name"])
+    if definition["type"] in ["string", "int"]:
+        value = definition.has_key("value") \
+            and definition["value"] or definition["default"]
+        result += """
+  <input type='text' name='%s' id='%s' value='%s' />""" % (name, name, value)
+    if definition["type"] in ["list", "list_yesno"]:
+        result += """
+<select name='%s' id='%s'>""" % (name, name)
+        values = []
+        if definition["type"] == "list_yesno":
+            values = [("yes", _("Yes")), ("no", _("No"))]
+        else:
+            if definition.has_key("values"):
+                values = definition["values"]
+        value = definition.has_key("value") \
+            and definition["value"] or definition["default"]
+        for v in values:
+            selected = ""
+            if value == v[0]:
+                selected = " selected='selected'"
+            result += "<option value='%s'%s>%s</option>\n" % (v[0], selected, v[1])
+        result += """
+</select>
+"""
+
+    if definition.has_key("help"):
+        result += """
+  <a href='%s' onclick='return false;' class='Tips' title='%s'>
+    <img src='/static/pics/info.png' border='0' />
+  </a>""" % (definition["help"], _("Help"))
+    result += """
+</div>
+"""
+    return result
 
 @register.filter
 def gender(value, target):

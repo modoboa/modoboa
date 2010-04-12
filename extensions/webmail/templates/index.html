@@ -1,0 +1,363 @@
+{% extends "common/email_listing.html" %}
+{% load i18n %}
+{% block css %}
+#listing {
+  position: absolute;
+  left: 155px;
+  right: 0px;
+  top: 130px;
+  height: expression(document.body.clientHeight - 35 + "px");
+  overflow: auto;
+}
+
+html > body #listing {
+  position: fixed;
+  bottom: 35px;
+}
+
+#leftcol {
+  float: left;
+  width: 150px;
+}
+
+thead tr {
+  position: relative;
+  top: expression(offsetParent.scrollTop); /*IE5+ only*/
+  z-index: 1;
+}
+
+table#emails > tbody {
+  position: fixed;
+  bottom: 35px;
+  top: 155px;
+  left: 155px;
+  right: 0px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#emails th {
+  /*text-align: center;*/
+}
+
+#emails tr {
+  width: 100%;
+}
+
+.box h3 {
+  font-size: small;
+  margin: 2px 0px 2px 0px;
+  text-align: center;
+}
+
+.box ul {
+  list-style: none;
+  padding: 5px 5px;
+  margin: 0;
+}
+
+.box li {
+  clear: both;
+  margin-bottom: 4px;
+}
+
+.box li.selected {
+  background: #ffffcc;
+}
+
+.box a:link, .box a:visited {
+  background: transparent;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.box a:hover { 
+  color: #6AB0C5;
+  text-decoration: none;
+}
+
+.box img {
+  float: left;
+  margin-right: 2px;
+  border: 0;
+}
+
+th {
+  /*-moz-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;
+  -webkit-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;*/
+}
+
+th.selected {
+  background: #EEEEEE;
+}
+
+.draggable {2
+  cursor: move;
+}
+
+.dragging {
+  background: #6AB0C5;
+}
+
+tr {
+  position: relative;
+  border-bottom: 1px solid #C8D6E8;
+}
+
+tr.selected {
+  background: #ffffcc;
+}
+
+{% endblock %}
+{% block js %}
+  wm_updatelisting = function(resp) {
+    updatelisting(resp);
+
+    $$("a[name=compose]").addEvent("click", loadCompose);
+    $$("a[name=empty]").addEvent("click", empty);
+    if (!checkSelection()) {
+      select($$("a[href=INBOX]"));
+    }
+  }
+
+  empty = function(event) {
+    event.stop();
+    new Request.JSON({url : event.target.get("href"), onSuccess : function(resp) {
+      wm_updatelisting(resp);
+    }}).get();
+  }
+
+  checkSelection = function() {
+    var selection = false;
+
+    $$("a[name=loadfolder]").each(function(item) {
+      if (!selection) {
+        selection = item.getParent().hasClass("selected");
+      }
+    });
+    return selection;
+  }
+
+  select = function(obj) {
+    $$("a[name=loadfolder]").each(function(item) {
+      item.getParent().removeClass("selected");
+      item.getParent().addClass("droppable");
+    });
+    obj.getParent().removeClass("droppable");
+    obj.getParent().addClass("selected");
+  }
+
+  register_callback("viewmail", function(resp) {
+    wm_updatelisting(resp, "hidden");
+    $$("a[name=back]").addEvent("click", loadFolder);
+    $$("a[name=reply]").addEvent("click", reply);
+    $$("a[name=replyall]").addEvent("click", replyall);
+    $$("a[name=forward]").addEvent("click", forward);
+    $$("a[name=delete]").addEvent("click", function(event) {
+      var lnk = event.target;
+
+      event.stop();
+      new Request.JSON({url: lnk.get("href"),
+                        onSuccess: get_callback("folder")}).get();
+    });
+    setDivHeight("mailcontent", 5, 0);
+  });
+
+  compose_callback = function(resp) {
+    wm_updatelisting(resp);
+    window.addEvent("resize", function(evt) {
+      setDivHeight("id_body", $("mailheader").getSize().y, 0);
+    });
+    $$("a[name=back]").addEvent("click", loadFolder);
+    $$("a[name=sendmail]").addEvent("click", function(evt) {
+      evt.stop();
+      $("composemail").set("send", {
+        onSuccess: function(resp) {
+          resp = JSON.decode(resp);
+          if (resp.status == "ko") {
+            wm_updatelisting(resp);
+            window.fireEvent("resize");
+            return;
+          }
+          current_anchor.parse_string(resp.url, true).setparams(navparams);
+          current_anchor.update();
+        }
+      });
+      $("composemail").send();
+    });
+    window.fireEvent("resize");
+  }
+
+  loadCompose = function(event) {
+    event.stop();
+    current_anchor.baseurl("compose/").update();
+  }
+  register_callback("compose", compose_callback);
+
+  reply = function(event) {
+    event.stop();
+    location.hash += event.target.get("href");
+  }
+  register_callback("reply", compose_callback);
+  replyall = function(event) {
+    event.stop();
+    location.hash += event.target.get("href") + "?all=1";
+  }
+  register_callback("replyall", compose_callback);
+  forward = function(event) {
+    event.stop();
+    location.hash += event.target.get("href");
+  }
+  register_callback("forward", compose_callback);
+
+  loadFolder = function(event, obj) {
+    if (!$defined(obj)) {
+      obj = event.target;
+    }
+    event.stop();
+    current_anchor.parse_string(obj.get("href"), true).setparams(navparams);
+    current_anchor.update();
+  }
+  register_callback("folder", function(resp) {
+    wm_updatelisting(resp);
+    if (navparams.has("order")) {
+      src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
+      th = $$("th[id=" + navparams.get("order").substring(1) + "]");
+      th.getElement("img").set("src", "/static/pics/" + src);
+      th.addClass("selected");
+    }
+    var selectedRows = new Array();
+    $$("tr").addEvent("click", function(event) {
+      var tr = event.target.getParent();
+      if (!tr.hasClass("selected")) {
+        tr.addClass("selected");
+        selectedRows.include(tr);
+      } else {
+        tr.removeClass("selected");
+        selectedRows.erase(tr);
+      }
+    });
+
+    $$("tr").each(function(item) {
+      new Drag.Move(item, {
+        droppables: ".droppable",
+      }).addEvents({
+        "start" : function(item) {
+          if (!item.hasClass("selected")) {
+            selectedRows.each(function(item, index) {
+              item.removeClass("selected");
+            });
+            selectedRows.empty();
+            item.addClass("selected");
+            selectedRows.include(item);
+          }
+          var block = new Element("div", {id: "draggeditems"})
+            .setStyles({"position" : "absolute",
+                        "opacity" : 0.8,
+                        "width" : "200px",
+                        "padding" : "5px",
+                        "text-align" : "center",
+                        "height" : "25px",
+                        "border" : "1px solid #333", 
+                        "background" : "white"})
+            .setStyles(item.getPosition())
+            .inject(document.body);
+          block.set("html", "Moving " + selectedRows.length + " messages"); 
+          this.oldelement = this.element;
+          this.element = block;
+        },
+        "cancel" : function(item) {
+          if ($defined(this.oldelement)) {
+            item.dispose();
+            delete(item);
+            this.element = this.oldelement;
+          }
+        },
+        "enter" : function(item, droppable) {
+          droppable.addClass("dragging");
+        },
+        "leave" : function(item, droppable) {
+          droppable.removeClass("dragging");
+        },
+        "drop" : function(item, droppable, event) {
+          item.dispose();
+          delete(item);
+          if (!droppable) {
+            this.element = this.oldelement;
+            return;
+          }
+          droppable.removeClass("dragging");
+          dest = droppable.getFirst("a").get("href");
+          msgset = new Array();
+          selectedRows.each(function(item, index) {
+            msgset.include(item.get("id"));
+          });
+          {% url extensions.webmail.main.move as moveurl %}
+          new Request.JSON({url: "{{ moveurl }}", 
+                            onSuccess: get_callback("folder")}
+          ).get({msgset : msgset.join(), to : dest});
+        },
+      });
+    });
+    $("toggleselect").addEvent("click", function(evt) {
+       var checked = evt.target.get("checked");
+       if (checked) {
+         $$("tbody>tr").each(function(item) {
+           item.addClass("selected");
+           selectedRows.include(item);
+         });
+       } else {
+         $$("tr").each(function(item) { item.removeClass("selected"); });
+         selectedRows.empty();
+       }
+    });
+
+
+    $$("tr").addEvent("dblclick", viewmail);
+    $$("th[class*=sortable]").addEvent("click", function(evt) {
+        var tmp = "?";
+        var order = (navparams.has("order")) ? navparams.get("order") : "";
+       
+        if (order == "") {
+            order = current_anchor.getparam("order");
+        }
+        if (order.substring(1) == evt.target.id) {
+            var sign = (order.charAt(0) == '+') ? '-' : '+';
+            order = sign + evt.target.id;
+        } else {
+            order = "-" + evt.target.id;
+        }
+        navparams.set("order", order);
+        current_anchor.setparams(navparams).update();
+    });
+  });
+
+  foldercallback = function(event) {
+    select(event.target);
+    loadFolder(event, event.target);
+  }
+  $$("a[name=loadfolder]").addEvent("click", foldercallback);
+{% endblock %}
+{% block middletitle %}{% trans "Webmail" %}{% endblock %}
+{% block leftcol %}
+<div id="leftcol" class="box">
+  <h3>{% trans "Folders" %}</h3>
+  <ul>
+  {% for fd in folders %}
+  {% url extensions.webmail.main.folder fd.name as fdurl %}
+  <li class="droppable">
+    <a href="{{ fd.name }}" name="loadfolder">
+      {% if fd.icon %}<img src="/static/pics/{{ fd.icon }}" />
+      {% else %}<img src="/static/pics/folder.png" />
+      {% endif %}
+    {{ fd.name }}
+    </a>
+  </li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}
+{% block menu %}
+
+{% endblock %}
