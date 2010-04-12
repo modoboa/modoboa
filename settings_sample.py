@@ -96,6 +96,7 @@ AUTHENTICATION_BACKENDS = (
 STORAGE_PATH = "/var/vmail"
 VIRTUAL_UID = "vmail"
 VIRTUAL_GID = "vmail"
+PASSWORD_SCHEME = "crypt" # Possible values : crypt, md5 or "" for clear passwords
 
 # Mailboxes format: maildir (default) or mbox
 # MAILBOX_TYPE = ""

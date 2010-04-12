@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.template import RequestContext
@@ -18,6 +19,7 @@ from mailng.lib import _render, _ctx_ok, _ctx_ko
 from mailng.lib import events
 import string
 import copy
+import pwd
 
 def is_superuser(user):
     if not user.is_superuser:
@@ -157,6 +159,8 @@ def newmailbox(request, dom_id=None):
             else:
                 mb = form.save(commit=False)
                 if mb.create_dir(domain):
+                    from django.conf import settings
+
                     user = User()
                     user.username = user.email = "%s@%s" % (mb.address, domain.name)
                     user.set_unusable_password()
@@ -174,7 +178,8 @@ def newmailbox(request, dom_id=None):
                  
                     mb.password = crypt_password(request.POST["password1"])
                     
-                    mb.uid = mb.gid = 500
+                    mb.uid = pwd.getpwnam(settings.VIRTUAL_UID).pw_uid
+                    mb.gid = pwd.getpwnam(settings.VIRTUAL_GID).pw_gid
                     mb.domain = domain
                     mb.quota = request.POST["quota"]
                     if not mb.quota:
@@ -218,13 +223,12 @@ def editmailbox(request, dom_id, mbox_id=None):
                         error = _("Failed to rename mailbox, check permissions")
             if not error:
                 mb = form.save(commit=False)
-                enabled = request.POST.has_key("enabled") \
+                mb.user.is_active = request.POST.has_key("enabled") \
                     and request.POST["enabled"] or False
-                if enabled != mb.user.is_active \
-                        or request.POST["password1"] != mb.user.password:
-                    mb.user.is_active = enabled
-                    mb.user.password = request.POST["password1"]
-                    mb.user.save()
+                mb.user.save()
+
+                if request.POST["password1"] != u"é":
+                    mb.password = crypt_password(request.POST["password1"])
                 mb.quota = request.POST["quota"]
                 if not mb.quota:
                     mb.quota = mb.domain.quota
@@ -242,8 +246,8 @@ def editmailbox(request, dom_id, mbox_id=None):
     form = MailboxForm(instance=mb)
     form.fields['quota'].initial = mb.quota
     form.fields['enabled'].initial = mb.user.is_active
-    form.fields['password1'].initial = mb.user.password
-    form.fields['password2'].initial = mb.user.password
+    form.fields['password1'].initial = "é"
+    form.fields['password2'].initial = "é"
     return _render(request, 'admin/editmailbox.html', {
             "form" : form, "mbox" : mb
             })

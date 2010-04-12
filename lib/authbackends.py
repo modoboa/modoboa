@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from mailng.admin.models import Mailbox
+from django.conf import settings
 import hashlib
 import crypt
 import string
@@ -25,15 +26,26 @@ class SimpleBackend:
         except User.DoesNotExist:
             return None
 
+def __get_password_scheme():
+    try:
+        scheme = getattr(settings, "PASSWORD_SCHEME")
+    except AttributeError:
+        scheme = "crypt"
+    return scheme
+
 def check_password(password, crypted):
-    if True:
+    scheme = __get_password_scheme()
+    if scheme == "crypt":
         return crypt.crypt(password, crypted) == crypted
-    else:
+    if scheme == "md5":
         return hashlib.md5(password).hexdigest() == crypted
+    return password
 
 def crypt_password(password):
-    if True:
+    scheme = __get_password_scheme()
+    if scheme == "crypt":
         salt = ''.join(Random().sample(string.letters + string.digits, 2))
         return crypt.crypt(password, salt)
-    else:
+    if scheme == "md5":
         return hashlib.md5(password).hexdigest()
+    return password

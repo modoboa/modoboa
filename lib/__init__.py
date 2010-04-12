@@ -37,15 +37,6 @@ def exec_pipe(cmd):
             code = -1
     return code, output
 
-def crypt_password(raw_password):
-    import md5
-    import random
-
-    salt = md5.new(str(random.random) + str(random.random)).hexdigest()
-    salt = salt[:5]
-    hash = md5.new(salt + raw_password).hexdigest()
-    return "%s$%s$%s" % ("md5", salt, hash)
-
 def _render(request, tpl, user_context):
     return render_to_response(tpl, user_context, 
                               context_instance=RequestContext(request))
