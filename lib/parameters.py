@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import string
-from mailng.admin.models import Parameter
+from mailng.lib.models import Parameter
 
 """
 This interface provides a simple way to declare and store parameters
@@ -10,7 +10,7 @@ in MailNG's database.
 Core components or extensions can register their own parameters, which
 will be available and modifiable directly from the web interface.
 
-Only super users will be able to acces this part of the web interface.
+Only super users will be able to access this part of the web interface.
 """
 
 _params = {}
@@ -21,8 +21,8 @@ class NotDefined(Exception):
         self.name = name
 
     def __str__(self):
-        return "Application '%s' and/or parameter '%s' not defined" % (self.app,
-                                                                       self.name)
+        return "Application '%s' and/or parameter '%s' not defined" \
+            % (self.app, self.name)
 
 def register(app, name, type="string", deflt=None, help=None, **kwargs):
     """Register a new parameter.
@@ -32,6 +32,8 @@ def register(app, name, type="string", deflt=None, help=None, **kwargs):
     if not app in _params.keys():
         _params[app] = {}
     _params[app][name] = {"type" : type, "default" : deflt, "help" : help}
+    for k, v in kwargs.iteritems():
+        _params[app][name][k] = v
 
 def save(app, name, value):
     if not app in _params.keys() or not name in _params[app].keys():

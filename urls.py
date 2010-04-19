@@ -6,6 +6,7 @@ from django.conf import settings
 # admin.autodiscover()
 
 from mailng.extensions import loadextensions, loadmenus
+from mailng.lib import parameters
 loadextensions()
 
 urlpatterns = patterns('',
@@ -41,7 +42,7 @@ if settings.DEBUG:
         urlpatterns += patterns(
             '',
             (r'^img/stats/(?P<path>.*)/$', 'django.views.static.serve',
-             {'document_root': settings.IMG_ROOTDIR})
+             {'document_root': parameters.get("stats", "IMG_ROOTDIR")})
             )
 
 

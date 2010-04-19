@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from mailng.lib import db
-from django.conf import settings
+from mailng.lib import db, parameters
 
 if __name__ == "__main__":
     conn = db.getconnection("amavis_quarantine")
-    try:
-        max_messages_age = getattr(settings, "MAX_MESSAGES_AGE")
-    except AttributeError:
-        max_messages_age = 14
+    max_messages_age = parameters.get("amavis_quarantine", "MAX_MESSAGES_AGE")
 
     print "Deleting messages older than %d days..." % max_messages_age
     db.execute(conn, """

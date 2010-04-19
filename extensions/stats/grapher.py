@@ -5,7 +5,7 @@ import time
 import datetime
 import rrdtool
 from django.utils.translation import ugettext as _
-from mailng.lib import getoption
+from mailng.lib import parameters
 
 traffic_avg_template = {
     'name' : 'traffic',
@@ -55,8 +55,8 @@ tpl = {'traffic':traffic_avg_template,
 
 class Grapher(object):
     def __init__(self):
-        self.rrd_rootdir = getoption("RRD_ROOTDIR", "/tmp")
-        self.img_rootdir = getoption("IMG_ROOTDIR", "/tmp")
+        self.rrd_rootdir = parameters.get("stats", "RRD_ROOTDIR")
+        self.img_rootdir = parameters.get("stats", "IMG_ROOTDIR")
 
     def process(self, target, suffix, start, end, tpl=traffic_avg_template):
         rrdfile = "%s/%s.rrd" % (self.rrd_rootdir, target)

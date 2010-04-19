@@ -27,6 +27,16 @@ def init():
     events.register("UserMenuDisplay", menu)
     parameters.register("amavis_quarantine", "MAX_MESSAGES_AGE", "int", 14,
                         help=_("Quarantine messages maximum age (in days) before deletion"))
+    parameters.register("amavis_quarantine", "AM_PDP_MODE", "list", "unix",
+                        values=[("inet", "inet"), ("unix", "unix")],
+                        help="")
+    parameters.register("amavis_quarantine", "AM_PDP_HOST", "string", "localhost",
+                        help="")
+    parameters.register("amavis_quarantine", "AM_PDP_PORT", "int", 9998,
+                        help="")
+    parameters.register("amavis_quarantine", "AM_PDP_SOCKET", "string", 
+                        "/var/amavis/amavisd.sock",
+                        help="")
 
 def urls():
     return (r'^mailng/quarantine/', 

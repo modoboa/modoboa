@@ -18,7 +18,6 @@ from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
 from extensions.stats.grapher import Grapher, tpl
 from extensions.stats.logparser import str2Time
-from mailng.lib import getoption
 
 graph_types = ['AVERAGE', 'MAX']
 
@@ -50,7 +49,8 @@ def menu(**kwargs):
             ]
     if kwargs["target"] == "admin_menu_box":
         return [
-            {"name"  : _("Statistics"),
+            {"name"  : "stats",
+             "label" : _("Statistics"),
              "url" : reverse('fullindex'),
              "img" : "/static/pics/graph.png"}
             ]
@@ -93,7 +93,7 @@ def graph_display(request,dom_id,graph_t=graph_types):
         "page" : "Domain statistics", "graph"   : graph_nature,
         "domain": domain, "domains" : domains, "messages" : errors,
         "types" : graph_type, "tmp_path" : tmp_path,
-        "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
+        "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -115,7 +115,7 @@ def adminindex(request):
         "graphs" : graph_list,
         "periods" : ["day", "week", "month", "year","Custom"],
         "period" : period, "cal" : CH_print,
-        "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
+        "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -149,7 +149,7 @@ def custom_period(request):
             "start" : start_ref,
             "end" : end_ref,
             "messages" : ["Custom period not selected"],
-            "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
+            "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
 
     period_name = "%s_%s" %(start.replace('/',''),end.replace('/',''))
     G = Grapher()
@@ -170,7 +170,7 @@ def custom_period(request):
         "start" : start_ref,
         "end" : end_ref,
         "messages" : None,
-        "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
+        "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
 
 
 @login_required
@@ -187,4 +187,4 @@ def index(request, dom_id=None):
         "graphs" : graph_list,
         "periods" : ["day", "week", "month", "year","Custom"],
         "period" : period,
-        "img_rootdir" : getoption("IMG_ROOTDIR", "/tmp")})
+        "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})

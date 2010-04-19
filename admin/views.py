@@ -178,8 +178,8 @@ def newmailbox(request, dom_id=None):
                  
                     mb.password = crypt_password(request.POST["password1"])
                     
-                    mb.uid = pwd.getpwnam(settings.VIRTUAL_UID).pw_uid
-                    mb.gid = pwd.getpwnam(settings.VIRTUAL_GID).pw_gid
+                    mb.uid = pwd.getpwnam(parameters.get("admin", "VIRTUAL_UID")).pw_uid
+                    mb.gid = pwd.getpwnam(parameters.get("admin", "VIRTUAL_GID")).pw_gid
                     mb.domain = domain
                     mb.quota = request.POST["quota"]
                     if not mb.quota:
@@ -417,11 +417,14 @@ def viewparameters(request):
     for app in apps:
         tmp = {"name" : app, "params" : []}
         for p in sorted(parameters._params[app]):
-            tmp["params"] += [{"name" : p, 
-                               "value" : parameters.get(app, p),
-                               "help" : parameters._params[app][p]["help"],
-                               "default" : parameters._params[app][p]["default"],
-                               "type" : parameters._params[app][p]["type"]}]
+            newdef = {"name" : p, 
+                      "value" : parameters.get(app, p),
+                      "help" : parameters._params[app][p]["help"],
+                      "default" : parameters._params[app][p]["default"],
+                      "type" : parameters._params[app][p]["type"]}
+            if "values" in parameters._params[app][p].keys():
+                newdef["values"] = parameters._params[app][p]["values"]
+            tmp["params"] += [newdef]
         gparams += [tmp]
 
     return _render(request, 'admin/parameters.html', {

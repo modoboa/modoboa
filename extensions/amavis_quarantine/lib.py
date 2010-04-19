@@ -2,25 +2,18 @@ import socket
 import re
 import struct
 import string
-from django.conf import settings
-
-def getParam(param, default=None):
-    try:
-        res = getattr(settings, param)
-    except AttributeError:
-        res = default
-    return res
+from mailng.lib import parameters
 
 class AMrelease(object):
     def __init__(self):
-        mode = getParam('AM_PDP_MODE', "unix")
+        mode = parameters.get("amavis_quarantine", "AM_PDP_MODE")
         if mode == "inet":
-            host = getParam('AM_PDP_HOST', 'localhost')
-            port = getParam('AM_PDP_PORT', '9998')
+            host = parameters.get("amavis_quarantine", 'AM_PDP_HOST')
+            port = parameters.get("amavis_quarantine", 'AM_PDP_PORT')
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((host, int(port)))
         else:
-            path = getParam('AM_PDP_SOCKET', '/var/amavis/amavisd.sock')
+            path = parameters.get("amavis_quarantine", 'AM_PDP_SOCKET')
             self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             self.sock.connect(path)
 

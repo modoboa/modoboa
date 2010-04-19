@@ -80,6 +80,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'mailng.lib',
     'mailng.admin',
     'mailng.main'
 
@@ -92,41 +93,6 @@ AUTHENTICATION_BACKENDS = (
     'mailng.lib.authbackends.SimpleBackend'
 )
 
-# Mailng specific options
-STORAGE_PATH = "/var/vmail"
-VIRTUAL_UID = "vmail"
-VIRTUAL_GID = "vmail"
-PASSWORD_SCHEME = "crypt" # Possible values : crypt, md5 or "" for clear passwords
-
-# Mailboxes format: maildir (default) or mbox
-# MAILBOX_TYPE = ""
-
-# Maildir storage directory
-# MAILDIR_ROOT = ".maildir"
-
 # Autoreplies sending timeout (default: 86400s)
 # AUTOREPLIES_TIMEOUT = 
 
-# Amavis quarantine options
-
-# Quarantine messages maximum age (in days) before deletion
-# MAX_MESSAGES_AGE = 14
-
-# AM.PDP daemon 
-# Modify above parameters if you want MailNG to be able
-# to release messages from the quarantine. Mode can be 
-# either "inet" or "unix".
-
-# AM_PDP_MODE = "inet" 
-# AM_PDP_HOST = "localhost"
-# AM_PDP_PORT = 9998
-# AM_PDP_SOCKET = "/var/amavis/amavisd.sock"
-
-# Statistics options
-
-# Path to mail log file
-#LOGFILE = "/tmp/maillog"
-# Path to directory where rrd files are stored
-#RRD_ROOTDIR = "/tmp/mailng"
-# Path to directory where png files are stored
-#IMG_ROOTDIR = "/home/tonio/projets/mailng/static/graphs"

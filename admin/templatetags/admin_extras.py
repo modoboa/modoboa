@@ -70,6 +70,12 @@ def settings_menu(selection, perms):
 @register.simple_tag
 def domains_menu(selection, perms):
     entries = [
+        {"name" : "newdomain",
+         "url" : reverse(admin.views.newdomain),
+         "label" : _("New domain"),
+         "img" : "/static/pics/add.png",
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:300,y:200}}"},
         {"name" : "domains",
          "url" : reverse(admin.views.domains),
          "label" : _("Domains"),
@@ -77,8 +83,8 @@ def domains_menu(selection, perms):
         ]
     entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box",
                                       perms=perms)
-    return render_to_string('main/menulist.html', 
-                            {"menu" : entries, "selection" : selection,
+    return render_to_string('main/menu.html', 
+                            {"entries" : entries, "selection" : selection,
                              "perms" : perms})
 
 @register.simple_tag
@@ -109,6 +115,7 @@ def param(app, definition):
                 values = definition["values"]
         value = definition.has_key("value") \
             and definition["value"] or definition["default"]
+        print name, values
         for v in values:
             selected = ""
             if value == v[0]:

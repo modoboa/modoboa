@@ -1,10 +1,4 @@
 window.addEvent('domready', function() {
-    SqueezeBox.assign($$('a.boxed'), {
-        parse: 'rel',
-        
-    });
-    setDivHeight("content", 20, 0);
-
     if ($$("a[name=deletePerm]"))
         $$("a[name=deletePerm]").addEvent('click', function(event) {
 	    if (!confirm(gettext("Remove this permission?")))

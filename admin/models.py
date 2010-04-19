@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from mailng.lib import exec_pipe, exec_as_vuser
+from mailng.lib import parameters
+from mailng.lib import exec_as_vuser
 import os
 
 class Domain(models.Model):
@@ -19,17 +19,18 @@ class Domain(models.Model):
             )
 
     def create_dir(self):
-        path = "%s/%s" % (settings.STORAGE_PATH, self.name)
+        path = "%s/%s" % (parameters.get("admin", "STORAGE_PATH"), self.name)
         return exec_as_vuser("mkdir -p %s" % path)
 
     def rename_dir(self, newname):
+        stpath = parameters.get("admin", "STORAGE_PATH")
         return exec_as_vuser("mv %s/%s %s/%s" \
-                                 % (settings.STORAGE_PATH, self.name,
-                                    settings.STORAGE_PATH, newname))
+                                 % (stpath, self.name, stpath, newname))
 
     def delete_dir(self):
         return exec_as_vuser("rm -r %s/%s" \
-                                 % (settings.STORAGE_PATH, self.name))
+                                 % (parameters.get("admin", "STORAGE_PATH"), 
+                                    self.name))
 
     def __str__(self):
         return self.name
@@ -56,20 +57,15 @@ class Mailbox(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Mailbox, self).__init__(*args, **kwargs)
-        try:
-            self.mbtype = getattr(settings, "MAILBOX_TYPE")
-        except AttributeError:
-            self.mbtype = "maildir"
-        try:
-            self.mdirroot = getattr(settings, "MAILDIR_ROOT")
-        except AttributeError:
-            self.mdirroot = ".maildir"
+        self.mbtype = parameters.get("admin", "MAILBOX_TYPE")
+        self.mdirroot = parameters.get("admin", "MAILDIR_ROOT")
 
     def __str__(self):
         return "%s" % (self.address)
 
     def create_dir(self, domain):
-        path = "%s/%s/%s" % (settings.STORAGE_PATH, domain.name, self.address)
+        path = "%s/%s/%s" % (parameters.get("admin", "STORAGE_PATH"),
+                             domain.name, self.address)
         if os.path.exists(path):
             return True
         if not exec_as_vuser("mkdir -p %s" % path):
@@ -90,7 +86,7 @@ class Mailbox(models.Model):
         return True
 
     def rename_dir(self, domain, newaddress):
-        path = "%s/%s" % (settings.STORAGE_PATH, domain)
+        path = "%s/%s" % (parameters.get("admin", "STORAGE_PATH"), domain)
         code = exec_as_vuser("mv %s/%s %s/%s" \
                                  % (path, self.address, path, newaddress))
         if code:
@@ -99,8 +95,8 @@ class Mailbox(models.Model):
 
     def delete_dir(self):
         return exec_as_vuser("rm -r %s/%s/%s" \
-                                     % (settings.STORAGE_PATH,
-                                        self.domain.name, self.address))
+                                 % (parameters.get("admin", "STORAGE_PATH"),
+                                    self.domain.name, self.address))
 
 class Alias(models.Model):
     address = models.CharField(_('address'), max_length=100,

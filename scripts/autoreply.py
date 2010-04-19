@@ -5,7 +5,7 @@ import sys
 import smtplib
 from email.mime.text import MIMEText
 import datetime
-from django.conf import settings
+from mailng.lib import parameters
 from mailng.admin.models import Mailbox
 from mailng.main.models import ARmessage, ARhistoric
 
@@ -23,10 +23,7 @@ if __name__ == "__main__":
         sys.exit(0)
     try:
         lastar = ARhistoric.objects.get(armessage=armessage.id, sender=sender)
-        try:
-            timeout = getattr(settings, "AUTOREPLIES_TIMEOUT")
-        except AttributeError:
-            timeout = 86400 # 24h
+        parameters.get("postfix_autoreply", "AUTOREPLIES_TIMEOUT")
         delta = datetime.timedelta(seconds=timeout)
         if lastar.last_sent + delta > datetime.datetime.now():
             sys.exit(0)

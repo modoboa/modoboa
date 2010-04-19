@@ -9,7 +9,7 @@ functionality into Postfix.
 """
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from mailng.lib import events
+from mailng.lib import events, parameters
 from mailng import main
 from models import Transport, Alias
 
@@ -21,6 +21,9 @@ def init():
     events.register("ModifyMailbox", onModifyMailbox)
 
     events.register("UserMenuDisplay", menu)
+
+    parameters.register("postfix_autoreply", "AUTOREPLIES_TIMEOUT", "int", 86400,
+                        help=_("Timeout in seconds between two auto-replies to the same recipient"))
 
 def urls():
     return ()

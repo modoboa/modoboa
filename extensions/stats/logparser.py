@@ -7,7 +7,7 @@ import re
 import rrdtool
 import string, pdb
 from optparse import OptionParser
-from mailng.lib import getoption
+from mailng.lib import parameters
 from mailng.admin.models import Domain
 import grapher
 
@@ -276,8 +276,8 @@ class LogParser(object):
             G.make_defaults(dom, tpl=grapher.size_avg_template)
 
 if __name__ == "__main__":
-    log_file = getoption("LOGFILE", "/var/log/maillog")
-    rrd_rootdir = getoption("RRD_ROOTDIR", "/tmp")
+    log_file = parameters.get("stats", "LOGFILE")
+    rrd_rootdir = parameters.get("stats", "RRD_ROOTDIR")
 
     parser = OptionParser()
     parser.add_option("-l","--logFile", default=log_file,

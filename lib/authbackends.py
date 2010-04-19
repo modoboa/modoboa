@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from mailng.admin.models import Mailbox
-from django.conf import settings
 import hashlib
 import crypt
 import string
 from random import Random
+from mailng.lib import parameters
 
 class SimpleBackend:
     def authenticate(self, username=None, password=None):
@@ -26,15 +26,8 @@ class SimpleBackend:
         except User.DoesNotExist:
             return None
 
-def __get_password_scheme():
-    try:
-        scheme = getattr(settings, "PASSWORD_SCHEME")
-    except AttributeError:
-        scheme = "crypt"
-    return scheme
-
 def check_password(password, crypted):
-    scheme = __get_password_scheme()
+    scheme = parameters.get("admin", "PASSWORD_SCHEME")
     if scheme == "crypt":
         return crypt.crypt(password, crypted) == crypted
     if scheme == "md5":
@@ -42,7 +35,7 @@ def check_password(password, crypted):
     return password
 
 def crypt_password(password):
-    scheme = __get_password_scheme()
+    scheme = parameters.get("admin", "PASSWORD_SCHEME")
     if scheme == "crypt":
         salt = ''.join(Random().sample(string.letters + string.digits, 2))
         return crypt.crypt(password, salt)
