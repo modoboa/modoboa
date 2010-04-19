@@ -39,7 +39,7 @@ check_anchor = function() {
     new Request.JSON({url: query, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
-        infobox.notice("Done");
+         infobox.notice("Done");
         infobox.hide(1);
     }}).get();
 }
@@ -268,11 +268,8 @@ toggleSelection = function(id, value) {
     });
 }
 
-checkSelection = function(id, text) {
-    var getout = $$("input[name=" + id + "]").every(function(item, index) {
-        return item.checked == false;
-    });
-    if (getout) {
+checkTableSelection = function(text) {
+    if (!$$("tr[class*=table-tr-selected]").length) {
         return false;
     }
     return confirm(text);

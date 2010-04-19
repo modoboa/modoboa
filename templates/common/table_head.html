@@ -2,7 +2,7 @@
   <tr>
     {% for c in table.columns %}
     {% if c.sortable %}
-    <th id="{{ c.name }}" class="sortable" width="{{ c.width }}">
+    <th id="{{ c.name }}" class="sortable" width="{{ c.width }}" align="{{ c.align }}">
     {% else %}
     <th id="{{ c.name }}" width="{{ c.width }}">
     {% endif %}

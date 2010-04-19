@@ -8,11 +8,12 @@ from mailng.lib.email_listing import MBconnector, EmailListing
 class Qtable(tables.Table):
     tableid = "emails"
     idkey = "mailid"
-    selection = tables.SelectionColumn("selection", first=True)
-    type = tables.Column("type", label=_("Type"))
-    from_ = tables.Column("from", label=_("From"))
-    subject = tables.Column("subject", label=_("Subject"))
-    time = tables.Column("date", label=_("Date"))
+    #selection = tables.SelectionColumn("selection", first=True)
+    _1_type = tables.Column("type", align="center", width="30px",
+                            label="<input type='checkbox' name='toggleselect' id='toggleselect' />")
+    _2_from_ = tables.Column("from", label=_("From"))
+    _3_subject = tables.Column("subject", label=_("Subject"))
+    _4_time = tables.Column("date", label=_("Date"))
 
     def parse_date(self, value):
         return datetime.fromtimestamp(value)

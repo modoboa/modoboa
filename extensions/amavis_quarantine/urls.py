@@ -8,6 +8,5 @@ urlpatterns = patterns('mailng.extensions.amavis_quarantine.main',
                        (r'^process/$', 'process'),
                        (r'^delete/(?P<mail_id>[\w\-\+]+)/$', 'delete'),
                        (r'^release/(?P<mail_id>[\w\-\+]+)/$', 'release'),
-                       (r'^search/', 'search'),
                        (r'^(?P<mail_id>[\w\-\+]+)/$', 'viewmail'), 
                        )

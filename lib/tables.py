@@ -60,6 +60,10 @@ class Table(object):
                     newcol["width"] = getattr(c, "width")
                 except AttributeError:
                     pass
+                try:
+                    newcol["align"] = getattr(c, "align")
+                except:
+                    pass
                 if isinstance(c, SelectionColumn):
                     newcol["value"] = c.render(row[self.idkey])
                     newcol["safe"] = True

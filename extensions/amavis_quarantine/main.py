@@ -41,6 +41,13 @@ def menu(**kwargs):
             ]
     return []
 
+def __get_current_url(request):
+    res = "?page=%s" % request.session["page"]
+    for p in ["criteria", "pattern"]:
+        if p in request.session.keys():
+            res += "&%s=%s" % (p, request.session[p])
+    return res
+    
 @login_required
 def _listing(request, internal=False, filter=None):
     #start = time.time()
@@ -50,6 +57,30 @@ def _listing(request, internal=False, filter=None):
             filter = ["&maddr.email='%s'" % mb.full_address]
         else:
             filter += ["&maddr.email='%s'" % mb.full_address]
+
+    if request.GET.has_key("pattern"):
+        request.session["pattern"] = re.escape(request.GET["pattern"])
+        if request.GET.has_key("criteria"):
+            request.session["criteria"] = request.GET["criteria"]
+        else:
+            request.session["criteria"] = ["from_addr"]
+    else:
+        for p in ["pattern", "criteria"]:
+            if p in request.session.keys():
+                del request.session[p]
+    
+    if request.session.has_key("pattern"):
+        tmp = ""
+        for c in request.session["criteria"].split(','):
+            if tmp != "":
+                tmp += " OR "
+            tmp += "msgs.%s LIKE '%%%s%%'" % (c, request.session["pattern"])
+        tmp = "&(%s)" % tmp
+        if filter is None:
+            filter = [tmp]
+        else:
+            filter += [tmp]
+
     pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
     request.session["page"] = pageid # ?? nécessaire
     lst = SQLlisting(filter, baseurl="listing/", empty=internal)
@@ -69,44 +100,6 @@ def _listing(request, internal=False, filter=None):
 @login_required
 def index(request, message=None):
     return _listing(request, True)
-
-# @login_required
-# def getmailcontent(request, mail_id):
-#     from mailng.lib.email_listing import Email
-
-#     conn = db.getconnection("amavis_quarantine")
-#     status, cursor = db.execute(conn, """
-# SELECT mail_text
-# FROM quarantine
-# WHERE quarantine.mail_id='%s'
-# """ % mail_id)
-#     content = ""
-#     for part in cursor.fetchall():
-#         content += part[0]
-#     msg = email.message_from_string(content)
-#     links = request.GET.has_key("links") and request.GET["links"] or "0"
-#     mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
-#     mail = Email(msg, mode, links)
-#     return mail.render(request)
-    
-# @login_required
-# def viewmail(request, mail_id):
-#     conn = db.getconnection("amavis_quarantine")
-#     status, cursor = db.execute(conn, """
-# SELECT mail_text
-# FROM quarantine
-# WHERE quarantine.mail_id='%s'
-# """ % mail_id)
-#     content = ""
-#     for part in cursor.fetchall():
-#         content += part[0]
-#     msg = email.message_from_string(content)
-#     ctx = getctx("ok", )
-#     return _render(request, 'amavis_quarantine/viewmail.html', {
-#             "headers" : msg, "alert" : msg.get("X-Amavis-Alert"),
-#             "mail_id" : mail_id, "page_id" : request.session["page"],
-#             "params" : request.GET
-#             })
 
 @login_required
 def getmailcontent(request, mail_id):
@@ -141,7 +134,8 @@ def viewmail(request, mail_id):
     content = Template("""
 <iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url" : reverse(getmailcontent, args=[mail_id]) + args}))
-    menu = viewm_menu("", request.session, mail_id, request.user.get_all_permissions())
+    menu = viewm_menu("", __get_current_url(request), mail_id, 
+                      request.user.get_all_permissions())
     ctx = getctx("ok", menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
@@ -181,7 +175,7 @@ def delete(request, mail_id, count=1):
                             count) % {"count" : count}
     else:
         message = error
-    ctx = getctx("ok", url="?page=%s" % request.session["page"], message=message)
+    ctx = getctx("ok", url=__get_current_url(request), message=message)
     return HttpResponse(simplejson.dumps(ctx), 
                         mimetype="application/json")
 
@@ -217,53 +211,23 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
                             count) % {"count" : count}
     else:
         message = error
-    ctx = getctx("ok", url="?page=%s" % request.session["page"], message=message)
+    ctx = getctx("ok", url=__get_current_url(request), message=message)
     return HttpResponse(simplejson.dumps(ctx), 
                         mimetype="application/json")
 
 @login_required
 def process(request):
     ids = ""
-    count = len(request.POST.getlist("selection"))
-    for id in request.POST.getlist("selection"):
+    count = len(request.POST["selection"].split(","))
+    for id in request.POST["selection"].split(","):
         if ids != "":
             ids += ","
         ids += "'%s'" % id
     if ids == "":
         return HttpResponseRedirect(reverse(index))
 
-    print "Ok c pas vide"
     if request.POST["action"] == "release":
         return release(request, ids, count)
             
     if request.POST["action"] == "delete":
         return delete(request, ids, count)
-
-@login_required
-def search(request):
-    if not request.GET.has_key("pattern"):
-        return
-    if request.GET.has_key("criteria"):
-        criteria = request.GET["criteria"].split(',')
-    else:
-        criteria = ["from_addr"]
-    filter = ""
-    pattern = re.escape(request.GET["pattern"])
-    for c in criteria:
-        if filter != "":
-            filter += " OR "
-        filter += "msgs.%s LIKE '%%%s%%'" % (c, pattern)
-    filter = "&(%s)" % filter 
-    return _listing(request, filter=filter)
-
-#     lst = SQLlisting([filter])
-
-#     page = lst.paginator.getpage(1)
-#     if page:
-#         content = lst.fetch(page.id_start, page.id_stop).render(request)
-#         navbar = lst.render_navbar(page)
-#     else:
-#         content = "Empty quarantine"
-#         navbar = ""
-#     ctx = {"status" : "ok", "listing" : content, "navbar" : navbar}
-#     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

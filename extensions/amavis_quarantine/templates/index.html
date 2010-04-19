@@ -28,10 +28,21 @@ thead tr {
   position: relative;
   z-index: 1;
 }
+
+tr.table-tr-selected {
+  background: #ffffcc;
+}
 {% endblock %}
 {% block js %}
   mysubmit = function(event, name) {
     event.stop();
+    var selection = new Array();
+    $$("tr[class*=table-tr-selected]").each(function(item) {
+      selection.push(item.get("id"));
+    });
+    new Element("input", {
+      "type" : "hidden", "name" : "selection", "value" : selection
+    }).inject($("listingform"), "top");
     new Element('input', {
       'type' : 'hidden', 'name' : "action", style: "display:none", 'value' : name
     }).inject($("listingform"), "top");
@@ -65,21 +76,34 @@ thead tr {
 
   register_callback("_listing", function(resp) {
     updatelisting(resp);
+
+    tbl = new HtmlTable($("emails"), {
+      selectable: true
+    });
+    if ($("toggleselect")) {
+      $("toggleselect").addEvent("click", function(evt) {
+        if ($$("tr[class*=table-tr-selected]").length) {
+          tbl.selectNone();
+        } else {
+          tbl.selectAll();
+        }
+      });
+    }
     $$("a[name=release]").addEvent("click", function(event) {
-      if (!checkSelection("selection", "{% trans "Release this selection?" %}")) {
+      if (!checkTableSelection("{% trans "Release this selection?" %}")) {
         event.stop();
         return;
       }
       mysubmit(event, "release");
     });
     $$("a[name=delete]").addEvent("click", function(event) {
-      if (!checkSelection("selection", "{% trans "Delete this selection?" %}")) {
+      if (!checkTableSelection("{% trans "Delete this selection?" %}")) {
         event.stop();
         return;
       }
       mysubmit(event, "delete");
     });
-    
+
     var myFx = new Fx.Slide($("searchparams"));
     myFx.hide();
     $("searchopts").addEvent("click", function(event) {
@@ -95,18 +119,11 @@ thead tr {
       $$("input[name=scriteria]:checked").each(function(obj) {
         criteria = obj.value;
       });
-      var url = "search"
+      var url = "listing"
         + "?pattern=" + $("searchfield").value
         + "&criteria=" + criteria;
       current_anchor.parse_string(url, true).setparams(navparams);
       current_anchor.update();
-
-      /*new Request.JSON({url: "{{ s_url }}", onSuccess: function(resp) {
-        $("listing").set("html", resp.listing);
-        $("navbar").set("html", resp.navbar);
-        {% url extensions.amavis_quarantine.main.viewmail as view_url %}
-        bindRows("{{ view_url }}", "{{ current_page }}");
-      }}).get({"pattern" : $("searchfield").value, "criteria" : criteria});*/
     });
     $("searchfield").addEvent("click", function(event) {
         $("searchfield").select();

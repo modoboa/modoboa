@@ -7,7 +7,7 @@ from mailng.extensions import amavis_quarantine
 register = template.Library()
 
 @register.simple_tag
-def viewm_menu(selection, session, mail_id, perms):
+def viewm_menu(selection, backurl, mail_id, perms):
     options_menu = [
         {"name" : "viewmode", 
          "label" : _("View as plain text"),
@@ -22,7 +22,7 @@ def viewm_menu(selection, session, mail_id, perms):
 
     entries = [
         {"name" : "back",
-         "url" : "?page=%s" % session["page"],
+         "url" : backurl,
          "img" : "/static/pics/back.png",
          "label" : _("Back to list")},
         {"name" : "headers",

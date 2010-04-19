@@ -2,11 +2,9 @@
   {% for row in table.rows %}
   <tr id="{{ row.id }}" class="{% cycle 'odd' 'even' %}">
     {% for cell in row.cols %}
-    {% if cell.safe %}
-    <td width="{{ cell.width }}">{{ cell.value|safe }}</td>
-    {% else %}
-    <td width="{{ cell.width }}" class="{{ cell.class }}">{{ cell.value }}</td>
-    {% endif %}
+    <td width="{{ cell.width }}" align="{{ cell.align }}" class="{{ cell.class }}">
+    {% if cell.safe %}{{ cell.value|safe }}{% else %}{{ cell.value }}{% endif %}
+    </td>
     {% endfor %}
   </tr>
   {% endfor %}
