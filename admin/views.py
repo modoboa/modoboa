@@ -12,11 +12,12 @@ from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from mailng import admin, main
-from mailng.admin.models import Domain, Mailbox, Alias, Parameter
+from mailng.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
 from mailng.lib import _render, _ctx_ok, _ctx_ko
 from mailng.lib import events, parameters
+from mailng.lib.models import Parameter
 import string
 import copy
 import pwd
