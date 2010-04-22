@@ -100,9 +100,13 @@ class IMAPheader(object):
             return value
         ndate = datetime(*(tmp)[:7])
         now = datetime.now()
-        if now - ndate > timedelta(7):
-            return ndate.strftime("%d.%m.%Y %H:%M")
-        return ndate.strftime("%a %H:%M")
+        try:
+            if now - ndate > timedelta(7):
+                return ndate.strftime("%d.%m.%Y %H:%M")
+            return ndate.strftime("%a %H:%M")
+        except ValueError:
+            return value
+
 
     @staticmethod
     def parse_subject(value, **kwargs):

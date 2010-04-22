@@ -274,3 +274,36 @@ checkTableSelection = function(text) {
     }
     return confirm(text);
 }
+
+searchbox_init = function() {
+    var myFx = new Fx.Slide($("searchparams"));
+    myFx.hide();
+    $("searchopts").addEvent("click", function(event) {
+        myFx.cancel();
+        myFx.toggle();
+    });
+    $$("input[name=scriteria]").addEvent("click", function(event) {
+        myFx.cancel();
+        myFx.toggle();
+    });
+    $("searchfield").addEvent("change", function(event) {
+        var criteria = "";
+        $$("input[name=scriteria]:checked").each(function(obj) {
+            criteria = obj.value;
+        });
+        var params = "pattern=" + $("searchfield").value
+            + "&criteria=" + criteria;
+        current_anchor.updateparams(params);
+        current_anchor.update();
+    });
+    $("searchfield").addEvent("click", function(event) {
+        $("searchfield").select();
+    });
+    
+    $("searchfield").addEvent("blur", function(event) {
+        if ($("searchfield").value == "") {
+            $("searchfield").set("value", "Search...");
+        }
+    });
+    $("searchbox").setStyle("float", "right");
+}

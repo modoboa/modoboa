@@ -94,7 +94,8 @@ def listing_menu(selection, folder, perms):
              "img" : "/static/pics/clear.png",
              "label" : _("Empty trash")}
             ]
-
-    return render_to_string("main/menu.html",
+    menu = render_to_string("main/menu.html",
                             {"selection" : selection, "entries" : entries,
                              "perms" : perms})
+    searchbar = render_to_string("common/email_searchbar.html", {})
+    return menu + searchbar

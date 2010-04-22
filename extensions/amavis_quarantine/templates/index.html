@@ -2,28 +2,6 @@
 {% load i18n %}
 {% load amextras %}
 {% block css %}
-#searchbox {
-  /*float: left;*/ /* Marche pas ici?! obligé de le faire en JS sous FF */
-  margin-right: 10px;
-  z-index: 2;
-  position: relative;
-}
-
-#searchbox img {
-  float: left;
-  margin-top: 4px;
-  margin-right: 5px;
-}
-
-#searchparams {
-  background: white;
-  padding: 5px;
-  width: 90%;
-  border-bottom: 5px solid #CCCCCC;
-  border-left: 5px solid #CCCCCC;
-  border-right: 5px solid #CCCCCC;
-}
-
 thead tr {
   position: relative;
   z-index: 1;
@@ -103,38 +81,7 @@ tr.table-tr-selected {
       }
       mysubmit(event, "delete");
     });
-
-    var myFx = new Fx.Slide($("searchparams"));
-    myFx.hide();
-    $("searchopts").addEvent("click", function(event) {
-      myFx.cancel();
-      myFx.toggle();
-    });
-    $$("input[name=scriteria]").addEvent("click", function(event) {
-      myFx.cancel();
-      myFx.toggle();
-    });
-    $("searchfield").addEvent("change", function(event) {
-      var criteria = "";
-      $$("input[name=scriteria]:checked").each(function(obj) {
-        criteria = obj.value;
-      });
-      var url = "listing"
-        + "?pattern=" + $("searchfield").value
-        + "&criteria=" + criteria;
-      current_anchor.parse_string(url, true).setparams(navparams);
-      current_anchor.update();
-    });
-    $("searchfield").addEvent("click", function(event) {
-        $("searchfield").select();
-    });
-
-    $("searchfield").addEvent("blur", function(event) {
-      if ($("searchfield").value == "") {
-        $("searchfield").set("value", "{% trans "Search..." %}");
-      }
-    });
-    $("searchbox").setStyle("float", "left");
+    searchbox_init();
     $$("tr").addEvent("dblclick", viewmail);
   });
 

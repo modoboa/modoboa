@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 import re
+import os
 from email.header import decode_header
 import lxml
 import lxml.html
@@ -159,7 +160,7 @@ class Email(object):
                     if re.match("^http:", fname):
                         path = fname
                     else:
-                        path = "/%s" % os.path.join("static/tmp", fname)
+                        path = os.path.abspath("static/tmp" + fname)
                         fp = open(path, "wb")
                         fp.write(part.get_payload(decode=True))
                         fp.close()

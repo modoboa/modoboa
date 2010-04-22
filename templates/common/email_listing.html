@@ -1,6 +1,7 @@
 {% extends "nlayout.html" %}
 {% load i18n %}
 {% block html_head %}
+<link rel="stylesheet" type="text/css" href="/static/stylesheets/searchbar.css" />
 <style type="text/css">
 #navbar {
   float: right;
@@ -21,6 +22,7 @@
 }
 {% block css %}{% endblock %}
 </style>
+
 <script type="text/javascript">
 window.addEvent("domready", function() {
   navparams = new Hash({
@@ -54,16 +56,6 @@ window.addEvent("domready", function() {
       $("navbar").set("html", resp.navbar);
       $("navbar").getChildren("a").addEvent("click", navbarcallback);
     }
-  }
-
-  if ($("selectall")) {
-    $("selectall").addEvent("click", function(event) {
-      if ($("selectall").checked) {
-        toggleSelection("selection", true);
-      } else {
-        toggleSelection("selection", false);
-      }
-    });
   }
   {% block js %}{% endblock %}
   ajaxListener("{{ deflocation }}", {{ defcallback }});

@@ -221,6 +221,7 @@ tr.selected {
   }
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
+    searchbox_init();
     if (navparams.has("order")) {
       src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
       th = $$("th[id=" + navparams.get("order").substring(1) + "]");
