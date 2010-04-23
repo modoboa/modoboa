@@ -227,3 +227,15 @@ class Email(object):
         body = Template(decode(body)).render({})
         return (False, body)
 
+def parse_search_parameters(request):
+    if request.GET.has_key("pattern"):
+        request.session["pattern"] = re.escape(request.GET["pattern"])
+        if request.GET.has_key("criteria"):
+            request.session["criteria"] = request.GET["criteria"]
+        else:
+            request.session["criteria"] = ["from_addr"]
+    else:
+        for p in ["pattern", "criteria"]:
+            if p in request.session.keys():
+                del request.session[p]
+    

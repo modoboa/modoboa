@@ -14,7 +14,7 @@ from mailng.lib import events, parameters, _render, _render_error, getctx
 from imap_listing import *
 from forms import *
 from templatetags.webextras import *
-from imap_listing import ImapEmail
+from lib.email_listing import parse_search_parameters
 
 def init():
     events.register("UserMenuDisplay", menu)
@@ -34,7 +34,6 @@ def init():
     parameters.register("webmail", "SMTP_SECURED", "list_yesno", "no",
                         help=_("Use a secured connection to access SMTP server"))
 
-
 def urls():
     return (r'^mailng/webmail/',
             include('mailng.extensions.webmail.urls'))
@@ -47,6 +46,13 @@ def menu(**kwargs):
          "url" : reverse(index),
          "img" : "/static/pics/webmail.png"}
         ]
+
+def __get_current_url(request):
+    res = "%s?page=%s" % (request.session["folder"], request.session["page"])
+    for p in ["criteria", "pattern", "order"]:
+        if p in request.session.keys():
+            res += "&%s=%s" % (p, request.session[p])
+    return res
 
 def userlogin(**kwargs):
     kwargs["request"].session["password"] = kwargs["password"]
@@ -64,12 +70,20 @@ def folder(request, name, updatenav=True):
         request.session["page"] = pageid
         if order:
             request.session["navparams"]["order"] = order
+        parse_search_parameters(request)
     else:
         # Internal usage
         order = request.session["navparams"]["order"]
 
+    optparams = {}
+    if request.session.has_key("pattern"):
+        optparams["pattern"] = request.session["pattern"]
+        optparams["criteria"] = request.session["criteria"]
+    else:
+        optparams["reset"] = True
     lst = ImapListing(request.user.username, request.session["password"],
-                      baseurl=name, folder=name, order=order)
+                      baseurl=name, folder=name, order=order, **optparams)
+
     page = lst.paginator.getpage(request.session["page"])
     if page:
         content = lst.fetch(request, page.id_start, page.id_stop)
@@ -106,7 +120,7 @@ def viewmail(request, folder, mail_id=None):
     content = Template("""
 <iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url" : reverse(getmailcontent, args=[folder, mail_id])}))
-    menu = viewm_menu("", request.session, mail_id,
+    menu = viewm_menu("", __get_current_url(request), folder, mail_id,
                       request.user.get_all_permissions())
     ctx = getctx("ok", menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
@@ -175,7 +189,8 @@ def empty(request, name):
     return folder(request, name, False)
 
 def render_compose(request, form, posturl, bodyheader=None, body=None):
-    menu = compose_menu("", request.session, request.user.get_all_permissions())
+    menu = compose_menu("", __get_current_url(request), 
+                        request.user.get_all_permissions())
     content = render_to_string("webmail/compose.html", {
             "form" : form, "bodyheader" : bodyheader, "body" : body,
             "posturl" : posturl
@@ -210,8 +225,7 @@ def send_mail(request, withctx=False):
             s.login(request.user.username, request.session["password"])
         s.sendmail(msg['From'], rcpts, msg.as_string())
         s.quit()
-        ctx = getctx("ok", url="%s?page=%s" % (request.session["folder"], 
-                                               request.session["page"]))
+        ctx = getctx("ok", url=__get_current_url(request))
     else:
         ctx = getctx("ko", level=2, listing=render_to_string("webmail/compose.html", 
                                                     {"form" : form}))

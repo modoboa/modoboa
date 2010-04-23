@@ -24,10 +24,10 @@ def backurl(session, **kwargs):
     return res
 
 @register.simple_tag
-def viewm_menu(selection, session, mail_id, perms):   
+def viewm_menu(selection, backurl, folder, mail_id, perms):   
     entries = [
         {"name" : "back",
-         "url" : "%s?page=%s" % (session["folder"], session["page"]),
+         "url" : backurl,
          "img" : "/static/pics/back.png",
          "label" : _("Back")},
         {"name" : "reply",
@@ -44,7 +44,7 @@ def viewm_menu(selection, session, mail_id, perms):
          "label" : _("Forward")},
         {"name" : "delete",
          "img" : "/static/pics/remove.png",
-         "url" : reverse(webmail.main.delete, args=[session["folder"], mail_id]),
+         "url" : reverse(webmail.main.delete, args=[folder, mail_id]),
          "label" : _("Delete")},
         ]
     
@@ -53,10 +53,10 @@ def viewm_menu(selection, session, mail_id, perms):
                              "perms" : perms})
 
 @register.simple_tag
-def compose_menu(selection, session, perms):
+def compose_menu(selection, backurl, perms):
     entries = [
         {"name" : "back",
-         "url" : "%s?page=%s" % (session["folder"], session["page"]),
+         "url" : backurl,
          "img" : "/static/pics/back.png",
          "label" : _("Back")},
         {"name" : "sendmail",

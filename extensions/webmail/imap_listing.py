@@ -122,6 +122,7 @@ class IMAPconnector(object):
     __metaclass__ = Singleton
 
     def __init__(self, request=None, user=None, password=None):
+        self.criterions = []
         self.address = parameters.get("webmail", "IMAP_SERVER")
         self.port = int(parameters.get("webmail", "IMAP_PORT"))
         if request:
@@ -172,11 +173,10 @@ class IMAPconnector(object):
                 criterion = "REVERSE %s" % criterion
         else:
             criterion = "REVERSE DATE"
-        print criterion
-
         folder = kwargs.has_key("folder") and kwargs["folder"] or None
         (status, data) = self.m.select(self._encodefolder(folder))
-        (status, data) = self.m.sort("(%s)" % criterion, "UTF-8", "(NOT DELETED)")
+        (status, data) = self.m.sort("(%s)" % criterion, "UTF-8", "(NOT DELETED)",
+                                     *self.criterions)
         self.messages = data[0].split()
         return len(self.messages)
 
@@ -257,6 +257,11 @@ class ImapListing(EmailListing):
     
     def __init__(self, user, password, **kwargs):
         self.mbc = IMAPconnector(user=user, password=password)
+        if kwargs.has_key("pattern"):
+            self.parse_search_parameters(kwargs["criteria"],
+                                         kwargs["pattern"])
+        if kwargs.has_key("reset"):
+            self.mbc.criterions = []
         EmailListing.__init__(self, **kwargs)  
 
     def getfolders(self):
@@ -269,6 +274,23 @@ class ImapListing(EmailListing):
         for fd in folders:
             md_folders += [{"name" : fd}]
         return md_folders
+
+    def parse_search_parameters(self, criterion, pattern):
+        def or_criterion(old, c):
+            if old == "":
+                return c
+            return "OR (%s) (%s)" % (old, c)
+
+        criterions = ""
+        for c in criterion.split(','):
+            if c == "from_addr":
+                key = "FROM"
+            elif c == "subject":
+                key = "SUBJECT"
+            else:
+                continue
+            criterions = or_criterion(criterions, '%s "%s"' % (key, pattern))
+        self.mbc.criterions = ["(%s)" % criterions]
 
 class ImapEmail(Email):
     def __init__(self, msg, addrfull=False, **kwargs):

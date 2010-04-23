@@ -21,6 +21,7 @@ from mailng.lib import db
 from mailng.admin.models import Mailbox
 from lib import AMrelease
 from templatetags.amextras import *
+from mailng.lib.email_listing import parse_search_parameters
 from sql_listing import *
 
 def init():
@@ -68,17 +69,7 @@ def _listing(request, internal=False, filter=None):
         else:
             filter += ["&maddr.email='%s'" % mb.full_address]
 
-    if request.GET.has_key("pattern"):
-        request.session["pattern"] = re.escape(request.GET["pattern"])
-        if request.GET.has_key("criteria"):
-            request.session["criteria"] = request.GET["criteria"]
-        else:
-            request.session["criteria"] = ["from_addr"]
-    else:
-        for p in ["pattern", "criteria"]:
-            if p in request.session.keys():
-                del request.session[p]
-    
+    parse_search_parameters(request)
     if request.session.has_key("pattern"):
         tmp = ""
         for c in request.session["criteria"].split(','):
@@ -164,13 +155,6 @@ WHERE quarantine.mail_id='%s'
     return _render(request, 'amavis_quarantine/viewheader.html', {
             "headers" : msg.items()
             })
-
-def _redirect_to_index(request, message, count):
-    request.user.message_set.create(message=message)
-    if count > 1:
-        return
-    page = request.GET.has_key("page") and request.GET["page"] or "1"
-    return HttpResponseRedirect(reverse(index) + "?page=%s" % page)
 
 @login_required
 def delete(request, mail_id, count=1):
