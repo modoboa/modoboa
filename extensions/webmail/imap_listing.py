@@ -1,9 +1,10 @@
+
 # -*- coding: utf-8 -*-
 
 import re
 import time
 import imaplib
-import ssl
+#import ssl
 from datetime import datetime, timedelta
 from email.header import decode_header
 import email.utils
@@ -141,11 +142,13 @@ class IMAPconnector(object):
                 self.m = imaplib.IMAP4_SSL(self.address, self.port)
             else:
                 self.m = imaplib.IMAP4(self.address, self.port)
-        except (imaplib.IMAP4.error, ssl.SSLError), error:
+#        except (imaplib.IMAP4.error, ssl.SSLError), error:
+        except Exception, error:
             return False, _("Connection to IMAP server failed, check your configuration")
         try:
             self.m.login(user, passwd)
-        except (imaplib.IMAP4.error, ssl.SSLError), error:
+#        except (imaplib.IMAP4.error, ssl.SSLError), error:
+        except Exception, error:
             return False, _("Authentication failed, check your configuration")
             
         return True, None
@@ -180,20 +183,33 @@ class IMAPconnector(object):
         self.messages = data[0].split()
         return len(self.messages)
 
+    def _parse_folder_name(self, dict, parts):
+        if not len(parts):
+            return
+        dict[parts[0]] = {}
+        self._parse_folder_name(dict[parts[0]], parts[1:])
+
     def listfolders(self, topfolder='INBOX', md_folders=[]):
+        list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
         (status, data) = self.m.list()
-        result = []
+        result = {}
         for mb in data:
-            attrs, truc, name = mb.split()
+            flags, delimiter, name = list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
+            if re.search("\%s" % delimiter, name):
+                parts = name.split(".")
+                dict = {}
+                self._parse_folder_name(dict, parts[1:])
+                result[parts[0]] = dict
+                continue
             present = False
             for mdf in md_folders:
                 if mdf["name"] == name:
                     present = True
                     break
             if not present:
-                result += [name]
-        return sorted(result)
+                result[name] = None
+        return result
 
     def msgseen(self, imapid):
         folder, id = imapid.split("/")
@@ -271,8 +287,11 @@ class ImapListing(EmailListing):
                       {"name" : 'Sent'},
                       {"name" : 'Trash', "icon" : "trash.png"}]
         folders = self.mbc.listfolders(md_folders=md_folders)
-        for fd in folders:
-            md_folders += [{"name" : fd}]
+        for fd in sorted(folders.keys()):
+            descr = {"name" : fd}
+            if folders[fd] != None:
+                descr["icon"] = "subfolders.png"
+            md_folders += [descr]
         return md_folders
 
     def parse_search_parameters(self, criterion, pattern):

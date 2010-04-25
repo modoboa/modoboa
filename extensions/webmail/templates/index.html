@@ -301,6 +301,7 @@ tr.selected {
         },
       });
     });
+    if ($("toggleselect")) {
     $("toggleselect").addEvent("click", function(evt) {
        var checked = evt.target.get("checked");
        if (checked) {
@@ -313,7 +314,7 @@ tr.selected {
          selectedRows.empty();
        }
     });
-
+    }
 
     $$("tr").addEvent("dblclick", viewmail);
     $$("th[class*=sortable]").addEvent("click", function(evt) {

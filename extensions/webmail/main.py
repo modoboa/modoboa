@@ -103,7 +103,7 @@ def index(request):
         lst = ImapListing(request.user.username, request.session["password"],
                           baseurl="INBOX", navparams=navp, folder="INBOX",
                           empty=True)
-    except Exception as exp:
+    except Exception, exp:
         return _render_error(request, {"error" : exp})
     return lst.render(request)
 
@@ -217,7 +217,8 @@ def send_mail(request, withctx=False):
             s = smtplib.SMTP(parameters.get("webmail", "SMTP_SERVER"))
             if parameters.get("webmail", "SMTP_SECURED") == "yes":
                 s.starttls()
-        except (smtplib.SMTPException, ssl.SSLError), error:
+        #except (smtplib.SMTPException, ssl.SSLError), error:
+        except Exception, e:
             print error
             # Prévoir la remontée de cette erreur au niveau du client!!
 
