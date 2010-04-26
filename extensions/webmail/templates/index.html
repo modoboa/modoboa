@@ -1,5 +1,6 @@
 {% extends "common/email_listing.html" %}
 {% load i18n %}
+{% load webextras %}
 {% block css %}
 #listing {
   position: absolute;
@@ -63,6 +64,7 @@ table#emails > tbody {
 
 .box li.selected {
   background: #ffffcc;
+  position: relative;
 }
 
 .box a:link, .box a:visited {
@@ -109,6 +111,17 @@ tr.selected {
   background: #ffffcc;
 }
 
+ul.hidden {
+  display: none;
+}
+
+ul.visible {
+  background: white;
+  display: block;
+  padding-bottom: 0;
+  padding-left: 10px;
+}
+
 {% endblock %}
 {% block js %}
   wm_updatelisting = function(resp) {
@@ -116,9 +129,6 @@ tr.selected {
 
     $$("a[name=compose]").addEvent("click", loadCompose);
     $$("a[name=empty]").addEvent("click", empty);
-    if (!checkSelection()) {
-      select($$("a[href=INBOX]"));
-    }
   }
 
   empty = function(event) {
@@ -128,17 +138,6 @@ tr.selected {
     }}).get();
   }
 
-  checkSelection = function() {
-    var selection = false;
-
-    $$("a[name=loadfolder]").each(function(item) {
-      if (!selection) {
-        selection = item.getParent().hasClass("selected");
-      }
-    });
-    return selection;
-  }
-
   select = function(obj) {
     $$("a[name=loadfolder]").each(function(item) {
       item.getParent().removeClass("selected");
@@ -146,6 +145,14 @@ tr.selected {
     });
     obj.getParent().removeClass("droppable");
     obj.getParent().addClass("selected");
+
+    $$(obj.getParents("ul[class*=hidden]")).each(function(item) {
+      item.removeClass("hidden");
+      item.addClass("visible");
+      $$("img[name=" + item.get("name") + "]").each(function(item) {
+        item.set("src", "/static/pics/folder-open.png");
+      });
+    });
   }
 
   register_callback("viewmail", function(resp) {
@@ -221,6 +228,18 @@ tr.selected {
   }
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
+    select($$("a[href=" + current_anchor.getbaseurl() + "]"));
+    $$("img[class=clickable]").addEvent("click", function(evt) {
+      $$("ul[name=" + evt.target.get("name") + "]").each(function(item) {
+        if (item.hasClass("hidden")) {
+          evt.target.set("src", "/static/pics/folder-open.png");
+          item.removeClass("hidden").addClass("visible");
+        } else {
+          evt.target.set("src", "/static/pics/subfolders.png");
+          item.removeClass("visible").addClass("hidden");
+        }
+      });
+    });
     searchbox_init();
     if (navparams.has("order")) {
       src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
@@ -346,20 +365,7 @@ tr.selected {
 <div id="leftcol" class="box">
   <h3>{% trans "Folders" %}</h3>
   <ul>
-  {% for fd in folders %}
-  {% url extensions.webmail.main.folder fd.name as fdurl %}
-  <li class="droppable">
-    <a href="{{ fd.name }}" name="loadfolder">
-      {% if fd.icon %}<img src="/static/pics/{{ fd.icon }}" />
-      {% else %}<img src="/static/pics/folder.png" />
-      {% endif %}
-    {{ fd.name }}
-    </a>
-  </li>
-  {% endfor %}
+    {% print_folders folders %}
   </ul>
 </div>
-{% endblock %}
-{% block menu %}
-
 {% endblock %}

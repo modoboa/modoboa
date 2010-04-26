@@ -155,6 +155,10 @@ function HashWrapper(deflocation) {
         return this;
     };
 
+    this.getbaseurl = function() {
+        return this.base.substr(0, this.base.length - 1);
+    };
+
     this.delparam = function(name) {
         if (!this.params.has(name)) {
             return false;

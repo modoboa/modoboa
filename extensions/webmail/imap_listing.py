@@ -183,11 +183,12 @@ class IMAPconnector(object):
         self.messages = data[0].split()
         return len(self.messages)
 
-    def _parse_folder_name(self, dict, parts):
+    def _parse_folder_name(self, dict, prefix, delimiter, parts):
         if not len(parts):
             return
-        dict[parts[0]] = {}
-        self._parse_folder_name(dict[parts[0]], parts[1:])
+        path = "%s%s%s" % (prefix, delimiter, parts[0])
+        dict[parts[0]] = {"path" : path, "sub" : {}}
+        self._parse_folder_name(dict[parts[0]]["sub"], path, delimiter, parts[1:])
 
     def listfolders(self, topfolder='INBOX', md_folders=[]):
         list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
@@ -198,8 +199,8 @@ class IMAPconnector(object):
             name = name.strip('"').decode("imap4-utf-7")
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
-                dict = {}
-                self._parse_folder_name(dict, parts[1:])
+                dict = {"path" : parts[0], "sub" : {}}
+                self._parse_folder_name(dict["sub"], parts[0], delimiter, parts[1:])
                 result[parts[0]] = dict
                 continue
             present = False
@@ -280,6 +281,18 @@ class ImapListing(EmailListing):
             self.mbc.criterions = []
         EmailListing.__init__(self, **kwargs)  
 
+    def __parse_folders(self, folders):
+        result = []
+        for fd in sorted(folders.keys()):
+            descr = {"name" : fd}
+            if folders[fd] is not None:
+                descr["path"] = folders[fd]["path"]
+                if folders[fd]["sub"] != {}:
+                    descr["icon"] = "subfolders.png"
+                    descr["sub"] = self.__parse_folders(folders[fd]["sub"])
+            result += [descr]
+        return result
+
     def getfolders(self):
         md_folders = [{"name" : "INBOX", "icon" : "overview.png"},
                       {"name" : 'Drafts'},
@@ -287,11 +300,7 @@ class ImapListing(EmailListing):
                       {"name" : 'Sent'},
                       {"name" : 'Trash', "icon" : "trash.png"}]
         folders = self.mbc.listfolders(md_folders=md_folders)
-        for fd in sorted(folders.keys()):
-            descr = {"name" : fd}
-            if folders[fd] != None:
-                descr["icon"] = "subfolders.png"
-            md_folders += [descr]
+        md_folders += self.__parse_folders(folders)
         return md_folders
 
     def parse_search_parameters(self, criterion, pattern):
