@@ -95,8 +95,13 @@ def print_folders(folders):
         else:
             icon = "folder.png"
         result += "<li class='droppable'>\n"
-        result += "<a href='%s' name='loadfolder'>%s</a>\n" \
-            % (fd.has_key("path") and fd["path"] or fd["name"], fd["name"])
+        label = fd["name"]
+        cssclass = ""
+        if fd.has_key("unseen"):
+            label += " (%d)" % fd["unseen"]
+            cssclass = "unseen"
+        result += "<a href='%s' class='%s' name='loadfolder'>%s</a>\n" \
+            % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, label)
         if fd.has_key("sub"):
             result += "<img name='%s' class='clickable' src='/static/pics/%s' />\n" \
                 % (fd["path"], icon)

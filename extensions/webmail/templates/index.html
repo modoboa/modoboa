@@ -16,7 +16,7 @@ html > body #listing {
   bottom: 35px;
 }
 
-#leftcol {
+#folders {
   float: left;
   width: 150px;
 }
@@ -70,7 +70,7 @@ table#emails > tbody {
 .box a:link, .box a:visited {
   background: transparent;
   color: black;
-  font-weight: bold;
+  /*font-weight: bold;*/
   text-decoration: none;
 }
 
@@ -126,7 +126,10 @@ ul.visible {
 {% block js %}
   wm_updatelisting = function(resp) {
     updatelisting(resp);
-
+    if ($defined(resp.folders)) {
+      $("folders").set("html", resp.folders);
+    }
+    $$("a[name=loadfolder]").addEvent("click", foldercallback);
     $$("a[name=compose]").addEvent("click", loadCompose);
     $$("a[name=empty]").addEvent("click", empty);
   }
@@ -375,14 +378,9 @@ ul.visible {
     select(event.target);
     loadFolder(event, event.target);
   }
-  $$("a[name=loadfolder]").addEvent("click", foldercallback);
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block leftcol %}
-<div id="leftcol" class="box">
-  <h3>{% trans "Folders" %}</h3>
-  <ul>
-    {% print_folders folders %}
-  </ul>
+<div id="folders" class="box">
 </div>
 {% endblock %}

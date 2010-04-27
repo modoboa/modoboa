@@ -105,9 +105,6 @@ class EmailListing:
                 "page" : page
                 })
     
-    def getfolders(self):
-        return None
-
     def fetch(self, request, id_start, id_stop):
         table = self.tbltype(self.mbc.fetch(start=id_start, stop=id_stop, 
                                             folder=self.folder))
@@ -131,7 +128,6 @@ class EmailListing:
                 "listing" : listing, 
                 "elapsed" : elapsed,
                 "navbar" : self.render_navbar(page),
-                "folders" : self.getfolders(),
                 "selection" : self.folder,
                 "navparams" : self.navparams,
                 "deflocation" : self.deflocation, "defcallback" : self.defcallback

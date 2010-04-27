@@ -91,7 +91,10 @@ def folder(request, name, updatenav=True):
     else:
         content = "Empty folder"
         navbar = ""
-    ctx = getctx("ok", listing=content, navbar=navbar,
+    folders = render_to_string("webmail/folders.html", {
+            "folders" : lst.getfolders()
+            })
+    ctx = getctx("ok", folders=folders, listing=content, navbar=navbar,
                  menu=listing_menu("", name, request.user.get_all_permissions()))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 

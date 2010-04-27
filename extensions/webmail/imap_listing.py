@@ -1,10 +1,9 @@
-
 # -*- coding: utf-8 -*-
 
 import re
 import time
 import imaplib
-#import ssl
+import ssl
 from datetime import datetime, timedelta
 from email.header import decode_header
 import email.utils
@@ -142,13 +141,11 @@ class IMAPconnector(object):
                 self.m = imaplib.IMAP4_SSL(self.address, self.port)
             else:
                 self.m = imaplib.IMAP4(self.address, self.port)
-#        except (imaplib.IMAP4.error, ssl.SSLError), error:
-        except Exception, error:
+        except (imaplib.IMAP4.error, ssl.SSLError), error:
             return False, _("Connection to IMAP server failed, check your configuration")
         try:
             self.m.login(user, passwd)
-#        except (imaplib.IMAP4.error, ssl.SSLError), error:
-        except Exception, error:
+        except (imaplib.IMAP4.error, ssl.SSLError), error:
             return False, _("Authentication failed, check your configuration")
             
         return True, None
@@ -182,6 +179,14 @@ class IMAPconnector(object):
                                      *self.criterions)
         self.messages = data[0].split()
         return len(self.messages)
+
+    def unseen_messages(self, folder):
+        """Return the number of unseen messages for folder"""
+        self.m.select(self._encodefolder(folder))
+        status, data = self.m.search("UTF-8", "(NOT DELETED UNSEEN)")
+        if status != "OK":
+            return
+        return len(data[0].split())
 
     def _parse_folder_name(self, dict, prefix, delimiter, parts):
         if not len(parts):
@@ -305,6 +310,12 @@ class ImapListing(EmailListing):
                       {"name" : 'Trash', "icon" : "trash.png"}]
         folders = self.mbc.listfolders(md_folders=md_folders)
         md_folders += self.__parse_folders(folders)
+        for fd in md_folders:
+            key = fd.has_key("path") and "path" or "name"
+            count = self.mbc.unseen_messages(fd[key])
+            if count == 0:
+                continue
+            fd["unseen"] = count
         return md_folders
 
     def parse_search_parameters(self, criterion, pattern):
