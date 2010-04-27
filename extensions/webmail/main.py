@@ -129,7 +129,7 @@ def viewmail(request, folder, mail_id=None):
 def getmailcontent(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if "class" in msg.keys() and msg["class"] == "unseen":
-        IMAPconnector(request).msgseen(msg["imapid"])
+        IMAPconnector(request).msg_read(*msg["imapid"].split("/"))
         email = ImapEmail(msg, mode="html", links="1")
     try:
         pageid = request.session["page"]
@@ -181,6 +181,21 @@ def delete(request, fdname, mail_id):
     mbc = IMAPconnector(request)
     mbc.move(mail_id, fdname, "Trash")
     return folder(request, fdname, False)
+
+@login_required
+def mark(request, name):
+    if not request.GET.has_key("status") or not request.GET.has_key("ids"):
+        return
+    mbc = IMAPconnector(request)
+    ids = request.GET["ids"].split(',')
+    msgset = []
+    for id in ids:
+        msgset.append(id.split("/")[1])
+    try:
+        getattr(mbc, "msg_%s" % request.GET["status"])(name, ",".join(msgset))
+    except AttributeError:
+        pass
+    return folder(request, name, False)
 
 @login_required
 def empty(request, name):

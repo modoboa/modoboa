@@ -65,9 +65,11 @@ def listing_menu(selection, folder, perms):
          "class" : "menubardropdown",
          "menu" : [
                 {"name" : "mark-read",
-                 "label" : _("As read")},
+                 "label" : _("As read"),
+                 "url" : reverse(webmail.main.mark, args=[folder]) + "?status=read"},
                 {"name" : "mark-unread",
-                 "label" : _("As unread")}
+                 "label" : _("As unread"),
+                 "url" : reverse(webmail.main.mark, args=[folder]) + "?status=unread"}
                 ]
          }
         ]

@@ -259,6 +259,22 @@ ul.visible {
       }
     });
 
+    buildmarkrequest = function(evt) {
+      evt.stop();
+      if (!selectedRows.length) {
+        return;
+      }
+      var ids = new Array();
+      selectedRows.each(function(item, index) {
+        ids.include(item.get("id"));
+      });
+      current_anchor.parse_string(evt.target.get("href"), true);
+      current_anchor.updateparams("ids=" + ids.join());
+      current_anchor.update();
+    }
+    $$("a[name=mark-read]").addEvent("click", buildmarkrequest);
+    $$("a[name=mark-unread]").addEvent("click", buildmarkrequest);
+
     $$("tr").each(function(item) {
       new Drag.Move(item, {
         droppables: ".droppable",

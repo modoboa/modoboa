@@ -212,9 +212,13 @@ class IMAPconnector(object):
                 result[name] = None
         return result
 
-    def msgseen(self, imapid):
-        folder, id = imapid.split("/")
-        self.m.store(id, "+FLAGS", "\\Seen")
+    def msg_unread(self, folder, msgset):
+        self.m.select(self._encodefolder(folder), True)
+        self.m.store(msgset, "-FLAGS", "\\Seen")
+
+    def msg_read(self, folder, msgset):
+        self.m.select(self._encodefolder(folder), True)
+        self.m.store(msgset, "+FLAGS", "\\Seen")
 
     def msgforwarded(self, folder, imapid):
         self.m.select(self._encodefolder(folder), True)
