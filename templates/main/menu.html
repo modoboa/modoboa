@@ -5,10 +5,14 @@
   <li class="dropdown {{ entry.class }}">
     <img src="{{ entry.img }}" border="0" />
     <label>{{ entry.label }}</label>
-    <ul class="links">
+    <ul class="links"
+        {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
       {% for sentry in entry.menu %}
       <li>
-        <a href="{{ sentry.url }}" name="{{ sentry.name }}">{{ sentry.label }}</a>
+        <a href="{{ sentry.url }}" name="{{ sentry.name }}">
+          <img src="{{ sentry.img }}" border="0" />
+          {{ sentry.label }}
+        </a>
       </li>
       {% endfor %}
     </ul>

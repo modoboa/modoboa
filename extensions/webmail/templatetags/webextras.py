@@ -59,7 +59,7 @@ def listing_menu(selection, folder, perms):
          "url" : reverse(webmail.main.compose),
          "img" : "/static/pics/edit.png",
          "label" : _("New message")},
-        {"name" : "actions",
+        {"name" : "mark",
          "img" : "/static/pics/domains.png",
          "label" : _("Mark messages"),
          "class" : "menubardropdown",
@@ -71,15 +71,25 @@ def listing_menu(selection, folder, perms):
                  "label" : _("As unread"),
                  "url" : reverse(webmail.main.mark, args=[folder]) + "?status=unread"}
                 ]
+         },
+        {"name" : "actions",
+         "img" : "/static/pics/settings.png",
+         "label" : _("Actions"),
+         "class" : "menubardropdown",
+         "width" : "150",
+         "menu" : [
+                {"name" : "fdaction",
+                 "label" : _("Compact folder"),
+                 "img" : "/static/pics/compress.png",
+                 "url" : "compact/%s/" % folder},
+                {"name" : "fdaction",
+                 "label" : _("Empty folder"),
+                 "img" : "/static/pics/clear.png",
+                 "url" : folder == "Trash" \
+                     and reverse(webmail.main.empty, args=[folder]) or ""}
+                ]
          }
         ]
-    if folder in ["Trash"]:
-        entries += [
-            {"name" : "empty",
-             "url" : reverse(webmail.main.empty, args=[folder]),
-             "img" : "/static/pics/clear.png",
-             "label" : _("Empty trash")}
-            ]
     menu = render_to_string("main/menu.html",
                             {"selection" : selection, "entries" : entries,
                              "perms" : perms})

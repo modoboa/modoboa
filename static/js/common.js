@@ -170,6 +170,8 @@ function HashWrapper(deflocation) {
 
 parse_menubar = function(id) {
     if ($(id)) {
+        var first = true;
+
 	$(id).getElements('li.dropdown').each(function(elem){
 	    var list = elem.getElement('ul.links');
 	    var myFx = new Fx.Slide(list, {
@@ -190,6 +192,11 @@ parse_menubar = function(id) {
 		    myFx.slideOut();
 		}
 	    });
+            if (!first) {
+                elem.setStyle("margin-left", "10em");
+            } else {
+                first = false;
+            }
 	});
         SqueezeBox.assign($$('a.boxed'), {
             parse: 'rel',        

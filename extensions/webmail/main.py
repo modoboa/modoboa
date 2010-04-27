@@ -206,6 +206,12 @@ def empty(request, name):
     mbc.empty(name)
     return folder(request, name, False)
 
+@login_required
+def compact(request, name):
+    mbc = IMAPconnector(request)
+    mbc.compact(name)
+    return folder(request, name, False)
+
 def render_compose(request, form, posturl, bodyheader=None, body=None):
     menu = compose_menu("", __get_current_url(request), 
                         request.user.get_all_permissions())

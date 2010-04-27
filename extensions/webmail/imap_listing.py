@@ -241,6 +241,10 @@ class IMAPconnector(object):
             self.m.store(num, "+FLAGS", "\\Deleted")
         self.m.expunge()
 
+    def compact(self, folder):
+        self.m.select(self._encodefolder(folder))
+        self.m.expunge()
+
     def fetch(self, start=None, stop=None, folder=None, all=False):
         if not start and not stop:
             return []
