@@ -229,6 +229,7 @@ ul.visible {
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
     select($$("a[href=" + current_anchor.getbaseurl() + "]"));
+    $$("img[class=clickable]").removeEvents();
     $$("img[class=clickable]").addEvent("click", function(evt) {
       $$("ul[name=" + evt.target.get("name") + "]").each(function(item) {
         if (item.hasClass("hidden")) {
