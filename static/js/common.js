@@ -170,7 +170,7 @@ function HashWrapper(deflocation) {
 
 parse_menubar = function(id) {
     if ($(id)) {
-        var first = true;
+        //var first = true;
 
 	$(id).getElements('li.dropdown').each(function(elem){
 	    var list = elem.getElement('ul.links');
@@ -192,11 +192,11 @@ parse_menubar = function(id) {
 		    myFx.slideOut();
 		}
 	    });
-            if (!first) {
+            /*if (!first) {
                 elem.setStyle("margin-left", "10em");
             } else {
                 first = false;
-            }
+            }*/
 	});
         SqueezeBox.assign($$('a.boxed'), {
             parse: 'rel',        
@@ -316,5 +316,5 @@ searchbox_init = function() {
             $("searchfield").set("value", "Search...");
         }
     });
-    $("searchbox").setStyle("float", "right");
+    $("searchbox").setStyle("float", "left");
 }

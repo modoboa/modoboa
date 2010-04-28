@@ -202,8 +202,9 @@ def mark(request, name):
 
 @login_required
 def empty(request, name):
-    mbc = IMAPconnector(request)
-    mbc.empty(name)
+    if name == "Trash":
+        mbc = IMAPconnector(request)
+        mbc.empty(name)
     return folder(request, name, False)
 
 @login_required

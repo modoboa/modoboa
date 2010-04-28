@@ -25,6 +25,7 @@ thead tr {
   position: relative;
   top: expression(offsetParent.scrollTop); /*IE5+ only*/
   z-index: 1;
+  padding: 0;
 }
 
 table#emails > tbody {
@@ -43,6 +44,12 @@ table#emails > tbody {
 
 #emails tr {
   width: 100%;
+  position: relative;
+  border-bottom: 1px solid #C8D6E8;
+}
+
+tr.selected {
+  background: #ffffcc;
 }
 
 .box h3 {
@@ -100,15 +107,6 @@ th.selected {
 
 .dragging {
   background: #6AB0C5;
-}
-
-tr {
-  position: relative;
-  border-bottom: 1px solid #C8D6E8;
-}
-
-tr.selected {
-  background: #ffffcc;
 }
 
 ul.hidden {

@@ -1,9 +1,8 @@
 #searchbox {
-     /*float: left;*/ /* Marche pas ici?! obligé de le faire en JS sous FF */
-     margin-right: 10px;
-     z-index: 2;
-     position: relative;
-     margin-left: 10px;
+    margin-right: 10px;
+    /*margin-left: 10px;*/
+    z-index: 2;
+    position: relative;
 }
 
 #searchbox img {

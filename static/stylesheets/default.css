@@ -192,10 +192,11 @@ div.right {
 }
 
 .dropdown {
-    position: absolute;
-    clear: both;
+    /*position: absolute;*/
+    position: relative;
+    /*clear: both;*/
     z-index: 2;
-    width: 250px;
+    /*width: 250px;*/
 }
 
 .dropdown li {
