@@ -293,6 +293,7 @@ class ImapListing(EmailListing):
     tbltype = WMtable
     deflocation = "INBOX/"
     defcallback = "wm_updatelisting"
+    reset_wm_url = False
     
     def __init__(self, user, password, **kwargs):
         self.mbc = IMAPconnector(user=user, password=password)

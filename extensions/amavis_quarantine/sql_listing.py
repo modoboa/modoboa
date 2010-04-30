@@ -87,6 +87,7 @@ class SQLlisting(EmailListing):
     tbltype = Qtable
     deflocation = "listing/"
     defcallback = "updatelisting"
+    reset_wm_url = True
 
     def __init__(self, filter, **kwargs):
         self.mbc = SQLconnector(filter)

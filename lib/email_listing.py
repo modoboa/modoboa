@@ -131,7 +131,9 @@ class EmailListing:
                 "navbar" : self.render_navbar(page),
                 "selection" : self.folder,
                 "navparams" : self.navparams,
-                "deflocation" : self.deflocation, "defcallback" : self.defcallback
+                "deflocation" : self.deflocation, 
+                "defcallback" : self.defcallback,
+                "reset_wm_url" : self.reset_wm_url
                 })
 
 class Email(object):

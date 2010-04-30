@@ -43,7 +43,11 @@ window.addEvent("domready", function() {
     if (event.target.parentNode.id) {
       var url = event.target.parentNode.id + "/";
       event.target.parentNode.setStyle("background", "#ffffcc");
+      {% if reset_wm_url %} 
+      current_anchor.baseurl(url).update();
+      {% else %}
       current_anchor.addbaseurl(url).update();
+      {% endif %}
     }
   }
 
