@@ -31,7 +31,8 @@ check_anchor = function() {
     delete(current_anchor.force);
     current_anchor.from_string(location.hash);
     if (!current_anchor.serialized) {
-        query = current_anchor.deflocation;
+        location.hash = current_anchor.deflocation;
+        return;
     } else {
         query = current_anchor.serialized.substring(1);
     }
@@ -153,6 +154,11 @@ function HashWrapper(deflocation) {
             this.base += '/';
         }
         return this;
+    };
+
+    this.addbaseurl = function(value) {
+        newbase = this.base + value;
+        return this.baseurl(newbase);
     };
 
     this.getbaseurl = function() {

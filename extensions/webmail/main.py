@@ -132,16 +132,17 @@ def viewmail(request, folder, mail_id=None):
 def getmailcontent(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if "class" in msg.keys() and msg["class"] == "unseen":
-        IMAPconnector(request).msg_read(*msg["imapid"].split("/"))
+        #IMAPconnector(request).msg_read(*msg["imapid"].split("/"))
+        IMAPconnector(request).msg_read(folder, mail_id)
         email = ImapEmail(msg, mode="html", links="1")
     try:
         pageid = request.session["page"]
     except KeyError:
         pageid = "1"
-    folder, imapid = msg["imapid"].split("/")
+    #folder, imapid = msg["imapid"].split("/")
     return _render(request, "common/viewmail.html", {
             "headers" : email.render_headers(folder, mail_id), 
-            "folder" : folder, "imapid" : imapid, "mailbody" : email.body, 
+            "folder" : folder, "imapid" : mail_id, "mailbody" : email.body, 
             "pre" : email.pre
             })
 
@@ -170,14 +171,9 @@ def move(request):
     for arg in ["msgset", "to"]:
         if not request.GET.has_key(arg):
             return
-    msgset = []
-    fdname = ""
-    for item in request.GET["msgset"].split(","):
-        fdname, id = item.split("/")
-        msgset += [id]
     mbc = IMAPconnector(request)
-    mbc.move(",".join(msgset), fdname, request.GET["to"])
-    return folder(request, fdname, False)
+    mbc.move(request.GET["msgset"], request.session["folder"], request.GET["to"])
+    return folder(request, request.session["folder"], False)
 
 @login_required
 def delete(request, fdname, mail_id):
@@ -190,12 +186,8 @@ def mark(request, name):
     if not request.GET.has_key("status") or not request.GET.has_key("ids"):
         return
     mbc = IMAPconnector(request)
-    ids = request.GET["ids"].split(',')
-    msgset = []
-    for id in ids:
-        msgset.append(id.split("/")[1])
     try:
-        getattr(mbc, "msg_%s" % request.GET["status"])(name, ",".join(msgset))
+        getattr(mbc, "msg_%s" % request.GET["status"])(name, request.GET["ids"])
     except AttributeError:
         pass
     return folder(request, name, False)

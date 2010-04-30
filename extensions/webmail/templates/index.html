@@ -250,7 +250,7 @@ ul.visible {
       th.addClass("selected");
     }
     var selectedRows = new Array();
-    $$("tr").addEvent("click", function(event) {
+    $$("tbody>tr").addEvent("click", function(event) {
       var tr = event.target.getParent();
       if (!tr.hasClass("selected")) {
         tr.addClass("selected");
@@ -270,9 +270,8 @@ ul.visible {
       selectedRows.each(function(item, index) {
         ids.include(item.get("id"));
       });
-      current_anchor.parse_string(evt.target.get("href"), true);
-      current_anchor.updateparams("ids=" + ids.join());
-      current_anchor.update();
+      new Request.JSON({url : evt.target.get("href"), 
+                        onSuccess : get_callback("folder")}).get({ids : ids.join()});
     }
     $$("a[name=mark-read]").addEvent("click", buildmarkrequest);
     $$("a[name=mark-unread]").addEvent("click", buildmarkrequest);
@@ -282,7 +281,7 @@ ul.visible {
       current_anchor.parse_string(evt.target.get("href"), true).update();
     });
 
-    $$("tr").each(function(item) {
+    $$("tbody>tr").each(function(item) {
       new Drag.Move(item, {
         droppables: ".droppable",
       }).addEvents({
@@ -309,13 +308,6 @@ ul.visible {
           block.set("html", "Moving " + selectedRows.length + " messages"); 
           this.oldelement = this.element;
           this.element = block;
-        },
-        "cancel" : function(item) {
-          if ($defined(this.oldelement)) {
-            item.dispose();
-            delete(item);
-            this.element = this.oldelement;
-          }
         },
         "enter" : function(item, droppable) {
           droppable.addClass("dragging");
@@ -352,13 +344,13 @@ ul.visible {
            selectedRows.include(item);
          });
        } else {
-         $$("tr").each(function(item) { item.removeClass("selected"); });
+         $$("tbody>tr").each(function(item) { item.removeClass("selected"); });
          selectedRows.empty();
        }
     });
     }
 
-    $$("tr").addEvent("dblclick", viewmail);
+    $$("tbody>tr").addEvent("dblclick", viewmail);
     $$("th[class*=sortable]").addEvent("click", function(evt) {
         var tmp = "?";
         var order = (navparams.has("order")) ? navparams.get("order") : "";

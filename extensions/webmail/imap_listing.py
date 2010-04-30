@@ -269,7 +269,7 @@ class IMAPconnector(object):
                 imapid = response_part[0].split()[0]
                 flags = imaplib.ParseFlags(response_part[0])
                 msg = email.message_from_string(response_part[1])
-                msg["imapid"] = "%s/%s" % (folder, imapid)
+                msg["imapid"] = imapid
                 if not "\\Seen" in flags:
                     msg["class"] = "unseen"
                 if "\\Answered" in flags:
