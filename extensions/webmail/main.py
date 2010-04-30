@@ -215,10 +215,11 @@ def render_compose(request, form, posturl, bodyheader=None, body=None):
     ctx = getctx("ok", level=2, menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
-def send_mail(request, withctx=False):
+def send_mail(request, withctx=False, origmsg=None):
     form = ComposeMailForm(request.POST)
     if form.is_valid():
         from email.mime.text import MIMEText
+        from email.utils import make_msgid, formatdate
         import smtplib
 
         msg = MIMEText(request.POST["id_body"].encode("utf-8"), 
@@ -226,6 +227,11 @@ def send_mail(request, withctx=False):
         msg["Subject"] = request.POST["subject"]
         msg["From"] = request.POST["from_"]
         msg["To"] = request.POST["to"]
+        msg["Message-ID"] = make_msgid()
+        msg["User-Agent"] = "MailNG"
+        msg["Date"] = formatdate()
+        if origmsg and origmsg.has_key("Message-ID"):
+            msg["References"] = msg["In-Reply-To"] = origmsg["Message-ID"]
         rcpts = msg['To'].split(',')
         if "cc" in request.POST.keys():
             msg["Cc"] = request.POST["cc"]
@@ -234,8 +240,7 @@ def send_mail(request, withctx=False):
             s = smtplib.SMTP(parameters.get("webmail", "SMTP_SERVER"))
             if parameters.get("webmail", "SMTP_SECURED") == "yes":
                 s.starttls()
-        #except (smtplib.SMTPException, ssl.SSLError), error:
-        except Exception, e:
+        except (smtplib.SMTPException, ssl.SSLError), error:
             print error
             # Prévoir la remontée de cette erreur au niveau du client!!
 
@@ -243,6 +248,7 @@ def send_mail(request, withctx=False):
             s.login(request.user.username, request.session["password"])
         s.sendmail(msg['From'], rcpts, msg.as_string())
         s.quit()
+        IMAPconnector(request).push_mail("Sent", msg)
         ctx = getctx("ok", url=__get_current_url(request))
     else:
         ctx = getctx("ko", level=2, listing=render_to_string("webmail/compose.html", 
@@ -262,9 +268,12 @@ def compose(request):
 
 @login_required
 def reply(request, folder, mail_id):
-    if request.method == "POST":
-        return send_mail(request)
     msg = fetchmail(request, folder, mail_id, True)
+    if request.method == "POST":
+        ctx, r = send_mail(request, True, origmsg=msg)
+        if ctx["status"] == "ok":
+            IMAPconnector(request).msg_answered(folder, mail_id)
+        return r
     email = ImapEmail(msg, True)
     lines = email.body.split('\n')
     body = ""

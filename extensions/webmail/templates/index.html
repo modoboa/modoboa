@@ -278,7 +278,9 @@ ul.visible {
 
     $$("a[name=fdaction]").addEvent("click", function(evt) {
       evt.stop();
-      current_anchor.parse_string(evt.target.get("href"), true).update();
+      new Request.JSON({url : evt.target.get("href"), 
+                        onSuccess : get_callback("folder")
+      }).get();
     });
 
     $$("tbody>tr").each(function(item) {

@@ -217,22 +217,31 @@ class IMAPconnector(object):
                 result[name] = None
         return result
 
+    def _add_flag(self, folder, mail_id, flag):
+        self.m.select(self._encodefolder(folder), True)
+        self.m.store(mail_id, "+FLAGS", flag)
+
     def msg_unread(self, folder, msgset):
         self.m.select(self._encodefolder(folder), True)
         self.m.store(msgset, "-FLAGS", "\\Seen")
 
     def msg_read(self, folder, msgset):
-        self.m.select(self._encodefolder(folder), True)
-        self.m.store(msgset, "+FLAGS", "\\Seen")
+        self._add_flag(folder, msgset, "\\Seen")
 
     def msgforwarded(self, folder, imapid):
-        self.m.select(self._encodefolder(folder), True)
-        self.m.store(imapid, "+FLAGS", "$Forwarded")
+        self._add_flag(folder, imapid, "$Forwarded")
+
+    def msg_answered(self, folder, imapid):
+        self._add_flag(folder, imapid, "\\Answered")
 
     def move(self, msgset, oldfolder, newfolder):
         self.m.select(self._encodefolder(oldfolder), True)
         self.m.copy(msgset, newfolder)
         self.m.store(msgset, "+FLAGS", "\\Deleted")
+
+    def push_mail(self, folder, msg):
+        now = imaplib.Time2Internaldate(time.time())
+        self.m.append(self._encodefolder(folder), '\\Seen', now, str(msg))
 
     def empty(self, folder):
         self.m.select(self._encodefolder(folder))
