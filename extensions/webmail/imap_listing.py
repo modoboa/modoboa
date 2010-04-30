@@ -112,7 +112,6 @@ class IMAPheader(object):
     def parse_subject(value, **kwargs):
         res = ""
         dcd = decode_header(re.sub("[\\r\\n]+", "", value))
-        print dcd
         for part in dcd:
             if res != "":
                 res += " "

@@ -63,6 +63,23 @@ def quar_menu(selection, perms):
          "url" : "",
          "img" : "/static/pics/remove.png",
          "label" : _("Delete")},
+        {"name" : "select",
+         "url" : "",
+         "img" : "/static/pics/domains.png",
+         "label" : _("Select all"),
+         "class" : "menubardropdown",
+         "menu" : [
+                {"name" : "selectmsgs",
+                 "url" : "S",
+                 "label" : _("Spam")},
+                {"name" : "selectmsgs",
+                 "url" : "H",
+                 "label" : _("Bad header")},
+                {"name" : "selectmsgs",
+                 "url" : "M",
+                 "label" : _("Bad MIME")}
+                ]
+         }
         ]
 
     menu = render_to_string('main/menu.html', 

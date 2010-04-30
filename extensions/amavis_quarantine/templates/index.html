@@ -68,6 +68,15 @@ tr.table-tr-selected {
         }
       });
     }
+    $$("a[name=selectmsgs]").addEvent("click", function(evt) {
+      evt.stop();
+      var type = evt.target.get("href");
+      $$("td[name=type]").each(function(item) {
+        if (item.get("html").trim() == type) {
+          item.getParent().addClass("table-tr-selected");
+        }
+      });
+    });
     $$("a[name=release]").addEvent("click", function(event) {
       if (!checkTableSelection("{% trans "Release this selection?" %}")) {
         event.stop();

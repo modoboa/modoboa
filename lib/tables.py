@@ -55,7 +55,7 @@ class Table(object):
         for row in rows:
             nrow = {"id" : row[self.idkey], "cols" : []}
             for c in self.columns:
-                newcol = {}
+                newcol = {"name" : c.name}
                 try:
                     newcol["width"] = getattr(c, "width")
                 except AttributeError:
