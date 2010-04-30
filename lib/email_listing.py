@@ -69,7 +69,7 @@ class Paginator(object):
             return None
         id_start, id_stop = self._indexes(page - 1)
         has_previous = has_next = False
-        if id_start < self.total:
+        if id_start <= self.total:
             if page > 1:
                 has_previous = True
             if id_stop < self.total:
