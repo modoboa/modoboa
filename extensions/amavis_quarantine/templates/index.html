@@ -56,6 +56,7 @@ tr.table-tr-selected {
     updatelisting(resp);
 
     tbl = new HtmlTable($("emails"), {
+      useKeyboard: false,
       selectable: true
     });
     if ($("toggleselect")) {
