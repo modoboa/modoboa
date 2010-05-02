@@ -34,6 +34,13 @@ def init():
     parameters.register("webmail", "SMTP_SECURED", "list_yesno", "no",
                         help=_("Use a secured connection to access SMTP server"))
 
+def infos():
+    return {
+        "name" : "Webmail",
+        "version" : "1.0",
+        "description" : _("Simple IMAP webmail")
+        }
+
 def urls():
     return (r'^mailng/webmail/',
             include('mailng.extensions.webmail.urls'))

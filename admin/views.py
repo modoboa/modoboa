@@ -442,3 +442,11 @@ def saveparameters(request):
         parameters.save(app, name, v)
     request.user.message_set.create(message=_("Configuration saved."))
     return HttpResponseRedirect(reverse(admin.views.viewparameters))
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def viewextensions(request):
+    from mailng.extensions import list_extensions
+    return _render(request, 'admin/extensions.html', {
+            "extensions" : list_extensions()
+            })

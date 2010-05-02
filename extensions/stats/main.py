@@ -25,6 +25,13 @@ graph_list = [{"name" : "traffic", "label" : _("Average normal traffic")},
               {"name" : "badtraffic", "label" : _("Average bad traffic")},
               {"name" : "size", "label" : _("Average normal traffic size")}]
 
+def infos():
+    return {
+        "name" : "Statistics",
+        "version" : "1.0",
+        "description" : _("Graphical statistics about emails traffic using RRDtool")
+        }
+
 def init():
     events.register("AdminMenuDisplay", menu)
     parameters.register("stats", "LOGFILE", "string", "/var/log/mail.log",

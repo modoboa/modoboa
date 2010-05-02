@@ -62,6 +62,9 @@ def settings_menu(selection, perms):
          "url" : reverse(admin.views.viewparameters),
          "img" : "/static/pics/domains.png",
          "label" : _("Parameters")},
+        {"name" : "extensions",
+         "url" : reverse(admin.views.viewextensions),
+         "label" : _("Extensions")},
         ]
     return render_to_string('main/menu.html', 
                             {"selection" : selection, "entries" : entries,

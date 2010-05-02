@@ -24,6 +24,13 @@ from templatetags.amextras import *
 from mailng.lib.email_listing import parse_search_parameters
 from sql_listing import *
 
+def infos():
+    return {
+        "name" : "Amavis quarantine",
+        "version" : "1.0",
+        "description" : _("Simple amavis quarantine management tool")
+        }
+
 def init():
     events.register("UserMenuDisplay", menu)
     parameters.register("amavis_quarantine", "MAX_MESSAGES_AGE", "int", 14,

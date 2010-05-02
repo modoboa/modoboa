@@ -24,3 +24,22 @@ def loadmenus():
             continue
         result += (u,)
     return result
+
+def list_extensions():
+    basedir = "extensions"
+    result = []
+    for d in os.listdir(basedir):
+        if not os.path.isdir("%s/%s" % (basedir, d)):
+            continue
+        isvalid = True
+        for f in ['urls.py', 'main.py', '__init__.py']:
+            if not os.path.exists("%s/%s/%s" % (basedir, d, f)):
+                isvalid = False
+                break
+        if isvalid:
+            module = __import__(d, globals(), locals(), ['main'])
+            try:
+                result += [module.main.infos()]
+            except AttributeError:
+                pass
+    return result

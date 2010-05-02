@@ -1,0 +1,14 @@
+{% extends "admin/settings_header.html" %}
+{% block menu %}
+{% load admin_extras %}
+{% settings_menu "extensions" perms %}
+{% endblock %}
+{% block setcontent %}
+{% load i18n %}
+<table>
+  <tr><th>{% trans "Name" %}</th><th>{% trans "Version" %}</th><th>{% trans "Description" %}</th></tr>
+{% for ext in extensions %}
+  <tr><td>{{ ext.name }}</td><td>{{ ext.version }}</td><td>{{ ext.description }}</td></tr>
+{% endfor %}
+</table>
+{% endblock %}
