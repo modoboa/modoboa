@@ -35,6 +35,12 @@ def register(app, name, type="string", deflt=None, help=None, **kwargs):
     for k, v in kwargs.iteritems():
         _params[app][name][k] = v
 
+def unregister_app(app):
+    if not _params.has_key(app):
+        return False
+    del _params[app]
+    return True
+
 def save(app, name, value):
     if not app in _params.keys() or not name in _params[app].keys():
         raise NotDefined(app, name)

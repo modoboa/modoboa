@@ -2,28 +2,28 @@
 import os
 import re
 
-extensions = []
+extensions = {}
 
 def loadextensions():
-    from django.conf import settings
+    from admin.models import Extension
 
-    expr = re.compile("mailng\.extensions\.(.+)")
-    for app in settings.INSTALLED_APPS:
-        m = expr.match(app)
-        if not m:
-            continue
-        module = __import__(m.group(1), globals(), locals(), ['main'])
+    exts = Extension.objects.filter(enabled=True)
+    for ext in exts:
+        module = __import__(ext.name, globals(), locals(), ['main'])
         module.main.init()
-        globals()['extensions'] += [module]
+        globals()['extensions'][ext] = module
     
 def loadmenus():
     result = []
-    for mod in extensions:
+    for name, mod in extensions.iteritems():
         u = mod.main.urls()
         if u == ():
             continue
         result += (u,)
     return result
+
+def isenabled(ext):
+    return extensions.has_key(ext)
 
 def list_extensions():
     basedir = "extensions"
@@ -39,7 +39,13 @@ def list_extensions():
         if isvalid:
             module = __import__(d, globals(), locals(), ['main'])
             try:
-                result += [module.main.infos()]
+                infos = module.main.infos()
+                infos["id"] = d
+                if os.path.isdir("%s/%s/templates" % (basedir, d)):
+                    infos["templates"] = True
+                else:
+                    infos["templates"] = False
+                result += [infos]
             except AttributeError:
                 pass
     return result

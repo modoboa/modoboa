@@ -12,7 +12,7 @@ from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from mailng import admin, main
-from mailng.admin.models import Domain, Mailbox, Alias
+from mailng.admin.models import Domain, Mailbox, Alias, Extension
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
 from mailng.lib import _render, _ctx_ok, _ctx_ko
@@ -447,6 +447,50 @@ def saveparameters(request):
 @user_passes_test(lambda u: u.is_superuser)
 def viewextensions(request):
     from mailng.extensions import list_extensions
+    from mailng.lib import tables
+    
+    class ExtensionsTable(tables.Table):
+        idkey = "id"
+        selection = tables.SelectionColumn("selection", width="4%", first=True)
+        _1_name = tables.Column("name", label=_("Name"), width="15%")
+        _2_version = tables.Column("version", label=_("Version"), width="6%")
+        _3_descr = tables.Column("description", label=_("Description"))
+        
+    exts = list_extensions()
+    for ext in exts:
+        try:
+            dbext = Extension.objects.get(name=ext["id"])
+            ext["selection"] = dbext.enabled
+        except Extension.DoesNotExist:
+            dbext = Extension()
+            dbext.name = ext["id"]
+            dbext.enabled = False
+            dbext.has_templates = ext["templates"]
+            dbext.save()
+            ext["selection"] = False
+            
+    tbl = ExtensionsTable(exts)
     return _render(request, 'admin/extensions.html', {
-            "extensions" : list_extensions()
+            "extensions" : tbl.render(request)
             })
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def saveextensions(request):
+    from mailng import extensions
+
+    actived_exts = Extension.objects.filter(enabled=True)
+    found = []
+    for k, v in request.POST.iteritems():
+        if k.startswith("select_"):
+            parts = k.split("_", 1)
+            dbext = Extension.objects.get(name=parts[1])            
+            if not dbext in actived_exts:
+                dbext.on()
+            else:
+                found += [dbext]
+    for ext in actived_exts:
+        if not ext in found:
+            ext.off()
+
+    return HttpResponseRedirect(reverse(admin.views.viewextensions))

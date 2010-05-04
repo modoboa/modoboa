@@ -5,10 +5,9 @@
 {% endblock %}
 {% block setcontent %}
 {% load i18n %}
-<table>
-  <tr><th>{% trans "Name" %}</th><th>{% trans "Version" %}</th><th>{% trans "Description" %}</th></tr>
-{% for ext in extensions %}
-  <tr><td>{{ ext.name }}</td><td>{{ ext.version }}</td><td>{{ ext.description }}</td></tr>
-{% endfor %}
-</table>
+<form method="POST" action="{% url admin.views.saveextensions %}">
+  {{ extensions }}
+  <br />
+  <input type="submit" name="apply" value="{% trans "Apply" %}" />
+</form>
 {% endblock %}

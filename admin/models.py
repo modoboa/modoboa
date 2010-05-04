@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from mailng.lib import parameters
-from mailng.lib import exec_as_vuser
+from mailng.lib import exec_cmd, exec_as_vuser
 import os
 
 class Domain(models.Model):
@@ -38,7 +38,7 @@ class Domain(models.Model):
 class Mailbox(models.Model):
     name = models.CharField(_('name'), max_length=100, 
                             help_text=_("First name and last name of mailbox owner"))
-    address = models.CharField(_('address'), max_length=100,
+    address = models.CharField(_('address'), max_length=10,
                                help_text=_("Mailbox address (without the @domain.tld part)"))
     full_address = models.CharField(max_length=150)
     password = models.CharField(_('password'), max_length=100)
@@ -111,3 +111,54 @@ class Alias(models.Model):
         permissions = (
             ("view_aliases", "View aliases"),
             )
+
+class Extension(models.Model):
+    name = models.CharField(max_length=150)
+    enabled = models.BooleanField(_('enabled'),
+                                  help_text=_("Check to enable this extension"))
+    has_templates = models.BooleanField()
+
+    def on(self):
+        from django.core.management import sql, color
+        from django.db import connection, models
+
+        style = color.no_style()
+        cursor = connection.cursor()
+        module = __import__("mailng.extensions.%s" % self.name, 
+                            globals(), locals(), ['main', 'models'])
+        try:
+            extmodels = module.models
+        except AttributeError:
+            extmodels = None
+        if extmodels is not None:
+            mods = []
+            for k, v in extmodels.__dict__.iteritems():
+                try:
+                    if not issubclass(v, models.Model):
+                        continue
+                    statements, pending = \
+                        connection.creation.sql_create_model(v, style)
+                    try:
+                        for sql in statements:
+                            cursor.execute(sql)
+                    except Exception, msg:
+                        pass
+                except TypeError:
+                    pass
+        if self.has_templates:
+            code, output = exec_cmd("ln -s ../extensions/%s/templates templates/%s" \
+                                        % (self.name, self.name))
+        module.main.init()
+        self.enabled = True
+        self.save()
+    
+    def off(self):
+        if self.has_templates:
+            code, output = exec_cmd("rm -f templates/%s" % self.name)
+            print output
+        self.enabled = False
+        self.save()
+        module = __import__("mailng.extensions.%s" % self.name, 
+                            globals(), locals(), ['main', 'models'])
+        module.main.destroy()
+        

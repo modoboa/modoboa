@@ -118,7 +118,6 @@ def param(app, definition):
                 values = definition["values"]
         value = definition.has_key("value") \
             and definition["value"] or definition["default"]
-        print name, values
         for v in values:
             selected = ""
             if value == v[0]:

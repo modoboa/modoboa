@@ -5,7 +5,7 @@ from django.conf import settings
 # from django.contrib import admin
 # admin.autodiscover()
 
-from mailng.extensions import loadextensions, loadmenus
+from mailng.extensions import loadextensions, loadmenus, isenabled
 from mailng.lib import parameters
 loadextensions()
 
@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('mailng',),})
 )
+
 menus = loadmenus()
 if menus != ():
     urlpatterns += patterns('', *menus)
@@ -38,7 +39,7 @@ if settings.DEBUG:
          {'document_root': settings.STATIC_ROOTDIR})
         )
     # Stats
-    if 'mailng.extensions.stats' in settings.INSTALLED_APPS:
+    if isenabled('stats'):
         urlpatterns += patterns(
             '',
             (r'^img/stats/(?P<path>.*)/$', 'django.views.static.serve',

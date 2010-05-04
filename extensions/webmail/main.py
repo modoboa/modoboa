@@ -34,6 +34,11 @@ def init():
     parameters.register("webmail", "SMTP_SECURED", "list_yesno", "no",
                         help=_("Use a secured connection to access SMTP server"))
 
+def destroy():
+    events.unregister("UserMenuDisplay", menu)
+    events.unregister("UserLogin", userlogin)
+    parameters.unregister_app("webmail")
+
 def infos():
     return {
         "name" : "Webmail",
@@ -139,14 +144,12 @@ def viewmail(request, folder, mail_id=None):
 def getmailcontent(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if "class" in msg.keys() and msg["class"] == "unseen":
-        #IMAPconnector(request).msg_read(*msg["imapid"].split("/"))
         IMAPconnector(request).msg_read(folder, mail_id)
         email = ImapEmail(msg, mode="html", links="1")
     try:
         pageid = request.session["page"]
     except KeyError:
         pageid = "1"
-    #folder, imapid = msg["imapid"].split("/")
     return _render(request, "common/viewmail.html", {
             "headers" : email.render_headers(folder, mail_id), 
             "folder" : folder, "imapid" : mail_id, "mailbody" : email.body, 

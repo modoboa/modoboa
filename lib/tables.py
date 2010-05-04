@@ -19,13 +19,14 @@ class Column:
             label = getattr(self, "name")
         return label
 
+
 class SelectionColumn(Column):
     def __str__(self):
         return "<input type='checkbox' name='selectall' id='selectall' />"
 
-    def render(self, value):
-        return "<input type='checkbox' name='%s' value='%s' />" \
-            % (self.name, value)
+    def render(self, value, selection):
+        return "<input type='checkbox' id='%s' name='select_%s' value='%s' %s/>" \
+            % (self.name, value, value, selection and "checked" or "")
 
 class ImgColumn(Column):
     sortable = False
@@ -56,33 +57,28 @@ class Table(object):
             nrow = {"id" : row[self.idkey], "cols" : []}
             for c in self.columns:
                 newcol = {"name" : c.name}
-                try:
-                    newcol["width"] = getattr(c, "width")
-                except AttributeError:
-                    pass
-                try:
-                    newcol["align"] = getattr(c, "align")
-                except:
-                    pass
+                for key in ["width", "align", "cssclass"]:
+                    try:
+                        newcol[key] = getattr(c, key)
+                    except AttributeError:
+                        newcol[key] = ""
                 if isinstance(c, SelectionColumn):
-                    newcol["value"] = c.render(row[self.idkey])
-                    newcol["safe"] = True
-
-                if isinstance(c, ImgColumn):
+                    selection = row.has_key(c.name) and row[c.name] or False
+                    newcol["value"] = c.render(row[self.idkey], selection)
+                    newcol["safe"] = True                  
+                elif isinstance(c, ImgColumn):
                     key = "img_%s" % c.name
                     if key in row.keys():
                         newcol["value"] = c.render(row[key])
                         newcol["safe"] = True
-
-                if row.has_key(c.name):
-                    try:
-                        cssclass = getattr(c, "cssclass")
-                    except AttributeError:
-                        cssclass = ""
+                elif row.has_key(c.name):
                     if "class" in row.keys():
-                        cssclass += (cssclass != "") and ", %s" % row["class"] or row["class"]
-                    newcol["value"] = self.parse(c.name, row[c.name])
-                    newcol["class"] = cssclass
+                        newcol["cssclass"] += newcol["cssclass"] != "" \
+                            and ", %s" % row["class"] or row["class"]
+                    try:
+                        newcol["value"] = self.parse(c.name, row[c.name])
+                    except AttributeError:
+                        newcol["value"] = row[c.name]
                 nrow["cols"] += [newcol]
             self.rows += [nrow]
 

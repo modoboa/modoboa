@@ -46,6 +46,10 @@ def init():
                         "/var/amavis/amavisd.sock",
                         help="")
 
+def destroy():
+    events.unregister("UserMenuDisplay", menu)
+    parameters.unregister_app("amavis_quarantine")
+
 def urls():
     return (r'^mailng/quarantine/', 
             include('mailng.extensions.amavis_quarantine.urls'))

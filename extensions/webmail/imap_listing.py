@@ -16,7 +16,6 @@ from mailng.lib import tables, imap_utf7, parameters
 class WMtable(tables.Table):
     tableid = "emails"
     idkey = "imapid"
-#    selection = tables.SelectionColumn("selection", width="20px", first=True)
     _1_flags = tables.ImgColumn("flags", width="4%",
                                 header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
     _2_subject = tables.Column("subject", label=_("Subject"), 

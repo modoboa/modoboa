@@ -41,6 +41,9 @@ def init():
     parameters.register("stats", "IMG_ROOTDIR", "string", "/tmp/mailng",
                         help=_("Path to directory where PNG files are stored"))
 
+def destroy():
+    events.unregister("AdminMenuDisplay", menu)
+
 def urls():
     return (r'^mailng/stats/', 
             include('mailng.extensions.stats.urls'))
