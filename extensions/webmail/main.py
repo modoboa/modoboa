@@ -151,7 +151,7 @@ def getmailcontent(request, folder, mail_id):
     except KeyError:
         pageid = "1"
     return _render(request, "common/viewmail.html", {
-            "headers" : email.render_headers(folder, mail_id), 
+            "headers" : email.render_headers(folder=folder, mail_id=mail_id), 
             "folder" : folder, "imapid" : mail_id, "mailbody" : email.body, 
             "pre" : email.pre
             })

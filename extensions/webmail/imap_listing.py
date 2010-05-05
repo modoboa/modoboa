@@ -372,6 +372,8 @@ class ImapEmail(Email):
                 pass
 
     def render_headers(self, **kwargs):
+        from django.template.loader import render_to_string
+
         attachments = []
         for part in self.attachments:
             decoded = decode_header(part.get_filename())
