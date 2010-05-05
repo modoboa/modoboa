@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
-from mailng import admin, main
+from mailng import admin, userprefs
 from mailng.admin.models import Domain, Mailbox, Alias, Extension
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from mailng.lib.authbackends import crypt_password
@@ -51,7 +51,7 @@ def domains(request):
             mb = Mailbox.objects.get(user=request.user.id)
             return mailboxes(request, dom_id=mb.domain.id)
 
-        return HttpResponseRedirect(reverse(main.views.index))
+        return HttpResponseRedirect(reverse(userprefs.views.index))
     
     domains = Domain.objects.all()
     counters = {}

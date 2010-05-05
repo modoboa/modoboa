@@ -1,5 +1,5 @@
 from django import forms
-from mailng.main.models import ARmessage
+from models import ARmessage
 from mailng.lib.authbackends import check_password
 from django.utils.translation import ugettext as _
 

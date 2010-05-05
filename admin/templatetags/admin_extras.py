@@ -41,7 +41,7 @@ def domain_menu(domain_id, selection, perms):
             ]
     entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_bar", 
                                       perms=perms, domain=domain_id)
-    return render_to_string('main/menu.html', 
+    return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries,
                              "perms" : perms})
 
@@ -66,7 +66,7 @@ def settings_menu(selection, perms):
          "url" : reverse(admin.views.viewextensions),
          "label" : _("Extensions")},
         ]
-    return render_to_string('main/menu.html', 
+    return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries,
                              "perms" : perms})
 
@@ -86,7 +86,7 @@ def domains_menu(selection, perms):
         ]
     entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box",
                                       perms=perms)
-    return render_to_string('main/menu.html', 
+    return render_to_string('common/menu.html', 
                             {"entries" : entries, "selection" : selection,
                              "perms" : perms})
 
@@ -94,8 +94,8 @@ def domains_menu(selection, perms):
 def loadadminextmenu(perms):
     menu = events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box", 
                                   perms=perms)
-    return render_to_string('main/menulist.html', 
-                            {"menu" : menu, "perms" : perms})
+    return render_to_string('common/menulist.html', 
+                            {"entries" : menu, "perms" : perms})
 
 @register.simple_tag
 def param(app, definition):

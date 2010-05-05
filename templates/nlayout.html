@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load main_extras %}
+{% load uprefs_extras %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -24,12 +24,9 @@
     <div id="topmenubar" class="uibar menubar">
       <div class="left" style="width: 50%">
         <ul>
-          <li>
-            {% url main.views.index as index_url %}
-            <a href="{{ index_url }}">
-              <img src="/static/pics/user.png" border="0" />{% trans "Preferences" %}</a>
-          </li>
           {% loadextmenu perms %}
+          {% uprefs_menu perms %}
+
           {% if user.is_superuser or perms.admin.view_domains %}
           <li class="dropdown topdropdown">
             <img src="/static/pics/admin.png" border="0" />

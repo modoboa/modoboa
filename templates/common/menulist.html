@@ -1,6 +1,5 @@
 {% load i18n %}
-<ul>
-  {% for entry in entries %}
+{% for entry in entries %}
     {% if entry.menu %}
   <li class="dropdown {{ entry.class }}">
     <img src="{{ entry.img }}" border="0" />
@@ -28,6 +27,5 @@
     {{ entry.label }}
     </a>
   </li>
-    {% endif %}
-  {% endfor %}
-</ul>
+  {% endif %}
+{% endfor %}

@@ -8,7 +8,6 @@ from django.contrib.auth.decorators \
     import login_required
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
-from mailng import main
 from mailng.lib import _render, _ctx_ok, _ctx_ko
 from mailng.lib.authbackends import crypt_password
 from forms import ARmessageForm, ChangePasswordForm
@@ -22,7 +21,7 @@ def index(request):
         arm = ARmessage.objects.filter(mbox=mb.id, enabled=True)
     except ARmessage.DoesNotExist:
         arm = None
-    return _render(request, "main/index.html", {"arm" : arm})
+    return _render(request, "userprefs/index.html", {"arm" : arm})
 
 @login_required
 def autoreply(request):
@@ -46,7 +45,7 @@ def autoreply(request):
                 )
             
     form = ARmessageForm(instance=arm)
-    return _render(request, "main/autoreply.html", {
+    return _render(request, "userprefs/autoreply.html", {
             "form" : form
             })
 
@@ -62,19 +61,19 @@ def changepassword(request):
             ctx = _ctx_ok("")
             return HttpResponse(simplejson.dumps(ctx), 
                                 mimetype="application/json")
-        ctx = _ctx_ko("main/chpassword.html", {
+        ctx = _ctx_ko("userprefs/chpassword.html", {
                 "form" : form, "error" : error
                 })
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = ChangePasswordForm(mb)
-    return render_to_response('main/chpassword.html', {
+    return render_to_response('userprefs/chpassword.html', {
             "form" : form
             })
 
 @login_required
 def confirm(request):
-    return render_to_response('main/confirm.html', {
+    return render_to_response('userprefs/confirm.html', {
             "msg" : request.GET["question"]
             })
 

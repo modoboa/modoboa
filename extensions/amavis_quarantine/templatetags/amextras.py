@@ -48,7 +48,7 @@ def viewm_menu(selection, backurl, mail_id, perms):
          "menu" : options_menu}
         ]
 
-    return render_to_string('main/menu.html', 
+    return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries, 
                              "perms" : perms})
 
@@ -82,7 +82,7 @@ def quar_menu(selection, perms):
          }
         ]
 
-    menu = render_to_string('main/menu.html', 
+    menu = render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries, 
                              "perms" : perms})
     searchbar = render_to_string('common/email_searchbar.html', {})

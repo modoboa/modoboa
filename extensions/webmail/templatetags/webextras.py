@@ -32,7 +32,7 @@ def viewm_menu(selection, backurl, folder, mail_id, perms):
          "label" : _("Delete")},
         ]
     
-    return render_to_string('main/menu.html', 
+    return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries, 
                              "perms" : perms})
 
@@ -48,7 +48,7 @@ def compose_menu(selection, backurl, perms):
          "img" : "/static/pics/send-receive.png",
          "label" : _("Send")},
         ]
-    return render_to_string('main/menu.html', 
+    return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries, 
                              "perms" : perms})
 
@@ -90,7 +90,7 @@ def listing_menu(selection, folder, perms):
                 ]
          }
         ]
-    menu = render_to_string("main/menu.html",
+    menu = render_to_string("common/menu.html",
                             {"selection" : selection, "entries" : entries,
                              "perms" : perms})
     searchbar = render_to_string("common/email_searchbar.html", {})

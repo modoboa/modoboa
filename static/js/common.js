@@ -176,33 +176,28 @@ function HashWrapper(deflocation) {
 
 parse_menubar = function(id) {
     if ($(id)) {
-        //var first = true;
-
 	$(id).getElements('li.dropdown').each(function(elem){
 	    var list = elem.getElement('ul.links');
 	    var myFx = new Fx.Slide(list, {
                 duration: 200
-            }).hide();
-
-            myFx.addEvent("start", function() {
-                this.wrapper.setStyle("clear", "both");
             });
+            
+            myFx.wrapper.setStyles({
+                /*"clear" : "both",*/
+                "position" : "absolute"
+            });
+            myFx.hide();
 
 	    elem.addEvents({
-		'mouseenter' : function(){
+		'mouseenter' : function(evt) {
 		    myFx.cancel();
 		    myFx.slideIn();
 		},
-		'mouseleave' : function(){
+		'mouseleave' : function() {
 		    myFx.cancel();
 		    myFx.slideOut();
 		}
 	    });
-            /*if (!first) {
-                elem.setStyle("margin-left", "10em");
-            } else {
-                first = false;
-            }*/
 	});
         SqueezeBox.assign($$('a.boxed'), {
             parse: 'rel',        

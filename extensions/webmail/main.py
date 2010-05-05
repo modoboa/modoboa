@@ -54,7 +54,8 @@ def menu(**kwargs):
     if kwargs["target"] != "user_menu_box":
         return []
     return [
-        {"name" : _("Webmail"),
+        {"name" : "webmail",
+         "label" : _("Webmail"),
          "url" : reverse(index),
          "img" : "/static/pics/webmail.png"}
         ]
