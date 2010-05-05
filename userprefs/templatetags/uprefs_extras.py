@@ -24,8 +24,8 @@ def uprefs_menu(perms):
                 ]
          }
         ]
-    entries[0]["menu"] += [events.raiseQueryEvent("UserMenuDisplay", 
-                                              target="user_menu_bar")]
+    entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", 
+                                                 target="user_menu_bar")
 
     return render_to_string('common/menulist.html', 
                             {"entries" : entries, "perms" : perms})

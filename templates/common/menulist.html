@@ -8,7 +8,10 @@
         {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
       {% for sentry in entry.menu %}
       <li>
-        <a href="{{ sentry.url }}" name="{{ sentry.name }}">
+        <a href="{{ sentry.url }}" name="{{ sentry.name }}"
+           {% if sentry.class %}class={{ sentry.class }}{% endif %}
+           {% if sentry.rel %}rel={{ sentry.rel }}{% endif %}
+           {% if sentry.confirm %} onclick="return confirm('{{ sentry.confirm }}')"{% endif %}>
           <img src="{{ sentry.img }}" border="0" alt="" />
           {{ sentry.label }}
         </a>

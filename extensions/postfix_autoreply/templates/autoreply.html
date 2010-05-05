@@ -1,14 +1,10 @@
-{% extends "main/header.html" %}
+{% extends "userprefs/header.html" %}
 {% load i18n %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/datepicker/vista.css" />
 <script src="/static/js/datepicker.js" type="text/javascript"></script>
 <script src="/static/js/main.js" type="text/javascript"></script>
-{% endblock %}
-{% block menu %}
-{% load main_extras %}
-{% menu "autoreply" perms %}
 {% endblock %}
 {% block subcontent %}
 <form action="" method="POST" id="armform" name="armform" class="simple">

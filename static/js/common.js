@@ -1,10 +1,6 @@
 window.addEvent('domready', function(){
     parse_menubar('topmenubar');
-    SqueezeBox.assign($$('a.boxed'), {
-        parse: 'rel',        
-    });
-
-    
+       
     infobox = new InfoBox({
         parent : $("menubar"),
         message : "Loading"
@@ -248,7 +244,7 @@ confirmation = function(question, action, callback) {
             }
         }
     });
-    SqueezeBox.open("/mailng/main/confirm/?question=" + question);
+    SqueezeBox.open("/mailng/userprefs/confirm/?question=" + question);
 }
 
 setDivHeight = function(id, extrah, modulo) {

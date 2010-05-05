@@ -57,7 +57,8 @@ def urls():
 def menu(**kwargs):
     if kwargs["target"] == "user_menu_box":
         return [
-            {"name" : _("Quarantine"),
+            {"name" : "quarantine",
+             "label" : _("Quarantine"),
              "url" : reverse(index),
              "img" : "/static/pics/quarantine.png"}
             ]
