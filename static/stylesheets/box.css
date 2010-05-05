@@ -26,9 +26,19 @@ input {
     padding: 2px;
 }
 
+input[type=text] {
+    width: 130px
+}
+
 input:hover {
     color: inherit;
     background-color: #ffffcc;
+}
+
+select {
+    width: 135px;
+    background-color: #eee;
+    border: 1px solid #cccccc;
 }
 
 td.odd {

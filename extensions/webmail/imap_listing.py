@@ -349,8 +349,8 @@ class ImapListing(EmailListing):
         self.mbc.criterions = ["(%s)" % criterions]
 
 class ImapEmail(Email):
-    def __init__(self, msg, addrfull=False, **kwargs):
-        Email.__init__(self, msg, **kwargs)
+    def __init__(self, msg, addrfull=False, *args, **kwargs):
+        Email.__init__(self, msg, *args, **kwargs)
 
         fields = ["Subject", "From", "To", "Reply-To", "Cc", "Date"]
         for f in fields:
@@ -371,3 +371,16 @@ class ImapEmail(Email):
             except:
                 pass
 
+    def render_headers(self, **kwargs):
+        attachments = []
+        for part in self.attachments:
+            decoded = decode_header(part.get_filename())
+            if decoded[0][1] is None:
+                attachments += [decoded[0][0]]
+            else:
+                attachments += [unicode(decoded[0][0], decoded[0][1])]
+        return render_to_string("webmail/headers.html", {
+                "headers" : self.headers,
+                "folder" : kwargs["folder"], "mail_id" : kwargs["mail_id"],
+                "attachments" : attachments != [] and attachments or None
+                })

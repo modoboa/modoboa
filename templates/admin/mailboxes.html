@@ -32,7 +32,7 @@
       </a>
       {% url admin.views.newalias domain.id mb.id as alias_url %}
       <a href="{{ alias_url }}" class="boxed"
-         rel="{handler:'iframe',size:{x:300,y:190}}">
+         rel="{handler:'iframe',size:{x:300,y:250}}">
         <img src="/static/pics/add.png" border="0" title="{% trans 'Add new alias' %}"/>
       </a>
       {% url mbox-aliases domain.id mb.id as aliases_url %}

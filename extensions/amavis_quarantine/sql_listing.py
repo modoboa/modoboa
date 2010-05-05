@@ -3,7 +3,7 @@
 from datetime import datetime
 from django.utils.translation import ugettext as _
 from mailng.lib import tables, db
-from mailng.lib.email_listing import MBconnector, EmailListing
+from mailng.lib.email_listing import MBconnector, EmailListing, Email
 
 class Qtable(tables.Table):
     tableid = "emails"
@@ -92,3 +92,21 @@ class SQLlisting(EmailListing):
     def __init__(self, filter, **kwargs):
         self.mbc = SQLconnector(filter)
         EmailListing.__init__(self, **kwargs)
+
+class SQLemail(Email):
+    def __init__(self, msg, *args, **kwargs):
+        Email.__init__(self, msg, *args, **kwargs)
+        fields = ["X-Amavis-Alert", "Subject", "From", "To", "Date"]
+        for f in fields:
+            label = f
+            if not msg.has_key(f):
+                f = f.upper()
+                if not msg.has_key(f):
+                    self.headers += [{"name" : label, "value" : ""}]
+                    continue
+            self.headers += [{"name" : label, "value" : msg[f]}]
+            try:
+                label = re.sub("-", "_", label)
+                setattr(self, label, msg[f])
+            except:
+                pass

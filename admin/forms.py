@@ -45,6 +45,7 @@ class AliasForm(forms.ModelForm):
             del kwargs["domain"]
         super(AliasForm, self).__init__(*args, **kwargs)
         self.fields['address'].widget.attrs['size'] = 14
+        self.fields['mbox'].widget.attrs['size'] = 5
         if domain:
             self.fields['mbox'].queryset = Mailbox.objects.filter(domain=domain.id)
 

@@ -1,9 +1,8 @@
+{% extends "common/mailheaders.html" %}
 {% load i18n %}
-<table id="emailheaders">
-  {% for hdr in headers %}
-  <tr><th width="130px">{{ hdr.name }}</th><td>{{ hdr.value }}</td></tr>
-  {% endfor %}
-  {% if attachments %}
+
+{% block extraheaders %}
+{% if attachments %}
   <tr>
     <th>{% trans "Attachments" %}</th>
     <td>
@@ -13,5 +12,5 @@
       {% endfor %}
     </td>
   </tr>
-  {% endif %}
-</table>
+{% endif %}
+{% endblock %}

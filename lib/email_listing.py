@@ -187,18 +187,9 @@ class Email(object):
                 return map[m.group(1)]
         return url
 
-    def render_headers(self, folder, mail_id):
-        attachments = []
-        for part in self.attachments:
-            decoded = decode_header(part.get_filename())
-            if decoded[0][1] is None:
-                attachments += [decoded[0][0]]
-            else:
-                attachments += [unicode(decoded[0][0], decoded[0][1])]
-        return render_to_string("webmail/headers.html", {
+    def render_headers(self, **kwargs):
+        return render_to_string("common/mailheaders.html", {
                 "headers" : self.headers,
-                "folder" : folder, "mail_id" : mail_id,
-                "attachments" : attachments != [] and attachments or None
                 })
         
     def render(self, request):

@@ -115,7 +115,7 @@ def index(request, message=None):
 
 @login_required
 def getmailcontent(request, mail_id):
-    from mailng.lib.email_listing import Email
+    from sql_listing import SQLemail
 
     conn = db.getconnection("amavis_quarantine")
     status, cursor = db.execute(conn, """
@@ -129,9 +129,9 @@ WHERE quarantine.mail_id='%s'
     msg = email.message_from_string(content)
     links = request.GET.has_key("links") and request.GET["links"] or "0"
     mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
-    mail = Email(msg, mode, links)
+    mail = SQLemail(msg, mode, links)
     return _render(request, "common/viewmail.html", {
-            "headers" : "", 
+            "headers" : mail.render_headers(), 
             "mailbody" : mail.body, 
             "pre" : mail.pre
             })
