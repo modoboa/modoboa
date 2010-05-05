@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-graph plugin do display rrd stats
+Graphical statistics about emails traffic using RRDtool
 
-This module provides rrdtool support to retreive statistics
-from postfix log : sent, received, bounced, rejected
+This module provides support to retrieve statistics from postfix log :
+sent, received, bounced, rejected
 
 """
 import calendar
@@ -67,7 +67,7 @@ def menu(**kwargs):
     return []
 
 @login_required
-def domain(request,dom_id):
+def domain(request, dom_id):
     domains = []
     errors = []
     return graph_display(request,dom_id,graph_types)
