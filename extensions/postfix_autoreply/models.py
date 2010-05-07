@@ -15,7 +15,7 @@ class ARmessage(models.Model):
     subject = models.CharField(_('subject'), max_length=255)
     content = models.TextField(_('content'))
     enabled = models.BooleanField(_('enabled'))
-#    untildate = models.DateTimeField(_('until'))
+    untildate = models.DateTimeField(_('until'))
 
 class ARhistoric(models.Model):
     armessage = models.ForeignKey(ARmessage)

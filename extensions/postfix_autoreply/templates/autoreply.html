@@ -1,13 +1,33 @@
-{% extends "userprefs/header.html" %}
+{% extends "layout_simple.html" %}
 {% load i18n %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="/static/stylesheets/box.css" />
-<link rel="stylesheet" type="text/css" href="/static/stylesheets/datepicker/vista.css" />
-<script src="/static/js/datepicker.js" type="text/javascript"></script>
-<script src="/static/js/main.js" type="text/javascript"></script>
+<script src="/static/js/form.js" type="text/javascript"></script>
+<!--<link rel="stylesheet" type="text/css" 
+      href="/static/stylesheets/datepicker/vista.css" />
+<script src="/static/js/datepicker.js" type="text/javascript"></script>-->
+<link rel="stylesheet" type="text/css" 
+      href="/static/stylesheets/calendar.css" />
+<script type="text/javascript" src="/static/js/calendar.js"></script>
+<style type="text/css">
+#id_subject {
+  width: 250px;
+}
+#id_content {
+  width: 250px;
+}
+</style>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  cal = new Calendar({id_untildate: "d/m/Y"});
+});
+</script>
 {% endblock %}
-{% block subcontent %}
-<form action="" method="POST" id="armform" name="armform" class="simple">
+
+{% block content %}
+<div class="title"><h1>{% trans "Auto-reply message" %}</h1></div>
+
+<form action="{% url extensions.postfix_autoreply.main.autoreply %}" 
+      method="POST" id="armform" name="armform" class="simple">
   {% include "common/genericform.html" %}
   <div class="spacer"></div>
 

@@ -148,6 +148,9 @@ class Extension(models.Model):
         if self.has_templates:
             code, output = exec_cmd("ln -s ../extensions/%s/templates templates/%s" \
                                         % (self.name, self.name))
+        if os.path.exists("extensions/%s/scripts" % self.name):
+            code, output = exec_cmd("ln -s ../extensions/%s/scripts scripts/%s" \
+                                        % (self.name, self.name))
         module.main.init()
         self.enabled = True
         self.save()

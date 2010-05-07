@@ -35,6 +35,9 @@ window.addEvent("domready", function() {
     chpassword_submit = function(event) {
         generic_submit(this, event, "chpwdform", chpassword_submit);
     }
+    arm_submit = function(event) {
+        generic_submit(this, event, "armform", arm_submit);
+    }
 
     if ($("domform"))
         $("domform").addEvent("submit", domain_submit);
@@ -51,9 +54,12 @@ window.addEvent("domready", function() {
     if ($("chpwdform"))
         $("chpwdform").addEvent("submit", chpassword_submit);
 
+    if ($("armform"))
+        $("armform").addEvent("submit", arm_submit);
+
     $$("input[type!=submit]", "select").each(function(elt) {
-        elt.store("tip:title", gettext("Help"));
         if ($(elt.name + "_helptext")) {
+            elt.store("tip:title", gettext("Help"));
             elt.store("tip:text", $(elt.name + "_helptext").get("html"));
         }
     });

@@ -7,12 +7,14 @@ This module provides a way to integrate MailNG auto-reply
 functionality into Postfix.
 
 """
+from django.http import HttpResponse
+from django.utils import simplejson
 from django.contrib.auth.decorators \
     import login_required
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from mailng.lib import _render, events, parameters
+from mailng.lib import _render, events, parameters, _ctx_ok, _ctx_ko
 from forms import *
 from models import *
 
@@ -29,11 +31,19 @@ def init():
     events.register("CreateMailbox", onCreateMailbox)
     events.register("DeleteMailbox", onDeleteMailbox)
     events.register("ModifyMailbox", onModifyMailbox)
-
     events.register("UserMenuDisplay", menu)
 
     parameters.register("postfix_autoreply", "AUTOREPLIES_TIMEOUT", "int", 86400,
                         help=_("Timeout in seconds between two auto-replies to the same recipient"))
+
+def destroy():
+    events.unregister("CreateDomain", onCreateDomain)
+    events.unregister("DeleteDomain", onDeleteDomain)
+    events.unregister("CreateMailbox", onCreateMailbox)
+    events.unregister("DeleteMailbox", onDeleteMailbox)
+    events.unregister("ModifyMailbox", onModifyMailbox)
+    events.unregister("UserMenuDisplay", menu)
+    parameters.unregister_app("postfix_autoreply")
 
 def urls():
     return (r'^mailng/postfix_autoreply/',
@@ -46,6 +56,8 @@ def menu(**kwargs):
         {"name" : "autoreply",
          "url" : reverse(autoreply),
          "img" : "/static/pics/auto-reply.png",
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:440,y:370}}",
          "label" : _("Auto-reply message")}
         ]
 
@@ -102,13 +114,22 @@ def autoreply(request):
             form = ARmessageForm(request.POST)
         error = None
         if form.is_valid():
+            from mailng import userprefs
+
             arm = form.save(commit=False)
             arm.mbox = mb
             arm.save()
             request.user.message_set.create(
                 message=_("Auto reply message updated successfully.")
                 )
-            
+            ctx = _ctx_ok(reverse(userprefs.views.index))
+        else:
+            ctx = _ctx_ko("postfix_autoreply/autoreply.html", {
+                    "form" : form, "error" : error
+                    })            
+        return HttpResponse(simplejson.dumps(ctx), 
+                            mimetype="application/json")
+
     form = ARmessageForm(instance=arm)
     return _render(request, "postfix_autoreply/autoreply.html", {
             "form" : form

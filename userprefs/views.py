@@ -16,11 +16,13 @@ from mailng.admin.models import Mailbox
 @login_required
 def index(request):
     mb = Mailbox.objects.get(user=request.user.id)
-    try:
-        arm = ARmessage.objects.filter(mbox=mb.id, enabled=True)
-    except ARmessage.DoesNotExist:
-        arm = None
-    return _render(request, "userprefs/index.html", {"arm" : arm})
+    return _render(request, "userprefs/index.html", {})
+    # try:
+    #     arm = ARmessage.objects.filter(mbox=mb.id, enabled=True)
+    # except ARmessage.DoesNotExist:
+    #     arm = None
+    # return _render(request, "userprefs/index.html", {"arm" : arm})
+
 
 @login_required
 def changepassword(request):

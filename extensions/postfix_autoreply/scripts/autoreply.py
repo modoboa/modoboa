@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 import datetime
 from mailng.lib import parameters
 from mailng.admin.models import Mailbox
-from mailng.main.models import ARmessage, ARhistoric
+from mailng.extensions.postfix_autoreply.models import ARmessage, ARhistoric
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -21,6 +21,12 @@ if __name__ == "__main__":
         armessage = ARmessage.objects.get(mbox=mbox.id, enabled=True)
     except ARmessage.DoesNotExist:
         sys.exit(0)
+
+    if armessage.untildate < datetime.datetime.now():
+        armessage.enabled = False
+        armessage.save()
+        sys.exit(0)
+
     try:
         lastar = ARhistoric.objects.get(armessage=armessage.id, sender=sender)
         parameters.get("postfix_autoreply", "AUTOREPLIES_TIMEOUT")
