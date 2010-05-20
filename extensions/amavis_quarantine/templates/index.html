@@ -71,6 +71,16 @@ tr.table-tr-selected {
     $$("a[name=selectmsgs]").addEvent("click", function(evt) {
       evt.stop();
       var type = evt.target.get("href");
+      if (!$chk(type)) {
+        $$("tr[class*=table-tr-selected]").each(function(item) {
+          item.removeClass("table-tr-selected");
+        });
+        if ($("toggleselect").checked) {
+          $("toggleselect").checked = false;
+          tbl.selectNone();
+        }
+        return;
+      }
       $$("td[name=type]").each(function(item) {
         if (item.get("html").trim() == type) {
           item.getParent().addClass("table-tr-selected");

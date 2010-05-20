@@ -7,15 +7,10 @@ This module provides a way to integrate MailNG auto-reply
 functionality into Postfix.
 
 """
-from django.http import HttpResponse
-from django.utils import simplejson
-from django.contrib.auth.decorators \
-    import login_required
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from mailng.lib import _render, events, parameters, _ctx_ok, _ctx_ko
-from forms import *
+from mailng.lib import events, parameters
 from models import *
 
 def infos():
@@ -50,11 +45,13 @@ def urls():
             include('mailng.extensions.postfix_autoreply.urls'))
 
 def menu(**kwargs):
+    import views
+
     if kwargs["target"] != "user_menu_bar":
         return []
     return [
         {"name" : "autoreply",
-         "url" : reverse(autoreply),
+         "url" : reverse(views.autoreply),
          "img" : "/static/pics/auto-reply.png",
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:440,y:370}}",
@@ -99,38 +96,3 @@ def onModifyMailbox(**kwargs):
     alias.autoreply_address =  \
         "%s@autoreply.%s" % (mbox.full_address, mbox.domain.name)
     alias.save()
-
-@login_required
-def autoreply(request):
-    mb = Mailbox.objects.get(user=request.user.id)
-    try:
-        arm = ARmessage.objects.get(mbox=mb.id)
-    except ARmessage.DoesNotExist:
-        arm = None
-    if request.method == "POST":
-        if arm:
-            form = ARmessageForm(request.POST, instance=arm)
-        else:
-            form = ARmessageForm(request.POST)
-        error = None
-        if form.is_valid():
-            from mailng import userprefs
-
-            arm = form.save(commit=False)
-            arm.mbox = mb
-            arm.save()
-            request.user.message_set.create(
-                message=_("Auto reply message updated successfully.")
-                )
-            ctx = _ctx_ok(reverse(userprefs.views.index))
-        else:
-            ctx = _ctx_ko("postfix_autoreply/autoreply.html", {
-                    "form" : form, "error" : error
-                    })            
-        return HttpResponse(simplejson.dumps(ctx), 
-                            mimetype="application/json")
-
-    form = ARmessageForm(instance=arm)
-    return _render(request, "postfix_autoreply/autoreply.html", {
-            "form" : form
-            })

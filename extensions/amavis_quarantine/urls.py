@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('mailng.extensions.amavis_quarantine.main',
+urlpatterns = patterns('mailng.extensions.amavis_quarantine.views',
                        (r'^$', 'index'),
                        (r'^listing/$', '_listing'),
                        (r'^getmailcontent/(?P<mail_id>[\w\-\+]+)/$', 'getmailcontent'),

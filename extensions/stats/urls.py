@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('mailng.extensions.stats.main',
+urlpatterns = patterns('mailng.extensions.stats.views',
                        url(r'^$', 'adminindex', name='fullindex'),
                        url(r'^custom_period$', 'custom_period'),
                        url(r'^(?P<dom_id>\d+)/$', 'index', name='domindex'),

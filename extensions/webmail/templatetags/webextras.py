@@ -28,7 +28,7 @@ def viewm_menu(selection, backurl, folder, mail_id, perms):
          "label" : _("Forward")},
         {"name" : "delete",
          "img" : "/static/pics/remove.png",
-         "url" : reverse(webmail.main.delete, args=[folder, mail_id]),
+         "url" : reverse(webmail.views.delete, args=[folder, mail_id]),
          "label" : _("Delete")},
         ]
     
@@ -56,7 +56,7 @@ def compose_menu(selection, backurl, perms):
 def listing_menu(selection, folder, perms):
     entries = [
         {"name" : "compose",
-         "url" : reverse(webmail.main.compose),
+         "url" : reverse(webmail.views.compose),
          "img" : "/static/pics/edit.png",
          "label" : _("New message")},
         {"name" : "mark",
@@ -66,10 +66,10 @@ def listing_menu(selection, folder, perms):
          "menu" : [
                 {"name" : "mark-read",
                  "label" : _("As read"),
-                 "url" : reverse(webmail.main.mark, args=[folder]) + "?status=read"},
+                 "url" : reverse(webmail.views.mark, args=[folder]) + "?status=read"},
                 {"name" : "mark-unread",
                  "label" : _("As unread"),
-                 "url" : reverse(webmail.main.mark, args=[folder]) + "?status=unread"}
+                 "url" : reverse(webmail.views.mark, args=[folder]) + "?status=unread"}
                 ]
          },
         {"name" : "actions",
@@ -86,7 +86,7 @@ def listing_menu(selection, folder, perms):
                  "label" : _("Empty folder"),
                  "img" : "/static/pics/clear.png",
                  "url" : folder == "Trash" \
-                     and reverse(webmail.main.empty, args=[folder]) or ""}
+                     and reverse(webmail.views.empty, args=[folder]) or ""}
                 ]
          }
         ]
