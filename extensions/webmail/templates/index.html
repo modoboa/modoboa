@@ -330,7 +330,7 @@ ul.visible {
           selectedRows.each(function(item, index) {
             msgset.include(item.get("id"));
           });
-          {% url extensions.webmail.main.move as moveurl %}
+          {% url extensions.webmail.views.move as moveurl %}
           new Request.JSON({url: "{{ moveurl }}", 
                             onSuccess: get_callback("folder")}
           ).get({msgset : msgset.join(), to : dest});

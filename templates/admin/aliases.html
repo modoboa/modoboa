@@ -28,8 +28,12 @@
         <img src="/static/pics/remove.png" border="0" title="{% trans 'Delete alias' %}" />
       </a>
     </td>
-    <td>{{ alias.address }}@{{ alias.mbox.domain.name }}</td>
-    <td>{{ alias.mbox.address }}@{{ alias.mbox.domain.name }}</td>
+    <td>{{ alias.full_address }}</td>
+    <td>
+      {% for mb in alias.mboxes.all %}
+      {{ mb.full_address }}<br/>
+      {% endfor %}
+    </td>
     <td>{{ alias.enabled|yesno }}</td
   </tr>
 {% endfor %}

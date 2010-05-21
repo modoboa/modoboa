@@ -45,13 +45,13 @@ class AliasForm(forms.ModelForm):
             del kwargs["domain"]
         super(AliasForm, self).__init__(*args, **kwargs)
         self.fields['address'].widget.attrs['size'] = 14
-        self.fields['mbox'].widget.attrs['size'] = 5
+        self.fields['mboxes'].widget.attrs['size'] = 5
         if domain:
-            self.fields['mbox'].queryset = Mailbox.objects.filter(domain=domain.id)
+            self.fields['mboxes'].queryset = Mailbox.objects.filter(domain=domain.id)
 
     class Meta:
         model = Alias
-        fields = ('address', 'mbox', 'enabled')
+        fields = ('address', 'mboxes', 'enabled')
 
 class PermissionForm(forms.Form):
     domain = forms.ModelChoiceField(queryset=Domain.objects.all(), label=_("Domain"), 

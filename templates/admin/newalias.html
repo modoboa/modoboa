@@ -6,7 +6,7 @@
 {% block content %}
 <div class="title"><h1>{% trans "New alias" %}</h1></div>
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
-{% url admin.views.newalias mbox.domain_id mbox.id as box_url %}
+{% url admin.views.newalias domain as box_url %}
 <form action="{{ box_url }}" method="POST" id="aliasform" name="aliasform">
   {% include "common/genericform.html" %}
   <div class="spacer"></div>

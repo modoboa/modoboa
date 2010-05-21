@@ -38,7 +38,7 @@ class Domain(models.Model):
 class Mailbox(models.Model):
     name = models.CharField(_('name'), max_length=100, 
                             help_text=_("First name and last name of mailbox owner"))
-    address = models.CharField(_('address'), max_length=10,
+    address = models.CharField(_('address'), max_length=100,
                                help_text=_("Mailbox address (without the @domain.tld part)"))
     full_address = models.CharField(max_length=150)
     password = models.CharField(_('password'), max_length=100)
@@ -102,8 +102,8 @@ class Alias(models.Model):
     address = models.CharField(_('address'), max_length=100,
                                help_text=_("The alias address (without the domain part)"))
     full_address = models.CharField(max_length=150)
-    mbox = models.ForeignKey(Mailbox, verbose_name=_('mailbox'),
-                             help_text=_("The mailbox this alias points to"))
+    mboxes = models.ManyToManyField(Mailbox, verbose_name=_('mailboxes'),
+                                    help_text=_("The mailboxes this alias points to"))
     enabled = models.BooleanField(_('enabled'),
                                   help_text=_("Check to activate this alias"))
 

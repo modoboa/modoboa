@@ -275,12 +275,9 @@ def delmailbox(request, dom_id, mbox_id=None):
 def aliases(request, dom_id=None, mbox_id=None):
     domain = Domain.objects.get(pk=dom_id)
     if not mbox_id:
-        mboxes = Mailbox.objects.filter(domain=dom_id)
-        aliases = []
-        for mb in mboxes:
-            aliases += Alias.objects.filter(mbox=mb.id)
+        aliases = Alias.objects.filter(mboxes__domain__id=dom_id).distinct()
     else:
-        aliases = Alias.objects.filter(mbox=mbox_id)
+        aliases = Alias.objects.filter(mboxes__id=mbox_id)
     return _render(request, 'admin/aliases.html', {
             "aliases" : aliases, "domain" : domain
             })
@@ -288,30 +285,30 @@ def aliases(request, dom_id=None, mbox_id=None):
 @login_required
 @good_domain
 @permission_required("admin.add_alias")
-def newalias(request, dom_id, mbox_id):
-    mbox = Mailbox.objects.get(pk=mbox_id)
+def newalias(request, dom_id):
     if request.method == "POST":
         form = AliasForm(request.POST)
         error = None
         if form.is_valid():
-            if Alias.objects.filter(address=request.POST["address"],
-                                    mbox=mbox_id):
-                error = _("Alias with this address already exists")
+            if Alias.objects.filter(address=request.POST["address"]):
+                error = _("Alias with this name already exists")
             else:
+                domain = Domain.objects.get(pk=dom_id)
                 alias = form.save(commit=False)
-                alias.full_address = "%s@%s" % (alias.address, mbox.domain.name)
+                alias.full_address = "%s@%s" % (alias.address, domain.name)
                 alias.save()
-                ctx = _ctx_ok(reverse(admin.views.aliases, args=[mbox.domain.id]))
+                form.save_m2m()
+                ctx = _ctx_ok(reverse(admin.views.aliases, args=[dom_id]))
                 return HttpResponse(simplejson.dumps(ctx),
                                     mimetype="application/json")
         ctx = _ctx_ko("admin/newalias.html", {
-                "mbox" : mbox, "form" : form, "error" : error
+                "domain" : dom_id, "form" : form, "error" : error
                 })
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
-    form = AliasForm({"mbox" : mbox_id}, domain=mbox.domain)
+    form = AliasForm()
     return render_to_response('admin/newalias.html', {
-            "mbox" : mbox, "form" : form, "noerrors" : True
+            "domain" : dom_id, "form" : form, "noerrors" : True
             })
 
 @login_required
@@ -341,7 +338,7 @@ def editalias(request, dom_id, alias_id):
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
     form = AliasForm(instance=alias)
     return _render(request, 'admin/editalias.html', {
-            "form" : form, "alias" : alias
+            "form" : form, "alias" : alias, "domain" : dom_id
             })
 
 @login_required
