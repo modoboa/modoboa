@@ -321,14 +321,15 @@ def editalias(request, dom_id, alias_id):
         error = None
         if form.is_valid():
             if alias.address != request.POST["address"] \
-                    and Alias.objects.filter(address=request.POST["address"],
-                                             mbox=alias.mbox.id):
-                error = _("Alias with this address already exists")
+                    and Alias.objects.filter(address=request.POST["address"]):
+                error = _("Alias with this name already exists")
             else:
+                domain = Domain.objects.get(pk=dom_id)
                 alias = form.save(commit=False)
                 alias.full_address = "%s@%s" % (alias.address, 
-                                                alias.mbox.domain.name)
+                                                domain.name)
                 alias.save()
+                form.save_m2m()
                 ctx = _ctx_ok(reverse(admin.views.aliases, args=[dom_id]))
                 return HttpResponse(simplejson.dumps(ctx), 
                                     mimetype="application/json")
