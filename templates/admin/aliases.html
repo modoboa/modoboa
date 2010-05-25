@@ -1,7 +1,7 @@
 {% extends "admin/domain_header.html" %}
 {% block menu %}
 {% load admin_extras %}
-{% domain_menu domain.id "aliases" perms %}
+{% domain_menu domain.id "aliases" user %}
 {% endblock %}
 {% block domcontent %}
 {% load i18n %}

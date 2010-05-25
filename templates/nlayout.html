@@ -24,10 +24,10 @@
     <div id="topmenubar" class="uibar menubar">
       <div class="left" style="width: 50%">
         <ul>
-          {% loadextmenu perms %}
-          {% uprefs_menu perms %}
+          {% loadextmenu user %}
+          {% uprefs_menu user %}
 
-          {% if user.is_superuser or perms.admin.view_domains %}
+          {% if user.is_superuser or perms.admin.view_domain %}
           <li class="dropdown topdropdown">
             <img src="/static/pics/admin.png" border="0" />
             <label>{% trans "Admin" %}</label>
@@ -37,12 +37,14 @@
                   <img src="/static/pics/domains.png" />{% trans "Domains" %}
                 </a>
               </li>
+              {% if user.is_superuser %}
               <li>
                 <a href="{% url admin.views.settings %}">
                   <img src="/static/pics/settings.png" border="0"/>
                   {% trans "Settings" %}
                 </a>
               </li>
+              {% endif %}
             </ul>
           </li>
           {% endif %}

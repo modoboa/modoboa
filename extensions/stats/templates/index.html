@@ -22,7 +22,7 @@ window.addEvent("domready", function() {
 {% block menu %}
 {% if domain %}
 {% load admin_extras %}
-{% domain_menu domain.id "stats" perms %}
+{% domain_menu domain.id "stats" user %}
 {% endif %}
 {% endblock %}
 {% block domcontent %}

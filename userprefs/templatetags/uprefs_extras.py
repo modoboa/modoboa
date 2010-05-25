@@ -8,7 +8,7 @@ from mailng.lib import events
 register = template.Library()
 
 @register.simple_tag
-def uprefs_menu(perms):
+def uprefs_menu(user):
     entries = [
         {"name"  : "userprefs",
          "img"   : "/static/pics/user.png",
@@ -28,11 +28,11 @@ def uprefs_menu(perms):
                                                  target="user_menu_bar")
 
     return render_to_string('common/menulist.html', 
-                            {"entries" : entries, "perms" : perms})
+                            {"entries" : entries, "user" : user})
 
 @register.simple_tag
-def loadextmenu(perms):
+def loadextmenu(user):
     menu = events.raiseQueryEvent("UserMenuDisplay", target="user_menu_box", 
-                                  perms=perms)
+                                  user=user)
     return render_to_string('common/menulist.html', 
-                            {"entries" : menu, "perms" : perms})
+                            {"entries" : menu, "user" : user})

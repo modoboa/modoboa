@@ -6,9 +6,19 @@ extensions = {}
 
 def loadextensions():
     from admin.models import Extension
+    from django.template import add_to_builtins
 
     exts = Extension.objects.filter(enabled=True)
     for ext in exts:
+        tagsdir = "extensions/%s/templatetags" % ext.name
+        if os.path.isdir("extensions/%s/templatetags" % ext.name):
+            for f in os.listdir(tagsdir):
+                if f in ["__init__.py", "__init__.pyc"]:
+                    continue
+                parts = f.split('.')
+                if len(parts) == 2 and parts[1] == "py":
+                    add_to_builtins("extensions.%s.templatetags.%s" \
+                                        % (ext.name, parts[0]))
         module = __import__(ext.name, globals(), locals(), ['main'])
         module.main.init()
         globals()['extensions'][ext] = module

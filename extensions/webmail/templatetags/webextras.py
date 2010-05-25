@@ -8,7 +8,7 @@ from mailng.extensions.webmail.imap_listing import IMAPheader
 register = template.Library()
 
 @register.simple_tag
-def viewm_menu(selection, backurl, folder, mail_id, perms):   
+def viewm_menu(selection, backurl, folder, mail_id, user):   
     entries = [
         {"name" : "back",
          "url" : backurl,
@@ -34,10 +34,10 @@ def viewm_menu(selection, backurl, folder, mail_id, perms):
     
     return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries, 
-                             "perms" : perms})
+                             "user" : user})
 
 @register.simple_tag
-def compose_menu(selection, backurl, perms):
+def compose_menu(selection, backurl, user):
     entries = [
         {"name" : "back",
          "url" : backurl,
@@ -50,10 +50,10 @@ def compose_menu(selection, backurl, perms):
         ]
     return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries, 
-                             "perms" : perms})
+                             "user" : user})
 
 @register.simple_tag
-def listing_menu(selection, folder, perms):
+def listing_menu(selection, folder, user):
     entries = [
         {"name" : "compose",
          "url" : reverse(webmail.views.compose),
@@ -92,7 +92,7 @@ def listing_menu(selection, folder, perms):
         ]
     menu = render_to_string("common/menu.html",
                             {"selection" : selection, "entries" : entries,
-                             "perms" : perms})
+                             "user" : user})
     searchbar = render_to_string("common/email_searchbar.html", {})
     return menu + searchbar
 

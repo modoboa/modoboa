@@ -12,7 +12,7 @@ genders = {
 }
 
 @register.simple_tag
-def domain_menu(domain_id, selection, perms):
+def domain_menu(domain_id, selection, user):
     entries = [
         {"name" : "",
          "url" : reverse(admin.views.newmailbox, args=[domain_id]),
@@ -30,7 +30,7 @@ def domain_menu(domain_id, selection, perms):
          "label" : _("Aliases")},
         ]
 
-    if perms.user.has_perm("admin.change_domain"):
+    if user.has_perm("admin.change_domain"):
         entries += [
             {"name" : "",
              "url" : reverse(admin.views.editdomain, args=[domain_id]),
@@ -40,13 +40,13 @@ def domain_menu(domain_id, selection, perms):
              "rel" : "{handler:'iframe',size:{x:300,y:180}}"}
             ]
     entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_bar", 
-                                      perms=perms, domain=domain_id)
+                                      user=user, domain=domain_id)
     return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries,
-                             "perms" : perms})
+                             "user" : user})
 
 @register.simple_tag
-def settings_menu(selection, perms):
+def settings_menu(selection, user):
     entries = [
         {"name" : "permissions",
          "url" : reverse(admin.views.settings),
@@ -68,10 +68,10 @@ def settings_menu(selection, perms):
         ]
     return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries,
-                             "perms" : perms})
+                             "user" : user})
 
 @register.simple_tag
-def domains_menu(selection, perms):
+def domains_menu(selection, user):
     entries = [
         {"name" : "newdomain",
          "url" : reverse(admin.views.newdomain),
@@ -85,17 +85,17 @@ def domains_menu(selection, perms):
          "img" : "/static/pics/domains.png"}
         ]
     entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box",
-                                      perms=perms)
+                                      user=user)
     return render_to_string('common/menu.html', 
                             {"entries" : entries, "selection" : selection,
-                             "perms" : perms})
+                             "user" : user})
 
 @register.simple_tag
-def loadadminextmenu(perms):
+def loadadminextmenu(user):
     menu = events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box", 
-                                  perms=perms)
+                                  user=user)
     return render_to_string('common/menulist.html', 
-                            {"entries" : menu, "perms" : perms})
+                            {"entries" : menu, "user" : user})
 
 @register.simple_tag
 def param(app, definition):

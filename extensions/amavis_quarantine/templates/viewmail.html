@@ -34,8 +34,7 @@ window.addEvent("domready", function() {
 {% endblock %}
 {% block middletitle %}{% trans "Mail content" %}{% endblock %}
 {% block menu %}
-  {% load amextras %}
-  {% viewm_menu "" mail_id page_id perms %}
+  {% viewm_menu "" mail_id page_id user %}
 {% endblock %}
 {% block content %}
 <div id="table-container">

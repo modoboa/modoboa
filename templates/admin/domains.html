@@ -11,7 +11,7 @@
   </script>
 {% endblock %}
 {% block middletitle %}{% trans "Available domains" %}{% endblock %}
-{% block menu %}{% domains_menu "domains" perms %}{% endblock %}
+{% block menu %}{% domains_menu "domains" user %}{% endblock %}
 {% block content %}
 <div id="domcontent">
   {% if not domains %}

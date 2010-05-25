@@ -1,6 +1,5 @@
 {% extends "nlayout.html" %}
 {% load i18n %}
-{% load stats_extra %}
 {% load admin_extras %}
 {% block html_head %}
 <style type="text/css">
@@ -29,7 +28,7 @@ window.addEvent("domready", function() {
 <script type="text/javascript" src="/static/js/calendar.js"></script>
 {% endblock %}
 {% block middletitle %}{% trans "Global statistics" %}{% endblock %}
-{% block menu %}{% domains_menu "stats" perms %}{% endblock %}
+{% block menu %}{% domains_menu "stats" user %}{% endblock %}
 {% block content %}
 <div id="graphcontent">
   <div id="selectors">
