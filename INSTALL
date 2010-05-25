@@ -123,7 +123,7 @@ Postfix versions >= 2.2)::
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT t2.full_address FROM admin_alias AS t1, admin_mailbox AS t2 WHERE t1.full_address='%s' AND t1.mbox_id=t2.id AND t1.enabled='1'
+  query = SELECT t3.full_address FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3 WHERE t1.full_address='%s' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t1.enabled='1'
 
 Then, use the following configuration in your /etc/postfix/main.cf file
 (this is one possible configuration)::
