@@ -5,9 +5,8 @@ from django.conf import settings
 # from django.contrib import admin
 # admin.autodiscover()
 
-from mailng.extensions import loadextensions, loadmenus, isenabled
+from mailng.extensions import *
 from mailng.lib import parameters
-loadextensions()
 
 urlpatterns = patterns('',
     # Example:
@@ -25,12 +24,10 @@ urlpatterns = patterns('',
     (r'^accounts/login/$', 'mailng.auth.views.dologin'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
-     {'packages': ('mailng',),})
-)
+     {'packages': ('mailng',),}),
 
-menus = loadmenus()
-if menus != ():
-    urlpatterns += patterns('', *menus)
+    *loadextensions()
+)
 
 if settings.DEBUG:
     urlpatterns += patterns(

@@ -68,11 +68,13 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'mailng.urls'
 
+MAILNG_DIR = os.path.dirname(__file__)
+STATIC_ROOTDIR = os.path.join(MAILNG_DIR, 'static')
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+    os.path.join(os.path.dirname(__file__), 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -82,7 +84,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'mailng.lib',
     'mailng.admin',
-    'mailng.main'
+    'mailng.main',
 
     # MailNG extensions here.
     # 'mailng.extensions.postfix_autoreply'
@@ -92,7 +94,4 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'mailng.lib.authbackends.SimpleBackend'
 )
-
-# Autoreplies sending timeout (default: 86400s)
-# AUTOREPLIES_TIMEOUT = 
 

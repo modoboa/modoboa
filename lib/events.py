@@ -24,7 +24,8 @@ def register(event, callback):
         return 0
     if not event in callbacks.keys():
         callbacks[event] = []
-    callbacks[event].append(callback)
+    if not callback in callbacks[event]:
+        callbacks[event].append(callback)
     return 1
 
 def unregister(event, callback):
@@ -32,7 +33,10 @@ def unregister(event, callback):
         return False
     if not callbacks.has_key(event):
         return False
-    callbacks[event].remove(callback)
+    try:
+        callbacks[event].remove(callback)
+    except ValueError:
+        pass
 
 def raiseEvent(event, **kwargs):
     if not event in events or not event in callbacks.keys():

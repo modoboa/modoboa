@@ -46,7 +46,7 @@ def menu(**kwargs):
     return [
         {"name" : "webmail",
          "label" : _("Webmail"),
-         "url" : reverse(views.index),
+         "url" : reverse(views.index, urlconf='mailng.urls'),
          "img" : "/static/pics/webmail.png"}
         ]
 
