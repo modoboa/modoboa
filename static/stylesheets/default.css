@@ -216,6 +216,7 @@ div.right {
     float: left;
     position: relative;
     z-index: 4;
+    font-size: small;
 }
 
 .dropdown ul li {

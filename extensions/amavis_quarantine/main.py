@@ -44,7 +44,7 @@ def menu(**kwargs):
         return [
             {"name" : "quarantine",
              "label" : _("Quarantine"),
-             "url" : reverse(views.index, urlconf='mailng.extensions.amavis_quarantine.exturls'),
+             "url" : reverse(views.index),
              "img" : "/static/pics/quarantine.png"}
             ]
     return []
