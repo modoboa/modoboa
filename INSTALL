@@ -4,7 +4,7 @@ Installation
 Requirements
 ------------
 
-- Python version 2.5+
+- Python version 2.6+
 - Django version 1.0+ (http://docs.djangoproject.com/en/dev/intro/install/#intro-install)
 
 How to install
@@ -39,6 +39,22 @@ Run the initialisation script. It will insert needed data into the database :
 
 How to upgrade
 --------------
+0.7 -> 0.8 : SQL migration needed.
+
+south is needed to handle migrations. You will find instructions on
+how to install south here:
+http://south.aeracode.org/docs/installation.html.
+
+NB: Before doing this migration, I recommend that you make a copy of your
+existing database.
+
+When this is done, add 'mailng.lib' and 'south' to your
+INSTALLED_APPS. Then, run the following commands:
+
+  # python manage.py syncdb
+  # python manage.py convert_to_south
+  # python manage.py migrate --all 0001 --fake
+  # python manage.py migrate --all 0002
 
 0.6 -> 0.7 : no SQL modifications.
 0.5 -> 0.6 : no SQL modifications.

@@ -84,7 +84,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'mailng.lib',
     'mailng.admin',
-    'mailng.main',
+    'mailng.userprefs',
 
     # MailNG extensions here.
     # 'mailng.extensions.postfix_autoreply'
