@@ -117,8 +117,24 @@ class IMAPheader(object):
             res += part[0].strip(" ")
         return decode(res)
 
+class ConnectionsManager(type):
+    def __init__(cls, name, bases, dict):
+        super(ConnectionsManager, cls).__init__(name, bases, dict)
+        cls.instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if kwargs.has_key("user"):
+            key = kwargs["user"]
+            if not cls.instances.has_key(key):
+                cls.instances[key] = None
+            if cls.instances[kwargs["user"]] is None:
+                cls.instances[kwargs["user"]] = \
+                    super(ConnectionsManager, cls).__call__(*args, **kwargs)
+            return cls.instances[kwargs["user"]]
+        return None
+
 class IMAPconnector(object):
-    __metaclass__ = Singleton
+    __metaclass__ = ConnectionsManager
 
     def __init__(self, request=None, user=None, password=None):
         self.criterions = []
