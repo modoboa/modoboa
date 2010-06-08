@@ -123,15 +123,19 @@ class ConnectionsManager(type):
         cls.instances = {}
 
     def __call__(cls, *args, **kwargs):
+        key = None
         if kwargs.has_key("user"):
             key = kwargs["user"]
-            if not cls.instances.has_key(key):
-                cls.instances[key] = None
-            if cls.instances[kwargs["user"]] is None:
-                cls.instances[kwargs["user"]] = \
-                    super(ConnectionsManager, cls).__call__(*args, **kwargs)
-            return cls.instances[kwargs["user"]]
-        return None
+        elif len(args):
+            key = args[0].user.username
+        if key is None:
+            return None
+        if not cls.instances.has_key(key):
+            cls.instances[key] = None
+        if cls.instances[key] is None:
+            cls.instances[key] = \
+                super(ConnectionsManager, cls).__call__(*args, **kwargs)
+        return cls.instances[key]
 
 class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
