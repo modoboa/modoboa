@@ -214,7 +214,7 @@ class Email(object):
         else:
             body = lxml.html.tostring(body)
             body = re.sub("<(/?)body", lambda m: "<%sdiv" % m.group(1), body)
-        body = Template(decode(body)).render({})
+        body = Template(decode(body)).render(Context({}))
         return (False, body)
 
 def parse_search_parameters(request):
