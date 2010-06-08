@@ -6,11 +6,12 @@ from django.contrib.auth.decorators \
     import login_required
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from mailng.lib import _render, _ctx_ok, _ctx_ko
+from mailng.lib import _render, _ctx_ok, _ctx_ko, is_not_localadmin
 from forms import *
 from models import *
 
 @login_required
+@is_not_localadmin('boxerror')
 def autoreply(request):
     mb = Mailbox.objects.get(user=request.user.id)
     try:

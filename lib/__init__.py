@@ -5,6 +5,7 @@ import time
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
+from django.utils.translation import ugettext as _
 from mailng.lib import parameters
 
 def exec_cmd(cmd):
@@ -18,8 +19,8 @@ def _render(request, tpl, user_context):
     return render_to_response(tpl, user_context, 
                               context_instance=RequestContext(request))
 
-def _render_error(request, user_context):
-    return render_to_response("common/error.html", user_context,
+def _render_error(request, errortpl, user_context):
+    return render_to_response("common/%s.html" % errortpl, user_context,
                               context_instance=RequestContext(request))
 
 def exec_as_vuser(cmd):
@@ -53,6 +54,18 @@ def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii')):
         except UnicodeDecodeError:
             pass
     return s.decode('ascii', 'ignore')
+
+def is_not_localadmin(errortpl="error"):
+    def dec(f):
+        def wrapped_f(request, **kwargs):
+            if request.user.id == 1:
+                return _render_error(request, errortpl, {
+                        "error" : _("Invalid action, %s is a local user" \
+                                        % request.user.username)
+                        })
+            return f(request, **kwargs)
+        return wrapped_f
+    return dec
 
 class Singleton(type):
     def __init__(cls, name, bases, dict):

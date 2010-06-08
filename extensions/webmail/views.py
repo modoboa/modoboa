@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from mailng.admin.models import Mailbox
-from mailng.lib import parameters, _render, _render_error, getctx
+from mailng.lib import parameters, _render, _render_error, getctx, is_not_localadmin
 from imap_listing import *
 from forms import *
 from templatetags.webextras import *
@@ -23,6 +23,7 @@ def __get_current_url(request):
     return res
 
 @login_required
+@is_not_localadmin()
 def folder(request, name, updatenav=True):
     if not name:
         name = "INBOX"
@@ -64,6 +65,7 @@ def folder(request, name, updatenav=True):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
+@is_not_localadmin()
 def index(request):
     try:
         navp = request.session.has_key("navparams") \
@@ -82,6 +84,7 @@ def fetchmail(request, folder, mail_id, all=False):
     return None
 
 @login_required
+@is_not_localadmin()
 def viewmail(request, folder, mail_id=None):
     from templatetags.webextras import viewm_menu
 
@@ -94,6 +97,7 @@ def viewmail(request, folder, mail_id=None):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
+@is_not_localadmin()
 def getmailcontent(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if "class" in msg.keys() and msg["class"] == "unseen":
@@ -110,6 +114,7 @@ def getmailcontent(request, folder, mail_id):
             })
 
 @login_required
+@is_not_localadmin()
 def getattachment(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     for part in msg.walk():
@@ -130,6 +135,7 @@ def getattachment(request, folder, mail_id):
     raise Http404
 
 @login_required
+@is_not_localadmin()
 def move(request):
     for arg in ["msgset", "to"]:
         if not request.GET.has_key(arg):
@@ -139,12 +145,14 @@ def move(request):
     return folder(request, request.session["folder"], False)
 
 @login_required
+@is_not_localadmin()
 def delete(request, fdname, mail_id):
     mbc = IMAPconnector(request)
     mbc.move(mail_id, fdname, "Trash")
     return folder(request, fdname, False)
 
 @login_required
+@is_not_localadmin()
 def mark(request, name):
     if not request.GET.has_key("status") or not request.GET.has_key("ids"):
         return
@@ -156,6 +164,7 @@ def mark(request, name):
     return folder(request, name, False)
 
 @login_required
+@is_not_localadmin()
 def empty(request, name):
     if name == "Trash":
         mbc = IMAPconnector(request)
@@ -163,6 +172,7 @@ def empty(request, name):
     return folder(request, name, False)
 
 @login_required
+@is_not_localadmin()
 def compact(request, name):
     mbc = IMAPconnector(request)
     mbc.compact(name)
@@ -221,6 +231,7 @@ def send_mail(request, withctx=False, origmsg=None):
     return ctx, HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
+@is_not_localadmin()
 def compose(request):
     if request.method == "POST":
         return send_mail(request)
@@ -230,6 +241,7 @@ def compose(request):
     return render_compose(request, form, reverse(compose))
 
 @login_required
+@is_not_localadmin()
 def reply(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if request.method == "POST":
@@ -272,6 +284,7 @@ def reply(request, folder, mail_id):
                           textheader, body)
 
 @login_required
+@is_not_localadmin()
 def forward(request, folder, mail_id):
     if request.method == "POST":
         ctx, response = send_mail(request, True)
