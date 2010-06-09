@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     try:
         lastar = ARhistoric.objects.get(armessage=armessage.id, sender=sender)
-        parameters.get("postfix_autoreply", "AUTOREPLIES_TIMEOUT")
+        parameters.get_admin("postfix_autoreply", "AUTOREPLIES_TIMEOUT")
         delta = datetime.timedelta(seconds=timeout)
         if lastar.last_sent + delta > datetime.datetime.now():
             sys.exit(0)

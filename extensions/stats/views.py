@@ -53,7 +53,7 @@ def graph_display(request,dom_id,graph_t=graph_types):
         "page" : "Domain statistics", "graph"   : graph_nature,
         "domain": domain, "domains" : domains, "messages" : errors,
         "types" : graph_type, "tmp_path" : tmp_path,
-        "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
+        "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -75,7 +75,7 @@ def adminindex(request):
         "graphs" : graph_list,
         "periods" : ["day", "week", "month", "year","Custom"],
         "period" : period, "cal" : CH_print,
-        "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
+        "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -109,7 +109,7 @@ def custom_period(request):
             "start" : start_ref,
             "end" : end_ref,
             "messages" : ["Custom period not selected"],
-            "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
+            "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
 
     period_name = "%s_%s" %(start.replace('/',''),end.replace('/',''))
     G = Grapher()
@@ -130,7 +130,7 @@ def custom_period(request):
         "start" : start_ref,
         "end" : end_ref,
         "messages" : None,
-        "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
+        "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
 
 
 @login_required
@@ -147,4 +147,4 @@ def index(request, dom_id=None):
         "graphs" : graph_list,
         "periods" : ["day", "week", "month", "year","Custom"],
         "period" : period,
-        "img_rootdir" : parameters.get("stats", "IMG_ROOTDIR")})
+        "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})

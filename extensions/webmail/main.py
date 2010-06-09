@@ -8,20 +8,30 @@ def init():
     events.register("UserMenuDisplay", menu)
     events.register("UserLogin", userlogin)
     events.register("UserLogout", userlogout)
-    parameters.register("webmail", "IMAP_SERVER", "string", "127.0.0.1",
-                        help=_("Address of your IMAP server"))
-    parameters.register("webmail", "IMAP_SECURED", "list_yesno", "no",
-                        help=_("Use a secured connection to access IMAP server"))
-    parameters.register("webmail", "IMAP_PORT", "int", "143",
-                        help=_("Listening port of your IMAP server"))
-    parameters.register("webmail", "SMTP_SERVER", "string", "127.0.0.1",
-                        help=_("Address of your SMTP server"))
-    parameters.register("webmail", "SMTP_PORT", "int", "25",
-                        help=_("Listening port of your SMTP server"))
-    parameters.register("webmail", "SMTP_AUTHENTICATION", "list_yesno", "no",
-                        help=_("Server needs authentication"))
-    parameters.register("webmail", "SMTP_SECURED", "list_yesno", "no",
-                        help=_("Use a secured connection to access SMTP server"))
+    parameters.register_admin("webmail", "IMAP_SERVER", type="string", 
+                              deflt="127.0.0.1",
+                              help=_("Address of your IMAP server"))
+    parameters.register_admin("webmail", "IMAP_SECURED", type="list_yesno", 
+                              deflt="no",
+                              help=_("Use a secured connection to access IMAP server"))
+    parameters.register_admin("webmail", "IMAP_PORT", type="int", deflt="143",
+                              help=_("Listening port of your IMAP server"))
+    parameters.register_admin("webmail", "SMTP_SERVER", type="string", 
+                              deflt="127.0.0.1",
+                              help=_("Address of your SMTP server"))
+    parameters.register_admin("webmail", "SMTP_PORT", type="int", deflt="25",
+                              help=_("Listening port of your SMTP server"))
+    parameters.register_admin("webmail", "SMTP_AUTHENTICATION", type="list_yesno",
+                              deflt="no",
+                              help=_("Server needs authentication"))
+    parameters.register_admin("webmail", "SMTP_SECURED", type="list_yesno", 
+                              deflt="no",
+                              help=_("Use a secured connection to access SMTP server"))
+
+    parameters.register_user("webmail", "TRASH_FOLDER", type="string", deflt="Trash",
+                             help=_("Folder where deleted messages go"))
+    parameters.register_user("webmail", "SENT_FOLDER", type="string", deflt="Sent",
+                             help=_("Folder where copies of sent messages go"))
 
 def destroy():
     events.unregister("UserMenuDisplay", menu)

@@ -179,8 +179,8 @@ def newmailbox(request, dom_id=None):
                  
                     mb.password = crypt_password(request.POST["password1"])
                     
-                    mb.uid = pwd.getpwnam(parameters.get("admin", "VIRTUAL_UID")).pw_uid
-                    mb.gid = pwd.getpwnam(parameters.get("admin", "VIRTUAL_GID")).pw_gid
+                    mb.uid = pwd.getpwnam(parameters.get_admin("admin", "VIRTUAL_UID")).pw_uid
+                    mb.gid = pwd.getpwnam(parameters.get_admin("admin", "VIRTUAL_GID")).pw_gid
                     mb.domain = domain
                     mb.quota = request.POST["quota"]
                     if not mb.quota:
@@ -415,14 +415,15 @@ def viewparameters(request):
     gparams = []
     for app in apps:
         tmp = {"name" : app, "params" : []}
-        for p in sorted(parameters._params[app]):
+        for p in sorted(parameters._params[app]['A']):
+            param_def = parameters._params[app]['A'][p]
             newdef = {"name" : p, 
-                      "value" : parameters.get(app, p),
-                      "help" : parameters._params[app][p]["help"],
-                      "default" : parameters._params[app][p]["default"],
-                      "type" : parameters._params[app][p]["type"]}
-            if "values" in parameters._params[app][p].keys():
-                newdef["values"] = parameters._params[app][p]["values"]
+                      "value" : parameters.get_admin(app, p),
+                      "help" : param_def["help"],
+                      "default" : param_def["default"],
+                      "type" : param_def["type"]}
+            if "values" in param_def.keys():
+                newdef["values"] = param_def["values"]
             tmp["params"] += [newdef]
         gparams += [tmp]
 
@@ -437,6 +438,6 @@ def saveparameters(request):
         if pname == "update":
             continue
         app, name = pname.split('.')
-        parameters.save(app, name, v)
+        parameters.save_admin(app, name, v)
     request.user.message_set.create(message=_("Configuration saved."))
     return HttpResponseRedirect(reverse(admin.views.viewparameters))

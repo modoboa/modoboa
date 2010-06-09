@@ -7,13 +7,33 @@ from django.db import models
 class Migration(SchemaMigration):
     
     def forwards(self, orm):
-        # Renaming model 'ARmessage'
-        db.rename_table('main_armessage', 'postfix_autoreply_armessage')
+        # Renaming/Creating model 'ARmessage'
+        try:
+            db.rename_table('main_armessage', 'postfix_autoreply_armessage')
+        except Exception:
+            db.create_table('postfix_autoreply_armessage', (
+                    ('mbox', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.Mailbox'])),
+                    ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+                    ('subject', self.gf('django.db.models.fields.CharField')(max_length=255)),
+                    ('content', self.gf('django.db.models.fields.TextField')()),
+                    ('enabled', self.gf('django.db.models.fields.BooleanField')(default=False, blank=True))
+                    ))
+            db.send_create_signal('postfix_autoreply', ['ARmessage'])
+
         db.add_column('postfix_autoreply_armessage', 'untildate',
                       models.DateTimeField(null=True))
 
         # Renaming model 'ARhistoric'
-        db.rename_table('main_arhistoric', 'postfix_autoreply_arhistoric')
+        try:
+            db.rename_table('main_arhistoric', 'postfix_autoreply_arhistoric')
+        except Exception:
+            db.create_table('postfix_autoreply_arhistoric', (
+                    ('armessage', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['postfix_autoreply.ARmessage'])),
+                    ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+                    ('last_sent', self.gf('django.db.models.fields.DateTimeField')(auto_now=True)),
+                    ('sender', self.gf('django.db.models.fields.TextField')()),
+                    ))
+            db.send_create_signal('postfix_autoreply', ['ARhistoric'])
     
     
     def backwards(self, orm):

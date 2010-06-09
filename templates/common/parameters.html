@@ -1,0 +1,13 @@
+{% load i18n %}
+{% load admin_extras %}
+  <p><input type="submit" name="update" value="{% trans 'Save' %}" /></p>
+  <div id="accordion">
+    {% for app in gparams %}
+    <h3 class="toggler atStart">{{ app.name }}</h3>
+    <div class="element atStart">
+      {% for p in app.params %}
+        {% param app.name p %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>

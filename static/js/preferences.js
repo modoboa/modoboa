@@ -1,12 +1,5 @@
 window.addEvent('domready', function() {
-    if ($$("a[name=deletePerm]"))
-        $$("a[name=deletePerm]").addEvent('click', function(event) {
-	    if (!confirm(gettext("Remove this permission?")))
-	        event.stop();
-	});
-
     var tip = new Tips($$(".Tips"));
-
     var accordion = new Accordion('h3.atStart', 'div.atStart', {
 	opacity: true,
 	onActive: function(toggler, element){
@@ -18,4 +11,8 @@ window.addEvent('domready', function() {
 	}
     }, $('accordion'));
 
+    new DatePicker("#untildate", {
+        pickerClass: "datepicker_vista",
+        allowEmpty: true
+    });
 });

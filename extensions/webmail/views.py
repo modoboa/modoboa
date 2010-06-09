@@ -47,7 +47,7 @@ def folder(request, name, updatenav=True):
         optparams["criteria"] = request.session["criteria"]
     else:
         optparams["reset"] = True
-    lst = ImapListing(request.user.username,
+    lst = ImapListing(request.user,
                       baseurl=name, folder=name, order=order, **optparams)
 
     page = lst.paginator.getpage(request.session["page"])
@@ -67,14 +67,14 @@ def folder(request, name, updatenav=True):
 @login_required
 @is_not_localadmin()
 def index(request):
-    #try:
-    navp = request.session.has_key("navparams") \
-        and request.session["navparams"] or {}
-    lst = ImapListing(request.user.username,
-                      baseurl="INBOX", navparams=navp, folder="INBOX",
-                      empty=True)
-    #except Exception, exp:
-    #    return _render_error(request, user_context={"error" : exp})
+    try:
+        navp = request.session.has_key("navparams") \
+            and request.session["navparams"] or {}
+        lst = ImapListing(request.user,
+                          baseurl="INBOX", navparams=navp, folder="INBOX",
+                          empty=True)
+    except Exception, exp:
+        return _render_error(request, user_context={"error" : exp})
     return lst.render(request)
 
 def fetchmail(request, folder, mail_id, all=False):
@@ -211,18 +211,19 @@ def send_mail(request, withctx=False, origmsg=None):
             msg["Cc"] = request.POST["cc"]
             rcpts += msg["Cc"].split(",")
         try:
-            s = smtplib.SMTP(parameters.get("webmail", "SMTP_SERVER"))
-            if parameters.get("webmail", "SMTP_SECURED") == "yes":
+            s = smtplib.SMTP(parameters.get_admin("webmail", "SMTP_SERVER"))
+            if parameters.get_admin("webmail", "SMTP_SECURED") == "yes":
                 s.starttls()
         except (smtplib.SMTPException, ssl.SSLError), error:
             print error
             # Prévoir la remontée de cette erreur au niveau du client!!
 
-        if parameters.get("webmail", "SMTP_AUTHENTICATION") == "yes":
+        if parameters.get_admin("webmail", "SMTP_AUTHENTICATION") == "yes":
             s.login(request.user.username, request.session["password"])
         s.sendmail(msg['From'], rcpts, msg.as_string())
         s.quit()
-        IMAPconnector(user=request.user.username).push_mail("Sent", msg)
+        sentfolder = parameters.get_user(request.user, "webmail", "SENT_FOLDER")
+        IMAPconnector(user=request.user.username).push_mail(sentfolder, msg)
         ctx = getctx("ok", url=__get_current_url(request))
     else:
         ctx = getctx("ko", level=2, listing=render_to_string("webmail/compose.html", 

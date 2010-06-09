@@ -5,7 +5,7 @@ from mailng.lib import db, parameters
 
 if __name__ == "__main__":
     conn = db.getconnection("amavis_quarantine")
-    max_messages_age = parameters.get("amavis_quarantine", "MAX_MESSAGES_AGE")
+    max_messages_age = parameters.get_admin("amavis_quarantine", "MAX_MESSAGES_AGE")
 
     print "Deleting messages older than %d days..." % max_messages_age
     db.execute(conn, """

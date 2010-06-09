@@ -27,7 +27,7 @@ class SimpleBackend:
             return None
 
 def check_password(password, crypted):
-    scheme = parameters.get("admin", "PASSWORD_SCHEME")
+    scheme = parameters.get_admin("admin", "PASSWORD_SCHEME")
     if scheme == "crypt":
         return crypt.crypt(password, crypted) == crypted
     if scheme == "md5":
@@ -35,7 +35,7 @@ def check_password(password, crypted):
     return password
 
 def crypt_password(password):
-    scheme = parameters.get("admin", "PASSWORD_SCHEME")
+    scheme = parameters.get_admin("admin", "PASSWORD_SCHEME")
     if scheme == "crypt":
         salt = ''.join(Random().sample(string.letters + string.digits, 2))
         return crypt.crypt(password, salt)

@@ -276,8 +276,8 @@ class LogParser(object):
             G.make_defaults(dom, tpl=grapher.size_avg_template)
 
 if __name__ == "__main__":
-    log_file = parameters.get("stats", "LOGFILE")
-    rrd_rootdir = parameters.get("stats", "RRD_ROOTDIR")
+    log_file = parameters.get_admin("stats", "LOGFILE")
+    rrd_rootdir = parameters.get_admin("stats", "RRD_ROOTDIR")
 
     parser = OptionParser()
     parser.add_option("-l","--logFile", default=log_file,

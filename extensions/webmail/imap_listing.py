@@ -140,11 +140,9 @@ class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
 
     def __init__(self, user=None, password=None):
-        print "IMAP constructor"
-
         self.criterions = []
-        self.address = parameters.get("webmail", "IMAP_SERVER")
-        self.port = int(parameters.get("webmail", "IMAP_PORT"))
+        self.address = parameters.get_admin("webmail", "IMAP_SERVER")
+        self.port = int(parameters.get_admin("webmail", "IMAP_PORT"))
         self.invalid = False
         status, msg = self.login(user, password)
         if not status:
@@ -153,7 +151,7 @@ class IMAPconnector(object):
     def login(self, user, passwd):
         import imaplib
         try:
-            secured = parameters.get("webmail", "IMAP_SECURED")
+            secured = parameters.get_admin("webmail", "IMAP_SECURED")
             if secured == "yes":
                 self.m = imaplib.IMAP4_SSL(self.address, self.port)
             else:
@@ -321,7 +319,8 @@ class ImapListing(EmailListing):
     reset_wm_url = False
     
     def __init__(self, user, **kwargs):
-        self.mbc = IMAPconnector(user=user)
+        self.user = user
+        self.mbc = IMAPconnector(user=user.username)
         if kwargs.has_key("pattern"):
             self.parse_search_parameters(kwargs["criteria"],
                                          kwargs["pattern"])
@@ -345,8 +344,11 @@ class ImapListing(EmailListing):
         md_folders = [{"name" : "INBOX", "icon" : "overview.png"},
                       {"name" : 'Drafts'},
                       {"name" : 'Junk'},
-                      {"name" : 'Sent'},
-                      {"name" : 'Trash', "icon" : "trash.png"}]
+                      {"name" : parameters.get_user(self.user, "webmail",
+                                                    "SENT_FOLDER")},
+                      {"name" : parameters.get_user(self.user, "webmail",
+                                                    "TRASH_FOLDER"),
+                       "icon" : "trash.png"}]
         folders = self.mbc.listfolders(md_folders=md_folders)
         md_folders += self.__parse_folders(folders)
         for fd in md_folders:

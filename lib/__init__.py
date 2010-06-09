@@ -25,7 +25,7 @@ def _render_error(request, errortpl="error", user_context={}):
 
 def exec_as_vuser(cmd):
     code, output = exec_cmd("sudo -u %s %s" \
-                                % (parameters.get("admin", "VIRTUAL_UID"), cmd))
+                                % (parameters.get_admin("admin", "VIRTUAL_UID"), cmd))
     if code:
         exec_cmd("echo '%s' >> /tmp/vmail.log" % output)
         return False
@@ -57,13 +57,13 @@ def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii')):
 
 def is_not_localadmin(errortpl="error"):
     def dec(f):
-        def wrapped_f(request, **kwargs):
+        def wrapped_f(request, *args, **kwargs):
             if request.user.id == 1:
                 return _render_error(request, errortpl, {
                         "error" : _("Invalid action, %s is a local user" \
                                         % request.user.username)
                         })
-            return f(request, **kwargs)
+            return f(request, *args, **kwargs)
         return wrapped_f
     return dec
 

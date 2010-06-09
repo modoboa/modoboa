@@ -12,7 +12,7 @@ def uprefs_menu(user):
     entries = [
         {"name"  : "userprefs",
          "img"   : "/static/pics/user.png",
-         "label" : _("Preferences"),
+         "label" : _("Options"),
          "class" : "topdropdown",
          "menu"  : [
                 {"name" : "changepwd",
@@ -20,9 +20,14 @@ def uprefs_menu(user):
                  "img" : "/static/pics/edit.png",
                  "label" : _("Change password"),
                  "class" : "boxed",
-                 "rel" : "{handler:'iframe',size:{x:350,y:220}}"}
+                 "rel" : "{handler:'iframe',size:{x:350,y:220}}"},
+                {"name" : "preferences",
+                 "img" : "/static/pics/user.png",
+                 "label" : _("Preferences"),
+                 "url" : reverse(userprefs.views.preferences),
+                 }
                 ]
-         }
+         },
         ]
     entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", 
                                                  target="user_menu_bar")
