@@ -162,7 +162,6 @@ class IMAPconnector(object):
             return False, _("Connection to IMAP server failed, check your configuration")
         try:
             self.m.login(user, passwd)
-        except imap
         except (imaplib.IMAP4.error, ssl.SSLError), error:
             return False, _("Authentication failed, check your configuration")
             
