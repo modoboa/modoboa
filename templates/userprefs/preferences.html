@@ -1,9 +1,11 @@
 {% extends "nlayout.html" %}
 {% load i18n %}
+{% load uprefs_extras %}
 {% block html_head %}
 <script src="/static/js/preferences.js" type="text/javascript"></script>
 {% endblock %}
 {% block middletitle %}{% trans "Preferences" %}{% endblock %}
+{% block menu %}{% uprefs_menu user %}{% endblock %}
 {% block content %}
 <form method="POST" action="{% url userprefs.views.savepreferences %}">
   {% include "common/parameters.html" %}

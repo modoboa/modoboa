@@ -48,7 +48,7 @@ def urls():
 def menu(**kwargs):
     import views
 
-    if kwargs["target"] != "user_menu_bar":
+    if kwargs["target"] != "uprefs_menu":
         return []
     return [
         {"name" : "autoreply",

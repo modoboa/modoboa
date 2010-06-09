@@ -16,7 +16,7 @@ class SimpleBackend:
             mb = Mailbox.objects.get(full_address=username)
         except Exception:
             return None
-        if not check_password(password, mb.password):
+        if not _check_password(password, mb.password):
             return None
         return user
 
@@ -26,7 +26,7 @@ class SimpleBackend:
         except User.DoesNotExist:
             return None
 
-def check_password(password, crypted):
+def _check_password(password, crypted):
     scheme = parameters.get_admin("admin", "PASSWORD_SCHEME")
     if scheme == "crypt":
         return crypt.crypt(password, crypted) == crypted

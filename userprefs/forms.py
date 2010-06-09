@@ -1,5 +1,7 @@
 from django import forms
-from mailng.lib.authbackends import check_password
+from mailng.admin.models import Mailbox
+from mailng.lib.authbackends import _check_password
+from django.contrib.auth.models import check_password
 from django.utils.translation import ugettext as _
 
 class ChangePasswordForm(forms.Form):
@@ -10,13 +12,17 @@ class ChangePasswordForm(forms.Form):
     confirmation = forms.CharField(label=_("Confirmation"), 
                                    widget=forms.PasswordInput)
 
-    def __init__(self, mb, *args, **kwargs):
+    def __init__(self, target, *args, **kwargs):
         super(ChangePasswordForm, self).__init__(*args, **kwargs)
-        self.mbox = mb
+        self.target = target
 
     def clean_oldpassword(self):
-        if not check_password(self.cleaned_data["oldpassword"], 
-                              self.mbox.password):
+        if not isinstance(self.target, Mailbox):
+            func = check_password
+        else:
+            func = _check_password
+        if not func(self.cleaned_data["oldpassword"], 
+                    self.target.password):
             raise forms.ValidationError(_("Old password mismatchs"))
         return self.cleaned_data["oldpassword"]
 

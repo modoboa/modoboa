@@ -52,7 +52,7 @@ def urls():
 def menu(**kwargs):
     import views
 
-    if kwargs["target"] != "user_menu_box":
+    if kwargs["target"] != "top_menu":
         return []
     return [
         {"name" : "webmail",

@@ -25,7 +25,7 @@
       <div class="left" style="width: 50%">
         <ul>
           {% loadextmenu user %}
-          {% uprefs_menu user %}
+          {% options_menu user %}
 
           {% if user.is_superuser or perms.admin.view_domain %}
           <li class="dropdown topdropdown">

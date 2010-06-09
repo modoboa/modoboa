@@ -15,18 +15,23 @@ from mailng.admin.models import Mailbox
 
 @login_required
 def index(request):
-    mb = Mailbox.objects.get(user=request.user.id)
-    return _render(request, "userprefs/index.html", {})
+    return HttpResponseRedirect(reverse(preferences))
 
 @login_required
 def changepassword(request):
-    mb = Mailbox.objects.get(user=request.user.id)
+    if request.user.id == 1:
+        target = request.user
+    else:
+        target = Mailbox.objects.get(user=request.user.id)
     error = None
     if request.method == "POST":
-        form = ChangePasswordForm(mb, request.POST)
+        form = ChangePasswordForm(target, request.POST)
         if form.is_valid():
-            mb.password = crypt_password(request.POST["confirmation"])
-            mb.save()
+            if request.user.id != 1:                
+                target.password = crypt_password(request.POST["confirmation"])
+            else:
+                target.set_password(request.POST["confirmation"])
+            target.save()
             ctx = _ctx_ok("")
             return HttpResponse(simplejson.dumps(ctx), 
                                 mimetype="application/json")
@@ -35,7 +40,7 @@ def changepassword(request):
                 })
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
-    form = ChangePasswordForm(mb)
+    form = ChangePasswordForm(target)
     return render_to_response('userprefs/chpassword.html', {
             "form" : form
             })
