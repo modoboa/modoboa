@@ -54,11 +54,15 @@ def menu(**kwargs):
 def userlogin(**kwargs):
     from imap_listing import IMAPconnector
 
+    if kwargs["request"].user.id == 1:
+        return
     m = IMAPconnector(user=kwargs["request"].user.username,
                       password=kwargs["password"])
 
 def userlogout(**kwargs):
     from imap_listing import IMAPconnector
 
+    if kwargs["request"].user.id == 1:
+        return
     m = IMAPconnector(user=kwargs["request"].user.username)
     m.logout()
