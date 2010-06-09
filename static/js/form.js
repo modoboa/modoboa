@@ -1,11 +1,14 @@
 window.addEvent("domready", function() {
-    sqbsubmit = function(obj, dest, id, callback) {
+    sqbsubmit = function(obj, dest, id, callback, onerror) {
         obj.set('send', {
             onSuccess: function(responseText) {
                 var decode = JSON.decode(responseText);
                 if (decode.status == "ko") {
                     $(dest).set("html", decode.content);
                     $(id).addEvent("submit", callback);
+                    if ($defined(onerror)) {
+                        onerror();
+                    }
                 } else {
                     if (decode.url != "")
                         parent.location.href = decode.url;
@@ -16,9 +19,9 @@ window.addEvent("domready", function() {
         obj.send();
     }
 
-    generic_submit = function(obj, event, id, callback) {
+    generic_submit = function(obj, event, id, callback, onerror) {
         event.stop();
-        sqbsubmit(obj, "content", id, callback);
+        sqbsubmit(obj, "content", id, callback, onerror);
     }
     domain_submit = function(event) { 
         generic_submit(this, event, "domform", domain_submit); 
@@ -35,8 +38,14 @@ window.addEvent("domready", function() {
     chpassword_submit = function(event) {
         generic_submit(this, event, "chpwdform", chpassword_submit);
     }
+
+    arm_onerror = function() {
+        new Calendar({id_untildate: "Y-m-d"}, {
+            tweak: {x: -100, y:-100}
+        });
+    }
     arm_submit = function(event) {
-        generic_submit(this, event, "armform", arm_submit);
+        generic_submit(this, event, "armform", arm_submit, arm_onerror);
     }
 
     if ($("domform"))

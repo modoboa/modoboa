@@ -11,8 +11,4 @@ window.addEvent('domready', function() {
 	}
     }, $('accordion'));
 
-    new DatePicker("#untildate", {
-        pickerClass: "datepicker_vista",
-        allowEmpty: true
-    });
 });

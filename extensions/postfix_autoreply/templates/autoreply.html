@@ -2,9 +2,6 @@
 {% load i18n %}
 {% block html_head %}
 <script src="/static/js/form.js" type="text/javascript"></script>
-<!--<link rel="stylesheet" type="text/css" 
-      href="/static/stylesheets/datepicker/vista.css" />
-<script src="/static/js/datepicker.js" type="text/javascript"></script>-->
 <link rel="stylesheet" type="text/css" 
       href="/static/stylesheets/calendar.css" />
 <script type="text/javascript" src="/static/js/calendar.js"></script>
@@ -18,7 +15,7 @@
 </style>
 <script type="text/javascript">
 window.addEvent("domready", function() {
-  cal = new Calendar({id_untildate: "d/m/Y"});
+  var cal = new Calendar({id_untildate: "Y-m-d"}, {tweak: {x: -100, y:-100}});
 });
 </script>
 {% endblock %}

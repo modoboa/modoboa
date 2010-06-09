@@ -149,7 +149,8 @@ def move(request):
 @is_not_localadmin()
 def delete(request, fdname, mail_id):
     mbc = IMAPconnector(user=request.user.username)
-    mbc.move(mail_id, fdname, "Trash")
+    mbc.move(mail_id, fdname, parameters.get_user(request.user, "webmail",
+                                                  "TRASH_FOLDER"))
     return folder(request, fdname, False)
 
 @login_required
