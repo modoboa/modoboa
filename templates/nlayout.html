@@ -62,7 +62,7 @@
           </li>
           
           <li>
-            {% url django.contrib.auth.views.logout_then_login as logout_url %}
+            {% url mailng.auth.views.dologout as logout_url %}
             <a href="{{ logout_url }}">
               <img src="/static/pics/logout.png" border="0" />{% trans "Logout" %}</a>
           </li>

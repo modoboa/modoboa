@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     (r'^mailng/admin/', include('mailng.admin.urls')),
     (r'^mailng/userprefs/', include('mailng.userprefs.urls')),
     (r'^accounts/login/$', 'mailng.auth.views.dologin'),
-    (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
+    (r'^accounts/logout/$', 'mailng.auth.views.dologout'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('mailng',),}),
 

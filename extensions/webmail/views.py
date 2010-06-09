@@ -47,7 +47,7 @@ def folder(request, name, updatenav=True):
         optparams["criteria"] = request.session["criteria"]
     else:
         optparams["reset"] = True
-    lst = ImapListing(request.user.username, request.session["password"],
+    lst = ImapListing(request.user.username,
                       baseurl=name, folder=name, order=order, **optparams)
 
     page = lst.paginator.getpage(request.session["page"])
@@ -67,18 +67,19 @@ def folder(request, name, updatenav=True):
 @login_required
 @is_not_localadmin()
 def index(request):
-    try:
-        navp = request.session.has_key("navparams") \
-            and request.session["navparams"] or {}
-        lst = ImapListing(request.user.username, request.session["password"],
-                          baseurl="INBOX", navparams=navp, folder="INBOX",
-                          empty=True)
-    except Exception, exp:
-        return _render_error(request, {"error" : exp})
+    #try:
+    navp = request.session.has_key("navparams") \
+        and request.session["navparams"] or {}
+    lst = ImapListing(request.user.username,
+                      baseurl="INBOX", navparams=navp, folder="INBOX",
+                      empty=True)
+    #except Exception, exp:
+    #    return _render_error(request, user_context={"error" : exp})
     return lst.render(request)
 
 def fetchmail(request, folder, mail_id, all=False):
-    res = IMAPconnector(request).fetch(start=mail_id, folder=folder, all=all)
+    res = IMAPconnector(user=request.user.username).fetch(start=mail_id, 
+                                                          folder=folder, all=all)
     if len(res):
         return res[0]
     return None
@@ -101,7 +102,7 @@ def viewmail(request, folder, mail_id=None):
 def getmailcontent(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if "class" in msg.keys() and msg["class"] == "unseen":
-        IMAPconnector(request).msg_read(folder, mail_id)
+        IMAPconnector(user=request.user.username).msg_read(folder, mail_id)
         email = ImapEmail(msg, mode="html", links="1")
     try:
         pageid = request.session["page"]
@@ -140,14 +141,14 @@ def move(request):
     for arg in ["msgset", "to"]:
         if not request.GET.has_key(arg):
             return
-    mbc = IMAPconnector(request)
+    mbc = IMAPconnector(user=request.user.username)
     mbc.move(request.GET["msgset"], request.session["folder"], request.GET["to"])
     return folder(request, request.session["folder"], False)
 
 @login_required
 @is_not_localadmin()
 def delete(request, fdname, mail_id):
-    mbc = IMAPconnector(request)
+    mbc = IMAPconnector(user=request.user.username)
     mbc.move(mail_id, fdname, "Trash")
     return folder(request, fdname, False)
 
@@ -156,7 +157,7 @@ def delete(request, fdname, mail_id):
 def mark(request, name):
     if not request.GET.has_key("status") or not request.GET.has_key("ids"):
         return
-    mbc = IMAPconnector(request)
+    mbc = IMAPconnector(user=request.user.username)
     try:
         getattr(mbc, "msg_%s" % request.GET["status"])(name, request.GET["ids"])
     except AttributeError:
@@ -167,14 +168,14 @@ def mark(request, name):
 @is_not_localadmin()
 def empty(request, name):
     if name == "Trash":
-        mbc = IMAPconnector(request)
+        mbc = IMAPconnector(user=request.user.username)
         mbc.empty(name)
     return folder(request, name, False)
 
 @login_required
 @is_not_localadmin()
 def compact(request, name):
-    mbc = IMAPconnector(request)
+    mbc = IMAPconnector(user=request.user.username)
     mbc.compact(name)
     return folder(request, name, False)
 
@@ -221,7 +222,7 @@ def send_mail(request, withctx=False, origmsg=None):
             s.login(request.user.username, request.session["password"])
         s.sendmail(msg['From'], rcpts, msg.as_string())
         s.quit()
-        IMAPconnector(request).push_mail("Sent", msg)
+        IMAPconnector(user=request.user.username).push_mail("Sent", msg)
         ctx = getctx("ok", url=__get_current_url(request))
     else:
         ctx = getctx("ko", level=2, listing=render_to_string("webmail/compose.html", 
@@ -247,7 +248,7 @@ def reply(request, folder, mail_id):
     if request.method == "POST":
         ctx, r = send_mail(request, True, origmsg=msg)
         if ctx["status"] == "ok":
-            IMAPconnector(request).msg_answered(folder, mail_id)
+            IMAPconnector(user=request.user.usernam).msg_answered(folder, mail_id)
         return r
     email = ImapEmail(msg, True)
     lines = email.body.split('\n')
@@ -289,7 +290,7 @@ def forward(request, folder, mail_id):
     if request.method == "POST":
         ctx, response = send_mail(request, True)
         if ctx["status"] == "ok":
-            IMAPconnector(request).msgforwarded(folder, mail_id)
+            IMAPconnector(user=request.user.username).msgforwarded(folder, mail_id)
         return response
 
     msg = fetchmail(request, folder, mail_id, True)

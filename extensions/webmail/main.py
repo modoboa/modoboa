@@ -7,6 +7,7 @@ from mailng.lib import events, parameters
 def init():
     events.register("UserMenuDisplay", menu)
     events.register("UserLogin", userlogin)
+    events.register("UserLogout", userlogout)
     parameters.register("webmail", "IMAP_SERVER", "string", "127.0.0.1",
                         help=_("Address of your IMAP server"))
     parameters.register("webmail", "IMAP_SECURED", "list_yesno", "no",
@@ -51,4 +52,13 @@ def menu(**kwargs):
         ]
 
 def userlogin(**kwargs):
-    kwargs["request"].session["password"] = kwargs["password"]
+    from imap_listing import IMAPconnector
+
+    m = IMAPconnector(user=kwargs["request"].user.username,
+                      password=kwargs["password"])
+
+def userlogout(**kwargs):
+    from imap_listing import IMAPconnector
+
+    m = IMAPconnector(user=kwargs["request"].user.username)
+    m.logout()

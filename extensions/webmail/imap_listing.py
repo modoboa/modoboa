@@ -126,13 +126,12 @@ class ConnectionsManager(type):
         key = None
         if kwargs.has_key("user"):
             key = kwargs["user"]
-        elif len(args):
-            key = args[0].user.username
-        if key is None:
+        else:
             return None
         if not cls.instances.has_key(key):
             cls.instances[key] = None
-        if cls.instances[key] is None:
+        if cls.instances[key] is None or cls.instances[key].invalid:
+            # I hope python's garbage collector will detect this correclty
             cls.instances[key] = \
                 super(ConnectionsManager, cls).__call__(*args, **kwargs)
         return cls.instances[key]
@@ -140,15 +139,14 @@ class ConnectionsManager(type):
 class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
 
-    def __init__(self, request=None, user=None, password=None):
+    def __init__(self, user=None, password=None):
+        print "IMAP constructor"
+
         self.criterions = []
         self.address = parameters.get("webmail", "IMAP_SERVER")
         self.port = int(parameters.get("webmail", "IMAP_PORT"))
-        if request:
-            status, msg = self.login(request.user.username, 
-                                     request.session["password"])
-        else:
-            status, msg = self.login(user, password)
+        self.invalid = False
+        status, msg = self.login(user, password)
         if not status:
             raise Exception(msg)
 
@@ -168,6 +166,11 @@ class IMAPconnector(object):
             return False, _("Authentication failed, check your configuration")
             
         return True, None
+
+    def logout(self):
+        self.m.close()
+        self.m.logout()
+        self.invalid = True
 
     def _encodefolder(self, folder):
         if not folder:
@@ -314,8 +317,8 @@ class ImapListing(EmailListing):
     defcallback = "wm_updatelisting"
     reset_wm_url = False
     
-    def __init__(self, user, password, **kwargs):
-        self.mbc = IMAPconnector(user=user, password=password)
+    def __init__(self, user, **kwargs):
+        self.mbc = IMAPconnector(user=user)
         if kwargs.has_key("pattern"):
             self.parse_search_parameters(kwargs["criteria"],
                                          kwargs["pattern"])

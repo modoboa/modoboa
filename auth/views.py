@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
@@ -35,3 +35,9 @@ def dologin(request):
     return render_to_response("registration/login.html", {
             "form" : form, "error" : error, "next" : next
             })
+
+def dologout(request):
+    events.raiseEvent("UserLogout", request=request)
+    logout(request)
+
+    return HttpResponseRedirect(reverse(dologin))
