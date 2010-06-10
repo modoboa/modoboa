@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-09 18:51+0200\n"
+"POT-Creation-Date: 2010-06-10 18:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -301,24 +301,36 @@ msgstr ""
 msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr ""
 
-#: extensions/amavis_quarantine/main.py:48
+#: extensions/amavis_quarantine/main.py:25
+msgid "Mode used to access the PDP server"
+msgstr ""
+
+#: extensions/amavis_quarantine/main.py:31
+msgid "PDP server port (if inet mode)"
+msgstr ""
+
+#: extensions/amavis_quarantine/main.py:34
+msgid "Path to the PDP server socket (if unix mode)"
+msgstr ""
+
+#: extensions/amavis_quarantine/main.py:50
 #: extensions/amavis_quarantine/templates/index.html:137
 msgid "Quarantine"
 msgstr "Quarantäne"
 
 #: extensions/amavis_quarantine/sql_listing.py:14
-#: extensions/webmail/forms.py:5 extensions/webmail/imap_listing.py:23
+#: extensions/webmail/forms.py:5 extensions/webmail/lib.py:23
 msgid "From"
 msgstr "Von"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
-#: extensions/webmail/forms.py:8 extensions/webmail/imap_listing.py:21
-#: extensions/webmail/views.py:301 templates/common/email_searchbar.html:7
+#: extensions/webmail/forms.py:8 extensions/webmail/lib.py:21
+#: extensions/webmail/views.py:323 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Betreff"
 
-#: extensions/amavis_quarantine/sql_listing.py:16
-#: extensions/webmail/imap_listing.py:24 extensions/webmail/views.py:302
+#: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:24
+#: extensions/webmail/views.py:324
 msgid "Date"
 msgstr "Datum"
 
@@ -392,7 +404,7 @@ msgstr "Diese Nachricht freigeben?"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:42
 #: extensions/amavis_quarantine/templatetags/amextras.py:65
-#: extensions/webmail/templatetags/webextras.py:32
+#: extensions/webmail/templatetags/webextras.py:33
 msgid "Delete"
 msgstr "Löschen"
 
@@ -610,64 +622,73 @@ msgstr ""
 msgid "Cc"
 msgstr ""
 
-#: extensions/webmail/imap_listing.py:160
+#: extensions/webmail/lib.py:177
 msgid "Connection to IMAP server failed, check your configuration"
 msgstr ""
 
-#: extensions/webmail/imap_listing.py:164
+#: extensions/webmail/lib.py:181
 msgid "Authentication failed, check your configuration"
 msgstr ""
 
-#: extensions/webmail/main.py:13
+#: extensions/webmail/main.py:14
+msgid "Key used to encrypt/decrypt passwords"
+msgstr ""
+
+#: extensions/webmail/main.py:17
 msgid "Address of your IMAP server"
 msgstr ""
 
-#: extensions/webmail/main.py:16
+#: extensions/webmail/main.py:20
 msgid "Use a secured connection to access IMAP server"
 msgstr ""
 
-#: extensions/webmail/main.py:18
+#: extensions/webmail/main.py:22
 msgid "Listening port of your IMAP server"
 msgstr ""
 
-#: extensions/webmail/main.py:21
+#: extensions/webmail/main.py:25
 msgid "Address of your SMTP server"
 msgstr ""
 
-#: extensions/webmail/main.py:23
+#: extensions/webmail/main.py:27
 msgid "Listening port of your SMTP server"
 msgstr ""
 
-#: extensions/webmail/main.py:26
+#: extensions/webmail/main.py:30
 msgid "Server needs authentication"
 msgstr ""
 
-#: extensions/webmail/main.py:29
+#: extensions/webmail/main.py:33
 msgid "Use a secured connection to access SMTP server"
 msgstr ""
 
-#: extensions/webmail/main.py:32
+#: extensions/webmail/main.py:36
 #, fuzzy
 msgid "Folder where deleted messages go"
 msgstr "Abgewiesene Nachrichten"
 
-#: extensions/webmail/main.py:34
+#: extensions/webmail/main.py:38
 msgid "Folder where copies of sent messages go"
 msgstr ""
 
-#: extensions/webmail/main.py:45
+#: extensions/webmail/main.py:49
 msgid "Simple IMAP webmail"
 msgstr ""
 
-#: extensions/webmail/main.py:59 extensions/webmail/templates/index.html:382
+#: extensions/webmail/main.py:63 extensions/webmail/templates/index.html:385
 msgid "Webmail"
 msgstr ""
 
-#: extensions/webmail/views.py:285
+#: extensions/webmail/views.py:58
+#: extensions/webmail/templatetags/webextras.py:87
+msgid "Empty folder"
+msgstr ""
+
+#: extensions/webmail/views.py:304
 msgid "wrote:"
 msgstr ""
 
-#: extensions/webmail/views.py:300
+#: extensions/webmail/views.py:322
 #, fuzzy
 msgid "Original message"
 msgstr "Gesendete Nachrichten"
@@ -680,58 +701,54 @@ msgstr ""
 msgid "Attachments"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:16
-#: extensions/webmail/templatetags/webextras.py:45
+#: extensions/webmail/templatetags/webextras.py:17
+#: extensions/webmail/templatetags/webextras.py:46
 msgid "Back"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:20
+#: extensions/webmail/templatetags/webextras.py:21
 msgid "Reply"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:24
+#: extensions/webmail/templatetags/webextras.py:25
 msgid "Reply all"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:28
+#: extensions/webmail/templatetags/webextras.py:29
 msgid "Forward"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:49
+#: extensions/webmail/templatetags/webextras.py:50
 msgid "Send"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:61
+#: extensions/webmail/templatetags/webextras.py:62
 #, fuzzy
 msgid "New message"
 msgstr "Gesendete Nachrichten"
 
-#: extensions/webmail/templatetags/webextras.py:64
+#: extensions/webmail/templatetags/webextras.py:65
 #, fuzzy
 msgid "Mark messages"
 msgstr "Nachricht"
 
-#: extensions/webmail/templatetags/webextras.py:68
+#: extensions/webmail/templatetags/webextras.py:69
 msgid "As read"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:71
+#: extensions/webmail/templatetags/webextras.py:72
 msgid "As unread"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:77
+#: extensions/webmail/templatetags/webextras.py:78
 #: templates/admin/aliases.html:13 templates/admin/domains.html:22
 #: templates/admin/mailboxes.html:14 templates/admin/permissions.html:14
 #: templates/admin/permissions.html:41
 msgid "Actions"
 msgstr "Aktionen"
 
-#: extensions/webmail/templatetags/webextras.py:82
+#: extensions/webmail/templatetags/webextras.py:83
 msgid "Compact folder"
-msgstr ""
-
-#: extensions/webmail/templatetags/webextras.py:86
-msgid "Empty folder"
 msgstr ""
 
 #: lib/__init__.py:63

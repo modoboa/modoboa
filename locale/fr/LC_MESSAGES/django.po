@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-09 18:51+0200\n"
+"POT-Creation-Date: 2010-06-10 18:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,13 +24,17 @@ msgstr "Emplacement du répertoire ou sont stockés les messages"
 msgid ""
 "UID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
-msgstr "UID du propriétaire virtuel des domaines/bals/messages sur le système de fichiers"
+msgstr ""
+"UID du propriétaire virtuel des domaines/bals/messages sur le système de "
+"fichiers"
 
 #: admin/__init__.py:11
 msgid ""
 "GID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
-msgstr "GID du propriétaire virtuel des domaines/bals/messages sur le système de fichiers"
+msgstr ""
+"GID du propriétaire virtuel des domaines/bals/messages sur le système de "
+"fichiers"
 
 #: admin/__init__.py:14
 msgid "Mailboxes storage format"
@@ -40,11 +44,14 @@ msgstr "Format de stockage des boites aux lettres"
 msgid ""
 "Sub-directory (inside the mailbox) where messages are stored when using the "
 "maildir format"
-msgstr "Sous répertoire (dans la boite aux lettres) ou les messages sont stockés en cas d'utilisation du format maildir"
+msgstr ""
+"Sous répertoire (dans la boite aux lettres) ou les messages sont stockés en "
+"cas d'utilisation du format maildir"
 
 #: admin/__init__.py:19
 msgid "Scheme used to crypt mailbox passwords"
-msgstr "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
+msgstr ""
+"Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
 #: admin/forms.py:16 templates/admin/domains.html:25
 #: templates/admin/mailboxes.html:17
@@ -293,24 +300,37 @@ msgstr ""
 msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr "Age maximum (en jours) des messages en quarantaine avant suppression"
 
-#: extensions/amavis_quarantine/main.py:48
+#: extensions/amavis_quarantine/main.py:25
+#, fuzzy
+msgid "Mode used to access the PDP server"
+msgstr "Utiliser une connexion sécurisée pour accéder au serveur IMAP"
+
+#: extensions/amavis_quarantine/main.py:31
+msgid "PDP server port (if inet mode)"
+msgstr ""
+
+#: extensions/amavis_quarantine/main.py:34
+msgid "Path to the PDP server socket (if unix mode)"
+msgstr ""
+
+#: extensions/amavis_quarantine/main.py:50
 #: extensions/amavis_quarantine/templates/index.html:137
 msgid "Quarantine"
 msgstr "Quarantaine"
 
 #: extensions/amavis_quarantine/sql_listing.py:14
-#: extensions/webmail/forms.py:5 extensions/webmail/imap_listing.py:23
+#: extensions/webmail/forms.py:5 extensions/webmail/lib.py:23
 msgid "From"
 msgstr "De"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
-#: extensions/webmail/forms.py:8 extensions/webmail/imap_listing.py:21
-#: extensions/webmail/views.py:301 templates/common/email_searchbar.html:7
+#: extensions/webmail/forms.py:8 extensions/webmail/lib.py:21
+#: extensions/webmail/views.py:323 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Sujet"
 
-#: extensions/amavis_quarantine/sql_listing.py:16
-#: extensions/webmail/imap_listing.py:24 extensions/webmail/views.py:302
+#: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:24
+#: extensions/webmail/views.py:324
 msgid "Date"
 msgstr ""
 
@@ -383,7 +403,7 @@ msgstr "Relâcher ce message?"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:42
 #: extensions/amavis_quarantine/templatetags/amextras.py:65
-#: extensions/webmail/templatetags/webextras.py:32
+#: extensions/webmail/templatetags/webextras.py:33
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -422,7 +442,9 @@ msgstr "Cette date est dépassée"
 
 #: extensions/postfix_autoreply/main.py:33
 msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr "Timeout en secondes entre deux réponses automatiques pour le même destinataire"
+msgstr ""
+"Timeout en secondes entre deux réponses automatiques pour le même "
+"destinataire"
 
 #: extensions/postfix_autoreply/main.py:59
 #: extensions/postfix_autoreply/templates/autoreply.html:24
@@ -598,63 +620,74 @@ msgstr "A"
 msgid "Cc"
 msgstr ""
 
-#: extensions/webmail/imap_listing.py:160
+#: extensions/webmail/lib.py:177
 msgid "Connection to IMAP server failed, check your configuration"
 msgstr "La connexion au serveur IMAP a échoué, vérifiez votre configuration"
 
-#: extensions/webmail/imap_listing.py:164
+#: extensions/webmail/lib.py:181
 msgid "Authentication failed, check your configuration"
 msgstr "L'authentification a échoué, vérifiez votre configuration"
 
-#: extensions/webmail/main.py:13
+#: extensions/webmail/main.py:14
+#, fuzzy
+msgid "Key used to encrypt/decrypt passwords"
+msgstr ""
+"Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
+
+#: extensions/webmail/main.py:17
 msgid "Address of your IMAP server"
 msgstr "Adresse de votre serveur IMAP"
 
-#: extensions/webmail/main.py:16
+#: extensions/webmail/main.py:20
 msgid "Use a secured connection to access IMAP server"
 msgstr "Utiliser une connexion sécurisée pour accéder au serveur IMAP"
 
-#: extensions/webmail/main.py:18
+#: extensions/webmail/main.py:22
 msgid "Listening port of your IMAP server"
 msgstr "Port d'écoute de votre serveur IMAP"
 
-#: extensions/webmail/main.py:21
+#: extensions/webmail/main.py:25
 msgid "Address of your SMTP server"
 msgstr "Adresse de votre serveur SMTP"
 
-#: extensions/webmail/main.py:23
+#: extensions/webmail/main.py:27
 msgid "Listening port of your SMTP server"
 msgstr "Port d'écoute de votre serveur SMTP"
 
-#: extensions/webmail/main.py:26
+#: extensions/webmail/main.py:30
 msgid "Server needs authentication"
 msgstr "Le serveur nécessite une authentification"
 
-#: extensions/webmail/main.py:29
+#: extensions/webmail/main.py:33
 msgid "Use a secured connection to access SMTP server"
 msgstr "Utiliser une connexion sécurisée pour accéder au serveur SMTP"
 
-#: extensions/webmail/main.py:32
+#: extensions/webmail/main.py:36
 msgid "Folder where deleted messages go"
 msgstr "Dossier de destination des messages supprimés"
 
-#: extensions/webmail/main.py:34
+#: extensions/webmail/main.py:38
 msgid "Folder where copies of sent messages go"
 msgstr "Dossier de destination des copies de messages envoyés"
 
-#: extensions/webmail/main.py:45
+#: extensions/webmail/main.py:49
 msgid "Simple IMAP webmail"
 msgstr ""
 
-#: extensions/webmail/main.py:59 extensions/webmail/templates/index.html:382
+#: extensions/webmail/main.py:63 extensions/webmail/templates/index.html:385
 msgid "Webmail"
 msgstr ""
 
-#: extensions/webmail/views.py:285
+#: extensions/webmail/views.py:58
+#: extensions/webmail/templatetags/webextras.py:87
+msgid "Empty folder"
+msgstr "Vider ce dossier"
+
+#: extensions/webmail/views.py:304
 msgid "wrote:"
 msgstr "a écrit :"
 
-#: extensions/webmail/views.py:300
+#: extensions/webmail/views.py:322
 msgid "Original message"
 msgstr "Message original"
 
@@ -666,57 +699,53 @@ msgstr "Dossiers"
 msgid "Attachments"
 msgstr "Pièces jointes"
 
-#: extensions/webmail/templatetags/webextras.py:16
-#: extensions/webmail/templatetags/webextras.py:45
+#: extensions/webmail/templatetags/webextras.py:17
+#: extensions/webmail/templatetags/webextras.py:46
 msgid "Back"
 msgstr "Retour"
 
-#: extensions/webmail/templatetags/webextras.py:20
+#: extensions/webmail/templatetags/webextras.py:21
 msgid "Reply"
 msgstr "Répondre"
 
-#: extensions/webmail/templatetags/webextras.py:24
+#: extensions/webmail/templatetags/webextras.py:25
 msgid "Reply all"
 msgstr "Répondre à tous"
 
-#: extensions/webmail/templatetags/webextras.py:28
+#: extensions/webmail/templatetags/webextras.py:29
 msgid "Forward"
 msgstr "Transférer"
 
-#: extensions/webmail/templatetags/webextras.py:49
+#: extensions/webmail/templatetags/webextras.py:50
 msgid "Send"
 msgstr "Envoyer"
 
-#: extensions/webmail/templatetags/webextras.py:61
+#: extensions/webmail/templatetags/webextras.py:62
 msgid "New message"
 msgstr "Nouveau message"
 
-#: extensions/webmail/templatetags/webextras.py:64
+#: extensions/webmail/templatetags/webextras.py:65
 msgid "Mark messages"
 msgstr "Marquer les messages"
 
-#: extensions/webmail/templatetags/webextras.py:68
+#: extensions/webmail/templatetags/webextras.py:69
 msgid "As read"
 msgstr "Comme lus"
 
-#: extensions/webmail/templatetags/webextras.py:71
+#: extensions/webmail/templatetags/webextras.py:72
 msgid "As unread"
 msgstr "Comme non lus"
 
-#: extensions/webmail/templatetags/webextras.py:77
+#: extensions/webmail/templatetags/webextras.py:78
 #: templates/admin/aliases.html:13 templates/admin/domains.html:22
 #: templates/admin/mailboxes.html:14 templates/admin/permissions.html:14
 #: templates/admin/permissions.html:41
 msgid "Actions"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:82
+#: extensions/webmail/templatetags/webextras.py:83
 msgid "Compact folder"
 msgstr "Compresser ce dossier"
-
-#: extensions/webmail/templatetags/webextras.py:86
-msgid "Empty folder"
-msgstr "Vider ce dossier"
 
 #: lib/__init__.py:63
 #, python-format
