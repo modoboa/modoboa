@@ -43,8 +43,7 @@
       {% include "common/genericform.html" %}
     </div>
     {% if body %}
-    <textarea id="id_body" name="id_body">
-{% if bodyheader %}{{ bodyheader }}{% endif %}
+    <textarea id="id_body" name="id_body">{% if bodyheader %}{{ bodyheader }}{% endif %}
 {{ body }}
 </textarea>
     {% else %}

@@ -122,7 +122,7 @@ class ConnectionsManager(type):
         super(ConnectionsManager, cls).__init__(name, bases, dict)
         cls.instances = {}
 
-    def __call__(cls, *args, **kwargs):
+    def __call__(cls, **kwargs):
         key = None
         if kwargs.has_key("user"):
             key = kwargs["user"]
@@ -130,10 +130,14 @@ class ConnectionsManager(type):
             return None
         if not cls.instances.has_key(key):
             cls.instances[key] = None
-        if cls.instances[key] is None or cls.instances[key].invalid:
-            # I hope python's garbage collector will detect this correclty
+        if kwargs.has_key("password"):
+            kwargs["password"] = decrypt(kwargs["password"])
+
+        if cls.instances[key] is None:
             cls.instances[key] = \
-                super(ConnectionsManager, cls).__call__(*args, **kwargs)
+                super(ConnectionsManager, cls).__call__(**kwargs)
+        else:
+            cls.instances[key].refresh(key, kwargs["password"])
         return cls.instances[key]
 
 class IMAPconnector(object):
@@ -143,10 +147,23 @@ class IMAPconnector(object):
         self.criterions = []
         self.address = parameters.get_admin("webmail", "IMAP_SERVER")
         self.port = int(parameters.get_admin("webmail", "IMAP_PORT"))
-        self.invalid = False
         status, msg = self.login(user, password)
         if not status:
             raise Exception(msg)
+
+    def refresh(self, user, password):
+        """Check if current connection needs a refresh
+
+        Is it really secure?
+        """
+        if self.m is not None:
+            try:
+                self.m.select()
+                return
+            except imaplib.IMAP4.error, error:
+                print error          
+        print self.login(user, password)
+
 
     def login(self, user, passwd):
         import imaplib
@@ -167,11 +184,12 @@ class IMAPconnector(object):
 
     def logout(self):
         try:
-            self.m.close()
+            self.m.select()
         except imaplib.IMAP4.error:
             pass
         self.m.logout()
-        self.invalid = True
+        del self.m
+        self.m = None
 
     def _encodefolder(self, folder):
         if not folder:
@@ -318,9 +336,9 @@ class ImapListing(EmailListing):
     defcallback = "wm_updatelisting"
     reset_wm_url = False
     
-    def __init__(self, user, **kwargs):
+    def __init__(self, user, password, **kwargs):
         self.user = user
-        self.mbc = IMAPconnector(user=user.username)
+        self.mbc = IMAPconnector(user=user.username, password=password)
         if kwargs.has_key("pattern"):
             self.parse_search_parameters(kwargs["criteria"],
                                          kwargs["pattern"])
@@ -414,3 +432,25 @@ class ImapEmail(Email):
                 "folder" : kwargs["folder"], "mail_id" : kwargs["mail_id"],
                 "attachments" : attachments != [] and attachments or None
                 })
+
+def encrypt(clear):
+    from Crypto.Cipher import AES
+    import base64
+    
+    obj = AES.new(parameters.get_admin("webmail", "SECRET_KEY"),
+                  AES.MODE_ECB)
+    if len(clear) % AES.block_size:
+        clear += "\0" * (AES.block_size - len(clear) % AES.block_size)
+    ciph = obj.encrypt(clear)
+    ciph = base64.b64encode(ciph)
+    return ciph
+
+def decrypt(ciph):
+    from Crypto.Cipher import AES
+    import base64
+
+    obj = AES.new(parameters.get_admin("webmail", "SECRET_KEY"),
+                  AES.MODE_ECB)
+    ciph = base64.b64decode(ciph)
+    clear = obj.decrypt(ciph)
+    return clear.rstrip('\0')

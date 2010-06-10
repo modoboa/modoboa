@@ -3,7 +3,8 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from mailng.extensions import webmail
-from mailng.extensions.webmail.imap_listing import IMAPheader
+from mailng.extensions.webmail.lib import IMAPheader
+from mailng.lib import parameters
 
 register = template.Library()
 
@@ -85,7 +86,8 @@ def listing_menu(selection, folder, user):
                 {"name" : "fdaction",
                  "label" : _("Empty folder"),
                  "img" : "/static/pics/clear.png",
-                 "url" : folder == "Trash" \
+                 "url" : folder == parameters.get_user(user, "webmail", 
+                                                       "TRASH_FOLDER") \
                      and reverse(webmail.views.empty, args=[folder]) or ""}
                 ]
          }

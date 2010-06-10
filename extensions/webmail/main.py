@@ -8,6 +8,10 @@ def init():
     events.register("UserMenuDisplay", menu)
     events.register("UserLogin", userlogin)
     events.register("UserLogout", userlogout)
+    
+    parameters.register_admin("webmail", "SECRET_KEY", type="string",
+                              deflt="abcdefghijklmnop",
+                              help=_("Key used to encrypt/decrypt passwords"))
     parameters.register_admin("webmail", "IMAP_SERVER", type="string", 
                               deflt="127.0.0.1",
                               help=_("Address of your IMAP server"))
@@ -62,17 +66,17 @@ def menu(**kwargs):
         ]
 
 def userlogin(**kwargs):
-    from imap_listing import IMAPconnector
+    from lib import IMAPconnector, encrypt
+
+    if kwargs["request"].user.id == 1:
+        return
+    kwargs["request"].session["password"] = encrypt(kwargs["password"])
+
+def userlogout(**kwargs):
+    from lib import IMAPconnector
 
     if kwargs["request"].user.id == 1:
         return
     m = IMAPconnector(user=kwargs["request"].user.username,
-                      password=kwargs["password"])
-
-def userlogout(**kwargs):
-    from imap_listing import IMAPconnector
-
-    if kwargs["request"].user.id == 1:
-        return
-    m = IMAPconnector(user=kwargs["request"].user.username)
+                      password=kwargs["request"].session["password"])
     m.logout()

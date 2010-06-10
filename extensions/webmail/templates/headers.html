@@ -6,7 +6,7 @@
   <tr>
     <th>{% trans "Attachments" %}</th>
     <td>
-      {% url extensions.webmail.main.getattachment folder mail_id as test %}
+      {% url extensions.webmail.views.getattachment folder mail_id as test %}
       {% for attachment in attachments %}
       <a href="{{ test }}?fname={{ attachment }}">{{ attachment }}</a>
       {% endfor %}

@@ -10,10 +10,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from mailng.admin.models import Mailbox
 from mailng.lib import parameters, _render, _render_error, getctx, is_not_localadmin
-from imap_listing import *
+from mailng.lib.email_listing import parse_search_parameters
+from lib import *
 from forms import *
 from templatetags.webextras import *
-from lib.email_listing import parse_search_parameters
 
 def __get_current_url(request):
     res = "%s?page=%s" % (request.session["folder"], request.session["page"])
@@ -47,7 +47,7 @@ def folder(request, name, updatenav=True):
         optparams["criteria"] = request.session["criteria"]
     else:
         optparams["reset"] = True
-    lst = ImapListing(request.user,
+    lst = ImapListing(request.user, request.session["password"],
                       baseurl=name, folder=name, order=order, **optparams)
 
     page = lst.paginator.getpage(request.session["page"])
@@ -55,31 +55,33 @@ def folder(request, name, updatenav=True):
         content = lst.fetch(request, page.id_start, page.id_stop)
         navbar = lst.render_navbar(page)
     else:
-        content = "Empty folder"
+        content = _("Empty folder")
         navbar = ""
     folders = render_to_string("webmail/folders.html", {
             "folders" : lst.getfolders()
             })
     ctx = getctx("ok", folders=folders, listing=content, navbar=navbar,
-                 menu=listing_menu("", name, request.user.get_all_permissions()))
+                 menu=listing_menu("", name, request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 @is_not_localadmin()
 def index(request):
-    try:
-        navp = request.session.has_key("navparams") \
-            and request.session["navparams"] or {}
-        lst = ImapListing(request.user,
-                          baseurl="INBOX", navparams=navp, folder="INBOX",
-                          empty=True)
-    except Exception, exp:
-        return _render_error(request, user_context={"error" : exp})
+    #try:
+    navp = request.session.has_key("navparams") \
+        and request.session["navparams"] or {}
+    lst = ImapListing(request.user, request.session["password"],
+                      baseurl="INBOX", navparams=navp, folder="INBOX",
+                      empty=True)
+    #except Exception, exp:
+    #    return _render_error(request, user_context={"error" : exp})
     return lst.render(request)
 
 def fetchmail(request, folder, mail_id, all=False):
-    res = IMAPconnector(user=request.user.username).fetch(start=mail_id, 
-                                                          folder=folder, all=all)
+    res = IMAPconnector(user=request.user.username, 
+                        password=request.session["password"]).fetch(start=mail_id, 
+                                                                    folder=folder, 
+                                                                    all=all)
     if len(res):
         return res[0]
     return None
@@ -102,7 +104,8 @@ def viewmail(request, folder, mail_id=None):
 def getmailcontent(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if "class" in msg.keys() and msg["class"] == "unseen":
-        IMAPconnector(user=request.user.username).msg_read(folder, mail_id)
+        IMAPconnector(user=request.user.username,
+                      password=request.session["password"]).msg_read(folder, mail_id)
         email = ImapEmail(msg, mode="html", links="1")
     try:
         pageid = request.session["page"]
@@ -141,14 +144,16 @@ def move(request):
     for arg in ["msgset", "to"]:
         if not request.GET.has_key(arg):
             return
-    mbc = IMAPconnector(user=request.user.username)
+    mbc = IMAPconnector(user=request.user.username, 
+                        password=request.session["password"])
     mbc.move(request.GET["msgset"], request.session["folder"], request.GET["to"])
     return folder(request, request.session["folder"], False)
 
 @login_required
 @is_not_localadmin()
 def delete(request, fdname, mail_id):
-    mbc = IMAPconnector(user=request.user.username)
+    mbc = IMAPconnector(user=request.user.username,
+                        password=request.session["password"])
     mbc.move(mail_id, fdname, parameters.get_user(request.user, "webmail",
                                                   "TRASH_FOLDER"))
     return folder(request, fdname, False)
@@ -158,7 +163,8 @@ def delete(request, fdname, mail_id):
 def mark(request, name):
     if not request.GET.has_key("status") or not request.GET.has_key("ids"):
         return
-    mbc = IMAPconnector(user=request.user.username)
+    mbc = IMAPconnector(user=request.user.username,
+                        password=request.session["password"])
     try:
         getattr(mbc, "msg_%s" % request.GET["status"])(name, request.GET["ids"])
     except AttributeError:
@@ -168,15 +174,17 @@ def mark(request, name):
 @login_required
 @is_not_localadmin()
 def empty(request, name):
-    if name == "Trash":
-        mbc = IMAPconnector(user=request.user.username)
+    if name == parameters.get_user(request.user, "webmail", "TRASH_FOLDER"):
+        mbc = IMAPconnector(user=request.user.username,
+                            password=request.session["password"])
         mbc.empty(name)
     return folder(request, name, False)
 
 @login_required
 @is_not_localadmin()
 def compact(request, name):
-    mbc = IMAPconnector(user=request.user.username)
+    mbc = IMAPconnector(user=request.user.username,
+                        password=request.session["password"])
     mbc.compact(name)
     return folder(request, name, False)
 
@@ -190,8 +198,10 @@ def render_compose(request, form, posturl, bodyheader=None, body=None):
     ctx = getctx("ok", level=2, menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
-def send_mail(request, withctx=False, origmsg=None):
+def send_mail(request, withctx=False, origmsg=None, posturl=None):
     form = ComposeMailForm(request.POST)
+    error = None
+    ctx = None
     if form.is_valid():
         from email.mime.text import MIMEText
         from email.utils import make_msgid, formatdate
@@ -211,24 +221,30 @@ def send_mail(request, withctx=False, origmsg=None):
         if "cc" in request.POST.keys():
             msg["Cc"] = request.POST["cc"]
             rcpts += msg["Cc"].split(",")
+        error = None
         try:
             s = smtplib.SMTP(parameters.get_admin("webmail", "SMTP_SERVER"))
             if parameters.get_admin("webmail", "SMTP_SECURED") == "yes":
                 s.starttls()
-        except (smtplib.SMTPException, ssl.SSLError), error:
-            print error
-            # Prévoir la remontée de cette erreur au niveau du client!!
+        except (smtplib.SMTPException, ssl.SSLError), text:
+            error = text
+        if error is None:
+            if parameters.get_admin("webmail", "SMTP_AUTHENTICATION") == "yes":
+                s.login(request.user.username, decrypt(request.session["password"]))
+            s.sendmail(msg['From'], rcpts, msg.as_string())
+            s.quit()
+            sentfolder = parameters.get_user(request.user, "webmail", "SENT_FOLDER")
+            IMAPconnector(user=request.user.username,
+                          password=request.session["password"]).push_mail(sentfolder, msg)
+            ctx = getctx("ok", url=__get_current_url(request))
 
-        if parameters.get_admin("webmail", "SMTP_AUTHENTICATION") == "yes":
-            s.login(request.user.username, request.session["password"])
-        s.sendmail(msg['From'], rcpts, msg.as_string())
-        s.quit()
-        sentfolder = parameters.get_user(request.user, "webmail", "SENT_FOLDER")
-        IMAPconnector(user=request.user.username).push_mail(sentfolder, msg)
-        ctx = getctx("ok", url=__get_current_url(request))
-    else:
-        ctx = getctx("ko", level=2, listing=render_to_string("webmail/compose.html", 
-                                                    {"form" : form}))
+    if ctx is None:
+        listing = render_to_string("webmail/compose.html", 
+                                   {"form" : form, 
+                                    "body" : request.POST["id_body"].strip(),
+                                    "posturl" : posturl})
+        ctx = getctx("ko", level=2, error=error, listing=listing)
+
     if not withctx:
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
     return ctx, HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
@@ -237,7 +253,7 @@ def send_mail(request, withctx=False, origmsg=None):
 @is_not_localadmin()
 def compose(request):
     if request.method == "POST":
-        return send_mail(request)
+        return send_mail(request, posturl=reverse(compose))
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
@@ -248,9 +264,12 @@ def compose(request):
 def reply(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if request.method == "POST":
-        ctx, r = send_mail(request, True, origmsg=msg)
+        ctx, r = send_mail(request, True, origmsg=msg, 
+                           posturl=reverse(reply, args=[folder, mail_id]))
         if ctx["status"] == "ok":
-            IMAPconnector(user=request.user.usernam).msg_answered(folder, mail_id)
+            IMAPconnector(user=request.user.username,
+                          password=request.session["password"]).msg_answered(folder,
+                                                                             mail_id)
         return r
     email = ImapEmail(msg, True)
     lines = email.body.split('\n')
@@ -290,9 +309,12 @@ def reply(request, folder, mail_id):
 @is_not_localadmin()
 def forward(request, folder, mail_id):
     if request.method == "POST":
-        ctx, response = send_mail(request, True)
+        ctx, response = send_mail(request, True, 
+                                  posturl=reverse(forward, args=[folder, mail_id]))
         if ctx["status"] == "ok":
-            IMAPconnector(user=request.user.username).msgforwarded(folder, mail_id)
+            IMAPconnector(user=request.user.username,
+                          password=request.session["password"]).msgforwarded(folder,
+                                                                             mail_id)
         return response
 
     msg = fetchmail(request, folder, mail_id, True)

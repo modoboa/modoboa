@@ -185,6 +185,9 @@ ul.visible {
           if (resp.status == "ko") {
             wm_updatelisting(resp);
             window.fireEvent("resize");
+            if ($defined(resp.error)) {
+              infobox.error(resp.error);
+            }
             return;
           }
           current_anchor.parse_string(resp.url, true).setparams(navparams);
