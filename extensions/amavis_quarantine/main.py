@@ -22,14 +22,16 @@ def init():
     parameters.register_admin("amavis_quarantine", "AM_PDP_MODE", type="list", 
                               deflt="unix",
                               values=[("inet", "inet"), ("unix", "unix")],
-                              help="")
+                              help=_("Mode used to access the PDP server"))
     parameters.register_admin("amavis_quarantine", "AM_PDP_HOST", type="string", 
-                              deflt="localhost", help="")
+                              deflt="localhost", 
+                              help=-("PDP server address (if inet mode)"))
     parameters.register_admin("amavis_quarantine", "AM_PDP_PORT", type="int", 
-                              deflt=9998, help="")
+                              deflt=9998, 
+                              help=_("PDP server port (if inet mode)"))
     parameters.register_admin("amavis_quarantine", "AM_PDP_SOCKET", type="string", 
                               deflt="/var/amavis/amavisd.sock",
-                              help="")
+                              help=_("Path to the PDP server socket (if unix mode)"))
 
 def destroy():
     events.unregister("UserMenuDisplay", menu)

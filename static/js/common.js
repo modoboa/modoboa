@@ -32,7 +32,7 @@ check_anchor = function() {
     } else {
         query = current_anchor.serialized.substring(1);
     }
-    infobox.show("Loading...", "gray");
+    infobox.show(gettext("Loading..."), "gray");
     new Request.JSON({url: query, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
@@ -195,7 +195,7 @@ parse_menubar = function(id) {
 		}
 	    });
 	});
-        SqueezeBox.assign($$('a.boxed'), {
+        SqueezeBox.assign($(id).getElements('a[class=boxed]'), {
             parse: 'rel',        
         });
     }
@@ -310,7 +310,7 @@ searchbox_init = function() {
     
     $("searchfield").addEvent("blur", function(event) {
         if ($("searchfield").value == "") {
-            $("searchfield").set("value", "Search...");
+            $("searchfield").set("value", gettext("Search..."));
         }
     });
     $("searchbox").setStyle("float", "left");

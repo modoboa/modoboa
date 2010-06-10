@@ -716,7 +716,7 @@ msgstr "Compresser ce dossier"
 
 #: extensions/webmail/templatetags/webextras.py:86
 msgid "Empty folder"
-msgstr "Dossier vide"
+msgstr "Vider ce dossier"
 
 #: lib/__init__.py:63
 #, python-format
