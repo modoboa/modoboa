@@ -2,6 +2,17 @@
 window.addEvent('domready', function() {
     var handlers = new Array();
     
+    if ($defined($("domcontent"))) {
+        SqueezeBox.assign($("domcontent").getElements('a[class=boxed]'), {
+            parse: 'rel',        
+        });
+    }
+    if ($defined($("subcontent"))) {
+        SqueezeBox.assign($("subcontent").getElements('a[class=boxed]'), {
+            parse: 'rel',        
+        });
+    }
+    
 //    handlers['loadDom'] = function(obj, target) {
 /*	$$('a[name=loadDom]').setStyles({'color' : '#999'});*/
 /*	obj.setStyles({"color": "black"});*/

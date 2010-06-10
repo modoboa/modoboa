@@ -25,7 +25,7 @@ def init():
                               help=_("Mode used to access the PDP server"))
     parameters.register_admin("amavis_quarantine", "AM_PDP_HOST", type="string", 
                               deflt="localhost", 
-                              help=-("PDP server address (if inet mode)"))
+                              help=_("PDP server address (if inet mode)"))
     parameters.register_admin("amavis_quarantine", "AM_PDP_PORT", type="int", 
                               deflt=9998, 
                               help=_("PDP server port (if inet mode)"))

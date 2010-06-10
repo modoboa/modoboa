@@ -1,5 +1,6 @@
 window.addEvent('domready', function(){
     parse_menubar('topmenubar');
+    parse_menubar('menubar');
        
     infobox = new InfoBox({
         parent : $("menubar"),
