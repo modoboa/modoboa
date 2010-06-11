@@ -16,13 +16,13 @@ var InfoBox = new Class({
     initialize: function(options) {
         this.setOptions(options);
 
-        var boxleft = document.body.getSize().x / 2 - this.options.width / 2;
+        var boxleft = $(document.body).getSize().x / 2 - this.options.width / 2;
         this.box = new Element("div", {"id" : "infobox"});
         this.box.setStyles({
-            "font-size" : "normal",
+            "font-size" : "1em",
             "font-weight" : "bold",
             "text-align" : "left",
-            "width" : this.options. width + "px",
+            "width" : this.options.width + "px",
             "padding" : "10px",
             "position" : "absolute",
             "top" : "0px",
@@ -41,7 +41,7 @@ var InfoBox = new Class({
             "margin-left" : "10px"
         });
         this.label.inject(this.box);
-        this.box.inject(document.body);
+        this.box.inject($(document.body));
     },
 
     setMessage: function(text) {

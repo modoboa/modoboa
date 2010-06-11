@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Patrick Ben Koetter <p@state-of-mind.de>, 2010.
 #
 #, fuzzy
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-10 18:02+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2010-06-10 22:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: static/js/common.js:35
 msgid "Loading..."
-msgstr ""
+msgstr "Lade ..."
 
 #: static/js/domains.js:15
 msgid "Delete this domain?"
@@ -35,6 +35,3 @@ msgstr "Diesen Alias löschen?"
 #: static/js/settings.js:4
 msgid "Remove this permission?"
 msgstr "Diese Berechtigung entziehen?"
-
-#~ msgid "Help"
-#~ msgstr "Hilfe"

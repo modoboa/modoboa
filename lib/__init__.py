@@ -60,8 +60,8 @@ def is_not_localadmin(errortpl="error"):
         def wrapped_f(request, *args, **kwargs):
             if request.user.id == 1:
                 return _render_error(request, errortpl, {
-                        "error" : _("Invalid action, %s is a local user" \
-                                        % request.user.username)
+                        "error" : _("Invalid action, %(user)s is a local user" \
+                                        % {"user" : request.user.username})
                         })
             return f(request, *args, **kwargs)
         return wrapped_f

@@ -1,5 +1,5 @@
 {% load i18n %}
-<label>Messages {{ page.id_start }} {% trans "to" %} {{ page.id_stop }} {% trans "of" %} {{ page.items }}</label>
+<label>{% trans "Messages" %} {{ page.id_start }} {% trans "to" %} {{ page.id_stop }} {% trans "of" %} {{ page.items }}</label>
   
 {% if page.previous_page %}
 <a href="{{ page.baseurl }}?page=1">

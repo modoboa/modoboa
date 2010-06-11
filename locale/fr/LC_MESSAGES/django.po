@@ -301,17 +301,16 @@ msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr "Age maximum (en jours) des messages en quarantaine avant suppression"
 
 #: extensions/amavis_quarantine/main.py:25
-#, fuzzy
 msgid "Mode used to access the PDP server"
-msgstr "Utiliser une connexion sécurisée pour accéder au serveur IMAP"
+msgstr "Mode utilisé pour accéder au serveur PDP"
 
 #: extensions/amavis_quarantine/main.py:31
 msgid "PDP server port (if inet mode)"
-msgstr ""
+msgstr "Port du serveur PDP (en mode inet)"
 
 #: extensions/amavis_quarantine/main.py:34
 msgid "Path to the PDP server socket (if unix mode)"
-msgstr ""
+msgstr "Emplacement de la socket du serveur PDP (en mode unix)"
 
 #: extensions/amavis_quarantine/main.py:50
 #: extensions/amavis_quarantine/templates/index.html:137
@@ -629,10 +628,9 @@ msgid "Authentication failed, check your configuration"
 msgstr "L'authentification a échoué, vérifiez votre configuration"
 
 #: extensions/webmail/main.py:14
-#, fuzzy
 msgid "Key used to encrypt/decrypt passwords"
 msgstr ""
-"Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
+"Clé utilisée pour chiffrer/déchiffre les mots de passe"
 
 #: extensions/webmail/main.py:17
 msgid "Address of your IMAP server"
@@ -948,18 +946,3 @@ msgstr "Nouveau mot de passe"
 #: userprefs/forms.py:26
 msgid "Old password mismatchs"
 msgstr "L'ancien mot de passe est incorrect"
-
-#~ msgid "mailbox"
-#~ msgstr "Boite aux lettres"
-
-#~ msgid "No messages in quarantine"
-#~ msgstr "Aucun message dans la quarantaine"
-
-#~ msgid "General"
-#~ msgstr "Général"
-
-#~ msgid "Your auto-reply message is activated."
-#~ msgstr "Votre réponse automatique est active."
-
-#~ msgid "Your auto-reply message is not activated."
-#~ msgstr "Votre réponse automatique n'est pas active."
