@@ -1,61 +1,8 @@
 {% extends "nlayout.html" %}
 {% load i18n %}
 {% load admin_extras %}
-{% load stats_extra %}
-{% block html_head %}
-<style type="text/css">
-  #graphcontent {
-    margin: 25px auto 10px;
-    width:90%;
-  }
-
-  #selectors {
-    float: none;
-  }
-</style>
-
-<script type="text/javascript">
-window.addEvent("domready", function() {
-  $("period").addEvent("change", function(event) {
-    {% url extensions.stats.main.adminindex as stats_url %}
-    location.href = "{{ stats_url }}" + "?period=" + $("period").value;
-  });
-  $("domain").addEvent("change", function(event) {
-    {% url extensions.stats.main.adminindex as stats_url %}
-    location.href = "{{ stats_url }}" + "?domain=" + $("domain").value;
-  });
-});
-</script>
-<script type="text/javascript" src="/static/js/calendar.js"></script>
-{% endblock %}
 {% block middletitle %}{% trans "Global statistics" %}{% endblock %}
 {% block menu %}{% domains_menu "stats" user %}{% endblock %}
 {% block content %}
-<div id="graphcontent">
-  <div id="selectors">
-    <label for="domain">{% trans "Domain:" %}</label>
-    <select id="domain" name="domain">
-      <option value="global" {% ifequal domain "global" %}selected{% endifequal %}>{% trans "Global" %}</option>
-      {% for d in domains %}
-      <option value="{{ d.id }}" {% ifequal d.name domain %}selected{% endifequal %}>{{ d.name }}</option>
-      {% endfor %}
-    </select>
-
-    <label for="period">{% trans "Period:" %}</label>
-    <select id="period" name="period">
-      {% for p in periods %}
-      <option value="{{ p }}" {% ifequal p period %}selected{% endifequal %}>{% getLabel p %}</option>
-      {% endfor %}
-    </select>
-    {% ifequal period "Custom" %}
-    {% include "stats/calendar.html" %}
-    {% endifequal %}
-  </div>
-  {% if start or end %}
-    <h3>{% trans "Custom period : from" %} {{ start }} {% trans "to" %} {{ end }}</h3>
-  {% endif %}
-  <div style="float:None;">
-  {% include "stats/graphs.html" %}
-  </div>
-</div>
+{% include "stats/content.html" %}
 {% endblock %}

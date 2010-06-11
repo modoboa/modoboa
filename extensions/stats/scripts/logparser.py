@@ -35,39 +35,20 @@ points_per_sample = 3
 variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
              "size_sent", "size_recv"]
 
-def str2Time(y, M, d, h ="0", m ="0", s="0"):
-    """str2Time
-
-    return epoch time from Year Month Day Hour:Minute:Second time format
-    """
-    try:
-        local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
-                                  "%Y %b %d %H:%M:%S")
-    except:
-        # try with 01-12 month format
-        try:
-            local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
-                                  "%Y %m %d %H:%M:%S")
-        except:
-            print "[rrd] ERROR unrecognized %s time format" %(y, M, d, h, m, s)
-            return 0
-    return int(time.mktime(local))
-
 
 class LogParser(object):
-    def __init__(self, logfile, workdir,
-                 year=None, debug=False, verbose=False):
-        self.logfile = logfile
+    def __init__(self, options, workdir, year=None):
+        self.logfile = options.logfile
         try:
-            self.f = open(logfile)
+            self.f = open(self.logfile)
         except IOError, errno:
-            if self.debug:
+            if options.debug:
                 print "%s" % errno
             sys.exit(1)
         self.workdir = workdir
         self.year = year
-        self.debug = debug
-        self.verbose = verbose
+        self.debug = options.debug
+        self.verbose = options.verbose
         self.cfs = ['AVERAGE', 'MAX']
 
         self.last_month = None
@@ -118,7 +99,7 @@ class LogParser(object):
                 params += ['RRA:%s:0.5:%s:%s' % (cf, step, realrows)]
 
         # With those setup, we can now created the RRD
-        rrdtool.create(fname,
+        rrdtool.create(str(fname),
                        '--start', str(m),
                        '--step', str(rrdstep),
                        *params)
@@ -141,7 +122,7 @@ class LogParser(object):
                 print "[rrd] create new RRD file %s" %fname
         else:
             if not self.lupdates.has_key(fname):
-                self.lupdates[fname] = rrdtool.last(fname)
+                self.lupdates[fname] = rrdtool.last(str(fname))
 
         if m <= self.lupdates[fname]:
             if self.verbose:
@@ -164,7 +145,7 @@ class LogParser(object):
                 if self.verbose:
                     print "[rrd] VERBOSE update -t %s %s:%s (SKIP)" \
                         % (tpl, p, values)
-                rrdtool.update(fname, "-t", tpl, "%s:%s" % (p, values))
+                rrdtool.update(str(fname), "-t", tpl, "%s:%s" % (p, values))
 
         values = "%s" % m
         tpl = ""
@@ -177,7 +158,7 @@ class LogParser(object):
         if self.verbose:
             print "[rrd] VERBOSE update -t %s %s" % (tpl, values)
 
-        rrdtool.update(fname, "-t", tpl, values)
+        rrdtool.update(str(fname), "-t", tpl, values)
         self.lupdates[fname] = m
         return True
 
@@ -208,7 +189,7 @@ class LogParser(object):
             se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
 
             if prev_se != se or prev_mi != mi or prev_ho != ho:
-                cur_t = str2Time(self.year, mo, da, ho, mi, se)
+                cur_t = grapher.str2Time(self.year, mo, da, ho, mi, se)
                 cur_t = cur_t - cur_t % rrdstep
                 prev_mi = mi
                 prev_ho = ho
@@ -276,18 +257,21 @@ class LogParser(object):
             G.make_defaults(dom, tpl=grapher.size_avg_template)
 
 if __name__ == "__main__":
+    from mailng.extensions.stats import main
+
+    main.init()
+
     log_file = parameters.get_admin("stats", "LOGFILE")
     rrd_rootdir = parameters.get_admin("stats", "RRD_ROOTDIR")
 
     parser = OptionParser()
-    parser.add_option("-l","--logFile", default=log_file,
+    parser.add_option("-l","--logfile", default=log_file,
                       help="postfix log in syslog format", metavar="FILE")
     parser.add_option("-v","--verbose", default=False, action="store_true",
                       dest="verbose", help="set verbose mode")
     parser.add_option("-d","--debug", default=False, action="store_true",
-                      dest="debug", help="set debug mode")
+                      help="set debug mode")
     (options, args) = parser.parse_args()
 
-    P = LogParser(options.logFile, rrd_rootdir,
-                  debug=options.debug, verbose=options.verbose)
+    P = LogParser(options, rrd_rootdir)
     P.process()

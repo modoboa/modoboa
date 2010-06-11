@@ -1,47 +1,8 @@
 {% extends "admin/domain_header.html" %}
-{% load i18n %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="/static/stylesheets/calendar.css" />
-<style type="text/css">
-  #selectors {
-    float: none;
-  }
-</style>
-
-<script type="text/javascript">
-window.addEvent("domready", function() {
-  $("period").addEvent("change", function(event) {
-    {% url extensions.stats.main.index domain.id as stats_url %}
-    location.href = "{{ stats_url }}" + "?period=" + $("period").value;
-  });
-});
-</script>
-<script type="text/javascript" src="/static/js/calendar.js"></script>
-{% endblock %}
-
 {% block menu %}
-{% if domain %}
 {% load admin_extras %}
 {% domain_menu domain.id "stats" user %}
-{% endif %}
 {% endblock %}
 {% block domcontent %}
-  <div id="selectors">
-    <label for="period">{% trans "Period:" %}</label>
-    <select id="period" name="period">
-      {% for p in periods %}
-      <option value="{{ p }}" {% ifequal p period %}selected{% endifequal %}>{{ p }}</option>
-      {% endfor %}
-    </select>
-    {% ifequal period "Custom" %}
-    {% include "stats/calendar.html" %}
-    {% endifequal %}
-  </div>
-  {% if start or end %}
-    <h3>{% trans "Custom period : from" %} {{ start }} {% trans "to" %} {{ end }}</h3>
-  {% endif %}
-  <div style="float:None;">
-  {% include "stats/graphs.html" %}
-  </div>
-</div>
+{% include "stats/content.html" %}
 {% endblock %}

@@ -53,6 +53,24 @@ tpl = {'traffic':traffic_avg_template,
        'badtraffic':badtraffic_avg_template,
        'size':size_avg_template}
 
+def str2Time(y, M, d, h ="0", m ="0", s="0"):
+    """str2Time
+
+    return epoch time from Year Month Day Hour:Minute:Second time format
+    """
+    try:
+        local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
+                                  "%Y %b %d %H:%M:%S")
+    except:
+        # try with 01-12 month format
+        try:
+            local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
+                                  "%Y %m %d %H:%M:%S")
+        except:
+            print "[rrd] ERROR unrecognized %s time format" %(y, M, d, h, m, s)
+            return 0
+    return int(time.mktime(local))
+
 class Grapher(object):
     def __init__(self):
         self.rrd_rootdir = parameters.get_admin("stats", "RRD_ROOTDIR")
@@ -71,11 +89,11 @@ class Grapher(object):
         defs = []
         lines = []
         for v, d in tpl["vars"].iteritems():
-            defs += ['DEF:%s=%s:%s:%s' % (v, rrdfile, v, tpl['cf']),
-                     'CDEF:%spm=%s,60,*' % (v, v)]
+            defs += [str('DEF:%s=%s:%s:%s' % (v, rrdfile, v, tpl['cf'])),
+                     str('CDEF:%spm=%s,60,*' % (v, v))]
             type = d.has_key("type") and d["type"] or "LINE"
-            lines += ["%s:%spm%s:%s" % (type, v, d["color"],
-                                        d["legend"].encode("utf-8"))]
+            lines += [str("%s:%spm%s:%s" % (type, v, d["color"],
+                                        d["legend"].encode("utf-8")))]
         params = defs + lines
         rrdtool.graph(str(path),
                       "--imgformat", "PNG",

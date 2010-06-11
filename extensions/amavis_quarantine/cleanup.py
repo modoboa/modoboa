@@ -4,6 +4,9 @@
 from mailng.lib import db, parameters
 
 if __name__ == "__main__":
+    from mailng.extensions.amavis_quarantine import main
+
+    main.init()
     conn = db.getconnection("amavis_quarantine")
     max_messages_age = parameters.get_admin("amavis_quarantine", "MAX_MESSAGES_AGE")
 

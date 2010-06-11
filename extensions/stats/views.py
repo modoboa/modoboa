@@ -1,65 +1,30 @@
 # -*- coding: utf-8 -*-
 
-import calendar
+from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from mailng.lib import parameters, _render
+from django.utils import simplejson
+from django.template.loader import render_to_string
+from mailng.lib import parameters, _render, getctx
 from mailng.admin.views import good_domain
 from mailng.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
-from extensions.stats.grapher import Grapher, tpl
-from extensions.stats.logparser import str2Time
+from extensions.stats.grapher import *
 
 graph_types = ['AVERAGE', 'MAX']
 graph_list = [{"name" : "traffic", "label" : _("Average normal traffic")},
               {"name" : "badtraffic", "label" : _("Average bad traffic")},
               {"name" : "size", "label" : _("Average normal traffic size")}]
-
-@login_required
-def domain(request, dom_id):
-    domains = []
-    errors = []
-    return graph_display(request,dom_id,graph_types)
-
-@login_required
-def graph_display(request,dom_id,graph_t=graph_types):
-    domains = []
-    errors = []
-    graph_type = None
-    domain=None
-    if type(graph_t) == type([]):
-        graph_type = graph_t
-    else :
-        graph_type = [graph_t]
-
-    if dom_id:
-        domain = Domain.objects.get(pk=dom_id)
-        if domain:
-            domains.append(domain)
-
-    if domains == []:
-        errors.append(_("No Domain defined"))
-
-
-    for d in domains:
-        P = parser(d.name)
-        if type(P) == type('err'):
-            errors.append(P)
-        else:
-            P.plot_rrd()
-
-    return _render(request, 'stats/index.html', {
-        "page" : "Domain statistics", "graph"   : graph_nature,
-        "domain": domain, "domains" : domains, "messages" : errors,
-        "types" : graph_type, "tmp_path" : tmp_path,
-        "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
+periods = [{"name" : "day", "label" : _("Day")},
+           {"name" : "week", "label" : _("Week")},
+           {"name" : "month", "label" : _("Month")},
+           {"name" : "year", "label" : _("Year")},
+           {"name" : "custom", "label" : _("Custom")}]
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def adminindex(request):
-    CH = calendar.HTMLCalendar(calendar.MONDAY)
-    CH_print = CH.formatmonth(2009,11)
     period = request.GET.has_key("period") and request.GET["period"] or "day"
     domain = request.GET.has_key("domain") and request.GET["domain"] or "global"
     if domain != "global":
@@ -73,65 +38,8 @@ def adminindex(request):
     return _render(request, 'stats/adminindex.html', {
         "domains" : domains, "domain" : domain,
         "graphs" : graph_list,
-        "periods" : ["day", "week", "month", "year","Custom"],
-        "period" : period, "cal" : CH_print,
-        "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
-
-@login_required
-@user_passes_test(lambda u: u.is_superuser)
-def custom_period(request):
-    start = None
-    end = None
-    start_ref = None
-    end_ref = None
-    domains = Domain.objects.all()
-    domain = request.GET.has_key("domain") and request.GET["domain"] or "global"
-    period = request.GET.has_key("period") and request.GET["period"] or "Custom"
-
-    if domain != "global":
-        domain = Domain.objects.get(pk=domain)
-        domain = domain.name
-    try:
-        start_ref = str(request.POST.get('start'))
-        start = start_ref.split(', ')[1]
-        end_ref = str(request.POST.get('end'))
-        end = end_ref.split(', ')[1]
-    except:
-        pass
-
-    if not end or not start:
-        return _render(request, 'stats/adminindex.html', {
-            "domains" : domains, "domain" : domain,
-            "graphs" : graph_list,
-            "period" : period,
-            "periods" : ["day", "week", "month", "year","Custom"],
-            "period_name":None,
-            "start" : start_ref,
-            "end" : end_ref,
-            "messages" : ["Custom period not selected"],
-            "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
-
-    period_name = "%s_%s" %(start.replace('/',''),end.replace('/',''))
-    G = Grapher()
-    for tpl_name in graph_list:
-        G.process(domain,
-                  period_name,
-                  str2Time(*start.split('/')),
-                  str2Time(*end.split('/')),
-                  tpl[tpl_name['name']])
-
-    print "[stats] ", period
-    return _render(request, 'stats/adminindex.html', {
-        "domains" : domains, "domain" : domain,
-        "graphs" : graph_list,
-        "period" : period,
-        "periods" : ["day", "week", "month", "year","Custom"],
-        "period_name": period_name,
-        "start" : start_ref,
-        "end" : end_ref,
-        "messages" : None,
-        "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
-
+        "periods" : periods,
+        "period" : period})
 
 @login_required
 @good_domain
@@ -145,6 +53,40 @@ def index(request, dom_id=None):
     return _render(request, 'stats/index.html', {
         "domain" : domain,
         "graphs" : graph_list,
-        "periods" : ["day", "week", "month", "year","Custom"],
-        "period" : period,
-        "img_rootdir" : parameters.get_admin("stats", "IMG_ROOTDIR")})
+        "periods" : periods,
+        "period" : period
+        })
+
+@login_required
+@good_domain
+@permission_required("admin.view_mailboxes")
+def getgraph(request, dom_id):
+    period = request.GET.has_key("period") and request.GET["period"] or "day"
+    if dom_id == "global":
+        domain = dom_id
+    else:
+        domain = Domain.objects.get(pk=dom_id).name
+    ctx = None
+    tplvars = {"graphs" : graph_list, "period" : period, "domain" : domain}
+    if period == "custom":
+        if not request.GET.has_key("start") or not request.GET.has_key("end"):
+            ctx = getctx("ko", error=_("Bad custom period"))
+        else:
+            start = request.GET["start"]
+            end = request.GET["end"]
+            G = Grapher()
+            period_name = "%s_%s" % (start.replace('-',''), end.replace('-',''))
+            for tpl_name in graph_list:
+                G.process(domain,
+                          period_name,
+                          str2Time(*start.split('-')),
+                          str2Time(*end.split('-')),
+                          tpl[tpl_name['name']])
+            tplvars["period_name"] = period_name
+            tplvars["start"] = start
+            tplvars["end"] = end
+    if ctx is None:
+        content = render_to_string("stats/graphs.html", tplvars)
+        ctx = getctx("ok", content=content)
+
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
