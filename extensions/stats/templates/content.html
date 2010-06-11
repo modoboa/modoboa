@@ -55,7 +55,7 @@ window.addEvent("domready", function() {
   }
 
   get_graph = function(evt) {
-    {% if domains %}
+    {% if admin %}
     var url = "{% url getgraph_root %}" + $("domain").value + "/";
     {% else %}
     var url = "{% url getgraph domain.id %}";
@@ -68,7 +68,7 @@ window.addEvent("domready", function() {
     new Request.JSON({url : url + "?" + p, onSuccess : getgraph_callback}).get();
   }
 
-  {% if domains %}
+  {% if admin %}
   $("domain").addEvent("change", get_graph);
   {% endif %}  
   $("period").addEvent("change", get_graph);
@@ -78,7 +78,7 @@ window.addEvent("domready", function() {
 <script type="text/javascript" src="/static/js/calendar.js"></script>
 
 <div id="selectors">
-  {% if domains %}
+  {% if admin %}
   <div id="domainbox">
     <label for="domain">{% trans "Domain:" %}</label>
     <select id="domain" name="domain">

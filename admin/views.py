@@ -47,6 +47,7 @@ def good_domain(f):
 @login_required
 def domains(request):
     if not request.user.has_perm("admin.view_domains"):
+        print "redirect"
         if request.user.has_perm("admin.view_mailboxes"):
             mb = Mailbox.objects.get(user=request.user.id)
             return mailboxes(request, dom_id=mb.domain.id)

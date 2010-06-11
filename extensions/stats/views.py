@@ -36,10 +36,11 @@ def adminindex(request):
         G.make_defaults(domain, t)
 
     return _render(request, 'stats/adminindex.html', {
-        "domains" : domains, "domain" : domain,
-        "graphs" : graph_list,
-        "periods" : periods,
-        "period" : period})
+            "admin" : True,
+            "domains" : domains,
+            "graphs" : graph_list,
+            "periods" : periods,
+            "period" : period})
 
 @login_required
 @good_domain
