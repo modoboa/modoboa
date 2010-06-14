@@ -37,7 +37,7 @@ check_anchor = function() {
     new Request.JSON({url: query, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
-         infobox.notice("Done");
+        infobox.notice(gettext("Done"));
         infobox.hide(1);
     }}).get();
 }
@@ -197,7 +197,7 @@ parse_menubar = function(id) {
 	    });
 	});
         SqueezeBox.assign($(id).getElements('a[class=boxed]'), {
-            parse: 'rel',        
+            parse: 'rel'
         });
     }
 }

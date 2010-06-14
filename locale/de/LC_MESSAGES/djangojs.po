@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-10 18:02+0200\n"
+"POT-Creation-Date: 2010-06-14 09:54+0200\n"
 "PO-Revision-Date: 2010-06-10 22:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,19 +16,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: static/js/common.js:35
+#: static/js/common.js:36
 msgid "Loading..."
 msgstr "Lade ..."
 
-#: static/js/domains.js:15
+#: static/js/common.js:40
+msgid "Done"
+msgstr ""
+
+#: static/js/domains.js:26
 msgid "Delete this domain?"
 msgstr "Diese Domäne löschen?"
 
-#: static/js/domains.js:22
+#: static/js/domains.js:33
 msgid "Delete this mailbox?"
 msgstr "Diese Mailbox löschen?"
 
-#: static/js/domains.js:36
+#: static/js/domains.js:47
 msgid "Delete this alias?"
 msgstr "Diesen Alias löschen?"
 

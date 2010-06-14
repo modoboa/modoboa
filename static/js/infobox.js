@@ -3,7 +3,7 @@ var InfoBox = new Class({
     options: {
         parent : null,
         message : "This is my info box!",
-        width : 200,
+        width : 200
     },
 
     profiles: {
@@ -101,5 +101,5 @@ var InfoBox = new Class({
         }
         $clear(this.timer);
         this.box.setStyle("display", "none");
-    },
+    }
 });

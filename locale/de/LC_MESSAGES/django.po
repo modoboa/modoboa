@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-10 18:03+0200\n"
+"POT-Creation-Date: 2010-06-14 09:54+0200\n"
 "PO-Revision-Date: 2010-06-10 23:21+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,15 +24,17 @@ msgstr "Pfad zum root-Verzeichnis unterhalb dessen E-Mails abgelegt werden"
 msgid ""
 "UID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
-msgstr "UID des virtuellen Benutzers, der Besitzer der Domains, Mailboxen "
-"und Nachrichten im Dateisystem ist."
+msgstr ""
+"UID des virtuellen Benutzers, der Besitzer der Domains, Mailboxen und "
+"Nachrichten im Dateisystem ist."
 
 #: admin/__init__.py:11
 msgid ""
 "GID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
-msgstr "GID des virtuellen Benutzers, der Besitzer der Domains, Mailboxen "
-"und Nachrichten im Dateisystem ist."
+msgstr ""
+"GID des virtuellen Benutzers, der Besitzer der Domains, Mailboxen und "
+"Nachrichten im Dateisystem ist."
 
 #: admin/__init__.py:14
 msgid "Mailboxes storage format"
@@ -43,8 +45,8 @@ msgid ""
 "Sub-directory (inside the mailbox) where messages are stored when using the "
 "maildir format"
 msgstr ""
-"Unterverzeichnis (innerhalb der Mailbox) in dem Nachrichten abgelegt "
-"werden wenn Maildir-Format eingesetzt wird."
+"Unterverzeichnis (innerhalb der Mailbox) in dem Nachrichten abgelegt werden "
+"wenn Maildir-Format eingesetzt wird."
 
 #: admin/__init__.py:19
 msgid "Scheme used to crypt mailbox passwords"
@@ -173,45 +175,45 @@ msgstr "Auswählen um den Alias zu aktivieren"
 msgid "Permission denied."
 msgstr "Zugriff verweigert."
 
-#: admin/views.py:72 admin/views.py:102
+#: admin/views.py:73 admin/views.py:103
 msgid "Domain with this name already defined"
 msgstr "Es existiert bereits eine Domain mit diesem Namen"
 
-#: admin/views.py:81
+#: admin/views.py:82
 msgid "Failed to initialise domain, check permissions"
 msgstr ""
 "Domäne konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:105
+#: admin/views.py:106
 msgid "Failed to rename domain, check permissions"
 msgstr "Domäne konnte nicht umbenannt werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:159 admin/views.py:221
+#: admin/views.py:160 admin/views.py:222
 msgid "Mailbox with this address already exists"
 msgstr "Eine Mailbox mit diesem Namen existiert bereits."
 
-#: admin/views.py:193
+#: admin/views.py:194
 msgid "Mailbox created."
 msgstr "Mailbox erstellt."
 
-#: admin/views.py:197
+#: admin/views.py:198
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Mailbox konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:224
+#: admin/views.py:225
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Mailbox konnte nicht umbenannt werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:294 admin/views.py:325
+#: admin/views.py:295 admin/views.py:326
 msgid "Alias with this name already exists"
 msgstr "Ein Alias mit dieser Adresse existiert bereits"
 
-#: admin/views.py:400
+#: admin/views.py:401
 msgid "admin is intouchable!!"
 msgstr "admin ist unantastbar!!"
 
-#: admin/views.py:442
+#: admin/views.py:443
 msgid "Configuration saved."
 msgstr "Bestätigung"
 
@@ -295,11 +297,18 @@ msgstr "Einfaches amavis Quarantäne-Management Werkzeug"
 
 #: extensions/amavis_quarantine/main.py:21
 msgid "Quarantine messages maximum age (in days) before deletion"
-msgstr "Maximales Alter (in Tagen) von Nachrichten in der Quarantäne bevor sie gelöscht werden"
+msgstr ""
+"Maximales Alter (in Tagen) von Nachrichten in der Quarantäne bevor sie "
+"gelöscht werden"
 
 #: extensions/amavis_quarantine/main.py:25
 msgid "Mode used to access the PDP server"
 msgstr ""
+
+#: extensions/amavis_quarantine/main.py:28
+#, fuzzy
+msgid "PDP server address (if inet mode)"
+msgstr "PDP-Server port (im inet-Modus)"
 
 #: extensions/amavis_quarantine/main.py:31
 msgid "PDP server port (if inet mode)"
@@ -438,7 +447,9 @@ msgstr "Das Datum ist vorbei"
 
 #: extensions/postfix_autoreply/main.py:33
 msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr "Zeit in Sekunden zwischen zwei automatisierten Antworten an denselben Empfänger"
+msgstr ""
+"Zeit in Sekunden zwischen zwei automatisierten Antworten an denselben "
+"Empfänger"
 
 #: extensions/postfix_autoreply/main.py:59
 #: extensions/postfix_autoreply/templates/autoreply.html:24
@@ -535,76 +546,78 @@ msgstr "Pfad zu dem Verzeichnis in die PNG-Dateien abgelegt sind"
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: extensions/stats/views.py:15
+#: extensions/stats/views.py:16
 msgid "Average normal traffic"
 msgstr "Durchschnittlicher normaler Datenverkehr"
 
-#: extensions/stats/views.py:16
+#: extensions/stats/views.py:17
 msgid "Average bad traffic"
 msgstr "Durchschnittlicher schlechter Datenverkehr"
 
-#: extensions/stats/views.py:17
+#: extensions/stats/views.py:18
 msgid "Average normal traffic size"
 msgstr "Durchschnittliche Grösse normaler Datenverkehr"
 
-#: extensions/stats/views.py:42
-msgid "No Domain defined"
-msgstr "Keine Domäne definiert."
-
-#: extensions/stats/templates/adminindex.html:31
-msgid "Global statistics"
-msgstr "Globale Statistiken"
-
-#: extensions/stats/templates/adminindex.html:36
-msgid "Domain:"
-msgstr "Domäne:"
-
-#: extensions/stats/templates/adminindex.html:38
-msgid "Global"
-msgstr "Global"
-
-#: extensions/stats/templates/adminindex.html:44
-#: extensions/stats/templates/index.html:30
-msgid "Period:"
-msgstr "Zeitraum:"
-
-#: extensions/stats/templates/adminindex.html:55
-#: extensions/stats/templates/index.html:41
-msgid "Custom period : from"
-msgstr "Individueller Zeitraum : von"
-
-#: extensions/stats/templates/adminindex.html:55
-#: extensions/stats/templates/index.html:41 templates/common/navbar.html:2
-msgid "to"
-msgstr "bis"
-
-#: extensions/stats/templates/calendar.html:5
-msgid "Start"
-msgstr "Start"
-
-#: extensions/stats/templates/calendar.html:6
-msgid "End"
-msgstr "Aktiviert"
-
-#: extensions/stats/templates/graphs.html:5
-msgid "No statistics available"
-msgstr "Keine Statistiken verfügbar"
-
-#: extensions/stats/templatetags/stats_extra.py:9
+#: extensions/stats/views.py:19
 msgid "Day"
 msgstr "Tag"
 
-#: extensions/stats/templatetags/stats_extra.py:10
+#: extensions/stats/views.py:20
 msgid "Week"
 msgstr "Woche"
 
-#: extensions/stats/templatetags/stats_extra.py:11
+#: extensions/stats/views.py:21
 msgid "Month"
 msgstr "Monat"
 
-#: extensions/stats/templatetags/stats_extra.py:12
+#: extensions/stats/views.py:22
 msgid "Year"
 msgstr "Jahr"
+
+#: extensions/stats/views.py:23
+msgid "Custom"
+msgstr ""
+
+#: extensions/stats/views.py:74
+#, fuzzy
+msgid "Bad custom period"
+msgstr "Individueller Zeitraum : von"
+
+#: extensions/stats/templates/adminindex.html:4
+msgid "Global statistics"
+msgstr "Globale Statistiken"
+
+#: extensions/stats/templates/content.html:83
+msgid "Domain:"
+msgstr "Domäne:"
+
+#: extensions/stats/templates/content.html:85
+msgid "Global"
+msgstr "Global"
+
+#: extensions/stats/templates/content.html:93
+msgid "Period:"
+msgstr "Zeitraum:"
+
+#: extensions/stats/templates/content.html:102
+msgid "Start"
+msgstr "Start"
+
+#: extensions/stats/templates/content.html:104
+msgid "End"
+msgstr "Aktiviert"
+
+#: extensions/stats/templates/graphs.html:3
+msgid "Custom period : from"
+msgstr "Individueller Zeitraum : von"
+
+#: extensions/stats/templates/graphs.html:3 templates/common/navbar.html:2
+msgid "to"
+msgstr "bis"
+
+#: extensions/stats/templates/graphs.html:8
+msgid "No statistics available"
+msgstr "Keine Statistiken verfügbar"
 
 #: extensions/webmail/forms.py:6
 msgid "To"
@@ -616,7 +629,8 @@ msgstr "Cc"
 
 #: extensions/webmail/lib.py:177
 msgid "Connection to IMAP server failed, check your configuration"
-msgstr "Verbindung zu IMAP-Server fehlgeschlagen, Überprüfen Sie Ihre Konfiguration"
+msgstr ""
+"Verbindung zu IMAP-Server fehlgeschlagen, Überprüfen Sie Ihre Konfiguration"
 
 #: extensions/webmail/lib.py:181
 msgid "Authentication failed, check your configuration"
@@ -740,8 +754,8 @@ msgid "Compact folder"
 msgstr "Ordner komprimieren"
 
 #: lib/__init__.py:63
-#, python-format
-msgid "Invalid action, %s is a local user"
+#, fuzzy, python-format
+msgid "Invalid action, %(user)s is a local user"
 msgstr "Unzulässige Aktion, %s ist ein lokaler Benutzer"
 
 #: templates/nlayout.html:33
@@ -884,6 +898,11 @@ msgid "Error"
 msgstr "Fehler"
 
 #: templates/common/navbar.html:2
+#, fuzzy
+msgid "Messages"
+msgstr "Nachricht"
+
+#: templates/common/navbar.html:2
 msgid "of"
 msgstr "von"
 
@@ -940,3 +959,6 @@ msgstr "Neues Passwort"
 #: userprefs/forms.py:26
 msgid "Old password mismatchs"
 msgstr "Altes Passwort stimmt nicht überein"
+
+#~ msgid "No Domain defined"
+#~ msgstr "Keine Domäne definiert."
