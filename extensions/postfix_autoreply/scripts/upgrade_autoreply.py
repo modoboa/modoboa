@@ -9,6 +9,7 @@ if __name__ == "__main__":
         import mailng.extensions.postfix_autoreply.main as par
         from mailng.extensions.postfix_autoreply.models import Transport, Alias
         
+        par.init()
         doms = Domain.objects.all()
         for dom in doms:
             try:

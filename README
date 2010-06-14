@@ -3,10 +3,16 @@ facilitate virtual domains hosting. It is designed to be integrated with email
 servers like postfix (http://www.postfix.org/) and/or dovecot 
 (http://www.dovecot.org/).
 
-For now, only the administration component is available. Additional tools will 
-come in a near future.
+Available components:
+ * Administration panel,
+ * Amavisd-new quarantine manager,
+ * Postfix auto-reply component,
+ * Graphical statistics about emails traffic,
+ * webmail.
 
 Django is needed to use Mailng (http://www.djangoproject.com/)
 
-Mootools version 1.2 (http://www.mootools.net/) and SqueezeBox version 1.1 
-(http://digitarald.de/project/squeezebox/) are provided with Mailng.
+The following external tools are provided with MailNG:
+ * Mootools version 1.2+ (http://www.mootools.net/),
+ * SqueezeBox version 1.1+ (http://digitarald.de/project/squeezebox/),
+ * Calendar (http://electricprism.com/aeron/calendar/)

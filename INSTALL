@@ -6,6 +6,7 @@ Requirements
 
 - Python version 2.6+
 - Django version 1.0+ (http://docs.djangoproject.com/en/dev/intro/install/#intro-install)
+- south version 0.7+ (http://south.aeracode.org/)
 
 How to install
 --------------
@@ -28,17 +29,23 @@ Settings file
 
 Initialise the database by running the following command::
 
-  python manage.py syncdb
+  # python manage.py syncdb
 
 Create the super admin account (just follow the procedure).
 
-Run the initialisation script. It will insert needed data into the database :
+Since version 0.8, MailNG is using south to handle schema
+migration. In order to finish the database creation, you must run the
+first migration like this::
 
-  export PYTHONPATH=$PWD/..
-  DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/populate.py
+  # python manage.py migrate
 
 How to upgrade
 --------------
+
+First, decompress the new tarball at the same location than your
+current installation. Then, check if the new version you're installing
+required a migration::
+
 0.7 -> 0.8 : SQL migration needed.
 
 south is needed to handle migrations. You will find instructions on
@@ -58,10 +65,6 @@ INSTALLED_APPS. Then, run the following commands:
 
 0.6 -> 0.7 : no SQL modifications.
 0.5 -> 0.6 : no SQL modifications.
-
-If no modifications have been made to the core SQL schema, juste
-decompress the new tarball at the same location than your current
-installation.
 
 Time zone and language
 ----------------------
@@ -84,7 +87,7 @@ variable. For example::
 Host configuration
 ------------------
 
-Before testing Mailng, you must create a group and a user that will be
+Before testing MailNG, you must create a group and a user that will be
 used to store mails on the host filesystem. There is only one
 group/user needed because we are in a virtual hosting configuration
 (ie. users with non-UNIX accounts).
@@ -106,12 +109,12 @@ file and add the following inside::
 Testing installation
 --------------------
 
-As a typical Django application, Mailng can be tested using a simple web 
+As a typical Django application, MailNG can be tested using a simple web 
 server. Just run this command to start it::
 
   python manage.py runserver
 
-You will be able to play with mailng by looking at 
+You will be able to play with MailNG by looking at 
 http://<youraddress>:8000/mailng/admin/.
 
 Tips to link Mailng with postfix
@@ -159,9 +162,9 @@ Then, use the following configuration in your /etc/postfix/main.cf file
   virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf
   # Stuff after
 
-NB: Mailng supports both maildir and mbox formats. You can specify
-which format to use by modifying the MAILBOX_TYPE variable located
-inside 'settings.py'.
+NB: MailNG supports both maildir and mbox formats. You can specify
+which format to use by modifying the MAILBOX_TYPE parameter available
+in the admin panel.
 
 Tips to activate auto-reply messages in Postifx
 -----------------------------------------------
@@ -173,9 +176,16 @@ line inside the INSTALLED_APPS variable::
 
   'mailng.extensions.postfix_autoreply',
 
+Run the following command to activate the component::
+
+  # export PYTHONPATH=<mailng_dir>/..
+  # DJANGO_SETTINGS_MODULE=mailng.settings \
+      <mailng_dir>/scripts/extension.py postfix-autoreply on
+
 Then run the following commands to update MailNG SQL schema and content::
 
   # python manage.py syncdb
+  # python manage.py migrate postfix-autoreply
   # export PYTHONPATH=$PWD/..
   # DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/upgrade_autoreply.py
 
@@ -214,7 +224,7 @@ of the directory where mailng is installed)
 NB: auto-reply messages are just sent one time per sender for a
 pre-defined time period. By default, this period is equal to 1 day
 (86400s), you can adjust this value by modifying the AUTOREPLY_TIMEOUT
-variable located inside 'settings.py'.
+parameter available in the admin panel.
 
 NB: Be sure that both 'autoreply' and 'autoreply.py' scripts (located
 inside the 'scripts' directory) have good permissions (ie. 0755).
@@ -345,9 +355,11 @@ line inside the INSTALLED_APPS variable::
 
   'mailng.extensions.amavis_quarantine',
 
-Just run the following command to update MailNG SQL schema::
+Then run the following command to activate the component::
   
-  # python manage.py syncdb
+  # export PYTHONPATH=<mailng_dir>/..
+  # DJANGO_SETTINGS_MODULE=mailng.settings \
+      <mailng_dir>/scripts/extension.py amavis-quarantine on
 
 Then, you need to specify where is the database that contains the
 quarantine. Inside settings.py, add a new connection to the
@@ -363,12 +375,6 @@ DB_CONNECTIONS variable like this::
      
 
 Replace values between <> with yours.
-
-Finally, create a symbolic link to the templates directory inside the
-main templates directory::
-
-  # ln -s <mailng_dir>/extensions/amavis_quarantine/templates \
-        templates/amavis_quarantine
 
 When viewing messages, you can choose to display links (addresses,
 images). In order to display images correctly, you need to create a
@@ -401,7 +407,7 @@ Don't forget to update the inet_acl list if you plan to release from
 the network.
 
 Once amavisd-new is configured, just tell MailNG where it can find the
-"release server" by modifying following variables inside settings.py::
+"release server" by modifying following parameters in the admin panel::
 
   # "unix" or "inet"
   AM_PDP_MODE = "inet"
@@ -444,14 +450,13 @@ line inside the INSTALLED_APPS variable::
 
   'mailng.extensions.stats',
 
-Create a symbolic link to the templates directory inside the main
-templates directory::
+Then run the following command to activate the component::
+  
+  # export PYTHONPATH=<mailng_dir>/..
+  # DJANGO_SETTINGS_MODULE=mailng.settings \
+      <mailng_dir>/scripts/extension.py stats on
 
-  # ln -s <mailng_dir>/extensions/stats/templates \
-       templates/stats
-
-Then, adapt following parameters (still in settings.py) to your
-environnement::
+Then, adapt the following parameters to your environnement::
 
   # Path to mail log file
   LOGFILE = "/var/log/mail.log"
@@ -478,3 +483,39 @@ crontab::
 Replace mailng_dir with the installation path of MailNG.
 
 Graphics are automatically created after each new parsing.
+
+Using the webmail component
+---------------------------
+
+MailNG provides a simple webmail component (you can browse, read and
+compose messages).  With this feature, it is possible to deploy an almost
+standalone emails platform just with MailNG.
+
+The following requirements are needed before going further::
+
+- lxml python module (http://codespeak.net/lxml/)
+- pycrypto python module (http://www.dlitz.net/software/pycrypto/)
+
+Just run the following command to activate the component::
+  
+  # export PYTHONPATH=<mailng_dir>/..
+  # DJANGO_SETTINGS_MODULE=mailng.settings \
+      <mailng_dir>/scripts/extension.py webmail on
+
+Next, go to the admin panel and modify the following parameters in
+order to communicate with your IMAP and SMTP servers::
+
+  IMAP_SECURED = no
+  IMAP_SERVER = 127.0.0.1
+  IMAP_PORT = 143
+
+  SMTP_SECURED = no
+  SMTP_AUTHENTICATION = no
+  SMTP_SERVER = 127.0.0.1
+  SMTP_PORT = 25
+
+Last but not least, modify the SECRET_KEY parameter and choose a new
+value (exactly 16 characters). This key is really important, it is
+used to encrypt/decrypt user passwords stored inside sessions. 
+
+Do not communicate this key to anyone!!

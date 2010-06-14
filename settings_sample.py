@@ -82,6 +82,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'south',
+    'mailng',
     'mailng.lib',
     'mailng.admin',
     'mailng.userprefs',
@@ -95,3 +97,16 @@ AUTHENTICATION_BACKENDS = (
     'mailng.lib.authbackends.SimpleBackend'
 )
 
+# Amavis quarantine
+# DB_CONNECTIONS = (
+#     {"amavis_quarantine" : {"driver"   : "",
+#                             "host"     : "",
+#                             "dbname"   : "",
+#                             "login"    : "",
+#                             "password" : ""}
+#      }
+#     )
+
+
+#SESSION_COOKIE_AGE = 300
+#CACHE_BACKEND = 'file://'
