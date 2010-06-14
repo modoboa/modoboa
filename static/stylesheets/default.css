@@ -252,6 +252,10 @@ div.right {
     color: black;
 }
 
+img {
+    border: 0;
+}
+
 table {
     /*margin: 0 auto;*/
     width: 100%;

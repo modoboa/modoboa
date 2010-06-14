@@ -249,6 +249,7 @@ ul.visible {
       src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
       th = $$("th[id=" + navparams.get("order").substring(1) + "]");
       th.getElement("img").set("src", "/static/pics/" + src);
+      th.getElement("img").setStyle("display", "block");
       th.addClass("selected");
     }
     var selectedRows = new Array();
