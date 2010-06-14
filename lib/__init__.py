@@ -8,10 +8,10 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from mailng.lib import parameters
 
-def exec_cmd(cmd):
+def exec_cmd(cmd, **kwargs):
     import subprocess
 
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, **kwargs)
     output = p.communicate()[0]
     return p.returncode, output
 
