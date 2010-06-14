@@ -22,7 +22,7 @@ msgstr "Lade ..."
 
 #: static/js/common.js:40
 msgid "Done"
-msgstr ""
+msgstr "Abgeschlossen"
 
 #: static/js/domains.js:26
 msgid "Delete this domain?"

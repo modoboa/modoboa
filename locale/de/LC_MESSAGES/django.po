@@ -303,12 +303,11 @@ msgstr ""
 
 #: extensions/amavis_quarantine/main.py:25
 msgid "Mode used to access the PDP server"
-msgstr ""
+msgstr "Modus für Zugriff auf den PDP-Server"
 
 #: extensions/amavis_quarantine/main.py:28
-#, fuzzy
 msgid "PDP server address (if inet mode)"
-msgstr "PDP-Server port (im inet-Modus)"
+msgstr "PDP-Server addresse (im inet-Modus)"
 
 #: extensions/amavis_quarantine/main.py:31
 msgid "PDP server port (if inet mode)"
@@ -576,12 +575,11 @@ msgstr "Jahr"
 
 #: extensions/stats/views.py:23
 msgid "Custom"
-msgstr ""
+msgstr "Individuell"
 
 #: extensions/stats/views.py:74
-#, fuzzy
 msgid "Bad custom period"
-msgstr "Individueller Zeitraum : von"
+msgstr "Ungültiger individueller Zeitraum"
 
 #: extensions/stats/templates/adminindex.html:4
 msgid "Global statistics"
@@ -754,7 +752,6 @@ msgid "Compact folder"
 msgstr "Ordner komprimieren"
 
 #: lib/__init__.py:63
-#, fuzzy, python-format
 msgid "Invalid action, %(user)s is a local user"
 msgstr "Unzulässige Aktion, %s ist ein lokaler Benutzer"
 
@@ -898,9 +895,8 @@ msgid "Error"
 msgstr "Fehler"
 
 #: templates/common/navbar.html:2
-#, fuzzy
 msgid "Messages"
-msgstr "Nachricht"
+msgstr "Nachrichten"
 
 #: templates/common/navbar.html:2
 msgid "of"
@@ -960,5 +956,3 @@ msgstr "Neues Passwort"
 msgid "Old password mismatchs"
 msgstr "Altes Passwort stimmt nicht überein"
 
-#~ msgid "No Domain defined"
-#~ msgstr "Keine Domäne definiert."
