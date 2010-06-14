@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load libextras %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,7 +22,7 @@
        {% if error %}
       <div class="error"><p>{{ error }}</p></div>
       {% endif %}
-      <h2>2010 - Version 0.7-dev</h2>
+      <h2>{% now "Y" %} - Version {% get_version %}</h2>
     </div>
     <div id="test">
       <h3>{% trans "Welcome" %}</h3>
