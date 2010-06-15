@@ -353,20 +353,20 @@ class ImapListing(EmailListing):
             if folders[fd] is not None:
                 descr["path"] = folders[fd]["path"]
                 if folders[fd]["sub"] != {}:
-                    descr["icon"] = "subfolders.png"
+                    descr["class"] = "subfolders"
                     descr["sub"] = self.__parse_folders(folders[fd]["sub"])
             result += [descr]
         return result
 
     def getfolders(self):
-        md_folders = [{"name" : "INBOX", "icon" : "overview.png"},
+        md_folders = [{"name" : "INBOX", "class" : "inbox"},
                       {"name" : 'Drafts'},
                       {"name" : 'Junk'},
                       {"name" : parameters.get_user(self.user, "webmail",
                                                     "SENT_FOLDER")},
                       {"name" : parameters.get_user(self.user, "webmail",
                                                     "TRASH_FOLDER"),
-                       "icon" : "trash.png"}]
+                       "class" : "trash"}]
         folders = self.mbc.listfolders(md_folders=md_folders)
         md_folders += self.__parse_folders(folders)
         for fd in md_folders:

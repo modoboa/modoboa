@@ -32,8 +32,8 @@
     $$(obj.getParents("ul[class*=hidden]")).each(function(item) {
       item.removeClass("hidden");
       item.addClass("visible");
-      $$("img[name=" + item.get("name") + "]").each(function(item) {
-        item.set("src", "/static/pics/folder-open.png");
+      $$("li[name=" + item.get("name") + "]").each(function(item) {
+        item.setStyle("background", "url('/static/pics/folder-open.png') no-repeat");
       });
     });
   }
@@ -115,17 +115,18 @@
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
     select($$("a[href=" + current_anchor.getbaseurl() + "]"));
-    $$("img[class=clickable]").removeEvents();
-    $$("img[class=clickable]").addEvent("click", function(evt) {
+    $$("li[class*=clickable]").removeEvents();
+    $$("li[class*=clickable]").addEvent("click", function(evt) {
       $$("ul[name=" + evt.target.get("name") + "]").each(function(item) {
         if (item.hasClass("hidden")) {
-          evt.target.set("src", "/static/pics/folder-open.png");
+          evt.target.setStyle("background", "url('/static/pics/folder-open.png') no-repeat");
           item.removeClass("hidden").addClass("visible");
         } else {
-          evt.target.set("src", "/static/pics/subfolders.png");
+          evt.target.setStyle("background", "url('/static/pics/subfolders.png') no-repeat");
           item.removeClass("visible").addClass("hidden");
         }
       });
+      evt.stop();
     });
     searchbox_init();
     if (navparams.has("order")) {

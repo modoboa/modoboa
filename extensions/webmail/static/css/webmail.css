@@ -61,19 +61,18 @@ tr.selected {
 }
 
 .box li {
-    clear: both;
     margin-bottom: 4px;
+    padding-left: 20px;
 }
 
 .box li.selected {
-    background: #ffffcc;
+    background-color: #ffffcc;
     position: relative;
 }
 
 .box a:link, .box a:visited {
     background: transparent;
     color: black;
-    /*font-weight: bold;*/
     text-decoration: none;
 }
 
@@ -86,6 +85,22 @@ tr.selected {
     float: left;
     margin-right: 2px;
     border: 0;
+}
+
+li.inbox {
+    background: url("/static/pics/overview.png") no-repeat;
+}
+
+li.trash {
+    background: url("/static/pics/trash.png") no-repeat;
+}
+
+li.folder {
+    background: url("/static/pics/folder.png") no-repeat;
+}
+
+li.subfolders {
+    background: url("/static/pics/subfolders.png") no-repeat;
 }
 
 th {
@@ -113,7 +128,6 @@ ul.visible {
     background: white;
     display: block;
     padding-bottom: 0;
-    padding-left: 10px;
 }
 
 /* Compose mail page */

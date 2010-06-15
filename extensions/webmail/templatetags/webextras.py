@@ -102,11 +102,15 @@ def listing_menu(selection, folder, user):
 def print_folders(folders):
     result = ""
     for fd in folders:
-        if fd.has_key("icon"):
-            icon = fd["icon"]
+        if fd.has_key("class"):
+            cssclass = fd["class"]
         else:
-            icon = "folder.png"
-        result += "<li class='droppable'>\n"
+            cssclass = "folder"
+        name = ""
+        if fd.has_key("sub"):
+            cssclass += " clickable"
+            name = fd["path"]
+        result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
         label = fd["name"]
         cssclass = ""
         if fd.has_key("unseen"):
@@ -115,10 +119,10 @@ def print_folders(folders):
         result += "<a href='%s' class='%s' name='loadfolder'>%s</a>\n" \
             % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, label)
         if fd.has_key("sub"):
-            result += "<img name='%s' class='clickable' src='/static/pics/%s' />\n" \
-                % (fd["path"], icon)
+            #result += "<img name='%s' class='clickable' src='/static/pics/%s' />\n" \
+            #    % (fd["path"], icon)
             result += "<ul name='%s' class='hidden'>" % (fd["path"]) + print_folders(fd["sub"]) + "</ul>\n"
-        else:
-            result += "<img src='/static/pics/%s' />\n" % icon
+        #else:
+        #    result += "<img src='/static/pics/%s' />\n" % icon
         result += "</li>\n"
     return result
