@@ -33,7 +33,7 @@ window.addEvent("domready", function() {
   navbarcallback = function(event) {
     event.stop();
     current_anchor.setparams(navparams);
-    current_anchor.parse_string(event.target.getParent().get("href")).update();
+    current_anchor.parse_string($(event.target).getParent().get("href")).update();
   }
 
   viewmail = function(event) {

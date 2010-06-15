@@ -100,7 +100,7 @@ th.selected {
   background: #EEEEEE;
 }
 
-.draggable {2
+.draggable {
   cursor: move;
 }
 
@@ -254,7 +254,7 @@ ul.visible {
     }
     var selectedRows = new Array();
     $$("tbody>tr").addEvent("click", function(event) {
-      var tr = event.target.getParent();
+      var tr = $(event.target).getParent();
       if (!tr.hasClass("selected")) {
         tr.addClass("selected");
         selectedRows.include(tr);
@@ -269,7 +269,7 @@ ul.visible {
 
     makeRowDraggable = function(item) {
       new Drag.Move(item, {
-        droppables: ".droppable",
+        droppables: ".droppable"
       }).addEvents({
         "start" : function(item) {
           if (!item.hasClass("selected")) {
@@ -319,7 +319,7 @@ ul.visible {
           new Request.JSON({url: "{{ moveurl }}", 
                             onSuccess: get_callback("folder")}
           ).get({msgset : msgset.join(), to : dest});
-        },
+        }
       });
     };
 
