@@ -1,0 +1,8 @@
+thead tr {
+    position: relative;
+    z-index: 1;
+}
+
+tr.table-tr-selected {
+    background: #ffffcc;
+}

@@ -1,14 +1,7 @@
 {% extends "common/email_listing.html" %}
 {% load i18n %}
 {% block css %}
-thead tr {
-  position: relative;
-  z-index: 1;
-}
-
-tr.table-tr-selected {
-  background: #ffffcc;
-}
+<link rel="stylesheet" type="text/css" href="/static/css/quarantine.css" />
 {% endblock %}
 {% block js %}
   mysubmit = function(event, name) {

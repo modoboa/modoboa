@@ -31,7 +31,7 @@ var InfoBox = new Class({
         });
         this.setProfile("gray");
         this.spinner = new Element("img", {
-            "src" : "/static/stylesheets/spinner.gif"
+            "src" : "/static/css/spinner.gif"
         });
         this.spinner.setStyle("float", "left");
         this.spinner.inject(this.box);

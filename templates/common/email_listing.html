@@ -2,7 +2,8 @@
 {% load i18n %}
 {% load libextras %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="/static/stylesheets/searchbar.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/searchbar.css" />
+{% block css %}{% endblock %}
 <style type="text/css">
 #navbar {
   float: right;
@@ -21,7 +22,6 @@
   margin-top: 5px;
   margin-right: 5px;
 }
-{% block css %}{% endblock %}
 </style>
 
 <script type="text/javascript">

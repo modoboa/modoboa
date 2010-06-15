@@ -269,7 +269,7 @@ Then, edit your /etc/dovecot/dovecot-sql.conf and modify following lines::
 
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
-  default_pass_scheme = PLAIN-MD5
+  default_pass_scheme = CRYPT
   password_query = SELECT full_address AS user, password FROM admin_mailbox WHERE full_address = '%u'
   user_query = SELECT path AS home, uid, gid FROM admin_mailbox WHERE full_address = '%u'
 
@@ -279,7 +279,7 @@ Enable quotas with Dovecot
 Put the following lines inside your dovecot.conf file::
 
     protocol imap {
-      mail_plugins = quota quota_imap
+      mail_plugins = quota imap_quota
     }
 
 Before continuing, you need to know which quota backend must be user

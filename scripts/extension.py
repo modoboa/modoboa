@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os, sys
+import glob
 from django.conf import settings
 
 def usage():
@@ -15,6 +16,18 @@ def update_extension(name, extdir, state):
 	    and "ln -s %s/%s %s/%s" % (extdir, d, d, name) \
 	    or "rm %s/%s" % (d, name)
 	os.system(cmd)
+
+    staticpath = "%s/%s" % (extdir, "static")
+    if os.path.isdir(staticpath):
+        for d in ['css', 'js']:
+            subpath = "%s/%s" % (staticpath, d)
+            if not os.path.isdir(subpath):
+                continue
+            for f in glob.glob("%s/*.%s" % (subpath, d)):
+                cmd = state == "on" \
+                    and "ln -s %s static/%s" % (f, d) \
+                    or "rm static/%s/%s" % (d, os.path.basename(f))
+                os.system(cmd)
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

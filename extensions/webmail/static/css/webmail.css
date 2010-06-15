@@ -1,0 +1,161 @@
+#listing {
+    position: absolute;
+    left: 155px;
+    right: 0px;
+    top: 130px;
+    height: expression(document.body.clientHeight - 35 + "px");
+    overflow: auto;
+}
+
+html > body #listing {
+    position: fixed;
+    bottom: 35px;
+}
+
+#folders {
+    float: left;
+    width: 150px;
+}
+
+/*thead tr {
+  position: relative;
+  top: expression(offsetParent.scrollTop); /*IE5+ only*/
+z-index: 1;
+padding: 0;
+}*/
+
+/*table#emails > tbody {
+  position: fixed;
+  bottom: 35px;
+  top: 155px;
+  left: 155px;
+  right: 0px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}*/
+
+#emails th {
+    position: relative;
+}
+
+#emails tr {
+    width: 100%;
+    /*position: relative;*/
+    border-bottom: 1px solid #C8D6E8;
+}
+
+tr.selected {
+    background: #ffffcc;
+}
+
+.box h3 {
+    font-size: small;
+    margin: 2px 0px 2px 0px;
+    text-align: center;
+}
+
+.box ul {
+    list-style: none;
+    padding: 5px 5px;
+    margin: 0;
+}
+
+.box li {
+    clear: both;
+    margin-bottom: 4px;
+}
+
+.box li.selected {
+    background: #ffffcc;
+    position: relative;
+}
+
+.box a:link, .box a:visited {
+    background: transparent;
+    color: black;
+    /*font-weight: bold;*/
+    text-decoration: none;
+}
+
+.box a:hover { 
+    color: #6AB0C5;
+    text-decoration: none;
+}
+
+.box img {
+    float: left;
+    margin-right: 2px;
+    border: 0;
+}
+
+th {
+/*-moz-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;
+  -webkit-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;*/
+}
+
+th.selected {
+    background: #EEEEEE;
+}
+
+.draggable {
+    cursor: move;
+}
+
+.dragging {
+    background: #6AB0C5;
+}
+
+ul.hidden {
+    display: none;
+}
+
+ul.visible {
+    background: white;
+    display: block;
+    padding-bottom: 0;
+    padding-left: 10px;
+}
+
+/* Compose mail page */
+#compose-container {
+    margin: 0 auto;
+    width: 100%;
+}
+
+div.row {
+    margin: 3px;
+    clear: both;
+}
+
+div.row label {
+    float: left;
+    width: 120px;
+    font-size: small;
+    padding: 3px 0;
+}
+
+textarea {
+    border: 1px solid #cccccc;
+    background-color: #eee;
+    width: 80%;
+    height: 30px;
+    font-size: medium;
+}
+
+textarea:hover {
+    background-color: #ffffcc;
+}
+
+#id_body {
+    background: white;
+    width: 98%;
+}
+
+input {
+    width: 80%;
+    padding: 0;
+}
+
+#mailheader {
+    padding-bottom: 5px;
+}
