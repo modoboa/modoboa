@@ -17,3 +17,12 @@ def get_version():
         return output.rstrip()
     else:
         return "Unknown"
+
+@register.simple_tag
+def join(items, sep=','):
+    res = ""
+    for k, v in items.iteritems():
+        if res != "":
+            res += sep
+        res += "%s : '%s'" % (k, v)
+    return res

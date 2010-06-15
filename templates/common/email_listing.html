@@ -1,5 +1,6 @@
 {% extends "nlayout.html" %}
 {% load i18n %}
+{% load libextras %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="/static/stylesheets/searchbar.css" />
 <style type="text/css">
@@ -26,9 +27,7 @@
 <script type="text/javascript">
 window.addEvent("domready", function() {
   navparams = new Hash({
-  {% for k, v in navparams.items %}
-    {{ k }} : "{{ v }}",
-  {% endfor %}
+    {% join navparams %}
   });
 
   navbarcallback = function(event) {

@@ -5,6 +5,7 @@ from south.v2 import SchemaMigration
 from django.db import models
 
 class Migration(SchemaMigration):
+    no_dry_dun = True
     
     def forwards(self, orm):
         
