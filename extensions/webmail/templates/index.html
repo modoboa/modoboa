@@ -84,7 +84,7 @@
 
   loadCompose = function(event) {
     event.stop();
-    current_anchor.baseurl("compose/").update();
+    current_anchor.baseurl("compose").update();
   }
   register_callback("compose", compose_callback);
 
@@ -106,10 +106,16 @@
 
   loadFolder = function(event, obj) {
     if (!$defined(obj)) {
-      obj = event.target;
+      obj = $(event.target);
     }
     event.stop();
-    current_anchor.parse_string(obj.get("href"), true).setparams(navparams);
+    // the following code prevents a bug under IE7
+    // because fullpath is returned instead of a relative one.
+    // (even if mootools uses getAttribute("href", 2), this is not working with AJAX requests)
+    var url = obj.get("href");
+    var baseurl = "http://" + location.host + location.pathname;
+    url = url.replace(baseurl, "");
+    current_anchor.parse_string(url, true).setparams(navparams);
     current_anchor.update();
   }
   register_callback("folder", function(resp) {

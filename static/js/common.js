@@ -77,9 +77,13 @@ function HashWrapper(deflocation) {
             this.reset();
         }
         this.base = (splits[0] == "") ? this.deflocation : splits[0];
-        if (this.base[this.base.length - 1] != '/') {
+        /*if (this.base[this.base.length - 1] != '/') {
             this.base += '/';
-        }
+        }*/
+	var re = new RegExp("/$");
+	if (!this.base.match(re)) {
+		this.base += '/';
+	}
         if (splits.length > 1) {
             params = splits[1].split('&');
             for (var i = 0; i < params.length; i++) {
@@ -106,7 +110,7 @@ function HashWrapper(deflocation) {
     };
 
     this.update = function(force) {
-        location.hash = this.serialize();
+        window.location.hash = this.serialize();
         if ($defined(force)) {
             this.force = force;
         }
@@ -147,9 +151,10 @@ function HashWrapper(deflocation) {
     this.baseurl = function(value) {
         this.reset();
         this.base = value;
-        if (this.base[this.base.length - 1] != '/') {
-            this.base += '/';
-        }
+ 	var re = new RegExp("/$");
+	if (!this.base.match(re)) {
+		this.base += '/';
+	}
         return this;
     };
 

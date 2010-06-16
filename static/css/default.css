@@ -145,8 +145,8 @@ div#footer {
     margin: 0;
     padding: 0;
     list-style: none;
-    width: 100%;
     color: #2a4069;
+    float: left;
 }
 
 .menubar li { 

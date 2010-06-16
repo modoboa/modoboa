@@ -74,6 +74,7 @@ tr.selected {
     background: transparent;
     color: black;
     text-decoration: none;
+    margin-left: 5px;
 }
 
 .box a:hover { 
@@ -83,7 +84,6 @@ tr.selected {
 
 .box img {
     float: left;
-    margin-right: 2px;
     border: 0;
 }
 
@@ -104,6 +104,7 @@ li.subfolders {
 }
 
 th {
+    cursor: pointer;
 /*-moz-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;
   -webkit-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;*/
 }
@@ -165,7 +166,7 @@ textarea:hover {
     width: 98%;
 }
 
-input {
+#mailheader input {
     width: 80%;
     padding: 0;
 }
