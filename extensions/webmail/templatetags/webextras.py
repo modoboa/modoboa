@@ -119,10 +119,6 @@ def print_folders(folders):
         result += "<a href='%s' class='%s' name='loadfolder'>%s</a>\n" \
             % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, label)
         if fd.has_key("sub"):
-            #result += "<img name='%s' class='clickable' src='/static/pics/%s' />\n" \
-            #    % (fd["path"], icon)
             result += "<ul name='%s' class='hidden'>" % (fd["path"]) + print_folders(fd["sub"]) + "</ul>\n"
-        #else:
-        #    result += "<img src='/static/pics/%s' />\n" % icon
         result += "</li>\n"
     return result

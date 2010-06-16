@@ -34,7 +34,7 @@ check_anchor = function() {
         query = current_anchor.serialized.substring(1);
     }
     infobox.show(gettext("Loading..."), "gray");
-    new Request.JSON({url: query, onSuccess: function(resp) {
+    new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
         infobox.notice(gettext("Done"));
@@ -110,7 +110,7 @@ function HashWrapper(deflocation) {
     };
 
     this.update = function(force) {
-        window.location.hash = this.serialize();
+        location.hash = this.serialize();
         if ($defined(force)) {
             this.force = force;
         }
@@ -320,4 +320,15 @@ searchbox_init = function() {
         }
     });
     $("searchbox").setStyle("float", "left");
+}
+
+// The following code prevents a bug under IE7 because fullpath is
+// returned instead of a relative one. (even if mootools uses
+// getAttribute("href", 2), this is not working with AJAX
+// requests)
+gethref = function(obj) {
+    var url = obj.get("href");
+    var baseurl = "http://" + location.host + location.pathname;
+
+    return url.replace(baseurl, "");
 }

@@ -277,8 +277,9 @@ class IMAPconnector(object):
 
     def move(self, msgset, oldfolder, newfolder):
         self.m.select(self._encodefolder(oldfolder), True)
-        self.m.copy(msgset, newfolder)
-        self.m.store(msgset, "+FLAGS", "\\Deleted")
+        status, data = self.m.copy(msgset, self._encodefolder(newfolder))
+        if status == 'OK':
+            self.m.store(msgset, "+FLAGS", "\\Deleted")
 
     def push_mail(self, folder, msg):
         now = imaplib.Time2Internaldate(time.time())

@@ -105,19 +105,14 @@
   register_callback("forward", compose_callback);
 
   loadFolder = function(event, obj) {
+    event.stop();
     if (!$defined(obj)) {
       obj = $(event.target);
     }
-    event.stop();
-    // the following code prevents a bug under IE7
-    // because fullpath is returned instead of a relative one.
-    // (even if mootools uses getAttribute("href", 2), this is not working with AJAX requests)
-    var url = obj.get("href");
-    var baseurl = "http://" + location.host + location.pathname;
-    url = url.replace(baseurl, "");
-    current_anchor.parse_string(url, true).setparams(navparams);
+    current_anchor.parse_string(gethref(obj), true).setparams(navparams);
     current_anchor.update();
   }
+
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
     select($$("a[href=" + current_anchor.getbaseurl() + "]"));
@@ -200,7 +195,7 @@
             return;
           }
           droppable.removeClass("dragging");
-          dest = droppable.getFirst("a").get("href");
+          dest = gethref(droppable.getFirst("a"));
           msgset = new Array();
           selectedRows.each(function(item, index) {
             msgset.include(item.get("id"));
@@ -229,10 +224,10 @@
     $$("a[name=mark-unread]").addEvent("click", buildmarkrequest);
 
     $$("a[name=fdaction]").addEvent("click", function(evt) {
-      evt.stop();
       new Request.JSON({url : evt.target.get("href"), 
                         onSuccess : get_callback("folder")
       }).get();
+      evt.stop();
     });
 
     if ($("toggleselect")) {
@@ -273,6 +268,7 @@
     select(event.target);
     loadFolder(event, event.target);
   }
+
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block leftcol %}

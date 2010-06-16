@@ -8,7 +8,6 @@ from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_control, never_cache
 from mailng.admin.models import Mailbox
 from mailng.lib import parameters, _render, _render_error, getctx, is_not_localadmin
 from mailng.lib.email_listing import parse_search_parameters
@@ -25,7 +24,6 @@ def __get_current_url(request):
 
 @login_required
 @is_not_localadmin()
-@cache_control(must_revalidate=True, private=True, no_cache=True) 
 def folder(request, name, updatenav=True):
     if not name:
         name = "INBOX"
@@ -68,7 +66,6 @@ def folder(request, name, updatenav=True):
 
 @login_required
 @is_not_localadmin()
-@cache_control(must_revalidate=True, private=True, no_cache=True) 
 def index(request):
     #try:
     navp = request.session.has_key("navparams") \
@@ -254,8 +251,6 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
 
 @login_required
 @is_not_localadmin()
-#@cache_control(no_cache=True, expires=-1)
-@never_cache
 def compose(request):
     if request.method == "POST":
         return send_mail(request, posturl=reverse(compose))

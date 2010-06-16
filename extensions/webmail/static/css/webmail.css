@@ -67,7 +67,6 @@ tr.selected {
 
 .box li.selected {
     background-color: #ffffcc;
-    position: relative;
 }
 
 .box a:link, .box a:visited {
@@ -117,8 +116,8 @@ th.selected {
     cursor: move;
 }
 
-.dragging {
-    background: #6AB0C5;
+.box li.dragging {
+    background-color: #6AB0C5;
 }
 
 ul.hidden {
@@ -126,7 +125,7 @@ ul.hidden {
 }
 
 ul.visible {
-    background: white;
+    background-color: white;
     display: block;
     padding-bottom: 0;
 }
