@@ -287,14 +287,14 @@ def aliases(request, dom_id=None, mbox_id=None):
 @good_domain
 @permission_required("admin.add_alias")
 def newalias(request, dom_id):
+    domain = Domain.objects.get(pk=dom_id)
     if request.method == "POST":
-        form = AliasForm(request.POST)
+        form = AliasForm(request.POST, domain=domain)
         error = None
         if form.is_valid():
             if Alias.objects.filter(address=request.POST["address"]):
                 error = _("Alias with this name already exists")
             else:
-                domain = Domain.objects.get(pk=dom_id)
                 alias = form.save(commit=False)
                 alias.full_address = "%s@%s" % (alias.address, domain.name)
                 alias.save()
@@ -307,7 +307,7 @@ def newalias(request, dom_id):
                 })
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
-    form = AliasForm()
+    form = AliasForm(domain=domain)
     return render_to_response('admin/newalias.html', {
             "domain" : dom_id, "form" : form, "noerrors" : True
             })

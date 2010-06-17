@@ -1,1 +1,1 @@
-[{"pk": 1, "model": "auth.group", "fields": {"name": "DomainAdmins", "permissions": [36, 37, 38, 40, 41, 42, 34, 39, 43]}}]
+[{"pk": 1, "model": "auth.group", "fields": {"name": "DomainAdmins", "permissions": [["add_mailbox", "admin", "mailbox"], ["change_mailbox", "admin", "mailbox"], ["delete_mailbox", "admin", "mailbox"], ["add_alias", "admin", "alias"], ["change_alias", "admin", "alias"], ["delete_alias", "admin", "alias"], ["view_domain", "admin", "domain"], ["view_mailboxes", "admin", "mailbox"], ["view_aliases", "admin", "alias"]]}}]

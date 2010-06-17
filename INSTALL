@@ -5,7 +5,7 @@ Requirements
 ------------
 
 - Python version 2.6+
-- Django version 1.0+ (http://docs.djangoproject.com/en/dev/intro/install/#intro-install)
+- Django version 1.2+ (http://docs.djangoproject.com/en/dev/intro/install/#intro-install)
 - south version 0.7+ (http://south.aeracode.org/)
 
 How to install
@@ -13,19 +13,20 @@ How to install
 
 Download Mailng's tarball and extract it::
 
-  tar xzf mailng-<version>.tar.gz
-  mv mailng-<version> mailng
+  # tar xzf mailng-<version>.tar.gz
+  # mv mailng-<version> mailng
 
-Settings file
+Then, enter the mailng directory, create a settings.py file (you can
+use settings-sample.py as a model). Specify database relative
+informations. You must choose between mysql and postgresql, other
+types are not supported by major email projects like postfix or
+dovecot.
 
-  Enter the mailng directory, create a settings.py file (you can use
-  settings-sample.py as a model).
-  Specify database relative informations.
-  You must choose between mysql and postgresql, other types are not supported by
-  major email projects like postfix or dovecot.
-  Create a database with the name you specified in settings.py.
-  you will probably need python database module backend like MySQLdb.
-  Modify TEMPLATE_DIRS.
+Create a database with the name you specified in settings.py. Make
+sure your database is using UTF8 as a default charset. If not, you
+will surely have problems with MySQL.
+
+You will probably need to install a python database backend like MySQLdb.
 
 Initialise the database by running the following command::
 
@@ -187,7 +188,13 @@ Then run the following commands to update MailNG SQL schema and content::
   # python manage.py syncdb
   # python manage.py migrate postfix-autoreply
   # export PYTHONPATH=$PWD/..
-  # DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/upgrade_autoreply.py
+  # DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/postfix_autoreply/upgrade_autoreply.py
+
+The user that executes the autoreply script needs to access
+settings.py. You must apply proper permissions on this file. For
+example, if settings.py belongs to www-data:www-data, you can add the
+vmail user to the www-data group and set the read permission for the
+group.
 
 To make Postfix understand this feature, you need to update your configuration
 files as follow::
@@ -199,7 +206,7 @@ files as follow::
 
  # /etc/postfix/master.cf
   autoreply unix        -       n       n       -       -       pipe
-            flags= user=nobody argv=<path_to_mailng>/scripts/autoreply $sender $mailbox
+            flags= user=vmail:<group> argv=<path_to_mailng>/scripts/postfix_autoreply/autoreply $sender $mailbox
 
 Then, create new map files with the following content::
 
@@ -227,7 +234,8 @@ pre-defined time period. By default, this period is equal to 1 day
 parameter available in the admin panel.
 
 NB: Be sure that both 'autoreply' and 'autoreply.py' scripts (located
-inside the 'scripts' directory) have good permissions (ie. 0755).
+inside the 'scripts/postfix_autoreply' directory) have good
+permissions (ie. 0755).
 
 Tips to link Mailng with dovecot
 --------------------------------

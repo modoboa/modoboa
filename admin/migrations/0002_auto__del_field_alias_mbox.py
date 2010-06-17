@@ -5,7 +5,7 @@ from south.v2 import SchemaMigration
 from django.db import models
 
 class Migration(SchemaMigration):
-    no_dry_dun = True
+    no_dry_run = True
     
     def forwards(self, orm):
         
@@ -18,7 +18,7 @@ class Migration(SchemaMigration):
         db.create_unique('admin_alias_mboxes', ['alias_id', 'mailbox_id'])
 
         for alias in orm.Alias.objects.all():
-            alias.mboxes.append(alias.mbox_id)
+            alias.mboxes.add(alias.mbox_id)
             alias.save()
 
         # Deleting field 'Alias.mbox'

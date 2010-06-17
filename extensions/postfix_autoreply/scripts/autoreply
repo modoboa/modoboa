@@ -1,8 +1,11 @@
 #!/bin/sh
 
-BASEDIR=/home/tonio/projets/devel
-export PYTHONPATH=$BASEDIR
-export DJANGO_SETTINGS_MODULE=mailng.settings
-#export PYTHON_EGG_CACHE=/tmp
+PYTHON=python
+BASEDIR=/var/www
+# If the user executing this script has no homedir or no shell, you
+# must need to set the above variable.
+EGG_CACHE=""
 
-$BASEDIR/mailng/scripts/postfix_autoreply/autoreply.py $1 $2
+PYTHON_EGG_CACHE=$EGG_CACHE PYTHONPATH=$BASEDIR \
+    DJANGO_SETTINGS_MODULE=mailng.settings $PYTHON \
+    $BASEDIR/mailng/scripts/postfix_autoreply/autoreply.py $1 $2

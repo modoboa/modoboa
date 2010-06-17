@@ -9,7 +9,7 @@ import string, pdb
 from optparse import OptionParser
 from mailng.lib import parameters
 from mailng.admin.models import Domain
-import grapher
+import mailng.extensions.stats.grapher as grapher
 
 """
 Postfix log parser.

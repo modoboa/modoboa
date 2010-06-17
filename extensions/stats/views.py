@@ -25,22 +25,14 @@ periods = [{"name" : "day", "label" : _("Day")},
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def adminindex(request):
-    period = request.GET.has_key("period") and request.GET["period"] or "day"
-    domain = request.GET.has_key("domain") and request.GET["domain"] or "global"
-    if domain != "global":
-        domain = Domain.objects.get(pk=domain)
-        domain = domain.name
     domains = Domain.objects.all()
-    G = Grapher()
-    for name, t in tpl.iteritems():
-        G.make_defaults(domain, t)
-
     return _render(request, 'stats/adminindex.html', {
             "admin" : True,
+            "domain" : "global",
             "domains" : domains,
             "graphs" : graph_list,
             "periods" : periods,
-            "period" : period})
+            "period" : "day"})
 
 @login_required
 @good_domain
