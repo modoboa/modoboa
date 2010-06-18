@@ -149,6 +149,9 @@ class Email(object):
                 if re.match("^attachment", part["Content-Disposition"]):
                     self.attachments += [part]
                     continue
+            if part.get_content_type() == "text/calendar":
+                contents["plain"] += part.get_payload(decode=True)
+                continue
             if part.get_content_type() in ("text/html", "text/plain"):
                 contents[part.get_content_subtype()] += part.get_payload(decode=True)
             if mode != "html" or links == "0":
@@ -178,6 +181,7 @@ class Email(object):
                 mode = "plain"
             else:
                 mode = "html"
+
         self.pre, self.body = \
             getattr(self, "viewmail_%s" % mode)(contents[mode], links=links)
 
@@ -206,6 +210,8 @@ class Email(object):
         return (True, body)
 
     def viewmail_html(self, content, **kwargs):
+        if content is None or content == "":
+            return (False, "")
         links = kwargs.has_key("links") and kwargs["links"] or "0"
         html = lxml.html.fromstring(content) 
         if links == "0":
