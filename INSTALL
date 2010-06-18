@@ -438,8 +438,7 @@ add the following line inside root's crontab::
 Replace mailng_dir with the installation path of MailNG.
 
 By default, messages older than 14 days are automatically purged. You
-can modify this value by changing the variable MAX_MESSAGES_AGE inside
-settings.py.
+can modify this value by changing the MAX_MESSAGES_AGE parameter in the admin panel.
 
 Using the statistics plugin
 ---------------------------

@@ -13,13 +13,18 @@ def mysql_newconnection(host, dbname, login, password):
     return MySQLdb.connect(host=host, db=dbname, user=login, passwd=password)
 
 def getconnection(name):
-    if not name in connections.keys():
+#    if not name in connections.keys():
+    if True:
         from django.conf import settings
         
         cfg = settings.DB_CONNECTIONS[name]
         if cfg["driver"] == "mysql":
             conn = mysql_newconnection(cfg["host"], cfg["dbname"], cfg["login"], 
                                        cfg["password"])
+
+        if connections.has_key(name):
+            close(connections[name])
+
         connections[name] = conn
     return connections[name]
         
