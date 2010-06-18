@@ -148,9 +148,13 @@ class Email(object):
             if part.has_key("Content-Disposition"):
                 if re.match("^attachment", part["Content-Disposition"]):
                     self.attachments += [part]
+                    continue
             if part.get_content_type() in ("text/html", "text/plain"):
                 contents[part.get_content_subtype()] += part.get_payload(decode=True)
             if mode != "html" or links == "0":
+                continue
+            if part.get_content_maintype() == "application":
+                self.attachments += [part]
                 continue
 
             if part.get_content_maintype() == "image":
@@ -159,7 +163,7 @@ class Email(object):
                     if re.match("^http:", fname):
                         path = fname
                     else:
-                        path = os.path.abspath("static/tmp" + fname)
+                        path = os.path.abspath("static/tmp/" + fname)
                         fp = open(path, "wb")
                         fp.write(part.get_payload(decode=True))
                         fp.close()

@@ -132,8 +132,16 @@ def getattachment(request, folder, mail_id):
             fname = unicode(decoded[0][0], decoded[0][1])
         if fname == request.GET["fname"]:
             resp = HttpResponse(part.get_payload(decode=1))
-            for hdr in ["Content-Disposition", "Content-Type"]:
+            for hdr in ["Content-Type", "Content-Transfer-Encoding"]:
+                if not part.has_key(hdr):
+                    continue
                 resp[hdr] = re.sub("\s", "", part[hdr])
+            if part.has_key("Content-Disposition"):
+                resp["Content-Disposition"] = \
+                    re.sub("\s", "", part["Content-Disposition"])
+            else:
+                resp["Content-Disposition"] = \
+                    "attachment; filename=%s" % fname
             resp["Content-Length"] = len(resp.content)
             return resp
     raise Http404
