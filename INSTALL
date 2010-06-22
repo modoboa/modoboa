@@ -509,6 +509,15 @@ Just run the following command to activate the component::
   # DJANGO_SETTINGS_MODULE=mailng.settings \
       <mailng_dir>/scripts/extension.py webmail on
 
+Sometimes, inline images are integrated inside emails. To display
+them, MailNG stores them inside a temporary folder. Make sure the
+following path exists, or create it if not::
+
+  # mkdir <path_to_mailng>/static/tmp
+
+The user that is running MailNG will need the write permission inside
+this folder.
+
 Next, go to the admin panel and modify the following parameters in
 order to communicate with your IMAP and SMTP servers::
 

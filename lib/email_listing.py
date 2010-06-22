@@ -161,20 +161,32 @@ class Email(object):
                 continue
 
             if part.get_content_maintype() == "image":
+                m = re.match("<(.+)>", part["Content-ID"])
+                cid = m is not None and m.group(1) or part["Content-ID"]
+
                 if part.has_key("Content-Location"):
                     fname = part["Content-Location"]
                     if re.match("^http:", fname):
                         path = fname
                     else:
-                        path = os.path.abspath("static/tmp/" + fname)
-                        fp = open(path, "wb")
-                        fp.write(part.get_payload(decode=True))
-                        fp.close()
-                    m = re.match("<(.+)>", part["Content-ID"])
-                    if m:
-                        self.attached_map[m.group(1)] = path
-                    else:
-                        self.attached_map[part["Content-ID"]] = path
+                        path = self.__save_image(fname, part)
+                elif part.has_key("Content-Disposition"):
+                    if not part["Content-Disposition"].startswith("inline"):
+                        continue
+                    params = part["Content-Disposition"].split(";")
+                    fname = None
+                    for p in params:
+                        lst = p.strip().split("=")
+                        if len(p) and p[0] == "filename":
+                            fname = p[1]
+                            break
+                    path = self.__save_image(fname is None and cid or fname, part)
+                else:
+                    continue
+               
+                self.attached_map[cid] = path
+                continue
+
 
         if not contents.has_key(mode) or contents[mode] == "":
             if mode == "html":
@@ -185,14 +197,22 @@ class Email(object):
         self.pre, self.body = \
             getattr(self, "viewmail_%s" % mode)(contents[mode], links=links)
 
+    def __save_image(self, fname, part):
+        if re.search("\.\.", fname):
+            return None
+        path = "static/tmp/" + fname
+        fp = open(path, "wb")
+        fp.write(part.get_payload(decode=True))
+        fp.close()
+        return "/" + path
+
     def map_cid(self, url):
         import re
 
-        map = globals()["attached_map"]
-        m = re.match(".*cid:([^\"]+)", url)
+        m = re.match(".*cid:(.+)", url)
         if m:
-            if map.has_key(m.group(1)):
-                return map[m.group(1)]
+            if self.attached_map.has_key(m.group(1)):
+                return self.attached_map[m.group(1)]
         return url
 
     def render_headers(self, **kwargs):
