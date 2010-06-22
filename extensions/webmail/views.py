@@ -164,7 +164,8 @@ def delete(request, fdname, mail_id):
                         password=request.session["password"])
     mbc.move(mail_id, fdname, parameters.get_user(request.user, "webmail",
                                                   "TRASH_FOLDER"))
-    return folder(request, fdname, False)
+    ctx = getctx("ok", next=__get_current_url(request))
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 @is_not_localadmin()

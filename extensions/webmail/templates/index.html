@@ -48,8 +48,9 @@
       var lnk = event.target;
 
       event.stop();
-      new Request.JSON({url: lnk.get("href"),
-                        onSuccess: get_callback("folder")}).get();
+      new Request.JSON({url: lnk.get("href"), onSuccess: function(resp) {
+                          current_anchor.parse_string(resp.next).update();
+                        }}).get();
     });
     setDivHeight("mailcontent", 5, 0);
   });

@@ -511,7 +511,7 @@ Just run the following command to activate the component::
 
 Sometimes, inline images are integrated inside emails. To display
 them, MailNG stores them inside a temporary folder. Make sure the
-following path exists, or create it if not::
+following path exists, otherwise create it::
 
   # mkdir <path_to_mailng>/static/tmp
 
