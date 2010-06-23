@@ -56,7 +56,10 @@ class EmailAddress(object):
             if part[1] is None:
                 self.name += part[0]
             else:
-                self.name += unicode(part[0], part[1])
+                try:
+                    self.name += unicode(part[0], part[1])
+                except UnicodeDecodeError:
+                    self.name = ""
         self.fulladdress = "%s <%s>" % (self.name, self.address)
 
     def __str__(self):
