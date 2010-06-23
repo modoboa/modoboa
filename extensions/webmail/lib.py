@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 import re
 import time
 import imaplib
@@ -392,8 +396,9 @@ class ImapListing(EmailListing):
                 key = "SUBJECT"
             else:
                 continue
-            criterions = or_criterion(criterions, '%s "%s"' % (key, pattern))
-        self.mbc.criterions = ["(%s)" % criterions]
+            criterions = \
+                unicode(or_criterion(criterions, '%s "%s"' % (key, pattern)))
+        self.mbc.criterions = [unicode("(%s)" % criterions)]
 
 class ImapEmail(Email):
     def __init__(self, msg, addrfull=False, *args, **kwargs):
