@@ -66,7 +66,7 @@ ORDER BY msgs.time_num DESC
         query = self._get_query()
         status, cursor = db.execute(self.conn, """
 SELECT msgs.from_addr, maddr.email, msgs.subject, msgs.content, quarantine.mail_id,
-       msgs.time_num, msgs.content
+       msgs.time_num, msgs.content, msgrcpt.rs
 %s
 LIMIT %d,%d
 """ % (query, start - 1, stop - 1))

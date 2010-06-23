@@ -50,6 +50,7 @@
       event.stop();
       new Request.JSON({url: lnk.get("href"), onSuccess: function(resp) {
                           current_anchor.parse_string(resp.next).update();
+                          select($$("a[href=" + current_anchor.getbaseurl() + "]"));
                         }}).get();
     });
     setDivHeight("mailcontent", 5, 0);
