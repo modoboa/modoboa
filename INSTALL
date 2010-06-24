@@ -24,9 +24,8 @@ dovecot.
 
 Create a database with the name you specified in settings.py. Make
 sure your database is using UTF8 as a default charset. If not, you
-will surely have problems with MySQL.
-
-You will probably need to install a python database backend like MySQLdb.
+will surely have problems (with MySQL at least). You will probably
+need to install a python database backend (like MySQLdb).
 
 Initialise the database by running the following command::
 
@@ -45,19 +44,30 @@ How to upgrade
 
 First, decompress the new tarball at the same location than your
 current installation. Then, check if the new version you're installing
-required a migration::
+requires a migration::
 
 0.7 -> 0.8 : SQL migration needed.
 
-south is needed to handle migrations. You will find instructions on
-how to install south here:
-http://south.aeracode.org/docs/installation.html.
+Before you start migration, make sure you have updated your
+INSTALLED_APPS variable and that it contains at least::
+
+  INSTALLED_APPS = (
+     # Django's stuff before
+
+     'south',
+     'mailng',
+     'mailng.lib',
+     'mailng.admin',
+     'mailng.userprefs',
+  )
+
+Starting with 0.8, mailng.main doesn't exist anymore. You need to
+remove it from your INSTALLED_APPS.
 
 NB: Before doing this migration, I recommend that you make a copy of your
 existing database.
 
-When this is done, add 'mailng.lib' and 'south' to your
-INSTALLED_APPS. Then, run the following commands:
+Finally, run the following commands:
 
   # python manage.py syncdb
   # python manage.py convert_to_south
@@ -95,17 +105,17 @@ group/user needed because we are in a virtual hosting configuration
 
 For example, create a vmail group::
 
-  groupadd vmail
+  # groupadd vmail
 
 Then create a vmail user::
 
-  useradd -g vmail -d /var/vmail -m vmail
+  # useradd -g vmail -d /var/vmail -m vmail
 
 At last, the system user used to run mailng will need permissions to
-manipulate directories in vmail's homedir. To do that, edit your /etc/sudoers
+manipulate directories in vmail's homedir. To do so, edit your /etc/sudoers
 file and add the following inside::
 
-  www-data ALL=(vmail) NOPASSWD: ALL
+  <user_that_runs_mailng> ALL=(vmail) NOPASSWD: ALL
 
 Testing installation
 --------------------
@@ -113,7 +123,7 @@ Testing installation
 As a typical Django application, MailNG can be tested using a simple web 
 server. Just run this command to start it::
 
-  python manage.py runserver
+  # python manage.py runserver
 
 You will be able to play with MailNG by looking at 
 http://<youraddress>:8000/mailng/admin/.
