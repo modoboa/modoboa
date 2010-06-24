@@ -51,17 +51,18 @@ def folder(request, name, updatenav=True):
                       baseurl=name, folder=name, order=order, **optparams)
 
     page = lst.paginator.getpage(request.session["page"])
-    if page:
-        content = lst.fetch(request, page.id_start, page.id_stop)
-        navbar = lst.render_navbar(page)
-    else:
-        content = _("Empty folder")
-        navbar = ""
     folders = render_to_string("webmail/folders.html", {
             "folders" : lst.getfolders()
             })
-    ctx = getctx("ok", folders=folders, listing=content, navbar=navbar,
-                 menu=listing_menu("", name, request.user))
+    dico = {"folders" : folders, "menu" : listing_menu("", name, request.user)}
+    if page:
+        dico["listing"] = lst.fetch(request, page.id_start, page.id_stop)
+        dico["navbar"] = lst.render_navbar(page)
+    else:
+        dico["listing"] = "<div class='info'>%s</div>" \
+            % _("This folder contains no messages")
+        dico["navbar"] = ""
+    ctx = getctx("ok", **dico)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required

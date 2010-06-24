@@ -54,7 +54,9 @@ window.addEvent("domready", function() {
       $("menubar").set("html", resp.menu);
       parse_menubar("menubar");
     }
-    $("listing").set("html", resp.listing);
+    if ($defined(resp.listing)) {
+      $("listing").set("html", resp.listing);
+    }
     if ($defined(resp.navbar)) {
       $("navbar").set("html", resp.navbar);
       $("navbar").getChildren("a").addEvent("click", navbarcallback);

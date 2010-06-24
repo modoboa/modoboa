@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:54+0200\n"
+"POT-Creation-Date: 2010-06-24 13:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
 
-#: admin/views.py:295 admin/views.py:326
+#: admin/views.py:296 admin/views.py:326
 msgid "Alias with this name already exists"
 msgstr "Un alias avec ce nom existe déjà"
 
@@ -317,23 +317,23 @@ msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Emplacement de la socket du serveur PDP (en mode unix)"
 
 #: extensions/amavis_quarantine/main.py:50
-#: extensions/amavis_quarantine/templates/index.html:137
+#: extensions/amavis_quarantine/templates/index.html:130
 msgid "Quarantine"
 msgstr "Quarantaine"
 
 #: extensions/amavis_quarantine/sql_listing.py:14
-#: extensions/webmail/forms.py:5 extensions/webmail/lib.py:23
+#: extensions/webmail/forms.py:5 extensions/webmail/lib.py:27
 msgid "From"
 msgstr "De"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
-#: extensions/webmail/forms.py:8 extensions/webmail/lib.py:21
-#: extensions/webmail/views.py:323 templates/common/email_searchbar.html:7
+#: extensions/webmail/forms.py:8 extensions/webmail/lib.py:25
+#: extensions/webmail/views.py:332 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Sujet"
 
-#: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:24
-#: extensions/webmail/views.py:324
+#: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:28
+#: extensions/webmail/views.py:333
 msgid "Date"
 msgstr ""
 
@@ -355,11 +355,11 @@ msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d message relâché correctement"
 msgstr[1] "%(count)d messages relâchés correctement"
 
-#: extensions/amavis_quarantine/templates/index.html:90
+#: extensions/amavis_quarantine/templates/index.html:83
 msgid "Release this selection?"
 msgstr "Relâcher cette sélection?"
 
-#: extensions/amavis_quarantine/templates/index.html:97
+#: extensions/amavis_quarantine/templates/index.html:90
 msgid "Delete this selection?"
 msgstr "Supprimer cette sélection?"
 
@@ -438,6 +438,10 @@ msgstr "Mauvais entête"
 #: extensions/amavis_quarantine/templatetags/amextras.py:83
 msgid "Bad MIME"
 msgstr "Mauvais type MIME"
+
+#: extensions/dummy_plugin/main.py:24
+msgid "Dummy"
+msgstr ""
 
 #: extensions/postfix_autoreply/forms.py:18
 msgid "This date is over"
@@ -576,7 +580,7 @@ msgstr "Année"
 msgid "Custom"
 msgstr "Personnalisée"
 
-#: extensions/stats/views.py:74
+#: extensions/stats/views.py:66
 msgid "Bad custom period"
 msgstr "Mauvaise période personnalisée"
 
@@ -584,23 +588,23 @@ msgstr "Mauvaise période personnalisée"
 msgid "Global statistics"
 msgstr "Statistiques globales"
 
-#: extensions/stats/templates/content.html:83
+#: extensions/stats/templates/content.html:84
 msgid "Domain:"
 msgstr "Domaine :"
 
-#: extensions/stats/templates/content.html:85
+#: extensions/stats/templates/content.html:86
 msgid "Global"
 msgstr ""
 
-#: extensions/stats/templates/content.html:93
+#: extensions/stats/templates/content.html:94
 msgid "Period:"
 msgstr "Période :"
 
-#: extensions/stats/templates/content.html:102
+#: extensions/stats/templates/content.html:103
 msgid "Start"
 msgstr "Démarrer"
 
-#: extensions/stats/templates/content.html:104
+#: extensions/stats/templates/content.html:105
 msgid "End"
 msgstr "Fin"
 
@@ -624,11 +628,11 @@ msgstr "A"
 msgid "Cc"
 msgstr ""
 
-#: extensions/webmail/lib.py:177
+#: extensions/webmail/lib.py:184
 msgid "Connection to IMAP server failed, check your configuration"
 msgstr "La connexion au serveur IMAP a échoué, vérifiez votre configuration"
 
-#: extensions/webmail/lib.py:181
+#: extensions/webmail/lib.py:188
 msgid "Authentication failed, check your configuration"
 msgstr "L'authentification a échoué, vérifiez votre configuration"
 
@@ -676,20 +680,19 @@ msgstr "Dossier de destination des copies de messages envoyés"
 msgid "Simple IMAP webmail"
 msgstr ""
 
-#: extensions/webmail/main.py:63 extensions/webmail/templates/index.html:385
+#: extensions/webmail/main.py:63 extensions/webmail/templates/index.html:275
 msgid "Webmail"
 msgstr ""
 
-#: extensions/webmail/views.py:58
-#: extensions/webmail/templatetags/webextras.py:87
-msgid "Empty folder"
-msgstr "Vider ce dossier"
+#: extensions/webmail/views.py:58 lib/email_listing.py:124
+msgid "This folder contains no messages"
+msgstr "Ce dossier ne contient pas de messages"
 
-#: extensions/webmail/views.py:304
+#: extensions/webmail/views.py:313
 msgid "wrote:"
 msgstr "a écrit :"
 
-#: extensions/webmail/views.py:322
+#: extensions/webmail/views.py:331
 msgid "Original message"
 msgstr "Message original"
 
@@ -746,8 +749,12 @@ msgid "Actions"
 msgstr ""
 
 #: extensions/webmail/templatetags/webextras.py:83
-msgid "Compact folder"
+msgid "Compress folder"
 msgstr "Compresser ce dossier"
+
+#: extensions/webmail/templatetags/webextras.py:87
+msgid "Empty folder"
+msgstr "Vider ce dossier"
 
 #: lib/__init__.py:63
 #, python-format
@@ -921,11 +928,11 @@ msgstr "Dernière"
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: templates/registration/login.html:7
+#: templates/registration/login.html:8
 msgid "Welcome to MailNG"
 msgstr "Bienvenue dans MailNG"
 
-#: templates/registration/login.html:27
+#: templates/registration/login.html:28
 msgid "Welcome"
 msgstr "Bienvenue"
 
@@ -954,4 +961,3 @@ msgstr "Nouveau mot de passe"
 #: userprefs/forms.py:26
 msgid "Old password mismatchs"
 msgstr "L'ancien mot de passe est incorrect"
-

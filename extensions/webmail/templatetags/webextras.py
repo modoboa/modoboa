@@ -80,7 +80,7 @@ def listing_menu(selection, folder, user):
          "width" : "150",
          "menu" : [
                 {"name" : "fdaction",
-                 "label" : _("Compact folder"),
+                 "label" : _("Compress folder"),
                  "img" : "/static/pics/compress.png",
                  "url" : "compact/%s/" % folder},
                 {"name" : "fdaction",

@@ -60,7 +60,7 @@ def _listing(request, internal=False, filter=None):
         content = lst.fetch(request, page.id_start, page.id_stop)
         navbar = lst.render_navbar(page)
     else:
-        content = _("Empty quarantine")
+        content = "<div class='info'>%s</div>" % _("Empty quarantine")
         navbar = ""
     ctx = getctx("ok", listing=content, navbar=navbar,
                  menu=quar_menu("", request.user.get_all_permissions()))

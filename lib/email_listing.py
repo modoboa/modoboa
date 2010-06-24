@@ -121,7 +121,7 @@ class EmailListing:
         if not self.empty:
             page = self.paginator.getpage(pageid)
             if not page:
-                listing = "Empty folder"
+                listing = _("This folder contains no messages")
             else:
                 listing = self.fetch(request, page.id_start, page.id_stop)
         elapsed = kwargs.has_key("start") and time.time() - kwargs["start"] or 0
