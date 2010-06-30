@@ -198,13 +198,15 @@ class Email(object):
             getattr(self, "viewmail_%s" % mode)(contents[mode], links=links)
 
     def __save_image(self, fname, part):
+        from django.conf import settings
+
         if re.search("\.\.", fname):
             return None
-        path = "static/tmp/" + fname
-        fp = open(path, "wb")
+        path = "/static/tmp/" + fname
+        fp = open(settings.MAILNG_DIR + path, "wb")
         fp.write(part.get_payload(decode=True))
         fp.close()
-        return "/" + path
+        return path
 
     def map_cid(self, url):
         import re
