@@ -186,7 +186,6 @@ class IMAPconnector(object):
             self.m.login(user, passwd)
         except (imaplib.IMAP4.error, ssl.SSLError), error:
             return False, _("Authentication failed, check your configuration")
-            
         return True, None
 
     def logout(self):
@@ -230,7 +229,7 @@ class IMAPconnector(object):
 
     def unseen_messages(self, folder):
         """Return the number of unseen messages for folder"""
-        self.m.select(self._encodefolder(folder))
+        self.m.select(self._encodefolder(folder), True)
         status, data = self.m.search("UTF-8", "(NOT DELETED UNSEEN)")
         if status != "OK":
             return
@@ -266,37 +265,37 @@ class IMAPconnector(object):
         return result
 
     def _add_flag(self, folder, mail_id, flag):
-        self.m.select(self._encodefolder(folder), True)
+        self.m.select(self._encodefolder(folder))
         self.m.store(mail_id, "+FLAGS", flag)
 
     def msg_unread(self, folder, msgset):
-        self.m.select(self._encodefolder(folder), True)
-        self.m.store(msgset, "-FLAGS", "\\Seen")
+        self.m.select(self._encodefolder(folder))
+        self.m.store(msgset, "-FLAGS", r'(\Seen)')
 
     def msg_read(self, folder, msgset):
-        self._add_flag(folder, msgset, "\\Seen")
+        self._add_flag(folder, msgset, r'(\Seen)')
 
     def msgforwarded(self, folder, imapid):
-        self._add_flag(folder, imapid, "$Forwarded")
+        self._add_flag(folder, imapid, '($Forwarded)')
 
     def msg_answered(self, folder, imapid):
-        self._add_flag(folder, imapid, "\\Answered")
+        self._add_flag(folder, imapid, r'(\Answered)')
 
     def move(self, msgset, oldfolder, newfolder):
-        self.m.select(self._encodefolder(oldfolder), True)
+        self.m.select(self._encodefolder(oldfolder))
         status, data = self.m.copy(msgset, self._encodefolder(newfolder))
         if status == 'OK':
-            self.m.store(msgset, "+FLAGS", "\\Deleted")
+            self.m.store(msgset, "+FLAGS", r'(\Deleted)')
 
     def push_mail(self, folder, msg):
         now = imaplib.Time2Internaldate(time.time())
-        self.m.append(self._encodefolder(folder), '\\Seen', now, str(msg))
+        self.m.append(self._encodefolder(folder), r'(\Seen)', now, str(msg))
 
     def empty(self, folder):
         self.m.select(self._encodefolder(folder))
         typ, data = self.m.search(None, 'ALL')
         for num in data[0].split():
-            self.m.store(num, "+FLAGS", "\\Deleted")
+            self.m.store(num, "+FLAGS", r'(\Deleted)')
         self.m.expunge()
 
     def compact(self, folder):
