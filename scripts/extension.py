@@ -32,7 +32,7 @@ def update_extension(name, extdir, state):
 if __name__ == "__main__":
     if len(sys.argv) != 3:
 	usage()
-    extdir = "%s/extensions/%s" % (settings.MAILNG_DIR, sys.argv[1])
+    extdir = "%s/extensions/%s" % (settings.MODOBOA_DIR, sys.argv[1])
     if not os.path.isdir(extdir):
 	print "Extension not found"
 	sys.exit(1)

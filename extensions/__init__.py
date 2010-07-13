@@ -4,7 +4,7 @@ import re
 from django.conf import settings
 
 def loadextensions():
-    basedir = "%s/extensions" % settings.MAILNG_DIR
+    basedir = "%s/extensions" % settings.MODOBOA_DIR
     result = []
     for f in os.listdir(basedir):
 	if not os.path.isdir("%s/%s" % (basedir, f)):

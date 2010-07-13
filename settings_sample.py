@@ -68,8 +68,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'modoboa.urls'
 
-MAILNG_DIR = os.path.dirname(__file__)
-STATIC_ROOTDIR = os.path.join(MAILNG_DIR, 'static')
+MODOBOA_DIR = os.path.dirname(__file__)
+STATIC_ROOTDIR = os.path.join(MODOBOA_DIR, 'static')
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.

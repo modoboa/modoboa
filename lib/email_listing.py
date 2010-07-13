@@ -203,7 +203,7 @@ class Email(object):
         if re.search("\.\.", fname):
             return None
         path = "/static/tmp/" + fname
-        fp = open(settings.MAILNG_DIR + path, "wb")
+        fp = open(settings.MODOBOA_DIR + path, "wb")
         fp.write(part.get_payload(decode=True))
         fp.close()
         return path
