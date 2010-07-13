@@ -3,7 +3,7 @@
 """
 Postfix auto-replies plugin.
 
-This module provides a way to integrate MailNG auto-reply
+This module provides a way to integrate Modoboa auto-reply
 functionality into Postfix.
 
 """

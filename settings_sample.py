@@ -88,7 +88,7 @@ INSTALLED_APPS = (
     'modoboa.admin',
     'modoboa.userprefs',
 
-    # MailNG extensions here.
+    # Modoboa extensions here.
     # 'modoboa.extensions.postfix_autoreply'
 )
 

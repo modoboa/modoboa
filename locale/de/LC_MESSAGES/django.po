@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-24 13:33+0200\n"
+"POT-Creation-Date: 2010-07-13 17:13+0200\n"
 "PO-Revision-Date: 2010-06-10 23:21+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -329,12 +329,12 @@ msgstr "Von"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
 #: extensions/webmail/forms.py:8 extensions/webmail/lib.py:25
-#: extensions/webmail/views.py:332 templates/common/email_searchbar.html:7
+#: extensions/webmail/views.py:333 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Betreff"
 
 #: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:28
-#: extensions/webmail/views.py:333
+#: extensions/webmail/views.py:334
 msgid "Date"
 msgstr "Datum"
 
@@ -439,10 +439,6 @@ msgstr "Nachrichten-Header"
 #: extensions/amavis_quarantine/templatetags/amextras.py:83
 msgid "Bad MIME"
 msgstr "Schlechtes MIME"
-
-#: extensions/dummy_plugin/main.py:24
-msgid "Dummy"
-msgstr ""
 
 #: extensions/postfix_autoreply/forms.py:18
 msgid "This date is over"
@@ -686,15 +682,15 @@ msgstr "Einfaches IMAP-Webmail"
 msgid "Webmail"
 msgstr "Webmail"
 
-#: extensions/webmail/views.py:58 lib/email_listing.py:124
+#: extensions/webmail/views.py:63 lib/email_listing.py:124
 msgid "This folder contains no messages"
 msgstr "Dieser Ordner enthält keine Einträge"
 
-#: extensions/webmail/views.py:313
+#: extensions/webmail/views.py:314
 msgid "wrote:"
 msgstr "schrieb:"
 
-#: extensions/webmail/views.py:331
+#: extensions/webmail/views.py:332
 msgid "Original message"
 msgstr "Gesendete Nachrichten"
 
@@ -931,8 +927,9 @@ msgid "Save"
 msgstr "Speichern"
 
 #: templates/registration/login.html:8
-msgid "Welcome to MailNG"
-msgstr "Willkommen bei MailNG"
+#, fuzzy
+msgid "Welcome to Modoboa"
+msgstr "Willkommen bei Modoboa"
 
 #: templates/registration/login.html:28
 msgid "Welcome"

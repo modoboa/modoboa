@@ -5,7 +5,7 @@ from modoboa.lib.models import *
 
 """
 This interface provides a simple way to declare and store parameters
-in MailNG's database.
+in Modoboa's database.
 
 Core components or extensions can register their own parameters, which
 will be available and modifiable directly from the web interface.

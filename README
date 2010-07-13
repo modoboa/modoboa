@@ -1,4 +1,4 @@
-Mailng is a light web messaging solution. It provides different tools that 
+Modoboa is a light web messaging solution. It provides different tools that 
 facilitate virtual domains hosting. It is designed to be integrated with email 
 servers like postfix (http://www.postfix.org/) and/or dovecot 
 (http://www.dovecot.org/).
@@ -10,9 +10,9 @@ Available components:
  * Graphical statistics about emails traffic,
  * webmail.
 
-Django is needed to use Mailng (http://www.djangoproject.com/)
+Django is needed to use Modoboa (http://www.djangoproject.com/)
 
-The following external tools are provided with MailNG:
+The following external tools are provided with Modoboa:
  * Mootools version 1.2+ (http://www.mootools.net/),
  * SqueezeBox version 1.1+ (http://digitarald.de/project/squeezebox/),
  * Calendar (http://electricprism.com/aeron/calendar/)

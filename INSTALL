@@ -11,7 +11,7 @@ Requirements
 How to install
 --------------
 
-Download Mailng's tarball and extract it::
+Download Modoboa's tarball and extract it::
 
   # tar xzf modoboa-<version>.tar.gz
   # mv modoboa-<version> modoboa
@@ -33,7 +33,7 @@ Initialise the database by running the following command::
 
 Create the super admin account (just follow the procedure).
 
-Since version 0.8, MailNG is using south to handle schema
+Since version 0.8, Modoboa is using south to handle schema
 migration. In order to finish the database creation, you must run the
 first migration like this::
 
@@ -80,7 +80,7 @@ Finally, run the following commands:
 Time zone and language
 ----------------------
 
-MailNG is available in english, french and german. You can choose
+Modoboa is available in english, french and german. You can choose
 which language to use by modifying the LANGUAGE_CODE variable inside
 settings.py::
 
@@ -98,7 +98,7 @@ variable. For example::
 Host configuration
 ------------------
 
-Before testing MailNG, you must create a group and a user that will be
+Before testing Modoboa, you must create a group and a user that will be
 used to store mails on the host filesystem. There is only one
 group/user needed because we are in a virtual hosting configuration
 (ie. users with non-UNIX accounts).
@@ -120,15 +120,15 @@ file and add the following inside::
 Testing installation
 --------------------
 
-As a typical Django application, MailNG can be tested using a simple web 
+As a typical Django application, Modoboa can be tested using a simple web 
 server. Just run this command to start it::
 
   # python manage.py runserver
 
-You will be able to play with MailNG by looking at 
+You will be able to play with Modoboa by looking at 
 http://<youraddress>:8000/modoboa/admin/.
 
-Tips to link Mailng with postfix
+Tips to link Modoboa with postfix
 --------------------------------
 
 First, define following maps on your server (this should work with
@@ -173,14 +173,14 @@ Then, use the following configuration in your /etc/postfix/main.cf file
   virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf
   # Stuff after
 
-NB: MailNG supports both maildir and mbox formats. You can specify
+NB: Modoboa supports both maildir and mbox formats. You can specify
 which format to use by modifying the MAILBOX_TYPE parameter available
 in the admin panel.
 
 Tips to activate auto-reply messages in Postifx
 -----------------------------------------------
 
-Since version 0.6, mail users can define an auto-reply message with MailNG.
+Since version 0.6, mail users can define an auto-reply message with Modoboa.
 
 To activate the extension, edit your settings.py and add the following
 line inside the INSTALLED_APPS variable::
@@ -193,7 +193,7 @@ Run the following command to activate the component::
   # DJANGO_SETTINGS_MODULE=modoboa.settings \
       <modoboa_dir>/scripts/extension.py postfix-autoreply on
 
-Then run the following commands to update MailNG SQL schema and content::
+Then run the following commands to update Modoboa SQL schema and content::
 
   # python manage.py syncdb
   # python manage.py migrate postfix-autoreply
@@ -247,7 +247,7 @@ NB: Be sure that both 'autoreply' and 'autoreply.py' scripts (located
 inside the 'scripts/postfix_autoreply' directory) have good
 permissions (ie. 0755).
 
-Tips to link Mailng with dovecot
+Tips to link Modoboa with dovecot
 --------------------------------
 
 If you are using 'maildir' format to store mailboxes, add the
@@ -331,7 +331,7 @@ user quotas::
 
   user_query = SELECT path AS home, uid, gid, concat('*:storage=', quota, 'M') AS quota_rule FROM admin_mailbox WHERE full_address = '%u'
 
-Tips to serve Mailng behind Apache2
+Tips to serve Modoboa behind Apache2
 ------------------------------------
 
 First, be sure to have apache2 and mod_python installed on your
@@ -424,7 +424,7 @@ Below is an example of a working configuration::
 Don't forget to update the inet_acl list if you plan to release from
 the network.
 
-Once amavisd-new is configured, just tell MailNG where it can find the
+Once amavisd-new is configured, just tell Modoboa where it can find the
 "release server" by modifying following parameters in the admin panel::
 
   # "unix" or "inet"
@@ -437,7 +437,7 @@ Once amavisd-new is configured, just tell MailNG where it can find the
   AM_PDP_HOST = "127.0.0.1"
   AM_PDP_PORT = 9998
 
-Last point, MailNG provides a simple script that periodically purge
+Last point, Modoboa provides a simple script that periodically purge
 the amavisd-new quarantine database. If you plan to use it, you can
 add the following line inside root's crontab::
 
@@ -445,7 +445,7 @@ add the following line inside root's crontab::
     DJANGO_SETTINGS_MODULE=modoboa.settings \
     <modoboa_dir>/extensions/amavis_quarantine/cleanup.py
 
-Replace modoboa_dir with the installation path of MailNG.
+Replace modoboa_dir with the installation path of Modoboa.
 
 By default, messages older than 14 days are automatically purged. You
 can modify this value by changing the MAX_MESSAGES_AGE parameter in the admin panel.
@@ -497,16 +497,16 @@ crontab::
 
   */5 * * * * PYTHONPATH=<modoboa_dir/..> DJANGO_SETTINGS_MODULE=modoboa.settings <modoboa_dir>/scripts/stats/logparser.py
 
-Replace modoboa_dir with the installation path of MailNG.
+Replace modoboa_dir with the installation path of Modoboa.
 
 Graphics are automatically created after each new parsing.
 
 Using the webmail component
 ---------------------------
 
-MailNG provides a simple webmail component (you can browse, read and
+Modoboa provides a simple webmail component (you can browse, read and
 compose messages).  With this feature, it is possible to deploy an almost
-standalone emails platform just with MailNG.
+standalone emails platform just with Modoboa.
 
 The following requirements are needed before going further::
 
@@ -520,12 +520,12 @@ Just run the following command to activate the component::
       <modoboa_dir>/scripts/extension.py webmail on
 
 Sometimes, inline images are integrated inside emails. To display
-them, MailNG stores them inside a temporary folder. Make sure the
+them, Modoboa stores them inside a temporary folder. Make sure the
 following path exists, otherwise create it::
 
   # mkdir <path_to_modoboa>/static/tmp
 
-The user that is running MailNG will need the write permission inside
+The user that is running Modoboa will need the write permission inside
 this folder.
 
 Next, go to the admin panel and modify the following parameters in

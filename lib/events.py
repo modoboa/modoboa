@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-This module provides a simple way of managing events between MailNG
+This module provides a simple way of managing events between Modoboa
 core application and additional components.
 
 """

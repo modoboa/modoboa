@@ -223,7 +223,7 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
         msg["From"] = request.POST["from_"]
         msg["To"] = request.POST["to"]
         msg["Message-ID"] = make_msgid()
-        msg["User-Agent"] = "MailNG"
+        msg["User-Agent"] = "Modoboa"
         msg["Date"] = formatdate(time.time(), True)
         if origmsg and origmsg.has_key("Message-ID"):
             msg["References"] = msg["In-Reply-To"] = origmsg["Message-ID"]
