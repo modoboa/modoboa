@@ -10,7 +10,7 @@ sent, received, bounced, rejected
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf.urls.defaults import *
-from mailng.lib import events, parameters
+from modoboa.lib import events, parameters
 
 def infos():
     return {
@@ -25,18 +25,18 @@ def init():
                               deflt="/var/log/mail.log",
                               help=_("Path to log file used to collect statistics"))
     parameters.register_admin("stats", "RRD_ROOTDIR", type="string", 
-                              deflt="/tmp/mailng",
+                              deflt="/tmp/modoboa",
                               help=_("Path to directory where RRD files are stored"))
     parameters.register_admin("stats", "IMG_ROOTDIR", type="string", 
-                              deflt="/tmp/mailng",
+                              deflt="/tmp/modoboa",
                               help=_("Path to directory where PNG files are stored"))
 
 def destroy():
     events.unregister("AdminMenuDisplay", menu)
 
 def urls():
-    return (r'^mailng/stats/', 
-            include('mailng.extensions.stats.urls'))
+    return (r'^modoboa/stats/', 
+            include('modoboa.extensions.stats.urls'))
 
 def menu(**kwargs):
     if kwargs["target"] == "admin_menu_bar":

@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from mailng.lib import parameters
-from mailng.lib import exec_cmd, exec_as_vuser
+from modoboa.lib import parameters
+from modoboa.lib import exec_cmd, exec_as_vuser
 import os
 
 class Domain(models.Model):

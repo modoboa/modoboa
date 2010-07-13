@@ -2,8 +2,8 @@
 
 from datetime import datetime
 from django.utils.translation import ugettext as _
-from mailng.lib import tables, db
-from mailng.lib.email_listing import MBconnector, EmailListing, Email
+from modoboa.lib import tables, db
+from modoboa.lib.email_listing import MBconnector, EmailListing, Email
 
 class Qtable(tables.Table):
     tableid = "emails"

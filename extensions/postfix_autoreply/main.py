@@ -10,7 +10,7 @@ functionality into Postfix.
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from mailng.lib import events, parameters
+from modoboa.lib import events, parameters
 from models import *
 
 def infos():
@@ -42,8 +42,8 @@ def destroy():
     parameters.unregister_app("postfix_autoreply")
 
 def urls():
-    return (r'^mailng/postfix_autoreply/',
-            include('mailng.extensions.postfix_autoreply.urls'))
+    return (r'^modoboa/postfix_autoreply/',
+            include('modoboa.extensions.postfix_autoreply.urls'))
 
 def menu(**kwargs):
     import views

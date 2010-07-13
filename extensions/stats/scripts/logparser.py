@@ -7,9 +7,9 @@ import re
 import rrdtool
 import string, pdb
 from optparse import OptionParser
-from mailng.lib import parameters
-from mailng.admin.models import Domain
-import mailng.extensions.stats.grapher as grapher
+from modoboa.lib import parameters
+from modoboa.admin.models import Domain
+import modoboa.extensions.stats.grapher as grapher
 
 """
 Postfix log parser.
@@ -257,7 +257,7 @@ class LogParser(object):
             G.make_defaults(dom, tpl=grapher.size_avg_template)
 
 if __name__ == "__main__":
-    from mailng.extensions.stats import main
+    from modoboa.extensions.stats import main
 
     main.init()
 

@@ -11,6 +11,6 @@ extpatterns = [
         (r'^(?P<mail_id>[\w\-\+]+)/$', 'viewmail')
         ]
 
-urlpatterns = patterns('mailng.extensions.amavis_quarantine.views',
+urlpatterns = patterns('modoboa.extensions.amavis_quarantine.views',
 		       *extpatterns
                        )

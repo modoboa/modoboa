@@ -2,7 +2,7 @@ import socket
 import re
 import struct
 import string
-from mailng.lib import parameters
+from modoboa.lib import parameters
 
 class AMrelease(object):
     def __init__(self):

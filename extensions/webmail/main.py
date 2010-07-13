@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
-from mailng.lib import events, parameters
+from modoboa.lib import events, parameters
 
 def init():
     events.register("UserMenuDisplay", menu)
@@ -50,8 +50,8 @@ def infos():
         }
 
 def urls():
-    return (r'^mailng/webmail/',
-            include('mailng.extensions.webmail.urls'))
+    return (r'^modoboa/webmail/',
+            include('modoboa.extensions.webmail.urls'))
 
 def menu(**kwargs):
     import views

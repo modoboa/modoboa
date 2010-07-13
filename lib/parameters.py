@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import string
-from mailng.lib.models import *
+from modoboa.lib.models import *
 
 """
 This interface provides a simple way to declare and store parameters

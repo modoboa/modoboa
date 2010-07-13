@@ -1,4 +1,4 @@
-# Django settings for mailng project.
+# Django settings for modoboa project.
 import os.path
 
 DEBUG = False 
@@ -11,7 +11,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = ''    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'mailng'       # Or path to database file if using sqlite3.
+DATABASE_NAME = 'modoboa'       # Or path to database file if using sqlite3.
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -34,7 +34,7 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
-LOGIN_REDIRECT_URL = '/mailng/admin/'
+LOGIN_REDIRECT_URL = '/modoboa/admin/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -66,7 +66,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'mailng.urls'
+ROOT_URLCONF = 'modoboa.urls'
 
 MAILNG_DIR = os.path.dirname(__file__)
 STATIC_ROOTDIR = os.path.join(MAILNG_DIR, 'static')
@@ -83,18 +83,18 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'south',
-    'mailng',
-    'mailng.lib',
-    'mailng.admin',
-    'mailng.userprefs',
+    'modoboa',
+    'modoboa.lib',
+    'modoboa.admin',
+    'modoboa.userprefs',
 
     # MailNG extensions here.
-    # 'mailng.extensions.postfix_autoreply'
+    # 'modoboa.extensions.postfix_autoreply'
 )
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'mailng.lib.authbackends.SimpleBackend'
+    'modoboa.lib.authbackends.SimpleBackend'
 )
 
 # Amavis quarantine

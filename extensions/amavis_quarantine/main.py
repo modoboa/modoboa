@@ -5,7 +5,7 @@
 from django.conf.urls.defaults import *
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
-from mailng.lib import events, parameters
+from modoboa.lib import events, parameters
 
 def infos():
     return {
@@ -38,8 +38,8 @@ def destroy():
     parameters.unregister_app("amavis_quarantine")
 
 def urls():
-    return (r'^mailng/quarantine/', 
-            include('mailng.extensions.amavis_quarantine.urls'))
+    return (r'^modoboa/quarantine/', 
+            include('modoboa.extensions.amavis_quarantine.urls'))
 
 def menu(**kwargs):
     import views

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators \
     import login_required
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from mailng.lib import _render, _ctx_ok, _ctx_ko, is_not_localadmin
+from modoboa.lib import _render, _ctx_ok, _ctx_ko, is_not_localadmin
 from forms import *
 from models import *
 
@@ -25,7 +25,7 @@ def autoreply(request):
             form = ARmessageForm(request.POST)
         error = None
         if form.is_valid():
-            from mailng import userprefs
+            from modoboa import userprefs
 
             arm = form.save(commit=False)
             arm.mbox = mb

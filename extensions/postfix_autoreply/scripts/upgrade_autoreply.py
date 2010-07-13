@@ -3,15 +3,15 @@
 
 import sys
 from django.conf import settings
-from mailng.admin.models import Domain, Mailbox
+from modoboa.admin.models import Domain, Mailbox
 
 if __name__ == "__main__":
-    if not "mailng.extensions.postfix_autoreply" in settings.INSTALLED_APPS:
+    if not "modoboa.extensions.postfix_autoreply" in settings.INSTALLED_APPS:
         print "Postfix autoreply extension is not activated"
         sys.exit(1)
 
-    import mailng.extensions.postfix_autoreply.main as par
-    from mailng.extensions.postfix_autoreply.models import Transport, Alias
+    import modoboa.extensions.postfix_autoreply.main as par
+    from modoboa.extensions.postfix_autoreply.models import Transport, Alias
         
     par.init()
     doms = Domain.objects.all()

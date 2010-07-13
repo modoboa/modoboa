@@ -5,12 +5,12 @@ from django.conf import settings
 # from django.contrib import admin
 # admin.autodiscover()
 
-from mailng.extensions import *
-from mailng.lib import parameters
+from modoboa.extensions import *
+from modoboa.lib import parameters
 
 urlpatterns = patterns('',
     # Example:
-    # (r'^mailng/', include('mailng.foo.urls')),
+    # (r'^modoboa/', include('modoboa.foo.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
@@ -19,12 +19,12 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # (r'^admin/(.*)', admin.site.root),
 
-    (r'^mailng/admin/', include('mailng.admin.urls')),
-    (r'^mailng/userprefs/', include('mailng.userprefs.urls')),
-    (r'^accounts/login/$', 'mailng.auth.views.dologin'),
-    (r'^accounts/logout/$', 'mailng.auth.views.dologout'),
+    (r'^modoboa/admin/', include('modoboa.admin.urls')),
+    (r'^modoboa/userprefs/', include('modoboa.userprefs.urls')),
+    (r'^accounts/login/$', 'modoboa.auth.views.dologin'),
+    (r'^accounts/logout/$', 'modoboa.auth.views.dologout'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
-     {'packages': ('mailng',),}),
+     {'packages': ('modoboa',),}),
 
     *loadextensions()
 )

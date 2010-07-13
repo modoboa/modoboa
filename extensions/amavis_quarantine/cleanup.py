@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from mailng.lib import db, parameters
+from modoboa.lib import db, parameters
 
 if __name__ == "__main__":
-    from mailng.extensions.amavis_quarantine import main
+    from modoboa.extensions.amavis_quarantine import main
 
     main.init()
     conn = db.getconnection("amavis_quarantine")

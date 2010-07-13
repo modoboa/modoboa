@@ -36,7 +36,7 @@ if __name__ == "__main__":
     if not os.path.isdir(extdir):
 	print "Extension not found"
 	sys.exit(1)
-    extname = "mailng.extensions.%s" % sys.argv[1]
+    extname = "modoboa.extensions.%s" % sys.argv[1]
     update_extension(sys.argv[1], extdir, sys.argv[2])
     if sys.argv[2] == "on":
 	print "Make sure you have added '%s' to INSTALLED_APPS (inside settings.py)" % extname

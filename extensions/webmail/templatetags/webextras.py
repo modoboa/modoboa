@@ -2,9 +2,9 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from mailng.extensions import webmail
-from mailng.extensions.webmail.lib import IMAPheader
-from mailng.lib import parameters
+from modoboa.extensions import webmail
+from modoboa.extensions.webmail.lib import IMAPheader
+from modoboa.lib import parameters
 
 register = template.Library()
 

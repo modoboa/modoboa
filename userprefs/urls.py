@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('mailng.userprefs.views',
+urlpatterns = patterns('modoboa.userprefs.views',
                        url(r'^$', 'index'),
                        (r'^preferences/$', 'preferences'),
                        (r'^preferences/save/$', 'savepreferences'),

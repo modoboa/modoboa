@@ -12,12 +12,12 @@ from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required
-from mailng.lib import _render, _ctx_ok, _ctx_ko, decode, getctx
-from mailng.lib import db
-from mailng.admin.models import Mailbox
+from modoboa.lib import _render, _ctx_ok, _ctx_ko, decode, getctx
+from modoboa.lib import db
+from modoboa.admin.models import Mailbox
 from lib import AMrelease
 from templatetags.amextras import *
-from mailng.lib.email_listing import parse_search_parameters
+from modoboa.lib.email_listing import parse_search_parameters
 from sql_listing import *
 
 def __get_current_url(request):

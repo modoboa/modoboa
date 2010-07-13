@@ -5,7 +5,7 @@ import time
 import datetime
 import rrdtool
 from django.utils.translation import ugettext as _
-from mailng.lib import parameters
+from modoboa.lib import parameters
 
 traffic_avg_template = {
     'name' : 'traffic',

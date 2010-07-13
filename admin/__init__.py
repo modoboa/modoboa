@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from mailng.lib import parameters
+from modoboa.lib import parameters
 from django.utils.translation import ugettext as _
 
 parameters.register_admin("admin","STORAGE_PATH", type="string", deflt="/var/vmail",

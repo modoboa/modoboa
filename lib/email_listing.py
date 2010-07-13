@@ -10,7 +10,7 @@ from lxml import etree
 from django.template.loader import render_to_string
 from django.template import Template, Context
 from django.utils.translation import ugettext as _
-from mailng.lib import _render, decode
+from modoboa.lib import _render, decode
 
 attached_map = {}
 

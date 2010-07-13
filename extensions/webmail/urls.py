@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('mailng.extensions.webmail.views',
+urlpatterns = patterns('modoboa.extensions.webmail.views',
                        (r'^$', "index"),
                        (r'^compose/$', "compose"),
                        (r'^move/$', "move"),

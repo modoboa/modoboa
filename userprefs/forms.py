@@ -1,6 +1,6 @@
 from django import forms
-from mailng.admin.models import Mailbox
-from mailng.lib.authbackends import _check_password
+from modoboa.admin.models import Mailbox
+from modoboa.lib.authbackends import _check_password
 from django.contrib.auth.models import check_password
 from django.utils.translation import ugettext as _
 

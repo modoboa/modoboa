@@ -5,10 +5,10 @@ import sys
 import smtplib
 from email.mime.text import MIMEText
 import datetime
-from mailng.lib import parameters
-from mailng.admin.models import Mailbox
-from mailng.extensions.postfix_autoreply import main
-from mailng.extensions.postfix_autoreply.models import ARmessage, ARhistoric
+from modoboa.lib import parameters
+from modoboa.admin.models import Mailbox
+from modoboa.extensions.postfix_autoreply import main
+from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

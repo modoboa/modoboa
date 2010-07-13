@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('mailng.extensions.stats.views',
+urlpatterns = patterns('modoboa.extensions.stats.views',
                        url(r'^$', 'adminindex', name='fullindex'),
                        url(r'^(?P<dom_id>\d+)/$', 'index', name='domindex'),
                        url(r'^graph/$', "getgraph", name="getgraph_root"),

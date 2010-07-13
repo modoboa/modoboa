@@ -12,9 +12,9 @@ from datetime import datetime, timedelta
 from email.header import decode_header
 import email.utils
 from django.utils.translation import ugettext as _
-from mailng.lib import decode, tables, imap_utf7, Singleton
-from mailng.lib.email_listing import MBconnector, EmailListing, Email
-from mailng.lib import tables, imap_utf7, parameters
+from modoboa.lib import decode, tables, imap_utf7, Singleton
+from modoboa.lib.email_listing import MBconnector, EmailListing, Email
+from modoboa.lib import tables, imap_utf7, parameters
 
 
 class WMtable(tables.Table):

@@ -2,7 +2,7 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from mailng.extensions import amavis_quarantine
+from modoboa.extensions import amavis_quarantine
 
 register = template.Library()
 

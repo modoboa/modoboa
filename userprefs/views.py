@@ -8,10 +8,10 @@ from django.contrib.auth.decorators \
     import login_required
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
-from mailng.lib import _render, _ctx_ok, _ctx_ko, parameters
-from mailng.lib.authbackends import crypt_password
+from modoboa.lib import _render, _ctx_ok, _ctx_ko, parameters
+from modoboa.lib.authbackends import crypt_password
 from forms import ChangePasswordForm
-from mailng.admin.models import Mailbox
+from modoboa.admin.models import Mailbox
 
 @login_required
 def index(request):

@@ -8,9 +8,9 @@ from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from mailng.admin.models import Mailbox
-from mailng.lib import parameters, _render, _render_error, getctx, is_not_localadmin
-from mailng.lib.email_listing import parse_search_parameters
+from modoboa.admin.models import Mailbox
+from modoboa.lib import parameters, _render, _render_error, getctx, is_not_localadmin
+from modoboa.lib.email_listing import parse_search_parameters
 from lib import *
 from forms import *
 from templatetags.webextras import *

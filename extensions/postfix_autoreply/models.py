@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from mailng.admin.models import Domain, Mailbox
+from modoboa.admin.models import Domain, Mailbox
 
 class Transport(models.Model):
     domain = models.CharField(max_length=300)

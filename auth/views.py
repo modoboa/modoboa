@@ -4,8 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from mailng.lib import events
-import mailng.admin
+from modoboa.lib import events
+import modoboa.admin
 from forms import LoginForm
 
 def dologin(request):
@@ -24,7 +24,7 @@ def dologin(request):
 
                 next = request.POST["next"]
                 if next == "None":
-                    next = reverse(mailng.admin.views.domains)
+                    next = reverse(modoboa.admin.views.domains)
                 return HttpResponseRedirect(next)
             else:
                 error = _("Account is disabled.")

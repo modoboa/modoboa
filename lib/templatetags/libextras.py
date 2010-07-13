@@ -1,7 +1,7 @@
 import os
 from django.conf import settings
 from django import template
-from mailng.lib import exec_cmd
+from modoboa.lib import exec_cmd
 
 register = template.Library()
 

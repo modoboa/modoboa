@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
-from mailng.admin.models import Mailbox
+from modoboa.admin.models import Mailbox
 import hashlib
 import crypt
 import string
 from random import Random
-from mailng.lib import parameters
+from modoboa.lib import parameters
 
 class SimpleBackend:
     def authenticate(self, username=None, password=None):

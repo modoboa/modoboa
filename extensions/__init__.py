@@ -20,4 +20,4 @@ def loadextensions():
     return result
 
 def isenabled(ext):
-    return "mailng.extensions.%s" % ext in settings.INSTALLED_APPS
+    return "modoboa.extensions.%s" % ext in settings.INSTALLED_APPS

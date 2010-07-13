@@ -1,7 +1,7 @@
 from django import forms
-from mailng.admin.models import Domain, Mailbox, Alias
+from modoboa.admin.models import Domain, Mailbox, Alias
 from django.utils.translation import ugettext as _
-from mailng.admin.templatetags.admin_extras import gender
+from modoboa.admin.templatetags.admin_extras import gender
 
 class DomainForm(forms.ModelForm):
     class Meta:

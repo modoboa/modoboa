@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
-from mailng.lib import parameters
+from modoboa.lib import parameters
 
 def exec_cmd(cmd, **kwargs):
     import subprocess

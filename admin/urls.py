@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('mailng.admin.views',
+urlpatterns = patterns('modoboa.admin.views',
                        url(r'^$', 'domains', name="index"),
                        url(r'^domains/$', 'domains', name="domains"),
                        (r'^domains/new/', 'newdomain'),

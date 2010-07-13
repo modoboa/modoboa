@@ -13,10 +13,10 @@ How to install
 
 Download Mailng's tarball and extract it::
 
-  # tar xzf mailng-<version>.tar.gz
-  # mv mailng-<version> mailng
+  # tar xzf modoboa-<version>.tar.gz
+  # mv modoboa-<version> modoboa
 
-Then, enter the mailng directory, create a settings.py file (you can
+Then, enter the modoboa directory, create a settings.py file (you can
 use settings-sample.py as a model). Specify database relative
 informations. You must choose between mysql and postgresql, other
 types are not supported by major email projects like postfix or
@@ -55,13 +55,13 @@ INSTALLED_APPS variable and that it contains at least::
      # Django's stuff before
 
      'south',
-     'mailng',
-     'mailng.lib',
-     'mailng.admin',
-     'mailng.userprefs',
+     'modoboa',
+     'modoboa.lib',
+     'modoboa.admin',
+     'modoboa.userprefs',
   )
 
-Starting with 0.8, mailng.main doesn't exist anymore. You need to
+Starting with 0.8, modoboa.main doesn't exist anymore. You need to
 remove it from your INSTALLED_APPS.
 
 NB: Before doing this migration, I recommend that you make a copy of your
@@ -111,11 +111,11 @@ Then create a vmail user::
 
   # useradd -g vmail -d /var/vmail -m vmail
 
-At last, the system user used to run mailng will need permissions to
+At last, the system user used to run modoboa will need permissions to
 manipulate directories in vmail's homedir. To do so, edit your /etc/sudoers
 file and add the following inside::
 
-  <user_that_runs_mailng> ALL=(vmail) NOPASSWD: ALL
+  <user_that_runs_modoboa> ALL=(vmail) NOPASSWD: ALL
 
 Testing installation
 --------------------
@@ -126,7 +126,7 @@ server. Just run this command to start it::
   # python manage.py runserver
 
 You will be able to play with MailNG by looking at 
-http://<youraddress>:8000/mailng/admin/.
+http://<youraddress>:8000/modoboa/admin/.
 
 Tips to link Mailng with postfix
 --------------------------------
@@ -185,20 +185,20 @@ Since version 0.6, mail users can define an auto-reply message with MailNG.
 To activate the extension, edit your settings.py and add the following
 line inside the INSTALLED_APPS variable::
 
-  'mailng.extensions.postfix_autoreply',
+  'modoboa.extensions.postfix_autoreply',
 
 Run the following command to activate the component::
 
-  # export PYTHONPATH=<mailng_dir>/..
-  # DJANGO_SETTINGS_MODULE=mailng.settings \
-      <mailng_dir>/scripts/extension.py postfix-autoreply on
+  # export PYTHONPATH=<modoboa_dir>/..
+  # DJANGO_SETTINGS_MODULE=modoboa.settings \
+      <modoboa_dir>/scripts/extension.py postfix-autoreply on
 
 Then run the following commands to update MailNG SQL schema and content::
 
   # python manage.py syncdb
   # python manage.py migrate postfix-autoreply
   # export PYTHONPATH=$PWD/..
-  # DJANGO_SETTINGS_MODULE=mailng.settings ./scripts/postfix_autoreply/upgrade_autoreply.py
+  # DJANGO_SETTINGS_MODULE=modoboa.settings ./scripts/postfix_autoreply/upgrade_autoreply.py
 
 The user that executes the autoreply script needs to access
 settings.py. You must apply proper permissions on this file. For
@@ -216,7 +216,7 @@ files as follow::
 
  # /etc/postfix/master.cf
   autoreply unix        -       n       n       -       -       pipe
-            flags= user=vmail:<group> argv=<path_to_mailng>/scripts/postfix_autoreply/autoreply $sender $mailbox
+            flags= user=vmail:<group> argv=<path_to_modoboa>/scripts/postfix_autoreply/autoreply $sender $mailbox
 
 Then, create new map files with the following content::
 
@@ -236,7 +236,7 @@ Then, create new map files with the following content::
 
 Finally, edit the shell script 'autoreply' located inside the
 'scripts' directory and change the value of BASEDIR. (just put absolute path
-of the directory where mailng is installed)
+of the directory where modoboa is installed)
 
 NB: auto-reply messages are just sent one time per sender for a
 pre-defined time period. By default, this period is equal to 1 day
@@ -344,10 +344,10 @@ following inside::
     <Location "/">
       SetHandler mod_python
       PythonHandler django.core.handlers.modpython
-      PythonPath "['<path to directory that contains mailng dir>'] + sys.path"
-      SetEnv DJANGO_SETTINGS_MODULE mailng.settings
+      PythonPath "['<path to directory that contains modoboa dir>'] + sys.path"
+      SetEnv DJANGO_SETTINGS_MODULE modoboa.settings
     </Location>
-    Alias "/static" "<path to mailng dir>/static"
+    Alias "/static" "<path to modoboa dir>/static"
     <Location "/static/">
       SetHandler None
     </Location>
@@ -371,13 +371,13 @@ installed on your server::
 To activate the extension, edit your settings.py and add the following
 line inside the INSTALLED_APPS variable::
 
-  'mailng.extensions.amavis_quarantine',
+  'modoboa.extensions.amavis_quarantine',
 
 Then run the following command to activate the component::
   
-  # export PYTHONPATH=<mailng_dir>/..
-  # DJANGO_SETTINGS_MODULE=mailng.settings \
-      <mailng_dir>/scripts/extension.py amavis-quarantine on
+  # export PYTHONPATH=<modoboa_dir>/..
+  # DJANGO_SETTINGS_MODULE=modoboa.settings \
+      <modoboa_dir>/scripts/extension.py amavis-quarantine on
 
 Then, you need to specify where is the database that contains the
 quarantine. Inside settings.py, add a new connection to the
@@ -398,7 +398,7 @@ When viewing messages, you can choose to display links (addresses,
 images). In order to display images correctly, you need to create a
 tmp directory under static/ for storing them. For example::
 
-  # mkdir <mailng_dir>/static/tmp
+  # mkdir <modoboa_dir>/static/tmp
 
 To be able to release messages, first take a look at this page::
 
@@ -441,11 +441,11 @@ Last point, MailNG provides a simple script that periodically purge
 the amavisd-new quarantine database. If you plan to use it, you can
 add the following line inside root's crontab::
 
-  0 0 * * * PYTHONPATH=<mailng_dir/..> \
-    DJANGO_SETTINGS_MODULE=mailng.settings \
-    <mailng_dir>/extensions/amavis_quarantine/cleanup.py
+  0 0 * * * PYTHONPATH=<modoboa_dir/..> \
+    DJANGO_SETTINGS_MODULE=modoboa.settings \
+    <modoboa_dir>/extensions/amavis_quarantine/cleanup.py
 
-Replace mailng_dir with the installation path of MailNG.
+Replace modoboa_dir with the installation path of MailNG.
 
 By default, messages older than 14 days are automatically purged. You
 can modify this value by changing the MAX_MESSAGES_AGE parameter in the admin panel.
@@ -465,13 +465,13 @@ installed on your server::
 To activate the extension, edit your settings.py and add the following
 line inside the INSTALLED_APPS variable::
 
-  'mailng.extensions.stats',
+  'modoboa.extensions.stats',
 
 Then run the following command to activate the component::
   
-  # export PYTHONPATH=<mailng_dir>/..
-  # DJANGO_SETTINGS_MODULE=mailng.settings \
-      <mailng_dir>/scripts/extension.py stats on
+  # export PYTHONPATH=<modoboa_dir>/..
+  # DJANGO_SETTINGS_MODULE=modoboa.settings \
+      <modoboa_dir>/scripts/extension.py stats on
 
 Then, adapt the following parameters to your environnement::
 
@@ -479,25 +479,25 @@ Then, adapt the following parameters to your environnement::
   LOGFILE = "/var/log/mail.log"
 
   # Path to directory where rrd files are stored
-  RRD_ROOTDIR = "/tmp/mailng"
+  RRD_ROOTDIR = "/tmp/modoboa"
 
   # Path to directory where png files are stored
-  IMG_ROOTDIR = "<mailng_dir>/static/graphs"
+  IMG_ROOTDIR = "<modoboa_dir>/static/graphs"
 
 Make sure the directories that will contain those files exist. If not,
 create them before going further. For example (according to previous
 parameters)::
 
-  $ mkdir /tmp/mailng
-  $ mkdir <mailng_dir>/static/graphs
+  $ mkdir /tmp/modoboa
+  $ mkdir <modoboa_dir>/static/graphs
 
 To finish, you need to collect information periodically in order to
 feed rrd files. To do so, just add the following lines into root's
 crontab::
 
-  */5 * * * * PYTHONPATH=<mailng_dir/..> DJANGO_SETTINGS_MODULE=mailng.settings <mailng_dir>/scripts/stats/logparser.py
+  */5 * * * * PYTHONPATH=<modoboa_dir/..> DJANGO_SETTINGS_MODULE=modoboa.settings <modoboa_dir>/scripts/stats/logparser.py
 
-Replace mailng_dir with the installation path of MailNG.
+Replace modoboa_dir with the installation path of MailNG.
 
 Graphics are automatically created after each new parsing.
 
@@ -515,15 +515,15 @@ The following requirements are needed before going further::
 
 Just run the following command to activate the component::
   
-  # export PYTHONPATH=<mailng_dir>/..
-  # DJANGO_SETTINGS_MODULE=mailng.settings \
-      <mailng_dir>/scripts/extension.py webmail on
+  # export PYTHONPATH=<modoboa_dir>/..
+  # DJANGO_SETTINGS_MODULE=modoboa.settings \
+      <modoboa_dir>/scripts/extension.py webmail on
 
 Sometimes, inline images are integrated inside emails. To display
 them, MailNG stores them inside a temporary folder. Make sure the
 following path exists, otherwise create it::
 
-  # mkdir <path_to_mailng>/static/tmp
+  # mkdir <path_to_modoboa>/static/tmp
 
 The user that is running MailNG will need the write permission inside
 this folder.

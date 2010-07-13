@@ -62,7 +62,7 @@
           </li>
           
           <li>
-            {% url mailng.auth.views.dologout as logout_url %}
+            {% url modoboa.auth.views.dologout as logout_url %}
             <a href="{{ logout_url }}">
               <img src="/static/pics/logout.png" border="0" />{% trans "Logout" %}</a>
           </li>
@@ -71,7 +71,7 @@
     </div>
     <div id="page">
       <div id="header">
-        <img class="logo" src="/static/css/mailng.png" />
+        <img class="logo" src="/static/css/modoboa.png" />
         <h1>{% block middletitle %}{% endblock %}</h1>
         <div id="menubar" class="menubar">
           {% block menu %}{% endblock %}

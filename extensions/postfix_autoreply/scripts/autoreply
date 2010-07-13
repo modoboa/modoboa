@@ -7,5 +7,5 @@ BASEDIR=/var/www
 EGG_CACHE=""
 
 PYTHON_EGG_CACHE=$EGG_CACHE PYTHONPATH=$BASEDIR \
-    DJANGO_SETTINGS_MODULE=mailng.settings $PYTHON \
-    $BASEDIR/mailng/scripts/postfix_autoreply/autoreply.py $1 $2
+    DJANGO_SETTINGS_MODULE=modoboa.settings $PYTHON \
+    $BASEDIR/modoboa/scripts/postfix_autoreply/autoreply.py $1 $2

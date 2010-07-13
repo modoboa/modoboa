@@ -2,8 +2,8 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from mailng import admin
-from mailng.lib import events
+from modoboa import admin
+from modoboa.lib import events
 
 register = template.Library()
 

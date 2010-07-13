@@ -5,9 +5,9 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.template.loader import render_to_string
-from mailng.lib import parameters, _render, getctx
-from mailng.admin.views import good_domain
-from mailng.admin.models import Domain, Mailbox
+from modoboa.lib import parameters, _render, getctx
+from modoboa.admin.views import good_domain
+from modoboa.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
 from extensions.stats.grapher import *

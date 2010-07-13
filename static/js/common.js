@@ -250,7 +250,7 @@ confirmation = function(question, action, callback) {
             }
         }
     });
-    SqueezeBox.open("/mailng/userprefs/confirm/?question=" + question);
+    SqueezeBox.open("/modoboa/userprefs/confirm/?question=" + question);
 }
 
 setDivHeight = function(id, extrah, modulo) {

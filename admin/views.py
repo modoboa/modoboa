@@ -11,13 +11,13 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
-from mailng import admin, userprefs
-from mailng.admin.models import Domain, Mailbox, Alias
+from modoboa import admin, userprefs
+from modoboa.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
-from mailng.lib.authbackends import crypt_password
-from mailng.lib import _render, _ctx_ok, _ctx_ko
-from mailng.lib import events, parameters
-from mailng.lib.models import Parameter
+from modoboa.lib.authbackends import crypt_password
+from modoboa.lib import _render, _ctx_ok, _ctx_ko
+from modoboa.lib import events, parameters
+from modoboa.lib.models import Parameter
 import string
 import copy
 import pwd
@@ -125,7 +125,7 @@ def deldomain(request, dom_id):
     events.raiseEvent("DeleteDomain", dom=domain)
     domain.delete_dir()
     domain.delete()
-    return HttpResponseRedirect('/mailng/admin/')
+    return HttpResponseRedirect('/modoboa/admin/')
 
 @login_required
 @good_domain
