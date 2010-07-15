@@ -124,7 +124,6 @@
     if (!$defined(obj)) {
       obj = $(event.target);
     }
-    console.log($defined(rtimer));
     $clear(rtimer);
     current_anchor.parse_string(gethref(obj), true).setparams(navparams);
     current_anchor.update();
