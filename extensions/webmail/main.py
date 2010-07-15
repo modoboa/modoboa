@@ -32,6 +32,8 @@ def init():
                               deflt="no",
                               help=_("Use a secured connection to access SMTP server"))
 
+    parameters.register_user("webmail", "REFRESH_INTERVAL", type="int", deflt=300,
+                             help=_("Automatic folder refresh rate (in seconds)"))
     parameters.register_user("webmail", "TRASH_FOLDER", type="string", deflt="Trash",
                              help=_("Folder where deleted messages go"))
     parameters.register_user("webmail", "SENT_FOLDER", type="string", deflt="Sent",

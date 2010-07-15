@@ -90,6 +90,7 @@ class EmailListing:
         self.folder = folder
         self.elems_per_page = elems_per_page
         self.navparams = navparams
+        self.extravars = {}
         order = "order" in kwargs.keys() and kwargs["order"] or None
         self.empty = "empty" in kwargs.keys() and kwargs["empty"] or False
         if not self.empty:
@@ -125,16 +126,19 @@ class EmailListing:
             else:
                 listing = self.fetch(request, page.id_start, page.id_stop)
         elapsed = kwargs.has_key("start") and time.time() - kwargs["start"] or 0
-        return _render(request, self.tpl, {
-                "listing" : listing, 
-                "elapsed" : elapsed,
-                "navbar" : self.render_navbar(page),
-                "selection" : self.folder,
-                "navparams" : self.navparams,
-                "deflocation" : self.deflocation, 
-                "defcallback" : self.defcallback,
-                "reset_wm_url" : self.reset_wm_url
-                })
+        context = {
+            "listing" : listing, 
+            "elapsed" : elapsed,
+            "navbar" : self.render_navbar(page),
+            "selection" : self.folder,
+            "navparams" : self.navparams,
+            "deflocation" : self.deflocation, 
+            "defcallback" : self.defcallback,
+            "reset_wm_url" : self.reset_wm_url
+            }
+        for k, v in self.extravars.iteritems():
+            context[k] = v
+        return _render(request, self.tpl, context)
 
 class Email(object):
     def __init__(self, msg, mode="plain", links="0"):

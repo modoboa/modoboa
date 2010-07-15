@@ -105,18 +105,34 @@
     location.hash += event.target.get("href");
   }
   register_callback("forward", compose_callback);
+ 
+  var rtimer = null;  
+  refreshFolder = function() {
+    var query = current_anchor.serialized.substring(1);
+    $clear(rtimer);
+    infobox.show('{% trans "Refreshing..." %}', "gray");
+    new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
+        callback = ($defined(resp.callback)) ? resp.callback : "default";
+        callbacks[callback](resp);
+        infobox.notice('{% trans "Done" %}');
+        infobox.hide(1);
+    }}).get();
+  }
 
   loadFolder = function(event, obj) {
     event.stop();
     if (!$defined(obj)) {
       obj = $(event.target);
     }
+    console.log($defined(rtimer));
+    $clear(rtimer);
     current_anchor.parse_string(gethref(obj), true).setparams(navparams);
     current_anchor.update();
   }
 
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
+    rtimer = refreshFolder.periodical({{ refreshrate }});
     select($$("a[href=" + current_anchor.getbaseurl() + "]"));
     $$("li[class*=clickable]").removeEvents();
     $$("li[class*=clickable]").addEvent("click", function(evt) {

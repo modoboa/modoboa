@@ -352,6 +352,8 @@ class ImapListing(EmailListing):
         if kwargs.has_key("reset"):
             self.mbc.criterions = []
         EmailListing.__init__(self, **kwargs)  
+        self.extravars["refreshrate"] = \
+            int(parameters.get_user(user, "webmail", "REFRESH_INTERVAL")) * 1000
 
     def __parse_folders(self, folders):
         result = []
