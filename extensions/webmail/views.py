@@ -198,9 +198,18 @@ def compact(request, name):
     mbc.compact(name)
     return folder(request, name, False)
 
-def render_compose(request, form, posturl, bodyheader=None, body=None):
+def render_compose(request, form, posturl, bodyheader=None, body=None, 
+                   insert_signature=False):
     menu = compose_menu("", __get_current_url(request), 
                         request.user.get_all_permissions())
+    if insert_signature:
+        if body == None:
+            body = ""
+        body += """
+---
+%s
+""" % parameters.get_user(request.user, "webmail", "SIGNATURE")
+
     content = render_to_string("webmail/compose.html", {
             "form" : form, "bodyheader" : bodyheader, "body" : body,
             "posturl" : posturl
@@ -267,7 +276,7 @@ def compose(request):
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
-    return render_compose(request, form, reverse(compose))
+    return render_compose(request, form, reverse(compose), insert_signature=True)
 
 @login_required
 @is_not_localadmin()

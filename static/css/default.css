@@ -303,6 +303,15 @@ input:hover {
     background-color: #ffffcc;
 }
 
+textarea {
+    border: 1px solid #cccccc;
+    background-color: #eee;
+    width: 300px;
+    height: 100px;
+    font-size: 1.1em;
+    font-family: arial, helvetica, verdana, tahoma, sans-serif;
+}
+
 table.hr {
     width: 80%;
     margin: 10px auto;

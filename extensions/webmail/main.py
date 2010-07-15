@@ -38,6 +38,8 @@ def init():
                              help=_("Folder where deleted messages go"))
     parameters.register_user("webmail", "SENT_FOLDER", type="string", deflt="Sent",
                              help=_("Folder where copies of sent messages go"))
+    parameters.register_user("webmail", "SIGNATURE", type="text", default="",
+                             help=_("User defined email signature"))
 
 def destroy():
     events.unregister("UserMenuDisplay", menu)

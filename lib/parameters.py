@@ -68,7 +68,7 @@ def save_admin(app, name, value):
         p = Parameter()
         p.name = fullname
     if p.value != value:
-        p.value = value
+        p.value = str(value).encode("string_escape")
         p.save()
     return True
 
@@ -82,7 +82,7 @@ def save_user(user, app, name, value):
         p.user = user
         p.name = fullname
     if p.value != value:
-        p.value = value
+        p.value = str(value).encode("string_escape")
         p.save()
     return True
 
@@ -92,7 +92,7 @@ def get_admin(app, name):
         p = Parameter.objects.get(name="%s.%s" % (app, name))
     except Parameter.DoesNotExist:
         return _params[app]["A"][name]["default"]
-    return p.value
+    return p.value.decode("string_escape")
 
 def get_user(user, app, name):
     __is_defined(app, "U", name)
@@ -100,4 +100,4 @@ def get_user(user, app, name):
         p = UserParameter.objects.get(user=user, name="%s.%s" % (app, name))
     except UserParameter.DoesNotExist:
         return _params[app]["U"][name]["default"]
-    return p.value
+    return p.value.decode("string_escape")

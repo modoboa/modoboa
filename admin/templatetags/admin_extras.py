@@ -99,11 +99,17 @@ def param(app, definition):
     result = """<div class='row'>
   <label>%s</label>""" % definition["name"]
     name = "%s.%s" % (app, definition["name"])
+    value = definition.has_key("value") \
+        and definition["value"] or definition["default"]
+
     if definition["type"] in ["string", "int"]:
-        value = definition.has_key("value") \
-            and definition["value"] or definition["default"]
         result += """
   <input type='text' name='%s' id='%s' value='%s' />""" % (name, name, value)
+
+    if definition["type"] == "text":
+        result += "<textarea name='%s' id='%s'>%s</textarea>" \
+            % (name, name, value)
+
     if definition["type"] in ["list", "list_yesno"]:
         result += """
 <select name='%s' id='%s'>""" % (name, name)
@@ -113,8 +119,6 @@ def param(app, definition):
         else:
             if definition.has_key("values"):
                 values = definition["values"]
-        value = definition.has_key("value") \
-            and definition["value"] or definition["default"]
         for v in values:
             selected = ""
             if value == v[0]:
