@@ -3,6 +3,7 @@
 {% load libextras %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="/static/css/searchbar.css" />
+<script type="text/javascript" src="/static/js/ProgressBar.js"></script>
 {% block css %}{% endblock %}
 <style type="text/css">
 #navbar {
@@ -72,5 +73,8 @@ window.addEvent("domready", function() {
 <div id="listing">{{ listing }}</div>
 <div class="spacer"></div>
 {% endblock %}
-{% block footer %}<div id="navbar">{{ navbar }}</div>{% endblock %}
+{% block footer %}
+<div id="quotabox"></div>
+<div id="navbar">{{ navbar }}</div>
+{% endblock %}
 

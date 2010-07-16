@@ -225,6 +225,7 @@ class IMAPconnector(object):
         (status, data) = self.m.sort("(%s)" % criterion, "UTF-8", "(NOT DELETED)",
                                      *self.criterions)
         self.messages = data[0].split()
+        self.getquota(folder)
         return len(self.messages)
 
     def unseen_messages(self, folder):
@@ -301,6 +302,17 @@ class IMAPconnector(object):
     def compact(self, folder):
         self.m.select(self._encodefolder(folder))
         self.m.expunge()
+
+    def getquota(self, folder):
+        status, data = self.m.getquotaroot(self._encodefolder(folder))
+        if status == "OK":
+            quotadef = data[1][0]
+            m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
+            if not m:
+                print "Problem while parsing quota def"
+                return
+            self.quota_limit = int(m.group(2))
+            self.quota_actual = int(m.group(1))
 
     def fetch(self, start=None, stop=None, folder=None, all=False):
         if not start and not stop:
@@ -403,6 +415,13 @@ class ImapListing(EmailListing):
             criterions = \
                 unicode(or_criterion(criterions, '%s "%s"' % (key, pattern)))
         self.mbc.criterions = [unicode("(%s)" % criterions)]
+
+    def getquota(self):
+        try:
+            return int(float(self.mbc.quota_actual) \
+                           / float(self.mbc.quota_limit) * 100)
+        except AttributeError:
+            return -1
 
 class ImapEmail(Email):
     def __init__(self, msg, addrfull=False, *args, **kwargs):

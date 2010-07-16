@@ -4,10 +4,22 @@
 <link rel="stylesheet" type="text/css" href="/static/css/webmail.css" />
 {% endblock %}
 {% block js %}
+  quota_pb = new ProgressBar({
+    container: $("quotabox"),
+    startPercentage: 0,
+    boxID: "box",
+    percentageID: "perc",
+    displayText: true,
+    displayID: "quotatext"
+  });
+
   wm_updatelisting = function(resp) {
     updatelisting(resp);
     if ($defined(resp.folders)) {
       $("folders").set("html", resp.folders);
+    }
+    if ($defined(resp.quota) && resp.quota != "-1") {
+      quota_pb.set(resp.quota);
     }
     $$("a[name=loadfolder]").addEvent("click", foldercallback);
     $$("a[name=compose]").addEvent("click", loadCompose);

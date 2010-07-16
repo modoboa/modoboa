@@ -62,6 +62,8 @@ def folder(request, name, updatenav=True):
         dico["listing"] = "<div class='info'>%s</div>" \
             % _("This folder contains no messages")
         dico["navbar"] = ""
+    dico["quota"] = lst.getquota()
+
     ctx = getctx("ok", **dico)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 

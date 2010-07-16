@@ -103,9 +103,8 @@ class EmailListing:
     def render_navbar(self, page):
         if page is None:
             return ""
-        return render_to_string("common/navbar.html", {
-                "page" : page
-                })
+        context = {"page" : page}
+        return render_to_string("common/navbar.html", context)
     
     def fetch(self, request, id_start, id_stop):
         table = self.tbltype(self.mbc.fetch(start=id_start, stop=id_stop, 
