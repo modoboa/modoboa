@@ -176,27 +176,30 @@ textarea:hover {
 
 /* Progress bar */
 #quotabox {
+    display: none;
     float: left;
     margin: 5px;
-    width: 250px;
+    width: 300px;
     padding: 0;
 }
 
 #box { 
-    border: 1px solid #ccc; 
-    width: 200px; 
-    height: 15px;
+    /*border: 1px solid #ccc; */
+    width: 200px;
+    background: url(../pics/progressbar_bg.gif) right center no-repeat;
+    height: 19px;
+    float: left;
 }
 
 #perc { 
-    background: green; 
-    height: 15px; 
+    background: url(../pics/ajax-loader.gif) right center no-repeat;
+    height: 19px; 
 }
 
 #quotatext { 
     font-family:tahoma, arial, sans-serif; 
     font-size:11px; 
-    color:#000; 
-
+    color:#000;
     padding: 3px 0 0 10px;
+    float: left;
 }
