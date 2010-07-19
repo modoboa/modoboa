@@ -403,7 +403,8 @@ class ImapListing(EmailListing):
             if old == "":
                 return c
             return "OR (%s) (%s)" % (old, c)
-
+        if criterion == "both":
+            criterion = "from_addr, subject"
         criterions = ""
         for c in criterion.split(','):
             if c == "from_addr":

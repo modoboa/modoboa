@@ -3,8 +3,8 @@
   <img src="/static/pics/search.png" id="searchopts" />
   <input type="text" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
   <div id="searchparams">
-    <input type="radio" name="scriteria" value="from_addr" checked>{% trans "From address" %}<br/>
-    <input type="radio" name="scriteria" value="subject">{% trans "Subject" %}<br/>
-    <input type="radio" name="scriteria" value="from_addr,subject">{% trans "Both" %}<br/>
+    <input type="radio" id="crit_from_addr" name="scriteria" value="from_addr" checked>{% trans "From address" %}<br/>
+    <input type="radio" id="crit_subject" name="scriteria" value="subject">{% trans "Subject" %}<br/>
+    <input type="radio" id="crit_both" name="scriteria" value="both">{% trans "Both" %}<br/>
   </div>
 </div>

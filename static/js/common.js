@@ -116,6 +116,10 @@ function HashWrapper(deflocation) {
         }
     };
 
+    this.deleteParam = function(str) {
+        this.params.erase(str);
+    };
+
     this.updateparams = function(str) {
         if (str.charAt(0) == '?') {
             str = str.substring(1);
@@ -305,9 +309,14 @@ searchbox_init = function() {
         $$("input[name=scriteria]:checked").each(function(obj) {
             criteria = obj.value;
         });
-        var params = "pattern=" + $("searchfield").value
-            + "&criteria=" + criteria;
-        current_anchor.updateparams(params);
+        var pattern = $("searchfield").get("value");
+        if (pattern != "") {
+            var params = "pattern=" + pattern + "&criteria=" + criteria;
+            current_anchor.updateparams(params);
+        } else {
+            current_anchor.deleteParam("pattern");
+            current_anchor.deleteParam("criteria");
+        }
         current_anchor.update();
     });
     $("searchfield").addEvent("click", function(event) {
@@ -320,6 +329,14 @@ searchbox_init = function() {
         }
     });
     $("searchbox").setStyle("float", "left");
+    var uri = new URI(location.href);
+    var params = uri.get("fragment").parseQueryString();
+    if ($defined(params.pattern)) {
+        $("searchfield").set("value", params.pattern);
+    }
+    if ($defined(params.criteria)) {
+        $("crit_" + params.criteria).checked = true;
+    }
 }
 
 // The following code prevents a bug under IE7 because fullpath is

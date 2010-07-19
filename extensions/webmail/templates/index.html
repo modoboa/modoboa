@@ -206,7 +206,7 @@
                         "border" : "1px solid #333", 
                         "background" : "white",
                         "z-index" : 3})
-            .setStyles(item.getPosition())
+            .setPosition(item.getPosition())
             .inject(document.body);
           block.set("html", "Moving " + selectedRows.length + " messages"); 
           this.oldelement = this.element;
