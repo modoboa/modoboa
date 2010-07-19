@@ -21,6 +21,7 @@
     if ($defined(resp.quota) && resp.quota != "-1") {
       quota_pb.set(resp.quota);
       $("quotabox").setStyle("display", "block");
+      $("quotalabel").setStyle("display", "block");
     }
     $$("a[name=loadfolder]").addEvent("click", foldercallback);
     $$("a[name=compose]").addEvent("click", loadCompose);
@@ -306,6 +307,7 @@
 </div>
 {% endblock %}
 {% block footer %}
+<div id="quotalabel">{% trans "Mailbox quota" %}</div>
 <div id="quotabox"></div>
 {{ block.super }}
 {% endblock %}

@@ -207,10 +207,9 @@ def render_compose(request, form, posturl, bodyheader=None, body=None,
     if insert_signature:
         if body == None:
             body = ""
-        body += """
----
-%s
-""" % parameters.get_user(request.user, "webmail", "SIGNATURE")
+        signature = parameters.get_user(request.user, "webmail", "SIGNATURE")
+        if signature != "":
+            body += "\n---\n%s" % signature
 
     content = render_to_string("webmail/compose.html", {
             "form" : form, "bodyheader" : bodyheader, "body" : body,
