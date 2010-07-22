@@ -25,14 +25,6 @@
     }
     $$("a[name=loadfolder]").addEvent("click", foldercallback);
     $$("a[name=compose]").addEvent("click", loadCompose);
-    $$("a[name=empty]").addEvent("click", empty);
-  }
-
-  empty = function(event) {
-    event.stop();
-    new Request.JSON({url : event.target.get("href"), onSuccess : function(resp) {
-      wm_updatelisting(resp);
-    }}).get();
   }
 
   select = function(obj) {
@@ -232,12 +224,24 @@
             msgset.include(item.get("id"));
           });
           {% url extensions.webmail.views.move as moveurl %}
-          new Request.JSON({url: "{{ moveurl }}", 
-                            onSuccess: get_callback("folder")}
-          ).get({msgset : msgset.join(), to : dest});
+          simple_request("{{ moveurl }}", {msgset : msgset.join(), to : dest});
         }
       });
     };
+
+    simple_request = function(url, params) {
+      infobox.show(gettext("Waiting..."), {
+          profile: "gray",
+          spinner: true
+      });
+      new Request.JSON({url : url, 
+                        onSuccess : function(response) {
+                          get_callback("folder")(response);
+                          infobox.notice(gettext("Done"));
+                          infobox.hide(1);
+                        }
+      }).get(params);
+    }
 
     buildmarkrequest = function(evt) {
       evt.stop();
@@ -248,16 +252,13 @@
       selectedRows.each(function(item, index) {
         ids.include(item.get("id"));
       });
-      new Request.JSON({url : evt.target.get("href"), 
-                        onSuccess : get_callback("folder")}).get({ids : ids.join()});
+      simple_request(evt.target.get("href"), {ids : ids.join()});
     }
     $$("a[name=mark-read]").addEvent("click", buildmarkrequest);
     $$("a[name=mark-unread]").addEvent("click", buildmarkrequest);
 
     $$("a[name=fdaction]").addEvent("click", function(evt) {
-      new Request.JSON({url : evt.target.get("href"), 
-                        onSuccess : get_callback("folder")
-      }).get();
+      simple_request(evt.target.get("href"), {});
       evt.stop();
     });
 

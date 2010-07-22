@@ -5,7 +5,7 @@
 {% endblock %}
 {% block setcontent %}
 {% url admin.views.saveparameters as action %}
-<form method="POST" action="{{ action }}">
+<form method="POST" action="{{ action }}" id="params_form">
   {% include "common/parameters.html" %}
 </form>
 {% endblock %}

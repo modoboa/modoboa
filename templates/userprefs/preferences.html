@@ -7,7 +7,8 @@
 {% block middletitle %}{% trans "Preferences" %}{% endblock %}
 {% block menu %}{% uprefs_menu user %}{% endblock %}
 {% block content %}
-<form method="POST" action="{% url userprefs.views.savepreferences %}">
+<form method="POST" action="{% url userprefs.views.savepreferences %}" 
+      id="uparams_form">
   {% include "common/parameters.html" %}
 </form>
 {% endblock %}

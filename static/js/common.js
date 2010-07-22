@@ -33,7 +33,10 @@ check_anchor = function() {
     } else {
         query = current_anchor.serialized.substring(1);
     }
-    infobox.show(gettext("Loading..."), "gray");
+    infobox.show(gettext("Loading..."), {
+        profile: "gray",
+        spinner: true
+    });
     new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
@@ -348,4 +351,19 @@ gethref = function(obj) {
     var baseurl = "http://" + location.host + location.pathname;
 
     return url.replace(baseurl, "");
+}
+
+saveparams = function(id, message) {
+    $$("input[name=update]").addEvent("click", function(evt) {
+        evt.stop();
+        $(id).set("send", {
+            onSuccess: function(response) {
+                var decode = JSON.decode(response);
+                if (decode.status == "ok") {
+                    infobox.notice(message);
+                    infobox.hide(1);
+                }
+            }
+        }).send();
+    });
 }

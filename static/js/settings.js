@@ -17,5 +17,5 @@ window.addEvent('domready', function() {
 	    toggler.setStyle('color', '#222');
 	}
     }, $('accordion'));
-
+    saveparams("params_form", gettext("Parameters saved"));
 });

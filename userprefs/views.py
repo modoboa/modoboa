@@ -8,7 +8,7 @@ from django.contrib.auth.decorators \
     import login_required
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
-from modoboa.lib import _render, _ctx_ok, _ctx_ko, parameters
+from modoboa.lib import _render, _ctx_ok, _ctx_ko, getctx, parameters
 from modoboa.lib.authbackends import crypt_password
 from forms import ChangePasswordForm
 from modoboa.admin.models import Mailbox
@@ -77,7 +77,8 @@ def savepreferences(request):
         app, name = pname.split('.')
         parameters.save_user(request.user, app, name, v)
 
-    return HttpResponseRedirect(reverse(preferences))
+    ctx = getctx("ok")
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 def confirm(request):

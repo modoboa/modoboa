@@ -15,7 +15,7 @@ from modoboa import admin, userprefs
 from modoboa.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
 from modoboa.lib.authbackends import crypt_password
-from modoboa.lib import _render, _ctx_ok, _ctx_ko
+from modoboa.lib import _render, _ctx_ok, _ctx_ko, getctx
 from modoboa.lib import events, parameters
 from modoboa.lib.models import Parameter
 import string
@@ -440,5 +440,5 @@ def saveparameters(request):
             continue
         app, name = pname.split('.')
         parameters.save_admin(app, name, v)
-    request.user.message_set.create(message=_("Configuration saved."))
-    return HttpResponseRedirect(reverse(admin.views.viewparameters))
+    ctx = getctx("ok")
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

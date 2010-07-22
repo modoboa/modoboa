@@ -56,40 +56,48 @@ var InfoBox = new Class({
     },
 
     notice: function(message) {
-        this.setProfile("green");
-        this.setMessage(message);
+        this.show(message, {
+            profile: "green"
+        });
     },
 
     error: function(message) {
-        this.setProfile("red");
-        this.setMessage(message);
+        this.show(message, {
+            profile: "red"
+        });
     },
 
     warning: function(message) {
-        this.setProfile("yellow");
-        this.setMessage(message);
+        this.show(message, {
+            profile: "yellow"
+        });
     },
 
-    show: function(message, prof, delay) {
+    show: function(message, arguments) {
         if ($defined(this.start)) {
             if ($time() - this.start > this.delay) {
                 $clear(this.showtimer);
                 delete(this.start);
                 delete(this.delay);
             } else {
-                this.showtimer = this.show.delay(100, this, [message, prof]);
+                this.showtimer = this.show.delay(100, this, [message, arguments]);
                 return;
             }
         }
         if ($defined(message)) {
             this.setMessage(message);
         }
-        if ($defined(prof)) {
-            this.setProfile(prof);
+        if ($defined(arguments.profile)) {
+            this.setProfile(arguments.profile);
         }
-        if ($defined(delay)) {
+        if ($defined(arguments.delay)) {
             this.start = $time();
-            this.delay = delay * 1000;
+            this.delay = arguments.delay * 1000;
+        }
+        if ($defined(arguments.spinner) && arguments.spinner) {
+            this.spinner.setStyle("display", "block");
+        } else {
+            this.spinner.setStyle("display", "none");
         }
         this.box.setStyle("display", "block");
     },

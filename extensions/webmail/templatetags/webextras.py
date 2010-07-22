@@ -83,15 +83,16 @@ def listing_menu(selection, folder, user):
                  "label" : _("Compress folder"),
                  "img" : "/static/pics/compress.png",
                  "url" : "compact/%s/" % folder},
-                {"name" : "fdaction",
-                 "label" : _("Empty folder"),
-                 "img" : "/static/pics/clear.png",
-                 "url" : folder == parameters.get_user(user, "webmail", 
-                                                       "TRASH_FOLDER") \
-                     and reverse(webmail.views.empty, args=[folder]) or ""}
                 ]
          }
         ]
+    if folder == parameters.get_user(user, "webmail", "TRASH_FOLDER"):
+        entries[2]["menu"] += [
+            {"name" : "fdaction",
+             "label" : _("Empty folder"),
+             "img" : "/static/pics/clear.png",
+             "url" : reverse(webmail.views.empty, args=[folder])}
+            ]
     menu = render_to_string("common/menu.html",
                             {"selection" : selection, "entries" : entries,
                              "user" : user})

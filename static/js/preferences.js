@@ -11,4 +11,5 @@ window.addEvent('domready', function() {
 	}
     }, $('accordion'));
 
+    saveparams("uparams_form", gettext("Preferences saved"));
 });
