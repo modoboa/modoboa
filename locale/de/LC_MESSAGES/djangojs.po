@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-13 17:13+0200\n"
+"POT-Creation-Date: 2010-07-23 16:23+0200\n"
 "PO-Revision-Date: 2010-06-10 22:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Loading..."
 msgstr "Lade ..."
 
-#: static/js/common.js:40
+#: static/js/common.js:43
 msgid "Done"
 msgstr "Abgeschlossen"
 
@@ -36,6 +36,14 @@ msgstr "Diese Mailbox löschen?"
 msgid "Delete this alias?"
 msgstr "Diesen Alias löschen?"
 
+#: static/js/preferences.js:14
+msgid "Preferences saved"
+msgstr ""
+
 #: static/js/settings.js:4
 msgid "Remove this permission?"
 msgstr "Diese Berechtigung entziehen?"
+
+#: static/js/settings.js:20
+msgid "Parameters saved"
+msgstr ""

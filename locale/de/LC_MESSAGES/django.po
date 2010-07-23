@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-13 17:13+0200\n"
+"POT-Creation-Date: 2010-07-23 16:23+0200\n"
 "PO-Revision-Date: 2010-06-10 23:21+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,10 +213,6 @@ msgstr "Ein Alias mit dieser Adresse existiert bereits"
 msgid "admin is intouchable!!"
 msgstr "admin ist unantastbar!!"
 
-#: admin/views.py:443
-msgid "Configuration saved."
-msgstr "Bestätigung"
-
 #: admin/templatetags/admin_extras.py:11
 msgid "enabled_m"
 msgstr "aktiviert_m"
@@ -261,15 +257,15 @@ msgstr "Neue Domäne"
 msgid "Domains"
 msgstr "Domäne"
 
-#: admin/templatetags/admin_extras.py:112
+#: admin/templatetags/admin_extras.py:118
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/templatetags/admin_extras.py:112
+#: admin/templatetags/admin_extras.py:118
 msgid "No"
 msgstr "Nein"
 
-#: admin/templatetags/admin_extras.py:131
+#: admin/templatetags/admin_extras.py:135
 msgid "Help"
 msgstr "Hilfe"
 
@@ -318,7 +314,7 @@ msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Pfad zum PDP-Server Socket (im UNIX-Modus)"
 
 #: extensions/amavis_quarantine/main.py:50
-#: extensions/amavis_quarantine/templates/index.html:130
+#: extensions/amavis_quarantine/templates/index.html:131
 msgid "Quarantine"
 msgstr "Quarantäne"
 
@@ -329,12 +325,12 @@ msgstr "Von"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
 #: extensions/webmail/forms.py:8 extensions/webmail/lib.py:25
-#: extensions/webmail/views.py:333 templates/common/email_searchbar.html:7
+#: extensions/webmail/views.py:353 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Betreff"
 
 #: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:28
-#: extensions/webmail/views.py:334
+#: extensions/webmail/views.py:354
 msgid "Date"
 msgstr "Datum"
 
@@ -667,30 +663,38 @@ msgid "Use a secured connection to access SMTP server"
 msgstr "Gesicherte Verbindung für Zugriff auf SMTP-Server verwenden"
 
 #: extensions/webmail/main.py:36
+msgid "Automatic folder refresh rate (in seconds)"
+msgstr ""
+
+#: extensions/webmail/main.py:38
 msgid "Folder where deleted messages go"
 msgstr "Abgewiesene Nachrichten"
 
-#: extensions/webmail/main.py:38
+#: extensions/webmail/main.py:40
 msgid "Folder where copies of sent messages go"
 msgstr "Ordner für Gesendete Nachrichten"
 
-#: extensions/webmail/main.py:49
+#: extensions/webmail/main.py:42
+msgid "User defined email signature"
+msgstr ""
+
+#: extensions/webmail/main.py:53
 msgid "Simple IMAP webmail"
 msgstr "Einfaches IMAP-Webmail"
 
-#: extensions/webmail/main.py:63 extensions/webmail/templates/index.html:275
+#: extensions/webmail/main.py:67 extensions/webmail/templates/index.html:309
 msgid "Webmail"
 msgstr "Webmail"
 
-#: extensions/webmail/views.py:63 lib/email_listing.py:124
+#: extensions/webmail/views.py:67 lib/email_listing.py:124
 msgid "This folder contains no messages"
 msgstr "Dieser Ordner enthält keine Einträge"
 
-#: extensions/webmail/views.py:314
+#: extensions/webmail/views.py:334
 msgid "wrote:"
 msgstr "schrieb:"
 
-#: extensions/webmail/views.py:332
+#: extensions/webmail/views.py:352
 msgid "Original message"
 msgstr "Gesendete Nachrichten"
 
@@ -701,6 +705,20 @@ msgstr "Ordner"
 #: extensions/webmail/templates/headers.html:7
 msgid "Attachments"
 msgstr "Dateianhänge"
+
+#: extensions/webmail/templates/index.html:120
+msgid "Reloading..."
+msgstr ""
+
+#: extensions/webmail/templates/index.html:127
+#, fuzzy
+msgid "Done"
+msgstr "Domäne"
+
+#: extensions/webmail/templates/index.html:315
+#, fuzzy
+msgid "Mailbox quota"
+msgstr "Mailbox"
 
 #: extensions/webmail/templatetags/webextras.py:17
 #: extensions/webmail/templatetags/webextras.py:46
@@ -750,7 +768,7 @@ msgstr "Aktionen"
 msgid "Compress folder"
 msgstr "Ordner komprimieren"
 
-#: extensions/webmail/templatetags/webextras.py:87
+#: extensions/webmail/templatetags/webextras.py:92
 msgid "Empty folder"
 msgstr "Leerer Ordner"
 

@@ -92,6 +92,7 @@
 
   loadCompose = function(event) {
     event.stop();
+    $clear(rtimer);
     current_anchor.baseurl("compose").update();
   }
   register_callback("compose", compose_callback);
@@ -116,7 +117,7 @@
   refreshFolder = function() {
     var query = current_anchor.serialized.substring(1);
     $clear(rtimer);
-    infobox.show('{% trans "Refreshing..." %}', {
+    infobox.show('{% trans "Reloading..." %}', {
         profile : "gray",
         spinner : true
     });

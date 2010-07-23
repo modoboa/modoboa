@@ -102,10 +102,11 @@
     $("menubar").set("html", "");
     $("navbar").set("html", "");
     if (resp.status == "ok") {
-      infobox.show(resp.message, "green", 1);
+      infobox.notice(resp.message);
     } else {
-      infobox.show(resp.message, "red", 1);
+      infobox.error(resp.message);
     }
+    infobox.hide(1);
     current_anchor.parse_string(resp.url, true).setparams(navparams);
     current_anchor.update(1);
   }

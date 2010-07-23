@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-13 17:13+0200\n"
+"POT-Creation-Date: 2010-07-23 16:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -214,10 +214,6 @@ msgstr "Un alias avec ce nom existe déjà"
 msgid "admin is intouchable!!"
 msgstr "admin est intouchable!!"
 
-#: admin/views.py:443
-msgid "Configuration saved."
-msgstr "Configuration sauvegardée."
-
 #: admin/templatetags/admin_extras.py:11
 msgid "enabled_m"
 msgstr "Activé"
@@ -262,15 +258,15 @@ msgstr "Nouveau domaine"
 msgid "Domains"
 msgstr "Domaines"
 
-#: admin/templatetags/admin_extras.py:112
+#: admin/templatetags/admin_extras.py:118
 msgid "Yes"
 msgstr "Oui"
 
-#: admin/templatetags/admin_extras.py:112
+#: admin/templatetags/admin_extras.py:118
 msgid "No"
 msgstr "Non"
 
-#: admin/templatetags/admin_extras.py:131
+#: admin/templatetags/admin_extras.py:135
 msgid "Help"
 msgstr "Aide"
 
@@ -317,7 +313,7 @@ msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Emplacement de la socket du serveur PDP (en mode unix)"
 
 #: extensions/amavis_quarantine/main.py:50
-#: extensions/amavis_quarantine/templates/index.html:130
+#: extensions/amavis_quarantine/templates/index.html:131
 msgid "Quarantine"
 msgstr "Quarantaine"
 
@@ -328,12 +324,12 @@ msgstr "De"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
 #: extensions/webmail/forms.py:8 extensions/webmail/lib.py:25
-#: extensions/webmail/views.py:333 templates/common/email_searchbar.html:7
+#: extensions/webmail/views.py:353 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Sujet"
 
 #: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:28
-#: extensions/webmail/views.py:334
+#: extensions/webmail/views.py:354
 msgid "Date"
 msgstr ""
 
@@ -665,30 +661,38 @@ msgid "Use a secured connection to access SMTP server"
 msgstr "Utiliser une connexion sécurisée pour accéder au serveur SMTP"
 
 #: extensions/webmail/main.py:36
+msgid "Automatic folder refresh rate (in seconds)"
+msgstr ""
+
+#: extensions/webmail/main.py:38
 msgid "Folder where deleted messages go"
 msgstr "Dossier de destination des messages supprimés"
 
-#: extensions/webmail/main.py:38
+#: extensions/webmail/main.py:40
 msgid "Folder where copies of sent messages go"
 msgstr "Dossier de destination des copies de messages envoyés"
 
-#: extensions/webmail/main.py:49
+#: extensions/webmail/main.py:42
+msgid "User defined email signature"
+msgstr ""
+
+#: extensions/webmail/main.py:53
 msgid "Simple IMAP webmail"
 msgstr ""
 
-#: extensions/webmail/main.py:63 extensions/webmail/templates/index.html:275
+#: extensions/webmail/main.py:67 extensions/webmail/templates/index.html:309
 msgid "Webmail"
 msgstr ""
 
-#: extensions/webmail/views.py:63 lib/email_listing.py:124
+#: extensions/webmail/views.py:67 lib/email_listing.py:124
 msgid "This folder contains no messages"
 msgstr "Ce dossier ne contient pas de messages"
 
-#: extensions/webmail/views.py:314
+#: extensions/webmail/views.py:334
 msgid "wrote:"
 msgstr "a écrit :"
 
-#: extensions/webmail/views.py:332
+#: extensions/webmail/views.py:352
 msgid "Original message"
 msgstr "Message original"
 
@@ -699,6 +703,18 @@ msgstr "Dossiers"
 #: extensions/webmail/templates/headers.html:7
 msgid "Attachments"
 msgstr "Pièces jointes"
+
+#: extensions/webmail/templates/index.html:120
+msgid "Reloading..."
+msgstr "Rechargement..."
+
+#: extensions/webmail/templates/index.html:127
+msgid "Done"
+msgstr "Effectué"
+
+#: extensions/webmail/templates/index.html:315
+msgid "Mailbox quota"
+msgstr "Quota de la boite aux lettres"
 
 #: extensions/webmail/templatetags/webextras.py:17
 #: extensions/webmail/templatetags/webextras.py:46
@@ -748,7 +764,7 @@ msgstr ""
 msgid "Compress folder"
 msgstr "Compresser ce dossier"
 
-#: extensions/webmail/templatetags/webextras.py:87
+#: extensions/webmail/templatetags/webextras.py:92
 msgid "Empty folder"
 msgstr "Vider ce dossier"
 
@@ -925,7 +941,6 @@ msgid "Save"
 msgstr "Sauvegarder"
 
 #: templates/registration/login.html:8
-#, fuzzy
 msgid "Welcome to Modoboa"
 msgstr "Bienvenue dans Modoboa"
 

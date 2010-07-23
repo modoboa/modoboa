@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-13 17:13+0200\n"
+"POT-Creation-Date: 2010-07-23 16:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Loading..."
 msgstr "Chargement..."
 
-#: static/js/common.js:40
+#: static/js/common.js:43
 msgid "Done"
 msgstr "Effectué"
 
@@ -36,6 +36,14 @@ msgstr "Supprimer cette boite aux lettres?"
 msgid "Delete this alias?"
 msgstr "Supprimer cet alias?"
 
+#: static/js/preferences.js:14
+msgid "Preferences saved"
+msgstr "Préférences enregistrées"
+
 #: static/js/settings.js:4
 msgid "Remove this permission?"
 msgstr "Supprimer cette permission?"
+
+#: static/js/settings.js:20
+msgid "Parameters saved"
+msgstr "Paramètres enregistrés"
