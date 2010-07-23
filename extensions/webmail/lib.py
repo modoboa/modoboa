@@ -197,11 +197,6 @@ class IMAPconnector(object):
         del self.m
         self.m = None
 
-    def _encodefolder(self, folder):
-        if not folder:
-            return "INBOX"
-        return folder.encode("imap4-utf-7")
-
     def messages_count(self, **kwargs):
         """An enhanced version of messages_count
 
@@ -236,34 +231,64 @@ class IMAPconnector(object):
             return
         return len(data[0].split())
 
-    def _parse_folder_name(self, dict, prefix, delimiter, parts):
-        if not len(parts):
-            return
-        path = "%s%s%s" % (prefix, delimiter, parts[0])
-        dict[parts[0]] = {"path" : path, "sub" : {}}
-        self._parse_folder_name(dict[parts[0]]["sub"], path, delimiter, parts[1:])
+    def _encodefolder(self, folder):
+        if not folder:
+            return "INBOX"
+        return folder.encode("imap4-utf-7")
 
-    def listfolders(self, topfolder='INBOX', md_folders=[]):
+    def _parse_folder_name(self, descr, prefix, delimiter, parts):
+        if not len(parts):
+            return False
+        path = "%s%s%s" % (prefix, delimiter, parts[0])
+        sdescr = {"name" : parts[0], "path" : path, "sub" : []}
+        if self._parse_folder_name(sdescr["sub"], path, delimiter, parts[1:]):
+            sdescr["class"] = "subfolders"
+        descr += [sdescr]
+        return True
+
+    def _listfolders(self, topfolder='INBOX', md_folders=[]):
         list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
         (status, data) = self.m.list()
-        result = {}
+        result = []
         for mb in data:
             flags, delimiter, name = list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
-                dict = {"path" : parts[0], "sub" : {}}
-                self._parse_folder_name(dict["sub"], parts[0], delimiter, parts[1:])
-                result[parts[0]] = dict
+                descr["path"] = parts[0]
+                descr["sub"] = []
+                if self._parse_folder_name(descr["sub"], parts[0], delimiter, 
+                                           parts[1:]):
+                    descr["class"] = "subfolders"
                 continue
             present = False
+            descr = {"name" : name}
             for mdf in md_folders:
                 if mdf["name"] == name:
                     present = True
                     break
             if not present:
-                result[name] = None
-        return result
+                result += [descr]
+        from operator import itemgetter
+        return sorted(result, key=itemgetter("name"))
+
+    def getfolders(self, user):
+        md_folders = [{"name" : "INBOX", "class" : "inbox"},
+                      {"name" : 'Drafts'},
+                      {"name" : 'Junk'},
+                      {"name" : parameters.get_user(user, "webmail",
+                                                    "SENT_FOLDER")},
+                      {"name" : parameters.get_user(user, "webmail",
+                                                    "TRASH_FOLDER"),
+                       "class" : "trash"}]
+        md_folders += self._listfolders(md_folders=md_folders)
+        for fd in md_folders:
+            key = fd.has_key("path") and "path" or "name"
+            count = self.unseen_messages(fd[key])
+            if count == 0:
+                continue
+            fd["unseen"] = count
+        return md_folders
 
     def _add_flag(self, folder, mail_id, flag):
         self.m.select(self._encodefolder(folder))
@@ -367,37 +392,6 @@ class ImapListing(EmailListing):
         self.extravars["refreshrate"] = \
             int(parameters.get_user(user, "webmail", "REFRESH_INTERVAL")) * 1000
 
-    def __parse_folders(self, folders):
-        result = []
-        for fd in sorted(folders.keys()):
-            descr = {"name" : fd}
-            if folders[fd] is not None:
-                descr["path"] = folders[fd]["path"]
-                if folders[fd]["sub"] != {}:
-                    descr["class"] = "subfolders"
-                    descr["sub"] = self.__parse_folders(folders[fd]["sub"])
-            result += [descr]
-        return result
-
-    def getfolders(self):
-        md_folders = [{"name" : "INBOX", "class" : "inbox"},
-                      {"name" : 'Drafts'},
-                      {"name" : 'Junk'},
-                      {"name" : parameters.get_user(self.user, "webmail",
-                                                    "SENT_FOLDER")},
-                      {"name" : parameters.get_user(self.user, "webmail",
-                                                    "TRASH_FOLDER"),
-                       "class" : "trash"}]
-        folders = self.mbc.listfolders(md_folders=md_folders)
-        md_folders += self.__parse_folders(folders)
-        for fd in md_folders:
-            key = fd.has_key("path") and "path" or "name"
-            count = self.mbc.unseen_messages(fd[key])
-            if count == 0:
-                continue
-            fd["unseen"] = count
-        return md_folders
-
     def parse_search_parameters(self, criterion, pattern):
         def or_criterion(old, c):
             if old == "":
@@ -423,6 +417,7 @@ class ImapListing(EmailListing):
                            / float(self.mbc.quota_limit) * 100)
         except AttributeError:
             return -1
+
 
 class ImapEmail(Email):
     def __init__(self, msg, addrfull=False, *args, **kwargs):

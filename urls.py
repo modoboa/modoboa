@@ -14,7 +14,6 @@ urlpatterns = patterns('',
 )
 
 if settings.DEBUG:
-    print "debug"
     urlpatterns += patterns(
         '',
         (r'^static/(?P<path>.*)$', 'django.views.static.serve',

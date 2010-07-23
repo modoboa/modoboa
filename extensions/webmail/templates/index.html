@@ -116,7 +116,10 @@
   refreshFolder = function() {
     var query = current_anchor.serialized.substring(1);
     $clear(rtimer);
-    infobox.show('{% trans "Refreshing..." %}', "gray");
+    infobox.show('{% trans "Refreshing..." %}', {
+        profile : "gray",
+        spinner : true
+    });
     new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);

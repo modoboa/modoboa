@@ -22,6 +22,12 @@ def __get_current_url(request):
             res += "&%s=%s" % (p, request.session[p])
     return res
 
+def __render_folders(mbc, request):
+    return render_to_string("webmail/folders.html", {
+            "selected" : request.session["folder"],
+            "folders" : mbc.getfolders(request.user)
+            })
+
 @login_required
 @is_not_localadmin()
 def folder(request, name, updatenav=True):
@@ -51,10 +57,8 @@ def folder(request, name, updatenav=True):
                       baseurl=name, folder=name, order=order, **optparams)
 
     page = lst.paginator.getpage(request.session["page"])
-    folders = render_to_string("webmail/folders.html", {
-            "folders" : lst.getfolders()
-            })
-    dico = {"folders" : folders, "menu" : listing_menu("", name, request.user)}
+    dico = {"folders" : __render_folders(lst.mbc, request), 
+            "menu" : listing_menu("", name, request.user)}
     if page:
         dico["listing"] = lst.fetch(request, page.id_start, page.id_stop)
         dico["navbar"] = lst.render_navbar(page)
@@ -99,7 +103,10 @@ def viewmail(request, folder, mail_id=None):
 """).render(Context({"url" : reverse(getmailcontent, args=[folder, mail_id])}))
     menu = viewm_menu("", __get_current_url(request), folder, mail_id,
                       request.user.get_all_permissions())
-    ctx = getctx("ok", menu=menu, listing=content)
+    mbc = IMAPconnector(user=request.user.username, 
+                        password=request.session["password"])
+    ctx = getctx("ok", menu=menu, listing=content, 
+                 folders=__render_folders(mbc, request))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
@@ -215,7 +222,10 @@ def render_compose(request, form, posturl, bodyheader=None, body=None,
             "form" : form, "bodyheader" : bodyheader, "body" : body,
             "posturl" : posturl
             })
-    ctx = getctx("ok", level=2, menu=menu, listing=content)
+    mbc = IMAPconnector(user=request.user.username, 
+                        password=request.session["password"])
+    ctx = getctx("ok", level=2, menu=menu, listing=content, 
+                 folders=__render_folders(mbc, request))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 def send_mail(request, withctx=False, origmsg=None, posturl=None):
