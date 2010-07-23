@@ -93,7 +93,6 @@
 
   loadCompose = function(event) {
     event.stop();
-    $clear(rtimer);
     current_anchor.baseurl("compose").update();
   }
   register_callback("compose", compose_callback);
@@ -115,6 +114,11 @@
   register_callback("forward", compose_callback);
  
   var rtimer = null;  
+
+  window.addEvent("pageRefresh", function() {
+    $clear(rtimer);
+  });
+
   refreshFolder = function() {
     var query = current_anchor.serialized.substring(1);
     $clear(rtimer);
@@ -135,7 +139,6 @@
     if (!$defined(obj)) {
       obj = $(event.target);
     }
-    $clear(rtimer);
     current_anchor.parse_string(gethref(obj), true).setparams(navparams);
     current_anchor.update();
   }

@@ -113,6 +113,7 @@ function HashWrapper(deflocation) {
     };
 
     this.update = function(force) {
+        window.fireEvent("pageRefresh");
         location.hash = this.serialize();
         if ($defined(force)) {
             this.force = force;
