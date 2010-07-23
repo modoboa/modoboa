@@ -14,6 +14,7 @@
   });
 
   wm_updatelisting = function(resp) {
+    window.removeEvents("resize");
     updatelisting(resp);
     if ($defined(resp.folders)) {
       $("folders").set("html", resp.folders);
