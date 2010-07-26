@@ -1,17 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) 2010
+# This file is distributed under the same license as the Modoboa package.
 # Patrick Ben Koetter <p@state-of-mind.de>, 2010.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-23 16:23+0200\n"
-"PO-Revision-Date: 2010-06-10 22:45+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2010-07-25 21:42+0200\n"
+"Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
+"Language-Team: DE <p@state-of-mind.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,7 +37,7 @@ msgstr "Diesen Alias löschen?"
 
 #: static/js/preferences.js:14
 msgid "Preferences saved"
-msgstr ""
+msgstr "Einstellungen gespeichert"
 
 #: static/js/settings.js:4
 msgid "Remove this permission?"
@@ -46,4 +45,4 @@ msgstr "Diese Berechtigung entziehen?"
 
 #: static/js/settings.js:20
 msgid "Parameters saved"
-msgstr ""
+msgstr "Parameter gespeichert"

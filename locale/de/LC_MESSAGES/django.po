@@ -1,17 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) 2010
+# This file is distributed under the same license as the Modoboa package.
 # Patrick Ben Koetter <p@state-of-mind.de>, 2010.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-23 16:23+0200\n"
-"PO-Revision-Date: 2010-06-10 23:21+0200\n"
+"PO-Revision-Date: 2010-07-25 21:39+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: DE <p@state-of-mind.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -664,7 +663,7 @@ msgstr "Gesicherte Verbindung für Zugriff auf SMTP-Server verwenden"
 
 #: extensions/webmail/main.py:36
 msgid "Automatic folder refresh rate (in seconds)"
-msgstr ""
+msgstr "Aktualisierungsintervall für Ordner (in Sekunden)"
 
 #: extensions/webmail/main.py:38
 msgid "Folder where deleted messages go"
@@ -676,7 +675,7 @@ msgstr "Ordner für Gesendete Nachrichten"
 
 #: extensions/webmail/main.py:42
 msgid "User defined email signature"
-msgstr ""
+msgstr "Benutzerdefinierte Signatur der E-Mail"
 
 #: extensions/webmail/main.py:53
 msgid "Simple IMAP webmail"
@@ -708,17 +707,15 @@ msgstr "Dateianhänge"
 
 #: extensions/webmail/templates/index.html:120
 msgid "Reloading..."
-msgstr ""
+msgstr "Aktualisiere..."
 
 #: extensions/webmail/templates/index.html:127
-#, fuzzy
 msgid "Done"
-msgstr "Domäne"
+msgstr "Abgeschlossen"
 
 #: extensions/webmail/templates/index.html:315
-#, fuzzy
 msgid "Mailbox quota"
-msgstr "Mailbox"
+msgstr "Mailbox Quota"
 
 #: extensions/webmail/templatetags/webextras.py:17
 #: extensions/webmail/templatetags/webextras.py:46
@@ -945,9 +942,8 @@ msgid "Save"
 msgstr "Speichern"
 
 #: templates/registration/login.html:8
-#, fuzzy
 msgid "Welcome to Modoboa"
-msgstr "Willkommen bei Modoboa"
+msgstr "Willkommen zu Modoboa"
 
 #: templates/registration/login.html:28
 msgid "Welcome"
