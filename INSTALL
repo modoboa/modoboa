@@ -46,6 +46,34 @@ First, decompress the new tarball at the same location than your
 current installation. Then, check if the new version you're installing
 requires a migration::
 
+0.8 -> 0.8.1 : project renamed.
+
+ * First, rename your mailng folder to modoboa and copy all the
+   content from modoboa-0.8.1 to modoboa.
+ 
+ * Edit your settings.py and replace all occurences of mailng by
+   modoboa. Make sure you don't modify the DATABASE section as you're
+   not going to rename your database.
+
+ * Rename the MAILNG_DIR variable to MODOBOA_DIR.
+
+ * Add 'django.contrib.messages.middleware.MessageMiddleware' to
+   MIDDLEWARE_CLASSES and 'django.contrib.messages' to
+   INSTALLED_APPS. Save your modifications.
+
+ * Run the following command::
+
+   # python manage.py syncdb
+
+ * For all activated extensions, run the following command::
+ 
+   # export PYTHONPATH=<modoboa_dir>/..
+   # DJANGO_SETTINGS_MODULE=modoboa.settings \
+      <modoboa_dir>/scripts/extension.py <extension> on
+
+ * Update your webserver configuration and restart it.
+
+
 0.7 -> 0.8 : SQL migration needed.
 
 Before you start migration, make sure you have updated your

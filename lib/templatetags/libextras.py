@@ -43,7 +43,7 @@ def display_messages(msgs):
 <script type="text/javascript">
   window.addEvent("domready", function() {
     infobox.%s("%s");
-    infobox.hide(3);
+    infobox.hide(2);
   });
 </script>
 """ % (level, text)

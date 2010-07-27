@@ -18,8 +18,7 @@ class ARmessage(models.Model):
                                help_text=_("The content that will appear in sended emails"))
     enabled = models.BooleanField(_('enabled'),
                                   help_text=_("Activate/Deactivate your auto reply"))
-    untildate = models.DateField(_('until'),
-                                 help_text=_("Activate your auto reply until this date"))
+    untildate = models.DateField()
 
 class ARhistoric(models.Model):
     armessage = models.ForeignKey(ARmessage)

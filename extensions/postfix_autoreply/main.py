@@ -55,7 +55,7 @@ def menu(**kwargs):
          "url" : reverse(views.autoreply),
          "img" : "/static/pics/auto-reply.png",
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:440,y:370}}",
+         "rel" : "{handler:'iframe',size:{x:440,y:400}}",
          "label" : _("Auto-reply message")}
         ]
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-23 16:23+0200\n"
+"POT-Creation-Date: 2010-07-27 15:29+0200\n"
 "PO-Revision-Date: 2010-07-25 21:39+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
@@ -170,45 +170,45 @@ msgstr "Mailbox auf den dieser Alias verweist"
 msgid "Check to activate this alias"
 msgstr "Auswählen um den Alias zu aktivieren"
 
-#: admin/views.py:27
+#: admin/views.py:29
 msgid "Permission denied."
 msgstr "Zugriff verweigert."
 
-#: admin/views.py:73 admin/views.py:103
+#: admin/views.py:75 admin/views.py:105
 msgid "Domain with this name already defined"
 msgstr "Es existiert bereits eine Domain mit diesem Namen"
 
-#: admin/views.py:82
+#: admin/views.py:84
 msgid "Failed to initialise domain, check permissions"
 msgstr ""
 "Domäne konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:106
+#: admin/views.py:108
 msgid "Failed to rename domain, check permissions"
 msgstr "Domäne konnte nicht umbenannt werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:160 admin/views.py:222
+#: admin/views.py:162 admin/views.py:225
 msgid "Mailbox with this address already exists"
 msgstr "Eine Mailbox mit diesem Namen existiert bereits."
 
-#: admin/views.py:194
+#: admin/views.py:196
 msgid "Mailbox created."
 msgstr "Mailbox erstellt."
 
-#: admin/views.py:198
+#: admin/views.py:201
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Mailbox konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:225
+#: admin/views.py:228
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Mailbox konnte nicht umbenannt werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:296 admin/views.py:326
+#: admin/views.py:299 admin/views.py:329
 msgid "Alias with this name already exists"
 msgstr "Ein Alias mit dieser Adresse existiert bereits"
 
-#: admin/views.py:401
+#: admin/views.py:404
 msgid "admin is intouchable!!"
 msgstr "admin ist unantastbar!!"
 
@@ -435,7 +435,15 @@ msgstr "Nachrichten-Header"
 msgid "Bad MIME"
 msgstr "Schlechtes MIME"
 
-#: extensions/postfix_autoreply/forms.py:18
+#: extensions/postfix_autoreply/forms.py:7
+msgid "Until"
+msgstr "Bis"
+
+#: extensions/postfix_autoreply/forms.py:8
+msgid "Activate your auto reply until this date"
+msgstr "Aktivieren Sie ihre automatisierte Antwort bis zu diesem Datum"
+
+#: extensions/postfix_autoreply/forms.py:22
 msgid "This date is over"
 msgstr "Das Datum ist vorbei"
 
@@ -469,14 +477,6 @@ msgstr "Der Inhalt, der in den versendeten Nachrichten verwendet wird"
 #: extensions/postfix_autoreply/models.py:20
 msgid "Activate/Deactivate your auto reply"
 msgstr "Aktivieren/Deaktivieren Sie die automatisierte Antwort"
-
-#: extensions/postfix_autoreply/models.py:21
-msgid "until"
-msgstr "bis"
-
-#: extensions/postfix_autoreply/models.py:22
-msgid "Activate your auto reply until this date"
-msgstr "Aktivieren Sie ihre automatisierte Antwort bis zu diesem Datum"
 
 #: extensions/postfix_autoreply/views.py:34
 msgid "Auto reply message updated successfully."
@@ -681,7 +681,7 @@ msgstr "Benutzerdefinierte Signatur der E-Mail"
 msgid "Simple IMAP webmail"
 msgstr "Einfaches IMAP-Webmail"
 
-#: extensions/webmail/main.py:67 extensions/webmail/templates/index.html:309
+#: extensions/webmail/main.py:67 extensions/webmail/templates/index.html:313
 msgid "Webmail"
 msgstr "Webmail"
 
@@ -705,15 +705,15 @@ msgstr "Ordner"
 msgid "Attachments"
 msgstr "Dateianhänge"
 
-#: extensions/webmail/templates/index.html:120
+#: extensions/webmail/templates/index.html:125
 msgid "Reloading..."
 msgstr "Aktualisiere..."
 
-#: extensions/webmail/templates/index.html:127
+#: extensions/webmail/templates/index.html:132
 msgid "Done"
 msgstr "Abgeschlossen"
 
-#: extensions/webmail/templates/index.html:315
+#: extensions/webmail/templates/index.html:319
 msgid "Mailbox quota"
 msgstr "Mailbox Quota"
 
@@ -958,7 +958,7 @@ msgstr "Passwort ändern"
 msgid "Do not delete mailbox directory"
 msgstr "Mailbox-Verzeichnis nicht löschen"
 
-#: templates/userprefs/preferences.html:7
+#: templates/userprefs/preferences.html:6
 #: userprefs/templatetags/uprefs_extras.py:26
 msgid "Preferences"
 msgstr "Einstellungen"

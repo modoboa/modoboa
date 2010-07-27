@@ -29,6 +29,7 @@ def autoreply(request):
             from modoboa import userprefs
 
             arm = form.save(commit=False)
+            arm.untildate = form.cleaned_data["untildate"]
             arm.mbox = mb
             arm.save()
             messages.info(request, _("Auto reply message updated successfully."),
@@ -42,6 +43,7 @@ def autoreply(request):
                             mimetype="application/json")
 
     form = ARmessageForm(instance=arm)
+    form.fields['untildate'].initial = arm.untildate
     return _render(request, "postfix_autoreply/autoreply.html", {
             "form" : form
             })

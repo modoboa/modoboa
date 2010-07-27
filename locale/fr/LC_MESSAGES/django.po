@@ -1,17 +1,17 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Antoine Nguyen <tonio@ngyn.org>, 2010.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-23 16:23+0200\n"
+"POT-Creation-Date: 2010-07-27 15:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Antoine Nguyen <tonio@ngyn.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -173,44 +173,44 @@ msgstr "Les boites aux lettres sur lesquelles pointe cet alias"
 msgid "Check to activate this alias"
 msgstr "Cocher pour activer cet alias"
 
-#: admin/views.py:27
+#: admin/views.py:29
 msgid "Permission denied."
 msgstr "Permission refusée."
 
-#: admin/views.py:73 admin/views.py:103
+#: admin/views.py:75 admin/views.py:105
 msgid "Domain with this name already defined"
 msgstr "Un domaine avec ce nom existe déjà"
 
-#: admin/views.py:82
+#: admin/views.py:84
 msgid "Failed to initialise domain, check permissions"
 msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
 
-#: admin/views.py:106
+#: admin/views.py:108
 msgid "Failed to rename domain, check permissions"
 msgstr "Impossible de renommer le domaine, vérifier les permissions"
 
-#: admin/views.py:160 admin/views.py:222
+#: admin/views.py:162 admin/views.py:225
 msgid "Mailbox with this address already exists"
 msgstr "Une boite aux lettres pour cette adresse existe déjà"
 
-#: admin/views.py:194
+#: admin/views.py:196
 msgid "Mailbox created."
 msgstr "Boite aux lettres créé."
 
-#: admin/views.py:198
+#: admin/views.py:201
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Impossible d'initialiser la boite aux lettres, vérifier les permissions"
 
-#: admin/views.py:225
+#: admin/views.py:228
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
 
-#: admin/views.py:296 admin/views.py:326
+#: admin/views.py:299 admin/views.py:329
 msgid "Alias with this name already exists"
 msgstr "Un alias avec ce nom existe déjà"
 
-#: admin/views.py:401
+#: admin/views.py:404
 msgid "admin is intouchable!!"
 msgstr "admin est intouchable!!"
 
@@ -435,7 +435,15 @@ msgstr "Mauvais entête"
 msgid "Bad MIME"
 msgstr "Mauvais type MIME"
 
-#: extensions/postfix_autoreply/forms.py:18
+#: extensions/postfix_autoreply/forms.py:7
+msgid "Until"
+msgstr "Jusqu'à"
+
+#: extensions/postfix_autoreply/forms.py:8
+msgid "Activate your auto reply until this date"
+msgstr "Activer votre réponse automatique jusqu'à cette date"
+
+#: extensions/postfix_autoreply/forms.py:22
 msgid "This date is over"
 msgstr "Cette date est dépassée"
 
@@ -469,14 +477,6 @@ msgstr "Le contenu qui apparaitra dans les emails envoyés"
 #: extensions/postfix_autoreply/models.py:20
 msgid "Activate/Deactivate your auto reply"
 msgstr "Activer/Désactiver votre réponse automatique"
-
-#: extensions/postfix_autoreply/models.py:21
-msgid "until"
-msgstr "jusqu'à"
-
-#: extensions/postfix_autoreply/models.py:22
-msgid "Activate your auto reply until this date"
-msgstr "Activer votre réponse automatique jusqu'à cette date"
 
 #: extensions/postfix_autoreply/views.py:34
 msgid "Auto reply message updated successfully."
@@ -680,7 +680,7 @@ msgstr ""
 msgid "Simple IMAP webmail"
 msgstr ""
 
-#: extensions/webmail/main.py:67 extensions/webmail/templates/index.html:309
+#: extensions/webmail/main.py:67 extensions/webmail/templates/index.html:313
 msgid "Webmail"
 msgstr ""
 
@@ -704,15 +704,15 @@ msgstr "Dossiers"
 msgid "Attachments"
 msgstr "Pièces jointes"
 
-#: extensions/webmail/templates/index.html:120
+#: extensions/webmail/templates/index.html:125
 msgid "Reloading..."
 msgstr "Rechargement..."
 
-#: extensions/webmail/templates/index.html:127
+#: extensions/webmail/templates/index.html:132
 msgid "Done"
 msgstr "Effectué"
 
-#: extensions/webmail/templates/index.html:315
+#: extensions/webmail/templates/index.html:319
 msgid "Mailbox quota"
 msgstr "Quota de la boite aux lettres"
 
@@ -957,7 +957,7 @@ msgstr "Changer de mot de passe"
 msgid "Do not delete mailbox directory"
 msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
-#: templates/userprefs/preferences.html:7
+#: templates/userprefs/preferences.html:6
 #: userprefs/templatetags/uprefs_extras.py:26
 msgid "Preferences"
 msgstr "Préférences"

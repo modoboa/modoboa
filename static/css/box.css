@@ -1,6 +1,6 @@
 body {
     font-family: arial, helvetica, verdana, tahoma, sans-serif;
-    font-size: small;
+    font-size: 0.9em;
     margin: 0 auto;
     padding: 0;
 }
@@ -14,14 +14,12 @@ div.row {
 div.row label {
     float: left;
     width: 120px;
-    font-size: small;
     padding: 3px 0;
 }
 
 input {
     border: 1px solid #cccccc;
     color: inherit;
-    /*background-color: #e9e9e9;*/
     background-color: #eee;
     padding: 2px;
 }
@@ -33,6 +31,14 @@ input[type=text] {
 input:hover {
     color: inherit;
     background-color: #ffffcc;
+}
+
+textarea {
+    border: 1px solid #cccccc;
+    background-color: #eee;
+    width: 300px;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 select {
