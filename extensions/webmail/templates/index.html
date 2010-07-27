@@ -129,7 +129,7 @@
     new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
-        infobox.notice('{% trans "Done" %}');
+        infobox.info('{% trans "Done" %}');
         infobox.hide(1);
     }}).get();
   }
@@ -245,7 +245,7 @@
       new Request.JSON({url : url, 
                         onSuccess : function(response) {
                           get_callback("folder")(response);
-                          infobox.notice(gettext("Done"));
+                          infobox.info(gettext("Done"));
                           infobox.hide(1);
                         }
       }).get(params);

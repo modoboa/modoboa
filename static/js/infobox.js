@@ -55,7 +55,7 @@ var InfoBox = new Class({
         });
     },
 
-    notice: function(message) {
+    info: function(message) {
         this.show(message, {
             profile: "green"
         });

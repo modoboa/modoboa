@@ -11,6 +11,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import User, Group
+from django.contrib import messages
+
 from modoboa import admin, userprefs
 from modoboa.admin.models import Domain, Mailbox, Alias
 from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
@@ -191,7 +193,8 @@ def newmailbox(request, dom_id=None):
                     
                     events.raiseEvent("CreateMailbox", mbox=mb)
 
-                    request.user.message_set.create(message=_("Mailbox created."))
+                    messages.info(request, _("Mailbox created."), 
+                                  fail_silently=True)
                     ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[domain.id]))
                     return HttpResponse(simplejson.dumps(ctx), 
                                         mimetype="application/json")
@@ -398,7 +401,7 @@ def deletepermission(request, mbox_id, group):
     if group == "SuperAdmins":
         user = User.objects.get(pk=mbox_id)
         if user.username == "admin":
-            request.user.message_set.create(message=_("admin is intouchable!!"))
+            messages.error(request, _("admin is intouchable!!"), fail_silently=True)
         else:
             user.is_superuser = False
             user.save()

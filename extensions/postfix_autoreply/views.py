@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.utils import simplejson
 from django.contrib.auth.decorators \
     import login_required
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import _render, _ctx_ok, _ctx_ko, is_not_localadmin
@@ -30,9 +31,8 @@ def autoreply(request):
             arm = form.save(commit=False)
             arm.mbox = mb
             arm.save()
-            request.user.message_set.create(
-                message=_("Auto reply message updated successfully.")
-                )
+            messages.info(request, _("Auto reply message updated successfully."),
+                          fail_silently=True)
             ctx = _ctx_ok(reverse(userprefs.views.index))
         else:
             ctx = _ctx_ko("postfix_autoreply/autoreply.html", {

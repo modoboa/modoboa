@@ -40,7 +40,7 @@ check_anchor = function() {
     new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
         callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
-        infobox.notice(gettext("Done"));
+        infobox.info(gettext("Done"));
         infobox.hide(1);
     }}).get();
 }
@@ -345,13 +345,17 @@ searchbox_init = function() {
 
 // The following code prevents a bug under IE7 because fullpath is
 // returned instead of a relative one. (even if mootools uses
-// getAttribute("href", 2), this is not working with AJAX
-// requests)
+// getAttribute("href", 2), this is not working for AJAX requests)
 gethref = function(obj) {
     var url = obj.get("href");
-    var baseurl = "http://" + location.host + location.pathname;
-
-    return url.replace(baseurl, "");
+    var re = new RegExp("^(https?):");
+    var scheme = re.exec(url);
+    
+    if (scheme != null) {
+        var baseurl = scheme[0] + "://" + location.host + location.pathname;
+        return url.replace(baseurl, "");
+    }
+    return url;
 }
 
 saveparams = function(id, message) {
@@ -361,7 +365,7 @@ saveparams = function(id, message) {
             onSuccess: function(response) {
                 var decode = JSON.decode(response);
                 if (decode.status == "ok") {
-                    infobox.notice(message);
+                    infobox.info(message);
                     infobox.hide(1);
                 }
             }

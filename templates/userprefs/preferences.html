@@ -1,12 +1,14 @@
 {% extends "nlayout.html" %}
-{% load i18n %}
-{% load uprefs_extras %}
+{% load i18n uprefs_extras libextras %}
 {% block html_head %}
 <script src="/static/js/preferences.js" type="text/javascript"></script>
 {% endblock %}
 {% block middletitle %}{% trans "Preferences" %}{% endblock %}
 {% block menu %}{% uprefs_menu user %}{% endblock %}
 {% block content %}
+{% if messages %}
+  {% display_messages messages %}
+{% endif %}
 <form method="POST" action="{% url userprefs.views.savepreferences %}" 
       id="uparams_form">
   {% include "common/parameters.html" %}

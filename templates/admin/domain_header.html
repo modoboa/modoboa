@@ -1,10 +1,13 @@
 {% extends "nlayout.html" %}
-{% load i18n %}
+{% load i18n libextras %}
 {% block html_head %}
 <script src="/static/js/domains.js" type="text/javascript"></script>
 {% endblock %}
 {% block middletitle %}{% trans "Domain" %} {{ domain.name }}{% endblock %}
 {% block content %}
+{% if messages %}
+{% display_messages messages %}
+{% endif %}
 <div id="subcontent">
 {% block domcontent %}{% endblock %}
 </div>
