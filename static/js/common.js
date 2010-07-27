@@ -333,13 +333,16 @@ searchbox_init = function() {
         }
     });
     $("searchbox").setStyle("float", "left");
-    var uri = new URI(location.href);
-    var params = uri.get("fragment").parseQueryString();
-    if ($defined(params.pattern)) {
-        $("searchfield").set("value", params.pattern);
-    }
-    if ($defined(params.criteria)) {
-        $("crit_" + params.criteria).checked = true;
+    var frag = new URI(location.href).get("fragment");
+    if (frag.indexOf('?') != -1) {
+        var params = frag.substring(frag.indexOf('?') + 1).parseQueryString();
+        console.log(params);
+        if ($defined(params.pattern)) {
+            $("searchfield").set("value", params.pattern);
+        }
+        if ($defined(params.criteria)) {
+            $("crit_" + params.criteria).checked = true;
+        }
     }
 }
 
