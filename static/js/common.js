@@ -336,7 +336,6 @@ searchbox_init = function() {
     var frag = new URI(location.href).get("fragment");
     if (frag.indexOf('?') != -1) {
         var params = frag.substring(frag.indexOf('?') + 1).parseQueryString();
-        console.log(params);
         if ($defined(params.pattern)) {
             $("searchfield").set("value", params.pattern);
         }
