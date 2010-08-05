@@ -4,9 +4,9 @@ import re
 import os
 import time, random, hashlib
 from email.header import decode_header
-import lxml
 import lxml.html
 from lxml import etree
+from django.conf import settings
 from django.template.loader import render_to_string
 from django.template import Template, Context
 from django.utils.translation import ugettext as _
@@ -103,7 +103,7 @@ class EmailListing:
     def render_navbar(self, page):
         if page is None:
             return ""
-        context = {"page" : page}
+        context = {"page" : page, "MEDIA_URL" : settings.MEDIA_URL}
         return render_to_string("common/navbar.html", context)
     
     def fetch(self, request, id_start, id_stop):
@@ -213,8 +213,6 @@ class Email(object):
         :param fname: the image associated filename
         :param part: the email part that contains the image payload
         """
-        from django.conf import settings
-
         if re.search("\.\.", fname):
             return None
         path = "/static/tmp/" + fname

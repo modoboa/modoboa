@@ -2,9 +2,10 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from modoboa.extensions import webmail
 from modoboa.extensions.webmail.lib import IMAPheader
-from modoboa.lib import parameters
+from modoboa.lib import parameters, static_url
 
 register = template.Library()
 
@@ -13,22 +14,22 @@ def viewm_menu(selection, backurl, folder, mail_id, user):
     entries = [
         {"name" : "back",
          "url" : backurl,
-         "img" : "/static/pics/back.png",
+         "img" : static_url("pics/back.png"),
          "label" : _("Back")},
         {"name" : "reply",
          "url" : "reply/",
-         "img" : "/static/pics/reply.png",
+         "img" : static_url("pics/reply.png"),
          "label" : _("Reply")},
         {"name" : "replyall",
          "url" : "reply/",
-         "img" : "/static/pics/reply-all.png",
+         "img" : static_url("pics/reply-all.png"),
          "label" : _("Reply all")},
         {"name" : "forward",
          "url" : "forward/",
-         "img" : "/static/pics/alias.png",
+         "img" : static_url("pics/alias.png"),
          "label" : _("Forward")},
         {"name" : "delete",
-         "img" : "/static/pics/remove.png",
+         "img" : static_url("pics/remove.png"),
          "url" : reverse(webmail.views.delete, args=[folder, mail_id]),
          "label" : _("Delete")},
         ]
@@ -42,11 +43,11 @@ def compose_menu(selection, backurl, user):
     entries = [
         {"name" : "back",
          "url" : backurl,
-         "img" : "/static/pics/back.png",
+         "img" : static_url("pics/back.png"),
          "label" : _("Back")},
         {"name" : "sendmail",
          "url" : "",
-         "img" : "/static/pics/send-receive.png",
+         "img" : static_url("pics/send-receive.png"),
          "label" : _("Send")},
         ]
     return render_to_string('common/menu.html', 
@@ -58,10 +59,10 @@ def listing_menu(selection, folder, user):
     entries = [
         {"name" : "compose",
          "url" : reverse(webmail.views.compose),
-         "img" : "/static/pics/edit.png",
+         "img" : static_url("pics/edit.png"),
          "label" : _("New message")},
         {"name" : "mark",
-         "img" : "/static/pics/domains.png",
+         "img" : static_url("pics/domains.png"),
          "label" : _("Mark messages"),
          "class" : "menubardropdown",
          "menu" : [
@@ -74,14 +75,14 @@ def listing_menu(selection, folder, user):
                 ]
          },
         {"name" : "actions",
-         "img" : "/static/pics/settings.png",
+         "img" : static_url("pics/settings.png"),
          "label" : _("Actions"),
          "class" : "menubardropdown",
          "width" : "150",
          "menu" : [
                 {"name" : "fdaction",
                  "label" : _("Compress folder"),
-                 "img" : "/static/pics/compress.png",
+                 "img" : static_url("pics/compress.png"),
                  "url" : "compact/%s/" % folder},
                 ]
          }
@@ -90,13 +91,15 @@ def listing_menu(selection, folder, user):
         entries[2]["menu"] += [
             {"name" : "fdaction",
              "label" : _("Empty folder"),
-             "img" : "/static/pics/clear.png",
+             "img" : static_url("pics/clear.png"),
              "url" : reverse(webmail.views.empty, args=[folder])}
             ]
     menu = render_to_string("common/menu.html",
                             {"selection" : selection, "entries" : entries,
                              "user" : user})
-    searchbar = render_to_string("common/email_searchbar.html", {})
+    searchbar = render_to_string("common/email_searchbar.html", {
+            "MEDIA_URL" : settings.MEDIA_URL
+            })
     return menu + searchbar
 
 @register.simple_tag

@@ -16,7 +16,7 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from modoboa.lib import decode, tables, imap_utf7, Singleton
 from modoboa.lib.email_listing import MBconnector, EmailListing, Email
-from modoboa.lib import tables, imap_utf7, parameters
+from modoboa.lib import tables, imap_utf7, parameters, static_url
 
 
 class WMtable(tables.Table):
@@ -369,7 +369,7 @@ class IMAPconnector(object):
                 if not "\\Seen" in flags:
                     msg["class"] = "unseen"
                 if "\\Answered" in flags:
-                    msg["img_flags"] = "/static/pics/answered.png"
+                    msg["img_flags"] = static_url("pics/answered.png")
                 tmpdict[imapid] = msg
         for id in submessages:
             result += [tmpdict[id]]

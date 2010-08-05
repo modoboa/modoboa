@@ -3,7 +3,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa import admin
-from modoboa.lib import events
+from modoboa.lib import events, static_url
 
 register = template.Library()
 
@@ -17,16 +17,16 @@ def domain_menu(domain_id, selection, user):
         {"name" : "",
          "url" : reverse(admin.views.newmailbox, args=[domain_id]),
          "label" : _("New mailbox"),
-         "img" : "/static/pics/add.png",
+         "img" : static_url("pics/add.png"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:300,y:280}}"},
         {"name" : "mailboxes",
          "url" : reverse(admin.views.mailboxes, args=[domain_id]),
-         "img" : "/static/pics/mailbox.png",
+         "img" : static_url("pics/mailbox.png"),
          "label" : _("Mailboxes")},
         {"name" : "aliases",
          "url" : reverse("full-aliases", args=[domain_id]),
-         "img" : "/static/pics/alias.png",
+         "img" : static_url("/pics/alias.png"),
          "label" : _("Aliases")},
         ]
 
@@ -35,7 +35,7 @@ def domain_menu(domain_id, selection, user):
             {"name" : "",
              "url" : reverse(admin.views.editdomain, args=[domain_id]),
              "label" : _("Properties"),
-             "img" : "/static/pics/edit.png",
+             "img" : static_url("pics/edit.png"),
              "class" : "boxed",
              "rel" : "{handler:'iframe',size:{x:300,y:180}}"}
             ]
@@ -51,16 +51,16 @@ def settings_menu(selection, user):
         {"name" : "permissions",
          "url" : reverse(admin.views.settings),
          "label" : _("Permissions"),
-         "img" : "/static/pics/permissions.png"},
+         "img" : static_url("pics/permissions.png"}),
         {"name" : "addperm",
          "url" : reverse(admin.views.addpermission),
-         "img" : "/static/pics/add.png",
+         "img" : static_url("pics/add.png"),
          "label" : _("Add permission"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:320,y:210}}"},
         {"name" : "parameters",
          "url" : reverse(admin.views.viewparameters),
-         "img" : "/static/pics/domains.png",
+         "img" : static_url("pics/domains.png"),
          "label" : _("Parameters")},
         ]
     return render_to_string('common/menu.html', 
@@ -73,13 +73,13 @@ def domains_menu(selection, user):
         {"name" : "newdomain",
          "url" : reverse(admin.views.newdomain),
          "label" : _("New domain"),
-         "img" : "/static/pics/add.png",
+         "img" : static_url("pics/add.png"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:300,y:200}}"},
         {"name" : "domains",
          "url" : reverse(admin.views.domains),
          "label" : _("Domains"),
-         "img" : "/static/pics/domains.png"}
+         "img" : static_url("pics/domains.png")}
         ]
     entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box",
                                       user=user)
@@ -131,8 +131,8 @@ def param(app, definition):
     if definition.has_key("help"):
         result += """
   <a href='%s' onclick='return false;' class='Tips' title='%s'>
-    <img src='/static/pics/info.png' border='0' />
-  </a>""" % (definition["help"], _("Help"))
+    <img src='%s' border='0' />
+  </a>""" % (definition["help"], _("Help"), static_url("pics/info.png"))
     result += """
 </div>
 """

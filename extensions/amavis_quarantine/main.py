@@ -5,7 +5,7 @@
 from django.conf.urls.defaults import *
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
-from modoboa.lib import events, parameters
+from modoboa.lib import events, parameters, static_url
 
 def infos():
     return {
@@ -49,7 +49,7 @@ def menu(**kwargs):
             {"name" : "quarantine",
              "label" : _("Quarantine"),
              "url" : reverse(views.index),
-             "img" : "/static/pics/quarantine.png"}
+             "img" : static_url("pics/quarantine.png")}
             ]
     return []
 

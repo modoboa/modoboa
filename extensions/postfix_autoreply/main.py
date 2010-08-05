@@ -10,7 +10,7 @@ functionality into Postfix.
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from modoboa.lib import events, parameters
+from modoboa.lib import events, parameters, static_url
 from models import *
 
 def infos():
@@ -53,7 +53,7 @@ def menu(**kwargs):
     return [
         {"name" : "autoreply",
          "url" : reverse(views.autoreply),
-         "img" : "/static/pics/auto-reply.png",
+         "img" : static_url("pics/auto-reply.png"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:440,y:400}}",
          "label" : _("Auto-reply message")}

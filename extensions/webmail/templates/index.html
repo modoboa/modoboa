@@ -40,7 +40,7 @@
       item.removeClass("hidden");
       item.addClass("visible");
       $$("li[name=" + item.get("name") + "]").each(function(item) {
-        item.setStyle("background", "url('/static/pics/folder-open.png') no-repeat");
+        item.setStyle("background", "url('{{ MEDIA_URL }}pics/folder-open.png') no-repeat");
       });
     });
   }
@@ -157,10 +157,10 @@
     $$("li[class*=clickable]").addEvent("click", function(evt) {
       $$("ul[name=" + evt.target.get("name") + "]").each(function(item) {
         if (item.hasClass("hidden")) {
-          evt.target.setStyle("background", "url('/static/pics/folder-open.png') no-repeat");
+          evt.target.setStyle("background", "url('{{ MEDIA_URL }}pics/folder-open.png') no-repeat");
           item.removeClass("hidden").addClass("visible");
         } else {
-          evt.target.setStyle("background", "url('/static/pics/subfolders.png') no-repeat");
+          evt.target.setStyle("background", "url('{{ MEDIA_URL }}pics/subfolders.png') no-repeat");
           item.removeClass("visible").addClass("hidden");
         }
       });
@@ -170,7 +170,7 @@
     if (navparams.has("order")) {
       src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
       th = $$("th[id=" + navparams.get("order").substring(1) + "]");
-      th.getElement("img").set("src", "/static/pics/" + src);
+      th.getElement("img").set("src", "{{ MEDIA_URL }}pics/" + src);
       th.getElement("img").setStyle("display", "block");
       th.addClass("selected");
     }

@@ -2,6 +2,7 @@
 import os
 import sys
 import time
+from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
@@ -36,6 +37,15 @@ def _ctx_ok(url):
 
 def _ctx_ko(tpl, ctx):
     return {"status" : "ko", "content" : render_to_string(tpl, ctx)}
+
+def static_url(path):
+    """Returns the correct static url for a given file
+
+    :param path: the targeted static media
+    """
+    if path.startswith("/"):
+        path = path[1:]
+    return "%s%s" % (settings.MEDIA_URL, path)
 
 def getctx(status, level=1, callback=None, **kwargs):
     if not callback:

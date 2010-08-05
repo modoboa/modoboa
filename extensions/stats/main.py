@@ -10,7 +10,7 @@ sent, received, bounced, rejected
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf.urls.defaults import *
-from modoboa.lib import events, parameters
+from modoboa.lib import events, parameters, static_url
 
 def infos():
     return {
@@ -45,13 +45,13 @@ def menu(**kwargs):
             {"label" : _("Statistics"),
              "name"  : "stats",
              "url" : reverse('domindex', args=[domain_id]),
-             "img" : "/static/pics/graph.png"}
+             "img" : static_url("pics/graph.png")}
             ]
     if kwargs["target"] == "admin_menu_box":
         return [
             {"name"  : "stats",
              "label" : _("Statistics"),
              "url" : reverse('fullindex'),
-             "img" : "/static/pics/graph.png"}
+             "img" : static_url("pics/graph.png")}
             ]
     return []

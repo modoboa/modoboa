@@ -2,6 +2,8 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.conf import settings
+from modoboa.lib import static_url
 from modoboa.extensions import amavis_quarantine
 
 register = template.Library()
@@ -23,27 +25,27 @@ def viewm_menu(selection, backurl, mail_id, perms):
     entries = [
         {"name" : "back",
          "url" : backurl,
-         "img" : "/static/pics/back.png",
+         "img" : static_url("pics/back.png"),
          "label" : _("Back to list")},
         {"name" : "headers",
          "url" : reverse(amavis_quarantine.views.viewheaders, args=[mail_id]),
-         "img" : "/static/pics/add.png",
+         "img" : static_url("pics/add.png"),
          "label" : _("View full headers"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:600,y:500}}"},
         {"name" : "release",
          "url" : reverse(amavis_quarantine.views.release, args=[mail_id]),
-         "img" : "/static/pics/release.png",
+         "img" : static_url("pics/release.png"),
          "label" : _("Release"),
          "confirm" : _("Release this message?")},
         {"name" : "delete",
          "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]),
-         "img" : "/static/pics/remove.png",
+         "img" : static_url("pics/remove.png"),
          "label" : _("Delete"),
          "confirm" : _("Delete this message?")},
         {"name" : "options",
          "label" : _("Options"),
-         "img" : "/static/pics/settings.png",
+         "img" : static_url("pics/settings.png"),
          "class" : "menubardropdown",
          "menu" : options_menu}
         ]
@@ -57,15 +59,15 @@ def quar_menu(selection, perms):
     entries = [
         {"name" : "release",
          "url" : "",
-         "img" : "/static/pics/release.png",
+         "img" : static_url("pics/release.png"),
          "label" : _("Release")},
         {"name" : "delete",
          "url" : "",
-         "img" : "/static/pics/remove.png",
+         "img" : static_url("pics/remove.png"),
          "label" : _("Delete")},
         {"name" : "select",
          "url" : "",
-         "img" : "/static/pics/domains.png",
+         "img" : static_url("pics/domains.png"),
          "label" : _("Select"),
          "class" : "menubardropdown",
          "menu" : [
@@ -88,5 +90,7 @@ def quar_menu(selection, perms):
     menu = render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries, 
                              "perms" : perms})
-    searchbar = render_to_string('common/email_searchbar.html', {})
+    searchbar = render_to_string('common/email_searchbar.html', {
+            "MEDIA_URL" : settings.MEDIA_URL
+            })
     return menu + searchbar

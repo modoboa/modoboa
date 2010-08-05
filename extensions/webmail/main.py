@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
-from modoboa.lib import events, parameters
+from modoboa.lib import events, parameters, static_url
 
 def init():
     events.register("UserMenuDisplay", menu)
@@ -69,7 +69,7 @@ def menu(**kwargs):
         {"name" : "webmail",
          "label" : _("Webmail"),
          "url" : reverse(views.index),
-         "img" : "/static/pics/webmail.png"}
+         "img" : static_url("pics/webmail.png")}
         ]
 
 def userlogin(**kwargs):
