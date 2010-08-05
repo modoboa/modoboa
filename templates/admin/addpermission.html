@@ -1,7 +1,7 @@
 {% extends "layout_simple.html" %}
 {% load i18n %}
 {% block html_head %}
-<script src="/static/js/form.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
 <script type="text/javascript">
 window.addEvent("domready", function() {
   $("id_domain").addEvent("change", function(event) {

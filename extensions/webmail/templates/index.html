@@ -1,7 +1,7 @@
 {% extends "common/email_listing.html" %}
 {% load i18n %}
 {% block css %}
-<link rel="stylesheet" type="text/css" href="/static/css/webmail.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/webmail.css" />
 {% endblock %}
 {% block js %}
   quota_pb = new ProgressBar({
@@ -86,8 +86,14 @@
           current_anchor.update();
         }
       });
+      tinyMCE.triggerSave();
       $("composemail").send();
     });
+    if (resp.editor == "html") {
+      new Request({url: "{% url tinymce-js 'common' %}",
+                   onSuccess: function(resp) { eval(resp); }
+                  }).get();
+    }
     window.fireEvent("resize");
   }
 

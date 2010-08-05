@@ -40,6 +40,9 @@ def init():
                              help=_("Folder where copies of sent messages go"))
     parameters.register_user("webmail", "SIGNATURE", type="text", default="",
                              help=_("User defined email signature"))
+    parameters.register_user("webmail", "EDITOR", type="list", deflt="text",
+                             values=[("html", "html"), ("plain", "text")],
+                             help=_("The default editor to use when composing a message"))
 
 def destroy():
     events.unregister("UserMenuDisplay", menu)

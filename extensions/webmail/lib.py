@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sys
+import sys, os
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
@@ -11,7 +11,9 @@ import ssl
 from datetime import datetime, timedelta
 from email.header import decode_header
 import email.utils
+import lxml
 from django.utils.translation import ugettext as _
+from django.conf import settings
 from modoboa.lib import decode, tables, imap_utf7, Singleton
 from modoboa.lib.email_listing import MBconnector, EmailListing, Email
 from modoboa.lib import tables, imap_utf7, parameters
@@ -457,6 +459,39 @@ class ImapEmail(Email):
                 "folder" : kwargs["folder"], "mail_id" : kwargs["mail_id"],
                 "attachments" : attachments != [] and attachments or None
                 })
+
+def find_images_in_body(body):
+    """Looks for images inside a HTML body
+
+    Before sending a message in HTML format, it is necessary to find
+    all img tags contained in the body in order to rewrite them. For
+    example, icons provided by tinyMCE are stored on the server
+    filesystem and not accessible from the outside. We must embark
+    them as parts off the MIME message if we want recipients to
+    display them correctly.
+
+    :param body: the HTML body to parse
+    """
+    from email.mime.image import MIMEImage
+    html = lxml.html.fromstring(body)
+    parts = []
+    for tag in html.iter("img"):
+        src = tag.get("src")
+        fname = os.path.basename(src)
+        cid = "%s@modoboa" % os.path.splitext(fname)[0]
+        tag.set("src", "cid:%s" % cid)
+
+        path = "%s/%s" % (settings.MODOBOA_DIR, re.sub("\.\./", "", src))
+        fp = open(path, "rb")
+        p = MIMEImage(fp.read())
+        fp.close()
+        p["Content-ID"] = "<%s>" % cid
+        ct = p["Content-Type"]
+        p.replace_header("Content-Type", '%s; name="%s"' % (ct, fname))
+        parts.append(p)
+        
+    return lxml.html.tostring(html), parts
+    
 
 def encrypt(clear):
     from Crypto.Cipher import AES

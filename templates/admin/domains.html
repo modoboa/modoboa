@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load admin_extras %}
 {% block html_head %}
-  <script src="/static/js/domains.js" type="text/javascript"></script>
+  <script src="{{ MEDIA_URL }}js/domains.js" type="text/javascript"></script>
   <script type="text/javascript">
     window.addEvent('domready', function() {
       {% url admin.views.domains as view_url %}
@@ -31,11 +31,11 @@
         {% url admin.views.editdomain dom.id as edit_url %}
         <a href="{{ edit_url }}" class="boxed"
            rel="{handler:'iframe',size:{x:300,y:180}}">
-          <img src="/static/pics/edit.png" border="0" title="{% trans 'Edit domain' %}"/>
+          <img src="{{ MEDIA_URL }}pics/edit.png" border="0" title="{% trans 'Edit domain' %}"/>
         </a>
         {% url admin.views.deldomain dom.id as del_url %}
         <a href="{{ del_url }}" name="deleteDom">
-          <img src="/static/pics/remove.png" border="0" title="{% trans 'Delete domain' %}"/>
+          <img src="{{ MEDIA_URL }}pics/remove.png" border="0" title="{% trans 'Delete domain' %}"/>
         </a>
       </td>
       {% url admin.views.mailboxes dom.id as domurl %}

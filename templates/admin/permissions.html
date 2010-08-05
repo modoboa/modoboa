@@ -21,7 +21,7 @@
     <td>
       {% url admin.views.deletepermission admin.id "SuperAdmins" as del_url %}
       <a href="{{ del_url }}" name="deletePerm">
-        <img src="/static/pics/remove.png" border="0" title="{% trans 'Remove permission' %}" />
+        <img src="{{ MEDIA_URL }}pics/remove.png" border="0" title="{% trans 'Remove permission' %}" />
       </a>
     </td>
     <td>{{ admin.first_name }} {{ admin.last_name }}</td>
@@ -48,7 +48,7 @@
     <td>
       {% url admin.views.deletepermission admin.id "DomainAdmins" as del_url %}
       <a href="{{ del_url }}" name="deletePerm">
-        <img src="/static/pics/remove.png" border="0"
+        <img src="{{ MEDIA_URL }}pics/remove.png" border="0"
              title="{% trans 'Remove permission' %}" />
       </a>
     </td>

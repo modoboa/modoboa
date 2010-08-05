@@ -1,10 +1,10 @@
 {% extends "layout_simple.html" %}
 {% load i18n %}
 {% block html_head %}
-<script src="/static/js/form.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" 
-      href="/static/css/calendar.css" />
-<script type="text/javascript" src="/static/js/calendar.js"></script>
+      href="{{ MEDIA_URL }}css/calendar.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/calendar.js"></script>
 <style type="text/css">
 #id_subject {
   width: 250px;

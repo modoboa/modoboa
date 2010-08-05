@@ -3,17 +3,17 @@
   
 {% if page.previous_page %}
 <a href="{{ page.baseurl }}?page=1">
-  <img src="/static/pics/first.png" border="0" title="{% trans "First" %}" />
+  <img src="{{ MEDIA_URL }}pics/first.png" border="0" title="{% trans "First" %}" />
 </a>
 <a href="{{ page.baseurl }}?page={{ page.previous_page }}">
-  <img src="/static/pics/back.png" border="0" title="{% trans "Previous" %}" />
+  <img src="{{ MEDIA_URL }}pics/back.png" border="0" title="{% trans "Previous" %}" />
 </a>
 {% endif %}
 {% if page.next_page %}
 <a href="{{ page.baseurl }}?page={{ page.next_page }}">
-  <img src="/static/pics/next.png" border="0" title="{% trans "Next" %}" />
+  <img src="{{ MEDIA_URL }}pics/next.png" border="0" title="{% trans "Next" %}" />
 </a>
 <a href="{{ page.baseurl }}?page={{ page.last_page }}">
-  <img src="/static/pics/last.png" border="0" title="{% trans "Last" %}" />
+  <img src="{{ MEDIA_URL }}pics/last.png" border="0" title="{% trans "Last" %}" />
 </a>
 {% endif %}

@@ -1,7 +1,7 @@
 {% extends "nlayout.html" %}
 {% load i18n libextras %}
 {% block html_head %}
-<script src="/static/js/settings.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}js/settings.js" type="text/javascript"></script>
 {% endblock %}
 {% block middletitle %}{% trans "Settings" %}{% endblock %}
 {% block content %}

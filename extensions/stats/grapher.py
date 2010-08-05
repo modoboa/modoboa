@@ -109,8 +109,6 @@ class Grapher(object):
 
         if not os.path.exists(path):
             print "[graph] Impossible to create %s graph" %path
-        else:
-            print "[graph] %s graph created" %path
 
     def make_defaults(self, target, tpl=traffic_avg_template):
         end = "%d" % int(time.mktime(time.localtime()))

@@ -1,7 +1,7 @@
 {% extends "nlayout.html" %}
 {% load i18n uprefs_extras libextras %}
 {% block html_head %}
-<script src="/static/js/preferences.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}js/preferences.js" type="text/javascript"></script>
 {% endblock %}
 {% block middletitle %}{% trans "Preferences" %}{% endblock %}
 {% block menu %}{% uprefs_menu user %}{% endblock %}

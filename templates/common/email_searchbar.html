@@ -1,6 +1,6 @@
 {% load i18n %}
 <div id="searchbox">
-  <img src="/static/pics/search.png" id="searchopts" />
+  <img src="{{ MEDIA_URL }}pics/search.png" id="searchopts" />
   <input type="text" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
   <div id="searchparams">
     <input type="radio" id="crit_from_addr" name="scriteria" value="from_addr" checked>{% trans "From address" %}<br/>

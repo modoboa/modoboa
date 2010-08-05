@@ -1,5 +1,5 @@
 {% load i18n %}
-<link rel="stylesheet" type="text/css" href="/static/css/calendar.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/calendar.css" />
 <style type="text/css">
   #selectors {
   }
@@ -76,7 +76,7 @@ window.addEvent("domready", function() {
   $("customsend").addEvent("click", get_graph);
 });
 </script>
-<script type="text/javascript" src="/static/js/calendar.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/calendar.js"></script>
 
 <div id="selectors">
   {% if admin %}

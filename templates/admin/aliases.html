@@ -21,11 +21,11 @@
       {% url admin.views.editalias domain.id alias.id as edit_url %}
       <a href="{{ edit_url }}" class="boxed"
          rel="{handler:'iframe',size:{x:300,y:250}}">
-        <img src="/static/pics/edit.png" border="0" title="{% trans 'Edit alias' %}"/>
+        <img src="{{ MEDIA_URL }}pics/edit.png" border="0" title="{% trans 'Edit alias' %}"/>
       </a>
       {% url admin.views.delalias domain.id alias.id as del_url %}
       <a href="{{ del_url }}" name="deleteAlias">
-        <img src="/static/pics/remove.png" border="0" title="{% trans 'Delete alias' %}" />
+        <img src="{{ MEDIA_URL }}pics/remove.png" border="0" title="{% trans 'Delete alias' %}" />
       </a>
     </td>
     <td>{{ alias.full_address }}</td>

@@ -1,7 +1,7 @@
 {% extends "layout_simple.html" %}
 {% load i18n %}
 {% block html_head %}
-<script src="/static/js/form.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
 {% endblock %}
 {% block content %}
 <div class="title"><h1>{% trans "Mailbox" %} {{ mbox.name }}</h1></div>

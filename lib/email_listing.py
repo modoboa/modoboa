@@ -169,10 +169,6 @@ class Email(object):
 
                 if part.has_key("Content-Location"):
                     fname = part["Content-Location"]
-                    if re.match("^http:", fname):
-                        path = fname
-                    else:
-                        path = self.__save_image(fname, part)
                 elif part.has_key("Content-Disposition"):
                     if not part["Content-Disposition"].startswith("inline"):
                         continue
@@ -183,12 +179,18 @@ class Email(object):
                         if len(p) and p[0] == "filename":
                             fname = p[1]
                             break
-                    path = self.__save_image(fname is None and cid or fname, part)
+                    if fname is None:
+                        fname = cid
+                elif part.has_key("Content-Type"):
+                    m = re.match(".*name=[\"'](.+)[\"']", part["Content-Type"])
+                    if m is None:
+                        continue
+                    fname = m.group(1)
                 else:
                     continue
                
-                self.attached_map[cid] = path
-                continue
+                self.attached_map[cid] = re.match("^http:", fname) and fname \
+                    or self.__save_image(fname, part)
 
 
         if not contents.has_key(mode) or contents[mode] == "":
@@ -201,6 +203,16 @@ class Email(object):
             getattr(self, "viewmail_%s" % mode)(contents[mode], links=links)
 
     def __save_image(self, fname, part):
+        """Save an inline image on the filesystem.
+
+        Some HTML messages are using inline images (attached images
+        with links on them inside the body). In order to display them,
+        images are saved on the filesystem and links contained in the
+        message are modified.
+
+        :param fname: the image associated filename
+        :param part: the email part that contains the image payload
+        """
         from django.conf import settings
 
         if re.search("\.\.", fname):
@@ -216,6 +228,7 @@ class Email(object):
 
         m = re.match(".*cid:(.+)", url)
         if m:
+            print self.attached_map
             if self.attached_map.has_key(m.group(1)):
                 return self.attached_map[m.group(1)]
         return url

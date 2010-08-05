@@ -211,12 +211,14 @@ def render_compose(request, form, posturl, bodyheader=None, body=None,
                    insert_signature=False):
     menu = compose_menu("", __get_current_url(request), 
                         request.user.get_all_permissions())
+    editor = parameters.get_user(request.user, "webmail", "EDITOR")
     if insert_signature:
         if body == None:
             body = ""
         signature = parameters.get_user(request.user, "webmail", "SIGNATURE")
         if signature != "":
-            body += "\n---\n%s" % signature
+            body += editor == "plain" and "\n---\n%s" % signature \
+                or "<br/>---<br/>%s" % re.sub("\n", "<br/>", signature)
 
     content = render_to_string("webmail/compose.html", {
             "form" : form, "bodyheader" : bodyheader, "body" : body,
@@ -225,7 +227,8 @@ def render_compose(request, form, posturl, bodyheader=None, body=None,
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
     ctx = getctx("ok", level=2, menu=menu, listing=content, 
-                 folders=__render_folders(mbc, request))
+                 folders=__render_folders(mbc, request),
+                 editor=editor)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 def send_mail(request, withctx=False, origmsg=None, posturl=None):
@@ -237,8 +240,19 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
         from email.utils import make_msgid, formatdate
         import smtplib
 
-        msg = MIMEText(request.POST["id_body"].encode("utf-8"), 
-                       _charset="utf-8")
+        subtype = parameters.get_user(request.user, "webmail", "EDITOR")
+        body = request.POST["id_body"]
+        if subtype == "html":
+            from email.mime.multipart import MIMEMultipart
+            msg = MIMEMultipart(_subtype="related")
+            body, images = find_images_in_body(body)
+            msg.attach(MIMEText(body.encode("utf-8"), _subtype=subtype, 
+                                _charset="utf-8"))
+            for img in images:
+                msg.attach(img)
+        else:
+            msg = MIMEText(body.encode("utf-8"), _subtype=subtype)
+
         msg["Subject"] = request.POST["subject"]
         msg["From"] = request.POST["from_"]
         msg["To"] = request.POST["to"]

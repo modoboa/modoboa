@@ -2,8 +2,9 @@
 {% load i18n %}
 {% load libextras %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="/static/css/searchbar.css" />
-<script type="text/javascript" src="/static/js/ProgressBar.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/searchbar.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/ProgressBar.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/tiny_mce/tiny_mce.js"></script>
 {% block css %}{% endblock %}
 <style type="text/css">
 #navbar {
