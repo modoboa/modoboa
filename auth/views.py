@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
@@ -34,7 +35,7 @@ def dologin(request):
     next = request.GET.has_key("next") and request.GET["next"] or None
     return render_to_response("registration/login.html", {
             "form" : form, "error" : error, "next" : next
-            })
+            }, context_instance=RequestContext(request))
 
 def dologout(request):
     events.raiseEvent("UserLogout", request=request)

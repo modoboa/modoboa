@@ -51,7 +51,7 @@ def settings_menu(selection, user):
         {"name" : "permissions",
          "url" : reverse(admin.views.settings),
          "label" : _("Permissions"),
-         "img" : static_url("pics/permissions.png"}),
+         "img" : static_url("pics/permissions.png")},
         {"name" : "addperm",
          "url" : reverse(admin.views.addpermission),
          "img" : static_url("pics/add.png"),
