@@ -174,20 +174,32 @@
       th.getElement("img").setStyle("display", "block");
       th.addClass("selected");
     }
+
     var selectedRows = new Array();
+
     $$("tbody>tr").addEvent("click", function(event) {
       var tr = $(event.target).getParent();
       if (!tr.hasClass("selected")) {
-        tr.addClass("selected");
-        selectedRows.include(tr);
-        tr.setStyle("position", "relative");
-        makeRowDraggable(tr);
+        selectRow(tr);
       } else {
-        tr.removeClass("selected");
-        selectedRows.erase(tr);
-        tr.setStyle("position", "static");
+        unselectRow(tr, true);
       }
     });
+
+    selectRow = function(tr) {
+      tr.addClass("selected");
+      selectedRows.include(tr);
+      tr.setStyle("position", "relative");
+      makeRowDraggable(tr);
+    }
+
+    unselectRow = function(tr, remove) {
+      tr.removeClass("selected");
+      if (remove) {
+        selectedRows.erase(tr);
+      }
+      tr.setStyle("position", "static");
+    }
 
     makeRowDraggable = function(item) {
       new Drag.Move(item, {
@@ -281,11 +293,12 @@
        var checked = evt.target.get("checked");
        if (checked) {
          $$("tbody>tr").each(function(item) {
-           item.addClass("selected");
-           selectedRows.include(item);
+           selectRow(item);
          });
        } else {
-         $$("tbody>tr").each(function(item) { item.removeClass("selected"); });
+         $$("tbody>tr").each(function(item) { 
+           unselectRow(item, false);
+         });
          selectedRows.empty();
        }
     });
