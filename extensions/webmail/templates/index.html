@@ -68,6 +68,20 @@
     window.addEvent("resize", function(evt) {
       setDivHeight("id_body", $("mailheader").getSize().y, 0);
     });
+    window.fireEvent("resize");
+
+    var editormode = resp.editor;
+    var editorid = "id_body";
+    if (editormode == "html") {
+      var instance = CKEDITOR.instances[editorid];
+      if (instance) {
+        CKEDITOR.remove(instance);
+      }
+      CKEDITOR.replace(editorid, {
+        customConfig: "{{ MEDIA_URL }}/js/editor_config.js",
+        height: $(editorid).getSize().y
+      });
+    }
     $$("a[name=back]").addEvent("click", loadFolder);
     $$("a[name=sendmail]").addEvent("click", function(evt) {
       evt.stop();
@@ -86,15 +100,11 @@
           current_anchor.update();
         }
       });
-      tinyMCE.triggerSave();
+      if (editormode == "html") {
+        CKEDITOR.instances[editorid].updateElement();
+      }
       $("composemail").send();
     });
-    if (resp.editor == "html") {
-      new Request({url: "{% url tinymce-js 'common' %}",
-                   onSuccess: function(resp) { eval(resp); }
-                  }).get();
-    }
-    window.fireEvent("resize");
   }
 
   loadCompose = function(event) {

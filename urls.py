@@ -10,7 +10,6 @@ urlpatterns = patterns('',
     (r'^accounts/logout/$', 'modoboa.auth.views.dologout'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('modoboa',),}),
-    (r'^tinymce/', include('tinymce.urls')),
     *loadextensions()
 )
 

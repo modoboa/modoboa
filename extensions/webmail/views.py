@@ -236,6 +236,16 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
                  editor=editor)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
+def __html2plaintext(content):
+    html = lxml.html.fromstring(content)
+    plaintext = ""
+    for p in html.xpath("//text()"):
+        p = p.strip('\r\t\n')
+        if p == "":
+            continue
+        plaintext += p + "\n"
+    return plaintext
+    
 def send_mail(request, withctx=False, origmsg=None, posturl=None):
     form = ComposeMailForm(request.POST)
     error = None
@@ -247,16 +257,23 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
 
         subtype = parameters.get_user(request.user, "EDITOR")
         body = request.POST["id_body"]
+        charset = "utf-8"
         if subtype == "html":
             from email.mime.multipart import MIMEMultipart
+
             msg = MIMEMultipart(_subtype="related")
+            submsg = MIMEMultipart(_subtype="alternative")
+            textbody = __html2plaintext(body)
+            submsg.attach(MIMEText(textbody.encode(charset),
+                                _subtype="plain", _charset=charset))
             body, images = find_images_in_body(body)
-            msg.attach(MIMEText(body.encode("utf-8"), _subtype=subtype, 
-                                _charset="utf-8"))
+            submsg.attach(MIMEText(body.encode(charset), _subtype=subtype, 
+                                _charset=charset))
+            msg.attach(submsg)
             for img in images:
                 msg.attach(img)
         else:
-            msg = MIMEText(body.encode("utf-8"), _subtype=subtype)
+            msg = MIMEText(body.encode(charset), _subtype=subtype)
 
         msg["Subject"] = request.POST["subject"]
         msg["From"] = request.POST["from_"]

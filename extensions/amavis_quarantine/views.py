@@ -86,7 +86,7 @@ WHERE quarantine.mail_id='%s'
     msg = email.message_from_string(content)
     links = request.GET.has_key("links") and request.GET["links"] or "0"
     mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
-    mail = SQLemail(msg, mode, links)
+    mail = SQLemail(msg, mformat=mode, links=links)
     return _render(request, "common/viewmail.html", {
             "headers" : mail.render_headers(), 
             "mailbody" : mail.body

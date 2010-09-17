@@ -581,7 +581,7 @@ def find_images_in_body(body):
 
     Before sending a message in HTML format, it is necessary to find
     all img tags contained in the body in order to rewrite them. For
-    example, icons provided by tinyMCE are stored on the server
+    example, icons provided by CKeditor are stored on the server
     filesystem and not accessible from the outside. We must embark
     them as parts off the MIME message if we want recipients to
     display them correctly.
@@ -589,21 +589,27 @@ def find_images_in_body(body):
     :param body: the HTML body to parse
     """
     from email.mime.image import MIMEImage
+    from urlparse import urlparse
+
     html = lxml.html.fromstring(body)
     parts = []
     for tag in html.iter("img"):
         src = tag.get("src")
-        fname = os.path.basename(src)
+        o = urlparse(src)
+        dirname = os.path.dirname(o.path).replace(settings.MEDIA_URL, "")
+        fname = os.path.basename(o.path)
         cid = "%s@modoboa" % os.path.splitext(fname)[0]
         tag.set("src", "cid:%s" % cid)
 
-        path = "%s/%s" % (settings.MODOBOA_DIR, re.sub("\.\./", "", src))
+        path = os.path.join(settings.MEDIA_ROOT, dirname, fname)
         fp = open(path, "rb")
         p = MIMEImage(fp.read())
         fp.close()
         p["Content-ID"] = "<%s>" % cid
         ct = p["Content-Type"]
-        p.replace_header("Content-Type", '%s; name="%s"' % (ct, fname))
+        p.replace_header("Content-Type", '%s; name="%s"' \
+                             % (ct, os.path.basename(fname)))
+        p["Content-Disposition"] = "inline"
         parts.append(p)
         
     return lxml.html.tostring(html), parts
