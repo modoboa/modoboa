@@ -21,13 +21,13 @@ def infos():
 
 def init():
     events.register("AdminMenuDisplay", menu)
-    parameters.register_admin("stats", "LOGFILE", type="string", 
+    parameters.register_admin("LOGFILE", type="string", 
                               deflt="/var/log/mail.log",
                               help=_("Path to log file used to collect statistics"))
-    parameters.register_admin("stats", "RRD_ROOTDIR", type="string", 
+    parameters.register_admin("RRD_ROOTDIR", type="string", 
                               deflt="/tmp/modoboa",
                               help=_("Path to directory where RRD files are stored"))
-    parameters.register_admin("stats", "IMG_ROOTDIR", type="string", 
+    parameters.register_admin("IMG_ROOTDIR", type="string", 
                               deflt="/tmp/modoboa",
                               help=_("Path to directory where PNG files are stored"))
 

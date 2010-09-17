@@ -97,10 +97,11 @@ def loadadminextmenu(user):
 @register.simple_tag
 def param(app, definition):
     result = """<div class='row'>
-  <label>%s</label>""" % definition["name"]
+  <label>%s</label>""" % (definition.has_key("label") \
+                              and definition["label"] or definition["name"])
     name = "%s.%s" % (app, definition["name"])
     value = definition.has_key("value") \
-        and definition["value"] or definition["default"]
+        and definition["value"] or definition["deflt"]
 
     if definition["type"] in ["string", "int"]:
         result += """

@@ -89,8 +89,7 @@ WHERE quarantine.mail_id='%s'
     mail = SQLemail(msg, mode, links)
     return _render(request, "common/viewmail.html", {
             "headers" : mail.render_headers(), 
-            "mailbody" : mail.body, 
-            "pre" : mail.pre
+            "mailbody" : mail.body
             })
 
 @login_required

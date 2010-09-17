@@ -182,8 +182,8 @@ def newmailbox(request, dom_id=None):
                  
                     mb.password = crypt_password(request.POST["password1"])
                     
-                    mb.uid = pwd.getpwnam(parameters.get_admin("admin", "VIRTUAL_UID")).pw_uid
-                    mb.gid = pwd.getpwnam(parameters.get_admin("admin", "VIRTUAL_GID")).pw_gid
+                    mb.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
+                    mb.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
                     mb.domain = domain
                     mb.quota = request.POST["quota"]
                     if not mb.quota:
@@ -422,9 +422,9 @@ def viewparameters(request):
         for p in sorted(parameters._params[app]['A']):
             param_def = parameters._params[app]['A'][p]
             newdef = {"name" : p, 
-                      "value" : parameters.get_admin(app, p),
+                      "value" : parameters.get_admin(p, app=app),
                       "help" : param_def["help"],
-                      "default" : param_def["default"],
+                      "default" : param_def["deflt"],
                       "type" : param_def["type"]}
             if "values" in param_def.keys():
                 newdef["values"] = param_def["values"]
@@ -442,6 +442,6 @@ def saveparameters(request):
         if pname == "update":
             continue
         app, name = pname.split('.')
-        parameters.save_admin(app, name, v)
+        parameters.save_admin(name, v, app=app)
     ctx = getctx("ok")
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

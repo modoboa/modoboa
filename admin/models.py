@@ -19,17 +19,17 @@ class Domain(models.Model):
             )
 
     def create_dir(self):
-        path = "%s/%s" % (parameters.get_admin("admin", "STORAGE_PATH"), self.name)
+        path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
         return exec_as_vuser("mkdir -p %s" % path)
 
     def rename_dir(self, newname):
-        stpath = parameters.get_admin("admin", "STORAGE_PATH")
+        stpath = parameters.get_admin("STORAGE_PATH")
         return exec_as_vuser("mv %s/%s %s/%s" \
                                  % (stpath, self.name, stpath, newname))
 
     def delete_dir(self):
         return exec_as_vuser("rm -r %s/%s" \
-                                 % (parameters.get_admin("admin", "STORAGE_PATH"), 
+                                 % (parameters.get_admin("STORAGE_PATH"), 
                                     self.name))
 
     def __str__(self):
@@ -57,14 +57,14 @@ class Mailbox(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Mailbox, self).__init__(*args, **kwargs)
-        self.mbtype = parameters.get_admin("admin", "MAILBOX_TYPE")
-        self.mdirroot = parameters.get_admin("admin", "MAILDIR_ROOT")
+        self.mbtype = parameters.get_admin("MAILBOX_TYPE")
+        self.mdirroot = parameters.get_admin("MAILDIR_ROOT")
 
     def __str__(self):
         return "%s" % (self.address)
 
     def create_dir(self, domain):
-        path = "%s/%s/%s" % (parameters.get_admin("admin", "STORAGE_PATH"),
+        path = "%s/%s/%s" % (parameters.get_admin("STORAGE_PATH"),
                              domain.name, self.address)
         if os.path.exists(path):
             return True
@@ -86,7 +86,7 @@ class Mailbox(models.Model):
         return True
 
     def rename_dir(self, domain, newaddress):
-        path = "%s/%s" % (parameters.get_admin("admin", "STORAGE_PATH"), domain)
+        path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), domain)
         code = exec_as_vuser("mv %s/%s %s/%s" \
                                  % (path, self.address, path, newaddress))
         if code:
@@ -95,7 +95,7 @@ class Mailbox(models.Model):
 
     def delete_dir(self):
         return exec_as_vuser("rm -r %s/%s/%s" \
-                                 % (parameters.get_admin("admin", "STORAGE_PATH"),
+                                 % (parameters.get_admin("STORAGE_PATH"),
                                     self.domain.name, self.address))
 
 class Alias(models.Model):

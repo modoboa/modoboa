@@ -28,7 +28,7 @@ def init():
     events.register("ModifyMailbox", onModifyMailbox)
     events.register("UserMenuDisplay", menu)
 
-    parameters.register_admin("postfix_autoreply", "AUTOREPLIES_TIMEOUT", 
+    parameters.register_admin("AUTOREPLIES_TIMEOUT", 
                               type="int", deflt=86400,
                               help=_("Timeout in seconds between two auto-replies to the same recipient"))
 

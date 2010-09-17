@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import string
+import inspect
+import re
 from modoboa.lib.models import *
 
 """
@@ -31,25 +33,34 @@ def __is_defined(app, level, name):
             or not name in _params[app][level].keys():
         raise NotDefined(app, name)
 
-def __register(app, level, name, type="string", deflt=None, help=None, **kwargs):
+def __register(app, level, name, **kwargs):
     """Register a new parameter.
 
     app corresponds to a core component (admin, main) or an extension.
-    """
+    """ 
     if not app in _params.keys():
         _params[app] = {}
         for lvl in _levels.keys():
             _params[app][lvl] = {}
     if not level in _levels.keys():
         return
-    _params[app][level][name] = {"type" : type, "default" : deflt, "help" : help}
+    _params[app][level][name] = kwargs
     for k, v in kwargs.iteritems():
         _params[app][level][name][k] = v
 
-def register_admin(app, name, **kwargs):
+def __guess_extension():
+    modname = inspect.getmodule(inspect.stack()[2][0]).__name__
+    m = re.match("(?:modoboa\.)?(?:extensions\.)?([^\.$]+)", modname)
+    if m:
+        return m.group(1)
+    return None
+
+def register_admin(name, **kwargs):
+    app = kwargs.has_key("app") and kwargs["app"] or __guess_extension()
     return __register(app, 'A', name, **kwargs)
 
-def register_user(app, name, **kwargs):
+def register_user(name, **kwargs):
+    app = kwargs.has_key("app") and kwargs["app"] or __guess_extension()
     return __register(app, 'U', name, **kwargs)
 
 def unregister_app(app):
@@ -58,9 +69,10 @@ def unregister_app(app):
     del _params[app]
     return True
 
-def save_admin(app, name, value):
+def save_admin(name, value, app=None):
+    if app is None:
+        app = __guess_extension()
     __is_defined(app, 'A', name)
-
     fullname = "%s.%s" % (app, name)
     try:
         p = Parameter.objects.get(name=fullname)
@@ -72,7 +84,9 @@ def save_admin(app, name, value):
         p.save()
     return True
 
-def save_user(user, app, name, value):
+def save_user(user, name, value, app=None):
+    if app is None:
+        app = __guess_extension()
     __is_defined(app, 'U', name)
     fullname = "%s.%s" % (app, name)
     try:
@@ -86,18 +100,22 @@ def save_user(user, app, name, value):
         p.save()
     return True
 
-def get_admin(app, name):
+def get_admin(name, app=None):
+    if app is None:
+        app = __guess_extension()
     __is_defined(app, "A", name)
     try:
         p = Parameter.objects.get(name="%s.%s" % (app, name))
     except Parameter.DoesNotExist:
-        return _params[app]["A"][name]["default"]
+        return _params[app]["A"][name]["deflt"]
     return p.value.decode("string_escape")
 
-def get_user(user, app, name):
+def get_user(user, name, app=None):
+    if app is None:
+        app = __guess_extension()
     __is_defined(app, "U", name)
     try:
         p = UserParameter.objects.get(user=user, name="%s.%s" % (app, name))
     except UserParameter.DoesNotExist:
-        return _params[app]["U"][name]["default"]
+        return _params[app]["U"][name]["deflt"]
     return p.value.decode("string_escape")

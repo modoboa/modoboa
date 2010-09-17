@@ -25,7 +25,7 @@ if settings.DEBUG:
         urlpatterns += patterns(
             '',
             (r'^img/stats/(?P<path>.*)/$', 'django.views.static.serve',
-             {'document_root': parameters.get_admin("stats", "IMG_ROOTDIR")})
+             {'document_root': parameters.get_admin("IMG_ROOTDIR", app="stats")})
             )
 
 

@@ -154,8 +154,8 @@ class IMAPconnector(object):
 
     def __init__(self, user=None, password=None):
         self.criterions = []
-        self.address = parameters.get_admin("webmail", "IMAP_SERVER")
-        self.port = int(parameters.get_admin("webmail", "IMAP_PORT"))
+        self.address = parameters.get_admin("IMAP_SERVER")
+        self.port = int(parameters.get_admin("IMAP_PORT"))
         status, msg = self.login(user, password)
         if not status:
             raise Exception(msg)
@@ -177,7 +177,7 @@ class IMAPconnector(object):
     def login(self, user, passwd):
         import imaplib
         try:
-            secured = parameters.get_admin("webmail", "IMAP_SECURED")
+            secured = parameters.get_admin("IMAP_SECURED")
             if secured == "yes":
                 self.m = imaplib.IMAP4_SSL(self.address, self.port)
             else:
@@ -278,10 +278,8 @@ class IMAPconnector(object):
         md_folders = [{"name" : "INBOX", "class" : "inbox"},
                       {"name" : 'Drafts'},
                       {"name" : 'Junk'},
-                      {"name" : parameters.get_user(user, "webmail",
-                                                    "SENT_FOLDER")},
-                      {"name" : parameters.get_user(user, "webmail",
-                                                    "TRASH_FOLDER"),
+                      {"name" : parameters.get_user(user, "SENT_FOLDER")},
+                      {"name" : parameters.get_user(user, "TRASH_FOLDER"),
                        "class" : "trash"}]
         md_folders += self._listfolders(md_folders=md_folders)
         for fd in md_folders:
@@ -341,6 +339,15 @@ class IMAPconnector(object):
             self.quota_limit = int(m.group(2))
             self.quota_actual = int(m.group(1))
 
+    def fetchpart(self, uid, folder, part):
+        self.m.select(self._encodefolder(folder), True)
+        typ, data = self.m.fetch(uid, "(BODY[%(p)s.MIME] BODY[%(p)s])" \
+                                     % {"p" : part})
+        if typ != "OK":
+            return None
+        msg = email.message_from_string(data[0][1] + data[1][1])
+        return msg
+
     def fetch(self, start=None, stop=None, folder=None, all=False):
         if not start and not stop:
             return []
@@ -360,6 +367,7 @@ class IMAPconnector(object):
         if not folder:
             folder = "INBOX"
         tmpdict = {}
+
         for response_part in data:
             if isinstance(response_part, tuple):
                 imapid = response_part[0].split()[0]
@@ -392,7 +400,7 @@ class ImapListing(EmailListing):
             self.mbc.criterions = []
         EmailListing.__init__(self, **kwargs)  
         self.extravars["refreshrate"] = \
-            int(parameters.get_user(user, "webmail", "REFRESH_INTERVAL")) * 1000
+            int(parameters.get_user(user, "REFRESH_INTERVAL")) * 1000
 
     def parse_search_parameters(self, criterion, pattern):
         def or_criterion(old, c):
@@ -422,8 +430,11 @@ class ImapListing(EmailListing):
 
 
 class ImapEmail(Email):
-    def __init__(self, msg, addrfull=False, *args, **kwargs):
-        Email.__init__(self, msg, *args, **kwargs)
+    def __init__(self, msg, user, dformat="DISPLAYMODE", addrfull=False, 
+                 *args, **kwargs):
+        mformat = parameters.get_user(user, "DISPLAYMODE")
+        dformat = parameters.get_user(user, dformat)
+        Email.__init__(self, msg, mformat, dformat, *args, **kwargs)
 
         fields = ["Subject", "From", "To", "Reply-To", "Cc", "Date"]
         for f in fields:
@@ -447,18 +458,123 @@ class ImapEmail(Email):
     def render_headers(self, **kwargs):
         from django.template.loader import render_to_string
 
-        attachments = []
-        for part in self.attachments:
-            decoded = decode_header(part.get_filename())
-            if decoded[0][1] is None:
-                attachments += [decoded[0][0]]
-            else:
-                attachments += [unicode(decoded[0][0], decoded[0][1])]
         return render_to_string("webmail/headers.html", {
                 "headers" : self.headers,
                 "folder" : kwargs["folder"], "mail_id" : kwargs["mail_id"],
-                "attachments" : attachments != [] and attachments or None
+                "attachments" : self.attachments != {} and self.attachments or None
                 })
+
+class ReplyModifier(ImapEmail):
+    def __init__(self, msg, user, form, all=False, **kwargs):
+        ImapEmail.__init__(self, msg, user, dformat="EDITOR", **kwargs)
+
+        self.textheader = "%s %s" % (self.From, _("wrote:"))
+        getattr(self, "_modify_%s" % self.dformat)()
+
+        form.fields["from_"].initial = user.username
+        if not "Reply-To" in msg.keys():
+            form.fields["to"].initial = self.From
+        else:
+            form.fields["to"].initial = self.Reply_To
+        if all:
+            form.fields["cc"].initial = ""
+            toparse = msg["To"].split(",")
+            if "Cc" in msg.keys():
+                toparse += msg["Cc"].split(",")
+            for addr in toparse:
+                tmp = EmailAddress(addr)
+                if tmp.address and tmp.address == request.user.username:
+                    continue
+                if form.fields["cc"].initial != "":
+                    form.fields["cc"].initial += ", "
+                form.fields["cc"].initial += tmp.fulladdress
+        m = re.match("re\s*:\s*.+", self.Subject.lower())
+        if m:
+            form.fields["subject"].initial = self.Subject
+        else:
+            form.fields["subject"].initial = "Re: %s" % self.Subject
+    
+    def _modify_plain(self):
+        lines = self.body.split('\n')
+        body = ""
+        for l in lines:
+            if body != "":
+                body += "\n"
+            body += ">%s" % l
+        self.body = body
+
+    def _modify_html(self):
+        pass
+
+class ForwardModifier(ImapEmail):
+    def __init__(self, msg, user, form, **kwargs):
+        ImapEmail.__init__(self, msg, user, dformat="EDITOR", **kwargs)
+    
+        self._header(msg)
+        form.fields["from_"].initial = user.username
+        form.fields["subject"].initial = "Fwd: %s" % self.Subject
+
+    def __getfunc(self, name):
+        return getattr(self, "%s_%s" % (name, self.dformat))
+
+    def _header(self, msg):
+        self.textheader = self.__getfunc("_header_begin")() + "\n"
+        self.textheader += \
+            self.__getfunc("_header_line")(_("Subject"), self.Subject) + "\n"
+        self.textheader += \
+            self.__getfunc("_header_line")(_("Date"), msg["Date"]) + "\n"
+        for hdr in ["From", "To", "Reply-To"]:
+            try:
+                key = re.sub("-", "_", hdr)
+                value = getattr(self, key)
+                self.textheader += \
+                    self.__getfunc("_header_line")(_(hdr), value) + "\n"
+            except:
+                pass
+        self.textheader += self.__getfunc("_header_end")()
+
+    def _header_begin_plain(self):
+        return "----- %s -----" % _("Original message")
+
+    def _header_begin_html(self):
+        return  """----- %s -----<br/>
+<table border='0'>""" % _("Original message")
+
+    def _header_line_plain(self, key, value):
+        return "%s: %s" % (key, value)
+
+    def _header_line_html(self, key, value):
+        return "  <tr><td>%s</td><td>%s</td></tr>" % (key, value)
+
+    def _header_end_plain(self):
+        return "\n"
+
+    def _header_end_html(self):
+        return "</table>"
+
+class EmailSignature(object):
+    """User signature
+
+    :param user: User object
+    """
+    def __init__(self, user):
+        dformat = parameters.get_user(user, "EDITOR")
+        content = parameters.get_user(user, "SIGNATURE")
+        getattr(self, "_format_sig_%s" % dformat)(content)
+
+    def _format_sig_plain(self, content):
+        self._sig = """
+---
+%s""" % content
+
+    def _format_sig_html(self, content):
+        content = re.sub("\n", "<br/>", content)
+        self._sig = """<br/>
+---<br/>
+%s""" % content
+
+    def __repr__(self):
+        return self._sig
 
 def find_images_in_body(body):
     """Looks for images inside a HTML body
@@ -497,7 +613,7 @@ def encrypt(clear):
     from Crypto.Cipher import AES
     import base64
     
-    obj = AES.new(parameters.get_admin("webmail", "SECRET_KEY"),
+    obj = AES.new(parameters.get_admin("SECRET_KEY"),
                   AES.MODE_ECB)
     if len(clear) % AES.block_size:
         clear += "\0" * (AES.block_size - len(clear) % AES.block_size)
@@ -509,8 +625,7 @@ def decrypt(ciph):
     from Crypto.Cipher import AES
     import base64
 
-    obj = AES.new(parameters.get_admin("webmail", "SECRET_KEY"),
-                  AES.MODE_ECB)
+    obj = AES.new(parameters.get_admin("SECRET_KEY"), AES.MODE_ECB)
     ciph = base64.b64decode(ciph)
     clear = obj.decrypt(ciph)
     return clear.rstrip('\0')

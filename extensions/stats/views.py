@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from django.template.loader import render_to_string
-from modoboa.lib import parameters, _render, getctx
+from modoboa.lib import _render, getctx
 from modoboa.admin.views import good_domain
 from modoboa.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \

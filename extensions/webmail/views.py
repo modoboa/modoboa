@@ -116,43 +116,48 @@ def getmailcontent(request, folder, mail_id):
     if "class" in msg.keys() and msg["class"] == "unseen":
         IMAPconnector(user=request.user.username,
                       password=request.session["password"]).msg_read(folder, mail_id)
-        email = ImapEmail(msg, mode="html", links="1")
+        email = ImapEmail(msg, request.user, links="1")
     try:
         pageid = request.session["page"]
     except KeyError:
         pageid = "1"
     return _render(request, "common/viewmail.html", {
             "headers" : email.render_headers(folder=folder, mail_id=mail_id), 
-            "folder" : folder, "imapid" : mail_id, "mailbody" : email.body, 
-            "pre" : email.pre
+            "folder" : folder, "imapid" : mail_id, "mailbody" : email.body
             })
 
 @login_required
 @is_not_localadmin()
 def getattachment(request, folder, mail_id):
-    msg = fetchmail(request, folder, mail_id, True)
-    for part in msg.walk():
-        fname = part.get_filename()
-        if fname is None:
-            continue
-        decoded = decode_header(fname)
-        if decoded[0][1] is None:
-            fname = unicode(decoded[0][0])
-        else:
-            fname = unicode(decoded[0][0], decoded[0][1])
-        if fname == request.GET["fname"]:
-            resp = HttpResponse(part.get_payload(decode=1))
-            for hdr in ["Content-Type", "Content-Transfer-Encoding"]:
+    if request.GET.has_key("partnumber"):
+        headers = {"Content-Type" : "text/plain",
+                   "Content-Transfer-Encoding" : None}
+        icon = IMAPconnector(user=request.user.username, 
+                             password=request.session["password"])
+        part = icon.fetchpart(mail_id, folder, request.GET["partnumber"])
+        if part is not None:
+            if part.get_content_maintype() == "message":
+                payload = part.get_payload(0)
+            else:
+                payload = part.get_payload(decode=True)
+            resp = HttpResponse(payload)
+            for hdr, default in headers.iteritems():
                 if not part.has_key(hdr):
-                    continue
+                    if default is not None:
+                        resp[hdr] = default
+                    else:
+                        continue
                 resp[hdr] = re.sub("\s", "", part[hdr])
+            # I would add this part into the previous loop if was able
+            # to use functions as default values... but I'm a bit lazy
+            # :p
             if part.has_key("Content-Disposition"):
                 resp["Content-Disposition"] = \
                     re.sub("\s", "", part["Content-Disposition"])
             else:
                 resp["Content-Disposition"] = \
-                    "attachment; filename=%s" % fname
-            resp["Content-Length"] = len(resp.content)
+                    "attachment; filename=%s" % request.GET["fname"]
+            resp["Content-Length"] = len(payload)
             return resp
     raise Http404
 
@@ -172,8 +177,7 @@ def move(request):
 def delete(request, fdname, mail_id):
     mbc = IMAPconnector(user=request.user.username,
                         password=request.session["password"])
-    mbc.move(mail_id, fdname, parameters.get_user(request.user, "webmail",
-                                                  "TRASH_FOLDER"))
+    mbc.move(mail_id, fdname, parameters.get_user(request.user, "TRASH_FOLDER"))
     ctx = getctx("ok", next=__get_current_url(request))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
@@ -193,7 +197,7 @@ def mark(request, name):
 @login_required
 @is_not_localadmin()
 def empty(request, name):
-    if name == parameters.get_user(request.user, "webmail", "TRASH_FOLDER"):
+    if name == parameters.get_user(request.user, "TRASH_FOLDER"):
         mbc = IMAPconnector(user=request.user.username,
                             password=request.session["password"])
         mbc.empty(name)
@@ -207,22 +211,23 @@ def compact(request, name):
     mbc.compact(name)
     return folder(request, name, False)
 
-def render_compose(request, form, posturl, bodyheader=None, body=None, 
-                   insert_signature=False):
+def render_compose(request, form, posturl, email=None, insert_signature=False):
     menu = compose_menu("", __get_current_url(request), 
                         request.user.get_all_permissions())
-    editor = parameters.get_user(request.user, "webmail", "EDITOR")
+    editor = parameters.get_user(request.user, "EDITOR")
+    if email is None:
+        body = ""
+        textheader = ""
+    else:
+        body = email.body
+        textheader = email.textheader
     if insert_signature:
-        if body == None:
-            body = ""
-        signature = parameters.get_user(request.user, "webmail", "SIGNATURE")
-        if signature != "":
-            body += editor == "plain" and "\n---\n%s" % signature \
-                or "<br/>---<br/>%s" % re.sub("\n", "<br/>", signature)
+        signature = EmailSignature(request.user)
+        body += str(signature)
 
     content = render_to_string("webmail/compose.html", {
-            "form" : form, "bodyheader" : bodyheader, "body" : body,
-            "posturl" : posturl
+            "form" : form, "bodyheader" : textheader,
+            "body" : body, "posturl" : posturl
             })
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
@@ -240,7 +245,7 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
         from email.utils import make_msgid, formatdate
         import smtplib
 
-        subtype = parameters.get_user(request.user, "webmail", "EDITOR")
+        subtype = parameters.get_user(request.user, "EDITOR")
         body = request.POST["id_body"]
         if subtype == "html":
             from email.mime.multipart import MIMEMultipart
@@ -267,17 +272,17 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
             rcpts += msg["Cc"].split(",")
         error = None
         try:
-            s = smtplib.SMTP(parameters.get_admin("webmail", "SMTP_SERVER"))
-            if parameters.get_admin("webmail", "SMTP_SECURED") == "yes":
+            s = smtplib.SMTP(parameters.get_admin("SMTP_SERVER"))
+            if parameters.get_admin("SMTP_SECURED") == "yes":
                 s.starttls()
         except (smtplib.SMTPException, ssl.SSLError), text:
             error = text
         if error is None:
-            if parameters.get_admin("webmail", "SMTP_AUTHENTICATION") == "yes":
+            if parameters.get_admin("SMTP_AUTHENTICATION") == "yes":
                 s.login(request.user.username, decrypt(request.session["password"]))
             s.sendmail(msg['From'], rcpts, msg.as_string())
             s.quit()
-            sentfolder = parameters.get_user(request.user, "webmail", "SENT_FOLDER")
+            sentfolder = parameters.get_user(request.user, "SENT_FOLDER")
             IMAPconnector(user=request.user.username,
                           password=request.session["password"]).push_mail(sentfolder, msg)
             ctx = getctx("ok", url=__get_current_url(request))
@@ -315,39 +320,12 @@ def reply(request, folder, mail_id):
                           password=request.session["password"]).msg_answered(folder,
                                                                              mail_id)
         return r
-    email = ImapEmail(msg, True)
-    lines = email.body.split('\n')
-    body = ""
-    for l in lines:
-        if body != "":
-            body += "\n"
-        body += ">%s" % l
-    form = ComposeMailForm()
-    form.fields["from_"].initial = request.user.username
-    if not "Reply-To" in msg.keys():
-        form.fields["to"].initial = email.From
-    else:
-        form.fields["to"].initial = email.Reply_To
-    if request.GET.has_key("all"):
-        form.fields["cc"].initial = ""
-        toparse = msg["To"].split(",")
-        if "Cc" in msg.keys():
-            toparse += msg["Cc"].split(",")
-        for addr in toparse:
-            tmp = EmailAddress(addr)
-            if tmp.address and tmp.address == request.user.username:
-                continue
-            if form.fields["cc"].initial != "":
-                form.fields["cc"].initial += ", "
-            form.fields["cc"].initial += tmp.fulladdress
-    m = re.match("re\s*:\s*.+", email.Subject.lower())
-    if m:
-        form.fields["subject"].initial = email.Subject
-    else:
-        form.fields["subject"].initial = "Re: %s" % email.Subject
-    textheader = "%s %s" % (email.From, _("wrote:"))
+
+    form = ComposeMailForm()    
+    email = ReplyModifier(msg, request.user, form, request.GET.has_key("full"),
+                          addrfull=True)
     return render_compose(request, form, reverse(reply, args=[folder, mail_id]),
-                          textheader, body)
+                          email)
 
 @login_required
 @is_not_localadmin()
@@ -360,23 +338,9 @@ def forward(request, folder, mail_id):
                           password=request.session["password"]).msgforwarded(folder,
                                                                              mail_id)
         return response
-
+    
     msg = fetchmail(request, folder, mail_id, True)
-    email = ImapEmail(msg, True)
-    textheader = "----- %s -----" % _("Original message")
-    textheader += "\n%s: %s" % (_("Subject"), email.Subject)
-    textheader += "\n%s: %s" % (_("Date"), msg["Date"])
-    for hdr in ["From", "To", "Reply-To"]:
-        try:
-            key = re.sub("-", "_", hdr)
-            value = getattr(email, key)
-            textheader += "\n%s: %s" % (_(hdr), value)
-        except:
-            pass
-    textheader += "\n"
-
     form = ComposeMailForm()
-    form.fields["from_"].initial = request.user.username
-    form.fields["subject"].initial = "Fwd: %s" % email.Subject
+    email = ForwardModifier(msg, request.user, form, addrfull=True)    
     return render_compose(request, form, reverse(forward, args=[folder, mail_id]), 
-                          textheader, email.body)
+                          email)

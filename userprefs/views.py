@@ -1,3 +1,4 @@
+import copy
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.template import RequestContext
@@ -55,13 +56,9 @@ def preferences(request):
         tmp = {"name" : app, "params" : []}
         for p in sorted(parameters._params[app]['U']):
             param_def = parameters._params[app]['U'][p]
-            newdef = {"name" : p, 
-                      "value" : parameters.get_user(request.user, app, p),
-                      "help" : param_def["help"],
-                      "default" : param_def["default"],
-                      "type" : param_def["type"]}
-            if "values" in param_def.keys():
-                newdef["values"] = param_def["values"]
+            newdef = copy.deepcopy(param_def)
+            newdef["name"] = p
+            newdef["value"] = parameters.get_user(request.user, p, app=app)
             tmp["params"] += [newdef]
         gparams += [tmp]
 
@@ -75,7 +72,7 @@ def savepreferences(request):
         if pname == "update":
             continue
         app, name = pname.split('.')
-        parameters.save_user(request.user, app, name, v)
+        parameters.save_user(request.user, name, v, app=app)
 
     ctx = getctx("ok")
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

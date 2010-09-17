@@ -87,7 +87,7 @@ def listing_menu(selection, folder, user):
                 ]
          }
         ]
-    if folder == parameters.get_user(user, "webmail", "TRASH_FOLDER"):
+    if folder == parameters.get_user(user, "TRASH_FOLDER"):
         entries[2]["menu"] += [
             {"name" : "fdaction",
              "label" : _("Empty folder"),

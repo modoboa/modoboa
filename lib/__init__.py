@@ -26,7 +26,7 @@ def _render_error(request, errortpl="error", user_context={}):
 
 def exec_as_vuser(cmd):
     code, output = exec_cmd("sudo -u %s %s" \
-                                % (parameters.get_admin("admin", "VIRTUAL_UID"), cmd))
+                                % (parameters.get_admin("VIRTUAL_UID", app="admin"), cmd))
     if code:
         exec_cmd("echo '%s' >> /tmp/vmail.log" % output)
         return False
@@ -57,7 +57,10 @@ def getctx(status, level=1, callback=None, **kwargs):
         ctx[kw] = v
     return ctx
 
-def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii')):
+def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=None):
+    if charset is not None:
+        return s.decode(charset, 'ignore')
+
     for encoding in encodings:
         try:
             return s.decode(encoding)

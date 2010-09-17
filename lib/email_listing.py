@@ -140,67 +140,109 @@ class EmailListing:
         return _render(request, self.tpl, context)
 
 class Email(object):
-    def __init__(self, msg, mode="plain", links="0"):
+    def __init__(self, msg, mformat="plain", dformat="plain", links="0"):
         self.attached_map = {}
-        contents = {"html" : "", "plain" : ""}
+        self.contents = {"html" : "", "plain" : ""}
         self.headers = []
-        self.attachments = []
-        for part in msg.walk():
-            if part.get_content_maintype() == 'multipart':
-                continue
-            if part.has_key("Content-Disposition"):
-                if re.match("^attachment", part["Content-Disposition"]):
-                    self.attachments += [part]
-                    continue
-            if part.get_content_type() == "text/calendar":
-                contents["plain"] += part.get_payload(decode=True)
-                continue
-            if part.get_content_type() in ("text/html", "text/plain"):
-                contents[part.get_content_subtype()] += part.get_payload(decode=True)
-            if mode != "html" or links == "0":
-                continue
-            if part.get_content_maintype() == "application":
-                self.attachments += [part]
-                continue
+        self.attachments = {}
+        self.mformat = mformat
+        self.dformat = dformat
+        self.links = links
 
-            if part.get_content_maintype() == "image":
-                m = re.match("<(.+)>", part["Content-ID"])
-                cid = m is not None and m.group(1) or part["Content-ID"]
+        self.__parse(msg)
 
-                if part.has_key("Content-Location"):
-                    fname = part["Content-Location"]
-                elif part.has_key("Content-Disposition"):
-                    if not part["Content-Disposition"].startswith("inline"):
-                        continue
-                    params = part["Content-Disposition"].split(";")
-                    fname = None
-                    for p in params:
-                        lst = p.strip().split("=")
-                        if len(p) and p[0] == "filename":
-                            fname = p[1]
-                            break
-                    if fname is None:
+        if not self.contents.has_key(mformat) or self.contents[mformat] == "":
+            # Fallback
+            self.mformat = mformat == "html" and "plain" or "html"
+
+        self.body = \
+            getattr(self, "viewmail_%s" % self.mformat) \
+            (self.contents[self.mformat], links=links)
+
+    def __parse_default(self, msg, level):
+        """Default parser
+
+        All parts handled by this parser will be consireded as
+        attachments.
+        """
+        fname = msg.get_filename()
+        if fname is not None:
+            decoded = decode_header(fname)
+            value = decoded[0][1] is None and decoded[0][0] \
+                or unicode(decoded[0][0], decoded[0][1])
+        else:
+            value = "part_%s" % level
+        self.attachments[level] = value
+
+    def _parse_text(self, msg, level):
+        """Displayable content parser
+
+        text, html, calendar, etc. All those contents can be displayed
+        inside a navigator.
+        """
+        if msg.get_content_subtype() == "calendar":
+            target = "plain"
+        else:
+            target = msg.get_content_subtype()
+        self.contents[target] += decode(msg.get_payload(decode=True), 
+                                        charset=msg.get_content_charset())
+
+    def _parse_image(self, msg, level):
+        """image/* parser
+
+        The only reason to make a specific parser for images is that,
+        sometimes, messages embark inline images, which means they
+        must be displayed and not attached.
+        """
+        if self.dformat == "html" and self.links != "0" \
+                and msg.has_key("Content-Disposition"):
+            if msg["Content-Disposition"].startswith("inline"):
+                cid = None
+                if msg.has_key("Content-ID"):
+                    m = re.match("<(.+)>", msg["Content-ID"])
+                    cid = m is not None and m.group(1) or msg["Content-ID"]
+                fname = msg.get_filename()
+                if fname is None:
+                    if msg.has_key("Content-Location"):
+                        fname = msg["Content-Location"]
+                    elif cid is not None:
                         fname = cid
-                elif part.has_key("Content-Type"):
-                    m = re.match(".*name=[\"'](.+)[\"']", part["Content-Type"])
-                    if m is None:
-                        continue
-                    fname = m.group(1)
-                else:
-                    continue
-               
+                    else:
+                        # I give up for now :p
+                        return
                 self.attached_map[cid] = re.match("^http:", fname) and fname \
-                    or self.__save_image(fname, part)
+                    or self.__save_image(fname, msg)
+                return
+        self.__parse_default(msg, level)  
 
+    def __parse(self, msg, level=None):
+        """Recursive email parser
 
-        if not contents.has_key(mode) or contents[mode] == "":
-            if mode == "html":
-                mode = "plain"
-            else:
-                mode = "html"
+        A message structure can be complex. To correctly handle
+        unknown MIME types, a simple rule is applied : if I don't know
+        how to display a specific part, it becomes an attachment! If
+        no name is specified for an attachment, the part number
+        described in the RFC 3501 (which retrieves BODY sections) is
+        used to build a file name (like part_1.1).
 
-        self.pre, self.body = \
-            getattr(self, "viewmail_%s" % mode)(contents[mode], links=links)
+        :param msg: message (or part) to parse
+        :param level: current part number
+        """
+        if msg.is_multipart() and msg.get_content_maintype() != "message":
+            cpt = 1
+            for part in msg.get_payload():
+                nlevel = level is None and ("%d" % cpt) \
+                    or "%s.%d" % (level, cpt)
+                self.__parse(part, nlevel)
+                cpt += 1
+            return
+
+        if level is None: 
+            level = "1"
+        try:
+            getattr(self, "_parse_%s" % msg.get_content_maintype())(msg, level)
+        except AttributeError:
+            self.__parse_default(msg, level)
 
     def __save_image(self, fname, part):
         """Save an inline image on the filesystem.
@@ -226,7 +268,6 @@ class Email(object):
 
         m = re.match(".*cid:(.+)", url)
         if m:
-            print self.attached_map
             if self.attached_map.has_key(m.group(1)):
                 return self.attached_map[m.group(1)]
         return url
@@ -236,14 +277,9 @@ class Email(object):
                 "headers" : self.headers,
                 })
         
-    def render(self, request):
-        return  _render(request, 'common/getmailcontent.html', {
-                "body" : self.body, "pre" : self.pre
-                })
-
     def viewmail_plain(self, content, **kwargs):
-        body = decode(content)
-        return (True, body)
+        return self.dformat == "html" and "<pre>%s</pre>" % content \
+            or content
 
     def viewmail_html(self, content, **kwargs):
         if content is None or content == "":
@@ -260,8 +296,8 @@ class Email(object):
         else:
             body = lxml.html.tostring(body)
             body = re.sub("<(/?)body", lambda m: "<%sdiv" % m.group(1), body)
-        body = Template(decode(body)).render(Context({}))
-        return (False, body)
+        body = Template(body).render(Context({}))
+        return body
 
 def parse_search_parameters(request):
     if request.GET.has_key("pattern"):
