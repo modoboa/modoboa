@@ -595,8 +595,10 @@ def find_images_in_body(body):
     parts = []
     for tag in html.iter("img"):
         src = tag.get("src")
+        if src is None:
+            continue
         o = urlparse(src)
-        dirname = os.path.dirname(o.path).replace(settings.MEDIA_URL, "")
+        dirname = os.path.dirncme(o.path).replace(settings.MEDIA_URL, "")
         fname = os.path.basename(o.path)
         cid = "%s@modoboa" % os.path.splitext(fname)[0]
         tag.set("src", "cid:%s" % cid)

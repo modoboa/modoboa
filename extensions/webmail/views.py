@@ -340,7 +340,7 @@ def reply(request, folder, mail_id):
 
     form = ComposeMailForm()    
     email = ReplyModifier(msg, request.user, form, request.GET.has_key("full"),
-                          addrfull=True)
+                          addrfull=True, links="1")
     return render_compose(request, form, reverse(reply, args=[folder, mail_id]),
                           email)
 
@@ -358,6 +358,6 @@ def forward(request, folder, mail_id):
     
     msg = fetchmail(request, folder, mail_id, True)
     form = ComposeMailForm()
-    email = ForwardModifier(msg, request.user, form, addrfull=True)    
+    email = ForwardModifier(msg, request.user, form, addrfull=True, links="1")
     return render_compose(request, form, reverse(forward, args=[folder, mail_id]), 
                           email)
