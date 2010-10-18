@@ -237,13 +237,22 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 def __html2plaintext(content):
+    """HTML to plain text translation
+
+    :param content: some HTML content
+    """
     html = lxml.html.fromstring(content)
     plaintext = ""
-    for p in html.xpath("//text()"):
-        p = p.strip('\r\t\n')
-        if p == "":
+    for ch in html.iter():
+        p = None
+        if ch.text is not None:
+            p = ch.text.strip('\r\t\n')
+        if ch.tag == "img":
+            p = ch.get("alt")
+        if p is None:
             continue
         plaintext += p + "\n"
+        
     return plaintext
     
 def send_mail(request, withctx=False, origmsg=None, posturl=None):
@@ -264,6 +273,7 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
             msg = MIMEMultipart(_subtype="related")
             submsg = MIMEMultipart(_subtype="alternative")
             textbody = __html2plaintext(body)
+            return
             submsg.attach(MIMEText(textbody.encode(charset),
                                 _subtype="plain", _charset=charset))
             body, images = find_images_in_body(body)
