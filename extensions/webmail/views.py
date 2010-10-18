@@ -273,7 +273,6 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
             msg = MIMEMultipart(_subtype="related")
             submsg = MIMEMultipart(_subtype="alternative")
             textbody = __html2plaintext(body)
-            return
             submsg.attach(MIMEText(textbody.encode(charset),
                                 _subtype="plain", _charset=charset))
             body, images = find_images_in_body(body)
