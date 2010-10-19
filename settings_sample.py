@@ -4,6 +4,8 @@ import os.path
 DEBUG = False 
 TEMPLATE_DEBUG = DEBUG
 
+MODOBOA_DIR = os.path.dirname(__file__)
+
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
@@ -38,7 +40,7 @@ LOGIN_REDIRECT_URL = '/modoboa/admin/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(MODOBOA_DIR, 'static')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -64,22 +66,16 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware'
 )
 
 ROOT_URLCONF = 'modoboa.urls'
 
-MODOBOA_DIR = os.path.dirname(__file__)
-STATIC_ROOTDIR = os.path.join(MODOBOA_DIR, 'static')
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(os.path.dirname(__file__), 'templates'),
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.messages.context_processors.messages',
 )
 
 INSTALLED_APPS = (
@@ -89,7 +85,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'south',
-    'tinymce',
     'modoboa',
     'modoboa.lib',
     'modoboa.admin',
