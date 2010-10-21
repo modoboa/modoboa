@@ -7,6 +7,7 @@ Requirements
 - Python version 2.6+
 - Django version 1.2+ (http://docs.djangoproject.com/en/dev/intro/install/#intro-install)
 - south version 0.7+ (http://south.aeracode.org/)
+- ckeditor version 3.4.1+ (http://ckeditor.com/)
 
 How to install
 --------------
@@ -45,6 +46,20 @@ How to upgrade
 First, decompress the new tarball at the same location than your
 current installation. Then, check if the new version you're installing
 requires a migration::
+
+0.8.1 -> 0.8.2 : ckeditor integration.
+
+ * Download the latest release of ckeditor and extract it into
+   <modoboa_dir>/static/js/. It should create a new folder named
+   'ckeditor'.
+
+ * Update your config file. First, update the following variables::
+   
+   MEDIA_ROOT = os.path.join(MODOBOA_DIR, '/static')
+   MEDIA_URL = '/static/'
+
+ * Then, delete the following variables: STATIC_ROOTDIR and
+   TEMPLATE_CONTEXT_PROCESSORS.
 
 0.8 -> 0.8.1 : project renamed.
 

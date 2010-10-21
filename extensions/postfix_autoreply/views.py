@@ -43,7 +43,8 @@ def autoreply(request):
                             mimetype="application/json")
 
     form = ARmessageForm(instance=arm)
-    form.fields['untildate'].initial = arm.untildate
+    if arm is not None:
+        form.fields['untildate'].initial = arm.untildate
     return _render(request, "postfix_autoreply/autoreply.html", {
             "form" : form
             })

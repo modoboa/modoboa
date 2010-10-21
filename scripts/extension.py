@@ -9,7 +9,7 @@ def usage():
     sys.exit(1)
 
 def update_extension(name, extdir, state):
-    for d in ['templates', 'scripts']:
+    for d in ['scripts']:
         if not os.path.isdir("%s/%s" % (extdir, d)):
 	    continue
         cmd = state == "on" \
