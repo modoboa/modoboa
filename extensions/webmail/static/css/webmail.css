@@ -197,13 +197,13 @@ textarea:hover {
 #box { 
     /*border: 1px solid #ccc; */
     width: 200px;
-    background: url(../pics/progressbar_bg.gif) right center no-repeat;
+    background: url(../../pics/progressbar_bg.gif) right center no-repeat;
     height: 19px;
     float: left;
 }
 
 #perc { 
-    background: url(../pics/progressbar.gif) right center no-repeat;
+    background: url(../../pics/progressbar.gif) right center no-repeat;
     height: 19px; 
 }
 

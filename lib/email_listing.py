@@ -180,7 +180,8 @@ class Email(object):
         text, html, calendar, etc. All those contents can be displayed
         inside a navigator.
         """
-        if msg.get_content_subtype() == "calendar":
+        if msg.get_content_subtype() not in ["plain", "html"]:
+            self.__parse_default(msg, level)
             target = "plain"
         else:
             target = msg.get_content_subtype()

@@ -598,7 +598,7 @@ def find_images_in_body(body):
         if src is None:
             continue
         o = urlparse(src)
-        dirname = os.path.dirncme(o.path).replace(settings.MEDIA_URL, "")
+        dirname = os.path.dirname(o.path).replace(settings.MEDIA_URL, "")
         fname = os.path.basename(o.path)
         cid = "%s@modoboa" % os.path.splitext(fname)[0]
         tag.set("src", "cid:%s" % cid)
