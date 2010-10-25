@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: modoboa-8e6c72ea0131\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-25 17:19+0200\n"
-"PO-Revision-Date: 2010-07-25 21:39+0200\n"
+"PO-Revision-Date: 2010-10-25 21:02+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
 "MIME-Version: 1.0\n"
@@ -171,7 +171,6 @@ msgid "Check to activate this alias"
 msgstr "Auswählen um den Alias zu aktivieren"
 
 #: admin/models.py:119
-#, fuzzy
 msgid "Check to enable this extension"
 msgstr "Auswählen, um diese Domäne zu aktivieren"
 
@@ -223,17 +222,16 @@ msgid "Name"
 msgstr "Name"
 
 #: admin/views.py:459
-#, fuzzy
 msgid "Version"
 msgstr "Berechtigungen"
 
 #: admin/views.py:460
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: admin/views.py:501
 msgid "Modifications applied."
-msgstr ""
+msgstr "Änderungen übernommen"
 
 #: admin/templatetags/admin_extras.py:11
 msgid "enabled_m"
@@ -273,7 +271,7 @@ msgstr "Eigenschaften"
 
 #: admin/templatetags/admin_extras.py:67
 msgid "Extensions"
-msgstr ""
+msgstr "Erweiterungen"
 
 #: admin/templatetags/admin_extras.py:78 templates/admin/newdomain.html:7
 msgid "New domain"
@@ -476,7 +474,7 @@ msgstr "Das Datum ist vorbei"
 
 #: extensions/postfix_autoreply/main.py:20
 msgid "Auto-reply (vacation) functionality using Postfix"
-msgstr ""
+msgstr "Automatische Antwort (Abwesenheitsbenachrichtigung) über Postfix-Programm"
 
 #: extensions/postfix_autoreply/main.py:33
 msgid "Timeout in seconds between two auto-replies to the same recipient"
@@ -703,14 +701,13 @@ msgstr "Gesicherte Verbindung für Zugriff auf SMTP-Server verwenden"
 
 #: extensions/webmail/main.py:35
 msgid "Listing refresh rate"
-msgstr ""
+msgstr "Liste Aktualisierungsintervall"
 
 #: extensions/webmail/main.py:36
 msgid "Automatic folder refresh rate (in seconds)"
 msgstr "Aktualisierungsintervall für Ordner (in Sekunden)"
 
 #: extensions/webmail/main.py:38
-#, fuzzy
 msgid "Trash folder"
 msgstr "Ordner komprimieren"
 
@@ -719,7 +716,6 @@ msgid "Folder where deleted messages go"
 msgstr "Abgewiesene Nachrichten"
 
 #: extensions/webmail/main.py:41
-#, fuzzy
 msgid "Sent folder"
 msgstr "Leerer Ordner"
 
@@ -729,7 +725,7 @@ msgstr "Ordner für Gesendete Nachrichten"
 
 #: extensions/webmail/main.py:44
 msgid "Signature text"
-msgstr ""
+msgstr "Signatur"
 
 #: extensions/webmail/main.py:45
 msgid "User defined email signature"
@@ -737,19 +733,19 @@ msgstr "Benutzerdefinierte Signatur der E-Mail"
 
 #: extensions/webmail/main.py:47
 msgid "Default editor"
-msgstr ""
+msgstr "Standard-Editor"
 
 #: extensions/webmail/main.py:49
 msgid "The default editor to use when composing a message"
-msgstr ""
+msgstr "Der Standard-Editor zum Erstellen einer Nachricht"
 
 #: extensions/webmail/main.py:51
 msgid "Default message display mode"
-msgstr ""
+msgstr "Standard Nachrichten Betrachtungsmodus"
 
 #: extensions/webmail/main.py:53
 msgid "The default mode used when displaying a message"
-msgstr ""
+msgstr "Der Standard Modus zum Betrachten einer Nachricht"
 
 #: extensions/webmail/main.py:64
 msgid "Simple IMAP webmail"
@@ -908,7 +904,6 @@ msgid "yes,no"
 msgstr "Ja,Nein"
 
 #: templates/admin/extensions.html:11
-#, fuzzy
 msgid "Apply"
 msgstr "Antworten"
 
