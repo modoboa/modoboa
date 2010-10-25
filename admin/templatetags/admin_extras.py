@@ -64,7 +64,8 @@ def settings_menu(selection, user):
          "label" : _("Parameters")},
         {"name" : "extensions",
          "url" : reverse(admin.views.viewextensions),
-         "label" : _("Extensions")},
+         "label" : _("Extensions"),
+         "img" : static_url("pics/extensions.png")},
         ]
     return render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries,
