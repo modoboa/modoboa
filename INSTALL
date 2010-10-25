@@ -9,6 +9,13 @@ Requirements
 - south version 0.7+ (http://south.aeracode.org/)
 - ckeditor version 3.4.1+ (http://ckeditor.com/)
 
+For extensions (mandatories since 0.8.2)::
+
+- mysqldb python module (http://mysql-python.sourceforge.net/)
+- lxml python module (http://codespeak.net/lxml/)
+- pycrypto python module (http://www.dlitz.net/software/pycrypto/)
+- rrdtool python binding (http://oss.oetiker.ch/rrdtool/)
+
 How to install
 --------------
 
@@ -47,7 +54,14 @@ First, decompress the new tarball at the same location than your
 current installation. Then, check if the new version you're installing
 requires a migration::
 
-0.8.1 -> 0.8.2 : ckeditor integration.
+0.8.1 -> 0.8.2 : ckeditor integration and more.
+
+ * Migrate the admin app::
+
+   # python manage.py migrate admin
+
+ * Update your config file and add all extensions to INSTALLED_APPS
+   (even those you are not going to use).
 
  * Download the latest release of ckeditor and extract it into
    <modoboa_dir>/static/js/. It should create a new folder named
@@ -225,16 +239,9 @@ Tips to activate auto-reply messages in Postifx
 
 Since version 0.6, mail users can define an auto-reply message with Modoboa.
 
-To activate the extension, edit your settings.py and add the following
-line inside the INSTALLED_APPS variable::
-
-  'modoboa.extensions.postfix_autoreply',
-
-Run the following command to activate the component::
-
-  # export PYTHONPATH=<modoboa_dir>/..
-  # DJANGO_SETTINGS_MODULE=modoboa.settings \
-      <modoboa_dir>/scripts/extension.py postfix-autoreply on
+To activate the extension, go to the admin -> settings -> extensions
+page, check the box corresponding to 'Postfix autoreply' and click on
+the "Apply" button.
 
 Then run the following commands to update Modoboa SQL schema and content::
 
@@ -405,22 +412,9 @@ Using the amavisd-new quarantine plugin
 This plugin allows you and your users to handle amavisd-new SQL
 quarantine. You can consult messages and/or release or delete them.
 
-If you plan to use it, first make sure to have those requirements
-installed on your server::
-
-- mysqldb python module (http://mysql-python.sourceforge.net/)
-- lxml python module (http://codespeak.net/lxml/)
-
-To activate the extension, edit your settings.py and add the following
-line inside the INSTALLED_APPS variable::
-
-  'modoboa.extensions.amavis_quarantine',
-
-Then run the following command to activate the component::
-  
-  # export PYTHONPATH=<modoboa_dir>/..
-  # DJANGO_SETTINGS_MODULE=modoboa.settings \
-      <modoboa_dir>/scripts/extension.py amavis-quarantine on
+To activate the extension, go to the admin -> settings -> extensions
+page, check the box corresponding to 'Amavis quarantine' and click on
+the "Apply" button.
 
 Then, you need to specify where is the database that contains the
 quarantine. Inside settings.py, add a new connection to the
@@ -500,21 +494,9 @@ This plugin allows you to collect various statistics about emails
 traffic on your server. It parses log file to collect information and
 then generates graphics in PNG format.
 
-If you plan to use it, first make sure to have those requirements
-installed on your server::
-
-- rrdtool python binding (http://oss.oetiker.ch/rrdtool/)
-
-To activate the extension, edit your settings.py and add the following
-line inside the INSTALLED_APPS variable::
-
-  'modoboa.extensions.stats',
-
-Then run the following command to activate the component::
-  
-  # export PYTHONPATH=<modoboa_dir>/..
-  # DJANGO_SETTINGS_MODULE=modoboa.settings \
-      <modoboa_dir>/scripts/extension.py stats on
+To activate the extension, go to the admin -> settings -> extensions
+page, check the box corresponding to 'Statistics' and click on
+the "Apply" button.
 
 Then, adapt the following parameters to your environnement::
 
@@ -551,16 +533,9 @@ Modoboa provides a simple webmail component (you can browse, read and
 compose messages).  With this feature, it is possible to deploy an almost
 standalone emails platform just with Modoboa.
 
-The following requirements are needed before going further::
-
-- lxml python module (http://codespeak.net/lxml/)
-- pycrypto python module (http://www.dlitz.net/software/pycrypto/)
-
-Just run the following command to activate the component::
-  
-  # export PYTHONPATH=<modoboa_dir>/..
-  # DJANGO_SETTINGS_MODULE=modoboa.settings \
-      <modoboa_dir>/scripts/extension.py webmail on
+To activate the extension, go to the admin -> settings -> extensions
+page, check the box corresponding to 'Webmail' and click on the
+"Apply" button.
 
 Sometimes, inline images are integrated inside emails. To display
 them, Modoboa stores them inside a temporary folder. Make sure the
