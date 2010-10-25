@@ -261,8 +261,8 @@ if __name__ == "__main__":
 
     main.init()
 
-    log_file = parameters.get_admin("LOGFILE")
-    rrd_rootdir = parameters.get_admin("RRD_ROOTDIR")
+    log_file = parameters.get_admin("LOGFILE", app="stats")
+    rrd_rootdir = parameters.get_admin("RRD_ROOTDIR", app="stats")
 
     parser = OptionParser()
     parser.add_option("-l","--logfile", default=log_file,
