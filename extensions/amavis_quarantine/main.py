@@ -37,8 +37,8 @@ def destroy():
     events.unregister("UserMenuDisplay", menu)
     parameters.unregister_app("amavis_quarantine")
 
-def urls():
-    return (r'^modoboa/quarantine/', 
+def urls(prefix):
+    return (r'^%squarantine/' % prefix, 
             include('modoboa.extensions.amavis_quarantine.urls'))
 
 def menu(**kwargs):

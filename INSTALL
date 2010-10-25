@@ -72,8 +72,15 @@ requires a migration::
    MEDIA_ROOT = os.path.join(MODOBOA_DIR, '/static')
    MEDIA_URL = '/static/'
 
- * Then, delete the following variables: STATIC_ROOTDIR and
+ * Add the following variable::
+
+   MODOBOA_WEBPATH = 'modoboa/'
+
+ * Delete the following variables: STATIC_ROOTDIR and
    TEMPLATE_CONTEXT_PROCESSORS.
+
+ * Finally, add 'modoboa.lib.middleware.ExtControlMiddleware' to
+   MIDDLEWARE_CLASSES.
 
 0.8 -> 0.8.1 : project renamed.
 

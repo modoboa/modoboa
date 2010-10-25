@@ -34,8 +34,8 @@ def init():
 def destroy():
     events.unregister("AdminMenuDisplay", menu)
 
-def urls():
-    return (r'^modoboa/stats/', 
+def urls(prefix):
+    return (r'^%sstats/' % prefix, 
             include('modoboa.extensions.stats.urls'))
 
 def menu(**kwargs):

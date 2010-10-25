@@ -3,14 +3,21 @@ from django.conf import settings
 from modoboa.extensions import *
 from modoboa.lib import parameters
 
+prefix = settings.MODOBOA_WEBPATH
+if prefix != "":
+    if prefix.startswith("/"):
+        prefix = prefix[1:]
+    if not prefix.endswith("/"):
+        prefix += "/"
+
 urlpatterns = patterns('',
-    (r'^modoboa/admin/', include('modoboa.admin.urls')),
-    (r'^modoboa/userprefs/', include('modoboa.userprefs.urls')),
+    (r'^%sadmin/' % prefix, include('modoboa.admin.urls')),
+    (r'^%suserprefs/' % prefix, include('modoboa.userprefs.urls')),
     (r'^accounts/login/$', 'modoboa.auth.views.dologin'),
     (r'^accounts/logout/$', 'modoboa.auth.views.dologout'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('modoboa',),}),
-    *loadextensions()
+    *loadextensions(prefix)
 )
 
 if settings.DEBUG:

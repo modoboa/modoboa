@@ -41,8 +41,8 @@ def destroy():
     events.unregister("UserMenuDisplay", menu)
     parameters.unregister_app("postfix_autoreply")
 
-def urls():
-    return (r'^modoboa/postfix_autoreply/',
+def urls(prefix):
+    return (r'^%spostfix_autoreply/' % prefix,
             include('modoboa.extensions.postfix_autoreply.urls'))
 
 def menu(**kwargs):

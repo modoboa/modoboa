@@ -5,6 +5,7 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 MODOBOA_DIR = os.path.dirname(__file__)
+MODOBOA_WEBPATH = "modoboa/"
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),

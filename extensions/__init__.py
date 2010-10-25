@@ -7,7 +7,7 @@ from modoboa.admin.models import Extension
 def isinstalled(ext):
     return "modoboa.extensions.%s" % ext in settings.INSTALLED_APPS
 
-def loadextensions():
+def loadextensions(prefix):
     basedir = "%s/extensions" % settings.MODOBOA_DIR
     result = []
     for f in os.listdir(basedir):
@@ -22,7 +22,7 @@ def loadextensions():
                 module.main.init()
         except Extension.DoesNotExist:
             pass
-   	u = module.main.urls()
+   	u = module.main.urls(prefix)
         if u == ():
             continue
         result += [u] 

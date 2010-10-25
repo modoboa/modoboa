@@ -64,8 +64,8 @@ def infos():
         "description" : _("Simple IMAP webmail")
         }
 
-def urls():
-    return (r'^modoboa/webmail/',
+def urls(prefix):
+    return (r'^%swebmail/' % prefix,
             include('modoboa.extensions.webmail.urls'))
 
 def menu(**kwargs):
