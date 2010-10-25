@@ -77,6 +77,11 @@ def is_not_localadmin(errortpl="error"):
                                         % {"user" : request.user.username})
                         })
             return f(request, *args, **kwargs)
+
+        wrapped_f.__name__ = f.__name__
+        wrapped_f.__dict__ = f.__dict__
+        wrapped_f.__doc__ = f.__doc__
+        wrapped_f.__module__ = f.__module__
         return wrapped_f
     return dec
 

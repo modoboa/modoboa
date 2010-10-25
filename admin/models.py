@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 from modoboa.lib import parameters
 from modoboa.lib import exec_cmd, exec_as_vuser
 import os
@@ -111,4 +112,57 @@ class Alias(models.Model):
         permissions = (
             ("view_aliases", "View aliases"),
             )
+
+class Extension(models.Model):
+    name = models.CharField(max_length=150)
+    enabled = models.BooleanField(_('enabled'),
+                                  help_text=_("Check to enable this extension"))
+
+    def __getmodule(self):
+        extname = "modoboa.extensions.%s" % self.name
+        return __import__(extname, globals(), locals(), ['main'])
+
+    def load(self):
+        self.__getmodule().main.init()
+
+    def unload(self):
+        self.__getmodule().main.destroy()
+
+    def on(self):
+        self.load()
+
+        extdir = "%s/extensions/%s" % (settings.MODOBOA_DIR, self.name)
+        scriptdir = "%s/%s" % (extdir, "scripts")
+        if os.path.exists(scriptdir):
+            targetdir = os.path.join(settings.MODOBOA_DIR, "scripts")
+            exec_cmd("ln -s %s %s/%s" % (scriptdir, targetdir, self.name))
+
+        staticpath = "%s/%s" % (extdir, "static")
+        if os.path.exists(staticpath):
+            for d in ['css', 'js']:
+                subpath = "%s/%s" % (staticpath, d)
+                if not os.path.exists(subpath):
+                    continue
+                exec_cmd("ln -s %s %s/static/%s/%s" % (subpath, settings.MODOBOA_DIR,
+                                                       d, self.name))
+
+    def off(self):
+        self.unload()
+
+        extdir = "%s/extensions/%s" % (settings.MODOBOA_DIR, self.name)
+        scriptdir = "%s/%s" % (extdir, "scripts")
+        if os.path.exists(scriptdir):
+            target = "%s/scripts/%s" % (settings.MODOBOA_DIR, self.name)
+            exec_cmd("rm %s" % target)
+
+        staticpath = "%s/%s" % (extdir, "static")  
+        if os.path.exists(staticpath):
+            for d in ['css', 'js']:
+                subpath = "%s/static/%s/%s" % (settings.MODOBOA_DIR, d, self.name)
+                exec_cmd("rm -f %s" % subpath)
+
+
+
+
+
 

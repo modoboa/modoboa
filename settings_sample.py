@@ -66,7 +66,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware'
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'modoboa.lib.middleware.ExtControlMiddleware',
 )
 
 ROOT_URLCONF = 'modoboa.urls'
@@ -91,7 +92,10 @@ INSTALLED_APPS = (
     'modoboa.userprefs',
 
     # Modoboa extensions here.
-    # 'modoboa.extensions.postfix_autoreply'
+    'modoboa.extensions.postfix_autoreply',
+    'modoboa.extensions.webmail',
+    'modoboa.extensions.stats',
+    'modoboa.extensions.amavis_quarantine',
 )
 
 AUTHENTICATION_BACKENDS = (

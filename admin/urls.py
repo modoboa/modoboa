@@ -21,4 +21,6 @@ urlpatterns = patterns('modoboa.admin.views',
                        (r'^settings/delperm/(?P<mbox_id>\d+)/(?P<group>\w+)/$', 'deletepermission'),
                        (r'^settings/parameters/$', 'viewparameters'),
                        (r'^settings/parameters/save/$', 'saveparameters'),
+                       (r'^settings/extensions/$', 'viewextensions'),
+                       (r'^settings/extensions/save/$', 'saveextensions'),
                        )
