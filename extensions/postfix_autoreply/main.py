@@ -17,7 +17,7 @@ def infos():
     return {
         "name" : "Postfix autoreply",
         "version" : "1.0",
-        "description" : "Auto-reply (vacation) functionality using Postfix"
+        "description" : _("Auto-reply (vacation) functionality using Postfix")
         }
 
 def init():
