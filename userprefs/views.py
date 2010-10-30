@@ -42,7 +42,7 @@ def changepassword(request):
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = ChangePasswordForm(target)
-    return render_to_response('userprefs/chpassword.html', {
+    return _render(request, 'userprefs/chpassword.html', {
             "form" : form
             })
 
@@ -79,7 +79,7 @@ def savepreferences(request):
 
 @login_required
 def confirm(request):
-    return render_to_response('userprefs/confirm.html', {
+    return _render(request, 'userprefs/confirm.html', {
             "msg" : request.GET["question"]
             })
 

@@ -4,8 +4,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
-from django.template.loader import render_to_string
-from modoboa.lib import _render, getctx
+from modoboa.lib import _render, _render_to_string, getctx
 from modoboa.admin.views import good_domain
 from modoboa.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
@@ -79,7 +78,7 @@ def getgraph(request, dom_id):
             tplvars["start"] = start
             tplvars["end"] = end
     if ctx is None:
-        content = render_to_string("stats/graphs.html", tplvars)
+        content = _render_to_string(request, "stats/graphs.html", tplvars)
         ctx = getctx("ok", content=content)
 
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

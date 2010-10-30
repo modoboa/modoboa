@@ -20,6 +20,10 @@ def _render(request, tpl, user_context):
     return render_to_response(tpl, user_context, 
                               context_instance=RequestContext(request))
 
+def _render_to_string(request, tpl, user_context):
+    return render_to_string(tpl, user_context,
+                            context_instance=RequestContext(request))
+
 def _render_error(request, errortpl="error", user_context={}):
     return render_to_response("common/%s.html" % errortpl, user_context,
                               context_instance=RequestContext(request))
