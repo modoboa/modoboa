@@ -16,7 +16,7 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from modoboa.lib import decode, tables, imap_utf7, Singleton
 from modoboa.lib.email_listing import MBconnector, EmailListing, Email
-from modoboa.lib import tables, imap_utf7, parameters, static_url
+from modoboa.lib import tables, imap_utf7, parameters, static_url, u2u_decode
 
 
 class WMtable(tables.Table):
@@ -118,13 +118,7 @@ class IMAPheader(object):
 
     @staticmethod
     def parse_subject(value, **kwargs):
-        res = ""
-        dcd = decode_header(re.sub("[\\r\\n]+", "", value))
-        for part in dcd:
-            if res != "":
-                res += " "
-            res += part[0].strip(" ")
-        return decode(res)
+        return u2u_decode.u2u_decode(value)
 
 class ConnectionsManager(type):
     def __init__(cls, name, bases, dict):
