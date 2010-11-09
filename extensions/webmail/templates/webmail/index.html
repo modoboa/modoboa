@@ -105,6 +105,28 @@
       }
       $("composemail").send();
     });
+
+    var files2upload = new Array();
+
+    delete_attachment = function(evt) {
+      var litag = evt.target.getParents("li");
+      var attachment = litag.get("text");
+
+      files2upload.erase(attachment);
+      litag.destroy();
+    }
+
+    $("upload_input").addEvent("change", function(evt) {
+      var atag = new Element("a").set("name", "delete_attachment");
+      var imgtag = new Element("img").set("src", "{{ MEDIA_URL }}pics/remove.png");
+      var litag = new Element("li").set("text", evt.target.value);
+
+      files2upload.include(evt.target.value);
+      imgtag.inject(atag);
+      atag.inject(litag);
+      litag.inject($("files2upload"));
+      atag.addEvent("click", delete_attachment);
+    });
   }
 
   loadCompose = function(event) {

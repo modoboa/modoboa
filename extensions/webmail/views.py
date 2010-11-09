@@ -9,7 +9,8 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from modoboa.admin.models import Mailbox
-from modoboa.lib import parameters, _render, _render_error, getctx, is_not_localadmin
+from modoboa.lib import parameters, _render, _render_error, \
+    getctx, is_not_localadmin, _render_to_string
 from modoboa.lib.email_listing import parse_search_parameters
 from lib import *
 from forms import *
@@ -225,7 +226,7 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
         signature = EmailSignature(request.user)
         body += str(signature)
 
-    content = render_to_string("webmail/compose.html", {
+    content = _render_to_string(request, "webmail/compose.html", {
             "form" : form, "bodyheader" : textheader,
             "body" : body, "posturl" : posturl
             })

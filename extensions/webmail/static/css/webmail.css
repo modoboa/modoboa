@@ -170,7 +170,60 @@ textarea:hover {
 }
 
 #mailheader {
+    width: 70%;
     padding-bottom: 5px;
+    float: left;
+}
+
+#attachments {
+    width: 29%;
+    float: left;
+}
+
+#attachments h3 {
+    float: left;
+    font-size: 1em;
+    margin: 0;
+    margin-right: 10px;
+}
+
+#attachments img {
+    float: left;
+    margin-right: 5px;
+}
+
+#attachments a:link, a:visited {
+    background: transparent;
+    color: black;
+    text-decoration: none;
+}
+
+#finput_container {
+    display: block; 
+    width: 100px; 
+    height: 20px; 
+    overflow: hidden
+}
+
+#upload_input {
+    font-size: 50px; 
+    width: 120px; 
+    opacity: 0; 
+    filter: alpha(opacity: 0);
+    position: relative; 
+    top: -40px;
+    left: -20px;
+}
+
+#attachments ul {
+    list-style: none;
+    padding: 5px 5px;
+    margin: 0;
+}
+
+#attachments li {
+    margin-bottom: 4px;
+    padding-left: 10px;
 }
 
 /* Progress bar */
