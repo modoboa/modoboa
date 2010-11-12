@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-8e6c72ea0131\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-25 17:19+0200\n"
+"POT-Creation-Date: 2010-11-12 22:39+0100\n"
 "PO-Revision-Date: 2010-10-25 21:02+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
@@ -273,23 +273,23 @@ msgstr "Eigenschaften"
 msgid "Extensions"
 msgstr "Erweiterungen"
 
-#: admin/templatetags/admin_extras.py:78 templates/admin/newdomain.html:7
+#: admin/templatetags/admin_extras.py:79 templates/admin/newdomain.html:7
 msgid "New domain"
 msgstr "Neue Domäne"
 
-#: admin/templatetags/admin_extras.py:84 templates/nlayout.html:37
+#: admin/templatetags/admin_extras.py:85 templates/nlayout.html:37
 msgid "Domains"
 msgstr "Domäne"
 
-#: admin/templatetags/admin_extras.py:122
+#: admin/templatetags/admin_extras.py:123
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/templatetags/admin_extras.py:122
+#: admin/templatetags/admin_extras.py:123
 msgid "No"
 msgstr "Nein"
 
-#: admin/templatetags/admin_extras.py:139
+#: admin/templatetags/admin_extras.py:140
 msgid "Help"
 msgstr "Hilfe"
 
@@ -349,12 +349,12 @@ msgstr "Von"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
 #: extensions/webmail/forms.py:8 extensions/webmail/lib.py:27
-#: extensions/webmail/lib.py:523 templates/common/email_searchbar.html:7
+#: extensions/webmail/lib.py:517 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Betreff"
 
 #: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:30
-#: extensions/webmail/lib.py:525
+#: extensions/webmail/lib.py:519
 msgid "Date"
 msgstr "Datum"
 
@@ -474,7 +474,8 @@ msgstr "Das Datum ist vorbei"
 
 #: extensions/postfix_autoreply/main.py:20
 msgid "Auto-reply (vacation) functionality using Postfix"
-msgstr "Automatische Antwort (Abwesenheitsbenachrichtigung) über Postfix-Programm"
+msgstr ""
+"Automatische Antwort (Abwesenheitsbenachrichtigung) über Postfix-Programm"
 
 #: extensions/postfix_autoreply/main.py:33
 msgid "Timeout in seconds between two auto-replies to the same recipient"
@@ -569,39 +570,39 @@ msgstr "Pfad zu dem Verzeichnis in die PNG-Dateien abgelegt sind"
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: extensions/stats/views.py:16
+#: extensions/stats/views.py:15
 msgid "Average normal traffic"
 msgstr "Durchschnittlicher normaler Datenverkehr"
 
-#: extensions/stats/views.py:17
+#: extensions/stats/views.py:16
 msgid "Average bad traffic"
 msgstr "Durchschnittlicher schlechter Datenverkehr"
 
-#: extensions/stats/views.py:18
+#: extensions/stats/views.py:17
 msgid "Average normal traffic size"
 msgstr "Durchschnittliche Grösse normaler Datenverkehr"
 
-#: extensions/stats/views.py:19
+#: extensions/stats/views.py:18
 msgid "Day"
 msgstr "Tag"
 
-#: extensions/stats/views.py:20
+#: extensions/stats/views.py:19
 msgid "Week"
 msgstr "Woche"
 
-#: extensions/stats/views.py:21
+#: extensions/stats/views.py:20
 msgid "Month"
 msgstr "Monat"
 
-#: extensions/stats/views.py:22
+#: extensions/stats/views.py:21
 msgid "Year"
 msgstr "Jahr"
 
-#: extensions/stats/views.py:23
+#: extensions/stats/views.py:22
 msgid "Custom"
 msgstr "Individuell"
 
-#: extensions/stats/views.py:66
+#: extensions/stats/views.py:65
 msgid "Bad custom period"
 msgstr "Ungültiger individueller Zeitraum"
 
@@ -650,20 +651,20 @@ msgstr "An"
 msgid "Cc"
 msgstr "Cc"
 
-#: extensions/webmail/lib.py:186
+#: extensions/webmail/lib.py:180
 msgid "Connection to IMAP server failed, check your configuration"
 msgstr ""
 "Verbindung zu IMAP-Server fehlgeschlagen, Überprüfen Sie Ihre Konfiguration"
 
-#: extensions/webmail/lib.py:190
+#: extensions/webmail/lib.py:184
 msgid "Authentication failed, check your configuration"
 msgstr "Authentifizierung fehlgeschlagen, Überprüfen Sie Ihre Konfiguration"
 
-#: extensions/webmail/lib.py:471
+#: extensions/webmail/lib.py:465
 msgid "wrote:"
 msgstr "schrieb:"
 
-#: extensions/webmail/lib.py:537 extensions/webmail/lib.py:541
+#: extensions/webmail/lib.py:531 extensions/webmail/lib.py:535
 msgid "Original message"
 msgstr "Gesendete Nachrichten"
 
@@ -747,36 +748,50 @@ msgstr "Standard Nachrichten Betrachtungsmodus"
 msgid "The default mode used when displaying a message"
 msgstr "Der Standard Modus zum Betrachten einer Nachricht"
 
-#: extensions/webmail/main.py:64
+#: extensions/webmail/main.py:55
+msgid "Number of displayed emails per page"
+msgstr ""
+
+#: extensions/webmail/main.py:56
+msgid "Sets the maximum number of messages displayed in a page"
+msgstr ""
+
+#: extensions/webmail/main.py:67
 msgid "Simple IMAP webmail"
 msgstr "Einfaches IMAP-Webmail"
 
-#: extensions/webmail/main.py:78
-#: extensions/webmail/templates/webmail/index.html:342
+#: extensions/webmail/main.py:81
+#: extensions/webmail/templates/webmail/index.html:406
 msgid "Webmail"
 msgstr "Webmail"
 
-#: extensions/webmail/views.py:67 lib/email_listing.py:124
+#: extensions/webmail/views.py:70 lib/email_listing.py:124
 msgid "This folder contains no messages"
 msgstr "Dieser Ordner enthält keine Einträge"
+
+#: extensions/webmail/templates/webmail/compose.html:8
+#: extensions/webmail/templates/webmail/headers.html:7
+msgid "Attachments"
+msgstr "Dateianhänge"
+
+#: extensions/webmail/templates/webmail/compose.html:11
+#, fuzzy
+msgid "Add"
+msgstr "Adresse"
 
 #: extensions/webmail/templates/webmail/folders.html:3
 msgid "Folders"
 msgstr "Ordner"
 
-#: extensions/webmail/templates/webmail/headers.html:7
-msgid "Attachments"
-msgstr "Dateianhänge"
-
-#: extensions/webmail/templates/webmail/index.html:141
+#: extensions/webmail/templates/webmail/index.html:163
 msgid "Reloading..."
 msgstr "Aktualisiere..."
 
-#: extensions/webmail/templates/webmail/index.html:148
+#: extensions/webmail/templates/webmail/index.html:170
 msgid "Done"
 msgstr "Abgeschlossen"
 
-#: extensions/webmail/templates/webmail/index.html:348
+#: extensions/webmail/templates/webmail/index.html:412
 msgid "Mailbox quota"
 msgstr "Mailbox Quota"
 
@@ -832,7 +847,7 @@ msgstr "Ordner komprimieren"
 msgid "Empty folder"
 msgstr "Leerer Ordner"
 
-#: lib/__init__.py:76
+#: lib/__init__.py:80
 #, python-format
 msgid "Invalid action, %(user)s is a local user"
 msgstr "Unzulässige Aktion, %(user)s ist ein lokaler Benutzer"
