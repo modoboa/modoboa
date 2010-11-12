@@ -54,8 +54,10 @@ def folder(request, name, updatenav=True):
         optparams["criteria"] = request.session["criteria"]
     else:
         optparams["reset"] = True
+    optparams["elems_per_page"] = int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
     lst = ImapListing(request.user, request.session["password"],
-                      baseurl=name, folder=name, order=order, **optparams)
+                      baseurl=name, folder=name, order=order, 
+                      **optparams)
 
     page = lst.paginator.getpage(request.session["page"])
     dico = {"folders" : __render_folders(lst.mbc, request), 

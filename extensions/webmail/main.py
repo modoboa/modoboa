@@ -51,6 +51,9 @@ def init():
                              label=_("Default message display mode"),
                              values=[("html", "html"), ("plain", "text")],
                              help=_("The default mode used when displaying a message"))
+    parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
+                             label=_("Number of displayed emails per page"),
+                             help=_("Sets the maximum number of messages displayed in a page"))
 
 def destroy():
     events.unregister("UserMenuDisplay", menu)
