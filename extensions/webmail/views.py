@@ -285,8 +285,12 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
         else:
             msg = MIMEText(body.encode(charset), _subtype=subtype)
 
+        mb = Mailbox.objects.get(full_address=request.POST["from_"])
         msg["Subject"] = request.POST["subject"]
-        msg["From"] = request.POST["from_"]
+        if mb is None:
+            msg["From"] = request.POST["from_"]
+        else:
+            msg["From"] = "%s <%s>" % (mb.name, request.POST["from_"])
         msg["To"] = request.POST["to"]
         msg["Message-ID"] = make_msgid()
         msg["User-Agent"] = "Modoboa"
