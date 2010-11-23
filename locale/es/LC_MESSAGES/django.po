@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.8.2 PACKAGE VERSION\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-03 08:03-0500\n"
-"PO-Revision-Date: 2010-11-19 09:36+0100\n"
+"POT-Creation-Date: 2010-11-19 02:47-0600\n"
+"PO-Revision-Date: 2010-11-19 09:48+0100\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: Español <i18n@impulzia.com>\n"
 "Language: \n"
@@ -351,12 +351,12 @@ msgstr "Desde"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
 #: extensions/webmail/forms.py:8 extensions/webmail/lib.py:27
-#: extensions/webmail/lib.py:523 templates/common/email_searchbar.html:7
+#: extensions/webmail/lib.py:517 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Tema"
 
 #: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:30
-#: extensions/webmail/lib.py:525
+#: extensions/webmail/lib.py:519
 msgid "Date"
 msgstr "Fecha"
 
@@ -650,19 +650,19 @@ msgstr "A"
 msgid "Cc"
 msgstr "Cc"
 
-#: extensions/webmail/lib.py:186
+#: extensions/webmail/lib.py:180
 msgid "Connection to IMAP server failed, check your configuration"
 msgstr "Ha fallado la conexión al servidor IMAP, compruebe su configuración"
 
-#: extensions/webmail/lib.py:190
+#: extensions/webmail/lib.py:184
 msgid "Authentication failed, check your configuration"
 msgstr "Ha fallado la autenticación, compruebe su configuración"
 
-#: extensions/webmail/lib.py:471
+#: extensions/webmail/lib.py:465
 msgid "wrote:"
 msgstr "escribió:"
 
-#: extensions/webmail/lib.py:537 extensions/webmail/lib.py:541
+#: extensions/webmail/lib.py:531 extensions/webmail/lib.py:535
 msgid "Original message"
 msgstr "Mensaje original"
 
@@ -746,36 +746,49 @@ msgstr "Modo por defecto para un mensaje"
 msgid "The default mode used when displaying a message"
 msgstr "Modo por defecto usado para mostar un mensjae"
 
-#: extensions/webmail/main.py:64
+#: extensions/webmail/main.py:55
+msgid "Number of displayed emails per page"
+msgstr "Número de emails mostrados por página"
+
+#: extensions/webmail/main.py:56
+msgid "Sets the maximum number of messages displayed in a page"
+msgstr "Fija el número máximo de mensajes mostrados en una página"
+
+#: extensions/webmail/main.py:67
 msgid "Simple IMAP webmail"
 msgstr "Simple webmail de IMAP"
 
-#: extensions/webmail/main.py:78
-#: extensions/webmail/templates/webmail/index.html:342
+#: extensions/webmail/main.py:81
+#: extensions/webmail/templates/webmail/index.html:364
 msgid "Webmail"
 msgstr "Webmail"
 
-#: extensions/webmail/views.py:67 lib/email_listing.py:124
+#: extensions/webmail/views.py:70 lib/email_listing.py:124
 msgid "This folder contains no messages"
 msgstr "Esta carpeta no contiene mensajes"
+
+#: extensions/webmail/templates/webmail/compose.html:8
+#: extensions/webmail/templates/webmail/headers.html:7
+msgid "Attachments"
+msgstr "Adjuntos"
+
+#: extensions/webmail/templates/webmail/compose.html:11
+msgid "Add"
+msgstr "Añadir"
 
 #: extensions/webmail/templates/webmail/folders.html:3
 msgid "Folders"
 msgstr "Carpetas"
 
-#: extensions/webmail/templates/webmail/headers.html:7
-msgid "Attachments"
-msgstr "Adjuntos"
-
-#: extensions/webmail/templates/webmail/index.html:141
+#: extensions/webmail/templates/webmail/index.html:163
 msgid "Reloading..."
 msgstr "Recargando..."
 
-#: extensions/webmail/templates/webmail/index.html:148
+#: extensions/webmail/templates/webmail/index.html:170
 msgid "Done"
 msgstr "Hecho"
 
-#: extensions/webmail/templates/webmail/index.html:348
+#: extensions/webmail/templates/webmail/index.html:370
 msgid "Mailbox quota"
 msgstr "Cuota del \"mailbox\""
 
