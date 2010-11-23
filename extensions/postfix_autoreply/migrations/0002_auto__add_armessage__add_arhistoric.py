@@ -3,14 +3,15 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from modoboa.lib import db_table_exists
 
 class Migration(SchemaMigration):
     
     def forwards(self, orm):
         # Renaming/Creating model 'ARmessage'
-        try:
+        if db_table_exists('main_armessage'):
             db.rename_table('main_armessage', 'postfix_autoreply_armessage')
-        except Exception:
+        else:
             db.create_table('postfix_autoreply_armessage', (
                     ('mbox', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.Mailbox'])),
                     ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -24,9 +25,9 @@ class Migration(SchemaMigration):
                       models.DateTimeField(null=True))
 
         # Renaming model 'ARhistoric'
-        try:
+        if db_table_exists('main_arhistoric'):
             db.rename_table('main_arhistoric', 'postfix_autoreply_arhistoric')
-        except Exception:
+        else:
             db.create_table('postfix_autoreply_arhistoric', (
                     ('armessage', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['postfix_autoreply.ARmessage'])),
                     ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
