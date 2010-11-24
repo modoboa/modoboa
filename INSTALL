@@ -371,10 +371,13 @@ If you use version prior to 1.1, add also the following configuration::
     quota = <backend>:storage=10240
   }
 
-Then modify the above user_query inside dovecot-sql.conf file like
-that to activate per user quotas::
+Then modify the above user_query inside dovecot-sql.conf as follow to
+activate per user quotas::
 
   user_query = SELECT path AS home, uid, gid, concat('<backend>:storage=', quota / 1024) AS quota FROM admin_mailbox WHERE full_address = '%u'
+
+If you are not using MySQL, you will have to replace the 'concat'
+function call with something working in your database.
 
 For version >= 1.1, put the following configuration inside dovecot.conf file::
 
