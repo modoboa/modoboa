@@ -12,6 +12,44 @@ genders = {
 }
 
 @register.simple_tag
+def admin_menu(user):
+    entries = [
+        {"name" : "admin",
+         "img" : static_url('pics/admin.png'),
+         "label" : _("Admin"),
+         "class" : "topdropdown",
+         "menu" : []
+         }
+        ]
+    if user.has_perm("admin.view_domains"):
+        entries[0]["menu"] += [
+            {"name" : "domains",
+             "url" : reverse(admin.views.domains),
+             "label" : _("Domains"),
+             "img" : static_url("pics/domains.png")}
+            ]
+    if user.has_perm("auth.view_permissions"):
+        entries[0]["menu"] += [
+            {"name" : "permissions",
+             "url" : "",
+             "label" : _("Permissions"),
+             "img" : static_url("pics/permissions.png")}
+            ]
+    if user.is_superuser:
+        entries[0]["menu"] += [
+            {"name" : "settings",
+             "img" : static_url("pics/settings.png"),
+             "label" : _("Settings"),
+             "url" : reverse(admin.views.settings)}
+            ]
+
+    if not len(entries[0]["menu"]):
+        return ""
+    return render_to_string("common/menulist.html",
+                            {"entries" : entries, "user" : user})
+        
+
+@register.simple_tag
 def domain_menu(domain_id, selection, user):
     entries = [
         {"name" : "",

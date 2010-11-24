@@ -3,7 +3,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa import userprefs
-from modoboa.lib import events
+from modoboa.lib import events, static_url
 
 register = template.Library()
 
@@ -11,18 +11,18 @@ register = template.Library()
 def options_menu(user):
     entries = [
         {"name"  : "userprefs",
-         "img"   : "/static/pics/user.png",
+         "img"   : static_url("pics/user.png"),
          "label" : _("Options"),
          "class" : "topdropdown",
          "menu"  : [
                 {"name" : "changepwd",
                  "url" : reverse(userprefs.views.changepassword),
-                 "img" : "/static/pics/edit.png",
+                 "img" : static_url("pics/edit.png"),
                  "label" : _("Change password"),
                  "class" : "boxed",
                  "rel" : "{handler:'iframe',size:{x:350,y:220}}"},
                 {"name" : "preferences",
-                 "img" : "/static/pics/user.png",
+                 "img" : static_url("pics/user.png"),
                  "label" : _("Preferences"),
                  "url" : reverse(userprefs.views.preferences),
                  }

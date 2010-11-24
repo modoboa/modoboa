@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load admin_extras %}
 {% load uprefs_extras %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -26,28 +27,7 @@
         <ul>
           {% loadextmenu user %}
           {% options_menu user %}
-
-          {% if user.is_superuser or perms.admin.view_domain %}
-          <li class="dropdown topdropdown">
-            <img src="{{ MEDIA_URL }}pics/admin.png" border="0" />
-            <label>{% trans "Admin" %}</label>
-            <ul class="links">
-              <li>
-                <a href="{% url admin.views.domains  %}">
-                  <img src="{{ MEDIA_URL }}pics/domains.png" />{% trans "Domains" %}
-                </a>
-              </li>
-              {% if user.is_superuser %}
-              <li>
-                <a href="{% url admin.views.settings %}">
-                  <img src="{{ MEDIA_URL }}pics/settings.png" border="0"/>
-                  {% trans "Settings" %}
-                </a>
-              </li>
-              {% endif %}
-            </ul>
-          </li>
-          {% endif %}
+          {% admin_menu user %}
         </ul>
       </div>
       <div class="right">
@@ -60,7 +40,6 @@
             {% endif %}
             / 
           </li>
-          
           <li>
             {% url modoboa.auth.views.dologout as logout_url %}
             <a href="{{ logout_url }}">
