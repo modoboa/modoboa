@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-19 02:47-0600\n"
-"PO-Revision-Date: 2010-11-19 09:48+0100\n"
+"PO-Revision-Date: 2010-11-24 09:49+0100\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: Español <i18n@impulzia.com>\n"
 "Language: \n"
@@ -27,7 +27,7 @@ msgid ""
 "UID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
 msgstr ""
-"UID del usuario virtual que es el propietario de los domions/mailboxes/"
+"UID del usuario virtual que es el propietario de los dominios/mailboxes/"
 "mensajes en el sistema"
 
 #: admin/__init__.py:11
@@ -35,7 +35,7 @@ msgid ""
 "GID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
 msgstr ""
-"GID del usuario virtual que es el propietario de los domions/mailboxes/"
+"GID del usuario virtual que es el propietario de los dominios/mailboxes/"
 "mensajes en el sistema"
 
 #: admin/__init__.py:14
@@ -62,7 +62,7 @@ msgstr "Cuota"
 #: admin/forms.py:17
 msgid "Mailbox quota in MB (default to domain quota if blank)"
 msgstr ""
-"Cuota del \"Mailbox\" en MB (por defecto la del dominio si no se especifica)"
+"Cuota del \"Mailbox\" en MB (por defecto la del dominio, si no se especifica)"
 
 #: admin/forms.py:18 auth/forms.py:6
 msgid "Password"
@@ -86,7 +86,7 @@ msgstr "Activar este \"mailbox\""
 
 #: admin/forms.py:37 userprefs/forms.py:31
 msgid "Passwords mismatch"
-msgstr "Las contraseñas no concuerdan"
+msgstr "Las contraseñas no coinciden"
 
 #: admin/forms.py:57 templates/admin/domain_header.html:6
 #: templates/admin/editdomain.html:7 templates/admin/permissions.html:42
@@ -103,7 +103,7 @@ msgstr "Usuario"
 
 #: admin/forms.py:61
 msgid "Select a user in the list"
-msgstr "Selecciones un usuario de la lista"
+msgstr "Seleccione un usuario de la lista"
 
 #: admin/forms.py:62
 msgid "Role"
@@ -127,7 +127,7 @@ msgstr "nombre"
 
 #: admin/models.py:11
 msgid "The domain name"
-msgstr "El nombre del dominio"
+msgstr "Nombre del dominio"
 
 #: admin/models.py:12
 msgid "Default quota in MB applied to mailboxes"
@@ -152,7 +152,7 @@ msgstr "dirección"
 
 #: admin/models.py:43
 msgid "Mailbox address (without the @domain.tld part)"
-msgstr "dirección del \"mailbox\" (sin la parte @dominio.tld)"
+msgstr "Dirección del \"mailbox\" (sin la parte @dominio.tld)"
 
 #: admin/models.py:45
 msgid "password"
@@ -160,7 +160,7 @@ msgstr "contraseña"
 
 #: admin/models.py:104
 msgid "The alias address (without the domain part)"
-msgstr "La dirreción de alias (sin la parte de dominio)"
+msgstr "La direción de alias (sin la parte de dominio)"
 
 #: admin/models.py:106
 msgid "mailboxes"
@@ -168,7 +168,7 @@ msgstr "\"mailboxes\""
 
 #: admin/models.py:107
 msgid "The mailboxes this alias points to"
-msgstr "Los \"mailboxes\" de este alias apunta a"
+msgstr "Los \"mailboxes\" de este alias apuntan a"
 
 #: admin/models.py:109
 msgid "Check to activate this alias"
@@ -184,7 +184,7 @@ msgstr "Permiso denegado."
 
 #: admin/views.py:75 admin/views.py:105
 msgid "Domain with this name already defined"
-msgstr "Un dominio con este nombre ya está definido"
+msgstr "Ya existe un dominio con este nombre"
 
 #: admin/views.py:84
 msgid "Failed to initialise domain, check permissions"
@@ -192,7 +192,7 @@ msgstr "Ha fallado la inicialización del dominio, compruebe permisos"
 
 #: admin/views.py:108
 msgid "Failed to rename domain, check permissions"
-msgstr "Ha fallado el renombrar este dominio, compruebe permisos"
+msgstr "Ha fallado el cambio de nombre de este dominio, compruebe permisos"
 
 #: admin/views.py:162 admin/views.py:225
 msgid "Mailbox with this address already exists"
@@ -208,11 +208,11 @@ msgstr "Ha fallado la inicialización del \"mailbox\", compruebe permisos"
 
 #: admin/views.py:228
 msgid "Failed to rename mailbox, check permissions"
-msgstr "Ha fallado el renombrar el \"mailbox\", compruebe permisos"
+msgstr "Ha fallado el cambio de nombre del \"mailbox\", compruebe permisos"
 
 #: admin/views.py:299 admin/views.py:329
 msgid "Alias with this name already exists"
-msgstr "Un alias con este nombre ya existe"
+msgstr "Ya existe un alias con este nombre"
 
 #: admin/views.py:404
 msgid "admin is intouchable!!"
@@ -237,11 +237,11 @@ msgstr "Modificaciones aplicadas."
 
 #: admin/templatetags/admin_extras.py:11
 msgid "enabled_m"
-msgstr "enabled_m"
+msgstr "Activado"
 
 #: admin/templatetags/admin_extras.py:11
 msgid "enabled_f"
-msgstr "enabled_f"
+msgstr "Activado"
 
 #: admin/templatetags/admin_extras.py:19 templates/admin/newmailbox.html:7
 msgid "New mailbox"
@@ -285,7 +285,7 @@ msgstr "Dominios"
 
 #: admin/templatetags/admin_extras.py:123
 msgid "Yes"
-msgstr "Si"
+msgstr "Sí"
 
 #: admin/templatetags/admin_extras.py:123
 msgid "No"
@@ -468,7 +468,7 @@ msgstr "Hasta"
 
 #: extensions/postfix_autoreply/forms.py:8
 msgid "Activate your auto reply until this date"
-msgstr "Activar su auto respuesta hasta esta fecha"
+msgstr "Activar su autorespuesta hasta esta fecha"
 
 #: extensions/postfix_autoreply/forms.py:22
 msgid "This date is over"
@@ -489,11 +489,11 @@ msgstr "Mensaje de autorespuesta"
 
 #: extensions/postfix_autoreply/models.py:15
 msgid "subject"
-msgstr "tema"
+msgstr "asunto"
 
 #: extensions/postfix_autoreply/models.py:16
 msgid "The subject that will appear in sended emails"
-msgstr "El tema que aparecerá en los correos enviados"
+msgstr "El asunto que aparecerá en los correos enviados"
 
 #: extensions/postfix_autoreply/models.py:17
 msgid "content"
@@ -619,7 +619,7 @@ msgstr "Global"
 
 #: extensions/stats/templates/stats/content.html:94
 msgid "Period:"
-msgstr "Perídodo:"
+msgstr "Período:"
 
 #: extensions/stats/templates/stats/content.html:103
 msgid "Start"
@@ -716,7 +716,7 @@ msgstr "Carpeta dónde van los mensajes eliminados"
 
 #: extensions/webmail/main.py:41
 msgid "Sent folder"
-msgstr "Carpete de enviados"
+msgstr "Carpeta de enviados"
 
 #: extensions/webmail/main.py:42
 msgid "Folder where copies of sent messages go"
@@ -744,7 +744,7 @@ msgstr "Modo por defecto para un mensaje"
 
 #: extensions/webmail/main.py:53
 msgid "The default mode used when displaying a message"
-msgstr "Modo por defecto usado para mostar un mensjae"
+msgstr "Modo por defecto usado para mostrar un mensaje"
 
 #: extensions/webmail/main.py:55
 msgid "Number of displayed emails per page"
@@ -756,12 +756,12 @@ msgstr "Fija el número máximo de mensajes mostrados en una página"
 
 #: extensions/webmail/main.py:67
 msgid "Simple IMAP webmail"
-msgstr "Simple webmail de IMAP"
+msgstr "Correo web simple para IMAP"
 
 #: extensions/webmail/main.py:81
 #: extensions/webmail/templates/webmail/index.html:364
 msgid "Webmail"
-msgstr "Webmail"
+msgstr "Correo web"
 
 #: extensions/webmail/views.py:70 lib/email_listing.py:124
 msgid "This folder contains no messages"
@@ -868,7 +868,7 @@ msgstr "Crear"
 
 #: templates/admin/aliases.html:9
 msgid "No alias defined."
-msgstr "No hay alias difinidos."
+msgstr "No hay alias definidos."
 
 #: templates/admin/aliases.html:14 templates/admin/mailboxes.html:16
 msgid "Address"
@@ -945,7 +945,7 @@ msgstr "Nuevo alias"
 
 #: templates/admin/permissions.html:9
 msgid "No superuser defined?!"
-msgstr "!¿No hay un super usuario definido?!"
+msgstr "!¿No hay un superusuario definido?!"
 
 #: templates/admin/permissions.html:11
 msgid "Super administrators"
