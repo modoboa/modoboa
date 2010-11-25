@@ -1,0 +1,20 @@
+{% extends "admin/add_permission.html" %}
+{% block html_head %}
+{{ block.super }}
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  $("id_domain").addEvent("change", function(event) {
+    domid = this.value;
+    if (domid == "") {
+      $("id_user").set("html", "");
+      return;
+    }
+    {% url domains as doms_url %}
+    new Request({url: "{{ doms_url }}" + domid + "/raw/", 
+      method: "get", onSuccess: function(data) {
+        $("id_user").set("html", data);
+      }}).send();
+    });
+});
+</script>
+{% endblock %}

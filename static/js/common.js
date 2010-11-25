@@ -1,7 +1,7 @@
 window.addEvent('domready', function(){
     parse_menubar('topmenubar');
     parse_menubar('menubar');
-       
+
     infobox = new InfoBox({
         parent : $("menubar"),
         message : "Loading"
@@ -21,7 +21,7 @@ get_callback = function(name) {
 current_anchor = null;
 
 check_anchor = function() {
-    if (current_anchor.serialized == location.hash 
+    if (current_anchor.serialized == location.hash
         && !$defined(current_anchor.force)) {
         return;
     }
@@ -67,9 +67,9 @@ function HashWrapper(deflocation) {
     };
 
     this.parse_string = function(value, reset) {
-        var splits = (value.charAt(0) == '#') 
+        var splits = (value.charAt(0) == '#')
             ? value.substring(1).split('?') : value.split('?');
-        
+
         if (splits.length == 0) {
             return this;
         }
@@ -143,7 +143,7 @@ function HashWrapper(deflocation) {
         this.params.set(name, value);
         return this;
     };
-    
+
     this.setparams = function(params) {
         this.params.extend(params);
         return this;
@@ -191,7 +191,7 @@ parse_menubar = function(id) {
 	    var myFx = new Fx.Slide(list, {
                 duration: 200
             });
-            
+
             myFx.wrapper.setStyles({
                 /*"clear" : "both",*/
                 "position" : "absolute"
@@ -227,12 +227,12 @@ get_iframe_body = function(id) {
             data = targetif.contentDocument.defaultView.document.body;
         } else {
             data = targetif.document.body;
-        }      
+        }
     } else if (targetif.contentWindow && !saf) {
         // IE 5.5 & 6.x
         data = targetif.contentWindow.document.body;
     }
-    return (data);  
+    return (data);
 }
 
 confirmation = function(question, action, callback) {
@@ -244,12 +244,12 @@ confirmation = function(question, action, callback) {
             var elt = ibody.getElement("input[name=result]");
 
             if (elt.get("value") == "ok") {
-                params = ""
+                params = "";
                 if (typeof callback != "undefined") {
                     params = callback(ibody);
                 }
                 new Request({
-                    method: "get", 
+                    method: "get",
                     url: action.get("href"),
                     onSuccess: function(res) {
                         window.location.reload();
@@ -262,7 +262,7 @@ confirmation = function(question, action, callback) {
 }
 
 setDivHeight = function(id, extrah, modulo) {
-    var contentsize = $(document.body).getSize().y 
+    var contentsize = $(document.body).getSize().y
         - $("topmenubar").getSize().y
         - $("header").getSize().y
         - $("footer").getSize().y
@@ -326,7 +326,7 @@ searchbox_init = function() {
     $("searchfield").addEvent("click", function(event) {
         $("searchfield").select();
     });
-    
+
     $("searchfield").addEvent("blur", function(event) {
         if ($("searchfield").value == "") {
             $("searchfield").set("value", gettext("Search..."));
@@ -352,7 +352,7 @@ gethref = function(obj) {
     var url = obj.get("href");
     var re = new RegExp("^(https?):");
     var scheme = re.exec(url);
-    
+
     if (scheme != null) {
         var baseurl = scheme[0] + "://" + location.host + location.pathname;
         return url.replace(baseurl, "");

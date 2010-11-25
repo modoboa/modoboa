@@ -14,11 +14,10 @@ from django.contrib.auth.models import User, Group
 from django.contrib import messages
 
 from modoboa import admin, userprefs
-from modoboa.admin.models import *
-from forms import MailboxForm, DomainForm, AliasForm, PermissionForm
+from models import *
+from forms import *
 from modoboa.lib.authbackends import crypt_password
-from modoboa.lib import _render, _ctx_ok, _ctx_ko, getctx
-from modoboa.lib import events, parameters
+from modoboa.lib import _render, _ctx_ok, _ctx_ko, getctx, events, parameters
 from modoboa.lib.models import Parameter
 import string
 import copy
@@ -88,7 +87,7 @@ def newdomain(request):
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = DomainForm()
-    return render_to_response('admin/newdomain.html', {
+    return _render(request, 'admin/newdomain.html', {
             "form" : form
             })
 
@@ -356,43 +355,87 @@ def delalias(request, dom_id, alias_id):
                                         args=[dom_id]))
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
-def settings(request):
-    admins = User.objects.filter(is_superuser=True)
+@permission_required("auth.view_permissions")
+def permissions(request):
+    permtables = []
+    if request.user.is_superuser:
+        admins = User.objects.filter(is_superuser=True)
+        admins_list = []
+        for admin in admins:
+            admins_list += [{"id" : admin.id, "user_name" : admin.username,
+                             "full_name" : "%s %s" % (admin.first_name, admin.last_name),
+                             "enabled" : admin.is_active}]
+        permtables += [
+            {"title" : _("Super administrators"),
+             "content" :  SuperAdminsTable(admins_list).render(request),
+             "addurl" : reverse(add_superadmin)}
+            ]
+
+    permtables += events.raiseQueryEvent("PermsGetTables", user=request.user)
+
     domadmins = Mailbox.objects.filter(user__groups__name="DomainAdmins")
+    domadmins_list = []
+    for admin in domadmins:
+        domadmins_list += [admin.tohash()]
+    permtables += [
+        {"title" : _("Domain administrators"),
+         "content" : DomainAdminsTable(domadmins_list).render(request),
+         "addurl" : reverse(add_domain_admin)}
+        ]
+
     return _render(request, 'admin/permissions.html', {
-            "admins" : admins, "domadmins" : domadmins
+            "permtables" : permtables
             })
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def addpermission(request):
+def add_superadmin(request):
     if request.method == "POST":
-        form = PermissionForm(request.POST)
-        if request.POST.has_key('user'):
-            mboxid = request.POST['user']
-            form.fields["user"].choices = \
-                [(mboxid, Mailbox.objects.get(pk=mboxid)),]
+        form = SuperAdminForm(request.POST)
         if form.is_valid():
-            mb = Mailbox.objects.get(pk=request.POST["user"])
-            if request.POST["role"] == "SuperAdmins":
-                mb.user.is_superuser = True
-                mb.user.groups.clear()
-            else:
-                mb.user.is_superuser = False
-                mb.user.groups.add(Group.objects.get(name=request.POST["role"]))
-            mb.user.save()
-            ctx = _ctx_ok(reverse(admin.views.settings))
+            user = User.objects.get(pk=request.POST["user"])
+            user.is_superuser = True
+            user.groups.clear()
+            user.save()
+            ctx = _ctx_ok(reverse(admin.views.permissions))
             return HttpResponse(simplejson.dumps(ctx), 
                                 mimetype="application/json")
-        ctx = _ctx_ko("admin/addpermission.html", {
+        ctx = _ctx_ko("admin/add_superadmin.html", {
                 "form" : form
                 })
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-    
-    form = PermissionForm()
-    return _render(request, 'admin/addpermission.html', {
-            "form" : form
+
+    form = SuperAdminForm()
+    return _render(request, 'admin/add_permission.html', {
+            "form" : form, "title" : _("Add super administrator"),
+            "action" : reverse(add_superadmin)
+            })
+
+@login_required
+@permission_required("domains.create")
+def add_domain_admin(request):
+    if request.method == "POST":
+        form = DomainAdminForm(request.POST)
+        mboxid = request.POST['user']
+        form.fields["user"].choices = \
+            [(mboxid, Mailbox.objects.get(pk=mboxid)),]
+        if form.is_valid():
+            mb = Mailbox.objects.get(pk=request.POST["user"])
+            mb.user.is_superuser = False
+            mb.user.groups.add(Group.objects.get(name="DomainAdmins"))
+            mb.user.save()
+            ctx = _ctx_ok(reverse(admin.views.permissions))
+            return HttpResponse(simplejson.dumps(ctx), 
+                                mimetype="application/json")
+        ctx = _ctx_ko("admin/add_domain_admin.html", {
+                "form" : form
+                })
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
+    form = DomainAdminForm()
+    return _render(request, 'admin/add_domain_admin.html', {
+            "form" : form, "title" : _("Add domain administrator"),
+            "action" : reverse(add_domain_admin)
             })
 
 @login_required

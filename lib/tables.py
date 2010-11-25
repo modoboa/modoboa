@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import inspect
 import lxml
+from django.utils.translation import ugettext as _
 from django.template import Template, Context
 from django.template.loader import render_to_string
 
@@ -83,15 +84,20 @@ class Table(object):
             self.rows += [nrow]
 
     def render(self, request):
-        t = Template("""
+        if len(self.rows):
+            t = Template("""
 <table id="{{ tableid }}">
   {% include "common/table_head.html" %}
   {% include "common/table_body.html" %}
 </table>
 """)
-        return t.render(Context({
-                    "table" : self, "tableid" : self.tableid
-                    }))
+            return t.render(Context({
+                        "table" : self, "tableid" : self.tableid
+                        }))
+        t = Template("""
+<div class="info">%s</div>
+""" % _("No entries to display"))
+        return t.render(Context())
 
     def render_head(self, request):
         t = Template("""

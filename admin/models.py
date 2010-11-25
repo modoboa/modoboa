@@ -99,6 +99,14 @@ class Mailbox(models.Model):
                                  % (parameters.get_admin("STORAGE_PATH"),
                                     self.domain.name, self.address))
 
+    def tohash(self):
+        return {
+            "id" : self.id, 
+            "domain" : self.domain.name,
+            "full_name" : self.name,
+            "enabled" : self.user.is_active
+            }
+
 class Alias(models.Model):
     address = models.CharField(_('address'), max_length=100,
                                help_text=_("The alias address (without the domain part)"))

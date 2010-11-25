@@ -1,34 +1,24 @@
 
 window.addEvent('domready', function() {
     var handlers = new Array();
-    
+
     if ($defined($("domcontent"))) {
         SqueezeBox.assign($("domcontent").getElements('a[class=boxed]'), {
-            parse: 'rel',        
+            parse: 'rel',
         });
     }
     if ($defined($("subcontent"))) {
         SqueezeBox.assign($("subcontent").getElements('a[class=boxed]'), {
-            parse: 'rel',        
+            parse: 'rel',
         });
     }
     
-//    handlers['loadDom'] = function(obj, target) {
-/*	$$('a[name=loadDom]').setStyles({'color' : '#999'});*/
-/*	obj.setStyles({"color": "black"});*/
-// 	loadPage(target, "content", null);
-//     };
-
-//     handlers['loadContent'] = function(obj, target) {
-//         loadPage(target, "content", null);
-//     };   
-
     if ($$("a[name=deleteDom]"))
       $$("a[name=deleteDom]").addEvent('click', function(event) {
 	  if (!confirm(gettext("Delete this domain?")))
 	    event.stop();
 	});
-    
+
     if ($$("a[name=deleteMb]"))
         $$("a[name=deleteMb]").addEvent('click', function(event) {
 	    event.stop();
@@ -50,7 +40,7 @@ window.addEvent('domready', function() {
                 event.stop();
         });
 
-    
+
     $(document.body).addEvent('click', function(event) {
 	target = event.target;
 	if (target.get('tag') == 'a') {
@@ -92,7 +82,7 @@ newdom = function() {
 
 loadPage = function(url, destination, callback) {
     var destination = (destination == null) ? "page" : destination;
-    
+
     if (callback)
 	new Request({url: url, method: "get", onSuccess: callback}).send();
     else

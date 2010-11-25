@@ -31,7 +31,7 @@ def admin_menu(user):
     if user.has_perm("auth.view_permissions"):
         entries[0]["menu"] += [
             {"name" : "permissions",
-             "url" : "",
+             "url" : reverse(admin.views.permissions),
              "label" : _("Permissions"),
              "img" : static_url("pics/permissions.png")}
             ]
@@ -40,7 +40,7 @@ def admin_menu(user):
             {"name" : "settings",
              "img" : static_url("pics/settings.png"),
              "label" : _("Settings"),
-             "url" : reverse(admin.views.settings)}
+             "url" : reverse(admin.views.viewparameters)}
             ]
 
     if not len(entries[0]["menu"]):
@@ -48,7 +48,6 @@ def admin_menu(user):
     return render_to_string("common/menulist.html",
                             {"entries" : entries, "user" : user})
         
-
 @register.simple_tag
 def domain_menu(domain_id, selection, user):
     entries = [
@@ -86,16 +85,6 @@ def domain_menu(domain_id, selection, user):
 @register.simple_tag
 def settings_menu(selection, user):
     entries = [
-        {"name" : "permissions",
-         "url" : reverse(admin.views.settings),
-         "label" : _("Permissions"),
-         "img" : static_url("pics/permissions.png")},
-        {"name" : "addperm",
-         "url" : reverse(admin.views.addpermission),
-         "img" : static_url("pics/add.png"),
-         "label" : _("Add permission"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:320,y:210}}"},
         {"name" : "parameters",
          "url" : reverse(admin.views.viewparameters),
          "img" : static_url("pics/domains.png"),
@@ -128,6 +117,19 @@ def domains_menu(selection, user):
     return render_to_string('common/menu.html', 
                             {"entries" : entries, "selection" : selection,
                              "user" : user})
+
+@register.simple_tag
+def permissions_menu(user):
+    entries = [
+        {"name" : "addperm",
+         "label" : _("Add permission"),
+         "img" : static_url("pics/add.png")},
+        {"name" : "delperms",
+         "label" : _("Remove permissions"),
+         "img" : static_url("pics/remove.png")},
+        ]
+    return render_to_string('common/menu.html', 
+                            {"entries" : entries, "user" : user})
 
 @register.simple_tag
 def loadadminextmenu(user):

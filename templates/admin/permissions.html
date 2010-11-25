@@ -1,62 +1,19 @@
-{% extends "admin/settings_header.html" %}
-{% block menu %}
-{% load admin_extras %}
-{% settings_menu "permissions" user %}
+{% extends "nlayout.html" %}
+{% load i18n admin_extras %}
+{% block html_head %}
+<script src="{{ MEDIA_URL }}js/permissions.js" type="text/javascript"></script>
 {% endblock %}
-{% block setcontent %}
-{% load i18n %}
-{% if not admins %}
-<p>{% trans "No superuser defined?!" %}</p>
-{% else %}
-<h4>{% trans "Super administrators" %}</h4>
-<table>
-  <tr>
-    <th width="50px">{% trans "Actions" %}</th>
-    <th width="210px">{% trans "Full name" %}</th>
-    <th>{% trans "User name" %}</th>
-    <th width="50px">{% trans "Enabled" %}</th>
-  </tr>
-  {% for admin in admins %}
-  <tr class="{% cycle 'odd' 'even' %}">
-    <td>
-      {% url admin.views.deletepermission admin.id "SuperAdmins" as del_url %}
-      <a href="{{ del_url }}" name="deletePerm">
-        <img src="{{ MEDIA_URL }}pics/remove.png" border="0" title="{% trans 'Remove permission' %}" />
-      </a>
-    </td>
-    <td>{{ admin.first_name }} {{ admin.last_name }}</td>
-    <td>{{ admin.username }}</td>
-    <td>{{ admin.is_active|yesno }}</td>
-  </tr>
+{% block middletitle %}{% trans "Permissions" %}{% endblock %}
+{% block menu %}
+{% permissions_menu user %}
+{% endblock %}
+{% block content %}
+<div id="accordion">
+  {% for table in permtables %}
+  <h3 class="toggler atStart">{{ table.title }}</h3>
+  <div class="element atStart" name="{{ table.addurl }}">
+    {{ table.content }}
+  </div>
   {% endfor %}
-</table>
-<br/><br/>
-{% endif %}
-<h4>{% trans "Domain administrators" %}</h4>
-{% if not domadmins %}
-<p>{% trans "No domain admin defined." %}</p>
-{% else %}
-<table>
-  <tr>
-    <th width="50px">{% trans "Actions" %}</th>
-    <th width="210px">{% trans "Domain" %}</th>
-    <th>{% trans "Name" %}</th>
-    <th width="50px">{% trans "Enabled" %}</th>
-  </tr>
-  {% for admin in domadmins %}
-  <tr class="{% cycle 'odd' 'even' %}">
-    <td>
-      {% url admin.views.deletepermission admin.id "DomainAdmins" as del_url %}
-      <a href="{{ del_url }}" name="deletePerm">
-        <img src="{{ MEDIA_URL }}pics/remove.png" border="0"
-             title="{% trans 'Remove permission' %}" />
-      </a>
-    </td>
-    <td>{{ admin.domain.name }}</td>
-    <td>{{ admin.name }}</td>
-    <td>{{ admin.user.is_active|yesno }}</td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
+</div>
 {% endblock %}

@@ -1,7 +1,9 @@
 from django import forms
 from modoboa.admin.models import Domain, Mailbox, Alias
 from django.utils.translation import ugettext as _
+from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
+from modoboa.lib import tables
 
 class DomainForm(forms.ModelForm):
     class Meta:
@@ -63,3 +65,30 @@ class PermissionForm(forms.Form):
                              choices=(("SuperAdmins", _("Super administrator")),
                                       ("DomainAdmins", _("Domain administrator"))),
                              help_text=_("Select the role you want this user to have"))
+
+class SuperAdminForm(forms.Form):
+    user = forms.ModelChoiceField(queryset=User.objects.all(),
+                                  label=_("User"), required=True,
+                                  help_text=_("Select a user in the list"))
+
+class DomainAdminForm(forms.Form):
+    domain = forms.ModelChoiceField(queryset=Domain.objects.all(), label=_("Domain"), 
+                                    required=True,
+                                    help_text=_("Select a domain in the list"))
+    user = forms.ChoiceField(label=_("User"), required=True,
+                             help_text=_("Select a user in the list"))
+
+class SuperAdminsTable(tables.Table):
+    idkey = "id"
+    selection = tables.SelectionColumn("selection", width="4%", first=True)
+    _1_user_name = tables.Column("user_name", label=_("User name"))
+    _2_full_name = tables.Column("full_name", label=_("Full name"))
+    _3_enabled = tables.Column("enabled", label=_("Enabled_m"), width="10%")
+    
+class DomainAdminsTable(tables.Table):
+    idkey = "id"
+    selection = tables.SelectionColumn("selection", width="4%", first=True)
+    _1_domain = tables.Column("domain", label=_("Domain"))
+    _2_full_name = tables.Column("full_name", label=_("Full name"))
+    _3_enabled = tables.Column("enabled", label=_("Enabled_m"), width="10%")
+    
