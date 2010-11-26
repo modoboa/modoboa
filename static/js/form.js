@@ -17,36 +17,36 @@ window.addEvent("domready", function() {
             }
         });
         obj.send();
-    }
+    };
 
     generic_submit = function(obj, event, id, callback, onerror) {
         event.stop();
         sqbsubmit(obj, "content", id, callback, onerror);
-    }
-    domain_submit = function(event) { 
-        generic_submit(this, event, "domform", domain_submit); 
-    }
-    mailbox_submit = function(event) { 
-        generic_submit(this, event, "mboxform", mailbox_submit); 
-    }
-    alias_submit = function(event) { 
-        generic_submit(this, event, "aliasform", alias_submit); 
-    }
+    };
+    domain_submit = function(event) {
+        generic_submit(this, event, "domform", domain_submit);
+    };
+    mailbox_submit = function(event) {
+        generic_submit(this, event, "mboxform", mailbox_submit);
+    };
+    alias_submit = function(event) {
+        generic_submit(this, event, "aliasform", alias_submit);
+    };
     permission_submit = function(event) {
         generic_submit(this, event, "permform", permission_submit);
-    }
+    };
     chpassword_submit = function(event) {
         generic_submit(this, event, "chpwdform", chpassword_submit);
-    }
+    };
 
     arm_onerror = function() {
         new Calendar({id_untildate: "Y-m-d"}, {
             tweak: {x: -100, y:-100}
         });
-    }
+    };
     arm_submit = function(event) {
         generic_submit(this, event, "armform", arm_submit, arm_onerror);
-    }
+    };
 
     if ($("domform"))
         $("domform").addEvent("submit", domain_submit);

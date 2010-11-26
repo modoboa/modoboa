@@ -1,12 +1,12 @@
 window.addEvent('domready', function() {
     var tip = new Tips($$(".Tips"));
 
-    var addperm_url = "";
+    var current_role = "";
     var accordion = new Accordion('h3.atStart', 'div.atStart', {
 	opacity: true,
 	onActive: function(toggler, element){
 	    toggler.setStyle('color', '#ff3300');
-	    addperm_url = element.get("name");
+	    current_role = element.get("id");
 	},
 
 	onBackground: function(toggler, element) {
@@ -16,13 +16,45 @@ window.addEvent('domready', function() {
 
     $$("a[name=addperm]").addEvent("click", function(evt) {
 	evt.stop();
-	if (addperm_url == "") {
-	    return;
-	}
 	SqueezeBox.initialize({
 	    size: {x: 300, y: 280},
 	    handler: 'iframe'
 	});
+	var addperm_url = evt.target.get("href") + "?role=" + current_role;
 	SqueezeBox.open(addperm_url);
+    });
+
+    $$("a[name=delperms]").addEvent("click", function(evt) {
+	evt.stop();
+	var selection = $(current_role).getElements("input[id=selection]:checked");
+	if (selection.length == 0) {
+	    return;
+	}
+	if (!confirm(gettext("Remove this selection?"))) {
+	    return;
+	}
+	var sr_selection = "";
+	selection.each(function(item) {
+	    if (sr_selection != "") {
+		sr_selection += ",";
+	    }
+	    sr_selection += item.get("value");
+	});
+	new Request.JSON({
+	    url : evt.target.get("href"),
+	    onSuccess: function(response) {
+		if (response.status == "ok") {
+		    $(current_role).set("html", response.content);
+		    infobox.info(response.message);
+		} else {
+		    infobox.error(response.message);
+		}
+		infobox.hide(2);
+
+	    }
+	}).send({
+	    method: "get",
+	    data: "role=" + current_role + "&selection=" + sr_selection
+	});
     });
 });

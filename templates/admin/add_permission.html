@@ -5,9 +5,10 @@
 {% endblock %}
 {% block content %}
 <div class="title"><h1>{{ title }}</h1></div>
-
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
-<form action="{{ action }}" method="POST" id="permform" name="permform">
+{% url admin.views.add_permission as addurl %}
+<form action="{{ addurl }}" method="POST" id="permform" name="permform">
+  <input type="hidden" name="role" id="role" value="{{ role }}" />
   {% include "common/genericform.html" %}
   <div class="spacer"></div>
   

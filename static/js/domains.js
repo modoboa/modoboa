@@ -4,15 +4,15 @@ window.addEvent('domready', function() {
 
     if ($defined($("domcontent"))) {
         SqueezeBox.assign($("domcontent").getElements('a[class=boxed]'), {
-            parse: 'rel',
+            parse: 'rel'
         });
     }
     if ($defined($("subcontent"))) {
         SqueezeBox.assign($("subcontent").getElements('a[class=boxed]'), {
-            parse: 'rel',
+            parse: 'rel'
         });
     }
-    
+
     if ($$("a[name=deleteDom]"))
       $$("a[name=deleteDom]").addEvent('click', function(event) {
 	  if (!confirm(gettext("Delete this domain?")))

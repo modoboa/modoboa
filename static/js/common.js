@@ -12,11 +12,11 @@ callbacks = {};
 
 register_callback = function(name, callback) {
     callbacks[name] = callback;
-}
+};
 
 get_callback = function(name) {
     return callbacks[name];
-}
+};
 
 current_anchor = null;
 
@@ -43,13 +43,13 @@ check_anchor = function() {
         infobox.info(gettext("Done"));
         infobox.hide(1);
     }}).get();
-}
+};
 
 ajaxListener = function(deflocation, defcallback) {
     current_anchor = new HashWrapper(deflocation);
     register_callback("default", defcallback);
     check_anchor.periodical(300);
-}
+};
 
 /*
 *
@@ -154,7 +154,7 @@ function HashWrapper(deflocation) {
             return "";
         }
         return this.params.get(name);
-    }
+    };
 
     this.baseurl = function(value) {
         this.reset();
@@ -213,7 +213,7 @@ parse_menubar = function(id) {
             parse: 'rel'
         });
     }
-}
+};
 
 get_iframe_body = function(id) {
     var saf = navigator.userAgent.match(/Safari/i);
@@ -233,7 +233,7 @@ get_iframe_body = function(id) {
         data = targetif.contentWindow.document.body;
     }
     return (data);
-}
+};
 
 confirmation = function(question, action, callback) {
     SqueezeBox.initialize({
@@ -259,7 +259,7 @@ confirmation = function(question, action, callback) {
         }
     });
     SqueezeBox.open("/modoboa/userprefs/confirm/?question=" + question);
-}
+};
 
 setDivHeight = function(id, extrah, modulo) {
     var contentsize = $(document.body).getSize().y
@@ -272,7 +272,7 @@ setDivHeight = function(id, extrah, modulo) {
         contentsize -= contentsize % modulo;
     }
     $(id).setStyle("height", contentsize + "px");
-}
+};
 
 bindRows = function(rooturl, page) {
     $$("tr").addEvent("click", function(event) {
@@ -282,20 +282,20 @@ bindRows = function(rooturl, page) {
             location.href = url;
         }
     });
-}
+};
 
 toggleSelection = function(id, value) {
     $$("input[name=" + id + "]").each(function(obj) {
         obj.checked = value;
     });
-}
+};
 
 checkTableSelection = function(text) {
     if (!$$("tr[class*=table-tr-selected]").length) {
         return false;
     }
     return confirm(text);
-}
+};
 
 searchbox_init = function() {
     var myFx = new Fx.Slide($("searchparams"));
@@ -343,7 +343,7 @@ searchbox_init = function() {
             $("crit_" + params.criteria).checked = true;
         }
     }
-}
+};
 
 // The following code prevents a bug under IE7 because fullpath is
 // returned instead of a relative one. (even if mootools uses
@@ -358,7 +358,7 @@ gethref = function(obj) {
         return url.replace(baseurl, "");
     }
     return url;
-}
+};
 
 saveparams = function(id, message) {
     $$("input[name=update]").addEvent("click", function(evt) {
@@ -373,4 +373,4 @@ saveparams = function(id, message) {
             }
         }).send();
     });
-}
+};

@@ -123,10 +123,12 @@ def permissions_menu(user):
     entries = [
         {"name" : "addperm",
          "label" : _("Add permission"),
-         "img" : static_url("pics/add.png")},
+         "img" : static_url("pics/add.png"),
+         "url" : reverse(admin.views.add_permission)},
         {"name" : "delperms",
          "label" : _("Remove permissions"),
-         "img" : static_url("pics/remove.png")},
+         "img" : static_url("pics/remove.png"),
+         "url" : reverse(admin.views.delete_permissions)},
         ]
     return render_to_string('common/menu.html', 
                             {"entries" : entries, "user" : user})

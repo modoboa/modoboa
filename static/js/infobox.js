@@ -101,7 +101,7 @@ var InfoBox = new Class({
         }
         this.box.setStyle("display", "block");
     },
-    
+
     hide: function(timer) {
         if ($defined(timer)) {
             this.timer = this.hide.periodical(timer * 1000, this);

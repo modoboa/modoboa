@@ -1,5 +1,5 @@
 {% extends "nlayout.html" %}
-{% load i18n admin_extras %}
+{% load i18n libextras admin_extras %}
 {% block html_head %}
 <script src="{{ MEDIA_URL }}js/permissions.js" type="text/javascript"></script>
 {% endblock %}
@@ -8,10 +8,13 @@
 {% permissions_menu user %}
 {% endblock %}
 {% block content %}
+{% if messages %}
+{% display_messages messages %}
+{% endif %}
 <div id="accordion">
   {% for table in permtables %}
   <h3 class="toggler atStart">{{ table.title }}</h3>
-  <div class="element atStart" name="{{ table.addurl }}">
+  <div class="element atStart" id="{{ table.id }}">
     {{ table.content }}
   </div>
   {% endfor %}
