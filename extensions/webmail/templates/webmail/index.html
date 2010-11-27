@@ -208,15 +208,57 @@
     }
 
     var selectedRows = new Array();
+    var fromrow = -1;
+    var torow = -1;
+
+    $(document.body).addEvent("keydown", function(event) {
+      if (event.shift) {
+        event.stop();
+      }
+    });
+
+    /* The IE way for disabling default selection */
+    $$("tbody>tr").set("unselectable", "on");
 
     $$("tbody>tr").addEvent("click", function(event) {
       var tr = $(event.target).getParent();
+
+      if (event.shift && fromrow != -1) {
+        var currentrow = parseInt(tr.get("name"));
+
+        if (fromrow < currentrow) {
+          rangeUp2Down(fromrow, currentrow);
+        } else {
+          rangeDown2Up(fromrow, currentrow);
+        }
+        fromrow = currentrow;
+        return;
+      }
+      fromrow = parseInt(tr.get("name"));
+      toggleSelectRow(tr);
+    });
+
+    rangeUp2Down = function(start, end) {
+      for (var i = start + 1; i <= end; i++) {
+        var tr = $$("tr[name=" + i + "]")[0];
+        toggleSelectRow(tr)
+      }
+    }
+
+    rangeDown2Up = function(start, end) {
+      for (var i = start - 1; i >= end; i--) {
+        var tr = $$("tr[name=" + i + "]")[0];
+        toggleSelectRow(tr)
+      }
+    }
+
+    toggleSelectRow = function(tr) {
       if (!tr.hasClass("selected")) {
         selectRow(tr);
       } else {
         unselectRow(tr, true);
       }
-    });
+    }
 
     selectRow = function(tr) {
       tr.addClass("selected");

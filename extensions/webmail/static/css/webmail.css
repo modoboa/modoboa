@@ -42,6 +42,9 @@ html > body #listing {
     width: 100%;
     /*position: relative;*/
     border-bottom: 1px solid #C8D6E8;
+    user-select: none; /* CSS3 */
+    -moz-user-select: none; /* Gecko (Firefox) */
+    -khtml-user-select:none; /* Webkit (Safari, Chrome) */
 }
 
 tr.selected {

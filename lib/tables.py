@@ -54,8 +54,9 @@ class Table(object):
                 except AttributeError:
                     self.columns += [m[1]]
         self.rows = []
+        trcpt = 0
         for row in rows:
-            nrow = {"id" : row[self.idkey], "cols" : []}
+            nrow = {"id" : row[self.idkey], "cols" : [], "trcpt" : trcpt}
             for c in self.columns:
                 newcol = {"name" : c.name}
                 for key in ["width", "align", "cssclass"]:
@@ -82,6 +83,7 @@ class Table(object):
                         newcol["value"] = row[c.name]
                 nrow["cols"] += [newcol]
             self.rows += [nrow]
+            trcpt += 1
 
     def render(self, request):
         if len(self.rows):
