@@ -16,6 +16,7 @@ events = ["CreateDomain",
           "AdminMenuDisplay",
 
           "PermsGetTables",
+          "PermsGetClass",
 
           "UserLogin",
           "UserLogout"]

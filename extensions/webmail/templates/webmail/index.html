@@ -211,12 +211,6 @@
     var fromrow = -1;
     var torow = -1;
 
-    $(document.body).addEvent("keydown", function(event) {
-      if (event.shift) {
-        event.stop();
-      }
-    });
-
     /* The IE way for disabling default selection */
     $$("tbody>tr").set("unselectable", "on");
 

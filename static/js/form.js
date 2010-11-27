@@ -33,7 +33,12 @@ window.addEvent("domready", function() {
         generic_submit(this, event, "aliasform", alias_submit);
     };
     permission_submit = function(event) {
-        generic_submit(this, event, "permform", permission_submit);
+        generic_submit(this, event, "permform", permission_submit, function() {
+	    if ($defined($("id_domain"))) {
+		$("id_domain").options[0].setProperty("selected", "selected");
+		domadminform_init();
+	    }
+	});
     };
     chpassword_submit = function(event) {
         generic_submit(this, event, "chpwdform", chpassword_submit);

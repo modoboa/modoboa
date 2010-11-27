@@ -115,7 +115,7 @@ def editdomain(request, dom_id):
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = DomainForm(instance=domain) 
-    return render_to_response('admin/editdomain.html', {
+    return _render(request, 'admin/editdomain.html', {
             "domain" : domain, "form" : form
             })
 
@@ -142,7 +142,7 @@ def mailboxes(request, dom_id=None):
 @good_domain
 @permission_required("admin.view_mailboxes")
 def mailboxes_raw(request, dom_id=None):
-    mailboxes = Mailbox.objects.filter(domain=dom_id)
+    mailboxes = Mailbox.objects.filter(domain=dom_id).exclude(user__id=request.user.id)
     return _render(request, 'admin/mailboxes_raw.html', {
             "mailboxes" : mailboxes
             })
@@ -310,7 +310,7 @@ def newalias(request, dom_id):
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = AliasForm(domain=domain)
-    return render_to_response('admin/newalias.html', {
+    return _render(request, 'admin/newalias.html', {
             "domain" : dom_id, "form" : form, "noerrors" : True
             })
 

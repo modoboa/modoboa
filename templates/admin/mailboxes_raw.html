@@ -1,3 +1,5 @@
+{% load i18n %}
+<option value="">{% trans "Choose a value" %}</option>
 {% for mb in mailboxes %}
 <option value='{{ mb.id }}'>{{ mb.name }}</option>
 {% endfor %}

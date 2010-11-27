@@ -2,7 +2,7 @@
 
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User, Group
-from modoboa.lib import _render
+from modoboa.lib import _render, getctx, _render_to_string
 from forms import *
 
 class Permissions(object):
@@ -23,20 +23,23 @@ class Permissions(object):
         raise NotImplementedError
 
 class SuperAdminsPerms(Permissions):
+    title = _("Add super administrator")
+    role = "super_admins"
+
     @staticmethod
     def is_auhorized(user):
         return user.is_superuser
     
     def get_add_form(self, request):
-        form = SuperAdminForm()
+        form = SuperAdminForm(request.user)
         return _render(request, 'admin/add_permission.html', {
                 "form" : form, 
-                "title" : _("Add super administrator"),
-                "role": "super_admins"
+                "title" : self.title,
+                "role": self.role
                 })
 
     def add(self, request):
-        form = SuperAdminForm(request.POST)
+        form = SuperAdminForm(request.user, request.POST)
         if form.is_valid():
             user = User.objects.get(pk=request.POST["user"])
             user.is_superuser = True
@@ -44,10 +47,12 @@ class SuperAdminsPerms(Permissions):
             user.save()
             return True, None
 
-        ctx = _ctx_ko("admin/add_superadmin.html", {
-                "form" : form
+        content = _render_to_string(request, "admin/add_permission.html", {
+                "form" : form,
+                "title" : self.title,
+                "role" : self.role
                 })
-        return False, ctx
+        return False, getctx("ko", content=content)
     
     def delete(self, selection):
         for s in selection:
@@ -69,32 +74,38 @@ class SuperAdminsPerms(Permissions):
    
 
 class DomainAdminsPerms(Permissions):
+    title = _("Add domain administrator")
+    role = "domain_admins"
+
     @staticmethod
-    def is_auhorized(user):
-        return True
+    def is_authorized(user):
+        return user.has_perm("admin.view_domains")
 
     def get_add_form(self, request):
         form = DomainAdminForm()
         return _render(request, 'admin/add_domain_admin.html', {
-                "form" : form, "title" : _("Add domain administrator"),
-                "role" : "domain_admins"
+                "form" : form, 
+                "title" : self.title,
+                "role" : self.role
                 })
     
     def add(self, request):
         form = DomainAdminForm(request.POST)
-        mboxid = request.POST['user']
-        form.fields["user"].choices = \
-            [(mboxid, Mailbox.objects.get(pk=mboxid)),]
+        if request.POST.has_key("user") and request.POST["user"] != "":
+            mboxid = request.POST['user']
+            mb = Mailbox.objects.get(pk=mboxid)
+            form.fields["user"].choices = [(mboxid, mb),]
         if form.is_valid():
-            mb = Mailbox.objects.get(pk=request.POST["user"])
             mb.user.is_superuser = False
             mb.user.groups.add(Group.objects.get(name="DomainAdmins"))
             mb.user.save()
             return True, None
-        ctx = _ctx_ko("admin/add_domain_admin.html", {
-                "form" : form
+        content = _render_to_string(request, "admin/add_domain_admin.html", {
+                "form" : form,
+                "title" : self.title,
+                "role" : self.role
                 })
-        return False, ctx
+        return False, getctx("ko", content=content)
 
     def delete(self, selection):
         for s in selection:
@@ -111,6 +122,19 @@ class DomainAdminsPerms(Permissions):
         return DomainAdminsTable(domadmins_list).render(request)
 
 def get_perms_class(user, role):
+    """Retrieves the class associated to a given role
+
+    The provided user must have the required permission to retrieve
+    this class.
+
+    If "role" is one of those provided by the admin component, its
+    class is directly returned. Otherwise, a "PermsGetClass" event is
+    raised to check if one of the active plugins provide the desired
+    class.
+
+    :param user: a User object
+    :param role: the role to look for
+    """
     parts = role.split("_")
     cname = ""
     for p in parts:
@@ -120,4 +144,7 @@ def get_perms_class(user, role):
         if globals()[cname].is_auhorized(user):
             return globals()[cname]
         return None
-    # else raise event for plugins
+    res = events.raiseQueryEvent("PermsGetClass", role=role)
+    if not len(res):
+        return None
+    return res[0]

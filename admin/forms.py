@@ -55,27 +55,22 @@ class AliasForm(forms.ModelForm):
         model = Alias
         fields = ('address', 'mboxes', 'enabled')
 
-class PermissionForm(forms.Form):
-    domain = forms.ModelChoiceField(queryset=Domain.objects.all(), label=_("Domain"), 
-                                    required=True,
-                                    help_text=_("Select a domain in the list"))
-    user = forms.ChoiceField(label=_("User"), required=True,
-                             help_text=_("Select a user in the list"))
-    role = forms.ChoiceField(label=_("Role"), required=True, 
-                             choices=(("SuperAdmins", _("Super administrator")),
-                                      ("DomainAdmins", _("Domain administrator"))),
-                             help_text=_("Select the role you want this user to have"))
-
 class SuperAdminForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=User.objects.all(),
-                                  label=_("User"), required=True,
+    user = forms.ModelChoiceField([], label=_("User"), required=True,
+                                  empty_label=_("Select a user"),
                                   help_text=_("Select a user in the list"))
+
+    def __init__(self, user, *args, **kwargs):
+        super(SuperAdminForm, self).__init__(*args, **kwargs)
+        self.fields["user"].queryset = User.objects.exclude(pk__in=[1, user.id])
 
 class DomainAdminForm(forms.Form):
     domain = forms.ModelChoiceField(queryset=Domain.objects.all(), label=_("Domain"), 
                                     required=True,
+                                    empty_label=_("Select a domain"),
                                     help_text=_("Select a domain in the list"))
     user = forms.ChoiceField(label=_("User"), required=True,
+                             choices=[("", _("Empty"))],
                              help_text=_("Select a user in the list"))
 
 class SuperAdminsTable(tables.Table):
