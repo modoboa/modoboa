@@ -77,14 +77,14 @@ def folder(request, name, updatenav=True):
 @login_required
 @is_not_localadmin()
 def index(request):
-    #try:
-    navp = request.session.has_key("navparams") \
-        and request.session["navparams"] or {}
-    lst = ImapListing(request.user, request.session["password"],
-                      baseurl="INBOX", navparams=navp, folder="INBOX",
-                      empty=True)
-    #except Exception, exp:
-    #    return _render_error(request, user_context={"error" : exp})
+    try:
+        navp = request.session.has_key("navparams") \
+            and request.session["navparams"] or {}
+        lst = ImapListing(request.user, request.session["password"],
+                          baseurl="INBOX", navparams=navp, folder="INBOX",
+                          empty=True)
+    except Exception, exp:
+        return _render_error(request, user_context={"error" : exp})
     return lst.render(request)
 
 def fetchmail(request, folder, mail_id, all=False):

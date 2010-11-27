@@ -95,6 +95,10 @@ def userlogout(**kwargs):
 
     if kwargs["request"].user.id == 1:
         return
-    m = IMAPconnector(user=kwargs["request"].user.username,
-                      password=kwargs["request"].session["password"])
-    m.logout()
+    try:
+        m = IMAPconnector(user=kwargs["request"].user.username,
+                          password=kwargs["request"].session["password"])
+    except Exception, e:
+        pass
+    else:
+        m.logout()

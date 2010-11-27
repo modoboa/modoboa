@@ -6,6 +6,7 @@ sys.setdefaultencoding("utf-8")
 
 import re
 import time
+import socket
 import imaplib
 import ssl
 from datetime import datetime, timedelta
@@ -176,7 +177,7 @@ class IMAPconnector(object):
                 self.m = imaplib.IMAP4_SSL(self.address, self.port)
             else:
                 self.m = imaplib.IMAP4(self.address, self.port)
-        except (imaplib.IMAP4.error, ssl.SSLError), error:
+        except (socket.error, imaplib.IMAP4.error, ssl.SSLError), error:
             return False, _("Connection to IMAP server failed, check your configuration")
         try:
             self.m.login(user, passwd)

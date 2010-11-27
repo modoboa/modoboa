@@ -26,7 +26,7 @@
     }
     $$("a[name=loadfolder]").addEvent("click", foldercallback);
     $$("a[name=compose]").addEvent("click", loadCompose);
-  }
+  };
 
   select = function(obj) {
     $$("a[name=loadfolder]").each(function(item) {
@@ -43,7 +43,7 @@
         item.setStyle("background", "url('{{ MEDIA_URL }}pics/folder-open.png') no-repeat");
       });
     });
-  }
+  };
 
   register_callback("viewmail", function(resp) {
     wm_updatelisting(resp, "hidden");
@@ -114,7 +114,7 @@
 
       files2upload.erase(attachment);
       litag.destroy();
-    }
+    };
 
     $("upload_input").addEvent("change", function(evt) {
       var atag = new Element("a").set("name", "delete_attachment");
@@ -127,31 +127,31 @@
       litag.inject($("files2upload"));
       atag.addEvent("click", delete_attachment);
     });
-  }
+  };
 
   loadCompose = function(event) {
     event.stop();
     current_anchor.baseurl("compose").update();
-  }
+  };
   register_callback("compose", compose_callback);
 
   reply = function(event) {
     event.stop();
     location.hash += event.target.get("href");
-  }
+  };
   register_callback("reply", compose_callback);
   replyall = function(event) {
     event.stop();
     location.hash += event.target.get("href") + "?all=1";
-  }
+  };
   register_callback("replyall", compose_callback);
   forward = function(event) {
     event.stop();
     location.hash += event.target.get("href");
-  }
+  };
   register_callback("forward", compose_callback);
- 
-  var rtimer = null;  
+
+  var rtimer = null;
 
   window.addEvent("pageRefresh", function() {
     $clear(rtimer);
@@ -170,7 +170,7 @@
         infobox.info('{% trans "Done" %}');
         infobox.hide(1);
     }}).get();
-  }
+  };
 
   loadFolder = function(event, obj) {
     event.stop();
@@ -179,7 +179,7 @@
     }
     current_anchor.parse_string(gethref(obj), true).setparams(navparams);
     current_anchor.update();
-  }
+  };
 
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
@@ -265,7 +265,7 @@
       selectedRows.include(tr);
       tr.setStyle("position", "relative");
       makeRowDraggable(tr);
-    }
+    };
 
     unselectRow = function(tr, remove) {
       tr.removeClass("selected");
@@ -273,7 +273,7 @@
         selectedRows.erase(tr);
       }
       tr.setStyle("position", "static");
-    }
+    };
 
     makeRowDraggable = function(item) {
       new Drag.Move(item, {
@@ -295,12 +295,12 @@
                         "padding" : "5px",
                         "text-align" : "center",
                         "height" : "25px",
-                        "border" : "1px solid #333", 
+                        "border" : "1px solid #333",
                         "background" : "white",
                         "z-index" : 3})
             .setPosition(item.getPosition())
             .inject(document.body);
-          block.set("html", "Moving " + selectedRows.length + " messages"); 
+          block.set("html", "Moving " + selectedRows.length + " messages");
           this.oldelement = this.element;
           this.element = block;
         },
@@ -334,14 +334,14 @@
           profile: "gray",
           spinner: true
       });
-      new Request.JSON({url : url, 
+      new Request.JSON({url : url,
                         onSuccess : function(response) {
                           get_callback("folder")(response);
                           infobox.info(gettext("Done"));
                           infobox.hide(1);
                         }
       }).get(params);
-    }
+    };
 
     buildmarkrequest = function(evt) {
       evt.stop();
@@ -353,7 +353,7 @@
         ids.include(item.get("id"));
       });
       simple_request(evt.target.get("href"), {ids : ids.join()});
-    }
+    };
     $$("a[name=mark-read]").addEvent("click", buildmarkrequest);
     $$("a[name=mark-unread]").addEvent("click", buildmarkrequest);
 
@@ -370,7 +370,7 @@
            selectRow(item);
          });
        } else {
-         $$("tbody>tr").each(function(item) { 
+         $$("tbody>tr").each(function(item) {
            unselectRow(item, false);
          });
          selectedRows.empty();
@@ -382,7 +382,7 @@
     $$("th[class*=sortable]").addEvent("click", function(evt) {
         var tmp = "?";
         var order = (navparams.has("order")) ? navparams.get("order") : "";
-       
+
         if (order == "") {
             order = current_anchor.getparam("order");
         }
@@ -400,7 +400,7 @@
   foldercallback = function(event) {
     select(event.target);
     loadFolder(event, event.target);
-  }
+  };
 
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
