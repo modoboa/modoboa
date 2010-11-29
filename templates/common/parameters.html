@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load admin_extras %}
+{% if gparams %}
   <p><input type="submit" name="update" value="{% trans 'Save' %}" /></p>
   <div id="accordion">
     {% for app in gparams %}
@@ -11,3 +12,6 @@
     </div>
     {% endfor %}
   </div>
+{% else %}
+  <div class="info">{% trans "No parameters available" %}</div>
+{% endif %}
