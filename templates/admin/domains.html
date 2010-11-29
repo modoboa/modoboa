@@ -1,6 +1,5 @@
 {% extends "nlayout.html" %}
-{% load i18n %}
-{% load admin_extras %}
+{% load i18n admin_extras libextras %}
 {% block html_head %}
   <script src="{{ MEDIA_URL }}js/domains.js" type="text/javascript"></script>
   <script type="text/javascript">
@@ -13,6 +12,9 @@
 {% block middletitle %}{% trans "Available domains" %}{% endblock %}
 {% block menu %}{% domains_menu "domains" user %}{% endblock %}
 {% block content %}
+{% if messages %}
+{% display_messages messages %}
+{% endif %}
 <div id="domcontent">
   {% if not domains %}
   {% trans "No domain defined." %}

@@ -28,6 +28,16 @@ def admin_menu(user):
              "label" : _("Domains"),
              "img" : static_url("pics/domains.png")}
             ]
+    elif user.has_perm("admin.view_mailboxes"):
+        entries[0]["menu"] += [
+            {"name" : "mailboxes",
+             "url" : reverse(admin.views.domains),
+             "label" : _("Mailboxes"),
+             "img" : static_url("pics/mailbox.png")}
+            ]
+    entries[0]["menu"] += \
+        events.raiseQueryEvent("AdminMenuDisplay", target="top_menu", 
+                               user=user)
     if user.has_perm("auth.view_permissions"):
         entries[0]["menu"] += [
             {"name" : "permissions",

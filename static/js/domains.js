@@ -23,7 +23,7 @@ window.addEvent('domready', function() {
         $$("a[name=deleteMb]").addEvent('click', function(event) {
 	    event.stop();
 	    confirmation(gettext("Delete this mailbox?"), this, function(body) {
-                result = "";
+                var result = "";
                 body.getElements("input[type=checkbox]:checked").each(function(obj) {
                     if (result != "") {
                         result += "&";
@@ -42,9 +42,9 @@ window.addEvent('domready', function() {
 
 
     $(document.body).addEvent('click', function(event) {
-	target = event.target;
+	var target = event.target;
 	if (target.get('tag') == 'a') {
-	    name = target.get('name');
+	    var name = target.get('name');
 	    if (name == 'undefined')
 		return;
 	    if (typeof(handlers[name]) != 'undefined') {
@@ -81,7 +81,7 @@ newdom = function() {
 };
 
 loadPage = function(url, destination, callback) {
-    var destination = (destination == null) ? "page" : destination;
+    destination = (destination == null) ? "page" : destination;
 
     if (callback)
 	new Request({url: url, method: "get", onSuccess: callback}).send();

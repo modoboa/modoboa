@@ -244,20 +244,31 @@ confirmation = function(question, action, callback) {
             var elt = ibody.getElement("input[name=result]");
 
             if (elt.get("value") == "ok") {
-                params = "";
+                var params = "";
                 if (typeof callback != "undefined") {
                     params = callback(ibody);
                 }
-                new Request({
+                new Request.JSON({
                     method: "get",
                     url: action.get("href"),
                     onSuccess: function(res) {
-                        window.location.reload();
+			if (res.status == "ok") {
+			    window.location.reload();
+			} else {
+			    infobox.error(res.error);
+			    infobox.hide(2);
+			}
                     }
                 }).send(params);
             }
         }
     });
+
+    /* FIXME: avoid using a hard coded address like this, maybe it
+     could be fixed by creating a new class for "confirmation" and
+     create one instance for each section/page using it (I mean
+     directly inside the html template) */
+
     SqueezeBox.open("/modoboa/userprefs/confirm/?question=" + question);
 };
 

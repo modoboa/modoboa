@@ -34,6 +34,11 @@ class MailboxForm(forms.ModelForm):
         for f in ['name', 'address', 'quota', 'password1', 'password2']:
             self.fields[f].widget.attrs['size'] = 14
 
+    def clean_address(self):
+        if self.cleaned_data["address"].find('@') != -1:
+            return self.cleaned_data["address"].rsplit("@", 1)[0]
+        return self.cleaned_data["address"]
+
     def clean_password2(self):
         if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
             raise forms.ValidationError(_("Passwords mismatch"))
@@ -54,6 +59,11 @@ class AliasForm(forms.ModelForm):
     class Meta:
         model = Alias
         fields = ('address', 'mboxes', 'enabled')
+
+    def clean_address(self):
+        if self.cleaned_data["address"].find('@') != -1:
+            return self.cleaned_data["address"].rsplit("@", 1)[0]
+        return self.cleaned_data["address"]
 
 class SuperAdminForm(forms.Form):
     user = forms.ModelChoiceField([], label=_("User"), required=True,

@@ -211,6 +211,7 @@
     var fromrow = -1;
     var torow = -1;
 
+
     /* The IE way for disabling default selection */
     $$("tbody>tr").set("unselectable", "on");
 
@@ -237,14 +238,14 @@
         var tr = $$("tr[name=" + i + "]")[0];
         toggleSelectRow(tr)
       }
-    }
+    };
 
     rangeDown2Up = function(start, end) {
       for (var i = start - 1; i >= end; i--) {
         var tr = $$("tr[name=" + i + "]")[0];
         toggleSelectRow(tr)
       }
-    }
+    };
 
     toggleSelectRow = function(tr) {
       if (!tr.hasClass("selected")) {
@@ -252,7 +253,7 @@
       } else {
         unselectRow(tr, true);
       }
-    }
+    };
 
     selectRow = function(tr) {
       tr.addClass("selected");
