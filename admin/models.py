@@ -87,6 +87,8 @@ class Mailbox(models.Model):
         return True
 
     def rename_dir(self, domain, newaddress):
+        if self.domain.name == domain and newaddress == self.address:
+            return True
         path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), domain)
         code = exec_as_vuser("mv %s/%s %s/%s" \
                                  % (path, self.address, path, newaddress))
