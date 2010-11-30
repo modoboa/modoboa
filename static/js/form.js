@@ -14,7 +14,11 @@ window.addEvent("domready", function() {
                         parent.location.href = decode.url;
                     parent.SqueezeBox.close();
                 }
-            }
+            },
+	    onFailure: function(xhr) {
+		parent.document.getElement('iframe').setStyles({width: 800, height: 600});
+		$(dest).set("html", xhr.responseText);
+	    }
         });
         obj.send();
     };
