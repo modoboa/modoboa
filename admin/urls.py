@@ -6,6 +6,10 @@ urlpatterns = patterns('modoboa.admin.views',
                        (r'^domains/new/', 'newdomain'),
                        (r'^domains/(?P<dom_id>\d+)/edit/$', 'editdomain'),
                        (r'^domains/(?P<dom_id>\d+)/delete/$', 'deldomain'),
+
+                       (r'^aliases/$', "domaliases"),
+                       (r'^aliases/new/(?P<dom_id>\d+)/', 'newdomalias'),
+
                        (r'^domains/(?P<dom_id>\d+)/newmailbox/$', 'newmailbox'),
                        (r'^domains/(?P<dom_id>\d+)/editmailbox/(?P<mbox_id>\d+)/$', 'editmailbox'),
                        (r'^domains/(?P<dom_id>\d+)/deletemailbox/(?P<mbox_id>\d+)/$', 'delmailbox'),

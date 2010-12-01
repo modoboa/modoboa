@@ -1,5 +1,5 @@
 from django import forms
-from modoboa.admin.models import Domain, Mailbox, Alias
+from modoboa.admin.models import *
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
@@ -13,6 +13,11 @@ class DomainForm(forms.ModelForm):
         super(DomainForm, self).__init__(*args, **kwargs)
         for f in ['name', 'quota']:
             self.fields[f].widget.attrs['size'] = 14
+
+class DomainAliasForm(forms.ModelForm):
+    class Meta:
+        model = DomainAlias
+        fields = ('name', 'target', 'enabled')
 
 class MailboxForm(forms.ModelForm):
     quota = forms.IntegerField(label=_("Quota"), required=False,

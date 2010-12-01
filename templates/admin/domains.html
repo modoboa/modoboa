@@ -16,12 +16,11 @@
 {% display_messages messages %}
 {% endif %}
 <div id="domcontent">
-  {% if not domains %}
-  {% trans "No domain defined." %}
+  {% if not domains %}<div class="info">{% trans "No domain defined." %}</div>
   {% else %}
   <table>
     <tr>
-      <th width="50px">{% trans "Actions" %}</th>
+      <th width="100px">{% trans "Actions" %}</th>
       <th>{% trans "Name" %}</th>
       <th width="150px">{% trans "Mailboxes" %}</th>
       <th width="50px">{% trans "Quota" %}</th>
@@ -38,6 +37,11 @@
         {% url admin.views.deldomain dom.id as del_url %}
         <a href="{{ del_url }}" name="deleteDom">
           <img src="{{ MEDIA_URL }}pics/remove.png" border="0" title="{% trans 'Delete domain' %}"/>
+        </a>
+	{% url admin.views.newdomalias dom.id as new_url %}
+	<a href="{{ new_url }}" class="boxed"
+	   rel="{handler:'iframe',size:{x:300,y:180}}">
+          <img src="{{ MEDIA_URL }}pics/add.png" border="0" title="{% trans 'Add domain alias' %}"/>
         </a>
       </td>
       {% url admin.views.mailboxes dom.id as domurl %}

@@ -36,6 +36,14 @@ class Domain(models.Model):
     def __str__(self):
         return self.name
 
+class DomainAlias(models.Model):
+    name = models.CharField(_("name"), max_length=100, unique=True,
+                            help_text=_("The alias name"))
+    target = models.ForeignKey(Domain, verbose_name=_('target'),
+                               help_text=_("The domain this alias points to"))
+    enabled = models.BooleanField(_('enabled'),
+                                  help_text=_("Check to activate this alias"))
+
 class Mailbox(models.Model):
     name = models.CharField(_('name'), max_length=100, 
                             help_text=_("First name and last name of mailbox owner"))

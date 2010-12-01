@@ -54,6 +54,39 @@ def domains(request):
             })
 
 @login_required
+def domaliases(request, dom_id=None):
+    domaliases = DomainAlias.objects.all()
+    return _render(request, 'admin/domaliases.html', {
+            "domaliases" : domaliases
+            })
+
+@login_required
+def newdomalias(request, dom_id):
+    domain = Domain.objects.get(pk=dom_id)
+    if request.method == "POST":
+        form = DomainAliasForm(request.POST)
+        error = None
+        if form.is_valid():
+            if DomainAlias.objects.filter(name=request.POST["name"]):
+                error = _("Alias with this name already exists")
+            else:
+                domalias = form.save(commit=False)
+                domalias.save()
+                ctx = _ctx_ok(reverse(admin.views.domaliases))
+                messages.info(request, _("Domain alias created"), fail_silently=True)
+                return HttpResponse(simplejson.dumps(ctx),
+                                    mimetype="application/json")
+        content = _render_to_string(request, "admin/newdomalias.html", {
+                "form" : form, "error" : error
+                })
+        ctx = getctx("ko", content=content)
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    form = DomainAliasForm()
+    return _render(request, 'admin/newdomalias.html', {
+            "form" : form
+            })
+
+@login_required
 @permission_required("admin.add_domain")
 def newdomain(request):
     if request.method == "POST":

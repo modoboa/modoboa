@@ -120,7 +120,11 @@ def domains_menu(selection, user):
         {"name" : "domains",
          "url" : reverse(admin.views.domains),
          "label" : _("Domains"),
-         "img" : static_url("pics/domains.png")}
+         "img" : static_url("pics/domains.png")},
+        {"name" : "domaliases",
+         "url" : reverse(admin.views.domaliases),
+         "label" : _("Domain aliases"),
+         "img" : static_url("pics/alias.png")}
         ]
     entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box",
                                       user=user)

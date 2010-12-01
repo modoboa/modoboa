@@ -30,6 +30,9 @@ window.addEvent("domready", function() {
     domain_submit = function(event) {
         generic_submit(this, event, "domform", domain_submit);
     };
+    domalias_submit = function(event) {
+	generic_submit(this, event, "domaliasform", domalias_submit);
+    };
     mailbox_submit = function(event) {
         generic_submit(this, event, "mboxform", mailbox_submit);
     };
@@ -59,6 +62,9 @@ window.addEvent("domready", function() {
 
     if ($("domform"))
         $("domform").addEvent("submit", domain_submit);
+
+    if ($("domaliasform"))
+	$("domaliasform").addEvent("submit", domalias_submit);
 
     if ($("mboxform"))
         $("mboxform").addEvent("submit", mailbox_submit);
