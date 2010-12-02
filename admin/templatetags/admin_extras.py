@@ -121,6 +121,12 @@ def domains_menu(selection, user):
          "url" : reverse(admin.views.domains),
          "label" : _("Domains"),
          "img" : static_url("pics/domains.png")},
+        {"name" : "newdomalias",
+         "url" : reverse(admin.views.newdomalias),
+         "label" : _("New domain alias"),
+         "img" : static_url("pics/add.png"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:300,y:200}}"},
         {"name" : "domaliases",
          "url" : reverse(admin.views.domaliases),
          "label" : _("Domain aliases"),
@@ -146,6 +152,70 @@ def permissions_menu(user):
         ]
     return render_to_string('common/menu.html', 
                             {"entries" : entries, "user" : user})
+
+def render_actions(actions):
+    t = template.Template("""
+{% for a in actions %}
+<a href="{{ a.url }}" name="{{ a.name }}" class="{{ a.class }}" rel="{{ a.rel }}">
+  <img src="{{ a.img }}" border="0" title="{{ a.title }}" />
+</a>
+{% endfor %}
+""")
+    return t.render(template.Context({
+                "actions" : actions
+                }))
+
+@register.simple_tag
+def domain_actions(user, domid):
+    actions = [
+        {"name" : "editdomain",
+         "url" : reverse(admin.views.editdomain, args=[domid]),
+         "img" : static_url("pics/edit.png"),
+         "title" : _("Edit domain"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:300,y:180}}"},
+        {"name" : "deldomain",
+         "url" : reverse(admin.views.deldomain, args=[domid]),
+         "img" : static_url("pics/remove.png"),
+         "title" : _("Delete domain")},
+        {"name" : "domaliases",
+         "url" : reverse(admin.views.domaliases) + "?domid=%s" % domid,
+         "img" : static_url("pics/alias.png"),
+         "title" : _("View aliases of this domain")}
+        ]
+    return render_actions(actions)
+
+@register.simple_tag
+def domalias_actions(user, aid):
+    actions = [
+        {"name" : "editalias",
+         "url" : reverse(admin.views.editdomalias, args=[aid]),
+         "img" : static_url("pics/edit.png"),
+         "title" : _("Edit alias"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:300,y:220}}"}
+        ]
+    return render_actions(actions)
+
+@register.simple_tag
+def mailbox_actions(user, domid, mid):
+    actions = [
+        {"name" : "editmailbox",
+         "url" : reverse(admin.views.editmailbox, args=[domid, mid]),
+         "img" : static_url("pics/edit.png"),
+         "title" : _("Edit mailbox"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:300,y:280}}"},
+        {"name" : "deleteMb",
+         "url" : reverse(admin.views.delmailbox, args=[domid, mid]),
+         "img" : static_url("pics/remove.png"),
+         "title" : _("Delete mailbox")},
+        {"name" : "aliases",
+         "url" : reverse("mbox-aliases", args=[domid, mid]),
+         "img" : static_url("pics/alias.png"),
+         "title" : _("View this mailbox aliases")},
+        ]
+    return render_actions(actions)
 
 @register.simple_tag
 def loadadminextmenu(user):

@@ -5,7 +5,9 @@
   <script type="text/javascript">
   </script>
 {% endblock %}
-{% block middletitle %}{% trans "Available aliases" %}{% endblock %}
+{% block middletitle %}
+{% trans "Domain aliases" %}{% if domain %} ({% trans "for" %} {{ domain.name }}){% endif %}
+{% endblock %}
 {% block menu %}{% domains_menu "domaliases" user %}{% endblock %}
 {% block content %}
 {% if messages %}{% display_messages messages %}{% endif %}
@@ -21,8 +23,8 @@
       <th width="75px">{% trans "Enabled" %}</th>
     </tr>
     {% for domalias in domaliases %}
-    <tr>
-      <td></td>
+    <tr class="{% cycle 'odd' 'even' %}">
+      <td>{% domalias_actions user domalias.id %}</td>
       <td>{{ domalias.name }}</td>
       <td>{{ domalias.target.name }}</td>
       <td>{{ domalias.enabled|yesno }}</td>

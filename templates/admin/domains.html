@@ -28,23 +28,7 @@
     </tr>
     {% for dom in domains %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ dom.id }}">
-      <td>
-        {% url admin.views.editdomain dom.id as edit_url %}
-        <a href="{{ edit_url }}" class="boxed"
-           rel="{handler:'iframe',size:{x:300,y:180}}">
-          <img src="{{ MEDIA_URL }}pics/edit.png" border="0" title="{% trans 'Edit domain' %}"/>
-        </a>
-        {% url admin.views.deldomain dom.id as del_url %}
-        <a href="{{ del_url }}" name="deleteDom">
-          <img src="{{ MEDIA_URL }}pics/remove.png" border="0" title="{% trans 'Delete domain' %}"/>
-        </a>
-	{% url admin.views.newdomalias dom.id as new_url %}
-	<a href="{{ new_url }}" class="boxed"
-	   rel="{handler:'iframe',size:{x:300,y:180}}">
-          <img src="{{ MEDIA_URL }}pics/add.png" border="0" title="{% trans 'Add domain alias' %}"/>
-        </a>
-      </td>
-      {% url admin.views.mailboxes dom.id as domurl %}
+      <td>{% domain_actions user dom.id %}</td>
       <td>{{ dom.name }}</td>
       <td>{{ dom.mboxcounter }}</td>
       <td>{{ dom.quota }} {% trans "MB" %}</td>

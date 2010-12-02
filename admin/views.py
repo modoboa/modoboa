@@ -54,28 +54,36 @@ def domains(request):
             })
 
 @login_required
-def domaliases(request, dom_id=None):
-    domaliases = DomainAlias.objects.all()
+def domaliases(request):
+    if request.GET.has_key("domid"):
+        domain = Domain.objects.get(pk=request.GET["domid"])
+        domaliases = DomainAlias.objects.filter(target=request.GET["domid"])
+    else:
+        domain = None
+        domaliases = DomainAlias.objects.all()
     return _render(request, 'admin/domaliases.html', {
-            "domaliases" : domaliases
+            "domaliases" : domaliases, "domain" : domain
             })
 
 @login_required
-def newdomalias(request, dom_id):
-    domain = Domain.objects.get(pk=dom_id)
+def newdomalias(request):
     if request.method == "POST":
         form = DomainAliasForm(request.POST)
         error = None
         if form.is_valid():
-            if DomainAlias.objects.filter(name=request.POST["name"]):
-                error = _("Alias with this name already exists")
+            domalias = form.save(commit=False)
+            if Domain.objects.filter(name=domalias.name):
+                error = _("A domain with this name already exists")
             else:
-                domalias = form.save(commit=False)
-                domalias.save()
-                ctx = _ctx_ok(reverse(admin.views.domaliases))
-                messages.info(request, _("Domain alias created"), fail_silently=True)
-                return HttpResponse(simplejson.dumps(ctx),
-                                    mimetype="application/json")
+                try:
+                    domalias.save()
+                except IntegrityError:
+                    error = _("Alias with this name already exists")
+                else:
+                    ctx = _ctx_ok(reverse(admin.views.domaliases))
+                    messages.info(request, _("Domain alias created"), fail_silently=True)
+                    return HttpResponse(simplejson.dumps(ctx),
+                                        mimetype="application/json")
         content = _render_to_string(request, "admin/newdomalias.html", {
                 "form" : form, "error" : error
                 })
@@ -84,6 +92,37 @@ def newdomalias(request, dom_id):
     form = DomainAliasForm()
     return _render(request, 'admin/newdomalias.html', {
             "form" : form
+            })
+
+@login_required
+def editdomalias(request, alias_id):
+    domalias = DomainAlias.objects.get(pk=alias_id)
+    if request.method == "POST":
+        form = DomainAliasForm(request.POST, instance=domalias)
+        error = None
+        if form.is_valid():
+            ndomalias = form.save(commit=False)
+            if Domain.objects.filter(name=ndomalias.name):
+                error = _("A domain with this name already exists")
+            else:
+                try:
+                    ndomalias.save()
+                except IntegrityError:
+                    error = _("Alias with this name already exists")
+                else:
+                    ctx = _ctx_ok(reverse(admin.views.domaliases))
+                    messages.info(request, _("Domain alias updated"), fail_silently=True)
+                    return HttpResponse(simplejson.dumps(ctx),
+                                        mimetype="application/json")
+        content = _render_to_string(request, "admin/editdomalias.html", {
+                "form" : form, "error" : error
+                })
+        ctx = getctx("ko", content=content)
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+            
+    form = DomainAliasForm(instance=domalias)
+    return _render(request, 'admin/editdomalias.html', {
+            "form" : form, "domalias" : domalias
             })
 
 @login_required
