@@ -156,6 +156,7 @@ textarea {
     background-color: #eee;
     width: 80%;
     height: 30px;
+    word-wrap: break-word;
 }
 
 textarea:hover {

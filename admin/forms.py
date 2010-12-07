@@ -32,7 +32,7 @@ class MailboxForm(forms.ModelForm):
 
     class Meta:
         model = Mailbox
-        fields = ('name', 'address')
+        fields = ('domain', 'name', 'address')
 
     def __init__(self, *args, **kwargs):
         super(MailboxForm, self).__init__(*args, **kwargs)
@@ -48,6 +48,13 @@ class MailboxForm(forms.ModelForm):
         if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
             raise forms.ValidationError(_("Passwords mismatch"))
         return self.cleaned_data["password2"]
+
+    def save(self, force_insert=False, force_update=False, commit=True):
+        m = super(MailboxForm, self).save(commit=False)
+        if commit:
+            m.save(enabled=self.cleaned_data["enabled"], 
+                   password=self.cleaned_data["password1"])
+        return m
 
 class AliasForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -69,6 +76,14 @@ class AliasForm(forms.ModelForm):
         if self.cleaned_data["address"].find('@') != -1:
             return self.cleaned_data["address"].rsplit("@", 1)[0]
         return self.cleaned_data["address"]
+
+    def save(self, force_insert=False, force_update=False, commit=True):
+        a = super(AliasForm, self).save(commit=False)
+        if commit:
+            domain = self.cleaned_data["mboxes"][0].domain
+            a.full_address = "%s@%s" % (a.address, domain.name)
+            a.save()
+        return a
 
 class SuperAdminForm(forms.Form):
     user = forms.ModelChoiceField([], label=_("User"), required=True,

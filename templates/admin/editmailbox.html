@@ -6,7 +6,7 @@
 {% block content %}
 <div class="title"><h1>{% trans "Mailbox" %} {{ mbox.name }}</h1></div>
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
-{% url admin.views.editmailbox mbox.domain_id mbox.id as box_url %}
+{% url admin.views.editmailbox mbox.id as box_url %}
 <form action="{{ box_url }}" method="POST" id="mboxform" name="mboxform">
   {% include "common/genericform.html" %}
   <div class="spacer"></div>

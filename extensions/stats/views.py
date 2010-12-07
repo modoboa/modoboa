@@ -9,7 +9,7 @@ from modoboa.admin.views import good_domain
 from modoboa.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
-from extensions.stats.grapher import *
+from modoboa.extensions.stats.grapher import *
 
 graph_types = ['AVERAGE', 'MAX']
 graph_list = [{"name" : "traffic", "label" : _("Average normal traffic")},

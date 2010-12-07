@@ -1,17 +1,7 @@
-{% extends "nlayout.html" %}
+{% extends "admin/domains_header.html" %}
 {% load i18n admin_extras libextras %}
-{% block html_head %}
-  <script src="{{ MEDIA_URL }}js/domains.js" type="text/javascript"></script>
-  <script type="text/javascript">
-  </script>
-{% endblock %}
-{% block middletitle %}
-{% trans "Domain aliases" %}{% if domain %} ({% trans "for" %} {{ domain.name }}){% endif %}
-{% endblock %}
-{% block menu %}{% domains_menu "domaliases" user %}{% endblock %}
-{% block content %}
-{% if messages %}{% display_messages messages %}{% endif %}
-<div id="domcontent">
+{% block pagetitle %}{% trans "Domain aliases" %}{% endblock %}
+{% block subcontent %}
   {% if not domaliases %}
   <div class="info">{% trans "No domain alias defined." %}</div>
   {% else %}
@@ -32,5 +22,4 @@
     {% endfor %}
   </table>
   {% endif %}
-</div>
 {% endblock %}

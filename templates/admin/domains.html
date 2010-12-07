@@ -1,21 +1,16 @@
-{% extends "nlayout.html" %}
+{% extends "admin/domains_header.html" %}
 {% load i18n admin_extras libextras %}
 {% block html_head %}
-  <script src="{{ MEDIA_URL }}js/domains.js" type="text/javascript"></script>
+  {{ block.super }}
   <script type="text/javascript">
     window.addEvent('domready', function() {
-      {% url admin.views.domains as view_url %}
+      {% url admin.views.mailboxes as view_url %}
       bindRows("{{ view_url }}", "{{ current_page }}");
     });
   </script>
 {% endblock %}
 {% block middletitle %}{% trans "Available domains" %}{% endblock %}
-{% block menu %}{% domains_menu "domains" user %}{% endblock %}
-{% block content %}
-{% if messages %}
-{% display_messages messages %}
-{% endif %}
-<div id="domcontent">
+{% block subcontent %}
   {% if not domains %}<div class="info">{% trans "No domain defined." %}</div>
   {% else %}
   <table>
@@ -37,5 +32,4 @@
     {% endfor %}
   </table>
   {% endif %}
-</div>
 {% endblock %}

@@ -7,18 +7,19 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        db.alter_column("auth_user", "username", models.CharField(unique=True, max_length=254))
-        db.alter_column("auth_user", "email", models.CharField(max_length=254))
+        db.alter_column("admin_alias", "full_address", 
+                        models.CharField(unique=True, max_length=254))
 
     def backwards(self, orm):
-        raise RuntimeError("Cannot revert this migration")
+        db.alter_column("admin_alias", "full_address",
+                        models.CharField(max_length=150))
 
     models = {
         'admin.alias': {
             'Meta': {'object_name': 'Alias'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'full_address': ('django.db.models.fields.CharField', [], {'max_length': '150'}),
+            'full_address': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '150'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mboxes': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['admin.Mailbox']", 'symmetrical': 'False'})
         },
@@ -28,6 +29,13 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'quota': ('django.db.models.fields.IntegerField', [], {})
+        },
+        'admin.domainalias': {
+            'Meta': {'object_name': 'DomainAlias'},
+            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
+            'target': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"})
         },
         'admin.extension': {
             'Meta': {'object_name': 'Extension'},

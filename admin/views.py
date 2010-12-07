@@ -13,22 +13,28 @@ from django.db import transaction, IntegrityError
 from modoboa import admin, userprefs
 from models import *
 from admin.permissions import *
-from modoboa.lib.authbackends import crypt_password
+from modoboa.lib import crypt_password
 from modoboa.lib import _render, _render_to_string, _ctx_ok, \
     getctx, events, parameters
 from modoboa.lib.models import Parameter
 import copy
-import pwd
 
 def good_domain(f):
-    def dec(request, dom_id, **kwargs):
+    def dec(request, **kwargs):
         if request.user.is_superuser:
-            return f(request, dom_id, **kwargs)
+            return f(request, **kwargs)
         mb = Mailbox.objects.get(user=request.user.id)
-        if isinstance(dom_id, str) or isinstance(dom_id, unicode):
-            dom_id = int(dom_id)
-        if dom_id == mb.domain.id:
-            return f(request, dom_id, **kwargs)
+        access = True
+        if request.GET.has_key("domid"):
+            dom_id = int(request.GET["domid"])
+            if dom_id != mb.domain.id:
+                access = False
+        else:
+            q = request.GET.copy()
+            q["domid"] = mb.domain.id
+            request.GET = q
+        if access:
+            return f(request, **kwargs)
 
         from django.conf import settings
         path = urlquote(request.get_full_path())
@@ -36,12 +42,20 @@ def good_domain(f):
         return HttpResponseRedirect("%s?next=%s" % (login_url, path))
     return dec
 
+def render_domains_page(request, page, **kwargs):
+    template = "admin/%s.html" % page
+    if request.GET.has_key("domid"):
+        kwargs["domid"] = request.GET["domid"]
+    else:
+        kwargs["domid"] = ""
+    kwargs["selection"] = page
+    return _render(request, template, kwargs)
+
 @login_required
 def domains(request):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
-            mb = Mailbox.objects.get(user=request.user.id)
-            return mailboxes(request, dom_id=mb.domain.id)
+            return HttpResponseRedirect(reverse(mailboxes))
 
         return HttpResponseRedirect(reverse(userprefs.views.preferences))
     
@@ -49,9 +63,8 @@ def domains(request):
     counters = {}
     for dom in domains:
         dom.mboxcounter = len(dom.mailbox_set.all())
-    return _render(request, 'admin/domains.html', {
-            "domains" : domains, "counters" : counters
-            })
+    return render_domains_page(request, "domains",
+                               domains=domains, counter=counters)
 
 @login_required
 def domaliases(request):
@@ -61,9 +74,8 @@ def domaliases(request):
     else:
         domain = None
         domaliases = DomainAlias.objects.all()
-    return _render(request, 'admin/domaliases.html', {
-            "domaliases" : domaliases, "domain" : domain
-            })
+    return render_domains_page(request, "domaliases",
+                               domaliases=domaliases, domain=domain)
 
 @login_required
 def newdomalias(request):
@@ -199,12 +211,15 @@ def deldomain(request, dom_id):
 @login_required
 @good_domain
 @permission_required("admin.view_mailboxes")
-def mailboxes(request, dom_id=None):
-    domain = Domain.objects.get(pk=dom_id)
-    mailboxes = Mailbox.objects.filter(domain=dom_id)
-    return _render(request, 'admin/mailboxes.html', {
-            "mailboxes" : mailboxes, "domain" : domain
-            })
+def mailboxes(request):
+    if request.GET.has_key("domid"):
+        domain = Domain.objects.get(pk=request.GET["domid"])
+        mailboxes = Mailbox.objects.filter(domain=domain.id)
+    else:
+        mailboxes = Mailbox.objects.all()
+        domain = None
+    return render_domains_page(request, "mailboxes",
+                               mailboxes=mailboxes, domain=domain)
 
 @login_required
 @good_domain
@@ -218,102 +233,60 @@ def mailboxes_raw(request, dom_id=None):
 @login_required
 @good_domain
 @permission_required("admin.add_mailbox")
-def newmailbox(request, dom_id=None):
-    domain = Domain.objects.get(pk=dom_id)
+def newmailbox(request):
     if request.method == "POST":
         form = MailboxForm(request.POST)
         error = None
         if form.is_valid():
-            mb = form.save(commit=False)
-            if mb.create_dir(domain):
-                from django.conf import settings
-
-                user = User()
-                user.username = user.email = "%s@%s" % (mb.address, domain.name)
-                user.set_unusable_password()
-                user.is_active = request.POST.has_key("enabled") \
-                    and True or False
-                try:
-                    fname, lname = mb.name.split()
-                except ValueError:
-                    fname = mb.name
-                    lname = ""
-                user.first_name = fname
-                user.last_name = lname
-                try:
-                    user.save()
-                except IntegrityError:
-                    error = _("Mailbox with this address already exists")
-                else:
-                    mb.user = user
-                    mb.password = crypt_password(request.POST["password1"])
-                    mb.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
-                    mb.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
-                    mb.domain = domain
-                    mb.quota = request.POST["quota"]
-                    if not mb.quota:
-                        mb.quota = domain.quota
-                    mb.full_address = user.email
-                    mb.save()
-                    
-                    events.raiseEvent("CreateMailbox", mbox=mb)
-                    
-                    messages.info(request, _("Mailbox created."), 
-                                  fail_silently=True)
-                    ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[domain.id]))
-                    return HttpResponse(simplejson.dumps(ctx), 
-                                        mimetype="application/json")
+            try:
+                mb = form.save()
+            except AdminError as e:
+                error = str(e)
             else:
-                error = _("Failed to initialise mailbox, check permissions")
-        content = _render_to_string("ko", "admin/newmailbox.html", {
-                "form" : form, "domain" : domain, "error" : error
+                events.raiseEvent("CreateMailbox", mbox=mb)
+                messages.info(request, _("Mailbox created"),
+                              fail_silently=True)
+                ctx = _ctx_ok(reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
+                return HttpResponse(simplejson.dumps(ctx), 
+                                    mimetype="application/json")
+        content = _render_to_string(request, "admin/newmailbox.html", {
+                "form" : form, "error" : error
                 })
         ctx = getctx("ko", content=content)
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = MailboxForm()
+    if request.GET.has_key("domid"):
+        form.fields["domain"].initial = request.GET["domid"]
     return _render(request, "admin/newmailbox.html", {
-            "domain" : domain, "form" : form
+            "form" : form
             })
 
 @login_required
 @good_domain
 @permission_required("admin.change_mailbox")
 @transaction.commit_manually
-def editmailbox(request, dom_id, mbox_id=None):
+def editmailbox(request, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
     if request.method == "POST":
         oldmb = copy.deepcopy(mb)
         form = MailboxForm(request.POST, instance=mb)
         error = None
         if form.is_valid():
-            mb = form.save(commit=False)
-            mb.user.is_active = request.POST.has_key("enabled") \
-                and request.POST["enabled"] or False
-            mb.user.username = mb.user.email = \
-                "%s@%s" % (mb.address, mb.domain.name)
             try:
-                mb.user.save()
-            except IntegrityError:
-                error = _("Mailbox with this address already exists")
+                mb = form.save()
+            except AdminError, inst:
+                error = str(inst)
             else:
-                if not oldmb.rename_dir(mb.domain.name, mb.address):
-                    error = _("Failed to rename mailbox, check permissions")
-                else:
-                    if request.POST["password1"] != u"é":
-                        mb.password = crypt_password(request.POST["password1"])
-                    mb.quota = request.POST["quota"]
-                    if not mb.quota:
-                        mb.quota = mb.domain.quota
-                    mb.full_address = mb.user.email
-                    mb.save()
+                if oldmb.rename_dir(mb.domain.name, mb.address):
                     transaction.commit()
                     events.raiseEvent("ModifyMailbox", mbox=mb, oldmbox=oldmb)
                     messages.info(request, _("Mailbox modified"),
                                   fail_silently=True)
-                    ctx = _ctx_ok(reverse(admin.views.mailboxes, args=[dom_id]))
+                    ctx = _ctx_ok(reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
                     return HttpResponse(simplejson.dumps(ctx),
                                         mimetype="application/json")
+                error = _("Failed to rename mailbox, check permissions")                
         if error is not None:
             transaction.rollback()
         ctx = getctx("ko", content=_render_to_string(request, "admin/editmailbox.html", {
@@ -333,7 +306,7 @@ def editmailbox(request, dom_id, mbox_id=None):
 @login_required
 @good_domain
 @permission_required("admin.delete_mailbox")
-def delmailbox(request, dom_id, mbox_id=None):
+def delmailbox(request, mbox_id=None):
     mb = Mailbox.objects.get(pk=mbox_id)
     if mb.user.id != request.user.id:
         events.raiseEvent("DeleteMailbox", mbox=mb)
@@ -351,90 +324,85 @@ def delmailbox(request, dom_id, mbox_id=None):
 @login_required
 @good_domain
 @permission_required("admin.view_aliases")
-def aliases(request, dom_id=None, mbox_id=None):
-    domain = Domain.objects.get(pk=dom_id)
-    if not mbox_id:
-        aliases = Alias.objects.filter(mboxes__domain__id=dom_id).distinct()
+def mbaliases(request):
+    if request.GET.has_key("domid"):
+        aliases = Alias.objects.filter(mboxes__domain__id=request.GET["domid"]).distinct()
+    if request.GET.has_key("mbid"):
+        aliases = Alias.objects.filter(mboxes__id=request.GET["mbid"]).distinct()
     else:
-        aliases = Alias.objects.filter(mboxes__id=mbox_id)
-    return _render(request, 'admin/aliases.html', {
-            "aliases" : aliases, "domain" : domain
-            })
+        aliases = Alias.objects.all()
+    return render_domains_page(request, "mbaliases", aliases=aliases)
 
 @login_required
 @good_domain
 @permission_required("admin.add_alias")
-def newalias(request, dom_id):
-    domain = Domain.objects.get(pk=dom_id)
+def newmbalias(request):    
     if request.method == "POST":
-        form = AliasForm(request.POST, domain=domain)
+        form = AliasForm(request.POST)
         error = None
         if form.is_valid():
-            if Alias.objects.filter(address=request.POST["address"]):
+            try:
+                alias = form.save()
+            except IntegrityError:
                 error = _("Alias with this name already exists")
             else:
-                alias = form.save(commit=False)
-                alias.full_address = "%s@%s" % (alias.address, domain.name)
-                alias.save()
                 form.save_m2m()
-                ctx = _ctx_ok(reverse(admin.views.aliases, args=[dom_id]))
-                messages.info(request, _("Alias created"), fail_silently=True)
+                ctx = _ctx_ok(reverse(admin.views.mbaliases) )
+                messages.info(request, _("Mailbox alias created"), fail_silently=True)
                 return HttpResponse(simplejson.dumps(ctx),
                                     mimetype="application/json")
-        content = _render_to_string(request, "admin/newalias.html", {
-                "domain" : dom_id, "form" : form, "error" : error
+        content = _render_to_string(request, "admin/newmbalias.html", {
+                "form" : form, "error" : error
                 })
         ctx = getctx("ko", content=content)
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
-    form = AliasForm(domain=domain)
-    return _render(request, 'admin/newalias.html', {
-            "domain" : dom_id, "form" : form, "noerrors" : True
+    if request.GET.has_key("domid"):
+        form = AliasForm(domain=Domain.objects.get(pk=request.GET["domid"]))
+    else:
+        form = AliasForm()
+    return _render(request, 'admin/newmbalias.html', {
+             "form" : form, "noerrors" : True
             })
 
 @login_required
 @good_domain
 @permission_required("admin.change_alias")
-def editalias(request, dom_id, alias_id):
+def editmbalias(request, alias_id):
     alias = Alias.objects.get(pk=alias_id)
     if request.method == "POST":
         form = AliasForm(request.POST, instance=alias)
         error = None
         if form.is_valid():
-            if alias.address != request.POST["address"] \
-                    and Alias.objects.filter(address=request.POST["address"]):
+            try:
+                alias = form.save()
+            except IntegrityError:
                 error = _("Alias with this name already exists")
             else:
-                domain = Domain.objects.get(pk=dom_id)
-                alias = form.save(commit=False)
-                alias.full_address = "%s@%s" % (alias.address, 
-                                                domain.name)
-                alias.save()
                 form.save_m2m()
-                ctx = _ctx_ok(reverse(admin.views.aliases, args=[dom_id]))
-                messages.info(request, _("Alias modified"),
+                ctx = _ctx_ok(reverse(admin.views.mbaliases))
+                messages.info(request, _("Mailbox alias modified"),
                               fail_silently=True)
                 return HttpResponse(simplejson.dumps(ctx), 
                                     mimetype="application/json")
-        content = _render_to_string(request, "admin/editalias.html", {
-                "domain" : dom_id, "alias" : alias, "form" : form, "error" : error
+        content = _render_to_string(request, "admin/editmbalias.html", {
+                "alias" : alias, "form" : form, "error" : error
                 })
         ctx = getctx("ko", content=content)
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
     form = AliasForm(instance=alias)
-    return _render(request, 'admin/editalias.html', {
-            "form" : form, "alias" : alias, "domain" : dom_id
+    return _render(request, 'admin/editmbalias.html', {
+            "form" : form, "alias" : alias
             })
 
 @login_required
 @good_domain
 @permission_required("admin.delete_alias")
-def delalias(request, dom_id, alias_id):
+def delmbalias(request, alias_id):
     alias = Alias.objects.get(pk=alias_id)
     alias.delete()
     messages.info(request, _("Alias deleted"), fail_silently=True)
-    return HttpResponseRedirect(reverse(admin.views.aliases, 
-                                        args=[dom_id]))
+    return HttpResponseRedirect(reverse(admin.views.mbaliases))
 
 @login_required
 @permission_required("auth.view_permissions")
@@ -530,8 +498,8 @@ def saveparameters(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewextensions(request):
-    from extensions import list_extensions
-    from lib import tables
+    from modoboa.extensions import list_extensions
+    from modoboa.lib import tables
     
     class ExtensionsTable(tables.Table):
         idkey = "id"
@@ -560,7 +528,7 @@ def viewextensions(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def saveextensions(request):
-    import extensions
+    from modoboa import extensions
 
     actived_exts = Extension.objects.filter(enabled=True)
     found = []

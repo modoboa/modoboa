@@ -288,7 +288,10 @@ setDivHeight = function(id, extrah, modulo) {
 bindRows = function(rooturl, page) {
     $$("tr").addEvent("click", function(event) {
         if (event.target.parentNode.id) {
-            var url = rooturl + event.target.parentNode.id + "?page=" + page;
+            var url = rooturl + "?domid=" + event.target.parentNode.id;
+	    if (page != "") {
+		url += "?page=" + page;
+	    }
             event.target.parentNode.setStyle("background", "#ffffcc");
             location.href = url;
         }

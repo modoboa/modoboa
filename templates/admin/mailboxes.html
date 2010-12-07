@@ -1,13 +1,9 @@
-{% extends "admin/domain_header.html" %}
-{% load i18n %}
-{% block menu %}
-{% load admin_extras %}
-{% domain_menu domain.id "mailboxes" user %}
-{% endblock %}
-{% block domcontent %}
-{% load i18n %}
+{% extends "admin/domains_header.html" %}
+{% load i18n admin_extras %}
+{% block pagetitle %}{% trans "Available mailboxes" %}{% endblock %}
+{% block subcontent %}
 {% if not mailboxes %}
-<p>{% trans "No mailbox defined." %}</p>
+<div class="info">{% trans "No mailbox defined." %}</div>
 {% else %}
 <table>
   <tr>
@@ -19,7 +15,7 @@
   </tr>
   {% for mb in mailboxes %}
   <tr class="{% cycle 'odd' 'even' %}">
-    <td>{% mailbox_actions user domain.id mb.id %}</td>
+    <td>{% mailbox_actions user mb %}</td>
     <td>{{ mb.name }}</td>
     <td>{{ mb.address }}@{{ mb.domain.name }}</td>
     <td>{{ mb.quota }} {% trans "MB" %}</td>

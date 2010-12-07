@@ -1,10 +1,28 @@
-from django.db import models
+# coding: utf8
+from django.db import models, IntegrityError
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.conf import settings
 from modoboa.lib import parameters
-from modoboa.lib import exec_cmd, exec_as_vuser
+from modoboa.lib import exec_cmd, exec_as_vuser, crypt_password
 import os
+import pwd
+
+class AdminError(Exception):
+    """Custom exception
+
+    
+    """
+    def __init__(self, value):
+        """Constructor
+
+        :param value: the information contained in this exception.
+        """
+        self.value = str(value)
+        
+    def __str__(self):
+        """String representation"""
+        return self.value
 
 class Domain(models.Model):
     name = models.CharField(_('name'), max_length=100,
@@ -70,28 +88,29 @@ class Mailbox(models.Model):
         self.mdirroot = parameters.get_admin("MAILDIR_ROOT")
 
     def __str__(self):
-        return "%s" % (self.address)
+        return "%s" % (self.full_address)
 
-    def create_dir(self, domain):
-        path = "%s/%s/%s" % (parameters.get_admin("STORAGE_PATH"),
-                             domain.name, self.address)
-        if os.path.exists(path):
+    def create_dir(self):
+        relpath = "%s/%s" % (self.domain.name, self.address)
+        abspath = os.path.join(parameters.get_admin("STORAGE_PATH"), relpath)
+        if self.mbtype == "mbox":
+            self.path = "%s/Inbox" % relpath
+        else:
+            self.path = "%s/%s" % (relpath, self.mdirroot)
+        if os.path.exists(abspath):
             return True
-        if not exec_as_vuser("mkdir -p %s" % path):
+        if not exec_as_vuser("mkdir -p %s" % abspath):
             return False
         if self.mbtype == "mbox":
             template = ["Inbox", "Drafts", "Sent", "Trash", "Junk"]
-            for dir in template:
-                exec_as_vuser("touch %s/%s" % (path, dir))
-                    
-            self.path = "%s/%s/Inbox" % (domain.name, self.address)
+            for f in template:
+                exec_as_vuser("touch %s/%s" % (abspath, f))
         else:
             template = [".Drafts/", ".Sent/", ".Trash/", ".Junk/"]
             for dir in template:
                 for sdir in ["cur", "new", "tmp"]:
                     exec_as_vuser("mkdir -p %s/%s/%s/%s" \
-                                      % (path, self.mdirroot, dir, sdir))
-            self.path = "%s/%s/%s/" % (domain.name, self.address, self.mdirroot)
+                                      % (abspath, self.mdirroot, dir, sdir))
         return True
 
     def rename_dir(self, domain, newaddress):
@@ -109,6 +128,42 @@ class Mailbox(models.Model):
                                  % (parameters.get_admin("STORAGE_PATH"),
                                     self.domain.name, self.address))
 
+    def save(self, *args, **kwargs):
+        if not self.create_dir():
+            raise AdminError(_("Failed to initialise mailbox, check permissions"))
+        try:
+            user = getattr(self, "user")
+        except User.DoesNotExist:
+            user = User()
+        user.username = user.email = "%s@%s" % (self.address, self.domain.name)
+        user.set_unusable_password()
+        user.is_active = kwargs["enabled"]
+        try:
+            fname, lname = self.name.split()
+        except ValueError:
+            fname = self.name
+            lname = ""
+        user.first_name = fname
+        user.last_name = lname
+        try:
+            user.save()
+        except IntegrityError:
+            raise AdminError(_("Mailbox with this address already exists"))
+        self.user = user
+        if kwargs["password"] != u"é":
+            self.password = crypt_password(kwargs["password"])
+        self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
+        self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
+        if not self.quota:
+            self.quota = self.domain.quota
+        self.full_address = self.user.email
+        try:
+            del kwargs["enabled"]
+            del kwargs["password"]
+        except KeyError:
+            pass
+        super(Mailbox, self).save(*args, **kwargs)
+
     def tohash(self):
         return {
             "id" : self.id, 
@@ -120,7 +175,7 @@ class Mailbox(models.Model):
 class Alias(models.Model):
     address = models.CharField(_('address'), max_length=100,
                                help_text=_("The alias address (without the domain part)"))
-    full_address = models.CharField(max_length=150)
+    full_address = models.CharField(max_length=254, unique=True)
     mboxes = models.ManyToManyField(Mailbox, verbose_name=_('mailboxes'),
                                     help_text=_("The mailboxes this alias points to"))
     enabled = models.BooleanField(_('enabled'),

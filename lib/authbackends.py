@@ -1,10 +1,6 @@
 from django.contrib.auth.models import User
 from modoboa.admin.models import Mailbox
-import hashlib
-import crypt
-import string
-from random import Random
-from modoboa.lib import parameters
+from modoboa.lib import _check_password
 
 class SimpleBackend:
     def authenticate(self, username=None, password=None):
@@ -26,19 +22,3 @@ class SimpleBackend:
         except User.DoesNotExist:
             return None
 
-def _check_password(password, crypted):
-    scheme = parameters.get_admin("PASSWORD_SCHEME", app="admin")
-    if scheme == "crypt":
-        return crypt.crypt(password, crypted) == crypted
-    if scheme == "md5":
-        return hashlib.md5(password).hexdigest() == crypted
-    return password
-
-def crypt_password(password):
-    scheme = parameters.get_admin("PASSWORD_SCHEME", app="admin")
-    if scheme == "crypt":
-        salt = ''.join(Random().sample(string.letters + string.digits, 2))
-        return crypt.crypt(password, salt)
-    if scheme == "md5":
-        return hashlib.md5(password).hexdigest()
-    return password

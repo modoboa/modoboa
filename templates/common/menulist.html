@@ -1,9 +1,11 @@
 {% load i18n %}
 {% for entry in entries %}
     {% if entry.menu %}
-  <li class="dropdown {{ entry.class }}">
+  <li class="dropdown {{ entry.class }}{% if selection == entry.name %} selected{% endif %}">
     <img src="{{ entry.img }}" border="0" />
+    {% if entry.url %}<a href="{{ entry.url }}">{% endif %}
     <label>{{ entry.label }}</label>
+    {% if entry.url %}</a>{% endif %}
     <ul class="links"
         {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
       {% for sentry in entry.menu %}
@@ -20,7 +22,7 @@
     </ul>
   </li>
     {% else %}
-  <li {% ifequal selection entry.name %}class="selected"{% endifequal %}>
+  <li {% if selection == entry.name %}class="selected"{% endif %}>
     <a href="{{ entry.url }}" name="{{ entry.name }}"
      {% if entry.class %}class={{ entry.class }}{% endif %}
      {% if entry.rel %}rel={{ entry.rel }}{% endif %}

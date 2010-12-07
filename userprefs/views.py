@@ -10,7 +10,7 @@ from django.contrib.auth.decorators \
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from modoboa.lib import _render, _ctx_ok, _ctx_ko, getctx, parameters
-from modoboa.lib.authbackends import crypt_password
+from modoboa.lib import crypt_password
 from forms import ChangePasswordForm
 from modoboa.admin.models import Mailbox
 

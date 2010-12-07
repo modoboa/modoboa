@@ -1,0 +1,17 @@
+{% extends "nlayout.html" %}
+{% load i18n admin_extras libextras %}
+{% block html_head %}
+<script src="{{ MEDIA_URL }}js/domains.js" type="text/javascript"></script>
+{% endblock %}
+{% block middletitle %}
+{% block pagetitle %}{% endblock %}{% if domain %} ({% trans "for" %} {{ domain.name }}){% endif %}
+{% endblock %}
+{% block menu %}{% domains_menu selection user domid %}{% endblock %}
+{% block content %}
+{% if messages %}
+{% display_messages messages %}
+{% endif %}
+<div id="subcontent">
+{% block subcontent %}{% endblock %}
+</div>
+{% endblock %}

@@ -177,6 +177,11 @@ div#footer {
     border-left: 5px solid #ccc;
     position: relative;
     z-index: 2;
+
+}
+
+.menubardropdown label {
+    cursor: pointer;
 }
 
 div.left {

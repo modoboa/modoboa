@@ -2,6 +2,8 @@
 import os
 import sys
 import time
+import hashlib, crypt, string
+from random import Random
 from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -118,3 +120,20 @@ class Singleton(type):
             cls.instance = super(Singleton, cls).__call__(*args, **kwargs)
         return cls.instance
 
+
+def _check_password(password, crypted):
+    scheme = parameters.get_admin("PASSWORD_SCHEME", app="admin")
+    if scheme == "crypt":
+        return crypt.crypt(password, crypted) == crypted
+    if scheme == "md5":
+        return hashlib.md5(password).hexdigest() == crypted
+    return password
+
+def crypt_password(password):
+    scheme = parameters.get_admin("PASSWORD_SCHEME", app="admin")
+    if scheme == "crypt":
+        salt = ''.join(Random().sample(string.letters + string.digits, 2))
+        return crypt.crypt(password, salt)
+    if scheme == "md5":
+        return hashlib.md5(password).hexdigest()
+    return password
