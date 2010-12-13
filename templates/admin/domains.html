@@ -11,11 +11,12 @@
 {% endblock %}
 {% block middletitle %}{% trans "Available domains" %}{% endblock %}
 {% block subcontent %}
+<div id="objects" name="domains" rel="300 190">
   {% if not domains %}<div class="info">{% trans "No domain defined." %}</div>
   {% else %}
-  <table>
+  <table id="objects_table">
     <tr>
-      <th width="100px">{% trans "Actions" %}</th>
+      <th width="70px" class="center">{% trans "Actions" %}</th>
       <th>{% trans "Name" %}</th>
       <th width="150px">{% trans "Mailboxes" %}</th>
       <th width="50px">{% trans "Quota" %}</th>
@@ -23,7 +24,7 @@
     </tr>
     {% for dom in domains %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ dom.id }}">
-      <td>{% domain_actions user dom.id %}</td>
+      <td class="center">{% domain_actions user dom.id %}</td>
       <td>{{ dom.name }}</td>
       <td>{{ dom.mboxcounter }}</td>
       <td>{{ dom.quota }} {% trans "MB" %}</td>
@@ -32,4 +33,5 @@
     {% endfor %}
   </table>
   {% endif %}
+</div>
 {% endblock %}

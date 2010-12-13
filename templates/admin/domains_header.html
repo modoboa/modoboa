@@ -2,6 +2,44 @@
 {% load i18n admin_extras libextras %}
 {% block html_head %}
 <script src="{{ MEDIA_URL }}js/domains.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}js/confirmation.js" type="text/javascript"></script>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  var rooturl = "{% url index %}";
+
+  $$("a[name=new]").addEvent("click", function(evt) {
+    var type = $("objects").get("name");
+    var sizes = $("objects").get("rel").split(" ");
+
+    evt.stop();
+    SqueezeBox.initialize({
+      size: {x: sizes[0], y: sizes[1]},
+      handler: 'iframe'
+    });
+    SqueezeBox.open(rooturl + type + "/new/");
+  });
+
+  $$("a[name=remove]").addEvent("click", function(evt) {
+    evt.stop();
+    if (objtable.selectedRows.length == 0) {
+      return;
+    }
+    var type = $("objects").get("name");
+    var selection = "";
+
+    objtable.selectedRows.each(function(item) {
+      if (selection != "") {
+        selection += ",";
+      }
+      selection += item.get("id");
+    });
+    new Confirmation(rooturl + type + "/delete/", "selection=" + selection,
+                     gettext("Remove this selection?"), {
+    {% if deloptions %}checkboxes: { {% join deloptions %} }{% endif %}
+    });
+  });
+});
+</script>
 {% endblock %}
 {% block middletitle %}
 {% block pagetitle %}{% endblock %}{% if domain %} ({% trans "for" %} {{ domain.name }}){% endif %}

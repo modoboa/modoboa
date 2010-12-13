@@ -5,5 +5,4 @@ urlpatterns = patterns('modoboa.userprefs.views',
                        (r'^preferences/$', 'preferences'),
                        (r'^preferences/save/$', 'savepreferences'),
                        (r'^changepassword/$', 'changepassword'),
-                       (r'^confirm/$', 'confirm'),
                        )

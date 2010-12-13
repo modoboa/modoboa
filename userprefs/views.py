@@ -1,10 +1,6 @@
 import copy
-from django.shortcuts import get_object_or_404, render_to_response
-from django.template.loader import render_to_string
-from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators \
     import login_required
 from django.utils import simplejson
@@ -76,10 +72,4 @@ def savepreferences(request):
 
     ctx = getctx("ok")
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-
-@login_required
-def confirm(request):
-    return _render(request, 'userprefs/confirm.html', {
-            "msg" : request.GET["question"]
-            })
 

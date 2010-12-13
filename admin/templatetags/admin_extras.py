@@ -59,40 +59,6 @@ def admin_menu(user):
                             {"entries" : entries, "user" : user})
         
 @register.simple_tag
-def domain_menu(domain_id, selection, user):
-    entries = [
-        {"name" : "",
-         "url" : reverse(admin.views.newmailbox),
-         "label" : _("New mailbox"),
-         "img" : static_url("pics/add.png"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:280}}"},
-        {"name" : "mailboxes",
-         "url" : reverse(admin.views.mailboxes),
-         "img" : static_url("pics/mailbox.png"),
-         "label" : _("Mailboxes")},
-        {"name" : "aliases",
-         "url" : reverse("full-aliases"),
-         "img" : static_url("/pics/alias.png"),
-         "label" : _("Aliases")},
-        ]
-
-    if user.has_perm("admin.change_domain"):
-        entries += [
-            {"name" : "",
-             "url" : reverse(admin.views.editdomain, args=[domain_id]),
-             "label" : _("Properties"),
-             "img" : static_url("pics/edit.png"),
-             "class" : "boxed",
-             "rel" : "{handler:'iframe',size:{x:300,y:180}}"}
-            ]
-    entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_bar", 
-                                      user=user, domain=domain_id)
-    return render_to_string('common/menu.html', 
-                            {"selection" : selection, "entries" : entries,
-                             "user" : user})
-
-@register.simple_tag
 def settings_menu(selection, user):
     entries = [
         {"name" : "parameters",
@@ -114,13 +80,6 @@ def dommenu_entry(name, label, img, listurl, newurl):
               "img" : img,
               "url" : listurl,
               "class" : "menubardropdown",
-              "menu" : [{"name" : "%s_new" % name,
-                         "url" : newurl,
-                         "label" : _("New"),
-                         "img" : static_url("pics/add.png"),
-                         "class" : "boxed",
-                         "rel" : "{handler:'iframe',size:{x:300,y:200}}"}
-                        ]
               }
     return result
 
@@ -128,6 +87,15 @@ def dommenu_entry(name, label, img, listurl, newurl):
 def domains_menu(selection, user, domid):
     args = domid != "" and ("?domid=%s" % domid) or ""
     entries = []
+    entries += [{"name" : "new",
+                 "label" : _("New"),
+                 "img" : static_url("pics/add.png")},
+                {"name" : "remove",
+                 "label" : _("Remove"),
+                 "img" : static_url("pics/remove.png")
+                 }]
+
+    entries += [{"separator" : True}]
     if user.has_perm("admin.view_domains"):
         entries += dommenu_entry("domains", _("Domains"), 
                                  static_url("pics/domains.png"),
@@ -188,11 +156,6 @@ def domain_actions(user, domid):
          "title" : _("Edit domain"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:300,y:180}}"},
-        {"name" : "deldomain",
-         "url" : reverse(admin.views.deldomain, args=[domid]),
-         "img" : static_url("pics/remove.png"),
-         "title" : _("Delete domain"),
-         "confirm" : _("Delete this domain?")},
         {"name" : "domaliases",
          "url" : reverse(admin.views.domaliases) + "?domid=%s" % domid,
          "img" : static_url("pics/alias.png"),
@@ -221,10 +184,6 @@ def mailbox_actions(user, mbox):
          "title" : _("Edit mailbox"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:300,y:280}}"},
-        {"name" : "deleteMb",
-         "url" : reverse(admin.views.delmailbox, args=[mbox.id]),
-         "img" : static_url("pics/remove.png"),
-         "title" : _("Delete mailbox")},
         {"name" : "aliases",
          "url" : reverse(admin.views.mbaliases) + "?mbid=%d" % mbox.id,
          "img" : static_url("pics/alias.png"),
@@ -240,12 +199,7 @@ def mbalias_actions(user, alias):
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit mailbox alias"),
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:250}}"},
-        {"name" : "dembalias",
-         "url" : reverse(admin.views.delmbalias, args=[alias.id]),
-         "img" : static_url("pics/remove.png"),
-         "title" : _("Delete mailbox alias"),
-         "confirm" : _("Delete this alias?")},
+         "rel" : "{handler:'iframe',size:{x:300,y:250}}"}
         ]
     return render_actions(actions)
 

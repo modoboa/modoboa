@@ -290,15 +290,22 @@ th.right {
     text-align: right;
 }
 
+th.center, td.center {
+    text-align: center;
+}
+
 td {
     border-bottom: 1px solid #C8D6E8;
     /*padding: 5px;*/
 }
 
+tr.table-tr-selected {
+    background: #ffffcc;
+}
+
 input {
     border: 1px solid #cccccc;
     color: inherit;
-    /*background-color: #e9e9e9;*/
     background-color: #eee;
     padding: 2px;
 }
@@ -388,4 +395,50 @@ div.row label {
     float: left;
     display: inline;
     color: red;
+}
+
+.separator {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* Custom confirmation box */
+#dlg-buttons { 
+    clear: both;
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+}
+
+#dlg-iconbox { 
+    float: left;
+    margin-top: 20px;
+    width: 32px;
+}
+
+#dlg-textbox {
+    float: left;
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 80%;
+}
+
+#dlg-textbox input {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+#dlg-textbox label {
+    margin-left: 5px;
+}
+
+#dlg-buttons {
+    position: absolute;
+    bottom: 15px;
+}
+
+#dlg-buttons input { 
+    width: 90px;
+    margin: 2px;
 }

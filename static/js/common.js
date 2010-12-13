@@ -193,7 +193,6 @@ parse_menubar = function(id) {
             });
 
             myFx.wrapper.setStyles({
-                /*"clear" : "both",*/
                 "position" : "absolute"
             });
             myFx.hide();
@@ -235,43 +234,6 @@ get_iframe_body = function(id) {
     return (data);
 };
 
-confirmation = function(question, action, callback) {
-    SqueezeBox.initialize({
-        size: {x: 350, y: 140},
-	handler: 'iframe',
-        onClose: function(content) {
-            var ibody = get_iframe_body(this.asset);
-            var elt = ibody.getElement("input[name=result]");
-
-            if (elt.get("value") == "ok") {
-                var params = "";
-                if (typeof callback != "undefined") {
-                    params = callback(ibody);
-                }
-                new Request.JSON({
-                    method: "get",
-                    url: action.get("href"),
-                    onSuccess: function(res) {
-			if (res.status == "ok") {
-			    window.location.reload();
-			} else {
-			    infobox.error(res.error);
-			    infobox.hide(2);
-			}
-                    }
-                }).send(params);
-            }
-        }
-    });
-
-    /* FIXME: avoid using a hard coded address like this, maybe it
-     could be fixed by creating a new class for "confirmation" and
-     create one instance for each section/page using it (I mean
-     directly inside the html template) */
-
-    SqueezeBox.open("/modoboa/userprefs/confirm/?question=" + question);
-};
-
 setDivHeight = function(id, extrah, modulo) {
     var contentsize = $(document.body).getSize().y
         - $("topmenubar").getSize().y
@@ -286,7 +248,7 @@ setDivHeight = function(id, extrah, modulo) {
 };
 
 bindRows = function(rooturl, page) {
-    $$("tr").addEvent("click", function(event) {
+	$$("tr").addEvent("dblclick", function(event) {
         if (event.target.parentNode.id) {
             var url = rooturl + "?domid=" + event.target.parentNode.id;
 	    if (page != "") {

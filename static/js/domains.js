@@ -1,4 +1,3 @@
-
 window.addEvent('domready', function() {
     var handlers = new Array();
 
@@ -19,27 +18,11 @@ window.addEvent('domready', function() {
 	    event.stop();
 	});
 
-    if ($$("a[name=deleteMb]"))
-        $$("a[name=deleteMb]").addEvent('click', function(event) {
-	    event.stop();
-	    confirmation(gettext("Delete this mailbox?"), this, function(body) {
-                var result = "";
-                body.getElements("input[type=checkbox]:checked").each(function(obj) {
-                    if (result != "") {
-                        result += "&";
-                    }
-                    result += obj.name + "=true";
-                });
-                return result;
-            });
-        });
-
     if ($$("a[name=deleteAlias]"))
         $$("a[name=deleteAlias]").addEvent('click', function(event) {
             if (!confirm(gettext("Delete this alias?")))
                 event.stop();
         });
-
 
     $(document.body).addEvent('click', function(event) {
 	var target = event.target;
@@ -68,17 +51,11 @@ window.addEvent('domready', function() {
 	}
     });
     setDivHeight("content", 20, 0);
+		    
+    objtable = new HtmlTable($("objects_table"), {
+	selectable: true
+    });
 });
-
-newdom = function() {
-    form = $("form[name=newdom]");
-    var params = obj.toQueryString();
-    form.set('send', {
-        onSuccess: function(response) {
-            SqueezeBox.loadModal(obj.action + '?' + params);
-        }
-    }).send();
-};
 
 loadPage = function(url, destination, callback) {
     destination = (destination == null) ? "page" : destination;

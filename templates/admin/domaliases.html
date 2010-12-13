@@ -2,10 +2,11 @@
 {% load i18n admin_extras libextras %}
 {% block pagetitle %}{% trans "Domain aliases" %}{% endblock %}
 {% block subcontent %}
+<div id="objects" name="domaliases" rel="300 190">
   {% if not domaliases %}
   <div class="info">{% trans "No domain alias defined." %}</div>
   {% else %}
-  <table>
+  <table id="objects_table">
     <tr>
       <th width="50px">{% trans "Actions" %}</th>
       <th width="150px">{% trans "Name" %}</th>
@@ -13,7 +14,7 @@
       <th width="75px">{% trans "Enabled" %}</th>
     </tr>
     {% for domalias in domaliases %}
-    <tr class="{% cycle 'odd' 'even' %}">
+    <tr class="{% cycle 'odd' 'even' %}" id="{{ domalias.id }}">
       <td>{% domalias_actions user domalias.id %}</td>
       <td>{{ domalias.name }}</td>
       <td>{{ domalias.target.name }}</td>
@@ -22,4 +23,5 @@
     {% endfor %}
   </table>
   {% endif %}
+</div>
 {% endblock %}

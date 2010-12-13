@@ -63,8 +63,10 @@ def domains(request):
     counters = {}
     for dom in domains:
         dom.mboxcounter = len(dom.mailbox_set.all())
+    deloptions = {"keepdir" : _("Do not delete domain directory")}
     return render_domains_page(request, "domains",
-                               domains=domains, counter=counters)
+                               domains=domains, counter=counters,
+                               deloptions=deloptions)
 
 @login_required
 def domaliases(request):
@@ -138,6 +140,15 @@ def editdomalias(request, alias_id):
             })
 
 @login_required
+@permission_required("admin.delete_domalias")
+def deldomalias(request):
+    selection = request.GET["selection"].split(",")
+    DomainAlias.objects.filter(id__in=selection).delete()
+    messages.info(request, _("Domain alias(es) deleted"), fail_silently=True)
+    return HttpResponse(simplejson.dumps(_ctx_ok("")), 
+                        mimetype="application/json")
+
+@login_required
 @permission_required("admin.add_domain")
 def newdomain(request):
     if request.method == "POST":
@@ -200,13 +211,26 @@ def editdomain(request, dom_id):
 
 @login_required
 @permission_required("admin.delete_domain")
-def deldomain(request, dom_id):
-    domain = Domain.objects.get(pk=dom_id)
-    events.raiseEvent("DeleteDomain", dom=domain)
-    domain.delete_dir()
-    domain.delete()
-    messages.info(request, _("Domain deleted"), fail_silently=True)
-    return HttpResponseRedirect(reverse(admin.views.domains))
+def deldomain(request):
+    selection = request.GET["selection"].split(",")
+    error = None
+    if request.user.id != 1:
+        mb = Mailbox.objects.get(user__id=request.user.id)
+        if dom.id in selection:
+            error = _("You can't delete your own domain")
+    if error is None:
+        if request.GET.has_key("keepdir") and request.GET["keepdir"] == "true":
+            keepdir = True
+        else:
+            keepdir = False
+        for dom in Domain.objects.filter(id__in=selection):
+            events.raiseEvent("DeleteDomain", dom=dom)
+            dom.delete(keepdir=keepdir)
+        messages.info(request, _("Domain deleted"), fail_silently=True)
+        ctx = _ctx_ok("")
+    else:
+        ctx = getctx("ko", error=error)
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 @good_domain
@@ -214,12 +238,13 @@ def deldomain(request, dom_id):
 def mailboxes(request):
     if request.GET.has_key("domid"):
         domain = Domain.objects.get(pk=request.GET["domid"])
-        mailboxes = Mailbox.objects.filter(domain=domain.id)
+        mboxes = Mailbox.objects.filter(domain=domain.id)
     else:
-        mailboxes = Mailbox.objects.all()
+        mboxes = Mailbox.objects.all()
         domain = None
+    deloptions = {"keepdir" : _("Do not delete mailbox directory")}
     return render_domains_page(request, "mailboxes",
-                               mailboxes=mailboxes, domain=domain)
+                               mailboxes=mboxes, domain=domain, deloptions=deloptions)
 
 @login_required
 @good_domain
@@ -306,18 +331,26 @@ def editmailbox(request, mbox_id=None):
 @login_required
 @good_domain
 @permission_required("admin.delete_mailbox")
-def delmailbox(request, mbox_id=None):
-    mb = Mailbox.objects.get(pk=mbox_id)
-    if mb.user.id != request.user.id:
-        events.raiseEvent("DeleteMailbox", mbox=mb)
-        if not request.GET.has_key("keepdir") or request.GET["keepdir"] != "true":
-            mb.delete_dir()
-        mb.user.delete()
-        mb.delete()
+def delmailbox(request):
+    selection = request.GET["selection"].split(",")
+    error = None
+    if not request.user.is_superuser:
+        mb = Mailbox.objects.get(user__id=request.user.id)
+        if mb.id in selection:
+            error = _("You can't delete your own mailbox")
+
+    if error is None:
+        if request.GET.has_key("keepdir") and request.GET["keepdir"] == "true":
+            keepdir = True
+        else:
+            keepdir = False
+        for mb in Mailbox.objects.filter(id__in=selection):
+            events.raiseEvent("DeleteMailbox", mbox=mb)
+            mb.delete()#keepdir=keepdir)
         messages.info(request, _("Mailbox deleted"), fail_silently=True)
         ctx = _ctx_ok("")
     else:
-        ctx = getctx("ko", error=_("You can't delete your own mailbox"))
+        ctx = getctx("ko", error=error)
     return HttpResponse(simplejson.dumps(ctx), 
                         mimetype="application/json")
 
@@ -398,11 +431,12 @@ def editmbalias(request, alias_id):
 @login_required
 @good_domain
 @permission_required("admin.delete_alias")
-def delmbalias(request, alias_id):
-    alias = Alias.objects.get(pk=alias_id)
-    alias.delete()
+def delmbalias(request):
+    selection = request.GET["selection"].split(",")
+    Alias.objects.filter(id__in=selection).delete()
     messages.info(request, _("Alias deleted"), fail_silently=True)
-    return HttpResponseRedirect(reverse(admin.views.mbaliases))
+    return HttpResponse(simplejson.dumps(_ctx_ok("")), 
+                        mimetype="application/json")
 
 @login_required
 @permission_required("auth.view_permissions")

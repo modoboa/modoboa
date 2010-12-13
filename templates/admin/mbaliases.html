@@ -2,28 +2,30 @@
 {% load i18n admin_extras %}
 {% block pagetitle %}{% trans "Mailbox aliases" %}{% endblock %}
 {% block subcontent %}
-{% if not aliases %}
-<div class="info">{% trans "No mailbox alias defined." %}</div>
-{% else %}
-<table>
-  <tr>
-    <th width="50px">{% trans "Actions" %}</th>
-    <th width="150px">{% trans "Address" %}</th>
-    <th width="200px">{% trans "Mailbox" %}</th>
-    <th width="75px">{% trans "Enabled" %}</th>
-  </tr>
-{% for alias in aliases %}
-  <tr>
-    <td>{% mbalias_actions user alias %}      
-    <td>{{ alias.full_address }}</td>
-    <td>
-      {% for mb in alias.mboxes.all %}
-      {{ mb.full_address }}<br/>
-      {% endfor %}
-    </td>
-    <td>{{ alias.enabled|yesno }}</td
-  </tr>
-{% endfor %}
-</table>
-{% endif %}
+<div id="objects" name="mbaliases" rel="300 260">
+  {% if not aliases %}
+  <div class="info">{% trans "No mailbox alias defined." %}</div>
+  {% else %}
+  <table id="objects_table">
+    <tr>
+      <th width="50px">{% trans "Actions" %}</th>
+      <th width="150px">{% trans "Address" %}</th>
+      <th width="200px">{% trans "Mailbox" %}</th>
+      <th width="75px">{% trans "Enabled" %}</th>
+    </tr>
+    {% for alias in aliases %}
+    <tr class="{% cycle 'odd' 'even' %}" id="{{ alias.id }}">
+      <td>{% mbalias_actions user alias %}      
+      <td>{{ alias.full_address }}</td>
+      <td>
+	{% for mb in alias.mboxes.all %}
+	{{ mb.full_address }}<br/>
+	{% endfor %}
+      </td>
+      <td>{{ alias.enabled|yesno }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+</div>
 {% endblock %}

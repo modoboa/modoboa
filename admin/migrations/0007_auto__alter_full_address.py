@@ -19,7 +19,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Alias'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'full_address': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '150'}),
+            'full_address': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '254'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mboxes': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['admin.Mailbox']", 'symmetrical': 'False'})
         },

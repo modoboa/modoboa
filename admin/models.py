@@ -51,6 +51,20 @@ class Domain(models.Model):
                                  % (parameters.get_admin("STORAGE_PATH"), 
                                     self.name))
 
+    def delete(self, *args, **kwargs):
+        keepdir = False
+        if kwargs.has_key("keepdir"):
+            keepdir = kwargs["keepdir"]
+            del kwargs["keepdir"]
+        # Not very optimized but currently, this is the simple way
+        # I've found to delete all related objects (mailboxes, users
+        # and aliases)!
+        for mb in self.mailbox_set.all():
+            mb.delete(keepdir=keepdir)
+        super(Domain, self).delete(*args, **kwargs)
+        if not keepdir:
+            self.delete_dir()
+
     def __str__(self):
         return self.name
 
@@ -74,7 +88,7 @@ class Mailbox(models.Model):
     gid = models.IntegerField()
     path = models.CharField(max_length=200)
     domain = models.ForeignKey(Domain)
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     path = models.CharField(max_length=255)
 
     class Meta:
@@ -163,6 +177,20 @@ class Mailbox(models.Model):
         except KeyError:
             pass
         super(Mailbox, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        keepdir = False
+        if kwargs.has_key("keepdir"):
+            keepdir = kwargs["keepdir"]
+            del kwargs["keepdir"]
+        for alias in self.alias_set.all():
+            alias.mboxes.remove(self)
+            if len(alias.mboxes.all()) == 0:
+                alias.delete()
+        self.user.delete()
+        super(Mailbox, self).delete(*args, **kwargs)
+        if not keepdir:
+            self.delete_dir()
 
     def tohash(self):
         return {

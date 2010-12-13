@@ -1,5 +1,8 @@
 {% load i18n %}
 {% for entry in entries %}
+  {% if entry.separator %}
+  <li class="separator">&nbsp;</li>
+  {% else %}
     {% if entry.menu %}
   <li class="dropdown {{ entry.class }}{% if selection == entry.name %} selected{% endif %}">
     <img src="{{ entry.img }}" border="0" />
@@ -32,5 +35,6 @@
     {{ entry.label }}
     </a>
   </li>
+    {% endif %}
   {% endif %}
 {% endfor %}
