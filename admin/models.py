@@ -88,7 +88,7 @@ class Mailbox(models.Model):
     gid = models.IntegerField()
     path = models.CharField(max_length=200)
     domain = models.ForeignKey(Domain)
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User)
     path = models.CharField(max_length=255)
 
     class Meta:
