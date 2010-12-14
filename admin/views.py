@@ -69,86 +69,6 @@ def domains(request):
                                deloptions=deloptions)
 
 @login_required
-def domaliases(request):
-    if request.GET.has_key("domid"):
-        domain = Domain.objects.get(pk=request.GET["domid"])
-        domaliases = DomainAlias.objects.filter(target=request.GET["domid"])
-    else:
-        domain = None
-        domaliases = DomainAlias.objects.all()
-    return render_domains_page(request, "domaliases",
-                               domaliases=domaliases, domain=domain)
-
-@login_required
-def newdomalias(request):
-    if request.method == "POST":
-        form = DomainAliasForm(request.POST)
-        error = None
-        if form.is_valid():
-            domalias = form.save(commit=False)
-            if Domain.objects.filter(name=domalias.name):
-                error = _("A domain with this name already exists")
-            else:
-                try:
-                    domalias.save()
-                except IntegrityError:
-                    error = _("Alias with this name already exists")
-                else:
-                    ctx = _ctx_ok(reverse(admin.views.domaliases))
-                    messages.info(request, _("Domain alias created"), fail_silently=True)
-                    return HttpResponse(simplejson.dumps(ctx),
-                                        mimetype="application/json")
-        content = _render_to_string(request, "admin/newdomalias.html", {
-                "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-    form = DomainAliasForm()
-    return _render(request, 'admin/newdomalias.html', {
-            "form" : form
-            })
-
-@login_required
-def editdomalias(request, alias_id):
-    domalias = DomainAlias.objects.get(pk=alias_id)
-    if request.method == "POST":
-        form = DomainAliasForm(request.POST, instance=domalias)
-        error = None
-        if form.is_valid():
-            ndomalias = form.save(commit=False)
-            if Domain.objects.filter(name=ndomalias.name):
-                error = _("A domain with this name already exists")
-            else:
-                try:
-                    ndomalias.save()
-                except IntegrityError:
-                    error = _("Alias with this name already exists")
-                else:
-                    ctx = _ctx_ok(reverse(admin.views.domaliases))
-                    messages.info(request, _("Domain alias updated"), fail_silently=True)
-                    return HttpResponse(simplejson.dumps(ctx),
-                                        mimetype="application/json")
-        content = _render_to_string(request, "admin/editdomalias.html", {
-                "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-            
-    form = DomainAliasForm(instance=domalias)
-    return _render(request, 'admin/editdomalias.html', {
-            "form" : form, "domalias" : domalias
-            })
-
-@login_required
-@permission_required("admin.delete_domalias")
-def deldomalias(request):
-    selection = request.GET["selection"].split(",")
-    DomainAlias.objects.filter(id__in=selection).delete()
-    messages.info(request, _("Domain alias(es) deleted"), fail_silently=True)
-    return HttpResponse(simplejson.dumps(_ctx_ok("")), 
-                        mimetype="application/json")
-
-@login_required
 @permission_required("admin.add_domain")
 def newdomain(request):
     if request.method == "POST":
@@ -233,6 +153,97 @@ def deldomain(request):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
+@permission_required("admin.view_domaliases")
+def domaliases(request):
+    if request.GET.has_key("domid"):
+        domain = Domain.objects.get(pk=request.GET["domid"])
+        domaliases = DomainAlias.objects.filter(target=request.GET["domid"])
+    else:
+        domain = None
+        domaliases = DomainAlias.objects.all()
+    return render_domains_page(request, "domaliases",
+                               domaliases=domaliases, domain=domain)
+
+@login_required
+@good_domain
+@permission_required("admin.add_domainalias")
+def newdomalias(request):
+    if request.method == "POST":
+        form = DomainAliasForm(request.POST)
+        error = None
+        if form.is_valid():
+            domalias = form.save(commit=False)
+            if Domain.objects.filter(name=domalias.name):
+                error = _("A domain with this name already exists")
+            else:
+                try:
+                    domalias.save()
+                except IntegrityError:
+                    error = _("Alias with this name already exists")
+                else:
+                    ctx = _ctx_ok(reverse(admin.views.domaliases))
+                    messages.info(request, _("Domain alias created"), fail_silently=True)
+                    return HttpResponse(simplejson.dumps(ctx),
+                                        mimetype="application/json")
+        content = _render_to_string(request, "admin/newdomalias.html", {
+                "form" : form, "error" : error
+                })
+        ctx = getctx("ko", content=content)
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    form = DomainAliasForm()
+    if not request.user.is_superuser:
+        form.fields["target"].queryset = \
+            Domain.objects.filter(mailbox__user__pk=request.user.id)
+    if request.GET.has_key("domid"):
+        form.fields["target"].initial = request.GET["domid"]
+    return _render(request, 'admin/newdomalias.html', {
+            "form" : form
+            })
+
+@login_required
+@good_domain
+@permission_required("admin.change_domainalias")
+def editdomalias(request, alias_id):
+    domalias = DomainAlias.objects.get(pk=alias_id)
+    if request.method == "POST":
+        form = DomainAliasForm(request.POST, instance=domalias)
+        error = None
+        if form.is_valid():
+            ndomalias = form.save(commit=False)
+            if Domain.objects.filter(name=ndomalias.name):
+                error = _("A domain with this name already exists")
+            else:
+                try:
+                    ndomalias.save()
+                except IntegrityError:
+                    error = _("Alias with this name already exists")
+                else:
+                    ctx = _ctx_ok(reverse(admin.views.domaliases))
+                    messages.info(request, _("Domain alias updated"), fail_silently=True)
+                    return HttpResponse(simplejson.dumps(ctx),
+                                        mimetype="application/json")
+        content = _render_to_string(request, "admin/editdomalias.html", {
+                "form" : form, "error" : error
+                })
+        ctx = getctx("ko", content=content)
+        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+            
+    form = DomainAliasForm(instance=domalias)
+    return _render(request, 'admin/editdomalias.html', {
+            "form" : form, "domalias" : domalias
+            })
+
+@login_required
+@good_domain
+@permission_required("admin.delete_domainalias")
+def deldomalias(request):
+    selection = request.GET["selection"].split(",")
+    DomainAlias.objects.filter(id__in=selection).delete()
+    messages.info(request, _("Domain alias(es) deleted"), fail_silently=True)
+    return HttpResponse(simplejson.dumps(_ctx_ok("")), 
+                        mimetype="application/json")
+
+@login_required
 @good_domain
 @permission_required("admin.view_mailboxes")
 def mailboxes(request):
@@ -281,6 +292,9 @@ def newmailbox(request):
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
     form = MailboxForm()
+    if not request.user.is_superuser:
+        form.fields["domain"].queryset = \
+            Domain.objects.filter(mailbox__user__pk=request.user.id)
     if request.GET.has_key("domid"):
         form.fields["domain"].initial = request.GET["domid"]
     return _render(request, "admin/newmailbox.html", {
@@ -346,7 +360,7 @@ def delmailbox(request):
             keepdir = False
         for mb in Mailbox.objects.filter(id__in=selection):
             events.raiseEvent("DeleteMailbox", mbox=mb)
-            mb.delete()#keepdir=keepdir)
+            mb.delete(keepdir=keepdir)
         messages.info(request, _("Mailbox deleted"), fail_silently=True)
         ctx = _ctx_ok("")
     else:
@@ -394,6 +408,8 @@ def newmbalias(request):
         form = AliasForm(domain=Domain.objects.get(pk=request.GET["domid"]))
     else:
         form = AliasForm()
+    if request.GET.has_key("mbid"):
+        form.fields["mboxes"].initial = request.GET["mbid"]
     return _render(request, 'admin/newmbalias.html', {
              "form" : form, "noerrors" : True
             })

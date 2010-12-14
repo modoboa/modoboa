@@ -76,6 +76,11 @@ class DomainAlias(models.Model):
     enabled = models.BooleanField(_('enabled'),
                                   help_text=_("Check to activate this alias"))
 
+    class Meta:
+        permissions = (
+            ("view_domaliases", "View domain aliases"),
+            )
+
 class Mailbox(models.Model):
     name = models.CharField(_('name'), max_length=100, 
                             help_text=_("First name and last name of mailbox owner"))
