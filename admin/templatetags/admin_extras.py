@@ -171,7 +171,7 @@ def domalias_actions(user, aid):
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit alias"),
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:220}}"}
+         "rel" : "{handler:'iframe',size:{x:300,y:190}}"}
         ]
     return render_actions(actions)
 
@@ -183,7 +183,7 @@ def mailbox_actions(user, mbox):
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit mailbox"),
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:280}}"},
+         "rel" : "{handler:'iframe',size:{x:300,y:320}}"},
         {"name" : "aliases",
          "url" : reverse(admin.views.mbaliases) + "?mbid=%d" % mbox.id,
          "img" : static_url("pics/alias.png"),
@@ -258,5 +258,7 @@ def param(app, definition):
 @register.filter
 def gender(value, target):
     if genders.has_key(value):
-        return target == "m" and genders[value][0] or genders[value][1]
+        trans = target == "m" and genders[value][0] or genders[value][1]
+        if trans.find("_") == -1:
+            return trans
     return value

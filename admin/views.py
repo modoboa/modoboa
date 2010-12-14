@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ungettext
 from django.utils.http import urlquote
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
@@ -136,7 +136,7 @@ def deldomain(request):
     error = None
     if request.user.id != 1:
         mb = Mailbox.objects.get(user__id=request.user.id)
-        if dom.id in selection:
+        if str(dom.id) in selection:
             error = _("You can't delete your own domain")
     if error is None:
         if request.GET.has_key("keepdir") and request.GET["keepdir"] == "true":
@@ -146,7 +146,8 @@ def deldomain(request):
         for dom in Domain.objects.filter(id__in=selection):
             events.raiseEvent("DeleteDomain", dom=dom)
             dom.delete(keepdir=keepdir)
-        messages.info(request, _("Domain deleted"), fail_silently=True)
+        msg = ungettext("Domain deleted", "Domains deleted", len(selection))
+        messages.info(request, msg, fail_silently=True)
         ctx = _ctx_ok("")
     else:
         ctx = getctx("ko", error=error)
@@ -239,7 +240,8 @@ def editdomalias(request, alias_id):
 def deldomalias(request):
     selection = request.GET["selection"].split(",")
     DomainAlias.objects.filter(id__in=selection).delete()
-    messages.info(request, _("Domain alias(es) deleted"), fail_silently=True)
+    msg = ungettext("Domain alias deleted", "Domain aliases deleted", len(selection))
+    messages.info(request, msg, fail_silently=True)
     return HttpResponse(simplejson.dumps(_ctx_ok("")), 
                         mimetype="application/json")
 
@@ -349,8 +351,8 @@ def delmailbox(request):
     selection = request.GET["selection"].split(",")
     error = None
     if not request.user.is_superuser:
-        mb = Mailbox.objects.get(user__id=request.user.id)
-        if mb.id in selection:
+        mb = Mailbox.objects.get(user__pk=request.user.id)
+        if str(mb.id) in selection:
             error = _("You can't delete your own mailbox")
 
     if error is None:
@@ -361,7 +363,8 @@ def delmailbox(request):
         for mb in Mailbox.objects.filter(id__in=selection):
             events.raiseEvent("DeleteMailbox", mbox=mb)
             mb.delete(keepdir=keepdir)
-        messages.info(request, _("Mailbox deleted"), fail_silently=True)
+        msg = ungettext("Mailbox deleted", "Mailboxes deleted", len(selection))
+        messages.info(request, msg, fail_silently=True)
         ctx = _ctx_ok("")
     else:
         ctx = getctx("ko", error=error)
@@ -450,7 +453,8 @@ def editmbalias(request, alias_id):
 def delmbalias(request):
     selection = request.GET["selection"].split(",")
     Alias.objects.filter(id__in=selection).delete()
-    messages.info(request, _("Alias deleted"), fail_silently=True)
+    msg = ungettext("Alias deleted", "Aliases deleted", len(selection))
+    messages.info(request, msg, fail_silently=True)
     return HttpResponse(simplejson.dumps(_ctx_ok("")), 
                         mimetype="application/json")
 
