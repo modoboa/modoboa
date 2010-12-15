@@ -74,10 +74,14 @@ div#footer {
 #content {
     position: fixed;
     overflow: auto;
-    padding: 5px;
+    /*padding: 5px;*/
     top: 130px;
     bottom: 35px;
     width: 100%;
+}
+
+#subcontent {
+    margin: 5px;
 }
 
 #header {
@@ -267,7 +271,6 @@ table {
     border-collapse: collapse;
 }
 
-
 tr.odd {
     background: white;
 }
@@ -277,13 +280,13 @@ tr.even {
 }
 
 th, td {
-    height: 20px;
+    line-height: 15px;
+    padding: 5px;
 }
 
 th {
     background: #CEDBEC;
     text-align: left;
-    padding: 5px;
 }
 
 th.right {
@@ -296,7 +299,6 @@ th.center, td.center {
 
 td {
     border-bottom: 1px solid #C8D6E8;
-    /*padding: 5px;*/
 }
 
 tr.table-tr-selected {

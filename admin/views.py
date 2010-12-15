@@ -60,12 +60,11 @@ def domains(request):
         return HttpResponseRedirect(reverse(userprefs.views.preferences))
     
     domains = Domain.objects.all()
-    counters = {}
     for dom in domains:
-        dom.mboxcounter = len(dom.mailbox_set.all())
+        dom.mbalias_counter = len(Alias.objects.filter(mboxes__domain__pk=dom.id))
     deloptions = {"keepdir" : _("Do not delete domain directory")}
     return render_domains_page(request, "domains",
-                               domains=domains, counter=counters,
+                               domains=domains,
                                deloptions=deloptions)
 
 @login_required
@@ -376,8 +375,8 @@ def delmailbox(request):
 @permission_required("admin.view_aliases")
 def mbaliases(request):
     if request.GET.has_key("domid"):
-        aliases = Alias.objects.filter(mboxes__domain__id=request.GET["domid"]).distinct()
-    if request.GET.has_key("mbid"):
+        aliases = Alias.objects.filter(mboxes__domain__pk=request.GET["domid"]).distinct()
+    elif request.GET.has_key("mbid"):
         aliases = Alias.objects.filter(mboxes__id=request.GET["mbid"]).distinct()
     else:
         aliases = Alias.objects.all()

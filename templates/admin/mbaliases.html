@@ -8,21 +8,21 @@
   {% else %}
   <table id="objects_table">
     <tr>
-      <th width="50px">{% trans "Actions" %}</th>
-      <th width="150px">{% trans "Address" %}</th>
-      <th width="200px">{% trans "Mailbox" %}</th>
-      <th width="75px">{% trans "Enabled" %}</th>
+      <th>{% trans "Address" %}</th>
+      <th>{% trans "Mailbox" %}</th>
+      <th width="70px" class="center">{% trans "Enabled" %}</th>
+      <th width="70px" class="center">{% trans "Actions" %}</th>
     </tr>
     {% for alias in aliases %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ alias.id }}">
-      <td>{% mbalias_actions user alias %}      
       <td>{{ alias.full_address }}</td>
       <td>
 	{% for mb in alias.mboxes.all %}
 	{{ mb.full_address }}<br/>
 	{% endfor %}
       </td>
-      <td>{{ alias.enabled|yesno }}</td>
+      <td class="center">{{ alias.enabled|yesno }}</td>
+      <td class="center">{% mbalias_actions user alias %}</td>
     </tr>
     {% endfor %}
   </table>

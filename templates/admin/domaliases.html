@@ -8,17 +8,17 @@
   {% else %}
   <table id="objects_table">
     <tr>
-      <th width="50px">{% trans "Actions" %}</th>
       <th width="150px">{% trans "Name" %}</th>
-      <th width="200px">{% trans "Targeted domain" %}</th>
-      <th width="75px">{% trans "Enabled" %}</th>
+      <th>{% trans "Targeted domain" %}</th>
+      <th width="70px" class="center">{% trans "Enabled" %}</th>
+      <th width="70px" class="center">{% trans "Actions" %}</th>
     </tr>
     {% for domalias in domaliases %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ domalias.id }}">
-      <td>{% domalias_actions user domalias.id %}</td>
       <td>{{ domalias.name }}</td>
       <td>{{ domalias.target.name }}</td>
-      <td>{{ domalias.enabled|yesno }}</td>
+      <td class="center">{{ domalias.enabled|yesno }}</td>
+      <td class="center">{% domalias_actions user domalias.id %}</td>
     </tr>
     {% endfor %}
   </table>
