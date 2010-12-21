@@ -595,10 +595,11 @@ def find_images_in_body(body):
         o = urlparse(src)
         dirname = os.path.dirname(o.path).replace(settings.MEDIA_URL, "")
         fname = os.path.basename(o.path)
+        path = os.path.join(settings.MEDIA_ROOT, dirname, fname)
+        if not os.path.exists(path):
+            continue
         cid = "%s@modoboa" % os.path.splitext(fname)[0]
         tag.set("src", "cid:%s" % cid)
-
-        path = os.path.join(settings.MEDIA_ROOT, dirname, fname)
         fp = open(path, "rb")
         p = MIMEImage(fp.read())
         fp.close()
