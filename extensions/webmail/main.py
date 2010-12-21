@@ -27,8 +27,11 @@ def init():
     parameters.register_admin("SMTP_AUTHENTICATION", type="list_yesno",
                               deflt="no",
                               help=_("Server needs authentication"))
-    parameters.register_admin("SMTP_SECURED", type="list_yesno", 
-                              deflt="no",
+    parameters.register_admin("SMTP_SECURED_MODE", type="list", 
+                              values=[("none", _("None")), 
+                                      ("starttls", "STARTTLS"),
+                                      ("ssl", "SSL/TLS")],
+                              deflt="none",
                               help=_("Use a secured connection to access SMTP server"))
 
     parameters.register_user("REFRESH_INTERVAL", type="int", deflt=300,

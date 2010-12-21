@@ -305,9 +305,15 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
             rcpts += msg["Cc"].split(",")
         error = None
         try:
-            s = smtplib.SMTP(parameters.get_admin("SMTP_SERVER"))
-            if parameters.get_admin("SMTP_SECURED") == "yes":
-                s.starttls()
+            secmode = parameters.get_admin("SMTP_SECURED_MODE")
+            if secmode == "ssl":
+                s = smtplib.SMTP_SSL(parameters.get_admin("SMTP_SERVER"),
+                                     int(parameters.get_admin("SMTP_PORT")))
+            else:
+                s = smtplib.SMTP(parameters.get_admin("SMTP_SERVER"),
+                                 int(parameters.get_admin("SMTP_PORT")))
+                if secmode == "starttls":
+                    s.starttls()
         except (smtplib.SMTPException, ssl.SSLError), text:
             error = text
         if error is None:
