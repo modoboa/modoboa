@@ -1,7 +1,7 @@
 {% extends "common/email_listing.html" %}
 {% load i18n %}
 {% block css %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/webmail/webmail.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/webmail/webmail.css" />
 {% endblock %}
 {% block js %}
   quota_pb = new ProgressBar({
@@ -207,122 +207,90 @@
       th.addClass("selected");
     }
 
-    var selectedRows = new Array();
-    var fromrow = -1;
-    var torow = -1;
-
-
     /* The IE way for disabling default selection */
     $$("tbody>tr").set("unselectable", "on");
 
-    $$("tbody>tr").addEvent("click", function(event) {
-      var tr = $(event.target).getParent();
-
-      if (event.shift && fromrow != -1) {
-        var currentrow = parseInt(tr.get("name"));
-
-        if (fromrow < currentrow) {
-          rangeUp2Down(fromrow, currentrow);
-        } else {
-          rangeDown2Up(fromrow, currentrow);
-        }
-        fromrow = currentrow;
-        return;
-      }
-      fromrow = parseInt(tr.get("name"));
-      toggleSelectRow(tr);
+    var emails_table = new HtmlTable($("emails"), {
+      selectable: true,
+      shiftForMultiSelect: true
     });
 
-    rangeUp2Down = function(start, end) {
-      for (var i = start + 1; i <= end; i++) {
-        var tr = $$("tr[name=" + i + "]")[0];
-        toggleSelectRow(tr)
-      }
-    };
-
-    rangeDown2Up = function(start, end) {
-      for (var i = start - 1; i >= end; i--) {
-        var tr = $$("tr[name=" + i + "]")[0];
-        toggleSelectRow(tr)
-      }
-    };
-
-    toggleSelectRow = function(tr) {
-      if (!tr.hasClass("selected")) {
-        selectRow(tr);
-      } else {
-        unselectRow(tr, true);
-      }
-    };
-
-    selectRow = function(tr) {
-      tr.addClass("selected");
-      selectedRows.include(tr);
-      tr.setStyle("position", "relative");
-      makeRowDraggable(tr);
-    };
-
-    unselectRow = function(tr, remove) {
-      tr.removeClass("selected");
-      if (remove) {
-        selectedRows.erase(tr);
-      }
-      tr.setStyle("position", "static");
-    };
-
-    makeRowDraggable = function(item) {
-      new Drag.Move(item, {
-        droppables: ".droppable"
-      }).addEvents({
-        "start" : function(item) {
-          if (!item.hasClass("selected")) {
-            selectedRows.each(function(item, index) {
-              item.removeClass("selected");
-            });
-            selectedRows.empty();
-            item.addClass("selected");
-            selectedRows.include(item);
-          }
-          var block = new Element("div", {id: "draggeditems"})
-            .setStyles({"position" : "absolute",
-                        "opacity" : 0.8,
+    bstart_dragging = function(item) {
+        var block = new Element("div", {id: "draggeditems"})
+	    .setStyles({"position" : "absolute",
+			"opacity" : 0.8,
                         "width" : "200px",
                         "padding" : "5px",
                         "text-align" : "center",
                         "height" : "25px",
                         "border" : "1px solid #333",
                         "background" : "white",
-                        "z-index" : 3})
-            .setPosition(item.getPosition())
-            .inject(document.body);
-          block.set("html", "Moving " + selectedRows.length + " messages");
-          this.oldelement = this.element;
-          this.element = block;
-        },
-        "enter" : function(item, droppable) {
-          droppable.addClass("dragging");
-        },
-        "leave" : function(item, droppable) {
-          droppable.removeClass("dragging");
-        },
-        "drop" : function(item, droppable, event) {
-          item.dispose();
-          delete(item);
-          if (!droppable) {
-            this.element = this.oldelement;
-            return;
-          }
-          droppable.removeClass("dragging");
-          dest = gethref(droppable.getFirst("a"));
-          msgset = new Array();
-          selectedRows.each(function(item, index) {
-            msgset.include(item.get("id"));
-          });
-          {% url extensions.webmail.views.move as moveurl %}
-          simple_request("{{ moveurl }}", {msgset : msgset.join(), to : dest});
-        }
-      });
+			display: "none",
+                        "z-index" : 3,
+		        top : this.element.getCoordinates()['top'],
+		        left : this.element.getCoordinates()['left']})
+	    .inject(document.body);
+	block.store("parent", this.element);
+        this.element = block;
     };
+
+    start_dragging = function(item) {
+	var tr = this.element.retrieve("parent").getParent();
+
+	if (!emails_table.isSelected(tr)) {
+	    emails_table.selectNone();
+	    emails_table.selectRow(tr);
+	}
+	item.set("html", "Moving " + emails_table._selectedRows.length + " messages");
+	this.element.setStyle("display", "block");
+    };
+
+    enter_droppable = function(item, droppable) {
+	droppable.addClass("dragging");
+    };
+
+    leave_droppable = function(item, droppable) {
+	droppable.removeClass("dragging");
+    };
+
+    drop_element = function(item, droppable, event) {
+	var parent = item.retrieve("parent");
+
+	this.element.dispose();
+        delete(this.element);
+        if (!droppable) {
+	    this.element = parent;
+	    return;
+        }
+        droppable.removeClass("dragging");
+        dest = gethref(droppable.getFirst("a"));
+        msgset = new Array();
+        emails_table._selectedRows.each(function(item, index) {
+	    msgset.include(item.get("id"));
+	});
+        {% url extensions.webmail.views.move as moveurl %}
+        simple_request("{{ moveurl }}", {msgset : msgset.join(), to : dest});
+    };
+
+    cancel_dragging = function(item) {
+	var parent = item.retrieve("parent");
+	this.element.dispose();
+        delete(this.element);
+	this.element = parent;
+    };
+
+    $$("td[class*=draggable]").each(function(item) {
+	new Drag.Move(item, {
+	    droppables: ".droppable"
+	}).addEvents({
+	    beforeStart: bstart_dragging,
+	    start: start_dragging,
+            enter: enter_droppable,
+	    leave: leave_droppable,
+            drop: drop_element,
+	    cancel: cancel_dragging
+	});
+    });
 
     simple_request = function(url, params) {
       infobox.show(gettext("Waiting..."), {
@@ -358,19 +326,13 @@
     });
 
     if ($("toggleselect")) {
-    $("toggleselect").addEvent("click", function(evt) {
-       var checked = evt.target.get("checked");
-       if (checked) {
-         $$("tbody>tr").each(function(item) {
-           selectRow(item);
-         });
-       } else {
-         $$("tbody>tr").each(function(item) {
-           unselectRow(item, false);
-         });
-         selectedRows.empty();
-       }
-    });
+	$("toggleselect").addEvent("click", function(evt) {
+	    if (evt.target.checked) {
+		emails_table.selectAll();		
+	    } else {
+		emails_table.selectNone();
+	    }
+	});
     }
 
     $$("tbody>tr").addEvent("dblclick", viewmail);

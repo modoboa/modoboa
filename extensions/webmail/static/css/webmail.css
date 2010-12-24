@@ -38,6 +38,10 @@ html > body #listing {
     position: relative;
 }
 
+#emails th input {
+    margin: 0;
+}
+
 #emails tr {
     width: 100%;
     /*position: relative;*/
@@ -47,8 +51,8 @@ html > body #listing {
     -khtml-user-select: none; /* Webkit (Safari, Chrome) */
 }
 
-tr.selected {
-    background: #ffffcc;
+#emails td {
+    position: relative;
 }
 
 .box h3 {
@@ -105,7 +109,7 @@ li.subfolders {
     background: url("/static/pics/subfolders.png") no-repeat;
 }
 
-th {
+th[class*=sortable] {
     cursor: pointer;
 /*-moz-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;
   -webkit-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;*/

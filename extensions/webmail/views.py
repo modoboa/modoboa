@@ -151,9 +151,9 @@ def getattachment(request, folder, mail_id):
                     else:
                         continue
                 resp[hdr] = re.sub("\s", "", part[hdr])
-            # I would add this part into the previous loop if was able
-            # to use functions as default values... but I'm a bit lazy
-            # :p
+            # I would add this part into the previous loop if I was
+            # able to use functions as default values... but I'm a bit
+            # lazy :p
             if part.has_key("Content-Disposition"):
                 resp["Content-Disposition"] = \
                     re.sub("\s", "", part["Content-Disposition"])

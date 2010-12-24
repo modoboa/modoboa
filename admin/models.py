@@ -91,10 +91,9 @@ class Mailbox(models.Model):
     quota = models.IntegerField()
     uid = models.IntegerField()
     gid = models.IntegerField()
-    path = models.CharField(max_length=200)
+    path = models.CharField(max_length=255)
     domain = models.ForeignKey(Domain)
     user = models.ForeignKey(User)
-    path = models.CharField(max_length=255)
 
     class Meta:
         permissions = (
@@ -173,12 +172,14 @@ class Mailbox(models.Model):
             self.password = crypt_password(kwargs["password"])
         self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
         self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
-        if not self.quota:
+        if kwargs.has_key("quota") and int(kwargs["quota"]) < self.domain.quota:
+            self.quota = kwargs["quota"]
+        else:
             self.quota = self.domain.quota
         self.full_address = self.user.email
         try:
-            del kwargs["enabled"]
-            del kwargs["password"]
+            for kw in ["enabled", "password", "quota"]:
+                del kwargs[kw]
         except KeyError:
             pass
         super(Mailbox, self).save(*args, **kwargs)

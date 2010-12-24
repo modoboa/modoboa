@@ -23,10 +23,11 @@ from modoboa.lib import tables, imap_utf7, parameters, static_url, u2u_decode
 class WMtable(tables.Table):
     tableid = "emails"
     idkey = "imapid"
-    _1_flags = tables.ImgColumn("flags", width="4%",
-                                header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
-    _2_subject = tables.Column("subject", label=_("Subject"), 
-                               cssclass="draggable", width="50%")
+    _0_select = tables.ImgColumn("select", cssclass="draggable left", width="1%", 
+                                 defvalue="%spics/grippy.png" % settings.MEDIA_URL,
+                                 header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
+    _1_flags = tables.ImgColumn("flags", width="4%")
+    _2_subject = tables.Column("subject", label=_("Subject"), width="50%")
     _3_from_ = tables.Column("from", width="20%", label=_("From"))
     _4_date = tables.Column("date", width="20%", label=_("Date"))
 

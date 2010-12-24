@@ -53,7 +53,8 @@ class MailboxForm(forms.ModelForm):
         m = super(MailboxForm, self).save(commit=False)
         if commit:
             m.save(enabled=self.cleaned_data["enabled"], 
-                   password=self.cleaned_data["password1"])
+                   password=self.cleaned_data["password1"],
+                   quota=self.cleaned_data["quota"])
         return m
 
 class AliasForm(forms.ModelForm):

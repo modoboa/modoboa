@@ -41,6 +41,13 @@ class ImgColumn(Column):
     def render(self, value):
         return "<img src='%s' />" % value
 
+class DivColumn(Column):
+    def __str__(self):
+        return ""
+
+    def render(self):
+        return "<div>&nbsp;</div>"
+
 class Table(object):
     tableid = ""
 
@@ -72,7 +79,15 @@ class Table(object):
                     key = "img_%s" % c.name
                     if key in row.keys():
                         newcol["value"] = c.render(row[key])
-                        newcol["safe"] = True
+                    else:
+                        try:
+                            newcol["value"] = c.render(c.defvalue)
+                        except Exception:
+                            pass
+                    newcol["safe"] = True
+                elif isinstance(c, DivColumn):
+                    newcol["value"] = c.render()
+                    newcol["safe"] = True
                 elif row.has_key(c.name):
                     if "class" in row.keys():
                         newcol["cssclass"] += newcol["cssclass"] != "" \

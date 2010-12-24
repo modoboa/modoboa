@@ -38,7 +38,7 @@ check_anchor = function() {
         spinner: true
     });
     new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
-        callback = ($defined(resp.callback)) ? resp.callback : "default";
+        var callback = ($defined(resp.callback)) ? resp.callback : "default";
         callbacks[callback](resp);
         infobox.info(gettext("Done"));
         infobox.hide(1);

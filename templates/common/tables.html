@@ -12,6 +12,7 @@
 
   <tbody>
     {% for row in table.rows %}
+    <div style="position:relative">
     <tr id="{{ row.id }}" class="{% cycle 'odd' 'even' %}">
       {% for cell in row.cols %}
       {% if cell.safe %}
@@ -21,6 +22,7 @@
       {% endif %}
       {% endfor %}
     </tr>
+    </div>
     {% endfor %}
   </tbody>
 </table>

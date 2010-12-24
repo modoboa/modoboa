@@ -103,11 +103,11 @@ var InfoBox = new Class({
     },
 
     hide: function(timer) {
-        if ($defined(timer)) {
-            this.timer = this.hide.periodical(timer * 1000, this);
-            return;
-        }
-        $clear(this.timer);
+	this.timer = this.hide_cb.periodical(timer * 1000, this);
+    },
+
+    hide_cb: function() {
+	$clear(this.timer);
         this.box.setStyle("display", "none");
     }
 });
