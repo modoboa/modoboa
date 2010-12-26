@@ -44,15 +44,10 @@ html > body #listing {
 
 #emails tr {
     width: 100%;
-    /*position: relative;*/
     border-bottom: 1px solid #C8D6E8;
     user-select: none; /* CSS3 */
     -moz-user-select: none; /* Gecko (Firefox) */
     -khtml-user-select: none; /* Webkit (Safari, Chrome) */
-}
-
-#emails td {
-    position: relative;
 }
 
 .box h3 {
@@ -121,6 +116,8 @@ th.selected {
 
 .draggable {
     cursor: move;
+    position: relative;
+    border: 0;
 }
 
 .box li.dragging {
