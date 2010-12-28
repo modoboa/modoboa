@@ -154,12 +154,16 @@
   var rtimer = null;
 
   window.addEvent("pageRefresh", function() {
-    $clear(rtimer);
+    console.log("timer : ", rtimer);
+    if (rtimer) {
+      clearInterval(rtimer);
+      rtimer = null;
+    }
   });
 
   refreshFolder = function() {
     var query = current_anchor.serialized.substring(1);
-    $clear(rtimer);
+    clearInterval(rtimer);
     infobox.show('{% trans "Reloading..." %}', {
         profile : "gray",
         spinner : true
@@ -232,6 +236,7 @@
 	    .inject(document.body);
 	block.store("parent", this.element);
         this.element = block;
+	clearInterval(rtimer);
     };
 
     start_dragging = function(item) {
@@ -253,13 +258,18 @@
 	droppable.removeClass("dragging");
     };
 
-    drop_element = function(item, droppable, event) {
+    restore_parent = function(item) {
 	var parent = item.retrieve("parent");
 
+	this.element = parent;
+	rtimer = refreshFolder.periodical({{ refreshrate }});
+    };
+
+    drop_element = function(item, droppable, event) {
 	this.element.dispose();
         delete(this.element);
         if (!droppable) {
-	    this.element = parent;
+	    restore_parent(item);
 	    return;
         }
         droppable.removeClass("dragging");
@@ -273,10 +283,9 @@
     };
 
     cancel_dragging = function(item) {
-	var parent = item.retrieve("parent");
 	this.element.dispose();
         delete(this.element);
-	this.element = parent;
+	restore_parent(item);
     };
 
     $$("td[class*=draggable]").each(function(item) {
