@@ -215,8 +215,17 @@
     $$("tbody>tr").set("unselectable", "on");
 
     var emails_table = new HtmlTable($("emails"), {
-      selectable: true,
-      shiftForMultiSelect: true
+	selectable: true,
+	shiftForMultiSelect: true
+    }).addEvents({
+	rowFocus: function(tr) {
+	    clearInterval(rtimer);
+	},
+	rowUnfocus: function(tr) {
+	    if (this._selectedRows.length == 0) {
+		rtimer = refreshFolder.periodical({{ refreshrate }});
+	    }
+	}
     });
 
     bstart_dragging = function(item) {
