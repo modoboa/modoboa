@@ -86,7 +86,6 @@ class Mailbox(models.Model):
                             help_text=_("First name and last name of mailbox owner"))
     address = models.CharField(_('address'), max_length=100,
                                help_text=_("Mailbox address (without the @domain.tld part)"))
-    full_address = models.CharField(max_length=150)
     password = models.CharField(_('password'), max_length=100)
     quota = models.IntegerField()
     uid = models.IntegerField()
@@ -106,7 +105,12 @@ class Mailbox(models.Model):
         self.mdirroot = parameters.get_admin("MAILDIR_ROOT")
 
     def __str__(self):
-        return "%s" % (self.full_address)
+        return self.__full_address()
+
+    def __full_address(self):
+        return "%s@%s" % (self.address, self.domain.name)
+
+    full_address = property(__full_address)
 
     def create_dir(self):
         relpath = "%s/%s" % (self.domain.name, self.address)
@@ -172,11 +176,11 @@ class Mailbox(models.Model):
             self.password = crypt_password(kwargs["password"])
         self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
         self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
-        if kwargs.has_key("quota") and int(kwargs["quota"]) < self.domain.quota:
+        if kwargs.has_key("quota") and kwargs["quota"] is not None \
+                and int(kwargs["quota"]) < self.domain.quota:
             self.quota = kwargs["quota"]
         else:
             self.quota = self.domain.quota
-        self.full_address = self.user.email
         try:
             for kw in ["enabled", "password", "quota"]:
                 del kwargs[kw]
@@ -207,9 +211,8 @@ class Mailbox(models.Model):
             }
 
 class Alias(models.Model):
-    address = models.CharField(_('address'), max_length=100,
+    address = models.CharField(_('address'), max_length=254,
                                help_text=_("The alias address (without the domain part)"))
-    full_address = models.CharField(max_length=254, unique=True)
     mboxes = models.ManyToManyField(Mailbox, verbose_name=_('mailboxes'),
                                     help_text=_("The mailboxes this alias points to"))
     enabled = models.BooleanField(_('enabled'),
@@ -219,6 +222,11 @@ class Alias(models.Model):
         permissions = (
             ("view_aliases", "View aliases"),
             )
+
+    def __domain(self):
+        return self.mboxes.all()[0].domain
+
+    domain = property(__domain)
 
 class Extension(models.Model):
     name = models.CharField(max_length=150)

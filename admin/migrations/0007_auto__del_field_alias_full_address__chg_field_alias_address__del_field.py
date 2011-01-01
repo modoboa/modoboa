@@ -7,19 +7,34 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        db.alter_column("admin_alias", "full_address", 
-                        models.CharField(unique=True, max_length=254))
+        
+        # Deleting field 'Alias.full_address'
+        db.delete_column('admin_alias', 'full_address')
+
+        # Changing field 'Alias.address'
+        db.alter_column('admin_alias', 'address', self.gf('django.db.models.fields.CharField')(max_length=254))
+
+        # Deleting field 'Mailbox.full_address'
+        db.delete_column('admin_mailbox', 'full_address')
+
 
     def backwards(self, orm):
-        db.alter_column("admin_alias", "full_address",
-                        models.CharField(max_length=150))
+        
+        # User chose to not deal with backwards NULL issues for 'Alias.full_address'
+        raise RuntimeError("Cannot reverse this migration. 'Alias.full_address' and its values cannot be restored.")
+
+        # Changing field 'Alias.address'
+        db.alter_column('admin_alias', 'address', self.gf('django.db.models.fields.CharField')(max_length=100))
+
+        # User chose to not deal with backwards NULL issues for 'Mailbox.full_address'
+        raise RuntimeError("Cannot reverse this migration. 'Mailbox.full_address' and its values cannot be restored.")
+
 
     models = {
         'admin.alias': {
             'Meta': {'object_name': 'Alias'},
-            'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '254'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'full_address': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '254'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mboxes': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['admin.Mailbox']", 'symmetrical': 'False'})
         },
@@ -47,7 +62,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Mailbox'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
-            'full_address': ('django.db.models.fields.CharField', [], {'max_length': '150'}),
             'gid': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),

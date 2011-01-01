@@ -199,7 +199,7 @@ def mbalias_actions(user, alias):
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit mailbox alias"),
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:250}}"}
+         "rel" : "{handler:'iframe',size:{x:300,y:300}}"}
         ]
     return render_actions(actions)
 

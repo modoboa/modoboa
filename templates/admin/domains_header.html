@@ -21,13 +21,13 @@ window.addEvent("domready", function() {
 
   $$("a[name=remove]").addEvent("click", function(evt) {
     evt.stop();
-    if (objtable.selectedRows.length == 0) {
+    if (objtable._selectedRows.length == 0) {
       return;
     }
     var type = $("objects").get("name");
     var selection = "";
 
-    objtable.selectedRows.each(function(item) {
+    objtable._selectedRows.each(function(item) {
       if (selection != "") {
         selection += ",";
       }

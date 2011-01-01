@@ -40,10 +40,10 @@ class WMtable(tables.Table):
 
 class EmailAddress(object):
     addr_exp = re.compile("([^<\(]+)[<(]([^>)]+)[>)]")
-    name_exp = re.compile('"([^"]+)"')
+    name_exp = re.compile('"?([^"]+)"?')
 
     def __init__(self, address):
-        self.fulladdress = address
+        self.fulladdress = u2u_decode.u2u_decode(address).strip("\r\t\n")
         self.name = self.address = None
         m = EmailAddress.addr_exp.match(self.fulladdress)
         if m is None:
@@ -75,7 +75,7 @@ class IMAPheader(object):
         addr = EmailAddress(value)
         if "full" in kwargs.keys() and kwargs["full"]:
             return addr.fulladdress
-        return addr.name and addr.name or value
+        return addr.name and addr.name or addr.fulladdress
 
     @staticmethod
     def parse_address_list(values, **kwargs):
@@ -454,11 +454,12 @@ class ImapEmail(Email):
     def render_headers(self, **kwargs):
         from django.template.loader import render_to_string
 
-        return render_to_string("webmail/headers.html", {
+        res = render_to_string("webmail/headers.html", {
                 "headers" : self.headers,
                 "folder" : kwargs["folder"], "mail_id" : kwargs["mail_id"],
                 "attachments" : self.attachments != {} and self.attachments or None
                 })
+        return res
 
 class ReplyModifier(ImapEmail):
     def __init__(self, msg, user, form, all=False, **kwargs):

@@ -4,11 +4,13 @@ import sys
 import time
 import hashlib, crypt, string
 from random import Random
+from django.http import HttpResponse
 from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
+from django.utils import simplejson
 from modoboa.lib import parameters
 
 def exec_cmd(cmd, **kwargs):
@@ -19,10 +21,19 @@ def exec_cmd(cmd, **kwargs):
     return p.returncode, output
 
 def _render(request, tpl, user_context):
+    """Custom rendering function
+
+    Just a wrapper which automatically adds a RequestContext instance
+    (useful to use settings variables like MEDIA_URL inside templates)
+    """
     return render_to_response(tpl, user_context, 
                               context_instance=RequestContext(request))
 
 def _render_to_string(request, tpl, user_context):
+    """Custom rendering function
+
+    Same a mrender_render.
+    """
     return render_to_string(tpl, user_context,
                             context_instance=RequestContext(request))
 
@@ -62,6 +73,31 @@ def getctx(status, level=1, callback=None, **kwargs):
     for kw, v in kwargs.iteritems():
         ctx[kw] = v
     return ctx
+
+def ajax_response(request, status="ok", url=None, template=None, **kwargs):
+    """Ajax response shortcut
+
+    Simple shortcut that sends an JSON response. If a template is
+    provided, a 'content' field will be added to the response,
+    containing the result of this template rendering.
+
+    :param request: a request object
+    :param status: the response status ('ok' or 'ko)
+    :param nexturl: url to display after receiving this response
+    :param template: eventual template's path
+    :param kwargs: dict used for template rendering
+    """
+    ctx = {}
+    for k, v in kwargs.iteritems():
+        ctx[k] = v
+    if template is not None:
+        content = _render_to_string(request, template, ctx)
+    else:
+        content = ""
+    return HttpResponse(simplejson.dumps({"status" : status, 
+                                          "content" : content,
+                                          "url" : url}),
+                        mimetype="application/json")
 
 def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=None):
     if charset is not None:

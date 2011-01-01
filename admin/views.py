@@ -14,8 +14,7 @@ from modoboa import admin, userprefs
 from models import *
 from admin.permissions import *
 from modoboa.lib import crypt_password
-from modoboa.lib import _render, _render_to_string, _ctx_ok, \
-    getctx, events, parameters
+from modoboa.lib import _render, ajax_response, getctx, events, parameters
 from modoboa.lib.models import Parameter
 import copy
 
@@ -69,7 +68,11 @@ def domains(request):
 
 @login_required
 @permission_required("admin.add_domain")
-def newdomain(request):
+def newdomain(request, tplname="admin/adminform.html"):
+    commonctx = {"title" : _("New domain"),
+                 "submit_label" : _("Create"),
+                 "action" : reverse(newdomain),
+                 "formid" : "domform"}
     if request.method == "POST":
         form = DomainForm(request.POST)
         error = None
@@ -81,26 +84,26 @@ def newdomain(request):
                 if domain.create_dir():
                     form.save()
                     events.raiseEvent("CreateDomain", dom=domain)
-                    ctx = _ctx_ok(reverse(admin.views.domains))
                     messages.info(request, _("Domain created"), fail_silently=True)
-                    return HttpResponse(simplejson.dumps(ctx), 
-                                        mimetype="application/json")
+                    return ajax_response(request, url=reverse(admin.views.domains))
+
                 error = _("Failed to initialise domain, check permissions")
-        content = _render_to_string(request, "admin/newdomain.html", {
-                "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+        commonctx["form"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
 
     form = DomainForm()
-    return _render(request, 'admin/newdomain.html', {
-            "form" : form
-            })
+    commonctx["form"] = form
+    return _render(request, tplname, commonctx)
 
 @login_required
 @permission_required("admin.change_domain")
-def editdomain(request, dom_id):
+def editdomain(request, dom_id, tplname="admin/adminform.html"):
     domain = Domain.objects.get(pk=dom_id)
+    commonctx = {"title" : _("Domain editing"),
+                 "submit_label" : _("Update"),
+                 "action" : reverse(editdomain, args=[dom_id]),
+                 "formid" : "domform"}
     olddomain = copy.deepcopy(domain)
     if request.method == "POST":
         form = DomainForm(request.POST, instance=domain)
@@ -114,19 +117,16 @@ def editdomain(request, dom_id):
                         error = _("Failed to rename domain, check permissions")
             if not error:
                 form.save()
-                ctx = _ctx_ok(reverse(admin.views.domains))
                 messages.info(request, _("Domain modified"), fail_silently=True)
-                return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-        content = _render_to_string(request, "admin/editdomain.html", {
-                "domain" : domain, "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+                return ajax_response(request, url=reverse(admin.views.domains))
 
-    form = DomainForm(instance=domain) 
-    return _render(request, 'admin/editdomain.html', {
-            "domain" : domain, "form" : form
-            })
+        commonctx["form"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
+
+    form = DomainForm(instance=domain)
+    commonctx["form"] = form
+    return _render(request, tplname, commonctx)
 
 @login_required
 @permission_required("admin.delete_domain")
@@ -147,10 +147,8 @@ def deldomain(request):
             dom.delete(keepdir=keepdir)
         msg = ungettext("Domain deleted", "Domains deleted", len(selection))
         messages.info(request, msg, fail_silently=True)
-        ctx = _ctx_ok("")
-    else:
-        ctx = getctx("ko", error=error)
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+        return ajax_response(request)
+    return ajax_response(request, status="ko", error=error)
 
 @login_required
 @permission_required("admin.view_domaliases")
@@ -167,9 +165,13 @@ def domaliases(request):
 @login_required
 @good_domain
 @permission_required("admin.add_domainalias")
-def newdomalias(request):
+def newdomalias(request, tplname="admin/adminform.html"):
+    commonctx = {"title" : _("New domain alias"),
+                 "submit_label" : _("Create"),
+                 "action" : reverse(newdomalias),
+                 "formid" : "domaliasform"}
     if request.method == "POST":
-        form = DomainAliasForm(request.POST)
+        form = DomainAliasForm(request.user, request.POST)
         error = None
         if form.is_valid():
             domalias = form.save(commit=False)
@@ -181,32 +183,30 @@ def newdomalias(request):
                 except IntegrityError:
                     error = _("Alias with this name already exists")
                 else:
-                    ctx = _ctx_ok(reverse(admin.views.domaliases))
                     messages.info(request, _("Domain alias created"), fail_silently=True)
-                    return HttpResponse(simplejson.dumps(ctx),
-                                        mimetype="application/json")
-        content = _render_to_string(request, "admin/newdomalias.html", {
-                "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-    form = DomainAliasForm()
-    if not request.user.is_superuser:
-        form.fields["target"].queryset = \
-            Domain.objects.filter(mailbox__user__pk=request.user.id)
+                    return ajax_response(request, url=reverse(admin.views.domaliases))
+
+        commonctx["form"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
+
+    form = DomainAliasForm(request.user)
     if request.GET.has_key("domid"):
         form.fields["target"].initial = request.GET["domid"]
-    return _render(request, 'admin/newdomalias.html', {
-            "form" : form
-            })
+    commonctx["form"] = form
+    return _render(request, tplname, commonctx)
 
 @login_required
 @good_domain
 @permission_required("admin.change_domainalias")
-def editdomalias(request, alias_id):
+def editdomalias(request, alias_id, tplname="admin/adminform.html"):
     domalias = DomainAlias.objects.get(pk=alias_id)
+    commonctx = {"title" : _("Domain alias editing"),
+                 "submit_label" : _("Update"),
+                 "action" : reverse(editdomalias, args=[alias_id]),
+                 "formid" : "domaliasform"}
     if request.method == "POST":
-        form = DomainAliasForm(request.POST, instance=domalias)
+        form = DomainAliasForm(request.user, request.POST, instance=domalias)
         error = None
         if form.is_valid():
             ndomalias = form.save(commit=False)
@@ -218,20 +218,15 @@ def editdomalias(request, alias_id):
                 except IntegrityError:
                     error = _("Alias with this name already exists")
                 else:
-                    ctx = _ctx_ok(reverse(admin.views.domaliases))
                     messages.info(request, _("Domain alias updated"), fail_silently=True)
-                    return HttpResponse(simplejson.dumps(ctx),
-                                        mimetype="application/json")
-        content = _render_to_string(request, "admin/editdomalias.html", {
-                "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+                    return ajax_response(request, url=reverse(admin.views.domaliases))
+        commonctx["form"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
             
-    form = DomainAliasForm(instance=domalias)
-    return _render(request, 'admin/editdomalias.html', {
-            "form" : form, "domalias" : domalias
-            })
+    form = DomainAliasForm(request.user, instance=domalias)
+    commonctx["form"] = form
+    return _render(request, tplname, commonctx)
 
 @login_required
 @good_domain
@@ -241,8 +236,7 @@ def deldomalias(request):
     DomainAlias.objects.filter(id__in=selection).delete()
     msg = ungettext("Domain alias deleted", "Domain aliases deleted", len(selection))
     messages.info(request, msg, fail_silently=True)
-    return HttpResponse(simplejson.dumps(_ctx_ok("")), 
-                        mimetype="application/json")
+    return ajax_response(request)
 
 @login_required
 @good_domain
@@ -262,17 +256,26 @@ def mailboxes(request):
 @good_domain
 @permission_required("admin.view_mailboxes")
 def mailboxes_raw(request, dom_id=None):
-    mailboxes = Mailbox.objects.filter(domain=dom_id).exclude(user__id=request.user.id)
+    target = request.GET.has_key("target") and request.GET["target"] or "permissions"
+    if target == "permissions":
+        mailboxes = Mailbox.objects.filter(domain=dom_id).exclude(user__id=request.user.id)
+    else:
+        mailboxes = Mailbox.objects.filter(domain=dom_id)
     return _render(request, 'admin/mailboxes_raw.html', {
-            "mailboxes" : mailboxes
+            "mailboxes" : mailboxes,
+            "target" : target
             })
 
 @login_required
 @good_domain
 @permission_required("admin.add_mailbox")
-def newmailbox(request):
+def newmailbox(request, tplname="admin/adminform.html"):
+    commonctx = {"title" : _("New mailbox"),
+                 "submit_label" : _("Create"),
+                 "action" : reverse(newmailbox),
+                 "formid" : "mboxform"}
     if request.method == "POST":
-        form = MailboxForm(request.POST)
+        form = MailboxForm(request.user, request.POST)
         error = None
         if form.is_valid():
             try:
@@ -283,34 +286,29 @@ def newmailbox(request):
                 events.raiseEvent("CreateMailbox", mbox=mb)
                 messages.info(request, _("Mailbox created"),
                               fail_silently=True)
-                ctx = _ctx_ok(reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
-                return HttpResponse(simplejson.dumps(ctx), 
-                                    mimetype="application/json")
-        content = _render_to_string(request, "admin/newmailbox.html", {
-                "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+                return ajax_response(request, url=reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
 
-    form = MailboxForm()
-    if not request.user.is_superuser:
-        form.fields["domain"].queryset = \
-            Domain.objects.filter(mailbox__user__pk=request.user.id)
-    if request.GET.has_key("domid"):
-        form.fields["domain"].initial = request.GET["domid"]
-    return _render(request, "admin/newmailbox.html", {
-            "form" : form
-            })
+        commonctx["form"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
+
+    form = MailboxForm(request.user)
+    commonctx["form"] = form
+    return _render(request, tplname, commonctx)
 
 @login_required
 @good_domain
 @permission_required("admin.change_mailbox")
 @transaction.commit_manually
-def editmailbox(request, mbox_id=None):
+def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
     mb = Mailbox.objects.get(pk=mbox_id)
+    commonctx = {"title" : _("Mailbox editing"),
+                 "submit_label" : _("Create"),
+                 "action" : reverse(editmailbox, args=[mbox_id]),
+                 "formid" : "mboxform"}
     if request.method == "POST":
         oldmb = copy.deepcopy(mb)
-        form = MailboxForm(request.POST, instance=mb)
+        form = MailboxForm(request.user, request.POST, instance=mb)
         error = None
         if form.is_valid():
             try:
@@ -323,25 +321,17 @@ def editmailbox(request, mbox_id=None):
                     events.raiseEvent("ModifyMailbox", mbox=mb, oldmbox=oldmb)
                     messages.info(request, _("Mailbox modified"),
                                   fail_silently=True)
-                    ctx = _ctx_ok(reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
-                    return HttpResponse(simplejson.dumps(ctx),
-                                        mimetype="application/json")
+                    return ajax_response(request, url=reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
                 error = _("Failed to rename mailbox, check permissions")                
         if error is not None:
             transaction.rollback()
-        ctx = getctx("ko", content=_render_to_string(request, "admin/editmailbox.html", {
-                    "mbox" : mb, "form" : form, "error" : error
-                    }))
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+        commonctx["form"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
 
-    form = MailboxForm(instance=mb)
-    form.fields['quota'].initial = mb.quota
-    form.fields['enabled'].initial = mb.user.is_active
-    form.fields['password1'].initial = "é"
-    form.fields['password2'].initial = "é"
-    return _render(request, 'admin/editmailbox.html', {
-            "form" : form, "mbox" : mb
-            })
+    form = MailboxForm(request.user, instance=mb)
+    commonctx["form"] = form
+    return _render(request, tplname, commonctx)
 
 @login_required
 @good_domain
@@ -364,11 +354,9 @@ def delmailbox(request):
             mb.delete(keepdir=keepdir)
         msg = ungettext("Mailbox deleted", "Mailboxes deleted", len(selection))
         messages.info(request, msg, fail_silently=True)
-        ctx = _ctx_ok("")
-    else:
-        ctx = getctx("ko", error=error)
-    return HttpResponse(simplejson.dumps(ctx), 
-                        mimetype="application/json")
+        return ajax_response(request)
+
+    return ajax_response(request, status="ko", error=error)
 
 @login_required
 @good_domain
@@ -385,9 +373,13 @@ def mbaliases(request):
 @login_required
 @good_domain
 @permission_required("admin.add_alias")
-def newmbalias(request):    
+def newmbalias(request, tplname="admin/mbaliasform.html"):
+    commonctx = {"title" : _("New mailbox alias"),
+                 "submit_label" : _("Create"),
+                 "action" : reverse(newmbalias),
+                 "formid" : "mbaliasform"}
     if request.method == "POST":
-        form = AliasForm(request.POST)
+        form = AliasForm(request.user, request.POST)
         error = None
         if form.is_valid():
             try:
@@ -396,33 +388,31 @@ def newmbalias(request):
                 error = _("Alias with this name already exists")
             else:
                 form.save_m2m()
-                ctx = _ctx_ok(reverse(admin.views.mbaliases) )
                 messages.info(request, _("Mailbox alias created"), fail_silently=True)
-                return HttpResponse(simplejson.dumps(ctx),
-                                    mimetype="application/json")
-        content = _render_to_string(request, "admin/newmbalias.html", {
-                "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+                return ajax_response(request, url=reverse(admin.views.mbaliases))
 
-    if request.GET.has_key("domid"):
-        form = AliasForm(domain=Domain.objects.get(pk=request.GET["domid"]))
-    else:
-        form = AliasForm()
+        commonctx["form"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
+
+    form = AliasForm(request.user)
     if request.GET.has_key("mbid"):
         form.fields["mboxes"].initial = request.GET["mbid"]
-    return _render(request, 'admin/newmbalias.html', {
-             "form" : form, "noerrors" : True
-            })
+    commonctx["form"] = form
+    commonctx["noerrors"] = True
+    return _render(request, tplname, commonctx)
 
 @login_required
 @good_domain
 @permission_required("admin.change_alias")
-def editmbalias(request, alias_id):
+def editmbalias(request, alias_id, tplname="admin/mbaliasform.html"):
     alias = Alias.objects.get(pk=alias_id)
+    commonctx = {"title" : _("Mailbox alias editing"),
+                 "submit_label" : _("Update"),
+                 "action" : reverse(editmbalias, args=[alias.id]),
+                 "formid" : "mbaliasform"}
     if request.method == "POST":
-        form = AliasForm(request.POST, instance=alias)
+        form = AliasForm(request.user, request.POST, instance=alias)
         error = None
         if form.is_valid():
             try:
@@ -431,20 +421,16 @@ def editmbalias(request, alias_id):
                 error = _("Alias with this name already exists")
             else:
                 form.save_m2m()
-                ctx = _ctx_ok(reverse(admin.views.mbaliases))
                 messages.info(request, _("Mailbox alias modified"),
                               fail_silently=True)
-                return HttpResponse(simplejson.dumps(ctx), 
-                                    mimetype="application/json")
-        content = _render_to_string(request, "admin/editmbalias.html", {
-                "alias" : alias, "form" : form, "error" : error
-                })
-        ctx = getctx("ko", content=content)
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-    form = AliasForm(instance=alias)
-    return _render(request, 'admin/editmbalias.html', {
-            "form" : form, "alias" : alias
-            })
+                return ajax_response(request, url=reverse(admin.views.mbaliases))
+        commonctx["form"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
+
+    form = AliasForm(request.user, instance=alias)
+    commonctx["form"] = form
+    return _render(request, tplname, commonctx)
 
 @login_required
 @good_domain
@@ -454,12 +440,11 @@ def delmbalias(request):
     Alias.objects.filter(id__in=selection).delete()
     msg = ungettext("Alias deleted", "Aliases deleted", len(selection))
     messages.info(request, msg, fail_silently=True)
-    return HttpResponse(simplejson.dumps(_ctx_ok("")), 
-                        mimetype="application/json")
+    return ajax_response(request)
 
 @login_required
 @permission_required("auth.view_permissions")
-def permissions(request):
+def permissions(request, tplname='admin/permissions.html'):
     permtables = []
     if request.user.is_superuser:
         permtables += [
@@ -476,7 +461,7 @@ def permissions(request):
          "content" : DomainAdminsPerms().get(request)}
         ]
 
-    return _render(request, 'admin/permissions.html', {
+    return _render(request, tplname, {
             "permtables" : permtables
             })
 
@@ -497,9 +482,7 @@ def add_permission(request):
             return HttpResponse(simplejson.dumps(data), mimetype="application/json")
         messages.info(request, _("Permission added."), 
                       fail_silently=True)
-    ctx = _ctx_ok(reverse(admin.views.permissions))
-    return HttpResponse(simplejson.dumps(ctx), 
-                        mimetype="application/json")
+    return ajax_response(request, url=reverse(admin.views.permissions))
 
 @login_required
 def delete_permissions(request):
@@ -516,7 +499,7 @@ def delete_permissions(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def viewparameters(request):
+def viewparameters(request, tplname='admin/parameters.html'):
     apps = sorted(parameters._params.keys())
     gparams = []
     for app in apps:
@@ -533,7 +516,7 @@ def viewparameters(request):
             tmp["params"] += [newdef]
         gparams += [tmp]
 
-    return _render(request, 'admin/parameters.html', {
+    return _render(request, tplname, {
             "gparams" : gparams
             })
 
@@ -545,12 +528,11 @@ def saveparameters(request):
             continue
         app, name = pname.split('.')
         parameters.save_admin(name, v, app=app)
-    ctx = getctx("ok")
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return ajax_response(request)
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def viewextensions(request):
+def viewextensions(request, tplname='admin/extensions.html'):
     from modoboa.extensions import list_extensions
     from modoboa.lib import tables
     
@@ -574,7 +556,7 @@ def viewextensions(request):
             ext["selection"] = False
             
     tbl = ExtensionsTable(exts)
-    return _render(request, 'admin/extensions.html', {
+    return _render(request, tplname, {
             "extensions" : tbl.render(request)
             })
 

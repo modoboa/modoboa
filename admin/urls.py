@@ -22,7 +22,8 @@ urlpatterns = patterns('modoboa.admin.views',
                        (r'^mbaliases/edit/(?P<alias_id>\d+)/$', 'editmbalias'),
                        (r'^mbaliases/delete/$', 'delmbalias'),
 
-                       (r'^domains/(?P<dom_id>\d+)/raw/$', 'mailboxes_raw'),
+                       (r'^domains/(?P<dom_id>\d+)/rawmboxes/$', 'mailboxes_raw'),
+
                        #url(r'^domains/(?P<dom_id>\d+)/aliases/$', "aliases", name="full-aliases"),
                        #url(r'^domains/(?P<dom_id>\d+)/aliases/(?P<mbox_id>\d+)/$', "aliases", name="mbox-aliases"),
 

@@ -2,7 +2,7 @@
 {% load i18n admin_extras %}
 {% block pagetitle %}{% trans "Mailbox aliases" %}{% endblock %}
 {% block subcontent %}
-<div id="objects" name="mbaliases" rel="300 260">
+<div id="objects" name="mbaliases" rel="300 300">
   {% if not aliases %}
   <div class="info">{% trans "No mailbox alias defined." %}</div>
   {% else %}
@@ -15,7 +15,7 @@
     </tr>
     {% for alias in aliases %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ alias.id }}">
-      <td>{{ alias.full_address }}</td>
+      <td>{{ alias.address }}@{{ alias.domain }}</td>
       <td>
 	{% for mb in alias.mboxes.all %}
 	{{ mb.full_address }}<br/>

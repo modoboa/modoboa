@@ -20,7 +20,7 @@ def options_menu(user):
                  "img" : static_url("pics/edit.png"),
                  "label" : _("Change password"),
                  "class" : "boxed",
-                 "rel" : "{handler:'iframe',size:{x:350,y:220}}"},
+                 "rel" : "{handler:'iframe',size:{x:360,y:200}}"},
                 {"name" : "preferences",
                  "img" : static_url("pics/user.png"),
                  "label" : _("Preferences"),

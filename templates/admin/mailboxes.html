@@ -18,7 +18,7 @@
     {% for mb in mailboxes %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ mb.id }}">
       <td>{{ mb.name }}</td>
-      <td>{{ mb.address }}@{{ mb.domain.name }}</td>
+      <td>{{ mb.full_address }}</td>
       <td class="center">{{ mb.alias_set.all|length }}</td>
       <td class="center">{{ mb.quota }} {% trans "MB" %}</td>
       <td class="center">{{ mb.user.is_active|yesno:_("yes,no") }}</td>

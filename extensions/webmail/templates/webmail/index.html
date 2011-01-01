@@ -154,7 +154,6 @@
   var rtimer = null;
 
   window.addEvent("pageRefresh", function() {
-    console.log("timer : ", rtimer);
     if (rtimer) {
       clearInterval(rtimer);
       rtimer = null;

@@ -9,7 +9,7 @@ class SimpleBackend:
         except User.DoesNotExist:
             return None
         try:
-            mb = Mailbox.objects.get(full_address=username)
+            mb = user.mailbox_set.all()[0]
         except Exception:
             return None
         if not _check_password(password, mb.password):

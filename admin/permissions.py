@@ -7,7 +7,7 @@ from forms import *
 
 class Permissions(object):
     @staticmethod
-    def is_auhorized(user):
+    def is_authorized(user):
         return True
 
     def get_add_form(self, request):
@@ -27,7 +27,7 @@ class SuperAdminsPerms(Permissions):
     role = "super_admins"
 
     @staticmethod
-    def is_auhorized(user):
+    def is_authorized(user):
         return user.is_superuser
     
     def get_add_form(self, request):
@@ -141,7 +141,7 @@ def get_perms_class(user, role):
         cname += p.capitalize()
     cname += "Perms"
     if globals().has_key(cname):
-        if globals()[cname].is_auhorized(user):
+        if globals()[cname].is_authorized(user):
             return globals()[cname]
         return None
     res = events.raiseQueryEvent("PermsGetClass", role=role)

@@ -1,0 +1,24 @@
+{% extends "admin/adminform.html" %}
+{% block html_head %}
+{{ block.super }}
+<script type="text/javascript">
+window.addEvent("domready", function() {
+    mbaliasform_init = function() {
+	$("id_domain").addEvent("change", function(event) {
+	    var domid = this.value;
+	    if (domid == "") {
+		$("id_mboxes").set("html", "");
+		return;
+	    }
+	    new Request({
+		url: "{% url domains %}" + domid + "/rawmboxes/?target=mbaliases",
+		method: "get", onSuccess: function(data) {
+		    $("id_mboxes").set("html", data);
+		}
+	    }).send();
+	});
+    };
+    mbaliasform_init();
+});
+</script>
+{% endblock %}

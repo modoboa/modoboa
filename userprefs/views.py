@@ -1,11 +1,10 @@
 import copy
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators \
     import login_required
-from django.utils import simplejson
 from django.utils.translation import ugettext as _
-from modoboa.lib import _render, _ctx_ok, _ctx_ko, getctx, parameters
+from modoboa.lib import _render, ajax_response, parameters
 from modoboa.lib import crypt_password
 from forms import ChangePasswordForm
 from modoboa.admin.models import Mailbox
@@ -15,7 +14,7 @@ def index(request):
     return HttpResponseRedirect(reverse(preferences))
 
 @login_required
-def changepassword(request):
+def changepassword(request, tplname="userprefs/chpassword.html"):
     if request.user.id == 1:
         target = request.user
     else:
@@ -29,13 +28,8 @@ def changepassword(request):
             else:
                 target.set_password(request.POST["confirmation"])
             target.save()
-            ctx = _ctx_ok("")
-            return HttpResponse(simplejson.dumps(ctx), 
-                                mimetype="application/json")
-        ctx = _ctx_ko("userprefs/chpassword.html", {
-                "form" : form, "error" : error
-                })
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+            return ajax_response(request)
+        return ajax_response(request, status="ko", template=tplname, form=form, error=error)
 
     form = ChangePasswordForm(target)
     return _render(request, 'userprefs/chpassword.html', {
@@ -70,6 +64,5 @@ def savepreferences(request):
         app, name = pname.split('.')
         parameters.save_user(request.user, name, v, app=app)
 
-    ctx = getctx("ok")
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return ajax_response(request)
 

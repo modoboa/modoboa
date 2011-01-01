@@ -12,9 +12,10 @@ domadminform_init = function() {
 	}
 	{% url domains as doms_url %}
 	new Request({
-	    url: "{{ doms_url }}" + domid + "/raw/",
+	    url: "{% url domains %}" + domid + "/rawmboxes/?target=permissions",
 	    method: "get", onSuccess: function(data) {
 		$("id_user").set("html", data);
+		$("id_user").options[0].setProperty("selected", "selected");
 	    }
 	}).send();
     });
