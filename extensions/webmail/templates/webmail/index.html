@@ -210,9 +210,6 @@
       th.addClass("selected");
     }
 
-    /* The IE way for disabling default selection */
-    $$("tbody>tr").set("unselectable", "on");
-
     var emails_table = new HtmlTable($("emails"), {
 	selectable: true,
 	shiftForMultiSelect: true
@@ -226,6 +223,10 @@
 	    }
 	}
     });
+
+    /* The IE way for disabling default selection */
+    /* Actually it doesn't work :p */
+    $$("tbody>tr").set("unselectable", "on");
 
     bstart_dragging = function(item) {
         var block = new Element("div", {id: "draggeditems"})

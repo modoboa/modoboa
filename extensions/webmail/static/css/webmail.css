@@ -35,7 +35,7 @@ html > body #listing {
 }*/
 
 #emails th {
-    position: relative;
+    /*position: relative;*/
 }
 
 #emails th input {
@@ -116,8 +116,12 @@ th.selected {
 
 .draggable {
     cursor: move;
-    position: relative;
+    /*position: relative;*/
     border: 0;
+}
+
+.draggable img {
+    position: static;
 }
 
 .box li.dragging {
