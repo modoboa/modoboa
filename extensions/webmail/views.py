@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from modoboa.admin.models import Mailbox
 from modoboa.lib import parameters, _render, _render_error, \
     getctx, is_not_localadmin, _render_to_string
-from modoboa.lib.email_listing import parse_search_parameters
+from modoboa.lib.email_listing import parse_search_parameters, Paginator
 from lib import *
 from forms import *
 from templatetags.webextras import *
@@ -23,11 +23,58 @@ def __get_current_url(request):
             res += "&%s=%s" % (p, request.session[p])
     return res
 
-def __render_folders(mbc, request):
-    return render_to_string("webmail/folders.html", {
-            "selected" : request.session["folder"],
-            "folders" : mbc.getfolders(request.user)
-            })
+def __render_common_components(request, folder, lst=None, content=None, menu=None):
+    """Render all components that are common to all pages in the webmail
+
+    It concerns the main listing, the viewmail and the compose
+    pages. Components are : main content, folders list, pagination
+    bar, quota bar.
+
+    Two modes are available : 
+     * If lst is provided, do not use content,
+     * If lst is not provided, do not use content, nor menu.
+
+    :param request: a Request object
+    :param folder: the current folder
+    :param lst: an ImapListing object
+    :param content: the HTML that will go into the 'listing' div
+    :param menu: the current page menu
+    """
+    if lst is not None:
+        paginator = lst.paginator
+        mbc = lst.mbc
+        menu = listing_menu("", folder, request.user)
+    else:
+        mbc = IMAPconnector(user=request.user.username, 
+                            password=request.session["password"])
+        paginator = Paginator(mbc.messages_count(folder=folder, 
+                                                 order=request.session["navparams"]["order"]), 
+                              int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")))
+                              
+    page = paginator.getpage(request.session["page"])
+    if page:
+        navbar = EmailListing.render_navbar(page)
+        if lst:
+            listing = lst.fetch(request, page.id_start, page.id_stop)
+    else:
+        navbar = ""
+        if lst:
+            listing = "<div class='info'>%s</div>" \
+                % _("This folder contains no messages")
+        
+    ret = {
+        "folders" : render_to_string("webmail/folders.html", {
+                "selected" : request.session["folder"],
+                "folders" : mbc.getfolders(request.user)
+                }),
+        "menu" : menu,
+        "listing" : listing,
+        "navbar" : navbar,
+        "quota" : ImapListing.computequota(mbc)
+        }
+    
+    return ret
+        
 
 @login_required
 @is_not_localadmin()
@@ -54,23 +101,11 @@ def folder(request, name, updatenav=True):
         optparams["criteria"] = request.session["criteria"]
     else:
         optparams["reset"] = True
-    optparams["elems_per_page"] = int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+        optparams["elems_per_page"] = int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
     lst = ImapListing(request.user, request.session["password"],
                       baseurl=name, folder=name, order=order, 
                       **optparams)
-
-    page = lst.paginator.getpage(request.session["page"])
-    dico = {"folders" : __render_folders(lst.mbc, request), 
-            "menu" : listing_menu("", name, request.user)}
-    if page:
-        dico["listing"] = lst.fetch(request, page.id_start, page.id_stop)
-        dico["navbar"] = lst.render_navbar(page)
-    else:
-        dico["listing"] = "<div class='info'>%s</div>" \
-            % _("This folder contains no messages")
-        dico["navbar"] = ""
-    dico["quota"] = lst.getquota()
-
+    dico = __render_common_components(request, folder, lst)
     ctx = getctx("ok", **dico)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
@@ -113,8 +148,8 @@ def viewmail(request, folder, mail_id=None):
                       request.user.get_all_permissions())
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
-    ctx = getctx("ok", menu=menu, listing=content, 
-                 folders=__render_folders(mbc, request))
+    ctx = getctx("ok", **__render_common_components(request, folder, 
+                                                    menu=menu, listing=content))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
@@ -239,9 +274,9 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
             })
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
-    ctx = getctx("ok", level=2, menu=menu, listing=content, 
-                 folders=__render_folders(mbc, request),
-                 editor=editor)
+    ctx = getctx("ok", level=2, editor=editor, 
+                 **__render_common_components(request, request.session["folder"], 
+                                              menu=menu, listing=content))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 def __html2plaintext(content):

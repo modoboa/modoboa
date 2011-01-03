@@ -418,13 +418,16 @@ class ImapListing(EmailListing):
                 unicode(or_criterion(criterions, '%s "%s"' % (key, pattern)))
         self.mbc.criterions = [unicode("(%s)" % criterions)]
 
-    def getquota(self):
+    @staticmethod
+    def computequota(mbc):
         try:
-            return int(float(self.mbc.quota_actual) \
-                           / float(self.mbc.quota_limit) * 100)
+            return int(float(mbc.quota_actual) \
+                           / float(mbc.quota_limit) * 100)
         except AttributeError:
             return -1
 
+    def getquota(self):
+        return ImapListing.computequota(self.mbc)
 
 class ImapEmail(Email):
     def __init__(self, msg, user, dformat="DISPLAYMODE", addrfull=False, 

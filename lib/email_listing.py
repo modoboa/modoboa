@@ -100,7 +100,8 @@ class EmailListing:
             if baseurl:
                 self.paginator.baseurl = baseurl
 
-    def render_navbar(self, page):
+    @staticmethod
+    def render_navbar(page):
         if page is None:
             return ""
         context = {"page" : page, "MEDIA_URL" : settings.MEDIA_URL}
