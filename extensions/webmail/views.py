@@ -101,9 +101,14 @@ def fetchmail(request, folder, mail_id, all=False):
 def viewmail(request, folder, mail_id=None):
     from templatetags.webextras import viewm_menu
 
+    if request.GET.has_key("links"):
+        links = int(request.GET["links"])
+    else:
+        links = parameters.get_user(request.user, "ENABLE_LINKS") == "yes" and 1 or 0
+    url = reverse(getmailcontent, args=[folder, mail_id]) + ("?links=%d" % links)
     content = Template("""
 <iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
-""").render(Context({"url" : reverse(getmailcontent, args=[folder, mail_id])}))
+""").render(Context({"url" : url}))
     menu = viewm_menu("", __get_current_url(request), folder, mail_id,
                       request.user.get_all_permissions())
     mbc = IMAPconnector(user=request.user.username, 
@@ -119,7 +124,7 @@ def getmailcontent(request, folder, mail_id):
     if "class" in msg.keys() and msg["class"] == "unseen":
         IMAPconnector(user=request.user.username,
                       password=request.session["password"]).msg_read(folder, mail_id)
-        email = ImapEmail(msg, request.user, links="1")
+        email = ImapEmail(msg, request.user, links=request.GET["links"])
     try:
         pageid = request.session["page"]
     except KeyError:

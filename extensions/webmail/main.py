@@ -57,6 +57,9 @@ def init():
     parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
                              label=_("Number of displayed emails per page"),
                              help=_("Sets the maximum number of messages displayed in a page"))
+    parameters.register_user("ENABLE_LINKS", type="list_yesno", deflt="no",
+                             label=_("Enable HTML links display"),
+                             help=_("Enable/Disable HTML links display"))
 
 def destroy():
     events.unregister("UserMenuDisplay", menu)

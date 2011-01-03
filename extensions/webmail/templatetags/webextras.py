@@ -32,6 +32,19 @@ def viewm_menu(selection, backurl, folder, mail_id, user):
          "img" : static_url("pics/remove.png"),
          "url" : reverse(webmail.views.delete, args=[folder, mail_id]),
          "label" : _("Delete")},
+        {"name" : "display_options",
+         "label" : _("Display options"),
+         "img" : static_url("pics/settings.png"),
+         "class" : "menubardropdown",
+         "menu" : [
+                 {"name" : "activate_links", 
+                  "label" : _("Activate links"),
+                  "url" : reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=1"},
+                 {"name" : "disable_links", 
+                  "label" : _("Disable links"),
+                  "url" : reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=0"},
+                ]
+         }
         ]
     
     return render_to_string('common/menu.html', 

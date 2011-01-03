@@ -1,3 +1,4 @@
+
 {% extends "common/email_listing.html" %}
 {% load i18n %}
 {% block css %}
@@ -19,6 +20,22 @@
     if ($defined(resp.folders)) {
       $("folders").set("html", resp.folders);
     }
+    select($$("a[href=" + current_anchor.getbaseurl() + "]"));
+    $$("li[class*=clickable]").removeEvents();
+    $$("li[class*=clickable]").addEvent("click", function(evt) {
+      $$("ul[name=" + evt.target.get("name") + "]").each(function(item) {
+        if (item.hasClass("hidden")) {
+          evt.target.setStyle("background", 
+			      "url('{{ MEDIA_URL }}pics/folder-open.png') no-repeat");
+          item.removeClass("hidden").addClass("visible");
+        } else {
+          evt.target.setStyle("background", 
+			      "url('{{ MEDIA_URL }}pics/subfolders.png') no-repeat");
+          item.removeClass("visible").addClass("hidden");
+        }
+      });
+      evt.stop();
+    });
     if ($defined(resp.quota) && resp.quota != "-1") {
       quota_pb.set(resp.quota);
       $("quotabox").setStyle("display", "block");
@@ -59,6 +76,14 @@
                           current_anchor.parse_string(resp.next).update();
                           select($$("a[href=" + current_anchor.getbaseurl() + "]"));
                         }}).get();
+    });
+    $$("a[name=activate_links]").addEvent("click", function(evt) {
+	evt.stop();
+	current_anchor.setparam("links", "1").update();
+    });
+     $$("a[name=disable_links]").addEvent("click", function(evt) {
+	evt.stop();
+	current_anchor.setparam("links", "0").update();
     });
     setDivHeight("mailcontent", 5, 0);
   });
@@ -187,20 +212,6 @@
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
     rtimer = refreshFolder.periodical({{ refreshrate }});
-    select($$("a[href=" + current_anchor.getbaseurl() + "]"));
-    $$("li[class*=clickable]").removeEvents();
-    $$("li[class*=clickable]").addEvent("click", function(evt) {
-      $$("ul[name=" + evt.target.get("name") + "]").each(function(item) {
-        if (item.hasClass("hidden")) {
-          evt.target.setStyle("background", "url('{{ MEDIA_URL }}pics/folder-open.png') no-repeat");
-          item.removeClass("hidden").addClass("visible");
-        } else {
-          evt.target.setStyle("background", "url('{{ MEDIA_URL }}pics/subfolders.png') no-repeat");
-          item.removeClass("visible").addClass("hidden");
-        }
-      });
-      evt.stop();
-    });
     searchbox_init();
     if (navparams.has("order")) {
       src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
