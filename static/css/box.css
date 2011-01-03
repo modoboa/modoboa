@@ -6,6 +6,7 @@ body {
 }
 
 div.row {
+    /*position: relative;*/
     clear: both;
     padding-top: 10px;
     padding-left: 20px;
@@ -24,11 +25,16 @@ input {
     padding: 2px;
 }
 
-input[type=text] {
-    width: 130px
+input[type=text], input[type=password] {
+    width: 140px
 }
 
-input:hover {
+/*input:hover {
+    color: inherit;
+    background-color: #ffffcc;
+}*/
+
+input:focus {
     color: inherit;
     background-color: #ffffcc;
 }
@@ -42,7 +48,7 @@ textarea {
 }
 
 select {
-    width: 135px;
+    width: 145px;
     background-color: #eee;
     border: 1px solid #cccccc;
 }
@@ -106,9 +112,10 @@ td.even {
 
 /* Mootools tooltips */
 .tip {
+    display: none;
+    position: absolute;
     color: #fff;
-    width: 139px;
-    z-index: 13000;
+    z-index: 2;
     border: 1px solid #cccccc;
 }
  
@@ -122,7 +129,7 @@ td.even {
 }
 
 .tip-text {
-    font-size: 11px;
+    font-size: 0.9em;
     padding: 4px 8px 8px;
     background: #eee;
     color: black;

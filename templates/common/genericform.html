@@ -1,7 +1,11 @@
+{% load i18n %}
 {% for field in form %}
 <div class="row">
   {% if field.help_text %}
-  <div id="{{ field.name }}_helptext" style="display:none">{{ field.help_text}}</div>
+  <div id="{{ field.name }}_helptext" class="tip">
+    <div class="tip-title">{% trans "Help" %}</div>
+    <div class="tip-text">{{ field.help_text}}</div>
+  </div>
   {% endif %}
   {{ field.label_tag }} {{ field }} {% ifequal noerrors False %}{{ field.errors }}{% endifequal %}
 </div>

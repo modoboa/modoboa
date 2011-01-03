@@ -55,11 +55,20 @@ window.addEvent("domready", function() {
 
     $(document.body).addEvent("submit", default_submit);
 
-    $$("input[type!=submit]", "select").each(function(elt) {
-        if ($(elt.name + "_helptext")) {
-            elt.store("tip:title", gettext("Help"));
-            elt.store("tip:text", $(elt.name + "_helptext").get("html"));
-        }
+    $$("input[type!=submit]", "select").addEvents({
+	focus: function(evt) {
+	    var helpdiv = $(evt.target.name + "_helptext");
+	    if (helpdiv) {
+		var coords = evt.target.getCoordinates();
+		helpdiv.setPosition({x: 10, y: coords['top'] + coords['height'] + 5});
+		helpdiv.setStyle("display", "block");
+	    }
+	},
+	blur: function(evt) {
+	    var helpdiv = $(evt.target.name + "_helptext");
+	    if (helpdiv) {
+		helpdiv.setStyle("display", "none");
+	    }
+	}
     });
-    var tip = new Tips($$("input[type!=submit]", "select"));
 });
