@@ -253,8 +253,9 @@ class IMAPconnector(object):
             name = name.strip('"').decode("imap4-utf-7")
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
-                descr["path"] = parts[0]
-                descr["sub"] = []
+                if not descr.has_key("path"):
+                    descr["path"] = parts[0]
+                    descr["sub"] = []
                 if self._parse_folder_name(descr["sub"], parts[0], delimiter, 
                                            parts[1:]):
                     descr["class"] = "subfolders"
