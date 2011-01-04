@@ -17,16 +17,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('admin', ['DomainAlias'])
 
-        try:
-            grp = orm["auth.Group"].objects.get(name="DomainAdmins")
-        except:
-            pass
-        else:
-            for pcode in ["view_domaliases", "add_domainalias", "change_domainalias",
-                          "delete_domainalias"]:
-                grp.permissions.add(orm["auth.Permissions"].objects.get(codename=pcode))
-            grp.save()
-
     def backwards(self, orm):
         
         # Deleting model 'DomainAlias'

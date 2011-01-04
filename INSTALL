@@ -5,150 +5,54 @@ Requirements
 ------------
 
 - Python version 2.6+
-- Django version 1.2+ (http://docs.djangoproject.com/en/dev/intro/install/#intro-install)
-- south version 0.7+ (http://south.aeracode.org/)
+- `Django version 1.2+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
+- `south version 0.7+ <http://south.aeracode.org/>`_
 
-For extensions (mandatories since 0.8.2)::
+For extensions (mandatories since 0.8.2):
 
-- mysqldb python module (http://mysql-python.sourceforge.net/)
-- lxml python module (http://codespeak.net/lxml/)
-- pycrypto python module (http://www.dlitz.net/software/pycrypto/)
-- rrdtool python binding (http://oss.oetiker.ch/rrdtool/)
-- ckeditor version 3.4.1+ (http://ckeditor.com/)
+- `mysqldb python module <http://mysql-python.sourceforge.net/>`_
+- `lxml python module <http://codespeak.net/lxml/>`_
+- `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
+- `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_
+- `ckeditor version 3.4.1+ <http://ckeditor.com/>`_
 
 How to install
 --------------
 
-Download Modoboa's tarball and extract it::
+Download the latest Modoboa's tarball and extract it::
 
-  # tar xzf modoboa-<version>.tar.gz
-  # mv modoboa-<version> modoboa
+  $ tar xzf modoboa-<version>.tar.gz
+  $ mv modoboa-<version> modoboa
 
-Then, enter the modoboa directory, create a settings.py file (you can
-use settings-sample.py as a model). Specify database relative
+Then, enter the *modoboa* directory, create a *settings.py* file (you can
+use *settings-sample.py* as a model). Specify database relative
 informations. You must choose between mysql and postgresql, other
-types are not supported by major email projects like postfix or
-dovecot.
+types are not supported by major email projects like *postfix* or
+*dovecot*.
 
-Create a database with the name you specified in settings.py. Make
+Create a database with the name you specified in *settings.py*. Make
 sure your database is using UTF8 as a default charset. If not, you
 will surely have problems (with MySQL at least). You will probably
 need to install a python database backend (like MySQLdb).
 
-Initialise the database by running the following command::
+Initialize the database by running the following command::
 
-  # python manage.py syncdb
+  $ python manage.py syncdb
 
-Create the super admin account (just follow the procedure).
+It will let you create the default super adminstrator.
 
-Since version 0.8, Modoboa is using south to handle schema
-migration. In order to finish the database creation, you must run the
-first migration like this::
+Since version 0.8, Modoboa is using *south* to handle schema
+migrations. To finish the database initialization, you must
+apply existing migrations like this::
 
-  # python manage.py migrate
-
-How to upgrade
---------------
-
-First, decompress the new tarball at the same location than your
-current installation. Then, check if the new version you're installing
-requires a migration::
-
-0.8.1 -> 0.8.2 : ckeditor integration and more.
-
- * Migrate the admin app::
-
-   # python manage.py migrate admin
-
- * Update your config file and add all extensions to INSTALLED_APPS
-   (even those you are not going to use).
-
- * Inside the '<modoboa_dir>/templates/' folder, remove all symbolic links.
-
- * Download the latest release of ckeditor and extract it into
-   <modoboa_dir>/static/js/. It should create a new folder named
-   'ckeditor'.
-
- * Update your config file. First, update the following variables::
-   
-   MEDIA_ROOT = os.path.join(MODOBOA_DIR, '/static')
-   MEDIA_URL = '/static/'
-
- * Add the following variable::
-
-   MODOBOA_WEBPATH = 'modoboa/'
-
- * Delete the following variables: STATIC_ROOTDIR and
-   TEMPLATE_CONTEXT_PROCESSORS.
-
- * Finally, add 'modoboa.lib.middleware.ExtControlMiddleware' to
-   MIDDLEWARE_CLASSES.
-
-0.8 -> 0.8.1 : project renamed.
-
- * First, rename your mailng folder to modoboa and copy all the
-   content from modoboa-0.8.1 to modoboa.
- 
- * Edit your settings.py and replace all occurences of mailng by
-   modoboa. Make sure you don't modify the DATABASE section as you're
-   not going to rename your database.
-
- * Rename the MAILNG_DIR variable to MODOBOA_DIR.
-
- * Add 'django.contrib.messages.middleware.MessageMiddleware' to
-   MIDDLEWARE_CLASSES and 'django.contrib.messages' to
-   INSTALLED_APPS. Save your modifications.
-
- * Run the following command::
-
-   # python manage.py syncdb
-
- * For all activated extensions, run the following command::
- 
-   # export PYTHONPATH=<modoboa_dir>/..
-   # DJANGO_SETTINGS_MODULE=modoboa.settings \
-      <modoboa_dir>/scripts/extension.py <extension> on
-
- * Update your webserver configuration and restart it.
-
-
-0.7 -> 0.8 : SQL migration needed.
-
-Before you start migration, make sure you have updated your
-INSTALLED_APPS variable and that it contains at least::
-
-  INSTALLED_APPS = (
-     # Django's stuff before
-
-     'south',
-     'modoboa',
-     'modoboa.lib',
-     'modoboa.admin',
-     'modoboa.userprefs',
-  )
-
-Starting with 0.8, modoboa.main doesn't exist anymore. You need to
-remove it from your INSTALLED_APPS.
-
-NB: Before doing this migration, I recommend that you make a copy of your
-existing database.
-
-Finally, run the following commands:
-
-  # python manage.py syncdb
-  # python manage.py convert_to_south
-  # python manage.py migrate --all 0001 --fake
-  # python manage.py migrate --all 0002
-
-0.6 -> 0.7 : no SQL modifications.
-0.5 -> 0.6 : no SQL modifications.
+  $ python manage.py migrate
 
 Time zone and language
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 Modoboa is available in english, french and german. You can choose
-which language to use by modifying the LANGUAGE_CODE variable inside
-settings.py::
+which language to use by modifying the ``LANGUAGE_CODE`` variable inside
+*settings.py*::
 
   LANGUAGE_CODE = 'en-US' # English
   # or
@@ -156,73 +60,174 @@ settings.py::
   # or
   LANGUAGE_CODE = 'de-DE' # German
 
-You can also specify your time zone by modifying the TIME_ZONE
+You can also specify your time zone by modifying the ``TIME_ZONE``
 variable. For example::
 
   TIME_ZONE = 'Europe/Paris'
 
 Host configuration
-------------------
+^^^^^^^^^^^^^^^^^^
 
-Before testing Modoboa, you must create a group and a user that will be
-used to store mails on the host filesystem. There is only one
+Before using Modoboa, you must create a group and a user that will be
+used to store emails on the host filesystem. There is only one
 group/user needed because we are in a virtual hosting configuration
 (ie. users with non-UNIX accounts).
 
 For example, create a vmail group::
 
-  # groupadd vmail
+  $ groupadd vmail
 
 Then create a vmail user::
 
-  # useradd -g vmail -d /var/vmail -m vmail
+  $ useradd -g vmail -d /var/vmail -m vmail
 
 At last, the system user used to run modoboa will need permissions to
-manipulate directories in vmail's homedir. To do so, edit your /etc/sudoers
+manipulate directories in vmail's homedir. To do so, edit the */etc/sudoers*
 file and add the following inside::
 
   <user_that_runs_modoboa> ALL=(vmail) NOPASSWD: ALL
 
 Testing installation
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 As a typical Django application, Modoboa can be tested using a simple web 
 server. Just run this command to start it::
 
-  # python manage.py runserver
+  $ python manage.py runserver
 
 You will be able to play with Modoboa by looking at 
 http://<youraddress>:8000/modoboa/admin/.
 
-Tips to link Modoboa with postfix
---------------------------------
+How to upgrade
+--------------
 
-First, define following maps on your server (this should work with
-Postfix versions >= 2.2)::
+First, decompress the new tarball at the same location than your
+current installation. Then, check if the new version you're installing
+requires a migration.
 
-# /etc/postfix/sql-domains.cf
+**NB: Before executing a schema migration, I recommend that you make a copy of your
+existing database.**
+
+0.8.3: admin application refactoring and more
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Migrate the *admin* application::
+
+     $ python manage.py migrate admin
+
+
+0.8.2: ckeditor integration and more
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Migrate the admin applicaton:: 
+
+     $ python manage.py migrate admin
+
+#. Update your config file and add all extensions to ``INSTALLED_APPS`` 
+   (even those you are not going to use).
+#. Inside the *<modoboa_dir>/templates/* directory, remove all symbolic links.
+#. Download the latest release of ckeditor and extract it into *<modoboa_dir>/static/js/*. It should create a new directory named *ckeditor*.
+#. Update the following variables inside *settings.py*::
+
+     MEDIA_ROOT = os.path.join(MODOBOA_DIR, '/static')
+     MEDIA_URL = '/static/'
+
+#. Then, add the following variable: ``MODOBOA_WEBPATH = 'modoboa/'``
+#. Delete the following variables: ``STATIC_ROOTDIR`` and
+   ``TEMPLATE_CONTEXT_PROCESSORS``.
+#. Finally, add ``modoboa.lib.middleware.ExtControlMiddleware`` to
+   ``MIDDLEWARE_CLASSES``.
+
+0.8.1 : project renamed
+^^^^^^^^^^^^^^^^^^^^^^^
+
+#. First, rename the *mailng* directory to *modoboa* and copy all the
+   content from *modoboa-0.8.1* to *modoboa*.
+#. Edit *settings.py* and replace all occurences of mailng by
+   modoboa. Make sure you don't modify the ``DATABASE`` section as you're
+   not going to rename your database.
+#. Rename the ``MAILNG_DIR`` variable to ``MODOBOA_DIR``.
+#. Add ``'django.contrib.messages.middleware.MessageMiddleware'`` to
+   ``MIDDLEWARE_CLASSES`` and ``'django.contrib.messages'`` to
+   ``INSTALLED_APPS``. Save your modifications.
+#. Run the following command::
+
+     $ python manage.py syncdb
+
+#. For all activated extensions, run the following command::
+ 
+     $ export PYTHONPATH=<modoboa_dir>/..=
+     $ DJANGO_SETTINGS_MODULE=modoboa.settings <modoboa_dir>/scripts/extension.py <extension> on
+
+#. Update your webserver configuration and restart it.
+
+0.8 : SQL migration needed
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Before you start the migration, make sure you have updated your
+``INSTALLED_APPS`` variable and that it contains at least::
+
+  INSTALLED_APPS = (
+     # Django's stuff before
+
+     'south',
+     'mailng',
+     'mailng.lib',
+     'mailng.admin',
+     'mailng.userprefs',
+  )
+
+Starting with 0.8, mailng.main doesn't exist anymore. You must remove
+it from your ``INSTALLED_APPS``.
+
+Finally, run the following commands::
+
+  $ python manage.py syncdb
+  $ python manage.py convert_to_south
+  $ python manage.py migrate --all 0001 --fake
+  $ python manage.py migrate --all 0002
+
+0.7 : no SQL modifications
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+0.6 : no SQL modifications
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Integrating Modoboa with other softwares
+========================================
+
+Postfix
+-------
+
+First, define the following map files on your server (it should work with
+*postfix* versions >= 2.2):
+
+``/etc/postfix/sql-domains.cf``::
+
   user = <user>
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
   query = SELECT name FROM admin_domain WHERE name='%s' AND enabled='1'
 
-# /etc/postfix/sql-mailboxes.cf
+``/etc/postfix/sql-mailboxes.cf``::
+
   user = <user>
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
   query = SELECT path FROM admin_mailbox WHERE full_address = '%s'
 
-# /etc/postfix/sql-aliases.cf
+``/etc/postfix/sql-aliases.cf``::
+
   user = <user>
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
   query = SELECT t3.full_address FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3 WHERE t1.full_address='%s' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t1.enabled='1'
 
-Then, use the following configuration in your /etc/postfix/main.cf file
-(this is one possible configuration)::
+Then, use the following configuration in the */etc/postfix/main.cf* file
+(this is just one possible configuration)::
 
   # Stuff before
   mailbox_transport = virtual
@@ -243,84 +248,21 @@ NB: Modoboa supports both maildir and mbox formats. You can specify
 which format to use by modifying the MAILBOX_TYPE parameter available
 in the admin panel.
 
-Tips to activate auto-reply messages in Postifx
------------------------------------------------
+Dovecot
+-------
 
-Since version 0.6, mail users can define an auto-reply message with Modoboa.
-
-To activate the extension, go to the admin -> settings -> extensions
-page, check the box corresponding to 'Postfix autoreply' and click on
-the "Apply" button.
-
-Then run the following commands to update Modoboa SQL schema and content::
-
-  # python manage.py syncdb
-  # python manage.py migrate postfix-autoreply
-  # export PYTHONPATH=$PWD/..
-  # DJANGO_SETTINGS_MODULE=modoboa.settings ./scripts/postfix_autoreply/upgrade_autoreply.py
-
-The user that executes the autoreply script needs to access
-settings.py. You must apply proper permissions on this file. For
-example, if settings.py belongs to www-data:www-data, you can add the
-vmail user to the www-data group and set the read permission for the
-group.
-
-To make Postfix understand this feature, you need to update your configuration
-files as follow::
-
- # /etc/postfix/main.cf
-  transport_maps = mysql:/etc/postfix/maps/sql-transport.cf
-  virtual_alias_maps = mysql:/etc/postfix/maps/sql-aliases.cf
-          mysql:/etc/postfix/maps/sql-autoreplies.cf
-
- # /etc/postfix/master.cf
-  autoreply unix        -       n       n       -       -       pipe
-            flags= user=vmail:<group> argv=<path_to_modoboa>/scripts/postfix_autoreply/autoreply $sender $mailbox
-
-Then, create new map files with the following content::
-
- # /etc/postfix/maps/sql-transport.cf
-  user = <user>
-  password = <password>
-  dbname = <database>
-  hosts = 127.0.0.1
-  query = SELECT method FROM postfix_autoreply_transport WHERE domain='%s'
-
- # /etc/postfix/maps/sql-autoreplies.cf
-  user = <user>
-  password = <password>
-  dbname = <database>
-  hosts = 127.0.0.1
-  query = SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'
-
-Finally, edit the shell script 'autoreply' located inside the
-'scripts' directory and change the value of BASEDIR. (just put absolute path
-of the directory where modoboa is installed)
-
-NB: auto-reply messages are just sent one time per sender for a
-pre-defined time period. By default, this period is equal to 1 day
-(86400s), you can adjust this value by modifying the AUTOREPLY_TIMEOUT
-parameter available in the admin panel.
-
-NB: Be sure that both 'autoreply' and 'autoreply.py' scripts (located
-inside the 'scripts/postfix_autoreply' directory) have good
-permissions (ie. 0755).
-
-Tips to link Modoboa with dovecot
---------------------------------
-
-If you are using 'maildir' format to store mailboxes, add the
-following line inside your main Dovecot config file
-(/etc/dovecot/dovecot.conf)::
+If you are using the *maildir* format to store mailboxes, add the
+following line into Dovecot's main config file
+(*/etc/dovecot/dovecot.conf*)::
 
   mail_location = maildir:<path_to_mailboxes>/%d/%n/.maildir
 
-If you are using 'mbox' format, put the following::
+If you are using the mbox format, add the following::
   
   mail_location = mbox:<path_to_mailboxes>/%d/%n/:INBOX=<path_to_mailboxes>/%d/%n/Inbox
 
-To make the authentication work, edit 'dovecot.conf' and add the
-following inside::
+To make the authentication work, edit *dovecot.conf* and add the
+following content inside::
 
   auth default {
     # ... stuff before
@@ -340,9 +282,9 @@ following inside::
   }
 
 Be sure to activate only one backend (per type) inside your configuration
-(comment other ones).
+(just comment the other ones).
 
-Then, edit your /etc/dovecot/dovecot-sql.conf and modify following lines::
+Then, edit your */etc/dovecot/dovecot-sql.conf* and modify following lines::
 
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
@@ -350,19 +292,20 @@ Then, edit your /etc/dovecot/dovecot-sql.conf and modify following lines::
   password_query = SELECT full_address AS user, password FROM admin_mailbox WHERE full_address = '%u'
   user_query = SELECT path AS home, uid, gid FROM admin_mailbox WHERE full_address = '%u'
 
-Enable quotas with Dovecot
---------------------------
+Enable quotas support
+^^^^^^^^^^^^^^^^^^^^^
 
-Put the following lines inside your dovecot.conf file::
+Put the following lines inside the *dovecot.conf* file::
 
     protocol imap {
       mail_plugins = quota imap_quota
     }
 
-Before continuing, you need to know which quota backend must be user
-(function of mailboxes format):: 
- * 'mbox' : backend=dirsize,
- * 'maildir' : backend=maildir.
+Before continuing, you need to know which quota backend must be used
+(function of mailboxes format):
+
+* mbox : backend=dirsize,
+* maildir : backend=maildir.
 
 If you use version prior to 1.1, add also the following configuration::
 
@@ -371,15 +314,15 @@ If you use version prior to 1.1, add also the following configuration::
     quota = <backend>:storage=10240
   }
 
-Then modify the above user_query inside dovecot-sql.conf as follow to
+Then, modify the above query inside *dovecot-sql.conf* as follow to
 activate per user quotas::
 
   user_query = SELECT path AS home, uid, gid, concat('<backend>:storage=', quota / 1024) AS quota FROM admin_mailbox WHERE full_address = '%u'
 
-If you are not using MySQL, you will have to replace the 'concat'
-function call with something working in your database.
+If you are not using MySQL, you will have to replace the ``concat``
+function call with something working with your database.
 
-For version >= 1.1, put the following configuration inside dovecot.conf file::
+For version >= 1.1, put the following configuration inside the *dovecot.conf* file::
 
   plugin {
     # Default 10M storage limit with an extra 5M limit when saving to Trash.
@@ -388,16 +331,19 @@ For version >= 1.1, put the following configuration inside dovecot.conf file::
     quota_rule2 = Trash:storage=5M
   }
 
-Then modify the above user_query inside dovecot-sql.conf to activate
+Then, modify the above query inside *dovecot-sql.conf* to activate
 user quotas::
 
   user_query = SELECT path AS home, uid, gid, concat('*:storage=', quota, 'M') AS quota_rule FROM admin_mailbox WHERE full_address = '%u'
 
-Tips to serve Modoboa behind Apache2
-------------------------------------
+How to serve Modoboa behind a webserver
+=======================================
 
-First, be sure to have apache2 and mod_python installed on your
-server.
+Apache 2
+--------
+
+First, make sure that both *apache2* and *mod_python* are installed on
+your server.
 
 Create a new virtualhost in your Apache configuration and put the
 following inside::
@@ -418,19 +364,29 @@ following inside::
 This is one possible configuration. Note that you will certainly need more
 configuration in order to launch Apache.
 
-Using the amavisd-new quarantine plugin
----------------------------------------
+Using default plugins
+=====================
 
-This plugin allows you and your users to handle amavisd-new SQL
+Enable or disable a plugin
+--------------------------
+
+Starting with 0.8.2, Modoboa provides an online panel to control
+plugins activation:
+
+* To activate a plugin, go to the *admin -> settings -> extensions* page,
+  check the corresponding box and click on the *Apply* button.
+* To deactivate a plugin, go to the *admin -> settings -> extensions* page,
+  uncheck the corresponding box and click on the *Apply* button.
+
+Amavisd-new quarantine
+----------------------
+
+This plugin allows you and your users to handle *amavisd-new* SQL
 quarantine. You can consult messages and/or release or delete them.
 
-To activate the extension, go to the admin -> settings -> extensions
-page, check the box corresponding to 'Amavis quarantine' and click on
-the "Apply" button.
-
-Then, you need to specify where is the database that contains the
-quarantine. Inside settings.py, add a new connection to the
-DB_CONNECTIONS variable like this::
+First, you need to specify where the database that contains the
+quarantine is. Inside *settings.py*, add a new connection to the
+``DB_CONNECTIONS`` variable like this::
 
   DB_CONNECTIONS = {
     "amavis_quarantine" : {"driver"   : "mysql",
@@ -441,19 +397,17 @@ DB_CONNECTIONS variable like this::
   }
      
 
-Replace values between <> with yours.
+Replace values between ``<>`` with yours.
 
 When viewing messages, you can choose to display links (addresses,
 images). In order to display images correctly, you need to create a
-tmp directory under static/ for storing them. For example::
+*tmp* directory under *static/* for storing them. For example::
 
-  # mkdir <modoboa_dir>/static/tmp
+  $ mkdir <modoboa_dir>/static/tmp
 
-To be able to release messages, first take a look at this page::
-
-http://www.ijs.si/software/amavisd/amavisd-new-docs.html#quar-release
-
-It shows how to configure amavisd-new to listen somewhere for the
+To be able to release messages, first take a look at this page:
+http://www.ijs.si/software/amavisd/amavisd-new-docs.html#quar-release. It
+explains how to configure *amavisd-new* to listen somewhere for the
 AM.PDP protocol. This protocol is used to send release requests.
 
 Below is an example of a working configuration::
@@ -470,11 +424,11 @@ Below is an example of a working configuration::
     inet_acl => [qw( 127.0.0.1 [::1] )],
   };
 
-Don't forget to update the inet_acl list if you plan to release from
+Don't forget to update the ``inet_acl`` list if you plan to release from
 the network.
 
-Once amavisd-new is configured, just tell Modoboa where it can find the
-"release server" by modifying following parameters in the admin panel::
+Once *amavisd-new* is configured, just tell Modoboa where it can find the
+"release server" by modifying the following parameters in the admin panel::
 
   # "unix" or "inet"
   AM_PDP_MODE = "inet"
@@ -486,31 +440,28 @@ Once amavisd-new is configured, just tell Modoboa where it can find the
   AM_PDP_HOST = "127.0.0.1"
   AM_PDP_PORT = 9998
 
-Last point, Modoboa provides a simple script that periodically purge
-the amavisd-new quarantine database. If you plan to use it, you can
-add the following line inside root's crontab::
+Last point, Modoboa provides a simple script that periodically purges
+the quarantine database. If you want to use it, you can add the
+following line inside root's crontab::
 
   0 0 * * * PYTHONPATH=<modoboa_dir/..> \
     DJANGO_SETTINGS_MODULE=modoboa.settings \
     <modoboa_dir>/extensions/amavis_quarantine/cleanup.py
 
-Replace modoboa_dir with the installation path of Modoboa.
+Replace ``modoboa_dir`` with the installation path of Modoboa.
 
 By default, messages older than 14 days are automatically purged. You
-can modify this value by changing the MAX_MESSAGES_AGE parameter in the admin panel.
+can modify this value by changing the ``MAX_MESSAGES_AGE`` parameter
+in the admin panel.
 
-Using the statistics plugin
----------------------------
+Graphical statistics
+--------------------
 
 This plugin allows you to collect various statistics about emails
 traffic on your server. It parses log file to collect information and
-then generates graphics in PNG format.
+then generates graphics using the PNG format.
 
-To activate the extension, go to the admin -> settings -> extensions
-page, check the box corresponding to 'Statistics' and click on
-the "Apply" button.
-
-Then, adapt the following parameters to your environnement::
+First, adapt the following parameters to your environnement::
 
   # Path to mail log file
   LOGFILE = "/var/log/mail.log"
@@ -522,41 +473,100 @@ Then, adapt the following parameters to your environnement::
   IMG_ROOTDIR = "<modoboa_dir>/static/graphs"
 
 Make sure the directories that will contain those files exist. If not,
-create them before going further. For example (according to previous
+create them before going further. For example (according to the previous
 parameters)::
 
   $ mkdir /tmp/modoboa
   $ mkdir <modoboa_dir>/static/graphs
 
 To finish, you need to collect information periodically in order to
-feed rrd files. To do so, just add the following lines into root's
+feed the rrd files. To do so, just add the following line into root's
 crontab::
 
   */5 * * * * PYTHONPATH=<modoboa_dir/..> DJANGO_SETTINGS_MODULE=modoboa.settings <modoboa_dir>/scripts/stats/logparser.py
 
-Replace modoboa_dir with the installation path of Modoboa.
+Replace ``modoboa_dir`` with the installation path of Modoboa.
 
-Graphics are automatically created after each new parsing.
+Graphics will be automatically created after each parsing.
 
-Using the webmail component
+Postifx auto-reply messages
 ---------------------------
+
+Since version 0.6, mail users can define an auto-reply message with Modoboa.
+
+Then run the following commands to update Modoboa SQL schema and content::
+
+  $ python manage.py syncdb
+  $ python manage.py migrate postfix-autoreply
+  $ export PYTHONPATH=$PWD/..
+  $ DJANGO_SETTINGS_MODULE=modoboa.settings ./scripts/postfix_autoreply/upgrade_autoreply.py
+
+The user that executes the autoreply script needs to access
+*settings.py*. You must apply proper permissions on this file. For
+example, if *settings.py* belongs to *www-data:www-data*, you can add the
+*vmail* user to the *www-data* group and set the read permission for the
+group.
+
+To make Postfix understand this feature, you need to update your configuration
+files as follow:
+
+``/etc/postfix/main.cf``::
+
+  transport_maps = mysql:/etc/postfix/maps/sql-transport.cf
+  virtual_alias_maps = mysql:/etc/postfix/maps/sql-aliases.cf
+          mysql:/etc/postfix/maps/sql-autoreplies.cf
+
+``/etc/postfix/master.cf``::
+
+  autoreply unix        -       n       n       -       -       pipe
+            flags= user=vmail:<group> argv=<path_to_modoboa>/scripts/postfix_autoreply/autoreply $sender $mailbox
+
+Then, create new map files with the following content:
+
+``/etc/postfix/maps/sql-transport.cf``::
+
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT method FROM postfix_autoreply_transport WHERE domain='%s'
+
+``/etc/postfix/maps/sql-autoreplies.cf``::
+
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'
+
+Finally, edit the *autoreply* shell script located inside the
+*scripts* directory and change the value of ``BASEDIR``. (just put absolute path
+of the directory where Modoboa is installed)
+
+NB: auto-reply messages are just sent one time per sender for a
+pre-defined time period. By default, this period is equal to 1 day
+(86400s), you can adjust this value by modifying the AUTOREPLY_TIMEOUT
+parameter available in the admin panel.
+
+NB: Make sure that both *autoreply* and *autoreply.py* scripts (located
+inside the *scripts/postfix_autoreply* directory) have good
+permissions (ie. 0755).
+
+Webmail
+-------
 
 Modoboa provides a simple webmail component (you can browse, read and
 compose messages).  With this feature, it is possible to deploy an almost
 standalone emails platform just with Modoboa.
 
-To activate the extension, go to the admin -> settings -> extensions
-page, check the box corresponding to 'Webmail' and click on the
-"Apply" button.
-
 Sometimes, inline images are integrated inside emails. To display
-them, Modoboa stores them inside a temporary folder. Make sure the
-following path exists, otherwise create it::
+them, Modoboa stores images into a temporary directory. Make sure the
+following path exists. If not, create it::
 
-  # mkdir <path_to_modoboa>/static/tmp
+  $ mkdir <path_to_modoboa>/static/tmp
 
 The user that is running Modoboa will need the write permission inside
-this folder.
+this directory.
 
 Next, go to the admin panel and modify the following parameters in
 order to communicate with your IMAP and SMTP servers::
