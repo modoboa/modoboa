@@ -26,14 +26,15 @@
   </li>
     {% else %}
   <li {% if selection == entry.name %}class="selected"{% endif %}>
+    {% if not entry.disabled %}
     <a href="{{ entry.url }}" name="{{ entry.name }}"
-     {% if entry.class %}class={{ entry.class }}{% endif %}
-     {% if entry.rel %}rel={{ entry.rel }}{% endif %}
-     {% if entry.confirm %} onclick="return confirm('{{ entry.confirm }}')"{% endif %}>
-    
-    {% if entry.img %}<img src="{{ entry.img }}" alt="" />{% endif %}
-    {{ entry.label }}
-    </a>
+       {% if entry.class %}class={{ entry.class }}{% endif %}
+       {% if entry.rel %}rel={{ entry.rel }}{% endif %}
+       {% if entry.confirm %} onclick="return confirm('{{ entry.confirm }}')"{% endif %}>
+    {% endif %}
+      {% if entry.img %}<img src="{{ entry.img }}" alt="" />{% endif %}
+      {{ entry.label }}
+    {% if not entry.disabled %}</a>{% endif %}
   </li>
     {% endif %}
   {% endif %}

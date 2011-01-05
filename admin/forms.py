@@ -152,12 +152,12 @@ class SuperAdminsTable(tables.Table):
     selection = tables.SelectionColumn("selection", width="4%", first=True)
     _1_user_name = tables.Column("user_name", label=_("User name"))
     _2_full_name = tables.Column("full_name", label=_("Full name"))
-    _3_enabled = tables.Column("enabled", label=_("Enabled_m"), width="10%")
+    _3_enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
     
 class DomainAdminsTable(tables.Table):
     idkey = "id"
     selection = tables.SelectionColumn("selection", width="4%", first=True)
     _1_domain = tables.Column("domain", label=_("Domain"))
     _2_full_name = tables.Column("full_name", label=_("Full name"))
-    _3_enabled = tables.Column("enabled", label=_("Enabled_m"), width="10%")
+    _3_enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
     

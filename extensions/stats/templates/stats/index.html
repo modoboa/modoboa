@@ -41,7 +41,7 @@ window.addEvent("domready", function() {
     } else {
       infobox.error(resp.error);
     }
-  }
+  };
 
   get_period = function() {
     if ($("period").value != "custom") {
@@ -55,7 +55,7 @@ window.addEvent("domready", function() {
     return "period=custom"
        + "&start=" + $("dateTravelStart").value
        + "&end=" + $("dateTravelEnd").value;
-  }
+  };
 
   get_graph = function(evt) {
     {% if user.is_superuser %}
@@ -70,7 +70,7 @@ window.addEvent("domready", function() {
     }
     new Request.JSON({url : url + "?" + p, noCache: true, 
                       onSuccess : getgraph_callback}).get();
-  }
+  };
 
   {% if user.is_superuser %}
   $("domain").addEvent("change", get_graph);

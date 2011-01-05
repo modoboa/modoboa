@@ -14,7 +14,7 @@
 <div id="accordion">
   {% for table in permtables %}
   <h3 class="toggler atStart">{{ table.title }}</h3>
-  <div class="element atStart" id="{{ table.id }}">
+  <div class="element atStart" id="{{ table.id }}" rel="{{ table.rel }}">
     {{ table.content }}
   </div>
   {% endfor %}

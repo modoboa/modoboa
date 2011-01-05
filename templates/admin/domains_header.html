@@ -42,7 +42,7 @@ window.addEvent("domready", function() {
 </script>
 {% endblock %}
 {% block middletitle %}
-{% block pagetitle %}{% endblock %}{% if domain %} ({% trans "for" %} {{ domain.name }}){% endif %}
+{% block pagetitle %}{% endblock %}{% if domain and domain != "global" %} ({% trans "for" %} {{ domain.name }}){% endif %}
 {% endblock %}
 {% block menu %}{% domains_menu selection user domid %}{% endblock %}
 {% block content %}

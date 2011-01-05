@@ -25,12 +25,12 @@ periods = [{"name" : "day", "label" : _("Day")},
 @good_domain
 @permission_required("admin.view_mailboxes")
 def index(request):
-    domain = None
     domains = None
     period = request.GET.has_key("period") and request.GET["period"] or "day"
     domid = request.GET.has_key("domid") and request.GET["domid"] or ""
     if request.user.is_superuser:
         domains = Domain.objects.all()
+        domain = "global"
     else:
         domain = Domain.objects.get(pk=domid)
 

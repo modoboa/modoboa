@@ -87,12 +87,19 @@ def dommenu_entry(name, label, img, listurl, newurl):
 def domains_menu(selection, user, domid):
     args = domid != "" and ("?domid=%s" % domid) or ""
     entries = []
+    if selection == "stats":
+        disabled = True
+    else:
+        disabled = False
+    
     entries += [{"name" : "new",
                  "label" : _("New"),
-                 "img" : static_url("pics/add.png")},
+                 "img" : static_url("pics/add.png"),
+                 "disabled" : disabled},
                 {"name" : "remove",
                  "label" : _("Remove"),
-                 "img" : static_url("pics/remove.png")
+                 "img" : static_url("pics/remove.png"),
+                 "disabled" : disabled
                  }]
 
     entries += [{"separator" : True}]

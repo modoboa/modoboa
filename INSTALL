@@ -39,7 +39,7 @@ Initialize the database by running the following command::
 
   $ python manage.py syncdb
 
-It will let you create the default super adminstrator.
+It will let you create the default super administrator.
 
 Since version 0.8, Modoboa is using *south* to handle schema
 migrations. To finish the database initialization, you must
@@ -115,6 +115,8 @@ existing database.**
 
      $ python manage.py migrate admin
 
+#. Update SQL queries used in your environnement (see :ref:`postfix-label` or :ref:`dovecot-label`).
+
 
 0.8.2: ckeditor integration and more
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -129,7 +131,7 @@ existing database.**
 #. Download the latest release of ckeditor and extract it into *<modoboa_dir>/static/js/*. It should create a new directory named *ckeditor*.
 #. Update the following variables inside *settings.py*::
 
-     MEDIA_ROOT = os.path.join(MODOBOA_DIR, '/static')
+     MEDIA_ROOT = os.path.join(MODOBOA_DIR, 'static')
      MEDIA_URL = '/static/'
 
 #. Then, add the following variable: ``MODOBOA_WEBPATH = 'modoboa/'``
@@ -187,14 +189,16 @@ Finally, run the following commands::
   $ python manage.py migrate --all 0001 --fake
   $ python manage.py migrate --all 0002
 
-0.7 : no SQL modifications
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+0.7 : Nothing to do 
+^^^^^^^^^^^^^^^^^^^
 
-0.6 : no SQL modifications
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+0.6 : Nothing to do
+^^^^^^^^^^^^^^^^^^^
 
 Integrating Modoboa with other softwares
 ========================================
+
+.. _postfix-label:
 
 Postfix
 -------
@@ -216,7 +220,7 @@ First, define the following map files on your server (it should work with
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT path FROM admin_mailbox WHERE full_address = '%s'
+  query = SELECT concat(t2.name, '/', t1.path) FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%u' AND t2.name='%d'
 
 ``/etc/postfix/sql-aliases.cf``::
 
@@ -224,7 +228,7 @@ First, define the following map files on your server (it should work with
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT t3.full_address FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3 WHERE t1.full_address='%s' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t1.enabled='1'
+  query = SELECT concat(t3.address, '@', t4.name) FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3, admin_domain AS t4 WHERE t1.enabled='1' AND t1.address='%u' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t3.domain_id=t4.id AND t4.name='%d'
 
 Then, use the following configuration in the */etc/postfix/main.cf* file
 (this is just one possible configuration)::
@@ -247,6 +251,8 @@ Then, use the following configuration in the */etc/postfix/main.cf* file
 NB: Modoboa supports both maildir and mbox formats. You can specify
 which format to use by modifying the MAILBOX_TYPE parameter available
 in the admin panel.
+
+.. _dovecot-label:
 
 Dovecot
 -------
@@ -281,7 +287,7 @@ following content inside::
     # ... stuff after
   }
 
-Be sure to activate only one backend (per type) inside your configuration
+Make sure to activate only one backend (per type) inside your configuration
 (just comment the other ones).
 
 Then, edit your */etc/dovecot/dovecot-sql.conf* and modify following lines::
@@ -289,8 +295,8 @@ Then, edit your */etc/dovecot/dovecot-sql.conf* and modify following lines::
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
   default_pass_scheme = CRYPT
-  password_query = SELECT full_address AS user, password FROM admin_mailbox WHERE full_address = '%u'
-  user_query = SELECT path AS home, uid, gid FROM admin_mailbox WHERE full_address = '%u'
+  password_query = SELECT concat(t1.address, t2.name) AS user, password FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
+  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid FROM admin_mailbox AS t1, admin_domain AS t2 WHERE WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 Enable quotas support
 ^^^^^^^^^^^^^^^^^^^^^
@@ -317,7 +323,7 @@ If you use version prior to 1.1, add also the following configuration::
 Then, modify the above query inside *dovecot-sql.conf* as follow to
 activate per user quotas::
 
-  user_query = SELECT path AS home, uid, gid, concat('<backend>:storage=', quota / 1024) AS quota FROM admin_mailbox WHERE full_address = '%u'
+  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('<backend>:storage=', quota / 1024) AS quota FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 If you are not using MySQL, you will have to replace the ``concat``
 function call with something working with your database.
@@ -334,7 +340,7 @@ For version >= 1.1, put the following configuration inside the *dovecot.conf* fi
 Then, modify the above query inside *dovecot-sql.conf* to activate
 user quotas::
 
-  user_query = SELECT path AS home, uid, gid, concat('*:storage=', quota, 'M') AS quota_rule FROM admin_mailbox WHERE full_address = '%u'
+  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('*:storage=', quota, 'M') AS quota_rule FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 How to serve Modoboa behind a webserver
 =======================================
@@ -363,6 +369,9 @@ following inside::
 
 This is one possible configuration. Note that you will certainly need more
 configuration in order to launch Apache.
+
+Nginx
+-----
 
 Using default plugins
 =====================

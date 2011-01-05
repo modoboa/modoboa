@@ -450,6 +450,7 @@ def permissions(request, tplname='admin/permissions.html'):
         permtables += [
             {"id" : "super_admins",
              "title" : _("Super administrators"),
+             "rel" : "300 140",
              "content" : SuperAdminsPerms().get(request)}
             ]
 
@@ -458,6 +459,7 @@ def permissions(request, tplname='admin/permissions.html'):
     permtables += [
         {"id" : "domain_admins",
          "title" : _("Domain administrators"),
+         "rel" : "300 180",
          "content" : DomainAdminsPerms().get(request)}
         ]
 

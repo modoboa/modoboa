@@ -2,11 +2,13 @@ window.addEvent('domready', function() {
     var tip = new Tips($$(".Tips"));
 
     var current_role = "";
+    var current_sizes = "";
     var accordion = new Accordion('h3.atStart', 'div.atStart', {
 	opacity: true,
 	onActive: function(toggler, element){
 	    toggler.setStyle('color', '#ff3300');
 	    current_role = element.get("id");
+	    current_sizes = element.get("rel");
 	},
 
 	onBackground: function(toggler, element) {
@@ -16,8 +18,9 @@ window.addEvent('domready', function() {
 
     $$("a[name=addperm]").addEvent("click", function(evt) {
 	evt.stop();
+	var sizes = current_sizes.split(" ");
 	SqueezeBox.initialize({
-	    size: {x: 300, y: 280},
+	    size: {x: sizes[0], y: sizes[1]},
 	    handler: 'iframe'
 	});
 	var addperm_url = evt.target.get("href") + "?role=" + current_role;
