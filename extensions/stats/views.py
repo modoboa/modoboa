@@ -22,32 +22,27 @@ periods = [{"name" : "day", "label" : _("Day")},
            {"name" : "custom", "label" : _("Custom")}]
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
-def adminindex(request):
-    domains = Domain.objects.all()
-    return _render(request, 'stats/adminindex.html', {
-            "admin" : True,
-            "domain" : "global",
-            "domains" : domains,
-            "graphs" : graph_list,
-            "periods" : periods,
-            "period" : "day"})
-
-@login_required
 @good_domain
 @permission_required("admin.view_mailboxes")
-def index(request, dom_id=None):
+def index(request):
     domain = None
+    domains = None
     period = request.GET.has_key("period") and request.GET["period"] or "day"
-    if request.user.has_perm("admin.view_mailboxes"):
-        domain = Domain.objects.get(pk=dom_id)
+    domid = request.GET.has_key("domid") and request.GET["domid"] or ""
+    if request.user.is_superuser:
+        domains = Domain.objects.all()
+    else:
+        domain = Domain.objects.get(pk=domid)
 
     return _render(request, 'stats/index.html', {
-        "domain" : domain,
-        "graphs" : graph_list,
-        "periods" : periods,
-        "period" : period
-        })
+            "domains" : domains,
+            "domain" : domain,
+            "graphs" : graph_list,
+            "periods" : periods,
+            "period" : period,
+            "selection" : "stats",
+            "domid" : domid
+            })
 
 @login_required
 @good_domain

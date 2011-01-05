@@ -39,14 +39,6 @@ def urls(prefix):
             include('modoboa.extensions.stats.urls'))
 
 def menu(**kwargs):
-    if kwargs["target"] == "admin_menu_bar":
-        domain_id = kwargs['domain']
-        return [
-            {"label" : _("Statistics"),
-             "name"  : "stats",
-             "url" : reverse('domindex', args=[domain_id]),
-             "img" : static_url("pics/graph.png")}
-            ]
     if kwargs["target"] == "admin_menu_box":
         return [
             {"name"  : "stats",

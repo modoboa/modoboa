@@ -1,8 +1,0 @@
-{% extends "nlayout.html" %}
-{% load i18n %}
-{% load admin_extras %}
-{% block middletitle %}{% trans "Global statistics" %}{% endblock %}
-{% block menu %}{% domains_menu "stats" user %}{% endblock %}
-{% block content %}
-{% include "stats/content.html" %}
-{% endblock %}

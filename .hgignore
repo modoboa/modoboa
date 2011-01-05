@@ -3,3 +3,6 @@
 static/tmp
 static/js/ckeditor
 settings.py
+doc/.build
+doc/.static
+doc/.templates

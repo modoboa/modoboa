@@ -1,8 +1,120 @@
-{% extends "admin/domain_header.html" %}
-{% block menu %}
-{% load admin_extras %}
-{% domain_menu domain.id "stats" user %}
+{% extends "admin/domains_header.html" %}
+{% load i18n %}
+{% block html_head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/calendar.css" />
+<style type="text/css">
+  #selectors {
+  }
+  #periodbox, #domainbox {
+    float: left;
+    margin-right: 20px;
+  }
+  #graphs {
+    margin-top: 15px;
+    float: none;
+  }
+  #customperiod {
+    display: none; 
+    border: 1px solid #dddddd;
+    float: left; 
+    padding: 3px;
+    margin-top: -3px;
+  }
+</style>
+
+<script type="text/javascript" src="{{ MEDIA_URL }}js/calendar.js"></script>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+  var myCal = new Calendar({
+    dateTravelStart: 'Y-m-d',
+    dateTravelEnd  : 'Y-m-d'
+  }, {
+    direction: 0, // -1 past, 0 past + future, 1 future
+    pad: 1,
+    offset: 1, // first day of the week: 0 = sunday, 1 = monday, etc..
+    tweak: {x: -147, y: 18} // tweak calendar positioning
+  });
+
+  getgraph_callback = function(resp) {
+    if (resp.status == "ok") {
+      $("graphs").set("html", resp.content);
+    } else {
+      infobox.error(resp.error);
+    }
+  }
+
+  get_period = function() {
+    if ($("period").value != "custom") {
+      $("customperiod").setStyle("display", "none");
+      return "period=" + $("period").value;
+    }
+    $("customperiod").setStyle("display", "block");
+    if ($("dateTravelStart").value == "" || $("dateTravelEnd").value == "") {
+      return "";
+    }
+    return "period=custom"
+       + "&start=" + $("dateTravelStart").value
+       + "&end=" + $("dateTravelEnd").value;
+  }
+
+  get_graph = function(evt) {
+    {% if user.is_superuser %}
+    var url = "{% url getgraph_root %}" + $("domain").value + "/";
+    {% else %}
+    var url = "{% url getgraph domain.id %}";
+    {% endif %}
+    var p = get_period();
+
+    if (p == "") {
+      return;
+    }
+    new Request.JSON({url : url + "?" + p, noCache: true, 
+                      onSuccess : getgraph_callback}).get();
+  }
+
+  {% if user.is_superuser %}
+  $("domain").addEvent("change", get_graph);
+  {% endif %}  
+  $("period").addEvent("change", get_graph);
+  $("customsend").addEvent("click", get_graph);
+});
+</script>
+
 {% endblock %}
-{% block domcontent %}
-{% include "stats/content.html" %}
+{% block pagetitle %}{% trans "Statistics" %}{% endblock %}
+{% block subcontent %}
+<div id="selectors">
+  {% if user.is_superuser %}
+  <div id="domainbox">
+    <label for="domain">{% trans "Domain:" %}</label>
+    <select id="domain" name="domain">
+      <option value="global" {% ifequal domain "global" %}selected{% endifequal %}>{% trans "Global" %}</option>
+      {% for d in domains %}
+      <option value="{{ d.id }}" {% ifequal d.name domain %}selected{% endifequal %}>{{ d.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% endif %}
+  <div id="periodbox">
+    <label for="period">{% trans "Period:" %}</label>
+    <select id="period" name="period">
+      {% for p in periods %}
+      <option value="{{ p.name }}" {% ifequal p.name period %}selected{% endifequal %}>{{ p.label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div id="customperiod">
+    {% trans "Start" %}: <input id="dateTravelStart" name="start" 
+                              value="{{ start }}" type="text"/>
+    {% trans "End" %}: <input id="dateTravelEnd" name="end" 
+                            value="{{ end }}" type="text" />
+    <input type="button" id="customsend" value="ok">
+  </div>
+</div>
+ 
+<div class="spacer"></div>
+<div id="graphs">
+  {% include "stats/graphs.html" %}
+</div>
 {% endblock %}
+ 
