@@ -103,6 +103,8 @@ class Mailbox(models.Model):
         super(Mailbox, self).__init__(*args, **kwargs)
         self.mbtype = parameters.get_admin("MAILBOX_TYPE")
         self.mdirroot = parameters.get_admin("MAILDIR_ROOT")
+        if not self.mdirroot.endswith('/'):
+            self.mdirroot += '/'
 
     def __str__(self):
         return self.__full_address()
@@ -116,9 +118,9 @@ class Mailbox(models.Model):
         relpath = "%s/%s" % (self.domain.name, self.address)
         abspath = os.path.join(parameters.get_admin("STORAGE_PATH"), relpath)
         if self.mbtype == "mbox":
-            self.path = "%s/Inbox" % relpath
+            self.path = "%s/Inbox" % self.address
         else:
-            self.path = "%s/%s" % (relpath, self.mdirroot)
+            self.path = "%s/%s" % (self.address, self.mdirroot)
         if os.path.exists(abspath):
             return True
         if not exec_as_vuser("mkdir -p %s" % abspath):

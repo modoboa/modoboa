@@ -246,7 +246,7 @@ First, define the following map files on your server (it should work with
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(t2.address, '@', t3.name) FROM admin_domainaliases AS t1, admin_mailbox AS t2, admin_domain AS t3 WHERE t1.target_id=t2.domain_id AND t2.domain_id=t3.id AND t2.enabled=1 AND t1.name='%d' AND t2.address='%u'
+  query = SELECT concat(t3.name, '/', t2.path) FROM admin_domainalias AS t1, admin_mailbox AS t2, admin_domain AS t3 WHERE t1.target_id=t2.domain_id AND t2.domain_id=t3.id AND t1.name='%d' AND t2.address='%u'
 
 Then, use the following configuration in the */etc/postfix/main.cf* file
 (this is just one possible configuration)::
@@ -264,8 +264,8 @@ Then, use the following configuration in the */etc/postfix/main.cf* file
   virtual_mailbox_domains = mysql:/etc/postfix/sql-domains.cf
   virtual_alias_domains = mysql:/etc/postfix/sql-domain-aliases.cf
   virtual_mailbox_maps = mysql:/etc/postfix/sql-mailboxes.cf
-    mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf
-  virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf
+  virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf,
+        mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf
   # Stuff after
 
 NB: Modoboa supports both maildir and mbox formats. You can specify
