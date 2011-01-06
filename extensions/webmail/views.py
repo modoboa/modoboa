@@ -55,11 +55,11 @@ def __render_common_components(request, folder, lst=None, content=None, menu=Non
     if page:
         navbar = EmailListing.render_navbar(page)
         if lst:
-            listing = lst.fetch(request, page.id_start, page.id_stop)
+            content = lst.fetch(request, page.id_start, page.id_stop)
     else:
         navbar = ""
         if lst:
-            listing = "<div class='info'>%s</div>" \
+            content = "<div class='info'>%s</div>" \
                 % _("This folder contains no messages")
         
     ret = {
@@ -68,7 +68,7 @@ def __render_common_components(request, folder, lst=None, content=None, menu=Non
                 "folders" : mbc.getfolders(request.user)
                 }),
         "menu" : menu,
-        "listing" : listing,
+        "listing" : content,
         "navbar" : navbar,
         "quota" : ImapListing.computequota(mbc)
         }
@@ -149,7 +149,7 @@ def viewmail(request, folder, mail_id=None):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
     ctx = getctx("ok", **__render_common_components(request, folder, 
-                                                    menu=menu, listing=content))
+                                                    menu=menu, content=content))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
@@ -276,7 +276,7 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
                         password=request.session["password"])
     ctx = getctx("ok", level=2, editor=editor, 
                  **__render_common_components(request, request.session["folder"], 
-                                              menu=menu, listing=content))
+                                              menu=menu, content=content))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 def __html2plaintext(content):

@@ -4,16 +4,6 @@
     <div id="mailheader">
       {% include "common/genericform.html" %}
     </div>
-    <div id="attachments">
-      <h3><img src="{{ MEDIA_URL }}pics/attachment.png" /> {% trans "Attachments" %}</h3>
-      <div id="finput_container">
-        <a href="javascript: void(0)"><img src="{{ MEDIA_URL }}pics/add.png" />
-        {% trans "Add" %}</a>
-        <input type="file" id="upload_input" name="upload" />
-      </div>
-      <ul id="files2upload">
-      </ul>
-    </div>
     <div class="spacer"></div>
     {% if body %}
     <textarea id="id_body" name="id_body" class="editor">{% if bodyheader %}{{ bodyheader }}{% endif %}

@@ -130,6 +130,7 @@ div#footer {
     width: 300px;
 }
 
+
 .uibar {
     background: #153F65;
     padding: 0;
@@ -443,4 +444,13 @@ div.row label {
 #dlg-buttons input { 
     width: 90px;
     margin: 2px;
+}
+
+/* Permission tables */
+#accordion {
+    margin: 5px;
+}
+
+.element {
+    margin: 10px 5px 10px 5px;
 }

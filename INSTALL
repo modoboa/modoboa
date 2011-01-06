@@ -117,6 +117,8 @@ existing database.**
 
 #. Update SQL queries used in your environnement (see :ref:`postfix-label` or :ref:`dovecot-label`).
 
+#. Update *postfix* configuration so that he can handle domain aliases (see :ref:`postfix-label`).
+
 
 0.8.2: ckeditor integration and more
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -214,6 +216,14 @@ First, define the following map files on your server (it should work with
   hosts = 127.0.0.1
   query = SELECT name FROM admin_domain WHERE name='%s' AND enabled='1'
 
+``/etc/postfix/sql-domain-aliases.cf``::
+
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT t2.name FROM admin_domainalias AS t1, admin_domain AS t2 WHERE t1.target_id=t2.id AND t1.enabled=1 AND t2.enabled=1 AND t1.name='%s'
+
 ``/etc/postfix/sql-mailboxes.cf``::
 
   user = <user>
@@ -230,6 +240,14 @@ First, define the following map files on your server (it should work with
   hosts = 127.0.0.1
   query = SELECT concat(t3.address, '@', t4.name) FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3, admin_domain AS t4 WHERE t1.enabled='1' AND t1.address='%u' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t3.domain_id=t4.id AND t4.name='%d'
 
+``/etc/postfix/sql-domain-aliases-mailboxes.cf``::
+
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT concat(t2.address, '@', t3.name) FROM admin_domainaliases AS t1, admin_mailbox AS t2, admin_domain AS t3 WHERE t1.target_id=t2.domain_id AND t2.domain_id=t3.id AND t2.enabled=1 AND t1.name='%d' AND t2.address='%u'
+
 Then, use the following configuration in the */etc/postfix/main.cf* file
 (this is just one possible configuration)::
 
@@ -244,7 +262,9 @@ Then, use the following configuration in the */etc/postfix/main.cf* file
 
   relay_domains = 
   virtual_mailbox_domains = mysql:/etc/postfix/sql-domains.cf
+  virtual_alias_domains = mysql:/etc/postfix/sql-domain-aliases.cf
   virtual_mailbox_maps = mysql:/etc/postfix/sql-mailboxes.cf
+    mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf
   virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf
   # Stuff after
 
