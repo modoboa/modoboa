@@ -24,16 +24,16 @@ Download the latest Modoboa's tarball and extract it::
   $ tar xzf modoboa-<version>.tar.gz
   $ mv modoboa-<version> modoboa
 
-Then, enter the *modoboa* directory, create a *settings.py* file (you can
-use *settings-sample.py* as a model). Specify database relative
-informations. You must choose between mysql and postgresql, other
-types are not supported by major email projects like *postfix* or
-*dovecot*.
+Then, enter the *modoboa* directory, create a *settings.py* file (you
+can use *settings-sample.py* as a model). Specify database relative
+informations. You must choose between *MySQL*, *PostgreSQL* or
+*sqlite*, other types are not supported by major email projects like
+*postfix* or *dovecot*.
 
 Create a database with the name you specified in *settings.py*. Make
 sure your database is using UTF8 as a default charset. If not, you
-will surely have problems (with MySQL at least). You will probably
-need to install a python database backend (like MySQLdb).
+will surely have problems (with *MySQL* at least). You will probably
+need to install a python database backend (like *MySQLdb*).
 
 Initialize the database by running the following command::
 
@@ -84,8 +84,8 @@ Then create a vmail user::
   $ useradd -g vmail -d /var/vmail -m vmail
 
 At last, the system user used to run modoboa will need permissions to
-manipulate directories in vmail's homedir. To do so, edit the */etc/sudoers*
-file and add the following inside::
+manipulate directories in vmail's homedir. To do so, edit the
+*/etc/sudoers* file and add the following inside::
 
   <user_that_runs_modoboa> ALL=(vmail) NOPASSWD: ALL
 
@@ -207,7 +207,7 @@ Integrating Modoboa with other softwares
 Postfix
 -------
 
-First, define the following map files on your server (it should work with
+For *MySQL* users, define the following map files on your server (it should work with
 *postfix* versions >= 2.2):
 
 ``/etc/postfix/sql-domains.cf``::
@@ -312,7 +312,7 @@ following content inside::
 Make sure to activate only one backend (per type) inside your configuration
 (just comment the other ones).
 
-Then, edit your */etc/dovecot/dovecot-sql.conf* and modify following lines::
+For *MySQL* users, edit your */etc/dovecot/dovecot-sql.conf* and modify following lines::
 
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
@@ -342,13 +342,10 @@ If you use version prior to 1.1, add also the following configuration::
     quota = <backend>:storage=10240
   }
 
-Then, modify the above query inside *dovecot-sql.conf* as follow to
-activate per user quotas::
+For *MySQL* users, modify the above query inside *dovecot-sql.conf* as
+follow to activate per-user quotas::
 
   user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('<backend>:storage=', t1.quota / 1024) AS quota FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
-
-If you are not using MySQL, you will have to replace the ``concat``
-function call with something working with your database.
 
 For version >= 1.1, put the following configuration inside the *dovecot.conf* file::
 
@@ -359,8 +356,8 @@ For version >= 1.1, put the following configuration inside the *dovecot.conf* fi
     quota_rule2 = Trash:storage=5M
   }
 
-Then, modify the above query inside *dovecot-sql.conf* to activate
-user quotas::
+For *MySQL* users, modify the above query inside *dovecot-sql.conf* to
+activate per-user quotas::
 
   user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('*:storage=', t1.quota, 'M') AS quota_rule FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
@@ -552,7 +549,7 @@ files as follow:
   autoreply unix        -       n       n       -       -       pipe
             flags= user=vmail:<group> argv=<path_to_modoboa>/scripts/postfix_autoreply/autoreply $sender $mailbox
 
-Then, create new map files with the following content:
+For *MySQL* users, create new map files with the following content:
 
 ``/etc/postfix/maps/sql-transport.cf``::
 
