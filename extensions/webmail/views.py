@@ -23,7 +23,7 @@ def __get_current_url(request):
             res += "&%s=%s" % (p, request.session[p])
     return res
 
-def __render_common_components(request, folder, lst=None, content=None, menu=None):
+def __render_common_components(request, folder_name, lst=None, content=None, menu=None):
     """Render all components that are common to all pages in the webmail
 
     It concerns the main listing, the viewmail and the compose
@@ -43,11 +43,11 @@ def __render_common_components(request, folder, lst=None, content=None, menu=Non
     if lst is not None:
         paginator = lst.paginator
         mbc = lst.mbc
-        menu = listing_menu("", folder, request.user)
+        menu = listing_menu("", folder_name, request.user)
     else:
         mbc = IMAPconnector(user=request.user.username, 
                             password=request.session["password"])
-        paginator = Paginator(mbc.messages_count(folder=folder, 
+        paginator = Paginator(mbc.messages_count(folder=folder_name, 
                                                  order=request.session["navparams"]["order"]), 
                               int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")))
                               
@@ -105,7 +105,7 @@ def folder(request, name, updatenav=True):
     lst = ImapListing(request.user, request.session["password"],
                       baseurl=name, folder=name, order=order, 
                       **optparams)
-    dico = __render_common_components(request, folder, lst)
+    dico = __render_common_components(request, name, lst)
     ctx = getctx("ok", **dico)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
