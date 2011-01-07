@@ -1,5 +1,6 @@
 .*~$
 ^[^\.]+\.pyc
+^[^\.]+\.mo
 static/tmp
 static/js/ckeditor
 settings.py

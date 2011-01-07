@@ -1,17 +1,17 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Antoine Nguyen <tonio@ngyn.org>, 2009-2011.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-25 16:05+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-01-07 09:47+0100\n"
+"PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language: Français\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,15 +24,11 @@ msgstr "Chargement..."
 msgid "Done"
 msgstr "Effectué"
 
-#: static/js/domains.js:26
+#: static/js/domains.js:17
 msgid "Delete this domain?"
 msgstr "Supprimer ce domaine?"
 
-#: static/js/domains.js:33
-msgid "Delete this mailbox?"
-msgstr "Supprimer cette boite aux lettres?"
-
-#: static/js/domains.js:47
+#: static/js/domains.js:23
 msgid "Delete this alias?"
 msgstr "Supprimer cet alias?"
 
@@ -40,10 +36,7 @@ msgstr "Supprimer cet alias?"
 msgid "Preferences saved"
 msgstr "Préférences enregistrées"
 
-#: static/js/settings.js:4
-msgid "Remove this permission?"
-msgstr "Supprimer cette permission?"
-
-#: static/js/settings.js:20
+#: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Paramètres enregistrés"
+

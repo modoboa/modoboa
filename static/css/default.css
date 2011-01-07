@@ -39,9 +39,8 @@ div#footer {
 #menubar {
     margin: 5px;
     display: table;
-    width: 700px;
+    width: 800px;
     margin-top: 35px;
-    /*position: absolute;*/
 }
 
 #topmenubar a, #topmenubar a:visited {

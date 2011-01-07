@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Antoine Nguyen <tonio@ngyn.org>, 2010.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-12 22:39+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-01-07 09:46+0100\n"
+"PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language: Français\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -53,185 +53,335 @@ msgid "Scheme used to crypt mailbox passwords"
 msgstr ""
 "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
-#: admin/forms.py:16 templates/admin/domains.html:25
-#: templates/admin/mailboxes.html:17
+#: admin/forms.py:38 templates/admin/domains.html:23
+#: templates/admin/mailboxes.html:14
 msgid "Quota"
 msgstr ""
 
-#: admin/forms.py:17
+#: admin/forms.py:39
 msgid "Mailbox quota in MB (default to domain quota if blank)"
 msgstr ""
 "Quota en Mo de la boite aux lettres (par défaut celui du domaine si vide)"
 
-#: admin/forms.py:18 auth/forms.py:6
+#: admin/forms.py:40 auth/forms.py:6
 msgid "Password"
 msgstr "Mot de passe"
 
-#: admin/forms.py:19
+#: admin/forms.py:41
 msgid "Password used to log in"
 msgstr "Mot de passe utilisé pour se connecter"
 
-#: admin/forms.py:20 userprefs/forms.py:12
+#: admin/forms.py:42 userprefs/forms.py:12
 msgid "Confirmation"
 msgstr ""
 
-#: admin/forms.py:21
+#: admin/forms.py:43
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
-#: admin/forms.py:24
+#: admin/forms.py:46
 msgid "Check to activate this mailbox"
 msgstr "Cocher pour activer cette boite aux lettres"
 
-#: admin/forms.py:37 userprefs/forms.py:31
+#: admin/forms.py:73 userprefs/forms.py:31
 msgid "Passwords mismatch"
 msgstr "Les mots de passe diffèrent"
 
-#: admin/forms.py:57 templates/admin/domain_header.html:6
-#: templates/admin/editdomain.html:7 templates/admin/permissions.html:42
+#: admin/forms.py:85 admin/forms.py:142 admin/forms.py:160
 msgid "Domain"
 msgstr "Domaine"
 
-#: admin/forms.py:59
+#: admin/forms.py:87 admin/forms.py:144
+msgid "Select a domain"
+msgstr "Sélectionner un domaine"
+
+#: admin/forms.py:88 admin/forms.py:145
 msgid "Select a domain in the list"
 msgstr "Sélectionner un domaine dans la liste"
 
-#: admin/forms.py:60
+#: admin/forms.py:133 admin/forms.py:146
 msgid "User"
 msgstr "Utilisateur"
 
-#: admin/forms.py:61
+#: admin/forms.py:134
+msgid "Select a user"
+msgstr "Sélectionner un utilisateur"
+
+#: admin/forms.py:135 admin/forms.py:148
 msgid "Select a user in the list"
 msgstr "Sélectionner un utilisateur dans la liste"
 
-#: admin/forms.py:62
-msgid "Role"
-msgstr "Rôle"
+#: admin/forms.py:147
+msgid "Empty"
+msgstr "Vide"
 
-#: admin/forms.py:63
-msgid "Super administrator"
-msgstr "Super administrateur"
+#: admin/forms.py:153
+msgid "User name"
+msgstr "Nom d'utilisateur"
 
-#: admin/forms.py:64
-msgid "Domain administrator"
-msgstr "Admin. de domaine"
+#: admin/forms.py:154 admin/forms.py:161
+msgid "Full name"
+msgstr "Nom complet"
 
-#: admin/forms.py:65
-msgid "Select the role you want this user to have"
-msgstr "Sélectionner le rôle souhaité pour cet utilisateur"
-
-#: admin/models.py:10 admin/models.py:40
+#: admin/models.py:28 admin/models.py:72 admin/models.py:85
 msgid "name"
 msgstr "Nom"
 
-#: admin/models.py:11
+#: admin/models.py:29
 msgid "The domain name"
 msgstr "Le nom du domaine"
 
-#: admin/models.py:12
+#: admin/models.py:30
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Quota par défaut en Mo appliqué aux boites aux lettres"
 
-#: admin/models.py:13 admin/models.py:108 admin/models.py:118
-#: extensions/postfix_autoreply/models.py:19
+#: admin/models.py:31 admin/models.py:76 admin/models.py:220
+#: admin/models.py:235 extensions/postfix_autoreply/models.py:19
 msgid "enabled"
 msgstr "Activé"
 
-#: admin/models.py:14
+#: admin/models.py:32
 msgid "Check to activate this domain"
 msgstr "Cocher pour activer ce domaine"
 
-#: admin/models.py:41
-msgid "First name and last name of mailbox owner"
-msgstr "Prénom et nom du propriétaire de la boite aux lettres"
+#: admin/models.py:73
+msgid "The alias name"
+msgstr "Le nom de l'alias"
 
-#: admin/models.py:42 admin/models.py:103
-msgid "address"
-msgstr "Adresse"
+#: admin/models.py:74
+msgid "target"
+msgstr "cible"
 
-#: admin/models.py:43
-msgid "Mailbox address (without the @domain.tld part)"
-msgstr "Adresse de la boite aux lettres (sans la partie @domain.tld)"
+#: admin/models.py:75
+msgid "The domain this alias points to"
+msgstr "Le domaine vers lequel cet alias pointe"
 
-#: admin/models.py:45
-msgid "password"
-msgstr "Mot de passe"
-
-#: admin/models.py:104
-msgid "The alias address (without the domain part)"
-msgstr "L'adresse de l'alias (sans la partie domaine)"
-
-#: admin/models.py:106
-msgid "mailboxes"
-msgstr "Boites aux lettres"
-
-#: admin/models.py:107
-msgid "The mailboxes this alias points to"
-msgstr "Les boites aux lettres sur lesquelles pointe cet alias"
-
-#: admin/models.py:109
+#: admin/models.py:77 admin/models.py:221
 msgid "Check to activate this alias"
 msgstr "Cocher pour activer cet alias"
 
-#: admin/models.py:119
-msgid "Check to enable this extension"
-msgstr "Cocher pour activer cette extension"
+#: admin/models.py:86
+msgid "First name and last name of mailbox owner"
+msgstr "Prénom et nom du propriétaire de la boite aux lettres"
 
-#: admin/views.py:29
-msgid "Permission denied."
-msgstr "Permission refusée."
+#: admin/models.py:87 admin/models.py:216
+msgid "address"
+msgstr "Adresse"
 
-#: admin/views.py:75 admin/views.py:105
-msgid "Domain with this name already defined"
-msgstr "Un domaine avec ce nom existe déjà"
+#: admin/models.py:88
+msgid "Mailbox address (without the @domain.tld part)"
+msgstr "Adresse de la boite aux lettres (sans la partie @domain.tld)"
 
-#: admin/views.py:84
-msgid "Failed to initialise domain, check permissions"
-msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
+#: admin/models.py:89
+msgid "password"
+msgstr "Mot de passe"
 
-#: admin/views.py:108
-msgid "Failed to rename domain, check permissions"
-msgstr "Impossible de renommer le domaine, vérifier les permissions"
-
-#: admin/views.py:162 admin/views.py:225
-msgid "Mailbox with this address already exists"
-msgstr "Une boite aux lettres pour cette adresse existe déjà"
-
-#: admin/views.py:196
-msgid "Mailbox created."
-msgstr "Boite aux lettres créé."
-
-#: admin/views.py:201
+#: admin/models.py:157
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Impossible d'initialiser la boite aux lettres, vérifier les permissions"
 
-#: admin/views.py:228
+#: admin/models.py:175
+msgid "Mailbox with this address already exists"
+msgstr "Une boite aux lettres pour cette adresse existe déjà"
+
+#: admin/models.py:217
+msgid "The alias address (without the domain part)"
+msgstr "L'adresse de l'alias (sans la partie domaine)"
+
+#: admin/models.py:218
+msgid "mailboxes"
+msgstr "Boites aux lettres"
+
+#: admin/models.py:219
+msgid "The mailboxes this alias points to"
+msgstr "Les boites aux lettres sur lesquelles pointe cet alias"
+
+#: admin/models.py:236
+msgid "Check to enable this extension"
+msgstr "Cocher pour activer cette extension"
+
+#: admin/permissions.py:26
+msgid "Add super administrator"
+msgstr "Ajouter un super administrateur"
+
+#: admin/permissions.py:77
+msgid "Add domain administrator"
+msgstr "Ajouter un admin. de domaine"
+
+#: admin/views.py:64
+msgid "Do not delete domain directory"
+msgstr "Ne pas supprimer le répertoire du domaine"
+
+#: admin/views.py:72
+msgid "New domain"
+msgstr "Nouveau domaine"
+
+#: admin/views.py:73 admin/views.py:170 admin/views.py:274 admin/views.py:306
+#: admin/views.py:378
+msgid "Create"
+msgstr "Créer"
+
+#: admin/views.py:81 admin/views.py:114
+msgid "Domain with this name already defined"
+msgstr "Un domaine avec ce nom existe déjà"
+
+#: admin/views.py:87
+msgid "Domain created"
+msgstr "Domaine créé"
+
+#: admin/views.py:90
+msgid "Failed to initialise domain, check permissions"
+msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
+
+#: admin/views.py:103
+msgid "Domain editing"
+msgstr "Edition de domaine"
+
+#: admin/views.py:104 admin/views.py:205 admin/views.py:411
+#: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:32
+#: templates/userprefs/chpassword.html:15
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: admin/views.py:117
+msgid "Failed to rename domain, check permissions"
+msgstr "Impossible de renommer le domaine, vérifier les permissions"
+
+#: admin/views.py:120
+msgid "Domain modified"
+msgstr "Domaine modifié"
+
+#: admin/views.py:139
+msgid "You can't delete your own domain"
+msgstr "Vous ne pouvez pas supprimer votre propre domaine"
+
+#: admin/views.py:148
+msgid "Domain deleted"
+msgid_plural "Domains deleted"
+msgstr[0] "Domaine supprimé"
+msgstr[1] "Domaines supprimés"
+
+#: admin/views.py:169
+msgid "New domain alias"
+msgstr "Nouvel alias de domaine"
+
+#: admin/views.py:179 admin/views.py:214
+msgid "A domain with this name already exists"
+msgstr "Un domaine de ce nom existe déjà"
+
+#: admin/views.py:184 admin/views.py:219 admin/views.py:388 admin/views.py:421
+msgid "Alias with this name already exists"
+msgstr "Un alias de ce nom existe déjà"
+
+#: admin/views.py:186
+msgid "Domain alias created"
+msgstr "Alias de domaine créé"
+
+#: admin/views.py:204
+msgid "Domain alias editing"
+msgstr "Edition d'alias de domaine"
+
+#: admin/views.py:221
+msgid "Domain alias updated"
+msgstr "Alias de domaine mis à jour"
+
+#: admin/views.py:237
+msgid "Domain alias deleted"
+msgid_plural "Domain aliases deleted"
+msgstr[0] "Alias de domaine supprimé"
+msgstr[1] "Alias de domaine supprimés"
+
+#: admin/views.py:251
+msgid "Do not delete mailbox directory"
+msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
+
+#: admin/views.py:273
+msgid "New mailbox"
+msgstr "Nouvelle boite aux lettres"
+
+#: admin/views.py:287
+msgid "Mailbox created"
+msgstr "Boite aux lettres créée"
+
+#: admin/views.py:305
+msgid "Mailbox editing"
+msgstr "Edition de boite aux lettres"
+
+#: admin/views.py:322
+msgid "Mailbox modified"
+msgstr "Boite aux lettres modifiée"
+
+#: admin/views.py:325
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
 
-#: admin/views.py:299 admin/views.py:329
-msgid "Alias with this name already exists"
-msgstr "Un alias avec ce nom existe déjà"
+#: admin/views.py:345
+msgid "You can't delete your own mailbox"
+msgstr "Vous ne pouvez pas supprimer votre propre boite aux lettres"
 
-#: admin/views.py:404
-msgid "admin is intouchable!!"
-msgstr "admin est intouchable!!"
+#: admin/views.py:355
+msgid "Mailbox deleted"
+msgid_plural "Mailboxes deleted"
+msgstr[0] "Boite aux lettres supprimée"
+msgstr[1] "Boites aux lettres supprimées"
 
-#: admin/views.py:458 templates/admin/domains.html:23
-#: templates/admin/mailboxes.html:15 templates/admin/permissions.html:43
+#: admin/views.py:377
+msgid "New mailbox alias"
+msgstr "Nouvel alias de boite aux lettres"
+
+#: admin/views.py:391
+msgid "Mailbox alias created"
+msgstr "Alias de boite aux lettres créé"
+
+#: admin/views.py:410
+msgid "Mailbox alias editing"
+msgstr "Edition d'alias de boite"
+
+#: admin/views.py:424
+msgid "Mailbox alias modified"
+msgstr "Alias de boite aux lettres modifié"
+
+#: admin/views.py:441
+msgid "Alias deleted"
+msgid_plural "Aliases deleted"
+msgstr[0] "Alias de boite aux lettres supprimé"
+msgstr[1] "Alias de boite aux lettres supprimés"
+
+#: admin/views.py:452
+msgid "Super administrators"
+msgstr "Super administrateurs"
+
+#: admin/views.py:461
+msgid "Domain administrators"
+msgstr "Administrateurs de domaine"
+
+#: admin/views.py:476 admin/views.py:493
+msgid "Permission denied!"
+msgstr "Permission refusée!"
+
+#: admin/views.py:485
+msgid "Permission added."
+msgstr "Permission ajoutée."
+
+#: admin/views.py:499
+msgid "Permissions removed"
+msgstr "Permission supprimée"
+
+#: admin/views.py:544 templates/admin/domains.html:19
+#: templates/admin/domaliases.html:11 templates/admin/mailboxes.html:11
 msgid "Name"
 msgstr "Nom"
 
-#: admin/views.py:459
+#: admin/views.py:545
 msgid "Version"
 msgstr ""
 
-#: admin/views.py:460
+#: admin/views.py:546
 msgid "Description"
 msgstr ""
 
-#: admin/views.py:501
+#: admin/views.py:587
 msgid "Modifications applied."
 msgstr "Modifications appliquées"
 
@@ -243,55 +393,96 @@ msgstr "Activé"
 msgid "enabled_f"
 msgstr "Activée"
 
-#: admin/templatetags/admin_extras.py:19 templates/admin/newmailbox.html:7
-msgid "New mailbox"
-msgstr "Nouvelle boite aux lettres"
-
-#: admin/templatetags/admin_extras.py:26 templates/admin/domains.html:24
-msgid "Mailboxes"
-msgstr "Boites aux lettres"
-
-#: admin/templatetags/admin_extras.py:30
-msgid "Aliases"
-msgstr "Alias"
-
-#: admin/templatetags/admin_extras.py:37
-msgid "Properties"
-msgstr "Propriétés"
-
-#: admin/templatetags/admin_extras.py:53
-msgid "Permissions"
+#: admin/templatetags/admin_extras.py:19
+msgid "Admin"
 msgstr ""
 
-#: admin/templatetags/admin_extras.py:58 templates/admin/addpermission.html:24
-msgid "Add permission"
-msgstr "Ajouter une permission"
-
-#: admin/templatetags/admin_extras.py:64
-msgid "Parameters"
-msgstr "Paramètres"
-
-#: admin/templatetags/admin_extras.py:67
-msgid "Extensions"
-msgstr ""
-
-#: admin/templatetags/admin_extras.py:79 templates/admin/newdomain.html:7
-msgid "New domain"
-msgstr "Nouveau domaine"
-
-#: admin/templatetags/admin_extras.py:85 templates/nlayout.html:37
+#: admin/templatetags/admin_extras.py:28
+#: admin/templatetags/admin_extras.py:107
 msgid "Domains"
 msgstr "Domaines"
 
-#: admin/templatetags/admin_extras.py:123
+#: admin/templatetags/admin_extras.py:35
+#: admin/templatetags/admin_extras.py:115 templates/admin/domains.html:21
+msgid "Mailboxes"
+msgstr "Boites aux lettres"
+
+#: admin/templatetags/admin_extras.py:45 templates/admin/permissions.html:6
+msgid "Permissions"
+msgstr ""
+
+#: admin/templatetags/admin_extras.py:52
+#: templates/admin/settings_header.html:6
+msgid "Settings"
+msgstr "Configuration"
+
+#: admin/templatetags/admin_extras.py:67
+msgid "Parameters"
+msgstr "Paramètres"
+
+#: admin/templatetags/admin_extras.py:70
+msgid "Extensions"
+msgstr ""
+
+#: admin/templatetags/admin_extras.py:96
+msgid "New"
+msgstr "Nouveau"
+
+#: admin/templatetags/admin_extras.py:100
+msgid "Remove"
+msgstr "Supprimer"
+
+#: admin/templatetags/admin_extras.py:112 templates/admin/domains.html:20
+#: templates/admin/domaliases.html:3
+msgid "Domain aliases"
+msgstr "Alias de domaine"
+
+#: admin/templatetags/admin_extras.py:118 templates/admin/domains.html:22
+#: templates/admin/mbaliases.html:3
+msgid "Mailbox aliases"
+msgstr "Alias de boite aux lettres"
+
+#: admin/templatetags/admin_extras.py:133
+msgid "Add permission"
+msgstr "Ajouter une permission"
+
+#: admin/templatetags/admin_extras.py:137
+msgid "Remove permissions"
+msgstr "Supprimer les permissions"
+
+#: admin/templatetags/admin_extras.py:163
+msgid "Edit domain"
+msgstr "Editer le domaine"
+
+#: admin/templatetags/admin_extras.py:169
+msgid "View aliases of this domain"
+msgstr "Voir les alias de ce domaine"
+
+#: admin/templatetags/admin_extras.py:179
+msgid "Edit alias"
+msgstr "Editer cet alias"
+
+#: admin/templatetags/admin_extras.py:191
+msgid "Edit mailbox"
+msgstr "Editer la boite aux lettres"
+
+#: admin/templatetags/admin_extras.py:197
+msgid "View this mailbox aliases"
+msgstr "Voir les alias de cette boite"
+
+#: admin/templatetags/admin_extras.py:207
+msgid "Edit mailbox alias"
+msgstr "Editer l'alias de boite"
+
+#: admin/templatetags/admin_extras.py:242
 msgid "Yes"
 msgstr "Oui"
 
-#: admin/templatetags/admin_extras.py:123
+#: admin/templatetags/admin_extras.py:242
 msgid "No"
 msgstr "Non"
 
-#: admin/templatetags/admin_extras.py:140
+#: admin/templatetags/admin_extras.py:259 templates/common/genericform.html:6
 msgid "Help"
 msgstr "Aide"
 
@@ -343,18 +534,18 @@ msgid "Quarantine"
 msgstr "Quarantaine"
 
 #: extensions/amavis_quarantine/sql_listing.py:14
-#: extensions/webmail/forms.py:5 extensions/webmail/lib.py:29
+#: extensions/webmail/forms.py:5 extensions/webmail/lib.py:31
 msgid "From"
 msgstr "De"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
-#: extensions/webmail/forms.py:8 extensions/webmail/lib.py:27
-#: extensions/webmail/lib.py:517 templates/common/email_searchbar.html:7
+#: extensions/webmail/forms.py:8 extensions/webmail/lib.py:30
+#: extensions/webmail/lib.py:524 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Sujet"
 
-#: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:30
-#: extensions/webmail/lib.py:519
+#: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:32
+#: extensions/webmail/lib.py:526
 msgid "Date"
 msgstr ""
 
@@ -405,6 +596,7 @@ msgid "View as HTML"
 msgstr "Afficher en HTML"
 
 #: extensions/amavis_quarantine/templatetags/amextras.py:21
+#: extensions/webmail/templatetags/webextras.py:41
 msgid "Activate links"
 msgstr "Activer les liens"
 
@@ -511,12 +703,6 @@ msgstr "Activer/Désactiver votre réponse automatique"
 msgid "Auto reply message updated successfully."
 msgstr "Message de réponse auto. mis à jour."
 
-#: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:32
-#: templates/admin/editalias.html:14 templates/admin/editdomain.html:15
-#: templates/admin/editmailbox.html:16 templates/userprefs/chpassword.html:15
-msgid "Update"
-msgstr "Mettre à jour"
-
 #: extensions/stats/grapher.py:18
 msgid "sent messages"
 msgstr "messages envoyés"
@@ -566,7 +752,7 @@ msgstr "Emplacement du répertoire de stockage des fichiers RRD"
 msgid "Path to directory where PNG files are stored"
 msgstr "Emplacement du répertoire de stockage des fichiers PNG"
 
-#: extensions/stats/main.py:45 extensions/stats/main.py:53
+#: extensions/stats/main.py:45 extensions/stats/templates/stats/index.html:84
 msgid "Statistics"
 msgstr "Statistiques"
 
@@ -602,33 +788,9 @@ msgstr "Année"
 msgid "Custom"
 msgstr "Personnalisée"
 
-#: extensions/stats/views.py:65
+#: extensions/stats/views.py:60
 msgid "Bad custom period"
 msgstr "Mauvaise période personnalisée"
-
-#: extensions/stats/templates/stats/adminindex.html:4
-msgid "Global statistics"
-msgstr "Statistiques globales"
-
-#: extensions/stats/templates/stats/content.html:84
-msgid "Domain:"
-msgstr "Domaine :"
-
-#: extensions/stats/templates/stats/content.html:86
-msgid "Global"
-msgstr ""
-
-#: extensions/stats/templates/stats/content.html:94
-msgid "Period:"
-msgstr "Période :"
-
-#: extensions/stats/templates/stats/content.html:103
-msgid "Start"
-msgstr "Démarrer"
-
-#: extensions/stats/templates/stats/content.html:105
-msgid "End"
-msgstr "Fin"
 
 #: extensions/stats/templates/stats/graphs.html:3
 msgid "Custom period : from"
@@ -643,6 +805,26 @@ msgstr "à"
 msgid "No statistics available"
 msgstr "Aucune statistique disponible"
 
+#: extensions/stats/templates/stats/index.html:89
+msgid "Domain:"
+msgstr "Domaine :"
+
+#: extensions/stats/templates/stats/index.html:91
+msgid "Global"
+msgstr ""
+
+#: extensions/stats/templates/stats/index.html:99
+msgid "Period:"
+msgstr "Période :"
+
+#: extensions/stats/templates/stats/index.html:107
+msgid "Start"
+msgstr "Démarrer"
+
+#: extensions/stats/templates/stats/index.html:109
+msgid "End"
+msgstr "Fin"
+
 #: extensions/webmail/forms.py:6
 msgid "To"
 msgstr "A"
@@ -651,19 +833,19 @@ msgstr "A"
 msgid "Cc"
 msgstr ""
 
-#: extensions/webmail/lib.py:180
+#: extensions/webmail/lib.py:182
 msgid "Connection to IMAP server failed, check your configuration"
 msgstr "La connexion au serveur IMAP a échoué, vérifiez votre configuration"
 
-#: extensions/webmail/lib.py:184
+#: extensions/webmail/lib.py:186
 msgid "Authentication failed, check your configuration"
 msgstr "L'authentification a échoué, vérifiez votre configuration"
 
-#: extensions/webmail/lib.py:465
+#: extensions/webmail/lib.py:472
 msgid "wrote:"
 msgstr "a écrit :"
 
-#: extensions/webmail/lib.py:531 extensions/webmail/lib.py:535
+#: extensions/webmail/lib.py:538 extensions/webmail/lib.py:542
 msgid "Original message"
 msgstr "Message original"
 
@@ -695,106 +877,113 @@ msgstr "Port d'écoute de votre serveur SMTP"
 msgid "Server needs authentication"
 msgstr "Le serveur nécessite une authentification"
 
-#: extensions/webmail/main.py:32
+#: extensions/webmail/main.py:31
+msgid "None"
+msgstr "Aucun"
+
+#: extensions/webmail/main.py:35
 msgid "Use a secured connection to access SMTP server"
 msgstr "Utiliser une connexion sécurisée pour accéder au serveur SMTP"
 
-#: extensions/webmail/main.py:35
+#: extensions/webmail/main.py:38
 msgid "Listing refresh rate"
 msgstr "Taux de rafraichissement de la liste"
 
-#: extensions/webmail/main.py:36
+#: extensions/webmail/main.py:39
 msgid "Automatic folder refresh rate (in seconds)"
 msgstr "Taux de rafraichissement automatique du dossier (en secondes)"
 
-#: extensions/webmail/main.py:38
+#: extensions/webmail/main.py:41
 msgid "Trash folder"
 msgstr "Dossier 'poubelle'"
 
-#: extensions/webmail/main.py:39
+#: extensions/webmail/main.py:42
 msgid "Folder where deleted messages go"
 msgstr "Dossier de destination des messages supprimés"
 
-#: extensions/webmail/main.py:41
+#: extensions/webmail/main.py:44
 msgid "Sent folder"
 msgstr "Dossier 'envoyé'"
 
-#: extensions/webmail/main.py:42
+#: extensions/webmail/main.py:45
 msgid "Folder where copies of sent messages go"
 msgstr "Dossier de destination des copies de messages envoyés"
 
-#: extensions/webmail/main.py:44
+#: extensions/webmail/main.py:47
 msgid "Signature text"
 msgstr "Texte de signature"
 
-#: extensions/webmail/main.py:45
+#: extensions/webmail/main.py:48
 msgid "User defined email signature"
 msgstr "Signature personnalisée"
 
-#: extensions/webmail/main.py:47
+#: extensions/webmail/main.py:50
 msgid "Default editor"
 msgstr "Editeur par défaut"
 
-#: extensions/webmail/main.py:49
+#: extensions/webmail/main.py:52
 msgid "The default editor to use when composing a message"
 msgstr "L'éditeur a utiliser par défaut pour écrire un message"
 
-#: extensions/webmail/main.py:51
+#: extensions/webmail/main.py:54
 msgid "Default message display mode"
 msgstr "Mode d'affichage par défaut d'un message"
 
-#: extensions/webmail/main.py:53
+#: extensions/webmail/main.py:56
 msgid "The default mode used when displaying a message"
 msgstr "Le mode utilisé par défaut pour afficher un message"
 
-#: extensions/webmail/main.py:55
+#: extensions/webmail/main.py:58
 msgid "Number of displayed emails per page"
 msgstr "Nombre d'emails affichés par page"
 
-#: extensions/webmail/main.py:56
+#: extensions/webmail/main.py:59
 msgid "Sets the maximum number of messages displayed in a page"
 msgstr "Définit le nombre maximal de messages affichés dans une page"
 
-#: extensions/webmail/main.py:67
+#: extensions/webmail/main.py:61
+msgid "Enable HTML links display"
+msgstr "Activer l'affichage des liens HTML"
+
+#: extensions/webmail/main.py:62
+msgid "Enable/Disable HTML links display"
+msgstr "Activer/Désactiver l'affichage des liens HTML"
+
+#: extensions/webmail/main.py:73
 msgid "Simple IMAP webmail"
 msgstr "Webmail IMAP simple"
 
-#: extensions/webmail/main.py:81
-#: extensions/webmail/templates/webmail/index.html:406
+#: extensions/webmail/main.py:87
+#: extensions/webmail/templates/webmail/index.html:370
 msgid "Webmail"
 msgstr ""
 
-#: extensions/webmail/views.py:70 lib/email_listing.py:124
+#: extensions/webmail/views.py:63 lib/email_listing.py:125
 msgid "This folder contains no messages"
 msgstr "Ce dossier ne contient pas de messages"
-
-#: extensions/webmail/templates/webmail/compose.html:8
-#: extensions/webmail/templates/webmail/headers.html:7
-msgid "Attachments"
-msgstr "Pièces jointes"
-
-#: extensions/webmail/templates/webmail/compose.html:11
-msgid "Add"
-msgstr "Ajouter"
 
 #: extensions/webmail/templates/webmail/folders.html:3
 msgid "Folders"
 msgstr "Dossiers"
 
-#: extensions/webmail/templates/webmail/index.html:163
+#: extensions/webmail/templates/webmail/headers.html:7
+msgid "Attachments"
+msgstr "Pièces jointes"
+
+#: extensions/webmail/templates/webmail/index.html:169
 msgid "Reloading..."
 msgstr "Rechargement..."
 
-#: extensions/webmail/templates/webmail/index.html:170
+#: extensions/webmail/templates/webmail/index.html:176
 msgid "Done"
 msgstr "Effectué"
 
-#: extensions/webmail/templates/webmail/index.html:412
+#: extensions/webmail/templates/webmail/index.html:376
 msgid "Mailbox quota"
 msgstr "Quota de la boite aux lettres"
 
 #: extensions/webmail/templatetags/webextras.py:18
-#: extensions/webmail/templatetags/webextras.py:47
+#: extensions/webmail/templatetags/webextras.py:60
 msgid "Back"
 msgstr "Retour"
 
@@ -810,167 +999,129 @@ msgstr "Répondre à tous"
 msgid "Forward"
 msgstr "Transférer"
 
-#: extensions/webmail/templatetags/webextras.py:51
+#: extensions/webmail/templatetags/webextras.py:36
+msgid "Display options"
+msgstr "Afficher les options"
+
+#: extensions/webmail/templatetags/webextras.py:44
+msgid "Disable links"
+msgstr "Désactiver les liens"
+
+#: extensions/webmail/templatetags/webextras.py:64
 msgid "Send"
 msgstr "Envoyer"
 
-#: extensions/webmail/templatetags/webextras.py:63
+#: extensions/webmail/templatetags/webextras.py:76
 msgid "New message"
 msgstr "Nouveau message"
 
-#: extensions/webmail/templatetags/webextras.py:66
+#: extensions/webmail/templatetags/webextras.py:79
 msgid "Mark messages"
 msgstr "Marquer les messages"
 
-#: extensions/webmail/templatetags/webextras.py:70
+#: extensions/webmail/templatetags/webextras.py:83
 msgid "As read"
 msgstr "Comme lus"
 
-#: extensions/webmail/templatetags/webextras.py:73
+#: extensions/webmail/templatetags/webextras.py:86
 msgid "As unread"
 msgstr "Comme non lus"
 
-#: extensions/webmail/templatetags/webextras.py:79
-#: templates/admin/aliases.html:13 templates/admin/domains.html:22
-#: templates/admin/mailboxes.html:14 templates/admin/permissions.html:14
-#: templates/admin/permissions.html:41
+#: extensions/webmail/templatetags/webextras.py:92
+#: templates/admin/domains.html:25 templates/admin/domaliases.html:14
+#: templates/admin/mailboxes.html:16 templates/admin/mbaliases.html:14
 msgid "Actions"
 msgstr ""
 
-#: extensions/webmail/templatetags/webextras.py:84
+#: extensions/webmail/templatetags/webextras.py:97
 msgid "Compress folder"
 msgstr "Compresser ce dossier"
 
-#: extensions/webmail/templatetags/webextras.py:93
+#: extensions/webmail/templatetags/webextras.py:106
 msgid "Empty folder"
 msgstr "Vider ce dossier"
 
-#: lib/__init__.py:80
+#: lib/__init__.py:118
 #, python-format
 msgid "Invalid action, %(user)s is a local user"
 msgstr "Action invalide, %(user)s est un utilisateur local"
 
-#: templates/nlayout.html:33
-msgid "Admin"
-msgstr ""
+#: lib/tables.py:116
+msgid "No entries to display"
+msgstr "Aucune entrée à afficher"
 
-#: templates/nlayout.html:44 templates/admin/settings_header.html:6
-msgid "Settings"
-msgstr "Configuration"
-
-#: templates/nlayout.html:67
+#: templates/nlayout.html:46
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/admin/addpermission.html:33 templates/admin/newalias.html:14
-#: templates/admin/newdomain.html:15 templates/admin/newmailbox.html:16
-msgid "Create"
-msgstr "Créer"
+#: templates/admin/add_permission.html:16
+msgid "Add"
+msgstr "Ajouter"
 
-#: templates/admin/aliases.html:9
-msgid "No alias defined."
-msgstr "Aucun alias défini."
-
-#: templates/admin/aliases.html:14 templates/admin/mailboxes.html:16
-msgid "Address"
-msgstr "Adresse"
-
-#: templates/admin/aliases.html:15 templates/admin/editmailbox.html:7
-msgid "Mailbox"
-msgstr "Boite aux lettres"
-
-#: templates/admin/aliases.html:16 templates/admin/domains.html:26
-#: templates/admin/permissions.html:17 templates/admin/permissions.html:44
-msgid "Enabled"
-msgstr "Activé"
-
-#: templates/admin/aliases.html:24
-msgid "Edit alias"
-msgstr "Editer cet alias"
-
-#: templates/admin/aliases.html:28
-msgid "Delete alias"
-msgstr "Supprimer cet alias"
-
-#: templates/admin/domains.html:13
+#: templates/admin/domains.html:12
 msgid "Available domains"
 msgstr "Domaines disponibles"
 
-#: templates/admin/domains.html:18
+#: templates/admin/domains.html:15
 msgid "No domain defined."
 msgstr "Aucun domaine défini."
 
-#: templates/admin/domains.html:34
-msgid "Edit domain"
-msgstr "Editer le domaine"
+#: templates/admin/domains.html:24 templates/admin/domaliases.html:13
+#: templates/admin/mbaliases.html:13
+msgid "Enabled"
+msgstr "Activé"
 
-#: templates/admin/domains.html:38
-msgid "Delete domain"
-msgstr "Supprimer le domaine"
-
-#: templates/admin/domains.html:44 templates/admin/mailboxes.html:45
+#: templates/admin/domains.html:33 templates/admin/mailboxes.html:23
 msgid "MB"
 msgstr "Mo"
 
-#: templates/admin/domains.html:45 templates/admin/mailboxes.html:46
+#: templates/admin/domains.html:34 templates/admin/mailboxes.html:24
 msgid "yes,no"
 msgstr "oui,non"
+
+#: templates/admin/domains_header.html:45
+msgid "for"
+msgstr "pour"
+
+#: templates/admin/domaliases.html:7
+msgid "No domain alias defined."
+msgstr "Aucun alias de domaine défini."
+
+#: templates/admin/domaliases.html:12
+msgid "Targeted domain"
+msgstr "Domaine ciblé"
 
 #: templates/admin/extensions.html:11
 msgid "Apply"
 msgstr "Appliquer"
 
-#: templates/admin/mailboxes.html:10
+#: templates/admin/mailboxes.html:3
+msgid "Available mailboxes"
+msgstr "Boites aux lettres disponibles"
+
+#: templates/admin/mailboxes.html:7
 msgid "No mailbox defined."
 msgstr "Aucune boite aux lettres définie."
 
-#: templates/admin/mailboxes.html:26
-msgid "Edit mailbox"
-msgstr "Editer la boite aux lettres"
+#: templates/admin/mailboxes.html:12 templates/admin/mbaliases.html:11
+msgid "Address"
+msgstr "Adresse"
 
-#: templates/admin/mailboxes.html:31
-msgid "Delete mailbox"
-msgstr "Supprimer la boite aux lettres"
+#: templates/admin/mailboxes.html:13
+msgid "Defined aliases"
+msgstr "Alias définis"
 
-#: templates/admin/mailboxes.html:36
-msgid "Add new alias"
-msgstr "Ajouter un alias"
+#: templates/admin/mailboxes_raw.html:3
+msgid "Choose a value"
+msgstr "Choisir une valeur"
 
-#: templates/admin/mailboxes.html:40
-msgid "Mailbox aliases"
-msgstr "Alias de cette boite aux lettres"
+#: templates/admin/mbaliases.html:7
+msgid "No mailbox alias defined."
+msgstr "Aucune alias de boite défini."
 
-#: templates/admin/newalias.html:7
-msgid "New alias"
-msgstr "Nouvel alias"
-
-#: templates/admin/permissions.html:9
-msgid "No superuser defined?!"
-msgstr "Aucun super utilisateur défini?!"
-
-#: templates/admin/permissions.html:11
-msgid "Super administrators"
-msgstr "Super administrateurs"
-
-#: templates/admin/permissions.html:15
-msgid "Full name"
-msgstr "Nom complet"
-
-#: templates/admin/permissions.html:16
-msgid "User name"
-msgstr "Nom d'utilisateur"
-
-#: templates/admin/permissions.html:24 templates/admin/permissions.html:52
-msgid "Remove permission"
-msgstr "Supprimer la permission"
-
-#: templates/admin/permissions.html:35
-msgid "Domain administrators"
-msgstr "Administrateurs de domaine"
-
-#: templates/admin/permissions.html:37
-msgid "No domain admin defined."
-msgstr "Aucun admin de domaine défini."
+#: templates/admin/mbaliases.html:12
+msgid "Mailbox"
+msgstr "Boite aux lettres"
 
 #: templates/common/email_searchbar.html:4
 msgid "Search..."
@@ -1012,9 +1163,13 @@ msgstr "Suivante"
 msgid "Last"
 msgstr "Dernière"
 
-#: templates/common/parameters.html:3
+#: templates/common/parameters.html:4
 msgid "Save"
 msgstr "Sauvegarder"
+
+#: templates/common/parameters.html:16
+msgid "No parameters available"
+msgstr "Aucun paramètre disponible"
 
 #: templates/registration/login.html:8
 msgid "Welcome to Modoboa"
@@ -1028,10 +1183,6 @@ msgstr "Bienvenue"
 #: userprefs/templatetags/uprefs_extras.py:21
 msgid "Change password"
 msgstr "Changer de mot de passe"
-
-#: templates/userprefs/confirm.html:25
-msgid "Do not delete mailbox directory"
-msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
 #: templates/userprefs/preferences.html:6
 #: userprefs/templatetags/uprefs_extras.py:26
