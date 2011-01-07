@@ -10,23 +10,11 @@ from modoboa.admin.models import Mailbox
 from modoboa.extensions.postfix_autoreply import main
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print "Not enough arguments, aborting."
-        sys.exit(1)
-
-    sender = sys.argv[1]
-    mailbox = sys.argv[2]
-    mbox = Mailbox.objects.get(full_address=mailbox)
-    try:
-        armessage = ARmessage.objects.get(mbox=mbox.id, enabled=True)
-    except ARmessage.DoesNotExist:
-        sys.exit(0)
-
+def send_autoreply(sender, mailbox, armessage):
     if armessage.untildate < datetime.datetime.now():
         armessage.enabled = False
         armessage.save()
-        sys.exit(0)
+        return
 
     try:
         lastar = ARhistoric.objects.get(armessage=armessage.id, sender=sender)
@@ -53,4 +41,29 @@ if __name__ == "__main__":
     
     lastar.last_sent = datetime.datetime.now()
     lastar.save()
-    sys.exit(0)
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print "Not enough arguments, aborting."
+        sys.exit(1)
+
+    sender = sys.argv[1]
+    for fulladdress in sys.argv[2:]:
+        parts = fulladdress.split('@')
+        if len(parts) == 2:
+            address = parts[0]
+            domain = parts[1]
+        else:
+            domain = parts[-1]
+            address = "@".join(parts[:-1])
+        try:
+            mbox = Mailbox.objects.get(address=address, domain__name=domain)
+        except Mailbox.DoesNotExist:
+            print "Unknown recipient %s" % (mbox)
+            continue
+        try:
+            armessage = ARmessage.objects.get(mbox=mbox.id, enabled=True)
+        except ARmessage.DoesNotExist:
+            continue
+
+        send_autoreply(sender, mbox, armessage)
