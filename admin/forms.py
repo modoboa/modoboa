@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 from django import forms
 from modoboa.admin.models import *
 from django.utils.translation import ugettext as _

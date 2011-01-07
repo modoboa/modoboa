@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: iso-8859-1 -*-
 
 """
 Imap folder names are encoded using a special version of utf-7 as defined in RFC 
