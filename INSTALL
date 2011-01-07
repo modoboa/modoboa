@@ -50,7 +50,7 @@ apply existing migrations like this::
 Time zone and language
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Modoboa is available in english, french and german. You can choose
+Modoboa is available in english, french, german and spanish. You can choose
 which language to use by modifying the ``LANGUAGE_CODE`` variable inside
 *settings.py*::
 
@@ -59,6 +59,8 @@ which language to use by modifying the ``LANGUAGE_CODE`` variable inside
   LANGUAGE_CODE = 'fr-FR' # French
   # or
   LANGUAGE_CODE = 'de-DE' # German
+  # or
+  LANGUAGE_CODE = 'es-ES' # Spanish
 
 You can also specify your time zone by modifying the ``TIME_ZONE``
 variable. For example::
@@ -117,7 +119,7 @@ existing database.**
 
 #. Update SQL queries used in your environnement (see :ref:`postfix-label` or :ref:`dovecot-label`).
 
-#. Update *postfix* configuration so that he can handle domain aliases (see :ref:`postfix-label`).
+#. Update *postfix* configuration so that it can handle domain aliases (see :ref:`postfix-label`).
 
 
 0.8.2: ckeditor integration and more
@@ -315,7 +317,7 @@ Then, edit your */etc/dovecot/dovecot-sql.conf* and modify following lines::
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
   default_pass_scheme = CRYPT
-  password_query = SELECT concat(t1.address, t2.name) AS user, password FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
+  password_query = SELECT concat(t1.address, '@', t2.name) AS user, password FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
   user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid FROM admin_mailbox AS t1, admin_domain AS t2 WHERE WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 Enable quotas support
@@ -343,7 +345,7 @@ If you use version prior to 1.1, add also the following configuration::
 Then, modify the above query inside *dovecot-sql.conf* as follow to
 activate per user quotas::
 
-  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('<backend>:storage=', quota / 1024) AS quota FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
+  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('<backend>:storage=', t1.quota / 1024) AS quota FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 If you are not using MySQL, you will have to replace the ``concat``
 function call with something working with your database.
@@ -360,7 +362,7 @@ For version >= 1.1, put the following configuration inside the *dovecot.conf* fi
 Then, modify the above query inside *dovecot-sql.conf* to activate
 user quotas::
 
-  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('*:storage=', quota, 'M') AS quota_rule FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
+  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('*:storage=', t1.quota, 'M') AS quota_rule FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 How to serve Modoboa behind a webserver
 =======================================
