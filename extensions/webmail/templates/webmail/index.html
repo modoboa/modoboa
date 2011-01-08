@@ -256,10 +256,10 @@
 	droppable.removeClass("dragging");
     };
 
-    restore_parent = function(item) {
+    restore_parent = function(drag, item) {
 	var parent = item.retrieve("parent");
 
-	this.element = parent;
+	drag.element = parent;
 	rtimer = refreshFolder.periodical({{ refreshrate }});
     };
 
@@ -267,7 +267,7 @@
 	this.element.dispose();
         delete(this.element);
         if (!droppable) {
-	    restore_parent(item);
+	    restore_parent(this, item);
 	    return;
         }
         droppable.removeClass("dragging");
@@ -283,7 +283,7 @@
     cancel_dragging = function(item) {
 	this.element.dispose();
         delete(this.element);
-	restore_parent(item);
+	restore_parent(this, item);
     };
 
     $$("td[class*=draggable]").each(function(item) {

@@ -440,7 +440,7 @@ msgstr "Alias de domaine"
 #: admin/templatetags/admin_extras.py:118 templates/admin/domains.html:22
 #: templates/admin/mbaliases.html:3
 msgid "Mailbox aliases"
-msgstr "Alias de boite aux lettres"
+msgstr "Alias de boite."
 
 #: admin/templatetags/admin_extras.py:133
 msgid "Add permission"
