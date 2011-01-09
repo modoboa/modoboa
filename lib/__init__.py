@@ -173,3 +173,13 @@ def crypt_password(password):
     if scheme == "md5":
         return hashlib.md5(password).hexdigest()
     return password
+
+def split_mailbox(mailbox):
+    parts = mailbox.split('@')
+    if len(parts) == 2:
+        address = parts[0]
+        domain = parts[1]
+    else:
+        domain = parts[-1]
+        address = "@".join(parts[:-1])
+    return (address, domain)

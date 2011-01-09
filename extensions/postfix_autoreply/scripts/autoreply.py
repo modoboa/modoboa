@@ -5,7 +5,7 @@ import sys
 import smtplib
 from email.mime.text import MIMEText
 import datetime
-from modoboa.lib import parameters
+from modoboa.lib import split_mailbox, parameters
 from modoboa.admin.models import Mailbox
 from modoboa.extensions.postfix_autoreply import main
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
@@ -49,13 +49,7 @@ if __name__ == "__main__":
 
     sender = sys.argv[1]
     for fulladdress in sys.argv[2:]:
-        parts = fulladdress.split('@')
-        if len(parts) == 2:
-            address = parts[0]
-            domain = parts[1]
-        else:
-            domain = parts[-1]
-            address = "@".join(parts[:-1])
+        address, domain = split_mailbox(fulladdress)
         try:
             mbox = Mailbox.objects.get(address=address, domain__name=domain)
         except Mailbox.DoesNotExist:

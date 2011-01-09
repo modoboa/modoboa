@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from modoboa.admin.models import Mailbox
 from modoboa.lib import parameters, _render, _render_error, \
-    getctx, is_not_localadmin, _render_to_string
+    getctx, is_not_localadmin, _render_to_string, split_mailbox
 from modoboa.lib.email_listing import parse_search_parameters, Paginator
 from lib import *
 from forms import *
@@ -327,12 +327,13 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
         else:
             msg = MIMEText(body.encode(charset), _subtype=subtype)
 
-        mb = Mailbox.objects.get(full_address=request.POST["from_"])
         msg["Subject"] = request.POST["subject"]
-        if mb is None:
-            msg["From"] = request.POST["from_"]
-        else:
+        address, domain = split_mailbox(request.POST["from_"])
+        try:
+            mb = Mailbox.objects.get(address=address, domain__name=domain)
             msg["From"] = "%s <%s>" % (mb.name, request.POST["from_"])
+        except Mailbox.DoesNotExist:
+            msg["From"] = request.POST["from_"]
         msg["To"] = request.POST["to"]
         msg["Message-ID"] = make_msgid()
         msg["User-Agent"] = "Modoboa"
