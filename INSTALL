@@ -318,7 +318,7 @@ For *MySQL* users, edit your */etc/dovecot/dovecot-sql.conf* and modify followin
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
   default_pass_scheme = CRYPT
   password_query = SELECT concat(t1.address, '@', t2.name) AS user, password FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
-  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid FROM admin_mailbox AS t1, admin_domain AS t2 WHERE WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
+  user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 Enable quotas support
 ^^^^^^^^^^^^^^^^^^^^^
