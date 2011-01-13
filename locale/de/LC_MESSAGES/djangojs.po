@@ -1,4 +1,4 @@
-# SOME DESCRIPTIVE TITLE.
+# Modoboa German translation.
 # Copyright (C) 2010
 # This file is distributed under the same license as the Modoboa package.
 # Patrick Ben Koetter <p@state-of-mind.de>, 2010.
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-07 09:47+0100\n"
-"PO-Revision-Date: 2010-07-25 21:42+0200\n"
+"PO-Revision-Date: 2011-01-13 22:50+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
 "Language: \n"
