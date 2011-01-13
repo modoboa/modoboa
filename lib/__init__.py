@@ -101,7 +101,10 @@ def ajax_response(request, status="ok", url=None, template=None, **kwargs):
 
 def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=None):
     if charset is not None:
-        return s.decode(charset, 'ignore')
+        try:
+            return s.decode(charset, 'ignore')
+        except LookupError:
+            pass
 
     for encoding in encodings:
         try:
