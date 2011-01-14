@@ -1,12 +1,11 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Modoboa spanish translation
+# Copyright (C) 2010
+# This file is distributed under the same license as the Modoboa package.
 # Pedro Gracia <pedro.gracia@impulzia.com>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-07 02:30-0600\n"
 "PO-Revision-Date: 2011-01-07 09:00+0100\n"

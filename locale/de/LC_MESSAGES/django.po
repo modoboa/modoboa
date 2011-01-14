@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-8e6c72ea0131\n"
+"Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-07 09:46+0100\n"
 "PO-Revision-Date: 2011-01-13 22:49+0100\n"
@@ -1203,32 +1203,3 @@ msgstr "Neues Passwort"
 msgid "Old password mismatchs"
 msgstr "Altes Passwort stimmt nicht überein"
 
-#~ msgid "Role"
-#~ msgstr "Rolle"
-
-#~ msgid "Select the role you want this user to have"
-#~ msgstr "Wählen Sie die Rolle für diesen Nutzer"
-
-#~ msgid "admin is intouchable!!"
-#~ msgstr "admin ist unantastbar!!"
-
-#~ msgid "Aliases"
-#~ msgstr "Aliase"
-
-#~ msgid "Properties"
-#~ msgstr "Eigenschaften"
-
-#~ msgid "Global statistics"
-#~ msgstr "Globale Statistiken"
-
-#~ msgid "Delete mailbox"
-#~ msgstr "Mailbox löschen"
-
-#~ msgid "Add new alias"
-#~ msgstr "Alias hinzufügen"
-
-#~ msgid "New alias"
-#~ msgstr "Neuer Alias"
-
-#~ msgid "No superuser defined?!"
-#~ msgstr "Kein Administrator definiert?!"

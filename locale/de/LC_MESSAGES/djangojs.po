@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-07 09:47+0100\n"
 "PO-Revision-Date: 2011-01-13 22:50+0100\n"
@@ -39,9 +39,3 @@ msgstr "Einstellungen gespeichert"
 #: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Parameter gespeichert"
-
-#~ msgid "Delete this mailbox?"
-#~ msgstr "Diese Mailbox löschen?"
-
-#~ msgid "Remove this permission?"
-#~ msgstr "Diese Berechtigung entziehen?"
