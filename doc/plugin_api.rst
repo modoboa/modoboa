@@ -1,8 +1,32 @@
 Extending Modoboa
 =================
 
-What is a plugin
-----------------
+Introduction
+------------
+
+Modoboa tries to be modular. In other words, Modoboa is a collection
+of different applications that work with each other, sharing the same
+interface. For now, you can see Modoboa as a placeholder for your
+plugin.
+
+In a perfect world, adding a feature to Modoboa results in adding a
+new plugin. This is currently the case (almost...) and should continue
+like this.
+
+The current API is really simple. You have the possibility to:
+ * Create entry points to your plugin inside the GUI,
+ * Modify administration objects (domains, mailboxes, etc.), 
+ * Be notified of specific events.
+
+With that, you can develop pretty advanced applications but we know
+(Modoboa's team) it is not enough. For example, you can't create a
+*Contacts* plugin that will work with the *Webmail* one.
+
+The API needs to be improved and it will be done with future releases
+so stay tuned :-).
+
+How Modoboa and plugins communicate together
+--------------------------------------------
 
 Modoboa plugins are actually Django applications but with an extra file
 called ``main.py``. This file contains a complete description of the
