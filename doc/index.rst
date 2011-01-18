@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    install
+   plugin_api
 
 Indices and tables
 ==================
