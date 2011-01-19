@@ -4,26 +4,15 @@ Extending Modoboa
 Introduction
 ------------
 
-Modoboa tries to be modular. In other words, Modoboa is a collection
-of different applications that work with each other, sharing the same
-interface. For now, you can see Modoboa as a placeholder for your
-plugin.
+Modoboa offers a plugin API to expand its capabilities. The current
+implementation provides the following possibilities:
 
-In a perfect world, adding a feature to Modoboa results in adding a
-new plugin. This is currently the case (almost...) and should continue
-like this.
+ * Expand navigation by adding entry points to your plugin inside the GUI
+ * Access and modify administrative objects (domains, mailboxes, etc.)
+ * Register callback actions for specific events
 
-The current API is really simple. You have the possibility to:
- * Create entry points to your plugin inside the GUI,
- * Modify administration objects (domains, mailboxes, etc.), 
- * Be notified of specific events.
-
-With that, you can develop pretty advanced applications but we know
-(Modoboa's team) it is not enough. For example, you can't create a
-*Contacts* plugin that will work with the *Webmail* one.
-
-The API needs to be improved and it will be done with future releases
-so stay tuned :-).
+The following subsections describe plugin architecture and explain
+how you can create your own plugin.
 
 How Modoboa and plugins communicate together
 --------------------------------------------
