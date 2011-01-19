@@ -36,8 +36,9 @@ directory. To create a new plugin, execute the following steps:
  * Move the resulting directory inside the ``extensions`` one,
  * Create a file called ``main.py`` inside your plugin's directory.
 
-The last file you created must follow a specific structure in order to
-be interpreted by Modoboa. The following functions are mandatory::
+The last file you created (ie. ``main.py``) must follow a specific
+structure in order to be interpreted by Modoboa. The following
+functions are mandatory::
 
   def init():
     """This function is called when Modoboa loads available and activated plugins.
