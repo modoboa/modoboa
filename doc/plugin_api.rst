@@ -11,23 +11,20 @@ implementation provides the following possibilities:
  * Access and modify administrative objects (domains, mailboxes, etc.)
  * Register callback actions for specific events
 
-The following subsections describe plugin architecture and explain
-how you can create your own plugin.
-
-How Modoboa and plugins communicate together
---------------------------------------------
-
-Modoboa plugins are actually Django applications but with an extra file
+Plugins are nothing more than Django applications with an extra file
 called ``main.py``. This file contains a complete description of the
 plugin:
 
  * Admin and user parameters
  * Registered events
- * Menus
+ * Custom menu entries
 
-According to that, a plugin can integrate Modoboa in different ways:
- * Extend the usual menus by adding custom entries, they will provide direct access to the plugin core content,
- * Add custom actions called when specific events are raised.
+The communication between both applications is provided by
+events. Modoboa offers some kind of hooks to let plugin add custom
+actions.
+
+The following subsections describe plugin architecture and explain
+how you can create your own plugin.
 
 Adding a custom plugin
 ----------------------
