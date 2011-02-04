@@ -152,6 +152,8 @@ class Email(object):
 
         self.__parse(msg)
 
+        print "mf : %s, df : %s" % (mformat, dformat)
+
         if not self.contents.has_key(mformat) or self.contents[mformat] == "":
             # Fallback
             self.mformat = mformat == "html" and "plain" or "html"
@@ -280,8 +282,7 @@ class Email(object):
                 })
         
     def viewmail_plain(self, content, **kwargs):
-        return self.dformat == "html" and "<pre>%s</pre>" % content \
-            or content
+        return "<pre>%s</pre>" % content
 
     def viewmail_html(self, content, **kwargs):
         if content is None or content == "":
