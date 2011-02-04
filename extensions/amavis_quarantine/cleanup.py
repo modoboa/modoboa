@@ -8,7 +8,8 @@ if __name__ == "__main__":
 
     main.init()
     conn = db.getconnection("amavis_quarantine")
-    max_messages_age = int(parameters.get_admin("MAX_MESSAGES_AGE"))
+    max_messages_age = int(parameters.get_admin("MAX_MESSAGES_AGE",
+                                                app="amavis_quarantine"))
 
     print "Deleting messages older than %d days..." % max_messages_age
     db.execute(conn, """
