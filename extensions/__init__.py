@@ -29,7 +29,7 @@ def loadextensions(prefix):
     return result
 
 def list_extensions():
-    basedir = "extensions"
+    basedir = "%s/extensions" % settings.MODOBOA_DIR
     result = []
     for d in os.listdir(basedir):
         if not os.path.isdir("%s/%s" % (basedir, d)):
