@@ -38,7 +38,7 @@ def display_messages(msgs):
     level = "info"
     for m in msgs:
         level = m.tags
-        text += str(m) + "\\\n"
+        text += unicode(m) + "\\\n"
        
     return """
 <script type="text/javascript">
