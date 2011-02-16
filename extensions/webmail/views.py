@@ -355,8 +355,8 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
                                  int(parameters.get_admin("SMTP_PORT")))
                 if secmode == "starttls":
                     s.starttls()
-        except (smtplib.SMTPException, ssl.SSLError), text:
-            error = text
+        except Exception, text:
+            error = str(text)
         if error is None:
             if parameters.get_admin("SMTP_AUTHENTICATION") == "yes":
                 s.login(request.user.username, decrypt(request.session["password"]))
@@ -373,7 +373,6 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
                                     "body" : request.POST["id_body"].strip(),
                                     "posturl" : posturl})
         ctx = getctx("ko", level=2, error=error, listing=listing)
-
     if not withctx:
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
     return ctx, HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
