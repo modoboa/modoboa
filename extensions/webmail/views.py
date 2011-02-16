@@ -402,7 +402,7 @@ def reply(request, folder, mail_id):
         return r
 
     form = ComposeMailForm()    
-    email = ReplyModifier(msg, request.user, form, request.GET.has_key("full"),
+    email = ReplyModifier(msg, request.user, form, request.GET.has_key("all"),
                           addrfull=True, links="1")
     return render_compose(request, form, reverse(reply, args=[folder, mail_id]),
                           email)

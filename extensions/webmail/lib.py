@@ -10,7 +10,6 @@ import socket
 import imaplib
 import ssl
 from datetime import datetime, timedelta
-from email.header import decode_header
 import email.utils
 import lxml
 from django.utils.translation import ugettext as _
@@ -39,33 +38,12 @@ class WMtable(tables.Table):
             return value
 
 class EmailAddress(object):
-    addr_exp = re.compile("([^<\(]+)[<(]([^>)]+)[>)]")
-    name_exp = re.compile('"?([^"]+)"?')
-
     def __init__(self, address):
         self.fulladdress = u2u_decode.u2u_decode(address).strip("\r\t\n")
-        self.name = self.address = None
-        m = EmailAddress.addr_exp.match(self.fulladdress)
-        if m is None:
-            return
-        name = m.group(1).strip()
-        self.address = m.group(2).strip()
-        m2 = EmailAddress.name_exp.match(name)
-        if m2:
-            name = m2.group(1)
-        self.name = ""
-        for part in decode_header(name):
-            if self.name != "":
-                self.name += " "
-            if part[1] is None:
-                self.name += part[0]
-            else:
-                try:
-                    self.name += unicode(part[0], part[1])
-                except UnicodeDecodeError:
-                    self.name = ""
-        self.fulladdress = "%s <%s>" % (self.name, self.address)
-
+        (self.name, self.address) = email.utils.parseaddr(self.fulladdress)
+        if self.name == "":
+            self.fulladdress = self.address
+        
     def __str__(self):
         return self.fulladdress
 
@@ -484,7 +462,7 @@ class ReplyModifier(ImapEmail):
                 toparse += msg["Cc"].split(",")
             for addr in toparse:
                 tmp = EmailAddress(addr)
-                if tmp.address and tmp.address == request.user.username:
+                if tmp.address and tmp.address == user.username:
                     continue
                 if form.fields["cc"].initial != "":
                     form.fields["cc"].initial += ", "
@@ -496,6 +474,7 @@ class ReplyModifier(ImapEmail):
             form.fields["subject"].initial = "Re: %s" % self.Subject
     
     def _modify_plain(self):
+        self.body = re.sub("</?pre>", "", self.body)
         lines = self.body.split('\n')
         body = ""
         for l in lines:
