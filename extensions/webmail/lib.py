@@ -303,6 +303,20 @@ class IMAPconnector(object):
         self.m.select(self._encodefolder(folder))
         self.m.expunge()
 
+    def create_folder(self, name, parent=None):
+        if parent is not None:
+            name = "%s.%s" % (parent, name)
+        typ, data = self.m.create(self._encodefolder(name))
+        if typ == "NO":
+            return False
+        return True
+
+    def delete_folder(self, name):
+        typ, data = self.m.delete(self._encodefolder(name))
+        if typ == "NO":
+            return False
+        return True
+
     def getquota(self, folder):
         status, data = self.m.getquotaroot(self._encodefolder(folder))
         if status == "OK":

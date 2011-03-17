@@ -12,11 +12,6 @@ html > body #listing {
     bottom: 35px;
 }
 
-#folders {
-    float: left;
-    width: 150px;
-}
-
 /*thead tr {
   position: relative;
   top: expression(offsetParent.scrollTop);
@@ -50,60 +45,6 @@ html > body #listing {
     -khtml-user-select: none; /* Webkit (Safari, Chrome) */
 }
 
-.box h3 {
-    font-size: small;
-    margin: 2px 0px 2px 0px;
-    text-align: center;
-}
-
-.box ul {
-    list-style: none;
-    padding: 5px 5px;
-    margin: 0;
-}
-
-.box li {
-    margin-bottom: 4px;
-    padding-left: 20px;
-}
-
-.box li.selected {
-    background-color: #FFFF77;
-}
-
-.box a:link, .box a:visited {
-    background: transparent;
-    color: black;
-    text-decoration: none;
-    margin-left: 5px;
-}
-
-.box a:hover { 
-    color: #6AB0C5;
-    text-decoration: none;
-}
-
-.box img {
-    float: left;
-    border: 0;
-}
-
-li.inbox {
-    background: url("/static/pics/overview.png") no-repeat;
-}
-
-li.trash {
-    background: url("/static/pics/trash.png") no-repeat;
-}
-
-li.folder {
-    background: url("/static/pics/folder.png") no-repeat;
-}
-
-li.subfolders {
-    background: url("/static/pics/subfolders.png") no-repeat;
-}
-
 th[class*=sortable] {
     cursor: pointer;
 /*-moz-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;
@@ -124,16 +65,11 @@ th.selected {
     position: static;
 }
 
-.box li.dragging {
-    background-color: #6AB0C5;
-}
-
 ul.hidden {
     display: none;
 }
 
 ul.visible {
-    background-color: white;
     display: block;
     padding-bottom: 0;
 }
@@ -219,4 +155,27 @@ textarea:hover {
 #quotatext { 
     padding: 2px 0 0 2px;
     float: left;
+}
+
+/* context menu specific */
+#fdmenu { border:1px solid #999; padding:0; background:#eee; width:150px; display:none; }
+#fdmenu .separator { border-top:1px solid #999; }
+#fdmenu ul { list-style-type:none; margin:0; padding:0; }
+#fdmenu li { margin:0; padding:0; }
+#fdmenu li a { display:block; padding:5px 10px 5px 5px; font-size:12px; text-decoration:none; font-family:tahoma,arial,sans-serif; color:#000; }
+#fdmenu li a:hover { background-color:#ddd; }
+#fdmenu img { float:left; margin: 0 5px 0 0; }
+
+.folder_menu {
+    float: right;
+    opacity: 0.8;
+}
+
+.folder_btn {
+    float: right;
+    margin: 3px;
+}
+
+.folder_menubar {
+    clear: both;
 }

@@ -116,8 +116,14 @@ def listing_menu(selection, folder, user):
     return menu + searchbar
 
 @register.simple_tag
-def print_folders(folders, selected=None):
+def print_folders(folders, selected=None, withunseen=False, withmenu=False):
     result = ""
+
+    import pprint
+    pprint.PrettyPrinter(indent=2).pprint(folders)
+    print "END"
+
+
     for fd in folders:
         if fd.has_key("class"):
             cssclass = fd["class"]
@@ -131,14 +137,17 @@ def print_folders(folders, selected=None):
         if selected == label:
             cssclass += " selected"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
+        if withmenu:
+            result += "<img src='%spics/go-down.png' class='footer' />" % settings.MEDIA_URL
 
         cssclass = ""
-        if fd.has_key("unseen"):
+        if withunseen and fd.has_key("unseen"):
             label += " (%d)" % fd["unseen"]
             cssclass = "unseen"
         result += "<a href='%s' class='%s' name='loadfolder'>%s</a>\n" \
             % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, label)
         if fd.has_key("sub"):
-            result += "<ul name='%s' class='hidden'>" % (fd["path"]) + print_folders(fd["sub"], selected) + "</ul>\n"
+            result += "<ul name='%s' class='hidden'>" % (fd["path"]) \
+                + print_folders(fd["sub"], selected, withunseen, withmenu) + "</ul>\n"
         result += "</li>\n"
     return result

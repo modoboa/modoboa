@@ -7,13 +7,13 @@ from django.contrib.auth.decorators \
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from modoboa.lib import _render, _ctx_ok, _ctx_ko, is_not_localadmin
+from modoboa.lib import _render, ajax_response, is_not_localadmin
 from forms import *
 from models import *
 
 @login_required
 @is_not_localadmin('boxerror')
-def autoreply(request):
+def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
     mb = Mailbox.objects.get(user=request.user.id)
     try:
         arm = ARmessage.objects.get(mbox=mb.id)
@@ -34,17 +34,13 @@ def autoreply(request):
             arm.save()
             messages.info(request, _("Auto reply message updated successfully."),
                           fail_silently=True)
-            ctx = _ctx_ok(reverse(userprefs.views.index))
-        else:
-            ctx = _ctx_ko("postfix_autoreply/autoreply.html", {
-                    "form" : form, "error" : error
-                    })            
-        return HttpResponse(simplejson.dumps(ctx), 
-                            mimetype="application/json")
+            return ajax_response(request, url=reverse(userprefs.views.index))
+        return ajax_response(request, status="ko", template=tplname, 
+                             form=form, error=error)
 
     form = ARmessageForm(instance=arm)
     if arm is not None:
         form.fields['untildate'].initial = arm.untildate
-    return _render(request, "postfix_autoreply/autoreply.html", {
+    return _render(request, tplname, {
             "form" : form
             })

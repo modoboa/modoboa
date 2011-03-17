@@ -74,7 +74,7 @@ def getctx(status, level=1, callback=None, **kwargs):
         ctx[kw] = v
     return ctx
 
-def ajax_response(request, status="ok", url=None, template=None, **kwargs):
+def ajax_response(request, status="ok", url="", ajaxnav=False, template=None, **kwargs):
     """Ajax response shortcut
 
     Simple shortcut that sends an JSON response. If a template is
@@ -94,10 +94,12 @@ def ajax_response(request, status="ok", url=None, template=None, **kwargs):
         content = _render_to_string(request, template, ctx)
     else:
         content = ""
-    return HttpResponse(simplejson.dumps({"status" : status, 
-                                          "content" : content,
-                                          "url" : url}),
-                        mimetype="application/json")
+    jsonctx = {"status" : status, "content" : content}
+    if ajaxnav:
+        jsonctx["ajaxnav"] = True
+    else:
+        jsonctx["url"] = url
+    return HttpResponse(simplejson.dumps(jsonctx), mimetype="application/json")
 
 def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=None):
     if charset is not None:

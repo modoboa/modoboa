@@ -1,0 +1,99 @@
+#folders {
+    float: left;
+    width: 150px;
+}
+
+#folders2 {
+    border: 1px solid #ccc;
+    background-color: #eee;
+    position: absolute;
+    top: 100px;
+    left: 20px;
+    right: 20px;
+    bottom: 40px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#fdcreate {
+    position: absolute;
+    top: 370px;
+    left: 20px;
+    right: 20px;
+    text-align: center;
+}
+
+.box h3 {
+    font-size: small;
+    margin: 2px 0px 2px 0px;
+    text-align: center;
+}
+
+.box ul {
+    list-style: none;
+    padding: 5px 5px;
+    margin: 0;
+}
+
+.box li {
+    margin-bottom: 4px;
+    padding-left: 15px;
+}
+
+.box li.selected {
+    background-color: #FFFF77;
+}
+
+.box a:link, .box a:visited {
+    background: transparent;
+    color: black;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.box a:hover { 
+    color: #6AB0C5;
+    text-decoration: none;
+}
+
+.box img {
+    border: 0;
+}
+
+.box li.dragging {
+    background-color: #6AB0C5;
+}
+
+img.aligned {
+    float: left;
+}
+
+img.footer {
+    float: none;
+    vertical-align: bottom;
+}
+
+li.inbox {
+    background: url("/static/pics/overview.png") no-repeat;
+}
+
+li.trash {
+    background: url("/static/pics/trash.png") no-repeat;
+}
+
+li.folder {
+    background: url("/static/pics/folder.png") no-repeat;
+}
+
+li.subfolders {
+    background: url("/static/pics/subfolders.png") no-repeat;
+}
+
+ul.hidden {
+    display: none;
+}
+
+ul.visible {
+    display: block;
+    padding-bottom: 0;
+}

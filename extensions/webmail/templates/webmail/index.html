@@ -1,8 +1,8 @@
-
 {% extends "common/email_listing.html" %}
 {% load i18n %}
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/webmail/webmail.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/webmail/folders.css" />
 {% endblock %}
 {% block js %}
   quota_pb = new ProgressBar({
@@ -19,9 +19,29 @@
     updatelisting(resp);
     if ($defined(resp.folders)) {
       $("folders").set("html", resp.folders);
+      $$("li[class*=clickable]").removeEvents();
+      SqueezeBox.assign($$('a[class=boxed]'), {
+        parse: 'rel'
+      });
+
+      var fdbuttons = $$("img[class*=footer]");
+      var fdmenu = new FdMenu({
+        media_url: "{{MEDIA_URL}}",
+        modify_url: "{% url extensions.webmail.views.editfolder %}",
+        delete_url: "{% url extensions.webmail.views.delfolder %}"
+      });
+
+      fdbuttons.addEvents({
+        click: function(evt) {
+          var parent = this.getParent();
+          var fdname = parent.getFirst("a[name=loadfolder]").get("href");
+
+          fdmenu.toggle(this, fdname);
+          evt.stop();
+        }
+      });
     }
     select($$("a[href=" + current_anchor.getbaseurl() + "]"));
-    $$("li[class*=clickable]").removeEvents();
     $$("li[class*=clickable]").addEvent("click", function(evt) {
       $$("ul[name=" + evt.target.get("name") + "]").each(function(item) {
         if (item.hasClass("hidden")) {
