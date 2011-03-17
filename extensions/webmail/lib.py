@@ -216,10 +216,16 @@ class IMAPconnector(object):
         if not len(parts):
             return False
         path = "%s%s%s" % (prefix, delimiter, parts[0])
-        sdescr = {"name" : parts[0], "path" : path, "sub" : []}
+        sdescr = None
+        for d in descr:
+            if d["path"] == path:
+                sdescr = d
+                break
+        if sdescr is None:
+            sdescr = {"name" : parts[0], "path" : path, "sub" : []}
+            descr += [sdescr]            
         if self._parse_folder_name(sdescr["sub"], path, delimiter, parts[1:]):
             sdescr["class"] = "subfolders"
-        descr += [sdescr]
         return True
 
     def _listfolders(self, topfolder='INBOX', md_folders=[]):

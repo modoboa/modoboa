@@ -138,7 +138,7 @@ def print_folders(folders, selected=None):
             cssclass = "unseen"
         result += "<a href='%s' class='%s' name='loadfolder'>%s</a>\n" \
             % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, label)
-        if fd.has_key("sub"):
+        if fd.has_key("sub") and len(fd["sub"]):
             result += "<ul name='%s' class='hidden'>" % (fd["path"]) + print_folders(fd["sub"], selected) + "</ul>\n"
         result += "</li>\n"
     return result
