@@ -97,7 +97,7 @@ def ajax_response(request, status="ok", url="", ajaxnav=False, template=None, **
     jsonctx = {"status" : status, "content" : content}
     if ajaxnav:
         jsonctx["ajaxnav"] = True
-    else:
+    if url != "":
         jsonctx["url"] = url
     return HttpResponse(simplejson.dumps(jsonctx), mimetype="application/json")
 

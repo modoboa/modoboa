@@ -1,8 +1,51 @@
 {% extends "common/email_listing.html" %}
 {% load i18n %}
-{% block css %}
+{% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/webmail/webmail.css" />
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/webmail/folders.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/webmail/fdmenu.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/webmail/webmail.js"></script>
+{{ block.super }}
+<script type="text/javascript">
+function wm_updatelisting(resp) {
+  window.removeEvents("resize");
+  updatelisting(resp);
+  if ($defined(resp.folders)) {
+    $("folders").set("html", resp.folders);
+    $$("li[class*=clickable]").removeEvents();
+    SqueezeBox.assign($$('a[class=boxed]'), {
+      parse: 'rel'
+    });
+
+    var fdbuttons = $$("img[class*=footer]");
+    var fdmenu = new FdMenu({
+      modify_url: "{% url extensions.webmail.views.editfolder %}",
+      delete_url: "{% url extensions.webmail.views.delfolder %}"
+    });
+
+    fdbuttons.addEvents({
+      click: function(evt) {
+        var parent = this.getParent();
+        var fdname = parent.getFirst("a[name=loadfolder]").get("href");
+
+        fdmenu.toggle(this, fdname);
+        evt.stop();
+      }
+    });
+  }
+  select_folder($$("a[href=" + current_anchor.getbaseurl() + "]"));
+  init_folders_browsing();
+
+  if ($defined(resp.quota) && resp.quota != "-1") {
+    quota_pb.set(resp.quota);
+    $("quotabox").setStyle("display", "block");
+    $("quotalabel").setStyle("display", "block");
+  }
+  $$("a[name=loadfolder]").addEvent("click", foldercallback);
+  $$("a[name=compose]").addEvent("click", compose_loader);
+}
+
+</script>
 {% endblock %}
 {% block js %}
   quota_pb = new ProgressBar({
@@ -14,167 +57,11 @@
     displayID: "quotatext"
   });
 
-  wm_updatelisting = function(resp) {
-    window.removeEvents("resize");
-    updatelisting(resp);
-    if ($defined(resp.folders)) {
-      $("folders").set("html", resp.folders);
-      $$("li[class*=clickable]").removeEvents();
-      SqueezeBox.assign($$('a[class=boxed]'), {
-        parse: 'rel'
-      });
-
-      var fdbuttons = $$("img[class*=footer]");
-      var fdmenu = new FdMenu({
-        media_url: "{{MEDIA_URL}}",
-        modify_url: "{% url extensions.webmail.views.editfolder %}",
-        delete_url: "{% url extensions.webmail.views.delfolder %}"
-      });
-
-      fdbuttons.addEvents({
-        click: function(evt) {
-          var parent = this.getParent();
-          var fdname = parent.getFirst("a[name=loadfolder]").get("href");
-
-          fdmenu.toggle(this, fdname);
-          evt.stop();
-        }
-      });
-    }
-    select($$("a[href=" + current_anchor.getbaseurl() + "]"));
-    $$("li[class*=clickable]").addEvent("click", function(evt) {
-      $$("ul[name=" + evt.target.get("name") + "]").each(function(item) {
-        if (item.hasClass("hidden")) {
-          evt.target.setStyle("background", 
-			      "url('{{ MEDIA_URL }}pics/folder-open.png') no-repeat");
-          item.removeClass("hidden").addClass("visible");
-        } else {
-          evt.target.setStyle("background", 
-			      "url('{{ MEDIA_URL }}pics/subfolders.png') no-repeat");
-          item.removeClass("visible").addClass("hidden");
-        }
-      });
-      evt.stop();
-    });
-    if ($defined(resp.quota) && resp.quota != "-1") {
-      quota_pb.set(resp.quota);
-      $("quotabox").setStyle("display", "block");
-      $("quotalabel").setStyle("display", "block");
-    }
-    $$("a[name=loadfolder]").addEvent("click", foldercallback);
-    $$("a[name=compose]").addEvent("click", loadCompose);
-  };
-
-  select = function(obj) {
-    $$("a[name=loadfolder]").each(function(item) {
-      item.getParent().removeClass("selected");
-      item.getParent().addClass("droppable");
-    });
-    obj.getParent().removeClass("droppable");
-    obj.getParent().addClass("selected");
-
-    $$(obj.getParents("ul[class*=hidden]")).each(function(item) {
-      item.removeClass("hidden");
-      item.addClass("visible");
-      $$("li[name=" + item.get("name") + "]").each(function(item) {
-        item.setStyle("background", "url('{{ MEDIA_URL }}pics/folder-open.png') no-repeat");
-      });
-    });
-  };
-
-  register_callback("viewmail", function(resp) {
-    wm_updatelisting(resp, "hidden");
-    $$("a[name=back]").addEvent("click", loadFolder);
-    $$("a[name=reply]").addEvent("click", reply);
-    $$("a[name=replyall]").addEvent("click", replyall);
-    $$("a[name=forward]").addEvent("click", forward);
-    $$("a[name=delete]").addEvent("click", function(event) {
-      var lnk = event.target;
-
-      event.stop();
-      new Request.JSON({url: lnk.get("href"), onSuccess: function(resp) {
-                          current_anchor.parse_string(resp.next).update();
-                          select($$("a[href=" + current_anchor.getbaseurl() + "]"));
-                        }}).get();
-    });
-    $$("a[name=activate_links]").addEvent("click", function(evt) {
-	evt.stop();
-	current_anchor.setparam("links", "1").update();
-    });
-     $$("a[name=disable_links]").addEvent("click", function(evt) {
-	evt.stop();
-	current_anchor.setparam("links", "0").update();
-    });
-    setDivHeight("mailcontent", 5, 0);
-  });
-
-  compose_callback = function(resp) {
-    wm_updatelisting(resp);
-    window.addEvent("resize", function(evt) {
-      setDivHeight("id_body", $("mailheader").getSize().y, 0);
-    });
-    window.fireEvent("resize");
-
-    var editormode = resp.editor;
-    var editorid = "id_body";
-    if (editormode == "html") {
-      var instance = CKEDITOR.instances[editorid];
-      if (instance) {
-        CKEDITOR.remove(instance);
-      }
-      CKEDITOR.replace(editorid, {
-        customConfig: "{{ MEDIA_URL }}/js/editor_config.js",
-        height: $(editorid).getSize().y
-      });
-    }
-    $$("a[name=back]").addEvent("click", loadFolder);
-    $$("a[name=sendmail]").addEvent("click", function(evt) {
-      evt.stop();
-      $("composemail").set("send", {
-        onSuccess: function(resp) {
-          resp = JSON.decode(resp);
-          if (resp.status == "ko") {
-            wm_updatelisting(resp);
-            window.fireEvent("resize");
-            if ($defined(resp.error)) {
-              infobox.error(resp.error);
-            }
-            return;
-          }
-          current_anchor.parse_string(resp.url, true).setparams(navparams);
-          current_anchor.update();
-        }
-      });
-      if (editormode == "html") {
-        CKEDITOR.instances[editorid].updateElement();
-      }
-      $("composemail").send();
-    });
-  };
-
-  loadCompose = function(event) {
-    event.stop();
-    current_anchor.baseurl("compose").update();
-  };
+  register_callback("viewmail", viewmail_cb);
   register_callback("compose", compose_callback);
-
-  reply = function(event) {
-    event.stop();
-    location.hash += event.target.get("href");
-  };
   register_callback("reply", compose_callback);
-  replyall = function(event) {
-    event.stop();
-    location.hash += event.target.get("href") + "?all=1";
-  };
   register_callback("replyall", compose_callback);
-  forward = function(event) {
-    event.stop();
-    location.hash += event.target.get("href");
-  };
   register_callback("forward", compose_callback);
-
-  var rtimer = null;
 
   window.addEvent("pageRefresh", function() {
     if (rtimer) {
@@ -183,30 +70,6 @@
     }
   });
 
-  refreshFolder = function() {
-    var query = current_anchor.serialized.substring(1);
-    clearInterval(rtimer);
-    infobox.show('{% trans "Reloading..." %}', {
-        profile : "gray",
-        spinner : true
-    });
-    new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
-        callback = ($defined(resp.callback)) ? resp.callback : "default";
-        callbacks[callback](resp);
-        infobox.info('{% trans "Done" %}');
-        infobox.hide(1);
-    }}).get();
-  };
-
-  loadFolder = function(event, obj) {
-    event.stop();
-    if (!$defined(obj)) {
-      obj = $(event.target);
-    }
-    current_anchor.parse_string(gethref(obj), true).setparams(navparams);
-    current_anchor.update();
-  };
-
   register_callback("folder", function(resp) {
     wm_updatelisting(resp);
     rtimer = refreshFolder.periodical({{ refreshrate }});
@@ -214,7 +77,7 @@
     if (navparams.has("order")) {
       src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
       th = $$("th[id=" + navparams.get("order").substring(1) + "]");
-      th.getElement("img").set("src", "{{ MEDIA_URL }}pics/" + src);
+      th.getElement("img").set("src", static_url("pics/" + src));
       th.getElement("img").setStyle("display", "block");
       th.addClass("selected");
     }
@@ -319,20 +182,6 @@
 	});
     });
 
-    simple_request = function(url, params) {
-      infobox.show(gettext("Waiting..."), {
-          profile: "gray",
-          spinner: true
-      });
-      new Request.JSON({url : url,
-                        onSuccess : function(response) {
-                          get_callback("folder")(response);
-                          infobox.info(gettext("Done"));
-                          infobox.hide(1);
-                        }
-      }).get(params);
-    };
-
     buildmarkrequest = function(evt) {
       evt.stop();
       if (!selectedRows.length) {
@@ -380,12 +229,6 @@
         current_anchor.setparams(navparams).update();
     });
   });
-
-  foldercallback = function(event) {
-    select(event.target);
-    loadFolder(event, event.target);
-  };
-
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block leftcol %}

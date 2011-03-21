@@ -6,18 +6,17 @@ var FdMenu = new Class({
     Implements: [Options],
 
     options: {
-      media_url: "",
       modify_url: "",
       delete_url: ""
     },
 
     add_entry: function(name, label, pic, url, onclick) {
       var item = new Element("li");
-      var picpath = this.options.media_url + "pics/" + pic;
+      var picpath = static_url("pics/" + pic);
 
       this[name] = new Element("a")
         .set("html", "<img src='" + picpath + "' /> " + label)
-        .addEvent("click", onclick)
+        .addEvent("click", onclick.bind(this))
         .inject(item);
       item.inject(this.list);
     },
@@ -36,28 +35,36 @@ var FdMenu = new Class({
             size: {x: 350, y: 400},
             handler: 'iframe'
           });
-          SqueezeBox.open(this.get("href"));
+          SqueezeBox.open(evt.target.get("href"));
+          $(document.body).fireEvent("click");
         });
       this.add_entry("delbutton", gettext("Delete folder"), "remove.png",
-                    this.options.delete_url, function(evt) {
-                      evt.stop();
-                      if (!confirm(gettext("Delete folder?"))) {
-                        return;
-                      }
-                      new Request.JSON({
-                        url: this.get("href"),
-                        method: "GET",
-                        onSuccess: function(resp) {
-                          if (resp.status == "ok") {
-                            infobox.info(gettext("Folder deleted."));
-                            var id = current_anchor.update.delay(500, current_anchor, 1);
-                          } else {
-                            infobox.error(gettext("Failed to delete folder"));
-                            infobox.hide(2);
-                          }
-                        }
-                      }).send();
-                    });
+        this.options.delete_url, function(evt) {
+          evt.stop();
+          $(document.body).fireEvent("click");
+          if (!confirm(gettext("Delete folder?"))) {
+            return;
+          }
+          new Request.JSON({
+            url: evt.target.get("href"),
+            method: "GET",
+            onSuccess: function(resp) {
+              if (resp.status == "ok") {
+                var dfolder = this.current_folder + "/";
+                infobox.info(gettext("Folder deleted."));
+                if (dfolder == current_anchor.base) {
+                  var pfolder = ((this.current_folder.split(".")).slice(0, -1)).join(".");
+                  current_anchor.baseurl(pfolder, 1);
+                }
+                current_anchor.update.delay(500, current_anchor, 1);
+              } else {
+                infobox.error(gettext("Failed to delete folder"));
+                infobox.hide(2);
+              }
+            }.bind(this)
+          }).send();
+        }
+      );
       this.list.inject(this.container);
       this.shown = false;
 
@@ -80,7 +87,9 @@ var FdMenu = new Class({
       });
       this.container.inject(document.body);
       this.shown = true;
+      this.current_folder = folder;
       this.modbutton.set("href", this.options.modify_url + "?name=" + folder);
+      this.delbutton.set("href", this.options.delete_url + "?name=" + folder);
     },
 
     hide: function() {

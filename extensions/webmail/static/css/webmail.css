@@ -157,7 +157,6 @@ textarea:hover {
     float: left;
 }
 
-/* context menu specific */
 #fdmenu { border:1px solid #999; padding:0; background:#eee; width:150px; display:none; }
 #fdmenu .separator { border-top:1px solid #999; }
 #fdmenu ul { list-style-type:none; margin:0; padding:0; }

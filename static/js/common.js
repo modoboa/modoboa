@@ -8,9 +8,26 @@ window.addEvent('domready', function(){
     });
 });
 
+var media_url = "";
 callbacks = {};
 
-register_callback = function(name, callback) {
+/*
+ * A simple function to initialize the value of the global variable
+ * 'media_url' (corresponding to django's MEDIA_URL variable).
+ */
+function set_media_url(url) {
+  media_url = url;
+}
+
+/*
+ * Shortcut function that construct an url from the media_url and the
+ * given value.
+ */
+function static_url(value) {
+  return media_url + value;
+}
+
+function register_callback(name, callback) {
     callbacks[name] = callback;
 };
 
@@ -18,170 +35,177 @@ get_callback = function(name) {
     return callbacks[name];
 };
 
-current_anchor = null;
+/*
+ * AJAX anchor based navigation
+ */
+var current_anchor = null;
 
-check_anchor = function() {
-    if (current_anchor.serialized == location.hash
-        && !$defined(current_anchor.force)) {
-        return;
-    }
-    delete(current_anchor.force);
-    current_anchor.from_string(location.hash);
-    if (!current_anchor.serialized) {
-        location.hash = current_anchor.deflocation;
-        return;
-    } else {
-        query = current_anchor.serialized.substring(1);
-    }
-    infobox.show(gettext("Loading..."), {
-        profile: "gray",
-        spinner: true
-    });
-    new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
-        var callback = ($defined(resp.callback)) ? resp.callback : "default";
-        callbacks[callback](resp);
-        infobox.info(gettext("Done"));
-        infobox.hide(1);
-    }}).get();
-};
+function check_anchor() {
+  if (current_anchor.serialized == location.hash
+      && !$defined(current_anchor.force)) {
+      return;
+  }
+  delete(current_anchor.force);
+  current_anchor.from_string(location.hash);
+  if (!current_anchor.serialized) {
+    location.hash = current_anchor.deflocation;
+    return;
+  }
 
-ajaxListener = function(deflocation, defcallback) {
-    current_anchor = new HashWrapper(deflocation);
-    register_callback("default", defcallback);
-    check_anchor.periodical(300);
+  var query = current_anchor.serialized.substring(1);
+
+  infobox.show(gettext("Loading..."), {
+    profile: "gray",
+    spinner: true
+  });
+  new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
+    var callback = ($defined(resp.callback)) ? resp.callback : "default";
+    callbacks[callback](resp);
+    infobox.info(gettext("Done"));
+    infobox.hide(1);
+  }}).get();
 };
 
 /*
-*
-*/
+ * Initialize the AJAX anchor based navigation
+ */
+function ajaxListener(deflocation, defcallback) {
+  current_anchor = new HashWrapper(deflocation);
+  register_callback("default", defcallback);
+  check_anchor.periodical(300);
+};
+
+/*
+ *
+ */
 function HashWrapper(deflocation) {
-    this.deflocation = deflocation;
-    this.params = $H();
-    this.base = '';
-    this.serialized = null;
+  this.deflocation = deflocation;
+  this.params = $H();
+  this.base = '';
+  this.serialized = null;
 
-    this.reset = function() {
-        this.base = null;
-        this.params.empty();
-        return this;
-    };
+  this.reset = function() {
+    this.base = null;
+    this.params.empty();
+    return this;
+  };
 
-    this.parse_string = function(value, reset) {
-        var splits = (value.charAt(0) == '#')
-            ? value.substring(1).split('?') : value.split('?');
+  this.parse_string = function(value, reset) {
+    var splits = (value.charAt(0) == '#')
+      ? value.substring(1).split('?') : value.split('?');
 
-        if (splits.length == 0) {
-            return this;
-        }
-        if (!$defined(reset)) {
-            reset = false;
-        }
-        if (reset) {
-            this.reset();
-        }
-        this.base = (splits[0] == "") ? this.deflocation : splits[0];
-        /*if (this.base[this.base.length - 1] != '/') {
-            this.base += '/';
-        }*/
-	var re = new RegExp("/$");
-	if (!this.base.match(re)) {
-		this.base += '/';
-	}
-        if (splits.length > 1) {
-            params = splits[1].split('&');
-            for (var i = 0; i < params.length; i++) {
-                tmp = params[i].split('=');
-                this.setparam(tmp[0], tmp[1]);
-            }
-        }
-        return this;
-    };
+    if (splits.length == 0) {
+      return this;
+    }
+    if (!$defined(reset)) {
+      reset = false;
+    }
+    if (reset) {
+      this.reset();
+    }
+    this.base = (splits[0] == "") ? this.deflocation : splits[0];
 
-    this.from_string = function(value, reset) {
-        this.parse_string(value);
-        this.serialized = value;
-        return this;
-    };
+    var re = new RegExp("/$");
+    if (!this.base.match(re)) {
+      this.base += '/';
+    }
+    if (splits.length > 1) {
+      var params = splits[1].split('&');
+      for (var i = 0; i < params.length; i++) {
+        var tmp = params[i].split('=');
+        this.setparam(tmp[0], tmp[1]);
+      }
+    }
+    return this;
+  };
 
-    this.serialize = function() {
-        var res = this.base;
+  this.from_string = function(value, reset) {
+    this.parse_string(value);
+    this.serialized = value;
+    return this;
+  };
 
-        if (this.params.getLength() != 0) {
-            res += "?" + this.params.toQueryString();
-        }
-        return res;
-    };
+  this.serialize = function() {
+    var res = this.base;
 
-    this.update = function(force) {
-        window.fireEvent("pageRefresh");
-        location.hash = this.serialize();
-        if ($defined(force)) {
-            this.force = force;
-        }
-    };
+    if (this.params.getLength() != 0) {
+      res += "?" + this.params.toQueryString();
+    }
+    return res;
+  };
 
-    this.deleteParam = function(str) {
-        this.params.erase(str);
-    };
+  this.update = function(force) {
+    window.fireEvent("pageRefresh");
+    location.hash = this.serialize();
+    if ($defined(force)) {
+      this.force = force;
+    }
+  };
 
-    this.updateparams = function(str) {
-        if (str.charAt(0) == '?') {
-            str = str.substring(1);
-        }
-        var elems = str.split('&');
-        for (var i = 0; i < elems.length; i++) {
-            this.setparamfromstring(elems[i]);
-        }
-    };
+  this.deleteParam = function(str) {
+    this.params.erase(str);
+  };
 
-    this.setparamfromstring = function(str) {
-        var def = str.split('=');
-        this.params.set(def[0], def[1]);
-    };
+  this.updateparams = function(str) {
+    if (str.charAt(0) == '?') {
+      str = str.substring(1);
+    }
+    var elems = str.split('&');
+    for (var i = 0; i < elems.length; i++) {
+      this.setparamfromstring(elems[i]);
+    }
+  };
 
-    this.setparam = function(name, value) {
-        this.params.set(name, value);
-        return this;
-    };
+  this.setparamfromstring = function(str) {
+    var def = str.split('=');
+    this.params.set(def[0], def[1]);
+  };
 
-    this.setparams = function(params) {
-        this.params.extend(params);
-        return this;
-    };
+  this.setparam = function(name, value) {
+    this.params.set(name, value);
+    return this;
+  };
 
-    this.getparam = function(name) {
-        if (!this.params.has(name)) {
-            return "";
-        }
-        return this.params.get(name);
-    };
+  this.setparams = function(params) {
+    this.params.extend(params);
+    return this;
+  };
 
-    this.baseurl = function(value) {
-        this.reset();
-        this.base = value;
- 	var re = new RegExp("/$");
-	if (!this.base.match(re)) {
-		this.base += '/';
-	}
-        return this;
-    };
+  this.getparam = function(name) {
+    if (!this.params.has(name)) {
+      return "";
+    }
+    return this.params.get(name);
+  };
 
-    this.addbaseurl = function(value) {
-        newbase = this.base + value;
-        return this.baseurl(newbase);
-    };
+  this.baseurl = function(value, noreset) {
+    if (!$defined(noreset) || noreset == 0) {
+      this.reset();
+    }
+    this.base = value;
+    var re = new RegExp("/$");
+    if (!this.base.match(re)) {
+      this.base += '/';
+    }
+    return this;
+  };
 
-    this.getbaseurl = function() {
-        return this.base.substr(0, this.base.length - 1);
-    };
+  this.addbaseurl = function(value) {
+    var newbase = this.base + value;
+    return this.baseurl(newbase);
+  };
 
-    this.delparam = function(name) {
-        if (!this.params.has(name)) {
-            return false;
-        }
-        this.params.erase(name);
-        return this;
-    };
+  this.getbaseurl = function() {
+    return this.base.substr(0, this.base.length - 1);
+  };
+
+  this.delparam = function(name) {
+    if (!this.params.has(name)) {
+      return false;
+    }
+    this.params.erase(name);
+    return this;
+  };
 };
 
 parse_menubar = function(id) {

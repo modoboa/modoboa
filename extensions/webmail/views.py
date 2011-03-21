@@ -428,6 +428,19 @@ def forward(request, folder, mail_id):
     return render_compose(request, form, reverse(forward, args=[folder, mail_id]), 
                           email)
 
+def separate_folder(fullname, sep="."):
+    """Split a folder name
+
+    If a separator is found in fullname, this function returns the
+    corresponding name and parent folder name.
+    """
+    if fullname.count("."):
+        parts = fullname.split(sep)
+        name = parts[-1]
+        parent = sep.join(parts[0:len(parts) - 1])
+        return name, parent
+    return fullname, None
+
 @login_required
 @is_not_localadmin()
 def newfolder(request, tplname="webmail/folder.html"):
@@ -466,19 +479,35 @@ def editfolder(request, tplname="webmail/folder.html"):
            "withmenu" : False,
            "withunseen" : False}
     ctx["folders"] = mbc.getfolders(request.user)
+    if request.method == "POST":
+        form = FolderForm(request.POST)
+        if form.is_valid():
+            pf = request.POST.has_key("parent_folder") \
+                and request.POST["parent_folder"] or None
+            ctx["selected"] = pf
+            oldname, oldparent = separate_folder(request.POST["oldname"])
+            try:
+                extra = {}
+                if form.cleaned_data["name"] != oldname \
+                        or (pf is not None and pf != oldparent):
+                    newname = form.cleaned_data["name"] if pf is None \
+                        else "%s.%s" % (pf, form.cleaned_data["name"])
+                    if not mbc.rename_folder(request.POST["oldname"], newname):
+                        raise Exception
+                    extra["url"] = newname
+                return ajax_response(request, ajaxnav=True, **extra)
+            except Exception:
+                pass
+        ctx["form"] = form
+        return ajax_response(request, status="ko", template=tplname, **ctx)
+
     if not request.GET.has_key("name") or request.GET["name"] == "":
         return
     name = request.GET["name"]
-    if name.count("."):
-        parts = name.split(".")
-        name = parts[-1]
-        parent = ".".join(parts[0:len(parts) - 1])
-    else:
-        parent = None
-    print parent
+    ctx["oldname"] = name
+    name, parent = separate_folder(name)
     ctx["form"] = FolderForm()
     ctx["form"].fields["name"].initial = name
-    parts = request
     ctx["selected"] = parent
     return _render(request, tplname, ctx)
 

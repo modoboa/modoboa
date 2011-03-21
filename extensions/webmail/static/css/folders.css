@@ -31,13 +31,19 @@
 
 .box ul {
     list-style: none;
-    padding: 5px 5px;
+    padding: 0 0 0 5px;
     margin: 0;
+    background-color: #FFFFFF;
+}
+
+.box li ul {
+    padding: 0 0 0 8px;
 }
 
 .box li {
-    margin-bottom: 4px;
-    padding-left: 15px;
+    margin: 0;
+    background-position: 2px 2px;
+    position: relative;
 }
 
 .box li.selected {
@@ -45,10 +51,13 @@
 }
 
 .box a:link, .box a:visited {
-    background: transparent;
     color: black;
     text-decoration: none;
-    margin-left: 5px;
+}
+
+a.block {
+    display: block;
+    padding: 2px 10px 2px 30px;
 }
 
 .box a:hover { 
@@ -69,24 +78,29 @@ img.aligned {
 }
 
 img.footer {
-    float: none;
-    vertical-align: bottom;
+    float: left;
+    margin-top: 10px;
+    margin-left: 18px;
 }
 
 li.inbox {
-    background: url("/static/pics/overview.png") no-repeat;
+    background-image: url("/static/pics/overview.png");
+    background-repeat: no-repeat;
 }
 
 li.trash {
-    background: url("/static/pics/trash.png") no-repeat;
+    background-image: url("/static/pics/trash.png");
+    background-repeat: no-repeat;
 }
 
 li.folder {
-    background: url("/static/pics/folder.png") no-repeat;
+    background-image: url("/static/pics/folder.png");
+    background-repeat: no-repeat;
 }
 
 li.subfolders {
-    background: url("/static/pics/subfolders.png") no-repeat;
+    background-image: url("/static/pics/folder.png");
+    background-repeat: no-repeat;
 }
 
 ul.hidden {
@@ -96,4 +110,22 @@ ul.hidden {
 ul.visible {
     display: block;
     padding-bottom: 0;
+}
+
+div.clickbox {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+}
+
+div.collapsed {
+    background-image: url("/static/pics/collapsed.png");
+    background-repeat: no-repeat;
+}
+
+div.expanded {
+    background-image: url("/static/pics/expanded.png");
+    background-repeat: no-repeat;
 }

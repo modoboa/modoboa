@@ -317,6 +317,13 @@ class IMAPconnector(object):
             return False
         return True
 
+    def rename_folder(self, oldname, newname):
+        typ, data = self.m.rename(self._encodefolder(oldname),
+                                  self._encodefolder(newname))
+        if typ == "NO":
+            return False
+        return True
+
     def delete_folder(self, name):
         typ, data = self.m.delete(self._encodefolder(name))
         if typ == "NO":

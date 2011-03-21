@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/searchbar.css" />
 <script type="text/javascript" src="{{ MEDIA_URL }}js/ProgressBar.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/webmail/fdmenu.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/email_listing.js"></script>
 {% block css %}{% endblock %}
 <style type="text/css">
 #navbar {
@@ -28,43 +28,23 @@
 </style>
 
 <script type="text/javascript">
+function viewmail(event) {
+  event.stop();
+  if (event.target.parentNode.id) {
+    var url = event.target.parentNode.id;
+    event.target.parentNode.setStyle("background", "#ffffcc");
+    {% if reset_wm_url %} 
+    current_anchor.baseurl(url).update();
+    {% else %}
+    current_anchor.addbaseurl(url).update();
+    {% endif %}
+  }
+}
+
 window.addEvent("domready", function() {
   navparams = new Hash({
     {% join navparams %}
-  });
-
-  navbarcallback = function(event) {
-    event.stop();
-    current_anchor.setparams(navparams);
-    current_anchor.parse_string($(event.target).getParent().get("href")).update();
-  }
-
-  viewmail = function(event) {
-    event.stop();
-    if (event.target.parentNode.id) {
-      var url = event.target.parentNode.id;
-      event.target.parentNode.setStyle("background", "#ffffcc");
-      {% if reset_wm_url %} 
-      current_anchor.baseurl(url).update();
-      {% else %}
-      current_anchor.addbaseurl(url).update();
-      {% endif %}
-    }
-  }
-
-  updatelisting = function(resp) {
-    if ($defined(resp.menu)) {
-      $("menubar").set("html", resp.menu);
-      parse_menubar("menubar");
-    }
-    if ($defined(resp.listing)) {
-      $("listing").set("html", resp.listing);
-    }
-    if ($defined(resp.navbar)) {
-      $("navbar").set("html", resp.navbar);
-      $("navbar").getChildren("a").addEvent("click", navbarcallback);
-    }
-  }
+  }); 
   {% block js %}{% endblock %}
   ajaxListener("{{ deflocation }}", {{ defcallback }});
 });

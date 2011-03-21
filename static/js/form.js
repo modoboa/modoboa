@@ -34,45 +34,47 @@ function register_extra_data_callback(name, callback) {
 }
 
 function ajax_submit(event) {
-    var form = event.target;
-    var myid = form.get("id");
-    var data = form.toQueryString();
-    
-    event.stop();
-    if ($defined(extra_data_callbacks[myid])) {
-        if (data != "") {
-            data += "&";
-        }
-        data += extra_data_callbacks[myid]();
-    }
+  var form = event.target;
+  var myid = form.get("id");
+  var data = form.toQueryString();
 
-    new Request({
-        method: form.get("method"),
-        data: data,
-        onSuccess: function(responseText) {
-	    var response = JSON.decode(responseText);
-            
-            if (response.status == "ko") {
-                $(document.body).set("html", response.content);
-		$(document.body).addEvent("submit", ajax_submit);
-		if ($defined(error_callbacks[myid])) {
-		    error_callbacks[myid]();
-		}
-            } else {
-                if ($defined(response.url) && response.url != "") {
-                    parent.location.href = response.url;			
-		}
-                if ($defined(response.ajaxnav)) {
-                    parent.current_anchor.update(1);
-                }
-                parent.SqueezeBox.close();
-            }
-        },
-	onFailure: function(xhr) {
-	    parent.document.getElement('iframe').setStyles({width: 800, height: 600});
-	    $(document.body).set("html", xhr.responseText);
+  event.stop();
+  if ($defined(extra_data_callbacks[myid])) {
+    if (data != "") {
+      data += "&";
+    }
+    data += extra_data_callbacks[myid]();
+  }
+
+  new Request({
+    method: form.get("method"),
+    data: data,
+    onSuccess: function(responseText) {
+      var response = JSON.decode(responseText);
+
+      if (response.status == "ko") {
+        $(document.body).set("html", response.content);
+	$(document.body).addEvent("submit", ajax_submit);
+	if ($defined(error_callbacks[myid])) {
+	  error_callbacks[myid]();
 	}
-    }).send();
+      } else {
+        if ($defined(response.ajaxnav)) {
+          if ($defined(response.url)) {
+            parent.current_anchor.baseurl(response.url, 1);
+          }
+          parent.current_anchor.update(1);
+        } else if ($defined(response.url)) {
+          parent.location.href = response.url;
+        }
+        parent.SqueezeBox.close();
+      }
+    },
+    onFailure: function(xhr) {
+      parent.document.getElement('iframe').setStyles({width: 800, height: 600});
+      $(document.body).set("html", xhr.responseText);
+    }
+  }).send();
 }
 
 window.addEvent("domready", function() {
