@@ -54,6 +54,9 @@ var FdMenu = new Class({
                 infobox.info(gettext("Folder deleted."));
                 if (dfolder == current_anchor.base) {
                   var pfolder = ((this.current_folder.split(".")).slice(0, -1)).join(".");
+                  if (pfolder == "") {
+                    pfolder = "INBOX";
+                  }
                   current_anchor.baseurl(pfolder, 1);
                 }
                 current_anchor.update.delay(500, current_anchor, 1);

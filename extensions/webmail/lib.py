@@ -257,7 +257,8 @@ class IMAPconnector(object):
 
     def getfolders(self, user):
         md_folders = [{"name" : "INBOX", "class" : "inbox"},
-                      {"name" : 'Drafts'},
+                      {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
+                       "class" : "drafts"},
                       {"name" : 'Junk'},
                       {"name" : parameters.get_user(user, "SENT_FOLDER")},
                       {"name" : parameters.get_user(user, "TRASH_FOLDER"),

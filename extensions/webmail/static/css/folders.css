@@ -74,7 +74,7 @@ a.block {
 }
 
 img.aligned {
-    float: left;
+    float: right;
 }
 
 img.footer {
@@ -95,6 +95,11 @@ li.trash {
 
 li.folder {
     background-image: url("/static/pics/folder.png");
+    background-repeat: no-repeat;
+}
+
+li.drafts {
+    background-image: url("/static/pics/draft.png");
     background-repeat: no-repeat;
 }
 
