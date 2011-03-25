@@ -31,13 +31,13 @@ var FdMenu = new Class({
       this.add_entry("modbutton", gettext("Edit folder"),
         "edit.png", this.options.modify_url, function(evt) {
           evt.stop();
-          SqueezeBox.initialize({
-            size: {x: 350, y: 400},
-            handler: 'iframe'
+          SqueezeBox.open(evt.target.get("href"), {
+            handler: "iframe",
+            size: {x: 350, y: 400}
           });
-          SqueezeBox.open(evt.target.get("href"));
           $(document.body).fireEvent("click");
         });
+
       this.add_entry("delbutton", gettext("Delete folder"), "remove.png",
         this.options.delete_url, function(evt) {
           evt.stop();
@@ -99,7 +99,7 @@ var FdMenu = new Class({
       this.container.setStyles({
         display: "none"
       });
-      this.container.dispose();
+      this.container = this.container.dispose();
       this.shown = false;
     },
 
