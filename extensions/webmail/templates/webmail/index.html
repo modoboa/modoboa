@@ -184,11 +184,11 @@ function wm_updatelisting(resp) {
 
     buildmarkrequest = function(evt) {
       evt.stop();
-      if (!selectedRows.length) {
+      if (!emails_table._selectedRows.length) {
         return;
       }
       var ids = new Array();
-      selectedRows.each(function(item, index) {
+      emails_table._selectedRows.each(function(item, index) {
         ids.include(item.get("id"));
       });
       simple_request(evt.target.get("href"), {ids : ids.join()});
