@@ -1,0 +1,45 @@
+{% extends "layout_simple.html" %}
+{% load i18n %}
+{% block html_head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/webmail/folders.css" />
+<script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}js/webmail/webmail.js" type="text/javascript"></script>
+<script type="text/javascript">
+  window.addEvent("domready", function() {
+    init_folders_browsing();
+
+    $$("a[name=loadfolder]").addEvent("click", function(evt) {
+      evt.stop();
+      $$("a[name=loadfolder]").each(function(item) {
+        item.getParent().removeClass("selected");
+      });
+      this.getParent().addClass("selected");
+    });
+
+    register_extra_data_callback("{{ fname }}", function() {
+      var result = "";
+      $$("li[class*=selected]").each(function(item) {
+        var atag = item.getFirst("a");
+        result = atag.get("href");
+      });
+      return "parent_folder=" + result;
+    });
+  });
+</script>
+{% endblock %}
+{% block content %}
+<div class="title"><h1>{{ title }}</h1></div>
+<form action="" method="POST" id="{{ fname }}" name="{{ fname }}">
+  <input type="hidden" name="oldname" value="{{ oldname }}" />
+  {% include "common/genericform.html" %}
+  <div class="row">
+    <label>{% trans "Parent folder" %}</label>
+  </div>
+  <div id="folders2" class="box">
+    {% include "webmail/folders.html" %}
+  </div>
+  <div id="fdcreate">
+    <input type="submit" name="submit" value='{{ submit_label }}'/>
+  </div>
+</form>
+{% endblock %}

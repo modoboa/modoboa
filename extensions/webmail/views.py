@@ -10,7 +10,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from modoboa.admin.models import Mailbox
 from modoboa.lib import parameters, _render, _render_error, \
-    getctx, is_not_localadmin, _render_to_string, split_mailbox
+    getctx, is_not_localadmin, _render_to_string, split_mailbox, \
+    ajax_response
 from modoboa.lib.email_listing import parse_search_parameters, Paginator
 from lib import *
 from forms import *
@@ -63,9 +64,12 @@ def __render_common_components(request, folder_name, lst=None, content=None, men
                 % _("This folder contains no messages")
         
     ret = {
-        "folders" : render_to_string("webmail/folders.html", {
+        "folders" : _render_to_string(request, "webmail/folders.html", {
+                "titlebar" : True,
                 "selected" : request.session["folder"],
-                "folders" : mbc.getfolders(request.user)
+                "folders" : mbc.getfolders(request.user),
+                "withmenu" : True,
+                "withunseen" : True
                 }),
         "menu" : menu,
         "listing" : content,
@@ -423,3 +427,97 @@ def forward(request, folder, mail_id):
     email = ForwardModifier(msg, request.user, form, addrfull=True, links="1")
     return render_compose(request, form, reverse(forward, args=[folder, mail_id]), 
                           email)
+
+def separate_folder(fullname, sep="."):
+    """Split a folder name
+
+    If a separator is found in fullname, this function returns the
+    corresponding name and parent folder name.
+    """
+    if fullname.count("."):
+        parts = fullname.split(sep)
+        name = parts[-1]
+        parent = sep.join(parts[0:len(parts) - 1])
+        return name, parent
+    return fullname, None
+
+@login_required
+@is_not_localadmin()
+def newfolder(request, tplname="webmail/folder.html"):
+    mbc = IMAPconnector(user=request.user.username, 
+                        password=request.session["password"])
+    ctx = {"title" : _("Create a new folder"),
+           "fname" : "newfolder",
+           "submit_label" : _("Create"),
+           "withmenu" : False,
+           "withunseen" : False}
+    ctx["folders"] = mbc.getfolders(request.user)
+    if request.method == "POST":
+        form = FolderForm(request.POST)
+        if form.is_valid():
+            pf = request.POST.has_key("parent_folder") \
+                and request.POST["parent_folder"] or None
+            if mbc.create_folder(form.cleaned_data["name"], pf):
+                return ajax_response(request, ajaxnav=True)
+
+        ctx["form"] = form
+        ctx["selected"] = None
+        return ajax_response(request, status="ko", template=tplname, **ctx)
+    
+    ctx["form"] = FolderForm()
+    ctx["selected"] = None
+    return _render(request, tplname, ctx)
+
+@login_required
+@is_not_localadmin()
+def editfolder(request, tplname="webmail/folder.html"):
+    mbc = IMAPconnector(user=request.user.username, 
+                        password=request.session["password"])
+    ctx = {"title" : _("Edit folder"),
+           "fname" : "editfolder",
+           "submit_label" : _("Update"),
+           "withmenu" : False,
+           "withunseen" : False}
+    ctx["folders"] = mbc.getfolders(request.user)
+    if request.method == "POST":
+        form = FolderForm(request.POST)
+        if form.is_valid():
+            pf = request.POST.has_key("parent_folder") \
+                and request.POST["parent_folder"] or None
+            ctx["selected"] = pf
+            oldname, oldparent = separate_folder(request.POST["oldname"])
+            try:
+                extra = {}
+                if form.cleaned_data["name"] != oldname \
+                        or (pf is not None and pf != oldparent):
+                    newname = form.cleaned_data["name"] if pf is None \
+                        else "%s.%s" % (pf, form.cleaned_data["name"])
+                    if not mbc.rename_folder(request.POST["oldname"], newname):
+                        raise Exception
+                    extra["url"] = newname
+                return ajax_response(request, ajaxnav=True, **extra)
+            except Exception:
+                pass
+        ctx["form"] = form
+        return ajax_response(request, status="ko", template=tplname, **ctx)
+
+    if not request.GET.has_key("name") or request.GET["name"] == "":
+        return
+    name = request.GET["name"]
+    ctx["oldname"] = name
+    name, parent = separate_folder(name)
+    ctx["form"] = FolderForm()
+    ctx["form"].fields["name"].initial = name
+    ctx["selected"] = parent
+    return _render(request, tplname, ctx)
+
+@login_required
+@is_not_localadmin()
+def delfolder(request):
+    if not request.GET.has_key("name") or request.GET["name"] == "":
+        return
+    mbc = IMAPconnector(user=request.user.username, 
+                        password=request.session["password"])
+    if mbc.delete_folder(request.GET["name"]):
+        return ajax_response(request)
+    return ajax_response(request, status="ko")

@@ -116,29 +116,36 @@ def listing_menu(selection, folder, user):
     return menu + searchbar
 
 @register.simple_tag
-def print_folders(folders, selected=None):
+def print_folders(folders, selected=None, withunseen=False, withmenu=False):
     result = ""
+
     for fd in folders:
-        if fd.has_key("class"):
-            cssclass = fd["class"]
-        else:
-            cssclass = "folder"
-        name = ""
-        if fd.has_key("sub"):
-            cssclass += " clickable"
-            name = fd["path"]
+        cssclass = fd["class"] if fd.has_key("class") else "folder"
+        name = fd["path"] if fd.has_key("sub") else fd["name"]
         label = fd["name"]
-        if selected == label:
+        if selected == name:
             cssclass += " selected"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
-
-        cssclass = ""
-        if fd.has_key("unseen"):
+        if fd.has_key("sub") and len(fd["sub"]):
+            if selected is not None and selected != name and selected.count(name):
+                ul_state = "visible"
+                div_state = "expanded"
+            else:
+                ul_state = "hidden"
+                div_state = "collapsed"
+            result += "<div class='clickbox %s'>&nbsp;</div>" % div_state
+        if withmenu:
+            result += "<img src='%spics/go-down.png' class='footer' />" \
+                % settings.MEDIA_URL
+            
+        cssclass = "block"
+        if withunseen and fd.has_key("unseen"):
             label += " (%d)" % fd["unseen"]
-            cssclass = "unseen"
+            cssclass += " unseen"
         result += "<a href='%s' class='%s' name='loadfolder'>%s</a>\n" \
             % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, label)
         if fd.has_key("sub") and len(fd["sub"]):
-            result += "<ul name='%s' class='hidden'>" % (fd["path"]) + print_folders(fd["sub"], selected) + "</ul>\n"
+            result += "<ul name='%s' class='%s'>" % (fd["path"], ul_state) \
+                + print_folders(fd["sub"], selected, withunseen, withmenu) + "</ul>\n"
         result += "</li>\n"
     return result

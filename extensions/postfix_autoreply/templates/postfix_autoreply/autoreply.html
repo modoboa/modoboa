@@ -16,6 +16,12 @@
 <script type="text/javascript">
 window.addEvent("domready", function() {
   var cal = new Calendar({id_untildate: "Y-m-d"}, {tweak: {x: -100, y:-100}});
+
+  register_error_callback("armform", function() {
+    new Calendar({id_untildate: "Y-m-d"}, {
+      tweak: {x: -100, y:-100}
+    });
+  });
 });
 </script>
 {% endblock %}

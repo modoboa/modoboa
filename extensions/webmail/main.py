@@ -43,6 +43,9 @@ def init():
     parameters.register_user("SENT_FOLDER", type="string", deflt="Sent",
                              label=_("Sent folder"),
                              help=_("Folder where copies of sent messages go"))
+    parameters.register_user("DRAFTS_FOLDER", type="string", deflt="Drafts",
+                             label=_("Drafts folder"),
+                             help=_("Folder where drafts go"))
     parameters.register_user("SIGNATURE", type="text", deflt="",
                              label=_("Signature text"),
                              help=_("User defined email signature"))
