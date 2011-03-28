@@ -59,14 +59,8 @@ function viewmail_cb(resp) {
   $$("a[name=forward]").addEvent("click", forward_loader);
   $$("a[name=delete]").addEvent("click", function(event) {
     var lnk = event.target;
-
     event.stop();
-    new Request.JSON({
-      url: lnk.get("href"), onSuccess: function(resp) {
-        current_anchor.parse_string(resp.next).update();
-        select_folder($$("a[href=" + current_anchor.getbaseurl() + "]"));
-      }
-    }).get();
+    simple_request(lnk.get("href"));
   });
   $$("a[name=activate_links]").addEvent("click", function(evt) {
     evt.stop();
@@ -219,9 +213,22 @@ function simple_request(url, params) {
   new Request.JSON({
     url : url,
     onSuccess : function(response) {
-      get_callback("folder")(response);
-      infobox.info(gettext("Done"));
-      infobox.hide(1);
+      if (response.status == "ok") {
+        if (!$defined(response.next)) {
+          get_callback("folder")(response);
+        }
+        infobox.info(gettext("Done"));
+        if ($defined(response.next)) {
+          (function(response) {
+            current_anchor.parse_string(response.next).update();
+            select_folder($$("a[href=" + current_anchor.getbaseurl() + "]"));
+          }).delay(500, this, response);
+        } else {
+          infobox.hide(1);
+        }
+      } else {
+        infobox.error(response.error);
+      }
     }
   }).get(params);
 }

@@ -29,6 +29,7 @@
 {% endblock %}
 {% block content %}
 <div class="title"><h1>{{ title }}</h1></div>
+<div id="error" class="error">{{ error }}</div>
 <form action="" method="POST" id="{{ fname }}" name="{{ fname }}">
   <input type="hidden" name="oldname" value="{{ oldname }}" />
   {% include "common/genericform.html" %}

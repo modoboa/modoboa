@@ -105,7 +105,8 @@ def folder(request, name, updatenav=True):
         optparams["criteria"] = request.session["criteria"]
     else:
         optparams["reset"] = True
-        optparams["elems_per_page"] = int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+        optparams["elems_per_page"] = \
+            int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
     lst = ImapListing(request.user, request.session["password"],
                       baseurl=name, folder=name, order=order, 
                       **optparams)
@@ -457,9 +458,9 @@ def newfolder(request, tplname="webmail/folder.html"):
         if form.is_valid():
             pf = request.POST.has_key("parent_folder") \
                 and request.POST["parent_folder"] or None
-            if mbc.create_folder(form.cleaned_data["name"], pf):
-                return ajax_response(request, ajaxnav=True)
-
+            mbc.create_folder(form.cleaned_data["name"], pf)
+            return ajax_response(request, ajaxnav=True)
+            
         ctx["form"] = form
         ctx["selected"] = None
         return ajax_response(request, status="ko", template=tplname, **ctx)
@@ -492,8 +493,7 @@ def editfolder(request, tplname="webmail/folder.html"):
                         or (pf is not None and pf != oldparent):
                     newname = form.cleaned_data["name"] if pf is None \
                         else "%s.%s" % (pf, form.cleaned_data["name"])
-                    if not mbc.rename_folder(request.POST["oldname"], newname):
-                        raise Exception
+                    mbc.rename_folder(request.POST["oldname"], newname)
                     extra["url"] = newname
                 return ajax_response(request, ajaxnav=True, **extra)
             except Exception:
@@ -518,6 +518,5 @@ def delfolder(request):
         return
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
-    if mbc.delete_folder(request.GET["name"]):
-        return ajax_response(request)
+    mbc.delete_folder(request.GET["name"])
     return ajax_response(request, status="ko")

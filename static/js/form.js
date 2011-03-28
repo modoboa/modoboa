@@ -49,15 +49,19 @@ function ajax_submit(event) {
   new Request({
     method: form.get("method"),
     data: data,
-    onSuccess: function(responseText) {
+    onSuccess: function(responseText){
       var response = JSON.decode(responseText);
 
       if (response.status == "ko") {
-        $(document.body).set("html", response.content);
-	$(document.body).addEvent("submit", ajax_submit);
-	if ($defined(error_callbacks[myid])) {
-	  error_callbacks[myid]();
-	}
+        if ($defined(response.norefresh) && response.norefresh == true) {
+          $("error").set("html", response.error);
+        } else {
+          $(document.body).set("html", response.content);
+	  $(document.body).addEvent("submit", ajax_submit);
+	  if ($defined(error_callbacks[myid])) {
+	    error_callbacks[myid]();
+	  }
+        }
       } else {
         if ($defined(response.ajaxnav)) {
           if ($defined(response.url)) {

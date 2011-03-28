@@ -18,6 +18,19 @@ from modoboa.lib import decode, tables, imap_utf7, Singleton
 from modoboa.lib.email_listing import MBconnector, EmailListing, Email
 from modoboa.lib import tables, imap_utf7, parameters, static_url, u2u_decode
 
+class WebmailError(Exception):
+    errorexpr = re.compile("\[([^\]]+)\]\s*([^\.]+)")
+
+    def __init__(self, reason, ajax=False):
+        m = WebmailError.errorexpr.match(reason)
+        if m is None:
+            self.reason = reason
+        else:
+            self.reason = "%s: %s" % (_("Server response"), m.group(2))
+        self.ajax = ajax
+
+    def __str__(self):
+        return self.reason
 
 class WMtable(tables.Table):
     tableid = "emails"
@@ -315,20 +328,20 @@ class IMAPconnector(object):
             name = "%s.%s" % (parent, name)
         typ, data = self.m.create(self._encodefolder(name))
         if typ == "NO":
-            return False
+            raise WebmailError(data[0])
         return True
 
     def rename_folder(self, oldname, newname):
         typ, data = self.m.rename(self._encodefolder(oldname),
                                   self._encodefolder(newname))
         if typ == "NO":
-            return False
+            raise WebmailError(data[0], ajax=True)
         return True
 
     def delete_folder(self, name):
         typ, data = self.m.delete(self._encodefolder(name))
         if typ == "NO":
-            return False
+            raise WebmailError(data[0])
         return True
 
     def getquota(self, folder):
