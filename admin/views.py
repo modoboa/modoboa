@@ -299,7 +299,6 @@ def newmailbox(request, tplname="admin/adminform.html"):
 @login_required
 @good_domain
 @permission_required("admin.change_mailbox")
-@transaction.commit_manually
 def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
     mb = Mailbox.objects.get(pk=mbox_id)
     commonctx = {"title" : _("Mailbox editing"),
@@ -312,19 +311,18 @@ def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
         error = None
         if form.is_valid():
             try:
-                mb = form.save()
+                mb = form.save(commit=False)
             except AdminError, inst:
                 error = str(inst)
             else:
                 if oldmb.rename_dir(mb.domain.name, mb.address):
-                    transaction.commit()
+                    form.commit_save(mb)
                     events.raiseEvent("ModifyMailbox", mbox=mb, oldmbox=oldmb)
                     messages.info(request, _("Mailbox modified"),
                                   fail_silently=True)
                     return ajax_response(request, url=reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
                 error = _("Failed to rename mailbox, check permissions")                
-        if error is not None:
-            transaction.rollback()
+
         commonctx["form"] = form
         commonctx["error"] = error
         return ajax_response(request, status="ko", template=tplname, **commonctx)

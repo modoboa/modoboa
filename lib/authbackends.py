@@ -3,6 +3,11 @@ from modoboa.admin.models import Mailbox
 from modoboa.lib import _check_password
 
 class SimpleBackend:
+
+    supports_object_permissions = False
+    supports_anonymous_user = False
+    supports_inactive_user = False
+
     def authenticate(self, username=None, password=None):
         try:
             user = User.objects.get(username=username)

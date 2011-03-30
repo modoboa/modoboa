@@ -37,9 +37,11 @@ class DomainAliasForm(ProxyForm):
 class MailboxForm(ProxyForm):
     quota = forms.IntegerField(label=_("Quota"), required=False,
                                help_text=_("Mailbox quota in MB (default to domain quota if blank)"))
-    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput,
+    password1 = forms.CharField(label=_("Password"), 
+                                widget=forms.PasswordInput(render_value=True),
                                 help_text=_("Password used to log in"))
-    password2 = forms.CharField(label=_("Confirmation"), widget=forms.PasswordInput,
+    password2 = forms.CharField(label=_("Confirmation"), 
+                                widget=forms.PasswordInput(render_value=True),
                                 help_text=_("Password confirmation"))
     enabled = forms.BooleanField(label=gender("Enabled", "f"), required=False, 
                                  initial=True,
@@ -73,12 +75,15 @@ class MailboxForm(ProxyForm):
             raise forms.ValidationError(_("Passwords mismatch"))
         return self.cleaned_data["password2"]
 
+    def commit_save(self, mb):
+        mb.save(enabled=self.cleaned_data["enabled"], 
+                password=self.cleaned_data["password1"],
+                quota=self.cleaned_data["quota"])
+
     def save(self, force_insert=False, force_update=False, commit=True):
         m = super(MailboxForm, self).save(commit=False)
         if commit:
-            m.save(enabled=self.cleaned_data["enabled"], 
-                   password=self.cleaned_data["password1"],
-                   quota=self.cleaned_data["quota"])
+            self.commit_save(m)
         return m
 
 class AliasForm(ProxyForm):
