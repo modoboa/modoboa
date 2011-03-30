@@ -74,7 +74,7 @@ def getctx(status, level=1, callback=None, **kwargs):
         ctx[kw] = v
     return ctx
 
-def ajax_response(request, status="ok", error=None,
+def ajax_response(request, status="ok", respmsg=None,
                   url="", ajaxnav=False, norefresh=False, 
                   template=None, **kwargs):
     """Ajax response shortcut
@@ -97,8 +97,8 @@ def ajax_response(request, status="ok", error=None,
     else:
         content = ""
     jsonctx = {"status" : status, "content" : content}
-    if error is not None:
-        jsonctx["error"] = error
+    if respmsg is not None:
+        jsonctx["respmsg"] = respmsg
     if ajaxnav:
         jsonctx["ajaxnav"] = True
     if url != "":

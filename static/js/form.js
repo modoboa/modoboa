@@ -54,7 +54,7 @@ function ajax_submit(event) {
 
       if (response.status == "ko") {
         if ($defined(response.norefresh) && response.norefresh == true) {
-          $("error").set("html", response.error);
+          $("error").set("html", response.respmsg);
         } else {
           $(document.body).set("html", response.content);
 	  $(document.body).addEvent("submit", ajax_submit);
@@ -63,6 +63,10 @@ function ajax_submit(event) {
 	  }
         }
       } else {
+        if ($defined(response.respmsg)) {
+          parent.current_anchor.loading_message = response.respmsg;
+          parent.current_anchor.loading_color = "green";
+        }
         if ($defined(response.ajaxnav)) {
           if ($defined(response.url)) {
             parent.current_anchor.baseurl(response.url, 1);

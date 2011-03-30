@@ -54,8 +54,8 @@ function check_anchor() {
 
   var query = current_anchor.serialized.substring(1);
 
-  infobox.show(gettext("Loading..."), {
-    profile: "gray",
+  infobox.show(current_anchor.loading_message, {
+    profile: current_anchor.loading_color,
     spinner: true
   });
   new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
@@ -63,6 +63,7 @@ function check_anchor() {
     callbacks[callback](resp);
     infobox.info(gettext("Done"));
     infobox.hide(1);
+    current_anchor.reset_loading_infos();
   }}).get();
 };
 
@@ -83,6 +84,12 @@ function HashWrapper(deflocation) {
   this.params = $H();
   this.base = '';
   this.serialized = null;
+
+  this.reset_loading_infos = function() {
+    this.loading_message = gettext("Loading...");
+    this.loading_color = "gray";
+  };
+  this.reset_loading_infos();
 
   this.reset = function() {
     this.base = null;

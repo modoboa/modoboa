@@ -8,6 +8,7 @@ from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from modoboa.admin.models import Mailbox
 from modoboa.lib import parameters, _render, _render_error, \
     getctx, is_not_localadmin, _render_to_string, split_mailbox, \
@@ -459,7 +460,7 @@ def newfolder(request, tplname="webmail/folder.html"):
             pf = request.POST.has_key("parent_folder") \
                 and request.POST["parent_folder"] or None
             mbc.create_folder(form.cleaned_data["name"], pf)
-            return ajax_response(request, ajaxnav=True)
+            return ajax_response(request, ajaxnav=True, respmsg=_("Folder created"))
             
         ctx["form"] = form
         ctx["selected"] = None
@@ -487,17 +488,16 @@ def editfolder(request, tplname="webmail/folder.html"):
                 and request.POST["parent_folder"] or None
             ctx["selected"] = pf
             oldname, oldparent = separate_folder(request.POST["oldname"])
-            try:
-                extra = {}
-                if form.cleaned_data["name"] != oldname \
-                        or (pf is not None and pf != oldparent):
-                    newname = form.cleaned_data["name"] if pf is None \
-                        else "%s.%s" % (pf, form.cleaned_data["name"])
-                    mbc.rename_folder(request.POST["oldname"], newname)
-                    extra["url"] = newname
-                return ajax_response(request, ajaxnav=True, **extra)
-            except Exception:
-                pass
+            extra = {}
+            if form.cleaned_data["name"] != oldname \
+                    or (pf is not None and pf != oldparent):
+                newname = form.cleaned_data["name"] if pf is None \
+                    else "%s.%s" % (pf, form.cleaned_data["name"])
+                mbc.rename_folder(request.POST["oldname"], newname)
+                extra["url"] = newname
+            return ajax_response(request, ajaxnav=True, 
+                                 respmsg=_("Folder modified"), **extra)
+
         ctx["form"] = form
         return ajax_response(request, status="ko", template=tplname, **ctx)
 
@@ -519,4 +519,4 @@ def delfolder(request):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
     mbc.delete_folder(request.GET["name"])
-    return ajax_response(request, status="ko")
+    return ajax_response(request)

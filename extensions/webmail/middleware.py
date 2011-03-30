@@ -8,4 +8,4 @@ class WebmailErrorMiddleware(object):
         if not isinstance(exception, WebmailError):
             return None
         return ajax_response(request, status="ko", 
-                             error=str(exception), norefresh=True)
+                             respmsg=str(exception), norefresh=True)

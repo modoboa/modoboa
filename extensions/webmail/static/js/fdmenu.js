@@ -51,7 +51,7 @@ var FdMenu = new Class({
             onSuccess: function(resp) {
               if (resp.status == "ok") {
                 var dfolder = this.current_folder + "/";
-                infobox.info(gettext("Folder deleted."));
+
                 if (dfolder == current_anchor.base) {
                   var pfolder = ((this.current_folder.split(".")).slice(0, -1)).join(".");
                   if (pfolder == "") {
@@ -59,9 +59,11 @@ var FdMenu = new Class({
                   }
                   current_anchor.baseurl(pfolder, 1);
                 }
-                current_anchor.update.delay(500, current_anchor, 1);
+                current_anchor.loading_message = gettext("Folder deleted");
+                current_anchor.loading_color = "green";
+                current_anchor.update(1);
               } else {
-                infobox.error(gettext("Failed to delete folder"));
+                infobox.error(resp.error);
                 infobox.hide(2);
               }
             }.bind(this)
