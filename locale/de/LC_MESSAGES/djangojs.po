@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-07 09:47+0100\n"
+"POT-Creation-Date: 2011-04-08 17:18+0200\n"
 "PO-Revision-Date: 2011-01-13 22:50+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
@@ -16,13 +16,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: static/js/common.js:36
+#: extensions/webmail/static/js/fdmenu.js:31
+msgid "Edit folder"
+msgstr ""
+
+#: extensions/webmail/static/js/fdmenu.js:62
+msgid "Folder deleted"
+msgstr ""
+
+#: extensions/webmail/static/js/webmail.js:188
+#, fuzzy
+msgid "Reloading..."
+msgstr "Lade ..."
+
+#: extensions/webmail/static/js/webmail.js:196
+#: extensions/webmail/static/js/webmail.js:220 static/js/common.js:64
+msgid "Done"
+msgstr "Abgeschlossen"
+
+#: extensions/webmail/static/js/webmail.js:209
+#, fuzzy
+msgid "Waiting..."
+msgstr "Lade ..."
+
+#: static/js/common.js:89
 msgid "Loading..."
 msgstr "Lade ..."
 
-#: static/js/common.js:43
-msgid "Done"
-msgstr "Abgeschlossen"
+#: static/js/common.js:339
+msgid "Search..."
+msgstr ""
 
 #: static/js/domains.js:17
 msgid "Delete this domain?"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-07 00:54-0600\n"
+"POT-Creation-Date: 2011-04-08 17:17+0200\n"
 "PO-Revision-Date: 2011-01-07 09:00+0100\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: Español <i18n@impulzia.com>\n"
@@ -67,59 +67,59 @@ msgstr ""
 msgid "Password"
 msgstr "Contraseña"
 
-#: admin/forms.py:41
+#: admin/forms.py:42
 msgid "Password used to log in"
 msgstr "Contraseña usada para identificarse (\"log in\")"
 
-#: admin/forms.py:42 userprefs/forms.py:12
+#: admin/forms.py:43 userprefs/forms.py:12
 msgid "Confirmation"
 msgstr "Confirmación"
 
-#: admin/forms.py:43
+#: admin/forms.py:45
 msgid "Password confirmation"
 msgstr "Confirmación de la contraseña"
 
-#: admin/forms.py:46
+#: admin/forms.py:48
 msgid "Check to activate this mailbox"
 msgstr "Activar este \"mailbox\""
 
-#: admin/forms.py:73 userprefs/forms.py:31
+#: admin/forms.py:75 userprefs/forms.py:31
 msgid "Passwords mismatch"
 msgstr "Las contraseñas no coinciden"
 
-#: admin/forms.py:85 admin/forms.py:142 admin/forms.py:160
+#: admin/forms.py:90 admin/forms.py:147 admin/forms.py:165
 msgid "Domain"
 msgstr "Dominio"
 
-#: admin/forms.py:87 admin/forms.py:144
+#: admin/forms.py:92 admin/forms.py:149
 msgid "Select a domain"
 msgstr "Seleccione un dominio"
 
-#: admin/forms.py:88 admin/forms.py:145
+#: admin/forms.py:93 admin/forms.py:150
 msgid "Select a domain in the list"
 msgstr "Elija un dominio de la lista"
 
-#: admin/forms.py:133 admin/forms.py:146
+#: admin/forms.py:138 admin/forms.py:151
 msgid "User"
 msgstr "Usuario"
 
-#: admin/forms.py:134
+#: admin/forms.py:139
 msgid "Select a user"
 msgstr "Seleccione un usuario"
 
-#: admin/forms.py:135 admin/forms.py:148
+#: admin/forms.py:140 admin/forms.py:153
 msgid "Select a user in the list"
 msgstr "Seleccione un usuario de la lista"
 
-#: admin/forms.py:147
+#: admin/forms.py:152
 msgid "Empty"
 msgstr "Vacío"
 
-#: admin/forms.py:153
+#: admin/forms.py:158
 msgid "User name"
 msgstr "Nombre de usuario"
 
-#: admin/forms.py:154 admin/forms.py:161
+#: admin/forms.py:159 admin/forms.py:166
 msgid "Full name"
 msgstr "Nombre completo"
 
@@ -216,8 +216,8 @@ msgstr "No eliminar el directorio del dominio"
 msgid "New domain"
 msgstr "Nuevo dominio"
 
-#: admin/views.py:73 admin/views.py:170 admin/views.py:274 admin/views.py:306
-#: admin/views.py:378
+#: admin/views.py:73 admin/views.py:170 admin/views.py:274 admin/views.py:305
+#: admin/views.py:376 extensions/webmail/views.py:453
 msgid "Create"
 msgstr "Crear"
 
@@ -237,9 +237,9 @@ msgstr "Ha fallado la inicialización del dominio, compruebe permisos"
 msgid "Domain editing"
 msgstr "Editando el dominio"
 
-#: admin/views.py:104 admin/views.py:205 admin/views.py:411
-#: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:32
-#: templates/userprefs/chpassword.html:15
+#: admin/views.py:104 admin/views.py:205 admin/views.py:409
+#: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:38
+#: extensions/webmail/views.py:480 templates/userprefs/chpassword.html:15
 msgid "Update"
 msgstr "Actualizar"
 
@@ -269,7 +269,7 @@ msgstr "Nuevo alias de dominio"
 msgid "A domain with this name already exists"
 msgstr "Ya existe un alias de dominio con este nombre"
 
-#: admin/views.py:184 admin/views.py:219 admin/views.py:388 admin/views.py:421
+#: admin/views.py:184 admin/views.py:219 admin/views.py:386 admin/views.py:419
 msgid "Alias with this name already exists"
 msgstr "Ya existe un alias con este nombre"
 
@@ -303,84 +303,84 @@ msgstr "Nuevo \"mailbox\""
 msgid "Mailbox created"
 msgstr "\"Mailbox\" creado."
 
-#: admin/views.py:305
+#: admin/views.py:304
 msgid "Mailbox editing"
 msgstr "Editando el \"Mailbox\""
 
-#: admin/views.py:322
+#: admin/views.py:321
 msgid "Mailbox modified"
 msgstr "\"Mailbox\" modificado"
 
-#: admin/views.py:325
+#: admin/views.py:324
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Ha fallado el cambio de nombre del \"mailbox\", compruebe permisos"
 
-#: admin/views.py:345
+#: admin/views.py:343
 msgid "You can't delete your own mailbox"
 msgstr "No puede eliminar su propio \"mailbox\""
 
-#: admin/views.py:355
+#: admin/views.py:353
 msgid "Mailbox deleted"
 msgid_plural "Mailboxes deleted"
 msgstr[0] "\"Mailbox\" elimiado"
 msgstr[1] "\"Mailboxes\" eliminados"
 
-#: admin/views.py:377
+#: admin/views.py:375
 msgid "New mailbox alias"
 msgstr "Nuevo alias del \"mailbox\""
 
-#: admin/views.py:391
+#: admin/views.py:389
 msgid "Mailbox alias created"
 msgstr "Alias del \"mailbox\" creado."
 
-#: admin/views.py:410
+#: admin/views.py:408
 msgid "Mailbox alias editing"
 msgstr "Editando el alias del \"mailbox\""
 
-#: admin/views.py:424
+#: admin/views.py:422
 msgid "Mailbox alias modified"
 msgstr "Alias del \"mailbox\" modificado"
 
-#: admin/views.py:441
+#: admin/views.py:439
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
 msgstr[0] "Alias eliminado"
 msgstr[1] "Alias eliminados"
 
-#: admin/views.py:452
+#: admin/views.py:450
 msgid "Super administrators"
 msgstr "Super administradores"
 
-#: admin/views.py:461
+#: admin/views.py:459
 msgid "Domain administrators"
 msgstr "Administradores del dominio"
 
-#: admin/views.py:476 admin/views.py:493
+#: admin/views.py:474 admin/views.py:491
 msgid "Permission denied!"
 msgstr "¡Permiso denegado!"
 
-#: admin/views.py:485
+#: admin/views.py:483
 msgid "Permission added."
 msgstr "Permiso añadido."
 
-#: admin/views.py:499
+#: admin/views.py:497
 msgid "Permissions removed"
 msgstr "Permisos eliminados"
 
-#: admin/views.py:544 templates/admin/domains.html:19
+#: admin/views.py:543 templates/admin/domains.html:19
 #: templates/admin/domaliases.html:11 templates/admin/mailboxes.html:11
 msgid "Name"
 msgstr "Nombre"
 
-#: admin/views.py:545
+#: admin/views.py:544
 msgid "Version"
 msgstr "Versión"
 
-#: admin/views.py:546
+#: admin/views.py:545
 msgid "Description"
 msgstr "Descripción"
 
-#: admin/views.py:587
+#: admin/views.py:586
 msgid "Modifications applied."
 msgstr "Modificaciones aplicadas."
 
@@ -530,23 +530,23 @@ msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Dirección del socket del servidor de PDP (en modo inet)"
 
 #: extensions/amavis_quarantine/main.py:50
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:131
+#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:132
 msgid "Quarantine"
 msgstr "Cuarentena"
 
 #: extensions/amavis_quarantine/sql_listing.py:14
-#: extensions/webmail/forms.py:5 extensions/webmail/lib.py:31
+#: extensions/webmail/forms.py:5 extensions/webmail/lib.py:43
 msgid "From"
 msgstr "Desde"
 
 #: extensions/amavis_quarantine/sql_listing.py:15
-#: extensions/webmail/forms.py:8 extensions/webmail/lib.py:30
-#: extensions/webmail/lib.py:524 templates/common/email_searchbar.html:7
+#: extensions/webmail/forms.py:8 extensions/webmail/lib.py:42
+#: extensions/webmail/lib.py:544 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Tema"
 
-#: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:32
-#: extensions/webmail/lib.py:526
+#: extensions/amavis_quarantine/sql_listing.py:16 extensions/webmail/lib.py:44
+#: extensions/webmail/lib.py:546
 msgid "Date"
 msgstr "Fecha"
 
@@ -568,11 +568,11 @@ msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d mensaje publicado correctamente"
 msgstr[1] "%(count)d mensajes publicados correctamente"
 
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:83
+#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:84
 msgid "Release this selection?"
 msgstr "¿Publicar esta selección?"
 
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:90
+#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:91
 msgid "Delete this selection?"
 msgstr "¿Eliminar esta selección?"
 
@@ -674,7 +674,7 @@ msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgstr "Tiempo en segundos entre dos autorespuestas para el mismo emisor"
 
 #: extensions/postfix_autoreply/main.py:59
-#: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:24
+#: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:30
 msgid "Auto-reply message"
 msgstr "Mensaje de autorespuesta"
 
@@ -831,19 +831,23 @@ msgstr "A"
 msgid "Cc"
 msgstr "Cc"
 
-#: extensions/webmail/lib.py:182
+#: extensions/webmail/lib.py:29
+msgid "Server response"
+msgstr ""
+
+#: extensions/webmail/lib.py:173
 msgid "Connection to IMAP server failed, check your configuration"
 msgstr "Ha fallado la conexión al servidor IMAP, compruebe su configuración"
 
-#: extensions/webmail/lib.py:186
+#: extensions/webmail/lib.py:177
 msgid "Authentication failed, check your configuration"
 msgstr "Ha fallado la autenticación, compruebe su configuración"
 
-#: extensions/webmail/lib.py:472
+#: extensions/webmail/lib.py:491
 msgid "wrote:"
 msgstr "escribió:"
 
-#: extensions/webmail/lib.py:538 extensions/webmail/lib.py:542
+#: extensions/webmail/lib.py:558 extensions/webmail/lib.py:562
 msgid "Original message"
 msgstr "Mensaje original"
 
@@ -868,99 +872,138 @@ msgid "Address of your SMTP server"
 msgstr "Dirección de su servidor IMAP"
 
 #: extensions/webmail/main.py:26
-msgid "Listening port of your SMTP server"
-msgstr "Puerto de su servidor SMTP"
-
-#: extensions/webmail/main.py:29
-msgid "Server needs authentication"
-msgstr "El servidor requiere autenticación"
-
-#: extensions/webmail/main.py:31
 msgid "None"
 msgstr "Nada"
 
-#: extensions/webmail/main.py:35
+#: extensions/webmail/main.py:30
 msgid "Use a secured connection to access SMTP server"
 msgstr "Usar una conexión segura para acceder al servidor SMTP"
 
-#: extensions/webmail/main.py:38
-msgid "Listing refresh rate"
-msgstr "Tasa de refresco"
+#: extensions/webmail/main.py:32
+msgid "Listening port of your SMTP server"
+msgstr "Puerto de su servidor SMTP"
+
+#: extensions/webmail/main.py:35
+msgid "Server needs authentication"
+msgstr "El servidor requiere autenticación"
 
 #: extensions/webmail/main.py:39
-msgid "Automatic folder refresh rate (in seconds)"
-msgstr "Tasa de refresco automática de la carpeta (en segundos)"
-
-#: extensions/webmail/main.py:41
-msgid "Trash folder"
-msgstr "Carpeta de basura"
-
-#: extensions/webmail/main.py:42
-msgid "Folder where deleted messages go"
-msgstr "Carpeta dónde van los mensajes eliminados"
-
-#: extensions/webmail/main.py:44
-msgid "Sent folder"
-msgstr "Carpeta de enviados"
-
-#: extensions/webmail/main.py:45
-msgid "Folder where copies of sent messages go"
-msgstr "Carpeta dónde van las copias de los correos enviados"
-
-#: extensions/webmail/main.py:47
-msgid "Signature text"
-msgstr "Texto de la firma"
-
-#: extensions/webmail/main.py:48
-msgid "User defined email signature"
-msgstr "Firma de correo definida por el usuario"
-
-#: extensions/webmail/main.py:50
-msgid "Default editor"
-msgstr "Editor por defecto"
-
-#: extensions/webmail/main.py:52
-msgid "The default editor to use when composing a message"
-msgstr "Editor por defecto para usar cuando redacta un mensaje"
-
-#: extensions/webmail/main.py:54
-msgid "Default message display mode"
-msgstr "Modo por defecto para un mensaje"
-
-#: extensions/webmail/main.py:56
-msgid "The default mode used when displaying a message"
-msgstr "Modo por defecto usado para mostrar un mensaje"
-
-#: extensions/webmail/main.py:58
 msgid "Number of displayed emails per page"
 msgstr "Número de emails mostrados por página"
 
-#: extensions/webmail/main.py:59
+#: extensions/webmail/main.py:40
 msgid "Sets the maximum number of messages displayed in a page"
 msgstr "Fija el número máximo de mensajes mostrados en una página"
 
+#: extensions/webmail/main.py:42
+msgid "Listing refresh rate"
+msgstr "Tasa de refresco"
+
+#: extensions/webmail/main.py:43
+msgid "Automatic folder refresh rate (in seconds)"
+msgstr "Tasa de refresco automática de la carpeta (en segundos)"
+
+#: extensions/webmail/main.py:45
+msgid "Trash folder"
+msgstr "Carpeta de basura"
+
+#: extensions/webmail/main.py:46
+msgid "Folder where deleted messages go"
+msgstr "Carpeta dónde van los mensajes eliminados"
+
+#: extensions/webmail/main.py:48
+msgid "Sent folder"
+msgstr "Carpeta de enviados"
+
+#: extensions/webmail/main.py:49
+msgid "Folder where copies of sent messages go"
+msgstr "Carpeta dónde van las copias de los correos enviados"
+
+#: extensions/webmail/main.py:51
+#, fuzzy
+msgid "Drafts folder"
+msgstr "Carpeta de basura"
+
+#: extensions/webmail/main.py:52
+#, fuzzy
+msgid "Folder where drafts go"
+msgstr "Carpeta dónde van los mensajes eliminados"
+
+#: extensions/webmail/main.py:54
+msgid "Signature text"
+msgstr "Texto de la firma"
+
+#: extensions/webmail/main.py:55
+msgid "User defined email signature"
+msgstr "Firma de correo definida por el usuario"
+
+#: extensions/webmail/main.py:57
+msgid "Default editor"
+msgstr "Editor por defecto"
+
+#: extensions/webmail/main.py:59
+msgid "The default editor to use when composing a message"
+msgstr "Editor por defecto para usar cuando redacta un mensaje"
+
 #: extensions/webmail/main.py:61
+msgid "Default message display mode"
+msgstr "Modo por defecto para un mensaje"
+
+#: extensions/webmail/main.py:63
+msgid "The default mode used when displaying a message"
+msgstr "Modo por defecto usado para mostrar un mensaje"
+
+#: extensions/webmail/main.py:65
 msgid "Enable HTML links display"
 msgstr "Activar el mostrar enlaces de HTML"
 
-#: extensions/webmail/main.py:62
+#: extensions/webmail/main.py:66
 msgid "Enable/Disable HTML links display"
 msgstr "Activar/Desactivar el mostrar enlaces HTML"
 
-#: extensions/webmail/main.py:73
+#: extensions/webmail/main.py:77
 msgid "Simple IMAP webmail"
 msgstr "Correo web simple para IMAP"
 
-#: extensions/webmail/main.py:87
-#: extensions/webmail/templates/webmail/index.html:370
+#: extensions/webmail/main.py:91
+#: extensions/webmail/templates/webmail/index.html:233
 msgid "Webmail"
 msgstr "Correo web"
 
-#: extensions/webmail/views.py:63 lib/email_listing.py:125
+#: extensions/webmail/views.py:65 lib/email_listing.py:125
 msgid "This folder contains no messages"
 msgstr "Esta carpeta no contiene mensajes"
 
-#: extensions/webmail/templates/webmail/folders.html:3
+#: extensions/webmail/views.py:451
+#, fuzzy
+msgid "Create a new folder"
+msgstr "Carpeta de enviados"
+
+#: extensions/webmail/views.py:463
+#, fuzzy
+msgid "Folder created"
+msgstr "Dominio creado"
+
+#: extensions/webmail/views.py:478
+#, fuzzy
+msgid "Edit folder"
+msgstr "Vaciar la carpeta"
+
+#: extensions/webmail/views.py:499
+#, fuzzy
+msgid "Folder modified"
+msgstr "Dominio modificado"
+
+#: extensions/webmail/templates/webmail/folder.html:37
+#, fuzzy
+msgid "Parent folder"
+msgstr "Carpeta de enviados"
+
+#: extensions/webmail/templates/webmail/folders.html:7
+msgid "Add a new folder"
+msgstr ""
+
+#: extensions/webmail/templates/webmail/folders.html:9
 msgid "Folders"
 msgstr "Carpetas"
 
@@ -968,15 +1011,7 @@ msgstr "Carpetas"
 msgid "Attachments"
 msgstr "Adjuntos"
 
-#: extensions/webmail/templates/webmail/index.html:169
-msgid "Reloading..."
-msgstr "Recargando..."
-
-#: extensions/webmail/templates/webmail/index.html:176
-msgid "Done"
-msgstr "Hecho"
-
-#: extensions/webmail/templates/webmail/index.html:376
+#: extensions/webmail/templates/webmail/index.html:239
 msgid "Mailbox quota"
 msgstr "Cuota del \"mailbox\""
 
@@ -1039,7 +1074,7 @@ msgstr "Comprimir la carpeta"
 msgid "Empty folder"
 msgstr "Vaciar la carpeta"
 
-#: lib/__init__.py:118
+#: lib/__init__.py:128
 #, python-format
 msgid "Invalid action, %(user)s is a local user"
 msgstr "Acción inválida, %(user)s es un usuario local"
@@ -1048,7 +1083,7 @@ msgstr "Acción inválida, %(user)s es un usuario local"
 msgid "No entries to display"
 msgstr "No hay entradas que mostrar"
 
-#: templates/nlayout.html:46
+#: templates/nlayout.html:49
 msgid "Logout"
 msgstr "Salir"
 
