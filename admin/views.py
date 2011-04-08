@@ -504,7 +504,8 @@ def viewparameters(request, tplname='admin/parameters.html'):
     gparams = []
     for app in apps:
         tmp = {"name" : app, "params" : []}
-        for p in sorted(parameters._params[app]['A']):
+        for p in parameters._params_order[app]['A']:
+
             param_def = parameters._params[app]['A'][p]
             newdef = {"name" : p, 
                       "value" : parameters.get_admin(p, app=app),

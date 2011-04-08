@@ -16,6 +16,7 @@ Only super users will be able to access this part of the web interface.
 """
 
 _params = {}
+_params_order = {}
 _levels = {'A' : 'admin', 'U' : 'user'}
 
 class NotDefined(Exception):
@@ -40,11 +41,16 @@ def __register(app, level, name, **kwargs):
     """ 
     if not app in _params.keys():
         _params[app] = {}
+        _params_order[app] = {}
         for lvl in _levels.keys():
             _params[app][lvl] = {}
+            _params_order[app][lvl] = []
     if not level in _levels.keys():
         return
-    _params[app][level][name] = kwargs
+    if _params[app][level].has_key(name):
+        return
+    _params[app][level][name] = {}
+    _params_order[app][level] += [name]
     for k, v in kwargs.iteritems():
         _params[app][level][name][k] = v
 

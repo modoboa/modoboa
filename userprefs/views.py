@@ -44,7 +44,7 @@ def preferences(request):
         if not len(parameters._params[app]['U']):
             continue
         tmp = {"name" : app, "params" : []}
-        for p in sorted(parameters._params[app]['U']):
+        for p in parameters._params_order[app]['U']:
             param_def = parameters._params[app]['U'][p]
             newdef = copy.deepcopy(param_def)
             newdef["name"] = p

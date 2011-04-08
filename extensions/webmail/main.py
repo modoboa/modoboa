@@ -22,18 +22,22 @@ def init():
     parameters.register_admin("SMTP_SERVER", type="string", 
                               deflt="127.0.0.1",
                               help=_("Address of your SMTP server"))
-    parameters.register_admin("SMTP_PORT", type="int", deflt="25",
-                              help=_("Listening port of your SMTP server"))
-    parameters.register_admin("SMTP_AUTHENTICATION", type="list_yesno",
-                              deflt="no",
-                              help=_("Server needs authentication"))
     parameters.register_admin("SMTP_SECURED_MODE", type="list", 
                               values=[("none", _("None")), 
                                       ("starttls", "STARTTLS"),
                                       ("ssl", "SSL/TLS")],
                               deflt="none",
                               help=_("Use a secured connection to access SMTP server"))
+    parameters.register_admin("SMTP_PORT", type="int", deflt="25",
+                              help=_("Listening port of your SMTP server"))
+    parameters.register_admin("SMTP_AUTHENTICATION", type="list_yesno",
+                              deflt="no",
+                              help=_("Server needs authentication"))
+   
 
+    parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
+                             label=_("Number of displayed emails per page"),
+                             help=_("Sets the maximum number of messages displayed in a page"))
     parameters.register_user("REFRESH_INTERVAL", type="int", deflt=300,
                              label=_("Listing refresh rate"),
                              help=_("Automatic folder refresh rate (in seconds)"))
@@ -57,9 +61,6 @@ def init():
                              label=_("Default message display mode"),
                              values=[("html", "html"), ("plain", "text")],
                              help=_("The default mode used when displaying a message"))
-    parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
-                             label=_("Number of displayed emails per page"),
-                             help=_("Sets the maximum number of messages displayed in a page"))
     parameters.register_user("ENABLE_LINKS", type="list_yesno", deflt="no",
                              label=_("Enable HTML links display"),
                              help=_("Enable/Disable HTML links display"))
