@@ -79,7 +79,6 @@ class Grapher(object):
     def process(self, target, suffix, start, end, tpl=traffic_avg_template):
         rrdfile = "%s/%s.rrd" % (self.rrd_rootdir, target)
         if not os.path.exists(rrdfile):
-            print "[graph] no rrd file %s detected" %rrdfile
             return
         ext = "png"
         path = "%s/%s_%s_%s_%s.%s" % (self.img_rootdir, tpl['name'],
