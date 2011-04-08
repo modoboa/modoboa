@@ -1,10 +1,10 @@
 {% extends "common/email_listing.html" %}
 {% load i18n %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/webmail/webmail.css" />
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/webmail/folders.css" />
-<script type="text/javascript" src="{{ MEDIA_URL }}js/webmail/fdmenu.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/webmail/webmail.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}webmail/css/webmail.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}webmail/css/folders.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}webmail/js/fdmenu.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}webmail/js/webmail.js"></script>
 {{ block.super }}
 <script type="text/javascript">
 function wm_updatelisting(resp) {

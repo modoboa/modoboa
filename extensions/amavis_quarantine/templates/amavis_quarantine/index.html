@@ -1,7 +1,8 @@
 {% extends "common/email_listing.html" %}
 {% load i18n %}
-{% block css %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/amavis_quarantine/quarantine.css" />
+{% block html_head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}amavis_quarantine/css/quarantine.css" />
+{{ block.super }}
 {% endblock %}
 {% block js %}
   mysubmit = function(event, name) {

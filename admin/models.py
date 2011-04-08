@@ -256,12 +256,8 @@ class Extension(models.Model):
 
         staticpath = "%s/%s" % (extdir, "static")
         if os.path.exists(staticpath):
-            for d in ['css', 'js']:
-                subpath = "%s/%s" % (staticpath, d)
-                if not os.path.exists(subpath):
-                    continue
-                exec_cmd("ln -s %s %s/static/%s/%s" % (subpath, settings.MODOBOA_DIR,
-                                                       d, self.name))
+            exec_cmd("ln -s %s/static %s/static/%s" % \
+                         (extdir, settings.MODOBOA_DIR, self.name))
 
     def off(self):
         self.unload()
@@ -274,12 +270,4 @@ class Extension(models.Model):
 
         staticpath = "%s/%s" % (extdir, "static")  
         if os.path.exists(staticpath):
-            for d in ['css', 'js']:
-                subpath = "%s/static/%s/%s" % (settings.MODOBOA_DIR, d, self.name)
-                exec_cmd("rm -f %s" % subpath)
-
-
-
-
-
-
+            exec_cmd("rm -r %s/static/%s" % (settings.MODOBOA_DIR, self.name)) 
