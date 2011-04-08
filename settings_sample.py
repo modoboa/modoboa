@@ -69,6 +69,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'modoboa.lib.middleware.ExtControlMiddleware',
+    'modoboa.extensions.webmail.middleware.WebmailErrorMiddleware',
 )
 
 ROOT_URLCONF = 'modoboa.urls'
