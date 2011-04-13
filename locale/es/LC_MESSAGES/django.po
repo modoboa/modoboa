@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-08 17:17+0200\n"
+"POT-Creation-Date: 2011-04-13 18:23+0200\n"
 "PO-Revision-Date: 2011-01-07 09:00+0100\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: Español <i18n@impulzia.com>\n"
@@ -530,7 +530,7 @@ msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Dirección del socket del servidor de PDP (en modo inet)"
 
 #: extensions/amavis_quarantine/main.py:50
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:132
+#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:36
 msgid "Quarantine"
 msgstr "Cuarentena"
 
@@ -567,14 +567,6 @@ msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d mensaje publicado correctamente"
 msgstr[1] "%(count)d mensajes publicados correctamente"
-
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:84
-msgid "Release this selection?"
-msgstr "¿Publicar esta selección?"
-
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:91
-msgid "Delete this selection?"
-msgstr "¿Eliminar esta selección?"
 
 #: extensions/amavis_quarantine/templates/amavis_quarantine/viewheader.html:36
 msgid "Message headers"
@@ -966,7 +958,7 @@ msgid "Simple IMAP webmail"
 msgstr "Correo web simple para IMAP"
 
 #: extensions/webmail/main.py:91
-#: extensions/webmail/templates/webmail/index.html:233
+#: extensions/webmail/templates/webmail/index.html:234
 msgid "Webmail"
 msgstr "Correo web"
 
@@ -999,11 +991,11 @@ msgstr "Dominio modificado"
 msgid "Parent folder"
 msgstr "Carpeta de enviados"
 
-#: extensions/webmail/templates/webmail/folders.html:7
+#: extensions/webmail/templates/webmail/folders.html:8
 msgid "Add a new folder"
 msgstr ""
 
-#: extensions/webmail/templates/webmail/folders.html:9
+#: extensions/webmail/templates/webmail/folders.html:10
 msgid "Folders"
 msgstr "Carpetas"
 
@@ -1011,7 +1003,7 @@ msgstr "Carpetas"
 msgid "Attachments"
 msgstr "Adjuntos"
 
-#: extensions/webmail/templates/webmail/index.html:239
+#: extensions/webmail/templates/webmail/index.html:240
 msgid "Mailbox quota"
 msgstr "Cuota del \"mailbox\""
 
@@ -1233,3 +1225,9 @@ msgstr "Nueva contraseña"
 #: userprefs/forms.py:26
 msgid "Old password mismatchs"
 msgstr "La contraseña actual no concuerda"
+
+#~ msgid "Release this selection?"
+#~ msgstr "¿Publicar esta selección?"
+
+#~ msgid "Delete this selection?"
+#~ msgstr "¿Eliminar esta selección?"

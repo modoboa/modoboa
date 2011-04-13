@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-08 17:18+0200\n"
+"POT-Creation-Date: 2011-04-13 18:23+0200\n"
 "PO-Revision-Date: 2011-01-07 09:00+0100\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: Español <i18n@impulzia.com>\n"
@@ -16,6 +16,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:81
+#, fuzzy
+msgid "Release this selection?"
+msgstr "¿Eliminar este alias?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:88
+#, fuzzy
+msgid "Delete this selection?"
+msgstr "¿Eliminar este alias?"
 
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"

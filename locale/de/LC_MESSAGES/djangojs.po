@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-08 17:18+0200\n"
+"POT-Creation-Date: 2011-04-13 18:23+0200\n"
 "PO-Revision-Date: 2011-01-13 22:50+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
@@ -15,6 +15,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:81
+#, fuzzy
+msgid "Release this selection?"
+msgstr "Diesen Alias löschen?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:88
+#, fuzzy
+msgid "Delete this selection?"
+msgstr "Diesen Alias löschen?"
 
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"

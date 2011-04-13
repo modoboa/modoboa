@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-08 17:17+0200\n"
+"POT-Creation-Date: 2011-04-13 18:23+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -529,7 +529,7 @@ msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Emplacement de la socket du serveur PDP (en mode unix)"
 
 #: extensions/amavis_quarantine/main.py:50
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:132
+#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:36
 msgid "Quarantine"
 msgstr "Quarantaine"
 
@@ -566,14 +566,6 @@ msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d message relâché correctement"
 msgstr[1] "%(count)d messages relâchés correctement"
-
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:84
-msgid "Release this selection?"
-msgstr "Relâcher cette sélection?"
-
-#: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:91
-msgid "Delete this selection?"
-msgstr "Supprimer cette sélection?"
 
 #: extensions/amavis_quarantine/templates/amavis_quarantine/viewheader.html:36
 msgid "Message headers"
@@ -966,7 +958,7 @@ msgid "Simple IMAP webmail"
 msgstr "Webmail IMAP simple"
 
 #: extensions/webmail/main.py:91
-#: extensions/webmail/templates/webmail/index.html:233
+#: extensions/webmail/templates/webmail/index.html:234
 msgid "Webmail"
 msgstr ""
 
@@ -994,11 +986,11 @@ msgstr "Dossier modifié"
 msgid "Parent folder"
 msgstr "Dossier parent"
 
-#: extensions/webmail/templates/webmail/folders.html:7
+#: extensions/webmail/templates/webmail/folders.html:8
 msgid "Add a new folder"
 msgstr "Ajouter un nouveau dossier"
 
-#: extensions/webmail/templates/webmail/folders.html:9
+#: extensions/webmail/templates/webmail/folders.html:10
 msgid "Folders"
 msgstr "Dossiers"
 
@@ -1006,7 +998,7 @@ msgstr "Dossiers"
 msgid "Attachments"
 msgstr "Pièces jointes"
 
-#: extensions/webmail/templates/webmail/index.html:239
+#: extensions/webmail/templates/webmail/index.html:240
 msgid "Mailbox quota"
 msgstr "Quota de la boite aux lettres"
 
