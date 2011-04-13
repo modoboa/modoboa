@@ -111,7 +111,7 @@ class IMAPheader(object):
 
     @staticmethod
     def parse_subject(value, **kwargs):
-        return u2u_decode.u2u_decode(value)
+        return decode(u2u_decode.u2u_decode(value))
 
 class ConnectionsManager(type):
     def __init__(cls, name, bases, dict):
