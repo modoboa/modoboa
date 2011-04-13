@@ -1,12 +1,15 @@
 {% load i18n %}
 {% load webextras %}
 {% if titlebar %}
-<a href="{% url extensions.webmail.views.newfolder %}" class="boxed"
-   rel="{handler: 'iframe', size: {x: 350, y: 400}}">
-  <img class="aligned" src="{{MEDIA_URL}}pics/add.png"
-       alt="{% trans 'Add a new folder' %}"/>
-</a>
-<h3>{% trans "Folders" %}</h3>
+<div class="boxtitle">
+  <a href="{% url extensions.webmail.views.newfolder %}" class="boxed"
+     rel="{handler: 'iframe', size: {x: 350, y: 400}}">
+    <img src="{{MEDIA_URL}}pics/add.png"
+         alt="{% trans 'Add a new folder' %}"/>
+  </a>
+  <label class="aligned">{% trans "Folders" %}</label>
+  <div class="spacer"></div>
+</div>
 {% endif %}
 <ul>
   {% print_folders folders selected withunseen withmenu %}

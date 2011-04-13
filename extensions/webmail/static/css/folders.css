@@ -1,6 +1,6 @@
 #folders {
     float: left;
-    width: 150px;
+    width: 170px;
 }
 
 #folders2 {
@@ -23,10 +23,24 @@
     text-align: center;
 }
 
+div.boxtitle {
+    text-align: center; 
+    font-weight: bold;
+    margin: 5px auto;
+    width: 100px;
+}
+
+.boxtitle a {
+    float: left;
+}
+
+.boxtitle label {
+    float: left;
+}
+
 .box h3 {
     font-size: small;
     margin: 2px 0px 2px 0px;
-    text-align: center;
 }
 
 .box ul {
@@ -71,10 +85,6 @@ a.block {
 
 .box li.dragging {
     background-color: #6AB0C5;
-}
-
-img.aligned {
-    float: right;
 }
 
 img.footer {

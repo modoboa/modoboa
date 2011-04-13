@@ -78,7 +78,6 @@ var FdMenu = new Class({
           this.hide();
         }
       }.bind(this));
-      //this.fx = new Fx.Slide(this.container);
     },
 
     show: function(origin, folder) {

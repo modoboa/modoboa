@@ -2,9 +2,9 @@
 {% load i18n %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}amavis_quarantine/css/quarantine.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}amavis_quarantine/js/quarantine.js"></script>
 {{ block.super }}
-{% endblock %}
-{% block js %}
+<script type="text/javascript">
   mysubmit = function(event, name) {
     event.stop();
     var selection = new Array();
@@ -27,106 +27,10 @@
     });
     $("listingform").send();
   }
-
-  updatehash = function(evt) {
-    evt.stop();
-    current_anchor.parse_string(evt.target.get("href"), true).setparams(navparams);
-    current_anchor.update();
-  }
-
-  appendhash = function(evt) {
-    evt.stop();
-    location.hash += evt.target.get("href");
-  }
-
-  updateparams = function(evt) {
-    evt.stop();
-    current_anchor.updateparams(evt.target.get("href"));
-    current_anchor.update();
-  }
-
-  register_callback("_listing", function(resp) {
-    updatelisting(resp);
-
-    tbl = new HtmlTable($("emails"), {
-      useKeyboard: false,
-      selectable: true
-    });
-    if ($("toggleselect")) {
-      $("toggleselect").addEvent("click", function(evt) {
-        if ($$("tr[class*=table-tr-selected]").length) {
-          tbl.selectNone();
-        } else {
-          tbl.selectAll();
-        }
-      });
-    }
-    $$("a[name=selectmsgs]").addEvent("click", function(evt) {
-      evt.stop();
-      var type = evt.target.get("href");
-      if (!$chk(type)) {
-        $$("tr[class*=table-tr-selected]").each(function(item) {
-          item.removeClass("table-tr-selected");
-        });
-        if ($("toggleselect").checked) {
-          $("toggleselect").checked = false;
-          tbl.selectNone();
-        }
-        return;
-      }
-      $$("td[name=type]").each(function(item) {
-        if (item.get("html").trim() == type) {
-          item.getParent().addClass("table-tr-selected");
-        }
-      });
-    });
-    $$("a[name=release]").addEvent("click", function(event) {
-      if (!checkTableSelection("{% trans "Release this selection?" %}")) {
-        event.stop();
-        return;
-      }
-      mysubmit(event, "release");
-    });
-    $$("a[name=delete]").addEvent("click", function(event) {
-      if (!checkTableSelection("{% trans "Delete this selection?" %}")) {
-        event.stop();
-        return;
-      }
-      mysubmit(event, "delete");
-    });
-    searchbox_init();
-    $$("tr").addEvent("dblclick", viewmail);
-  });
-
-  actioncallback = function(resp) {
-    $("listing").set("html", "");
-    $("menubar").set("html", "");
-    $("navbar").set("html", "");
-    if (resp.status == "ok") {
-      infobox.info(resp.message);
-    } else {
-      infobox.error(resp.message);
-    }
-    infobox.hide(1);
-    current_anchor.parse_string(resp.url, true).setparams(navparams);
-    current_anchor.update(1);
-  }
-
-  actionclick = function(evt) {
-    evt.stop();
-    new Request.JSON({
-      url: evt.target.get("href"), 
-      onSuccess: actioncallback
-    }).get();
-  }
-
-  register_callback("viewmail", function(resp) {
-    updatelisting(resp);
-    $$("a[name=back]").addEvent("click", updatehash);
-    $$("a[name=delete]").addEvent("click", actionclick);
-    $$("a[name=release]").addEvent("click", actionclick);
-    $$("a[name=viewmode]").addEvent("click", updateparams);
-    setDivHeight("mailcontent", 5, 0);
-  });
+</script>
+{% endblock %}
+{% block js %}
+  register_callback("_listing", listing_cb);
+  register_callback("viewmail", viewmail_cb);
 {% endblock %}
 {% block middletitle %}{% trans "Quarantine" %}{% endblock %}
