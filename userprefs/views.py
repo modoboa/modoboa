@@ -28,7 +28,7 @@ def changepassword(request, tplname="userprefs/chpassword.html"):
             else:
                 target.set_password(request.POST["confirmation"])
             target.save()
-            return ajax_response(request)
+            return ajax_response(request, respmsg=_("Password changed"))
         return ajax_response(request, status="ko", template=tplname, form=form, error=error)
 
     form = ChangePasswordForm(target)

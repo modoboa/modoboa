@@ -161,7 +161,8 @@ class Mailbox(models.Model):
             user = User()
         user.username = user.email = "%s@%s" % (self.address, self.domain.name)
         user.set_unusable_password()
-        user.is_active = kwargs["enabled"]
+        if kwargs.has_key("enabled"):
+            user.is_active = kwargs["enabled"]
         try:
             fname, lname = self.name.split()
         except ValueError:
@@ -174,7 +175,7 @@ class Mailbox(models.Model):
         except IntegrityError:
             raise AdminError(_("Mailbox with this address already exists"))
         self.user = user
-        if kwargs["password"] != u"é":
+        if kwargs.has_key("password") and kwargs["password"] != u"é":
             self.password = crypt_password(kwargs["password"])
         self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
         self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
@@ -183,11 +184,11 @@ class Mailbox(models.Model):
             self.quota = kwargs["quota"]
         else:
             self.quota = self.domain.quota
-        try:
-            for kw in ["enabled", "password", "quota"]:
+        for kw in ["enabled", "password", "quota"]:
+            try:
                 del kwargs[kw]
-        except KeyError:
-            pass
+            except KeyError:
+                pass
         super(Mailbox, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

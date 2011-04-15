@@ -64,8 +64,13 @@ function ajax_submit(event) {
         }
       } else {
         if ($defined(response.respmsg)) {
-          parent.current_anchor.loading_message = response.respmsg;
-          parent.current_anchor.loading_color = "green";
+          if ($defined(parent.current_anchor)) {
+            parent.current_anchor.loading_message = response.respmsg;
+            parent.current_anchor.loading_color = "green";
+          } else {
+            parent.infobox.info(response.respmsg);
+            parent.infobox.hide(1);
+          }
         }
         if ($defined(response.ajaxnav)) {
           if ($defined(response.url)) {
