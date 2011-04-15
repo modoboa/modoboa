@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-13 18:23+0200\n"
+"POT-Creation-Date: 2011-04-15 15:37+0200\n"
 "PO-Revision-Date: 2011-01-07 09:00+0100\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: Español <i18n@impulzia.com>\n"
@@ -135,8 +135,8 @@ msgstr "Nombre del dominio"
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Cuota por defecto en MB que se aplicarán a los \"mailboxes\""
 
-#: admin/models.py:31 admin/models.py:76 admin/models.py:220
-#: admin/models.py:235 extensions/postfix_autoreply/models.py:19
+#: admin/models.py:31 admin/models.py:76 admin/models.py:221
+#: admin/models.py:236 extensions/postfix_autoreply/models.py:19
 msgid "enabled"
 msgstr "activado"
 
@@ -156,7 +156,7 @@ msgstr "objetivo"
 msgid "The domain this alias points to"
 msgstr "El dominio de este alias apuntan a"
 
-#: admin/models.py:77 admin/models.py:221
+#: admin/models.py:77 admin/models.py:222
 msgid "Check to activate this alias"
 msgstr "Activar este alias"
 
@@ -164,7 +164,7 @@ msgstr "Activar este alias"
 msgid "First name and last name of mailbox owner"
 msgstr "Nombre y apellidos del propietario del \"mailbox\""
 
-#: admin/models.py:87 admin/models.py:216
+#: admin/models.py:87 admin/models.py:217
 msgid "address"
 msgstr "dirección"
 
@@ -180,23 +180,23 @@ msgstr "contraseña"
 msgid "Failed to initialise mailbox, check permissions"
 msgstr "Ha fallado la inicialización del \"mailbox\", compruebe permisos"
 
-#: admin/models.py:175
+#: admin/models.py:176
 msgid "Mailbox with this address already exists"
 msgstr "Ya existe un \"Mailbox\" con esta dirección"
 
-#: admin/models.py:217
+#: admin/models.py:218
 msgid "The alias address (without the domain part)"
 msgstr "La direción de alias (sin la parte de dominio)"
 
-#: admin/models.py:218
+#: admin/models.py:219
 msgid "mailboxes"
 msgstr "\"mailboxes\""
 
-#: admin/models.py:219
+#: admin/models.py:220
 msgid "The mailboxes this alias points to"
 msgstr "Los \"mailboxes\" de este alias apuntan a"
 
-#: admin/models.py:236
+#: admin/models.py:237
 msgid "Check to enable this extension"
 msgstr "Activar esta extensión"
 
@@ -1225,6 +1225,11 @@ msgstr "Nueva contraseña"
 #: userprefs/forms.py:26
 msgid "Old password mismatchs"
 msgstr "La contraseña actual no concuerda"
+
+#: userprefs/views.py:31
+#, fuzzy
+msgid "Password changed"
+msgstr "Contraseña"
 
 #~ msgid "Release this selection?"
 #~ msgstr "¿Publicar esta selección?"

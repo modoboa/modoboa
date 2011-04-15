@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-13 18:23+0200\n"
+"POT-Creation-Date: 2011-04-15 15:37+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -135,8 +135,8 @@ msgstr "Le nom du domaine"
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Quota par défaut en Mo appliqué aux boites aux lettres"
 
-#: admin/models.py:31 admin/models.py:76 admin/models.py:220
-#: admin/models.py:235 extensions/postfix_autoreply/models.py:19
+#: admin/models.py:31 admin/models.py:76 admin/models.py:221
+#: admin/models.py:236 extensions/postfix_autoreply/models.py:19
 msgid "enabled"
 msgstr "Activé"
 
@@ -156,7 +156,7 @@ msgstr "cible"
 msgid "The domain this alias points to"
 msgstr "Le domaine vers lequel cet alias pointe"
 
-#: admin/models.py:77 admin/models.py:221
+#: admin/models.py:77 admin/models.py:222
 msgid "Check to activate this alias"
 msgstr "Cocher pour activer cet alias"
 
@@ -164,7 +164,7 @@ msgstr "Cocher pour activer cet alias"
 msgid "First name and last name of mailbox owner"
 msgstr "Prénom et nom du propriétaire de la boite aux lettres"
 
-#: admin/models.py:87 admin/models.py:216
+#: admin/models.py:87 admin/models.py:217
 msgid "address"
 msgstr "Adresse"
 
@@ -181,23 +181,23 @@ msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Impossible d'initialiser la boite aux lettres, vérifier les permissions"
 
-#: admin/models.py:175
+#: admin/models.py:176
 msgid "Mailbox with this address already exists"
 msgstr "Une boite aux lettres pour cette adresse existe déjà"
 
-#: admin/models.py:217
+#: admin/models.py:218
 msgid "The alias address (without the domain part)"
 msgstr "L'adresse de l'alias (sans la partie domaine)"
 
-#: admin/models.py:218
+#: admin/models.py:219
 msgid "mailboxes"
 msgstr "Boites aux lettres"
 
-#: admin/models.py:219
+#: admin/models.py:220
 msgid "The mailboxes this alias points to"
 msgstr "Les boites aux lettres sur lesquelles pointe cet alias"
 
-#: admin/models.py:236
+#: admin/models.py:237
 msgid "Check to enable this extension"
 msgstr "Cocher pour activer cette extension"
 
@@ -1220,3 +1220,7 @@ msgstr "Nouveau mot de passe"
 #: userprefs/forms.py:26
 msgid "Old password mismatchs"
 msgstr "L'ancien mot de passe est incorrect"
+
+#: userprefs/views.py:31
+msgid "Password changed"
+msgstr "Mot de passe changé"
