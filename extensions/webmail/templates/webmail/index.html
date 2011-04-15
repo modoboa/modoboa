@@ -14,7 +14,7 @@ function wm_updatelisting(resp) {
   if ($defined(resp.folders)) {
     $("folders").set("html", resp.folders);
     $$("li[class*=clickable]").removeEvents();
-    SqueezeBox.assign($$('a[class=boxed]'), {
+    SqueezeBox.assign($("folders").getElements('a[class=boxed]'), {
       parse: 'rel'
     });
 
