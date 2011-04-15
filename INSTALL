@@ -110,6 +110,40 @@ requires a migration.
 **NB: Before executing a schema migration, I recommend that you make a copy of your
 existing database.**
 
+0.8.4: folders manipulation support (webmail) and bugfixes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Update the ``MIDDLEWARE_CLASSES`` variable in *settings.py*::
+
+    MIDDLEWARE_CLASSES = (
+      'django.middleware.common.CommonMiddleware',
+      'django.contrib.sessions.middleware.SessionMiddleware',
+      'django.contrib.auth.middleware.AuthenticationMiddleware',
+      'django.contrib.messages.middleware.MessageMiddleware',
+      'modoboa.lib.middleware.ExtControlMiddleware',
+      'modoboa.extensions.webmail.middleware.WebmailErrorMiddleware',
+    )
+
+#. Go the *Settings/Extensions* panel, deactivate and activate your extensions, it will update all the symbolic links to the new format.
+
+#. Optional: update the ``DATABASES`` and ``TEMPLATE_LOADERS`` variables in *settings.py* to remove warning messages (appearing with Django 1.3)::
+
+    DATABASES = {
+      "default" : {
+        "ENGINE" : "<your engine>",
+        "NAME" : "modoboa",
+        "USER" : "<your user>",
+        "PASSWORD" : "<your password>",
+        "HOST" : "",
+        "PORT" : ""
+      }
+    }
+  
+    TEMPLATE_LOADERS = (
+      'django.template.loaders.filesystem.Loader',
+      'django.template.loaders.app_directories.Loader',
+    )
+
 0.8.3: admin application refactoring and more
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
