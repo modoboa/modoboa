@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-13 18:23+0200\n"
-"PO-Revision-Date: 2011-01-13 22:50+0100\n"
+"PO-Revision-Date: 2011-04-26 23:33+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
 "Language: \n"
@@ -17,27 +17,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:81
-#, fuzzy
 msgid "Release this selection?"
-msgstr "Diesen Alias löschen?"
+msgstr "Diese Auswahl freilassen?"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:88
-#, fuzzy
 msgid "Delete this selection?"
-msgstr "Diesen Alias löschen?"
+msgstr "Diese Auswahl löschen?"
 
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"
-msgstr ""
+msgstr "Ordner bearbeiten"
 
 #: extensions/webmail/static/js/fdmenu.js:62
 msgid "Folder deleted"
-msgstr ""
+msgstr "Ordner gelöscht"
 
 #: extensions/webmail/static/js/webmail.js:188
-#, fuzzy
 msgid "Reloading..."
-msgstr "Lade ..."
+msgstr "Aktualisiere..."
 
 #: extensions/webmail/static/js/webmail.js:196
 #: extensions/webmail/static/js/webmail.js:220 static/js/common.js:64
@@ -45,17 +42,16 @@ msgid "Done"
 msgstr "Abgeschlossen"
 
 #: extensions/webmail/static/js/webmail.js:209
-#, fuzzy
 msgid "Waiting..."
-msgstr "Lade ..."
+msgstr "Warte..."
 
 #: static/js/common.js:89
 msgid "Loading..."
-msgstr "Lade ..."
+msgstr "Lade..."
 
 #: static/js/common.js:339
 msgid "Search..."
-msgstr ""
+msgstr "Suchen..."
 
 #: static/js/domains.js:17
 msgid "Delete this domain?"

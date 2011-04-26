@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-15 15:37+0200\n"
-"PO-Revision-Date: 2011-01-13 22:49+0100\n"
+"PO-Revision-Date: 2011-04-26 23:30+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
 "Language: \n"
@@ -918,14 +918,12 @@ msgid "Folder where copies of sent messages go"
 msgstr "Ordner für Gesendete Nachrichten"
 
 #: extensions/webmail/main.py:51
-#, fuzzy
 msgid "Drafts folder"
-msgstr "Papierkorb"
+msgstr "Entwürfe"
 
 #: extensions/webmail/main.py:52
-#, fuzzy
 msgid "Folder where drafts go"
-msgstr "Ordner für gelöschte Nachrichten"
+msgstr "Ordner für Entwürfe"
 
 #: extensions/webmail/main.py:54
 msgid "Signature text"
@@ -973,33 +971,28 @@ msgid "This folder contains no messages"
 msgstr "Dieser Ordner enthält keine Nachrichten"
 
 #: extensions/webmail/views.py:451
-#, fuzzy
 msgid "Create a new folder"
-msgstr "Gesendete Nachrichten"
+msgstr "Neuen Ordner anlegen"
 
 #: extensions/webmail/views.py:463
-#, fuzzy
 msgid "Folder created"
-msgstr "Domäne erstellt."
+msgstr "Ordner erstellt"
 
 #: extensions/webmail/views.py:478
-#, fuzzy
 msgid "Edit folder"
-msgstr "Leerer Ordner"
+msgstr "Ordner bearbeiten"
 
 #: extensions/webmail/views.py:499
-#, fuzzy
 msgid "Folder modified"
-msgstr "Domäne verändert"
+msgstr "Ordner verändert"
 
 #: extensions/webmail/templates/webmail/folder.html:37
-#, fuzzy
 msgid "Parent folder"
-msgstr "Gesendete Nachrichten"
+msgstr "Übergeordneter Ordner"
 
 #: extensions/webmail/templates/webmail/folders.html:8
 msgid "Add a new folder"
-msgstr ""
+msgstr "Neuen Ordner erstellen"
 
 #: extensions/webmail/templates/webmail/folders.html:10
 msgid "Folders"
@@ -1233,9 +1226,8 @@ msgid "Old password mismatchs"
 msgstr "Altes Passwort stimmt nicht überein"
 
 #: userprefs/views.py:31
-#, fuzzy
 msgid "Password changed"
-msgstr "Passwort"
+msgstr "Passwort geändert"
 
 #~ msgid "Release this selection?"
 #~ msgstr "Auswahl freigeben?"
