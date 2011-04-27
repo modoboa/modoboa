@@ -1,14 +1,14 @@
 # Modoboa spanish translation
 # Copyright (C) 2010
 # This file is distributed under the same license as the Modoboa package.
-# Pedro Gracia <pedro.gracia@impulzia.com>, 2010.
+# Pedro Gracia <pedro.gracia@impulzia.com>, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-15 15:37+0200\n"
-"PO-Revision-Date: 2011-01-07 09:00+0100\n"
+"PO-Revision-Date: 2011-04-27 13:55+0200\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: Español <i18n@impulzia.com>\n"
 "Language: \n"
@@ -825,7 +825,7 @@ msgstr "Cc"
 
 #: extensions/webmail/lib.py:29
 msgid "Server response"
-msgstr ""
+msgstr "Respuesta del servidor"
 
 #: extensions/webmail/lib.py:173
 msgid "Connection to IMAP server failed, check your configuration"
@@ -912,14 +912,12 @@ msgid "Folder where copies of sent messages go"
 msgstr "Carpeta dónde van las copias de los correos enviados"
 
 #: extensions/webmail/main.py:51
-#, fuzzy
 msgid "Drafts folder"
-msgstr "Carpeta de basura"
+msgstr "Carpeta de borradores"
 
 #: extensions/webmail/main.py:52
-#, fuzzy
 msgid "Folder where drafts go"
-msgstr "Carpeta dónde van los mensajes eliminados"
+msgstr "Carpeta dónde van los borradores"
 
 #: extensions/webmail/main.py:54
 msgid "Signature text"
@@ -967,33 +965,28 @@ msgid "This folder contains no messages"
 msgstr "Esta carpeta no contiene mensajes"
 
 #: extensions/webmail/views.py:451
-#, fuzzy
 msgid "Create a new folder"
-msgstr "Carpeta de enviados"
+msgstr "Crear una nueva carpeta"
 
 #: extensions/webmail/views.py:463
-#, fuzzy
 msgid "Folder created"
-msgstr "Dominio creado"
+msgstr "Carpeta creada"
 
 #: extensions/webmail/views.py:478
-#, fuzzy
 msgid "Edit folder"
-msgstr "Vaciar la carpeta"
+msgstr "Editar carpeta"
 
 #: extensions/webmail/views.py:499
-#, fuzzy
 msgid "Folder modified"
-msgstr "Dominio modificado"
+msgstr "Carpeta modificada"
 
 #: extensions/webmail/templates/webmail/folder.html:37
-#, fuzzy
 msgid "Parent folder"
-msgstr "Carpeta de enviados"
+msgstr "Carpeta padre"
 
 #: extensions/webmail/templates/webmail/folders.html:8
 msgid "Add a new folder"
-msgstr ""
+msgstr "Añadir una nueva carpeta"
 
 #: extensions/webmail/templates/webmail/folders.html:10
 msgid "Folders"
@@ -1227,9 +1220,8 @@ msgid "Old password mismatchs"
 msgstr "La contraseña actual no concuerda"
 
 #: userprefs/views.py:31
-#, fuzzy
 msgid "Password changed"
-msgstr "Contraseña"
+msgstr "Contraseña cambiada"
 
 #~ msgid "Release this selection?"
 #~ msgstr "¿Publicar esta selección?"
