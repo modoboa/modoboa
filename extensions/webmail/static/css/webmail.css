@@ -1,6 +1,6 @@
 #listing {
     position: absolute;
-    left: 155px;
+    left: 160px;
     right: 0px;
     top: 130px;
     height: expression(document.body.clientHeight - 35 + "px");
