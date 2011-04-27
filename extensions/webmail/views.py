@@ -308,30 +308,30 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
     form = ComposeMailForm(request.POST)
     error = None
     ctx = None
+    editormode = parameters.get_user(request.user, "EDITOR")
     if form.is_valid():
         from email.mime.text import MIMEText
         from email.utils import make_msgid, formatdate
         import smtplib
 
-        subtype = parameters.get_user(request.user, "EDITOR")
         body = request.POST["id_body"]
         charset = "utf-8"
-        if subtype == "html":
+        if editormode == "html":
             from email.mime.multipart import MIMEMultipart
 
             msg = MIMEMultipart(_subtype="related")
             submsg = MIMEMultipart(_subtype="alternative")
             textbody = __html2plaintext(body)
             submsg.attach(MIMEText(textbody.encode(charset),
-                                _subtype="plain", _charset=charset))
+                                   _subtype="plain", _charset=charset))
             body, images = find_images_in_body(body)
-            submsg.attach(MIMEText(body.encode(charset), _subtype=subtype, 
-                                _charset=charset))
+            submsg.attach(MIMEText(body.encode(charset), _subtype=editormode, 
+                                   _charset=charset))
             msg.attach(submsg)
             for img in images:
                 msg.attach(img)
         else:
-            msg = MIMEText(body.encode(charset), _subtype=subtype)
+            msg = MIMEText(body.encode(charset), _subtype=editormode)
 
         msg["Subject"] = request.POST["subject"]
         address, domain = split_mailbox(request.POST["from_"])
@@ -378,7 +378,7 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
                                    {"form" : form, 
                                     "body" : request.POST["id_body"].strip(),
                                     "posturl" : posturl})
-        ctx = getctx("ko", level=2, error=error, listing=listing)
+        ctx = getctx("ko", level=2, error=error, listing=listing, editor=editormode)
     if not withctx:
         return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
     return ctx, HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

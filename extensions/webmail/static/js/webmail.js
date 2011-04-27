@@ -82,14 +82,17 @@ function compose_loader(event) {
   current_anchor.baseurl("compose").update();
 }
 
+function resize_window_callback(event) {
+  setDivHeight("id_body", $("mailheader").getSize().y, 0);
+}
+
 /*
  * Callback of the 'compose' action
  */
 function compose_callback(resp) {
   wm_updatelisting(resp);
-  window.addEvent("resize", function(evt) {
-    setDivHeight("id_body", $("mailheader").getSize().y, 0);
-  });
+
+  window.addEvent("resize", resize_window_callback);
   window.fireEvent("resize");
 
   var editormode = resp.editor;
@@ -105,15 +108,19 @@ function compose_callback(resp) {
       height: $(editorid).getSize().y
     });
   }
-  $$("a[name=back]").addEvent("click", loadFolder);
-  $$("a[name=sendmail]").addEvent("click", function(evt) {
+  $$("a[name=back]")
+    .removeEvents("click")
+    .addEvent("click", loadFolder);
+  $$("a[name=sendmail]")
+    .removeEvents("click")
+    .addEvent("click", function(evt) {
     evt.stop();
     $("composemail").set("send", {
       onSuccess: function(resp) {
         resp = JSON.decode(resp);
         if (resp.status == "ko") {
-          wm_updatelisting(resp);
-          window.fireEvent("resize");
+          get_callback("compose")(resp);
+
           if ($defined(resp.error)) {
             infobox.error(resp.error);
           }
