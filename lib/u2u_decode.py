@@ -10,11 +10,16 @@ sre = re.compile(r'\?=[ \t]+=\?')
 # re pat for MIME encoded_word (without trailing spaces)
 mre = re.compile(r'=\?[^?]*?\?[bq]\?[^? \t]*?\?=', re.I)
 
+tre = re.compile('=\?.+\?=')
+
 def decode_mime(m):
     # substitute matching encoded_word with unicode equiv.
     h = decode_header(m.group(0))
     u = unicode(make_header(h))
     return u
+
+def clean_spaces(m):
+    return m.group(0).replace(" ", "=20")
 
 def u2u_decode(s):
     # utility function for (final) decoding of mime header
@@ -22,6 +27,7 @@ def u2u_decode(s):
     # note2: spaces between enc_words are stripped (see RFC2047)
     s = ''.join(s.splitlines())
     s = sre.sub('?==?', s)
+    s = tre.sub(clean_spaces, s)
     u = mre.sub(decode_mime, s)
     return u
 
