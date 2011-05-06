@@ -345,6 +345,10 @@ class IMAPconnector(object):
         return True
 
     def getquota(self, folder):
+        if not "QUOTA" in self.m.capabilities:
+            self.quota_limit = self.quota_actual = None
+            return
+
         status, data = self.m.getquotaroot(self._encodefolder(folder))
         if status == "OK":
             quotadef = data[1][0]
@@ -442,7 +446,7 @@ class ImapListing(EmailListing):
         try:
             return int(float(mbc.quota_actual) \
                            / float(mbc.quota_limit) * 100)
-        except AttributeError:
+        except (AttributeError, TypeError):
             return -1
 
     def getquota(self):
