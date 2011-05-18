@@ -6,7 +6,6 @@ body {
 }
 
 div.row {
-    /*position: relative;*/
     clear: both;
     padding-top: 10px;
     padding-left: 20px;
@@ -133,4 +132,8 @@ td.even {
     padding: 4px 8px 8px;
     background: #eee;
     color: black;
+}
+
+.spacer {
+    clear: both;
 }

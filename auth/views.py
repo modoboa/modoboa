@@ -8,6 +8,7 @@ from django.utils.translation import ugettext as _
 from modoboa.lib import events
 import modoboa.admin
 from forms import LoginForm
+from modoboa.auth.lib import *
 
 def dologin(request):
     error = None
@@ -19,6 +20,9 @@ def dologin(request):
             if user.is_active:
                 login(request, user)
             
+                if request.user.id != 1:
+                    request.session["password"] = encrypt(request.POST["password"])
+
                 events.raiseEvent("UserLogin", request=request, 
                                   username=request.POST["username"],
                                   password=request.POST["password"])

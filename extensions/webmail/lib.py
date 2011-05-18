@@ -14,9 +14,9 @@ import email.utils
 import lxml
 from django.utils.translation import ugettext as _
 from django.conf import settings
-from modoboa.lib import decode, tables, imap_utf7, Singleton
+from modoboa.lib import decode, u2u_decode, tables, \
+    imap_utf7, static_url, ConnectionsManager, parameters
 from modoboa.lib.email_listing import MBconnector, EmailListing, Email
-from modoboa.lib import tables, imap_utf7, parameters, static_url, u2u_decode
 
 class WebmailError(Exception):
     errorexpr = re.compile("\[([^\]]+)\]\s*([^\.]+)")
@@ -112,29 +112,6 @@ class IMAPheader(object):
     @staticmethod
     def parse_subject(value, **kwargs):
         return decode(u2u_decode.u2u_decode(value))
-
-class ConnectionsManager(type):
-    def __init__(cls, name, bases, dict):
-        super(ConnectionsManager, cls).__init__(name, bases, dict)
-        cls.instances = {}
-
-    def __call__(cls, **kwargs):
-        key = None
-        if kwargs.has_key("user"):
-            key = kwargs["user"]
-        else:
-            return None
-        if not cls.instances.has_key(key):
-            cls.instances[key] = None
-        if kwargs.has_key("password"):
-            kwargs["password"] = decrypt(kwargs["password"])
-
-        if cls.instances[key] is None:
-            cls.instances[key] = \
-                super(ConnectionsManager, cls).__call__(**kwargs)
-        else:
-            cls.instances[key].refresh(key, kwargs["password"])
-        return cls.instances[key]
 
 class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
@@ -248,6 +225,10 @@ class IMAPconnector(object):
         for mb in data:
             flags, delimiter, name = list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
+            # Dovecot stores user scripts into a specific folder, I'm
+            # wondering why this folder appears in 'list' result?
+            if name in ["dovecot.sieve"]:
+                continue
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
                 if not descr.has_key("path"):
@@ -642,24 +623,3 @@ def find_images_in_body(body):
         
     return lxml.html.tostring(html), parts
     
-
-def encrypt(clear):
-    from Crypto.Cipher import AES
-    import base64
-    
-    obj = AES.new(parameters.get_admin("SECRET_KEY"),
-                  AES.MODE_ECB)
-    if len(clear) % AES.block_size:
-        clear += "\0" * (AES.block_size - len(clear) % AES.block_size)
-    ciph = obj.encrypt(clear)
-    ciph = base64.b64encode(ciph)
-    return ciph
-
-def decrypt(ciph):
-    from Crypto.Cipher import AES
-    import base64
-
-    obj = AES.new(parameters.get_admin("SECRET_KEY"), AES.MODE_ECB)
-    ciph = base64.b64decode(ciph)
-    clear = obj.decrypt(ciph)
-    return clear.rstrip('\0')

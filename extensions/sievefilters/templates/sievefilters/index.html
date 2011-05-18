@@ -1,0 +1,121 @@
+{% extends "nlayout.html" %}
+{% load i18n libextras sfilters_tags %}
+{% block html_head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}sievefilters/css/style.css" />
+<script type="text/javascript">
+var curscript = null;
+
+function loadscript(evt) {
+  var params = "name=" + this.get("href");
+
+  curscript = this.get("href");
+  evt.stop();
+  $$("#sets_list li").removeClass("selected");
+  this.getParent().addClass("selected");
+  new Request.JSON({
+    url: "{% url extensions.sievefilters.views.getscript %}",
+    onSuccess: function(response) {
+      if (response.status == "ok") {
+        $("set_content").set("html", response.content);
+      }
+    }
+  }).get(params);
+}
+
+function check_prereqs(evt, msg) {
+  evt.stop();
+  if (!curscript) {
+    return false;
+  }
+  if (!confirm(msg)) {
+    return false;
+  }
+  return true;
+}
+
+function send_command(cmd) {
+  new Request.JSON({
+    url: cmd,
+    data: "name=" + curscript,
+    onSuccess: function(response) {
+      if (response.status == "ko") {
+        infobox.calcsize(300);
+        infobox.error(response.respmsg);
+      } else {
+        if (!response.norefresh) {
+          location.reload();
+        }
+        infobox.calcsize();
+        infobox.info(response.respmsg);
+        infobox.hide(2);
+      }
+    }
+  }).get();
+}
+
+function savescript(evt) {
+  if (!check_prereqs(evt, gettext("Save changes?"))) {
+    return;
+  }
+  new Request.JSON({
+    url: $("feditor").get("action"),
+    method: $("feditor").get("method"),
+    data: $("feditor").toQueryString(),
+    onSuccess: function(response) {
+      if (response.status == "ko") {
+        infobox.calcsize(300);
+        infobox.error(response.respmsg);
+      } else {
+        infobox.calcsize();
+        infobox.info(response.respmsg);
+        infobox.hide(2);
+      }
+    }
+  }).send();
+}
+
+function deletescript(evt) {
+  if (!check_prereqs(evt, gettext("Delete filters set?"))) {
+    return;
+  }
+  send_command("{% url extensions.sievefilters.views.delete_filters_set %}");
+}
+
+function activatescript(evt) {
+  if (!check_prereqs(evt, gettext("Activate this filters set?"))) {
+    return;
+  }
+  send_command("{% url extensions.sievefilters.views.activate_filters_set %}");
+}
+
+$(document).addEvent("domready", function() {
+  $$("a[name=loadscript]").addEvent("click", loadscript);
+  $$("a[name=savescript]").addEvent("click", savescript);
+  $$("a[name=deletescript]").addEvent("click", deletescript);
+  $$("a[name=activatescript]").addEvent("click", activatescript);
+});
+</script>
+{% endblock %}
+{% block middletitle %}{% trans "Message filters" %}{% endblock %}
+{% block menu %}{% sfilters_menu user %}{% endblock %}
+{% block content %}
+{% if messages %}
+  {% display_messages messages %}
+{% endif %}
+<div id="sets_list">
+  <ul>
+    {% if active_script %}
+    <li>
+      <a href="{{ active_script }}" name="loadscript">{{ active_script }}</a>
+      <img src="{{ MEDIA_URL }}pics/active.png" />
+    </li>
+    {% endif %}
+    {% for script in scripts %}
+    <li><a href="{{ script }}" name="loadscript">{{ script }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+<div id="set_content">
+</div>
+<div class="spacer"></div>
+{% endblock %}

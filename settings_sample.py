@@ -102,6 +102,7 @@ INSTALLED_APPS = (
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',
     'modoboa.extensions.amavis_quarantine',
+    'modoboa.extensions.sievefilters',
 )
 
 AUTHENTICATION_BACKENDS = (

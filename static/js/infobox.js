@@ -22,13 +22,11 @@ var InfoBox = new Class({
             "font-size" : "1em",
             "font-weight" : "bold",
             "text-align" : "left",
-            "width" : this.options.width + "px",
             "padding" : "10px",
             "position" : "absolute",
-            "top" : "0px",
-            "left" : boxleft + "px",
             "display" : "none"
         });
+        this.calcsize();
         this.setProfile("gray");
         this.spinner = new Element("img", {
             "src" : "/static/css/spinner.gif"
@@ -38,10 +36,22 @@ var InfoBox = new Class({
 
         this.label = new Element("label").set("html", this.options.message);
         this.label.setStyles({
-            "margin-left" : "10px"
+            "white-space": "pre-line"
+            /*"margin-left" : "10px"*/
         });
         this.label.inject(this.box);
         this.box.inject($(document.body));
+    },
+
+    calcsize: function(width) {
+        var w = ($defined(width) ? width : this.options.width);
+        var boxleft = $(document.body).getSize().x / 2 - w / 2;
+
+        this.box.setStyles({
+            width: w + "px",
+            left: boxleft + "px",
+            top: "0px"
+        });
     },
 
     setMessage: function(text) {

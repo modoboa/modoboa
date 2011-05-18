@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from modoboa.lib import parameters
+from modoboa.auth.lib import decrypt
 
 def exec_cmd(cmd, **kwargs):
     import subprocess
@@ -94,6 +95,8 @@ def ajax_response(request, status="ok", respmsg=None,
         ctx[k] = v
     if template is not None:
         content = _render_to_string(request, template, ctx)
+    elif kwargs.has_key("content"):
+        content = kwargs["content"]
     else:
         content = ""
     jsonctx = {"status" : status, "content" : content}
@@ -156,17 +159,6 @@ def db_table_exists(table, cursor=None):
     else:
         return table in table_names
 
-class Singleton(type):
-    def __init__(cls, name, bases, dict):
-        super(Singleton, cls).__init__(name, bases, dict)
-        cls.instance = None
-
-    def __call__(cls, *args, **kwargs):
-        if cls.instance is None:
-            cls.instance = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls.instance
-
-
 def _check_password(password, crypted):
     scheme = parameters.get_admin("PASSWORD_SCHEME", app="admin")
     if scheme == "crypt":
@@ -193,3 +185,33 @@ def split_mailbox(mailbox):
         domain = parts[-1]
         address = "@".join(parts[:-1])
     return (address, domain)
+
+class ConnectionsManager(type):
+    """Singleton pattern implementation
+
+    This class is specialized in connection management.
+    """
+    def __init__(cls, name, bases, dict):
+        super(ConnectionsManager, cls).__init__(name, bases, dict)
+        cls.instances = {}
+
+    def __call__(cls, **kwargs):
+        key = None
+        if kwargs.has_key("user"):
+            key = kwargs["user"]
+        else:
+            return None
+        if not cls.instances.has_key(key):
+            cls.instances[key] = None
+        if kwargs.has_key("password"):
+            kwargs["password"] = decrypt(kwargs["password"])
+
+        if cls.instances[key] is None:
+            cls.instances[key] = \
+                super(ConnectionsManager, cls).__call__(**kwargs)
+        else:
+            cls.instances[key].refresh(key, kwargs["password"])
+        return cls.instances[key]
+
+class ConnectionError(Exception):
+    pass

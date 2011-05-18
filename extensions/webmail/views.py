@@ -14,6 +14,7 @@ from modoboa.lib import parameters, _render, _render_error, \
     getctx, is_not_localadmin, _render_to_string, split_mailbox, \
     ajax_response
 from modoboa.lib.email_listing import parse_search_parameters, Paginator
+from modoboa.auth.lib import *
 from lib import *
 from forms import *
 from templatetags.webextras import *
@@ -365,7 +366,7 @@ def send_mail(request, withctx=False, origmsg=None, posturl=None):
             error = str(text)
         if error is None:
             if parameters.get_admin("SMTP_AUTHENTICATION") == "yes":
-                s.login(request.user.username, decrypt(request.session["password"]))
+                s.login(request.user.username, get_password(request))
             s.sendmail(msg['From'], rcpts, msg.as_string())
             s.quit()
             sentfolder = parameters.get_user(request.user, "SENT_FOLDER")

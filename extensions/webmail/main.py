@@ -6,11 +6,8 @@ from modoboa.lib import events, parameters, static_url
 
 def init():
     events.register("UserMenuDisplay", menu)
-    events.register("UserLogin", userlogin)
     events.register("UserLogout", userlogout)
     
-    parameters.register_admin("SECRET_KEY", type="string", deflt="abcdefghijklmnop",
-                              help=_("Key used to encrypt/decrypt passwords"))
     parameters.register_admin("IMAP_SERVER", type="string", 
                               deflt="127.0.0.1",
                               help=_("Address of your IMAP server"))
@@ -67,7 +64,6 @@ def init():
 
 def destroy():
     events.unregister("UserMenuDisplay", menu)
-    events.unregister("UserLogin", userlogin)
     parameters.unregister_app("webmail")
 
 def infos():
@@ -92,13 +88,6 @@ def menu(**kwargs):
          "url" : reverse(views.index),
          "img" : static_url("pics/webmail.png")}
         ]
-
-def userlogin(**kwargs):
-    from lib import IMAPconnector, encrypt
-
-    if kwargs["request"].user.id == 1:
-        return
-    kwargs["request"].session["password"] = encrypt(kwargs["password"])
 
 def userlogout(**kwargs):
     from lib import IMAPconnector

@@ -1,0 +1,6 @@
+<form action="{% url extensions.sievefilters.views.savescript %}" 
+      method="POST" id="feditor" name="feditor">
+  <input type="hidden" name="scriptname" value="{{ name }}" />
+  <textarea id="scriptcontent" name="scriptcontent">{{ scriptcontent }}</textarea>
+</form>
+

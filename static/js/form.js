@@ -13,6 +13,10 @@ var error_callbacks = {
     }
 };
 
+var success_callbacks = {
+
+};
+
 var extra_data_callbacks = {
 
 };
@@ -27,6 +31,10 @@ function register_callback(hash, name, callback) {
 
 function register_error_callback(name, callback) {
     return register_callback(error_callbacks, name, callback);
+}
+
+function register_success_callback(name, callback) {
+    return register_callback(success_callbacks, name, callback);
 }
 
 function register_extra_data_callback(name, callback) {
@@ -80,7 +88,10 @@ function ajax_submit(event) {
         } else if ($defined(response.url)) {
           parent.location.href = response.url;
         }
-        parent.SqueezeBox.close();
+        if ($defined(success_callbacks[myid])) {
+	  success_callbacks[myid](response);
+	}
+        parent.SqueezeBox.close();          
       }
     },
     onFailure: function(xhr) {
