@@ -58,13 +58,21 @@ function check_anchor() {
     profile: current_anchor.loading_color,
     spinner: true
   });
-  new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
-    var callback = ($defined(resp.callback)) ? resp.callback : "default";
-    callbacks[callback](resp);
-    infobox.info(gettext("Done"));
-    infobox.hide(1);
-    current_anchor.reset_loading_infos();
-  }}).get();
+  new Request.JSON({
+    url: query,
+    noCache : true,
+    onSuccess: function(resp) {
+      var callback = ($defined(resp.callback)) ? resp.callback : "default";
+      callbacks[callback](resp);
+      infobox.info(gettext("Done"));
+      infobox.hide(1);
+      current_anchor.reset_loading_infos();
+    },
+    onFailure: function(xhr) {
+      $(document.body).set("html", xhr.responseText);
+      $(document.body).setStyle("overflow", "auto");
+    }
+  }).get();
 };
 
 /*
