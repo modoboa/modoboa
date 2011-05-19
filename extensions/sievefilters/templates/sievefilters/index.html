@@ -27,7 +27,7 @@ function check_prereqs(evt, msg) {
   if (!curscript) {
     return false;
   }
-  if (!confirm(msg)) {
+  if ($defined(msg) && !confirm(msg)) {
     return false;
   }
   return true;
@@ -88,11 +88,20 @@ function activatescript(evt) {
   send_command("{% url extensions.sievefilters.views.activate_filters_set %}");
 }
 
+function downloadscript(evt) {
+  if (!curscript) {
+    evt.stop();
+    return;
+  }
+  this.set("href", this.get("href") + "?name=" + curscript);
+}
+
 $(document).addEvent("domready", function() {
   $$("a[name=loadscript]").addEvent("click", loadscript);
   $$("a[name=savescript]").addEvent("click", savescript);
   $$("a[name=deletescript]").addEvent("click", deletescript);
   $$("a[name=activatescript]").addEvent("click", activatescript);
+  $$("a[name=downloadscript]").addEvent("click", downloadscript);
 });
 </script>
 {% endblock %}

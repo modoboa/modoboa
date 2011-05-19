@@ -7,4 +7,5 @@ urlpatterns = patterns('modoboa.extensions.sievefilters.views',
                        (r'^newfs/$', 'new_filters_set'),
                        (r'^deletefs/$', 'delete_filters_set'),
                        (r'^activatefs/$', 'activate_filters_set'),
+                       (r'^downloadfs/$', 'download_filters_set'),
                        )

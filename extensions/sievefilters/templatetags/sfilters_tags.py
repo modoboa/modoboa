@@ -29,7 +29,11 @@ def sfilters_menu(user):
         {"name" : "deletescript",
          "img" : static_url("pics/remove.png"),
          "label" : _("Remove filters set"),
-         "url" : reverse(views.delete_filters_set),}
+         "url" : reverse(views.delete_filters_set),},
+        {"name" : "downloadscript",
+         "img" : static_url("pics/download.png"),
+         "label" : _("Download"),
+         "url" : reverse(views.download_filters_set)}
         ]
 
     return render_to_string('common/menulist.html', 

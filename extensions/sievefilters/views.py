@@ -101,3 +101,21 @@ def activate_filters_set(request):
     except SieveClientError, e:
         return ajax_response(request, "ko", respmsg=str(e))
     return ajax_response(request, respmsg=_("Filters set activated"))
+
+@login_required
+def download_filters_set(request):
+    if not request.GET.has_key("name") or \
+            request.GET["name"] == "":
+        return
+    sc = SieveClient(user=request.user.username, 
+                     password=request.session["password"])
+    try:
+        script = sc.getscript(request.GET["name"])
+    except SieveClientError, e:
+        return ajax_response(request, "ko", respmsg=str(e))
+
+    resp = HttpResponse(script)
+    resp["Content-Type"] = "text/plain"
+    resp["Content-Length"] = len(script)
+    resp["Content-Disposition"] = "attachment; filename=%s.txt" % request.GET["name"]
+    return resp
