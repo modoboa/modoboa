@@ -118,15 +118,14 @@ var SqueezeBox = {
       return !SqueezeBox.fromElement(this, options);
     });
   },
-  
+
   open: function(subject, options) {
     this.initialize();
 
     if (this.element != null) this.trash();
     this.element = $(subject) || false;
-    
+
     this.setOptions(Object.merge(this.presets, options || {}));
-    
     if (this.element && this.options.parse) {
       var obj = this.element.getProperty(this.options.parse);
       if (obj && (obj = JSON.decode(obj, this.options.parseSecure))) this.setOptions(obj);
@@ -134,7 +133,7 @@ var SqueezeBox = {
     this.url = ((this.element) ? (this.element.get('href')) : subject) || this.options.url || '';
 
     this.assignOptions();
-    
+
     var handler = handler || this.options.handler;
     if (handler) return this.setContent(handler, this.parsers[handler].call(this, true));
     var ret = false;
@@ -147,7 +146,7 @@ var SqueezeBox = {
       return false;
     }, this);
   },
-  
+
   fromElement: function(from, options) {
     return this.open(from, options);
   },

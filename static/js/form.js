@@ -1,10 +1,4 @@
 var error_callbacks = {
-    mbaliasform: function() {
-	if ($("id_domain").value == 0) {
-	    $("id_mboxes").set("html", "");
-	}
-	mbaliasform_init();
-    },
     permform: function() {
 	if ($defined($("id_domain"))) {
 	    $("id_domain").options[0].setProperty("selected", "selected");

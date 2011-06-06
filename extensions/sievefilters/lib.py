@@ -2,7 +2,8 @@
 
 from django.utils.translation import ugettext as _
 from managesieve import ManageSieveClient, Error
-from modoboa.lib import ConnectionsManager, ConnectionError, parameters
+from modoboa.lib import parameters
+from modoboa.lib.connections import ConnectionsManager, ConnectionError
 
 class SieveClientError(Exception):
     pass

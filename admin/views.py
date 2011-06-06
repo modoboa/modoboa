@@ -6,6 +6,7 @@ from django.utils.http import urlquote
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
+from django.db.models import Q
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.db import transaction, IntegrityError
@@ -14,7 +15,8 @@ from modoboa import admin, userprefs
 from models import *
 from admin.permissions import *
 from modoboa.lib import crypt_password
-from modoboa.lib import _render, ajax_response, getctx, events, parameters
+from modoboa.lib import _render, ajax_response, ajax_simple_response, \
+    getctx, events, parameters, split_mailbox
 from modoboa.lib.models import Parameter
 import copy
 
@@ -60,7 +62,7 @@ def domains(request):
     
     domains = Domain.objects.all()
     for dom in domains:
-        dom.mbalias_counter = len(Alias.objects.filter(mboxes__domain__pk=dom.id))
+        dom.mbalias_counter = len(Alias.objects.filter(domain=dom.id))
     deloptions = {"keepdir" : _("Do not delete domain directory")}
     return render_domains_page(request, "domains",
                                domains=domains,
@@ -268,6 +270,22 @@ def mailboxes_raw(request, dom_id=None):
 
 @login_required
 @good_domain
+@permission_required("admin.view_mailboxes")
+def mailboxes_search(request):
+    if request.method != "POST":
+        return
+    local_part, domain = split_mailbox(request.POST["search"])
+    query = Q(address__startswith=local_part)
+    if domain is not None and domain != "":
+        query &= Q(domain__name__startswith=domain)
+    if request.GET.has_key("domid"):
+        query = Q(domain=request.GET["domid"]) & query
+    mboxes = Mailbox.objects.filter(query)
+    result = map(lambda mb: mb.full_address, mboxes)
+    return ajax_simple_response(result)
+
+@login_required
+@good_domain
 @permission_required("admin.add_mailbox")
 def newmailbox(request, tplname="admin/adminform.html"):
     commonctx = {"title" : _("New mailbox"),
@@ -361,12 +379,49 @@ def delmailbox(request):
 @permission_required("admin.view_aliases")
 def mbaliases(request):
     if request.GET.has_key("domid"):
-        aliases = Alias.objects.filter(mboxes__domain__pk=request.GET["domid"]).distinct()
+        aliases = Alias.objects.filter(domain=request.GET["domid"])
     elif request.GET.has_key("mbid"):
         aliases = Alias.objects.filter(mboxes__id=request.GET["mbid"]).distinct()
     else:
         aliases = Alias.objects.all()
+    if not request.user.is_superuser:
+        usermb = Mailbox.objects.get(user=request.user.id)
+        for al in aliases:
+            al.ui_disabled = False
+            for mb in al.mboxes.all():
+                if mb.domain.id != usermb.domain.id:
+                    al.ui_disabled = True
+                    break
     return render_domains_page(request, "mbaliases", aliases=aliases)
+
+def _validate_mbalias(request, form, successmsg, tplname, commonctx):
+    """Mailbox alias validation
+
+    Common function shared between creation and modification actions.
+    """
+    error = None
+    if form.is_valid():
+        try:
+            if not request.POST.has_key("targets"):
+                raise AdminError(_("No target defined"))
+            form.set_targets(request.user, request.POST.getlist("targets"))
+            try:
+                alias = form.save()
+            except IntegrityError:
+                raise AdminError(_("Alias with this name already exists"))
+            
+            messages.info(request, successmsg, fail_silently=True)
+            return ajax_response(request, url=reverse(admin.views.mbaliases))
+        except AdminError, e:
+            error = str(e)
+
+    if request.POST.has_key("targets"):
+        targets = request.POST.getlist("targets")
+        commonctx["targets"] = targets[:-1]
+
+    commonctx["form"] = form
+    commonctx["error"] = error
+    return ajax_response(request, status="ko", template=tplname, **commonctx)
 
 @login_required
 @good_domain
@@ -378,24 +433,10 @@ def newmbalias(request, tplname="admin/mbaliasform.html"):
                  "formid" : "mbaliasform"}
     if request.method == "POST":
         form = AliasForm(request.user, request.POST)
-        error = None
-        if form.is_valid():
-            try:
-                alias = form.save()
-            except IntegrityError:
-                error = _("Alias with this name already exists")
-            else:
-                form.save_m2m()
-                messages.info(request, _("Mailbox alias created"), fail_silently=True)
-                return ajax_response(request, url=reverse(admin.views.mbaliases))
-
-        commonctx["form"] = form
-        commonctx["error"] = error
-        return ajax_response(request, status="ko", template=tplname, **commonctx)
+        return _validate_mbalias(request, form, _("Mailbox alias created"),
+                                 tplname, commonctx)
 
     form = AliasForm(request.user)
-    if request.GET.has_key("mbid"):
-        form.fields["mboxes"].initial = request.GET["mbid"]
     commonctx["form"] = form
     commonctx["noerrors"] = True
     return _render(request, tplname, commonctx)
@@ -411,23 +452,12 @@ def editmbalias(request, alias_id, tplname="admin/mbaliasform.html"):
                  "formid" : "mbaliasform"}
     if request.method == "POST":
         form = AliasForm(request.user, request.POST, instance=alias)
-        error = None
-        if form.is_valid():
-            try:
-                alias = form.save()
-            except IntegrityError:
-                error = _("Alias with this name already exists")
-            else:
-                form.save_m2m()
-                messages.info(request, _("Mailbox alias modified"),
-                              fail_silently=True)
-                return ajax_response(request, url=reverse(admin.views.mbaliases))
-        commonctx["form"] = form
-        commonctx["error"] = error
-        return ajax_response(request, status="ko", template=tplname, **commonctx)
+        return _validate_mbalias(request, form, _("Mailbox alias modified"),
+                                 tplname, commonctx)
 
     form = AliasForm(request.user, instance=alias)
     commonctx["form"] = form
+    commonctx["targets"] = alias.get_targets()
     return _render(request, tplname, commonctx)
 
 @login_required

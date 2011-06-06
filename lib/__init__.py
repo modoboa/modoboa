@@ -12,7 +12,6 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.utils import simplejson
 from modoboa.lib import parameters
-from modoboa.auth.lib import decrypt
 
 def exec_cmd(cmd, **kwargs):
     import subprocess
@@ -33,7 +32,7 @@ def _render(request, tpl, user_context):
 def _render_to_string(request, tpl, user_context):
     """Custom rendering function
 
-    Same a mrender_render.
+    Same as _render.
     """
     return render_to_string(tpl, user_context,
                             context_instance=RequestContext(request))
@@ -109,6 +108,15 @@ def ajax_response(request, status="ok", respmsg=None,
     jsonctx["norefresh"] = norefresh
     return HttpResponse(simplejson.dumps(jsonctx), mimetype="application/json")
 
+def ajax_simple_response(content):
+    """Simple AJAX response
+
+    No extra formatting is done. The content is passed directly to simplejon.
+
+    :param content: the response's content (list, dict, string)
+    """
+    return HttpResponse(simplejson.dumps(content), mimetype="application/json")
+
 def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=None):
     if charset is not None:
         try:
@@ -177,6 +185,14 @@ def crypt_password(password):
     return password
 
 def split_mailbox(mailbox):
+    """Try to split a mailbox in two parts
+
+    :return: a 2-uple (local part, domain)
+    """
+    try:
+        mailbox.index("@")
+    except ValueError:
+        return mailbox, None
     parts = mailbox.split('@')
     if len(parts) == 2:
         address = parts[0]
@@ -185,33 +201,3 @@ def split_mailbox(mailbox):
         domain = parts[-1]
         address = "@".join(parts[:-1])
     return (address, domain)
-
-class ConnectionsManager(type):
-    """Singleton pattern implementation
-
-    This class is specialized in connection management.
-    """
-    def __init__(cls, name, bases, dict):
-        super(ConnectionsManager, cls).__init__(name, bases, dict)
-        cls.instances = {}
-
-    def __call__(cls, **kwargs):
-        key = None
-        if kwargs.has_key("user"):
-            key = kwargs["user"]
-        else:
-            return None
-        if not cls.instances.has_key(key):
-            cls.instances[key] = None
-        if kwargs.has_key("password"):
-            kwargs["password"] = decrypt(kwargs["password"])
-
-        if cls.instances[key] is None:
-            cls.instances[key] = \
-                super(ConnectionsManager, cls).__call__(**kwargs)
-        else:
-            cls.instances[key].refresh(key, kwargs["password"])
-        return cls.instances[key]
-
-class ConnectionError(Exception):
-    pass

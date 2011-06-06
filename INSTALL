@@ -250,7 +250,7 @@ For *MySQL* users, define the following map files on your server (it should work
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT name FROM admin_domain WHERE name='%s' AND enabled='1'
+  query = SELECT name FROM admin_domain WHERE name='%s' AND enabled=1
 
 ``/etc/postfix/sql-domain-aliases.cf``::
 
@@ -266,7 +266,7 @@ For *MySQL* users, define the following map files on your server (it should work
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(t2.name, '/', t1.path) FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%u' AND t2.name='%d'
+  query = SELECT concat(t2.name, '/', t1.path) FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.enabled=1 AND t1.domain_id=t2.id AND t1.address='%u' AND t2.enabled=1 AND t2.name='%d'
 
 ``/etc/postfix/sql-aliases.cf``::
 
@@ -274,7 +274,15 @@ For *MySQL* users, define the following map files on your server (it should work
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(t3.address, '@', t4.name) FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3, admin_domain AS t4 WHERE t1.enabled='1' AND t1.address='%u' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t3.domain_id=t4.id AND t4.name='%d'
+  query = SELECT concat(t3.address, '@', t4.name) FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3, admin_domain AS t4 WHERE t1.enabled=1 AND t1.address='%u' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t3.enabled=1 AND t3.domain_id=t4.id AND t4.enabled=1 AND t4.name='%d'
+
+``/etc/postfix/sql-forwards.cf``::
+
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT t1.extmboxes FROM admin_alias AS t1, admin_domain AS t2 WHERE t1.enabled=1 AND t1.address='%u' AND t1.domain_id=t2.id AND t2.name="%d" AND t2.enabled=1
 
 ``/etc/postfix/sql-domain-aliases-mailboxes.cf``::
 
@@ -301,12 +309,58 @@ Then, use the following configuration in the */etc/postfix/main.cf* file
   virtual_alias_domains = mysql:/etc/postfix/sql-domain-aliases.cf
   virtual_mailbox_maps = mysql:/etc/postfix/sql-mailboxes.cf
   virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf,
+        mysql:/etc/postfix/sql-forwards.cf,
         mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf
   # Stuff after
 
 NB: Modoboa supports both maildir and mbox formats. You can specify
 which format to use by modifying the MAILBOX_TYPE parameter available
 in the admin panel.
+
+Optional : 'catchall' aliases
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Modoboa supports 'catchall' aliases creation. In the case you would
+like to use this feature, you'll need to add specific queries to
+*postfix* configuration.
+
+First, create the following new maps:
+
+``/etc/postfix/sql-email2email.cf``::
+
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT concat(t1.address, '@', t2.name) FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%u' AND t2.name='%d'
+
+``/etc/postfix/sql-catchall-aliases.cf``::
+
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT concat(t3.address, '@', t4.name) FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3, admin_domain AS t4 WHERE t1.enabled='1' AND t1.address='*' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t3.enabled='1' AND t3.domain_id=t4.id AND t4.enabled='1' AND t4.name='%d'
+
+``/etc/postfix/sql-catchall-forwards.cf``::
+
+  user = <user>
+  password = <password>
+  dbname = <database>
+  hosts = 127.0.0.1
+  query = SELECT t1.extmboxes FROM admin_alias AS t1, admin_domain AS t2 WHERE t1.enabled='1' AND t1.address='*' AND t1.domain_id=t2.id AND t2.name="%d" AND t2.enabled='1'
+
+Once done, edit the *main.cf* configuration file and add the new maps
+to the ``virtual_alias_maps`` parameter like this::
+
+   virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf,
+        mysql:/etc/postfix/sql-forwards.cf,
+        mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf,
+        mysql:/etc/postfix/sql-email2email.cf,                  # new
+        mysql:/etc/postfix/sql-catchall-aliases.cf,             # new
+        mysql:/etc/postfix/sql-catchall-forwards.cf             # new
+
+Reload *postfix*.
 
 .. _dovecot-label:
 
@@ -529,8 +583,8 @@ images). In order to display images correctly, you need to create a
 
   $ mkdir <modoboa_dir>/static/tmp
 
-To be able to release messages, first take a look at this page:
-http://www.ijs.si/software/amavisd/amavisd-new-docs.html#quar-release. It
+To be able to release messages, first take a look at `this page
+<http://www.ijs.si/software/amavisd/amavisd-new-docs.html#quar-release>`_. It
 explains how to configure *amavisd-new* to listen somewhere for the
 AM.PDP protocol. This protocol is used to send release requests.
 

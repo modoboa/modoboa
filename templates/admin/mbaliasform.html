@@ -1,24 +1,34 @@
 {% extends "admin/adminform.html" %}
+{% load i18n %}
 {% block html_head %}
 {{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/Autocompleter.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/dynamic_textinput.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/Observer.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/Autocompleter.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/Autocompleter.Request.js"></script>
 <script type="text/javascript">
+function init_form() {
+    var dti = new DynamicTextInput($$("input[name=targets]"));
+
+    new Autocompleter.Request.JSON("id_targets", 
+                                   "{% url admin.views.mailboxes_search %}", {
+        postVar: "search",
+        minLength: 3
+    });
+}
+
 window.addEvent("domready", function() {
-    mbaliasform_init = function() {
-	$("id_domain").addEvent("change", function(event) {
-	    var domid = this.value;
-	    if (domid == "") {
-		$("id_mboxes").set("html", "");
-		return;
-	    }
-	    new Request({
-		url: "{% url domains %}" + domid + "/rawmboxes/?target=mbaliases",
-		method: "get", onSuccess: function(data) {
-		    $("id_mboxes").set("html", data);
-		}
-	    }).send();
-	});
-    };
-    mbaliasform_init();
+    register_error_callback("mbaliasform", init_form);
+    init_form();
 });
 </script>
+{% endblock %}
+{% block extrafields %}
+{% for t in targets %}
+<div class="row">
+  <label></label>
+  <input type="text" name="targets" id="id_targets_{{ forloop.counter }}" value="{{ t }}" />
+</div>
+{% endfor %}
 {% endblock %}

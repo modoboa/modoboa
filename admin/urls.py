@@ -16,6 +16,7 @@ urlpatterns = patterns('modoboa.admin.views',
                        (r'^mailboxes/new/$', 'newmailbox'),
                        (r'^mailboxes/edit/(?P<mbox_id>\d+)/$', 'editmailbox'),
                        (r'^mailboxes/delete/$', 'delmailbox'),
+                       (r'^mailboxes/search/$', 'mailboxes_search'),
                        
                        (r'^mbaliases/$', 'mbaliases'),
                        (r'^mbaliases/new/$', 'newmbalias'),

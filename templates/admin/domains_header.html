@@ -12,11 +12,10 @@ window.addEvent("domready", function() {
     var sizes = $("objects").get("rel").split(" ");
 
     evt.stop();
-    SqueezeBox.initialize({
-      size: {x: sizes[0], y: sizes[1]},
+    SqueezeBox.open(rooturl + type + "/new/", {
+      size: {x: parseInt(sizes[0]), y: parseInt(sizes[1])},
       handler: 'iframe'
     });
-    SqueezeBox.open(rooturl + type + "/new/");
   });
 
   $$("a[name=remove]").addEvent("click", function(evt) {
@@ -28,11 +27,19 @@ window.addEvent("domready", function() {
     var selection = "";
 
     objtable._selectedRows.each(function(item) {
+      var options = JSON.decode(item.get("rel"));
+
+      if ($defined(options.ui_disabled) && options.ui_disabled == "True") {
+        return;
+      }
       if (selection != "") {
         selection += ",";
       }
       selection += item.get("id");
     });
+    if (selection == "") {
+      return;
+    }
     new Confirmation(rooturl + type + "/delete/", "selection=" + selection,
                      gettext("Remove this selection?"), {
     {% if deloptions %}checkboxes: { {% join deloptions %} }{% endif %}

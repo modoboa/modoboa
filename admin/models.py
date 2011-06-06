@@ -215,9 +215,11 @@ class Mailbox(models.Model):
 
 class Alias(models.Model):
     address = models.CharField(_('address'), max_length=254,
-                               help_text=_("The alias address (without the domain part)"))
+                               help_text=_("The alias address (without the domain part). For a 'catch-all' address, just enter an * character."))
+    domain = models.ForeignKey(Domain)
     mboxes = models.ManyToManyField(Mailbox, verbose_name=_('mailboxes'),
                                     help_text=_("The mailboxes this alias points to"))
+    extmboxes = models.TextField(blank=True)
     enabled = models.BooleanField(_('enabled'),
                                   help_text=_("Check to activate this alias"))
 
@@ -226,10 +228,50 @@ class Alias(models.Model):
             ("view_aliases", "View aliases"),
             )
 
-    def __domain(self):
-        return self.mboxes.all()[0].domain
+    def save(self, int_targets, ext_targets, *args, **kwargs):
+        if len(ext_targets):
+            self.extmboxes = ",".join(ext_targets)
+        super(Alias, self).save(*args, **kwargs)
+        curmboxes = self.mboxes.all()
+        for t in int_targets:
+            if not t in curmboxes:
+                self.mboxes.add(t)
+        for t in curmboxes:
+            if not t in int_targets:
+                self.mboxes.remove(t)
 
-    domain = property(__domain)
+    def first_target(self):
+        """Return the first target of this alias
+
+        It is taken from internal addresses, or external addresses.
+        """
+        if len(self.mboxes.all()):
+            return self.mboxes.all()[0]
+        if len(self.extmboxes):
+            return self.extmboxes.split(",")[0]
+        return None
+
+    def get_targets(self):
+        """Return a list containing targeted mailboxes
+
+        Internal and external addresses are mixed into a single list.
+        """
+        result = []
+        if len(self.mboxes.all()):
+            for mb in self.mboxes.all()[1:]:
+                result += [mb.full_address]
+            if len(self.extmboxes):
+                result += self.extmboxes.split(",")
+        else:
+            result = self.extmboxes.split(",")[1:]
+        return result
+
+    def repr_extmboxes(self):
+        """Return external targets as a string
+
+        A ready to print representation of external targets.
+        """
+        return "<br/>".join(self.extmboxes.split(","))
 
 class Extension(models.Model):
     name = models.CharField(max_length=150)

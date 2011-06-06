@@ -15,7 +15,8 @@ import lxml
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from modoboa.lib import decode, u2u_decode, tables, \
-    imap_utf7, static_url, ConnectionsManager, parameters
+    imap_utf7, static_url, parameters
+from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.email_listing import MBconnector, EmailListing, Email
 
 class WebmailError(Exception):

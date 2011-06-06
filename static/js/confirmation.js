@@ -25,7 +25,7 @@ var Confirmation = new Class({
 	    id: "dlg-iconbox",
 	    html: "<img src='/static/pics/dialog-warning.png' alt='Warning' />"
 	}).inject(content);
-	
+
 	this.textdiv = new Element("div", {
 	    id: "dlg-textbox",
 	    html: "<b>" + question + "</b>"
@@ -42,19 +42,19 @@ var Confirmation = new Class({
 	    .addEvent("click", this.cancel_handler)
 	    .inject(buttonsdiv);
 
-	new Element("input", {type: "hidden", name: "result", id: "result", value: "cancel"})
+        new Element("input", {type: "hidden", name: "result",
+                              id: "result", value: "cancel"})
 	    .inject(content);
 
-	SqueezeBox.initialize({
-	    size: {x: 350, y: 140},
+	SqueezeBox.open(content, {
+            size: {x: 350, y: 140},
 	    handler: "adopt",
-	    onClose: this.close_handler
+	    onClose: this.close_handler.bind(content)
 	});
-	SqueezeBox.open(content);
     },
 
     close_handler: function(content) {
-	var result = $("confirmbox").getElement("input[name=result]");
+	var result = this.getElement("input[name=result]");
 	if (result.get("value") != "ok") {
 	    return;
 	}

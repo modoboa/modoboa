@@ -8,21 +8,58 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        try:
-            p = orm.Parameter.objects.get(name="webmail.SECRET_KEY")
-        except orm.Parameter.DoesNotExist:
-            pass
-        else:
-            p.name = "auth.SECRET_KEY"
-            p.save()
+        for alias in orm.Alias.objects.all():
+            print alias.address
+            alias.domain = alias.mboxes.all()[0].domain
+            alias.save()
 
     def backwards(self, orm):
         "Write your backwards methods here."
-        p = orm.Parameter.objects.get(name="auth.SECRET_KEY")
-        p.name = "webmail.SECRET_KEY"
-        p.save()
+
 
     models = {
+        'admin.alias': {
+            'Meta': {'object_name': 'Alias'},
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '254'}),
+            'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
+            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'extmboxes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'mboxes': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['admin.Mailbox']", 'symmetrical': 'False'})
+        },
+        'admin.domain': {
+            'Meta': {'object_name': 'Domain'},
+            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'quota': ('django.db.models.fields.IntegerField', [], {})
+        },
+        'admin.domainalias': {
+            'Meta': {'object_name': 'DomainAlias'},
+            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
+            'target': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"})
+        },
+        'admin.extension': {
+            'Meta': {'object_name': 'Extension'},
+            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '150'})
+        },
+        'admin.mailbox': {
+            'Meta': {'object_name': 'Mailbox'},
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
+            'gid': ('django.db.models.fields.IntegerField', [], {}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'password': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'quota': ('django.db.models.fields.IntegerField', [], {}),
+            'uid': ('django.db.models.fields.IntegerField', [], {}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -58,20 +95,7 @@ class Migration(DataMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'lib.parameter': {
-            'Meta': {'object_name': 'Parameter'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'value': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        },
-        'lib.userparameter': {
-            'Meta': {'object_name': 'UserParameter'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
-            'value': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
     }
 
-    complete_apps = ['lib']
+    complete_apps = ['admin']

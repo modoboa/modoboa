@@ -12,18 +12,6 @@ window.addEvent('domready', function() {
         });
     }
 
-    if ($$("a[name=deleteDom]"))
-      $$("a[name=deleteDom]").addEvent('click', function(event) {
-	  if (!confirm(gettext("Delete this domain?")))
-	    event.stop();
-	});
-
-    if ($$("a[name=deleteAlias]"))
-        $$("a[name=deleteAlias]").addEvent('click', function(event) {
-            if (!confirm(gettext("Delete this alias?")))
-                event.stop();
-        });
-
     $(document.body).addEvent('click', function(event) {
 	var target = event.target;
 	if (target.get('tag') == 'a') {
@@ -56,14 +44,3 @@ window.addEvent('domready', function() {
 	selectable: true
     });
 });
-
-loadPage = function(url, destination, callback) {
-    destination = (destination == null) ? "page" : destination;
-
-    if (callback)
-	new Request({url: url, method: "get", onSuccess: callback}).send();
-    else
-	new Request({url: url, method: "get", onSuccess: function(data) {
-	    $(destination).set('html', data);
-	}}).send();
-};

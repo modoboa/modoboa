@@ -4,7 +4,7 @@ from modoboa.admin.models import *
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
-from modoboa.lib import tables
+from modoboa.lib import tables, split_mailbox
 
 class DomainForm(forms.ModelForm):
     class Meta:
@@ -87,51 +87,70 @@ class MailboxForm(ProxyForm):
         return m
 
 class AliasForm(ProxyForm):
-    domain = forms.ModelChoiceField(queryset=Domain.objects.all(), label=_("Domain"),
-                                    required=True,
-                                    empty_label=_("Select a domain"),
-                                    help_text=_("Select a domain in the list"))
+    targets = forms.CharField(label=_("Target(s)"), required=False,
+                              help_text=_("Mailbox(es) this alias will point to"))
 
     def __init__(self, *args, **kwargs):
         super(AliasForm, self).__init__(*args, **kwargs)
         self.fields['address'].widget.attrs['size'] = 14
-        self.fields['mboxes'].widget.attrs['size'] = 5
 
         # This part is a little bit tricky. As 'domain' is not a
         # member of Alias, we need to fill it manually. if
         # self._domain exists, it means a DomainAdmin is going to
-        # create a new alias, we know how to fill the fields. Else,
-        # leave them empty (super admin mode).
+        # create a new alias, we know how to fill the fields.
         if self._domain is not None:
             self.fields["domain"].queryset = Domain.objects.filter(pk=self._domain.id)
-        elif len(args) < 2 or args[1]["domain"] == '':
-            self.fields['mboxes'].queryset = Mailbox.objects.none()
         
         # if 'instance' exists, it means we are modifying an existing
-        # record, we need to select the right value for
-        # 'domain'. Finally, if super user is doing the job, we need
-        # to fill 'mboxes' because it's currently empty (see upper).
-        if kwargs.has_key("instance") or self._domain is not None:
-            domain = self._domain is None and kwargs["instance"].domain or self._domain
+        # record, we need to select the right value for 'domain' and
+        # to fill the first "targets" input (because it is created by the
+        # Form object, not by us).
+        domain = None
+        if self._domain:
+            domain = self._domain
+        if kwargs.has_key("instance"):
+            if self._domain is None:
+                domain = kwargs["instance"].domain
+            self.fields["targets"].initial = kwargs["instance"].first_target()
+        if domain is not None:
             self.fields["domain"].initial = domain
-            self.fields['mboxes'].queryset = Mailbox.objects.filter(domain=domain)
         
-        self.fields.keyOrder = ['domain', 'address', 'mboxes', 'enabled']
+        self.fields.keyOrder = ['address', 'domain', 'enabled', 'targets']
 
     class Meta:
         model = Alias
-        fields = ('address', 'mboxes', 'enabled')
+        fields = ('address', 'domain', 'enabled')
 
     def clean_address(self):
         if self.cleaned_data["address"].find('@') != -1:
             return self.cleaned_data["address"].rsplit("@", 1)[0]
         return self.cleaned_data["address"]
 
+    def set_targets(self, user, values):
+        self.ext_targets = []
+        self.int_targets = []
+        for addr in values:
+            if addr == "":
+                continue
+            local_part, domain = split_mailbox(addr)
+            if domain is None:
+                raise AdminError("%s %s" % (_("Invalid mailbox"), addr))
+            try:
+                mb = Mailbox.objects.get(address=local_part, domain__name=domain)
+            except Mailbox.DoesNotExist:
+                self.ext_targets += [addr]
+            else:
+                if not user.is_superuser:
+                    usermb = Mailbox.objects.get(user=user.id)
+                    if usermb.domain.id != mb.domain.id:
+                        raise AdminError("%s %s" % (_("Permission denied on"), addr))
+                self.int_targets += [mb]
+
     def save(self, force_insert=False, force_update=False, commit=True):
         a = super(AliasForm, self).save(commit=False)
         if commit:
-            domain = self.cleaned_data["domain"].name
-            a.save()
+            a.save(self.int_targets, self.ext_targets)
+            self.save_m2m()
         return a
 
 class SuperAdminForm(forms.Form):
