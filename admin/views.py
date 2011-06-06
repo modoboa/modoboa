@@ -11,6 +11,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.db import transaction, IntegrityError
 
+from lib import *
 from modoboa import admin, userprefs
 from models import *
 from admin.permissions import *
@@ -19,29 +20,6 @@ from modoboa.lib import _render, ajax_response, ajax_simple_response, \
     getctx, events, parameters, split_mailbox
 from modoboa.lib.models import Parameter
 import copy
-
-def good_domain(f):
-    def dec(request, **kwargs):
-        if request.user.is_superuser:
-            return f(request, **kwargs)
-        mb = Mailbox.objects.get(user=request.user.id)
-        access = True
-        if request.GET.has_key("domid"):
-            dom_id = int(request.GET["domid"])
-            if dom_id != mb.domain.id:
-                access = False
-        else:
-            q = request.GET.copy()
-            q["domid"] = mb.domain.id
-            request.GET = q
-        if access:
-            return f(request, **kwargs)
-
-        from django.conf import settings
-        path = urlquote(request.get_full_path())
-        login_url = settings.LOGIN_URL
-        return HttpResponseRedirect("%s?next=%s" % (login_url, path))
-    return dec
 
 def render_domains_page(request, page, **kwargs):
     template = "admin/%s.html" % page

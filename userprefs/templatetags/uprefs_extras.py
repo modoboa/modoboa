@@ -4,6 +4,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa import userprefs
 from modoboa.lib import events, static_url
+from modoboa.admin.lib import is_domain_admin
 
 register = template.Library()
 
@@ -29,6 +30,16 @@ def options_menu(user):
                 ]
          },
         ]
+    if not user.is_superuser and not is_domain_admin(user):
+        entries[0]["menu"] += [{
+            "name" : "setforwards",
+            "url" : reverse(userprefs.views.setforward),
+            "img" : static_url("pics/alias.png"),
+            "label" : _("Forward"),
+            "class" : "boxed",
+            "rel" : "{handler:'iframe',size:{x:360,y:320}}"
+            }]
+
     entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", 
                                                  target="options_menu")
 

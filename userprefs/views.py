@@ -2,12 +2,13 @@ import copy
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators \
-    import login_required
+    import login_required, user_passes_test
 from django.utils.translation import ugettext as _
 from modoboa.lib import _render, ajax_response, parameters
 from modoboa.lib import crypt_password
-from forms import ChangePasswordForm
-from modoboa.admin.models import Mailbox
+from forms import *
+from modoboa.admin.models import Mailbox, Alias
+from modoboa.admin.lib import is_domain_admin
 
 @login_required
 def index(request):
@@ -33,6 +34,38 @@ def changepassword(request, tplname="userprefs/chpassword.html"):
 
     form = ChangePasswordForm(target)
     return _render(request, 'userprefs/chpassword.html', {
+            "form" : form
+            })
+
+@login_required
+@user_passes_test(lambda u: not u.is_superuser and not is_domain_admin(u))
+def setforward(request, tplname="userprefs/setforward.html"):
+    mb = Mailbox.objects.get(user=request.user.id)
+    try:
+        al = Alias.objects.get(address=mb.address, 
+                               domain__name=mb.domain.name)
+    except Alias.DoesNotExist:
+        al = None
+    if request.method == "POST":
+        form = ForwardForm(request.POST)
+        error = None
+        if form.is_valid():
+            try:
+                if al is None:
+                    al = Alias()
+                    al.address = mb.address
+                    al.domain = mb.domain
+                    al.enabled = mb.user.is_active
+                form.parse_dest()
+                al.save([], form.dests)
+                return ajax_response(request, respmsg=_("Forward updated"))
+            except BadDestination, e:
+                error = str(e)
+        return ajax_response(request, status="ko", template=tplname, form=form, error=error)
+    form = ForwardForm()
+    if al is not None:
+        form.fields["dest"].initial = al.extmboxes
+    return _render(request, tplname, {
             "form" : form
             })
 
