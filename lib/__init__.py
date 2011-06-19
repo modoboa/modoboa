@@ -6,7 +6,7 @@ import hashlib, crypt, string
 from random import Random
 from django.http import HttpResponse
 from django.conf import settings
-from django.template import RequestContext
+from django import template
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
@@ -27,7 +27,7 @@ def _render(request, tpl, user_context):
     (useful to use settings variables like MEDIA_URL inside templates)
     """
     return render_to_response(tpl, user_context, 
-                              context_instance=RequestContext(request))
+                              context_instance=template.RequestContext(request))
 
 def _render_to_string(request, tpl, user_context):
     """Custom rendering function
@@ -35,11 +35,24 @@ def _render_to_string(request, tpl, user_context):
     Same as _render.
     """
     return render_to_string(tpl, user_context,
-                            context_instance=RequestContext(request))
+                            context_instance=template.RequestContext(request))
 
 def _render_error(request, errortpl="error", user_context={}):
     return render_to_response("common/%s.html" % errortpl, user_context,
-                              context_instance=RequestContext(request))
+                              context_instance=template.RequestContext(request))
+
+def render_actions(actions):
+    t = template.Template("""
+{% for a in actions %}
+<a href="{{ a.url }}" name="{{ a.name }}" class="{{ a.class }}" rel="{{ a.rel }}"
+   {% if a.confirm %}onclick="return confirm('{{ a.confirm }}')"{% endif %}>
+  <img src="{{ a.img }}" border="0" title="{{ a.title }}" />
+</a>
+{% endfor %}
+""")
+    return t.render(template.Context({
+                "actions" : actions
+                }))
 
 def exec_as_vuser(cmd):
     code, output = exec_cmd("sudo -u %s %s" \

@@ -1,63 +1,87 @@
-#sets_list {
+#fsets_list {
+    margin-left: 5px;
+    float: left;
+    display: inline;
+}
+
+#fset_menu {
     position: absolute;
-    border: 1px solid #CCC;
-    left: 10px;
     top: 0px;
-    bottom: 10px;
-    width: 160px;
-    
+    left: 10px;
 }
 
 #set_content {
     position: absolute;
-    left: 180px;
+    left: 10px;
     right: 10px;
     top: 0px;
     bottom: 10px;
     padding: 0;
 }
 
-#sets_list ul {
-    list-style: none;
-    padding: 5px 0 0 5px;
+#set_content h1 {
+    padding: 2px 5px;
     margin: 0;
+    font-size: 1.2em;
+    background: #CEDBEC;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
-#sets_list li {
-    margin: 2px 0;
-}
-
-#sets_list a, #sets_list a:visited {
-    color: black;
-    text-decoration: none;
-}
-
-#sets_list a:hover { 
-    color: #6AB0C5;
-    text-decoration: none;
-}
-
-#sets_list li.selected {
-    background-color: #FFFF77;
-}
-
-#sets_list img {
-    float: right;
-}
-
-#set_content form {
-    height: 100%;
+#fsets_bar {
+    margin-left: 10px;
+    width: 250px;
 }
 
 #set_content textarea {
     margin: 0;
     width: 100%;
     height: 100%;
+    padding: 2px;
+}
+
+#set_content label {
+    margin: 5px;
+}
+
+#filters_list {
+    border-left: 1px solid #CCC;
+    position: absolute;
+    padding-left: 5px;
+    left: 190px;
+    right: 10px;
+    top: 0px;
+    bottom: 0px;
+}
+
+#feditor {
+    position: absolute;
+    left: 190px;
+    right: 10px;
+    top: 0px;
+    bottom: 0px;
 }
 
 #id_content {
     width: 95% !important;
     height: 270px;
+}
+
+/* Filter form */
+#filterform {
+    margin: 7px;
+}
+
+#filterform h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    margin-top: 20px;
+}
+
+#filterform #id_name {
+    margin-top: 10px;
+    width: 200px;
 }
 
 #submit_container {
@@ -69,4 +93,102 @@
 
 #error {
     white-space: pre-line;
+}
+
+#condlist {
+    border: 1px solid #CCC;
+    padding: 5px;
+}
+
+#actionlist {
+    border: 1px solid #CCC;
+    padding-top: 10px;
+}
+
+#condlist ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline;
+}
+
+#condlist li {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+#matchtype {
+    margin-bottom: 10px;
+}
+
+#submit {
+    margin-top: 20px;
+}
+
+div.item {
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+div.item input, div.item select {
+    margin: 0 2px;
+}
+
+#condlist label {
+    margin: 0 !important;
+    padding: 0;
+}
+
+ul.errors {
+    list-style: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.errors li {
+    color: red;
+    font-style: bold;
+    display: inline;
+}
+
+.leftbox {
+    width: 155px;
+}
+
+.leftbox h1 {
+    float: none !important;
+    padding: 0;
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.leftbox ul {
+    list-style: none;
+    padding: 5px 0 0 0;
+    margin: 0;
+}
+
+.leftbox li {
+    margin: 5px 0;
+}
+
+.leftbox a, .leftbox a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.leftbox a:hover { 
+    color: #6AB0C5;
+    text-decoration: none;
+}
+
+.leftbox li.selected {
+    background-color: #FFFF77;
+}
+
+.leftbox img {
+    float: left;
+    margin-right: 5px;
 }

@@ -3,6 +3,7 @@
 {% load libextras %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/searchbar.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/anchor_nav.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/ProgressBar.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/email_listing.js"></script>
 {% block css %}{% endblock %}
@@ -27,6 +28,8 @@
 </style>
 
 <script type="text/javascript">
+var current_anchor = new AnchorNavigation("{{ deflocation }}");
+
 function viewmail(event) {
   event.stop();
   if (event.target.parentNode.id) {
@@ -45,7 +48,7 @@ window.addEvent("domready", function() {
     {% join navparams %}
   }); 
   {% block js %}{% endblock %}
-  ajaxListener("{{ deflocation }}", {{ defcallback }});
+  current_anchor.set_default_callback({{ defcallback }});
 });
 </script>
 {% endblock %}

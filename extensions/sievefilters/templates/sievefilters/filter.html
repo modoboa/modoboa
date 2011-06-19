@@ -1,0 +1,79 @@
+{% extends "layout_simple.html" %}
+{% load i18n sfilters_tags %}
+{% block html_head %}
+{{ block.super }}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/form.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/dynamic_textinput.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}sievefilters/js/dynamic_fields.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}sievefilters/css/style.css" />
+
+<script type="text/javascript">
+var cond_templates = null;
+var action_templates = null;
+var da = null;
+var dc = null;
+
+function initform() {
+  var clist = $$("select[name*=cond_target_]");
+  var alist = $$("select[name*=action_name_]");
+  
+  dc = new DynamicCondition(clist, {
+    templates: cond_templates
+  });
+  da = new DynamicAction(alist, {
+    templates: action_templates,
+    ufolders_url: "{% url extensions.sievefilters.views.get_user_folders %}"
+  });
+        
+  clist.addEvent("change", dc.onTargetChange.bind(dc));
+  alist.addEvent("change", da.onNameChange.bind(da));
+}
+
+$(document).addEvent("domready", function() {
+  new Request.JSON({
+    url: "{% url extensions.sievefilters.views.get_templates 'condition' %}",
+    onSuccess: function(response) {
+      cond_templates = response;
+    }
+  }).get();
+  new Request.JSON({
+    url: "{% url extensions.sievefilters.views.get_templates 'action' %}",
+    onSuccess: function(response) {
+      action_templates = response;
+      initform();
+    }
+  }).get();
+  register_error_callback("filterform", initform);
+  register_extra_data_callback("filterform", function() {
+    return "conds=" + dc.fields_cnt + "&actions=" + da.fields_cnt;
+  });
+});
+</script>
+
+{% endblock %}
+{% block content %}
+<div class="title"><h1>{{ title }}</h1></div>
+<form action="{{ actionurl }}" method="POST" id="filterform" name="filterform">
+  {% if oldname %}<input type="hidden" name="oldname" value="{{ oldname }}" />{% endif %}
+  {{ form.name.label_tag }}:
+  {{ form.name }}{% display_errors form.name.errors %}
+  <h2>{% trans "Conditions" %}</h2>
+  <div id="condlist">
+    <div id="matchtype">
+      {{ form.match_type }}{% display_errors form.match_type.errors %}
+      <div class="spacer"></div>
+    </div>
+    <div class="spacer"></div>
+    {% for ec in conds_nb %}
+    {% display_condition form ec %}
+    {% endfor %}
+  </div>
+  <h2>{% trans "Actions" %}</h2>
+  <div id="actionlist">
+    {% for ea in actions_nb %}
+    {% display_action form ea %}
+    {% endfor %}
+  </div>    
+  <input type="submit" id="submit" name="submit" value='{% trans "Save" %}' />
+</form>
+{% endblock %}

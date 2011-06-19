@@ -119,7 +119,7 @@ function compose_callback(resp) {
       onSuccess: function(resp) {
         resp = JSON.decode(resp);
         if (resp.status == "ko") {
-          get_callback("compose")(resp);
+          current_anchor.get_callback("compose")(resp);
 
           if ($defined(resp.error)) {
             infobox.error(resp.error);
@@ -199,7 +199,7 @@ function refreshFolder() {
   new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
     var callback = ($defined(resp.callback)) ? resp.callback : "default";
 
-    callbacks[callback](resp);
+    current_anchor.get_callback(callback)(resp);
     infobox.info(gettext("Done"));
     infobox.hide(1);
   }}).get();
@@ -222,7 +222,7 @@ function simple_request(url, params) {
     onSuccess : function(response) {
       if (response.status == "ok") {
         if (!$defined(response.next)) {
-          get_callback("folder")(response);
+          current_anchor.get_callback("folder")(response);
         }
         infobox.info(gettext("Done"));
         if ($defined(response.next)) {

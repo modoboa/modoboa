@@ -10,6 +10,7 @@ var DynamicTextInput = new Class({
         if (!$defined(targets) || !targets.length) {
             return;
         }
+        this.fields_cnt = 0;
         for (var cpt = 0; cpt < targets.length; cpt++) {
             var target = targets[cpt];
             var btn;
@@ -18,31 +19,28 @@ var DynamicTextInput = new Class({
                 btn = new Element("img", {
                     src: parent.static_url("pics/add.png")
                 });
-                btn.addEvent("click", this.newinput.bind(this));
+                btn.addEvent("click", this.newelement.bind(this));
             } else {
                 var btnid = "btn_" + cpt;
                 btn = new Element("img", {
                     src: parent.static_url("pics/remove.png"),
                     id: btnid
                 });
-                btn.addEvent("click", this.removeinput.bind(this));
+                btn.addEvent("click", this.removeelement.bind(this));
             }
             btn.setStyles({
                 "float": "right",
                 "margin-top": "2px"
             });
             btn.inject(target, "after");
+            this.fields_cnt++;
         }
         this.nextid = targets.length;
         this.target = targets[0];
         this.setOptions(options);
     },
 
-    newinput: function(event) {
-        if (this.target.get("value") == "") {
-            return;
-        }
-        var coords = this.target.getCoordinates();
+    createfield: function() {
         var div = new Element("div").addClass("row");
         var label = new Element("label").inject(div);
         var ninput = new Element("input", {
@@ -51,6 +49,15 @@ var DynamicTextInput = new Class({
             name: this.target.get("name"),
             value: this.target.get("value")
         }).inject(div);
+
+        return [div, ninput];
+    },
+
+    newelement: function(event) {
+        if (this.target.get("value") == "") {
+            return;
+        }
+        var field = this.createfield();
         var delbtn = new Element("img", {
             id: "delbtn_" + this.nextid,
             src: parent.static_url("pics/remove.png")
@@ -61,17 +68,19 @@ var DynamicTextInput = new Class({
             "float" : "right",
             "margin-top": "2px"
         });
-        div.inject(this.target.getParent(), "after");
-        delbtn.inject(ninput, "after");
-        delbtn.addEvent("click", this.removeinput.bind(this));
+        field[0].inject(this.target.getParent(), "after");
+        delbtn.inject(field[1], "after");
+        delbtn.addEvent("click", this.removeelement.bind(this));
         this.target.set("value", "");
+        this.fields_cnt++;
     },
 
-    removeinput: function(event) {
+    removeelement: function(event) {
         var id = (event.target.get("id").split("_"))[1];
         var input = $("id_" + this.target.get("name") + "_" + id);
 
         input.destroy();
         event.target.destroy();
+        this.fields_cnt--;
     }
 });

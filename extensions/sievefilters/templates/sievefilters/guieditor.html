@@ -1,0 +1,8 @@
+{% load sfilters_tags i18n %}
+<div id="fset_menu" class="leftbox">
+  <h1>{% trans "Actions" %}</h1>
+  {% fset_menu "gui" fs.name %}
+</div>
+<div id="filters_list">
+  {% include "sievefilters/filters.html" %}
+</div>

@@ -1,11 +1,6 @@
 window.addEvent('domready', function() {
     var handlers = new Array();
 
-    if ($defined($("domcontent"))) {
-        SqueezeBox.assign($("domcontent").getElements('a[class=boxed]'), {
-            parse: 'rel'
-        });
-    }
     if ($defined($("subcontent"))) {
         SqueezeBox.assign($("subcontent").getElements('a[class=boxed]'), {
             parse: 'rel'

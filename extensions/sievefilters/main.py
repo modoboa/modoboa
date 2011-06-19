@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
 from modoboa.lib import events, parameters, static_url
-from managesieve import SUPPORTED_AUTH_MECHS
+from sievelib.managesieve import SUPPORTED_AUTH_MECHS
 
 def init():
     events.register("UserMenuDisplay", menu)
@@ -22,6 +22,12 @@ def init():
     parameters.register_admin("AUTHENTICATION_MECH", type="list", deflt="auto",
                               values=values,
                               help=_("Prefered authentication mechanism"))
+
+    # User parameters
+    parameters.register_user("EDITOR_MODE", type="list", deflt="raw",
+                             label=_("Editor mode"),
+                             values=[("raw", "raw"), ("gui", "simplified")],
+                             help=_("Select the mode you want the editor to work in"))
     
 def destroy():
     events.unregister("UserMenuDisplay", menu)

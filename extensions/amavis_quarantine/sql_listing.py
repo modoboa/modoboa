@@ -3,7 +3,8 @@
 from datetime import datetime
 from django.utils.translation import ugettext as _
 from modoboa.lib import tables, db
-from modoboa.lib.email_listing import MBconnector, EmailListing, Email
+from modoboa.lib.email_listing import MBconnector, EmailListing
+from modoboa.lib.emailutils import *
 
 class Qtable(tables.Table):
     tableid = "emails"

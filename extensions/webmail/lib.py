@@ -10,14 +10,15 @@ import socket
 import imaplib
 import ssl
 from datetime import datetime, timedelta
-import email.utils
+import email
 import lxml
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from modoboa.lib import decode, u2u_decode, tables, \
     imap_utf7, static_url, parameters
 from modoboa.lib.connections import ConnectionsManager
-from modoboa.lib.email_listing import MBconnector, EmailListing, Email
+from modoboa.lib.email_listing import MBconnector, EmailListing
+from modoboa.lib.emailutils import *
 
 class WebmailError(Exception):
     errorexpr = re.compile("\[([^\]]+)\]\s*([^\.]+)")
@@ -50,16 +51,6 @@ class WMtable(tables.Table):
             return getattr(IMAPheader, "parse_%s" % header)(value)
         except AttributeError:
             return value
-
-class EmailAddress(object):
-    def __init__(self, address):
-        self.fulladdress = u2u_decode.u2u_decode(address).strip("\r\t\n")
-        (self.name, self.address) = email.utils.parseaddr(self.fulladdress)
-        if self.name == "":
-            self.fulladdress = self.address
-        
-    def __str__(self):
-        return self.fulladdress
 
 class IMAPheader(object):
     @staticmethod
@@ -250,7 +241,7 @@ class IMAPconnector(object):
         from operator import itemgetter
         return sorted(result, key=itemgetter("name"))
 
-    def getfolders(self, user):
+    def getfolders(self, user, unseen_messages=True):
         md_folders = [{"name" : "INBOX", "class" : "inbox"},
                       {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
                        "class" : "drafts"},
@@ -259,12 +250,13 @@ class IMAPconnector(object):
                       {"name" : parameters.get_user(user, "TRASH_FOLDER"),
                        "class" : "trash"}]
         md_folders += self._listfolders(md_folders=md_folders)
-        for fd in md_folders:
-            key = fd.has_key("path") and "path" or "name"
-            count = self.unseen_messages(fd[key])
-            if count == 0:
-                continue
-            fd["unseen"] = count
+        if unseen_messages:
+            for fd in md_folders:
+                key = fd.has_key("path") and "path" or "name"
+                count = self.unseen_messages(fd[key])
+                if count == 0:
+                    continue
+                fd["unseen"] = count
         return md_folders
 
     def _add_flag(self, folder, mail_id, flag):

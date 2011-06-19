@@ -58,11 +58,11 @@ function wm_updatelisting(resp) {
     displayID: "quotatext"
   });
 
-  register_callback("viewmail", viewmail_cb);
-  register_callback("compose", compose_callback);
-  register_callback("reply", compose_callback);
-  register_callback("replyall", compose_callback);
-  register_callback("forward", compose_callback);
+  current_anchor.register_callback("viewmail", viewmail_cb);
+  current_anchor.register_callback("compose", compose_callback);
+  current_anchor.register_callback("reply", compose_callback);
+  current_anchor.register_callback("replyall", compose_callback);
+  current_anchor.register_callback("forward", compose_callback);
 
   window.addEvent("pageRefresh", function() {
     if (rtimer) {
@@ -71,7 +71,7 @@ function wm_updatelisting(resp) {
     }
   });
 
-  register_callback("folder", function(resp) {
+  current_anchor.register_callback("folder", function(resp) {
     wm_updatelisting(resp);
     rtimer = refreshFolder.periodical({{ refreshrate }});
     searchbox_init();

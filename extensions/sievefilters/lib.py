@@ -1,7 +1,9 @@
 # coding: utf-8
 
 from django.utils.translation import ugettext as _
-from managesieve import ManageSieveClient, Error
+from sievelib.managesieve import Client, Error
+from sievelib.parser import Parser
+from sievelib.factory import FiltersSet
 from modoboa.lib import parameters
 from modoboa.lib.connections import ConnectionsManager, ConnectionError
 
@@ -17,9 +19,9 @@ class SieveClient(object):
             raise ConnectionError(msg)
 
     def login(self, user, password):
-        self.msc = ManageSieveClient(parameters.get_admin("SERVER"), 
-                                     int(parameters.get_admin("PORT")),
-                                     debug=False)
+        self.msc = Client(parameters.get_admin("SERVER"), 
+                          int(parameters.get_admin("PORT")),
+                          debug=False)
         use_starttls = True if parameters.get_admin("STARTTLS") == "yes" else False
         authmech = parameters.get_admin("AUTHENTICATION_MECH")
         if authmech == "AUTO":
@@ -42,11 +44,18 @@ class SieveClient(object):
     def listscripts(self):
         return self.msc.listscripts()
 
-    def getscript(self, name):
+    def getscript(self, name, format="raw"):
         content = self.msc.getscript(name)
         if content is None:
             raise SieveClientError(self.msc.errmsg)
-        return content
+        if format == "raw":
+            return content
+        p = Parser()
+        if not p.parse(content):
+            return None
+        fs = FiltersSet(name)
+        fs.from_parser_result(p)
+        return fs
 
     def pushscript(self, name, content, active=False):
         if not self.msc.havespace(name, len(content)):

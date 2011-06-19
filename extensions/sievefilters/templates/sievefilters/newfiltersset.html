@@ -3,6 +3,28 @@
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}sievefilters/css/style.css" />
 <script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).addEvent("domready", function() {
+  register_success_callback("newfiltersset", function(response) {
+    var name = response.url;
+    var option = new Element("option", {value: name, html: name});
+    var curfset = $(parent.document).getElementById("curfset");
+
+    option.inject(curfset);
+    curfset.set("value", name);
+    if ($("id_active").checked) {
+      curfset.getElements("option").each(function(item) {
+        if (item.get("value") == name) {
+          item.set("html", name + " (" + gettext("active") + ")");
+        } else {
+          item.set("html", item.get("value"));
+        }
+      });
+    }
+  });
+});
+
+</script>
 {% endblock %}
 {% block content %}
 <div class="title"><h1>{{ title }}</h1></div>

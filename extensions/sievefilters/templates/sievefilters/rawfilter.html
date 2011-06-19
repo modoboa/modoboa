@@ -1,6 +1,10 @@
-<form action="{% url extensions.sievefilters.views.savescript %}" 
+{% load i18n sfilters_tags %}
+<div id="fset_menu" class="leftbox">
+  <h1>{% trans "Actions" %}</h1>
+  {% fset_menu "raw" name %}
+</div>
+<form action="{% url extensions.sievefilters.views.savefs name %}" 
       method="POST" id="feditor" name="feditor">
-  <input type="hidden" name="scriptname" value="{{ name }}" />
   <textarea id="scriptcontent" name="scriptcontent">{{ scriptcontent }}</textarea>
 </form>
 

@@ -1,130 +1,41 @@
 {% extends "nlayout.html" %}
 {% load i18n libextras sfilters_tags %}
 {% block html_head %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/anchor_nav.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}sievefilters/js/lib.js"></script>
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}sievefilters/css/style.css" />
 <script type="text/javascript">
-var curscript = null;
-
-function loadscript(evt) {
-  var params = "name=" + this.get("href");
-
-  curscript = this.get("href");
-  evt.stop();
-  $$("#sets_list li").removeClass("selected");
-  this.getParent().addClass("selected");
-  new Request.JSON({
-    url: "{% url extensions.sievefilters.views.getscript %}",
-    onSuccess: function(response) {
-      if (response.status == "ok") {
-        $("set_content").set("html", response.content);
-      }
-    }
-  }).get(params);
-}
-
-function check_prereqs(evt, msg) {
-  evt.stop();
-  if (!curscript) {
-    return false;
-  }
-  if ($defined(msg) && !confirm(msg)) {
-    return false;
-  }
-  return true;
-}
-
-function send_command(cmd) {
-  new Request.JSON({
-    url: cmd,
-    data: "name=" + curscript,
-    onSuccess: function(response) {
-      if (response.status == "ko") {
-        infobox.calcsize(300);
-        infobox.error(response.respmsg);
-      } else {
-        if (!response.norefresh) {
-          location.reload();
-        }
-        infobox.calcsize();
-        infobox.info(response.respmsg);
-        infobox.hide(2);
-      }
-    }
-  }).get();
-}
-
-function savescript(evt) {
-  if (!check_prereqs(evt, gettext("Save changes?"))) {
-    return;
-  }
-  new Request.JSON({
-    url: $("feditor").get("action"),
-    method: $("feditor").get("method"),
-    data: $("feditor").toQueryString(),
-    onSuccess: function(response) {
-      if (response.status == "ko") {
-        infobox.calcsize(300);
-        infobox.error(response.respmsg);
-      } else {
-        infobox.calcsize();
-        infobox.info(response.respmsg);
-        infobox.hide(2);
-      }
-    }
-  }).send();
-}
-
-function deletescript(evt) {
-  if (!check_prereqs(evt, gettext("Delete filters set?"))) {
-    return;
-  }
-  send_command("{% url extensions.sievefilters.views.delete_filters_set %}");
-}
-
-function activatescript(evt) {
-  if (!check_prereqs(evt, gettext("Activate this filters set?"))) {
-    return;
-  }
-  send_command("{% url extensions.sievefilters.views.activate_filters_set %}");
-}
-
-function downloadscript(evt) {
-  if (!curscript) {
-    evt.stop();
-    return;
-  }
-  this.set("href", this.get("href") + "?name=" + curscript);
-}
+var current_anchor = new AnchorNavigation("{{ active_script }}", {
+    defcallback: loadfs
+});
 
 $(document).addEvent("domready", function() {
-  $$("a[name=loadscript]").addEvent("click", loadscript);
-  $$("a[name=savescript]").addEvent("click", savescript);
-  $$("a[name=deletescript]").addEvent("click", deletescript);
-  $$("a[name=activatescript]").addEvent("click", activatescript);
-  $$("a[name=downloadscript]").addEvent("click", downloadscript);
+  $("curfset").addEvent("change", changefs);
 });
 </script>
 {% endblock %}
 {% block middletitle %}{% trans "Message filters" %}{% endblock %}
-{% block menu %}{% sfilters_menu user %}{% endblock %}
+{% block menu %}
+<div id="fsets_list">
+  <label>{% trans "Filters sets" %}</label>
+  <select id="curfset">
+    {% if active_script %}
+    <option value="{{ active_script }}">{{ active_script }} (active)</option>
+    {% endif %}
+    {% for script in scripts %}
+    <option value="{{ script }}">{{ script }}</option>
+    {% endfor %}
+  </select>
+</div>
+<ul>{% sfilters_menu user %}</ul>
+{% endblock %}
 {% block content %}
 {% if messages %}
   {% display_messages messages %}
 {% endif %}
-<div id="sets_list">
-  <ul>
-    {% if active_script %}
-    <li>
-      <a href="{{ active_script }}" name="loadscript">{{ active_script }}</a>
-      <img src="{{ MEDIA_URL }}pics/active.png" />
-    </li>
-    {% endif %}
-    {% for script in scripts %}
-    <li><a href="{{ script }}" name="loadscript">{{ script }}</a></li>
-    {% endfor %}
-  </ul>
-</div>
 <div id="set_content">
+  {% if not active_script and not scripts %}
+  <div class="info">{% trans "No filters set defined yet. You must create one in order to define filters." %}</div>
+  {% endif %}
 </div>
-<div class="spacer"></div>
 {% endblock %}

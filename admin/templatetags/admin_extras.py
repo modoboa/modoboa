@@ -3,7 +3,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa import admin
-from modoboa.lib import events, static_url
+from modoboa.lib import events, static_url, render_actions
 
 register = template.Library()
 
@@ -140,19 +140,6 @@ def permissions_menu(user):
         ]
     return render_to_string('common/menu.html', 
                             {"entries" : entries, "user" : user})
-
-def render_actions(actions):
-    t = template.Template("""
-{% for a in actions %}
-<a href="{{ a.url }}" name="{{ a.name }}" class="{{ a.class }}" rel="{{ a.rel }}"
-   {% if a.confirm %}onclick="return confirm('{{ a.confirm }}')"{% endif %}>
-  <img src="{{ a.img }}" border="0" title="{{ a.title }}" />
-</a>
-{% endfor %}
-""")
-    return t.render(template.Context({
-                "actions" : actions
-                }))
 
 @register.simple_tag
 def domain_actions(user, domid):

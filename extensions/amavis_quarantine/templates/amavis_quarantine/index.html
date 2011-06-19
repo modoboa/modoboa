@@ -30,7 +30,7 @@
 </script>
 {% endblock %}
 {% block js %}
-  register_callback("_listing", listing_cb);
-  register_callback("viewmail", viewmail_cb);
+  current_anchor.register_callback("_listing", listing_cb);
+  current_anchor.register_callback("viewmail", viewmail_cb);
 {% endblock %}
 {% block middletitle %}{% trans "Quarantine" %}{% endblock %}
