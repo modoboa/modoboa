@@ -3,7 +3,6 @@ import time
 import re
 import os
 import time, random, hashlib
-from email.header import decode_header
 import lxml.html
 from lxml import etree
 from django.conf import settings

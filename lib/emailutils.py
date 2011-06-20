@@ -1,6 +1,8 @@
 # coding: utf-8
 
+import re
 import email
+from email.header import decode_header
 import lxml
 from django.template import Template, Context
 from django.template.loader import render_to_string
