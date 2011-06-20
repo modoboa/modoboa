@@ -197,20 +197,3 @@ def crypt_password(password):
         return hashlib.md5(password).hexdigest()
     return password
 
-def split_mailbox(mailbox):
-    """Try to split a mailbox in two parts
-
-    :return: a 2-uple (local part, domain)
-    """
-    try:
-        mailbox.index("@")
-    except ValueError:
-        return mailbox, None
-    parts = mailbox.split('@')
-    if len(parts) == 2:
-        address = parts[0]
-        domain = parts[1]
-    else:
-        domain = parts[-1]
-        address = "@".join(parts[:-1])
-    return (address, domain)

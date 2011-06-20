@@ -3,7 +3,7 @@ from modoboa.admin.models import Domain
 from modoboa.lib import _check_password
 from django.contrib.auth.models import check_password
 from django.utils.translation import ugettext as _
-from modoboa.lib import split_mailbox
+from modoboa.lib.emailutils import split_mailbox
 
 class BadDestination(Exception):
     pass

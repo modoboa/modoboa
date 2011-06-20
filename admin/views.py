@@ -17,7 +17,8 @@ from models import *
 from admin.permissions import *
 from modoboa.lib import crypt_password
 from modoboa.lib import _render, ajax_response, ajax_simple_response, \
-    getctx, events, parameters, split_mailbox
+    getctx, events, parameters
+from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.models import Parameter
 import copy
 
@@ -252,6 +253,7 @@ def mailboxes_raw(request, dom_id=None):
 def mailboxes_search(request):
     if request.method != "POST":
         return
+    addr = EmailAddress(request.POST["search"])
     local_part, domain = split_mailbox(request.POST["search"])
     query = Q(address__startswith=local_part)
     if domain is not None and domain != "":

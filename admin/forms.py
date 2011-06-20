@@ -4,7 +4,8 @@ from modoboa.admin.models import *
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
-from modoboa.lib import tables, split_mailbox
+from modoboa.lib import tables
+from modoboa.lib.emailutils import split_mailbox
 
 class DomainForm(forms.ModelForm):
     class Meta:

@@ -5,7 +5,8 @@ import sys
 import smtplib
 from email.mime.text import MIMEText
 import datetime
-from modoboa.lib import split_mailbox, parameters
+from modoboa.lib import parameters
+from modoboa.lib.emailutils import split_mailbox
 from modoboa.admin.models import Mailbox
 from modoboa.extensions.postfix_autoreply import main
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric

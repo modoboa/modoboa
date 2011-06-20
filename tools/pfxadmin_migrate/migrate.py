@@ -48,7 +48,8 @@ from django.db.models import Q
 from django.contrib.auth.models import Group
 import modoboa.admin.models as md_models
 import models as pf_models
-from modoboa.lib import split_mailbox, exec_cmd
+from modoboa.lib import exec_cmd
+from modoboa.lib.emailutils import split_mailbox
 
 def migrate_domain_aliases(domain, options):
     print "\tMigrating domain aliases"

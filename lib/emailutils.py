@@ -176,3 +176,21 @@ class Email(object):
             body = re.sub("<(/?)body", lambda m: "<%sdiv" % m.group(1), body)
         body = Template(body).render(Context({}))
         return body
+
+def split_mailbox(mailbox):
+    """Tries to split a mailbox in two parts (local part and domain name)
+
+    :return: a 2-uple (local part, domain)
+    """
+    try:
+        mailbox.index("@")
+    except ValueError:
+        return mailbox, None
+    parts = mailbox.split('@')
+    if len(parts) == 2:
+        address = parts[0]
+        domain = parts[1]
+    else:
+        domain = parts[-1]
+        address = "@".join(parts[:-1])
+    return (address, domain)
