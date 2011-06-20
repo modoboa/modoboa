@@ -11,8 +11,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from modoboa.admin.models import Mailbox
 from modoboa.lib import parameters, _render, _render_error, \
-    getctx, is_not_localadmin, _render_to_string, split_mailbox, \
+    getctx, is_not_localadmin, _render_to_string, \
     ajax_response
+from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.email_listing import parse_search_parameters, Paginator
 from modoboa.auth.lib import *
 from lib import *
