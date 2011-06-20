@@ -33,6 +33,10 @@ def init():
                               deflt="/var/amavis/amavisd.sock",
                               help=_("Path to the PDP server socket (if unix mode)"))
 
+    parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
+                             label=_("Number of displayed emails per page"),
+                             help=_("Sets the maximum number of messages displayed in a page"))
+
 def destroy():
     events.unregister("UserMenuDisplay", menu)
     parameters.unregister_app("amavis_quarantine")

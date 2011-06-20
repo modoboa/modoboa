@@ -13,7 +13,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required
 from modoboa.lib import _render, _ctx_ok, _ctx_ko, decode, getctx
-from modoboa.lib import db
+from modoboa.lib import db, parameters
 from modoboa.admin.models import Mailbox
 from lib import AMrelease
 from templatetags.amextras import *
@@ -52,7 +52,9 @@ def _listing(request, internal=False, filter=None):
 
     pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
     request.session["page"] = pageid # ?? nécessaire
-    lst = SQLlisting(filter, baseurl="listing/", empty=internal)
+    lst = SQLlisting(filter, baseurl="listing/", empty=internal, 
+                     elems_per_page=int(parameters.get_user(request.user, 
+                                                        "MESSAGES_PER_PAGE")))
     if internal:
         return lst.render(request, pageid=int(pageid))
     page = lst.paginator.getpage(pageid)
