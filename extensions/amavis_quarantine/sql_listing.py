@@ -70,7 +70,7 @@ SELECT msgs.from_addr, maddr.email, msgs.subject, msgs.content, quarantine.mail_
        msgs.time_num, msgs.content, msgrcpt.rs
 %s
 LIMIT %d,%d
-""" % (query, start - 1, stop - 1))
+""" % (query, start - 1, kwargs["nbelems"]))
         if not status:
             print cursor
             return []

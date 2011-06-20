@@ -109,7 +109,8 @@ class EmailListing:
     
     def fetch(self, request, id_start, id_stop):
         table = self.tbltype(self.mbc.fetch(start=id_start, stop=id_stop, 
-                                            folder=self.folder))
+                                            folder=self.folder, 
+                                            nbelems=self.elems_per_page))
         tpl = Template("""
 <form method="POST" id="listingform">
   {{ table }}
