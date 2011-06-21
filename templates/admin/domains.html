@@ -17,16 +17,20 @@
   <table id="objects_table">
     <tr>
       <th>{% trans "Name" %}</th>
-      <th width="150px" class="center">{% trans "Domain aliases" %}</th>
-      <th width="150px" class="center">{% trans "Mailboxes" %}</th>
-      <th width="150px" class="center">{% trans "Mailbox aliases" %}</th>
-      <th width="70px" class="center">{% trans "Quota" %}</th>
-      <th width="70px" class="center">{% trans "Enabled" %}</th>
-      <th width="70px" class="center">{% trans "Actions" %}</th>
+      <th width="160px">{% trans "Created" %}</th>
+      <th width="160px">{% trans "Last modified" %}</th>
+      <th width="100px" class="center">{% trans "Domain aliases" %}</th>
+      <th width="100px" class="center">{% trans "Mailboxes" %}</th>
+      <th width="100px" class="center">{% trans "Mailbox aliases" %}</th>
+      <th width="50px" class="center">{% trans "Quota" %}</th>
+      <th width="50px" class="center">{% trans "Enabled" %}</th>
+      <th width="50px" class="center">{% trans "Actions" %}</th>
     </tr>
     {% for dom in domains %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ dom.id }}">
       <td>{{ dom.name }}</td>
+      <td>{{ dom.dates.creation }}</td>
+      <td>{{ dom.dates.last_modification }}</td>
       <td class="center">{{ dom.domainalias_set.all|length }}</td>
       <td class="center">{{ dom.mailbox_set.all|length }}</td>
       <td class="center">{{ dom.mbalias_counter }}</td>

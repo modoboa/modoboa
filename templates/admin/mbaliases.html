@@ -8,10 +8,12 @@
   {% else %}
   <table id="objects_table">
     <tr>
-      <th width="25%">{% trans "Address" %}</th>
-      <th width="40%">{% trans "Target(s)" %}</th>
-      <th width="70px" class="center">{% trans "Enabled" %}</th>
-      <th width="70px" class="center">{% trans "Actions" %}</th>
+      <th>{% trans "Address" %}</th>
+      <th>{% trans "Target(s)" %}</th>
+      <th width="170px">{% trans "Created" %}</th>
+      <th width="170px">{% trans "Last modified" %}</th>
+      <th width="50px" class="center">{% trans "Enabled" %}</th>
+      <th width="50px" class="center">{% trans "Actions" %}</th>
     </tr>
     {% for alias in aliases %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ alias.id }}" 
@@ -23,6 +25,8 @@
 	{% endfor %}
         {{ alias.repr_extmboxes|safe }}
       </td>
+      <td>{{ alias.dates.creation }}</td>
+      <td>{{ alias.dates.last_modification }}</td>
       <td class="center">{{ alias.enabled|yesno }}</td>
       <td class="center">
         {% if alias.ui_disabled %}--{% else %}{% mbalias_actions user alias %}{% endif %}

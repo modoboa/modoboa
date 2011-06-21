@@ -4,22 +4,34 @@ from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 
+def create_od(orm, obj):
+    od = orm.ObjectDates()
+    od.save()
+    obj.dates = od
+    obj.save()
+
 class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        for alias in orm.Alias.objects.all():
-            alias.domain = alias.mboxes.all()[0].domain
-            alias.save()
+        for domain in orm.Domain.objects.all():
+            create_od(orm, domain)
+        for domalias in orm.DomainAlias.objects.all():
+            create_od(orm, domainalias)
+        for mbox in orm.Mailbox.objects.all():
+            create_od(orm, mbox)
+        for mbalias in orm.Alias.objects.all():
+            create_od(orm, mbalias)
 
     def backwards(self, orm):
         "Write your backwards methods here."
-
+        orm.ObjectDates.objects.all().delete()
 
     models = {
         'admin.alias': {
             'Meta': {'object_name': 'Alias'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '254'}),
+            'dates': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['admin.ObjectDates']", 'unique': 'True'}),
             'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'extmboxes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -28,6 +40,7 @@ class Migration(DataMigration):
         },
         'admin.domain': {
             'Meta': {'object_name': 'Domain'},
+            'dates': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['admin.ObjectDates']", 'unique': 'True'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -35,6 +48,7 @@ class Migration(DataMigration):
         },
         'admin.domainalias': {
             'Meta': {'object_name': 'DomainAlias'},
+            'dates': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['admin.ObjectDates']", 'unique': 'True'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
@@ -49,6 +63,7 @@ class Migration(DataMigration):
         'admin.mailbox': {
             'Meta': {'object_name': 'Mailbox'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'dates': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['admin.ObjectDates']", 'unique': 'True'}),
             'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
             'gid': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -58,6 +73,12 @@ class Migration(DataMigration):
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
+        'admin.objectdates': {
+            'Meta': {'object_name': 'ObjectDates'},
+            'creation': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modification': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},

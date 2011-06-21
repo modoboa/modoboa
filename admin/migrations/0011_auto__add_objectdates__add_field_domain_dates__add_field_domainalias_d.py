@@ -1,25 +1,57 @@
 # encoding: utf-8
 import datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-class Migration(DataMigration):
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        "Write your forwards methods here."
-        for alias in orm.Alias.objects.all():
-            alias.domain = alias.mboxes.all()[0].domain
-            alias.save()
+        
+        # Adding model 'ObjectDates'
+        db.create_table('admin_objectdates', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('creation', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('last_modification', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+        ))
+        db.send_create_signal('admin', ['ObjectDates'])
+
+        # Adding field 'Domain.dates'
+        db.add_column('admin_domain', 'dates', self.gf('django.db.models.fields.related.ForeignKey')(default=-1, to=orm['admin.ObjectDates']), keep_default=False)
+
+        # Adding field 'DomainAlias.dates'
+        db.add_column('admin_domainalias', 'dates', self.gf('django.db.models.fields.related.ForeignKey')(default=-1, to=orm['admin.ObjectDates']), keep_default=False)
+
+        # Adding field 'Alias.dates'
+        db.add_column('admin_alias', 'dates', self.gf('django.db.models.fields.related.ForeignKey')(default=-1, to=orm['admin.ObjectDates']), keep_default=False)
+
+        # Adding field 'Mailbox.dates'
+        db.add_column('admin_mailbox', 'dates', self.gf('django.db.models.fields.related.ForeignKey')(default=-1, to=orm['admin.ObjectDates']), keep_default=False)
+
 
     def backwards(self, orm):
-        "Write your backwards methods here."
+        
+        # Deleting model 'ObjectDates'
+        db.delete_table('admin_objectdates')
+
+        # Deleting field 'Domain.dates'
+        db.delete_column('admin_domain', 'dates_id')
+
+        # Deleting field 'DomainAlias.dates'
+        db.delete_column('admin_domainalias', 'dates_id')
+
+        # Deleting field 'Alias.dates'
+        db.delete_column('admin_alias', 'dates_id')
+
+        # Deleting field 'Mailbox.dates'
+        db.delete_column('admin_mailbox', 'dates_id')
 
 
     models = {
         'admin.alias': {
             'Meta': {'object_name': 'Alias'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '254'}),
+            'dates': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.ObjectDates']"}),
             'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'extmboxes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -28,6 +60,7 @@ class Migration(DataMigration):
         },
         'admin.domain': {
             'Meta': {'object_name': 'Domain'},
+            'dates': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.ObjectDates']"}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -35,6 +68,7 @@ class Migration(DataMigration):
         },
         'admin.domainalias': {
             'Meta': {'object_name': 'DomainAlias'},
+            'dates': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.ObjectDates']"}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
@@ -49,6 +83,7 @@ class Migration(DataMigration):
         'admin.mailbox': {
             'Meta': {'object_name': 'Mailbox'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'dates': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.ObjectDates']"}),
             'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
             'gid': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -58,6 +93,12 @@ class Migration(DataMigration):
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
+        'admin.objectdates': {
+            'Meta': {'object_name': 'ObjectDates'},
+            'creation': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'last_modification': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},

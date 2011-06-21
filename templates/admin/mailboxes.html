@@ -8,17 +8,21 @@
   {% else %}
   <table id="objects_table">
     <tr>
-      <th>{% trans "Name" %}</th>
       <th>{% trans "Address" %}</th>
-      <th width="150px" class="center">{% trans "Defined aliases" %}</th>
-      <th width="70px" class="center">{% trans "Quota" %}</th>
-      <th width="70px" class="center">{{ "Enabled"|gender:"f" }}</th>
+      <th>{% trans "Name" %}</th>
+      <th width="160px">{% trans "Created" %}</th>
+      <th width="160px">{% trans "Last modified" %}</th>
+      <th width="70px" class="center">{% trans "Aliases" %}</th>
+      <th width="50px" class="center">{% trans "Quota" %}</th>
+      <th width="50px" class="center">{{ "Enabled"|gender:"f" }}</th>
       <th width="70px" class="center">{% trans "Actions" %}</th>
     </tr>
     {% for mb in mailboxes %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ mb.id }}">
-      <td>{{ mb.name }}</td>
       <td>{{ mb.full_address }}</td>
+      <td>{{ mb.name }}</td>
+      <td>{{ mb.dates.creation }}</td>
+      <td>{{ mb.dates.last_modification }}</td>
       <td class="center">{{ mb.alias_set.all|length }}</td>
       <td class="center">{{ mb.quota }} {% trans "MB" %}</td>
       <td class="center">{{ mb.user.is_active|yesno:_("yes,no") }}</td>

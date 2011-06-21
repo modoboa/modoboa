@@ -8,15 +8,19 @@
   {% else %}
   <table id="objects_table">
     <tr>
-      <th width="150px">{% trans "Name" %}</th>
+      <th>{% trans "Name" %}</th>
       <th>{% trans "Targeted domain" %}</th>
-      <th width="70px" class="center">{% trans "Enabled" %}</th>
-      <th width="70px" class="center">{% trans "Actions" %}</th>
+      <th width="170px">{% trans "Created" %}</th>
+      <th width="170px">{% trans "Last modified" %}</th>
+      <th width="50px" class="center">{% trans "Enabled" %}</th>
+      <th width="50px" class="center">{% trans "Actions" %}</th>
     </tr>
     {% for domalias in domaliases %}
     <tr class="{% cycle 'odd' 'even' %}" id="{{ domalias.id }}">
       <td>{{ domalias.name }}</td>
       <td>{{ domalias.target.name }}</td>
+      <td>{{ domalias.dates.creation }}</td>
+      <td>{{ domalias.dates.last_modification }}</td>
       <td class="center">{{ domalias.enabled|yesno }}</td>
       <td class="center">{% domalias_actions user domalias.id %}</td>
     </tr>

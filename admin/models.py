@@ -24,7 +24,45 @@ class AdminError(Exception):
         """String representation"""
         return self.value
 
-class Domain(models.Model):
+class ObjectDates(models.Model):
+    """Dates recording for admin objects
+
+    This table keeps creation and last modification dates for Domains,
+    domain aliases, mailboxes and aliases objects.
+    """
+    creation = models.DateTimeField(auto_now_add=True)
+    last_modification = models.DateTimeField(auto_now=True)
+
+    @staticmethod
+    def set_for_object(obj):
+        """Initialize or update dates for a given object.
+
+        :param obj: an admin object (Domain, Mailbox, etc)
+        """
+        try:
+            dates = getattr(obj, "dates")
+        except ObjectDates.DoesNotExist:
+            dates = ObjectDates()
+        dates.save()
+        obj.dates = dates
+
+class DatesAware(models.Model):
+    """Abstract model to support dates
+
+    Inherit from this model to automatically add the "dates" feature
+    to another model. It defines the appropriate field and handles
+    saves.
+    """
+    dates = models.ForeignKey(ObjectDates)
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        ObjectDates.set_for_object(self)
+        super(DatesAware, self).save(*args, **kwargs)
+
+class Domain(DatesAware):
     name = models.CharField(_('name'), max_length=100,
                             help_text=_("The domain name"))
     quota = models.IntegerField(help_text=_("Default quota in MB applied to mailboxes"))
@@ -68,7 +106,7 @@ class Domain(models.Model):
     def __str__(self):
         return self.name
 
-class DomainAlias(models.Model):
+class DomainAlias(DatesAware):
     name = models.CharField(_("name"), max_length=100, unique=True,
                             help_text=_("The alias name"))
     target = models.ForeignKey(Domain, verbose_name=_('target'),
@@ -81,7 +119,7 @@ class DomainAlias(models.Model):
             ("view_domaliases", "View domain aliases"),
             )
 
-class Mailbox(models.Model):
+class Mailbox(DatesAware):
     name = models.CharField(_('name'), max_length=100, 
                             help_text=_("First name and last name of mailbox owner"))
     address = models.CharField(_('address'), max_length=100,
@@ -175,6 +213,7 @@ class Mailbox(models.Model):
         except IntegrityError:
             raise AdminError(_("Mailbox with this address already exists"))
         self.user = user
+
         if kwargs.has_key("password") and kwargs["password"] != u"é":
             self.password = crypt_password(kwargs["password"])
         self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
@@ -213,7 +252,7 @@ class Mailbox(models.Model):
             "enabled" : self.user.is_active
             }
 
-class Alias(models.Model):
+class Alias(DatesAware):
     address = models.CharField(_('address'), max_length=254,
                                help_text=_("The alias address (without the domain part). For a 'catch-all' address, just enter an * character."))
     domain = models.ForeignKey(Domain)
