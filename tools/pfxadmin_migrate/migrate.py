@@ -51,6 +51,16 @@ import models as pf_models
 from modoboa.lib import exec_cmd
 from modoboa.lib.emailutils import split_mailbox
 
+def migrate_dates(oldobj):
+    dates = md_models.ObjectDates()
+    dates.creation = oldobj.created
+    try:
+        dates.last_modification = oldobj.modified
+    except AttributeError:
+        dates.last_modification = oldobj.created
+    dates.save()
+    return dates
+
 def migrate_domain_aliases(domain, options):
     print "\tMigrating domain aliases"
     old_domain_aliases = pf_models.AliasDomain.objects.using(options._from).filter(target_domain=domain.name)
@@ -59,6 +69,7 @@ def migrate_domain_aliases(domain, options):
         new_da.name = old_da.alias_domain
         new_da.target = old_da.target_domain
         new_da.enabled = new_da.active
+        new_da.dates = migrate_dates(old_da)
         new_da.save(using=options.to)
 
 def migrate_mailbox_aliases(domain, options):
@@ -89,6 +100,7 @@ You will need to recreate it manually.
                 extmboxes += [goto]
             else:
                 intmboxes += [mb]
+        new_al.dates = migrate_dates(old_al)
         new_al.save(intmboxes, extmboxes, using=options.to)
 
 def migrate_mailboxes(domain, options):
@@ -100,6 +112,7 @@ def migrate_mailboxes(domain, options):
         new_mb.address = old_mb.local_part
         new_mb.password = old_mb.password
         new_mb.domain = domain
+        new_mb.dates = migrate_dates(old_mb)
         if old_mb.quota:
             new_mb.quota = old_mb.quota / 1024000
             
@@ -121,6 +134,7 @@ def migrate_domain(old_dom, options):
     newdom.name = old_dom.domain
     newdom.enabled = old_dom.active
     newdom.quota = old_dom.maxquota
+    newdom.dates = migrate_dates(old_dom)
     newdom.save(using=options.to)
     migrate_mailboxes(newdom, options)
     migrate_mailbox_aliases(newdom, options)
@@ -156,6 +170,7 @@ def migrate_admins(options):
             mb.password = old_admin.password
             mb.save(using=options.to)            
 
+        mb.user.date_joined = old_admin.modified
         if creds.domain == "ALL":
             mb.user.is_superuser = True
         else:
