@@ -1,8 +1,8 @@
 Installation
-============
+************
 
 Requirements
-------------
+============
 
 - Python version 2.6+
 - `Django version 1.2+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
@@ -15,9 +15,10 @@ For extensions (mandatories since 0.8.2):
 - `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
 - `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_
 - `ckeditor version 3.4.1+ <http://ckeditor.com/>`_
+- `sievelib python module <http://pypi.python.org/pypi/sievelib>`_
 
 How to install
---------------
+==============
 
 Download the latest Modoboa's tarball and extract it::
 
@@ -40,15 +41,15 @@ Initialize the database by running the following command::
   $ python manage.py syncdb
 
 It will let you create the default super administrator.
-
-Since version 0.8, Modoboa is using *south* to handle schema
+S
+ince version 0.8, Modoboa is using *south* to handle schema
 migrations. To finish the database initialization, you must
 apply existing migrations like this::
 
   $ python manage.py migrate
 
 Time zone and language
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 Modoboa is available in english, french, german and spanish. You can choose
 which language to use by modifying the ``LANGUAGE_CODE`` variable inside
@@ -67,13 +68,40 @@ variable. For example::
 
   TIME_ZONE = 'Europe/Paris'
 
+.. _default-conf:
+
+Default configuration
+---------------------
+
+Throught the *Admin > Configuration* panel, you can customize the way
+Modoboa stores mailboxes on the filesystem. Here is the list of
+editable parameters with their default value::
+
+  Where Modoboa stores mailboxes
+  STORAGE_PATH = /var/vmail
+
+  Which user:group Modoboa uses to assign permissions on mailboxes
+  VIRTUAL_UID = vmail
+  VIRTUAL_GID = vmail
+
+  Which format is used to store messages in a mailbox
+  MAILBOX_TYPE = maildir
+
+  If maildir is in use, tells Modoboa that mailbox content is under a
+  potential sub-directory
+  MAILDIR_ROOT = .maildir
+
+  Which encryption method is used to store passwords
+  PASSWORD_SCHEME = crypt
+
 Host configuration
-^^^^^^^^^^^^^^^^^^
+------------------
 
 Before using Modoboa, you must create a group and a user that will be
 used to store emails on the host filesystem. There is only one
 group/user needed because we are in a virtual hosting configuration
-(ie. users with non-UNIX accounts).
+(ie. users with non-UNIX accounts). Following examples are based on
+default values presented in :ref:`default-conf`.
 
 For example, create a vmail group::
 
@@ -89,8 +117,24 @@ manipulate directories in vmail's homedir. To do so, edit the
 
   <user_that_runs_modoboa> ALL=(vmail) NOPASSWD: ALL
 
+Secret key used to encrypt passwords in sessions
+------------------------------------------------
+
+Since version 0.8.5, the SECRET_KEY parameter was moved from the
+``webmail`` plugin to the ``auth`` application. The reason is simple :
+multiple plugins need to store the user password in the current
+session. This parameter needed to be centralised.
+
+In the *Admin > Configuration*, click on the *Auth* section and modify
+the SECRET_KEY parameter. Choose a new value (exactly 16
+characters). This key is really important, it is used to
+encrypt/decrypt user passwords stored inside sessions.
+
+.. note::
+   Do not communicate this key to anyone!!
+
 Testing installation
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 As a typical Django application, Modoboa can be tested using a simple web 
 server. Just run this command to start it::
@@ -98,20 +142,35 @@ server. Just run this command to start it::
   $ python manage.py runserver
 
 You will be able to play with Modoboa by looking at 
-http://<youraddress>:8000/modoboa/admin/.
+``http://<youraddress>:8000/modoboa/admin/``.
 
 How to upgrade
---------------
+==============
 
 First, decompress the new tarball at the same location than your
 current installation. Then, check if the new version you're installing
 requires a migration.
 
-**NB: Before executing a schema migration, I recommend that you make a copy of your
-existing database.**
+.. note::
+   Before executing a schema/data migration, I recommend that you make
+   a copy of your existing database.
+
+0.8.5: new "Sieve filters" plugin, improved admin app
+------------------------------------------------------
+
+#. Migrate the ``lib`` and ``admin`` applications::
+
+    $ python manage.py migrate lib
+    $ python manage.py migrate admin
+
+#. Add ``modoboa.auth`` and ``modoboa.extensions.sievefilters`` to the
+   ``INSTALLED_APPS`` variable in *settings.py*.
+
+#. Go the *Settings/Extensions* panel, deactivate and activate your
+   extensions, it will update all the symbolic links.
 
 0.8.4: folders manipulation support (webmail) and bugfixes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------------------------
 
 #. Update the ``MIDDLEWARE_CLASSES`` variable in *settings.py*::
 
@@ -145,7 +204,7 @@ existing database.**
     )
 
 0.8.3: admin application refactoring and more
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------------
 
 #. Migrate the *admin* application::
 
@@ -157,7 +216,7 @@ existing database.**
 
 
 0.8.2: ckeditor integration and more
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------------
 
 #. Migrate the admin applicaton:: 
 
@@ -179,7 +238,7 @@ existing database.**
    ``MIDDLEWARE_CLASSES``.
 
 0.8.1 : project renamed
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 #. First, rename the *mailng* directory to *modoboa* and copy all the
    content from *modoboa-0.8.1* to *modoboa*.
@@ -202,7 +261,7 @@ existing database.**
 #. Update your webserver configuration and restart it.
 
 0.8 : SQL migration needed
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------
 
 Before you start the migration, make sure you have updated your
 ``INSTALLED_APPS`` variable and that it contains at least::
@@ -227,11 +286,11 @@ Finally, run the following commands::
   $ python manage.py migrate --all 0001 --fake
   $ python manage.py migrate --all 0002
 
-0.7 : Nothing to do 
-^^^^^^^^^^^^^^^^^^^
+0.7 : Nothing to do
+-------------------
 
 0.6 : Nothing to do
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
 Integrating Modoboa with other softwares
 ========================================
@@ -313,9 +372,10 @@ Then, use the following configuration in the */etc/postfix/main.cf* file
         mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf
   # Stuff after
 
-NB: Modoboa supports both maildir and mbox formats. You can specify
-which format to use by modifying the MAILBOX_TYPE parameter available
-in the admin panel.
+.. note::
+   Modoboa supports both maildir and mbox formats. You can specify
+   which format to use by modifying the MAILBOX_TYPE parameter available
+   in the admin panel.
 
 Optional : 'catchall' aliases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -448,6 +508,61 @@ For *MySQL* users, modify the above query inside *dovecot-sql.conf* to
 activate per-user quotas::
 
   user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('*:storage=', t1.quota, 'M') AS quota_rule FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
+
+Enable ManageSieve/Sieve support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note:: 
+   The following configuration example should work with versions
+   1.X. For versions >= 2, please refer to `Dovecot's wiki
+   <http://wiki2.dovecot.org/>`_.
+
+Edit the */etc/dovecot/dovecot.conf* file and make the following
+modifications:
+
+* Add ``managesieve`` to the ``protocols`` variable::
+
+    protocols = imap imaps managesieve
+
+* Uncomment the ``managesieve`` section::
+
+    protocol managesieve {
+      # ...
+    }
+
+* Configure the ``lda`` protocol as follow::
+
+    protocol lda {
+      postmaster_address = postmaster@<your domain>
+      mail_plugins = sieve # + your other plugins
+      # ...
+    }
+
+* In the ``plugin`` section, uncomment the following content::
+
+    plugin {
+      # stuff before
+
+      # Location of the active script. When ManageSieve is used this is actually 
+      # a symlink pointing to the active script in the sieve storage directory.
+      sieve=~/.dovecot.sieve
+
+      #
+      # The path to the directory where the personal Sieve scripts are stored. For 
+      # ManageSieve this is where the uploaded scripts are stored.
+      sieve_dir=~/sieve
+    }
+
+Restart *Dovecot*.
+
+Migrating from other softwares
+==============================
+
+PostfixAdmin
+------------
+
+Since version 0.8.5, Modoboa provides a simple script to migrate an
+existing PostfixAdmin database to a Modoboa one.
 
 How to serve Modoboa behind a webserver
 =======================================
@@ -721,14 +836,50 @@ Finally, edit the *autoreply* shell script located inside the
 *scripts* directory and change the value of ``BASEDIR``. (just put absolute path
 of the directory where Modoboa is installed)
 
-NB: auto-reply messages are just sent one time per sender for a
-pre-defined time period. By default, this period is equal to 1 day
-(86400s), you can adjust this value by modifying the AUTOREPLY_TIMEOUT
-parameter available in the admin panel.
+.. note::
+   Auto-reply messages are just sent one time per sender for a
+   pre-defined time period. By default, this period is equal to 1 day
+   (86400s), you can adjust this value by modifying the AUTOREPLY_TIMEOUT
+   parameter available in the admin panel.
 
-NB: Make sure that both *autoreply* and *autoreply.py* scripts (located
-inside the *scripts/postfix_autoreply* directory) have good
-permissions (ie. 0755).
+.. note::
+   Make sure that both *autoreply* and *autoreply.py* scripts (located
+   inside the *scripts/postfix_autoreply* directory) have good
+   permissions (ie. 0755).
+
+Sieve filters
+-------------
+
+Since version 0.8.5, Modoboa provides a plugin to easily create
+server-side message filters, using the `sievelib module
+<http://pypi.python.org/pypi/sievelib>`_ (which provides Sieve and
+ManageSieve clients).
+
+Two working modes are available to users:
+
+* A raw mode: you create filters using the Sieve language directly
+  (advanced users)
+* An assisted mode: you create filters using an intuitive form
+
+To be able to use this plugin, your server setup must include a
+ManageSieve server and your IMAP server must support the Sieve
+language. Don't panic, Dovecot supports both :-)
+
+Refer to :ref:`dovecot-label` section if you want to active those
+features into Dovecot.
+
+.. note:: 
+   The sieve filters plugin requires that the webmail plugin is
+   activated and configured.
+
+Go the admin panel and modify plugin's parameters in order to
+communicate with the ManageSieve server (default values are displayed
+below)::
+
+  SERVER = localhost
+  PORT = 2000
+  STARTTLS = no
+  AUTHENTICATION_MECH = plain
 
 Webmail
 -------
@@ -757,9 +908,3 @@ order to communicate with your IMAP and SMTP servers::
   SMTP_AUTHENTICATION = no
   SMTP_SERVER = 127.0.0.1
   SMTP_PORT = 25
-
-Last but not least, modify the SECRET_KEY parameter and choose a new
-value (exactly 16 characters). This key is really important, it is
-used to encrypt/decrypt user passwords stored inside sessions. 
-
-Do not communicate this key to anyone!!

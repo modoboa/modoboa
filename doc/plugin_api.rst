@@ -1,23 +1,23 @@
 Extending Modoboa
-=================
+*****************
 
 Introduction
-------------
+============
 
 Modoboa offers a plugin API to expand its capabilities. The current
 implementation provides the following possibilities:
 
- * Expand navigation by adding entry points to your plugin inside the GUI
- * Access and modify administrative objects (domains, mailboxes, etc.)
- * Register callback actions for specific events
+* Expand navigation by adding entry points to your plugin inside the GUI
+* Access and modify administrative objects (domains, mailboxes, etc.)
+* Register callback actions for specific events
 
 Plugins are nothing more than Django applications with an extra file
 called ``main.py``. This file contains a complete description of the
 plugin:
 
- * Admin and user parameters
- * Registered events
- * Custom menu entries
+* Admin and user parameters
+* Registered events
+* Custom menu entries
 
 The communication between both applications is provided by
 events. Modoboa offers some kind of hooks to let plugin add custom
@@ -27,14 +27,14 @@ The following subsections describe plugin architecture and explain
 how you can create your own plugin.
 
 Adding a custom plugin
-----------------------
+======================
 
 All Modoboa plugins must be located inside the ``extensions``
 directory. To create a new plugin, execute the following steps:
 
- * Run ``python manage.py startapp`` to get some basefiles for your plugin,
- * Move the resulting directory inside the ``extensions`` one,
- * Create a file called ``main.py`` inside your plugin's directory.
+* Run ``python manage.py startapp`` to get some basefiles for your plugin,
+* Move the resulting directory inside the ``extensions`` one,
+* Create a file called ``main.py`` inside your plugin's directory.
 
 The last file you created (ie. ``main.py``) must follow a specific
 structure in order to be interpreted by Modoboa. The following
@@ -84,16 +84,16 @@ same format as other plugins). Eventually, run ``python manage.py
 syncdb`` if your plugin provides custom tables.
 
 Events
-------
+======
 
 Playing with events
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
 Modoboa provides a simple API to interact with events. It understands
 two kinds of events: 
  
- * Those that return a value,
- * Those that return nothing.
+* Those that return a value,
+* Those that return nothing.
 
 Listening to a specific event is achieved as follow::
 
@@ -119,14 +119,14 @@ The parameters are the same as those used with ``register``.
 Read further to get a complete list and description of the available events.
 
 UserLogin
-^^^^^^^^^
+---------
 
 Raised when a user logs in. This event provides a ``request`` argument
 that corresponds to the ``Request`` object used inside the associated
 view function.
 
 UserLogout
-^^^^^^^^^^
+__________
 
 Raised when a user logs out. This event provides a ``request`` argument
 that corresponds to the ``Request`` object used inside the associated
@@ -135,14 +135,14 @@ view function.
 .. _usermenudisplay:
 
 UserMenuDisplay
-^^^^^^^^^^^^^^^
+---------------
 
 Raised when a user menu is about to be displayed. It provides a
 ``target`` argument that indicates which menu is being
 displayed. Possible values are:
 
- * ``uprefs_menu`` : corresponds to the menu bar available inside the *User preferences* page
- * ``top_menu`` : corresponds to the top blue bar
+* ``uprefs_menu`` : corresponds to the menu bar available inside the *User preferences* page
+* ``top_menu`` : corresponds to the top blue bar
 
 All callbacks that listen to this event must return a list of
 dictionnaries (corresponding to menu entries). Each dictionnary must
@@ -154,44 +154,44 @@ contain at least the following keys::
    "img" : static_url("your_pic")} # can be set to ""
 
 AdminMenuDisplay
-^^^^^^^^^^^^^^^^
+----------------
 
 Raised when an admin menu is about to be displayed. It provides a
 ``target`` argument that indicates which menu is being
 displayed. Possible values are:
 
- * ``admin_menu_box`` : corresponds to the menu bar available inside administration pages
- * ``top_menu`` : corresponds to the *Admin* dropdown menu located inside the top blue bar
+* ``admin_menu_box`` : corresponds to the menu bar available inside administration pages
+* ``top_menu`` : corresponds to the *Admin* dropdown menu located inside the top blue bar
 
 See :ref:`usermenudisplay` for a description of what callbacks that
 listen to this event must return.
 
 CreateDomain
-^^^^^^^^^^^^
+------------
 
 Raised when a new domain is created. The new domain object is
 available inside the ``dom`` argument.
 
 DeleteDomain
-^^^^^^^^^^^^
+------------
 
 Raised when an existing domain is about to be deleted. The domain
 object is available inside the ``dom`` argument.
 
 CreateMailbox
-^^^^^^^^^^^^^
+-------------
 
 Raised when a new mailbox is created. The new mailbox object is
 available inside the ``mbox`` argument.
 
 DeleteMailbox
-^^^^^^^^^^^^^
+-------------
 
 Raised when an existing mailbox is about to be deleted. The mailbox
 object is available inside the ``mbox`` argument.
 
 ModifyMailbox
-^^^^^^^^^^^^^
+-------------
 
 Raised when an existing mailbox is modified. The old mailbox and the
 new mailbox objects are respectively available inside the ``oldmbox``
@@ -200,7 +200,7 @@ and ``mbox`` arguments.
 .. _permsgettables:
 
 PermsGetTables
-^^^^^^^^^^^^^^
+--------------
 
 Raised when the different permission lists (one per role) are about to
 be displayed. The current *User* object is available inside the
@@ -223,7 +223,7 @@ For ``content``, replace *MyPermClass* with the appropriate name.
 .. _permsgetclass:
 
 PermsGetClass
-^^^^^^^^^^^^^
+-------------
 
 Raised to retrieve the class (inheriting from ``Permissions``)
 implementing a specific role. This event is used to add or delete or
@@ -234,14 +234,15 @@ Callbacks listening to this event must return the class object
 corresponding to the given ``role`` argument.
 
 Parameters
-----------
+==========
 
 A plugin can declare its own parameters. There are two levels available:
- * 'Administration' parameters : used to configure the plugin, editable inside the *Admin > Settings > Parameters* page,
- * 'User' parameters : per-user parameters (or preferences), editable inside the *Options > Preferences* page.
+
+* 'Administration' parameters : used to configure the plugin, editable inside the *Admin > Settings > Parameters* page,
+* 'User' parameters : per-user parameters (or preferences), editable inside the *Options > Preferences* page.
 
 Playing with parameters
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 To declare a new administration parameter, use the following function::
 
@@ -254,10 +255,11 @@ To declare a new user parameter, use the following function::
   parameter.register_user(name, **kwargs)
 
 Both functions accept extra arguments listed here:
- * ``type`` : parameter's type, possible values are : ``int``, ``string``, ``list``, ``list_yesno``,
- * ``deflt`` : default value,
- * ``help`` : help text,
- * ``values`` : list of possible values if ``type`` is ``list``.
+
+* ``type`` : parameter's type, possible values are : ``int``, ``string``, ``list``, ``list_yesno``,
+* ``deflt`` : default value,
+* ``help`` : help text,
+* ``values`` : list of possible values if ``type`` is ``list``.
 
 To undeclare parameters (for example when a plugin is disabled is
 disabled from the interface), use the following function::
@@ -268,14 +270,15 @@ disabled from the interface), use the following function::
 directory containing the source code.
 
 Custom permission levels
-------------------------
+========================
 
 Custom permissions roles can be added to Modoboa. If you to want to
 integrate the default permissions panel (*Admin > Permissions*), each
 role you add must inherit from the ``Permissions`` (file
 ``admin/permissions.py``) class and implement all its methods.
 
-See :ref:`permsgettables` and :ref:`permsgetclass` to learn how to
-integrate your custom roles.
+.. note::
+   See :ref:`permsgettables` and :ref:`permsgetclass` to learn how to
+   integrate your custom roles.
 
 
