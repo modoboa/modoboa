@@ -249,6 +249,7 @@ class Mailbox(DatesAware):
             "id" : self.id, 
             "domain" : self.domain.name,
             "full_name" : self.name,
+            "date_joined" : self.user.date_joined,
             "enabled" : self.user.is_active
             }
 

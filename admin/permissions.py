@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import datetime
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User, Group
 from modoboa.lib import _render, getctx, _render_to_string
@@ -43,6 +44,7 @@ class SuperAdminsPerms(Permissions):
         if form.is_valid():
             user = User.objects.get(pk=request.POST["user"])
             user.is_superuser = True
+            user.date_joined = datetime.datetime.now()
             user.groups.clear()
             user.save()
             return True, None
@@ -69,6 +71,7 @@ class SuperAdminsPerms(Permissions):
         for admin in admins:
             admins_list += [{"id" : admin.id, "user_name" : admin.username,
                              "full_name" : "%s %s" % (admin.first_name, admin.last_name),
+                             "date_joined" : admin.date_joined,
                              "enabled" : admin.is_active}]
         return SuperAdminsTable(admins_list).render(request)
    
@@ -97,6 +100,7 @@ class DomainAdminsPerms(Permissions):
             form.fields["user"].choices = [(mboxid, mb),]
         if form.is_valid():
             mb.user.is_superuser = False
+            user.date_joined = datetime.datetime.now()
             mb.user.groups.add(Group.objects.get(name="DomainAdmins"))
             mb.user.save()
             return True, None
