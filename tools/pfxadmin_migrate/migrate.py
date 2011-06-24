@@ -11,12 +11,11 @@ database to a Modoboa one.
 As the two products do not share the same schema, some informations
 will be lost on the new database. Here is the list:
  * Description, transport and backup MX for domains
- * Dates (creation/modification)
  * Logs
  * Fetchmail table 
 
-Mailboxes organization on the filesystem will be changed. PostfixAdmin
-uses the following layout:: 
+Mailboxes organisation on the filesystem will change. PostfixAdmin
+uses the following layout::
 
   <topdir>/domain.tld/user@domain.tld/
 
@@ -191,7 +190,7 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-f", "--from", dest="_from", default="pfxadmin",
                       help="Name of postfixadmin db connection declared in settings.py")
-    parser.add_option("-t", "--to", default="modoboa",
+    parser.add_option("-t", "--to", default="default",
                       help="Name of the Modoboa db connection declared in settings.py")
     parser.add_option("-r", "--rename-dirs", action="store_true",
                       help="Rename mailbox directories (default is no)")
