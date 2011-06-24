@@ -7,7 +7,7 @@ import lxml
 from django.template import Template, Context
 from django.template.loader import render_to_string
 import u2u_decode
-from lib import decode
+from modoboa.lib import decode
 
 class EmailAddress(object):
     def __init__(self, address):
