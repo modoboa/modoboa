@@ -21,7 +21,13 @@ DATABASES = {
         "PASSWORD" : "",
         "HOST" : "",
         "PORT" : ""
-    }
+    },
+    # "pfxadmin" : {
+    #     "ENGINE" : "",
+    #     "NAME" : "",
+    #     "USER" : "",
+    #     "PASSWORD"
+    # }
 }
 
 # Local time zone for this installation. Choices can be found here:
@@ -93,6 +99,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'south',
     'modoboa',
+    'modoboa.auth',
     'modoboa.lib',
     'modoboa.admin',
     'modoboa.userprefs',
@@ -103,6 +110,9 @@ INSTALLED_APPS = (
     'modoboa.extensions.stats',
     'modoboa.extensions.amavis_quarantine',
     'modoboa.extensions.sievefilters',
+
+    # Extra tools
+    # 'modoboa.tools.pfxadmin_migrate',
 )
 
 AUTHENTICATION_BACKENDS = (
