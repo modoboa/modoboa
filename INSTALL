@@ -332,7 +332,7 @@ For *MySQL* users, define the following map files on your server (it should work
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(t2.name, '/', t1.path) FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.enabled=1 AND t1.domain_id=t2.id AND t1.address='%u' AND t2.enabled=1 AND t2.name='%d'
+  query = SELECT concat(t2.name, '/', t1.path, (SELECT value FROM lib_parameter WHERE name='admin.MAILDIR_ROOT', '/') FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.enabled=1 AND t1.domain_id=t2.id AND t1.address='%u' AND t2.enabled=1 AND t2.name='%d'
 
 ``/etc/postfix/sql-aliases.cf``::
 
@@ -363,7 +363,6 @@ Then, use the following configuration in the */etc/postfix/main.cf* file
 
   # Stuff before
   mailbox_transport = virtual
-  home_mailbox = .maildir/ 
   maildrop_destination_recipient_limit = 1
   virtual_minimum_uid = <vmail user id> 
   virtual_gid_maps = static:<vmail group id>
@@ -429,6 +428,31 @@ to the ``virtual_alias_maps`` parameter like this::
 
 Reload *postfix*.
 
+.. _dovecot_lda:
+
+Optional: using Dovecot's LDA
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you are using *Dovecot* in your environnement, I recommend to use
+its LDA. Doing so, you'll will be able to use extra functionalities
+such as sieve filters and more.
+
+First, edit the */etc/postfix/main.cf* file and define (or modify if
+they already exist) the following parameters::
+
+  virtual_transport = dovecot
+  dovecot_destination_recipient_limit = 1
+
+If you have followed the :ref:`postfix-label` section to install your
+environnement, you need to modify the SQL query corresponding to the
+``virtual_mailbox_maps`` parameter. Edit the
+*/etc/postfix/maps/sql-mailboxes.cf* and modify the ``query``
+parameter as follow::
+
+  query = SELECT concat(t2.name, '/', t1.path) FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.enabled=1 AND t1.domain_id=t2.id AND t1.address='%u' AND t2.enabled=1 AND t2.name='%d'
+
+Restart *Postfix*.
+
 .. _dovecot-label:
 
 Dovecot
@@ -438,11 +462,14 @@ If you are using the *maildir* format to store mailboxes, add the
 following line into Dovecot's main config file
 (*/etc/dovecot/dovecot.conf*)::
 
-  mail_location = maildir:<path_to_mailboxes>/%d/%n/.maildir
+  mail_location = maildir:<path_to_mailboxes>/%h/.maildir
+
+The ``.maildir`` part is the previous example must match the value of
+the ``MAILDIR_ROOT`` parameter. See :ref:`default-conf`.
 
 If you are using the mbox format, add the following::
   
-  mail_location = mbox:<path_to_mailboxes>/%d/%n/:INBOX=<path_to_mailboxes>/%d/%n/Inbox
+  mail_location = mbox:<path_to_mailboxes>/%h/:INBOX=<path_to_mailboxes>/%h/Inbox
 
 To make the authentication work, edit *dovecot.conf* and add the
 following content inside::
@@ -561,6 +588,12 @@ modifications:
     }
 
 Restart *Dovecot*.
+
+.. note::
+
+   If you're using *Postfix* as MTA, you will have to use *Dovecot*'s
+   local delivery agent otherwise your emails won't get filtered. See
+   :ref:`dovecot_lda` to get information on how to activate this.
 
 Migrating from other softwares
 ==============================

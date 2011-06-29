@@ -158,7 +158,7 @@ class Mailbox(DatesAware):
         if self.mbtype == "mbox":
             self.path = "%s/Inbox" % self.address
         else:
-            self.path = "%s/%s" % (self.address, self.mdirroot)
+            self.path = "%s/" % self.address
         if os.path.exists(abspath):
             return True
         if not exec_as_vuser("mkdir -p %s" % abspath):
@@ -182,7 +182,7 @@ class Mailbox(DatesAware):
         code = exec_as_vuser("mv %s/%s %s/%s" \
                                  % (path, self.address, path, newaddress))
         if code:
-            self.path = "%s/%s/%s/" % (domain, newaddress, self.mdirroot)
+            self.path = "%s/" % newaddress
         return code
 
     def delete_dir(self):
