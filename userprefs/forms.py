@@ -1,5 +1,5 @@
 from django import forms
-from modoboa.admin.models import Domain
+from modoboa.admin.models import Domain, Mailbox
 from modoboa.lib import _check_password
 from django.contrib.auth.models import check_password
 from django.utils.translation import ugettext as _
