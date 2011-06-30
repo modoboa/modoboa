@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-13 18:23+0200\n"
+"POT-Creation-Date: 2011-06-30 21:26+0200\n"
 "PO-Revision-Date: 2011-04-26 23:33+0200\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
@@ -24,6 +24,14 @@ msgstr "Diese Auswahl freilassen?"
 msgid "Delete this selection?"
 msgstr "Diese Auswahl löschen?"
 
+#: extensions/sievefilters/static/js/lib.js:14
+msgid "Remove this filter?"
+msgstr ""
+
+#: extensions/sievefilters/static/js/lib.js:116
+msgid "Save changes?"
+msgstr ""
+
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"
 msgstr "Ordner bearbeiten"
@@ -32,34 +40,26 @@ msgstr "Ordner bearbeiten"
 msgid "Folder deleted"
 msgstr "Ordner gelöscht"
 
-#: extensions/webmail/static/js/webmail.js:188
+#: extensions/webmail/static/js/webmail.js:195
 msgid "Reloading..."
 msgstr "Aktualisiere..."
 
-#: extensions/webmail/static/js/webmail.js:196
-#: extensions/webmail/static/js/webmail.js:220 static/js/common.js:64
+#: extensions/webmail/static/js/webmail.js:203
+#: extensions/webmail/static/js/webmail.js:227 static/js/anchor_nav.js:199
 msgid "Done"
 msgstr "Abgeschlossen"
 
-#: extensions/webmail/static/js/webmail.js:209
+#: extensions/webmail/static/js/webmail.js:216
 msgid "Waiting..."
 msgstr "Warte..."
 
-#: static/js/common.js:89
+#: static/js/anchor_nav.js:10
 msgid "Loading..."
 msgstr "Lade..."
 
-#: static/js/common.js:339
+#: static/js/common.js:150
 msgid "Search..."
 msgstr "Suchen..."
-
-#: static/js/domains.js:17
-msgid "Delete this domain?"
-msgstr "Diese Domäne löschen?"
-
-#: static/js/domains.js:23
-msgid "Delete this alias?"
-msgstr "Diesen Alias löschen?"
 
 #: static/js/preferences.js:14
 msgid "Preferences saved"
@@ -68,3 +68,9 @@ msgstr "Einstellungen gespeichert"
 #: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Parameter gespeichert"
+
+#~ msgid "Delete this domain?"
+#~ msgstr "Diese Domäne löschen?"
+
+#~ msgid "Delete this alias?"
+#~ msgstr "Diesen Alias löschen?"

@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.8.4\n"
+"Project-Id-Version: modoboa-0.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-13 18:23+0200\n"
+"POT-Creation-Date: 2011-06-30 21:26+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -24,6 +24,14 @@ msgstr "Relâcher cette sélection?"
 msgid "Delete this selection?"
 msgstr "Supprimer cette sélection?"
 
+#: extensions/sievefilters/static/js/lib.js:14
+msgid "Remove this filter?"
+msgstr "Supprimer ce filtre"
+
+#: extensions/sievefilters/static/js/lib.js:116
+msgid "Save changes?"
+msgstr "Sauvegarder les changements?"
+
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"
 msgstr "Editer le dossier"
@@ -32,34 +40,26 @@ msgstr "Editer le dossier"
 msgid "Folder deleted"
 msgstr "Dossier supprimé"
 
-#: extensions/webmail/static/js/webmail.js:188
+#: extensions/webmail/static/js/webmail.js:195
 msgid "Reloading..."
 msgstr "Rechargement..."
 
-#: extensions/webmail/static/js/webmail.js:196
-#: extensions/webmail/static/js/webmail.js:220 static/js/common.js:64
+#: extensions/webmail/static/js/webmail.js:203
+#: extensions/webmail/static/js/webmail.js:227 static/js/anchor_nav.js:199
 msgid "Done"
 msgstr "Effectué"
 
-#: extensions/webmail/static/js/webmail.js:209
+#: extensions/webmail/static/js/webmail.js:216
 msgid "Waiting..."
 msgstr "En attente..."
 
-#: static/js/common.js:89
+#: static/js/anchor_nav.js:10
 msgid "Loading..."
 msgstr "Chargement..."
 
-#: static/js/common.js:339
+#: static/js/common.js:150
 msgid "Search..."
 msgstr "Chercher..."
-
-#: static/js/domains.js:17
-msgid "Delete this domain?"
-msgstr "Supprimer ce domaine?"
-
-#: static/js/domains.js:23
-msgid "Delete this alias?"
-msgstr "Supprimer cet alias?"
 
 #: static/js/preferences.js:14
 msgid "Preferences saved"
