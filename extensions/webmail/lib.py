@@ -217,10 +217,6 @@ class IMAPconnector(object):
         for mb in data:
             flags, delimiter, name = list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
-            # Dovecot stores user scripts into a specific folder, I'm
-            # wondering why this folder appears in 'list' result?
-            if name in ["dovecot.sieve"]:
-                continue
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
                 if not descr.has_key("path"):
@@ -342,7 +338,7 @@ class IMAPconnector(object):
         msg = email.message_from_string(data[0][1] + data[1][1])
         return msg
 
-    def fetch(self, start=None, stop=None, folder=None, all=False):
+    def fetch(self, start=None, stop=None, folder=None, all=False, **kwargs):
         if not start and not stop:
             return []
         result = []
