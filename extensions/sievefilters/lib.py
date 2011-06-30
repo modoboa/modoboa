@@ -26,7 +26,9 @@ class SieveClient(object):
         authmech = parameters.get_admin("AUTHENTICATION_MECH")
         if authmech == "AUTO":
             authmech = None
-        if not self.msc.connect(user, password, use_starttls, authmech):
+        try:
+            ret = self.msc.connect(user, password, use_starttls, authmech)
+        except Error, e:
             return False, _("Connection to MANAGESIEVE server failed, check your configuration")
         return True, None
         
@@ -37,7 +39,10 @@ class SieveClient(object):
             pass
         else:
             return
-        ret, msg = self.login(user, password)
+        try:
+            ret, msg = self.login(user, password)
+        except Error, e:
+            raise ConnectionError(e)
         if not ret:
             raise ConnectionError(msg)
 
@@ -52,6 +57,7 @@ class SieveClient(object):
             return content
         p = Parser()
         if not p.parse(content):
+            print "Parse error????"
             return None
         fs = FiltersSet(name)
         fs.from_parser_result(p)

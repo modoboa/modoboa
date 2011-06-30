@@ -13,12 +13,22 @@ var action_templates = null;
 var da = null;
 var dc = null;
 
+function matchtype_cb(event) {
+  if (this.get("value") == "all") {
+    $$("#condlist div[class=item]").slide("out");
+  } else {
+    $("hide").setStyle("display", "block");
+    $$("#condlist div[class=item]").slide("in");
+  }
+}
+
 function initform() {
   var clist = $$("select[name*=cond_target_]");
   var alist = $$("select[name*=action_name_]");
   
   dc = new DynamicCondition(clist, {
-    templates: cond_templates
+    templates: cond_templates,
+    parentContainer: $("condlist")
   });
   da = new DynamicAction(alist, {
     templates: action_templates,
@@ -27,6 +37,8 @@ function initform() {
         
   clist.addEvent("change", dc.onTargetChange.bind(dc));
   alist.addEvent("change", da.onNameChange.bind(da));
+
+  $$("input[name=match_type]").addEvent("click", matchtype_cb);
 }
 
 $(document).addEvent("domready", function() {
@@ -60,13 +72,16 @@ $(document).addEvent("domready", function() {
   <h2>{% trans "Conditions" %}</h2>
   <div id="condlist">
     <div id="matchtype">
+      <label>{% trans "Match type" %}:</label>
       {{ form.match_type }}{% display_errors form.match_type.errors %}
       <div class="spacer"></div>
     </div>
     <div class="spacer"></div>
+    {% if hideconds %}<div id="hide" style="display:none">{% endif %}
     {% for ec in conds_nb %}
     {% display_condition form ec %}
     {% endfor %}
+    {% if hideconds %}</div>{% endif %}
   </div>
   <h2>{% trans "Actions" %}</h2>
   <div id="actionlist">

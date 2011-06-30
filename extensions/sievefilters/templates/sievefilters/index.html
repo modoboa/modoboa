@@ -5,7 +5,7 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}sievefilters/js/lib.js"></script>
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}sievefilters/css/style.css" />
 <script type="text/javascript">
-var current_anchor = new AnchorNavigation("{{ active_script }}", {
+var current_anchor = new AnchorNavigation("{{ default_script }}", {
     defcallback: loadfs
 });
 
@@ -20,7 +20,7 @@ $(document).addEvent("domready", function() {
   <label>{% trans "Filters sets" %}</label>
   <select id="curfset">
     {% if active_script %}
-    <option value="{{ active_script }}">{{ active_script }} (active)</option>
+    <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
     {% endif %}
     {% for script in scripts %}
     <option value="{{ script }}">{{ script }}</option>

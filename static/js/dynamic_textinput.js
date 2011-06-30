@@ -3,7 +3,7 @@ var DynamicTextInput = new Class({
     Implements: [Options],
 
     options: {
-
+        parentContainer: null
     },
 
     initialize: function(targets, options) {
@@ -62,13 +62,16 @@ var DynamicTextInput = new Class({
             id: "delbtn_" + this.nextid,
             src: parent.static_url("pics/remove.png")
         });
-
         this.nextid += 1;
         delbtn.setStyles({
             "float" : "right",
             "margin-top": "2px"
         });
-        field[0].inject(this.target.getParent(), "after");
+        if (!this.options.parentContainer) {
+            field[0].inject(this.target.getParent(), "after");
+        } else {
+            field[0].inject(this.options.parentContainer);
+        }
         delbtn.inject(field[1], "after");
         delbtn.addEvent("click", this.removeelement.bind(this));
         this.target.set("value", "");

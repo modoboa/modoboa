@@ -16,9 +16,9 @@ header_operators = [("contains", _("contains"), "string"),
 
 class FilterForm(forms.Form):
     name = forms.CharField(label=_("Name"))
-    match_type = forms.ChoiceField(choices=[("allof", _("Match all of the following")),
-                                            ("anyof", _("Match any of the following")),
-                                            ("all", _("Match all messages"))],
+    match_type = forms.ChoiceField(choices=[("allof", _("All of the following")),
+                                            ("anyof", _("Any of the following")),
+                                            ("all", _("All messages"))],
                                    initial="anyof",
                                    widget=forms.RadioSelect)
 
@@ -158,19 +158,20 @@ def build_filter_form_from_qdict(request):
     qdict["match_type"] = request.POST["match_type"]
     cpt = 0
     i = 0
-    while True:
-        if cpt == int(request.POST["conds"]):
-            break
-        if request.POST.has_key("cond_target_%d" % i):
-            qdict["cond_target_%d" % cpt] = request.POST["cond_target_%d" % i]
-            qdict["cond_operator_%d" % cpt] = request.POST["cond_operator_%d" % i]
-            qdict["cond_value_%d" % cpt] = request.POST["cond_value_%d" % i]
-            condtarget = request.POST["cond_target_%d" % i]
-            condop = request.POST["cond_operator_%d" % i]
-            condvalue = request.POST["cond_value_%d" % i]
-            conditions += [(condtarget, condop, condvalue)]
-            cpt += 1
-        i += 1
+    if qdict["match_type"] != "all":
+        while True:
+            if cpt == int(request.POST["conds"]):
+                break
+            if request.POST.has_key("cond_target_%d" % i):
+                qdict["cond_target_%d" % cpt] = request.POST["cond_target_%d" % i]
+                qdict["cond_operator_%d" % cpt] = request.POST["cond_operator_%d" % i]
+                qdict["cond_value_%d" % cpt] = request.POST["cond_value_%d" % i]
+                condtarget = request.POST["cond_target_%d" % i]
+                condop = request.POST["cond_operator_%d" % i]
+                condvalue = request.POST["cond_value_%d" % i]
+                conditions += [(condtarget, condop, condvalue)]
+                cpt += 1
+            i += 1
     cpt = 0
     i = 0
     while True:
@@ -197,12 +198,16 @@ def build_filter_form_from_qdict(request):
     return FilterForm(conditions, actions, request, qdict)
 
 def build_filter_form_from_filter(request, name, fobj):
-    from sievelib.commands import SizeCommand
+    from sievelib.commands import SizeCommand, TrueCommand
 
     match_type = fobj["test"].name
     conditions = []
     for t in fobj["test"]["tests"]:
-        if isinstance(t, SizeCommand):
+        if isinstance(t, TrueCommand):
+            match_type = "all"
+            conditions += [("Subject", "contains", "")]
+            break
+        elif isinstance(t, SizeCommand):
             conditions += [("size", t["comparator"][1:], t["limit"])]
         else:
             conditions += [(t["header-names"].strip('"'), 

@@ -102,7 +102,8 @@
 
 #actionlist {
     border: 1px solid #CCC;
-    padding-top: 10px;
+    padding: 5px;
+    padding-top: 15px;
 }
 
 #condlist ul {
@@ -120,6 +121,8 @@
 
 #matchtype {
     margin-bottom: 10px;
+    margin-left: 7px;
+    font-size: 0.9em;
 }
 
 #submit {
@@ -129,6 +132,11 @@
 div.item {
     margin-bottom: 10px;
     margin-left: 5px;
+    overflow: auto;
+}
+
+div.item input[type=text], div.item select {
+    width: 190px;
 }
 
 div.item input, div.item select {
@@ -149,7 +157,8 @@ ul.errors {
 
 .errors li {
     color: red;
-    font-style: bold;
+    font-weight: bold;
+    font-size: 0.9em;
     display: inline;
 }
 
@@ -191,4 +200,16 @@ ul.errors {
 .leftbox img {
     float: left;
     margin-right: 5px;
+}
+
+a.green {
+    text-decoration: none;
+    font-weight: bold;
+    color: green;
+}
+
+a.red {
+    text-decoration: none;
+    font-weight: bold;
+    color: red;
 }

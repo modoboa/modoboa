@@ -34,7 +34,7 @@ def fset_menu(mode, setname):
              "label" : _("New filter"),
              "url" : reverse(views.newfilter, args=[setname]),
              "class" : "boxed",
-             "rel" : "{handler:'iframe',size:{x:650,y:400}}"},
+             "rel" : "{handler:'iframe',size:{x:700,y:400}}"},
 
             ]
     if mode == "raw":
@@ -130,18 +130,21 @@ def display_action(form, cnt):
     action = form["action_name_%d" % cnt]
     values = []
     acnt = 0
+    verrors = []
     while True:
         try:
             values += [form["action_arg_%d_%d" % (cnt, acnt)]]
-            print display_errors(form["action_arg_%d_%d" % (cnt, acnt)].errors)
+            if len(form["action_arg_%d_%d" % (cnt, acnt)].errors):
+                verrors += form["action_arg_%d_%d" % (cnt, acnt)].errors
             acnt += 1
         except KeyError:
             break
     t = template.Template("""
 <div class="item">
-  {{ afield }}{% for v in values %}{{ v }}{% endfor %}
+  {{ afield }}{% for v in values %}{{ v }}{% endfor %}{{ verrors }}
 </div>
 """)
     return t.render(template.Context({
-                "afield" : action, "values" : values
+                "afield" : action, "values" : values, 
+                "verrors" : display_errors(verrors)
                 }))

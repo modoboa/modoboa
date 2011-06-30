@@ -4,21 +4,30 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from modoboa.lib import _render, _render_to_string, \
+from modoboa.lib import _render, _render_to_string, _render_error, \
     ajax_response, ajax_simple_response, parameters
+from modoboa.lib.connections import ConnectionError
 from modoboa.auth.lib import get_password
 from lib import *
 from forms import *
 
 @login_required
 def index(request, tplname="sievefilters/index.html"):
-    sc = SieveClient(user=request.user.username, 
-                     password=request.session["password"])
+    try:
+        sc = SieveClient(user=request.user.username, 
+                         password=request.session["password"])
+    except ConnectionError, e:
+        return _render_error(request, user_context={"error" : e})
+
     active_script, scripts = sc.listscripts()
     if active_script is None:
         active_script = ""
+        default_script = scripts[0] if len(scripts) else ""
+    else:
+        default_script = active_script
     return _render(request, tplname, {
             "active_script" : active_script,
+            "default_script" : default_script,
             "scripts" : sorted(scripts),
             })
 
@@ -42,10 +51,17 @@ def getfs(request, name):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
     editormode = parameters.get_user(request.user, "EDITOR_MODE")
+    error = None
     try:
         content = sc.getscript(name, format=editormode)
     except SieveClientError, e:
-        return ajax_response(request, "ko", respmsg=str(e))
+        error = str(e)
+    else:
+        if content is None:
+            error = _("Failed to retrieve filters set")
+
+    if error is not None:
+        return ajax_response(request, "ko", respmsg=error)
 
     if editormode == "raw":
         return ajax_response(request, template="sievefilters/rawfilter.html", 
@@ -67,13 +83,17 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
                              password=request.session["password"])
         fset = sc.getscript(setname, format="fset")
         conditions, actions = form.tofilter()
+        match_type = form.cleaned_data["match_type"]
+        if match_type == "all":
+            match_type = "anyof"
+            conditions = [("true",)]
         if not update:
             fset.addfilter(form.cleaned_data["name"], conditions, actions,
-                           form.cleaned_data["match_type"])
+                           match_type)
         else:
             fset.updatefilter(request.POST["oldname"],
                               form.cleaned_data["name"], conditions, actions,
-                              form.cleaned_data["match_type"])
+                              match_type)
         sc.pushscript(fset.name, str(fset))
         return ajax_response(request, respmsg=okmsg, ajaxnav=True)
     tplctx = build_filter_ctx(tplctx, form)
@@ -107,6 +127,8 @@ def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
     form = build_filter_form_from_filter(request, fname, f)
     ctx = build_filter_ctx(ctx, form)
     ctx["oldname"] = fname
+    if form.fields["match_type"].initial == "all":
+        ctx["hideconds"] = True
     return _render(request, tplname, ctx)
 
 @login_required
@@ -206,16 +228,22 @@ def toggle_filter_state(request, setname, fname):
         if fset.is_filter_disabled(fname):
             ret = fset.enablefilter(fname)
             newstate = _("yes")
+            color = "green"
         else:
             ret = fset.disablefilter(fname)
             newstate = _("no")
+            color = "red"
         if not ret:
             pass
         sc.pushscript(setname, str(fset))
     except SieveClientError, e:
         return ajax_response(request, "ko", respmsg=str(e))
     
-    return ajax_response(request, respmsg=newstate)
+    return ajax_simple_response({
+            "status" : "ok",
+            "label" : newstate,
+            "color" : color
+            })
 
 def move_filter(request, setname, fname, direction):
     sc = SieveClient(user=request.user.username, 

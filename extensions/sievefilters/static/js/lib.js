@@ -181,7 +181,9 @@ function toggle_filter_state(event) {
         url: this.get("href"),
         onSuccess: function(response) {
             if (response.status == "ok") {
-                this.set("html", response.respmsg);
+                this.set("html", response.label);
+                this.set("class", "");
+                this.addClass(response.color);
             } else {
                 infobox.error(respmsg.respmsg);
             }
