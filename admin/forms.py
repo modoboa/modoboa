@@ -1,6 +1,7 @@
 # coding: utf-8
 from django import forms
 from modoboa.admin.models import *
+from modoboa.admin.lib import is_domain_admin
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
@@ -130,12 +131,20 @@ class AliasForm(ProxyForm):
     def set_targets(self, user, values):
         self.ext_targets = []
         self.int_targets = []
+        umb = Mailbox.objects.get(user=user.id)
         for addr in values:
             if addr == "":
                 continue
             local_part, domain = split_mailbox(addr)
             if domain is None:
                 raise AdminError("%s %s" % (_("Invalid mailbox"), addr))
+            if is_domain_admin(user) and umb.domain.name != domain:
+                try:
+                    d = Domain.objects.get(name=domain)
+                except Domain.DoesNotExist:
+                    pass
+                else:
+                    raise AdminError("%s %s" % (_("Access denied for"), addr))
             try:
                 mb = Mailbox.objects.get(address=local_part, domain__name=domain)
             except Mailbox.DoesNotExist:
