@@ -41,7 +41,7 @@ admin. panel. Currently, it appears that the ``crypt`` scheme is
 compatible with PostfixAdmin ``md5crypt`` algorithm...
 
 """
-import os
+import os, sys
 from django.conf import settings
 from django.db.utils import ConnectionDoesNotExist
 from django.db.models import Q
