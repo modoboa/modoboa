@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-01 10:11+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:81
+msgid "Release this selection?"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:88
+msgid "Delete this selection?"
+msgstr ""
+
+#: extensions/sievefilters/static/js/lib.js:14
+msgid "Remove this filter?"
+msgstr ""
+
+#: extensions/sievefilters/static/js/lib.js:116
+msgid "Save changes?"
+msgstr ""
+
+#: extensions/webmail/static/js/fdmenu.js:31
+msgid "Edit folder"
+msgstr ""
+
+#: extensions/webmail/static/js/fdmenu.js:62
+msgid "Folder deleted"
+msgstr ""
+
+#: extensions/webmail/static/js/webmail.js:195
+msgid "Reloading..."
+msgstr ""
+
+#: extensions/webmail/static/js/webmail.js:203
+#: extensions/webmail/static/js/webmail.js:227 static/js/anchor_nav.js:199
+msgid "Done"
+msgstr ""
+
+#: extensions/webmail/static/js/webmail.js:216
+msgid "Waiting..."
+msgstr ""
+
+#: static/js/anchor_nav.js:10
+msgid "Loading..."
+msgstr ""
+
+#: static/js/common.js:150
+msgid "Search..."
+msgstr ""
+
+#: static/js/preferences.js:14
+msgid "Preferences saved"
+msgstr ""
+
+#: static/js/settings.js:14
+msgid "Parameters saved"
+msgstr ""
