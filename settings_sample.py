@@ -26,7 +26,7 @@ DATABASES = {
     #     "ENGINE" : "",
     #     "NAME" : "",
     #     "USER" : "",
-    #     "PASSWORD"
+    #     "PASSWORD" : ""
     # }
 }
 

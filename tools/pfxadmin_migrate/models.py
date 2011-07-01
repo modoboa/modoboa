@@ -18,6 +18,7 @@ class Admin(models.Model):
     class Meta:
         db_table = u'admin'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Alias(models.Model):
     address = models.CharField(max_length=765, primary_key=True)
@@ -29,6 +30,7 @@ class Alias(models.Model):
     class Meta:
         db_table = u'alias'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class AliasDomain(models.Model):
     alias_domain = models.CharField(max_length=765, primary_key=True)
@@ -39,6 +41,7 @@ class AliasDomain(models.Model):
     class Meta:
         db_table = u'alias_domain'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Config(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -47,6 +50,7 @@ class Config(models.Model):
     class Meta:
         db_table = u'config'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Domain(models.Model):
     domain = models.CharField(max_length=765, primary_key=True)
@@ -63,6 +67,7 @@ class Domain(models.Model):
     class Meta:
         db_table = u'domain'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class DomainAdmins(models.Model):
     username = models.CharField(max_length=765)
@@ -72,6 +77,7 @@ class DomainAdmins(models.Model):
     class Meta:
         db_table = u'domain_admins'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Fetchmail(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -93,6 +99,7 @@ class Fetchmail(models.Model):
     class Meta:
         db_table = u'fetchmail'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Log(models.Model):
     timestamp = models.DateTimeField()
@@ -103,6 +110,7 @@ class Log(models.Model):
     class Meta:
         db_table = u'log'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Mailbox(models.Model):
     username = models.CharField(max_length=765, primary_key=True)
@@ -118,6 +126,7 @@ class Mailbox(models.Model):
     class Meta:
         db_table = u'mailbox'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Quota(models.Model):
     username = models.CharField(max_length=765, primary_key=True)
@@ -126,6 +135,7 @@ class Quota(models.Model):
     class Meta:
         db_table = u'quota'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Quota2(models.Model):
     username = models.CharField(max_length=300, primary_key=True)
@@ -134,6 +144,7 @@ class Quota2(models.Model):
     class Meta:
         db_table = u'quota2'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class Vacation(models.Model):
     email = models.CharField(max_length=765)
@@ -146,6 +157,7 @@ class Vacation(models.Model):
     class Meta:
         db_table = u'vacation'
         app_label = 'pfxadmin_migrate'
+	managed = False
 
 class VacationNotification(models.Model):
     on_vacation = models.ForeignKey(Vacation, db_column='on_vacation')
@@ -154,4 +166,4 @@ class VacationNotification(models.Model):
     class Meta:
         db_table = u'vacation_notification'
         app_label = 'pfxadmin_migrate'
-
+	managed = False

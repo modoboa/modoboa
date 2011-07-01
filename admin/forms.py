@@ -11,7 +11,8 @@ from modoboa.lib.emailutils import split_mailbox
 class DomainForm(forms.ModelForm):
     class Meta:
         model = Domain
-        
+        fields = ("name", "quota", "enabled")
+
     def __init__(self, *args, **kwargs):
         super(DomainForm, self).__init__(*args, **kwargs)
         for f in ['name', 'quota']:
