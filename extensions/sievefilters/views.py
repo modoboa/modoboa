@@ -1,5 +1,5 @@
 # coding: utf-8
-
+from sievelib.managesieve import Error
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
@@ -18,8 +18,11 @@ def index(request, tplname="sievefilters/index.html"):
                          password=request.session["password"])
     except ConnectionError, e:
         return _render_error(request, user_context={"error" : e})
-
-    active_script, scripts = sc.listscripts()
+    
+    try:
+        active_script, scripts = sc.listscripts()
+    except Error, e:
+        return _render_error(request, user_context={"error" : e})
     if active_script is None:
         active_script = ""
         default_script = scripts[0] if len(scripts) else ""

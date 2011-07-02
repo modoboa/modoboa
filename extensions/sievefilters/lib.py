@@ -14,7 +14,10 @@ class SieveClient(object):
     __metaclass__ = ConnectionsManager
 
     def __init__(self, user=None, password=None):
-        ret, msg = self.login(user, password)
+        try:
+            ret, msg = self.login(user, password)
+        except Error, e:
+            raise ConnectionError(str(e))
         if not ret:
             raise ConnectionError(msg)
 
@@ -29,6 +32,8 @@ class SieveClient(object):
         try:
             ret = self.msc.connect(user, password, use_starttls, authmech)
         except Error, e:
+            ret = False
+        if not ret:
             return False, _("Connection to MANAGESIEVE server failed, check your configuration")
         return True, None
 
