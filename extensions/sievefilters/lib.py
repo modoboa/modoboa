@@ -31,14 +31,19 @@ class SieveClient(object):
         except Error, e:
             return False, _("Connection to MANAGESIEVE server failed, check your configuration")
         return True, None
+
+    def logout(self):
+        self.msc.logout()
+        self.msc = None
         
     def refresh(self, user, password):
-        try:
-            self.msc.capability()
-        except Error, e:
-            pass
-        else:
-            return
+        if self.msc is not None:
+            try:
+                self.msc.capability()
+            except Error, e:
+                pass
+            else:
+                return
         try:
             ret, msg = self.login(user, password)
         except Error, e:

@@ -7,6 +7,7 @@ from sievelib.managesieve import SUPPORTED_AUTH_MECHS
 
 def init():
     events.register("UserMenuDisplay", menu)
+    events.register("UserLogout", userlogout)
 
     parameters.register_admin("SERVER", type="string", 
                               deflt="127.0.0.1",
@@ -55,3 +56,16 @@ def menu(**kwargs):
          "url" : reverse(views.index),
          "img" : static_url("pics/filters.png")}
         ]
+
+def userlogout(**kwargs):
+    from lib import SieveClient
+
+    if kwargs["request"].user.id == 1:
+        return
+    try:
+        sc = SieveClient(user=kwargs["request"].user.username,
+                         password=kwargs["request"].session["password"])
+    except Exception, e:
+        pass
+    else:
+        sc.logout()
