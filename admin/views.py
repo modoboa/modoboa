@@ -116,7 +116,7 @@ def deldomain(request):
     error = None
     if request.user.id != 1:
         mb = Mailbox.objects.get(user__id=request.user.id)
-        if str(dom.id) in selection:
+        if str(mb.domain.id) in selection:
             error = _("You can't delete your own domain")
     if error is None:
         if request.GET.has_key("keepdir") and request.GET["keepdir"] == "true":
@@ -129,7 +129,7 @@ def deldomain(request):
         msg = ungettext("Domain deleted", "Domains deleted", len(selection))
         messages.info(request, msg, fail_silently=True)
         return ajax_response(request)
-    return ajax_response(request, status="ko", error=error)
+    return ajax_response(request, status="ko", respmsg=error)
 
 @login_required
 @permission_required("admin.view_domaliases")

@@ -73,10 +73,13 @@ var Confirmation = new Class({
 		if (res.status == "ok") {
 		    window.location.reload();
 		} else {
-		    infobox.error(res.error);
+		    infobox.error(res.respmsg);
 		    infobox.hide(2);
 		}
-	    }
+	    },
+            onFailure: function(xhr) {
+                $(parent.document.body).set("html", xhr.responseText);
+            }
         }).send(params);
     },
 

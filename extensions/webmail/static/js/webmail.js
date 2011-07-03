@@ -234,7 +234,7 @@ function simple_request(url, params) {
           infobox.hide(1);
         }
       } else {
-        infobox.error(response.error);
+        infobox.error(response.respmsg);
       }
     }
   }).get(params);
