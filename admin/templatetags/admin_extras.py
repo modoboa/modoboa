@@ -149,7 +149,7 @@ def domain_actions(user, domid):
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit domain"),
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:180}}"},
+         "rel" : "{handler:'iframe',size:{x:310,y:190}}"},
         {"name" : "domaliases",
          "url" : reverse(admin.views.domaliases) + "?domid=%s" % domid,
          "img" : static_url("pics/alias.png"),
