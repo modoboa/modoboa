@@ -1,5 +1,6 @@
-Installation
-************
+==============
+ Installation
+==============
 
 Requirements
 ============
@@ -158,7 +159,7 @@ requires a migration.
    a copy of your existing database.
 
 0.8.5: new "Sieve filters" plugin, improved admin app
-------------------------------------------------------
+-----------------------------------------------------
 
 #. Migrate the ``lib`` and ``admin`` applications::
 
@@ -340,7 +341,7 @@ For *MySQL* users, define the following map files on your server (it should work
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(t3.address, '@', t4.name) FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3, admin_domain AS t4 WHERE t1.enabled=1 AND t1.address='%u' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t3.enabled=1 AND t3.domain_id=t4.id AND t4.enabled=1 AND t4.name='%d'
+  query = (SELECT concat(t1.address, '@', t2.name) FROM admin_mailbox t1, admin_domain t2 WHERE t1.id IN (SELECT t3.mailbox_id FROM admin_alias t1, admin_domain t2, admin_alias_mboxes t3 WHERE t1.enabled='1' AND t1.address='%u' AND t1.domain_id=t2.id AND t2.name='%d' AND t3.alias_id=t1.id) AND t1.domain_id=t2.id) UNION (SELECT t1.extmboxes FROM admin_alias AS t1, admin_domain AS t2 WHERE t1.enabled='1' AND t1.extmboxes<>'' AND t1.address='%u' AND t1.domain_id=t2.id AND t2.name="%d" AND t2.enabled='1')
 
 ``/etc/postfix/sql-forwards.cf``::
 
@@ -374,7 +375,6 @@ Then, use the following configuration in the */etc/postfix/main.cf* file
   virtual_alias_domains = mysql:/etc/postfix/sql-domain-aliases.cf
   virtual_mailbox_maps = mysql:/etc/postfix/sql-mailboxes.cf
   virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf,
-        mysql:/etc/postfix/sql-forwards.cf,
         mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf
   # Stuff after
 
@@ -384,13 +384,13 @@ Then, use the following configuration in the */etc/postfix/main.cf* file
    in the admin panel.
 
 Optional : 'catchall' aliases
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Modoboa supports 'catchall' aliases creation. In the case you would
 like to use this feature, you'll need to add specific queries to
 *postfix* configuration.
 
-First, create the following new maps:
+First, create the following new maps (*MySQL* users):
 
 ``/etc/postfix/sql-email2email.cf``::
 
@@ -406,15 +406,7 @@ First, create the following new maps:
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(t3.address, '@', t4.name) FROM admin_alias AS t1, admin_alias_mboxes AS t2, admin_mailbox AS t3, admin_domain AS t4 WHERE t1.enabled='1' AND t1.address='*' AND t1.id=t2.alias_id AND t2.mailbox_id=t3.id AND t3.enabled='1' AND t3.domain_id=t4.id AND t4.enabled='1' AND t4.name='%d'
-
-``/etc/postfix/sql-catchall-forwards.cf``::
-
-  user = <user>
-  password = <password>
-  dbname = <database>
-  hosts = 127.0.0.1
-  query = SELECT t1.extmboxes FROM admin_alias AS t1, admin_domain AS t2 WHERE t1.enabled='1' AND t1.address='*' AND t1.domain_id=t2.id AND t2.name="%d" AND t2.enabled='1'
+  query = (SELECT concat(t1.address, '@', t2.name) FROM admin_mailbox t1, admin_domain t2 WHERE t1.id IN (SELECT t3.mailbox_id FROM admin_alias t1, admin_domain t2, admin_alias_mboxes t3 WHERE t1.enabled='1' AND t1.address='*' AND t1.domain_id=t2.id AND t2.name='%d' AND t3.alias_id=t1.id) AND t1.domain_id=t2.id) UNION (SELECT t1.extmboxes FROM admin_alias AS t1, admin_domain AS t2 WHERE t1.enabled='1' AND t1.extmboxes<>'' AND t1.address='*' AND t1.domain_id=t2.id AND t2.name="%d" AND t2.enabled='1')
 
 Once done, edit the *main.cf* configuration file and add the new maps
 to the ``virtual_alias_maps`` parameter like this::
@@ -423,15 +415,14 @@ to the ``virtual_alias_maps`` parameter like this::
         mysql:/etc/postfix/sql-forwards.cf,
         mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf,
         mysql:/etc/postfix/sql-email2email.cf,                  # new
-        mysql:/etc/postfix/sql-catchall-aliases.cf,             # new
-        mysql:/etc/postfix/sql-catchall-forwards.cf             # new
+        mysql:/etc/postfix/sql-catchall-aliases.cf              # new
 
 Reload *postfix*.
 
 .. _dovecot_lda:
 
 Optional: using Dovecot's LDA
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you are using *Dovecot* in your environnement, I recommend to use
 its LDA. Doing so, you'll will be able to use extra functionalities
@@ -503,7 +494,7 @@ For *MySQL* users, edit your */etc/dovecot/dovecot-sql.conf* and modify followin
   user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 Enable quotas support
-^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
 Put the following lines inside the *dovecot.conf* file::
 
@@ -544,7 +535,7 @@ activate per-user quotas::
   user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid, concat('*:storage=', t1.quota, 'M') AS quota_rule FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 Enable ManageSieve/Sieve support
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note:: 
    The following configuration example should work with versions

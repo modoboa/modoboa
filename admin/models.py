@@ -271,6 +271,8 @@ class Alias(DatesAware):
     def save(self, int_targets, ext_targets, *args, **kwargs):
         if len(ext_targets):
             self.extmboxes = ",".join(ext_targets)
+        else:
+            self.extmboxes = ""
         super(Alias, self).save(*args, **kwargs)
         curmboxes = self.mboxes.all()
         for t in int_targets:
