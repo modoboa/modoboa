@@ -29,7 +29,7 @@ window.addEvent("domready", function() {
     objtable._selectedRows.each(function(item) {
       var options = JSON.decode(item.get("rel"));
 
-      if ($defined(options.ui_disabled) && options.ui_disabled == "True") {
+      if ($defined(options) && $defined(options.ui_disabled) && options.ui_disabled == "True") {
         return;
       }
       if (selection != "") {
