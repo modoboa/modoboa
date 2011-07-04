@@ -130,8 +130,8 @@ def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
     form = build_filter_form_from_filter(request, fname, f)
     ctx = build_filter_ctx(ctx, form)
     ctx["oldname"] = fname
-    if form.fields["match_type"].initial == "all":
-        ctx["hideconds"] = True
+    ctx["hidestyle"] = "none" \
+        if form.fields["match_type"].initial == "all" else "block"
     return _render(request, tplname, ctx)
 
 @login_required

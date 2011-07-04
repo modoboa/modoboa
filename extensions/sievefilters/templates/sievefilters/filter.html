@@ -77,11 +77,11 @@ $(document).addEvent("domready", function() {
       <div class="spacer"></div>
     </div>
     <div class="spacer"></div>
-    {% if hideconds %}<div id="hide" style="display:none">{% endif %}
-    {% for ec in conds_nb %}
-    {% display_condition form ec %}
-    {% endfor %}
-    {% if hideconds %}</div>{% endif %}
+    <div id="hide" style="display:{{ hidestyle }}">
+      {% for ec in conds_nb %}
+      {% display_condition form ec %}
+      {% endfor %}
+    </div>
   </div>
   <h2>{% trans "Actions" %}</h2>
   <div id="actionlist">
