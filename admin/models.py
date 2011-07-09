@@ -105,7 +105,7 @@ class Domain(DatesAware):
 
     def save(self, *args, **kwargs):
         if not self.create_dir():
-            raise AdminError("Failed to initialise domain, check permissions")
+            raise AdminError(_("Failed to initialise domain, check permissions"))
         super(Domain, self).save(*args, **kwargs)
 
     def __str__(self):

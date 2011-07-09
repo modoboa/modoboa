@@ -1,13 +1,13 @@
 # Modoboa french translation
 # Copyright (C) 2010-2011
 # This file is distributed under the same license as the Modoboa package.
-# Antoine Nguyen <tonio@ngyn.org>, 2010-2011.
 #
+# Antoine Nguyen <tonio@ngyn.org>, 2010-2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-30 21:25+0200\n"
+"POT-Creation-Date: 2011-07-09 15:15+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -54,101 +54,105 @@ msgid "Scheme used to crypt mailbox passwords"
 msgstr ""
 "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
-#: admin/forms.py:40 templates/admin/domains.html:25
+#: admin/forms.py:27
+msgid "Failed to rename domain, check permissions"
+msgstr "Impossible de renommer le domaine, vérifier les permissions"
+
+#: admin/forms.py:51 templates/admin/domains.html:25
 #: templates/admin/mailboxes.html:16
 msgid "Quota"
 msgstr ""
 
-#: admin/forms.py:41
+#: admin/forms.py:52
 msgid "Mailbox quota in MB (default to domain quota if blank)"
 msgstr ""
 "Quota en Mo de la boite aux lettres (par défaut celui du domaine si vide)"
 
-#: admin/forms.py:42 auth/forms.py:6
+#: admin/forms.py:53 auth/forms.py:6
 msgid "Password"
 msgstr "Mot de passe"
 
-#: admin/forms.py:44
+#: admin/forms.py:55
 msgid "Password used to log in"
 msgstr "Mot de passe utilisé pour se connecter"
 
-#: admin/forms.py:45 userprefs/forms.py:16
+#: admin/forms.py:56 userprefs/forms.py:16
 msgid "Confirmation"
 msgstr ""
 
-#: admin/forms.py:47
+#: admin/forms.py:58
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
-#: admin/forms.py:50
+#: admin/forms.py:61
 msgid "Check to activate this mailbox"
 msgstr "Cocher pour activer cette boite aux lettres"
 
-#: admin/forms.py:77 userprefs/forms.py:35
+#: admin/forms.py:88 userprefs/forms.py:35
 msgid "Passwords mismatch"
 msgstr "Les mots de passe diffèrent"
 
-#: admin/forms.py:92 templates/admin/mbaliases.html:12
+#: admin/forms.py:103 templates/admin/mbaliases.html:12
 msgid "Target(s)"
 msgstr "Cible(s)"
 
-#: admin/forms.py:93
+#: admin/forms.py:104
 msgid "Mailbox(es) this alias will point to"
 msgstr "Les boites aux lettres sur lesquelles cet alias pointera"
 
-#: admin/forms.py:140
+#: admin/forms.py:151
 msgid "Invalid mailbox"
 msgstr "Boite aux lettres invalide"
 
-#: admin/forms.py:147
+#: admin/forms.py:158
 msgid "Access denied for"
 msgstr "Permission refusée pour"
 
-#: admin/forms.py:156
+#: admin/forms.py:167
 msgid "Permission denied on"
 msgstr "Permission refusée sur"
 
-#: admin/forms.py:167 admin/forms.py:180
+#: admin/forms.py:178 admin/forms.py:191
 msgid "User"
 msgstr "Utilisateur"
 
-#: admin/forms.py:168
+#: admin/forms.py:179
 msgid "Select a user"
 msgstr "Sélectionner un utilisateur"
 
-#: admin/forms.py:169 admin/forms.py:182
+#: admin/forms.py:180 admin/forms.py:193
 msgid "Select a user in the list"
 msgstr "Sélectionner un utilisateur dans la liste"
 
-#: admin/forms.py:176 admin/forms.py:195
+#: admin/forms.py:187 admin/forms.py:206
 msgid "Domain"
 msgstr "Domaine"
 
-#: admin/forms.py:178
+#: admin/forms.py:189
 msgid "Select a domain"
 msgstr "Sélectionner un domaine"
 
-#: admin/forms.py:179
+#: admin/forms.py:190
 msgid "Select a domain in the list"
 msgstr "Sélectionner un domaine dans la liste"
 
-#: admin/forms.py:181
+#: admin/forms.py:192
 msgid "Empty"
 msgstr "Vide"
 
-#: admin/forms.py:187
+#: admin/forms.py:198
 msgid "User name"
 msgstr "Nom d'utilisateur"
 
-#: admin/forms.py:188 admin/forms.py:196
+#: admin/forms.py:199 admin/forms.py:207
 msgid "Full name"
 msgstr "Nom complet"
 
-#: admin/forms.py:189 admin/forms.py:197
+#: admin/forms.py:200 admin/forms.py:208
 msgid "Defined"
 msgstr "Défini le"
 
-#: admin/models.py:66 admin/models.py:110 admin/models.py:123
+#: admin/models.py:66 admin/models.py:115 admin/models.py:128
 msgid "name"
 msgstr "Nom"
 
@@ -160,8 +164,8 @@ msgstr "Le nom du domaine"
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Quota par défaut en Mo appliqué aux boites aux lettres"
 
-#: admin/models.py:69 admin/models.py:114 admin/models.py:263
-#: admin/models.py:318 extensions/postfix_autoreply/models.py:19
+#: admin/models.py:69 admin/models.py:119 admin/models.py:268
+#: admin/models.py:325 extensions/postfix_autoreply/models.py:19
 msgid "enabled"
 msgstr "Activé"
 
@@ -169,48 +173,52 @@ msgstr "Activé"
 msgid "Check to activate this domain"
 msgstr "Cocher pour activer ce domaine"
 
-#: admin/models.py:111
+#: admin/models.py:108
+msgid "Failed to initialise domain, check permissions"
+msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
+
+#: admin/models.py:116
 msgid "The alias name"
 msgstr "Le nom de l'alias"
 
-#: admin/models.py:112
+#: admin/models.py:117
 msgid "target"
 msgstr "cible"
 
-#: admin/models.py:113
+#: admin/models.py:118
 msgid "The domain this alias points to"
 msgstr "Le domaine vers lequel cet alias pointe"
 
-#: admin/models.py:115 admin/models.py:264
+#: admin/models.py:120 admin/models.py:269
 msgid "Check to activate this alias"
 msgstr "Cocher pour activer cet alias"
 
-#: admin/models.py:124
+#: admin/models.py:129
 msgid "First name and last name of mailbox owner"
 msgstr "Prénom et nom du propriétaire de la boite aux lettres"
 
-#: admin/models.py:125 admin/models.py:257
+#: admin/models.py:130 admin/models.py:262
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models.py:126
+#: admin/models.py:131
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Adresse de la boite aux lettres (sans la partie @domain.tld)"
 
-#: admin/models.py:127
+#: admin/models.py:132
 msgid "password"
 msgstr "Mot de passe"
 
-#: admin/models.py:195
+#: admin/models.py:200
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Impossible d'initialiser la boite aux lettres, vérifier les permissions"
 
-#: admin/models.py:214
+#: admin/models.py:219
 msgid "Mailbox with this address already exists"
 msgstr "Une boite aux lettres pour cette adresse existe déjà"
 
-#: admin/models.py:258
+#: admin/models.py:263
 msgid ""
 "The alias address (without the domain part). For a 'catch-all' address, just "
 "enter an * character."
@@ -218,15 +226,15 @@ msgstr ""
 "L'adresse de l'alias (sans la partie domaine). Pour une adresse 'attrape-"
 "tout', entrer juste un caractère *."
 
-#: admin/models.py:260
+#: admin/models.py:265
 msgid "mailboxes"
 msgstr "Boites aux lettres"
 
-#: admin/models.py:261
+#: admin/models.py:266
 msgid "The mailboxes this alias points to"
 msgstr "Les boites aux lettres sur lesquelles pointe cet alias"
 
-#: admin/models.py:319
+#: admin/models.py:326
 msgid "Check to enable this extension"
 msgstr "Cocher pour activer cette extension"
 
@@ -242,183 +250,175 @@ msgstr "Ajouter un admin. de domaine"
 msgid "Do not delete domain directory"
 msgstr "Ne pas supprimer le répertoire du domaine"
 
-#: admin/views.py:53
+#: admin/views.py:63
+msgid "Domain with this name already defined"
+msgstr "Un domaine avec ce nom existe déjà"
+
+#: admin/views.py:80
 msgid "New domain"
 msgstr "Nouveau domaine"
 
-#: admin/views.py:54 admin/views.py:151 admin/views.py:271 admin/views.py:302
-#: admin/views.py:410 extensions/sievefilters/views.py:161
+#: admin/views.py:81 admin/views.py:148 admin/views.py:268 admin/views.py:299
+#: admin/views.py:407 extensions/sievefilters/views.py:164
 #: extensions/webmail/views.py:455
 msgid "Create"
 msgstr "Créer"
 
-#: admin/views.py:62 admin/views.py:95
-msgid "Domain with this name already defined"
-msgstr "Un domaine avec ce nom existe déjà"
-
-#: admin/views.py:68
+#: admin/views.py:86
 msgid "Domain created"
 msgstr "Domaine créé"
 
-#: admin/views.py:71
-msgid "Failed to initialise domain, check permissions"
-msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
-
-#: admin/views.py:84
+#: admin/views.py:97
 msgid "Domain editing"
 msgstr "Edition de domaine"
 
-#: admin/views.py:85 admin/views.py:186 admin/views.py:429
+#: admin/views.py:98 admin/views.py:183 admin/views.py:426
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:38
 #: extensions/webmail/views.py:482 templates/userprefs/chpassword.html:15
 #: templates/userprefs/setforward.html:15
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: admin/views.py:98
-msgid "Failed to rename domain, check permissions"
-msgstr "Impossible de renommer le domaine, vérifier les permissions"
-
-#: admin/views.py:101
+#: admin/views.py:103
 msgid "Domain modified"
 msgstr "Domaine modifié"
 
-#: admin/views.py:120
+#: admin/views.py:117
 msgid "You can't delete your own domain"
 msgstr "Vous ne pouvez pas supprimer votre propre domaine"
 
-#: admin/views.py:129
+#: admin/views.py:126
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domaine supprimé"
 msgstr[1] "Domaines supprimés"
 
-#: admin/views.py:150
+#: admin/views.py:147
 msgid "New domain alias"
 msgstr "Nouvel alias de domaine"
 
-#: admin/views.py:160 admin/views.py:195
+#: admin/views.py:157 admin/views.py:192
 msgid "A domain with this name already exists"
 msgstr "Un domaine de ce nom existe déjà"
 
-#: admin/views.py:165 admin/views.py:200 admin/views.py:390
+#: admin/views.py:162 admin/views.py:197 admin/views.py:387
 msgid "Alias with this name already exists"
 msgstr "Un alias de ce nom existe déjà"
 
-#: admin/views.py:167
+#: admin/views.py:164
 msgid "Domain alias created"
 msgstr "Alias de domaine créé"
 
-#: admin/views.py:185
+#: admin/views.py:182
 msgid "Domain alias editing"
 msgstr "Edition d'alias de domaine"
 
-#: admin/views.py:202
+#: admin/views.py:199
 msgid "Domain alias updated"
 msgstr "Alias de domaine mis à jour"
 
-#: admin/views.py:218
+#: admin/views.py:215
 msgid "Domain alias deleted"
 msgid_plural "Domain aliases deleted"
 msgstr[0] "Alias de domaine supprimé"
 msgstr[1] "Alias de domaine supprimés"
 
-#: admin/views.py:232
+#: admin/views.py:229
 msgid "Do not delete mailbox directory"
 msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
-#: admin/views.py:270
+#: admin/views.py:267
 msgid "New mailbox"
 msgstr "Nouvelle boite aux lettres"
 
-#: admin/views.py:284
+#: admin/views.py:281
 msgid "Mailbox created"
 msgstr "Boite aux lettres créée"
 
-#: admin/views.py:301
+#: admin/views.py:298
 msgid "Mailbox editing"
 msgstr "Edition de boite aux lettres"
 
-#: admin/views.py:318
+#: admin/views.py:315
 msgid "Mailbox modified"
 msgstr "Boite aux lettres modifiée"
 
-#: admin/views.py:321
+#: admin/views.py:318
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
 
-#: admin/views.py:340
+#: admin/views.py:337
 msgid "You can't delete your own mailbox"
 msgstr "Vous ne pouvez pas supprimer votre propre boite aux lettres"
 
-#: admin/views.py:350
+#: admin/views.py:347
 msgid "Mailbox deleted"
 msgid_plural "Mailboxes deleted"
 msgstr[0] "Boite aux lettres supprimée"
 msgstr[1] "Boites aux lettres supprimées"
 
-#: admin/views.py:385
+#: admin/views.py:382
 msgid "No target defined"
 msgstr "Aucune cible définie"
 
-#: admin/views.py:409
+#: admin/views.py:406
 msgid "New mailbox alias"
 msgstr "Nouvel alias de boite aux lettres"
 
-#: admin/views.py:415
+#: admin/views.py:412
 msgid "Mailbox alias created"
 msgstr "Alias de boite aux lettres créé"
 
-#: admin/views.py:428
+#: admin/views.py:425
 msgid "Mailbox alias editing"
 msgstr "Edition d'alias de boite"
 
-#: admin/views.py:434
+#: admin/views.py:431
 msgid "Mailbox alias modified"
 msgstr "Alias de boite aux lettres modifié"
 
-#: admin/views.py:448
+#: admin/views.py:445
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
 msgstr[0] "Alias de boite aux lettres supprimé"
 msgstr[1] "Alias de boite aux lettres supprimés"
 
-#: admin/views.py:459
+#: admin/views.py:456
 msgid "Super administrators"
 msgstr "Super administrateurs"
 
-#: admin/views.py:468
+#: admin/views.py:465
 msgid "Domain administrators"
 msgstr "Administrateurs de domaine"
 
-#: admin/views.py:483 admin/views.py:500
+#: admin/views.py:480 admin/views.py:497
 msgid "Permission denied!"
 msgstr "Permission refusée!"
 
-#: admin/views.py:492
+#: admin/views.py:489
 msgid "Permission added."
 msgstr "Permission ajoutée."
 
-#: admin/views.py:506
+#: admin/views.py:503
 msgid "Permissions removed"
 msgstr "Permission supprimée"
 
-#: admin/views.py:552 extensions/sievefilters/forms.py:18
+#: admin/views.py:549 extensions/sievefilters/forms.py:18
 #: extensions/sievefilters/templates/sievefilters/filters.html:8
 #: templates/admin/domains.html:19 templates/admin/domaliases.html:11
 #: templates/admin/mailboxes.html:12
 msgid "Name"
 msgstr "Nom"
 
-#: admin/views.py:553
+#: admin/views.py:550
 msgid "Version"
 msgstr ""
 
-#: admin/views.py:554
+#: admin/views.py:551
 msgid "Description"
 msgstr ""
 
-#: admin/views.py:595
+#: admin/views.py:592
 msgid "Modifications applied."
 msgstr "Modifications appliquées"
 
@@ -801,103 +801,103 @@ msgstr "Déplacer le message vers"
 msgid "Redirect message to"
 msgstr "Rediriger le message vers"
 
-#: extensions/sievefilters/lib.py:32
+#: extensions/sievefilters/lib.py:37
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 "La connexion au serveur ManageSieve a échoué, vérifiez votre configuration"
 
-#: extensions/sievefilters/lib.py:68
+#: extensions/sievefilters/lib.py:78
 msgid "Not enough space on server"
 msgstr "Pas assez d'espace sur le serveur"
 
-#: extensions/sievefilters/main.py:13
+#: extensions/sievefilters/main.py:14
 msgid "Address of your MANAGESIEVE server"
 msgstr "Adresse de votre serveur ManageSieve"
 
-#: extensions/sievefilters/main.py:15
+#: extensions/sievefilters/main.py:16
 msgid "Listening port of your MANAGESIEVE server"
 msgstr "Port d'écoute de votre serveur ManageSieve"
 
-#: extensions/sievefilters/main.py:17
+#: extensions/sievefilters/main.py:18
 msgid "Use the STARTTLS extension"
 msgstr "Utiliser l'extension STARTTLS"
 
-#: extensions/sievefilters/main.py:24
+#: extensions/sievefilters/main.py:25
 msgid "Prefered authentication mechanism"
 msgstr "Méthode d'authentification préférée"
 
-#: extensions/sievefilters/main.py:28
+#: extensions/sievefilters/main.py:29
 msgid "Editor mode"
 msgstr "Mode de l'editeur"
 
-#: extensions/sievefilters/main.py:30
+#: extensions/sievefilters/main.py:31
 msgid "Select the mode you want the editor to work in"
 msgstr "Sélectionner le mode de fonctionnement de l'éditeur"
 
-#: extensions/sievefilters/main.py:40
+#: extensions/sievefilters/main.py:41
 msgid "Plugin to easily create server-side filters"
 msgstr "Extension pour créer simplement des filtres côté serveur"
 
-#: extensions/sievefilters/main.py:54
+#: extensions/sievefilters/main.py:55
 #: extensions/sievefilters/templates/sievefilters/index.html:17
 msgid "Message filters"
 msgstr "Filtres de messages"
 
-#: extensions/sievefilters/views.py:61
+#: extensions/sievefilters/views.py:64
 msgid "Failed to retrieve filters set"
 msgstr "Impossible de récuperer le jeu de filtres"
 
-#: extensions/sievefilters/views.py:104
+#: extensions/sievefilters/views.py:107
 #: extensions/sievefilters/templatetags/sfilters_tags.py:34
 msgid "New filter"
 msgstr "Nouveau filtre"
 
-#: extensions/sievefilters/views.py:107
+#: extensions/sievefilters/views.py:110
 msgid "Filter created"
 msgstr "Filtre créé"
 
-#: extensions/sievefilters/views.py:117
+#: extensions/sievefilters/views.py:120
 #: extensions/sievefilters/templatetags/sfilters_tags.py:72
 msgid "Edit filter"
 msgstr "Editer le filtre"
 
-#: extensions/sievefilters/views.py:122
+#: extensions/sievefilters/views.py:125
 msgid "Filter modified"
 msgstr "Filtre modifié"
 
-#: extensions/sievefilters/views.py:141
+#: extensions/sievefilters/views.py:144
 msgid "Filter removed"
 msgstr "Filtre supprimé"
 
-#: extensions/sievefilters/views.py:142
+#: extensions/sievefilters/views.py:145
 msgid "Failed to remove filter"
 msgstr "Impossible de supprimer le filtre"
 
-#: extensions/sievefilters/views.py:155
+#: extensions/sievefilters/views.py:158
 msgid "Filters set saved"
 msgstr "Jeu de filtres sauvegardé"
 
-#: extensions/sievefilters/views.py:159
+#: extensions/sievefilters/views.py:162
 msgid "Create a new filters set"
 msgstr "Créer un nouveau jeu de filtres"
 
-#: extensions/sievefilters/views.py:179
+#: extensions/sievefilters/views.py:182
 msgid "Filters set created"
 msgstr "Jeu de filtres créé"
 
-#: extensions/sievefilters/views.py:195
+#: extensions/sievefilters/views.py:198
 msgid "Filters set deleted"
 msgstr "Jeu de filtres supprimé"
 
-#: extensions/sievefilters/views.py:205
+#: extensions/sievefilters/views.py:208
 msgid "Filters set activated"
 msgstr "Jeu de filtres activé"
 
-#: extensions/sievefilters/views.py:230
+#: extensions/sievefilters/views.py:233
 msgid "yes"
 msgstr "oui"
 
-#: extensions/sievefilters/views.py:234
+#: extensions/sievefilters/views.py:237
 msgid "no"
 msgstr "non"
 
@@ -907,7 +907,7 @@ msgstr ""
 
 #: extensions/sievefilters/templates/sievefilters/filter.html:75
 msgid "Match type"
-msgstr ""
+msgstr "Type de comparaison"
 
 #: extensions/sievefilters/templates/sievefilters/filter.html:86
 #: extensions/sievefilters/templates/sievefilters/filters.html:7
@@ -1503,6 +1503,8 @@ msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
 msgstr ""
+"Vous ne pouvez pas définir un transfert vers une destination locale. "
+"Veuillez plutôt demander à votre administrateur de créer un alias"
 
 #: userprefs/views.py:32
 msgid "Password changed"
