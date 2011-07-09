@@ -47,32 +47,45 @@ def domains(request):
                                domains=domains,
                                deloptions=deloptions)
 
+def _validate_domain(request, form, successmsg, commonctx, 
+                     callback=None, tplname="admin/adminform.html"):
+    """Domain validation
+
+    Common function shared between creation and modification actions.
+    """
+    error = None
+    if form.is_valid():
+        try:
+            domain = form.save()
+        except AdminError, e:
+            error = str(e)
+        except IntegrityError:
+            error = _("Domain with this name already defined")
+        else:
+            if callback is not None:
+                callback(domain)
+            messages.info(request, successmsg, fail_silently=True)
+            return ajax_response(request, url=reverse(admin.views.domains))
+
+    commonctx["form"] = form
+    commonctx["error"] = error
+    return ajax_response(request, status="ko", template=tplname, **commonctx)
+
 @login_required
 @permission_required("admin.add_domain")
 def newdomain(request, tplname="admin/adminform.html"):
+    def newdomain_cb(domain):
+        events.raiseEvent("CreateDomain", dom=domain)
+
     commonctx = {"title" : _("New domain"),
                  "submit_label" : _("Create"),
                  "action" : reverse(newdomain),
                  "formid" : "domform"}
     if request.method == "POST":
         form = DomainForm(request.POST)
-        error = None
-        if form.is_valid():
-            if Domain.objects.filter(name=request.POST["name"]):
-                error = _("Domain with this name already defined")
-            else:
-                domain = form.save(commit=False)
-                if domain.create_dir():
-                    form.save()
-                    events.raiseEvent("CreateDomain", dom=domain)
-                    messages.info(request, _("Domain created"), fail_silently=True)
-                    return ajax_response(request, url=reverse(admin.views.domains))
-
-                error = _("Failed to initialise domain, check permissions")
-        commonctx["form"] = form
-        commonctx["error"] = error
-        return ajax_response(request, status="ko", template=tplname, **commonctx)
-
+        return _validate_domain(request, form, _("Domain created"), commonctx, 
+                                newdomain_cb)
+                                
     form = DomainForm()
     commonctx["form"] = form
     return _render(request, tplname, commonctx)
@@ -85,25 +98,9 @@ def editdomain(request, dom_id, tplname="admin/adminform.html"):
                  "submit_label" : _("Update"),
                  "action" : reverse(editdomain, args=[dom_id]),
                  "formid" : "domform"}
-    olddomain = copy.deepcopy(domain)
     if request.method == "POST":
         form = DomainForm(request.POST, instance=domain)
-        error = None
-        if form.is_valid():
-            if domain.name != olddomain.name:
-                if Domain.objects.filter(name=domain.name):
-                    error = _("Domain with this name already defined")
-                else:
-                    if not olddomain.rename_dir(domain.name):
-                        error = _("Failed to rename domain, check permissions")
-            if not error:
-                form.save()
-                messages.info(request, _("Domain modified"), fail_silently=True)
-                return ajax_response(request, url=reverse(admin.views.domains))
-
-        commonctx["form"] = form
-        commonctx["error"] = error
-        return ajax_response(request, status="ko", template=tplname, **commonctx)
+        return _validate_domain(request, form, _("Domain modified"), commonctx)
 
     form = DomainForm(instance=domain)
     commonctx["form"] = form

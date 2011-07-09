@@ -63,7 +63,7 @@ class DatesAware(models.Model):
         super(DatesAware, self).save(*args, **kwargs)
 
 class Domain(DatesAware):
-    name = models.CharField(_('name'), max_length=100,
+    name = models.CharField(_('name'), max_length=100, unique=True,
                             help_text=_("The domain name"))
     quota = models.IntegerField(help_text=_("Default quota in MB applied to mailboxes"))
     enabled = models.BooleanField(_('enabled'),
@@ -79,10 +79,10 @@ class Domain(DatesAware):
         path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
         return exec_as_vuser("mkdir -p %s" % path)
 
-    def rename_dir(self, newname):
+    def rename_dir(self, oldname):
         stpath = parameters.get_admin("STORAGE_PATH")
         return exec_as_vuser("mv %s/%s %s/%s" \
-                                 % (stpath, self.name, stpath, newname))
+                                 % (stpath, oldname, stpath, self.name))
 
     def delete_dir(self):
         return exec_as_vuser("rm -r %s/%s" \
@@ -102,6 +102,11 @@ class Domain(DatesAware):
         super(Domain, self).delete(*args, **kwargs)
         if not keepdir:
             self.delete_dir()
+
+    def save(self, *args, **kwargs):
+        if not self.create_dir():
+            raise AdminError("Failed to initialise domain, check permissions")
+        super(Domain, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

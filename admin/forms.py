@@ -14,9 +14,19 @@ class DomainForm(forms.ModelForm):
         fields = ("name", "quota", "enabled")
 
     def __init__(self, *args, **kwargs):
+        self.oldname = None
+        if kwargs.has_key("instance"):
+            self.oldname = kwargs["instance"].name
         super(DomainForm, self).__init__(*args, **kwargs)
-        for f in ['name', 'quota']:
-            self.fields[f].widget.attrs['size'] = 14
+
+    def save(self, force_insert=False, force_update=False, commit=True):
+        d = super(DomainForm, self).save(commit=False)
+        if commit:
+            if self.oldname is not None and d.name != self.oldname:
+                if not d.rename_dir(self.oldname):
+                    raise AdminError(_("Failed to rename domain, check permissions"))
+            d.save()
+        return d
 
 class ProxyForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
