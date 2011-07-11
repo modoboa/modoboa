@@ -619,8 +619,7 @@ corresponding to your PostfixAdmin setup::
   }
 
 This connection should correspond to the one defined in PostfixAdmin's
-configuration file. Then, add ``'modoboa.tools.pfxadmin_migrate',`` to
-the ``INSTALLED_APPS`` variable. Save your modifications.
+configuration file.
 
 You are now ready to start the migration. Enter Modoboa's root
 directory and execute the following command::
