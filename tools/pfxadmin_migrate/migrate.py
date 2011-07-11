@@ -52,12 +52,19 @@ from modoboa.lib import exec_cmd
 from modoboa.lib.emailutils import split_mailbox
 
 def migrate_dates(oldobj):
+    """Creates a new ObjectDates instance
+
+    Due to Django limitations, we only retrieve the creation date. The
+    modification date will be set to 'now' because the corresponding
+    field in Modoboa's schema has the 'auto_now' attribute to True.
+    (see https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.DateField).
+
+    :param oldobj: the PostfixAdmin record which is beeing migrated.
+    """
     dates = md_models.ObjectDates()
+    dates.save()
+
     dates.creation = oldobj.created
-    try:
-        dates.last_modification = oldobj.modified
-    except AttributeError:
-        dates.last_modification = oldobj.created
     dates.save()
     return dates
 
@@ -168,6 +175,7 @@ def migrate_admins(options):
             mb.name = local_part
             mb.enabled = old_admin.active
             mb.password = old_admin.password
+            mb.dates = migrate_dates(old_admin)
             mb.save(using=options.to)            
 
         mb.user.date_joined = old_admin.modified
