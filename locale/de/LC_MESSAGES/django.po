@@ -1,21 +1,21 @@
 # Modoboa German translation.
-# Copyright (C) 2010
+# Copyright (C) 2011
 # This file is distributed under the same license as the Modoboa package.
-# Patrick Ben Koetter <p@state-of-mind.de>, 2010.
-#
+# 
+# Patrick Ben Koetter <p@state-of-mind.de>, 2010-2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.8.4\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Modoboa-0.8.5\n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2011-07-09 15:15+0200\n"
-"PO-Revision-Date: 2011-04-26 23:30+0200\n"
+"PO-Revision-Date: 2011-07-10 07:54+0000\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: admin/__init__.py:7
 msgid "Path to the root directory where messages are stored"
@@ -91,29 +91,24 @@ msgid "Passwords mismatch"
 msgstr "Passwörter stimmen nicht überein"
 
 #: admin/forms.py:103 templates/admin/mbaliases.html:12
-#, fuzzy
 msgid "Target(s)"
-msgstr "Ziel"
+msgstr "Ziel(e)"
 
 #: admin/forms.py:104
-#, fuzzy
 msgid "Mailbox(es) this alias will point to"
-msgstr "Mailbox auf den dieser Alias verweist"
+msgstr "Mailbox(en) auf den der Alias verweisen wird"
 
 #: admin/forms.py:151
-#, fuzzy
 msgid "Invalid mailbox"
-msgstr "Mailbox bearbeiten"
+msgstr "Ungültige Mailbox"
 
 #: admin/forms.py:158
-#, fuzzy
 msgid "Access denied for"
-msgstr "Berechtigung verweigert!"
+msgstr "Zugriff verweigert für"
 
 #: admin/forms.py:167
-#, fuzzy
 msgid "Permission denied on"
-msgstr "Berechtigung verweigert!"
+msgstr "Erlaubnis verweigert für"
 
 #: admin/forms.py:178 admin/forms.py:191
 msgid "User"
@@ -152,9 +147,8 @@ msgid "Full name"
 msgstr "Voller Name"
 
 #: admin/forms.py:200 admin/forms.py:208
-#, fuzzy
 msgid "Defined"
-msgstr "Definierte Aliase"
+msgstr "Definiert"
 
 #: admin/models.py:66 admin/models.py:115 admin/models.py:128
 msgid "name"
@@ -224,11 +218,12 @@ msgid "Mailbox with this address already exists"
 msgstr "Eine Mailbox mit dieser Adresse existiert bereits."
 
 #: admin/models.py:263
-#, fuzzy
 msgid ""
-"The alias address (without the domain part). For a 'catch-all' address, just "
-"enter an * character."
-msgstr "Die Alias-Adresse (ohne den @domain.tld-Anteil)"
+"The alias address (without the domain part). For a 'catch-all' address, just"
+" enter an * character."
+msgstr ""
+"Die Alias-Adresse (ohne den Domain-Anteil). Geben sie für eine Adresse an, "
+"die alles annimmt, * an."
 
 #: admin/models.py:265
 msgid "mailboxes"
@@ -362,9 +357,8 @@ msgstr[0] "Mailbox gelöscht"
 msgstr[1] "Mailboxen gelöscht"
 
 #: admin/views.py:382
-#, fuzzy
 msgid "No target defined"
-msgstr "Keine Domäne definiert."
+msgstr "Kein Ziel angegeben"
 
 #: admin/views.py:406
 msgid "New mailbox alias"
@@ -748,48 +742,44 @@ msgid "Auto reply message updated successfully."
 msgstr "Automatische Antwort erfolgreich aktualisiert."
 
 #: extensions/sievefilters/forms.py:10
-#, fuzzy
 msgid "Check to activate this filters set"
-msgstr "Auswählen um den Alias zu aktivieren"
+msgstr "Häckchen setzen, damit Filter aktiv wird"
 
 #: extensions/sievefilters/forms.py:12
-#, fuzzy
 msgid "contains"
-msgstr "Domänen"
+msgstr "enthält"
 
 #: extensions/sievefilters/forms.py:13
 msgid "does not contain"
-msgstr ""
+msgstr "enthält nicht"
 
 #: extensions/sievefilters/forms.py:14
 msgid "is"
-msgstr ""
+msgstr "ist"
 
 #: extensions/sievefilters/forms.py:15
 msgid "is not"
-msgstr ""
+msgstr "ist nicht"
 
 #: extensions/sievefilters/forms.py:19
 msgid "All of the following"
-msgstr ""
+msgstr "Alle folgende"
 
 #: extensions/sievefilters/forms.py:20
 msgid "Any of the following"
-msgstr ""
+msgstr "Irgendeines der folgenden"
 
 #: extensions/sievefilters/forms.py:21
-#, fuzzy
 msgid "All messages"
-msgstr "Markiere Nachrichten"
+msgstr "Alle Nachrichten"
 
 #: extensions/sievefilters/forms.py:27
-#, fuzzy
 msgid "Sender"
-msgstr "Senden"
+msgstr "Sender"
 
 #: extensions/sievefilters/forms.py:28
 msgid "Recipient"
-msgstr ""
+msgstr "Empfänger"
 
 #: extensions/sievefilters/forms.py:29 extensions/webmail/forms.py:7
 msgid "Cc"
@@ -797,149 +787,132 @@ msgstr "Cc"
 
 #: extensions/sievefilters/forms.py:30
 msgid "Size"
-msgstr ""
+msgstr "Größe"
 
 #: extensions/sievefilters/forms.py:31
 msgid "is greater than"
-msgstr ""
+msgstr "ist größer als"
 
 #: extensions/sievefilters/forms.py:32
 msgid "is less than"
-msgstr ""
+msgstr "ist weniger als"
 
 #: extensions/sievefilters/forms.py:36
-#, fuzzy
 msgid "Move message to"
-msgstr "Neue Nachrichten"
+msgstr "Verschiebe Nachricht nach"
 
 #: extensions/sievefilters/forms.py:38
-#, fuzzy
 msgid "Redirect message to"
-msgstr "Abgewiesene Nachrichten"
+msgstr "Leite Nachricht um zu"
 
 #: extensions/sievefilters/lib.py:37
-#, fuzzy
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
-"Verbindung zu IMAP-Server fehlgeschlagen. Überprüfen Sie Ihre Konfiguration"
+"Verbindung zu MANAGESIEVE-Server fehlgeschlagen. Überprüfen Sie Ihre "
+"Konfiguration."
 
 #: extensions/sievefilters/lib.py:78
 msgid "Not enough space on server"
-msgstr ""
+msgstr "Kein weiterer Platz auf Server verfügbar"
 
 #: extensions/sievefilters/main.py:14
-#, fuzzy
 msgid "Address of your MANAGESIEVE server"
-msgstr "Addresse Ihres IMAP-Servers"
+msgstr "Adresse Ihres MANAGESIEVE-Servers"
 
 #: extensions/sievefilters/main.py:16
-#, fuzzy
 msgid "Listening port of your MANAGESIEVE server"
-msgstr "Port auf dem der IMAP-Server lauscht"
+msgstr "TCP-Port auf Ihr MANAGESIEVE-Server lauscht"
 
 #: extensions/sievefilters/main.py:18
 msgid "Use the STARTTLS extension"
-msgstr ""
+msgstr "STARTTLS benutzen"
 
 #: extensions/sievefilters/main.py:25
-#, fuzzy
 msgid "Prefered authentication mechanism"
-msgstr "Server erfordert Authentifizierung"
+msgstr "Bevorzugte Authentifizierungsmethode"
 
 #: extensions/sievefilters/main.py:29
-#, fuzzy
 msgid "Editor mode"
-msgstr "Ordner bearbeiten"
+msgstr "Editor-Modus"
 
 #: extensions/sievefilters/main.py:31
 msgid "Select the mode you want the editor to work in"
-msgstr ""
+msgstr "Wählen Sie den Modus aus in dem der Editor arbeiten soll"
 
 #: extensions/sievefilters/main.py:41
 msgid "Plugin to easily create server-side filters"
-msgstr ""
+msgstr "Plugin, um auf einfache Weise server-seitige Filter zu erstellen"
 
 #: extensions/sievefilters/main.py:55
 #: extensions/sievefilters/templates/sievefilters/index.html:17
-#, fuzzy
 msgid "Message filters"
-msgstr "Nachrichten-Header"
+msgstr "Nachrichten-Filter"
 
 #: extensions/sievefilters/views.py:64
-#, fuzzy
 msgid "Failed to retrieve filters set"
-msgstr "Berechtigung entziehen"
+msgstr "Konnte Filter-Satz nicht laden"
 
 #: extensions/sievefilters/views.py:107
 #: extensions/sievefilters/templatetags/sfilters_tags.py:34
 msgid "New filter"
-msgstr ""
+msgstr "Neuer Filter"
 
 #: extensions/sievefilters/views.py:110
-#, fuzzy
 msgid "Filter created"
-msgstr "Ordner erstellt"
+msgstr "Filter erstellt"
 
 #: extensions/sievefilters/views.py:120
 #: extensions/sievefilters/templatetags/sfilters_tags.py:72
-#, fuzzy
 msgid "Edit filter"
-msgstr "Ordner bearbeiten"
+msgstr "Filter bearbeiten"
 
 #: extensions/sievefilters/views.py:125
-#, fuzzy
 msgid "Filter modified"
-msgstr "Ordner verändert"
+msgstr "Filter verändert"
 
 #: extensions/sievefilters/views.py:144
-#, fuzzy
 msgid "Filter removed"
-msgstr "Berechtigungen entfernt"
+msgstr "Filter entfernt"
 
 #: extensions/sievefilters/views.py:145
 msgid "Failed to remove filter"
-msgstr ""
+msgstr "Konnte Filter nicht entfernen"
 
 #: extensions/sievefilters/views.py:158
 msgid "Filters set saved"
-msgstr ""
+msgstr "Filter-Satz gespeichert"
 
 #: extensions/sievefilters/views.py:162
-#, fuzzy
 msgid "Create a new filters set"
-msgstr "Neuen Ordner anlegen"
+msgstr "Neuen Filter-Satz erstellen"
 
 #: extensions/sievefilters/views.py:182
-#, fuzzy
 msgid "Filters set created"
-msgstr "Ordner erstellt"
+msgstr "Filter erstellt"
 
 #: extensions/sievefilters/views.py:198
-#, fuzzy
 msgid "Filters set deleted"
-msgstr "Alias gelöscht"
+msgstr "Filter entfernt"
 
 #: extensions/sievefilters/views.py:208
 msgid "Filters set activated"
-msgstr ""
+msgstr "Filter-Satz aktiviert"
 
 #: extensions/sievefilters/views.py:233
-#, fuzzy
 msgid "yes"
 msgstr "Ja"
 
 #: extensions/sievefilters/views.py:237
 msgid "no"
-msgstr ""
+msgstr "Nein"
 
 #: extensions/sievefilters/templates/sievefilters/filter.html:72
-#, fuzzy
 msgid "Conditions"
-msgstr "Bestätigung"
+msgstr "Bedingungen"
 
 #: extensions/sievefilters/templates/sievefilters/filter.html:75
 msgid "Match type"
-msgstr ""
+msgstr "Übereinstimmung"
 
 #: extensions/sievefilters/templates/sievefilters/filter.html:86
 #: extensions/sievefilters/templates/sievefilters/filters.html:7
@@ -958,66 +931,62 @@ msgstr "Speichern"
 
 #: extensions/sievefilters/templates/sievefilters/filters.html:2
 msgid "Filters"
-msgstr ""
+msgstr "Filter"
 
 #: extensions/sievefilters/templates/sievefilters/filters.html:9
-#, fuzzy
 msgid "Active"
-msgstr "Aktionen"
+msgstr "Aktiv"
 
 #: extensions/sievefilters/templates/sievefilters/filters.html:26
-#, fuzzy
 msgid "No filter defined yet"
-msgstr "Keine Mailbox definiert."
+msgstr "Noch keine Filter definiert"
 
 #: extensions/sievefilters/templates/sievefilters/index.html:20
 msgid "Filters sets"
-msgstr ""
+msgstr "Filter-Sätze"
 
 #: extensions/sievefilters/templates/sievefilters/index.html:23
-#, fuzzy
 msgid "active"
-msgstr "Aktionen"
+msgstr "aktiv"
 
 #: extensions/sievefilters/templates/sievefilters/index.html:38
 msgid ""
 "No filters set defined yet. You must create one in order to define filters."
 msgstr ""
+"Nich keine Filter-Sätze definiert. Sie müssen einen erstellen, damit sie "
+"Filter erstellen können."
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:17
-#, fuzzy
 msgid "New filters set"
-msgstr "Neue Nachrichten"
+msgstr "Neuer Filter-Satz"
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:44
 msgid "Save filters set"
-msgstr ""
+msgstr "Filter-Satz speichern"
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:51
-#, fuzzy
 msgid "Activate filters set"
-msgstr "Links aktivieren"
+msgstr "Filter-Satz aktivieren"
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:55
-#, fuzzy
 msgid "Remove filters set"
-msgstr "Berechtigung entziehen"
+msgstr "Filter-Satz entfernen"
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:59
 msgid "Download"
-msgstr ""
+msgstr "Herunterladen"
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:78
 msgid "Remove this filter"
-msgstr ""
+msgstr "Filter entfernen"
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:85
 msgid "Move this filter up"
-msgstr ""
+msgstr "Filter nach oben verschieben"
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:92
 msgid "Move this filter down"
-msgstr ""
+msgstr "Filter nach unten verschieben"
 
 #: extensions/stats/grapher.py:18
 msgid "sent messages"
@@ -1146,7 +1115,7 @@ msgstr "An"
 
 #: extensions/webmail/lib.py:31
 msgid "Server response"
-msgstr ""
+msgstr "Server-Antwort"
 
 #: extensions/webmail/lib.py:142
 msgid "Connection to IMAP server failed, check your configuration"
@@ -1391,15 +1360,13 @@ msgstr "Keine Domäne definiert."
 
 #: templates/admin/domains.html:20 templates/admin/domaliases.html:13
 #: templates/admin/mailboxes.html:13 templates/admin/mbaliases.html:13
-#, fuzzy
 msgid "Created"
-msgstr "Erstellen"
+msgstr "Erstellt"
 
 #: templates/admin/domains.html:21 templates/admin/domaliases.html:14
 #: templates/admin/mailboxes.html:14 templates/admin/mbaliases.html:14
-#, fuzzy
 msgid "Last modified"
-msgstr "Domäne verändert"
+msgstr "Zuletzt verändert"
 
 #: templates/admin/domains.html:26 templates/admin/domaliases.html:15
 #: templates/admin/mbaliases.html:15
@@ -1443,9 +1410,8 @@ msgid "Address"
 msgstr "Adresse"
 
 #: templates/admin/mailboxes.html:15
-#, fuzzy
 msgid "Aliases"
-msgstr "Alias gelöscht"
+msgstr "Aliases"
 
 #: templates/admin/mailboxes_raw.html:3
 msgid "Choose a value"
@@ -1519,7 +1485,7 @@ msgstr "Einstellungen"
 
 #: templates/userprefs/setforward.html:7
 msgid "Define your forward"
-msgstr ""
+msgstr "Weiterleitung definieren"
 
 #: userprefs/forms.py:12
 msgid "Old password"
@@ -1534,36 +1500,23 @@ msgid "Old password mismatchs"
 msgstr "Altes Passwort stimmt nicht überein"
 
 #: userprefs/forms.py:39
-#, fuzzy
 msgid "Destination(s)"
-msgstr "Beschreibung"
+msgstr "Ziel(e)"
 
 #: userprefs/forms.py:52
 msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
 msgstr ""
+"Sie können keine Weiterleitung auf ein lokales Ziel anlegen. Bitten Sie "
+"Ihren Administrator stattdessen einen Alias anzulegen."
 
 #: userprefs/views.py:32
 msgid "Password changed"
 msgstr "Passwort geändert"
 
 #: userprefs/views.py:61
-#, fuzzy
 msgid "Forward updated"
-msgstr "Weiterleiten"
+msgstr "Weiterleitung aktualisiert"
 
-#~ msgid "Mail content"
-#~ msgstr "Mail-Inhalt"
 
-#~ msgid "Message"
-#~ msgstr "Nachricht"
-
-#~ msgid "Mailbox"
-#~ msgstr "Mailbox"
-
-#~ msgid "Release this selection?"
-#~ msgstr "Auswahl freigeben?"
-
-#~ msgid "Delete this selection?"
-#~ msgstr "Auswahl löschen?"
