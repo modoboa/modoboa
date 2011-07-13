@@ -9,6 +9,7 @@ from modoboa.lib import crypt_password
 from forms import *
 from modoboa.admin.models import Mailbox, Alias
 from modoboa.admin.lib import is_domain_admin
+from modoboa.auth.lib import encrypt
 
 @login_required
 def index(request):
@@ -28,6 +29,7 @@ def changepassword(request, tplname="userprefs/chpassword.html"):
                 target.password = crypt_password(request.POST["confirmation"])
             else:
                 target.set_password(request.POST["confirmation"])
+                request.session["password"] = encrypt(request.POST["confirmation"])
             target.save()
             return ajax_response(request, respmsg=_("Password changed"))
         return ajax_response(request, status="ko", template=tplname, form=form, error=error)
