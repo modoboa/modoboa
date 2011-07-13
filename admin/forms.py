@@ -142,7 +142,8 @@ class AliasForm(ProxyForm):
     def set_targets(self, user, values):
         self.ext_targets = []
         self.int_targets = []
-        umb = Mailbox.objects.get(user=user.id)
+        if user.id != 1:
+            umb = Mailbox.objects.get(user=user)
         for addr in values:
             if addr == "":
                 continue
