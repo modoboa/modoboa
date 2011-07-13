@@ -46,7 +46,7 @@ class ForwardForm(forms.Form):
                 raise BadDestination("Invalid mailbox syntax for %s" % d)
             try:
                 mb = Domain.objects.get(name=domname)
-            except Mailbox.DoesNotExist:
+            except Domain.DoesNotExist:
                 self.dests += [d]
             else:
                 raise BadDestination(_("You can't define a forward to a local destination. Please ask your administrator to create an alias instead."))
