@@ -100,7 +100,7 @@ class DomainAdminsPerms(Permissions):
             form.fields["user"].choices = [(mboxid, mb),]
         if form.is_valid():
             mb.user.is_superuser = False
-            user.date_joined = datetime.datetime.now()
+            mb.user.date_joined = datetime.datetime.now()
             mb.user.groups.add(Group.objects.get(name="DomainAdmins"))
             mb.user.save()
             return True, None
