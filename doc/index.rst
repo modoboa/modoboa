@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 3
 
    install
+   virtualmachine
    plugin_api
 
 Indices and tables
