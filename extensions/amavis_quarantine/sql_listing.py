@@ -2,28 +2,26 @@
 
 from datetime import datetime
 from django.utils.translation import ugettext as _
-from modoboa.lib import tables, db
+from modoboa.lib import tables, db, static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
 
 class Qtable(tables.Table):
     tableid = "emails"
     idkey = "mailid"
-    #selection = tables.SelectionColumn("selection", first=True)
-    _1_type = tables.Column("type", align="center", width="30px",
-                            label="<input type='checkbox' name='toggleselect' id='toggleselect' />")
-    _2_from_ = tables.Column("from", label=_("From"))
-    _3_subject = tables.Column("subject", label=_("Subject"))
-    _4_time = tables.Column("date", label=_("Date"))
+
+    type = tables.Column("type", align="center", width="30px",
+                         label="<input type='checkbox' name='toggleselect' id='toggleselect' />")
+    rstatus = tables.ImgColumn("rstatus", width='25px')
+    from_ = tables.Column("from", label=_("From"), limit=30)
+    subject = tables.Column("subject", label=_("Subject"), limit=40)
+    time = tables.Column("date", label=_("Date"))
+    to = tables.Column("to", label=_("To"), limit=30)
+
+    cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']
 
     def parse_date(self, value):
         return datetime.fromtimestamp(value)
-
-    def parse(self, header, value):
-        try:
-            return getattr(self, "parse_%s" % header)(value)
-        except AttributeError:
-            return value
 
 class SQLconnector(MBconnector):
     def __init__(self, filter=None):
@@ -77,10 +75,13 @@ LIMIT %d,%d
         emails = []
         rows = cursor.fetchall()
         for row in rows:
-            emails.append({"from" : row[0], "to" : row[1], 
-                           "subject" : row[2], "content" : row[3],
-                           "mailid" : row[4], "date" : row[5],
-                           "type" : row[6]})
+            m = {"from" : row[0], "to" : row[1], 
+                 "subject" : row[2], "content" : row[3],
+                 "mailid" : row[4], "date" : row[5],
+                 "type" : row[6]}
+            if row[7] == "R":
+                m["img_rstatus"] = static_url("pics/release.png");
+            emails.append(m)
         return emails
 
 class SQLlisting(EmailListing):
@@ -90,7 +91,9 @@ class SQLlisting(EmailListing):
     defcallback = "updatelisting"
     reset_wm_url = True
 
-    def __init__(self, filter, **kwargs):
+    def __init__(self, user, filter, **kwargs):
+        if not user.is_superuser:
+            Qtable.cols_order.remove('to')
         self.mbc = SQLconnector(filter)
         EmailListing.__init__(self, **kwargs)
 

@@ -107,14 +107,15 @@ class EmailListing:
         return render_to_string("common/navbar.html", context)
     
     def fetch(self, request, id_start, id_stop):
-        table = self.tbltype(self.mbc.fetch(start=id_start, stop=id_stop, 
+        table = self.tbltype(request,
+                             self.mbc.fetch(start=id_start, stop=id_stop, 
                                             folder=self.folder, 
                                             nbelems=self.elems_per_page))
         tpl = Template("""
 <form method="POST" id="listingform">
   {{ table }}
 </form>""")
-        return tpl.render(Context({"table" : table.render(request)}))
+        return tpl.render(Context({"table" : table.render()}))
 
     def render(self, request, pageid=1, **kwargs):
         listing = ""

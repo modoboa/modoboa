@@ -62,6 +62,15 @@ class DatesAware(models.Model):
         ObjectDates.set_for_object(self)
         super(DatesAware, self).save(*args, **kwargs)
 
+    def __creation(self):
+        return self.dates.creation
+
+    def __last_modification(self):
+        return self.dates.last_modification
+
+    creation = property(__creation)
+    last_modification = property(__last_modification)
+
 class Domain(DatesAware):
     name = models.CharField(_('name'), max_length=100, unique=True,
                             help_text=_("The domain name"))
@@ -156,6 +165,11 @@ class Mailbox(DatesAware):
         return "%s@%s" % (self.address, self.domain.name)
 
     full_address = property(__full_address)
+
+    def __enabled(self):
+        return self.user.is_active
+
+    enabled = property(__enabled)
 
     def create_dir(self):
         relpath = "%s/%s" % (self.domain.name, self.address)
@@ -273,6 +287,16 @@ class Alias(DatesAware):
             ("view_aliases", "View aliases"),
             )
 
+    def __full_address(self):
+        return "%s@%s" % (self.address, self.domain.name)
+    full_address = property(__full_address)
+
+    def __targets(self):
+        ret = "<br/>".join(map(lambda m: str(m), self.mboxes.all()))
+        ret += "<br/>" + self.repr_extmboxes()
+        return ret
+    targets = property(__targets)
+
     def save(self, int_targets, ext_targets, *args, **kwargs):
         if len(ext_targets):
             self.extmboxes = ",".join(ext_targets)
@@ -319,6 +343,15 @@ class Alias(DatesAware):
         A ready to print representation of external targets.
         """
         return "<br/>".join(self.extmboxes.split(","))
+
+    def ui_disabled(self, user):
+        if user.is_superuser:
+            return False
+        usermb = Mailbox.objects.get(user=user.id)
+        for mb in self.mboxes.all():
+            if mb.domain.id != usermb.domain.id:
+                return True
+        return False
 
 class Extension(models.Model):
     name = models.CharField(max_length=150)

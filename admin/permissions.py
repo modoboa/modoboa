@@ -73,7 +73,7 @@ class SuperAdminsPerms(Permissions):
                              "full_name" : "%s %s" % (admin.first_name, admin.last_name),
                              "date_joined" : admin.date_joined,
                              "enabled" : admin.is_active}]
-        return SuperAdminsTable(admins_list).render(request)
+        return SuperAdminsTable(request, admins_list).render()
    
 
 class DomainAdminsPerms(Permissions):
@@ -123,7 +123,7 @@ class DomainAdminsPerms(Permissions):
         domadmins_list = []
         for admin in domadmins:
             domadmins_list += [admin.tohash()]
-        return DomainAdminsTable(domadmins_list).render(request)
+        return DomainAdminsTable(request, domadmins_list).render()
 
 def get_perms_class(user, role):
     """Retrieves the class associated to a given role

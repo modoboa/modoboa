@@ -52,7 +52,7 @@ def _listing(request, internal=False, filter=None):
 
     pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
     request.session["page"] = pageid # ?? nécessaire
-    lst = SQLlisting(filter, baseurl="listing/", empty=internal, 
+    lst = SQLlisting(request.user, filter, baseurl="listing/", empty=internal, 
                      elems_per_page=int(parameters.get_user(request.user, 
                                                         "MESSAGES_PER_PAGE")))
     if internal:
@@ -165,6 +165,7 @@ WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN 
         result = amr.sendreq(k, values["secret"], *values["rcpts"])
         if result:
             count += 1
+            db.execute(conn, "UPDATE msgrcpt SET rs='R' WHERE mail_id='%s'" % k)
         else:
             error = result
             break

@@ -17,3 +17,5 @@ parameters.register_admin("MAILDIR_ROOT", type="string", deflt=".maildir",
 parameters.register_admin("PASSWORD_SCHEME", type="list", deflt="crypt",
                           values=[("crypt", "crypt"), ("md5", "md5"), ("clear", "clear")],
                           help=_("Scheme used to crypt mailbox passwords"))
+parameters.register_admin("ITEMS_PER_PAGE", type="int", deflt=30,
+                          help=_("Number of displayed items per page"))

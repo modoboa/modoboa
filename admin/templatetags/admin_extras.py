@@ -170,26 +170,31 @@ def domalias_actions(user, aid):
     return render_actions(actions)
 
 @register.simple_tag
-def mailbox_actions(user, mbox):
+def mailbox_actions(user, mboxid):
     actions = [
         {"name" : "editmailbox",
-         "url" : reverse(admin.views.editmailbox, args=[mbox.id]),
+         "url" : reverse(admin.views.editmailbox, args=[mboxid]),
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit mailbox"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:300,y:320}}"},
         {"name" : "aliases",
-         "url" : reverse(admin.views.mbaliases) + "?mbid=%d" % mbox.id,
+         "url" : reverse(admin.views.mbaliases) + "?mbid=%d" % mboxid,
          "img" : static_url("pics/alias.png"),
          "title" : _("View this mailbox aliases")},
         ]
     return render_actions(actions)
 
 @register.simple_tag
-def mbalias_actions(user, alias):
+def mbalias_actions(user, aliasid):
+    from admin.models import Alias
+
+    alias = Alias.objects.get(pk=aliasid)
+    if alias.ui_disabled(user):
+        return "--"
     actions = [
         {"name" : "editmbalias",
-         "url" : reverse(admin.views.editmbalias, args=[alias.id]),
+         "url" : reverse(admin.views.editmbalias, args=[aliasid]),
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit mailbox alias"),
          "class" : "boxed",

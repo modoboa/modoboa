@@ -119,12 +119,6 @@ textarea:hover {
 }
 
 /* Progress bar */
-#footer {
-    color: white;
-    font-weight: bold;
-    font-size: 1em;
-}
-
 #quotalabel {
     float: left;
     padding: 7px 2px 0 5px;

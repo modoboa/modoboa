@@ -1,4 +1,4 @@
-{% extends "admin/domains_header.html" %}
+{% extends "admin/listing.html" %}
 {% load i18n admin_extras libextras %}
 {% block html_head %}
   {{ block.super }}
@@ -8,38 +8,4 @@
       bindRows("{{ view_url }}", "{{ current_page }}");
     });
   </script>
-{% endblock %}
-{% block middletitle %}{% trans "Available domains" %}{% endblock %}
-{% block subcontent %}
-<div id="objects" name="domains" rel="310 190">
-  {% if not domains %}<div class="info">{% trans "No domain defined." %}</div>
-  {% else %}
-  <table id="objects_table">
-    <tr>
-      <th>{% trans "Name" %}</th>
-      <th width="160px">{% trans "Created" %}</th>
-      <th width="160px">{% trans "Last modified" %}</th>
-      <th width="100px" class="center">{% trans "Domain aliases" %}</th>
-      <th width="100px" class="center">{% trans "Mailboxes" %}</th>
-      <th width="100px" class="center">{% trans "Mailbox aliases" %}</th>
-      <th width="50px" class="center">{% trans "Quota" %}</th>
-      <th width="50px" class="center">{% trans "Enabled" %}</th>
-      <th width="50px" class="center">{% trans "Actions" %}</th>
-    </tr>
-    {% for dom in domains %}
-    <tr class="{% cycle 'odd' 'even' %}" id="{{ dom.id }}">
-      <td>{{ dom.name }}</td>
-      <td>{{ dom.dates.creation }}</td>
-      <td>{{ dom.dates.last_modification }}</td>
-      <td class="center">{{ dom.domainalias_set.all|length }}</td>
-      <td class="center">{{ dom.mailbox_set.all|length }}</td>
-      <td class="center">{{ dom.mbalias_counter }}</td>
-      <td class="center">{{ dom.quota }} {% trans "MB" %}</td>
-      <td class="center">{{ dom.enabled|yesno:_("yes,no") }}</td>
-      <td class="center">{% domain_actions user dom.id %}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% endif %}
-</div>
 {% endblock %}

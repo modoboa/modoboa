@@ -10,11 +10,13 @@ from django.db.models import Q
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.db import transaction, IntegrityError
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from lib import *
 from modoboa import admin, userprefs
 from models import *
 from admin.permissions import *
+from admin.tables import *
 from modoboa.lib import crypt_password
 from modoboa.lib import _render, ajax_response, ajax_simple_response, \
     getctx, events, parameters
@@ -22,14 +24,28 @@ from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.models import Parameter
 import copy
 
-def render_domains_page(request, page, **kwargs):
-    template = "admin/%s.html" % page
+def render_domains_page(request, objtype, tblclass, tplname="admin/listing.html", 
+                        **kwargs):
     if request.GET.has_key("domid"):
         kwargs["domid"] = request.GET["domid"]
     else:
         kwargs["domid"] = ""
-    kwargs["selection"] = page
-    return _render(request, template, kwargs)
+    kwargs["selection"] = objtype
+    paginator = Paginator(kwargs["objects"], 
+                          int(parameters.get_admin("ITEMS_PER_PAGE")))
+    try:
+        page = request.GET.get("page", "1")
+    except ValueError:
+        page = 1
+    try:
+        kwargs["objects"] = paginator.page(page)
+    except (EmptyPage, PageNotAnInteger):
+        kwargs["objects"] = paginator.page(paginator.num_pages)
+    kwargs["last_page"] = paginator.num_pages
+    kwargs["total"] = paginator.count
+    kwargs["table"] = tblclass(request, kwargs["objects"].object_list).render()
+    
+    return _render(request, tplname, kwargs)
 
 @login_required
 def domains(request):
@@ -43,8 +59,12 @@ def domains(request):
     for dom in domains:
         dom.mbalias_counter = len(Alias.objects.filter(domain=dom.id))
     deloptions = {"keepdir" : _("Do not delete domain directory")}
-    return render_domains_page(request, "domains",
-                               domains=domains,
+    return render_domains_page(request, "domains", DomsTable,
+                               "admin/domains.html",
+                               title=_("Available domains"),
+                               emptymsg=_("No domain defined."),
+                               objects=domains,
+                               rel="310 190",
                                deloptions=deloptions)
 
 def _validate_domain(request, form, successmsg, commonctx, 
@@ -137,8 +157,11 @@ def domaliases(request):
     else:
         domain = None
         domaliases = DomainAlias.objects.all()
-    return render_domains_page(request, "domaliases",
-                               domaliases=domaliases, domain=domain)
+    return render_domains_page(request, "domaliases", DomAliasesTable,
+                               title=_("Domain aliases"),
+                               emptymsg=_("No domain alias defined."),
+                               rel="310 190",
+                               objects=domaliases)
 
 @login_required
 @good_domain
@@ -227,8 +250,11 @@ def mailboxes(request):
         mboxes = Mailbox.objects.all()
         domain = None
     deloptions = {"keepdir" : _("Do not delete mailbox directory")}
-    return render_domains_page(request, "mailboxes",
-                               mailboxes=mboxes, domain=domain, deloptions=deloptions)
+    return render_domains_page(request, "mailboxes", MailboxesTable,
+                               title=_("Available mailboxes"),
+                               emptymsg=_("No mailbox defined."),
+                               rel="310 320",
+                               objects=mboxes, domain=domain, deloptions=deloptions)
 
 @login_required
 @good_domain
@@ -360,15 +386,12 @@ def mbaliases(request):
         aliases = Alias.objects.filter(mboxes__id=request.GET["mbid"]).distinct()
     else:
         aliases = Alias.objects.all()
-    if not request.user.is_superuser:
-        usermb = Mailbox.objects.get(user=request.user.id)
-        for al in aliases:
-            al.ui_disabled = False
-            for mb in al.mboxes.all():
-                if mb.domain.id != usermb.domain.id:
-                    al.ui_disabled = True
-                    break
-    return render_domains_page(request, "mbaliases", aliases=aliases)
+    
+    return render_domains_page(request, "mbaliases", MbAliasesTable,
+                               title=_("Mailbox aliases"),
+                               emptymsg=_("No mailbox alias defined."),
+                               rel="320 300",
+                               objects=aliases)
 
 def _validate_mbalias(request, form, successmsg, tplname, commonctx):
     """Mailbox alias validation
@@ -546,9 +569,11 @@ def viewextensions(request, tplname='admin/extensions.html'):
     class ExtensionsTable(tables.Table):
         idkey = "id"
         selection = tables.SelectionColumn("selection", width="4%", first=True)
-        _1_name = tables.Column("name", label=_("Name"), width="15%")
-        _2_version = tables.Column("version", label=_("Version"), width="6%")
-        _3_descr = tables.Column("description", label=_("Description"))
+        name = tables.Column("name", label=_("Name"), width="15%")
+        version = tables.Column("version", label=_("Version"), width="6%")
+        descr = tables.Column("description", label=_("Description"))
+        
+        cols_order = ["selection", "name", "version", "descr"]
         
     exts = list_extensions()
     for ext in exts:
@@ -562,9 +587,9 @@ def viewextensions(request, tplname='admin/extensions.html'):
             dbext.save()
             ext["selection"] = False
             
-    tbl = ExtensionsTable(exts)
+    tbl = ExtensionsTable(request, exts)
     return _render(request, tplname, {
-            "extensions" : tbl.render(request)
+            "extensions" : tbl.render()
             })
 
 @login_required

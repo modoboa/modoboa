@@ -34,6 +34,27 @@ div#footer {
     height: 30px;
     bottom: 0px;
     border-top: 5px solid #333;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+#navbar {
+    float: right;
+    padding: 0;
+    margin: 0;
+    text-align: right;
+}
+
+#navbar label {
+    color: white;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+#navbar img {
+    margin-top: 5px;
+    margin-right: 5px;
 }
 
 #menubar {

@@ -1,0 +1,34 @@
+{% extends "admin/domains_header.html" %}
+{% load i18n %}
+{% block middletitle %}{{ title }}{% endblock %}
+{% block subcontent %}
+<div id="objects" name="{{ selection }}" rel="{{ rel }}">
+  {% if not objects %}<div class="info">{{ emptymsg }}</div>
+  {% else %}
+  {{ table }}
+  {% endif %}
+</div>
+{% endblock %}
+{% block footer %}
+<div id="navbar">
+  {% if total %}
+  <label>{% trans "Items" %} {{ objects.start_index }} {% trans "to" %} {{ objects.end_index }} {% trans "of" %} {{ total }}</label>
+  {% endif %}
+  {% if objects.has_previous %}
+  <a href="?page=1">
+    <img src="{{ MEDIA_URL }}pics/first.png" border="0" title="{% trans "First" %}" />
+  </a>
+  <a href="?page={{ objects.previous_page_number }}">
+    <img src="{{ MEDIA_URL }}pics/back.png" border="0" title="{% trans "Previous" %}" />
+  </a>
+  {% endif %}
+  {% if objects.has_next %}
+  <a href="?page={{ objects.next_page_number }}">
+    <img src="{{ MEDIA_URL }}pics/next.png" border="0" title="{% trans "Next" %}" />
+  </a>
+  <a href="?page={{ page.last_page }}">
+    <img src="{{ MEDIA_URL }}pics/last.png" border="0" title="{% trans "Last" %}" />
+  </a>
+  {% endif %}
+</div>
+{% endblock %}

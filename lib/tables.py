@@ -48,22 +48,46 @@ class DivColumn(Column):
     def render(self):
         return "<div>&nbsp;</div>"
 
+class ActionColumn(Column):
+    def render(self, fct, user, rowid):
+        return fct(user, rowid)
+
 class Table(object):
     tableid = ""
 
-    def __init__(self, rows={}):
+    def __init__(self, request, rows={}):
         self.columns = []
-        for m in inspect.getmembers(self):
-            if isinstance(m[1], Column):
+        self.request = request
+        try:
+            order = getattr(self, "cols_order")
+        except AttributeError:
+            for m in inspect.getmembers(self):
+                if isinstance(m[1], Column):
+                    try:
+                        if getattr(m[1], "first"):
+                            self.columns = [m[1]] + self.columns
+                    except AttributeError:
+                        self.columns += [m[1]]
+        else:
+            for colname in order:
                 try:
-                    if getattr(m[1], "first"):
-                        self.columns = [m[1]] + self.columns
+                    col = getattr(self, colname)
                 except AttributeError:
-                    self.columns += [m[1]]
+                    continue
+                if not isinstance(col, Column):
+                    continue
+                self.columns += [col]
+
+        if rows != {}:
+            self.populate(rows)
+
+    def populate(self, rows):
         self.rows = []
         trcpt = 0
         for row in rows:
             nrow = {"id" : row[self.idkey], "cols" : [], "trcpt" : trcpt}
+            if row.has_key("options"):
+                nrow["options"] = row["options"]
             for c in self.columns:
                 newcol = {"name" : c.name}
                 for key in ["width", "align", "cssclass"]:
@@ -88,6 +112,9 @@ class Table(object):
                 elif isinstance(c, DivColumn):
                     newcol["value"] = c.render()
                     newcol["safe"] = True
+                elif isinstance(c, ActionColumn):
+                    newcol["value"] = c.render(c.defvalue, self.request.user, nrow["id"])
+                    newcol["safe"] = True
                 elif row.has_key(c.name):
                     if "class" in row.keys():
                         newcol["cssclass"] += newcol["cssclass"] != "" \
@@ -96,11 +123,48 @@ class Table(object):
                         newcol["value"] = self.parse(c.name, row[c.name])
                     except AttributeError:
                         newcol["value"] = row[c.name]
+                    try:
+                        limit = getattr(c, "limit")
+                        if len(newcol["value"]) > limit:
+                            newcol["value"] = newcol["value"][0:limit] + "..."
+                    except AttributeError:
+                        pass
+                    try:
+                        newcol["safe"] = getattr(c, "safe")
+                    except AttributeError:
+                        pass
                 nrow["cols"] += [newcol]
             self.rows += [nrow]
             trcpt += 1
+            
+    def _rows_from_model(self, objects):
+        rows = []
+        for obj in objects:
+            nrow = {}
+            try:
+                idkey = getattr(self, "idkey")
+                nrow[idkey] = getattr(obj, idkey)
+            except AttributeError:
+                pass
+            for c in self.columns:
+                try:
+                    nrow[c.name] = getattr(obj, c.name)
+                except AttributeError:
+                    pass
+            try:
+                nrow["options"] = getattr(self, "rowoptions")(self.request, obj)
+            except AttributeError:
+                pass
+            rows += [nrow]
+        return rows
 
-    def render(self, request):
+    def parse(self, header, value):
+        try:
+            return getattr(self, "parse_%s" % header)(value)
+        except AttributeError:
+            return value
+
+    def render(self):
         if len(self.rows):
             t = Template("""
 <table id="{{ tableid }}">
