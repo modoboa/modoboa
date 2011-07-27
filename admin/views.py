@@ -24,8 +24,12 @@ from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.models import Parameter
 import copy
 
-def render_domains_page(request, objtype, tblclass, tplname="admin/listing.html", 
-                        **kwargs):
+def render_listing(request, objtype, tplname="admin/listing.html", 
+                   **kwargs):
+    tblclass = "%sTable" % objtype.capitalize()
+    if not globals().has_key(tblclass):
+        raise AdminError(_("Unknown object type"))
+    tblclass = globals()[tblclass]
     if request.GET.has_key("domid"):
         kwargs["domid"] = request.GET["domid"]
     else:
@@ -43,7 +47,7 @@ def render_domains_page(request, objtype, tblclass, tplname="admin/listing.html"
         kwargs["objects"] = paginator.page(paginator.num_pages)
     kwargs["last_page"] = paginator.num_pages
     kwargs["total"] = paginator.count
-    kwargs["table"] = tblclass(request, kwargs["objects"].object_list).render()
+    kwargs["table"] = tblclass(request, kwargs["objects"].object_list)
     
     return _render(request, tplname, kwargs)
 
@@ -59,13 +63,12 @@ def domains(request):
     for dom in domains:
         dom.mbalias_counter = len(Alias.objects.filter(domain=dom.id))
     deloptions = {"keepdir" : _("Do not delete domain directory")}
-    return render_domains_page(request, "domains", DomsTable,
-                               "admin/domains.html",
-                               title=_("Available domains"),
-                               emptymsg=_("No domain defined."),
-                               objects=domains,
-                               rel="310 190",
-                               deloptions=deloptions)
+    return render_listing(request, "domains",
+                          "admin/domains.html",
+                          title=_("Available domains"),
+                          objects=domains,
+                          rel="310 190",
+                          deloptions=deloptions)
 
 def _validate_domain(request, form, successmsg, commonctx, 
                      callback=None, tplname="admin/adminform.html"):
@@ -157,9 +160,8 @@ def domaliases(request):
     else:
         domain = None
         domaliases = DomainAlias.objects.all()
-    return render_domains_page(request, "domaliases", DomAliasesTable,
+    return render_listing(request, "domaliases",
                                title=_("Domain aliases"),
-                               emptymsg=_("No domain alias defined."),
                                rel="310 190",
                                objects=domaliases)
 
@@ -250,11 +252,10 @@ def mailboxes(request):
         mboxes = Mailbox.objects.all()
         domain = None
     deloptions = {"keepdir" : _("Do not delete mailbox directory")}
-    return render_domains_page(request, "mailboxes", MailboxesTable,
-                               title=_("Available mailboxes"),
-                               emptymsg=_("No mailbox defined."),
-                               rel="310 320",
-                               objects=mboxes, domain=domain, deloptions=deloptions)
+    return render_listing(request, "mailboxes",
+                          title=_("Available mailboxes"),
+                          rel="310 320",
+                          objects=mboxes, domain=domain, deloptions=deloptions)
 
 @login_required
 @good_domain
@@ -387,11 +388,10 @@ def mbaliases(request):
     else:
         aliases = Alias.objects.all()
     
-    return render_domains_page(request, "mbaliases", MbAliasesTable,
-                               title=_("Mailbox aliases"),
-                               emptymsg=_("No mailbox alias defined."),
-                               rel="320 300",
-                               objects=aliases)
+    return render_listing(request, "mbaliases",
+                          title=_("Mailbox aliases"),
+                          rel="320 300",
+                          objects=aliases)
 
 def _validate_mbalias(request, form, successmsg, tplname, commonctx):
     """Mailbox alias validation
@@ -564,16 +564,6 @@ def saveparameters(request):
 @user_passes_test(lambda u: u.is_superuser)
 def viewextensions(request, tplname='admin/extensions.html'):
     from modoboa.extensions import list_extensions
-    from modoboa.lib import tables
-    
-    class ExtensionsTable(tables.Table):
-        idkey = "id"
-        selection = tables.SelectionColumn("selection", width="4%", first=True)
-        name = tables.Column("name", label=_("Name"), width="15%")
-        version = tables.Column("version", label=_("Version"), width="6%")
-        descr = tables.Column("description", label=_("Description"))
-        
-        cols_order = ["selection", "name", "version", "descr"]
         
     exts = list_extensions()
     for ext in exts:
@@ -589,7 +579,7 @@ def viewextensions(request, tplname='admin/extensions.html'):
             
     tbl = ExtensionsTable(request, exts)
     return _render(request, tplname, {
-            "extensions" : tbl.render()
+            "extensions" : tbl
             })
 
 @login_required

@@ -6,7 +6,7 @@
 {% block setcontent %}
 {% load i18n %}
 <form method="POST" action="{% url admin.views.saveextensions %}">
-  {{ extensions }}
+  {{ extensions|safe }}
   <br />
   <input type="submit" name="apply" value="{% trans "Apply" %}" />
 </form>

@@ -3,10 +3,7 @@
 {% block middletitle %}{{ title }}{% endblock %}
 {% block subcontent %}
 <div id="objects" name="{{ selection }}" rel="{{ rel }}">
-  {% if not objects %}<div class="info">{{ emptymsg }}</div>
-  {% else %}
-  {{ table }}
-  {% endif %}
+  {{ table|safe }}
 </div>
 {% endblock %}
 {% block footer %}

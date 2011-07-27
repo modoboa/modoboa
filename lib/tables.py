@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+:mod:`tables` --- simple tabular renderer
+-----------------------------------------
+
+This module offers a simple (I hope so) interface to render tabular
+data. For a given Table class, it generates the corresponding HTML
+output (using standard tags like <table> and co.).
+
+"""
 import inspect
 import lxml
 from django.utils.translation import ugettext as _
@@ -6,6 +15,8 @@ from django.template import Template, Context
 from django.template.loader import render_to_string
 
 class Column:
+    """Simple column representation
+    """
     sortable = True
 
     def __init__(self, name, **kwargs):
@@ -22,6 +33,11 @@ class Column:
 
 
 class SelectionColumn(Column):
+    """Specific column: selection
+
+    A 'selection' column contains only checkboxes (one per row). It is
+    usefull to select rows for grouped actions (modify, delete, etc.)
+    """
     def __str__(self):
         return "<input type='checkbox' name='selectall' id='selectall' />"
 
@@ -30,6 +46,10 @@ class SelectionColumn(Column):
             % (self.name, value, value, selection and "checked" or "")
 
 class ImgColumn(Column):
+    """Specific column: image
+    
+    This kind of column only contains images tags (<img>).
+    """
     sortable = False
 
     def __str__(self):
@@ -163,6 +183,9 @@ class Table(object):
             return getattr(self, "parse_%s" % header)(value)
         except AttributeError:
             return value
+
+    def __str__(self):
+        return self.render()
 
     def render(self):
         if len(self.rows):

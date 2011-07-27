@@ -84,6 +84,14 @@ class Domain(DatesAware):
             ("view_domains", "View domains"),
             )
 
+    def __domainalias_count(self):
+        return len(self.domainalias_set.all())
+    domainalias_count = property(__domainalias_count)
+
+    def __mailbox_count(self):
+        return len(self.mailbox_set.all())
+    mailbox_count = property(__mailbox_count)
+
     def create_dir(self):
         path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
         return exec_as_vuser("mkdir -p %s" % path)
@@ -163,13 +171,15 @@ class Mailbox(DatesAware):
 
     def __full_address(self):
         return "%s@%s" % (self.address, self.domain.name)
-
     full_address = property(__full_address)
 
     def __enabled(self):
         return self.user.is_active
-
     enabled = property(__enabled)
+
+    def __alias_count(self):
+        return len(self.alias_set.all())
+    alias_count = property(__alias_count)
 
     def create_dir(self):
         relpath = "%s/%s" % (self.domain.name, self.address)

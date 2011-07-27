@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from modoboa.lib import tables
 from templatetags.admin_extras import *
 
-class DomsTable(tables.Table):
+class DomainsTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
 
@@ -11,9 +11,9 @@ class DomsTable(tables.Table):
     creation = tables.Column("creation", label=_("Created"), width="160px")
     modified = tables.Column("last_modification", label=_("Last modified"), 
                              width="160px")
-    domaliases = tables.Column("domainalias_set", label=_("Domain aliases"), 
+    domaliases = tables.Column("domainalias_count", label=_("Domain aliases"), 
                                width="100px", align="center")
-    mboxes = tables.Column("mailbox_set", label=_("Mailboxes"), 
+    mboxes = tables.Column("mailbox_count", label=_("Mailboxes"), 
                            width="100px", align="center")
     mbaliases = tables.Column("mbalias_counter", label=_("Mailbox aliases"),
                               width="100px", align="center")
@@ -28,14 +28,8 @@ class DomsTable(tables.Table):
                   "quota", "enabled", "actions"]
 
     def __init__(self, request, doms):
-        super(DomsTable, self).__init__(request)
+        super(DomainsTable, self).__init__(request)
         self.populate(self._rows_from_model(doms))
-
-    def parse_domainalias_set(self, value):
-        return len(value.all())
-
-    def parse_mailbox_set(self, value):
-        return len(value.all())
 
     def parse_quota(self, value):
         return "%s %s" % (value, _("MB"))
@@ -43,7 +37,7 @@ class DomsTable(tables.Table):
     def parse_enabled(self, value):
         return _("yes") if value else _("no")
 
-class DomAliasesTable(tables.Table):
+class DomaliasesTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
 
@@ -61,7 +55,7 @@ class DomAliasesTable(tables.Table):
                   "modified", "enabled", "actions"]
 
     def __init__(self, request, domaliases):
-        super(DomAliasesTable, self).__init__(request)
+        super(DomaliasesTable, self).__init__(request)
         self.populate(self._rows_from_model(domaliases))
 
     def parse_enabled(self, value):
@@ -76,7 +70,7 @@ class MailboxesTable(tables.Table):
     creation = tables.Column("creation", label=_("Created"), width="160px")
     modified = tables.Column("last_modification", label=_("Last modified"), 
                              width="160px")
-    aliases = tables.Column("alias_set", label=_("Aliases"), width="70px",
+    aliases = tables.Column("alias_count", label=_("Aliases"), width="70px",
                             align="center")
     quota = tables.Column("quota", label=_("Quota"), width="50px", align="center")
     enabled = tables.Column("enabled", label=gender("Enabled", "f"), width="50px",
@@ -91,16 +85,13 @@ class MailboxesTable(tables.Table):
         super(MailboxesTable, self).__init__(request)
         self.populate(self._rows_from_model(mailboxes))
 
-    def parse_alias_set(self, value):
-        return len(value.all())
-
     def parse_quota(self, value):
         return "%s %s" % (value, _("MB"))
 
     def parse_enabled(self, value):
         return _("yes") if value else _("no")
 
-class MbAliasesTable(tables.Table):
+class MbaliasesTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
     
@@ -117,7 +108,7 @@ class MbAliasesTable(tables.Table):
     cols_order = ["address", "targets", "creation", "modified", "enabled", "actions"]
 
     def __init__(self, request, aliases):
-        super(MbAliasesTable, self).__init__(request)
+        super(MbaliasesTable, self).__init__(request)
         self.populate(self._rows_from_model(aliases))
 
     def rowoptions(self, request, alias):
@@ -126,5 +117,11 @@ class MbAliasesTable(tables.Table):
     def parse_enabled(self, value):
         return _("yes") if value else _("no")
 
-
-
+class ExtensionsTable(tables.Table):
+    idkey = "id"
+    selection = tables.SelectionColumn("selection", width="4%", first=True)
+    name = tables.Column("name", label=_("Name"), width="15%")
+    version = tables.Column("version", label=_("Version"), width="6%")
+    descr = tables.Column("description", label=_("Description"))
+    
+    cols_order = ["selection", "name", "version", "descr"]
