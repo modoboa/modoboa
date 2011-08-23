@@ -9,7 +9,7 @@ from modoboa.extensions import amavis_quarantine
 register = template.Library()
 
 @register.simple_tag
-def viewm_menu(selection, backurl, mail_id, perms):
+def viewm_menu(selection, backurl, mail_id, rcpt, perms):
     options_menu = [
         {"name" : "viewmode", 
          "label" : _("View as plain text"),
@@ -34,12 +34,14 @@ def viewm_menu(selection, backurl, mail_id, perms):
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:600,y:500}}"},
         {"name" : "release",
-         "url" : reverse(amavis_quarantine.views.release, args=[mail_id]),
+         "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
+             + "?rcpt=%s" % rcpt,
          "img" : static_url("pics/release.png"),
          "label" : _("Release"),
          "confirm" : _("Release this message?")},
         {"name" : "delete",
-         "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]),
+         "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
+             + "?rcpt=%s" % rcpt,
          "img" : static_url("pics/remove.png"),
          "label" : _("Delete"),
          "confirm" : _("Delete this message?")},
@@ -55,7 +57,7 @@ def viewm_menu(selection, backurl, mail_id, perms):
                              "perms" : perms})
 
 @register.simple_tag
-def quar_menu(selection, perms):
+def quar_menu(selection, user):
     entries = [
         {"name" : "release",
          "url" : "",
@@ -88,9 +90,13 @@ def quar_menu(selection, perms):
         ]
 
     menu = render_to_string('common/menu.html', 
-                            {"selection" : selection, "entries" : entries, 
-                             "perms" : perms})
+                            {"selection" : selection, "entries" : entries})
+    if user.is_superuser or is_domain_admin(user):
+        extraopts = [{"name" : "to", "label" : _("To")}]
+    else:
+        extraopts = []
     searchbar = render_to_string('common/email_searchbar.html', {
-            "MEDIA_URL" : settings.MEDIA_URL
+            "MEDIA_URL" : settings.MEDIA_URL,
+            "extraopts" : extraopts
             })
     return menu + searchbar

@@ -17,10 +17,9 @@ from django.template.loader import render_to_string
 class Column:
     """Simple column representation
     """
-    sortable = True
-
     def __init__(self, name, **kwargs):
         self.name = name
+        self.sortable = True
         for k, v in kwargs.iteritems():
             setattr(self, k, v)
             
@@ -50,9 +49,8 @@ class ImgColumn(Column):
     
     This kind of column only contains images tags (<img>).
     """
-    sortable = False
-
     def __str__(self):
+        self.sortable = False
         try:
             return getattr(self, "header")
         except AttributeError:

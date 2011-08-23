@@ -75,13 +75,7 @@ function wm_updatelisting(resp) {
     wm_updatelisting(resp);
     rtimer = refreshFolder.periodical({{ refreshrate }});
     searchbox_init();
-    if (navparams.has("order")) {
-      src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
-      th = $$("th[id=" + navparams.get("order").substring(1) + "]");
-      th.getElement("img").set("src", static_url("pics/" + src));
-      th.getElement("img").setStyle("display", "block");
-      th.addClass("selected");
-    }
+    update_sortable_column();
 
     var emails_table = new HtmlTable($("emails"), {
 	selectable: true,
@@ -211,24 +205,8 @@ function wm_updatelisting(resp) {
 	    }
 	});
     }
-
+    init_sortable_columns();
     $$("tbody>tr").addEvent("dblclick", viewmail);
-    $$("th[class*=sortable]").addEvent("click", function(evt) {
-        var tmp = "?";
-        var order = (navparams.has("order")) ? navparams.get("order") : "";
-
-        if (order == "") {
-            order = current_anchor.getparam("order");
-        }
-        if (order.substring(1) == evt.target.id) {
-            var sign = (order.charAt(0) == '+') ? '-' : '+';
-            order = sign + evt.target.id;
-        } else {
-            order = "-" + evt.target.id;
-        }
-        navparams.set("order", order);
-        current_anchor.setparams(navparams).update();
-    });
   });
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}

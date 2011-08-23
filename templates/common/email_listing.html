@@ -23,6 +23,37 @@ function viewmail(event) {
   }
 }
 
+function init_sortable_columns() {
+  $$("th[class*=sortable]").addEvent("click", function(evt) {
+    var tmp = "?";
+    var order = (navparams.has("order")) ? navparams.get("order") : "";
+
+    if (order == "") {
+      order = current_anchor.getparam("order");
+    }
+    if (order.substring(1) == evt.target.id) {
+      var sign = (order.charAt(0) == '+') ? '-' : '+';
+      order = sign + evt.target.id;
+    } else {
+      order = "-" + evt.target.id;
+    }
+    navparams.set("order", order);
+    current_anchor.setparams(navparams).update();
+  });
+}
+
+function update_sortable_column() {
+  if (!navparams.has("order")) {
+    return;
+  }
+  var src = navparams.get("order").charAt(0) == "-" ? "down_arrow.png" : "up_arrow.png";
+  var th = $$("th[id=" + navparams.get("order").substring(1) + "]");
+
+  th.getElement("img").set("src", static_url("pics/" + src));
+  th.getElement("img").setStyle("display", "block");
+  th.addClass("selected");    
+}
+
 window.addEvent("domready", function() {
   navparams = new Hash({
     {% join navparams %}

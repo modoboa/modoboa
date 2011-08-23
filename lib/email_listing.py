@@ -83,16 +83,21 @@ class Paginator(object):
             p.baseurl = self.baseurl
         return p
 
-class EmailListing:
+class EmailListing(object):
     def __init__(self, baseurl=None, folder=None, elems_per_page=40, 
                  navparams={}, **kwargs):
         self.folder = folder
         self.elems_per_page = elems_per_page
         self.navparams = navparams
         self.extravars = {}
-        order = "order" in kwargs.keys() and kwargs["order"] or None
         self.empty = "empty" in kwargs.keys() and kwargs["empty"] or False
         if not self.empty:
+            if kwargs.has_key("order"):
+                order = kwargs["order"]
+            elif self.navparams.has_key("order"):
+                order = self.navparams["order"]
+            else:
+                order = None
             self.paginator = Paginator(self.mbc.messages_count(folder=self.folder, 
                                                                order=order), 
                                        elems_per_page)

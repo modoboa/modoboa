@@ -27,8 +27,17 @@ DATABASES = {
     #     "NAME" : "",
     #     "USER" : "",
     #     "PASSWORD" : ""
+    # },
+    # "amavis": {
+    #	  "ENGINE" : "",
+    #	  "HOST" : "",
+    #	  "NAME" : "",
+    #	  "USER" : "",
+    #	  "PASSWORD" : ""
     # }
 }
+
+DATABASE_ROUTERS = ["extensions.amavis_quarantine.lib.AmavisRouter"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -119,17 +128,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'modoboa.lib.authbackends.SimpleBackend'
 )
-
-# Amavis quarantine
-# DB_CONNECTIONS = (
-#     {"amavis_quarantine" : {"driver"   : "",
-#                             "host"     : "",
-#                             "dbname"   : "",
-#                             "login"    : "",
-#                             "password" : ""}
-#      }
-#     )
-
 
 #SESSION_COOKIE_AGE = 300
 #CACHE_BACKEND = 'file://'

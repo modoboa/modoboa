@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-import time
 import email
-import re
-import os
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import Template, Context
 from django.utils import simplejson
@@ -12,51 +8,78 @@ from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required
-from modoboa.lib import _render, _ctx_ok, _ctx_ko, decode, getctx
-from modoboa.lib import db, parameters
+from django.db.models import Q
+from modoboa.lib import parameters, _render, getctx, ajax_response
 from modoboa.admin.models import Mailbox
 from lib import AMrelease
 from templatetags.amextras import *
 from modoboa.lib.email_listing import parse_search_parameters
 from sql_listing import *
+from admin.lib import is_domain_admin
 
 def __get_current_url(request):
-    res = "?page=%s" % request.session["page"]
-    for p in ["criteria", "pattern"]:
-        if p in request.session.keys():
-            res += "&%s=%s" % (p, request.session[p])
+    if request.session.has_key("page"):
+        res = "?page=%s" % request.session["page"]
+    else:
+        res = ""
+    params = "&".join(map(lambda p: "%s=%s" % (p, request.session[p]), 
+                          filter(request.session.has_key, ["criteria", "pattern"])))
+    if params != "":
+        res += "?%s" % (params)
     return res
     
 @login_required
-def _listing(request, internal=False, filter=None):
-    #start = time.time()
-    if not request.user.is_superuser:
-        mb = Mailbox.objects.get(user=request.user.id)
-        if filter is None:
-            filter = ["&maddr.email='%s'" % mb.full_address]
-        else:
-            filter += ["&maddr.email='%s'" % mb.full_address]
+def _listing(request):
+    filter = None
+    rcptfilter = None
+    msgs = None
+
+    order = request.GET.has_key("order") and request.GET["order"] or "-date"
+    if not request.session.has_key("navparams"):
+        request.session["navparams"] = {}
+    request.session["navparams"]["order"] = order
 
     parse_search_parameters(request)
     if request.session.has_key("pattern"):
-        tmp = ""
-        for c in request.session["criteria"].split(','):
-            if tmp != "":
-                tmp += " OR "
-            tmp += "msgs.%s LIKE '%%%s%%'" % (c, request.session["pattern"])
-        tmp = "&(%s)" % tmp
-        if filter is None:
-            filter = [tmp]
-        else:
-            filter += [tmp]
+        criteria = request.session["criteria"]
+        if criteria == "both":
+            criteria = "from_addr,subject,to"
+        for c in criteria.split(","):
+            if c == "from_addr":
+                nfilter = Q(mail__from_addr__contains=request.session["pattern"])
+            elif c == "subject":
+                nfilter = Q(mail__subject__contains=request.session["pattern"])
+            elif c == "to":
+                rcptfilter = request.session["pattern"]
+                continue
+            else:
+                raise Exception("unsupported search criteria %s" % c)
+            filter = nfilter if filter is None else filter | nfilter
 
-    pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
-    request.session["page"] = pageid # ?? nécessaire
-    lst = SQLlisting(request.user, filter, baseurl="listing/", empty=internal, 
+    q = ~Q(rs='D')
+    if not request.user.is_superuser:
+        mb = Mailbox.objects.get(user=request.user.id)
+        if is_domain_admin(request.user):
+            q &= Q(rid__email__contains=mb.domain.name)
+        else:
+            q &= Q(rid__email=mb.full_address)
+    if (request.user.is_superuser or is_domain_admin(request.user)) \
+            and rcptfilter is not None:
+        q &= Q(rid__email__contains=rcptfilter)
+    msgs = Msgrcpt.objects.filter(q).values("mail_id")
+
+    if request.GET.has_key("page"):
+        request.session["page"] = request.GET["page"]
+        pageid = int(request.session["page"])
+    else:
+        if request.session.has_key("page"):
+            del request.session["page"]
+        pageid = 1
+    
+    lst = SQLlisting(request.user, msgs, filter, baseurl="listing/", 
+                     navparams=request.session["navparams"],
                      elems_per_page=int(parameters.get_user(request.user, 
                                                         "MESSAGES_PER_PAGE")))
-    if internal:
-        return lst.render(request, pageid=int(pageid))
     page = lst.paginator.getpage(pageid)
     if page:
         content = lst.fetch(request, page.id_start, page.id_stop)
@@ -65,26 +88,21 @@ def _listing(request, internal=False, filter=None):
         content = "<div class='info'>%s</div>" % _("Empty quarantine")
         navbar = ""
     ctx = getctx("ok", listing=content, navbar=navbar,
-                 menu=quar_menu("", request.user.get_all_permissions()))
+                 menu=quar_menu("", request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
-def index(request, message=None):
-    return _listing(request, True)
+def index(request):
+    return SQLlisting(request.user, None, None, empty=True).render(request)
 
 @login_required
 def getmailcontent(request, mail_id):
     from sql_listing import SQLemail
 
-    conn = db.getconnection("amavis_quarantine")
-    status, cursor = db.execute(conn, """
-SELECT mail_text
-FROM quarantine
-WHERE quarantine.mail_id='%s'
-""" % mail_id)
+    qmails = Quarantine.objects.filter(mail=mail_id)
     content = ""
-    for part in cursor.fetchall():
-        content += part[0]
+    for qm in qmails:
+        content += qm.mail_text
     msg = email.message_from_string(content)
     links = request.GET.has_key("links") and request.GET["links"] or "0"
     mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
@@ -96,102 +114,107 @@ WHERE quarantine.mail_id='%s'
 
 @login_required
 def viewmail(request, mail_id):
-    args = ""
+    if request.user.is_superuser or is_domain_admin(request.user):
+        rcpt = request.GET["rcpt"]
+    else:
+        mb = Mailbox.objects.get(user=request.user)
+        rcpt = mb.full_address
+        msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=rcpt)
+        msgrcpt.rs = 'V'
+        msgrcpt.save()
+    args = []
     for kw in ["mode", "links"]:
-        if kw in request.GET.keys():
-            args += args != "" and "&" or "?"
-            args += "%s=%s" % (kw, request.GET[kw])
+        if request.GET.has_key(kw):
+            args += ["%s=%s" % (kw, request.GET[kw])]
+    
     content = Template("""
 <iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
-""").render(Context({"url" : reverse(getmailcontent, args=[mail_id]) + args}))
-    menu = viewm_menu("", __get_current_url(request), mail_id, 
+""").render(Context({"url" : reverse(getmailcontent, args=[mail_id]) \
+                         + "?%s" % "&".join(args)}))
+    menu = viewm_menu("", __get_current_url(request), mail_id, rcpt,
                       request.user.get_all_permissions())
     ctx = getctx("ok", menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 def viewheaders(request, mail_id):
-    conn = db.getconnection("amavis_quarantine")
-    status, cursor = db.execute(conn, """
-SELECT mail_text
-FROM quarantine
-WHERE quarantine.mail_id='%s'
-""" % mail_id)
     content = ""
-    for part in cursor.fetchall():
-        content += part[0]
+    for qm in Quarantine.objects.filter(mail=mail_id):
+        content += qm.mail_text
     msg = email.message_from_string(content)
     return _render(request, 'amavis_quarantine/viewheader.html', {
             "headers" : msg.items()
             })
 
-@login_required
-def delete(request, mail_id, count=1):
-    conn = db.getconnection("amavis_quarantine")
-    if mail_id[0] != "'":
-        mail_id = "'%s'" % mail_id
-    status, error = db.execute(conn, 
-                               "DELETE FROM msgs WHERE mail_id IN (%s)" % mail_id)
-    if status:
-        message = ungettext("%(count)d message deleted successfully",
-                            "%(count)d messages deleted successfully",
-                            count) % {"count" : count}
-    else:
-        message = error
-    ctx = getctx("ok", url=__get_current_url(request), message=message)
-    return HttpResponse(simplejson.dumps(ctx), 
-                        mimetype="application/json")
+def check_mail_id(request, mail_id):
+    if type(mail_id) in [str, unicode]:
+        if request.GET.has_key("rcpt"):
+            mail_id = ["%s %s" % (request.GET["rcpt"], mail_id)]
+        else:
+            mail_id = [mail_id]
+    return mail_id
 
 @login_required
-def release(request, mail_id, count=1):
-    conn = db.getconnection("amavis_quarantine")
-    if mail_id[0] != "'":
-        mail_id = "'%s'" % mail_id
-    status, cursor = db.execute(conn, """
-SELECT msgs.mail_id,secret_id,quar_type,maddr.email FROM msgs, maddr, msgrcpt
-WHERE msgrcpt.mail_id=msgs.mail_id AND msgrcpt.rid=maddr.id AND msgs.mail_id IN (%s)
-""" % (mail_id))
-    emails = {}
+def delete(request, mail_id):
+    mail_id = check_mail_id(request, mail_id)
+    if not request.user.is_superuser and not is_domain_admin(request.user):
+        mb = Mailbox.objects.get(user=request.user)
+        msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
+        msgrcpts.update(rs='D')
+    else:
+        for mid in mail_id:
+            r, i = mid.split()
+            msgrcpt = Msgrcpt.objects.get(mail=i, rid__email=r)
+            msgrcpt.rs = 'D'
+            msgrcpt.save()
+
+    message = ungettext("%(count)d message deleted successfully",
+                        "%(count)d messages deleted successfully",
+                        len(mail_id)) % {"count" : len(mail_id)}
+    return ajax_response(request, respmsg=message,
+                         url=__get_current_url(request))
+
+@login_required
+def release(request, mail_id):
+    mail_id = check_mail_id(request, mail_id)
+    if not request.user.is_superuser and not is_domain_admin(request.user):
+        mb = Mailbox.objects.get(user=request.user)
+        msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
+    else:
+        msgrcpts = []
+        for mid in mail_id:
+            r, i = mid.split()
+            msgrcpts += [Msgrcpt.objects.get(mail=i, rid__email=r)]
+
     amr = AMrelease()
-    for row in cursor.fetchall():
-        if not emails.has_key(row[0]):
-            emails[row[0]] = {}
-            emails[row[0]]["rcpts"] = []
-        emails[row[0]]["secret"] = row[1]
-        emails[row[0]]["rcpts"] += [row[3]]
-    count = 0
     error = None
-    for k, values in emails.iteritems():
-        result = amr.sendreq(k, values["secret"], *values["rcpts"])
+    for rcpt in msgrcpts:
+        result = amr.sendreq(rcpt.mail.mail_id, rcpt.mail.secret_id, rcpt.rid.email)
         if result:
-            count += 1
-            db.execute(conn, "UPDATE msgrcpt SET rs='R' WHERE mail_id='%s'" % k)
+            rcpt.rs = 'R'
+            rcpt.save()
         else:
             error = result
             break
+
     if not error:
         message = ungettext("%(count)d message released successfully",
                             "%(count)d messages released successfully",
-                            count) % {"count" : count}
+                            len(mail_id)) % {"count" : len(mail_id)}
     else:
         message = error
-    ctx = getctx("ok", url=__get_current_url(request), message=message)
-    return HttpResponse(simplejson.dumps(ctx), 
-                        mimetype="application/json")
+    return ajax_response(request, "ko" if error else "ok", respmsg=message,
+                         url=__get_current_url(request))
 
 @login_required
 def process(request):
-    ids = ""
-    count = len(request.POST["selection"].split(","))
-    for id in request.POST["selection"].split(","):
-        if ids != "":
-            ids += ","
-        ids += "'%s'" % id
-    if ids == "":
+    ids = request.POST.get("selection", "")
+    ids = ids.split(",")
+    if not len(ids):
         return HttpResponseRedirect(reverse(index))
 
     if request.POST["action"] == "release":
-        return release(request, ids, count)
+        return release(request, ids)
             
     if request.POST["action"] == "delete":
-        return delete(request, ids, count)
+        return delete(request, ids)

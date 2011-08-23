@@ -10,16 +10,20 @@ function navbarcallback(event) {
 }
 
 function updatelisting(resp) {
-  if ($defined(resp.menu)) {
-    $("menubar").set("html", resp.menu);
-    parse_menubar("menubar");
-  }
-  if ($defined(resp.listing)) {
-    $("listing").set("html", resp.listing);
-  }
-  if ($defined(resp.navbar)) {
-    $("navbar").set("html", resp.navbar);
-    $("navbar").getChildren("a").addEvent("click", navbarcallback);
-  }
+    if ($defined(resp.url)) {
+        current_anchor.baseurl(resp.url).update();
+        return;
+    }
+    if ($defined(resp.menu)) {
+        $("menubar").set("html", resp.menu);
+        parse_menubar("menubar");
+    }
+    if ($defined(resp.listing)) {
+        $("listing").set("html", resp.listing);
+    }
+    if ($defined(resp.navbar)) {
+        $("navbar").set("html", resp.navbar);
+        $("navbar").getChildren("a").addEvent("click", navbarcallback);
+    }
 }
 

@@ -9,7 +9,13 @@
     event.stop();
     var selection = new Array();
     $$("tr[class*=table-tr-selected]").each(function(item) {
-      selection.push(item.get("id"));
+      var content = "";
+      var to = item.getFirst("td[name=to]");
+
+      if ($defined(to)) {
+        content = to.get("html").trim() + " ";
+      }
+      selection.push(content + item.get("id"));
     });
     new Element("input", {
       "type" : "hidden", "name" : "selection", "value" : selection

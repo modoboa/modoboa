@@ -2,9 +2,11 @@
 
 from datetime import datetime
 from django.utils.translation import ugettext as _
-from modoboa.lib import tables, db, static_url
+from django.db.models import Q
+from modoboa.lib import tables, static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
+from models import *
 
 class Qtable(tables.Table):
     tableid = "emails"
@@ -16,7 +18,7 @@ class Qtable(tables.Table):
     from_ = tables.Column("from", label=_("From"), limit=30)
     subject = tables.Column("subject", label=_("Subject"), limit=40)
     time = tables.Column("date", label=_("Date"))
-    to = tables.Column("to", label=_("To"), limit=30)
+    to = tables.Column("to", label=_("To"), sortable=False)
 
     cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']
 
@@ -24,64 +26,51 @@ class Qtable(tables.Table):
         return datetime.fromtimestamp(value)
 
 class SQLconnector(MBconnector):
-    def __init__(self, filter=None):
-        self.conn = db.getconnection("amavis_quarantine")
-        self.filter = ""
-        if filter:
-            for a in filter:
-                if not a:
-                    continue
-                if a[0] == "&":
-                    self.filter += " AND "
-                else:
-                    self.filter += " OR "
-                self.filter += a[1:]
-        query = self._get_query()
-        status, cursor = db.execute(self.conn, """
-SELECT count(quarantine.mail_id) AS total
-%s
-""" % query)
-        if not status:
-            print cursor
-            self.count = 0
-        else:
-            self.count = int(cursor.fetchone()[0])
-
-    def _get_query(self):
-        return """
-FROM quarantine, maddr, msgrcpt, msgs
-WHERE quarantine.mail_id=msgrcpt.mail_id
-AND msgrcpt.rid=maddr.id
-AND msgrcpt.mail_id=msgs.mail_id
-AND quarantine.chunk_ind=1
-%s
-ORDER BY msgs.time_num DESC
-""" % self.filter
+    orders = {
+        "from" : "mail__from_addr",
+        "subject" : "mail__subject",
+        "date" : "mail__time_num"
+        }
+    
+    def __init__(self, mail_ids=None, filter=None):
+        self.count = None
+        self.mail_ids = mail_ids
+        self.filter = filter
 
     def messages_count(self, **kwargs):
+        if self.count is None:
+            filter = Q(chunk_ind=1)
+            if self.mail_ids is not None:
+                filter &= Q(mail__in=self.mail_ids)
+            if self.filter:
+                filter &= self.filter
+            self.messages = Quarantine.objects.filter(filter)
+            if kwargs.has_key("order"):
+                totranslate = kwargs["order"][1:]
+                sign = kwargs["order"][:1]
+                if sign == " ":
+                    sign = ""
+                order = sign + self.orders[totranslate]
+                self.messages = self.messages.order_by(order)
+            self.count = self.messages.count()
         return self.count
 
     def fetch(self, start=None, stop=None, **kwargs):
-        query = self._get_query()
-        status, cursor = db.execute(self.conn, """
-SELECT msgs.from_addr, maddr.email, msgs.subject, msgs.content, quarantine.mail_id,
-       msgs.time_num, msgs.content, msgrcpt.rs
-%s
-LIMIT %d,%d
-""" % (query, start - 1, kwargs["nbelems"]))
-        if not status:
-            print cursor
-            return []
+        messages = self.messages[start - 1:stop]
         emails = []
-        rows = cursor.fetchall()
-        for row in rows:
-            m = {"from" : row[0], "to" : row[1], 
-                 "subject" : row[2], "content" : row[3],
-                 "mailid" : row[4], "date" : row[5],
-                 "type" : row[6]}
-            if row[7] == "R":
-                m["img_rstatus"] = static_url("pics/release.png");
-            emails.append(m)
+        for qm in messages:
+            for rcpt in qm.mail.msgrcpt_set.all():
+                m = {"from" : qm.mail.from_addr, 
+                     "to" : rcpt.rid.email,
+                     "subject" : qm.mail.subject,
+                     "mailid" : qm.mail_id,
+                     "date" : qm.mail.time_num,
+                     "type" : qm.mail.content}
+                if rcpt.rs == '':
+                    m["class"] = "unseen"
+                elif rcpt.rs == 'R':
+                    m["img_rstatus"] = static_url("pics/release.png")
+                emails.append(m)
         return emails
 
 class SQLlisting(EmailListing):
@@ -91,16 +80,17 @@ class SQLlisting(EmailListing):
     defcallback = "updatelisting"
     reset_wm_url = True
 
-    def __init__(self, user, filter, **kwargs):
+    def __init__(self, user, msgs, filter, **kwargs):
         if not user.is_superuser:
             Qtable.cols_order.remove('to')
-        self.mbc = SQLconnector(filter)
-        EmailListing.__init__(self, **kwargs)
+        self.mbc = SQLconnector(msgs, filter)
+        
+        super(SQLlisting, self).__init__(**kwargs)
 
 class SQLemail(Email):
     def __init__(self, msg, *args, **kwargs):
-        Email.__init__(self, msg, *args, **kwargs)
-        fields = ["X-Amavis-Alert", "Subject", "From", "To", "Date"]
+        super(SQLemail, self).__init__(msg, *args, **kwargs)
+        fields = ["X-Amavis-Alert", "Subject", "From", "To", "Cc", "Date"]
         for f in fields:
             label = f
             if not msg.has_key(f):

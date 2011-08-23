@@ -1,6 +1,7 @@
 function updatehash(evt) {
   evt.stop();
-  current_anchor.parse_string(evt.target.get("href"), true).setparams(navparams);
+  var url = $defined(this.get("href")) ? this.get("href") : "";
+  current_anchor.parse_string(url, true).setparams(navparams);
   current_anchor.update();
 }
 
@@ -20,13 +21,12 @@ function actioncallback(resp) {
   $("menubar").set("html", "");
   $("navbar").set("html", "");
   if (resp.status == "ok") {
-    infobox.info(resp.message);
+    infobox.info(resp.respmsg);
+    current_anchor.parse_string(resp.url, true).setparams(navparams);
+    current_anchor.update(1);
   } else {
-    infobox.error(resp.message);
+    infobox.error(resp.respmsg);
   }
-  infobox.hide(1);
-  current_anchor.parse_string(resp.url, true).setparams(navparams);
-  current_anchor.update(1);
 }
 
 function actionclick(evt) {
@@ -35,6 +35,17 @@ function actionclick(evt) {
       url: evt.target.get("href"),
       onSuccess: actioncallback
   }).get();
+}
+
+function viewmail_cs(evt) {
+    evt.stop();
+    var to = this.getFirst("td[name=to]");
+
+    current_anchor.baseurl(this.get("id"));
+    if ($defined(to)) {
+        current_anchor.setparam("rcpt", to.get("html").trim());
+    }
+    current_anchor.update();
 }
 
 /*
@@ -92,7 +103,9 @@ function listing_cb(resp) {
     mysubmit(event, "delete");
   });
   searchbox_init();
-  $$("tr").addEvent("dblclick", viewmail);
+  init_sortable_columns();
+  update_sortable_column();
+  $$("tbody>tr").addEvent("dblclick", viewmail_cs);
 }
 
 /*

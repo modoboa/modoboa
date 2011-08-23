@@ -45,16 +45,6 @@ html > body #listing {
     -khtml-user-select: none; /* Webkit (Safari, Chrome) */
 }
 
-th[class*=sortable] {
-    cursor: pointer;
-/*-moz-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;
-  -webkit-box-shadow: 0px -15px 10px -10px rgba(0,0,0,0.6) inset;*/
-}
-
-th.selected {
-    background: #EEEEEE;
-}
-
 .draggable {
     cursor: move;
     /*position: relative;*/

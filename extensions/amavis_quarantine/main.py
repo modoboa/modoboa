@@ -19,6 +19,8 @@ def init():
     parameters.register_admin("MAX_MESSAGES_AGE", type="int", 
                               deflt=14,
                               help=_("Quarantine messages maximum age (in days) before deletion"))
+    parameters.register_admin("RELEASED_MSGS_CLEANUP", type="list_yesno", deflt="no",
+                              help=_("Remove messages marked as released while cleaning up the database"))
     parameters.register_admin("AM_PDP_MODE", type="list", 
                               deflt="unix",
                               values=[("inet", "inet"), ("unix", "unix")],
