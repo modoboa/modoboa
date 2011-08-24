@@ -245,15 +245,17 @@ def deldomalias(request):
 @good_domain
 @permission_required("admin.view_mailboxes")
 def mailboxes(request):
+    title = _("Available mailboxes")
     if request.GET.has_key("domid"):
         domain = Domain.objects.get(pk=request.GET["domid"])
         mboxes = Mailbox.objects.filter(domain=domain.id)
+        title += " (%s)" % domain.name
     else:
         mboxes = Mailbox.objects.all()
         domain = None
     deloptions = {"keepdir" : _("Do not delete mailbox directory")}
     return render_listing(request, "mailboxes",
-                          title=_("Available mailboxes"),
+                          title=title,
                           rel="310 320",
                           objects=mboxes, domain=domain, deloptions=deloptions)
 
