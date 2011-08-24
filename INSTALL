@@ -152,6 +152,51 @@ server. Just run this command to start it::
 You will be able to play with Modoboa by looking at 
 ``http://<youraddress>:8000/modoboa/admin/``.
 
+External authentication backend
+===============================
+
+LDAP
+----
+
+*Modoboa* supports external LDAP authentication using the following extra components:
+
+* `Python LDAP client <http://www.python-ldap.org/>`_
+* `Django LDAP authentication backend <http://pypi.python.org/pypi/django-auth-ldap>`_
+
+If you want to use this feature, you must first install those components::
+
+  $ easy_install python-ldap django-auth-ldap
+
+Then, all you have to do is to modify the `settings.py` file:
+
+* Add a new authentication backend to the `AUTHENTICATION_BACKENDS`
+  variable, like this::
+
+    AUTHENTICATION_BACKENDS = (
+      'django_auth_ldap.backend.LDAPBackend',
+      'django.contrib.auth.backends.ModelBackend',
+      'modoboa.lib.authbackends.SimpleBackend'
+    )
+
+* Set the required parameters to establish the communication with your
+  LDAP server, for example::
+
+    import ldap
+    from django_auth_ldap.config import LDAPSearch
+
+    AUTH_LDAP_BIND_DN = ""
+    AUTH_LDAP_BIND_PASSWORD = ""
+    AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=users,dc=example,dc=com",
+        ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+
+You will find a detailled documentation `here
+<http://packages.python.org/django-auth-ldap/>`_.
+
+Once the authentication is properly configured, the users defined in
+your LDAP directory will be able to connect to *Modoboa*, the associated
+domain and mailboxes will be automatically created if needed.
+
+
 How to upgrade
 ==============
 

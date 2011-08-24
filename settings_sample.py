@@ -131,3 +131,14 @@ AUTHENTICATION_BACKENDS = (
 
 #SESSION_COOKIE_AGE = 300
 #CACHE_BACKEND = 'file://'
+
+#
+# External LDAP authentication (optional)
+#
+# import ldap
+# from django_auth_ldap.config import LDAPSearch
+
+# AUTH_LDAP_BIND_DN = ""
+# AUTH_LDAP_BIND_PASSWORD = ""
+# AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=users,dc=example,dc=com",
+#     ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
