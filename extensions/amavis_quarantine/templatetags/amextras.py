@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from modoboa.lib import static_url
 from modoboa.extensions import amavis_quarantine
+from modoboa.admin.lib import is_domain_admin
 
 register = template.Library()
 

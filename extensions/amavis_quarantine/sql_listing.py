@@ -6,6 +6,7 @@ from django.db.models import Q
 from modoboa.lib import tables, static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
+from modoboa.admin.lib import is_domain_admin
 from models import *
 
 class Qtable(tables.Table):
@@ -81,8 +82,11 @@ class SQLlisting(EmailListing):
     reset_wm_url = True
 
     def __init__(self, user, msgs, filter, **kwargs):
-        if not user.is_superuser:
-            Qtable.cols_order.remove('to')
+        if not user.is_superuser and not is_domain_admin(user):
+            try:
+                Qtable.cols_order.remove('to')
+            except ValueError:
+                pass
         self.mbc = SQLconnector(msgs, filter)
         
         super(SQLlisting, self).__init__(**kwargs)
