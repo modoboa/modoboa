@@ -261,6 +261,24 @@ class Mailbox(DatesAware):
                 pass
         super(Mailbox, self).save(*args, **kwargs)
 
+    def save_from_user(self, localpart, domain, user):
+        """Simple save method called for automatic creations
+
+        :param localpart: the mailbox
+        :param domain: the associated Domain object
+        :param user: the associated User object
+        """
+        self.name = "%s %s" % (user.first_name, user.last_name)
+        self.address = localpart
+        self.domain = domain
+        self.user = user
+        if not self.create_dir():
+            raise AdminError(_("Failed to initialise mailbox, check permissions"))
+        self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
+        self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
+        self.quota = self.domain.quota
+        super(Mailbox, self).save()
+
     def delete(self, *args, **kwargs):
         keepdir = False
         if kwargs.has_key("keepdir"):
@@ -430,11 +448,7 @@ try:
             mb = Mailbox.objects.get(domain=domain, address=localpart)
         except Mailbox.DoesNotExist:
             mb = Mailbox()
-            mb.name = "%s %s" % (user.first_name, user.last_name)
-            mb.address = localpart
-            mb.domain = domain
-            mb.user = user
-            mb.save()
+            mb.save_from_user(localpart, domain, user)
 
 except ImportError, inst:
     pass
