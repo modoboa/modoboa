@@ -2,9 +2,11 @@
 from django.db import models, IntegrityError
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
+from django.dispatch import receiver
 from django.conf import settings
 from modoboa.lib import parameters
 from modoboa.lib import exec_cmd, exec_as_vuser, crypt_password
+from modoboa.lib.emailutils import split_mailbox
 import os
 import pwd
 
@@ -404,3 +406,35 @@ class Extension(models.Model):
         staticpath = "%s/%s" % (extdir, "static")  
         if os.path.exists(staticpath):
             exec_cmd("rm -r %s/static/%s" % (settings.MODOBOA_DIR, self.name)) 
+
+#
+# Optional callback to execute if django-auth-ldap is enabled.
+#
+try:
+    from django_auth_ldap.backend import populate_user
+
+    @receiver(populate_user, dispatch_uid="myuid")
+    def populate_callback(sender, user=None, **kwargs):
+        if user is None:
+            return
+        localpart, domname = split_mailbox(user.username)
+        try:
+            domain = Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            domain = Domain()
+            domain.name = domname
+            domain.enabled = True
+            domain.quota = 0
+            domain.save()
+        try:
+            mb = Mailbox.objects.get(domain=domain, address=localpart)
+        except Mailbox.DoesNotExist:
+            mb = Mailbox()
+            mb.name = "%s %s" % (user.first_name, user.last_name)
+            mb.address = localpart
+            mb.domain = domain
+            mb.user = user
+            mb.save()
+
+except ImportError, inst:
+    pass
