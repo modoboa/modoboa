@@ -2,12 +2,14 @@
 import os
 import re
 from django.conf import settings
-from modoboa.admin.models import Extension
 
 def isinstalled(ext):
     return "modoboa.extensions.%s" % ext in settings.INSTALLED_APPS
 
 def loadextensions(prefix):
+    # To avoid a circular import...
+    from modoboa.admin.models import Extension
+
     basedir = "%s/extensions" % settings.MODOBOA_DIR
     result = []
     for f in os.listdir(basedir):
