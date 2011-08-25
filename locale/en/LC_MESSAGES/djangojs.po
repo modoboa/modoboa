@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-01 10:11+0200\n"
+"POT-Creation-Date: 2011-08-25 09:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:81
+#: extensions/amavis_quarantine/static/js/quarantine.js:92
 msgid "Release this selection?"
 msgstr ""
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:88
+#: extensions/amavis_quarantine/static/js/quarantine.js:99
 msgid "Delete this selection?"
 msgstr ""
 

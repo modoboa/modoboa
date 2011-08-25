@@ -1,27 +1,27 @@
 # Modoboa German translation.
 # Copyright (C) 2011
 # This file is distributed under the same license as the Modoboa package.
-# 
+#
 # Patrick Ben Koetter <p@state-of-mind.de>, 2010-2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.5\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
-"POT-Creation-Date: 2011-07-01 10:11+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-25 09:58+0200\n"
 "PO-Revision-Date: 2011-07-10 07:30+0000\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:81
+#: extensions/amavis_quarantine/static/js/quarantine.js:92
 msgid "Release this selection?"
 msgstr "Diese Auswahl freilassen?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:88
+#: extensions/amavis_quarantine/static/js/quarantine.js:99
 msgid "Delete this selection?"
 msgstr "Diese Auswahl löschen?"
 
@@ -69,5 +69,3 @@ msgstr "Einstellungen gespeichert"
 #: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Parameter gespeichert"
-
-

@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.8.5\n"
+"Project-Id-Version: modoboa-0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-30 21:26+0200\n"
+"POT-Creation-Date: 2011-08-25 09:58+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:81
+#: extensions/amavis_quarantine/static/js/quarantine.js:92
 msgid "Release this selection?"
 msgstr "Relâcher cette sélection?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:88
+#: extensions/amavis_quarantine/static/js/quarantine.js:99
 msgid "Delete this selection?"
 msgstr "Supprimer cette sélection?"
 
