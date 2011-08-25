@@ -208,6 +208,34 @@ requires a migration.
    Before executing a schema/data migration, I recommend that you make
    a copy of your existing database.
 
+0.8.6: Quarantine plugin refactoring (using Django's ORM)
+---------------------------------------------------------
+
+#. Just update your configuration if you are using the quarantine
+   plugin. Open *settings.py*, move the database configuration from
+   the ``DB_CONNECTIONS`` variable to the ``DATABASES`` variable, like
+   this::
+
+    DATABASES = {
+        "default" : {
+            # The default database configuration
+        },
+        #    ...
+        "amavis": {
+            "ENGINE" : "<your value>",
+            "HOST" : "<your value>",
+            "NAME" : "<your value>",
+            "USER" : "<your value>",
+            "PASSWORD" : "<your value>"
+        }
+    }
+
+#. Add the new following variable somewhere in the file::
+
+    DATABASE_ROUTERS = ["modoboa.extensions.amavis_quarantine.dbrouter.AmavisRouter"]
+
+#. Remove the deprecated ``DB_CONNECTIONS`` variable from *settings.py*.
+
 0.8.5: new "Sieve filters" plugin, improved admin app
 -----------------------------------------------------
 
@@ -817,16 +845,19 @@ quarantine. You can consult messages and/or release or delete them.
 
 First, you need to specify where the database that contains the
 quarantine is. Inside *settings.py*, add a new connection to the
-``DB_CONNECTIONS`` variable like this::
+``DATABASES`` variable like this::
 
-  DB_CONNECTIONS = {
-    "amavis_quarantine" : {"driver"   : "mysql",
-                            "host"     : "<your_host>",
-                            "dbname"   : "<amavis_dbname>",
-                            "login"    : "<user>",
-                            "password" : "<password>"}
-  }
-     
+  DATABASES = {
+    # Stuff before
+    #
+    "amavis": {
+      "ENGINE" : "<your value>",
+      "HOST" : "<your value>",
+      "NAME" : "<your value>",
+      "USER" : "<your value>",
+      "PASSWORD" : "<your value>"
+    }
+  }    
 
 Replace values between ``<>`` with yours.
 
