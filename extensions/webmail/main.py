@@ -2,7 +2,8 @@
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
-from modoboa.lib import events, parameters, static_url
+from modoboa.lib import events, parameters
+from modoboa.lib.webutils import static_url
 
 def init():
     events.register("UserMenuDisplay", menu)

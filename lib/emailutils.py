@@ -7,7 +7,6 @@ import lxml
 from django.template import Template, Context
 from django.template.loader import render_to_string
 import u2u_decode
-from modoboa.lib import decode
 
 class EmailAddress(object):
     def __init__(self, address):
@@ -196,3 +195,17 @@ def split_mailbox(mailbox):
         domain = parts[-1]
         address = "@".join(parts[:-1])
     return (address, domain)
+
+def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=None):
+    if charset is not None:
+        try:
+            return s.decode(charset, 'ignore')
+        except LookupError:
+            pass
+
+    for encoding in encodings:
+        try:
+            return s.decode(encoding)
+        except UnicodeDecodeError:
+            pass
+    return s.decode('ascii', 'ignore')

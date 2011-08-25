@@ -17,9 +17,10 @@ from modoboa import admin, userprefs
 from models import *
 from admin.permissions import *
 from admin.tables import *
-from modoboa.lib import crypt_password
-from modoboa.lib import _render, ajax_response, ajax_simple_response, \
-    getctx, events, parameters
+from modoboa.lib import events, parameters
+from modoboa.auth.lib import crypt_password
+from modoboa.lib.webutils \
+    import _render, ajax_response, ajax_simple_response, getctx
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.models import Parameter
 import copy

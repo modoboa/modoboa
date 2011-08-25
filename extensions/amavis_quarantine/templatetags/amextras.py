@@ -3,7 +3,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from modoboa.lib import static_url
+from modoboa.lib.webutils import static_url
 from modoboa.extensions import amavis_quarantine
 from modoboa.admin.lib import is_domain_admin
 

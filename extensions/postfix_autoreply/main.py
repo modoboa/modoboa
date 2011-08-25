@@ -10,7 +10,8 @@ functionality into Postfix.
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from modoboa.lib import events, parameters, static_url
+from modoboa.lib import events, parameters
+from modoboa.lib.webutils import static_url
 from models import *
 
 def infos():

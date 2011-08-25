@@ -3,7 +3,7 @@
 import datetime
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User, Group
-from modoboa.lib import _render, getctx, _render_to_string
+from modoboa.lib.webutils import _render, getctx, _render_to_string
 from forms import *
 
 class Permissions(object):

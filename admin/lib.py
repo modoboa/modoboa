@@ -1,7 +1,26 @@
 # coding: utf-8
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User, Group
+from django.utils.translation import ugettext as _
 from models import *
+from modoboa.lib.webutils import _render_error
+
+def is_not_localadmin(errortpl="error"):
+    def dec(f):
+        def wrapped_f(request, *args, **kwargs):
+            if request.user.id == 1:
+                return _render_error(request, errortpl, {
+                        "error" : _("Invalid action, %(user)s is a local user" \
+                                        % {"user" : request.user.username})
+                        })
+            return f(request, *args, **kwargs)
+
+        wrapped_f.__name__ = f.__name__
+        wrapped_f.__dict__ = f.__dict__
+        wrapped_f.__doc__ = f.__doc__
+        wrapped_f.__module__ = f.__module__
+        return wrapped_f
+    return dec
 
 def is_domain_admin(user):
     """Tell if a user is administrator for a domain of not

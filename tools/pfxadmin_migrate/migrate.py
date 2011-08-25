@@ -48,7 +48,7 @@ from django.db.models import Q
 from django.contrib.auth.models import Group
 import modoboa.admin.models as md_models
 import models as pf_models
-from modoboa.lib import exec_cmd
+from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.emailutils import split_mailbox
 
 def migrate_dates(oldobj):

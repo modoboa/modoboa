@@ -4,12 +4,12 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators \
     import login_required, user_passes_test
 from django.utils.translation import ugettext as _
-from modoboa.lib import _render, ajax_response, parameters
-from modoboa.lib import crypt_password
+from modoboa.lib import parameters
+from modoboa.lib.webutils import _render, ajax_response
 from forms import *
 from modoboa.admin.models import Mailbox, Alias
 from modoboa.admin.lib import is_domain_admin
-from modoboa.auth.lib import encrypt
+from modoboa.auth.lib import encrypt, crypt_password
 
 @login_required
 def index(request):

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from modoboa.admin.models import Mailbox
-from modoboa.lib import _check_password
+from modoboa.auth.lib import _check_password
 
 class SimpleBackend:
 

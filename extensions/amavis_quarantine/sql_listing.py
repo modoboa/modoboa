@@ -3,7 +3,8 @@
 from datetime import datetime
 from django.utils.translation import ugettext as _
 from django.db.models import Q
-from modoboa.lib import tables, static_url
+from modoboa.lib import tables
+from modoboa.lib.webutils import static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
 from modoboa.admin.lib import is_domain_admin

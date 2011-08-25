@@ -9,13 +9,14 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required
 from django.db.models import Q
-from modoboa.lib import parameters, _render, getctx, ajax_response
+from modoboa.lib import parameters
+from modoboa.lib.webutils import _render, getctx, ajax_response
 from modoboa.admin.models import Mailbox
 from lib import AMrelease
 from templatetags.amextras import *
 from modoboa.lib.email_listing import parse_search_parameters
 from sql_listing import *
-from admin.lib import is_domain_admin
+from modoboa.admin.lib import is_domain_admin
 
 def __get_current_url(request):
     if request.session.has_key("page"):

@@ -3,7 +3,8 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa import admin
-from modoboa.lib import events, static_url, render_actions
+from modoboa.lib import events
+from modoboa.lib.webutils import static_url, render_actions
 
 register = template.Library()
 

@@ -3,7 +3,7 @@ import os
 from django.conf import settings
 from django import template
 from django.contrib import messages
-from modoboa.lib import exec_cmd
+from modoboa.lib.sysutils import exec_cmd
 
 register = template.Library()
 

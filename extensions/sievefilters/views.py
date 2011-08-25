@@ -4,8 +4,10 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from modoboa.lib import _render, _render_to_string, _render_error, \
-    ajax_response, ajax_simple_response, is_not_localadmin, parameters
+from modoboa.lib import parameters
+from modoboa.lib.webutils import _render, _render_to_string, _render_error, \
+    ajax_response, ajax_simple_response
+from modoboa.admin.lib import is_not_localadmin
 from modoboa.lib.connections import ConnectionError
 from modoboa.auth.lib import get_password
 from lib import *

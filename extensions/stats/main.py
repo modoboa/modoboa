@@ -10,7 +10,8 @@ sent, received, bounced, rejected
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf.urls.defaults import *
-from modoboa.lib import events, parameters, static_url
+from modoboa.lib import events, parameters
+from modoboa.lib.webutils import static_url
 
 def infos():
     return {

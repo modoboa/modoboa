@@ -5,8 +5,9 @@ from django.utils.translation import ugettext as _
 from django.dispatch import receiver
 from django.conf import settings
 from modoboa.lib import parameters
-from modoboa.lib import exec_cmd, exec_as_vuser, crypt_password
+from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
+from modoboa.auth.lib import crypt_password
 import os
 import pwd
 

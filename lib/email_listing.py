@@ -9,7 +9,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.template import Template, Context
 from django.utils.translation import ugettext as _
-from modoboa.lib import _render, decode
+from modoboa.lib.webutils import _render
+from modoboa.lib.emailutils import decode
 
 attached_map = {}
 

@@ -5,7 +5,8 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from modoboa.extensions import webmail
 from modoboa.extensions.webmail.lib import IMAPheader
-from modoboa.lib import parameters, static_url
+from modoboa.lib import parameters
+from modoboa.lib.webutils import static_url
 
 register = template.Library()
 

@@ -10,11 +10,12 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from modoboa.admin.models import Mailbox
-from modoboa.lib import parameters, _render, _render_error, \
-    getctx, is_not_localadmin, _render_to_string, \
-    ajax_response
+from modoboa.lib import parameters
+from modoboa.lib.webutils import _render, _render_error, \
+    getctx, _render_to_string, ajax_response
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.email_listing import parse_search_parameters, Paginator
+from modoboa.admin.lib import is_not_localadmin
 from modoboa.auth.lib import *
 from lib import *
 from forms import *

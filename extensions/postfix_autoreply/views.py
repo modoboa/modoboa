@@ -7,7 +7,8 @@ from django.contrib.auth.decorators \
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from modoboa.lib import _render, ajax_response, is_not_localadmin
+from modoboa.lib.webutils import _render, ajax_response
+from modoboa.admin.lib import is_not_localadmin
 from forms import *
 from models import *
 

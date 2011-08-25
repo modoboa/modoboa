@@ -6,6 +6,6 @@ class Parameter(models.Model):
     value = models.CharField(max_length=255)
 
 class UserParameter(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey("auth.User")
     name = models.CharField(max_length=255)
     value = models.CharField(max_length=255)

@@ -3,7 +3,6 @@
 import string
 import inspect
 import re
-from modoboa.lib.models import *
 
 """
 This interface provides a simple way to declare and store parameters
@@ -76,6 +75,8 @@ def unregister_app(app):
     return True
 
 def save_admin(name, value, app=None):
+    from models import Parameter
+
     if app is None:
         app = __guess_extension()
     __is_defined(app, 'A', name)
@@ -91,6 +92,8 @@ def save_admin(name, value, app=None):
     return True
 
 def save_user(user, name, value, app=None):
+    from models import UserParameter
+
     if app is None:
         app = __guess_extension()
     __is_defined(app, 'U', name)
@@ -107,6 +110,8 @@ def save_user(user, name, value, app=None):
     return True
 
 def get_admin(name, app=None):
+    from models import Parameter
+
     if app is None:
         app = __guess_extension()
     __is_defined(app, "A", name)
@@ -117,6 +122,8 @@ def get_admin(name, app=None):
     return p.value.decode("string_escape")
 
 def get_user(user, name, app=None):
+    from models import UserParameter
+
     if app is None:
         app = __guess_extension()
     __is_defined(app, "U", name)

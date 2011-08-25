@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from modoboa.lib import ajax_response
+from modoboa.lib.webutils import ajax_response
 from modoboa.extensions.webmail.lib import WebmailError
 
 class WebmailErrorMiddleware(object):
