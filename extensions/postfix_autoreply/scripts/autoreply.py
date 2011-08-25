@@ -12,7 +12,8 @@ from modoboa.extensions.postfix_autoreply import main
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
 
 def send_autoreply(sender, mailbox, armessage):
-    if armessage.untildate < datetime.datetime.now():
+    if armessage.untildate is not None \
+            and armessage.untildate < datetime.datetime.now():
         armessage.enabled = False
         armessage.save()
         return
@@ -32,12 +33,12 @@ def send_autoreply(sender, mailbox, armessage):
 
     msg = MIMEText(armessage.content.encode('utf-8'), _charset='utf-8')
     msg['Subject'] = armessage.subject
-    msg['From'] = mailbox
+    msg['From'] = mailbox.full_address
     msg['To'] = sender
     
     s = smtplib.SMTP()
     s.connect()
-    s.sendmail(mailbox, sender, msg.as_string())
+    s.sendmail(mailbox.full_address, sender, msg.as_string())
     s.quit()
     
     lastar.last_sent = datetime.datetime.now()
