@@ -7,7 +7,7 @@ from modoboa.lib.webutils import render_actions
 
 register = template.Library()
 
-from modoboa.lib import static_url
+from modoboa.lib.webutils import static_url
 
 @register.simple_tag
 def sfilters_menu(user):
