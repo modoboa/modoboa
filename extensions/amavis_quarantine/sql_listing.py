@@ -22,7 +22,7 @@ class Qtable(tables.Table):
     time = tables.Column("date", label=_("Date"))
     to = tables.Column("to", label=_("To"), sortable=False)
 
-    cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']
+    cols_order = []
 
     def parse_date(self, value):
         return datetime.fromtimestamp(value)
@@ -84,10 +84,9 @@ class SQLlisting(EmailListing):
 
     def __init__(self, user, msgs, filter, **kwargs):
         if not user.is_superuser and not is_domain_admin(user):
-            try:
-                Qtable.cols_order.remove('to')
-            except ValueError:
-                pass
+            Qtable.cols_order = ['type', 'rstatus', 'from_', 'subject', 'time']
+        else:
+            Qtable.cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']
         self.mbc = SQLconnector(msgs, filter)
         
         super(SQLlisting, self).__init__(**kwargs)
