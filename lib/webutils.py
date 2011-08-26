@@ -62,7 +62,7 @@ def getctx(status, level=1, callback=None, **kwargs):
     return ctx
 
 def ajax_response(request, status="ok", respmsg=None,
-                  url="", ajaxnav=False, norefresh=False, 
+                  url=None, ajaxnav=False, norefresh=False, 
                   template=None, **kwargs):
     """Ajax response shortcut
 
@@ -70,9 +70,12 @@ def ajax_response(request, status="ok", respmsg=None,
     provided, a 'content' field will be added to the response,
     containing the result of this template rendering.
 
-    :param request: a request object
+    :param request: a Request object
     :param status: the response status ('ok' or 'ko)
-    :param nexturl: url to display after receiving this response
+    :param respmsg: the message that will displayed in the interface
+    :param url: url to display after receiving this response
+    :param ajaxnav:
+    :param norefresh: do not refresh the page after receiving this response
     :param template: eventual template's path
     :param kwargs: dict used for template rendering
     """
@@ -90,7 +93,7 @@ def ajax_response(request, status="ok", respmsg=None,
         jsonctx["respmsg"] = respmsg
     if ajaxnav:
         jsonctx["ajaxnav"] = True
-    if url != "":
+    if url is not None:
         jsonctx["url"] = url
     jsonctx["norefresh"] = norefresh
     return HttpResponse(simplejson.dumps(jsonctx), mimetype="application/json")
