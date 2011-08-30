@@ -2,7 +2,6 @@
 from django.db import models, IntegrityError
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
-from django.dispatch import receiver
 from django.conf import settings
 from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
@@ -432,7 +431,6 @@ class Extension(models.Model):
 try:
     from django_auth_ldap.backend import populate_user
 
-    @receiver(populate_user, dispatch_uid="myuid")
     def populate_callback(sender, user=None, **kwargs):
         if user is None:
             return
@@ -450,6 +448,8 @@ try:
         except Mailbox.DoesNotExist:
             mb = Mailbox()
             mb.save_from_user(localpart, domain, user)
+
+    populate_user.connect(populate_callback, dispatch_uid="myuid")
 
 except ImportError, inst:
     pass

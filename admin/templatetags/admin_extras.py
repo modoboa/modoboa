@@ -188,7 +188,7 @@ def mailbox_actions(user, mboxid):
 
 @register.simple_tag
 def mbalias_actions(user, aliasid):
-    from admin.models import Alias
+    from modoboa.admin.models import Alias
 
     alias = Alias.objects.get(pk=aliasid)
     if alias.ui_disabled(user):

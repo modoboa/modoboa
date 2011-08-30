@@ -15,8 +15,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from lib import *
 from modoboa import admin, userprefs
 from models import *
-from admin.permissions import *
-from admin.tables import *
+from modoboa.admin.permissions import *
+from modoboa.admin.tables import *
 from modoboa.lib import events, parameters
 from modoboa.auth.lib import crypt_password
 from modoboa.lib.webutils \
