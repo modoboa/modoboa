@@ -208,6 +208,17 @@ requires a migration.
    Before executing a schema/data migration, I recommend that you make
    a copy of your existing database.
 
+0.8.6.1: maintenance release
+----------------------------
+
+#. If you have tried to create a new mailbox and if you have
+   encountered the following `issue
+   <http://dev.modoboa.org/ticket/163>`_, you must run the
+   ``dbcleanup.py`` script in order to remove orphan records::
+
+    $ cd <modoboa_dir>
+    $ PYTHONPATH=$PWD/.. DJANGO_SETTINGS_MODULE=modoboa.settings ./admin/scripts/dbcleanup.py
+
 0.8.6: Quarantine plugin refactoring (using Django's ORM)
 ---------------------------------------------------------
 
