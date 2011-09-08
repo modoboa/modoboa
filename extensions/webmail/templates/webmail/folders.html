@@ -3,7 +3,7 @@
 {% if titlebar %}
 <div class="boxtitle">
   <a href="{% url extensions.webmail.views.newfolder %}" class="boxed"
-     rel="{handler: 'iframe', size: {x: 350, y: 400}}">
+     rel="{handler: 'iframe', size: {x: 350, y: 400}, closeBtn: true}">
     <img src="{{MEDIA_URL}}pics/add.png"
          alt="{% trans 'Add a new folder' %}"/>
   </a>

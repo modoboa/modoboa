@@ -1,5 +1,10 @@
 from django.conf.urls.defaults import *
 
+#
+# FIXME: there is a big issue with this url mapping. If a folder's
+# name matches one of the first entries (from "compose" to
+# "attachments"), the associated folder will not be accessible.
+#
 urlpatterns = patterns('modoboa.extensions.webmail.views',
                        (r'^$', "index"),
                        (r'^compose/$', "compose"),
@@ -10,6 +15,10 @@ urlpatterns = patterns('modoboa.extensions.webmail.views',
                        (r'^newfolder/$', "newfolder"),
                        (r'^editfolder/$', 'editfolder'),
                        (r'^delfolder/$', 'delfolder'),
+
+                       (r'^attachments/$', 'attachments'),
+                       (r'^delattachment/$', 'delattachment'),
+
                        (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/part/$', 'getattachment'),
                        (r'^(?P<fdname>.+)/(?P<mail_id>[\w\-\+]+)/delete/$', 'delete'),
                        (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/content/$', 'getmailcontent'),

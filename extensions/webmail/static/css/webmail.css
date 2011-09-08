@@ -12,6 +12,29 @@ html > body #listing {
     bottom: 35px;
 }
 
+.clearfix:after {
+   content: ".";
+   display: block;
+   clear: both;
+   visibility: hidden;
+   overflow: hidden;
+   line-height: 0;
+   height: 0;
+}
+ 
+.clearfix {
+   display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+   display: block;
+}
+ 
+* html .clearfix {
+   height: 1%;
+   overflow: visible;
+}
+
 /*thead tr {
   position: relative;
   top: expression(offsetParent.scrollTop);
@@ -66,27 +89,63 @@ ul.visible {
 
 /* Compose mail page */
 #compose-container {
-    margin: 0 auto;
-    width: 100%;
+    /*margin: 0 auto;*/
+    /*width: 100%;*/
+    position: absolute;
+    left: 0px;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+}
+
+#attachments {
+    position: relative;
+    border: 1px solid #cccccc;
+    background-color: #eee;
+    margin-bottom: 5px;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+#attachments img {
+    float: left;
+}
+
+#list {
+    position: absolute;
+    top: 5px;
+    left: 130px;
+    font-weight: bold;
+}
+
+.shortlist {
+    font-weight: normal !important;
+    font-style: italic;
 }
 
 div.row {
-    margin: 3px;
-    clear: both;
+    width: 100%;
+    height: 40px;
+    margin: 5px 0;
 }
 
 div.row label {
-    float: left;
     width: 120px;
     font-size: small;
     padding: 3px 0;
 }
 
+div.input_container {
+    position: absolute;
+    left: 130px;
+    right: 0;
+}
+
 textarea {
     border: 1px solid #cccccc;
     background-color: #eee;
-    width: 80%;
-    height: 30px;
+    width: 100%;
+    height: 40px;
     word-wrap: break-word;
 }
 
@@ -96,15 +155,22 @@ textarea:hover {
 
 #id_body {
     background: white;
-    width: 98%;
+    /*width: 98%;*/
+    position: absolute;
+    left: 0;
+    right: 10px;
 }
 
 #mailheader input {
-    width: 80%;
+    width: 100%;
     padding: 0;
+    height: 20px;
+    clear: both;
+
 }
 
 #mailheader {
+    position: relative;
     padding-bottom: 5px;
 }
 

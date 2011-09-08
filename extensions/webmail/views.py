@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 import sys
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.utils import simplejson
@@ -20,13 +20,6 @@ from modoboa.auth.lib import *
 from lib import *
 from forms import *
 from templatetags.webextras import *
-
-def __get_current_url(request):
-    res = "%s?page=%s" % (request.session["folder"], request.session["page"])
-    for p in ["criteria", "pattern", "order"]:
-        if p in request.session.keys():
-            res += "&%s=%s" % (p, request.session[p])
-    return res
 
 def __render_common_components(request, folder_name, lst=None, content=None, menu=None):
     """Render all components that are common to all pages in the webmail
@@ -153,7 +146,7 @@ def viewmail(request, folder, mail_id=None):
     content = Template("""
 <iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url" : url}))
-    menu = viewm_menu("", __get_current_url(request), folder, mail_id,
+    menu = viewm_menu("", get_current_url(request), folder, mail_id,
                       request.user.get_all_permissions())
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
@@ -230,7 +223,7 @@ def delete(request, fdname, mail_id):
     mbc = IMAPconnector(user=request.user.username,
                         password=request.session["password"])
     mbc.move(mail_id, fdname, parameters.get_user(request.user, "TRASH_FOLDER"))
-    ctx = getctx("ok", next=__get_current_url(request))
+    ctx = getctx("ok", next=get_current_url(request))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
@@ -264,7 +257,7 @@ def compact(request, name):
     return folder(request, name, False)
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):
-    menu = compose_menu("", __get_current_url(request), 
+    menu = compose_menu("", get_current_url(request), 
                         request.user.get_all_permissions())
     editor = parameters.get_user(request.user, "EDITOR")
     if email is None:
@@ -276,121 +269,43 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
     if insert_signature:
         signature = EmailSignature(request.user)
         body += str(signature)
+    randid = None
+    if not request.GET.has_key("id"):
+        if request.session.has_key("compose_mail"):
+            clean_attachments(request.session["compose_mail"]["attachments"])
+        randid = set_compose_session(request)
+    elif not request.session.has_key("compose_mail") \
+            or request.session["compose_mail"]["id"] != request.GET["id"]:
+        randid = set_compose_session(request)
 
+    attachments = request.session["compose_mail"]["attachments"]
+    if len(attachments):
+        short_att_list = "(%s)" \
+            % ", ".join(map(lambda att: att["fname"], 
+                            attachments[:2] + [{"fname" : "..."}] \
+                                if len(attachments) > 2 else attachments))
+    else:
+        short_att_list = ""
     content = _render_to_string(request, "webmail/compose.html", {
             "form" : form, "bodyheader" : textheader,
-            "body" : body, "posturl" : posturl
+            "body" : body, "posturl" : posturl,
+            "attachments" : attachments, "short_att_list" : short_att_list
             })
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
     ctx = getctx("ok", level=2, editor=editor, 
                  **__render_common_components(request, request.session["folder"], 
                                               menu=menu, content=content))
+    if randid is not None:
+        ctx["id"] = randid
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-
-def __html2plaintext(content):
-    """HTML to plain text translation
-
-    :param content: some HTML content
-    """
-    html = lxml.html.fromstring(content)
-    plaintext = ""
-    for ch in html.iter():
-        p = None
-        if ch.text is not None:
-            p = ch.text.strip('\r\t\n')
-        if ch.tag == "img":
-            p = ch.get("alt")
-        if p is None:
-            continue
-        plaintext += p + "\n"
-        
-    return plaintext
-    
-def send_mail(request, withctx=False, origmsg=None, posturl=None):
-    form = ComposeMailForm(request.POST)
-    error = None
-    ctx = None
-    editormode = parameters.get_user(request.user, "EDITOR")
-    if form.is_valid():
-        from email.mime.text import MIMEText
-        from email.utils import make_msgid, formatdate
-        import smtplib
-
-        body = request.POST["id_body"]
-        charset = "utf-8"
-        if editormode == "html":
-            from email.mime.multipart import MIMEMultipart
-
-            msg = MIMEMultipart(_subtype="related")
-            submsg = MIMEMultipart(_subtype="alternative")
-            textbody = __html2plaintext(body)
-            submsg.attach(MIMEText(textbody.encode(charset),
-                                   _subtype="plain", _charset=charset))
-            body, images = find_images_in_body(body)
-            submsg.attach(MIMEText(body.encode(charset), _subtype=editormode, 
-                                   _charset=charset))
-            msg.attach(submsg)
-            for img in images:
-                msg.attach(img)
-        else:
-            msg = MIMEText(body.encode(charset), _subtype=editormode)
-
-        msg["Subject"] = request.POST["subject"]
-        address, domain = split_mailbox(request.POST["from_"])
-        try:
-            mb = Mailbox.objects.get(address=address, domain__name=domain)
-            msg["From"] = "%s <%s>" % (mb.name, request.POST["from_"])
-        except Mailbox.DoesNotExist:
-            msg["From"] = request.POST["from_"]
-        msg["To"] = request.POST["to"]
-        msg["Message-ID"] = make_msgid()
-        msg["User-Agent"] = "Modoboa"
-        msg["Date"] = formatdate(time.time(), True)
-        if origmsg and origmsg.has_key("Message-ID"):
-            msg["References"] = msg["In-Reply-To"] = origmsg["Message-ID"]
-        rcpts = msg['To'].split(',')
-        if "cc" in request.POST.keys():
-            msg["Cc"] = request.POST["cc"]
-            rcpts += msg["Cc"].split(",")
-        error = None
-        try:
-            secmode = parameters.get_admin("SMTP_SECURED_MODE")
-            if secmode == "ssl":
-                s = smtplib.SMTP_SSL(parameters.get_admin("SMTP_SERVER"),
-                                     int(parameters.get_admin("SMTP_PORT")))
-            else:
-                s = smtplib.SMTP(parameters.get_admin("SMTP_SERVER"),
-                                 int(parameters.get_admin("SMTP_PORT")))
-                if secmode == "starttls":
-                    s.starttls()
-        except Exception, text:
-            error = str(text)
-        if error is None:
-            if parameters.get_admin("SMTP_AUTHENTICATION") == "yes":
-                s.login(request.user.username, get_password(request))
-            s.sendmail(msg['From'], rcpts, msg.as_string())
-            s.quit()
-            sentfolder = parameters.get_user(request.user, "SENT_FOLDER")
-            IMAPconnector(user=request.user.username,
-                          password=request.session["password"]).push_mail(sentfolder, msg)
-            ctx = getctx("ok", url=__get_current_url(request))
-
-    if ctx is None:
-        listing = render_to_string("webmail/compose.html", 
-                                   {"form" : form, 
-                                    "body" : request.POST["id_body"].strip(),
-                                    "posturl" : posturl})
-        ctx = getctx("ko", level=2, error=error, listing=listing, editor=editormode)
-    if not withctx:
-        return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-    return ctx, HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 @is_not_localadmin()
 def compose(request):
     if request.method == "POST":
-        return send_mail(request, posturl=reverse(compose))
+        status, resp = send_mail(request, posturl=reverse(compose))
+        return resp
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
@@ -401,13 +316,13 @@ def compose(request):
 def reply(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if request.method == "POST":
-        ctx, r = send_mail(request, True, origmsg=msg, 
-                           posturl=reverse(reply, args=[folder, mail_id]))
-        if ctx["status"] == "ok":
+        status, resp = send_mail(request, origmsg=msg, 
+                                 posturl=reverse(reply, args=[folder, mail_id]))
+        if status:
             IMAPconnector(user=request.user.username,
                           password=request.session["password"]).msg_answered(folder,
                                                                              mail_id)
-        return r
+        return resp
 
     form = ComposeMailForm()    
     email = ReplyModifier(msg, request.user, form, request.GET.has_key("all"),
@@ -419,9 +334,9 @@ def reply(request, folder, mail_id):
 @is_not_localadmin()
 def forward(request, folder, mail_id):
     if request.method == "POST":
-        ctx, response = send_mail(request, True, 
-                                  posturl=reverse(forward, args=[folder, mail_id]))
-        if ctx["status"] == "ok":
+        status, response = send_mail(request,
+                                     posturl=reverse(forward, args=[folder, mail_id]))
+        if status:
             IMAPconnector(user=request.user.username,
                           password=request.session["password"]).msgforwarded(folder,
                                                                              mail_id)
@@ -523,3 +438,62 @@ def delfolder(request):
                         password=request.session["password"])
     mbc.delete_folder(request.GET["name"])
     return ajax_response(request)
+
+@login_required
+@is_not_localadmin()
+def attachments(request, tplname="webmail/attachments.html"):
+    if request.method == "POST":
+        csuploader = AttachmentUploadHandler()
+        request.upload_handlers.insert(0, csuploader)
+        error = None
+        form = AttachmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                fobj = request.FILES["attachment"]
+                tmpname = save_attachment(fobj)
+                request.session["compose_mail"]["attachments"] \
+                    += [{"fname" : str(fobj), 
+                         "content-type" : fobj.content_type,
+                         "size" : fobj.size,
+                         "tmpname" : os.path.basename(tmpname)}]
+                request.session.modified = True
+                return _render(request, "webmail/upload_done.html", {
+                        "status" : "ok", "fname" : request.FILES["attachment"],
+                        "tmpname" : os.path.basename(tmpname)
+                        });
+            except WebmailError, inst:
+                error = _("Failed to save attachment: ") + str(inst)
+
+        if csuploader.toobig:
+            error = _("Attachment is too big (limit: %s)" \
+                          % parameters.get_admin("MAX_ATTACHMENT_SIZE"))
+        return _render(request, "webmail/upload_done.html", {
+                "status" : "ko", "error" : error
+                });
+    ctx = {"form" : AttachmentForm(), 
+           "attachments" : request.session["compose_mail"]["attachments"]}
+    return _render(request, tplname, ctx)
+
+@login_required
+@is_not_localadmin()
+def delattachment(request):
+    if not request.session.has_key("compose_mail") \
+            or not request.GET.has_key("name") \
+            or not request.GET["name"]:
+        return ajax_response(request, "ko", respmsg=_("Bad query"))
+
+    error = None
+    for att in request.session["compose_mail"]["attachments"]:
+        if att["tmpname"] == request.GET["name"]:
+            request.session["compose_mail"]["attachments"].remove(att)
+            fullpath = os.path.join(settings.MEDIA_ROOT, "tmp", att["tmpname"])
+            try:
+                os.remove(fullpath)
+            except OSError, e:
+                error = _("Failed to remove attachment: ") + str(e)
+                break
+            request.session.modified = True
+            return ajax_response(request)
+    if error is None:
+        error = _("Unknown attachment")
+    return ajax_response(request, "ko", respmsg=error)

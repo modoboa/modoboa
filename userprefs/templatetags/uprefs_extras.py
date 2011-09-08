@@ -22,7 +22,7 @@ def options_menu(user):
                  "img" : static_url("pics/edit.png"),
                  "label" : _("Change password"),
                  "class" : "boxed",
-                 "rel" : "{handler:'iframe',size:{x:360,y:200}}"},
+                 "rel" : "{handler:'iframe',size:{x:360,y:200},closeBtn:true}"},
                 {"name" : "preferences",
                  "img" : static_url("pics/user.png"),
                  "label" : _("Preferences"),
@@ -38,7 +38,7 @@ def options_menu(user):
             "img" : static_url("pics/alias.png"),
             "label" : _("Forward"),
             "class" : "boxed",
-            "rel" : "{handler:'iframe',size:{x:360,y:320}}"
+            "rel" : "{handler:'iframe',size:{x:360,y:320},closeBtn:true}"
             }]
 
     entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", 

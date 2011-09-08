@@ -33,7 +33,8 @@ var FdMenu = new Class({
           evt.stop();
           SqueezeBox.open(evt.target.get("href"), {
             handler: "iframe",
-            size: {x: 350, y: 400}
+            size: {x: 350, y: 400},
+            closeBtn: true
           });
           $(document.body).fireEvent("click");
         });

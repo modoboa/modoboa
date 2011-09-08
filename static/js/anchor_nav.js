@@ -20,6 +20,7 @@ var AnchorNavigation = new Class({
         this.params = $H();
         this.base = '';
         this.serialized = null;
+        this.updatenext = true;
         this.reset_loading_infos();
         if (this.options.defcallback) {
             this.register_callback("default", this.options.defcallback);
@@ -83,11 +84,19 @@ var AnchorNavigation = new Class({
         return res;
     },
 
-    update: function(force) {
+    update: function(force, noupdate) {
         window.fireEvent("pageRefresh");
         location.hash = this.serialize();
-        if ($defined(force)) {
-            this.force = force;
+
+        if (!$defined(noupdate)) {
+            noupdate = false;
+        }
+        if (!noupdate) {
+            if ($defined(force)) {
+                this.force = force;
+            }
+        } else {
+            this.updatenext = false;
         }
     },
 
@@ -181,6 +190,10 @@ var AnchorNavigation = new Class({
         this.from_string(location.hash);
         if (!this.serialized) {
             location.hash = this.deflocation;
+            return;
+        }
+        if (!this.updatenext) {
+            this.updatenext = true;
             return;
         }
 

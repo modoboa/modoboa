@@ -9,3 +9,6 @@ class ComposeMailForm(forms.Form):
 
 class FolderForm(forms.Form):
     name = forms.CharField()
+
+class AttachmentForm(forms.Form):
+    attachment = forms.FileField(label="")

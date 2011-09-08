@@ -12,10 +12,12 @@ import ssl
 from datetime import datetime, timedelta
 import email
 import lxml
+from django.core.files.uploadhandler import FileUploadHandler, StopUpload, SkipFile
+from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from modoboa.lib import u2u_decode, tables, imap_utf7, parameters
-from modoboa.lib.webutils import static_url
+from modoboa.lib.webutils import static_url, size2integer
 from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
@@ -611,4 +613,225 @@ def find_images_in_body(body):
         parts.append(p)
         
     return lxml.html.tostring(html), parts
+
+def set_compose_session(request):
+    """Initialize a new "compose" session.
+
+    It is used to keep track of attachments defined with a new
+    message. Each new message will be associated with a unique ID (in
+    order to avoid conflicts between users).
+
+    :param request: a Request object.
+    :return: the new unique ID.
+    """
+    import uuid
+    randid = str(uuid.uuid4()).replace("-", "")
+    request.session["compose_mail"] = {"id" : randid, "attachments" : []}
+    return randid
+
+def save_attachment(f):
+    """Save a new attachment to the filesystem.
+
+    The attachment is not saved using its own name to the
+    filesystem. To avoid conflicts, a random name is generated and
+    used instead.
+
+    :param f: an uploaded file object (see Django's documentation)
+    :return: the new random name
+    """
+    from tempfile import NamedTemporaryFile
+
+    dstdir = os.path.join(settings.MEDIA_ROOT, "tmp")
+    try:
+        fp = NamedTemporaryFile(dir=dstdir, delete=False)
+    except Exception, e:
+        raise WebmailError(str(e))
+    for chunk in f.chunks():
+        fp.write(chunk)
+    fp.close()
+    return fp.name
+
+def clean_attachments(attlist):
+    """Remove all attachments from the filesystem
+
+    :param attlist: a list of 2-uple. Each element must contain the following information :
+                    (random name, real name).
+    """
+    for att in attlist:
+        fullpath = os.path.join(settings.MEDIA_ROOT, "tmp", att["tmpname"])
+        try:
+            os.remove(fullpath)
+        except OSError, e:
+            pass
+
+def html2plaintext(content):
+    """HTML to plain text translation
+
+    :param content: some HTML content
+    """
+    html = lxml.html.fromstring(content)
+    plaintext = ""
+    for ch in html.iter():
+        p = None
+        if ch.text is not None:
+            p = ch.text.strip('\r\t\n')
+        if ch.tag == "img":
+            p = ch.get("alt")
+        if p is None:
+            continue
+        plaintext += p + "\n"
+        
+    return plaintext
+
+def get_current_url(request):
+    res = "%s?page=%s" % (request.session["folder"], request.session["page"])
+    for p in ["criteria", "pattern", "order"]:
+        if p in request.session.keys():
+            res += "&%s=%s" % (p, request.session[p])
+    return res
+
+def create_mail_attachment(attdef):
+    """Create the MIME part corresponding to the given attachment.
+
+    Mandatory keys: 'fname', 'tmpname', 'content-type'
+
+    :param attdef: a dictionary containing the attachment definition
+    :return: a MIMEBase object
+    """
+    from email import Encoders
+    from email.mime.base import MIMEBase
+
+    maintype, subtype = attdef["content-type"].split("/")
+    res = MIMEBase(maintype, subtype)
+    fp = open(os.path.join(settings.MEDIA_ROOT, "tmp", attdef["tmpname"]), "rb")
+    res.set_payload(fp.read())
+    fp.close()
+    Encoders.encode_base64(res)
+    res.add_header("Content-Disposition", "attachment; filename='%s'" % attdef["fname"])
+    return res
+
+def send_mail(request, origmsg=None, posturl=None):
+    """Email verification and sending.
+
+    If the form does not present any error, a new MIME message is
+    constructed. Then, a connection is established with the defined
+    SMTP server and the message is finally sent.
+
+    :param request: a Request object
+    :param origmsg: the eventual original message (in case of a reply)
+    :param posturl: the url to post the message form to
+    :return: a 2-uple (True|False, HttpResponse)
+    """
+    from email.mime.multipart import MIMEMultipart
+    from forms import ComposeMailForm
+    from modoboa.lib.webutils import getctx, ajax_simple_response
+    from modoboa.admin.models import Mailbox
+    from modoboa.auth.lib import get_password
+
+    form = ComposeMailForm(request.POST)
+    editormode = parameters.get_user(request.user, "EDITOR")
+    if form.is_valid():
+        from email.mime.text import MIMEText
+        from email.utils import make_msgid, formatdate
+        import smtplib
+
+        body = request.POST["id_body"]
+        charset = "utf-8"
+        if editormode == "html":
+            msg = MIMEMultipart(_subtype="related")
+            submsg = MIMEMultipart(_subtype="alternative")
+            textbody = html2plaintext(body)
+            submsg.attach(MIMEText(textbody.encode(charset),
+                                   _subtype="plain", _charset=charset))
+            body, images = find_images_in_body(body)
+            submsg.attach(MIMEText(body.encode(charset), _subtype=editormode, 
+                                   _charset=charset))
+            msg.attach(submsg)
+            for img in images:
+                msg.attach(img)
+        else:
+            text = MIMEText(body.encode(charset), _subtype=editormode)
+            if len(request.session["compose_mail"]["attachments"]):
+                msg = MIMEMultipart()
+                msg.attach(text)
+            else:
+                msg = text
+
+        for attdef in request.session["compose_mail"]["attachments"]:
+            msg.attach(create_mail_attachment(attdef))
+
+        msg["Subject"] = form.cleaned_data["subject"]
+        address, domain = split_mailbox(form.cleaned_data["from_"])
+        try:
+            mb = Mailbox.objects.get(address=address, domain__name=domain)
+            msg["From"] = "%s <%s>" % (mb.name, form.cleaned_data["from_"])
+        except Mailbox.DoesNotExist:
+            msg["From"] = form.cleaned_data["from_"]
+        msg["To"] = form.cleaned_data["to"]
+        msg["Message-ID"] = make_msgid()
+        msg["User-Agent"] = "Modoboa"
+        msg["Date"] = formatdate(time.time(), True)
+        if origmsg and origmsg.has_key("Message-ID"):
+            msg["References"] = msg["In-Reply-To"] = origmsg["Message-ID"]
+        rcpts = msg['To'].split(',')
+        if form.cleaned_data["cc"] != "":
+            msg["Cc"] = form.cleaned_data["cc"]
+            rcpts += msg["Cc"].split(",")
+
+        try:
+            secmode = parameters.get_admin("SMTP_SECURED_MODE")
+            if secmode == "ssl":
+                s = smtplib.SMTP_SSL(parameters.get_admin("SMTP_SERVER"),
+                                     int(parameters.get_admin("SMTP_PORT")))
+            else:
+                s = smtplib.SMTP(parameters.get_admin("SMTP_SERVER"),
+                                 int(parameters.get_admin("SMTP_PORT")))
+                if secmode == "starttls":
+                    s.starttls()
+        except Exception, text:
+            raise WebmailError(str(text))
+
+        if parameters.get_admin("SMTP_AUTHENTICATION") == "yes":
+            try:
+                s.login(request.user.username, get_password(request))
+            except smtplib.SMTPAuthenticationError, e:
+                raise WebmailError(str(e))
+        s.sendmail(msg['From'], rcpts, msg.as_string())
+        s.quit()
+        sentfolder = parameters.get_user(request.user, "SENT_FOLDER")
+        IMAPconnector(user=request.user.username,
+                      password=request.session["password"]).push_mail(sentfolder, msg)
+        clean_attachments(request.session["compose_mail"]["attachments"])
+        del request.session["compose_mail"]
+        return True, ajax_simple_response(getctx("ok", url=get_current_url(request)))
+
+
+    listing = render_to_string("webmail/compose.html", 
+                               {"form" : form, 
+                                "body" : request.POST["id_body"].strip(),
+                                "posturl" : posturl})
+    return False, ajax_simple_response(
+        getctx("ko", level=2, listing=listing, editor=editormode)
+        )
+
+class AttachmentUploadHandler(FileUploadHandler):
+    """
+    Simple upload handler to limit the size of the attachments users
+    can upload.
+    """
     
+    def __init__(self, request=None):
+        super(AttachmentUploadHandler, self).__init__(request)
+        self.total_upload = 0
+        self.toobig = False
+        self.maxsize = size2integer(parameters.get_admin("MAX_ATTACHMENT_SIZE"))
+        
+    def receive_data_chunk(self, raw_data, start):
+        self.total_upload += len(raw_data)
+        if self.total_upload >= self.maxsize:
+            self.toobig = True
+            raise SkipFile()
+        return raw_data
+    
+    def file_complete(self, file_size):
+        return None

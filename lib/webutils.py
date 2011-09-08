@@ -4,6 +4,7 @@
 This module contains extra functions/shortcuts used to render HTML.
 """
 import sys
+import re
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
@@ -115,3 +116,28 @@ def static_url(path):
     if path.startswith("/"):
         path = path[1:]
     return "%s%s" % (settings.MEDIA_URL, path)
+
+def size2integer(value):
+    """Try to convert a string representing a size to an integer value
+    in bytes.
+
+    Supported formats: 
+    * K|k for KB
+    * M|m for MB
+    * G|g for GB
+
+    :param value: the string to convert
+    :return: the corresponding integer value
+    """
+    m = re.match("(\d+)\s*(\w+)", value)
+    if m is None:
+        if re.match("\d+", value):
+            return int(value)
+        return 0
+    if m.group(2)[0] in ["K", "k"]:
+        return int(m.group(1)) * 2 ** 10
+    if m.group(2)[0] in ["M", "m"]:
+        return int(m.group(1)) * 2 ** 20
+    if m.group(2)[0] in ["G", "g"]:
+        return int(m.group(1)) * 2 ** 30
+    return 0

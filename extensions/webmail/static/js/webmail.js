@@ -87,6 +87,38 @@ function resize_window_callback(event) {
 }
 
 /*
+ * Callback of the 'sendmail' action.
+ */
+function sendmail_callback(evt) {
+    evt.stop();
+    infobox.show(gettext("Sending..."), {
+        profile : "gray",
+        spinner : true
+    });
+    disable_link(this);
+    $("composemail").set("send", {
+        onSuccess: function(resp) {
+            resp = JSON.decode(resp);
+            if (resp.status == "ko") {
+                current_anchor.get_callback("compose")(resp);
+                if ($defined(resp.respmsg)) {
+                    infobox.error(resp.respmsg);
+                }
+                enable_link(this, sendmail_callback);
+                return;
+            }
+            current_anchor.parse_string(resp.url, true).setparams(navparams);
+            current_anchor.update();
+            this.eliminate("editormode");
+        }.bind(this)
+    });
+    if (this.retrieve("editormode") == "html") {
+        CKEDITOR.instances[editorid].updateElement();
+    }
+    $("composemail").send();
+}
+
+/*
  * Callback of the 'compose' action
  */
 function compose_callback(resp) {
@@ -108,33 +140,24 @@ function compose_callback(resp) {
       height: $(editorid).getSize().y
     });
   }
+  if (resp.id) {
+      current_anchor.setparam("id", resp.id).update(0, 1);
+  }
+  $("attachments").addEvent("click", function(evt) {
+      SqueezeBox.open(this.get("name"), {
+          handler: "iframe",
+          size: {x: 350, y: 400},
+          closeBtn: false
+      });
+  });
+
   $$("a[name=back]")
     .removeEvents("click")
     .addEvent("click", loadFolder);
   $$("a[name=sendmail]")
+    .store("editormode", editormode)
     .removeEvents("click")
-    .addEvent("click", function(evt) {
-    evt.stop();
-    $("composemail").set("send", {
-      onSuccess: function(resp) {
-        resp = JSON.decode(resp);
-        if (resp.status == "ko") {
-          current_anchor.get_callback("compose")(resp);
-
-          if ($defined(resp.error)) {
-            infobox.error(resp.error);
-          }
-          return;
-        }
-        current_anchor.parse_string(resp.url, true).setparams(navparams);
-        current_anchor.update();
-      }
-    });
-    if (editormode == "html") {
-      CKEDITOR.instances[editorid].updateElement();
-    }
-    $("composemail").send();
-  });
+    .addEvent("click", sendmail_callback);
 }
 
 /*

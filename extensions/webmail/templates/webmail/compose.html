@@ -3,6 +3,20 @@
   <div id="compose-container">
     <div id="mailheader">
       {% include "common/genericform.html" %}
+      <div id="attachments" name="{% url extensions.webmail.views.attachments %}">
+        <div>
+          <img src="{{ MEDIA_URL }}pics/attachment.png" />
+          {% trans "Attachments" %}
+        </div>
+        <div id="list">
+          {% blocktrans count attachments|length as counter %}
+          {{ counter }} file
+          {% plural %}
+          {{ counter }} files
+          {% endblocktrans %}
+          <span class="shortlist">{{ short_att_list }}</span>
+        </div>
+      </div>
     </div>
     <div class="spacer"></div>
     {% if body %}

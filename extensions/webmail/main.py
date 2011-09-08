@@ -31,6 +31,8 @@ def init():
     parameters.register_admin("SMTP_AUTHENTICATION", type="list_yesno",
                               deflt="no",
                               help=_("Server needs authentication"))
+    parameters.register_admin("MAX_ATTACHMENT_SIZE", type="int", deflt=2048,
+                              help=_("Maximum attachment size in KB"))
    
 
     parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,

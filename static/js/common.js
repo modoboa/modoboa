@@ -26,6 +26,28 @@ function static_url(value) {
   return media_url + value;
 }
 
+/*
+ * Easy way to deactivate a link (ie. clicking on it does nothing)
+ */
+function disable_link(link) {
+    link.removeEvents("click")
+        .addEvent("click", function(evt) {
+            evt.stop();
+        });
+}
+
+/*
+ * Easy way to re-activate a link that was previously disabled. An
+ * extra argument can be passed to specify a new "click" event
+ * callback.
+ */
+function enable_link(link, callback) {
+    link.removeEvents("click");
+    if ($defined(callback)) {
+        link.addEvent("click", callback);
+    }
+}
+
 function parse_menubar(id) {
   if ($(id)) {
     $(id).getElements('li.dropdown').each(function(elem){

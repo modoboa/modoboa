@@ -88,7 +88,9 @@ var SqueezeBox = {
       }
     }
     this.content = new Element('div', {id: 'sbox-content'}).inject(this.win);
-    this.closeBtn = new Element('a', {id: 'sbox-btn-close', href: '#'}).inject(this.win);
+    if (this.options.closeBtn) {
+        this.closeBtn = new Element('a', {id: 'sbox-btn-close', href: '#'}).inject(this.win);
+    }
     this.fx = {
       overlay: new Fx.Tween(this.overlay, Object.merge({
         property: 'opacity',
@@ -155,6 +157,11 @@ var SqueezeBox = {
     this.overlay.set('class', this.options.classOverlay);
     this.win.set('class', this.options.classWindow);
     if (Browser.ie) this.win.addClass('sbox-window-ie6');
+    if (!this.options.closeBtn) {
+        this.closeBtn.dispose();
+    } else {
+        this.closeBtn.inject(this.win);
+    }
   },
 
   close: function(e) {
@@ -239,7 +246,9 @@ var SqueezeBox = {
 
   toggleListeners: function(state) {
     var fn = (state) ? 'addEvent' : 'removeEvent';
-    this.closeBtn[fn]('click', this.bound.close);
+    if (this.options.closeBtn) {
+        this.closeBtn[fn]('click', this.bound.close);
+    }
     this.overlay[fn]('click', this.bound.close);
     this.doc[fn]('keydown', this.bound.key)[fn]('mousewheel', this.bound.scroll);
     this.doc.getWindow()[fn]('resize', this.bound.window)[fn]('scroll', this.bound.window);

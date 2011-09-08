@@ -87,7 +87,7 @@ def save_admin(name, value, app=None):
         p = Parameter()
         p.name = fullname
     if p.value != value:
-        p.value = str(value).encode("string_escape")
+        p.value = str(value).encode("string_escape").strip()
         p.save()
     return True
 
@@ -105,7 +105,7 @@ def save_user(user, name, value, app=None):
         p.user = user
         p.name = fullname
     if p.value != value:
-        p.value = str(value).encode("string_escape")
+        p.value = str(value).encode("string_escape").strip()
         p.save()
     return True
 
