@@ -38,14 +38,12 @@ def viewm_menu(selection, backurl, mail_id, rcpt, perms):
          "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
              + "?rcpt=%s" % rcpt,
          "img" : static_url("pics/release.png"),
-         "label" : _("Release"),
-         "confirm" : _("Release this message?")},
+         "label" : _("Release")},
         {"name" : "delete",
          "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
              + "?rcpt=%s" % rcpt,
          "img" : static_url("pics/remove.png"),
-         "label" : _("Delete"),
-         "confirm" : _("Delete this message?")},
+         "label" : _("Delete")},
         {"name" : "options",
          "label" : _("Options"),
          "img" : static_url("pics/settings.png"),

@@ -30,11 +30,26 @@ function actioncallback(resp) {
 }
 
 function actionclick(evt) {
-  evt.stop();
   new Request.JSON({
       url: evt.target.get("href"),
       onSuccess: actioncallback
   }).get();
+}
+
+function deleteclick(evt) {
+    evt.stop();
+    if (!confirm(gettext("Delete this message?"))) {
+        return false;
+    }
+    actionclick(evt);
+}
+
+function releaseclick(evt) {
+    evt.stop();
+    if (!confirm(gettext("Release this message?"))) {
+        return false;
+    }
+    actionclick(evt);
 }
 
 function viewmail_cs(evt) {
@@ -114,8 +129,8 @@ function listing_cb(resp) {
 function viewmail_cb(resp) {
   updatelisting(resp);
   $$("a[name=back]").addEvent("click", updatehash);
-  $$("a[name=delete]").addEvent("click", actionclick);
-  $$("a[name=release]").addEvent("click", actionclick);
+  $$("a[name=delete]").addEvent("click", deleteclick);
+  $$("a[name=release]").addEvent("click", releaseclick);
   $$("a[name=viewmode]").addEvent("click", updateparams);
   setDivHeight("mailcontent", 5, 0);
 }
