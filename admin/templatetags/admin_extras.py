@@ -1,6 +1,6 @@
 from django import template
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from django.core.urlresolvers import reverse
 from modoboa import admin
 from modoboa.lib import events
@@ -9,7 +9,7 @@ from modoboa.lib.webutils import static_url, render_actions
 register = template.Library()
 
 genders = {
-    "Enabled" : (_("enabled_m"), _("enabled_f"))
+    "Enabled" : (ugettext_noop("enabled_m"), ugettext_noop("enabled_f"))
 }
 
 @register.simple_tag
@@ -214,7 +214,7 @@ def loadadminextmenu(user):
 def param(app, definition):
     result = """<div class='row'>
   <label>%s</label>""" % (definition.has_key("label") \
-                              and definition["label"] or definition["name"])
+                              and _(definition["label"]) or definition["name"])
     name = "%s.%s" % (app, definition["name"])
     value = definition.has_key("value") \
         and definition["value"] or definition["deflt"]
@@ -249,7 +249,7 @@ def param(app, definition):
         result += """
   <a href='%s' onclick='return false;' class='Tips' title='%s'>
     <img src='%s' border='0' />
-  </a>""" % (definition["help"], _("Help"), static_url("pics/info.png"))
+  </a>""" % (_(definition["help"]), _("Help"), static_url("pics/info.png"))
     result += """
 </div>
 """

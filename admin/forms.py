@@ -2,7 +2,7 @@
 from django import forms
 from modoboa.admin.models import *
 from modoboa.admin.lib import is_domain_admin
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
 from modoboa.lib import tables
@@ -48,17 +48,17 @@ class DomainAliasForm(ProxyForm):
             self.fields["target"].queryset = Domain.objects.filter(pk=self._domain.id)
 
 class MailboxForm(ProxyForm):
-    quota = forms.IntegerField(label=_("Quota"), required=False,
-                               help_text=_("Mailbox quota in MB (default to domain quota if blank)"))
-    password1 = forms.CharField(label=_("Password"), 
+    quota = forms.IntegerField(label=ugettext_noop("Quota"), required=False,
+                               help_text=ugettext_noop("Mailbox quota in MB (default to domain quota if blank)"))
+    password1 = forms.CharField(label=ugettext_noop("Password"), 
                                 widget=forms.PasswordInput(render_value=True),
-                                help_text=_("Password used to log in"))
-    password2 = forms.CharField(label=_("Confirmation"), 
+                                help_text=ugettext_noop("Password used to log in"))
+    password2 = forms.CharField(label=ugettext_noop("Confirmation"), 
                                 widget=forms.PasswordInput(render_value=True),
-                                help_text=_("Password confirmation"))
+                                help_text=ugettext_noop("Password confirmation"))
     enabled = forms.BooleanField(label=gender("Enabled", "f"), required=False, 
                                  initial=True,
-                                 help_text=_("Check to activate this mailbox"))
+                                 help_text=ugettext_noop("Check to activate this mailbox"))
 
     class Meta:
         model = Mailbox
@@ -100,8 +100,8 @@ class MailboxForm(ProxyForm):
         return m
 
 class AliasForm(ProxyForm):
-    targets = forms.CharField(label=_("Target(s)"), required=False,
-                              help_text=_("Mailbox(es) this alias will point to"))
+    targets = forms.CharField(label=ugettext_noop("Target(s)"), required=False,
+                              help_text=ugettext_noop("Mailbox(es) this alias will point to"))
 
     def __init__(self, *args, **kwargs):
         super(AliasForm, self).__init__(*args, **kwargs)
@@ -176,36 +176,26 @@ class AliasForm(ProxyForm):
         return a
 
 class SuperAdminForm(forms.Form):
-    user = forms.ModelChoiceField([], label=_("User"), required=True,
-                                  empty_label=_("Select a user"),
-                                  help_text=_("Select a user in the list"))
-
     def __init__(self, user, *args, **kwargs):
         super(SuperAdminForm, self).__init__(*args, **kwargs)
+
+        self.fields["user"] = \
+            forms.ModelChoiceField([], label=_("User"), required=True,
+                                   empty_label=_("Select a user"),
+                                   help_text=_("Select a user in the list"))
         self.fields["user"].queryset = User.objects.exclude(pk__in=[1, user.id])
 
 class DomainAdminForm(forms.Form):
-    domain = forms.ModelChoiceField(queryset=Domain.objects.all(), label=_("Domain"), 
-                                    required=True,
-                                    empty_label=_("Select a domain"),
-                                    help_text=_("Select a domain in the list"))
-    user = forms.ChoiceField(label=_("User"), required=True,
-                             choices=[("", _("Empty"))],
-                             help_text=_("Select a user in the list"))
+    def __init__(self, *args, **kwargs):
+        super(DomainAdminForm, self).__init__(*args, **kwargs)
 
-class SuperAdminsTable(tables.Table):
-    idkey = "id"
-    selection = tables.SelectionColumn("selection", width="4%", first=True)
-    _1_user_name = tables.Column("user_name", label=_("User name"))
-    _2_full_name = tables.Column("full_name", label=_("Full name"))
-    _3_date_joined = tables.Column("date_joined", label=_("Defined"))
-    _4_enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
-    
-class DomainAdminsTable(tables.Table):
-    idkey = "id"
-    selection = tables.SelectionColumn("selection", width="4%", first=True)
-    _1_domain = tables.Column("domain", label=_("Domain"))
-    _2_full_name = tables.Column("full_name", label=_("Full name"))
-    _3_date_joined = tables.Column("date_joined", label=_("Defined"))
-    _4_enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
-    
+        self.fields["domain"] = \
+            forms.ModelChoiceField(queryset=Domain.objects.all(), 
+                                   label=_("Domain"), 
+                                   required=True,
+                                   empty_label=_("Select a domain"),
+                                   help_text=_("Select a domain in the list"))
+        self.fields["user"] = \
+            forms.ChoiceField(label=_("User"), required=True,
+                              choices=[("", _("Empty"))],
+                              help_text=_("Select a user in the list"))

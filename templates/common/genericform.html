@@ -4,9 +4,9 @@
   {% if field.help_text %}
   <div id="{{ field.name }}_helptext" class="tip">
     <div class="tip-title">{% trans "Help" %}</div>
-    <div class="tip-text">{{ field.help_text}}</div>
+    <div class="tip-text">{% trans field.help_text %}</div>
   </div>
   {% endif %}
-  {{ field.label_tag }}<div class="input_container clearfix"> {{ field }}</div> {% ifequal noerrors False %}{{ field.errors }}{% endifequal %}
+  <label for="id_{{ field.html_name }}">{% trans field.label %}</label><div class="input_container clearfix"> {{ field }}</div> {% ifequal noerrors False %}{{ field.errors }}{% endifequal %}
 </div>
 {% endfor %}

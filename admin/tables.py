@@ -1,5 +1,5 @@
 # coding: utf-8
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from modoboa.lib import tables
 from templatetags.admin_extras import *
 
@@ -7,20 +7,21 @@ class DomainsTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
 
-    name = tables.Column("name", label=_("Name"))
-    creation = tables.Column("creation", label=_("Created"), width="160px")
-    modified = tables.Column("last_modification", label=_("Last modified"), 
+    name = tables.Column("name", label=ugettext_noop("Name"))
+    creation = tables.Column("creation", label=ugettext_noop("Created"), width="160px")
+    modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
                              width="160px")
-    domaliases = tables.Column("domainalias_count", label=_("Domain aliases"), 
+    domaliases = tables.Column("domainalias_count", label=ugettext_noop("Domain aliases"), 
                                width="100px", align="center")
-    mboxes = tables.Column("mailbox_count", label=_("Mailboxes"), 
+    mboxes = tables.Column("mailbox_count", label=ugettext_noop("Mailboxes"), 
                            width="100px", align="center")
-    mbaliases = tables.Column("mbalias_counter", label=_("Mailbox aliases"),
+    mbaliases = tables.Column("mbalias_counter", label=ugettext_noop("Mailbox aliases"),
                               width="100px", align="center")
-    quota = tables.Column("quota", label=_("Quota"), width="50px", align="center")
-    enabled = tables.Column("enabled", label=_("Enabled"), width="50px",
+    quota = tables.Column("quota", label=ugettext_noop("Quota"), 
+                          width="50px", align="center")
+    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="50px",
                             align="center")
-    actions = tables.ActionColumn("actions", label=_("Actions"),  width="50px",
+    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),  width="50px",
                                   align="center", defvalue=domain_actions)
 
     cols_order = ["name", "creation", "modified", 
@@ -41,15 +42,16 @@ class DomaliasesTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
 
-    name = tables.Column("name", label=_("Name"))
-    target = tables.Column("target", label=_("Targeted domain"))
-    creation = tables.Column("creation", label=_("Created"), width="170px")
-    modified = tables.Column("last_modification", label=_("Last modified"), 
+    name = tables.Column("name", label=ugettext_noop("Name"))
+    target = tables.Column("target", label=ugettext_noop("Targeted domain"))
+    creation = tables.Column("creation", label=ugettext_noop("Created"), width="170px")
+    modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
                              width="170px")
-    enabled = tables.Column("enabled", label=_("Enabled"), width="50px",
+    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="50px",
                             align="center")
-    actions = tables.ActionColumn("actions", label=_("Actions"),  width="50px",
-                                  align="center", defvalue=domalias_actions)
+    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"), 
+                                  width="50px", align="center", 
+                                  defvalue=domalias_actions)
     
     cols_order = ["name", "target", "creation",
                   "modified", "enabled", "actions"]
@@ -65,18 +67,20 @@ class MailboxesTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
 
-    address = tables.Column("address", label=_("Address"))
-    name = tables.Column("name", label=_("Name"))
-    creation = tables.Column("creation", label=_("Created"), width="160px")
-    modified = tables.Column("last_modification", label=_("Last modified"), 
+    address = tables.Column("address", label=ugettext_noop("Address"))
+    name = tables.Column("name", label=ugettext_noop("Name"))
+    creation = tables.Column("creation", label=ugettext_noop("Created"), 
                              width="160px")
-    aliases = tables.Column("alias_count", label=_("Aliases"), width="70px",
+    modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
+                             width="160px")
+    aliases = tables.Column("alias_count", label=ugettext_noop("Aliases"), width="70px",
                             align="center")
-    quota = tables.Column("quota", label=_("Quota"), width="50px", align="center")
+    quota = tables.Column("quota", label=ugettext_noop("Quota"), 
+                          width="50px", align="center")
     enabled = tables.Column("enabled", label=gender("Enabled", "f"), width="50px",
                             align="center")
-    actions = tables.ActionColumn("actions", label=_("Actions"),  width="70px",
-                                  align="center", defvalue=mailbox_actions)
+    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"), 
+                                  width="70px", align="center", defvalue=mailbox_actions)
     
     cols_order = ["address", "name", "creation", "modified", "aliases",
                   "quota", "enabled", "actions"]
@@ -95,14 +99,14 @@ class MbaliasesTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
     
-    address = tables.Column("full_address", label=_("Address"))
-    targets = tables.Column("targets", label=_("Target(s)"), safe=True)
-    creation = tables.Column("creation", label=_("Created"), width="170px")
-    modified = tables.Column("last_modification", label=_("Last modified"), 
+    address = tables.Column("full_address", label=ugettext_noop("Address"))
+    targets = tables.Column("targets", label=ugettext_noop("Target(s)"), safe=True)
+    creation = tables.Column("creation", label=ugettext_noop("Created"), width="170px")
+    modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
                              width="170px")
     enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="50px",
                             align="center")
-    actions = tables.ActionColumn("actions", label=_("Actions"),  width="50px",
+    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"), width="50px",
                                   align="center", defvalue=mbalias_actions)
 
     cols_order = ["address", "targets", "creation", "modified", "enabled", "actions"]
@@ -120,8 +124,29 @@ class MbaliasesTable(tables.Table):
 class ExtensionsTable(tables.Table):
     idkey = "id"
     selection = tables.SelectionColumn("selection", width="4%", first=True)
-    name = tables.Column("name", label=_("Name"), width="15%")
-    version = tables.Column("version", label=_("Version"), width="6%")
-    descr = tables.Column("description", label=_("Description"))
+    name = tables.Column("name", label=ugettext_noop("Name"), width="15%")
+    version = tables.Column("version", label=ugettext_noop("Version"), width="6%")
+    descr = tables.Column("description", label=ugettext_noop("Description"))
     
     cols_order = ["selection", "name", "version", "descr"]
+
+class SuperAdminsTable(tables.Table):
+    idkey = "id"
+    selection = tables.SelectionColumn("selection", width="4%", first=True)
+    user_name = tables.Column("user_name", label=ugettext_noop("User name"))
+    full_name = tables.Column("full_name", label=ugettext_noop("Full name"))
+    date_joined = tables.Column("date_joined", label=ugettext_noop("Defined"))
+    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
+
+    cols_order = ["selection", "user_name", "full_name", "date_joined", "enabled"]
+    
+class DomainAdminsTable(tables.Table):
+    idkey = "id"
+    selection = tables.SelectionColumn("selection", width="4%", first=True)
+    domain = tables.Column("domain", label=ugettext_noop("Domain"))
+    full_name = tables.Column("full_name", label=ugettext_noop("Full name"))
+    date_joined = tables.Column("date_joined", label=ugettext_noop("Defined"))
+    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
+
+    cols_order = ["selection", "domain", "full_name", "date_joined", "enabled"]
+    

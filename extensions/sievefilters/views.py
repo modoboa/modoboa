@@ -41,8 +41,8 @@ def index(request, tplname="sievefilters/index.html"):
 @is_not_localadmin()
 def get_templates(request, ftype):
     if ftype == "condition":
-        return ajax_simple_response(FilterForm.cond_templates)
-    return ajax_simple_response(FilterForm.action_templates)
+        return ajax_simple_response(FilterForm([], [], request).cond_templates)
+    return ajax_simple_response(FilterForm([], [], request).action_templates)
 
 @login_required
 @is_not_localadmin()

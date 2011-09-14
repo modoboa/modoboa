@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from django.db.models import Q
 from modoboa.lib import tables
 from modoboa.lib.webutils import static_url
@@ -18,10 +18,10 @@ class Qtable(tables.Table):
                          label="<input type='checkbox' name='toggleselect' id='toggleselect' />",
                          sortable=False)
     rstatus = tables.ImgColumn("rstatus", width='25px')
-    from_ = tables.Column("from", label=_("From"), limit=30)
-    subject = tables.Column("subject", label=_("Subject"), limit=40)
-    time = tables.Column("date", label=_("Date"))
-    to = tables.Column("to", label=_("To"), sortable=False)
+    from_ = tables.Column("from", label=ugettext_noop("From"), limit=30)
+    subject = tables.Column("subject", label=ugettext_noop("Subject"), limit=40)
+    time = tables.Column("date", label=ugettext_noop("Date"))
+    to = tables.Column("to", label=ugettext_noop("To"), sortable=False)
 
     cols_order = []
 

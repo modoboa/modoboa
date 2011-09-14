@@ -9,11 +9,7 @@
           {% trans "Attachments" %}
         </div>
         <div id="list">
-          {% blocktrans count attachments|length as counter %}
-          {{ counter }} file
-          {% plural %}
-          {{ counter }} files
-          {% endblocktrans %}
+          {% blocktrans count attachments|length as counter %}{{ counter }} file{% plural %}{{ counter }} files{% endblocktrans %}
           <span class="shortlist">{{ short_att_list }}</span>
         </div>
       </div>

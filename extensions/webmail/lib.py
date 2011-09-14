@@ -14,7 +14,7 @@ import email
 import lxml
 from django.core.files.uploadhandler import FileUploadHandler, StopUpload, SkipFile
 from django.http import HttpResponse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop as __
 from django.conf import settings
 from modoboa.lib import u2u_decode, tables, imap_utf7, parameters
 from modoboa.lib.webutils import static_url, size2integer
@@ -39,14 +39,15 @@ class WebmailError(Exception):
 class WMtable(tables.Table):
     tableid = "emails"
     idkey = "imapid"
-    _0_select = tables.ImgColumn("select", cssclass="draggable left", width="1%", 
-                                 defvalue="%spics/grippy.png" % settings.MEDIA_URL,
-                                 header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
-    _1_flags = tables.ImgColumn("flags", width="4%")
-    _2_subject = tables.Column("subject", label=_("Subject"), width="50%")
-    _3_from_ = tables.Column("from", width="20%", label=_("From"))
-    _4_date = tables.Column("date", width="20%", label=_("Date"))
+    select = tables.ImgColumn("select", cssclass="draggable left", width="1%", 
+                              defvalue="%spics/grippy.png" % settings.MEDIA_URL,
+                              header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
+    flags = tables.ImgColumn("flags", width="4%")
+    subject = tables.Column("subject", label=__("Subject"), width="50%")
+    from_ = tables.Column("from", width="20%", label=__("From"))
+    date = tables.Column("date", width="20%", label=__("Date"))
 
+    cols_order = ["select", "flags", "subject", "from_", "date"]
 
     def parse(self, header, value):
         try:

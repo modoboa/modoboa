@@ -9,7 +9,7 @@ functionality into Postfix.
 """
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_noop as _, ugettext
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
 from models import *
@@ -18,7 +18,7 @@ def infos():
     return {
         "name" : "Postfix autoreply",
         "version" : "1.0",
-        "description" : _("Auto-reply (vacation) functionality using Postfix")
+        "description" : ugettext("Auto-reply (vacation) functionality using Postfix")
         }
 
 def init():
@@ -57,7 +57,7 @@ def menu(**kwargs):
          "img" : static_url("pics/auto-reply.png"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:440,y:400}}",
-         "label" : _("Auto-reply message")}
+         "label" : ugettext("Auto-reply message")}
         ]
 
 def onCreateDomain(**kwargs):

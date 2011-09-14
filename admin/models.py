@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.db import models, IntegrityError
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from django.conf import settings
 from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
@@ -74,11 +74,11 @@ class DatesAware(models.Model):
     last_modification = property(__last_modification)
 
 class Domain(DatesAware):
-    name = models.CharField(_('name'), max_length=100, unique=True,
-                            help_text=_("The domain name"))
-    quota = models.IntegerField(help_text=_("Default quota in MB applied to mailboxes"))
-    enabled = models.BooleanField(_('enabled'),
-                                  help_text=_("Check to activate this domain"))
+    name = models.CharField(ugettext_noop('name'), max_length=100, unique=True,
+                            help_text=ugettext_noop("The domain name"))
+    quota = models.IntegerField(help_text=ugettext_noop("Default quota in MB applied to mailboxes"))
+    enabled = models.BooleanField(ugettext_noop('enabled'),
+                                  help_text=ugettext_noop("Check to activate this domain"))
 
     class Meta:
         permissions = (
@@ -131,12 +131,12 @@ class Domain(DatesAware):
         return self.name
 
 class DomainAlias(DatesAware):
-    name = models.CharField(_("name"), max_length=100, unique=True,
-                            help_text=_("The alias name"))
-    target = models.ForeignKey(Domain, verbose_name=_('target'),
-                               help_text=_("The domain this alias points to"))
-    enabled = models.BooleanField(_('enabled'),
-                                  help_text=_("Check to activate this alias"))
+    name = models.CharField(ugettext_noop("name"), max_length=100, unique=True,
+                            help_text=ugettext_noop("The alias name"))
+    target = models.ForeignKey(Domain, verbose_name=ugettext_noop('target'),
+                               help_text=ugettext_noop("The domain this alias points to"))
+    enabled = models.BooleanField(ugettext_noop('enabled'),
+                                  help_text=ugettext_noop("Check to activate this alias"))
 
     class Meta:
         permissions = (
@@ -144,11 +144,11 @@ class DomainAlias(DatesAware):
             )
 
 class Mailbox(DatesAware):
-    name = models.CharField(_('name'), max_length=100, 
-                            help_text=_("First name and last name of mailbox owner"))
-    address = models.CharField(_('address'), max_length=100,
-                               help_text=_("Mailbox address (without the @domain.tld part)"))
-    password = models.CharField(_('password'), max_length=100)
+    name = models.CharField(ugettext_noop('name'), max_length=100, 
+                            help_text=ugettext_noop("First name and last name of mailbox owner"))
+    address = models.CharField(ugettext_noop('address'), max_length=100,
+                               help_text=ugettext_noop("Mailbox address (without the @domain.tld part)"))
+    password = models.CharField(ugettext_noop('password'), max_length=100)
     quota = models.IntegerField()
     uid = models.IntegerField()
     gid = models.IntegerField()
@@ -303,14 +303,14 @@ class Mailbox(DatesAware):
             }
 
 class Alias(DatesAware):
-    address = models.CharField(_('address'), max_length=254,
-                               help_text=_("The alias address (without the domain part). For a 'catch-all' address, just enter an * character."))
+    address = models.CharField(ugettext_noop('address'), max_length=254,
+                               help_text=ugettext_noop("The alias address (without the domain part). For a 'catch-all' address, just enter an * character."))
     domain = models.ForeignKey(Domain)
-    mboxes = models.ManyToManyField(Mailbox, verbose_name=_('mailboxes'),
-                                    help_text=_("The mailboxes this alias points to"))
+    mboxes = models.ManyToManyField(Mailbox, verbose_name=ugettext_noop('mailboxes'),
+                                    help_text=ugettext_noop("The mailboxes this alias points to"))
     extmboxes = models.TextField(blank=True)
-    enabled = models.BooleanField(_('enabled'),
-                                  help_text=_("Check to activate this alias"))
+    enabled = models.BooleanField(ugettext_noop('enabled'),
+                                  help_text=ugettext_noop("Check to activate this alias"))
 
     class Meta:
         permissions = (
@@ -385,8 +385,8 @@ class Alias(DatesAware):
 
 class Extension(models.Model):
     name = models.CharField(max_length=150)
-    enabled = models.BooleanField(_('enabled'),
-                                  help_text=_("Check to enable this extension"))
+    enabled = models.BooleanField(ugettext_noop('enabled'),
+                                  help_text=ugettext_noop("Check to enable this extension"))
 
     def __getmodule(self):
         extname = "modoboa.extensions.%s" % self.name

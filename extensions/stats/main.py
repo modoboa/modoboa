@@ -8,7 +8,7 @@ sent, received, bounced, rejected
 
 """
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_noop as _, ugettext
 from django.conf.urls.defaults import *
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
@@ -17,7 +17,7 @@ def infos():
     return {
         "name" : "Statistics",
         "version" : "1.0",
-        "description" : _("Graphical statistics about emails traffic using RRDtool")
+        "description" : ugettext("Graphical statistics about emails traffic using RRDtool")
         }
 
 def init():
@@ -43,7 +43,7 @@ def menu(**kwargs):
     if kwargs["target"] == "admin_menu_box":
         return [
             {"name"  : "stats",
-             "label" : _("Statistics"),
+             "label" : ugettext("Statistics"),
              "url" : reverse('fullindex'),
              "img" : static_url("pics/graph.png")}
             ]

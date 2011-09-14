@@ -60,7 +60,7 @@ div#footer {
 #menubar {
     margin: 5px;
     display: table;
-    width: 730px;
+    width: 735px;
     margin-top: 35px;
 }
 
@@ -177,7 +177,7 @@ div#footer {
 .menubar li { 
     float: left;
     display: inline;
-    margin: 5px 5px;
+    margin: 4px 4px;
 }
 
 .menubar li.selected {

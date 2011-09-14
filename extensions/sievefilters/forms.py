@@ -1,46 +1,46 @@
 from django import forms
 from django.http import QueryDict
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from modoboa.admin.templatetags.admin_extras import gender
 
 class FiltersSetForm(forms.Form):
     name = forms.CharField()
     active = forms.BooleanField(label=gender("Active", "m"), required=False, 
                                 initial=False,
-                                help_text=_("Check to activate this filters set"))
-
-header_operators = [("contains", _("contains"), "string"),
-                    ("notcontains", _("does not contain"), "string"),
-                    ("is", _("is"), "string"),
-                    ("isnot", _("is not"), "string")]
+                                help_text=ugettext_noop("Check to activate this filters set"))
 
 class FilterForm(forms.Form):
-    name = forms.CharField(label=_("Name"))
-    match_type = forms.ChoiceField(choices=[("allof", _("All of the following")),
-                                            ("anyof", _("Any of the following")),
-                                            ("all", _("All messages"))],
-                                   initial="anyof",
-                                   widget=forms.RadioSelect)
-
-    cond_templates = [
-        {"name" : "Subject", "label" : _("Subject"), "operators" : header_operators},
-        {"name" : "From", "label" : _("Sender"), "operators" : header_operators},
-        {"name" : "To", "label" : _("Recipient"), "operators" : header_operators},
-        {"name" : "Cc", "label" : _("Cc"), "operators" : header_operators},
-        {"name" : "size", "label" : _("Size"), 
-         "operators" : [("over", _("is greater than"), "number"),
-                        ("under", _("is less than"), "number")]},
-        ]
-
-    action_templates = [
-        {"name" : "fileinto", "label" : _("Move message to"),
-         "args" : [{"type" : "list", "vloader" : "userfolders"}]},
-        {"name" : "redirect", "label" : _("Redirect message to"),
-         "args" : [{"type" : "string"}]},
-        ]
-    
     def __init__(self, conditions, actions, request, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)
+
+        self.fields["name"] = forms.CharField(label=_("Name"))
+        self.fields["match_type"] = forms.ChoiceField(choices=[("allof", _("All of the following")),
+                                                               ("anyof", _("Any of the following")),
+                                                               ("all", _("All messages"))],
+                                                      initial="anyof",
+                                                      widget=forms.RadioSelect)
+
+        self.header_operators = [("contains", _("contains"), "string"),
+                                 ("notcontains", _("does not contain"), "string"),
+                                 ("is", _("is"), "string"),
+                                 ("isnot", _("is not"), "string")]
+        
+        self.cond_templates = [
+            {"name" : "Subject", "label" : _("Subject"), "operators" : self.header_operators},
+            {"name" : "From", "label" : _("Sender"), "operators" : self.header_operators},
+            {"name" : "To", "label" : _("Recipient"), "operators" : self.header_operators},
+            {"name" : "Cc", "label" : _("Cc"), "operators" : self.header_operators},
+            {"name" : "size", "label" : _("Size"), 
+             "operators" : [("over", _("is greater than"), "number"),
+                            ("under", _("is less than"), "number")]},
+            ]
+    
+        self.action_templates = [
+            {"name" : "fileinto", "label" : _("Move message to"),
+             "args" : [{"type" : "list", "vloader" : "userfolders"}]},
+            {"name" : "redirect", "label" : _("Redirect message to"),
+             "args" : [{"type" : "string"}]},
+            ]
 
         self.conds_cnt = 0
         for c in conditions:
@@ -53,7 +53,7 @@ class FilterForm(forms.Form):
         targets = []
         ops = []
         vfield = None
-        for tpl in FilterForm.cond_templates:
+        for tpl in self.cond_templates:
             targets += [(tpl["name"], tpl["label"]),]
             if tpl["name"] != name:
                 continue
@@ -89,7 +89,7 @@ class FilterForm(forms.Form):
     def _build_action_field(self, request, name, value):
         actions = []
         args = None
-        for tpl in FilterForm.action_templates:
+        for tpl in self.action_templates:
             actions += [(tpl["name"], tpl["label"]),]
             if name == tpl["name"]:
                 args = tpl["args"]

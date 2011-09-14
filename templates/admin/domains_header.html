@@ -41,7 +41,7 @@ window.addEvent("domready", function() {
       return;
     }
     new Confirmation(rooturl + type + "/delete/", "selection=" + selection,
-                     gettext("Remove this selection?"), {
+                     "{% trans 'Remove this selection?' %}", {
     {% if deloptions %}checkboxes: { {% join deloptions %} }{% endif %}
     });
   });

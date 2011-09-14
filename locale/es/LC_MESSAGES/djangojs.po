@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-25 09:58+0200\n"
+"POT-Creation-Date: 2011-09-14 14:06+0200\n"
 "PO-Revision-Date: 2011-07-08 09:04+0000\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: Español <i18n@impulzia.com>\n"
@@ -17,11 +17,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:92
+#: extensions/amavis_quarantine/static/js/quarantine.js:41
+#, fuzzy
+msgid "Delete this message?"
+msgstr "¿Eliminar esta selección?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:49
+#, fuzzy
+msgid "Release this message?"
+msgstr "¿Publicar esta selección?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:107
 msgid "Release this selection?"
 msgstr "¿Publicar esta selección?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:99
+#: extensions/amavis_quarantine/static/js/quarantine.js:114
 msgid "Delete this selection?"
 msgstr "¿Eliminar esta selección?"
 
@@ -33,24 +43,34 @@ msgstr "¿Eliminar este filtro?"
 msgid "Save changes?"
 msgstr "¿Guardar cambios?"
 
+#: extensions/sievefilters/static/js/lib.js:143
+#, fuzzy
+msgid "Remove filters set?"
+msgstr "¿Eliminar este filtro?"
+
+#: extensions/sievefilters/static/js/lib.js:161
+#, fuzzy
+msgid "Activate this filters set?"
+msgstr "¿Eliminar este filtro?"
+
+#: extensions/sievefilters/static/js/lib.js:169
+msgid "active"
+msgstr ""
+
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"
 msgstr "Editar carpeta"
 
-#: extensions/webmail/static/js/fdmenu.js:62
+#: extensions/webmail/static/js/fdmenu.js:63
 msgid "Folder deleted"
 msgstr "Carpeta eliminada"
 
-#: extensions/webmail/static/js/webmail.js:195
-msgid "Reloading..."
-msgstr "Recargando..."
-
-#: extensions/webmail/static/js/webmail.js:203
-#: extensions/webmail/static/js/webmail.js:227 static/js/anchor_nav.js:199
+#: extensions/webmail/static/js/webmail.js:226
+#: extensions/webmail/static/js/webmail.js:250 static/js/anchor_nav.js:212
 msgid "Done"
 msgstr "Hecho"
 
-#: extensions/webmail/static/js/webmail.js:216
+#: extensions/webmail/static/js/webmail.js:239
 msgid "Waiting..."
 msgstr "Esperando..."
 
@@ -58,7 +78,7 @@ msgstr "Esperando..."
 msgid "Loading..."
 msgstr "Cargando..."
 
-#: static/js/common.js:150
+#: static/js/common.js:172
 msgid "Search..."
 msgstr "Buscar..."
 
@@ -69,3 +89,6 @@ msgstr "Preferencias guardas"
 #: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Parámetros guardados"
+
+#~ msgid "Reloading..."
+#~ msgstr "Recargando..."

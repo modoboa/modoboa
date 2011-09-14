@@ -28,7 +28,7 @@ class Column:
             label = getattr(self, "label")
         except KeyError:
             label = getattr(self, "name")
-        return label
+        return _(label)
 
 
 class SelectionColumn(Column):

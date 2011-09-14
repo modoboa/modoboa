@@ -2,7 +2,7 @@
 
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from django.utils import simplejson
 from modoboa.lib.webutils import _render, _render_to_string, getctx
 from modoboa.admin.views import good_domain
@@ -12,14 +12,14 @@ from django.contrib.auth.decorators \
 from modoboa.extensions.stats.grapher import *
 
 graph_types = ['AVERAGE', 'MAX']
-graph_list = [{"name" : "traffic", "label" : _("Average normal traffic")},
-              {"name" : "badtraffic", "label" : _("Average bad traffic")},
-              {"name" : "size", "label" : _("Average normal traffic size")}]
-periods = [{"name" : "day", "label" : _("Day")},
-           {"name" : "week", "label" : _("Week")},
-           {"name" : "month", "label" : _("Month")},
-           {"name" : "year", "label" : _("Year")},
-           {"name" : "custom", "label" : _("Custom")}]
+graph_list = [{"name" : "traffic", "label" : ugettext_noop("Average normal traffic")},
+              {"name" : "badtraffic", "label" : ugettext_noop("Average bad traffic")},
+              {"name" : "size", "label" : ugettext_noop("Average normal traffic size")}]
+periods = [{"name" : "day", "label" : ugettext_noop("Day")},
+           {"name" : "week", "label" : ugettext_noop("Week")},
+           {"name" : "month", "label" : ugettext_noop("Month")},
+           {"name" : "year", "label" : ugettext_noop("Year")},
+           {"name" : "custom", "label" : ugettext_noop("Custom")}]
 
 @login_required
 @good_domain

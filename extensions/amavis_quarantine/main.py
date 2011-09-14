@@ -3,7 +3,7 @@
 """
 """
 from django.conf.urls.defaults import *
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import ugettext_noop as _, ugettext
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
@@ -12,7 +12,7 @@ def infos():
     return {
         "name" : "Amavis quarantine",
         "version" : "1.0",
-        "description" : _("Simple amavis quarantine management tool")
+        "description" : ugettext("Simple amavis quarantine management tool")
         }
 
 def init():
@@ -33,11 +33,11 @@ def init():
                               deflt=9998, 
                               help=_("PDP server port (if inet mode)"))
     parameters.register_admin("AM_PDP_SOCKET", type="string", 
-                              deflt="/var/amavis/amavisd.sock",
+                              deflt=_("/var/amavis/amavisd.sock"),
                               help=_("Path to the PDP server socket (if unix mode)"))
 
     parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
-                             label=_("Number of displayed emails per page"),
+                             label="Number of displayed emails per page",
                              help=_("Sets the maximum number of messages displayed in a page"))
 
 def destroy():

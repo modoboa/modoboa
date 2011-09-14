@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_noop as _, ugettext
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
 from modoboa.lib import events, parameters
@@ -73,7 +73,7 @@ def infos():
     return {
         "name" : "Webmail",
         "version" : "1.0",
-        "description" : _("Simple IMAP webmail")
+        "description" : ugettext("Simple IMAP webmail")
         }
 
 def urls(prefix):

@@ -23,6 +23,9 @@ def dologin(request):
                 if request.user.id != 1:
                     request.session["password"] = encrypt(request.POST["password"])
 
+                request.session["django_language"] = \
+                    parameters.get_user(request.user, "LANG", app="general")
+
                 events.raiseEvent("UserLogin", request=request, 
                                   username=request.POST["username"],
                                   password=request.POST["password"])

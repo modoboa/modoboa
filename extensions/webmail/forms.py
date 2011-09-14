@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_noop as _
 
 class ComposeMailForm(forms.Form):
     from_ = forms.CharField(label=_("From"))
@@ -11,4 +11,4 @@ class FolderForm(forms.Form):
     name = forms.CharField()
 
 class AttachmentForm(forms.Form):
-    attachment = forms.FileField(label="")
+    attachment = forms.FileField(label=_("Select a file"))

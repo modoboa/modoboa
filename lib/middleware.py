@@ -15,5 +15,3 @@ class ExtControlMiddleware(object):
         if ext.enabled:
             return None
         raise Http404
-        
-

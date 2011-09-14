@@ -61,11 +61,19 @@ def __guess_extension():
     return None
 
 def register_admin(name, **kwargs):
-    app = kwargs.has_key("app") and kwargs["app"] or __guess_extension()
+    if kwargs.has_key("app"):
+        app = kwargs["app"]
+        del kwargs["app"]
+    else:
+        app = __guess_extension()
     return __register(app, 'A', name, **kwargs)
 
 def register_user(name, **kwargs):
-    app = kwargs.has_key("app") and kwargs["app"] or __guess_extension()
+    if kwargs.has_key("app"):
+        app = kwargs["app"]
+        del kwargs["app"]
+    else:
+        app = __guess_extension()
     return __register(app, 'U', name, **kwargs)
 
 def unregister_app(app):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_noop as _, ugettext
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
 from modoboa.lib import events, parameters
@@ -39,7 +39,7 @@ def infos():
     return {
         "name" : "Sieve filters",
         "version" : "1.0",
-        "description" : _("Plugin to easily create server-side filters")
+        "description" : ugettext("Plugin to easily create server-side filters")
         }
 
 def urls(prefix):
@@ -53,7 +53,7 @@ def menu(**kwargs):
         return []
     return [
         {"name" : "sievefilters",
-         "label" : _("Message filters"),
+         "label" : ugettext("Message filters"),
          "url" : reverse(views.index),
          "img" : static_url("pics/filters.png")}
         ]

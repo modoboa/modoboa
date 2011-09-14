@@ -74,6 +74,7 @@ def setforward(request, tplname="userprefs/setforward.html"):
 @login_required
 def preferences(request):
     apps = sorted(parameters._params.keys())
+    print request.LANGUAGE_CODE
     gparams = []
     for app in apps:
         if not len(parameters._params[app]['U']):

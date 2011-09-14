@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-25 09:58+0200\n"
+"POT-Creation-Date: 2011-09-14 14:06+0200\n"
 "PO-Revision-Date: 2011-07-10 07:30+0000\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
@@ -17,11 +17,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:92
+#: extensions/amavis_quarantine/static/js/quarantine.js:41
+#, fuzzy
+msgid "Delete this message?"
+msgstr "Diese Auswahl löschen?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:49
+#, fuzzy
+msgid "Release this message?"
+msgstr "Diese Auswahl freilassen?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:107
 msgid "Release this selection?"
 msgstr "Diese Auswahl freilassen?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:99
+#: extensions/amavis_quarantine/static/js/quarantine.js:114
 msgid "Delete this selection?"
 msgstr "Diese Auswahl löschen?"
 
@@ -33,24 +43,34 @@ msgstr "Diesen Filter entfernen?"
 msgid "Save changes?"
 msgstr "Änderungen speichern?"
 
+#: extensions/sievefilters/static/js/lib.js:143
+#, fuzzy
+msgid "Remove filters set?"
+msgstr "Diesen Filter entfernen?"
+
+#: extensions/sievefilters/static/js/lib.js:161
+#, fuzzy
+msgid "Activate this filters set?"
+msgstr "Diesen Filter entfernen?"
+
+#: extensions/sievefilters/static/js/lib.js:169
+msgid "active"
+msgstr ""
+
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"
 msgstr "Ordner bearbeiten"
 
-#: extensions/webmail/static/js/fdmenu.js:62
+#: extensions/webmail/static/js/fdmenu.js:63
 msgid "Folder deleted"
 msgstr "Ordner gelöscht"
 
-#: extensions/webmail/static/js/webmail.js:195
-msgid "Reloading..."
-msgstr "Aktualisiere..."
-
-#: extensions/webmail/static/js/webmail.js:203
-#: extensions/webmail/static/js/webmail.js:227 static/js/anchor_nav.js:199
+#: extensions/webmail/static/js/webmail.js:226
+#: extensions/webmail/static/js/webmail.js:250 static/js/anchor_nav.js:212
 msgid "Done"
 msgstr "Abgeschlossen"
 
-#: extensions/webmail/static/js/webmail.js:216
+#: extensions/webmail/static/js/webmail.js:239
 msgid "Waiting..."
 msgstr "Warte..."
 
@@ -58,7 +78,7 @@ msgstr "Warte..."
 msgid "Loading..."
 msgstr "Lade..."
 
-#: static/js/common.js:150
+#: static/js/common.js:172
 msgid "Search..."
 msgstr "Suchen..."
 
@@ -69,3 +89,6 @@ msgstr "Einstellungen gespeichert"
 #: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Parameter gespeichert"
+
+#~ msgid "Reloading..."
+#~ msgstr "Aktualisiere..."

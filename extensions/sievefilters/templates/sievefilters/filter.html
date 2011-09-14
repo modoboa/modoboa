@@ -67,7 +67,7 @@ $(document).addEvent("domready", function() {
 <div class="title"><h1>{{ title }}</h1></div>
 <form action="{{ actionurl }}" method="POST" id="filterform" name="filterform">
   {% if oldname %}<input type="hidden" name="oldname" value="{{ oldname }}" />{% endif %}
-  {{ form.name.label_tag }}:
+  <label for="id_{{ form.name.html_name }}">{% trans form.name.label %}</label>:
   {{ form.name }}{% display_errors form.name.errors %}
   <h2>{% trans "Conditions" %}</h2>
   <div id="condlist">

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-25 09:58+0200\n"
+"POT-Creation-Date: 2011-09-14 14:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:92
+#: extensions/amavis_quarantine/static/js/quarantine.js:41
+msgid "Delete this message?"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:49
+msgid "Release this message?"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:107
 msgid "Release this selection?"
 msgstr ""
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:99
+#: extensions/amavis_quarantine/static/js/quarantine.js:114
 msgid "Delete this selection?"
 msgstr ""
 
@@ -33,24 +41,32 @@ msgstr ""
 msgid "Save changes?"
 msgstr ""
 
+#: extensions/sievefilters/static/js/lib.js:143
+msgid "Remove filters set?"
+msgstr ""
+
+#: extensions/sievefilters/static/js/lib.js:161
+msgid "Activate this filters set?"
+msgstr ""
+
+#: extensions/sievefilters/static/js/lib.js:169
+msgid "active"
+msgstr ""
+
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"
 msgstr ""
 
-#: extensions/webmail/static/js/fdmenu.js:62
+#: extensions/webmail/static/js/fdmenu.js:63
 msgid "Folder deleted"
 msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:195
-msgid "Reloading..."
-msgstr ""
-
-#: extensions/webmail/static/js/webmail.js:203
-#: extensions/webmail/static/js/webmail.js:227 static/js/anchor_nav.js:199
+#: extensions/webmail/static/js/webmail.js:226
+#: extensions/webmail/static/js/webmail.js:250 static/js/anchor_nav.js:212
 msgid "Done"
 msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:216
+#: extensions/webmail/static/js/webmail.js:239
 msgid "Waiting..."
 msgstr ""
 
@@ -58,7 +74,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: static/js/common.js:150
+#: static/js/common.js:172
 msgid "Search..."
 msgstr ""
 

@@ -2,18 +2,18 @@ from django import forms
 from modoboa.admin.models import Domain, Mailbox
 from modoboa.auth.lib import _check_password
 from django.contrib.auth.models import check_password
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from modoboa.lib.emailutils import split_mailbox
 
 class BadDestination(Exception):
     pass
 
 class ChangePasswordForm(forms.Form):
-    oldpassword = forms.CharField(label=_("Old password"), 
+    oldpassword = forms.CharField(label=ugettext_noop("Old password"), 
                                   widget=forms.PasswordInput)
-    newpassword = forms.CharField(label=_("New password"), 
+    newpassword = forms.CharField(label=ugettext_noop("New password"), 
                                   widget=forms.PasswordInput)
-    confirmation = forms.CharField(label=_("Confirmation"), 
+    confirmation = forms.CharField(label=ugettext_noop("Confirmation"), 
                                    widget=forms.PasswordInput)
 
     def __init__(self, target, *args, **kwargs):

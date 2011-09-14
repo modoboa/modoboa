@@ -137,7 +137,7 @@ function savefs(evt) {
  * Remove the current filters set.
  *
  * On success, the user will be automatically redirected to the active
- * filters set. (FIXME: what happens when there is no more script?)
+ * filters set.
  */
 function removefs(evt) {
     if (!check_prereqs(evt, gettext("Remove filters set?"))) {

@@ -1,10 +1,11 @@
 # coding: utf-8
 
 import datetime
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_noop
 from django.contrib.auth.models import User, Group
 from modoboa.lib.webutils import _render, getctx, _render_to_string
 from forms import *
+from tables import SuperAdminsTable, DomainAdminsTable
 
 class Permissions(object):
     @staticmethod
@@ -24,7 +25,7 @@ class Permissions(object):
         raise NotImplementedError
 
 class SuperAdminsPerms(Permissions):
-    title = _("Add super administrator")
+    title = ugettext_noop("Add super administrator")
     role = "super_admins"
 
     @staticmethod
@@ -35,7 +36,7 @@ class SuperAdminsPerms(Permissions):
         form = SuperAdminForm(request.user)
         return _render(request, 'admin/add_permission.html', {
                 "form" : form, 
-                "title" : self.title,
+                "title" : _(self.title),
                 "role": self.role
                 })
 
@@ -51,7 +52,7 @@ class SuperAdminsPerms(Permissions):
 
         content = _render_to_string(request, "admin/add_permission.html", {
                 "form" : form,
-                "title" : self.title,
+                "title" : _(self.title),
                 "role" : self.role
                 })
         return False, getctx("ko", content=content)
@@ -77,7 +78,7 @@ class SuperAdminsPerms(Permissions):
    
 
 class DomainAdminsPerms(Permissions):
-    title = _("Add domain administrator")
+    title = ugettext_noop("Add domain administrator")
     role = "domain_admins"
 
     @staticmethod
@@ -88,7 +89,7 @@ class DomainAdminsPerms(Permissions):
         form = DomainAdminForm()
         return _render(request, 'admin/add_domain_admin.html', {
                 "form" : form, 
-                "title" : self.title,
+                "title" : _(self.title),
                 "role" : self.role
                 })
     
@@ -106,7 +107,7 @@ class DomainAdminsPerms(Permissions):
             return True, None
         content = _render_to_string(request, "admin/add_domain_admin.html", {
                 "form" : form,
-                "title" : self.title,
+                "title" : _(self.title),
                 "role" : self.role
                 })
         return False, getctx("ko", content=content)
