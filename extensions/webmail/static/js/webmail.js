@@ -83,7 +83,7 @@ function compose_loader(event) {
 }
 
 function resize_window_callback(event) {
-  setDivHeight("id_body", $("mailheader").getSize().y, 0);
+    CKEDITOR.instances["id_body"].resize("100%", $("body_container").getSize().y);
 }
 
 /*
@@ -125,7 +125,6 @@ function compose_callback(resp) {
   wm_updatelisting(resp);
 
   window.addEvent("resize", resize_window_callback);
-  window.fireEvent("resize");
 
   var editormode = resp.editor;
   var editorid = "id_body";
@@ -136,8 +135,10 @@ function compose_callback(resp) {
       CKEDITOR.remove(instance);
     }
     CKEDITOR.replace(editorid, {
-      customConfig: static_url("js/editor_config.js"),
-      height: $(editorid).getSize().y
+      customConfig: static_url("js/editor_config.js")
+    });
+    CKEDITOR.on("instanceReady", function(evt) {
+        resize_window_callback();
     });
   }
   if (resp.id) {

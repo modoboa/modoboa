@@ -15,6 +15,7 @@
       </div>
     </div>
     <div class="spacer"></div>
+    <div id="body_container">
     {% if body %}
     <textarea id="id_body" name="id_body" class="editor">{% if bodyheader %}{{ bodyheader }}{% endif %}
 {{ body }}
@@ -22,6 +23,7 @@
     {% else %}
     <textarea id="id_body" name="id_body" class="editor"></textarea>
     {% endif %}
+    </div>
   </div>
 </form>
 

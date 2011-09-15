@@ -34,3 +34,7 @@ img {
 div.row label {
     width: 150px;
 }
+
+#id_attachment {
+    width: 290px;
+}

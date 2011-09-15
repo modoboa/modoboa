@@ -556,9 +556,11 @@ class EmailSignature(object):
     :param user: User object
     """
     def __init__(self, user):
+        self._sig = ""
         dformat = parameters.get_user(user, "EDITOR")
         content = parameters.get_user(user, "SIGNATURE")
-        getattr(self, "_format_sig_%s" % dformat)(content)
+        if len(content):
+            getattr(self, "_format_sig_%s" % dformat)(content)
 
     def _format_sig_plain(self, content):
         self._sig = """
