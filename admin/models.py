@@ -179,6 +179,12 @@ class Mailbox(DatesAware):
         return self.user.is_active
     enabled = property(__enabled)
 
+    def __full_path(self):
+        path = os.path.join(parameters.get_admin("STORAGE_PATH"),
+                            self.domain.name, self.address)
+        return os.path.abspath(path)
+    full_path = property(__full_path)
+
     def __alias_count(self):
         return len(self.alias_set.all())
     alias_count = property(__alias_count)

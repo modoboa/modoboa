@@ -4,6 +4,7 @@ import datetime
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.contrib.auth.models import User, Group
 from modoboa.lib.webutils import _render, getctx, _render_to_string
+from modoboa.lib import events
 from forms import *
 from tables import SuperAdminsTable, DomainAdminsTable
 
