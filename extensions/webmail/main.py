@@ -73,7 +73,8 @@ def infos():
     return {
         "name" : "Webmail",
         "version" : "1.0",
-        "description" : ugettext("Simple IMAP webmail")
+        "description" : ugettext("Simple IMAP webmail"),
+        "url" : "webmail"
         }
 
 def urls(prefix):

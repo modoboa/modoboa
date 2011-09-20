@@ -6,6 +6,10 @@ from django.conf import settings
 def isinstalled(ext):
     return "modoboa.extensions.%s" % ext in settings.INSTALLED_APPS
 
+def get_extension_infos(name):
+    ext = __import__(name, globals(), locals(), ["main"])
+    return ext.main.infos()
+
 def loadextensions(prefix):
     # To avoid a circular import...
     from modoboa.admin.models import Extension

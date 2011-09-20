@@ -3,7 +3,7 @@ from django.db import models, IntegrityError
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.conf import settings
-from modoboa.lib import parameters
+from modoboa.lib import parameters, events
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.auth.lib import crypt_password
@@ -418,6 +418,8 @@ class Extension(models.Model):
             exec_cmd("ln -s %s/static %s/static/%s" % \
                          (extdir, settings.MODOBOA_DIR, self.name))
 
+        events.raiseEvent("ExtEnabled", ext=self)
+
     def off(self):
         self.unload()
 
@@ -430,6 +432,8 @@ class Extension(models.Model):
         staticpath = "%s/%s" % (extdir, "static")  
         if os.path.exists(staticpath):
             exec_cmd("rm -r %s/static/%s" % (settings.MODOBOA_DIR, self.name)) 
+
+        events.raiseEvent("ExtDisabled", ext=self)
 
 #
 # Optional callback to execute if django-auth-ldap is enabled.

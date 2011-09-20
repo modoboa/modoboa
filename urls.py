@@ -11,6 +11,7 @@ if prefix != "":
         prefix += "/"
 
 urlpatterns = patterns('',
+    (r'^%s$' % prefix, 'modoboa.lib.webutils.topredirection'),
     (r'^%sadmin/' % prefix, include('modoboa.admin.urls')),
     (r'^%suserprefs/' % prefix, include('modoboa.userprefs.urls')),
     (r'^accounts/login/$', 'modoboa.auth.views.dologin'),

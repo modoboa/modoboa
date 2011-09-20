@@ -17,7 +17,8 @@ def infos():
     return {
         "name" : "Statistics",
         "version" : "1.0",
-        "description" : ugettext("Graphical statistics about emails traffic using RRDtool")
+        "description" : ugettext("Graphical statistics about emails traffic using RRDtool"),
+        "url" : "stats"
         }
 
 def init():

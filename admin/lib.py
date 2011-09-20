@@ -44,20 +44,22 @@ def good_domain(f):
     def dec(request, **kwargs):
         if request.user.is_superuser:
             return f(request, **kwargs)
-        mb = Mailbox.objects.get(user=request.user.id)
-        access = True
-        if request.GET.has_key("domid"):
-            dom_id = int(request.GET["domid"])
-            if dom_id != mb.domain.id:
-                access = False
-        else:
-            q = request.GET.copy()
-            q["domid"] = mb.domain.id
-            request.GET = q
-        if access:
-            return f(request, **kwargs)
+        if is_domain_admin(request.user):
+            mb = Mailbox.objects.get(user=request.user.id)
+            access = True
+            if request.GET.has_key("domid"):
+                dom_id = int(request.GET["domid"])
+                if dom_id != mb.domain.id:
+                    access = False
+            else:
+                q = request.GET.copy()
+                q["domid"] = mb.domain.id
+                request.GET = q
+            if access:
+                return f(request, **kwargs)
 
         from django.conf import settings
+        from django.utils.http import urlquote
         path = urlquote(request.get_full_path())
         login_url = settings.LOGIN_URL
         return HttpResponseRedirect("%s?next=%s" % (login_url, path))

@@ -3,9 +3,10 @@
 """
 This module contains extra functions/shortcuts used to render HTML.
 """
-import sys
+import os, sys
 import re
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django import template
@@ -141,3 +142,31 @@ def size2integer(value):
     if m.group(2)[0] in ["G", "g"]:
         return int(m.group(1)) * 2 ** 30
     return 0
+
+@login_required
+def topredirection(request):
+    """Simple view to redirect the request when no application is specified
+
+    The default "top redirection" can be specified in the *Admin >
+    Settings* panel. It is the application that will be launched by
+    default. Users that are not allowed to access this application
+    will be redirected to the "User preferences" application.
+
+    :param request: a Request object
+    """
+    from modoboa.lib import parameters
+    from modoboa.extensions import get_extension_infos
+    from modoboa.admin.lib import is_domain_admin
+
+    topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="general")
+    if not topredir in ["admin", "userprefs"]:
+        infos = get_extension_infos(topredir)
+        path = infos["url"]
+    else:
+        path = topredir
+
+    if topredir in ["admin", "stats"] and \
+            (not request.user.is_superuser and not is_domain_admin(request.user)):
+        path = "userprefs"
+
+    return HttpResponseRedirect(path)

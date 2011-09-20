@@ -39,7 +39,8 @@ def infos():
     return {
         "name" : "Sieve filters",
         "version" : "1.0",
-        "description" : ugettext("Plugin to easily create server-side filters")
+        "description" : ugettext("Plugin to easily create server-side filters"),
+        "url" : "sfilters"
         }
 
 def urls(prefix):

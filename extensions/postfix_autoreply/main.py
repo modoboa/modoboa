@@ -18,7 +18,8 @@ def infos():
     return {
         "name" : "Postfix autoreply",
         "version" : "1.0",
-        "description" : ugettext("Auto-reply (vacation) functionality using Postfix")
+        "description" : ugettext("Auto-reply (vacation) functionality using Postfix"),
+        "url" : "postfix_autoreply"
         }
 
 def init():

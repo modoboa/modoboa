@@ -12,7 +12,8 @@ def infos():
     return {
         "name" : "Amavis quarantine",
         "version" : "1.0",
-        "description" : ugettext("Simple amavis quarantine management tool")
+        "description" : ugettext("Simple amavis quarantine management tool"),
+        "url" : "quarantine"
         }
 
 def init():
