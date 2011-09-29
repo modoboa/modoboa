@@ -95,18 +95,27 @@ class Domain(DatesAware):
     mailbox_count = property(__mailbox_count)
 
     def create_dir(self):
-        path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
-        return exec_as_vuser("mkdir -p %s" % path)
+	if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+		path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
+		return exec_as_vuser("mkdir -p %s" % path)
+	else:
+		return True
 
     def rename_dir(self, oldname):
-        stpath = parameters.get_admin("STORAGE_PATH")
-        return exec_as_vuser("mv %s/%s %s/%s" \
-                                 % (stpath, oldname, stpath, self.name))
+	if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+		stpath = parameters.get_admin("STORAGE_PATH")
+		return exec_as_vuser("mv %s/%s %s/%s" \
+					 % (stpath, oldname, stpath, self.name))
+	else:
+		return True
 
     def delete_dir(self):
-        return exec_as_vuser("rm -r %s/%s" \
-                                 % (parameters.get_admin("STORAGE_PATH"), 
-                                    self.name))
+	if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+		return exec_as_vuser("rm -r %s/%s" \
+					 % (parameters.get_admin("STORAGE_PATH"), 
+					    self.name))
+	else:
+		return True
 
     def delete(self, *args, **kwargs):
         keepdir = False
@@ -190,42 +199,51 @@ class Mailbox(DatesAware):
     alias_count = property(__alias_count)
 
     def create_dir(self):
-        relpath = "%s/%s" % (self.domain.name, self.address)
-        abspath = os.path.join(parameters.get_admin("STORAGE_PATH"), relpath)
-        if self.mbtype == "mbox":
-            self.path = "%s/Inbox" % self.address
-        else:
-            self.path = "%s/" % self.address
-        if os.path.exists(abspath):
-            return True
-        if not exec_as_vuser("mkdir -p %s" % abspath):
-            return False
-        if self.mbtype == "mbox":
-            template = ["Inbox", "Drafts", "Sent", "Trash", "Junk"]
-            for f in template:
-                exec_as_vuser("touch %s/%s" % (abspath, f))
-        else:
-            template = [".Drafts/", ".Sent/", ".Trash/", ".Junk/"]
-            for dir in template:
-                for sdir in ["cur", "new", "tmp"]:
-                    exec_as_vuser("mkdir -p %s/%s/%s/%s" \
-                                      % (abspath, self.mdirroot, dir, sdir))
-        return True
+	if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+		relpath = "%s/%s" % (self.domain.name, self.address)
+		abspath = os.path.join(parameters.get_admin("STORAGE_PATH"), relpath)
+		if self.mbtype == "mbox":
+		    self.path = "%s/Inbox" % self.address
+		else:
+		    self.path = "%s/" % self.address
+		if os.path.exists(abspath):
+		    return True
+		if not exec_as_vuser("mkdir -p %s" % abspath):
+		    return False
+		if self.mbtype == "mbox":
+		    template = ["Inbox", "Drafts", "Sent", "Trash", "Junk"]
+		    for f in template:
+			exec_as_vuser("touch %s/%s" % (abspath, f))
+		else:
+		    template = [".Drafts/", ".Sent/", ".Trash/", ".Junk/"]
+		    for dir in template:
+			for sdir in ["cur", "new", "tmp"]:
+			    exec_as_vuser("mkdir -p %s/%s/%s/%s" \
+					      % (abspath, self.mdirroot, dir, sdir))
+		return True
+	else:
+		return True
 
     def rename_dir(self, domain, newaddress):
-        if self.domain.name == domain and newaddress == self.address:
-            return True
-        path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), domain)
-        code = exec_as_vuser("mv %s/%s %s/%s" \
-                                 % (path, self.address, path, newaddress))
-        if code:
-            self.path = "%s/" % newaddress
-        return code
+	if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+		if self.domain.name == domain and newaddress == self.address:
+		    return True
+		path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), domain)
+		code = exec_as_vuser("mv %s/%s %s/%s" \
+					 % (path, self.address, path, newaddress))
+		if code:
+		    self.path = "%s/" % newaddress
+		return code
+	else:
+		return True
 
     def delete_dir(self):
-        return exec_as_vuser("rm -r %s/%s/%s" \
-                                 % (parameters.get_admin("STORAGE_PATH"),
-                                    self.domain.name, self.address))
+	if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+		return exec_as_vuser("rm -r %s/%s/%s" \
+					 % (parameters.get_admin("STORAGE_PATH"),
+					    self.domain.name, self.address))
+	else:
+		return True
 
     def save(self, *args, **kwargs):
         if not self.create_dir():
@@ -253,8 +271,19 @@ class Mailbox(DatesAware):
 
         if kwargs.has_key("password") and kwargs["password"] != u"é":
             self.password = crypt_password(kwargs["password"])
-        self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
-        self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
+	# If we ever had numerical uid, don't resolve it
+	v_uid = parameters.get_admin("VIRTUAL_UID");
+	if v_uid.isdigit():
+		self.uid = v_uid
+	else:
+		self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
+	# Just the same for gid
+	v_gid = parameters.get_admin("VIRTUAL_GID")
+	if v_gid.isdigit:
+		self.gid = v_gid
+	else:
+		self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
+
         if kwargs.has_key("quota") and kwargs["quota"] is not None \
                 and int(kwargs["quota"]) < self.domain.quota:
             self.quota = kwargs["quota"]
@@ -280,8 +309,18 @@ class Mailbox(DatesAware):
         self.user = user
         if not self.create_dir():
             raise AdminError(_("Failed to initialise mailbox, check permissions"))
-        self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
-        self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
+	# If we ever had numerical uid, don't resolve it
+	v_uid = parameters.get_admin("VIRTUAL_UID");
+	if v_uid.isdigit():
+		self.uid = v_uid
+	else:
+		self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
+	# Just the same for gid
+	v_gid = parameters.get_admin("VIRTUAL_GID")
+	if v_gid.isdigit:
+		self.gid = v_gid
+	else:
+		self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
         self.quota = self.domain.quota
         super(Mailbox, self).save()
 
