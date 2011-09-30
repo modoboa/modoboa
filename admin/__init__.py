@@ -4,8 +4,7 @@ from modoboa.lib import parameters, events
 from django.utils.translation import ugettext as _
 from models import Extension
 
-parameters.register_admin("CREATE_DIRECTORIES", type="list", deflt="yes",
-			  values=[("yes", "yes"), ("no", "no")],
+parameters.register_admin("CREATE_DIRECTORIES", type="list_yesno", deflt="yes",
 			  help=_("Modoboa will handle mailbox creation on filesystem"))
 parameters.register_admin("STORAGE_PATH", type="string", deflt="/var/vmail",
                           help=_("Path to the root directory where messages are stored"))
