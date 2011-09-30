@@ -1109,3 +1109,8 @@ order to communicate with your IMAP and SMTP servers::
   SMTP_AUTHENTICATION = no
   SMTP_SERVER = 127.0.0.1
   SMTP_PORT = 25
+
+Since version 0.8.7, the webmail supports the sending of attachments
+with messages. You can limit the size of each attachment by going to
+the *Admin > Settings > Parameters* page. Click on the ``webmail``
+section and modify the value of the ``MAX_ATTACHMENT_SIZE`` parameter.
