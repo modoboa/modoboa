@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-14 14:06+0200\n"
+"POT-Creation-Date: 2011-09-30 15:26+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -60,12 +60,16 @@ msgstr "Editer le dossier"
 msgid "Folder deleted"
 msgstr "Dossier supprimé"
 
-#: extensions/webmail/static/js/webmail.js:226
-#: extensions/webmail/static/js/webmail.js:250 static/js/anchor_nav.js:212
+#: extensions/webmail/static/js/webmail.js:94
+msgid "Sending..."
+msgstr "Envoi..."
+
+#: extensions/webmail/static/js/webmail.js:227
+#: extensions/webmail/static/js/webmail.js:251 static/js/anchor_nav.js:212
 msgid "Done"
 msgstr "Effectué"
 
-#: extensions/webmail/static/js/webmail.js:239
+#: extensions/webmail/static/js/webmail.js:240
 msgid "Waiting..."
 msgstr "En attente..."
 

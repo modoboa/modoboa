@@ -208,6 +208,27 @@ requires a migration.
    Before executing a schema/data migration, I recommend that you make
    a copy of your existing database.
 
+0.8.7: per-user language selection
+----------------------------------
+
+#. Edit the *settings.py* file and add the
+   ``'django.middleware.locale.LocaleMiddleware'`` middleware to the
+   ``MIDDLEWARE_CLASSES`` variable like this::
+
+    MIDDLEWARE_CLASSES = (
+      'django.middleware.common.CommonMiddleware',
+      'django.contrib.sessions.middleware.SessionMiddleware',
+      'django.contrib.auth.middleware.AuthenticationMiddleware',
+      'django.contrib.messages.middleware.MessageMiddleware',
+      'django.middleware.locale.LocaleMiddleware',
+      'modoboa.lib.middleware.ExtControlMiddleware',
+      'modoboa.extensions.webmail.middleware.WebmailErrorMiddleware',
+    )
+
+#. To select a custom language, go to *Options > Preferences* and
+   select the ``general`` section. Choose a value, save and disconnect
+   from Modoboa. On the next login, the desired language will be used.
+
 0.8.6.1: maintenance release
 ----------------------------
 

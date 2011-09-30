@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-14 14:11+0200\n"
+"POT-Creation-Date: 2011-09-30 15:25+0200\n"
 "PO-Revision-Date: 2011-08-25 13:03+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
@@ -17,11 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin/__init__.py:7
+#: admin/__init__.py:8
+msgid "Modoboa will handle mailbox creation on filesystem"
+msgstr ""
+
+#: admin/__init__.py:10
 msgid "Path to the root directory where messages are stored"
 msgstr "Pfad zum root-Verzeichnis unterhalb dessen E-Mails abgelegt werden"
 
-#: admin/__init__.py:9
+#: admin/__init__.py:12
 msgid ""
 "UID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
@@ -29,7 +33,7 @@ msgstr ""
 "UID des virtuellen Benutzers, der Besitzer der Domains, Mailboxen und "
 "Nachrichten im Dateisystem ist."
 
-#: admin/__init__.py:11
+#: admin/__init__.py:14
 msgid ""
 "GID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
@@ -37,11 +41,11 @@ msgstr ""
 "GID des virtuellen Benutzers, der Besitzer der Domains, Mailboxen und "
 "Nachrichten im Dateisystem ist."
 
-#: admin/__init__.py:14
+#: admin/__init__.py:17
 msgid "Mailboxes storage format"
 msgstr "Mailbox erstellt."
 
-#: admin/__init__.py:16
+#: admin/__init__.py:19
 msgid ""
 "Sub-directory (inside the mailbox) where messages are stored when using the "
 "maildir format"
@@ -49,13 +53,18 @@ msgstr ""
 "Unterverzeichnis (innerhalb der Mailbox) in dem Nachrichten abgelegt werden "
 "wenn Maildir-Format eingesetzt wird."
 
-#: admin/__init__.py:19
+#: admin/__init__.py:22
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Verschlüsselungsschema der Mailbox-Passworte"
 
-#: admin/__init__.py:21
+#: admin/__init__.py:24
 msgid "Number of displayed items per page"
 msgstr "Anzahl dargestellter Einträge pro Seite"
+
+#: admin/__init__.py:31
+#, fuzzy
+msgid "The default redirection used when no application is specified"
+msgstr "Der Standard-Editor zum Erstellen einer Nachricht"
 
 #: admin/forms.py:27
 msgid "Failed to rename domain, check permissions"
@@ -146,7 +155,7 @@ msgstr "Leer"
 msgid "Invalid action, %(user)s is a local user"
 msgstr "Unzulässige Aktion, %(user)s ist ein lokaler Benutzer"
 
-#: admin/models.py:77 admin/models.py:134 admin/models.py:147
+#: admin/models.py:77 admin/models.py:141 admin/models.py:154
 msgid "name"
 msgstr "Name"
 
@@ -158,8 +167,8 @@ msgstr "Name der Domäne"
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Standard-Quota für Mailboxen (in MB)"
 
-#: admin/models.py:80 admin/models.py:138 admin/models.py:312
-#: admin/models.py:388 extensions/postfix_autoreply/models.py:19
+#: admin/models.py:80 admin/models.py:145 admin/models.py:352
+#: admin/models.py:428 extensions/postfix_autoreply/models.py:19
 msgid "enabled"
 msgstr "aktiviert"
 
@@ -167,53 +176,53 @@ msgstr "aktiviert"
 msgid "Check to activate this domain"
 msgstr "Auswählen, um diese Domäne zu aktivieren"
 
-#: admin/models.py:127
+#: admin/models.py:134
 msgid "Failed to initialise domain, check permissions"
 msgstr ""
 "Domäne konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
-#: admin/models.py:135
+#: admin/models.py:142
 msgid "The alias name"
 msgstr "Der Alias-Name"
 
-#: admin/models.py:136
+#: admin/models.py:143
 msgid "target"
 msgstr "Ziel"
 
-#: admin/models.py:137
+#: admin/models.py:144
 msgid "The domain this alias points to"
 msgstr "Domäne auf die dieser Alias verweist"
 
-#: admin/models.py:139 admin/models.py:313
+#: admin/models.py:146 admin/models.py:353
 msgid "Check to activate this alias"
 msgstr "Auswählen um den Alias zu aktivieren"
 
-#: admin/models.py:148
+#: admin/models.py:155
 msgid "First name and last name of mailbox owner"
 msgstr "Vor- und Nachname des Mailbox-Besitzers"
 
-#: admin/models.py:149 admin/models.py:306
+#: admin/models.py:156 admin/models.py:346
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models.py:150
+#: admin/models.py:157
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Mailbox-Adresse (ohne den @domain.tld-Anteil)"
 
-#: admin/models.py:151
+#: admin/models.py:158
 msgid "password"
 msgstr "Passwort"
 
-#: admin/models.py:226 admin/models.py:276
+#: admin/models.py:245 admin/models.py:306
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Mailbox konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
-#: admin/models.py:245
+#: admin/models.py:264
 msgid "Mailbox with this address already exists"
 msgstr "Eine Mailbox mit dieser Adresse existiert bereits."
 
-#: admin/models.py:307
+#: admin/models.py:347
 msgid ""
 "The alias address (without the domain part). For a 'catch-all' address, just "
 "enter an * character."
@@ -221,23 +230,23 @@ msgstr ""
 "Die Alias-Adresse (ohne den Domain-Anteil). Geben sie für eine Adresse an, "
 "die alles annimmt, * an."
 
-#: admin/models.py:309
+#: admin/models.py:349
 msgid "mailboxes"
 msgstr "Mailboxen"
 
-#: admin/models.py:310
+#: admin/models.py:350
 msgid "The mailboxes this alias points to"
 msgstr "Mailbox auf den dieser Alias verweist"
 
-#: admin/models.py:389
+#: admin/models.py:429
 msgid "Check to enable this extension"
 msgstr "Auswählen, um diese Erweiterung zu aktivieren"
 
-#: admin/permissions.py:28
+#: admin/permissions.py:29
 msgid "Add super administrator"
 msgstr "Super-Administrator hinzufügen"
 
-#: admin/permissions.py:81
+#: admin/permissions.py:82
 msgid "Add domain administrator"
 msgstr "Domänen-Administrator hinzufügen"
 
@@ -257,7 +266,7 @@ msgstr "Erstellt"
 msgid "Last modified"
 msgstr "Zuletzt verändert"
 
-#: admin/tables.py:14 admin/views.py:165
+#: admin/tables.py:14 admin/views.py:164
 #: admin/templatetags/admin_extras.py:113
 msgid "Domain aliases"
 msgstr "Domänen-Aliase"
@@ -267,7 +276,7 @@ msgstr "Domänen-Aliase"
 msgid "Mailboxes"
 msgstr "Mailboxen"
 
-#: admin/tables.py:18 admin/views.py:395
+#: admin/tables.py:18 admin/views.py:394
 #: admin/templatetags/admin_extras.py:119
 msgid "Mailbox aliases"
 msgstr "Mailboxen-Aliase"
@@ -328,176 +337,176 @@ msgstr "Voller Name"
 msgid "Defined"
 msgstr "Definiert"
 
-#: admin/views.py:32
+#: admin/views.py:31
 msgid "Unknown object type"
 msgstr "Unbekannter Objekt-Typ"
 
-#: admin/views.py:66
+#: admin/views.py:65
 msgid "Do not delete domain directory"
 msgstr "Domänen-Verzeichnis nicht löschen"
 
-#: admin/views.py:69
+#: admin/views.py:68
 msgid "Available domains"
 msgstr "Verfügbare Domänen"
 
-#: admin/views.py:87
+#: admin/views.py:86
 msgid "Domain with this name already defined"
 msgstr "Es existiert bereits eine Domain mit diesem Namen"
 
-#: admin/views.py:104
+#: admin/views.py:103
 msgid "New domain"
 msgstr "Neue Domäne"
 
-#: admin/views.py:105 admin/views.py:174 admin/views.py:298 admin/views.py:329
-#: admin/views.py:433 extensions/sievefilters/views.py:175
+#: admin/views.py:104 admin/views.py:173 admin/views.py:297 admin/views.py:328
+#: admin/views.py:432 extensions/sievefilters/views.py:175
 #: extensions/webmail/views.py:371
 msgid "Create"
 msgstr "Erstellen"
 
-#: admin/views.py:110
+#: admin/views.py:109
 msgid "Domain created"
 msgstr "Domäne erstellt."
 
-#: admin/views.py:121
+#: admin/views.py:120
 msgid "Domain editing"
 msgstr "Domäne Bearbeitung"
 
-#: admin/views.py:122 admin/views.py:209 admin/views.py:452
+#: admin/views.py:121 admin/views.py:208 admin/views.py:451
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:38
 #: extensions/webmail/views.py:398 templates/userprefs/chpassword.html:15
 #: templates/userprefs/setforward.html:15
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: admin/views.py:127
+#: admin/views.py:126
 msgid "Domain modified"
 msgstr "Domäne verändert"
 
-#: admin/views.py:141
+#: admin/views.py:140
 msgid "You can't delete your own domain"
 msgstr "Sie können Ihre eigene Domäne nicht löschen"
 
-#: admin/views.py:150
+#: admin/views.py:149
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domäne gelöscht"
 msgstr[1] "Domänen gelöscht"
 
-#: admin/views.py:173
+#: admin/views.py:172
 msgid "New domain alias"
 msgstr "Neuer Domänen-Alias"
 
-#: admin/views.py:183 admin/views.py:218
+#: admin/views.py:182 admin/views.py:217
 msgid "A domain with this name already exists"
 msgstr "Eine Domäne mit diesem Namen existiert bereits"
 
-#: admin/views.py:188 admin/views.py:223 admin/views.py:413
+#: admin/views.py:187 admin/views.py:222 admin/views.py:412
 msgid "Alias with this name already exists"
 msgstr "Ein Alias mit diesem Namen existiert bereits"
 
-#: admin/views.py:190
+#: admin/views.py:189
 msgid "Domain alias created"
 msgstr "Domänen-Alias erstellt"
 
-#: admin/views.py:208
+#: admin/views.py:207
 msgid "Domain alias editing"
 msgstr "Domänen-Alias Bearbeitung"
 
-#: admin/views.py:225
+#: admin/views.py:224
 msgid "Domain alias updated"
 msgstr "Domänen-Alias aktualisiert"
 
-#: admin/views.py:241
+#: admin/views.py:240
 msgid "Domain alias deleted"
 msgid_plural "Domain aliases deleted"
 msgstr[0] "Domänen-Alias gelöscht"
 msgstr[1] "Domänen-Aliase gelöscht"
 
-#: admin/views.py:249
+#: admin/views.py:248
 msgid "Available mailboxes"
 msgstr "Verfügbare Mailboxen"
 
-#: admin/views.py:257
+#: admin/views.py:256
 msgid "Do not delete mailbox directory"
 msgstr "Löschen Sie nicht das Mailbox-Verzeichnis"
 
-#: admin/views.py:297
+#: admin/views.py:296
 msgid "New mailbox"
 msgstr "Neue Mailbox"
 
-#: admin/views.py:311
+#: admin/views.py:310
 msgid "Mailbox created"
 msgstr "Mailbox erstellt."
 
-#: admin/views.py:328
+#: admin/views.py:327
 msgid "Mailbox editing"
 msgstr "Mailboxen Bearbeitung"
 
-#: admin/views.py:345
+#: admin/views.py:344
 msgid "Mailbox modified"
 msgstr "Mailbox verändert"
 
-#: admin/views.py:348
+#: admin/views.py:347
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Mailbox konnte nicht umbenannt werden. Prüfen Sie die Berechtigungen."
 
-#: admin/views.py:367
+#: admin/views.py:366
 msgid "You can't delete your own mailbox"
 msgstr "Sie können Ihre eigene Mailbox nicht löschen"
 
-#: admin/views.py:377
+#: admin/views.py:376
 msgid "Mailbox deleted"
 msgid_plural "Mailboxes deleted"
 msgstr[0] "Mailbox gelöscht"
 msgstr[1] "Mailboxen gelöscht"
 
-#: admin/views.py:408
+#: admin/views.py:407
 msgid "No target defined"
 msgstr "Kein Ziel angegeben"
 
-#: admin/views.py:432
+#: admin/views.py:431
 msgid "New mailbox alias"
 msgstr "Neuer Mailbox-Alias"
 
-#: admin/views.py:438
+#: admin/views.py:437
 msgid "Mailbox alias created"
 msgstr "Mailbox-Alias erstellt."
 
-#: admin/views.py:451
+#: admin/views.py:450
 msgid "Mailbox alias editing"
 msgstr "Mailbox-Alias Bearbeitung"
 
-#: admin/views.py:457
+#: admin/views.py:456
 msgid "Mailbox alias modified"
 msgstr "Mailbox-Alias verändert"
 
-#: admin/views.py:471
+#: admin/views.py:470
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
 msgstr[0] "Alias gelöscht"
 msgstr[1] "Aliase gelöscht"
 
-#: admin/views.py:482
+#: admin/views.py:481
 msgid "Super administrators"
 msgstr "Super-Administratoren"
 
-#: admin/views.py:491
+#: admin/views.py:490
 msgid "Domain administrators"
 msgstr "Domänen-Administratoren"
 
-#: admin/views.py:506 admin/views.py:523
+#: admin/views.py:505 admin/views.py:522
 msgid "Permission denied!"
 msgstr "Berechtigung verweigert!"
 
-#: admin/views.py:515
+#: admin/views.py:514
 msgid "Permission added."
 msgstr "Berechtigung hinzugefügt."
 
-#: admin/views.py:529
+#: admin/views.py:528
 msgid "Permissions removed"
 msgstr "Berechtigungen entfernt"
 
-#: admin/views.py:610
+#: admin/views.py:609
 msgid "Modifications applied."
 msgstr "Änderungen übernommen."
 
@@ -613,43 +622,43 @@ msgstr ""
 msgid "Simple amavis quarantine management tool"
 msgstr "Einfaches amavis Quarantäne-Management Werkzeug"
 
-#: extensions/amavis_quarantine/main.py:22
+#: extensions/amavis_quarantine/main.py:23
 msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr ""
 "Maximales Alter (in Tagen) von Nachrichten in der Quarantäne bevor sie "
 "gelöscht werden"
 
-#: extensions/amavis_quarantine/main.py:24
+#: extensions/amavis_quarantine/main.py:25
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr "Freigegebene Nachrichten löschen wenn Datenbank bereinigt wird"
 
-#: extensions/amavis_quarantine/main.py:28
+#: extensions/amavis_quarantine/main.py:29
 msgid "Mode used to access the PDP server"
 msgstr "Modus für Zugriff auf den PDP-Server"
 
-#: extensions/amavis_quarantine/main.py:31
+#: extensions/amavis_quarantine/main.py:32
 msgid "PDP server address (if inet mode)"
 msgstr "PDP-Server addresse (im inet-Modus)"
 
-#: extensions/amavis_quarantine/main.py:34
+#: extensions/amavis_quarantine/main.py:35
 msgid "PDP server port (if inet mode)"
 msgstr "PDP-Server port (im inet-Modus)"
 
-#: extensions/amavis_quarantine/main.py:36
+#: extensions/amavis_quarantine/main.py:37
 msgid "/var/amavis/amavisd.sock"
 msgstr ""
 
-#: extensions/amavis_quarantine/main.py:37
+#: extensions/amavis_quarantine/main.py:38
 msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Pfad zum PDP-Server Socket (im UNIX-Modus)"
 
-#: extensions/amavis_quarantine/main.py:41 extensions/webmail/main.py:40
+#: extensions/amavis_quarantine/main.py:42 extensions/webmail/main.py:40
 msgid "Sets the maximum number of messages displayed in a page"
 msgstr ""
 "Legt die maximale Anzahl von Nachrichten fest, die in einer Seite "
 "dargestellt werden"
 
-#: extensions/amavis_quarantine/main.py:57
+#: extensions/amavis_quarantine/main.py:58
 #: extensions/amavis_quarantine/templates/amavis_quarantine/index.html:42
 msgid "Quarantine"
 msgstr "Quarantäne"
@@ -772,13 +781,13 @@ msgid "Auto-reply (vacation) functionality using Postfix"
 msgstr ""
 "Automatische Antwort (Abwesenheitsbenachrichtigung) über Postfix-Programm"
 
-#: extensions/postfix_autoreply/main.py:34
+#: extensions/postfix_autoreply/main.py:35
 msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgstr ""
 "Zeit in Sekunden zwischen zwei automatisierten Antworten an denselben "
 "Empfänger"
 
-#: extensions/postfix_autoreply/main.py:60
+#: extensions/postfix_autoreply/main.py:61
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:30
 msgid "Auto-reply message"
 msgstr "Automatische Antwort"
@@ -909,7 +918,7 @@ msgstr "Wählen Sie den Modus aus in dem der Editor arbeiten soll"
 msgid "Plugin to easily create server-side filters"
 msgstr "Plugin, um auf einfache Weise server-seitige Filter zu erstellen"
 
-#: extensions/sievefilters/main.py:56
+#: extensions/sievefilters/main.py:57
 #: extensions/sievefilters/templates/sievefilters/index.html:17
 msgid "Message filters"
 msgstr "Nachrichten-Filter"
@@ -1072,19 +1081,19 @@ msgstr "Versendegrösse"
 msgid "Graphical statistics about emails traffic using RRDtool"
 msgstr "Grafische E-Mail-Statistik (setzt RRDtool ein)"
 
-#: extensions/stats/main.py:27
+#: extensions/stats/main.py:28
 msgid "Path to log file used to collect statistics"
 msgstr "Pfad zur Log-Datei, um Statistiken zu sammeln"
 
-#: extensions/stats/main.py:30
+#: extensions/stats/main.py:31
 msgid "Path to directory where RRD files are stored"
 msgstr "Pfad zum Verzeichnis in dem die RRD-Dateien abgelegt werden"
 
-#: extensions/stats/main.py:33
+#: extensions/stats/main.py:34
 msgid "Path to directory where PNG files are stored"
 msgstr "Pfad zu dem Verzeichnis in dem PNG-Dateien abgelegt werden"
 
-#: extensions/stats/main.py:46 extensions/stats/templates/stats/index.html:84
+#: extensions/stats/main.py:47 extensions/stats/templates/stats/index.html:84
 msgid "Statistics"
 msgstr "Statistiken"
 
@@ -1291,7 +1300,7 @@ msgstr "Aktiviere/Deaktiviere Darstellung von HTML-Links"
 msgid "Simple IMAP webmail"
 msgstr "Einfaches IMAP-Webmail"
 
-#: extensions/webmail/main.py:90
+#: extensions/webmail/main.py:91
 #: extensions/webmail/templates/webmail/index.html:212
 msgid "Webmail"
 msgstr "Webmail"

@@ -233,6 +233,18 @@ new instance of this role. The role's name is available inside the
 Callbacks listening to this event must return the class object
 corresponding to the given ``role`` argument.
 
+ExtEnabled
+----------
+
+Raised just after an extension has been activated. The Extension
+object is available inside the ``ext`` keyword argument.
+
+ExtDisabled
+-----------
+
+Raised just after an extension has been disabled. The Extension
+object is available inside the ``ext`` keyword argument.
+
 Parameters
 ==========
 

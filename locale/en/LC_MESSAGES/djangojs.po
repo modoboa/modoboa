@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-14 14:06+0200\n"
+"POT-Creation-Date: 2011-09-30 15:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,12 +61,16 @@ msgstr ""
 msgid "Folder deleted"
 msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:226
-#: extensions/webmail/static/js/webmail.js:250 static/js/anchor_nav.js:212
+#: extensions/webmail/static/js/webmail.js:94
+msgid "Sending..."
+msgstr ""
+
+#: extensions/webmail/static/js/webmail.js:227
+#: extensions/webmail/static/js/webmail.js:251 static/js/anchor_nav.js:212
 msgid "Done"
 msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:239
+#: extensions/webmail/static/js/webmail.js:240
 msgid "Waiting..."
 msgstr ""
 
