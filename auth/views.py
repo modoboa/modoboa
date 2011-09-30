@@ -31,7 +31,7 @@ def dologin(request):
                                   password=request.POST["password"])
 
                 next = request.POST["next"]
-                if next == "None":
+                if next.strip() in ["", "None"]:
                     next = reverse(modoboa.admin.views.domains)
                 return HttpResponseRedirect(next)
             else:
