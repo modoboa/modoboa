@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Modoboa-0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-30 15:26+0200\n"
-"PO-Revision-Date: 2011-07-10 07:30+0000\n"
+"PO-Revision-Date: 2011-10-09 00:26+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
 "Language: de\n"
@@ -18,14 +18,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:41
-#, fuzzy
 msgid "Delete this message?"
-msgstr "Diese Auswahl löschen?"
+msgstr "Diese Nachricht löschen?"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:49
-#, fuzzy
 msgid "Release this message?"
-msgstr "Diese Auswahl freilassen?"
+msgstr "Diese Nachricht freilassen?"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:107
 msgid "Release this selection?"
@@ -44,18 +42,16 @@ msgid "Save changes?"
 msgstr "Änderungen speichern?"
 
 #: extensions/sievefilters/static/js/lib.js:143
-#, fuzzy
 msgid "Remove filters set?"
 msgstr "Diesen Filter entfernen?"
 
 #: extensions/sievefilters/static/js/lib.js:161
-#, fuzzy
 msgid "Activate this filters set?"
-msgstr "Diesen Filter entfernen?"
+msgstr "Diesen Filter aktivieren?"
 
 #: extensions/sievefilters/static/js/lib.js:169
 msgid "active"
-msgstr ""
+msgstr "aktiv"
 
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"
@@ -66,12 +62,12 @@ msgid "Folder deleted"
 msgstr "Ordner gelöscht"
 
 #: extensions/webmail/static/js/webmail.js:94
-#, fuzzy
 msgid "Sending..."
-msgstr "Aktualisiere..."
+msgstr "Sende …"
 
 #: extensions/webmail/static/js/webmail.js:227
-#: extensions/webmail/static/js/webmail.js:251 static/js/anchor_nav.js:212
+#: extensions/webmail/static/js/webmail.js:251
+#: static/js/anchor_nav.js:212
 msgid "Done"
 msgstr "Abgeschlossen"
 
@@ -94,3 +90,4 @@ msgstr "Einstellungen gespeichert"
 #: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Parameter gespeichert"
+
