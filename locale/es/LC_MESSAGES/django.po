@@ -1,25 +1,28 @@
-# Modoboa spanish translation
+# Modoboa spanish translation.
 # Copyright (C) 2011
 # This file is distributed under the same license as the Modoboa package.
-#
+# 
+# Translators:
+# Pedro Gracia <lasarux@neuroomante.com>, 2011.
 # Pedro Gracia <pedro.gracia@impulzia.com>, 2010, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa-0.8.6\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Modoboa-0.8.7\n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2011-09-30 15:26+0200\n"
-"PO-Revision-Date: 2011-08-29 09:20+0000\n"
+"PO-Revision-Date: 2011-10-12 08:40+0000\n"
 "Last-Translator: lasarux <lasarux@neuroomante.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: es\n"
+"Language-Team: ES <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: admin/__init__.py:8
 msgid "Modoboa will handle mailbox creation on filesystem"
 msgstr ""
+"Modoboa se ocupará de la creación del \"mailbox\" en el sistema de ficheros."
 
 #: admin/__init__.py:10
 msgid "Path to the root directory where messages are stored"
@@ -30,16 +33,16 @@ msgid ""
 "UID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
 msgstr ""
-"UID del usuario virtual que es el propietario de los dominios/mailboxes/"
-"mensajes en el sistema"
+"UID del usuario virtual que es el propietario de los "
+"dominios/mailboxes/mensajes en el sistema"
 
 #: admin/__init__.py:14
 msgid ""
 "GID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
 msgstr ""
-"GID del usuario virtual que es el propietario de los dominios/mailboxes/"
-"mensajes en el sistema"
+"GID del usuario virtual que es el propietario de los "
+"dominios/mailboxes/mensajes en el sistema"
 
 #: admin/__init__.py:17
 msgid "Mailboxes storage format"
@@ -62,9 +65,9 @@ msgid "Number of displayed items per page"
 msgstr "Número de ítems mostrado por página"
 
 #: admin/__init__.py:31
-#, fuzzy
 msgid "The default redirection used when no application is specified"
-msgstr "Editor por defecto para usar cuando redacta un mensaje"
+msgstr ""
+"La redirección que será usada cuando ninguna aplicación sea especificada."
 
 #: admin/forms.py:27
 msgid "Failed to rename domain, check permissions"
@@ -77,7 +80,8 @@ msgstr "Cuota"
 #: admin/forms.py:52
 msgid "Mailbox quota in MB (default to domain quota if blank)"
 msgstr ""
-"Cuota del \"Mailbox\" en MB (por defecto la del dominio, si no se especifica)"
+"Cuota del \"Mailbox\" en MB (por defecto la del dominio, si no se "
+"especifica)"
 
 #: admin/forms.py:53 auth/forms.py:6
 msgid "Password"
@@ -223,11 +227,11 @@ msgstr "Ya existe un \"Mailbox\" con esta dirección"
 
 #: admin/models.py:347
 msgid ""
-"The alias address (without the domain part). For a 'catch-all' address, just "
-"enter an * character."
+"The alias address (without the domain part). For a 'catch-all' address, just"
+" enter an * character."
 msgstr ""
-"La dirección del alias (sin la parte del dominio). Para una dirección que lo "
-"recoja todo, ponga un asterisco (*)."
+"La dirección del alias (sin la parte del dominio). Para una dirección que lo"
+" recoja todo, ponga un asterisco (*)."
 
 #: admin/models.py:349
 msgid "mailboxes"
@@ -630,8 +634,8 @@ msgstr ""
 #: extensions/amavis_quarantine/main.py:25
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr ""
-"Eliminar los mensajes marcados como publicados cuando se haga limpieza de la "
-"base de datos"
+"Eliminar los mensajes marcados como publicados cuando se haga limpieza de la"
+" base de datos"
 
 #: extensions/amavis_quarantine/main.py:29
 msgid "Mode used to access the PDP server"
@@ -647,7 +651,7 @@ msgstr "Puerto del servidor de PDP (en modo inet)"
 
 #: extensions/amavis_quarantine/main.py:37
 msgid "/var/amavis/amavisd.sock"
-msgstr ""
+msgstr "/var/amavis/amavisd.sock"
 
 #: extensions/amavis_quarantine/main.py:38
 msgid "Path to the PDP server socket (if unix mode)"
@@ -878,7 +882,8 @@ msgstr "Redirigir el mensaje a"
 
 #: extensions/sievefilters/lib.py:37
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr "La conexión al servidor MANAGESIEVE falló, verifique su configuración."
+msgstr ""
+"La conexión al servidor MANAGESIEVE falló, verifique su configuración."
 
 #: extensions/sievefilters/lib.py:78
 msgid "Not enough space on server"
@@ -1161,9 +1166,8 @@ msgid "End"
 msgstr "Fin"
 
 #: extensions/webmail/forms.py:14
-#, fuzzy
 msgid "Select a file"
-msgstr "Seleccione un usuario"
+msgstr "Seleccione un fichero"
 
 #: extensions/webmail/lib.py:33
 msgid "Server response"
@@ -1219,7 +1223,7 @@ msgstr "El servidor requiere autenticación"
 
 #: extensions/webmail/main.py:35
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
-msgstr ""
+msgstr "Tamaño máximo del adjunto en bytes (or KB, MB, GB si se especifica)"
 
 #: extensions/webmail/main.py:39
 msgid "Number of displayed emails per page"
@@ -1319,29 +1323,25 @@ msgid "Folder modified"
 msgstr "Carpeta modificada"
 
 #: extensions/webmail/views.py:465
-#, fuzzy
 msgid "Failed to save attachment: "
-msgstr "La eliminación del filtro falló"
+msgstr "Fallo al guardar el adjunto:"
 
 #: extensions/webmail/views.py:468
 #, python-format
 msgid "Attachment is too big (limit: %s)"
-msgstr ""
+msgstr "EL adjunto es demasiado grande (límite: %s)"
 
 #: extensions/webmail/views.py:483
-#, fuzzy
 msgid "Bad query"
-msgstr "Mala cabecera"
+msgstr "Consulta errónea"
 
 #: extensions/webmail/views.py:493
-#, fuzzy
 msgid "Failed to remove attachment: "
-msgstr "La eliminación del filtro falló"
+msgstr "Fallo al eliminar el adjunto:"
 
 #: extensions/webmail/views.py:498
-#, fuzzy
 msgid "Unknown attachment"
-msgstr "Adjuntos"
+msgstr "Adjunto desconocido"
 
 #: extensions/webmail/templates/webmail/attachments.html:86
 #: extensions/webmail/templates/webmail/compose.html:9
@@ -1350,24 +1350,23 @@ msgid "Attachments"
 msgstr "Adjuntos"
 
 #: extensions/webmail/templates/webmail/attachments.html:93
-#, fuzzy
 msgid "Attach"
-msgstr "Adjuntos"
+msgstr "Adjunto"
 
 #: extensions/webmail/templates/webmail/attachments.html:97
 msgid "Uploading.."
-msgstr ""
+msgstr "Subiendo..."
 
 #: extensions/webmail/templates/webmail/attachments.html:113
 msgid "Done"
-msgstr ""
+msgstr "Hecho"
 
 #: extensions/webmail/templates/webmail/compose.html:12
 #, python-format
 msgid "%(counter)s file"
 msgid_plural "%(counter)s files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s fichero"
+msgstr[1] "%(counter)s ficheros"
 
 #: extensions/webmail/templates/webmail/folder.html:37
 msgid "Parent folder"
@@ -1452,9 +1451,8 @@ msgid "Add"
 msgstr "Añadir"
 
 #: templates/admin/domains_header.html:44
-#, fuzzy
 msgid "Remove this selection?"
-msgstr "Eliminar este filtro"
+msgstr "¿Eliminar esta selección?"
 
 #: templates/admin/domains_header.html:52
 msgid "for"
@@ -1539,13 +1537,12 @@ msgid "Define your forward"
 msgstr "Defina su reenvío"
 
 #: userprefs/__init__.py:7
-#, fuzzy
 msgid "Prefered language"
-msgstr "Preferencias"
+msgstr "Idioma preferido"
 
 #: userprefs/__init__.py:10
 msgid "Prefered language to display pages"
-msgstr ""
+msgstr "Idioma preferido para mostrar las páginas"
 
 #: userprefs/forms.py:12
 msgid "Old password"
@@ -1579,11 +1576,4 @@ msgstr "Contraseña cambiada"
 msgid "Forward updated"
 msgstr "Reenvío actualizado"
 
-#~ msgid "Enabled"
-#~ msgstr "Activado"
 
-#~ msgid "Release this message?"
-#~ msgstr "¿Publicar este mensaje?"
-
-#~ msgid "Delete this message?"
-#~ msgstr "¿Eliminar este mensaje?"

@@ -5,8 +5,8 @@
 # Antoine Nguyen <tonio@ngyn.org>, 2010-2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.8.6\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: modoboa-0.8.7\n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2011-09-30 15:25+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"

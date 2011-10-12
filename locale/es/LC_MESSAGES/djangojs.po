@@ -1,31 +1,31 @@
-# Modoboa spanish translation
+# Modoboa spanish translation.
 # Copyright (C) 2011
 # This file is distributed under the same license as the Modoboa package.
-#
+# 
+# Translators:
+# Pedro Gracia <lasarux@neuroomante.com>, 2011.
 # Pedro Gracia <pedro.gracia@impulzia.com>, 2010, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa-0.8.5\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Modoboa-0.8.7\n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2011-09-30 15:26+0200\n"
-"PO-Revision-Date: 2011-07-08 09:04+0000\n"
-"Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
-"Language-Team: Español <i18n@impulzia.com>\n"
-"Language: es\n"
+"PO-Revision-Date: 2011-10-12 08:42+0000\n"
+"Last-Translator: lasarux <lasarux@neuroomante.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:41
-#, fuzzy
 msgid "Delete this message?"
-msgstr "¿Eliminar esta selección?"
+msgstr "¿Eliminar este mensaje?"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:49
-#, fuzzy
 msgid "Release this message?"
-msgstr "¿Publicar esta selección?"
+msgstr "¿Publicar este mensaje?"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:107
 msgid "Release this selection?"
@@ -44,18 +44,16 @@ msgid "Save changes?"
 msgstr "¿Guardar cambios?"
 
 #: extensions/sievefilters/static/js/lib.js:143
-#, fuzzy
 msgid "Remove filters set?"
-msgstr "¿Eliminar este filtro?"
+msgstr "¿Eliminar este conjunto de filtros?"
 
 #: extensions/sievefilters/static/js/lib.js:161
-#, fuzzy
 msgid "Activate this filters set?"
-msgstr "¿Eliminar este filtro?"
+msgstr "¿Activar este conjunto de filtros?"
 
 #: extensions/sievefilters/static/js/lib.js:169
 msgid "active"
-msgstr ""
+msgstr "Activar"
 
 #: extensions/webmail/static/js/fdmenu.js:31
 msgid "Edit folder"
@@ -66,9 +64,8 @@ msgid "Folder deleted"
 msgstr "Carpeta eliminada"
 
 #: extensions/webmail/static/js/webmail.js:94
-#, fuzzy
 msgid "Sending..."
-msgstr "Recargando..."
+msgstr "Enviando..."
 
 #: extensions/webmail/static/js/webmail.js:227
 #: extensions/webmail/static/js/webmail.js:251 static/js/anchor_nav.js:212
@@ -94,3 +91,5 @@ msgstr "Preferencias guardas"
 #: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Parámetros guardados"
+
+

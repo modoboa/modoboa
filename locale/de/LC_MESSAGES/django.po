@@ -5,8 +5,8 @@
 # Patrick Ben Koetter <p@state-of-mind.de>, 2010-2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa-0.8.6\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Modoboa-0.8.7\n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2011-09-30 15:25+0200\n"
 "PO-Revision-Date: 2011-10-09 00:24+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
