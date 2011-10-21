@@ -2,6 +2,7 @@
  * Globals
  */
 var rtimer = null;
+var editorid = "id_body";
 
 /*
  * Enables folders opening/closing
@@ -127,7 +128,6 @@ function compose_callback(resp) {
   window.addEvent("resize", resize_window_callback);
 
   var editormode = resp.editor;
-  var editorid = "id_body";
 
   if (editormode == "html") {
     var instance = CKEDITOR.instances[editorid];
