@@ -753,7 +753,8 @@ def send_mail(request, origmsg=None, posturl=None):
             for img in images:
                 msg.attach(img)
         else:
-            text = MIMEText(body.encode(charset), _subtype=editormode)
+            text = MIMEText(body.encode(charset), 
+                            _subtype=editormode, _charset=charset)
             if len(request.session["compose_mail"]["attachments"]):
                 msg = MIMEMultipart()
                 msg.attach(text)
