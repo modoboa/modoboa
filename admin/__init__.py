@@ -2,6 +2,7 @@
 
 from modoboa.lib import parameters, events
 from django.utils.translation import ugettext as _
+from django.db.utils import DatabaseError
 from models import Extension
 
 parameters.register_admin("CREATE_DIRECTORIES", type="list_yesno", deflt="yes",
@@ -23,11 +24,22 @@ parameters.register_admin("PASSWORD_SCHEME", type="list", deflt="crypt",
 parameters.register_admin("ITEMS_PER_PAGE", type="int", deflt=30,
                           help=_("Number of displayed items per page"))
 
+#
+# Quick fix for #184
+#
+# Just catch the DatabaseError exception raised when runnning the
+# first ``syncdb`` command. 
+#
+try:
+    enabled_extensions = list(Extension.objects.filter(enabled=True))
+except DatabaseError:
+    enabled_extensions = []
+
 parameters.register_admin("DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
                           app="general",
                           values=sorted([("admin", "admin"), ("userprefs", "userprefs")] \
                                             + map(lambda ext: (ext.name, ext.name), 
-                                                  Extension.objects.filter(enabled=True))),
+                                                  enabled_extensions)),
                           help=_("The default redirection used when no application is specified"))
 
 def unset_default_topredirection(**kwargs):
