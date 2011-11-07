@@ -7,7 +7,7 @@ from modoboa.lib.emailutils import sendmail_simple
 @login_required
 @is_not_localadmin()
 def send_virus(request):
-    status, error = sendmail_simple("virus@evil.tld", request.user.username, """
+    status, error = sendmail_simple("virus@example.net", request.user.username, """
 This is the EICAR testvirus pattern.
 
 X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
@@ -22,7 +22,7 @@ will detect and treat it as if it were a virus.
 @login_required
 @is_not_localadmin()
 def send_spam(request):
-    status, error = sendmail_simple("spam@evil.tld", request.user.username, """
+    status, error = sendmail_simple("spam@example.net", request.user.username, """
 This is the GTUBE, the
         Generic
         Test for
