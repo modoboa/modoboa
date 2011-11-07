@@ -1,17 +1,20 @@
 # coding: utf-8
 
 import re
-import email
-from email.header import decode_header
 import lxml
 from django.template import Template, Context
 from django.template.loader import render_to_string
 import u2u_decode
+import smtplib
+from email.header import decode_header
+from email.mime.text import MIMEText
+from email.utils import make_msgid, formatdate, parseaddr
+import time
 
 class EmailAddress(object):
     def __init__(self, address):
         self.fulladdress = u2u_decode.u2u_decode(address).strip("\r\t\n")
-        (self.name, self.address) = email.utils.parseaddr(self.fulladdress)
+        (self.name, self.address) = parseaddr(self.fulladdress)
         if self.name == "":
             self.fulladdress = self.address
         
@@ -209,3 +212,32 @@ def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=Non
         except UnicodeDecodeError:
             pass
     return s.decode('ascii', 'ignore')
+
+def sendmail_simple(sender, rcpt, content=""):
+    """Simple way to send a text message
+
+    Send a text/plain message with basic headers (msg-id, date).
+
+    Return a tuple (True, None) on success, (False, error message)
+    otherwise.
+
+    :param sender: sender address
+    :param rcpt: recipient address
+    :param content: message's content
+    :return: tuple
+    """
+    msg = MIMEText(content)
+    msg["Subject"] = "Sample message"
+    msg["From"] = sender
+    msg["To"] = rcpt
+    msg["Message-ID"] = make_msgid()
+    msg["Date"] = formatdate(time.time(), True)
+
+    try:
+        s = smtplib.SMTP()
+        s.connect()
+        s.sendmail(msg["From"], [rcpt], msg.as_string())
+        s.quit()
+    except smtplib.SMTPException, e:
+        return False, "SMTP error: %s" % str(e)
+    return True, None

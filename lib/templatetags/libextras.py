@@ -3,6 +3,7 @@ import os
 from django.conf import settings
 from django import template
 from django.contrib import messages
+from modoboa.lib import events
 from modoboa.lib.sysutils import exec_cmd
 
 register = template.Library()
@@ -49,3 +50,9 @@ def display_messages(msgs):
 </script>
 """ % (level, text)
 
+@register.simple_tag
+def load_optionalmenu(user):
+    menu = events.raiseQueryEvent("UserMenuDisplay", target="top_menu_middle",
+                                  user=user)
+    return template.loader.render_to_string('common/menulist.html', 
+                                            {"entries" : menu, "user" : user})
