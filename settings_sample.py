@@ -37,7 +37,7 @@ DATABASES = {
     # }
 }
 
-DATABASE_ROUTERS = ["extensions.amavis_quarantine.lib.AmavisRouter"]
+DATABASE_ROUTERS = ["modoboa.extensions.amavis_quarantine.dbrouter.AmavisRouter"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
