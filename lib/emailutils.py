@@ -228,7 +228,6 @@ def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
     """
     try:
         s = smtplib.SMTP(server, port)
-        s.connect()
         s.sendmail(sender, [rcpt], msgstring)
         s.quit()
     except smtplib.SMTPException, e:

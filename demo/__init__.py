@@ -11,7 +11,7 @@ def menu(**kwargs):
         return []
     return [
         {"name"  : "demo",
-         "label" : _("Demo"),
+         "label" : _("Test messages"),
          "img" : static_url("pics/demo.png"),
          "class" : "topdropdown",
          "menu"  : [

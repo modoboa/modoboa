@@ -1,4 +1,5 @@
 # coding: utf-8
+import os
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from modoboa.admin.lib import is_not_localadmin
