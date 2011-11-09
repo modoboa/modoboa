@@ -213,6 +213,28 @@ def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=Non
             pass
     return s.decode('ascii', 'ignore')
 
+def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
+    """Message sending
+
+    Return a tuple (True, None) on success, (False, error message)
+    otherwise.
+
+    :param sender: sender address
+    :param rcpt: recipient address
+    :param msgstring: the message structure (must be a string)
+    :param server: the sending server's address
+    :param port: the listening port
+    :return: tuple
+    """
+    try:
+        s = smtplib.SMTP(server, port)
+        s.connect()
+        s.sendmail(sender, [rcpt], msgstring)
+        s.quit()
+    except smtplib.SMTPException, e:
+        return False, "SMTP error: %s" % str(e)
+    return True, None
+
 def sendmail_simple(sender, rcpt, content=""):
     """Simple way to send a text message
 
@@ -233,11 +255,30 @@ def sendmail_simple(sender, rcpt, content=""):
     msg["Message-ID"] = make_msgid()
     msg["Date"] = formatdate(time.time(), True)
 
+    return __sendmail(sender, rcpt, msg.as_string())
+
+def sendmail_fromfile(sender, rcpt, fname):
+    """Send a message contained within a file
+    
+    The given file name must represent a valid message structure. It
+    must not include the From: and To: headers, they are automatically
+    added by the function.
+
+    :param sender: sender address
+    :param rcpt: recipient address
+    :param fname: the name of the file containing the message
+    :return: a tuple
+    """
     try:
-        s = smtplib.SMTP()
-        s.connect()
-        s.sendmail(msg["From"], [rcpt], msg.as_string())
-        s.quit()
-    except smtplib.SMTPException, e:
-        return False, "SMTP error: %s" % str(e)
-    return True, None
+        fp = open(fname)
+    except IOError, e:
+        return False, str(e)
+
+    content = """From: %s
+To: %s
+""" % (sender, rcpt)
+    content += fp.read()
+    fp.close()
+
+    return __sendmail(sender, rcpt, content)
+    

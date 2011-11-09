@@ -1,20 +1,16 @@
 # coding: utf-8
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from modoboa.admin.lib import is_not_localadmin
 from modoboa.lib.webutils import ajax_response
-from modoboa.lib.emailutils import sendmail_simple
+from modoboa.lib.emailutils import sendmail_simple, sendmail_fromfile
 
 @login_required
 @is_not_localadmin()
 def send_virus(request):
-    status, error = sendmail_simple("virus@example.net", request.user.username, """
-This is the EICAR testvirus pattern.
-
-X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
-
-It cannot harm your computer, but virus scanners
-will detect and treat it as if it were a virus.
-""")
+    status, error = sendmail_fromfile("virus@example.net", request.user.username,
+                                      os.path.join(settings.MODOBOA_DIR,
+                                                   "tmp/virus.msg"))
     if status:
         return ajax_response(request)
     return ajax_response(request, "ko", respmsg=error)
