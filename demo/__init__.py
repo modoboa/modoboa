@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_noop as _
 from modoboa.lib import events
@@ -27,4 +28,5 @@ def menu(**kwargs):
          }
         ]
 
-events.register("UserMenuDisplay", menu)
+if 'demo' in settings.INSTALLED_APPS:
+    events.register("UserMenuDisplay", menu)
