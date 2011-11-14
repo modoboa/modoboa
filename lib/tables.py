@@ -11,7 +11,7 @@ output (using standard tags like <table> and co.).
 import inspect
 import lxml
 from django.utils.translation import ugettext as _
-from django.template import Template, Context
+from django.template import Template, RequestContext, Context
 from django.template.loader import render_to_string
 
 class Column:
@@ -193,7 +193,7 @@ class Table(object):
   {% include "common/table_body.html" %}
 </table>
 """)
-            return t.render(Context({
+            return t.render(RequestContext(self.request, {
                         "table" : self, "tableid" : self.tableid
                         }))
         t = Template("""

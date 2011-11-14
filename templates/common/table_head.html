@@ -7,7 +7,7 @@
     <th id="{{ c.name }}" width="{{ c.width }}">
     {% endif %}
       {{ c|safe }}
-      <span style="float: right"><img style="display: none" alt="" src="" /></span>
+      <span style="float: right"><img style="display: none" alt="" src="{{ MEDIA_URL }}pics/transparent.png" /></span>
     </th>
     {% endfor %}
   </tr>
