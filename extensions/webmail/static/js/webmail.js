@@ -23,8 +23,12 @@ var Webmail = new Class({
         this.init_menubar();
         this.init_folders_buttons();
         this.init_folders_browsing();
-        this.init_emails_table();
+        
+        /* FIXME: à faire uniquement pour le mode pushState */
+        /*this.init_emails_table();*/
 
+        current_anchor.register_callback("listmailbox",
+                                         this.listmailbox_callback.bind(this));
         current_anchor.register_callback("viewmail", this.viewmail_callback.bind(this));
         current_anchor.register_callback("compose", this.compose_callback.bind(this));
         current_anchor.register_callback("reply", this.compose_callback.bind(this));
@@ -339,8 +343,10 @@ var Webmail = new Class({
     /*
      * Callback for 'folder' action
      */
-    folder_callback: function(resp) {
-
+    listmailbox_callback: function(resp) {
+        window.removeEvents("resize");
+        updatelisting(resp);
+        this.init_emails_table();
     },
 
     /*

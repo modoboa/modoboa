@@ -217,6 +217,6 @@ var AnchorNavigation = new Class({
                 $(document.body).set("html", xhr.responseText);
                 $(document.body).setStyle("overflow", "auto");
             }
-        }).get();
+        }).get("json=1");
     }
 });

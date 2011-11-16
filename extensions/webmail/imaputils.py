@@ -5,12 +5,42 @@
 """
 import imaplib, ssl, email
 import re
+from functools import wraps
+from imapclient.response_parser import *
 from modoboa.lib import parameters
 from modoboa.lib.connections import *
 from modoboa.lib.webutils import static_url
+from exceptions import ImapError
+
+class capability(object):
+    """
+    Simple decorator to check if the server presents the required
+    capability. If not, a fallback method is called instead.
+
+    :param name: the capability name (upper case)
+    :param fallback_method: a method's name
+    """
+    def __init__(self, name, fallback_method):
+        self.name = name
+        self.fallback_method = fallback_method
+
+    def __call__(self, method):
+        @wraps(method)
+        def wrapped_func(cls, *args, **kwargs):
+            if self.name in cls.m.capabilities:
+                return method(cls, *args, **kwargs)
+            return getattr(cls, self.fallback_method)(*args, **kwargs)
+
+        return wrapped_func
+
 
 class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
+
+    list_base_pattern = r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "(?P<name>[^"]*)"'
+    list_response_pattern = re.compile(list_base_pattern)
+    listextended_response_pattern = \
+        re.compile(list_base_pattern + r'\s*(?P<childinfo>.*)')
 
     def __init__(self, user=None, password=None):
         self.criterions = []
@@ -19,6 +49,39 @@ class IMAPconnector(object):
         status, msg = self.login(user, password)
         if not status:
             raise Exception(msg)
+
+    def _cmd(self, name, *args):
+        """IMAP command wrapper
+
+        To simplify errors handling, this wrapper calls the
+        appropriate method (``uid`` or FIXME) and then check the
+        return code. If an error has occured, an ``ImapError``
+        exception is raised.
+
+        For specific commands commands (FETCH, ...), the result is
+        parsed using the IMAPclient module before being returned.
+
+        :param name: the command's name
+        :return: the command's result
+        """
+        if name in ['FETCH', 'SORT', 'STORE']:
+            try:
+                typ, data = self.m.uid(name, *args, **kwargs)
+            except imaplib.IMAP4.error, e:
+                raise ImapError(e)
+            if typ == "NO":
+                raise ImapError(data)
+            return parse_fetch_response(data)
+
+        try:
+            typ, data = self.m._simple_command(name, *args)
+        except imaplib.IMAP4.error, e:
+            raise ImapError(e)
+        if typ == "NO":
+            raise ImapError(data)
+        if not name in self.m.untagged_responses:
+            return None
+        return self.m.untagged_responses.pop(name)
 
     def refresh(self, user, password):
         """Check if current connection needs a refresh
@@ -113,12 +176,11 @@ class IMAPconnector(object):
             sdescr["class"] = "subfolders"
         return True
 
-    def _listfolders(self, topfolder='INBOX', md_folders=[]):
-        list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
+    def _listfolders_simple(self, topmailbox='INBOX', md_mailboxes=[]):
         (status, data) = self.m.list()
         result = []
         for mb in data:
-            flags, delimiter, name = list_response_pattern.match(mb).groups()
+            flags, delimiter, name = self.list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
@@ -131,7 +193,7 @@ class IMAPconnector(object):
                 continue
             present = False
             descr = {"name" : name}
-            for mdf in md_folders:
+            for mdf in md_mailboxes:
                 if mdf["name"] == name:
                     present = True
                     break
@@ -140,23 +202,34 @@ class IMAPconnector(object):
         from operator import itemgetter
         return sorted(result, key=itemgetter("name"))
 
+    @capability('LIST-EXTENDED', '_listfolders_simple')
+    def _listfolders(self, topmailbox='', md_mailboxes=[]):
+        resp = self._cmd("LSUB", topmailbox, "%", "RETURN", "(CHILDREN)")
+        print resp
+        for mb in resp:
+            flags, delimiter, name, childinfo = \
+                self.listextended_response_pattern.match(mb).groups()
+            flags = flags.split(' ')
+            print flags
+        return []
+
     def getfolders(self, user, unseen_messages=True):
-        md_folders = [{"name" : "INBOX", "class" : "inbox"},
-                      {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
-                       "class" : "drafts"},
-                      {"name" : 'Junk'},
-                      {"name" : parameters.get_user(user, "SENT_FOLDER")},
-                      {"name" : parameters.get_user(user, "TRASH_FOLDER"),
-                       "class" : "trash"}]
-        md_folders += self._listfolders(md_folders=md_folders)
+        md_mailboxes = [{"name" : "INBOX", "class" : "inbox"},
+                        {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
+                         "class" : "drafts"},
+                        {"name" : 'Junk'},
+                        {"name" : parameters.get_user(user, "SENT_FOLDER")},
+                        {"name" : parameters.get_user(user, "TRASH_FOLDER"),
+                         "class" : "trash"}]
+        md_mailboxes += self._listfolders(md_mailboxes=md_mailboxes)
         if unseen_messages:
-            for fd in md_folders:
+            for fd in md_mailboxes:
                 key = fd.has_key("path") and "path" or "name"
                 count = self.unseen_messages(fd[key])
                 if count == 0:
                     continue
                 fd["unseen"] = count
-        return md_folders
+        return md_mailboxes
 
     def _add_flag(self, folder, mail_id, flag):
         self.m.select(self._encodefolder(folder))

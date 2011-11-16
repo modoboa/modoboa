@@ -12,7 +12,7 @@ from django.contrib import messages
 from modoboa.admin.models import Mailbox
 from modoboa.lib import parameters
 from modoboa.lib.webutils import _render, _render_error, \
-    getctx, _render_to_string, ajax_response
+    getctx, _render_to_string, ajax_response, ajax_simple_response
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.email_listing import parse_search_parameters, Paginator
 from modoboa.admin.lib import is_not_localadmin
@@ -516,7 +516,7 @@ def listmailbox(request):
     lst = ImapListing(request.user, request.session["password"],
                       baseurl=mbox, folder=mbox, order="-date")
 
-    return dict(listing=lst.render(request))
+    return lst.render(request)
 
 @login_required
 @is_not_localadmin()
@@ -561,3 +561,6 @@ def newindex(request):
             menufunc = globals()["listmailbox_menu"]
         response["menu"] = menufunc("", request.session["mbox"], request.user)
         return _render(request, "webmail/index.html", response)
+
+    response.update(status="ok", callback=action)
+    return ajax_simple_response(response)
