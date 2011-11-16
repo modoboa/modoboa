@@ -127,7 +127,7 @@ def print_folders(folders, selected=None, withunseen=False, withmenu=False):
         if selected == name:
             cssclass += " selected"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
-        if fd.has_key("sub") and len(fd["sub"]):
+        if fd.has_key("sub"):
             if selected is not None and selected != name and selected.count(name):
                 ul_state = "visible"
                 div_state = "expanded"

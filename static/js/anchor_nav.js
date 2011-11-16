@@ -207,6 +207,10 @@ var AnchorNavigation = new Class({
             url: query,
             noCache : true,
             onSuccess: function(resp) {
+                if (resp.status == "ko") {
+                    infobox.error(resp.respmsg);
+                    return;
+                }
                 var callback = ($defined(resp.callback)) ? resp.callback : "default";
                 this.callbacks[callback](resp);
                 infobox.info(gettext("Done"));

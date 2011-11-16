@@ -6,11 +6,13 @@
 import imaplib, ssl, email
 import re
 from functools import wraps
-from imapclient.response_parser import *
+from imapclient.response_parser import parse_fetch_response
 from modoboa.lib import parameters
 from modoboa.lib.connections import *
 from modoboa.lib.webutils import static_url
 from exceptions import ImapError
+
+imaplib.Debug = 4
 
 class capability(object):
     """
@@ -66,12 +68,14 @@ class IMAPconnector(object):
         """
         if name in ['FETCH', 'SORT', 'STORE']:
             try:
-                typ, data = self.m.uid(name, *args, **kwargs)
+                typ, data = self.m.uid(name, *args)
             except imaplib.IMAP4.error, e:
                 raise ImapError(e)
             if typ == "NO":
                 raise ImapError(data)
-            return parse_fetch_response(data)
+            if name == 'FETCH':
+                return parse_fetch_response(data)
+            return data
 
         try:
             typ, data = self.m._simple_command(name, *args)
@@ -140,20 +144,39 @@ class IMAPconnector(object):
         else:
             criterion = "REVERSE DATE"
         folder = kwargs.has_key("folder") and kwargs["folder"] or None
-        (status, data) = self.m.select(self._encodefolder(folder))
-        (status, data) = self.m.sort("(%s)" % criterion, "UTF-8", "(NOT DELETED)",
-                                     *self.criterions)
+        self.select_mailbox(folder, False)
+        data = self._cmd("SORT", "(%s)" % criterion, "UTF-8", "(NOT DELETED)",
+                         *self.criterions)
         self.messages = data[0].split()
         self.getquota(folder)
         return len(self.messages)
 
-    def unseen_messages(self, folder):
-        """Return the number of unseen messages for folder"""
-        self.m.select(self._encodefolder(folder), True)
-        status, data = self.m.search("UTF-8", "(NOT DELETED UNSEEN)")
-        if status != "OK":
-            return
-        return len(data[0].split())
+    def select_mailbox(self, name, readonly=True):
+        """Issue a SELECT/EXAMINE command to the server
+
+        The given name is first 'imap-utf7' encoded.
+        
+        :param name: mailbox's name
+        :param readonly: 
+        """
+        name = name.encode("imap4-utf-7")
+        if readonly:
+            self._cmd("EXAMINE", name)
+        else:
+            self._cmd("SELECT", name)
+
+    def unseen_messages(self, mailbox):
+        """Return the number of unseen messages
+
+        :param mailbox: the mailbox's name
+        :return: an integer
+        """
+        # self.select_mailbox(mailbox)
+        # data = self._cmd("SEARCH", "UTF-8", "(NOT DELETED UNSEEN)")
+        # return len(data[0].split())
+        data = self._cmd("STATUS", mailbox.encode("imap4-utf-7"), "(UNSEEN)")
+        print data
+        return 0
 
     def _encodefolder(self, folder):
         if not folder:
@@ -205,13 +228,27 @@ class IMAPconnector(object):
     @capability('LIST-EXTENDED', '_listfolders_simple')
     def _listfolders(self, topmailbox='', md_mailboxes=[]):
         resp = self._cmd("LSUB", topmailbox, "%", "RETURN", "(CHILDREN)")
-        print resp
+        result = []
         for mb in resp:
             flags, delimiter, name, childinfo = \
                 self.listextended_response_pattern.match(mb).groups()
             flags = flags.split(' ')
-            print flags
-        return []
+            name = name.decode("imap4-utf-7")
+            present = False
+            for mdm in md_mailboxes:
+                if mdm["name"] == name:
+                    present = True
+                    break
+            if present:
+                continue
+            descr = dict(name=name)
+            if r'\HasChildren' in flags:
+                descr["path"] = name
+                descr["sub"] = []
+                descr["class"] = "subfolders"
+            result += [descr]
+        from operator import itemgetter
+        return sorted(result, key=itemgetter("name"))
 
     def getfolders(self, user, unseen_messages=True):
         md_mailboxes = [{"name" : "INBOX", "class" : "inbox"},
@@ -314,11 +351,8 @@ class IMAPconnector(object):
         msg = email.message_from_string(data[0][1] + data[1][1])
         return msg
 
-    def fetch(self, start=None, stop=None, folder=None, all=False, **kwargs):
-        if not start and not stop:
-            return []
-        result = []
-        self.m.select(self._encodefolder(folder), True)
+    def fetch(self, start, stop=None, folder=None, all=False, **kwargs):
+        self.select_mailbox(folder, False)
         if start and stop:
             submessages = self.messages[start - 1:stop]
             range = ",".join(submessages)
@@ -326,27 +360,19 @@ class IMAPconnector(object):
             submessages = [start]
             range = start
         if not all:
-            query = '(FLAGS BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
+            query = '(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
         else:
             query = '(RFC822)'
-        typ, data = self.m.fetch(range, query)
-        if not folder:
-            folder = "INBOX"
-        tmpdict = {}
-
-        for response_part in data:
-            if isinstance(response_part, tuple):
-                imapid = response_part[0].split()[0]
-                flags = imaplib.ParseFlags(response_part[0])
-                msg = email.message_from_string(response_part[1])
-                msg["imapid"] = imapid
-                if not "\\Seen" in flags:
-                    msg["class"] = "unseen"
-                if "\\Answered" in flags:
-                    msg["img_flags"] = static_url("pics/answered.png")
-                tmpdict[imapid] = msg
-        for id in submessages:
-            result += [tmpdict[id]]
+        data = self._cmd("FETCH", range, query)
+        result = []
+        for uid in submessages:
+            msg = email.message_from_string(data[int(uid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]'])
+            msg['imapid'] = uid
+            if not r'\Seen' in data[int(uid)]['FLAGS']:
+                msg['class'] = 'unseen'
+            if r'\Answered' in data[int(uid)]['FLAGS']:
+                msg['img_flags'] = static_url('pics/answered.png')
+            result += [msg]
         return result
 
 def get_imapconnector(request):
