@@ -6,7 +6,9 @@ from django.conf.urls.defaults import *
 # "attachments"), the associated folder will not be accessible.
 #
 urlpatterns = patterns('modoboa.extensions.webmail.views',
-                       (r'^$', "index"),
+                       #(r'^$', "index"),
+                       (r'^$', "newindex"),
+
                        (r'^compose/$', "compose"),
                        (r'^move/$', "move"),
                        (r'^mark/(?P<name>.+)/$', "mark"),

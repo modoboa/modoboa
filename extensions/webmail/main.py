@@ -89,7 +89,7 @@ def menu(**kwargs):
     return [
         {"name" : "webmail",
          "label" : _("Webmail"),
-         "url" : reverse(views.index),
+         "url" : reverse(views.newindex),
          "img" : static_url("pics/webmail.png")}
         ]
 

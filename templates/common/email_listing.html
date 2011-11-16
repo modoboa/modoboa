@@ -56,7 +56,7 @@ function update_sortable_column() {
 
 window.addEvent("domready", function() {
   navparams = new Hash({
-    {% join navparams %}
+    {% if navparams %}{% join navparams %}{% endif %}
   }); 
   {% block js %}{% endblock %}
   current_anchor.set_default_callback({{ defcallback }});

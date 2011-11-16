@@ -497,3 +497,67 @@ def delattachment(request):
     if error is None:
         error = _("Unknown attachment")
     return ajax_response(request, "ko", respmsg=error)
+
+#
+# NEW CODE STARTS HERE
+#
+def render_mboxes_list(request, imapc):
+    return _render_to_string(request, "webmail/folders.html", {
+            "titlebar" : True,
+            "selected" : request.session["mbox"],
+            "folders" : imapc.getfolders(request.user),
+            "withmenu" : True,
+            "withunseen" : True
+            })
+
+def listmailbox(request):
+    mbox = request.GET.get("mbox", "INBOX")
+    request.session["mbox"] = mbox
+    lst = ImapListing(request.user, request.session["password"],
+                      baseurl=mbox, folder=mbox, order="-date")
+
+    return dict(listing=lst.render(request))
+
+@login_required
+@is_not_localadmin()
+def newindex(request):
+    """Webmail actions handler
+
+    Problèmes liés à la navigation 'anchor based'
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    Lors d'un rafraichissemt complet, une première requête est envoyée
+    vers /webmail/. On ne connait pas encore l'action qui va être
+    demandée mais on peut déjà envoyer des informations indépendantes
+    (comme les dossiers, le quota).
+
+    Si on se contente de cela, l'affichage donnera un aspect décomposé
+    qui n'est pas très séduisant (à cause de la latence notamment). Il
+    faudrait pouvoir envoyer le menu par la même occasion, le souci
+    étant de savoir lequel...
+
+    """
+    action = request.GET.get("action", None)
+    json = request.GET.get("json", False)
+
+    if action is not None:
+        try:
+            response = globals()[action](request)
+        except KeyError:
+            raise WebmailError(_("Undefined action"))
+    else:
+        if json:
+            raise WebmailError(_("Bad request"))
+        response = dict(deflocation="?action=listmailbox", 
+                        defcallback="wm_updatelisting")
+
+    if not json:
+        imapc = get_imapconnector(request)
+        response["refreshrate"] = parameters.get_user(request.user, "REFRESH_INTERVAL")
+        response["mboxes"] = render_mboxes_list(request, imapc)
+        try:
+            menufunc = globals()["%s_menu" % action]
+        except KeyError:
+            menufunc = globals()["listmailbox_menu"]
+        response["menu"] = menufunc("", request.session["mbox"], request.user)
+        return _render(request, "webmail/index.html", response)

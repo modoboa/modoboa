@@ -69,7 +69,7 @@ def compose_menu(selection, backurl, user):
                              "user" : user})
 
 @register.simple_tag
-def listing_menu(selection, folder, user):
+def listmailbox_menu(selection, folder, user):
     entries = [
         {"name" : "compose",
          "url" : reverse(webmail.views.compose),

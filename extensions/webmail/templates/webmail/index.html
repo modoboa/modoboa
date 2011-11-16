@@ -49,7 +49,7 @@ function wm_updatelisting(resp) {
 </script>
 {% endblock %}
 {% block js %}
-  quota_pb = new ProgressBar({
+  /*quota_pb = new ProgressBar({
     container: $("quotabox"),
     startPercentage: 0,
     boxID: "box",
@@ -69,6 +69,13 @@ function wm_updatelisting(resp) {
       clearInterval(rtimer);
       rtimer = null;
     }
+  });*/
+
+  new Webmail({
+    refreshRate: {{ refreshrate }},
+    modify_url:  "{% url extensions.webmail.views.editfolder %}",
+    delete_url: "{% url extensions.webmail.views.delfolder %}",
+    move_url: "{% url extensions.webmail.views.move as moveurl %}"
   });
 
   current_anchor.register_callback("folder", function(resp) {
@@ -211,9 +218,9 @@ function wm_updatelisting(resp) {
 {% endblock %}
 {% block middletitle %}{% trans "Webmail" %}{% endblock %}
 {% block leftcol %}
-<div id="folders" class="box">
-</div>
+<div id="folders" class="box">{{ mboxes }}</div>
 {% endblock %}
+{% block menu %}{{ menu }}{% endblock %}
 {% block footer %}
 <div id="quotalabel">{% trans "Mailbox quota" %}</div>
 <div id="quotabox"></div>
