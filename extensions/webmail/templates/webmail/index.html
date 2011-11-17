@@ -75,7 +75,8 @@ function wm_updatelisting(resp) {
     refreshRate: {{ refreshrate }},
     modify_url:  "{% url extensions.webmail.views.editfolder %}",
     delete_url: "{% url extensions.webmail.views.delfolder %}",
-    move_url: "{% url extensions.webmail.views.move as moveurl %}"
+    move_url: "{% url extensions.webmail.views.move %}",
+    submboxes_url: "{% url extensions.webmail.views.submailboxes %}"
   });
 
   current_anchor.register_callback("folder", function(resp) {

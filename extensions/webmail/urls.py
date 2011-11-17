@@ -8,6 +8,7 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('modoboa.extensions.webmail.views',
                        #(r'^$', "index"),
                        (r'^$', "newindex"),
+                       (r'^submailboxes', "submailboxes"),
 
                        (r'^compose/$', "compose"),
                        (r'^move/$', "move"),

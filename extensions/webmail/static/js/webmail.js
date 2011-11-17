@@ -8,7 +8,8 @@ var Webmail = new Class({
         refreshRate: 0,
         modify_url: "",
         delete_url: "",
-        move_url: ""
+        move_url: "",
+        submboxes_url: ""
     },
 
     /*
@@ -23,7 +24,7 @@ var Webmail = new Class({
         this.init_menubar();
         this.init_folders_buttons();
         this.init_folders_browsing();
-        
+
         /* FIXME: à faire uniquement pour le mode pushState */
         /*this.init_emails_table();*/
 
@@ -94,27 +95,88 @@ var Webmail = new Class({
     },
 
     /*
+     * Open/Close a mailbox with children
+     */
+    toggle_mbox_state: function(div, ul) {
+        if (ul.hasClass("hidden")) {
+            div.removeClass("collapsed").addClass("expanded");
+            ul.removeClass("hidden").addClass("visible");
+        } else {
+            div.removeClass("expanded").addClass("collapsed");
+            ul.removeClass("visible").addClass("hidden");
+        }
+    },
+
+    /*
+     * Inject new mailboxes under a given parent in the tree.
+     */
+    inject_mailboxes: function(parent, mboxes) {
+        var ul = new Element("ul", {
+            name: parent.get("name"),
+            'class': "hidden"
+        }).inject(parent);
+
+        for (var i = 0; i < mboxes.length; i++) {
+            var mbname = mboxes[i].name;
+            var li = new Element("li", {
+                name: mbname,
+                'class': "droppable folder"
+            }).inject(ul);
+            var img = new Element("img", {
+                'class': "footer",
+                src: static_url("pics/go-down.png")
+            }).inject(li);
+            var link = new Element("a", {
+                name: "loadfolder",
+                'class': "block",
+                href: mbname
+            }).inject(li);
+            var parts = mbname.split(".");
+            var displayname = parts[parts.length - 1];
+
+            if (mboxes[i].unseen != undefined) {
+                link.addClass("unseen");
+                link.set("html", displayname + " (" + mboxes[i].unseen + ")");
+            } else {
+                link.set("html", displayname);
+            }
+        }
+        this.toggle_mbox_state(parent.getFirst("div"), ul);
+    },
+
+    /*
+     * Download sub-mailboxes from the server
+     */
+    get_mailboxes: function(parent) {
+        new Request.JSON({
+            url: this.options.submboxes_url,
+            onSuccess: function(resp) {
+                if (resp.status == "ko") {
+                    return;
+                }
+                this.inject_mailboxes(parent, resp.mboxes);
+            }.bind(this)
+        }).get({topmailbox: parent.get("name")});
+    },
+
+    /*
      * Enables folders opening/closing
      *
      * Available for folders with subfolders.
      */
     init_folders_browsing: function() {
         $$("div[class*=clickbox]").addEvent("click", function(evt) {
-            var parent = this.getParent();
+            var div = evt.target;
+            var parent = div.getParent();
             var ul = parent.getFirst("ul[name=" + parent.get("name") + "]");
 
-            if (!$defined(ul)) {
+            if (ul == undefined) {
+                this.get_mailboxes(parent);
                 return;
             }
-            if (ul.hasClass("hidden")) {
-                this.removeClass("collapsed").addClass("expanded");
-                ul.removeClass("hidden").addClass("visible");
-            } else {
-                this.removeClass("expanded").addClass("collapsed");
-                ul.removeClass("visible").addClass("hidden");
-            }
+            this.toggle_mbox_state(div, ul);
             evt.stop();
-        });
+        }.bind(this));
     },
 
     /*

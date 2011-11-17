@@ -520,6 +520,13 @@ def listmailbox(request):
 
 @login_required
 @is_not_localadmin()
+def submailboxes(request):
+    topmailbox = request.GET.get('topmailbox', '')
+    mboxes = get_imapconnector(request).getfolders(request.user, topmailbox)
+    return ajax_simple_response(dict(status="ok", mboxes=mboxes))
+
+@login_required
+@is_not_localadmin()
 def newindex(request):
     """Webmail actions handler
 

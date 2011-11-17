@@ -43,6 +43,7 @@ class IMAPconnector(object):
     list_response_pattern = re.compile(list_base_pattern)
     listextended_response_pattern = \
         re.compile(list_base_pattern + r'\s*(?P<childinfo>.*)')
+    unseen_pattern = re.compile(r'[^\(]+\(UNSEEN (\d+)\)')
 
     def __init__(self, user=None, password=None):
         self.criterions = []
@@ -175,8 +176,10 @@ class IMAPconnector(object):
         # data = self._cmd("SEARCH", "UTF-8", "(NOT DELETED UNSEEN)")
         # return len(data[0].split())
         data = self._cmd("STATUS", mailbox.encode("imap4-utf-7"), "(UNSEEN)")
-        print data
-        return 0
+        m = self.unseen_pattern.match(data[0])
+        if m is None:
+            return 0
+        return int(m.group(1))
 
     def _encodefolder(self, folder):
         if not folder:
@@ -227,7 +230,8 @@ class IMAPconnector(object):
 
     @capability('LIST-EXTENDED', '_listfolders_simple')
     def _listfolders(self, topmailbox='', md_mailboxes=[]):
-        resp = self._cmd("LSUB", topmailbox, "%", "RETURN", "(CHILDREN)")
+        pattern = ("%s.%%" % topmailbox) if len(topmailbox) else "%"
+        resp = self._cmd("LSUB", "", pattern, "RETURN", "(CHILDREN)")
         result = []
         for mb in resp:
             flags, delimiter, name, childinfo = \
@@ -250,15 +254,18 @@ class IMAPconnector(object):
         from operator import itemgetter
         return sorted(result, key=itemgetter("name"))
 
-    def getfolders(self, user, unseen_messages=True):
-        md_mailboxes = [{"name" : "INBOX", "class" : "inbox"},
-                        {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
-                         "class" : "drafts"},
-                        {"name" : 'Junk'},
-                        {"name" : parameters.get_user(user, "SENT_FOLDER")},
-                        {"name" : parameters.get_user(user, "TRASH_FOLDER"),
-                         "class" : "trash"}]
-        md_mailboxes += self._listfolders(md_mailboxes=md_mailboxes)
+    def getfolders(self, user, topmailbox='', unseen_messages=True):
+        if len(topmailbox):
+            md_mailboxes = []
+        else:
+            md_mailboxes = [{"name" : "INBOX", "class" : "inbox"},
+                            {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
+                             "class" : "drafts"},
+                            {"name" : 'Junk'},
+                            {"name" : parameters.get_user(user, "SENT_FOLDER")},
+                            {"name" : parameters.get_user(user, "TRASH_FOLDER"),
+                             "class" : "trash"}]
+        md_mailboxes += self._listfolders(topmailbox, md_mailboxes)
         if unseen_messages:
             for fd in md_mailboxes:
                 key = fd.has_key("path") and "path" or "name"
