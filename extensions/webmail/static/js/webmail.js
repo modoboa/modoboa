@@ -66,32 +66,35 @@ var Webmail = new Class({
     },
 
     /*
+     * Open/Close the menu containing folder buttons
+     */
+    toggle_folder_buttons: function(evt) {
+        var parent = evt.target.getParent();
+        var fdname = parent.getFirst("a[name=loadfolder]").get("href");
+
+        this.fdmenu.toggle(evt.target, fdname);
+        evt.stop();
+    },
+
+    /*
      * Initializes the misc. buttons available to manipulate folders.
      */
     init_folders_buttons: function() {
         $$("li[class*=clickable]").removeEvents();
 
-        $$("a[name=loadfolder]").addEvent("click", this.folder_loader.bind(this));
+        $$("a[name=loadfolder]").addEvent("click", this.listmailbox_loader.bind(this));
 
         SqueezeBox.assign($("folders").getElements('a[class=boxed]'), {
             parse: 'rel'
         });
 
-        var fdbuttons = $$("img[class*=footer]");
-        var fdmenu = new FdMenu({
+        this.fdmenu = new FdMenu({
             modify_url: this.options.modify_url,
             delete_url: this.options.delete_url
         });
 
-        fdbuttons.addEvents({
-            click: function(evt) {
-                var parent = this.getParent();
-                var fdname = parent.getFirst("a[name=loadfolder]").get("href");
-
-                fdmenu.toggle(this, fdname);
-                evt.stop();
-            }
-        });
+        $$("img[class*=footer]")
+            .addEvent("click", this.toggle_folder_buttons.bind(this));
     },
 
     /*
@@ -140,6 +143,9 @@ var Webmail = new Class({
             } else {
                 link.set("html", displayname);
             }
+
+            link.addEvent("click", this.listmailbox_loader.bind(this));
+            img.addEvent("click", this.toggle_folder_buttons.bind(this));
         }
         this.toggle_mbox_state(parent.getFirst("div"), ul);
     },
@@ -259,24 +265,28 @@ var Webmail = new Class({
 	        } else {
 	            this.emails_table.selectNone();
 	        }
+                evt.stopPropagation();
 	    }.bind(this));
         }
 
         init_sortable_columns();
         update_sortable_column();
 
+        this.dragobjs = new Array();
         $$("td[class*=draggable]").each(function(item) {
-            new Drag.Move(item, {
+            var pid = item.getParent().get("id");
+
+            this.dragobjs[pid] = new Drag.Move(item, {
 	        droppables: ".droppable"
 	    }).addEvents({
-	        beforeStart: this.bstart_dragging,
-	        start: this.start_dragging,
+	        beforeStart: this.bstart_dragging.bind(this),
+	        start: this.start_dragging.bind(this),
                 enter: this.enter_droppable,
 	        leave: this.leave_droppable,
-                drop: this.drop_element,
-	        cancel: this.cancel_dragging
+                drop: this.drop_element.bind(this),
+	        cancel: this.cancel_dragging.bind(this)
 	    });
-        });
+        }.bind(this));
 
         $$("tbody>tr").addEvent("dblclick", viewmail);
     },
@@ -289,34 +299,27 @@ var Webmail = new Class({
      * 'before start' event callback
      */
     bstart_dragging: function(item) {
-        var block = new Element("div", {id: "draggeditems"})
-	    .setStyles({"position" : "absolute",
-			"opacity" : 0.8,
-                        "width" : "200px",
-                        "padding" : "5px",
-                        "text-align" : "center",
-                        "height" : "25px",
-                        "border" : "1px solid #333",
-                        "background" : "white",
-			display: "none",
-                        "z-index" : 3,
-		        top : this.element.getCoordinates()['top'],
-		        left : this.element.getCoordinates()['left']})
-	    .inject(document.body);
-	block.store("parent", this.element);
-        this.element = block;
-	clearInterval(rtimer);
+        var dragobj = this.dragobjs[item.getParent().get("id")];
+        var block = new Element("div", {id: "draggeditems", 'class': "dragbox"})
+	    .setStyles({
+                top : dragobj.element.getCoordinates()['top'],
+		left : dragobj.element.getCoordinates()['left']
+            }).inject(document.body);
+
+	block.store("parent", dragobj.element);
+        dragobj.element = block;
+	clearInterval(this.rtimer);
     },
 
-    start_dragging: function(item) {
-	var tr = this.element.retrieve("parent").getParent();
+    start_dragging: function(item, event) {
+        var tr = event.target.getParent();
 
-	if (!emails_table.isSelected(tr)) {
-	    emails_table.selectNone();
-	    emails_table.selectRow(tr);
+	if (!this.emails_table.isSelected(tr)) {
+	    this.emails_table.selectNone();
+	    this.emails_table.selectRow(tr);
 	}
-	item.set("html", "Moving " + emails_table._selectedRows.length + " messages");
-	this.element.setStyle("display", "block");
+	item.set("html", "Moving " + this.emails_table._selectedRows.length + " messages");
+	item.setStyle("display", "block");
     },
 
     enter_droppable: function(item, droppable) {
@@ -327,23 +330,24 @@ var Webmail = new Class({
 	droppable.removeClass("dragging");
     },
 
-    restore_parent: function(drag, item) {
+    restore_parent: function(item) {
 	var parent = item.retrieve("parent");
+        var drag = this.dragobjs[parent.getParent().get("id")];
 
 	drag.element = parent;
         this.init_automatic_refresh();
     },
 
     drop_element: function(item, droppable, event) {
-	this.element.dispose();
-        delete(this.element);
+	item.dispose();
         if (!droppable) {
-	    restore_parent(this, item);
+	    this.restore_parent(item);
 	    return;
         }
         droppable.removeClass("dragging");
-        dest = gethref(droppable.getFirst("a"));
-        msgset = new Array();
+        var dest = gethref(droppable.getFirst("a"));
+        var msgset = new Array();
+
         this.emails_table._selectedRows.each(function(item, index) {
 	    msgset.include(item.get("id"));
 	});
@@ -354,9 +358,8 @@ var Webmail = new Class({
     },
 
     cancel_dragging: function(item) {
-	this.element.dispose();
-        delete(this.element);
-	restore_parent(this, item);
+	item.dispose();
+	this.restore_parent(item);
     },
 
     /*
@@ -388,18 +391,20 @@ var Webmail = new Class({
      * Onclick callback used to load the content of a particular
      * folder. (activated when clicking on a folder's name)
      */
-    _folder_loader: function(event, obj) {
+    _listmailbox_loader: function(event, obj) {
         event.stop();
-        if (!$defined(obj)) {
+        if (obj == undefined) {
             obj = $(event.target);
         }
-        current_anchor.parse_string(gethref(obj), true).setparams(navparams);
-        current_anchor.update();
+        current_anchor.reset().setparams({
+           action: "listmailbox",
+           name: gethref(obj)
+        }).update();
     },
 
-    folder_loader: function(event) {
+    listmailbox_loader: function(event) {
         this.select_folder(event.target);
-        this._folder_loader(event, event.target);
+        this._listmailbox_loader(event, event.target);
     },
 
     /*
@@ -416,7 +421,7 @@ var Webmail = new Class({
      */
     viewmail_callback: function(resp) {
         wm_updatelisting(resp, "hidden");
-        $$("a[name=back]").addEvent("click", this._folder_loader);
+        $$("a[name=back]").addEvent("click", this._listmailbox_loader);
         $$("a[name=reply]").addEvent("click", this.reply_loader);
         $$("a[name=replyall]").addEvent("click", this.replyall_loader);
         $$("a[name=forward]").addEvent("click", this.forward_loader);
@@ -517,7 +522,7 @@ var Webmail = new Class({
 
         $$("a[name=back]")
             .removeEvents("click")
-            .addEvent("click", this._folder_loader);
+            .addEvent("click", this._listmailbox_loader);
         $$("a[name=sendmail]")
             .store("editormode", editormode)
             .removeEvents("click")

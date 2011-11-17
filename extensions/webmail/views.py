@@ -511,7 +511,7 @@ def render_mboxes_list(request, imapc):
             })
 
 def listmailbox(request):
-    mbox = request.GET.get("mbox", "INBOX")
+    mbox = request.GET.get("name", "INBOX")
     request.session["mbox"] = mbox
     lst = ImapListing(request.user, request.session["password"],
                       baseurl=mbox, folder=mbox, order="-date")
@@ -560,7 +560,8 @@ def newindex(request):
 
     if not json:
         imapc = get_imapconnector(request)
-        response["refreshrate"] = parameters.get_user(request.user, "REFRESH_INTERVAL")
+        response["refreshrate"] = \
+            int(parameters.get_user(request.user, "REFRESH_INTERVAL")) * 1000
         response["mboxes"] = render_mboxes_list(request, imapc)
         try:
             menufunc = globals()["%s_menu" % action]

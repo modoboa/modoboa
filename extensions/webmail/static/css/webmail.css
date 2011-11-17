@@ -230,3 +230,16 @@ textarea:hover {
 .folder_menubar {
     clear: both;
 }
+
+.dragbox {
+    position : absolute;
+    opacity : 0.8;
+    width : 200px;
+    padding : 5px;
+    text-align : center;
+    height : 25px;
+    border : 1px solid #333;
+    background : white;
+    display: none;
+    z-index : 3;
+}

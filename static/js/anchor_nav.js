@@ -35,7 +35,7 @@ var AnchorNavigation = new Class({
     },
 
     reset: function() {
-        this.base = null;
+        this.base = '';
         this.params.empty();
         return this;
     },
