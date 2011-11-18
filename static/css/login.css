@@ -7,26 +7,10 @@ html, body {
 }
 
 #loginbox {
-    margin: 100px auto;
-    width: 610px;
-    padding-bottom: 15px;
-    background: white;
-
-    border: 5px solid #333;
-    /*-moz-box-shadow: 0 10px 30px #222;*/
-    -webkit-box-shadow: 0 10px 30px #222;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 5px;
-}
-
-#loginbox h2 {
-    margin: 30px 10px 0 10px;
-    font-size: small;
-}
-
-#loginbox h3 {
-    font-size: small;
-    text-align: center;
+    margin: 100px auto 10px auto;
+    padding: 0 0 15px 0;
+    font-size: 1em;
+    width: 630px;
 }
 
 #logo {
@@ -44,6 +28,40 @@ html, body {
 #test {
     float: right;
     width: 300px;
+}
+
+.roundedbox {
+    margin: 10px auto;
+    padding: 10px;
+    width: 610px;
+    background: white;
+    font-size: 1.1em;
+
+    border: 5px solid #333;
+    border-radius: 10px;
+}
+
+.roundedbox h1 {
+    padding: 0;
+    margin: 0;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.roundedbox h2 {
+    margin: 30px 10px 0 10px;
+    font-size: small;
+}
+
+.roundedbox h3 {
+    font-size: small;
+    text-align: center;
+}
+
+.roundedbox a, a:visited {
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
 }
 
 .spacer { 

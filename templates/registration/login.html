@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <div id="loginbox">
+  <div id="loginbox" class="roundedbox">
     <div id="logo">
       <img src="{{ MEDIA_URL }}css/modoboa.png" />
        {% if error %}
@@ -27,8 +27,7 @@
     <div id="test">
       <h3>{% trans "Welcome" %}</h3>
       <form method="post" action="">
-        {% include "common/genericform.html" %}
-        
+        {% include "common/genericform.html" %}        
         <div class="lastrow" align="center">
           <input type="submit" value="login" />
         </div>
@@ -37,5 +36,8 @@
     </div>
     <div class="spacer"></div>
   </div>
+  {% for annoucement in annoucements %}
+  <div class="roundedbox">{{ annoucement|safe }}</div>
+  {% endfor %}
 </body>
 </html>

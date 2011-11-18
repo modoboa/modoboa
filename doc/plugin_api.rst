@@ -126,7 +126,7 @@ that corresponds to the ``Request`` object used inside the associated
 view function.
 
 UserLogout
-__________
+----------
 
 Raised when a user logs out. This event provides a ``request`` argument
 that corresponds to the ``Request`` object used inside the associated
@@ -244,6 +244,17 @@ ExtDisabled
 
 Raised just after an extension has been disabled. The Extension
 object is available inside the ``ext`` keyword argument.
+
+GetAnnouncement
+---------------
+
+Some places in the interface let plugins add their own announcement
+(ie. message). A keyword argument ``target`` is provided to registered
+callbacks and indicates the place where the announcement will appear:
+
+* ``loginpage`` : corresponds to the login page
+
+Callbacks listening to this event must return a list of string.
 
 Parameters
 ==========
