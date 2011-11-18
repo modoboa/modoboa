@@ -39,9 +39,11 @@ def dologin(request):
         error = _("Your username and password didn't match. Please try again.")
     else:
         form = LoginForm()
+
     next = request.GET.has_key("next") and request.GET["next"] or None
     return render_to_response("registration/login.html", {
-            "form" : form, "error" : error, "next" : next
+            "form" : form, "error" : error, "next" : next, 
+            "annoucements" : events.raiseQueryEvent("GetAnnouncement", target="loginpage")
             }, context_instance=RequestContext(request))
 
 def dologout(request):

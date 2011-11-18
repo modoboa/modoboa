@@ -22,7 +22,9 @@ events = ["CreateDomain",
           "ExtDisabled",
 
           "UserLogin",
-          "UserLogout"]
+          "UserLogout",
+
+          "GetAnnouncement"]
 
 callbacks = {}
 
