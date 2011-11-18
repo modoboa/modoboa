@@ -112,6 +112,7 @@ var AnchorNavigation = new Class({
         for (var i = 0; i < elems.length; i++) {
             this.setparamfromstring(elems[i]);
         }
+        return this;
     },
 
     setparamfromstring: function(str) {

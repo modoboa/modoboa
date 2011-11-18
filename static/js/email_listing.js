@@ -4,9 +4,11 @@
  */
 
 function navbarcallback(event) {
-  event.stop();
-  current_anchor.setparams(navparams);
-  current_anchor.parse_string($(event.target).getParent().get("href")).update();
+    event.stop();
+    current_anchor.reset()
+        .setparams(navparams)
+        .updateparams(this.get("href"))
+        .update();
 }
 
 function updatelisting(resp) {
@@ -23,7 +25,7 @@ function updatelisting(resp) {
     }
     if ($defined(resp.navbar)) {
         $("navbar").set("html", resp.navbar);
-        $("navbar").getChildren("a").addEvent("click", navbarcallback);
+        $$("#navbar a").addEvent("click", navbarcallback);
     }
 }
 

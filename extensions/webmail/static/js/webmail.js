@@ -147,6 +147,7 @@ var Webmail = new Class({
             link.addEvent("click", this.listmailbox_loader.bind(this));
             img.addEvent("click", this.toggle_folder_buttons.bind(this));
         }
+        this.init_draggables();
         this.toggle_mbox_state(parent.getFirst("div"), ul);
     },
 
@@ -272,11 +273,29 @@ var Webmail = new Class({
         init_sortable_columns();
         update_sortable_column();
 
-        this.dragobjs = new Array();
+        this.init_draggables();
+
+        $$("tbody>tr").addEvent("dblclick", viewmail);
+    },
+
+    /*
+     * Drag & Drop feature
+     */
+    init_draggables: function(pattern) {
+        if (this.dragobjs == undefined) {
+            this.dragobjs = new Array();
+        } else {
+            this.dragobjs.each(function(item) {
+                item.detach();
+                delete(item);
+            });
+            this.dragobjs = new Array();
+        }
+
         $$("td[class*=draggable]").each(function(item) {
             var pid = item.getParent().get("id");
 
-            this.dragobjs[pid] = new Drag.Move(item, {
+            this.dragobjs[pid] = item.makeDraggable({
 	        droppables: ".droppable"
 	    }).addEvents({
 	        beforeStart: this.bstart_dragging.bind(this),
@@ -287,13 +306,8 @@ var Webmail = new Class({
 	        cancel: this.cancel_dragging.bind(this)
 	    });
         }.bind(this));
-
-        $$("tbody>tr").addEvent("dblclick", viewmail);
     },
 
-    /*
-     * Drag & Drop feature
-     */
 
     /*
      * 'before start' event callback
@@ -574,12 +588,13 @@ var Webmail = new Class({
             profile: "gray",
             spinner: true
         });
+        params["json"] = "1";
         new Request.JSON({
             url : url,
             onSuccess : function(response) {
                 if (response.status == "ok") {
                     if (!$defined(response.next)) {
-                        current_anchor.get_callback("folder")(response);
+                        current_anchor.get_callback("listmailbox")(response);
                     }
                     infobox.info(gettext("Done"));
                     if ($defined(response.next)) {

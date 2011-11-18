@@ -67,7 +67,7 @@ class IMAPconnector(object):
         :param name: the command's name
         :return: the command's result
         """
-        if name in ['FETCH', 'SORT', 'STORE']:
+        if name in ['FETCH', 'SORT', 'STORE', 'COPY']:
             try:
                 typ, data = self.m.uid(name, *args)
             except imaplib.IMAP4.error, e:
@@ -292,11 +292,13 @@ class IMAPconnector(object):
     def msg_answered(self, folder, imapid):
         self._add_flag(folder, imapid, r'(\Answered)')
 
-    def move(self, msgset, oldfolder, newfolder):
-        self.m.select(self._encodefolder(oldfolder))
-        status, data = self.m.copy(msgset, self._encodefolder(newfolder))
-        if status == 'OK':
-            self.m.store(msgset, "+FLAGS", r'(\Deleted)')
+    def move(self, msgset, oldmailbox, newmailbox):
+        """Move messages between mailboxes
+
+        """
+        self.select_mailbox(oldmailbox, False)
+        self._cmd("COPY", msgset, newmailbox.encode("imap4-utf-7"))
+        self._cmd("STORE", msgset, "+FLAGS", r'(\Deleted)')
 
     def push_mail(self, folder, msg):
         now = imaplib.Time2Internaldate(time.time())

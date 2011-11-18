@@ -211,11 +211,12 @@ def getattachment(request, folder, mail_id):
 def move(request):
     for arg in ["msgset", "to"]:
         if not request.GET.has_key(arg):
-            return
-    mbc = IMAPconnector(user=request.user.username, 
-                        password=request.session["password"])
-    mbc.move(request.GET["msgset"], request.session["folder"], request.GET["to"])
-    return folder(request, request.session["folder"], False)
+            raise WebmailError(_("Invalid request"))
+    mbc = get_imapconnector(request)
+    mbc.move(request.GET["msgset"], request.session["mbox"], request.GET["to"])
+    resp = listmailbox(request, request.session["mbox"])
+    resp.update(status="ok")
+    return ajax_simple_response(resp)
 
 @login_required
 @is_not_localadmin()
@@ -502,21 +503,33 @@ def delattachment(request):
 # NEW CODE STARTS HERE
 #
 def render_mboxes_list(request, imapc):
+    curmbox = request.session.get("mbox", "INBOX")
     return _render_to_string(request, "webmail/folders.html", {
             "titlebar" : True,
-            "selected" : request.session["mbox"],
+            "selected" : curmbox,
             "folders" : imapc.getfolders(request.user),
             "withmenu" : True,
             "withunseen" : True
             })
 
-def listmailbox(request):
-    mbox = request.GET.get("name", "INBOX")
-    request.session["mbox"] = mbox
-    lst = ImapListing(request.user, request.session["password"],
-                      baseurl=mbox, folder=mbox, order="-date")
+def set_nav_params(request):
+    if not request.session.has_key("navparams"):
+        request.session["navparams"] = {}
+        
+    request.session["pageid"] = \
+        int(request.GET.get("page", 1))
 
-    return lst.render(request)
+def listmailbox(request, defmailbox="INBOX"):
+    mbox = request.GET.get("name", defmailbox)
+    request.session["mbox"] = mbox
+
+    set_nav_params(request)
+
+    lst = ImapListing(request.user, request.session["password"],
+                      baseurl="?action=listmailbox&name=%s&" % mbox,
+                      folder=mbox, order="-date")
+
+    return lst.render(request, request.session["pageid"])
 
 @login_required
 @is_not_localadmin()
@@ -559,6 +572,7 @@ def newindex(request):
                         defcallback="wm_updatelisting")
 
     if not json:
+        curmbox = request.session.get("mbox", "INBOX")
         imapc = get_imapconnector(request)
         response["refreshrate"] = \
             int(parameters.get_user(request.user, "REFRESH_INTERVAL")) * 1000
@@ -567,7 +581,7 @@ def newindex(request):
             menufunc = globals()["%s_menu" % action]
         except KeyError:
             menufunc = globals()["listmailbox_menu"]
-        response["menu"] = menufunc("", request.session["mbox"], request.user)
+        response["menu"] = menufunc("", curmbox, request.user)
         return _render(request, "webmail/index.html", response)
 
     response.update(status="ok", callback=action)
