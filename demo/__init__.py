@@ -28,5 +28,5 @@ def menu(**kwargs):
          }
         ]
 
-if 'demo' in settings.INSTALLED_APPS:
+if 'modoboa.demo' in settings.INSTALLED_APPS:
     events.register("UserMenuDisplay", menu)
