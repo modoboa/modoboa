@@ -12,6 +12,8 @@ events = ["CreateDomain",
           "DeleteMailbox",
           "ModifyMailbox",
 
+          "PasswordChange",
+
           "UserMenuDisplay",
           "AdminMenuDisplay",
 

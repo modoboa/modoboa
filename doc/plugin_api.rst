@@ -256,6 +256,17 @@ callbacks and indicates the place where the announcement will appear:
 
 Callbacks listening to this event must return a list of string.
 
+PasswordChange
+--------------
+
+Raised just before a *password change* action. The associated ``User``
+object is provided inside the ``user`` keyword argument.
+
+Callbacks listening to this event must return a list containing either
+``True`` or ``False``. If at least one ``True`` is returned, the
+*password change* will be cancelled (ie. changing the password for
+this user is disabled).
+
 Parameters
 ==========
 

@@ -35,6 +35,10 @@ def announcement(**kwargs):
         return [txt]
     return ""
 
+def password_change(user):
+    return [user.id == 1]
+
 if 'modoboa.demo' in settings.INSTALLED_APPS:
     events.register("UserMenuDisplay", menu)
     events.register("GetAnnouncement", announcement)
+    events.register("PasswordChange", password_change)

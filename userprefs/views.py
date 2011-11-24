@@ -3,9 +3,10 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators \
     import login_required, user_passes_test
+from django.conf import settings
 from django.utils.translation import ugettext as _
-from modoboa.lib import parameters
-from modoboa.lib.webutils import _render, ajax_response
+from modoboa.lib import parameters, events
+from modoboa.lib.webutils import _render, _render_error, ajax_response
 from forms import *
 from modoboa.admin.models import Mailbox, Alias
 from modoboa.admin.lib import is_domain_admin
@@ -21,6 +22,11 @@ def changepassword(request, tplname="userprefs/chpassword.html"):
         target = request.user
     else:
         target = Mailbox.objects.get(user=request.user.id)
+    res = events.raiseQueryEvent("PasswordChange", user=request.user)
+    if True in res:
+        ctx = dict(error=_("Password change is disabled for this user"))
+        return _render_error(request, errortpl="error_simple", user_context=ctx)
+
     error = None
     if request.method == "POST":
         form = ChangePasswordForm(target, request.POST)
@@ -32,7 +38,8 @@ def changepassword(request, tplname="userprefs/chpassword.html"):
                 request.session["password"] = encrypt(request.POST["confirmation"])
             target.save()
             return ajax_response(request, respmsg=_("Password changed"))
-        return ajax_response(request, status="ko", template=tplname, form=form, error=error)
+        return ajax_response(request, status="ko", template=tplname, 
+                             form=form, error=error)
 
     form = ChangePasswordForm(target)
     return _render(request, 'userprefs/chpassword.html', {
