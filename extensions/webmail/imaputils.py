@@ -230,7 +230,7 @@ class IMAPconnector(object):
 
     @capability('LIST-EXTENDED', '_listfolders_simple')
     def _listfolders(self, topmailbox='', md_mailboxes=[]):
-        pattern = ("%s.%%" % topmailbox) if len(topmailbox) else "%"
+        pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
         resp = self._cmd("LSUB", "", pattern, "RETURN", "(CHILDREN)")
         result = []
         for mb in resp:
@@ -275,16 +275,32 @@ class IMAPconnector(object):
                 fd["unseen"] = count
         return md_mailboxes
 
-    def _add_flag(self, folder, mail_id, flag):
-        self.m.select(self._encodefolder(folder))
-        self.m.store(mail_id, "+FLAGS", flag)
+    def _add_flag(self, mbox, msgset, flag):
+        """Add flag(s) to a messages set
 
-    def msg_unread(self, folder, msgset):
-        self.m.select(self._encodefolder(folder))
-        self.m.store(msgset, "-FLAGS", r'(\Seen)')
+        :param mbox: the mailbox containing the messages
+        :param msgset: messages set (uid)
+        :param flag: the flag to add
+        """
+        self.select_mailbox(mbox, False)
+        self._cmd("STORE", msgset, "+FLAGS", flag)
 
-    def msg_read(self, folder, msgset):
-        self._add_flag(folder, msgset, r'(\Seen)')
+    def mark_messages_unread(self, mbox, msgset):
+        """Mark a set of messages as unread
+
+        :param mbox: the mailbox containing the messages
+        :param msgset: messages set (uid)
+        """
+        self.select_mailbox(mbox, False)
+        self._cmd("STORE", msgset, "-FLAGS", r'(\Seen)')
+
+    def mark_messages_read(self, mbox, msgset):
+        """Mark a set of messages as unread
+
+        :param mbox: the mailbox containing the messages
+        :param msgset: messages set (uid)
+        """
+        self._add_flag(mbox, msgset, r'(\Seen)')
 
     def msgforwarded(self, folder, imapid):
         self._add_flag(folder, imapid, '($Forwarded)')
@@ -304,16 +320,24 @@ class IMAPconnector(object):
         now = imaplib.Time2Internaldate(time.time())
         self.m.append(self._encodefolder(folder), r'(\Seen)', now, str(msg))
 
-    def empty(self, folder):
-        self.m.select(self._encodefolder(folder))
-        typ, data = self.m.search(None, 'ALL')
-        for num in data[0].split():
-            self.m.store(num, "+FLAGS", r'(\Deleted)')
-        self.m.expunge()
+    def empty(self, mbox):
+        self.select_mailbox(mbox, False)
+        resp = self._cmd("SEARCH", "ALL")
+        print resp
+        
+        # for num in data[0].split():
+        #     self.m.store(num, "+FLAGS", r'(\Deleted)')
+        # self.m.expunge()
 
-    def compact(self, folder):
-        self.m.select(self._encodefolder(folder))
-        self.m.expunge()
+    def compact(self, mbox):
+        """Compact a specific mailbox
+
+        Issue an EXPUNGE command for the specified mailbox.
+        
+        :param mbox: the mailbox's name
+        """
+        self.select_mailbox(mbox, False)
+        self._cmd("EXPUNGE")
 
     def create_folder(self, name, parent=None):
         if parent is not None:

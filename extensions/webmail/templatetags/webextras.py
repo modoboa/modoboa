@@ -56,7 +56,7 @@ def viewm_menu(selection, backurl, folder, mail_id, user):
 def compose_menu(selection, backurl, user):
     entries = [
         {"name" : "back",
-         "url" : backurl,
+         "url" : "javascript:history.go(-2);",#backurl,
          "img" : static_url("pics/back.png"),
          "label" : _("Back")},
         {"name" : "sendmail",
@@ -72,7 +72,7 @@ def compose_menu(selection, backurl, user):
 def listmailbox_menu(selection, folder, user):
     entries = [
         {"name" : "compose",
-         "url" : reverse(webmail.views.compose),
+         "url" : "compose",
          "img" : static_url("pics/edit.png"),
          "label" : _("New message")},
         {"name" : "mark",

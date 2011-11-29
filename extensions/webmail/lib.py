@@ -110,8 +110,9 @@ class ImapListing(EmailListing):
         if kwargs.has_key("pattern"):
             self.parse_search_parameters(kwargs["criteria"],
                                          kwargs["pattern"])
-        if kwargs.has_key("reset"):
+        else:
             self.mbc.criterions = []
+
         EmailListing.__init__(self, **kwargs)  
         self.extravars["refreshrate"] = \
             int(parameters.get_user(user, "REFRESH_INTERVAL")) * 1000

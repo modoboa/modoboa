@@ -42,6 +42,7 @@ var Webmail = new Class({
      */
     init_menubar: function() {
         searchbox_init();
+        $$("a[name=compose]").addEvent("click", this.compose_loader);
         $$("a[name=mark-read]").addEvent("click", this.send_mark_request.bind(this));
         $$("a[name=mark-unread]").addEvent("click", this.send_mark_request.bind(this));
         $$("a[name=fdaction]").addEvent("click", function(evt) {
@@ -58,11 +59,21 @@ var Webmail = new Class({
       var ids = new Array();
 
       this.emails_table._selectedRows.each(function(item, index) {
-        ids.include(item.get("id"));
+          ids.include(item.get("id"));
       });
       this.simple_request(evt.target.get("href"), {
           ids : ids.join()
-      });
+      }, function(response) {
+          if (response.action == "read") {
+              this.emails_table._selectedRows.removeClass("unseen");
+          } else {
+              this.emails_table._selectedRows.addClass("unseen");
+          }
+          /*
+           * MAJ de l'affichage du nombre de messages non lus
+           * (faire fonction à part)
+           */
+      }.bind(this));
     },
 
     /*
@@ -461,7 +472,7 @@ var Webmail = new Class({
      */
     compose_loader: function(event) {
         event.stop();
-        current_anchor.baseurl("compose").update();
+        current_anchor.reset().setparam("action", this.get("href")).update();
     },
 
     /*
@@ -505,7 +516,8 @@ var Webmail = new Class({
      * It is also shared with other similar actions : reply, forward.
      */
     compose_callback: function(resp) {
-        wm_updatelisting(resp);
+        //wm_updatelisting(resp);
+        updatelisting(resp);
 
         window.addEvent("resize", this.resize_window_callback.bind(this));
 
@@ -534,9 +546,9 @@ var Webmail = new Class({
             });
         });
 
-        $$("a[name=back]")
+        /*$$("a[name=back]")
             .removeEvents("click")
-            .addEvent("click", this._listmailbox_loader);
+            .addEvent("click", this._listmailbox_loader);*/
         $$("a[name=sendmail]")
             .store("editormode", editormode)
             .removeEvents("click")
@@ -583,7 +595,7 @@ var Webmail = new Class({
      * encoded answer. The infobox is cleared by the request callback
      * function.
      */
-    simple_request: function(url, params) {
+    simple_request: function(url, params, callback) {
         infobox.show(gettext("Waiting..."), {
             profile: "gray",
             spinner: true
@@ -593,8 +605,12 @@ var Webmail = new Class({
             url : url,
             onSuccess : function(response) {
                 if (response.status == "ok") {
-                    if (!$defined(response.next)) {
-                        current_anchor.get_callback("listmailbox")(response);
+                    if (response.next == undefined) {
+                        if (callback != undefined) {
+                            callback(response);
+                        } else {
+                            current_anchor.get_callback("listmailbox")(response);
+                        }
                     }
                     infobox.info(gettext("Done"));
                     if ($defined(response.next)) {

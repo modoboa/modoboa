@@ -10,7 +10,7 @@ urlpatterns = patterns('modoboa.extensions.webmail.views',
                        (r'^$', "newindex"),
                        (r'^submailboxes', "submailboxes"),
 
-                       (r'^compose/$', "compose"),
+#                       (r'^compose/$', "compose"),
                        (r'^move/$', "move"),
                        (r'^mark/(?P<name>.+)/$', "mark"),
                        (r'^empty/(?P<name>.+)/$', "empty"),

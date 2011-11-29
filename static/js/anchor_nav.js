@@ -53,11 +53,13 @@ var AnchorNavigation = new Class({
         if (reset) {
             this.reset();
         }
-        this.base = (splits[0] == "") ? this.deflocation : splits[0];
+        this.base = splits[0];
 
-        var re = new RegExp("/$");
-        if (!this.base.match(re)) {
-            this.base += '/';
+        if (this.base != "") {
+            var re = new RegExp("/$");
+            if (!this.base.match(re)) {
+                this.base += '/';
+            }
         }
         if (splits.length > 1) {
             var params = splits[1].split('&');
@@ -183,16 +185,14 @@ var AnchorNavigation = new Class({
     },
 
     check_anchor: function() {
-        if (this.serialized == location.hash
-            && !$defined(this.force)) {
+        if (this.serialized == location.hash && this.force == undefined) {
             return;
         }
         delete(this.force);
-        this.from_string(location.hash);
-        if (!this.serialized) {
-            location.hash = this.deflocation;
-            return;
-        }
+
+        this.from_string((location.hash != "") ? location.hash : "#" + this.deflocation);
+        location.hash = this.serialized;
+
         if (!this.updatenext) {
             this.updatenext = true;
             return;
