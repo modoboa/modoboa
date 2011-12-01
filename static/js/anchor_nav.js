@@ -9,7 +9,9 @@ var AnchorNavigation = new Class({
         checkinterval: 300,
         defloadingtext: gettext("Loading..."),
         defloadingcolor: "gray",
-        defcallback: null
+        defcallback: null,
+        spin_disabled: false,
+        spin_target: undefined
     },
 
     initialize: function(deflocation, options) {
@@ -27,6 +29,17 @@ var AnchorNavigation = new Class({
             this.ca_id =
                 this.check_anchor.bind(this).periodical(this.options.checkinterval);
         }
+    },
+
+    /*
+     * Disable the spinner.
+     */
+    disable_spinner: function() {
+        this.options.spin_disabled = true;
+    },
+
+    enable_spinner: function() {
+        this.options.spin_disabled = false;
     },
 
     reset_loading_infos: function() {
@@ -200,22 +213,34 @@ var AnchorNavigation = new Class({
 
         var query = this.serialized.substring(1);
 
-        infobox.show(this.loading_message, {
-            profile: this.loading_color,
-            spinner: true
-        });
+        if (!this.options.spin_disabled) {
+            var target = this.options.spin_target ? this.options.spin_target
+                : document.body;
+            $(target).spin({
+                message: this.loading_message
+            });
+            /*infobox.show(this.loading_message, {
+                profile: this.loading_color,
+                spinner: true
+            });*/
+        }
         new Request.JSON({
             url: query,
             noCache : true,
             onSuccess: function(resp) {
+                if (!this.options.spin_disabled) {
+                    var target = this.options.spin_target ? this.options.spin_target
+                        : document.body;
+                    $(target).unspin();
+                }
                 if (resp.status == "ko") {
                     infobox.error(resp.respmsg);
                     return;
                 }
                 var callback = ($defined(resp.callback)) ? resp.callback : "default";
                 this.callbacks[callback](resp);
-                infobox.info(gettext("Done"));
-                infobox.hide(1);
+                /*infobox.info(gettext("Done"));
+                infobox.hide(1);*/
                 this.reset_loading_infos();
             }.bind(this),
             onFailure: function(xhr) {

@@ -11,10 +11,10 @@ from modoboa.lib.webutils import static_url
 register = template.Library()
 
 @register.simple_tag
-def viewm_menu(selection, backurl, folder, mail_id, user):   
+def viewmail_menu(selection, folder, user, mail_id=None):   
     entries = [
         {"name" : "back",
-         "url" : backurl,
+         "url" : "javascript:history.go(-1);",
          "img" : static_url("pics/back.png"),
          "label" : _("Back")},
         {"name" : "reply",
@@ -40,10 +40,12 @@ def viewm_menu(selection, backurl, folder, mail_id, user):
          "menu" : [
                  {"name" : "activate_links", 
                   "label" : _("Activate links"),
-                  "url" : reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=1"},
+                  "url" : ""},
+                  #reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=1"},
                  {"name" : "disable_links", 
                   "label" : _("Disable links"),
-                  "url" : reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=0"},
+                  "url" : ""}
+                  #reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=0"},
                 ]
          }
         ]

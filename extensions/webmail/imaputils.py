@@ -12,7 +12,7 @@ from modoboa.lib.connections import *
 from modoboa.lib.webutils import static_url
 from exceptions import ImapError
 
-imaplib.Debug = 4
+#imaplib.Debug = 4
 
 class capability(object):
     """
@@ -87,6 +87,32 @@ class IMAPconnector(object):
         if not name in self.m.untagged_responses:
             return None
         return self.m.untagged_responses.pop(name)
+
+    def __find_content_in_bodystruct(self, bodystruct, mtype, stype, prefix=""):
+        """Retrieve the number (index) of a specific part
+
+        This part number will generally be used inside a FETCH request
+        to specify a ``BODY.PEEK`` section.
+
+        :param bodystruct: a BODYSTRUCTURE list
+        :param mtype: the MIME main type (like text)
+        :param stype: the MIME sub type (like plain)
+        :param prefix: the prefix that will be added to the current part number
+        :return: a tuple (index (None on error), encoding (string), size (int))
+        """
+        if type(bodystruct[0]) in [list, tuple]:
+            cpt = 1
+            for part in bodystruct[0]:
+                nprefix = "%s" % cpt if prefix == "" else "%s.%d" % (prefix, cpt)
+                index, encoding, size = \
+                    self.__find_content_in_bodystruct(bodystruct[0], mtype, stype, nprefix)
+                if index:
+                    return (index, encoding, size)
+                cpt += 1
+
+        if bodystruct[0] == mtype and bodystruct[1] == stype:
+            return ("1" if not len(prefix) else prefix, bodystruct[5], int(bodystruct[6]))
+        return (None, None, 0)
 
     def refresh(self, user, password):
         """Check if current connection needs a refresh
@@ -384,18 +410,24 @@ class IMAPconnector(object):
         msg = email.message_from_string(data[0][1] + data[1][1])
         return msg
 
-    def fetch(self, start, stop=None, folder=None, all=False, **kwargs):
-        self.select_mailbox(folder, False)
+    def fetch(self, start, stop=None, mbox=None, **kwargs):
+        """Retrieve information about messages from the server
+
+        Issue a FETCH command to retrieve information about one or
+        more messages (such as headers) from the server.
+
+        :param start: index of the first message
+        :param stop: index of the last message (optionnal)
+        :param mbox: the mailbox that contains the messages
+        """
+        self.select_mailbox(mbox, False)
         if start and stop:
             submessages = self.messages[start - 1:stop]
             range = ",".join(submessages)
         else:
             submessages = [start]
             range = start
-        if not all:
-            query = '(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
-        else:
-            query = '(RFC822)'
+        query = '(FLAGS BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
         data = self._cmd("FETCH", range, query)
         result = []
         for uid in submessages:
@@ -407,6 +439,48 @@ class IMAPconnector(object):
                 msg['img_flags'] = static_url('pics/answered.png')
             result += [msg]
         return result
+
+    def fetchmail(self, mbox, mailid, fmt="plain"):
+        """Retrieve information about a specific message
+
+        Issue a FETCH command to retrieve a message's content from the
+        server. In order to not overload the server, we first retrieve
+        the BODYSTRUCTURE of the message. Then, according to the
+        result and to the user's preferences, we retrieve the
+        appropriate content (plain, html, etc.).
+
+        :param mbox: the mailbox containing the message
+        :param mailid: the message's unique id
+        :param fmt: the desired content's format
+        """
+        self.select_mailbox(mbox, False)
+        data = self._cmd("FETCH", mailid, "(BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])")
+        content = data[int(mailid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]']
+
+        fallback_fmt = "html" if fmt == "plain" else "plain"
+        (pnum, encoding, size) = (None, None, 0)
+        for f in [fmt, fallback_fmt]:
+            pnum, encoding, size = \
+                self.__find_content_in_bodystruct(data[int(mailid)]['BODYSTRUCTURE'],
+                                                  "text", f)
+            if pnum is not None and size:
+                break
+        if pnum is None:
+            return None
+
+        data = self._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
+
+        data = data[int(mailid)]['BODY[%s]' % pnum]        
+        if encoding == "base64":
+            import base64
+            content += base64.b64decode(data)
+        elif encoding == "quoted-printable":
+            import quopri
+            content += quopri.decodestring(data)
+        else:
+            content += data
+
+        return email.message_from_string(content)
 
 def get_imapconnector(request):
     imapc = IMAPconnector(user=request.user.username, 

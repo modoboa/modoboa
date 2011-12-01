@@ -19,7 +19,7 @@ from modoboa.admin.lib import is_not_localadmin
 from modoboa.auth.lib import *
 from lib import *
 from forms import *
-from templatetags.webextras import *
+from templatetags import webextras
 
 def __render_common_components(request, folder_name, lst=None, content=None, menu=None):
     """Render all components that are common to all pages in the webmail
@@ -124,51 +124,58 @@ def index(request):
         return _render_error(request, user_context={"error" : exp})
     return lst.render(request)
 
-def fetchmail(request, folder, mail_id, all=False):
-    res = IMAPconnector(user=request.user.username, 
-                        password=request.session["password"]).fetch(start=mail_id, 
-                                                                    folder=folder, 
-                                                                    all=all)
-    if len(res):
-        return res[0]
-    return None
+def fetchmail(request, mbox, mailid, all=False):
+    imapc = get_imapconnector(request)
+    res = imapc.fetchmail(mbox, mailid)
+
+    return res
+    # res = IMAPconnector(user=request.user.username, 
+    #                     password=request.session["password"]).fetch(start=mail_id, 
+    #                                                                 folder=folder, 
+    #                                                                 all=all)
+    # if len(res):
+    #     return res[0]
+    # return None
+
+# @login_required
+# @is_not_localadmin()
+# def viewmail(request, folder, mail_id=None):
+#     from templatetags.webextras import viewm_menu
+
+#     if request.GET.has_key("links"):
+#         links = int(request.GET["links"])
+#     else:
+#         links = parameters.get_user(request.user, "ENABLE_LINKS") == "yes" and 1 or 0
+#     url = reverse(getmailcontent, args=[folder, mail_id]) + ("?links=%d" % links)
+#     content = Template("""
+# <iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
+# """).render(Context({"url" : url}))
+#     menu = viewm_menu("", get_current_url(request), folder, mail_id,
+#                       request.user.get_all_permissions())
+#     mbc = IMAPconnector(user=request.user.username, 
+#                         password=request.session["password"])
+#     ctx = getctx("ok", **__render_common_components(request, folder, 
+#                                                     menu=menu, content=content))
+#     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 @is_not_localadmin()
-def viewmail(request, folder, mail_id=None):
-    from templatetags.webextras import viewm_menu
+def getmailcontent(request):
+    mbox = request.GET.get("mbox", None)
+    mailid = request.GET.get("mailid", None)
+    if mbox is None or mailid is None:
+        raise WebmailError(_("Invalid request"))
 
-    if request.GET.has_key("links"):
-        links = int(request.GET["links"])
-    else:
-        links = parameters.get_user(request.user, "ENABLE_LINKS") == "yes" and 1 or 0
-    url = reverse(getmailcontent, args=[folder, mail_id]) + ("?links=%d" % links)
-    content = Template("""
-<iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
-""").render(Context({"url" : url}))
-    menu = viewm_menu("", get_current_url(request), folder, mail_id,
-                      request.user.get_all_permissions())
-    mbc = IMAPconnector(user=request.user.username, 
-                        password=request.session["password"])
-    ctx = getctx("ok", **__render_common_components(request, folder, 
-                                                    menu=menu, content=content))
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    content = fetchmail(request, mbox, mailid, True)
 
-@login_required
-@is_not_localadmin()
-def getmailcontent(request, folder, mail_id):
-    msg = fetchmail(request, folder, mail_id, True)
-    if "class" in msg.keys() and msg["class"] == "unseen":
-        IMAPconnector(user=request.user.username,
-                      password=request.session["password"]).msg_read(folder, mail_id)
-        email = ImapEmail(msg, request.user, links=request.GET["links"])
-    try:
-        pageid = request.session["page"]
-    except KeyError:
-        pageid = "1"
+    # if "class" in msg.keys() and msg["class"] == "unseen":
+    #     IMAPconnector(user=request.user.username,
+    #                   password=request.session["password"]).msg_read(folder, mail_id)
+
+    email = ImapEmail(content, request.user, links=request.GET["links"])
     return _render(request, "common/viewmail.html", {
-            "headers" : email.render_headers(folder=folder, mail_id=mail_id), 
-            "folder" : folder, "imapid" : mail_id, "mailbody" : email.body
+            "headers" : email.render_headers(folder=mbox, mail_id=mailid), 
+            "folder" : mbox, "imapid" : mailid, "mailbody" : email.body
             })
 
 @login_required
@@ -603,6 +610,20 @@ def compose(request):
     form.fields["from_"].initial = request.user.username
     return render_compose(request, form, "compose", insert_signature=True)
 
+def viewmail(request):
+    mailid = request.GET.get("mailid", None)
+    if mailid is None:
+        raise WebmailError(_("Invalid request"))
+
+    links = 1
+    url = reverse(getmailcontent) + "?mbox=%s&mailid=%s&links=%d" % \
+        (request.session["mbox"], mailid, links)
+    content = Template("""
+<iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
+""").render(Context({"url" : url}))
+
+    return dict(listing=content, menuargs=dict(mail_id=mailid))
+
 @login_required
 @is_not_localadmin()
 def submailboxes(request):
@@ -650,24 +671,21 @@ def newindex(request):
 
     curmbox = request.session.get("mbox", "INBOX")
     if not json:
+        request.session["lastaction"] = None
         imapc = get_imapconnector(request)
         response["refreshrate"] = \
             int(parameters.get_user(request.user, "REFRESH_INTERVAL")) * 1000
         response["mboxes"] = render_mboxes_list(request, imapc)
-        try:
-            menufunc = globals()["%s_menu" % action]
-        except KeyError:
-            if request.session.has_key("lastaction"):
-                menufunc = globals()["%s_menu" % request.session["lastaction"]]
-            else:
-                menufunc = globals()["listmailbox_menu"]
-        response["menu"] = menufunc("", curmbox, request.user)
         return _render(request, "webmail/index.html", response)
 
-    if request.session.get("lastaction", None) != action:
-        request.session["lastaction"] = action
+    if request.session["lastaction"] != action:
+        extra_args = {}
+        if response.has_key("menuargs"):
+            extra_args = response["menuargs"]
+            del response["menuargs"]
         try:
-            response["menu"] = globals()["%s_menu" % action]("", curmbox, request.user)
+            response["menu"] = \
+                getattr(webextras, "%s_menu" % action)("", curmbox, request.user, **extra_args)
         except KeyError:
             pass
 

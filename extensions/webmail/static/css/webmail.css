@@ -12,6 +12,14 @@ html > body #listing {
     bottom: 35px;
 }
 
+body.loading {
+    display: block;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+    z-index: 3;
+    background: #FFF url("../../css/spinner.gif") center center no-repeat;
+}
+
 .clearfix:after {
    content: ".";
    display: block;

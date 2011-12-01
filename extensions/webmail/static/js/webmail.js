@@ -21,13 +21,13 @@ var Webmail = new Class({
         this.rtimer = null;
         this.editorid = "id_body";
 
-        this.init_menubar();
         this.init_folders_buttons();
         this.init_folders_browsing();
 
         /* FIXME: à faire uniquement pour le mode pushState */
         /*this.init_emails_table();*/
 
+        current_anchor.disable_spinner();
         current_anchor.register_callback("listmailbox",
                                          this.listmailbox_callback.bind(this));
         current_anchor.register_callback("viewmail", this.viewmail_callback.bind(this));
@@ -35,20 +35,17 @@ var Webmail = new Class({
         current_anchor.register_callback("reply", this.compose_callback.bind(this));
         current_anchor.register_callback("replyall", this.compose_callback.bind(this));
         current_anchor.register_callback("forward", this.compose_callback.bind(this));
-    },
 
-    /*
-     * Menubar initialization
-     */
-    init_menubar: function() {
-        searchbox_init();
-        $$("a[name=compose]").addEvent("click", this.compose_loader);
-        $$("a[name=mark-read]").addEvent("click", this.send_mark_request.bind(this));
-        $$("a[name=mark-unread]").addEvent("click", this.send_mark_request.bind(this));
-        $$("a[name=fdaction]").addEvent("click", function(evt) {
-            this.simple_request(evt.target.get("href"), {});
-            evt.stop();
+        this.gspinner = new Spinner("document.body", {
+            message: gettext("Loading, please wait..."),
+            'class': "spinner-noop"
+        });
+        this.gspinner.addEvent("hide", function(target) {
+            this.gspinner.destroy();
+            delete(this.gspinner);
+            current_anchor.enable_spinner();
         }.bind(this));
+        this.gspinner.show();
     },
 
     send_mark_request: function(evt) {
@@ -286,7 +283,7 @@ var Webmail = new Class({
 
         this.init_draggables();
 
-        $$("tbody>tr").addEvent("dblclick", viewmail);
+        $$("tbody>tr").addEvent("dblclick", this.viewmail_loader);
     },
 
     /*
@@ -405,7 +402,10 @@ var Webmail = new Class({
      *
      */
     page_update: function(response) {
-
+        if (this.gspinner) {
+            this.gspinner.hide();
+        }
+        updatelisting(response);
     },
 
     /*
@@ -437,16 +437,41 @@ var Webmail = new Class({
      */
     listmailbox_callback: function(resp) {
         window.removeEvents("resize");
-        updatelisting(resp);
+        this.page_update(resp);
+        if (resp.menu != undefined) {
+            searchbox_init();
+            $$("a[name=compose]").addEvent("click", this.compose_loader);
+            $$("a[name=mark-read]")
+                .addEvent("click", this.send_mark_request.bind(this));
+            $$("a[name=mark-unread]")
+                .addEvent("click", this.send_mark_request.bind(this));
+            $$("a[name=fdaction]").addEvent("click", function(evt) {
+                this.simple_request(evt.target.get("href"), {});
+                evt.stop();
+            }.bind(this));
+        }
         this.init_emails_table();
+    },
+
+    /*
+     * Loader of the 'viemmail' action
+     */
+    viewmail_loader: function(evt) {
+        evt.stop();
+        current_anchor.reset().setparams({
+            action: "viewmail",
+            mailid: this.get("id")
+        }).update();
     },
 
     /*
      * Callback of the 'viewmail' action
      */
     viewmail_callback: function(resp) {
-        wm_updatelisting(resp, "hidden");
-        $$("a[name=back]").addEvent("click", this._listmailbox_loader);
+        /*wm_updatelisting(resp, "hidden");*/
+        this.page_update(resp);
+
+        //$$("a[name=back]").addEvent("click", this._listmailbox_loader);
         $$("a[name=reply]").addEvent("click", this.reply_loader);
         $$("a[name=replyall]").addEvent("click", this.replyall_loader);
         $$("a[name=forward]").addEvent("click", this.forward_loader);
@@ -517,7 +542,7 @@ var Webmail = new Class({
      */
     compose_callback: function(resp) {
         //wm_updatelisting(resp);
-        updatelisting(resp);
+        this.page_update(resp);
 
         window.addEvent("resize", this.resize_window_callback.bind(this));
 

@@ -8,7 +8,9 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}js/email_listing.js"></script>
 {% block css %}{% endblock %}
 <script type="text/javascript">
-var current_anchor = new AnchorNavigation("{{ deflocation }}");
+var current_anchor = new AnchorNavigation("{{ deflocation }}", {
+  spin_target: "page"
+});
 
 function viewmail(event) {
   event.stop();
