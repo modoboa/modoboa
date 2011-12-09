@@ -199,3 +199,13 @@ class DomainAdminForm(forms.Form):
             forms.ChoiceField(label=_("User"), required=True,
                               choices=[("", _("Empty"))],
                               help_text=_("Select a user in the list"))
+
+class ImportDataForm(forms.Form):
+    sourcefile = forms.FileField(label=_("Select a file"))
+    sepcar = forms.CharField(label=_("Separator"), max_length=1, required=False)
+
+    def clean_sepcar(self):
+        if self.cleaned_data["sepcar"] == "":
+            return ";"
+        return self.cleaned_data["sepcar"]
+

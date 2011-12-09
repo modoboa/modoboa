@@ -608,3 +608,37 @@ def saveextensions(request):
             ext.save()
     messages.info(request, _("Modifications applied."), fail_silently=True)
     return HttpResponseRedirect(reverse(admin.views.viewextensions))
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def importdata(request, tplname="admin/import.html"):
+    if request.method == "POST":
+        error = None
+        form = ImportDataForm(request.POST, request.FILES)
+        if form.is_valid():
+            import csv
+            reader = csv.reader(request.FILES['sourcefile'], 
+                                delimiter=form.cleaned_data['sepcar'])
+            cpt = 0
+            try:
+                for row in reader:
+                    mb = Mailbox()
+                    mb.create_from_csv(row)
+                    cpt += 1
+            except AdminError, e:
+                error = str(e)
+            else:
+                messages.info(request, _("%d mailboxes imported successfully" % cpt))
+                return _render(request, "admin/import_done.html", {
+                        "status" : "ok", "msg" : ""
+                        })
+
+        return _render(request, "admin/import_done.html", {
+                "status" : "ko", "msg" : error
+                })
+
+    form = ImportDataForm()
+    ctx = dict(title=_("Import data"), action="", formid="importform", 
+               enctype="multipart/form-data", form=form, submit_label=_("Import"))
+    return _render(request, tplname, ctx)
+

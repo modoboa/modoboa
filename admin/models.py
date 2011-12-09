@@ -319,6 +319,26 @@ class Mailbox(DatesAware):
         self.quota = self.domain.quota
         super(Mailbox, self).save()
 
+    def create_from_csv(self, line):
+        """Create a new mailbox from a CSV file entry
+
+        The expected order is the following::
+
+          [loginname, password, first name, last name, address]
+
+        :param line: a list containing the expected information
+        """
+        if len(line) < 5:
+            raise AdminError(_("Invalid line"))
+        mailbox, domname = split_mailbox(line[4])
+        self.address = mailbox
+        try:
+            self.domain = Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            raise AdminError(_("Cannot import this mailbox because the associated domain does not exist"))
+        self.name = "%s %s" % (line[2], line[3])
+        self.save(password=line[1], enabled=True)
+
     def delete(self, *args, **kwargs):
         keepdir = False
         if kwargs.has_key("keepdir"):

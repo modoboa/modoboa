@@ -1,50 +1,11 @@
 {% extends "nlayout.html" %}
 {% load i18n admin_extras libextras %}
 {% block html_head %}
-<script src="{{ MEDIA_URL }}js/domains.js" type="text/javascript"></script>
 <script src="{{ MEDIA_URL }}js/confirmation.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}js/domains.js" type="text/javascript"></script>
 <script type="text/javascript">
 window.addEvent("domready", function() {
-  var rooturl = "{% url index %}";
-
-  $$("a[name=new]").addEvent("click", function(evt) {
-    var type = $("objects").get("name");
-    var sizes = $("objects").get("rel").split(" ");
-
-    evt.stop();
-    SqueezeBox.open(rooturl + type + "/new/", {
-      size: {x: parseInt(sizes[0]), y: parseInt(sizes[1])},
-      handler: 'iframe'
-    });
-  });
-
-  $$("a[name=remove]").addEvent("click", function(evt) {
-    evt.stop();
-    if (objtable._selectedRows.length == 0) {
-      return;
-    }
-    var type = $("objects").get("name");
-    var selection = "";
-
-    objtable._selectedRows.each(function(item) {
-      var options = JSON.decode(item.get("rel"));
-
-      if ($defined(options) && $defined(options.ui_disabled) && options.ui_disabled == "True") {
-        return;
-      }
-      if (selection != "") {
-        selection += ",";
-      }
-      selection += item.get("id");
-    });
-    if (selection == "") {
-      return;
-    }
-    new Confirmation(rooturl + type + "/delete/", "selection=" + selection,
-                     "{% trans 'Remove this selection?' %}", {
-    {% if deloptions %}checkboxes: { {% join deloptions %} }{% endif %}
-    });
-  });
+  new Domains("{% url index %}"{% if deloptions %}, { {% join deloptions %} } {% endif %});
 });
 </script>
 {% endblock %}

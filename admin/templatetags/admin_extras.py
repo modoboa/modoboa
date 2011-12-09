@@ -93,7 +93,13 @@ def domains_menu(selection, user, domid):
     else:
         disabled = False
     
-    entries += [{"name" : "new",
+    entries += [
+        {"name" : "actions",
+         "label" : _("Actions"),
+         "img" : static_url("pics/tools.png"),
+         "class" : "menubardropdown",
+         "menu" : [
+                {"name" : "new",
                  "label" : _("New"),
                  "img" : static_url("pics/add.png"),
                  "disabled" : disabled},
@@ -101,7 +107,16 @@ def domains_menu(selection, user, domid):
                  "label" : _("Remove"),
                  "img" : static_url("pics/remove.png"),
                  "disabled" : disabled
-                 }]
+                 },
+                {"name" : "import",
+                 "label" : _("Import data"),
+                 "img" : static_url("pics/import.png"),
+                 "class" : "boxed",
+                 "rel" : "{handler:'iframe',size:{x:370,y:250}}",
+                 "url" : reverse(admin.views.importdata)}
+                ]
+         },
+        ]
 
     entries += [{"separator" : True}]
     if user.has_perm("admin.view_domains"):

@@ -1,0 +1,65 @@
+{% extends "layout_simple.html" %}
+{% load i18n %}
+{% block html_head %}
+{{ block.super }}
+<style>
+#id_sepcar {
+    width: 10px;
+}
+
+#import_result, #import_status {
+    width: 100%;
+    text-align: center;
+}
+
+#import_result {
+    color: green;
+    font-weight: bold;
+}
+
+</style>
+
+<script type="text/javascript">
+function import_cb(status, msg) {
+    $("import_status").setStyle("display", "none");
+    $("submit").set("disabled", false);
+    if (status == "ok") {
+        parent.location.reload();
+        parent.SqueezeBox.close();
+    } else {
+        $("import_result").set("html", "");
+        $("error").set("html", msg);
+    }
+}
+
+window.addEvent("domready", function() {
+    $("importform").addEvent("submit", function(evt) {
+        if ($("id_sourcefile").value == "") {
+            evt.stop();
+            return;
+        }
+        $("import_status").setStyle("display", "block");
+        $("submit").set("disabled", true);
+    });
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="title"><h1>{% trans "Import data" %}</h1></div>
+<div id="error" class="error">{{ error }}</div>
+<form action="{% url admin.views.importdata %}" enctype="multipart/form-data" 
+      target="import_target"
+      method="POST" id="importform" name="importform">
+  {% include "common/genericform.html" %}
+  <div class="spacer"></div>
+  <div class="lastrow" align="center">
+    <input type="submit" id="submit" name="submit" value="{% trans 'Import' %}" />
+  </div>
+</form>
+<iframe id="import_target" name="import_target" src="#" 
+        style="width:0;height:0;border:0px solid #fff;"></iframe>
+<div id="import_status" style="display:none">
+  <img src="{{MEDIA_URL}}css/spinner.gif" /> {% trans "Importing..." %}
+</div>
+<div id="import_result"></div>
+{% endblock %}

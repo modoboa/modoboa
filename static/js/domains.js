@@ -1,41 +1,66 @@
-window.addEvent('domready', function() {
-    var handlers = new Array();
-
-    if ($defined($("subcontent"))) {
-        SqueezeBox.assign($("subcontent").getElements('a[class=boxed]'), {
-            parse: 'rel'
+var Domains = new Class({
+    initialize: function(rooturl, deloptions) {
+        this.rooturl = rooturl;
+        if (deloptions != undefined) {
+            this.deloptions = deloptions;
+        } else {
+            this.deloptions = new Array();
+        }
+        if ($("subcontent") != undefined) {
+            SqueezeBox.assign($("subcontent").getElements('a[class=boxed]'), {
+                parse: 'rel'
+            });
+        }
+        setDivHeight("content", 20, 0);
+        this.objtable = new HtmlTable($("objects_table"), {
+            selectable: true
         });
+
+        $$("a[name=new]").addEvent("click", this.new_clickcb.bind(this));
+        $$("a[name=remove]").addEvent("click", this.remove_clickcb.bind(this));
+
+    },
+
+    new_clickcb: function(evt) {
+        var type = $("objects").get("name");
+        var sizes = $("objects").get("rel").split(" ");
+
+        evt.stop();
+        SqueezeBox.open(this.rooturl + type + "/new/", {
+            size: {x: parseInt(sizes[0]), y: parseInt(sizes[1])},
+            handler: 'iframe'
+        });
+    },
+
+    remove_clickcb: function(evt) {
+        evt.stop();
+        if (this.objtable._selectedRows.length == 0) {
+            return;
+        }
+        var type = $("objects").get("name");
+        var selection = "";
+
+        this.objtable._selectedRows.each(function(item) {
+            var options = JSON.decode(item.get("rel"));
+
+            if (options != undefined && options.ui_disabled != undefined &&
+                options.ui_disabled == "True") {
+                return;
+            }
+            if (selection != "") {
+                selection += ",";
+            }
+            selection += item.get("id");
+        });
+        if (selection == "") {
+            return;
+        }
+        new Confirmation(
+            this.rooturl + type + "/delete/",
+            "selection=" + selection,
+            gettext('Remove this selection?'), {
+                checkboxes: this.deloptions
+            }
+        );
     }
-
-    $(document.body).addEvent('click', function(event) {
-	var target = event.target;
-	if (target.get('tag') == 'a') {
-	    var name = target.get('name');
-	    if (name == 'undefined')
-		return;
-	    if (typeof(handlers[name]) != 'undefined') {
-		if (!handlers[name](target, target.get('href'))) {
-		    new Event(event).stop();
-                }
-	    }
-	}
-    });
-
-    $(document.body).addEvent('submit', function(event) {
-	target = event.target;
-	if (target.get('tag') == 'form') {
-	    name = target.get('name');
-	    if (name == 'undefined')
-		return;
-	    if (typeof(handlers[name]) != 'undefined') {
-		new Event(event).stop();
-		handlers[name](target);
-	    }
-	}
-    });
-    setDivHeight("content", 20, 0);
-		    
-    objtable = new HtmlTable($("objects_table"), {
-	selectable: true
-    });
 });
