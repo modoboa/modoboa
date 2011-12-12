@@ -8,7 +8,9 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}js/email_listing.js"></script>
 {% block css %}{% endblock %}
 <script type="text/javascript">
-var current_anchor = new AnchorNavigation("{{ deflocation }}");
+var current_anchor = new AnchorNavigation("{{ deflocation }}", {
+  spin_target: "page"
+});
 
 function viewmail(event) {
   event.stop();
@@ -56,7 +58,7 @@ function update_sortable_column() {
 
 window.addEvent("domready", function() {
   navparams = new Hash({
-    {% join navparams %}
+    {% if navparams %}{% join navparams %}{% endif %}
   }); 
   {% block js %}{% endblock %}
   current_anchor.set_default_callback({{ defcallback }});

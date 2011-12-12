@@ -11,10 +11,10 @@ from modoboa.lib.webutils import static_url
 register = template.Library()
 
 @register.simple_tag
-def viewm_menu(selection, backurl, folder, mail_id, user):   
+def viewmail_menu(selection, folder, user, mail_id=None):   
     entries = [
         {"name" : "back",
-         "url" : backurl,
+         "url" : "javascript:history.go(-1);",
          "img" : static_url("pics/back.png"),
          "label" : _("Back")},
         {"name" : "reply",
@@ -40,10 +40,12 @@ def viewm_menu(selection, backurl, folder, mail_id, user):
          "menu" : [
                  {"name" : "activate_links", 
                   "label" : _("Activate links"),
-                  "url" : reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=1"},
+                  "url" : ""},
+                  #reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=1"},
                  {"name" : "disable_links", 
                   "label" : _("Disable links"),
-                  "url" : reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=0"},
+                  "url" : ""}
+                  #reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=0"},
                 ]
          }
         ]
@@ -56,7 +58,7 @@ def viewm_menu(selection, backurl, folder, mail_id, user):
 def compose_menu(selection, backurl, user):
     entries = [
         {"name" : "back",
-         "url" : backurl,
+         "url" : "javascript:history.go(-2);",#backurl,
          "img" : static_url("pics/back.png"),
          "label" : _("Back")},
         {"name" : "sendmail",
@@ -69,10 +71,10 @@ def compose_menu(selection, backurl, user):
                              "user" : user})
 
 @register.simple_tag
-def listing_menu(selection, folder, user):
+def listmailbox_menu(selection, folder, user):
     entries = [
         {"name" : "compose",
-         "url" : reverse(webmail.views.compose),
+         "url" : "compose",
          "img" : static_url("pics/edit.png"),
          "label" : _("New message")},
         {"name" : "mark",
@@ -127,7 +129,7 @@ def print_folders(folders, selected=None, withunseen=False, withmenu=False):
         if selected == name:
             cssclass += " selected"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
-        if fd.has_key("sub") and len(fd["sub"]):
+        if fd.has_key("sub"):
             if selected is not None and selected != name and selected.count(name):
                 ul_state = "visible"
                 div_state = "expanded"
