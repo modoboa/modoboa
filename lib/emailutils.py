@@ -4,6 +4,7 @@ import re
 import lxml
 from django.template import Template, Context
 from django.template.loader import render_to_string
+from django.conf import settings
 import u2u_decode
 import smtplib
 from email.header import decode_header
