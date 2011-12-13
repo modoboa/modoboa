@@ -544,6 +544,12 @@ they already exist) the following parameters::
   virtual_transport = dovecot
   dovecot_destination_recipient_limit = 1
 
+Then, edit the */etc/postfix/master.cf* file and add the following
+definition at the end::
+
+  dovecot   unix  -       n       n       -       -       pipe
+    flags=DRhu user=vmail:vmail argv=/usr/lib/dovecot/deliver -f ${sender} -d ${recipient}
+
 If you have followed the :ref:`postfix-label` section to install your
 environnement, you need to modify the SQL query corresponding to the
 ``virtual_mailbox_maps`` parameter. Edit the
