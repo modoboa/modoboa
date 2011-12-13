@@ -8,13 +8,13 @@ body {
 div.row {
     clear: both;
     padding-top: 10px;
-    padding-left: 20px;
 }
 
 div.row label {
     float: left;
     width: 120px;
     padding: 3px 0;
+    padding-left: 20px;
 }
 
 input {
