@@ -125,11 +125,10 @@ function sendmail_callback(evt) {
 function compose_callback(resp) {
   wm_updatelisting(resp);
 
-  window.addEvent("resize", resize_window_callback);
-
   var editormode = resp.editor;
 
   if (editormode == "html") {
+    window.addEvent("resize", resize_window_callback);
     var instance = CKEDITOR.instances[editorid];
     if (instance) {
       CKEDITOR.remove(instance);
