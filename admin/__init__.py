@@ -24,22 +24,27 @@ parameters.register_admin("PASSWORD_SCHEME", type="list", deflt="crypt",
 parameters.register_admin("ITEMS_PER_PAGE", type="int", deflt=30,
                           help=_("Number of displayed items per page"))
 
-#
-# Quick fix for #184
-#
-# Just catch the DatabaseError exception raised when runnning the
-# first ``syncdb`` command. 
-#
-try:
-    enabled_extensions = list(Extension.objects.filter(enabled=True))
-except DatabaseError:
-    enabled_extensions = []
+def enabled_applications():
+    """Return the list of currently enabled extensions
+
+    Quick fix for #184:
+
+    Just catch the DatabaseError exception raised when runnning the
+    first ``syncdb`` command.
+
+    :return: a list
+    """
+    result = [("admin", "admin"), ("userprefs", "userprefs")]
+    try:
+        exts = list(Extension.objects.filter(enabled=True))
+    except DatabaseError:
+        exts = []
+    result += map(lambda ext: (ext.name, ext.name), exts)
+    return sorted(result)
 
 parameters.register_admin("DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
                           app="general",
-                          values=sorted([("admin", "admin"), ("userprefs", "userprefs")] \
-                                            + map(lambda ext: (ext.name, ext.name), 
-                                                  enabled_extensions)),
+                          values=enabled_applications(),
                           help=_("The default redirection used when no application is specified"))
 
 def unset_default_topredirection(**kwargs):
@@ -51,4 +56,14 @@ def unset_default_topredirection(**kwargs):
     if topredirection == kwargs["ext"].name:
         parameters.save_admin("DEFAULT_TOP_REDIRECTION", "userprefs", app="general")
 
+def update_available_applications(**kwargs):
+    """Simple callback to update the list of available applications
+
+    Must be called each time an extension is disabled/enabled.
+    """
+    parameters.update_admin("DEFAULT_TOP_REDIRECTION", app="general",
+                            values=enabled_applications())
+
 events.register("ExtDisabled", unset_default_topredirection)
+events.register("ExtDisabled", update_available_applications)
+events.register("ExtEnabled", update_available_applications)

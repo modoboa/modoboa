@@ -596,16 +596,16 @@ def saveextensions(request):
             parts = k.split("_", 1)
             dbext = Extension.objects.get(name=parts[1])            
             if not dbext in actived_exts:
-                dbext.on()
                 dbext.enabled = True
                 dbext.save()
+                dbext.on()
             else:
                 found += [dbext]
     for ext in actived_exts:
         if not ext in found:
-            ext.off()
             ext.enabled = False
             ext.save()
+            ext.off()
     messages.info(request, _("Modifications applied."), fail_silently=True)
     return HttpResponseRedirect(reverse(admin.views.viewextensions))
 

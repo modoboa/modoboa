@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 """
+:mod:`events` --- simple events handling
+----------------------------------------
+
 This module provides a simple way of managing events between Modoboa
 core application and additional components.
 

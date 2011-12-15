@@ -3,7 +3,8 @@ var DynamicTextInput = new Class({
     Implements: [Options],
 
     options: {
-        parentContainer: null
+        parentContainer: null,
+        containerLevel: 1
     },
 
     initialize: function(targets, options) {
@@ -68,7 +69,11 @@ var DynamicTextInput = new Class({
             "margin-top": "2px"
         });
         if (!this.options.parentContainer) {
-            field[0].inject(this.target.getParent(), "after");
+            var container = this.target;
+            for (var i = 0; i < this.options.containerLevel; i++) {
+                container = container.getParent()
+            }
+            field[0].inject(container, "after");
         } else {
             field[0].inject(this.options.parentContainer);
         }

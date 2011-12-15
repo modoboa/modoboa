@@ -65,15 +65,25 @@ def setforward(request, tplname="userprefs/setforward.html"):
                     al.address = mb.address
                     al.domain = mb.domain
                     al.enabled = mb.user.is_active
+                intdests = []
+                if form.cleaned_data["keepcopies"]:
+                    intdests += [mb]
                 form.parse_dest()
-                al.save([], form.dests)
+                al.save(intdests, form.dests)
                 return ajax_response(request, respmsg=_("Forward updated"))
             except BadDestination, e:
                 error = str(e)
-        return ajax_response(request, status="ko", template=tplname, form=form, error=error)
+        return ajax_response(request, status="ko", template=tplname,
+                             form=form, error=error)
     form = ForwardForm()
     if al is not None:
         form.fields["dest"].initial = al.extmboxes
+    try:
+        selfmb = al.mboxes.get(pk=mb.id)
+    except Mailbox.DoesNotExist:
+        pass
+    else:
+        form.fields["keepcopies"].initial = True
     return _render(request, tplname, {
             "form" : form
             })

@@ -36,7 +36,12 @@ def __is_defined(app, level, name):
 def __register(app, level, name, **kwargs):
     """Register a new parameter.
 
-    app corresponds to a core component (admin, main) or an extension.
+    ``app`` corresponds to a core component (admin, main) or to an
+    extension.
+
+    :param name: the application's name
+    :param level: the level this parameter is available from
+    :param name: the parameter's name
     """ 
     if not app in _params.keys():
         _params[app] = {}
@@ -53,7 +58,24 @@ def __register(app, level, name, **kwargs):
     for k, v in kwargs.iteritems():
         _params[app][level][name][k] = v
 
+def __update(app, level, name, **kwargs):
+    """Update a parameter's definition
+
+    :param app: the application's name
+    :param level: the level this parameter is available from
+    :param name: the parameter's name
+    """
+    if not app in _params.keys() or not level in _levels.keys() \
+            or not _params[app][level].has_key(name):
+        return
+    for k, v in kwargs.iteritems():
+        _params[app][level][name][k] = v
+
 def __guess_extension():
+    """Tries to guess the application's name by inspecting the stack
+
+    :return: a string or None
+    """
     modname = inspect.getmodule(inspect.stack()[2][0]).__name__
     m = re.match("(?:modoboa\.)?(?:extensions\.)?([^\.$]+)", modname)
     if m:
@@ -61,12 +83,34 @@ def __guess_extension():
     return None
 
 def register_admin(name, **kwargs):
+    """Register a new parameter (admin level)
+
+    Each parameter is associated to one application. If no application
+    is provided, the function tries to guess the appropriate one.
+
+    :param name: the parameter's name
+    """
     if kwargs.has_key("app"):
         app = kwargs["app"]
         del kwargs["app"]
     else:
         app = __guess_extension()
     return __register(app, 'A', name, **kwargs)
+
+def update_admin(name, **kwargs):
+    """Update a parameter's definition (admin level)
+
+    Each parameter is associated to one application. If no application
+    is provided, the function tries to guess the appropriate one.
+
+    :param name: the parameter's name
+    """
+    if kwargs.has_key("app"):
+        app = kwargs["app"]
+        del kwargs["app"]
+    else:
+        app = __guess_extension()
+    return __update(app, 'A', name, **kwargs)
 
 def register_user(name, **kwargs):
     if kwargs.has_key("app"):

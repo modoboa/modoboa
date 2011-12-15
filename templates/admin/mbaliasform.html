@@ -9,7 +9,9 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}js/Autocompleter.Request.js"></script>
 <script type="text/javascript">
 function init_form() {
-    var dti = new DynamicTextInput($$("input[name=targets]"));
+    var dti = new DynamicTextInput($$("input[name=targets]"), {
+        containerLevel: 2
+    });
 
     new Autocompleter.Request.JSON("id_targets", 
                                    "{% url admin.views.mailboxes_search %}", {

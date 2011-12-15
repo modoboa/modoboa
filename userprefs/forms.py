@@ -37,6 +37,7 @@ class ChangePasswordForm(forms.Form):
 
 class ForwardForm(forms.Form):
     dest = forms.CharField(label=_("Destination(s)"), widget=forms.Textarea)
+    keepcopies = forms.BooleanField(label=_("Keep local copies"), required=False)
 
     def parse_dest(self):
         self.dests = []
