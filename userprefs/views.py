@@ -78,12 +78,12 @@ def setforward(request, tplname="userprefs/setforward.html"):
     form = ForwardForm()
     if al is not None:
         form.fields["dest"].initial = al.extmboxes
-    try:
-        selfmb = al.mboxes.get(pk=mb.id)
-    except Mailbox.DoesNotExist:
-        pass
-    else:
-        form.fields["keepcopies"].initial = True
+        try:
+            selfmb = al.mboxes.get(pk=mb.id)
+        except Mailbox.DoesNotExist:
+            pass
+        else:
+            form.fields["keepcopies"].initial = True
     return _render(request, tplname, {
             "form" : form
             })
