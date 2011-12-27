@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import events
-import modoboa.admin
+from modoboa.admin import views as admviews
 from forms import LoginForm
 from modoboa.auth.lib import *
 
@@ -32,7 +32,7 @@ def dologin(request):
 
                 next = request.POST["next"]
                 if next.strip() in ["", "None"]:
-                    next = reverse(modoboa.admin.views.domains)
+                    next = reverse(admviews.domains)
                 return HttpResponseRedirect(next)
             else:
                 error = _("Account is disabled.")
