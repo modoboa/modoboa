@@ -4,6 +4,7 @@ from modoboa.auth.lib import _check_password
 from django.contrib.auth.models import check_password
 from django.utils.translation import ugettext as _, ugettext_noop
 from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib import parameters
 
 class BadDestination(Exception):
     pass
@@ -21,6 +22,9 @@ class ChangePasswordForm(forms.Form):
         self.target = target
 
     def clean_oldpassword(self):
+        if parameters.get_admin("AUTHENTICATION_TYPE", app="admin") != "local":
+            return self.cleaned_data["oldpassword"]
+
         if not isinstance(self.target, Mailbox):
             func = check_password
         else:

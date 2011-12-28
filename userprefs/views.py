@@ -8,9 +8,9 @@ from django.utils.translation import ugettext as _
 from modoboa.lib import parameters, events
 from modoboa.lib.webutils import _render, _render_error, ajax_response
 from forms import *
-from modoboa.admin.models import Mailbox, Alias
+from modoboa.admin.models import Mailbox, Alias, AdminError
 from modoboa.admin.lib import is_domain_admin
-from modoboa.auth.lib import encrypt, crypt_password
+from modoboa.auth.lib import encrypt
 
 @login_required
 def index(request):
@@ -31,13 +31,18 @@ def changepassword(request, tplname="userprefs/chpassword.html"):
     if request.method == "POST":
         form = ChangePasswordForm(target, request.POST)
         if form.is_valid():
-            if request.user.id != 1:                
-                target.password = crypt_password(request.POST["confirmation"])
+            if request.user.id != 1:
+                try:
+                    target.set_password(form.cleaned_data["oldpassword"],
+                                        form.cleaned_data["confirmation"])
+                except AdminError, e:
+                    error = str(e)
+                request.session["password"] = encrypt(request.POST["confirmation"])
             else:
                 target.set_password(request.POST["confirmation"])
-                request.session["password"] = encrypt(request.POST["confirmation"])
-            target.save()
-            return ajax_response(request, respmsg=_("Password changed"))
+
+            if error is None:
+                return ajax_response(request, respmsg=_("Password changed"))
         return ajax_response(request, status="ko", template=tplname, 
                              form=form, error=error)
 

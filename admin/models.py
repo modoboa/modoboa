@@ -6,6 +6,7 @@ from django.conf import settings
 from modoboa.lib import parameters, events
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.ldaputils import *
 from modoboa.auth.lib import crypt_password
 import os
 import pwd
@@ -291,6 +292,26 @@ class Mailbox(DatesAware):
                 pass
         super(Mailbox, self).save(*args, **kwargs)
 
+    def set_password(self, curvalue, newvalue):
+        """Password update
+
+        Update the current mailbox's password with the given clear
+        value. This value is encrypted according to the defined method
+        before it is saved.
+
+        :param value: the new password's value
+        """
+        if parameters.get_admin("AUTHENTICATION_TYPE") == "local":
+            self.password = crypt_password(value)
+            self.save()
+            return
+
+        ab = LDAPAuthBackend()
+        try:
+            ab.update_user_password(self.user.username, curvalue, newvalue)
+        except LDAPException, e:
+            raise AdminError(_("Failed to update password: %s" % str(e)))
+
     def save_from_user(self, localpart, domain, user):
         """Simple save method called for automatic creations
 
@@ -307,16 +328,16 @@ class Mailbox(DatesAware):
 	# If we ever had numerical uid, don't resolve it
 	v_uid = parameters.get_admin("VIRTUAL_UID");
 	if v_uid.isdigit():
-		self.uid = v_uid
+            self.uid = v_uid
 	else:
-		self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
+            self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
 	# Just the same for gid
 	v_gid = parameters.get_admin("VIRTUAL_GID")
-	if v_gid.isdigit:
-		self.gid = v_gid
+	if v_gid.isdigit():
+            self.gid = v_gid
 	else:
-		self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
-        self.quota = self.domain.quota
+            self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
+            self.quota = self.domain.quota
         super(Mailbox, self).save()
 
     def create_from_csv(self, line):
@@ -489,31 +510,39 @@ class Extension(models.Model):
 
         events.raiseEvent("ExtDisabled", ext=self)
 
-#
-# Optional callback to execute if django-auth-ldap is enabled.
-#
+def populate_callback(sender, user=None, **kwargs):
+    """Populate signal callback
+
+    If the LDAP authentication backend is in use, this callback will
+    be called each time a new user authenticates succesfuly to
+    Modoboa. This function is in charge of creating the mailbox
+    associated to the provided ``User`` object.
+
+    :param sender: ??
+    :param user: a ``User`` instance
+    """
+    if parameters.get_admin("AUTHENTICATION_TYPE") != "ldap":
+        return
+    if user is None:
+        return
+    localpart, domname = split_mailbox(user.username)
+    try:
+        domain = Domain.objects.get(name=domname)
+    except Domain.DoesNotExist:
+        domain = Domain()
+        domain.name = domname
+        domain.enabled = True
+        domain.quota = 0
+        domain.save()
+    try:
+        mb = Mailbox.objects.get(domain=domain, address=localpart)
+    except Mailbox.DoesNotExist:
+        mb = Mailbox()
+        mb.save_from_user(localpart, domain, user)
+
 try:
     from django_auth_ldap.backend import populate_user
-
-    def populate_callback(sender, user=None, **kwargs):
-        if user is None:
-            return
-        localpart, domname = split_mailbox(user.username)
-        try:
-            domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
-            domain = Domain()
-            domain.name = domname
-            domain.enabled = True
-            domain.quota = 0
-            domain.save()
-        try:
-            mb = Mailbox.objects.get(domain=domain, address=localpart)
-        except Mailbox.DoesNotExist:
-            mb = Mailbox()
-            mb.save_from_user(localpart, domain, user)
-
-    populate_user.connect(populate_callback, dispatch_uid="myuid")
-
 except ImportError, inst:
     pass
+else:
+    populate_user.connect(populate_callback, dispatch_uid="myuid")
