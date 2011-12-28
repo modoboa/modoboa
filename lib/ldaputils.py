@@ -90,6 +90,8 @@ class LDAPAuthBackend(object):
         :return: the encrypted password
         """
         scheme = parameters.get_admin("PASSWORD_SCHEME", app="admin")
+        if scheme == "clear":
+            return str(clearpassword)
         crypted = crypt_password(clearpassword, False)
         return str("{%s}%s" % (scheme.upper(), base64.encodestring(crypted)))
 
