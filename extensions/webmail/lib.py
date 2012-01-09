@@ -213,10 +213,9 @@ class IMAPconnector(object):
             sdescr["class"] = "subfolders"
         return True
 
-    def _listfolders(self, topfolder='INBOX', md_folders=[]):
+    def _listfolders(self, topfolder='INBOX', folders=[]):
         list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
         (status, data) = self.m.list()
-        result = []
         for mb in data:
             flags, delimiter, name = list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
@@ -229,16 +228,20 @@ class IMAPconnector(object):
                                            parts[1:]):
                     descr["class"] = "subfolders"
                 continue
-            present = False
+
+            pos = -1
             descr = {"name" : name}
-            for mdf in md_folders:
+            for idx, mdf in enumerate(folders):
                 if mdf["name"] == name:
-                    present = True
+                    pos = idx
                     break
-            if not present:
-                result += [descr]
+            if pos == -1:
+                folders += [descr]
+            else:
+                folders[idx] = descr
+                
         from operator import itemgetter
-        return sorted(result, key=itemgetter("name"))
+        return sorted(folders, key=itemgetter("name"))
 
     def getfolders(self, user, unseen_messages=True):
         md_folders = [{"name" : "INBOX", "class" : "inbox"},
@@ -248,7 +251,8 @@ class IMAPconnector(object):
                       {"name" : parameters.get_user(user, "SENT_FOLDER")},
                       {"name" : parameters.get_user(user, "TRASH_FOLDER"),
                        "class" : "trash"}]
-        md_folders += self._listfolders(md_folders=md_folders)
+        self._listfolders(folders=md_folders)
+
         if unseen_messages:
             for fd in md_folders:
                 key = fd.has_key("path") and "path" or "name"
