@@ -1,4 +1,5 @@
 {% extends "admin/settings_header.html" %}
+{% load i18n %}
 {% block menu %}
 {% load admin_extras %}
 {% settings_menu "parameters" user %}
@@ -8,4 +9,7 @@
 <form method="POST" action="{{ action }}" id="params_form">
   {% include "common/parameters.html" %}
 </form>
+{% endblock %}
+{% block footer %}
+<input type="button" id="update" name="update" value="{% trans 'Save' %}" />
 {% endblock %}

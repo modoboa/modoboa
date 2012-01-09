@@ -1,7 +1,6 @@
 {% load i18n %}
 {% load admin_extras %}
 {% if gparams %}
-  <p><input style="margin: 5px" type="submit" name="update" value="{% trans 'Save' %}" /></p>
   <div id="accordion">
     {% for app in gparams %}
     <h3 class="toggler atStart">{{ app.name }}</h3>
