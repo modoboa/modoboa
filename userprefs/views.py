@@ -40,6 +40,7 @@ def changepassword(request, tplname="userprefs/chpassword.html"):
                 request.session["password"] = encrypt(request.POST["confirmation"])
             else:
                 target.set_password(request.POST["confirmation"])
+                target.save()
 
             if error is None:
                 return ajax_response(request, respmsg=_("Password changed"))

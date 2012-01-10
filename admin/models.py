@@ -302,7 +302,7 @@ class Mailbox(DatesAware):
         :param value: the new password's value
         """
         if parameters.get_admin("AUTHENTICATION_TYPE") == "local":
-            self.password = crypt_password(value)
+            self.password = crypt_password(newvalue)
             self.save()
             return
 
