@@ -1,22 +1,22 @@
 # Modoboa spanish translation.
 # Copyright (C) 2011
 # This file is distributed under the same license as the Modoboa package.
-# 
+#
 # Translators:
 # Pedro Gracia <lasarux@neuroomante.com>, 2011.
 # Pedro Gracia <pedro.gracia@impulzia.com>, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.7\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
-"POT-Creation-Date: 2011-09-30 15:26+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-10 11:09+0100\n"
 "PO-Revision-Date: 2011-10-12 08:42+0000\n"
 "Last-Translator: lasarux <lasarux@neuroomante.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:41
@@ -63,16 +63,16 @@ msgstr "Editar carpeta"
 msgid "Folder deleted"
 msgstr "Carpeta eliminada"
 
-#: extensions/webmail/static/js/webmail.js:94
+#: extensions/webmail/static/js/webmail.js:95
 msgid "Sending..."
 msgstr "Enviando..."
 
-#: extensions/webmail/static/js/webmail.js:227
-#: extensions/webmail/static/js/webmail.js:251 static/js/anchor_nav.js:212
+#: extensions/webmail/static/js/webmail.js:229
+#: extensions/webmail/static/js/webmail.js:254 static/js/anchor_nav.js:215
 msgid "Done"
 msgstr "Hecho"
 
-#: extensions/webmail/static/js/webmail.js:240
+#: extensions/webmail/static/js/webmail.js:243
 msgid "Waiting..."
 msgstr "Esperando..."
 
@@ -80,9 +80,17 @@ msgstr "Esperando..."
 msgid "Loading..."
 msgstr "Cargando..."
 
-#: static/js/common.js:172
+#: static/js/common.js:17
+msgid "Message sent"
+msgstr ""
+
+#: static/js/common.js:188
 msgid "Search..."
 msgstr "Buscar..."
+
+#: static/js/domains.js:61
+msgid "Remove this selection?"
+msgstr "¿Eliminar esta selección?"
 
 #: static/js/preferences.js:14
 msgid "Preferences saved"
@@ -91,5 +99,3 @@ msgstr "Preferencias guardas"
 #: static/js/settings.js:14
 msgid "Parameters saved"
 msgstr "Parámetros guardados"
-
-
