@@ -349,9 +349,9 @@ class Mailbox(DatesAware):
 
         :param line: a list containing the expected information
         """
-        if len(line) < 5:
+        if len(line) < 4:
             raise AdminError(_("Invalid line"))
-        mailbox, domname = split_mailbox(line[4])
+        mailbox, domname = split_mailbox(line[0])
         self.address = mailbox
         try:
             self.domain = Domain.objects.get(name=domname)
