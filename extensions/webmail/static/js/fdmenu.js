@@ -46,7 +46,7 @@ var FdMenu = new Class({
           if (!confirm(gettext("Delete folder?"))) {
             return;
           }
-          new Request.JSON({
+          new Request.JSON.mdb({
             url: evt.target.get("href"),
             method: "GET",
             onSuccess: function(resp) {

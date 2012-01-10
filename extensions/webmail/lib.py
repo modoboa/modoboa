@@ -691,6 +691,9 @@ def html2plaintext(content):
     return plaintext
 
 def get_current_url(request):
+    if not request.session.has_key("folder"):
+        return ""
+
     res = "%s?page=%s" % (request.session["folder"], request.session["page"])
     for p in ["criteria", "pattern", "order"]:
         if p in request.session.keys():

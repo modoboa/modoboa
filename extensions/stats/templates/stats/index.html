@@ -68,8 +68,8 @@ window.addEvent("domready", function() {
     if (p == "") {
       return;
     }
-    new Request.JSON({url : url + "?" + p, noCache: true, 
-                      onSuccess : getgraph_callback}).get();
+    new Request.JSON.mdb({url : url + "?" + p, noCache: true, 
+                          onSuccess : getgraph_callback}).get();
   };
 
   {% if user.is_superuser %}

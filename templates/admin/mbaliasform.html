@@ -16,7 +16,8 @@ function init_form() {
     new Autocompleter.Request.JSON("id_targets", 
                                    "{% url admin.views.mailboxes_search %}", {
         postVar: "search",
-        minLength: 3
+        minLength: 3,
+        onComplete: ajax_login_redirect
     });
 }
 

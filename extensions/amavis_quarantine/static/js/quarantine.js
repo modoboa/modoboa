@@ -30,7 +30,7 @@ function actioncallback(resp) {
 }
 
 function actionclick(evt) {
-  new Request.JSON({
+  new Request.JSON.mdb({
       url: evt.target.get("href"),
       onSuccess: actioncallback
   }).get();

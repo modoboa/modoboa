@@ -206,6 +206,9 @@ var AnchorNavigation = new Class({
         new Request.JSON({
             url: query,
             noCache : true,
+            onComplete: function() {
+                ajax_login_redirect();
+            },
             onSuccess: function(resp) {
                 var callback = ($defined(resp.callback)) ? resp.callback : "default";
                 this.callbacks[callback](resp);

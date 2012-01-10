@@ -219,13 +219,17 @@ function refreshFolder() {
     profile : "gray",
     spinner : true
   });
-  new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
-    var callback = ($defined(resp.callback)) ? resp.callback : "default";
+  new Request.JSON.mdb({
+      url: query,
+      noCache : true,
+      onSuccess: function(resp) {
+          var callback = ($defined(resp.callback)) ? resp.callback : "default";
 
-    current_anchor.get_callback(callback)(resp);
-    infobox.info(gettext("Done"));
-    infobox.hide(1);
-  }}).get();
+          current_anchor.get_callback(callback)(resp);
+          infobox.info(gettext("Done"));
+          infobox.hide(1);
+      }
+  }).get();
 }
 
 /*
@@ -240,7 +244,7 @@ function simple_request(url, params) {
     profile: "gray",
     spinner: true
   });
-  new Request.JSON({
+  new Request.JSON.mdb({
     url : url,
     onSuccess : function(response) {
       if (response.status == "ok") {

@@ -6,7 +6,7 @@
 <script type="text/javascript">
 function del_attachment(evt) {
     evt.stop();
-    new Request.JSON({
+    new Request.JSON.mdb({
         url: this.get("href"),
         onSuccess: function(resp) {
             this.getParent().dispose();
