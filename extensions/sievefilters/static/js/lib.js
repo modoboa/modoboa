@@ -14,7 +14,7 @@ function removefilter(evt) {
     if (!confirm(gettext("Remove this filter?"))) {
         return;
     }
-    new Request.JSON({
+    new Request.JSON.mdb({
         url: this.get("href"),
         onSuccess: function(response) {
             if (response.status == "ok") {
@@ -72,7 +72,7 @@ function loadfs(response) {
  * (remove, activate)
  */
 function send_command(cmd, extracb) {
-    new Request.JSON({
+    new Request.JSON.mdb({
         url: cmd,
         onSuccess: function(response) {
             if (response.status == "ko") {
@@ -116,7 +116,7 @@ function savefs(evt) {
     if (!check_prereqs(evt, gettext("Save changes?"))) {
         return;
     }
-    new Request.JSON({
+    new Request.JSON.mdb({
         url: $("feditor").get("action"),
         method: $("feditor").get("method"),
         data: $("feditor").toQueryString(),
@@ -177,7 +177,7 @@ function activatefs(evt) {
 
 function toggle_filter_state(event) {
     event.stop();
-    new Request.JSON({
+    new Request.JSON.mdb({
         url: this.get("href"),
         onSuccess: function(response) {
             if (response.status == "ok") {
@@ -193,7 +193,7 @@ function toggle_filter_state(event) {
 
 function move_filter(event) {
     event.stop();
-    new Request.JSON({
+    new Request.JSON.mdb({
         url: this.get("href"),
         onSuccess: function(response) {
             $("filters_list").set("html", response.content);

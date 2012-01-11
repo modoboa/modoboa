@@ -484,3 +484,9 @@ div.row label {
 .element {
     margin: 10px 5px 10px 5px;
 }
+
+/* Parameters or Preferences */
+#footer > #update { 
+    color: #000000;
+    margin: 2px;
+}

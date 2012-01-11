@@ -1,14 +1,14 @@
 # Modoboa German translation.
-# Copyright (C) 2011
+# Copyright (C) 2012
 # This file is distributed under the same license as the Modoboa package.
 #
-# Patrick Ben Koetter <p@state-of-mind.de>, 2010-2011.
+# Patrick Ben Koetter <p@state-of-mind.de>, 2010-2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa-0.8.7\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
-"POT-Creation-Date: 2011-09-30 15:26+0200\n"
-"PO-Revision-Date: 2011-10-09 00:26+0100\n"
+"Project-Id-Version: Modoboa-0.8.8\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-10 11:09+0100\n"
+"PO-Revision-Date: 2012-01-10 22:49+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
 "Language: de\n"
@@ -61,17 +61,17 @@ msgstr "Ordner bearbeiten"
 msgid "Folder deleted"
 msgstr "Ordner gelöscht"
 
-#: extensions/webmail/static/js/webmail.js:94
+#: extensions/webmail/static/js/webmail.js:95
 msgid "Sending..."
 msgstr "Sende …"
 
-#: extensions/webmail/static/js/webmail.js:227
-#: extensions/webmail/static/js/webmail.js:251
-#: static/js/anchor_nav.js:212
+#: extensions/webmail/static/js/webmail.js:229
+#: extensions/webmail/static/js/webmail.js:254
+#: static/js/anchor_nav.js:215
 msgid "Done"
 msgstr "Abgeschlossen"
 
-#: extensions/webmail/static/js/webmail.js:240
+#: extensions/webmail/static/js/webmail.js:243
 msgid "Waiting..."
 msgstr "Warte..."
 
@@ -79,9 +79,17 @@ msgstr "Warte..."
 msgid "Loading..."
 msgstr "Lade..."
 
-#: static/js/common.js:172
+#: static/js/common.js:17
+msgid "Message sent"
+msgstr "Nachrichten gesendet"
+
+#: static/js/common.js:188
 msgid "Search..."
 msgstr "Suchen..."
+
+#: static/js/domains.js:61
+msgid "Remove this selection?"
+msgstr "Diese Auswahl entfernen?"
 
 #: static/js/preferences.js:14
 msgid "Preferences saved"

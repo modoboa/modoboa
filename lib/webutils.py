@@ -39,8 +39,7 @@ def render_actions(actions):
 {% for a in actions %}
 <a href="{{ a.url }}" name="{{ a.name }}" class="{{ a.class }}" rel="{{ a.rel }}"
    {% if a.confirm %}onclick="return confirm('{{ a.confirm }}')"{% endif %}>
-  <img src="{{ a.img }}" border="0" title="{{ a.title }}" />
-</a>
+  <img src="{{ a.img }}" border="0" title="{{ a.title }}" /></a>
 {% endfor %}
 """)
     return t.render(template.Context({

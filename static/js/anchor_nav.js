@@ -227,6 +227,9 @@ var AnchorNavigation = new Class({
         new Request.JSON({
             url: query,
             noCache : true,
+            onComplete: function() {
+                ajax_login_redirect();
+            },
             onSuccess: function(resp) {
                 if (!this.options.spin_disabled) {
                     var target = this.options.spin_target ? this.options.spin_target

@@ -5,6 +5,10 @@ from django.utils.translation import ugettext as _
 from django.db.utils import DatabaseError
 from models import Extension
 
+parameters.register_admin("AUTHENTICATION_TYPE", type="list", deflt="local",
+                          values=[('local', _("Local")),
+                                  ('ldap', "LDAP")],
+                          help=_("The backend used for authentication"))
 parameters.register_admin("CREATE_DIRECTORIES", type="list_yesno", deflt="yes",
 			  help=_("Modoboa will handle mailbox creation on filesystem"))
 parameters.register_admin("STORAGE_PATH", type="string", deflt="/var/vmail",

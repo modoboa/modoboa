@@ -79,7 +79,7 @@ class MailboxTestCase(TestCase):
 
         Two cases:
         * The default admin changes his password (no associated Mailbox)
-        * A normal user changes hist password
+        * A normal user changes his password
         """
         clt = Client()
         self.assertEqual(clt.login(username="admin", password="toto"), True)

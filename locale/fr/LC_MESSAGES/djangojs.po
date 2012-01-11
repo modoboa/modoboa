@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.8.7\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
-"POT-Creation-Date: 2011-09-30 15:26+0200\n"
+"Project-Id-Version: modoboa-0.8.8\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-10 11:09+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -60,16 +60,16 @@ msgstr "Editer le dossier"
 msgid "Folder deleted"
 msgstr "Dossier supprimé"
 
-#: extensions/webmail/static/js/webmail.js:94
+#: extensions/webmail/static/js/webmail.js:95
 msgid "Sending..."
 msgstr "Envoi..."
 
-#: extensions/webmail/static/js/webmail.js:227
-#: extensions/webmail/static/js/webmail.js:251 static/js/anchor_nav.js:212
+#: extensions/webmail/static/js/webmail.js:229
+#: extensions/webmail/static/js/webmail.js:254 static/js/anchor_nav.js:215
 msgid "Done"
 msgstr "Effectué"
 
-#: extensions/webmail/static/js/webmail.js:240
+#: extensions/webmail/static/js/webmail.js:243
 msgid "Waiting..."
 msgstr "En attente..."
 
@@ -77,9 +77,17 @@ msgstr "En attente..."
 msgid "Loading..."
 msgstr "Chargement..."
 
-#: static/js/common.js:172
+#: static/js/common.js:17
+msgid "Message sent"
+msgstr "Message envoyé"
+
+#: static/js/common.js:188
 msgid "Search..."
 msgstr "Chercher..."
+
+#: static/js/domains.js:61
+msgid "Remove this selection?"
+msgstr "Supprimer cette sélection?"
 
 #: static/js/preferences.js:14
 msgid "Preferences saved"

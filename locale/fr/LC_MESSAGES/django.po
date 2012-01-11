@@ -5,9 +5,9 @@
 # Antoine Nguyen <tonio@ngyn.org>, 2010-2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.8.7\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
-"POT-Creation-Date: 2011-09-30 15:25+0200\n"
+"Project-Id-Version: modoboa-0.8.8\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-10 11:09+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -17,16 +17,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/__init__.py:8
+#: admin/__init__.py:9
+msgid "Local"
+msgstr "Locale"
+
+#: admin/__init__.py:11
+msgid "The backend used for authentication"
+msgstr "Le backend utilisé pour l'authentification"
+
+#: admin/__init__.py:13
 msgid "Modoboa will handle mailbox creation on filesystem"
 msgstr ""
 "Modoboa prendra en charge la création des boites sur le système de fichiers"
 
-#: admin/__init__.py:10
+#: admin/__init__.py:15
 msgid "Path to the root directory where messages are stored"
 msgstr "Emplacement du répertoire ou sont stockés les messages"
 
-#: admin/__init__.py:12
+#: admin/__init__.py:17
 msgid ""
 "UID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
@@ -34,7 +42,7 @@ msgstr ""
 "UID du propriétaire virtuel des domaines/bals/messages sur le système de "
 "fichiers"
 
-#: admin/__init__.py:14
+#: admin/__init__.py:19
 msgid ""
 "GID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
@@ -42,11 +50,11 @@ msgstr ""
 "GID du propriétaire virtuel des domaines/bals/messages sur le système de "
 "fichiers"
 
-#: admin/__init__.py:17
+#: admin/__init__.py:22
 msgid "Mailboxes storage format"
 msgstr "Format de stockage des boites aux lettres"
 
-#: admin/__init__.py:19
+#: admin/__init__.py:24
 msgid ""
 "Sub-directory (inside the mailbox) where messages are stored when using the "
 "maildir format"
@@ -54,16 +62,16 @@ msgstr ""
 "Sous répertoire (dans la boite aux lettres) ou les messages sont stockés en "
 "cas d'utilisation du format maildir"
 
-#: admin/__init__.py:22
+#: admin/__init__.py:27
 msgid "Scheme used to crypt mailbox passwords"
 msgstr ""
 "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
-#: admin/__init__.py:24
+#: admin/__init__.py:29
 msgid "Number of displayed items per page"
 msgstr "Nombre d'éléments affichés par page"
 
-#: admin/__init__.py:31
+#: admin/__init__.py:52
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "La redirection appliquée par défaut quand aucune application n'est spécifiée"
@@ -89,7 +97,7 @@ msgstr "Mot de passe"
 msgid "Password used to log in"
 msgstr "Mot de passe utilisé pour se connecter"
 
-#: admin/forms.py:56 userprefs/forms.py:16
+#: admin/forms.py:56 userprefs/forms.py:17
 msgid "Confirmation"
 msgstr "Confirmation"
 
@@ -101,7 +109,7 @@ msgstr "Confirmation du mot de passe"
 msgid "Check to activate this mailbox"
 msgstr "Cocher pour activer cette boite aux lettres"
 
-#: admin/forms.py:88 userprefs/forms.py:35
+#: admin/forms.py:88 userprefs/forms.py:39
 msgid "Passwords mismatch"
 msgstr "Les mots de passe diffèrent"
 
@@ -153,78 +161,99 @@ msgstr "Sélectionner un domaine dans la liste"
 msgid "Empty"
 msgstr "Vide"
 
+#: admin/forms.py:204 extensions/webmail/forms.py:14
+msgid "Select a file"
+msgstr "Sélectionner un fichier"
+
+#: admin/forms.py:205
+msgid "Separator"
+msgstr "Séparateur"
+
 #: admin/lib.py:13
 #, python-format
 msgid "Invalid action, %(user)s is a local user"
 msgstr "Action invalide, %(user)s est un utilisateur local"
 
-#: admin/models.py:77 admin/models.py:141 admin/models.py:154
+#: admin/models.py:78 admin/models.py:142 admin/models.py:155
 msgid "name"
 msgstr "Nom"
 
-#: admin/models.py:78
+#: admin/models.py:79
 msgid "The domain name"
 msgstr "Le nom du domaine"
 
-#: admin/models.py:79
+#: admin/models.py:80
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Quota par défaut en Mo appliqué aux boites aux lettres"
 
-#: admin/models.py:80 admin/models.py:145 admin/models.py:352
-#: admin/models.py:428 extensions/postfix_autoreply/models.py:19
+#: admin/models.py:81 admin/models.py:146 admin/models.py:393
+#: admin/models.py:469 extensions/postfix_autoreply/models.py:19
 msgid "enabled"
 msgstr "Activé"
 
-#: admin/models.py:81
+#: admin/models.py:82
 msgid "Check to activate this domain"
 msgstr "Cocher pour activer ce domaine"
 
-#: admin/models.py:134
+#: admin/models.py:135
 msgid "Failed to initialise domain, check permissions"
 msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
 
-#: admin/models.py:142
+#: admin/models.py:143
 msgid "The alias name"
 msgstr "Le nom de l'alias"
 
-#: admin/models.py:143
+#: admin/models.py:144
 msgid "target"
 msgstr "cible"
 
-#: admin/models.py:144
+#: admin/models.py:145
 msgid "The domain this alias points to"
 msgstr "Le domaine vers lequel cet alias pointe"
 
-#: admin/models.py:146 admin/models.py:353
+#: admin/models.py:147 admin/models.py:394
 msgid "Check to activate this alias"
 msgstr "Cocher pour activer cet alias"
 
-#: admin/models.py:155
+#: admin/models.py:156
 msgid "First name and last name of mailbox owner"
 msgstr "Prénom et nom du propriétaire de la boite aux lettres"
 
-#: admin/models.py:156 admin/models.py:346
+#: admin/models.py:157 admin/models.py:387
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models.py:157
+#: admin/models.py:158
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Adresse de la boite aux lettres (sans la partie @domain.tld)"
 
-#: admin/models.py:158
+#: admin/models.py:159
 msgid "password"
 msgstr "Mot de passe"
 
-#: admin/models.py:245 admin/models.py:306
+#: admin/models.py:246 admin/models.py:327
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Impossible d'initialiser la boite aux lettres, vérifier les permissions"
 
-#: admin/models.py:264
+#: admin/models.py:265
 msgid "Mailbox with this address already exists"
 msgstr "Une boite aux lettres pour cette adresse existe déjà"
 
-#: admin/models.py:347
+#: admin/models.py:313
+#, python-format
+msgid "Failed to update password: %s"
+msgstr "Echec de la mise à jour du mot de passe : %s"
+
+#: admin/models.py:353
+msgid "Invalid line"
+msgstr "Ligne invalide"
+
+#: admin/models.py:359
+msgid "Cannot import this mailbox because the associated domain does not exist"
+msgstr "Impossible d'importer cette boite car le domaine associé n'existe pas"
+
+#: admin/models.py:388
 msgid ""
 "The alias address (without the domain part). For a 'catch-all' address, just "
 "enter an * character."
@@ -232,15 +261,15 @@ msgstr ""
 "L'adresse de l'alias (sans la partie domaine). Pour une adresse 'attrape-"
 "tout', entrer juste un caractère *."
 
-#: admin/models.py:349
+#: admin/models.py:390
 msgid "mailboxes"
 msgstr "Boites aux lettres"
 
-#: admin/models.py:350
+#: admin/models.py:391
 msgid "The mailboxes this alias points to"
 msgstr "Les boites aux lettres sur lesquelles pointe cet alias"
 
-#: admin/models.py:429
+#: admin/models.py:470
 msgid "Check to enable this extension"
 msgstr "Cocher pour activer cette extension"
 
@@ -269,22 +298,22 @@ msgid "Last modified"
 msgstr "Modifié"
 
 #: admin/tables.py:14 admin/views.py:164
-#: admin/templatetags/admin_extras.py:113
+#: admin/templatetags/admin_extras.py:128
 msgid "Domain aliases"
 msgstr "Alias de domaine"
 
 #: admin/tables.py:16 admin/templatetags/admin_extras.py:36
-#: admin/templatetags/admin_extras.py:116
+#: admin/templatetags/admin_extras.py:131
 msgid "Mailboxes"
 msgstr "Boites"
 
 #: admin/tables.py:18 admin/views.py:394
-#: admin/templatetags/admin_extras.py:119
+#: admin/templatetags/admin_extras.py:134
 msgid "Mailbox aliases"
 msgstr "Alias de boite."
 
 #: admin/tables.py:24 admin/tables.py:52 admin/tables.py:82
-#: admin/tables.py:109
+#: admin/tables.py:109 admin/templatetags/admin_extras.py:98
 #: extensions/sievefilters/templates/sievefilters/filter.html:86
 #: extensions/sievefilters/templates/sievefilters/filters.html:7
 #: extensions/sievefilters/templates/sievefilters/guieditor.html:3
@@ -512,6 +541,20 @@ msgstr "Permission supprimée"
 msgid "Modifications applied."
 msgstr "Modifications appliquées"
 
+#: admin/views.py:631
+#, python-format
+msgid "%d mailboxes imported successfully"
+msgstr "%d boites importées avec succès"
+
+#: admin/views.py:641 admin/templatetags/admin_extras.py:112
+#: templates/admin/import.html:48
+msgid "Import data"
+msgstr "Importer des données"
+
+#: admin/views.py:642 templates/admin/import.html:56
+msgid "Import"
+msgstr "Importer"
+
 #: admin/templatetags/admin_extras.py:12
 msgid "enabled_m"
 msgstr "Activé"
@@ -525,7 +568,7 @@ msgid "Admin"
 msgstr "Admin"
 
 #: admin/templatetags/admin_extras.py:29
-#: admin/templatetags/admin_extras.py:108
+#: admin/templatetags/admin_extras.py:123
 msgid "Domains"
 msgstr "Domaines"
 
@@ -546,55 +589,55 @@ msgstr "Paramètres"
 msgid "Extensions"
 msgstr "Extensions"
 
-#: admin/templatetags/admin_extras.py:97
+#: admin/templatetags/admin_extras.py:103
 msgid "New"
 msgstr "Nouveau"
 
-#: admin/templatetags/admin_extras.py:101
+#: admin/templatetags/admin_extras.py:107
 msgid "Remove"
 msgstr "Supprimer"
 
-#: admin/templatetags/admin_extras.py:134
+#: admin/templatetags/admin_extras.py:149
 msgid "Add permission"
 msgstr "Ajouter une permission"
 
-#: admin/templatetags/admin_extras.py:138
+#: admin/templatetags/admin_extras.py:153
 msgid "Remove permissions"
 msgstr "Supprimer les permissions"
 
-#: admin/templatetags/admin_extras.py:151
+#: admin/templatetags/admin_extras.py:166
 msgid "Edit domain"
 msgstr "Editer le domaine"
 
-#: admin/templatetags/admin_extras.py:157
+#: admin/templatetags/admin_extras.py:172
 msgid "View aliases of this domain"
 msgstr "Voir les alias de ce domaine"
 
-#: admin/templatetags/admin_extras.py:167
+#: admin/templatetags/admin_extras.py:182
 msgid "Edit alias"
 msgstr "Editer cet alias"
 
-#: admin/templatetags/admin_extras.py:179
+#: admin/templatetags/admin_extras.py:194
 msgid "Edit mailbox"
 msgstr "Editer la boite aux lettres"
 
-#: admin/templatetags/admin_extras.py:185
+#: admin/templatetags/admin_extras.py:200
 msgid "View this mailbox aliases"
 msgstr "Voir les alias de cette boite"
 
-#: admin/templatetags/admin_extras.py:200
+#: admin/templatetags/admin_extras.py:215
 msgid "Edit mailbox alias"
 msgstr "Editer l'alias de boite"
 
-#: admin/templatetags/admin_extras.py:235
+#: admin/templatetags/admin_extras.py:250
 msgid "Yes"
 msgstr "Oui"
 
-#: admin/templatetags/admin_extras.py:235
+#: admin/templatetags/admin_extras.py:250
 msgid "No"
 msgstr "Non"
 
-#: admin/templatetags/admin_extras.py:252 templates/common/genericform.html:6
+#: admin/templatetags/admin_extras.py:267 templates/common/genericform.html:6
 msgid "Help"
 msgstr "Aide"
 
@@ -619,6 +662,48 @@ msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
 "réessayer."
+
+#: demo/__init__.py:16
+msgid "Test messages"
+msgstr "Message de test"
+
+#: demo/__init__.py:21
+msgid "Send virus"
+msgstr "Envoyer un virus"
+
+#: demo/__init__.py:25
+msgid "Send spam"
+msgstr "Envoyer un spam"
+
+#: demo/templates/demo/login_announcement.html:2
+msgid ""
+"\n"
+"<h1>Welcome to the online demo!</h1>\n"
+"<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
+"<p>To try the demo, the following users are available (<i>username/password</"
+"i>): </p>\n"
+"<ul>\n"
+"  <li>A super administrator : <b>admin/password</b></li>\n"
+"  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
+"  <li>A simple user : <b>user@demo.local/user</b></li>\n"
+"</ul>\n"
+"<p>Please report any issue of give any suggestion to \n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
+"mailing list</a>.</p>\n"
+msgstr ""
+"\n"
+"<h1>Bienvenue sur la démo en ligne!</h1>\n"
+"<p><b>Attention:</b> Le contenu de la démo est réinitialisé toutes les deux heures.</p>\n"
+"<p>Pour essayer la démo, les utilisateurs suivants sont disponibles (<i>nom d'utilisateur/mot de passe</"
+"i>): </p>\n"
+"<ul>\n"
+"  <li>Un super administrateur : <b>admin/password</b></li>\n"
+"  <li>Un administrateur de domaine : <b>admin@demo.local/admin</b></li>\n"
+"  <li>Un simple utilisateur : <b>user@demo.local/user</b></li>\n"
+"</ul>\n"
+"<p>Veuillez svp rapporter toute erreur sur \n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">la "
+"liste de diffusion</a>.</p>\n"
 
 #: extensions/amavis_quarantine/main.py:15
 msgid "Simple amavis quarantine management tool"
@@ -670,12 +755,12 @@ msgstr "De"
 
 #: extensions/amavis_quarantine/sql_listing.py:22
 #: extensions/sievefilters/forms.py:29 extensions/webmail/forms.py:8
-#: extensions/webmail/lib.py:521 templates/common/email_searchbar.html:7
+#: extensions/webmail/lib.py:525 templates/common/email_searchbar.html:7
 msgid "Subject"
 msgstr "Sujet"
 
 #: extensions/amavis_quarantine/sql_listing.py:23
-#: extensions/webmail/lib.py:523
+#: extensions/webmail/lib.py:527
 msgid "Date"
 msgstr "Date"
 
@@ -980,7 +1065,7 @@ msgid "Match type"
 msgstr "Type de comparaison"
 
 #: extensions/sievefilters/templates/sievefilters/filter.html:92
-#: templates/common/parameters.html:4
+#: templates/admin/parameters.html:14 templates/userprefs/preferences.html:18
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -1165,10 +1250,6 @@ msgstr "Démarrer"
 msgid "End"
 msgstr "Fin"
 
-#: extensions/webmail/forms.py:14
-msgid "Select a file"
-msgstr "Sélectionner un fichier"
-
 #: extensions/webmail/lib.py:33
 msgid "Server response"
 msgstr "Réponse du serveur"
@@ -1181,11 +1262,11 @@ msgstr "La connexion au serveur IMAP a échoué, vérifiez votre configuration"
 msgid "Authentication failed, check your configuration"
 msgstr "L'authentification a échoué, vérifiez votre configuration"
 
-#: extensions/webmail/lib.py:468
+#: extensions/webmail/lib.py:472
 msgid "wrote:"
 msgstr "a écrit :"
 
-#: extensions/webmail/lib.py:535 extensions/webmail/lib.py:539
+#: extensions/webmail/lib.py:539 extensions/webmail/lib.py:543
 msgid "Original message"
 msgstr "Message original"
 
@@ -1442,7 +1523,7 @@ msgstr "Vider ce dossier"
 msgid "No entries to display"
 msgstr "Aucune entrée à afficher"
 
-#: templates/nlayout.html:49
+#: templates/nlayout.html:50
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -1450,17 +1531,17 @@ msgstr "Déconnexion"
 msgid "Add"
 msgstr "Ajouter"
 
-#: templates/admin/domains_header.html:44
-msgid "Remove this selection?"
-msgstr "Supprimer cette sélection ?"
-
-#: templates/admin/domains_header.html:52
+#: templates/admin/domains_header.html:13
 msgid "for"
 msgstr "pour"
 
 #: templates/admin/extensions.html:11
 msgid "Apply"
 msgstr "Appliquer"
+
+#: templates/admin/import.html:62
+msgid "Importing..."
+msgstr "Import en cours..."
 
 #: templates/admin/listing.html:12
 msgid "Items"
@@ -1510,7 +1591,7 @@ msgstr "Erreur"
 msgid "Messages"
 msgstr "Messages"
 
-#: templates/common/parameters.html:16
+#: templates/common/parameters.html:15
 msgid "No parameters available"
 msgstr "Aucun paramètre disponible"
 
@@ -1544,23 +1625,27 @@ msgstr "Langage préféré"
 msgid "Prefered language to display pages"
 msgstr "Langage préféré pour afficher les pages"
 
-#: userprefs/forms.py:12
+#: userprefs/forms.py:13
 msgid "Old password"
 msgstr "Ancien mot de passe"
 
-#: userprefs/forms.py:14
+#: userprefs/forms.py:15
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: userprefs/forms.py:30
+#: userprefs/forms.py:34
 msgid "Old password mismatchs"
 msgstr "L'ancien mot de passe est incorrect"
 
-#: userprefs/forms.py:39
+#: userprefs/forms.py:43
 msgid "Destination(s)"
 msgstr "Destination(s)"
 
-#: userprefs/forms.py:52
+#: userprefs/forms.py:44
+msgid "Keep local copies"
+msgstr "Conserver des copies locales"
+
+#: userprefs/forms.py:57
 msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
@@ -1568,10 +1653,15 @@ msgstr ""
 "Vous ne pouvez pas définir un transfert vers une destination locale. "
 "Veuillez plutôt demander à votre administrateur de créer un alias"
 
-#: userprefs/views.py:34
+#: userprefs/views.py:27
+msgid "Password change is disabled for this user"
+msgstr "Le changement de mot de passe est désactivé pour cet utilisateur"
+
+#: userprefs/views.py:46
 msgid "Password changed"
 msgstr "Mot de passe changé"
 
-#: userprefs/views.py:63
+#: userprefs/views.py:79
 msgid "Forward updated"
 msgstr "Transfert mis à jour"
+

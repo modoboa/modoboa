@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from modoboa.admin.models import Extension
 
 class ExtControlMiddleware(object):
@@ -15,3 +15,10 @@ class ExtControlMiddleware(object):
         if ext.enabled:
             return None
         raise Http404
+
+class AjaxLoginRedirect(object):
+    def process_response(self, request, response):
+        if request.is_ajax():
+            if type(response) == HttpResponseRedirect:
+                response.status_code = 278
+        return response
