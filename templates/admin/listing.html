@@ -23,7 +23,7 @@
   <a href="?page={{ objects.next_page_number }}">
     <img src="{{ MEDIA_URL }}pics/next.png" border="0" title="{% trans "Next" %}" />
   </a>
-  <a href="?page={{ page.last_page }}">
+  <a href="?page={{ objects.last_page }}">
     <img src="{{ MEDIA_URL }}pics/last.png" border="0" title="{% trans "Last" %}" />
   </a>
   {% endif %}
