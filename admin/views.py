@@ -9,7 +9,6 @@ from django.db.models import Q
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.db import transaction, IntegrityError
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from lib import *
 from modoboa import admin, userprefs
@@ -23,33 +22,6 @@ from modoboa.lib.webutils \
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.models import Parameter
 import copy
-
-def render_listing(request, objtype, tplname="admin/listing.html", 
-                   **kwargs):
-    tblclass = "%sTable" % objtype.capitalize()
-    if not globals().has_key(tblclass):
-        raise AdminError(_("Unknown object type"))
-    tblclass = globals()[tblclass]
-    if request.GET.has_key("domid"):
-        kwargs["domid"] = request.GET["domid"]
-    else:
-        kwargs["domid"] = ""
-    kwargs["selection"] = objtype
-    paginator = Paginator(kwargs["objects"], 
-                          int(parameters.get_admin("ITEMS_PER_PAGE")))
-    try:
-        page = request.GET.get("page", "1")
-    except ValueError:
-        page = 1
-    try:
-        kwargs["objects"] = paginator.page(page)
-    except (EmptyPage, PageNotAnInteger):
-        kwargs["objects"] = paginator.page(paginator.num_pages)
-    kwargs["last_page"] = paginator.num_pages
-    kwargs["total"] = paginator.count
-    kwargs["table"] = tblclass(request, kwargs["objects"].object_list)
-    
-    return _render(request, tplname, kwargs)
 
 @login_required
 def domains(request):

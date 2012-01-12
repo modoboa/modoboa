@@ -2,8 +2,10 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext as _
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from models import *
-from modoboa.lib.webutils import _render_error
+from modoboa.lib.webutils import _render_error, _render
+from modoboa.admin.tables import *
 
 def is_not_localadmin(errortpl="error"):
     def dec(f):
@@ -64,3 +66,40 @@ def good_domain(f):
         login_url = settings.LOGIN_URL
         return HttpResponseRedirect("%s?next=%s" % (login_url, path))
     return dec
+
+def render_listing(request, objtype, tplname="admin/listing.html",
+                   **kwargs):
+    """Common function to render a listing
+
+    All listing pages available into the admin application use the
+    same layout, rendered by this function.
+
+    :param request: a ``Request`` object
+    :param objtype: the object type's name (lowercase)
+    :param tplname: the template used to render the HTML
+    """
+    tblclass = "%sTable" % objtype.capitalize()
+    if not globals().has_key(tblclass):
+        raise AdminError(_("Unknown object type"))
+    tblclass = globals()[tblclass]
+    
+    if request.GET.has_key("domid"):
+        kwargs["domid"] = request.GET["domid"]
+    else:
+        kwargs["domid"] = ""
+    kwargs["selection"] = objtype
+    paginator = Paginator(kwargs["objects"], 
+                          int(parameters.get_admin("ITEMS_PER_PAGE")))
+    try:
+        page = request.GET.get("page", "1")
+    except ValueError:
+        page = 1
+    try:
+        kwargs["objects"] = paginator.page(page)
+    except (EmptyPage, PageNotAnInteger):
+        kwargs["objects"] = paginator.page(paginator.num_pages)
+    kwargs["last_page"] = paginator.num_pages
+    kwargs["total"] = paginator.count
+    kwargs["table"] = tblclass(request, kwargs["objects"].object_list)
+    
+    return _render(request, tplname, kwargs)

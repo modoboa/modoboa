@@ -15,6 +15,7 @@ div.row label {
     float: left;
     width: 120px;
     padding: 3px 0;
+    margin-right: 5px;
 }
 
 input {
