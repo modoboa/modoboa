@@ -49,10 +49,10 @@ def urls(prefix):
     return (r'^%squarantine/' % prefix, 
             include('modoboa.extensions.amavis_quarantine.urls'))
 
-def menu(**kwargs):
+def menu(target, menu):
     import views
 
-    if kwargs["target"] == "top_menu":
+    if target == "top_menu":
         return [
             {"name" : "quarantine",
              "label" : _("Quarantine"),

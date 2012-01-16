@@ -493,7 +493,7 @@ class Extension(models.Model):
             exec_cmd("ln -s %s/static %s/static/%s" % \
                          (extdir, settings.MODOBOA_DIR, self.name))
 
-        events.raiseEvent("ExtEnabled", ext=self)
+        events.raiseEvent("ExtEnabled", self)
 
     def off(self):
         self.unload()
@@ -508,7 +508,7 @@ class Extension(models.Model):
         if os.path.exists(staticpath):
             exec_cmd("rm -r %s/static/%s" % (settings.MODOBOA_DIR, self.name)) 
 
-        events.raiseEvent("ExtDisabled", ext=self)
+        events.raiseEvent("ExtDisabled", self)
 
 def populate_callback(sender, user=None, **kwargs):
     """Populate signal callback

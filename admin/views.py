@@ -8,7 +8,7 @@ from django.contrib.auth.decorators \
 from django.db.models import Q
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
-from django.db import transaction, IntegrityError
+from django.db import transaction, IntegrityError, transaction
 
 from lib import *
 from modoboa import admin, userprefs
@@ -31,7 +31,10 @@ def domains(request):
 
         return HttpResponseRedirect(reverse(userprefs.views.preferences))
     
-    domains = Domain.objects.all()
+    if request.user.is_superuser:
+        domains = Domain.objects.all()
+    else:
+        domains = events.raiseQueryEvent("GetUserDomains", request.user)
     for dom in domains:
         dom.mbalias_counter = len(Alias.objects.filter(domain=dom.id))
     deloptions = {"keepdir" : _("Do not delete domain directory")}
@@ -50,6 +53,7 @@ def _validate_domain(request, form, successmsg, commonctx,
     """
     error = None
     if form.is_valid():
+        events.raiseEvent("CanCreateDomain", request.user)
         try:
             domain = form.save()
         except AdminError, e:
@@ -58,7 +62,7 @@ def _validate_domain(request, form, successmsg, commonctx,
             error = _("Domain with this name already defined")
         else:
             if callback is not None:
-                callback(domain)
+                callback(request.user, domain)
             messages.info(request, successmsg, fail_silently=True)
             return ajax_response(request, url=reverse(admin.views.domains))
 
@@ -68,9 +72,10 @@ def _validate_domain(request, form, successmsg, commonctx,
 
 @login_required
 @permission_required("admin.add_domain")
+@transaction.commit_on_success
 def newdomain(request, tplname="admin/adminform.html"):
-    def newdomain_cb(domain):
-        events.raiseEvent("CreateDomain", dom=domain)
+    def newdomain_cb(user, domain):
+        events.raiseEvent("CreateDomain", user, domain)
 
     commonctx = {"title" : _("New domain"),
                  "submit_label" : _("Create"),
@@ -106,17 +111,21 @@ def editdomain(request, dom_id, tplname="admin/adminform.html"):
 def deldomain(request):
     selection = request.GET["selection"].split(",")
     error = None
-    if request.user.id != 1:
+    try:
         mb = Mailbox.objects.get(user__id=request.user.id)
+    except Mailbox.DoesNotExist:
+        pass
+    else:
         if str(mb.domain.id) in selection:
             error = _("You can't delete your own domain")
+
     if error is None:
         if request.GET.has_key("keepdir") and request.GET["keepdir"] == "true":
             keepdir = True
         else:
             keepdir = False
         for dom in Domain.objects.filter(id__in=selection):
-            events.raiseEvent("DeleteDomain", dom=dom)
+            events.raiseEvent("DeleteDomain", dom)
             dom.delete(keepdir=keepdir)
         msg = ungettext("Domain deleted", "Domains deleted", len(selection))
         messages.info(request, msg, fail_silently=True)
@@ -278,7 +287,7 @@ def newmailbox(request, tplname="admin/adminform.html"):
             except AdminError as e:
                 error = str(e)
             else:
-                events.raiseEvent("CreateMailbox", mbox=mb)
+                events.raiseEvent("CreateMailbox", mb)
                 messages.info(request, _("Mailbox created"),
                               fail_silently=True)
                 return ajax_response(request, url=reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
@@ -312,7 +321,7 @@ def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
             else:
                 if oldmb.rename_dir(mb.domain.name, mb.address):
                     form.commit_save(mb)
-                    events.raiseEvent("ModifyMailbox", mbox=mb, oldmbox=oldmb)
+                    events.raiseEvent("ModifyMailbox", mb, oldmb)
                     messages.info(request, _("Mailbox modified"),
                                   fail_silently=True)
                     return ajax_response(request, url=reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
@@ -343,7 +352,7 @@ def delmailbox(request):
         else:
             keepdir = False
         for mb in Mailbox.objects.filter(id__in=selection):
-            events.raiseEvent("DeleteMailbox", mbox=mb)
+            events.raiseEvent("DeleteMailbox", mb)
             mb.delete(keepdir=keepdir)
         msg = ungettext("Mailbox deleted", "Mailboxes deleted", len(selection))
         messages.info(request, msg, fail_silently=True)

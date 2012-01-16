@@ -21,11 +21,18 @@ class ResellerForm(forms.ModelForm):
                 user.groups.add(grp)
                 user.save()
             try:
-                pool = LimitsPool.objects.get(user=user)
+                pool = user.limitspool
             except LimitsPool.DoesNotExist:
                 pool = LimitsPool()
                 pool.user = user
                 pool.save()
+                
+                for lname in reseller_limits_tpl:
+                    l = Limit()
+                    l.name = lname
+                    l.pool = pool
+                    l.save()
+
         return user
 
 class ResellerWithPasswordForm(ResellerForm):
@@ -41,10 +48,24 @@ class ResellerWithPasswordForm(ResellerForm):
             raise forms.ValidationError(_("The two password fields didn't match."))
         return password2
 
-class LimitsPoolForm(forms.ModelForm):
-    class Meta:
-        model = LimitsPool
-        fields = ("maxdomains", "maxdomaliases", "maxmboxes", "maxmbaliases")
-        
+class ResellerPoolForm(forms.Form):
+    domains_limit = forms.IntegerField(ugettext_noop("Max domains"),
+        help_text=ugettext_noop("Maximum number of domains that can be created by this user"))
+    domain_aliases_limit = forms.IntegerField(ugettext_noop("Max domain aliases"),
+        help_text=ugettext_noop("Maximum number of domain aliases that can be created by this user"))
+    mailboxes_limit = forms.IntegerField(ugettext_noop("Max mailboxes"),
+        help_text=ugettext_noop("Maximum number of mailboxes that can be created by this user"))
+    mailbox_aliases_limit = forms.IntegerField(ugettext_noop("Max mailbox aliases"),
+        help_text=ugettext_noop("Maximum number of mailbox aliases that can be created by this user"))
 
+    def load_from_user(self, user):
+        for l in reseller_limits_tpl:
+            self.fields[l].initial = user.limitspool.getmaxvalue(l)
 
+    def save_new_limits(self, pool):
+        for lname in reseller_limits_tpl:
+            l = pool.limit_set.get(name=lname)
+            l.maxvalue = self.cleaned_data[lname]
+            l.save()
+
+    

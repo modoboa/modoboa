@@ -87,7 +87,17 @@ def delete_resellers(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def edit_limits_pool(request, resid, tplname="limits/pool.html"):
-    pool = LimitsPool.objects.get(user=resid)
-    form = LimitsPoolForm(instance=pool)
-    ctx = dict(form=form, reseller=pool.user)
+    reseller = User.objects.get(pk=resid)
+    if request.method == "POST":
+        form = ResellerPoolForm(request.POST)
+        if form.is_valid():
+            form.save_new_limits(reseller.limitspool)
+            messages.info(request, _("Pool updated"), fail_silently=True)
+            return ajax_response(request, url=reverse(resellers))
+        ctx = dict(form=form)
+        return ajax_response(request, status="ko", template=tplname, **ctx)
+
+    form = ResellerPoolForm()
+    form.load_from_user(reseller)
+    ctx = dict(form=form, reseller=reseller)
     return _render(request, tplname, ctx)

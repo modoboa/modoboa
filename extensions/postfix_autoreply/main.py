@@ -47,10 +47,10 @@ def urls(prefix):
     return (r'^%spostfix_autoreply/' % prefix,
             include('modoboa.extensions.postfix_autoreply.urls'))
 
-def menu(**kwargs):
+def menu(target, user):
     import views
 
-    if kwargs["target"] != "uprefs_menu":
+    if target != "uprefs_menu":
         return []
     return [
         {"name" : "autoreply",

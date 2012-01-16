@@ -26,9 +26,9 @@ def dologin(request):
                 request.session["django_language"] = \
                     parameters.get_user(request.user, "LANG", app="general")
 
-                events.raiseEvent("UserLogin", request=request, 
-                                  username=request.POST["username"],
-                                  password=request.POST["password"])
+                events.raiseEvent("UserLogin", request, 
+                                  request.POST["username"],
+                                  request.POST["password"])
 
                 next = request.POST["next"]
                 if next.strip() in ["", "None"]:
@@ -43,11 +43,11 @@ def dologin(request):
     next = request.GET.has_key("next") and request.GET["next"] or None
     return render_to_response("registration/login.html", {
             "form" : form, "error" : error, "next" : next, 
-            "annoucements" : events.raiseQueryEvent("GetAnnouncement", target="loginpage")
+            "annoucements" : events.raiseQueryEvent("GetAnnouncement", "loginpage")
             }, context_instance=RequestContext(request))
 
 def dologout(request):
-    events.raiseEvent("UserLogout", request=request)
+    events.raiseEvent("UserLogout", request)
     logout(request)
 
     return HttpResponseRedirect(reverse(dologin))

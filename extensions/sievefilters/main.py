@@ -47,10 +47,10 @@ def urls(prefix):
     return (r'^%ssfilters/' % prefix,
             include('modoboa.extensions.sievefilters.urls'))
 
-def menu(**kwargs):
+def menu(target, user):
     import views
 
-    if kwargs["target"] != "options_menu":
+    if target != "options_menu":
         return []
     return [
         {"name" : "sievefilters",

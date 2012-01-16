@@ -81,10 +81,10 @@ def urls(prefix):
     return (r'^%swebmail/' % prefix,
             include('modoboa.extensions.webmail.urls'))
 
-def menu(**kwargs):
+def menu(target, user):
     import views
 
-    if kwargs["target"] != "top_menu":
+    if target != "top_menu":
         return []
     return [
         {"name" : "webmail",

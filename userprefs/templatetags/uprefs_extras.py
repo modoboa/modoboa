@@ -41,8 +41,7 @@ def options_menu(user):
             "rel" : "{handler:'iframe',size:{x:360,y:350},closeBtn:true}"
             }]
 
-    entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", 
-                                                 target="options_menu")
+    entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", "options_menu")
 
     return render_to_string('common/menulist.html', 
                             {"entries" : entries, "user" : user})
@@ -58,7 +57,6 @@ def uprefs_menu(user):
 
 @register.simple_tag
 def loadextmenu(user):
-    menu = events.raiseQueryEvent("UserMenuDisplay", target="top_menu", 
-                                  user=user)
+    menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu", user)
     return render_to_string('common/menulist.html', 
                             {"entries" : menu, "user" : user})

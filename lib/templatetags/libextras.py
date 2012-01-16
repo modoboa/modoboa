@@ -52,7 +52,6 @@ def display_messages(msgs):
 
 @register.simple_tag
 def load_optionalmenu(user):
-    menu = events.raiseQueryEvent("UserMenuDisplay", target="top_menu_middle",
-                                  user=user)
+    menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu_middle", user)
     return template.loader.render_to_string('common/menulist.html', 
                                             {"entries" : menu, "user" : user})

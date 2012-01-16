@@ -60,7 +60,7 @@ def unset_default_topredirection(**kwargs):
     if topredirection == kwargs["ext"].name:
         parameters.save_admin("DEFAULT_TOP_REDIRECTION", "userprefs", app="general")
 
-def update_available_applications(**kwargs):
+def update_available_applications(extension):
     """Simple callback to update the list of available applications
 
     Must be called each time an extension is disabled/enabled.

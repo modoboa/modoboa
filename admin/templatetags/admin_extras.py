@@ -37,8 +37,7 @@ def admin_menu(user):
              "img" : static_url("pics/mailbox.png")}
             ]
     entries[0]["menu"] += \
-        events.raiseQueryEvent("AdminMenuDisplay", target="top_menu", 
-                               user=user)
+        events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user)
     if user.has_perm("auth.view_permissions"):
         entries[0]["menu"] += [
             {"name" : "permissions",
@@ -135,8 +134,7 @@ def domains_menu(selection, user, domid):
                       reverse(admin.views.mbaliases) + args, 
                       reverse(admin.views.newmbalias) + args),
         ]
-    entries += events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box",
-                                      user=user)
+    entries += events.raiseQueryEvent("AdminMenuDisplay", "admin_menu_box", user)
     return render_to_string('common/menu.html', 
                             {"entries" : entries, 
                              "selection" : selection,
@@ -220,8 +218,7 @@ def mbalias_actions(user, aliasid):
 
 @register.simple_tag
 def loadadminextmenu(user):
-    menu = events.raiseQueryEvent("AdminMenuDisplay", target="admin_menu_box", 
-                                  user=user)
+    menu = events.raiseQueryEvent("AdminMenuDisplay", "admin_menu_box", user)
     return render_to_string('common/menulist.html', 
                             {"entries" : menu, "user" : user})
 

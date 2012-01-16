@@ -9,27 +9,32 @@ core application and additional components.
 
 """
 
-events = ["CreateDomain",
-          "DeleteDomain",
-          "CreateMailbox",
-          "DeleteMailbox",
-          "ModifyMailbox",
+events = [
+    "CanCreateDomain",
+    "CreateDomain",
+    "DeleteDomain",
+    "CreateMailbox",
+    "DeleteMailbox",
+    "ModifyMailbox",
 
-          "PasswordChange",
+    "GetUserDomains",
+    
+    "PasswordChange",
+    
+    "UserMenuDisplay",
+    "AdminMenuDisplay",
+    
+    "PermsGetTables",
+    "PermsGetClass",
+    
+    "ExtEnabled",
+    "ExtDisabled",
 
-          "UserMenuDisplay",
-          "AdminMenuDisplay",
-
-          "PermsGetTables",
-          "PermsGetClass",
-
-          "ExtEnabled",
-          "ExtDisabled",
-
-          "UserLogin",
-          "UserLogout",
-
-          "GetAnnouncement"]
+    "UserLogin",
+    "UserLogout",
+    
+    "GetAnnouncement"
+    ]
 
 callbacks = {}
 
@@ -64,7 +69,7 @@ def unregister(event, callback):
     except ValueError:
         pass
 
-def raiseEvent(event, **kwargs):
+def raiseEvent(event, *args):
     """Raise a specific event
 
     Any additional keyword argument will be passed to registered
@@ -75,10 +80,10 @@ def raiseEvent(event, **kwargs):
     if not event in events or not event in callbacks.keys():
         return 0
     for callback in callbacks[event]:
-        callback(**kwargs)
+        callback(*args)
     return 1
 
-def raiseQueryEvent(event, **kwargs):
+def raiseQueryEvent(event, *args):
     """Raise a specific event and wait for answers from callbacks
 
     Any additional keyword argument will be passed to registered
@@ -90,5 +95,5 @@ def raiseQueryEvent(event, **kwargs):
     if not event in events or not event in callbacks.keys():
         return result
     for callback in callbacks[event]:
-        result += callback(**kwargs)
+        result += callback(*args)
     return result

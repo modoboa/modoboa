@@ -40,8 +40,8 @@ def urls(prefix):
     return (r'^%sstats/' % prefix, 
             include('modoboa.extensions.stats.urls'))
 
-def menu(**kwargs):
-    if kwargs["target"] == "admin_menu_box":
+def menu(target, user):
+    if target == "admin_menu_box":
         return [
             {"name"  : "stats",
              "label" : ugettext("Statistics"),
