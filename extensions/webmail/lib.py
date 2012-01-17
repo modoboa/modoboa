@@ -238,7 +238,7 @@ class IMAPconnector(object):
             if pos == -1:
                 folders += [descr]
             else:
-                folders[idx] = descr
+                folders[idx].update(**descr)
                 
         from operator import itemgetter
         return sorted(folders, key=itemgetter("name"))
