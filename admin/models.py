@@ -6,10 +6,15 @@ from django.conf import settings
 from modoboa.lib import parameters, events
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.ldaputils import *
 from modoboa.auth.lib import crypt_password
 import os
 import pwd
+
+try:
+    from modoboa.lib.ldaputils import *
+    ldap_available = True
+except ImportError:
+    ldap_available = False
 
 class AdminError(Exception):
     """Custom exception
@@ -305,6 +310,8 @@ class Mailbox(DatesAware):
             self.password = crypt_password(newvalue)
             self.save()
             return
+        if not ldap_available:
+            raise AdminError(_("Failed to update password: LDAP module not installed"))
 
         ab = LDAPAuthBackend()
         try:
