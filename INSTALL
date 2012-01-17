@@ -8,6 +8,7 @@ Requirements
 - `Python version 2.6+ <http://python.org/>`_
 - `Django version 1.2+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
 - `south version 0.7+ <http://south.aeracode.org/>`_
+- `ldap python module <http://www.python-ldap.org/>`_
 
 For extensions (mandatories since 0.8.2):
 
@@ -234,6 +235,8 @@ requires a migration.
 
 0.8.8: CSV import feature and minor fixes
 -----------------------------------------
+
+#. Install the `LDAP python module <http://www.python-ldap.org/>`_
 
 #. Edit the *settings.py* file and
    ``'modoboa.lib.middleware.AjaxLoginRedirect'`` to the
