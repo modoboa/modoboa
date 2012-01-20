@@ -16,6 +16,10 @@ window.addEvent('domready', function() {
 	}
     }, $('accordion'));
 
+    SqueezeBox.assign($("content").getElements('a[class=boxed]'), {
+        parse: 'rel'
+    });
+
     $$("a[name=addperm]").addEvent("click", function(evt) {
 	evt.stop();
 	var sizes = current_sizes.split(" ");

@@ -11,18 +11,17 @@ from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
-from controls import *
+from models import *
+import permissions
+import controls
 
 baseurl = "limits"
 
 def init():
-    events.register("AdminMenuDisplay", menu)
-    events.register("CanCreateDomain", check_domains_limit)
-    events.register("CreateDomain", associate_domain_to_reseller)
-    events.register("GetUserDomains", get_reseller_domains)
+    pass
 
 def destroy():
-    events.unregister("AdminMenuDisplay", menu)
+    pass
 
 def infos():
     return {
@@ -32,20 +31,25 @@ def infos():
         "url" : baseurl
         }
 
-def menu(target, user):
-    import views
-
-    if target != "top_menu":
-        return []
-    if not user.is_superuser:
-        return []
-    return [
-        {"name" : "resellers",
-         "label" : _("Resellers"),
-         "url" : reverse(views.resellers),
-         "img" : static_url("pics/resellers.png")}
-        ]
-
 def urls(prefix):
     return (r'^%s%s/' % (prefix, baseurl),
             include('modoboa.extensions.limits.urls'))
+
+@events.observe('AdminFooterDisplay')
+def display_pool_usage(user, objtype):
+    if objtype == "domaliases":
+        objtype = "domain_aliases"
+    elif objtype == "mbaliases":
+        objtype = "mailbox_aliases"
+    try:
+        l = user.limitspool.get_limit('%s_limit' % objtype)
+    except LimitsPool.DoesNotExist:
+        return []
+    if l.maxvalue == -2:
+        label = _("undefined")
+    elif l.maxvalue == -1:
+        label = _("unlimited")
+    else:
+        label = str(l.maxvalue)
+    return [_("Pool usage: %s / %s") % (l.curvalue, label)]
+

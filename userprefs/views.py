@@ -8,8 +8,8 @@ from django.utils.translation import ugettext as _
 from modoboa.lib import parameters, events
 from modoboa.lib.webutils import _render, _render_error, ajax_response
 from forms import *
-from modoboa.admin.models import Mailbox, Alias, AdminError
-from modoboa.admin.lib import is_domain_admin
+from modoboa.admin.models import Mailbox, Alias
+from modoboa.admin.lib import is_domain_admin, AdminError
 from modoboa.auth.lib import encrypt
 
 @login_required

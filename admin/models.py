@@ -1,31 +1,28 @@
 # coding: utf-8
 from django.db import models, IntegrityError
-from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.conf import settings
 from modoboa.lib import parameters, events
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.ldaputils import *
 from modoboa.auth.lib import crypt_password
 import os
 import pwd
 
-class AdminError(Exception):
-    """Custom exception
+try:
+    from modoboa.lib.ldaputils import *
+    ldap_available = True
+except ImportError:
+    ldap_available = False
 
-    
-    """
-    def __init__(self, value):
-        """Constructor
-
-        :param value: the information contained in this exception.
-        """
-        self.value = str(value)
-        
-    def __str__(self):
-        """String representation"""
-        return self.value
+class ObjectOwner(models.Model):
+    user = models.ForeignKey(User)
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
 class ObjectDates(models.Model):
     """Dates recording for admin objects
@@ -80,6 +77,7 @@ class Domain(DatesAware):
     quota = models.IntegerField(help_text=ugettext_noop("Default quota in MB applied to mailboxes"))
     enabled = models.BooleanField(ugettext_noop('enabled'),
                                   help_text=ugettext_noop("Check to activate this domain"))
+    owners = generic.GenericRelation(ObjectOwner)
 
     class Meta:
         permissions = (
@@ -265,6 +263,10 @@ class Mailbox(DatesAware):
             raise AdminError(_("Mailbox with this address already exists"))
         self.user = user
 
+        if len(user.groups.all()) == 0:
+            user.groups.add(Group.objects.get(name="SimpleUsers"))
+            user.save()
+
         if kwargs.has_key("password") and kwargs["password"] != u"é":
             self.password = crypt_password(kwargs["password"])
 	# If we ever had numerical uid, don't resolve it
@@ -305,6 +307,8 @@ class Mailbox(DatesAware):
             self.password = crypt_password(newvalue)
             self.save()
             return
+        if not ldap_available:
+            raise AdminError(_("Failed to update password: LDAP module not installed"))
 
         ab = LDAPAuthBackend()
         try:
@@ -456,11 +460,12 @@ class Alias(DatesAware):
         return "<br/>".join(self.extmboxes.split(","))
 
     def ui_disabled(self, user):
+        from modoboa.admin.lib import is_object_owner
+
         if user.is_superuser:
             return False
-        usermb = Mailbox.objects.get(user=user.id)
         for mb in self.mboxes.all():
-            if mb.domain.id != usermb.domain.id:
+            if not is_object_owner(user, mb.domain):
                 return True
         return False
 

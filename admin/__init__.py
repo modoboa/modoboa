@@ -51,13 +51,13 @@ parameters.register_admin("DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
                           values=enabled_applications(),
                           help=_("The default redirection used when no application is specified"))
 
-def unset_default_topredirection(**kwargs):
+def unset_default_topredirection(extension):
     """
     Simple callback to change the default redirection if the
     corresponding extension is being disabled.
     """
     topredirection = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="general")
-    if topredirection == kwargs["ext"].name:
+    if topredirection == extension.name:
         parameters.save_admin("DEFAULT_TOP_REDIRECTION", "userprefs", app="general")
 
 def update_available_applications(extension):

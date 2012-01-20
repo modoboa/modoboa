@@ -49,8 +49,7 @@ def options_menu(user):
 @register.simple_tag
 def uprefs_menu(user):
     entries = []
-    entries += events.raiseQueryEvent("UserMenuDisplay", 
-                                      target="uprefs_menu")
+    entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu")
 
     return render_to_string('common/menulist.html', 
                             {"entries" : entries, "user" : user})

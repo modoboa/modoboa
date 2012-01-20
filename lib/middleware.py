@@ -3,6 +3,8 @@
 import re
 from django.http import Http404, HttpResponseRedirect
 from modoboa.admin.models import Extension
+from modoboa.lib.webutils import _render_error, ajax_response
+from modoboa.lib.exceptions import ModoboaException
 
 class ExtControlMiddleware(object):
     def process_view(self, request, view, args, kwargs):
@@ -22,3 +24,14 @@ class AjaxLoginRedirect(object):
             if type(response) == HttpResponseRedirect:
                 response.status_code = 278
         return response
+
+class CommonExceptionCatcher(object):
+    def process_exception(self, request, exception):
+        if not isinstance(exception, ModoboaException):
+            return None
+
+        if not request.is_ajax():
+            return _render_error(request, errortpl="error_simple",
+                                 user_context=dict(error=str(exception)))
+        
+        return ajax_response(request, status="ko", respmsg=str(exception))

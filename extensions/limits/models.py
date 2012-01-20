@@ -17,32 +17,42 @@ class LimitsPool(models.Model):
     user = models.OneToOneField(User)
 
     def getcurvalue(self, lname):
-        l = Limit.objects.get(name=lname)
+        l = self.limit_set.get(name=lname)
         return l.curvalue
 
     def getmaxvalue(self, lname):
-        l = Limit.objects.get(name=lname)
+        l = self.limit_set.get(name=lname)
         return l.maxvalue
 
     def inc_curvalue(self, lname, nb=1):
-        l = Limit.objects.get(name=lname)
-        if l.curvalue + nb > l.maxvalue:
-            return False
+        l = self.limit_set.get(name=lname)
         l.curvalue += nb
         l.save()
-        return True
+
+    def dec_curvalue(self, lname, nb=1):
+        l = self.limit_set.get(name=lname)
+        if not l.curvalue:
+            return
+        l.curvalue -= nb
+        l.save()
+
+    def will_be_reached(self, lname, nb=1):
+        l = self.limit_set.get(name=lname)
+        if l.maxvalue <= -1:
+            return False
+        if l.curvalue + nb > l.maxvalue:
+            return True
+        return False
 
     def get_limit(self, lname):
-        return Limit.objects.get(name=lname)
+        try:
+            return self.limit_set.get(name=lname)
+        except Limit.DoesNotExist:
+            return None
 
 class Limit(models.Model):
     name = models.CharField(max_length=255)
     curvalue = models.IntegerField(default=0)
-    maxvalue = models.IntegerField(default=0)
+    maxvalue = models.IntegerField(default=-2)
     pool = models.ForeignKey(LimitsPool)
 
-class ResellerObject(models.Model):
-    user = models.ForeignKey(User)
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')

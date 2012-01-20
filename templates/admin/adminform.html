@@ -1,10 +1,15 @@
 {% extends "layout_simple.html" %}
 {% block html_head %}
 <script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+    var form = new Form();
+});
+</script>
 {% endblock %}
 {% block content %}
 <div class="title"><h1>{{ title }}</h1></div>
-{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<div class="error">{% if error %}{{ error }}{% endif %}</div>
 <form action="{{ action }}" enctype="{{ enctype }}" 
       method="POST" id="{{ formid }}" name="{{ formid }}">
   {% include "common/genericform.html" %}

@@ -142,11 +142,22 @@ class SuperAdminsTable(tables.Table):
     
 class DomainAdminsTable(tables.Table):
     idkey = "id"
-    selection = tables.SelectionColumn("selection", width="4%", first=True)
-    domain = tables.Column("domain", label=ugettext_noop("Domain"))
-    full_name = tables.Column("full_name", label=ugettext_noop("Full name"))
+    selection = tables.SelectionColumn("selection", width="4%")
+    username = tables.Column("username", label=ugettext_noop("User name"))
+    first_name = tables.Column("first_name", label=ugettext_noop("First name"))
+    last_name = tables.Column("last_name", label=ugettext_noop("Last name"))
     date_joined = tables.Column("date_joined", label=ugettext_noop("Defined"))
-    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
+    enabled = tables.Column("is_active", label=gender("Enabled", "m"), width="10%")
+    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),
+                                  width="50px", align="center", 
+                                  defvalue=domain_admin_actions)
 
-    cols_order = ["selection", "domain", "full_name", "date_joined", "enabled"]
+    cols_order = ["selection", "username", "first_name", 
+                  "last_name", "date_joined", "enabled", "actions"]
     
+    def __init__(self, request, users):
+        super(DomainAdminsTable, self).__init__(request)
+        self.populate(self._rows_from_model(users))
+
+    def parse_is_active(self, value):
+        return _("yes") if value else _("no")

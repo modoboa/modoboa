@@ -1,28 +1,57 @@
-{% extends "admin/add_permission.html" %}
+{% extends "layout_simple.html" %}
+{% load i18n %}
 {% block html_head %}
-{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/Autocompleter.css" />
+<script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/Observer.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/Autocompleter.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/Autocompleter.Request.js"></script>
 <script type="text/javascript">
 window.addEvent("domready", function() {
-domadminform_init = function() {
-    $("id_domain").addEvent("change", function(event) {
-	var domid = this.value;
-	if (domid == "") {
-	    $("id_user").set("html", "");
-	    return;
-	}
-	{% url domains as doms_url %}
-	new Request({
-	    url: "{% url domains %}" + domid + "/rawmboxes/?target=permissions",
-	    method: "get", 
-            onComplete: ajax_login_redirect,
-            onSuccess: function(data) {
-		$("id_user").set("html", data);
-		$("id_user").options[0].setProperty("selected", "selected");
-	    }
-	}).send();
-    });
-};
-domadminform_init();
+    var form = new Form({target: "formcontainer"});
+
+$("createfrom").addEvent("change", function(evt) {
+    var url = "";
+    var styles = null;
+    var from = this.get("value");
+
+    evt.stop();
+    if (from == "create") {
+        url = "{% url admin.views.create_domain_admin %}";
+        styles = {height: 380};
+    } else {
+        url = "{% url admin.views.domain_admin_promotion %}";
+        styles = {height: 200};
+    }
+    new Request.JSON.mdb({
+        url: url,
+        onSuccess: function(response) {
+            $("formcontainer").set("html", response.content);
+            form.init_help_messages();
+            if (from == "promote") {
+                new Autocompleter.Request.JSON("id_name", 
+                    "{% url admin.views.search_account %}", {
+                    postVar: "search",
+                    minLength: 3,
+                    onComplete: ajax_login_redirect
+                });
+            }
+            $(parent.document).getElement('iframe').setStyles(styles);
+        }
+    }).get();
+});
 });
 </script>
+{% endblock %}
+{% block content %}
+<div class="title"><h1>{{ title }}</h1></div>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<div class="center">
+  <select id="createfrom">
+    <option value="none">{% trans "Choose" %}</option>
+    <option value="create">{% trans "Create a new account" %}</option>
+    <option value="promote">{% trans "Promote an existing account" %}</option>
+  </select>
+</div>
+<div id="formcontainer"></div>
 {% endblock %}

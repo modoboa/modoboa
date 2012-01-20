@@ -25,6 +25,7 @@ Request.JSON.mdb = new Class({
     Extends: Request.JSON,
 
     options: {
+        format: "json",
         onComplete: ajax_login_redirect,
         onFailure: function(xhr) {
             $(document.body).setStyle("overflow", "auto");

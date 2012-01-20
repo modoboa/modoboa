@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
 from modoboa.lib import tables
 from modoboa.lib.emailutils import split_mailbox
+from lib import get_user_domains
 
 class DomainForm(forms.ModelForm):
     class Meta:
@@ -32,10 +33,10 @@ class ProxyForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(ProxyForm, self).__init__(*args, **kwargs)
 
-        if user.is_superuser:
-            self._domain = None
+        if not user.is_superuser:
+            self._domains = Domain.objects.filter(owners__user=user)
         else:
-            self._domain = user.mailbox_set.all()[0].domain
+            self._domains = None
 
 class DomainAliasForm(ProxyForm):
     class Meta:
@@ -44,8 +45,9 @@ class DomainAliasForm(ProxyForm):
 
     def __init__(self, *args, **kwargs):
         super(DomainAliasForm, self).__init__(*args, **kwargs)
-        if self._domain is not None:
-            self.fields["target"].queryset = Domain.objects.filter(pk=self._domain.id)
+        if self._domains is not None:
+            #self.fields["target"].queryset = Domain.objects.filter(pk=self._domain.id)
+            self.fields["target"].queryset = self._domains
 
 class MailboxForm(ProxyForm):
     quota = forms.IntegerField(label=ugettext_noop("Quota"), required=False,
@@ -68,9 +70,10 @@ class MailboxForm(ProxyForm):
         super(MailboxForm, self).__init__(*args, **kwargs)
         for f in ['name', 'address', 'quota', 'password1', 'password2']:
             self.fields[f].widget.attrs['size'] = 14
-        if self._domain is not None:
-            self.fields["domain"].queryset = Domain.objects.filter(pk=self._domain.id)
-            self.fields["domain"].initial = self._domain
+        if self._domains is not None:
+            self.fields["domain"].queryset = self._domains
+            #self.fields["domain"].queryset = Domain.objects.filter(pk=self._domain.id)
+            #self.fields["domain"].initial = self._domain
 
         if kwargs.has_key("instance"):
             self.fields['quota'].initial = kwargs["instance"].quota
@@ -111,22 +114,26 @@ class AliasForm(ProxyForm):
         # member of Alias, we need to fill it manually. if
         # self._domain exists, it means a DomainAdmin is going to
         # create a new alias, we know how to fill the fields.
-        if self._domain is not None:
-            self.fields["domain"].queryset = Domain.objects.filter(pk=self._domain.id)
+        # if self._domain is not None:
+        #     self.fields["domain"].queryset = Domain.objects.filter(pk=self._domain.id)
         
+        if self._domains is not None:
+            self.fields["domain"].queryset = self._domains
+
         # if 'instance' exists, it means we are modifying an existing
         # record, we need to select the right value for 'domain' and
         # to fill the first "targets" input (because it is created by the
         # Form object, not by us).
-        domain = None
-        if self._domain:
-            domain = self._domain
+        #domain = None
+        # if self._domain:
+        #     domain = self._domain
         if kwargs.has_key("instance"):
-            if self._domain is None:
-                domain = kwargs["instance"].domain
+            # if self._domain is None:
+            #     domain = kwargs["instance"].domain
             self.fields["targets"].initial = kwargs["instance"].first_target()
-        if domain is not None:
-            self.fields["domain"].initial = domain
+
+        # if domain is not None:
+        #     self.fields["domain"].initial = domain
         
         self.fields.keyOrder = ['address', 'domain', 'enabled', 'targets']
 
@@ -140,33 +147,37 @@ class AliasForm(ProxyForm):
         return self.cleaned_data["address"]
 
     def set_targets(self, user, values):
+        """Targets dispatching
+
+        We make a difference between 'local' targets (the ones hosted
+        by Modoboa) and 'external targets.
+        """
+        from modoboa.admin.lib import is_object_owner
+
         self.ext_targets = []
         self.int_targets = []
-        if user.id != 1:
-            umb = Mailbox.objects.get(user=user)
+
         for addr in values:
             if addr == "":
                 continue
-            local_part, domain = split_mailbox(addr)
-            if domain is None:
+            local_part, domname = split_mailbox(addr)
+            if domname is None:
                 raise AdminError("%s %s" % (_("Invalid mailbox"), addr))
-            if is_domain_admin(user) and umb.domain.name != domain:
-                try:
-                    d = Domain.objects.get(name=domain)
-                except Domain.DoesNotExist:
-                    pass
-                else:
-                    raise AdminError("%s %s" % (_("Access denied for"), addr))
             try:
-                mb = Mailbox.objects.get(address=local_part, domain__name=domain)
-            except Mailbox.DoesNotExist:
-                self.ext_targets += [addr]
-            else:
-                if not user.is_superuser:
-                    usermb = Mailbox.objects.get(user=user.id)
-                    if usermb.domain.id != mb.domain.id:
-                        raise AdminError("%s %s" % (_("Permission denied on"), addr))
+                domain = Domain.objects.get(name=domname)
+            except Domain.DoesNotExist:
+                domain = None
+            if domain:
+                if not is_object_owner(user, domain):
+                    raise PermDeniedException(addr)
+                try:
+                    mb = Mailbox.objects.get(domain=domain, address=local_part)
+                except Mailbox.DoesNotExist:
+                    raise AdminError(_("Mailbox %s does not exist" % addr))
                 self.int_targets += [mb]
+                continue
+
+            self.ext_targets += [addr]
 
     def save(self, force_insert=False, force_update=False, commit=True):
         a = super(AliasForm, self).save(commit=False)
@@ -186,19 +197,72 @@ class SuperAdminForm(forms.Form):
         self.fields["user"].queryset = User.objects.exclude(pk__in=[1, user.id])
 
 class DomainAdminForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(DomainAdminForm, self).__init__(*args, **kwargs)
+    createfrom = forms.ChoiceField(
+        choices=[("new", ugettext_noop("Create a new account")),
+                 ("select", ugettext_noop("Promote an existing account"))],
+        widget=forms.RadioSelect)
 
-        self.fields["domain"] = \
-            forms.ModelChoiceField(queryset=Domain.objects.all(), 
-                                   label=_("Domain"), 
-                                   required=True,
-                                   empty_label=_("Select a domain"),
-                                   help_text=_("Select a domain in the list"))
-        self.fields["user"] = \
-            forms.ChoiceField(label=_("User"), required=True,
-                              choices=[("", _("Empty"))],
-                              help_text=_("Select a user in the list"))
+    domain = forms.ModelChoiceField(
+        queryset=Domain.objects.all(), 
+        label=_("Domain"), 
+        required=True,
+        empty_label=ugettext_noop("Select a domain"),
+        help_text=ugettext_noop("Select a domain in the list")
+        )
+    
+    user = forms.ChoiceField(
+        label=ugettext_noop("User"), required=True,
+        choices=[("", ugettext_noop("Empty"))],
+        help_text=ugettext_noop("Select a user in the list"))
+
+class UserForm(forms.ModelForm):
+    createmb = forms.BooleanField(
+        label=ugettext_noop("Create mailbox"), required=False,
+        help_text=ugettext_noop("Create a mailbox for this user using the given address")
+        )
+
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "last_name", "email")
+
+    def save(self, commit=True, group=None):
+        user = super(UserForm, self).save(commit=False)
+        if self.cleaned_data.has_key("password1"):
+            user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+            if group:
+                user.groups.add(Group.objects.get(name=group))
+                user.save()
+        return user
+
+class UserWithPasswordForm(UserForm):
+    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label=ugettext_noop("Confirmation"), 
+        widget=forms.PasswordInput,
+        help_text=ugettext_noop("Enter the same password as above, for verification.")
+        )
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1", "")
+        password2 = self.cleaned_data["password2"]
+        if password1 != password2:
+            raise forms.ValidationError(_("The two password fields didn't match."))
+        return password2
+
+class DomainAdminPromotionForm(forms.Form):
+    name = forms.CharField(
+        label=ugettext_noop("Name"),
+        help_text=ugettext_noop("The username/email address/name of the account to promote")
+        )
+
+    def clean_name(self):
+        try:
+            u = User.objects.get(username=self.cleaned_data["name"])
+        except User.DoesNotExist:
+            raise forms.ValidationError(_("Unknown user"))
+        return self.cleaned_data["name"]
 
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=_("Select a file"))

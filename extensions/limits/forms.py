@@ -3,28 +3,23 @@
 from django import forms
 from django.utils.translation import ugettext_noop as _
 from django.contrib.auth.models import User, Group
+from modoboa.admin.forms import UserForm, UserWithPasswordForm
 from models import *
 
-class ResellerForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ("username", "first_name", "last_name", "email")
+class ResellerForm(UserForm):
+    def __init__(self, *args, **kwargs):
+        super(ResellerForm, self).__init__(*args, **kwargs)
+        del self.fields["createmb"]
 
-    def save(self, commit=True):
-        user = super(ResellerForm, self).save(commit=False)
-        if self.cleaned_data.has_key("password1"):
-            user.set_password(self.cleaned_data["password1"])
+    def save(self, commit=True, group=None):
+        user = super(ResellerForm, self).save(commit, group)
         if commit:
-            user.save()
-            grp = Group.objects.get(name="Resellers")
-            if not grp in user.groups.all():
-                user.groups.add(grp)
-                user.save()
             try:
                 pool = user.limitspool
             except LimitsPool.DoesNotExist:
                 pool = LimitsPool()
                 pool.user = user
+                print pool.user
                 pool.save()
                 
                 for lname in reseller_limits_tpl:
@@ -35,18 +30,8 @@ class ResellerForm(forms.ModelForm):
 
         return user
 
-class ResellerWithPasswordForm(ResellerForm):
-    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_("Confirmation"), 
-                                widget=forms.PasswordInput,
-        help_text = _("Enter the same password as above, for verification."))
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get("password1", "")
-        password2 = self.cleaned_data["password2"]
-        if password1 != password2:
-            raise forms.ValidationError(_("The two password fields didn't match."))
-        return password2
+class ResellerWithPasswordForm(ResellerForm, UserWithPasswordForm):
+    pass
 
 class ResellerPoolForm(forms.Form):
     domains_limit = forms.IntegerField(ugettext_noop("Max domains"),
@@ -57,6 +42,23 @@ class ResellerPoolForm(forms.Form):
         help_text=ugettext_noop("Maximum number of mailboxes that can be created by this user"))
     mailbox_aliases_limit = forms.IntegerField(ugettext_noop("Max mailbox aliases"),
         help_text=ugettext_noop("Maximum number of mailbox aliases that can be created by this user"))
+
+    def check_limit_value(self, lname):
+        if self.cleaned_data[lname] < -1:
+            raise forms.ValidationError(_("Invalid limit"))
+        return self.cleaned_data[lname]
+
+    def clean_domains_limit(self):
+        return self.check_limit_value("domains_limit")
+
+    def clean_domain_aliases_limit(self):
+        return self.check_limit_value("domain_aliases_limit")
+
+    def clean_mailboxes_limit(self):
+        return self.check_limit_value("mailboxes_limit")
+
+    def clean_mailbox_aliases_limit(self):
+        return self.check_limit_value("mailbox_aliases_limit")
 
     def load_from_user(self, user):
         for l in reseller_limits_tpl:

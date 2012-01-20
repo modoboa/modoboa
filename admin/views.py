@@ -16,6 +16,7 @@ from models import *
 from modoboa.admin.permissions import *
 from modoboa.admin.tables import *
 from modoboa.lib import events, parameters
+from modoboa.lib.exceptions import *
 from modoboa.auth.lib import crypt_password
 from modoboa.lib.webutils \
     import _render, ajax_response, ajax_simple_response, getctx
@@ -31,10 +32,7 @@ def domains(request):
 
         return HttpResponseRedirect(reverse(userprefs.views.preferences))
     
-    if request.user.is_superuser:
-        domains = Domain.objects.all()
-    else:
-        domains = events.raiseQueryEvent("GetUserDomains", request.user)
+    domains = get_user_domains(request.user)
     for dom in domains:
         dom.mbalias_counter = len(Alias.objects.filter(domain=dom.id))
     deloptions = {"keepdir" : _("Do not delete domain directory")}
@@ -53,7 +51,6 @@ def _validate_domain(request, form, successmsg, commonctx,
     """
     error = None
     if form.is_valid():
-        events.raiseEvent("CanCreateDomain", request.user)
         try:
             domain = form.save()
         except AdminError, e:
@@ -74,7 +71,9 @@ def _validate_domain(request, form, successmsg, commonctx,
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
 def newdomain(request, tplname="admin/adminform.html"):
+    events.raiseEvent("CanCreateDomain", request.user)
     def newdomain_cb(user, domain):
+        set_object_ownership(user, domain)
         events.raiseEvent("CreateDomain", user, domain)
 
     commonctx = {"title" : _("New domain"),
@@ -94,6 +93,9 @@ def newdomain(request, tplname="admin/adminform.html"):
 @permission_required("admin.change_domain")
 def editdomain(request, dom_id, tplname="admin/adminform.html"):
     domain = Domain.objects.get(pk=dom_id)
+    if not is_object_owner(request.user, domain):
+        raise PermDeniedException(_("You can't edit this domain"))
+
     commonctx = {"title" : _("Domain editing"),
                  "submit_label" : _("Update"),
                  "action" : reverse(editdomain, args=[dom_id]),
@@ -108,47 +110,47 @@ def editdomain(request, dom_id, tplname="admin/adminform.html"):
 
 @login_required
 @permission_required("admin.delete_domain")
+@transaction.commit_on_success
 def deldomain(request):
     selection = request.GET["selection"].split(",")
     error = None
+    keepdir = True if request.GET.get("keepdir", "false") == "true" else False
     try:
         mb = Mailbox.objects.get(user__id=request.user.id)
     except Mailbox.DoesNotExist:
-        pass
-    else:
-        if str(mb.domain.id) in selection:
-            error = _("You can't delete your own domain")
+        mb = None
 
-    if error is None:
-        if request.GET.has_key("keepdir") and request.GET["keepdir"] == "true":
-            keepdir = True
-        else:
-            keepdir = False
-        for dom in Domain.objects.filter(id__in=selection):
-            events.raiseEvent("DeleteDomain", dom)
-            dom.delete(keepdir=keepdir)
-        msg = ungettext("Domain deleted", "Domains deleted", len(selection))
-        messages.info(request, msg, fail_silently=True)
-        return ajax_response(request)
-    return ajax_response(request, status="ko", respmsg=error)
+    for dom in Domain.objects.filter(id__in=selection):
+        if not is_object_owner(request.user, dom):
+            raise PermDeniedException(_("You can't delete this domain"))
+        if mb and mb.domain == dom:
+            raise AdminError(_("You can't delete your own domain"))
+
+        events.raiseEvent("DeleteDomain", request.user, dom)
+        dom.delete(keepdir=keepdir)
+
+    msg = ungettext("Domain deleted", "Domains deleted", len(selection))
+    messages.info(request, msg, fail_silently=True)
+    return ajax_response(request)
 
 @login_required
 @permission_required("admin.view_domaliases")
+@check_domain_ownership
 def domaliases(request):
     if request.GET.has_key("domid"):
         domain = Domain.objects.get(pk=request.GET["domid"])
         domaliases = DomainAlias.objects.filter(target=request.GET["domid"])
     else:
         domain = None
-        domaliases = DomainAlias.objects.all()
+        domaliases = get_user_domaliases(request.user)
     return render_listing(request, "domaliases",
                                title=_("Domain aliases"),
                                rel="310 190",
                                objects=domaliases)
 
 @login_required
-@good_domain
 @permission_required("admin.add_domainalias")
+@transaction.commit_on_success
 def newdomalias(request, tplname="admin/adminform.html"):
     commonctx = {"title" : _("New domain alias"),
                  "submit_label" : _("Create"),
@@ -158,6 +160,7 @@ def newdomalias(request, tplname="admin/adminform.html"):
         form = DomainAliasForm(request.user, request.POST)
         error = None
         if form.is_valid():
+            events.raiseEvent("CanCreateDomainAlias", request.user)
             domalias = form.save(commit=False)
             if Domain.objects.filter(name=domalias.name):
                 error = _("A domain with this name already exists")
@@ -167,6 +170,7 @@ def newdomalias(request, tplname="admin/adminform.html"):
                 except IntegrityError:
                     error = _("Alias with this name already exists")
                 else:
+                    events.raiseEvent("DomainAliasCreated", request.user, domalias)
                     messages.info(request, _("Domain alias created"), fail_silently=True)
                     return ajax_response(request, url=reverse(admin.views.domaliases))
 
@@ -181,10 +185,12 @@ def newdomalias(request, tplname="admin/adminform.html"):
     return _render(request, tplname, commonctx)
 
 @login_required
-@good_domain
 @permission_required("admin.change_domainalias")
 def editdomalias(request, alias_id, tplname="admin/adminform.html"):
     domalias = DomainAlias.objects.get(pk=alias_id)
+    if not is_object_owner(request.user, domalias.target):
+        raise PermDeniedException(_("You do not have access to this domain"))
+
     commonctx = {"title" : _("Domain alias editing"),
                  "submit_label" : _("Update"),
                  "action" : reverse(editdomalias, args=[alias_id]),
@@ -213,18 +219,23 @@ def editdomalias(request, alias_id, tplname="admin/adminform.html"):
     return _render(request, tplname, commonctx)
 
 @login_required
-@good_domain
 @permission_required("admin.delete_domainalias")
+@transaction.commit_on_success
 def deldomalias(request):
     selection = request.GET["selection"].split(",")
-    DomainAlias.objects.filter(id__in=selection).delete()
+    for daid in selection:
+        domalias = DomainAlias.objects.get(pk=daid)
+        if not is_object_owner(request.user, domalias.target):
+            raise PermDeniedException(_("You don't have acces to this domain"))
+        events.raiseEvent("DomainAliasDeleted", request.user, domalias)
+        domalias.delete()
     msg = ungettext("Domain alias deleted", "Domain aliases deleted", len(selection))
     messages.info(request, msg, fail_silently=True)
     return ajax_response(request)
 
 @login_required
-@good_domain
 @permission_required("admin.view_mailboxes")
+@check_domain_ownership
 def mailboxes(request):
     title = _("Available mailboxes")
     if request.GET.has_key("domid"):
@@ -232,7 +243,7 @@ def mailboxes(request):
         mboxes = Mailbox.objects.filter(domain=domain.id)
         title += " (%s)" % domain.name
     else:
-        mboxes = Mailbox.objects.all()
+        mboxes = get_user_mailboxes(request.user)
         domain = None
     deloptions = {"keepdir" : _("Do not delete mailbox directory")}
     return render_listing(request, "mailboxes",
@@ -255,8 +266,8 @@ def mailboxes_raw(request, dom_id=None):
             })
 
 @login_required
-@good_domain
 @permission_required("admin.view_mailboxes")
+@check_domain_ownership
 def mailboxes_search(request):
     if request.method != "POST":
         return
@@ -266,13 +277,15 @@ def mailboxes_search(request):
         query &= Q(domain__name__startswith=domain)
     if request.GET.has_key("domid"):
         query = Q(domain=request.GET["domid"]) & query
+    elif not request.user.is_superuser:
+        query = Q(domain__in=get_user_domains(request.user)) & query
     mboxes = Mailbox.objects.filter(query)
     result = map(lambda mb: mb.full_address, mboxes)
     return ajax_simple_response(result)
 
 @login_required
-@good_domain
 @permission_required("admin.add_mailbox")
+@transaction.commit_on_success
 def newmailbox(request, tplname="admin/adminform.html"):
     commonctx = {"title" : _("New mailbox"),
                  "submit_label" : _("Create"),
@@ -282,12 +295,17 @@ def newmailbox(request, tplname="admin/adminform.html"):
         form = MailboxForm(request.user, request.POST)
         error = None
         if form.is_valid():
+            if not request.user.is_superuser:
+                if not is_object_owner(request.user, form.cleaned_data["domain"]):
+                    raise PermDeniedException(_("You do not have access to this domain"))
+
+            events.raiseEvent("CanCreateMailbox", request.user)
             try:
                 mb = form.save()
             except AdminError as e:
                 error = str(e)
             else:
-                events.raiseEvent("CreateMailbox", mb)
+                events.raiseEvent("CreateMailbox", request.user, mb)
                 messages.info(request, _("Mailbox created"),
                               fail_silently=True)
                 return ajax_response(request, url=reverse(admin.views.mailboxes) + "?domid=%d" % mb.domain.id)
@@ -301,10 +319,12 @@ def newmailbox(request, tplname="admin/adminform.html"):
     return _render(request, tplname, commonctx)
 
 @login_required
-@good_domain
 @permission_required("admin.change_mailbox")
 def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
     mb = Mailbox.objects.get(pk=mbox_id)
+    if not is_object_owner(request.user, mb.domain):
+        raise PermDeniedException(_("You do not have access to this domain"))
+
     commonctx = {"title" : _("Mailbox editing"),
                  "submit_label" : _("Create"),
                  "action" : reverse(editmailbox, args=[mbox_id]),
@@ -336,66 +356,63 @@ def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
     return _render(request, tplname, commonctx)
 
 @login_required
-@good_domain
 @permission_required("admin.delete_mailbox")
+@transaction.commit_on_success
 def delmailbox(request):
     selection = request.GET["selection"].split(",")
     error = None
-    if not request.user.is_superuser:
-        mb = Mailbox.objects.get(user__pk=request.user.id)
-        if str(mb.id) in selection:
-            error = _("You can't delete your own mailbox")
+    keepdir = True if request.GET.get("keepdir", "false") == "true" else False
+    usermb = request.user.mailbox_set.all()[0] \
+        if len(request.user.mailbox_set.all()) else None
 
-    if error is None:
-        if request.GET.has_key("keepdir") and request.GET["keepdir"] == "true":
-            keepdir = True
-        else:
-            keepdir = False
-        for mb in Mailbox.objects.filter(id__in=selection):
-            events.raiseEvent("DeleteMailbox", mb)
-            mb.delete(keepdir=keepdir)
-        msg = ungettext("Mailbox deleted", "Mailboxes deleted", len(selection))
-        messages.info(request, msg, fail_silently=True)
-        return ajax_response(request)
+    for mb in Mailbox.objects.filter(id__in=selection):
+        if not is_object_owner(request.user, mb.domain):
+            raise PermDeniedException(_("You don't have access to this domain"))
+        if usermb and usermb == mb:
+            raise AdminError(_("You can't delete your own mailbox"))
+        events.raiseEvent("DeleteMailbox", request.user, mb)
+        mb.delete(keepdir=keepdir)
 
-    return ajax_response(request, status="ko", error=error)
+    msg = ungettext("Mailbox deleted", "Mailboxes deleted", len(selection))
+    messages.info(request, msg, fail_silently=True)
+    return ajax_response(request)
 
 @login_required
-@good_domain
 @permission_required("admin.view_aliases")
+@check_domain_ownership
 def mbaliases(request):
     if request.GET.has_key("domid"):
         aliases = Alias.objects.filter(domain=request.GET["domid"])
     elif request.GET.has_key("mbid"):
         aliases = Alias.objects.filter(mboxes__id=request.GET["mbid"]).distinct()
     else:
-        aliases = Alias.objects.all()
+        aliases = get_user_mbaliases(request.user)
     
     return render_listing(request, "mbaliases",
                           title=_("Mailbox aliases"),
                           rel="320 300",
                           objects=aliases)
 
-def _validate_mbalias(request, form, successmsg, tplname, commonctx):
+def _validate_mbalias(request, form, successmsg, tplname, commonctx, callback=None):
     """Mailbox alias validation
 
     Common function shared between creation and modification actions.
     """
     error = None
     if form.is_valid():
+        if not request.POST.has_key("targets"):
+            raise AdminError(_("No target defined"))
+        form.set_targets(request.user, request.POST.getlist("targets"))
         try:
-            if not request.POST.has_key("targets"):
-                raise AdminError(_("No target defined"))
-            form.set_targets(request.user, request.POST.getlist("targets"))
-            try:
-                alias = form.save()
-            except IntegrityError:
-                raise AdminError(_("Alias with this name already exists"))
+            alias = form.save()
+        except IntegrityError:
+            raise AdminError(_("Alias with this name already exists"))
             
-            messages.info(request, successmsg, fail_silently=True)
-            return ajax_response(request, url=reverse(admin.views.mbaliases))
-        except AdminError, e:
-            error = str(e)
+        if callback:
+            callback(request.user, alias)
+
+        messages.info(request, successmsg, fail_silently=True)
+        return ajax_response(request, url=reverse(admin.views.mbaliases))
 
     if request.POST.has_key("targets"):
         targets = request.POST.getlist("targets")
@@ -406,17 +423,21 @@ def _validate_mbalias(request, form, successmsg, tplname, commonctx):
     return ajax_response(request, status="ko", template=tplname, **commonctx)
 
 @login_required
-@good_domain
 @permission_required("admin.add_alias")
+@transaction.commit_on_success
 def newmbalias(request, tplname="admin/mbaliasform.html"):
+    events.raiseEvent("CanCreateMailboxAlias", request.user)
     commonctx = {"title" : _("New mailbox alias"),
                  "submit_label" : _("Create"),
                  "action" : reverse(newmbalias),
                  "formid" : "mbaliasform"}
     if request.method == "POST":
+        def callback(user, mbalias):
+            events.raiseEvent("MailboxAliasCreated", user, mbalias)
+
         form = AliasForm(request.user, request.POST)
         return _validate_mbalias(request, form, _("Mailbox alias created"),
-                                 tplname, commonctx)
+                                 tplname, commonctx, callback)
 
     form = AliasForm(request.user)
     commonctx["form"] = form
@@ -424,10 +445,11 @@ def newmbalias(request, tplname="admin/mbaliasform.html"):
     return _render(request, tplname, commonctx)
 
 @login_required
-@good_domain
 @permission_required("admin.change_alias")
 def editmbalias(request, alias_id, tplname="admin/mbaliasform.html"):
     alias = Alias.objects.get(pk=alias_id)
+    if not is_object_owner(request.user, alias.domain):
+        raise PermDeniedException(_("You do not have access to this domain"))
     commonctx = {"title" : _("Mailbox alias editing"),
                  "submit_label" : _("Update"),
                  "action" : reverse(editmbalias, args=[alias.id]),
@@ -443,11 +465,17 @@ def editmbalias(request, alias_id, tplname="admin/mbaliasform.html"):
     return _render(request, tplname, commonctx)
 
 @login_required
-@good_domain
 @permission_required("admin.delete_alias")
+@transaction.commit_on_success
 def delmbalias(request):
     selection = request.GET["selection"].split(",")
-    Alias.objects.filter(id__in=selection).delete()
+    for mbaid in selection:
+        mbalias = Alias.objects.get(pk=mbaid)
+        if not is_object_owner(request.user, mbalias.domain):
+            raise PermDeniedException(_("You do not have access to this domain"))
+        events.raiseEvent("MailboxAliasDeleted", request.user, mbalias)
+        mbalias.delete()
+
     msg = ungettext("Alias deleted", "Aliases deleted", len(selection))
     messages.info(request, msg, fail_silently=True)
     return ajax_response(request)
@@ -464,12 +492,12 @@ def permissions(request, tplname='admin/permissions.html'):
              "content" : SuperAdminsPerms().get(request)}
             ]
 
-    permtables += events.raiseQueryEvent("PermsGetTables", user=request.user)
+    permtables += events.raiseQueryEvent("PermsGetTables", request)
 
     permtables += [
         {"id" : "domain_admins",
          "title" : _("Domain administrators"),
-         "rel" : "310 180",
+         "rel" : "350 250",
          "content" : DomainAdminsPerms().get(request)}
         ]
 
@@ -492,9 +520,91 @@ def add_permission(request):
         status, data = pobj.add(request)
         if not status:
             return HttpResponse(simplejson.dumps(data), mimetype="application/json")
-        messages.info(request, _("Permission added."), 
-                      fail_silently=True)
+        try:
+            msg = pobj.add_success_msg
+        except AttributeError:
+            msg = _("Permission added")
+        messages.info(request, msg, fail_silently=True)
     return ajax_response(request, url=reverse(admin.views.permissions))
+
+@login_required
+@permission_required("auth.view_permissions")
+def create_domain_admin(request, tplname="admin/create_domain_admin.html"):
+    if request.method == "POST":
+        form = UserWithPasswordForm(request.POST)
+        if form.is_valid():
+            user = form.save(group="DomainAdmins")
+            events.raiseEvent("DomainAdminCreated", user)
+            messages.info(request, _("Domain admin created"), fail_silently=True)
+            return ajax_response(request, url=reverse(admin.views.permissions))
+
+        return ajax_response(request, status="ko", template=tplname, form=form)
+
+    form = UserWithPasswordForm()
+    return ajax_response(request, tplname, form=form)
+
+@login_required
+@permission_required("auth.view_permissions")
+def edit_domain_admin(request, da_id, tplname="admin/adminform.html"):
+    ctx = dict(title=_("Edit domain admin"), 
+               action=reverse(edit_domain_admin, args=[da_id]),
+               formid="eda_form",
+               submit_label=_("Update"))
+    u = User.objects.get(pk=da_id, groups__name="DomainAdmins")
+    if request.method == "POST":
+        if request.POST.get("password1", "") != "" and \
+                request.POST.get("password2", "") != "":
+            form = UserWithPasswordForm(request.POST, instance=u)
+        else:
+            form = UserForm(request.POST, instance=u)
+        if form.is_valid():
+            form.save()
+            if form.cleaned_data["createmb"]:
+                pass
+            messages.info(request, _("Domain admin updated"), fail_silently=True)
+            return ajax_response(request, 
+                                 url=reverse("modoboa.admin.views.permissions"))
+        ctx.update(form=form)
+        return ajax_response(request, status="ko", template=tplname, **ctx)
+
+    form = UserWithPasswordForm(instance=u)
+    ctx.update(form=form)
+    return _render(request, tplname, ctx)
+
+@login_required
+@permission_required("auth.view_permissions")
+def domain_admin_promotion(request):
+    if request.method == "POST":
+        form = DomainAdminPromotionForm(request.POST)
+        if form.is_valid():
+            u = User.objects.get(username=form.cleaned_data["name"])
+            u.groups.add(Group.objects.get(name="DomainAdmins"))
+            u.save()
+            messages.info(request, _("Domain admin added"), fail_silently=True)
+            return ajax_response(request, url=reverse(admin.views.permissions))
+
+    form = DomainAdminPromotionForm()
+    return ajax_response(request, template="admin/domain_admin_promotion.html",
+                         form=form)
+
+@login_required
+@permission_required("admin.view_permissions")
+@check_domain_ownership
+def search_account(request):
+    search = request.POST.get("search", None)
+    if search is None:
+        return ajax_simple_response([])
+
+    query = Q(username__startswith=search)
+    query &= Q(is_superuser=False)
+    if not request.user.has_perm("admin.add_domain"):
+        query &= Q(groups__name="SimpleUsers")
+    else:
+        query &= ~Q(groups__name__in=["DomainAdmins"])
+
+    users = User.objects.filter(query)
+    result = map(lambda u: u.username, users.all())
+    return ajax_simple_response(result)
 
 @login_required
 def delete_permissions(request):

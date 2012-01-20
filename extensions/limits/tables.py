@@ -8,6 +8,7 @@ class ResellersTable(tables.Table):
     tableid =  "resellers_table"
     idkey = "id"
 
+    selection = tables.SelectionColumn("selection", width="4%")
     fname = tables.Column("first_name", label=ugettext_noop("First name"))
     lname = tables.Column("last_name", label=ugettext_noop("Last name"))
     username = tables.Column("username", label=ugettext_noop("Username"))
@@ -16,7 +17,7 @@ class ResellersTable(tables.Table):
                                   width="50px",
                                   align="center", defvalue=reseller_actions)
 
-    cols_order = ["username", "fname", "lname", "created", "actions"]
+    cols_order = ["selection", "username", "fname", "lname", "created", "actions"]
 
     def __init__(self, request, users):
         super(ResellersTable, self).__init__(request)

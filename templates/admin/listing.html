@@ -1,5 +1,5 @@
 {% extends "admin/domains_header.html" %}
-{% load i18n %}
+{% load i18n admin_extras %}
 {% block middletitle %}{{ title }}{% endblock %}
 {% block subcontent %}
 <div id="objects" name="{{ selection }}" rel="{{ rel }}">
@@ -7,6 +7,7 @@
 </div>
 {% endblock %}
 {% block footer %}
+<div id="adminfo">{% get_footer_content user selection %}</div>
 <div id="navbar">
   {% if total %}
   <label>{% trans "Items" %} {{ objects.start_index }} {% trans "to" %} {{ objects.end_index }} {% trans "of" %} {{ total }}</label>

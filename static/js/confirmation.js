@@ -66,7 +66,7 @@ var Confirmation = new Class({
 	    }
 	    params += item.get("name") + "=true";
 	});
-	new Request.JSON({
+	new Request.JSON.mdb({
 	    method: "get",
 	    url: Confirmation.url,
 	    onSuccess: function(res) {
@@ -76,10 +76,7 @@ var Confirmation = new Class({
 		    infobox.error(res.respmsg);
 		    infobox.hide(2);
 		}
-	    },
-            onFailure: function(xhr) {
-                $(parent.document.body).set("html", xhr.responseText);
-            }
+	    }
         }).send(params);
     },
 

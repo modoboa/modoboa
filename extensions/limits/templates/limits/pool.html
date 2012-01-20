@@ -2,11 +2,17 @@
 {% load i18n %}
 {% block html_head %}
 <script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
+<script type="text/javascript">
+window.addEvent("domready", function() {
+    var form = new Form();
+});
+</script>
 {% endblock %}
 {% block content %}
 <div class="title"><h1>{% trans "Limits pool for" %} {{ reseller.username }}</h1></div>
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
-<form action="" method="POST" id="limits_pool_form" name="limits_pool_form">
+<form action="{% url extensions.limits.views.edit_limits_pool reseller.id %}" 
+      method="POST" id="limits_pool_form" name="limits_pool_form">
   {% include "common/genericform.html" %}
   <div class="spacer"></div>
   <div class="lastrow" align="center">

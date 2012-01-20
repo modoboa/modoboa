@@ -26,7 +26,7 @@ input {
 }
 
 input[type=text], input[type=password] {
-    width: 140px
+    width: 140px;
 }
 
 /*input:hover {
@@ -102,6 +102,10 @@ td.even {
     font-weight: bold;
 }
 
+.center { 
+    text-align: center;
+}
+
 #id_username { 
   width: 120px;
 }
@@ -139,6 +143,15 @@ td.even {
     clear: both;
 }
 
+ul { 
+    list-style: none;
+    padding: 0;
+}
+
+li { 
+    display: inline;
+}
+
 /*
  * clearfix related
  */
@@ -163,4 +176,16 @@ html[xmlns] .clearfix {
 * html .clearfix {
    height: 1%;
    overflow: visible;
+}
+
+/*
+ * Domain admin form
+ */
+#createfrom {
+    margin: 10px auto;
+    width: auto;
+}
+
+#permform > #id_name { 
+    width: 180px;
 }

@@ -33,6 +33,7 @@ Extracted from `this blog
   one instance to another.
 
 """
+import sys
 import ldap
 import re
 import base64

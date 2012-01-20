@@ -39,9 +39,14 @@ div#footer {
     font-size: 1em;
 }
 
+#adminfo { 
+    float: left;
+    padding: 5px;
+}
+
 #navbar {
     float: right;
-    padding: 0;
+    padding: 5px;
     margin: 0;
     text-align: right;
 }

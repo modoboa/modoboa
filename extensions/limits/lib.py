@@ -4,15 +4,18 @@
 -------------------------------
 
 """
-
 from django.contrib.auth.models import Group
+from modoboa.lib.exceptions import ModoboaException
 
-class LimitReached(Exception):
+class LimitReached(ModoboaException):
     def __init__(self, limit):
         self.limit = limit
 
     def __str__(self):
         return "%s reached" % self.limit.name
+
+class BadLimitValue(ModoboaException):
+    pass
 
 def is_reseller(user):
     """Tell if a user is a reseller or not

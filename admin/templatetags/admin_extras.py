@@ -200,6 +200,18 @@ def mailbox_actions(user, mboxid):
     return render_actions(actions)
 
 @register.simple_tag
+def domain_admin_actions(user, daid):
+    actions = [
+        {"name" : "editdomainadmin",
+         "url" : reverse(admin.views.edit_domain_admin, args=[daid]),
+         "img" : static_url("pics/edit.png"),
+         "title" : _("Edit domain admin"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:350,y:320}}"},
+        ]
+    return render_actions(actions)
+
+@register.simple_tag
 def mbalias_actions(user, aliasid):
     from modoboa.admin.models import Alias
 
@@ -274,3 +286,8 @@ def gender(value, target):
         if trans.find("_") == -1:
             return trans
     return value
+
+@register.simple_tag
+def get_footer_content(user, objtype):
+    res = events.raiseQueryEvent("AdminFooterDisplay", user, objtype)
+    return "".join(res)

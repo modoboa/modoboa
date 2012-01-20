@@ -7,11 +7,15 @@ from modoboa.lib.webutils import _render, getctx, _render_to_string
 from modoboa.lib import events
 from forms import *
 from tables import SuperAdminsTable, DomainAdminsTable
+from lib import set_object_ownership
 
 class Permissions(object):
+    submit_label = ugettext_noop("Add")
+    formtpl = 'admin/add_permission.html'
+
     @staticmethod
     def is_authorized(user):
-        return True
+        return user.is_superuser
 
     def get_add_form(self, request):
         raise NotImplementedError
@@ -25,21 +29,20 @@ class Permissions(object):
     def get(self, request):
         raise NotImplementedError
 
+    def _render_form(self, request, form, instring=False):
+        ctx = dict(form=form, title=self.title, submit_label=self.submit_label,
+                   role=self.role)
+        if instring:
+            return _render_to_string(request, self.formtpl, ctx)
+        return _render(request, self.formtpl, ctx)
+
 class SuperAdminsPerms(Permissions):
     title = ugettext_noop("Add super administrator")
     role = "super_admins"
-
-    @staticmethod
-    def is_authorized(user):
-        return user.is_superuser
     
     def get_add_form(self, request):
         form = SuperAdminForm(request.user)
-        return _render(request, 'admin/add_permission.html', {
-                "form" : form, 
-                "title" : _(self.title),
-                "role": self.role
-                })
+        return self._render_form(request, form)
 
     def add(self, request):
         form = SuperAdminForm(request.user, request.POST)
@@ -51,11 +54,7 @@ class SuperAdminsPerms(Permissions):
             user.save()
             return True, None
 
-        content = _render_to_string(request, "admin/add_permission.html", {
-                "form" : form,
-                "title" : _(self.title),
-                "role" : self.role
-                })
+        content = self._render_form(request, form, True)
         return False, getctx("ko", content=content)
     
     def delete(self, selection):
@@ -81,22 +80,19 @@ class SuperAdminsPerms(Permissions):
 class DomainAdminsPerms(Permissions):
     title = ugettext_noop("Add domain administrator")
     role = "domain_admins"
-
+    formtpl = 'admin/add_domain_admin.html'
+    
     @staticmethod
     def is_authorized(user):
         return user.has_perm("admin.view_domains")
 
     def get_add_form(self, request):
         form = DomainAdminForm()
-        return _render(request, 'admin/add_domain_admin.html', {
-                "form" : form, 
-                "title" : _(self.title),
-                "role" : self.role
-                })
+        return self._render_form(request, form)
     
     def add(self, request):
         form = DomainAdminForm(request.POST)
-        if request.POST.has_key("user") and request.POST["user"] != "":
+        if request.POST.get("user", "") != "":
             mboxid = request.POST['user']
             mb = Mailbox.objects.get(pk=mboxid)
             form.fields["user"].choices = [(mboxid, mb),]
@@ -105,27 +101,28 @@ class DomainAdminsPerms(Permissions):
             mb.user.date_joined = datetime.datetime.now()
             mb.user.groups.add(Group.objects.get(name="DomainAdmins"))
             mb.user.save()
+            set_object_ownership(mb.user, mb.domain)
             return True, None
-        content = _render_to_string(request, "admin/add_domain_admin.html", {
-                "form" : form,
-                "title" : _(self.title),
-                "role" : self.role
-                })
+        content = self._render_form(request, form, True)
         return False, getctx("ko", content=content)
 
     def delete(self, selection):
-        for s in selection:
-            mbox = Mailbox.objects.get(pk=int(s))
-            grp = Group.objects.get(name="DomainAdmins")
-            mbox.user.groups.remove(grp)
-            mbox.user.save()
+        User.objects.filter(id__in=selection).delete()
+        # for s in selection:
+        #     user.delete()
+        #     try:
+        #         mbox = Mailbox.objects.get(pk=int(s))
+        #     grp = Group.objects.get(name="DomainAdmins")
+        #     mbox.user.groups.remove(grp)
+        #     mbox.user.save()
 
     def get(self, request):
-        domadmins = Mailbox.objects.filter(user__groups__name="DomainAdmins")
-        domadmins_list = []
-        for admin in domadmins:
-            domadmins_list += [admin.tohash()]
-        return DomainAdminsTable(request, domadmins_list).render()
+        #domadmins = Mailbox.objects.filter(user__groups__name="DomainAdmins")
+        domainadmins = User.objects.filter(groups__name="DomainAdmins")
+        # domadmins_list = []
+        # for admin in domadmins:
+        #     domadmins_list += [admin.tohash()]
+        return DomainAdminsTable(request, domainadmins).render()
 
 def get_perms_class(user, role):
     """Retrieves the class associated to a given role
@@ -150,7 +147,7 @@ def get_perms_class(user, role):
         if globals()[cname].is_authorized(user):
             return globals()[cname]
         return None
-    res = events.raiseQueryEvent("PermsGetClass", role=role)
+    res = events.raiseQueryEvent("PermsGetClass", role)
     if not len(res):
         return None
     return res[0]
