@@ -327,7 +327,7 @@ class IMAPconnector(object):
             return
 
         status, data = self.m.getquotaroot(self._encodefolder(folder))
-        if status == "OK":
+        if status == "OK" and data[1][0] is not None:
             quotadef = data[1][0]
             m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
             if not m:
