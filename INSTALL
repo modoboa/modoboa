@@ -43,15 +43,12 @@ need to install a python database backend (like *MySQLdb*).
 
 Initialize the database by running the following command::
 
-  $ python manage.py syncdb
+  $ python manage.py syncdb --migrate
 
 It will let you create the default super administrator.
 
-Since version 0.8, Modoboa is using *south* to handle schema
-migrations. To finish the database initialization, you must apply
-existing migrations like this::
-
-  $ python manage.py migrate
+Since version 0.8, Modoboa uses *south* to handle schema migrations,
+this is the reason why you must add the ``--migrate`` option.
 
 Finally, create the ``scripts`` directory::
 
@@ -235,8 +232,6 @@ requires a migration.
 
 0.8.8: CSV import feature and minor fixes
 -----------------------------------------
-
-#. Install the `LDAP python module <http://www.python-ldap.org/>`_
 
 #. Edit the *settings.py* file and
    ``'modoboa.lib.middleware.AjaxLoginRedirect'`` to the
