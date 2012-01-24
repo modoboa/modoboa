@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
 from modoboa.lib import tables
 from modoboa.lib.emailutils import split_mailbox
-from lib import get_user_domains
+from lib import get_user_domains, get_user_domains_qs
 
 class DomainForm(forms.ModelForm):
     class Meta:
@@ -34,7 +34,7 @@ class ProxyForm(forms.ModelForm):
         super(ProxyForm, self).__init__(*args, **kwargs)
 
         if not user.is_superuser:
-            self._domains = Domain.objects.filter(owners__user=user)
+            self._domains = get_user_domains_qs(user)
         else:
             self._domains = None
 

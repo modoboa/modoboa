@@ -2,6 +2,7 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from modoboa import admin
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url, render_actions
@@ -179,7 +180,7 @@ def domalias_actions(user, aid):
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit alias"),
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:190}}"}
+         "rel" : "{handler:'iframe',size:{x:310,y:190}}"}
         ]
     return render_actions(actions)
 
@@ -191,7 +192,7 @@ def mailbox_actions(user, mboxid):
          "img" : static_url("pics/edit.png"),
          "title" : _("Edit mailbox"),
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:320}}"},
+         "rel" : "{handler:'iframe',size:{x:310,y:320}}"},
         {"name" : "aliases",
          "url" : reverse(admin.views.mbaliases) + "?mbid=%d" % mboxid,
          "img" : static_url("pics/alias.png"),
@@ -209,6 +210,7 @@ def domain_admin_actions(user, daid):
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:350,y:320}}"},
         ]
+    actions += events.raiseQueryEvent("DomainAdminActions", User.objects.get(pk=daid))
     return render_actions(actions)
 
 @register.simple_tag

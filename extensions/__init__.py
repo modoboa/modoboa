@@ -25,7 +25,7 @@ def loadextensions(prefix):
         try:
             ext = Extension.objects.get(name=f)
             if ext.enabled:
-                module.main.init()
+                ext.load()
         except Extension.DoesNotExist:
             pass
    	u = module.main.urls(prefix)

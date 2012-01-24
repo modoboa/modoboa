@@ -65,8 +65,6 @@ var Form = new Class({
         var myid = form.get("id");
         var data = form.toQueryString();
 
-        console.log("submit");
-
         event.stop();
         if (this.callbacks["extra_data"][myid] != undefined) {
             if (data != "") {

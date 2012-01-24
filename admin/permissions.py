@@ -107,14 +107,14 @@ class DomainAdminsPerms(Permissions):
         return False, getctx("ko", content=content)
 
     def delete(self, selection):
-        User.objects.filter(id__in=selection).delete()
-        # for s in selection:
-        #     user.delete()
-        #     try:
-        #         mbox = Mailbox.objects.get(pk=int(s))
-        #     grp = Group.objects.get(name="DomainAdmins")
-        #     mbox.user.groups.remove(grp)
-        #     mbox.user.save()
+        grp = Group.objects.get(name="DomainAdmins")
+        for uid in selection:
+            u = User.objects.get(pk=uid)
+            u.groups.remove(grp)
+            u.save()
+            events.raiseEvent("DomainAdminDeleted", u)
+            if not len(u.mailbox_set.all()):
+                u.delete()
 
     def get(self, request):
         #domadmins = Mailbox.objects.filter(user__groups__name="DomainAdmins")

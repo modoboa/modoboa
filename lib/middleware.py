@@ -34,4 +34,5 @@ class CommonExceptionCatcher(object):
             return _render_error(request, errortpl="error_simple",
                                  user_context=dict(error=str(exception)))
         
-        return ajax_response(request, status="ko", respmsg=str(exception))
+        return ajax_response(request, status="ko", respmsg=str(exception),
+                             norefresh=True)

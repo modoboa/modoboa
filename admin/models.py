@@ -24,6 +24,9 @@ class ObjectOwner(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 
+    class Meta:
+        unique_together = (("content_type", "object_id"),)
+
 class ObjectDates(models.Model):
     """Dates recording for admin objects
 
@@ -471,21 +474,33 @@ class Alias(DatesAware):
 
 class Extension(models.Model):
     name = models.CharField(max_length=150)
-    enabled = models.BooleanField(ugettext_noop('enabled'),
-                                  help_text=ugettext_noop("Check to enable this extension"))
+    enabled = models.BooleanField(
+        ugettext_noop('enabled'),
+        help_text=ugettext_noop("Check to enable this extension")
+        )
 
     def __getmodule(self):
         extname = "modoboa.extensions.%s" % self.name
         return __import__(extname, globals(), locals(), ['main'])
 
+    def init(self):
+        module = self.__getmodule()
+        if hasattr(module.main, "init"):
+            module.main.init()
+
     def load(self):
-        self.__getmodule().main.init()
+        module = self.__getmodule()
+        if hasattr(module.main, "load"):
+            module.main.load()
 
     def unload(self):
         self.__getmodule().main.destroy()
 
     def on(self):
         self.load()
+        self.init()
+        self.enabled = True
+        self.save()
 
         extdir = "%s/extensions/%s" % (settings.MODOBOA_DIR, self.name)
         scriptdir = "%s/%s" % (extdir, "scripts")
@@ -502,6 +517,9 @@ class Extension(models.Model):
 
     def off(self):
         self.unload()
+
+        self.enabled = False
+        self.save()
 
         extdir = "%s/extensions/%s" % (settings.MODOBOA_DIR, self.name)
         scriptdir = "%s/%s" % (extdir, "scripts")

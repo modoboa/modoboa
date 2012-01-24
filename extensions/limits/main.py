@@ -6,6 +6,8 @@ The *limits* extension
 
 
 """
+from django.contrib.auth.models import Permission, Group
+from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_noop as _, ugettext
 from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import include
@@ -14,14 +16,25 @@ from modoboa.lib.webutils import static_url
 from models import *
 import permissions
 import controls
+import views
 
 baseurl = "limits"
 
 def init():
-    pass
+    ct = ContentType.objects.get(app_label="admin", model="domain")
+    grp = Group.objects.get(name="DomainAdmins")
+    for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
+        perm = Permission.objects.get(content_type=ct, codename=pname)
+        grp.permissions.add(perm)
+    grp.save()
 
 def destroy():
-    pass
+    ct = ContentType.objects.get(app_label="admin", model="domain")
+    grp = Group.objects.get(name="DomainAdmins")
+    for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
+        perm = Permission.objects.get(content_type=ct, codename=pname)
+        grp.permissions.remove(perm)
+    grp.save()
 
 def infos():
     return {
@@ -53,3 +66,13 @@ def display_pool_usage(user, objtype):
         label = str(l.maxvalue)
     return [_("Pool usage: %s / %s") % (l.curvalue, label)]
 
+@events.observe("DomainAdminActions")
+def get_da_actions(user):
+    return [
+        {"name" : "editpool",
+         "url" : reverse(views.edit_limits_pool, args=[user.id]),
+         "img" : static_url("pics/settings.png"),
+         "title" : _("Edit limits allocated to this domain admin"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:330,y:280}}"},
+        ]

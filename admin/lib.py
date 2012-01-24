@@ -2,6 +2,7 @@
 from functools import wraps
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User, Group
+from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from models import *
@@ -77,18 +78,6 @@ def good_domain(f):
         return HttpResponseRedirect("%s?next=%s" % (login_url, path))
     return dec
 
-# def has_access_to_domain(user, domain):
-#     """
-#     """
-#     access = events.raiseQueryEvent("CanViewDomain", user, domain)
-#     if True in access:
-#         return True
-#     if is_domain_admin(user):
-#         mb = Mailbox.objects.get(user=request.user.id)
-#         if mb.domain == domain:
-#             return True
-#     return False
-
 def render_listing(request, objtype, tplname="admin/listing.html",
                    **kwargs):
     """Common function to render a listing
@@ -132,14 +121,29 @@ def set_object_ownership(user, obj):
     :param user: a ``User`` object
     :param obj: an admin. object (Domain, Mailbox, ...)
     """
-    obj_owner = ObjectOwner(user=user, content_object=obj)
-    obj_owner.save()
+    try:
+        ct = ContentType.objects.get_for_model(obj)
+        obj_owner = user.objectowner_set.get(content_type=ct, object_id=obj.id)
+    except ObjectOwner.DoesNotExist:
+        obj_owner = ObjectOwner(user=user, content_object=obj)
+        obj_owner.save()
+
+def unset_object_ownership(obj):
+    """Remove the ownership of the given object
+
+    :param obj: an object inheriting from ``models.Model``
+    """
+    ct = ContentType.objects.get_for_model(obj)
+    ObjectOwner.objects.get(content_type=ct, object_id=obj.id).delete()
 
 def is_object_owner(user, obj):
     """Check if a user is the object's owner
 
-    An object can have multiple owners but this function only
-    concerns one given user.
+    An object can only belongs to one user. 
+
+    This function is recursive : if the given user is not the owner
+    and if he owns other ``User`` objects, we also check if one of
+    those users owns the object.
 
     :param user: a ``User`` object
     :param obj: a admin object
@@ -148,14 +152,44 @@ def is_object_owner(user, obj):
     if user.is_superuser:
         return True
 
-    qs = user.objectowner_set.filter(content_type__app_label="admin",
-                                     content_type__model=obj._meta.module_name)
-    for entry in qs.all():
-        if entry.content_object == obj:
+    ct = ContentType.objects.get_for_model(obj)
+    try:
+        ooentry = user.objectowner_set.get(content_type=ct, object_id=obj.id)
+    except ObjectOwner.DoesNotExist:
+        pass
+    else:
+        return True
+    if ct.model == "user":
+        return False
+
+    ct = ContentType.objects.get_for_model(User)
+    qs = user.objectowner_set.filter(content_type=ct)
+    for ooentry in qs.all():
+        if is_object_owner(ooentry.content_object, obj):
             return True
     return False
 
+def get_object_owner(obj):
+    """Return this object's owner
+
+    :param obj: an object inheriting from ``model.Model``
+    :return: a ``User`` object
+    """
+    ct = ContentType.objects.get_for_model(obj)
+    res = ObjectOwner.objects.filter(content_type=ct, object_id=obj.id)
+    if not len(res):
+        return None
+    return res[0].user
+
 def check_domain_ownership(f):
+    """Decorator to check if the current user can access to a domain
+
+    This decorator only applies to url that contain a 'domid' or
+    'mbid' parameter. (for a direct access)
+
+    Raise a ``PermDeniedError`` if the current user can't view the
+    requested object.
+    """
     @wraps(f)
     def dec(request, **kwargs):
         if not request.user.is_superuser:
@@ -177,41 +211,86 @@ def get_user_domains(user):
     if user.is_superuser:
         return Domain.objects.all()
 
-    qs = user.objectowner_set.filter(content_type__app_label="admin",
-                                     content_type__model="domain")
+    domct = ContentType.objects.get_for_model(Domain)
+    qs = user.objectowner_set.filter(content_type=domct)
     domains = []
     for entry in qs.all():
         domains += [entry.content_object]
+
+    userct = ContentType.objects.get_for_model(User)
+    qs = user.objectowner_set.filter(content_type=userct)
+    for entry in qs:
+        if not is_domain_admin(entry.content_object):
+            continue
+        domains += get_user_domains(entry.content_object)
     return domains
 
+def get_user_domains_qs(user):
+    """Return the domains belonging to this user
+
+    The result is a ``QuerySet`` object, so this function can be used
+    to fill ``ModelChoiceField`` objects.
+
+    :param user: a ``User`` object
+    """
+    if user.is_superuser:
+        return Domain.objects.all()
+    result = Domain.objects.filter(owners__user=user)
+    
+    userct = ContentType.objects.get_for_model(User)
+    for entry in user.objectowner_set.filter(content_type=userct):
+        if not is_domain_admin(entry.content_object):
+            continue
+        result |= get_user_domains_qs(entry.content_object)
+    return result
+
 def get_user_domaliases(user):
+    """Return the domain aliases that belong to this user
+
+    The result will contain the domain aliases defined for each domain
+    that user can see.
+
+    :param user: a ``User`` object
+    :return: a list of ``DomainAlias`` objects
+    """
     if user.is_superuser:
         return DomainAlias.objects.all()
-    qs = user.objectowner_set.filter(content_type__app_label="admin",
-                                     content_type__model="domain")
+    domains = get_user_domains_qs(user)
     domaliases = []
-    for entry in qs.all():
-        domaliases += entry.content_object.domainalias_set.all()
+    for dom in domains:
+        domaliases += dom.domainalias_set.all()
     return domaliases
 
 def get_user_mailboxes(user):
+    """Return the mailboxes that belong to this user
+
+    The result will contain the mailboxes defined for each domain that
+    user can see.
+
+    :param user: a ``User`` object
+    :return: a list of ``Mailbox`` objects
+    """
     if user.is_superuser:
         return Mailbox.objects.all()
-
-    qs = user.objectowner_set.filter(content_type__app_label="admin",
-                                     content_type__model="domain")
     mboxes = []
-    for ro in qs.all():
-        mboxes += Mailbox.objects.filter(domain=ro.content_object)
+    domains = get_user_domains_qs(user)
+    for dom in domains:
+        mboxes += dom.mailbox_set.all()
     return mboxes
 
 def get_user_mbaliases(user):
+    """Return the mailbox aliases that belong to this user
+
+    The result will contain the mailbox aliases defined for each
+    domain that user can see.
+
+    :param user: a ``User`` object
+    :return: a list of ``Alias`` objects
+    """
     if user.is_superuser:
         return Alias.objects.all()
-
-    qs = user.objectowner_set.filter(content_type__app_label="admin",
-                                     content_type__model="domain")
+    domains = get_user_domains_qs(user)
     mbaliases = []
-    for ro in qs.all():
-        mbaliases += Alias.objects.filter(domain=ro.content_object)
+    for dom in domains:
+        mbaliases += dom.alias_set.all()
     return mbaliases

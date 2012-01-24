@@ -16,6 +16,13 @@ reseller_limits_tpl = [
 class LimitsPool(models.Model):
     user = models.OneToOneField(User)
 
+    def create_limits(self):
+        for lname in reseller_limits_tpl:
+            l = Limit()
+            l.name = lname
+            l.pool = self
+            l.save()
+
     def getcurvalue(self, lname):
         l = self.limit_set.get(name=lname)
         return l.curvalue
@@ -56,3 +63,5 @@ class Limit(models.Model):
     maxvalue = models.IntegerField(default=-2)
     pool = models.ForeignKey(LimitsPool)
 
+    class Meta:
+        unique_together = (("name", "pool"),)

@@ -31,6 +31,8 @@ events = [
     "MailboxAliasDeleted",
 
     "DomainAdminCreated",
+    "DomainAdminActions",
+    "DomainAdminDeleted",
 
     "PasswordChange",
     

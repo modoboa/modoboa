@@ -10,7 +10,7 @@ window.addEvent("domready", function() {
 {% endblock %}
 {% block content %}
 <div class="title"><h1>{% trans "Limits pool for" %} {{ reseller.username }}</h1></div>
-{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<div class="error">{% if error %}{{ error }}{% endif %}</div>
 <form action="{% url extensions.limits.views.edit_limits_pool reseller.id %}" 
       method="POST" id="limits_pool_form" name="limits_pool_form">
   {% include "common/genericform.html" %}

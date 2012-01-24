@@ -3,6 +3,8 @@
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.contrib.auth.models import User
 from modoboa.admin.permissions import Permissions
+from modoboa.admin.lib import set_object_ownership
+from modoboa.admin.models import ObjectOwner
 from modoboa.lib import events
 from modoboa.lib.webutils import _render, _render_to_string
 from tables import *
@@ -21,13 +23,21 @@ class ResellersPerms(Permissions):
         form = ResellerWithPasswordForm(request.POST)
         error = None
         if form.is_valid():
-            form.save(group="Resellers")
+            r = form.save(group="Resellers")
+            set_object_ownership(request.user, r)
             return True, None
         content = self._render_form(request, form, True)
         return False, dict(status="ko", content=content)
 
     def delete(self, selection):
-        User.objects.filter(id__in=selection).delete()
+        ct = ContentType.objects.get_for_model(User)
+        for u in User.objects.filter(id__in=selection):
+            try:
+                ObjectOwner.objects.get(content_type=ct, object_id=u.id).delete()
+            except ObjectOwner.DoesNotExist:
+                pass
+            u.delete()
+        
 
     def get(self, request):
         resellers = User.objects.filter(groups__name="Resellers")

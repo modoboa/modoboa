@@ -4,7 +4,9 @@ from django import forms
 from django.utils.translation import ugettext_noop as _
 from django.contrib.auth.models import User, Group
 from modoboa.admin.forms import UserForm, UserWithPasswordForm
+from modoboa.admin.lib import get_object_owner
 from models import *
+from lib import *
 
 class ResellerForm(UserForm):
     def __init__(self, *args, **kwargs):
@@ -19,14 +21,8 @@ class ResellerForm(UserForm):
             except LimitsPool.DoesNotExist:
                 pool = LimitsPool()
                 pool.user = user
-                print pool.user
                 pool.save()
-                
-                for lname in reseller_limits_tpl:
-                    l = Limit()
-                    l.name = lname
-                    l.pool = pool
-                    l.save()
+                pool.create_limits()
 
         return user
 
@@ -64,9 +60,30 @@ class ResellerPoolForm(forms.Form):
         for l in reseller_limits_tpl:
             self.fields[l].initial = user.limitspool.getmaxvalue(l)
 
+    def allocate_from_pool(self, limit, pool):
+        ol = pool.get_limit(limit.name)
+        if ol.maxvalue == -2:
+            raise BadLimitValue(_("Your pool is not initialized yet"))
+        newvalue = self.cleaned_data[limit.name]
+        if newvalue == -1 and ol.maxvalue != -1:
+            raise BadLimitValue(_("You're not allowed to define unlimited values"))
+
+        if limit.maxvalue > -1:
+            newvalue -= limit.maxvalue
+            if newvalue == 0:
+                return
+        remain = ol.maxvalue - ol.curvalue
+        if newvalue > remain:
+            raise UnsifficientResource(ol)
+        ol.maxvalue -= newvalue
+        ol.save()
+
     def save_new_limits(self, pool):
+        owner = get_object_owner(pool.user)
         for lname in reseller_limits_tpl:
             l = pool.limit_set.get(name=lname)
+            if not owner.is_superuser:
+                self.allocate_from_pool(l, owner.limitspool)
             l.maxvalue = self.cleaned_data[lname]
             l.save()
 

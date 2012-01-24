@@ -1,10 +1,10 @@
 # coding: utf-8
 from django.utils.translation import ugettext as _
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.contrib.auth.models import *
 from django.contrib import messages
 from django.contrib.auth.decorators \
-    import login_required, user_passes_test
+    import login_required, user_passes_test, permission_required
 from django.core.urlresolvers import reverse
 from forms import *
 from modoboa.lib.webutils import _render, ajax_response
@@ -39,7 +39,8 @@ def edit_reseller(request, resid, tplname="admin/add_permission.html"):
     return _render(request, tplname, ctx)
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
+@permission_required("auth.view_permissions")
+@transaction.commit_on_success
 def edit_limits_pool(request, resid, tplname="limits/pool.html"):
     reseller = User.objects.get(pk=resid)
     ctx = dict(reseller=reseller)
