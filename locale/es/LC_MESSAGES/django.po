@@ -1,32 +1,31 @@
 # Modoboa spanish translation.
-# Copyright (C) 2011
+# Copyright (C) 2012
 # This file is distributed under the same license as the Modoboa package.
-#
+# 
 # Translators:
-# Pedro Gracia <lasarux@neuroomante.com>, 2011.
+# Pedro Gracia <lasarux@neuroomante.com>, 2011, 2012.
 # Pedro Gracia <pedro.gracia@impulzia.com>, 2010, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa-0.8.7\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Modoboa-0.8.8\n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2012-01-10 11:09+0100\n"
-"PO-Revision-Date: 2011-10-12 08:40+0000\n"
-"Last-Translator: lasarux <lasarux@neuroomante.com>\n"
+"PO-Revision-Date: 2012-01-23 08:44+0000\n"
+"Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: ES <LL@li.org>\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: admin/__init__.py:9
 msgid "Local"
-msgstr ""
+msgstr "Local"
 
 #: admin/__init__.py:11
-#, fuzzy
 msgid "The backend used for authentication"
-msgstr "Contraseña usada para autenticar"
+msgstr "El 'backend' usados para autenticación"
 
 #: admin/__init__.py:13
 msgid "Modoboa will handle mailbox creation on filesystem"
@@ -42,16 +41,16 @@ msgid ""
 "UID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
 msgstr ""
-"UID del usuario virtual que es el propietario de los dominios/mailboxes/"
-"mensajes en el sistema"
+"UID del usuario virtual que es el propietario de los "
+"dominios/mailboxes/mensajes en el sistema"
 
 #: admin/__init__.py:19
 msgid ""
 "GID of the virtual user which owns domains/mailboxes/messages on the "
 "filesystem"
 msgstr ""
-"GID del usuario virtual que es el propietario de los dominios/mailboxes/"
-"mensajes en el sistema"
+"GID del usuario virtual que es el propietario de los "
+"dominios/mailboxes/mensajes en el sistema"
 
 #: admin/__init__.py:22
 msgid "Mailboxes storage format"
@@ -89,7 +88,8 @@ msgstr "Cuota"
 #: admin/forms.py:52
 msgid "Mailbox quota in MB (default to domain quota if blank)"
 msgstr ""
-"Cuota del \"Mailbox\" en MB (por defecto la del dominio, si no se especifica)"
+"Cuota del \"Mailbox\" en MB (por defecto la del dominio, si no se "
+"especifica)"
 
 #: admin/forms.py:53 auth/forms.py:6
 msgid "Password"
@@ -169,7 +169,7 @@ msgstr "Seleccione un fichero"
 
 #: admin/forms.py:205
 msgid "Separator"
-msgstr ""
+msgstr "Separador"
 
 #: admin/lib.py:13
 #, python-format
@@ -244,24 +244,26 @@ msgstr "Ya existe un \"Mailbox\" con esta dirección"
 #: admin/models.py:313
 #, python-format
 msgid "Failed to update password: %s"
-msgstr ""
+msgstr "Falló en la actualización del password: %s"
 
 #: admin/models.py:353
-#, fuzzy
 msgid "Invalid line"
-msgstr "'mailbox' inválido"
+msgstr "Línea inválida"
 
 #: admin/models.py:359
-msgid "Cannot import this mailbox because the associated domain does not exist"
+msgid ""
+"Cannot import this mailbox because the associated domain does not exist"
 msgstr ""
+"No ha sido posible importar este 'mailbox' ya que el dominio asociado no "
+"existe"
 
 #: admin/models.py:388
 msgid ""
-"The alias address (without the domain part). For a 'catch-all' address, just "
-"enter an * character."
+"The alias address (without the domain part). For a 'catch-all' address, just"
+" enter an * character."
 msgstr ""
-"La dirección del alias (sin la parte del dominio). Para una dirección que lo "
-"recoja todo, ponga un asterisco (*)."
+"La dirección del alias (sin la parte del dominio). Para una dirección que lo"
+" recoja todo, ponga un asterisco (*)."
 
 #: admin/models.py:390
 msgid "mailboxes"
@@ -544,18 +546,18 @@ msgid "Modifications applied."
 msgstr "Modificaciones aplicadas."
 
 #: admin/views.py:631
-#, fuzzy, python-format
+#, python-format
 msgid "%d mailboxes imported successfully"
-msgstr "%(count)d mensaje eliminado correctamente"
+msgstr "%d 'mailboxes' importadas con éxito"
 
 #: admin/views.py:641 admin/templatetags/admin_extras.py:112
 #: templates/admin/import.html:48
 msgid "Import data"
-msgstr ""
+msgstr "Importar datos"
 
 #: admin/views.py:642 templates/admin/import.html:56
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #: admin/templatetags/admin_extras.py:12
 msgid "enabled_m"
@@ -666,17 +668,14 @@ msgstr ""
 "nuevo."
 
 #: demo/__init__.py:16
-#, fuzzy
 msgid "Test messages"
-msgstr "mensajes enviados"
+msgstr "Mensajes de test"
 
 #: demo/__init__.py:21
-#, fuzzy
 msgid "Send virus"
-msgstr "Remitente"
+msgstr "Enviar virus"
 
 #: demo/__init__.py:25
-#, fuzzy
 msgid "Send spam"
 msgstr "Enviar"
 
@@ -685,17 +684,25 @@ msgid ""
 "\n"
 "<h1>Welcome to the online demo!</h1>\n"
 "<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
-"<p>To try the demo, the following users are available (<i>username/password</"
-"i>): </p>\n"
+"<p>To try the demo, the following users are available (<i>username/password</i>): </p>\n"
 "<ul>\n"
 "  <li>A super administrator : <b>admin/password</b></li>\n"
 "  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
 "  <li>A simple user : <b>user@demo.local/user</b></li>\n"
 "</ul>\n"
 "<p>Please report any issue of give any suggestion to \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
-"mailing list</a>.</p>\n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the mailing list</a>.</p>\n"
 msgstr ""
+"\n"
+"<h1>¡Bienvenido a la demo online!</h1>\n"
+"<p><b>Aviso:</b> Los datos de esta demo serán borrados cada dos horas.</p>\n"
+"<p>Para probar la demo puede usar cualquiera de los siguientes usuarios disponibles (<i>username/password</i>): </p>\n"
+"<ul>\n"
+"  <li>Un super administrador : <b>admin/password</b></li>\n"
+"  <li>Un administrador dominio : <b>admin@demo.local/admin</b></li>\n"
+"  <li>Un usuario normal: <b>user@demo.local/user</b></li>\n"
+"</ul>\n"
+"<p>Por favor, informe de cualquier incidencia o sugerencia que tenga a   la lista de correo <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\"></a>.</p>\n"
 
 #: extensions/amavis_quarantine/main.py:15
 msgid "Simple amavis quarantine management tool"
@@ -710,8 +717,8 @@ msgstr ""
 #: extensions/amavis_quarantine/main.py:25
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr ""
-"Eliminar los mensajes marcados como publicados cuando se haga limpieza de la "
-"base de datos"
+"Eliminar los mensajes marcados como publicados cuando se haga limpieza de la"
+" base de datos"
 
 #: extensions/amavis_quarantine/main.py:29
 msgid "Mode used to access the PDP server"
@@ -958,7 +965,8 @@ msgstr "Redirigir el mensaje a"
 
 #: extensions/sievefilters/lib.py:37
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr "La conexión al servidor MANAGESIEVE falló, verifique su configuración."
+msgstr ""
+"La conexión al servidor MANAGESIEVE falló, verifique su configuración."
 
 #: extensions/sievefilters/lib.py:78
 msgid "Not enough space on server"
@@ -1530,9 +1538,8 @@ msgid "Apply"
 msgstr "Aplicar"
 
 #: templates/admin/import.html:62
-#, fuzzy
 msgid "Importing..."
-msgstr "Subiendo..."
+msgstr "Importando..."
 
 #: templates/admin/listing.html:12
 msgid "Items"
@@ -1634,7 +1641,7 @@ msgstr "Destino(s)"
 
 #: userprefs/forms.py:44
 msgid "Keep local copies"
-msgstr ""
+msgstr "Mantener copias locales"
 
 #: userprefs/forms.py:57
 msgid ""
@@ -1646,7 +1653,7 @@ msgstr ""
 
 #: userprefs/views.py:27
 msgid "Password change is disabled for this user"
-msgstr ""
+msgstr "El cambio de contraseña está deshabilitado para este usuario"
 
 #: userprefs/views.py:46
 msgid "Password changed"
@@ -1655,3 +1662,5 @@ msgstr "Contraseña cambiada"
 #: userprefs/views.py:79
 msgid "Forward updated"
 msgstr "Reenvío actualizado"
+
+

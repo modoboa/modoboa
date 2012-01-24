@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.8.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 11:09+0100\n"
+"POT-Creation-Date: 2012-01-17 13:45+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -174,86 +174,90 @@ msgstr "Séparateur"
 msgid "Invalid action, %(user)s is a local user"
 msgstr "Action invalide, %(user)s est un utilisateur local"
 
-#: admin/models.py:78 admin/models.py:142 admin/models.py:155
+#: admin/models.py:83 admin/models.py:147 admin/models.py:160
 msgid "name"
 msgstr "Nom"
 
-#: admin/models.py:79
+#: admin/models.py:84
 msgid "The domain name"
 msgstr "Le nom du domaine"
 
-#: admin/models.py:80
+#: admin/models.py:85
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Quota par défaut en Mo appliqué aux boites aux lettres"
 
-#: admin/models.py:81 admin/models.py:146 admin/models.py:393
-#: admin/models.py:469 extensions/postfix_autoreply/models.py:19
+#: admin/models.py:86 admin/models.py:151 admin/models.py:400
+#: admin/models.py:476 extensions/postfix_autoreply/models.py:19
 msgid "enabled"
 msgstr "Activé"
 
-#: admin/models.py:82
+#: admin/models.py:87
 msgid "Check to activate this domain"
 msgstr "Cocher pour activer ce domaine"
 
-#: admin/models.py:135
+#: admin/models.py:140
 msgid "Failed to initialise domain, check permissions"
 msgstr "Impossible d'initialiser le domaine, vérifier les permissions"
 
-#: admin/models.py:143
+#: admin/models.py:148
 msgid "The alias name"
 msgstr "Le nom de l'alias"
 
-#: admin/models.py:144
+#: admin/models.py:149
 msgid "target"
 msgstr "cible"
 
-#: admin/models.py:145
+#: admin/models.py:150
 msgid "The domain this alias points to"
 msgstr "Le domaine vers lequel cet alias pointe"
 
-#: admin/models.py:147 admin/models.py:394
+#: admin/models.py:152 admin/models.py:401
 msgid "Check to activate this alias"
 msgstr "Cocher pour activer cet alias"
 
-#: admin/models.py:156
+#: admin/models.py:161
 msgid "First name and last name of mailbox owner"
 msgstr "Prénom et nom du propriétaire de la boite aux lettres"
 
-#: admin/models.py:157 admin/models.py:387
+#: admin/models.py:162 admin/models.py:394
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models.py:158
+#: admin/models.py:163
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Adresse de la boite aux lettres (sans la partie @domain.tld)"
 
-#: admin/models.py:159
+#: admin/models.py:164
 msgid "password"
 msgstr "Mot de passe"
 
-#: admin/models.py:246 admin/models.py:327
+#: admin/models.py:251 admin/models.py:334
 msgid "Failed to initialise mailbox, check permissions"
 msgstr ""
 "Impossible d'initialiser la boite aux lettres, vérifier les permissions"
 
-#: admin/models.py:265
+#: admin/models.py:270
 msgid "Mailbox with this address already exists"
 msgstr "Une boite aux lettres pour cette adresse existe déjà"
 
-#: admin/models.py:313
+#: admin/models.py:314
+msgid "Failed to update password: LDAP module not installed"
+msgstr "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
+
+#: admin/models.py:320
 #, python-format
 msgid "Failed to update password: %s"
 msgstr "Echec de la mise à jour du mot de passe : %s"
 
-#: admin/models.py:353
+#: admin/models.py:360
 msgid "Invalid line"
 msgstr "Ligne invalide"
 
-#: admin/models.py:359
+#: admin/models.py:366
 msgid "Cannot import this mailbox because the associated domain does not exist"
 msgstr "Impossible d'importer cette boite car le domaine associé n'existe pas"
 
-#: admin/models.py:388
+#: admin/models.py:395
 msgid ""
 "The alias address (without the domain part). For a 'catch-all' address, just "
 "enter an * character."
@@ -261,15 +265,15 @@ msgstr ""
 "L'adresse de l'alias (sans la partie domaine). Pour une adresse 'attrape-"
 "tout', entrer juste un caractère *."
 
-#: admin/models.py:390
+#: admin/models.py:397
 msgid "mailboxes"
 msgstr "Boites aux lettres"
 
-#: admin/models.py:391
+#: admin/models.py:398
 msgid "The mailboxes this alias points to"
 msgstr "Les boites aux lettres sur lesquelles pointe cet alias"
 
-#: admin/models.py:470
+#: admin/models.py:477
 msgid "Check to enable this extension"
 msgstr "Cocher pour activer cette extension"
 
@@ -693,17 +697,18 @@ msgid ""
 msgstr ""
 "\n"
 "<h1>Bienvenue sur la démo en ligne!</h1>\n"
-"<p><b>Attention:</b> Le contenu de la démo est réinitialisé toutes les deux heures.</p>\n"
-"<p>Pour essayer la démo, les utilisateurs suivants sont disponibles (<i>nom d'utilisateur/mot de passe</"
-"i>): </p>\n"
+"<p><b>Attention:</b> Le contenu de la démo est réinitialisé toutes les deux "
+"heures.</p>\n"
+"<p>Pour essayer la démo, les utilisateurs suivants sont disponibles (<i>nom "
+"d'utilisateur/mot de passe</i>): </p>\n"
 "<ul>\n"
 "  <li>Un super administrateur : <b>admin/password</b></li>\n"
 "  <li>Un administrateur de domaine : <b>admin@demo.local/admin</b></li>\n"
 "  <li>Un simple utilisateur : <b>user@demo.local/user</b></li>\n"
 "</ul>\n"
 "<p>Veuillez svp rapporter toute erreur sur \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">la "
-"liste de diffusion</a>.</p>\n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">la liste "
+"de diffusion</a>.</p>\n"
 
 #: extensions/amavis_quarantine/main.py:15
 msgid "Simple amavis quarantine management tool"
@@ -1664,4 +1669,3 @@ msgstr "Mot de passe changé"
 #: userprefs/views.py:79
 msgid "Forward updated"
 msgstr "Transfert mis à jour"
-

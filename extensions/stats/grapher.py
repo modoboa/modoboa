@@ -3,7 +3,7 @@
 import os
 import time
 import datetime
-#import rrdtool
+import rrdtool
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
 

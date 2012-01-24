@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 11:09+0100\n"
-"PO-Revision-Date: 2012-01-10 22:49+0100\n"
+"POT-Creation-Date: 2012-01-17 13:45+0100\n"
+"PO-Revision-Date: 2012-01-17 14:28+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.de>\n"
 "Language: de\n"
@@ -168,105 +168,109 @@ msgstr "Separator"
 msgid "Invalid action, %(user)s is a local user"
 msgstr "Unzulässige Aktion, %(user)s ist ein lokaler Benutzer"
 
-#: admin/models.py:78
-#: admin/models.py:142
-#: admin/models.py:155
+#: admin/models.py:83
+#: admin/models.py:147
+#: admin/models.py:160
 msgid "name"
 msgstr "Name"
 
-#: admin/models.py:79
+#: admin/models.py:84
 msgid "The domain name"
 msgstr "Name der Domäne"
 
-#: admin/models.py:80
+#: admin/models.py:85
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Standard-Quota für Mailboxen (in MB)"
 
-#: admin/models.py:81
-#: admin/models.py:146
-#: admin/models.py:393
-#: admin/models.py:469
+#: admin/models.py:86
+#: admin/models.py:151
+#: admin/models.py:400
+#: admin/models.py:476
 #: extensions/postfix_autoreply/models.py:19
 msgid "enabled"
 msgstr "aktiviert"
 
-#: admin/models.py:82
+#: admin/models.py:87
 msgid "Check to activate this domain"
 msgstr "Auswählen, um diese Domäne zu aktivieren"
 
-#: admin/models.py:135
+#: admin/models.py:140
 msgid "Failed to initialise domain, check permissions"
 msgstr "Domäne konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
-#: admin/models.py:143
+#: admin/models.py:148
 msgid "The alias name"
 msgstr "Der Alias-Name"
 
-#: admin/models.py:144
+#: admin/models.py:149
 msgid "target"
 msgstr "Ziel"
 
-#: admin/models.py:145
+#: admin/models.py:150
 msgid "The domain this alias points to"
 msgstr "Domäne auf die dieser Alias verweist"
 
-#: admin/models.py:147
-#: admin/models.py:394
+#: admin/models.py:152
+#: admin/models.py:401
 msgid "Check to activate this alias"
 msgstr "Auswählen um den Alias zu aktivieren"
 
-#: admin/models.py:156
+#: admin/models.py:161
 msgid "First name and last name of mailbox owner"
 msgstr "Vor- und Nachname des Mailbox-Besitzers"
 
-#: admin/models.py:157
-#: admin/models.py:387
+#: admin/models.py:162
+#: admin/models.py:394
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models.py:158
+#: admin/models.py:163
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Mailbox-Adresse (ohne den @domain.tld-Anteil)"
 
-#: admin/models.py:159
+#: admin/models.py:164
 msgid "password"
 msgstr "Passwort"
 
-#: admin/models.py:246
-#: admin/models.py:327
+#: admin/models.py:251
+#: admin/models.py:334
 msgid "Failed to initialise mailbox, check permissions"
 msgstr "Mailbox konnte nicht initialisiert werden. Prüfen Sie die Berechtigungen."
 
-#: admin/models.py:265
+#: admin/models.py:270
 msgid "Mailbox with this address already exists"
 msgstr "Eine Mailbox mit dieser Adresse existiert bereits."
 
-#: admin/models.py:313
+#: admin/models.py:314
+msgid "Failed to update password: LDAP module not installed"
+msgstr "Konnte Kennwort nicht aktualisieren: LDAP-Modul nicht installiert"
+
+#: admin/models.py:320
 #, python-format
 msgid "Failed to update password: %s"
 msgstr "Konnte Kennwort nicht aktualisieren: %s"
 
-#: admin/models.py:353
+#: admin/models.py:360
 msgid "Invalid line"
 msgstr "Ungültige Zeile"
 
-#: admin/models.py:359
+#: admin/models.py:366
 msgid "Cannot import this mailbox because the associated domain does not exist"
 msgstr "Kann Mailbox nicht importieren, weil die dazugehörende Domain nicht existiert"
 
-#: admin/models.py:388
+#: admin/models.py:395
 msgid "The alias address (without the domain part). For a 'catch-all' address, just enter an * character."
 msgstr "Die Alias-Adresse (ohne den Domain-Anteil). Geben sie für eine Adresse an, die alles annimmt, * an."
 
-#: admin/models.py:390
+#: admin/models.py:397
 msgid "mailboxes"
 msgstr "Mailboxen"
 
-#: admin/models.py:391
+#: admin/models.py:398
 msgid "The mailboxes this alias points to"
 msgstr "Mailbox auf den dieser Alias verweist"
 
-#: admin/models.py:470
+#: admin/models.py:477
 msgid "Check to enable this extension"
 msgstr "Auswählen, um diese Erweiterung zu aktivieren"
 

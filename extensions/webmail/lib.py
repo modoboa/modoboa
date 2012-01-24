@@ -238,7 +238,7 @@ class IMAPconnector(object):
             if pos == -1:
                 folders += [descr]
             else:
-                folders[idx] = descr
+                folders[idx].update(**descr)
                 
         from operator import itemgetter
         return sorted(folders, key=itemgetter("name"))
@@ -327,7 +327,7 @@ class IMAPconnector(object):
             return
 
         status, data = self.m.getquotaroot(self._encodefolder(folder))
-        if status == "OK":
+        if status == "OK" and data[1][0] is not None:
             quotadef = data[1][0]
             m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
             if not m:

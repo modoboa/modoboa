@@ -8,6 +8,7 @@ Requirements
 - `Python version 2.6+ <http://python.org/>`_
 - `Django version 1.2+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
 - `south version 0.7+ <http://south.aeracode.org/>`_
+- `ldap python module <http://www.python-ldap.org/>`_
 
 For extensions (mandatories since 0.8.2):
 
@@ -42,15 +43,12 @@ need to install a python database backend (like *MySQLdb*).
 
 Initialize the database by running the following command::
 
-  $ python manage.py syncdb
+  $ python manage.py syncdb --migrate
 
 It will let you create the default super administrator.
 
-Since version 0.8, Modoboa is using *south* to handle schema
-migrations. To finish the database initialization, you must apply
-existing migrations like this::
-
-  $ python manage.py migrate
+Since version 0.8, Modoboa uses *south* to handle schema migrations,
+this is the reason why you must add the ``--migrate`` option.
 
 Finally, create the ``scripts`` directory::
 
