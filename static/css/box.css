@@ -189,3 +189,11 @@ html[xmlns] .clearfix {
 #permform > #id_name { 
     width: 180px;
 }
+
+/*
+ * Assign domains form
+ */
+#assignform #id_domains { 
+    width: 310px;
+    height: 200px;
+}

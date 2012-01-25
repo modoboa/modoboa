@@ -5,7 +5,9 @@
 
 """
 from modoboa.admin.models import Mailbox
-from modoboa.admin.lib import get_object_owner, set_object_ownership
+from modoboa.admin.lib import \
+    get_object_owner, grant_access_to_object, is_object_owner, \
+    ungrant_access_to_object
 from modoboa.lib import events
 from lib import *
 from models import *
@@ -20,8 +22,6 @@ def check_limit(user, lname):
 
     :param user: a ``User`` object
     """
-    if not is_reseller(user):
-        return
     try:
         if user.limitspool.will_be_reached(lname):
             raise LimitReached(user.limitspool.get_limit(lname))
@@ -107,16 +107,17 @@ def create_pool(user):
 @events.observe("DomainAdminDeleted")
 def move_pool_resource(domadmin):
     owner = get_object_owner(domadmin)
-    for ooentry in domadmin.objectowner_set.all():
-        obj = ooentry.content_object
-        ooentry.delete()
-        set_object_ownership(owner, obj)
+    if not owner.is_superuser:
+        for ooentry in domadmin.objectaccess_set.all():
+            if ooentry.is_owner:
+                grant_access_to_object(owner, ooentry.content_object, True)
+            ooentry.delete()
 
-    for lname in reseller_limits_tpl:
-        l = domadmin.limitspool.get_limit(lname)
-        ol = owner.limitspool.get_limit(lname)
-        ol.curvalue += l.curvalue
-        ol.maxvalue += l.maxvalue
-        ol.save()
+        for lname in reseller_limits_tpl:
+            l = domadmin.limitspool.get_limit(lname)
+            ol = owner.limitspool.get_limit(lname)
+            ol.curvalue += l.curvalue
+            ol.maxvalue += l.maxvalue
+            ol.save()
 
     domadmin.limitspool.delete()

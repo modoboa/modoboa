@@ -7,7 +7,7 @@ from modoboa.lib.webutils import _render, getctx, _render_to_string
 from modoboa.lib import events
 from forms import *
 from tables import SuperAdminsTable, DomainAdminsTable
-from lib import set_object_ownership
+from lib import grant_access_to_object, ungrant_access_to_object
 
 class Permissions(object):
     submit_label = ugettext_noop("Add")
@@ -101,20 +101,24 @@ class DomainAdminsPerms(Permissions):
             mb.user.date_joined = datetime.datetime.now()
             mb.user.groups.add(Group.objects.get(name="DomainAdmins"))
             mb.user.save()
-            set_object_ownership(mb.user, mb.domain)
+            #set_object_ownership(mb.user, mb.domain)
             return True, None
         content = self._render_form(request, form, True)
         return False, getctx("ko", content=content)
 
     def delete(self, selection):
-        grp = Group.objects.get(name="DomainAdmins")
+        dagrp = Group.objects.get(name="DomainAdmins")
+        sugrp = Group.objects.get(name="SimpleUsers")
         for uid in selection:
             u = User.objects.get(pk=uid)
-            u.groups.remove(grp)
+            u.groups.remove(dagrp)
             u.save()
             events.raiseEvent("DomainAdminDeleted", u)
             if not len(u.mailbox_set.all()):
+                ungrant_access_to_object(u)
                 u.delete()
+            else:
+                u.groups.add(sugrp)
 
     def get(self, request):
         #domadmins = Mailbox.objects.filter(user__groups__name="DomainAdmins")

@@ -264,6 +264,20 @@ class DomainAdminPromotionForm(forms.Form):
             raise forms.ValidationError(_("Unknown user"))
         return self.cleaned_data["name"]
 
+class AssignDomainsForm(forms.Form):
+    domains = forms.ModelMultipleChoiceField(
+        queryset=None,
+        label=ugettext_noop("Domains"), 
+        required=True,
+        help_text=ugettext_noop("Select one or more domains in the list")
+        )
+
+    def __init__(self, user, domadmin, *args, **kwargs):
+        super(AssignDomainsForm, self).__init__(*args, **kwargs)
+        self.fields["domains"].queryset = get_user_domains_qs(user)
+        self.fields["domains"].initial = get_user_domains_qs(domadmin)
+    
+
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=_("Select a file"))
     sepcar = forms.CharField(label=_("Separator"), max_length=1, required=False)

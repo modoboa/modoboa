@@ -43,6 +43,20 @@ class LimitsPool(models.Model):
         l.curvalue -= nb
         l.save()
 
+    def dec_limit(self, lname, nb=1):
+        l = self.limit_set.get(name=lname)
+        l.curvalue -= nb
+        if l.maxvalue > -1:
+            l.maxvalue -= nb
+        l.save()
+
+    def inc_limit(self, lname, nb=1):
+        l = self.limit_set.get(name=lname)
+        l.curvalue += nb
+        if l.maxvalue > -1:
+            l.maxvalue += nb
+        l.save()
+
     def will_be_reached(self, lname, nb=1):
         l = self.limit_set.get(name=lname)
         if l.maxvalue <= -1:

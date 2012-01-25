@@ -115,35 +115,59 @@ def render_listing(request, objtype, tplname="admin/listing.html",
     
     return _render(request, tplname, kwargs)
 
-def set_object_ownership(user, obj):
-    """Simple shorcut to associate an object to a user
+def grant_access_to_object(user, obj, is_owner=False):
+    """Grant access to an object for a given user
+
+    There are two different cases where we want to grant access to an
+    object for a specific user:
+
+    * He is the owner (he's just created the object)
+    * He is going to administrate the object (but he is not the owner)
 
     :param user: a ``User`` object
     :param obj: an admin. object (Domain, Mailbox, ...)
+    :param is_owner: the user is the unique object's owner
     """
     try:
         ct = ContentType.objects.get_for_model(obj)
-        obj_owner = user.objectowner_set.get(content_type=ct, object_id=obj.id)
-    except ObjectOwner.DoesNotExist:
-        obj_owner = ObjectOwner(user=user, content_object=obj)
-        obj_owner.save()
+        entry = user.objectaccess_set.get(content_type=ct, object_id=obj.id)
+        entry.is_owner = is_owner
+        entry.save()
+    except ObjectAccess.DoesNotExist:
+        pass
+    else:
+        return
 
-def unset_object_ownership(obj):
-    """Remove the ownership of the given object
+    try:
+        objaccess = ObjectAccess(user=user, content_object=obj, is_owner=is_owner)
+        objaccess.save()
+    except IntegrityError, e:
+        raise AdminError(_("Failed to grant access (%s)" % str(e)))
+
+def ungrant_access_to_object(obj, user=None):
+    """Ungrant access to an object for a specific user
+
+    If no user is provided, all entries referencing this object are
+    deleted from the database.
 
     :param obj: an object inheriting from ``models.Model``
+    :param user: a ``User`` object
     """
     ct = ContentType.objects.get_for_model(obj)
-    ObjectOwner.objects.get(content_type=ct, object_id=obj.id).delete()
+    if user:
+        try:
+            ObjectAccess.objects.get(user=user, content_type=ct, object_id=obj.id).delete()
+        except ObjectAccess.DoesNotExist:
+            pass
+    else:
+        ObjectAccess.objects.filter(content_type=ct, object_id=obj.id).delete()
 
-def is_object_owner(user, obj):
-    """Check if a user is the object's owner
+def can_access_object(user, obj):
+    """Check if a user can access a specific object
 
-    An object can only belongs to one user. 
-
-    This function is recursive : if the given user is not the owner
-    and if he owns other ``User`` objects, we also check if one of
-    those users owns the object.
+    This function is recursive : if the given user hasn't got direct
+    access to this object and if he has got access other ``User``
+    objects, we check if one of those users owns the object.
 
     :param user: a ``User`` object
     :param obj: a admin object
@@ -154,35 +178,52 @@ def is_object_owner(user, obj):
 
     ct = ContentType.objects.get_for_model(obj)
     try:
-        ooentry = user.objectowner_set.get(content_type=ct, object_id=obj.id)
-    except ObjectOwner.DoesNotExist:
+        ooentry = user.objectaccess_set.get(content_type=ct, object_id=obj.id)
+    except ObjectAccess.DoesNotExist:
         pass
     else:
         return True
     if ct.model == "user":
         return False
+    if directowner:
+        return False
 
     ct = ContentType.objects.get_for_model(User)
-    qs = user.objectowner_set.filter(content_type=ct)
+    qs = user.objectaccess_set.filter(content_type=ct)
     for ooentry in qs.all():
         if is_object_owner(ooentry.content_object, obj):
             return True
     return False
 
+def is_object_owner(user, obj):
+    """Tell is the user is the unique owner of this object
+
+    :param user: a ``User`` object
+    :param obj: an object inheriting from ``models.Model``
+    :return: a boolean
+    """
+    ct = ContentType.objects.get_for_model(obj)
+    try:
+        ooentry = user.objectaccess_set.get(content_type=ct, object_id=obj.id)
+    except ObjectAccess.DoesNotExist:
+        return False
+    return ooentry.is_owner
+
 def get_object_owner(obj):
-    """Return this object's owner
+    """Return the unique owner of this object
 
     :param obj: an object inheriting from ``model.Model``
     :return: a ``User`` object
     """
     ct = ContentType.objects.get_for_model(obj)
-    res = ObjectOwner.objects.filter(content_type=ct, object_id=obj.id)
-    if not len(res):
+    try:
+        entry = ObjectAccess.objects.get(content_type=ct, object_id=obj.id, is_owner=True)
+    except ObjectAccess.DoesNotExist:
         return None
-    return res[0].user
+    return entry.user
 
-def check_domain_ownership(f):
-    """Decorator to check if the current user can access to a domain
+def check_domain_access(f):
+    """Decorator to check if the current user can access a domain
 
     This decorator only applies to url that contain a 'domid' or
     'mbid' parameter. (for a direct access)
@@ -201,7 +242,7 @@ def check_domain_ownership(f):
                 mbid = request.GET.get("mbid", None)
                 if mbid:
                     domain = Mailbox.objects.get(pk=mbid).domain
-            if domain and not is_object_owner(request.user, domain):
+            if domain and not can_access_object(request.user, domain):
                 raise PermDeniedError(_("You can't access this domain"))
 
         return f(request, **kwargs)
@@ -212,13 +253,13 @@ def get_user_domains(user):
         return Domain.objects.all()
 
     domct = ContentType.objects.get_for_model(Domain)
-    qs = user.objectowner_set.filter(content_type=domct)
+    qs = user.objectaccess_set.filter(content_type=domct)
     domains = []
     for entry in qs.all():
         domains += [entry.content_object]
 
     userct = ContentType.objects.get_for_model(User)
-    qs = user.objectowner_set.filter(content_type=userct)
+    qs = user.objectaccess_set.filter(content_type=userct)
     for entry in qs:
         if not is_domain_admin(entry.content_object):
             continue
@@ -235,13 +276,13 @@ def get_user_domains_qs(user):
     """
     if user.is_superuser:
         return Domain.objects.all()
-    result = Domain.objects.filter(owners__user=user)
-    
+    result = Domain.objects.filter(owners__user=user).distinct()
+
     userct = ContentType.objects.get_for_model(User)
-    for entry in user.objectowner_set.filter(content_type=userct):
+    for entry in user.objectaccess_set.filter(content_type=userct):
         if not is_domain_admin(entry.content_object):
             continue
-        result |= get_user_domains_qs(entry.content_object)
+        result |= get_user_domains_qs(entry.content_object).distinct()
     return result
 
 def get_user_domaliases(user):

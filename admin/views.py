@@ -32,7 +32,7 @@ def domains(request):
 
         return HttpResponseRedirect(reverse(userprefs.views.preferences))
     
-    domains = get_user_domains(request.user)
+    domains = get_user_domains_qs(request.user)
     for dom in domains:
         dom.mbalias_counter = len(Alias.objects.filter(domain=dom.id))
     deloptions = {"keepdir" : _("Do not delete domain directory")}
@@ -73,7 +73,7 @@ def _validate_domain(request, form, successmsg, commonctx,
 def newdomain(request, tplname="admin/adminform.html"):
     events.raiseEvent("CanCreateDomain", request.user)
     def newdomain_cb(user, domain):
-        set_object_ownership(user, domain)
+        grant_access_to_object(user, domain, is_owner=True)
         events.raiseEvent("CreateDomain", user, domain)
 
     commonctx = {"title" : _("New domain"),
@@ -127,7 +127,7 @@ def deldomain(request):
             raise AdminError(_("You can't delete your own domain"))
 
         events.raiseEvent("DeleteDomain", dom)
-        unset_object_ownership(dom)
+        ungrant_access_to_object(dom)
         dom.delete(keepdir=keepdir)
 
     msg = ungettext("Domain deleted", "Domains deleted", len(selection))
@@ -136,7 +136,7 @@ def deldomain(request):
 
 @login_required
 @permission_required("admin.view_domaliases")
-@check_domain_ownership
+@check_domain_access
 def domaliases(request):
     if request.GET.has_key("domid"):
         domain = Domain.objects.get(pk=request.GET["domid"])
@@ -171,7 +171,7 @@ def newdomalias(request, tplname="admin/adminform.html"):
                 except IntegrityError:
                     error = _("Alias with this name already exists")
                 else:
-                    set_object_ownership(request.user, domalias)
+                    grant_access_to_object(request.user, domalias, is_owner=True)
                     events.raiseEvent("DomainAliasCreated", request.user, domalias)
                     messages.info(request, _("Domain alias created"), fail_silently=True)
                     return ajax_response(request, url=reverse(admin.views.domaliases))
@@ -230,7 +230,7 @@ def deldomalias(request):
         if not is_object_owner(request.user, domalias.target):
             raise PermDeniedException(_("You don't have acces to this domain"))
         events.raiseEvent("DomainAliasDeleted", domalias)
-        unset_object_ownership(domalias)
+        ungrant_access_to_object(domalias)
         domalias.delete()
     msg = ungettext("Domain alias deleted", "Domain aliases deleted", len(selection))
     messages.info(request, msg, fail_silently=True)
@@ -238,7 +238,7 @@ def deldomalias(request):
 
 @login_required
 @permission_required("admin.view_mailboxes")
-@check_domain_ownership
+@check_domain_access
 def mailboxes(request):
     title = _("Available mailboxes")
     if request.GET.has_key("domid"):
@@ -270,7 +270,7 @@ def mailboxes_raw(request, dom_id=None):
 
 @login_required
 @permission_required("admin.view_mailboxes")
-@check_domain_ownership
+@check_domain_access
 def mailboxes_search(request):
     if request.method != "POST":
         return
@@ -300,7 +300,7 @@ def newmailbox(request, tplname="admin/adminform.html"):
         error = None
         if form.is_valid():
             if not request.user.is_superuser:
-                if not is_object_owner(request.user, form.cleaned_data["domain"]):
+                if not can_access_object(request.user, form.cleaned_data["domain"]):
                     raise PermDeniedException(_("You do not have access to this domain"))
 
             try:
@@ -308,7 +308,8 @@ def newmailbox(request, tplname="admin/adminform.html"):
             except AdminError as e:
                 error = str(e)
             else:
-                set_object_ownership(request.user, mb)
+                grant_access_to_object(request.user, mb, is_owner=True)
+                grant_access_to_object(request.user, mb.user, is_owner=True)
                 events.raiseEvent("CreateMailbox", request.user, mb)
                 messages.info(request, _("Mailbox created"),
                               fail_silently=True)
@@ -370,12 +371,13 @@ def delmailbox(request):
         if len(request.user.mailbox_set.all()) else None
 
     for mb in Mailbox.objects.filter(id__in=selection):
-        if not is_object_owner(request.user, mb.domain):
+        if not can_access_object(request.user, mb.domain):
             raise PermDeniedException(_("You don't have access to this domain"))
         if usermb and usermb == mb:
             raise AdminError(_("You can't delete your own mailbox"))
         events.raiseEvent("DeleteMailbox", mb)
-        unset_object_ownership(mb)
+        ungrant_access_to_object(mb)
+        ungrant_access_to_object(mb.user)
         mb.delete(keepdir=keepdir)
 
     msg = ungettext("Mailbox deleted", "Mailboxes deleted", len(selection))
@@ -384,7 +386,7 @@ def delmailbox(request):
 
 @login_required
 @permission_required("admin.view_aliases")
-@check_domain_ownership
+@check_domain_access
 def mbaliases(request):
     if request.GET.has_key("domid"):
         aliases = Alias.objects.filter(domain=request.GET["domid"])
@@ -438,7 +440,7 @@ def newmbalias(request, tplname="admin/mbaliasform.html"):
                  "formid" : "mbaliasform"}
     if request.method == "POST":
         def callback(user, mbalias):
-            set_object_ownership(user, mbalias)
+            grant_access_to_object(user, mbalias, is_owner=True)
             events.raiseEvent("MailboxAliasCreated", user, mbalias)
 
         form = AliasForm(request.user, request.POST)
@@ -480,7 +482,7 @@ def delmbalias(request):
         if not is_object_owner(request.user, mbalias.domain):
             raise PermDeniedException(_("You do not have access to this domain"))
         events.raiseEvent("MailboxAliasDeleted", mbalias)
-        unset_object_ownership(mbalias)
+        ungrant_access_to_object(mbalias)
         mbalias.delete()
 
     msg = ungettext("Alias deleted", "Aliases deleted", len(selection))
@@ -541,7 +543,7 @@ def create_domain_admin(request, tplname="admin/create_domain_admin.html"):
         form = UserWithPasswordForm(request.POST)
         if form.is_valid():
             user = form.save(group="DomainAdmins")
-            set_object_ownership(request.user, user)
+            grant_access_to_object(request.user, user, is_owner=True)
             events.raiseEvent("DomainAdminCreated", user)
             messages.info(request, _("Domain admin created"), fail_silently=True)
             return ajax_response(request, url=reverse(admin.views.permissions))
@@ -588,7 +590,11 @@ def domain_admin_promotion(request):
             u = User.objects.get(username=form.cleaned_data["name"])
             u.groups.add(Group.objects.get(name="DomainAdmins"))
             u.save()
-            set_object_ownership(request.user, u)
+            if not can_access_object(request.user, u):
+                # The only case where we need to grant access to the
+                # object is when ``u`` has been create by a super
+                # admin
+                grant_access_to_object(request.user, u, is_owner=True)
             events.raiseEvent("DomainAdminCreated", u)
             messages.info(request, _("Domain admin added"), fail_silently=True)
             return ajax_response(request, url=reverse(admin.views.permissions))
@@ -599,7 +605,38 @@ def domain_admin_promotion(request):
 
 @login_required
 @permission_required("auth.view_permissions")
-@check_domain_ownership
+@transaction.commit_on_success
+def assign_domains_to_admin(request, da_id, tplname="admin/adminform.html"):
+    da = User.objects.get(pk=da_id)
+    ctx = dict(title=_("Assign domains to %s" % da.username),
+               action=reverse(assign_domains_to_admin, args=[da_id]),
+               formid="assignform",
+               submit_label=_("Assign"))
+    if request.method == "POST":
+        form = AssignDomainsForm(request.user, da, request.POST)
+        if form.is_valid():
+            current_domains = get_user_domains(da)
+            for domain in form.cleaned_data["domains"]:
+                if not domain in current_domains:
+                    grant_access_to_object(da, domain)
+                else:
+                    current_domains.remove(domain)
+            for domain in current_domains:
+                ungrant_access_to_object(domain, da)
+            msg = ungettext("Domain assigned", "Domains assigned", 
+                            len(form.cleaned_data["domains"]))
+            messages.info(request, msg)
+            return ajax_response(request, url=reverse(admin.views.permissions))
+        ctx.update(form=form)
+        return ajax_response(request, status="ko", template=tplname, **ctx)
+
+    form = AssignDomainsForm(request.user, da)
+    ctx.update(form=form)
+    return _render(request, tplname, ctx)
+
+@login_required
+@permission_required("auth.view_permissions")
+@check_domain_access
 def search_account(request):
     search = request.POST.get("search", None)
     if search is None:

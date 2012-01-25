@@ -18,14 +18,15 @@ try:
 except ImportError:
     ldap_available = False
 
-class ObjectOwner(models.Model):
+class ObjectAccess(models.Model):
     user = models.ForeignKey(User)
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
+    is_owner = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = (("content_type", "object_id"),)
+        unique_together = (("user", "content_type", "object_id"),)
 
 class ObjectDates(models.Model):
     """Dates recording for admin objects
@@ -80,7 +81,7 @@ class Domain(DatesAware):
     quota = models.IntegerField(help_text=ugettext_noop("Default quota in MB applied to mailboxes"))
     enabled = models.BooleanField(ugettext_noop('enabled'),
                                   help_text=ugettext_noop("Check to activate this domain"))
-    owners = generic.GenericRelation(ObjectOwner)
+    owners = generic.GenericRelation(ObjectAccess)
 
     class Meta:
         permissions = (

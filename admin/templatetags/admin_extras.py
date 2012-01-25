@@ -209,6 +209,12 @@ def domain_admin_actions(user, daid):
          "title" : _("Edit domain admin"),
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:350,y:320}}"},
+        {"name" : "assigndomains",
+         "url" : reverse(admin.views.assign_domains_to_admin, args=[daid]),
+         "img" : static_url("pics/domains.png"),
+         "title" : _("Assign domain(s) to this administrator"),
+         "class" : "boxed",
+         "rel" : "{handler:'iframe',size:{x:350,y:320}}"},
         ]
     actions += events.raiseQueryEvent("DomainAdminActions", User.objects.get(pk=daid))
     return render_actions(actions)

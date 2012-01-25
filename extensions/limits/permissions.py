@@ -3,8 +3,8 @@
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.contrib.auth.models import User
 from modoboa.admin.permissions import Permissions
-from modoboa.admin.lib import set_object_ownership
-from modoboa.admin.models import ObjectOwner
+from modoboa.admin.lib import grant_access_to_object
+from modoboa.admin.models import ObjectAccess
 from modoboa.lib import events
 from modoboa.lib.webutils import _render, _render_to_string
 from tables import *
@@ -24,7 +24,7 @@ class ResellersPerms(Permissions):
         error = None
         if form.is_valid():
             r = form.save(group="Resellers")
-            set_object_ownership(request.user, r)
+            grant_access_to_object(request.user, r, True)
             return True, None
         content = self._render_form(request, form, True)
         return False, dict(status="ko", content=content)

@@ -149,7 +149,7 @@ class DomainAdminsTable(tables.Table):
     date_joined = tables.Column("date_joined", label=ugettext_noop("Defined"))
     enabled = tables.Column("is_active", label=gender("Enabled", "m"), width="10%")
     actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),
-                                  width="50px", align="center", 
+                                  width="70px", align="center", 
                                   defvalue=domain_admin_actions)
 
     cols_order = ["selection", "username", "first_name", 

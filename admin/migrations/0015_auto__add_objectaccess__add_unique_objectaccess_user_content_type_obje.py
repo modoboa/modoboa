@@ -8,20 +8,27 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'ObjectOwner'
-        db.create_table('admin_objectowner', (
+        # Adding model 'ObjectAccess'
+        db.create_table('admin_objectaccess', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
             ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('is_owner', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
-        db.send_create_signal('admin', ['ObjectOwner'])
+        db.send_create_signal('admin', ['ObjectAccess'])
+
+        # Adding unique constraint on 'ObjectAccess', fields ['user', 'content_type', 'object_id']
+        db.create_unique('admin_objectaccess', ['user_id', 'content_type_id', 'object_id'])
 
 
     def backwards(self, orm):
         
-        # Deleting model 'ObjectOwner'
-        db.delete_table('admin_objectowner')
+        # Removing unique constraint on 'ObjectAccess', fields ['user', 'content_type', 'object_id']
+        db.delete_unique('admin_objectaccess', ['user_id', 'content_type_id', 'object_id'])
+
+        # Deleting model 'ObjectAccess'
+        db.delete_table('admin_objectaccess')
 
 
     models = {
@@ -71,18 +78,19 @@ class Migration(SchemaMigration):
             'uid': ('django.db.models.fields.IntegerField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
+        'admin.objectaccess': {
+            'Meta': {'unique_together': "(('user', 'content_type', 'object_id'),)", 'object_name': 'ObjectAccess'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_owner': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
         'admin.objectdates': {
             'Meta': {'object_name': 'ObjectDates'},
             'creation': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_modification': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
-        },
-        'admin.objectowner': {
-            'Meta': {'object_name': 'ObjectOwner'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
