@@ -6,7 +6,7 @@
   <tr>
     <th>{% trans "Attachments" %}</th>
     <td>
-      {% url extensions.webmail.views.getattachment folder mail_id as test %}
+      {% url modoboa.extensions.webmail.views.getattachment folder mail_id as test %}
       {% for key, fname in attachments.items %}
       <a href="{{ test }}?fname={{ fname }}&partnumber={{ key }}">{{ fname }}</a>
       {% endfor %}

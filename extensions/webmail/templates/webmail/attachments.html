@@ -22,7 +22,7 @@ function upload_cb(fname, tmpname) {
     var ndiv = new Element("div");
     var delbtn = new Element("a")
         .set("name", "delattachment")
-        .set("href", "{% url extensions.webmail.views.delattachment %}?name=" + tmpname)
+        .set("href", "{% url modoboa.extensions.webmail.views.delattachment %}?name=" + tmpname)
         .set("html", "<img src='{{MEDIA_URL}}pics/remove.png' />")
         .inject(ndiv);
     var label = new Element("label").set("html", fname).inject(ndiv);
@@ -87,7 +87,7 @@ window.addEvent("domready", function() {
 <div id="error" class="error">{{ error }}</div>
 <form enctype="multipart/form-data" method="post" name="uploadfile" id="uploadfile"
       target="upload_target"
-      action="{% url extensions.webmail.views.attachments %}">
+      action="{% url modoboa.extensions.webmail.views.attachments %}">
   {% include "common/genericform.html" %}
   <div class="row">
     <input type="submit" id="submit" name="submit" value="{% trans 'Attach' %}" />
@@ -101,7 +101,7 @@ window.addEvent("domready", function() {
 <div id="attachment_list">
 {% for att in attachments %}
 <div>
-  <a href="{% url extensions.webmail.views.delattachment %}?name={{ att.tmpname }}"
+  <a href="{% url modoboa.extensions.webmail.views.delattachment %}?name={{ att.tmpname }}"
      name="delattachment">
     <img src="{{ MEDIA_URL }}pics/remove.png" />
   </a>

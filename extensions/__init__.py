@@ -1,14 +1,20 @@
-# -*- coding: utf-8 -*-
-import os
+# coding: utf-8
+import os, sys
 import re
 from django.conf import settings
+from django.conf.urls.defaults import include
 
 def isinstalled(ext):
     return "modoboa.extensions.%s" % ext in settings.INSTALLED_APPS
 
+def get_ext_module(extname):
+    modname = "modoboa.extensions.%s" % extname
+    if not sys.modules.has_key(modname):
+        __import__(modname)
+    return sys.modules[modname]
+
 def get_extension_infos(name):
-    ext = __import__(name, globals(), locals(), ["main"])
-    return ext.main.infos()
+    return get_ext_module(name).infos()
 
 def loadextensions(prefix):
     # To avoid a circular import...
@@ -21,17 +27,17 @@ def loadextensions(prefix):
 	    continue
 	if not isinstalled(f):
 	    continue
-        module = __import__(f, globals(), locals(), ['main'])
         try:
             ext = Extension.objects.get(name=f)
             if ext.enabled:
                 ext.load()
         except Extension.DoesNotExist:
             pass
-   	u = module.main.urls(prefix)
-        if u == ():
-            continue
-        result += [u] 
+        module = get_ext_module(f)
+        baseurl = module.baseurl if hasattr(module, "baseurl") \
+            else f
+        result += [(r'%s%s/' % (prefix, baseurl),
+                    include("modoboa.extensions.%s.urls" % f))]
     return result
 
 def list_extensions():
@@ -43,14 +49,14 @@ def list_extensions():
         if not isinstalled(d):
             continue
         isvalid = True
-        for f in ['urls.py', 'main.py', '__init__.py', 'views.py']:
+        for f in ['urls.py', '__init__.py', 'views.py']:
             if not os.path.exists("%s/%s/%s" % (basedir, d, f)):
                 isvalid = False
                 break
         if isvalid:
-            module = __import__(d, globals(), locals(), ['main'])
+            module = __import__(d, globals(), locals())
             try:
-                infos = module.main.infos()
+                infos = module.infos()
                 infos["id"] = d
                 if os.path.isdir("%s/%s/templates" % (basedir, d)):
                     infos["templates"] = True
@@ -59,13 +65,4 @@ def list_extensions():
                 result += [infos]
             except AttributeError:
                 pass
-    return result
-
-def loadmenus():
-    result = []
-    for name, mod in extensions.iteritems():
-        u = mod.main.urls()
-        if u == ():
-            continue
-        result += (u,)
     return result

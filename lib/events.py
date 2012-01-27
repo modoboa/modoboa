@@ -69,9 +69,10 @@ def register(event, callback):
     if not event in events:
         return 0
     if not event in callbacks.keys():
-        callbacks[event] = []
-    if not callback in callbacks[event]:
-        callbacks[event].append(callback)
+        callbacks[event] = {}
+    fullname = "%s.%s" % (callback.__module__, callback.__name__)
+    if not callbacks[event].has_key(fullname):
+        callbacks[event][fullname] = callback
     return 1
 
 class observe(object):
@@ -127,9 +128,10 @@ def unregister(event, callback):
         return False
     if not callbacks.has_key(event):
         return False
+    fullname = "%s.%s" % (callback.__module__, callback.__name__)
     try:
-        callbacks[event].remove(callback)
-    except ValueError:
+        del callbacks[event][fullname]
+    except KeyError:
         pass
 
 def raiseEvent(event, *args):
@@ -142,7 +144,7 @@ def raiseEvent(event, *args):
     """
     if not event in events or not event in callbacks.keys():
         return 0
-    for callback in callbacks[event]:
+    for name, callback in callbacks[event].iteritems():
         callback(*args)
     return 1
 
@@ -157,6 +159,6 @@ def raiseQueryEvent(event, *args):
     result = []
     if not event in events or not event in callbacks.keys():
         return result
-    for callback in callbacks[event]:
+    for name, callback in callbacks[event].iteritems():
         result += callback(*args)
     return result

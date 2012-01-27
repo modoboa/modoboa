@@ -29,7 +29,7 @@ window.addEvent("domready", function() {
 {% block content %}
 <div class="title"><h1>{% trans "Auto-reply message" %}</h1></div>
 
-<form action="{% url extensions.postfix_autoreply.views.autoreply %}" 
+<form action="{% url modoboa.extensions.postfix_autoreply.views.autoreply %}" 
       method="POST" id="armform" name="armform" class="simple">
   {% include "common/genericform.html" %}
   <div class="spacer"></div>

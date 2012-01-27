@@ -3,7 +3,7 @@
   <h1>{% trans "Actions" %}</h1>
   {% fset_menu "raw" name %}
 </div>
-<form action="{% url extensions.sievefilters.views.savefs name %}" 
+<form action="{% url modoboa.extensions.sievefilters.views.savefs name %}" 
       method="POST" id="feditor" name="feditor">
   <textarea id="scriptcontent" name="scriptcontent">{{ scriptcontent }}</textarea>
 </form>

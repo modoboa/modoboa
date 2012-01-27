@@ -20,8 +20,8 @@ function wm_updatelisting(resp) {
 
     var fdbuttons = $$("img[class*=footer]");
     var fdmenu = new FdMenu({
-      modify_url: "{% url extensions.webmail.views.editfolder %}",
-      delete_url: "{% url extensions.webmail.views.delfolder %}"
+      modify_url: "{% url modoboa.extensions.webmail.views.editfolder %}",
+      delete_url: "{% url modoboa.extensions.webmail.views.delfolder %}"
     });
 
     fdbuttons.addEvents({
@@ -154,7 +154,7 @@ function wm_updatelisting(resp) {
         emails_table._selectedRows.each(function(item, index) {
 	    msgset.include(item.get("id"));
 	});
-        {% url extensions.webmail.views.move as moveurl %}
+        {% url modoboa.extensions.webmail.views.move as moveurl %}
         simple_request("{{ moveurl }}", {msgset : msgset.join(), to : dest});
     };
 

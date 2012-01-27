@@ -23,7 +23,7 @@
     new Element('input', {
       'type' : 'hidden', 'name' : "action", style: "display:none", 'value' : name
     }).inject($("listingform"), "top");
-    {% url extensions.amavis_quarantine.views.process as actionurl %}
+    {% url modoboa.extensions.amavis_quarantine.views.process as actionurl %}
     $("listingform").set("action", "{{ actionurl }}");
     $("listingform").set("send", {
       onSuccess : function(res) {

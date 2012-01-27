@@ -3,7 +3,7 @@
   <div id="compose-container">
     <div id="mailheader">
       {% include "common/genericform.html" %}
-      <div id="attachments" name="{% url extensions.webmail.views.attachments %}">
+      <div id="attachments" name="{% url modoboa.extensions.webmail.views.attachments %}">
         <div>
           <img src="{{ MEDIA_URL }}pics/attachment.png" />
           {% trans "Attachments" %}

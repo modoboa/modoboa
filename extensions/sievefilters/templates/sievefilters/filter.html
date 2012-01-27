@@ -32,7 +32,7 @@ function initform() {
   });
   da = new DynamicAction(alist, {
     templates: action_templates,
-    ufolders_url: "{% url extensions.sievefilters.views.get_user_folders %}"
+    ufolders_url: "{% url modoboa.extensions.sievefilters.views.get_user_folders %}"
   });
         
   clist.addEvent("change", dc.onTargetChange.bind(dc));
@@ -43,13 +43,13 @@ function initform() {
 
 $(document).addEvent("domready", function() {
   new Request.JSON({
-    url: "{% url extensions.sievefilters.views.get_templates 'condition' %}",
+    url: "{% url modoboa.extensions.sievefilters.views.get_templates 'condition' %}",
     onSuccess: function(response) {
       cond_templates = response;
     }
   }).get();
   new Request.JSON({
-    url: "{% url extensions.sievefilters.views.get_templates 'action' %}",
+    url: "{% url modoboa.extensions.sievefilters.views.get_templates 'action' %}",
     onSuccess: function(response) {
       action_templates = response;
       initform();

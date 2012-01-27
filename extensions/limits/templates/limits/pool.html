@@ -11,7 +11,7 @@ window.addEvent("domready", function() {
 {% block content %}
 <div class="title"><h1>{% trans "Limits pool for" %} {{ reseller.username }}</h1></div>
 <div class="error">{% if error %}{{ error }}{% endif %}</div>
-<form action="{% url extensions.limits.views.edit_limits_pool reseller.id %}" 
+<form action="{% url modoboa.extensions.limits.views.edit_limits_pool reseller.id %}" 
       method="POST" id="limits_pool_form" name="limits_pool_form">
   {% include "common/genericform.html" %}
   <div class="spacer"></div>

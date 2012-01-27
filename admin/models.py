@@ -10,8 +10,9 @@ from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
+from modoboa.extensions import get_ext_module
 from exceptions import *
-import os
+import os, sys
 import pwd
 import re
 import crypt, hashlib, string, base64
@@ -653,22 +654,19 @@ class Extension(models.Model):
         help_text=ugettext_noop("Check to enable this extension")
         )
 
-    def __getmodule(self):
-        extname = "modoboa.extensions.%s" % self.name
-        return __import__(extname, globals(), locals(), ['main'])
-
     def init(self):
-        module = self.__getmodule()
-        if hasattr(module.main, "init"):
-            module.main.init()
+        module = get_ext_module(self.name)
+        if hasattr(module, "init"):
+            module.init()
 
     def load(self):
-        module = self.__getmodule()
-        if hasattr(module.main, "load"):
-            module.main.load()
+        module = get_ext_module(self.name)
+        if hasattr(module, "load"):
+            module.load()
 
     def unload(self):
-        self.__getmodule().main.destroy()
+        module = get_ext_module(self.name)
+        module.destroy()
 
     def on(self):
         self.load()
