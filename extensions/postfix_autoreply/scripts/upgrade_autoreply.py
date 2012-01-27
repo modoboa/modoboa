@@ -13,7 +13,7 @@ if __name__ == "__main__":
     import modoboa.extensions.postfix_autoreply.main as par
     from modoboa.extensions.postfix_autoreply.models import Transport, Alias
         
-    par.init()
+    par.load()
     doms = Domain.objects.all()
     for dom in doms:
         try:

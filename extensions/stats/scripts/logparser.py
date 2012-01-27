@@ -259,7 +259,7 @@ class LogParser(object):
 if __name__ == "__main__":
     from modoboa.extensions.stats import main
 
-    main.init()
+    main.load()
 
     log_file = parameters.get_admin("LOGFILE", app="stats")
     rrd_rootdir = parameters.get_admin("RRD_ROOTDIR", app="stats")

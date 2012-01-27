@@ -1,35 +1,26 @@
 # encoding: utf-8
 import datetime
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
+from modoboa.lib.models import Parameter
 
-class Migration(SchemaMigration):
+class Migration(DataMigration):
 
     def forwards(self, orm):
-        
-        # Adding model 'ObjectAccess'
-        db.create_table('admin_objectaccess', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('is_owner', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal('admin', ['ObjectAccess'])
-
-        # Adding unique constraint on 'ObjectAccess', fields ['user', 'content_type', 'object_id']
-        db.create_unique('admin_objectaccess', ['user_id', 'content_type_id', 'object_id'])
-
+        "Write your forwards methods here."
+        try:
+            s = Parameter.objects.get(name='PASSWORD_SCHEME').value
+        except Parameter.DoesNotExist:
+            s = "crypt"
+            
+        for mb in orm.Mailbox.objects.all():
+            mb.user.password = '{%s}%s' % (s.upper(), mb.password)
+            mb.user.save()
 
     def backwards(self, orm):
-        
-        # Removing unique constraint on 'ObjectAccess', fields ['user', 'content_type', 'object_id']
-        db.delete_unique('admin_objectaccess', ['user_id', 'content_type_id', 'object_id'])
-
-        # Deleting model 'ObjectAccess'
-        db.delete_table('admin_objectaccess')
-
+        "Write your backwards methods here."
+        raise RuntimeError("Cannot reverse this migration.")
 
     models = {
         'admin.alias': {
@@ -76,14 +67,6 @@ class Migration(SchemaMigration):
             'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        },
-        'admin.objectaccess': {
-            'Meta': {'unique_together': "(('user', 'content_type', 'object_id'),)", 'object_name': 'ObjectAccess'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_owner': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'admin.objectdates': {

@@ -68,7 +68,7 @@ class MailboxesTable(tables.Table):
     idkey = "id"
 
     address = tables.Column("address", label=ugettext_noop("Address"))
-    name = tables.Column("name", label=ugettext_noop("Name"))
+    name = tables.Column("user", label=ugettext_noop("Name"))
     creation = tables.Column("creation", label=ugettext_noop("Created"), 
                              width="160px")
     modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
@@ -94,6 +94,9 @@ class MailboxesTable(tables.Table):
 
     def parse_enabled(self, value):
         return _("yes") if value else _("no")
+
+    def parse_name(self, user):
+        return "%s %s" % (user.first_name, user.last_name)
 
 class MbaliasesTable(tables.Table):
     tableid = "objects_table"

@@ -54,7 +54,6 @@ def get_resellers_table(request):
 
 @events.observe("PermsGetClass")
 def get_perms_class(role):
-    print role
     if role != "resellers":
         return []
     return [ResellersPerms]

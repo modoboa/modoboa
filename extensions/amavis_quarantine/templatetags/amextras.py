@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from modoboa.lib.webutils import static_url
 from modoboa.extensions import amavis_quarantine
-from modoboa.admin.lib import is_domain_admin
 
 register = template.Library()
 
@@ -90,7 +89,7 @@ def quar_menu(selection, user):
 
     menu = render_to_string('common/menu.html', 
                             {"selection" : selection, "entries" : entries})
-    if user.is_superuser or is_domain_admin(user):
+    if not user.belongs_to_group('SimpleUsers'):
         extraopts = [{"name" : "to", "label" : _("To")}]
     else:
         extraopts = []

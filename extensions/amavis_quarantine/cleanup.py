@@ -20,7 +20,7 @@ if __name__ == "__main__":
         l.setLevel(logging.DEBUG)
         l.addHandler(logging.StreamHandler())
 
-    main.init()
+    main.load()
 
     max_messages_age = int(parameters.get_admin("MAX_MESSAGES_AGE",
                                                 app="amavis_quarantine"))

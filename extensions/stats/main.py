@@ -21,8 +21,7 @@ def infos():
         "url" : "stats"
         }
 
-def init():
-    events.register("AdminMenuDisplay", menu)
+def load():
     parameters.register_admin("LOGFILE", type="string", 
                               deflt="/var/log/mail.log",
                               help=_("Path to log file used to collect statistics"))
@@ -40,6 +39,7 @@ def urls(prefix):
     return (r'^%sstats/' % prefix, 
             include('modoboa.extensions.stats.urls'))
 
+@events.observe("AdminMenuDisplay")
 def menu(target, user):
     if target == "admin_menu_box":
         return [

@@ -2,10 +2,11 @@
 
 import datetime
 from django.utils.translation import ugettext as _, ugettext_noop
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from modoboa.lib.webutils import _render, getctx, _render_to_string
 from modoboa.lib import events
 from forms import *
+from models import User
 from tables import SuperAdminsTable, DomainAdminsTable
 from lib import grant_access_to_object, ungrant_access_to_object
 
@@ -50,6 +51,7 @@ class SuperAdminsPerms(Permissions):
             user = User.objects.get(pk=request.POST["user"])
             user.is_superuser = True
             user.date_joined = datetime.datetime.now()
+            events.raiseEvent("SuperAdminPromotion", user)
             user.groups.clear()
             user.save()
             return True, None
@@ -61,7 +63,6 @@ class SuperAdminsPerms(Permissions):
         for s in selection:
             user = User.objects.get(pk=int(s))
             if user.username == "admin":
-                #messages.error(request, _("admin is intouchable!!"), fail_silently=True)
                 continue
             user.is_superuser = False
             user.save()
@@ -89,22 +90,6 @@ class DomainAdminsPerms(Permissions):
     def get_add_form(self, request):
         form = DomainAdminForm()
         return self._render_form(request, form)
-    
-    def add(self, request):
-        form = DomainAdminForm(request.POST)
-        if request.POST.get("user", "") != "":
-            mboxid = request.POST['user']
-            mb = Mailbox.objects.get(pk=mboxid)
-            form.fields["user"].choices = [(mboxid, mb),]
-        if form.is_valid():
-            mb.user.is_superuser = False
-            mb.user.date_joined = datetime.datetime.now()
-            mb.user.groups.add(Group.objects.get(name="DomainAdmins"))
-            mb.user.save()
-            #set_object_ownership(mb.user, mb.domain)
-            return True, None
-        content = self._render_form(request, form, True)
-        return False, getctx("ko", content=content)
 
     def delete(self, selection):
         dagrp = Group.objects.get(name="DomainAdmins")
@@ -121,11 +106,8 @@ class DomainAdminsPerms(Permissions):
                 u.groups.add(sugrp)
 
     def get(self, request):
-        #domadmins = Mailbox.objects.filter(user__groups__name="DomainAdmins")
         domainadmins = User.objects.filter(groups__name="DomainAdmins")
-        # domadmins_list = []
-        # for admin in domadmins:
-        #     domadmins_list += [admin.tohash()]
+        domainadmins = filter(lambda da: request.user.is_owner(da), domainadmins)
         return DomainAdminsTable(request, domainadmins).render()
 
 def get_perms_class(user, role):

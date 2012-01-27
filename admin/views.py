@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.db.models import Q
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.db import transaction, IntegrityError, transaction
 
@@ -17,7 +17,6 @@ from modoboa.admin.permissions import *
 from modoboa.admin.tables import *
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import *
-from modoboa.auth.lib import crypt_password
 from modoboa.lib.webutils \
     import _render, ajax_response, ajax_simple_response, getctx
 from modoboa.lib.emailutils import split_mailbox
@@ -32,7 +31,7 @@ def domains(request):
 
         return HttpResponseRedirect(reverse(userprefs.views.preferences))
     
-    domains = get_user_domains_qs(request.user)
+    domains = request.user.get_domains()
     for dom in domains:
         dom.mbalias_counter = len(Alias.objects.filter(domain=dom.id))
     deloptions = {"keepdir" : _("Do not delete domain directory")}
@@ -93,7 +92,7 @@ def newdomain(request, tplname="admin/adminform.html"):
 @permission_required("admin.change_domain")
 def editdomain(request, dom_id, tplname="admin/adminform.html"):
     domain = Domain.objects.get(pk=dom_id)
-    if not is_object_owner(request.user, domain):
+    if not request.user.is_owner(domain):
         raise PermDeniedException(_("You can't edit this domain"))
 
     commonctx = {"title" : _("Domain editing"),
@@ -121,7 +120,7 @@ def deldomain(request):
         mb = None
 
     for dom in Domain.objects.filter(id__in=selection):
-        if not is_object_owner(request.user, dom):
+        if not request.user.is_owner(dom):
             raise PermDeniedException(_("You can't delete this domain"))
         if mb and mb.domain == dom:
             raise AdminError(_("You can't delete your own domain"))
@@ -143,7 +142,7 @@ def domaliases(request):
         domaliases = DomainAlias.objects.filter(target=request.GET["domid"])
     else:
         domain = None
-        domaliases = get_user_domaliases(request.user)
+        domaliases = request.user.get_domaliases()
     return render_listing(request, "domaliases",
                                title=_("Domain aliases"),
                                rel="310 190",
@@ -190,7 +189,7 @@ def newdomalias(request, tplname="admin/adminform.html"):
 @permission_required("admin.change_domainalias")
 def editdomalias(request, alias_id, tplname="admin/adminform.html"):
     domalias = DomainAlias.objects.get(pk=alias_id)
-    if not is_object_owner(request.user, domalias.target):
+    if not request.user.is_owner(domalias.target):
         raise PermDeniedException(_("You do not have access to this domain"))
 
     commonctx = {"title" : _("Domain alias editing"),
@@ -227,7 +226,7 @@ def deldomalias(request):
     selection = request.GET["selection"].split(",")
     for daid in selection:
         domalias = DomainAlias.objects.get(pk=daid)
-        if not is_object_owner(request.user, domalias.target):
+        if not request.user.is_owner(domalias.target):
             raise PermDeniedException(_("You don't have acces to this domain"))
         events.raiseEvent("DomainAliasDeleted", domalias)
         ungrant_access_to_object(domalias)
@@ -246,27 +245,13 @@ def mailboxes(request):
         mboxes = Mailbox.objects.filter(domain=domain.id)
         title += " (%s)" % domain.name
     else:
-        mboxes = get_user_mailboxes(request.user)
+        mboxes = request.user.get_mailboxes()
         domain = None
     deloptions = {"keepdir" : _("Do not delete mailbox directory")}
     return render_listing(request, "mailboxes",
                           title=title,
                           rel="310 320",
                           objects=mboxes, domain=domain, deloptions=deloptions)
-
-@login_required
-@good_domain
-@permission_required("admin.view_mailboxes")
-def mailboxes_raw(request, dom_id=None):
-    target = request.GET.has_key("target") and request.GET["target"] or "permissions"
-    if target == "permissions":
-        mailboxes = Mailbox.objects.filter(domain=dom_id).exclude(user__id=request.user.id)
-    else:
-        mailboxes = Mailbox.objects.filter(domain=dom_id)
-    return _render(request, 'admin/mailboxes_raw.html', {
-            "mailboxes" : mailboxes,
-            "target" : target
-            })
 
 @login_required
 @permission_required("admin.view_mailboxes")
@@ -281,7 +266,7 @@ def mailboxes_search(request):
     if request.GET.has_key("domid"):
         query = Q(domain=request.GET["domid"]) & query
     elif not request.user.is_superuser:
-        query = Q(domain__in=get_user_domains(request.user)) & query
+        query = Q(domain__in=request.user.get_domains()) & query
     mboxes = Mailbox.objects.filter(query)
     result = map(lambda mb: mb.full_address, mboxes)
     return ajax_simple_response(result)
@@ -296,11 +281,11 @@ def newmailbox(request, tplname="admin/adminform.html"):
                  "action" : reverse(newmailbox),
                  "formid" : "mboxform"}
     if request.method == "POST":
-        form = MailboxForm(request.user, request.POST)
+        form = MailboxWithPasswordForm(request.user, request.POST)
         error = None
         if form.is_valid():
             if not request.user.is_superuser:
-                if not can_access_object(request.user, form.cleaned_data["domain"]):
+                if not request.user.can_access(form.cleaned_data["domain"]):
                     raise PermDeniedException(_("You do not have access to this domain"))
 
             try:
@@ -319,7 +304,7 @@ def newmailbox(request, tplname="admin/adminform.html"):
         commonctx["error"] = error
         return ajax_response(request, status="ko", template=tplname, **commonctx)
 
-    form = MailboxForm(request.user)
+    form = MailboxWithPasswordForm(request.user)
     commonctx["form"] = form
     return _render(request, tplname, commonctx)
 
@@ -327,7 +312,7 @@ def newmailbox(request, tplname="admin/adminform.html"):
 @permission_required("admin.change_mailbox")
 def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
     mb = Mailbox.objects.get(pk=mbox_id)
-    if not is_object_owner(request.user, mb.domain):
+    if not request.user.is_owner(mb.domain):
         raise PermDeniedException(_("You do not have access to this domain"))
 
     commonctx = {"title" : _("Mailbox editing"),
@@ -335,8 +320,13 @@ def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
                  "action" : reverse(editmailbox, args=[mbox_id]),
                  "formid" : "mboxform"}
     if request.method == "POST":
+        if request.POST.get("password1", "") != "" or \
+           request.POST.get("password2", "") != "":
+            formclass = MailboxWithPasswordForm
+        else:
+            formclass = MailboxForm
         oldmb = copy.deepcopy(mb)
-        form = MailboxForm(request.user, request.POST, instance=mb)
+        form = formclass(request.user, request.POST, instance=mb)
         error = None
         if form.is_valid():
             try:
@@ -356,7 +346,7 @@ def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
         commonctx["error"] = error
         return ajax_response(request, status="ko", template=tplname, **commonctx)
 
-    form = MailboxForm(request.user, instance=mb)
+    form = MailboxWithPasswordForm(request.user, instance=mb)
     commonctx["form"] = form
     return _render(request, tplname, commonctx)
 
@@ -371,7 +361,7 @@ def delmailbox(request):
         if len(request.user.mailbox_set.all()) else None
 
     for mb in Mailbox.objects.filter(id__in=selection):
-        if not can_access_object(request.user, mb.domain):
+        if not request.user.can_access(mb.domain):
             raise PermDeniedException(_("You don't have access to this domain"))
         if usermb and usermb == mb:
             raise AdminError(_("You can't delete your own mailbox"))
@@ -393,7 +383,7 @@ def mbaliases(request):
     elif request.GET.has_key("mbid"):
         aliases = Alias.objects.filter(mboxes__id=request.GET["mbid"]).distinct()
     else:
-        aliases = get_user_mbaliases(request.user)
+        aliases = request.user.get_mbaliases()
     
     return render_listing(request, "mbaliases",
                           title=_("Mailbox aliases"),
@@ -456,7 +446,7 @@ def newmbalias(request, tplname="admin/mbaliasform.html"):
 @permission_required("admin.change_alias")
 def editmbalias(request, alias_id, tplname="admin/mbaliasform.html"):
     alias = Alias.objects.get(pk=alias_id)
-    if not is_object_owner(request.user, alias.domain):
+    if not request.user.is_owner(alias.domain):
         raise PermDeniedException(_("You do not have access to this domain"))
     commonctx = {"title" : _("Mailbox alias editing"),
                  "submit_label" : _("Update"),
@@ -479,7 +469,7 @@ def delmbalias(request):
     selection = request.GET["selection"].split(",")
     for mbaid in selection:
         mbalias = Alias.objects.get(pk=mbaid)
-        if not is_object_owner(request.user, mbalias.domain):
+        if not request.user.is_owner(mbalias.domain):
             raise PermDeniedException(_("You do not have access to this domain"))
         events.raiseEvent("MailboxAliasDeleted", mbalias)
         ungrant_access_to_object(mbalias)
@@ -590,7 +580,7 @@ def domain_admin_promotion(request):
             u = User.objects.get(username=form.cleaned_data["name"])
             u.groups.add(Group.objects.get(name="DomainAdmins"))
             u.save()
-            if not can_access_object(request.user, u):
+            if not request.user.can_access(u):
                 # The only case where we need to grant access to the
                 # object is when ``u`` has been create by a super
                 # admin
@@ -615,7 +605,7 @@ def assign_domains_to_admin(request, da_id, tplname="admin/adminform.html"):
     if request.method == "POST":
         form = AssignDomainsForm(request.user, da, request.POST)
         if form.is_valid():
-            current_domains = get_user_domains(da)
+            current_domains = da.get_domains()
             for domain in form.cleaned_data["domains"]:
                 if not domain in current_domains:
                     grant_access_to_object(da, domain)
@@ -744,7 +734,8 @@ def saveextensions(request):
     return HttpResponseRedirect(reverse(admin.views.viewextensions))
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
+@permission_required("admin.add_mailbox")
+@transaction.commit_on_success
 def importdata(request, tplname="admin/import.html"):
     if request.method == "POST":
         error = None
@@ -753,19 +744,19 @@ def importdata(request, tplname="admin/import.html"):
             import csv
             reader = csv.reader(request.FILES['sourcefile'], 
                                 delimiter=form.cleaned_data['sepcar'])
-            cpt = 0
             try:
+                cpt = 0
                 for row in reader:
                     mb = Mailbox()
-                    mb.create_from_csv(row)
+                    mb.create_from_csv(request.user, row)
+                    events.raiseEvent("CreateMailbox", request.user, mb)
                     cpt += 1
-            except AdminError, e:
-                error = str(e)
-            else:
                 messages.info(request, _("%d mailboxes imported successfully" % cpt))
                 return _render(request, "admin/import_done.html", {
                         "status" : "ok", "msg" : ""
                         })
+            except ModoboaException, e:
+                error = str(e)
 
         return _render(request, "admin/import_done.html", {
                 "status" : "ko", "msg" : error

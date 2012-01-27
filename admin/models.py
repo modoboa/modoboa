@@ -2,15 +2,20 @@
 from django.db import models, IntegrityError
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User as DUser, UserManager, Group
 from django.utils.translation import ugettext as _, ugettext_noop
+from django.utils.crypto import constant_time_compare
 from django.conf import settings
 from modoboa.lib import parameters, events
+from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.auth.lib import crypt_password
+from exceptions import *
 import os
 import pwd
+import re
+import crypt, hashlib, string, base64
+from random import Random
 
 try:
     from modoboa.lib.ldaputils import *
@@ -18,6 +23,205 @@ try:
 except ImportError:
     ldap_available = False
 
+class User(DUser):
+    """Proxy for the ``User`` model.
+
+    It overloads the way passwords are stored into the database. The
+    main reason to change this mechanism is to ensure the
+    compatibility with the way Dovecot stores passwords.
+
+    It also adds new attributes and methods.
+    """
+    class Meta:
+        proxy = True
+
+    password_expr = re.compile(r'\{(\w+)\}(.+)')
+
+    def __unicode__(self):
+        return u"%s %s" % (self.first_name, self.last_name)
+
+    def _crypt_password(self, raw_value):
+        scheme = parameters.get_admin("PASSWORD_SCHEME")
+        if scheme == "crypt":
+            salt = ''.join(Random().sample(string.letters + string.digits, 2))
+            result = crypt.crypt(raw_value, salt)
+        elif scheme == "md5":
+            obj = hashlib.md5(raw_value)
+            result = obj.hexdigest()
+        elif scheme == "sha256":
+            obj = hashlib.sha256(raw_value)
+            result = base64.b64encode(obj.digest())
+        else:
+            scheme = "plain"
+            result = raw_value
+        return "{%s}%s" % (scheme.upper(), result)
+
+    def set_password(self, raw_value, curvalue=None):
+        """Password update
+
+        Update the current mailbox's password with the given clear
+        value. This value is encrypted according to the defined method
+        before it is saved.
+
+        :param raw_value: the new password's value
+        :param curvalue: the current password (for LDAP authentication)
+        """
+        if parameters.get_admin("AUTHENTICATION_TYPE") == "local":
+            self.password = self._crypt_password(raw_value)
+            return
+
+        if not ldap_available:
+            raise AdminError(_("Failed to update password: LDAP module not installed"))
+
+        ab = LDAPAuthBackend()
+        try:
+            ab.update_user_password(self.username, curvalue, raw_value)
+        except LDAPException, e:
+            raise AdminError(_("Failed to update password: %s" % str(e)))
+
+    def check_password(self, raw_value):
+        m = self.password_expr.match(self.password)
+        if m is None:
+            return False
+        scheme = m.group(1).lower()
+        val2 = m.group(2)
+        if scheme == "crypt":
+            val1 = crypt.crypt(raw_value, m.group(2))
+        elif scheme == "md5":
+            val1 = hashlib.md5(raw_value).hexdigest()
+        elif scheme == "sha256":
+            val1 = base64.b64encode(hashlib.sha256(raw_value).digest())
+        else:
+            val1 = raw_value
+        return constant_time_compare(val1, val2)
+
+    @property
+    def has_mailbox(self):
+        return len(self.mailbox_set.all()) != 0
+
+    def belongs_to_group(self, name):
+        """Simple shortcut to check if this user is a member of a
+        specific group.
+
+        :param name: the group's name
+        :return: a boolean
+        """
+        try:
+            self.groups.get(name=name)
+        except Group.DoesNotExist:
+            return False
+        return True
+
+    def get_domains(self):
+        """Return the domains belonging to this user
+        
+        The result is a ``QuerySet`` object, so this function can be used
+        to fill ``ModelChoiceField`` objects.
+        
+        :param user: a ``User`` object
+        """
+        if self.is_superuser:
+            return Domain.objects.all()
+        result = Domain.objects.filter(owners__user=self).distinct()
+
+        userct = ContentType.objects.get_for_model(User)
+        for entry in self.objectaccess_set.filter(content_type=userct):
+            if not entry.content_object.belongs_to_group('DomainAdmins'):
+                continue
+            result |= entry.content_object.get_domains().distinct()
+        return result
+
+    def get_domaliases(self):
+        """Return the domain aliases that belong to this user
+        
+        The result will contain the domain aliases defined for each domain
+        that user can see.
+        
+        :return: a list of ``DomainAlias`` objects
+        """
+        if self.is_superuser:
+            return DomainAlias.objects.all()
+        domains = self.get_domains()
+        domaliases = []
+        for dom in domains:
+            domaliases += dom.domainalias_set.all()
+        return domaliases
+
+    def get_mailboxes(self):
+        """Return the mailboxes that belong to this user
+        
+        The result will contain the mailboxes defined for each domain that
+        user can see.
+        
+        :return: a list of ``Mailbox`` objects
+        """
+        if self.is_superuser:
+            return Mailbox.objects.all()
+        mboxes = []
+        domains = self.get_domains()
+        for dom in domains:
+            mboxes += dom.mailbox_set.all()
+        return mboxes
+        
+    def get_mbaliases(self):
+        """Return the mailbox aliases that belong to this user
+        
+        The result will contain the mailbox aliases defined for each
+        domain that user can see.
+        
+        :return: a list of ``Alias`` objects
+        """
+        if self.is_superuser:
+            return Alias.objects.all()
+        domains = self.get_domains()
+        mbaliases = []
+        for dom in domains:
+            mbaliases += dom.alias_set.all()
+        return mbaliases
+
+    def is_owner(self, obj):
+        """Tell is the user is the unique owner of this object
+
+        :param obj: an object inheriting from ``models.Model``
+        :return: a boolean
+        """
+        ct = ContentType.objects.get_for_model(obj)
+        try:
+            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
+        except ObjectAccess.DoesNotExist:
+            return False
+        return ooentry.is_owner
+
+    def can_access(self, obj):
+        """Check if the user can access a specific object
+
+        This function is recursive : if the given user hasn't got direct
+        access to this object and if he has got access other ``User``
+        objects, we check if one of those users owns the object.
+        
+        :param obj: a admin object
+        :return: a boolean
+        """
+        if self.is_superuser:
+            return True
+
+        ct = ContentType.objects.get_for_model(obj)
+        try:
+            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
+        except ObjectAccess.DoesNotExist:
+            pass
+        else:
+            return True
+        if ct.model == "user":
+            return False
+
+        ct = ContentType.objects.get_for_model(User)
+        qs = self.objectaccess_set.filter(content_type=ct)
+        for ooentry in qs.all():
+            if ooentry.content_object.is_owner(obj):
+                return True
+        return False
+    
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User)
     content_type = models.ForeignKey(ContentType)
@@ -27,7 +231,7 @@ class ObjectAccess(models.Model):
 
     class Meta:
         unique_together = (("user", "content_type", "object_id"),)
-
+            
 class ObjectDates(models.Model):
     """Dates recording for admin objects
 
@@ -154,11 +358,10 @@ class DomainAlias(DatesAware):
             )
 
 class Mailbox(DatesAware):
-    name = models.CharField(ugettext_noop('name'), max_length=100, 
-                            help_text=ugettext_noop("First name and last name of mailbox owner"))
-    address = models.CharField(ugettext_noop('address'), max_length=100,
-                               help_text=ugettext_noop("Mailbox address (without the @domain.tld part)"))
-    password = models.CharField(ugettext_noop('password'), max_length=100)
+    address = models.CharField(
+        ugettext_noop('address'), max_length=100,
+        help_text=ugettext_noop("Mailbox address (without the @domain.tld part)")
+        )
     quota = models.IntegerField()
     uid = models.IntegerField()
     gid = models.IntegerField()
@@ -251,16 +454,17 @@ class Mailbox(DatesAware):
         except User.DoesNotExist:
             user = User()
         user.username = user.email = "%s@%s" % (self.address, self.domain.name)
-        user.set_unusable_password()
         if kwargs.has_key("enabled"):
             user.is_active = kwargs["enabled"]
         try:
-            fname, lname = self.name.split()
+            fname, lname = kwargs["name"].split()
         except ValueError:
-            fname = self.name
+            fname = kwargs["name"]
             lname = ""
         user.first_name = fname
         user.last_name = lname
+        if kwargs.has_key("password"):
+            user.set_password(kwargs["password"])
         try:
             user.save()
         except IntegrityError:
@@ -271,8 +475,6 @@ class Mailbox(DatesAware):
             user.groups.add(Group.objects.get(name="SimpleUsers"))
             user.save()
 
-        if kwargs.has_key("password") and kwargs["password"] != u"é":
-            self.password = crypt_password(kwargs["password"])
 	# If we ever had numerical uid, don't resolve it
 	v_uid = parameters.get_admin("VIRTUAL_UID");
 	if v_uid.isdigit():
@@ -291,34 +493,12 @@ class Mailbox(DatesAware):
             self.quota = kwargs["quota"]
         else:
             self.quota = self.domain.quota
-        for kw in ["enabled", "password", "quota"]:
+        for kw in ["name", "enabled", "password", "quota"]:
             try:
                 del kwargs[kw]
             except KeyError:
                 pass
         super(Mailbox, self).save(*args, **kwargs)
-
-    def set_password(self, curvalue, newvalue):
-        """Password update
-
-        Update the current mailbox's password with the given clear
-        value. This value is encrypted according to the defined method
-        before it is saved.
-
-        :param value: the new password's value
-        """
-        if parameters.get_admin("AUTHENTICATION_TYPE") == "local":
-            self.password = crypt_password(newvalue)
-            self.save()
-            return
-        if not ldap_available:
-            raise AdminError(_("Failed to update password: LDAP module not installed"))
-
-        ab = LDAPAuthBackend()
-        try:
-            ab.update_user_password(self.user.username, curvalue, newvalue)
-        except LDAPException, e:
-            raise AdminError(_("Failed to update password: %s" % str(e)))
 
     def save_from_user(self, localpart, domain, user):
         """Simple save method called for automatic creations
@@ -348,7 +528,7 @@ class Mailbox(DatesAware):
             self.quota = self.domain.quota
         super(Mailbox, self).save()
 
-    def create_from_csv(self, line):
+    def create_from_csv(self, user, line):
         """Create a new mailbox from a CSV file entry
 
         The expected order is the following::
@@ -365,8 +545,11 @@ class Mailbox(DatesAware):
             self.domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise AdminError(_("Cannot import this mailbox because the associated domain does not exist"))
-        self.name = "%s %s" % (line[2], line[3])
-        self.save(password=line[1], enabled=True)
+        if not user.is_owner(self.domain):
+            raise PermDeniedException(_("You don't have access to this domain"))
+
+        name = "%s %s" % (line[2], line[3])
+        self.save(name=name, password=line[1], enabled=True)
 
     def delete(self, *args, **kwargs):
         keepdir = False
@@ -382,14 +565,6 @@ class Mailbox(DatesAware):
         if not keepdir:
             self.delete_dir()
 
-    def tohash(self):
-        return {
-            "id" : self.id, 
-            "domain" : self.domain.name,
-            "full_name" : self.name,
-            "date_joined" : self.user.date_joined,
-            "enabled" : self.user.is_active
-            }
 
 class Alias(DatesAware):
     address = models.CharField(ugettext_noop('address'), max_length=254,
@@ -464,12 +639,10 @@ class Alias(DatesAware):
         return "<br/>".join(self.extmboxes.split(","))
 
     def ui_disabled(self, user):
-        from modoboa.admin.lib import is_object_owner
-
         if user.is_superuser:
             return False
         for mb in self.mboxes.all():
-            if not is_object_owner(user, mb.domain):
+            if not user.is_owner(mb.domain):
                 return True
         return False
 

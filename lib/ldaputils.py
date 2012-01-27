@@ -36,9 +36,9 @@ Extracted from `this blog
 import sys
 import ldap
 import re
-import base64
+import base64, hashlib, string, crypt
+from random import Random
 from django.conf import settings
-from modoboa.auth.lib import crypt_password
 from modoboa.lib import parameters
 
 class LDAPException(Exception): pass
@@ -81,7 +81,7 @@ class LDAPAuthBackend(object):
             return None
         return dn
 
-    def _crypt_password(self, clearpassword):
+    def _crypt_password(self, user, clearpassword):
         """Overidding of the crypt_password function (LDAP compliant)
 
         The crypted password in base64 encoded and we prepend the used
@@ -91,10 +91,18 @@ class LDAPAuthBackend(object):
         :return: the encrypted password
         """
         scheme = parameters.get_admin("PASSWORD_SCHEME", app="admin")
-        if scheme == "clear":
+        if scheme == "crypt":
+            salt = ''.join(Random().sample(string.letters + string.digits, 2))
+            result = crypt.crypt(clearpassword, salt)
+        elif scheme == "md5":
+            obj = hashlib.md5(clearpassword)
+            result = obj.digest()
+        elif scheme == "sha256":
+            obj = hashlib.sha256(clearpassword)
+            result = obj.digest()
+        else:
             return str(clearpassword)
-        crypted = crypt_password(clearpassword, False)
-        return str("{%s}%s" % (scheme.upper(), base64.encodestring(crypted)))
+        return str("{%s}%s" % (scheme.upper(), base64.b64encode(result)))
 
     def update_user_password(self, user, password, newpassword):
         try:
@@ -104,7 +112,7 @@ class LDAPAuthBackend(object):
                 newpassword = ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
             ldif = [(ldap.MOD_REPLACE,
                      self.pwd_attr, 
-                     self._crypt_password(newpassword))]
+                     self._crypt_password(user, newpassword))]
             conn.modify_s(dn, ldif)
         except ldap.LDAPError, e:
             raise LDAPException(str(e))

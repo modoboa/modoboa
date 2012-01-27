@@ -2,7 +2,6 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 from modoboa import admin
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url, render_actions
@@ -202,6 +201,8 @@ def mailbox_actions(user, mboxid):
 
 @register.simple_tag
 def domain_admin_actions(user, daid):
+    from modoboa.admin.models import User
+
     actions = [
         {"name" : "editdomainadmin",
          "url" : reverse(admin.views.edit_domain_admin, args=[daid]),

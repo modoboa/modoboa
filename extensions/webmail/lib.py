@@ -735,7 +735,6 @@ def send_mail(request, origmsg=None, posturl=None):
     from email.mime.multipart import MIMEMultipart
     from forms import ComposeMailForm
     from modoboa.lib.webutils import getctx, ajax_simple_response
-    from modoboa.admin.models import Mailbox
     from modoboa.auth.lib import get_password
 
     form = ComposeMailForm(request.POST)
@@ -772,11 +771,11 @@ def send_mail(request, origmsg=None, posturl=None):
             msg.attach(create_mail_attachment(attdef))
 
         msg["Subject"] = form.cleaned_data["subject"]
-        address, domain = split_mailbox(form.cleaned_data["from_"])
-        try:
-            mb = Mailbox.objects.get(address=address, domain__name=domain)
-            msg["From"] = "%s <%s>" % (mb.name, form.cleaned_data["from_"])
-        except Mailbox.DoesNotExist:
+        if request.user.first_name != "" or request.user.last_name != "":
+            msg["From"] = "%s %s <%s>" % (request.user.first_name,
+                                          request.user.last_name,
+                                          form.cleaned_data["from_"])
+        else:
             msg["From"] = form.cleaned_data["from_"]
         msg["To"] = form.cleaned_data["to"]
         msg["Message-ID"] = make_msgid()

@@ -16,3 +16,6 @@ class PermDeniedException(ModoboaException):
     def __str__(self):
         return _("Permission denied: %s" % self.msg)
 
+class NeedsMailboxException(ModoboaException):
+    pass
+                              

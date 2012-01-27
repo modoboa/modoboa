@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 """
 """
@@ -16,13 +16,16 @@ def infos():
         "url" : "quarantine"
         }
 
-def init():
-    events.register("UserMenuDisplay", menu)
-    parameters.register_admin("MAX_MESSAGES_AGE", type="int", 
-                              deflt=14,
-                              help=_("Quarantine messages maximum age (in days) before deletion"))
-    parameters.register_admin("RELEASED_MSGS_CLEANUP", type="list_yesno", deflt="no",
-                              help=_("Remove messages marked as released while cleaning up the database"))
+def load():
+    parameters.register_admin(
+        "MAX_MESSAGES_AGE", type="int", 
+        deflt=14,
+        help=_("Quarantine messages maximum age (in days) before deletion")
+        )
+    parameters.register_admin(
+        "RELEASED_MSGS_CLEANUP", type="list_yesno", deflt="no",
+        help=_("Remove messages marked as released while cleaning up the database")
+        )
     parameters.register_admin("AM_PDP_MODE", type="list", 
                               deflt="unix",
                               values=[("inet", "inet"), ("unix", "unix")],
@@ -37,9 +40,11 @@ def init():
                               deflt=_("/var/amavis/amavisd.sock"),
                               help=_("Path to the PDP server socket (if unix mode)"))
 
-    parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
-                             label="Number of displayed emails per page",
-                             help=_("Sets the maximum number of messages displayed in a page"))
+    parameters.register_user(
+        "MESSAGES_PER_PAGE", type="int", deflt=40,
+        label="Number of displayed emails per page",
+        help=_("Sets the maximum number of messages displayed in a page")
+        )
 
 def destroy():
     events.unregister("UserMenuDisplay", menu)
@@ -49,6 +54,7 @@ def urls(prefix):
     return (r'^%squarantine/' % prefix, 
             include('modoboa.extensions.amavis_quarantine.urls'))
 
+@events.observe("UserMenuDisplay")
 def menu(target, menu):
     import views
 

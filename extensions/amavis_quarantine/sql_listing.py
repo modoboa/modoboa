@@ -7,7 +7,6 @@ from modoboa.lib import tables
 from modoboa.lib.webutils import static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
-from modoboa.admin.lib import is_domain_admin
 from models import *
 
 class Qtable(tables.Table):
@@ -84,7 +83,7 @@ class SQLlisting(EmailListing):
     reset_wm_url = True
 
     def __init__(self, user, msgs, filter, **kwargs):
-        if not user.is_superuser and not is_domain_admin(user):
+        if user.belongs_to_group('SimpleUsers'):
             Qtable.cols_order = ['type', 'rstatus', 'from_', 'subject', 'time']
         else:
             Qtable.cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']

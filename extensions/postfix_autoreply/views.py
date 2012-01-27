@@ -8,12 +8,12 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib.webutils import _render, ajax_response
-from modoboa.admin.lib import is_not_localadmin
+from modoboa.lib.decorators import needs_mailbox
 from forms import *
 from models import *
 
 @login_required
-@is_not_localadmin('boxerror')
+@needs_mailbox()
 def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
     mb = Mailbox.objects.get(user=request.user.id)
     try:

@@ -155,7 +155,6 @@ def topredirection(request):
     """
     from modoboa.lib import parameters
     from modoboa.extensions import get_extension_infos
-    from modoboa.admin.lib import is_domain_admin
 
     topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="general")
     if not topredir in ["admin", "userprefs"]:
@@ -165,7 +164,7 @@ def topredirection(request):
         path = topredir
 
     if topredir in ["admin", "stats"] and \
-            (not request.user.is_superuser and not is_domain_admin(request.user)):
+            request.user.belongs_to_group('SimpleUsers'):
         path = "userprefs"
 
     return HttpResponseRedirect(path)

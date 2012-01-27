@@ -6,7 +6,7 @@
 """
 from modoboa.admin.models import Mailbox
 from modoboa.admin.lib import \
-    get_object_owner, grant_access_to_object, is_object_owner, \
+    get_object_owner, grant_access_to_object, \
     ungrant_access_to_object
 from modoboa.lib import events
 from lib import *
@@ -104,20 +104,20 @@ def create_pool(user):
     p.save()
     p.create_limits()
 
-@events.observe("DomainAdminDeleted")
-def move_pool_resource(domadmin):
-    owner = get_object_owner(domadmin)
+@events.observe("DomainAdminDeleted", "SuperAdminPromotion")
+def move_pool_resource(user):
+    owner = get_object_owner(user)
     if not owner.is_superuser:
-        for ooentry in domadmin.objectaccess_set.all():
+        for ooentry in user.objectaccess_set.all():
             if ooentry.is_owner:
                 grant_access_to_object(owner, ooentry.content_object, True)
             ooentry.delete()
 
         for lname in reseller_limits_tpl:
-            l = domadmin.limitspool.get_limit(lname)
+            l = user.limitspool.get_limit(lname)
             ol = owner.limitspool.get_limit(lname)
             ol.curvalue += l.curvalue
             ol.maxvalue += l.maxvalue
             ol.save()
 
-    domadmin.limitspool.delete()
+    user.limitspool.delete()

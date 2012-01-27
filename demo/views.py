@@ -2,12 +2,12 @@
 import os
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from modoboa.admin.lib import is_not_localadmin
 from modoboa.lib.webutils import ajax_response
 from modoboa.lib.emailutils import sendmail_simple, sendmail_fromfile
+from modoboa.lib.decorators import needs_mailbox
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def send_virus(request):
     status, error = sendmail_fromfile("virus@example.net", request.user.username,
                                       os.path.join(settings.MODOBOA_DIR,
@@ -17,7 +17,7 @@ def send_virus(request):
     return ajax_response(request, "ko", respmsg=error)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def send_spam(request):
     status, error = sendmail_simple("spam@example.net", request.user.username, """
 This is the GTUBE, the

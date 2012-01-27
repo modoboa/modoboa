@@ -25,8 +25,6 @@ urlpatterns = patterns(
     (r'^mbaliases/edit/(?P<alias_id>\d+)/$', 'editmbalias'),
     (r'^mbaliases/delete/$', 'delmbalias'),
     
-    (r'^domains/(?P<dom_id>\d+)/rawmboxes/$', 'mailboxes_raw'),
-    
     (r'^settings/$', 'viewparameters'),
     (r'^settings/parameters/$', 'viewparameters'),
     (r'^settings/parameters/save/$', 'saveparameters'),

@@ -9,13 +9,12 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from modoboa.admin.models import Mailbox
 from modoboa.lib import parameters
 from modoboa.lib.webutils import _render, _render_error, \
     getctx, _render_to_string, ajax_response
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.email_listing import parse_search_parameters, Paginator
-from modoboa.admin.lib import is_not_localadmin
+from modoboa.lib.decorators import needs_mailbox
 from modoboa.auth.lib import *
 from lib import *
 from forms import *
@@ -78,7 +77,7 @@ def __render_common_components(request, folder_name, lst=None, content=None, men
         
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def folder(request, name, updatenav=True):
     if not name:
         name = "INBOX"
@@ -112,7 +111,7 @@ def folder(request, name, updatenav=True):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def index(request):
     try:
         navp = request.session.has_key("navparams") \
@@ -134,7 +133,7 @@ def fetchmail(request, folder, mail_id, all=False):
     return None
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def viewmail(request, folder, mail_id=None):
     from templatetags.webextras import viewm_menu
 
@@ -155,7 +154,7 @@ def viewmail(request, folder, mail_id=None):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def getmailcontent(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if "class" in msg.keys() and msg["class"] == "unseen":
@@ -172,7 +171,7 @@ def getmailcontent(request, folder, mail_id):
             })
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def getattachment(request, folder, mail_id):
     if request.GET.has_key("partnumber"):
         headers = {"Content-Type" : "text/plain",
@@ -207,7 +206,7 @@ def getattachment(request, folder, mail_id):
     raise Http404
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def move(request):
     for arg in ["msgset", "to"]:
         if not request.GET.has_key(arg):
@@ -218,7 +217,7 @@ def move(request):
     return folder(request, request.session["folder"], False)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def delete(request, fdname, mail_id):
     mbc = IMAPconnector(user=request.user.username,
                         password=request.session["password"])
@@ -227,7 +226,7 @@ def delete(request, fdname, mail_id):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def mark(request, name):
     if not request.GET.has_key("status") or not request.GET.has_key("ids"):
         return
@@ -240,7 +239,7 @@ def mark(request, name):
     return folder(request, name, False)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def empty(request, name):
     if name == parameters.get_user(request.user, "TRASH_FOLDER"):
         mbc = IMAPconnector(user=request.user.username,
@@ -249,7 +248,7 @@ def empty(request, name):
     return folder(request, name, False)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def compact(request, name):
     mbc = IMAPconnector(user=request.user.username,
                         password=request.session["password"])
@@ -301,7 +300,7 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def compose(request):
     if request.method == "POST":
         status, resp = send_mail(request, posturl=reverse(compose))
@@ -312,7 +311,7 @@ def compose(request):
     return render_compose(request, form, reverse(compose), insert_signature=True)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def reply(request, folder, mail_id):
     msg = fetchmail(request, folder, mail_id, True)
     if request.method == "POST":
@@ -331,7 +330,7 @@ def reply(request, folder, mail_id):
                           email)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def forward(request, folder, mail_id):
     if request.method == "POST":
         status, response = send_mail(request,
@@ -362,7 +361,7 @@ def separate_folder(fullname, sep="."):
     return fullname, None
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def newfolder(request, tplname="webmail/folder.html"):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
@@ -389,7 +388,7 @@ def newfolder(request, tplname="webmail/folder.html"):
     return _render(request, tplname, ctx)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def editfolder(request, tplname="webmail/folder.html"):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
@@ -430,7 +429,7 @@ def editfolder(request, tplname="webmail/folder.html"):
     return _render(request, tplname, ctx)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def delfolder(request):
     if not request.GET.has_key("name") or request.GET["name"] == "":
         return
@@ -440,7 +439,7 @@ def delfolder(request):
     return ajax_response(request)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def attachments(request, tplname="webmail/attachments.html"):
     if request.method == "POST":
         csuploader = AttachmentUploadHandler()
@@ -475,7 +474,7 @@ def attachments(request, tplname="webmail/attachments.html"):
     return _render(request, tplname, ctx)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def delattachment(request):
     if not request.session.has_key("compose_mail") \
             or not request.GET.has_key("name") \

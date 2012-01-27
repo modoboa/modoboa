@@ -7,14 +7,14 @@ from django.core.urlresolvers import reverse
 from modoboa.lib import parameters
 from modoboa.lib.webutils import _render, _render_to_string, _render_error, \
     ajax_response, ajax_simple_response
-from modoboa.admin.lib import is_not_localadmin
+from modoboa.lib.decorators import needs_mailbox
 from modoboa.lib.connections import ConnectionError
 from modoboa.auth.lib import get_password
 from lib import *
 from forms import *
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def index(request, tplname="sievefilters/index.html"):
     try:
         sc = SieveClient(user=request.user.username, 
@@ -38,14 +38,14 @@ def index(request, tplname="sievefilters/index.html"):
             })
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def get_templates(request, ftype):
     if ftype == "condition":
         return ajax_simple_response(FilterForm([], [], request).cond_templates)
     return ajax_simple_response(FilterForm([], [], request).action_templates)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def get_user_folders(request):
     from modoboa.extensions.webmail.lib import IMAPconnector
 
@@ -55,7 +55,7 @@ def get_user_folders(request):
     return ajax_simple_response(ret)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def getfs(request, name):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
@@ -109,7 +109,7 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
     return ajax_response(request, status="ko", template=tplname, **tplctx)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def newfilter(request, setname, tplname="sievefilters/filter.html"):
     ctx = {"title" : _("New filter"),
            "actionurl" : reverse(newfilter, args=[setname])}
@@ -123,7 +123,7 @@ def newfilter(request, setname, tplname="sievefilters/filter.html"):
     return _render(request, tplname, ctx)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
     ctx = {"title" : _("Edit filter"),
            "actionurl" : reverse(editfilter, args=[setname, fname])}
@@ -143,7 +143,7 @@ def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
     return _render(request, tplname, ctx)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def removefilter(request, setname, fname):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
@@ -154,7 +154,7 @@ def removefilter(request, setname, fname):
     return ajax_response(request, "ko", respmsg=_("Failed to remove filter"))
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def savefs(request, name):
     if not request.POST.has_key("scriptcontent"):
         return
@@ -168,7 +168,7 @@ def savefs(request, name):
     return ajax_response(request, respmsg=_("Filters set saved"))
     
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def new_filters_set(request, tplname="sievefilters/newfiltersset.html"):
     ctx = {"title" : _("Create a new filters set"),
            "fname" : "newfiltersset",
@@ -199,7 +199,7 @@ def new_filters_set(request, tplname="sievefilters/newfiltersset.html"):
     return _render(request, tplname, ctx)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def remove_filters_set(request, name):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
@@ -210,7 +210,7 @@ def remove_filters_set(request, name):
     return ajax_response(request, respmsg=_("Filters set deleted"))
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def activate_filters_set(request, name):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
@@ -221,7 +221,7 @@ def activate_filters_set(request, name):
     return ajax_response(request, respmsg=_("Filters set activated"))
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def download_filters_set(request, name):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
@@ -237,7 +237,7 @@ def download_filters_set(request, name):
     return resp
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def toggle_filter_state(request, setname, fname):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
@@ -275,11 +275,11 @@ def move_filter(request, setname, fname, direction):
     return ajax_response(request, template="sievefilters/filters.html", fs=fset)
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def move_filter_up(request, setname, fname):
     return move_filter(request, setname, fname, "up")
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def move_filter_down(request, setname, fname):
     return move_filter(request, setname, fname, "down")

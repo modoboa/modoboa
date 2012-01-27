@@ -22,9 +22,11 @@ parameters.register_admin("MAILBOX_TYPE", type="list", deflt="maildir",
                           help=_("Mailboxes storage format"))
 parameters.register_admin("MAILDIR_ROOT", type="string", deflt=".maildir",
                           help=_("Sub-directory (inside the mailbox) where messages are stored when using the maildir format"))
-parameters.register_admin("PASSWORD_SCHEME", type="list", deflt="crypt",
-                          values=[("crypt", "crypt"), ("md5", "md5"), ("clear", "clear")],
-                          help=_("Scheme used to crypt mailbox passwords"))
+parameters.register_admin(
+    "PASSWORD_SCHEME", type="list", deflt="crypt",
+    values=[("crypt", "crypt"), ("md5", "md5"), ("sha256", "sha256"), ("clear", "clear")],
+    help=_("Scheme used to crypt mailbox passwords")
+    )
 parameters.register_admin("ITEMS_PER_PAGE", type="int", deflt=30,
                           help=_("Number of displayed items per page"))
 
@@ -51,6 +53,7 @@ parameters.register_admin("DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
                           values=enabled_applications(),
                           help=_("The default redirection used when no application is specified"))
 
+@events.observe("ExtDisabled")
 def unset_default_topredirection(extension):
     """
     Simple callback to change the default redirection if the
@@ -60,6 +63,7 @@ def unset_default_topredirection(extension):
     if topredirection == extension.name:
         parameters.save_admin("DEFAULT_TOP_REDIRECTION", "userprefs", app="general")
 
+@events.observe("ExtDisabled", "ExtEnabled")
 def update_available_applications(extension):
     """Simple callback to update the list of available applications
 
@@ -67,7 +71,3 @@ def update_available_applications(extension):
     """
     parameters.update_admin("DEFAULT_TOP_REDIRECTION", app="general",
                             values=enabled_applications())
-
-events.register("ExtDisabled", unset_default_topredirection)
-events.register("ExtDisabled", update_available_applications)
-events.register("ExtEnabled", update_available_applications)

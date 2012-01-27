@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.utils import simplejson
 from modoboa.lib.webutils import _render, _render_to_string, getctx
-from modoboa.admin.views import good_domain
+from modoboa.admin.lib import check_domain_access
 from modoboa.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
@@ -22,21 +22,17 @@ periods = [{"name" : "day", "label" : ugettext_noop("Day")},
            {"name" : "custom", "label" : ugettext_noop("Custom")}]
 
 @login_required
-@good_domain
 @permission_required("admin.view_mailboxes")
+@check_domain_access
 def index(request):
     domains = None
-    period = request.GET.has_key("period") and request.GET["period"] or "day"
-    domid = request.GET.has_key("domid") and request.GET["domid"] or ""
-    if request.user.is_superuser:
-        domains = Domain.objects.all()
-        domain = "global"
-    else:
-        domain = Domain.objects.get(pk=domid)
+    period = request.GET.get("period", "day")
+    domid = request.GET.get("domid", "")
+
+    domains = request.user.get_domains()
 
     return _render(request, 'stats/index.html', {
             "domains" : domains,
-            "domain" : domain,
             "graphs" : graph_list,
             "periods" : periods,
             "period" : period,
@@ -45,16 +41,20 @@ def index(request):
             })
 
 @login_required
-@good_domain
 @permission_required("admin.view_mailboxes")
 def getgraph(request, dom_id):
-    period = request.GET.has_key("period") and request.GET["period"] or "day"
+    period = request.GET.get("period", "day")
     if dom_id == "global":
+        if not request.user.is_superuser:
+            raise PermDeniedError(_("you're not allowed to see those statistics"))
         domain = dom_id
     else:
-        domain = Domain.objects.get(pk=dom_id).name
+        domain = Domain.objects.get(pk=dom_id)
+        if not request.user.can_access(domain):
+            raise PermDeniedError(_("You don't have access to this domain"))
+
     ctx = None
-    tplvars = {"graphs" : graph_list, "period" : period, "domain" : domain}
+    tplvars = {"graphs" : graph_list, "period" : period, "domain" : domain.name}
     if period == "custom":
         if not request.GET.has_key("start") or not request.GET.has_key("end"):
             ctx = getctx("ko", error=_("Bad custom period"))
@@ -64,7 +64,7 @@ def getgraph(request, dom_id):
             G = Grapher()
             period_name = "%s_%s" % (start.replace('-',''), end.replace('-',''))
             for tpl_name in graph_list:
-                G.process(domain,
+                G.process(domain.name,
                           period_name,
                           str2Time(*start.split('-')),
                           str2Time(*end.split('-')),

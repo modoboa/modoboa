@@ -22,17 +22,12 @@ def infos():
         "url" : "postfix_autoreply"
         }
 
-def init():
-    events.register("CreateDomain", onCreateDomain)
-    events.register("DeleteDomain", onDeleteDomain)
-    events.register("CreateMailbox", onCreateMailbox)
-    events.register("DeleteMailbox", onDeleteMailbox)
-    events.register("ModifyMailbox", onModifyMailbox)
-    events.register("UserMenuDisplay", menu)
-
-    parameters.register_admin("AUTOREPLIES_TIMEOUT", 
-                              type="int", deflt=86400,
-                              help=_("Timeout in seconds between two auto-replies to the same recipient"))
+def load():
+    parameters.register_admin(
+        "AUTOREPLIES_TIMEOUT", 
+        type="int", deflt=86400,
+        help=_("Timeout in seconds between two auto-replies to the same recipient")
+        )
 
 def destroy():
     events.unregister("CreateDomain", onCreateDomain)
@@ -47,10 +42,13 @@ def urls(prefix):
     return (r'^%spostfix_autoreply/' % prefix,
             include('modoboa.extensions.postfix_autoreply.urls'))
 
+@events.observe("UserMenuDisplay")
 def menu(target, user):
     import views
 
     if target != "uprefs_menu":
+        return []
+    if not user.has_mailbox:
         return []
     return [
         {"name" : "autoreply",
@@ -61,41 +59,40 @@ def menu(target, user):
          "label" : ugettext("Auto-reply message")}
         ]
 
-def onCreateDomain(**kwargs):
-    dom = kwargs["dom"]
+@events.observe("CreateDomain")
+def onCreateDomain(user, domain):
     transport = Transport()
-    transport.domain = "autoreply.%s" % dom.name
+    transport.domain = "autoreply.%s" % domain.name
     transport.method = "autoreply:"
     transport.save()
 
-def onDeleteDomain(**kwargs):
-    dom = kwargs["dom"]
-    trans = Transport.objects.get(domain="autoreply.%s" % dom.name)
+@events.observe("DeleteDomain")
+def onDeleteDomain(domain):
+    trans = Transport.objects.get(domain="autoreply.%s" % domain.name)
     trans.delete()
 
-def onCreateMailbox(**kwargs):
-    mbox = kwargs["mbox"]
+@events.observe("CreateMailbox")
+def onCreateMailbox(user, mailbox):
     alias = Alias()
-    alias.full_address = mbox.full_address
+    alias.full_address = mailbox.full_address
     alias.autoreply_address = \
-        "%s@autoreply.%s" % (mbox.full_address, mbox.domain.name)
+        "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)
     alias.save()
 
-def onDeleteMailbox(**kwargs):
-    mbox = kwargs["mbox"]
+@events.observe("DeleteMailbox")
+def onDeleteMailbox(mailbox):
     try:
-        alias = Alias.objects.get(full_address=mbox.full_address)
+        alias = Alias.objects.get(full_address=mailbox.full_address)
         alias.delete()
     except Alias.DoesNotExist:
         pass
 
-def onModifyMailbox(**kwargs):
-    mbox = kwargs["mbox"]
-    oldmbox = kwargs["oldmbox"]
-    if oldmbox.full_address == mbox.full_address:
+@events.observe("ModifyMailbox")
+def onModifyMailbox(mailbox, oldmailbox):
+    if oldmailbox.full_address == mailbox.full_address:
         return
-    alias = Alias.objects.get(full_address=oldmbox.full_address)
-    alias.full_address = mbox.full_address
+    alias = Alias.objects.get(full_address=oldmailbox.full_address)
+    alias.full_address = mailbox.full_address
     alias.autoreply_address =  \
-        "%s@autoreply.%s" % (mbox.full_address, mbox.domain.name)
+        "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)
     alias.save()

@@ -20,7 +20,7 @@ def send_autoreply(sender, mailbox, armessage):
 
     try:
         lastar = ARhistoric.objects.get(armessage=armessage.id, sender=sender)
-        main.init()
+        main.load()
         timeout = parameters.get_admin("AUTOREPLIES_TIMEOUT", 
                                        app="postfix_autoreply")
         delta = datetime.timedelta(seconds=int(timeout))

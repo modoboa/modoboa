@@ -16,7 +16,6 @@ from lib import AMrelease
 from templatetags.amextras import *
 from modoboa.lib.email_listing import parse_search_parameters
 from sql_listing import *
-from modoboa.admin.lib import is_domain_admin
 
 def __get_current_url(request):
     if request.session.has_key("page"):
@@ -28,7 +27,13 @@ def __get_current_url(request):
     if params != "":
         res += "?%s" % (params)
     return res
-    
+
+def empty_quarantine(request):
+    content = "<div class='info'>%s</div>" % _("Empty quarantine")
+    ctx = getctx("ok", level=2, listing=content, navbar="",
+                 menu=quar_menu("", request.user))
+    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
 @login_required
 def _listing(request):
     filter = None
@@ -59,12 +64,16 @@ def _listing(request):
 
     q = ~Q(rs='D')
     if not request.user.is_superuser:
-        mb = Mailbox.objects.get(user=request.user.id)
-        if is_domain_admin(request.user):
-            q &= Q(rid__email__contains=mb.domain.name)
+        if not request.user.belongs_to_group('SimpleUsers'):
+            doms = request.user.get_domains()
+            if not len(doms):
+                return empty_quarantine(request)
+            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+            q &= Q(rid__email__regex=regexp)
         else:
-            q &= Q(rid__email=mb.full_address)
-    if (request.user.is_superuser or is_domain_admin(request.user)) \
+            q &= Q(rid__email=request.user.email)
+
+    if not request.user.belongs_to_group('SimpleUsers') \
             and rcptfilter is not None:
         q &= Q(rid__email__contains=rcptfilter)
     msgs = Msgrcpt.objects.filter(q).values("mail_id")
@@ -82,12 +91,11 @@ def _listing(request):
                      elems_per_page=int(parameters.get_user(request.user, 
                                                         "MESSAGES_PER_PAGE")))
     page = lst.paginator.getpage(pageid)
-    if page:
-        content = lst.fetch(request, page.id_start, page.id_stop)
-        navbar = lst.render_navbar(page)
-    else:
-        content = "<div class='info'>%s</div>" % _("Empty quarantine")
-        navbar = ""
+    if not page:
+        return empty_quarantine(request)
+
+    content = lst.fetch(request, page.id_start, page.id_stop)
+    navbar = lst.render_navbar(page)
     ctx = getctx("ok", listing=content, navbar=navbar,
                  menu=quar_menu("", request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
@@ -115,7 +123,7 @@ def getmailcontent(request, mail_id):
 
 @login_required
 def viewmail(request, mail_id):
-    if request.user.is_superuser or is_domain_admin(request.user):
+    if not request.user.belongs_to_group('SimpleUsers'):
         rcpt = request.GET["rcpt"]
     else:
         mb = Mailbox.objects.get(user=request.user)
@@ -158,7 +166,7 @@ def check_mail_id(request, mail_id):
 @login_required
 def delete(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
-    if not request.user.is_superuser and not is_domain_admin(request.user):
+    if request.user.belongs_to_group('SimpleUsers'):
         mb = Mailbox.objects.get(user=request.user)
         msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
         msgrcpts.update(rs='D')
@@ -178,7 +186,7 @@ def delete(request, mail_id):
 @login_required
 def release(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
-    if not request.user.is_superuser and not is_domain_admin(request.user):
+    if request.user.belongs_to_group('SimpleUsers'):
         mb = Mailbox.objects.get(user=request.user)
         msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
     else:

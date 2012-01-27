@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from modoboa import userprefs
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url
-from modoboa.admin.lib import is_domain_admin
 
 register = template.Library()
 
@@ -31,7 +30,7 @@ def options_menu(user):
                 ]
          },
         ]
-    if not user.is_superuser and not is_domain_admin(user):
+    if user.belongs_to_group('SimpleUsers'):
         entries[0]["menu"] += [{
             "name" : "setforwards",
             "url" : reverse(userprefs.views.setforward),
@@ -41,7 +40,7 @@ def options_menu(user):
             "rel" : "{handler:'iframe',size:{x:360,y:350},closeBtn:true}"
             }]
 
-    entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", "options_menu")
+    entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", "options_menu", user)
 
     return render_to_string('common/menulist.html', 
                             {"entries" : entries, "user" : user})
@@ -49,7 +48,7 @@ def options_menu(user):
 @register.simple_tag
 def uprefs_menu(user):
     entries = []
-    entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu")
+    entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu", user)
 
     return render_to_string('common/menulist.html', 
                             {"entries" : entries, "user" : user})

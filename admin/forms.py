@@ -1,13 +1,10 @@
 # coding: utf-8
 from django import forms
 from modoboa.admin.models import *
-from modoboa.admin.lib import is_domain_admin
 from django.utils.translation import ugettext as _, ugettext_noop
-from django.contrib.auth.models import User
 from modoboa.admin.templatetags.admin_extras import gender
 from modoboa.lib import tables
 from modoboa.lib.emailutils import split_mailbox
-from lib import get_user_domains, get_user_domains_qs
 
 class DomainForm(forms.ModelForm):
     class Meta:
@@ -34,7 +31,7 @@ class ProxyForm(forms.ModelForm):
         super(ProxyForm, self).__init__(*args, **kwargs)
 
         if not user.is_superuser:
-            self._domains = get_user_domains_qs(user)
+            self._domains = user.get_domains()
         else:
             self._domains = None
 
@@ -50,25 +47,23 @@ class DomainAliasForm(ProxyForm):
             self.fields["target"].queryset = self._domains
 
 class MailboxForm(ProxyForm):
+    name = forms.CharField(
+        label=ugettext_noop("Name"), max_length=100,
+        help_text=ugettext_noop("First name and last name of mailbox owner")
+        )
     quota = forms.IntegerField(label=ugettext_noop("Quota"), required=False,
                                help_text=ugettext_noop("Mailbox quota in MB (default to domain quota if blank)"))
-    password1 = forms.CharField(label=ugettext_noop("Password"), 
-                                widget=forms.PasswordInput(render_value=True),
-                                help_text=ugettext_noop("Password used to log in"))
-    password2 = forms.CharField(label=ugettext_noop("Confirmation"), 
-                                widget=forms.PasswordInput(render_value=True),
-                                help_text=ugettext_noop("Password confirmation"))
     enabled = forms.BooleanField(label=gender("Enabled", "f"), required=False, 
                                  initial=True,
                                  help_text=ugettext_noop("Check to activate this mailbox"))
 
     class Meta:
         model = Mailbox
-        fields = ('domain', 'name', 'address')
+        fields = ('domain', 'address')
 
     def __init__(self, *args, **kwargs):
         super(MailboxForm, self).__init__(*args, **kwargs)
-        for f in ['name', 'address', 'quota', 'password1', 'password2']:
+        for f in ['name', 'address', 'quota']:
             self.fields[f].widget.attrs['size'] = 14
         if self._domains is not None:
             self.fields["domain"].queryset = self._domains
@@ -76,31 +71,52 @@ class MailboxForm(ProxyForm):
             #self.fields["domain"].initial = self._domain
 
         if kwargs.has_key("instance"):
-            self.fields['quota'].initial = kwargs["instance"].quota
-            self.fields['enabled'].initial = kwargs["instance"].user.is_active
-            self.fields['password1'].initial = "é"
-            self.fields['password2'].initial = "é"
+            mb = kwargs["instance"]
+            self.fields['name'].initial = unicode(mb.user)
+            self.fields['quota'].initial = mb.quota
+            self.fields['enabled'].initial = mb.user.is_active
 
     def clean_address(self):
         if self.cleaned_data["address"].find('@') != -1:
             return self.cleaned_data["address"].rsplit("@", 1)[0]
         return self.cleaned_data["address"]
 
-    def clean_password2(self):
-        if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
-            raise forms.ValidationError(_("Passwords mismatch"))
-        return self.cleaned_data["password2"]
-
-    def commit_save(self, mb):
-        mb.save(enabled=self.cleaned_data["enabled"], 
-                password=self.cleaned_data["password1"],
-                quota=self.cleaned_data["quota"])
+    def commit_save(self, mb, **kwargs):
+        mb.save(name=self.cleaned_data["name"],
+                enabled=self.cleaned_data["enabled"], 
+                quota=self.cleaned_data["quota"],
+                **kwargs)
 
     def save(self, force_insert=False, force_update=False, commit=True):
         m = super(MailboxForm, self).save(commit=False)
         if commit:
             self.commit_save(m)
         return m
+
+class MailboxWithPasswordForm(MailboxForm):
+    password1 = forms.CharField(label=ugettext_noop("Password"), 
+                                widget=forms.PasswordInput(render_value=True),
+                                help_text=ugettext_noop("Password used to log in"))
+    password2 = forms.CharField(label=ugettext_noop("Confirmation"), 
+                                widget=forms.PasswordInput(render_value=True),
+                                help_text=ugettext_noop("Password confirmation"))
+
+    def __init__(self, *args, **kwargs):
+        super(MailboxWithPasswordForm, self).__init__(*args, **kwargs)
+        for f in ['password1', 'password2']:
+            self.fields[f].widget.attrs['size'] = 14
+        self.fields.keyOrder = ['name', 'domain', 'address', 'quota',
+                                'password1', 'password2', 'enabled']
+            
+    def clean_password2(self):
+        if self.cleaned_data["password1"] != self.cleaned_data["password2"]:
+            raise forms.ValidationError(_("Passwords mismatch"))
+        return self.cleaned_data["password2"]
+
+    def commit_save(self, mb):
+        super(MailboxWithPasswordForm, self).commit_save(
+            mb, password=self.cleaned_data["password1"]
+            )
 
 class AliasForm(ProxyForm):
     targets = forms.CharField(label=ugettext_noop("Target(s)"), required=False,
@@ -152,8 +168,6 @@ class AliasForm(ProxyForm):
         We make a difference between 'local' targets (the ones hosted
         by Modoboa) and 'external targets.
         """
-        from modoboa.admin.lib import is_object_owner
-
         self.ext_targets = []
         self.int_targets = []
 
@@ -168,7 +182,7 @@ class AliasForm(ProxyForm):
             except Domain.DoesNotExist:
                 domain = None
             if domain:
-                if not is_object_owner(user, domain):
+                if not user.is_owner(domain):
                     raise PermDeniedException(addr)
                 try:
                     mb = Mailbox.objects.get(domain=domain, address=local_part)
@@ -274,9 +288,8 @@ class AssignDomainsForm(forms.Form):
 
     def __init__(self, user, domadmin, *args, **kwargs):
         super(AssignDomainsForm, self).__init__(*args, **kwargs)
-        self.fields["domains"].queryset = get_user_domains_qs(user)
-        self.fields["domains"].initial = get_user_domains_qs(domadmin)
-    
+        self.fields["domains"].queryset = user.get_domains()
+        self.fields["domains"].initial = domadmin.get_domains()
 
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=_("Select a file"))

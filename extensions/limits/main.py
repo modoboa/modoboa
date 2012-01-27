@@ -6,7 +6,8 @@ The *limits* extension
 
 
 """
-from django.contrib.auth.models import Permission, Group
+from django.contrib.auth.models import Permission, User, Group
+from django.db import IntegrityError
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_noop as _, ugettext
 from django.core.urlresolvers import reverse
@@ -27,6 +28,12 @@ def init():
         perm = Permission.objects.get(content_type=ct, codename=pname)
         grp.permissions.add(perm)
     grp.save()
+
+    for user in User.objects.filter(groups__name='DomainAdmins'):
+        try:
+            controls.create_pool(user)
+        except IntegrityError:
+            pass
 
 def destroy():
     ct = ContentType.objects.get(app_label="admin", model="domain")
@@ -50,6 +57,8 @@ def urls(prefix):
 
 @events.observe('AdminFooterDisplay')
 def display_pool_usage(user, objtype):
+    if user.id == 1:
+        return []
     if objtype == "domaliases":
         objtype = "domain_aliases"
     elif objtype == "mbaliases":

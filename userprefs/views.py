@@ -9,7 +9,7 @@ from modoboa.lib import parameters, events
 from modoboa.lib.webutils import _render, _render_error, ajax_response
 from forms import *
 from modoboa.admin.models import Mailbox, Alias
-from modoboa.admin.lib import is_domain_admin, AdminError
+from modoboa.admin.lib import AdminError
 from modoboa.auth.lib import encrypt
 
 @login_required
@@ -18,42 +18,36 @@ def index(request):
 
 @login_required
 def changepassword(request, tplname="userprefs/chpassword.html"):
-    if request.user.id == 1:
-        target = request.user
-    else:
-        target = Mailbox.objects.get(user=request.user.id)
-    res = events.raiseQueryEvent("PasswordChange", user=request.user)
+    res = events.raiseQueryEvent("PasswordChange", request.user)
     if True in res:
         ctx = dict(error=_("Password change is disabled for this user"))
         return _render_error(request, errortpl="error_simple", user_context=ctx)
 
     error = None
     if request.method == "POST":
-        form = ChangePasswordForm(target, request.POST)
+        form = ChangePasswordForm(request.user, request.POST)
         if form.is_valid():
-            if request.user.id != 1:
-                try:
-                    target.set_password(form.cleaned_data["oldpassword"],
-                                        form.cleaned_data["confirmation"])
-                except AdminError, e:
-                    error = str(e)
-                request.session["password"] = encrypt(request.POST["confirmation"])
+            try:
+                request.user.set_password(form.cleaned_data["confirmation"],
+                                          form.cleaned_data["oldpassword"])
+            except AdminError, e:
+                error = str(e)
             else:
-                target.set_password(request.POST["confirmation"])
-                target.save()
-
+                request.session["password"] = encrypt(request.POST["confirmation"])
+                request.user.save()
             if error is None:
                 return ajax_response(request, respmsg=_("Password changed"))
+
         return ajax_response(request, status="ko", template=tplname, 
                              form=form, error=error)
 
-    form = ChangePasswordForm(target)
+    form = ChangePasswordForm(request.user)
     return _render(request, 'userprefs/chpassword.html', {
             "form" : form
             })
 
 @login_required
-@user_passes_test(lambda u: not u.is_superuser and not is_domain_admin(u))
+@user_passes_test(lambda u: u.belongs_to_group('SimpleUsers'))
 def setforward(request, tplname="userprefs/setforward.html"):
     mb = Mailbox.objects.get(user=request.user.id)
     try:

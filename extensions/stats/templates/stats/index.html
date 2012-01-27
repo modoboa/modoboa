@@ -58,11 +58,7 @@ window.addEvent("domready", function() {
   };
 
   get_graph = function(evt) {
-    {% if user.is_superuser %}
     var url = "{% url getgraph_root %}" + $("domain").value + "/";
-    {% else %}
-    var url = "{% url getgraph domain.id %}";
-    {% endif %}
     var p = get_period();
 
     if (p == "") {
@@ -72,9 +68,7 @@ window.addEvent("domready", function() {
                           onSuccess : getgraph_callback}).get();
   };
 
-  {% if user.is_superuser %}
   $("domain").addEvent("change", get_graph);
-  {% endif %}  
   $("period").addEvent("change", get_graph);
   $("customsend").addEvent("click", get_graph);
 });
@@ -84,17 +78,18 @@ window.addEvent("domready", function() {
 {% block pagetitle %}{% trans "Statistics" %}{% endblock %}
 {% block subcontent %}
 <div id="selectors">
-  {% if user.is_superuser %}
   <div id="domainbox">
     <label for="domain">{% trans "Domain:" %}</label>
     <select id="domain" name="domain">
+      {% if user.is_superuser %}
       <option value="global" {% ifequal domain "global" %}selected{% endifequal %}>{% trans "Global" %}</option>
+      {% endif %}
       {% for d in domains %}
       <option value="{{ d.id }}" {% ifequal d.name domain %}selected{% endifequal %}>{{ d.name }}</option>
       {% endfor %}
     </select>
   </div>
-  {% endif %}
+
   <div id="periodbox">
     <label for="period">{% trans "Period:" %}</label>
     <select id="period" name="period">

@@ -6,10 +6,7 @@ from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
 from sievelib.managesieve import SUPPORTED_AUTH_MECHS
 
-def init():
-    events.register("UserMenuDisplay", menu)
-    events.register("UserLogout", userlogout)
-
+def load():
     parameters.register_admin("SERVER", type="string", 
                               deflt="127.0.0.1",
                               help=_("Address of your MANAGESIEVE server"))
@@ -47,10 +44,13 @@ def urls(prefix):
     return (r'^%ssfilters/' % prefix,
             include('modoboa.extensions.sievefilters.urls'))
 
+@events.observe("UserMenuDisplay")
 def menu(target, user):
     import views
 
     if target != "options_menu":
+        return []
+    if not user.has_mailbox:
         return []
     return [
         {"name" : "sievefilters",
@@ -59,14 +59,15 @@ def menu(target, user):
          "img" : static_url("pics/filters.png")}
         ]
 
-def userlogout(**kwargs):
+@events.observe("Userlogout")
+def userlogout(request):
     from lib import SieveClient
 
-    if kwargs["request"].user.id == 1:
+    if not request.user.has_mailbox:
         return
     try:
-        sc = SieveClient(user=kwargs["request"].user.username,
-                         password=kwargs["request"].session["password"])
+        sc = SieveClient(user=request.user.username,
+                         password=request.session["password"])
     except Exception, e:
         pass
     else:

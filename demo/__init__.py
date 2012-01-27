@@ -6,10 +6,12 @@ from django.template.loader import render_to_string
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url
 
-def menu(**kwargs):
+def menu(target, user):
     import views
 
-    if kwargs["target"] != "top_menu_middle":
+    if target != "top_menu_middle":
+        return []
+    if not user.has_mailbox:
         return []
     return [
         {"name"  : "demo",
@@ -29,8 +31,8 @@ def menu(**kwargs):
          }
         ]
 
-def announcement(**kwargs):
-    if kwargs["target"] == "loginpage":
+def announcement(target):
+    if target == "loginpage":
         txt = render_to_string("demo/login_announcement.html")
         return [txt]
     return ""

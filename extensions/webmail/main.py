@@ -5,10 +5,7 @@ from django.conf.urls.defaults import include
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
 
-def init():
-    events.register("UserMenuDisplay", menu)
-    events.register("UserLogout", userlogout)
-    
+def load():
     parameters.register_admin("IMAP_SERVER", type="string", 
                               deflt="127.0.0.1",
                               help=_("Address of your IMAP server"))
@@ -81,10 +78,13 @@ def urls(prefix):
     return (r'^%swebmail/' % prefix,
             include('modoboa.extensions.webmail.urls'))
 
+@events.observe("UserMenuDisplay")
 def menu(target, user):
     import views
 
     if target != "top_menu":
+        return []
+    if not user.has_mailbox:
         return []
     return [
         {"name" : "webmail",
@@ -93,14 +93,15 @@ def menu(target, user):
          "img" : static_url("pics/webmail.png")}
         ]
 
-def userlogout(**kwargs):
+@events.observe("Userlogout")
+def userlogout(request):
     from lib import IMAPconnector
 
-    if kwargs["request"].user.id == 1:
+    if not request.user.has_mailbox:
         return
     try:
-        m = IMAPconnector(user=kwargs["request"].user.username,
-                          password=kwargs["request"].session["password"])
+        m = IMAPconnector(user=request.user.username,
+                          password=request.session["password"])
     except Exception, e:
         pass
     else:

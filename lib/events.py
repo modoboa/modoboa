@@ -13,6 +13,8 @@ import inspect
 import re
 
 events = [
+    "SuperAdminPromotion",
+
     "CanCreateDomain",
     "CreateDomain",
     "DeleteDomain",
@@ -87,8 +89,8 @@ class observe(object):
 
     :param evtname: the event's name
     """
-    def __init__(self, evtname):
-        self.evtname = evtname
+    def __init__(self, *evtnames):
+        self.evtnames = evtnames
 
     def __guess_extension_name(self, modname):
         if modname.startswith('modoboa.extensions'):
@@ -112,7 +114,7 @@ class observe(object):
                     return []
             return f(*args)
 
-        register(self.evtname, wrapped_f)
+        map(lambda evt: register(evt, wrapped_f), self.evtnames)
         return wrapped_f
 
 def unregister(event, callback):

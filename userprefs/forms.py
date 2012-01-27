@@ -1,7 +1,5 @@
 from django import forms
 from modoboa.admin.models import Domain, Mailbox
-from modoboa.auth.lib import _check_password
-from django.contrib.auth.models import check_password
 from django.utils.translation import ugettext as _, ugettext_noop
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib import parameters
@@ -25,12 +23,7 @@ class ChangePasswordForm(forms.Form):
         if parameters.get_admin("AUTHENTICATION_TYPE", app="admin") != "local":
             return self.cleaned_data["oldpassword"]
 
-        if not isinstance(self.target, Mailbox):
-            func = check_password
-        else:
-            func = _check_password
-        if not func(self.cleaned_data["oldpassword"], 
-                    self.target.password):
+        if not self.target.check_password(self.cleaned_data["oldpassword"]):
             raise forms.ValidationError(_("Old password mismatchs"))
         return self.cleaned_data["oldpassword"]
 
