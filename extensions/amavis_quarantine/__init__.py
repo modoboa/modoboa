@@ -59,7 +59,7 @@ def menu(target, user):
     if target == "top_menu":
         return [
             {"name" : "quarantine",
-             "label" : _("Quarantine"),
+             "label" : ugettext("Quarantine"),
              "url" : reverse('modoboa.extensions.amavis_quarantine.views.index'),
              "img" : static_url("pics/quarantine.png")}
             ]
