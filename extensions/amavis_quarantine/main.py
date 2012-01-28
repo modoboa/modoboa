@@ -55,7 +55,7 @@ def menu(**kwargs):
     if kwargs["target"] == "top_menu":
         return [
             {"name" : "quarantine",
-             "label" : _("Quarantine"),
+             "label" : ugettext("Quarantine"),
              "url" : reverse(views.index),
              "img" : static_url("pics/quarantine.png")}
             ]
