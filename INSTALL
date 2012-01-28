@@ -43,12 +43,18 @@ need to install a python database backend (like *MySQLdb*).
 
 Initialize the database by running the following command::
 
-  $ python manage.py syncdb --migrate
-
-It will let you create the default super administrator.
+  $ python manage.py syncdb --migrate --noinput
 
 Since version 0.8, Modoboa uses *south* to handle schema migrations,
 this is the reason why you must add the ``--migrate`` option.
+
+At the end of this command, a default super administrator is
+available:
+
+ * Username: admin
+ * Password: password
+
+You may change its password the first time you log into Modoboa.
 
 Finally, create the ``scripts`` directory::
 
@@ -83,6 +89,12 @@ Throught the *Admin > Configuration* panel, you can customize the way
 Modoboa stores mailboxes on the filesystem. Here is the list of
 editable parameters with their default value::
 
+  The authentication type
+  AUTHENTICATION_TYPE = Local
+
+  Does Modoboa need to handle the creation of directories on the file system?
+  CREATE_DIRECTORIES = Yes
+
   Where Modoboa stores mailboxes
   STORAGE_PATH = /var/vmail
 
@@ -97,11 +109,19 @@ editable parameters with their default value::
   potential sub-directory
   MAILDIR_ROOT = .maildir
 
-  Which encryption method is used to store passwords
+  The encryption method used to store passwords
   PASSWORD_SCHEME = crypt
+
+  The number of displayed items per page for listing pages
+  ITEMS_PER_PAGE = 30
 
 Host configuration
 ------------------
+
+.. note::
+
+   You can skip this part in case you set the ``CREATE_DIRECTORIES``
+   parameter to ``No``.
 
 Before using Modoboa, you must create a group and a user that will be
 used to store emails on the host filesystem. There is only one
