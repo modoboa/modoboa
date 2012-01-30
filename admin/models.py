@@ -24,6 +24,15 @@ try:
 except ImportError:
     ldap_available = False
 
+def get_content_type(obj):
+    """Simple function that use the right method to retrieve a content type
+
+    :param obj: a django model
+    :return: a ``ContentType`` object
+    """
+    return obj.get_content_type() if hasattr(obj, "get_content_type") \
+        else ContentType.objects.get_for_model(obj)
+
 class User(DUser):
     """Proxy for the ``User`` model.
 
@@ -40,6 +49,21 @@ class User(DUser):
 
     def __unicode__(self):
         return u"%s %s" % (self.first_name, self.last_name)
+
+    @staticmethod
+    def get_content_type():
+        """An uggly hack to retrieve the appropriate content_type!
+
+        The explanation is available here:
+        https://code.djangoproject.com/ticket/11154
+
+        Quickly, the content_types framework does not retrieve the
+        appropriate content type for proxy models, it retrieves the
+        one of the first parent that is not a proxy.
+        """
+        if not hasattr(User, "ct"):
+            User.ct = ContentType.objects.get(app_label="admin", model="user")
+        return User.ct
 
     def _crypt_password(self, raw_value):
         scheme = parameters.get_admin("PASSWORD_SCHEME")
@@ -125,7 +149,7 @@ class User(DUser):
             return Domain.objects.all()
         result = Domain.objects.filter(owners__user=self).distinct()
 
-        userct = ContentType.objects.get_for_model(User)
+        userct = self.get_content_type()
         for entry in self.objectaccess_set.filter(content_type=userct):
             if not entry.content_object.belongs_to_group('DomainAdmins'):
                 continue
@@ -186,7 +210,7 @@ class User(DUser):
         :param obj: an object inheriting from ``models.Model``
         :return: a boolean
         """
-        ct = ContentType.objects.get_for_model(obj)
+        ct = get_content_type(obj)
         try:
             ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
@@ -206,7 +230,7 @@ class User(DUser):
         if self.is_superuser:
             return True
 
-        ct = ContentType.objects.get_for_model(obj)
+        ct = get_content_type(obj)
         try:
             ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
@@ -216,7 +240,7 @@ class User(DUser):
         if ct.model == "user":
             return False
 
-        ct = ContentType.objects.get_for_model(User)
+        ct = self.get_content_type()
         qs = self.objectaccess_set.filter(content_type=ct)
         for ooentry in qs.all():
             if ooentry.content_object.is_owner(obj):

@@ -58,8 +58,8 @@ def grant_access_to_object(user, obj, is_owner=False):
     :param obj: an admin. object (Domain, Mailbox, ...)
     :param is_owner: the user is the unique object's owner
     """
+    ct = get_content_type(obj)
     try:
-        ct = ContentType.objects.get_for_model(obj)
         entry = user.objectaccess_set.get(content_type=ct, object_id=obj.id)
         entry.is_owner = is_owner
         entry.save()
@@ -69,7 +69,8 @@ def grant_access_to_object(user, obj, is_owner=False):
         return
 
     try:
-        objaccess = ObjectAccess(user=user, content_object=obj, is_owner=is_owner)
+        objaccess = ObjectAccess(user=user, content_type=ct, 
+                                 object_id=obj.id, is_owner=is_owner)
         objaccess.save()
     except IntegrityError, e:
         raise AdminError(_("Failed to grant access (%s)" % str(e)))
@@ -83,7 +84,7 @@ def ungrant_access_to_object(obj, user=None):
     :param obj: an object inheriting from ``models.Model``
     :param user: a ``User`` object
     """
-    ct = ContentType.objects.get_for_model(obj)
+    ct = get_content_type(obj)
     if user:
         try:
             ObjectAccess.objects.get(user=user, content_type=ct, object_id=obj.id).delete()
@@ -98,7 +99,7 @@ def get_object_owner(obj):
     :param obj: an object inheriting from ``model.Model``
     :return: a ``User`` object
     """
-    ct = ContentType.objects.get_for_model(obj)
+    ct = get_content_type(obj)
     try:
         entry = ObjectAccess.objects.get(content_type=ct, object_id=obj.id, is_owner=True)
     except ObjectAccess.DoesNotExist:
