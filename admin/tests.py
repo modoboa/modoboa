@@ -52,16 +52,18 @@ class MailboxTestCase(TestCase):
     def test(self):
         dom = Domain.objects.get(name="test.com")
         mb = Mailbox()
-        mb.name = "Tester Toto"
         mb.address = "tester"
         mb.domain = dom
-        mb.save(password="toto", enabled=True)
+        mb.save(name="Tester toto", password="toto", enabled=True)
         self.assertEqual(mb.full_address, "tester@test.com")
         self.assertEqual(os.path.exists(mb.full_path), True)
         self.assertEqual(mb.quota, 100)
         self.assertEqual(mb.enabled, True)
         self.assertIsNotNone(mb.user)
         self.assertEqual(mb.user.username, mb.full_address)
+        self.assertTrue(mb.user.check_password("toto"))
+        self.assertEqual(mb.user.first_name, "Tester")
+        self.assertEqual(mb.user.last_name, "toto")
         self.assertEqual(dom.mailbox_count, 2)
 
         mb.address = "pouet"
@@ -82,9 +84,9 @@ class MailboxTestCase(TestCase):
         * A normal user changes his password
         """
         clt = Client()
-        self.assertEqual(clt.login(username="admin", password="toto"), True)
+        self.assertEqual(clt.login(username="admin", password="password"), True)
         response = clt.post("/modoboa/userprefs/changepassword/",
-                            {"oldpassword" : "toto", 
+                            {"oldpassword" : "password", 
                              "newpassword" : "titi", "confirmation" : "titi"})
         self.assertEqual(response.status_code, 200)
         obj = simplejson.loads(response.content)
@@ -132,41 +134,40 @@ class PermissionsTestCase(TestCase):
 
     def setUp(self):
         self.clt = Client()
-        self.clt.login(username="admin", password="toto")
-        self.mb = Mailbox.objects.get(pk=1)
+        self.clt.login(username="admin", password="password")
+        self.user = User.objects.get(username="user@test.com")
         
     def tearDown(self):
         self.clt.logout()
 
     def test_domain_admins(self):
-        response = self.clt.post("/modoboa/admin/permissions/add/",
-                                 {"role" : "domain_admins",
-                                  "domain" : "1", "user" : "1"})
+        response = self.clt.post("/modoboa/admin/permissions/domainadmin/promote/",
+                                 {"name" : self.user.username})
         self.assertEqual(response.status_code, 200)
         obj = simplejson.loads(response.content)
         self.assertEqual(obj["status"], "ok")
-        self.assertEqual(is_domain_admin(self.mb.user), True)
+        self.assertEqual(self.user.belongs_to_group('DomainAdmins'), True)
 
         response = self.clt.get("/modoboa/admin/permissions/delete/",
-                                {"role" : "domain_admins", "selection" : "1"})
+                                {"role" : "domain_admins", 
+                                 "selection" : self.user.id})
         self.assertEqual(response.status_code, 200)
         obj = simplejson.loads(response.content)
         self.assertEqual(obj["status"], "ok")
-        self.assertEqual(is_domain_admin(self.mb.user), False)
-
+        self.assertEqual(self.user.belongs_to_group('DomainAdmins'), False)
 
     def test_superusers(self):
         response = self.clt.post("/modoboa/admin/permissions/add/",
-                                 {"role" : "super_admins", "user" : "2"})
+                                 {"role" : "super_admins", "user" : self.user.id})
         self.assertEqual(response.status_code, 200)
         obj = simplejson.loads(response.content)
         self.assertEqual(obj["status"], "ok")
-        self.assertEqual(User.objects.get(pk=2).is_superuser, True)
+        self.assertEqual(User.objects.get(username="user@test.com").is_superuser, True)
 
         response = self.clt.get("/modoboa/admin/permissions/delete/",
-                                {"role" : "super_admins", "selection" : "2"})
+                                {"role" : "super_admins", "selection" : self.user.id})
         self.assertEqual(response.status_code, 200)
         obj = simplejson.loads(response.content)
         self.assertEqual(obj["status"], "ok")
-        self.assertEqual(User.objects.get(pk=2).is_superuser, False)
+        self.assertEqual(User.objects.get(username="user@test.com").is_superuser, False)
 

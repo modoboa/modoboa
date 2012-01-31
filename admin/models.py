@@ -481,13 +481,14 @@ class Mailbox(DatesAware):
         user.username = user.email = "%s@%s" % (self.address, self.domain.name)
         if kwargs.has_key("enabled"):
             user.is_active = kwargs["enabled"]
-        try:
-            fname, lname = kwargs["name"].split()
-        except ValueError:
-            fname = kwargs["name"]
-            lname = ""
-        user.first_name = fname
-        user.last_name = lname
+        if kwargs.has_key("name"):
+            try:
+                fname, lname = kwargs["name"].split()
+            except ValueError:
+                fname = kwargs["name"]
+                lname = ""
+            user.first_name = fname
+            user.last_name = lname
         if kwargs.has_key("password"):
             user.set_password(kwargs["password"])
         try:
