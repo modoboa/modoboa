@@ -3,24 +3,62 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
-from modoboa.lib.models import Parameter
+from django.core.exceptions import ObjectDoesNotExist
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
+        superusers = orm.User.objects.filter(is_superuser=True)
+        if not len(superusers):
+            # Empty db, nothing to do
+            return
+
+        domadmins = orm.User.objects.filter(groups__name='DomainAdmins')
+        domains = orm.Domain.objects.all()
+        deferred_admin = []
+
+        domct = orm['contenttypes.ContentType'].objects.get(
+            app_label='admin', model='domain'
+            )
         try:
-            s = Parameter.objects.get(name='admin.PASSWORD_SCHEME').value
-        except Parameter.DoesNotExist:
-            s = "crypt"
-            
-        for mb in orm.Mailbox.objects.all():
-            mb.user.password = '{%s}%s' % (s.upper(), mb.password)
-            mb.user.save()
+            uct = orm['contenttypes.ContentType'].objects.get(
+                app_label='admin', model='user'
+                )
+        except ObjectDoesNotExist:
+            uct = orm['contenttypes.ContentType'](
+                name='user', app_label='admin', model='user'
+                )
+            uct.save()
+
+        for da in domadmins:
+            for i, su in enumerate(superusers):
+                objaccess = orm.ObjectAccess(
+                    user=su, content_type=uct, object_id=da.id                    
+                    )
+                if i == 0:
+                    objectaccess.is_owner=True
+                objaccess.save()
+                    
+                dom = da.mailbox_set.all()[0].domain
+                objaccess = orm.ObjectAccess(
+                    user=da, content_type=domct, object_id=dom.id, is_owner=True
+                    )
+                objaccess.save()
+                deferred_admin += [dom]
+        
+        for dom in domains:
+            for i, su in enumerate(superusers):
+                objaccess = orm.ObjectAccess(
+                    user=su, content_type=domct, object_id=dom.id
+                    )
+                if not dom in deferred_admin:
+                    objaccess.is_owner = True
+                objaccess.save()
 
     def backwards(self, orm):
         "Write your backwards methods here."
-        raise RuntimeError("Cannot reverse this migration.")
+
 
     models = {
         'admin.alias': {
@@ -62,11 +100,17 @@ class Migration(DataMigration):
             'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
             'gid': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
+        'admin.objectaccess': {
+            'Meta': {'unique_together': "(('user', 'content_type', 'object_id'),)", 'object_name': 'ObjectAccess'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_owner': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'admin.objectdates': {
@@ -74,6 +118,9 @@ class Migration(DataMigration):
             'creation': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_modification': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
+        },
+        'admin.user': {
+            'Meta': {'object_name': 'User', 'db_table': "'auth_user'", '_ormbases': ['auth.User'], 'proxy': 'True'}
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -113,4 +160,4 @@ class Migration(DataMigration):
         }
     }
 
-    complete_apps = ['admin', 'auth']
+    complete_apps = ['contenttypes', 'admin']

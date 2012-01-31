@@ -27,21 +27,8 @@ class Migration(SchemaMigration):
         # Deleting field 'Mailbox.name'
         db.delete_column('admin_mailbox', 'name')
 
-
     def backwards(self, orm):
-        
-        # Removing unique constraint on 'ObjectAccess', fields ['user', 'content_type', 'object_id']
-        db.delete_unique('admin_objectaccess', ['user_id', 'content_type_id', 'object_id'])
-
-        # Deleting model 'ObjectAccess'
-        db.delete_table('admin_objectaccess')
-
-        # User chose to not deal with backwards NULL issues for 'Mailbox.password'
-        raise RuntimeError("Cannot reverse this migration. 'Mailbox.password' and its values cannot be restored.")
-
-        # User chose to not deal with backwards NULL issues for 'Mailbox.name'
-        raise RuntimeError("Cannot reverse this migration. 'Mailbox.name' and its values cannot be restored.")
-
+        raise RuntimeError("Cannot reverse this migration.")
 
     models = {
         'admin.alias': {
