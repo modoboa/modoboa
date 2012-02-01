@@ -408,10 +408,10 @@ class Mailbox(DatesAware):
 
     def __str__(self):
         return self.__full_address()
-
-    def __full_address(self):
+	
+    @property
+    def full_address(self):
         return "%s@%s" % (self.address, self.domain.name)
-    full_address = property(__full_address)
 
     def __enabled(self):
         return self.user.is_active

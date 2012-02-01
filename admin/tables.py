@@ -67,7 +67,7 @@ class MailboxesTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
 
-    address = tables.Column("address", label=ugettext_noop("Address"))
+    address = tables.Column("full_address", label=ugettext_noop("Address"))
     name = tables.Column("user", label=ugettext_noop("Name"))
     creation = tables.Column("creation", label=ugettext_noop("Created"), 
                              width="160px")
