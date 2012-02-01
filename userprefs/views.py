@@ -95,6 +95,10 @@ def preferences(request):
     for app in apps:
         if not len(parameters._params[app]['U']):
             continue
+        if parameters.get_app_option('U', 'needs_mailbox', False, app=app) \
+                and not request.user.has_mailbox:
+            continue
+            
         tmp = {"name" : app, "params" : []}
         for p in parameters._params_order[app]['U']:
             param_def = parameters._params[app]['U'][p]
