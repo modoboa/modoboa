@@ -7,7 +7,6 @@ sys.setdefaultencoding("utf-8")
 import re
 import time
 import socket
-import imaplib
 import ssl
 from datetime import datetime, timedelta
 import email
@@ -31,12 +30,13 @@ class WMtable(tables.Table):
     select = tables.ImgColumn("select", cssclass="draggable left", width="1%", 
                               defvalue="%spics/grippy.png" % settings.MEDIA_URL,
                               header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
-    flags = tables.ImgColumn("flags", width="4%")
+    flags = tables.ImgColumn("flags", width="2%")
+    withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column("subject", label=__("Subject"), width="50%")
     from_ = tables.Column("from", width="20%", label=__("From"))
     date = tables.Column("date", width="20%", label=__("Date"))
 
-    cols_order = ["select", "flags", "subject", "from_", "date"]
+    cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
 
     def parse(self, header, value):
         try:
@@ -148,12 +148,40 @@ class ImapListing(EmailListing):
         return ImapListing.computequota(self.mbc)
 
 class ImapEmail(Email):
-    def __init__(self, msg, user, dformat="DISPLAYMODE", addrfull=False, 
-                 *args, **kwargs):
-        mformat = parameters.get_user(user, "DISPLAYMODE")
-        dformat = parameters.get_user(user, dformat)
-        Email.__init__(self, msg, mformat, dformat, *args, **kwargs)
+    def __init__(self, mbox, mailid, request, dformat="DISPLAYMODE", addrfull=False, 
+                 links=0):
+        mformat = parameters.get_user(request.user, "DISPLAYMODE")
+        dformat = parameters.get_user(request.user, dformat)
 
+        self.headers = []
+        self.attachments = {}
+        self.imapc = get_imapconnector(request)
+        msg = self.imapc.fetchmail(mbox, mailid)
+        self.mbox = mbox
+        self.mailid = mailid
+        headers = msg['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]']
+        fallback_fmt = "html" if dformat == "plain" else "plain"
+        
+        self.bs = BodyStructure(msg['BODYSTRUCTURE'])
+        data = None
+
+        mformat = dformat if self.bs.contents.has_key(dformat) else fallback_fmt
+
+        pnum = self.bs.contents[mformat]['pnum']
+        data = self.imapc._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
+        content = self._decode_content(self.bs.contents[mformat]['encoding'],
+                                       data[int(mailid)]['BODY[%s]' % pnum])
+        charset = self._find_content_charset(mformat)
+        if charset is not None:
+            content = content.decode(charset)
+
+        self._find_attachments()
+        self._fetch_inlines()
+
+        self.body = \
+            getattr(self, "viewmail_%s" % mformat)(content, links=links)
+
+        msg = email.message_from_string(headers)
         fields = ["Subject", "From", "To", "Reply-To", "Cc", "Date"]
         for f in fields:
             label = f
@@ -172,6 +200,68 @@ class ImapEmail(Email):
                 setattr(self, label, value)
             except:
                 pass
+
+    def _find_content_charset(self, subtype):
+        for pos, elem in enumerate(self.bs.contents[subtype]["params"]):
+            if elem == "charset":
+                return self.bs.contents[subtype]["params"][pos + 1]
+        return None
+
+    def _decode_content(self, encoding, content):
+        encoding = encoding.lower()
+        if encoding == "base64":
+            import base64
+            return base64.b64decode(content)
+        elif encoding == "quoted-printable":
+            import quopri
+            return quopri.decodestring(content)
+        return content
+
+    def _find_attachments(self):
+        for att in self.bs.attachments:
+            attname = "part_%s" % att["pnum"]
+            params = None
+            key = None
+            if att.has_key("params") and att["params"] != "NIL":
+                params = att["params"]
+                key = "name"
+
+            if key is None and \
+                    att.has_key("disposition") and len(att["disposition"]) > 1:
+                params = att["disposition"][1]
+                key = "filename"
+            
+            if key and params:
+                for pos, value in enumerate(params):
+                    if value == key:
+                        attname = u2u_decode.u2u_decode(params[pos + 1]).strip("\r\t\n")
+                        break
+            self.attachments[att["pnum"]] = attname
+
+    def _fetch_inlines(self):
+        for cid, params in self.bs.inlines.iteritems():
+            if re.search("\.\.", cid):
+                continue
+            fname = "static/tmp/%s_%s" % (self.mailid, cid)
+            path = os.path.join(settings.MODOBOA_DIR, fname)
+            params["fname"] = "/%s" % fname
+            if os.path.exists(path):
+                continue
+
+            content = self.imapc.fetchpart(self.mailid, self.mbox, params["pnum"])
+            fp = open(path, "wb")
+            fp.write(self._decode_content(params["encoding"], content))
+            fp.close()
+
+
+    def map_cid(self, url):
+        import re
+
+        m = re.match(".*cid:(.+)", url)
+        if m:
+            if self.bs.inlines.has_key(m.group(1)):
+                return self.bs.inlines[m.group(1)]["fname"]
+        return url
 
     def render_headers(self, **kwargs):
         from django.template.loader import render_to_string

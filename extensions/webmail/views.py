@@ -166,13 +166,13 @@ def getmailcontent(request):
     if mbox is None or mailid is None:
         raise WebmailError(_("Invalid request"))
 
-    content = fetchmail(request, mbox, mailid, True)
+    #content = fetchmail(request, mbox, mailid, True)
 
     # if "class" in msg.keys() and msg["class"] == "unseen":
     #     IMAPconnector(user=request.user.username,
     #                   password=request.session["password"]).msg_read(folder, mail_id)
 
-    email = ImapEmail(content, request.user, links=request.GET["links"])
+    email = ImapEmail(mbox, mailid, request, links=request.GET["links"])
     return _render(request, "common/viewmail.html", {
             "headers" : email.render_headers(folder=mbox, mail_id=mailid), 
             "folder" : mbox, "imapid" : mailid, "mailbody" : email.body
@@ -659,10 +659,9 @@ def newindex(request):
     json = request.GET.get("json", False)
 
     if action is not None:
-        try:
-            response = globals()[action](request)
-        except KeyError:
+        if not globals().has_key(action):
             raise WebmailError(_("Undefined action"))
+        response = globals()[action](request)            
     else:
         if json:
             raise WebmailError(_("Bad request"))

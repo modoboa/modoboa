@@ -11,6 +11,7 @@ from modoboa.lib import parameters
 from modoboa.lib.connections import *
 from modoboa.lib.webutils import static_url
 from exceptions import ImapError
+from fetch_parser import *
 
 #imaplib.Debug = 4
 
@@ -35,6 +36,86 @@ class capability(object):
 
         return wrapped_func
 
+class BodyStructure(object):
+    """
+    BODYSTRUCTURE response parser.
+
+    Just a simple class that tries to distinguish content parts from
+    attachments.
+    """
+    def __init__(self, definition=None):
+        self.is_multipart = False
+        self.contents = {}
+        self.attachments = []
+        self.inlines = {}
+
+        if definition is not None:
+            self.load_from_definition(definition)
+
+    def __store_part(self, definition, pnum, multisubtype):
+        """Store the given message part in the appropriate category.
+
+        This method sort parts in two categories:
+
+        * contents (what is going to be displayed)
+        * attachments
+
+        As there is no official definition about what is a content and
+        what is an attachment, the following rules are applied:
+
+        * If the MIME type is text/plain or text/html:
+
+         * If no previous part of this type has already been seen, it's a content
+         * Otherwise it's an attachment
+
+        * Else, if the multipart subtype is related, we consider this
+          part as content because it is certainly an embedded image
+
+        * Any other MIME type is considered as an attachment (for now)
+
+        :param definition: a part definition (list)
+        :param prefix: the part's number
+        :param multisubtype: the multipart subtype
+        """
+        pnum = "1" if pnum is None else pnum
+        params = dict(pnum=pnum, params=definition[2], cid=definition[3],
+                      description=definition[4], encoding=definition[5], 
+                      size=definition[6])
+        subtype = definition[1].lower()
+        mtype = "%s/%s" % (definition[0].lower(), subtype)
+        if mtype in ("text/plain", "text/html"):
+            if not self.contents.has_key(mtype):
+                self.contents[subtype] = params
+                return
+        elif multisubtype in ["related"]:
+            self.inlines[params["cid"].strip("<>")] = params
+            return
+
+        if len(definition) > 7:
+            params.update(md5=definition[7], disposition=definition[8], 
+                          lang=definition[9], location=definition[10])
+        self.attachments += [params]
+
+    def load_from_definition(self, definition, multisubtype=None):
+        if type(definition) == dict:
+            struct = definition["struct"]
+            pnum = definition["partnum"]
+        elif type(definition[0]) == dict:
+            struct = definition[0]["struct"]
+            pnum = definition[0]["partnum"]
+        else:
+            struct = definition
+            pnum = None
+
+        if type(struct[0]) == list:
+            for part in struct[0]:
+                self.load_from_definition(part, struct[1])
+            return
+        
+        self.__store_part(struct, pnum, multisubtype)
+
+    def has_attachments(self):
+        return len(self.attachments)
 
 class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
@@ -105,13 +186,14 @@ class IMAPconnector(object):
             for part in bodystruct[0]:
                 nprefix = "%s" % cpt if prefix == "" else "%s.%d" % (prefix, cpt)
                 index, encoding, size = \
-                    self.__find_content_in_bodystruct(bodystruct[0], mtype, stype, nprefix)
-                if index:
+                    self.__find_content_in_bodystruct(part, mtype, stype, nprefix)
+                if index is not None:
                     return (index, encoding, size)
                 cpt += 1
-
-        if bodystruct[0] == mtype and bodystruct[1] == stype:
-            return ("1" if not len(prefix) else prefix, bodystruct[5], int(bodystruct[6]))
+        else:
+            if bodystruct[0].lower() == mtype and bodystruct[1].lower() == stype:
+                return ("1" if not len(prefix) else prefix, 
+                        bodystruct[5], int(bodystruct[6]))
         return (None, None, 0)
 
     def refresh(self, user, password):
@@ -401,14 +483,10 @@ class IMAPconnector(object):
             self.quota_limit = int(m.group(2))
             self.quota_actual = int(m.group(1))
 
-    def fetchpart(self, uid, folder, part):
-        self.m.select(self._encodefolder(folder), True)
-        typ, data = self.m.fetch(uid, "(BODY[%(p)s.MIME] BODY[%(p)s])" \
-                                     % {"p" : part})
-        if typ != "OK":
-            return None
-        msg = email.message_from_string(data[0][1] + data[1][1])
-        return msg
+    def fetchpart(self, uid, mbox, partnum):
+        self.select_mailbox(mbox, False)
+        data = self._cmd("FETCH", uid, "(BODY[%s])" % partnum)
+        return data[int(uid)]["BODY[%s]" % partnum]
 
     def fetch(self, start, stop=None, mbox=None, **kwargs):
         """Retrieve information about messages from the server
@@ -427,7 +505,7 @@ class IMAPconnector(object):
         else:
             submessages = [start]
             range = start
-        query = '(FLAGS BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
+        query = '(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
         data = self._cmd("FETCH", range, query)
         result = []
         for uid in submessages:
@@ -437,10 +515,13 @@ class IMAPconnector(object):
                 msg['class'] = 'unseen'
             if r'\Answered' in data[int(uid)]['FLAGS']:
                 msg['img_flags'] = static_url('pics/answered.png')
+            bs = BodyStructure(data[int(uid)]['BODYSTRUCTURE'])
+            if bs.has_attachments():
+                msg['img_withatts'] = static_url('pics/attachment.png')
             result += [msg]
         return result
 
-    def fetchmail(self, mbox, mailid, fmt="plain"):
+    def fetchmail(self, mbox, mailid):
         """Retrieve information about a specific message
 
         Issue a FETCH command to retrieve a message's content from the
@@ -455,34 +536,15 @@ class IMAPconnector(object):
         """
         self.select_mailbox(mbox, False)
         data = self._cmd("FETCH", mailid, "(BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])")
-        content = data[int(mailid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]']
-
-        fallback_fmt = "html" if fmt == "plain" else "plain"
-        (pnum, encoding, size) = (None, None, 0)
-        for f in [fmt, fallback_fmt]:
-            pnum, encoding, size = \
-                self.__find_content_in_bodystruct(data[int(mailid)]['BODYSTRUCTURE'],
-                                                  "text", f)
-            if pnum is not None and size:
-                break
-        if pnum is None:
-            return None
-
-        data = self._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
-
-        data = data[int(mailid)]['BODY[%s]' % pnum]        
-        if encoding == "base64":
-            import base64
-            content += base64.b64decode(data)
-        elif encoding == "quoted-printable":
-            import quopri
-            content += quopri.decodestring(data)
-        else:
-            content += data
-
-        return email.message_from_string(content)
+        return data[int(mailid)]
 
 def get_imapconnector(request):
     imapc = IMAPconnector(user=request.user.username, 
                           password=request.session["password"])
     return imapc
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
