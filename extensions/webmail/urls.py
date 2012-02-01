@@ -6,8 +6,13 @@ from django.conf.urls.defaults import *
 # "attachments"), the associated folder will not be accessible.
 #
 urlpatterns = patterns('modoboa.extensions.webmail.views',
-                       (r'^$', "index"),
-                       (r'^compose/$', "compose"),
+                       #(r'^$', "index"),
+                       (r'^$', "newindex"),
+                       (r'^submailboxes', "submailboxes"),
+                       (r'^mailcontent', "getmailcontent"),
+
+
+#                       (r'^compose/$', "compose"),
                        (r'^move/$', "move"),
                        (r'^mark/(?P<name>.+)/$', "mark"),
                        (r'^empty/(?P<name>.+)/$', "empty"),
@@ -21,9 +26,9 @@ urlpatterns = patterns('modoboa.extensions.webmail.views',
 
                        (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/part/$', 'getattachment'),
                        (r'^(?P<fdname>.+)/(?P<mail_id>[\w\-\+]+)/delete/$', 'delete'),
-                       (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/content/$', 'getmailcontent'),
+                       #(r'^(?P<folder>.+)/(?P<mailid>[\w\-\+]+)/content/$', 'getmailcontent'),
                        (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/forward/$', 'forward'),
                        (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/reply/$', 'reply'),
-                       (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/$', 'viewmail'),
+#                       (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/$', 'viewmail'),
                        (r'^(?P<name>.+)/$', "folder"),
                        )

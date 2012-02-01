@@ -166,7 +166,7 @@ class Email(object):
 
     def viewmail_html(self, content, **kwargs):
         if content is None or content == "":
-            return (False, "")
+            return ""
         links = kwargs.has_key("links") and kwargs["links"] or "0"
         html = lxml.html.fromstring(content) 
         if links == "0":

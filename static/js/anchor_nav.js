@@ -9,7 +9,9 @@ var AnchorNavigation = new Class({
         checkinterval: 300,
         defloadingtext: gettext("Loading..."),
         defloadingcolor: "gray",
-        defcallback: null
+        defcallback: null,
+        spin_disabled: false,
+        spin_target: undefined
     },
 
     initialize: function(deflocation, options) {
@@ -29,13 +31,24 @@ var AnchorNavigation = new Class({
         }
     },
 
+    /*
+     * Disable the spinner.
+     */
+    disable_spinner: function() {
+        this.options.spin_disabled = true;
+    },
+
+    enable_spinner: function() {
+        this.options.spin_disabled = false;
+    },
+
     reset_loading_infos: function() {
         this.loading_message = this.options.defloadingtext;
         this.loading_color = this.options.defloadingcolor;
     },
 
     reset: function() {
-        this.base = null;
+        this.base = '';
         this.params.empty();
         return this;
     },
@@ -53,11 +66,13 @@ var AnchorNavigation = new Class({
         if (reset) {
             this.reset();
         }
-        this.base = (splits[0] == "") ? this.deflocation : splits[0];
+        this.base = splits[0];
 
-        var re = new RegExp("/$");
-        if (!this.base.match(re)) {
-            this.base += '/';
+        if (this.base != "") {
+            var re = new RegExp("/$");
+            if (!this.base.match(re)) {
+                this.base += '/';
+            }
         }
         if (splits.length > 1) {
             var params = splits[1].split('&');
@@ -112,6 +127,7 @@ var AnchorNavigation = new Class({
         for (var i = 0; i < elems.length; i++) {
             this.setparamfromstring(elems[i]);
         }
+        return this;
     },
 
     setparamfromstring: function(str) {
@@ -182,16 +198,14 @@ var AnchorNavigation = new Class({
     },
 
     check_anchor: function() {
-        if (this.serialized == location.hash
-            && !$defined(this.force)) {
+        if (this.serialized == location.hash && this.force == undefined) {
             return;
         }
         delete(this.force);
-        this.from_string(location.hash);
-        if (!this.serialized) {
-            location.hash = this.deflocation;
-            return;
-        }
+
+        this.from_string((location.hash != "") ? location.hash : "#" + this.deflocation);
+        location.hash = this.serialized;
+
         if (!this.updatenext) {
             this.updatenext = true;
             return;
@@ -199,10 +213,17 @@ var AnchorNavigation = new Class({
 
         var query = this.serialized.substring(1);
 
-        infobox.show(this.loading_message, {
-            profile: this.loading_color,
-            spinner: true
-        });
+        if (!this.options.spin_disabled) {
+            var target = this.options.spin_target ? this.options.spin_target
+                : document.body;
+            $(target).spin({
+                message: this.loading_message
+            });
+            /*infobox.show(this.loading_message, {
+                profile: this.loading_color,
+                spinner: true
+            });*/
+        }
         new Request.JSON({
             url: query,
             noCache : true,
@@ -210,16 +231,25 @@ var AnchorNavigation = new Class({
                 ajax_login_redirect();
             },
             onSuccess: function(resp) {
+                if (!this.options.spin_disabled) {
+                    var target = this.options.spin_target ? this.options.spin_target
+                        : document.body;
+                    $(target).unspin();
+                }
+                if (resp.status == "ko") {
+                    infobox.error(resp.respmsg);
+                    return;
+                }
                 var callback = ($defined(resp.callback)) ? resp.callback : "default";
                 this.callbacks[callback](resp);
-                infobox.info(gettext("Done"));
-                infobox.hide(1);
+                /*infobox.info(gettext("Done"));
+                infobox.hide(1);*/
                 this.reset_loading_infos();
             }.bind(this),
             onFailure: function(xhr) {
                 $(document.body).set("html", xhr.responseText);
                 $(document.body).setStyle("overflow", "auto");
             }
-        }).get();
+        }).get("json=1");
     }
 });

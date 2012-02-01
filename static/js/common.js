@@ -153,8 +153,10 @@ checkTableSelection = function(text) {
     return confirm(text);
 };
 
-searchbox_init = function() {
+function searchbox_init() {
     var myFx = new Fx.Slide($("searchparams"));
+    var $searchfield = $("searchfield");
+
     myFx.hide();
     $("searchopts").addEvent("click", function(event) {
         myFx.cancel();
@@ -164,28 +166,31 @@ searchbox_init = function() {
         myFx.cancel();
         myFx.toggle();
     });
-    $("searchfield").addEvent("change", function(event) {
+    $searchfield.addEvent("change", function(event) {
         var criteria = "";
+        var pattern = this.get("value");
+
         $$("input[name=scriteria]:checked").each(function(obj) {
             criteria = obj.value;
         });
-        var pattern = $("searchfield").get("value");
         if (pattern != "") {
-            var params = "pattern=" + pattern + "&criteria=" + criteria;
-            current_anchor.updateparams(params);
+            current_anchor.setparams({
+                pattern: pattern,
+                criteria: criteria
+            });
         } else {
             current_anchor.deleteParam("pattern");
             current_anchor.deleteParam("criteria");
         }
         current_anchor.update();
     });
-    $("searchfield").addEvent("click", function(event) {
-        $("searchfield").select();
+    $searchfield.addEvent("click", function(event) {
+        $searchfield.select();
     });
 
-    $("searchfield").addEvent("blur", function(event) {
-        if ($("searchfield").value == "") {
-            $("searchfield").set("value", gettext("Search..."));
+    $searchfield.addEvent("blur", function(event) {
+        if ($searchfield.value == "") {
+            $searchfield.set("value", gettext("Search..."));
         }
     });
     $("searchbox").setStyle("float", "left");
@@ -193,7 +198,7 @@ searchbox_init = function() {
     if (frag.indexOf('?') != -1) {
         var params = frag.substring(frag.indexOf('?') + 1).parseQueryString();
         if ($defined(params.pattern)) {
-            $("searchfield").set("value", params.pattern);
+            $searchfield.set("value", params.pattern);
         }
         if ($defined(params.criteria)) {
             $("crit_" + params.criteria).checked = true;
