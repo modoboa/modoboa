@@ -312,7 +312,7 @@ def newmailbox(request, tplname="admin/adminform.html"):
 @permission_required("admin.change_mailbox")
 def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
     mb = Mailbox.objects.get(pk=mbox_id)
-    if not request.user.is_owner(mb.domain):
+    if not request.user.can_access(mb.domain):
         raise PermDeniedException(_("You do not have access to this domain"))
 
     commonctx = {"title" : _("Mailbox editing"),
