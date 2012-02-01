@@ -39,6 +39,6 @@ def reseller_actions(user, resid):
          "img" : static_url("pics/settings.png"),
          "title" : _("Edit limits allocated to this reseller"),
          "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:330,y:280}}"},
+         "rel" : "{handler:'iframe',size:{x:330,y:310}}"},
         ]
     return render_actions(actions)

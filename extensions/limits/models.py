@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _, ugettext_noop
 from modoboa.admin.models import User
 
 reseller_limits_tpl = [
+    "domain_admins_limit",
     "domains_limit",
     "domain_aliases_limit",
     "mailboxes_limit",

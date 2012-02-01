@@ -23,6 +23,7 @@ $("createfrom").addEvent("change", function(evt) {
         url = "{% url admin.views.domain_admin_promotion %}";
         styles = {height: 200};
     }
+    var size = {y: styles.height};
     new Request.JSON.mdb({
         url: url,
         onSuccess: function(response) {
@@ -37,6 +38,7 @@ $("createfrom").addEvent("change", function(evt) {
                 });
             }
             $(parent.document).getElement('iframe').setStyles(styles);
+            parent.SqueezeBox.resize(size);
         }
     }).get();
 });
