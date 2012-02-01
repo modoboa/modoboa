@@ -95,15 +95,12 @@ def create_pool(user):
     p.save()
     p.create_limits()
 
-@events.observe("DomainAdminDeleted")
-def create_pool(da):
-    owner = get_object_owner(da)
-    dec_limit(owner, 'domain_admins_limit')
-
 @events.observe("DomainAdminDeleted", "SuperAdminPromotion")
 def move_pool_resource(user):
     owner = get_object_owner(user)
     if not owner.is_superuser:
+        dec_limit(owner, 'domain_admins_limit')
+
         for ooentry in user.objectaccess_set.all():
             if ooentry.is_owner:
                 grant_access_to_object(owner, ooentry.content_object, True)
