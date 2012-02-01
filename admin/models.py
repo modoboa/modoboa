@@ -407,7 +407,7 @@ class Mailbox(DatesAware):
             self.mdirroot += '/'
 
     def __str__(self):
-        return self.__full_address()
+        return self.full_address()
 	
     @property
     def full_address(self):
