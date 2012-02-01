@@ -23,12 +23,12 @@ window.addEvent('domready', function() {
     $$("a[name=addperm]").addEvent("click", function(evt) {
 	evt.stop();
 	var sizes = current_sizes.split(" ");
-	SqueezeBox.initialize({
-	    size: {x: sizes[0], y: sizes[1]},
-	    handler: 'iframe'
-	});
 	var addperm_url = evt.target.get("href") + "?role=" + current_role;
-	SqueezeBox.open(addperm_url);
+
+	SqueezeBox.open(addperm_url, {
+            size: {x: parseInt(sizes[0]), y: parseInt(sizes[1])},
+	    handler: 'iframe'
+        });
     });
 
     $$("a[name=delperms]").addEvent("click", function(evt) {
