@@ -621,14 +621,14 @@ def viewmail(request):
     return dict(listing=content, menuargs=dict(mail_id=mailid))
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def submailboxes(request):
     topmailbox = request.GET.get('topmailbox', '')
     mboxes = get_imapconnector(request).getfolders(request.user, topmailbox)
     return ajax_simple_response(dict(status="ok", mboxes=mboxes))
 
 @login_required
-@is_not_localadmin()
+@needs_mailbox()
 def newindex(request):
     """Webmail actions handler
 
