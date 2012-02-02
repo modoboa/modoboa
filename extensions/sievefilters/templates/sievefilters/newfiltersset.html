@@ -5,23 +5,25 @@
 <script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).addEvent("domready", function() {
-  register_success_callback("newfiltersset", function(response) {
-    var name = response.url;
-    var option = new Element("option", {value: name, html: name});
-    var curfset = $(parent.document).getElementById("curfset");
+    var form = new Form();
 
-    option.inject(curfset);
-    curfset.set("value", name);
-    if ($("id_active").checked) {
-      curfset.getElements("option").each(function(item) {
-        if (item.get("value") == name) {
-          item.set("html", name + " (" + gettext("active") + ")");
-        } else {
-          item.set("html", item.get("value"));
+    form.register_success_callback("newfiltersset", function(response) {
+        var name = response.url;
+        var option = new Element("option", {value: name, html: name});
+        var curfset = $(parent.document).getElementById("curfset");
+
+        option.inject(curfset);
+        curfset.set("value", name);
+        if ($("id_active").checked) {
+            curfset.getElements("option").each(function(item) {
+                if (item.get("value") == name) {
+                    item.set("html", name + " (" + gettext("active") + ")");
+                } else {
+                    item.set("html", item.get("value"));
+                }
+            });
         }
-      });
-    }
-  });
+    });
 });
 
 </script>
@@ -29,7 +31,8 @@ $(document).addEvent("domready", function() {
 {% block content %}
 <div class="title"><h1>{{ title }}</h1></div>
 {% if error %}<div id="error" class="error">{{ error }}</div>{% endif %}
-<form action="" method="POST" id="{{ fname }}" name="{{ fname }}">
+<form action="{% url modoboa.extensions.sievefilters.views.new_filters_set %}" 
+      method="POST" id="{{ fname }}" name="{{ fname }}">
   {% include "common/genericform.html" %}
   <div id="submit_container">
     <input type="submit" name="submit" value='{{ submit_label }}'/>

@@ -6,6 +6,8 @@
 <script src="{{ MEDIA_URL }}webmail/js/webmail.js" type="text/javascript"></script>
 <script type="text/javascript">
   window.addEvent("domready", function() {
+    var form = new Form();
+
     init_folders_browsing();
 
     $$("a[name=loadfolder]").addEvent("click", function(evt) {
@@ -16,7 +18,7 @@
       this.getParent().addClass("selected");
     });
 
-    register_extra_data_callback("{{ fname }}", function() {
+    form.register_extra_data_callback("{{ fname }}", function() {
       var result = "";
       $$("li[class*=selected]").each(function(item) {
         var atag = item.getFirst("a");
@@ -30,7 +32,8 @@
 {% block content %}
 <div class="title"><h1>{{ title }}</h1></div>
 <div id="error" class="error">{{ error }}</div>
-<form action="" method="POST" id="{{ fname }}" name="{{ fname }}">
+<form action="{% url modoboa.extensions.webmail.views.newfolder %}" 
+      method="POST" id="{{ fname }}" name="{{ fname }}">
   <input type="hidden" name="oldname" value="{{ oldname }}" />
   {% include "common/genericform.html" %}
   <div class="row">

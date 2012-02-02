@@ -28,9 +28,9 @@ def index(request, tplname="sievefilters/index.html"):
         return _render_error(request, user_context={"error" : e})
     if active_script is None:
         active_script = ""
-        default_script = scripts[0] if len(scripts) else ""
+        default_script = "%s/" % scripts[0] if len(scripts) else ""
     else:
-        default_script = active_script
+        default_script = "%s/" % active_script
     return _render(request, tplname, {
             "active_script" : active_script,
             "default_script" : default_script,

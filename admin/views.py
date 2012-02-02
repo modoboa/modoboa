@@ -574,7 +574,7 @@ def edit_domain_admin(request, da_id, tplname="admin/adminform.html"):
 
 @login_required
 @permission_required("auth.view_permissions")
-def domain_admin_promotion(request):
+def domain_admin_promotion(request, tplname="admin/domain_admin_promotion.html"):
     if request.method == "POST":
         form = DomainAdminPromotionForm(request.POST)
         if form.is_valid():
@@ -590,9 +590,10 @@ def domain_admin_promotion(request):
             messages.info(request, _("Domain admin added"), fail_silently=True)
             return ajax_response(request, url=reverse(admin.views.permissions))
 
+        return ajax_response(request, status="ko", template=tplname, form=form)
+
     form = DomainAdminPromotionForm()
-    return ajax_response(request, template="admin/domain_admin_promotion.html",
-                         form=form)
+    return ajax_response(request, template=tplname, form=form)
 
 @login_required
 @permission_required("auth.view_permissions")
