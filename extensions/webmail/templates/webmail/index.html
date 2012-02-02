@@ -74,10 +74,10 @@ function wm_updatelisting(resp) {
 
   new Webmail({
     refreshRate: {{ refreshrate }},
-    modify_url:  "{% url extensions.webmail.views.editfolder %}",
-    delete_url: "{% url extensions.webmail.views.delfolder %}",
-    move_url: "{% url extensions.webmail.views.move %}",
-    submboxes_url: "{% url extensions.webmail.views.submailboxes %}"
+    modify_url:  "{% url modoboa.extensions.webmail.views.editfolder %}",
+    delete_url: "{% url modoboa.extensions.webmail.views.delfolder %}",
+    move_url: "{% url modoboa.extensions.webmail.views.move %}",
+    submboxes_url: "{% url modoboa.extensions.webmail.views.submailboxes %}"
   });
 
   current_anchor.register_callback("folder", function(resp) {

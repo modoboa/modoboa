@@ -544,11 +544,10 @@ var Webmail = new Class({
         //wm_updatelisting(resp);
         this.page_update(resp);
 
-        window.addEvent("resize", this.resize_window_callback.bind(this));
-
         var editormode = resp.editor;
 
         if (editormode == "html") {
+            window.addEvent("resize", this.resize_window_callback.bind(this));
             var instance = CKEDITOR.instances[editorid];
             if (instance) {
                 CKEDITOR.remove(instance);
@@ -584,12 +583,14 @@ var Webmail = new Class({
      * Callback of the 'sendmail' action.
      */
     sendmail_callback: function(evt) {
+        var link = evt.target;
+
         evt.stop();
         infobox.show(gettext("Sending..."), {
             profile : "gray",
             spinner : true
         });
-        disable_link(this);
+        disable_link(link);
         $("composemail").set("send", {
             onSuccess: function(resp) {
                 resp = JSON.decode(resp);
@@ -603,10 +604,10 @@ var Webmail = new Class({
                 }
                 current_anchor.parse_string(resp.url, true).setparams(navparams);
                 current_anchor.update();
-                this.eliminate("editormode");
+                link.eliminate("editormode");
             }.bind(this)
         });
-        if (this.retrieve("editormode") == "html") {
+        if (link.retrieve("editormode") == "html") {
             CKEDITOR.instances[editorid].updateElement();
         }
         $("composemail").send();

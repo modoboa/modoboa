@@ -157,6 +157,7 @@ def fetchmail(request, mbox, mailid, all=False):
 #                                                     menu=menu, content=content))
 #     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
+
 @login_required
 @needs_mailbox()
 def viewmail(request, folder, mail_id=None):
@@ -173,6 +174,8 @@ def viewmail(request, folder, mail_id=None):
             "headers" : email.render_headers(folder=mbox, mail_id=mailid), 
             "folder" : mbox, "imapid" : mailid, "mailbody" : email.body
             })
+
+
 
 @login_required
 @needs_mailbox()
@@ -602,9 +605,25 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
     return ctx
 
 def compose(request):
+    if request.method == "POST":
+        return send_mail(request)
+
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
-    return render_compose(request, form, "compose", insert_signature=True)
+    return render_compose(request, form, "?action=compose", insert_signature=True)
+
+@login_required
+@needs_mailbox()
+def getmailcontent(request):
+    mbox = request.GET.get("mbox", None)
+    mailid = request.GET.get("mailid", None)
+    if mbox is None or mailid is None:
+         raise WebmailError(_("Invalid request"))
+    email = ImapEmail(mbox, mailid, request, links=request.GET["links"])
+    return _render(request, "common/viewmail.html", {
+            "headers" : email.render_headers(folder=mbox, mail_id=mailid), 
+            "folder" : mbox, "imapid" : mailid, "mailbody" : email.body
+            })
 
 def viewmail(request):
     mailid = request.GET.get("mailid", None)

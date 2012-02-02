@@ -10,8 +10,7 @@ urlpatterns = patterns(
     #(r'^$', "index"),
     (r'^$', "newindex"),
     (r'^submailboxes', "submailboxes"),
-    #(r'^mailcontent', "getmailcontent"),
-
+    (r'^getmailcontent', 'getmailcontent'),
     
     #                       (r'^compose/$', "compose"),
     (r'^move/$', "move"),
