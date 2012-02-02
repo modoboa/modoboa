@@ -37,6 +37,7 @@ urlpatterns = patterns(
     (r'^permissions/domainadmin/edit/(?P<da_id>\d+)/$', 'edit_domain_admin'),
     (r'^permissions/domainadmin/promote/$', 'domain_admin_promotion'),
     (r'^permissions/domainadmin/assign/(?P<da_id>\d+)/$', 'assign_domains_to_admin'),
+    (r'^permissions/domainadmins/(?P<dom_id>\d+)/$', 'view_domain_admins'),
     (r'^permissions/searchaccount/$', 'search_account'),
     (r'^permissions/delete/$', 'delete_permissions'),
     )

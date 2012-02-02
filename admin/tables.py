@@ -21,7 +21,7 @@ class DomainsTable(tables.Table):
                           width="50px", align="center")
     enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="50px",
                             align="center")
-    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),  width="50px",
+    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),  width="70px",
                                   align="center", defvalue=domain_actions)
 
     cols_order = ["name", "creation", "modified", 

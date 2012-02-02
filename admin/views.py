@@ -627,6 +627,14 @@ def assign_domains_to_admin(request, da_id, tplname="admin/adminform.html"):
 
 @login_required
 @permission_required("auth.view_permissions")
+def view_domain_admins(request, dom_id, tplname="admin/view_domain_admins.html"):
+    domain = Domain.objects.get(pk=dom_id)
+    return _render(request, tplname, {
+            "domain" : domain
+            })
+
+@login_required
+@permission_required("auth.view_permissions")
 @check_domain_access
 def search_account(request):
     search = request.POST.get("search", None)
