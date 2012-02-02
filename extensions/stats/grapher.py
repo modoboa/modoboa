@@ -3,7 +3,6 @@
 import os
 import time
 import datetime
-import rrdtool
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
 
@@ -77,6 +76,8 @@ class Grapher(object):
         self.img_rootdir = parameters.get_admin("IMG_ROOTDIR")
 
     def process(self, target, suffix, start, end, tpl=traffic_avg_template):
+        import rrdtool
+
         rrdfile = "%s/%s.rrd" % (self.rrd_rootdir, target)
         if not os.path.exists(rrdfile):
             return

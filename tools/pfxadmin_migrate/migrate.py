@@ -115,9 +115,7 @@ def migrate_mailboxes(domain, options):
     old_mboxes = pf_models.Mailbox.objects.using(options._from).filter(domain=domain.name)
     for old_mb in old_mboxes:
         new_mb = md_models.Mailbox()
-        new_mb.name = old_mb.name
         new_mb.address = old_mb.local_part
-        new_mb.password = old_mb.password
         new_mb.domain = domain
         new_mb.dates = migrate_dates(old_mb)
         if old_mb.quota:
@@ -132,7 +130,7 @@ def migrate_mailboxes(domain, options):
                 print "Error: cannot rename mailbox directory\n%s" % output
                 sys.exit(1)
 
-        new_mb.save(using=options.to)
+        new_mb.save(name=old_mb.name, password=old_mb.password, using=options.to)
         
 
 def migrate_domain(old_dom, options):
@@ -161,29 +159,27 @@ def migrate_admins(options):
             print "Warning: skipping useless admin %s" % (old_admin.username)
             continue
         try:
-            mb = md_models.Mailbox.objects.using(options.to).get(user__username=old_admin.username)
-        except md_models.Mailbox.DoesNotExist:
+            user = md_models.User.objects.using(options.to).get(username=old_admin.username)
+        except md_models.User.DoesNotExist:
             try:
                 domain = md_models.Domain.objects.using(options.to).get(name=domname)
             except md_models.Domain.DoesNotExist:
                 print "Warning: skipping domain admin %s, domain not found" \
                     % old_admin.username
                 continue
-            mb = md_models.Mailbox()
-            mb.address = local_part
-            mb.domain = domain
-            mb.name = local_part
-            mb.enabled = old_admin.active
-            mb.password = old_admin.password
-            mb.dates = migrate_dates(old_admin)
-            mb.save(using=options.to)            
+            user = md_models.User()
+            user.username = old_admin.username
+            user.email = old_admin.username
+            user.password = old_admin.password
+            user.is_active = old_admin.active
+            user.save(using=options.to)
 
-        mb.user.date_joined = old_admin.modified
+        user.date_joined = old_admin.modified
         if creds.domain == "ALL":
-            mb.user.is_superuser = True
+            user.is_superuser = True
         else:
-            mb.user.groups.add(dagroup)
-        mb.save(using=options.to)
+            user.groups.add(dagroup)
+        user.save(using=options.to)
 
 def do_migration(options):
     pf_domains = pf_models.Domain.objects.using(options._from).all()
