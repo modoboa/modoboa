@@ -177,7 +177,7 @@ def save_admin(name, value, app=None):
         p = Parameter()
         p.name = fullname
     if p.value != value:
-        p.value = str(value).encode("string_escape").strip()
+        p.value = value.encode("unicode_escape").strip()
         p.save()
     return True
 
@@ -209,7 +209,7 @@ def get_admin(name, app=None):
         p = Parameter.objects.get(name="%s.%s" % (app, name))
     except Parameter.DoesNotExist:
         return _params[app]["A"][name]["deflt"]
-    return p.value.decode("string_escape")
+    return p.value.decode("unicode_escape")
 
 def get_user(user, name, app=None):
     from models import UserParameter
@@ -221,11 +221,7 @@ def get_user(user, name, app=None):
         p = UserParameter.objects.get(user=user, name="%s.%s" % (app, name))
     except UserParameter.DoesNotExist:
         return _params[app]["U"][name]["deflt"]
-    try:
-        dvalue = p.value.decode("string_escape")
-    except ValueError:
-        dvalue = p.value
-    return dvalue
+    return p.value.decode("unicode_escape")
 
 def get_app_option(lvl, name, dflt, app=None):
     if app is None:
