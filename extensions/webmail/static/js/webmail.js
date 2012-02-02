@@ -762,6 +762,8 @@ function sendmail_callback(evt) {
                 current_anchor.get_callback("compose")(resp);
                 if ($defined(resp.respmsg)) {
                     infobox.error(resp.respmsg);
+                } else {
+                    infobox.hide();
                 }
                 enable_link(this, sendmail_callback);
                 return;
