@@ -403,6 +403,11 @@ div.row label {
     padding: 3px 0;
 }
 
+.missing input,
+.missing textarea { 
+    background-color: #F9D2D2;
+}
+
 .error {
     margin: 0 auto;
     padding: 5px;

@@ -734,7 +734,7 @@ def send_mail(request, origmsg=None, posturl=None):
     """
     from email.mime.multipart import MIMEMultipart
     from forms import ComposeMailForm
-    from modoboa.lib.webutils import getctx, ajax_simple_response
+    from modoboa.lib.webutils import getctx, ajax_simple_response, _render_to_string
     from modoboa.auth.lib import get_password
 
     form = ComposeMailForm(request.POST)
@@ -815,13 +815,13 @@ def send_mail(request, origmsg=None, posturl=None):
         del request.session["compose_mail"]
         return True, ajax_simple_response(getctx("ok", url=get_current_url(request)))
 
-
-    listing = render_to_string("webmail/compose.html", 
-                               {"form" : form, 
+    listing = _render_to_string(request, "webmail/compose.html", 
+                               {"form" : form, "noerrors" : True,
                                 "body" : request.POST["id_body"].strip(),
                                 "posturl" : posturl})
+    error = _("Red fields are mandatories")
     return False, ajax_simple_response(
-        getctx("ko", level=2, listing=listing, editor=editormode)
+        getctx("ko", level=2, respmsg=error, listing=listing, editor=editormode)
         )
 
 class AttachmentUploadHandler(FileUploadHandler):
