@@ -5,6 +5,8 @@ from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
 
 def load():
+    parameters.register_app(uparams_opts=dict(needs_mailbox=True))
+
     parameters.register_admin("IMAP_SERVER", type="string", 
                               deflt="127.0.0.1",
                               help=_("Address of your IMAP server"))
@@ -30,7 +32,6 @@ def load():
     parameters.register_admin("MAX_ATTACHMENT_SIZE", type="int", deflt=2048,
                               help=_("Maximum attachment size in bytes (or KB, MB, GB if specified)"))
    
-
     parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
                              label=_("Number of displayed emails per page"),
                              help=_("Sets the maximum number of messages displayed in a page"))

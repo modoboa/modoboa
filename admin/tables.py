@@ -21,7 +21,7 @@ class DomainsTable(tables.Table):
                           width="50px", align="center")
     enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="50px",
                             align="center")
-    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),  width="50px",
+    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),  width="70px",
                                   align="center", defvalue=domain_actions)
 
     cols_order = ["name", "creation", "modified", 
@@ -67,7 +67,7 @@ class MailboxesTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
 
-    address = tables.Column("address", label=ugettext_noop("Address"))
+    address = tables.Column("full_address", label=ugettext_noop("Address"))
     name = tables.Column("user", label=ugettext_noop("Name"))
     creation = tables.Column("creation", label=ugettext_noop("Created"), 
                              width="160px")

@@ -8,7 +8,7 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}js/Autocompleter.Request.js"></script>
 <script type="text/javascript">
 window.addEvent("domready", function() {
-    var form = new Form({target: "formcontainer"});
+    var form = new Form({resptarget: "formcontainer"});
 
 $("createfrom").addEvent("change", function(evt) {
     var url = "";
@@ -23,6 +23,7 @@ $("createfrom").addEvent("change", function(evt) {
         url = "{% url admin.views.domain_admin_promotion %}";
         styles = {height: 200};
     }
+    var size = {y: styles.height};
     new Request.JSON.mdb({
         url: url,
         onSuccess: function(response) {
@@ -37,6 +38,7 @@ $("createfrom").addEvent("change", function(evt) {
                 });
             }
             $(parent.document).getElement('iframe').setStyles(styles);
+            parent.SqueezeBox.resize(size);
         }
     }).get();
 });

@@ -27,6 +27,49 @@ class NotDefined(Exception):
         return "Application '%s' and/or parameter '%s' not defined" \
             % (self.app, self.name)
 
+def register_app(app=None, aparams_opts=None, uparams_opts=None):
+    """Manually register an application
+
+    You don't need to call this function unless you want to provide
+    specific options for your application parameters.
+
+    For example, you can indicate that user-level parameters are only
+    accessible for users that own a mailbox.
+
+    :param app: the application's name
+    :param aparams_opts: a dict containing options applicable to admin-level params
+    :param uparams_opts: a dict containing options applicable to user-level params
+    """
+    if app is None:
+        app = __guess_extension()
+
+    if _params.has_key(app):
+        return
+    _params[app] = {}
+    _params[app]['options'] = {}
+    _params_order[app] = {}
+    for lvl in _levels.keys():
+        _params[app][lvl] = {}
+        _params_order[app][lvl] = []
+
+    if aparams_opts:
+        _params[app]['options']['A'] = aparams_opts
+    if uparams_opts:
+        _params[app]['options']['U'] = uparams_opts
+        
+def unregister_app(app):
+    """Unregister an application
+
+    All parameters associated to this application will also be
+    removed.
+
+    :param app: the application's name (string)
+    """
+    if not _params.has_key(app):
+        return False
+    del _params[app]
+    return True
+
 def __is_defined(app, level, name):
     if not level in _levels.keys() \
             or not app in _params.keys() \
@@ -44,11 +87,8 @@ def __register(app, level, name, **kwargs):
     :param name: the parameter's name
     """ 
     if not app in _params.keys():
-        _params[app] = {}
-        _params_order[app] = {}
-        for lvl in _levels.keys():
-            _params[app][lvl] = {}
-            _params_order[app][lvl] = []
+        register_app(app)
+
     if not level in _levels.keys():
         return
     if _params[app][level].has_key(name):
@@ -113,18 +153,16 @@ def update_admin(name, **kwargs):
     return __update(app, 'A', name, **kwargs)
 
 def register_user(name, **kwargs):
+    """Register a new user-level parameter
+
+    :param name: the parameter's name
+    """
     if kwargs.has_key("app"):
         app = kwargs["app"]
         del kwargs["app"]
     else:
         app = __guess_extension()
     return __register(app, 'U', name, **kwargs)
-
-def unregister_app(app):
-    if not _params.has_key(app):
-        return False
-    del _params[app]
-    return True
 
 def save_admin(name, value, app=None):
     from models import Parameter
@@ -139,7 +177,7 @@ def save_admin(name, value, app=None):
         p = Parameter()
         p.name = fullname
     if p.value != value:
-        p.value = str(value).encode("string_escape").strip()
+        p.value = value.encode("unicode_escape").strip()
         p.save()
     return True
 
@@ -157,7 +195,7 @@ def save_user(user, name, value, app=None):
         p.user = user
         p.name = fullname
     if p.value != value:
-        p.value = str(value).encode("string_escape").strip()
+        p.value = value.encode("unicode_escape").strip()
         p.save()
     return True
 
@@ -171,7 +209,7 @@ def get_admin(name, app=None):
         p = Parameter.objects.get(name="%s.%s" % (app, name))
     except Parameter.DoesNotExist:
         return _params[app]["A"][name]["deflt"]
-    return p.value.decode("string_escape")
+    return p.value.decode("unicode_escape")
 
 def get_user(user, name, app=None):
     from models import UserParameter
@@ -183,4 +221,13 @@ def get_user(user, name, app=None):
         p = UserParameter.objects.get(user=user, name="%s.%s" % (app, name))
     except UserParameter.DoesNotExist:
         return _params[app]["U"][name]["deflt"]
-    return p.value.decode("string_escape")
+    return p.value.decode("unicode_escape")
+
+def get_app_option(lvl, name, dflt, app=None):
+    if app is None:
+        app = __guess_extension()
+    if not lvl in _params[app]['options']:
+        return dflt
+    if not _params[app]['options'][lvl].has_key(name):
+        return dflt
+    return _params[app]['options'][lvl][name]

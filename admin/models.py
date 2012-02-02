@@ -295,14 +295,13 @@ class DatesAware(models.Model):
         ObjectDates.set_for_object(self)
         super(DatesAware, self).save(*args, **kwargs)
 
-    def __creation(self):
+    @property
+    def creation(self):
         return self.dates.creation
 
-    def __last_modification(self):
+    @property
+    def last_modification(self):
         return self.dates.last_modification
-
-    creation = property(__creation)
-    last_modification = property(__last_modification)
 
 class Domain(DatesAware):
     name = models.CharField(ugettext_noop('name'), max_length=100, unique=True,
@@ -317,14 +316,14 @@ class Domain(DatesAware):
             ("view_domain", "View domain"),
             ("view_domains", "View domains"),
             )
-
-    def __domainalias_count(self):
+        
+    @property
+    def domainalias_count(self):
         return len(self.domainalias_set.all())
-    domainalias_count = property(__domainalias_count)
 
-    def __mailbox_count(self):
+    @property
+    def mailbox_count(self):
         return len(self.mailbox_set.all())
-    mailbox_count = property(__mailbox_count)
 
     def create_dir(self):
         if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
@@ -407,25 +406,25 @@ class Mailbox(DatesAware):
             self.mdirroot += '/'
 
     def __str__(self):
-        return self.__full_address()
-
-    def __full_address(self):
+        return self.full_address
+	
+    @property
+    def full_address(self):
         return "%s@%s" % (self.address, self.domain.name)
-    full_address = property(__full_address)
 
-    def __enabled(self):
+    @property
+    def enabled(self):
         return self.user.is_active
-    enabled = property(__enabled)
 
-    def __full_path(self):
+    @property
+    def full_path(self):
         path = os.path.join(parameters.get_admin("STORAGE_PATH"),
                             self.domain.name, self.address)
         return os.path.abspath(path)
-    full_path = property(__full_path)
 
-    def __alias_count(self):
+    @property
+    def alias_count(self):
         return len(self.alias_set.all())
-    alias_count = property(__alias_count)
 
     def create_dir(self):
         if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
@@ -607,15 +606,15 @@ class Alias(DatesAware):
             ("view_aliases", "View aliases"),
             )
 
-    def __full_address(self):
+    @property
+    def full_address(self):
         return "%s@%s" % (self.address, self.domain.name)
-    full_address = property(__full_address)
 
-    def __targets(self):
+    @property
+    def targets(self):
         ret = "<br/>".join(map(lambda m: str(m), self.mboxes.all()))
         ret += "<br/>" + self.repr_extmboxes()
         return ret
-    targets = property(__targets)
 
     def save(self, int_targets, ext_targets, *args, **kwargs):
         if len(ext_targets):

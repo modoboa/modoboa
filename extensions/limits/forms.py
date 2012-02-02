@@ -30,6 +30,10 @@ class ResellerWithPasswordForm(ResellerForm, UserWithPasswordForm):
     pass
 
 class ResellerPoolForm(forms.Form):
+    domain_admins_limit = forms.IntegerField(
+        ugettext_noop("Max domain admins"),
+        help_text=ugettext_noop("Maximum number of domain administrators that can be created by this user")
+        )
     domains_limit = forms.IntegerField(ugettext_noop("Max domains"),
         help_text=ugettext_noop("Maximum number of domains that can be created by this user"))
     domain_aliases_limit = forms.IntegerField(ugettext_noop("Max domain aliases"),

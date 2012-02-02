@@ -1,0 +1,8 @@
+{% extends "layout_simple.html" %}
+{% load i18n %}
+{% block content %}
+<div class="title"><h1>{% trans "Administrators of" %} {{ domain.name }}</h1></div>
+<select id="domainadmins" multiple="multiple">
+{% for owner in domain.owners.all %}<option value="{{ owner.user.id }}">{{ owner.user.username }}</option>{% endfor %}
+</select>
+{% endblock %}

@@ -169,6 +169,15 @@ def domain_actions(user, domid):
          "img" : static_url("pics/alias.png"),
          "title" : _("View aliases of this domain")}
         ]
+    if user.has_perm('admin.view_domains'):
+        actions += [
+            {"name" : "viewadmins",
+             "url" : reverse(admin.views.view_domain_admins, args=[domid]),
+             "img" : static_url("pics/administrators.png"),
+             "title" : _("View administrators of this domain"),
+             "class" : "boxed",
+             "rel" : "{handler:'iframe',size:{x:310,y:190}}"},
+            ]
     return render_actions(actions)
 
 @register.simple_tag

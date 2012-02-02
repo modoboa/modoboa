@@ -40,9 +40,6 @@ def dec_limit(user, lname):
     except LimitsPool.DoesNotExist:
         pass
 
-@events.observe('CanCreateDomain')
-def check_domains_limit(user):
-    check_limit(user, 'domains_limit')
 
 @events.observe('CreateDomain')
 def inc_nb_domains(user, domain):
@@ -59,10 +56,6 @@ def dec_nb_domains(domain):
     for mbalias in domain.alias_set.all():
         dec_nb_mbaliases(mbalias)
 
-@events.observe('CanCreateDomainAlias')
-def check_domaliases_limit(user):
-    check_limit(user, 'domain_aliases_limit')
-
 @events.observe('DomainAliasCreated')
 def inc_nb_domaliases(user, domalias):
     inc_limit(user, 'domain_aliases_limit')
@@ -71,10 +64,6 @@ def inc_nb_domaliases(user, domalias):
 def dec_nb_domaliases(domainalias):
     owner = get_object_owner(domainalias)
     dec_limit(owner, 'domain_aliases_limit')
-
-@events.observe('CanCreateMailbox')
-def check_mboxes_limit(user):
-    check_limit(user, 'mailboxes_limit')
 
 @events.observe('CreateMailbox')
 def inc_nb_mailboxes(user, mailbox):
@@ -85,10 +74,6 @@ def dec_nb_mailboxes(mailbox):
     owner = get_object_owner(mailbox)
     dec_limit(owner, 'mailboxes_limit')
 
-@events.observe('CanCreateMailboxAlias')
-def check_mbaliases_limit(user):
-    check_limit(user, 'mailbox_aliases_limit')
-
 @events.observe('MailboxAliasCreated')
 def inc_nb_mbaliases(user, mailboxalias):
     inc_limit(user, 'mailbox_aliases_limit')
@@ -98,8 +83,14 @@ def dec_nb_mbaliases(mailboxalias):
     owner = get_object_owner(mailboxalias)
     dec_limit(owner, 'mailbox_aliases_limit')
 
+@events.observe('CanCreate')
+def can_create_new_object(user, objtype):
+    check_limit(user, '%s_limit' % objtype)
+
 @events.observe("DomainAdminCreated")
 def create_pool(user):
+    owner = get_object_owner(user)
+    inc_limit(owner, 'domain_admins_limit')
     p = LimitsPool(user=user)
     p.save()
     p.create_limits()
@@ -108,6 +99,8 @@ def create_pool(user):
 def move_pool_resource(user):
     owner = get_object_owner(user)
     if not owner.is_superuser:
+        dec_limit(owner, 'domain_admins_limit')
+
         for ooentry in user.objectaccess_set.all():
             if ooentry.is_owner:
                 grant_access_to_object(owner, ooentry.content_object, True)

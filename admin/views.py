@@ -70,7 +70,7 @@ def _validate_domain(request, form, successmsg, commonctx,
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
 def newdomain(request, tplname="admin/adminform.html"):
-    events.raiseEvent("CanCreateDomain", request.user)
+    events.raiseEvent("CanCreate", request.user, "domains")
     def newdomain_cb(user, domain):
         grant_access_to_object(user, domain, is_owner=True)
         events.raiseEvent("CreateDomain", user, domain)
@@ -152,7 +152,7 @@ def domaliases(request):
 @permission_required("admin.add_domainalias")
 @transaction.commit_on_success
 def newdomalias(request, tplname="admin/adminform.html"):
-    events.raiseEvent("CanCreateDomainAlias", request.user)
+    events.raiseEvent("CanCreate", request.user, "domain_aliases")
     commonctx = {"title" : _("New domain alias"),
                  "submit_label" : _("Create"),
                  "action" : reverse(newdomalias),
@@ -275,7 +275,7 @@ def mailboxes_search(request):
 @permission_required("admin.add_mailbox")
 @transaction.commit_on_success
 def newmailbox(request, tplname="admin/adminform.html"):
-    events.raiseEvent("CanCreateMailbox", request.user)
+    events.raiseEvent("CanCreate", request.user, "mailboxes")
     commonctx = {"title" : _("New mailbox"),
                  "submit_label" : _("Create"),
                  "action" : reverse(newmailbox),
@@ -312,7 +312,7 @@ def newmailbox(request, tplname="admin/adminform.html"):
 @permission_required("admin.change_mailbox")
 def editmailbox(request, mbox_id=None, tplname="admin/adminform.html"):
     mb = Mailbox.objects.get(pk=mbox_id)
-    if not request.user.is_owner(mb.domain):
+    if not request.user.can_access(mb.domain):
         raise PermDeniedException(_("You do not have access to this domain"))
 
     commonctx = {"title" : _("Mailbox editing"),
@@ -423,7 +423,7 @@ def _validate_mbalias(request, form, successmsg, tplname, commonctx, callback=No
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
 def newmbalias(request, tplname="admin/mbaliasform.html"):
-    events.raiseEvent("CanCreateMailboxAlias", request.user)
+    events.raiseEvent("CanCreate", request.user, "mailbox_aliases")
     commonctx = {"title" : _("New mailbox alias"),
                  "submit_label" : _("Create"),
                  "action" : reverse(newmbalias),
@@ -496,7 +496,7 @@ def permissions(request, tplname='admin/permissions.html'):
     permtables += [
         {"id" : "domain_admins",
          "title" : _("Domain administrators"),
-         "rel" : "350 250",
+         "rel" : "350 100",
          "content" : DomainAdminsPerms().get(request)}
         ]
 
@@ -515,6 +515,7 @@ def add_permission(request):
     else:
         pobj = pclass()
         if request.method == "GET":
+            events.raiseEvent("CanCreate", request.user, role)
             return pobj.get_add_form(request)
         status, data = pobj.add(request)
         if not status:
@@ -573,7 +574,7 @@ def edit_domain_admin(request, da_id, tplname="admin/adminform.html"):
 
 @login_required
 @permission_required("auth.view_permissions")
-def domain_admin_promotion(request):
+def domain_admin_promotion(request, tplname="admin/domain_admin_promotion.html"):
     if request.method == "POST":
         form = DomainAdminPromotionForm(request.POST)
         if form.is_valid():
@@ -589,9 +590,10 @@ def domain_admin_promotion(request):
             messages.info(request, _("Domain admin added"), fail_silently=True)
             return ajax_response(request, url=reverse(admin.views.permissions))
 
+        return ajax_response(request, status="ko", template=tplname, form=form)
+
     form = DomainAdminPromotionForm()
-    return ajax_response(request, template="admin/domain_admin_promotion.html",
-                         form=form)
+    return ajax_response(request, template=tplname, form=form)
 
 @login_required
 @permission_required("auth.view_permissions")
@@ -623,6 +625,14 @@ def assign_domains_to_admin(request, da_id, tplname="admin/adminform.html"):
     form = AssignDomainsForm(request.user, da)
     ctx.update(form=form)
     return _render(request, tplname, ctx)
+
+@login_required
+@permission_required("auth.view_permissions")
+def view_domain_admins(request, dom_id, tplname="admin/view_domain_admins.html"):
+    domain = Domain.objects.get(pk=dom_id)
+    return _render(request, tplname, {
+            "domain" : domain
+            })
 
 @login_required
 @permission_required("auth.view_permissions")

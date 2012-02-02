@@ -8,6 +8,8 @@ from sievelib.managesieve import SUPPORTED_AUTH_MECHS
 baseurl = "sfilters"
 
 def load():
+    parameters.register_app(uparams_opts=dict(needs_mailbox=True))
+
     parameters.register_admin("SERVER", type="string", 
                               deflt="127.0.0.1",
                               help=_("Address of your MANAGESIEVE server"))

@@ -15,20 +15,18 @@ import re
 events = [
     "SuperAdminPromotion",
 
-    "CanCreateDomain",
+    "CanCreate",
+
     "CreateDomain",
     "DeleteDomain",
 
-    "CanCreateDomainAlias",
     "DomainAliasCreated",
     "DomainAliasDeleted",
 
-    "CanCreateMailbox",
     "CreateMailbox",
     "DeleteMailbox",
     "ModifyMailbox",
 
-    "CanCreateMailboxAlias",
     "MailboxAliasCreated",
     "MailboxAliasDeleted",
 
