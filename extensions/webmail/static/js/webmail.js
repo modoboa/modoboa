@@ -473,7 +473,7 @@ var Webmail = new Class({
 
         //$$("a[name=back]").addEvent("click", this._listmailbox_loader);
         $$("a[name=reply]").addEvent("click", this.reply_loader);
-        $$("a[name=replyall]").addEvent("click", this.replyall_loader);
+        $$("a[name=replyall]").addEvent("click", this.reply_loader);
         $$("a[name=forward]").addEvent("click", this.forward_loader);
         $$("a[name=delete]").addEvent("click", function(event) {
             var lnk = event.target;
@@ -504,18 +504,9 @@ var Webmail = new Class({
      * Loader of the 'reply' action (called when the associated button
      * is clicked).
      */
-    reply_loader: function(event) {
+    reply_loader: function(event, all) {
         event.stop();
-        location.hash += event.target.get("href");
-    },
-
-    /*
-     * Loader of the 'replyall' action (called when the associated button
-     * is clicked).
-     */
-    replyall_loader: function(event) {
-        event.stop();
-        location.hash += event.target.get("href") + "?all=1";
+        current_anchor.reset().updateparams(this.get("href")).update();
     },
 
     /*
@@ -524,7 +515,7 @@ var Webmail = new Class({
      */
     forward_loader: function(event) {
         event.stop();
-        location.hash += event.target.get("href");
+        current_anchor.reset().updateparams(this.get("href")).update();
     },
 
     /*
@@ -598,12 +589,15 @@ var Webmail = new Class({
                     current_anchor.get_callback("compose")(resp);
                     if ($defined(resp.respmsg)) {
                         infobox.error(resp.respmsg);
+                    } else {
+                        infobox.hide();
                     }
-                    enable_link(this, sendmail_callback);
+                    enable_link(link, sendmail_callback);
                     return;
                 }
-                current_anchor.parse_string(resp.url, true).setparams(navparams);
-                current_anchor.update();
+                history.go(-2);
+                infobox.info(gettext("Done"));
+                infobox.hide(1);
                 link.eliminate("editormode");
             }.bind(this)
         });

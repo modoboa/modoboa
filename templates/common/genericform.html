@@ -1,5 +1,8 @@
 {% load i18n %}
-{% for field in form %}
+{% for field in form.hidden_fields %}
+{{ field }}
+{% endfor %}
+{% for field in form.visible_fields %}
 <div class="row clearfix">
   {% if field.help_text %}
   <div id="{{ field.name }}_helptext" class="tip">

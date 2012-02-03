@@ -7,6 +7,8 @@ class ComposeMailForm(forms.Form):
     cc = forms.CharField(label=_("Cc"), widget=forms.Textarea(), required=False)
     subject = forms.CharField(label=_("Subject"), max_length=255, required=False)
 
+    origmsgid = forms.CharField(widget=forms.HiddenInput(), required=False)
+    
 class FolderForm(forms.Form):
     name = forms.CharField()
 

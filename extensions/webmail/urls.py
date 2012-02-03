@@ -28,7 +28,7 @@ urlpatterns = patterns(
     (r'^(?P<fdname>.+)/(?P<mail_id>[\w\-\+]+)/delete/$', 'delete'),
     #(r'^(?P<folder>.+)/(?P<mailid>[\w\-\+]+)/content/$', 'getmailcontent'),
     (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/forward/$', 'forward'),
-    (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/reply/$', 'reply'),
+#    (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/reply/$', 'reply'),
     #                       (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/$', 'viewmail'),
     (r'^(?P<name>.+)/$', "folder"),
     )

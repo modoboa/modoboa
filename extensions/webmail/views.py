@@ -320,42 +320,42 @@ def compact(request, name):
 #     form.fields["from_"].initial = request.user.username
 #     return render_compose(request, form, reverse(compose), insert_signature=True)
 
-@login_required
-@needs_mailbox()
-def reply(request, folder, mail_id):
-    msg = fetchmail(request, folder, mail_id, True)
-    if request.method == "POST":
-        status, resp = send_mail(request, origmsg=msg, 
-                                 posturl=reverse(reply, args=[folder, mail_id]))
-        if status:
-            IMAPconnector(user=request.user.username,
-                          password=request.session["password"]).msg_answered(folder,
-                                                                             mail_id)
-        return resp
+# @login_required
+# @needs_mailbox()
+# def reply(request, folder, mail_id):
+#     msg = fetchmail(request, folder, mail_id, True)
+#     if request.method == "POST":
+#         status, resp = send_mail(request, origmsg=msg, 
+#                                  posturl=reverse(reply, args=[folder, mail_id]))
+#         if status:
+#             IMAPconnector(user=request.user.username,
+#                           password=request.session["password"]).msg_answered(folder,
+#                                                                              mail_id)
+#         return resp
 
-    form = ComposeMailForm()    
-    email = ReplyModifier(msg, request.user, form, request.GET.has_key("all"),
-                          addrfull=True, links="1")
-    return render_compose(request, form, reverse(reply, args=[folder, mail_id]),
-                          email)
+#     form = ComposeMailForm()    
+#     email = ReplyModifier(msg, request.user, form, request.GET.has_key("all"),
+#                           addrfull=True, links="1")
+#     return render_compose(request, form, reverse(reply, args=[folder, mail_id]),
+#                           email)
 
-@login_required
-@needs_mailbox()
-def forward(request, folder, mail_id):
-    if request.method == "POST":
-        status, response = send_mail(request,
-                                     posturl=reverse(forward, args=[folder, mail_id]))
-        if status:
-            IMAPconnector(user=request.user.username,
-                          password=request.session["password"]).msgforwarded(folder,
-                                                                             mail_id)
-        return response
+# @login_required
+# @needs_mailbox()
+# def forward(request, folder, mail_id):
+#     if request.method == "POST":
+#         status, response = send_mail(request,
+#                                      posturl=reverse(forward, args=[folder, mail_id]))
+#         if status:
+#             IMAPconnector(user=request.user.username,
+#                           password=request.session["password"]).msgforwarded(folder,
+#                                                                              mail_id)
+#         return response
     
-    msg = fetchmail(request, folder, mail_id, True)
-    form = ComposeMailForm()
-    email = ForwardModifier(msg, request.user, form, addrfull=True, links="1")
-    return render_compose(request, form, reverse(forward, args=[folder, mail_id]), 
-                          email)
+#     msg = fetchmail(request, folder, mail_id, True)
+#     form = ComposeMailForm()
+#     email = ForwardModifier(msg, request.user, form, addrfull=True, links="1")
+#     return render_compose(request, form, reverse(forward, args=[folder, mail_id]), 
+#                           email)
 
 def separate_folder(fullname, sep="."):
     """Split a folder name
@@ -605,12 +605,43 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
     return ctx
 
 def compose(request):
+    url = "?action=compose"
     if request.method == "POST":
-        return send_mail(request)
+        status, resp = send_mail(request, posturl=url)
+        return resp
 
     form = ComposeMailForm()
     form.fields["from_"].initial = request.user.username
-    return render_compose(request, form, "?action=compose", insert_signature=True)
+    return render_compose(request, form, url, insert_signature=True)
+
+def compose_and_send(request, action, callback=None):
+    mbox = request.GET.get("mbox", None)
+    mailid = request.GET.get("mailid", None)
+    if mbox is None or mailid is None:
+        raise WebmailError(_("Bad request"))
+    url = "?action=%s&mbox=%s&mailid=%s" % (action, mbox, mailid)
+    if request.method == "POST":
+        status, resp = send_mail(request, url)
+        if status and callback:
+            callback(mbox, mailid)
+        return resp
+
+    form = ComposeMailForm()
+    modclass = globals()["%sModifier" % action.capitalize()]
+    email = modclass(mbox, mailid, request, form, addrfull=True, links="1")
+    return render_compose(request, form, url, email)
+
+def reply(request):
+    def msg_replied(mbox, mailid):
+        get_imapconnector(request).msg_answered(mbox, mailid)
+
+    return compose_and_send(request, "reply", msg_replied)
+
+def forward(request):
+    def msg_forwarded(mbox, mailid):
+        get_imapconnector(request).msg_forwarded(mbox, mailid)
+
+    return compose_and_send(request, "reply", msg_forwarded)
 
 @login_required
 @needs_mailbox()
@@ -671,20 +702,19 @@ def newindex(request):
 
     """
     action = request.GET.get("action", None)
-    json = request.GET.get("json", False)
 
     if action is not None:
         if not globals().has_key(action):
             raise WebmailError(_("Undefined action"))
         response = globals()[action](request)            
     else:
-        if json:
+        if request.is_ajax():
             raise WebmailError(_("Bad request"))
         response = dict(deflocation="?action=listmailbox", 
                         defcallback="wm_updatelisting")
 
     curmbox = request.session.get("mbox", "INBOX")
-    if not json:
+    if not request.is_ajax():
         request.session["lastaction"] = None
         imapc = get_imapconnector(request)
         response["refreshrate"] = \
@@ -692,6 +722,8 @@ def newindex(request):
         response["mboxes"] = render_mboxes_list(request, imapc)
         return _render(request, "webmail/index.html", response)
 
+    if action in ["reply", "forward"]:
+        action = "compose"
     if request.session["lastaction"] != action:
         extra_args = {}
         if response.has_key("menuargs"):
@@ -703,5 +735,7 @@ def newindex(request):
         except KeyError:
             pass
 
-    response.update(status="ok", callback=action)
+    response.update(callback=action)
+    if not response.has_key("status"):
+        response.update(status="ok")
     return ajax_simple_response(response)

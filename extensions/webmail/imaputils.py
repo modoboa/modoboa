@@ -5,6 +5,7 @@
 """
 import imaplib, ssl, email
 import re
+import time
 from functools import wraps
 from imapclient.response_parser import parse_fetch_response
 from modoboa.lib import parameters
@@ -410,11 +411,12 @@ class IMAPconnector(object):
         """
         self._add_flag(mbox, msgset, r'(\Seen)')
 
-    def msgforwarded(self, folder, imapid):
-        self._add_flag(folder, imapid, '($Forwarded)')
+    def msgforwarded(self, mailbox, mailid):
+        self._add_flag(mailbox, mailid, '($Forwarded)')
 
-    def msg_answered(self, folder, imapid):
-        self._add_flag(folder, imapid, r'(\Answered)')
+    def msg_answered(self, mailbox, mailid):
+        """Add the \Answered flag to this email"""
+        self._add_flag(mailbox, mailid, r'(\Answered)')
 
     def move(self, msgset, oldmailbox, newmailbox):
         """Move messages between mailboxes
@@ -521,7 +523,7 @@ class IMAPconnector(object):
             result += [msg]
         return result
 
-    def fetchmail(self, mbox, mailid):
+    def fetchmail(self, mbox, mailid, readonly=True, headers=None):
         """Retrieve information about a specific message
 
         Issue a FETCH command to retrieve a message's content from the
@@ -532,10 +534,17 @@ class IMAPconnector(object):
 
         :param mbox: the mailbox containing the message
         :param mailid: the message's unique id
-        :param fmt: the desired content's format
+        :param readonly:
+        :param extraheaders:
         """
-        self.select_mailbox(mbox, False)
-        data = self._cmd("FETCH", mailid, "(BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])")
+        self.select_mailbox(mbox, readonly)
+        if headers is None:
+            headers = ['DATE', 'FROM', 'TO', 'CC', 'SUBJECT']
+        bcmd = "BODY.PEEK" if readonly else "BODY"
+        data = self._cmd(
+            "FETCH", mailid, 
+            "(BODYSTRUCTURE %s[HEADER.FIELDS (%s)])" % (bcmd, " ".join(headers))
+            )
         return data[int(mailid)]
 
 def get_imapconnector(request):

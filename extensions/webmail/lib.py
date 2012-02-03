@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 import sys, os
 reload(sys)
@@ -92,10 +92,16 @@ class IMAPheader(object):
         except ValueError:
             return value
 
+    @staticmethod
+    def parse_message_id(value, **kwargs):
+        return value.strip('\n')
 
     @staticmethod
     def parse_subject(value, **kwargs):
-        return decode(u2u_decode.u2u_decode(value))
+        try:
+            return decode(u2u_decode.u2u_decode(value))
+        except UnicodeDecodeError:
+            return value
 
 class ImapListing(EmailListing):
     tpl = "webmail/index.html"
@@ -148,24 +154,33 @@ class ImapListing(EmailListing):
         return ImapListing.computequota(self.mbc)
 
 class ImapEmail(Email):
+    headernames = [
+        ('Date', True),
+        ('From', True),
+        ('To', True),
+        ('Cc', True),
+        ('Subject', True),
+        ]
+
     def __init__(self, mbox, mailid, request, dformat="DISPLAYMODE", addrfull=False, 
                  links=0):
         mformat = parameters.get_user(request.user, "DISPLAYMODE")
-        dformat = parameters.get_user(request.user, dformat)
+        self.dformat = parameters.get_user(request.user, dformat)
 
         self.headers = []
         self.attachments = {}
         self.imapc = get_imapconnector(request)
-        msg = self.imapc.fetchmail(mbox, mailid)
+        msg = self.imapc.fetchmail(mbox, mailid, readonly=False,
+                                   headers=self.headers_as_list)
         self.mbox = mbox
         self.mailid = mailid
-        headers = msg['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]']
-        fallback_fmt = "html" if dformat == "plain" else "plain"
+        headers = msg['BODY[HEADER.FIELDS (%s)]' % self.headers_as_text]
+        fallback_fmt = "html" if self.dformat == "plain" else "plain"
         
         self.bs = BodyStructure(msg['BODYSTRUCTURE'])
         data = None
 
-        mformat = dformat if self.bs.contents.has_key(dformat) else fallback_fmt
+        mformat = self.dformat if self.bs.contents.has_key(self.dformat) else fallback_fmt
 
         pnum = self.bs.contents[mformat]['pnum']
         data = self.imapc._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
@@ -182,24 +197,33 @@ class ImapEmail(Email):
             getattr(self, "viewmail_%s" % mformat)(content, links=links)
 
         msg = email.message_from_string(headers)
-        fields = ["Subject", "From", "To", "Reply-To", "Cc", "Date"]
-        for f in fields:
-            label = f
-            if not f in msg.keys():
-                f = f.upper()
-                if not f in msg.keys():
+        for hdr in self.headernames:
+            label = hdr[0]
+            name = hdr[0]
+            if not name in msg.keys():
+                name = name.upper()
+                if not name in msg.keys():
                     continue
             try:
-                key = re.sub("-", "_", f).lower()
-                value = getattr(IMAPheader, "parse_%s" % key)(msg[f], full=addrfull)
-                self.headers += [{"name" : label, "value" : value}]
+                key = re.sub("-", "_", name).lower()
+                value = getattr(IMAPheader, "parse_%s" % key)(msg[name], full=addrfull)
             except AttributeError:
-                self.headers += [{"name" : label, "value" : msg[f]}]
+                value = msg[name]
+            if hdr[1]:
+                self.headers += [{"name" : label, "value" : value}]
             try:
                 label = re.sub("-", "_", label)
                 setattr(self, label, value)
             except:
                 pass
+
+    @property
+    def headers_as_list(self):
+        return map(lambda hdr: hdr[0].upper(), self.headernames)
+
+    @property
+    def headers_as_text(self):
+        return " ".join(map(lambda hdr: hdr[0].upper(), self.headernames))
 
     def _find_content_charset(self, subtype):
         for pos, elem in enumerate(self.bs.contents[subtype]["params"]):
@@ -273,26 +297,45 @@ class ImapEmail(Email):
                 })
         return res
 
-class ReplyModifier(ImapEmail):
-    def __init__(self, msg, user, form, all=False, **kwargs):
-        ImapEmail.__init__(self, msg, user, dformat="EDITOR", **kwargs)
-
-        self.textheader = "%s %s" % (self.From, _("wrote:"))
+class Modifier(ImapEmail):
+    def __init__(self, *args, **kwargs):
+        super(Modifier, self).__init__(*args, **kwargs)
         getattr(self, "_modify_%s" % self.dformat)()
 
-        form.fields["from_"].initial = user.username
-        if not "Reply-To" in msg.keys():
+    def _modify_plain(self):
+        self.body = re.sub("</?pre>", "", self.body)
+
+    def _modify_html(self):
+        pass
+
+    
+class ReplyModifier(Modifier):
+    headernames = ImapEmail.headernames + \
+        [("Reply-To", True),
+         ("Message-ID", False)]
+
+    def __init__(self, mbox, mailid, request, form,  **kwargs):
+        super(ReplyModifier, self).__init__(
+            mbox, mailid, request, dformat="EDITOR", **kwargs
+            )
+
+        self.textheader = "%s %s" % (self.From, _("wrote:"))
+
+        form.fields["from_"].initial = request.user.username
+        if hasattr(self, "Message_ID"):
+            form.fields["origmsgid"].initial = self.Message_ID
+        if not hasattr(self, "Reply_To"):
             form.fields["to"].initial = self.From
         else:
             form.fields["to"].initial = self.Reply_To
-        if all:
+        if all: # reply-all
             form.fields["cc"].initial = ""
-            toparse = msg["To"].split(",")
-            if "Cc" in msg.keys():
-                toparse += msg["Cc"].split(",")
+            toparse = self.To.split(",")
+            if hasattr(self, 'Cc'):
+                toparse += self.Cc.split(",")
             for addr in toparse:
                 tmp = EmailAddress(addr)
-                if tmp.address and tmp.address == user.username:
+                if tmp.address and tmp.address == request.user.username:
                     continue
                 if form.fields["cc"].initial != "":
                     form.fields["cc"].initial += ", "
@@ -302,9 +345,9 @@ class ReplyModifier(ImapEmail):
             form.fields["subject"].initial = self.Subject
         else:
             form.fields["subject"].initial = "Re: %s" % self.Subject
-    
+
     def _modify_plain(self):
-        self.body = re.sub("</?pre>", "", self.body)
+        super(ReplyModifier, self)._modify_plain()
         lines = self.body.split('\n')
         body = ""
         for l in lines:
@@ -312,27 +355,26 @@ class ReplyModifier(ImapEmail):
                 body += "\n"
             body += ">%s" % l
         self.body = body
-
-    def _modify_html(self):
-        pass
-
-class ForwardModifier(ImapEmail):
-    def __init__(self, msg, user, form, **kwargs):
-        ImapEmail.__init__(self, msg, user, dformat="EDITOR", **kwargs)
+   
+class ForwardModifier(Modifier):
+    def __init__(self, mbox, mailid, request, form, **kwargs):
+        super(ForwardModifier, self).__init__(
+            mbox, mailid, request, dformat="EDITOR", **kwargs
+            )
     
-        self._header(msg)
-        form.fields["from_"].initial = user.username
+        self._header()
+        form.fields["from_"].initial = request.user.username
         form.fields["subject"].initial = "Fwd: %s" % self.Subject
 
     def __getfunc(self, name):
         return getattr(self, "%s_%s" % (name, self.dformat))
 
-    def _header(self, msg):
+    def _header(self):
         self.textheader = self.__getfunc("_header_begin")() + "\n"
         self.textheader += \
             self.__getfunc("_header_line")(_("Subject"), self.Subject) + "\n"
         self.textheader += \
-            self.__getfunc("_header_line")(_("Date"), msg["Date"]) + "\n"
+            self.__getfunc("_header_line")(_("Date"), self.Date) + "\n"
         for hdr in ["From", "To", "Reply-To"]:
             try:
                 key = re.sub("-", "_", hdr)
@@ -528,7 +570,7 @@ def create_mail_attachment(attdef):
     res.add_header("Content-Disposition", "attachment; filename='%s'" % attdef["fname"])
     return res
 
-def send_mail(request, origmsg=None, posturl=None):
+def send_mail(request, posturl=None):
     """Email verification and sending.
 
     If the form does not present any error, a new MIME message is
@@ -536,7 +578,6 @@ def send_mail(request, origmsg=None, posturl=None):
     SMTP server and the message is finally sent.
 
     :param request: a Request object
-    :param origmsg: the eventual original message (in case of a reply)
     :param posturl: the url to post the message form to
     :return: a 2-uple (True|False, HttpResponse)
     """
@@ -589,8 +630,8 @@ def send_mail(request, origmsg=None, posturl=None):
         msg["Message-ID"] = make_msgid()
         msg["User-Agent"] = "Modoboa"
         msg["Date"] = formatdate(time.time(), True)
-        if origmsg and origmsg.has_key("Message-ID"):
-            msg["References"] = msg["In-Reply-To"] = origmsg["Message-ID"]
+        if form.cleaned_data.has_key("origmsgid"):
+            msg["References"] = msg["In-Reply-To"] = form.cleaned_data["origmsgid"]
         rcpts = msg['To'].split(',')
         if form.cleaned_data["cc"] != "":
             msg["Cc"] = form.cleaned_data["cc"]
@@ -621,16 +662,14 @@ def send_mail(request, origmsg=None, posturl=None):
                       password=request.session["password"]).push_mail(sentfolder, msg)
         clean_attachments(request.session["compose_mail"]["attachments"])
         del request.session["compose_mail"]
-        return True, ajax_simple_response(getctx("ok", url=get_current_url(request)))
+        return True, dict(url=get_current_url(request))
 
     listing = _render_to_string(request, "webmail/compose.html", 
                                {"form" : form, "noerrors" : True,
                                 "body" : request.POST["id_body"].strip(),
                                 "posturl" : posturl})
     error = _("Red fields are mandatories")
-    return False, ajax_simple_response(
-        getctx("ko", level=2, respmsg=error, listing=listing, editor=editormode)
-        )
+    return False, dict(status="ko", respmsg=error, listing=listing, editor=editormode)
 
 class AttachmentUploadHandler(FileUploadHandler):
     """
