@@ -72,8 +72,12 @@ function parse_menubar(id) {
         duration: 200
       });
 
+      var coords = elem.getCoordinates();
+
       myFx.wrapper.setStyles({
-        "position" : "absolute"
+          position : "absolute",
+          /*top: 30,*/
+          left : coords['left']
       });
       myFx.hide();
 

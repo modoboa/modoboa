@@ -14,46 +14,47 @@ genders = {
 
 @register.simple_tag
 def admin_menu(user):
-    entries = [
-        {"name" : "admin",
-         "img" : static_url('pics/admin.png'),
-         "label" : _("Admin"),
-         "class" : "topdropdown",
-         "menu" : []
-         }
-        ]
+    # entries = [
+    #     {"name" : "admin",
+    #      "img" : static_url('pics/admin.png'),
+    #      "label" : _("Admin"),
+    #      "class" : "topdropdown",
+    #      "menu" : []
+    #      }
+    #     ]
+    entries = []
     if user.has_perm("admin.view_domains"):
-        entries[0]["menu"] += [
+        entries += [
             {"name" : "domains",
              "url" : reverse(admin.views.domains),
              "label" : _("Domains"),
              "img" : static_url("pics/domains.png")}
             ]
     elif user.has_perm("admin.view_mailboxes"):
-        entries[0]["menu"] += [
+        entries += [
             {"name" : "mailboxes",
              "url" : reverse(admin.views.domains),
              "label" : _("Mailboxes"),
              "img" : static_url("pics/mailbox.png")}
             ]
-    entries[0]["menu"] += \
+    entries += \
         events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user)
     if user.has_perm("auth.view_permissions"):
-        entries[0]["menu"] += [
+        entries += [
             {"name" : "permissions",
              "url" : reverse(admin.views.permissions),
-             "label" : _("Permissions"),
+             "label" : _("Accounts"),
              "img" : static_url("pics/permissions.png")}
             ]
     if user.is_superuser:
-        entries[0]["menu"] += [
+        entries += [
             {"name" : "settings",
              "img" : static_url("pics/settings.png"),
-             "label" : _("Settings"),
+             "label" : _("Modoboa"),
              "url" : reverse(admin.views.viewparameters)}
             ]
 
-    if not len(entries[0]["menu"]):
+    if not len(entries):
         return ""
     return render_to_string("common/menulist.html",
                             {"entries" : entries, "user" : user})

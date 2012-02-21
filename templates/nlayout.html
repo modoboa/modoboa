@@ -28,26 +28,14 @@
       <div class="left" style="width: 50%">
         <ul>
           {% loadextmenu user %}
-          {% options_menu user %}
+
           {% admin_menu user %}
           {% load_optionalmenu user %}
         </ul>
       </div>
-      <div class="right">
+      <div id="usermenubox" class="right">
         <ul>
-          <li class="title">
-            {% if user.first_name %}
-            {{ user.first_name }} {{ user.last_name }}
-            {% else %}
-            {{ user.username }}
-            {% endif %}
-            / 
-          </li>
-          <li>
-            {% url modoboa.auth.views.dologout as logout_url %}
-            <a href="{{ logout_url }}">
-              <img src="{{ MEDIA_URL }}pics/logout.png" border="0" />{% trans "Logout" %}</a>
-          </li>
+          {% user_menu user %}
         </ul>
       </div>
     </div>

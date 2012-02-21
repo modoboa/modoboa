@@ -124,6 +124,12 @@ class User(DUser):
     def has_mailbox(self):
         return len(self.mailbox_set.all()) != 0
 
+    @property
+    def fullname(self):
+        if self.first_name != "":
+            return "%s %s" % (self.first_name, self.last_name)
+        return self.username
+
     def belongs_to_group(self, name):
         """Simple shortcut to check if this user is a member of a
         specific group.

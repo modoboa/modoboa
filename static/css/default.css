@@ -29,6 +29,10 @@ div#topmenubar {
     bottom: auto;
 }
 
+#usermenubox { 
+    margin-right: 5px;
+}
+
 div#footer {
     position: absolute;
     height: 30px;
@@ -247,7 +251,7 @@ div.right {
     border-bottom: 5px solid #333;
     border-right: 5px solid #333;
     border-left: 5px solid #333;
-    width: 150px;
+    /*width: 150px;*/
     float: left;
     position: relative;
     z-index: 4;
