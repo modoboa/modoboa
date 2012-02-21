@@ -69,13 +69,7 @@ class SuperAdminsPerms(Permissions):
 
     def get(self, request):
         admins = User.objects.filter(is_superuser=True)
-        admins_list = []
-        for admin in admins:
-            admins_list += [{"id" : admin.id, "user_name" : admin.username,
-                             "full_name" : "%s %s" % (admin.first_name, admin.last_name),
-                             "date_joined" : admin.date_joined,
-                             "enabled" : admin.is_active}]
-        return SuperAdminsTable(request, admins_list).render()
+        return SuperAdminsTable(request, admins).render()
    
 
 class DomainAdminsPerms(Permissions):

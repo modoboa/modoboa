@@ -513,9 +513,9 @@ def add_permission(request):
         messages.error(request, _("Permission denied!"), 
                        fail_silently=True)
     else:
+        events.raiseEvent("CanCreate", request.user, role)
         pobj = pclass()
         if request.method == "GET":
-            events.raiseEvent("CanCreate", request.user, role)
             return pobj.get_add_form(request)
         status, data = pobj.add(request)
         if not status:
@@ -530,6 +530,7 @@ def add_permission(request):
 @login_required
 @permission_required("auth.view_permissions")
 def create_domain_admin(request, tplname="admin/create_domain_admin.html"):
+    events.raiseEvent("CanCreate", request.user, "domain_admins")
     if request.method == "POST":
         form = UserWithPasswordForm(request.POST)
         if form.is_valid():

@@ -135,13 +135,22 @@ class ExtensionsTable(tables.Table):
 
 class SuperAdminsTable(tables.Table):
     idkey = "id"
-    selection = tables.SelectionColumn("selection", width="4%", first=True)
-    user_name = tables.Column("user_name", label=ugettext_noop("User name"))
-    full_name = tables.Column("full_name", label=ugettext_noop("Full name"))
+    selection = tables.SelectionColumn("selection", width="4%")
+    username = tables.Column("username", label=ugettext_noop("User name"))
+    first_name = tables.Column("first_name", label=ugettext_noop("First name"))
+    last_name = tables.Column("last_name", label=ugettext_noop("Last name"))
     date_joined = tables.Column("date_joined", label=ugettext_noop("Defined"))
     enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
 
-    cols_order = ["selection", "user_name", "full_name", "date_joined", "enabled"]
+    cols_order = ["selection", "username", "first_name", "last_name", 
+                  "date_joined", "enabled"]
+
+    def __init__(self, request, users):
+        super(SuperAdminsTable, self).__init__(request)
+        self.populate(self._rows_from_model(users))
+
+    def parse_enabled(self, value):
+        return _("yes") if value else _("no")
     
 class DomainAdminsTable(tables.Table):
     idkey = "id"

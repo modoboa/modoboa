@@ -62,6 +62,8 @@ class ResellerPoolForm(forms.Form):
 
     def load_from_user(self, user):
         for l in reseller_limits_tpl:
+            if not self.fields.has_key(l):
+                continue
             self.fields[l].initial = user.limitspool.getmaxvalue(l)
 
     def allocate_from_pool(self, limit, pool):
@@ -85,6 +87,8 @@ class ResellerPoolForm(forms.Form):
     def save_new_limits(self, pool):
         owner = get_object_owner(pool.user)
         for lname in reseller_limits_tpl:
+            if not self.cleaned_data.has_key(lname):
+                continue
             l = pool.limit_set.get(name=lname)
             if not owner.is_superuser:
                 self.allocate_from_pool(l, owner.limitspool)

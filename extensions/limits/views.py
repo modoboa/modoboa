@@ -41,19 +41,23 @@ def edit_reseller(request, resid, tplname="admin/add_permission.html"):
 @login_required
 @permission_required("auth.view_permissions")
 @transaction.commit_on_success
-def edit_limits_pool(request, resid, tplname="limits/pool.html"):
-    reseller = User.objects.get(pk=resid)
-    ctx = dict(reseller=reseller)
+def edit_limits_pool(request, uid, tplname="limits/pool.html"):
+    user = User.objects.get(pk=uid)
+    ctx = dict(reseller=user)
     if request.method == "POST":
         form = ResellerPoolForm(request.POST)
+        if not user.belongs_to_group('Resellers'):
+            del form.fields["domain_admins_limit"]
         if form.is_valid():
-            form.save_new_limits(reseller.limitspool)
+            form.save_new_limits(user.limitspool)
             messages.info(request, _("Pool updated"), fail_silently=True)
             return ajax_response(request, url=reverse("modoboa.admin.views.permissions"))
         ctx.update(form=form)
         return ajax_response(request, status="ko", template=tplname, **ctx)
 
     form = ResellerPoolForm()
-    form.load_from_user(reseller)
+    if not user.belongs_to_group('Resellers'):
+        del form.fields["domain_admins_limit"]
+    form.load_from_user(user)
     ctx.update(form=form)
     return _render(request, tplname, ctx)
