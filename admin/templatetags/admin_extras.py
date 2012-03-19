@@ -13,15 +13,7 @@ genders = {
 }
 
 @register.simple_tag
-def admin_menu(user):
-    # entries = [
-    #     {"name" : "admin",
-    #      "img" : static_url('pics/admin.png'),
-    #      "label" : _("Admin"),
-    #      "class" : "topdropdown",
-    #      "menu" : []
-    #      }
-    #     ]
+def admin_menu(selection, user):
     entries = []
     if user.has_perm("admin.view_domains"):
         entries += [
@@ -30,21 +22,14 @@ def admin_menu(user):
              "label" : _("Domains"),
              "img" : static_url("pics/domains.png")}
             ]
-    elif user.has_perm("admin.view_mailboxes"):
-        entries += [
-            {"name" : "mailboxes",
-             "url" : reverse(admin.views.domains),
-             "label" : _("Mailboxes"),
-             "img" : static_url("pics/mailbox.png")}
-            ]
     entries += \
         events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user)
-    if user.has_perm("auth.view_permissions"):
+    if user.has_perm("auth.add_user") or user.has_perm("admin.add_mailbox"):
         entries += [
-            {"name" : "permissions",
-             "url" : reverse(admin.views.permissions),
-             "label" : _("Accounts"),
-             "img" : static_url("pics/permissions.png")}
+            {"name" : "identities",
+             "url" : reverse(admin.views.identities),
+             "label" : _("Identities")},
+             
             ]
     if user.is_superuser:
         entries += [
@@ -57,193 +42,127 @@ def admin_menu(user):
     if not len(entries):
         return ""
     return render_to_string("common/menulist.html",
-                            {"entries" : entries, "user" : user})
+                            {"entries" : entries, "selection" : selection, "user" : user})
         
 @register.simple_tag
 def settings_menu(selection, user):
     entries = [
-        {"name" : "parameters",
-         "url" : reverse(admin.views.viewparameters),
-         "img" : static_url("pics/domains.png"),
-         "label" : _("Parameters")},
         {"name" : "extensions",
          "url" : reverse(admin.views.viewextensions),
          "label" : _("Extensions"),
          "img" : static_url("pics/extensions.png")},
+        {"name" : "parameters",
+         "url" : reverse(admin.views.viewparameters),
+         "img" : static_url("pics/domains.png"),
+         "label" : _("Parameters")},
         ]
-    return render_to_string('common/menu.html', 
-                            {"selection" : selection, "entries" : entries,
-                             "user" : user})
-
-def dommenu_entry(name, label, img, listurl, newurl):
-    result = {"name" : name,
-              "label" : label,
-              "img" : img,
-              "url" : listurl,
-              "class" : "menubardropdown",
-              }
-    return result
+    return render_to_string('common/menu.html', {
+            "entries" : entries, 
+            "css" : "nav nav-list",
+            "selection" : selection,
+            "user" : user
+            })
 
 @register.simple_tag
-def domains_menu(selection, user, domid):
-    args = domid != "" and ("?domid=%s" % domid) or ""
-    entries = []
-    if selection == "stats":
-        disabled = True
-    else:
-        disabled = False
-    
-    entries += [
-        {"name" : "actions",
-         "label" : _("Actions"),
-         "img" : static_url("pics/tools.png"),
-         "class" : "menubardropdown",
-         "menu" : [
-                {"name" : "new",
-                 "label" : _("New"),
-                 "img" : static_url("pics/add.png"),
-                 "disabled" : disabled},
-                {"name" : "remove",
-                 "label" : _("Remove"),
-                 "img" : static_url("pics/remove.png"),
-                 "disabled" : disabled
-                 },
-                {"name" : "import",
-                 "label" : _("Import data"),
-                 "img" : static_url("pics/import.png"),
-                 "class" : "boxed",
-                 "rel" : "{handler:'iframe',size:{x:370,y:250}}",
-                 "url" : reverse(admin.views.importdata)}
-                ]
-         },
-        ]
-
-    entries += [{"separator" : True}]
-    if user.has_perm("admin.view_domains"):
-        entries += dommenu_entry("domains", _("Domains"), 
-                                 static_url("pics/domains.png"),
-                                 reverse(admin.views.domains), 
-                                 reverse(admin.views.newdomain)),
-    entries += [
-        dommenu_entry("domaliases", _("Domain aliases"), static_url("pics/alias.png"),
-                      reverse(admin.views.domaliases) + args, 
-                      reverse(admin.views.newdomalias) + args),
-        dommenu_entry("mailboxes", _("Mailboxes"), static_url("pics/mailbox.png"),
-                      reverse(admin.views.mailboxes) + args, 
-                      reverse(admin.views.newmailbox) + args),
-        dommenu_entry("mbaliases", _("Mailbox aliases"), static_url("pics/alias.png"),
-                      reverse(admin.views.mbaliases) + args, 
-                      reverse(admin.views.newmbalias) + args),
-        ]
-    entries += events.raiseQueryEvent("AdminMenuDisplay", "admin_menu_box", user)
-    return render_to_string('common/menu.html', 
-                            {"entries" : entries, 
-                             "selection" : selection,
-                             "user" : user})
-
-@register.simple_tag
-def permissions_menu(user):
+def domains_menu(selection, user):
     entries = [
-        {"name" : "addperm",
-         "label" : _("Add permission"),
-         "img" : static_url("pics/add.png"),
-         "url" : reverse(admin.views.add_permission)},
-        {"name" : "delperms",
-         "label" : _("Remove permissions"),
-         "img" : static_url("pics/remove.png"),
-         "url" : reverse(admin.views.delete_permissions)},
+        {"name" : "newdomain",
+         "label" : _("New domain"),
+         "img" : "icon-plus",
+         "modal" : True,
+         "modalcb" : "domainform_cb",
+         "url" : reverse("modoboa.admin.views.newdomain")},
+        {"name" : "import",
+         "label" : _("Import"),
+         "img" : "icon-folder-open",
+         "url" : reverse(admin.views.import_domains),
+         "modal" : True,
+         "modalcb" : "importform_cb"}
         ]
-    return render_to_string('common/menu.html', 
-                            {"entries" : entries, "user" : user})
+    return render_to_string('common/menu.html', {
+            "entries" : entries, 
+            "css" : "nav nav-list",
+            "selection" : selection,
+            "user" : user
+            })        
+
+@register.simple_tag
+def identities_menu(user):
+    entries = [
+        {"name" : "newaccount",
+         "label" : _("New account"),
+         "img" : "icon-plus",
+         "modal" : True,
+         "modalcb" : "newaccount_cb",
+         "url" : reverse(admin.views.newaccount)},
+        {"name" : "newdlist",
+         "label" : _("New distribution list"),
+         "img" : "icon-plus",
+         "modal" : True,
+         "modalcb" : "dlistform_cb",
+         "url" : reverse(admin.views.newdlist)},
+        {"name" : "import",
+         "label" : _("Import"),
+         "img" : "icon-folder-open",
+         "url" : reverse(admin.views.import_identities),
+         "modal" : True,
+         "modalcb" : "importform_cb"}
+        ]
+
+    return render_to_string('common/menu.html', {
+            "entries" : entries, 
+            "css" : "nav nav-list",
+            "user" : user
+            })
 
 @register.simple_tag
 def domain_actions(user, domid):
     actions = [
         {"name" : "editdomain",
          "url" : reverse(admin.views.editdomain, args=[domid]),
-         "img" : static_url("pics/edit.png"),
+         "img" : "icon-edit",
          "title" : _("Edit domain"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:310,y:190}}"},
-        {"name" : "domaliases",
-         "url" : reverse(admin.views.domaliases) + "?domid=%s" % domid,
-         "img" : static_url("pics/alias.png"),
-         "title" : _("View aliases of this domain")}
+         "modal" : True,
+         "modalcb" : "domainform_cb"},
+        {"name" : "deldomain",
+         "url" : reverse(admin.views.deldomain) + "?selection=%s" % domid,
+         "img" : "icon-remove"},         
         ]
-    if user.has_perm('admin.view_domains'):
-        actions += [
-            {"name" : "viewadmins",
-             "url" : reverse(admin.views.view_domain_admins, args=[domid]),
-             "img" : static_url("pics/administrators.png"),
-             "title" : _("View administrators of this domain"),
-             "class" : "boxed",
-             "rel" : "{handler:'iframe',size:{x:310,y:190}}"},
-            ]
+
     return render_actions(actions)
 
 @register.simple_tag
-def domalias_actions(user, aid):
+def account_actions(user, accountid):
     actions = [
-        {"name" : "editalias",
-         "url" : reverse(admin.views.editdomalias, args=[aid]),
-         "img" : static_url("pics/edit.png"),
-         "title" : _("Edit alias"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:310,y:190}}"}
+        {"name" : "editaccount",
+         "url" : reverse(admin.views.editaccount, args=[accountid]), 
+         "img" : "icon-edit",
+         "modal" : True,
+         "modalcb" : "editaccount_cb",
+         "title" : _("Edit account")},
+        {"name" : "delaccount",
+         "url" : reverse(admin.views.delaccount) + "?selection=%s" % accountid,
+         "img" : "icon-remove",
+         "title" : _("Delete this account")},
         ]
     return render_actions(actions)
 
 @register.simple_tag
-def mailbox_actions(user, mboxid):
+def identity_actions(user, iid):
+    name, objid = iid.split(':')
+    if name == "User":
+        return account_actions(user, objid)
     actions = [
-        {"name" : "editmailbox",
-         "url" : reverse(admin.views.editmailbox, args=[mboxid]),
-         "img" : static_url("pics/edit.png"),
-         "title" : _("Edit mailbox"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:310,y:320}}"},
-        {"name" : "aliases",
-         "url" : reverse(admin.views.mbaliases) + "?mbid=%d" % mboxid,
-         "img" : static_url("pics/alias.png"),
-         "title" : _("View this mailbox aliases")},
-        ]
-    return render_actions(actions)
-
-@register.simple_tag
-def domain_admin_actions(user, daid):
-    from modoboa.admin.models import User
-
-    actions = [
-        {"name" : "editdomainadmin",
-         "url" : reverse(admin.views.edit_domain_admin, args=[daid]),
-         "img" : static_url("pics/edit.png"),
-         "title" : _("Edit domain admin"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:350,y:320}}"},
-        {"name" : "assigndomains",
-         "url" : reverse(admin.views.assign_domains_to_admin, args=[daid]),
-         "img" : static_url("pics/domains.png"),
-         "title" : _("Assign domain(s) to this administrator"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:350,y:320}}"},
-        ]
-    actions += events.raiseQueryEvent("DomainAdminActions", User.objects.get(pk=daid))
-    return render_actions(actions)
-
-@register.simple_tag
-def mbalias_actions(user, aliasid):
-    from modoboa.admin.models import Alias
-
-    alias = Alias.objects.get(pk=aliasid)
-    if alias.ui_disabled(user):
-        return "--"
-    actions = [
-        {"name" : "editmbalias",
-         "url" : reverse(admin.views.editmbalias, args=[aliasid]),
-         "img" : static_url("pics/edit.png"),
-         "title" : _("Edit mailbox alias"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:320,y:300}}"}
+        {"name" : "editdlist",
+         "url" : reverse(admin.views.editdlist, args=[objid]),
+         "img" : "icon-edit",
+         "modal" : True,
+         "modalcb" : "dlistform_cb",
+         "title" : _("Edit distribution list")},
+        {"name" : "deldlist",
+         "url" : reverse(admin.views.deldlist) + "?selection=%s" % objid,
+         "img" : "icon-remove",
+         "title" : _("Delete this distribution list")},
         ]
     return render_actions(actions)
 
@@ -255,9 +174,11 @@ def loadadminextmenu(user):
 
 @register.simple_tag
 def param(app, definition):
-    result = """<div class='row'>
-  <label>%s</label>""" % (definition.has_key("label") \
-                              and _(definition["label"]) or definition["name"])
+    result = """<div class='control-group'>
+  <label class="param-label">%s</label>
+  <div class="param-controls">""" \
+        % (definition.has_key("label") and _(definition["label"]) 
+           or definition["name"])
     name = "%s.%s" % (app, definition["name"])
     value = definition.has_key("value") \
         and definition["value"] or definition["deflt"]
@@ -290,10 +211,14 @@ def param(app, definition):
 
     if definition.has_key("help"):
         result += """
-  <a href='%s' onclick='return false;' class='Tips' title='%s'>
-    <img src='%s' border='0' />
-  </a>""" % (_(definition["help"]), _("Help"), static_url("pics/info.png"))
+<p class="help-block">%s</p>
+""" % definition["help"]
+  #       result += """
+  # <a href='%s' onclick='return false;' class='Tips' title='%s'>
+  #   <img src='%s' border='0' />
+  # </a>""" % (_(definition["help"]), _("Help"), static_url("pics/info.png"))
     result += """
+  </div>
 </div>
 """
     return result

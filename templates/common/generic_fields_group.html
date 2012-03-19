@@ -1,0 +1,8 @@
+<div class="control-group{% if haserror %} error{% endif %}">
+  <label class="control-label">{{ label }}</label>
+  <div class="controls spaced">
+    {% for field in group %}
+    {{ field }}{% if field.errors %}<p class="help-block">{% for error in field.errors %}{{ error|safe }}{% endfor %}</p>{% endif %}
+    {% endfor %}
+  </div>
+</div>

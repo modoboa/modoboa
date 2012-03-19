@@ -155,13 +155,15 @@ class Table(object):
             self.rows += [nrow]
             trcpt += 1
             
-    def _rows_from_model(self, objects):
+    def _rows_from_model(self, objects, include_type_in_id=False):
         rows = []
         for obj in objects:
             nrow = {}
             try:
                 idkey = getattr(self, "idkey")
                 nrow[idkey] = getattr(obj, idkey)
+                if include_type_in_id:
+                    nrow[idkey] = "%s:%s" % (obj.__class__.__name__, nrow[idkey])
             except AttributeError:
                 pass
             for c in self.columns:
@@ -169,10 +171,11 @@ class Table(object):
                     nrow[c.name] = getattr(obj, c.name)
                 except AttributeError:
                     pass
-            try:
-                nrow["options"] = getattr(self, "rowoptions")(self.request, obj)
-            except AttributeError:
-                pass
+            for meth in ["options", "class"]:
+                try:
+                    nrow[meth] = getattr(self, "row_%s" % meth)(self.request, obj)
+                except AttributeError:
+                    pass
             rows += [nrow]
         return rows
 
@@ -188,7 +191,7 @@ class Table(object):
     def render(self):
         if len(self.rows):
             t = Template("""
-<table id="{{ tableid }}">
+<table id="{{ tableid }}" class="table table-striped table-bordered">
   {% include "common/table_head.html" %}
   {% include "common/table_body.html" %}
 </table>

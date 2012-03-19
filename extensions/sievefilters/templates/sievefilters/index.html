@@ -1,41 +1,77 @@
-{% extends "nlayout.html" %}
-{% load i18n libextras sfilters_tags %}
+{% extends "twocols.html" %}
+{% load i18n sfilters_tags %}
 {% block html_head %}
-<script type="text/javascript" src="{{ MEDIA_URL }}js/anchor_nav.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}sievefilters/js/lib.js"></script>
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}sievefilters/css/style.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/history.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}sievefilters/js/lib.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/dynamic_input.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}sievefilters/js/jquery.dynfields.js"></script>
 <script type="text/javascript">
-var current_anchor = new AnchorNavigation("{{ default_script }}", {
+var history = new History({
+    deflocation: "{{ default_script }}",
     defcallback: loadfs
 });
+var cond_templates = null;
+var action_templates = null;
 
-$(document).addEvent("domready", function() {
-  $("curfset").addEvent("change", changefs);
+function filterform_cb() {
+    cond_templates = fetch_templates("{% url modoboa.extensions.sievefilters.views.get_templates 'condition' %}", cond_templates);
+    action_templates = fetch_templates("{% url modoboa.extensions.sievefilters.views.get_templates 'action' %}", action_templates);
+
+    var $dc = $("#condition_0").dyncondition({
+        templates: cond_templates
+    }).data('dyncondition');
+    var $da = $("#action_0").dynaction({
+        templates: action_templates,
+        ufolders_url: "{% url modoboa.extensions.sievefilters.views.get_user_folders %}"
+    }).data('dynaction');
+
+    $("input[name=match_type]").click(function(e) {
+        if ($(this).attr("value") == "all") {
+            $("div[id*=condition]").hide();
+        } else {
+            $("div[id*=condition]").show();
+        }
+    });
+
+    $(".submit").one('click', function(e) {
+        var counters = "conds=" + $dc.fields_cnt + "&actions=" + $da.fields_cnt;
+
+        simple_ajax_form_post(e, {
+            error_cb: filterform_cb,
+            reload_mode: 'history',
+            extradata: counters
+        });
+    });
+}
+
+$(document).ready(function() {
+  $("#curfset").change(changefs);
 });
 </script>
 {% endblock %}
-{% block middletitle %}{% trans "Message filters" %}{% endblock %}
-{% block menu %}
-<div id="fsets_list">
-  <label>{% trans "Filters sets" %}</label>
-  <select id="curfset">
-    {% if active_script %}
-    <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
-    {% endif %}
-    {% for script in scripts %}
-    <option value="{{ script }}">{{ script }}</option>
-    {% endfor %}
-  </select>
+{% block leftcol %}
+<div class="well sidebar-nav">
+  <ul id="menu" class="nav nav-list">
+    <li class="nav-header">{% trans "Filter sets" %}</li>
+    <li>
+      <select id="curfset" class="span2">
+        {% if active_script %}
+        <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
+        {% endif %}
+        {% for script in scripts %}
+        <option value="{{ script }}">{{ script }}</option>
+        {% endfor %}
+      </select>
+    </li>
+    {% sfilters_menu user %}
+  </ul>
 </div>
-<ul>{% sfilters_menu user %}</ul>
 {% endblock %}
-{% block content %}
-{% if messages %}
-  {% display_messages messages %}
-{% endif %}
+{% block apparea %}
 <div id="set_content">
   {% if not active_script and not scripts %}
-  <div class="info">{% trans "No filters set defined yet. You must create one in order to define filters." %}</div>
+  <div class="alert alert-info">{% trans "No filters set defined yet. You must create one in order to define filters." %}</div>
   {% endif %}
 </div>
 {% endblock %}

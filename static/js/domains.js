@@ -1,27 +1,7 @@
-var Domains = new Class({
-    initialize: function(rooturl, deloptions) {
-        this.rooturl = rooturl;
-        if (deloptions != undefined) {
-            this.deloptions = deloptions;
-        } else {
-            this.deloptions = new Array();
-        }
-        if ($("subcontent") != undefined) {
-            SqueezeBox.assign($("subcontent").getElements('a[class=boxed]'), {
-                parse: 'rel'
-            });
-        }
-        setDivHeight("content", 20, 0);
-        this.objtable = new HtmlTable($("objects_table"), {
-            selectable: true
-        });
+(function($) {
+    var objtable = null;
 
-        $$("a[name=new]").addEvent("click", this.new_clickcb.bind(this));
-        $$("a[name=remove]").addEvent("click", this.remove_clickcb.bind(this));
-
-    },
-
-    new_clickcb: function(evt) {
+    function new_clickcb(evt) {
         var type = $("objects").get("name");
         var sizes = $("objects").get("rel").split(" ");
 
@@ -30,9 +10,9 @@ var Domains = new Class({
             size: {x: parseInt(sizes[0]), y: parseInt(sizes[1])},
             handler: 'iframe'
         });
-    },
+    };
 
-    remove_clickcb: function(evt) {
+    function remove_clickcb(evt) {
         evt.stop();
         if (this.objtable._selectedRows.length == 0) {
             return;
@@ -62,5 +42,38 @@ var Domains = new Class({
                 checkboxes: this.deloptions
             }
         );
-    }
-});
+    };
+
+    var methods = {
+        init: function(rooturl, deloptions) {
+            this.rooturl = rooturl;
+            if (deloptions != undefined) {
+                this.deloptions = deloptions;
+            } else {
+                this.deloptions = new Array();
+            }
+            if ($("subcontent") != undefined) {
+                SqueezeBox.assign($("subcontent").getElements('a[class=boxed]'), {
+                    parse: 'rel'
+                });
+            }
+            setDivHeight("content", 20, 0);
+            this.objtable = new HtmlTable($("objects_table"), {
+                selectable: true
+            });
+
+            $$("a[name=new]").addEvent("click", new_clickcb);
+            $$("a[name=remove]").addEvent("click", remove_clickcb);
+        }
+    };
+
+    $.fn.Domains = function(method) {
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || !method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error(gettext('Unknown method: ') + method);
+        }
+     };
+})(jQuery);

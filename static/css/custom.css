@@ -1,0 +1,64 @@
+body {
+    padding-top: 60px;
+}
+
+#bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#pagination_bar { 
+    color: #999999 !important;
+}
+
+.simplepagination ul { 
+    display: inline-block;
+}
+
+.simplepagination li { 
+    display: inline;
+}
+
+.simplepagination .disabled a,
+.simplepagination .disabled a:hover { 
+    background-color: transparent;
+    cursor: default;
+}
+
+.sidebar-nav { 
+    padding: 9px 0;
+}
+
+.form-horizontal .param-label { 
+    float: left;
+    padding-top: 5px;
+    text-align: left;
+    width: 200px;
+}
+
+.form-horizontal .param-controls { 
+    margin-left: 210px;
+}
+
+.form-horizontal .control-group { 
+    margin-bottom: 8px;
+}
+
+.spaced select,
+.spaced input[type="text"] { 
+    margin-bottom: 8px;
+}
+
+.padded5 { 
+    padding: 5px;
+}
+
+.buttons_list .bset { 
+    display: none;
+}
+
+.buttons_list .active { 
+    display: block;
+}

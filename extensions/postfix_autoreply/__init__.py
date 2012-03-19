@@ -21,6 +21,23 @@ def infos():
         "url" : "postfix_autoreply"
         }
 
+def init():
+    from modoboa.admin.models import Domain
+
+    for dom in Domain.objects.all():
+        try:
+            trans = Transport.objects.get(domain="autoreply.%s" % dom.name)
+        except Transport.DoesNotExist:
+            onCreateDomain(None, dom)
+        else:
+            continue
+
+        for mb in dom.mailbox_set.all():
+            try:
+                alias = Alias.objects.get(full_address=mb.full_address)
+            except Alias.DoesNotExist:
+                onCreateMailbox(None, mb)
+
 def load():
     parameters.register_admin(
         "AUTOREPLIES_TIMEOUT", 
@@ -48,10 +65,9 @@ def menu(target, user):
     return [
         {"name" : "autoreply",
          "url" : reverse(views.autoreply),
-         "img" : static_url("pics/auto-reply.png"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:440,y:400}}",
-         "label" : ugettext("Auto-reply message")}
+         "label" : ugettext("Auto-reply message"),
+         "modal": True,
+         "modalcb" : "arform_cb"}
         ]
 
 @events.observe("CreateDomain")
@@ -75,12 +91,18 @@ def onCreateMailbox(user, mailbox):
     alias.save()
 
 @events.observe("DeleteMailbox")
-def onDeleteMailbox(mailbox):
-    try:
-        alias = Alias.objects.get(full_address=mailbox.full_address)
-        alias.delete()
-    except Alias.DoesNotExist:
-        pass
+def onDeleteMailbox(mailboxes):
+    from modoboa.admin.models import Mailbox
+
+    if isinstance(mailboxes, Mailbox):
+        mailboxes = [mailboxes]
+    for mailbox in mailboxes:
+        try:
+            alias = Alias.objects.get(full_address=mailbox.full_address)
+        except Alias.DoesNotExist:
+            pass
+        else:
+            alias.delete()
 
 @events.observe("ModifyMailbox")
 def onModifyMailbox(mailbox, oldmailbox):
@@ -91,3 +113,17 @@ def onModifyMailbox(mailbox, oldmailbox):
     alias.autoreply_address =  \
         "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)
     alias.save()
+
+@events.observe("GetStaticContent")
+def get_static_content(target):
+    if target != "userprefs":
+        return []
+    return """<script type="text/javascript">
+function arform_cb() {
+    $('#id_untildate').datepicker();
+    $(".submit").one('click', function(e) {
+        simple_ajax_form_post(e, arform_cb);
+    });
+}
+</script>
+"""

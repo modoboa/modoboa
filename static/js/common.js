@@ -1,14 +1,17 @@
-window.addEvent('domready', function(){
-    parse_menubar('topmenubar');
-    parse_menubar('menubar');
+$(document).ready(function() {
+    $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
+    $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
 
-    infobox = new InfoBox({
+    //parse_menubar('#topmenubar');
+    //parse_menubar('#menubar');
+
+    /*infobox = new InfoBox({
         parent : $("menubar"),
         message : "Loading"
-    });
+    });*/
 
     /* Specific javascript code for the demo... not the best place */
-    $$("a[name=sendspam], a[name=sendvirus]").addEvent("click", function(evt) {
+    /*$$("a[name=sendspam], a[name=sendvirus]").addEvent("click", function(evt) {
         evt.stop();
         new Request.JSON({
             url: this.get("href"),
@@ -21,7 +24,7 @@ window.addEvent('domready', function(){
                 }
             }
         }).get();
-    });
+    });*/
 });
 
 var media_url = "";
@@ -65,8 +68,29 @@ function enable_link(link, callback) {
 }
 
 function parse_menubar(id) {
-  if ($(id)) {
-    $(id).getElements('li.dropdown').each(function(elem){
+    var $menubar = $(id);
+
+    if ($menubar == undefined) {
+        return;
+    }
+    $menubar.find('.dropdown-toggle').dropdown();
+    $menubar.find('a[data-toggle="modal"]').click(function(e) {
+        console.log(this);
+        e.preventDefault();
+        var href = $(this).attr('href');
+
+        if (href.indexOf('#') == 0) {
+            $(href).modal('open');
+        } else {
+            $.get(href, function(data) {
+                $('<div class="modal" >' + data + '</div>').modal();
+            }).success(function() {
+                $('input:text:visible:first').focus();
+            });
+        }
+    });
+
+        /*.each(function(elem){
       var list = elem.getElement('ul.links');
       var myFx = new Fx.Slide(list, {
         duration: 200
@@ -76,7 +100,6 @@ function parse_menubar(id) {
 
       myFx.wrapper.setStyles({
           position : "absolute",
-          /*top: 30,*/
           left : coords['left']
       });
       myFx.hide();
@@ -91,11 +114,11 @@ function parse_menubar(id) {
 	  myFx.slideOut();
 	}
       });
-    });
-    SqueezeBox.assign($(id).getElements('a[class=boxed]'), {
+    });*/
+    /*SqueezeBox.assign($(id).getElements('a[class=boxed]'), {
       parse: 'rel'
-    });
-  }
+    });*/
+
 };
 
 get_iframe_body = function(id) {
@@ -220,17 +243,16 @@ gethref = function(obj) {
     return url;
 };
 
-saveparams = function(id, message) {
-    $$("input[name=update]").addEvent("click", function(evt) {
-        evt.stop();
-        $(id).set("send", {
-            onSuccess: function(response) {
-                var decode = JSON.decode(response);
-                if (decode.status == "ok") {
-                    infobox.info(message);
-                    infobox.hide(1);
-                }
+/*function saveparams(id, message) {
+    $("#update").click(function(evt) {
+        evt.preventDefault();
+        var $form = $("form");
+
+        $.post($form.attr("action"), $form.serialize(), function(data) {
+            if (data.status == "ok") {
+                $("body").notify("success", message, 2000);
             }
-        }).send();
+        });
     });
-};
+};*/
+

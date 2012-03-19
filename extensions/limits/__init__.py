@@ -9,10 +9,10 @@ from django.db import IntegrityError
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_noop as _, ugettext
 from django.core.urlresolvers import reverse
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib.webutils import static_url
-from modoboa.admin.models import User
 from models import *
+from forms import ResourcePoolForm
 import permissions
 import controls
 import views
@@ -20,6 +20,8 @@ import views
 baseurl = "limits"
 
 def init():
+    from modoboa.admin.models import User
+
     ct = ContentType.objects.get(app_label="admin", model="domain")
     dagrp = Group.objects.get(name="DomainAdmins")
     for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
@@ -59,9 +61,9 @@ def infos():
         "url" : baseurl
         }
 
-@events.observe('AdminFooterDisplay')
+#@events.observe('AdminFooterDisplay')
 def display_pool_usage(user, objtype):
-    if user.id == 1:
+    if user.is_superuser:
         return []
     if objtype == "domaliases":
         objtype = "domain_aliases"
@@ -89,3 +91,36 @@ def get_da_actions(user):
          "class" : "boxed",
          "rel" : "{handler:'iframe',size:{x:330,y:280}}"},
         ]
+
+@events.observe("ExtraAccountForm")
+def extra_account_form(user, account=None):
+    if not user.is_superuser and not user.belongs_to_group("Resellers"):
+        return []
+    if account:
+        if not account.belongs_to_group("Resellers") and \
+           not account.belongs_to_group("DomainAdmins"):
+            return []
+
+    return [
+        dict(
+            id="resources", title=_("Resources"), cls=ResourcePoolForm
+            )
+        ]
+
+@events.observe("CheckExtraAccountForm")
+def check_form_access(account, form):
+    if form["id"] != "resources":
+        return [True]
+    if not account.belongs_to_group("Resellers") and \
+       not account.belongs_to_group("DomainAdmins"):
+        return [False]
+    return [True]
+
+@events.observe("FillAccountInstances")
+def fill_account_instances(user, account, instances):
+    if not user.is_superuser and not user.belongs_to_group("Resellers"):
+        return
+    if not account.belongs_to_group("Resellers") and \
+       not account.belongs_to_group("DomainAdmins"):
+        return
+    instances["resources"] = account

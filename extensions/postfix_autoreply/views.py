@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+# coding: utf-8
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.contrib.auth.decorators \
@@ -14,7 +13,13 @@ from models import *
 
 @login_required
 @needs_mailbox()
-def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
+def autoreply(request, tplname="common/generic_modal_form.html"):
+    ctx = dict(
+        title=_("Auto-reply message"),
+        action=reverse(autoreply),
+        formid="arform",
+        submit_label=_("Update")
+        )
     mb = Mailbox.objects.get(user=request.user.id)
     try:
         arm = ARmessage.objects.get(mbox=mb.id)
@@ -33,15 +38,13 @@ def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
             arm.untildate = form.cleaned_data["untildate"]
             arm.mbox = mb
             arm.save()
-            messages.info(request, _("Auto reply message updated successfully."),
-                          fail_silently=True)
+            messages.info(request, _("Auto reply message updated successfully."))
             return ajax_response(request, url=reverse(userprefs.views.index))
-        return ajax_response(request, status="ko", template=tplname, 
-                             form=form, error=error)
+        ctx.update(form=form, error=error)
+        return ajax_response(request, status="ko", template=tplname, **ctx)
 
     form = ARmessageForm(instance=arm)
     if arm is not None:
         form.fields['untildate'].initial = arm.untildate
-    return _render(request, tplname, {
-            "form" : form
-            })
+    ctx.update(form=form)
+    return _render(request, tplname, ctx)

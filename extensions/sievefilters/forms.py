@@ -1,6 +1,10 @@
 from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_noop
+from django.forms.widgets import RadioFieldRenderer, RadioSelect, RadioInput
+from django.utils.safestring import mark_safe
+from django.utils.html import conditional_escape
+from django.utils.encoding import force_unicode
 from modoboa.admin.templatetags.admin_extras import gender
 
 class FiltersSetForm(forms.Form):
@@ -9,17 +13,52 @@ class FiltersSetForm(forms.Form):
                                 initial=False,
                                 help_text=ugettext_noop("Check to activate this filters set"))
 
+class CustomRadioInput(RadioInput):
+    def __unicode__(self):
+        return self.render()
+
+    def render(self, name=None, value=None, attrs=None, choices=()):
+        name = name or self.name
+        value = value or self.value
+        attrs = attrs or self.attrs
+        if 'id' in self.attrs:
+            label_for = ' for="%s_%s"' % (self.attrs['id'], self.index)
+        else:
+            label_for = ''
+        choice_label = conditional_escape(force_unicode(self.choice_label))
+        return mark_safe(
+            u'<label%s class="radio inline">%s %s</label>' \
+                % (label_for, self.tag(), choice_label)
+            )
+
+class CustomRadioFieldRenderer(RadioFieldRenderer):
+    def __iter__(self):
+        for i, choice in enumerate(self.choices):
+            yield CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
+            
+    def __getitem__(self, idx):
+        choice = self.choices[idx]
+        return CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, idx)
+
+    def render(self):
+        return mark_safe(u'\n'.join([force_unicode(w) for w in self]))
+
+class CustomRadioSelect(RadioSelect):
+    renderer = CustomRadioFieldRenderer
+
 class FilterForm(forms.Form):
     def __init__(self, conditions, actions, request, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)
 
         self.fields["name"] = forms.CharField(label=_("Name"))
-        self.fields["match_type"] = forms.ChoiceField(choices=[("allof", _("All of the following")),
-                                                               ("anyof", _("Any of the following")),
-                                                               ("all", _("All messages"))],
-                                                      initial="anyof",
-                                                      widget=forms.RadioSelect)
-
+        self.fields["match_type"] = forms.ChoiceField(
+            choices=[("allof", _("All of the following")),
+                     ("anyof", _("Any of the following")),
+                     ("all", _("All messages"))],
+            initial="anyof",
+            widget=CustomRadioSelect(attrs={"class" : "radio inline"})
+            )
+        
         self.header_operators = [("contains", _("contains"), "string"),
                                  ("notcontains", _("does not contain"), "string"),
                                  ("is", _("is"), "string"),

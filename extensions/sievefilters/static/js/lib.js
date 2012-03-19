@@ -10,41 +10,40 @@ var curscript = null;
  *
  */
 function removefilter(evt) {
-    evt.stop();
+    evt.preventDefault();
     if (!confirm(gettext("Remove this filter?"))) {
         return;
     }
-    new Request.JSON.mdb({
-        url: this.get("href"),
-        onSuccess: function(response) {
+    var $this = $(this);
+
+    $.ajax({
+        url: $this.attr("href"),
+        dataType: 'json',
+        success: function(response) {
             if (response.status == "ok") {
-                current_anchor.update(true);
-                infobox.info(response.respmsg);
-                infobox.hide(1);
+                history.update(true);
+                $("body").notify('success', response.respmsg, 2000);
             } else {
-                infobox.error(response.respmsg);
+                $("body").notify('error', response.respmsg);
             }
         }
-    }).get();
+    });
 }
 
 /*
  * Handler listening for the "change" event on the filters sets list.
  */
 function changefs(evt) {
-    evt.stop();
-    current_anchor.baseurl(this.get("value")).update();
+    evt.preventDefault();
+    history.baseurl($(this).attr("value")).update();
 }
 
 /*
  * Initializes buttons located inside the filters list
  */
 function init_filters_list() {
-    SqueezeBox.assign($("filters_list").getElements('a[class=boxed]'), {
-        parse: 'rel'
-    });
-    $$("a[name=togglestate]").addEvent("click", toggle_filter_state);
-    $$("a[name*=movefilter_]").addEvent("click", move_filter);
+    $("a[name=togglestate]").click(toggle_filter_state);
+    $("a[name*=movefilter_]").click(move_filter);
 }
 
 /*
@@ -53,17 +52,21 @@ function init_filters_list() {
  * It updates the middle DIV and initializes the user interface.
  */
 function loadfs(response) {
-    curscript = current_anchor.getbaseurl();
-    $("curfset").set("value", curscript);
-    $("set_content").set("html", response.content);
-    parse_menubar("fset_menu");
-    if ($defined($("filters_list"))) {
+    curscript = history.getbaseurl();
+    $("#curfset").attr("value", curscript);
+    $("#set_content").html(response.content);
+
+    if ($("#filters_list") != undefined) {
         init_filters_list();
     }
-    $$("a[name=removefilter]").addEvent("click", removefilter);
-    $$("a[name=activatefs]").addEvent("click", activatefs);
-    $$("a[name=savefs]").addEvent("click", savefs);
-    $$("a[name=removefs]").addEvent("click", removefs);
+    if ($("#fsetmenu").length) {
+        $("#fsetmenu").remove();
+    }
+    $("#menu").after($(response.menu));
+    $("a[name=removefilter]").click(removefilter);
+    $("a[name=activatefs]").click(activatefs);
+    $("a[name=savefs]").click(savefs);
+    $("a[name=removefs]").click(removefs);
 }
 
 /*
@@ -72,25 +75,23 @@ function loadfs(response) {
  * (remove, activate)
  */
 function send_command(cmd, extracb) {
-    new Request.JSON.mdb({
+    $.ajax({
         url: cmd,
-        onSuccess: function(response) {
+        dataType: 'json',
+        success: function(response) {
             if (response.status == "ko") {
-                infobox.calcsize(300);
-                infobox.error(response.respmsg);
+                $("body").notify('error', response.respmsg);
             } else {
-                if ($defined(extracb)) {
-                    extracb();
+                if (extracb != undefined) {
+                    extracb(response);
                 }
                 if (!response.norefresh) {
-                    current_anchor.update(true);
+                    history.update(true);
                 }
-                infobox.calcsize();
-                infobox.info(response.respmsg);
-                infobox.hide(2);
+                $("body").notify('success', response.respmsg, 2000);
             }
         }
-    }).get();
+    });
 }
 
 /*
@@ -98,11 +99,11 @@ function send_command(cmd, extracb) {
  * validate any new asked action. (activate, save, remove)
  */
 function check_prereqs(evt, msg) {
-  evt.stop();
+  evt.preventDefault();
   if (!curscript) {
     return false;
   }
-  if ($defined(msg) && !confirm(msg)) {
+  if (msg != undefined && !confirm(msg)) {
     return false;
   }
   return true;
@@ -116,21 +117,21 @@ function savefs(evt) {
     if (!check_prereqs(evt, gettext("Save changes?"))) {
         return;
     }
-    new Request.JSON.mdb({
-        url: $("feditor").get("action"),
-        method: $("feditor").get("method"),
-        data: $("feditor").toQueryString(),
-        onSuccess: function(response) {
+    var $editor = $("#feditor");
+
+    $.ajax({
+        url: $editor.attr("action"),
+        type: $editor.attr("method"),
+        dataType: 'json',
+        data: $editor.serialize(),
+        success: function(response) {
             if (response.status == "ko") {
-                infobox.calcsize(300);
-                infobox.error(response.respmsg);
+                $("body").notify('error', response.respmsg);
             } else {
-                infobox.calcsize();
-                infobox.info(response.respmsg);
-                infobox.hide(2);
+                $("body").notify('success', response.respmsg, 2000);
             }
         }
-    }).send();
+    });
 }
 
 /*
@@ -143,14 +144,11 @@ function removefs(evt) {
     if (!check_prereqs(evt, gettext("Remove filters set?"))) {
         return;
     }
-    send_command(this.get("href"), function() {
-        $("curfset").getElements("option[value=" + curscript + "]").destroy();
-        if (!$("curfset").getElements("option[value=" + curscript + "]").length) {
-            current_anchor.reset().update();
-            location.reload();
-        } else {
-            current_anchor.reset();
-        }
+    send_command($(this).attr("href"), function(response) {
+        var $curfset = $("#curfset");
+
+        $curfset.find("option[value=" + curscript + "]").remove();
+        history.baseurl(response.newfs, 1);
     });
 }
 
@@ -158,46 +156,105 @@ function removefs(evt) {
  * Activate the current filters set.
  */
 function activatefs(evt) {
+    var $this = $(this);
+
     if (!check_prereqs(evt, gettext("Activate this filters set?"))) {
         return;
     }
-    send_command(
-        this.get("href"),
-        function() {
-            $("curfset").getElements("option").each(function(item) {
-                if (item.get("value") == curscript) {
-                    item.set("html", curscript + " (" + gettext("active") + ")");
-                } else {
-                    item.set("html", item.get("value"));
-                }
-            });
-        }
-    );
+    send_command($this.attr("href"), function(response) {
+        $("#curfset").find("option").each(function(index, element) {
+            var $element = $(element);
+
+            ($element.attr("value") == curscript)
+                ? $element.html(curscript + " (" + gettext("active") + ")")
+                : $element.html($element.attr("value"));
+        });
+    });
 }
 
+/*
+ * Enable/Disable a specific filter
+ */
 function toggle_filter_state(event) {
-    event.stop();
-    new Request.JSON.mdb({
-        url: this.get("href"),
-        onSuccess: function(response) {
+    var $this = $(this);
+
+    event.preventDefault();
+    $.ajax({
+        url: $this.attr("href"),
+        dataType: 'json',
+        success: function(response) {
             if (response.status == "ok") {
-                this.set("html", response.label);
-                this.set("class", "");
-                this.addClass(response.color);
+                $this.html(response.label);
+                $this.attr("class", "");
+                $this.addClass(response.color);
             } else {
-                infobox.error(respmsg.respmsg);
+                $("body").notify('error', response.respmsg);
             }
-        }.bind(this)
-    }).get();
+        }
+    });
 }
 
 function move_filter(event) {
-    event.stop();
-    new Request.JSON.mdb({
-        url: this.get("href"),
-        onSuccess: function(response) {
-            $("filters_list").set("html", response.content);
+    var $this = $(this);
+
+    event.preventDefault();
+    $.ajax({
+        url: $this.attr('href'),
+        dataType: 'json',
+        success: function(response) {
+            $("#set_content").html(response.content);
             init_filters_list();
         }
-    }).get();
+    });
+}
+
+function filterset_created(data) {
+    var name = data.url;
+    var option = $('<option value="' + name + '">' + name + '</option>');
+    var curfset = $(parent.document).find("#curfset");
+
+    curfset.append(option);
+    curfset.attr("value", name);
+
+    if ($("#id_active").checked) {
+        curfset.find("option").each(function(index, element) {
+            var $element = $(element);
+
+            if ($element.attr("value") == name) {
+                $element.html(name + " (" + gettext("active") + ")");
+            } else {
+                $element.html($element.attr("value"));
+            }
+        });
+    }
+    history.baseurl(data.url, 1).update(1);
+}
+
+function filtersetform_cb() {
+    $(".submit").one('click', function(e) {
+        simple_ajax_form_post(e, {
+            reload_on_success: false,
+            error_cb: filtersetform_cb,
+            success_cb: filterset_created
+        });
+    });
+}
+
+/*
+ * From here: specific functions used by the user-friendly form to
+ * create/edit filters.
+ */
+function fetch_templates(url, container) {
+    if (container) {
+        return container;
+    }
+    var result;
+
+    $.ajax({
+        url: url,
+        async: false,
+        dataType: 'json',
+        success: function(data) { result = data; }
+    });
+    return result;
 }

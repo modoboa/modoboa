@@ -93,4 +93,4 @@ class Migration(DataMigration):
         }
     }
 
-    complete_apps = ['admin']
+    complete_apps = ['admin', 'contenttypes']

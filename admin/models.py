@@ -24,15 +24,6 @@ try:
 except ImportError:
     ldap_available = False
 
-def get_content_type(obj):
-    """Simple function that use the right method to retrieve a content type
-
-    :param obj: a django model
-    :return: a ``ContentType`` object
-    """
-    return obj.get_content_type() if hasattr(obj, "get_content_type") \
-        else ContentType.objects.get_for_model(obj)
-
 class User(DUser):
     """Proxy for the ``User`` model.
 
@@ -49,6 +40,37 @@ class User(DUser):
 
     def __unicode__(self):
         return u"%s %s" % (self.first_name, self.last_name)
+
+    def delete(self, fromuser, keep_mb_dir, *args, **kwargs):
+        """Custom delete method
+        """
+        from modoboa.lib.permissions import \
+            get_object_owner, grant_access_to_object, ungrant_access_to_object
+
+        if not fromuser.can_access(self):
+            raise PermDeniedException(_("You don't have access to this account"))
+        if fromuser == self:
+            raise AdminError(_("You can't delete your own account"))
+        if self.has_mailbox:
+            mb = self.mailbox_set.all()[0]
+            if not fromuser.can_access(mb.domain):
+                raise PermDeniedException(_("You don't have access to this domain"))
+            events.raiseEvent("DeleteMailbox", mb)
+            ungrant_access_to_object(mb)
+            mb.delete(keepdir=keep_mb_dir)
+
+        owner = get_object_owner(self)
+        for ooentry in self.objectaccess_set.all():
+            if ooentry.is_owner:
+                if ooentry.content_object is not None:
+                    grant_access_to_object(owner, ooentry.content_object, True)
+                else:
+                    print "ORPHELIN!!!"
+            ooentry.delete()
+
+        events.raiseEvent("AccountDeleted", self)
+        ungrant_access_to_object(self)
+        super(User, self).delete(*args, **kwargs)
 
     @staticmethod
     def get_content_type():
@@ -129,6 +151,27 @@ class User(DUser):
         if self.first_name != "":
             return "%s %s" % (self.first_name, self.last_name)
         return self.username
+
+    @property
+    def identity(self):
+        if self.email != "":
+            return self.email
+        return self.username
+
+    @property
+    def name_or_rcpt(self):
+        if self.first_name != "":
+            return "%s %s" % (self.first_name, self.last_name)
+        return "----"
+
+    @property
+    def group(self):
+        if self.is_superuser:
+            return "SuperAdmin"
+        try:
+            return self.groups.all()[0].name
+        except IndexError:
+            return "?"
 
     def belongs_to_group(self, name):
         """Simple shortcut to check if this user is a member of a
@@ -216,6 +259,8 @@ class User(DUser):
         :param obj: an object inheriting from ``models.Model``
         :return: a boolean
         """
+        from modoboa.lib.permissions import get_content_type
+
         ct = get_content_type(obj)
         try:
             ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
@@ -233,6 +278,8 @@ class User(DUser):
         :param obj: a admin object
         :return: a boolean
         """
+        from modoboa.lib.permissions import get_content_type
+
         if self.is_superuser:
             return True
 
@@ -360,8 +407,8 @@ class Domain(DatesAware):
         # Not very optimized but currently, this is the simple way
         # I've found to delete all related objects (mailboxes, users
         # and aliases)!
-        for mb in self.mailbox_set.all():
-            mb.delete(keepdir=keepdir)
+        # for mb in self.mailbox_set.all():
+        #     mb.delete(keepdir=keepdir)
         super(Domain, self).delete(*args, **kwargs)
         if not keepdir:
             self.delete_dir()
@@ -379,13 +426,18 @@ class DomainAlias(DatesAware):
                             help_text=ugettext_noop("The alias name"))
     target = models.ForeignKey(Domain, verbose_name=ugettext_noop('target'),
                                help_text=ugettext_noop("The domain this alias points to"))
-    enabled = models.BooleanField(ugettext_noop('enabled'),
-                                  help_text=ugettext_noop("Check to activate this alias"))
+    enabled = models.BooleanField(
+        ugettext_noop('enabled'),
+        help_text=ugettext_noop("Check to activate this alias")
+        )
 
     class Meta:
         permissions = (
             ("view_domaliases", "View domain aliases"),
             )
+
+    def __unicode__(self):
+        return self.name
 
 class Mailbox(DatesAware):
     address = models.CharField(
@@ -456,13 +508,14 @@ class Mailbox(DatesAware):
                                           % (abspath, self.mdirroot, dir, sdir))
         return True
 
-    def rename_dir(self, domain, newaddress):
+    def rename_dir(self, newdomain, newaddress):
         if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
             if self.domain.name == domain and newaddress == self.address:
                 return True
-            path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), domain)
+            oldpath = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.domain.name)
+            newpath = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), newdomain)
             code = exec_as_vuser("mv %s/%s %s/%s" \
-                                     % (path, self.address, path, newaddress))
+                                     % (oldpath, self.address, newpath, newaddress))
             if code:
                 self.path = "%s/" % newaddress
             return code
@@ -498,8 +551,8 @@ class Mailbox(DatesAware):
             user.set_password(kwargs["password"])
         try:
             user.save()
-        except IntegrityError:
-            raise AdminError(_("Mailbox with this address already exists"))
+        except IntegrityError, e:
+            raise AdminError(_("Account '%s' already exists" % user.username))
         self.user = user
 
         if len(user.groups.all()) == 0:
@@ -538,7 +591,6 @@ class Mailbox(DatesAware):
         :param domain: the associated Domain object
         :param user: the associated User object
         """
-        self.name = "%s %s" % (user.first_name, user.last_name)
         self.address = localpart
         self.domain = domain
         self.user = user
@@ -556,7 +608,7 @@ class Mailbox(DatesAware):
             self.gid = v_gid
 	else:
             self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
-            self.quota = self.domain.quota
+        self.quota = self.domain.quota
         super(Mailbox, self).save()
 
     def create_from_csv(self, user, line):
@@ -591,18 +643,21 @@ class Mailbox(DatesAware):
             alias.mboxes.remove(self)
             if len(alias.mboxes.all()) == 0:
                 alias.delete()
-        self.user.delete()
         super(Mailbox, self).delete(*args, **kwargs)
         if not keepdir:
             self.delete_dir()
 
 
 class Alias(DatesAware):
-    address = models.CharField(ugettext_noop('address'), max_length=254,
-                               help_text=ugettext_noop("The alias address (without the domain part). For a 'catch-all' address, just enter an * character."))
+    address = models.CharField(
+        ugettext_noop('address'), max_length=254,
+        help_text=ugettext_noop("The alias address (without the domain part). For a 'catch-all' address, just enter an * character.")
+        )
     domain = models.ForeignKey(Domain)
-    mboxes = models.ManyToManyField(Mailbox, verbose_name=ugettext_noop('mailboxes'),
-                                    help_text=ugettext_noop("The mailboxes this alias points to"))
+    mboxes = models.ManyToManyField(
+        Mailbox, verbose_name=ugettext_noop('mailboxes'),
+        help_text=ugettext_noop("The mailboxes this alias points to")
+        )
     extmboxes = models.TextField(blank=True)
     enabled = models.BooleanField(ugettext_noop('enabled'),
                                   help_text=ugettext_noop("Check to activate this alias"))
@@ -611,63 +666,42 @@ class Alias(DatesAware):
         permissions = (
             ("view_aliases", "View aliases"),
             )
+        unique_together = (("address", "domain"),)
 
     @property
     def full_address(self):
         return "%s@%s" % (self.address, self.domain.name)
 
     @property
-    def targets(self):
-        ret = "<br/>".join(map(lambda m: str(m), self.mboxes.all()))
-        ret += "<br/>" + self.repr_extmboxes()
-        return ret
+    def identity(self):
+        return self.full_address
 
-    def save(self, int_targets, ext_targets, *args, **kwargs):
-        if len(ext_targets):
-            self.extmboxes = ",".join(ext_targets)
+    @property
+    def name_or_rcpt(self):
+        return "%s, ..." % self.get_recipients()[0]
+
+    def save(self, int_rcpts, ext_rcpts, *args, **kwargs):
+        if len(ext_rcpts):
+            self.extmboxes = ",".join(ext_rcpts)
         else:
             self.extmboxes = ""
         super(Alias, self).save(*args, **kwargs)
         curmboxes = self.mboxes.all()
-        for t in int_targets:
+        for t in int_rcpts:
             if not t in curmboxes:
                 self.mboxes.add(t)
         for t in curmboxes:
-            if not t in int_targets:
+            if not t in int_rcpts:
                 self.mboxes.remove(t)
 
-    def first_target(self):
-        """Return the first target of this alias
-
-        It is taken from internal addresses, or external addresses.
-        """
-        if len(self.mboxes.all()):
-            return self.mboxes.all()[0]
-        if len(self.extmboxes):
-            return self.extmboxes.split(",")[0]
-        return None
-
-    def get_targets(self):
-        """Return a list containing targeted mailboxes
+    def get_recipients(self):
+        """Return a the recipients list
 
         Internal and external addresses are mixed into a single list.
         """
-        result = []
-        if len(self.mboxes.all()):
-            for mb in self.mboxes.all()[1:]:
-                result += [mb.full_address]
-            if len(self.extmboxes):
-                result += self.extmboxes.split(",")
-        else:
-            result = self.extmboxes.split(",")[1:]
+        result = map(lambda mb: mb.full_address, self.mboxes.all())
+        result += self.extmboxes.split(',')
         return result
-
-    def repr_extmboxes(self):
-        """Return external targets as a string
-
-        A ready to print representation of external targets.
-        """
-        return "<br/>".join(self.extmboxes.split(","))
 
     def ui_disabled(self, user):
         if user.is_superuser:
@@ -699,10 +733,11 @@ class Extension(models.Model):
         module.destroy()
 
     def on(self):
-        self.load()
-        self.init()
         self.enabled = True
         self.save()
+
+        self.load()
+        self.init()
 
         extdir = "%s/extensions/%s" % (settings.MODOBOA_DIR, self.name)
         scriptdir = "%s/%s" % (extdir, "scripts")

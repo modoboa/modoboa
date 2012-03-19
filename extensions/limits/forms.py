@@ -3,33 +3,10 @@
 from django import forms
 from django.utils.translation import ugettext_noop as _
 from django.contrib.auth.models import User, Group
-from modoboa.admin.forms import UserForm, UserWithPasswordForm
-from modoboa.admin.lib import get_object_owner
 from models import *
 from lib import *
 
-class ResellerForm(UserForm):
-    def __init__(self, *args, **kwargs):
-        super(ResellerForm, self).__init__(*args, **kwargs)
-        del self.fields["createmb"]
-
-    def save(self, commit=True, group=None):
-        user = super(ResellerForm, self).save(commit, group)
-        if commit:
-            try:
-                pool = user.limitspool
-            except LimitsPool.DoesNotExist:
-                pool = LimitsPool()
-                pool.user = user
-                pool.save()
-                pool.create_limits()
-
-        return user
-
-class ResellerWithPasswordForm(ResellerForm, UserWithPasswordForm):
-    pass
-
-class ResellerPoolForm(forms.Form):
+class ResourcePoolForm(forms.Form):
     domain_admins_limit = forms.IntegerField(
         ugettext_noop("Max domain admins"),
         help_text=ugettext_noop("Maximum number of domain administrators that can be created by this user")
@@ -42,6 +19,16 @@ class ResellerPoolForm(forms.Form):
         help_text=ugettext_noop("Maximum number of mailboxes that can be created by this user"))
     mailbox_aliases_limit = forms.IntegerField(ugettext_noop("Max mailbox aliases"),
         help_text=ugettext_noop("Maximum number of mailbox aliases that can be created by this user"))
+
+    def __init__(self, *args, **kwargs):
+        if kwargs.has_key("instance"):
+            self.account = kwargs["instance"]
+            del kwargs["instance"]
+        super(ResourcePoolForm, self).__init__(*args, **kwargs)
+        if hasattr(self, "account"):
+            if not self.account.belongs_to_group("Resellers"):
+                del self.fields["domain_admins_limit"]
+            self.load_from_user(self.account)
 
     def check_limit_value(self, lname):
         if self.cleaned_data[lname] < -1:
@@ -84,12 +71,14 @@ class ResellerPoolForm(forms.Form):
         ol.maxvalue -= newvalue
         ol.save()
 
-    def save_new_limits(self, pool):
-        owner = get_object_owner(pool.user)
+    def save(self):
+        from modoboa.lib.permissions import get_object_owner
+
+        owner = get_object_owner(self.account)
         for lname in reseller_limits_tpl:
             if not self.cleaned_data.has_key(lname):
                 continue
-            l = pool.limit_set.get(name=lname)
+            l = self.account.limitspool.limit_set.get(name=lname)
             if not owner.is_superuser:
                 self.allocate_from_pool(l, owner.limitspool)
             l.maxvalue = self.cleaned_data[lname]

@@ -26,7 +26,7 @@ class DomainsTable(tables.Table):
 
     cols_order = ["name", "creation", "modified", 
                   "domaliases", "mboxes", "mbaliases",
-                  "quota", "enabled", "actions"]
+                  "quota", "actions"]
 
     def __init__(self, request, doms):
         super(DomainsTable, self).__init__(request)
@@ -38,91 +38,10 @@ class DomainsTable(tables.Table):
     def parse_enabled(self, value):
         return _("yes") if value else _("no")
 
-class DomaliasesTable(tables.Table):
-    tableid = "objects_table"
-    idkey = "id"
-
-    name = tables.Column("name", label=ugettext_noop("Name"))
-    target = tables.Column("target", label=ugettext_noop("Targeted domain"))
-    creation = tables.Column("creation", label=ugettext_noop("Created"), width="170px")
-    modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
-                             width="170px")
-    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="50px",
-                            align="center")
-    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"), 
-                                  width="50px", align="center", 
-                                  defvalue=domalias_actions)
-    
-    cols_order = ["name", "target", "creation",
-                  "modified", "enabled", "actions"]
-
-    def __init__(self, request, domaliases):
-        super(DomaliasesTable, self).__init__(request)
-        self.populate(self._rows_from_model(domaliases))
-
-    def parse_enabled(self, value):
-        return _("yes") if value else _("no")
-
-class MailboxesTable(tables.Table):
-    tableid = "objects_table"
-    idkey = "id"
-
-    address = tables.Column("full_address", label=ugettext_noop("Address"))
-    name = tables.Column("user", label=ugettext_noop("Name"))
-    creation = tables.Column("creation", label=ugettext_noop("Created"), 
-                             width="160px")
-    modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
-                             width="160px")
-    aliases = tables.Column("alias_count", label=ugettext_noop("Aliases"), width="70px",
-                            align="center")
-    quota = tables.Column("quota", label=ugettext_noop("Quota"), 
-                          width="50px", align="center")
-    enabled = tables.Column("enabled", label=gender("Enabled", "f"), width="50px",
-                            align="center")
-    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"), 
-                                  width="70px", align="center", defvalue=mailbox_actions)
-    
-    cols_order = ["address", "name", "creation", "modified", "aliases",
-                  "quota", "enabled", "actions"]
-
-    def __init__(self, request, mailboxes):
-        super(MailboxesTable, self).__init__(request)
-        self.populate(self._rows_from_model(mailboxes))
-
-    def parse_quota(self, value):
-        return "%s %s" % (value, _("MB"))
-
-    def parse_enabled(self, value):
-        return _("yes") if value else _("no")
-
-    def parse_name(self, user):
-        return "%s %s" % (user.first_name, user.last_name)
-
-class MbaliasesTable(tables.Table):
-    tableid = "objects_table"
-    idkey = "id"
-    
-    address = tables.Column("full_address", label=ugettext_noop("Address"))
-    targets = tables.Column("targets", label=ugettext_noop("Target(s)"), safe=True)
-    creation = tables.Column("creation", label=ugettext_noop("Created"), width="170px")
-    modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
-                             width="170px")
-    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="50px",
-                            align="center")
-    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"), width="50px",
-                                  align="center", defvalue=mbalias_actions)
-
-    cols_order = ["address", "targets", "creation", "modified", "enabled", "actions"]
-
-    def __init__(self, request, aliases):
-        super(MbaliasesTable, self).__init__(request)
-        self.populate(self._rows_from_model(aliases))
-
-    def rowoptions(self, request, alias):
-        return "{ui_disabled : '%s'}" % alias.ui_disabled(request.user)
-
-    def parse_enabled(self, value):
-        return _("yes") if value else _("no")
+    def row_class(self, request, domain):
+        if not domain.enabled:
+            return "muted"
+        return ""
 
 class ExtensionsTable(tables.Table):
     idkey = "id"
@@ -133,43 +52,55 @@ class ExtensionsTable(tables.Table):
     
     cols_order = ["selection", "name", "version", "descr"]
 
-class SuperAdminsTable(tables.Table):
+class AccountsTable(tables.Table):
     idkey = "id"
-    selection = tables.SelectionColumn("selection", width="4%")
-    username = tables.Column("username", label=ugettext_noop("User name"))
-    first_name = tables.Column("first_name", label=ugettext_noop("First name"))
-    last_name = tables.Column("last_name", label=ugettext_noop("Last name"))
-    date_joined = tables.Column("date_joined", label=ugettext_noop("Defined"))
-    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="10%")
-
-    cols_order = ["selection", "username", "first_name", "last_name", 
-                  "date_joined", "enabled"]
-
-    def __init__(self, request, users):
-        super(SuperAdminsTable, self).__init__(request)
-        self.populate(self._rows_from_model(users))
-
-    def parse_enabled(self, value):
-        return _("yes") if value else _("no")
-    
-class DomainAdminsTable(tables.Table):
-    idkey = "id"
-    selection = tables.SelectionColumn("selection", width="4%")
     username = tables.Column("username", label=ugettext_noop("User name"))
     first_name = tables.Column("first_name", label=ugettext_noop("First name"))
     last_name = tables.Column("last_name", label=ugettext_noop("Last name"))
     date_joined = tables.Column("date_joined", label=ugettext_noop("Defined"))
     enabled = tables.Column("is_active", label=gender("Enabled", "m"), width="10%")
+    role = tables.Column("group", label=ugettext_noop("Role"))
     actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),
                                   width="70px", align="center", 
-                                  defvalue=domain_admin_actions)
+                                  defvalue=account_actions)
 
-    cols_order = ["selection", "username", "first_name", 
-                  "last_name", "date_joined", "enabled", "actions"]
+    cols_order = ["username", "first_name", "last_name", "date_joined", 
+                  "role", "actions"]
     
     def __init__(self, request, users):
-        super(DomainAdminsTable, self).__init__(request)
+        super(AccountsTable, self).__init__(request)
         self.populate(self._rows_from_model(users))
 
     def parse_is_active(self, value):
         return _("yes") if value else _("no")
+
+    def parse_group(self, value):
+        if value == "SimpleUsers":
+            return "U"
+        return value[:1]
+
+    def row_class(self, request, obj):
+        if not obj.is_active:
+            return "muted"
+        return ""
+
+class IdentitiesTable(tables.Table):
+    idkey = "id"
+    identity = tables.Column("identity", label=ugettext_noop("Email/Username"))
+    name_or_rcpt = tables.Column("name_or_rcpt", label=ugettext_noop("Fullname/Recipient"))
+    actions = tables.ActionColumn("actions",  label=ugettext_noop("Actions"),
+                                  width="70px", align="center", 
+                                  defvalue=identity_actions)
+
+    cols_order = ["identity", "name_or_rcpt", "actions"]
+
+    def __init__(self, request, identities):
+        super(IdentitiesTable, self).__init__(request)
+        self.populate(self._rows_from_model(identities, True))
+
+    def row_class(self, request, obj):
+        if obj.__class__.__name__ == "User" and not obj.is_active:
+            return "muted"
+        if not obj.enabled:
+            return "muted"
+        return ""

@@ -1,96 +1,23 @@
-{% extends "layout_simple.html" %}
-{% load i18n sfilters_tags %}
-{% block html_head %}
-{{ block.super }}
-<script type="text/javascript" src="{{ MEDIA_URL }}js/form.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/dynamic_textinput.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}sievefilters/js/dynamic_fields.js"></script>
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}sievefilters/css/style.css" />
-
-<script type="text/javascript">
-var cond_templates = null;
-var action_templates = null;
-var da = null;
-var dc = null;
-
-function matchtype_cb(event) {
-  if (this.get("value") == "all") {
-    $$("#condlist div[class=item]").slide("out");
-  } else {
-    $("hide").setStyle("display", "block");
-    $$("#condlist div[class=item]").slide("in");
-  }
-}
-
-function initform() {
-  var clist = $$("select[name*=cond_target_]");
-  var alist = $$("select[name*=action_name_]");
-  
-  dc = new DynamicCondition(clist, {
-    templates: cond_templates,
-    parentContainer: $("condlist")
-  });
-  da = new DynamicAction(alist, {
-    templates: action_templates,
-    ufolders_url: "{% url modoboa.extensions.sievefilters.views.get_user_folders %}"
-  });
-        
-  clist.addEvent("change", dc.onTargetChange.bind(dc));
-  alist.addEvent("change", da.onNameChange.bind(da));
-
-  $$("input[name=match_type]").addEvent("click", matchtype_cb);
-}
-
-$(document).addEvent("domready", function() {
-  var form = new Form();
-
-  new Request.JSON({
-    url: "{% url modoboa.extensions.sievefilters.views.get_templates 'condition' %}",
-    onSuccess: function(response) {
-      cond_templates = response;
-    }
-  }).get();
-  new Request.JSON({
-    url: "{% url modoboa.extensions.sievefilters.views.get_templates 'action' %}",
-    onSuccess: function(response) {
-      action_templates = response;
-      initform();
-    }
-  }).get();
-  form.register_error_callback("filterform", initform);
-  form.register_extra_data_callback("filterform", function() {
-    return "conds=" + dc.fields_cnt + "&actions=" + da.fields_cnt;
-  });
-});
-</script>
-
-{% endblock %}
-{% block content %}
-<div class="title"><h1>{{ title }}</h1></div>
-<form action="{{ actionurl }}" method="POST" id="filterform" name="filterform">
+{% extends "common/generic_modal_form.html" %}
+{% load i18n libextras sfilters_tags %}
+{% block formbody %}
   {% if oldname %}<input type="hidden" name="oldname" value="{{ oldname }}" />{% endif %}
-  <label for="id_{{ form.name.html_name }}">{% trans form.name.label %}</label>:
-  {{ form.name }}{% display_errors form.name.errors %}
-  <h2>{% trans "Conditions" %}</h2>
+  {% render_field form.name %}
+  <h6>{% trans "Conditions" %}</h6>
   <div id="condlist">
     <div id="matchtype">
-      <label>{% trans "Match type" %}:</label>
-      {{ form.match_type }}{% display_errors form.match_type.errors %}
-      <div class="spacer"></div>
+      {% render_field form.match_type %}
     </div>
-    <div class="spacer"></div>
     <div id="hide" style="display:{{ hidestyle }}">
       {% for ec in conds_nb %}
       {% display_condition form ec %}
       {% endfor %}
     </div>
   </div>
-  <h2>{% trans "Actions" %}</h2>
+  <h6>{% trans "Actions" %}</h6>
   <div id="actionlist">
     {% for ea in actions_nb %}
     {% display_action form ea %}
     {% endfor %}
-  </div>    
-  <input type="submit" id="submit" name="submit" value='{% trans "Save" %}' />
-</form>
+  </div>
 {% endblock %}

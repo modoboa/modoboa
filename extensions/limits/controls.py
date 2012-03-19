@@ -4,13 +4,10 @@
 ----------------------------------------------------------------------------
 
 """
-from modoboa.admin.models import Mailbox
-from modoboa.admin.lib import \
-    get_object_owner, grant_access_to_object, \
-    ungrant_access_to_object
 from modoboa.lib import events
 from lib import *
 from models import *
+from modoboa.lib.permissions import get_object_owner
 
 def check_limit(user, lname):
     """Check if a user has reached a defined limit
@@ -40,6 +37,22 @@ def dec_limit(user, lname):
     except LimitsPool.DoesNotExist:
         pass
 
+def move_pool_resource(owner, user):
+    try:
+        pool = user.limitspool
+    except LimitsPool.DoesNotExist:
+        return
+    if not owner.is_superuser:
+        for lname in reseller_limits_tpl:
+            l = user.limitspool.get_limit(lname)
+            if l.maxvalue < 0:
+                continue
+            ol = owner.limitspool.get_limit(lname)
+            ol.curvalue += l.curvalue
+            ol.maxvalue += l.maxvalue
+            ol.save()
+
+    user.limitspool.delete()
 
 @events.observe('CreateDomain')
 def inc_nb_domains(user, domain):
@@ -61,18 +74,29 @@ def inc_nb_domaliases(user, domalias):
     inc_limit(user, 'domain_aliases_limit')
 
 @events.observe('DomainAliasDeleted')
-def dec_nb_domaliases(domainalias):
-    owner = get_object_owner(domainalias)
-    dec_limit(owner, 'domain_aliases_limit')
+def dec_nb_domaliases(domainaliases):
+    from modoboa.admin.models import DomainAlias
+
+    if isinstance(domainaliases, DomainAlias):
+        domainaliases = [domainaliases]
+    for domainalias in domainaliases:
+        owner = get_object_owner(domainalias)
+        dec_limit(owner, 'domain_aliases_limit')
 
 @events.observe('CreateMailbox')
 def inc_nb_mailboxes(user, mailbox):
     inc_limit(user, 'mailboxes_limit')
 
 @events.observe('DeleteMailbox')
-def dec_nb_mailboxes(mailbox):
-    owner = get_object_owner(mailbox)
-    dec_limit(owner, 'mailboxes_limit')
+def dec_nb_mailboxes(mailboxes):
+    from modoboa.admin.models import Mailbox
+
+    if isinstance(mailboxes, Mailbox):
+        mailboxes = [mailboxes]
+    for mailbox in mailboxes:
+        owner = get_object_owner(mailbox)
+        dec_limit(owner, 'mailboxes_limit')
+        # FIXME: Gestion des alias ici
 
 @events.observe('MailboxAliasCreated')
 def inc_nb_mbaliases(user, mailboxalias):
@@ -87,30 +111,48 @@ def dec_nb_mbaliases(mailboxalias):
 def can_create_new_object(user, objtype):
     check_limit(user, '%s_limit' % objtype)
 
-@events.observe("DomainAdminCreated")
+@events.observe("AccountCreated")
 def create_pool(user):
     owner = get_object_owner(user)
-    inc_limit(owner, 'domain_admins_limit')
-    p = LimitsPool(user=user)
-    p.save()
-    p.create_limits()
+    if not owner.is_superuser and \
+       not owner.belongs_to_group("Resellers"):
+        return
 
-@events.observe("DomainAdminDeleted", "SuperAdminPromotion")
-def move_pool_resource(user):
-    owner = get_object_owner(user)
-    if not owner.is_superuser:
+    if user.belongs_to_group("DomainAdmins"):
+        check_limit(owner, 'domain_admins_limit')
+        inc_limit(owner, 'domain_admins_limit')
+
+    if user.belongs_to_group("DomainAdmins") or \
+       user.belongs_to_group("Resellers"):
+        p = LimitsPool(user=user)
+        p.save()
+        p.create_limits()
+
+@events.observe("AccountModified")
+def on_account_modified(old, new):
+    owner = get_object_owner(old)
+    if owner.group not in ["SuperAdmins", "Resellers"]:
+        return
+
+    if not new.group in ["DomainAdmins", "Resellers"]:
+        move_pool_resource(owner, new)
+
+    if old.oldgroup == "DomainAdmins":
+        if new.group != "DomainAdmins":
+            dec_limit(owner, 'domain_admins_limit')
+        return
+    
+    if new.group == "DomainAdmins":
+        check_limit(owner, 'domain_admins_limit')
+        inc_limit(owner, 'domain_admins_limit')
+
+@events.observe("AccountDeleted")
+def on_account_deleted(account):
+    owner = get_object_owner(account)
+    if not owner.group in ["SuperAdmins", "Resellers"]:
+        return
+
+    move_pool_resource(owner, account)
+
+    if account.group == "DomainAdmins":
         dec_limit(owner, 'domain_admins_limit')
-
-        for ooentry in user.objectaccess_set.all():
-            if ooentry.is_owner:
-                grant_access_to_object(owner, ooentry.content_object, True)
-            ooentry.delete()
-
-        for lname in reseller_limits_tpl:
-            l = user.limitspool.get_limit(lname)
-            ol = owner.limitspool.get_limit(lname)
-            ol.curvalue += l.curvalue
-            ol.maxvalue += l.maxvalue
-            ol.save()
-
-    user.limitspool.delete()

@@ -1,0 +1,34 @@
+{% extends "admin/listing.html" %}
+{% load admin_extras libextras %}
+{% block html_head %}
+{{ block.super }}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/creation_wizard.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/autocompleter.js"></script>
+<script type="text/javascript">
+function get_domains_list(container) {
+    $.getJSON("{% url modoboa.admin.views.domains_list %}", function(data) {
+        container.value = data;
+    });
+}
+
+function get_account_list(container) {
+    $.getJSON("{% url modoboa.admin.views.accounts_list %}", function(data) {
+        container.value = data;
+    });
+}
+
+$(document).ready(function() {
+   $("a[name=delaccount]").confirm({
+       question: gettext("Delete this account?"),
+       checkboxes: {keepdir: gettext("Do not delete mailbox directory")}
+   });
+   $("a[name=deldlist]").confirm({
+       question: gettext("Delete this list?")
+   });
+   $("#pagination_bar").find(".disabled").click(function(e) {
+       e.preventDefault();
+   });
+});
+</script>
+{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">{% identities_menu user %}</div>{% endblock %}

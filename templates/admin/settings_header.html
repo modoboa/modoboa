@@ -1,14 +1,27 @@
-{% extends "nlayout.html" %}
-{% load i18n libextras %}
+{% extends "twocols.html" %}
+{% load i18n libextras admin_extras %}
 {% block html_head %}
-<script src="{{ MEDIA_URL }}js/settings.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#update").click(function(evt) {
+        evt.preventDefault();
+        var $form = $("form");
+
+        $.post($form.attr("action"), $form.serialize(), function(data) {
+            if (data.status == "ok") {
+                if (data.reload) {
+                    window.location.reload();
+                }
+                $("body").notify("success", data.message, 2000);
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
-{% block middletitle %}{% trans "Settings" %}{% endblock %}
-{% block content %}
-{% if messages %}
-{% display_messages messages %}
-{% endif %}
-<div id="setcontent">
-{% block setcontent %}{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">{% settings_menu selection user %}</div>{% endblock %}
+{% block footer %}
+<div class="pull-right padded5">
+  <a href="#" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</a>
 </div>
 {% endblock %}

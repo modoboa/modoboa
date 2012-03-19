@@ -1,0 +1,31 @@
+{% load i18n libextras %}
+<div class="modal-header">
+  <a class="close" data-dismiss="modal">x</a>
+  <h3>{{ title }}</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" action="{{ action }}" method="POST">
+    <ul class="nav nav-pills">
+      {% for tab in tabs %}
+      <li class="{% if tabs.active_id == tab.id %}active{% endif %}">
+        <a href="#{{ tab.id }}" data-toggle="tab">{{ tab.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="tab-content">
+      {% for tab in tabs %}
+      <div class="tab-pane{% if tabs.active_id == tab.id %} active{% endif %}" id="{{ tab.id }}">
+        {% if tab.formtpl %}
+        {% render_form tab.instance tab.formtpl %}
+        {% else %}
+        {% render_form tab.instance %}
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <a href="#" class="btn btn-primary" id="submit">{{ submit_label }}</a>
+  <a class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+</div>

@@ -1,6 +1,7 @@
 # coding: utf-8
 from sievelib.managesieve import Error
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
@@ -12,6 +13,7 @@ from modoboa.lib.connections import ConnectionError
 from modoboa.auth.lib import get_password
 from lib import *
 from forms import *
+from templatetags.sfilters_tags import fset_menu
 
 @login_required
 @needs_mailbox()
@@ -26,6 +28,7 @@ def index(request, tplname="sievefilters/index.html"):
         active_script, scripts = sc.listscripts()
     except Error, e:
         return _render_error(request, user_context={"error" : e})
+
     if active_script is None:
         active_script = ""
         default_script = "%s/" % scripts[0] if len(scripts) else ""
@@ -73,10 +76,18 @@ def getfs(request, name):
         return ajax_response(request, "ko", respmsg=error)
 
     if editormode == "raw":
-        return ajax_response(request, template="sievefilters/rawfilter.html", 
-                             name=name, scriptcontent=content)
-    return ajax_response(request, template="sievefilters/guieditor.html",
-                         fs=content)
+        htmlcontent =  render_to_string("sievefilters/rawfilter.html", dict(
+                name=name, scriptcontent=content
+                ))
+    else:
+        htmlcontent = render_to_string("sievefilters/guieditor.html", dict(
+                fs=content
+                ))
+
+    menu = '<ul id="fsetmenu" class="nav nav-list"><li class="nav-header">%s</li>%s</ul>' % \
+            (_("Actions"), fset_menu(editormode, name))
+    resp = dict(status="ok", menu=menu, content=htmlcontent)
+    return ajax_simple_response(resp)
 
 def build_filter_ctx(ctx, form):
     ctx["form"] = form
@@ -111,8 +122,11 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
 @login_required
 @needs_mailbox()
 def newfilter(request, setname, tplname="sievefilters/filter.html"):
-    ctx = {"title" : _("New filter"),
-           "actionurl" : reverse(newfilter, args=[setname])}
+    ctx = dict(
+        title=_("New filter"),
+        action=reverse(newfilter, args=[setname]),
+        submit_label=_("Create")
+        )
     if request.method == "POST":
         return submitfilter(request, setname, _("Filter created"), tplname, ctx)
 
@@ -124,9 +138,12 @@ def newfilter(request, setname, tplname="sievefilters/filter.html"):
 
 @login_required
 @needs_mailbox()
-def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
-    ctx = {"title" : _("Edit filter"),
-           "actionurl" : reverse(editfilter, args=[setname, fname])}
+def editfilter(request, setname, fname, tplname="sievefilters/filter2.html"):
+    ctx = dict(
+        title=_("Edit filter"),
+        action=reverse(editfilter, args=[setname, fname]),
+        submit_label=_("Update")
+        )
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
     if request.method == "POST":
@@ -169,10 +186,11 @@ def savefs(request, name):
     
 @login_required
 @needs_mailbox()
-def new_filters_set(request, tplname="sievefilters/newfiltersset.html"):
+def new_filters_set(request, tplname="common/generic_modal_form.html"):
     ctx = {"title" : _("Create a new filters set"),
-           "fname" : "newfiltersset",
+           "formid" : "newfiltersset",
            "submit_label" : _("Create"),
+           "action" : reverse(new_filters_set),
            "withmenu" : False,
            "withunseen" : False}
     if request.method == "POST":
@@ -206,8 +224,11 @@ def remove_filters_set(request, name):
     try:
         sc.deletescript(name)
     except SieveClientError, e:
-        return ajax_response(request, "ko", respmsg=str(e))
-    return ajax_response(request, respmsg=_("Filters set deleted"))
+        return ajax_simple_response(dict(status="ko", respmsg=str(e)))
+    acs, scripts = sc.listscripts()
+    return ajax_simple_response(dict(
+            status="ok", respmsg=_("Filters set deleted"), newfs=acs
+            ))
 
 @login_required
 @needs_mailbox()
@@ -272,7 +293,7 @@ def move_filter(request, setname, fname, direction):
         sc.pushscript(setname, str(fset))
     except (SieveClientError), e:
         return ajax_response(request, "ko", respmsg=str(e))
-    return ajax_response(request, template="sievefilters/filters.html", fs=fset)
+    return ajax_response(request, template="sievefilters/guieditor.html", fs=fset)
 
 @login_required
 @needs_mailbox()

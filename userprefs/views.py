@@ -6,7 +6,8 @@ from django.contrib.auth.decorators \
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters, events
-from modoboa.lib.webutils import _render, _render_error, ajax_response
+from modoboa.lib.webutils import _render, _render_error, ajax_response, \
+    ajax_simple_response
 from forms import *
 from modoboa.admin.models import Mailbox, Alias
 from modoboa.admin.lib import AdminError
@@ -109,6 +110,7 @@ def preferences(request):
         gparams += [tmp]
 
     return _render(request, 'userprefs/preferences.html', {
+            "selection" : "preferences",
             "gparams" : gparams
             })
 
@@ -120,5 +122,6 @@ def savepreferences(request):
         app, name = pname.split('.')
         parameters.save_user(request.user, name, v, app=app)
 
-    return ajax_response(request)
-
+    return ajax_simple_response(dict(
+            status="ok", message=_("Preferences saved")
+            ))

@@ -42,6 +42,8 @@ class SieveClient(object):
         self.msc = None
         
     def refresh(self, user, password):
+        import ssl
+
         if self.msc is not None:
             try:
                 self.msc.capability()
@@ -51,7 +53,7 @@ class SieveClient(object):
                 return
         try:
             ret, msg = self.login(user, password)
-        except Error, e:
+        except (Error, ssl.SSLError), e:
             raise ConnectionError(e)
         if not ret:
             raise ConnectionError(msg)
@@ -74,6 +76,8 @@ class SieveClient(object):
         return fs
 
     def pushscript(self, name, content, active=False):
+        if type(content) is unicode:
+            content = str(content)
         if not self.msc.havespace(name, len(content)):
             error = "%s (%s)" % (_("Not enough space on server"), self.msc.errmsg)
             raise SieveClientError(error)

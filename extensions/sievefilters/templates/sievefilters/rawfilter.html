@@ -1,8 +1,3 @@
-{% load i18n sfilters_tags %}
-<div id="fset_menu" class="leftbox">
-  <h1>{% trans "Actions" %}</h1>
-  {% fset_menu "raw" name %}
-</div>
 <form action="{% url modoboa.extensions.sievefilters.views.savefs name %}" 
       method="POST" id="feditor" name="feditor">
   <textarea id="scriptcontent" name="scriptcontent">{{ scriptcontent }}</textarea>

@@ -1,0 +1,20 @@
+{% load i18n libextras %}
+<div class="modal-header">
+  <a class="close" data-dismiss="modal">x</a>
+  <h3>{{ title }}</h3>
+</div>
+<div class="modal-body">
+  {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+  <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 
+        method="POST" id="{{ formid }}" name="{{ formid }}"
+        target="{{ target }}">
+    {% block formbody %}
+    {% render_form form %}
+    {% block extrafields %}{% endblock %}
+    {% endblock %}
+  </form>
+</div>
+<div class="modal-footer">
+  <a href="#" class="btn btn-primary submit">{{ submit_label }}</a>
+  <a class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+</div>

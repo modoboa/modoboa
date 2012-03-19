@@ -1,0 +1,102 @@
+(function($) {
+    var Notify = function(element, options) {
+        this.$element = $(element);
+        this.options = $.extend({}, $.fn.notify.defaults, options);
+    };
+
+    Notify.prototype = {
+        constructor: Notify,
+
+        build_box: function(bid) {
+            if (bid == undefined) {
+                bid = "notifybox";
+            }
+            var div = $("<div class='alert' />", {
+                id: bid,
+                click: $.proxy(this.destroy_box, this)
+            });
+
+            return div;
+        },
+
+        destroy_box: function(evt) {
+            evt.preventDefault();
+            this.$element.hide().remove();
+        },
+
+        set_position: function(box) {
+            box.css({
+                position: "absolute",
+                top: this.options.top_position,
+                left: "50%",
+                marginLeft: '-' + (box.outerWidth() / 2) + 'px'
+            });
+        },
+
+        set_message: function(box, value) {
+            var content = '<a class="close" data-dismiss="alert">×</a>' + value;
+
+            box.html(content);
+        },
+
+        show: function(klass, message, timer) {
+            var nbox = this.build_box();
+
+            if (klass != "normal") {
+                nbox.addClass("alert-" + klass);
+            }
+            this.set_message(nbox, message);
+            this.set_position(nbox);
+            this.$element.append(nbox);
+            if (timer != undefined) {
+                window.setTimeout(function() {
+                    $('.alert').alert('close');
+                }, timer);
+            }
+            return this;
+        },
+
+        success: function(message, timer) {
+            return this.show.apply(this, ["success", message, timer]);
+        },
+
+        info: function(message, timer) {
+            return this.show.apply(this, ["info", message, timer]);
+        },
+
+        error: function(message, timer) {
+            return this.show.apply(this, ["error", message, timer]);
+        },
+
+        warning: function(message, timer) {
+            return this.show.apply(this, ["warning", message, timer]);
+        },
+
+        hide: function() {
+
+        }
+    };
+
+    $.fn.notify = function(method) {
+        var args = arguments;
+
+        return this.each(function() {
+            var $this = $(this),
+                data = $this.data('notify'),
+                options = typeof method === "object" && method;
+
+            if (!data) {
+                $this.data('notify', new Notify(this, options));
+                data = $this.data('notify');
+            }
+            if (typeof method === "string") {
+                data[method].apply(data, Array.prototype.slice.call(args, 1));
+            }
+        });
+    };
+
+    $.fn.notify.defaults = {
+        top_position: 50
+    };
+
+})(jQuery);

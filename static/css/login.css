@@ -1,93 +1,19 @@
-html, body {
-    font-family: arial, helvetica, verdana, tahoma, sans-serif;
-    font-size: small;
-    background: #153F65;
-    margin: 0;
-    padding: 0;
-}
-
-#loginbox {
-    margin: 100px auto 10px auto;
-    padding: 0 0 15px 0;
-    font-size: 1em;
-    width: 630px;
-}
-
-#logo {
-    float: left;
-    text-align: center;
-    width: 300px;
-    margin-top: 10px;
-    border-right: 1px solid #ccc;
+#logo { 
+    margin-top: 60px;
 }
 
 #logo img {
-    height: 90px;
+    height: 100px;
 }
 
-#test {
-    float: right;
-    width: 300px;
+input[type="text"], 
+input[type="password"] { 
+    width: 315px;
+    padding: 7px;
 }
 
-.roundedbox {
-    margin: 10px auto;
-    padding: 10px;
-    width: 610px;
-    background: white;
-    font-size: 1.1em;
-
-    border: 5px solid #333;
-    border-radius: 10px;
+.form-actions { 
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
-.roundedbox h1 {
-    padding: 0;
-    margin: 0;
-    font-size: 1.2em;
-    text-align: center;
-}
-
-.roundedbox h2 {
-    margin: 30px 10px 0 10px;
-    font-size: small;
-}
-
-.roundedbox h3 {
-    font-size: small;
-    text-align: center;
-}
-
-.roundedbox a, a:visited {
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-}
-
-.spacer { 
-    clear: both;  
-}
-
-/* Mootools tooltips */
-.tip {
-    color: #fff;
-    width: 139px;
-    z-index: 13000;
-    border: 1px solid #cccccc;
-}
- 
-.tip-title {
-    font-weight: bold;
-    font-size: 11px;
-    margin: 0;
-    color: #9FD4FF;
-    padding: 8px 8px 4px;
-    background: #eee;
-}
-
-.tip-text {
-    font-size: 11px;
-    padding: 4px 8px 8px;
-    background: #eee;
-    color: black;
-}

@@ -1,19 +1,32 @@
-{% extends "nlayout.html" %}
+{% extends "twocols.html" %}
 {% load i18n uprefs_extras libextras %}
 {% block html_head %}
-<script src="{{ MEDIA_URL }}js/preferences.js" type="text/javascript"></script>
+{% extra_head_content %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#update").click(function(evt) {
+        evt.preventDefault();
+        var $form = $("form");
+
+        $.post($form.attr("action"), $form.serialize(), function(data) {
+            if (data.status == "ok") {
+                $("body").notify("success", data.message, 2000);
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
-{% block middletitle %}{% trans "Preferences" %}{% endblock %}
-{% block menu %}{% uprefs_menu user %}{% endblock %}
-{% block content %}
-{% if messages %}
-  {% display_messages messages %}
-{% endif %}
-<form method="POST" action="{% url userprefs.views.savepreferences %}" 
-      id="uparams_form">
-  {% include "common/parameters.html" %}
-</form>
+{% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu selection user %}</div>{% endblock %}
+{% block apparea %}
+  <form class="form-horizontal" method="POST" 
+        action="{% url userprefs.views.savepreferences %}" 
+        id="uparams_form">
+    {% include "common/parameters.html" %}
+  </form>
 {% endblock %}
 {% block footer %}
-<input type="button" id="update" name="update" value="{% trans 'Save' %}" />
+<div class="pull-right padded5">
+  <a href="#" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</a>
+</div>
 {% endblock %}

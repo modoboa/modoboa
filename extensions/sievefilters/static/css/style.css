@@ -1,43 +1,6 @@
-#fsets_list {
-    margin-left: 5px;
-    float: left;
-    display: inline;
-}
-
-#fset_menu {
-    position: absolute;
-    top: 0px;
-    left: 10px;
-}
-
-#set_content {
-    position: absolute;
-    left: 10px;
-    right: 10px;
-    top: 0px;
-    bottom: 10px;
-    padding: 0;
-}
-
-#set_content h1 {
-    padding: 2px 5px;
-    margin: 0;
-    font-size: 1.2em;
-    background: #CEDBEC;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-
-#fsets_bar {
-    margin-left: 10px;
-    width: 250px;
-}
-
 #set_content textarea {
-    margin: 0;
     width: 100%;
-    height: 100%;
-    padding: 2px;
+    height: 500px;
 }
 
 #set_content label {
@@ -48,14 +11,6 @@
     border-left: 1px solid #CCC;
     position: absolute;
     padding-left: 5px;
-    left: 190px;
-    right: 10px;
-    top: 0px;
-    bottom: 0px;
-}
-
-#feditor {
-    position: absolute;
     left: 190px;
     right: 10px;
     top: 0px;
@@ -141,11 +96,6 @@ div.item input[type=text], div.item select {
 
 div.item input, div.item select {
     margin: 0 2px;
-}
-
-#condlist label {
-    margin: 0 !important;
-    padding: 0;
 }
 
 ul.errors {

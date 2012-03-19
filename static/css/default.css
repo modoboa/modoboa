@@ -68,7 +68,7 @@ div#footer {
 
 #menubar {
     margin: 5px;
-    display: table;
+    /*display: table;*/
     width: 735px;
     margin-top: 35px;
 }
@@ -83,7 +83,7 @@ div#footer {
     font-weight: bold;
 }
 
-#menubar a, #menubar a:visited {
+/*#menubar a, #menubar a:visited {
     color: black;
     font-weight: bold;
 }
@@ -91,7 +91,7 @@ div#footer {
 #menubar label {
     color: black;
     font-weight: bold;
-}
+}*/
 
 #page {
     width: 100%;
@@ -167,7 +167,7 @@ div#footer {
     width: 100%;
 }
 
-.menubar a, .menubar a:visited {
+/*.menubar a, .menubar a:visited {
     text-decoration: none;
 }
 
@@ -201,7 +201,7 @@ div#footer {
 
 .menubar .title {
     color: white;
-}
+}*/
 
 .menubardropdown ul {
     background: white;

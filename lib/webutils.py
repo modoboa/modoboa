@@ -37,9 +37,11 @@ def _render_error(request, errortpl="error", user_context={}):
 def render_actions(actions):
     t = template.Template("""
 {% for a in actions %}
-<a href="{{ a.url }}" name="{{ a.name }}" class="{{ a.class }}" rel="{{ a.rel }}"
+<a href="{{ a.url }}" name="{{ a.name }}"
+   {% if a.modal %}data-toggle="ajaxmodal"{% endif %}
+   {% if a.modalcb %}modalcb="{{ a.modalcb }}"{% endif %}
    {% if a.confirm %}onclick="return confirm('{{ a.confirm }}')"{% endif %}>
-  <img src="{{ a.img }}" border="0" title="{{ a.title }}" /></a>
+  <i class="{{ a.img }}" title="{{ a.title }}"></i></a>
 {% endfor %}
 """)
     return t.render(template.Context({

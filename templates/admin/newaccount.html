@@ -1,0 +1,33 @@
+{% load i18n libextras %}
+<div class="modal-header">
+  <a class="close" data-dismiss="modal">x</a>
+  <h3>{{ title }}</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 
+        method="POST" id="{{ formid }}" name="{{ formid }}">
+    <div id="wizard" class="carousel">
+      <div class="carousel-inner">
+        {% for step in steps %}
+        <div id="step{{ forloop.counter }}" 
+             class="item{% if forloop.first %} active{% endif %}">
+          {% render_form step.form %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <div class="buttons_list">
+    {% for step in steps %}
+    <div id="step{{ forloop.counter }}_buttons" 
+         class="bset{% if forloop.first %} active{% endif %}">
+      {% for button in step.buttons %}
+      <a href="#" class="btn {{ button.classes }}">{{ button.label }}</a>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <a class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+  </div>
+</div>

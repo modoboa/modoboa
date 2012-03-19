@@ -13,8 +13,6 @@ import inspect
 import re
 
 events = [
-    "SuperAdminPromotion",
-
     "CanCreate",
 
     "CreateDomain",
@@ -30,17 +28,22 @@ events = [
     "MailboxAliasCreated",
     "MailboxAliasDeleted",
 
-    "DomainAdminCreated",
+    "AccountCreated",
+    "AccountModified",
+    "AccountDeleted",
     "DomainAdminActions",
-    "DomainAdminDeleted",
 
     "PasswordChange",
     
     "UserMenuDisplay",
     "AdminMenuDisplay",
+    "GetStaticContent",
+
+    "ExtraAccountForm",
+    "CheckExtraAccountForm",
+    "FillAccountInstances",
     
-    "PermsGetTables",
-    "PermsGetClass",
+    "GetExtraRoles",
     
     "ExtEnabled",
     "ExtDisabled",

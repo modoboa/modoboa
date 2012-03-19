@@ -1,11 +1,17 @@
 {% extends "admin/listing.html" %}
 {% load i18n admin_extras libextras %}
 {% block html_head %}
-  {{ block.super }}
-  <script type="text/javascript">
-    window.addEvent('domready', function() {
-      {% url admin.views.mailboxes as view_url %}
-      bindRows("{{ view_url }}", "{{ current_page }}");
+{{ block.super }}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("a[name=deldomain]").confirm({
+            question: gettext("Delete this domain?"),
+            checkboxes: {keepdir: gettext("Do not delete domain directory")}
+        });
+
+        {% url admin.views.mailboxes as view_url %}
+        //bindRows("{{ view_url }}", "{{ current_page }}");
     });
   </script>
 {% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">{% domains_menu "domains" user %}</div>{% endblock %}

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from django.utils.translation import ugettext_noop as _, ugettext
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
@@ -55,7 +55,7 @@ def menu(target, user):
         {"name" : "sievefilters",
          "label" : ugettext("Message filters"),
          "url" : reverse(views.index),
-         "img" : static_url("pics/filters.png")}
+         "img" : "icon-check"}
         ]
 
 @events.observe("Userlogout")

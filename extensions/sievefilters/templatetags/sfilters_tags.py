@@ -2,7 +2,6 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from modoboa.extensions.sievefilters import views
 from modoboa.lib.webutils import render_actions
 
 register = template.Library()
@@ -13,11 +12,11 @@ from modoboa.lib.webutils import static_url
 def sfilters_menu(user):
     entries = [
         {"name"  : "newfilterset",
-         "img"   : static_url("pics/add.png"),
+         "img"   : "icon-plus",
          "label" : _("New filters set"),
-         "url" : reverse(views.new_filters_set),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:300,y:170}}"
+         "url" : reverse("modoboa.extensions.sievefilters.views.new_filters_set"),
+         "modal" : True,
+         "modalcb" : "filtersetform_cb"
          }
         ]
 
@@ -30,65 +29,74 @@ def fset_menu(mode, setname):
     if mode == "gui":
         entries += [
             {"name" : "newfilter",
-             "img" : static_url("pics/add.png"),
+             "img" : "icon-plus",
              "label" : _("New filter"),
-             "url" : reverse(views.newfilter, args=[setname]),
-             "class" : "boxed",
-             "rel" : "{handler:'iframe',size:{x:700,y:400}}"},
-
+             "url" : reverse("modoboa.extensions.sievefilters.views.newfilter", 
+                             args=[setname]),
+             "modal" : True,
+             "autowidth" : True,
+             "modalcb" : "filterform_cb"}
             ]
     if mode == "raw":
         entries += [
             {"name" : "savefs",
-             "img" : static_url("pics/save.png"),
+             "img" : "icon-download-alt",
              "label" : _("Save filters set"),
-             "url" : reverse(views.savefs, args=[setname])},
+             "url" : reverse("modoboa.extensions.sievefilters.views.savefs", 
+                             args=[setname])},
             ]
 
     entries += [
         {"name" : "activatefs",
-         "img" : static_url("pics/active.png"),
+         "img" : "icon-ok",
          "label" : _("Activate filters set"),
-         "url" : reverse(views.activate_filters_set, args=[setname])},
+         "url" : reverse("modoboa.extensions.sievefilters.views.activate_filters_set", 
+                         args=[setname])},
         {"name" : "removefs",
-         "img" : static_url("pics/remove.png"),
+         "img" : "icon-remove",
          "label" : _("Remove filters set"),
-         "url" : reverse(views.remove_filters_set, args=[setname])},
+         "url" : reverse("modoboa.extensions.sievefilters.views.remove_filters_set", 
+                         args=[setname])},
         {"name" : "downloadfs",
-         "img" : static_url("pics/download.png"),
+         "img" : "icon-download",
          "label" : _("Download"),
-         "url" : reverse(views.download_filters_set, args=[setname])}
+         "url" : reverse("modoboa.extensions.sievefilters.views.download_filters_set",
+                         args=[setname])}
         ]
 
-    return render_to_string('common/menu.html', 
+    return render_to_string('common/menulist.html', 
                             {"entries" : entries})
 
 @register.simple_tag
 def filter_actions(setname, f, position, islast):
     actions = [
         {"name" : "editfilter",
-         "url" : reverse(views.editfilter, args=[setname, f["name"]]),
-         "img" : static_url("pics/edit.png"),
+         "url" : reverse("modoboa.extensions.sievefilters.views.editfilter",
+                         args=[setname, f["name"]]),
+         "img" : "icon-edit",
          "title" : _("Edit filter"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:650,y:400}}"},
+         "modal" : True,
+         "modalcb" : "filterform_cb"},
         {"name" : "removefilter",
-         "url" : reverse(views.removefilter, args=[setname, f["name"]]),
-         "img" : static_url("pics/remove.png"),
+         "url" : reverse("modoboa.extensions.sievefilters.views.removefilter",
+                         args=[setname, f["name"]]),
+         "img" : "icon-remove",
          "title" : _("Remove this filter")}
         ]
     if position != 1:
         actions += [
             {"name" : "movefilter_up",
-             "url" : reverse(views.move_filter_up, args=[setname, f["name"]]),
-             "img" : static_url("pics/moveup.png"),
+             "url" : reverse("modoboa.extensions.sievefilters.views.move_filter_up",
+                             args=[setname, f["name"]]),
+             "img" : "icon-arrow-up",
              "title" : _("Move this filter up")}
             ]
     if not islast:
         actions += [
             {"name" : "movefilter_down",
-             "url" : reverse(views.move_filter_down, args=[setname, f["name"]]),
-             "img" : static_url("pics/movedown.png"),
+             "url" : reverse("modoboa.extensions.sievefilters.views.move_filter_down",
+                             args=[setname, f["name"]]),
+             "img" : "icon-arrow-down",
              "title" : _("Move this filter down")},
             ]
     return render_actions(actions)
@@ -114,11 +122,12 @@ def display_condition(form, cnt):
     operator = form["cond_operator_%d" % cnt]
     value = form["cond_value_%d" % cnt]
     t = template.Template("""
-<div class="item">
+<div id="condition_{{ idx }}" class="item">
   {{ tfield }}{{ofield}}{{ vfield }}{{ verrors }}
 </div>
 """)
     return t.render(template.Context({
+                "idx" : cnt,
                 "tfield" : target,
                 "ofield" : operator, 
                 "vfield" : value,
@@ -140,11 +149,12 @@ def display_action(form, cnt):
         except KeyError:
             break
     t = template.Template("""
-<div class="item">
+<div id="action_{{ idx }}" class="item">
   {{ afield }}{% for v in values %}{{ v }}{% endfor %}{{ verrors }}
 </div>
 """)
     return t.render(template.Context({
+                "idx" : cnt,
                 "afield" : action, "values" : values, 
                 "verrors" : display_errors(verrors)
                 }))

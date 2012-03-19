@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 import os
 from django.conf import settings
 from django import template
@@ -44,15 +44,20 @@ def display_messages(msgs):
     for m in msgs:
         level = m.tags
         text += unicode(m) + "\\\n"
-       
+
+    if level == "info":
+        level = "success"
+        timeout = "2000"
+    else:
+        timeout = "undefined"
+
     return """
 <script type="text/javascript">
-  window.addEvent("domready", function() {
-    infobox.%s("%s");
-    infobox.hide(2);
-  });
+    $(document).ready(function() {
+        $('body').notify('%s', '%s', %s);
+    });
 </script>
-""" % (level, text)
+""" % (level, text, timeout)
 
 @register.simple_tag
 def load_optionalmenu(user):
@@ -61,41 +66,53 @@ def load_optionalmenu(user):
                                             {"entries" : menu, "user" : user})
 
 @register.simple_tag
-def user_menu(user):
-    entries = [
-        {"name" : "user",
-         "img" : static_url('pics/administrators.png'),
-         "label" : user.fullname,
-         "class" : "topdropdown",
-         "menu" : [
-                {"name" : "changepwd",
-                 "url" : reverse("modoboa.userprefs.views.changepassword"),
-                 "img" : static_url("pics/edit.png"),
-                 "label" : _("Change password"),
-                 "class" : "boxed",
-                 "rel" : "{handler:'iframe',size:{x:360,y:200},closeBtn:true}"},
-                {"name" : "preferences",
-                 "img" : static_url("pics/user.png"),
-                 "label" : _("Preferences"),
-                 "url" : reverse("modoboa.userprefs.views.preferences")},
-                {"name" : "logout",
-                 "url" : reverse("modoboa.auth.views.dologout"),
-                 "label" : _("Logout"),
-                 "img" : static_url("pics/logout.png")}
-                ]
-         }
-        ]
-    if user.belongs_to_group('SimpleUsers'):
-        entries[0]["menu"] += [{
-            "name" : "setforwards",
-            "url" : reverse("modoboa.userprefs.views.setforward"),
-            "img" : static_url("pics/alias.png"),
-            "label" : _("Forward"),
-            "class" : "boxed",
-            "rel" : "{handler:'iframe',size:{x:360,y:350},closeBtn:true}"
-            }]
+def render_form(form, tpl=None):
+    if tpl is not None:
+        return render_to_string(tpl, dict(form=form))
 
-    entries[0]["menu"] += events.raiseQueryEvent("UserMenuDisplay", "options_menu", user)
+    ret = ""
+    for field in form:
+        ret += "%s\n" % render_field(field)
+    return ret
 
-    return render_to_string("common/menulist.html",
-                            {"entries" : entries, "user" : user})
+@register.simple_tag
+def render_field(field):
+    return render_to_string("common/generic_field.html", dict(
+            field=field
+            ))
+
+@register.simple_tag
+def render_fields_group(form, pattern):
+    from django.forms import forms
+
+    first = forms.BoundField(form, form.fields[pattern], pattern)
+    label = first.label
+    group = [first]
+    cpt = 1
+    haserror = len(first.errors) != 0
+    while True:
+        fname = "%s_%d" % (pattern, cpt)
+        if not form.fields.has_key(fname):
+            break
+        bfield = forms.BoundField(form, form.fields[fname], fname)
+        if len(bfield.errors):
+            haserror = True
+        group += [bfield]
+        cpt += 1
+
+    return render_to_string("common/generic_fields_group.html", dict(
+            label=label, group=group, haserror=haserror
+            ))
+
+@register.simple_tag
+def pagination_bar(page):
+    return render_to_string("common/pagination_bar.html", dict(
+            page=page
+            ))
+
+@register.simple_tag
+def alert(msg, typ):
+    return """<div class="alert alert-%s">
+<a class="close" data-dismiss="alert">×</a>
+%s
+</div>""" % (typ, msg)

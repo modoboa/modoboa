@@ -1,23 +1,25 @@
 {% load i18n %}
 {% for entry in entries %}
   {% if entry.separator %}
-  <li class="separator">&nbsp;</li>
+  <li class="divider">&nbsp;</li>
   {% else %}
     {% if entry.menu %}
-  <li class="dropdown {{ entry.class }}{% if selection == entry.name %} selected{% endif %}">
-    <img src="{{ entry.img }}" border="0" />
-    {% if entry.url %}<a href="{{ entry.url }}">{% endif %}
-    <label>{{ entry.label }}</label>
-    {% if entry.url %}</a>{% endif %}
-    <ul class="links"
+  <li class="dropdown {{ entry.class }}{% if selection == entry.name %} selected{% endif %}"> 
+    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ entry.url }}">
+      {% if entry.img %}<i class="{{ entry.img }}"></i>{% endif %}
+      {{ entry.label }}
+    </a>
+    <ul class="dropdown-menu"
         {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
       {% for sentry in entry.menu %}
       <li>
         <a href="{{ sentry.url }}" name="{{ sentry.name }}"
+           {% if sentry.modal %}data-toggle="ajaxmodal{% if sentry.autowidth %}-autowidth{% endif %}"{% endif %}
+           {% if sentry.modalcb %}modalcb="{{ entry.modalcb }}"{% endif %}
            {% if sentry.class %}class={{ sentry.class }}{% endif %}
            {% if sentry.rel %}rel={{ sentry.rel }}{% endif %}
            {% if sentry.confirm %} onclick="return confirm('{{ sentry.confirm }}')"{% endif %}>
-          {% if sentry.img %}<img src="{{ sentry.img }}" border="0" alt="" />{% endif %}
+          {% if sentry.img %}<i class="{{ sentry.img }}"></i>{% endif %}
           {{ sentry.label }}
         </a>
       </li>
@@ -25,14 +27,16 @@
     </ul>
   </li>
     {% else %}
-  <li {% if selection == entry.name %}class="selected"{% endif %}>
+  <li {% if selection == entry.name %}class="active"{% endif %}>
     {% if not entry.disabled %}
     <a href="{{ entry.url }}" name="{{ entry.name }}"
+       {% if entry.modal %}data-toggle="ajaxmodal{% if entry.autowidth %}-autowidth{% endif %}"{% endif %}
+       {% if entry.modalcb %}modalcb="{{ entry.modalcb }}"{% endif %}
        {% if entry.class %}class={{ entry.class }}{% endif %}
        {% if entry.rel %}rel={{ entry.rel }}{% endif %}
        {% if entry.confirm %} onclick="return confirm('{{ entry.confirm }}')"{% endif %}>
     {% endif %}
-      {% if entry.img %}<img src="{{ entry.img }}" alt="" />{% endif %}
+      {% if entry.img %}<i class="{{ entry.img }}"></i>{% endif %}
       {{ entry.label }}
     {% if not entry.disabled %}</a>{% endif %}
   </li>

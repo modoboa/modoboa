@@ -1,0 +1,9 @@
+{% extends "nlayout.html" %}
+{% load libextras %}
+{% block content %}
+<div class="span2">{% block leftcol %}{% endblock %}</div>
+<div class="span10">
+  {% if messages %}{% display_messages messages %}{% endif %}
+  {% block apparea %}{% endblock %}
+</div>
+{% endblock %}
