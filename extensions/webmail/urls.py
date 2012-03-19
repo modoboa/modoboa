@@ -13,6 +13,7 @@ urlpatterns = patterns(
     (r'^getmailcontent', 'getmailcontent'),
     
     #                       (r'^compose/$', "compose"),
+    (r'^delete/$', 'delete'),
     (r'^move/$', "move"),
     (r'^mark/(?P<name>.+)/$', "mark"),
     (r'^empty/(?P<name>.+)/$', "empty"),
@@ -25,7 +26,7 @@ urlpatterns = patterns(
     (r'^delattachment/$', 'delattachment'),
     
     (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/part/$', 'getattachment'),
-    (r'^(?P<fdname>.+)/(?P<mail_id>[\w\-\+]+)/delete/$', 'delete'),
+    #(r'^(?P<fdname>.+)/(?P<mail_id>[\w\-\+]+)/delete/$', 'delete'),
     #(r'^(?P<folder>.+)/(?P<mailid>[\w\-\+]+)/content/$', 'getmailcontent'),
     (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/forward/$', 'forward'),
 #    (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/reply/$', 'reply'),

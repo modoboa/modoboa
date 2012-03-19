@@ -31,7 +31,7 @@ def viewmail_menu(selection, folder, user, mail_id=None):
          "label" : _("Forward")},
         {"name" : "delete",
          "img" : static_url("pics/remove.png"),
-         "url" : "action=delete&mbox=%s&mailid=%s" % (folder, mail_id),
+         "url" : reverse(webmail.views.delete) + "?mbox=%s&mailid=%s" % (folder, mail_id),
          "label" : _("Delete")},
         {"name" : "display_options",
          "label" : _("Display options"),

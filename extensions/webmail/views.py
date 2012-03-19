@@ -123,60 +123,6 @@ def index(request):
         return _render_error(request, user_context={"error" : exp})
     return lst.render(request)
 
-def fetchmail(request, mbox, mailid, all=False):
-    imapc = get_imapconnector(request)
-    res = imapc.fetchmail(mbox, mailid)
-
-    return res
-    # res = IMAPconnector(user=request.user.username, 
-    #                     password=request.session["password"]).fetch(start=mail_id, 
-    #                                                                 folder=folder, 
-    #                                                                 all=all)
-    # if len(res):
-    #     return res[0]
-    # return None
-
-# @login_required
-# @is_not_localadmin()
-# def viewmail(request, folder, mail_id=None):
-#     from templatetags.webextras import viewm_menu
-
-#     if request.GET.has_key("links"):
-#         links = int(request.GET["links"])
-#     else:
-#         links = parameters.get_user(request.user, "ENABLE_LINKS") == "yes" and 1 or 0
-#     url = reverse(getmailcontent, args=[folder, mail_id]) + ("?links=%d" % links)
-#     content = Template("""
-# <iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
-# """).render(Context({"url" : url}))
-#     menu = viewm_menu("", get_current_url(request), folder, mail_id,
-#                       request.user.get_all_permissions())
-#     mbc = IMAPconnector(user=request.user.username, 
-#                         password=request.session["password"])
-#     ctx = getctx("ok", **__render_common_components(request, folder, 
-#                                                     menu=menu, content=content))
-#     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-
-
-@login_required
-@needs_mailbox()
-def viewmail(request, folder, mail_id=None):
-    from templatetags.webextras import viewm_menu
-
-    #content = fetchmail(request, mbox, mailid, True)
-
-    # if "class" in msg.keys() and msg["class"] == "unseen":
-    #     IMAPconnector(user=request.user.username,
-    #                   password=request.session["password"]).msg_read(folder, mail_id)
-
-    email = ImapEmail(mbox, mailid, request, links=request.GET["links"])
-    return _render(request, "common/viewmail.html", {
-            "headers" : email.render_headers(folder=mbox, mail_id=mailid), 
-            "folder" : mbox, "imapid" : mailid, "mailbody" : email.body
-            })
-
-
-
 @login_required
 @needs_mailbox()
 def getattachment(request, folder, mail_id):
@@ -226,12 +172,15 @@ def move(request):
 
 @login_required
 @needs_mailbox()
-def delete(request, fdname, mail_id):
-    mbc = IMAPconnector(user=request.user.username,
-                        password=request.session["password"])
-    mbc.move(mail_id, fdname, parameters.get_user(request.user, "TRASH_FOLDER"))
-    ctx = getctx("ok", next=get_current_url(request))
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+def delete(request):
+    mbox = request.GET.get("mbox", None)
+    mailid = request.GET.get("mailid", None)
+    if mbox is None or mailid is None:
+        raise WebmailError(_("Invalid request"))
+    mbc = get_imapconnector(request)
+    mbc.move(mailid, mbox, parameters.get_user(request.user, "TRASH_FOLDER"))
+    resp = dict(status="ok")
+    return ajax_simple_response(resp)
 
 @login_required
 @needs_mailbox()
@@ -264,98 +213,6 @@ def compact(request, name):
     imapc = get_imapconnector(request)
     imapc.compact(name)
     return ajax_simple_response(dict(status="ok"))
-
-# def render_compose(request, form, posturl, email=None, insert_signature=False):
-#     menu = compose_menu("", get_current_url(request), 
-#                         request.user.get_all_permissions())
-#     editor = parameters.get_user(request.user, "EDITOR")
-#     if email is None:
-#         body = ""
-#         textheader = ""
-#     else:
-#         body = email.body
-#         textheader = email.textheader
-#     if insert_signature:
-#         signature = EmailSignature(request.user)
-#         body += str(signature)
-#     randid = None
-#     if not request.GET.has_key("id"):
-#         if request.session.has_key("compose_mail"):
-#             clean_attachments(request.session["compose_mail"]["attachments"])
-#         randid = set_compose_session(request)
-#     elif not request.session.has_key("compose_mail") \
-#             or request.session["compose_mail"]["id"] != request.GET["id"]:
-#         randid = set_compose_session(request)
-
-#     attachments = request.session["compose_mail"]["attachments"]
-#     if len(attachments):
-#         short_att_list = "(%s)" \
-#             % ", ".join(map(lambda att: att["fname"], 
-#                             attachments[:2] + [{"fname" : "..."}] \
-#                                 if len(attachments) > 2 else attachments))
-#     else:
-#         short_att_list = ""
-#     content = _render_to_string(request, "webmail/compose.html", {
-#             "form" : form, "bodyheader" : textheader,
-#             "body" : body, "posturl" : posturl,
-#             "attachments" : attachments, "short_att_list" : short_att_list
-#             })
-#     mbc = IMAPconnector(user=request.user.username, 
-#                         password=request.session["password"])
-#     ctx = getctx("ok", level=2, editor=editor, 
-#                  **__render_common_components(request, request.session["folder"], 
-#                                               menu=menu, content=content))
-#     if randid is not None:
-#         ctx["id"] = randid
-#     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-
-# @login_required
-# @is_not_localadmin()
-# def compose(request):
-#     if request.method == "POST":
-#         status, resp = send_mail(request, posturl=reverse(compose))
-#         return resp
-
-#     form = ComposeMailForm()
-#     form.fields["from_"].initial = request.user.username
-#     return render_compose(request, form, reverse(compose), insert_signature=True)
-
-# @login_required
-# @needs_mailbox()
-# def reply(request, folder, mail_id):
-#     msg = fetchmail(request, folder, mail_id, True)
-#     if request.method == "POST":
-#         status, resp = send_mail(request, origmsg=msg, 
-#                                  posturl=reverse(reply, args=[folder, mail_id]))
-#         if status:
-#             IMAPconnector(user=request.user.username,
-#                           password=request.session["password"]).msg_answered(folder,
-#                                                                              mail_id)
-#         return resp
-
-#     form = ComposeMailForm()    
-#     email = ReplyModifier(msg, request.user, form, request.GET.has_key("all"),
-#                           addrfull=True, links="1")
-#     return render_compose(request, form, reverse(reply, args=[folder, mail_id]),
-#                           email)
-
-# @login_required
-# @needs_mailbox()
-# def forward(request, folder, mail_id):
-#     if request.method == "POST":
-#         status, response = send_mail(request,
-#                                      posturl=reverse(forward, args=[folder, mail_id]))
-#         if status:
-#             IMAPconnector(user=request.user.username,
-#                           password=request.session["password"]).msgforwarded(folder,
-#                                                                              mail_id)
-#         return response
-    
-#     msg = fetchmail(request, folder, mail_id, True)
-#     form = ComposeMailForm()
-#     email = ForwardModifier(msg, request.user, form, addrfull=True, links="1")
-#     return render_compose(request, form, reverse(forward, args=[folder, mail_id]), 
-#                           email)
 
 def separate_folder(fullname, sep="."):
     """Split a folder name
@@ -641,7 +498,7 @@ def forward(request):
     def msg_forwarded(mbox, mailid):
         get_imapconnector(request).msg_forwarded(mbox, mailid)
 
-    return compose_and_send(request, "reply", msg_forwarded)
+    return compose_and_send(request, "forward", msg_forwarded)
 
 @login_required
 @needs_mailbox()
@@ -650,7 +507,7 @@ def getmailcontent(request):
     mailid = request.GET.get("mailid", None)
     if mbox is None or mailid is None:
          raise WebmailError(_("Invalid request"))
-    email = ImapEmail(mbox, mailid, request, links=request.GET["links"])
+    email = ImapEmail(mbox, mailid, request, links=int(request.GET["links"]))
     return _render(request, "common/viewmail.html", {
             "headers" : email.render_headers(folder=mbox, mail_id=mailid), 
             "folder" : mbox, "imapid" : mailid, "mailbody" : email.body
@@ -660,8 +517,12 @@ def viewmail(request):
     mailid = request.GET.get("mailid", None)
     if mailid is None:
         raise WebmailError(_("Invalid request"))
+    links = request.GET.get("links", None)
+    if links is None:
+        links = 1 if parameters.get_user(request.user, "ENABLE_LINKS") == "yes" else 0
+    else:
+        links = int(links)
 
-    links = 1
     url = reverse(getmailcontent) + "?mbox=%s&mailid=%s&links=%d" % \
         (request.session["mbox"], mailid, links)
     content = Template("""
@@ -720,6 +581,7 @@ def newindex(request):
         response["refreshrate"] = \
             int(parameters.get_user(request.user, "REFRESH_INTERVAL")) * 1000
         response["mboxes"] = render_mboxes_list(request, imapc)
+        response["quota"] = ImapListing.computequota(imapc)
         return _render(request, "webmail/index.html", response)
 
     if action in ["reply", "forward"]:

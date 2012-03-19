@@ -470,20 +470,20 @@ class IMAPconnector(object):
             raise WebmailError(data[0])
         return True
 
-    def getquota(self, folder):
+    def getquota(self, mailbox):
         if not "QUOTA" in self.m.capabilities:
             self.quota_limit = self.quota_actual = None
             return
 
-        status, data = self.m.getquotaroot(self._encodefolder(folder))
-        if status == "OK":
-            quotadef = data[1][0]
-            m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
-            if not m:
-                print "Problem while parsing quota def"
-                return
-            self.quota_limit = int(m.group(2))
-            self.quota_actual = int(m.group(1))
+        data = self._cmd("GETQUOTAROOT", self._encodefolder(mailbox))
+        print data
+        quotadef = data[1][0]
+        m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
+        if not m:
+            print "Problem while parsing quota def"
+            return
+        self.quota_limit = int(m.group(2))
+        self.quota_actual = int(m.group(1))
 
     def fetchpart(self, uid, mbox, partnum):
         self.select_mailbox(mbox, False)
@@ -517,6 +517,8 @@ class IMAPconnector(object):
                 msg['class'] = 'unseen'
             if r'\Answered' in data[int(uid)]['FLAGS']:
                 msg['img_flags'] = static_url('pics/answered.png')
+            if r'$Forwarded' in data[int(uid)]['FLAGS']:
+                msg['img_flags'] = static_url('pics/forwarded.png')
             bs = BodyStructure(data[int(uid)]['BODYSTRUCTURE'])
             if bs.has_attachments():
                 msg['img_withatts'] = static_url('pics/attachment.png')

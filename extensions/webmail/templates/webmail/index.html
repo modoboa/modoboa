@@ -225,6 +225,6 @@ function wm_updatelisting(resp) {
 {% block menu %}{{ menu }}{% endblock %}
 {% block footer %}
 <div id="quotalabel">{% trans "Mailbox quota" %}</div>
-<div id="quotabox"></div>
+<div id="quotabox">{{ quota }}</div>
 {{ block.super }}
 {% endblock %}

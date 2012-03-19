@@ -23,6 +23,7 @@ var Webmail = new Class({
 
         this.init_folders_buttons();
         this.init_folders_browsing();
+        this.init_quota_bar();
 
         /* FIXME: à faire uniquement pour le mode pushState */
         /*this.init_emails_table();*/
@@ -35,6 +36,7 @@ var Webmail = new Class({
         current_anchor.register_callback("reply", this.compose_callback.bind(this));
         current_anchor.register_callback("replyall", this.compose_callback.bind(this));
         current_anchor.register_callback("forward", this.compose_callback.bind(this));
+        current_anchor.register_callback("delete", this.delete_callback);
 
         this.gspinner = new Spinner("document.body", {
             message: gettext("Loading, please wait..."),
@@ -478,7 +480,9 @@ var Webmail = new Class({
         $$("a[name=delete]").addEvent("click", function(event) {
             var lnk = event.target;
             event.stop();
-            this.simple_request(lnk.get("href"));
+            this.simple_request(lnk.get("href"), undefined, function(resp) {
+                history.go(-1);
+            });
         }.bind(this));
         $$("a[name=activate_links]").addEvent("click", function(evt) {
             evt.stop();
@@ -620,7 +624,6 @@ var Webmail = new Class({
             profile: "gray",
             spinner: true
         });
-        params["json"] = "1";
         new Request.JSON({
             url : url,
             onSuccess : function(response) {
