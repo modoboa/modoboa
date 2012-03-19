@@ -76,8 +76,6 @@ def infos():
 
 @events.observe("UserMenuDisplay")
 def menu(target, user):
-    import views
-
     if target != "top_menu":
         return []
     if not user.has_mailbox:
@@ -85,7 +83,7 @@ def menu(target, user):
     return [
         {"name" : "webmail",
          "label" : _("Webmail"),
-         "url" : reverse(views.index),
+         "url" : reverse("modoboa.extensions.webmail.views.newindex"),
          "img" : static_url("pics/webmail.png")}
         ]
 

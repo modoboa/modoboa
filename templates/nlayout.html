@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load i18n admin_extras uprefs_extras libextras %}
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head profile="http://www.w3.org/2005/10/profile">
   <meta charset="utf-8" />
   <title>Modoboa - {% block pagetitle %}{% endblock %}</title>
@@ -54,7 +55,12 @@
         {% block footer %}{% endblock %}
         </div>
       </div>
+      
+      <div id="content">
+        {% block content %}{% endblock %}
+      </div>
     </div>
   </footer>
   </div>
 </body>
+</html>

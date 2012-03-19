@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 import sys, os
 reload(sys)
@@ -7,7 +7,6 @@ sys.setdefaultencoding("utf-8")
 import re
 import time
 import socket
-import imaplib
 import ssl
 from datetime import datetime, timedelta
 import email
@@ -22,19 +21,8 @@ from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
 
-class WebmailError(Exception):
-    errorexpr = re.compile("\[([^\]]+)\]\s*([^\.]+)")
-
-    def __init__(self, reason, ajax=False):
-        m = WebmailError.errorexpr.match(reason)
-        if m is None:
-            self.reason = reason
-        else:
-            self.reason = "%s: %s" % (_("Server response"), m.group(2))
-        self.ajax = ajax
-
-    def __str__(self):
-        return self.reason
+from imaputils import *
+from exceptions import *
 
 class WMtable(tables.Table):
     tableid = "emails"
@@ -42,12 +30,13 @@ class WMtable(tables.Table):
     select = tables.ImgColumn("select", cssclass="draggable left", width="1%", 
                               defvalue="%spics/grippy.png" % settings.MEDIA_URL,
                               header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
-    flags = tables.ImgColumn("flags", width="4%")
+    flags = tables.ImgColumn("flags", width="2%")
+    withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column("subject", label=__("Subject"), width="50%")
     from_ = tables.Column("from", width="20%", label=__("From"))
     date = tables.Column("date", width="20%", label=__("Date"))
 
-    cols_order = ["select", "flags", "subject", "from_", "date"]
+    cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
 
     def parse(self, header, value):
         try:
@@ -103,282 +92,16 @@ class IMAPheader(object):
         except ValueError:
             return value
 
+    @staticmethod
+    def parse_message_id(value, **kwargs):
+        return value.strip('\n')
 
     @staticmethod
     def parse_subject(value, **kwargs):
-        return decode(u2u_decode.u2u_decode(value))
-
-class IMAPconnector(object):
-    __metaclass__ = ConnectionsManager
-
-    def __init__(self, user=None, password=None):
-        self.criterions = []
-        self.address = parameters.get_admin("IMAP_SERVER")
-        self.port = int(parameters.get_admin("IMAP_PORT"))
-        status, msg = self.login(user, password)
-        if not status:
-            raise Exception(msg)
-
-    def refresh(self, user, password):
-        """Check if current connection needs a refresh
-
-        Is it really secure?
-        """
-        if self.m is not None:
-            try:
-                self.m.select()
-                return
-            except imaplib.IMAP4.error, error:
-                print error          
-        print self.login(user, password)
-
-
-    def login(self, user, passwd):
-        import imaplib
         try:
-            secured = parameters.get_admin("IMAP_SECURED")
-            if secured == "yes":
-                self.m = imaplib.IMAP4_SSL(self.address, self.port)
-            else:
-                self.m = imaplib.IMAP4(self.address, self.port)
-        except (socket.error, imaplib.IMAP4.error, ssl.SSLError), error:
-            return False, _("Connection to IMAP server failed, check your configuration")
-        try:
-            self.m.login(user, passwd)
-        except (imaplib.IMAP4.error, ssl.SSLError), error:
-            return False, _("Authentication failed, check your configuration")
-        return True, None
-
-    def logout(self):
-        try:
-            self.m.select()
-        except imaplib.IMAP4.error:
-            pass
-        self.m.logout()
-        del self.m
-        self.m = None
-
-    def messages_count(self, **kwargs):
-        """An enhanced version of messages_count
-
-        With IMAP, to know how many messages a mailbox contains, we
-        have to make a request to the server. To avoid requests
-        multiplications, we sort messages in the same time. This will
-        be usefull for other methods.
-
-        :param order: sorting order
-        :param folder: mailbox to scan
-        """
-        if "order" in kwargs.keys() and kwargs["order"]:
-            sign = kwargs["order"][:1]
-            criterion = kwargs["order"][1:].upper()
-            if sign == '-':
-                criterion = "REVERSE %s" % criterion
-        else:
-            criterion = "REVERSE DATE"
-        folder = kwargs.has_key("folder") and kwargs["folder"] or None
-        (status, data) = self.m.select(self._encodefolder(folder))
-        (status, data) = self.m.sort("(%s)" % criterion, "UTF-8", "(NOT DELETED)",
-                                     *self.criterions)
-        self.messages = data[0].split()
-        self.getquota(folder)
-        return len(self.messages)
-
-    def unseen_messages(self, folder):
-        """Return the number of unseen messages for folder"""
-        self.m.select(self._encodefolder(folder), True)
-        status, data = self.m.search("UTF-8", "(NOT DELETED UNSEEN)")
-        if status != "OK":
-            return
-        return len(data[0].split())
-
-    def _encodefolder(self, folder):
-        if not folder:
-            return "INBOX"
-        return folder.encode("imap4-utf-7")
-
-    def _parse_folder_name(self, descr, prefix, delimiter, parts):
-        if not len(parts):
-            return False
-        path = "%s%s%s" % (prefix, delimiter, parts[0])
-        sdescr = None
-        for d in descr:
-            if d["path"] == path:
-                sdescr = d
-                break
-        if sdescr is None:
-            sdescr = {"name" : parts[0], "path" : path, "sub" : []}
-            descr += [sdescr]            
-        if self._parse_folder_name(sdescr["sub"], path, delimiter, parts[1:]):
-            sdescr["class"] = "subfolders"
-        return True
-
-    def _listfolders(self, topfolder='INBOX', folders=[]):
-        list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
-        (status, data) = self.m.list()
-        for mb in data:
-            flags, delimiter, name = list_response_pattern.match(mb).groups()
-            name = name.strip('"').decode("imap4-utf-7")
-            if re.search("\%s" % delimiter, name):
-                parts = name.split(".")
-                if not descr.has_key("path"):
-                    descr["path"] = parts[0]
-                    descr["sub"] = []
-                if self._parse_folder_name(descr["sub"], parts[0], delimiter, 
-                                           parts[1:]):
-                    descr["class"] = "subfolders"
-                continue
-
-            pos = -1
-            descr = {"name" : name}
-            for idx, mdf in enumerate(folders):
-                if mdf["name"] == name:
-                    pos = idx
-                    break
-            if pos == -1:
-                folders += [descr]
-            else:
-                folders[idx].update(**descr)
-                
-        from operator import itemgetter
-        return sorted(folders, key=itemgetter("name"))
-
-    def getfolders(self, user, unseen_messages=True):
-        md_folders = [{"name" : "INBOX", "class" : "inbox"},
-                      {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
-                       "class" : "drafts"},
-                      {"name" : 'Junk'},
-                      {"name" : parameters.get_user(user, "SENT_FOLDER")},
-                      {"name" : parameters.get_user(user, "TRASH_FOLDER"),
-                       "class" : "trash"}]
-        self._listfolders(folders=md_folders)
-
-        if unseen_messages:
-            for fd in md_folders:
-                key = fd.has_key("path") and "path" or "name"
-                count = self.unseen_messages(fd[key])
-                if count == 0:
-                    continue
-                fd["unseen"] = count
-        return md_folders
-
-    def _add_flag(self, folder, mail_id, flag):
-        self.m.select(self._encodefolder(folder))
-        self.m.store(mail_id, "+FLAGS", flag)
-
-    def msg_unread(self, folder, msgset):
-        self.m.select(self._encodefolder(folder))
-        self.m.store(msgset, "-FLAGS", r'(\Seen)')
-
-    def msg_read(self, folder, msgset):
-        self._add_flag(folder, msgset, r'(\Seen)')
-
-    def msgforwarded(self, folder, imapid):
-        self._add_flag(folder, imapid, '($Forwarded)')
-
-    def msg_answered(self, folder, imapid):
-        self._add_flag(folder, imapid, r'(\Answered)')
-
-    def move(self, msgset, oldfolder, newfolder):
-        self.m.select(self._encodefolder(oldfolder))
-        status, data = self.m.copy(msgset, self._encodefolder(newfolder))
-        if status == 'OK':
-            self.m.store(msgset, "+FLAGS", r'(\Deleted)')
-
-    def push_mail(self, folder, msg):
-        now = imaplib.Time2Internaldate(time.time())
-        self.m.append(self._encodefolder(folder), r'(\Seen)', now, str(msg))
-
-    def empty(self, folder):
-        self.m.select(self._encodefolder(folder))
-        typ, data = self.m.search(None, 'ALL')
-        for num in data[0].split():
-            self.m.store(num, "+FLAGS", r'(\Deleted)')
-        self.m.expunge()
-
-    def compact(self, folder):
-        self.m.select(self._encodefolder(folder))
-        self.m.expunge()
-
-    def create_folder(self, name, parent=None):
-        if parent is not None:
-            name = "%s.%s" % (parent, name)
-        typ, data = self.m.create(self._encodefolder(name))
-        if typ == "NO":
-            raise WebmailError(data[0])
-        return True
-
-    def rename_folder(self, oldname, newname):
-        typ, data = self.m.rename(self._encodefolder(oldname),
-                                  self._encodefolder(newname))
-        if typ == "NO":
-            raise WebmailError(data[0], ajax=True)
-        return True
-
-    def delete_folder(self, name):
-        typ, data = self.m.delete(self._encodefolder(name))
-        if typ == "NO":
-            raise WebmailError(data[0])
-        return True
-
-    def getquota(self, folder):
-        if not "QUOTA" in self.m.capabilities:
-            self.quota_limit = self.quota_actual = None
-            return
-
-        status, data = self.m.getquotaroot(self._encodefolder(folder))
-        if status == "OK" and data[1][0] is not None:
-            quotadef = data[1][0]
-            m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
-            if not m:
-                print "Problem while parsing quota def"
-                return
-            self.quota_limit = int(m.group(2))
-            self.quota_actual = int(m.group(1))
-
-    def fetchpart(self, uid, folder, part):
-        self.m.select(self._encodefolder(folder), True)
-        typ, data = self.m.fetch(uid, "(BODY[%(p)s.MIME] BODY[%(p)s])" \
-                                     % {"p" : part})
-        if typ != "OK":
-            return None
-        msg = email.message_from_string(data[0][1] + data[1][1])
-        return msg
-
-    def fetch(self, start=None, stop=None, folder=None, all=False, **kwargs):
-        if not start and not stop:
-            return []
-        result = []
-        self.m.select(self._encodefolder(folder), True)
-        if start and stop:
-            submessages = self.messages[start - 1:stop]
-            range = ",".join(submessages)
-        else:
-            submessages = [start]
-            range = start
-        if not all:
-            query = '(FLAGS BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
-        else:
-            query = '(RFC822)'
-        typ, data = self.m.fetch(range, query)
-        if not folder:
-            folder = "INBOX"
-        tmpdict = {}
-
-        for response_part in data:
-            if isinstance(response_part, tuple):
-                imapid = response_part[0].split()[0]
-                flags = imaplib.ParseFlags(response_part[0])
-                msg = email.message_from_string(response_part[1])
-                msg["imapid"] = imapid
-                if not "\\Seen" in flags:
-                    msg["class"] = "unseen"
-                if "\\Answered" in flags:
-                    msg["img_flags"] = static_url("pics/answered.png")
-                tmpdict[imapid] = msg
-        for id in submessages:
-            result += [tmpdict[id]]
-        return result
+            return decode(u2u_decode.u2u_decode(value))
+        except UnicodeDecodeError:
+            return value
 
 class ImapListing(EmailListing):
     tpl = "webmail/index.html"
@@ -393,8 +116,9 @@ class ImapListing(EmailListing):
         if kwargs.has_key("pattern"):
             self.parse_search_parameters(kwargs["criteria"],
                                          kwargs["pattern"])
-        if kwargs.has_key("reset"):
+        else:
             self.mbc.criterions = []
+
         EmailListing.__init__(self, **kwargs)  
         self.extravars["refreshrate"] = \
             int(parameters.get_user(user, "REFRESH_INTERVAL")) * 1000
@@ -430,30 +154,138 @@ class ImapListing(EmailListing):
         return ImapListing.computequota(self.mbc)
 
 class ImapEmail(Email):
-    def __init__(self, msg, user, dformat="DISPLAYMODE", addrfull=False, 
-                 *args, **kwargs):
-        mformat = parameters.get_user(user, "DISPLAYMODE")
-        dformat = parameters.get_user(user, dformat)
-        Email.__init__(self, msg, mformat, dformat, *args, **kwargs)
+    headernames = [
+        ('Date', True),
+        ('From', True),
+        ('To', True),
+        ('Cc', True),
+        ('Subject', True),
+        ]
 
-        fields = ["Subject", "From", "To", "Reply-To", "Cc", "Date"]
-        for f in fields:
-            label = f
-            if not f in msg.keys():
-                f = f.upper()
-                if not f in msg.keys():
+    def __init__(self, mbox, mailid, request, dformat="DISPLAYMODE", addrfull=False, 
+                 links=0):
+        mformat = parameters.get_user(request.user, "DISPLAYMODE")
+        self.dformat = parameters.get_user(request.user, dformat)
+
+        self.headers = []
+        self.attachments = {}
+        self.imapc = get_imapconnector(request)
+        msg = self.imapc.fetchmail(mbox, mailid, readonly=False,
+                                   headers=self.headers_as_list)
+        self.mbox = mbox
+        self.mailid = mailid
+        headers = msg['BODY[HEADER.FIELDS (%s)]' % self.headers_as_text]
+        fallback_fmt = "html" if self.dformat == "plain" else "plain"
+        
+        self.bs = BodyStructure(msg['BODYSTRUCTURE'])
+        data = None
+
+        mformat = self.dformat if self.bs.contents.has_key(self.dformat) else fallback_fmt
+
+        pnum = self.bs.contents[mformat]['pnum']
+        data = self.imapc._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
+        content = self._decode_content(self.bs.contents[mformat]['encoding'],
+                                       data[int(mailid)]['BODY[%s]' % pnum])
+        charset = self._find_content_charset(mformat)
+        if charset is not None:
+            content = content.decode(charset)
+
+        self._find_attachments()
+        self._fetch_inlines()
+
+        self.body = \
+            getattr(self, "viewmail_%s" % mformat)(content, links=links)
+
+        msg = email.message_from_string(headers)
+        for hdr in self.headernames:
+            label = hdr[0]
+            name = hdr[0]
+            if not name in msg.keys():
+                name = name.upper()
+                if not name in msg.keys():
                     continue
             try:
-                key = re.sub("-", "_", f).lower()
-                value = getattr(IMAPheader, "parse_%s" % key)(msg[f], full=addrfull)
-                self.headers += [{"name" : label, "value" : value}]
+                key = re.sub("-", "_", name).lower()
+                value = getattr(IMAPheader, "parse_%s" % key)(msg[name], full=addrfull)
             except AttributeError:
-                self.headers += [{"name" : label, "value" : msg[f]}]
+                value = msg[name]
+            if hdr[1]:
+                self.headers += [{"name" : label, "value" : value}]
             try:
                 label = re.sub("-", "_", label)
                 setattr(self, label, value)
             except:
                 pass
+
+    @property
+    def headers_as_list(self):
+        return map(lambda hdr: hdr[0].upper(), self.headernames)
+
+    @property
+    def headers_as_text(self):
+        return " ".join(map(lambda hdr: hdr[0].upper(), self.headernames))
+
+    def _find_content_charset(self, subtype):
+        for pos, elem in enumerate(self.bs.contents[subtype]["params"]):
+            if elem == "charset":
+                return self.bs.contents[subtype]["params"][pos + 1]
+        return None
+
+    def _decode_content(self, encoding, content):
+        encoding = encoding.lower()
+        if encoding == "base64":
+            import base64
+            return base64.b64decode(content)
+        elif encoding == "quoted-printable":
+            import quopri
+            return quopri.decodestring(content)
+        return content
+
+    def _find_attachments(self):
+        for att in self.bs.attachments:
+            attname = "part_%s" % att["pnum"]
+            params = None
+            key = None
+            if att.has_key("params") and att["params"] != "NIL":
+                params = att["params"]
+                key = "name"
+
+            if key is None and \
+                    att.has_key("disposition") and len(att["disposition"]) > 1:
+                params = att["disposition"][1]
+                key = "filename"
+            
+            if key and params:
+                for pos, value in enumerate(params):
+                    if value == key:
+                        attname = u2u_decode.u2u_decode(params[pos + 1]).strip("\r\t\n")
+                        break
+            self.attachments[att["pnum"]] = attname
+
+    def _fetch_inlines(self):
+        for cid, params in self.bs.inlines.iteritems():
+            if re.search("\.\.", cid):
+                continue
+            fname = "static/tmp/%s_%s" % (self.mailid, cid)
+            path = os.path.join(settings.MODOBOA_DIR, fname)
+            params["fname"] = "/%s" % fname
+            if os.path.exists(path):
+                continue
+
+            content = self.imapc.fetchpart(self.mailid, self.mbox, params["pnum"])
+            fp = open(path, "wb")
+            fp.write(self._decode_content(params["encoding"], content))
+            fp.close()
+
+
+    def map_cid(self, url):
+        import re
+
+        m = re.match(".*cid:(.+)", url)
+        if m:
+            if self.bs.inlines.has_key(m.group(1)):
+                return self.bs.inlines[m.group(1)]["fname"]
+        return url
 
     def render_headers(self, **kwargs):
         from django.template.loader import render_to_string
@@ -465,26 +297,45 @@ class ImapEmail(Email):
                 })
         return res
 
-class ReplyModifier(ImapEmail):
-    def __init__(self, msg, user, form, all=False, **kwargs):
-        ImapEmail.__init__(self, msg, user, dformat="EDITOR", **kwargs)
-
-        self.textheader = "%s %s" % (self.From, _("wrote:"))
+class Modifier(ImapEmail):
+    def __init__(self, *args, **kwargs):
+        super(Modifier, self).__init__(*args, **kwargs)
         getattr(self, "_modify_%s" % self.dformat)()
 
-        form.fields["from_"].initial = user.username
-        if not "Reply-To" in msg.keys():
+    def _modify_plain(self):
+        self.body = re.sub("</?pre>", "", self.body)
+
+    def _modify_html(self):
+        pass
+
+    
+class ReplyModifier(Modifier):
+    headernames = ImapEmail.headernames + \
+        [("Reply-To", True),
+         ("Message-ID", False)]
+
+    def __init__(self, mbox, mailid, request, form,  **kwargs):
+        super(ReplyModifier, self).__init__(
+            mbox, mailid, request, dformat="EDITOR", **kwargs
+            )
+
+        self.textheader = "%s %s" % (self.From, _("wrote:"))
+
+        form.fields["from_"].initial = request.user.username
+        if hasattr(self, "Message_ID"):
+            form.fields["origmsgid"].initial = self.Message_ID
+        if not hasattr(self, "Reply_To"):
             form.fields["to"].initial = self.From
         else:
             form.fields["to"].initial = self.Reply_To
-        if all:
+        if all: # reply-all
             form.fields["cc"].initial = ""
-            toparse = msg["To"].split(",")
-            if "Cc" in msg.keys():
-                toparse += msg["Cc"].split(",")
+            toparse = self.To.split(",")
+            if hasattr(self, 'Cc'):
+                toparse += self.Cc.split(",")
             for addr in toparse:
                 tmp = EmailAddress(addr)
-                if tmp.address and tmp.address == user.username:
+                if tmp.address and tmp.address == request.user.username:
                     continue
                 if form.fields["cc"].initial != "":
                     form.fields["cc"].initial += ", "
@@ -494,9 +345,9 @@ class ReplyModifier(ImapEmail):
             form.fields["subject"].initial = self.Subject
         else:
             form.fields["subject"].initial = "Re: %s" % self.Subject
-    
+
     def _modify_plain(self):
-        self.body = re.sub("</?pre>", "", self.body)
+        super(ReplyModifier, self)._modify_plain()
         lines = self.body.split('\n')
         body = ""
         for l in lines:
@@ -504,27 +355,26 @@ class ReplyModifier(ImapEmail):
                 body += "\n"
             body += ">%s" % l
         self.body = body
-
-    def _modify_html(self):
-        pass
-
-class ForwardModifier(ImapEmail):
-    def __init__(self, msg, user, form, **kwargs):
-        ImapEmail.__init__(self, msg, user, dformat="EDITOR", **kwargs)
+   
+class ForwardModifier(Modifier):
+    def __init__(self, mbox, mailid, request, form, **kwargs):
+        super(ForwardModifier, self).__init__(
+            mbox, mailid, request, dformat="EDITOR", **kwargs
+            )
     
-        self._header(msg)
-        form.fields["from_"].initial = user.username
+        self._header()
+        form.fields["from_"].initial = request.user.username
         form.fields["subject"].initial = "Fwd: %s" % self.Subject
 
     def __getfunc(self, name):
         return getattr(self, "%s_%s" % (name, self.dformat))
 
-    def _header(self, msg):
+    def _header(self):
         self.textheader = self.__getfunc("_header_begin")() + "\n"
         self.textheader += \
             self.__getfunc("_header_line")(_("Subject"), self.Subject) + "\n"
         self.textheader += \
-            self.__getfunc("_header_line")(_("Date"), msg["Date"]) + "\n"
+            self.__getfunc("_header_line")(_("Date"), self.Date) + "\n"
         for hdr in ["From", "To", "Reply-To"]:
             try:
                 key = re.sub("-", "_", hdr)
@@ -720,7 +570,7 @@ def create_mail_attachment(attdef):
     res.add_header("Content-Disposition", "attachment; filename='%s'" % attdef["fname"])
     return res
 
-def send_mail(request, origmsg=None, posturl=None):
+def send_mail(request, posturl=None):
     """Email verification and sending.
 
     If the form does not present any error, a new MIME message is
@@ -728,7 +578,6 @@ def send_mail(request, origmsg=None, posturl=None):
     SMTP server and the message is finally sent.
 
     :param request: a Request object
-    :param origmsg: the eventual original message (in case of a reply)
     :param posturl: the url to post the message form to
     :return: a 2-uple (True|False, HttpResponse)
     """
@@ -781,8 +630,8 @@ def send_mail(request, origmsg=None, posturl=None):
         msg["Message-ID"] = make_msgid()
         msg["User-Agent"] = "Modoboa"
         msg["Date"] = formatdate(time.time(), True)
-        if origmsg and origmsg.has_key("Message-ID"):
-            msg["References"] = msg["In-Reply-To"] = origmsg["Message-ID"]
+        if form.cleaned_data.has_key("origmsgid"):
+            msg["References"] = msg["In-Reply-To"] = form.cleaned_data["origmsgid"]
         rcpts = msg['To'].split(',')
         if form.cleaned_data["cc"] != "":
             msg["Cc"] = form.cleaned_data["cc"]
@@ -813,16 +662,14 @@ def send_mail(request, origmsg=None, posturl=None):
                       password=request.session["password"]).push_mail(sentfolder, msg)
         clean_attachments(request.session["compose_mail"]["attachments"])
         del request.session["compose_mail"]
-        return True, ajax_simple_response(getctx("ok", url=get_current_url(request)))
+        return True, dict(url=get_current_url(request))
 
     listing = _render_to_string(request, "webmail/compose.html", 
                                {"form" : form, "noerrors" : True,
                                 "body" : request.POST["id_body"].strip(),
                                 "posturl" : posturl})
     error = _("Red fields are mandatories")
-    return False, ajax_simple_response(
-        getctx("ko", level=2, respmsg=error, listing=listing, editor=editormode)
-        )
+    return False, dict(status="ko", respmsg=error, listing=listing, editor=editormode)
 
 class AttachmentUploadHandler(FileUploadHandler):
     """

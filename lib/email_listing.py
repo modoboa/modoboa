@@ -115,7 +115,7 @@ class EmailListing(object):
     def fetch(self, request, id_start, id_stop):
         table = self.tbltype(request,
                              self.mbc.fetch(start=id_start, stop=id_stop, 
-                                            folder=self.folder, 
+                                            mbox=self.folder, 
                                             nbelems=self.elems_per_page))
         tpl = Template("""
 <form method="POST" id="listingform">
@@ -123,29 +123,37 @@ class EmailListing(object):
 </form>""")
         return tpl.render(Context({"table" : table.render()}))
 
+    # def render(self, request, pageid=1, **kwargs):
+    #     listing = ""
+    #     page = None
+    #     if not self.empty:
+    #         page = self.paginator.getpage(pageid)
+    #         if not page:
+    #             listing = _("This folder contains no messages")
+    #         else:
+    #             listing = self.fetch(request, page.id_start, page.id_stop)
+    #     elapsed = kwargs.has_key("start") and time.time() - kwargs["start"] or 0
+    #     context = {
+    #         "listing" : listing, 
+    #         "elapsed" : elapsed,
+    #         "navbar" : self.render_navbar(page),
+    #         "selection" : self.folder,
+    #         "navparams" : self.navparams,
+    #         "deflocation" : self.deflocation, 
+    #         "defcallback" : self.defcallback,
+    #         "reset_wm_url" : self.reset_wm_url
+    #         }
+    #     for k, v in self.extravars.iteritems():
+    #         context[k] = v
+    #     return _render(request, self.tpl, context)
+
     def render(self, request, pageid=1, **kwargs):
-        listing = ""
-        page = None
-        if not self.empty:
-            page = self.paginator.getpage(pageid)
-            if not page:
-                listing = _("This folder contains no messages")
-            else:
-                listing = self.fetch(request, page.id_start, page.id_stop)
-        elapsed = kwargs.has_key("start") and time.time() - kwargs["start"] or 0
-        context = {
-            "listing" : listing, 
-            "elapsed" : elapsed,
-            "navbar" : self.render_navbar(page),
-            "selection" : self.folder,
-            "navparams" : self.navparams,
-            "deflocation" : self.deflocation, 
-            "defcallback" : self.defcallback,
-            "reset_wm_url" : self.reset_wm_url
-            }
-        for k, v in self.extravars.iteritems():
-            context[k] = v
-        return _render(request, self.tpl, context)
+        page = self.paginator.getpage(pageid)
+        if not page:
+            listing = _("This folder contains no message")
+        else:
+            listing = self.fetch(request, page.id_start, page.id_stop)
+        return dict(listing=listing, navbar=self.render_navbar(page))
 
 def parse_search_parameters(request):
     if request.GET.has_key("pattern"):
