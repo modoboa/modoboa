@@ -12,20 +12,20 @@ function navbarcallback(event) {
 }
 
 function updatelisting(resp) {
-    if ($defined(resp.url)) {
-        current_anchor.baseurl(resp.url).update();
+    if (resp.url != undefined) {
+        history.baseurl(resp.url).update();
         return;
     }
-    if ($defined(resp.menu)) {
+    /*if (resp.menu != undefined) {
         $("menubar").set("html", resp.menu);
         parse_menubar("menubar");
+    }*/
+    if (resp.listing != undefined) {
+        $("#listing").html(resp.listing);
     }
-    if ($defined(resp.listing)) {
-        $("listing").set("html", resp.listing);
-    }
-    if ($defined(resp.navbar)) {
+    /*if ($defined(resp.navbar)) {
         $("navbar").set("html", resp.navbar);
         $$("#navbar a").addEvent("click", navbarcallback);
-    }
+    }*/
 }
 

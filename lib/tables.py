@@ -188,16 +188,17 @@ class Table(object):
     def __str__(self):
         return self.render()
 
-    def render(self):
+    def render(self, styles="table-striped table-bordered", withheader=True):
         if len(self.rows):
             t = Template("""
-<table id="{{ tableid }}" class="table table-striped table-bordered">
-  {% include "common/table_head.html" %}
+<table id="{{ tableid }}" class="table {{ styles }}">
+  {% if withheader %}{% include "common/table_head.html" %}{% endif %}
   {% include "common/table_body.html" %}
 </table>
 """)
             return t.render(RequestContext(self.request, {
-                        "table" : self, "tableid" : self.tableid
+                        "table" : self, "tableid" : self.tableid, "styles" : styles,
+                        "withheader" : withheader
                         }))
         t = Template("""
 <div class="info">%s</div>

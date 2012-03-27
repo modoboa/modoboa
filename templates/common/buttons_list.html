@@ -1,0 +1,11 @@
+{% load libextras %}
+<div class="btn-toolbar">{% for entry in entries %}
+  <div class="btn-group">{% if entry.menu %}
+    <a class="btn dropdown-toggle" data-toggle="dropdown">{{ entry.label }}<span class="caret"></span></a>  
+    <ul class="dropdown-menu">{% for sentry in entry.menu %}
+      <li>{% render_link sentry %}</li>
+      {% endfor %}</ul>
+    {% else %}{% render_link entry "btn" %}{% endif %}
+  </div>
+{% endfor %}{{ extracontent }}</div>
+

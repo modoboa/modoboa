@@ -1,136 +1,180 @@
-function updatehash(evt) {
-  evt.stop();
-  var url = $defined(this.get("href")) ? this.get("href") : "";
-  current_anchor.parse_string(url, true).setparams(navparams);
-  current_anchor.update();
-}
+var Quarantine = function(options) {
+    this.initialize(options);
+};
 
-function appendhash(evt) {
-  evt.stop();
-  location.hash += evt.target.get("href");
-}
+Quarantine.prototype = {
+    constructor: Quarantine,
 
-function updateparams(evt) {
-  evt.stop();
-  current_anchor.updateparams(evt.target.get("href"));
-  current_anchor.update();
-}
+    defaults: {
+        deflocation: "listing",
+        defcallback: "listing_cb"
+    },
 
-function actioncallback(resp) {
-  $("listing").set("html", "");
-  $("menubar").set("html", "");
-  $("navbar").set("html", "");
-  if (resp.status == "ok") {
-    infobox.info(resp.respmsg);
-    current_anchor.parse_string(resp.url, true).setparams(navparams);
-    current_anchor.update(1);
-  } else {
-    infobox.error(resp.respmsg);
-  }
-}
+    initialize: function(options) {
+        this.options = $.extend({}, this.defaults, options);
+        this.navobj = new History(this.options);
 
-function actionclick(evt) {
-  new Request.JSON.mdb({
-      url: evt.target.get("href"),
-      onSuccess: actioncallback
-  }).get();
-}
+        this.register_navcallbacks();
+        this.listen();
+    },
 
-function deleteclick(evt) {
-    evt.stop();
-    if (!confirm(gettext("Delete this message?"))) {
-        return false;
+    update_page: function(data) {
+        if (data.menu != undefined) {
+            $("#menubar").html(data.menu);
+            $("#searchfield").searchbar({navobj: this.navobj});
+        }
+        if (data.navbar) {
+            $("#bottom-bar-in").html(data.navbar);
+        }
+        if (data.listing != undefined) {
+            $("#listing").html(data.listing);
+            $("#listing").css({
+                top: $("#menubar").outerHeight() + 60 + "px",
+                bottom: $("#bottom-bar").outerHeight() + "px",
+                overflow: "auto"
+            });
+        }
+    },
+
+    listen: function() {
+        $(document).on("dblclick", "tbody>tr", $.proxy(this.viewmail_loader, this));
+        $(document).on("click", "a[name=selectmsgs]", $.proxy(this.selectmsgs, this));
+        $(document).on("click", "a[name=release-multi]",
+            $.proxy(this.release_selection, this));
+        $(document).on("click", "a[name=delete-multi]",
+            $.proxy(this.delete_selection, this));
+        $(document).on("click", "#bottom-bar a", $.proxy(this.load_page, this));
+
+        $(document).on("click", "a[name=release]", $.proxy(this.release, this));
+        $(document).on("click", "a[name=delete]", $.proxy(this.delete, this));
+        $(document).on("click", "a[name=viewmode]", $.proxy(this.update_params, this));
+    },
+
+    load_page: function(e) {
+        e.preventDefault();
+        var $link = $(e.target).parent();
+
+        this.navobj.deleteParam("rcpt");
+        this.navobj.from_string($link.attr("href")).update();
+    },
+
+    viewmail_loader: function(e) {
+        e.preventDefault();
+        var $tr = $(e.target).parent();
+        var $to = $tr.find("td[name=to]");
+
+        this.navobj.baseurl($tr.attr("id"));
+        if ($to.length) {
+            this.navobj.setparam("rcpt", $to.html().trim());
+        }
+        this.navobj.update();
+    },
+
+    selectmsgs: function(e) {
+        e.preventDefault();
+        var type = $(e.target).attr("href");
+
+        if (type == "") {
+            $("#emails").htmltable("clear_selection");
+            return;
+        }
+        $("td[name=type]").each(function() {
+            var $this = $(this);
+            if ($this.html().trim() == type) {
+                $("#emails").htmltable("select_row", $this.parent());
+            }
+        });
+    },
+
+    _send_selection: function(e, name, message) {
+        var $link = $(e.target);
+
+        e.preventDefault();
+        if (!this.htmltable.current_selection().length ||
+            !confirm(message)) {
+            return;
+        }
+        var selection = [];
+
+        this.htmltable.current_selection().each(function() {
+            var $tr = $(this);
+            var $to = $tr.find("td[name=to]");
+
+            if ($to.length) {
+                selection.push($to.html().trim() + " " + $tr.attr("id"));
+            } else {
+                selection.push($tr.attr("id"));
+            }
+        });
+        $.ajax({
+            url: $link.attr("href"),
+            data: "action=" + name + "&selection=" + selection.join(","),
+            type: 'POST',
+            dataType: 'json',
+            success: $.proxy(this.action_cb, this)
+        });
+    },
+
+    release_selection: function(e) {
+        this._send_selection(e, "release", gettext("Release this selection?"));
+    },
+
+    delete_selection: function(e) {
+        this._send_selection(e, "delete", gettext("Delete this selection?"));
+    },
+
+    _send_action: function(e, message) {
+        var $link = $(e.target);
+
+        e.preventDefault();
+        if (!confirm(message)) {
+            return;
+        }
+        $.ajax({
+            url: $link.attr("href"),
+            dataType: 'json',
+            success: $.proxy(this.action_cb, this)
+        });
+    },
+
+    release: function(e) {
+        this._send_action(e, gettext("Release this message?"));
+    },
+
+    delete: function(e) {
+        this._send_action(e, gettext("Delete this message?"));
+    },
+
+    update_params: function(e) {
+        var $link = $(e.target);
+        e.preventDefault();
+        this.navobj.updateparams($link.attr("href")).update();
+    },
+
+    register_navcallbacks: function() {
+        this.navobj.register_callback("_listing",
+            $.proxy(this.listing_cb, this));
+        this.navobj.register_callback("viewmail",
+            $.proxy(this.viewmail_cb, this));
+    },
+
+    listing_cb: function(data) {
+        this.update_page(data);
+        $("#emails").htmltable();
+        this.htmltable = $("#emails").data("htmltable");
+    },
+
+    viewmail_cb: function(data) {
+        this.update_page(data);
+        $("#listing").css("overflow", "hidden");
+    },
+
+    action_cb: function(data) {
+        if (data.status == "ok") {
+            this.navobj.parse_string(data.url, true).update(true);
+            $("body").notify("success", data.respmsg, 2000);
+        } else {
+            $("body").notify("error", data.respmsg);
+        }
     }
-    actionclick(evt);
-}
-
-function releaseclick(evt) {
-    evt.stop();
-    if (!confirm(gettext("Release this message?"))) {
-        return false;
-    }
-    actionclick(evt);
-}
-
-function viewmail_cs(evt) {
-    evt.stop();
-    var to = this.getFirst("td[name=to]");
-
-    current_anchor.baseurl(this.get("id"));
-    if ($defined(to)) {
-        current_anchor.setparam("rcpt", to.get("html").trim());
-    }
-    current_anchor.update();
-}
-
-/*
- * Callback of the 'listing' action (the main screen)
- */
-function listing_cb(resp) {
-  updatelisting(resp);
-
-  var tbl = new HtmlTable($("emails"), {
-    useKeyboard: false,
-    selectable: true
-  });
-
-  if ($("toggleselect")) {
-    $("toggleselect").addEvent("click", function(evt) {
-      if ($$("tr[class*=table-tr-selected]").length) {
-        tbl.selectNone();
-      } else {
-        tbl.selectAll();
-      }
-    });
-  }
-  $$("a[name=selectmsgs]").addEvent("click", function(evt) {
-    evt.stop();
-    var type = evt.target.get("href");
-
-    if (!$chk(type)) {
-      $$("tr[class*=table-tr-selected]").each(function(item) {
-        item.removeClass("table-tr-selected");
-      });
-      if ($("toggleselect").checked) {
-        $("toggleselect").checked = false;
-        tbl.selectNone();
-      }
-      return;
-    }
-    $$("td[name=type]").each(function(item) {
-      if (item.get("html").trim() == type) {
-        item.getParent().addClass("table-tr-selected");
-      }
-    });
-  });
-  $$("a[name=release]").addEvent("click", function(event) {
-    if (!checkTableSelection(gettext("Release this selection?"))) {
-      event.stop();
-      return;
-    }
-    mysubmit(event, "release");
-  });
-  $$("a[name=delete]").addEvent("click", function(event) {
-    if (!checkTableSelection(gettext("Delete this selection?"))) {
-      event.stop();
-      return;
-    }
-    mysubmit(event, "delete");
-  });
-  searchbox_init();
-  init_sortable_columns();
-  update_sortable_column();
-  $$("tbody>tr").addEvent("dblclick", viewmail_cs);
-}
-
-/*
- * Callback of the 'viewmail' action
- */
-function viewmail_cb(resp) {
-  updatelisting(resp);
-  $$("a[name=back]").addEvent("click", updatehash);
-  $$("a[name=delete]").addEvent("click", deleteclick);
-  $$("a[name=release]").addEvent("click", releaseclick);
-  $$("a[name=viewmode]").addEvent("click", updateparams);
-  setDivHeight("mailcontent", 5, 0);
-}
+};

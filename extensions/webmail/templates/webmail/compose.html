@@ -1,8 +1,8 @@
-{% load i18n %}
+{% load i18n libextras %}
 <form method="POST" action="{{ posturl }}" id="composemail">
   <div id="compose-container">
     <div id="mailheader">
-      {% include "common/genericform.html" %}
+      {% render_form form %}
       <div id="attachments" name="{% url modoboa.extensions.webmail.views.attachments %}">
         <div>
           <img src="{{ MEDIA_URL }}pics/attachment.png" />

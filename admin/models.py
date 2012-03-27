@@ -167,7 +167,7 @@ class User(DUser):
     @property
     def group(self):
         if self.is_superuser:
-            return "SuperAdmin"
+            return "SuperAdmins"
         try:
             return self.groups.all()[0].name
         except IndexError:

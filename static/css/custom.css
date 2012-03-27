@@ -2,6 +2,14 @@ body {
     padding-top: 60px;
 }
 
+#fixed_content { 
+    position: absolute;
+    top: 60px;
+    right: 0;
+    left: 0;
+    overflow: hidden;
+}
+
 #bottom-bar {
     position: fixed;
     left: 0;
@@ -46,6 +54,19 @@ body {
     margin-bottom: 8px;
 }
 
+.dropdown-menu .radio {
+    padding: 3px 33px;
+}
+
+.no-margin { 
+    margin: 0;
+}
+
+.dropdown-menu label:hover { 
+    background-color: #0088CC;
+    color: white;
+}
+
 .spaced select,
 .spaced input[type="text"] { 
     margin-bottom: 8px;
@@ -61,4 +82,8 @@ body {
 
 .buttons_list .active { 
     display: block;
+}
+
+.tr-selected { 
+    background-color: #F5F5F5;
 }

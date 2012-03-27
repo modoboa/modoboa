@@ -233,21 +233,6 @@ function searchbox_init() {
     }
 };
 
-// The following code prevents a bug under IE7 because fullpath is
-// returned instead of a relative one. (even if mootools uses
-// getAttribute("href", 2), this is not working for AJAX requests)
-gethref = function(obj) {
-    var url = obj.get("href");
-    var re = new RegExp("^(https?):");
-    var scheme = re.exec(url);
-
-    if (scheme != null) {
-        var baseurl = scheme[0] + "://" + location.host + location.pathname;
-        return url.replace(baseurl, "");
-    }
-    return url;
-};
-
 /*function saveparams(id, message) {
     $("#update").click(function(evt) {
         evt.preventDefault();

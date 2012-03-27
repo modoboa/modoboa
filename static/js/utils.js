@@ -124,6 +124,42 @@ function simple_ajax_form_post(e, options) {
 }
 
 /*
+ * The following code prevents a bug under IE7 because fullpath is
+ * returned instead of a relative one. (even if mootools uses
+ * getAttribute("href", 2), this is not working for AJAX requests)
+ */
+function gethref(obj) {
+    var url = $(obj).attr("href");
+    var re = new RegExp("^(https?):");
+    var scheme = re.exec(url);
+
+    if (scheme != null) {
+        var baseurl = scheme[0] + "://" + location.host + location.pathname;
+        return url.replace(baseurl, "");
+    }
+    return url;
+};
+
+/*
+ * Extract the current URL parameters into a dictionnary.
+ *
+ * Ref:
+ * http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
+ */
+function parse_qs(raw) {
+    if (raw == "") return {};
+    var res = {};
+
+    for (var i = 0; i < raw.length; i++) {
+        var p = raw[i].split('=');
+
+        if (p.length != 2) continue;
+        res[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return res;
+}
+
+/*
  * Simple wrapper around Request.JSON. We just ensure that
  * redirections are correctly catched. (on session timeout for
  * example)

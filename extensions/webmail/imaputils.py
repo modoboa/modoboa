@@ -367,13 +367,13 @@ class IMAPconnector(object):
         if len(topmailbox):
             md_mailboxes = []
         else:
-            md_mailboxes = [{"name" : "INBOX", "class" : "inbox"},
+            md_mailboxes = [{"name" : "INBOX", "class" : "icon-home"},
                             {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
-                             "class" : "drafts"},
+                             "class" : "icon-file"},
                             {"name" : 'Junk'},
                             {"name" : parameters.get_user(user, "SENT_FOLDER")},
                             {"name" : parameters.get_user(user, "TRASH_FOLDER"),
-                             "class" : "trash"}]
+                             "class" : "icon-trash"}]
         md_mailboxes += self._listfolders(topmailbox, md_mailboxes)
         if unseen_messages:
             for fd in md_mailboxes:
@@ -476,7 +476,10 @@ class IMAPconnector(object):
             return
 
         data = self._cmd("GETQUOTAROOT", self._encodefolder(mailbox))
-        print data
+        if data is None:
+            self.quota_limit = self.quota_actual = None
+            return
+        
         quotadef = data[1][0]
         m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
         if not m:

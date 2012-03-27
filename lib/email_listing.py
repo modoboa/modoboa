@@ -26,7 +26,7 @@ class Page(object):
     def __init__(self, pageid, id_start, id_stop, items, 
                  items_per_page, has_previous, has_next,
                  baseurl=None):
-        self.pageid = pageid
+        self.number = pageid
         self.id_start = id_start
         self.id_stop = id_stop
         self.items = items
@@ -35,15 +35,15 @@ class Page(object):
         self.has_next = has_next
         self.baseurl = baseurl
 
-    def previous_page(self):
+    def previous_page_number(self):
         if not self.has_previous:
             return False
-        return self.pageid - 1
+        return self.number - 1
 
-    def next_page(self):
+    def next_page_number(self):
         if not self.has_next:
             return False
-        return self.pageid + 1
+        return self.number + 1
 
     def last_page(self):
         lid = self.items / self.items_per_page
@@ -57,7 +57,9 @@ class Paginator(object):
     def __init__(self, total, elems_per_page):
         self.total = total
         self.elems_per_page = elems_per_page
-        self.baseurl = None
+        self.num_pages = total / elems_per_page
+        if total % elems_per_page:
+            self.num_pages += 1
 
     def _indexes(self, page):
         id_start = self.elems_per_page * page + 1
@@ -80,11 +82,12 @@ class Paginator(object):
             return None
         p = Page(page, id_start, id_stop, self.total,
                  self.elems_per_page, has_previous, has_next)
-        if self.baseurl:
-            p.baseurl = self.baseurl
+        p.paginator = self
         return p
 
 class EmailListing(object):
+    table_styles = "table-striped table-condensed"
+
     def __init__(self, baseurl=None, folder=None, elems_per_page=40, 
                  navparams={}, **kwargs):
         self.folder = folder
@@ -102,15 +105,14 @@ class EmailListing(object):
             self.paginator = Paginator(self.mbc.messages_count(folder=self.folder, 
                                                                order=order), 
                                        elems_per_page)
-            if baseurl:
-                self.paginator.baseurl = baseurl
+            self.baseurl = baseurl
 
     @staticmethod
-    def render_navbar(page):
+    def render_navbar(page, baseurl=None):
         if page is None:
             return ""
-        context = {"page" : page, "MEDIA_URL" : settings.MEDIA_URL}
-        return render_to_string("common/navbar.html", context)
+        context = {"page" : page, "MEDIA_URL" : settings.MEDIA_URL, "baseurl" : baseurl}
+        return render_to_string("common/pagination_bar.html", context)
     
     def fetch(self, request, id_start, id_stop):
         table = self.tbltype(request,
@@ -121,7 +123,12 @@ class EmailListing(object):
 <form method="POST" id="listingform">
   {{ table }}
 </form>""")
-        return tpl.render(Context({"table" : table.render()}))
+        return tpl.render(
+            Context(
+                {"table" : table.render(styles=self.table_styles,
+                                        withheader=False)}
+                )
+            )
 
     # def render(self, request, pageid=1, **kwargs):
     #     listing = ""
@@ -153,7 +160,7 @@ class EmailListing(object):
             listing = _("This folder contains no message")
         else:
             listing = self.fetch(request, page.id_start, page.id_stop)
-        return dict(listing=listing, navbar=self.render_navbar(page))
+        return dict(listing=listing, navbar=self.render_navbar(page, self.baseurl))
 
 def parse_search_parameters(request):
     if request.GET.has_key("pattern"):

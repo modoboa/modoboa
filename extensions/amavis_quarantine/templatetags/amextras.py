@@ -24,46 +24,44 @@ def viewm_menu(selection, backurl, mail_id, rcpt, perms):
 
     entries = [
         {"name" : "back",
-         "url" : backurl,
-         "img" : static_url("pics/back.png"),
+         "img" : "icon-arrow-left",
+         "url" : "javascript:history.go(-1);",
          "label" : _("Back to list")},
         {"name" : "headers",
          "url" : reverse(amavis_quarantine.views.viewheaders, args=[mail_id]),
-         "img" : static_url("pics/add.png"),
          "label" : _("View full headers"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:600,y:500}}"},
+         "modal" : True,
+         "autowidth" : True},
         {"name" : "release",
+         "img" : "icon-ok",
          "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
              + "?rcpt=%s" % rcpt,
-         "img" : static_url("pics/release.png"),
          "label" : _("Release")},
         {"name" : "delete",
+         "img" : "icon-remove",
          "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
              + "?rcpt=%s" % rcpt,
-         "img" : static_url("pics/remove.png"),
          "label" : _("Delete")},
         {"name" : "options",
          "label" : _("Options"),
-         "img" : static_url("pics/settings.png"),
-         "class" : "menubardropdown",
+         "img" : "icon-cog",
          "menu" : options_menu}
         ]
 
-    return render_to_string('common/menu.html', 
+    return render_to_string('common/buttons_list.html', 
                             {"selection" : selection, "entries" : entries, 
                              "perms" : perms})
 
 @register.simple_tag
 def quar_menu(selection, user):
     entries = [
-        {"name" : "release",
-         "url" : "",
-         "img" : static_url("pics/release.png"),
+        {"name" : "release-multi",
+         "url" : reverse(amavis_quarantine.views.process),
+         "img" : "icon-ok",
          "label" : _("Release")},
-        {"name" : "delete",
-         "url" : "",
-         "img" : static_url("pics/remove.png"),
+        {"name" : "delete-multi",
+         "img" : "icon-remove",
+         "url" : reverse(amavis_quarantine.views.process),
          "label" : _("Delete")},
         {"name" : "select",
          "url" : "",
@@ -87,9 +85,7 @@ def quar_menu(selection, user):
          }
         ]
 
-    menu = render_to_string('common/menu.html', 
-                            {"selection" : selection, "entries" : entries})
-    if not user.belongs_to_group('SimpleUsers'):
+    if user.group != 'SimpleUsers':
         extraopts = [{"name" : "to", "label" : _("To")}]
     else:
         extraopts = []
@@ -97,4 +93,7 @@ def quar_menu(selection, user):
             "MEDIA_URL" : settings.MEDIA_URL,
             "extraopts" : extraopts
             })
-    return menu + searchbar
+    
+    return render_to_string('common/buttons_list.html', dict(
+            selection=selection, entries=entries, extracontent=searchbar
+            ))

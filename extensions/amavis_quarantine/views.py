@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+# coding: utf-8
 import email
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import Template, Context
@@ -29,14 +28,14 @@ def __get_current_url(request):
     return res
 
 def empty_quarantine(request):
-    content = "<div class='info'>%s</div>" % _("Empty quarantine")
+    content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content, navbar="",
                  menu=quar_menu("", request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 def _listing(request):
-    filter = None
+    flt = None
     rcptfilter = None
     msgs = None
 
@@ -60,11 +59,11 @@ def _listing(request):
                 continue
             else:
                 raise Exception("unsupported search criteria %s" % c)
-            filter = nfilter if filter is None else filter | nfilter
+            flt = nfilter if flt is None else flt | nfilter
 
     q = ~Q(rs='D')
     if not request.user.is_superuser:
-        if not request.user.belongs_to_group('SimpleUsers'):
+        if request.user.group != 'SimpleUsers':
             doms = request.user.get_domains()
             if not len(doms):
                 return empty_quarantine(request)
@@ -73,7 +72,7 @@ def _listing(request):
         else:
             q &= Q(rid__email=request.user.email)
 
-    if not request.user.belongs_to_group('SimpleUsers') \
+    if request.user.group != 'SimpleUsers' \
             and rcptfilter is not None:
         q &= Q(rid__email__contains=rcptfilter)
     msgs = Msgrcpt.objects.filter(q).values("mail_id")
@@ -86,7 +85,7 @@ def _listing(request):
             del request.session["page"]
         pageid = 1
     
-    lst = SQLlisting(request.user, msgs, filter, baseurl="listing/", 
+    lst = SQLlisting(request.user, msgs, flt,
                      navparams=request.session["navparams"],
                      elems_per_page=int(parameters.get_user(request.user, 
                                                         "MESSAGES_PER_PAGE")))
@@ -95,14 +94,16 @@ def _listing(request):
         return empty_quarantine(request)
 
     content = lst.fetch(request, page.id_start, page.id_stop)
-    navbar = lst.render_navbar(page)
+    navbar = lst.render_navbar(page, "listing/")
     ctx = getctx("ok", listing=content, navbar=navbar,
                  menu=quar_menu("", request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
 def index(request):
-    return SQLlisting(request.user, None, None, empty=True).render(request)
+    return _render(request, "amavis_quarantine/index.html", dict(
+            deflocation="listing/", defcallback="listing_cb", selection="quarantine"
+            ))
 
 @login_required
 def getmailcontent(request, mail_id):
@@ -123,7 +124,7 @@ def getmailcontent(request, mail_id):
 
 @login_required
 def viewmail(request, mail_id):
-    if not request.user.belongs_to_group('SimpleUsers'):
+    if request.user.group != 'SimpleUsers':
         rcpt = request.GET["rcpt"]
     else:
         mb = Mailbox.objects.get(user=request.user)
@@ -137,7 +138,7 @@ def viewmail(request, mail_id):
             args += ["%s=%s" % (kw, request.GET[kw])]
     
     content = Template("""
-<iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
+<iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url" : reverse(getmailcontent, args=[mail_id]) \
                          + "?%s" % "&".join(args)}))
     menu = viewm_menu("", __get_current_url(request), mail_id, rcpt,
@@ -152,6 +153,7 @@ def viewheaders(request, mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
     return _render(request, 'amavis_quarantine/viewheader.html', {
+            "title" : _("Message headers"),
             "headers" : msg.items()
             })
 
@@ -166,7 +168,7 @@ def check_mail_id(request, mail_id):
 @login_required
 def delete(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
-    if request.user.belongs_to_group('SimpleUsers'):
+    if request.user.group == 'SimpleUsers':
         mb = Mailbox.objects.get(user=request.user)
         msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
         msgrcpts.update(rs='D')
@@ -186,7 +188,7 @@ def delete(request, mail_id):
 @login_required
 def release(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
-    if request.user.belongs_to_group('SimpleUsers'):
+    if request.user.group == 'SimpleUsers':
         mb = Mailbox.objects.get(user=request.user)
         msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
     else:

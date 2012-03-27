@@ -1,6 +1,6 @@
-{% extends "nlayout.html" %}
+{% extends "fluid.html" %}
 {% load libextras %}
-{% block content %}
+{% block rowcontent %}
 <div class="span2">{% block leftcol %}{% endblock %}</div>
 <div class="span10">
   {% if messages %}{% display_messages messages %}{% endif %}

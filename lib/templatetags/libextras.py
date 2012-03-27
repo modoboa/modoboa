@@ -3,6 +3,7 @@ import os
 from django.conf import settings
 from django import template
 from django.contrib import messages
+from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
@@ -116,3 +117,15 @@ def alert(msg, typ):
 <a class="close" data-dismiss="alert">×</a>
 %s
 </div>""" % (typ, msg)
+
+@register.simple_tag
+def render_link(linkdef, mdclass=None):
+    t = Template("""<a href="{{ link.url }}" name="{{ link.name }}"
+{% if link.modal %}data-toggle="ajaxmodal{% if link.autowidth %}-autowidth{% endif %}"{% endif %}
+{% if link.modalcb %}modalcb="{{ link.modalcb }}"{% endif %}
+class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
+{% if link.confirm %} onclick="return confirm('{{ link.confirm }}')"{% endif %}>
+{% if link.img %}<i class="{{ link.img }}"></i>{% endif %}
+{{ link.label }}
+</a>""")
+    return t.render(Context(dict(link=linkdef, mdclass=mdclass)))

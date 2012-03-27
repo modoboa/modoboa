@@ -1,16 +1,5 @@
 var History = function(options) {
-    this.options = $.extend({}, this.defaults, options);
-    this.callbacks = {};
-    this.params = {};
-    this.base = '';
-    this.serialized = null;
-    this.updatenext = true;
-    this.reset_loading_infos();
-    if (this.options.defcallback) {
-        this.register_callback("default", this.options.defcallback);
-        this.check_id =
-            setInterval($.proxy(this.check, this), this.options.checkinterval);
-    }
+    this.initialize(options);
 };
 
 History.prototype = {
@@ -24,6 +13,34 @@ History.prototype = {
         defcallback: null
     },
 
+    initialize: function(options) {
+        this.options = $.extend({}, this.defaults, options);
+        this.callbacks = {};
+        this.base = '';
+        this.serialized = null;
+        this.updatenext = true;
+        this.load_params();
+        this.reset_loading_infos();
+        if (this.options.defcallback) {
+            this.register_callback("default", this.options.defcallback);
+            this.check_id =
+                setInterval($.proxy(this.check, this), this.options.checkinterval);
+        }
+    },
+
+    load_params: function() {
+        var rawqs = window.location.hash.substr(1);
+
+        if (rawqs.indexOf('?')) {
+            this.params = {};
+            return;
+        }
+        var tmp = rawqs.split('?');
+
+        rawqs = (tmp.length == 1) ? tmp[0] : tmp[1];
+        this.params = parse_qs(rawqs.split('&'));
+    },
+
     paramslength: function() {
         return Object.keys(this.params).length;
     },
@@ -34,7 +51,7 @@ History.prototype = {
     },
 
     reset: function() {
-        this.base = null;
+        this.base = "";
         this.params = {};
         return this;
     },
@@ -100,7 +117,9 @@ History.prototype = {
     },
 
     deleteParam: function(str) {
-        this.params.erase(str);
+        if (this.params[str] != undefined) {
+            delete this.params[str];
+        }
     },
 
     updateparams: function(str) {
@@ -111,6 +130,7 @@ History.prototype = {
         for (var i = 0; i < elems.length; i++) {
             this.setparamfromstring(elems[i]);
         }
+        return this;
     },
 
     setparamfromstring: function(str) {
@@ -124,7 +144,7 @@ History.prototype = {
     },
 
     setparams: function(params) {
-        this.params.extend(params);
+        this.params = $.extend({}, this.params, params);
         return this;
     },
 

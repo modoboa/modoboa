@@ -50,7 +50,7 @@ def viewmail_menu(selection, folder, user, mail_id=None):
          }
         ]
     
-    return render_to_string('common/menu.html', 
+    return render_to_string('common/buttons_list.html', 
                             {"selection" : selection, "entries" : entries, 
                              "user" : user})
 
@@ -66,7 +66,7 @@ def compose_menu(selection, backurl, user):
          "img" : static_url("pics/send-receive.png"),
          "label" : _("Send")},
         ]
-    return render_to_string('common/menu.html', 
+    return render_to_string('common/buttons_list.html', 
                             {"selection" : selection, "entries" : entries, 
                              "user" : user})
 
@@ -74,13 +74,13 @@ def compose_menu(selection, backurl, user):
 def listmailbox_menu(selection, folder, user):
     entries = [
         {"name" : "compose",
-         "url" : "compose",
-         "img" : static_url("pics/edit.png"),
-         "label" : _("New message")},
+         "url" : "compose",         
+         "label" : _("New message"),
+         "class" : "btn"},
         {"name" : "mark",
-         "img" : static_url("pics/domains.png"),
+         
          "label" : _("Mark messages"),
-         "class" : "menubardropdown",
+         "class" : "btn",
          "menu" : [
                 {"name" : "mark-read",
                  "label" : _("As read"),
@@ -93,8 +93,7 @@ def listmailbox_menu(selection, folder, user):
         {"name" : "actions",
          "img" : static_url("pics/settings.png"),
          "label" : _("Actions"),
-         "class" : "menubardropdown",
-         "width" : "150",
+         "class" : "btn",
          "menu" : [
                 {"name" : "fdaction",
                  "label" : _("Compress folder"),
@@ -110,24 +109,25 @@ def listmailbox_menu(selection, folder, user):
              "img" : static_url("pics/clear.png"),
              "url" : reverse(webmail.views.empty, args=[folder])}
             ]
-    menu = render_to_string("common/menu.html",
+    menu = render_to_string("common/buttons_list.html",
                             {"selection" : selection, "entries" : entries,
-                             "user" : user})
-    searchbar = render_to_string("common/email_searchbar.html", {
-            "MEDIA_URL" : settings.MEDIA_URL
-            })
-    return menu + searchbar
+                             "user" : user, "css" : "nav"})
+    # searchbar = render_to_string("common/email_searchbar.html", {
+    #         "MEDIA_URL" : settings.MEDIA_URL
+    #         })
+    # return menu + searchbar
+    return menu
 
 @register.simple_tag
 def print_folders(folders, selected=None, withunseen=False, withmenu=False):
     result = ""
 
     for fd in folders:
-        cssclass = fd["class"] if fd.has_key("class") else "folder"
+        cssclass = ""
         name = fd["path"] if fd.has_key("sub") else fd["name"]
         label = fd["name"]
         if selected == name:
-            cssclass += " selected"
+            cssclass = "active"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
         if fd.has_key("sub"):
             if selected is not None and selected != name and selected.count(name):
@@ -136,17 +136,21 @@ def print_folders(folders, selected=None, withunseen=False, withmenu=False):
             else:
                 ul_state = "hidden"
                 div_state = "collapsed"
-            result += "<div class='clickbox %s'>&nbsp;</div>" % div_state
-        if withmenu:
-            result += "<img src='%spics/go-down.png' class='footer' />" \
-                % settings.MEDIA_URL
+            result += "<div class='clickbox %s'></div>" % div_state
+        # if withmenu:
+        #     result += "<img src='%spics/go-down.png' class='footer' />" \
+        #         % settings.MEDIA_URL
             
         cssclass = "block"
         if withunseen and fd.has_key("unseen"):
             label += " (%d)" % fd["unseen"]
             cssclass += " unseen"
-        result += "<a href='%s' class='%s' name='loadfolder'>%s</a>\n" \
-            % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, label)
+        iclass = fd["class"] if fd.has_key("class") else "icon-folder-close"
+        result += """<a href='%s' class='%s' name='loadfolder'>
+  <i class="%s"></i>
+  %s
+</a>
+""" % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, iclass, label)
         if fd.has_key("sub") and len(fd["sub"]):
             result += "<ul name='%s' class='%s'>" % (fd["path"], ul_state) \
                 + print_folders(fd["sub"], selected, withunseen, withmenu) + "</ul>\n"

@@ -1,16 +1,12 @@
 {% load i18n %}
 {% load webextras %}
-{% if titlebar %}
-<div class="boxtitle">
-  <a href="{% url modoboa.extensions.webmail.views.newfolder %}" class="boxed"
-     rel="{handler: 'iframe', size: {x: 350, y: 400}, closeBtn: true}">
-    <img src="{{MEDIA_URL}}pics/add.png"
-         alt="{% trans 'Add a new folder' %}"/>
-  </a>
-  <label class="aligned">{% trans "Folders" %}</label>
-  <div class="spacer"></div>
-</div>
-{% endif %}
-<ul>
+<ul class="nav nav-list">
+  {% if titlebar %}
+  <li class="nav-header">
+    <a href="{% url modoboa.extensions.webmail.views.newfolder %}">
+      <i class="icon-plus"></i>
+      {% trans "Folders" %}
+    </a>
+  {% endif %}
   {% print_folders folders selected withunseen withmenu %}
 </ul>

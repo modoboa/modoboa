@@ -1,13 +1,13 @@
 {% load i18n %}
-<div id="searchbox">
-  <img src="{{ MEDIA_URL }}pics/search.png" id="searchopts" />
-  <input type="text" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
-  <div id="searchparams">
-    <input type="radio" id="crit_from_addr" name="scriteria" value="from_addr" checked>{% trans "From address" %}<br/>
-    <input type="radio" id="crit_subject" name="scriteria" value="subject">{% trans "Subject" %}<br/>
+<div id="searchbox" class="btn-group">
+  <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-search" id="searchopts"></i></a>
+  <ul class="dropdown-menu" id="searchparams">
+    <li><label class="radio"><input type="radio" id="crit_from_addr" name="scriteria" value="from_addr" checked>{% trans "From address" %}</label></li>
+    <li><label class="radio"><input type="radio" id="crit_subject" name="scriteria" value="subject">{% trans "Subject" %}</label></li>
     {% for opt in extraopts %}
-    <input type="radio" id="crit_{{ opt.name }}" name="scriteria" value="{{ opt.name }}">{{ opt.label }}</br>
+    <li><label class="radio"><input type="radio" id="crit_{{ opt.name }}" name="scriteria" value="{{ opt.name }}">{{ opt.label }}</label></li>
     {% endfor %}
-    <input type="radio" id="crit_both" name="scriteria" value="both">{% trans "Both" %}<br/>
-  </div>
+    <li><label class="radio"><input type="radio" id="crit_both" name="scriteria" value="both">{% trans "Both" %}</label></li>
+  </ul>
+  <input type="text" class="pull-right no-margin" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
 </div>

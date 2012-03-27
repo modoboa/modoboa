@@ -1,7 +1,6 @@
 <tbody>
   {% for row in table.rows %}
-  <tr id="{{ row.id }}" class="{% cycle 'odd' 'even' %} {{ row.style }}" name="{{ row.trcpt }}"
-      rel="{{ row.options }}">
+  <tr id="{{ row.id }}" class="{{ row.style }}" name="{{ row.trcpt }}">
     {% for cell in row.cols %}
     <td name="{{ cell.name }}" width="{{ cell.width }}" align="{{ cell.align }}" class="{{ cell.cssclass }}">
     {% if cell.safe %}{{ cell.value|safe }}{% else %}{{ cell.value }}{% endif %}

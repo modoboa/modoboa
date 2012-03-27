@@ -246,11 +246,11 @@ class AccountFormGeneral(forms.ModelForm):
                 role = self.cleaned_data["role"]
             else:
                 role = "SimpleUsers"
+            account.groups.clear()
             if role == "SuperAdmins":
                 account.is_superuser = True
             else:
                 account.is_superuser = False
-                account.groups.clear()
                 account.groups.add(Group.objects.get(name=role))
             account.save()
         return account

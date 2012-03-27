@@ -65,10 +65,10 @@ def user_menu(user):
                             {"entries" : entries, "user" : user})
 
 @register.simple_tag
-def loadextmenu(user):
+def loadextmenu(selection, user):
     menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu", user)
     return render_to_string('common/menulist.html', 
-                            {"entries" : menu, "user" : user})
+                            {"selection" : selection, "entries" : menu, "user" : user})
 
 @register.simple_tag
 def extra_head_content():

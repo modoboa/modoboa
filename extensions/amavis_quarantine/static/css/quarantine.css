@@ -1,8 +1,29 @@
+#menubar { 
+    position: fixed;
+    top: 60px;
+    padding-left: 15px;
+}
+
+#listing { 
+    position: fixed;
+    padding: 0 15px;
+    right: 0;
+    left: 0;
+}
+
+#mailcontent {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
 thead tr {
     position: relative;
     z-index: 1;
 }
 
-tr.table-tr-selected {
-    background: #ffffcc;
+td.unseen { 
+    font-weight: bold;
 }

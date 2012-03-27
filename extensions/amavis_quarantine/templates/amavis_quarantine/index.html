@@ -1,42 +1,22 @@
-{% extends "common/email_listing.html" %}
-{% load i18n %}
+{% extends "fixed.html" %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}amavis_quarantine/css/quarantine.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.htmltable.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/history.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/searchbar.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}amavis_quarantine/js/quarantine.js"></script>
-{{ block.super }}
 <script type="text/javascript">
-  mysubmit = function(event, name) {
-    event.stop();
-    var selection = new Array();
-    $$("tr[class*=table-tr-selected]").each(function(item) {
-      var content = "";
-      var to = item.getFirst("td[name=to]");
-
-      if ($defined(to)) {
-        content = to.get("html").trim() + " ";
-      }
-      selection.push(content + item.get("id"));
+$(document).ready(function() {
+    var qm = new Quarantine({
+        deflocation: "{{ deflocation }}",
+        defcallback: "{{ defcallback }}"
     });
-    new Element("input", {
-      "type" : "hidden", "name" : "selection", "value" : selection
-    }).inject($("listingform"), "top");
-    new Element('input', {
-      'type' : 'hidden', 'name' : "action", style: "display:none", 'value' : name
-    }).inject($("listingform"), "top");
-    {% url modoboa.extensions.amavis_quarantine.views.process as actionurl %}
-    $("listingform").set("action", "{{ actionurl }}");
-    $("listingform").set("send", {
-      onSuccess : function(res) {
-        response = JSON.decode(res);
-        actioncallback(response);
-      }
-    });
-    $("listingform").send();
-  }
+});
 </script>
 {% endblock %}
-{% block js %}
-  current_anchor.register_callback("_listing", listing_cb);
-  current_anchor.register_callback("viewmail", viewmail_cb);
+{% block fixed_content %}
+<div id="menubar"></div>
+<div id="listing"></div>
 {% endblock %}
-{% block middletitle %}{% trans "Quarantine" %}{% endblock %}
+{% block footer %}
+{% endblock %}

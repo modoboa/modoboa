@@ -526,7 +526,7 @@ def viewmail(request):
     url = reverse(getmailcontent) + "?mbox=%s&mailid=%s&links=%d" % \
         (request.session["mbox"], mailid, links)
     content = Template("""
-<iframe width="100%" frameBorder="0" src="{{ url }}" id="mailcontent"></iframe>
+<iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url" : url}))
 
     return dict(listing=content, menuargs=dict(mail_id=mailid))
@@ -571,7 +571,7 @@ def newindex(request):
     else:
         if request.is_ajax():
             raise WebmailError(_("Bad request"))
-        response = dict(deflocation="?action=listmailbox", 
+        response = dict(selection="webmail", deflocation="?action=listmailbox", 
                         defcallback="wm_updatelisting")
 
     curmbox = request.session.get("mbox", "INBOX")
@@ -582,7 +582,7 @@ def newindex(request):
             int(parameters.get_user(request.user, "REFRESH_INTERVAL")) * 1000
         response["mboxes"] = render_mboxes_list(request, imapc)
         response["quota"] = ImapListing.computequota(imapc)
-        return _render(request, "webmail/index.html", response)
+        return _render(request, "webmail/index2.html", response)
 
     if action in ["reply", "forward"]:
         action = "compose"

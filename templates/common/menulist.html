@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n libextras %}
 {% for entry in entries %}
   {% if entry.separator %}
   <li class="divider">&nbsp;</li>
@@ -12,33 +12,13 @@
     <ul class="dropdown-menu"
         {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
       {% for sentry in entry.menu %}
-      <li>
-        <a href="{{ sentry.url }}" name="{{ sentry.name }}"
-           {% if sentry.modal %}data-toggle="ajaxmodal{% if sentry.autowidth %}-autowidth{% endif %}"{% endif %}
-           {% if sentry.modalcb %}modalcb="{{ entry.modalcb }}"{% endif %}
-           {% if sentry.class %}class={{ sentry.class }}{% endif %}
-           {% if sentry.rel %}rel={{ sentry.rel }}{% endif %}
-           {% if sentry.confirm %} onclick="return confirm('{{ sentry.confirm }}')"{% endif %}>
-          {% if sentry.img %}<i class="{{ sentry.img }}"></i>{% endif %}
-          {{ sentry.label }}
-        </a>
-      </li>
+      <li>{% render_link sentry %}</li>
       {% endfor %}
     </ul>
   </li>
     {% else %}
   <li {% if selection == entry.name %}class="active"{% endif %}>
-    {% if not entry.disabled %}
-    <a href="{{ entry.url }}" name="{{ entry.name }}"
-       {% if entry.modal %}data-toggle="ajaxmodal{% if entry.autowidth %}-autowidth{% endif %}"{% endif %}
-       {% if entry.modalcb %}modalcb="{{ entry.modalcb }}"{% endif %}
-       {% if entry.class %}class={{ entry.class }}{% endif %}
-       {% if entry.rel %}rel={{ entry.rel }}{% endif %}
-       {% if entry.confirm %} onclick="return confirm('{{ entry.confirm }}')"{% endif %}>
-    {% endif %}
-      {% if entry.img %}<i class="{{ entry.img }}"></i>{% endif %}
-      {{ entry.label }}
-    {% if not entry.disabled %}</a>{% endif %}
+    {% render_link entry %}
   </li>
     {% endif %}
   {% endif %}

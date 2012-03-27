@@ -76,14 +76,15 @@ class SQLconnector(MBconnector):
         return emails
 
 class SQLlisting(EmailListing):
-    tpl = "amavis_quarantine/index.html"
+    tpl = "amavis_quarantine/index2.html"
     tbltype = Qtable
     deflocation = "listing/"
     defcallback = "updatelisting"
     reset_wm_url = True
+    table_styles = "table-condensed"
 
     def __init__(self, user, msgs, filter, **kwargs):
-        if user.belongs_to_group('SimpleUsers'):
+        if user.group == 'SimpleUsers':
             Qtable.cols_order = ['type', 'rstatus', 'from_', 'subject', 'time']
         else:
             Qtable.cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']
