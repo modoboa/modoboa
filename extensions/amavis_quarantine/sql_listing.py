@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from datetime import datetime
 from django.utils.translation import ugettext as _, ugettext_noop
@@ -11,6 +11,7 @@ from models import *
 
 class Qtable(tables.Table):
     tableid = "emails"
+    styles = "table-condensed"
     idkey = "mailid"
 
     type = tables.Column("type", align="center", width="30px",
@@ -81,7 +82,6 @@ class SQLlisting(EmailListing):
     deflocation = "listing/"
     defcallback = "updatelisting"
     reset_wm_url = True
-    table_styles = "table-condensed"
 
     def __init__(self, user, msgs, filter, **kwargs):
         if user.group == 'SimpleUsers':

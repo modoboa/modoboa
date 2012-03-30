@@ -76,7 +76,8 @@ def newdomain(request):
         events.raiseEvent("CreateDomain", user, domain)
 
     commonctx = {"title" : _("New domain"),
-                 "submit_label" : _("Create"),
+                 "action_label" : _("Create"),
+                 "action_classes" : "submit",
                  "action" : reverse(newdomain),
                  "formid" : "domform"}
     if request.method == "POST":
@@ -96,7 +97,8 @@ def editdomain(request, dom_id, tplname="admin/domainform.html"):
         raise PermDeniedException(_("You can't edit this domain"))
 
     commonctx = {"title" : _("Domain editing"),
-                 "submit_label" : _("Update"),
+                 "action_label" : _("Update"),
+                 "action_classes" : "submit",
                  "action" : reverse(editdomain, args=[dom_id]),
                  "formid" : "domform"}
     if request.method == "POST":
@@ -186,7 +188,8 @@ def _validate_dlist(request, form, successmsg, tplname, commonctx, callback=None
 def newdlist(request, tplname="common/generic_modal_form.html"):
     events.raiseEvent("CanCreate", request.user, "mailbox_aliases")
     commonctx = {"title" : _("New distribution list"),
-                 "submit_label" : _("Create"),
+                 "action_label" : _("Create"),
+                 "action_classes" : "submit",
                  "action" : reverse(newdlist),
                  "formid" : "dlistform"}
 
@@ -210,7 +213,8 @@ def editdlist(request, dlist_id, tplname="admin/dlistform.html"):
     if not request.user.is_owner(dlist.domain):
         raise PermDeniedException(_("You do not have access to this domain"))
     commonctx = {"title" : dlist.full_address,
-                 "submit_label" : _("Update"),
+                 "action_label" : _("Update"),
+                 "action_classes" : "submit",
                  "action" : reverse(editdlist, args=[dlist.id]),
                  "formid" : "dlistform"}
     if request.method == "POST":
@@ -521,7 +525,8 @@ def import_identities(request):
 
     ctx = dict(
         title=_("Import identities"),
-        submit_label=_("Import"),
+        action_label=_("Import"),
+        action_classes="submit",
         action=reverse(import_identities),
         formid="importform",
         enctype="multipart/form-data",
@@ -538,7 +543,8 @@ def import_domains(request):
 
     ctx = dict(
         title=_("Import domains"),
-        submit_label=_("Import"),
+        action_label=_("Import"),
+        action_classes="submit",
         action=reverse(import_domains),
         formid="importform",
         enctype="multipart/form-data",

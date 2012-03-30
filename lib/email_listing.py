@@ -86,7 +86,6 @@ class Paginator(object):
         return p
 
 class EmailListing(object):
-    table_styles = "table-striped table-condensed"
 
     def __init__(self, baseurl=None, folder=None, elems_per_page=40, 
                  navparams={}, **kwargs):
@@ -125,8 +124,7 @@ class EmailListing(object):
 </form>""")
         return tpl.render(
             Context(
-                {"table" : table.render(styles=self.table_styles,
-                                        withheader=False)}
+                {"table" : table.render(withheader=False)}
                 )
             )
 

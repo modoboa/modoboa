@@ -15,7 +15,7 @@ def viewmail_menu(selection, folder, user, mail_id=None):
     entries = [
         {"name" : "back",
          "url" : "javascript:history.go(-1);",
-         "img" : static_url("pics/back.png"),
+         "img" : "icon-arrow-left",
          "label" : _("Back")},
         {"name" : "reply",
          "url" : "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
@@ -58,12 +58,12 @@ def viewmail_menu(selection, folder, user, mail_id=None):
 def compose_menu(selection, backurl, user):
     entries = [
         {"name" : "back",
-         "url" : "javascript:history.go(-2);",#backurl,
-         "img" : static_url("pics/back.png"),
+         "url" : "javascript:history.go(-2);",
+         "img" : "icon-arrow-left",
          "label" : _("Back")},
         {"name" : "sendmail",
          "url" : "",
-         "img" : static_url("pics/send-receive.png"),
+         "img" : "icon-envelope",
          "label" : _("Send")},
         ]
     return render_to_string('common/buttons_list.html', 
@@ -109,14 +109,13 @@ def listmailbox_menu(selection, folder, user):
              "img" : static_url("pics/clear.png"),
              "url" : reverse(webmail.views.empty, args=[folder])}
             ]
-    menu = render_to_string("common/buttons_list.html",
-                            {"selection" : selection, "entries" : entries,
-                             "user" : user, "css" : "nav"})
-    # searchbar = render_to_string("common/email_searchbar.html", {
-    #         "MEDIA_URL" : settings.MEDIA_URL
-    #         })
-    # return menu + searchbar
-    return menu
+    searchbar = render_to_string('common/email_searchbar.html', {
+            "MEDIA_URL" : settings.MEDIA_URL
+            })
+    return render_to_string('common/buttons_list.html', dict(
+            selection=selection, entries=entries, extracontent=searchbar,
+            user=user, css="nav"
+            ))
 
 @register.simple_tag
 def print_folders(folders, selected=None, withunseen=False, withmenu=False):

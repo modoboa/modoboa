@@ -5,9 +5,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <script type="text/javascript">
     {% if status == "ok" %}
-    parent.upload_cb("{{ fname }}", "{{ tmpname }}");
+    parent.webmail.upload_success("{{ fname }}", "{{ tmpname }}");
     {% else %}
-    parent.upload_error("{{ error }}");
+    parent.webmail.upload_error("{{ error }}");
     {% endif %}
   </script>
 </head>

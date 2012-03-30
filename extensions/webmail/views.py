@@ -56,7 +56,7 @@ def __render_common_components(request, folder_name, lst=None, content=None, men
     else:
         navbar = ""
         if lst:
-            content = "<div class='info'>%s</div>" \
+            content = "<div class='alert alert-info'>%s</div>" \
                 % _("This folder contains no messages")
         
     ret = {
@@ -307,7 +307,7 @@ def delfolder(request):
 
 @login_required
 @needs_mailbox()
-def attachments(request, tplname="webmail/attachments.html"):
+def attachments(request, tplname="webmail/attachments2.html"):
     if request.method == "POST":
         csuploader = AttachmentUploadHandler()
         request.upload_handlers.insert(0, csuploader)
@@ -336,8 +336,15 @@ def attachments(request, tplname="webmail/attachments.html"):
         return _render(request, "webmail/upload_done.html", {
                 "status" : "ko", "error" : error
                 });
-    ctx = {"form" : AttachmentForm(), 
-           "attachments" : request.session["compose_mail"]["attachments"]}
+    ctx = {
+        "title" : _("Attachments"),
+        "formid" : "uploadfile",
+        "target" : "upload_target",
+        "enctype" : "multipart/form-data",
+        "form" : AttachmentForm(),
+        "action" : reverse(attachments),
+        "attachments" : request.session["compose_mail"]["attachments"]
+        }
     return _render(request, tplname, ctx)
 
 @login_required
@@ -578,10 +585,17 @@ def newindex(request):
     if not request.is_ajax():
         request.session["lastaction"] = None
         imapc = get_imapconnector(request)
+        imapc.getquota(curmbox)
         response["refreshrate"] = \
             int(parameters.get_user(request.user, "REFRESH_INTERVAL")) * 1000
         response["mboxes"] = render_mboxes_list(request, imapc)
         response["quota"] = ImapListing.computequota(imapc)
+        if response["quota"] < 50:
+            response["quotalevel"] = "success"
+        elif response["quotalevel"] < 80:
+            response["quotalevel"] = "warning"
+        else:
+            response["quotalevel"] = "danger"
         return _render(request, "webmail/index2.html", response)
 
     if action in ["reply", "forward"]:

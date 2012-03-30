@@ -61,6 +61,7 @@ History.prototype = {
             ? value.substring(1).split('?') : value.split('?');
 
         if (splits.length == 0) {
+            this.base = this.options.deflocation;
             return this;
         }
         if (reset === undefined) {
@@ -69,11 +70,12 @@ History.prototype = {
         if (reset) {
             this.reset();
         }
-        this.base = (splits[0] == "") ? this.options.deflocation : splits[0];
 
-        var re = new RegExp("/$");
-        if (!this.base.match(re)) {
-            this.base += '/';
+        if ((this.base = splits[0]) != "") {
+            var re = new RegExp("/$");
+            if (!this.base.match(re)) {
+                this.base += '/';
+            }
         }
         if (splits.length > 1) {
             var params = splits[1].split('&');
@@ -101,7 +103,7 @@ History.prototype = {
     },
 
     update: function(force, noupdate) {
-        $(window).trigger("pageRefresh");
+        /*$(window).trigger("pageRefresh");*/
         location.hash = this.serialize();
 
         if (noupdate === undefined) {

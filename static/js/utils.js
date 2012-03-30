@@ -2,10 +2,10 @@
  * Collection of functions that are accessible to every page.
  */
 
-function modalbox(e, css) {
+function modalbox(e, css, defhref, defcb) {
     e.preventDefault();
-    var href = $(this).attr('href');
-    var modalcb = $(this).attr('modalcb');
+    var href = (defhref != undefined) ? defhref : $(this).attr('href');
+    var modalcb = (defcb != undefined) ? defcb : $(this).attr('modalcb');
 
     if (href.indexOf('#') == 0) {
         $(href).modal('open');
@@ -22,7 +22,11 @@ function modalbox(e, css) {
             .modal()
             .one('shown', function() {
                 if (modalcb != undefined) {
-                    eval(modalcb + '()');
+                    if (typeof modalcb === "function") {
+                        modalcb();
+                    } else {
+                        eval(modalcb + '()');
+                    }
                 }
             })
             .on('hidden', function() {

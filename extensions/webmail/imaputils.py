@@ -135,7 +135,7 @@ class IMAPconnector(object):
         if not status:
             raise Exception(msg)
 
-    def _cmd(self, name, *args):
+    def _cmd(self, name, *args, **kwargs):
         """IMAP command wrapper
 
         To simplify errors handling, this wrapper calls the
@@ -166,9 +166,16 @@ class IMAPconnector(object):
             raise ImapError(e)
         if typ == "NO":
             raise ImapError(data)
-        if not name in self.m.untagged_responses:
-            return None
-        return self.m.untagged_responses.pop(name)
+        if not kwargs.has_key('responses'):
+            if not name in self.m.untagged_responses:
+                return None
+            return self.m.untagged_responses.pop(name)
+        res = []
+        for r in kwargs['responses']:
+            if not r in self.m.untagged_responses:
+                return None
+            res.append(self.m.untagged_responses.pop(r))
+        return res
 
     def __find_content_in_bodystruct(self, bodystruct, mtype, stype, prefix=""):
         """Retrieve the number (index) of a specific part
@@ -358,7 +365,6 @@ class IMAPconnector(object):
             if r'\HasChildren' in flags:
                 descr["path"] = name
                 descr["sub"] = []
-                descr["class"] = "subfolders"
             result += [descr]
         from operator import itemgetter
         return sorted(result, key=itemgetter("name"))
@@ -411,7 +417,7 @@ class IMAPconnector(object):
         """
         self._add_flag(mbox, msgset, r'(\Seen)')
 
-    def msgforwarded(self, mailbox, mailid):
+    def msg_forwarded(self, mailbox, mailid):
         self._add_flag(mailbox, mailid, '($Forwarded)')
 
     def msg_answered(self, mailbox, mailid):
@@ -475,7 +481,8 @@ class IMAPconnector(object):
             self.quota_limit = self.quota_actual = None
             return
 
-        data = self._cmd("GETQUOTAROOT", self._encodefolder(mailbox))
+        data = self._cmd("GETQUOTAROOT", self._encodefolder(mailbox), 
+                         responses=["QUOTAROOT", "QUOTA"])
         if data is None:
             self.quota_limit = self.quota_actual = None
             return

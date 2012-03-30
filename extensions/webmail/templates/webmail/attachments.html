@@ -1,115 +1,24 @@
-{% extends "layout_simple.html" %}
+{% extends "common/generic_modal_form.html" %}
 {% load i18n %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}webmail/css/attachments.css" />
-<script src="{{ MEDIA_URL }}webmail/js/webmail.js" type="text/javascript"></script>
-<script type="text/javascript">
-function del_attachment(evt) {
-    evt.stop();
-    new Request.JSON.mdb({
-        url: this.get("href"),
-        onSuccess: function(resp) {
-            this.getParent().dispose();
-        }.bind(this)
-    }).get();
-}
-
-function upload_cb(fname, tmpname) {
-    $("upload_status").setStyle("display", "none");
-    $("submit").set("disabled", false);
-    $("error").set("html", "");
-
-    var ndiv = new Element("div");
-    var delbtn = new Element("a")
-        .set("name", "delattachment")
-        .set("href", "{% url modoboa.extensions.webmail.views.delattachment %}?name=" + tmpname)
-        .set("html", "<img src='{{MEDIA_URL}}pics/remove.png' />")
-        .inject(ndiv);
-    var label = new Element("label").set("html", fname).inject(ndiv);
-       
-    delbtn.addEvent("click", del_attachment);
-    $("id_attachment").set("value", "");
-    ndiv.inject($("attachment_list"));
-}
-
-function upload_error(msg) {
-    $("upload_status").setStyle("display", "none");
-    $("error").set("html", msg);
-    $("submit").set("disabled", false);
-}
-
-window.addEvent("domready", function() {
-    $("uploadfile").addEvent("submit", function(evt) {
-        if ($("id_attachment").value == "") {
-            evt.stop();
-            return;
-        }
-        $("upload_status").setStyle("display", "block");
-        $("submit").set("disabled", true);
-    });
-    $$("a[name=delattachment]").addEvent("click", del_attachment);
-    $("done").addEvent("click", function(evt) {
-        var nfiles = 0;
-        var shortlist = "";
-        var html;
-
-        $$("a[name=delattachment]").each(function(item) {
-            var label = item.getNext();
-
-            nfiles++;
-            if (nfiles <= 2) {
-                if (shortlist != "") {
-                    shortlist += ", ";
-                } else {
-                    shortlist = "(";
-                }
-                shortlist += label.get("html");
-                return;
-            }
-            if (nfiles == 3) {
-                shortlist += ", ...";
-            }
-        });
-        if (shortlist != "") {
-            shortlist += ")";
-        }
-        html = interpolate(ngettext("%s file", "%s files", nfiles), [nfiles]);
-        html += " <span class='shortlist'>" + shortlist + "</span>";
-        parent.document.getElementById("list")
-            .set("html", html);
-        parent.SqueezeBox.close();
-    });
-});
-</script>
-{% endblock %}
-{% block content %}
-<div class="title"><h1>{% trans "Attachments" %}</h1></div>
-<div id="error" class="error">{{ error }}</div>
-<form enctype="multipart/form-data" method="post" name="uploadfile" id="uploadfile"
-      target="upload_target"
-      action="{% url modoboa.extensions.webmail.views.attachments %}">
-  {% include "common/genericform.html" %}
-  <div class="row">
-    <input type="submit" id="submit" name="submit" value="{% trans 'Attach' %}" />
-  </div>
-</form>
+{% block modalbody %}
+{{ block.super }}
+<div id="test" style="text-align: center">
+<input type="button" class="btn btn-primary" id="submit" name="submit" value="{% trans 'Attach' %}" />
+</div>
 <div id="upload_status" style="display:none">
-  <img src="{{MEDIA_URL}}css/spinner.gif" /> {% trans "Uploading.." %}
+  <img src="{{ MEDIA_URL }}css/spinner.gif" /> {% trans "Uploading.." %}
 </div>
 <iframe id="upload_target" name="upload_target" src="#" 
         style="width:0;height:0;border:0px solid #fff;"></iframe>
-<div id="attachment_list">
+<div class="well" id="attachment_list">
 {% for att in attachments %}
-<div>
+<div class="row-fluid">
   <a href="{% url modoboa.extensions.webmail.views.delattachment %}?name={{ att.tmpname }}"
      name="delattachment">
-    <img src="{{ MEDIA_URL }}pics/remove.png" />
+    <i class="icon-remove"></i>
   </a>
   <label>{{ att.fname }}</label>
 </div>
 {% endfor %}
-</div>
-<div id="done_container">
-  <input type="button" id="done" name="done" value="{% trans 'Done' %}" />
 </div>
 {% endblock %}

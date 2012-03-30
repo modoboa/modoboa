@@ -42,11 +42,19 @@
       </div>
     </div>    
     {% block content %}{% endblock %}
-    <div id="bottom-bar">
+    <div id="bottom-bar" class="navbar">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <div id="bottom-bar-in" class="nav-collapse">
-            {% block footer %}{% endblock %}
+          <div class="row">
+          <div id="bottom-bar-left" class="pull-left">
+            {% block footerleft %}{% endblock %}
+          </div>
+          <div id="bottom-bar-middle" class="">
+            {% block footermiddle %}{% endblock %}
+          </div>
+          <div id="bottom-bar-right" class="pull-right nav-collapse">
+            {% block footerright %}{% endblock %}
+          </div>
           </div>
         </div>
       </div>

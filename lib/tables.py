@@ -188,8 +188,13 @@ class Table(object):
     def __str__(self):
         return self.render()
 
-    def render(self, styles="table-striped table-bordered", withheader=True):
+    def render(self, withheader=True):
         if len(self.rows):
+            try:
+                styles = self.styles
+            except AttributeError:
+                styles = "table-striped table-bordered"
+
             t = Template("""
 <table id="{{ tableid }}" class="table {{ styles }}">
   {% if withheader %}{% include "common/table_head.html" %}{% endif %}
@@ -201,7 +206,7 @@ class Table(object):
                         "withheader" : withheader
                         }))
         t = Template("""
-<div class="info">%s</div>
+<div class="alert alert-info">%s</div>
 """ % _("No entries to display"))
         return t.render(Context())
 

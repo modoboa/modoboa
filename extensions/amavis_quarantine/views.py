@@ -94,7 +94,7 @@ def _listing(request):
         return empty_quarantine(request)
 
     content = lst.fetch(request, page.id_start, page.id_stop)
-    navbar = lst.render_navbar(page, "listing/")
+    navbar = lst.render_navbar(page, "listing/?")
     ctx = getctx("ok", listing=content, navbar=navbar,
                  menu=quar_menu("", request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

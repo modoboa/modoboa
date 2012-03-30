@@ -5,8 +5,10 @@
 
 """
 import re
+from django.utils.translation import ugettext as _
+from modoboa.lib.exceptions import ModoboaException
 
-class WebmailError(Exception):
+class WebmailError(ModoboaException):
     errorexpr = re.compile("\[([^\]]+)\]\s*([^\.]+)")
 
     def __init__(self, reason, ajax=False):
@@ -20,7 +22,7 @@ class WebmailError(Exception):
     def __str__(self):
         return self.reason
 
-class ImapError(Exception):
+class ImapError(ModoboaException):
     def __init__(self, reason):
         self.reason = reason
 

@@ -26,15 +26,18 @@ from exceptions import *
 
 class WMtable(tables.Table):
     tableid = "emails"
+    styles = "table-condensed"
     idkey = "imapid"
-    select = tables.ImgColumn("select", cssclass="draggable left", width="1%", 
-                              defvalue="%spics/grippy.png" % settings.MEDIA_URL,
-                              header="<input type='checkbox' name='toggleselect' id='toggleselect' />")
+    select = tables.ImgColumn(
+        "select", cssclass="draggable left", width="1%", 
+        defvalue="%spics/grippy.png" % settings.MEDIA_URL,
+        header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
+        )
     flags = tables.ImgColumn("flags", width="2%")
     withatts = tables.ImgColumn("withatts", width="2%")
-    subject = tables.Column("subject", label=__("Subject"), width="50%")
-    from_ = tables.Column("from", width="20%", label=__("From"))
-    date = tables.Column("date", width="20%", label=__("Date"))
+    subject = tables.Column("subject", label=__("Subject"), width="50%", limit=60)
+    from_ = tables.Column("from", width="20%", label=__("From"), limit=30)
+    date = tables.Column("date", width="10%", label=__("Date"))
 
     cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
 

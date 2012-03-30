@@ -1,7 +1,7 @@
 {% load i18n libextras %}
-<form method="POST" action="{{ posturl }}" id="composemail">
+<form class="form-horizontal" method="POST" action="{{ posturl }}" id="composemail">
   <div id="compose-container">
-    <div id="mailheader">
+    <div id="mailheader" class="well">
       {% render_form form %}
       <div id="attachments" name="{% url modoboa.extensions.webmail.views.attachments %}">
         <div>
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="spacer"></div>
+
     <div id="body_container">
     {% if body %}
     <textarea id="id_body" name="id_body" class="editor">{% if bodyheader %}{{ bodyheader }}{% endif %}
