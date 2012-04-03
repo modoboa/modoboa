@@ -88,7 +88,7 @@ if (!Object.keys) {
  */
 function simple_ajax_form_post(e, options) {
     e.preventDefault();
-    var $form = $("form");
+    var $form = (options.formid != undefined) ? $("#" + options.formid) : $("form");
     var defaults = {reload_on_success: true, reload_mode: 'full'};
     var opts = $.extend({}, defaults, options);
     var args = $form.serialize();
@@ -96,7 +96,6 @@ function simple_ajax_form_post(e, options) {
     if (options.extradata != undefined) {
         args += "&" + options.extradata;
     }
-
     $.post($form.attr("action"), args, function(data) {
         if (data.status == "ok") {
             if (opts.success_cb != undefined) {
@@ -164,6 +163,18 @@ function parse_qs(raw) {
 }
 
 /*
+ * Return the target associated to an event object.
+ */
+function get_target(e, tag) {
+    var $target = $(e.target);
+
+    if (tag === undefined || $target.is(tag)) {
+        return $target;
+    }
+    return $target.parent();
+}
+
+/*
  * Simple wrapper around Request.JSON. We just ensure that
  * redirections are correctly catched. (on session timeout for
  * example)
@@ -180,3 +191,14 @@ function parse_qs(raw) {
 //         }
 //     }
 // });
+
+/*
+ * 'Change password' form initialization.
+ */
+function chpasswordform_cb() {
+    $(".submit").one('click', function(e) {
+        simple_ajax_form_post(e, {
+            error_cb: chpasswordform_cb
+        });
+    });
+}

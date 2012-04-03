@@ -1,3 +1,4 @@
+# coding: utf-8
 import copy
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -18,11 +19,19 @@ def index(request):
     return HttpResponseRedirect(reverse(preferences))
 
 @login_required
-def changepassword(request, tplname="userprefs/chpassword.html"):
+def changepassword(request, tplname="common/generic_modal_form.html"):
     res = events.raiseQueryEvent("PasswordChange", request.user)
     if True in res:
         ctx = dict(error=_("Password change is disabled for this user"))
         return _render_error(request, errortpl="error_simple", user_context=ctx)
+
+    ctx = dict(
+        title=_("Change password"),
+        formid="chpasswordform",
+        action=reverse(changepassword),
+        action_label=_("Update"),
+        action_classes="submit",
+        )
 
     error = None
     if request.method == "POST":
@@ -38,14 +47,11 @@ def changepassword(request, tplname="userprefs/chpassword.html"):
                 request.user.save()
             if error is None:
                 return ajax_response(request, respmsg=_("Password changed"))
+        ctx.update(form=form, error=error)
+        return ajax_response(request, status="ko", template=tplname, **ctx)
 
-        return ajax_response(request, status="ko", template=tplname, 
-                             form=form, error=error)
-
-    form = ChangePasswordForm(request.user)
-    return _render(request, 'userprefs/chpassword.html', {
-            "form" : form
-            })
+    ctx.update(form=ChangePasswordForm(request.user))
+    return _render(request, tplname, ctx)
 
 @login_required
 @user_passes_test(lambda u: u.belongs_to_group('SimpleUsers'))
