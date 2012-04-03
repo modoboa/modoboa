@@ -1,6 +1,7 @@
 (function($) {
     var Cwizard = function(element, options)  {
         this.$element = $(element);
+        this.$element.carousel({pause: true});
         this.$element.carousel("pause");
         this.setcallbacks();
     };
@@ -51,8 +52,9 @@
 
         prev: function(evt) {
             evt.preventDefault();
-            this.$element.on('slid', update_buttons);
+            this.$element.on('slid', this.update_buttons);
             this.$element.carousel('prev');
+            this.setcallbacks();
         },
 
         submit: function(evt) {

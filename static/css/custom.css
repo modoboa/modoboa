@@ -82,7 +82,7 @@ body {
 }
 
 .buttons_list .active { 
-    display: block;
+    display: inline;
 }
 
 .tr-selected { 
