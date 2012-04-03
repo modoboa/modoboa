@@ -76,6 +76,7 @@ def filter_actions(setname, f, position, islast):
          "img" : "icon-edit",
          "title" : _("Edit filter"),
          "modal" : True,
+         "autowidth" : True,
          "modalcb" : "filterform_cb"},
         {"name" : "removefilter",
          "url" : reverse("modoboa.extensions.sievefilters.views.removefilter",

@@ -124,8 +124,10 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
 def newfilter(request, setname, tplname="sievefilters/filter.html"):
     ctx = dict(
         title=_("New filter"),
+        formid="filterform",
         action=reverse(newfilter, args=[setname]),
-        submit_label=_("Create")
+        action_label=_("Create"),
+        action_classes="submit"
         )
     if request.method == "POST":
         return submitfilter(request, setname, _("Filter created"), tplname, ctx)
@@ -138,11 +140,13 @@ def newfilter(request, setname, tplname="sievefilters/filter.html"):
 
 @login_required
 @needs_mailbox()
-def editfilter(request, setname, fname, tplname="sievefilters/filter2.html"):
+def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
     ctx = dict(
         title=_("Edit filter"),
+        formid="filterform",
         action=reverse(editfilter, args=[setname, fname]),
-        submit_label=_("Update")
+        action_label=_("Update"),
+        action_classes="submit"
         )
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
