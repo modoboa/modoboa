@@ -93,7 +93,7 @@ def newdomain(request):
 @permission_required("admin.change_domain")
 def editdomain(request, dom_id, tplname="admin/domainform.html"):
     domain = Domain.objects.get(pk=dom_id)
-    if not request.user.is_owner(domain):
+    if not request.user.can_access(domain):
         raise PermDeniedException(_("You can't edit this domain"))
 
     commonctx = {"title" : _("Domain editing"),
@@ -210,7 +210,7 @@ def newdlist(request, tplname="common/generic_modal_form.html"):
 @permission_required("admin.change_alias")
 def editdlist(request, dlist_id, tplname="admin/dlistform.html"):
     dlist = Alias.objects.get(pk=dlist_id)
-    if not request.user.is_owner(dlist.domain):
+    if not request.user.can_access(dlist.domain):
         raise PermDeniedException(_("You do not have access to this domain"))
     commonctx = {"title" : dlist.full_address,
                  "action_label" : _("Update"),
@@ -233,7 +233,7 @@ def deldlist(request):
     selection = request.GET["selection"].split(",")
     for dlist_id in selection:
         dlist = Alias.objects.get(pk=dlist_id)
-        if not request.user.is_owner(dlist.domain):
+        if not request.user.can_access(dlist.domain):
             raise PermDeniedException(_("You do not have access to this domain"))
         events.raiseEvent("MailboxAliasDeleted", dlist)
         ungrant_access_to_object(dlist)

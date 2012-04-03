@@ -584,7 +584,7 @@ class Mailbox(DatesAware):
                 pass
         super(Mailbox, self).save(*args, **kwargs)
 
-    def save_from_user(self, localpart, domain, user):
+    def save_from_user(self, localpart, domain, user, quota=None):
         """Simple save method called for automatic creations
 
         :param localpart: the mailbox
@@ -608,7 +608,7 @@ class Mailbox(DatesAware):
             self.gid = v_gid
 	else:
             self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
-        self.quota = self.domain.quota
+        self.quota = self.domain.quota if quota is None else quota
         super(Mailbox, self).save()
 
     def create_from_csv(self, user, line):

@@ -151,10 +151,10 @@ History.prototype = {
     },
 
     getparam: function(name) {
-        if (!this.params.has(name)) {
+        if (this.params[name] === undefined) {
             return "";
         }
-        return this.params.get(name);
+        return this.params[name];
     },
 
     baseurl: function(value, noreset) {

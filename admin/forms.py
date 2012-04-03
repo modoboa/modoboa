@@ -285,10 +285,10 @@ class AccountFormGeneralPwd(AccountFormGeneral):
 
 class AccountFormMail(forms.Form, DynamicForm):
     # FIXME
-    # * ajout du quota
     # * Renommage de boite ?
 
     email = forms.EmailField(label=_("E-mail"), required=False)
+    quota = forms.IntegerField(label=_("Quota"), required=False)
     aliases = forms.EmailField(
         label=ugettext_noop("Alias(es)"), 
         required=False,
@@ -309,6 +309,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             name = "aliases_%d" % (pos + 1)
             self._create_field(forms.EmailField, name, alias.full_address)
         self.fields["email"].initial = self.mb.full_address
+        self.fields["quota"].initial = self.mb.quota
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", forms.EmailField)
 
@@ -331,7 +332,8 @@ class AccountFormMail(forms.Form, DynamicForm):
             except Mailbox.DoesNotExist:
                 events.raiseEvent("CanCreate", user, "mailboxes")
                 self.mb = Mailbox()
-                self.mb.save_from_user(locpart, domain, account)
+                self.mb.save_from_user(locpart, domain, account, 
+                                       self.cleaned_data["quota"])
                 grant_access_to_object(user, self.mb, is_owner=True)
                 events.raiseEvent("CreateMailbox", user, self.mb)
         else:
@@ -339,9 +341,9 @@ class AccountFormMail(forms.Form, DynamicForm):
                 if self.mb.rename_dir(domname, locpart):
                     self.mb.domain = domain
                     self.mb.address = locpart
-                    self.mb.save()
                 else:
                     raise AdminError(_("Failed to rename mailbox, check permissions"))
+            self.mb.save(quota=self.cleaned_data["quota"])
 
         account.email = self.cleaned_data["email"]
         account.save()

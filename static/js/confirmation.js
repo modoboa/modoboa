@@ -10,7 +10,7 @@
 
          show: function(e) {
              e.preventDefault();
-             
+
              this.box = this.buildbox();
              this.box.modal();
              this.box.on('hidden', $.proxy(this.hidden_callback, this));
@@ -85,6 +85,8 @@
                      }
                      if (data.status == "ok") {
                          window.location.reload();
+                     } else {
+                         $("body").notify("error", data.respmsg);
                      }
                  }
              });

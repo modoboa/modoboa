@@ -25,8 +25,11 @@
         },
 
         listen: function() {
-            $(document).on("click", "tbody>tr",
-                $.proxy(this.toggle_select, this));
+
+            $(document)
+                .off("click", "tbody>tr")
+                .on("click", "tbody>tr",
+                    $.proxy(this.toggle_select, this));
             $(document).on("keydown", "body", $.proxy(this.keydown, this));
             $(document).on("keyup", "body", $.proxy(this.keyup, this));
         },
@@ -64,6 +67,10 @@
                 return;
             }
             this._toggle_select($tr);
+        },
+
+        is_selected: function($row) {
+            return $row.hasClass(this.options.tr_selected_class);
         },
 
         current_selection: function() {

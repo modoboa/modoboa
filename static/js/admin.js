@@ -28,7 +28,9 @@ function newaccount_cb() {
 function editaccount_cb() {
     accountform_init();
     $('#submit').click(function(e) {
-        simple_ajax_form_post(e, editaccount_cb);
+        simple_ajax_form_post(e, {
+            error_cb: editaccount_cb
+        });
     });
 }
 
@@ -39,7 +41,9 @@ function dlistform_cb() {
     });
     $("#id_recipients").dynamic_input();
     $(".submit").one('click', function(e) {
-        simple_ajax_form_post(e, dlistform_cb);
+        simple_ajax_form_post(e, {
+            error_cb: dlistform_cb
+        });
     });
 }
 

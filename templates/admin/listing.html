@@ -7,7 +7,5 @@
 {% block apparea %}
 {{ table|safe }}
 {% endblock %}
-{% block footer %}
-<div id="adminfo">{% get_footer_content user selection %}</div>
-{%  pagination_bar page %}
-{% endblock %}
+{% block footerleft %}<div id="adminfo">{% get_footer_content user selection %}</div>{% endblock %}
+{% block footerright %}{%  pagination_bar page %}{% endblock %}
