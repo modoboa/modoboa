@@ -30,7 +30,7 @@ def __get_current_url(request):
 def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content, navbar="",
-                 menu=quar_menu("", request.user))
+                 menu=quar_menu(request.user, -1))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
@@ -38,8 +38,13 @@ def _listing(request):
     flt = None
     rcptfilter = None
     msgs = None
+    nbrequests = -1
 
-    order = request.GET.has_key("order") and request.GET["order"] or "-date"
+    if not request.user.is_superuser and request.user.group != 'SimpleUsers':
+        if not len(request.user.get_domains()):
+            return empty_quarantine(request)
+
+    order = request.GET.get("order", "-date")
     if not request.session.has_key("navparams"):
         request.session["navparams"] = {}
     request.session["navparams"]["order"] = order
@@ -61,20 +66,26 @@ def _listing(request):
                 raise Exception("unsupported search criteria %s" % c)
             flt = nfilter if flt is None else flt | nfilter
 
-    q = ~Q(rs='D')
-    if not request.user.is_superuser:
-        if request.user.group != 'SimpleUsers':
+    if request.GET.get("viewrequests", None) == "1":
+        q = Q(rs='p')
+    else:
+        q = ~Q(rs='D')
+    rq = Q(rs='p')
+    if request.user.group == 'SimpleUsers':
+        q &= Q(rid__email=request.user.email)
+    else:
+        if not request.user.is_superuser:
             doms = request.user.get_domains()
-            if not len(doms):
-                return empty_quarantine(request)
             regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-            q &= Q(rid__email__regex=regexp)
-        else:
-            q &= Q(rid__email=request.user.email)
+            doms_q = Q(rid__email__regex=regexp)
+            q &= doms_q
+            rp &= doms_q            
+        if rcptfilter is not None:
+            q &= Q(rid__email__contains=rcptfilter)
 
-    if request.user.group != 'SimpleUsers' \
-            and rcptfilter is not None:
-        q &= Q(rid__email__contains=rcptfilter)
+        if parameters.get_admin("USER_CAN_RELEASE") == "no":
+            nbrequests = len(Msgrcpt.objects.filter(rq))
+
     msgs = Msgrcpt.objects.filter(q).values("mail_id")
 
     if request.GET.has_key("page"):
@@ -96,7 +107,7 @@ def _listing(request):
     content = lst.fetch(request, page.id_start, page.id_stop)
     navbar = lst.render_navbar(page, "listing/?")
     ctx = getctx("ok", listing=content, navbar=navbar,
-                 menu=quar_menu("", request.user))
+                 menu=quar_menu(request.user, nbrequests))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
@@ -127,9 +138,9 @@ def viewmail(request, mail_id):
     if request.user.group != 'SimpleUsers':
         rcpt = request.GET["rcpt"]
     else:
+        rcpt = None
         mb = Mailbox.objects.get(user=request.user)
-        rcpt = mb.full_address
-        msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=rcpt)
+        msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=mb.full_address)
         msgrcpt.rs = 'V'
         msgrcpt.save()
     args = []
@@ -141,8 +152,7 @@ def viewmail(request, mail_id):
 <iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url" : reverse(getmailcontent, args=[mail_id]) \
                          + "?%s" % "&".join(args)}))
-    menu = viewm_menu("", __get_current_url(request), mail_id, rcpt,
-                      request.user.get_all_permissions())
+    menu = viewm_menu(request.user, mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
@@ -190,7 +200,16 @@ def release(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
     if request.user.group == 'SimpleUsers':
         mb = Mailbox.objects.get(user=request.user)
+        print mail_id
         msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
+        if parameters.get_admin("USER_CAN_RELEASE") == "no":
+            print msgrcpts
+            msgrcpts.update(rs='p')
+            message = ungettext("%(count)d request sent",
+                                "%(count)d requests sent",
+                                len(mail_id)) % {"count" : len(mail_id)}
+            return ajax_response(request, "ok", respmsg=message,
+                                 url=__get_current_url(request))
     else:
         msgrcpts = []
         for mid in mail_id:

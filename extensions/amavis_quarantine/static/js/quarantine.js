@@ -24,7 +24,7 @@ Quarantine.prototype = {
             $("#searchfield").searchbar({navobj: this.navobj});
         }
         if (data.navbar) {
-            $("#bottom-bar-in").html(data.navbar);
+            $("#bottom-bar-right").html(data.navbar);
         }
         if (data.listing != undefined) {
             $("#listing").html(data.listing);
@@ -43,6 +43,8 @@ Quarantine.prototype = {
             $.proxy(this.release_selection, this));
         $(document).on("click", "a[name=delete-multi]",
             $.proxy(this.delete_selection, this));
+        $(document).on("click", "a[name=viewrequests]",
+            $.proxy(this.view_requests, this));
         $(document).on("click", "#bottom-bar a", $.proxy(this.load_page, this));
 
         $(document).on("click", "a[name=release]", $.proxy(this.release, this));
@@ -56,6 +58,11 @@ Quarantine.prototype = {
 
         this.navobj.deleteParam("rcpt");
         this.navobj.from_string($link.attr("href")).update();
+    },
+
+    view_requests: function(e) {
+        e.preventDefault();
+        this.navobj.setparam("viewrequests", "1").update();
     },
 
     viewmail_loader: function(e) {

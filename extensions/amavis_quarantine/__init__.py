@@ -41,6 +41,8 @@ def load():
     parameters.register_admin("AM_PDP_SOCKET", type="string", 
                               deflt=_("/var/amavis/amavisd.sock"),
                               help=_("Path to the PDP server socket (if unix mode)"))
+    parameters.register_admin("USER_CAN_RELEASE", type="list_yesno", deflt="no",
+                              help=_("Allow users to directly release their messages"))
 
     parameters.register_user(
         "MESSAGES_PER_PAGE", type="int", deflt=40,

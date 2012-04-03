@@ -1,5 +1,6 @@
 from django import template
 from django.template.loader import render_to_string
+from django.template import Template, Context
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -9,7 +10,7 @@ from modoboa.extensions import amavis_quarantine
 register = template.Library()
 
 @register.simple_tag
-def viewm_menu(selection, backurl, mail_id, rcpt, perms):
+def viewm_menu(user, mail_id, rcpt):
     options_menu = [
         {"name" : "viewmode", 
          "label" : _("View as plain text"),
@@ -35,12 +36,12 @@ def viewm_menu(selection, backurl, mail_id, rcpt, perms):
         {"name" : "release",
          "img" : "icon-ok",
          "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
-             + "?rcpt=%s" % rcpt,
+             + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Release")},
         {"name" : "delete",
          "img" : "icon-remove",
          "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
-             + "?rcpt=%s" % rcpt,
+             + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Delete")},
         {"name" : "options",
          "label" : _("Options"),
@@ -49,11 +50,10 @@ def viewm_menu(selection, backurl, mail_id, rcpt, perms):
         ]
 
     return render_to_string('common/buttons_list.html', 
-                            {"selection" : selection, "entries" : entries, 
-                             "perms" : perms})
+                            {"entries" : entries})
 
 @register.simple_tag
-def quar_menu(selection, user):
+def quar_menu(user, nbrequests):
     entries = [
         {"name" : "release-multi",
          "url" : reverse(amavis_quarantine.views.process),
@@ -89,11 +89,17 @@ def quar_menu(selection, user):
         extraopts = [{"name" : "to", "label" : _("To")}]
     else:
         extraopts = []
-    searchbar = render_to_string('common/email_searchbar.html', {
+    extracontent = render_to_string('common/email_searchbar.html', {
             "MEDIA_URL" : settings.MEDIA_URL,
             "extraopts" : extraopts
             })
+
+    if nbrequests != -1:
+        tpl = Template('<div class="btn-group"><a name="viewrequests" href="#" class="btn btn-danger">{{ label }}</a></div>')
+        extracontent += tpl.render(Context(dict(
+                    label=_("%d pending requests" % nbrequests)
+                    )))
     
     return render_to_string('common/buttons_list.html', dict(
-            selection=selection, entries=entries, extracontent=searchbar
+            entries=entries, extracontent=extracontent
             ))

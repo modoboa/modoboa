@@ -27,3 +27,7 @@ thead tr {
 td.unseen { 
     font-weight: bold;
 }
+
+td.pending { 
+    font-style: italic;
+}

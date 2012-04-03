@@ -73,6 +73,8 @@ class SQLconnector(MBconnector):
                     m["class"] = "unseen"
                 elif rcpt.rs == 'R':
                     m["img_rstatus"] = static_url("pics/release.png")
+                elif rcpt.rs == 'p':
+                    m["class"] = "pending"
                 emails.append(m)
         return emails
 
