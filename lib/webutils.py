@@ -35,18 +35,10 @@ def _render_error(request, errortpl="error", user_context={}):
                               context_instance=template.RequestContext(request))
 
 def render_actions(actions):
-    t = template.Template("""
-{% for a in actions %}
-<a href="{{ a.url }}" name="{{ a.name }}"
-   {% if a.modal %}data-toggle="ajaxmodal"{% endif %}
-   {% if a.modalcb %}modalcb="{{ a.modalcb }}"{% endif %}
-   {% if a.confirm %}onclick="return confirm('{{ a.confirm }}')"{% endif %}>
-  <i class="{{ a.img }}" title="{{ a.title }}"></i></a>
-{% endfor %}
+    t = template.Template("""{% load libextras %}
+{% for a in actions %}{% render_link a %}{% endfor %}
 """)
-    return t.render(template.Context({
-                "actions" : actions
-                }))
+    return t.render(template.Context(dict(actions=actions)))
 
 def _ctx_ok(url):
     return {"status" : "ok", "url" : url}

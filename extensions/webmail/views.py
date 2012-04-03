@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 import time
 import sys
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -64,7 +64,6 @@ def __render_common_components(request, folder_name, lst=None, content=None, men
                 "titlebar" : True,
                 "selected" : request.session["folder"],
                 "folders" : mbc.getfolders(request.user),
-                "withmenu" : True,
                 "withunseen" : True
                 }),
         "menu" : menu,
@@ -229,20 +228,22 @@ def separate_folder(fullname, sep="."):
 
 @login_required
 @needs_mailbox()
-def newfolder(request, tplname="webmail/folder.html"):
+def newfolder(request, tplname="webmail/folder2.html"):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
     ctx = {"title" : _("Create a new folder"),
-           "fname" : "newfolder",
-           "submit_label" : _("Create"),
-           "withmenu" : False,
-           "withunseen" : False}
+           "formid" : "mboxform",
+           "action" : reverse(newfolder),
+           "action_label" : _("Create"),
+           "action_classes" : "submit",
+           "withunseen" : False,
+           "selectonly" : True}
+
     ctx["folders"] = mbc.getfolders(request.user)
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
-            pf = request.POST.has_key("parent_folder") \
-                and request.POST["parent_folder"] or None
+            pf = request.POST.get("parent_folder", None)
             mbc.create_folder(form.cleaned_data["name"], pf)
             return ajax_response(request, ajaxnav=True, respmsg=_("Folder created"))
             
@@ -256,14 +257,16 @@ def newfolder(request, tplname="webmail/folder.html"):
 
 @login_required
 @needs_mailbox()
-def editfolder(request, tplname="webmail/folder.html"):
+def editfolder(request, tplname="webmail/folder2.html"):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
-    ctx = {"title" : _("Edit folder"),
-           "fname" : "editfolder",
-           "submit_label" : _("Update"),
-           "withmenu" : False,
-           "withunseen" : False}
+    ctx = {"title" : _("Edit mailbox"),
+           "formid" : "mboxform",
+           "action" : reverse(editfolder),
+           "action_label" : _("Update"),
+           "action_classes" : "submit",
+           "withunseen" : False,
+           "selectonly" : True}
     ctx["folders"] = mbc.getfolders(request.user)
     if request.method == "POST":
         form = FolderForm(request.POST)
@@ -285,12 +288,12 @@ def editfolder(request, tplname="webmail/folder.html"):
         ctx["form"] = form
         return ajax_response(request, status="ko", template=tplname, **ctx)
 
-    if not request.GET.has_key("name") or request.GET["name"] == "":
-        return
-    name = request.GET["name"]
-    ctx["oldname"] = name
-    name, parent = separate_folder(name)
+    name = request.GET.get("name", None)
+    if name is None:
+        raise WebmailError(_("Invalid request"))
+    shortname, parent = separate_folder(name)
     ctx["form"] = FolderForm()
+    ctx["form"].fields["oldname"].initial = shortname
     ctx["form"].fields["name"].initial = name
     ctx["selected"] = parent
     return _render(request, tplname, ctx)
@@ -298,16 +301,17 @@ def editfolder(request, tplname="webmail/folder.html"):
 @login_required
 @needs_mailbox()
 def delfolder(request):
-    if not request.GET.has_key("name") or request.GET["name"] == "":
-        return
+    name = request.GET.get("name", None)
+    if name is None:
+        raise WebmailError(_("Bad request"))
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
-    mbc.delete_folder(request.GET["name"])
+    mbc.delete_folder(name)
     return ajax_response(request)
 
 @login_required
 @needs_mailbox()
-def attachments(request, tplname="webmail/attachments2.html"):
+def attachments(request, tplname="webmail/attachments.html"):
     if request.method == "POST":
         csuploader = AttachmentUploadHandler()
         request.upload_handlers.insert(0, csuploader)
@@ -383,10 +387,8 @@ def render_mboxes_list(request, imapc):
     """
     curmbox = request.session.get("mbox", "INBOX")
     return _render_to_string(request, "webmail/folders.html", {
-            "titlebar" : True,
             "selected" : curmbox,
             "folders" : imapc.getfolders(request.user),
-            "withmenu" : True,
             "withunseen" : True
             })
 

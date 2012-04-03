@@ -126,6 +126,5 @@ def render_link(linkdef, mdclass=None):
 class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 {% if link.confirm %} onclick="return confirm('{{ link.confirm }}')"{% endif %}>
 {% if link.img %}<i class="{{ link.img }}"></i>{% endif %}
-{{ link.label }}
-</a>""")
+{{ link.label }}</a>""")
     return t.render(Context(dict(link=linkdef, mdclass=mdclass)))

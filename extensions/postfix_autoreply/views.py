@@ -18,7 +18,8 @@ def autoreply(request, tplname="common/generic_modal_form.html"):
         title=_("Auto-reply message"),
         action=reverse(autoreply),
         formid="arform",
-        submit_label=_("Update")
+        action_label=_("Update"),
+        action_classes="submit"
         )
     mb = Mailbox.objects.get(user=request.user.id)
     try:

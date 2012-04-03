@@ -74,7 +74,8 @@ def compose_menu(selection, backurl, user):
 def listmailbox_menu(selection, folder, user):
     entries = [
         {"name" : "compose",
-         "url" : "compose",         
+         "url" : "compose",
+         "img" : "icon-edit",
          "label" : _("New message"),
          "class" : "btn"},
         {"name" : "mark",
@@ -118,7 +119,11 @@ def listmailbox_menu(selection, folder, user):
             ))
 
 @register.simple_tag
-def print_folders(folders, selected=None, withunseen=False, withmenu=False):
+def print_folders(folders, selected=None, withunseen=False, selectonly=False):
+    """Display a tree of mailboxes and sub-mailboxes
+
+    
+    """
     result = ""
 
     for fd in folders:
@@ -136,22 +141,46 @@ def print_folders(folders, selected=None, withunseen=False, withmenu=False):
                 ul_state = "hidden"
                 div_state = "collapsed"
             result += "<div class='clickbox %s'></div>" % div_state
-        # if withmenu:
-        #     result += "<img src='%spics/go-down.png' class='footer' />" \
-        #         % settings.MEDIA_URL
             
         cssclass = "block"
         if withunseen and fd.has_key("unseen"):
             label += " (%d)" % fd["unseen"]
             cssclass += " unseen"
         iclass = fd["class"] if fd.has_key("class") else "icon-folder-close"
-        result += """<a href='%s' class='%s' name='loadfolder'>
+        result += """<a href='%s' class='%s' name='%s'>
   <i class="%s"></i>
   %s
 </a>
-""" % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, iclass, label)
+""" % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, 
+       'selectfolder' if selectonly else 'loadfolder', iclass, label)
         if fd.has_key("sub") and len(fd["sub"]):
             result += "<ul name='%s' class='%s'>" % (fd["path"], ul_state) \
-                + print_folders(fd["sub"], selected, withunseen, withmenu) + "</ul>\n"
+                + print_folders(fd["sub"], selected, withunseen, selectonly) + "</ul>\n"
         result += "</li>\n"
     return result
+
+@register.simple_tag
+def mboxes_menu():
+    entries = [
+        {"name" : "newmbox",
+         "url" : reverse(webmail.views.newfolder),
+         "img" : "icon-plus",
+         "label" : "",
+         "modal" : True,
+         "modalcb" : "webmail.mboxform_cb",
+         "class" : "btn btn-mini"},
+        {"name" : "editmbox",
+         "url" : reverse(webmail.views.editfolder),
+         "img" : "icon-edit",
+         "label" : "",
+         "class" : "btn btn-mini"},
+        {"name" : "removembox",
+         "url" : reverse(webmail.views.delfolder),
+         "img" : "icon-remove",
+         "label" : "",
+         "class" : "btn btn-mini"}
+        ]
+
+    return render_to_string('common/buttons_list.html', dict(
+            entries=entries, css="nav"
+            ))

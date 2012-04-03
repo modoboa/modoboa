@@ -11,7 +11,7 @@ from imapclient.response_parser import parse_fetch_response
 from modoboa.lib import parameters
 from modoboa.lib.connections import *
 from modoboa.lib.webutils import static_url
-from exceptions import ImapError
+from exceptions import ImapError, WebmailError
 from fetch_parser import *
 
 #imaplib.Debug = 4
@@ -347,7 +347,7 @@ class IMAPconnector(object):
     @capability('LIST-EXTENDED', '_listfolders_simple')
     def _listfolders(self, topmailbox='', md_mailboxes=[]):
         pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
-        resp = self._cmd("LSUB", "", pattern, "RETURN", "(CHILDREN)")
+        resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         result = []
         for mb in resp:
             flags, delimiter, name, childinfo = \

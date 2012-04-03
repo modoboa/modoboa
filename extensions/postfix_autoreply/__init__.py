@@ -122,7 +122,10 @@ def get_static_content(target):
 function arform_cb() {
     $('#id_untildate').datepicker();
     $(".submit").one('click', function(e) {
-        simple_ajax_form_post(e, arform_cb);
+        simple_ajax_form_post(e, {
+            error_cb: arform_cb,
+            formid: "arform"
+        });
     });
 }
 </script>

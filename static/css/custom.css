@@ -18,7 +18,7 @@ body {
     margin-bottom: 0;
 }
 
-#pagination_bar { 
+.navbar-text { 
     color: #999999 !important;
 }
 

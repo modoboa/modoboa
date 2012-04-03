@@ -10,6 +10,7 @@ class ComposeMailForm(forms.Form):
     origmsgid = forms.CharField(label="", widget=forms.HiddenInput(), required=False)
     
 class FolderForm(forms.Form):
+    oldname = forms.CharField(label="", widget=forms.HiddenInput(), required=False)
     name = forms.CharField()
 
 class AttachmentForm(forms.Form):
