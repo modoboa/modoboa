@@ -2,6 +2,7 @@
 import os
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext as _
 from modoboa.lib.webutils import ajax_simple_response
 from modoboa.lib.emailutils import sendmail_simple, sendmail_fromfile
 from modoboa.lib.decorators import needs_mailbox
