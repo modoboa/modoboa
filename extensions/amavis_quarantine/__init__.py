@@ -77,4 +77,20 @@ def create_user_record(user, mailbox):
     u.email = mailbox.full_address
     u.fullname = mailbox.user.fullname
     u.local = "1"
+    u.priority = 7
+    u.policy_id = 1
     u.save()
+
+@events.observe("ModifyMailbox")
+def modify_user_record(mailbox, oldmailbox):
+    if mailbox.full_address == oldmailbox.full_address:
+        return
+    u = Users.objects.get(email=oldmailbox.full_address)
+    u.email = mailbox.full_address
+    u.save()
+
+@events.observe("DeleteMailbox")
+def remove_user_record(mailbox):
+    from models import Users
+
+    Users.objects.get(email=mailbox.full_address).delete()
