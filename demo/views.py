@@ -37,5 +37,5 @@ XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 You should send this test mail from an account outside of your network.
 """)
     if status:
-        return ajax_simple_response(dict(status="ok", respmsg=_("Message sent"))
+        return ajax_simple_response(dict(status="ok", respmsg=_("Message sent")))
     return ajax_simple_response(dict(status="ko", respmsg=error))
