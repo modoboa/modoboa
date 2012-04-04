@@ -2,7 +2,7 @@
 import os
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from modoboa.lib.webutils import ajax_response
+from modoboa.lib.webutils import ajax_simple_response
 from modoboa.lib.emailutils import sendmail_simple, sendmail_fromfile
 from modoboa.lib.decorators import needs_mailbox
 
@@ -13,8 +13,8 @@ def send_virus(request):
                                       os.path.join(settings.MODOBOA_DIR,
                                                    "tmp/virus.msg"))
     if status:
-        return ajax_response(request)
-    return ajax_response(request, "ko", respmsg=error)
+        return ajax_simple_response(dict(status="ok", respmsg=_("Message sent")))
+    return ajax_simple_response(dict(status="ko", respmsg=error))
 
 @login_required
 @needs_mailbox()
@@ -37,5 +37,5 @@ XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 You should send this test mail from an account outside of your network.
 """)
     if status:
-        return ajax_response(request)
-    return ajax_response(request, "ko", respmsg=error)
+        return ajax_simple_response(dict(status="ok", respmsg=_("Message sent"))
+    return ajax_simple_response(dict(status="ko", respmsg=error))

@@ -1,6 +1,8 @@
 $(document).ready(function() {
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
+    $(document).on('click', 'a[name=sendspam]', simple_ajax_request);
+    $(document).on('click', 'a[name=sendvirus]', simple_ajax_request);
 
     //parse_menubar('#topmenubar');
     //parse_menubar('#menubar');
