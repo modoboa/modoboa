@@ -1,8 +1,10 @@
+# coding: utf-8
 import socket
 import re
 import struct
 import string
 from functools import wraps
+from django.core.urlresolvers import reverse
 from modoboa.lib import parameters
 
 def selfservice(ssfunc=None):
