@@ -53,6 +53,26 @@ def viewm_menu(user, mail_id, rcpt):
                             {"entries" : entries})
 
 @register.simple_tag
+def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
+    entries = [
+        {"name" : "release",
+         "img" : "icon-ok",
+         "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
+             + ("?rcpt=%s" % rcpt \
+                    + (("&secret_id=%s" % secret_id) if secret_id != "" else "")),
+         "label" : _("Release")},
+        {"name" : "delete",
+         "img" : "icon-remove",
+         "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
+             + "?rcpt=%s" % rcpt \
+             + ("&secret_id=%s" % secret_id if secret_id != "" else ""),
+         "label" : _("Delete")},
+        ]
+
+    return render_to_string('common/buttons_list.html', 
+                            {"entries" : entries})
+
+@register.simple_tag
 def quar_menu(user, nbrequests):
     entries = [
         {"name" : "release-multi",
@@ -94,7 +114,7 @@ def quar_menu(user, nbrequests):
             "extraopts" : extraopts
             })
 
-    if nbrequests != -1:
+    if nbrequests > 0:
         tpl = Template('<div class="btn-group"><a name="viewrequests" href="#" class="btn btn-danger">{{ label }}</a></div>')
         extracontent += tpl.render(Context(dict(
                     label=_("%d pending requests" % nbrequests)

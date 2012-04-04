@@ -2,7 +2,31 @@ import socket
 import re
 import struct
 import string
+from functools import wraps
 from modoboa.lib import parameters
+
+def selfservice(ssfunc=None):
+    """Decorator used to expose views to the 'self-service' feature
+
+    The 'self-service' feature allows users to act on quarantined
+    messages without beeing authenticated.
+
+    This decorator only acts as a 'router'.
+
+    :param ssfunc: the function to call if the 'self-service'
+                   pre-requisites are satisfied
+    """
+    def decorator(f):
+        @wraps(f)
+        def wrapped_f(request, *args, **kwargs):
+            if request.user.is_authenticated():
+                return f(request, *args, **kwargs)
+            if parameters.get_admin("SELF_SERVICE") == "no":
+                from django.contrib.auth.views import redirect_to_login
+                return redirect_to_login(reverse(f, args=args))
+            return ssfunc(request, *args, **kwargs)
+        return wrapped_f
+    return decorator
 
 class AMrelease(object):
     def __init__(self):

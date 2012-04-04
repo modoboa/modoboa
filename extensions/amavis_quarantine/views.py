@@ -1,6 +1,6 @@
 # coding: utf-8
 import email
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.template import Template, Context
 from django.utils import simplejson
 from django.utils.translation import ugettext as _, ungettext
@@ -9,9 +9,10 @@ from django.contrib.auth.decorators \
     import login_required
 from django.db.models import Q
 from modoboa.lib import parameters
-from modoboa.lib.webutils import _render, getctx, ajax_response
+from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.webutils import _render, getctx, ajax_response, ajax_simple_response
 from modoboa.admin.models import Mailbox
-from lib import AMrelease
+from lib import AMrelease, selfservice
 from templatetags.amextras import *
 from modoboa.lib.email_listing import parse_search_parameters
 from sql_listing import *
@@ -116,7 +117,21 @@ def index(request):
             deflocation="listing/", defcallback="listing_cb", selection="quarantine"
             ))
 
-@login_required
+def getmailcontent_selfservice(request, mail_id):
+    from sql_listing import SQLemail
+
+    qmails = Quarantine.objects.filter(mail=mail_id)
+    content = ""
+    for qm in qmails:
+        content += qm.mail_text
+    msg = email.message_from_string(content)
+    mail = SQLemail(msg, mformat="plain", links="0")
+    return _render(request, "common/viewmail.html", {
+            "headers" : mail.render_headers(), 
+            "mailbody" : mail.body
+            })
+
+@selfservice(getmailcontent_selfservice)
 def getmailcontent(request, mail_id):
     from sql_listing import SQLemail
 
@@ -133,7 +148,21 @@ def getmailcontent(request, mail_id):
             "mailbody" : mail.body
             })
 
-@login_required
+def viewmail_selfservice(request, mail_id, 
+                         tplname="amavis_quarantine/viewmail_selfservice.html"):
+    rcpt = request.GET.get("rcpt", None)
+    secret_id = request.GET.get("secret_id", "")
+    if rcpt is None:
+        raise Http404
+    content = Template("""
+<iframe src="{% url modoboa.extensions.amavis_quarantine.views.getmailcontent mail_id %}" id="mailcontent"></iframe>
+""").render(Context(dict(mail_id=mail_id)))
+    
+    return _render(request, tplname, dict(
+            mail_id=mail_id, rcpt=rcpt, secret_id=secret_id, content=content
+            ))
+
+@selfservice(viewmail_selfservice)
 def viewmail(request, mail_id):
     if request.user.group != 'SimpleUsers':
         rcpt = request.GET["rcpt"]
@@ -175,7 +204,19 @@ def check_mail_id(request, mail_id):
             mail_id = [mail_id]
     return mail_id
 
-@login_required
+def delete_selfservice(request, mail_id):
+    rcpt = request.GET.get("rcpt", None)
+    if rcpt is None:
+        raise ModoboaException(_("Invalid request"))
+    try:
+        msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=rcpt)
+        msgrcpt.rs = 'D'
+        msgrcpt.save()
+    except Msgrcpt.DoesNotExist:
+        raise ModoboaException(_("Invalid request"))
+    return ajax_simple_response(dict(status="ok", respmsg=_("Message deleted")))
+
+@selfservice(delete_selfservice)
 def delete(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
     if request.user.group == 'SimpleUsers':
@@ -195,15 +236,38 @@ def delete(request, mail_id):
     return ajax_response(request, respmsg=message,
                          url=__get_current_url(request))
 
-@login_required
+def release_selfservice(request, mail_id):
+    rcpt = request.GET.get("rcpt", None)
+    secret_id = request.GET.get("secret_id", None)
+    if rcpt is None or secret_id is None:
+        raise ModoboaException(_("Invalid request"))
+    try:
+        msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=rcpt)
+    except Msgrcpt.DoesNotExist:
+        raise ModoboaException(_("Invalid request"))
+    if secret_id != msgrcpt.mail.secret_id:
+        raise ModoboaException(_("Invalid request"))
+    if parameters.get_admin("USER_CAN_RELEASE") == "no":
+        msgrcpt.rs = 'p'
+        msg = _("Request sent")
+    else:
+        amr = AMrelease()
+        result = amr.sendreq(mail_id, secret_id, rcpt)
+        if result:
+            rcpt.rs = 'R'
+            msg = _("Message released")
+        else:
+            raise ModoboaException(result)
+    msgrcpt.save()
+    return ajax_simple_response(dict(status="ok", respmsg=msg))
+
+@selfservice(release_selfservice)
 def release(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
     if request.user.group == 'SimpleUsers':
         mb = Mailbox.objects.get(user=request.user)
-        print mail_id
         msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
         if parameters.get_admin("USER_CAN_RELEASE") == "no":
-            print msgrcpts
             msgrcpts.update(rs='p')
             message = ungettext("%(count)d request sent",
                                 "%(count)d requests sent",
