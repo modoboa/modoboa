@@ -7,7 +7,7 @@ import imaplib, ssl, email
 import re
 import time
 from functools import wraps
-from imapclient.response_parser import parse_fetch_response
+from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
 from modoboa.lib.connections import *
 from modoboa.lib.webutils import static_url
