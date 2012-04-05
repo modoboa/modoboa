@@ -166,7 +166,7 @@ class DlistForm(forms.ModelForm, DynamicForm):
             except Domain.DoesNotExist:
                 domain = None
             if domain:
-                if not user.is_owner(domain):
+                if not user.can_access(domain):
                     raise PermDeniedException(v)
                 try:
                     mb = Mailbox.objects.get(domain=domain, address=local_part)
@@ -244,15 +244,13 @@ class AccountFormGeneral(forms.ModelForm):
             account.save()
             if self.cleaned_data.has_key("role"):
                 role = self.cleaned_data["role"]
-            else:
-                role = "SimpleUsers"
-            account.groups.clear()
-            if role == "SuperAdmins":
-                account.is_superuser = True
-            else:
-                account.is_superuser = False
-                account.groups.add(Group.objects.get(name=role))
-            account.save()
+                account.groups.clear()
+                if role == "SuperAdmins":
+                    account.is_superuser = True
+                else:
+                    account.is_superuser = False
+                    account.groups.add(Group.objects.get(name=role))
+                account.save()
         return account
 
 class AccountFormGeneralPwd(AccountFormGeneral):
@@ -438,7 +436,7 @@ class AccountForm(TabForms):
     def check_perms(self, account):
         if account.is_superuser:
             return False
-        return account.has_perm("admin.view_domain")
+        return account.has_perm("auth.add_user")
 
     def _before_is_valid(self, form):
         if form["id"] == "general":

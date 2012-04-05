@@ -8,9 +8,6 @@
             question: gettext("Delete this domain?"),
             checkboxes: {keepdir: gettext("Do not delete domain directory")}
         });
-
-        {% url admin.views.mailboxes as view_url %}
-        //bindRows("{{ view_url }}", "{{ current_page }}");
     });
   </script>
 {% endblock %}

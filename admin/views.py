@@ -37,7 +37,7 @@ def domains(request):
                           objects=domains)
 
 @login_required
-@permission_required("admin.view_domains")
+@permission_required("auth.add_user")
 def domains_list(request):
     doms = map(lambda dom: dom.name, request.user.get_domains())
     return ajax_simple_response(doms)
@@ -245,7 +245,7 @@ def deldlist(request):
     return ajax_response(request)
 
 @login_required
-@user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_mailbox"))
+@user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
 def identities(request, tplname='admin/identities.html'):
     accounts_list = []
     for account in User.objects.all():
@@ -253,17 +253,19 @@ def identities(request, tplname='admin/identities.html'):
                 account.has_mailbox and request.user.can_access(account.mailbox_set.all()[0].domain):
             accounts_list += [account]
     for mbalias in Alias.objects.all():
-        if len(mbalias.get_recipients()) > 2:
+        if len(mbalias.get_recipients()) >= 2:
             accounts_list += [mbalias]
     return render_listing(request, "identities", tplname, objects=accounts_list)
 
 @login_required
+@permission_required("auth.add_user")
 def accounts_list(request):
     accs = User.objects.filter(is_superuser=False).exclude(groups__name='SimpleUsers')
     res = map(lambda a: a.username, accs.all())
     return ajax_simple_response(res)
 
 @login_required
+@permission_required("auth.add_user")
 @transaction.commit_on_success
 def newaccount(request, tplname='admin/newaccount.html'):
     from modoboa.lib.formutils import CreationWizard
@@ -315,6 +317,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
     return _render(request, tplname, ctx)
 
 @login_required
+@permission_required("auth.change_user")
 @transaction.commit_on_success
 def editaccount(request, accountid, tplname="common/tabforms.html"):
     account = User.objects.get(pk=accountid)
@@ -352,8 +355,7 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
     return _render(request, tplname, ctx)
 
 @login_required
-@user_passes_test(lambda u: u.has_perm("auth.delete_user") or \
-                            u.has_perm("admin.delete_mailbox"))
+@permission_required("auth.delete_user")
 @transaction.commit_on_success
 def delaccount(request):
     selection = request.GET["selection"].split(",")
@@ -367,7 +369,7 @@ def delaccount(request):
     return ajax_response(request)
 
 @login_required
-@permission_required("auth.view_permissions")
+@permission_required("auth.add_account")
 @check_domain_access
 def search_account(request):
     search = request.POST.get("search", None)
@@ -518,6 +520,7 @@ def importdata(request, typ):
             })
 
 @login_required
+@user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("auth.add_alias"))
 @transaction.commit_on_success
 def import_identities(request):
     if request.method == "POST":
@@ -536,6 +539,7 @@ def import_identities(request):
     return _render(request, "admin/importform.html", ctx)
 
 @login_required
+@permission_required("admin.add_domain")
 @transaction.commit_on_success
 def import_domains(request):
     if request.method == "POST":

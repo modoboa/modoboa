@@ -1,6 +1,5 @@
 (function($) {
     var DynamicInput = function(element, options) {
-        console.log(element);
         this.$element = $(element);
         this.options = $.extend({}, $.fn.dynamic_input.defaults, options);
         this.nextid = 1;

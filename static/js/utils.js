@@ -210,7 +210,7 @@ function simple_ajax_request(e) {
     var $this = $(this);
     e.preventDefault();
     $.ajax({
-        url: $this.attr("herf"),
+        url: $this.attr("href"),
         dataType: 'json',
         success: function(data) {
             if (data.status == "ok") {

@@ -43,14 +43,21 @@ class User(DUser):
 
     def delete(self, fromuser, keep_mb_dir, *args, **kwargs):
         """Custom delete method
+
+        To check permissions properly, we need to make a distinction
+        between 2 cases:
+
+        * If the user owns a mailbox, the check is made on that object
+          (useful for domain admins)
+
+        * Otherwise, the check is made on the user
         """
         from modoboa.lib.permissions import \
             get_object_owner, grant_access_to_object, ungrant_access_to_object
 
-        if not fromuser.can_access(self):
-            raise PermDeniedException(_("You don't have access to this account"))
         if fromuser == self:
             raise AdminError(_("You can't delete your own account"))
+
         if self.has_mailbox:
             mb = self.mailbox_set.all()[0]
             if not fromuser.can_access(mb.domain):
@@ -58,6 +65,8 @@ class User(DUser):
             events.raiseEvent("DeleteMailbox", mb)
             ungrant_access_to_object(mb)
             mb.delete(keepdir=keep_mb_dir)
+        elif not fromuser.can_access(self):
+            raise PermDeniedException(_("You don't have access to this account"))
 
         owner = get_object_owner(self)
         for ooentry in self.objectaccess_set.all():
@@ -700,7 +709,8 @@ class Alias(DatesAware):
         Internal and external addresses are mixed into a single list.
         """
         result = map(lambda mb: mb.full_address, self.mboxes.all())
-        result += self.extmboxes.split(',')
+        if self.extmboxes != "":
+            result += self.extmboxes.split(',')
         return result
 
     def ui_disabled(self, user):

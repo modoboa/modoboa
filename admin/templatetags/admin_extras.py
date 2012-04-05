@@ -19,22 +19,19 @@ def admin_menu(selection, user):
         entries += [
             {"name" : "domains",
              "url" : reverse(admin.views.domains),
-             "label" : _("Domains"),
-             "img" : static_url("pics/domains.png")}
+             "label" : _("Domains")}
             ]
     entries += \
         events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user)
-    if user.has_perm("auth.add_user") or user.has_perm("admin.add_mailbox"):
+    if user.has_perm("auth.add_user") or user.has_perm("admin.add_alias"):
         entries += [
             {"name" : "identities",
              "url" : reverse(admin.views.identities),
              "label" : _("Identities")},
-             
             ]
     if user.is_superuser:
         entries += [
             {"name" : "settings",
-             "img" : static_url("pics/settings.png"),
              "label" : _("Modoboa"),
              "url" : reverse(admin.views.viewparameters)}
             ]

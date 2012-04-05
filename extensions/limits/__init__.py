@@ -24,18 +24,20 @@ def init():
 
     ct = ContentType.objects.get(app_label="admin", model="domain")
     dagrp = Group.objects.get(name="DomainAdmins")
-    for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
-        perm = Permission.objects.get(content_type=ct, codename=pname)
-        dagrp.permissions.add(perm)
-    dagrp.save()
 
     grp = Group(name="Resellers")
     grp.save()
     grp.permissions.add(*dagrp.permissions.all())
+
     ct = ContentType.objects.get_for_model(Permission)
-    grp.permissions.add(Permission.objects.get(
-            content_type=ct, codename="view_permissions"
-            ))
+    for pname in ["view_permissions"]:
+        perm = Permission.objects.get(content_type=ct, codename=pname)
+        grp.permissions.add(perm)
+
+    ct = ContentType.objects.get_for_model(Domain)
+    for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
+        perm = Permission.objects.get(content_type=ct, codename=pname)
+        grp.permissions.add(perm)
     grp.save()
 
     for user in User.objects.filter(groups__name='DomainAdmins'):
@@ -45,12 +47,6 @@ def init():
             pass
 
 def destroy():
-    ct = ContentType.objects.get(app_label="admin", model="domain")
-    grp = Group.objects.get(name="DomainAdmins")
-    for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
-        perm = Permission.objects.get(content_type=ct, codename=pname)
-        grp.permissions.remove(perm)
-    grp.save()
     Group.objects.get(name="Resellers").delete()
 
 def infos():

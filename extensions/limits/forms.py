@@ -26,8 +26,9 @@ class ResourcePoolForm(forms.Form):
             del kwargs["instance"]
         super(ResourcePoolForm, self).__init__(*args, **kwargs)
         if hasattr(self, "account"):
-            if not self.account.belongs_to_group("Resellers"):
+            if self.account.group != "Resellers":
                 del self.fields["domain_admins_limit"]
+                del self.fields["domains_limit"]
             self.load_from_user(self.account)
 
     def check_limit_value(self, lname):

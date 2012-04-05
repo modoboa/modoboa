@@ -1,3 +1,16 @@
+# coding: utf-8
+"""
+
+Liste des tests effectués
+=========================
+
+Permissions
+-----------
+
+* Vérifier qu'un admin de domaine qui modifie son propre compte laisse
+  le rôle intact
+
+"""
 from django.test import TestCase
 from django.test.client import Client
 from django.utils import simplejson
@@ -141,20 +154,19 @@ class PermissionsTestCase(TestCase):
         self.clt.logout()
 
     def test_domain_admins(self):
-        response = self.clt.post("/modoboa/admin/permissions/domainadmin/promote/",
-                                 {"name" : self.user.username})
+        response = self.clt.post("/modoboa/admin/accounts/edit/%d/" % self.user.id,
+                                 {"role" : "DomainAdmins"})
         self.assertEqual(response.status_code, 200)
         obj = simplejson.loads(response.content)
         self.assertEqual(obj["status"], "ok")
-        self.assertEqual(self.user.belongs_to_group('DomainAdmins'), True)
+        self.assertEqual(self.user.group == "DomainAdmins", True)
 
-        response = self.clt.get("/modoboa/admin/permissions/delete/",
-                                {"role" : "domain_admins", 
-                                 "selection" : self.user.id})
+        response = self.clt.get("/modoboa/admin/accounts/edit/%d/" % self.user.id,
+                                {"role" : "SimpleUsers"})
         self.assertEqual(response.status_code, 200)
         obj = simplejson.loads(response.content)
         self.assertEqual(obj["status"], "ok")
-        self.assertEqual(self.user.belongs_to_group('DomainAdmins'), False)
+        self.assertEqual(self.user.group == 'DomainAdmins', False)
 
     def test_superusers(self):
         response = self.clt.post("/modoboa/admin/permissions/add/",
