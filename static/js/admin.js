@@ -27,7 +27,7 @@ function newaccount_cb() {
 
 function editaccount_cb() {
     accountform_init();
-    $('#submit').click(function(e) {
+    $('.submit').one('click', function(e) {
         simple_ajax_form_post(e, {
             error_cb: editaccount_cb
         });

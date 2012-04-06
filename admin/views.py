@@ -328,7 +328,8 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
     ctx = dict(
         title=account.username,
         action=reverse(editaccount, args=[accountid]),
-        submit_label=_("Update")
+        action_label=_("Update"),
+        action_classes="submit"
         )
 
     if request.method == "POST":

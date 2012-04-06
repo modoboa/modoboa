@@ -193,7 +193,8 @@ def savefs(request, name):
 def new_filters_set(request, tplname="common/generic_modal_form.html"):
     ctx = {"title" : _("Create a new filters set"),
            "formid" : "newfiltersset",
-           "submit_label" : _("Create"),
+           "action_label" : _("Create"),
+           "action_classes" : "submit",
            "action" : reverse(new_filters_set),
            "withmenu" : False,
            "withunseen" : False}
