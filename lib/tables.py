@@ -10,9 +10,11 @@ output (using standard tags like <table> and co.).
 """
 import inspect
 import lxml
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.template import Template, RequestContext, Context
 from django.template.loader import render_to_string
+from templatetags.libextras import render_link
 
 class Column:
     """Simple column representation
@@ -69,6 +71,12 @@ class DivColumn(Column):
 class ActionColumn(Column):
     def render(self, fct, user, rowid):
         return fct(user, rowid)
+
+class LinkColumn(Column):
+    def render(self, rowid, value):
+        linkdef = dict(url=reverse(self.urlpattern, args=[rowid]), label=value,
+                       modal=self.modal, modalcb=self.modalcb)
+        return render_link(linkdef)
 
 class Table(object):
     tableid = ""
@@ -132,6 +140,9 @@ class Table(object):
                     newcol["safe"] = True
                 elif isinstance(c, ActionColumn):
                     newcol["value"] = c.render(c.defvalue, self.request.user, nrow["id"])
+                    newcol["safe"] = True
+                elif isinstance(c, LinkColumn):
+                    newcol["value"] = c.render(nrow["id"], row[c.name])
                     newcol["safe"] = True
                 elif row.has_key(c.name):
                     if "class" in row.keys():

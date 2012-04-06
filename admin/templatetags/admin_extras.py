@@ -115,15 +115,9 @@ def identities_menu(user):
 @register.simple_tag
 def domain_actions(user, domid):
     actions = [
-        {"name" : "editdomain",
-         "url" : reverse(admin.views.editdomain, args=[domid]),
-         "img" : "icon-edit",
-         "title" : _("Edit domain"),
-         "modal" : True,
-         "modalcb" : "domainform_cb"},
         {"name" : "deldomain",
          "url" : reverse(admin.views.deldomain) + "?selection=%s" % domid,
-         "img" : "icon-remove"},         
+         "img" : "icon-trash"},         
         ]
 
     return render_actions(actions)
@@ -139,7 +133,7 @@ def account_actions(user, accountid):
          "title" : _("Edit account")},
         {"name" : "delaccount",
          "url" : reverse(admin.views.delaccount) + "?selection=%s" % accountid,
-         "img" : "icon-remove",
+         "img" : "icon-trash",
          "title" : _("Delete this account")},
         ]
     return render_actions(actions)
@@ -158,7 +152,7 @@ def identity_actions(user, iid):
          "title" : _("Edit distribution list")},
         {"name" : "deldlist",
          "url" : reverse(admin.views.deldlist) + "?selection=%s" % objid,
-         "img" : "icon-remove",
+         "img" : "icon-trash",
          "title" : _("Delete this distribution list")},
         ]
     return render_actions(actions)

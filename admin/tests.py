@@ -7,6 +7,7 @@ Liste des tests effectués
 Permissions
 -----------
 
+
 * Vérifier qu'un admin de domaine qui modifie son propre compte laisse
   le rôle intact
 

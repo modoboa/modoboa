@@ -7,10 +7,11 @@ class DomainsTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
 
-    name = tables.Column("name", label=ugettext_noop("Name"))
-    creation = tables.Column("creation", label=ugettext_noop("Created"), width="160px")
-    modified = tables.Column("last_modification", label=ugettext_noop("Last modified"), 
-                             width="160px")
+    name = tables.LinkColumn(
+        "name", label=ugettext_noop("Name"), 
+        urlpattern="modoboa.admin.views.editdomain",
+        title=_("Edit domain"), modal=True, modalcb="domainform_cb"
+        )
     domaliases = tables.Column("domainalias_count", label=ugettext_noop("Domain aliases"), 
                                width="100px", align="center")
     mboxes = tables.Column("mailbox_count", label=ugettext_noop("Mailboxes"), 
@@ -24,8 +25,7 @@ class DomainsTable(tables.Table):
     actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),  width="70px",
                                   align="center", defvalue=domain_actions)
 
-    cols_order = ["name", "creation", "modified", 
-                  "domaliases", "mboxes", "mbaliases",
+    cols_order = ["name", "domaliases", "mboxes", "mbaliases",
                   "quota", "actions"]
 
     def __init__(self, request, doms):
@@ -51,38 +51,6 @@ class ExtensionsTable(tables.Table):
     descr = tables.Column("description", label=ugettext_noop("Description"))
     
     cols_order = ["selection", "name", "version", "descr"]
-
-class AccountsTable(tables.Table):
-    idkey = "id"
-    username = tables.Column("username", label=ugettext_noop("User name"))
-    first_name = tables.Column("first_name", label=ugettext_noop("First name"))
-    last_name = tables.Column("last_name", label=ugettext_noop("Last name"))
-    date_joined = tables.Column("date_joined", label=ugettext_noop("Defined"))
-    enabled = tables.Column("is_active", label=gender("Enabled", "m"), width="10%")
-    role = tables.Column("group", label=ugettext_noop("Role"))
-    actions = tables.ActionColumn("actions", label=ugettext_noop("Actions"),
-                                  width="70px", align="center", 
-                                  defvalue=account_actions)
-
-    cols_order = ["username", "first_name", "last_name", "date_joined", 
-                  "role", "actions"]
-    
-    def __init__(self, request, users):
-        super(AccountsTable, self).__init__(request)
-        self.populate(self._rows_from_model(users))
-
-    def parse_is_active(self, value):
-        return _("yes") if value else _("no")
-
-    def parse_group(self, value):
-        if value == "SimpleUsers":
-            return "U"
-        return value[:1]
-
-    def row_class(self, request, obj):
-        if not obj.is_active:
-            return "muted"
-        return ""
 
 class IdentitiesTable(tables.Table):
     idkey = "id"
