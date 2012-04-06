@@ -123,38 +123,22 @@ def domain_actions(user, domid):
     return render_actions(actions)
 
 @register.simple_tag
-def account_actions(user, accountid):
-    actions = [
-        {"name" : "editaccount",
-         "url" : reverse(admin.views.editaccount, args=[accountid]), 
-         "img" : "icon-edit",
-         "modal" : True,
-         "modalcb" : "editaccount_cb",
-         "title" : _("Edit account")},
-        {"name" : "delaccount",
-         "url" : reverse(admin.views.delaccount) + "?selection=%s" % accountid,
-         "img" : "icon-trash",
-         "title" : _("Delete this account")},
-        ]
-    return render_actions(actions)
-
-@register.simple_tag
 def identity_actions(user, iid):
     name, objid = iid.split(':')
     if name == "User":
-        return account_actions(user, objid)
-    actions = [
-        {"name" : "editdlist",
-         "url" : reverse(admin.views.editdlist, args=[objid]),
-         "img" : "icon-edit",
-         "modal" : True,
-         "modalcb" : "dlistform_cb",
-         "title" : _("Edit distribution list")},
-        {"name" : "deldlist",
-         "url" : reverse(admin.views.deldlist) + "?selection=%s" % objid,
-         "img" : "icon-trash",
-         "title" : _("Delete this distribution list")},
-        ]
+        actions = [
+            {"name" : "delaccount",
+             "url" : reverse(admin.views.delaccount) + "?selection=%s" % objid,
+             "img" : "icon-trash",
+             "title" : _("Delete this account")},
+            ]
+    else:
+        actions = [
+            {"name" : "deldlist",
+             "url" : reverse(admin.views.deldlist) + "?selection=%s" % objid,
+             "img" : "icon-trash",
+             "title" : _("Delete this distribution list")},
+            ]
     return render_actions(actions)
 
 @register.simple_tag

@@ -74,8 +74,14 @@ class ActionColumn(Column):
 
 class LinkColumn(Column):
     def render(self, rowid, value):
-        linkdef = dict(url=reverse(self.urlpattern, args=[rowid]), label=value,
-                       modal=self.modal, modalcb=self.modalcb)
+        linkdef = dict(label=value, modal=self.modal)
+        if type(self.urlpattern) == dict:
+            t, value = rowid.split(":")
+            linkdef.update(url=reverse(self.urlpattern[t], args=[value]),
+                           modalcb=self.modalcb[t])
+        else:
+            linkdef.update(url=reverse(self.urlpattern, args=[rowid]),
+                           modalcb=self.modalcb)
         return render_link(linkdef)
 
 class Table(object):

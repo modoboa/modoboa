@@ -54,7 +54,13 @@ class ExtensionsTable(tables.Table):
 
 class IdentitiesTable(tables.Table):
     idkey = "id"
-    identity = tables.Column("identity", label=ugettext_noop("Email/Username"))
+    identity = tables.LinkColumn(
+        "identity", label=ugettext_noop("Email/Username"),
+        modal=True,
+        urlpattern={"User" : "modoboa.admin.views.editaccount",
+                    "Alias" : "modoboa.admin.views.editdlist"},
+        modalcb={"User" : "editaccount_cb", "Alias" : "dlistform_cb"}
+        )
     name_or_rcpt = tables.Column("name_or_rcpt", label=ugettext_noop("Fullname/Recipient"))
     actions = tables.ActionColumn("actions",  label=ugettext_noop("Actions"),
                                   width="70px", align="center", 
