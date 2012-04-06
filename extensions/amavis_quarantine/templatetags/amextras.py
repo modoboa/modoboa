@@ -85,9 +85,7 @@ def quar_menu(user, nbrequests):
          "label" : _("Delete")},
         {"name" : "select",
          "url" : "",
-         "img" : static_url("pics/domains.png"),
-         "label" : _("Select"),
-         "class" : "menubardropdown",
+         "label" : _("Content Class"),
          "menu" : [
                 {"name" : "selectmsgs",
                  "url"  : "",
