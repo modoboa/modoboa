@@ -18,7 +18,7 @@ function modalbox(e, css, defhref, defcb) {
             }
             return;
         }
-        var $div = $('<div id="modalbox" class="modal fade" >' + data + '</div>')
+        var $div = $('<div id="modalbox" class="modal" >' + data + '</div>')
             .modal()
             .one('shown', function() {
                 if (modalcb != undefined) {
