@@ -293,19 +293,21 @@ def newaccount(request, tplname='admin/newaccount.html'):
         submit_label=_("Create")
         )
     cwizard = CreationWizard(create_account)
-    cwizard.add_step(AccountFormGeneralPwd, 
-                     buttons=[dict(classes="btn-inverse next", label=_("Next"))],
+    cwizard.add_step(AccountFormGeneralPwd, _("General"),
+                     [dict(classes="btn-inverse next", label=_("Next"))],
                      new_args=[request.user])
-    cwizard.add_step(AccountFormMail,
-                     buttons=[dict(classes="btn-primary submit", label=_("Create")),
-                              dict(classes="btn-inverse prev", label=_("Previous"))])
+    cwizard.add_step(AccountFormMail, _("Mail"),
+                     [dict(classes="btn-primary submit", label=_("Create")),
+                      dict(classes="btn-inverse prev", label=_("Previous"))])
 
     if request.method == "POST":
         retcode, data = cwizard.validate_step(request)
         if retcode == -1:
             raise AdminError(data)
         if retcode == 1:
-            return ajax_simple_response(dict(status="ok"))
+            return ajax_simple_response(dict(
+                    status="ok", title=cwizard.get_title(data + 1)
+                    ))
         if retcode == 2:
             messages.info(request, _("Account created"))
             return ajax_simple_response(dict(status="ok"))
@@ -314,6 +316,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
 
     cwizard.create_forms()
     ctx.update(steps=cwizard.steps)
+    ctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
     return _render(request, tplname, ctx)
 
 @login_required

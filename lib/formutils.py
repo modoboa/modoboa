@@ -11,8 +11,8 @@ class CreationWizard(object):
         self.steps = []
         self.done_cb = done_cb
 
-    def add_step(self, cls, buttons, new_args=None):
-        self.steps += [dict(cls=cls, buttons=buttons, new_args=new_args)]
+    def add_step(self, cls, title, buttons, new_args=None):
+        self.steps += [dict(cls=cls, title=title, buttons=buttons, new_args=new_args)]
 
     def create_forms(self, data=None):
         for step in self.steps:
@@ -37,8 +37,11 @@ class CreationWizard(object):
             if stepid == len(self.steps) - 1:
                 self.done_cb(self.steps)
                 return 2, None
-            return 1, None
+            return 1, stepid
         return 0, stepid
+
+    def get_title(self, stepid):
+        return "%d. %s" % (stepid + 1, self.steps[stepid]["title"])
 
 class DynamicForm(object):
 

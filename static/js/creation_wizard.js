@@ -22,6 +22,7 @@
             $.post($form.attr("action"), data, $.proxy(function(resp) {
                 if (resp.status == "ok") {
                     if (!last) {
+                        $(".modal-header").find("small").html(resp.title);
                         this.$element.carousel('next');
                     } else {
                         $("#modalbox").modal('hide').remove();
