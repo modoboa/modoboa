@@ -40,7 +40,9 @@ class SelectionColumn(Column):
     usefull to select rows for grouped actions (modify, delete, etc.)
     """
     def __str__(self):
-        return "<input type='checkbox' name='selectall' id='selectall' />"
+        if self.header:
+            return "<input type='checkbox' name='selectall' id='selectall' />"
+        return ""
 
     def render(self, value, selection):
         return "<input type='checkbox' id='%s' name='select_%s' value='%s' %s/>" \

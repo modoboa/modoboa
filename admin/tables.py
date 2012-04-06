@@ -45,7 +45,7 @@ class DomainsTable(tables.Table):
 
 class ExtensionsTable(tables.Table):
     idkey = "id"
-    selection = tables.SelectionColumn("selection", width="4%", first=True)
+    selection = tables.SelectionColumn("selection", width="4%", header=False)
     name = tables.Column("name", label=ugettext_noop("Name"), width="15%")
     version = tables.Column("version", label=ugettext_noop("Version"), width="6%")
     descr = tables.Column("description", label=ugettext_noop("Description"))
