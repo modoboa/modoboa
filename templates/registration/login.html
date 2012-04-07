@@ -11,6 +11,11 @@
   <script type="text/javascript" src="{{ MEDIA_URL }}js/bootstrap.js"></script>
   {% url django.views.i18n.javascript_catalog as catalog_url %}
   <script type="text/javascript" src="{{ catalog_url }}"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#id_username').focus();
+  });
+  </script>
 </head>
 
 <body>
