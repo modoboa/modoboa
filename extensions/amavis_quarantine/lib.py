@@ -5,7 +5,9 @@ import struct
 import string
 from functools import wraps
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from modoboa.lib import parameters
+from models import Msgrcpt
 
 def selfservice(ssfunc=None):
     """Decorator used to expose views to the 'self-service' feature
@@ -29,6 +31,19 @@ def selfservice(ssfunc=None):
             return ssfunc(request, *args, **kwargs)
         return wrapped_f
     return decorator
+
+def get_nb_requests(user):
+    """Return the number of current pending requests
+    
+    :param user: a ``User`` instance
+    """
+    rq = Q(rs='p')
+    if not user.is_superuser:
+        doms = user.get_domains()
+        regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+        doms_q = Q(rid__email__regex=regexp)
+        rp &= doms_q
+    return len(Msgrcpt.objects.filter(rq))
 
 class AMrelease(object):
     def __init__(self):

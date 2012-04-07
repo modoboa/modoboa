@@ -6,6 +6,7 @@ Amavis quarantine manager (SQL based)
 """
 from django.utils.translation import ugettext_noop as _, ugettext
 from django.core.urlresolvers import reverse
+from django.template import Template, Context
 from modoboa.lib import events, parameters
 
 baseurl = "quarantine"
@@ -95,29 +96,45 @@ def remove_user_record(mailbox):
 
     Users.objects.get(email=mailbox.full_address).delete()
 
+@events.observe("GetStaticContent")
+def extra_static_content():
+    tpl = Template("""<script type="text/javascript">
+function check_nb_requests() {
+    $.ajax({
+        url: "{{ url }}",
+        dataType: 'json',
+        success: function(data) {
+            var $link = $("#nbrequests");
+            if (data.requests > 0) {
+                $link.html(data.requests + " " + gettext("pending requests"));
+                $link.parent().removeClass('hidden');
+            } else {
+                $link.parent().addClass('hidden');
+            }
+        }
+    });
+}
+
+$(document).ready(function() {
+    setInterval(check_nb_requests, 2000);
+});
+</script>""")
+    url = reverse("modoboa.extensions.amavis_quarantine.views.nbrequests")
+    return [tpl.render(Context(dict(url=url)))]
+
 @events.observe("TopNotifications")
 def display_requests(user):
-    from models import Msgrcpt
-    from django.db.models import Q
-    from django.template import Template, Context
+    from lib import get_nb_requests
 
     if parameters.get_admin("USER_CAN_RELEASE") == "yes" \
             or user.group == "SimpleUsers":
         return []
+    nbrequests = get_nb_requests(user)
 
-    rq = Q(rs='p')
-    if not user.is_superuser:
-        doms = user.get_domains()
-        regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-        doms_q = Q(rid__email__regex=regexp)
-        rp &= doms_q
-
-    nbrequests = len(Msgrcpt.objects.filter(rq))
-    if nbrequests > 0:
-        url = reverse("modoboa.extensions.amavis_quarantine.views.index")
-        url += "#listing/?viewrequests=1"
-        tpl = Template('<div class="btn-group"><a href="{{ url }}" class="btn btn-danger">{{ label }}</a></div>')
-        return [tpl.render(Context(dict(
-                        label=_("%d pending requests" % nbrequests), url=url
-                        )))]
-    return []
+    url = reverse("modoboa.extensions.amavis_quarantine.views.index")
+    url += "#listing/?viewrequests=1"
+    tpl = Template('<div class="btn-group {{ css }}"><a id="nbrequests" href="{{ url }}" class="btn btn-danger">{{ label }}</a></div>')
+    css = "hidden" if nbrequests == 0 else ""
+    return [tpl.render(Context(dict(
+                    label=_("%d pending requests" % nbrequests), url=url, css=css
+                    )))]

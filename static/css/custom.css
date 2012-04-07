@@ -88,3 +88,7 @@ body {
 .tr-selected { 
     background-color: #F5F5F5;
 }
+
+.hidden { 
+    display: none;
+}

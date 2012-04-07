@@ -115,9 +115,7 @@ def onModifyMailbox(mailbox, oldmailbox):
     alias.save()
 
 @events.observe("GetStaticContent")
-def get_static_content(target):
-    if target != "userprefs":
-        return []
+def get_static_content():
     return """<script type="text/javascript">
 function arform_cb() {
     $('#id_untildate').datepicker();

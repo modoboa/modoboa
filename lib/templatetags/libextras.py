@@ -61,6 +61,15 @@ def display_messages(msgs):
 """ % (level, text, timeout)
 
 @register.simple_tag
+def extra_head_content():
+    tpl = Template("{% for sc in static_content %}{{ sc|safe }}{% endfor %}")
+    return tpl.render(
+        Context(
+            dict(static_content=events.raiseQueryEvent("GetStaticContent"))
+            )
+        )
+
+@register.simple_tag
 def load_optionalmenu(user):
     menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu_middle", user)
     return template.loader.render_to_string('common/menulist.html', 

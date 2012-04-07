@@ -6,13 +6,13 @@ from django.utils import simplejson
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
-    import login_required
+    import login_required, user_passes_test
 from django.db.models import Q
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.webutils import _render, getctx, ajax_response, ajax_simple_response
 from modoboa.admin.models import Mailbox
-from lib import AMrelease, selfservice
+from lib import *
 from templatetags.amextras import *
 from modoboa.lib.email_listing import parse_search_parameters
 from sql_listing import *
@@ -306,3 +306,9 @@ def process(request):
             
     if request.POST["action"] == "delete":
         return delete(request, ids)
+
+@login_required
+@user_passes_test(lambda u: u.group != 'SimpleUsers')
+def nbrequests(request):
+    nbrequests = get_nb_requests(request.user)
+    return ajax_simple_response(dict(requests=nbrequests))
