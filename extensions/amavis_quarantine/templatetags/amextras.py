@@ -34,14 +34,14 @@ def viewm_menu(user, mail_id, rcpt):
          "modal" : True,
          "autowidth" : True},
         {"name" : "release",
-         "img" : "icon-ok",
+         "img" : "icon-white icon-ok",
          "class" : "btn-success",
          "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
              + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Release")},
         {"name" : "delete",
          "class" : "btn-danger",
-         "img" : "icon-trash",
+         "img" : "icon-white icon-trash",
          "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
              + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Delete")},
@@ -75,15 +75,15 @@ def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
                             {"entries" : entries})
 
 @register.simple_tag
-def quar_menu(user, nbrequests):
+def quar_menu(user):
     entries = [
         {"name" : "release-multi",
          "url" : reverse(amavis_quarantine.views.process),
-         "img" : "icon-ok",
+         "img" : "icon-white icon-ok",
          "class" : "btn-success",
          "label" : _("Release")},
         {"name" : "delete-multi",
-         "img" : "icon-trash",
+         "img" : "icon-white icon-trash",
          "class" : "btn-danger",
          "url" : reverse(amavis_quarantine.views.process),
          "label" : _("Delete")},
@@ -116,12 +116,6 @@ def quar_menu(user, nbrequests):
             "extraopts" : extraopts
             })
 
-    if nbrequests > 0:
-        tpl = Template('<div class="btn-group"><a name="viewrequests" href="#" class="btn btn-danger">{{ label }}</a></div>')
-        extracontent += tpl.render(Context(dict(
-                    label=_("%d pending requests" % nbrequests)
-                    )))
-    
     return render_to_string('common/buttons_list.html', dict(
             entries=entries, extracontent=extracontent
             ))

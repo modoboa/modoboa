@@ -67,6 +67,11 @@ def load_optionalmenu(user):
                                             {"entries" : menu, "user" : user})
 
 @register.simple_tag
+def load_notifications(user):
+    content = events.raiseQueryEvent("TopNotifications", user)
+    return "".join(content)
+
+@register.simple_tag
 def render_form(form, tpl=None):
     if tpl is not None:
         return render_to_string(tpl, dict(form=form))

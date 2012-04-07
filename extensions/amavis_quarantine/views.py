@@ -39,7 +39,6 @@ def _listing(request):
     flt = None
     rcptfilter = None
     msgs = None
-    nbrequests = -1
 
     if not request.user.is_superuser and request.user.group != 'SimpleUsers':
         if not len(request.user.get_domains()):
@@ -71,7 +70,6 @@ def _listing(request):
         q = Q(rs='p')
     else:
         q = ~Q(rs='D')
-    rq = Q(rs='p')
     if request.user.group == 'SimpleUsers':
         q &= Q(rid__email=request.user.email)
     else:
@@ -80,12 +78,8 @@ def _listing(request):
             regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
             doms_q = Q(rid__email__regex=regexp)
             q &= doms_q
-            rp &= doms_q            
         if rcptfilter is not None:
             q &= Q(rid__email__contains=rcptfilter)
-
-        if parameters.get_admin("USER_CAN_RELEASE") == "no":
-            nbrequests = len(Msgrcpt.objects.filter(rq))
 
     msgs = Msgrcpt.objects.filter(q).values("mail_id")
 
@@ -108,7 +102,7 @@ def _listing(request):
     content = lst.fetch(request, page.id_start, page.id_stop)
     navbar = lst.render_navbar(page, "listing/?")
     ctx = getctx("ok", listing=content, navbar=navbar,
-                 menu=quar_menu(request.user, nbrequests))
+                 menu=quar_menu(request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required

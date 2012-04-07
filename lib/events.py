@@ -53,6 +53,7 @@ events = [
     
     "GetAnnouncement",
 
+    "TopNotifications",
     "AdminFooterDisplay",
     ]
 

@@ -94,3 +94,30 @@ def remove_user_record(mailbox):
     from models import Users
 
     Users.objects.get(email=mailbox.full_address).delete()
+
+@events.observe("TopNotifications")
+def display_requests(user):
+    from models import Msgrcpt
+    from django.db.models import Q
+    from django.template import Template, Context
+
+    if parameters.get_admin("USER_CAN_RELEASE") == "yes" \
+            or user.group == "SimpleUsers":
+        return []
+
+    rq = Q(rs='p')
+    if not user.is_superuser:
+        doms = user.get_domains()
+        regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+        doms_q = Q(rid__email__regex=regexp)
+        rp &= doms_q
+
+    nbrequests = len(Msgrcpt.objects.filter(rq))
+    if nbrequests > 0:
+        url = reverse("modoboa.extensions.amavis_quarantine.views.index")
+        url += "#listing/?viewrequests=1"
+        tpl = Template('<div class="btn-group"><a href="{{ url }}" class="btn btn-danger">{{ label }}</a></div>')
+        return [tpl.render(Context(dict(
+                        label=_("%d pending requests" % nbrequests), url=url
+                        )))]
+    return []
