@@ -97,17 +97,31 @@ class SQLlisting(EmailListing):
 class SQLemail(Email):
     def __init__(self, msg, *args, **kwargs):
         super(SQLemail, self).__init__(msg, *args, **kwargs)
-        fields = ["X-Amavis-Alert", "Subject", "From", "To", "Cc", "Date"]
+        fields = ["Subject", "From", "To", "Cc", "Date"]
         for f in fields:
             label = f
-            if not msg.has_key(f):
-                f = f.upper()
-                if not msg.has_key(f):
-                    self.headers += [{"name" : label, "value" : ""}]
-                    continue
-            self.headers += [{"name" : label, "value" : msg[f]}]
+            self.headers += [{"name" : label, "value" : self.get_header(msg, f)}]
             try:
                 label = re.sub("-", "_", label)
                 setattr(self, label, msg[f])
             except:
                 pass
+        qreason = self.get_header(msg, "X-Amavis-Alert")
+        self.qtype = ""
+        self.qreason = ""
+        if self.qreason != "":
+            self.qtype, self.qreason = qreason.split(',', 2)
+
+    def get_header(self, msg, name):
+        if msg.has_key(name):
+            return msg[name]
+        name = name.upper()
+        if msg.has_key(name):
+            return msg[name]
+        return ""
+
+    def render_headers(self, **kwargs):
+        return render_to_string("amavis_quarantine/mailheaders.html", {
+                "qtype" : self.qtype, "qreason" : self.qreason, 
+                "headers" : self.headers,
+                })

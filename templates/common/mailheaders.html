@@ -1,7 +1,9 @@
 {% load i18n %}
+{% block emailheaders %}
 <table id="emailheaders" class="table table-striped table-bordered table-condensed">
   {% for hdr in headers %}
   <tr><th width="130px">{% trans hdr.name %}</th><td>{{ hdr.value }}</td></tr>
   {% endfor %}
   {% block extraheaders %}{% endblock %}
 </table>
+{% endblock %}

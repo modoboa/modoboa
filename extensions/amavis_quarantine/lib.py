@@ -42,7 +42,7 @@ def get_nb_requests(user):
         doms = user.get_domains()
         regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
         doms_q = Q(rid__email__regex=regexp)
-        rp &= doms_q
+        rq &= doms_q
     return len(Msgrcpt.objects.filter(rq))
 
 class AMrelease(object):
