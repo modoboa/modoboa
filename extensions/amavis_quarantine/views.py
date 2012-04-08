@@ -31,7 +31,7 @@ def __get_current_url(request):
 def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content, navbar="",
-                 menu=quar_menu(request.user, -1))
+                 menu=quar_menu(request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 @login_required
