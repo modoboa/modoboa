@@ -109,7 +109,7 @@ class SQLemail(Email):
         qreason = self.get_header(msg, "X-Amavis-Alert")
         self.qtype = ""
         self.qreason = ""
-        if self.qreason != "":
+        if qreason != "":
             self.qtype, self.qreason = qreason.split(',', 2)
 
     def get_header(self, msg, name):
