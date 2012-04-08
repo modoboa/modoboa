@@ -2,6 +2,9 @@
     position: fixed;
     top: 60px;
     padding-left: 15px;
+    padding-right: 15px;
+    left: 0;
+    right: 0;
 }
 
 #listing { 

@@ -12,15 +12,6 @@ register = template.Library()
 @register.simple_tag
 def viewm_menu(user, mail_id, rcpt):
     entries = [
-        {"name" : "back",
-         "img" : "icon-arrow-left",
-         "url" : "javascript:history.go(-1);",
-         "label" : _("Back to list")},
-        {"name" : "headers",
-         "url" : reverse(amavis_quarantine.views.viewheaders, args=[mail_id]),
-         "label" : _("View full headers"),
-         "modal" : True,
-         "autowidth" : True},
         {"name" : "release",
          "img" : "icon-white icon-ok",
          "class" : "btn-success",
@@ -33,10 +24,23 @@ def viewm_menu(user, mail_id, rcpt):
          "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
              + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Delete")},
+        {"name" : "headers",
+         "url" : reverse(amavis_quarantine.views.viewheaders, args=[mail_id]),
+         "label" : _("View full headers"),
+         "modal" : True,
+         "autowidth" : True},
         ]
 
-    return render_to_string('common/buttons_list.html', 
-                            {"entries" : entries})
+    menu = render_to_string('common/buttons_list.html', 
+                            {"entries" : entries, "extraclasses" : "pull-left"})
+    
+    entries = [{"name" : "close",
+                "url" : "javascript:history.go(-1);",
+                "img" : "icon-remove"}]
+    menu += render_to_string('common/buttons_list.html', 
+                             {"entries" : entries, "extraclasses" : "pull-right"})
+
+    return menu
 
 @register.simple_tag
 def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
