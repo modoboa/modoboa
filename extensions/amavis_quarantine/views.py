@@ -134,9 +134,7 @@ def getmailcontent(request, mail_id):
     for qm in qmails:
         content += qm.mail_text
     msg = email.message_from_string(content)
-    links = request.GET.has_key("links") and request.GET["links"] or "0"
-    mode = request.GET.has_key("mode") and request.GET["mode"] or "plain"
-    mail = SQLemail(msg, mformat=mode, links=links)
+    mail = SQLemail(msg, mformat="plain", links="0")
     return _render(request, "common/viewmail.html", {
             "headers" : mail.render_headers(), 
             "mailbody" : mail.body
@@ -166,15 +164,10 @@ def viewmail(request, mail_id):
         msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=mb.full_address)
         msgrcpt.rs = 'V'
         msgrcpt.save()
-    args = []
-    for kw in ["mode", "links"]:
-        if request.GET.has_key(kw):
-            args += ["%s=%s" % (kw, request.GET[kw])]
     
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
-""").render(Context({"url" : reverse(getmailcontent, args=[mail_id]) \
-                         + "?%s" % "&".join(args)}))
+""").render(Context({"url" : reverse(getmailcontent, args=[mail_id])}))
     menu = viewm_menu(request.user, mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

@@ -11,18 +11,6 @@ register = template.Library()
 
 @register.simple_tag
 def viewm_menu(user, mail_id, rcpt):
-    options_menu = [
-        {"name" : "viewmode", 
-         "label" : _("View as plain text"),
-         "url" : "?mode=plain&links=0"},
-        {"name" : "viewmode", 
-         "label" : _("View as HTML"),
-         "url" : "?mode=html&links=0"},
-        {"name" : "viewmode", 
-         "label" : _("Activate links"),
-         "url" : "?mode=html&links=1"}
-        ]
-
     entries = [
         {"name" : "back",
          "img" : "icon-arrow-left",
@@ -45,10 +33,6 @@ def viewm_menu(user, mail_id, rcpt):
          "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
              + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Delete")},
-        {"name" : "options",
-         "label" : _("Options"),
-         "img" : "icon-cog",
-         "menu" : options_menu}
         ]
 
     return render_to_string('common/buttons_list.html', 
