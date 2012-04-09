@@ -22,6 +22,10 @@
     height: 100%;
 }
 
+#emails tbody tr:hover { 
+    color: #0088cc;
+}
+
 thead tr {
     position: relative;
     z-index: 1;
