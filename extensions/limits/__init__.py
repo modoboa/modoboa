@@ -20,7 +20,7 @@ import views
 baseurl = "limits"
 
 def init():
-    from modoboa.admin.models import User
+    from modoboa.admin.models import User, Domain
 
     ct = ContentType.objects.get(app_label="admin", model="domain")
     dagrp = Group.objects.get(name="DomainAdmins")
