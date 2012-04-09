@@ -243,8 +243,12 @@ class AccountFormGeneral(forms.ModelForm):
         account = super(AccountFormGeneral, self).save(commit=False)
         if commit:
             account.save()
+            role = None
             if self.cleaned_data.has_key("role"):
                 role = self.cleaned_data["role"]
+            elif self.user.group == "DomainAdmins":
+                role = "SimpleUsers"
+            if role is not None:
                 account.groups.clear()
                 if role == "SuperAdmins":
                     account.is_superuser = True
@@ -437,7 +441,8 @@ class AccountForm(TabForms):
     def check_perms(self, account):
         if account.is_superuser:
             return False
-        return account.has_perm("admin.add_domain")
+        return self.user.has_perm("admin.add_domain") \
+            and account.has_perm("auth.add_user")
 
     def _before_is_valid(self, form):
         if form["id"] == "general":
