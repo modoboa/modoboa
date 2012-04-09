@@ -324,7 +324,15 @@ def newaccount(request, tplname='admin/newaccount.html'):
 @transaction.commit_on_success
 def editaccount(request, accountid, tplname="common/tabforms.html"):
     account = User.objects.get(pk=accountid)
-    mb = account.mailbox_set.all()[0] if account.has_mailbox else None
+    if account.has_mailbox:
+        mb = account.mailbox_set.all()[0]
+        if not request.user.can_access(mb.domain):
+            raise PermDeniedException(_("You don't have access to this domain"))
+    else:
+        if not request.user.can_access(account):
+            raise PermDeniedException(_("You can't access this account"))
+        mb = None
+
     instances = dict(general=account, mail=mb, perms=account)
     events.raiseEvent("FillAccountInstances", request.user, account, instances)
 

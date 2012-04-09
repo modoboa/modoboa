@@ -519,12 +519,13 @@ class Mailbox(DatesAware):
 
     def rename_dir(self, newdomain, newaddress):
         if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
-            if self.domain.name == domain and newaddress == self.address:
+            if self.domain.name == newdomain and newaddress == self.address:
                 return True
             oldpath = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.domain.name)
             newpath = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), newdomain)
-            code = exec_as_vuser("mv %s/%s %s/%s" \
-                                     % (oldpath, self.address, newpath, newaddress))
+            oldpath = os.path.join(oldpath, self.address)
+            newpath = os.path.join(newpath, newaddress)
+            code = exec_as_vuser("mv %s %s" % (oldpath, newpath))
             if code:
                 self.path = "%s/" % newaddress
             return code

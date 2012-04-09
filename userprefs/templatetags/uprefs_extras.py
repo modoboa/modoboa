@@ -39,9 +39,9 @@ def user_menu(user):
                  "label" : _("Change password"),
                  "modal" : True,
                  "modalcb" : "chpasswordform_cb"},
-                {"name" : "preferences",
+                {"name" : "settings",
                  "img" : "icon-list",
-                 "label" : _("Preferences"),
+                 "label" : _("Settings"),
                  "url" : reverse("modoboa.userprefs.views.preferences")}
                 ]}
         ]
@@ -70,12 +70,3 @@ def loadextmenu(selection, user):
     menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu", user)
     return render_to_string('common/menulist.html', 
                             {"selection" : selection, "entries" : menu, "user" : user})
-
-@register.simple_tag
-def extra_head_content():
-    tpl = Template("{% for sc in static_content %}{{ sc|safe }}{% endfor %}")
-    return tpl.render(
-        Context(
-            dict(static_content=events.raiseQueryEvent("GetStaticContent", "userprefs"))
-            )
-        )

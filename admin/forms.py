@@ -220,8 +220,9 @@ class AccountFormGeneral(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(AccountFormGeneral, self).__init__(*args, **kwargs)
         
+        self.fields["is_active"].label = _("Enabled")
         self.user = user
-        if user.belongs_to_group("DomainAdmins"):
+        if user.group == "DomainAdmins":
             del self.fields["role"]
             return
 
@@ -436,7 +437,7 @@ class AccountForm(TabForms):
     def check_perms(self, account):
         if account.is_superuser:
             return False
-        return account.has_perm("auth.add_user")
+        return account.has_perm("admin.add_domain")
 
     def _before_is_valid(self, form):
         if form["id"] == "general":

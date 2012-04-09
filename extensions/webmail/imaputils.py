@@ -133,7 +133,7 @@ class IMAPconnector(object):
         self.port = int(parameters.get_admin("IMAP_PORT"))
         status, msg = self.login(user, password)
         if not status:
-            raise Exception(msg)
+            raise WebmailError(msg)
 
     def _cmd(self, name, *args, **kwargs):
         """IMAP command wrapper
@@ -219,6 +219,8 @@ class IMAPconnector(object):
 
 
     def login(self, user, passwd):
+        import socket
+
         try:
             secured = parameters.get_admin("IMAP_SECURED")
             if secured == "yes":
