@@ -118,7 +118,7 @@ def onModifyMailbox(mailbox, oldmailbox):
 def get_static_content():
     return """<script type="text/javascript">
 function arform_cb() {
-    $('#id_untildate').datepicker();
+    $('#id_untildate').datepicker({format: 'yyyy-mm-dd'});
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
             error_cb: arform_cb,

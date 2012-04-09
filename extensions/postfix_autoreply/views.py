@@ -1,4 +1,5 @@
 # coding: utf-8
+from datetime import date
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.contrib.auth.decorators \
@@ -47,5 +48,7 @@ def autoreply(request, tplname="common/generic_modal_form.html"):
     form = ARmessageForm(instance=arm)
     if arm is not None:
         form.fields['untildate'].initial = arm.untildate
+    else:
+        form.fields['untildate'].initial = date.today()
     ctx.update(form=form)
     return _render(request, tplname, ctx)

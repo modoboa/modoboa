@@ -12,6 +12,10 @@ class ARmessageForm(forms.ModelForm):
     class Meta:
         model = ARmessage
         fields = ('subject', 'content', 'enabled')
+    
+    def __init__(self, *args, **kwargs):
+        super(ARmessageForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['subject', 'content', 'untildate', 'enabled']
 
     def clean_untildate(self):
         if self.cleaned_data["untildate"] is not None:
