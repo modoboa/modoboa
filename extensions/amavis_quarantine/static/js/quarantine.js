@@ -49,7 +49,7 @@ Quarantine.prototype = {
 
         $(document).on("click", "a[name=release]", $.proxy(this.release, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete, this));
-        $(document).on("click", "a[name=viewmode]", $.proxy(this.update_params, this));
+        $(document).on("click", "a[name=headers]", $.proxy(this.headers, this));
     },
 
     load_page: function(e) {
@@ -150,6 +150,39 @@ Quarantine.prototype = {
 
     delete: function(e) {
         this._send_action(e, gettext("Delete this message?"));
+    },
+
+    show_rawheaders: function($mailcontent) {
+        $mailcontent.find("#rawheaders").removeClass("hidden");
+        $mailcontent.find("#emailheaders").addClass("hidden");
+    },
+
+    headers: function(e) {
+        e.preventDefault();
+
+        var $link = $(e.target);
+        var $mailcontent = $("#mailcontent").contents();
+        var $headers = $mailcontent.find("#emailheaders");
+        var $rawheaders = $mailcontent.find("#rawheaders");
+
+        if ($headers.hasClass("hidden")) {
+            $link.html(gettext("View full headers"));
+            $headers.removeClass("hidden");
+            $rawheaders.addClass("hidden");
+            return;
+        }
+        $link.html(gettext("Hide full headers"));
+        if (!$rawheaders.length) {
+            $.ajax({
+                url: $link.attr("href"),
+                success: $.proxy(function(data) {
+                    $mailcontent.find("#table-container").append($(data));
+                    this.show_rawheaders($mailcontent);
+                }, this)
+            });
+            return;
+        }
+        this.show_rawheaders($mailcontent);
     },
 
     update_params: function(e) {

@@ -179,7 +179,6 @@ def viewheaders(request, mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
     return _render(request, 'amavis_quarantine/viewheader.html', {
-            "title" : _("Message headers"),
             "headers" : msg.items()
             })
 

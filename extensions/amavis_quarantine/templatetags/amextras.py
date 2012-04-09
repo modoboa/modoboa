@@ -26,9 +26,7 @@ def viewm_menu(user, mail_id, rcpt):
          "label" : _("Delete")},
         {"name" : "headers",
          "url" : reverse(amavis_quarantine.views.viewheaders, args=[mail_id]),
-         "label" : _("View full headers"),
-         "modal" : True,
-         "autowidth" : True},
+         "label" : _("View full headers")},
         ]
 
     menu = render_to_string('common/buttons_list.html', 

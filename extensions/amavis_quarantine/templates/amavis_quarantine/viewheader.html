@@ -1,11 +1,4 @@
-{% extends "common/generic_modal.html" %}
-{% load i18n %}
-{% block modalbody %}
-<table class="table table-condensed table-striped">
-{% for k, v in headers %}
-<tr>
-  <td class="odd">{{ k }}</td><td>{{ v }}</td>
-</tr>
+<pre id="rawheaders">
+{% for k, v in headers %}{{ k }}: {{ v }}
 {% endfor %}
-</table>
-{% endblock %}
+</pre>
