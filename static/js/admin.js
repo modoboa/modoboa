@@ -2,7 +2,9 @@ function domainform_cb() {
     $('input:text:visible:first').focus();
     $("#id_aliases").dynamic_input();
     $(".submit").one('click', function(e) {
-        simple_ajax_form_post(e, domainform_cb);
+        simple_ajax_form_post(e, {
+            error_cb: domainform_cb
+        });
     });
 }
 
@@ -54,6 +56,7 @@ function importform_cb() {
             return;
         }
         $("#import_status").css("display", "block");
+        $("#import_result").html("").removeClass("alert alert-error");
         $("form").submit();
     });
 }
@@ -64,8 +67,8 @@ function importdone(status, msg) {
         $("#modalbox").modal('hide');
         window.location.reload();
     } else {
-        $("#import_result").html("");
-        $(".modal-header").notify({top_position: 10});
-        $(".modal-header").notify('error', msg);
+        $("#import_result").addClass("alert alert-error");
+        $("#import_result").html(msg);
+        importform_cb();
     }
 }

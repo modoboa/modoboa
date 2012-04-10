@@ -1,7 +1,10 @@
 {% extends "common/generic_modal_form.html" %}
 {% load libextras i18n %}
 {% block formbody %}
-
+<div class="alert alert-info">
+  <h4>{% trans "Help" %}</h4>
+  {{ helptext|safe }}
+</div>
 {% render_form form %}
 <iframe id="import_target" name="import_target" src="#" 
         style="width:0;height:0;border:0px solid #fff;"></iframe>

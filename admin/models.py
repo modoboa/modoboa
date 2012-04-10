@@ -430,6 +430,14 @@ class Domain(DatesAware):
     def __str__(self):
         return self.name
 
+    def create_from_csv(self, user, row):
+        if len(row) < 3:
+            raise AdminError(_("Invalid line"))
+        self.name = row[1].strip()
+        self.quota = int(row[2].strip())
+        self.enabled = True
+        self.save()
+
 class DomainAlias(DatesAware):
     name = models.CharField(ugettext_noop("name"), max_length=100, unique=True,
                             help_text=ugettext_noop("The alias name"))
@@ -546,7 +554,11 @@ class Mailbox(DatesAware):
             user = getattr(self, "user")
         except User.DoesNotExist:
             user = User()
-        user.username = user.email = "%s@%s" % (self.address, self.domain.name)
+        user.email = "%s@%s" % (self.address, self.domain.name)
+        if kwargs.has_key("username"):
+            user.username = kwargs["username"]
+        else:
+            user.username = user.email
         if kwargs.has_key("enabled"):
             user.is_active = kwargs["enabled"]
         if kwargs.has_key("name"):
@@ -587,7 +599,7 @@ class Mailbox(DatesAware):
             self.quota = kwargs["quota"]
         else:
             self.quota = self.domain.quota
-        for kw in ["name", "enabled", "password", "quota"]:
+        for kw in ["username", "name", "enabled", "password", "quota"]:
             try:
                 del kwargs[kw]
             except KeyError:
@@ -630,19 +642,20 @@ class Mailbox(DatesAware):
 
         :param line: a list containing the expected information
         """
-        if len(line) < 4:
+        if len(line) < 6:
             raise AdminError(_("Invalid line"))
-        mailbox, domname = split_mailbox(line[0])
+        mailbox, domname = split_mailbox(line[5].strip())
         self.address = mailbox
         try:
             self.domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise AdminError(_("Cannot import this mailbox because the associated domain does not exist"))
-        if not user.is_owner(self.domain):
+        if not user.can_access(self.domain):
             raise PermDeniedException(_("You don't have access to this domain"))
 
-        name = "%s %s" % (line[2], line[3])
-        self.save(name=name, password=line[1], enabled=True)
+        name = "%s %s" % (line[3].strip(), line[4].strip())
+        self.save(username=line[1].strip(), name=name, 
+                  password=line[2].strip(), enabled=True)
 
     def delete(self, *args, **kwargs):
         keepdir = False
@@ -721,6 +734,36 @@ class Alias(DatesAware):
             if not user.is_owner(mb.domain):
                 return True
         return False
+
+    def create_from_csv(self, user, row):
+        if len(row) < 4:
+            raise AdminError(_("Invalid line"))
+        localpart, domname = split_mailbox(row[1].strip())
+        try:
+            domain = Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            raise AdminError(_("Domain does not exist"))
+        if not user.can_access(domain):
+            raise PermDeniedException(_("You can't access this domain"))
+        self.address = localpart
+        self.domain = domain
+        self.enabled = True
+        int_rcpts = []
+        ext_rcpts = []
+        for rcpt in row[2:]:
+            rcpt = rcpt.strip()
+            localpart, domname = split_mailbox(rcpt)
+            try:
+                Domain.objects.get(name=domname)
+            except Domain.DoesNotExist:
+                ext_rcpts += [rcpt]
+                continue
+            try:
+                int_rcpts += [Mailbox.objects.get(address=localpart, 
+                                                  domain__name=domname)]
+            except Mailbox.DoesNotExist:
+                raise AdminError(_("Mailbox %s does not exist" % rcpt))
+        self.save(int_rcpts, ext_rcpts)        
 
 class Extension(models.Model):
     name = models.CharField(max_length=150)

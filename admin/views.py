@@ -127,8 +127,10 @@ def deldomain(request):
         if mb and mb.domain == dom:
             raise AdminError(_("You can't delete your own domain"))
 
-        events.raiseEvent("DomainAliasDeleted", dom.domainalias_set.all())
-        events.raiseEvent("DeleteMailbox", dom.mailbox_set.all())
+        if len(dom.domainalias_set.all()):
+            events.raiseEvent("DomainAliasDeleted", dom.domainalias_set.all())
+        if len(dom.mailbox_set.all()):
+            events.raiseEvent("DeleteMailbox", dom.mailbox_set.all())
         events.raiseEvent("DeleteDomain", dom)
         ungrant_access_to_object(dom)
         dom.delete(keepdir=keepdir)
@@ -481,18 +483,29 @@ def saveextensions(request):
             ))
 
 def import_domain(user, row):
-    pass
+    """Specific code for domains import"""
+    dom = Domain()
+    dom.create_from_csv(user, row)
+    grant_access_to_object(user, dom, is_owner=True)
+    events.raiseEvent("CreateDomain", user, dom)
 
 def import_account(user, row):
     """Specific code for accounts import"""
     mb = Mailbox()
     mb.create_from_csv(user, row)
-    events.raiseEvent("AccountCreated", user, mb.user)
+    grant_access_to_object(user, mb.user, is_owner=True)
+    grant_access_to_object(user, mb, is_owner=True)
+    events.raiseEvent("AccountCreated", mb.user)
     events.raiseEvent("CreateMailbox", user, mb)
-    grant_access_to_object(user, mb.user)
-    grant_access_to_object(user, mb)
 
-def importdata(request, typ):
+def import_dlist(user, row):
+    """Specific code for distribution lists import"""
+    dlist = Alias()
+    dlist.create_from_csv(user, row)
+    grant_access_to_object(user, dlist, is_owner=True)
+    events.raiseEvent("MailboxAliasCreated", user, dlist)
+
+def importdata(request):
     """Generic import function
 
     As the process of importing data from a CSV file is the same
@@ -514,18 +527,22 @@ def importdata(request, typ):
             error = str(e)
 
         if error is None:
-            fct = globals()["import_%s" % typ]
             try:
                 cpt = 0
                 for row in reader:
+                    try:
+                        fct = globals()["import_%s" % row[0].strip()]
+                    except KeyError:
+                        continue
                     fct(request.user, row)
                     cpt += 1
-                messages.info(request, _("%d %s imported successfully" % (cpt, typ)))
+                messages.info(request, _("%d objects imported successfully" % cpt))
                 return _render(request, "admin/import_done.html", {
                         "status" : "ok", "msg" : ""
                         })
-            except ModoboaException, e:
+            except (IntegrityError, ModoboaException), e:
                 error = str(e)
+                print error
 
     return _render(request, "admin/import_done.html", {
             "status" : "ko", "msg" : error
@@ -536,8 +553,15 @@ def importdata(request, typ):
 @transaction.commit_on_success
 def import_identities(request):
     if request.method == "POST":
-        return importdata(request, "account")
+        return importdata(request)
 
+    helptext = _("""Provide a CSV file where lines respect one of the following format:
+<ul>
+<li><em>account; loginname; password; first name; last name; address</em></li>
+<li><em>dlist; address; recipient; recipient; ...</em></li>
+</ul>
+You can use a different character as separator.
+""")
     ctx = dict(
         title=_("Import identities"),
         action_label=_("Import"),
@@ -546,7 +570,8 @@ def import_identities(request):
         formid="importform",
         enctype="multipart/form-data",
         target="import_target",
-        form=ImportDataForm()
+        form=ImportDataForm(),
+        helptext=helptext
         )
     return _render(request, "admin/importform.html", ctx)
 
@@ -555,7 +580,13 @@ def import_identities(request):
 @transaction.commit_on_success
 def import_domains(request):
     if request.method == "POST":
-        return importdata(request, "domain")
+        return importdata(request)
+
+    helptext = _("""Provide a CSV file where lines respect the following format:<br/>
+<em>domain; name; quota</em><br/>
+
+You can use a different character as separator.
+""")
 
     ctx = dict(
         title=_("Import domains"),
@@ -565,6 +596,7 @@ def import_domains(request):
         formid="importform",
         enctype="multipart/form-data",
         target="import_target",
+        helptext=helptext,
         form=ImportDataForm()
         )
     return _render(request, "admin/importform.html", ctx)
