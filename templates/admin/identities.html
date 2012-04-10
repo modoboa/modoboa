@@ -31,4 +31,5 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">{% identities_menu user %}</div>{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">{% include "admin/searchform.html" %}
+{% identities_menu user %}</div>{% endblock %}

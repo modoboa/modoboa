@@ -1,0 +1,6 @@
+{% load i18n %}
+<form id="searchform" class="form-search">
+  <input class="input-medium search-query" type="text" 
+         value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search' %}"{% endif %}
+         id="searchquery" name="searchquery" />
+</form>

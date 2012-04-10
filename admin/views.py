@@ -30,11 +30,11 @@ def domains(request):
         return HttpResponseRedirect(reverse(userprefs.views.preferences))
     
     domains = request.user.get_domains()
-    for dom in domains:
-        dom.mbalias_counter = len(Alias.objects.filter(domain=dom.id))
-    return render_listing(request, "domains",
-                          "admin/domains.html",
-                          objects=domains)
+    squery = request.GET.get("searchquery", None)
+    if squery is not None:
+        domains = domains.filter(name__contains=squery)
+    return render_listing(request, "domains", "admin/domains.html",
+                          objects=domains, squery=squery)
 
 @login_required
 @permission_required("auth.add_user")
@@ -250,14 +250,28 @@ def deldlist(request):
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
 def identities(request, tplname='admin/identities.html'):
     accounts_list = []
-    for account in User.objects.all():
+    squery = request.GET.get("searchquery", None)
+    if squery:
+        accounts = User.objects.filter(username__contains=squery)
+        if squery.find('@') != -1:
+            local_part, domname = split_mailbox(squery)
+            mbaliases = Alias.objects.filter(address__contains=local_part,
+                                             domain__name__contains=domname)
+        else:
+            mbaliases = Alias.objects.filter(address__contains=squery)
+    else:
+        accounts = User.objects.all()
+        mbaliases = Alias.objects.all()
+
+    for account in accounts:
         if request.user.can_access(account) or \
                 account.has_mailbox and request.user.can_access(account.mailbox_set.all()[0].domain):
             accounts_list += [account]
-    for mbalias in Alias.objects.all():
+    for mbalias in mbaliases:
         if len(mbalias.get_recipients()) >= 2:
             accounts_list += [mbalias]
-    return render_listing(request, "identities", tplname, objects=accounts_list)
+    return render_listing(request, "identities", tplname, 
+                          objects=accounts_list, squery=squery)
 
 @login_required
 @permission_required("auth.add_user")

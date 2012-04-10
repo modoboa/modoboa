@@ -8,7 +8,16 @@
             question: gettext("Delete this domain?"),
             checkboxes: {keepdir: gettext("Do not delete domain directory")}
         });
+        $("#searchquery").focus(function() {
+            $(this).attr("value", "");
+        }).blur(function() {
+            var $this = $(this);
+            if ($this.attr("value") == "") {
+                $this.attr("value", gettext("Search"));
+            }
+        });
     });
   </script>
 {% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">{% domains_menu "domains" user %}</div>{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">{% include "admin/searchform.html" %}
+{% domains_menu "domains" user %}</div>{% endblock %}

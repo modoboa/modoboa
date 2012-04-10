@@ -3,6 +3,18 @@
 {% block html_head %}
 {{ block.super }}
 <script type="text/javascript" src="{{ MEDIA_URL }}js/dynamic_input.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#searchquery").focus(function() {
+        $(this).attr("value", "");
+    }).blur(function() {
+        var $this = $(this);
+        if ($this.attr("value") == "") {
+            $this.attr("value", {% if squery %}"{{ squery }}"{% else %}gettext("Search"){% endif %});
+        }
+    });
+});
+</script>
 {% endblock %}
 {% block apparea %}
 {{ table|safe }}

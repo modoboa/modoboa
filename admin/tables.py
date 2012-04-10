@@ -16,7 +16,7 @@ class DomainsTable(tables.Table):
                                width="100px", align="center")
     mboxes = tables.Column("mailbox_count", label=ugettext_noop("Mailboxes"), 
                            width="100px", align="center")
-    mbaliases = tables.Column("mbalias_counter", label=ugettext_noop("Mailbox aliases"),
+    mbaliases = tables.Column("mbalias_count", label=ugettext_noop("Mailbox aliases"),
                               width="100px", align="center")
     quota = tables.Column("quota", label=ugettext_noop("Quota"), 
                           width="50px", align="center")

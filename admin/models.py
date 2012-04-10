@@ -387,6 +387,10 @@ class Domain(DatesAware):
     def mailbox_count(self):
         return len(self.mailbox_set.all())
 
+    @property
+    def mbalias_count(self):
+        return len(self.alias_set.all())
+
     def create_dir(self):
         if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
             path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
