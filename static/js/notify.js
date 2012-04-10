@@ -50,7 +50,7 @@
             this.$element.append(nbox);
             if (timer != undefined) {
                 window.setTimeout(function() {
-                    $('.alert').alert('close');
+                    nbox.alert('close');
                 }, timer);
             }
             return this;

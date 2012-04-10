@@ -231,6 +231,9 @@ function filterset_created(data) {
 }
 
 function filtersetform_cb() {
+    $("#newfiltersset").find("input").keypress(function(e) {
+        if (e.which == 13) e.preventDefault();
+    });
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
             reload_on_success: false,

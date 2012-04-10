@@ -251,6 +251,7 @@ def deldlist(request):
 def identities(request, tplname='admin/identities.html'):
     accounts_list = []
     squery = request.GET.get("searchquery", None)
+    mbalias_q = Q(domain__in=request.user.get_domains())
     if squery:
         accounts = User.objects.filter(username__contains=squery)
         if squery.find('@') != -1:
@@ -258,10 +259,10 @@ def identities(request, tplname='admin/identities.html'):
             mbaliases = Alias.objects.filter(address__contains=local_part,
                                              domain__name__contains=domname)
         else:
-            mbaliases = Alias.objects.filter(address__contains=squery)
+            mbaliases = Alias.objects.filter(mbalias_q & Q(address__contains=squery))
     else:
         accounts = User.objects.all()
-        mbaliases = Alias.objects.all()
+        mbaliases = Alias.objects.filter(mbalias_q)
 
     for account in accounts:
         if request.user.can_access(account) or \

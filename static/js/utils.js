@@ -40,7 +40,10 @@ function modalbox(e, css, defhref, defcb) {
 }
 
 function modalbox_autowidth(e) {
-    modalbox.apply(this, [e, {width: 'auto'}]);
+    modalbox.apply(this, [e, {
+        width: 'auto',
+        'margin-left': function() { return -($(this).width() / 2); }
+    }]);
 }
 
 /*

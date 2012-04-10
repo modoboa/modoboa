@@ -34,11 +34,6 @@
     margin-top: 20px;
 }
 
-#filterform #id_name {
-    margin-top: 10px;
-    width: 200px;
-}
-
 #submit_container {
     width: 100%;
     position: absolute;
