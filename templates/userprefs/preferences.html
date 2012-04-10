@@ -2,6 +2,16 @@
 {% load i18n uprefs_extras libextras %}
 {% block html_head %}
 <script type="text/javascript">
+function forwardform_cb() {
+    $(".submit").one('click', function(e) {
+        simple_ajax_form_post(e, {
+            formid: "forwardform",
+            error_cb: forwardform_cb,
+            reload_on_success: false
+        });
+    });
+}
+
 $(document).ready(function() {
     $("#update").click(function(evt) {
         evt.preventDefault();

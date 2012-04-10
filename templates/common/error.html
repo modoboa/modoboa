@@ -1,6 +1,5 @@
 {% extends "nlayout.html" %}
 {% load i18n %}
-{% block middletitle %}{% trans "Error" %}{% endblock %}
 {% block content %}
-<div class="error"><p>{{ error }}</p></div>
+<div class="alert alert-error"><strong>{% trans "Error:" %}</strong> {{ error }}</div>
 {% endblock %}

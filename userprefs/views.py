@@ -23,7 +23,7 @@ def changepassword(request, tplname="common/generic_modal_form.html"):
     res = events.raiseQueryEvent("PasswordChange", request.user)
     if True in res:
         ctx = dict(error=_("Password change is disabled for this user"))
-        return _render_error(request, errortpl="error_simple", user_context=ctx)
+        return _render_error(request, user_context=ctx)
 
     ctx = dict(
         title=_("Change password"),
@@ -55,8 +55,15 @@ def changepassword(request, tplname="common/generic_modal_form.html"):
 
 @login_required
 @user_passes_test(lambda u: u.belongs_to_group('SimpleUsers'))
-def setforward(request, tplname="userprefs/setforward.html"):
-    mb = Mailbox.objects.get(user=request.user.id)
+def setforward(request, tplname="common/generic_modal_form.html"):
+    mb = request.user.mailbox_set.all()[0]
+    ctx = dict(
+        title=_("Define a forward"),
+        formid="forwardform",
+        action=reverse(setforward),
+        action_label=_("Update"),
+        action_classes="submit",
+        )
     try:
         al = Alias.objects.get(address=mb.address, 
                                domain__name=mb.domain.name)
@@ -80,9 +87,11 @@ def setforward(request, tplname="userprefs/setforward.html"):
                 return ajax_response(request, respmsg=_("Forward updated"))
             except BadDestination, e:
                 error = str(e)
-        return ajax_response(request, status="ko", template=tplname,
-                             form=form, error=error)
+        ctx.update(form=form, error=error)
+        return ajax_response(request, status="ko", template=tplname, **ctx)
+
     form = ForwardForm()
+    print al
     if al is not None:
         form.fields["dest"].initial = al.extmboxes
         try:
@@ -91,9 +100,8 @@ def setforward(request, tplname="userprefs/setforward.html"):
             pass
         else:
             form.fields["keepcopies"].initial = True
-    return _render(request, tplname, {
-            "form" : form
-            })
+    ctx.update(form=form)
+    return _render(request, tplname, ctx)
 
 @login_required
 def preferences(request):

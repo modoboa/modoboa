@@ -16,6 +16,15 @@ def uprefs_menu(selection, user):
          "url" : "",
          "label" : _("Preferences")},
         ]
+    if user.group == 'SimpleUsers':
+        entries += [
+            {"name" : "setforwards",
+             "url" : reverse("modoboa.userprefs.views.setforward"),
+             "modal" : True,
+             "modalcb" : "forwardform_cb",
+             "label" : _("Forward")}
+            ]
+
     entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu", user)
 
     return render_to_string('common/menu.html', {
@@ -51,16 +60,6 @@ def user_menu(user, selection):
             "url" : reverse("modoboa.auth.views.dologout"),
             "label" : _("Logout"),
             "img" : "icon-off"}]
-
-    # if user.group == 'SimpleUsers':
-    #     entries[0]["menu"] += [{
-    #         "name" : "setforwards",
-    #         "url" : reverse("modoboa.userprefs.views.setforward"),
-    #         "img" : static_url("pics/alias.png"),
-    #         "label" : _("Forward"),
-    #         "class" : "boxed",
-    #         "rel" : "{handler:'iframe',size:{x:360,y:350},closeBtn:true}"
-    #         }]
 
     return render_to_string("common/menulist.html",
                             {"selection" : selection, "entries" : entries, "user" : user})

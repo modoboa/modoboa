@@ -97,7 +97,11 @@ def remove_user_record(mailbox):
     Users.objects.get(email=mailbox.full_address).delete()
 
 @events.observe("GetStaticContent")
-def extra_static_content():
+def extra_static_content(user):
+    if parameters.get_admin("USER_CAN_RELEASE") == "yes" \
+            or user.group == "SimpleUsers":
+        return []
+
     tpl = Template("""<script type="text/javascript">
 function check_nb_requests() {
     $.ajax({

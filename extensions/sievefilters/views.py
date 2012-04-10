@@ -35,6 +35,7 @@ def index(request, tplname="sievefilters/index.html"):
     else:
         default_script = "%s/" % active_script
     return _render(request, tplname, {
+            "selection" : "user",
             "active_script" : active_script,
             "default_script" : default_script,
             "scripts" : sorted(scripts),

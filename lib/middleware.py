@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+# coding: utf-8
 import re
 from django.http import Http404, HttpResponseRedirect
 from modoboa.admin.models import Extension
@@ -31,8 +30,7 @@ class CommonExceptionCatcher(object):
             return None
 
         if not request.is_ajax():
-            return _render_error(request, errortpl="error_simple",
-                                 user_context=dict(error=str(exception)))
+            return _render_error(request, user_context=dict(error=str(exception)))
         
         return ajax_response(request, status="ko", respmsg=str(exception),
                              norefresh=True)

@@ -61,11 +61,11 @@ def display_messages(msgs):
 """ % (level, text, timeout)
 
 @register.simple_tag
-def extra_head_content():
+def extra_head_content(user):
     tpl = Template("{% for sc in static_content %}{{ sc|safe }}{% endfor %}")
     return tpl.render(
         Context(
-            dict(static_content=events.raiseQueryEvent("GetStaticContent"))
+            dict(static_content=events.raiseQueryEvent("GetStaticContent", user))
             )
         )
 
