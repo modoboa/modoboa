@@ -437,7 +437,8 @@ def viewparameters(request, tplname='admin/parameters.html'):
         gparams += [tmp]
 
     return _render(request, tplname, {
-            "selection" : "parameters",
+            "selection" : "settings",
+            "left_selection" : "parameters",
             "gparams" : gparams
             })
 
@@ -470,7 +471,8 @@ def viewextensions(request, tplname='admin/extensions.html'):
             
     tbl = ExtensionsTable(request, exts)
     return _render(request, tplname, {
-            "selection" : "extensions",
+            "selection" : "settings",
+            "left_selection" : "extensions",
             "extensions" : tbl
             })
 

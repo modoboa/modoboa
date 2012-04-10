@@ -36,7 +36,7 @@
               {% load_optionalmenu user %}
             </ul>
             <ul class="nav pull-right">
-              {% user_menu user %}
+              {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
             </ul>
             <div class="pull-right">{% load_notifications user %}</div>
           </div>

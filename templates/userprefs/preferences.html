@@ -16,7 +16,7 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu selection user %}</div>{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu left_selection user %}</div>{% endblock %}
 {% block apparea %}
   <form class="form-horizontal" method="POST" 
         action="{% url userprefs.views.savepreferences %}" 

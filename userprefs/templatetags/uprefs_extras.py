@@ -27,7 +27,7 @@ def uprefs_menu(selection, user):
 
 
 @register.simple_tag
-def user_menu(user):
+def user_menu(user, selection):
     entries = [
         {"name" : "user",
          "img" : "icon-user icon-white",
@@ -63,7 +63,7 @@ def user_menu(user):
     #         }]
 
     return render_to_string("common/menulist.html",
-                            {"entries" : entries, "user" : user})
+                            {"selection" : selection, "entries" : entries, "user" : user})
 
 @register.simple_tag
 def loadextmenu(selection, user):

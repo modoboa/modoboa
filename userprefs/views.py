@@ -116,7 +116,8 @@ def preferences(request):
         gparams += [tmp]
 
     return _render(request, 'userprefs/preferences.html', {
-            "selection" : "preferences",
+            "selection" : "user",
+            "left_selection" : "preferences",
             "gparams" : gparams
             })
 

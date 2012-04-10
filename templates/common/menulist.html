@@ -4,8 +4,8 @@
   <li class="divider">&nbsp;</li>
   {% else %}
     {% if entry.menu %}
-  <li class="dropdown {{ entry.class }}{% if selection == entry.name %} selected{% endif %}"> 
-    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ entry.url }}">
+  <li class="dropdown {{ entry.class }}{% if selection == entry.name %} active{% endif %}"> 
+    <a class="dropdown-toggle" name="{{ entry.name }}" data-toggle="dropdown" href="{{ entry.url }}">
       {% if entry.img %}<i class="{{ entry.img }}"></i>{% endif %}
       {{ entry.label }}
     </a>
