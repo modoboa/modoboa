@@ -1,5 +1,5 @@
 /*
- * Just an extract of Bootstrap table styles in order to include it 
+ * Just an extract of Bootstrap table and alert styles in order to include it 
  * into the 'viewmail' page. It is not really *clean* but I don't know 
  * any other way to do that.
  */
@@ -19,6 +19,15 @@ table{max-width:100%;border-collapse:collapse;border-spacing:0;background-color:
 .table-bordered thead:last-child tr:last-child th:last-child,.table-bordered tbody:last-child tr:last-child td:last-child{-webkit-border-radius:0 0 4px 0;-moz-border-radius:0 0 4px 0;border-radius:0 0 4px 0;}
 .table-striped tbody tr:nth-child(odd) td,.table-striped tbody tr:nth-child(odd) th{background-color:#f9f9f9;}
 .table tbody tr:hover td,.table tbody tr:hover th{background-color:#f5f5f5;}
+.alert{padding:8px 35px 8px 14px;margin-bottom:18px;text-shadow:0 1px 0 rgba(255, 255, 255, 0.5);background-color:#fcf8e3;border:1px solid #fbeed5;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;color:#c09853;}
+.alert-heading{color:inherit;}
+.alert .close{position:relative;top:-2px;right:-21px;line-height:18px;}
+.alert-success{background-color:#dff0d8;border-color:#d6e9c6;color:#468847;}
+.alert-danger,.alert-error{background-color:#f2dede;border-color:#eed3d7;color:#b94a48;}
+.alert-info{background-color:#d9edf7;border-color:#bce8f1;color:#3a87ad;}
+.alert-block{padding-top:14px;padding-bottom:14px;}
+.alert-block>p,.alert-block>ul{margin-bottom:0;}
+.alert-block p+p{margin-top:5px;}
 
  pre {
      white-space: pre-wrap; /* css-3 */
