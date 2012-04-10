@@ -149,15 +149,15 @@ def loadadminextmenu(user):
 
 @register.simple_tag
 def param(app, definition):
-    result = """<div class='control-group'>
-  <label class="param-label">%s</label>
-  <div class="param-controls">""" \
-        % (definition.has_key("label") and _(definition["label"]) 
-           or definition["name"])
     name = "%s.%s" % (app, definition["name"])
     value = definition.has_key("value") \
         and definition["value"] or definition["deflt"]
 
+    result = """<div class='control-group'>
+  <label class="param-label" for="%s">%s</label>
+  <div class="param-controls">""" \
+        % (name, definition.has_key("label") and _(definition["label"]) 
+           or definition["name"])
     if definition["type"] in ["string", "int"]:
         result += """
   <input type='text' name='%s' id='%s' value='%s' />""" % (name, name, value)
@@ -188,10 +188,6 @@ def param(app, definition):
         result += """
 <p class="help-block">%s</p>
 """ % definition["help"]
-  #       result += """
-  # <a href='%s' onclick='return false;' class='Tips' title='%s'>
-  #   <img src='%s' border='0' />
-  # </a>""" % (_(definition["help"]), _("Help"), static_url("pics/info.png"))
     result += """
   </div>
 </div>

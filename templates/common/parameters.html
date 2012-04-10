@@ -2,18 +2,13 @@
 {% if gparams %}
   <div class="tabbable">
     <ul class="nav nav-tabs">
-      {% for app in gparams %}
-      <li{% if forloop.first %} class="active"{% endif %}><a href="#{{ forloop.counter }}" data-toggle="tab">{{ app.name }}</a></li>
+      {% for app in gparams %}<li{% if forloop.first %} class="active"{% endif %}><a href="#{{ forloop.counter }}" data-toggle="tab">{{ app.name }}</a></li>
       {% endfor %}
     </ul>
-    <div class="tab-content">
-      {% for app in gparams %}
+    <div class="tab-content">{% for app in gparams %}
       <div class="tab-pane{% if forloop.first %} active{% endif %}" id="{{ forloop.counter }}">
-        {% for p in app.params %}
-        {% param app.name p %}
-        {% endfor %}
-      </div>
-      {% endfor %}
+        {% for p in app.params %}{% param app.name p %}{% endfor %}
+      </div>{% endfor %}
     </div>
   </div>
 {% else %}

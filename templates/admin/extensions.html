@@ -4,4 +4,5 @@
 <form method="POST" action="{% url admin.views.saveextensions %}">
   {{ extensions|safe }}
 </form>
+<a href="#" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</a>
 {% endblock %}

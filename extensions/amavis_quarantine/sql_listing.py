@@ -14,9 +14,11 @@ class Qtable(tables.Table):
     styles = "table-condensed"
     idkey = "mailid"
 
-    type = tables.Column("type", align="center", width="30px",
-                         label="<input type='checkbox' name='toggleselect' id='toggleselect' />",
-                         sortable=False)
+    type = tables.Column(
+        "type", align="center", width="30px",
+        label="<input type='checkbox' name='toggleselect' id='toggleselect' />",
+        sortable=False
+        )
     rstatus = tables.ImgColumn("rstatus", width='25px')
     from_ = tables.Column("from", label=ugettext_noop("From"), limit=30)
     subject = tables.Column("subject", label=ugettext_noop("Subject"), limit=40)
