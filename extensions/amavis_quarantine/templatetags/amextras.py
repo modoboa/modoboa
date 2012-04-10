@@ -44,13 +44,15 @@ def viewm_menu(user, mail_id, rcpt):
 def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
     entries = [
         {"name" : "release",
-         "img" : "icon-ok",
+         "img" : "icon-white icon-ok",
+         "class" : "btn-success",
          "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
              + ("?rcpt=%s" % rcpt \
                     + (("&secret_id=%s" % secret_id) if secret_id != "" else "")),
          "label" : _("Release")},
         {"name" : "delete",
-         "img" : "icon-remove",
+         "img" : "icon-white icon-trash",
+         "class" : "btn-danger",
          "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
              + "?rcpt=%s" % rcpt \
              + ("&secret_id=%s" % secret_id if secret_id != "" else ""),
