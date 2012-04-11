@@ -13,7 +13,6 @@ from modoboa.lib import events
 from modoboa.lib.webutils import static_url
 from models import *
 from forms import ResourcePoolForm
-import permissions
 import controls
 import views
 
