@@ -74,7 +74,9 @@ def display_pool_usage(user, target, currentpage):
             names += ["domain_admins_limit"]
     else:
         names = ["domains_limit", "domain_aliases_limit"]
-    limits = user.limitspool.limit_set.filter(name__in=names)
+    limits = user.limitspool.limit_set.filter(name__in=names, maxvalue__gt=0)
+    if len(limits) == 0:
+        return []
     return [render_to_string("limits/poolusage.html", dict(limits=limits))]
 
 @events.observe("ExtraAccountForm")

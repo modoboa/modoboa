@@ -94,3 +94,10 @@ class Limit(models.Model):
             if l[0] == self.name:
                 return l[1]
         return ""
+
+    def __str__(self):
+        if self.maxvalue == -2:
+            return _("undefined")
+        if self.maxvalue == -1:
+            return _("unlimited")
+        return "%d%%" % self.usage
