@@ -1,0 +1,8 @@
+{% load i18n libextras %}
+<div class="well">
+  <h6>{% trans "Resource usage" %}</h6>{% for l in limits %}
+  <div class="resource">
+    {{ l.label }} ({{ l.usage }}%)
+    <div rel="tooltip" title="{{ l.curvalue }}/{{ l.maxvalue }}" class="progress {% progress_color l.usage %}"><div class="bar" style="width: {{ l.usage }}%"></div></div>
+  </div>
+{% endfor %}</div>
