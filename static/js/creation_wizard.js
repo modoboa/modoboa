@@ -1,6 +1,7 @@
 (function($) {
     var Cwizard = function(element, options)  {
         this.$element = $(element);
+        this.options = $.extend({}, $.fn.cwizard.defaults, options);
         this.$element.carousel({pause: true});
         this.$element.carousel("pause");
         this.setcallbacks();
@@ -16,7 +17,7 @@
         },
 
         post: function(last) {
-            var $form = $('form');
+            var $form = (this.options.formid) ? $('#' + this.options.formid) : $('form');
             var data = $form.serialize() + "&stepid=" + $(".item.active").attr("id");
 
             $.post($form.attr("action"), data, $.proxy(function(resp) {
@@ -77,6 +78,10 @@
                 data[method]();
             }
         });
+    };
+
+    $.fn.cwizard.defaults = {
+
     };
 
 })(jQuery);

@@ -203,6 +203,6 @@ def gender(value, target):
     return value
 
 @register.simple_tag
-def get_footer_content(user, objtype):
-    res = events.raiseQueryEvent("AdminFooterDisplay", user, objtype)
+def get_extra_admin_content(user, target, currentpage):
+    res = events.raiseQueryEvent("ExtraAdminContent", user, target, currentpage)
     return "".join(res)

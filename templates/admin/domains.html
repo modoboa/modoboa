@@ -20,4 +20,4 @@
   </script>
 {% endblock %}
 {% block leftcol %}<div class="well sidebar-nav">{% include "admin/searchform.html" %}
-{% domains_menu "domains" user %}</div>{% endblock %}
+{% domains_menu "domains" user %}</div>{{ block.super }}{% endblock %}

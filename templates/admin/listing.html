@@ -16,8 +16,8 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
+{% block leftcol %}{% get_extra_admin_content user "leftcol" selection %}{% endblock %}
 {% block apparea %}
 {{ table|safe }}
 {% endblock %}
-{% block footerleft %}<div id="adminfo">{% get_footer_content user selection %}</div>{% endblock %}
 {% block footerright %}{%  pagination_bar page %}{% endblock %}

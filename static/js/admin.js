@@ -3,6 +3,7 @@ function domainform_cb() {
     $("#id_aliases").dynamic_input();
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
+            formid: "domform",
             error_cb: domainform_cb
         });
     });
@@ -24,13 +25,14 @@ function accountform_init() {
 function newaccount_cb() {
     $('input:text:visible:first').focus();
     accountform_init();
-    $("#wizard").cwizard();
+    $("#wizard").cwizard({formid: "newaccount_form"});
 }
 
 function editaccount_cb() {
     accountform_init();
     $('.submit').one('click', function(e) {
         simple_ajax_form_post(e, {
+            formid: "accountform",
             error_cb: editaccount_cb
         });
     });
@@ -44,6 +46,7 @@ function dlistform_cb() {
     $("#id_recipients").dynamic_input();
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
+            formid: "dlistform",
             error_cb: dlistform_cb
         });
     });

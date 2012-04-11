@@ -1,7 +1,7 @@
 {% extends "common/generic_modal.html" %}
 {% load i18n libextras %}
 {% block modalbody %}
-  <form class="form-horizontal" action="{{ action }}" method="POST">
+  <form id="{{ formid }}" class="form-horizontal" action="{{ action }}" method="POST">
     <ul class="nav nav-pills">
       {% for tab in tabs %}
       <li class="{% if tabs.active_id == tab.id %}active{% endif %}">

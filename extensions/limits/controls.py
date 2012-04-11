@@ -43,11 +43,11 @@ def move_pool_resource(owner, user):
     except LimitsPool.DoesNotExist:
         return
     if not owner.is_superuser:
-        for lname in reseller_limits_tpl:
-            l = user.limitspool.get_limit(lname)
+        for ltpl in limits_tpl:
+            l = user.limitspool.get_limit(ltpl[0])
             if l.maxvalue < 0:
                 continue
-            ol = owner.limitspool.get_limit(lname)
+            ol = owner.limitspool.get_limit(ltpl[0])
             ol.curvalue += l.curvalue
             ol.maxvalue += l.maxvalue
             ol.save()

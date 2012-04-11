@@ -5,21 +5,21 @@ from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _, ugettext_noop
 from modoboa.admin.models import User
 
-reseller_limits_tpl = [
-    "domain_admins_limit",
-    "domains_limit",
-    "domain_aliases_limit",
-    "mailboxes_limit",
-    "mailbox_aliases_limit",
+limits_tpl = [
+    ("domain_admins_limit", ugettext_noop("Domain admins")),
+    ("domains_limit", ugettext_noop("Domains")),
+    ("domain_aliases_limit", ugettext_noop("Domain aliases")),
+    ("mailboxes_limit", ugettext_noop("Mailboxes")),
+    ("mailbox_aliases_limit", ugettext_noop("Mailbox aliases"))
     ]
 
 class LimitsPool(models.Model):
     user = models.OneToOneField(User)
 
     def create_limits(self):
-        for lname in reseller_limits_tpl:
+        for ltpl in limits_tpl:
             l = Limit()
-            l.name = lname
+            l.name = ltpl[0]
             l.pool = self
             l.save()
 
@@ -79,3 +79,18 @@ class Limit(models.Model):
 
     class Meta:
         unique_together = (("name", "pool"),)
+
+    @property
+    def usage(self):
+        if self.maxvalue < 0:
+            return -1
+        if self.maxvalue == 0:
+            return 0
+        return int(float(self.curvalue) / self.maxvalue * 100)
+
+    @property
+    def label(self):
+        for l in limits_tpl:
+            if l[0] == self.name:
+                return l[1]
+        return ""

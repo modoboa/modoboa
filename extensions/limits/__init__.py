@@ -57,36 +57,26 @@ def infos():
         "url" : baseurl
         }
 
-#@events.observe('AdminFooterDisplay')
-def display_pool_usage(user, objtype):
+@events.observe("GetExtraRoles")
+def get_extra_roles(user):
     if user.is_superuser:
-        return []
-    if objtype == "domaliases":
-        objtype = "domain_aliases"
-    elif objtype == "mbaliases":
-        objtype = "mailbox_aliases"
-    try:
-        l = user.limitspool.get_limit('%s_limit' % objtype)
-    except LimitsPool.DoesNotExist:
-        return []
-    if l.maxvalue == -2:
-        label = _("undefined")
-    elif l.maxvalue == -1:
-        label = _("unlimited")
-    else:
-        label = str(l.maxvalue)
-    return [_("Pool usage: %s / %s") % (l.curvalue, label)]
+        return [("Resellers", _("Reseller")),]
+    return []
 
-@events.observe("DomainAdminActions")
-def get_da_actions(user):
-    return [
-        {"name" : "editpool",
-         "url" : reverse(views.edit_limits_pool, args=[user.id]),
-         "img" : static_url("pics/settings.png"),
-         "title" : _("Edit limits allocated to this domain admin"),
-         "class" : "boxed",
-         "rel" : "{handler:'iframe',size:{x:330,y:280}}"},
-        ]
+@events.observe("ExtraAdminContent")
+def display_pool_usage(user, target, currentpage):
+    from django.template.loader import render_to_string
+
+    if target != "leftcol" or user.is_superuser:
+        return []
+    if currentpage == "identities":
+        names = ["mailboxes_limit", "mailbox_aliases_limit"]
+        if user.has_perm("admin.add_domain"):
+            names += ["domain_admins_limit"]
+    else:
+        names = ["domains_limit", "domain_aliases_limit"]
+    limits = user.limitspool.limit_set.filter(name__in=names)
+    return [render_to_string("limits/poolusage.html", dict(limits=limits))]
 
 @events.observe("ExtraAccountForm")
 def extra_account_form(user, account=None):
@@ -120,3 +110,27 @@ def fill_account_instances(user, account, instances):
        not account.belongs_to_group("DomainAdmins"):
         return
     instances["resources"] = account
+
+@events.observe("GetStaticContent")
+def get_static_content(user):
+    if user.group == "SimpleUsers":
+        return []
+    return """<style>
+.resource {
+    margin: 5px 0;
+}
+
+.resource .progress { 
+    margin-bottom: 0px;
+}
+
+.resource .progress .bar {
+    color: #000000;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".progress").tooltip();
+});
+</script>
+"""

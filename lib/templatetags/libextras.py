@@ -142,3 +142,12 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 {% if link.img %}<i class="{{ link.img }}"></i>{% endif %}
 {{ link.label }}</a>""")
     return t.render(Context(dict(link=linkdef, mdclass=mdclass)))
+
+@register.simple_tag
+def progress_color(value):
+    value = int(value)
+    if value < 50:
+        return "progress-success"
+    if value < 80:
+        return "progress-warning"
+    return "progress-danger"

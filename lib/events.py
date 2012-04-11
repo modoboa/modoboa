@@ -54,7 +54,7 @@ events = [
     "GetAnnouncement",
 
     "TopNotifications",
-    "AdminFooterDisplay",
+    "ExtraAdminContent",
     ]
 
 callbacks = {}

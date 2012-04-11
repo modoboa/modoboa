@@ -49,10 +49,10 @@ class ResourcePoolForm(forms.Form):
         return self.check_limit_value("mailbox_aliases_limit")
 
     def load_from_user(self, user):
-        for l in reseller_limits_tpl:
-            if not self.fields.has_key(l):
+        for l in limits_tpl:
+            if not self.fields.has_key(l[0]):
                 continue
-            self.fields[l].initial = user.limitspool.getmaxvalue(l)
+            self.fields[l[0]].initial = user.limitspool.getmaxvalue(l[0])
 
     def allocate_from_pool(self, limit, pool):
         ol = pool.get_limit(limit.name)
@@ -76,13 +76,13 @@ class ResourcePoolForm(forms.Form):
         from modoboa.lib.permissions import get_object_owner
 
         owner = get_object_owner(self.account)
-        for lname in reseller_limits_tpl:
-            if not self.cleaned_data.has_key(lname):
+        for ltpl in limits_tpl:
+            if not self.cleaned_data.has_key(ltpl[0]):
                 continue
-            l = self.account.limitspool.limit_set.get(name=lname)
+            l = self.account.limitspool.limit_set.get(name=ltpl[0])
             if not owner.is_superuser:
                 self.allocate_from_pool(l, owner.limitspool)
-            l.maxvalue = self.cleaned_data[lname]
+            l.maxvalue = self.cleaned_data[ltpl[0]]
             l.save()
 
     

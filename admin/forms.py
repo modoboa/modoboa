@@ -246,7 +246,7 @@ class AccountFormGeneral(forms.ModelForm):
             role = None
             if self.cleaned_data.has_key("role"):
                 role = self.cleaned_data["role"]
-            elif self.user.group == "DomainAdmins":
+            elif self.user.group == "DomainAdmins" and self.user != account:
                 role = "SimpleUsers"
             if role is not None:
                 account.groups.clear()
