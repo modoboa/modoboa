@@ -32,12 +32,10 @@ def index(request):
     domains = request.user.get_domains()
 
     return _render(request, 'stats/index.html', {
-            "domains" : domains,
             "graphs" : graph_list,
             "periods" : periods,
             "period" : period,
-            "selection" : "stats",
-            "domid" : domid
+            "selection" : "stats"
             })
 
 @login_required
@@ -47,7 +45,8 @@ def graphs(request):
     if not view:
         raise ModoboaException(_("Invalid request"))
     period = request.GET.get("period", "day")
-    tplvars = dict(graphs=graph_list, period=period)
+    tplvars = dict(graphs=graph_list, period=period, 
+                   graphs_loc=parameters.get_admin("GRAPHS_LOCATION"))
     if view == "global":
         if not request.user.is_superuser:
             raise PermDeniedError(_("you're not allowed to see those statistics"))

@@ -31,6 +31,9 @@ def load():
     parameters.register_admin("IMG_ROOTDIR", type="string", 
                               deflt="/tmp/modoboa",
                               help=_("Path to directory where PNG files are stored"))
+    parameters.register_admin("GRAPHS_LOCATION", type="string", 
+                              deflt="graphs",
+                              help=_("Graphics location (to build URLs)"))
 
 def destroy():
     events.unregister("AdminMenuDisplay", menu)
