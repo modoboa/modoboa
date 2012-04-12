@@ -6,12 +6,6 @@
     height: 100px;
 }
 
-input[type="text"], 
-input[type="password"] { 
-    width: 315px;
-    padding: 7px;
-}
-
 .form-actions { 
     background-color: transparent;
     padding-right: 0px;

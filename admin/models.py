@@ -163,8 +163,6 @@ class User(DUser):
 
     @property
     def identity(self):
-        if self.email != "":
-            return self.email
         return self.username
 
     @property

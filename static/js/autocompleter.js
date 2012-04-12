@@ -107,7 +107,7 @@
         keydown: function(evt) {
             evt.stopPropagation();
 
-            switch (evt.keyCode) {
+            switch (evt.which) {
                 case 13:
                 case 27:
                     evt.preventDefault();
@@ -127,7 +127,7 @@
             evt.stopPropagation();
             evt.preventDefault();
 
-            switch (evt.keyCode) {
+            switch (evt.which) {
             case 40:
             case 38:
                 break;
