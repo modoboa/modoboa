@@ -35,13 +35,12 @@ def load():
 def destroy():
     events.unregister("AdminMenuDisplay", menu)
 
-@events.observe("AdminMenuDisplay")
+@events.observe("UserMenuDisplay")
 def menu(target, user):
-    if target == "admin_menu_box":
+    if target == "top_menu":
         return [
             {"name"  : "stats",
              "label" : ugettext("Statistics"),
-             "url" : reverse('fullindex'),
-             "img" : static_url("pics/graph.png")}
+             "url" : reverse('fullindex')}
             ]
     return []

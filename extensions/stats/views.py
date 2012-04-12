@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
-
+# coding: utf-8
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_noop
 from django.utils import simplejson
-from modoboa.lib.webutils import _render, _render_to_string, getctx
+from modoboa.lib.webutils import _render, _render_to_string, ajax_simple_response
 from modoboa.lib.permissions import check_domain_access
 from modoboa.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
 from modoboa.extensions.stats.grapher import *
+from modoboa.lib.exceptions import *
 
 graph_types = ['AVERAGE', 'MAX']
 graph_list = [{"name" : "traffic", "label" : ugettext_noop("Average normal traffic")},
@@ -41,39 +41,43 @@ def index(request):
             })
 
 @login_required
-@permission_required("admin.view_mailboxes")
-def getgraph(request, dom_id):
+@user_passes_test(lambda u: u.group != "SimpleUsers")
+def graphs(request):
+    view = request.GET.get("view", None)
+    if not view:
+        raise ModoboaException(_("Invalid request"))
     period = request.GET.get("period", "day")
-    if dom_id == "global":
+    tplvars = dict(graphs=graph_list, period=period)
+    if view == "global":
         if not request.user.is_superuser:
             raise PermDeniedError(_("you're not allowed to see those statistics"))
-        domain = dom_id
+        tplvars.update(domain=view)
     else:
-        domain = Domain.objects.get(pk=dom_id)
+        try:
+            domain = Domain.objects.get(name=view)
+        except Domain.DoesNotExist:
+            raise ModoboaException(_("Domain not found. Please enter a full name"))
         if not request.user.can_access(domain):
             raise PermDeniedError(_("You don't have access to this domain"))
+        tplvars.update(domain=domain.name)
 
-    ctx = None
-    tplvars = {"graphs" : graph_list, "period" : period, "domain" : domain.name}
     if period == "custom":
         if not request.GET.has_key("start") or not request.GET.has_key("end"):
-            ctx = getctx("ko", error=_("Bad custom period"))
-        else:
-            start = request.GET["start"]
-            end = request.GET["end"]
-            G = Grapher()
-            period_name = "%s_%s" % (start.replace('-',''), end.replace('-',''))
-            for tpl_name in graph_list:
-                G.process(domain.name,
-                          period_name,
-                          str2Time(*start.split('-')),
-                          str2Time(*end.split('-')),
-                          tpl[tpl_name['name']])
-            tplvars["period_name"] = period_name
-            tplvars["start"] = start
-            tplvars["end"] = end
-    if ctx is None:
-        content = _render_to_string(request, "stats/graphs.html", tplvars)
-        ctx = getctx("ok", content=content)
+            raise ModoboaException(_("Bad custom period"))
+        start = request.GET["start"]
+        end = request.GET["end"]
+        G = Grapher()
+        period_name = "%s_%s" % (start.replace('-',''), end.replace('-',''))
+        for tpl_name in graph_list:
+            G.process(tplvars["domain"],
+                      period_name,
+                      str2Time(*start.split('-')),
+                      str2Time(*end.split('-')),
+                      tpl[tpl_name['name']])
+        tplvars["period_name"] = period_name
+        tplvars["start"] = start
+        tplvars["end"] = end
 
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return ajax_simple_response(dict(
+            status="ok", content=_render_to_string(request, "stats/graphs.html", tplvars)
+            ))

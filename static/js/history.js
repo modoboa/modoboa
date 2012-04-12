@@ -31,7 +31,7 @@ History.prototype = {
     load_params: function() {
         var rawqs = window.location.hash.substr(1);
 
-        if (rawqs.indexOf('?')) {
+        if (rawqs.indexOf('?') == -1) {
             this.params = {};
             return;
         }
@@ -118,12 +118,6 @@ History.prototype = {
         }
     },
 
-    deleteParam: function(str) {
-        if (this.params[str] != undefined) {
-            delete this.params[str];
-        }
-    },
-
     updateparams: function(str) {
         if (str.charAt(0) == '?') {
             str = str.substring(1);
@@ -179,10 +173,10 @@ History.prototype = {
     },
 
     delparam: function(name) {
-        if (!this.params.has(name)) {
-            return false;
+        if (this.params[name] == undefined) {
+            return this;
         }
-        this.params.erase(name);
+        delete(this.params[name]);
         return this;
     },
 

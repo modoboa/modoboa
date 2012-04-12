@@ -1,115 +1,35 @@
-{% extends "admin/domains_header.html" %}
+{% extends "fixed.html" %}
 {% load i18n %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/calendar.css" />
-<style type="text/css">
-  #selectors {
-  }
-  #periodbox, #domainbox {
-    float: left;
-    margin-right: 20px;
-  }
-  #graphs {
-    margin-top: 15px;
-    float: none;
-  }
-  #customperiod {
-    display: none; 
-    border: 1px solid #dddddd;
-    float: left; 
-    padding: 3px;
-    margin-top: -3px;
-  }
-</style>
-
-<script type="text/javascript" src="{{ MEDIA_URL }}js/calendar.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}stats/css/stats.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/history.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}stats/js/stats.js"></script>
 <script type="text/javascript">
-window.addEvent("domready", function() {
-  var myCal = new Calendar({
-    dateTravelStart: 'Y-m-d',
-    dateTravelEnd  : 'Y-m-d'
-  }, {
-    direction: 0, // -1 past, 0 past + future, 1 future
-    pad: 1,
-    offset: 1, // first day of the week: 0 = sunday, 1 = monday, etc..
-    tweak: {x: -147, y: 18} // tweak calendar positioning
-  });
-
-  getgraph_callback = function(resp) {
-    if (resp.status == "ok") {
-      $("graphs").set("html", resp.content);
-    } else {
-      infobox.error(resp.error);
-    }
-  };
-
-  get_period = function() {
-    if ($("period").value != "custom") {
-      $("customperiod").setStyle("display", "none");
-      return "period=" + $("period").value;
-    }
-    $("customperiod").setStyle("display", "block");
-    if ($("dateTravelStart").value == "" || $("dateTravelEnd").value == "") {
-      return "";
-    }
-    return "period=custom"
-       + "&start=" + $("dateTravelStart").value
-       + "&end=" + $("dateTravelEnd").value;
-  };
-
-  get_graph = function(evt) {
-    var url = "{% url getgraph_root %}" + $("domain").value + "/";
-    var p = get_period();
-
-    if (p == "") {
-      return;
-    }
-    new Request.JSON.mdb({url : url + "?" + p, noCache: true, 
-                          onSuccess : getgraph_callback}).get();
-  };
-
-  $("domain").addEvent("change", get_graph);
-  $("period").addEvent("change", get_graph);
-  $("customsend").addEvent("click", get_graph);
+$(document).ready(function() {
+    var stats = new Stats({
+        graphurl: "{% url modoboa.extensions.stats.views.graphs %}"
+    });
 });
 </script>
-
 {% endblock %}
-{% block pagetitle %}{% trans "Statistics" %}{% endblock %}
-{% block subcontent %}
-<div id="selectors">
-  <div id="domainbox">
-    <label for="domain">{% trans "Domain:" %}</label>
-    <select id="domain" name="domain">
-      {% if user.is_superuser %}
-      <option value="global" {% ifequal domain "global" %}selected{% endifequal %}>{% trans "Global" %}</option>
-      {% endif %}
-      {% for d in domains %}
-      <option value="{{ d.id }}" {% ifequal d.name domain %}selected{% endifequal %}>{{ d.name }}</option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <div id="periodbox">
-    <label for="period">{% trans "Period:" %}</label>
-    <select id="period" name="period">
-      {% for p in periods %}
-      <option value="{{ p.name }}" {% ifequal p.name period %}selected{% endifequal %}>{% trans p.label %}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div id="customperiod">
-    {% trans "Start" %}: <input id="dateTravelStart" name="start" 
-                              value="{{ start }}" type="text"/>
-    {% trans "End" %}: <input id="dateTravelEnd" name="end" 
-                            value="{{ end }}" type="text" />
-    <input type="button" id="customsend" value="ok">
-  </div>
+{% block fixed_content %}
+<div id="menubar">
+  <form id="searchform" class="form-search">
+    <input class="input-medium search-query" type="text" 
+           value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search a domain' %}"{% endif %}
+           id="searchquery" name="searchquery" />
+  </form>
+  <form id="period" class="form-inline">
+    {% for p in periods %}<label class="radio"><input name="period" type="radio" value="{{ p.name }}"{% if p.name == period %}checked{% endif %} />{% trans p.label %}</label>
+    {% endfor %}
+    <span id="custom-period">
+      <input id="id_from" class="input-small" name="date_from" value="{{ start }}" type="text" />
+      <input id="id_to" class="input-small" name="date_to" value="{{ end }}" type="text" />
+      <button class="btn" id="customsend">{% trans "Apply" %}</button>
+    </span>
+  </form>
 </div>
- 
-<div class="spacer"></div>
-<div id="graphs">
-  {% include "stats/graphs.html" %}
-</div>
+<hr>
+<div id="graphs"></div>
 {% endblock %}
  
