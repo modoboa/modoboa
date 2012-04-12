@@ -5,7 +5,7 @@ import time
 from modoboa.extensions.amavis_quarantine.models import *
 
 if __name__ == "__main__":
-    from modoboa.extensions.amavis_quarantine import main
+    from modoboa.extensions import amavis_quarantine
     from modoboa.lib import parameters
     from optparse import OptionParser
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
         l.setLevel(logging.DEBUG)
         l.addHandler(logging.StreamHandler())
 
-    main.load()
+    amavis_quarantine.load()
 
     max_messages_age = int(parameters.get_admin("MAX_MESSAGES_AGE",
                                                 app="amavis_quarantine"))
