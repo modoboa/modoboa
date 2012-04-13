@@ -14,6 +14,8 @@
             var div = $("<div class='alert' />", {
                 id: bid,
                 click: $.proxy(this.destroy_box, this)
+            }).css({
+                position: "absolute"
             });
 
             return div;
@@ -26,10 +28,9 @@
 
         set_position: function(box) {
             box.css({
-                position: "absolute",
                 top: this.options.top_position,
                 left: "50%",
-                marginLeft: '-' + (box.outerWidth() / 2) + 'px'
+                'margin-left': -box.outerWidth(true) / 2
             });
         },
 
@@ -46,8 +47,8 @@
                 nbox.addClass("alert-" + klass);
             }
             this.set_message(nbox, message);
-            this.set_position(nbox);
             this.$element.append(nbox);
+            this.set_position(nbox);
             if (timer != undefined) {
                 window.setTimeout(function() {
                     nbox.alert('close');

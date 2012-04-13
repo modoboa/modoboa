@@ -1,10 +1,6 @@
 # coding: utf-8
-from django.http import HttpResponse
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_noop
-from django.utils import simplejson
 from modoboa.lib.webutils import _render, _render_to_string, ajax_simple_response
-from modoboa.lib.permissions import check_domain_access
 from modoboa.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
@@ -23,19 +19,23 @@ periods = [{"name" : "day", "label" : ugettext_noop("Day")},
 
 @login_required
 @permission_required("admin.view_mailboxes")
-@check_domain_access
 def index(request):
-    domains = None
+    deflocation = ""
+    if request.user.is_superuser:
+        deflocation = "graphs/?view=global"
+    else:
+        if len(request.user.get_domains()):
+            deflocation = "graphs/?view=%s" % request.user.get_domains()[0].name
+        else:
+            raise ModoboaException(_("No statistics available"))
+        
     period = request.GET.get("period", "day")
-    domid = request.GET.get("domid", "")
-
-    domains = request.user.get_domains()
-
     return _render(request, 'stats/index.html', {
             "graphs" : graph_list,
             "periods" : periods,
             "period" : period,
-            "selection" : "stats"
+            "selection" : "stats",
+            "deflocation" : deflocation
             })
 
 @login_required
@@ -49,7 +49,7 @@ def graphs(request):
                    graphs_loc=parameters.get_admin("GRAPHS_LOCATION"))
     if view == "global":
         if not request.user.is_superuser:
-            raise PermDeniedError(_("you're not allowed to see those statistics"))
+            raise PermDeniedException(_("you're not allowed to see those statistics"))
         tplvars.update(domain=view)
     else:
         try:
@@ -57,7 +57,7 @@ def graphs(request):
         except Domain.DoesNotExist:
             raise ModoboaException(_("Domain not found. Please enter a full name"))
         if not request.user.can_access(domain):
-            raise PermDeniedError(_("You don't have access to this domain"))
+            raise PermDeniedException(_("You don't have access to this domain"))
         tplvars.update(domain=domain.name)
 
     if period == "custom":
