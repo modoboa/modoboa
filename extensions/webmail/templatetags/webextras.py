@@ -143,16 +143,18 @@ def print_folders(folders, selected=None, withunseen=False, selectonly=False):
             result += "<div class='clickbox %s'></div>" % div_state
             
         cssclass = "block"
+        extra_attrs = ""
         if withunseen and fd.has_key("unseen"):
             label += " (%d)" % fd["unseen"]
             cssclass += " unseen"
+            extra_attrs = ' data-toggle="%d"' % fd["unseen"]
         iclass = fd["class"] if fd.has_key("class") else "icon-folder-close"
-        result += """<a href='%s' class='%s' name='%s'>
+        result += """<a href='%s' class='%s' name='%s'%s>
   <i class="%s"></i>
   %s
 </a>
 """ % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, 
-       'selectfolder' if selectonly else 'loadfolder', iclass, label)
+       'selectfolder' if selectonly else 'loadfolder', extra_attrs, iclass, label)
         if fd.has_key("sub") and len(fd["sub"]):
             result += "<ul name='%s' class='%s'>" % (fd["path"], ul_state) \
                 + print_folders(fd["sub"], selected, withunseen, selectonly) + "</ul>\n"

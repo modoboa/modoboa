@@ -120,8 +120,10 @@ class Table(object):
         trcpt = 0
         for row in rows:
             nrow = {"id" : row[self.idkey], "cols" : [], "trcpt" : trcpt}
-            if row.has_key("options"):
-                nrow["options"] = row["options"]
+            for name in ["style", "options"]:
+                if row.has_key(name):
+                    nrow[name] = row[name]
+                
             for c in self.columns:
                 newcol = {"name" : c.name}
                 for key in ["width", "align", "cssclass"]:

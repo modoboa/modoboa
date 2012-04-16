@@ -50,16 +50,6 @@ def get_templates(request, ftype):
 
 @login_required
 @needs_mailbox()
-def get_user_folders(request):
-    from modoboa.extensions.webmail.lib import IMAPconnector
-
-    mbc = IMAPconnector(user=request.user.username, 
-                        password=request.session["password"])
-    ret = mbc.getfolders(request.user, unseen_messages=False)
-    return ajax_simple_response(ret)
-
-@login_required
-@needs_mailbox()
 def getfs(request, name):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])

@@ -155,7 +155,7 @@ class EmailListing(object):
     def render(self, request, pageid=1, **kwargs):
         page = self.paginator.getpage(pageid)
         if not page:
-            listing = _("This folder contains no message")
+            listing = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
         else:
             listing = self.fetch(request, page.id_start, page.id_stop)
         return dict(listing=listing, navbar=self.render_navbar(page, self.baseurl))

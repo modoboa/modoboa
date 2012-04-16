@@ -150,23 +150,26 @@ class FilterForm(forms.Form):
     def _build_fileinto_field(self, request, value):
         self._build_action_field(request, "fileinto", value)
 
-    def __build_folders_list(self, folders):
+    def __build_folders_list(self, folders, user, imapc, parentmb=None):
         ret = []
         for fd in folders:
             value = fd["path"] if fd.has_key("path") else fd["name"]
-            ret += [(value, fd["name"])]
-            if fd.has_key("sub") and len(fd["sub"]):
-                ret += self.__build_folders_list(fd["sub"])
+            if parentmb:
+                ret += [(value, fd["name"].replace("%s." % parentmb, ""))]
+            else:
+                ret += [(value, fd["name"])]
+            if fd.has_key("sub"):
+                submboxes = imapc.getmboxes(user, value, unseen_messages=False)
+                ret += self.__build_folders_list(submboxes, user, imapc, value)
         return ret
 
     def userfolders(self, request):
-        from modoboa.extensions.webmail.lib import IMAPconnector
+        from modoboa.extensions.webmail.imaputils import get_imapconnector
 
-        mbc = IMAPconnector(user=request.user.username, 
-                            password=request.session["password"])
-        ret = mbc.getfolders(request.user, unseen_messages=False)
+        mbc = get_imapconnector(request)
+        ret = mbc.getmboxes(request.user, unseen_messages=False)
 
-        folders = self.__build_folders_list(ret)
+        folders = self.__build_folders_list(ret, request.user, mbc)
         return folders
 
     def tofilter(self):

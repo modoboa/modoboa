@@ -149,7 +149,7 @@ class IMAPconnector(object):
         :param name: the command's name
         :return: the command's result
         """
-        if name in ['FETCH', 'SORT', 'STORE', 'COPY']:
+        if name in ['FETCH', 'SORT', 'STORE', 'COPY', 'SEARCH']:
             try:
                 typ, data = self.m.uid(name, *args)
             except imaplib.IMAP4.error, e:
@@ -211,12 +211,15 @@ class IMAPconnector(object):
         """
         if self.m is not None:
             try:
-                self.m.select()
+                self._cmd("CHECK")
+            except ImapError, e:
+                if hasattr(self, "current_mailbox"):
+                    del self.current_mailbox
+            else:
                 return
-            except imaplib.IMAP4.error, error:
-                print error          
-        print self.login(user, password)
-
+        status, msg = self.login(user, password)
+        if not status:
+            raise ImapError(msg)
 
     def login(self, user, passwd):
         import socket
@@ -263,14 +266,18 @@ class IMAPconnector(object):
         else:
             criterion = "REVERSE DATE"
         folder = kwargs.has_key("folder") and kwargs["folder"] or None
-        self.select_mailbox(folder, False)
+
+        # FIXME: pourquoi suis je obligé de faire un SELECT ici?  un
+        # EXAMINE plante mais je pense que c'est du à une mauvaise
+        # lecture des réponses de ma part...
+        self.select_mailbox(folder, readonly=False)
         data = self._cmd("SORT", "(%s)" % criterion, "UTF-8", "(NOT DELETED)",
                          *self.criterions)
         self.messages = data[0].split()
         self.getquota(folder)
         return len(self.messages)
 
-    def select_mailbox(self, name, readonly=True):
+    def select_mailbox(self, name, readonly=True, force=False):
         """Issue a SELECT/EXAMINE command to the server
 
         The given name is first 'imap-utf7' encoded.
@@ -278,11 +285,16 @@ class IMAPconnector(object):
         :param name: mailbox's name
         :param readonly: 
         """
+        if hasattr(self, "current_mailbox"):
+            if self.current_mailbox == name and not force:
+                return
+        self.current_mailbox = name
         name = name.encode("imap4-utf-7")
         if readonly:
             self._cmd("EXAMINE", name)
         else:
             self._cmd("SELECT", name)
+        self.m.state = "SELECTED"
 
     def unseen_messages(self, mailbox):
         """Return the number of unseen messages
@@ -290,21 +302,18 @@ class IMAPconnector(object):
         :param mailbox: the mailbox's name
         :return: an integer
         """
-        # self.select_mailbox(mailbox)
-        # data = self._cmd("SEARCH", "UTF-8", "(NOT DELETED UNSEEN)")
-        # return len(data[0].split())
         data = self._cmd("STATUS", mailbox.encode("imap4-utf-7"), "(UNSEEN)")
         m = self.unseen_pattern.match(data[0])
         if m is None:
             return 0
         return int(m.group(1))
 
-    def _encodefolder(self, folder):
+    def _encode_mbox_name(self, folder):
         if not folder:
             return "INBOX"
         return folder.encode("imap4-utf-7")
 
-    def _parse_folder_name(self, descr, prefix, delimiter, parts):
+    def _parse_mailbox_name(self, descr, prefix, delimiter, parts):
         if not len(parts):
             return False
         path = "%s%s%s" % (prefix, delimiter, parts[0])
@@ -316,11 +325,11 @@ class IMAPconnector(object):
         if sdescr is None:
             sdescr = {"name" : parts[0], "path" : path, "sub" : []}
             descr += [sdescr]            
-        if self._parse_folder_name(sdescr["sub"], path, delimiter, parts[1:]):
+        if self._parse_mailbox_name(sdescr["sub"], path, delimiter, parts[1:]):
             sdescr["class"] = "subfolders"
         return True
 
-    def _listfolders_simple(self, topmailbox='INBOX', md_mailboxes=[]):
+    def _listmboxes_simple(self, topmailbox='INBOX', md_mailboxes=[]):
         (status, data) = self.m.list()
         result = []
         for mb in data:
@@ -331,8 +340,8 @@ class IMAPconnector(object):
                 if not descr.has_key("path"):
                     descr["path"] = parts[0]
                     descr["sub"] = []
-                if self._parse_folder_name(descr["sub"], parts[0], delimiter, 
-                                           parts[1:]):
+                if self._parse_mailbox_name(descr["sub"], parts[0], delimiter, 
+                                            parts[1:]):
                     descr["class"] = "subfolders"
                 continue
             present = False
@@ -347,31 +356,35 @@ class IMAPconnector(object):
         return sorted(result, key=itemgetter("name"))
 
     @capability('LIST-EXTENDED', '_listfolders_simple')
-    def _listfolders(self, topmailbox='', md_mailboxes=[]):
+    def _listmboxes(self, topmailbox='', mailboxes=[]):
         pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
-        result = []
+        newmboxes = []
         for mb in resp:
             flags, delimiter, name, childinfo = \
                 self.listextended_response_pattern.match(mb).groups()
             flags = flags.split(' ')
             name = name.decode("imap4-utf-7")
-            present = False
-            for mdm in md_mailboxes:
+            pos = -1
+            for idx, mdm in enumerate(mailboxes):
                 if mdm["name"] == name:
-                    present = True
+                    pos = idx
                     break
-            if present:
-                continue
-            descr = dict(name=name)
+            if pos == -1:
+                descr = dict(name=name)
+                newmboxes += [descr]
+            else:
+                descr = mailboxes[idx]
+            
+            if r'\Marked' in flags or not r'\UnMarked' in flags:
+                descr["send_status"] = True
             if r'\HasChildren' in flags:
                 descr["path"] = name
                 descr["sub"] = []
-            result += [descr]
         from operator import itemgetter
-        return sorted(result, key=itemgetter("name"))
+        mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
-    def getfolders(self, user, topmailbox='', unseen_messages=True):
+    def getmboxes(self, user, topmailbox='', unseen_messages=True):
         if len(topmailbox):
             md_mailboxes = []
         else:
@@ -382,14 +395,18 @@ class IMAPconnector(object):
                             {"name" : parameters.get_user(user, "SENT_FOLDER")},
                             {"name" : parameters.get_user(user, "TRASH_FOLDER"),
                              "class" : "icon-trash"}]
-        md_mailboxes += self._listfolders(topmailbox, md_mailboxes)
+        self._listmboxes(topmailbox, md_mailboxes)
+
         if unseen_messages:
-            for fd in md_mailboxes:
-                key = fd.has_key("path") and "path" or "name"
-                count = self.unseen_messages(fd[key])
+            for mb in md_mailboxes:
+                if not mb.has_key("send_status"):
+                    continue
+                del mb["send_status"]
+                key = mb.has_key("path") and "path" or "name"
+                count = self.unseen_messages(mb[key])
                 if count == 0:
                     continue
-                fd["unseen"] = count
+                mb["unseen"] = count
         return md_mailboxes
 
     def _add_flag(self, mbox, msgset, flag):
@@ -432,20 +449,18 @@ class IMAPconnector(object):
         """
         self.select_mailbox(oldmailbox, False)
         self._cmd("COPY", msgset, newmailbox.encode("imap4-utf-7"))
-        self._cmd("STORE", msgset, "+FLAGS", r'(\Deleted)')
+        self._cmd("STORE", msgset, "+FLAGS", r'(\Deleted \Seen)')
 
     def push_mail(self, folder, msg):
         now = imaplib.Time2Internaldate(time.time())
-        self.m.append(self._encodefolder(folder), r'(\Seen)', now, str(msg))
+        self.m.append(self._encode_mbox_name(folder), r'(\Seen)', now, str(msg))
 
     def empty(self, mbox):
         self.select_mailbox(mbox, False)
         resp = self._cmd("SEARCH", "ALL")
-        print resp
-        
-        # for num in data[0].split():
-        #     self.m.store(num, "+FLAGS", r'(\Deleted)')
-        # self.m.expunge()
+        seq = ",".join(resp[0].split())
+        self._cmd("STORE", seq, "+FLAGS", r'(\Deleted)')
+        self._cmd("EXPUNGE")
 
     def compact(self, mbox):
         """Compact a specific mailbox
@@ -460,20 +475,20 @@ class IMAPconnector(object):
     def create_folder(self, name, parent=None):
         if parent is not None:
             name = "%s.%s" % (parent, name)
-        typ, data = self.m.create(self._encodefolder(name))
+        typ, data = self.m.create(self._encode_mbox_name(name))
         if typ == "NO":
             raise WebmailError(data[0])
         return True
 
     def rename_folder(self, oldname, newname):
-        typ, data = self.m.rename(self._encodefolder(oldname),
-                                  self._encodefolder(newname))
+        typ, data = self.m.rename(self._encode_mbox_name(oldname),
+                                  self._encode_mbox_name(newname))
         if typ == "NO":
             raise WebmailError(data[0], ajax=True)
         return True
 
     def delete_folder(self, name):
-        typ, data = self.m.delete(self._encodefolder(name))
+        typ, data = self.m.delete(self._encode_mbox_name(name))
         if typ == "NO":
             raise WebmailError(data[0])
         return True
@@ -483,7 +498,7 @@ class IMAPconnector(object):
             self.quota_limit = self.quota_actual = None
             return
 
-        data = self._cmd("GETQUOTAROOT", self._encodefolder(mailbox), 
+        data = self._cmd("GETQUOTAROOT", self._encode_mbox_name(mailbox), 
                          responses=["QUOTAROOT", "QUOTA"])
         if data is None:
             self.quota_limit = self.quota_actual = None
@@ -526,7 +541,7 @@ class IMAPconnector(object):
             msg = email.message_from_string(data[int(uid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]'])
             msg['imapid'] = uid
             if not r'\Seen' in data[int(uid)]['FLAGS']:
-                msg['class'] = 'unseen'
+                msg['style'] = 'unseen'
             if r'\Answered' in data[int(uid)]['FLAGS']:
                 msg['img_flags'] = static_url('pics/answered.png')
             if r'$Forwarded' in data[int(uid)]['FLAGS']:
@@ -551,6 +566,7 @@ class IMAPconnector(object):
         :param readonly:
         :param extraheaders:
         """
+        print mbox
         self.select_mailbox(mbox, readonly)
         if headers is None:
             headers = ['DATE', 'FROM', 'TO', 'CC', 'SUBJECT']
@@ -562,6 +578,10 @@ class IMAPconnector(object):
         return data[int(mailid)]
 
 def get_imapconnector(request):
+    """Simple shortcut to create a connector
+
+    :param request: a ``Request`` object
+    """
     imapc = IMAPconnector(user=request.user.username, 
                           password=request.session["password"])
     return imapc

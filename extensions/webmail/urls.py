@@ -11,6 +11,7 @@ urlpatterns = patterns(
     (r'^$', "newindex"),
     (r'^submailboxes', "submailboxes"),
     (r'^getmailcontent', 'getmailcontent'),
+    (r'^unseenmsgs', 'check_unseen_messages'),
     
     #                       (r'^compose/$', "compose"),
     (r'^delete/$', 'delete'),

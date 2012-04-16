@@ -103,11 +103,9 @@ def extra_static_content(user):
         return []
 
     tpl = Template("""<script type="text/javascript">
-function check_nb_requests() {
-    $.ajax({
-        url: "{{ url }}",
-        dataType: 'json',
-        success: function(data) {
+$(document).ready(function() {
+    var poller = new Poller("{{ url }}", {
+        success_cb: function(data) {
             var $link = $("#nbrequests");
             if (data.requests > 0) {
                 $link.html(data.requests + " " + gettext("pending requests"));
@@ -117,10 +115,6 @@ function check_nb_requests() {
             }
         }
     });
-}
-
-$(document).ready(function() {
-    setInterval(check_nb_requests, 2000);
 });
 </script>""")
     url = reverse("modoboa.extensions.amavis_quarantine.views.nbrequests")

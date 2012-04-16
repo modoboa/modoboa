@@ -303,4 +303,4 @@ def process(request):
 @user_passes_test(lambda u: u.group != 'SimpleUsers')
 def nbrequests(request):
     nbrequests = get_nb_requests(request.user)
-    return ajax_simple_response(dict(requests=nbrequests))
+    return ajax_simple_response(dict(status="ok", requests=nbrequests))

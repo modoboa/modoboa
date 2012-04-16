@@ -63,7 +63,7 @@ def __render_common_components(request, folder_name, lst=None, content=None, men
         "folders" : _render_to_string(request, "webmail/folders.html", {
                 "titlebar" : True,
                 "selected" : request.session["folder"],
-                "folders" : mbc.getfolders(request.user),
+                "folders" : mbc.getmboxes(request.user),
                 "withunseen" : True
                 }),
         "menu" : menu,
@@ -125,38 +125,50 @@ def index(request):
 @login_required
 @needs_mailbox()
 def getattachment(request, folder, mail_id):
-    if request.GET.has_key("partnumber"):
-        headers = {"Content-Type" : "text/plain",
-                   "Content-Transfer-Encoding" : None}
-        icon = IMAPconnector(user=request.user.username, 
-                             password=request.session["password"])
-        part = icon.fetchpart(mail_id, folder, request.GET["partnumber"])
-        if part is not None:
-            if part.get_content_maintype() == "message":
-                payload = part.get_payload(0)
-            else:
-                payload = part.get_payload(decode=True)
-            resp = HttpResponse(payload)
-            for hdr, default in headers.iteritems():
-                if not part.has_key(hdr):
-                    if default is not None:
-                        resp[hdr] = default
-                    else:
-                        continue
-                resp[hdr] = re.sub("\s", "", part[hdr])
-            # I would add this part into the previous loop if I was
-            # able to use functions as default values... but I'm a bit
-            # lazy :p
-            if part.has_key("Content-Disposition"):
-                resp["Content-Disposition"] = \
-                    re.sub("\s", "", part["Content-Disposition"])
-            else:
-                resp["Content-Disposition"] = \
-                    "attachment; filename=%s" % request.GET["fname"]
-            resp["Content-Length"] = len(payload)
-            return resp
-    raise Http404
+    """Fetch a message attachment
+    
+    Problème lié aux optimisations apportées : la méthode fetchpart du
+    client IMAP ne renvoie que le payload. Pour obtenir les headers,
+    deux solutions :
 
+    * Conserver le bodystructure parsé précédemment (nécessite du caching)
+    
+    * Reparser le bodystructure :p
+    """
+    pnum = request.GET.get("partnumber", None)
+    if not pnum:
+        raise Http404
+    
+    headers = {"Content-Type" : "text/plain",
+               "Content-Transfer-Encoding" : None}
+    imapc = get_imapconnector(request)
+    part = imapc.fetchpart(mail_id, folder, pnum)
+    if part is None:
+        raise Http404
+    if part.get_content_maintype() == "message":
+        payload = part.get_payload(0)
+    else:
+        payload = part.get_payload(decode=True)
+    resp = HttpResponse(payload)
+    for hdr, default in headers.iteritems():
+        if not part.has_key(hdr):
+            if default is not None:
+                resp[hdr] = default
+            else:
+                continue
+        resp[hdr] = re.sub("\s", "", part[hdr])
+    # I would add this part into the previous loop if I was
+    # able to use functions as default values... but I'm a bit
+    # lazy :p
+    if part.has_key("Content-Disposition"):
+        resp["Content-Disposition"] = \
+            re.sub("\s", "", part["Content-Disposition"])
+    else:
+        resp["Content-Disposition"] = \
+            "attachment; filename=%s" % request.GET["fname"]
+    resp["Content-Length"] = len(payload)
+    return resp
+    
 @login_required
 @needs_mailbox()
 def move(request):
@@ -204,7 +216,10 @@ def mark(request, name):
 def empty(request, name):
     if name == parameters.get_user(request.user, "TRASH_FOLDER"):
         get_imapconnector(request).empty(name)
-    return ajax_simple_response(dict(status="ok"))
+    content = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
+    return ajax_simple_response(dict(
+            status="ok", listing=content
+            ))
 
 @login_required
 @needs_mailbox()
@@ -239,7 +254,7 @@ def newfolder(request, tplname="webmail/folder2.html"):
            "withunseen" : False,
            "selectonly" : True}
 
-    ctx["folders"] = mbc.getfolders(request.user)
+    ctx["folders"] = mbc.getmboxes(request.user)
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
@@ -267,7 +282,7 @@ def editfolder(request, tplname="webmail/folder2.html"):
            "action_classes" : "submit",
            "withunseen" : False,
            "selectonly" : True}
-    ctx["folders"] = mbc.getfolders(request.user)
+    ctx["folders"] = mbc.getmboxes(request.user)
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
@@ -388,7 +403,7 @@ def render_mboxes_list(request, imapc):
     curmbox = request.session.get("mbox", "INBOX")
     return _render_to_string(request, "webmail/folders.html", {
             "selected" : curmbox,
-            "folders" : imapc.getfolders(request.user),
+            "folders" : imapc.getmboxes(request.user),
             "withunseen" : True
             })
 
@@ -544,8 +559,21 @@ def viewmail(request):
 @needs_mailbox()
 def submailboxes(request):
     topmailbox = request.GET.get('topmailbox', '')
-    mboxes = get_imapconnector(request).getfolders(request.user, topmailbox)
+    mboxes = get_imapconnector(request).getmboxes(request.user, topmailbox)
     return ajax_simple_response(dict(status="ok", mboxes=mboxes))
+
+@login_required
+@needs_mailbox()
+def check_unseen_messages(request):
+    mboxes = request.GET.get("mboxes", None)
+    if not mboxes:
+        raise WebmailError(_("Invalid request"))
+    mboxes = mboxes.split(",")
+    counters = dict()
+    imapc = get_imapconnector(request)
+    for mb in mboxes:
+        counters[mb] = imapc.unseen_messages(mb)
+    return ajax_simple_response(dict(status="ok", counters=counters))
 
 @login_required
 @needs_mailbox()
@@ -587,10 +615,10 @@ def newindex(request):
     if not request.is_ajax():
         request.session["lastaction"] = None
         imapc = get_imapconnector(request)
+        response["mboxes"] = render_mboxes_list(request, imapc)
         imapc.getquota(curmbox)
         response["refreshrate"] = \
-            int(parameters.get_user(request.user, "REFRESH_INTERVAL")) * 1000
-        response["mboxes"] = render_mboxes_list(request, imapc)
+            int(parameters.get_user(request.user, "REFRESH_INTERVAL"))
         response["quota"] = ImapListing.computequota(imapc)
         if response["quota"] < 50:
             response["quotalevel"] = "success"

@@ -53,7 +53,7 @@ def fset_menu(mode, setname):
          "url" : reverse("modoboa.extensions.sievefilters.views.activate_filters_set", 
                          args=[setname])},
         {"name" : "removefs",
-         "img" : "icon-remove",
+         "img" : "icon-trash",
          "label" : _("Remove filters set"),
          "url" : reverse("modoboa.extensions.sievefilters.views.remove_filters_set", 
                          args=[setname])},
@@ -81,7 +81,7 @@ def filter_actions(setname, f, position, islast):
         {"name" : "removefilter",
          "url" : reverse("modoboa.extensions.sievefilters.views.removefilter",
                          args=[setname, f["name"]]),
-         "img" : "icon-remove",
+         "img" : "icon-trash",
          "title" : _("Remove this filter")}
         ]
     if position != 1:

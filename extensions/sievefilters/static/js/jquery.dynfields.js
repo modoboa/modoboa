@@ -54,7 +54,7 @@
             return $('<a />', {
                 href: '#',
                 id: 'condition_' + this.nextid + '_rmbtn',
-                html: '<i class="icon-remove"></i>'
+                html: '<i class="icon-trash"></i>'
             }).click($.proxy(this.removefields, this));
         },
 
@@ -250,7 +250,7 @@
             return $('<a />', {
                 href: '#',
                 id: 'action_' + this.nextid + '_rmbtn',
-                html: '<i class="icon-remove"></i>'
+                html: '<i class="icon-trash"></i>'
             }).click($.proxy(this.removefields, this));
         },
 
@@ -322,7 +322,6 @@
 
     $.fn.dynaction.defaults = {
         defaultaction: "fileinto",
-        templates: [],
-        ufolders_url: null
+        templates: []
     };
 })(jQuery);

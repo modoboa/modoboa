@@ -22,8 +22,7 @@ function filterform_cb() {
         templates: cond_templates
     }).data('dyncondition');
     var $da = $("#action_0").dynaction({
-        templates: action_templates,
-        ufolders_url: "{% url modoboa.extensions.sievefilters.views.get_user_folders %}"
+        templates: action_templates
     }).data('dynaction');
 
     $("input[name=match_type]").click(function(e) {
