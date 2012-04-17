@@ -1,114 +1,128 @@
-#listing {
-    position: absolute;
-    left: 160px;
-    right: 0px;
-    top: 130px;
-    height: expression(document.body.clientHeight - 35 + "px");
+body, html {
+    overflow: hidden; 
+    height: 100%;
+}
+
+#leftcol { 
+    /*position: fixed;
+    top: 60px;
+    left: 0;
+    width: 200px;
+    padding-left: 15px;
+    overflow: hidden;*/
+}
+
+#folders {
+    position: fixed;
+    top: 60px;
+    left: 15px;
+    width: 200px;
+    overflow-y: auto;
+    margin-bottom: 5px;
+}
+
+#mboxes_container { 
     overflow: auto;
 }
 
-html > body #listing {
+#menubar { 
     position: fixed;
-    bottom: 35px;
+    left: 215px;
+    padding-left: 15px;
 }
 
-body.loading {
-    display: block;
-    filter: alpha(opacity=50);
-    opacity: 0.5;
-    z-index: 3;
-    background: #FFF url("../../css/spinner.gif") center center no-repeat;
+#listing { 
+    position: fixed;
+    left: 215px;
+    right: 0;
+    padding-left: 15px;
 }
 
-.clearfix:after {
-   content: ".";
-   display: block;
-   clear: both;
-   visibility: hidden;
-   overflow: hidden;
-   line-height: 0;
-   height: 0;
-}
- 
-.clearfix {
-   display: inline-block;
-}
- 
-html[xmlns] .clearfix {
-   display: block;
-}
- 
-* html .clearfix {
-   height: 1%;
-   overflow: visible;
-}
-
-/*thead tr {
-  position: relative;
-  top: expression(offsetParent.scrollTop);
-  z-index: 1;
-  padding: 0;
-}*/
-
-/*table#emails > tbody {
-  position: fixed;
-  bottom: 35px;
-  top: 155px;
-  left: 155px;
-  right: 0px;
-  overflow-x: hidden;
-  overflow-y: auto;
-}*/
-
-#emails th {
-    /*position: relative;*/
-}
-
-#emails th input {
-    margin: 0;
-}
-
-#emails tr {
-    width: 100%;
-    border-bottom: 1px solid #C8D6E8;
-    user-select: none; /* CSS3 */
-    -moz-user-select: none; /* Gecko (Firefox) */
-    -khtml-user-select: none; /* Webkit (Safari, Chrome) */
-}
-
-.draggable {
-    cursor: move;
-    /*position: relative;*/
+#mailcontent {
     border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.draggable img {
-    position: static;
+.unseen { 
+    font-weight: bold;
 }
 
-ul.hidden {
-    display: none;
+td[name="date"] { 
+    text-align: right;
 }
 
-ul.visible {
-    display: block;
-    padding-bottom: 0;
+#quotabar { 
+    margin: 12px 0 0 15px;
+    width: 200px;
 }
 
-/* Compose mail page */
-#compose-container {
+#quotaraw { 
+    margin-left: 10px;
+}
+
+/*
+ * Mailboxes list
+ */
+#mboxactions { 
+    position: fixed;
+    padding-left: 14px;
+}
+
+#mboxactions .btn-toolbar { 
+    margin-bottom: 0px;
+}
+
+#folders li { 
+    position: relative;
+}
+
+div.clickbox {
     position: absolute;
     left: 0px;
-    right: 10px;
-    top: 0;
-    bottom: 0;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+}
+
+div.collapsed {
+    background-image: url("/static/pics/collapsed.png");
+    background-repeat: no-repeat;
+}
+
+div.expanded {
+    background-image: url("/static/pics/expanded.png");
+    background-repeat: no-repeat;
+}
+
+/*
+ * Compose form
+ */
+#mailheader {
+    position: relative;
+    padding-bottom: 5px;
+}
+
+#mailheader input { 
+    width: 99%;
+    padding: 2px 0;
+}
+
+#mailheader textarea { 
+    width: 99%;
+    height: 40px;
+    padding: 2px 0;
+}
+
+#mailheader label { 
+    text-align: left;
 }
 
 #attachments {
     position: relative;
-    border: 1px solid #cccccc;
-    background-color: #eee;
-    margin: 10px 0 5px 0;
+    margin: 1px 0 5px 0;
     padding: 5px 0;
     cursor: pointer;
     width: 100%;
@@ -121,8 +135,40 @@ ul.visible {
 #list {
     position: absolute;
     top: 5px;
-    left: 130px;
+    left: 160px;
     font-weight: bold;
+}
+
+#body_container {
+    position: absolute;
+    left: 15px;
+    right: 0px;
+    bottom: 15px;
+}
+
+#id_body {
+    width: 99%;
+    height: 100%;
+}
+
+/*
+ * Attachments form
+ */
+#submit { 
+    margin: 0 auto;
+}
+
+#attachment_list {
+    margin-top: 20px;
+    height: 150px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 2px;
+}
+
+#attachment_list i,
+#attachment_list label { 
+    float: left;
 }
 
 .shortlist {
@@ -130,124 +176,24 @@ ul.visible {
     font-style: italic;
 }
 
-div.row {
-    width: 100%;
-    margin: 5px 0;
-}
-
-div.row label {
-    width: 120px;
-    font-size: small;
-    padding: 3px 0;
-}
-
-div.input_container {
-    position: static;
-    margin-left: 130px;
-}
-
-textarea {
-    border: 1px solid #cccccc;
-    background-color: #eee;
-    width: 100%;
-    height: 40px;
-    word-wrap: break-word;
-    resize: none;
-    padding: 2px 0;
-}
-
-textarea:hover {
-    background-color: #ffffcc;
-}
-
-#body_container {
-    position: absolute;
-    top: 205px;
-    left: 0;
-    right: 0px;
-    bottom: 15px;
-}
-
-#id_body {
-    background: white;
-    width: 100%;
-    height: 100%;
-}
-
-#mailheader input {
-    width: 100%;
-    padding: 2px 0;
-}
-
-#mailheader {
-    position: relative;
-    padding-bottom: 5px;
-}
-
-/* Progress bar */
-#quotalabel {
-    float: left;
-    padding: 7px 2px 0 5px;
-    display: none;
-}
-
-#quotabox {
-    display: none;
-    float: left;
-    margin: 5px;
-    width: 300px;
-    padding: 0;
-}
-
-#box { 
-    /*border: 1px solid #ccc; */
-    width: 200px;
-    background: url(../../pics/progressbar_bg.gif) right center no-repeat;
-    height: 19px;
-    float: left;
-}
-
-#perc { 
-    background: url(../../pics/progressbar.gif) right center no-repeat;
-    height: 19px; 
-}
-
-#quotatext { 
-    padding: 2px 0 0 2px;
-    float: left;
-}
-
-#fdmenu { border:1px solid #999; padding:0; background:#eee; width:150px; display:none; }
-#fdmenu .separator { border-top:1px solid #999; }
-#fdmenu ul { list-style-type:none; margin:0; padding:0; }
-#fdmenu li { margin:0; padding:0; }
-#fdmenu li a { display:block; padding:5px 10px 5px 5px; font-size:12px; text-decoration:none; font-family:tahoma,arial,sans-serif; color:#000; }
-#fdmenu li a:hover { background-color:#ddd; }
-#fdmenu img { float:left; margin: 0 5px 0 0; }
-
-.folder_menu {
-    float: right;
-    opacity: 0.8;
-}
-
-.folder_btn {
-    float: right;
-    margin: 3px;
-}
-
-.folder_menubar {
-    clear: both;
-}
-
+/*
+ * Drap & Drop
+ */
 .dragbox {
-    position : absolute;
-    opacity : 0.8;
-    width : 200px;
     padding : 5px;
     text-align : center;
-    height : 25px;
-    border : 1px solid #333;
     background : white;
-    display: none;
     z-index : 3;
+}
+
+/*
+ * Folder form
+ */
+.modal-body { 
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#folders2 li { 
+    position: relative;
 }

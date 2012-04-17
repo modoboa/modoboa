@@ -1,49 +1,10 @@
-{% extends "layout_simple.html" %}
-{% load i18n %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}webmail/css/folders.css" />
-<script src="{{ MEDIA_URL }}js/form.js" type="text/javascript"></script>
-<script src="{{ MEDIA_URL }}webmail/js/webmail.js" type="text/javascript"></script>
-<script type="text/javascript">
-  window.addEvent("domready", function() {
-    var form = new Form();
-
-    init_folders_browsing();
-
-    $$("a[name=loadfolder]").addEvent("click", function(evt) {
-      evt.stop();
-      $$("a[name=loadfolder]").each(function(item) {
-        item.getParent().removeClass("selected");
-      });
-      this.getParent().addClass("selected");
-    });
-
-    form.register_extra_data_callback("{{ fname }}", function() {
-      var result = "";
-      $$("li[class*=selected]").each(function(item) {
-        var atag = item.getFirst("a");
-        result = atag.get("href");
-      });
-      return "parent_folder=" + result;
-    });
-  });
-</script>
-{% endblock %}
-{% block content %}
-<div class="title"><h1>{{ title }}</h1></div>
-<div id="error" class="error">{{ error }}</div>
-<form action="{% url modoboa.extensions.webmail.views.newfolder %}" 
-      method="POST" id="{{ fname }}" name="{{ fname }}">
-  <input type="hidden" name="oldname" value="{{ oldname }}" />
-  {% include "common/genericform.html" %}
-  <div class="row">
-    <label>{% trans "Parent folder" %}</label>
-  </div>
-  <div id="folders2" class="box">
-    {% include "webmail/folders.html" %}
-  </div>
-  <div id="fdcreate">
-    <input type="submit" name="submit" value='{{ submit_label }}'/>
-  </div>
-</form>
+{% extends "common/generic_modal_form.html" %}
+{% load i18n webextras %}
+{% block extrafields %}
+<div id="folders2" class="well">
+  <ul class="nav nav-list">
+    <li class="nav-header">{% trans "Parent mailbox" %}</li>
+    {% print_folders folders selected withunseen selectonly %}
+  </ul>
+</div>
 {% endblock %}

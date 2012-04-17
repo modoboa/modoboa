@@ -35,6 +35,9 @@ def join(items, sep=','):
         res += "%s : '%s'" % (k, v)
     return res
 
+@register.simple_tag
+def tolist(values):
+    return "[%s]" % ",".join(map(lambda v: '"%s"' % v, values))
 
 @register.simple_tag
 def display_messages(msgs):
@@ -134,7 +137,7 @@ def alert(msg, typ):
 
 @register.simple_tag
 def render_link(linkdef, mdclass=None):
-    t = Template("""<a href="{{ link.url }}" name="{{ link.name }}"
+    t = Template("""<a href="{{ link.url }}" name="{{ link.name }}" title="{{ link.title }}"
 {% if link.modal %}data-toggle="ajaxmodal{% if link.autowidth %}-autowidth{% endif %}"{% endif %}
 {% if link.modalcb %}modalcb="{{ link.modalcb }}"{% endif %}
 class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"

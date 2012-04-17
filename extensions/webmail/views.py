@@ -214,11 +214,12 @@ def mark(request, name):
 @login_required
 @needs_mailbox()
 def empty(request, name):
-    if name == parameters.get_user(request.user, "TRASH_FOLDER"):
-        get_imapconnector(request).empty(name)
+    if name != parameters.get_user(request.user, "TRASH_FOLDER"):
+        raise WebmailError(_("Invalid request"))
+    get_imapconnector(request).empty(name)
     content = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
     return ajax_simple_response(dict(
-            status="ok", listing=content
+            status="ok", listing=content, mailbox=name
             ))
 
 @login_required
@@ -620,13 +621,12 @@ def newindex(request):
         response["refreshrate"] = \
             int(parameters.get_user(request.user, "REFRESH_INTERVAL"))
         response["quota"] = ImapListing.computequota(imapc)
-        if response["quota"] < 50:
-            response["quotalevel"] = "success"
-        elif response["quotalevel"] < 80:
-            response["quotalevel"] = "warning"
-        else:
-            response["quotalevel"] = "danger"
-        return _render(request, "webmail/index2.html", response)
+        response["ro_mboxes"] = ["INBOX", "Junk", 
+                                 parameters.get_user(request.user, "SENT_FOLDER"),
+                                 parameters.get_user(request.user, "TRASH_FOLDER"),
+                                 parameters.get_user(request.user, "DRAFTS_FOLDER")]
+                                 
+        return _render(request, "webmail/index.html", response)
 
     if action in ["reply", "forward"]:
         action = "compose"

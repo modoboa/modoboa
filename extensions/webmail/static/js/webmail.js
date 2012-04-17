@@ -1,533 +1,589 @@
-var Webmail = new Class({
-    Implements: [Options],
+/*
+ * The javascript code that brings the webmail to life!
+ */
+var Webmail = function(options) {
+    this.initialize(options);
+};
 
-    /*
-     * Default values for options
-     */
+Webmail.prototype = {
+    constructor: Webmail,
+
     defaults: {
-        refreshRate: 0,
-        modify_url: "",
-        delete_url: "",
+        poller_interval: 300, /* in seconds */
+        poller_url: "",
         move_url: "",
-        submboxes_url: ""
+        submboxes_url: "",
+        delattachment_url: "",
+        deflocation: "",
+        defcallback: "",
+        ro_mboxes: ["INBOX"]
     },
 
-    /*
-     * Constructor
-     */
     initialize: function(options) {
-        this.setOptions(options);
-
+        this.options = $.extend({}, this.defaults, options);
         this.rtimer = null;
         this.editorid = "id_body";
 
-        this.init_folders_buttons();
-        this.init_folders_browsing();
-        this.init_quota_bar();
-
-        /* FIXME: à faire uniquement pour le mode pushState */
-        /*this.init_emails_table();*/
-
-        current_anchor.disable_spinner();
-        current_anchor.register_callback("listmailbox",
-                                         this.listmailbox_callback.bind(this));
-        current_anchor.register_callback("viewmail", this.viewmail_callback.bind(this));
-        current_anchor.register_callback("compose", this.compose_callback.bind(this));
-        current_anchor.register_callback("reply", this.compose_callback.bind(this));
-        current_anchor.register_callback("replyall", this.compose_callback.bind(this));
-        current_anchor.register_callback("forward", this.compose_callback.bind(this));
-        current_anchor.register_callback("delete", this.delete_callback);
-
-        this.gspinner = new Spinner("document.body", {
-            message: gettext("Loading, please wait..."),
-            'class': "spinner-noop"
+        this.navobject = new History({
+            deflocation: this.options.deflocation,
+            defcallback: this.options.defcallback
         });
-        this.gspinner.addEvent("hide", function(target) {
-            this.gspinner.destroy();
-            delete(this.gspinner);
-            current_anchor.enable_spinner();
-        }.bind(this));
-        this.gspinner.show();
+        this.poller = new Poller(this.options.poller_url, {
+            interval: this.options.poller_interval * 1000,
+            success_cb: $.proxy(this.poller_cb, this),
+            args: this.get_visible_mailboxes
+        });
+        this.record_unseen_messages();
+
+        $("#folders").css({
+            bottom: $("#bottom-bar").outerHeight(true)
+        });
+        $("#mboxactions").css({
+            bottom: $("#bottom-bar").outerHeight(true) + 10
+        });
+        this.resize();
+
+        this.init_droppables();
+        this.register_navcallbacks();
+        this.listen();
     },
 
-    send_mark_request: function(evt) {
-      evt.stop();
-      if (!this.emails_table._selectedRows.length) {
-        return;
-      }
-      var ids = new Array();
+    register_navcallbacks: function() {
+        this.navobject.register_callback("listmailbox",
+            $.proxy(this.listmailbox_callback, this));
+        this.navobject.register_callback("compose",
+            $.proxy(this.compose_callback, this));
+        this.navobject.register_callback("viewmail",
+            $.proxy(this.viewmail_callback, this));
 
-      this.emails_table._selectedRows.each(function(item, index) {
-          ids.include(item.get("id"));
-      });
-      this.simple_request(evt.target.get("href"), {
-          ids : ids.join()
-      }, function(response) {
-          if (response.action == "read") {
-              this.emails_table._selectedRows.removeClass("unseen");
-          } else {
-              this.emails_table._selectedRows.addClass("unseen");
-          }
-          /*
-           * MAJ de l'affichage du nombre de messages non lus
-           * (faire fonction à part)
-           */
-      }.bind(this));
+        this.navobject.register_callback("reply",
+            $.proxy(this.compose_callback, this));
+        this.navobject.register_callback("replyall",
+            $.proxy(this.compose_callback, this));
+        this.navobject.register_callback("forward",
+            $.proxy(this.compose_callback, this));
+        this.navobject.register_callback("delete",
+            $.proxy(this.delete_callback, this));
+    },
+
+    listen: function() {
+        $(window).resize(this.resize);
+
+        $(document).on("click", "a[name=compose]",
+            $.proxy(this.compose_loader, this));
+        $(document).on("click", "a[name*=mark-]",
+            $.proxy(this.send_mark_request, this));
+        $(document).on("click", "a[name=empty]",
+            $.proxy(this.empty, this));
+        $(document).on("click", "#bottom-bar a",
+            $.proxy(this.getpage_loader, this));
+
+        $(document).on("click", "a[name=loadfolder]",
+            $.proxy(this.listmailbox_loader, this));
+        $(document).on("click", "a[name=selectfolder]",
+            this.select_parent_mailbox),
+        $(document).on("click", "div[class*=clickbox]",
+            $.proxy(this.mbox_state_callback, this));
+        $(document).on("click", "a[name=editmbox]",
+            $.proxy(this.edit_mbox, this));
+        $(document).on("click", "a[name=removembox]",
+            $.proxy(this.remove_mbox, this));
+
+        $(document).on("dblclick", "tbody>tr",
+            $.proxy(this.viewmail_loader, this));
+
+        $(document).on("click", "a[name=reply]",
+            $.proxy(this.reply_loader, this));
+        $(document).on("click", "a[name=replyall]",
+            $.proxy(this.reply_loader, this));
+        $(document).on("click", "a[name=forward]",
+            $.proxy(this.reply_loader, this));
+        $(document).on("click", "a[name=delete]",
+            $.proxy(this.delete_message, this));
+        $(document).on("click", "a[name=activate_links]",
+            $.proxy(function(e) { this.display_mode(e, "1"); }, this));
+        $(document).on("click", "a[name=disable_links]",
+            $.proxy(function(e) { this.disable_mode(e, "0"); }, this));
+
+        $(document).on("click", "a[name=sendmail]",
+            $.proxy(this.sendmail, this));
+
+        $(document).on("click", "#attachments", $.proxy(function(e) {
+            var $div = $(e.target).parent();
+            modalbox(e, undefined, $div.attr("name"),
+                $.proxy(this.attachments_init, this));
+        }, this));
+    },
+
+    record_unseen_messages: function() {
+        var unseen_counters = {};
+
+        $("#folders").find("a.unseen").each(function() {
+            var $this = $(this);
+            unseen_counters[$this.attr("href")] = parseInt($this.attr("data-toggle"));
+        });
+        this.unseen_counters = unseen_counters;
+    },
+
+    resize: function() {
+        $("#mboxes_container").height($("#folders").height() - $("#mboxactions").height());
     },
 
     /*
-     * Open/Close the menu containing folder buttons
+     * Simple helper to retrieve the currently selected mailbox.
      */
-    toggle_folder_buttons: function(evt) {
-        var parent = evt.target.getParent();
-        var fdname = parent.getFirst("a[name=loadfolder]").get("href");
-
-        this.fdmenu.toggle(evt.target, fdname);
-        evt.stop();
+    get_current_mailbox: function() {
+        if (this.navobject.params.action != "listmailbox") {
+            return null;
+        }
+        return (this.navobject.params.name)
+            ? this.navobject.params.name : "INBOX";
     },
 
     /*
-     * Initializes the misc. buttons available to manipulate folders.
+     * Enable or disable edit and remove actions for the currently
+     * selected mailbox.
      */
-    init_folders_buttons: function() {
-        $$("li[class*=clickable]").removeEvents();
-
-        $$("a[name=loadfolder]").addEvent("click", this.listmailbox_loader.bind(this));
-
-        SqueezeBox.assign($("folders").getElements('a[class=boxed]'), {
-            parse: 'rel'
-        });
-
-        this.fdmenu = new FdMenu({
-            modify_url: this.options.modify_url,
-            delete_url: this.options.delete_url
-        });
-
-        $$("img[class*=footer]")
-            .addEvent("click", this.toggle_folder_buttons.bind(this));
-    },
-
-    /*
-     * Open/Close a mailbox with children
-     */
-    toggle_mbox_state: function(div, ul) {
-        if (ul.hasClass("hidden")) {
-            div.removeClass("collapsed").addClass("expanded");
-            ul.removeClass("hidden").addClass("visible");
+    enable_mb_actions: function(state) {
+        if (state === undefined) {
+            state = true;
+        }
+        if (state) {
+            $("a[name=editmbox], a[name=removembox]").removeClass("disabled");
         } else {
-            div.removeClass("expanded").addClass("collapsed");
-            ul.removeClass("visible").addClass("hidden");
+            $("a[name=editmbox], a[name=removembox]").addClass("disabled");
+        }
+    },
+
+    page_update: function(response) {
+        /*if (this.gspinner) {
+            this.gspinner.hide();
+        }*/
+        if (response.menu != undefined) {
+            $("#menubar").html(response.menu);
+            $("#searchfield").searchbar({navobj: this.navobject});
+        }
+        if (response.navbar) {
+            $("#bottom-bar-right").html(response.navbar);
+        }
+        $("#listing").html(response.listing);
+        $("#listing").css({
+            top: $("#menubar").outerHeight(true) + 60 + "px",
+            bottom: $("#bottom-bar").outerHeight(true) + "px",
+            overflow: "auto"
+        });
+    },
+
+    /*
+     *  Set the *unseen messages* counter for a particular mailbox in
+     *  the list. If the mailbox is currently selected, we update the
+     *  listing.
+     */
+    set_unseen_messages: function(mailbox, value) {
+        if (this.poller.running_request) {
+            return;
+        }
+        if (this.unseen_counters[mailbox] != undefined
+            && value == this.unseen_counters[mailbox]) {
+            return;
+        }
+
+        if (this.navobject.params.action == "listmailbox") {
+            var curmb = this.get_current_mailbox();
+            if (curmb == mailbox) {
+                this.navobject.update(true);
+            }
+        }
+
+        var $link = $('a[href="' + mailbox + '"]');
+        var parts = mailbox.split('.');
+        var dname = " " + parts[parts.length - 1];
+        var $i = $link.children("i");
+
+        this.unseen_counters[mailbox] = value;
+        if (value) {
+            $link.html(dname + " (" + value + ")");
+            $link.addClass("unseen");
+        } else {
+            $link.html(dname);
+            $link.removeClass("unseen");
+        }
+        $link.prepend($i);
+    },
+
+    /*
+     * Increment or decrement the *unseen messages* counter of the
+     * given mailbox.
+     */
+    change_unseen_messages: function(mailbox, offset) {
+        if (this.unseen_counters[mailbox] === undefined) {
+            this.unseen_counters[mailbox] = 0;
+        }
+        this.set_unseen_messages(mailbox, this.unseen_counters[mailbox] + offset);
+    },
+
+    /*
+     * Returns a list containing the currently visible mailboxes (in
+     * the left tree).
+     */
+    get_visible_mailboxes: function() {
+        var res = new Array();
+
+        $("#folders").find("ul:visible").children("li.droppable").each(function() {
+            res.push($(this).attr("name"));
+        });
+        return "mboxes=" + res.join(",");
+    },
+
+    /*
+     * Sends a refresh request to the server. This method is called
+     * periodically to check for new messages. (not really optimized)
+     */
+    update_unseen_messages: function(mailbox) {
+        $.ajax({
+            url: this.options.poller_url + "?selection=" + mailbox,
+            dataType: 'json',
+            success: $.proxy(this.poller_cb, this)
+        });
+    },
+
+    /*
+     * Poller callback.
+     */
+    poller_cb: function(data) {
+        for (var mb in data.counters) {
+            this.set_unseen_messages(mb, parseInt(data.counters[mb]));
         }
     },
 
     /*
      * Inject new mailboxes under a given parent in the tree.
      */
-    inject_mailboxes: function(parent, mboxes) {
-        var ul = new Element("ul", {
-            name: parent.get("name"),
-            'class': "hidden"
-        }).inject(parent);
+    inject_mailboxes: function($parent, mboxes) {
+        var $ul = $("<ul />", {
+            name: $parent.attr("name"),
+            'class': "hidden nav nav-list"
+        });
+        var $plink = $parent.children("a");
 
+        $parent.append($ul);
         for (var i = 0; i < mboxes.length; i++) {
             var mbname = mboxes[i].name;
-            var li = new Element("li", {
+            var $li = $("<li />", {
                 name: mbname,
-                'class': "droppable folder"
-            }).inject(ul);
-            var img = new Element("img", {
-                'class': "footer",
-                src: static_url("pics/go-down.png")
-            }).inject(li);
-            var link = new Element("a", {
-                name: "loadfolder",
+                'class': "droppable"
+            });
+            var $link = $("<a />", {
+                name: $plink.attr("name"),
                 'class': "block",
                 href: mbname
-            }).inject(li);
+            });
             var parts = mbname.split(".");
-            var displayname = parts[parts.length - 1];
+            var linkcontent = "<i class='icon-folder-close'></i> ";
+            var displayname = linkcontent + parts[parts.length - 1];
+
+            $li.append($link);
+            $ul.append($li);
 
             if (mboxes[i].unseen != undefined) {
-                link.addClass("unseen");
-                link.set("html", displayname + " (" + mboxes[i].unseen + ")");
+                $link.addClass("unseen");
+                $link.html(displayname + " (" + mboxes[i].unseen + ")");
+                this.unseen_counters[$link.attr("href")] = mboxes[i].unseen;
             } else {
-                link.set("html", displayname);
+                $link.html(displayname);
             }
-
-            link.addEvent("click", this.listmailbox_loader.bind(this));
-            img.addEvent("click", this.toggle_folder_buttons.bind(this));
         }
-        this.init_draggables();
-        this.toggle_mbox_state(parent.getFirst("div"), ul);
+        this.init_droppables($ul.find(".droppable"), true);
+        this.toggle_mbox_state($parent.children("div"), $ul);
     },
 
     /*
      * Download sub-mailboxes from the server
      */
     get_mailboxes: function(parent) {
-        new Request.JSON({
+        $.ajax({
             url: this.options.submboxes_url,
-            onSuccess: function(resp) {
-                if (resp.status == "ko") {
+            dataType: 'json',
+            data: "topmailbox=" + parent.attr("name"),
+            success: $.proxy(function(data) {
+                if (data.status == "ko") {
                     return;
                 }
-                this.inject_mailboxes(parent, resp.mboxes);
-            }.bind(this)
-        }).get({topmailbox: parent.get("name")});
-    },
-
-    /*
-     * Enables folders opening/closing
-     *
-     * Available for folders with subfolders.
-     */
-    init_folders_browsing: function() {
-        $$("div[class*=clickbox]").addEvent("click", function(evt) {
-            var div = evt.target;
-            var parent = div.getParent();
-            var ul = parent.getFirst("ul[name=" + parent.get("name") + "]");
-
-            if (ul == undefined) {
-                this.get_mailboxes(parent);
-                return;
-            }
-            this.toggle_mbox_state(div, ul);
-            evt.stop();
-        }.bind(this));
-    },
-
-    /*
-     * Select a particular folder
-     */
-    select_folder: function(obj) {
-        $$("a[name=loadfolder]").each(function(item) {
-            item.getParent().removeClass("selected");
-            item.getParent().addClass("droppable");
-        });
-        obj.getParent().removeClass("droppable");
-        obj.getParent().addClass("selected");
-
-        $$(obj.getParents("ul[class*=hidden]")).each(function(item) {
-            item.removeClass("hidden");
-            item.addClass("visible");
-            $$("li[name=" + item.get("name") + "]").each(function(item) {
-                item.setStyle(
-                    "background",
-                    "url('" + static_url("pics/folder-open.png") + "') no-repeat"
-                );
-            });
+                this.inject_mailboxes(parent, data.mboxes);
+            }, this)
         });
     },
 
     /*
-     * Automatic folder listing refresh
-     *
-     * Called at a regular frequency to make an asynchronous request that
-     * retrieves a folder's content (ie. mails)
+     * Open/Close a mailbox with children
      */
-     refresh_folder: function() {
-         var query = current_anchor.serialized.substring(1);
-
-         clearInterval(this.rtimer);
-         infobox.show(gettext("Reloading..."), {
-             profile : "gray",
-             spinner : true
-         });
-         new Request.JSON({url: query, noCache : true, onSuccess: function(resp) {
-             var callback = ($defined(resp.callback)) ? resp.callback : "default";
-
-             current_anchor.get_callback(callback)(resp);
-             infobox.info(gettext("Done"));
-             infobox.hide(1);
-         }}).get();
-     },
-
-    init_automatic_refresh: function() {
-        this.rtimer = this.refresh_folder
-            .periodical(this.options.refreshRate);
-    },
-
-    /*
-     * Emails table initialization.
-     */
-    init_emails_table: function() {
-        this.emails_table = new HtmlTable($("emails"), {
-            selectable: true,
-	    shiftForMultiSelect: true
-        }).addEvents({
-            rowFocus: function(tr) {
-	        clearInterval(this.rtimer);
-	    }.bind(this),
-	    rowUnfocus: function(tr) {
-	        if (this.emails_table._selectedRows.length == 0) {
-                    this.init_automatic_refresh();
-	        }
-	    }.bind(this)
-        });
-
-        /* The IE way for disabling default selection */
-        /* Actually it doesn't work :p */
-        $$("tbody>tr").set("unselectable", "on");
-
-        if ($("toggleselect")) {
-            $("toggleselect").addEvent("click", function(evt) {
-	        if (evt.target.checked) {
-	            this.emails_table.selectAll();
-	        } else {
-	            this.emails_table.selectNone();
-	        }
-                evt.stopPropagation();
-	    }.bind(this));
-        }
-
-        init_sortable_columns();
-        update_sortable_column();
-
-        this.init_draggables();
-
-        $$("tbody>tr").addEvent("dblclick", this.viewmail_loader);
-    },
-
-    /*
-     * Drag & Drop feature
-     */
-    init_draggables: function(pattern) {
-        if (this.dragobjs == undefined) {
-            this.dragobjs = new Array();
+    toggle_mbox_state: function($div, $ul) {
+        if ($ul.hasClass("hidden")) {
+            $div.removeClass("collapsed").addClass("expanded");
+            $ul.removeClass("hidden").addClass("visible");
         } else {
-            this.dragobjs.each(function(item) {
-                item.detach();
-                delete(item);
-            });
-            this.dragobjs = new Array();
+            $div.removeClass("expanded").addClass("collapsed");
+            $ul.removeClass("visible").addClass("hidden");
         }
-
-        $$("td[class*=draggable]").each(function(item) {
-            var pid = item.getParent().get("id");
-
-            this.dragobjs[pid] = item.makeDraggable({
-	        droppables: ".droppable"
-	    }).addEvents({
-	        beforeStart: this.bstart_dragging.bind(this),
-	        start: this.start_dragging.bind(this),
-                enter: this.enter_droppable,
-	        leave: this.leave_droppable,
-                drop: this.drop_element.bind(this),
-	        cancel: this.cancel_dragging.bind(this)
-	    });
-        }.bind(this));
     },
 
+    mbox_state_callback: function(e) {
+        e.preventDefault();
+        var $div = $(e.target);
+        var $parent = $div.parent();
+        var $ul = $parent.find('ul[name="' + $parent.attr("name") + '"]');
+
+        if (!$ul.length) {
+            this.get_mailboxes($parent);
+            return;
+        }
+        this.toggle_mbox_state($div, $ul);
+    },
 
     /*
-     * 'before start' event callback
+     * Select a particular mailbox
      */
-    bstart_dragging: function(item) {
-        var dragobj = this.dragobjs[item.getParent().get("id")];
-        var block = new Element("div", {id: "draggeditems", 'class': "dragbox"})
-	    .setStyles({
-                top : dragobj.element.getCoordinates()['top'],
-		left : dragobj.element.getCoordinates()['left']
-            }).inject(document.body);
+    select_mailbox: function(obj) {
+        var $obj = $(obj);
 
-	block.store("parent", dragobj.element);
-        dragobj.element = block;
-	clearInterval(this.rtimer);
+        $("a[name=loadfolder]").each(function() {
+            var $this = $(this);
+            $this.parent().removeClass("active");
+            $this.parent().addClass("droppable");
+        });
+        $obj.parent().removeClass("droppable");
+        $obj.parent().addClass("active");
+
+        // $$(obj.getParents("ul[class*=hidden]")).each(function(item) {
+        //     item.removeClass("hidden");
+        //     item.addClass("visible");
+        //     $$("li[name=" + item.get("name") + "]").each(function(item) {
+        //         item.setStyle(
+        //             "background",
+        //             "url('" + static_url("pics/folder-open.png") + "') no-repeat"
+        //         );
+        //     });
+        // });
     },
 
-    start_dragging: function(item, event) {
-        var tr = event.target.getParent();
-
-	if (!this.emails_table.isSelected(tr)) {
-	    this.emails_table.selectNone();
-	    this.emails_table.selectRow(tr);
-	}
-	item.set("html", "Moving " + this.emails_table._selectedRows.length + " messages");
-	item.setStyle("display", "block");
+    select_parent_mailbox: function(e) {
+        e.preventDefault();
+        $("a[name=selectfolder]").parent().removeClass("active");
+        $(this).parent().addClass("active");
     },
 
-    enter_droppable: function(item, droppable) {
-	droppable.addClass("dragging");
-    },
-
-    leave_droppable: function(item, droppable) {
-	droppable.removeClass("dragging");
-    },
-
-    restore_parent: function(item) {
-	var parent = item.retrieve("parent");
-        var drag = this.dragobjs[parent.getParent().get("id")];
-
-	drag.element = parent;
-        this.init_automatic_refresh();
-    },
-
-    drop_element: function(item, droppable, event) {
-	item.dispose();
-        if (!droppable) {
-	    this.restore_parent(item);
-	    return;
+    /*
+     * Edit the currently selected mailbox. Opens a modal box that
+     * permits to change mailbox's name and more.
+     */
+    edit_mbox: function(e) {
+        var $link = get_target(e, "a");
+        if ($link.hasClass("disabled")) {
+            e.preventDefault();
+            return;
         }
-        droppable.removeClass("dragging");
-        var dest = gethref(droppable.getFirst("a"));
-        var msgset = new Array();
+        var $selected = $("#folders li.active").children("a");
 
-        this.emails_table._selectedRows.each(function(item, index) {
-	    msgset.include(item.get("id"));
-	});
-        this.simple_request(this.options.move_url, {
-            msgset : msgset.join(),
-            to : dest
+        modalbox(e, undefined, $link.attr("href") + "?name=" + $selected.attr("href"),
+            $.proxy(this.mboxform_cb, this));
+    },
+
+    /*
+     * Remove the currently selected mailbox.
+     */
+    remove_mbox: function(e) {
+        var $link = get_target(e, "a");
+
+        e.preventDefault();
+        if ($link.hasClass("disabled")) return;
+        if (!confirm(gettext("Remove the selected mailbox?"))) {
+            return;
+        }
+
+        var $selected = $("#folders li.active").children("a");
+
+        $.ajax({
+            url: $link.attr("href") + "?name=" + $selected.attr("href"),
+            dataType: 'json',
+            success: $.proxy(function(data) {
+                if (data.status == "ok") {
+                    $("body").notify("success", gettext("Mailbox removed"), 2000);
+                    if (this.navobject.getparam("action") == "listmailbox") {
+                        $('li[name="' + this.navobject.getparam("name") + '"]').remove();
+                        this.select_mailbox($("a[href=INBOX]"));
+                        this.navobject.setparam("name", "INBOX").update();
+                    }
+                } else {
+                    $("body").notify("error", data.respmsg);
+                }
+            }, this)
         });
     },
 
-    cancel_dragging: function(item) {
-	item.dispose();
-	this.restore_parent(item);
-    },
+    send_mark_request: function(e) {
+        e.preventDefault();
+        if (!this.htmltable.current_selection().length) {
+            return;
+        }
+        var $link = $(e.target);
+        var selection = [];
 
-    /*
-     * Bottom left quota bar initialisation.
-     */
-    init_quota_bar: function() {
-        this.quota_pb = new ProgressBar({
-            container: $("quotabox"),
-            startPercentage: 0,
-            boxID: "box",
-            percentageID: "perc",
-            displayText: true,
-            displayID: "quotatext"
+        this.htmltable.current_selection().each(function() {
+            selection.push($(this).attr("id"));
+        });
+        $.ajax({
+            url: $link.attr("href"),
+            data: "ids=" + selection.join(","),
+            dataType: 'json',
+            success: $.proxy(this.mark_callback, this)
         });
     },
 
-    /*
-     *
-     */
-    page_update: function(response) {
-        if (this.gspinner) {
-            this.gspinner.hide();
-        }
-        updatelisting(response);
+    send_mb_action: function(url, cb) {
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: $.proxy(function(data) {
+                if (data.status == "ko") {
+                    $("body").notify("error", data.respmsg);
+                    return;
+                }
+                cb.apply(this, [data]);
+            }, this)
+        });
+    },
+
+    empty: function(e) {
+        e.preventDefault();
+        var $link = $(e.target);
+
+        this.send_mb_action($link.attr("href"), function(data) {
+            this.page_update(data);
+            this.set_unseen_messages(data.mailbox, 0);
+        });
+    },
+
+    delete_message: function(e) {
+        var $link = $(e.target);
+        e.preventDefault();
+        $.ajax({
+            url: $link.attr("href"),
+            dataType: 'json',
+            success: $.proxy(this.delete_callback, this)
+        });
+    },
+
+    display_mode: function(e, value) {
+        e.preventDefault();
+        this.navobject.setparam("links", value).update();
     },
 
     /*
-     * Webmail actions start here
+     * Action loaders
      */
 
     /*
      * Onclick callback used to load the content of a particular
-     * folder. (activated when clicking on a folder's name)
+     * mailbox. (activated when clicking on a mailbox's name)
      */
     _listmailbox_loader: function(event, obj) {
-        event.stop();
-        if (obj == undefined) {
+        event.preventDefault();
+        if (obj === undefined) {
             obj = $(event.target);
         }
-        current_anchor.reset().setparams({
+        this.navobject.reset().setparams({
            action: "listmailbox",
            name: gethref(obj)
         }).update();
     },
 
     listmailbox_loader: function(event) {
-        this.select_folder(event.target);
-        this._listmailbox_loader(event, event.target);
+        this.select_mailbox(event.target);
+        this._listmailbox_loader(event, $(event.target));
     },
 
     /*
-     * Callback for 'folder' action
+     * Special loader used for pagination links as we only need to
+     * update the 'page' parameter.
      */
-    listmailbox_callback: function(resp) {
-        window.removeEvents("resize");
-        this.page_update(resp);
-        if (resp.menu != undefined) {
-            searchbox_init();
-            $$("a[name=compose]").addEvent("click", this.compose_loader);
-            $$("a[name=mark-read]")
-                .addEvent("click", this.send_mark_request.bind(this));
-            $$("a[name=mark-unread]")
-                .addEvent("click", this.send_mark_request.bind(this));
-            $$("a[name=fdaction]").addEvent("click", function(evt) {
-                this.simple_request(evt.target.get("href"), {});
-                evt.stop();
-            }.bind(this));
-        }
-        this.init_emails_table();
-    },
-
-    /*
-     * Loader of the 'viemmail' action
-     */
-    viewmail_loader: function(evt) {
-        evt.stop();
-        current_anchor.reset().setparams({
-            action: "viewmail",
-            mailid: this.get("id")
-        }).update();
-    },
-
-    /*
-     * Callback of the 'viewmail' action
-     */
-    viewmail_callback: function(resp) {
-        /*wm_updatelisting(resp, "hidden");*/
-        this.page_update(resp);
-
-        //$$("a[name=back]").addEvent("click", this._listmailbox_loader);
-        $$("a[name=reply]").addEvent("click", this.reply_loader);
-        $$("a[name=replyall]").addEvent("click", this.reply_loader);
-        $$("a[name=forward]").addEvent("click", this.forward_loader);
-        $$("a[name=delete]").addEvent("click", function(event) {
-            var lnk = event.target;
-            event.stop();
-            this.simple_request(lnk.get("href"), undefined, function(resp) {
-                history.go(-1);
-            });
-        }.bind(this));
-        $$("a[name=activate_links]").addEvent("click", function(evt) {
-            evt.stop();
-            current_anchor.setparam("links", "1").update();
-        });
-        $$("a[name=disable_links]").addEvent("click", function(evt) {
-            evt.stop();
-            current_anchor.setparam("links", "0").update();
-        });
-        setDivHeight("mailcontent", 5, 0);
+    getpage_loader: function(e) {
+        var $link = $(e.target).parent();
+        e.preventDefault();
+        this.navobject.updateparams($link.attr("href")).update();
     },
 
     /*
      * Loader of the 'compose' action (called when the associated button
      * is clicked)
      */
-    compose_loader: function(event) {
-        event.stop();
-        current_anchor.reset().setparam("action", this.get("href")).update();
+    compose_loader: function(e) {
+        var $link = $(e.target);
+
+        e.preventDefault();
+        this.navobject.reset().setparam("action", $link.attr("href")).update();
+    },
+
+    reply_loader: function(e) {
+        var $link = $(e.target);
+        e.preventDefault();
+        this.navobject.reset().updateparams($link.attr("href")).update();
+    },
+
+    sendmail: function(e) {
+        var $link = $(e.target);
+        var $form = $("#composemail");
+        var args = $form.serialize();
+
+        e.preventDefault();
+        $link.attr("disabled", "disabled");
+        $.ajax({
+            url: $form.attr("action"),
+            data: args,
+            dataType: 'json',
+            type: 'POST',
+            success: $.proxy(this.sendmail_callback, this)
+        });
     },
 
     /*
-     * Loader of the 'reply' action (called when the associated button
-     * is clicked).
+     * Loader of the 'viewmail' action
      */
-    reply_loader: function(event, all) {
-        event.stop();
-        current_anchor.reset().updateparams(this.get("href")).update();
+    viewmail_loader: function(e) {
+        var $tr = $(e.target).parent();
+
+        e.preventDefault();
+        if ($tr.hasClass("unseen")) {
+            var mb = this.navobject.params["name"];
+            this.change_unseen_messages(mb, -1);
+        }
+        this.navobject.reset().setparams({
+            action: "viewmail",
+            mailid: $tr.attr("id")
+        }).update();
     },
 
     /*
-     * Loader of the 'forward' action (called when the associated button
-     * is clicked).
+     * Ajax navigation callbacks
      */
-    forward_loader: function(event) {
-        event.stop();
-        current_anchor.reset().updateparams(this.get("href")).update();
-    },
 
     /*
-     * Resize the current editor on page resizing.
+     * 'listmailbox' callback
      */
-    resize_window_callback: function(event) {
-        CKEDITOR.instances[this.editorid]
-            .resize("100%", $("body_container").getSize().y);
+    listmailbox_callback: function(resp) {
+        //window.removeEvents("resize");
+        var curmb = this.get_current_mailbox();
+
+        this.enable_mb_actions();
+        for (var idx in this.options.ro_mboxes) {
+            if (curmb == this.options.ro_mboxes[idx]) {
+                this.enable_mb_actions(false);
+                break;
+            }
+        }
+        this.page_update(resp);
+        $("#emails").htmltable();
+        this.htmltable = $("#emails").data("htmltable");
+        this.init_draggables();
     },
 
     /*
@@ -536,390 +592,240 @@ var Webmail = new Class({
      * It is also shared with other similar actions : reply, forward.
      */
     compose_callback: function(resp) {
-        //wm_updatelisting(resp);
         this.page_update(resp);
-
-        var editormode = resp.editor;
-
-        if (editormode == "html") {
-            window.addEvent("resize", this.resize_window_callback.bind(this));
-            var instance = CKEDITOR.instances[editorid];
-            if (instance) {
-                CKEDITOR.remove(instance);
-            }
-            CKEDITOR.replace(editorid, {
-                customConfig: static_url("js/editor_config.js")
-            });
-            CKEDITOR.on("instanceReady", function(evt) {
-                this.resize_window_callback();
-            }.bind(this));
+        if (resp.id != undefined) {
+            this.navobject.setparam("id", resp.id).update(false, true);
         }
-        if (resp.id) {
-            current_anchor.setparam("id", resp.id).update(0, 1);
-        }
-        $("attachments").addEvent("click", function(evt) {
-            SqueezeBox.open(this.get("name"), {
-                handler: "iframe",
-                size: {x: 350, y: 400},
-                closeBtn: false
-            });
+        this.position_body();
+    },
+
+    position_body: function() {
+        var $mailheader = $("#mailheader");
+        var top = $mailheader.outerHeight(true);
+
+        $("#body_container").css({
+            top: top + "px"
         });
+    },
 
-        /*$$("a[name=back]")
-            .removeEvents("click")
-            .addEvent("click", this._listmailbox_loader);*/
-        $$("a[name=sendmail]")
-            .store("editormode", editormode)
-            .removeEvents("click")
-            .addEvent("click", this.sendmail_callback.bind(this));
+    sendmail_callback: function(data) {
+        if (data.status == "ko") {
+            this.navobject.get_callback("compose")(data);
+            if (data.respmsg != undefined) {
+                $("body").notify("error", data.respmsg);
+            }
+            $("a[name=sendmail]").attr("disabled", null);
+            return;
+        }
+        history.go(-2);
+        $("body").notify("success", gettext("Message sent"), 2000);
     },
 
     /*
-     * Callback of the 'sendmail' action.
+     * Callback of the 'viewmail' action
      */
-    sendmail_callback: function(evt) {
-        var link = evt.target;
-
-        evt.stop();
-        infobox.show(gettext("Sending..."), {
-            profile : "gray",
-            spinner : true
-        });
-        disable_link(link);
-        $("composemail").set("send", {
-            onSuccess: function(resp) {
-                resp = JSON.decode(resp);
-                if (resp.status == "ko") {
-                    current_anchor.get_callback("compose")(resp);
-                    if ($defined(resp.respmsg)) {
-                        infobox.error(resp.respmsg);
-                    } else {
-                        infobox.hide();
-                    }
-                    enable_link(link, sendmail_callback);
-                    return;
-                }
-                history.go(-2);
-                infobox.info(gettext("Done"));
-                infobox.hide(1);
-                link.eliminate("editormode");
-            }.bind(this)
-        });
-        if (link.retrieve("editormode") == "html") {
-            CKEDITOR.instances[editorid].updateElement();
-        }
-        $("composemail").send();
+    viewmail_callback: function(resp) {
+        this.page_update(resp);
+        $("#listing").css("overflow", "hidden");
     },
 
+    mark_callback: function(data) {
+        if (data.status == "ko") {
+            $("body").notify("error", data.respmsg);
+            return;
+        }
+        if (data.action == "read") {
+            this.htmltable.current_selection().removeClass("unseen");
+        } else {
+            this.htmltable.current_selection().addClass("unseen");
+        }
+        if (data.unseen != undefined && data.mbox) {
+            this.set_unseen_messages(data.mbox, data.unseen);
+        }
+    },
+
+    delete_callback: function(data) {
+        if (data.status == "ok") {
+            history.go(-2);
+            $("body").notify("success", gettext("Message deleted"), 2000);
+        } else {
+            $("body").notify("error", data.respmsg);
+        }
+    },
 
     /*
-     * Simple AJAX request
-     *
-     * Initialize the infobox with a loading message and wait for a JSON
-     * encoded answer. The infobox is cleared by the request callback
-     * function.
+     * Mailbox form
      */
-    simple_request: function(url, params, callback) {
-        infobox.show(gettext("Waiting..."), {
-            profile: "gray",
-            spinner: true
-        });
-        new Request.JSON({
-            url : url,
-            onSuccess : function(response) {
-                if (response.status == "ok") {
-                    if (response.next == undefined) {
-                        if (callback != undefined) {
-                            callback(response);
-                        } else {
-                            current_anchor.get_callback("listmailbox")(response);
-                        }
-                    }
-                    infobox.info(gettext("Done"));
-                    if ($defined(response.next)) {
-                        (function(response) {
-                             current_anchor.parse_string(response.next).update();
-                             select_folder($$("a[href=" + current_anchor.getbaseurl() + "]"));
-                         }).delay(500, this, response);
-                    } else {
-                        infobox.hide(1);
-                    }
-                } else {
-                    infobox.error(response.respmsg);
-                }
-            }
-        }).get(params);
-    }
-});
+    mboxform_cb: function() {
+        $(".submit").one('click', $.proxy(function(e) {
+            var $link = $("#folders2 li.active").children("a");
 
+            simple_ajax_form_post(e, {
+               formid: "mboxform",
+               error_cb: this.mboxform_cb,
+               extradata: ($link.length) ? "parent_folder=" + $link.attr("href") : ""
+            });
+        }, this));
+    },
 
-/*
- * Globals
- */
-var rtimer = null;
-var editorid = "id_body";
-
-/*
- * Enables folders opening/closing
- *
- * Available for folders with subfolders.
- */
-function init_folders_browsing() {
-  $$("div[class*=clickbox]").addEvent("click", function(evt) {
-    var parent = this.getParent();
-    var ul = parent.getFirst("ul[name=" + parent.get("name") + "]");
-
-    if (!$defined(ul)) {
-      return;
-    }
-    if (ul.hasClass("hidden")) {
-      this.removeClass("collapsed").addClass("expanded");
-      ul.removeClass("hidden").addClass("visible");
-    } else {
-      this.removeClass("expanded").addClass("collapsed");
-      ul.removeClass("visible").addClass("hidden");
-    }
-    evt.stop();
-  });
-}
-
-/*
- * Select a particular folder
- */
-function select_folder(obj) {
-  $$("a[name=loadfolder]").each(function(item) {
-    item.getParent().removeClass("selected");
-    item.getParent().addClass("droppable");
-  });
-  obj.getParent().removeClass("droppable");
-  obj.getParent().addClass("selected");
-
-  $$(obj.getParents("ul[class*=hidden]")).each(function(item) {
-    item.removeClass("hidden");
-    item.addClass("visible");
-    $$("li[name=" + item.get("name") + "]").each(function(item) {
-      item.setStyle("background",
-                    "url('" + static_url("pics/folder-open.png") + "') no-repeat");
-    });
-  });
-}
-
-/*
- * Callback of the 'viewmail' action
- */
-function viewmail_cb(resp) {
-  wm_updatelisting(resp, "hidden");
-  $$("a[name=back]").addEvent("click", loadFolder);
-  $$("a[name=reply]").addEvent("click", reply_loader);
-  $$("a[name=replyall]").addEvent("click", replyall_loader);
-  $$("a[name=forward]").addEvent("click", forward_loader);
-  $$("a[name=delete]").addEvent("click", function(event) {
-    var lnk = event.target;
-    event.stop();
-    simple_request(lnk.get("href"));
-  });
-  $$("a[name=activate_links]").addEvent("click", function(evt) {
-    evt.stop();
-    current_anchor.setparam("links", "1").update();
-  });
-  $$("a[name=disable_links]").addEvent("click", function(evt) {
-    evt.stop();
-    current_anchor.setparam("links", "0").update();
-  });
-  setDivHeight("mailcontent", 5, 0);
-}
-
-/*
- * Loader of the 'compose' action (called when the associated button
- * is clicked)
- */
-function compose_loader(event) {
-  event.stop();
-  current_anchor.baseurl("compose").update();
-}
-
-function resize_window_callback(event) {
-    CKEDITOR.instances["id_body"].resize("100%", $("body_container").getSize().y);
-}
-
-/*
- * Callback of the 'sendmail' action.
- */
-function sendmail_callback(evt) {
-    evt.stop();
-    infobox.show(gettext("Sending..."), {
-        profile : "gray",
-        spinner : true
-    });
-    disable_link(this);
-    $("composemail").set("send", {
-        onSuccess: function(resp) {
-            resp = JSON.decode(resp);
-            if (resp.status == "ko") {
-                current_anchor.get_callback("compose")(resp);
-                if ($defined(resp.respmsg)) {
-                    infobox.error(resp.respmsg);
-                } else {
-                    infobox.hide();
-                }
-                enable_link(this, sendmail_callback);
+    /*
+     * Attachments form
+     */
+    attachments_init: function() {
+        $("#submit").click(function(e) {
+            e.preventDefault();
+            if ($("#id_attachment").attr("value") == "") {
                 return;
             }
-            current_anchor.parse_string(resp.url, true).setparams(navparams);
-            current_anchor.update();
-            this.eliminate("editormode");
-        }.bind(this)
-    });
-    if (this.retrieve("editormode") == "html") {
-        CKEDITOR.instances[editorid].updateElement();
-    }
-    $("composemail").send();
-}
+            $("#upload_status").css("display", "block");
+            $("#submit").attr("disabled", "disabled");
+            $("#uploadfile").submit();
+        });
+        $("a[name=delattachment]").click(this.del_attachment);
+        $(".modal").one("hide", this.close_attachments);
+    },
 
-/*
- * Callback of the 'compose' action
- */
-function compose_callback(resp) {
-  wm_updatelisting(resp);
+    _reset_upload_form: function() {
+        $("#upload_status").css("display", "none");
+        $("#submit").attr("disabled", null);
+    },
 
-  var editormode = resp.editor;
+    upload_success: function(fname, tmpname) {
+        this._reset_upload_form();
+        var $delbtn = $("<a />", {
+            name: "delattachment",
+            href: this.options.delattachment_url + "?name=" + tmpname,
+            html: "<i class='icon-remove'></i>"
+        });
+        var $label = $("<label />", {html: fname});
+        var $div = $("<div />").append($delbtn, $label);
 
-  if (editormode == "html") {
-    window.addEvent("resize", resize_window_callback);
-    var instance = CKEDITOR.instances[editorid];
-    if (instance) {
-      CKEDITOR.remove(instance);
-    }
-    CKEDITOR.replace(editorid, {
-      customConfig: static_url("js/editor_config.js")
-    });
-    CKEDITOR.on("instanceReady", function(evt) {
-        resize_window_callback();
-    });
-  }
-  if (resp.id) {
-      current_anchor.setparam("id", resp.id).update(0, 1);
-  }
-  $("attachments").addEvent("click", function(evt) {
-      SqueezeBox.open(this.get("name"), {
-          handler: "iframe",
-          size: {x: 350, y: 400},
-          closeBtn: false
-      });
-  });
+        $delbtn.click(this.del_attachment);
+        $("#id_attachment").attr("value", "");
+        $("#attachment_list").append($div);
+    },
 
-  $$("a[name=back]")
-    .removeEvents("click")
-    .addEvent("click", loadFolder);
-  $$("a[name=sendmail]")
-    .store("editormode", editormode)
-    .removeEvents("click")
-    .addEvent("click", sendmail_callback);
-}
+    upload_error: function(msg) {
+        this._reset_upload_form();
+        $(".modal-header").notify('error', msg);
+    },
 
-/*
- * Loader of the 'reply' action (called when the associated button
- * is clicked).
- */
-function reply_loader(event) {
-  event.stop();
-  location.hash += event.target.get("href");
-}
+    del_attachment: function(e) {
+        e.preventDefault();
+        var $this = $(this);
 
-/*
- * Loader of the 'replyall' action (called when the associated button
- * is clicked).
- */
-function replyall_loader(event) {
-  event.stop();
-  location.hash += event.target.get("href") + "?all=1";
-}
+        $.ajax({
+            url: $this.attr("href"),
+            success: function() {
+                $this.parent().remove();
+            }
+        });
+    },
 
-/*
- * Loader of the 'forward' action (called when the associated button
- * is clicked).
- */
-function forward_loader(event) {
-  event.stop();
-  location.hash += event.target.get("href");
-}
+    close_attachments: function() {
+        var nfiles = 0;
+        var shortlist = "";
+        var html;
 
-/*
- * Onclick callback used to load the content of a particular
- * folder. (activated when clicking on a folder's name)
- */
-function loadFolder(event, obj) {
-  event.stop();
-  if (!$defined(obj)) {
-    obj = $(event.target);
-  }
-  current_anchor.parse_string(gethref(obj), true).setparams(navparams);
-  current_anchor.update();
-}
+        $("a[name=delattachment]").each(function() {
+            var $this = $(this);
+            var $label = $this.next("label");
 
-function foldercallback(event) {
-  select_folder(event.target);
-  loadFolder(event, event.target);
-}
-
-/*
- * Automatic folder listing refresh
- *
- * Called at a regular frequency to make an asynchronous request that
- * retrieves a folder's content (ie. mails)
- */
-function refreshFolder() {
-  var query = current_anchor.serialized.substring(1);
-
-  clearInterval(rtimer);
-  infobox.show(gettext("Reloading..."), {
-    profile : "gray",
-    spinner : true
-  });
-  new Request.JSON.mdb({
-      url: query,
-      noCache : true,
-      onSuccess: function(resp) {
-          var callback = ($defined(resp.callback)) ? resp.callback : "default";
-
-          current_anchor.get_callback(callback)(resp);
-          infobox.info(gettext("Done"));
-          infobox.hide(1);
-      }
-  }).get();
-}
-
-/*
- * Simple AJAX request
- *
- * Initialize the infobox with a loading message and wait for a JSON
- * encoded answer. The infobox is cleared by the request callback
- * function.
- */
-function simple_request(url, params) {
-  infobox.show(gettext("Waiting..."), {
-    profile: "gray",
-    spinner: true
-  });
-  new Request.JSON.mdb({
-    url : url,
-    onSuccess : function(response) {
-      if (response.status == "ok") {
-        if (!$defined(response.next)) {
-          current_anchor.get_callback("folder")(response);
+            nfiles++;
+            if (nfiles <= 2) {
+                if (shortlist != "") {
+                    shortlist += ", ";
+                } else {
+                    shortlist = "(";
+                }
+                shortlist += $label.html();
+                return;
+            }
+            if (nfiles == 3) {
+                shortlist += ", ...";
+            }
+        });
+        if (shortlist != "") {
+            shortlist += ")";
         }
-        infobox.info(gettext("Done"));
-        if ($defined(response.next)) {
-          (function(response) {
-            current_anchor.parse_string(response.next).update();
-            select_folder($$("a[href=" + current_anchor.getbaseurl() + "]"));
-          }).delay(500, this, response);
-        } else {
-          infobox.hide(1);
-        }
-      } else {
-        infobox.error(response.respmsg);
-      }
+        html = interpolate(ngettext("%s file", "%s files", nfiles), [nfiles]);
+        html += " <span class='shortlist'>" + shortlist + "</span>";
+        $("#list").html(html);
+    },
+
+    /*
+     * Drag & Drop feature to move message(s) between mailboxes
+     */
+    init_draggables: function() {
+        var plug = this;
+
+        $("td[name=select]").draggable({
+            opacity: 0.8,
+            helper: function(e) {
+                var $this = $(this);
+                var $tr = $this.parent();
+
+                if (!plug.htmltable.is_selected($tr)) {
+                    plug.htmltable.select_row($tr);
+                }
+
+                var nmsgs = plug.htmltable.current_selection().length;
+
+                var $dragbox = $("<div />", {
+                    id: "draggeditems",
+                    'class': "well dragbox"
+                })
+                .appendTo($(document.body))
+                .css({
+                    top: $this.offset().top,
+                    left: $this.offset().left
+                });
+                $dragbox.html(interpolate(ngettext("Moving %s message",
+                    "Moving %s messages", nmsgs), [nmsgs]));
+                return $dragbox;
+            }
+        });
+    },
+
+    init_droppables: function(set, greedy) {
+        var plug = this;
+        var $set = (set === undefined) ? $(".droppable") : set;
+
+        $set.droppable({
+            greedy: true,
+            hoverClass: "active",
+
+            drop: function(e, ui) {
+                var $this = $(this);
+                var selection = new Array();
+                var unseen_cnt = 0;
+                var from = plug.get_current_mailbox();
+                var to = gethref($this.find("a"));
+
+                plug.htmltable.current_selection().each(function() {
+                    var $this = $(this);
+                    selection.push($this.attr("id"));
+                    if ($this.hasClass("unseen")) {
+                        unseen_cnt++;
+                    }
+                });
+                $.ajax({
+                    url: plug.options.move_url,
+                    data: "msgset=" + selection.join() + "&to=" + to,
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == "ok") {
+                            if (unseen_cnt) {
+                                plug.change_unseen_messages(from, -unseen_cnt);
+                                plug.change_unseen_messages(to, unseen_cnt);
+                            }
+                            plug.listmailbox_callback(data);
+                        } else {
+                            $("body").notify("error", data.respmsg);
+                        }
+                    }
+                });
+            }
+        });
     }
-  }).get(params);
-}
+};

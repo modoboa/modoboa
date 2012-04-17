@@ -105,9 +105,8 @@ def listmailbox_menu(selection, folder, user):
         ]
     if folder == parameters.get_user(user, "TRASH_FOLDER"):
         entries[2]["menu"] += [
-            {"name" : "fdaction",
+            {"name" : "empty",
              "label" : _("Empty folder"),
-             "img" : static_url("pics/clear.png"),
              "url" : reverse(webmail.views.empty, args=[folder])}
             ]
     searchbar = render_to_string('common/email_searchbar.html', {
@@ -167,19 +166,19 @@ def mboxes_menu():
         {"name" : "newmbox",
          "url" : reverse(webmail.views.newfolder),
          "img" : "icon-plus",
-         "label" : "",
+         "title" : _("Create a new mailbox"),
          "modal" : True,
          "modalcb" : "webmail.mboxform_cb",
          "class" : "btn btn-mini"},
         {"name" : "editmbox",
          "url" : reverse(webmail.views.editfolder),
          "img" : "icon-edit",
-         "label" : "",
+         "title" : _("Edit the selected mailbox"),
          "class" : "btn btn-mini"},
         {"name" : "removembox",
          "url" : reverse(webmail.views.delfolder),
          "img" : "icon-remove",
-         "label" : "",
+         "title" : _("Remove the selected mailbox"),
          "class" : "btn btn-mini"}
         ]
 
