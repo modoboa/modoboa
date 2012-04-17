@@ -244,7 +244,7 @@ def separate_folder(fullname, sep="."):
 
 @login_required
 @needs_mailbox()
-def newfolder(request, tplname="webmail/folder2.html"):
+def newfolder(request, tplname="webmail/folder.html"):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
     ctx = {"title" : _("Create a new folder"),
@@ -273,7 +273,7 @@ def newfolder(request, tplname="webmail/folder2.html"):
 
 @login_required
 @needs_mailbox()
-def editfolder(request, tplname="webmail/folder2.html"):
+def editfolder(request, tplname="webmail/folder.html"):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
     ctx = {"title" : _("Edit mailbox"),
