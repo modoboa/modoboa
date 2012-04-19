@@ -356,7 +356,7 @@ class IMAPconnector(object):
         return sorted(result, key=itemgetter("name"))
 
     @capability('LIST-EXTENDED', '_listfolders_simple')
-    def _listmboxes(self, topmailbox='', mailboxes=[]):
+    def _listmboxes(self, topmailbox='', mailboxes=[], until_mailbox=None):
         pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
@@ -381,10 +381,25 @@ class IMAPconnector(object):
             if r'\HasChildren' in flags:
                 descr["path"] = name
                 descr["sub"] = []
+                if until_mailbox and until_mailbox.startswith(name):
+                    self._listmboxes(name, descr["sub"], until_mailbox)
+
         from operator import itemgetter
         mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
-    def getmboxes(self, user, topmailbox='', unseen_messages=True):
+    def getmboxes(self, user, topmailbox='', until_mailbox=None, unseen_messages=True):
+        """Returns a list of mailboxes for a particular user
+
+        By default, only the first level of mailboxes under
+        ``topmailbox`` is returned. If ``until_mailbox`` is specified,
+        all levels needed to access this mailbox will be returned.
+
+        :param user: a ``User`` instance
+        :param topmailbox: the mailbox where to start in the tree
+        :param until_mailbox: the deepest needed mailbox
+        :param unseen_messages: include unseen messages counters or not
+        :return: a list
+        """
         if len(topmailbox):
             md_mailboxes = []
         else:
@@ -395,7 +410,11 @@ class IMAPconnector(object):
                             {"name" : parameters.get_user(user, "SENT_FOLDER")},
                             {"name" : parameters.get_user(user, "TRASH_FOLDER"),
                              "class" : "icon-trash"}]
-        self._listmboxes(topmailbox, md_mailboxes)
+        if until_mailbox:
+            name, parent = separate_mailbox(until_mailbox)
+            if parent:
+                until_mailbox = parent
+        self._listmboxes(topmailbox, md_mailboxes, until_mailbox)
 
         if unseen_messages:
             for mb in md_mailboxes:
@@ -576,6 +595,19 @@ class IMAPconnector(object):
             "(BODYSTRUCTURE %s[HEADER.FIELDS (%s)])" % (bcmd, " ".join(headers))
             )
         return data[int(mailid)]
+
+def separate_mailbox(fullname, sep="."):
+    """Split a mailbox name
+
+    If a separator is found in ``fullname``, this function returns the
+    corresponding name and parent mailbox name.
+    """
+    if fullname.count("."):
+        parts = fullname.split(sep)
+        name = parts[-1]
+        parent = sep.join(parts[0:len(parts) - 1])
+        return name, parent
+    return fullname, None
 
 def get_imapconnector(request):
     """Simple shortcut to create a connector

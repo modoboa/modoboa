@@ -140,6 +140,7 @@ def render_link(linkdef, mdclass=None):
     t = Template("""<a href="{{ link.url }}" name="{{ link.name }}" title="{{ link.title }}"
 {% if link.modal %}data-toggle="ajaxmodal{% if link.autowidth %}-autowidth{% endif %}"{% endif %}
 {% if link.modalcb %}modalcb="{{ link.modalcb }}"{% endif %}
+{% if link.closecb %}closecb="{{ link.closecb }}"{% endif %}
 class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 {% if link.confirm %} onclick="return confirm('{{ link.confirm }}')"{% endif %}>
 {% if link.img %}<i class="{{ link.img }}"></i>{% endif %}

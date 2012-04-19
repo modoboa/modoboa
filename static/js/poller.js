@@ -20,11 +20,30 @@ Poller.prototype = {
         this.url = url;
         this.options = $.extend({}, this.defaults, options);
         this.running_request = false;
+        this.paused = false;
         this.reset();
     },
 
     reset: function() {
-        setTimeout($.proxy(this.send_request, this), this.options.interval);
+        if (!this.paused) {
+            this.tid = setTimeout($.proxy(this.send_request, this), this.options.interval);
+        }
+    },
+
+    pause: function() {
+        this.paused = true;
+        if (!this.tid) {
+            return;
+        }
+        clearTimeout(this.tid);
+    },
+
+    resume: function() {
+        if (!this.paused) {
+            return;
+        }
+        this.paused = false;
+        this.reset();
     },
 
     send_request: function() {

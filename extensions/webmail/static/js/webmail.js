@@ -84,6 +84,8 @@ Webmail.prototype = {
             this.select_parent_mailbox),
         $(document).on("click", "div[class*=clickbox]",
             $.proxy(this.mbox_state_callback, this));
+        $(document).on("click", "a[name=newmbox]",
+            $.proxy(this.new_mailbox, this));
         $(document).on("click", "a[name=editmbox]",
             $.proxy(this.edit_mbox, this));
         $(document).on("click", "a[name=removembox]",
@@ -133,11 +135,10 @@ Webmail.prototype = {
      * Simple helper to retrieve the currently selected mailbox.
      */
     get_current_mailbox: function() {
-        if (this.navobject.params.action != "listmailbox") {
-            return null;
+        if (this.navobject.getparam("action") != "listmailbox") {
+            return undefined;
         }
-        return (this.navobject.params.name)
-            ? this.navobject.params.name : "INBOX";
+        return this.navobject.getparam("name", "INBOX");
     },
 
     /*
@@ -257,6 +258,42 @@ Webmail.prototype = {
     },
 
     /*
+     * Inject a new *clickbox* somewhere in the tree
+     */
+    inject_clickbox: function($container) {
+        $container.prepend($("<div />", {'class' : 'clickbox collapsed'}));
+    },
+
+    /*
+     * Injects a single mailbox somewhere in the tree
+     */
+    inject_mailbox: function($parent, mailbox, linkname, unseen) {
+        var $li = $("<li />", {
+            name: mailbox,
+            'class': "droppable"
+        });
+        var $link = $("<a />", {
+            name: linkname,
+            'class': "block",
+            href: mailbox
+        });
+        var parts = mailbox.split(".");
+        var linkcontent = "<i class='icon-folder-close'></i> ";
+        var displayname = linkcontent + parts[parts.length - 1];
+
+        $li.append($link);
+        $parent.append($li);
+
+        if (unseen != undefined) {
+            $link.addClass("unseen");
+            $link.html(displayname + " (" + unseen + ")");
+            this.unseen_counters[$link.attr("href")] = unseen;
+        } else {
+            $link.html(displayname);
+        }
+    },
+
+    /*
      * Inject new mailboxes under a given parent in the tree.
      */
     inject_mailboxes: function($parent, mboxes) {
@@ -267,30 +304,16 @@ Webmail.prototype = {
         var $plink = $parent.children("a");
 
         $parent.append($ul);
+        if (!$parent.children("div").length) {
+            this.inject_clickbox($parent);
+        }
         for (var i = 0; i < mboxes.length; i++) {
-            var mbname = mboxes[i].name;
-            var $li = $("<li />", {
-                name: mbname,
-                'class': "droppable"
-            });
-            var $link = $("<a />", {
-                name: $plink.attr("name"),
-                'class': "block",
-                href: mbname
-            });
-            var parts = mbname.split(".");
-            var linkcontent = "<i class='icon-folder-close'></i> ";
-            var displayname = linkcontent + parts[parts.length - 1];
-
-            $li.append($link);
-            $ul.append($li);
-
-            if (mboxes[i].unseen != undefined) {
-                $link.addClass("unseen");
-                $link.html(displayname + " (" + mboxes[i].unseen + ")");
-                this.unseen_counters[$link.attr("href")] = mboxes[i].unseen;
-            } else {
-                $link.html(displayname);
+            if ($parent.find('li[name="' + mboxes[i].name + '"]').length) {
+                continue;
+            }
+            this.inject_mailbox($ul, mboxes[i].name, $plink.attr("name"), mboxes[i].unseen);
+            if (mboxes[i].sub != undefined) {
+                this.inject_clickbox($('li[name="' + mboxes[i].name + '"]'));
             }
         }
         this.init_droppables($ul.find(".droppable"), true);
@@ -300,10 +323,14 @@ Webmail.prototype = {
     /*
      * Download sub-mailboxes from the server
      */
-    get_mailboxes: function(parent) {
+    get_mailboxes: function(parent, async) {
+        if (async === undefined) {
+            async = true;
+        }
         $.ajax({
             url: this.options.submboxes_url,
             dataType: 'json',
+            async: async,
             data: "topmailbox=" + parent.attr("name"),
             success: $.proxy(function(data) {
                 if (data.status == "ko") {
@@ -341,29 +368,58 @@ Webmail.prototype = {
     },
 
     /*
-     * Select a particular mailbox
+     * Unselect every selected mailbox
+     */
+    reset_mb_selection: function() {
+        $("a[name=loadfolder]").parent().removeClass("active").addClass("droppable");
+    },
+
+    /*
+     * Select a particular mailbox (one already present in the DOM)
      */
     select_mailbox: function(obj) {
-        var $obj = $(obj);
+        var $obj = (typeof obj != "string") ? $(obj) : $('a[href="' + obj + '"]');
 
-        $("a[name=loadfolder]").each(function() {
-            var $this = $(this);
-            $this.parent().removeClass("active");
-            $this.parent().addClass("droppable");
-        });
+        this.reset_mb_selection();
+        $obj.parents("ul").addClass("visible");
         $obj.parent().removeClass("droppable");
         $obj.parent().addClass("active");
+    },
 
-        // $$(obj.getParents("ul[class*=hidden]")).each(function(item) {
-        //     item.removeClass("hidden");
-        //     item.addClass("visible");
-        //     $$("li[name=" + item.get("name") + "]").each(function(item) {
-        //         item.setStyle(
-        //             "background",
-        //             "url('" + static_url("pics/folder-open.png") + "') no-repeat"
-        //         );
-        //     });
-        // });
+    /*
+     * Tries to select a particular sub-mailbox and loads it from the
+     * server if it's not present in the DOM. (nb: all parents needed
+     * to access this mailbox are also loaded)
+     */
+    load_and_select_mailbox: function(mailbox) {
+        if (mailbox.indexOf(".") == -1) {
+            this.select_mailbox(mailbox);
+            return;
+        }
+        this.reset_mb_selection();
+
+        var parts = mailbox.split(".");
+        var curmb = parts[0], lastmb = "";
+
+        for (var i = 1; i < parts.length; i++) {
+            lastmb = curmb;
+            curmb += "." + parts[i];
+
+            var $link = $('a[href="' + curmb + '"]');
+            var $container = $('li[name="' + lastmb + '"]');
+
+            if ($link.length) {
+                if ($container.children("div").hasClass("collapsed")) {
+                    this.toggle_mbox_state($container.children("div"), $container.children("ul"));
+                }
+                continue;
+            }
+
+            this.get_mailboxes($container, false);
+            $container.children("div").addClass("expanded");
+            $container.children("ul").addClass("visible");
+        }
+        $('li[name="' + mailbox + '"]').addClass("active");
     },
 
     select_parent_mailbox: function(e) {
@@ -372,11 +428,17 @@ Webmail.prototype = {
         $(this).parent().addClass("active");
     },
 
+    new_mailbox: function(e) {
+        this.poller.pause();
+    },
+
     /*
      * Edit the currently selected mailbox. Opens a modal box that
      * permits to change mailbox's name and more.
      */
     edit_mbox: function(e) {
+        this.poller.pause();
+
         var $link = get_target(e, "a");
         if ($link.hasClass("disabled")) {
             e.preventDefault();
@@ -385,7 +447,7 @@ Webmail.prototype = {
         var $selected = $("#folders li.active").children("a");
 
         modalbox(e, undefined, $link.attr("href") + "?name=" + $selected.attr("href"),
-            $.proxy(this.mboxform_cb, this));
+            $.proxy(this.mboxform_cb, this), $.proxy(this.mboxform_close, this));
     },
 
     /*
@@ -393,13 +455,13 @@ Webmail.prototype = {
      */
     remove_mbox: function(e) {
         var $link = get_target(e, "a");
-
         e.preventDefault();
         if ($link.hasClass("disabled")) return;
         if (!confirm(gettext("Remove the selected mailbox?"))) {
             return;
         }
 
+        this.poller.pause();
         var $selected = $("#folders li.active").children("a");
 
         $.ajax({
@@ -407,17 +469,62 @@ Webmail.prototype = {
             dataType: 'json',
             success: $.proxy(function(data) {
                 if (data.status == "ok") {
+                    this.remove_mbox_from_tree(this.navobject.getparam("name"));
+                    this.poller.resume();
                     $("body").notify("success", gettext("Mailbox removed"), 2000);
-                    if (this.navobject.getparam("action") == "listmailbox") {
-                        $('li[name="' + this.navobject.getparam("name") + '"]').remove();
-                        this.select_mailbox($("a[href=INBOX]"));
-                        this.navobject.setparam("name", "INBOX").update();
-                    }
                 } else {
                     $("body").notify("error", data.respmsg);
                 }
             }, this)
         });
+    },
+
+    /*
+     * Remove a mailbox from the tree.
+     *
+     * It is a client-side action, no request is sent to the server.
+     */
+    remove_mbox_from_tree: function(mailbox) {
+        var $container = (typeof mailbox === "string") ? $('li[name="' + mailbox + '"]') : mailbox;
+        var $parent = $container.parent("ul");
+
+        if ($parent.children("li").length == 1) {
+            $parent.siblings("div").remove();
+            $parent.remove();
+        } else {
+            $container.remove();
+        }
+        if (this.navobject.getparam("action") == "listmailbox") {
+            this.select_mailbox($("a[href=INBOX]"));
+            this.navobject.setparam("name", "INBOX").update();
+        }
+    },
+
+    /*
+     * Rename a mailbox (client-side)
+     * If needed, the mailbox will be moved to its new location.
+     */
+    rename_mailbox: function(oldname, newname, oldparent, newparent) {
+        var pattern = (oldparent) ? oldparent + "." + oldname : oldname;
+        var $link = $("#folders").find('a[href="' + pattern + '"]');
+
+        if (oldname != newname) {
+            var $i = $link.children("i");
+
+            $link.html(newname);
+            $link.parent("li").attr("name", pattern);
+            $link.prepend($i);
+            $link.attr("href", pattern);
+        }
+        if (oldparent != newparent) {
+            var newlocation = (newparent != "") ? newparent + "." + newname : newname;
+            this.remove_mbox_from_tree($link.parent("li"));
+            if (this.navobject.getparam("action") == "listmailbox") {
+                this.navobject.setparam("name", newlocation).update();
+            } else {
+                this.select_mailbox("INBOX");
+            }
+        }
     },
 
     send_mark_request: function(e) {
@@ -487,13 +594,15 @@ Webmail.prototype = {
      * mailbox. (activated when clicking on a mailbox's name)
      */
     _listmailbox_loader: function(event, obj) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         if (obj === undefined) {
             obj = $(event.target);
         }
         this.navobject.reset().setparams({
            action: "listmailbox",
-           name: gethref(obj)
+           name: obj.attr("href")
         }).update();
     },
 
@@ -573,6 +682,9 @@ Webmail.prototype = {
         //window.removeEvents("resize");
         var curmb = this.get_current_mailbox();
 
+        if (!$('li[name="' + curmb + '"]').hasClass("active")) {
+            this.load_and_select_mailbox(curmb);
+        }
         this.enable_mb_actions();
         for (var idx in this.options.ro_mboxes) {
             if (curmb == this.options.ro_mboxes[idx]) {
@@ -617,7 +729,7 @@ Webmail.prototype = {
             $("a[name=sendmail]").attr("disabled", null);
             return;
         }
-        history.go(-2);
+        this._listmailbox_loader(null, $("#folders").find("li[class*=active]").children("a"));
         $("body").notify("success", gettext("Message sent"), 2000);
     },
 
@@ -654,18 +766,60 @@ Webmail.prototype = {
     },
 
     /*
-     * Mailbox form
+     * Mailbox form initialization
      */
     mboxform_cb: function() {
+        $("#mboxform").find("input").keypress(function(e) {
+            if (e.which == 13) e.preventDefault();
+        });
         $(".submit").one('click', $.proxy(function(e) {
             var $link = $("#folders2 li.active").children("a");
 
             simple_ajax_form_post(e, {
-               formid: "mboxform",
-               error_cb: this.mboxform_cb,
-               extradata: ($link.length) ? "parent_folder=" + $link.attr("href") : ""
+                reload_on_success: false,
+                formid: "mboxform",
+                error_cb: this.mboxform_cb,
+                extradata: ($link.length) ? "parent_folder=" + $link.attr("href") : "",
+                success_cb: $.proxy(this.mboxform_success, this)
             });
         }, this));
+    },
+
+    mboxform_success: function(data) {
+        if (data.oldmb === undefined) {
+            var $parent;
+
+            if (data.parent) {
+                $parent = $("#folders").find('li[name="' + data.parent + '"]');
+                if (!$parent.length) {
+                    return;
+                }
+                if (!$parent.children("div").length) {
+                    this.inject_clickbox($parent);
+                }
+                var $ul = $parent.children("ul");
+                if (!$ul.length) {
+                    return;
+                }
+                $parent = $ul;
+            } else {
+                $parent = $("#mboxes_container").children("ul");
+            }
+            this.inject_mailbox($parent, data.newmb, "loadfolder");
+        } else if (data.newmb) {
+            this.rename_mailbox(data.oldmb, data.newmb, data.oldparent, data.newparent);
+        }
+        this.poller.resume();
+    },
+
+    /*
+     * Just a simple 'onclose' callback to check if the poller has
+     * been resumed (useful when the user has cancelled the action)
+     */
+    mboxform_close: function() {
+        if (this.poller.paused) {
+            this.poller.resume();
+        }
     },
 
     /*

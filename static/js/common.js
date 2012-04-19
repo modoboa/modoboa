@@ -3,30 +3,6 @@ $(document).ready(function() {
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
     $(document).on('click', 'a[name=sendspam]', simple_ajax_request);
     $(document).on('click', 'a[name=sendvirus]', simple_ajax_request);
-
-    //parse_menubar('#topmenubar');
-    //parse_menubar('#menubar');
-
-    /*infobox = new InfoBox({
-        parent : $("menubar"),
-        message : "Loading"
-    });*/
-
-    /* Specific javascript code for the demo... not the best place */
-    /*$$("a[name=sendspam], a[name=sendvirus]").addEvent("click", function(evt) {
-        evt.stop();
-        new Request.JSON({
-            url: this.get("href"),
-            onSuccess: function(response) {
-                if (response.status == "ok") {
-                    infobox.info(gettext("Message sent"));
-                    infobox.hide(1);
-                } else {
-                    infobox.error(response.respmsg);
-                }
-            }
-        }).get();
-    });*/
 });
 
 var media_url = "";

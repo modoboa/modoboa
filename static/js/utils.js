@@ -2,10 +2,12 @@
  * Collection of functions that are accessible to every page.
  */
 
-function modalbox(e, css, defhref, defcb) {
+function modalbox(e, css, defhref, defcb, defclosecb) {
     e.preventDefault();
-    var href = (defhref != undefined) ? defhref : $(this).attr('href');
-    var modalcb = (defcb != undefined) ? defcb : $(this).attr('modalcb');
+    var $this = $(this);
+    var href = (defhref != undefined) ? defhref : $this.attr('href');
+    var modalcb = (defcb != undefined) ? defcb : $this.attr('modalcb');
+    var closecb = (defclosecb != undefined) ? defclosecb : $this.attr("closecb");
 
     if (href.indexOf('#') == 0) {
         $(href).modal('open');
@@ -21,15 +23,14 @@ function modalbox(e, css, defhref, defcb) {
         var $div = $('<div id="modalbox" class="modal" >' + data + '</div>')
             .one('shown', function() {
                 if (modalcb != undefined) {
-                    if (typeof modalcb === "function") {
-                        modalcb();
-                    } else {
-                        eval(modalcb + '()');
-                    }
+                    if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
                 }
             })
             .on('hidden', function() {
                 $("#modalbox").remove();
+                if (closecb != undefined) {
+                    if (typeof closecb === "function") closecb(); else eval(closecb + '()');
+                }
             })
             .modal();
 

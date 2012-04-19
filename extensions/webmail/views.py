@@ -229,39 +229,28 @@ def compact(request, name):
     imapc.compact(name)
     return ajax_simple_response(dict(status="ok"))
 
-def separate_folder(fullname, sep="."):
-    """Split a folder name
-
-    If a separator is found in fullname, this function returns the
-    corresponding name and parent folder name.
-    """
-    if fullname.count("."):
-        parts = fullname.split(sep)
-        name = parts[-1]
-        parent = sep.join(parts[0:len(parts) - 1])
-        return name, parent
-    return fullname, None
-
 @login_required
 @needs_mailbox()
 def newfolder(request, tplname="webmail/folder.html"):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
-    ctx = {"title" : _("Create a new folder"),
+    ctx = {"title" : _("Create a new mailbox"),
            "formid" : "mboxform",
-           "action" : reverse(newfolder),
+           "action" : reverse(newfolder), 
            "action_label" : _("Create"),
            "action_classes" : "submit",
            "withunseen" : False,
            "selectonly" : True}
 
-    ctx["folders"] = mbc.getmboxes(request.user)
+    ctx["mboxes"] = mbc.getmboxes(request.user)
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
             pf = request.POST.get("parent_folder", None)
             mbc.create_folder(form.cleaned_data["name"], pf)
-            return ajax_response(request, ajaxnav=True, respmsg=_("Folder created"))
+            return ajax_simple_response(dict(
+                    status="ok", respmsg=_("Mailbox created"), newmb=form.cleaned_data["name"], parent=pf
+                    ))
             
         ctx["form"] = form
         ctx["selected"] = None
@@ -283,34 +272,39 @@ def editfolder(request, tplname="webmail/folder.html"):
            "action_classes" : "submit",
            "withunseen" : False,
            "selectonly" : True}
-    ctx["folders"] = mbc.getmboxes(request.user)
+
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
             pf = request.POST.has_key("parent_folder") \
                 and request.POST["parent_folder"] or None
             ctx["selected"] = pf
-            oldname, oldparent = separate_folder(request.POST["oldname"])
-            extra = {}
+            oldname, oldparent = separate_mailbox(request.POST["oldname"])
+            res = dict(status="ok", respmsg=_("Mailbox updated"))
             if form.cleaned_data["name"] != oldname \
                     or (pf is not None and pf != oldparent):
                 newname = form.cleaned_data["name"] if pf is None \
                     else "%s.%s" % (pf, form.cleaned_data["name"])
                 mbc.rename_folder(request.POST["oldname"], newname)
-                extra["url"] = newname
-            return ajax_response(request, ajaxnav=True, 
-                                 respmsg=_("Folder modified"), **extra)
+                res["oldmb"] = oldname
+                res["newmb"] = form.cleaned_data["name"]
+                res["oldparent"] = oldparent
+                res["newparent"] = pf
+                del request.session["mbox"]
+            return ajax_simple_response(res)
 
+        ctx["mboxes"] = mbc.getmboxes(request.user)
         ctx["form"] = form
         return ajax_response(request, status="ko", template=tplname, **ctx)
 
     name = request.GET.get("name", None)
     if name is None:
         raise WebmailError(_("Invalid request"))
-    shortname, parent = separate_folder(name)
+    shortname, parent = separate_mailbox(name)
+    ctx["mboxes"] = mbc.getmboxes(request.user, until_mailbox=parent)
     ctx["form"] = FolderForm()
-    ctx["form"].fields["oldname"].initial = shortname
-    ctx["form"].fields["name"].initial = name
+    ctx["form"].fields["oldname"].initial = name
+    ctx["form"].fields["name"].initial = shortname
     ctx["selected"] = parent
     return _render(request, tplname, ctx)
 
@@ -323,6 +317,8 @@ def delfolder(request):
     mbc = IMAPconnector(user=request.user.username, 
                         password=request.session["password"])
     mbc.delete_folder(name)
+    if request.session.has_key("mbox"):
+        del request.session["mbox"]
     return ajax_response(request)
 
 @login_required
@@ -404,7 +400,7 @@ def render_mboxes_list(request, imapc):
     curmbox = request.session.get("mbox", "INBOX")
     return _render_to_string(request, "webmail/folders.html", {
             "selected" : curmbox,
-            "folders" : imapc.getmboxes(request.user),
+            "mboxes" : imapc.getmboxes(request.user),
             "withunseen" : True
             })
 
@@ -438,13 +434,11 @@ def listmailbox(request, defmailbox="INBOX"):
     :return: a dictionnary
     """
     mbox = request.GET.get("name", defmailbox)
-    request.session["mbox"] = mbox
     set_nav_params(request)
-
     lst = ImapListing(request.user, request.session["password"],
                       baseurl="?action=listmailbox&name=%s&" % mbox,
                       folder=mbox, **request.session["navparams"])
-
+    request.session["mbox"] = mbox
     return lst.render(request, request.session["pageid"])
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):

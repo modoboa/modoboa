@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from modoboa.extensions import webmail
 from modoboa.extensions.webmail.lib import IMAPheader
+from modoboa.extensions.webmail.imaputils import separate_mailbox
 from modoboa.lib import parameters
 from modoboa.lib.webutils import static_url
 
@@ -118,22 +119,23 @@ def listmailbox_menu(selection, folder, user):
             ))
 
 @register.simple_tag
-def print_folders(folders, selected=None, withunseen=False, selectonly=False):
+def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False):
     """Display a tree of mailboxes and sub-mailboxes
 
-    
+    :param tree: the mailboxes to display
     """
     result = ""
 
-    for fd in folders:
+    for mbox in tree:
         cssclass = ""
-        name = fd["path"] if fd.has_key("sub") else fd["name"]
-        label = fd["name"]
+        name = mbox["path"] if mbox.has_key("sub") else mbox["name"]
+        label = separate_mailbox(mbox["name"])[0]
         if selected == name:
             cssclass = "active"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
-        if fd.has_key("sub"):
+        if mbox.has_key("sub"):
             if selected is not None and selected != name and selected.count(name):
+                print "%s is visible" % name
                 ul_state = "visible"
                 div_state = "expanded"
             else:
@@ -143,20 +145,20 @@ def print_folders(folders, selected=None, withunseen=False, selectonly=False):
             
         cssclass = "block"
         extra_attrs = ""
-        if withunseen and fd.has_key("unseen"):
-            label += " (%d)" % fd["unseen"]
+        if withunseen and mbox.has_key("unseen"):
+            label += " (%d)" % mbox["unseen"]
             cssclass += " unseen"
-            extra_attrs = ' data-toggle="%d"' % fd["unseen"]
-        iclass = fd["class"] if fd.has_key("class") else "icon-folder-close"
+            extra_attrs = ' data-toggle="%d"' % mbox["unseen"]
+        iclass = mbox["class"] if mbox.has_key("class") else "icon-folder-close"
         result += """<a href='%s' class='%s' name='%s'%s>
   <i class="%s"></i>
   %s
 </a>
-""" % (fd.has_key("path") and fd["path"] or fd["name"], cssclass, 
+""" % (mbox.has_key("path") and mbox["path"] or mbox["name"], cssclass, 
        'selectfolder' if selectonly else 'loadfolder', extra_attrs, iclass, label)
-        if fd.has_key("sub") and len(fd["sub"]):
-            result += "<ul name='%s' class='%s'>" % (fd["path"], ul_state) \
-                + print_folders(fd["sub"], selected, withunseen, selectonly) + "</ul>\n"
+        if mbox.has_key("sub") and len(mbox["sub"]):
+            result += "<ul name='%s' class='nav nav-list %s'>" % (mbox["path"], ul_state) \
+                + print_mailboxes(mbox["sub"], selected, withunseen, selectonly) + "</ul>\n"
         result += "</li>\n"
     return result
 
@@ -169,6 +171,7 @@ def mboxes_menu():
          "title" : _("Create a new mailbox"),
          "modal" : True,
          "modalcb" : "webmail.mboxform_cb",
+         "closecb" : "webmail.mboxform_close",
          "class" : "btn btn-mini"},
         {"name" : "editmbox",
          "url" : reverse(webmail.views.editfolder),

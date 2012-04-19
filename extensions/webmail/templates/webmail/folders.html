@@ -1,8 +1,8 @@
 {% load i18n webextras %}
 <div id="mboxes_container">
   <ul class="nav nav-list">
-    <li class="nav-header">{% trans "Folders" %}</li>
-    {% print_folders folders selected withunseen %}
+    <li class="nav-header">{% trans "Mailboxes" %}</li>
+    {% print_mailboxes mboxes selected withunseen %}
   </ul>
 </div>
 <div id="mboxactions">{% mboxes_menu %}</div>

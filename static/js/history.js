@@ -97,7 +97,13 @@ History.prototype = {
         var res = this.base;
 
         if (this.paramslength() != 0) {
-            res += "?" + $.param(this.params);
+            res += "?";
+            $.each(this.params, function(key, value) {
+                if (res != "?") {
+                    res += "&";
+                }
+                res += key + "=" + encodeURIComponent(value);
+            });
         }
         return res;
     },
@@ -144,9 +150,9 @@ History.prototype = {
         return this;
     },
 
-    getparam: function(name) {
+    getparam: function(name, defvalue) {
         if (this.params[name] === undefined) {
-            return "";
+            return (defvalue != undefined) ? defvalue : undefined;
         }
         return this.params[name];
     },
@@ -201,7 +207,7 @@ History.prototype = {
             return;
         }
         delete(this.force);
-        this.from_string(location.hash);
+        this.from_string(decodeURIComponent(location.hash));
         if (!this.serialized) {
             location.hash = this.options.deflocation;
             return;
@@ -221,6 +227,10 @@ History.prototype = {
                     resp = $.parseJSON(XMLHttpRequest.responseText);
                 } catch (e) {
                     resp = { status: 'ko', respmsg: gettext('Internal Error') };
+                }
+                if (resp.status == "ko") {
+                    $("body").notify("error", resp.respmsg);
+                    return;
                 }
                 var callback = (resp.callback != undefined) ? resp.callback : "default";
                 this.callbacks[callback](resp);
