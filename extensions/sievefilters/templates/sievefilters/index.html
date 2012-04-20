@@ -1,5 +1,5 @@
-{% extends "twocols.html" %}
-{% load i18n sfilters_tags %}
+{% extends "twocols.html" %}{% load i18n sfilters_tags %}
+{% block pagetitle %}{% trans "Message filters" %}{% endblock %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}sievefilters/css/style.css" />
 <script type="text/javascript" src="{{ MEDIA_URL }}js/history.js"></script>

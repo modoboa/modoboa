@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 """
 :mod:`tables` --- simple tabular renderer
 -----------------------------------------
@@ -206,7 +206,7 @@ class Table(object):
         except AttributeError:
             return value
 
-    def __str__(self):
+    def __unicode__(self):
         return self.render()
 
     def render(self, withheader=True):

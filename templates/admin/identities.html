@@ -1,5 +1,5 @@
-{% extends "admin/listing.html" %}
-{% load admin_extras libextras %}
+{% extends "admin/listing.html" %}{% load admin_extras libextras i18n %}
+{% block pagetitle %}{% trans "Identities" %}{% endblock %}
 {% block html_head %}
 {{ block.super }}
 <script type="text/javascript" src="{{ MEDIA_URL }}js/creation_wizard.js"></script>

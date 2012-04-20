@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-{% load i18n admin_extras uprefs_extras libextras %}
-<html lang="en">
+<!DOCTYPE html>{% load i18n admin_extras uprefs_extras libextras %}
+<html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
-    <title>Modoboa - {% block pagetitle %}{% endblock %}</title>
+    <title>{% block pagetitle %}{% endblock %}</title>
     <link rel="icon" type="image/png" href="{{ MEDIA_URL }}css/logo-icon.png" />
     <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap-responsive.css" />

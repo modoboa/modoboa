@@ -40,10 +40,10 @@ def destroy():
 
 @events.observe("UserMenuDisplay")
 def menu(target, user):
-    if target == "top_menu":
-        return [
-            {"name"  : "stats",
-             "label" : ugettext("Statistics"),
-             "url" : reverse('fullindex')}
-            ]
-    return []
+    if target != "top_menu" or user.group == "SimpleUsers":
+        return []
+    return [
+        {"name"  : "stats",
+         "label" : ugettext("Statistics"),
+         "url" : reverse('fullindex')}
+        ]

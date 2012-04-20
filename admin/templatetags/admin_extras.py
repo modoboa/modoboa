@@ -179,7 +179,7 @@ def param(app, definition):
             selected = ""
             if value == v[0]:
                 selected = " selected='selected'"
-            result += "<option value='%s'%s>%s</option>\n" % (v[0], selected, v[1])
+            result += "<option value='%s'%s>%s</option>\n" % (v[0], selected, v[1].decode("utf-8"))
         result += """
 </select>
 """

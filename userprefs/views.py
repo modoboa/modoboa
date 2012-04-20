@@ -91,7 +91,6 @@ def setforward(request, tplname="common/generic_modal_form.html"):
         return ajax_response(request, status="ko", template=tplname, **ctx)
 
     form = ForwardForm()
-    print al
     if al is not None:
         form.fields["dest"].initial = al.extmboxes
         try:

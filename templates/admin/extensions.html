@@ -1,5 +1,5 @@
-{% extends "admin/settings_header.html" %}
-{% load i18n %}
+{% extends "admin/settings_header.html" %}{% load i18n %}
+{% block pagetitle %}{% trans "Extensions" %}{% endblock %}
 {% block apparea %}
 <form method="POST" action="{% url admin.views.saveextensions %}">
   {{ extensions|safe }}

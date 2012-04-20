@@ -1,5 +1,5 @@
-{% extends "admin/settings_header.html" %}
-{% load i18n %}
+{% extends "admin/settings_header.html" %}{% load i18n %}
+{% block pagetitle %}{% trans "Parameters" %}{% endblock %}
 {% block apparea %}
 {% url admin.views.saveparameters as action %}
 <form method="POST" action="{{ action }}" id="params_form" class="form-horizontal">
