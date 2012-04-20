@@ -1,13 +1,8 @@
 # coding: utf-8
 
 import sys, os
-reload(sys)
-sys.setdefaultencoding("utf-8")
-
 import re
 import time
-import socket
-import ssl
 from datetime import datetime, timedelta
 import email
 import lxml
@@ -102,7 +97,7 @@ class IMAPheader(object):
     @staticmethod
     def parse_subject(value, **kwargs):
         try:
-            return decode(u2u_decode.u2u_decode(value))
+            return u2u_decode.u2u_decode(value)
         except UnicodeDecodeError:
             return value
 

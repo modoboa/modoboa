@@ -1,126 +1,18 @@
 # coding: utf-8
-import time
-import sys
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404
 from django.template import Template, Context
-from django.template.loader import render_to_string
-from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from modoboa.lib import parameters
 from modoboa.lib.webutils import _render, _render_error, \
     getctx, _render_to_string, ajax_response, ajax_simple_response
-from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.email_listing import parse_search_parameters, Paginator
+from modoboa.lib.email_listing import parse_search_parameters
 from modoboa.lib.decorators import needs_mailbox
 from modoboa.auth.lib import *
 from lib import *
 from forms import *
 from templatetags import webextras
-
-def __render_common_components(request, folder_name, lst=None, content=None, menu=None):
-    """Render all components that are common to all pages in the webmail
-
-    It concerns the main listing, the viewmail and the compose
-    pages. Components are : main content, folders list, pagination
-    bar, quota bar.
-
-    Two modes are available : 
-     * If lst is provided, do not use content,
-     * If lst is not provided, do not use content, nor menu.
-
-    :param request: a Request object
-    :param folder: the current folder
-    :param lst: an ImapListing object
-    :param content: the HTML that will go into the 'listing' div
-    :param menu: the current page menu
-    """
-    if lst is not None:
-        paginator = lst.paginator
-        mbc = lst.mbc
-        menu = listing_menu("", folder_name, request.user)
-    else:
-        mbc = IMAPconnector(user=request.user.username, 
-                            password=request.session["password"])
-        paginator = Paginator(mbc.messages_count(folder=folder_name, 
-                                                 order=request.session["navparams"]["order"]), 
-                              int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")))
-                              
-    page = paginator.getpage(request.session["page"])
-    if page:
-        navbar = EmailListing.render_navbar(page)
-        if lst:
-            content = lst.fetch(request, page.id_start, page.id_stop)
-    else:
-        navbar = ""
-        if lst:
-            content = "<div class='alert alert-info'>%s</div>" \
-                % _("This folder contains no messages")
-        
-    ret = {
-        "folders" : _render_to_string(request, "webmail/folders.html", {
-                "titlebar" : True,
-                "selected" : request.session["folder"],
-                "folders" : mbc.getmboxes(request.user),
-                "withunseen" : True
-                }),
-        "menu" : menu,
-        "listing" : content,
-        "navbar" : navbar,
-        "quota" : ImapListing.computequota(mbc)
-        }
-    
-    return ret
-        
-
-@login_required
-@needs_mailbox()
-def folder(request, name, updatenav=True):
-    if not name:
-        name = "INBOX"
-    order = request.GET.has_key("order") and request.GET["order"] or "-date"
-    if updatenav:
-        pageid = request.GET.has_key("page") and int(request.GET["page"]) or 1
-        if not "navparams" in request.session.keys():
-            request.session["navparams"] = {}
-        request.session["folder"] = name
-        request.session["page"] = pageid
-        if order:
-            request.session["navparams"]["order"] = order
-        parse_search_parameters(request)
-    else:
-        # Internal usage
-        order = request.session["navparams"]["order"]
-
-    optparams = {}
-    if request.session.has_key("pattern"):
-        optparams["pattern"] = request.session["pattern"]
-        optparams["criteria"] = request.session["criteria"]
-    else:
-        optparams["reset"] = True
-        optparams["elems_per_page"] = \
-            int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
-    lst = ImapListing(request.user, request.session["password"],
-                      baseurl=name, folder=name, order=order, 
-                      **optparams)
-    dico = __render_common_components(request, name, lst)
-    ctx = getctx("ok", **dico)
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-
-@login_required
-@needs_mailbox()
-def index(request):
-    try:
-        navp = request.session.has_key("navparams") \
-            and request.session["navparams"] or {}
-        lst = ImapListing(request.user, request.session["password"],
-                          baseurl="INBOX", navparams=navp, folder="INBOX",
-                          empty=True)
-    except Exception, exp:
-        return _render_error(request, user_context={"error" : exp})
-    return lst.render(request)
 
 @login_required
 @needs_mailbox()
@@ -282,7 +174,7 @@ def editfolder(request, tplname="webmail/folder.html"):
             oldname, oldparent = separate_mailbox(request.POST["oldname"])
             res = dict(status="ok", respmsg=_("Mailbox updated"))
             if form.cleaned_data["name"] != oldname \
-                    or (pf is not None and pf != oldparent):
+                    or (pf != oldparent):
                 newname = form.cleaned_data["name"] if pf is None \
                     else "%s.%s" % (pf, form.cleaned_data["name"])
                 mbc.rename_folder(request.POST["oldname"], newname)
@@ -387,9 +279,6 @@ def delattachment(request):
         error = _("Unknown attachment")
     return ajax_response(request, "ko", respmsg=error)
 
-#
-# NEW CODE STARTS HERE
-#
 def render_mboxes_list(request, imapc):
     """Return the HTML representation of a mailboxes list
 
@@ -572,7 +461,7 @@ def check_unseen_messages(request):
 
 @login_required
 @needs_mailbox()
-def newindex(request):
+def index(request):
     """Webmail actions handler
 
     Problèmes liés à la navigation 'anchor based'

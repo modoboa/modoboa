@@ -83,8 +83,7 @@ def menu(target, user):
     return [
         {"name" : "webmail",
          "label" : _("Webmail"),
-         "url" : reverse("modoboa.extensions.webmail.views.newindex"),
-         "img" : static_url("pics/webmail.png")}
+         "url" : reverse("modoboa.extensions.webmail.views.index")},
         ]
 
 @events.observe("Userlogout")

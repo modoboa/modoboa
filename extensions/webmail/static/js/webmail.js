@@ -424,8 +424,14 @@ Webmail.prototype = {
 
     select_parent_mailbox: function(e) {
         e.preventDefault();
+        var $this = $(this);
+        var $parent = $this.parent();
+        var is_selected = $parent.hasClass("active");
+
         $("a[name=selectfolder]").parent().removeClass("active");
-        $(this).parent().addClass("active");
+        if (!is_selected) {
+            $parent.addClass("active");
+        }
     },
 
     new_mailbox: function(e) {
@@ -501,6 +507,33 @@ Webmail.prototype = {
     },
 
     /*
+     * Add a new mailbox into the tree. We check if the parent is
+     * present before adding. If it's not present, we do nothing.
+     */
+    add_mailbox_to_tree: function(parent, mailbox) {
+        var $parent;
+
+        if (parent) {
+            $parent = $("#folders").find('li[name="' + parent + '"]');
+            if (!$parent.length) {
+                return;
+            }
+            if (!$parent.children("div").length) {
+                this.inject_clickbox($parent);
+            }
+            var $ul = $parent.children("ul");
+            if (!$ul.length) {
+                return;
+            }
+            $parent = $ul;
+            mailbox = $parent.attr("name") + "." + mailbox;
+        } else {
+            $parent = $("#mboxes_container").children("ul");
+        }
+        this.inject_mailbox($parent, mailbox, "loadfolder");
+    },
+
+    /*
      * Rename a mailbox (client-side)
      * If needed, the mailbox will be moved to its new location.
      */
@@ -517,8 +550,9 @@ Webmail.prototype = {
             $link.attr("href", pattern);
         }
         if (oldparent != newparent) {
-            var newlocation = (newparent != "") ? newparent + "." + newname : newname;
+            var newlocation = (newparent) ? newparent + "." + newname : newname;
             this.remove_mbox_from_tree($link.parent("li"));
+            this.add_mailbox_to_tree(newparent, newname);
             if (this.navobject.getparam("action") == "listmailbox") {
                 this.navobject.setparam("name", newlocation).update();
             } else {
@@ -787,25 +821,7 @@ Webmail.prototype = {
 
     mboxform_success: function(data) {
         if (data.oldmb === undefined) {
-            var $parent;
-
-            if (data.parent) {
-                $parent = $("#folders").find('li[name="' + data.parent + '"]');
-                if (!$parent.length) {
-                    return;
-                }
-                if (!$parent.children("div").length) {
-                    this.inject_clickbox($parent);
-                }
-                var $ul = $parent.children("ul");
-                if (!$ul.length) {
-                    return;
-                }
-                $parent = $ul;
-            } else {
-                $parent = $("#mboxes_container").children("ul");
-            }
-            this.inject_mailbox($parent, data.newmb, "loadfolder");
+            this.add_mailbox_to_tree(data.parent, data.newmb);
         } else if (data.newmb) {
             this.rename_mailbox(data.oldmb, data.newmb, data.oldparent, data.newparent);
         }
