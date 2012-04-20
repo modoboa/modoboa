@@ -111,8 +111,7 @@ Webmail.prototype = {
             $.proxy(this.sendmail, this));
 
         $(document).on("click", "#attachments", $.proxy(function(e) {
-            var $div = $(e.target).parent();
-            modalbox(e, undefined, $div.attr("name"),
+            modalbox(e, undefined, $("#attachments").attr("name"),
                 $.proxy(this.attachments_init, this));
         }, this));
     },

@@ -82,10 +82,11 @@ class BodyStructure(object):
         params = dict(pnum=pnum, params=definition[2], cid=definition[3],
                       description=definition[4], encoding=definition[5], 
                       size=definition[6])
+        mtype = definition[0].lower()
         subtype = definition[1].lower()
-        mtype = "%s/%s" % (definition[0].lower(), subtype)
-        if mtype in ("text/plain", "text/html"):
-            if not self.contents.has_key(mtype):
+        ftype = "%s/%s" % (definition[0].lower(), subtype)
+        if ftype in ("text/plain", "text/html"):
+            if not self.contents.has_key(ftype):
                 self.contents[subtype] = params
                 return
         elif multisubtype in ["related"]:
@@ -93,8 +94,13 @@ class BodyStructure(object):
             return
 
         if len(definition) > 7:
-            params.update(md5=definition[7], disposition=definition[8], 
-                          lang=definition[9], location=definition[10])
+            extensions = ["md5", "disposition", "language", "location"]
+            if mtype == "text":
+                extensions = ["textlines"] + extensions
+            elif ftype == "message/rfc822":
+                extensions = ["envelopestruct", "bodystruct", "textlines"] + extensions
+            for idx, value in enumerate(definition[7:]):
+                params[extensions[idx]] = value
         self.attachments += [params]
 
     def load_from_definition(self, definition, multisubtype=None):
