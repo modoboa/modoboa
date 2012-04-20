@@ -11,6 +11,7 @@ core application and additional components.
 from functools import wraps
 import inspect
 import re
+from django.conf import settings
 
 events = [
     "CanCreate",
@@ -114,6 +115,9 @@ class observe(object):
                     return []
                 if not ext.enabled:
                     return []
+            elif not modname in settings.INSTALLED_APPS:
+                return []
+                
             return f(*args)
 
         map(lambda evt: register(evt, wrapped_f), self.evtnames)

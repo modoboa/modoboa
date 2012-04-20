@@ -1,6 +1,16 @@
 /*
- * Collection of functions that are accessible to every page.
+ * Global javascript utilities
  */
+
+var media_url = "";
+
+/*
+ * A simple function to initialize the value of the global variable
+ * 'media_url' (corresponding to django's MEDIA_URL variable).
+ */
+function set_media_url(url) {
+  media_url = url;
+}
 
 function modalbox(e, css, defhref, defcb, defclosecb) {
     e.preventDefault();
@@ -45,20 +55,6 @@ function modalbox_autowidth(e) {
         width: 'auto',
         'margin-left': function() { return -($(this).width() / 2); }
     }]);
-}
-
-/*
- * Simple function that redirect ajax requests to the login page if
- * the status code received with a response is equal to 278.
- */
-function ajax_login_redirect() {
-    if (this.status != 278) {
-        return;
-    }
-    var params = "?next=" + window.location.pathname;
-
-    window.location.href =
-        this.xhr.getResponseHeader("Location").replace(/\?.*$/, params);
 }
 
 /*
@@ -179,35 +175,6 @@ function get_target(e, tag) {
 }
 
 /*
- * Simple wrapper around Request.JSON. We just ensure that
- * redirections are correctly catched. (on session timeout for
- * example)
- */
-// Request.JSON.mdb = new Class({
-//     Extends: Request.JSON,
-
-//     options: {
-//         format: "json",
-//         onComplete: ajax_login_redirect,
-//         onFailure: function(xhr) {
-//             $(document.body).setStyle("overflow", "auto");
-//             $(document.body).set("html", xhr.responseText);
-//         }
-//     }
-// });
-
-/*
- * 'Change password' form initialization.
- */
-function chpasswordform_cb() {
-    $(".submit").one('click', function(e) {
-        simple_ajax_form_post(e, {
-            error_cb: chpasswordform_cb
-        });
-    });
-}
-
-/*
  * Send a simple AJAX request.
  */
 function simple_ajax_request(e) {
@@ -225,3 +192,22 @@ function simple_ajax_request(e) {
         }
     });
 }
+
+/*
+ * Simple function that redirect ajax requests to the login page if
+ * the status code received with a response is equal to 278.
+ */
+function ajax_login_redirect() {
+    if (this.status != 278) {
+        return;
+    }
+    var params = "?next=" + window.location.pathname;
+
+    window.location.href =
+        this.xhr.getResponseHeader("Location").replace(/\?.*$/, params);
+}
+
+$(document).ready(function() {
+    $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
+    $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
+});

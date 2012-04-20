@@ -1,7 +1,7 @@
 # coding: utf-8
 
-from modoboa.lib import parameters
-from django.utils.translation import ugettext as _
+from modoboa.lib import parameters, events
+from django.utils.translation import ugettext_noop as _
 
 parameters.register_user("LANG", type="list", deflt="en", 
                          label=_("Prefered language"),
@@ -9,3 +9,16 @@ parameters.register_user("LANG", type="list", deflt="en",
                                  ("es", "español"), ("fr", "français")],
                          help=_("Prefered language to display pages"),
                          app="general")
+
+@events.observe("GetStaticContent")
+def get_static_content(user):
+    return """<script type="text/javascript">
+function chpasswordform_cb() {
+    $(".submit").one('click', function(e) {
+        simple_ajax_form_post(e, {
+            formid: "chpasswordform",
+            error_cb: chpasswordform_cb
+        });
+    });
+}
+</script>"""

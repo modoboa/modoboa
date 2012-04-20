@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url
 
+@events.observe("UserMenuDisplay")
 def menu(target, user):
     import views
 
@@ -31,16 +32,24 @@ def menu(target, user):
          }
         ]
 
+@events.observe("GetAnnouncement")
 def announcement(target):
     if target == "loginpage":
         txt = render_to_string("demo/login_announcement.html")
         return [txt]
     return ""
 
+@events.observe("PasswordChange")
 def password_change(user):
     return [user.id == 1]
 
-if 'modoboa.demo' in settings.INSTALLED_APPS:
-    events.register("UserMenuDisplay", menu)
-    events.register("GetAnnouncement", announcement)
-    events.register("PasswordChange", password_change)
+@events.observe("GetStaticContent")
+def get_static_content(user):
+    if not user.has_mailbox:
+        return []
+    return """<script type="text/javascript">
+$(document).ready(function() {
+    $(document).on('click', 'a[name=sendspam]', simple_ajax_request);
+    $(document).on('click', 'a[name=sendvirus]', simple_ajax_request);
+});
+</script>"""
