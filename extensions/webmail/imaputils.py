@@ -31,9 +31,9 @@ class capability(object):
     def __call__(self, method):
         @wraps(method)
         def wrapped_func(cls, *args, **kwargs):
-            if self.name in cls.m.capabilities:
+            if self.name in cls.capabilities:
                 return method(cls, *args, **kwargs)
-            return getattr(cls, self.fallback_method)(*args, **kwargs)
+            return getattr(cls, self.fallback_method)(cls, **kwargs)
 
         return wrapped_func
 
@@ -131,9 +131,7 @@ class IMAPconnector(object):
         self.criterions = []
         self.address = parameters.get_admin("IMAP_SERVER")
         self.port = int(parameters.get_admin("IMAP_PORT"))
-        status, msg = self.login(user, password)
-        if not status:
-            raise WebmailError(msg)
+        self.login(user, password)
 
     def _cmd(self, name, *args, **kwargs):
         """IMAP command wrapper
@@ -216,14 +214,20 @@ class IMAPconnector(object):
                 if hasattr(self, "current_mailbox"):
                     del self.current_mailbox
             else:
-                return
-        status, msg = self.login(user, password)
-        if not status:
-            raise ImapError(msg)
+                return        
+        self.login(user, password)
 
     def login(self, user, passwd):
-        import socket
+        """Custom login method
+        
+        We connect to the server, issue a LOGIN command. If
+        successfull, we try to record a eventuel CAPABILITY untagged
+        response. Otherwise, we issue the command.
 
+        :param user: username
+        :param passwd: password
+        """
+        import socket
         try:
             secured = parameters.get_admin("IMAP_SECURED")
             if secured == "yes":
@@ -231,19 +235,23 @@ class IMAPconnector(object):
             else:
                 self.m = imaplib.IMAP4(self.address, self.port)
         except (socket.error, imaplib.IMAP4.error, ssl.SSLError), error:
-            return False, _("Connection to IMAP server failed, check your configuration")
-        try:
-            self.m.login(user, passwd)
-        except (imaplib.IMAP4.error, ssl.SSLError), error:
-            return False, _("Authentication failed, check your configuration")
-        return True, None
+            raise ImapError(_("Connection to IMAP server failed: %s" % error))
+
+        data = self._cmd("LOGIN", user, passwd)
+        self.m.state = "AUTH"
+        if self.m.untagged_responses.has_key("CAPABILITY"):
+            self.capabilities = \
+                self.m.untagged_responses.pop('CAPABILITY')[0].split()
+        else:
+            data = self._cmd("CAPABILITY")
+            self.capabilities = data[0].split()
 
     def logout(self):
         try:
-            self.m.select()
-        except imaplib.IMAP4.error:
+            self._cmd("CHECK")
+        except ImapError, e:
             pass
-        self.m.logout()
+        self._cmd("LOGOUT")
         del self.m
         self.m = None
 
@@ -303,7 +311,7 @@ class IMAPconnector(object):
         :return: an integer
         """
         data = self._cmd("STATUS", mailbox.encode("imap4-utf-7"), "(UNSEEN)")
-        m = self.unseen_pattern.match(data[0])
+        m = self.unseen_pattern.match(data[-1])
         if m is None:
             return 0
         return int(m.group(1))
@@ -329,12 +337,24 @@ class IMAPconnector(object):
             sdescr["class"] = "subfolders"
         return True
 
-    def _listmboxes_simple(self, topmailbox='INBOX', md_mailboxes=[]):
+    def _listmboxes_simple(self, topmailbox='INBOX', mailboxes=[], **kwargs):
+        #data = self._cmd("LIST", "", "*")
         (status, data) = self.m.list()
         result = []
+        newmboxes = []
         for mb in data:
             flags, delimiter, name = self.list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
+            pos = -1
+            for idx, mdm in enumerate(mailboxes):
+                if mdm["name"] == name:
+                    pos = idx
+                    break
+            if pos == -1:
+                descr = dict(name=name)
+                newmboxes += [descr]
+            else:
+                descr = mailboxes[idx]
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
                 if not descr.has_key("path"):
@@ -344,18 +364,11 @@ class IMAPconnector(object):
                                             parts[1:]):
                     descr["class"] = "subfolders"
                 continue
-            present = False
-            descr = {"name" : name}
-            for mdf in md_mailboxes:
-                if mdf["name"] == name:
-                    present = True
-                    break
-            if not present:
-                result += [descr]
-        from operator import itemgetter
-        return sorted(result, key=itemgetter("name"))
 
-    @capability('LIST-EXTENDED', '_listfolders_simple')
+        from operator import itemgetter
+        mailboxes += sorted(newmboxes, key=itemgetter("name"))
+
+    @capability('LIST-EXTENDED', '_listmboxes_simple')
     def _listmboxes(self, topmailbox='', mailboxes=[], until_mailbox=None):
         pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
@@ -513,7 +526,7 @@ class IMAPconnector(object):
         return True
 
     def getquota(self, mailbox):
-        if not "QUOTA" in self.m.capabilities:
+        if not "QUOTA" in self.capabilities:
             self.quota_limit = self.quota_actual = None
             return
 

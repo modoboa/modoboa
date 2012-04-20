@@ -160,6 +160,7 @@ Webmail.prototype = {
         /*if (this.gspinner) {
             this.gspinner.hide();
         }*/
+        $(window).unbind("resize");
         if (response.menu != undefined) {
             $("#menubar").html(response.menu);
             $("#searchfield").searchbar({navobj: this.navobject});
@@ -679,6 +680,9 @@ Webmail.prototype = {
 
         e.preventDefault();
         $link.attr("disabled", "disabled");
+        if (this.editormode == "html") {
+            CKEDITOR.instances[this.editorid].updateElement();
+        }
         $.ajax({
             url: $form.attr("action"),
             data: args,
@@ -696,7 +700,7 @@ Webmail.prototype = {
 
         e.preventDefault();
         if ($tr.hasClass("unseen")) {
-            var mb = this.navobject.params["name"];
+            var mb = this.get_current_mailbox();
             this.change_unseen_messages(mb, -1);
         }
         this.navobject.reset().setparams({
@@ -737,8 +741,28 @@ Webmail.prototype = {
      *
      * It is also shared with other similar actions : reply, forward.
      */
+    resize_editor: function() {
+        CKEDITOR.instances[this.editorid].resize("100%",
+            $("#body_container").outerHeight(true));
+    },
+
     compose_callback: function(resp) {
         this.page_update(resp);
+        this.editormode = resp.editor;
+        if (resp.editor == "html") {
+            var instance = CKEDITOR.instances[this.editorid];
+
+            $(window).resize($.proxy(this.resize_editor, this));
+            if (instance) {
+                CKEDITOR.remove(instance);
+            }
+            CKEDITOR.replace(this.editorid, {
+                customConfig: static_url("js/editor_config.js")
+            });
+            CKEDITOR.on("instanceReady", $.proxy(function(evt) {
+                this.resize_editor();
+            }, this));
+        }
         if (resp.id != undefined) {
             this.navobject.setparam("id", resp.id).update(false, true);
         }
