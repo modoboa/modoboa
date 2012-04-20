@@ -1,54 +1,54 @@
-<!DOCTYPE html>
-{% load i18n libextras %}
-<head profile="http://www.w3.org/2005/10/profile">
-  <meta charset="utf-8" />
-  <title>{% trans "Welcome to Modoboa" %}</title>
-  <link rel="icon" type="image/png" href="{{ MEDIA_URL }}css/logo-icon.png" />
-  <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap.css" />
-  <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap-responsive.css" />  
-  <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/login.css" />
-  <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.js"></script>
-  <script type="text/javascript" src="{{ MEDIA_URL }}js/bootstrap.js"></script>
-  {% url django.views.i18n.javascript_catalog as catalog_url %}
-  <script type="text/javascript" src="{{ catalog_url }}"></script>
-  <script type="text/javascript">
-  $(document).ready(function() {
-      $('#id_username').focus();
-  });
-  </script>
-</head>
-<body>
-  <div class="container">
-    <div class="offset4">
-      <div class="row">
-        <div id="logo" class="span3">
-          <img src="{{ MEDIA_URL }}css/modoboa.png" />
+<!DOCTYPE html>{% load i18n libextras %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% trans "Welcome to Modoboa" %}</title>
+    <link rel="icon" type="image/png" href="{{ MEDIA_URL }}css/logo-icon.png" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap-responsive.css" />  
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/login.css" />
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/bootstrap.js"></script>
+    {% url django.views.i18n.javascript_catalog as catalog_url %}
+    <script type="text/javascript" src="{{ catalog_url }}"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#id_username').focus();
+    });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="offset4">
+        <div class="row">
+          <div id="logo" class="span3">
+            <img src="{{ MEDIA_URL }}css/modoboa.png" />
+          </div>
+        </div>
+        <div class="row">
+          <form method="post" action="{% url modoboa.auth.views.dologin %}" 
+                class="well span3">
+            {% render_form form %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="form-actions">
+              <label class="pull-left checkbox">
+                <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
+              </label>
+              <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
+            </div>
+          </form>
+        </div>
+        <div class="row">
+          <div class="span4">
+            {% if error %}{% alert error "error" %}{% endif %}
+          </div>
         </div>
       </div>
-      <div class="row">
-        <form method="post" action="{% url modoboa.auth.views.dologin %}" 
-              class="well span3">
-          {% render_form form %}
-          <input type="hidden" name="next" value="{{ next }}" />
-          <div class="form-actions">
-            <label class="pull-left checkbox">
-              <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
-            </label>
-            <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
-          </div>
-        </form>
-      </div>
-      <div class="row">
-        <div class="span4">
-        {% if error %}{% alert error "error" %}{% endif %}
-      </div>
-      </div>
     </div>
-  </div>
-  
-  <!--
-  {% for annoucement in annoucements %}
-  <div class="roundedbox">{{ annoucement|safe }}</div>
-  {% endfor %}
-  -->
-</body>
+    <!--
+        {% for annoucement in annoucements %}
+        <div class="roundedbox">{{ annoucement|safe }}</div>
+        {% endfor %}
+        -->
+  </body>
+</html>
