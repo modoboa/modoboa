@@ -312,7 +312,9 @@ def listmailbox(request, defmailbox="INBOX"):
     set_nav_params(request)
     lst = ImapListing(request.user, request.session["password"],
                       baseurl="?action=listmailbox&name=%s&" % mbox,
-                      folder=mbox, **request.session["navparams"])
+                      folder=mbox, 
+                      elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
+                      **request.session["navparams"])
     request.session["mbox"] = mbox
     return lst.render(request, request.session["pageid"])
 

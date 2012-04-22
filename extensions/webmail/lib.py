@@ -117,7 +117,7 @@ class ImapListing(EmailListing):
         else:
             self.mbc.criterions = []
 
-        EmailListing.__init__(self, **kwargs)  
+        super(ImapListing, self).__init__(**kwargs)
         self.extravars["refreshrate"] = \
             int(parameters.get_user(user, "REFRESH_INTERVAL")) * 1000
 
