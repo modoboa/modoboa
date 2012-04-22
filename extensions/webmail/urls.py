@@ -18,6 +18,5 @@ urlpatterns = patterns(
     
     (r'^attachments/$', 'attachments'),
     (r'^delattachment/$', 'delattachment'),
-    
-    (r'^(?P<folder>.+)/(?P<mail_id>[\w\-\+]+)/part/$', 'getattachment'),
+    (r'^getattachment/$', 'getattachment'),
     )

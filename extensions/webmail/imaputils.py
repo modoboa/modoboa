@@ -93,6 +93,7 @@ class BodyStructure(object):
             self.inlines[params["cid"].strip("<>")] = params
             return
 
+        params["Content-Type"] = ftype
         if len(definition) > 7:
             extensions = ["md5", "disposition", "language", "location"]
             if mtype == "text":
@@ -123,6 +124,12 @@ class BodyStructure(object):
 
     def has_attachments(self):
         return len(self.attachments)
+
+    def find_attachment(self, pnum):
+        for att in self.attachments:
+            if pnum == att["pnum"]:
+                return att
+        return None
 
 class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
@@ -551,9 +558,21 @@ class IMAPconnector(object):
         self.quota_actual = int(m.group(1))
 
     def fetchpart(self, uid, mbox, partnum):
+        """Retrieve a specific message part
+
+        Useful to fetch attachments from the server. Part headers and
+        the payload are returned separatly.
+
+        :param uid: a message UID
+        :param mbox: the mailbox containing the message
+        :param partnum: the part number
+        :return: a 2uple (dict, string)
+        """
         self.select_mailbox(mbox, False)
-        data = self._cmd("FETCH", uid, "(BODY[%s])" % partnum)
-        return data[int(uid)]["BODY[%s]" % partnum]
+        data = self._cmd("FETCH", uid, "(BODYSTRUCTURE BODY[%s])" % partnum)
+        bs = BodyStructure(data[int(uid)]["BODYSTRUCTURE"])
+        attdef = bs.find_attachment(partnum)
+        return attdef, data[int(uid)]["BODY[%s]" % partnum]
 
     def fetch(self, start, stop=None, mbox=None, **kwargs):
         """Retrieve information about messages from the server
@@ -604,7 +623,6 @@ class IMAPconnector(object):
         :param readonly:
         :param extraheaders:
         """
-        print mbox
         self.select_mailbox(mbox, readonly)
         if headers is None:
             headers = ['DATE', 'FROM', 'TO', 'CC', 'SUBJECT']

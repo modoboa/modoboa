@@ -182,8 +182,8 @@ class ImapEmail(Email):
 
         pnum = self.bs.contents[mformat]['pnum']
         data = self.imapc._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
-        content = self._decode_content(self.bs.contents[mformat]['encoding'],
-                                       data[int(mailid)]['BODY[%s]' % pnum])
+        content = decode_payload(self.bs.contents[mformat]['encoding'],
+                                 data[int(mailid)]['BODY[%s]' % pnum])
         charset = self._find_content_charset(mformat)
         if charset is not None:
             content = content.decode(charset)
@@ -229,16 +229,6 @@ class ImapEmail(Email):
                 return self.bs.contents[subtype]["params"][pos + 1]
         return None
 
-    def _decode_content(self, encoding, content):
-        encoding = encoding.lower()
-        if encoding == "base64":
-            import base64
-            return base64.b64decode(content)
-        elif encoding == "quoted-printable":
-            import quopri
-            return quopri.decodestring(content)
-        return content
-
     def _find_attachments(self):
         for att in self.bs.attachments:
             attname = "part_%s" % att["pnum"]
@@ -270,9 +260,9 @@ class ImapEmail(Email):
             if os.path.exists(path):
                 continue
 
-            content = self.imapc.fetchpart(self.mailid, self.mbox, params["pnum"])
+            pdef, content = self.imapc.fetchpart(self.mailid, self.mbox, params["pnum"])
             fp = open(path, "wb")
-            fp.write(self._decode_content(params["encoding"], content))
+            fp.write(decode_payload(params["encoding"], content))
             fp.close()
 
 
@@ -427,6 +417,25 @@ class EmailSignature(object):
 
     def __repr__(self):
         return self._sig
+
+def decode_payload(encoding, payload):
+    """Decode the payload according to the given encoding
+
+    Supported encodings: base64, quoted-printable.
+
+    :param encoding: the encoding's name
+    :param payload: the value to decode
+    :return: a string
+    """
+    print payload
+    encoding = encoding.lower()
+    if encoding == "base64":
+        import base64
+        return base64.b64decode(payload)
+    elif encoding == "quoted-printable":
+        import quopri
+        return quopri.decodestring(payload)
+    return payload
 
 def find_images_in_body(body):
     """Looks for images inside a HTML body

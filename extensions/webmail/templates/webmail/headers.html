@@ -1,13 +1,11 @@
-{% extends "common/mailheaders.html" %}
-{% load i18n %}
+{% extends "common/mailheaders.html" %}{% load i18n %}
 {% block extraheaders %}
 {% if attachments %}
   <tr>
     <th>{% trans "Attachments" %}</th>
-    <td>
-      {% url modoboa.extensions.webmail.views.getattachment folder mail_id as test %}
+    <td>{% url modoboa.extensions.webmail.views.getattachment as url %}
       {% for key, fname in attachments.items %}
-      <a href="{{ test }}?fname={{ fname }}&partnumber={{ key }}">{{ fname }}</a>
+      <a href="{{ url }}?mbox={{ folder }}&mailid={{ mail_id }}&fname={{ fname }}&partnumber={{ key }}">{{ fname }}</a>
       {% endfor %}
     </td>
   </tr>

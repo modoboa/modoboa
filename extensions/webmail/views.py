@@ -16,49 +16,35 @@ from templatetags import webextras
 
 @login_required
 @needs_mailbox()
-def getattachment(request, folder, mail_id):
+def getattachment(request):
     """Fetch a message attachment
     
-    Problème lié aux optimisations apportées : la méthode fetchpart du
-    client IMAP ne renvoie que le payload. Pour obtenir les headers,
-    deux solutions :
+    FIXME: par manque de caching, le bodystructure du message est
+    redemandé pour accéder aux headers de cette pièce jointe.
 
-    * Conserver le bodystructure parsé précédemment (nécessite du caching)
-    
-    * Reparser le bodystructure :p
+    :param request: a ``Request`` object
+    :param folder
     """
+    mbox = request.GET.get("mbox", None)
+    mailid = request.GET.get("mailid", None)
     pnum = request.GET.get("partnumber", None)
-    if not pnum:
-        raise Http404
+    if not mbox or not mailid or not pnum:
+        raise WebmailError(_("Invalid request"))
     
     headers = {"Content-Type" : "text/plain",
                "Content-Transfer-Encoding" : None}
     imapc = get_imapconnector(request)
-    part = imapc.fetchpart(mail_id, folder, pnum)
-    if part is None:
-        raise Http404
-    if part.get_content_maintype() == "message":
-        payload = part.get_payload(0)
+    partdef, payload = imapc.fetchpart(mailid, mbox, pnum)
+    resp = HttpResponse(decode_payload(partdef["encoding"], payload))
+    resp["Content-Type"] = partdef["Content-Type"]
+    resp["Content-Transfer-Encoding"] = partdef["encoding"]
+    if partdef["disposition"] != 'NIL':
+        disp = partdef["disposition"]
+        cd = "%s; %s=%s" % (disp[0], disp[1][0], disp[1][1])
     else:
-        payload = part.get_payload(decode=True)
-    resp = HttpResponse(payload)
-    for hdr, default in headers.iteritems():
-        if not part.has_key(hdr):
-            if default is not None:
-                resp[hdr] = default
-            else:
-                continue
-        resp[hdr] = re.sub("\s", "", part[hdr])
-    # I would add this part into the previous loop if I was
-    # able to use functions as default values... but I'm a bit
-    # lazy :p
-    if part.has_key("Content-Disposition"):
-        resp["Content-Disposition"] = \
-            re.sub("\s", "", part["Content-Disposition"])
-    else:
-        resp["Content-Disposition"] = \
-            "attachment; filename=%s" % request.GET["fname"]
-    resp["Content-Length"] = len(payload)
+        cd = "attachment; filename=%s" % request.GET["fname"]
+    resp["Content-Disposition"] = cd
+    resp["Content-Length"] = partdef["size"]
     return resp
     
 @login_required
