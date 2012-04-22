@@ -9,7 +9,15 @@ var media_url = "";
  * 'media_url' (corresponding to django's MEDIA_URL variable).
  */
 function set_media_url(url) {
-  media_url = url;
+    media_url = url;
+}
+
+/*
+ * Shortcut function that construct an url from the media_url and the
+ * given value.
+ */
+function static_url(value) {
+    return media_url + value;
 }
 
 function modalbox(e, css, defhref, defcb, defclosecb) {

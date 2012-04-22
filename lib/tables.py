@@ -61,6 +61,8 @@ class ImgColumn(Column):
             return ""
 
     def render(self, value):
+        if type(value) in [list, tuple]:
+            return "".join(map(lambda i: "<img src='%s' />" % i, value))
         return "<img src='%s' />" % value
 
 class DivColumn(Column):

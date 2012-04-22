@@ -28,7 +28,7 @@ class WMtable(tables.Table):
         defvalue="%spics/grippy.png" % settings.MEDIA_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
         )
-    flags = tables.ImgColumn("flags", width="2%")
+    flags = tables.ImgColumn("flags", width="4%")
     withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column("subject", label=__("Subject"), width="50%", limit=60)
     from_ = tables.Column("from", width="20%", label=__("From"), limit=30)
@@ -427,7 +427,6 @@ def decode_payload(encoding, payload):
     :param payload: the value to decode
     :return: a string
     """
-    print payload
     encoding = encoding.lower()
     if encoding == "base64":
         import base64

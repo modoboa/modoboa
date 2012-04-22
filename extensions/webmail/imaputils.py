@@ -429,11 +429,12 @@ class IMAPconnector(object):
         if len(topmailbox):
             md_mailboxes = []
         else:
-            md_mailboxes = [{"name" : "INBOX", "class" : "icon-home"},
+            md_mailboxes = [{"name" : "INBOX", "class" : "icon-inbox"},
                             {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
                              "class" : "icon-file"},
-                            {"name" : 'Junk'},
-                            {"name" : parameters.get_user(user, "SENT_FOLDER")},
+                            {"name" : 'Junk', "class" : "icon-fire"},
+                            {"name" : parameters.get_user(user, "SENT_FOLDER"),
+                             "class" : "icon-envelope"},
                             {"name" : parameters.get_user(user, "TRASH_FOLDER"),
                              "class" : "icon-trash"}]
         if until_mailbox:
@@ -600,9 +601,12 @@ class IMAPconnector(object):
             if not r'\Seen' in data[int(uid)]['FLAGS']:
                 msg['style'] = 'unseen'
             if r'\Answered' in data[int(uid)]['FLAGS']:
-                msg['img_flags'] = static_url('pics/answered.png')
+                msg['img_flags'] = [static_url('pics/answered.png')]
             if r'$Forwarded' in data[int(uid)]['FLAGS']:
-                msg['img_flags'] = static_url('pics/forwarded.png')
+                if msg.has_key('img_flags'):
+                    msg['img_flags'] += [static_url('pics/forwarded.png')]
+                else:
+                    msg['img_flags'] = [static_url('pics/forwarded.png')]
             bs = BodyStructure(data[int(uid)]['BODYSTRUCTURE'])
             if bs.has_attachments():
                 msg['img_withatts'] = static_url('pics/attachment.png')

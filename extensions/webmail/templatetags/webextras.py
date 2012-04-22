@@ -1,3 +1,4 @@
+# coding: utf-8
 from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
@@ -20,33 +21,27 @@ def viewmail_menu(selection, folder, user, mail_id=None):
          "label" : _("Back")},
         {"name" : "reply",
          "url" : "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
-         "img" : static_url("pics/reply.png"),
+         "img" : "icon-share",
          "label" : _("Reply")},
         {"name" : "replyall",
          "url" : "action=reply&mbox=%s&mailid=%s&all=1" % (folder, mail_id),
-         "img" : static_url("pics/reply-all.png"),
+         "img" : "",
          "label" : _("Reply all")},
         {"name" : "forward",
          "url" : "action=forward&mbox=%s&mailid=%s" % (folder, mail_id),
-         "img" : static_url("pics/alias.png"),
+         "img" : "icon-arrow-right",
          "label" : _("Forward")},
         {"name" : "delete",
-         "img" : static_url("pics/remove.png"),
+         "img" : "icon-trash",
          "url" : reverse(webmail.views.delete) + "?mbox=%s&mailid=%s" % (folder, mail_id),
          "label" : _("Delete")},
         {"name" : "display_options",
          "label" : _("Display options"),
-         "img" : static_url("pics/settings.png"),
-         "class" : "menubardropdown",
          "menu" : [
                  {"name" : "activate_links", 
-                  "label" : _("Activate links"),
-                  "url" : ""},
-                  #reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=1"},
+                  "label" : _("Activate links")},
                  {"name" : "disable_links", 
-                  "label" : _("Disable links"),
-                  "url" : ""}
-                  #reverse(webmail.views.viewmail, args=[folder, mail_id]) + "?links=0"},
+                  "label" : _("Disable links")}
                 ]
          }
         ]
@@ -80,7 +75,6 @@ def listmailbox_menu(selection, folder, user):
          "label" : _("New message"),
          "class" : "btn"},
         {"name" : "mark",
-         
          "label" : _("Mark messages"),
          "class" : "btn",
          "menu" : [
@@ -93,14 +87,12 @@ def listmailbox_menu(selection, folder, user):
                 ]
          },
         {"name" : "actions",
-         "img" : static_url("pics/settings.png"),
          "label" : _("Actions"),
          "class" : "btn",
          "menu" : [
                 {"name" : "fdaction",
                  "label" : _("Compress folder"),
-                 "img" : static_url("pics/compress.png"),
-                 "url" : "compact/%s/" % folder},
+                 "url" : "compact/%s/" % folder}
                 ]
          }
         ]
