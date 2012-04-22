@@ -14,8 +14,8 @@ Available components:
 Django is needed to use Modoboa (http://www.djangoproject.com/)
 
 The following external tools are provided with Modoboa:
- * Mootools version 1.3+ (http://www.mootools.net/)
- * SqueezeBox version 1.1+ (http://digitarald.de/project/squeezebox/)
- * Calendar (http://electricprism.com/aeron/calendar/)
- * Autocompleter (http://digitarald.de/project/autocompleter/)
+ * jQuery version 1.7.1 (http://www.jquery.org/)
+ * jQuery-UI 1.8+ (http://jqueryui.com/)
+ * Bootstrap, from Twitter version 2.0.2 (http://twitter.github.com/bootstrap/)
+ * Bootstrap datepicker (https://bitbucket.org/eternicode/bootstrap-datepicker)
 

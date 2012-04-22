@@ -43,12 +43,8 @@
             {% if error %}{% alert error "error" %}{% endif %}
           </div>
         </div>
-      </div>
-    </div>
-    <!--
-        {% for annoucement in annoucements %}
-        <div class="roundedbox">{{ annoucement|safe }}</div>
-        {% endfor %}
-        -->
+      </div>{% for annoucement in annoucements %}
+      <div class="offset3 span5 well">{{ annoucement|safe }}</div>
+      {% endfor %}</div>
   </body>
 </html>

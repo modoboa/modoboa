@@ -130,10 +130,11 @@ def pagination_bar(page):
 
 @register.simple_tag
 def alert(msg, typ):
-    return """<div class="alert alert-%s">
+    t = Template("""<div class="alert alert-{{ type }}">
 <a class="close" data-dismiss="alert">×</a>
-%s
-</div>""" % (typ, msg)
+{{ msg }}
+</div>""")
+    return t.render(Context(dict(type=typ, msg=msg)))
 
 @register.simple_tag
 def render_link(linkdef, mdclass=None):
