@@ -8,6 +8,5 @@ class LoginForm(forms.Form):
         )
     password = forms.CharField(
         label=_("Password"),
-        widget=forms.PasswordInput(attrs={"class" : "span3"}),
-        help_text=_("Password used to authenticate")
+        widget=forms.PasswordInput(attrs={"class" : "span3"})
         )

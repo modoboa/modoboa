@@ -40,6 +40,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         }
         var $div = $('<div id="modalbox" class="modal" >' + data + '</div>')
             .one('shown', function() {
+                $(".help").popover();
                 if (modalcb != undefined) {
                     if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
                 }
