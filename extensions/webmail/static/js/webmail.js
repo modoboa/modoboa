@@ -675,13 +675,14 @@ Webmail.prototype = {
     sendmail: function(e) {
         var $link = $(e.target);
         var $form = $("#composemail");
-        var args = $form.serialize();
 
         e.preventDefault();
         $link.attr("disabled", "disabled");
         if (this.editormode == "html") {
             CKEDITOR.instances[this.editorid].updateElement();
         }
+        var args = $form.serialize();
+
         $.ajax({
             url: $form.attr("action"),
             data: args,
@@ -696,6 +697,7 @@ Webmail.prototype = {
      */
     viewmail_loader: function(e) {
         var $tr = $(e.target).parent();
+        var curmb = this.get_current_mailbox();
 
         e.preventDefault();
         if ($tr.hasClass("unseen")) {
@@ -704,6 +706,7 @@ Webmail.prototype = {
         }
         this.navobject.reset().setparams({
             action: "viewmail",
+            mbox: curmb,
             mailid: $tr.attr("id")
         }).update();
     },
@@ -745,8 +748,20 @@ Webmail.prototype = {
             $("#body_container").outerHeight(true));
     },
 
+    add_field: function(e, name) {
+        e.preventDefault();
+        $("label[for=id_" + name + "]").parent().show();
+        $(e.target).hide();
+        this.position_body();
+        if (this.editormode == "html") {
+            this.resize_editor();
+        }
+    },
+
     compose_callback: function(resp) {
         this.page_update(resp);
+        $("#add_cc").click($.proxy(function(e) { this.add_field(e, "cc"); }, this));
+        $("#add_cci").click($.proxy(function(e) { this.add_field(e, "cci"); }, this));
         this.editormode = resp.editor;
         if (resp.editor == "html") {
             var instance = CKEDITOR.instances[this.editorid];
@@ -796,6 +811,13 @@ Webmail.prototype = {
     viewmail_callback: function(resp) {
         this.page_update(resp);
         $("#listing").css("overflow", "hidden");
+        $("a[name=close]").click($.proxy(function(e) {
+            e.preventDefault();
+            var curmb = this.get_current_mailbox();
+            this.navobject.delparam("mailid")
+                .setparams({action: "listmailbox", name: curmb})
+                .update();
+        }, this));
     },
 
     mark_callback: function(data) {

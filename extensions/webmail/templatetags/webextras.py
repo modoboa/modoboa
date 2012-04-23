@@ -15,10 +15,6 @@ register = template.Library()
 @register.simple_tag
 def viewmail_menu(selection, folder, user, mail_id=None):   
     entries = [
-        {"name" : "back",
-         "url" : "javascript:history.go(-1);",
-         "img" : "icon-arrow-left",
-         "label" : _("Back")},
         {"name" : "reply",
          "url" : "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
          "img" : "icon-share",
@@ -45,10 +41,17 @@ def viewmail_menu(selection, folder, user, mail_id=None):
                 ]
          }
         ]
-    
-    return render_to_string('common/buttons_list.html', 
+    menu = render_to_string('common/buttons_list.html', 
                             {"selection" : selection, "entries" : entries, 
-                             "user" : user})
+                             "user" : user, "extraclasses" : "pull-left"})
+
+    entries = [{"name" : "close",
+                "title" : _("Close this message"),
+                "img" : "icon-remove"}]
+    menu += render_to_string('common/buttons_list.html', 
+                             {"entries" : entries, "extraclasses" : "pull-right"})
+
+    return menu
 
 @register.simple_tag
 def compose_menu(selection, backurl, user):

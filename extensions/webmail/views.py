@@ -410,8 +410,9 @@ def getmailcontent(request):
             })
 
 def viewmail(request):
+    mbox = request.GET.get("mbox", None)
     mailid = request.GET.get("mailid", None)
-    if mailid is None:
+    if mbox is None or mailid is None:
         raise WebmailError(_("Invalid request"))
     links = request.GET.get("links", None)
     if links is None:
@@ -420,7 +421,7 @@ def viewmail(request):
         links = int(links)
 
     url = reverse(getmailcontent) + "?mbox=%s&mailid=%s&links=%d" % \
-        (request.session["mbox"], mailid, links)
+        (mbox, mailid, links)
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url" : url}))

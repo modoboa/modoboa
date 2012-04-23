@@ -3,15 +3,6 @@ body, html {
     height: 100%;
 }
 
-#leftcol { 
-    /*position: fixed;
-    top: 60px;
-    left: 0;
-    width: 200px;
-    padding-left: 15px;
-    overflow: hidden;*/
-}
-
 #folders {
     position: fixed;
     top: 60px;
@@ -28,7 +19,9 @@ body, html {
 #menubar { 
     position: fixed;
     left: 215px;
+    right: 0;
     padding-left: 15px;
+    padding-right: 15px;
 }
 
 #listing { 
@@ -118,6 +111,14 @@ div.expanded {
 
 #mailheader label { 
     text-align: left;
+}
+
+#mailheader .options {
+    margin-left: 160px;
+}
+
+#add_cc {
+    margin-right: 20px;
 }
 
 #attachments {

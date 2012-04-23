@@ -5,6 +5,7 @@ class ComposeMailForm(forms.Form):
     from_ = forms.CharField(label=_("From"))
     to = forms.CharField(label=_("To"))
     cc = forms.CharField(label=_("Cc"), required=False)
+    cci = forms.CharField(label=_("Cci"), required=False)
     subject = forms.CharField(label=_("Subject"), max_length=255, required=False)
 
     origmsgid = forms.CharField(label="", widget=forms.HiddenInput(), required=False)

@@ -601,6 +601,9 @@ def send_mail(request, posturl=None):
 
         body = request.POST["id_body"]
         charset = "utf-8"
+
+        print body
+
         if editormode == "html":
             msg = MIMEMultipart(_subtype="related")
             submsg = MIMEMultipart(_subtype="alternative")
@@ -639,9 +642,10 @@ def send_mail(request, posturl=None):
         if form.cleaned_data.has_key("origmsgid"):
             msg["References"] = msg["In-Reply-To"] = form.cleaned_data["origmsgid"]
         rcpts = msg['To'].split(',')
-        if form.cleaned_data["cc"] != "":
-            msg["Cc"] = form.cleaned_data["cc"]
-            rcpts += msg["Cc"].split(",")
+        for hdr in ["cc", "cci"]:
+            if form.cleaned_data[hdr] != "":
+                msg[hdr.capitalize()] = form.cleaned_data[hdr]
+                rcpts += msg[hdr.capitalize()].split(",")
 
         try:
             secmode = parameters.get_admin("SMTP_SECURED_MODE")

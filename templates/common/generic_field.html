@@ -1,4 +1,4 @@
-<div class="control-group {% if field.errors %}error{% endif %}">
+<div class="control-group {% if field.errors %}error{% endif %}"{% if hidden %}style="display: none"{% endif %}>
   {% if field.label %}<label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>{% endif %}
   <div class="controls spaced">
     {{ field }}{% if field.errors %}<p class="help-block">{% for error in field.errors %}{{ error|safe }}{% endfor %}</p>{% endif %}

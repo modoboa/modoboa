@@ -100,6 +100,12 @@ def render_field(field):
             ))
 
 @register.simple_tag
+def render_and_hide_field(field):
+    return render_to_string("common/generic_field.html", dict(
+            field=field, hidden=True
+            ))
+
+@register.simple_tag
 def render_fields_group(form, pattern):
     from django.forms import forms
 
