@@ -99,7 +99,7 @@ class SQLlisting(EmailListing):
 class SQLemail(Email):
     def __init__(self, msg, *args, **kwargs):
         super(SQLemail, self).__init__(msg, *args, **kwargs)
-        fields = ["Subject", "From", "To", "Cc", "Date"]
+        fields = ["From", "To", "Cc", "Date", "Subject"]
         for f in fields:
             label = f
             self.headers += [{"name" : label, "value" : self.get_header(msg, f)}]

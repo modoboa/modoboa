@@ -153,10 +153,10 @@ class ImapListing(EmailListing):
 
 class ImapEmail(Email):
     headernames = [
-        ('Date', True),
         ('From', True),
         ('To', True),
         ('Cc', True),
+        ('Date', True),
         ('Subject', True),
         ]
 
