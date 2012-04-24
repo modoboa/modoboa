@@ -186,15 +186,21 @@ function get_target(e, tag) {
 /*
  * Send a simple AJAX request.
  */
-function simple_ajax_request(e) {
+function simple_ajax_request(e, uoptions) {
     var $this = $(this);
-    e.preventDefault();
+    var defaults = {};
+    var options = $.extend({}, defaults, uoptions);
+
+    if (e != undefined) e.preventDefault();
     $.ajax({
         url: $this.attr("href"),
         dataType: 'json',
         success: function(data) {
             if (data.status == "ok") {
-                $("body").notify("success", data.respmsg, 2000);
+                if (options.ok_cb) options.ok_cb(data);
+                if (options.respmsg) {
+                    $("body").notify("success", data.respmsg, 2000);
+                }
             } else {
                 $("body").notify("error", data.respmsg);
             }

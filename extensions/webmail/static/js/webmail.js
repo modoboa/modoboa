@@ -165,6 +165,14 @@ Webmail.prototype = {
         });
     },
 
+    go_back_to_listing: function() {
+        var curmb = this.get_current_mailbox();
+        this.navobject.delparam("mailid").delparam("mbox")
+            .setparams({action: "listmailbox", mbox: curmb});
+        this.restore_nav_params();
+        this.navobject.update();
+    },
+
     /*
      * Enable or disable edit and remove actions for the currently
      * selected mailbox.
@@ -838,11 +846,7 @@ Webmail.prototype = {
         $("#listing").css("overflow", "hidden");
         $("a[name=close]").click($.proxy(function(e) {
             e.preventDefault();
-            var curmb = this.get_current_mailbox();
-            this.navobject.delparam("mailid").delparam("mbox")
-                .setparams({action: "listmailbox", mbox: curmb});
-            this.restore_nav_params();
-            this.navobject.update();
+            this.go_back_to_listing();
         }, this));
     },
 
@@ -863,7 +867,7 @@ Webmail.prototype = {
 
     delete_callback: function(data) {
         if (data.status == "ok") {
-            history.go(-2);
+            this.go_back_to_listing();
             $("body").notify("success", gettext("Message deleted"), 2000);
         } else {
             $("body").notify("error", data.respmsg);

@@ -19,6 +19,7 @@ urlpatterns = patterns(
     (r'^settings/extensions/save/$', 'saveextensions'),
     
     (r'^permissions/searchaccount/$', 'search_account'),
+    (r'^permissions/remove/$', 'remove_permission'),
 
     (r'^identities/$', 'identities'),
     (r'^identities/import/$', 'import_identities'),

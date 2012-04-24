@@ -142,6 +142,16 @@ def identity_actions(user, iid):
     return render_actions(actions)
 
 @register.simple_tag
+def domadmin_actions(daid, domid):
+    actions = [dict(
+            name="removeperm",
+            url=reverse(admin.views.remove_permission) + "?domid=%s&daid=%s" % (domid, daid),
+            img="icon-trash",
+            title=_("Remove this permission")
+            )]
+    return render_actions(actions)
+
+@register.simple_tag
 def loadadminextmenu(user):
     menu = events.raiseQueryEvent("AdminMenuDisplay", "admin_menu_box", user)
     return render_to_string('common/menulist.html', 

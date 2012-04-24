@@ -7,6 +7,18 @@ function domainform_cb() {
             error_cb: domainform_cb
         });
     });
+    $("a[name=removeperm]").click(function(e) {
+        var $tr = $(this).parent().parent();
+        simple_ajax_request.apply(this, [e, {
+            ok_cb: function(resp) {
+                $tr.remove();
+                if (!$("#domadmins").children("tr").length) {
+                    $("#admins").html('<div class="alert alert-info">'
+                        + gettext("No domain administrator defined") + "</div>");
+                }
+            }
+        }]);
+    });
 }
 
 function accountform_init() {

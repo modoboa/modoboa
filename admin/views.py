@@ -69,7 +69,7 @@ def _validate_domain(request, form, successmsg, commonctx, tplname,
 @login_required
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
-def newdomain(request):
+def newdomain(request, tplname="admin/newdomainform.html"):
     events.raiseEvent("CanCreate", request.user, "domains")
     def newdomain_cb(user, domain):
         grant_access_to_object(user, domain, is_owner=True)
@@ -83,30 +83,39 @@ def newdomain(request):
     if request.method == "POST":
         form = DomainForm(request.POST)
         return _validate_domain(request, form, _("Domain created"), commonctx, 
-                                "admin/domainform.html",
-                                callback=newdomain_cb)
+                                tplname, callback=newdomain_cb)
     form = DomainForm()
     commonctx["form"] = form
-    return _render(request, "common/generic_modal_form.html", commonctx)
+    return _render(request, tplname, commonctx)
 
 @login_required
 @permission_required("admin.change_domain")
-def editdomain(request, dom_id, tplname="admin/domainform.html"):
+def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     domain = Domain.objects.get(pk=dom_id)
     if not request.user.can_access(domain):
         raise PermDeniedException(_("You can't edit this domain"))
 
-    commonctx = {"title" : _("Domain editing"),
+    domadmins = map(lambda oaccess: oaccess.user, domain.owners.all())
+    domadmins = filter(
+        lambda u: request.user.can_access(u) and not u.is_superuser, 
+        domadmins
+        )
+    if not request.user.is_superuser:
+        domadmins = filter(lambda u: u.group == "DomainAdmins", domadmins)
+        
+    commonctx = {"title" : domain.name,
                  "action_label" : _("Update"),
                  "action_classes" : "submit",
                  "action" : reverse(editdomain, args=[dom_id]),
-                 "formid" : "domform"}
+                 "formid" : "domform",
+                 "domain" : domain}
     if request.method == "POST":
         form = DomainForm(request.POST, instance=domain)
         return _validate_domain(request, form, _("Domain modified"), commonctx, tplname)
 
     form = DomainForm(instance=domain)
     commonctx["form"] = form
+    commonctx["domadmins"] = domadmins
     return _render(request, tplname, commonctx)
 
 @login_required
@@ -419,6 +428,23 @@ def search_account(request):
     users = User.objects.filter(query)
     result = map(lambda u: u.username, users.all())
     return ajax_simple_response(result)
+
+@login_required
+@permission_required("admin.add_domain")
+def remove_permission(request):
+    domid = request.GET.get("domid", None)
+    daid = request.GET.get("daid", None)
+    if domid is None or daid is None:
+        raise AdminError(_("Invalid request"))
+    try:
+        account = User.objects.get(pk=daid)
+        domain = Domain.objects.get(pk=domid)
+    except (User.DoesNotExist, Domain.DoesNotExist):
+        raise AdminError(_("Invalid request"))
+    if not request.user.can_access(account) or not request.user.can_access(domain):
+        raise AdminError(_("Permission denied"))
+    ungrant_access_to_object(domain, account)
+    return ajax_simple_response(dict(status="ok"))
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)

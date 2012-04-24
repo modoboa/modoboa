@@ -1,6 +1,4 @@
-{% extends "common/generic_modal_form.html" %}
-{% load libextras %}
-{% block formbody %}
+{% extends "common/generic_modal_form.html" %}{% load libextras %}{% block formbody %}
 {% render_field form.name %}
 {% render_field form.quota %}
 {% render_fields_group form "aliases" %}
