@@ -308,10 +308,10 @@ def listmailbox(request, defmailbox="INBOX"):
     :param defmailbox: the default mailbox (when not present inside request arguments)
     :return: a dictionnary
     """
-    mbox = request.GET.get("name", defmailbox)
+    mbox = request.GET.get("mbox", defmailbox)
     set_nav_params(request)
     lst = ImapListing(request.user, request.session["password"],
-                      baseurl="?action=listmailbox&name=%s&" % mbox,
+                      baseurl="?action=listmailbox&mbox=%s&" % mbox,
                       folder=mbox, 
                       elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
                       **request.session["navparams"])
@@ -481,8 +481,7 @@ def index(request):
     else:
         if request.is_ajax():
             raise WebmailError(_("Bad request"))
-        response = dict(selection="webmail", deflocation="?action=listmailbox", 
-                        defcallback="wm_updatelisting")
+        response = dict(selection="webmail")
 
     curmbox = request.session.get("mbox", "INBOX")
     if not request.is_ajax():

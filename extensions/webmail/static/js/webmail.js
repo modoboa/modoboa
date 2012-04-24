@@ -14,8 +14,6 @@ Webmail.prototype = {
         move_url: "",
         submboxes_url: "",
         delattachment_url: "",
-        deflocation: "",
-        defcallback: "",
         ro_mboxes: ["INBOX"]
     },
 
@@ -25,8 +23,8 @@ Webmail.prototype = {
         this.editorid = "id_body";
 
         this.navobject = new History({
-            deflocation: this.options.deflocation,
-            defcallback: this.options.defcallback
+            deflocation: "?action=listmailbox",
+            defcallback: $.proxy(this.listmailbox_callback, this)
         });
         this.poller = new Poller(this.options.poller_url, {
             interval: this.options.poller_interval * 1000,
@@ -134,10 +132,37 @@ Webmail.prototype = {
      * Simple helper to retrieve the currently selected mailbox.
      */
     get_current_mailbox: function() {
-        if (this.navobject.getparam("action") != "listmailbox") {
-            return undefined;
+        return this.navobject.getparam("mbox", "INBOX");
+    },
+
+    /*
+     * Keep track of interesting navigation parameters in order to
+     * restore them later.
+     */
+    store_nav_params: function() {
+        var params = new Array("page", "order", "pattern", "criteria");
+
+        this.navparams = {};
+        for (var idx in params) {
+            this.navparams[params[idx]] = this.navobject.getparam(params[idx]);
         }
-        return this.navobject.getparam("name", "INBOX");
+    },
+
+    /*
+     * Restore navigation parameters previously stored via
+     * store_nav_params.
+     */
+    restore_nav_params: function() {
+        if (this.navparams === undefined) {
+            return;
+        }
+        var navobject = this.navobject;
+        $.each(this.navparams, function(key, value) {
+            if (value === undefined) {
+                return;
+            }
+            navobject.setparam(key, value);
+        });
     },
 
     /*
@@ -475,7 +500,7 @@ Webmail.prototype = {
             dataType: 'json',
             success: $.proxy(function(data) {
                 if (data.status == "ok") {
-                    this.remove_mbox_from_tree(this.navobject.getparam("name"));
+                    this.remove_mbox_from_tree(this.navobject.getparam("mbox"));
                     this.poller.resume();
                     $("body").notify("success", gettext("Mailbox removed"), 2000);
                 } else {
@@ -554,7 +579,7 @@ Webmail.prototype = {
             this.remove_mbox_from_tree($link.parent("li"));
             this.add_mailbox_to_tree(newparent, newname);
             if (this.navobject.getparam("action") == "listmailbox") {
-                this.navobject.setparam("name", newlocation).update();
+                this.navobject.setparam("mbox", newlocation).update();
             } else {
                 this.select_mailbox("INBOX");
             }
@@ -636,7 +661,7 @@ Webmail.prototype = {
         }
         this.navobject.reset().setparams({
            action: "listmailbox",
-           name: obj.attr("href")
+           mbox: obj.attr("href")
         }).update();
     },
 
@@ -719,9 +744,9 @@ Webmail.prototype = {
      * 'listmailbox' callback
      */
     listmailbox_callback: function(resp) {
-        //window.removeEvents("resize");
         var curmb = this.get_current_mailbox();
 
+        this.store_nav_params();
         if (!$('li[name="' + curmb + '"]').hasClass("active")) {
             this.load_and_select_mailbox(curmb);
         }
@@ -814,9 +839,10 @@ Webmail.prototype = {
         $("a[name=close]").click($.proxy(function(e) {
             e.preventDefault();
             var curmb = this.get_current_mailbox();
-            this.navobject.delparam("mailid")
-                .setparams({action: "listmailbox", name: curmb})
-                .update();
+            this.navobject.delparam("mailid").delparam("mbox")
+                .setparams({action: "listmailbox", mbox: curmb});
+            this.restore_nav_params();
+            this.navobject.update();
         }, this));
     },
 
