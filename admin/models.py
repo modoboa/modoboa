@@ -38,6 +38,17 @@ class User(DUser):
 
     password_expr = re.compile(r'\{(\w+)\}(.+)')
 
+    def __init__(self, *args, **kwargs):
+        """Constructor
+
+        A little hack to increase the maximum length for the username
+        field.
+        """
+        max_length = 254
+        DUser._meta.get_field('username').max_length = max_length
+        DUser._meta.get_field('username').validators[0].limit_value = 254
+        super(User, self).__init__(*args, **kwargs)
+
     def __unicode__(self):
         return u"%s %s" % (self.first_name, self.last_name)
 
@@ -549,6 +560,26 @@ class Mailbox(DatesAware):
                                         self.domain.name, self.address))
         return True
 
+    def set_ownership(self):
+        # If we ever had numerical uid, don't resolve it
+	v_uid = parameters.get_admin("VIRTUAL_UID");
+	if v_uid.isdigit():
+            self.uid = v_uid
+	else:
+            try:
+                self.uid = pwd.getpwnam(v_uid).pw_uid
+            except KeyError:
+                raise AdminError(_("%s is not a valid uid/username" % v_uid))
+	# Just the same for gid
+	v_gid = parameters.get_admin("VIRTUAL_GID")
+	if v_gid.isdigit():
+            self.gid = v_gid
+	else:
+            try:
+                self.gid = pwd.getpwnam(v_gid).pw_gid
+            except KeyError:
+                raise AdminError(_("%s is not a valid gid/groupname" % v_gid))
+
     def save(self, *args, **kwargs):
         if not self.create_dir():
             raise AdminError(_("Failed to initialise mailbox, check permissions"))
@@ -583,18 +614,7 @@ class Mailbox(DatesAware):
             user.groups.add(Group.objects.get(name="SimpleUsers"))
             user.save()
 
-	# If we ever had numerical uid, don't resolve it
-	v_uid = parameters.get_admin("VIRTUAL_UID");
-	if v_uid.isdigit():
-            self.uid = v_uid
-	else:
-            self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
-	# Just the same for gid
-	v_gid = parameters.get_admin("VIRTUAL_GID")
-	if v_gid.isdigit():
-            self.gid = v_gid
-	else:
-            self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
+        self.set_ownership()
 
         if kwargs.has_key("quota") and kwargs["quota"] is not None \
                 and int(kwargs["quota"]) < self.domain.quota:
@@ -620,18 +640,7 @@ class Mailbox(DatesAware):
         self.user = user
         if not self.create_dir():
             raise AdminError(_("Failed to initialise mailbox, check permissions"))
-	# If we ever had numerical uid, don't resolve it
-	v_uid = parameters.get_admin("VIRTUAL_UID");
-	if v_uid.isdigit():
-            self.uid = v_uid
-	else:
-            self.uid = pwd.getpwnam(parameters.get_admin("VIRTUAL_UID")).pw_uid
-	# Just the same for gid
-	v_gid = parameters.get_admin("VIRTUAL_GID")
-	if v_gid.isdigit():
-            self.gid = v_gid
-	else:
-            self.gid = pwd.getpwnam(parameters.get_admin("VIRTUAL_GID")).pw_gid
+        self.set_ownership()
         self.quota = self.domain.quota if quota is None else quota
         super(Mailbox, self).save()
 

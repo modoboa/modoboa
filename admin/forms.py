@@ -209,13 +209,15 @@ class ImportDataForm(forms.Form):
         return str(self.cleaned_data["sepcar"])
 
 class AccountFormGeneral(forms.ModelForm):
+    username = forms.CharField(max_length=254)
     role = forms.ChoiceField(
-        choices=[('', ugettext_noop("Choose"))]
+        choices=[('', ugettext_noop("Choose"))],
+        help_text=ugettext_noop("What level of permission this user will have")
         )
 
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name", "role", "is_active")
+        fields = ("first_name", "last_name", "role", "is_active")
 
     def __init__(self, user, *args, **kwargs):
         super(AccountFormGeneral, self).__init__(*args, **kwargs)

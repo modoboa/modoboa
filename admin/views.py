@@ -328,8 +328,11 @@ def newaccount(request, tplname='admin/newaccount.html'):
         if retcode == 2:
             messages.info(request, _("Account created"))
             return ajax_simple_response(dict(status="ok"))
-        ctx.update(steps=cwizard.steps)
-        return ajax_response(request, status="ko", template=tplname, **ctx)
+
+        from modoboa.lib.templatetags.libextras import render_form
+        return ajax_simple_response(dict(
+                status="ko", stepid=data, form=render_form(cwizard.steps[data]["form"])
+                ))
 
     cwizard.create_forms()
     ctx.update(steps=cwizard.steps)

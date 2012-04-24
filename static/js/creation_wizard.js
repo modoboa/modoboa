@@ -1,16 +1,21 @@
 (function($) {
     var Cwizard = function(element, options)  {
-        this.$element = $(element);
-        this.options = $.extend({}, $.fn.cwizard.defaults, options);
-        this.$element.carousel({pause: true});
-        this.$element.carousel("pause");
-        this.setcallbacks();
+        this.initialize(element, options);
     };
 
     Cwizard.prototype = {
         constructor: Cwizard,
 
-        setcallbacks: function() {
+        initialize: function(element, options) {
+            this.$element = $(element);
+            this.options = $.extend({}, $.fn.cwizard.defaults, options);
+            this.$element.carousel({pause: true});
+            this.$element.carousel("pause");
+            this.listen();
+            $('input:text:visible:first').focus();
+        },
+
+        listen: function() {
             $(".next").one("click", $.proxy(this.next, this));
             $(".prev").one("click", $.proxy(this.prev, this));
             $(".submit").one("click", $.proxy(this.submit, this));
@@ -23,6 +28,7 @@
             $.post($form.attr("action"), data, $.proxy(function(resp) {
                 if (resp.status == "ok") {
                     if (!last) {
+                        $('input:text:visible:first').focus();
                         $(".modal-header").find("small").html(resp.title);
                         this.$element.carousel('next');
                     } else {
@@ -31,13 +37,13 @@
                     }
                     return;
                 }
-                if (resp.content) {
-                    $(".modal").html(resp.content);
+                if (resp.stepid != undefined && resp.form != undefined) {
+                    $("#step" + (resp.stepid + 1)).html(resp.form);
                 }
                 if (resp.respmsg) {
                     $(".modal-body").prepend(build_error_alert(resp.respmsg));
                 }
-                this.setcallbacks();
+                this.listen();
             }, this));
         },
 
@@ -56,7 +62,7 @@
             evt.preventDefault();
             this.$element.on('slid', this.update_buttons);
             this.$element.carousel('prev');
-            this.setcallbacks();
+            this.listen();
         },
 
         submit: function(evt) {

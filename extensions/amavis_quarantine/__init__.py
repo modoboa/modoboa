@@ -42,6 +42,9 @@ def load():
     parameters.register_admin("AM_PDP_SOCKET", type="string", 
                               deflt=_("/var/amavis/amavisd.sock"),
                               help=_("Path to the PDP server socket (if unix mode)"))
+    parameters.register_admin("CHECK_REQUESTS_INTERVAL", type="int",
+                              deflt=30,
+                              help=_("Interval between two release requests checks"))
     parameters.register_admin("USER_CAN_RELEASE", type="list_yesno", deflt="no",
                               help=_("Allow users to directly release their messages"))
     parameters.register_admin("SELF_SERVICE", type="list_yesno", deflt="no",
@@ -105,6 +108,7 @@ def extra_static_content(user):
     tpl = Template("""<script type="text/javascript">
 $(document).ready(function() {
     var poller = new Poller("{{ url }}", {
+        interval: {{ interval }},
         success_cb: function(data) {
             var $link = $("#nbrequests");
             if (data.requests > 0) {
@@ -118,7 +122,8 @@ $(document).ready(function() {
 });
 </script>""")
     url = reverse("modoboa.extensions.amavis_quarantine.views.nbrequests")
-    return [tpl.render(Context(dict(url=url)))]
+    interval = int(parameters.get_admin("CHECK_REQUESTS_INTERVAL")) * 1000
+    return [tpl.render(Context(dict(url=url, interval=interval)))]
 
 @events.observe("TopNotifications")
 def display_requests(user):
