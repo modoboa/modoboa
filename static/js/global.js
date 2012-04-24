@@ -206,17 +206,18 @@ function simple_ajax_request(e) {
  * Simple function that redirect ajax requests to the login page if
  * the status code received with a response is equal to 278.
  */
-function ajax_login_redirect() {
-    if (this.status != 278) {
+function ajax_login_redirect(xhr) {
+    if (xhr.status != 278) {
         return;
     }
     var params = "?next=" + window.location.pathname;
 
     window.location.href =
-        this.xhr.getResponseHeader("Location").replace(/\?.*$/, params);
+        xhr.getResponseHeader("Location").replace(/\?.*$/, params);
 }
 
 $(document).ready(function() {
+    $(document).ajaxSuccess(function(e, xhr, settings) { ajax_login_redirect(xhr); });
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
 });

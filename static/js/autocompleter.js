@@ -70,10 +70,13 @@
         },
 
         select_entry: function(evt) {
+            var $link;
             if (evt != undefined) {
                 evt.preventDefault();
+                $link = $(evt.target);
+            } else {
+                $link = this.$menu.find('.active > a');
             }
-            var $link = this.$menu.find('.active > a');
             var curvalue = this.$element.attr("value");
 
             this.$element.attr("value", curvalue.substr(
