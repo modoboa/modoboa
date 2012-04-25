@@ -19,6 +19,28 @@ def infos():
         "url" : "quarantine"
         }
 
+def init():
+    """Init function
+
+    Only run once, when the extension is enabled. We create records
+    for existing mailboxes in order Amavis considers them local.
+    """
+    from modoboa.admin.models import Mailbox
+    from models import Users
+
+    for mb in Mailbox.objects.all():
+
+        try:
+            u = Users.objects.get(email=mailbox.full_address)
+        except Users.DoesNotExist:
+            u = Users()            
+            u.email = mailbox.full_address
+            u.fullname = mailbox.user.fullname
+            u.local = "1"
+            u.priority = 7
+            u.policy_id = 1
+            u.save()
+
 def load():
     parameters.register_admin(
         "MAX_MESSAGES_AGE", type="int", 
