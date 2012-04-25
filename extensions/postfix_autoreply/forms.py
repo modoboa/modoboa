@@ -1,12 +1,14 @@
+# coding: utf-8
 from django import forms
 from models import ARmessage
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 import datetime
 
 class ARmessageForm(forms.ModelForm):
     untildate = forms.DateField(
-        label=_('Until'), required=False,
-        help_text=_("Activate your auto reply until this date")
+        label=ugettext_lazy('Until'), 
+        required=False,
+        help_text=ugettext_lazy("Activate your auto reply until this date")
         )
 
     class Meta:

@@ -1,6 +1,6 @@
 from django import forms
 from modoboa.admin.models import Domain, Mailbox
-from django.utils.translation import ugettext as _, ugettext_noop
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib import parameters
 
@@ -8,11 +8,11 @@ class BadDestination(Exception):
     pass
 
 class ChangePasswordForm(forms.Form):
-    oldpassword = forms.CharField(label=ugettext_noop("Old password"), 
+    oldpassword = forms.CharField(label=ugettext_lazy("Old password"), 
                                   widget=forms.PasswordInput)
-    newpassword = forms.CharField(label=ugettext_noop("New password"), 
+    newpassword = forms.CharField(label=ugettext_lazy("New password"), 
                                   widget=forms.PasswordInput)
-    confirmation = forms.CharField(label=ugettext_noop("Confirmation"), 
+    confirmation = forms.CharField(label=ugettext_lazy("Confirmation"), 
                                    widget=forms.PasswordInput)
 
     def __init__(self, target, *args, **kwargs):
@@ -33,8 +33,8 @@ class ChangePasswordForm(forms.Form):
         return self.cleaned_data["confirmation"]
 
 class ForwardForm(forms.Form):
-    dest = forms.CharField(label=_("Destination(s)"), widget=forms.Textarea)
-    keepcopies = forms.BooleanField(label=_("Keep local copies"), required=False)
+    dest = forms.CharField(label=ugettext_lazy("Destination(s)"), widget=forms.Textarea)
+    keepcopies = forms.BooleanField(label=ugettext_lazy("Keep local copies"), required=False)
 
     def parse_dest(self):
         self.dests = []

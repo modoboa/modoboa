@@ -250,6 +250,11 @@ requires a migration.
    Before executing a schema/data migration, I recommend that you make
    a copy of your existing database.
 
+0.9: global UI refactoring, new *limits* extension and more
+-----------------------------------------------------------
+
+
+
 0.8.8: CSV import feature and minor fixes
 -----------------------------------------
 
