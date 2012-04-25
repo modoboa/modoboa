@@ -29,13 +29,12 @@ def init():
     from models import Users
 
     for mb in Mailbox.objects.all():
-
         try:
-            u = Users.objects.get(email=mailbox.full_address)
+            u = Users.objects.get(email=mb.full_address)
         except Users.DoesNotExist:
             u = Users()            
-            u.email = mailbox.full_address
-            u.fullname = mailbox.user.fullname
+            u.email = mb.full_address
+            u.fullname = mb.user.fullname
             u.local = "1"
             u.priority = 7
             u.policy_id = 1
