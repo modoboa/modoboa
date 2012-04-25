@@ -1,6 +1,6 @@
 from django import template
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _, ugettext_noop
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa import admin
 from modoboa.lib import events
@@ -9,7 +9,7 @@ from modoboa.lib.webutils import static_url, render_actions
 register = template.Library()
 
 genders = {
-    "Enabled" : (ugettext_noop("enabled_m"), ugettext_noop("enabled_f"))
+    "Enabled" : (ugettext_lazy("enabled_m"), ugettext_lazy("enabled_f"))
 }
 
 @register.simple_tag
@@ -166,7 +166,7 @@ def param(app, definition):
     result = """<div class='control-group'>
   <label class="param-label" for="%s">%s</label>
   <div class="param-controls">""" \
-        % (name, definition.has_key("label") and _(definition["label"]) 
+        % (name, definition.has_key("label") and _(definition["label"])
            or definition["name"])
     if definition["type"] in ["string", "int"]:
         result += """
@@ -197,7 +197,7 @@ def param(app, definition):
     if definition.has_key("help"):
         result += """
 <p class="help-block">%s</p>
-""" % definition["help"]
+""" % _(definition["help"])
     result += """
   </div>
 </div>

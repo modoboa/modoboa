@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 11:09+0100\n"
+"POT-Creation-Date: 2012-04-25 14:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,31 +17,41 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:41
-msgid "Delete this message?"
-msgstr ""
-
-#: extensions/amavis_quarantine/static/js/quarantine.js:49
-msgid "Release this message?"
-msgstr ""
-
-#: extensions/amavis_quarantine/static/js/quarantine.js:107
+#: extensions/amavis_quarantine/static/js/quarantine.js:126
 msgid "Release this selection?"
 msgstr ""
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:114
+#: extensions/amavis_quarantine/static/js/quarantine.js:130
 msgid "Delete this selection?"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:148
+#: extensions/amavis_quarantine/static/js/selfservice.js:22
+msgid "Release this message?"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:152
+#: extensions/amavis_quarantine/static/js/selfservice.js:26
+msgid "Delete this message?"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:169
+msgid "View full headers"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:174
+msgid "Hide full headers"
 msgstr ""
 
 #: extensions/sievefilters/static/js/lib.js:14
 msgid "Remove this filter?"
 msgstr ""
 
-#: extensions/sievefilters/static/js/lib.js:116
+#: extensions/sievefilters/static/js/lib.js:117
 msgid "Save changes?"
 msgstr ""
 
-#: extensions/sievefilters/static/js/lib.js:143
+#: extensions/sievefilters/static/js/lib.js:144
 msgid "Remove filters set?"
 msgstr ""
 
@@ -50,50 +60,38 @@ msgid "Activate this filters set?"
 msgstr ""
 
 #: extensions/sievefilters/static/js/lib.js:169
+#: extensions/sievefilters/static/js/lib.js:224
 msgid "active"
 msgstr ""
 
-#: extensions/webmail/static/js/fdmenu.js:31
-msgid "Edit folder"
+#: extensions/stats/static/js/stats.js:28
+msgid "Search a domain"
 msgstr ""
 
-#: extensions/webmail/static/js/fdmenu.js:63
-msgid "Folder deleted"
+#: extensions/webmail/static/js/webmail.js:499
+msgid "Remove the selected mailbox?"
 msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:95
-msgid "Sending..."
+#: extensions/webmail/static/js/webmail.js:513
+msgid "Mailbox removed"
 msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:229
-#: extensions/webmail/static/js/webmail.js:254 static/js/anchor_nav.js:215
-msgid "Done"
+#: static/js/admin.js:17
+msgid "No domain administrator defined"
 msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:243
-msgid "Waiting..."
+#: static/js/confirmation.js:45
+msgid "Cancel"
 msgstr ""
 
-#: static/js/anchor_nav.js:10
+#: static/js/confirmation.js:84 static/js/history.js:229
+msgid "Internal Error"
+msgstr ""
+
+#: static/js/history.js:10
 msgid "Loading..."
 msgstr ""
 
-#: static/js/common.js:17
-msgid "Message sent"
-msgstr ""
-
-#: static/js/common.js:188
+#: static/js/searchbar.js:20
 msgid "Search..."
-msgstr ""
-
-#: static/js/domains.js:61
-msgid "Remove this selection?"
-msgstr ""
-
-#: static/js/preferences.js:14
-msgid "Preferences saved"
-msgstr ""
-
-#: static/js/settings.js:14
-msgid "Parameters saved"
 msgstr ""

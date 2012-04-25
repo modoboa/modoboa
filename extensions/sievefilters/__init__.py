@@ -1,5 +1,5 @@
 # coding: utf-8
-from django.utils.translation import ugettext_noop as _, ugettext
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
@@ -12,24 +12,24 @@ def load():
 
     parameters.register_admin("SERVER", type="string", 
                               deflt="127.0.0.1",
-                              help=_("Address of your MANAGESIEVE server"))
+                              help=ugettext_lazy("Address of your MANAGESIEVE server"))
     parameters.register_admin("PORT", type="int", deflt="2000",
-                              help=_("Listening port of your MANAGESIEVE server"))
+                              help=ugettext_lazy("Listening port of your MANAGESIEVE server"))
     parameters.register_admin("STARTTLS", type="list_yesno", deflt="no",
-                              help=_("Use the STARTTLS extension"))
+                              help=ugettext_lazy("Use the STARTTLS extension"))
 
     values = [('AUTO', 'auto')]
     for m in SUPPORTED_AUTH_MECHS:
         values += [(m, m.lower())]
     parameters.register_admin("AUTHENTICATION_MECH", type="list", deflt="auto",
                               values=values,
-                              help=_("Prefered authentication mechanism"))
+                              help=ugettext_lazy("Prefered authentication mechanism"))
 
     # User parameters
     parameters.register_user("EDITOR_MODE", type="list", deflt="raw",
-                             label=_("Editor mode"),
+                             label=ugettext_lazy("Editor mode"),
                              values=[("raw", "raw"), ("gui", "simplified")],
-                             help=_("Select the mode you want the editor to work in"))
+                             help=ugettext_lazy("Select the mode you want the editor to work in"))
     
 def destroy():
     events.unregister("UserMenuDisplay", menu)
@@ -39,7 +39,7 @@ def infos():
     return {
         "name" : "Sieve filters",
         "version" : "1.0",
-        "description" : ugettext("Plugin to easily create server-side filters"),
+        "description" : _("Plugin to easily create server-side filters"),
         "url" : "sfilters"
         }
 
@@ -53,7 +53,7 @@ def menu(target, user):
         return []
     return [
         {"name" : "sievefilters",
-         "label" : ugettext("Message filters"),
+         "label" : _("Message filters"),
          "url" : reverse(views.index),
          "img" : "icon-check"}
         ]

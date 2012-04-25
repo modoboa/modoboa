@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 11:09+0100\n"
+"POT-Creation-Date: 2012-04-25 14:47+0200\n"
 "PO-Revision-Date: 2012-01-10 22:49+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
@@ -17,31 +17,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:41
-msgid "Delete this message?"
-msgstr "Diese Nachricht löschen?"
-
-#: extensions/amavis_quarantine/static/js/quarantine.js:49
-msgid "Release this message?"
-msgstr "Diese Nachricht freilassen?"
-
-#: extensions/amavis_quarantine/static/js/quarantine.js:107
+#: extensions/amavis_quarantine/static/js/quarantine.js:126
 msgid "Release this selection?"
 msgstr "Diese Auswahl freilassen?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:114
+#: extensions/amavis_quarantine/static/js/quarantine.js:130
 msgid "Delete this selection?"
 msgstr "Diese Auswahl löschen?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:148
+#: extensions/amavis_quarantine/static/js/selfservice.js:22
+msgid "Release this message?"
+msgstr "Diese Nachricht freilassen?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:152
+#: extensions/amavis_quarantine/static/js/selfservice.js:26
+msgid "Delete this message?"
+msgstr "Diese Nachricht löschen?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:169
+msgid "View full headers"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:174
+msgid "Hide full headers"
+msgstr ""
 
 #: extensions/sievefilters/static/js/lib.js:14
 msgid "Remove this filter?"
 msgstr "Diesen Filter entfernen?"
 
-#: extensions/sievefilters/static/js/lib.js:116
+#: extensions/sievefilters/static/js/lib.js:117
 msgid "Save changes?"
 msgstr "Änderungen speichern?"
 
-#: extensions/sievefilters/static/js/lib.js:143
+#: extensions/sievefilters/static/js/lib.js:144
 msgid "Remove filters set?"
 msgstr "Diesen Filter entfernen?"
 
@@ -50,52 +60,63 @@ msgid "Activate this filters set?"
 msgstr "Diesen Filter aktivieren?"
 
 #: extensions/sievefilters/static/js/lib.js:169
+#: extensions/sievefilters/static/js/lib.js:224
 msgid "active"
 msgstr "aktiv"
 
-#: extensions/webmail/static/js/fdmenu.js:31
-msgid "Edit folder"
-msgstr "Ordner bearbeiten"
+#: extensions/stats/static/js/stats.js:28
+msgid "Search a domain"
+msgstr ""
 
-#: extensions/webmail/static/js/fdmenu.js:63
-msgid "Folder deleted"
-msgstr "Ordner gelöscht"
+#: extensions/webmail/static/js/webmail.js:499
+#, fuzzy
+msgid "Remove the selected mailbox?"
+msgstr "Diese Auswahl entfernen?"
 
-#: extensions/webmail/static/js/webmail.js:95
-msgid "Sending..."
-msgstr "Sende …"
+#: extensions/webmail/static/js/webmail.js:513
+msgid "Mailbox removed"
+msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:229
-#: extensions/webmail/static/js/webmail.js:254
-#: static/js/anchor_nav.js:215
-msgid "Done"
-msgstr "Abgeschlossen"
+#: static/js/admin.js:17
+msgid "No domain administrator defined"
+msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:243
-msgid "Waiting..."
-msgstr "Warte..."
+#: static/js/confirmation.js:45
+msgid "Cancel"
+msgstr ""
 
-#: static/js/anchor_nav.js:10
+#: static/js/confirmation.js:84 static/js/history.js:229
+msgid "Internal Error"
+msgstr ""
+
+#: static/js/history.js:10
 msgid "Loading..."
 msgstr "Lade..."
 
-#: static/js/common.js:17
-msgid "Message sent"
-msgstr "Nachrichten gesendet"
-
-#: static/js/common.js:188
+#: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Suchen..."
 
-#: static/js/domains.js:61
-msgid "Remove this selection?"
-msgstr "Diese Auswahl entfernen?"
+#~ msgid "Edit folder"
+#~ msgstr "Ordner bearbeiten"
 
-#: static/js/preferences.js:14
-msgid "Preferences saved"
-msgstr "Einstellungen gespeichert"
+#~ msgid "Folder deleted"
+#~ msgstr "Ordner gelöscht"
 
-#: static/js/settings.js:14
-msgid "Parameters saved"
-msgstr "Parameter gespeichert"
+#~ msgid "Sending..."
+#~ msgstr "Sende …"
 
+#~ msgid "Done"
+#~ msgstr "Abgeschlossen"
+
+#~ msgid "Waiting..."
+#~ msgstr "Warte..."
+
+#~ msgid "Message sent"
+#~ msgstr "Nachrichten gesendet"
+
+#~ msgid "Preferences saved"
+#~ msgstr "Einstellungen gespeichert"
+
+#~ msgid "Parameters saved"
+#~ msgstr "Parameter gespeichert"

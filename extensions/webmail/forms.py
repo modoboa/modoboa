@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import ugettext_noop as _
+from django.utils.translation import ugettext_lazy as _
 
 class ComposeMailForm(forms.Form):
     from_ = forms.CharField(label=_("From"))

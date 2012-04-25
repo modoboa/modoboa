@@ -22,8 +22,10 @@ def index(request):
 def changepassword(request, tplname="common/generic_modal_form.html"):
     res = events.raiseQueryEvent("PasswordChange", request.user)
     if True in res:
-        ctx = dict(error=_("Password change is disabled for this user"))
-        return _render_error(request, user_context=ctx)
+        from modoboa.lib.exceptions import ModoboaException
+        raise ModoboaException(_("Password change is disabled for this user"))
+        # ctx = dict(error=_("Password change is disabled for this user"))
+        # return _render_error(request, user_context=ctx)
 
     ctx = dict(
         title=_("Change password"),

@@ -8,7 +8,7 @@ functionality into Postfix.
 """
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_noop as _, ugettext
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
 from models import *
@@ -17,7 +17,7 @@ def infos():
     return {
         "name" : "Postfix autoreply",
         "version" : "1.0",
-        "description" : ugettext("Auto-reply (vacation) functionality using Postfix"),
+        "description" : _("Auto-reply (vacation) functionality using Postfix"),
         "url" : "postfix_autoreply"
         }
 
@@ -42,7 +42,7 @@ def load():
     parameters.register_admin(
         "AUTOREPLIES_TIMEOUT", 
         type="int", deflt=86400,
-        help=_("Timeout in seconds between two auto-replies to the same recipient")
+        help=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient")
         )
 
 def destroy():
@@ -65,7 +65,7 @@ def menu(target, user):
     return [
         {"name" : "autoreply",
          "url" : reverse(views.autoreply),
-         "label" : ugettext("Auto-reply message"),
+         "label" : ugettext_lazy("Auto-reply message"),
          "modal": True,
          "modalcb" : "arform_cb"}
         ]

@@ -8,7 +8,7 @@ import email
 import lxml
 from django.core.files.uploadhandler import FileUploadHandler, StopUpload, SkipFile
 from django.http import HttpResponse
-from django.utils.translation import ugettext as _, ugettext_noop as __
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf import settings
 from modoboa.lib import u2u_decode, tables, imap_utf7, parameters
 from modoboa.lib.webutils import static_url, size2integer
@@ -30,9 +30,9 @@ class WMtable(tables.Table):
         )
     flags = tables.ImgColumn("flags", width="4%")
     withatts = tables.ImgColumn("withatts", width="2%")
-    subject = tables.Column("subject", label=__("Subject"), width="50%", limit=60)
-    from_ = tables.Column("from", width="20%", label=__("From"), limit=30)
-    date = tables.Column("date", width="10%", label=__("Date"))
+    subject = tables.Column("subject", label=ugettext_lazy("Subject"), width="50%", limit=60)
+    from_ = tables.Column("from", width="20%", label=ugettext_lazy("From"), limit=30)
+    date = tables.Column("date", width="10%", label=ugettext_lazy("Date"))
 
     cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
 

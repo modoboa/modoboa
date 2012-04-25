@@ -2,9 +2,8 @@
 """
 Amavis quarantine manager (SQL based)
 
-
 """
-from django.utils.translation import ugettext_noop as _, ugettext
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from django.template import Template, Context
 from modoboa.lib import events, parameters
@@ -15,7 +14,7 @@ def infos():
     return {
         "name" : "Amavis quarantine",
         "version" : "1.0",
-        "description" : ugettext("Simple amavis quarantine management tool"),
+        "description" : _("Simple amavis quarantine management tool"),
         "url" : "quarantine"
         }
 
@@ -53,28 +52,28 @@ def load():
     parameters.register_admin("AM_PDP_MODE", type="list", 
                               deflt="unix",
                               values=[("inet", "inet"), ("unix", "unix")],
-                              help=_("Mode used to access the PDP server"))
+                              help=ugettext_lazy("Mode used to access the PDP server"))
     parameters.register_admin("AM_PDP_HOST", type="string", 
                               deflt="localhost", 
-                              help=_("PDP server address (if inet mode)"))
+                              help=ugettext_lazy("PDP server address (if inet mode)"))
     parameters.register_admin("AM_PDP_PORT", type="int", 
                               deflt=9998, 
-                              help=_("PDP server port (if inet mode)"))
+                              help=ugettext_lazy("PDP server port (if inet mode)"))
     parameters.register_admin("AM_PDP_SOCKET", type="string", 
-                              deflt=_("/var/amavis/amavisd.sock"),
-                              help=_("Path to the PDP server socket (if unix mode)"))
+                              deflt="/var/amavis/amavisd.sock",
+                              help=ugettext_lazy("Path to the PDP server socket (if unix mode)"))
     parameters.register_admin("CHECK_REQUESTS_INTERVAL", type="int",
                               deflt=30,
-                              help=_("Interval between two release requests checks"))
+                              help=ugettext_lazy("Interval between two release requests checks"))
     parameters.register_admin("USER_CAN_RELEASE", type="list_yesno", deflt="no",
-                              help=_("Allow users to directly release their messages"))
+                              help=ugettext_lazy("Allow users to directly release their messages"))
     parameters.register_admin("SELF_SERVICE", type="list_yesno", deflt="no",
-                              help=_("Activate the 'self-service' mode"))
+                              help=ugettext_lazy("Activate the 'self-service' mode"))
 
     parameters.register_user(
         "MESSAGES_PER_PAGE", type="int", deflt=40,
         label="Number of displayed emails per page",
-        help=_("Sets the maximum number of messages displayed in a page")
+        help=ugettext_lazy("Sets the maximum number of messages displayed in a page")
         )
 
 def destroy():
@@ -88,9 +87,8 @@ def menu(target, user):
     if target == "top_menu":
         return [
             {"name" : "quarantine",
-             "label" : ugettext("Quarantine"),
-             "url" : reverse('modoboa.extensions.amavis_quarantine.views.index'),
-             "img" : static_url("pics/quarantine.png")}
+             "label" : _("Quarantine"),
+             "url" : reverse('modoboa.extensions.amavis_quarantine.views.index')}
             ]
     return []
 
@@ -133,7 +131,7 @@ $(document).ready(function() {
         success_cb: function(data) {
             var $link = $("#nbrequests");
             if (data.requests > 0) {
-                $link.html(data.requests + " " + gettext("pending requests"));
+                $link.html(data.requests + " " + "{{ text }}");
                 $link.parent().removeClass('hidden');
             } else {
                 $link.parent().addClass('hidden');
@@ -144,7 +142,7 @@ $(document).ready(function() {
 </script>""")
     url = reverse("modoboa.extensions.amavis_quarantine.views.nbrequests")
     interval = int(parameters.get_admin("CHECK_REQUESTS_INTERVAL")) * 1000
-    return [tpl.render(Context(dict(url=url, interval=interval)))]
+    return [tpl.render(Context(dict(url=url, interval=interval, text=_("pending requests"))))]
 
 @events.observe("TopNotifications")
 def display_requests(user):

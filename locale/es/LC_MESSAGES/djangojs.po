@@ -1,49 +1,59 @@
 # Modoboa spanish translation.
 # Copyright (C) 2012
 # This file is distributed under the same license as the Modoboa package.
-# 
+#
 # Translators:
 # Pedro Gracia <lasarux@neuroomante.com>, 2011.
 # Pedro Gracia <pedro.gracia@impulzia.com>, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.8\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
-"POT-Creation-Date: 2012-01-10 11:09+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-25 14:47+0200\n"
 "PO-Revision-Date: 2012-01-10 10:34+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: ES <LL@li.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:41
-msgid "Delete this message?"
-msgstr "¿Eliminar este mensaje?"
-
-#: extensions/amavis_quarantine/static/js/quarantine.js:49
-msgid "Release this message?"
-msgstr "¿Publicar este mensaje?"
-
-#: extensions/amavis_quarantine/static/js/quarantine.js:107
+#: extensions/amavis_quarantine/static/js/quarantine.js:126
 msgid "Release this selection?"
 msgstr "¿Publicar esta selección?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:114
+#: extensions/amavis_quarantine/static/js/quarantine.js:130
 msgid "Delete this selection?"
 msgstr "¿Eliminar esta selección?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:148
+#: extensions/amavis_quarantine/static/js/selfservice.js:22
+msgid "Release this message?"
+msgstr "¿Publicar este mensaje?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:152
+#: extensions/amavis_quarantine/static/js/selfservice.js:26
+msgid "Delete this message?"
+msgstr "¿Eliminar este mensaje?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:169
+msgid "View full headers"
+msgstr ""
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:174
+msgid "Hide full headers"
+msgstr ""
 
 #: extensions/sievefilters/static/js/lib.js:14
 msgid "Remove this filter?"
 msgstr "¿Eliminar este filtro?"
 
-#: extensions/sievefilters/static/js/lib.js:116
+#: extensions/sievefilters/static/js/lib.js:117
 msgid "Save changes?"
 msgstr "¿Guardar cambios?"
 
-#: extensions/sievefilters/static/js/lib.js:143
+#: extensions/sievefilters/static/js/lib.js:144
 msgid "Remove filters set?"
 msgstr "¿Eliminar este conjunto de filtros?"
 
@@ -52,52 +62,60 @@ msgid "Activate this filters set?"
 msgstr "¿Activar este conjunto de filtros?"
 
 #: extensions/sievefilters/static/js/lib.js:169
+#: extensions/sievefilters/static/js/lib.js:224
 msgid "active"
 msgstr "Activar"
 
-#: extensions/webmail/static/js/fdmenu.js:31
-msgid "Edit folder"
-msgstr "Editar carpeta"
+#: extensions/stats/static/js/stats.js:28
+msgid "Search a domain"
+msgstr ""
 
-#: extensions/webmail/static/js/fdmenu.js:63
-msgid "Folder deleted"
-msgstr "Carpeta eliminada"
+#: extensions/webmail/static/js/webmail.js:499
+#, fuzzy
+msgid "Remove the selected mailbox?"
+msgstr "¿Publicar esta selección?"
 
-#: extensions/webmail/static/js/webmail.js:95
-msgid "Sending..."
-msgstr "Enviando..."
+#: extensions/webmail/static/js/webmail.js:513
+msgid "Mailbox removed"
+msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:229
-#: extensions/webmail/static/js/webmail.js:254 static/js/anchor_nav.js:215
-msgid "Done"
-msgstr "Hecho"
+#: static/js/admin.js:17
+msgid "No domain administrator defined"
+msgstr ""
 
-#: extensions/webmail/static/js/webmail.js:243
-msgid "Waiting..."
-msgstr "Esperando..."
+#: static/js/confirmation.js:45
+msgid "Cancel"
+msgstr ""
 
-#: static/js/anchor_nav.js:10
+#: static/js/confirmation.js:84 static/js/history.js:229
+msgid "Internal Error"
+msgstr ""
+
+#: static/js/history.js:10
 msgid "Loading..."
 msgstr "Cargando..."
 
-#: static/js/common.js:17
-msgid "Message sent"
-msgstr ""
-
-#: static/js/common.js:188
+#: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Buscar..."
 
-#: static/js/domains.js:61
-msgid "Remove this selection?"
-msgstr ""
+#~ msgid "Edit folder"
+#~ msgstr "Editar carpeta"
 
-#: static/js/preferences.js:14
-msgid "Preferences saved"
-msgstr "Preferencias guardas"
+#~ msgid "Folder deleted"
+#~ msgstr "Carpeta eliminada"
 
-#: static/js/settings.js:14
-msgid "Parameters saved"
-msgstr "Parámetros guardados"
+#~ msgid "Sending..."
+#~ msgstr "Enviando..."
 
+#~ msgid "Done"
+#~ msgstr "Hecho"
 
+#~ msgid "Waiting..."
+#~ msgstr "Esperando..."
+
+#~ msgid "Preferences saved"
+#~ msgstr "Preferencias guardas"
+
+#~ msgid "Parameters saved"
+#~ msgstr "Parámetros guardados"

@@ -3,7 +3,7 @@ from django.db import models, IntegrityError
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User as DUser, UserManager, Group
-from django.utils.translation import ugettext as _, ugettext_noop
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils.crypto import constant_time_compare
 from django.conf import settings
 from modoboa.lib import parameters, events
@@ -375,11 +375,11 @@ class DatesAware(models.Model):
         return self.dates.last_modification
 
 class Domain(DatesAware):
-    name = models.CharField(ugettext_noop('name'), max_length=100, unique=True,
-                            help_text=ugettext_noop("The domain name"))
-    quota = models.IntegerField(help_text=ugettext_noop("Default quota in MB applied to mailboxes"))
-    enabled = models.BooleanField(ugettext_noop('enabled'),
-                                  help_text=ugettext_noop("Check to activate this domain"))
+    name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
+                            help_text=ugettext_lazy("The domain name"))
+    quota = models.IntegerField(help_text=ugettext_lazy("Default quota in MB applied to mailboxes"))
+    enabled = models.BooleanField(ugettext_lazy('enabled'),
+                                  help_text=ugettext_lazy("Check to activate this domain"))
     owners = generic.GenericRelation(ObjectAccess)
 
     class Meta:
@@ -452,13 +452,13 @@ class Domain(DatesAware):
         self.save()
 
 class DomainAlias(DatesAware):
-    name = models.CharField(ugettext_noop("name"), max_length=100, unique=True,
-                            help_text=ugettext_noop("The alias name"))
-    target = models.ForeignKey(Domain, verbose_name=ugettext_noop('target'),
-                               help_text=ugettext_noop("The domain this alias points to"))
+    name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
+                            help_text=ugettext_lazy("The alias name"))
+    target = models.ForeignKey(Domain, verbose_name=ugettext_lazy('target'),
+                               help_text=ugettext_lazy("The domain this alias points to"))
     enabled = models.BooleanField(
-        ugettext_noop('enabled'),
-        help_text=ugettext_noop("Check to activate this alias")
+        ugettext_lazy('enabled'),
+        help_text=ugettext_lazy("Check to activate this alias")
         )
 
     class Meta:
@@ -471,8 +471,8 @@ class DomainAlias(DatesAware):
 
 class Mailbox(DatesAware):
     address = models.CharField(
-        ugettext_noop('address'), max_length=100,
-        help_text=ugettext_noop("Mailbox address (without the @domain.tld part)")
+        ugettext_lazy('address'), max_length=100,
+        help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
         )
     quota = models.IntegerField()
     uid = models.IntegerField()
@@ -684,17 +684,17 @@ class Mailbox(DatesAware):
 
 class Alias(DatesAware):
     address = models.CharField(
-        ugettext_noop('address'), max_length=254,
-        help_text=ugettext_noop("The alias address (without the domain part). For a 'catch-all' address, just enter an * character.")
+        ugettext_lazy('address'), max_length=254,
+        help_text=ugettext_lazy("The alias address (without the domain part). For a 'catch-all' address, just enter an * character.")
         )
     domain = models.ForeignKey(Domain)
     mboxes = models.ManyToManyField(
-        Mailbox, verbose_name=ugettext_noop('mailboxes'),
-        help_text=ugettext_noop("The mailboxes this alias points to")
+        Mailbox, verbose_name=ugettext_lazy('mailboxes'),
+        help_text=ugettext_lazy("The mailboxes this alias points to")
         )
     extmboxes = models.TextField(blank=True)
-    enabled = models.BooleanField(ugettext_noop('enabled'),
-                                  help_text=ugettext_noop("Check to activate this alias"))
+    enabled = models.BooleanField(ugettext_lazy('enabled'),
+                                  help_text=ugettext_lazy("Check to activate this alias"))
 
     class Meta:
         permissions = (
@@ -779,8 +779,8 @@ class Alias(DatesAware):
 class Extension(models.Model):
     name = models.CharField(max_length=150)
     enabled = models.BooleanField(
-        ugettext_noop('enabled'),
-        help_text=ugettext_noop("Check to enable this extension")
+        ugettext_lazy('enabled'),
+        help_text=ugettext_lazy("Check to enable this extension")
         )
 
     def init(self):

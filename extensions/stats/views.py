@@ -1,5 +1,5 @@
 # coding: utf-8
-from django.utils.translation import ugettext as _, ugettext_noop
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.webutils import _render, _render_to_string, ajax_simple_response
 from modoboa.admin.models import Domain, Mailbox
 from django.contrib.auth.decorators \
@@ -8,14 +8,14 @@ from modoboa.extensions.stats.grapher import *
 from modoboa.lib.exceptions import *
 
 graph_types = ['AVERAGE', 'MAX']
-graph_list = [{"name" : "traffic", "label" : ugettext_noop("Average normal traffic")},
-              {"name" : "badtraffic", "label" : ugettext_noop("Average bad traffic")},
-              {"name" : "size", "label" : ugettext_noop("Average normal traffic size")}]
-periods = [{"name" : "day", "label" : ugettext_noop("Day")},
-           {"name" : "week", "label" : ugettext_noop("Week")},
-           {"name" : "month", "label" : ugettext_noop("Month")},
-           {"name" : "year", "label" : ugettext_noop("Year")},
-           {"name" : "custom", "label" : ugettext_noop("Custom")}]
+graph_list = [{"name" : "traffic", "label" : ugettext_lazy("Average normal traffic")},
+              {"name" : "badtraffic", "label" : ugettext_lazy("Average bad traffic")},
+              {"name" : "size", "label" : ugettext_lazy("Average normal traffic size")}]
+periods = [{"name" : "day", "label" : ugettext_lazy("Day")},
+           {"name" : "week", "label" : ugettext_lazy("Week")},
+           {"name" : "month", "label" : ugettext_lazy("Month")},
+           {"name" : "year", "label" : ugettext_lazy("Year")},
+           {"name" : "custom", "label" : ugettext_lazy("Custom")}]
 
 @login_required
 @permission_required("admin.view_mailboxes")

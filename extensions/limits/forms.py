@@ -1,24 +1,24 @@
 # coding: utf-8
 
 from django import forms
-from django.utils.translation import ugettext_noop as _
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User, Group
 from models import *
 from lib import *
 
 class ResourcePoolForm(forms.Form):
     domain_admins_limit = forms.IntegerField(
-        ugettext_noop("Max domain admins"),
-        help_text=ugettext_noop("Maximum number of domain administrators that can be created by this user")
+        label=ugettext_lazy("Domain admins"),
+        help_text=ugettext_lazy("Maximum number of domain administrators this user can create")
         )
-    domains_limit = forms.IntegerField(ugettext_noop("Max domains"),
-        help_text=ugettext_noop("Maximum number of domains that can be created by this user"))
-    domain_aliases_limit = forms.IntegerField(ugettext_noop("Max domain aliases"),
-        help_text=ugettext_noop("Maximum number of domain aliases that can be created by this user"))
-    mailboxes_limit = forms.IntegerField(ugettext_noop("Max mailboxes"),
-        help_text=ugettext_noop("Maximum number of mailboxes that can be created by this user"))
-    mailbox_aliases_limit = forms.IntegerField(ugettext_noop("Max mailbox aliases"),
-        help_text=ugettext_noop("Maximum number of mailbox aliases that can be created by this user"))
+    domains_limit = forms.IntegerField(label=ugettext_lazy("Domains"),
+        help_text=ugettext_lazy("Maximum number of domains this user can create"))
+    domain_aliases_limit = forms.IntegerField(label=ugettext_lazy("Domain aliases"),
+        help_text=ugettext_lazy("Maximum number of domain aliases this user can create"))
+    mailboxes_limit = forms.IntegerField(label=ugettext_lazy("Mailboxes"),
+        help_text=ugettext_lazy("Maximum number of mailboxes this user can create"))
+    mailbox_aliases_limit = forms.IntegerField(label=ugettext_lazy("Mailbox aliases"),
+        help_text=ugettext_lazy("Maximum number of mailbox aliases this user can create"))
 
     def __init__(self, *args, **kwargs):
         if kwargs.has_key("instance"):
@@ -29,6 +29,7 @@ class ResourcePoolForm(forms.Form):
             if self.account.group != "Resellers":
                 del self.fields["domain_admins_limit"]
                 del self.fields["domains_limit"]
+                del self.fields["domain_aliases_limit"]
             self.load_from_user(self.account)
 
     def check_limit_value(self, lname):
@@ -57,7 +58,7 @@ class ResourcePoolForm(forms.Form):
     def allocate_from_pool(self, limit, pool):
         ol = pool.get_limit(limit.name)
         if ol.maxvalue == -2:
-            raise BadLimitValue(_("Your pool is not initialized yet"))
+            raise BadLimitValue(_("Your resources are not initialized yet"))
         newvalue = self.cleaned_data[limit.name]
         if newvalue == -1 and ol.maxvalue != -1:
             raise BadLimitValue(_("You're not allowed to define unlimited values"))

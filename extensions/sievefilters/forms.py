@@ -1,6 +1,6 @@
 from django import forms
 from django.http import QueryDict
-from django.utils.translation import ugettext as _, ugettext_noop
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.forms.widgets import RadioFieldRenderer, RadioSelect, RadioInput
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
@@ -11,7 +11,7 @@ class FiltersSetForm(forms.Form):
     name = forms.CharField()
     active = forms.BooleanField(label=gender("Active", "m"), required=False, 
                                 initial=False,
-                                help_text=ugettext_noop("Check to activate this filters set"))
+                                help_text=ugettext_lazy("Check to activate this filters set"))
 
 class CustomRadioInput(RadioInput):
     def __unicode__(self):

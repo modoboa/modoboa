@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_noop as _
+from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url

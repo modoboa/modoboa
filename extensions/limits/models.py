@@ -2,15 +2,15 @@
 
 from django.db import models
 from django.contrib.contenttypes import generic
-from django.utils.translation import ugettext as _, ugettext_noop
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.admin.models import User
 
 limits_tpl = [
-    ("domain_admins_limit", ugettext_noop("Domain admins")),
-    ("domains_limit", ugettext_noop("Domains")),
-    ("domain_aliases_limit", ugettext_noop("Domain aliases")),
-    ("mailboxes_limit", ugettext_noop("Mailboxes")),
-    ("mailbox_aliases_limit", ugettext_noop("Mailbox aliases"))
+    ("domain_admins_limit", ugettext_lazy("Domain admins")),
+    ("domains_limit", ugettext_lazy("Domains")),
+    ("domain_aliases_limit", ugettext_lazy("Domain aliases")),
+    ("mailboxes_limit", ugettext_lazy("Mailboxes")),
+    ("mailbox_aliases_limit", ugettext_lazy("Mailbox aliases"))
     ]
 
 class LimitsPool(models.Model):

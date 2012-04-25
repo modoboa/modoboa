@@ -20,7 +20,7 @@ class UnsifficientResource(ModoboaException):
         self.limit = limit
 
     def __str__(self):
-        return _("Not enough resource into your pool")
+        return _("Not enough resources")
 
 class BadLimitValue(ModoboaException):
     pass

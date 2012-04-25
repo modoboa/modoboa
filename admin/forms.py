@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.models import Group
 from modoboa.admin.models import *
-from django.utils.translation import ugettext as _, ugettext_noop
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
 from modoboa.admin.templatetags.admin_extras import gender
 from modoboa.lib.emailutils import split_mailbox
@@ -12,9 +12,9 @@ from modoboa.lib.permissions import *
 
 class DomainForm(forms.ModelForm, DynamicForm):
     aliases = DomainNameField(
-        label=ugettext_noop("Alias(es)"), 
+        label=ugettext_lazy("Alias(es)"), 
         required=False,
-        help_text=ugettext_noop("Alias(es) of this domain")
+        help_text=ugettext_lazy("Alias(es) of this domain")
         )
 
     class Meta:
@@ -102,12 +102,12 @@ class DomainForm(forms.ModelForm, DynamicForm):
 
 class DlistForm(forms.ModelForm, DynamicForm):
     email = forms.EmailField(
-        label=ugettext_noop("Email address"),
-        help_text=ugettext_noop("")
+        label=ugettext_lazy("Email address"),
+        help_text=ugettext_lazy("The distribution list address")
         )
     recipients = forms.EmailField(
-        label=ugettext_noop("Recipients"), required=False,
-        help_text=ugettext_noop("Mailbox(es) this alias will point to")
+        label=ugettext_lazy("Recipients"), required=False,
+        help_text=ugettext_lazy("Mailbox(es) this alias will point to")
         )
 
     class Meta:
@@ -209,10 +209,10 @@ class ImportDataForm(forms.Form):
         return str(self.cleaned_data["sepcar"])
 
 class AccountFormGeneral(forms.ModelForm):
-    username = forms.CharField(max_length=254)
+    username = forms.CharField(label=ugettext_lazy("Username"), max_length=254)
     role = forms.ChoiceField(
-        choices=[('', ugettext_noop("Choose"))],
-        help_text=ugettext_noop("What level of permission this user will have")
+        choices=[('', ugettext_lazy("Choose"))],
+        help_text=ugettext_lazy("What level of permission this user will have")
         )
 
     class Meta:
@@ -229,7 +229,7 @@ class AccountFormGeneral(forms.ModelForm):
             return
 
         self.fields["role"].choices = \
-            [('', ugettext_noop("Choose"))] + get_account_roles(user)
+            [('', ugettext_lazy("Choose"))] + get_account_roles(user)
         if kwargs.has_key("instance"):
             u = kwargs["instance"]
             if u.is_superuser:
@@ -263,9 +263,9 @@ class AccountFormGeneral(forms.ModelForm):
 class AccountFormGeneralPwd(AccountFormGeneral):
     password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
     password2 = forms.CharField(
-        label=ugettext_noop("Confirmation"), 
+        label=ugettext_lazy("Confirmation"), 
         widget=forms.PasswordInput,
-        help_text=ugettext_noop("Enter the same password as above, for verification.")
+        help_text=ugettext_lazy("Enter the same password as above, for verification.")
         )
 
     class Meta:
@@ -295,9 +295,9 @@ class AccountFormMail(forms.Form, DynamicForm):
     email = forms.EmailField(label=_("E-mail"), required=False)
     quota = forms.IntegerField(label=_("Quota"), required=False)
     aliases = forms.EmailField(
-        label=ugettext_noop("Alias(es)"), 
+        label=ugettext_lazy("Alias(es)"), 
         required=False,
-        help_text=ugettext_noop("Alias(es) of this mailbox")
+        help_text=ugettext_lazy("Alias(es) of this mailbox")
         )
 
     def __init__(self, *args, **kwargs):
@@ -385,9 +385,9 @@ class AccountFormMail(forms.Form, DynamicForm):
 
 class AccountPermissionsForm(forms.Form, DynamicForm):
     domains = DomainNameField(
-        label=ugettext_noop("Domain(s)"), 
+        label=ugettext_lazy("Domain(s)"), 
         required=False,
-        help_text=ugettext_noop("Domain(s) that user administrates")
+        help_text=ugettext_lazy("Domain(s) that user administrates")
         )
 
     def __init__(self, *args, **kwargs):

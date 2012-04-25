@@ -8,7 +8,7 @@ sent, received, bounced, rejected
 
 """
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_noop as _, ugettext
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf.urls.defaults import *
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
@@ -17,23 +17,23 @@ def infos():
     return {
         "name" : "Statistics",
         "version" : "1.0",
-        "description" : ugettext("Graphical statistics about emails traffic using RRDtool"),
+        "description" : _("Graphical statistics about emails traffic using RRDtool"),
         "url" : "stats"
         }
 
 def load():
     parameters.register_admin("LOGFILE", type="string", 
                               deflt="/var/log/mail.log",
-                              help=_("Path to log file used to collect statistics"))
+                              help=ugettext_lazy("Path to log file used to collect statistics"))
     parameters.register_admin("RRD_ROOTDIR", type="string", 
                               deflt="/tmp/modoboa",
-                              help=_("Path to directory where RRD files are stored"))
+                              help=ugettext_lazy("Path to directory where RRD files are stored"))
     parameters.register_admin("IMG_ROOTDIR", type="string", 
                               deflt="/tmp/modoboa",
-                              help=_("Path to directory where PNG files are stored"))
+                              help=ugettext_lazy("Path to directory where PNG files are stored"))
     parameters.register_admin("GRAPHS_LOCATION", type="string", 
                               deflt="graphs",
-                              help=_("Graphics location (to build URLs)"))
+                              help=ugettext_lazy("Graphics location (to build URLs)"))
 
 def destroy():
     events.unregister("AdminMenuDisplay", menu)
@@ -44,6 +44,6 @@ def menu(target, user):
         return []
     return [
         {"name"  : "stats",
-         "label" : ugettext("Statistics"),
+         "label" : _("Statistics"),
          "url" : reverse('fullindex')}
         ]

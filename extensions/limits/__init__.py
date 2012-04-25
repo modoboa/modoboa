@@ -7,7 +7,7 @@ The *limits* extension
 from django.contrib.auth.models import Permission, Group
 from django.db import IntegrityError
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext_noop as _, ugettext
+from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url
@@ -52,7 +52,7 @@ def infos():
     return {
         "name" : "Limits",
         "version" : "1.0",
-        "description" : ugettext("Limits for objects creation"),
+        "description" : _("Per administrator resources to limit the number of objects they can create"),
         "url" : baseurl
         }
 

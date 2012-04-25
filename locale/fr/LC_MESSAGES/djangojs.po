@@ -1,13 +1,13 @@
 # Modoboa french translation
-# Copyright (C) 2009-2011
+# Copyright (C) 2009-2012
 # This file is distributed under the same license as the Modoboa package.
-# Antoine Nguyen <tonio@ngyn.org>, 2009-2011.
+# Antoine Nguyen <tonio@ngyn.org>, 2009-2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.8.8\n"
+"Project-Id-Version: modoboa-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 11:09+0100\n"
+"POT-Creation-Date: 2012-04-25 14:47+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -16,31 +16,41 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:41
-msgid "Delete this message?"
-msgstr "Supprimer ce message?"
-
-#: extensions/amavis_quarantine/static/js/quarantine.js:49
-msgid "Release this message?"
-msgstr "Relâcher cette message?"
-
-#: extensions/amavis_quarantine/static/js/quarantine.js:107
+#: extensions/amavis_quarantine/static/js/quarantine.js:126
 msgid "Release this selection?"
 msgstr "Relâcher cette sélection?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:114
+#: extensions/amavis_quarantine/static/js/quarantine.js:130
 msgid "Delete this selection?"
 msgstr "Supprimer cette sélection?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:148
+#: extensions/amavis_quarantine/static/js/selfservice.js:22
+msgid "Release this message?"
+msgstr "Relâcher cette message?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:152
+#: extensions/amavis_quarantine/static/js/selfservice.js:26
+msgid "Delete this message?"
+msgstr "Supprimer ce message?"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:169
+msgid "View full headers"
+msgstr "Voir les entêtes complets"
+
+#: extensions/amavis_quarantine/static/js/quarantine.js:174
+msgid "Hide full headers"
+msgstr "Cacher les entêtes complets"
 
 #: extensions/sievefilters/static/js/lib.js:14
 msgid "Remove this filter?"
 msgstr "Supprimer ce filtre?"
 
-#: extensions/sievefilters/static/js/lib.js:116
+#: extensions/sievefilters/static/js/lib.js:117
 msgid "Save changes?"
-msgstr "Sauvegarder les changements?"
+msgstr "Enregistrer les changements?"
 
-#: extensions/sievefilters/static/js/lib.js:143
+#: extensions/sievefilters/static/js/lib.js:144
 msgid "Remove filters set?"
 msgstr "Supprimer ce jeu de filtres?"
 
@@ -49,50 +59,38 @@ msgid "Activate this filters set?"
 msgstr "Activer ce jeu de filtres?"
 
 #: extensions/sievefilters/static/js/lib.js:169
+#: extensions/sievefilters/static/js/lib.js:224
 msgid "active"
 msgstr "actif"
 
-#: extensions/webmail/static/js/fdmenu.js:31
-msgid "Edit folder"
-msgstr "Editer le dossier"
+#: extensions/stats/static/js/stats.js:28
+msgid "Search a domain"
+msgstr "Checher un domaine"
 
-#: extensions/webmail/static/js/fdmenu.js:63
-msgid "Folder deleted"
-msgstr "Dossier supprimé"
+#: extensions/webmail/static/js/webmail.js:499
+msgid "Remove the selected mailbox?"
+msgstr "Supprimer la boite sélectionnée?"
 
-#: extensions/webmail/static/js/webmail.js:95
-msgid "Sending..."
-msgstr "Envoi..."
+#: extensions/webmail/static/js/webmail.js:513
+msgid "Mailbox removed"
+msgstr "Boite aux lettres supprimées"
 
-#: extensions/webmail/static/js/webmail.js:229
-#: extensions/webmail/static/js/webmail.js:254 static/js/anchor_nav.js:215
-msgid "Done"
-msgstr "Effectué"
+#: static/js/admin.js:17
+msgid "No domain administrator defined"
+msgstr "Aucun administrateur de domaine défini"
 
-#: extensions/webmail/static/js/webmail.js:243
-msgid "Waiting..."
-msgstr "En attente..."
+#: static/js/confirmation.js:45
+msgid "Cancel"
+msgstr "Annuler"
 
-#: static/js/anchor_nav.js:10
+#: static/js/confirmation.js:84 static/js/history.js:229
+msgid "Internal Error"
+msgstr "Erreur interne"
+
+#: static/js/history.js:10
 msgid "Loading..."
 msgstr "Chargement..."
 
-#: static/js/common.js:17
-msgid "Message sent"
-msgstr "Message envoyé"
-
-#: static/js/common.js:188
+#: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Chercher..."
-
-#: static/js/domains.js:61
-msgid "Remove this selection?"
-msgstr "Supprimer cette sélection?"
-
-#: static/js/preferences.js:14
-msgid "Preferences saved"
-msgstr "Préférences enregistrées"
-
-#: static/js/settings.js:14
-msgid "Parameters saved"
-msgstr "Paramètres enregistrés"
