@@ -290,9 +290,6 @@ class AccountFormGeneralPwd(AccountFormGeneral):
         return user
 
 class AccountFormMail(forms.Form, DynamicForm):
-    # FIXME
-    # * Renommage de boite ?
-
     email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
     quota = forms.IntegerField(label=ugettext_lazy("Quota"), required=False)
     aliases = forms.EmailField(
@@ -309,11 +306,13 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not hasattr(self, "mb") or self.mb is None:
             return
         self.fields["email"].required = True
-        for pos, alias in enumerate(self.mb.alias_set.all()):
+        cpt = 1
+        for alias in self.mb.alias_set.all():
             if len(alias.get_recipients()) >= 2:
                 continue
-            name = "aliases_%d" % (pos + 1)
+            name = "aliases_%d" % cpt
             self._create_field(forms.EmailField, name, alias.full_address)
+            cpt += 1
         self.fields["email"].initial = self.mb.full_address
         self.fields["quota"].initial = self.mb.quota
         if len(args) and isinstance(args[0], QueryDict):

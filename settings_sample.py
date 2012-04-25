@@ -23,13 +23,13 @@ DATABASES = {
         "PORT" : ""
     },
     # "pfxadmin" : {
-    #     "ENGINE" : "",
+    #     "ENGINE" : "django.db.backends.",
     #     "NAME" : "",
     #     "USER" : "",
     #     "PASSWORD" : ""
     # },
     # "amavis": {
-    #	  "ENGINE" : "",
+    #	  "ENGINE" : "django.db.backends.",
     #	  "HOST" : "",
     #	  "NAME" : "",
     #	  "USER" : "",
@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'modoboa.userprefs',
 
     # Modoboa extensions here.
+    'modoboa.extensions.limits',
     'modoboa.extensions.postfix_autoreply',
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',
@@ -132,7 +133,6 @@ AUTHENTICATION_BACKENDS = (
 )
 
 #SESSION_COOKIE_AGE = 300
-#CACHE_BACKEND = 'file://'
 
 #
 # External LDAP authentication (optional)

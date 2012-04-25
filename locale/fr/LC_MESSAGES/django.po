@@ -1551,7 +1551,7 @@ msgstr "Répondre à tous"
 #: extensions/webmail/templatetags/webextras.py:29
 #: userprefs/templatetags/uprefs_extras.py:25
 msgid "Forward"
-msgstr "Transférer"
+msgstr "Transfert"
 
 #: extensions/webmail/templatetags/webextras.py:35
 msgid "Display options"
