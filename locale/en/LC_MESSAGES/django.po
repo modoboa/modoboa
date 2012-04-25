@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-25 16:41+0200\n"
+"POT-Creation-Date: 2012-04-25 16:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "The default redirection used when no application is specified"
 msgstr ""
 
-#: admin/forms.py:15 admin/forms.py:298
+#: admin/forms.py:15 admin/forms.py:299
 msgid "Alias(es)"
 msgstr ""
 
@@ -103,7 +103,7 @@ msgstr ""
 msgid "Mailbox(es) this alias will point to"
 msgstr ""
 
-#: admin/forms.py:143 admin/forms.py:329 admin/models.py:756
+#: admin/forms.py:143 admin/forms.py:330 admin/models.py:756
 msgid "Domain does not exist"
 msgstr ""
 
@@ -136,72 +136,76 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: admin/forms.py:214 admin/forms.py:232
+#: admin/forms.py:214
+msgid "Role"
+msgstr ""
+
+#: admin/forms.py:215 admin/forms.py:233
 msgid "Choose"
 msgstr ""
 
-#: admin/forms.py:215
+#: admin/forms.py:216
 msgid "What level of permission this user will have"
 msgstr ""
 
-#: admin/forms.py:225
+#: admin/forms.py:226
 msgid "Enabled"
 msgstr ""
 
-#: admin/forms.py:264 auth/forms.py:10
+#: admin/forms.py:265 auth/forms.py:10
 msgid "Password"
 msgstr ""
 
-#: admin/forms.py:266 userprefs/forms.py:15
+#: admin/forms.py:267 userprefs/forms.py:15
 msgid "Confirmation"
 msgstr ""
 
-#: admin/forms.py:268
+#: admin/forms.py:269
 msgid "Enter the same password as above, for verification."
 msgstr ""
 
-#: admin/forms.py:280
+#: admin/forms.py:281
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: admin/forms.py:295
+#: admin/forms.py:296
 msgid "E-mail"
 msgstr ""
 
-#: admin/forms.py:296 admin/tables.py:21
+#: admin/forms.py:297 admin/tables.py:21
 msgid "Quota"
 msgstr ""
 
-#: admin/forms.py:300
+#: admin/forms.py:301
 msgid "Alias(es) of this mailbox"
 msgstr ""
 
-#: admin/forms.py:332 admin/models.py:75 admin/models.py:665
+#: admin/forms.py:333 admin/models.py:75 admin/models.py:665
 #: admin/views.py:359 extensions/stats/views.py:60
 msgid "You don't have access to this domain"
 msgstr ""
 
-#: admin/forms.py:350
+#: admin/forms.py:351
 msgid "Failed to rename mailbox, check permissions"
 msgstr ""
 
-#: admin/forms.py:388
+#: admin/forms.py:389
 msgid "Domain(s)"
 msgstr ""
 
-#: admin/forms.py:390
+#: admin/forms.py:391
 msgid "Domain(s) that user administrates"
 msgstr ""
 
-#: admin/forms.py:429 admin/views.py:322 templates/admin/editdomainform.html:4
+#: admin/forms.py:430 admin/views.py:322 templates/admin/editdomainform.html:4
 msgid "General"
 msgstr ""
 
-#: admin/forms.py:431 admin/views.py:325
+#: admin/forms.py:432 admin/views.py:325
 msgid "Mail"
 msgstr ""
 
-#: admin/forms.py:433
+#: admin/forms.py:434
 msgid "Permissions"
 msgstr ""
 
@@ -841,15 +845,15 @@ msgstr ""
 msgid "Maximum number of mailbox aliases this user can create"
 msgstr ""
 
-#: extensions/limits/forms.py:36
+#: extensions/limits/forms.py:37
 msgid "Invalid limit"
 msgstr ""
 
-#: extensions/limits/forms.py:60
+#: extensions/limits/forms.py:61
 msgid "Your resources are not initialized yet"
 msgstr ""
 
-#: extensions/limits/forms.py:63
+#: extensions/limits/forms.py:64
 msgid "You're not allowed to define unlimited values"
 msgstr ""
 

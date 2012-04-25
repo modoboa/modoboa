@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-25 16:41+0200\n"
+"POT-Creation-Date: 2012-04-25 16:51+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -76,7 +76,7 @@ msgid "The default redirection used when no application is specified"
 msgstr ""
 "La redirection appliquée par défaut quand aucune application n'est spécifiée"
 
-#: admin/forms.py:15 admin/forms.py:298
+#: admin/forms.py:15 admin/forms.py:299
 msgid "Alias(es)"
 msgstr "Alias"
 
@@ -112,7 +112,7 @@ msgstr "Destinataires"
 msgid "Mailbox(es) this alias will point to"
 msgstr "Les boites aux lettres sur lesquelles cet alias pointera"
 
-#: admin/forms.py:143 admin/forms.py:329 admin/models.py:756
+#: admin/forms.py:143 admin/forms.py:330 admin/models.py:756
 msgid "Domain does not exist"
 msgstr "Domain inexistant"
 
@@ -145,72 +145,76 @@ msgstr "Séparateur"
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: admin/forms.py:214 admin/forms.py:232
+#: admin/forms.py:214
+msgid "Role"
+msgstr "Rôle"
+
+#: admin/forms.py:215 admin/forms.py:233
 msgid "Choose"
 msgstr "Choisir"
 
-#: admin/forms.py:215
+#: admin/forms.py:216
 msgid "What level of permission this user will have"
 msgstr "Quel niveau de permission cet utilisateur aura"
 
-#: admin/forms.py:225
+#: admin/forms.py:226
 msgid "Enabled"
 msgstr "Activé"
 
-#: admin/forms.py:264 auth/forms.py:10
+#: admin/forms.py:265 auth/forms.py:10
 msgid "Password"
 msgstr "Mot de passe"
 
-#: admin/forms.py:266 userprefs/forms.py:15
+#: admin/forms.py:267 userprefs/forms.py:15
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: admin/forms.py:268
+#: admin/forms.py:269
 msgid "Enter the same password as above, for verification."
 msgstr "Entrer le même mot de passe, pour vérification."
 
-#: admin/forms.py:280
+#: admin/forms.py:281
 msgid "The two password fields didn't match."
 msgstr "Les deux mots de passe ne correspondent pas."
 
-#: admin/forms.py:295
+#: admin/forms.py:296
 msgid "E-mail"
 msgstr "E-mail"
 
-#: admin/forms.py:296 admin/tables.py:21
+#: admin/forms.py:297 admin/tables.py:21
 msgid "Quota"
 msgstr "Quota"
 
-#: admin/forms.py:300
+#: admin/forms.py:301
 msgid "Alias(es) of this mailbox"
 msgstr "Alias de cette boite"
 
-#: admin/forms.py:332 admin/models.py:75 admin/models.py:665
+#: admin/forms.py:333 admin/models.py:75 admin/models.py:665
 #: admin/views.py:359 extensions/stats/views.py:60
 msgid "You don't have access to this domain"
 msgstr "Vous n'avez pas accès à ce domaine"
 
-#: admin/forms.py:350
+#: admin/forms.py:351
 msgid "Failed to rename mailbox, check permissions"
 msgstr "Impossible de renommer la boite aux lettres, vérifier les permissions."
 
-#: admin/forms.py:388
+#: admin/forms.py:389
 msgid "Domain(s)"
 msgstr "Domaine(s)"
 
-#: admin/forms.py:390
+#: admin/forms.py:391
 msgid "Domain(s) that user administrates"
 msgstr "Domaine(s) que cet utilisateur administre"
 
-#: admin/forms.py:429 admin/views.py:322 templates/admin/editdomainform.html:4
+#: admin/forms.py:430 admin/views.py:322 templates/admin/editdomainform.html:4
 msgid "General"
 msgstr "Général"
 
-#: admin/forms.py:431 admin/views.py:325
+#: admin/forms.py:432 admin/views.py:325
 msgid "Mail"
 msgstr "Courrier"
 
-#: admin/forms.py:433
+#: admin/forms.py:434
 msgid "Permissions"
 msgstr "Permissions"
 
@@ -883,15 +887,15 @@ msgstr "Nombre maximal de boites que cet utilisateur peut créer"
 msgid "Maximum number of mailbox aliases this user can create"
 msgstr "Nombre maximal d'alias de boite que cet utilisateur peut créer"
 
-#: extensions/limits/forms.py:36
+#: extensions/limits/forms.py:37
 msgid "Invalid limit"
 msgstr "Limite invalide"
 
-#: extensions/limits/forms.py:60
+#: extensions/limits/forms.py:61
 msgid "Your resources are not initialized yet"
 msgstr "Vos ressources ne sont pas encore initialisées"
 
-#: extensions/limits/forms.py:63
+#: extensions/limits/forms.py:64
 msgid "You're not allowed to define unlimited values"
 msgstr "Vous n'êtes pas autorisé à définir des valeurs illimitées"
 

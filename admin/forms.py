@@ -196,8 +196,8 @@ class DlistForm(forms.ModelForm, DynamicForm):
         return dlist
 
 class ImportDataForm(forms.Form):
-    sourcefile = forms.FileField(label=_("Select a file"))
-    sepcar = forms.CharField(label=_("Separator"), max_length=1, required=False)
+    sourcefile = forms.FileField(label=ugettext_lazy("Select a file"))
+    sepcar = forms.CharField(label=ugettext_lazy("Separator"), max_length=1, required=False)
 
     def __init__(self, *args, **kwargs):
         super(ImportDataForm, self).__init__(*args, **kwargs)
@@ -211,6 +211,7 @@ class ImportDataForm(forms.Form):
 class AccountFormGeneral(forms.ModelForm):
     username = forms.CharField(label=ugettext_lazy("Username"), max_length=254)
     role = forms.ChoiceField(
+        label=ugettext_lazy("Role"),
         choices=[('', ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
         )
@@ -292,8 +293,8 @@ class AccountFormMail(forms.Form, DynamicForm):
     # FIXME
     # * Renommage de boite ?
 
-    email = forms.EmailField(label=_("E-mail"), required=False)
-    quota = forms.IntegerField(label=_("Quota"), required=False)
+    email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
+    quota = forms.IntegerField(label=ugettext_lazy("Quota"), required=False)
     aliases = forms.EmailField(
         label=ugettext_lazy("Alias(es)"), 
         required=False,
