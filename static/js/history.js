@@ -95,17 +95,19 @@ History.prototype = {
 
     serialize: function() {
         var res = this.base;
+        var args = "";
 
         if (this.paramslength() != 0) {
-            res += "?";
+            args += "?";
+            console.log(this.params);
             $.each(this.params, function(key, value) {
-                if (res != "?") {
-                    res += "&";
+                if (args != "?") {
+                    args += "&";
                 }
-                res += key + "=" + encodeURIComponent(value);
+                args += key + "=" + encodeURIComponent(value);
             });
         }
-        return res;
+        return res + args;
     },
 
     update: function(force, noupdate) {
