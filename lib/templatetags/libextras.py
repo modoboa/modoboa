@@ -131,7 +131,7 @@ def render_fields_group(form, pattern):
 @register.simple_tag
 def pagination_bar(page):
     return render_to_string("common/pagination_bar.html", dict(
-            page=page
+            page=page, baseurl="?"
             ))
 
 @register.simple_tag
