@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     "default" : {
-        "ENGINE" : "",
+        "ENGINE" : "django.db.backends.",
         "NAME" : "modoboa",
         "USER" : "",
         "PASSWORD" : "",
@@ -89,8 +89,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'modoboa.lib.middleware.AjaxLoginRedirect',
+    'modoboa.lib.middleware.CommonExceptionCatcher',
     'modoboa.lib.middleware.ExtControlMiddleware',
-    'modoboa.extensions.webmail.middleware.WebmailErrorMiddleware',
 )
 
 ROOT_URLCONF = 'modoboa.urls'

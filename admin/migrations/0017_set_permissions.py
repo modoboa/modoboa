@@ -34,18 +34,18 @@ class Migration(DataMigration):
         for da in domadmins:
             for i, su in enumerate(superusers):
                 objaccess = orm.ObjectAccess(
-                    user=su, content_type=uct, object_id=da.id                    
+                    user=su, content_type=uct, object_id=da.id
                     )
                 if i == 0:
-                    objectaccess.is_owner=True
+                    objaccess.is_owner = True
                 objaccess.save()
                     
-                dom = da.mailbox_set.all()[0].domain
-                objaccess = orm.ObjectAccess(
-                    user=da, content_type=domct, object_id=dom.id, is_owner=True
-                    )
-                objaccess.save()
-                deferred_admin += [dom]
+            dom = da.mailbox_set.all()[0].domain
+            objaccess = orm.ObjectAccess(
+                user=da, content_type=domct, object_id=dom.id, is_owner=True
+                )
+            objaccess.save()
+            deferred_admin += [dom]
         
         for dom in domains:
             for i, su in enumerate(superusers):
