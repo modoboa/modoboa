@@ -111,7 +111,6 @@ History.prototype = {
     },
 
     update: function(force, noupdate) {
-        /*$(window).trigger("pageRefresh");*/
         location.hash = this.serialize();
 
         if (noupdate === undefined) {
