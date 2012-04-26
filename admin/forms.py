@@ -296,6 +296,7 @@ class AccountFormGeneral(forms.ModelForm):
 
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)
+        account.username = self.cleaned_data["username"]
         if commit:
             account.save()
             role = None

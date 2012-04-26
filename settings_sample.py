@@ -128,8 +128,8 @@ INSTALLED_APPS = (
 )
 
 AUTHENTICATION_BACKENDS = (
+    'modoboa.lib.authbackends.SimpleBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'modoboa.lib.authbackends.SimpleBackend'
 )
 
 #SESSION_COOKIE_AGE = 300

@@ -59,7 +59,6 @@ class IdentitiesTable(tables.Table):
         )
     name_or_rcpt = tables.Column("name_or_rcpt", label=ugettext_lazy("Fullname/Recipient"))
     actions = tables.ActionColumn("actions",  label=ugettext_lazy("Actions"),
-                                  width="70px", align="center", 
                                   defvalue=identity_actions)
 
     cols_order = ["identity", "name_or_rcpt", "actions"]
