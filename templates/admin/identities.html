@@ -25,6 +25,9 @@ $(document).ready(function() {
    $("a[name=deldlist]").confirm({
        question: gettext("Delete this list?")
    });
+   $("a[name=delforward]").confirm({
+       question: gettext("Delete this forward?")
+   });
    $("#pagination_bar").find(".disabled").click(function(e) {
        e.preventDefault();
    });

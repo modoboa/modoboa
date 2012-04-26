@@ -195,6 +195,58 @@ class DlistForm(forms.ModelForm, DynamicForm):
             self.save_m2m()
         return dlist
 
+class ForwardForm(forms.ModelForm):
+    email = forms.EmailField(
+        label=ugettext_lazy("Email address"),
+        help_text=ugettext_lazy("The forwarded address")
+        )
+    recipient = forms.EmailField(
+        label=ugettext_lazy("Recipient"),
+        help_text=ugettext_lazy("The address to forward messages to")
+        )
+
+    class Meta:
+        model = Alias
+        fields = ("enabled",)
+    
+    def __init__(self, *args, **kwargs):
+        super(ForwardForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['email', 'recipient', 'enabled']
+        if kwargs.has_key("instance"):
+            forward = kwargs["instance"]
+            self.fields["email"].initial = forward.full_address
+            self.fields["recipient"].initial = forward.extmboxes
+
+    def clean_email(self):
+        localpart, domname = split_mailbox(self.cleaned_data["email"])
+        try:
+            Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            raise forms.ValidationError(_("Domain does not exist"))
+        return self.cleaned_data["email"]
+
+    def clean_recipient(self):
+        local_part, domname = split_mailbox(self.cleaned_data["recipient"])
+        try:
+            domain = Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            pass
+        else:
+            raise forms.ValidationError(_("Local addresses are forbidden"))
+        return self.cleaned_data["recipient"]
+        
+    def set_recipients(self, user):
+        pass
+
+    def save(self, commit=True):
+        forward = super(ForwardForm, self).save(commit=False)
+        localpart, domname = split_mailbox(self.cleaned_data["email"])
+        forward.address = localpart
+        forward.domain = Domain.objects.get(name=domname)
+        if commit:
+            forward.save([], [self.cleaned_data["recipient"]])
+        return forward
+
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=ugettext_lazy("Select a file"))
     sepcar = forms.CharField(label=ugettext_lazy("Separator"), max_length=1, required=False)

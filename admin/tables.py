@@ -6,37 +6,32 @@ from templatetags.admin_extras import *
 class DomainsTable(tables.Table):
     tableid = "objects_table"
     idkey = "id"
+    styles = "table"
 
     name = tables.LinkColumn(
         "name", label=ugettext_lazy("Name"), 
         urlpattern="modoboa.admin.views.editdomain",
         title=_("Edit domain"), modal=True, modalcb="domainform_cb"
         )
-    domaliases = tables.Column("domainalias_count", label=ugettext_lazy("Domain aliases"), 
-                               width="100px", align="center")
-    mboxes = tables.Column("mailbox_count", label=ugettext_lazy("Mailboxes"), 
-                           width="100px", align="center")
-    mbaliases = tables.Column("mbalias_count", label=ugettext_lazy("Mailbox aliases"),
-                              width="100px", align="center")
-    quota = tables.Column("quota", label=ugettext_lazy("Quota"), 
-                          width="50px", align="center")
-    enabled = tables.Column("enabled", label=gender("Enabled", "m"), width="50px",
-                            align="center")
-    actions = tables.ActionColumn("actions", label=ugettext_lazy("Actions"),  width="70px",
-                                  align="center", defvalue=domain_actions)
+    domaliases = tables.Column("domainalias_set", 
+                               label=ugettext_lazy("Alias(es)"), safe=True)
+    actions = tables.ActionColumn("actions", label=ugettext_lazy("Actions"), 
+                                  defvalue=domain_actions)
 
-    cols_order = ["name", "domaliases", "mboxes", "mbaliases",
-                  "quota", "actions"]
+    cols_order = ["name", "domaliases", "actions"]
 
     def __init__(self, request, doms):
         super(DomainsTable, self).__init__(request)
         self.populate(self._rows_from_model(doms))
 
-    def parse_quota(self, value):
-        return "%s %s" % (value, _("MB"))
 
-    def parse_enabled(self, value):
-        return _("yes") if value else _("no")
+    def parse_domainalias_set(self, aliases):
+        if not len(aliases.all()):
+            return "---"
+        res = ""
+        for da in aliases.all():
+            res += "%s<br/>" % da.name
+        return res
 
     def row_class(self, request, domain):
         if not domain.enabled:
@@ -54,12 +49,13 @@ class ExtensionsTable(tables.Table):
 
 class IdentitiesTable(tables.Table):
     idkey = "id"
+    styles = "table"
     identity = tables.LinkColumn(
         "identity", label=ugettext_lazy("Email/Username"),
         modal=True,
         urlpattern={"User" : "modoboa.admin.views.editaccount",
-                    "Alias" : "modoboa.admin.views.editdlist"},
-        modalcb={"User" : "editaccount_cb", "Alias" : "dlistform_cb"}
+                    "Alias" : "modoboa.admin.views.editalias"},
+        modalcb={"User" : "editaccount_cb", "Alias" : "aliasform_cb"}
         )
     name_or_rcpt = tables.Column("name_or_rcpt", label=ugettext_lazy("Fullname/Recipient"))
     actions = tables.ActionColumn("actions",  label=ugettext_lazy("Actions"),

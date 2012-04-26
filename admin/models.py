@@ -712,7 +712,10 @@ class Alias(DatesAware):
 
     @property
     def name_or_rcpt(self):
-        return "%s, ..." % self.get_recipients()[0]
+        rcpts = self.get_recipients()
+        if len(rcpts) > 1:
+            return "%s, ..." % rcpts[0]
+        return rcpts[0]
 
     def save(self, int_rcpts, ext_rcpts, *args, **kwargs):
         if len(ext_rcpts):
@@ -729,7 +732,7 @@ class Alias(DatesAware):
                 self.mboxes.remove(t)
 
     def get_recipients(self):
-        """Return a the recipients list
+        """Return the recipients list
 
         Internal and external addresses are mixed into a single list.
         """

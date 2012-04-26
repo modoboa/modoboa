@@ -64,7 +64,7 @@ def settings_menu(selection, user):
 def domains_menu(selection, user):
     entries = [
         {"name" : "newdomain",
-         "label" : _("New domain"),
+         "label" : _("Add domain"),
          "img" : "icon-plus",
          "modal" : True,
          "modalcb" : "domainform_cb",
@@ -87,16 +87,22 @@ def domains_menu(selection, user):
 def identities_menu(user):
     entries = [
         {"name" : "newaccount",
-         "label" : _("New account"),
+         "label" : _("Add account"),
          "img" : "icon-plus",
          "modal" : True,
          "modalcb" : "newaccount_cb",
          "url" : reverse(admin.views.newaccount)},
-        {"name" : "newdlist",
-         "label" : _("New distribution list"),
+        {"name" : "newforward",
+         "label" : _("Add forward"),
          "img" : "icon-plus",
          "modal" : True,
-         "modalcb" : "dlistform_cb",
+         "modalcb" : "aliasform_cb",
+         "url" : reverse(admin.views.newforward)},
+        {"name" : "newdlist",
+         "label" : _("Add distribution list"),
+         "img" : "icon-plus",
+         "modal" : True,
+         "modalcb" : "aliasform_cb",
          "url" : reverse(admin.views.newdlist)},
         {"name" : "import",
          "label" : _("Import"),
@@ -133,12 +139,22 @@ def identity_actions(user, iid):
              "title" : _("Delete this account")},
             ]
     else:
-        actions = [
-            {"name" : "deldlist",
-             "url" : reverse(admin.views.deldlist) + "?selection=%s" % objid,
-             "img" : "icon-trash",
-             "title" : _("Delete this distribution list")},
-            ]
+        from modoboa.admin.models import Alias
+        alias = Alias.objects.get(pk=objid)
+        if len(alias.get_recipients()) >= 2:
+            actions = [
+                {"name" : "deldlist",
+                 "url" : reverse(admin.views.deldlist) + "?selection=%s" % objid,
+                 "img" : "icon-trash",
+                 "title" : _("Delete this distribution list")},
+                ]
+        else:
+            actions = [
+                {"name" : "delforward",
+                 "url" : reverse(admin.views.delforward) + "?selection=%s" % objid,
+                 "img" : "icon-trash",
+                 "title" : _("Delete this forward")},
+                ]
     return render_actions(actions)
 
 @register.simple_tag

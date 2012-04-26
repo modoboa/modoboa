@@ -154,7 +154,7 @@ class AliasTestCase(ModoTestCase):
         dlist = Alias.objects.get(address="all", domain__name="test.com")
         self.assertEqual(len(dlist.get_recipients()), 3)
         del values["recipients_1"]
-        self.check_ajax_post("/modoboa/admin/distriblists/edit/%d/" % dlist.id,
+        self.check_ajax_post("/modoboa/admin/aliases/edit/%d/" % dlist.id,
                              values)
         self.assertEqual(len(dlist.get_recipients()), 2)
         
@@ -163,6 +163,21 @@ class AliasTestCase(ModoTestCase):
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get, 
                           address="all", domain__name="test.com")
 
+    def test_forward(self):
+        values = dict(email="forward@test.com", recipient="rcpt@dest.com")
+        self.check_ajax_post("/modoboa/admin/forwards/new/", values)
+        fwd = Alias.objects.get(address="forward", domain__name="test.com")
+        self.assertEqual(len(fwd.get_recipients()), 1)
+        
+        values["recipient"] = "rcpt2@dest.com"
+        self.check_ajax_post("/modoboa/admin/aliases/edit/%d/" % fwd.id,
+                             values)
+        self.assertEqual(len(fwd.get_recipients()), 1)
+        
+        self.check_ajax_get("/modoboa/admin/forwards/delete/?selection=%d" \
+                                % fwd.id, {})
+        self.assertRaises(Alias.DoesNotExist, Alias.objects.get, 
+                          address="forward", domain__name="test.com")
 
 class PermissionsTestCase(ModoTestCase):
     fixtures = ["test_content.json"]

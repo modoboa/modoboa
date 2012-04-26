@@ -166,8 +166,8 @@ def mailboxes_search(request):
     result = map(lambda mb: mb.full_address, mboxes)
     return ajax_simple_response(result)
 
-def _validate_dlist(request, form, successmsg, tplname, commonctx, callback=None):
-    """Distribution list validation
+def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None):
+    """Alias validation
 
     Common function shared between creation and modification actions.
     """
@@ -193,67 +193,96 @@ def _validate_dlist(request, form, successmsg, tplname, commonctx, callback=None
     commonctx["error"] = error
     return ajax_response(request, status="ko", template=tplname, **commonctx)
 
+def _new_alias(request, tplname, formclass, ctx, successmsg):
+    events.raiseEvent("CanCreate", request.user, "mailbox_aliases")
+    ctx.update(action_label=_("Create"), action_classes="submit")
+    if request.method == "POST":
+        def callback(user, alias):
+            grant_access_to_object(user, alias, is_owner=True)
+            events.raiseEvent("MailboxAliasCreated", user, alias)
+
+        form = formclass(request.POST)
+        return _validate_alias(request, form, successmsg, tplname, ctx, callback)
+
+    form = formclass()
+    ctx["form"] = form
+    return _render(request, tplname, ctx)
+
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
-def newdlist(request, tplname="common/generic_modal_form.html"):
-    events.raiseEvent("CanCreate", request.user, "mailbox_aliases")
-    commonctx = {"title" : _("New distribution list"),
-                 "action_label" : _("Create"),
-                 "action_classes" : "submit",
-                 "action" : reverse(newdlist),
-                 "formid" : "dlistform"}
+def newdlist(request):
+    ctx = dict(title=_("New distribution list"), 
+               action=reverse(newdlist),
+               formid="aliasform")
+    return _new_alias(request, "common/generic_modal_form.html", 
+                      DlistForm, ctx, _("Distribution list created"))
 
+@login_required
+@permission_required("admin.add_alias")
+@transaction.commit_on_success
+def newforward(request):
+    ctx = dict(title=_("New forward"), 
+               action=reverse(newforward),
+               formid="aliasform")
+    return _new_alias(request, "common/generic_modal_form.html", 
+                      ForwardForm, ctx, _("Forward created"))
+
+def _edit_alias(request, alias, tplname, formclass, ctx, successmsg):
+    if not request.user.can_access(alias.domain):
+        raise PermDeniedException(_("You do not have access to this domain"))
+    ctx.update(title=alias.full_address, action_label=_("Update"),
+               action_classes="submit")
     if request.method == "POST":
-        def callback(user, dlist):
-            grant_access_to_object(user, dlist, is_owner=True)
-            events.raiseEvent("MailboxAliasCreated", user, dlist)
+        form = formclass(request.POST, instance=alias)
+        return _validate_alias(request, form, successmsg, tplname, ctx)
 
-        form = DlistForm(request.POST)
-        return _validate_dlist(request, form, _("Distribution list created"),
-                               tplname, commonctx, callback)
+    form = formclass(instance=alias)
+    ctx["form"] = form
+    return _render(request, tplname, ctx)
 
-    form = DlistForm()
-    commonctx["form"] = form
-    return _render(request, "common/generic_modal_form.html", commonctx)
+def editdlist(request, alias, ctx):
+    return _edit_alias(request, alias, "admin/dlistform.html",
+                       DlistForm, ctx, _("Distribution list modified"))
+
+def editforward(request, alias, ctx):
+    return _edit_alias(request, alias, "common/generic_modal_form.html",
+                       ForwardForm, ctx, _("Forward modified"))
 
 @login_required
 @permission_required("admin.change_alias")
-def editdlist(request, dlist_id, tplname="admin/dlistform.html"):
-    dlist = Alias.objects.get(pk=dlist_id)
-    if not request.user.can_access(dlist.domain):
-        raise PermDeniedException(_("You do not have access to this domain"))
-    commonctx = {"title" : dlist.full_address,
-                 "action_label" : _("Update"),
-                 "action_classes" : "submit",
-                 "action" : reverse(editdlist, args=[dlist.id]),
-                 "formid" : "dlistform"}
-    if request.method == "POST":
-        form = DlistForm(request.POST, instance=dlist)
-        return _validate_dlist(request, form, _("Distribution list modified"),
-                               tplname, commonctx)
+def editalias(request, alid):
+    alias = Alias.objects.get(pk=alid)
+    ctx = dict(action=reverse(editalias, args=[alias.id]), formid="aliasform")
+    if len(alias.get_recipients()) >= 2:
+        return editdlist(request, alias, ctx)
+    return editforward(request, alias, ctx)
 
-    form = DlistForm(instance=dlist)
-    commonctx["form"] = form
-    return _render(request, tplname, commonctx)
+def _del_alias(request, msg, msgs):
+    selection = request.GET["selection"].split(",")
+    for alid in selection:
+        alias = Alias.objects.get(pk=alid)
+        if not request.user.can_access(alias.domain):
+            raise PermDeniedException(_("You do not have access to this domain"))
+        events.raiseEvent("MailboxAliasDeleted", alias)
+        ungrant_access_to_object(alias)
+        alias.delete()
+
+    msg = ungettext(msg, msgs, len(selection))
+    messages.info(request, msg)
+    return ajax_response(request)
 
 @login_required
 @permission_required("admin.delete_alias")
 @transaction.commit_on_success
 def deldlist(request):
-    selection = request.GET["selection"].split(",")
-    for dlist_id in selection:
-        dlist = Alias.objects.get(pk=dlist_id)
-        if not request.user.can_access(dlist.domain):
-            raise PermDeniedException(_("You do not have access to this domain"))
-        events.raiseEvent("MailboxAliasDeleted", dlist)
-        ungrant_access_to_object(dlist)
-        dlist.delete()
+    return _del_alias(request, "Distribution list deleted", "Distribution lists deleted")
 
-    msg = ungettext("Distribution list deleted", 
-                    "Distribution lists deleted", len(selection))
-    messages.info(request, msg)
-    return ajax_response(request)
+@login_required
+@permission_required("admin.delete_alias")
+@transaction.commit_on_success
+def delforward(request):
+    return _del_alias(request, "Forward deleted", "Forwards deleted")
 
 @login_required
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
@@ -278,8 +307,10 @@ def identities(request, tplname='admin/identities.html'):
                 account.has_mailbox and request.user.can_access(account.mailbox_set.all()[0].domain):
             accounts_list += [account]
     for mbalias in mbaliases:
-        if len(mbalias.get_recipients()) >= 2:
+        if len(mbalias.get_recipients()) >= 2 or \
+                not len(mbalias.mboxes.all()):
             accounts_list += [mbalias]
+
     return render_listing(request, "identities", tplname, 
                           objects=accounts_list, squery=squery)
 

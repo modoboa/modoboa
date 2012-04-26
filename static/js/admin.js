@@ -50,7 +50,7 @@ function editaccount_cb() {
     });
 }
 
-function dlistform_cb() {
+function aliasform_cb() {
     $("#id_email").autocompleter({
         from_character: "@",
         choices: get_domains_list
@@ -58,8 +58,8 @@ function dlistform_cb() {
     $("#id_recipients").dynamic_input();
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
-            formid: "dlistform",
-            error_cb: dlistform_cb
+            formid: "aliasform",
+            error_cb: aliasform_cb
         });
     });
 }

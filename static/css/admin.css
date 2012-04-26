@@ -11,11 +11,11 @@ span.title {
     width: 180px;
 }
 
-table#domadmins th#actions {
+table th#actions {
     text-align: right;
 }
 
-table#domadmins td[name="actions"] {
+table td[name="actions"] {
     text-align: right;
 }
 
