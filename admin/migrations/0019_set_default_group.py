@@ -8,7 +8,10 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        sugroup = orm["auth.Group"].objects.get(name="SimpleUsers")
+        try:
+            sugroup = orm["auth.Group"].objects.get(name="SimpleUsers")
+        except orm["auth.Group"].DoesNotExist:
+            return
         for account in orm["auth.User"].objects.all():
             if not len(account.groups.all()):
                 account.groups.add(sugroup)
