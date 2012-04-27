@@ -267,14 +267,21 @@ class AccountFormGeneral(forms.ModelForm):
         choices=[('', ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
         )
+    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label=ugettext_lazy("Confirmation"), 
+        widget=forms.PasswordInput,
+        help_text=ugettext_lazy("Enter the same password as above, for verification.")
+        )
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "role", "is_active")
+        fields = ("username", "first_name", "last_name", "role", "is_active")
 
     def __init__(self, user, *args, **kwargs):
         super(AccountFormGeneral, self).__init__(*args, **kwargs)
-        
+        self.fields.keyOrder = ['role', 'username', 'first_name', 'last_name',
+                                'password1', 'password2', 'is_active']
         self.fields["is_active"].label = _("Enabled")
         self.user = user
         if user.group == "DomainAdmins":
@@ -284,6 +291,12 @@ class AccountFormGeneral(forms.ModelForm):
         self.fields["role"].choices = \
             [('', ugettext_lazy("Choose"))] + get_account_roles(user)
         if kwargs.has_key("instance"):
+            if len(args) \
+               and (args[0].get("password1", "") == "" \
+                    and args[0].get("password2", "") == ""):
+                self.fields["password1"].required = False
+                self.fields["password2"].required = False
+
             u = kwargs["instance"]
             if u.is_superuser:
                 role = "SuperAdmins"
@@ -294,10 +307,27 @@ class AccountFormGeneral(forms.ModelForm):
                     pass
             self.fields["role"].initial = role
 
+    def clean_username(self):
+        from django.core.validators import validate_email
+        
+        if self.cleaned_data["role"] != "SimpleUsers":
+            return self.cleaned_data
+        validate_email(self.cleaned_data["username"])
+        return self.cleaned_data["username"]
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1", "")
+        password2 = self.cleaned_data["password2"]
+        if password1 != password2:
+            raise forms.ValidationError(_("The two password fields didn't match."))
+        return password2
+
+
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)
-        account.username = self.cleaned_data["username"]
         if commit:
+            if self.cleaned_data.has_key("password1"):
+                account.set_password(self.cleaned_data["password1"])
             account.save()
             role = None
             if self.cleaned_data.has_key("role"):
@@ -313,34 +343,6 @@ class AccountFormGeneral(forms.ModelForm):
                     account.groups.add(Group.objects.get(name=role))
                 account.save()
         return account
-
-class AccountFormGeneralPwd(AccountFormGeneral):
-    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
-    password2 = forms.CharField(
-        label=ugettext_lazy("Confirmation"), 
-        widget=forms.PasswordInput,
-        help_text=ugettext_lazy("Enter the same password as above, for verification.")
-        )
-
-    class Meta:
-        model = User
-        fields = ("username", "first_name", "last_name",
-                  "password1", "password2", "role", "is_active")
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get("password1", "")
-        password2 = self.cleaned_data["password2"]
-        if password1 != password2:
-            raise forms.ValidationError(_("The two password fields didn't match."))
-        return password2
-
-    def save(self, commit=True, **kwargs):
-        user = super(AccountFormGeneralPwd, self).save(**kwargs)
-        if self.cleaned_data.has_key("password1"):
-            user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
 
 class AccountFormMail(forms.Form, DynamicForm):
     email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
@@ -479,7 +481,7 @@ class AccountForm(TabForms):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         self.forms = [
-            dict(id="general", title=_("General"), cls=AccountFormGeneralPwd,
+            dict(id="general", title=_("General"), cls=AccountFormGeneral,
                  new_args=[user], mandatory=True),
             dict(id="mail", title=_("Mail"), formtpl="admin/mailform.html",
                  cls=AccountFormMail),

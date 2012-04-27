@@ -1,28 +1,40 @@
 (function($) {
     var Autocompleter = function(element, options) {
-        this.$element = $(element);
-        this.options = $.extend({}, $.fn.autocompleter.defaults, options);
-        this.choices = {
-            value: null
-        };
-        if (typeof this.options.choices === "function") {
-            this.options.choices(this.choices);
-        } else {
-            this.choices.value = this.options.choices();
-        }
-        this.$menu =
-            $('<ul class="dropdown-menu autocompleter" data-toggle="dropdown" />');
-        $("body").append(this.$menu);
-        this.$menu.on("click", $.proxy(this.select_entry, this));
-
-        this.$element.attr("autocomplete", "off");
-        this.$element.keydown($.proxy(this.keydown, this));
-        this.$element.keyup($.proxy(this.keyup, this));
-        this.$element.blur($.proxy(this.hide_menu, this));
+        this.initialize(element, options);
     };
 
     Autocompleter.prototype = {
         constructor: Autocompleter,
+
+        initialize: function(element, options) {
+            this.$element = $(element);
+            this.options = $.extend({}, $.fn.autocompleter.defaults, options);
+            this.choices = {
+                value: null
+            };
+            if (typeof this.options.choices === "function") {
+                this.options.choices(this.choices);
+            } else {
+                this.choices.value = this.options.choices();
+            }
+            this.$menu =
+                $('<ul class="dropdown-menu autocompleter" data-toggle="dropdown" />');
+            $("body").append(this.$menu);
+            this.$menu.on("click", $.proxy(this.select_entry, this));
+
+            this.$element.attr("autocomplete", "off");
+            this.listen();
+        },
+
+        listen: function() {
+            this.$element.keydown($.proxy(this.keydown, this));
+            this.$element.keyup($.proxy(this.keyup, this));
+            this.$element.blur($.proxy(this.hide_menu, this));
+        },
+
+        unbind: function() {
+            this.$element.off("keydown keyup blur");
+        },
 
         check_user_input: function() {
             var value = this.$element.attr("value");

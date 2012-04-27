@@ -21,23 +21,62 @@ function domainform_cb() {
     });
 }
 
-function accountform_init() {
+function generalform_init() {
+    $("#id_role").change(function(e) {
+        if ($(this).attr("value") == "SimpleUsers") {
+            $("#id_username").autocompleter({
+                from_character: "@",
+                choices: get_domains_list
+            });
+            $("#id_email").addClass("disabled")
+                .attr("readonly", "")
+                .autocompleter("unbind");
+        } else {
+            $("#id_email").removeClass("disabled")
+                .attr("readonly", null)
+                .autocompleter("listen");
+        }
+    });
+}
+
+function mailform_init() {
     $("#id_aliases").dynamic_input();
     $("#id_email").autocompleter({
         from_character: "@",
         choices: get_domains_list
     });
+    $("#id_role").trigger("change");
     $("#id_domains")
         .autocompleter({
             choices: get_domains_list
         })
         .dynamic_input();
+
+}
+
+function accountform_init() {
+    generalform_init();
+    mailform_init();
+}
+
+function mailform_prefill() {
+    if ($("#id_role").attr("value") == "SimpleUsers") {
+        $("#id_email").attr("value", $("#id_username").attr("value"));
+    }
 }
 
 function newaccount_cb() {
-    $('input:text:visible:first').focus();
     accountform_init();
-    $("#wizard").cwizard({formid: "newaccount_form"});
+    $("#wizard").cwizard({
+        formid: "newaccount_form",
+        transition_callbacks: {
+            1: mailform_prefill
+        },
+        error_callbacks: {
+            1: generalform_init,
+            2: mailform_init
+        }
+    });
 }
 
 function editaccount_cb() {

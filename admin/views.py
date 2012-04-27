@@ -350,7 +350,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
         submit_label=_("Create")
         )
     cwizard = CreationWizard(create_account)
-    cwizard.add_step(AccountFormGeneralPwd, _("General"),
+    cwizard.add_step(AccountFormGeneral, _("General"),
                      [dict(classes="btn-inverse next", label=_("Next"))],
                      new_args=[request.user])
     cwizard.add_step(AccountFormMail, _("Mail"),
@@ -363,7 +363,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
             raise AdminError(data)
         if retcode == 1:
             return ajax_simple_response(dict(
-                    status="ok", title=cwizard.get_title(data + 1)
+                    status="ok", title=cwizard.get_title(data + 1), stepid=data
                     ))
         if retcode == 2:
             messages.info(request, _("Account created"))
@@ -406,9 +406,6 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 
     if request.method == "POST":
         classes = {}
-        if request.POST.get("password1", "") == "" \
-                and request.POST.get("password2", "") == "":
-            classes["general"] = AccountFormGeneral
         form = AccountForm(request.user, request.POST, 
                            instances=instances, classes=classes)
         account.oldgroup = account.group
