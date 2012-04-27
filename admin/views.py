@@ -32,7 +32,9 @@ def domains(request):
     domains = request.user.get_domains()
     squery = request.GET.get("searchquery", None)
     if squery is not None:
-        domains = domains.filter(name__contains=squery)
+        q = Q(name__contains=squery)
+        q |= Q(domainalias__name__contains=squery)
+        domains = domains.filter(q).distinct()
     return render_listing(request, "domains", "admin/domains.html",
                           objects=domains, squery=squery)
 

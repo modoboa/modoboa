@@ -16,9 +16,9 @@
         },
 
         listen: function() {
-            $(".next").one("click", $.proxy(this.next, this));
-            $(".prev").one("click", $.proxy(this.prev, this));
-            $(".submit").one("click", $.proxy(this.submit, this));
+            $(".next").on("click", $.proxy(this.next, this));
+            $(".prev").on("click", $.proxy(this.prev, this));
+            $(".submit").on("click", $.proxy(this.submit, this));
         },
 
         post: function(last) {
@@ -52,7 +52,6 @@
                 if (resp.respmsg) {
                     $(".modal-body").prepend(build_error_alert(resp.respmsg));
                 }
-                //this.listen();
             }, this));
         },
 
