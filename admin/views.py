@@ -97,10 +97,9 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     if not request.user.can_access(domain):
         raise PermDeniedException(_("You can't edit this domain"))
 
-    domadmins = map(lambda oaccess: oaccess.user, domain.owners.all())
     domadmins = filter(
         lambda u: request.user.can_access(u) and not u.is_superuser, 
-        domadmins
+        domain.admins
         )
     if not request.user.is_superuser:
         domadmins = filter(lambda u: u.group == "DomainAdmins", domadmins)
@@ -137,36 +136,11 @@ def deldomain(request):
             raise PermDeniedException(_("You can't delete this domain"))
         if mb and mb.domain == dom:
             raise AdminError(_("You can't delete your own domain"))
-
-        if len(dom.domainalias_set.all()):
-            events.raiseEvent("DomainAliasDeleted", dom.domainalias_set.all())
-        if len(dom.mailbox_set.all()):
-            events.raiseEvent("DeleteMailbox", dom.mailbox_set.all())
-        events.raiseEvent("DeleteDomain", dom)
-        ungrant_access_to_object(dom)
         dom.delete(keepdir=keepdir)
 
     msg = ungettext("Domain deleted", "Domains deleted", len(selection))
     messages.info(request, msg, fail_silently=True)
     return ajax_response(request)
-
-@login_required
-@permission_required("admin.view_mailboxes")
-@check_domain_access
-def mailboxes_search(request):
-    if request.method != "POST":
-        return
-    local_part, domain = split_mailbox(request.POST["search"])
-    query = Q(address__startswith=local_part)
-    if domain is not None and domain != "":
-        query &= Q(domain__name__startswith=domain)
-    if request.GET.has_key("domid"):
-        query = Q(domain=request.GET["domid"]) & query
-    elif not request.user.is_superuser:
-        query = Q(domain__in=request.user.get_domains()) & query
-    mboxes = Mailbox.objects.filter(query)
-    result = map(lambda mb: mb.full_address, mboxes)
-    return ajax_simple_response(result)
 
 def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None):
     """Alias validation
@@ -175,7 +149,7 @@ def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None
     """
     error = None
     if form.is_valid():
-        form.set_recipients(request.user)
+        form.set_recipients()
         try:
             alias = form.save()
         except IntegrityError:
@@ -202,11 +176,14 @@ def _new_alias(request, tplname, formclass, ctx, successmsg):
         def callback(user, alias):
             grant_access_to_object(user, alias, is_owner=True)
             events.raiseEvent("MailboxAliasCreated", user, alias)
+            if user.is_superuser:
+                for admin in alias.domain.admins:
+                    grant_access_to_object(admin, alias)
 
-        form = formclass(request.POST)
+        form = formclass(request.user, request.POST)
         return _validate_alias(request, form, successmsg, tplname, ctx, callback)
 
-    form = formclass()
+    form = formclass(request.user)
     ctx["form"] = form
     return _render(request, tplname, ctx)
 
@@ -231,15 +208,15 @@ def newforward(request):
                       ForwardForm, ctx, _("Forward created"))
 
 def _edit_alias(request, alias, tplname, formclass, ctx, successmsg):
-    if not request.user.can_access(alias.domain):
-        raise PermDeniedException(_("You do not have access to this domain"))
+    if not request.user.can_access(alias):
+        raise PermDeniedException(_("You do not have access to this alias"))
     ctx.update(title=alias.full_address, action_label=_("Update"),
                action_classes="submit")
     if request.method == "POST":
-        form = formclass(request.POST, instance=alias)
+        form = formclass(request.user, request.POST, instance=alias)
         return _validate_alias(request, form, successmsg, tplname, ctx)
 
-    form = formclass(instance=alias)
+    form = formclass(request.user, instance=alias)
     ctx["form"] = form
     return _render(request, tplname, ctx)
 
@@ -264,10 +241,8 @@ def _del_alias(request, msg, msgs):
     selection = request.GET["selection"].split(",")
     for alid in selection:
         alias = Alias.objects.get(pk=alid)
-        if not request.user.can_access(alias.domain):
-            raise PermDeniedException(_("You do not have access to this domain"))
-        events.raiseEvent("MailboxAliasDeleted", alias)
-        ungrant_access_to_object(alias)
+        if not request.user.can_access(alias):
+            raise PermDeniedException(_("!"))
         alias.delete()
 
     msg = ungettext(msg, msgs, len(selection))
@@ -289,32 +264,29 @@ def delforward(request):
 @login_required
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
 def identities(request, tplname='admin/identities.html'):
-    accounts_list = []
+    idents_list = request.user.get_identities()
     squery = request.GET.get("searchquery", None)
-    mbalias_q = Q(domain__in=request.user.get_domains())
     if squery:
-        accounts = User.objects.filter(username__contains=squery)
+        uct = get_content_type(User)
+        uids = idents_list.filter(content_type=uct).values_list("object_id", flat=True)
+        objects = [u for u in User.objects.filter(pk__in=uids, username__contains=squery)]
+        alct = get_content_type(Alias)
+        alids = idents_list.filter(content_type=alct).values_list("object_id", flat=True)
         if squery.find('@') != -1:
             local_part, domname = split_mailbox(squery)
             mbaliases = Alias.objects.filter(address__contains=local_part,
                                              domain__name__contains=domname)
+            q = Q(address__contains=local_part, domain__name__contains=domname)
         else:
-            mbaliases = Alias.objects.filter(mbalias_q & Q(address__contains=squery))
+            q = Q(address__contains=squery)
+        objects += [al for al in Alias.objects.filter(Q(pk__in=alids) & q)]
     else:
-        accounts = User.objects.all()
-        mbaliases = Alias.objects.filter(mbalias_q)
-
-    for account in accounts:
-        if request.user.can_access(account) or \
-                account.has_mailbox and request.user.can_access(account.mailbox_set.all()[0].domain):
-            accounts_list += [account]
-    for mbalias in mbaliases:
-        if len(mbalias.get_recipients()) >= 2 or \
-                not len(mbalias.mboxes.all()):
-            accounts_list += [mbalias]
-
+        objects = []
+        for oa in idents_list:
+            if oa.content_object:
+                objects.append(oa.content_object)
     return render_listing(request, "identities", tplname, 
-                          objects=accounts_list, squery=squery)
+                          objects=objects, squery=squery)
 
 @login_required
 @permission_required("auth.add_user")
@@ -332,7 +304,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
     def create_account(steps):
         """Account creation callback
 
-        Called when all the creation steps have been validated.
+        Called when all creation steps have been validated.
 
         :param steps: the steps data
         """
@@ -343,7 +315,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
         events.raiseEvent("AccountCreated", account)
 
         mailform = steps[1]["form"]
-        mailform.save(request.user, account)
+        mb = mailform.save(request.user, account)
 
     ctx = dict(
         title=_("New account"),
@@ -386,14 +358,11 @@ def newaccount(request, tplname='admin/newaccount.html'):
 @transaction.commit_on_success
 def editaccount(request, accountid, tplname="common/tabforms.html"):
     account = User.objects.get(pk=accountid)
+    if not request.user.can_access(account):
+        raise PermDeniedException(_("You can't access this account"))
+    mb = None
     if account.has_mailbox:
         mb = account.mailbox_set.all()[0]
-        if not request.user.can_access(mb.domain):
-            raise PermDeniedException(_("You don't have access to this domain"))
-    else:
-        if not request.user.can_access(account):
-            raise PermDeniedException(_("You can't access this account"))
-        mb = None
 
     instances = dict(general=account, mail=mb, perms=account)
     events.raiseEvent("FillAccountInstances", request.user, account, instances)
@@ -439,25 +408,6 @@ def delaccount(request):
     msg = ungettext("Account deleted", "Accounts deleted", len(selection))
     messages.info(request, msg, fail_silently=True)
     return ajax_response(request)
-
-@login_required
-@permission_required("auth.add_account")
-@check_domain_access
-def search_account(request):
-    search = request.POST.get("search", None)
-    if search is None:
-        return ajax_simple_response([])
-
-    query = Q(username__startswith=search)
-    query &= Q(is_superuser=False)
-    if not request.user.has_perm("admin.add_domain"):
-        query &= Q(groups__name="SimpleUsers")
-    else:
-        query &= ~Q(groups__name__in=["DomainAdmins"])
-
-    users = User.objects.filter(query)
-    result = map(lambda u: u.username, users.all())
-    return ajax_simple_response(result)
 
 @login_required
 @permission_required("admin.add_domain")

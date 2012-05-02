@@ -183,6 +183,11 @@ class PermissionsTestCase(ModoTestCase):
     fixtures = ["test_content.json"]
 
     def setUp(self):
+        """
+        FIXME: je n'arrive pas à générer des données de test incluant
+        déjà les permissions (cf. table ObjectAccess). C'est pour
+        cette raison que j'assigne le domaine test.com ici...
+        """
         from modoboa.lib.permissions import grant_access_to_object
 
         super(PermissionsTestCase, self).setUp()
@@ -191,9 +196,13 @@ class PermissionsTestCase(ModoTestCase):
             username=self.user.username, role="DomainAdmins", 
             is_active=self.user.is_active, email="user@test.com"
             )
-        grant_access_to_object(User.objects.get(username="admin@test.com"),
-                               Domain.objects.get(name="test.com"))
-        
+        self.admin = User.objects.get(username="admin@test.com")
+        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % self.admin.id, dict(
+                username=self.admin.username, role="DomainAdmins", 
+                is_active=self.admin.is_active, email="admin@test.com",
+                password1="", password2="", domains="test.com"
+                ))
+
     def tearDown(self):
         self.clt.logout()
 
@@ -224,7 +233,7 @@ class PermissionsTestCase(ModoTestCase):
         self.assertEqual(self.clt.login(username="admin@test.com", password="toto"),
                          True)
         admin = User.objects.get(username="admin@test.com")
-        values = dict(username="admin@test.com", first_name="Admin",
+        values = dict(username="admin@test.com", first_name="Admin", password1="", password2="",
                       is_active=True, email="admin@test.com")
         self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % admin.id, values)
         self.assertEqual(admin.group, "DomainAdmins")
@@ -246,5 +255,7 @@ class PermissionsTestCase(ModoTestCase):
         response = self.clt.get("/modoboa/admin/accounts/edit/%d/" % user.id,
                                 HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response["Content-Type"], "application/json")
+
+
 
         

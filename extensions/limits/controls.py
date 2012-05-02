@@ -32,6 +32,8 @@ def inc_limit(user, lname):
         pass
 
 def dec_limit(user, lname):
+    if user is None:
+        return
     try:
         user.limitspool.dec_curvalue(lname)
     except LimitsPool.DoesNotExist:
@@ -96,7 +98,6 @@ def dec_nb_mailboxes(mailboxes):
     for mailbox in mailboxes:
         owner = get_object_owner(mailbox)
         dec_limit(owner, 'mailboxes_limit')
-        # FIXME: Gestion des alias ici
 
 @events.observe('MailboxAliasCreated')
 def inc_nb_mbaliases(user, mailboxalias):

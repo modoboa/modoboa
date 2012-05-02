@@ -10,15 +10,12 @@ urlpatterns = patterns(
     (r'^domains/delete/$', 'deldomain'),
     (r'^domains/import/$', 'import_domains'),
     
-    (r'^mailboxes/search/$', 'mailboxes_search'),
-    
     (r'^settings/$', 'viewparameters'),
     (r'^settings/parameters/$', 'viewparameters'),
     (r'^settings/parameters/save/$', 'saveparameters'),
     (r'^settings/extensions/$', 'viewextensions'),
     (r'^settings/extensions/save/$', 'saveextensions'),
     
-    (r'^permissions/searchaccount/$', 'search_account'),
     (r'^permissions/remove/$', 'remove_permission'),
 
     (r'^identities/$', 'identities'),

@@ -113,10 +113,17 @@ def modify_user_record(mailbox, oldmailbox):
     u.save()
 
 @events.observe("DeleteMailbox")
-def remove_user_record(mailbox):
+def remove_user_record(mailboxes):
     from models import Users
+    from modoboa.admin.models import Mailbox
 
-    Users.objects.get(email=mailbox.full_address).delete()
+    if isinstance(mailboxes, Mailbox):
+        mailboxes = [mailboxes]
+    for mailbox in mailboxes:
+        try:
+            Users.objects.get(email=mailbox.full_address).delete()
+        except Users.DoesNotExist:
+            pass
 
 @events.observe("GetStaticContent")
 def extra_static_content(user):

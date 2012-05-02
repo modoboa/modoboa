@@ -95,8 +95,6 @@ class DomainForm(forms.ModelForm, DynamicForm):
             for dalias in d.domainalias_set.all():
                 if not len(filter(lambda name: self.cleaned_data[name] == dalias.name, 
                                   self.cleaned_data.keys())):
-                    events.raiseEvent("DomainAliasDeleted", dalias)
-                    ungrant_access_to_object(dalias)
                     dalias.delete()
         return d
 
@@ -114,7 +112,8 @@ class DlistForm(forms.ModelForm, DynamicForm):
         model = Alias
         fields = ("enabled",)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
         super(DlistForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['email', 'recipients', 'enabled']
 
@@ -138,12 +137,14 @@ class DlistForm(forms.ModelForm, DynamicForm):
     def clean_email(self):
         localpart, domname = split_mailbox(self.cleaned_data["email"])
         try:
-            Domain.objects.get(name=domname)
+            domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise forms.ValidationError(_("Domain does not exist"))
+        if not self.user.can_access(domain):
+            raise forms.ValidationError(_("You don't have access to this domain"))
         return self.cleaned_data["email"]
 
-    def set_recipients(self, user):
+    def set_recipients(self):
         """Recipients dispatching
 
         We make a difference between 'local' recipients (the ones hosted
@@ -166,7 +167,7 @@ class DlistForm(forms.ModelForm, DynamicForm):
             except Domain.DoesNotExist:
                 domain = None
             if domain:
-                if not user.can_access(domain):
+                if not self.user.can_access(domain):
                     raise PermDeniedException(v)
                 try:
                     mb = Mailbox.objects.get(domain=domain, address=local_part)
@@ -209,7 +210,8 @@ class ForwardForm(forms.ModelForm):
         model = Alias
         fields = ("enabled",)
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
         super(ForwardForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['email', 'recipient', 'enabled']
         if kwargs.has_key("instance"):
@@ -220,9 +222,11 @@ class ForwardForm(forms.ModelForm):
     def clean_email(self):
         localpart, domname = split_mailbox(self.cleaned_data["email"])
         try:
-            Domain.objects.get(name=domname)
+            domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise forms.ValidationError(_("Domain does not exist"))
+        if not self.user.can_access(domain):
+            raise forms.ValidationError(_("You don't have access to this domain"))
         return self.cleaned_data["email"]
 
     def clean_recipient(self):
@@ -235,7 +239,7 @@ class ForwardForm(forms.ModelForm):
             raise forms.ValidationError(_("Local addresses are forbidden"))
         return self.cleaned_data["recipient"]
         
-    def set_recipients(self, user):
+    def set_recipients(self):
         pass
 
     def save(self, commit=True):
@@ -286,32 +290,33 @@ class AccountFormGeneral(forms.ModelForm):
         self.user = user
         if user.group == "DomainAdmins":
             del self.fields["role"]
-            return
+        else:
+            self.fields["role"].choices = \
+                [('', ugettext_lazy("Choose"))] + get_account_roles(user)
 
-        self.fields["role"].choices = \
-            [('', ugettext_lazy("Choose"))] + get_account_roles(user)
         if kwargs.has_key("instance"):
             if len(args) \
                and (args[0].get("password1", "") == "" \
                     and args[0].get("password2", "") == ""):
                 self.fields["password1"].required = False
                 self.fields["password2"].required = False
-
-            u = kwargs["instance"]
-            if u.is_superuser:
-                role = "SuperAdmins"
-            else:
-                try:
-                    role = u.groups.all()[0].name
-                except IndexError:
-                    pass
-            self.fields["role"].initial = role
+            if user.group != "DomainAdmins":
+                u = kwargs["instance"]
+                if u.is_superuser:
+                    role = "SuperAdmins"
+                else:
+                    try:
+                        role = u.groups.all()[0].name
+                    except IndexError:
+                        pass
+                self.fields["role"].initial = role
 
     def clean_username(self):
         from django.core.validators import validate_email
-        
+        if not self.cleaned_data.has_key("role"):
+            return self.cleaned_data["username"]
         if self.cleaned_data["role"] != "SimpleUsers":
-            return self.cleaned_data
+            return self.cleaned_data["username"]
         validate_email(self.cleaned_data["username"])
         return self.cleaned_data["username"]
 
@@ -326,7 +331,7 @@ class AccountFormGeneral(forms.ModelForm):
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)
         if commit:
-            if self.cleaned_data.has_key("password1"):
+            if self.cleaned_data["password1"] != "":
                 account.set_password(self.cleaned_data["password1"])
             account.save()
             role = None
@@ -396,6 +401,10 @@ class AccountFormMail(forms.Form, DynamicForm):
                                        self.cleaned_data["quota"])
                 grant_access_to_object(user, self.mb, is_owner=True)
                 events.raiseEvent("CreateMailbox", user, self.mb)
+                if user.is_superuser:
+                    for admin in self.mb.domain.admins:
+                        grant_access_to_object(admin, self.mb)
+                    
         else:
             if self.cleaned_data["email"] != self.mb.full_address:
                 if self.mb.rename_dir(domname, locpart):
@@ -426,6 +435,9 @@ class AccountFormMail(forms.Form, DynamicForm):
             al.save([self.mb], [])
             grant_access_to_object(user, al, is_owner=True)
             events.raiseEvent("MailboxAliasCreated", user, al)
+            if user.is_superuser:
+                for admin in al.domain.admins:
+                    grant_access_to_object(admin, al)
 
         for alias in self.mb.alias_set.all():
             if len(alias.get_recipients()) >= 2:
@@ -470,11 +482,21 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             if not value in current_domains:
                 domain = Domain.objects.get(name=value)
                 grant_access_to_object(self.account, domain)
+                for mb in domain.mailbox_set.all():
+                    grant_access_to_object(self.account, mb)
+                    grant_access_to_object(self.account, mb.user)
+                for al in Alias.objects.filter(domain=domain):
+                    grant_access_to_object(self.account, al)
 
         for domain in self.account.get_domains():
             if not len(filter(lambda name: self.cleaned_data[name] == domain.name, 
                               self.cleaned_data.keys())):
                 ungrant_access_to_object(domain, self.account)
+                for mb in domain.mailbox_set.all():
+                    ungrant_access_to_object(mb, self.account)
+                    ungrant_access_to_object(mb.user, self.account)
+                for al in Alias.objects.filter(domain=domain):
+                    ungrant_access_to_object(al, self.account)
 
 class AccountForm(TabForms):
 

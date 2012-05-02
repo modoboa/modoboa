@@ -7,20 +7,21 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class Migration(DataMigration):
 
+    def grant_access(self, orm, user, ct, obj, is_owner=False):
+        objaccess = orm["admin.ObjectAccess"](
+            user=user, content_type=ct, object_id=obj.id
+            )
+        objaccess.is_owner = is_owner
+        objaccess.save()
+
     def forwards(self, orm):
-        "Write your forwards methods here."
-        superusers = orm.User.objects.filter(is_superuser=True)
+        superusers = orm["auth.User"].objects.filter(is_superuser=True)
         if not len(superusers):
             # Empty db, nothing to do
             return
 
-        domadmins = orm.User.objects.filter(groups__name='DomainAdmins')
-        domains = orm.Domain.objects.all()
-        deferred_admin = []
-
-        domct = orm['contenttypes.ContentType'].objects.get(
-            app_label='admin', model='domain'
-            )
+        # 1: all superadmins must be able to access every defined
+        # object. (user, domain, domain alias, mailbox, alias)
         try:
             uct = orm['contenttypes.ContentType'].objects.get(
                 app_label='admin', model='user'
@@ -30,35 +31,48 @@ class Migration(DataMigration):
                 name='user', app_label='admin', model='user'
                 )
             uct.save()
+        for account in orm["admin.User"].objects.all():
+            for i, su in enumerate(superusers):
+                self.grant_access(orm, su, uct, account, i == 0)
+        domct = orm['contenttypes.ContentType'].objects.get(
+            app_label='admin', model='domain'
+            )
+        for dom in orm["admin.Domain"].objects.all():
+            for i, su in enumerate(superusers):
+                self.grant_access(orm, su, domct, dom, i == 0)
+        dalct = orm['contenttypes.ContentType'].objects.get(
+            app_label='admin', model='domainalias'
+            )
+        for domalias in orm["admin.DomainAlias"].objects.all():
+            for i, su in enumerate(superusers):
+                self.grant_access(orm, su, dalct, domalias, i == 0)
+        mbct = orm['contenttypes.ContentType'].objects.get(
+            app_label='admin', model='mailbox'
+            )
+        for mb in orm["admin.Mailbox"].objects.all():
+            for i, su in enumerate(superusers):
+                self.grant_access(orm, su, mbct, mb, i == 0)
+        alct = orm['contenttypes.ContentType'].objects.get(
+            app_label='admin', model='alias'
+            )
+        for alias in orm["admin.Alias"].objects.all():
+            for i, su in enumerate(superusers):
+                self.grant_access(orm, su, alct, alias, i == 0)
 
-        for da in domadmins:
-            for i, su in enumerate(superusers):
-                objaccess = orm.ObjectAccess(
-                    user=su, content_type=uct, object_id=da.id
-                    )
-                if i == 0:
-                    objaccess.is_owner = True
-                objaccess.save()
-                    
+        # 2: domain admins must have access to their domain's content
+        for da in orm["admin.User"].objects.filter(groups__name='DomainAdmins'):
             dom = da.mailbox_set.all()[0].domain
-            objaccess = orm.ObjectAccess(
-                user=da, content_type=domct, object_id=dom.id, is_owner=True
-                )
-            objaccess.save()
-            deferred_admin += [dom]
-        
-        for dom in domains:
-            for i, su in enumerate(superusers):
-                objaccess = orm.ObjectAccess(
-                    user=su, content_type=domct, object_id=dom.id
-                    )
-                if not dom in deferred_admin:
-                    objaccess.is_owner = True
-                objaccess.save()
+            self.grant_access(orm, da, domct, dom)
+
+            for mb in dom.mailbox_set.all():
+                self.grant_access(orm, da, mbct, mb)
+                self.grant_access(orm, da, uct, mb.user)
+            for al in dom.alias_set.all():
+                self.grant_access(orm, da, alct, al)
 
     def backwards(self, orm):
         "Write your backwards methods here."
-
+        raise RuntimeError("Cannot revert this migration")
 
     models = {
         'admin.alias': {

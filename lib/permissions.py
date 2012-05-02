@@ -78,6 +78,15 @@ def ungrant_access_to_object(obj, user=None):
     else:
         ObjectAccess.objects.filter(content_type=ct, object_id=obj.id).delete()
 
+def ungrant_access_to_objects(objects):
+    """Cancel all accesses for a given objects list
+
+    :param objects: a list of objects inheriting from ``model.Model``
+    """
+    for obj in objects:
+        ct = get_content_type(obj)
+        ObjectAccess.objects.filter(content_type=ct, object_id=obj.id).delete()
+
 def get_object_owner(obj):
     """Return the unique owner of this object
 
@@ -90,29 +99,3 @@ def get_object_owner(obj):
     except ObjectAccess.DoesNotExist:
         return None
     return entry.user
-
-def check_domain_access(f):
-    """Decorator to check if the current user can access a domain
-
-    This decorator only applies to url that contain a 'domid' or
-    'mbid' parameter. (for a direct access)
-
-    Raise a ``PermDeniedError`` if the current user can't view the
-    requested object.
-    """
-    @wraps(f)
-    def dec(request, **kwargs):
-        if not request.user.is_superuser:
-            domain = None
-            domid = request.GET.get("domid", None)
-            if domid:
-                domain = Domain.objects.get(pk=domid)
-            else:
-                mbid = request.GET.get("mbid", None)
-                if mbid:
-                    domain = Mailbox.objects.get(pk=mbid).domain
-            if domain and not request.user.can_access(domain):
-                raise PermDeniedError(_("You can't access this domain"))
-
-        return f(request, **kwargs)
-    return dec

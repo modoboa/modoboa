@@ -69,24 +69,19 @@ class User(DUser):
         if fromuser == self:
             raise AdminError(_("You can't delete your own account"))
 
+        if not fromuser.can_access(self):
+            raise PermDeniedException("You don't have access to this account")
+
         if self.has_mailbox:
             mb = self.mailbox_set.all()[0]
-            if not fromuser.can_access(mb.domain):
-                raise PermDeniedException(_("You don't have access to this domain"))
-            events.raiseEvent("DeleteMailbox", mb)
-            ungrant_access_to_object(mb)
+            if not fromuser.can_access(mb):
+                raise PermDeniedException(_("You don't have access to this mailbox"))
             mb.delete(keepdir=keep_mb_dir)
-        elif not fromuser.can_access(self):
-            raise PermDeniedException(_("You don't have access to this account"))
 
         owner = get_object_owner(self)
-        for ooentry in self.objectaccess_set.all():
-            if ooentry.is_owner:
-                if ooentry.content_object is not None:
-                    grant_access_to_object(owner, ooentry.content_object, True)
-                else:
-                    print "ORPHELIN!!!"
-            ooentry.delete()
+        for ooentry in self.objectaccess_set.filter(is_owner=True):
+            if ooentry.content_object is not None:
+                grant_access_to_object(owner, ooentry.content_object, True)
 
         events.raiseEvent("AccountDeleted", self)
         ungrant_access_to_object(self)
@@ -204,24 +199,22 @@ class User(DUser):
             return False
         return True
 
+    def get_identities(self):
+        from modoboa.lib.permissions import get_content_type
+
+        userct = get_content_type(self)
+        alct = get_content_type(Alias)
+        return self.objectaccess_set.filter(content_type__in=[userct, alct])
+
     def get_domains(self):
         """Return the domains belonging to this user
         
         The result is a ``QuerySet`` object, so this function can be used
         to fill ``ModelChoiceField`` objects.
-        
-        :param user: a ``User`` object
         """
         if self.is_superuser:
             return Domain.objects.all()
-        result = Domain.objects.filter(owners__user=self).distinct()
-
-        userct = self.get_content_type()
-        for entry in self.objectaccess_set.filter(content_type=userct):
-            if not entry.content_object.belongs_to_group('DomainAdmins'):
-                continue
-            result |= entry.content_object.get_domains().distinct()
-        return result
+        return Domain.objects.filter(owners__user=self)
 
     def get_domaliases(self):
         """Return the domain aliases that belong to this user
@@ -327,6 +320,9 @@ class ObjectAccess(models.Model):
 
     class Meta:
         unique_together = (("user", "content_type", "object_id"),)
+
+    def __unicode__(self):
+        return "%s => %s (%s)" % (self.user, self.content_object, self.content_type)
             
 class ObjectDates(models.Model):
     """Dates recording for admin objects
@@ -400,6 +396,10 @@ class Domain(DatesAware):
     def mbalias_count(self):
         return len(self.alias_set.all())
 
+    @property
+    def admins(self):
+        return [oa.user for oa in self.owners.filter(user__is_superuser=False)]
+        
     def create_dir(self):
         if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
             path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
@@ -421,17 +421,21 @@ class Domain(DatesAware):
                                         self.name))
         return True
 
-    def delete(self, *args, **kwargs):
-        keepdir = False
-        if kwargs.has_key("keepdir"):
-            keepdir = kwargs["keepdir"]
-            del kwargs["keepdir"]
-        # Not very optimized but currently, this is the simple way
-        # I've found to delete all related objects (mailboxes, users
-        # and aliases)!
-        # for mb in self.mailbox_set.all():
-        #     mb.delete(keepdir=keepdir)
-        super(Domain, self).delete(*args, **kwargs)
+    def delete(self, keepdir=False):
+        from modoboa.lib.permissions import ungrant_access_to_object, ungrant_access_to_objects
+
+        if len(self.domainalias_set.all()):
+            events.raiseEvent("DomainAliasDeleted", self.domainalias_set.all())
+            ungrant_access_to_objects(self.domainalias_set.all())
+        if len(self.mailbox_set.all()):
+            events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
+            ungrant_access_to_objects(self.mailbox_set.all())
+        if len(self.alias_set.all()):
+            events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
+            ungrant_access_to_objects(self.alias_set.all())
+        events.raiseEvent("DeleteDomain", self)
+        ungrant_access_to_object(self)
+        super(Domain, self).delete()
         if not keepdir:
             self.delete_dir()
 
@@ -468,6 +472,12 @@ class DomainAlias(DatesAware):
 
     def __unicode__(self):
         return self.name
+
+    def delete(self):
+        from modoboa.lib.permissions import ungrant_access_to_object
+        events.raiseEvent("DomainAliasDeleted", self)
+        ungrant_access_to_object(self)
+        super(DomainAlias, self).delete()
 
 class Mailbox(DatesAware):
     address = models.CharField(
@@ -668,16 +678,16 @@ class Mailbox(DatesAware):
         self.save(username=line[1].strip(), name=name, 
                   password=line[2].strip(), enabled=True)
 
-    def delete(self, *args, **kwargs):
-        keepdir = False
-        if kwargs.has_key("keepdir"):
-            keepdir = kwargs["keepdir"]
-            del kwargs["keepdir"]
+    def delete(self, keepdir=False):
+        from modoboa.lib.permissions import ungrant_access_to_object
+
+        events.raiseEvent("DeleteMailbox", self)
+        ungrant_access_to_object(self)
         for alias in self.alias_set.all():
             alias.mboxes.remove(self)
             if len(alias.mboxes.all()) == 0:
                 alias.delete()
-        super(Mailbox, self).delete(*args, **kwargs)
+        super(Mailbox, self).delete()
         if not keepdir:
             self.delete_dir()
 
@@ -730,6 +740,13 @@ class Alias(DatesAware):
         for t in curmboxes:
             if not t in int_rcpts:
                 self.mboxes.remove(t)
+
+    def delete(self):
+        from modoboa.lib.permissions import ungrant_access_to_object
+
+        events.raiseEvent("MailboxAliasDeleted", self)
+        ungrant_access_to_object(self)
+        super(Alias, self).delete()
 
     def get_recipients(self):
         """Return the recipients list
