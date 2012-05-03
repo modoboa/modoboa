@@ -96,27 +96,3 @@ msgstr "Lade..."
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Suchen..."
-
-#~ msgid "Edit folder"
-#~ msgstr "Ordner bearbeiten"
-
-#~ msgid "Folder deleted"
-#~ msgstr "Ordner gelöscht"
-
-#~ msgid "Sending..."
-#~ msgstr "Sende …"
-
-#~ msgid "Done"
-#~ msgstr "Abgeschlossen"
-
-#~ msgid "Waiting..."
-#~ msgstr "Warte..."
-
-#~ msgid "Message sent"
-#~ msgstr "Nachrichten gesendet"
-
-#~ msgid "Preferences saved"
-#~ msgstr "Einstellungen gespeichert"
-
-#~ msgid "Parameters saved"
-#~ msgstr "Parameter gespeichert"
