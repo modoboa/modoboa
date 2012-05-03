@@ -35,6 +35,7 @@ class User(DUser):
     """
     class Meta:
         proxy = True
+        ordering = ["username"]
 
     password_expr = re.compile(r'\{(\w+)\}(.+)')
 
@@ -70,12 +71,12 @@ class User(DUser):
             raise AdminError(_("You can't delete your own account"))
 
         if not fromuser.can_access(self):
-            raise PermDeniedException("You don't have access to this account")
+            raise PermDeniedException
 
         if self.has_mailbox:
             mb = self.mailbox_set.all()[0]
             if not fromuser.can_access(mb):
-                raise PermDeniedException(_("You don't have access to this mailbox"))
+                raise PermDeniedException
             mb.delete(keepdir=keep_mb_dir)
 
         owner = get_object_owner(self)
@@ -383,6 +384,7 @@ class Domain(DatesAware):
             ("view_domain", "View domain"),
             ("view_domains", "View domains"),
             )
+        ordering = ["name"]
         
     @property
     def domainalias_count(self):
@@ -672,7 +674,7 @@ class Mailbox(DatesAware):
         except Domain.DoesNotExist:
             raise AdminError(_("Cannot import this mailbox because the associated domain does not exist"))
         if not user.can_access(self.domain):
-            raise PermDeniedException(_("You don't have access to this domain"))
+            raise PermDeniedException
 
         name = "%s %s" % (line[3].strip(), line[4].strip())
         self.save(username=line[1].strip(), name=name, 
@@ -711,6 +713,7 @@ class Alias(DatesAware):
             ("view_aliases", "View aliases"),
             )
         unique_together = (("address", "domain"),)
+        ordering = ["domain__name", "address"]
 
     @property
     def full_address(self):
@@ -775,7 +778,7 @@ class Alias(DatesAware):
         except Domain.DoesNotExist:
             raise AdminError(_("Domain does not exist"))
         if not user.can_access(domain):
-            raise PermDeniedException(_("You can't access this domain"))
+            raise PermDeniedException
         self.address = localpart
         self.domain = domain
         self.enabled = True

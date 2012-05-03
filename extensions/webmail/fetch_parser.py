@@ -102,6 +102,9 @@ def parse_fetch_response(data):
     while cpt < len(data):
         content = ()
         while cpt < len(data) and data[cpt] != ')':
+            if type(data[cpt]) == str:
+                # FIXME : probably an unsolicited response
+                continue
             content += data[cpt]
             cpt += 1
         cpt += 1

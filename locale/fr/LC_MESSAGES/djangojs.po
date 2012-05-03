@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-25 14:47+0200\n"
+"POT-Creation-Date: 2012-05-03 11:05+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -83,7 +83,7 @@ msgstr "Aucun administrateur de domaine défini"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: static/js/confirmation.js:84 static/js/history.js:229
+#: static/js/confirmation.js:84 static/js/history.js:230
 msgid "Internal Error"
 msgstr "Erreur interne"
 

@@ -99,7 +99,6 @@ History.prototype = {
 
         if (this.paramslength() != 0) {
             args += "?";
-            console.log(this.params);
             $.each(this.params, function(key, value) {
                 if (args != "?") {
                     args += "&";

@@ -49,7 +49,7 @@ def graphs(request):
                    graphs_loc=parameters.get_admin("GRAPHS_LOCATION"))
     if view == "global":
         if not request.user.is_superuser:
-            raise PermDeniedException(_("you're not allowed to see those statistics"))
+            raise PermDeniedException
         tplvars.update(domain=view)
     else:
         try:
@@ -57,7 +57,7 @@ def graphs(request):
         except Domain.DoesNotExist:
             raise ModoboaException(_("Domain not found. Please enter a full name"))
         if not request.user.can_access(domain):
-            raise PermDeniedException(_("You don't have access to this domain"))
+            raise PermDeniedException
         tplvars.update(domain=domain.name)
 
     if period == "custom":

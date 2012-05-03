@@ -92,6 +92,12 @@ def identities_menu(user):
          "modal" : True,
          "modalcb" : "newaccount_cb",
          "url" : reverse(admin.views.newaccount)},
+        {"name" : "newalias",
+         "label" : _("Add alias"),
+         "img" : "icon-plus",
+         "modal" : True,
+         "modalcb" : "aliasform_cb",
+         "url" : reverse(admin.views.newalias)},
         {"name" : "newforward",
          "label" : _("Add forward"),
          "img" : "icon-plus",
@@ -148,12 +154,19 @@ def identity_actions(user, iid):
                  "img" : "icon-trash",
                  "title" : _("Delete this distribution list")},
                 ]
-        else:
+        elif alias.extmboxes != "":
             actions = [
                 {"name" : "delforward",
                  "url" : reverse(admin.views.delforward) + "?selection=%s" % objid,
                  "img" : "icon-trash",
                  "title" : _("Delete this forward")},
+                ]
+        else:
+            actions = [
+                {"name" : "delalias",
+                 "url" : reverse(admin.views.delalias) + "?selection=%s" % objid,
+                 "img" : "icon-trash",
+                 "title" : _("Delete this alias")},
                 ]
     return render_actions(actions)
 

@@ -17,6 +17,12 @@ function get_account_list(container) {
     });
 }
 
+function get_mboxes_list(container) {
+    $.getJSON("{% url modoboa.admin.views.mboxes_list %}", function(data) {
+        container.value = data;
+    });
+}
+
 $(document).ready(function() {
    $("a[name=delaccount]").confirm({
        question: gettext("Delete this account?"),
@@ -27,6 +33,9 @@ $(document).ready(function() {
    });
    $("a[name=delforward]").confirm({
        question: gettext("Delete this forward?")
+   });
+   $("a[name=delalias]").confirm({
+       question: gettext("Delete this alias?")
    });
    $("#pagination_bar").find(".disabled").click(function(e) {
        e.preventDefault();

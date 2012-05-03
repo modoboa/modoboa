@@ -11,7 +11,8 @@ class Migration(DataMigration):
         try:
             sugroup = orm["auth.Group"].objects.get(name="SimpleUsers")
         except orm["auth.Group"].DoesNotExist:
-            return
+            sugroup = orm["auth.Group"](name="SimpleUsers")
+            sugroup.save()
         for account in orm["auth.User"].objects.all():
             if not len(account.groups.all()):
                 account.groups.add(sugroup)

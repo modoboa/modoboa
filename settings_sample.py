@@ -20,7 +20,11 @@ DATABASES = {
         "USER" : "",
         "PASSWORD" : "",
         "HOST" : "",
-        "PORT" : ""
+        "PORT" : "",
+        # MySQL users only
+        # "OPTIONS" : {
+        #     "init_command" : "SET foreign_key_checks = 0;",
+        # },
     },
     # "pfxadmin" : {
     #     "ENGINE" : "django.db.backends.",

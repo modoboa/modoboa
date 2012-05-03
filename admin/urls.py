@@ -26,11 +26,15 @@ urlpatterns = patterns(
     (r'^accounts/edit/(?P<accountid>\d+)/$', 'editaccount'),
     (r'^accounts/delete/$', 'delaccount'),
 
+    (r'^mailboxes/list/$', 'mboxes_list'),
+
     (r'^distriblists/new/$', 'newdlist'),
     (r'^distriblists/delete/$', 'deldlist'),
 
     (r'^forwards/new/$', 'newforward'),
     (r'^forwards/delete/$', 'delforward'),
 
-    (r'^aliases/edit/(?P<alid>\d+)/$', 'editalias')
+    (r'^aliases/new/$', 'newalias'),
+    (r'^aliases/edit/(?P<alid>\d+)/$', 'editalias_dispatcher'),
+    (r'^aliases/delete/$', 'delalias'),
     )

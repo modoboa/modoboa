@@ -2,8 +2,9 @@
 from functools import wraps
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
-from modoboa.admin.models import ObjectAccess
+from modoboa.admin.models import ObjectAccess, IntegrityError
 import events
+from exceptions import ModoboaException
 
 def get_content_type(obj):
     """Simple function that use the right method to retrieve a content type
@@ -58,7 +59,7 @@ def grant_access_to_object(user, obj, is_owner=False):
                                  object_id=obj.id, is_owner=is_owner)
         objaccess.save()
     except IntegrityError, e:
-        raise AdminError(_("Failed to grant access (%s)" % str(e)))
+        raise ModoboaException(_("Failed to grant access (%s)" % str(e)))
 
 def ungrant_access_to_object(obj, user=None):
     """Ungrant access to an object for a specific user

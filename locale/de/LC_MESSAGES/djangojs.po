@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.8.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-25 14:47+0200\n"
+"POT-Creation-Date: 2012-05-03 11:05+0200\n"
 "PO-Revision-Date: 2012-01-10 22:49+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
@@ -85,7 +85,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: static/js/confirmation.js:84 static/js/history.js:229
+#: static/js/confirmation.js:84 static/js/history.js:230
 msgid "Internal Error"
 msgstr ""
 

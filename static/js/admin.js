@@ -95,6 +95,9 @@ function aliasform_cb() {
         choices: get_domains_list
     });
     $("#id_recipients").dynamic_input();
+    $("#id_int_recipient").autocompleter({
+        choices: get_mboxes_list
+    })
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
             formid: "aliasform",

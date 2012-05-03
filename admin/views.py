@@ -95,7 +95,7 @@ def newdomain(request, tplname="admin/newdomainform.html"):
 def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     domain = Domain.objects.get(pk=dom_id)
     if not request.user.can_access(domain):
-        raise PermDeniedException(_("You can't edit this domain"))
+        raise PermDeniedException
 
     domadmins = filter(
         lambda u: request.user.can_access(u) and not u.is_superuser, 
@@ -133,7 +133,7 @@ def deldomain(request):
 
     for dom in Domain.objects.filter(id__in=selection):
         if not request.user.can_access(dom):
-            raise PermDeniedException(_("You can't delete this domain"))
+            raise PermDeniedException
         if mb and mb.domain == dom:
             raise AdminError(_("You can't delete your own domain"))
         dom.delete(keepdir=keepdir)
@@ -200,6 +200,16 @@ def newdlist(request):
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
+def newalias(request):
+    ctx = dict(title=_("New alias"), 
+               action=reverse(newalias),
+               formid="aliasform")
+    return _new_alias(request, "common/generic_modal_form.html", 
+                      AliasForm, ctx, _("Alias created"))
+
+@login_required
+@permission_required("admin.add_alias")
+@transaction.commit_on_success
 def newforward(request):
     ctx = dict(title=_("New forward"), 
                action=reverse(newforward),
@@ -209,7 +219,7 @@ def newforward(request):
 
 def _edit_alias(request, alias, tplname, formclass, ctx, successmsg):
     if not request.user.can_access(alias):
-        raise PermDeniedException(_("You do not have access to this alias"))
+        raise PermDeniedException
     ctx.update(title=alias.full_address, action_label=_("Update"),
                action_classes="submit")
     if request.method == "POST":
@@ -219,6 +229,10 @@ def _edit_alias(request, alias, tplname, formclass, ctx, successmsg):
     form = formclass(request.user, instance=alias)
     ctx["form"] = form
     return _render(request, tplname, ctx)
+
+def editalias(request, alias, ctx):
+    return _edit_alias(request, alias, "common/generic_modal_form.html",
+                       AliasForm, ctx, _("Alias modified"))
 
 def editdlist(request, alias, ctx):
     return _edit_alias(request, alias, "admin/dlistform.html",
@@ -230,24 +244,32 @@ def editforward(request, alias, ctx):
 
 @login_required
 @permission_required("admin.change_alias")
-def editalias(request, alid):
+def editalias_dispatcher(request, alid):
     alias = Alias.objects.get(pk=alid)
-    ctx = dict(action=reverse(editalias, args=[alias.id]), formid="aliasform")
+    ctx = dict(action=reverse(editalias_dispatcher, args=[alias.id]), formid="aliasform")
     if len(alias.get_recipients()) >= 2:
         return editdlist(request, alias, ctx)
-    return editforward(request, alias, ctx)
+    if alias.extmboxes != "":
+        return editforward(request, alias, ctx)
+    return editalias(request, alias, ctx)
 
 def _del_alias(request, msg, msgs):
     selection = request.GET["selection"].split(",")
     for alid in selection:
         alias = Alias.objects.get(pk=alid)
         if not request.user.can_access(alias):
-            raise PermDeniedException(_("!"))
+            raise PermDeniedException
         alias.delete()
 
     msg = ungettext(msg, msgs, len(selection))
     messages.info(request, msg)
     return ajax_response(request)
+
+@login_required
+@permission_required("admin.delete_alias")
+@transaction.commit_on_success
+def delalias(request):
+    return _del_alias(request, "Alias deleted", "Aliases deleted")
 
 @login_required
 @permission_required("admin.delete_alias")
@@ -285,6 +307,7 @@ def identities(request, tplname='admin/identities.html'):
         for oa in idents_list:
             if oa.content_object:
                 objects.append(oa.content_object)
+    objects = sorted(objects, key=lambda o: o.identity)
     return render_listing(request, "identities", tplname, 
                           objects=objects, squery=squery)
 
@@ -294,6 +317,12 @@ def accounts_list(request):
     accs = User.objects.filter(is_superuser=False).exclude(groups__name='SimpleUsers')
     res = map(lambda a: a.username, accs.all())
     return ajax_simple_response(res)
+
+@login_required
+@permission_required("admin.add_mailbox")
+def mboxes_list(request):
+    mboxes = request.user.get_mailboxes()
+    return ajax_simple_response([mb.full_address for mb in mboxes])
 
 @login_required
 @permission_required("auth.add_user")
@@ -359,7 +388,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
 def editaccount(request, accountid, tplname="common/tabforms.html"):
     account = User.objects.get(pk=accountid)
     if not request.user.can_access(account):
-        raise PermDeniedException(_("You can't access this account"))
+        raise PermDeniedException
     mb = None
     if account.has_mailbox:
         mb = account.mailbox_set.all()[0]
@@ -422,7 +451,7 @@ def remove_permission(request):
     except (User.DoesNotExist, Domain.DoesNotExist):
         raise AdminError(_("Invalid request"))
     if not request.user.can_access(account) or not request.user.can_access(domain):
-        raise AdminError(_("Permission denied"))
+        raise PermDeniedException
     ungrant_access_to_object(domain, account)
     return ajax_simple_response(dict(status="ok"))
 

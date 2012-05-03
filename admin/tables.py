@@ -54,7 +54,7 @@ class IdentitiesTable(tables.Table):
         "identity", label=ugettext_lazy("Email/Username"),
         modal=True,
         urlpattern={"User" : "modoboa.admin.views.editaccount",
-                    "Alias" : "modoboa.admin.views.editalias"},
+                    "Alias" : "modoboa.admin.views.editalias_dispatcher"},
         modalcb={"User" : "editaccount_cb", "Alias" : "aliasform_cb"}
         )
     name_or_rcpt = tables.Column("name_or_rcpt", label=ugettext_lazy("Fullname/Recipient"))

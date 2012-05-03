@@ -196,28 +196,22 @@ class DlistForm(forms.ModelForm, DynamicForm):
             self.save_m2m()
         return dlist
 
-class ForwardForm(forms.ModelForm):
+class GenericAliasForm(forms.ModelForm):
     email = forms.EmailField(
-        label=ugettext_lazy("Email address"),
-        help_text=ugettext_lazy("The forwarded address")
+        label=ugettext_lazy("Address"),
+        help_text=ugettext_lazy("A valid e-mail address")
         )
-    recipient = forms.EmailField(
-        label=ugettext_lazy("Recipient"),
-        help_text=ugettext_lazy("The address to forward messages to")
-        )
-
+   
     class Meta:
         model = Alias
         fields = ("enabled",)
     
     def __init__(self, user, *args, **kwargs):
         self.user = user
-        super(ForwardForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['email', 'recipient', 'enabled']
+        super(GenericAliasForm, self).__init__(*args, **kwargs)
         if kwargs.has_key("instance"):
-            forward = kwargs["instance"]
-            self.fields["email"].initial = forward.full_address
-            self.fields["recipient"].initial = forward.extmboxes
+            alias = kwargs["instance"]
+            self.fields["email"].initial = alias.full_address
 
     def clean_email(self):
         localpart, domname = split_mailbox(self.cleaned_data["email"])
@@ -229,27 +223,73 @@ class ForwardForm(forms.ModelForm):
             raise forms.ValidationError(_("You don't have access to this domain"))
         return self.cleaned_data["email"]
 
-    def clean_recipient(self):
-        local_part, domname = split_mailbox(self.cleaned_data["recipient"])
+    def set_recipients(self):
+        pass
+
+    def _save(self):
+        alias = super(GenericAliasForm, self).save(commit=False)
+        localpart, domname = split_mailbox(self.cleaned_data["email"])
+        alias.address = localpart
+        alias.domain = Domain.objects.get(name=domname)
+        return alias
+
+class AliasForm(GenericAliasForm):
+    int_recipient = forms.EmailField(
+        label=ugettext_lazy("Recipient"),
+        help_text=ugettext_lazy("A local recipient address")
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(AliasForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['email', 'int_recipient', 'enabled']
+        if kwargs.has_key("instance"):
+            alias = kwargs["instance"]
+            self.fields["int_recipient"].initial = alias.mboxes.all()[0].full_address
+
+    def clean_int_recipient(self):
+        localpart, domname = split_mailbox(self.cleaned_data["int_recipient"])
+        try:
+            self.rcpt_mb = Mailbox.objects.get(address=localpart, domain__name=domname)
+        except Mailbox.DoesNotExist:
+            raise forms.ValidationError(_("Mailbox does not exist"))
+        if not self.user.can_access(self.rcpt_mb):
+            raise forms.ValidationError(_("You can't access this mailbox"))
+        return self.cleaned_data["int_recipient"]
+
+    def save(self, commit=True):
+        alias = self._save()
+        if commit:
+            alias.save([self.rcpt_mb], [])
+        return alias
+
+class ForwardForm(GenericAliasForm):
+    ext_recipient = forms.EmailField(
+        label=ugettext_lazy("Recipient"),
+        help_text=ugettext_lazy("An external recipient address")
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(ForwardForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['email', 'ext_recipient', 'enabled']
+        if kwargs.has_key("instance"):
+            alias = kwargs["instance"]
+            self.fields["ext_recipient"].initial = alias.extmboxes
+
+    def clean_ext_recipient(self):
+        local_part, domname = split_mailbox(self.cleaned_data["ext_recipient"])
         try:
             domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             pass
         else:
-            raise forms.ValidationError(_("Local addresses are forbidden"))
-        return self.cleaned_data["recipient"]
-        
-    def set_recipients(self):
-        pass
+            raise forms.ValidationError(_("Local recipients are forbidden"))
+        return self.cleaned_data["ext_recipient"]
 
     def save(self, commit=True):
-        forward = super(ForwardForm, self).save(commit=False)
-        localpart, domname = split_mailbox(self.cleaned_data["email"])
-        forward.address = localpart
-        forward.domain = Domain.objects.get(name=domname)
+        alias = self._save()
         if commit:
-            forward.save([], [self.cleaned_data["recipient"]])
-        return forward
+            alias.save([], [self.cleaned_data["ext_recipient"]])
+        return alias
 
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=ugettext_lazy("Select a file"))
@@ -389,7 +429,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             raise AdminError(_("Domain does not exist"))
 
         if not user.can_access(domain):
-            raise PermDeniedException(_("You don't have access to this domain"))
+            raise PermDeniedException
 
         if not hasattr(self, "mb") or self.mb is None:
             try:

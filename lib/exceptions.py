@@ -10,11 +10,13 @@ class ModoboaException(Exception):
     pass
 
 class PermDeniedException(ModoboaException):
-    def __init__(self, msg):
+    def __init__(self, msg=None):
         self.msg = msg
 
     def __str__(self):
-        return _("Permission denied: %s" % self.msg)
+        if self.msg:
+            return _("Permission denied: %s" % self.msg)
+        return _("Permission denied")
 
 class NeedsMailboxException(ModoboaException):
     pass
