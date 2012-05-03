@@ -21,20 +21,28 @@ function domainform_cb() {
     });
 }
 
+function simpleuser_mode() {
+    $("#id_username").autocompleter({
+        from_character: "@",
+        choices: get_domains_list
+    });
+    $("#id_email").addClass("disabled")
+        .attr("readonly", "")
+        .autocompleter("unbind");
+}
+
+function normal_mode() {
+    $("#id_email").removeClass("disabled")
+        .attr("readonly", null)
+        .autocompleter("listen");
+}
+
 function generalform_init() {
     $("#id_role").change(function(e) {
         if ($(this).attr("value") == "SimpleUsers") {
-            $("#id_username").autocompleter({
-                from_character: "@",
-                choices: get_domains_list
-            });
-            $("#id_email").addClass("disabled")
-                .attr("readonly", "")
-                .autocompleter("unbind");
+            simpleuser_mode();
         } else {
-            $("#id_email").removeClass("disabled")
-                .attr("readonly", null)
-                .autocompleter("listen");
+            normal_mode();
         }
     });
 }
@@ -45,7 +53,11 @@ function mailform_init() {
         from_character: "@",
         choices: get_domains_list
     });
-    $("#id_role").trigger("change");
+    if ($("#id_role").length) {
+        $("#id_role").trigger("change");
+    } else {
+        simpleuser_mode();
+    }
     $("#id_domains")
         .autocompleter({
             choices: get_domains_list
@@ -60,7 +72,7 @@ function accountform_init() {
 }
 
 function mailform_prefill() {
-    if ($("#id_role").attr("value") == "SimpleUsers") {
+    if (!$("#id_role").length || $("#id_role").attr("value") == "SimpleUsers") {
         $("#id_email").attr("value", $("#id_username").attr("value"));
     }
 }

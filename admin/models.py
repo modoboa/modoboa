@@ -202,7 +202,7 @@ class User(DUser):
 
     def get_identities(self):
         from modoboa.lib.permissions import get_content_type
-
+    
         userct = get_content_type(self)
         alct = get_content_type(Alias)
         return self.objectaccess_set.filter(content_type__in=[userct, alct])
