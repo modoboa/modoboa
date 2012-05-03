@@ -10,3 +10,7 @@ class LoginForm(forms.Form):
         label=_("Password"),
         widget=forms.PasswordInput(attrs={"class" : "span3"})
         )
+    rememberme = forms.BooleanField(
+        initial=False,
+        required=False
+        )

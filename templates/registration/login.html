@@ -28,10 +28,11 @@
         <div class="row">
           <form method="post" action="{% url modoboa.auth.views.dologin %}" 
                 class="well span3">
-            {% render_form form %}
+            {% render_field form.username %}
+            {% render_field form.password %}
             <input type="hidden" name="next" value="{{ next }}" />
             <div class="form-actions">
-              <label class="pull-left checkbox">
+              <label class="pull-left checkbox" for="id_rememberme">
                 <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
               </label>
               <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
