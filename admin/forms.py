@@ -444,6 +444,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                 if user.is_superuser:
                     for admin in self.mb.domain.admins:
                         grant_access_to_object(admin, self.mb)
+                        grant_access_to_object(admin, self.mb.user)
                     
         else:
             if self.cleaned_data["email"] != self.mb.full_address:
