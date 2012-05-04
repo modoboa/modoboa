@@ -71,6 +71,8 @@ Webmail.prototype = {
             $.proxy(this.compose_loader, this));
         $(document).on("click", "a[name*=mark-]",
             $.proxy(this.send_mark_request, this));
+        $(document).on("click", "a[name=compress]",
+            $.proxy(this.compress, this));
         $(document).on("click", "a[name=empty]",
             $.proxy(this.empty, this));
         $(document).on("click", "#bottom-bar a",
@@ -167,7 +169,7 @@ Webmail.prototype = {
 
     go_back_to_listing: function() {
         var curmb = this.get_current_mailbox();
-        this.navobject.delparam("mailid").delparam("mbox")
+        this.navobject.reset()
             .setparams({action: "listmailbox", mbox: curmb});
         this.restore_nav_params();
         this.navobject.update();
@@ -189,10 +191,16 @@ Webmail.prototype = {
     },
 
     page_update: function(response) {
-        /*if (this.gspinner) {
-            this.gspinner.hide();
-        }*/
+        var curmb = this.get_current_mailbox();
+
         $(window).unbind("resize");
+        this.enable_mb_actions();
+        for (var idx in this.options.ro_mboxes) {
+            if (curmb == this.options.ro_mboxes[idx]) {
+                this.enable_mb_actions(false);
+                break;
+            }
+        }
         if (response.menu != undefined) {
             $("#menubar").html(response.menu);
             $("#searchfield").searchbar({navobj: this.navobject});
@@ -622,7 +630,9 @@ Webmail.prototype = {
                     $("body").notify("error", data.respmsg);
                     return;
                 }
-                cb.apply(this, [data]);
+                if (cb != undefined) {
+                    cb.apply(this, [data]);
+                }
             }, this)
         });
     },
@@ -637,8 +647,14 @@ Webmail.prototype = {
         });
     },
 
-    delete_message: function(e) {
+    compress: function(e) {
+        e.preventDefault();
         var $link = $(e.target);
+        this.send_mb_action($link.attr("href"));
+    },
+
+    delete_message: function(e) {
+        var $link = get_target(e, "a");
         e.preventDefault();
         $.ajax({
             url: $link.attr("href"),
@@ -757,13 +773,6 @@ Webmail.prototype = {
         this.store_nav_params();
         if (!$('li[name="' + curmb + '"]').hasClass("active")) {
             this.load_and_select_mailbox(curmb);
-        }
-        this.enable_mb_actions();
-        for (var idx in this.options.ro_mboxes) {
-            if (curmb == this.options.ro_mboxes[idx]) {
-                this.enable_mb_actions(false);
-                break;
-            }
         }
         this.page_update(resp);
         $("#emails").htmltable();

@@ -96,13 +96,16 @@ def menu(target, user):
 def create_user_record(user, mailbox):
     from models import Users
 
-    u = Users()
-    u.email = mailbox.full_address
-    u.fullname = mailbox.user.fullname
-    u.local = "1"
-    u.priority = 7
-    u.policy_id = 1
-    u.save()
+    try:
+        Users.objects.get(email=mailbox.full_address)
+    except Users.DoesNotExist:
+        u = Users()
+        u.email = mailbox.full_address
+        u.fullname = mailbox.user.fullname
+        u.local = "1"
+        u.priority = 7
+        u.policy_id = 1
+        u.save()
 
 @events.observe("ModifyMailbox")
 def modify_user_record(mailbox, oldmailbox):

@@ -55,7 +55,7 @@ def move(request):
             raise WebmailError(_("Invalid request"))
     mbc = get_imapconnector(request)
     mbc.move(request.GET["msgset"], request.session["mbox"], request.GET["to"])
-    resp = listmailbox(request, request.session["mbox"])
+    resp = listmailbox(request, request.session["mbox"], update_session=False)
     resp.update(status="ok")
     return ajax_simple_response(resp)
 
@@ -297,7 +297,7 @@ def set_nav_params(request):
         elif request.session["navparams"].has_key(p):
             del request.session["navparams"][p]
 
-def listmailbox(request, defmailbox="INBOX"):
+def listmailbox(request, defmailbox="INBOX", update_session=True):
     """Mailbox content listing
 
     Return a list of messages contained in the specified mailbox. The
@@ -309,13 +309,15 @@ def listmailbox(request, defmailbox="INBOX"):
     :return: a dictionnary
     """
     mbox = request.GET.get("mbox", defmailbox)
-    set_nav_params(request)
+    if update_session:
+        set_nav_params(request)
+        request.session["mbox"] = mbox
+
     lst = ImapListing(request.user, request.session["password"],
                       baseurl="?action=listmailbox&mbox=%s&" % mbox,
                       folder=mbox, 
                       elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
                       **request.session["navparams"])
-    request.session["mbox"] = mbox
     return lst.render(request, request.session["pageid"])
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):

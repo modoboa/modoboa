@@ -93,7 +93,7 @@ def listmailbox_menu(selection, folder, user):
          "label" : _("Actions"),
          "class" : "btn",
          "menu" : [
-                {"name" : "fdaction",
+                {"name" : "compress",
                  "label" : _("Compress folder"),
                  "url" : "compact/%s/" % folder}
                 ]
