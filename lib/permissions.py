@@ -68,6 +68,22 @@ def grant_access_to_object(user, obj, is_owner=False):
     except IntegrityError, e:
         raise ModoboaException(_("Failed to grant access (%s)" % str(e)))
 
+def grant_access_to_objects(user, objects, ct):
+    """Grant access to a collection of objects
+
+    All objects in the collection must share the same type (ie. ``ct``
+    applies to all objects).
+
+    :param user: a ``User`` object
+    :param objects: a list of objects
+    :param ct: the content type
+    """
+    for obj in objects:
+        try:
+            ObjectAccess.objects.create(user=user, content_type=ct, object_id=obj.id)
+        except IntegrityError:
+            pass
+    
 def ungrant_access_to_object(obj, user=None):
     """Ungrant access to an object for a specific user
 

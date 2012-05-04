@@ -138,6 +138,13 @@ def on_account_modified(old, new):
     if not new.group in ["DomainAdmins", "Resellers"]:
         move_pool_resource(owner, new)
 
+    try:
+        pool = new.limitspool
+    except LimitsPool.DoesNotExist:
+        p = LimitsPool(user=new)
+        p.save()
+        p.create_limits()
+
     if old.oldgroup == "DomainAdmins":
         if new.group != "DomainAdmins":
             dec_limit(owner, 'domain_admins_limit')

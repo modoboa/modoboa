@@ -367,6 +367,18 @@ class AccountFormGeneral(forms.ModelForm):
             raise forms.ValidationError(_("The two password fields didn't match."))
         return password2
 
+    def give_all_accesses(self, account):
+        """Give access to all objects defined in the database
+
+        Must be used when an account is promoted as a super user.
+
+        :param account: a ``User`` instance
+        """
+        grant_access_to_objects(account, User.objects.all(), get_content_type(User))
+        grant_access_to_objects(account, Domain.objects.all(), get_content_type(Domain))
+        grant_access_to_objects(account, DomainAlias.objects.all(), get_content_type(DomainAlias))
+        grant_access_to_objects(account, Mailbox.objects.all(), get_content_type(Mailbox))
+        grant_access_to_objects(account, Alias.objects.all(), get_content_type(Alias))
 
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)
@@ -383,7 +395,10 @@ class AccountFormGeneral(forms.ModelForm):
                 account.groups.clear()
                 if role == "SuperAdmins":
                     account.is_superuser = True
+                    self.give_all_accesses(account)
                 else:
+                    if account.is_superuser:
+                        ObjectAccess.objects.filter(user=account).delete()
                     account.is_superuser = False
                     account.groups.add(Group.objects.get(name=role))
                 account.save()
