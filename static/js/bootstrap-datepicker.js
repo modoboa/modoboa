@@ -24,7 +24,8 @@
 
 	var Datepicker = function(element, options){
 		this.element = $(element);
-		this.language = options.language in dates ? options.language : "en";
+		this.language = options.language||this.element.data('date-language')||"en";
+		this.language = this.language in dates ? this.language : "en";
 		this.format = DPGlobal.parseFormat(options.format||this.element.data('date-format')||'mm/dd/yyyy');
 		this.picker = $(DPGlobal.template)
 							.appendTo('body')
@@ -34,6 +35,8 @@
 							});
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on') : false;
+		if(this.component && this.component.length === 0)
+			this.component = false;
 
 		if (this.isInput) {
 			this.element.on({
@@ -45,6 +48,10 @@
 		} else {
 			if (this.component){
 				this.component.on('click', $.proxy(this.show, this));
+				var element = this.element.find('input');
+				element.on({
+					blur: $.proxy(this._hide, this)
+				})
 			} else {
 				this.element.on('click', $.proxy(this.show, this));
 			}
@@ -73,8 +80,8 @@
 				break;
 		}
 
-		this.weekStart = options.weekStart||this.element.data('date-weekstart')||dates[this.language].weekStart||0;
-		this.weekEnd = this.weekStart == 0 ? 6 : this.weekStart - 1;
+		this.weekStart = ((options.weekStart||this.element.data('date-weekstart')||dates[this.language].weekStart||0) % 7);
+		this.weekEnd = ((this.weekStart + 6) % 7);
 		this.startDate = -Infinity;
 		this.endDate = Infinity;
 		this.setStartDate(options.startDate||this.element.data('date-startdate'));
@@ -473,7 +480,8 @@
 					this.show();
 				return;
 			}
-			var dir, day, month;
+			var dateChanged = false,
+				dir, day, month;
 			switch(e.keyCode){
 				case 27: // escape
 					this.hide();
@@ -495,6 +503,7 @@
 					this.setValue();
 					this.update();
 					e.preventDefault();
+					dateChanged = true;
 					break;
 				case 38: // up
 				case 40: // down
@@ -512,11 +521,27 @@
 					this.setValue();
 					this.update();
 					e.preventDefault();
+					dateChanged = true;
 					break;
 				case 13: // enter
 					this.hide();
 					e.preventDefault();
 					break;
+			}
+			if (dateChanged){
+				this.element.trigger({
+					type: 'changeDate',
+					date: this.date
+				});
+				var element;
+				if (this.isInput) {
+					element = this.element;
+				} else if (this.component){
+					element = this.element.find('input');
+				}
+				if (element) {
+					element.change();
+				}
 			}
 		},
 
@@ -582,7 +607,9 @@
 		validParts: /dd?|mm?|MM?|yy(?:yy)?/g,
 		nonpunctuation: /[^ -\/:-@\[-`{-~\t\n\r]+/g,
 		parseFormat: function(format){
-			var separators = format.split(this.validParts),
+			// IE treats \0 as a string end in inputs (truncating the value),
+			// so it's a bad format delimiter, anyway
+			var separators = format.replace(this.validParts, '\0').split('\0'),
 				parts = format.match(this.validParts);
 			if (!separators || !separators.length || !parts || parts.length == 0){
 				throw new Error("Invalid date format.");
@@ -618,12 +645,23 @@
 			}
 			var parts = date ? date.match(this.nonpunctuation) : [],
 				date = new Date(),
-				val, filtered;
+				parsed = {},
+				setters_order = ['yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'd', 'dd'],
+				setters_map = {
+					yyyy: function(d,v){ return d.setFullYear(v); },
+					yy: function(d,v){ return d.setFullYear(2000+v); },
+					m: function(d,v){ return d.setMonth(v-1); },
+					d: function(d,v){ return d.setDate(v); },
+				},
+				val, filtered, part;
+			setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
+			setters_map['dd'] = setters_map['d'];
 			date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
 			if (parts.length == format.parts.length) {
 				for (var i=0, cnt = format.parts.length; i < cnt; i++) {
 					val = parseInt(parts[i], 10)||1;
-					switch(format.parts[i]) {
+					part = format.parts[i];
+					switch(part) {
 						case 'MM':
 							filtered = $(dates[language].months).filter(function(){
 								var m = this.slice(0, parts[i].length),
@@ -641,24 +679,12 @@
 							val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
 							break;
 					}
-					switch(format.parts[i]) {
-						case 'dd':
-						case 'd':
-							date.setDate(val);
-							break;
-						case 'mm':
-						case 'm':
-						case 'MM':
-						case 'M':
-							date.setMonth(val - 1);
-							break;
-						case 'yy':
-							date.setFullYear(2000 + val);
-							break;
-						case 'yyyy':
-							date.setFullYear(val);
-							break;
-					}
+					parsed[part] = val;
+				}
+				for (var i=0, s; i<setters_order.length; i++){
+					s = setters_order[i];
+					if (s in parsed)
+						setters_map[s](date, parsed[s])
 				}
 			}
 			return date;
