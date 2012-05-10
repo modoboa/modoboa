@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Modoboa-0.8.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-03 11:05+0200\n"
-"PO-Revision-Date: 2012-01-10 22:49+0100\n"
+"PO-Revision-Date: 2012-05-10 17:08+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@state-of-mind.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
 "Language: de\n"
@@ -37,11 +37,11 @@ msgstr "Diese Nachricht löschen?"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:169
 msgid "View full headers"
-msgstr ""
+msgstr "Vollansicht Header anzeigen"
 
 #: extensions/amavis_quarantine/static/js/quarantine.js:174
 msgid "Hide full headers"
-msgstr ""
+msgstr "Vollansicht Header ausblenden"
 
 #: extensions/sievefilters/static/js/lib.js:14
 msgid "Remove this filter?"
@@ -66,28 +66,28 @@ msgstr "aktiv"
 
 #: extensions/stats/static/js/stats.js:28
 msgid "Search a domain"
-msgstr ""
+msgstr "Domain suchen"
 
 #: extensions/webmail/static/js/webmail.js:499
-#, fuzzy
 msgid "Remove the selected mailbox?"
-msgstr "Diese Auswahl entfernen?"
+msgstr "Ausgewählte Mailbox entfernen?"
 
 #: extensions/webmail/static/js/webmail.js:513
 msgid "Mailbox removed"
-msgstr ""
+msgstr "Mailbox entfernt"
 
 #: static/js/admin.js:17
 msgid "No domain administrator defined"
-msgstr ""
+msgstr "Domain-Administrator fehlt"
 
 #: static/js/confirmation.js:45
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
-#: static/js/confirmation.js:84 static/js/history.js:230
+#: static/js/confirmation.js:84
+#: static/js/history.js:230
 msgid "Internal Error"
-msgstr ""
+msgstr "Interner Fehler"
 
 #: static/js/history.js:10
 msgid "Loading..."
@@ -96,3 +96,4 @@ msgstr "Lade..."
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Suchen..."
+
