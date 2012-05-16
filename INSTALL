@@ -16,8 +16,8 @@ For extensions (mandatories since 0.8.2):
 - `lxml python module <http://codespeak.net/lxml/>`_
 - `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
 - `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_
-- `ckeditor version 3.4.1+ <http://ckeditor.com/>`_
 - `sievelib python module <http://pypi.python.org/pypi/sievelib>`_
+- `ckeditor version 3.4.1+ <http://ckeditor.com/>`_
 
 .. _howtoinstall:
 
@@ -31,7 +31,7 @@ Download the latest Modoboa's tarball and extract it::
   $ cd modoboa
 
 Then, enter the *modoboa* directory, create a *settings.py* file (you
-can use *settings-sample.py* as a model). Specify database relative
+can use *settings-sample.py* as an example). Specify database relative
 informations. You must choose between *MySQL*, *PostgreSQL* or
 *sqlite*, other types are not supported by major email projects like
 *postfix* or *dovecot*.
@@ -51,14 +51,10 @@ this is the reason why you must add the ``--migrate`` option.
 At the end of this command, a default super administrator is
 available:
 
- * Username: admin
- * Password: password
+* Username: admin
+* Password: password
 
 You may change its password the first time you log into Modoboa.
-
-Finally, create the ``scripts`` directory::
-
-  $ mkdir scripts
 
 Time zone and language
 ----------------------
@@ -192,8 +188,8 @@ Then, all you have to do is to modify the `settings.py` file:
 
     AUTHENTICATION_BACKENDS = (
       'django_auth_ldap.backend.LDAPBackend',
+      'modoboa.lib.authbackends.SimpleBackend',
       'django.contrib.auth.backends.ModelBackend',
-      'modoboa.lib.authbackends.SimpleBackend'
     )
 
 * Set the required parameters to establish the communication with your
@@ -253,12 +249,76 @@ requires a migration.
 0.9: global UI refactoring, new *limits* extension and more
 -----------------------------------------------------------
 
+.. note::
+   Many files have been renamed/removed for this version. I recommend
+   that you backup important files (*settings.py*, etc.) elsewhere
+   (ie. */tmp* for example). Then, remove the *modoboa* directory,
+   extract the new tarball at the same place, rename the new directory
+   to *modoboa* and copy the files you've just backup into it.
 
+.. note::
+   If the first super administrator you created is named ``admin``,
+   its password will be changed to ``password`` at the end of this
+   upgrade. Don't forget to modify it!
+
+#. Edit the *settings.py* file and update the following variables
+   (just copy/paste their new content)::
+
+    MIDDLEWARE_CLASSES = (
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
+        'modoboa.lib.middleware.AjaxLoginRedirect',
+        'modoboa.lib.middleware.CommonExceptionCatcher',
+        'modoboa.lib.middleware.ExtControlMiddleware',
+    )
+
+    AUTHENTICATION_BACKENDS = (
+        'modoboa.lib.authbackends.SimpleBackend',
+        'django.contrib.auth.backends.ModelBackend',
+    )
+
+#. **For MySQL users only**, add the following option to your database
+   configuration::
+
+    DATABASES = {
+        "default" : {
+            # ...
+            # MySQL users only
+            "OPTIONS" : {
+                "init_command" : "SET foreign_key_checks = 0;",
+            },
+        }
+    }
+
+#. Add ``'modoboa.extensions.limits'`` to ``INSTALLED_APPS``
+
+#. Update your database (make sure to create a backup before launching
+   the following command)::
+
+    $ ./manage.py syncdb --migrate
+
+#. If you are4 using the *stats* extension, please rename the
+   *<modoboa_dir>/static/stats* directory to *<modoboa_dir>/static/graphs*
+
+#. Restart the python instance(s) that serve *Modoboa*
+
+#. Log into Modoboa, go to *Modoboa > Extensions*, uncheck all
+   extensions, save. Then, check the extensions you want to use and
+   save again.
+
+#. **For Dovecot users only**, you need to modify the
+   ``password_query`` (file */etc/dovecot/dovecot-sql.conf* by default
+   on a Debian system) like this::
+
+    password_query = SELECT email AS user, password FROM auth_user WHERE email='%u'
 
 0.8.8: CSV import feature and minor fixes
 -----------------------------------------
 
-#. Edit the *settings.py* file and
+#. Edit the *settings.py* file and add
    ``'modoboa.lib.middleware.AjaxLoginRedirect'`` to the
    ``MIDDLEWARE_CLASSES`` variable like this::
 
@@ -677,7 +737,7 @@ For *MySQL* users, edit your */etc/dovecot/dovecot-sql.conf* and modify followin
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
   default_pass_scheme = CRYPT
-  password_query = SELECT concat(t1.address, '@', t2.name) AS user, password FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
+  password_query = SELECT email AS user, password FROM auth_user WHERE email='%u'
   user_query = SELECT concat(t2.name, '/', t1.path) AS home, uid, gid FROM admin_mailbox AS t1, admin_domain AS t2 WHERE t1.domain_id=t2.id AND t1.address='%n' AND t2.name='%d'
 
 Enable quotas support
@@ -946,6 +1006,19 @@ plugins activation:
 * To deactivate a plugin, go to the *admin -> settings -> extensions* page,
   uncheck the corresponding box and click on the *Apply* button.
 
+Per-admin limits
+----------------
+
+This extension offers a way to define limits about how many objects
+(aliases, mailboxes) a domain administrator can create.
+
+It also brings a new role: ``Reseller``. A reseller is a domain
+administrator that can also manipulates domains and assign permissions
+to domain administrators.
+
+If you don't want to limit particular object type, just set the
+associated value to -1.
+
 Amavisd-new quarantine
 ----------------------
 
@@ -1069,8 +1142,6 @@ Then run the following commands to update Modoboa SQL schema and content::
 
   $ python manage.py syncdb
   $ python manage.py migrate postfix-autoreply
-  $ export PYTHONPATH=$PWD/..
-  $ DJANGO_SETTINGS_MODULE=modoboa.settings ./scripts/postfix_autoreply/upgrade_autoreply.py
 
 The user that executes the autoreply script needs to access
 *settings.py*. You must apply proper permissions on this file. For

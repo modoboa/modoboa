@@ -32,7 +32,6 @@ events = [
     "AccountCreated",
     "AccountModified",
     "AccountDeleted",
-    "DomainAdminActions",
 
     "PasswordChange",
     

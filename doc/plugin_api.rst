@@ -182,32 +182,26 @@ displayed. Possible values are:
 See :ref:`usermenudisplay` for a description of what callbacks that
 listen to this event must return.
 
-AdminFooterDisplay
-------------------
+GetStaticContent
+----------------
 
-Raised when the footer (ie. bottom of the page) of listing pages
-inside the ``admin`` application is displayed. Plugins can listen to
-this event when they want to add specific information into that place.
+Let extensions add static content (ie. CSS or javascript) to default
+pages. It is pretty useful for functionalities that don't need a
+template but need javascript stuff.
 
 *Callback prototype*::
 
-  def callback(user, object_type): pass
+  def callback(user): pass
 
-* ``user`` is a ``User`` instance (the one that is displaying the page)
-* ``object_type`` is a string indicating which kind of object is
-  displayed. Possible values are:
+* ``user`` is a ``User`` instance corresponding to the currently
+  logged in user
 
- * ``domains``: a list of domains
- * ``domaliases``: a list of domain aliases
- * ``mailboxes``: a list of mailboxes
- * ``mbaliases``: a list of mailbox aliases
+Callbacks listening to this event must return a list of string.
 
-Registered callbacks must return a list of string objects.
+CanCreate
+---------
 
-CanCreateDomain
----------------
-
-Raised just before a user tries to access the ``newdomain`` function.
+Raised just before a user tries to create a new object.
 
 *Callback prototype*::
 
@@ -241,20 +235,6 @@ Raised when an existing domain is about to be deleted.
 
 * ``domain`` is a ``Domain`` instance
 
-CanCreateDomainAlias
---------------------
-
-Raised just before a user tries to access the ``newdomalias`` function.
-
-*Callback prototype*::
-
-  def callback(user): pass
-
-* ``user`` is a ``User`` instance
-
-Return ``True`` or ``False`` to indicate that the user can
-respectively create or not create a new domain alias.
-
 DomainAliasCreated
 ------------------
 
@@ -277,20 +257,6 @@ Raised when an existing domain alias is about to be deleted.
   def callback(domain_alias): pass
 
 * ``domain_alias`` is a ``DomainAlias`` instance
-
-CanCreateMailbox
-----------------
-
-Raised just before a user tries to access the ``newmailbox`` function.
-
-*Callback prototype*::
-
-  def callback(user): pass
-
-* ``user`` is a ``User`` instance
-
-Return ``True`` or ``False`` to indicate that the user can
-respectively create or not create a new mailbox.
 
 CreateMailbox
 -------------
@@ -327,20 +293,6 @@ Raised when an existing mailbox is modified.
 * ``newmailbox`` is a ``Mailbox`` instance containing the new values
 * ``oldmailbox`` is a ``Mailbox`` instance containing the old values
 
-CanCreateMailboxAlias
----------------------
-
-Raised just before a user tries to access the ``newmbalias`` function.
-
-*Callback prototype*::
-
-  def callback(user): pass
-
-* ``user`` is a ``User`` instance
-
-Return ``True`` or ``False`` to indicate that the user can
-respectively create or not create a new mailbox alias.
-
 MailboxAliasCreated
 -------------------
 
@@ -364,64 +316,115 @@ Raised when an existing mailbox alias is about to be deleted.
 
 * ``mailbox_alias`` is an ``Alias`` instance
 
-.. _permsgettables:
-
-PermsGetTables
+AccountCreated
 --------------
 
-Raised when the different permission lists (one per role) are about to
-be displayed. 
+Raised when a new account is created.
 
 *Callback prototype*::
 
-  def callback(request): pass
+  def callback(account): pass
 
-* ``request`` is a ``Request`` instance
+* ``account`` is the newly created account (``User`` instance)
 
-Callbacks that listen to this event must return a list of
-dictionnaries (corresponding to tables). Each dictionnary must contain
-at least the following elements::
 
-  {"id" : "table_id",
-   "title" : _("The title corresponding to this table"),
-   "rel" : "x y",
-   "content" : MyPermClass().get(request)}
+AccountModified
+---------------
 
-For ``rel``, replace x and y with the *Add form* size (the one that
-appears when you click on the ``Add permission`` button.
+Raised when an existing account is modified.
 
-For ``content``, replace *MyPermClass* with the appropriate name.
+*Callback prototype*::
 
-.. _permsgetclass:
+  def callback(oldaccount, newaccount): pass
 
-PermsGetClass
+* ``oldaccount`` is the account before it is modified
+
+* ``newaccount`` is the account after the modification
+
+AccountDeleted
+--------------
+
+Raised when an existing account is deleted.
+
+*Callback prototype*::
+
+  def callback(account): pass
+
+* ``oldaccount`` is the account that is going to be deleted
+
+ExtraAccountForm
+----------------
+
+Let extensions add new forms to the global account edition form (the
+one with tabs).
+
+*Callback prototype*::
+
+  def callback(user, account): pass
+
+* ``user`` is a ``User`` instance corresponding to the currently
+  logged in user
+
+* ``account`` is the account beeing modified (``User`` instance)
+
+Callbacks listening to the event must return a list of dictionnaries,
+each one must contain at least three keys::
+
+  {"id" : "<the form's id>",
+   "title" : "<the title used to present the form>",
+   "cls" : TheFormClassName}
+
+CheckExtraAccountForm
+---------------------
+
+When an account is being modified, this event lets extensions check if
+this account is concerned by a specific form.
+
+*Callback prototype*::
+
+  def callback(account, form): pass
+
+* ``account`` is the ``User`` instance beeing modified
+
+* ``form`` is a dictionnary (same content as for ``ExtraAccountForm``)
+
+Callbacks listening to this event must return a list containing one
+Boolean.
+
+FillAccountInstances
+--------------------
+
+When an account is beeing modified, this event is raised to fill extra
+forms.
+
+*Callback prototype*::
+
+  def callback(user, account, instances): pass
+
+* ``user`` is a ``User`` instance corresponding to the currently
+  logged in user
+
+* ``account`` is the ``User`` instance beeing modified
+
+* ``instances`` is a dictionnary where the callback will add
+  information needed to fill a specific form
+
+.. _getextraroles:
+
+GetExtraRoles
 -------------
 
-Raised to retrieve the class (inheriting from ``Permissions``)
-implementing a specific role. This event is used to add or delete or
-new instance of this role. 
-
-*Callback prototype*::
-
-  def callback(role): pass
-
-* ``role`` is a string indicating the role beeing added
-
-Callbacks listening to this event must return the class object
-corresponding to the given ``role`` argument.
-
-SuperAdminPromotion
--------------------
-
-Raised when an existing user becomes a super administrator. Each group
-that user belongs to is still available (inside the ``user.groups``
-queryset) at the time the event is raised.
+Let extensions define new administrative roles.
 
 *Callback prototype*::
 
   def callback(user): pass
 
-* ``user`` is a ``User`` instance
+* ``user`` is a ``User`` instance corresponding to the currently
+  logged in user
+
+Callbacks listening to this event must return a list of 2uple (two
+strings) which respect the following format: ``(value, label)``.
 
 ExtEnabled
 ----------
@@ -458,7 +461,41 @@ Some places in the interface let plugins add their own announcement
 * ``target`` is a string indicating the place where the announcement
   will appear:
 
- * ``loginpage`` : corresponds to the login page
+* ``loginpage`` : corresponds to the login page
+
+Callbacks listening to this event must return a list of string.
+
+TopNotifications
+----------------
+
+Let extensions add custom content into the top bar.
+
+*Callback prototype*::
+
+  def callback(user): pass
+
+* ``user`` is a ``User`` instance corresponding to the currently
+  logged in user
+
+Callbacks listening to this event must return a list of string.
+
+ExtraAdminContent
+-----------------
+
+Let extensions add extra content into the admin panel.
+
+*Callback prototype*::
+
+  def callback(user, target, currentpage): pass
+
+* ``user`` is a ``User`` instance corresponding to the currently
+  logged in user
+
+* ``target`` is a string indicating the place where the content will
+  be displayed. Possible values are : ``leftcol``
+
+* ``currentpage`` is a string indicating which page (or section) is
+  displayed. Possible values are : ``domains``, ``identities``
 
 Callbacks listening to this event must return a list of string.
 
@@ -516,16 +553,17 @@ disabled from the interface), use the following function::
 ``appname`` corresponds to your plugin's name, ie. the name of the
 directory containing the source code.
 
-Custom permission levels
-========================
+Custom administrative roles
+===========================
 
-Custom permissions roles can be added to Modoboa. If you to want to
-integrate the default permissions panel (*Admin > Permissions*), each
-role you add must inherit from the ``Permissions`` class (see file
-``admin/permissions.py``) and implement all its methods.
+Modoboa uses Django's internal permission system. Administrative roles
+are nothing more than groups (``Group`` instances).
 
-.. note::
-   See :ref:`permsgettables` and :ref:`permsgetclass` to learn how to
-   integrate your custom roles.
+If an extension needs to add new roles, it needs to follow those steps:
 
+#. Create a new ``Group`` instance. It can be done by providing
+   `fixtures <https://docs.djangoproject.com/en/dev/howto/initial-data/>`_ 
+   or by creating it into the extension ``init`` function
 
+#. A a new listener for the :ref:`getextraroles` event that will return
+   the group's name
