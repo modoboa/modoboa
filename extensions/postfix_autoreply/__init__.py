@@ -8,7 +8,7 @@ functionality into Postfix.
 """
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import ugettext as _, ugettext_lazy, get_language
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import static_url
 from models import *
@@ -121,7 +121,7 @@ def get_static_content(user):
 
     return """<script type="text/javascript">
 function arform_cb() {
-    $('#id_untildate').datepicker({format: 'yyyy-mm-dd'});
+    $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '%s'});
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
             error_cb: arform_cb,
@@ -130,4 +130,4 @@ function arform_cb() {
     });
 }
 </script>
-"""
+""" % get_language()

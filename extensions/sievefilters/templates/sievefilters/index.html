@@ -54,7 +54,7 @@ $(document).ready(function() {
   <ul id="menu" class="nav nav-list">
     <li class="nav-header">{% trans "Filter sets" %}</li>
     <li>
-      <select id="curfset" class="span2">
+      <select id="curfset" class="span12">
         {% if active_script %}
         <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
         {% endif %}

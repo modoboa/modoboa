@@ -11,6 +11,7 @@
     <script src="{{ MEDIA_URL }}js/jquery.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}js/bootstrap.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}js/bootstrap-datepicker.js" type="text/javascript"></script>
+    {% if LANGUAGE_CODE != "en" %}<script src="{{ MEDIA_URL }}js/locales/bootstrap-datepicker.{{ LANGUAGE_CODE }}.js" type="text/javascript"></script>{% endif %}
     <script src="{{ MEDIA_URL }}js/global.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}js/confirmation.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}js/notify.js" type="text/javascript"></script>
