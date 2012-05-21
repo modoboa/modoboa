@@ -112,7 +112,7 @@ class SQLemail(Email):
         self.qtype = ""
         self.qreason = ""
         if qreason != "":
-            self.qtype, self.qreason = qreason.split(',', 2)
+            self.qtype, self.qreason = qreason.split(',', 1)
 
     def get_header(self, msg, name):
         if msg.has_key(name):
