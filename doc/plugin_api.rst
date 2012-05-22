@@ -12,7 +12,7 @@ implementation provides the following possibilities:
 * Register callback actions for specific events
 
 Plugins are nothing more than Django applications with an extra piece
-of code that integrates them into Modoboa. Usually, the ``__init__.py`` file
+of code that integrates them into Modoboa. Usually, the *__init__.py* file
 will contain a complete description of the plugin:
 
 * Admin and user parameters
