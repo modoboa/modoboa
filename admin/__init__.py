@@ -42,7 +42,7 @@ def enabled_applications():
     """
     result = [("admin", "admin"), ("userprefs", "userprefs")]
     try:
-        exts = list(Extension.objects.filter(enabled=True))
+        exts = Extension.objects.filter(enabled=True)
     except DatabaseError:
         exts = []
     result += [(ext.name, ext.name) for ext in exts]

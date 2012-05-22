@@ -810,7 +810,8 @@ class Extension(models.Model):
         super(Extension, self).__init__(*args, **kwargs)
         if self.name:
             self.instance = exts_pool.get_extension(self.name)
-            self.__get_ext_dir()
+            if self.instance:
+                self.__get_ext_dir()
 
     def __get_ext_dir(self):
         modname = self.instance.__module__
