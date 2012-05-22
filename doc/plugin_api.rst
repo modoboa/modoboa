@@ -11,9 +11,9 @@ implementation provides the following possibilities:
 * Access and modify administrative objects (domains, mailboxes, etc.)
 * Register callback actions for specific events
 
-Plugins are nothing more than Django applications using a specific
-structure. The ``__init__.py`` file contains a complete description of
-the plugin:
+Plugins are nothing more than Django applications with an extra piece
+of code that integrates them into Modoboa. Usually, the ``__init__.py`` file
+will contain a complete description of the plugin:
 
 * Admin and user parameters
 * Observed events
@@ -29,52 +29,49 @@ how you can create your own plugin.
 Adding a custom plugin
 ======================
 
-All Modoboa plugins must be located inside the ``extensions``
-directory. To create a new plugin, execute the following steps:
+To create a new plugin, just start a new django application like
+this (into modoboa's directory)::
 
-* Run ``python manage.py startapp`` to get some basefiles for your plugin
-* Move the resulting directory inside the ``extensions`` one
+  $ python manage.py startapp
 
-The ``__init__.py`` file created inside your module's directory must
-follow a specific structure in order to be interpreted by Modoboa. The
-following functions are mandatory::
+Then, you need to register this application using the provided
+API. Just copy/paste the following example into the *__init__.py* file
+of the future extension::
 
-  def init():
-    """This function is called when the extension is activated.
-    """
-    pass
+  from modoboa.extensions import ModoExtension, exts_pool
+  
+  class MyExtension(ModoExtension):
+      name = "myext"
+      label = "My Extension"
+      version = "0.1"
+      description = "A description"
+      url = "myext_root_location" # optional, name is used if not defined
+      
+      def init(self):
+          """This method is called when the extension is activated.
+          """
+          pass
+          
+      def load(self):
+          """This method is called when Modoboa loads available and activated plugins.
 
-  def load():
-    """This function is called when Modoboa loads available and activated plugins.
+          Declare parameters and register events here.
+          """ 
+          pass
+          
+      def destroy(self):
+          """This function is called when a plugin is disabled from the interface.
+          
+          Unregister parameters and events here.
+          """
+          pass
 
-    Declare parameters and register events here.
-    """ 
-    pass
+  exts_pool.register_extension(MyExtension)
 
-  def destroy():
-    """This function is called when a plugin is disabled from the interface.
-
-    Unregister parameters and events here.
-    """
-    pass
-
-  def infos():
-    """This function is used to populate the plugins list 
-    available in the administration panel.
-
-    It must return a dictionnary containing at least three 
-    keys : "name", "version", "description"
-    """
-    return {
-        "name" : "Example plugin",
-	"version" : "1.0",
-	"description" : "Example description"
-        }
-
-Once you have filled ``__init__.py``, simply add your plugin's name to
-the ``INSTALLED_APPS`` variable located inside ``settings.py``. (use
-the same format as other plugins). Eventually, run ``python manage.py
-syncdb`` if your plugin provides custom tables.
+Once done, simply add your plugin's module name to the
+``INSTALLED_APPS`` variable located inside *settings.py*. Optionaly,
+run ``python manage.py syncdb`` if your plugin provides custom tables
+and ``python manage.py collectstatic`` to update static files.
 
 Events
 ======

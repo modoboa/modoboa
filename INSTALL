@@ -6,7 +6,7 @@ Requirements
 ============
 
 - `Python version 2.6+ <http://python.org/>`_
-- `Django version 1.2+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
+- `Django version 1.3+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
 - `south version 0.7+ <http://south.aeracode.org/>`_
 - `ldap python module <http://www.python-ldap.org/>`_
 
@@ -55,6 +55,10 @@ available:
 * Password: password
 
 You may change its password the first time you log into Modoboa.
+
+Finally, create the directory that will contain static content::
+
+  $ python manage.py collectstatic
 
 Time zone and language
 ----------------------
@@ -250,6 +254,10 @@ requires a migration.
 -----------------------------------------------------------
 
 .. note::
+   This version requires at least django 1.3. Make sure to update your
+   version before starting to migrate.
+
+.. note::
    Many files have been renamed/removed for this version. I recommend
    that you backup important files (*settings.py*, etc.) elsewhere
    (ie. */tmp* for example). Then, remove the *modoboa* directory,
@@ -280,6 +288,18 @@ requires a migration.
         'django.contrib.auth.backends.ModelBackend',
     )
 
+#. Add ``django.contrib.staticfiles`` to ``INSTALLED_APPS``
+
+#. Add the following new variables::
+
+    STATIC_ROOT = os.path.join(MODOBOA_DIR, 'sitestatic')
+    STATIC_URL = '/static/'
+
+#. Update the following variables (just copy/paste their new values)::
+
+    MEDIA_ROOT = os.path.join(MODOBOA_DIR, 'media')
+    MEDIA_URL = '/media/'
+
 #. **For MySQL users only**, add the following option to your database
    configuration::
 
@@ -300,7 +320,12 @@ requires a migration.
 
     $ ./manage.py syncdb --migrate
 
-#. If you are4 using the *stats* extension, please rename the
+#. Run the following command to initialize the directory that contains
+   static files::
+
+    $ ./manage.py collectstatic
+
+#. If you are using the *stats* extension, please rename the
    *<modoboa_dir>/static/stats* directory to *<modoboa_dir>/static/graphs*
 
 #. Restart the python instance(s) that serve *Modoboa*

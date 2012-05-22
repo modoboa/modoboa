@@ -20,15 +20,14 @@ urlpatterns = patterns('',
     (r'^accounts/logout/$', 'modoboa.auth.views.dologout'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('modoboa',),}),
-#    *loadextensions(prefix)
     *exts_pool.load_all(prefix)
 )
 
 if settings.DEBUG:
     urlpatterns += patterns(
-        '',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-         {'document_root': settings.MEDIA_ROOT})
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': settings.MEDIA_ROOT, 'show_indexes' : True}),
+        url(r'', include('django.contrib.staticfiles.urls')),
         )
 
 
