@@ -160,10 +160,13 @@ def viewmail(request, mail_id):
         rcpt = request.GET["rcpt"]
     else:
         rcpt = None
+
+    if request.user.has_mailbox:
         mb = Mailbox.objects.get(user=request.user)
-        msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=mb.full_address)
-        msgrcpt.rs = 'V'
-        msgrcpt.save()
+        if not rcpt or rcpt == mb.full_address:
+            msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=mb.full_address)
+            msgrcpt.rs = 'V'
+            msgrcpt.save()
     
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>

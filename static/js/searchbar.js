@@ -39,9 +39,9 @@
                     criteria: criteria
                 });
             } else {
-                this.options.navobj.deleteParam("pattern");
-                this.options.navobj.deleteParam("criteria");
-                this.options.navobj.deleteParam("page");
+                this.options.navobj.delparam("pattern");
+                this.options.navobj.delparam("criteria");
+                this.options.navobj.delparam("page");
             }
             this.options.navobj.update();
         }
