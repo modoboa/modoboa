@@ -10,49 +10,49 @@ from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy, get_language
 from modoboa.lib import events, parameters
-from modoboa.lib.webutils import static_url
+from modoboa.extensions import ModoExtension, exts_pool
 from models import *
 
-def infos():
-    return {
-        "name" : "Postfix autoreply",
-        "version" : "1.0",
-        "description" : _("Auto-reply (vacation) functionality using Postfix"),
-        "url" : "postfix_autoreply"
-        }
+class PostfixAutoreply(ModoExtension):
+    name = "postfix_autoreply"
+    label = "Postfix autoreply"
+    version = "1.0"
+    description = ugettext_lazy("Auto-reply (vacation) functionality using Postfix")
 
-def init():
-    from modoboa.admin.models import Domain
-
-    for dom in Domain.objects.all():
-        try:
-            trans = Transport.objects.get(domain="autoreply.%s" % dom.name)
-        except Transport.DoesNotExist:
-            onCreateDomain(None, dom)
-        else:
-            continue
-
-        for mb in dom.mailbox_set.all():
+    def init(self):
+        from modoboa.admin.models import Domain
+        
+        for dom in Domain.objects.all():
             try:
-                alias = Alias.objects.get(full_address=mb.full_address)
-            except Alias.DoesNotExist:
-                onCreateMailbox(None, mb)
+                trans = Transport.objects.get(domain="autoreply.%s" % dom.name)
+            except Transport.DoesNotExist:
+                onCreateDomain(None, dom)
+            else:
+                continue
 
-def load():
-    parameters.register_admin(
-        "AUTOREPLIES_TIMEOUT", 
-        type="int", deflt=86400,
-        help=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient")
-        )
+            for mb in dom.mailbox_set.all():
+                try:
+                    alias = Alias.objects.get(full_address=mb.full_address)
+                except Alias.DoesNotExist:
+                    onCreateMailbox(None, mb)
 
-def destroy():
-    events.unregister("CreateDomain", onCreateDomain)
-    events.unregister("DeleteDomain", onDeleteDomain)
-    events.unregister("CreateMailbox", onCreateMailbox)
-    events.unregister("DeleteMailbox", onDeleteMailbox)
-    events.unregister("ModifyMailbox", onModifyMailbox)
-    events.unregister("UserMenuDisplay", menu)
-    parameters.unregister_app("postfix_autoreply")
+    def load(self):
+        parameters.register_admin(
+            "AUTOREPLIES_TIMEOUT", 
+            type="int", deflt=86400,
+            help=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient")
+            )
+
+    def destroy(self):
+        events.unregister("CreateDomain", onCreateDomain)
+        events.unregister("DeleteDomain", onDeleteDomain)
+        events.unregister("CreateMailbox", onCreateMailbox)
+        events.unregister("DeleteMailbox", onDeleteMailbox)
+        events.unregister("ModifyMailbox", onModifyMailbox)
+        events.unregister("UserMenuDisplay", menu)
+        parameters.unregister_app("postfix_autoreply")
+
+exts_pool.register_extension(PostfixAutoreply)
 
 @events.observe("UserMenuDisplay")
 def menu(target, user):

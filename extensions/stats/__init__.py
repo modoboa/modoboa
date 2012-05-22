@@ -11,32 +11,32 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf.urls.defaults import *
 from modoboa.lib import events, parameters
-from modoboa.lib.webutils import static_url
+from modoboa.extensions import ModoExtension, exts_pool
 
-def infos():
-    return {
-        "name" : "Statistics",
-        "version" : "1.0",
-        "description" : _("Graphical statistics about emails traffic using RRDtool"),
-        "url" : "stats"
-        }
+class Stats(ModoExtension):
+    name = "stats"
+    label = "Statistics"
+    version = "1.0"
+    description = ugettext_lazy("Graphical statistics about emails traffic using RRDtool")
 
-def load():
-    parameters.register_admin("LOGFILE", type="string", 
-                              deflt="/var/log/mail.log",
-                              help=ugettext_lazy("Path to log file used to collect statistics"))
-    parameters.register_admin("RRD_ROOTDIR", type="string", 
-                              deflt="/tmp/modoboa",
-                              help=ugettext_lazy("Path to directory where RRD files are stored"))
-    parameters.register_admin("IMG_ROOTDIR", type="string", 
-                              deflt="/tmp/modoboa",
-                              help=ugettext_lazy("Path to directory where PNG files are stored"))
-    parameters.register_admin("GRAPHS_LOCATION", type="string", 
-                              deflt="graphs",
-                              help=ugettext_lazy("Graphics location (to build URLs)"))
+    def load(self):
+        parameters.register_admin("LOGFILE", type="string", 
+                                  deflt="/var/log/mail.log",
+                                  help=ugettext_lazy("Path to log file used to collect statistics"))
+        parameters.register_admin("RRD_ROOTDIR", type="string", 
+                                  deflt="/tmp/modoboa",
+                                  help=ugettext_lazy("Path to directory where RRD files are stored"))
+        parameters.register_admin("IMG_ROOTDIR", type="string", 
+                                  deflt="/tmp/modoboa",
+                                  help=ugettext_lazy("Path to directory where PNG files are stored"))
+        parameters.register_admin("GRAPHS_LOCATION", type="string", 
+                                  deflt="graphs",
+                                  help=ugettext_lazy("Graphics location (to build URLs)"))
 
-def destroy():
-    events.unregister("AdminMenuDisplay", menu)
+    def destroy(self):
+        events.unregister("AdminMenuDisplay", menu)
+
+exts_pool.register_extension(Stats)
 
 @events.observe("UserMenuDisplay")
 def menu(target, user):

@@ -1,13 +1,13 @@
 {% extends "fixed.html" %}{% load i18n libextras %}
 {% block pagetitle %}Webmail{% endblock %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}webmail/css/webmail.css" />
-<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.htmltable.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/searchbar.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}webmail/js/webmail.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}webmail/css/webmail.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.htmltable.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/searchbar.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}webmail/js/webmail.js"></script>
 <script type="text/javascript">
 var webmail = undefined;
 

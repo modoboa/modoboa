@@ -1,9 +1,9 @@
 {% extends "fixed.html" %}{% load i18n %}
 {% block pagetitle %}{% trans "Graphical statistics" %}{% endblock %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}stats/css/stats.css" />
-<script type="text/javascript" src="{{ MEDIA_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}stats/js/stats.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}stats/css/stats.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     var stats = new Stats({

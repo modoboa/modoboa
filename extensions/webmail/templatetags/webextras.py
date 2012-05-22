@@ -106,7 +106,7 @@ def listmailbox_menu(selection, folder, user):
              "url" : reverse(webmail.views.empty, args=[folder])}
             ]
     searchbar = render_to_string('common/email_searchbar.html', {
-            "MEDIA_URL" : settings.MEDIA_URL
+            "STATIC_URL" : settings.STATIC_URL
             })
     return render_to_string('common/buttons_list.html', dict(
             selection=selection, entries=entries, extracontent=searchbar,

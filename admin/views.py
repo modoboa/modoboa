@@ -494,9 +494,9 @@ def saveparameters(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewextensions(request, tplname='admin/extensions.html'):
-    from modoboa.extensions import list_extensions
+    from modoboa.extensions import exts_pool
         
-    exts = list_extensions()
+    exts = exts_pool.list_all()
     for ext in exts:
         try:
             dbext = Extension.objects.get(name=ext["id"])

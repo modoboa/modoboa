@@ -10,7 +10,7 @@ from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.extensions import get_ext_module
+from modoboa.extensions import exts_pool
 from exceptions import *
 import os, sys
 import pwd
@@ -806,55 +806,48 @@ class Extension(models.Model):
         help_text=ugettext_lazy("Check to enable this extension")
         )
 
-    def init(self):
-        module = get_ext_module(self.name)
-        if hasattr(module, "init"):
-            module.init()
+    def __init__(self, *args, **kwargs):
+        super(Extension, self).__init__(*args, **kwargs)
+        self.instance = exts_pool.get_extension(self.name)
+        self.__get_ext_dir()
 
-    def load(self):
-        module = get_ext_module(self.name)
-        if hasattr(module, "load"):
-            module.load()
-
-    def unload(self):
-        module = get_ext_module(self.name)
-        module.destroy()
+    def __get_ext_dir(self):
+        modname = self.instance.__module__
+        path = os.path.realpath(sys.modules[modname].__file__)
+        self.extdir = os.path.dirname(path)
 
     def on(self):
         self.enabled = True
         self.save()
 
-        self.load()
-        self.init()
+        self.instance.load()
+        self.instance.init()
 
-        extdir = "%s/extensions/%s" % (settings.MODOBOA_DIR, self.name)
-        scriptdir = "%s/%s" % (extdir, "scripts")
+        if self.instance.needs_media:
+            path = os.path.join(settings.MEDIA_ROOT, self.name)
+            exec_cmd("mkdir %s" % path)
+
+        scriptdir = "%s/%s" % (self.extdir, "scripts")
         if os.path.exists(scriptdir):
             targetdir = os.path.join(settings.MODOBOA_DIR, "scripts")
             exec_cmd("ln -s %s %s/%s" % (scriptdir, targetdir, self.name))
 
-        staticpath = "%s/%s" % (extdir, "static")
-        if os.path.exists(staticpath):
-            exec_cmd("ln -s %s/static %s/static/%s" % \
-                         (extdir, settings.MODOBOA_DIR, self.name))
-
         events.raiseEvent("ExtEnabled", self)
 
     def off(self):
-        self.unload()
+        self.instance.destroy()
 
         self.enabled = False
         self.save()
 
-        extdir = "%s/extensions/%s" % (settings.MODOBOA_DIR, self.name)
-        scriptdir = "%s/%s" % (extdir, "scripts")
+        if self.instance.needs_media:
+            path = os.path.join(settings.MEDIA_ROOT, self.name)
+            exec_cmd("rm -r %s" % path)
+
+        scriptdir = "%s/%s" % (self.extdir, "scripts")
         if os.path.exists(scriptdir):
             target = "%s/scripts/%s" % (settings.MODOBOA_DIR, self.name)
             exec_cmd("rm %s" % target)
-
-        staticpath = "%s/%s" % (extdir, "static")  
-        if os.path.exists(staticpath):
-            exec_cmd("rm -r %s/static/%s" % (settings.MODOBOA_DIR, self.name)) 
 
         events.raiseEvent("ExtDisabled", self)
 

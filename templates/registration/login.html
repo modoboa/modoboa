@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <title>{% trans "Welcome to Modoboa" %}</title>
-    <link rel="icon" type="image/png" href="{{ MEDIA_URL }}css/logo-icon.png" />
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap-responsive.css" />  
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/login.css" />
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.js"></script>
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/bootstrap.js"></script>
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}css/logo-icon.png" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />  
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/login.css" />
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
     {% url django.views.i18n.javascript_catalog as catalog_url %}
     <script type="text/javascript" src="{{ catalog_url }}"></script>
     <script type="text/javascript">
@@ -22,7 +22,7 @@
       <div class="offset4">
         <div class="row">
           <div id="logo" class="span3">
-            <img src="{{ MEDIA_URL }}css/modoboa.png" />
+            <img src="{{ STATIC_URL }}css/modoboa.png" />
           </div>
         </div>
         <div class="row">

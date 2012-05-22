@@ -103,7 +103,7 @@ def quar_menu(user):
     else:
         extraopts = []
     extracontent = render_to_string('common/email_searchbar.html', {
-            "MEDIA_URL" : settings.MEDIA_URL,
+            "STATIC_URL" : settings.STATIC_URL,
             "extraopts" : extraopts
             })
 

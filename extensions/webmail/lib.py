@@ -25,7 +25,7 @@ class WMtable(tables.Table):
     idkey = "imapid"
     select = tables.ImgColumn(
         "select", cssclass="draggable left", width="1%", 
-        defvalue="%spics/grippy.png" % settings.MEDIA_URL,
+        defvalue="%spics/grippy.png" % settings.STATIC_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
         )
     flags = tables.ImgColumn("flags", width="4%")
@@ -458,9 +458,8 @@ def find_images_in_body(body):
         if src is None:
             continue
         o = urlparse(src)
-        dirname = os.path.dirname(o.path).replace(settings.MEDIA_URL, "")
         fname = os.path.basename(o.path)
-        path = os.path.join(settings.MEDIA_ROOT, dirname, fname)
+        path = os.path.join(settings.MEDIA_ROOT, "webmail", fname)
         if not os.path.exists(path):
             continue
         cid = "%s@modoboa" % os.path.splitext(fname)[0]
@@ -504,7 +503,7 @@ def save_attachment(f):
     """
     from tempfile import NamedTemporaryFile
 
-    dstdir = os.path.join(settings.MEDIA_ROOT, "tmp")
+    dstdir = os.path.join(settings.MEDIA_ROOT, "webmail")
     try:
         fp = NamedTemporaryFile(dir=dstdir, delete=False)
     except Exception, e:
@@ -521,7 +520,7 @@ def clean_attachments(attlist):
                     (random name, real name).
     """
     for att in attlist:
-        fullpath = os.path.join(settings.MEDIA_ROOT, "tmp", att["tmpname"])
+        fullpath = os.path.join(settings.MEDIA_ROOT, "webmail", att["tmpname"])
         try:
             os.remove(fullpath)
         except OSError, e:
@@ -569,7 +568,7 @@ def create_mail_attachment(attdef):
 
     maintype, subtype = attdef["content-type"].split("/")
     res = MIMEBase(maintype, subtype)
-    fp = open(os.path.join(settings.MEDIA_ROOT, "tmp", attdef["tmpname"]), "rb")
+    fp = open(os.path.join(settings.MEDIA_ROOT, "webmail", attdef["tmpname"]), "rb")
     res.set_payload(fp.read())
     fp.close()
     Encoders.encode_base64(res)

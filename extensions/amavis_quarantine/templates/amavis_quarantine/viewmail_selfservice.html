@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <title>Modoboa</title>
-    <link rel="icon" type="image/png" href="{{ MEDIA_URL }}css/logo-icon.png" />
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}amavis_quarantine/css/selfservice.css" />
-    <script src="{{ MEDIA_URL }}js/jquery.js" type="text/javascript"></script>
-    <script src="{{ MEDIA_URL }}js/bootstrap.js" type="text/javascript"></script>
-    <script src="{{ MEDIA_URL }}js/global.js" type="text/javascript"></script>
-    <script src="{{ MEDIA_URL }}js/notify.js" type="text/javascript"></script>
-    <script src="{{ MEDIA_URL }}amavis_quarantine/js/selfservice.js" type="text/javascript"></script>
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}css/logo-icon.png" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}amavis_quarantine/css/selfservice.css" />
+    <script src="{{ STATIC_URL }}js/jquery.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/global.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/notify.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}amavis_quarantine/js/selfservice.js" type="text/javascript"></script>
     {% url django.views.i18n.javascript_catalog as catalog_url %}
     <script type="text/javascript" src="{{ catalog_url }}"></script>
     <script type="text/javascript">
-        set_media_url("{{ MEDIA_URL }}");
+        set_media_url("{{ STATIC_URL }}");
     </script>
   </head>
   <body>

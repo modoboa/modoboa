@@ -2,8 +2,8 @@
 {% block pagetitle %}{% trans "Identities" %}{% endblock %}
 {% block html_head %}
 {{ block.super }}
-<script type="text/javascript" src="{{ MEDIA_URL }}js/creation_wizard.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/autocompleter.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/creation_wizard.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
     $.getJSON("{% url modoboa.admin.views.domains_list %}", function(data) {

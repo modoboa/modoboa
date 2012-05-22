@@ -17,7 +17,7 @@ def _render(request, tpl, user_context):
     """Custom rendering function
 
     Just a wrapper which automatically adds a RequestContext instance
-    (useful to use settings variables like MEDIA_URL inside templates)
+    (useful to use settings variables like STATIC_URL inside templates)
     """
     return render_to_response(tpl, user_context, 
                               context_instance=template.RequestContext(request))
@@ -109,7 +109,7 @@ def static_url(path):
     """
     if path.startswith("/"):
         path = path[1:]
-    return "%s%s" % (settings.MEDIA_URL, path)
+    return "%s%s" % (settings.STATIC_URL, path)
 
 def size2integer(value):
     """Try to convert a string representing a size to an integer value

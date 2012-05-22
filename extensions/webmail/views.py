@@ -253,7 +253,7 @@ def delattachment(request):
     for att in request.session["compose_mail"]["attachments"]:
         if att["tmpname"] == request.GET["name"]:
             request.session["compose_mail"]["attachments"].remove(att)
-            fullpath = os.path.join(settings.MEDIA_ROOT, "tmp", att["tmpname"])
+            fullpath = os.path.join(settings.MEDIA_ROOT, "webmail", att["tmpname"])
             try:
                 os.remove(fullpath)
             except OSError, e:

@@ -6,7 +6,7 @@
 <input type="button" class="btn btn-primary" id="submit" name="submit" value="{% trans 'Attach' %}" />
 </div>
 <div id="upload_status" style="display:none">
-  <img src="{{ MEDIA_URL }}css/spinner.gif" /> {% trans "Uploading.." %}
+  <img src="{{ STATIC_URL }}css/spinner.gif" /> {% trans "Uploading.." %}
 </div>
 <iframe id="upload_target" name="upload_target" src="#" 
         style="width:0;height:0;border:0px solid #fff;"></iframe>

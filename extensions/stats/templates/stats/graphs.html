@@ -4,6 +4,6 @@
 {% endif %}
 {% for elems in graphs %}
 <h3>{% trans elems.label %}</h3>
-<p><img src="{{ MEDIA_URL }}{{ graphs_loc }}/{{ elems.name }}_{{ domain }}_AVERAGE_{% ifequal period 'custom' %}{{ period_name }}{% else %}{{ period }}{% endifequal %}.png" 
+<p><img src="{{ STATIC_URL }}{{ graphs_loc }}/{{ elems.name }}_{{ domain }}_AVERAGE_{% ifequal period 'custom' %}{{ period_name }}{% else %}{{ period }}{% endifequal %}.png" 
         alt="{% trans 'No statistics available' %}" /></p>
 {% endfor %}

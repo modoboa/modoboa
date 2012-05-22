@@ -41,11 +41,11 @@ class DomainsTable(tables.Table):
 class ExtensionsTable(tables.Table):
     idkey = "id"
     selection = tables.SelectionColumn("selection", width="4%", header=False)
-    name = tables.Column("name", label=ugettext_lazy("Name"), width="15%")
+    label = tables.Column("label", label=ugettext_lazy("Name"), width="15%")
     version = tables.Column("version", label=ugettext_lazy("Version"), width="6%")
     descr = tables.Column("description", label=ugettext_lazy("Description"))
     
-    cols_order = ["selection", "name", "version", "descr"]
+    cols_order = ["selection", "label", "version", "descr"]
 
 class IdentitiesTable(tables.Table):
     idkey = "id"

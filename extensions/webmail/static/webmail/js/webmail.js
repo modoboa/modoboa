@@ -813,7 +813,7 @@ Webmail.prototype = {
                 CKEDITOR.remove(instance);
             }
             CKEDITOR.replace(this.editorid, {
-                customConfig: static_url("js/editor_config.js")
+                customConfig: get_static_url("js/editor_config.js")
             });
             CKEDITOR.on("instanceReady", $.proxy(function(evt) {
                 this.resize_editor();

@@ -2,46 +2,45 @@
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
-from modoboa.lib.webutils import static_url
+from modoboa.extensions import ModoExtension, exts_pool
 from sievelib.managesieve import SUPPORTED_AUTH_MECHS
 
-baseurl = "sfilters"
+class SieveFilters(ModoExtension):
+    name = "sievefilters"
+    label = "Sieve filters"
+    version = "1.0"
+    description = ugettext_lazy("Plugin to easily create server-side filters")
+    url = "sfilters"
 
-def load():
-    parameters.register_app(uparams_opts=dict(needs_mailbox=True))
+    def load(self):
+        parameters.register_app(uparams_opts=dict(needs_mailbox=True))
+        
+        parameters.register_admin("SERVER", type="string", 
+                                  deflt="127.0.0.1",
+                                  help=ugettext_lazy("Address of your MANAGESIEVE server"))
+        parameters.register_admin("PORT", type="int", deflt="2000",
+                                  help=ugettext_lazy("Listening port of your MANAGESIEVE server"))
+        parameters.register_admin("STARTTLS", type="list_yesno", deflt="no",
+                                  help=ugettext_lazy("Use the STARTTLS extension"))
 
-    parameters.register_admin("SERVER", type="string", 
-                              deflt="127.0.0.1",
-                              help=ugettext_lazy("Address of your MANAGESIEVE server"))
-    parameters.register_admin("PORT", type="int", deflt="2000",
-                              help=ugettext_lazy("Listening port of your MANAGESIEVE server"))
-    parameters.register_admin("STARTTLS", type="list_yesno", deflt="no",
-                              help=ugettext_lazy("Use the STARTTLS extension"))
+        values = [('AUTO', 'auto')]
+        for m in SUPPORTED_AUTH_MECHS:
+            values += [(m, m.lower())]
+        parameters.register_admin("AUTHENTICATION_MECH", type="list", deflt="auto",
+                                  values=values,
+                                  help=ugettext_lazy("Prefered authentication mechanism"))
 
-    values = [('AUTO', 'auto')]
-    for m in SUPPORTED_AUTH_MECHS:
-        values += [(m, m.lower())]
-    parameters.register_admin("AUTHENTICATION_MECH", type="list", deflt="auto",
-                              values=values,
-                              help=ugettext_lazy("Prefered authentication mechanism"))
-
-    # User parameters
-    parameters.register_user("EDITOR_MODE", type="list", deflt="raw",
-                             label=ugettext_lazy("Editor mode"),
-                             values=[("raw", "raw"), ("gui", "simplified")],
-                             help=ugettext_lazy("Select the mode you want the editor to work in"))
+        # User parameters
+        parameters.register_user("EDITOR_MODE", type="list", deflt="raw",
+                                 label=ugettext_lazy("Editor mode"),
+                                 values=[("raw", "raw"), ("gui", "simplified")],
+                                 help=ugettext_lazy("Select the mode you want the editor to work in"))
     
-def destroy():
-    events.unregister("UserMenuDisplay", menu)
-    parameters.unregister_app("sievefilters")
+    def destroy(self):
+        events.unregister("UserMenuDisplay", menu)
+        parameters.unregister_app("sievefilters")
 
-def infos():
-    return {
-        "name" : "Sieve filters",
-        "version" : "1.0",
-        "description" : _("Plugin to easily create server-side filters"),
-        "url" : "sfilters"
-        }
+exts_pool.register_extension(SieveFilters)
 
 @events.observe("UserMenuDisplay")
 def menu(target, user):

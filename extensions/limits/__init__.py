@@ -10,51 +10,49 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa.lib import events
-from modoboa.lib.webutils import static_url
+from modoboa.extensions import ModoExtension, exts_pool
 from models import *
 from forms import ResourcePoolForm
 import controls
 import views
 
-baseurl = "limits"
+class Limits(ModoExtension):
+    name = "limits"
+    label = "Limits"
+    version = "1.0"
+    description = ugettext_lazy("Per administrator resources to limit the number of objects they can create")
 
-def init():
-    from modoboa.admin.models import User, Domain
+    def init(self):
+        from modoboa.admin.models import User, Domain
+        
+        ct = ContentType.objects.get(app_label="admin", model="domain")
+        dagrp = Group.objects.get(name="DomainAdmins")
+        
+        grp = Group(name="Resellers")
+        grp.save()
+        grp.permissions.add(*dagrp.permissions.all())
+        
+        ct = ContentType.objects.get_for_model(Permission)
+        for pname in ["view_permissions"]:
+            perm = Permission.objects.get(content_type=ct, codename=pname)
+            grp.permissions.add(perm)
+        
+        ct = ContentType.objects.get_for_model(Domain)
+        for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
+            perm = Permission.objects.get(content_type=ct, codename=pname)
+            grp.permissions.add(perm)
+            grp.save()
+        
+        for user in User.objects.filter(groups__name='DomainAdmins'):
+            try:
+                controls.create_pool(user)
+            except IntegrityError:
+                pass
 
-    ct = ContentType.objects.get(app_label="admin", model="domain")
-    dagrp = Group.objects.get(name="DomainAdmins")
+    def destroy(self):
+        Group.objects.get(name="Resellers").delete()
 
-    grp = Group(name="Resellers")
-    grp.save()
-    grp.permissions.add(*dagrp.permissions.all())
-
-    ct = ContentType.objects.get_for_model(Permission)
-    for pname in ["view_permissions"]:
-        perm = Permission.objects.get(content_type=ct, codename=pname)
-        grp.permissions.add(perm)
-
-    ct = ContentType.objects.get_for_model(Domain)
-    for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
-        perm = Permission.objects.get(content_type=ct, codename=pname)
-        grp.permissions.add(perm)
-    grp.save()
-
-    for user in User.objects.filter(groups__name='DomainAdmins'):
-        try:
-            controls.create_pool(user)
-        except IntegrityError:
-            pass
-
-def destroy():
-    Group.objects.get(name="Resellers").delete()
-
-def infos():
-    return {
-        "name" : "Limits",
-        "version" : "1.0",
-        "description" : _("Per administrator resources to limit the number of objects they can create"),
-        "url" : baseurl
-        }
+exts_pool.register_extension(Limits)
 
 @events.observe("GetExtraRoles")
 def get_extra_roles(user):

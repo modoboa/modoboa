@@ -2,22 +2,22 @@
  * Global javascript utilities
  */
 
-var media_url = "";
+var static_url = "";
 
 /*
  * A simple function to initialize the value of the global variable
  * 'media_url' (corresponding to django's MEDIA_URL variable).
  */
-function set_media_url(url) {
-    media_url = url;
+function set_static_url(url) {
+    static_url = url;
 }
 
 /*
  * Shortcut function that construct an url from the media_url and the
  * given value.
  */
-function static_url(value) {
-    return media_url + value;
+function get_static_url(value) {
+    return static_url + value;
 }
 
 function modalbox(e, css, defhref, defcb, defclosecb) {

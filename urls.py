@@ -14,12 +14,14 @@ urlpatterns = patterns('',
     (r'^%s$' % prefix, 'modoboa.lib.webutils.topredirection'),
     (r'^%sadmin/' % prefix, include('modoboa.admin.urls')),
     (r'^%suserprefs/' % prefix, include('modoboa.userprefs.urls')),
-    (r'^%sdemo/' % prefix, include('modoboa.demo.urls')),                       
+    (r'^%sdemo/' % prefix, include('modoboa.demo.urls')),
+    (r'^%stemplot/' % prefix, include('templot.frontends.modoboa.urls')),
     (r'^accounts/login/$', 'modoboa.auth.views.dologin'),
     (r'^accounts/logout/$', 'modoboa.auth.views.dologout'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
      {'packages': ('modoboa',),}),
-    *loadextensions(prefix)
+#    *loadextensions(prefix)
+    *exts_pool.load_all(prefix)
 )
 
 if settings.DEBUG:

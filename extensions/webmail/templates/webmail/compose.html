@@ -12,7 +12,7 @@
       {% render_field form.subject %}
       <div id="attachments" name="{% url modoboa.extensions.webmail.views.attachments %}">
         <div>
-          <img src="{{ MEDIA_URL }}pics/attachment.png" />
+          <img src="{{ STATIC_URL }}pics/attachment.png" />
           {% trans "Attachments" %}
         </div>
         <div id="list">

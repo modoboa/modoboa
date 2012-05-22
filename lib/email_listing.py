@@ -110,7 +110,7 @@ class EmailListing(object):
     def render_navbar(page, baseurl=None):
         if page is None:
             return ""
-        context = {"page" : page, "MEDIA_URL" : settings.MEDIA_URL, "baseurl" : baseurl}
+        context = {"page" : page, "STATIC_URL" : settings.STATIC_URL, "baseurl" : baseurl}
         return render_to_string("common/pagination_bar.html", context)
     
     def fetch(self, request, id_start, id_stop):

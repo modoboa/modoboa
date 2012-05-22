@@ -4,65 +4,71 @@ import re
 from django.conf import settings
 from django.conf.urls.defaults import include
 
-def isinstalled(ext):
-    return "modoboa.extensions.%s" % ext in settings.INSTALLED_APPS
+class ModoExtension(object):
+    """Base extension class
 
-def get_ext_module(extname):
-    modname = "modoboa.extensions.%s" % extname
-    if not sys.modules.has_key(modname):
-        __import__(modname)
-    return sys.modules[modname]
+    Each Modoboa extension must inherit from this class to be
+    considered as valid.
+    """
+    name = None
+    version = "0.1"
+    description = ""
+    url = None
+    needs_media = False
 
-def get_extension_infos(name):
-    return get_ext_module(name).infos()
+    def infos(self):
+        return dict(name=self.name, label=self.label, version=self.version,
+                    description=self.description, url=self.url)
 
-def loadextensions(prefix):
-    # To avoid a circular import...
-    from modoboa.admin.models import Extension
+    def init(self):
+        pass
 
-    basedir = "%s/extensions" % settings.MODOBOA_DIR
-    result = []
-    for f in os.listdir(basedir):
-	if not os.path.isdir("%s/%s" % (basedir, f)):
-	    continue
-	if not isinstalled(f):
-	    continue
-        try:
-            ext = Extension.objects.get(name=f)
-            if ext.enabled:
-                ext.load()
-        except Extension.DoesNotExist:
-            pass
-        module = get_ext_module(f)
-        baseurl = module.baseurl if hasattr(module, "baseurl") \
-            else f
-        result += [(r'%s%s/' % (prefix, baseurl),
-                    include("modoboa.extensions.%s.urls" % f))]
-    return result
+    def destroy(self):
+        pass
+    
+    def load(self):
+        pass
 
-def list_extensions():
-    basedir = "%s/extensions" % settings.MODOBOA_DIR
-    result = []
-    for d in os.listdir(basedir):
-        if not os.path.isdir("%s/%s" % (basedir, d)):
-            continue
-        if not isinstalled(d):
-            continue
-        isvalid = True
-        for f in ['urls.py', '__init__.py', 'views.py']:
-            if not os.path.exists("%s/%s/%s" % (basedir, d, f)):
-                isvalid = False
-                break
-        if isvalid:
-            module = __import__(d, globals(), locals())
+
+class ExtensionsPool(object):
+    """The extensions manager"""
+
+    def __init__(self):
+        self.extensions = dict()
+
+    def register_extension(self, ext):
+        self.extensions[ext.name] = dict(cls=ext)
+
+    def get_extension(self, name):
+        if not self.extensions.has_key(name):
+            return None
+        if not self.extensions[name].has_key("instance"):
+            self.extensions[name]["instance"] = self.extensions[name]["cls"]()
+        return self.extensions[name]["instance"]
+
+    def load_all(self, prefix):
+        from modoboa.admin.models import Extension
+
+        result = []
+        for extname, extdef in self.extensions.iteritems():
+            extinstance = self.get_extension(extname)
             try:
-                infos = module.infos()
-                infos["id"] = d
-                if os.path.isdir("%s/%s/templates" % (basedir, d)):
-                    infos["templates"] = True
-                else:
-                    infos["templates"] = False
-                result += [infos]
-            except AttributeError:
+                ext = Extension.objects.get(name=extname)
+                if ext.enabled:
+                    extinstance.load()
+            except Extension.DoesNotExist:
                 pass
-    return result
+            baseurl = extinstance.url if extinstance.url is not None else extname
+            result += [(r'%s%s/' % (prefix, baseurl),
+                        include("%s.urls" % extinstance.__module__))]
+        return result
+
+    def list_all(self):
+        result = []
+        for extname, extdef in self.extensions.iteritems():
+            infos = extdef["instance"].infos()
+            infos["id"] = extname
+            result += [infos]
+        return sorted(result, key=lambda i: i["name"])
+
+exts_pool = ExtensionsPool()
