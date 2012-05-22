@@ -332,6 +332,7 @@ Webmail.prototype = {
         } else {
             $link.html(displayname);
         }
+        return $li;
     },
 
     /*
@@ -357,7 +358,7 @@ Webmail.prototype = {
                 this.inject_clickbox($('li[name="' + mboxes[i].name + '"]'));
             }
         }
-        this.init_droppables($ul.find(".droppable"), true);
+        this.init_droppables($ul.find(".droppable"));
         this.toggle_mbox_state($parent.children("div"), $ul);
     },
 
@@ -543,7 +544,7 @@ Webmail.prototype = {
         }
         if (this.navobject.getparam("action") == "listmailbox") {
             this.select_mailbox($("a[href=INBOX]"));
-            this.navobject.setparam("name", "INBOX").update();
+            this.navobject.setparam("mbox", "INBOX").update();
         }
     },
 
@@ -571,7 +572,8 @@ Webmail.prototype = {
         } else {
             $parent = $("#mboxes_container").children("ul");
         }
-        this.inject_mailbox($parent, mailbox, "loadfolder");
+        var $li = this.inject_mailbox($parent, mailbox, "loadfolder");
+        this.init_droppables($li);
     },
 
     /*
@@ -1041,7 +1043,7 @@ Webmail.prototype = {
         });
     },
 
-    init_droppables: function(set, greedy) {
+    init_droppables: function(set) {
         var plug = this;
         var $set = (set === undefined) ? $(".droppable") : set;
 
