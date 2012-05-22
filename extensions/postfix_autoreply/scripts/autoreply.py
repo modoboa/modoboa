@@ -8,7 +8,7 @@ import datetime
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.admin.models import Mailbox
-from modoboa.extensions import postfix_autoreply
+from modoboa.extensions.postfix_autoreply import PostfixAutoreply
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
 
 def send_autoreply(sender, mailbox, armessage):
@@ -20,7 +20,7 @@ def send_autoreply(sender, mailbox, armessage):
 
     try:
         lastar = ARhistoric.objects.get(armessage=armessage.id, sender=sender)
-        postfix_autoreply.load()
+        PostfixAutoreply().load()
         timeout = parameters.get_admin("AUTOREPLIES_TIMEOUT", 
                                        app="postfix_autoreply")
         delta = datetime.timedelta(seconds=int(timeout))

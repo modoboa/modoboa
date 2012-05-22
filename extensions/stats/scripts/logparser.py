@@ -257,9 +257,9 @@ class LogParser(object):
             G.make_defaults(dom, tpl=grapher.size_avg_template)
 
 if __name__ == "__main__":
-    from modoboa.extensions import stats
+    from modoboa.extensions.stats import Stats
 
-    stats.load()
+    Stats().load()
 
     log_file = parameters.get_admin("LOGFILE", app="stats")
     rrd_rootdir = parameters.get_admin("RRD_ROOTDIR", app="stats")
