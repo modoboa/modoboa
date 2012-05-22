@@ -45,8 +45,8 @@ def enabled_applications():
         exts = list(Extension.objects.filter(enabled=True))
     except DatabaseError:
         exts = []
-    result += map(lambda ext: (ext.name, ext.name), exts)
-    return sorted(result)
+    result += [(ext.name, ext.name) for ext in exts]
+    return sorted(result, key=lambda e: e[0])
 
 parameters.register_admin("DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
                           app="general",

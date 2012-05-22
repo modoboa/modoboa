@@ -46,6 +46,10 @@ class ExtensionsPool(object):
             self.extensions[name]["instance"] = self.extensions[name]["cls"]()
         return self.extensions[name]["instance"]
 
+    def get_extension_infos(self, name):
+        instance = self.get_extension(name)
+        return instance.infos()
+
     def load_all(self, prefix):
         from modoboa.admin.models import Extension
 
