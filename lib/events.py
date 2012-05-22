@@ -91,8 +91,10 @@ class observe(object):
 
     :param evtname: the event's name
     """
-    def __init__(self, *evtnames):
+    def __init__(self, *evtnames, **kwargs):
         self.evtnames = evtnames
+        if kwargs.has_key("extname"):
+            self.extname = kwargs["extname"]
 
     def __guess_extension_name(self, modname):
         if modname.startswith('modoboa.extensions'):
@@ -103,7 +105,7 @@ class observe(object):
 
     def __call__(self, f):
         modname = inspect.getmodule(inspect.stack()[1][0]).__name__
-        extname = self.__guess_extension_name(modname)
+        extname = self.extname if hasattr(self, "extname") else self.__guess_extension_name(modname)
         @wraps(f)
         def wrapped_f(*args):
             if extname:
