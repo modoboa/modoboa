@@ -29,7 +29,7 @@ $(document).ready(function() {
 {% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu left_selection user %}</div>{% endblock %}
 {% block apparea %}
   <form class="form-horizontal" method="POST" 
-        action="{% url userprefs.views.savepreferences %}" 
+        action="{% url modoboa.userprefs.views.savepreferences %}" 
         id="uparams_form">
     {% include "common/parameters.html" %}
   </form>
