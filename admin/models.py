@@ -808,10 +808,15 @@ class Extension(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Extension, self).__init__(*args, **kwargs)
-        if self.name:
-            self.instance = exts_pool.get_extension(self.name)
-            if self.instance:
-                self.__get_ext_dir()
+
+    def __get_ext_instance(self):
+        if not self.name:
+            return None
+        if hasattr(self, "instance") and self.instance:
+            return
+        self.instance = exts_pool.get_extension(self.name)
+        if self.instance:
+            self.__get_ext_dir()
 
     def __get_ext_dir(self):
         modname = self.instance.__module__
@@ -822,6 +827,7 @@ class Extension(models.Model):
         self.enabled = True
         self.save()
 
+        self.__get_ext_instance()
         self.instance.load()
         self.instance.init()
 
@@ -837,6 +843,7 @@ class Extension(models.Model):
         events.raiseEvent("ExtEnabled", self)
 
     def off(self):
+        self.__get_ext_instance()
         self.instance.destroy()
 
         self.enabled = False
