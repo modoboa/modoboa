@@ -43,9 +43,9 @@ def enabled_applications():
     result = [("admin", "admin"), ("userprefs", "userprefs")]
     try:
         exts = Extension.objects.filter(enabled=True)
+        result += [(ext.name, ext.name) for ext in exts]
     except DatabaseError:
-        exts = []
-    result += [(ext.name, ext.name) for ext in exts]
+        pass
     return sorted(result, key=lambda e: e[0])
 
 parameters.register_admin("DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
