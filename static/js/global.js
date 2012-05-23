@@ -198,7 +198,7 @@ function simple_ajax_request(e, uoptions) {
         success: function(data) {
             if (data.status == "ok") {
                 if (options.ok_cb) options.ok_cb(data);
-                if (options.respmsg) {
+                if (data.respmsg) {
                     $("body").notify("success", data.respmsg, 2000);
                 }
             } else {
