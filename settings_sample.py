@@ -72,7 +72,7 @@ MEDIA_ROOT = os.path.join(MODOBOA_DIR, 'media')
 MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(MODOBOA_DIR, 'sitestatic')
-STATIC_URL = '/static/'
+STATIC_URL = '/sitestatic/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.

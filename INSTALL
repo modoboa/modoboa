@@ -293,7 +293,7 @@ requires a migration.
 #. Add the following new variables::
 
     STATIC_ROOT = os.path.join(MODOBOA_DIR, 'sitestatic')
-    STATIC_URL = '/static/'
+    STATIC_URL = '/sitestatic/'
 
 #. Update the following variables (just copy/paste their new values)::
 
@@ -326,13 +326,17 @@ requires a migration.
     $ ./manage.py collectstatic
 
 #. If you are using the *stats* extension, please rename the
-   *<modoboa_dir>/static/stats* directory to *<modoboa_dir>/static/graphs*
+   *<modoboa_dir>/static/stats* directory to *<modoboa_dir>/media/stats*
+   and change the value of the ``IMG_ROOTDIR`` parameter (go to the adminstration panel)
 
 #. Restart the python instance(s) that serve *Modoboa*
 
 #. Log into Modoboa, go to *Modoboa > Extensions*, uncheck all
    extensions, save. Then, check the extensions you want to use and
-   save again.
+   save again
+
+#. Update your webserver configuration to make static files available
+   (see :ref:`webserver`)
 
 #. **For Dovecot users only**, you need to modify the
    ``password_query`` (file */etc/dovecot/dovecot-sql.conf* by default
@@ -923,6 +927,8 @@ The procedure is over, edit the *settings.py* file and:
 
 You should be able to connect to Modoboa using the same credentials
 you were using to connect to PostfixAdmin.
+
+.. _webserver: 
 
 How to serve Modoboa behind a webserver
 =======================================

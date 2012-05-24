@@ -45,8 +45,7 @@ def graphs(request):
     if not view:
         raise ModoboaException(_("Invalid request"))
     period = request.GET.get("period", "day")
-    tplvars = dict(graphs=graph_list, period=period, 
-                   graphs_loc=parameters.get_admin("GRAPHS_LOCATION"))
+    tplvars = dict(graphs=graph_list, period=period)
     if view == "global":
         if not request.user.is_superuser:
             raise PermDeniedException

@@ -18,6 +18,7 @@ class Stats(ModoExtension):
     label = "Statistics"
     version = "1.0"
     description = ugettext_lazy("Graphical statistics about emails traffic using RRDtool")
+    needs_media = True
 
     def load(self):
         parameters.register_admin("LOGFILE", type="string", 
@@ -29,9 +30,6 @@ class Stats(ModoExtension):
         parameters.register_admin("IMG_ROOTDIR", type="string", 
                                   deflt="/tmp/modoboa",
                                   help=ugettext_lazy("Path to directory where PNG files are stored"))
-        parameters.register_admin("GRAPHS_LOCATION", type="string", 
-                                  deflt="graphs",
-                                  help=ugettext_lazy("Graphics location (to build URLs)"))
 
     def destroy(self):
         events.unregister("AdminMenuDisplay", menu)
