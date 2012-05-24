@@ -943,8 +943,12 @@ following inside::
       PythonPath "['<path to directory that contains modoboa dir>'] + sys.path"
       SetEnv DJANGO_SETTINGS_MODULE modoboa.settings
     </Location>
-    Alias "/static" "<path to modoboa dir>/static"
-    <Location "/static/">
+    Alias "/sitestatic" "<path to modoboa dir>/sitestatic"
+    <Location "/sitestatic/">
+      SetHandler None
+    </Location>
+    Alias "/media" "<path to modoboa dir>/media"
+    <Location "/media/">
       SetHandler None
     </Location>
   </VirtualHost>
@@ -996,7 +1000,11 @@ following configuration::
         access_log  /var/log/nginx/<host fqdn>.access.log;
         error_log /var/log/nginx/<host fqdn>.error.log;
 
-        location /static/ {
+        location /sitestatic/ {
+                autoindex on;
+        }
+
+        location /media/ {
                 autoindex on;
         }
 
