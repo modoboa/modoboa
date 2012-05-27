@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'LimitsPool'
         db.create_table('limits_limitspool', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['admin.User'], unique=True)),
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
         ))
         db.send_create_signal('limits', ['LimitsPool'])
 

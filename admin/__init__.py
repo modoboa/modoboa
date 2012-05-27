@@ -40,12 +40,15 @@ def enabled_applications():
 
     :return: a list
     """
+    from modoboa.lib.dbutils import db_table_exists
+
     result = [("admin", "admin"), ("userprefs", "userprefs")]
-    try:
-        exts = Extension.objects.filter(enabled=True)
-        result += [(ext.name, ext.name) for ext in exts]
-    except DatabaseError:
-        pass
+    if db_table_exists("admin_extension"):
+        try:
+            exts = Extension.objects.filter(enabled=True)
+            result += [(ext.name, ext.name) for ext in exts]
+        except DatabaseError:
+            pass
     return sorted(result, key=lambda e: e[0])
 
 parameters.register_admin("DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
