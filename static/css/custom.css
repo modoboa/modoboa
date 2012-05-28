@@ -1,5 +1,6 @@
 body {
     padding-top: 60px;
+    padding-bottom: 60px;
 }
 
 #fixed_content { 
@@ -8,14 +9,6 @@ body {
     right: 0;
     left: 0;
     overflow: hidden;
-}
-
-#bottom-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin-bottom: 0;
 }
 
 .navbar-text { 
