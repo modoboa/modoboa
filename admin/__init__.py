@@ -33,10 +33,9 @@ parameters.register_admin("ITEMS_PER_PAGE", type="int", deflt=30,
 def enabled_applications():
     """Return the list of currently enabled extensions
 
-    Quick fix for #184:
-
-    Just catch the DatabaseError exception raised when runnning the
-    first ``syncdb`` command.
+    We check if the table exists before trying to fetch activated
+    extensions because the admin module is always imported by Django,
+    even before the database exists (example: the first ``syncdb``).
 
     :return: a list
     """
@@ -44,11 +43,8 @@ def enabled_applications():
 
     result = [("admin", "admin"), ("userprefs", "userprefs")]
     if db_table_exists("admin_extension"):
-        try:
-            exts = Extension.objects.filter(enabled=True)
-            result += [(ext.name, ext.name) for ext in exts]
-        except DatabaseError:
-            pass
+        exts = Extension.objects.filter(enabled=True)
+        result += [(ext.name, ext.name) for ext in exts]
     return sorted(result, key=lambda e: e[0])
 
 parameters.register_admin("DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
