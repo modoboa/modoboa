@@ -254,7 +254,7 @@ class ImapEmail(Email):
         for cid, params in self.bs.inlines.iteritems():
             if re.search("\.\.", cid):
                 continue
-            fname = "static/tmp/%s_%s" % (self.mailid, cid)
+            fname = "media/webmail/%s_%s" % (self.mailid, cid)
             path = os.path.join(settings.MODOBOA_DIR, fname)
             params["fname"] = "/%s" % fname
             if os.path.exists(path):
