@@ -25,12 +25,15 @@ class Column:
         for k, v in kwargs.iteritems():
             setattr(self, k, v)
             
-    def __str__(self):
+    def __unicode__(self):
         try:
             label = getattr(self, "label")
         except KeyError:
             label = getattr(self, "name")
         return _(label)
+
+    def __str__(self):
+        return self.__unicode__()
 
 
 class SelectionColumn(Column):
