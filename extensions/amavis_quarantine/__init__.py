@@ -92,6 +92,17 @@ def menu(target, user):
             ]
     return []
 
+@events.observe("DeleteDomain")
+def on_delete_domain(domain):
+    from models import Users
+
+    try:
+        u = Users.objects.get(email="@%s" % domain.name)
+    except Users.DoesNotExist:
+        return
+    u.policy.delete()
+    u.delete()
+
 @events.observe("CreateMailbox")
 def create_user_record(user, mailbox):
     from models import Users
@@ -170,3 +181,21 @@ def display_requests(user):
     return [tpl.render(Context(dict(
                     label=_("%d pending requests" % nbrequests), url=url, css=css
                     )))]
+
+@events.observe("ExtraDomainForm")
+def extra_domain_form(user, domain):
+    from forms import DomainPolicyForm
+
+    if not user.is_superuser and not user.belongs_to_group("Resellers"):
+        return []
+    return [
+        dict(
+            id="amavis", title=_("Amavis"), cls=DomainPolicyForm
+            )
+        ]
+
+@events.observe("FillDomainInstances")
+def fill_domain_instances(user, domain, instances):
+    if not user.is_superuser and not user.belongs_to_group("Resellers"):
+        return
+    instances["amavis"] = domain

@@ -45,7 +45,7 @@ def domains_list(request):
     return ajax_simple_response(doms)
 
 def _validate_domain(request, form, successmsg, commonctx, tplname, 
-                     callback=None):
+                     callback=None, tpl_form_name="form"):
     """Domain form validation
 
     Common function shared between creation and modification actions.
@@ -56,15 +56,15 @@ def _validate_domain(request, form, successmsg, commonctx, tplname,
             domain = form.save(request.user)
         except AdminError, e:
             error = str(e)
-        except IntegrityError:
-            error = _("An alias with this name already exists")
+        # except IntegrityError:
+        #     error = _("An alias with this name already exists")
         else:
             if callback is not None:
                 callback(request.user, domain)
             messages.info(request, successmsg, fail_silently=True)
             return ajax_response(request, url=reverse(admin.views.domains))
 
-    commonctx["form"] = form
+    commonctx[tpl_form_name] = form
     commonctx["error"] = error
     return ajax_response(request, status="ko", template=tplname, **commonctx)
 
@@ -83,10 +83,10 @@ def newdomain(request, tplname="admin/newdomainform.html"):
                  "action" : reverse(newdomain),
                  "formid" : "domform"}
     if request.method == "POST":
-        form = DomainForm(request.POST)
+        form = DomainFormGeneral(request.POST)
         return _validate_domain(request, form, _("Domain created"), commonctx, 
                                 tplname, callback=newdomain_cb)
-    form = DomainForm()
+    form = DomainFormGeneral()
     commonctx["form"] = form
     return _render(request, tplname, commonctx)
 
@@ -103,7 +103,10 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
         )
     if not request.user.is_superuser:
         domadmins = filter(lambda u: u.group == "DomainAdmins", domadmins)
-        
+
+    instances = dict(general=domain)
+    events.raiseEvent("FillDomainInstances", request.user, domain, instances)
+
     commonctx = {"title" : domain.name,
                  "action_label" : _("Update"),
                  "action_classes" : "submit",
@@ -111,11 +114,11 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
                  "formid" : "domform",
                  "domain" : domain}
     if request.method == "POST":
-        form = DomainForm(request.POST, instance=domain)
-        return _validate_domain(request, form, _("Domain modified"), commonctx, tplname)
+        form = DomainForm(request.user, request.POST, instances=instances)
+        return _validate_domain(request, form, _("Domain modified"), commonctx, tplname,
+                                tpl_form_name="tabs")
 
-    form = DomainForm(instance=domain)
-    commonctx["form"] = form
+    commonctx["tabs"] = DomainForm(request.user, instances=instances)
     commonctx["domadmins"] = domadmins
     return _render(request, tplname, commonctx)
 

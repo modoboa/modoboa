@@ -42,6 +42,9 @@ events = [
     "ExtraAccountForm",
     "CheckExtraAccountForm",
     "FillAccountInstances",
+
+    "ExtraDomainForm",
+    "FillDomainInstances",
     
     "GetExtraRoles",
     

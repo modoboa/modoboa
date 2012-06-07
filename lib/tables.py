@@ -28,13 +28,9 @@ class Column:
     def __unicode__(self):
         try:
             label = getattr(self, "label")
-        except KeyError:
+        except AttributeError:
             label = getattr(self, "name")
         return _(label)
-
-    def __str__(self):
-        return self.__unicode__()
-
 
 class SelectionColumn(Column):
     """Specific column: selection

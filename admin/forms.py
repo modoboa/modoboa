@@ -10,7 +10,7 @@ from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import *
 from modoboa.lib.permissions import *
 
-class DomainForm(forms.ModelForm, DynamicForm):
+class DomainFormGeneral(forms.ModelForm, DynamicForm):
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"), 
         required=False,
@@ -25,7 +25,7 @@ class DomainForm(forms.ModelForm, DynamicForm):
         self.oldname = None
         if kwargs.has_key("instance"):
             self.oldname = kwargs["instance"].name
-        super(DomainForm, self).__init__(*args, **kwargs)
+        super(DomainFormGeneral, self).__init__(*args, **kwargs)
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", DomainNameField)
@@ -36,7 +36,7 @@ class DomainForm(forms.ModelForm, DynamicForm):
                 self._create_field(forms.CharField, name, dalias.name, 3)
 
     def clean(self):
-        super(DomainForm, self).clean()
+        super(DomainFormGeneral, self).clean()
         if len(self._errors):
             raise forms.ValidationError(self._errors)
 
@@ -69,7 +69,7 @@ class DomainForm(forms.ModelForm, DynamicForm):
         return cleaned_data
 
     def save(self, user, commit=True):
-        d = super(DomainForm, self).save(commit=False)
+        d = super(DomainFormGeneral, self).save(commit=False)
         if commit:
             if self.oldname is not None and d.name != self.oldname:
                 if not d.rename_dir(self.oldname):
@@ -97,6 +97,32 @@ class DomainForm(forms.ModelForm, DynamicForm):
                                   self.cleaned_data.keys())):
                     dalias.delete()
         return d
+
+class DomainForm(TabForms):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        self.forms = [
+            dict(id="general", title=_("General"), formtpl="admin/domain_general_form.html",
+                 cls=DomainFormGeneral, mandatory=True),
+            ]
+        cbargs = [user]
+        if kwargs.has_key("instances"):
+            cbargs += [kwargs["instances"]["general"]]
+        self.forms += events.raiseQueryEvent("ExtraDomainForm", *cbargs)
+
+        super(DomainForm, self).__init__(*args, **kwargs)
+
+    def save(self, user):
+        """Custom save method
+
+        As forms interact with each other, it is simpler to make
+        custom code to save them.
+        """
+        self.forms[0]["instance"].save(user)
+        if len(self.forms) <= 1:
+            return
+        for f in self.forms[1:]:
+            f["instance"].save()
 
 class DlistForm(forms.ModelForm, DynamicForm):
     email = forms.EmailField(
