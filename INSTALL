@@ -659,8 +659,8 @@ First, create the following new maps (*MySQL* users):
   user = <user>
   password = <password>
   dbname = <database>
-  hosts = 127.0.0.1
-  query = SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE dom.name='%d' AND dom.enabled=1 AND mb.address='%u' AND mb.enabled=1
+  hosts = 127.0.0.1e
+  query = SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN auth_user user ON mb.user_id=user.id WHERE dom.name='%d' AND dom.enabled=1 AND mb.address='%u' AND user.is_active=1
 
 ``/etc/postfix/sql-catchall-aliases.cf``::
 
