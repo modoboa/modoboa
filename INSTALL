@@ -1144,14 +1144,13 @@ First, adapt the following parameters to your environnement::
   RRD_ROOTDIR = "/tmp/modoboa"
 
   # Path to directory where png files are stored
-  IMG_ROOTDIR = "<modoboa_dir>/static/graphs"
+  IMG_ROOTDIR = "<modoboa_dir>/media/stats"
 
-Make sure the directories that will contain those files exist. If not,
-create them before going further. For example (according to the previous
+Make sure the directory that will contain those files exist. If not,
+create it before going further. For example (according to the previous
 parameters)::
 
   $ mkdir /tmp/modoboa
-  $ mkdir <modoboa_dir>/static/graphs
 
 To finish, you need to collect information periodically in order to
 feed the rrd files. To do so, just add the following line into root's

@@ -66,7 +66,7 @@ class LogParser(object):
 
         self.workdict = {}
         self.lupdates = {}
-        self.line_expr = re.compile("(\w+)\s+(\d+)\s+(\d+):(\d+):(\d+)\s+(\w+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
+        self.line_expr = re.compile("(\w+)\s+(\d+)\s+(\d+):(\d+):(\d+)\s+([-\w]+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
 
     def init_rrd(self, fname, m):
         """init_rrd
