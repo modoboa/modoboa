@@ -527,13 +527,13 @@ class Mailbox(DatesAware):
         return len(self.alias_set.all())
 
     def create_dir(self):
+        if self.mbtype == "mbox":
+            self.path = "%s/Inbox" % self.address
+        else:
+            self.path = "%s/" % self.address
         if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
             relpath = "%s/%s" % (self.domain.name, self.address)
             abspath = os.path.join(parameters.get_admin("STORAGE_PATH"), relpath)
-            if self.mbtype == "mbox":
-                self.path = "%s/Inbox" % self.address
-            else:
-                self.path = "%s/" % self.address
             if os.path.exists(abspath):
                 return True
             if not exec_as_vuser("mkdir -p %s" % abspath):
@@ -562,6 +562,8 @@ class Mailbox(DatesAware):
             if code:
                 self.path = "%s/" % newaddress
             return code
+        else:
+            self.path  ="%s/" % newaddress
 
         return True
 
