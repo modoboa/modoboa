@@ -24,7 +24,7 @@ class WMtable(tables.Table):
     styles = "table-condensed"
     idkey = "imapid"
     select = tables.ImgColumn(
-        "select", cssclass="draggable left", width="1%", 
+        "select", cssclass="draggable left", width="2%", 
         defvalue="%spics/grippy.png" % settings.STATIC_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
         )
@@ -32,7 +32,7 @@ class WMtable(tables.Table):
     withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column("subject", label=ugettext_lazy("Subject"), width="50%", limit=60)
     from_ = tables.Column("from", width="20%", label=ugettext_lazy("From"), limit=30)
-    date = tables.Column("date", width="10%", label=ugettext_lazy("Date"))
+    date = tables.Column("date", width="15%", label=ugettext_lazy("Date"))
 
     cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
 
