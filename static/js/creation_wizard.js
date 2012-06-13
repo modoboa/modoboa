@@ -42,7 +42,7 @@
                     return;
                 }
                 if (resp.stepid != undefined && resp.form != undefined) {
-                    var stepid = resp.stepid + 1;                    
+                    var stepid = resp.stepid + 1;
                     $("#step" + stepid).html(resp.form);
                     if (this.options.error_callbacks[stepid] != undefined) {
                         this.options.error_callbacks[stepid]();
@@ -70,7 +70,6 @@
             evt.preventDefault();
             this.$element.on('slid', this.update_buttons);
             this.$element.carousel('prev');
-            this.listen();
         },
 
         submit: function(evt) {
