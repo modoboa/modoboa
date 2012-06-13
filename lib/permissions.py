@@ -40,8 +40,8 @@ def grant_access_to_object(user, obj, is_owner=False):
     * He is the owner (he's just created the object)
     * He is going to administrate the object (but he is not the owner)
 
-    If the user isn't a *super user* but is the owner, we also grant
-    access to this object to all super admins.
+    If the user is is the owner, we also grant access to this object
+    to all super users.
 
     :param user: a ``User`` object
     :param obj: an admin. object (Domain, Mailbox, ...)
@@ -60,10 +60,11 @@ def grant_access_to_object(user, obj, is_owner=False):
     try:
         ObjectAccess.objects.create(user=user, content_type=ct, 
                                     object_id=obj.id, is_owner=is_owner)
-        if is_owner and not user.is_superuser:
+        if is_owner:
             from modoboa.admin.models import User
             for su in User.objects.filter(is_superuser=True):
-                ObjectAccess.objects.create(user=su, content_type=ct, object_id=obj.id)
+                if su != user:
+                    ObjectAccess.objects.create(user=su, content_type=ct, object_id=obj.id)
 
     except IntegrityError, e:
         raise ModoboaException(_("Failed to grant access (%s)" % str(e)))
