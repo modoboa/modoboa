@@ -94,9 +94,9 @@ def render_form(form, tpl=None):
     return ret
 
 @register.simple_tag
-def render_field(field):
+def render_field(field, help_display_mode="tooltip"):
     return render_to_string("common/generic_field.html", dict(
-            field=field
+            field=field, help_display_mode=help_display_mode
             ))
 
 @register.simple_tag

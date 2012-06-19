@@ -13,9 +13,9 @@ class Alias(models.Model):
 class ARmessage(models.Model):
     mbox = models.ForeignKey(Mailbox)
     subject = models.CharField(_('subject'), max_length=255,
-                               help_text=_("The subject that will appear in sended emails"))
+                               help_text=_("The subject that will appear in sent emails"))
     content = models.TextField(_('content'),
-                               help_text=_("The content that will appear in sended emails"))
+                               help_text=_("The content that will appear in sent emails"))
     enabled = models.BooleanField(_('enabled'),
                                   help_text=_("Activate/Deactivate your auto reply"))
     untildate = models.DateField()

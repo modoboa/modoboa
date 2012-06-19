@@ -1,0 +1,20 @@
+{% extends "userprefs/section.html" %}
+{% block html_head %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '{{ LANGUAGE_CODE }}'});
+    $(document).on("click", "#update", function(evt) {
+        evt.preventDefault();
+        var $form = $("#form");
+        $.post($form.attr("action"), $form.serialize(), function(data) {
+            if (data.status == "ok") {
+                $("body").notify("success", data.respmsg, 2000);
+            } else {
+                $("#form").html(data.content);
+                $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '{{ LANGUAGE_CODE }}'});
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -8,7 +8,7 @@ functionality into Postfix.
 """
 from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _, ugettext_lazy, get_language
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
 from models import *
@@ -65,9 +65,7 @@ def menu(target, user):
     return [
         {"name" : "autoreply",
          "url" : reverse(views.autoreply),
-         "label" : ugettext_lazy("Auto-reply message"),
-         "modal": True,
-         "modalcb" : "arform_cb"}
+         "label" : ugettext_lazy("Auto-reply message")}
         ]
 
 @events.observe("CreateDomain")
@@ -113,21 +111,3 @@ def onModifyMailbox(mailbox, oldmailbox):
     alias.autoreply_address =  \
         "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)
     alias.save()
-
-@events.observe("GetStaticContent")
-def get_static_content(user):
-    if not user.has_mailbox:
-        return []
-
-    return """<script type="text/javascript">
-function arform_cb() {
-    $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '%s'});
-    $(".submit").one('click', function(e) {
-        simple_ajax_form_post(e, {
-            error_cb: arform_cb,
-            formid: "arform"
-        });
-    });
-}
-</script>
-""" % get_language()

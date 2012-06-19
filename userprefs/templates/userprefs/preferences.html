@@ -2,16 +2,6 @@
 {% block pagetitle %}{% trans "Settings" %}{% endblock %}
 {% block html_head %}
 <script type="text/javascript">
-function forwardform_cb() {
-    $(".submit").one('click', function(e) {
-        simple_ajax_form_post(e, {
-            formid: "forwardform",
-            error_cb: forwardform_cb,
-            reload_on_success: false
-        });
-    });
-}
-
 $(document).ready(function() {
     $("#update").click(function(evt) {
         evt.preventDefault();
@@ -28,11 +18,13 @@ $(document).ready(function() {
 {% endblock %}
 {% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu left_selection user %}</div>{% endblock %}
 {% block apparea %}
+  <h2>{% trans "Preferences" %} <small>{% trans "Customize Modoboa" %}</small></h2>
+  <hr>
   <form class="form-horizontal" method="POST" 
-        action="{% url modoboa.userprefs.views.savepreferences %}" 
+        action="{% url modoboa.userprefs.views.preferences %}" 
         id="uparams_form">
     {% include "common/parameters.html" %}
+    <hr>
+    <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</button>
   </form>
-  <hr>
-  <a href="#" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</a>
 {% endblock %}

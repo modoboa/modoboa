@@ -81,7 +81,7 @@ class SQLconnector(MBconnector):
         return emails
 
 class SQLlisting(EmailListing):
-    tpl = "amavis_quarantine/index2.html"
+    tpl = "amavis_quarantine/index.html"
     tbltype = Qtable
     deflocation = "listing/"
     defcallback = "updatelisting"

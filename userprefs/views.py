@@ -1,5 +1,7 @@
 # coding: utf-8
 import copy
+from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators \
@@ -7,8 +9,7 @@ from django.contrib.auth.decorators \
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters, events
-from modoboa.lib.webutils import _render, _render_error, ajax_response, \
-    ajax_simple_response
+from modoboa.lib.webutils import ajax_response, ajax_simple_response
 from forms import *
 from modoboa.admin.models import Mailbox, Alias
 from modoboa.admin.lib import AdminError
@@ -16,55 +17,17 @@ from modoboa.auth.lib import encrypt
 
 @login_required
 def index(request):
-    return HttpResponseRedirect(reverse(preferences))
-
-@login_required
-def changepassword(request, tplname="common/generic_modal_form.html"):
-    res = events.raiseQueryEvent("PasswordChange", request.user)
-    if True in res:
-        from modoboa.lib.exceptions import ModoboaException
-        raise ModoboaException(_("Password change is disabled for this user"))
-        # ctx = dict(error=_("Password change is disabled for this user"))
-        # return _render_error(request, user_context=ctx)
-
-    ctx = dict(
-        title=_("Change password"),
-        formid="chpasswordform",
-        action=reverse(changepassword),
-        action_label=_("Update"),
-        action_classes="submit",
-        )
-
-    error = None
-    if request.method == "POST":
-        form = ChangePasswordForm(request.user, request.POST)
-        if form.is_valid():
-            try:
-                request.user.set_password(form.cleaned_data["confirmation"],
-                                          form.cleaned_data["oldpassword"])
-            except AdminError, e:
-                error = str(e)
-            else:
-                request.session["password"] = encrypt(request.POST["confirmation"])
-                request.user.save()
-            if error is None:
-                return ajax_response(request, respmsg=_("Password changed"))
-        ctx.update(form=form, error=error)
-        return ajax_response(request, status="ko", template=tplname, **ctx)
-
-    ctx.update(form=ChangePasswordForm(request.user))
-    return _render(request, tplname, ctx)
+    return HttpResponseRedirect(reverse(profile))
 
 @login_required
 @user_passes_test(lambda u: u.belongs_to_group('SimpleUsers'))
-def setforward(request, tplname="common/generic_modal_form.html"):
+def forward(request):
     mb = request.user.mailbox_set.all()[0]
     ctx = dict(
-        title=_("Define a forward"),
-        formid="forwardform",
-        action=reverse(setforward),
-        action_label=_("Update"),
-        action_classes="submit",
+        title=_("Forward"), 
+        subtitle=_("Automatically forward emails to another address"),
+        action=reverse(forward),
+        left_selection="forward",
         )
     try:
         al = Alias.objects.get(address=mb.address, 
@@ -90,7 +53,7 @@ def setforward(request, tplname="common/generic_modal_form.html"):
             except BadDestination, e:
                 error = str(e)
         ctx.update(form=form, error=error)
-        return ajax_response(request, status="ko", template=tplname, **ctx)
+        return ajax_response(request, status="ko", template="userprefs/form.html", **ctx)
 
     form = ForwardForm()
     if al is not None:
@@ -102,10 +65,50 @@ def setforward(request, tplname="common/generic_modal_form.html"):
         else:
             form.fields["keepcopies"].initial = True
     ctx.update(form=form)
-    return _render(request, tplname, ctx)
+    return render(request, "userprefs/section.html", ctx)
+
+@login_required
+def profile(request):
+    update_password = True
+    if True in events.raiseQueryEvent("PasswordChange", request.user):
+        update_password = False
+
+    if request.method == "POST":
+        form = ProfileForm(update_password, request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            if update_password:
+                request.session["password"] = encrypt(form.cleaned_data["confirmation"])
+            return ajax_simple_response(dict(
+                    status="ok", respmsg=_("Profile updated")
+                    ))
+        return ajax_simple_response(dict(
+                status="ko", 
+                content=render_to_string("userprefs/form.html", dict(form=form))
+                ))
+
+    form = ProfileForm(update_password, instance=request.user)
+    return render(request, 'userprefs/section.html', {
+            "title" : _("Profile"), 
+            "subtitle" : _("Update your personal information"),
+            "action" : reverse(profile),
+            "left_selection" : "profile",
+            "form" : form
+            })
 
 @login_required
 def preferences(request):
+    if request.method == "POST":
+        for pname, v in request.POST.iteritems():
+            if pname == "update":
+                continue
+            app, name = pname.split('.')
+            parameters.save_user(request.user, name, v, app=app)
+
+        return ajax_simple_response(dict(
+                status="ok", message=_("Preferences saved")
+                ))
+
     apps = sorted(parameters._params.keys())
     gparams = []
     for app in apps:
@@ -124,20 +127,8 @@ def preferences(request):
             tmp["params"] += [newdef]
         gparams += [tmp]
 
-    return _render(request, 'userprefs/preferences.html', {
+    return render(request, 'userprefs/preferences.html', {
             "selection" : "user",
             "left_selection" : "preferences",
             "gparams" : gparams
             })
-
-@login_required
-def savepreferences(request):
-    for pname, v in request.POST.iteritems():
-        if pname == "update":
-            continue
-        app, name = pname.split('.')
-        parameters.save_user(request.user, name, v, app=app)
-
-    return ajax_simple_response(dict(
-            status="ok", message=_("Preferences saved")
-            ))

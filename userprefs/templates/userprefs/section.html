@@ -1,0 +1,27 @@
+{% extends "twocols.html" %}{% load i18n uprefs_extras libextras %}
+{% block pagetitle %}{{ title }}{% endblock %}
+{% block html_head %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $(document).on("click", "#update", function(evt) {
+        evt.preventDefault();
+        var $form = $("#form");
+        $.post($form.attr("action"), $form.serialize(), function(data) {
+            if (data.status == "ok") {
+                $("body").notify("success", data.respmsg, 2000);
+            } else {
+                $("#form").html(data.content);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu left_selection user %}</div>{% endblock %}
+{% block apparea %}
+  <h2>{{ title }} <small>{{ subtitle }}</small></h2>
+  <hr>
+  <form class="form-horizontal" method="POST" action="{{ action }}" id="form">
+    {% include "userprefs/form.html" %}
+  </form>
+{% endblock %}

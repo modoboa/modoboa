@@ -27,7 +27,7 @@ def domains(request):
         if request.user.has_perm("admin.view_mailboxes"):
             return HttpResponseRedirect(reverse(identities))
 
-        return HttpResponseRedirect(reverse(userprefs.views.preferences))
+        return HttpResponseRedirect(reverse(userprefs.views.index))
     
     domains = request.user.get_domains()
     squery = request.GET.get("searchquery", None)
