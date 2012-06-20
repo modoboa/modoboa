@@ -216,7 +216,7 @@ function filterset_created(data) {
     curfset.append(option);
     curfset.attr("value", name);
 
-    if ($("#id_active").checked) {
+    if ($("#id_active").prop("checked", true)) {
         curfset.find("option").each(function(index, element) {
             var $element = $(element);
 
