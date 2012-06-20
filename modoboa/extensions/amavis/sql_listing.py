@@ -81,7 +81,7 @@ class SQLconnector(MBconnector):
         return emails
 
 class SQLlisting(EmailListing):
-    tpl = "amavis_quarantine/index.html"
+    tpl = "amavis/index.html"
     tbltype = Qtable
     deflocation = "listing/"
     defcallback = "updatelisting"
@@ -123,7 +123,7 @@ class SQLemail(Email):
         return ""
 
     def render_headers(self, **kwargs):
-        return render_to_string("amavis_quarantine/mailheaders.html", {
+        return render_to_string("amavis/mailheaders.html", {
                 "qtype" : self.qtype, "qreason" : self.qreason, 
                 "headers" : self.headers,
                 })

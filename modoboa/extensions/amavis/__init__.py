@@ -10,10 +10,10 @@ from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
 
 class AmavisQuarantine(ModoExtension):
-    name = "amavis_quarantine"
-    label = "Amavis quarantine"
+    name = "amavis"
+    label = "Amavis frontend"
     version = "1.0"
-    description = ugettext_lazy("Simple amavis quarantine management tool")
+    description = ugettext_lazy("Simple amavis management frontend")
     url = "quarantine"
 
     def init(self):
@@ -76,7 +76,7 @@ class AmavisQuarantine(ModoExtension):
 
         def destroy(self):
             events.unregister("UserMenuDisplay", menu)
-            parameters.unregister_app("amavis_quarantine")
+            parameters.unregister_app("amavis")
 
 exts_pool.register_extension(AmavisQuarantine)
 
@@ -88,7 +88,7 @@ def menu(target, user):
         return [
             {"name" : "quarantine",
              "label" : _("Quarantine"),
-             "url" : reverse('modoboa.extensions.amavis_quarantine.views.index')}
+             "url" : reverse('modoboa.extensions.amavis.views.index')}
             ]
     return []
 
@@ -161,7 +161,7 @@ $(document).ready(function() {
     });
 });
 </script>""")
-    url = reverse("modoboa.extensions.amavis_quarantine.views.nbrequests")
+    url = reverse("modoboa.extensions.amavis.views.nbrequests")
     interval = int(parameters.get_admin("CHECK_REQUESTS_INTERVAL")) * 1000
     return [tpl.render(Context(dict(url=url, interval=interval, text=_("pending requests"))))]
 
@@ -174,7 +174,7 @@ def display_requests(user):
         return []
     nbrequests = get_nb_requests(user)
 
-    url = reverse("modoboa.extensions.amavis_quarantine.views.index")
+    url = reverse("modoboa.extensions.amavis.views.index")
     url += "#listing/?viewrequests=1"
     tpl = Template('<div class="btn-group {{ css }}"><a id="nbrequests" href="{{ url }}" class="btn btn-danger">{{ label }}</a></div>')
     css = "hidden" if nbrequests == 0 else ""

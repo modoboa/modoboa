@@ -8,8 +8,6 @@ from modoboa.lib.webutils import static_url
 
 @events.observe("UserMenuDisplay")
 def menu(target, user):
-    import views
-
     if target != "top_menu_middle":
         return []
     if not user.has_mailbox:
@@ -22,12 +20,10 @@ def menu(target, user):
          "menu"  : [
                 {"name"  : "sendvirus",
                  "label" :  _("Send virus"),
-                 "img" : static_url("pics/send-receive.png"),
-                 "url"   : reverse(views.send_virus)},
+                 "url"   : reverse("modoboa.demo.views.send_virus")},
                 {"name"  : "sendspam",
                  "label" :  _("Send spam"),
-                 "img" : static_url("pics/send-receive.png"),
-                 "url"   : reverse(views.send_spam)}
+                 "url"   : reverse("modoboa.demo.views.send_spam")}
                 ]
          }
         ]

@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns(
-    'modoboa.extensions.amavis_quarantine.views',
+    'modoboa.extensions.amavis.views',
     (r'^$', 'index'),
     (r'^listing/$', '_listing'),
     (r'^getmailcontent/(?P<mail_id>[\w\-\+]+)/$', 'getmailcontent'),

@@ -107,7 +107,7 @@ def _listing(request):
 
 @login_required
 def index(request):
-    return _render(request, "amavis_quarantine/index.html", dict(
+    return _render(request, "amavis/index.html", dict(
             deflocation="listing/", defcallback="listing_cb", selection="quarantine"
             ))
 
@@ -141,13 +141,13 @@ def getmailcontent(request, mail_id):
             })
 
 def viewmail_selfservice(request, mail_id, 
-                         tplname="amavis_quarantine/viewmail_selfservice.html"):
+                         tplname="amavis/viewmail_selfservice.html"):
     rcpt = request.GET.get("rcpt", None)
     secret_id = request.GET.get("secret_id", "")
     if rcpt is None:
         raise Http404
     content = Template("""
-<iframe src="{% url modoboa.extensions.amavis_quarantine.views.getmailcontent mail_id %}" id="mailcontent"></iframe>
+<iframe src="{% url modoboa.extensions.amavis.views.getmailcontent mail_id %}" id="mailcontent"></iframe>
 """).render(Context(dict(mail_id=mail_id)))
     
     return _render(request, tplname, dict(
@@ -181,7 +181,7 @@ def viewheaders(request, mail_id):
     for qm in Quarantine.objects.filter(mail=mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
-    return _render(request, 'amavis_quarantine/viewheader.html', {
+    return _render(request, 'amavis/viewheader.html', {
             "headers" : msg.items()
             })
 

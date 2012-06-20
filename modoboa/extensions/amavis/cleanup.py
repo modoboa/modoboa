@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import time
-from modoboa.extensions.amavis_quarantine.models import *
+from modoboa.extensions.amavis.models import *
 
 if __name__ == "__main__":
-    from modoboa.extensions import amavis_quarantine
+    from modoboa.extensions import amavis
     from modoboa.lib import parameters
     from optparse import OptionParser
 
@@ -20,14 +20,14 @@ if __name__ == "__main__":
         l.setLevel(logging.DEBUG)
         l.addHandler(logging.StreamHandler())
 
-    amavis_quarantine.load()
+    amavis.load()
 
     max_messages_age = int(parameters.get_admin("MAX_MESSAGES_AGE",
-                                                app="amavis_quarantine"))
+                                                app="amavis"))
 
     flags = ['D']
     if parameters.get_admin("RELEASED_MSGS_CLEANUP", 
-                            app="amavis_quarantine") == "yes":
+                            app="amavis") == "yes":
         flags += ['R']
 
     print "Deleting marked messages..."

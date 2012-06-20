@@ -432,11 +432,15 @@ class AccountFormGeneral(forms.ModelForm):
 
 class AccountFormMail(forms.Form, DynamicForm):
     email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
-    quota = forms.IntegerField(label=ugettext_lazy("Quota"), required=False)
+    quota = forms.IntegerField(
+        label=ugettext_lazy("Quota"),
+        required=False,
+        help_text=_("Quota in MB for this mailbox. Leave empty to use the value defined at domain level.")
+        )
     aliases = forms.EmailField(
         label=ugettext_lazy("Alias(es)"), 
         required=False,
-        help_text=ugettext_lazy("Alias(es) of this mailbox")
+        help_text=ugettext_lazy("Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input.")
         )
 
     def __init__(self, *args, **kwargs):

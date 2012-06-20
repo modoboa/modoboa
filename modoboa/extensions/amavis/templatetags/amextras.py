@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from modoboa.lib.webutils import static_url
-from modoboa.extensions import amavis_quarantine
+from modoboa.extensions import amavis
 
 register = template.Library()
 
@@ -15,17 +15,17 @@ def viewm_menu(user, mail_id, rcpt):
         {"name" : "release",
          "img" : "icon-white icon-ok",
          "class" : "btn-success",
-         "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
+         "url" : reverse(amavis.views.release, args=[mail_id]) \
              + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Release")},
         {"name" : "delete",
          "class" : "btn-danger",
          "img" : "icon-white icon-trash",
-         "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
+         "url" : reverse(amavis.views.delete, args=[mail_id]) \
              + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Delete")},
         {"name" : "headers",
-         "url" : reverse(amavis_quarantine.views.viewheaders, args=[mail_id]),
+         "url" : reverse(amavis.views.viewheaders, args=[mail_id]),
          "label" : _("View full headers")},
         ]
 
@@ -46,14 +46,14 @@ def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
         {"name" : "release",
          "img" : "icon-white icon-ok",
          "class" : "btn-success",
-         "url" : reverse(amavis_quarantine.views.release, args=[mail_id]) \
+         "url" : reverse(amavis.views.release, args=[mail_id]) \
              + ("?rcpt=%s" % rcpt \
                     + (("&secret_id=%s" % secret_id) if secret_id != "" else "")),
          "label" : _("Release")},
         {"name" : "delete",
          "img" : "icon-white icon-trash",
          "class" : "btn-danger",
-         "url" : reverse(amavis_quarantine.views.delete, args=[mail_id]) \
+         "url" : reverse(amavis.views.delete, args=[mail_id]) \
              + "?rcpt=%s" % rcpt \
              + ("&secret_id=%s" % secret_id if secret_id != "" else ""),
          "label" : _("Delete")},
@@ -66,14 +66,14 @@ def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
 def quar_menu(user):
     entries = [
         {"name" : "release-multi",
-         "url" : reverse(amavis_quarantine.views.process),
+         "url" : reverse(amavis.views.process),
          "img" : "icon-white icon-ok",
          "class" : "btn-success",
          "label" : _("Release")},
         {"name" : "delete-multi",
          "img" : "icon-white icon-trash",
          "class" : "btn-danger",
-         "url" : reverse(amavis_quarantine.views.process),
+         "url" : reverse(amavis.views.process),
          "label" : _("Delete")},
         {"name" : "select",
          "url" : "",
