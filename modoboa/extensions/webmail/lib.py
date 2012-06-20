@@ -316,7 +316,8 @@ class ReplyModifier(Modifier):
             form.fields["to"].initial = self.From
         else:
             form.fields["to"].initial = self.Reply_To
-        if all: # reply-all
+        if request.GET.get("all", "0") == "1": # reply-all
+            print "reply all"
             form.fields["cc"].initial = ""
             toparse = self.To.split(",")
             if hasattr(self, 'Cc'):

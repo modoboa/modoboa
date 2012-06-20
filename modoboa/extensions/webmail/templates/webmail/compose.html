@@ -7,7 +7,7 @@
         <a id="add_cc" href="#">{% trans "Add Cc field" %}</a> <a id="add_cci" href="#">{% trans "Add Cci field" %}</a>
       </div>
       {% render_field form.to %}
-      {% render_and_hide_field form.cc %}
+      {% if form.cc.value %}{% render_field form.cc %}{% else %}{% render_and_hide_field form.cc %}{% endif %}
       {% render_and_hide_field form.cci %}
       {% render_field form.subject %}
       <div id="attachments" name="{% url modoboa.extensions.webmail.views.attachments %}">
