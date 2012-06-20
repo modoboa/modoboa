@@ -1,11 +1,9 @@
 .*~$
 ^[^\.]+\.pyc
 ^[^\.]+\.mo
-sitestatic
-scripts
-static/tmp
-static/js/ckeditor
-settings.py
+dist
+build
+modoboa.egg-info
 doc/.build
 doc/.static
 doc/.templates

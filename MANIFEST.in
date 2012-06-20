@@ -1,0 +1,3 @@
+include INSTALL COPYING requirements.txt
+recursive-include modoboa *.html *.js *.css *.png *.po
+recursive-include doc *
