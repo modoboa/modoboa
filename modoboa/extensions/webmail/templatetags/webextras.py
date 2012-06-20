@@ -130,7 +130,6 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False):
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
         if mbox.has_key("sub"):
             if selected is not None and selected != name and selected.count(name):
-                print "%s is visible" % name
                 ul_state = "visible"
                 div_state = "expanded"
             else:

@@ -194,6 +194,9 @@ Webmail.prototype = {
         var curmb = this.get_current_mailbox();
 
         $(window).unbind("resize");
+        if (!$('li[name="' + curmb + '"]').hasClass("active")) {
+            this.load_and_select_mailbox(curmb);
+        }
         this.enable_mb_actions();
         for (var idx in this.options.ro_mboxes) {
             if (curmb == this.options.ro_mboxes[idx]) {
@@ -770,12 +773,7 @@ Webmail.prototype = {
      * 'listmailbox' callback
      */
     listmailbox_callback: function(resp) {
-        var curmb = this.get_current_mailbox();
-
         this.store_nav_params();
-        if (!$('li[name="' + curmb + '"]').hasClass("active")) {
-            this.load_and_select_mailbox(curmb);
-        }
         this.page_update(resp);
         $("#emails").htmltable();
         this.htmltable = $("#emails").data("htmltable");
