@@ -11,6 +11,9 @@ $(document).ready(function() {
                 $("body").notify("success", data.respmsg, 2000);
             } else {
                 $("#form").html(data.content);
+                if (data.respmsg) {
+                    $("body").notify("error", data.respmsg);
+                }
             }
         });
     });

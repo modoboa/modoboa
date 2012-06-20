@@ -52,8 +52,13 @@ def forward(request):
                 return ajax_response(request, respmsg=_("Forward updated"))
             except BadDestination, e:
                 error = str(e)
+
         ctx.update(form=form, error=error)
-        return ajax_response(request, status="ko", template="userprefs/form.html", **ctx)
+        return ajax_simple_response(dict(
+                status="ko", 
+                content=render_to_string("userprefs/form.html", dict(form=form)),
+                respmsg=error
+                ))
 
     form = ForwardForm()
     if al is not None:

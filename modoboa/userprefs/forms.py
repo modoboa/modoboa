@@ -52,12 +52,24 @@ class ProfileForm(forms.ModelForm):
         return user
 
 class ForwardForm(forms.Form):
-    dest = forms.CharField(label=ugettext_lazy("Destination(s)"), widget=forms.Textarea)
-    keepcopies = forms.BooleanField(label=ugettext_lazy("Keep local copies"), required=False)
+    dest = forms.CharField(
+        label=ugettext_lazy("Recipient(s)"), 
+        widget=forms.Textarea,
+        required=False,
+        help_text=ugettext_lazy("Indicate one or more recipients separated by a ','")
+        )
+    keepcopies = forms.BooleanField(
+        label=ugettext_lazy("Keep local copies"), 
+        required=False,
+        help_text=ugettext_lazy("Forward messages and store copies into your local mailbox")
+        )
 
     def parse_dest(self):
         self.dests = []
-        for d in self.cleaned_data["dest"].strip().split(","):
+        rawdata = self.cleaned_data["dest"].strip()
+        if rawdata == "":
+            return
+        for d in rawdata.split(","):
             local_part, domname = split_mailbox(d)
             if not local_part or not domname or not len(domname):
                 raise BadDestination("Invalid mailbox syntax for %s" % d)
