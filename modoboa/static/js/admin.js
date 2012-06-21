@@ -48,7 +48,10 @@ function generalform_init() {
 }
 
 function mailform_init() {
-    $("#id_aliases").dynamic_input();
+    $("#id_aliases").autocompleter({
+        from_character: "@",
+        choices: get_domains_list
+    }).dynamic_input();
     $("#id_email").autocompleter({
         from_character: "@",
         choices: get_domains_list
@@ -109,7 +112,7 @@ function aliasform_cb() {
     $("#id_recipients").dynamic_input();
     $("#id_int_recipient").autocompleter({
         choices: get_mboxes_list
-    })
+    });
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
             formid: "aliasform",

@@ -24,17 +24,38 @@ For extensions (mandatories since 0.8.2):
 How to install
 ==============
 
-Download the latest Modoboa's tarball and extract it::
+You can choose between two options to install Modoboa:
+
+* Use the Python package available on the `PyPI <http://pypi.python.org/pypi>`_
+* Download the sources tarball
+
+The easiest one is to install it from the *PyPI*. Just run the
+following command and you're done::
+
+  $ pip install modoboa
+
+If you prefer to use the tarball, download the latest one and run the
+following procedure::
 
   $ tar xzf modoboa-<version>.tar.gz
-  $ mv modoboa-<version> modoboa
-  $ cd modoboa
+  $ cd modoboa-<version>
+  $ python setup.py install
 
-Then, enter the *modoboa* directory, create a *settings.py* file (you
-can use *settings-sample.py* as an example). Specify database relative
-informations. You must choose between *MySQL*, *PostgreSQL* or
-*sqlite*, other types are not supported by major email projects like
-*postfix* or *dovecot*.
+As Modoboa is a set of Django applications, you need to create a new
+project. Just run the following commands::
+
+  $ cd /var/www
+  $ django-admin.py startproject modoboa_example
+  $ cd modoboa_example
+  $ wget http://modoboa.org/resources/settings.py
+  $ wget http://modoboa.org/resources/urls.py
+  $ python manage.py collectstatic
+  $ mkdir media
+
+Then, edit the freshly downloaded *settings.py* file and adjust the
+database relative information. You must choose which backend to use
+between *MySQL*, *PostgreSQL* or *sqlite*, other types are not
+supported by major email projects like *postfix* or *dovecot*.
 
 Create a database with the name you specified in *settings.py*. Make
 sure your database is using UTF8 as a default charset. If not, you
@@ -45,20 +66,14 @@ Initialize the database by running the following command::
 
   $ python manage.py syncdb --migrate --noinput
 
-Since version 0.8, Modoboa uses *south* to handle schema migrations,
-this is the reason why you must add the ``--migrate`` option.
-
 At the end of this command, a default super administrator is
 available:
 
 * Username: admin
 * Password: password
 
-You may change its password the first time you log into Modoboa.
-
-Finally, create the directory that will contain static content::
-
-  $ python manage.py collectstatic
+It is **strongly** recommanded to change this password the first time
+you log into Modoboa.
 
 Time zone and language
 ----------------------
