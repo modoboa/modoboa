@@ -107,7 +107,7 @@ class AccountTestCase(ModoTestCase):
         * The default admin changes his password (no associated Mailbox)
         * A normal user changes his password
         """
-        self.check_ajax_post("/modoboa/userprefs/changepassword/",
+        self.check_ajax_post("/modoboa/userprefs/profile/",
                             {"oldpassword" : "password", 
                              "newpassword" : "titi", "confirmation" : "titi"})
         self.clt.logout()
@@ -116,7 +116,7 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(self.clt.login(username="user@test.com", password="toto"),
                          True)
 
-        self.check_ajax_post("/modoboa/userprefs/changepassword/",
+        self.check_ajax_post("/modoboa/userprefs/profile/",
                             {"oldpassword" : "toto", 
                              "newpassword" : "tutu", "confirmation" : "tutu"})
         self.clt.logout()
@@ -164,7 +164,7 @@ class AliasTestCase(ModoTestCase):
                           address="all", domain__name="test.com")
 
     def test_forward(self):
-        values = dict(email="forward@test.com", recipient="rcpt@dest.com")
+        values = dict(email="forward@test.com", ext_recipient="rcpt@dest.com")
         self.check_ajax_post("/modoboa/admin/forwards/new/", values)
         fwd = Alias.objects.get(address="forward", domain__name="test.com")
         self.assertEqual(len(fwd.get_recipients()), 1)
