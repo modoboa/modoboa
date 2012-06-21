@@ -21,6 +21,11 @@ urlpatterns = patterns('',
     *exts_pool.load_all(prefix)
 )
 
+if 'modoboa.demo' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        (r'%sdemo/' % prefix, include('modoboa.demo.urls'))
+    )
+
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     from django.conf.urls.static import static
