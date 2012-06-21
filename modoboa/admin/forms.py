@@ -448,18 +448,18 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.mb = kwargs["instance"]
             del kwargs["instance"]
         super(AccountFormMail, self).__init__(*args, **kwargs)
-        if not hasattr(self, "mb") or self.mb is None:
-            return
-        self.fields["email"].required = True
-        cpt = 1
-        for alias in self.mb.alias_set.all():
-            if len(alias.get_recipients()) >= 2:
-                continue
-            name = "aliases_%d" % cpt
-            self._create_field(forms.EmailField, name, alias.full_address)
-            cpt += 1
-        self.fields["email"].initial = self.mb.full_address
-        self.fields["quota"].initial = self.mb.quota
+        if hasattr(self, "mb") and self.mb is not None:
+            self.fields["email"].required = True
+            cpt = 1
+            for alias in self.mb.alias_set.all():
+                if len(alias.get_recipients()) >= 2:
+                    continue
+                name = "aliases_%d" % cpt
+                self._create_field(forms.EmailField, name, alias.full_address)
+                cpt += 1
+            self.fields["email"].initial = self.mb.full_address
+            self.fields["quota"].initial = self.mb.quota
+
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", forms.EmailField)
 
