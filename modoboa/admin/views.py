@@ -91,7 +91,7 @@ def newdomain(request, tplname="admin/newdomainform.html"):
     return _render(request, tplname, commonctx)
 
 @login_required
-@permission_required("admin.change_domain")
+@permission_required("admin.view_domains")
 def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     domain = Domain.objects.get(pk=dom_id)
     if not request.user.can_access(domain):

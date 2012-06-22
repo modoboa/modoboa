@@ -62,6 +62,9 @@ def settings_menu(selection, user):
 
 @register.simple_tag
 def domains_menu(selection, user):
+    if not user.has_perm("admin.add_domain"):
+        return ""
+
     entries = [
         {"name" : "newdomain",
          "label" : _("Add domain"),
@@ -76,6 +79,7 @@ def domains_menu(selection, user):
          "modal" : True,
          "modalcb" : "importform_cb"}
         ]
+
     return render_to_string('common/menu.html', {
             "entries" : entries, 
             "css" : "nav nav-list",
@@ -126,13 +130,14 @@ def identities_menu(user):
 
 @register.simple_tag
 def domain_actions(user, domid):
-    actions = [
-        {"name" : "deldomain",
-         "url" : reverse(admin.views.deldomain) + "?selection=%s" % domid,
-         "img" : "icon-trash"},         
-        ]
-
-    return render_actions(actions)
+    if user.has_perm("admin.delete_domain"):
+        actions = [
+            {"name" : "deldomain",
+             "url" : reverse(admin.views.deldomain) + "?selection=%s" % domid,
+             "img" : "icon-trash"},
+            ]
+        return render_actions(actions)
+    return "---"
 
 @register.simple_tag
 def identity_actions(user, iid):
@@ -204,16 +209,22 @@ def param(app, definition):
     if definition["type"] == "text":
         result += "<textarea name='%s' id='%s'>%s</textarea>" \
             % (name, name, value)
+        
+    if definition["type"] == "list_yesno":
+        for v in [("yes", _("Yes")), ("no", _("No"))]:
+            checked = "checked" if value == v[0] else ""
+            result += """<label for="%(id)s" class="radio inline">
+  %(label)s
+  <input type="radio" name="%(id)s" id="%(id)s" value="%(value)s"%(checked)s />
+</label>
+""" % dict(id=name, value=v[0], label=v[1], checked=checked)
 
-    if definition["type"] in ["list", "list_yesno"]:
+    if definition["type"] == "list":
         result += """
 <select name='%s' id='%s'>""" % (name, name)
         values = []
-        if definition["type"] == "list_yesno":
-            values = [("yes", _("Yes")), ("no", _("No"))]
-        else:
-            if definition.has_key("values"):
-                values = definition["values"]
+        if definition.has_key("values"):
+            values = definition["values"]
         for v in values:
             selected = ""
             if value == v[0]:

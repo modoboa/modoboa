@@ -17,7 +17,7 @@
     </ul>
   </li>
     {% else %}
-  <li {% if selection == entry.name %}class="active"{% endif %}>
+  <li class="{% if selection == entry.name %}active{% endif %}">
     {% render_link entry %}
   </li>
     {% endif %}

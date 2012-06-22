@@ -101,10 +101,13 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 class DomainForm(TabForms):
     def __init__(self, user, *args, **kwargs):
         self.user = user
-        self.forms = [
-            dict(id="general", title=_("General"), formtpl="admin/domain_general_form.html",
-                 cls=DomainFormGeneral, mandatory=True),
-            ]
+        self.forms = []
+        if user.has_perm("admin.change_domain"):
+            self.forms.append(dict(
+                    id="general", title=_("General"), formtpl="admin/domain_general_form.html",
+                    cls=DomainFormGeneral, mandatory=True
+                    ))
+
         cbargs = [user]
         if kwargs.has_key("instances"):
             cbargs += [kwargs["instances"]["general"]]
@@ -115,14 +118,11 @@ class DomainForm(TabForms):
     def save(self, user):
         """Custom save method
 
-        As forms interact with each other, it is simpler to make
-        custom code to save them.
+        As forms interact with each other, it is easier to make custom
+        code to save them.
         """
-        self.forms[0]["instance"].save(user)
-        if len(self.forms) <= 1:
-            return
-        for f in self.forms[1:]:
-            f["instance"].save()
+        for f in self.forms:
+            f["instance"].save(user)
 
 class DlistForm(forms.ModelForm, DynamicForm):
     email = forms.EmailField(

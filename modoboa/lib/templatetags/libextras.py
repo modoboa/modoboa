@@ -143,7 +143,7 @@ def alert(msg, typ):
     return t.render(Context(dict(type=typ, msg=msg)))
 
 @register.simple_tag
-def render_link(linkdef, mdclass=None):
+def render_link(linkdef, mdclass=""):
     t = Template("""<a href="{{ link.url }}" name="{{ link.name }}" title="{{ link.title }}"
 {% if link.modal %}data-toggle="ajaxmodal{% if link.autowidth %}-autowidth{% endif %}"{% endif %}
 {% if link.modalcb %}modalcb="{{ link.modalcb }}"{% endif %}
