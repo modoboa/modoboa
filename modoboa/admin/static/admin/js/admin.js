@@ -129,7 +129,7 @@ function importform_cb() {
         }
         $("#import_status").css("display", "block");
         $("#import_result").html("").removeClass("alert alert-error");
-        $("form").submit();
+        $("#importform").submit();
     });
 }
 
