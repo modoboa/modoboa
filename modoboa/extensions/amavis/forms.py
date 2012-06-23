@@ -2,17 +2,19 @@
 
 from django import forms
 from models import Policy, Users
+from modoboa.lib.formutils import InlineRadioSelect
 
 class DomainPolicyForm(forms.ModelForm):
-
     class Meta:
         model = Policy
-        fields = ('bypass_virus_checks', 'bypass_spam_checks', 'spam_modifies_subj',
-                  'spam_tag2_level', 'spam_kill_level')
+        fields = ('bypass_virus_checks', 'bypass_spam_checks', 
+                  'spam_tag2_level', 'spam_modifies_subj',
+                  'spam_kill_level', 'bypass_banned_checks')
         widgets = {
-            'bypass_spam_checks' : forms.Select(attrs={'class' : 'span1'}),
-            'bypass_virus_checks' : forms.Select(attrs={'class' : 'span1'}),
-            'spam_modifies_subj' : forms.Select(attrs={'class' : 'span1'}),
+            'bypass_spam_checks' : InlineRadioSelect(),
+            'bypass_virus_checks' : InlineRadioSelect(),
+            'bypass_banned_checks' : InlineRadioSelect(),
+            'spam_modifies_subj' : InlineRadioSelect(attrs={'class' : 'span1'}),
             'spam_tag2_level' : forms.TextInput(attrs={'class' : 'span1'}),
             'spam_kill_level' : forms.TextInput(attrs={'class' : 'span1'}),
             }
@@ -27,11 +29,10 @@ class DomainPolicyForm(forms.ModelForm):
                 del kwargs["instance"]
         super(DomainPolicyForm, self).__init__(*args, **kwargs)
 
-    def save(self, commit=True):
+    def save(self, user, commit=True):
         p = super(DomainPolicyForm, self).save(commit=False)
         if commit:
             p.save()        
-            print p.id
             try:
                 u = Users.objects.get(policy__id=p.id)
             except Users.DoesNotExist:

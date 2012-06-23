@@ -76,18 +76,21 @@ class Policy(models.Model):
     banned_files_lover = models.CharField(max_length=3, blank=True)
     bad_header_lover = models.CharField(max_length=3, blank=True)
     bypass_virus_checks = models.CharField(
-        ugettext_lazy("Bypass virus checks"), max_length=3, 
-        choices=(('Y', 'yes'), ('N', 'no')), blank=True
+        ugettext_lazy("Enable virus filter"), max_length=3,
+        choices=(('Y', 'yes'), ('N', 'no')), blank=False, default='Y'
         )
     bypass_spam_checks = models.CharField(
-        ugettext_lazy("Bypass spam checks"), max_length=3, 
-        choices=(('Y', 'yes'), ('N', 'no')), blank=True
+        ugettext_lazy("Enable spam filter"), max_length=3, 
+        choices=(('Y', 'yes'), ('N', 'no')), blank=False, default='Y'
         )
-    bypass_banned_checks = models.CharField(max_length=3, blank=True)
+    bypass_banned_checks = models.CharField(
+        ugettext_lazy("Enable banned filter"), max_length=3, 
+        choices=(('Y', 'yes'), ('N', 'no')), blank=False, default='Y'
+        )
     bypass_header_checks = models.CharField(max_length=3, blank=True)
     spam_modifies_subj = models.CharField(
-        ugettext_lazy("Modify spam subject"), 
-        choices=(('Y', 'yes'), ('N', 'no')), max_length=3, blank=True
+        ugettext_lazy("Indicate spam in subject"), 
+        choices=(('Y', 'yes'), ('N', 'no')), max_length=3, blank=False, default='Y'
         )
     virus_quarantine_to = models.CharField(max_length=192, blank=True)
     spam_quarantine_to = models.CharField(max_length=192, blank=True)
@@ -97,10 +100,10 @@ class Policy(models.Model):
     other_quarantine_to = models.CharField(max_length=192, blank=True)
     spam_tag_level = models.FloatField(null=True, blank=True)
     spam_tag2_level = models.FloatField(
-        ugettext_lazy("Spam tag2 level"), null=True, blank=True
+        ugettext_lazy("Spam score"), null=True, blank=True
         )
     spam_kill_level = models.FloatField(
-        ugettext_lazy("Spam kill level"), null=True, blank=True
+        ugettext_lazy("Discard spam beyond"), null=True, blank=True
         )
     spam_dsn_cutoff_level = models.FloatField(null=True, blank=True)
     spam_quarantine_cutoff_level = models.FloatField(null=True, blank=True)

@@ -186,16 +186,16 @@ def display_requests(user):
 def extra_domain_form(user, domain):
     from forms import DomainPolicyForm
 
-    if not user.is_superuser and not user.belongs_to_group("Resellers"):
+    if not user.has_perm("admin.view_domains"):
         return []
     return [
         dict(
-            id="amavis", title=_("Amavis"), cls=DomainPolicyForm
+            id="amavis", title=_("Content filter"), cls=DomainPolicyForm
             )
         ]
 
 @events.observe("FillDomainInstances")
 def fill_domain_instances(user, domain, instances):
-    if not user.is_superuser and not user.belongs_to_group("Resellers"):
+    if not user.has_perm("admin.view_domains"):
         return
     instances["amavis"] = domain
