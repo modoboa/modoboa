@@ -20,6 +20,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     class Meta:
         model = Domain
         fields = ("name", "quota", "aliases", "enabled")
+        widgets = dict(
+            quota=forms.widgets.TextInput(attrs={"class" : "span1"})
+            )
 
     def __init__(self, *args, **kwargs):
         self.oldname = None
@@ -435,7 +438,8 @@ class AccountFormMail(forms.Form, DynamicForm):
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
-        help_text=_("Quota in MB for this mailbox. Leave empty to use the value defined at domain level.")
+        help_text=_("Quota in MB for this mailbox. Leave empty to use the value defined at domain level."),
+        widget=forms.widgets.TextInput(attrs={"class" : "span1"})
         )
     aliases = forms.EmailField(
         label=ugettext_lazy("Alias(es)"), 

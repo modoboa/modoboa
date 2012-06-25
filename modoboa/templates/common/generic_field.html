@@ -2,7 +2,8 @@
 <div class="control-group {% if field.errors %}error{% endif %}"{% if hidden %}style="display: none"{% endif %}>
   {% if field.label %}<label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>{% endif %}{% if help_display_mode == "tooltip" and field.help_text %}<a href="#" class="help pull-left" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>{% endif %}
   <div class="controls spaced">
-    {{ field }}{% if help_display_mode == "inline" and field.help_text %}<span class="help-inline">{{ field.help_text }}</span>{% endif %}
+    {% if appended_text %}<div class="input-append">{% endif %}
+    {{ field }}{% if appended_text %}<span class="add-on">{{ appended_text }}</span></div>{% endif %}{% if help_display_mode == "inline" and field.help_text %}<span class="help-inline">{{ field.help_text }}</span>{% endif %}
     {% if field.errors %}<p class="help-block">{% for error in field.errors %}{{ error|safe }}{% endfor %}</p>{% endif %}
   </div>
 </div>

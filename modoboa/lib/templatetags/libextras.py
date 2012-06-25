@@ -100,6 +100,12 @@ def render_field(field, help_display_mode="tooltip"):
             ))
 
 @register.simple_tag
+def render_field_appended(field, text):
+    return render_to_string("common/generic_field.html", dict(
+            field=field, help_display_mode="tooltip", appended_text=text
+            ))
+
+@register.simple_tag
 def render_and_hide_field(field):
     return render_to_string("common/generic_field.html", dict(
             field=field, hidden=True

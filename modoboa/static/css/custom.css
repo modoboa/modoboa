@@ -63,7 +63,8 @@ body {
 
 .spaced select,
 .spaced input[type="text"],
-.spaced input[type="password"] { 
+.spaced input[type="password"],
+.spaced span {
     margin-bottom: 8px;
 }
 

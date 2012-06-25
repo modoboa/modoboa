@@ -1,4 +1,4 @@
 {% load libextras %}
 {% render_field form.email %}
-{% render_field form.quota %}
+{% render_field_appended form.quota _("MB") %}
 {% render_fields_group form "aliases" %}
