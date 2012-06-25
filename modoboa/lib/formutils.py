@@ -14,8 +14,9 @@ class CreationWizard(object):
         self.steps = []
         self.done_cb = done_cb
 
-    def add_step(self, cls, title, buttons, new_args=None):
-        self.steps += [dict(cls=cls, title=title, buttons=buttons, new_args=new_args)]
+    def add_step(self, cls, title, buttons, formtpl=None, new_args=None):
+        self.steps += [dict(cls=cls, title=title, buttons=buttons, 
+                            formtpl=formtpl, new_args=new_args)]
 
     def create_forms(self, data=None):
         for step in self.steps:

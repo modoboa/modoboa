@@ -11,7 +11,7 @@
         {% for step in steps %}
         <div id="step{{ forloop.counter }}" 
              class="item{% if forloop.first %} active{% endif %}">
-          {% render_form step.form %}
+          {% if step.formtpl %}{% render_form step.form step.formtpl %}{% else %}{% render_form step.form %}{% endif %}
         </div>
         {% endfor %}
       </div>

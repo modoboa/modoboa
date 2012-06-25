@@ -361,7 +361,8 @@ def newaccount(request, tplname='admin/newaccount.html'):
                      new_args=[request.user])
     cwizard.add_step(AccountFormMail, _("Mail"),
                      [dict(classes="btn-primary submit", label=_("Create")),
-                      dict(classes="btn-inverse prev", label=_("Previous"))])
+                      dict(classes="btn-inverse prev", label=_("Previous"))],
+                     formtpl="admin/mailform.html")
 
     if request.method == "POST":
         retcode, data = cwizard.validate_step(request)
