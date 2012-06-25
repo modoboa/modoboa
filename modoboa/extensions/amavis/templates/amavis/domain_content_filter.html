@@ -1,0 +1,12 @@
+{% load i18n libextras %}
+{% render_field form.bypass_virus_checks "inline" %}
+{% render_field form.bypass_spam_checks "inline" %}
+<div class="control-group"> 
+  <label class="control-label">{% trans "Thresholds" %}</label>
+  <div class="controls spaced">
+    {{ form.spam_tag2_level }} <span class="help-inline">{% trans "or more is spam" %}</span><br>
+    {{ form.spam_kill_level }} <span class="help-inline">{% trans "or more throw spam message away" %}</span>
+  </div>
+</div>
+{% render_field form.spam_modifies_subj "inline" %}
+{% render_field form.bypass_banned_checks "inline" %}
