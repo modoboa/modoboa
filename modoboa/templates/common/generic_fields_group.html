@@ -1,5 +1,6 @@
+{% load i18n %}
 <div class="control-group{% if haserror %} error{% endif %}">
-  <label class="control-label">{{ label }}</label>
+  <label class="control-label">{{ label }}</label>{% if help_text %}<a href="#" class="help pull-left" data-original-title="{% trans 'Help:' %} {{ label }}" data-content="{{ help_text }}" rel="popover">?</a>{% endif %}
   <div class="controls spaced">
     {% for field in group %}
     {{ field }}{% if field.errors %}<p class="help-block">{% for error in field.errors %}{{ error|safe }}{% endfor %}</p>{% endif %}

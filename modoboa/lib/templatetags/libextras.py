@@ -132,7 +132,7 @@ def render_fields_group(form, pattern):
         cpt += 1
 
     return render_to_string("common/generic_fields_group.html", dict(
-            label=label, group=group, haserror=haserror
+            label=label, help_text=first.help_text, group=group, haserror=haserror
             ))
 
 @register.simple_tag
