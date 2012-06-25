@@ -63,7 +63,7 @@ def grant_access_to_object(user, obj, is_owner=False):
         if is_owner:
             from modoboa.admin.models import User
             for su in User.objects.filter(is_superuser=True):
-                if su != user:
+                if su != user and su != obj:
                     ObjectAccess.objects.create(user=su, content_type=ct, object_id=obj.id)
 
     except IntegrityError, e:
