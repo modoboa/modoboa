@@ -235,7 +235,7 @@ def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
         return False, "SMTP error: %s" % str(e)
     return True, None
 
-def sendmail_simple(sender, rcpt, content=""):
+def sendmail_simple(sender, rcpt, subject="Sample message", content="", **kwargs):
     """Simple way to send a text message
 
     Send a text/plain message with basic headers (msg-id, date).
@@ -245,17 +245,18 @@ def sendmail_simple(sender, rcpt, content=""):
 
     :param sender: sender address
     :param rcpt: recipient address
+    :param subject: message's subject
     :param content: message's content
     :return: tuple
     """
     msg = MIMEText(content)
-    msg["Subject"] = "Sample message"
+    msg["Subject"] = subject
     msg["From"] = sender
     msg["To"] = rcpt
     msg["Message-ID"] = make_msgid()
     msg["Date"] = formatdate(time.time(), True)
 
-    return __sendmail(sender, rcpt, msg.as_string())
+    return __sendmail(sender, rcpt, msg.as_string(), **kwargs)
 
 def sendmail_fromfile(sender, rcpt, fname):
     """Send a message contained within a file

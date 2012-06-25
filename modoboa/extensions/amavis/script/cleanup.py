@@ -5,7 +5,7 @@ import time
 from modoboa.extensions.amavis.models import *
 
 if __name__ == "__main__":
-    from modoboa.extensions import amavis
+    from modoboa.extensions.amavis import Amavis
     from modoboa.lib import parameters
     from optparse import OptionParser
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
         l.setLevel(logging.DEBUG)
         l.addHandler(logging.StreamHandler())
 
-    amavis.load()
+    Amavis().load()
 
     max_messages_age = int(parameters.get_admin("MAX_MESSAGES_AGE",
                                                 app="amavis"))

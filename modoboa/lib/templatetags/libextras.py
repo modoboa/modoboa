@@ -1,5 +1,6 @@
 # coding: utf-8
 import os
+import datetime
 from django.conf import settings
 from django import template
 from django.contrib import messages
@@ -168,3 +169,7 @@ def progress_color(value):
     if value < 80:
         return "progress-warning"
     return "progress-danger"
+
+@register.filter
+def fromunix(value):
+    return datetime.datetime.fromtimestamp(int(value))

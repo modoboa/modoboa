@@ -9,7 +9,7 @@ from django.template import Template, Context
 from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
 
-class AmavisQuarantine(ModoExtension):
+class Amavis(ModoExtension):
     name = "amavis"
     label = "Amavis frontend"
     version = "1.0"
@@ -67,6 +67,8 @@ class AmavisQuarantine(ModoExtension):
                                   help=ugettext_lazy("Allow users to directly release their messages"))
         parameters.register_admin("SELF_SERVICE", type="list_yesno", deflt="no",
                                   help=ugettext_lazy("Activate the 'self-service' mode"))
+        parameters.register_admin("NOTIFICATIONS_SENDER", type="string", deflt="notification@modoboa.org",
+                                  help=ugettext_lazy("The e-mail address used to send notitications"))
         
         parameters.register_user(
             "MESSAGES_PER_PAGE", type="int", deflt=40,
@@ -78,7 +80,7 @@ class AmavisQuarantine(ModoExtension):
             events.unregister("UserMenuDisplay", menu)
             parameters.unregister_app("amavis")
 
-exts_pool.register_extension(AmavisQuarantine)
+exts_pool.register_extension(Amavis)
 
 @events.observe("UserMenuDisplay")
 def menu(target, user):
