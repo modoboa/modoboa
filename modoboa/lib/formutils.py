@@ -169,23 +169,3 @@ class DomainNameField(forms.CharField):
     def clean(self, value):
         value = self.to_python(value).strip()
         return super(DomainNameField, self).clean(value)
-
-class BootstrapRadioInput(forms.widgets.RadioInput):
-    def __unicode__(self):
-        if 'id' in self.attrs:
-            label_for = ' for="%s_%s"' % (self.attrs['id'], self.index)
-        else:
-            label_for = ''
-        choice_label = conditional_escape(force_unicode(self.choice_label))
-        return mark_safe(u'<label%s class="radio inline">%s %s</label>' % (label_for, self.tag(), choice_label))
-
-class InlineRadioFieldRenderer(forms.widgets.RadioFieldRenderer):
-    def __iter__(self):
-        for i, choice in enumerate(self.choices):
-            yield BootstrapRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
-
-    def render(self):
-        return mark_safe(u'\n%s\n' % u'\n'.join([u'%s' % force_unicode(w) for w in self]))
-
-class InlineRadioSelect(forms.widgets.RadioSelect):
-    renderer = InlineRadioFieldRenderer

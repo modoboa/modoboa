@@ -2,19 +2,46 @@
 
 from django import forms
 from models import Policy, Users
-from modoboa.lib.formutils import InlineRadioSelect
+from django.utils.translation import ugettext_lazy
+
+def is_yes(v): return v == 'Y'
+
+class CustomInputField(forms.CharField):
+    """Custom <input> field
+
+    Most of the columns defined by amavis use the *char* type even if
+    they only support 2 values (Y/N). As we want to display them using
+    checkboxes, we need to make some modifications in order that
+    values are correctly interpreted.
+    """
+    def validate(self, value):
+        value = "N" if not value else "Y"
+        super(CustomInputField, self).validate(value)
+
+    def clean(self, value):
+        value = "N" if not value else "Y"
+        return super(CustomInputField, self).clean(value)
 
 class DomainPolicyForm(forms.ModelForm):
+    bypass_spam_checks = CustomInputField(label=ugettext_lazy("Spam filter"),
+                                          widget=forms.CheckboxInput(check_test=is_yes),
+                                          help_text=ugettext_lazy("enabled"))
+    bypass_virus_checks = CustomInputField(label=ugettext_lazy("Virus filter"), 
+                                          widget=forms.CheckboxInput(check_test=is_yes),
+                                          help_text=ugettext_lazy("enabled"))
+    bypass_banned_checks = CustomInputField(label=ugettext_lazy("Banned filter"), 
+                                          widget=forms.CheckboxInput(check_test=is_yes),
+                                          help_text=ugettext_lazy("enabled"))
+    spam_modifies_subj = CustomInputField(label=ugettext_lazy("Spam marker"), 
+                                          widget=forms.CheckboxInput(check_test=is_yes),
+                                          help_text=ugettext_lazy("tag subject"))
+
     class Meta:
         model = Policy
         fields = ('bypass_virus_checks', 'bypass_spam_checks', 
                   'spam_tag2_level', 'spam_modifies_subj',
                   'spam_kill_level', 'bypass_banned_checks')
         widgets = {
-            'bypass_spam_checks' : InlineRadioSelect(),
-            'bypass_virus_checks' : InlineRadioSelect(),
-            'bypass_banned_checks' : InlineRadioSelect(),
-            'spam_modifies_subj' : InlineRadioSelect(attrs={'class' : 'span1'}),
             'spam_tag2_level' : forms.TextInput(attrs={'class' : 'span1'}),
             'spam_kill_level' : forms.TextInput(attrs={'class' : 'span1'}),
             }

@@ -190,7 +190,8 @@ def extra_domain_form(user, domain):
         return []
     return [
         dict(
-            id="amavis", title=_("Content filter"), cls=DomainPolicyForm
+            id="amavis", title=_("Content filter"), cls=DomainPolicyForm,
+            formtpl="amavis/domain_content_filter.html"
             )
         ]
 

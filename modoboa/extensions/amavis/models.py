@@ -75,23 +75,11 @@ class Policy(models.Model):
     spam_lover = models.CharField(max_length=3, blank=True)
     banned_files_lover = models.CharField(max_length=3, blank=True)
     bad_header_lover = models.CharField(max_length=3, blank=True)
-    bypass_virus_checks = models.CharField(
-        ugettext_lazy("Enable virus filter"), max_length=3,
-        choices=(('Y', 'yes'), ('N', 'no')), blank=False, default='Y'
-        )
-    bypass_spam_checks = models.CharField(
-        ugettext_lazy("Enable spam filter"), max_length=3, 
-        choices=(('Y', 'yes'), ('N', 'no')), blank=False, default='Y'
-        )
-    bypass_banned_checks = models.CharField(
-        ugettext_lazy("Enable banned filter"), max_length=3, 
-        choices=(('Y', 'yes'), ('N', 'no')), blank=False, default='Y'
-        )
+    bypass_virus_checks = models.CharField(max_length=3, blank=True)
+    bypass_spam_checks = models.CharField(max_length=3, blank=True)
+    bypass_banned_checks = models.CharField(max_length=3, blank=True)
     bypass_header_checks = models.CharField(max_length=3, blank=True)
-    spam_modifies_subj = models.CharField(
-        ugettext_lazy("Indicate spam in subject"), 
-        choices=(('Y', 'yes'), ('N', 'no')), max_length=3, blank=False, default='Y'
-        )
+    spam_modifies_subj = models.CharField(max_length=3, blank=True)
     virus_quarantine_to = models.CharField(max_length=192, blank=True)
     spam_quarantine_to = models.CharField(max_length=192, blank=True)
     banned_quarantine_to = models.CharField(max_length=192, blank=True)
