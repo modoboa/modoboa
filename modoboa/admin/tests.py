@@ -249,7 +249,7 @@ class PermissionsTestCase(ModoTestCase):
         self.assertEqual(self.clt.login(username="admin@test.com", password="toto"),
                          True)
         response = self.clt.get("/modoboa/admin/domains/")
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
         
         user = User.objects.get(username="user@test.com")
         response = self.clt.get("/modoboa/admin/accounts/edit/%d/" % user.id,

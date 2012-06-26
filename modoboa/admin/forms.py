@@ -487,7 +487,8 @@ class AccountFormMail(forms.Form, DynamicForm):
                 events.raiseEvent("CanCreate", user, "mailboxes")
                 self.mb = Mailbox()
                 self.mb.save_from_user(locpart, domain, account, 
-                                       self.cleaned_data["quota"])
+                                       self.cleaned_data["quota"],
+                                       owner=user)
                 grant_access_to_object(user, self.mb, is_owner=True)
                 events.raiseEvent("CreateMailbox", user, self.mb)
                 if user.is_superuser:
@@ -502,7 +503,8 @@ class AccountFormMail(forms.Form, DynamicForm):
                     self.mb.address = locpart
                 else:
                     raise AdminError(_("Failed to rename mailbox, check permissions"))
-            self.mb.save(quota=self.cleaned_data["quota"])
+            self.mb.set_quota(self.cleaned_data["quota"], user.has_perm("admin.add_domain"))
+            self.mb.save()
 
         account.email = self.cleaned_data["email"]
         account.save()

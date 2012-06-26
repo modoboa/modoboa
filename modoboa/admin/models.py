@@ -594,6 +594,12 @@ class Mailbox(DatesAware):
             except KeyError:
                 raise AdminError(_("%s is not a valid gid/groupname" % v_gid))
 
+    def set_quota(self, value, override_domain=False):
+        if value is None or (int(value) > self.domain.quota and not override_domain):
+            self.quota = self.domain.quota
+        else:
+            self.quota = value
+
     def save(self, *args, **kwargs):
         if not self.create_dir():
             raise AdminError(_("Failed to initialise mailbox, check permissions"))
@@ -629,12 +635,8 @@ class Mailbox(DatesAware):
             user.save()
 
         self.set_ownership()
+        self.set_quota(kwargs["quota"] if kwargs.has_key("quota") else None)
 
-        if kwargs.has_key("quota") and kwargs["quota"] is not None \
-                and int(kwargs["quota"]) < self.domain.quota:
-            self.quota = kwargs["quota"]
-        else:
-            self.quota = self.domain.quota
         for kw in ["username", "name", "enabled", "password", "quota"]:
             try:
                 del kwargs[kw]
@@ -642,7 +644,7 @@ class Mailbox(DatesAware):
                 pass
         super(Mailbox, self).save(*args, **kwargs)
 
-    def save_from_user(self, localpart, domain, user, quota=None):
+    def save_from_user(self, localpart, domain, user, quota=None, owner=None):
         """Simple save method called for automatic creations
 
         :param localpart: the mailbox
@@ -655,7 +657,7 @@ class Mailbox(DatesAware):
         if not self.create_dir():
             raise AdminError(_("Failed to initialise mailbox, check permissions"))
         self.set_ownership()
-        self.quota = self.domain.quota if quota is None else quota
+        self.set_quota(quota, True if (owner and owner.has_perm("admin.add_domain")) else False)
         super(Mailbox, self).save()
 
     def create_from_csv(self, user, line):
