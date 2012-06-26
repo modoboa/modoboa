@@ -635,7 +635,8 @@ class Mailbox(DatesAware):
             user.save()
 
         self.set_ownership()
-        self.set_quota(kwargs["quota"] if kwargs.has_key("quota") else None)
+        if kwargs.has_key("quota"):
+            self.set_quota(kwargs["quota"])
 
         for kw in ["username", "name", "enabled", "password", "quota"]:
             try:
@@ -682,7 +683,7 @@ class Mailbox(DatesAware):
 
         name = "%s %s" % (line[3].strip(), line[4].strip())
         self.save(username=line[1].strip(), name=name, 
-                  password=line[2].strip(), enabled=True)
+                  password=line[2].strip(), enabled=True, quota=None)
 
     def delete(self, keepdir=False):
         from modoboa.lib.permissions import ungrant_access_to_object
