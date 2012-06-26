@@ -50,7 +50,7 @@ class ExtensionsPool(object):
         instance = self.get_extension(name)
         return instance.infos()
 
-    def load_all(self, prefix):
+    def load_all(self):
         from modoboa.admin.models import Extension
 
         result = []
@@ -58,12 +58,14 @@ class ExtensionsPool(object):
             extinstance = self.get_extension(extname)
             try:
                 ext = Extension.objects.get(name=extname)
+                if ext is None:
+                    continue
                 if ext.enabled:
                     extinstance.load()
             except Extension.DoesNotExist:
                 pass
             baseurl = extinstance.url if extinstance.url is not None else extname
-            result += [(r'%s%s/' % (prefix, baseurl),
+            result += [(r'^%s/' % (baseurl),
                         include("%s.urls" % extinstance.__module__))]
         return result
 
