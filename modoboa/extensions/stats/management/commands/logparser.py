@@ -1,16 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-import time
-import sys
-import os
-import re
-import rrdtool
-import string, pdb
-from optparse import OptionParser
-from modoboa.lib import parameters
-from modoboa.admin.models import Domain
-import modoboa.extensions.stats.grapher as grapher
-
+# coding: utf-8
 """
 Postfix log parser.
 
@@ -28,27 +17,32 @@ Predefined events are:
  * Global consolidation of all previous events.
 
 """
-
-rrdstep = 60
-xpoints = 540
-points_per_sample = 3
-variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
-             "size_sent", "size_recv"]
-
+import time
+import sys
+import os
+import re
+import rrdtool
+import string
+from django.core.management.base import BaseCommand, CommandError
+from optparse import make_option
+from modoboa.lib import parameters
+from modoboa.admin.models import Domain
+from modoboa.extensions.stats import Stats
+import modoboa.extensions.stats.grapher as grapher
 
 class LogParser(object):
     def __init__(self, options, workdir, year=None):
-        self.logfile = options.logfile
+        self.logfile = options["logfile"]
         try:
             self.f = open(self.logfile)
         except IOError, errno:
-            if options.debug:
+            if options["debug"]:
                 print "%s" % errno
             sys.exit(1)
         self.workdir = workdir
         self.year = year
-        self.debug = options.debug
-        self.verbose = options.verbose
+        self.debug = options["debug"]
+        self.verbose = options["verbose"]
         self.cfs = ['AVERAGE', 'MAX']
 
         self.last_month = None
@@ -256,22 +250,22 @@ class LogParser(object):
             G.make_defaults(dom, tpl=grapher.badtraffic_avg_template)
             G.make_defaults(dom, tpl=grapher.size_avg_template)
 
-if __name__ == "__main__":
-    from modoboa.extensions.stats import Stats
 
-    Stats().load()
+class Command(BaseCommand):
+    help = 'Log file parser'
 
-    log_file = parameters.get_admin("LOGFILE", app="stats")
-    rrd_rootdir = parameters.get_admin("RRD_ROOTDIR", app="stats")
+    option_list = BaseCommand.option_list + (
+        make_option("--logfile", default=None,
+                    help="postfix log in syslog format", metavar="FILE"),
+        make_option("--verbose", default=False, action="store_true",
+                    dest="verbose", help="Set verbose mode"),
+        make_option("--debug", default=False, action="store_true",
+                    help="Set debug mode")
+        )
 
-    parser = OptionParser()
-    parser.add_option("-l","--logfile", default=log_file,
-                      help="postfix log in syslog format", metavar="FILE")
-    parser.add_option("-v","--verbose", default=False, action="store_true",
-                      dest="verbose", help="set verbose mode")
-    parser.add_option("-d","--debug", default=False, action="store_true",
-                      help="set debug mode")
-    (options, args) = parser.parse_args()
-
-    P = LogParser(options, rrd_rootdir)
-    P.process()
+    def handle(self, *args, **options):
+        Stats().load()
+        if options["logfile"] is None:
+            options["logfile"] = parameters.get_admin("LOGFILE", app="stats")
+        p = LogParser(options, parameters.get_admin("RRD_ROOTDIR", app="stats"))
+        p.process()

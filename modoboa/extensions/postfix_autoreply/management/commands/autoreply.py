@@ -5,6 +5,7 @@ import sys
 import smtplib
 from email.mime.text import MIMEText
 import datetime
+from django.core.management.base import BaseCommand, CommandError
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.admin.models import Mailbox
@@ -44,22 +45,26 @@ def send_autoreply(sender, mailbox, armessage):
     lastar.last_sent = datetime.datetime.now()
     lastar.save()
 
-if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print "Not enough arguments, aborting."
-        sys.exit(1)
 
-    sender = sys.argv[1]
-    for fulladdress in sys.argv[2:]:
-        address, domain = split_mailbox(fulladdress)
-        try:
-            mbox = Mailbox.objects.get(address=address, domain__name=domain)
-        except Mailbox.DoesNotExist:
-            print "Unknown recipient %s" % (mbox)
-            continue
-        try:
-            armessage = ARmessage.objects.get(mbox=mbox.id, enabled=True)
-        except ARmessage.DoesNotExist:
-            continue
+class Command(BaseCommand):
+    args = '<sender> <recipient ...>'
+    help = 'Send autoreply emails'
 
-        send_autoreply(sender, mbox, armessage)
+    def handle(self, *args, **options):
+        if len(args) < 2:
+            raise CommandError("usage: ./manage.py autoreply <sender> <recipient ...>")
+
+        sender = args[0]
+        for fulladdress in args[1:]:
+            address, domain = split_mailbox(fulladdress)
+            try:
+                mbox = Mailbox.objects.get(address=address, domain__name=domain)
+            except Mailbox.DoesNotExist:
+                print "Unknown recipient %s" % (mbox)
+                continue
+            try:
+                armessage = ARmessage.objects.get(mbox=mbox.id, enabled=True)
+            except ARmessage.DoesNotExist:
+                continue
+
+            send_autoreply(sender, mbox, armessage)

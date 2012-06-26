@@ -840,11 +840,6 @@ class Extension(models.Model):
             path = os.path.join(settings.MEDIA_ROOT, self.name)
             exec_cmd("mkdir %s" % path)
 
-        scriptdir = "%s/%s" % (self.extdir, "scripts")
-        if os.path.exists(scriptdir):
-            targetdir = os.path.join(settings.MODOBOA_DIR, "scripts")
-            exec_cmd("ln -s %s %s/%s" % (scriptdir, targetdir, self.name))
-
         events.raiseEvent("ExtEnabled", self)
 
     def off(self):
@@ -857,11 +852,6 @@ class Extension(models.Model):
         if self.instance.needs_media:
             path = os.path.join(settings.MEDIA_ROOT, self.name)
             exec_cmd("rm -r %s" % path)
-
-        scriptdir = "%s/%s" % (self.extdir, "scripts")
-        if os.path.exists(scriptdir):
-            target = "%s/scripts/%s" % (settings.MODOBOA_DIR, self.name)
-            exec_cmd("rm %s" % target)
 
         events.raiseEvent("ExtDisabled", self)
 
