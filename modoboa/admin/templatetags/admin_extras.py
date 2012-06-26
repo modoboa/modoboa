@@ -211,13 +211,13 @@ def param(app, definition):
             % (name, name, value)
         
     if definition["type"] == "list_yesno":
-        for v in [("yes", _("Yes")), ("no", _("No"))]:
+        for idx, v in enumerate([("yes", _("Yes")), ("no", _("No"))]):
             checked = "checked" if value == v[0] else ""
             result += """<label for="%(id)s" class="radio inline">
   %(label)s
-  <input type="radio" name="%(id)s" id="%(id)s" value="%(value)s"%(checked)s />
+  <input type="radio" name="%(name)s" id="%(id)s" value="%(value)s"%(checked)s />
 </label>
-""" % dict(id=name, value=v[0], label=v[1], checked=checked)
+""" % dict(id="%s_%d" % (name, idx), name=name, value=v[0], label=v[1], checked=checked)
 
     if definition["type"] == "list":
         result += """
