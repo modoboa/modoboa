@@ -16,9 +16,9 @@ LDAP
 
 If you want to use this feature, you must first install those components::
 
-  $ easy_install python-ldap django-auth-ldap
+  $ pip install python-ldap django-auth-ldap
 
-Then, all you have to do is to modify the `settings.py` file:
+Then, all you have to do is to modify the *settings.py* file:
 
 * Add a new authentication backend to the `AUTHENTICATION_BACKENDS`
   variable, like this::

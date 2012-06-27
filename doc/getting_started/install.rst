@@ -11,7 +11,6 @@ Requirements
 * `Python version 2.6+ <http://python.org/>`_
 * `Django version 1.3+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
 * `south version 0.7+ <http://south.aeracode.org/>`_
-* `ldap python module <http://www.python-ldap.org/>`_
 * `lxml python module <http://codespeak.net/lxml/>`_
 * `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
 * `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_

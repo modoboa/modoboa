@@ -6,14 +6,28 @@ Configuration
 Online parameters
 *****************
 
-FIXME : present the online panel
+Modoboa provides online panels to modify internal parameters. There
+are two available levels:
 
-Throught the *Admin > Configuration* panel, you can customize the way
-Modoboa stores mailboxes on the filesystem. Here is the list of
-editable parameters with their default value::
+* Application level: global parameters, define how the application
+  behaves. Available at *Modoboa > Parameters*
 
-Administration application
-==========================
+* User level: per user customization. Available at *User > Settings >
+  Preferences*
+ 
+Regardless level, parameters are displayed using tabs, each tab
+corresponding to one application.
+
+.. _admin-params:
+
+*admin* application parameters
+==============================
+
+The *admin* application exposes several parameters, mainly to control
+how mailboxes are created and how messages are stored on the file
+system.
+
+Default values are presented below::
 
   The authentication type
   AUTHENTICATION_TYPE = Local
@@ -56,7 +70,7 @@ group/user needed because we are in a virtual hosting configuration
 (ie. users with non-UNIX accounts). 
 
 The following examples are based on the default values presented in
-:ref:`default-conf`.
+:ref:`admin-params`.
 
 For example, create a vmail group::
 
@@ -76,11 +90,10 @@ manipulate directories in vmail's homedir. To do so, edit the
 Time zone and language
 **********************
 
-FIXME : per user language
+Modoboa is available in english, french, german and spanish.
 
-Modoboa is available in english, french, german and spanish. You can choose
-which language to use by modifying the ``LANGUAGE_CODE`` variable inside
-*settings.py*::
+To specify the default language to use, edit the *settings.py* file
+and modify the ``LANGUAGE_CODE`` variable::
 
   LANGUAGE_CODE = 'en-US' # English
   # or
@@ -90,8 +103,12 @@ which language to use by modifying the ``LANGUAGE_CODE`` variable inside
   # or
   LANGUAGE_CODE = 'es-ES' # Spanish
 
-You can also specify your time zone by modifying the ``TIME_ZONE``
-variable. For example::
+.. note::
+
+  Each user has the possibility to define the language he prefers.
+
+In the same configuration file, specify the timezone to use by
+modifying the ``TIME_ZONE`` variable. For example::
 
   TIME_ZONE = 'Europe/Paris'
 
