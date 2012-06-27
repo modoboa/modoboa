@@ -41,7 +41,7 @@ DATABASES = {
     # }
 }
 
-DATABASE_ROUTERS = ["modoboa.extensions.amavis_quarantine.dbrouter.AmavisRouter"]
+DATABASE_ROUTERS = ["modoboa.extensions.amavis.dbrouter.AmavisRouter"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -100,7 +100,7 @@ MIDDLEWARE_CLASSES = (
     'modoboa.lib.middleware.ExtControlMiddleware',
 )
 
-ROOT_URLCONF = 'modoboa.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".

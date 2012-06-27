@@ -134,7 +134,7 @@ class DlistForm(forms.ModelForm, DynamicForm):
         )
     recipients = forms.EmailField(
         label=ugettext_lazy("Recipients"), required=False,
-        help_text=ugettext_lazy("Mailbox(es) this alias will point to")
+        help_text=ugettext_lazy("Mailbox(es) this alias will point to. Indicate only one address per input, press ENTER to add a new input.")
         )
 
     class Meta:

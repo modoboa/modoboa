@@ -6,14 +6,41 @@
 Modoboa's documentation!
 ========================
 
-Contents:
+This documentation refers to version |release|.
+
+***************
+Getting started
+***************
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
-   install
-   virtualmachine
-   plugin_api
+   getting_started/install
+   getting_started/upgrade
+   getting_started/configuration
+   getting_started/integration
+   getting_started/plugins
+
+*****************
+Extending Modoboa
+*****************
+
+.. toctree::
+   :maxdepth: 2
+
+   extending/plugin_api
+
+*******************
+Additional resource
+*******************
+
+.. toctree::
+   :maxdepth: 2
+
+   additional/webserver
+   additional/migrating
+   additional/virtualmachine
+
 
 Indices and tables
 ==================
