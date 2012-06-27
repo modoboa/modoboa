@@ -30,6 +30,12 @@ from modoboa.admin.models import Domain
 from modoboa.extensions.stats import Stats
 import modoboa.extensions.stats.grapher as grapher
 
+rrdstep = 60
+xpoints = 540
+points_per_sample = 3
+variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
+             "size_sent", "size_recv"]
+
 class LogParser(object):
     def __init__(self, options, workdir, year=None):
         self.logfile = options["logfile"]
