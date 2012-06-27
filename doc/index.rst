@@ -29,6 +29,7 @@ Extending Modoboa
    :maxdepth: 2
 
    extending/plugin_api
+   extending/events
 
 *******************
 Additional resource
