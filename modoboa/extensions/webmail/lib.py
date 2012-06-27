@@ -601,8 +601,6 @@ def send_mail(request, posturl=None):
         body = request.POST["id_body"]
         charset = "utf-8"
 
-        print body
-
         if editormode == "html":
             msg = MIMEMultipart(_subtype="related")
             submsg = MIMEMultipart(_subtype="alternative")

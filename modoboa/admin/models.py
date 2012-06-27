@@ -513,6 +513,13 @@ class Mailbox(DatesAware):
         return "%s@%s" % (self.address, self.domain.name)
 
     @property
+    def name_and_address(self):
+        if self.user.first_name != "" or self.user.last_name != "":
+            return "%s %s <%s>" % \
+                (self.user.first_name, request.user.last_name, self.full_address)
+        return self.full_address
+
+    @property
     def enabled(self):
         return self.user.is_active
 

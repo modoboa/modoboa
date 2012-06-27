@@ -2,12 +2,10 @@
 # coding: utf-8
 
 import sys
-import smtplib
-from email.mime.text import MIMEText
 import datetime
 from django.core.management.base import BaseCommand, CommandError
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.emailutils import split_mailbox, sendmail_simple
 from modoboa.admin.models import Mailbox
 from modoboa.extensions.postfix_autoreply import PostfixAutoreply
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
@@ -32,15 +30,8 @@ def send_autoreply(sender, mailbox, armessage):
         lastar.armessage = armessage
         lastar.sender = sender
 
-    msg = MIMEText(armessage.content.encode('utf-8'), _charset='utf-8')
-    msg['Subject'] = armessage.subject
-    msg['From'] = mailbox.full_address
-    msg['To'] = sender
-    
-    s = smtplib.SMTP()
-    s.connect()
-    s.sendmail(mailbox.full_address, sender, msg.as_string())
-    s.quit()
+    sendmail_simple(mailbox.name_and_address, sender, armessage.subject,
+                    armessage.content.encode('utf-8'))
     
     lastar.last_sent = datetime.datetime.now()
     lastar.save()
