@@ -5,23 +5,58 @@ Upgrading an existing installation
 This section regroups all the upgrade procedures required to use
 newest versions of Modoboa.
 
+.. note::
+   Before running a migration, we recommend that you make
+   a copy of your existing database.
+
 **************
 Latest version
 **************
 
-FIXME
+Starting with version 0.9.1, Modoboa comes as a standard django
+application. Fetch the latest version (see :ref:`get_modoboa`) and
+install it.
 
-**************
-Modoboa <= 0.9
-**************
+``pip`` users, just run the following command::
+
+  $ pip install --upgrade modoboa
+
+Then, follow the common procedure::
+
+  $ cd <modoboa_instance_dir>
+  $ python manage.py syncdb --migrate
+  $ python collectstatic
+
+Finally, refer to this page to see if the version you're installing
+requires specific operations.
+
+0.9.1: standard django application and more
+===========================================
+
+For this version, we recommend to install a new instance (see
+:ref:`deployment`) in a different directory.
+
+Then, copy the following content from the old installation to the new
+one:
+
+* The ``media`` directory
+* The directory containing RRD files if you use the :ref:`stats` plugin
+
+Don't copy the old *settings.py* file, just keep the new one and
+modify it (see :ref:`database` and :ref:`timezone_lang`).
+
+Finally, check the :ref:`amavis_frontend`, :ref:`postfix_ar` and
+:ref:`stats` chapters (depending on those you use) because the
+provided cron scripts have been changed, you must update the way you
+call them.
+
+********************
+Modoboa prior to 0.9
+********************
 
 First, decompress the new tarball at the same location than your
 current installation. Then, check if the new version you're installing
 requires a migration.
-
-.. note::
-   Before executing a schema/data migration, I recommend that you make
-   a copy of your existing database.
 
 0.9: global UI refactoring, new *limits* extension and more
 ===========================================================

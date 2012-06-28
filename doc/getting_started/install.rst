@@ -16,10 +16,7 @@ Requirements
 * `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_
 * `sievelib python module <http://pypi.python.org/pypi/sievelib>`_
 
-Optional
-========
-
-* `ckeditor version 3.4.1+ <http://ckeditor.com/>`_
+.. _get_modoboa:
 
 ***********
 Get Modoboa
@@ -51,12 +48,13 @@ Database
 Thanks to *django*, Modoboa supports several databases. Depending on
 the one you will use, you must install the appropriate python package:
 
-* `MySQL <http://www.mysql.com>`_: `mysqldb <http://mysql-python.sourceforge.net/>`_
-* `PostgreSQL <http://www.postgresql.org>`_ : `psycopg2 <http://initd.org/psycopg/>`_
-* `SQLite <http://www.sqlite.org>`_: already shipped with *Python*
+* `mysqldb <http://mysql-python.sourceforge.net/>`_ for `MySQL <http://www.mysql.com>`_
+* `psycopg2 <http://initd.org/psycopg/>`_ for `PostgreSQL <http://www.postgresql.org>`_
 
 Then, create a user and a database that will be used by Modoboa. Make
 sure your database is using UTF8 as a default charset.
+
+.. _deployment:
 
 **********
 Deployment
@@ -91,5 +89,15 @@ available:
 * Username: ``admin``
 * Password: ``password``
 
-It is **strongly** recommanded to change this password the first time
+It is **strongly** recommended to change this password the first time
 you log into Modoboa.
+
+To check if your installation works, just launch the embedded HTTP
+server::
+
+  $ python manage.py runserver
+
+You should be able to access your site at http://locahost:8000/.
+
+For a production environnement, we recommend using a stable webserver
+like :ref:`apache2` or :ref:`nginx-label`.

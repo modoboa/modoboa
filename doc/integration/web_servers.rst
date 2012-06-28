@@ -36,6 +36,8 @@ following inside::
 This is one possible configuration. Note that you will certainly need more
 configuration in order to launch Apache.
 
+.. _nginx-label:
+
 *****
 Nginx
 *****

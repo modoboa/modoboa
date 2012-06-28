@@ -86,6 +86,8 @@ manipulate directories in vmail's homedir. To do so, edit the
 
   <user_that_runs_modoboa> ALL=(vmail) NOPASSWD: ALL
 
+.. _timezone_lang:
+
 **********************
 Time zone and language
 **********************

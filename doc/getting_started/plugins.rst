@@ -29,6 +29,8 @@ to domain administrators.
 If you don't want to limit a particular object type, just set the
 associated value to -1.
 
+.. _amavis_frontend:
+
 ********************
 Amavisd-new frontend
 ********************
@@ -171,6 +173,8 @@ Here is a link example::
 
   http://<modoboa_url>/quarantine/%i/?rcpt=%R&secret_id=[:secret_id]
 
+.. _stats:
+
 ********************
 Graphical statistics
 ********************
@@ -206,6 +210,8 @@ feed the RRD files. Add the following line into root's crontab::
 Replace ``<modoboa_site>`` with the path of your Modoboa instance.
 
 Graphics will be automatically created after each parsing.
+
+.. _postfix_ar:
 
 ***************************
 Postifx auto-reply messages
@@ -323,11 +329,18 @@ The size of each attachment sent with messages is limited. You can
 change the default value by modifying the ``MAX_ATTACHMENT_SIZE``
 parameter.
 
-Using a rich editor
-===================
+Using CKeditor
+==============
 
-CKeditor is supported by Modoboa. To use it, first download it from
-`the official website <http://ckeditor.com/>`_, then extract the tarball::
+Modoboa supports CKeditor to compose HTML messages. To use it, first
+download it from `the official website <http://ckeditor.com/>`_, then
+extract the tarball::
 
   $ cd <modoboa_site_dir>
-  $ 
+  $ tar xzf /path/to/ckeditor/tarball.tag.gz -C sitestatic/js/
+
+And you're done!
+
+Now, each user has the possibility to choose between CKeditor and the
+raw text editor to compose their messages. (see *User > Settings >
+Preferences > Webmail*)
