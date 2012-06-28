@@ -203,11 +203,13 @@ History.prototype = {
     },
 
     check: function() {
-        if (this.serialized == location.hash && this.force === undefined) {
+        var decodedhash = decodeURIComponent(location.hash);
+
+        if (this.serialized == decodedhash && this.force === undefined) {
             return;
         }
         delete(this.force);
-        this.from_string(decodeURIComponent(location.hash));
+        this.from_string(decodedhash);
         if (!this.serialized) {
             location.hash = this.options.deflocation;
             return;
