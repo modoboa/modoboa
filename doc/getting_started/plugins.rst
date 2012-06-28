@@ -133,17 +133,43 @@ example line to root's crontab::
 
 You are free to change the frequency.
 
-*****************
-Self-service mode
-*****************
-
-TBD
-
 .. note::
 
   If you want to let users release their messages alone (not
   recommanded), change the value of the ``USER_CAN_RELEASE`` parameter
   into the admin panel.
+
+Self-service mode
+=================
+
+The *self-service* mode let users act on quarantined messages without
+beeing authenticated. They can:
+
+* View messages
+* Remove messages
+* Release messages (or send release requests)
+
+To access a specific message, they only need the following information:
+
+* Message's unique identifier
+* Message's secret identifier
+
+This information is controlled by *amavis*, which is in charge of
+notifying users when new messages are put into quarantine. Each
+notification (one per message) must embark a direct link containing
+the required identifiers.
+
+To activate this feature, go the administration panel and set the
+``SELF_SERVICE`` paramater to yes.
+
+The last step is to customize the notification messages *amavis*
+sends. The most important is to embark a direct link. Take a look at
+the `README.customize <http://amavis.org/README.customize.txt>`_ file to
+learn what you're allowed to do.
+
+Here is a link example::
+
+  http://<modoboa_url>/quarantine/%i/?rcpt=%R&secret_id=[:secret_id]
 
 ********************
 Graphical statistics

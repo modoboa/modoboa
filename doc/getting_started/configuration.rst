@@ -112,3 +112,71 @@ modifying the ``TIME_ZONE`` variable. For example::
 
   TIME_ZONE = 'Europe/Paris'
 
+***********************
+External authentication
+***********************
+
+LDAP
+====
+
+*Modoboa* supports external LDAP authentication using the following extra components:
+
+* `Python LDAP client <http://www.python-ldap.org/>`_
+* `Django LDAP authentication backend <http://pypi.python.org/pypi/django-auth-ldap>`_
+
+If you want to use this feature, you must first install those components::
+
+  $ pip install python-ldap django-auth-ldap
+
+Then, all you have to do is to modify the *settings.py* file:
+
+* Add a new authentication backend to the `AUTHENTICATION_BACKENDS`
+  variable, like this::
+
+    AUTHENTICATION_BACKENDS = (
+      'django_auth_ldap.backend.LDAPBackend',
+      'modoboa.lib.authbackends.SimpleBackend',
+      'django.contrib.auth.backends.ModelBackend',
+    )
+
+* Set the required parameters to establish the communication with your
+  LDAP server, for example::
+
+    import ldap
+    from django_auth_ldap.config import LDAPSearch
+
+    AUTH_LDAP_BIND_DN = ""
+    AUTH_LDAP_BIND_PASSWORD = ""
+    LDAP_USER_BASE = "ou=users,dc=example,dc=com"	
+    LDAP_USER_FILTER = "(mail=%(user)s)"
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(LDAP_USER_BASE,
+        ldap.SCOPE_SUBTREE, LDAP_USER_FILTER)
+
+You will find a detailled documentation `here
+<http://packages.python.org/django-auth-ldap/>`_.
+
+Once the authentication is properly configured, the users defined in
+your LDAP directory will be able to connect to *Modoboa*, the associated
+domain and mailboxes will be automatically created if needed.
+
+Users will also be able to update their LDAP password directly from
+Modoboa.
+
+.. note:: 
+
+   Modoboa doesn't provide any synchronization mechanism once a user
+   is registered into the database. Any modification done from the
+   directory to a user account will not be reported to Modoboa (an
+   email address change for example). Currently, the only solution is
+   to manually delete the Modoboa record, it will be recreated on the
+   next user login.
+
+Available settings
+------------------
+
+* ``LDAP_USER_BASE`` : the distinguish name of the search base
+* ``LDAP_USER_FILTER`` : the filter used to retrieve users distinguish name
+* ``LDAP_PASSWORD_ATTR`` : the attribute used to store the password
+  (default: ``userPassword``)
+* ``LDAP_ACTIVE_DIRECTORY`` : used to indicate if your directory is an
+  Active Directory one (default: ``False``)

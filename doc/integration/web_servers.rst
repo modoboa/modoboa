@@ -1,12 +1,14 @@
-.. _webserver:
+.. _webservers:
 
-#######################################
-How to serve Modoboa behind a webserver
-#######################################
+###########
+Web servers
+###########
 
-********
-Apache 2
-********
+.. _apache2:
+
+*******
+Apache2
+*******
 
 First, make sure that both *apache2* and *mod_python* are installed on
 your server.

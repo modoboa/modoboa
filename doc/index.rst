@@ -18,8 +18,18 @@ Getting started
    getting_started/install
    getting_started/upgrade
    getting_started/configuration
-   getting_started/integration
    getting_started/plugins
+
+********************************
+Integration with other softwares
+********************************
+
+.. toctree::
+   :maxdepth: 2
+
+   integration/smtp_servers
+   integration/imap_servers
+   integration/web_servers
 
 *****************
 Extending Modoboa
@@ -38,7 +48,6 @@ Additional resource
 .. toctree::
    :maxdepth: 2
 
-   additional/webserver
    additional/migrating
    additional/virtualmachine
 

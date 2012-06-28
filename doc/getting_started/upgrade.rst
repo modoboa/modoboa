@@ -109,7 +109,7 @@ requires a migration.
    save again
 
 #. Update your webserver configuration to make static files available
-   (see :ref:`webserver`)
+   (see :ref:`webservers`)
 
 #. **For Dovecot users only**, you need to modify the
    ``password_query`` (file */etc/dovecot/dovecot-sql.conf* by default
