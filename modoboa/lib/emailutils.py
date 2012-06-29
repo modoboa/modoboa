@@ -249,7 +249,7 @@ def sendmail_simple(sender, rcpt, subject="Sample message", content="", **kwargs
     :param content: message's content
     :return: tuple
     """
-    msg = MIMEText(content, charset='utf-8')
+    msg = MIMEText(content, _charset='utf-8')
     msg["Subject"] = subject
     msg["From"] = sender
     msg["To"] = rcpt
