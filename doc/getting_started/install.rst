@@ -39,6 +39,16 @@ following procedure::
   $ cd modoboa-<version>
   $ python setup.py install
 
+All dependencies will be installed regardless the way you chose. The
+only exception concerns the RRDtool binding because there isn't any
+python package available, it is directly provided with the official
+tarball.
+
+Fortunately, all major distributions includes a ready-to-use
+package. On Debian/Ubuntu::
+
+  $ apt-get install python-rrdtool
+
 .. _database:
 
 ********

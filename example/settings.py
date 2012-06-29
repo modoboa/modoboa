@@ -5,7 +5,6 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 MODOBOA_DIR = os.path.dirname(__file__)
-MODOBOA_WEBPATH = "modoboa/"
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
@@ -60,7 +59,9 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
-LOGIN_REDIRECT_URL = '/modoboa/admin/'
+LOGIN_REDIRECT_URL = '/admin/'
+
+LOGIN_URL = '/accounts/login/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -128,7 +129,7 @@ INSTALLED_APPS = (
     'modoboa.extensions.postfix_autoreply',
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',
-    'modoboa.extensions.amavis_quarantine',
+    'modoboa.extensions.amavis',
     'modoboa.extensions.sievefilters',
 
     # Extra tools
