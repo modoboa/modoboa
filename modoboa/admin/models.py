@@ -516,7 +516,7 @@ class Mailbox(DatesAware):
     def name_and_address(self):
         if self.user.first_name != "" or self.user.last_name != "":
             return "%s %s <%s>" % \
-                (self.user.first_name, request.user.last_name, self.full_address)
+                (self.user.first_name, self.user.last_name, self.full_address)
         return self.full_address
 
     @property
