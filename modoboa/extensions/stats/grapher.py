@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
+import sys, os
 import time
 import datetime
 from django.utils.translation import ugettext as _
@@ -52,22 +52,24 @@ tpl = {'traffic':traffic_avg_template,
        'badtraffic':badtraffic_avg_template,
        'size':size_avg_template}
 
-def str2Time(y, M, d, h ="0", m ="0", s="0"):
-    """str2Time
+def str2Time(y, M, d, h="0", m="0", s="0"):
+    """Date conversion
 
-    return epoch time from Year Month Day Hour:Minute:Second time format
+    Returns a date and a time in seconds from the epoch.
+
+    :return: an integer
     """
     try:
-        local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
-                                  "%Y %b %d %H:%M:%S")
-    except:
-        # try with 01-12 month format
-        try:
-            local = time.strptime("%s %s %s %s:%s:%s" %(y, M, d, h, m, s), \
-                                  "%Y %m %d %H:%M:%S")
-        except:
-            print "[rrd] ERROR unrecognized %s time format" %(y, M, d, h, m, s)
-            return 0
+        if not M.isdigit():
+            local = time.strptime("%s %s %s %s:%s:%s" % (y, M, d, h, m, s), \
+                                      "%Y %b %d %H:%M:%S")
+        else:
+            local = time.strptime("%s %s %s %s:%s:%s" % (y, M, d, h, m, s), \
+                                      "%Y %m %d %H:%M:%S")
+    except ValueError:
+        print >>sys.stderr, "Error: failed to convert date and time"
+        return 0
+
     return int(time.mktime(local))
 
 class Grapher(object):

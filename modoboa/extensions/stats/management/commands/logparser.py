@@ -46,16 +46,16 @@ class LogParser(object):
                 print "%s" % errno
             sys.exit(1)
         self.workdir = workdir
-        self.year = year
+        self.__year = year
         self.debug = options["debug"]
         self.verbose = options["verbose"]
         self.cfs = ['AVERAGE', 'MAX']
 
-        self.last_month = None
-        if not self.year:
-            self.year = time.localtime().tm_year
-            if self.debug:
-                print "[rrd] Dealing with year %s" %self.year
+        curtime = time.localtime()
+        if not self.__year:
+            self.__year = curtime.tm_year
+        self.curmonth = curtime.tm_mon
+
         self.data = {}
         domains = Domain.objects.all()
         self.domains = []
@@ -176,6 +176,29 @@ class LogParser(object):
             self.initcounters("global", cur_t)
         self.data["global"][cur_t][counter] += val
 
+    def year(self, month):
+        """Return the appropriate year
+
+        Date used in log files don't always embark the year so we need
+        to guess it :p
+
+        This method tries to deal with year changes in a simply
+        (ugly?) way: if we currently are in january and the given
+        month is different, return the current year -1. Otherwise,
+        return the current year.
+
+        Obviously, this method only works for year to year + 1
+        changes.
+
+        :param month: the month of the current record beeing parsed
+        :return: an integer
+        """
+        month = time.strptime(month, "%b").tm_mon if not month.isdigit() \
+            else int(month)
+        if self.curmonth == 1 and month != self.curmonth:
+            return self.__year - 1
+        return self.__year
+
     def process(self):
         id_expr = re.compile("(\w{9,18}): (.*)")
         prev_se = -1
@@ -189,7 +212,7 @@ class LogParser(object):
             se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
 
             if prev_se != se or prev_mi != mi or prev_ho != ho:
-                cur_t = grapher.str2Time(self.year, mo, da, ho, mi, se)
+                cur_t = grapher.str2Time(self.year(mo), mo, da, ho, mi, se)
                 cur_t = cur_t - cur_t % rrdstep
                 prev_mi = mi
                 prev_ho = ho
@@ -247,9 +270,7 @@ class LogParser(object):
         for dom, data in self.data.iteritems():
             if self.debug:
                 print "[rrd] dealing with domain %s" %dom
-            sortedData = {}
-            sortedData = [ (i, data[i]) for i in sorted(data.keys()) ]
-            for t, dict in sortedData:
+            for t in sorted(data.keys()):
                 self.update_rrd(dom, t)
 
             G.make_defaults(dom, tpl=grapher.traffic_avg_template)
