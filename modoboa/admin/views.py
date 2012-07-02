@@ -582,7 +582,7 @@ def importdata(request):
 
         try:
             reader = csv.reader(request.FILES['sourcefile'], 
-                                delimiter=form.cleaned_data['sepcar'])
+                                delimiter=form.cleaned_data['sepchar'])
         except Exception, e:
             error = str(e)
 
@@ -602,7 +602,6 @@ def importdata(request):
                         })
             except (IntegrityError, ModoboaException), e:
                 error = str(e)
-                print error
 
     return _render(request, "admin/import_done.html", {
             "status" : "ko", "msg" : error

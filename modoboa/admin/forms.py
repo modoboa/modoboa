@@ -322,16 +322,16 @@ class ForwardForm(GenericAliasForm):
 
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=ugettext_lazy("Select a file"))
-    sepcar = forms.CharField(label=ugettext_lazy("Separator"), max_length=1, required=False)
+    sepchar = forms.CharField(label=ugettext_lazy("Separator"), max_length=1, required=False)
 
     def __init__(self, *args, **kwargs):
         super(ImportDataForm, self).__init__(*args, **kwargs)
-        self.fields["sepcar"].widget.attrs = {"class" : "span1"}
+        self.fields["sepchar"].widget.attrs = {"class" : "span1"}
 
-    def clean_sepcar(self):
-        if self.cleaned_data["sepcar"] == "":
+    def clean_sepchar(self):
+        if self.cleaned_data["sepchar"] == "":
             return ";"
-        return str(self.cleaned_data["sepcar"])
+        return str(self.cleaned_data["sepchar"])
 
 class AccountFormGeneral(forms.ModelForm):
     username = forms.CharField(label=ugettext_lazy("Username"), max_length=254)
