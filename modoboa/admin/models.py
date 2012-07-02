@@ -6,7 +6,7 @@ from django.contrib.auth.models import User as DUser, UserManager, Group
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils.crypto import constant_time_compare
 from django.conf import settings
-from modoboa.lib import parameters, events
+from modoboa.lib import md5crypt, parameters, events
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
@@ -37,7 +37,7 @@ class User(DUser):
         proxy = True
         ordering = ["username"]
 
-    password_expr = re.compile(r'\{(\w+)\}(.+)')
+    password_expr = re.compile(r'(\{(\w+)\}|(\$1\$))(.+)')
 
     def __init__(self, *args, **kwargs):
         """Constructor
@@ -106,18 +106,30 @@ class User(DUser):
     def _crypt_password(self, raw_value):
         scheme = parameters.get_admin("PASSWORD_SCHEME")
         if scheme == "crypt":
-            salt = ''.join(Random().sample(string.letters + string.digits, 2))
+            salt = "".join(Random().sample(string.letters + string.digits, 2))
             result = crypt.crypt(raw_value, salt)
+            prefix = "{CRYPT}"
         elif scheme == "md5":
             obj = hashlib.md5(raw_value)
             result = obj.hexdigest()
+            prefix = "{MD5}"
+        # The md5crypt scheme is the only supported method that has both:
+        # (a) a salt ("crypt" has this too),
+        # (b) supports passwords lengths of more than 8 characters (all except
+        #     "crypt").
+        elif scheme == "md5crypt":
+            salt = "".join(Random().sample(string.letters + string.digits, 2))
+            result = md5crypt(raw_value, salt)
+            prefix = "" # the result already has $1$ prepended to it to signify what this is
         elif scheme == "sha256":
             obj = hashlib.sha256(raw_value)
             result = base64.b64encode(obj.digest())
+            prefix = "{SHA256}"
         else:
             scheme = "plain"
             result = raw_value
-        return "{%s}%s" % (scheme.upper(), result)
+            prefix = "{PLAIN}"
+        return "%s%s" % (prefix, result)
 
     def set_password(self, raw_value, curvalue=None):
         """Password update
@@ -146,14 +158,18 @@ class User(DUser):
         m = self.password_expr.match(self.password)
         if m is None:
             return False
-        scheme = m.group(1).lower()
-        val2 = m.group(2)
+        scheme = (m.group(2) or m.group(3)).lower()
+        val2 = m.group(4)
         if scheme == "crypt":
-            val1 = crypt.crypt(raw_value, m.group(2))
+            val1 = crypt.crypt(raw_value, val2)
         elif scheme == "md5":
             val1 = hashlib.md5(raw_value).hexdigest()
         elif scheme == "sha256":
             val1 = base64.b64encode(hashlib.sha256(raw_value).digest())
+        elif scheme == "$1$": # md5crypt
+            salt, hashed = val2.split('$')
+            val1 = md5crypt(raw_value, salt)
+            val2 = self.password # re-add scheme for comparison below
         else:
             val1 = raw_value
         return constant_time_compare(val1, val2)

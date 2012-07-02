@@ -23,8 +23,12 @@ parameters.register_admin("MAILBOX_TYPE", type="list", deflt="maildir",
 parameters.register_admin("MAILDIR_ROOT", type="string", deflt=".maildir",
                           help=ugettext_lazy("Sub-directory (inside the mailbox) where messages are stored when using the maildir format"))
 parameters.register_admin(
-    "PASSWORD_SCHEME", type="list", deflt="crypt",
-    values=[("crypt", "crypt"), ("md5", "md5"), ("sha256", "sha256"), ("plain", "plain")],
+    "PASSWORD_SCHEME", type="list", deflt="md5crypt",
+    values=[("crypt", "crypt"),
+            ("md5", "md5"), 
+            ("md5crypt", "md5crypt"), 
+            ("sha256", "sha256"), 
+            ("plain", "plain")],
     help=ugettext_lazy("Scheme used to crypt mailbox passwords")
     )
 parameters.register_admin("ITEMS_PER_PAGE", type="int", deflt=30,
