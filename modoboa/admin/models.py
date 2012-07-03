@@ -118,7 +118,9 @@ class User(DUser):
         # (b) supports passwords lengths of more than 8 characters (all except
         #     "crypt").
         elif scheme == "md5crypt":
-            salt = "".join(Random().sample(string.letters + string.digits, 2))
+            # The salt may vary from 12 to 48 bits. (Using all six bytes here
+            # with a subset of characters means we get only 35 random bits.)
+            salt = "".join(Random().sample(string.letters + string.digits, 6))
             result = md5crypt(raw_value, salt)
             prefix = "" # the result already has $1$ prepended to it to signify what this is
         elif scheme == "sha256":
