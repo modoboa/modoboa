@@ -20,7 +20,7 @@ def send_virus(request):
 @login_required
 @needs_mailbox()
 def send_spam(request):
-    status, error = sendmail_simple("spam@example.net", request.user.username, """
+    status, error = sendmail_simple("spam@example.net", request.user.username, content="""
 This is the GTUBE, the
         Generic
         Test for
