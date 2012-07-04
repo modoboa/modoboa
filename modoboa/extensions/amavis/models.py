@@ -77,6 +77,7 @@ class Policy(models.Model):
     policy_name = models.CharField(max_length=96, blank=True)
     virus_lover = models.CharField(max_length=3, blank=True, null=True)
     spam_lover = models.CharField(max_length=3, blank=True, null=True)
+    unchecked_lover = models.CharField(max_length=3, blank=True, null=True)
     banned_files_lover = models.CharField(max_length=3, blank=True, null=True)
     bad_header_lover = models.CharField(max_length=3, blank=True, null=True)
     bypass_virus_checks = models.CharField(
@@ -115,7 +116,7 @@ class Policy(models.Model):
     virus_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     spam_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     banned_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
-    uncheked_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    unchecked_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     bad_header_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     clean_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     archive_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
