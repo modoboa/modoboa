@@ -58,6 +58,11 @@ class DomainPolicyForm(forms.ModelForm):
     
     def save(self, user, commit=True):
         p = super(DomainPolicyForm, self).save(commit=False)
+        for f in ['bypass_spam_checks', 'bypass_virus_checks', 'bypass_banned_checks', 
+                  'spam_modifies_subj']:
+            if getattr(p, f) == '':
+                setattr(p, f, None)
+
         if commit:
             p.save()
             try:

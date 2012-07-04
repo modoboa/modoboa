@@ -70,41 +70,41 @@ class Msgrcpt(models.Model):
 
 class Policy(models.Model):
     policy_name = models.CharField(max_length=96, blank=True)
-    virus_lover = models.CharField(max_length=3, blank=True)
-    spam_lover = models.CharField(max_length=3, blank=True)
-    banned_files_lover = models.CharField(max_length=3, blank=True)
-    bad_header_lover = models.CharField(max_length=3, blank=True)
+    virus_lover = models.CharField(max_length=3, blank=True, null=True)
+    spam_lover = models.CharField(max_length=3, blank=True, null=True)
+    banned_files_lover = models.CharField(max_length=3, blank=True, null=True)
+    bad_header_lover = models.CharField(max_length=3, blank=True, null=True)
     bypass_virus_checks = models.CharField(
-        ugettext_lazy("Virus filter"), default='',
+        ugettext_lazy("Virus filter"), default='', null=True,
         choices=(('N', 'yes'), ('Y', 'no'), ('', 'default')),
         max_length=3,
         help_text=ugettext_lazy("Bypass virus checks or not. Choose 'default' to use global settings.")
         )
     bypass_spam_checks = models.CharField(
-        ugettext_lazy("Spam filter"), default='',
+        ugettext_lazy("Spam filter"), default='', null=True,
         choices=(('N', 'yes'), ('Y', 'no'), ('', 'default')),
         max_length=3,
         help_text=ugettext_lazy("Bypass spam checks or not. Choose 'default' to use global settings.")
         )
     bypass_banned_checks = models.CharField(
-        ugettext_lazy("Banned filter"), default='',
+        ugettext_lazy("Banned filter"), default='', null=True,
         choices=(('N', 'yes'), ('Y', 'no'), ('', 'default')),
         max_length=3,
         help_text=ugettext_lazy("Bypass banned checks or not. Choose 'default' to use global settings.")
         )
     bypass_header_checks = models.CharField(max_length=3, blank=True)
     spam_modifies_subj = models.CharField(
-        ugettext_lazy("Spam marker"), default='',
+        ugettext_lazy("Spam marker"), default='', null=True,
         choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
         max_length=3,
         help_text=ugettext_lazy("Modify spam subject or not. Choose 'default' to use global settings.")
         )
-    virus_quarantine_to = models.CharField(max_length=192, blank=True)
-    spam_quarantine_to = models.CharField(max_length=192, blank=True)
-    banned_quarantine_to = models.CharField(max_length=192, blank=True)
-    bad_header_quarantine_to = models.CharField(max_length=192, blank=True)
-    clean_quarantine_to = models.CharField(max_length=192, blank=True)
-    other_quarantine_to = models.CharField(max_length=192, blank=True)
+    virus_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    spam_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    banned_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    bad_header_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    clean_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    other_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     spam_tag_level = models.FloatField(null=True, blank=True)
     spam_tag2_level = models.FloatField(
         ugettext_lazy("Spam score"), null=True, blank=True
@@ -114,22 +114,22 @@ class Policy(models.Model):
         )
     spam_dsn_cutoff_level = models.FloatField(null=True, blank=True)
     spam_quarantine_cutoff_level = models.FloatField(null=True, blank=True)
-    addr_extension_virus = models.CharField(max_length=192, blank=True)
-    addr_extension_spam = models.CharField(max_length=192, blank=True)
-    addr_extension_banned = models.CharField(max_length=192, blank=True)
-    addr_extension_bad_header = models.CharField(max_length=192, blank=True)
-    warnvirusrecip = models.CharField(max_length=3, blank=True)
-    warnbannedrecip = models.CharField(max_length=3, blank=True)
-    warnbadhrecip = models.CharField(max_length=3, blank=True)
-    newvirus_admin = models.CharField(max_length=192, blank=True)
-    virus_admin = models.CharField(max_length=192, blank=True)
-    banned_admin = models.CharField(max_length=192, blank=True)
-    bad_header_admin = models.CharField(max_length=192, blank=True)
-    spam_admin = models.CharField(max_length=192, blank=True)
-    spam_subject_tag = models.CharField(max_length=192, blank=True)
-    spam_subject_tag2 = models.CharField(max_length=192, blank=True)
+    addr_extension_virus = models.CharField(max_length=192, blank=True, null=True)
+    addr_extension_spam = models.CharField(max_length=192, blank=True, null=True)
+    addr_extension_banned = models.CharField(max_length=192, blank=True, null=True)
+    addr_extension_bad_header = models.CharField(max_length=192, blank=True, null=True)
+    warnvirusrecip = models.CharField(max_length=3, blank=True, null=True)
+    warnbannedrecip = models.CharField(max_length=3, blank=True, null=True)
+    warnbadhrecip = models.CharField(max_length=3, blank=True, null=True)
+    newvirus_admin = models.CharField(max_length=192, blank=True, null=True)
+    virus_admin = models.CharField(max_length=192, blank=True, null=True)
+    banned_admin = models.CharField(max_length=192, blank=True, null=True)
+    bad_header_admin = models.CharField(max_length=192, blank=True, null=True)
+    spam_admin = models.CharField(max_length=192, blank=True, null=True)
+    spam_subject_tag = models.CharField(max_length=192, blank=True, null=True)
+    spam_subject_tag2 = models.CharField(max_length=192, blank=True, null=True)
     message_size_limit = models.IntegerField(null=True, blank=True)
-    banned_rulenames = models.CharField(max_length=192, blank=True)
+    banned_rulenames = models.CharField(max_length=192, blank=True, null=True)
     class Meta:
         db_table = u'policy'
         managed = False
