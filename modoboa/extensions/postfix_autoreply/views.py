@@ -40,7 +40,7 @@ def autoreply(request, tplname="userprefs/section.html"):
 
     ctx = dict(
         title=_("Auto-reply message"),
-        subtitle=_("Define an automatic message to send when you are unavailable"),
+        subtitle=_("Define a message to automatically send when you are off"),
         action=reverse(autoreply),
         left_selection="autoreply",
         )
