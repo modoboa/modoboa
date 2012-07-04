@@ -76,19 +76,19 @@ class Policy(models.Model):
     bad_header_lover = models.CharField(max_length=3, blank=True)
     bypass_virus_checks = models.CharField(
         ugettext_lazy("Virus filter"), default='',
-        choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
+        choices=(('N', 'yes'), ('Y', 'no'), ('', 'default')),
         max_length=3,
         help_text=ugettext_lazy("Bypass virus checks or not. Choose 'default' to use global settings.")
         )
     bypass_spam_checks = models.CharField(
         ugettext_lazy("Spam filter"), default='',
-        choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
+        choices=(('N', 'yes'), ('Y', 'no'), ('', 'default')),
         max_length=3,
         help_text=ugettext_lazy("Bypass spam checks or not. Choose 'default' to use global settings.")
         )
     bypass_banned_checks = models.CharField(
         ugettext_lazy("Banned filter"), default='',
-        choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
+        choices=(('N', 'yes'), ('Y', 'no'), ('', 'default')),
         max_length=3,
         help_text=ugettext_lazy("Bypass banned checks or not. Choose 'default' to use global settings.")
         )
