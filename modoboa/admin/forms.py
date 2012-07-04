@@ -14,7 +14,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"), 
         required=False,
-        help_text=ugettext_lazy("Alias(es) of this domain")
+        help_text=ugettext_lazy("Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input.")
         )
 
     class Meta:
