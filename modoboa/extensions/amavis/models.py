@@ -40,6 +40,7 @@ class Msgs(models.Model):
     policy = models.CharField(max_length=765, blank=True)
     client_addr = models.CharField(max_length=765, blank=True)
     size = models.IntegerField()
+    originating = models.CharField(max_length=3)
     content = models.CharField(max_length=1, blank=True)
     quar_type = models.CharField(max_length=1, blank=True)
     quar_loc = models.CharField(max_length=255, blank=True)
@@ -52,11 +53,15 @@ class Msgs(models.Model):
     class Meta:
         db_table = u'msgs'
         managed = False
+        unique_together = ('partition_tag', 'mail_id')
 
 class Msgrcpt(models.Model):
     partition_tag = models.IntegerField(null=True, blank=True)
     mail = models.ForeignKey(Msgs, primary_key=True)
     rid = models.ForeignKey(Maddr, db_column='rid', primary_key=True)
+    rseqnum = models.IntegerField(default=0)
+    is_local = models.CharField(max_length=3)
+    content = models.CharField(max_length=3)
     ds = models.CharField(max_length=3)
     rs = models.CharField(max_length=3)
     bl = models.CharField(max_length=3, blank=True)
@@ -66,7 +71,7 @@ class Msgrcpt(models.Model):
     class Meta:
         db_table = u'msgrcpt'
         managed = False
-        unique_together = ("mail", "rid")
+        unique_together = ("partition_tag", "mail", "rseqnum")
 
 class Policy(models.Model):
     policy_name = models.CharField(max_length=96, blank=True)
@@ -110,11 +115,13 @@ class Policy(models.Model):
     virus_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     spam_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     banned_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    uncheked_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     bad_header_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     clean_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
-    other_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    archive_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     spam_tag_level = models.FloatField(null=True, blank=True)
     spam_tag2_level = models.FloatField(null=True, blank=True)
+    spam_tag3_level = models.FloatField(null=True, blank=True)
     spam_kill_level = models.FloatField(null=True, blank=True)
     spam_dsn_cutoff_level = models.FloatField(null=True, blank=True)
     spam_quarantine_cutoff_level = models.FloatField(null=True, blank=True)
@@ -132,8 +139,14 @@ class Policy(models.Model):
     spam_admin = models.CharField(max_length=192, blank=True, null=True)
     spam_subject_tag = models.CharField(max_length=192, blank=True, null=True)
     spam_subject_tag2 = models.CharField(max_length=192, blank=True, null=True)
+    spam_subject_tag3 = models.CharField(max_length=192, blank=True, null=True)
     message_size_limit = models.IntegerField(null=True, blank=True)
     banned_rulenames = models.CharField(max_length=192, blank=True, null=True)
+    disclaimer_options = models.CharField(max_length=192, blank=True, null=True)
+    forward_method = models.CharField(max_length=192, blank=True, null=True)
+    sa_userconf = models.CharField(max_length=192, blank=True, null=True)
+    sa_username = models.CharField(max_length=192, blank=True, null=True)
+
     class Meta:
         db_table = u'policy'
         managed = False
@@ -147,7 +160,7 @@ class Quarantine(models.Model):
         db_table = u'quarantine'
         managed = False
         ordering = ["-mail__time_num"]
-        unique_together = ("mail", "chunk_ind")
+        unique_together = ("partition_tag", "mail", "chunk_ind")
 
 class Users(models.Model):
     id = models.AutoField(primary_key=True)
