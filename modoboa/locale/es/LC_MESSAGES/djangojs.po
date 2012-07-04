@@ -1,90 +1,90 @@
 # Modoboa spanish translation.
 # Copyright (C) 2010-2012
 # This file is distributed under the same license as the Modoboa package.
-# 
+#
 # Pedro Gracia <pedro.gracia@impulzia.com>, 2010-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.9\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
-"POT-Creation-Date: 2012-05-03 11:05+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-03 09:12+0200\n"
 "PO-Revision-Date: 2012-05-19 08:45+0000\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: ES <LL@li.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:126
+#: admin/static/admin/js/admin.js:17
+msgid "No domain administrator defined"
+msgstr "No hay un administrador de dominio definido"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:126
 msgid "Release this selection?"
 msgstr "¿Publicar esta selección?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:130
+#: extensions/amavis/static/amavis/js/quarantine.js:130
 msgid "Delete this selection?"
 msgstr "¿Eliminar esta selección?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:148
-#: extensions/amavis_quarantine/static/js/selfservice.js:22
+#: extensions/amavis/static/amavis/js/quarantine.js:148
+#: extensions/amavis/static/amavis/js/selfservice.js:22
 msgid "Release this message?"
 msgstr "¿Publicar este mensaje?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:152
-#: extensions/amavis_quarantine/static/js/selfservice.js:26
+#: extensions/amavis/static/amavis/js/quarantine.js:152
+#: extensions/amavis/static/amavis/js/selfservice.js:26
 msgid "Delete this message?"
 msgstr "¿Eliminar este mensaje?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:169
+#: extensions/amavis/static/amavis/js/quarantine.js:169
 msgid "View full headers"
 msgstr "Ver todas las cabeceras"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:174
+#: extensions/amavis/static/amavis/js/quarantine.js:174
 msgid "Hide full headers"
 msgstr "Esconder todas las cabeceras"
 
-#: extensions/sievefilters/static/js/lib.js:14
+#: extensions/sievefilters/static/sievefilters/js/lib.js:14
 msgid "Remove this filter?"
 msgstr "¿Eliminar este filtro?"
 
-#: extensions/sievefilters/static/js/lib.js:117
+#: extensions/sievefilters/static/sievefilters/js/lib.js:117
 msgid "Save changes?"
 msgstr "¿Guardar cambios?"
 
-#: extensions/sievefilters/static/js/lib.js:144
+#: extensions/sievefilters/static/sievefilters/js/lib.js:144
 msgid "Remove filters set?"
 msgstr "¿Eliminar este conjunto de filtros?"
 
-#: extensions/sievefilters/static/js/lib.js:161
+#: extensions/sievefilters/static/sievefilters/js/lib.js:161
 msgid "Activate this filters set?"
 msgstr "¿Activar este conjunto de filtros?"
 
-#: extensions/sievefilters/static/js/lib.js:169
-#: extensions/sievefilters/static/js/lib.js:224
+#: extensions/sievefilters/static/sievefilters/js/lib.js:169
+#: extensions/sievefilters/static/sievefilters/js/lib.js:224
 msgid "active"
 msgstr "Activar"
 
-#: extensions/stats/static/js/stats.js:28
+#: extensions/stats/static/stats/js/stats.js:28
 msgid "Search a domain"
 msgstr "Buscar un dominio"
 
-#: extensions/webmail/static/js/webmail.js:499
+#: extensions/webmail/static/webmail/js/webmail.js:511
 msgid "Remove the selected mailbox?"
 msgstr "¿Eliminar el mailbox seleccionado?"
 
-#: extensions/webmail/static/js/webmail.js:513
+#: extensions/webmail/static/webmail/js/webmail.js:525
 msgid "Mailbox removed"
 msgstr "Mailbox eliminado"
-
-#: static/js/admin.js:17
-msgid "No domain administrator defined"
-msgstr "No hay un administrador de dominio definido"
 
 #: static/js/confirmation.js:45
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: static/js/confirmation.js:84 static/js/history.js:230
+#: static/js/confirmation.js:84 static/js/history.js:231
 msgid "Internal Error"
 msgstr "Error interno"
 

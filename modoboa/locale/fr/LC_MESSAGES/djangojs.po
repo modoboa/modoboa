@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.9\n"
+"Project-Id-Version: modoboa-0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-03 11:05+0200\n"
+"POT-Creation-Date: 2012-07-03 09:12+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -16,74 +16,74 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:126
+#: admin/static/admin/js/admin.js:17
+msgid "No domain administrator defined"
+msgstr "Aucun administrateur de domaine défini"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:126
 msgid "Release this selection?"
 msgstr "Relâcher cette sélection?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:130
+#: extensions/amavis/static/amavis/js/quarantine.js:130
 msgid "Delete this selection?"
 msgstr "Supprimer cette sélection?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:148
-#: extensions/amavis_quarantine/static/js/selfservice.js:22
+#: extensions/amavis/static/amavis/js/quarantine.js:148
+#: extensions/amavis/static/amavis/js/selfservice.js:22
 msgid "Release this message?"
 msgstr "Relâcher cette message?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:152
-#: extensions/amavis_quarantine/static/js/selfservice.js:26
+#: extensions/amavis/static/amavis/js/quarantine.js:152
+#: extensions/amavis/static/amavis/js/selfservice.js:26
 msgid "Delete this message?"
 msgstr "Supprimer ce message?"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:169
+#: extensions/amavis/static/amavis/js/quarantine.js:169
 msgid "View full headers"
 msgstr "Voir les entêtes complets"
 
-#: extensions/amavis_quarantine/static/js/quarantine.js:174
+#: extensions/amavis/static/amavis/js/quarantine.js:174
 msgid "Hide full headers"
 msgstr "Cacher les entêtes complets"
 
-#: extensions/sievefilters/static/js/lib.js:14
+#: extensions/sievefilters/static/sievefilters/js/lib.js:14
 msgid "Remove this filter?"
 msgstr "Supprimer ce filtre?"
 
-#: extensions/sievefilters/static/js/lib.js:117
+#: extensions/sievefilters/static/sievefilters/js/lib.js:117
 msgid "Save changes?"
 msgstr "Enregistrer les changements?"
 
-#: extensions/sievefilters/static/js/lib.js:144
+#: extensions/sievefilters/static/sievefilters/js/lib.js:144
 msgid "Remove filters set?"
 msgstr "Supprimer ce jeu de filtres?"
 
-#: extensions/sievefilters/static/js/lib.js:161
+#: extensions/sievefilters/static/sievefilters/js/lib.js:161
 msgid "Activate this filters set?"
 msgstr "Activer ce jeu de filtres?"
 
-#: extensions/sievefilters/static/js/lib.js:169
-#: extensions/sievefilters/static/js/lib.js:224
+#: extensions/sievefilters/static/sievefilters/js/lib.js:169
+#: extensions/sievefilters/static/sievefilters/js/lib.js:224
 msgid "active"
 msgstr "actif"
 
-#: extensions/stats/static/js/stats.js:28
+#: extensions/stats/static/stats/js/stats.js:28
 msgid "Search a domain"
 msgstr "Checher un domaine"
 
-#: extensions/webmail/static/js/webmail.js:499
+#: extensions/webmail/static/webmail/js/webmail.js:511
 msgid "Remove the selected mailbox?"
 msgstr "Supprimer la boite sélectionnée?"
 
-#: extensions/webmail/static/js/webmail.js:513
+#: extensions/webmail/static/webmail/js/webmail.js:525
 msgid "Mailbox removed"
 msgstr "Boite aux lettres supprimées"
-
-#: static/js/admin.js:17
-msgid "No domain administrator defined"
-msgstr "Aucun administrateur de domaine défini"
 
 #: static/js/confirmation.js:45
 msgid "Cancel"
 msgstr "Annuler"
 
-#: static/js/confirmation.js:84 static/js/history.js:230
+#: static/js/confirmation.js:84 static/js/history.js:231
 msgid "Internal Error"
 msgstr "Erreur interne"
 
