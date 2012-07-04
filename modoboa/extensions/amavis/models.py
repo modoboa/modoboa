@@ -92,7 +92,7 @@ class Policy(models.Model):
         max_length=3,
         help_text=ugettext_lazy("Bypass banned checks or not. Choose 'default' to use global settings.")
         )
-    bypass_header_checks = models.CharField(max_length=3, blank=True)
+    bypass_header_checks = models.CharField(max_length=3, blank=True, null=True)
     spam_modifies_subj = models.CharField(
         ugettext_lazy("Spam marker"), default='', null=True,
         choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
