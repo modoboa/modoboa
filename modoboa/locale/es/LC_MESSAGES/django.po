@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-04 15:16+0200\n"
+"POT-Creation-Date: 2012-07-04 18:39+0200\n"
 "PO-Revision-Date: 2012-05-19 08:42+0000\n"
 "Last-Translator: Pedro Gracia <pedro.gracia@impulzia.com>\n"
 "Language-Team: ES <LL@li.org>\n"
@@ -80,8 +80,10 @@ msgid "Alias(es)"
 msgstr "Alias"
 
 #: admin/forms.py:17
-msgid "Alias(es) of this domain"
-msgstr "Alias para este dominio"
+msgid ""
+"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
+"add a new input."
+msgstr ""
 
 #: admin/forms.py:54
 msgid "An alias with this name already exists"
@@ -862,55 +864,55 @@ msgstr "%d peticiones pendientes"
 msgid "Content filter"
 msgstr "Clase de contenido"
 
-#: extensions/amavis/models.py:78
+#: extensions/amavis/models.py:84
 #, fuzzy
 msgid "Virus filter"
 msgstr "Editar filtro"
 
-#: extensions/amavis/models.py:79 extensions/amavis/models.py:87
-#: extensions/amavis/models.py:95 extensions/amavis/models.py:104
+#: extensions/amavis/models.py:85 extensions/amavis/models.py:93
+#: extensions/amavis/models.py:101 extensions/amavis/models.py:110
 #: extensions/sievefilters/views.py:265
 msgid "yes"
 msgstr "sí"
 
-#: extensions/amavis/models.py:80 extensions/amavis/models.py:88
-#: extensions/amavis/models.py:96 extensions/amavis/models.py:105
+#: extensions/amavis/models.py:86 extensions/amavis/models.py:94
+#: extensions/amavis/models.py:102 extensions/amavis/models.py:111
 #: extensions/sievefilters/views.py:269
 msgid "no"
 msgstr "no"
 
-#: extensions/amavis/models.py:81 extensions/amavis/models.py:89
-#: extensions/amavis/models.py:97 extensions/amavis/models.py:106
+#: extensions/amavis/models.py:87 extensions/amavis/models.py:95
+#: extensions/amavis/models.py:103 extensions/amavis/models.py:112
 msgid "default"
 msgstr ""
 
-#: extensions/amavis/models.py:83
+#: extensions/amavis/models.py:89
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
 msgstr ""
 
-#: extensions/amavis/models.py:86
+#: extensions/amavis/models.py:92
 #, fuzzy
 msgid "Spam filter"
 msgstr "Nuevo filtro"
 
-#: extensions/amavis/models.py:91
+#: extensions/amavis/models.py:97
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
 msgstr ""
 
-#: extensions/amavis/models.py:94
+#: extensions/amavis/models.py:100
 #, fuzzy
 msgid "Banned filter"
 msgstr "Nuevo filtro"
 
-#: extensions/amavis/models.py:99
+#: extensions/amavis/models.py:105
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
 msgstr ""
 
-#: extensions/amavis/models.py:103
+#: extensions/amavis/models.py:109
 msgid "Spam marker"
 msgstr ""
 
-#: extensions/amavis/models.py:108
+#: extensions/amavis/models.py:114
 msgid "Modify spam subject or not. Choose 'default' to use global settings."
 msgstr ""
 
@@ -1994,6 +1996,9 @@ msgstr "Bienvenido a Modoboa"
 #: userprefs/templatetags/uprefs_extras.py:55
 msgid "Logout"
 msgstr "Salir"
+
+#~ msgid "Alias(es) of this domain"
+#~ msgstr "Alias para este dominio"
 
 #, fuzzy
 #~ msgid "tag subject"

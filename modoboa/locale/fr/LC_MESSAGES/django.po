@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-04 15:16+0200\n"
+"POT-Creation-Date: 2012-07-04 18:39+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -81,8 +81,12 @@ msgid "Alias(es)"
 msgstr "Alias"
 
 #: admin/forms.py:17
-msgid "Alias(es) of this domain"
-msgstr "Alias de ce domaine"
+msgid ""
+"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
+"add a new input."
+msgstr ""
+"Alias de ce domaine. Indiquer seulement un nom par champ, appuyer sur ENTREE "
+"pour ajouter un nouveau champ."
 
 #: admin/forms.py:54
 msgid "An alias with this name already exists"
@@ -862,58 +866,58 @@ msgstr "%d requêtes en attente"
 msgid "Content filter"
 msgstr "Filtrage de contenu"
 
-#: extensions/amavis/models.py:78
+#: extensions/amavis/models.py:84
 msgid "Virus filter"
 msgstr "Filtrage des virus"
 
-#: extensions/amavis/models.py:79 extensions/amavis/models.py:87
-#: extensions/amavis/models.py:95 extensions/amavis/models.py:104
+#: extensions/amavis/models.py:85 extensions/amavis/models.py:93
+#: extensions/amavis/models.py:101 extensions/amavis/models.py:110
 #: extensions/sievefilters/views.py:265
 msgid "yes"
 msgstr "oui"
 
-#: extensions/amavis/models.py:80 extensions/amavis/models.py:88
-#: extensions/amavis/models.py:96 extensions/amavis/models.py:105
+#: extensions/amavis/models.py:86 extensions/amavis/models.py:94
+#: extensions/amavis/models.py:102 extensions/amavis/models.py:111
 #: extensions/sievefilters/views.py:269
 msgid "no"
 msgstr "non"
 
-#: extensions/amavis/models.py:81 extensions/amavis/models.py:89
-#: extensions/amavis/models.py:97 extensions/amavis/models.py:106
+#: extensions/amavis/models.py:87 extensions/amavis/models.py:95
+#: extensions/amavis/models.py:103 extensions/amavis/models.py:112
 msgid "default"
 msgstr "défaut"
 
-#: extensions/amavis/models.py:83
+#: extensions/amavis/models.py:89
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
 msgstr ""
 "Désactiver le filtrage des virus ou non. Choisir 'défaut' pour utiliser les "
 "paramètres globaux."
 
-#: extensions/amavis/models.py:86
+#: extensions/amavis/models.py:92
 msgid "Spam filter"
 msgstr "Filtrage du spam"
 
-#: extensions/amavis/models.py:91
+#: extensions/amavis/models.py:97
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
 msgstr ""
 "Désactiver le filtrage du spam ou non. Choisir 'défaut' pour utiliser les "
 "paramètres globaux."
 
-#: extensions/amavis/models.py:94
+#: extensions/amavis/models.py:100
 msgid "Banned filter"
 msgstr "Filtrage des messages bannis"
 
-#: extensions/amavis/models.py:99
+#: extensions/amavis/models.py:105
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
 msgstr ""
 "Désactiver le filtrage des messages bannis ou non. Choisir 'défaut' pour "
 "utiliser les paramètres globaux."
 
-#: extensions/amavis/models.py:103
+#: extensions/amavis/models.py:109
 msgid "Spam marker"
 msgstr "Marquage du spam"
 
-#: extensions/amavis/models.py:108
+#: extensions/amavis/models.py:114
 msgid "Modify spam subject or not. Choose 'default' to use global settings."
 msgstr ""
 "Modifier le sujet du spam ou non. Choisir 'défaut' pour utiliser les "
@@ -1996,3 +2000,6 @@ msgstr "Personnalisez Modoboa"
 #: userprefs/templatetags/uprefs_extras.py:55
 msgid "Logout"
 msgstr "Déconnexion"
+
+#~ msgid "Alias(es) of this domain"
+#~ msgstr "Alias de ce domaine"
