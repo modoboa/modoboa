@@ -1,6 +1,11 @@
 # coding: utf-8
 """
-Amavis quarantine manager (SQL based)
+Amavis management frontend.
+
+Provides:
+
+* SQL quarantine management
+* Per-domain settings
 
 """
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -20,22 +25,18 @@ class Amavis(ModoExtension):
         """Init function
         
         Only run once, when the extension is enabled. We create records
-        for existing mailboxes in order Amavis considers them local.
+        for existing domains to let Amavis consider them local.
         """
-        from modoboa.admin.models import Mailbox
-        from models import Users
+        from modoboa.admin.models import Domain
+        from models import Users, Policy
         
-        for mb in Mailbox.objects.all():
+        for dom in Domain.objects.all():
             try:
-                u = Users.objects.get(email=mb.full_address)
+                u = Users.objects.get(email="@%s" % dom.name)
             except Users.DoesNotExist:
-                u = Users()            
-                u.email = mb.full_address
-                u.fullname = mb.user.fullname
-                u.local = "1"
-                u.priority = 7
-                u.policy_id = 1
-                u.save()
+                p = Policy.objects.create(policy_name=dom.name)
+                Users.objects.create(email="@%s" % dom.name, fullname=dom.name, 
+                                     local="1", priority=7, policy=p)
 
     def load(self):
         parameters.register_admin(
@@ -76,9 +77,9 @@ class Amavis(ModoExtension):
             help=ugettext_lazy("Sets the maximum number of messages displayed in a page")
             )
 
-        def destroy(self):
-            events.unregister("UserMenuDisplay", menu)
-            parameters.unregister_app("amavis")
+    def destroy(self):
+        events.unregister("UserMenuDisplay", menu)
+        parameters.unregister_app("amavis")
 
 exts_pool.register_extension(Amavis)
 
@@ -94,6 +95,24 @@ def menu(target, user):
             ]
     return []
 
+@events.observe("CreateDomain")
+def on_create_domain(user, domain):
+    from models import Users, Policy
+    p = Policy.objects.create(policy_name=domain.name)
+    Users.objects.create(email="@%s" % domain.name, fullname=domain.name, 
+                         local="1", priority=7, policy=p)
+
+@events.observe("DomainModified")
+def on_domain_modified(domain):
+    if domain.oldname != domain.name:
+        from models import Users
+        u = Users.objects.get(email="@%s" % domain.oldname)
+        u.email = "@%s" % domain.name
+        u.fullname = domain.name
+        u.policy.policy_name = domain.name
+        u.policy.save()
+        u.save()
+
 @events.observe("DeleteDomain")
 def on_delete_domain(domain):
     from models import Users
@@ -104,42 +123,6 @@ def on_delete_domain(domain):
         return
     u.policy.delete()
     u.delete()
-
-@events.observe("CreateMailbox")
-def create_user_record(user, mailbox):
-    from models import Users
-
-    try:
-        Users.objects.get(email=mailbox.full_address)
-    except Users.DoesNotExist:
-        u = Users()
-        u.email = mailbox.full_address
-        u.fullname = mailbox.user.fullname
-        u.local = "1"
-        u.priority = 7
-        u.policy_id = 1
-        u.save()
-
-@events.observe("ModifyMailbox")
-def modify_user_record(mailbox, oldmailbox):
-    if mailbox.full_address == oldmailbox.full_address:
-        return
-    u = Users.objects.get(email=oldmailbox.full_address)
-    u.email = mailbox.full_address
-    u.save()
-
-@events.observe("DeleteMailbox")
-def remove_user_record(mailboxes):
-    from models import Users
-    from modoboa.admin.models import Mailbox
-
-    if isinstance(mailboxes, Mailbox):
-        mailboxes = [mailboxes]
-    for mailbox in mailboxes:
-        try:
-            Users.objects.get(email=mailbox.full_address).delete()
-        except Users.DoesNotExist:
-            pass
 
 @events.observe("GetStaticContent")
 def extra_static_content(user):

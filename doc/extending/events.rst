@@ -200,6 +200,18 @@ Raised when an existing domain alias is about to be deleted.
 
 * ``domain_alias`` is a ``DomainAlias`` instance
 
+DomainModified
+==============
+
+Raised when a domain has been modified.
+
+*Callback prototype*::
+
+  def callback(domain): pass
+
+* ``domain`` is the modified ``Domain`` instance, it contains an extra
+  ``oldname`` field which contains the old domain name
+
 ExtDisabled
 ===========
 

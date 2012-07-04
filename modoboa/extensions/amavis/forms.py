@@ -3,38 +3,32 @@
 from django import forms
 from models import Policy, Users
 from django.utils.translation import ugettext_lazy
+from django.forms.widgets import RadioSelect, RadioInput
+from django.utils.html import conditional_escape
+from django.utils.encoding import force_unicode
+from django.utils.safestring import mark_safe
 
-def is_yes(v): return v == 'Y'
+class CustomRadioInput(RadioInput):
+    def __unicode__(self):
+        if 'id' in self.attrs:
+            label_for = ' for="%s_%s"' % (self.attrs['id'], self.index)
+        else:
+            label_for = ''
+        choice_label = conditional_escape(force_unicode(self.choice_label))
+        return mark_safe(u'<label class="radio inline" %s>%s %s</label>' % (label_for, self.tag(), choice_label))
 
-class CustomInputField(forms.CharField):
-    """Custom <input> field
+class InlineRadioRenderer(RadioSelect.renderer):
+    def __iter__(self):
+        for i, choice in enumerate(self.choices):
+            yield CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
 
-    Most of the columns defined by amavis use the *char* type even if
-    they only support 2 values (Y/N). As we want to display them using
-    checkboxes, we need to make some modifications in order that
-    values are correctly interpreted.
-    """
-    def validate(self, value):
-        value = "N" if not value else "Y"
-        super(CustomInputField, self).validate(value)
+    def render(self):
+        return mark_safe(u'\n'.join([u'%s\n' % force_unicode(w) for w in self]))
 
-    def clean(self, value):
-        value = "N" if not value else "Y"
-        return super(CustomInputField, self).clean(value)
+class InlineRadioSelect(RadioSelect):
+    renderer = InlineRadioRenderer
 
 class DomainPolicyForm(forms.ModelForm):
-    bypass_spam_checks = CustomInputField(label=ugettext_lazy("Spam filter"),
-                                          widget=forms.CheckboxInput(check_test=is_yes),
-                                          help_text=ugettext_lazy("enabled"))
-    bypass_virus_checks = CustomInputField(label=ugettext_lazy("Virus filter"), 
-                                          widget=forms.CheckboxInput(check_test=is_yes),
-                                          help_text=ugettext_lazy("enabled"))
-    bypass_banned_checks = CustomInputField(label=ugettext_lazy("Banned filter"), 
-                                          widget=forms.CheckboxInput(check_test=is_yes),
-                                          help_text=ugettext_lazy("enabled"))
-    spam_modifies_subj = CustomInputField(label=ugettext_lazy("Spam marker"), 
-                                          widget=forms.CheckboxInput(check_test=is_yes),
-                                          help_text=ugettext_lazy("tag subject"))
 
     class Meta:
         model = Policy
@@ -42,8 +36,12 @@ class DomainPolicyForm(forms.ModelForm):
                   'spam_tag2_level', 'spam_modifies_subj',
                   'spam_kill_level', 'bypass_banned_checks')
         widgets = {
+            'bypass_virus_checks' : InlineRadioSelect(),
+            'bypass_spam_checks' : InlineRadioSelect(),
             'spam_tag2_level' : forms.TextInput(attrs={'class' : 'span1'}),
+            'spam_modifies_subj' : InlineRadioSelect(),
             'spam_kill_level' : forms.TextInput(attrs={'class' : 'span1'}),
+            'bypass_banned_checks' : InlineRadioSelect(),
             }
 
     def __init__(self, *args, **kwargs):
@@ -55,20 +53,17 @@ class DomainPolicyForm(forms.ModelForm):
             except (Users.DoesNotExist, Policy.DoesNotExist), e:
                 del kwargs["instance"]
         super(DomainPolicyForm, self).__init__(*args, **kwargs)
-
+        for f in self.fields.keys():
+            self.fields[f].required = False
+    
     def save(self, user, commit=True):
         p = super(DomainPolicyForm, self).save(commit=False)
         if commit:
-            p.save()        
-            try:
-                u = Users.objects.get(policy__id=p.id)
-            except Users.DoesNotExist:
-                u = Users()
-                u.email = "@%s" % self.domain.name
-                u.fullname = self.domain.name
-                u.policy = p
-                u.local = "1"
-                u.priority = 7
-                u.save()
             p.save()
+            try:
+                u = Users.objects.get(policy=p)
+            except Users.DoesNotExist:
+                u = Users.objects.get(email="@%s" % self.domain.name)
+                u.policy = p
+                p.save()
         return p

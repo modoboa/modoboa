@@ -69,17 +69,36 @@ class Msgrcpt(models.Model):
         unique_together = ("mail", "rid")
 
 class Policy(models.Model):
-    id = models.AutoField(primary_key=True)
     policy_name = models.CharField(max_length=96, blank=True)
     virus_lover = models.CharField(max_length=3, blank=True)
     spam_lover = models.CharField(max_length=3, blank=True)
     banned_files_lover = models.CharField(max_length=3, blank=True)
     bad_header_lover = models.CharField(max_length=3, blank=True)
-    bypass_virus_checks = models.CharField(max_length=3, blank=True)
-    bypass_spam_checks = models.CharField(max_length=3, blank=True)
-    bypass_banned_checks = models.CharField(max_length=3, blank=True)
+    bypass_virus_checks = models.CharField(
+        ugettext_lazy("Virus filter"), default='',
+        choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
+        max_length=3,
+        help_text=ugettext_lazy("Bypass virus checks or not. Choose 'default' to use global settings.")
+        )
+    bypass_spam_checks = models.CharField(
+        ugettext_lazy("Spam filter"), default='',
+        choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
+        max_length=3,
+        help_text=ugettext_lazy("Bypass spam checks or not. Choose 'default' to use global settings.")
+        )
+    bypass_banned_checks = models.CharField(
+        ugettext_lazy("Banned filter"), default='',
+        choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
+        max_length=3,
+        help_text=ugettext_lazy("Bypass banned checks or not. Choose 'default' to use global settings.")
+        )
     bypass_header_checks = models.CharField(max_length=3, blank=True)
-    spam_modifies_subj = models.CharField(max_length=3, blank=True)
+    spam_modifies_subj = models.CharField(
+        ugettext_lazy("Spam marker"), default='',
+        choices=(('Y', 'yes'), ('N', 'no'), ('', 'default')),
+        max_length=3,
+        help_text=ugettext_lazy("Modify spam subject or not. Choose 'default' to use global settings.")
+        )
     virus_quarantine_to = models.CharField(max_length=192, blank=True)
     spam_quarantine_to = models.CharField(max_length=192, blank=True)
     banned_quarantine_to = models.CharField(max_length=192, blank=True)

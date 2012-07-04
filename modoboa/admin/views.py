@@ -114,9 +114,13 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
                  "formid" : "domform",
                  "domain" : domain}
     if request.method == "POST":
+        def editdomain_cb(user, newdomain):
+            events.raiseEvent("DomainModified", domain)
+
+        domain.oldname = domain.name
         form = DomainForm(request.user, request.POST, instances=instances)
         return _validate_domain(request, form, _("Domain modified"), commonctx, tplname,
-                                tpl_form_name="tabs")
+                                tpl_form_name="tabs", callback=editdomain_cb)
 
     commonctx["tabs"] = DomainForm(request.user, instances=instances)
     commonctx["domadmins"] = domadmins

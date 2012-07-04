@@ -17,6 +17,7 @@ events = [
     "CanCreate",
 
     "CreateDomain",
+    "DomainModified",
     "DeleteDomain",
 
     "DomainAliasCreated",
