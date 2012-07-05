@@ -136,11 +136,11 @@ div.clickbox {
 }
 
 div.collapsed {
-    background-image: url("/static/pics/collapsed.png");
+    background-image: url("../../pics/collapsed.png");
     background-repeat: no-repeat;
 }
 
 div.expanded {
-    background-image: url("/static/pics/expanded.png");
+    background-image: url("../../pics/expanded.png");
     background-repeat: no-repeat;
 }
