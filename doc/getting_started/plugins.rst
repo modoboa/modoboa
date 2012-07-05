@@ -138,7 +138,7 @@ You are free to change the frequency.
 .. note::
 
   If you want to let users release their messages alone (not
-  recommanded), change the value of the ``USER_CAN_RELEASE`` parameter
+  recommended), change the value of the ``USER_CAN_RELEASE`` parameter
   into the admin panel.
 
 Self-service mode

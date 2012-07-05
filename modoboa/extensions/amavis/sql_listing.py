@@ -70,7 +70,7 @@ class SQLconnector(MBconnector):
                      "subject" : qm.mail.subject,
                      "mailid" : qm.mail_id,
                      "date" : qm.mail.time_num,
-                     "type" : qm.mail.content}
+                     "type" : rcpt.content}
                 if rcpt.rs == '':
                     m["class"] = "unseen"
                 elif rcpt.rs == 'R':
