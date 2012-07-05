@@ -36,7 +36,7 @@ class Amavis(ModoExtension):
             except Users.DoesNotExist:
                 p = Policy.objects.create(policy_name=dom.name)
                 Users.objects.create(email="@%s" % dom.name, fullname=dom.name, 
-                                     local="1", priority=7, policy=p)
+                                     priority=7, policy=p)
 
     def load(self):
         parameters.register_admin(
@@ -100,7 +100,7 @@ def on_create_domain(user, domain):
     from models import Users, Policy
     p = Policy.objects.create(policy_name=domain.name)
     Users.objects.create(email="@%s" % domain.name, fullname=domain.name, 
-                         local="1", priority=7, policy=p)
+                         priority=7, policy=p)
 
 @events.observe("DomainModified")
 def on_domain_modified(domain):

@@ -169,7 +169,6 @@ class Users(models.Model):
     policy = models.ForeignKey(Policy)
     email = models.CharField(unique=True, max_length=255)
     fullname = models.CharField(max_length=765, blank=True)
-    local = models.CharField(max_length=3, blank=True)
     class Meta:
         db_table = u'users'
         managed = False

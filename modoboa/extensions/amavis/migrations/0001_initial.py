@@ -126,7 +126,6 @@ class Migration(SchemaMigration):
             'email': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'fullname': ('django.db.models.fields.CharField', [], {'max_length': '765', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'local': ('django.db.models.fields.CharField', [], {'max_length': '3', 'blank': 'True'}),
             'policy': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['amavis.Policy']"}),
             'priority': ('django.db.models.fields.IntegerField', [], {})
         },
