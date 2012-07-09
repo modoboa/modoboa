@@ -9,6 +9,8 @@ newest versions of Modoboa.
    Before running a migration, we recommend that you make
    a copy of your existing database.
 
+.. _latestversion:
+
 **************
 Latest version
 **************
@@ -44,6 +46,8 @@ one:
 
 Don't copy the old *settings.py* file, just keep the new one and
 modify it (see :ref:`database` and :ref:`timezone_lang`).
+
+Migrate your database (see :ref:`latestversion`).
 
 Finally, check the :ref:`amavis_frontend`, :ref:`postfix_ar` and
 :ref:`stats` chapters (depending on those you use) because the
