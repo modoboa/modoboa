@@ -43,10 +43,16 @@ This plugin provides a simple management frontend for `amavisd-new
 * Per domain customization (using policies): specify how amavisd-new
   will handle traffic
 
+.. note::
+
+   This plugin requires *amavisd-new* version **2.7.0** or higher. If
+   you're planning to use the :ref:`selfservice`, you'll need version
+   **2.8.0**.
+
 Database
 ========
 
-You must specify to Modoboa where it can find the amavis
+You must tell to Modoboa where it can find the amavis
 database. Inside *settings.py*, add a new connection to the
 ``DATABASES`` variable like this::
 
@@ -140,6 +146,8 @@ You are free to change the frequency.
   If you want to let users release their messages alone (not
   recommended), change the value of the ``USER_CAN_RELEASE`` parameter
   into the admin panel.
+
+.. _selfservice:
 
 Self-service mode
 =================
