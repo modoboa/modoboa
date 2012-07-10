@@ -54,9 +54,9 @@ Finally, check the :ref:`amavis_frontend`, :ref:`postfix_ar` and
 provided cron scripts have been changed, you must update the way you
 call them.
 
-********************
-Modoboa prior to 0.9
-********************
+*********************
+Modoboa 0.9 and prior
+*********************
 
 First, decompress the new tarball at the same location than your
 current installation. Then, check if the new version you're installing
