@@ -3,6 +3,7 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 class Migration(DataMigration):
 
@@ -10,7 +11,7 @@ class Migration(DataMigration):
         "Write your forwards methods here."
         try:
             ext = orm["admin.Extension"].objects.get(name="amavis_quarantine")
-        except orm["admin.Extension"].DoesNotExist:
+        except ObjectDoesNotExist:
             return
         ext.name = "amavis"
         ext.save()
@@ -19,7 +20,7 @@ class Migration(DataMigration):
         "Write your backwards methods here."
         try:
             ext = orm["admin.Extension"].objects.get(name="amavis")
-        except orm["admin.Extension"].DoesNotExist:
+        except ObjectDoesNotExist:
             return
         ext.name = "amavis_quarantine"
         ext.save()

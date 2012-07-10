@@ -3,6 +3,7 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 class Migration(DataMigration):
 
@@ -14,8 +15,11 @@ class Migration(DataMigration):
                                             spam_modifies_subj=None)
         for dom in orm["admin.Domain"].objects.all():
             orm["amavis.Users"].objects.create(email="@%s" % dom.name, fullname=dom.name,
-                                               local='1', priority=7, policy_id=1)
-        ext = orm["admin.Extension"].objects.get(name="amavis")
+                                               priority=7, policy_id=1)
+        try:
+            ext = orm["admin.Extension"].objects.get(name="amavis")
+        except ObjectDoesNotExist:
+            return
         if ext.enabled:
             for dom in orm["admin.Domain"].objects.all():
                 u = orm["amavis.Users"].objects.get(email="@%s" % dom.name)
