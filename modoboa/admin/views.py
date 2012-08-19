@@ -10,7 +10,6 @@ from django.db import transaction, IntegrityError
 
 from lib import render_listing
 from forms import *
-from modoboa import admin, userprefs
 from models import * 
 from modoboa.admin.tables import *
 from modoboa.lib import events, parameters
@@ -27,7 +26,7 @@ def domains(request):
         if request.user.has_perm("admin.view_mailboxes"):
             return HttpResponseRedirect(reverse(identities))
 
-        return HttpResponseRedirect(reverse(userprefs.views.index))
+        return HttpResponseRedirect(reverse("modoboa.userprefs.views.index"))
     
     domains = request.user.get_domains()
     squery = request.GET.get("searchquery", None)
@@ -62,7 +61,7 @@ def _validate_domain(request, form, successmsg, commonctx, tplname,
             if callback is not None:
                 callback(request.user, domain)
             messages.info(request, successmsg, fail_silently=True)
-            return ajax_response(request, url=reverse(admin.views.domains))
+            return ajax_response(request, url=reverse("modoboa.admin.views.domains"))
 
     commonctx[tpl_form_name] = form
     commonctx["error"] = error
@@ -166,7 +165,7 @@ def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None
             callback(request.user, alias)
 
         messages.info(request, successmsg)
-        return ajax_response(request, url=reverse(admin.views.identities))
+        return ajax_response(request, url=reverse("modoboa.admin.views.identities"))
 
     if request.POST.has_key("targets"):
         targets = request.POST.getlist("targets")
