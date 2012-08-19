@@ -96,11 +96,7 @@ following configuration::
                 proxy_set_header Host $http_host;
                 proxy_redirect off;
                 proxy_set_header X-Forwarded-Protocol ssl;
-
-                if (!-f $request_filename) {
-			proxy_pass http://modoboa;
-                        break;
-                }
+		proxy_pass http://modoboa;
         }
   }
 
