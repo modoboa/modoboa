@@ -1,5 +1,6 @@
 # coding: utf-8
 from django.db import connection
+from django.conf import settings
             
 def db_table_exists(table, cursor=None):
     """Check if table exists
@@ -18,3 +19,15 @@ def db_table_exists(table, cursor=None):
         raise Exception("unable to determine if the table '%s' exists" % table)
     else:
         return table in table_names
+
+def db_type():
+    """Return the type of the *default* database
+
+    Supported values : 'postgres', 'mysql', 'sqlite'
+
+    :return: a string or None
+    """
+    for t in ['postgres', 'mysql', 'sqlite']:
+        if settings.DATABASES['default']['ENGINE'].find(t) != -1:
+            return t
+    return None

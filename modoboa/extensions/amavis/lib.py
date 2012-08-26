@@ -7,6 +7,7 @@ from functools import wraps
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from modoboa.lib import parameters
+from modoboa.lib.dbutils import db_type
 from models import Msgrcpt
 
 def selfservice(ssfunc=None):
@@ -41,6 +42,8 @@ def get_nb_requests(user):
     if not user.is_superuser:
         doms = user.get_domains()
         regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+        if db_type() == 'postgres':
+            return len(Msgrcpt.objects.filter(rq).extra(where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], tables=['maddr']))
         doms_q = Q(rid__email__regex=regexp)
         rq &= doms_q
     return len(Msgrcpt.objects.filter(rq))

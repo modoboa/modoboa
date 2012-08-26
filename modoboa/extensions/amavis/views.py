@@ -70,18 +70,32 @@ def _listing(request):
         q = Q(rs='p')
     else:
         q = ~Q(rs='D')
-    if request.user.group == 'SimpleUsers':
-        q &= Q(rid__email=request.user.email)
-    else:
-        if not request.user.is_superuser:
-            doms = request.user.get_domains()
-            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-            doms_q = Q(rid__email__regex=regexp)
-            q &= doms_q
-        if rcptfilter is not None:
-            q &= Q(rid__email__contains=rcptfilter)
 
-    msgs = Msgrcpt.objects.filter(q).values("mail_id")
+    if db_type() != 'postgres':
+        if request.user.group == 'SimpleUsers':
+            q &= Q(rid__email=request.user.email)
+        else:
+            if not request.user.is_superuser:
+                doms = request.user.get_domains()
+                regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+                doms_q = Q(rid__email__regex=regexp)
+                q &= doms_q
+            if rcptfilter is not None:
+                q &= Q(rid__email__contains=rcptfilter)
+
+        msgs = Msgrcpt.objects.filter(q).values("mail_id")
+    else:
+        if request.user.group == 'SimpleUsers':
+            msgs = Msgrcpt.objects.filter(q).extra(where=["convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email], tables=['maddr'])
+        else:
+            where = []
+            if not request.user.is_superuser:
+                doms = request.user.get_domains()
+                regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+                where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
+            if rcptfilter is not None:
+                where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'" % rcptfilter)
+        msgs = Msgrcpt.objects.filter(q).extra(where=where, tables=['maddr']).values("mail_id")
 
     if request.GET.has_key("page"):
         request.session["page"] = request.GET["page"]
