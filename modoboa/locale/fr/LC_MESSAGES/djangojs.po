@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.9.1\n"
+"Project-Id-Version: modoboa-0.9.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-07-03 09:12+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"

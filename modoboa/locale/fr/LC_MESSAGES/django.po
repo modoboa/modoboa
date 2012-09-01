@@ -5,9 +5,9 @@
 # Antoine Nguyen <tonio@ngyn.org>, 2009-2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.9.1\n"
+"Project-Id-Version: modoboa-0.9.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-04 18:39+0200\n"
+"POT-Creation-Date: 2012-09-01 10:55+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -100,7 +100,7 @@ msgstr "Un domaine de ce nom existe déjà"
 msgid "Failed to rename domain, check permissions"
 msgstr "Impossible de renommer le domaine, vérifier les permissions"
 
-#: admin/forms.py:110 admin/forms.py:598 admin/views.py:363
+#: admin/forms.py:110 admin/forms.py:598 admin/views.py:362
 msgid "General"
 msgstr "Général"
 
@@ -109,8 +109,12 @@ msgid "Email address"
 msgstr "Adresse email"
 
 #: admin/forms.py:133
-msgid "The distribution list address"
-msgstr "L'adresse de liste de distribution"
+msgid ""
+"The distribution list address. Use the '*' character to create a 'catchall' "
+"address (ex: *@domain.tld)."
+msgstr ""
+"L'adresse de la liste de distribution. Utiliser le caractère '*' pour créer une adresse 'attrape tout' "
+"(ex: *@domain.tld)."
 
 #: admin/forms.py:136
 msgid "Recipients"
@@ -155,8 +159,12 @@ msgid "Address"
 msgstr "Adresse"
 
 #: admin/forms.py:231
-msgid "A valid e-mail address"
-msgstr "Une adresse email valide"
+msgid ""
+"A valid e-mail address. Use the '*' character to create a 'catchall' address "
+"(ex: *@domain.tld)."
+msgstr ""
+"Une adresse email valide. Utiliser le caractère '*' pour créer une adresse 'attrape tout' "
+"(ex: *@domain.tld)."
 
 #: admin/forms.py:267 admin/forms.py:296 extensions/sievefilters/forms.py:70
 msgid "Recipient"
@@ -246,10 +254,12 @@ msgstr ""
 #: admin/forms.py:447
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input."
+"to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
+"*@domain.tld)."
 msgstr ""
 "Alias de cette boite. Indiquer seulement une adresse par champ, appuyer sur "
-"ENTREE pour ajouter un nouveau champ."
+"ENTREE pour ajouter un nouveau champ. Utiliser le caractère '*' pour créer une adresse 'attrape tout' "
+"(ex: *@domain.tld)."
 
 #: admin/forms.py:505
 msgid "Failed to rename mailbox, check permissions"
@@ -263,7 +273,7 @@ msgstr "Domaine(s)"
 msgid "Domain(s) that user administrates"
 msgstr "Domaine(s) que cet utilisateur administre"
 
-#: admin/forms.py:600 admin/views.py:366
+#: admin/forms.py:600 admin/views.py:365
 msgid "Mail"
 msgstr "Courrier"
 
@@ -420,109 +430,109 @@ msgstr "Email/Nom d'utilisateur"
 msgid "Fullname/Recipient"
 msgstr "Nom complet/Destinataire"
 
-#: admin/views.py:80
+#: admin/views.py:79
 msgid "New domain"
 msgstr "Nouveau domaine"
 
-#: admin/views.py:81 admin/views.py:181 admin/views.py:360 admin/views.py:367
+#: admin/views.py:80 admin/views.py:180 admin/views.py:359 admin/views.py:366
 #: extensions/sievefilters/views.py:120 extensions/sievefilters/views.py:187
 #: extensions/webmail/views.py:118
 msgid "Create"
 msgstr "Créer"
 
-#: admin/views.py:87
+#: admin/views.py:86
 msgid "Domain created"
 msgstr "Domaine créé"
 
-#: admin/views.py:111 admin/views.py:230 admin/views.py:411
+#: admin/views.py:110 admin/views.py:229 admin/views.py:410
 #: extensions/sievefilters/views.py:139 extensions/webmail/views.py:149
 #: userprefs/templates/userprefs/form.html:4
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: admin/views.py:122
+#: admin/views.py:121
 msgid "Domain modified"
 msgstr "Domaine modifié"
 
-#: admin/views.py:145
+#: admin/views.py:144
 msgid "You can't delete your own domain"
 msgstr "Vous ne pouvez pas supprimer votre propre domaine"
 
-#: admin/views.py:148
+#: admin/views.py:147
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domaine supprimé"
 msgstr[1] "Domaines supprimés"
 
-#: admin/views.py:163
+#: admin/views.py:162
 msgid "Alias with this name already exists"
 msgstr "Un alias de ce nom existe déjà"
 
-#: admin/views.py:201
+#: admin/views.py:200
 msgid "New distribution list"
 msgstr "Nouvelle liste de distribution"
 
-#: admin/views.py:205
+#: admin/views.py:204
 msgid "Distribution list created"
 msgstr "Liste de distribution créée"
 
-#: admin/views.py:211
+#: admin/views.py:210
 msgid "New alias"
 msgstr "Nouvel alias"
 
-#: admin/views.py:215
+#: admin/views.py:214
 msgid "Alias created"
 msgstr "Alias créé"
 
-#: admin/views.py:221
+#: admin/views.py:220
 msgid "New forward"
 msgstr "Nouveau transfert"
 
-#: admin/views.py:225
+#: admin/views.py:224
 msgid "Forward created"
 msgstr "Transfert créé"
 
-#: admin/views.py:242
+#: admin/views.py:241
 msgid "Alias modified"
 msgstr "Alias modifié"
 
-#: admin/views.py:246
+#: admin/views.py:245
 msgid "Distribution list modified"
 msgstr "Liste de distribution modifiée"
 
-#: admin/views.py:250
+#: admin/views.py:249
 msgid "Forward modified"
 msgstr "Transfert modifié"
 
-#: admin/views.py:357
+#: admin/views.py:356
 msgid "New account"
 msgstr "Nouveau compte"
 
-#: admin/views.py:364
+#: admin/views.py:363
 msgid "Next"
 msgstr "Suivante"
 
-#: admin/views.py:368
+#: admin/views.py:367
 msgid "Previous"
 msgstr "Précédente"
 
-#: admin/views.py:380
+#: admin/views.py:379
 msgid "Account created"
 msgstr "Compte créé"
 
-#: admin/views.py:425
+#: admin/views.py:424
 msgid "Account updated"
 msgstr "Compte mis à jour"
 
-#: admin/views.py:445
+#: admin/views.py:444
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Compte supprimé"
 msgstr[1] "Comptes supprimés"
 
-#: admin/views.py:455 admin/views.py:460 extensions/amavis/views.py:199
-#: extensions/amavis/views.py:205 extensions/amavis/views.py:232
-#: extensions/amavis/views.py:236 extensions/amavis/views.py:238
+#: admin/views.py:454 admin/views.py:459 extensions/amavis/views.py:213
+#: extensions/amavis/views.py:219 extensions/amavis/views.py:246
+#: extensions/amavis/views.py:250 extensions/amavis/views.py:252
 #: extensions/stats/views.py:46 extensions/webmail/views.py:32
 #: extensions/webmail/views.py:55 extensions/webmail/views.py:68
 #: extensions/webmail/views.py:80 extensions/webmail/views.py:96
@@ -532,20 +542,20 @@ msgstr[1] "Comptes supprimés"
 msgid "Invalid request"
 msgstr "Requête invalide"
 
-#: admin/views.py:500
+#: admin/views.py:499
 msgid "Parameters saved"
 msgstr "Paramètres enregistrés"
 
-#: admin/views.py:546
+#: admin/views.py:545
 msgid "Modifications applied."
 msgstr "Modifications appliquées."
 
-#: admin/views.py:603
+#: admin/views.py:602
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d objets importés avec succès"
 
-#: admin/views.py:621
+#: admin/views.py:620
 msgid ""
 "Provide a CSV file where lines respect one of the following format:\n"
 "<ul>\n"
@@ -563,16 +573,16 @@ msgstr ""
 "</ul>\n"
 "Vous pouvez utiliser un caractère différent comme séparateur.\n"
 
-#: admin/views.py:629
+#: admin/views.py:628
 msgid "Import identities"
 msgstr "Importer des identités"
 
-#: admin/views.py:630 admin/views.py:656 admin/templatetags/admin_extras.py:76
+#: admin/views.py:629 admin/views.py:655 admin/templatetags/admin_extras.py:76
 #: admin/templatetags/admin_extras.py:118
 msgid "Import"
 msgstr "Importer"
 
-#: admin/views.py:648
+#: admin/views.py:647
 msgid ""
 "Provide a CSV file where lines respect the following format:<br/>\n"
 "<em>domain; name; quota</em><br/>\n"
@@ -584,7 +594,7 @@ msgstr ""
 "\n"
 "Vous pouvez utiliser un caractère différent comme séparateur.\n"
 
-#: admin/views.py:655
+#: admin/views.py:654
 msgid "Import domains"
 msgstr "Importer des domaines"
 
@@ -949,33 +959,33 @@ msgstr "A"
 msgid "Empty quarantine"
 msgstr "Quarantaine vide"
 
-#: extensions/amavis/views.py:206
+#: extensions/amavis/views.py:220
 msgid "Message deleted"
 msgstr "Message supprimé"
 
-#: extensions/amavis/views.py:222
+#: extensions/amavis/views.py:236
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
 msgstr[0] "%(count)d message supprimé correctement"
 msgstr[1] "%(count)d messages supprimés correctement"
 
-#: extensions/amavis/views.py:241
+#: extensions/amavis/views.py:255
 msgid "Request sent"
 msgstr "Requête envoyée"
 
-#: extensions/amavis/views.py:247
+#: extensions/amavis/views.py:261
 msgid "Message released"
 msgstr "Message relâché"
 
-#: extensions/amavis/views.py:261
+#: extensions/amavis/views.py:275
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
 msgstr[0] "%(count)d requête envoyée"
 msgstr[1] "%(count)d requêtes envoyées"
 
-#: extensions/amavis/views.py:284
+#: extensions/amavis/views.py:298
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
@@ -2000,6 +2010,12 @@ msgstr "Personnalisez Modoboa"
 #: userprefs/templatetags/uprefs_extras.py:55
 msgid "Logout"
 msgstr "Déconnexion"
+
+#~ msgid "The distribution list address"
+#~ msgstr "L'adresse de liste de distribution"
+
+#~ msgid "A valid e-mail address"
+#~ msgstr "Une adresse email valide"
 
 #~ msgid "Alias(es) of this domain"
 #~ msgstr "Alias de ce domaine"

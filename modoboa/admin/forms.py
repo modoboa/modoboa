@@ -130,7 +130,7 @@ class DomainForm(TabForms):
 class DlistForm(forms.ModelForm, DynamicForm):
     email = forms.EmailField(
         label=ugettext_lazy("Email address"),
-        help_text=ugettext_lazy("The distribution list address")
+        help_text=ugettext_lazy("The distribution list address. Use the '*' character to create a 'catchall' address (ex: *@domain.tld).")
         )
     recipients = forms.EmailField(
         label=ugettext_lazy("Recipients"), required=False,
@@ -228,7 +228,7 @@ class DlistForm(forms.ModelForm, DynamicForm):
 class GenericAliasForm(forms.ModelForm):
     email = forms.EmailField(
         label=ugettext_lazy("Address"),
-        help_text=ugettext_lazy("A valid e-mail address")
+        help_text=ugettext_lazy("A valid e-mail address. Use the '*' character to create a 'catchall' address (ex: *@domain.tld).")
         )
    
     class Meta:
@@ -444,7 +444,7 @@ class AccountFormMail(forms.Form, DynamicForm):
     aliases = forms.EmailField(
         label=ugettext_lazy("Alias(es)"), 
         required=False,
-        help_text=ugettext_lazy("Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input.")
+        help_text=ugettext_lazy("Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. Use the '*' character to create a 'catchall' alias (ex: *@domain.tld).")
         )
 
     def __init__(self, *args, **kwargs):
