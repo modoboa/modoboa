@@ -60,7 +60,7 @@ Define the following map files on your server (it should work with
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(mb.address, '@', dom.name) FROM admin_domain dom INNER JOIN admin_domainalias domal ON dom.id=domal.target_id INNER JOIN admin_mailbox mb ON dom.id=mb.domain_id WHERE domal.name='%d' AND domal.enabled=1 AND mb.address='%u' 
+  query = SELECT DISTINCT concat(mb.address, '@', dom.name) FROM admin_alias al INNER JOIN admin_domain dom ON dom.id=al.domain_id INNER JOIN admin_domainalias domal ON domal.target_id=dom.id INNER JOIN (admin_alias_mboxes almb, admin_mailbox mb) ON (almb.alias_id=al.id AND almb.mailbox_id=mb.id) WHERE domal.name='%d' AND domal.enabled=1 AND (al.address='%u' OR mb.address='%u')
 
 Then, use the following configuration in the */etc/postfix/main.cf* file
 (this is just one possible configuration)::
