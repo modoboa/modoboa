@@ -13,7 +13,6 @@ of the following components:
 * MySQL
 * Postfix
 * Dovecot
-* saslauthd
 * nginx and gunicorn
 
 Actually, it is the result you obtain if you follow the official
@@ -57,7 +56,7 @@ current network address like this::
 
 Once you know its address, open a web browser and go to this url::
 
-  http://<ip_address>/modoboa/admin/
+  http://<ip_address>/admin/
 
 You should see the login page. Here are the users available by default:
 
@@ -73,15 +72,4 @@ admin@demo.local admin    Administrator of the domain *demo.local*.
 
 user@demo.local  user     Simple user. Can access to applications.
 ================ ======== ============================================
-
-Limitations
-===========
-
-Using this demo, you will be able to test almost every functionality
-*Modoboa* provides. The exceptions are listed below:
-
-* No spam quarantine: there is not any amavis setup on the machine. By
-  the way, you can still use this feature if you know any quarantine
-  available on your network.
-
 
