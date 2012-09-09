@@ -17,7 +17,16 @@ class Command(BaseCommand):
                     action='store_true',
                     default=False,
                     help='Activate debug output'),
+        make_option('--verbose',
+                    action='store_true',
+                    default=False,
+                    help='Display informational messages')
         )
+
+    def __vprint(self, msg):
+        if not self.verbose:
+            return
+        print msg
 
     def handle(self, *args, **options):
         if options["debug"]:
@@ -25,6 +34,7 @@ class Command(BaseCommand):
             l = logging.getLogger("django.db.backends")
             l.setLevel(logging.DEBUG)
             l.addHandler(logging.StreamHandler())
+        self.verbose = options["verbose"]
 
         Amavis().load()
 
@@ -36,19 +46,19 @@ class Command(BaseCommand):
                                 app="amavis") == "yes":
             flags += ['R']
 
-        print "Deleting marked messages..."
+        self.__vprint("Deleting marked messages...")
         ids = Msgrcpt.objects.filter(rs__in=flags).values("mail_id")
         for msg in Msgs.objects.filter(mail_id__in=ids):
             if not msg.msgrcpt_set.exclude(rs__in=flags).count():
                 msg.delete()
         
-        print "Deleting messages older than %d days..." % max_messages_age
+        self.__vprint("Deleting messages older than %d days..." % max_messages_age)
         limit = int(time.time()) - (max_messages_age * 24 * 3600)
         Msgs.objects.filter(time_num__lt=limit).delete()
 
-        print "Deleting unreferenced e-mail addresses..."
+        self.__vprint("Deleting unreferenced e-mail addresses...")
         for maddr in Maddr.objects.all():
             if not len(maddr.msgs_set.all()) and not len(maddr.msgrcpt_set.all()):
                 maddr.delete()
     
-        print "Done."
+        self.__vprint("Done.")
