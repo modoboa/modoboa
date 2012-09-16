@@ -152,12 +152,12 @@ $(document).ready(function() {
 
 @events.observe("TopNotifications")
 def display_requests(user):
-    from lib import get_nb_requests
+    from sql_listing import get_wrapper
 
     if parameters.get_admin("USER_CAN_RELEASE") == "yes" \
             or user.group == "SimpleUsers":
         return []
-    nbrequests = get_nb_requests(user)
+    nbrequests = get_wrapper().get_pending_requests(user)
 
     url = reverse("modoboa.extensions.amavis.views.index")
     url += "#listing/?viewrequests=1"

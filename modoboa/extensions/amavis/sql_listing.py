@@ -7,6 +7,7 @@ from modoboa.lib import tables
 from modoboa.lib.webutils import static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
+from modoboa.lib.dbutils import db_type
 from models import *
 
 class Qtable(tables.Table):
@@ -79,6 +80,105 @@ class SQLconnector(MBconnector):
                     m["class"] = "pending"
                 emails.append(m)
         return emails
+
+
+class SQLWrapper(object):
+
+    def get_mails(self, request, rcptfilter=None):
+        if request.GET.get("viewrequests", None) == "1":
+            q = Q(rs='p')
+        else:
+            q = ~Q(rs='D')
+            
+        if request.user.group == 'SimpleUsers':
+            q &= Q(rid__email=request.user.email)
+        else:
+            if not request.user.is_superuser:
+                doms = request.user.get_domains()
+                regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+                doms_q = Q(rid__email__regex=regexp)
+                q &= doms_q
+            if rcptfilter is not None:
+                q &= Q(rid__email__contains=rcptfilter)
+
+        return Msgrcpt.objects.filter(q).values("mail_id")
+
+    def get_recipient_message(self, address, mailid):
+        return Msgrcpt.objects.get(mail=mailid, rid__email=address)
+
+    def get_recipient_messages(self, address, mailids):
+        return Msgrcpt.objects.filter(mail__in=mailids, rid__email=address)
+
+    def get_domains_pending_requests(self, domains):
+        regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, domains))
+        return Msgrcpt.objects.filter(rs='p', rid__email__regex=regexp)
+
+    def get_pending_requests(self, user):
+        """Return the number of current pending requests
+        
+        :param user: a ``User`` instance
+        """
+        rq = Q(rs='p')
+        if not user.is_superuser:
+            doms = user.get_domains()
+            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+            doms_q = Q(rid__email__regex=regexp)
+            rq &= doms_q
+        return len(Msgrcpt.objects.filter(rq))
+
+class PgWrapper(SQLWrapper):
+    
+    def get_mails(self, request, rcptfilter=None):
+        if request.GET.get("viewrequests", None) == "1":
+            q = Q(rs='p')
+        else:
+            q = ~Q(rs='D')
+        if request.user.group == 'SimpleUsers':
+            msgs = Msgrcpt.objects.filter(q).extra(
+                where=["convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email], 
+                tables=['maddr']
+                )
+        else:
+            where = []
+            if not request.user.is_superuser:
+                doms = request.user.get_domains()
+                regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+                where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
+            if rcptfilter is not None:
+                where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'" % rcptfilter)
+        return Msgrcpt.objects.filter(q).extra(where=where, tables=['maddr']).values("mail_id")
+
+    def get_recipient_message(self, address, mailid):
+        return Msgrcpt.objects.filter(mail=mailid).extra(
+            where=["convert_from(maddr.email, 'UTF8') = '%s'" % address], 
+            tables=['maddr']
+            )
+
+    def get_recipient_messages(self, address, mailids):
+        return Msgrcpt.objects.filter(mail__in=mailids).extra(
+            where=["convert_from(maddr.email, 'UTF8') = '%s'" % address], 
+            tables=['maddr']
+            )
+
+    def get_domains_pending_requests(self, domains):
+        regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, domains))
+        return Msgrcpt.objects.filter(rs='p').extra(
+            where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp], 
+            tables=['maddr']
+            )
+
+    def get_pending_requests(self, user):
+         rq = Q(rs='p')
+         if not user.is_superuser:
+             doms = user.get_domains()
+             regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+             return len(Msgrcpt.objects.filter(rq).extra(where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], tables=['maddr']))
+         return len(Msgrcpt.objects.filter(rq))
+
+def get_wrapper():
+    if db_type() == 'postgres':
+        return PgWrapper()
+    return SQLWrapper()
 
 class SQLlisting(EmailListing):
     tpl = "amavis/index.html"

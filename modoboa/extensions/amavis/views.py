@@ -66,36 +66,7 @@ def _listing(request):
                 raise Exception("unsupported search criteria %s" % c)
             flt = nfilter if flt is None else flt | nfilter
 
-    if request.GET.get("viewrequests", None) == "1":
-        q = Q(rs='p')
-    else:
-        q = ~Q(rs='D')
-
-    if db_type() != 'postgres':
-        if request.user.group == 'SimpleUsers':
-            q &= Q(rid__email=request.user.email)
-        else:
-            if not request.user.is_superuser:
-                doms = request.user.get_domains()
-                regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-                doms_q = Q(rid__email__regex=regexp)
-                q &= doms_q
-            if rcptfilter is not None:
-                q &= Q(rid__email__contains=rcptfilter)
-
-        msgs = Msgrcpt.objects.filter(q).values("mail_id")
-    else:
-        if request.user.group == 'SimpleUsers':
-            msgs = Msgrcpt.objects.filter(q).extra(where=["convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email], tables=['maddr'])
-        else:
-            where = []
-            if not request.user.is_superuser:
-                doms = request.user.get_domains()
-                regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-                where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
-            if rcptfilter is not None:
-                where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'" % rcptfilter)
-        msgs = Msgrcpt.objects.filter(q).extra(where=where, tables=['maddr']).values("mail_id")
+    msgs = get_wrapper().get_mails(request, rcptfilter)
 
     if request.GET.has_key("page"):
         request.session["page"] = request.GET["page"]
@@ -178,7 +149,7 @@ def viewmail(request, mail_id):
     if request.user.has_mailbox:
         mb = Mailbox.objects.get(user=request.user)
         if not rcpt or rcpt == mb.full_address:
-            msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=mb.full_address)
+            msgrcpt = get_wrapper().get_recipient_message(mb.full_address, mail_id)
             msgrcpt.rs = 'V'
             msgrcpt.save()
     
@@ -212,7 +183,7 @@ def delete_selfservice(request, mail_id):
     if rcpt is None:
         raise ModoboaException(_("Invalid request"))
     try:
-        msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=rcpt)
+        msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
         msgrcpt.rs = 'D'
         msgrcpt.save()
     except Msgrcpt.DoesNotExist:
@@ -224,12 +195,13 @@ def delete(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
     if request.user.group == 'SimpleUsers':
         mb = Mailbox.objects.get(user=request.user)
-        msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
+        msgrcpts = get_wrapper().get_recipient_messages(mb.full_address, mail_id)
         msgrcpts.update(rs='D')
     else:
+        wrapper = get_wrapper()
         for mid in mail_id:
             r, i = mid.split()
-            msgrcpt = Msgrcpt.objects.get(mail=i, rid__email=r)
+            msgrcpt = wrapper.get_recipient_message(r, i)
             msgrcpt.rs = 'D'
             msgrcpt.save()
 
@@ -245,7 +217,7 @@ def release_selfservice(request, mail_id):
     if rcpt is None or secret_id is None:
         raise ModoboaException(_("Invalid request"))
     try:
-        msgrcpt = Msgrcpt.objects.get(mail=mail_id, rid__email=rcpt)
+        msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
     except Msgrcpt.DoesNotExist:
         raise ModoboaException(_("Invalid request"))
     if secret_id != msgrcpt.mail.secret_id:
@@ -269,7 +241,7 @@ def release(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
     if request.user.group == 'SimpleUsers':
         mb = Mailbox.objects.get(user=request.user)
-        msgrcpts = Msgrcpt.objects.filter(mail__in=mail_id, rid__email=mb.full_address)
+        msgrcpts = get_wrapper().get_recipient_messages(mb.full_address, mail_id)
         if parameters.get_admin("USER_CAN_RELEASE") == "no":
             msgrcpts.update(rs='p')
             message = ungettext("%(count)d request sent",
@@ -279,9 +251,10 @@ def release(request, mail_id):
                                  url=__get_current_url(request))
     else:
         msgrcpts = []
+        wrapper = get_wrapper()
         for mid in mail_id:
             r, i = mid.split()
-            msgrcpts += [Msgrcpt.objects.get(mail=i, rid__email=r)]
+            msgrcpts += [wrapper.get_recipient_message(r, i)]
 
     amr = AMrelease()
     error = None
@@ -319,5 +292,5 @@ def process(request):
 @login_required
 @user_passes_test(lambda u: u.group != 'SimpleUsers')
 def nbrequests(request):
-    nbrequests = get_nb_requests(request.user)
+    nbrequests = get_wrapper().get_pending_requests(request.user)
     return ajax_simple_response(dict(status="ok", requests=nbrequests))

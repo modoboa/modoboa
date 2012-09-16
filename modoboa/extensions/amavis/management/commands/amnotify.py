@@ -12,6 +12,7 @@ from modoboa.lib.emailutils import sendmail_simple
 from modoboa.admin.models import User, Domain
 from modoboa.extensions.amavis import Amavis
 from modoboa.extensions.amavis.models import *
+from modoboa.extensions.amavis.sql_listing import get_wrapper
 
 class Command(BaseCommand):
     help = 'Amavis notification tool'
@@ -55,8 +56,7 @@ class Command(BaseCommand):
             if not da.has_mailbox:
                 continue
             rcpt = da.mailbox_set.all()[0].full_address
-            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, da.get_domains()))
-            reqs = Msgrcpt.objects.filter(rs='p', rid__email__regex=regexp)
+            reqs = get_wrapper().get_domains_pending_requests(da.get_domains())
             if len(reqs):
                 self.send_pr_notification(rcpt, reqs)
 
