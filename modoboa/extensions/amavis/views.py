@@ -99,7 +99,7 @@ def index(request):
 def getmailcontent_selfservice(request, mail_id):
     from sql_listing import SQLemail
 
-    qmails = Quarantine.objects.filter(mail=mail_id)
+    qmails = get_wrapper().get_mail_content(mail_id)
     content = ""
     for qm in qmails:
         content += qm.mail_text
@@ -114,7 +114,7 @@ def getmailcontent_selfservice(request, mail_id):
 def getmailcontent(request, mail_id):
     from sql_listing import SQLemail
 
-    qmails = Quarantine.objects.filter(mail=mail_id)
+    qmails = get_wrapper().get_mail_content(mail_id)
     content = ""
     for qm in qmails:
         content += qm.mail_text

@@ -126,6 +126,9 @@ class SQLWrapper(object):
             rq &= doms_q
         return len(Msgrcpt.objects.filter(rq))
 
+    def get_mail_content(self, mailid):        
+        return Quarantine.objects.filter(mail=mail_id)
+
 class PgWrapper(SQLWrapper):
     
     def get_mails(self, request, rcptfilter=None):
@@ -149,10 +152,11 @@ class PgWrapper(SQLWrapper):
         return Msgrcpt.objects.filter(q).extra(where=where, tables=['maddr']).values("mail_id")
 
     def get_recipient_message(self, address, mailid):
-        return Msgrcpt.objects.filter(mail=mailid).extra(
+        qset = Msgrcpt.objects.filter(mail=mailid).extra(
             where=["convert_from(maddr.email, 'UTF8') = '%s'" % address], 
             tables=['maddr']
             )
+        return qset.all()[0]
 
     def get_recipient_messages(self, address, mailids):
         return Msgrcpt.objects.filter(mail__in=mailids).extra(
@@ -174,6 +178,12 @@ class PgWrapper(SQLWrapper):
              regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
              return len(Msgrcpt.objects.filter(rq).extra(where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], tables=['maddr']))
          return len(Msgrcpt.objects.filter(rq))
+
+
+    def get_mail_content(self, mailid):
+        return Quarantine.objects.filter(mail=mailid).extra(
+            select={'mail_text' : "convert_from(mail_text, 'UTF8'"}
+            )
 
 def get_wrapper():
     if db_type() == 'postgres':
