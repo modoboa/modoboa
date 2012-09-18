@@ -134,18 +134,18 @@ class PgWrapper(SQLWrapper):
         else:
             q = ~Q(rs='D')
         if request.user.group == 'SimpleUsers':
-            msgs = Msgrcpt.objects.filter(q).extra(
+            return Msgrcpt.objects.filter(q).extra(
                 where=["convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email], 
                 tables=['maddr']
                 )
-        else:
-            where = []
-            if not request.user.is_superuser:
-                doms = request.user.get_domains()
-                regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-                where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
-            if rcptfilter is not None:
-                where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'" % rcptfilter)
+
+        where = []
+        if not request.user.is_superuser:
+            doms = request.user.get_domains()
+            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+            where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
+        if rcptfilter is not None:
+            where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'" % rcptfilter)
         return Msgrcpt.objects.filter(q).extra(where=where, tables=['maddr']).values("mail_id")
 
     def get_recipient_message(self, address, mailid):
