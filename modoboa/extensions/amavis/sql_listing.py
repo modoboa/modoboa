@@ -83,6 +83,17 @@ class SQLconnector(MBconnector):
 
 
 class SQLWrapper(object):
+    """A simple SQL wrapper.
+
+    This wrapper has been added just to answer the *Postgres bytea
+    fields* issue :p
+
+    The base class doesn't add anything special but defines the method
+    (and so piece of SQL queries) that should be overloaded when
+    Postgres is in use.
+
+    See ``PgWrapper`` for the real mess...
+    """
 
     def get_mails(self, request, rcptfilter=None):
         if request.GET.get("viewrequests", None) == "1":
@@ -130,6 +141,11 @@ class SQLWrapper(object):
         return Quarantine.objects.filter(mail=mail_id)
 
 class PgWrapper(SQLWrapper):
+    """The postgres wrapper
+
+    Make use of ``QuerySet.extra`` and postgres ``convert_from``
+    function to let the quarantine manager work as expected !
+    """
     
     def get_mails(self, request, rcptfilter=None):
         if request.GET.get("viewrequests", None) == "1":
@@ -189,6 +205,10 @@ class PgWrapper(SQLWrapper):
             )
 
 def get_wrapper():
+    """Return the appropriate *Wrapper class
+
+    The result depends on the DB engine in use.
+    """
     if db_type() == 'postgres':
         return PgWrapper()
     return SQLWrapper()
