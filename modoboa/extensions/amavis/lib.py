@@ -5,8 +5,10 @@ import struct
 import string
 from functools import wraps
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 from django.db.models import Q
 from modoboa.lib import parameters
+from modoboa.lib.exceptions import ModoboaException
 from models import Msgrcpt
 
 def selfservice(ssfunc=None):
@@ -35,15 +37,18 @@ def selfservice(ssfunc=None):
 class AMrelease(object):
     def __init__(self):
         mode = parameters.get_admin("AM_PDP_MODE")
-        if mode == "inet":
-            host = parameters.get_admin('AM_PDP_HOST')
-            port = parameters.get_admin('AM_PDP_PORT')
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.connect((host, int(port)))
-        else:
-            path = parameters.get_admin('AM_PDP_SOCKET')
-            self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-            self.sock.connect(path)
+        try:
+            if mode == "inet":
+                host = parameters.get_admin('AM_PDP_HOST')
+                port = parameters.get_admin('AM_PDP_PORT')
+                self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.sock.connect((host, int(port)))
+            else:
+                path = parameters.get_admin('AM_PDP_SOCKET')
+                self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                self.sock.connect(path)
+        except socket.error, err:
+            raise ModoboaException(_("Connection to amavis failed: %s" % str(err)))
 
     def decode(self, answer):
         def repl(match):
