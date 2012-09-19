@@ -180,19 +180,27 @@ class ImapEmail(Email):
 
         mformat = self.dformat if self.bs.contents.has_key(self.dformat) else fallback_fmt
 
-        pnum = self.bs.contents[mformat]['pnum']
-        data = self.imapc._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
-        content = decode_payload(self.bs.contents[mformat]['encoding'],
-                                 data[int(mailid)]['BODY[%s]' % pnum])
-        charset = self._find_content_charset(mformat)
-        if charset is not None:
-            content = content.decode(charset)
+        if len(self.bs.contents):
+            pnum = self.bs.contents[mformat]['pnum']
+            data = self.imapc._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
+            content = decode_payload(self.bs.contents[mformat]['encoding'],
+                                     data[int(mailid)]['BODY[%s]' % pnum])
+            charset = self._find_content_charset(mformat)
+            if charset is not None:
+                try:
+                    content = content.decode(charset)
+                except (UnicodeDecodeError, LookupError):
+                    import chardet
+                    result = chardet.detect(content)
+                    content = content.decode(result['encoding'])
 
+            self._fetch_inlines()
+            self.body = \
+                getattr(self, "viewmail_%s" % mformat)(content, links=links)
+        else:
+            self.body = None
+            
         self._find_attachments()
-        self._fetch_inlines()
-
-        self.body = \
-            getattr(self, "viewmail_%s" % mformat)(content, links=links)
 
         msg = email.message_from_string(headers)
         for hdr in self.headernames:

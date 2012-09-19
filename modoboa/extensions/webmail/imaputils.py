@@ -102,6 +102,7 @@ class BodyStructure(object):
                 extensions = ["envelopestruct", "bodystruct", "textlines"] + extensions
             for idx, value in enumerate(definition[7:]):
                 params[extensions[idx]] = value
+
         self.attachments += [params]
 
     def load_from_definition(self, definition, multisubtype=None):

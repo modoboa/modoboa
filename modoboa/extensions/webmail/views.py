@@ -40,9 +40,9 @@ def getattachment(request):
     resp["Content-Transfer-Encoding"] = partdef["encoding"]
     if partdef["disposition"] != 'NIL':
         disp = partdef["disposition"]
-        cd = "%s; %s=%s" % (disp[0], disp[1][0], disp[1][1])
+        cd = '%s; %s="%s"' % (disp[0], disp[1][0], disp[1][1])
     else:
-        cd = "attachment; filename=%s" % request.GET["fname"]
+        cd = 'attachment; filename="%s"' % request.GET["fname"]
     resp["Content-Disposition"] = cd
     resp["Content-Length"] = partdef["size"]
     return resp
@@ -408,7 +408,7 @@ def getmailcontent(request):
     email = ImapEmail(mbox, mailid, request, links=int(request.GET["links"]))
     return _render(request, "common/viewmail.html", {
             "headers" : email.render_headers(folder=mbox, mail_id=mailid), 
-            "folder" : mbox, "imapid" : mailid, "mailbody" : email.body
+            "folder" : mbox, "imapid" : mailid, "mailbody" : email.body if email.body else ""
             })
 
 def viewmail(request):

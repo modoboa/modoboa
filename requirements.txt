@@ -3,3 +3,4 @@ south
 lxml
 pycrypto
 sievelib
+chardet
