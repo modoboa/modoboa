@@ -176,13 +176,16 @@ class PgWrapper(SQLWrapper):
          if not user.is_superuser:
              doms = user.get_domains()
              regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-             return len(Msgrcpt.objects.filter(rq).extra(where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], tables=['maddr']))
+             return len(Msgrcpt.objects.filter(rq).extra(
+                     where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], 
+                     tables=['maddr']
+                     ))
          return len(Msgrcpt.objects.filter(rq))
 
 
     def get_mail_content(self, mailid):
         return Quarantine.objects.filter(mail=mailid).extra(
-            select={'mail_text' : "convert_from(mail_text, 'UTF8'"}
+            select={'mail_text' : "convert_from(mail_text, 'UTF8')"}
             )
 
 def get_wrapper():

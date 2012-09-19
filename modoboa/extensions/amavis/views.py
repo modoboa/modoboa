@@ -163,7 +163,7 @@ def viewmail(request, mail_id):
 @login_required
 def viewheaders(request, mail_id):
     content = ""
-    for qm in Quarantine.objects.filter(mail=mail_id):
+    for qm in get_wrapper().get_mail_content(mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
     return _render(request, 'amavis/viewheader.html', {
@@ -196,7 +196,10 @@ def delete(request, mail_id):
     if request.user.group == 'SimpleUsers':
         mb = Mailbox.objects.get(user=request.user)
         msgrcpts = get_wrapper().get_recipient_messages(mb.full_address, mail_id)
-        msgrcpts.update(rs='D')
+        #msgrcpts.update(rs='D')
+        for msgrcpt in msgrcpts:
+            msgrcpt.rs = 'D'
+            msgrcpt.save()
     else:
         wrapper = get_wrapper()
         for mid in mail_id:
@@ -243,7 +246,14 @@ def release(request, mail_id):
         mb = Mailbox.objects.get(user=request.user)
         msgrcpts = get_wrapper().get_recipient_messages(mb.full_address, mail_id)
         if parameters.get_admin("USER_CAN_RELEASE") == "no":
-            msgrcpts.update(rs='p')
+            # FIXME : can't use this syntax because extra SQL (using
+            # .extra() for postgres) is not propagated (the 'tables'
+            # parameter is lost somewhere...)
+            #
+            # msgrcpts.update(rs='p')
+            for msgrcpt in msgrcpts:
+                msgrcpt.rs = 'p'
+                msgrcpt.save()
             message = ungettext("%(count)d request sent",
                                 "%(count)d requests sent",
                                 len(mail_id)) % {"count" : len(mail_id)}
