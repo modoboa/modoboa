@@ -29,18 +29,19 @@ class InlineRadioSelect(RadioSelect):
     renderer = InlineRadioRenderer
 
 class DomainPolicyForm(forms.ModelForm):
+    spam_subject_tag2_act = forms.BooleanField()
 
     class Meta:
         model = Policy
         fields = ('bypass_virus_checks', 'bypass_spam_checks', 
-                  'spam_tag2_level', 'spam_modifies_subj',
+                  'spam_tag2_level', 'spam_subject_tag2',
                   'spam_kill_level', 'bypass_banned_checks')
         widgets = {
             'bypass_virus_checks' : InlineRadioSelect(),
             'bypass_spam_checks' : InlineRadioSelect(),
             'spam_tag2_level' : forms.TextInput(attrs={'class' : 'span1'}),
-            'spam_modifies_subj' : InlineRadioSelect(),
             'spam_kill_level' : forms.TextInput(attrs={'class' : 'span1'}),
+            'spam_subject_tag2' : forms.TextInput(attrs={'class' : 'span2'}),
             'bypass_banned_checks' : InlineRadioSelect(),
             }
 
@@ -58,10 +59,12 @@ class DomainPolicyForm(forms.ModelForm):
     
     def save(self, user, commit=True):
         p = super(DomainPolicyForm, self).save(commit=False)
-        for f in ['bypass_spam_checks', 'bypass_virus_checks', 'bypass_banned_checks', 
-                  'spam_modifies_subj']:
+        for f in ['bypass_spam_checks', 'bypass_virus_checks', 'bypass_banned_checks']:
             if getattr(p, f) == '':
                 setattr(p, f, None)
+
+        if self.cleaned_data['spam_subject_tag2_act']:
+            p.spam_subject_tag2 = None
 
         if commit:
             p.save()

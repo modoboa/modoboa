@@ -105,14 +105,6 @@ class Policy(models.Model):
         help_text=ugettext_lazy("Bypass banned checks or not. Choose 'default' to use global settings.")
         )
     bypass_header_checks = models.CharField(max_length=3, blank=True, null=True)
-    spam_modifies_subj = models.CharField(
-        ugettext_lazy("Spam marker"), default='', null=True,
-        choices=(('N', ugettext_lazy('yes')), 
-                 ('Y', ugettext_lazy('no')), 
-                 ('', ugettext_lazy('default'))),
-        max_length=3,
-        help_text=ugettext_lazy("Modify spam subject or not. Choose 'default' to use global settings.")
-        )
     virus_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     spam_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
     banned_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
@@ -139,7 +131,11 @@ class Policy(models.Model):
     bad_header_admin = models.CharField(max_length=192, blank=True, null=True)
     spam_admin = models.CharField(max_length=192, blank=True, null=True)
     spam_subject_tag = models.CharField(max_length=192, blank=True, null=True)
-    spam_subject_tag2 = models.CharField(max_length=192, blank=True, null=True)
+    spam_subject_tag2 = models.CharField(
+        ugettext_lazy("Spam marker"), default='',
+        max_length=192, blank=True, null=True,
+        help_text=ugettext_lazy("Modify spam subject using the specified text. Choose 'default' to use global settings.")
+        )
     spam_subject_tag3 = models.CharField(max_length=192, blank=True, null=True)
     message_size_limit = models.IntegerField(null=True, blank=True)
     banned_rulenames = models.CharField(max_length=192, blank=True, null=True)

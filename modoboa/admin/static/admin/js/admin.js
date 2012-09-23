@@ -19,6 +19,7 @@ function domainform_cb() {
             }
         }]);
     });
+    $(document).trigger('domform_init');
 }
 
 function simpleuser_mode() {

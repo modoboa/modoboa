@@ -222,9 +222,22 @@ function ajax_login_redirect(xhr) {
         xhr.getResponseHeader("Location").replace(/\?.*$/, params);
 }
 
+function activate_widget(e) {
+    var $this = $(this);
+    var widget_id = $this.attr("id").substr(0, $this.attr("id").length - 4);
+    var $widget = $('#' + widget_id);
+
+    if ($this.attr("checked") && $this.attr("checked") == "checked") {
+        $widget.attr('disabled', true);
+    } else {
+        $widget.attr('disabled', false);
+    }
+}
+
 $(document).ready(function() {
     $(document).ajaxSuccess(function(e, xhr, settings) { ajax_login_redirect(xhr); });
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
+    $(document).on('click', '.activator', activate_widget);
     $(".help").popover();
 });

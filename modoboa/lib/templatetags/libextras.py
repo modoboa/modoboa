@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.webutils import static_url
@@ -105,6 +105,13 @@ def render_field_appended(field, text):
     return render_to_string("common/generic_field.html", dict(
             field=field, help_display_mode="tooltip", appended_text=text
             ))
+
+@register.simple_tag
+def render_field_with_activator(field, activator_label=ugettext_lazy("activate")):
+    return render_to_string("common/generic_field.html", {
+            "field" : field, "help_display_mode" : "tooltip", "activator" : True,
+            "activator_label" : activator_label
+            })
 
 @register.simple_tag
 def render_and_hide_field(field):
