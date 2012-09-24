@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.9.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-01 10:55+0200\n"
+"POT-Creation-Date: 2012-09-24 21:35+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -113,8 +113,8 @@ msgid ""
 "The distribution list address. Use the '*' character to create a 'catchall' "
 "address (ex: *@domain.tld)."
 msgstr ""
-"L'adresse de la liste de distribution. Utiliser le caractère '*' pour créer une adresse 'attrape tout' "
-"(ex: *@domain.tld)."
+"L'adresse de la liste de distribution. Utiliser le caractère '*' pour créer "
+"une adresse 'attrape tout' (ex: *@domain.tld)."
 
 #: admin/forms.py:136
 msgid "Recipients"
@@ -163,8 +163,8 @@ msgid ""
 "A valid e-mail address. Use the '*' character to create a 'catchall' address "
 "(ex: *@domain.tld)."
 msgstr ""
-"Une adresse email valide. Utiliser le caractère '*' pour créer une adresse 'attrape tout' "
-"(ex: *@domain.tld)."
+"Une adresse email valide. Utiliser le caractère '*' pour créer une adresse "
+"'attrape tout' (ex: *@domain.tld)."
 
 #: admin/forms.py:267 admin/forms.py:296 extensions/sievefilters/forms.py:70
 msgid "Recipient"
@@ -258,8 +258,8 @@ msgid ""
 "*@domain.tld)."
 msgstr ""
 "Alias de cette boite. Indiquer seulement une adresse par champ, appuyer sur "
-"ENTREE pour ajouter un nouveau champ. Utiliser le caractère '*' pour créer une adresse 'attrape tout' "
-"(ex: *@domain.tld)."
+"ENTREE pour ajouter un nouveau champ. Utiliser le caractère '*' pour créer "
+"une adresse 'attrape tout' (ex: *@domain.tld)."
 
 #: admin/forms.py:505
 msgid "Failed to rename mailbox, check permissions"
@@ -530,9 +530,9 @@ msgid_plural "Accounts deleted"
 msgstr[0] "Compte supprimé"
 msgstr[1] "Comptes supprimés"
 
-#: admin/views.py:454 admin/views.py:459 extensions/amavis/views.py:213
-#: extensions/amavis/views.py:219 extensions/amavis/views.py:246
-#: extensions/amavis/views.py:250 extensions/amavis/views.py:252
+#: admin/views.py:454 admin/views.py:459 extensions/amavis/views.py:184
+#: extensions/amavis/views.py:190 extensions/amavis/views.py:221
+#: extensions/amavis/views.py:225 extensions/amavis/views.py:227
 #: extensions/stats/views.py:46 extensions/webmail/views.py:32
 #: extensions/webmail/views.py:55 extensions/webmail/views.py:68
 #: extensions/webmail/views.py:80 extensions/webmail/views.py:96
@@ -863,37 +863,41 @@ msgstr "Définit le nombre maximal de messages affichés dans une page"
 msgid "Quarantine"
 msgstr "Quarantaine"
 
-#: extensions/amavis/__init__.py:151
+#: extensions/amavis/__init__.py:158
 msgid "pending requests"
 msgstr "requêtes en attente"
 
-#: extensions/amavis/__init__.py:167
+#: extensions/amavis/__init__.py:174
 #, python-format
 msgid "%d pending requests"
 msgstr "%d requêtes en attente"
 
-#: extensions/amavis/__init__.py:178
+#: extensions/amavis/__init__.py:185
 msgid "Content filter"
 msgstr "Filtrage de contenu"
+
+#: extensions/amavis/lib.py:51
+#, python-format
+msgid "Connection to amavis failed: %s"
+msgstr "La connexion avec amavis a échoué : %s"
 
 #: extensions/amavis/models.py:84
 msgid "Virus filter"
 msgstr "Filtrage des virus"
 
 #: extensions/amavis/models.py:85 extensions/amavis/models.py:93
-#: extensions/amavis/models.py:101 extensions/amavis/models.py:110
-#: extensions/sievefilters/views.py:265
+#: extensions/amavis/models.py:101 extensions/sievefilters/views.py:265
 msgid "yes"
 msgstr "oui"
 
 #: extensions/amavis/models.py:86 extensions/amavis/models.py:94
-#: extensions/amavis/models.py:102 extensions/amavis/models.py:111
-#: extensions/sievefilters/views.py:269
+#: extensions/amavis/models.py:102 extensions/sievefilters/views.py:269
 msgid "no"
 msgstr "non"
 
 #: extensions/amavis/models.py:87 extensions/amavis/models.py:95
-#: extensions/amavis/models.py:103 extensions/amavis/models.py:112
+#: extensions/amavis/models.py:103
+#: extensions/amavis/templates/amavis/domain_content_filter.html:11
 msgid "default"
 msgstr "défaut"
 
@@ -923,33 +927,35 @@ msgstr ""
 "Désactiver le filtrage des messages bannis ou non. Choisir 'défaut' pour "
 "utiliser les paramètres globaux."
 
-#: extensions/amavis/models.py:109
+#: extensions/amavis/models.py:135
 msgid "Spam marker"
 msgstr "Marquage du spam"
 
-#: extensions/amavis/models.py:114
-msgid "Modify spam subject or not. Choose 'default' to use global settings."
+#: extensions/amavis/models.py:137
+msgid ""
+"Modify spam subject using the specified text. Choose 'default' to use global "
+"settings."
 msgstr ""
-"Modifier le sujet du spam ou non. Choisir 'défaut' pour utiliser les "
+"Modifier le sujet du spam en utilisant le texte spécifié. Choisir 'défaut' pour utiliser les "
 "paramètres globaux."
 
-#: extensions/amavis/sql_listing.py:23 extensions/webmail/forms.py:5
+#: extensions/amavis/sql_listing.py:24 extensions/webmail/forms.py:5
 #: extensions/webmail/lib.py:34
 msgid "From"
 msgstr "De"
 
-#: extensions/amavis/sql_listing.py:24 extensions/sievefilters/forms.py:68
+#: extensions/amavis/sql_listing.py:25 extensions/sievefilters/forms.py:68
 #: extensions/webmail/forms.py:9 extensions/webmail/lib.py:33
-#: extensions/webmail/lib.py:363 templates/common/email_searchbar.html:6
+#: extensions/webmail/lib.py:371 templates/common/email_searchbar.html:6
 msgid "Subject"
 msgstr "Sujet"
 
-#: extensions/amavis/sql_listing.py:25 extensions/webmail/lib.py:35
-#: extensions/webmail/lib.py:365
+#: extensions/amavis/sql_listing.py:26 extensions/webmail/lib.py:35
+#: extensions/webmail/lib.py:373
 msgid "Date"
 msgstr "Date"
 
-#: extensions/amavis/sql_listing.py:26
+#: extensions/amavis/sql_listing.py:27
 #: extensions/amavis/templatetags/amextras.py:102
 #: extensions/webmail/forms.py:6
 msgid "To"
@@ -959,40 +965,40 @@ msgstr "A"
 msgid "Empty quarantine"
 msgstr "Quarantaine vide"
 
-#: extensions/amavis/views.py:220
+#: extensions/amavis/views.py:191
 msgid "Message deleted"
 msgstr "Message supprimé"
 
-#: extensions/amavis/views.py:236
+#: extensions/amavis/views.py:211
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
 msgstr[0] "%(count)d message supprimé correctement"
 msgstr[1] "%(count)d messages supprimés correctement"
 
-#: extensions/amavis/views.py:255
+#: extensions/amavis/views.py:230
 msgid "Request sent"
 msgstr "Requête envoyée"
 
-#: extensions/amavis/views.py:261
+#: extensions/amavis/views.py:236
 msgid "Message released"
 msgstr "Message relâché"
 
-#: extensions/amavis/views.py:275
+#: extensions/amavis/views.py:257
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
 msgstr[0] "%(count)d requête envoyée"
 msgstr[1] "%(count)d requêtes envoyées"
 
-#: extensions/amavis/views.py:298
+#: extensions/amavis/views.py:281
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d message relâché correctement"
 msgstr[1] "%(count)d messages relâchés correctement"
 
-#: extensions/amavis/management/commands/amnotify.py:45
+#: extensions/amavis/management/commands/amnotify.py:46
 msgid "[modoboa] Pending release requests"
 msgstr "[modoboa] requêtes de libération en attente"
 
@@ -1672,20 +1678,20 @@ msgstr "Réponse du serveur"
 msgid "Cci"
 msgstr "Cci"
 
-#: extensions/webmail/imaputils.py:251
+#: extensions/webmail/imaputils.py:252
 #, python-format
 msgid "Connection to IMAP server failed: %s"
 msgstr "La connexion au serveur IMAP a échoué : %s"
 
-#: extensions/webmail/lib.py:310
+#: extensions/webmail/lib.py:318
 msgid "wrote:"
 msgstr "a écrit :"
 
-#: extensions/webmail/lib.py:377 extensions/webmail/lib.py:381
+#: extensions/webmail/lib.py:385 extensions/webmail/lib.py:389
 msgid "Original message"
 msgstr "Message original"
 
-#: extensions/webmail/lib.py:678
+#: extensions/webmail/lib.py:686
 msgid "Red fields are mandatories"
 msgstr "Les champs rouges sont obligatoires"
 
@@ -1883,6 +1889,10 @@ msgstr "Impossible de donner l'accès : %s"
 #: lib/tables.py:232
 msgid "No entries to display"
 msgstr "Aucune entrée à afficher"
+
+#: lib/templatetags/libextras.py:110
+msgid "activate"
+msgstr "activer"
 
 #: templates/common/email_searchbar.html:5
 msgid "From address"

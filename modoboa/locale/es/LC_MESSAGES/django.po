@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-01 10:55+0200\n"
+"POT-Creation-Date: 2012-09-24 21:35+0200\n"
 "PO-Revision-Date: 2012-07-09 16:10+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -532,9 +532,9 @@ msgid_plural "Accounts deleted"
 msgstr[0] "Cuenta eliminada"
 msgstr[1] "Cuentas eliminadas"
 
-#: admin/views.py:454 admin/views.py:459 extensions/amavis/views.py:213
-#: extensions/amavis/views.py:219 extensions/amavis/views.py:246
-#: extensions/amavis/views.py:250 extensions/amavis/views.py:252
+#: admin/views.py:454 admin/views.py:459 extensions/amavis/views.py:184
+#: extensions/amavis/views.py:190 extensions/amavis/views.py:221
+#: extensions/amavis/views.py:225 extensions/amavis/views.py:227
 #: extensions/stats/views.py:46 extensions/webmail/views.py:32
 #: extensions/webmail/views.py:55 extensions/webmail/views.py:68
 #: extensions/webmail/views.py:80 extensions/webmail/views.py:96
@@ -869,37 +869,41 @@ msgstr "Fija el número máximo de mensajes mostrados en una página"
 msgid "Quarantine"
 msgstr "Cuarentena"
 
-#: extensions/amavis/__init__.py:151
+#: extensions/amavis/__init__.py:158
 msgid "pending requests"
 msgstr "Peticiones pendientes"
 
-#: extensions/amavis/__init__.py:167
+#: extensions/amavis/__init__.py:174
 #, python-format
 msgid "%d pending requests"
 msgstr "%d peticiones pendientes"
 
-#: extensions/amavis/__init__.py:178
+#: extensions/amavis/__init__.py:185
 msgid "Content filter"
 msgstr "Filtro de contenido"
+
+#: extensions/amavis/lib.py:51
+#, fuzzy, python-format
+msgid "Connection to amavis failed: %s"
+msgstr "Falló la conexión con el servidor IMAP: %s"
 
 #: extensions/amavis/models.py:84
 msgid "Virus filter"
 msgstr "Filtro de virus"
 
 #: extensions/amavis/models.py:85 extensions/amavis/models.py:93
-#: extensions/amavis/models.py:101 extensions/amavis/models.py:110
-#: extensions/sievefilters/views.py:265
+#: extensions/amavis/models.py:101 extensions/sievefilters/views.py:265
 msgid "yes"
 msgstr "sí"
 
 #: extensions/amavis/models.py:86 extensions/amavis/models.py:94
-#: extensions/amavis/models.py:102 extensions/amavis/models.py:111
-#: extensions/sievefilters/views.py:269
+#: extensions/amavis/models.py:102 extensions/sievefilters/views.py:269
 msgid "no"
 msgstr "no"
 
 #: extensions/amavis/models.py:87 extensions/amavis/models.py:95
-#: extensions/amavis/models.py:103 extensions/amavis/models.py:112
+#: extensions/amavis/models.py:103
+#: extensions/amavis/templates/amavis/domain_content_filter.html:11
 msgid "default"
 msgstr "Por defecto"
 
@@ -929,33 +933,36 @@ msgstr ""
 "Saltarse la comprobación de expulsados o no. Elija 'Por defecto' para usar "
 "la configuración global."
 
-#: extensions/amavis/models.py:109
+#: extensions/amavis/models.py:135
 msgid "Spam marker"
 msgstr "Marcador de spam"
 
-#: extensions/amavis/models.py:114
-msgid "Modify spam subject or not. Choose 'default' to use global settings."
+#: extensions/amavis/models.py:137
+#, fuzzy
+msgid ""
+"Modify spam subject using the specified text. Choose 'default' to use global "
+"settings."
 msgstr ""
 "Modificar el asunto de spam o no. Elija 'Por defecto' para usar la "
 "configuración global."
 
-#: extensions/amavis/sql_listing.py:23 extensions/webmail/forms.py:5
+#: extensions/amavis/sql_listing.py:24 extensions/webmail/forms.py:5
 #: extensions/webmail/lib.py:34
 msgid "From"
 msgstr "Desde"
 
-#: extensions/amavis/sql_listing.py:24 extensions/sievefilters/forms.py:68
+#: extensions/amavis/sql_listing.py:25 extensions/sievefilters/forms.py:68
 #: extensions/webmail/forms.py:9 extensions/webmail/lib.py:33
-#: extensions/webmail/lib.py:363 templates/common/email_searchbar.html:6
+#: extensions/webmail/lib.py:371 templates/common/email_searchbar.html:6
 msgid "Subject"
 msgstr "Tema"
 
-#: extensions/amavis/sql_listing.py:25 extensions/webmail/lib.py:35
-#: extensions/webmail/lib.py:365
+#: extensions/amavis/sql_listing.py:26 extensions/webmail/lib.py:35
+#: extensions/webmail/lib.py:373
 msgid "Date"
 msgstr "Fecha"
 
-#: extensions/amavis/sql_listing.py:26
+#: extensions/amavis/sql_listing.py:27
 #: extensions/amavis/templatetags/amextras.py:102
 #: extensions/webmail/forms.py:6
 msgid "To"
@@ -965,40 +972,40 @@ msgstr "A"
 msgid "Empty quarantine"
 msgstr "Vaciar cuarentena"
 
-#: extensions/amavis/views.py:220
+#: extensions/amavis/views.py:191
 msgid "Message deleted"
 msgstr "Mensaje eliminado"
 
-#: extensions/amavis/views.py:236
+#: extensions/amavis/views.py:211
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
 msgstr[0] "%(count)d mensaje eliminado correctamente"
 msgstr[1] "%(count)d mensajes eliminados correctamente"
 
-#: extensions/amavis/views.py:255
+#: extensions/amavis/views.py:230
 msgid "Request sent"
 msgstr "Petición enviada"
 
-#: extensions/amavis/views.py:261
+#: extensions/amavis/views.py:236
 msgid "Message released"
 msgstr "Mensaje publicado"
 
-#: extensions/amavis/views.py:275
+#: extensions/amavis/views.py:257
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
 msgstr[0] "%(count)d petición enviada"
 msgstr[1] "%(count)d peticiones enviadas"
 
-#: extensions/amavis/views.py:298
+#: extensions/amavis/views.py:281
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d mensaje publicado correctamente"
 msgstr[1] "%(count)d mensajes publicados correctamente"
 
-#: extensions/amavis/management/commands/amnotify.py:45
+#: extensions/amavis/management/commands/amnotify.py:46
 msgid "[modoboa] Pending release requests"
 msgstr "[modoboa] Pendiente de publicar las peticiones"
 
@@ -1675,20 +1682,20 @@ msgstr "Respuesta del servidor"
 msgid "Cci"
 msgstr "Cco"
 
-#: extensions/webmail/imaputils.py:251
+#: extensions/webmail/imaputils.py:252
 #, python-format
 msgid "Connection to IMAP server failed: %s"
 msgstr "Falló la conexión con el servidor IMAP: %s"
 
-#: extensions/webmail/lib.py:310
+#: extensions/webmail/lib.py:318
 msgid "wrote:"
 msgstr "escribió:"
 
-#: extensions/webmail/lib.py:377 extensions/webmail/lib.py:381
+#: extensions/webmail/lib.py:385 extensions/webmail/lib.py:389
 msgid "Original message"
 msgstr "Mensaje original"
 
-#: extensions/webmail/lib.py:678
+#: extensions/webmail/lib.py:686
 msgid "Red fields are mandatories"
 msgstr "Los campos en rojo son obligatorios"
 
@@ -1886,6 +1893,11 @@ msgstr "Fallo al dar acceso (%s)"
 #: lib/tables.py:232
 msgid "No entries to display"
 msgstr "No hay entradas que mostrar"
+
+#: lib/templatetags/libextras.py:110
+#, fuzzy
+msgid "activate"
+msgstr "activo"
 
 #: templates/common/email_searchbar.html:5
 msgid "From address"
