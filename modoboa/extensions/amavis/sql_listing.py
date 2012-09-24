@@ -138,7 +138,7 @@ class SQLWrapper(object):
         return len(Msgrcpt.objects.filter(rq))
 
     def get_mail_content(self, mailid):        
-        return Quarantine.objects.filter(mail=mail_id)
+        return Quarantine.objects.filter(mail=mailid)
 
 class PgWrapper(SQLWrapper):
     """The postgres wrapper
