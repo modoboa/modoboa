@@ -132,7 +132,7 @@ class Policy(models.Model):
     spam_admin = models.CharField(max_length=192, blank=True, null=True)
     spam_subject_tag = models.CharField(max_length=192, blank=True, null=True)
     spam_subject_tag2 = models.CharField(
-        ugettext_lazy("Spam marker"), default='',
+        ugettext_lazy("Spam marker"), default=None,
         max_length=192, blank=True, null=True,
         help_text=ugettext_lazy("Modify spam subject using the specified text. Choose 'default' to use global settings.")
         )

@@ -44,6 +44,11 @@ This plugin provides a simple management frontend for `amavisd-new
   will handle traffic
 
 .. note::
+   The per-domain policies feature only works for new
+   installations. Currently, you can't use modoboa with an existing
+   database (ie. with data in *users* and *policies* tables).
+
+.. note::
 
    This plugin requires *amavisd-new* version **2.7.0** or higher. If
    you're planning to use the :ref:`selfservice`, you'll need version
