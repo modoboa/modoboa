@@ -40,7 +40,12 @@ def getattachment(request):
     resp["Content-Transfer-Encoding"] = partdef["encoding"]
     if partdef["disposition"] != 'NIL':
         disp = partdef["disposition"]
-        cd = '%s; %s="%s"' % (disp[0], disp[1][0], disp[1][1])
+        # FIXME : ugly hack, see fetch_parser.py for more explanation
+        # :p
+        if type(disp[1][0]) != dict:
+            cd = '%s; %s="%s"' % (disp[0], disp[1][0], disp[1][1])
+        else:
+            cd = '%s; %s="%s"' % (disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1])
     else:
         cd = 'attachment; filename="%s"' % request.GET["fname"]
     resp["Content-Disposition"] = cd

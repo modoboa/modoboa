@@ -14,7 +14,7 @@ from modoboa.lib.webutils import static_url
 from exceptions import ImapError, WebmailError
 from fetch_parser import *
 
-#imaplib.Debug = 4
+ #imaplib.Debug = 4
 
 class capability(object):
     """
