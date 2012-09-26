@@ -245,7 +245,13 @@ class SQLemail(Email):
         self.qtype = ""
         self.qreason = ""
         if qreason != "":
-            self.qtype, self.qreason = qreason.split(',', 1)
+            if ',' in qreason:
+                self.qtype, self.qreason = qreason.split(',', 1)
+            elif qreason.startswith("BAD HEADER SECTION "):
+                # Workaround for amavis <= 2.8.0 :p
+                self.qtype = "BAD HEADER SECTION"
+                self.qreason = qreason[19:]
+                
 
     def get_header(self, msg, name):
         if msg.has_key(name):
