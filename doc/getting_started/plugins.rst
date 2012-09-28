@@ -75,6 +75,12 @@ database. Inside *settings.py*, add a new connection to the
 
 Replace values between ``<>`` with yours.
 
+.. note::
+
+   Modoboa doesn't create *amavis* tables. You need to install them
+   following the `official documentation
+   <http://www.amavis.org/#doc>`_.
+
 Cleanup
 -------
 

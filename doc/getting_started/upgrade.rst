@@ -27,7 +27,7 @@ Then, follow the common procedure::
 
   $ cd <modoboa_instance_dir>
   $ python manage.py syncdb --migrate
-  $ python collectstatic
+  $ python manage.py collectstatic
 
 Finally, refer to this page to see if the version you're installing
 requires specific operations.
