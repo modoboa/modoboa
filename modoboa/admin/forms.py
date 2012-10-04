@@ -386,8 +386,9 @@ class AccountFormGeneral(forms.ModelForm):
             return self.cleaned_data["username"]
         if self.cleaned_data["role"] != "SimpleUsers":
             return self.cleaned_data["username"]
-        validate_email(self.cleaned_data["username"])
-        return self.cleaned_data["username"]
+        uname = self.cleaned_data["username"].lower()
+        validate_email(uname)
+        return uname
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1", "")
@@ -466,6 +467,10 @@ class AccountFormMail(forms.Form, DynamicForm):
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", forms.EmailField)
+
+    def clean_email(self):
+        """Ensure lower case emails"""
+	return self.cleaned_data["email"].lower()
 
     def save(self, user, account):
         if self.cleaned_data["email"] == "":
