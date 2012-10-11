@@ -50,7 +50,7 @@ def read(fname):
     return open(os.path.join(ROOT, fname)).read()
 
 setup(name="modoboa",
-      version='0.9.2',
+      version='0.9.3',
       url='http://modoboa.org/',
       license='MIT',
       description="Mail hosting made simple",
@@ -59,6 +59,7 @@ setup(name="modoboa",
       author_email='tonio@ngyn.org',
       packages=find_packages(),
       include_package_data=True,
+      scripts=["modoboa/bin/modoboa-admin.py"],
       zip_safe=False,
       install_requires=parse_requirements(PIP_REQUIRES),
       dependency_links=parse_dependency_links(PIP_REQUIRES),
