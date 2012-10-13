@@ -5,9 +5,10 @@ from django.core import management
 from modoboa.core.management import Command
 
 class DeployCommand(Command):
+    help = "Create a fresh django project (calling startproject) and apply Modoboa specific settings."
 
-    def __init__(self):
-        super(DeployCommand, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super(DeployCommand, self).__init__(*args, **kwargs)
         self._parser.add_argument('name', type=str,
                                   help='The name of your Modoboa instance')
 
