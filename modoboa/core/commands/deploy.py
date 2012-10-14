@@ -30,9 +30,9 @@ class DeployCommand(Command):
                                   help='The name of your Modoboa instance')
         self._parser.add_argument('--with-amavis', action='store_true', default=False,
                                   help='Include amavis configuration')
-        self._parser.add_argument('--run-syncdb', action='store_true', default=False,
+        self._parser.add_argument('--syncdb', action='store_true', default=False,
                                   help='Run django syncdb command')
-        self._parser.add_argument('--run-collectstatic', action='store_true', default=False,
+        self._parser.add_argument('--collectstatic', action='store_true', default=False,
                                   help='Run django collectstatic command')
 
     def _exec_django_command(self, name, cwd, *args):
@@ -108,9 +108,9 @@ class DeployCommand(Command):
         shutil.copyfile("%s/urls.py" % self._templates_dir, "%s/urls.py" % path)
         os.mkdir("%s/media" % path)
         
-        if parsed_args.run_syncdb:
+        if parsed_args.syncdb:
             self._exec_django_command("syncdb", parsed_args.name, '--migrate', '--noinput')
             self._exec_django_command("loaddata", parsed_args.name, 'initial_users.json')
                 
-        if parsed_args.run_collectstatic:
+        if parsed_args.collectstatic:
             self._exec_django_command("collectstatic", parsed_args.name, '--noinput')
