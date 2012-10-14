@@ -38,7 +38,7 @@ class DomainTestCase(TestCase):
         self.assertEqual(os.path.exists(path), False)
 
 class DomainAliasTestCase(ModoTestCase):
-    fixtures = ["test_content.json"]
+    fixtures = ["initial_users.json", "test_content.json"]
     
     def test_model(self):
         dom = Domain.objects.get(name="test.com")
@@ -67,7 +67,7 @@ class DomainAliasTestCase(ModoTestCase):
         self.assertEqual(len(dom.domainalias_set.all()), 1)
 
 class AccountTestCase(ModoTestCase):
-    fixtures = ["test_content.json",]
+    fixtures = ["initial_users.json", "test_content.json",]
 
     def test(self):
         values = dict(username="tester@test.com", first_name="Tester", last_name="Toto",
@@ -123,7 +123,7 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(self.clt.login(username="user@test.com", password="tutu"), True)
        
 class AliasTestCase(ModoTestCase):
-    fixtures = ["test_content.json"]
+    fixtures = ["initial_users.json", "test_content.json"]
     
     def test_alias(self):
         user = User.objects.get(username="user@test.com")
@@ -180,7 +180,7 @@ class AliasTestCase(ModoTestCase):
                           address="forward", domain__name="test.com")
 
 class PermissionsTestCase(ModoTestCase):
-    fixtures = ["test_content.json"]
+    fixtures = ["initial_users.json", "test_content.json"]
 
     def setUp(self):
         """
