@@ -110,6 +110,7 @@ class DeployCommand(Command):
         
         if parsed_args.run_syncdb:
             self._exec_django_command("syncdb", parsed_args.name, '--migrate', '--noinput')
+            self._exec_django_command("loaddata", parsed_args.name, 'initial_users.json')
                 
         if parsed_args.run_collectstatic:
             self._exec_django_command("collectstatic", parsed_args.name, '--noinput')

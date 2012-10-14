@@ -1,4 +1,4 @@
-# Django settings for toto project.
+# Django settings for {{ name }} project.
 import os
 
 DEBUG = True
@@ -101,7 +101,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -112,10 +112,10 @@ MIDDLEWARE_CLASSES = (
     'modoboa.lib.middleware.ExtControlMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = '{{ name }}.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = '{{ name }}.wsgi.application'
+{% if django14 %}# Python dotted path to the WSGI application used by Django's runserver.
+WSGI_APPLICATION = '{{ name }}.wsgi.application'{% endif %}
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
