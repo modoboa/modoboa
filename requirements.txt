@@ -4,3 +4,4 @@ lxml
 pycrypto
 sievelib
 chardet
+argparse

@@ -15,6 +15,8 @@ Requirements
 * `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
 * `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_
 * `sievelib python module <http://pypi.python.org/pypi/sievelib>`_
+* `chardet python module <http://pypi.python.org/pypi/chardet>`_
+* `argparse python module <http://pypi.python.org/pypi/argparse>`_
 
 .. _get_modoboa:
 
@@ -44,7 +46,7 @@ only exception concerns the RRDtool binding because there isn't any
 python package available, it is directly provided with the official
 tarball.
 
-Fortunately, all major distributions includes a ready-to-use
+Fortunately, all major distributions include a ready-to-use
 package. On Debian/Ubuntu::
 
   $ apt-get install python-rrdtool
@@ -70,12 +72,33 @@ sure your database is using UTF8 as a default charset.
 Deployment
 **********
 
+Automatic
+=========
+
+`modoboa-admin.py`, a command line tool, let you deploy a
+*ready-to-use* Modoboa site using only one instruction::
+
+  $ modoboa-admin.py deploy modoboa_example --syncdb --collectstatic [--with-amavis]
+
+Just answer the few questions and you're done. You can now go to the
+:ref:`first_use` section.
+
+.. note::
+
+   The `--with-amavis` option must be set only if you intend to use
+   the :ref:`amavis_frontend`.
+
+Manual
+======
+
 As Modoboa is a set of Django applications, you need to create a new
 project. Just run the following commands::
 
   $ cd /var/www
   $ django-admin.py startproject modoboa_example
   $ cd modoboa_example
+  $ rm settings.py
+  $ rm urls.py
   $ wget http://modoboa.org/resources/settings.py
   $ wget http://modoboa.org/resources/urls.py
   $ mkdir media
@@ -92,9 +115,15 @@ Finally, run the following commands::
 
   $ python manage.py collectstatic
   $ python manage.py syncdb --migrate --noinput
+  $ python manage.py loaddata initial_users.json
 
-At the end of this command, a default super administrator is
-available:
+.. _first_use:
+
+*********
+First use
+*********
+
+Your installation should now have a default super administrator:
 
 * Username: ``admin``
 * Password: ``password``
@@ -107,7 +136,7 @@ server::
 
   $ python manage.py runserver
 
-You should be able to access your site at http://locahost:8000/.
+You should be able to access Modoboa at http://locahost:8000/.
 
 For a production environnement, we recommend using a stable webserver
 like :ref:`apache2` or :ref:`nginx-label`.

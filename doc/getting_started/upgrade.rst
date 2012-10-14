@@ -29,8 +29,9 @@ Then, follow the common procedure::
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
-Finally, refer to this page to see if the version you're installing
-requires specific operations.
+Finally, refer to this page to check if the version you're installing
+requires specific operations. If the version you're looking for is not
+present, it means nothing special is required.
 
 0.9.1: standard django application and more
 ===========================================

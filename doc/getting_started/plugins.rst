@@ -261,25 +261,15 @@ configuration files as follow:
 
 ``<modoboa_site>`` is the path of your Modoboa instance.
 
-Then, create new map files with the following content:
+Then, create the requested map files::
 
-``/etc/postfix/maps/sql-transport.cf``::
+  $ modoboa-admin.py postfix_maps mapfiles --categories autoreply
 
-  user = <user>
-  password = <password>
-  dbname = <database>
-  hosts = 127.0.0.1
-  query = SELECT method FROM postfix_autoreply_transport WHERE domain='%s'
-
-``/etc/postfix/maps/sql-autoreplies.cf``::
-
-  user = <user>
-  password = <password>
-  dbname = <database>
-  hosts = 127.0.0.1
-  query = SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'
+`mapfiles` is the directory where the files will be stored. Answer the
+few questions and you're done.
 
 .. note::
+
    Auto-reply messages are just sent one time per sender for a
    pre-defined time period. By default, this period is equal to 1 day
    (86400s), you can adjust this value by modifying the ``AUTOREPLY_TIMEOUT``
