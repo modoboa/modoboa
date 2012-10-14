@@ -13,9 +13,10 @@ class Command(object):
     """
     help = "No help available."
 
-    def __init__(self, commands, **kwargs):
+    def __init__(self, commands, verbose=False, **kwargs):
         self._commands = commands
         self._parser = argparse.ArgumentParser()
+        self._verbose = verbose
         if not settings.configured:
             settings.configure()
         self._templates_dir = "%s/templates" % os.path.dirname(__file__)
@@ -74,6 +75,8 @@ def handle_command_line():
         epilog="""Available commands:
 %s
 """ % "\n".join(map(lambda c: "\t" + c, sorted(commands))))
+    parser.add_argument('--verbose', action='store_true',
+                        help='Activate verbose output')
     parser.add_argument('command', type=str,
                         help='A valid command name')
     (args, remaining) = parser.parse_known_args()
@@ -82,4 +85,4 @@ def handle_command_line():
         print >>sys.stderr, "Unknown command '%s'" % args.command
         sys.exit(1)
 
-    commands[args.command](commands).run(remaining)
+    commands[args.command](commands, verbose=args.verbose).run(remaining)

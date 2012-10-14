@@ -1,4 +1,5 @@
 # Django settings for toto project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,28 +12,21 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    },
+DATABASES = { {{ default_conn|safe }}
     # "pfxadmin" : {
     #     "ENGINE" : "django.db.backends.",
     #     "NAME" : "",
     #     "USER" : "",
     #     "PASSWORD" : ""
-    # },
+    # },{% if not amavis_conn %}
     # "amavis": {
     #	  "ENGINE" : "django.db.backends.",
     #	  "HOST" : "",
     #	  "NAME" : "",
     #	  "USER" : "",
     #	  "PASSWORD" : ""
-    # }
+    # }{% else %}
+    {{ amavis_conn|safe }}{% endif %}
 }
 
 DATABASE_ROUTERS = ["modoboa.extensions.amavis.dbrouter.AmavisRouter"]
@@ -153,7 +147,7 @@ INSTALLED_APPS = (
     'modoboa.extensions.postfix_autoreply',
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',
-    'modoboa.extensions.amavis',
+    {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
     'modoboa.extensions.sievefilters',
 
     # Extra tools
@@ -173,15 +167,15 @@ AUTHENTICATION_BACKENDS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
+    {% if django14 %}'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
         }
-    },
+    },{% endif %}
     'handlers': {
         'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
+            'level': 'ERROR',{% if django14 %}
+            'filters': ['require_debug_false'],{% endif %}
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
