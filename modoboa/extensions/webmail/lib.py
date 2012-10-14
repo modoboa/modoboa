@@ -181,22 +181,25 @@ class ImapEmail(Email):
         mformat = self.dformat if self.bs.contents.has_key(self.dformat) else fallback_fmt
 
         if len(self.bs.contents):
-            pnum = self.bs.contents[mformat]['pnum']
-            data = self.imapc._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
-            content = decode_payload(self.bs.contents[mformat]['encoding'],
-                                     data[int(mailid)]['BODY[%s]' % pnum])
-            charset = self._find_content_charset(mformat)
-            if charset is not None:
-                try:
-                    content = content.decode(charset)
-                except (UnicodeDecodeError, LookupError):
-                    import chardet
-                    result = chardet.detect(content)
-                    content = content.decode(result['encoding'])
+            bodyc = u''
+            for part in self.bs.contents[mformat]:
+                pnum = part['pnum']
+                data = self.imapc._cmd("FETCH", mailid, "(BODY.PEEK[%s])" % pnum)
+                content = decode_payload(part['encoding'],
+                                         data[int(mailid)]['BODY[%s]' % pnum])
+                charset = self._find_content_charset(part)
+                if charset is not None:
+                    try:
+                        content = content.decode(charset)
+                    except (UnicodeDecodeError, LookupError):
+                        import chardet
+                        result = chardet.detect(content)
+                        content = content.decode(result['encoding'])
+                bodyc += content
 
             self._fetch_inlines()
             self.body = \
-                getattr(self, "viewmail_%s" % mformat)(content, links=links)
+                getattr(self, "viewmail_%s" % mformat)(bodyc, links=links)
         else:
             self.body = None
             
@@ -231,10 +234,10 @@ class ImapEmail(Email):
     def headers_as_text(self):
         return " ".join(map(lambda hdr: hdr[0].upper(), self.headernames))
 
-    def _find_content_charset(self, subtype):
-        for pos, elem in enumerate(self.bs.contents[subtype]["params"]):
+    def _find_content_charset(self, part):
+        for pos, elem in enumerate(part["params"]):
             if elem == "charset":
-                return self.bs.contents[subtype]["params"][pos + 1]
+                return part["params"][pos + 1]
         return None
 
     def _find_attachments(self):

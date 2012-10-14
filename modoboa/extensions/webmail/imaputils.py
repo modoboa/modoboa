@@ -14,7 +14,7 @@ from modoboa.lib.webutils import static_url
 from exceptions import ImapError, WebmailError
 from fetch_parser import *
 
- #imaplib.Debug = 4
+#imaplib.Debug = 4
 
 class capability(object):
     """
@@ -86,9 +86,11 @@ class BodyStructure(object):
         subtype = definition[1].lower()
         ftype = "%s/%s" % (definition[0].lower(), subtype)
         if ftype in ("text/plain", "text/html"):
-            if not self.contents.has_key(ftype):
-                self.contents[subtype] = params
-                return
+            if not self.contents.has_key(subtype):
+                self.contents[subtype] = [params]
+            else:
+                self.contents[subtype].append(params)
+            return
         elif multisubtype in ["related"]:
             self.inlines[params["cid"].strip("<>")] = params
             return
