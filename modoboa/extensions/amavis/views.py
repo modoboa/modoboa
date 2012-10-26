@@ -19,7 +19,7 @@ from sql_listing import *
 
 def __get_current_url(request):
     if request.session.has_key("page"):
-        res = "?page=%s" % request.session["page"]
+        res = "listing?page=%s" % request.session["page"]
     else:
         res = ""
     params = "&".join(map(lambda p: "%s=%s" % (p, request.session[p]), 

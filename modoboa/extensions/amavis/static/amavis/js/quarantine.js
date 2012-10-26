@@ -131,7 +131,7 @@ Quarantine.prototype = {
     },
 
     _send_action: function(e, message) {
-        var $link = $(e.target);
+        var $link = get_target(e, "a");
 
         e.preventDefault();
         if (!confirm(message)) {
@@ -160,7 +160,7 @@ Quarantine.prototype = {
     headers: function(e) {
         e.preventDefault();
 
-        var $link = $(e.target);
+        var $link = get_target(e, "a");
         var $mailcontent = $("#mailcontent").contents();
         var $headers = $mailcontent.find("#emailheaders");
         var $rawheaders = $mailcontent.find("#rawheaders");
