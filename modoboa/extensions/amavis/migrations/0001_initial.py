@@ -96,7 +96,6 @@ class Migration(SchemaMigration):
             'spam_dsn_cutoff_level': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'spam_kill_level': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'spam_lover': ('django.db.models.fields.CharField', [], {'max_length': '3', 'null': 'True', 'blank': 'True'}),
-            'spam_modifies_subj': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '3', 'null': 'True'}),
             'spam_quarantine_cutoff_level': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'spam_quarantine_to': ('django.db.models.fields.CharField', [], {'max_length': '192', 'null': 'True', 'blank': 'True'}),
             'spam_subject_tag': ('django.db.models.fields.CharField', [], {'max_length': '192', 'null': 'True', 'blank': 'True'}),

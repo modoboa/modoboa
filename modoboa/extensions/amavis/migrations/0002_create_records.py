@@ -12,7 +12,7 @@ class Migration(DataMigration):
         orm["amavis.Users"].objects.all().delete()
         orm["amavis.Policy"].objects.create(id=1, policy_name='default', bypass_virus_checks=None,
                                             bypass_spam_checks=None, bypass_banned_checks=None,
-                                            spam_modifies_subj=None)
+                                            spam_subject_tag2=None)
         for dom in orm["admin.Domain"].objects.all():
             orm["amavis.Users"].objects.create(email="@%s" % dom.name, fullname=dom.name,
                                                priority=7, policy_id=1)
@@ -171,7 +171,6 @@ class Migration(DataMigration):
             'spam_dsn_cutoff_level': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'spam_kill_level': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'spam_lover': ('django.db.models.fields.CharField', [], {'max_length': '3', 'null': 'True', 'blank': 'True'}),
-            'spam_modifies_subj': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '3', 'null': 'True'}),
             'spam_quarantine_cutoff_level': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'spam_quarantine_to': ('django.db.models.fields.CharField', [], {'max_length': '192', 'null': 'True', 'blank': 'True'}),
             'spam_subject_tag': ('django.db.models.fields.CharField', [], {'max_length': '192', 'null': 'True', 'blank': 'True'}),
