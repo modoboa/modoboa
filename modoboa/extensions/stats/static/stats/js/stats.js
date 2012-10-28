@@ -31,14 +31,6 @@ Stats.prototype = {
                 }
             }
         });
-        if (navobj.params.period) {
-            $("input[value=" + navobj.params.period + "]").attr("checked", "checked");
-            if (navobj.params.period != "custom") {
-                $("#custom-period").hide();
-            }
-        } else {
-            $("#custom-period").hide();
-        }
         if (navobj.params.start) {
             $("#id_from").attr("value", navobj.params.start);
         }
@@ -55,8 +47,7 @@ Stats.prototype = {
 
     listen: function() {
         $("#searchform").on("keypress", $.proxy(this.search_domain, this));
-        $(document).on("change", "input[name=period]",
-            $.proxy(this.change_period, this));
+        $(".period_selector").click($.proxy(this.change_period, this));
         $("#customsend").on("click", $.proxy(this.customgraphs, this));
     },
 
@@ -66,15 +57,11 @@ Stats.prototype = {
     },
 
     change_period: function(e) {
-        var $input = $(e.target);
+        e.preventDefault();
+        var $link = $(e.target);
 
-        if ($input.attr("value") == "custom") {
-            $("#custom-period").show();
-        } else {
-            $("#custom-period").hide();
-            this.navobj.delparam("start").delparam("end");
-            this.navobj.setparam("period", $input.attr("value")).update();
-        }
+        this.navobj.delparam("start").delparam("end");
+        this.navobj.setparam("period", $link.attr("data-period")).update();
     },
 
     graphs_cb: function(data) {
@@ -82,7 +69,7 @@ Stats.prototype = {
             $("body").notify("error", data.respmsg);
             return;
         }
-        $("#graphs").html(data.content);
+        $("#graphs_mailstats").html(data.content);
     },
 
     search_domain: function(e) {

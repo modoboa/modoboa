@@ -1,4 +1,4 @@
-{% extends "fixed.html" %}{% load i18n %}
+{% extends "twocols.html" %}{% load i18n %}
 {% block pagetitle %}{% trans "Graphical statistics" %}{% endblock %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}stats/css/stats.css" />
@@ -13,24 +13,43 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block fixed_content %}
-<div id="menubar">
-  <form id="searchform" class="form-search">
-    <input class="input-medium search-query" type="text" 
-           value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search a domain' %}"{% endif %}
-           id="searchquery" name="searchquery" />
-  </form>
-  <form id="period" class="form-inline">
-    {% for p in periods %}<label class="radio"><input name="period" type="radio" value="{{ p.name }}"{% if p.name == period %}checked{% endif %} />{% trans p.label %}</label>
+{% block leftcol %}
+<div id="periods" class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">
+      {% trans "Predefined time ranges" %}
+    </li>
+    {% for p in periods %}<li class="period">
+      <a href="#" class="period_selector" data-period="{{ p.name }}">{% trans p.label %}</a>
+    </li>
     {% endfor %}
-    <span id="custom-period">
-      <input id="id_from" class="input-small" name="date_from" value="{{ start }}" type="text" />
-      <input id="id_to" class="input-small" name="date_to" value="{{ end }}" type="text" />
-      <button class="btn" id="customsend">{% trans "Apply" %}</button>
-    </span>
-  </form>
+    <li class="nav-header">
+      {% trans "Custom time range" %}
+    </li>
+    <li>
+      <form class="form-inline">
+        <span id="custom-period">
+          <div class="input-prepend">
+            <span class="add-on"><i class="icon-indent-left"></i></span><input id="id_from" class="input-medium" name="date_from" value="{{ start }}" type="text" />
+          </div>
+          <div class="input-prepend">
+            <span class="add-on"><i class="icon-indent-right"></i></span><input id="id_to" class="input-medium" name="date_to" value="{{ end }}" type="text" />
+          </div>
+          <button class="btn" id="customsend">{% trans "Apply" %}</button>
+        </span>
+      </form>
+    </li>
+  </ul>
 </div>
-<hr>
-<div id="graphs"></div>
+{% endblock %}
+{% block apparea %}
+<div id="graphs" class="tabbable">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#graphs_mailstats" data-toggle="tab">{% trans "Mail trafic" %}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="graphs_mailstats"></div>
+  </div>
+</div>
 {% endblock %}
  

@@ -6,16 +6,12 @@ from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
 from modoboa.extensions.stats.grapher import *
 from modoboa.lib.exceptions import *
+from graph_templates import *
 
-graph_types = ['AVERAGE', 'MAX']
-graph_list = [{"name" : "traffic", "label" : ugettext_lazy("Average normal traffic")},
-              {"name" : "badtraffic", "label" : ugettext_lazy("Average bad traffic")},
-              {"name" : "size", "label" : ugettext_lazy("Average normal traffic size")}]
 periods = [{"name" : "day", "label" : ugettext_lazy("Day")},
            {"name" : "week", "label" : ugettext_lazy("Week")},
            {"name" : "month", "label" : ugettext_lazy("Month")},
-           {"name" : "year", "label" : ugettext_lazy("Year")},
-           {"name" : "custom", "label" : ugettext_lazy("Custom")}]
+           {"name" : "year", "label" : ugettext_lazy("Year")}]
 
 @login_required
 @permission_required("admin.view_mailboxes")
@@ -31,7 +27,6 @@ def index(request):
         
     period = request.GET.get("period", "day")
     return _render(request, 'stats/index.html', {
-            "graphs" : graph_list,
             "periods" : periods,
             "period" : period,
             "selection" : "stats",
@@ -45,7 +40,7 @@ def graphs(request):
     if not view:
         raise ModoboaException(_("Invalid request"))
     period = request.GET.get("period", "day")
-    tplvars = dict(graphs=graph_list, period=period)
+    tplvars = dict(graphs=[], period=period)
     if view == "global":
         if not request.user.is_superuser:
             raise PermDeniedException
@@ -66,12 +61,13 @@ def graphs(request):
         end = request.GET["end"]
         G = Grapher()
         period_name = "%s_%s" % (start.replace('-',''), end.replace('-',''))
-        for tpl_name in graph_list:
+        for tpl in [traffic_avg_template, badtraffic_avg_template, size_avg_template]:
+            tplvars['graphs'].append(tpl['name'])
             G.process(tplvars["domain"],
                       period_name,
                       str2Time(*start.split('-')),
                       str2Time(*end.split('-')),
-                      tpl[tpl_name['name']])
+                      tpl)
         tplvars["period_name"] = period_name
         tplvars["start"] = start
         tplvars["end"] = end
