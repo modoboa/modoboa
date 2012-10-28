@@ -71,6 +71,9 @@ def graphs(request):
         tplvars["period_name"] = period_name
         tplvars["start"] = start
         tplvars["end"] = end
+    else:
+        # FIXME
+        tplvars['graphs'] = ['traffic', 'badtraffic', 'size']
 
     return ajax_simple_response(dict(
             status="ok", content=_render_to_string(request, "stats/graphs.html", tplvars)
