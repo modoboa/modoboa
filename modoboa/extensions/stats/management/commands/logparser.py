@@ -28,7 +28,8 @@ from optparse import make_option
 from modoboa.lib import parameters
 from modoboa.admin.models import Domain
 from modoboa.extensions.stats import Stats
-import modoboa.extensions.stats.grapher as grapher
+from modoboa.extensions.stats.grapher import Grapher
+from modoboa.extensions.stats.graph_templates import *
 
 rrdstep = 60
 xpoints = 540
@@ -266,16 +267,16 @@ class LogParser(object):
                     continue
 
         # Sort everything by time
-        G = grapher.Grapher()
+        G = Grapher()
         for dom, data in self.data.iteritems():
             if self.debug:
                 print "[rrd] dealing with domain %s" %dom
             for t in sorted(data.keys()):
                 self.update_rrd(dom, t)
 
-            G.make_defaults(dom, tpl=grapher.traffic_avg_template)
-            G.make_defaults(dom, tpl=grapher.badtraffic_avg_template)
-            G.make_defaults(dom, tpl=grapher.size_avg_template)
+            G.make_defaults(dom, tpl=traffic_avg_template)
+            G.make_defaults(dom, tpl=badtraffic_avg_template)
+            G.make_defaults(dom, tpl=size_avg_template)
 
 
 class Command(BaseCommand):
