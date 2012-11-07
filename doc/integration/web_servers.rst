@@ -10,31 +10,78 @@ Web servers
 Apache2
 *******
 
-First, make sure that both *apache2* and *mod_python* are installed on
-your server.
+mod_wgsi
+========
+
+First, make sure that *mod_wsgi* is installed on your server.
 
 Create a new virtualhost in your Apache configuration and put the
-following inside::
+following content inside::
 
   <VirtualHost *:80>
+    ServerName <your value>
+    DocumentRoot <path to your site's dir>
+
+    Alias /media/ <path to your site's dir>/media/
+    <Directory <path to your site's dir>/media>
+      Order deny,allow
+      Allow from all
+    </Directory>
+
+    Alias /sitestatic/ <path to your site's dir>/sitestatic/
+    <Directory <path to your site's dir>/sitestatic>
+      Order deny,allow
+      Allow from all
+    </Directory>
+
+    WSGIScriptAlias / <path to your site's dir>/wsgi.py
+  </VirtualHost>
+
+This is just one possible configuration. 
+
+.. note::
+   *Django* 1.3 users, please consult this `page <https://docs.djangoproject.com/en/1.3/howto/deployment/modwsgi/>`_,
+   it contains an example *wsgi.py* file.
+
+.. note:: 
+   You will certainly need more configuration in order to launch
+   Apache.
+
+mod_python
+==========
+
+First, make sure that *mod_python* is installed on your server.
+
+Create a new virtualhost in your Apache configuration and put the
+following content inside::
+
+  <VirtualHost *:80>
+    ServerName <your value>
+    DocumentRoot <path to your site's dir>
+
     <Location "/">
       SetHandler mod_python
       PythonHandler django.core.handlers.modpython
-      PythonPath "['<path to directory that contains modoboa dir>'] + sys.path"
-      SetEnv DJANGO_SETTINGS_MODULE modoboa.settings
+      PythonPath "['<path to directory that contains your site's dir>'] + sys.path"
+      SetEnv DJANGO_SETTINGS_MODULE <your site's name>.settings
     </Location>
-    Alias "/sitestatic" "<path to modoboa dir>/sitestatic"
+
+    Alias "/sitestatic" "<path to your site's dir>/sitestatic"
     <Location "/sitestatic/">
       SetHandler None
     </Location>
-    Alias "/media" "<path to modoboa dir>/media"
+
+    Alias "/media" "<path to your site's dir>/media"
     <Location "/media/">
       SetHandler None
     </Location>
   </VirtualHost>
 
-This is one possible configuration. Note that you will certainly need more
-configuration in order to launch Apache.
+This is just one possible configuration. 
+
+.. note:: 
+   You will certainly need more configuration in order to launch
+   Apache.
 
 .. _nginx-label:
 
