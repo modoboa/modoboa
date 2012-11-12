@@ -6,6 +6,7 @@ from django.contrib.auth.decorators \
     import login_required, user_passes_test, permission_required
 from modoboa.extensions.stats.grapher import *
 from modoboa.lib.exceptions import *
+from modoboa.lib import events
 from graph_templates import *
 
 periods = [{"name" : "day", "label" : ugettext_lazy("Day")},
@@ -16,27 +17,36 @@ periods = [{"name" : "day", "label" : ugettext_lazy("Day")},
 @login_required
 @permission_required("admin.view_mailboxes")
 def index(request):
-    deflocation = ""
+    """
+    FIXME: how to select a default graph set ?
+    """
+    deflocation = "graphs/?gset=mailtraffic&"
     if request.user.is_superuser:
-        deflocation = "graphs/?view=global"
+        deflocation += "view=global"
     else:
         if len(request.user.get_domains()):
-            deflocation = "graphs/?view=%s" % request.user.get_domains()[0].name
+            deflocation += "view=%s" % request.user.get_domains()[0].name
         else:
             raise ModoboaException(_("No statistics available"))
         
     period = request.GET.get("period", "day")
+    graph_sets = events.raiseDictEvent('GetGraphSets')
     return _render(request, 'stats/index.html', {
             "periods" : periods,
             "period" : period,
             "selection" : "stats",
-            "deflocation" : deflocation
+            "deflocation" : deflocation,
+            "graph_sets" : graph_sets
             })
 
 @login_required
 @user_passes_test(lambda u: u.group != "SimpleUsers")
 def graphs(request):
     view = request.GET.get("view", None)
+    gset = request.GET.get("gset", None)
+    gsets = events.raiseDictEvent("GetGraphSets")
+    if not gset in gsets:
+        raise ModoboaException(_("Unknown graphic sets"))
     if not view:
         raise ModoboaException(_("Invalid request"))
     period = request.GET.get("period", "day")
@@ -61,19 +71,15 @@ def graphs(request):
         end = request.GET["end"]
         G = Grapher()
         period_name = "%s_%s" % (start.replace('-',''), end.replace('-',''))
-        for tpl in [traffic_avg_template, badtraffic_avg_template, size_avg_template]:
-            tplvars['graphs'].append(tpl['name'])
-            G.process(tplvars["domain"],
-                      period_name,
-                      str2Time(*start.split('-')),
-                      str2Time(*end.split('-')),
-                      tpl)
+        for tpl in gsets[gset].get_graphs():
+            tplvars['graphs'].append(tpl.display_name)
+            G.process(tplvars["domain"], period_name, str2Time(*start.split('-')),
+                      str2Time(*end.split('-')), tpl)
         tplvars["period_name"] = period_name
         tplvars["start"] = start
         tplvars["end"] = end
     else:
-        # FIXME
-        tplvars['graphs'] = ['traffic', 'badtraffic', 'size']
+        tplvars['graphs'] = gsets[gset].get_graph_names()
 
     return ajax_simple_response(dict(
             status="ok", content=_render_to_string(request, "stats/graphs.html", tplvars)

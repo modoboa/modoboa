@@ -28,8 +28,8 @@ from optparse import make_option
 from modoboa.lib import parameters
 from modoboa.admin.models import Domain
 from modoboa.extensions.stats import Stats
-from modoboa.extensions.stats.grapher import Grapher
-from modoboa.extensions.stats.graph_templates import *
+from modoboa.extensions.stats.grapher import *
+from modoboa.extensions.stats.graph_templates import MailTraffic
 
 rrdstep = 60
 xpoints = 540
@@ -213,7 +213,7 @@ class LogParser(object):
             se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
 
             if prev_se != se or prev_mi != mi or prev_ho != ho:
-                cur_t = grapher.str2Time(self.year(mo), mo, da, ho, mi, se)
+                cur_t = str2Time(self.year(mo), mo, da, ho, mi, se)
                 cur_t = cur_t - cur_t % rrdstep
                 prev_mi = mi
                 prev_ho = ho
@@ -274,10 +274,8 @@ class LogParser(object):
             for t in sorted(data.keys()):
                 self.update_rrd(dom, t)
 
-            G.make_defaults(dom, tpl=traffic_avg_template)
-            G.make_defaults(dom, tpl=badtraffic_avg_template)
-            G.make_defaults(dom, tpl=size_avg_template)
-
+            for graph_tpl in MailTraffic().get_graphs():
+                G.make_defaults(dom, graph_tpl)
 
 class Command(BaseCommand):
     help = 'Log file parser'

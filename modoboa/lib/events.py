@@ -63,6 +63,14 @@ events = [
 
 callbacks = {}
 
+def registerEvent(name):
+    """Register a new event
+
+    :param name: the event's name
+    """
+    if not name in events:
+        events.append(name)
+
 def register(event, callback):
     """Register a plugin callback for a specific event
 
@@ -71,8 +79,9 @@ def register(event, callback):
     :param event: the event to listen to
     :param callback: a function to execute when the event is raised
     """
-    if not event in events:
-        return 0
+    # if not event in events:
+    #     print "Event %s not registered" % event
+    #     return 0
     if not event in callbacks.keys():
         callbacks[event] = {}
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
@@ -171,4 +180,22 @@ def raiseQueryEvent(event, *args):
         return result
     for name, callback in callbacks[event].iteritems():
         result += callback(*args)
+    return result
+
+def raiseDictEvent(event, *args):
+    """Raise a specific event and return result as a dictionnary
+
+    Any additional keyword argument will be passed to registered
+    callbacks. Callback answers must be dictionnaries.
+
+    :param event: the event to raise
+    :return: a dictionnary
+    """
+    result = {}
+    if not event in events or not event in callbacks.keys():
+        return result
+    for name, callback in callbacks[event].iteritems():
+        tmp = callback(*args)
+        for k, v in tmp.iteritems():
+            result[k] = v
     return result

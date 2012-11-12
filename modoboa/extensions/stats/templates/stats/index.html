@@ -8,7 +8,7 @@
 $(document).ready(function() {
     var stats = new Stats({
         graphurl: "{% url modoboa.extensions.stats.views.graphs %}",
-        deflocation: "{{ deflocation }}"
+        deflocation: "{{ deflocation|safe }}"
     });
 });
 </script>
@@ -44,12 +44,14 @@ $(document).ready(function() {
 {% endblock %}
 {% block apparea %}
 <div id="graphs" class="tabbable">
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#graphs_mailstats" data-toggle="tab">{% trans "Mail trafic" %}</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="graphs_mailstats"></div>
-  </div>
+  <ul class="nav nav-tabs">{% for id, gset in graph_sets.items %}
+    <li {% if forloop.first %}class="active"{% endif %}>
+      <a href="#graphs_{{ gset.html_id }}" data-toggle="tab">{{ gset.title }}</a>
+    </li>
+  </ul>{% endfor %}
+  <div class="tab-content">{% for id, gset in graph_sets.items %}
+    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}"></div>
+  </div>{% endfor %}
 </div>
 {% endblock %}
  

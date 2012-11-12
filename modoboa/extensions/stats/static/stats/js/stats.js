@@ -69,7 +69,7 @@ Stats.prototype = {
             $("body").notify("error", data.respmsg);
             return;
         }
-        $("#graphs_mailstats").html(data.content);
+        $(".tab-pane.active").html(data.content);
     },
 
     search_domain: function(e) {

@@ -21,6 +21,8 @@ class Stats(ModoExtension):
     needs_media = True
 
     def load(self):
+        events.registerEvent("GetGraphSets")
+
         parameters.register_admin("LOGFILE", type="string", 
                                   deflt="/var/log/mail.log",
                                   help=ugettext_lazy("Path to log file used to collect statistics"))
@@ -45,3 +47,10 @@ def menu(target, user):
          "label" : _("Statistics"),
          "url" : reverse('fullindex')}
         ]
+
+@events.observe("GetGraphSets")
+def get_default_graph_sets():
+    from graph_templates import MailTraffic
+
+    gset = MailTraffic()
+    return {gset.html_id: gset}
