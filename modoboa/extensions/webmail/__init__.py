@@ -88,7 +88,7 @@ def menu(target, user):
          "url" : reverse("modoboa.extensions.webmail.views.index")},
         ]
 
-@events.observe("Userlogout")
+@events.observe("UserLogout")
 def userlogout(request):
     from lib import IMAPconnector
 

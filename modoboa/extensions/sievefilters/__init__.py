@@ -57,7 +57,7 @@ def menu(target, user):
          "img" : "icon-check"}
         ]
 
-@events.observe("Userlogout")
+@events.observe("UserLogout")
 def userlogout(request):
     from lib import SieveClient
 
