@@ -6,7 +6,7 @@ import datetime
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
 
-def str2Time(y, M, d, h="0", m="0", s="0"):
+def str2Time(y, M, d, h="00", m="00", s="00"):
     """Date conversion
 
     Returns a date and a time in seconds from the epoch.
@@ -44,16 +44,21 @@ class Grapher(object):
         end = str(end)
         defs = []
         lines = []
-        defs.append('COMMENT: %s %s %s %s\\c' % ("From", start, "to", end))
-        defs.append('COMMENT:\\s')
         for v, d in graph_tpl.vars.iteritems():
             defs += [str('DEF:%s=%s:%s:%s' % (v, rrdfile, v, graph_tpl.cf)),
                      str('CDEF:%spm=%s,60,*' % (v, v)),
-                     str('VDEF:%s_total=%s,TOTAL' % (v, v))]
+                     str('VDEF:%s_total=%s,TOTAL' % (v, v)),]
             type = d.has_key("type") and d["type"] or "LINE"
             lines += [str("%s:%spm%s:%s:STACK" % (type, v, d["color"],
                                                   (d["legend"].encode("utf8")).ljust(20)))]
             lines.append('GPRINT:%s_total:%s%%7.0lf%%s\\l' % (v, _("Total").encode('utf-8')))
+
+        first_ds = graph_tpl.vars.keys()[0]
+        defs.append(str('VDEF:%s_first=%s,FIRST' % (first_ds, first_ds)))
+        defs.append(str('VDEF:%s_last=%s,LAST' % (first_ds, first_ds)))
+        defs.append('GPRINT:%s_first:%s %%c:strftime' % (first_ds, "From"))
+        defs.append('GPRINT:%s_last:%s %%c\\c:strftime' % (first_ds, "to"))
+        defs.append('COMMENT:\\s')
 
         params = defs + lines
         rrdtool.graph(str(path),
