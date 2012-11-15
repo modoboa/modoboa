@@ -20,12 +20,10 @@ def index(request):
     """
     FIXME: how to select a default graph set ?
     """
-    deflocation = "graphs/?gset=mailtraffic&"
-    if request.user.is_superuser:
-        deflocation += "view=global"
-    else:
+    deflocation = "graphs/?gset=mailtraffic"
+    if not request.user.is_superuser:
         if len(request.user.get_domains()):
-            deflocation += "view=%s" % request.user.get_domains()[0].name
+            deflocation += "&searchquery=%s" % request.user.get_domains()[0].name
         else:
             raise ModoboaException(_("No statistics available"))
         
@@ -42,27 +40,24 @@ def index(request):
 @login_required
 @user_passes_test(lambda u: u.group != "SimpleUsers")
 def graphs(request):
-    view = request.GET.get("view", None)
     gset = request.GET.get("gset", None)
     gsets = events.raiseDictEvent("GetGraphSets")
     if not gset in gsets:
         raise ModoboaException(_("Unknown graphic sets"))
-    if not view:
-        raise ModoboaException(_("Invalid request"))
+    searchq = request.GET.get("searchquery", None)
     period = request.GET.get("period", "day")
     tplvars = dict(graphs=[], period=period)
-    if view == "global":
+    if searchq in [None, "global"]:
         if not request.user.is_superuser:
             raise PermDeniedException
-        tplvars.update(domain=view)
+        tplvars.update(domain="global")
     else:
-        try:
-            domain = Domain.objects.get(name=view)
-        except Domain.DoesNotExist:
-            raise ModoboaException(_("Domain not found. Please enter a full name"))
-        if not request.user.can_access(domain):
+        domain = Domain.objects.filter(name__contains=searchq)
+        if len(domain) != 1:
+            return ajax_simple_response({"status" : "ok"})
+        if not request.user.can_access(domain[0]):
             raise PermDeniedException
-        tplvars.update(domain=domain.name)
+        tplvars.update(domain=domain[0].name)
 
     if period == "custom":
         if not request.GET.has_key("start") or not request.GET.has_key("end"):
@@ -82,5 +77,6 @@ def graphs(request):
         tplvars['graphs'] = gsets[gset].get_graph_names()
 
     return ajax_simple_response(dict(
-            status="ok", content=_render_to_string(request, "stats/graphs.html", tplvars)
+            status="ok",  
+            content=_render_to_string(request, "stats/graphs.html", tplvars)
             ))

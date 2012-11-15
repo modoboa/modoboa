@@ -6,7 +6,7 @@ Stats.prototype = {
     constructor: Stats,
 
     defaults: {
-        deflocation: "graphs/?view=global"
+        deflocation: "graphs/"
     },
 
     initialize: function(options) {
@@ -16,18 +16,21 @@ Stats.prototype = {
         var navobj = new History(this.options);
         this.navobj = navobj;
 
-        if (navobj.params.view != undefined) {
-            $("#searchquery").attr("value", navobj.params.view);
+        if (navobj.params.searchquery != undefined) {
+            $("#searchquery").attr("value", navobj.params.searchquery);
         }
         $("#searchquery").focus(function() {
-            $(this).attr("value", "");
+            var $this = $(this);
+            $this.data("oldvalue", $this.attr("value"));
+            $this.attr("value", "");
         }).blur(function() {
             var $this = $(this);
             if ($this.attr("value") == "") {
-                if (navobj.params["view"] == "global") {
-                    $this.attr("value", gettext("Search a domain"));
+                if ($this.data("oldvalue")) {
+                    $this.attr("value", $this.data('oldvalue'));
+                    $this.data("oldvalue", null);
                 } else {
-                    $this.attr("value", navobj.params.view);
+                    $this.attr("value", gettext("Search a domain"));
                 }
             }
         });
@@ -40,13 +43,16 @@ Stats.prototype = {
         $("#custom-period input").datepicker({
             format: 'yyyy-mm-dd'
         });
+        $("#searchquery").autocompleter({
+            choices: get_domains_list,
+            choice_selected: $.proxy(this.search_domain, this)
+        });
 
         this.register_nav_callbacks();
         this.listen();
     },
 
     listen: function() {
-        $("#searchform").on("keypress", $.proxy(this.search_domain, this));
         $(".period_selector").click($.proxy(this.change_period, this));
         $("#customsend").on("click", $.proxy(this.customgraphs, this));
     },
@@ -69,19 +75,13 @@ Stats.prototype = {
             $("body").notify("error", data.respmsg);
             return;
         }
-        $(".tab-pane.active").html(data.content);
+        if (data.content) {
+            $(".tab-pane.active").html(data.content);
+        }
     },
 
-    search_domain: function(e) {
-        var $input = $(e.target);
-
-        switch (e.which) {
-        case 13:
-            e.preventDefault();
-            var domain = ($input.attr("value") == "") ? "global" : $input.attr("value");
-            this.navobj.setparam("view", domain).update();
-            break;
-        }
+    search_domain: function(value) {
+        this.navobj.setparam("searchquery", value).update();
     },
 
     customgraphs: function(e) {

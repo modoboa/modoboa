@@ -95,6 +95,9 @@
                 0, curvalue.indexOf(this.options.from_character) + 1
             ) + $link.attr("name"));
             this.hide_menu();
+            if (this.options.choice_selected) {
+                this.options.choice_selected(this.$element.attr('value'));
+            }
         },
 
         activate_next: function() {
@@ -176,6 +179,8 @@
         });
     };
 
-    $.fn.autocompleter.defaults = {};
+    $.fn.autocompleter.defaults = {
+        'choice_selected': null
+    };
 
 })(jQuery);

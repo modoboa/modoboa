@@ -3,8 +3,15 @@
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}stats/css/stats.css" />
 <script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
 <script type="text/javascript">
+function get_domains_list(container) {
+    $.getJSON("{% url modoboa.admin.views.domains_list %}", function(data) {
+        container.value = data;
+    });
+}
+
 $(document).ready(function() {
     var stats = new Stats({
         graphurl: "{% url modoboa.extensions.stats.views.graphs %}",
@@ -16,6 +23,13 @@ $(document).ready(function() {
 {% block leftcol %}
 <div id="periods" class="well sidebar-nav">
   <ul class="nav nav-list">
+    <li class="nav-header">
+      {% trans "Filter" %}
+    </li>
+    <div class="input-prepend input-append">
+      <span class="add-on"><i class="icon-search"></i></span>
+      <input class="input-medium" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+    </div>
     <li class="nav-header">
       {% trans "Predefined time ranges" %}
     </li>
