@@ -71,7 +71,7 @@ class Grapher(object):
                       "--lower-limit", "0",
                       "--slope-mode",
                       "--units-exponent", "0",
-                      "--title", graph_tpl.title.encode("utf-8"),
+                      "--title", str("%s: %s" % (target, graph_tpl.title.encode("utf-8"))),
                       *params)
 
         if not os.path.exists(path):

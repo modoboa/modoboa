@@ -21,6 +21,9 @@ Stats.prototype = {
         }
         $("#searchquery").focus(function() {
             var $this = $(this);
+            if ($this.attr("value") == undefined) {
+                return;
+            }
             $this.data("oldvalue", $this.attr("value"));
             $this.attr("value", "");
         }).blur(function() {
@@ -45,7 +48,8 @@ Stats.prototype = {
         });
         $("#searchquery").autocompleter({
             choices: get_domains_list,
-            choice_selected: $.proxy(this.search_domain, this)
+            choice_selected: $.proxy(this.search_domain, this),
+            empty_choice: $.proxy(this.reset_search, this)
         });
 
         this.register_nav_callbacks();
@@ -82,6 +86,11 @@ Stats.prototype = {
 
     search_domain: function(value) {
         this.navobj.setparam("searchquery", value).update();
+    },
+
+    reset_search: function() {
+        $("#searchquery").data("oldvalue", null);
+        this.navobj.delparam("searchquery").update();
     },
 
     customgraphs: function(e) {

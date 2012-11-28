@@ -43,7 +43,7 @@ def graphs(request):
     gset = request.GET.get("gset", None)
     gsets = events.raiseDictEvent("GetGraphSets")
     if not gset in gsets:
-        raise ModoboaException(_("Unknown graphic sets"))
+        raise ModoboaException(_("Unknown graphic set"))
     searchq = request.GET.get("searchquery", None)
     period = request.GET.get("period", "day")
     tplvars = dict(graphs=[], period=period)

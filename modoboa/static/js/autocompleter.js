@@ -91,6 +91,13 @@
             }
             var curvalue = this.$element.attr("value");
 
+            if (curvalue == undefined || curvalue == "") {
+                if (this.options.empty_choice) {
+                    this.options.empty_choice();
+                }
+                return;
+            }
+
             this.$element.attr("value", curvalue.substr(
                 0, curvalue.indexOf(this.options.from_character) + 1
             ) + $link.attr("name"));
@@ -180,7 +187,8 @@
     };
 
     $.fn.autocompleter.defaults = {
-        'choice_selected': null
+        'choice_selected' : null,
+        'empty_choice' : null
     };
 
 })(jQuery);

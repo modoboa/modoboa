@@ -28,7 +28,7 @@ $(document).ready(function() {
     </li>
     <div class="input-prepend input-append">
       <span class="add-on"><i class="icon-search"></i></span>
-      <input class="input-medium" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+      <input class="span10" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
     </div>
     <li class="nav-header">
       {% trans "Predefined time ranges" %}
@@ -44,10 +44,10 @@ $(document).ready(function() {
       <form class="form-inline">
         <span id="custom-period">
           <div class="input-prepend">
-            <span class="add-on"><i class="icon-indent-left"></i></span><input id="id_from" class="input-medium" name="date_from" value="{{ start }}" type="text" />
+            <span class="add-on"><i class="icon-indent-left"></i></span><input id="id_from" class="span10" name="date_from" value="{{ start }}" type="text" />
           </div>
           <div class="input-prepend">
-            <span class="add-on"><i class="icon-indent-right"></i></span><input id="id_to" class="input-medium" name="date_to" value="{{ end }}" type="text" />
+            <span class="add-on"><i class="icon-indent-right"></i></span><input id="id_to" class="span10" name="date_to" value="{{ end }}" type="text" />
           </div>
           <button class="btn" id="customsend">{% trans "Apply" %}</button>
         </span>
