@@ -1,6 +1,9 @@
 {% load i18n %}
 <form id="searchform" class="form-horizontal">
-  <input class="search" type="text" 
-         value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search' %}"{% endif %}
-         id="searchquery" name="searchquery" />
+  <div class="input-prepend input-append">
+    <span class="add-on"><i class="icon-search"></i></span>
+    <input class="span10" type="text"
+           value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search' %}"{% endif %}
+           id="searchquery" name="searchquery" />
+  </div>
 </form>

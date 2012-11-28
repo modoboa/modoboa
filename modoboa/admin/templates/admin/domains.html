@@ -19,5 +19,11 @@
     });
   </script>
 {% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">{% include "admin/searchform.html" %}
-{% domains_menu "domains" user %}</div>{{ block.super }}{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">
+<li class="nav-header">
+  {% trans "Filter" %}
+</li>{% include "admin/searchform.html" %}
+<li class="nav-header">
+  {% trans "Actions" %}
+</li>{% domains_menu "domains" user %}
+</div>{{ block.super }}{% endblock %}

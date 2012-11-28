@@ -43,5 +43,11 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">{% include "admin/searchform.html" %}
-{% identities_menu user %}</div>{{ block.super }}{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">
+<li class="nav-header">
+  {% trans "Filter" %}
+</li>{% include "admin/searchform.html" %}
+<li class="nav-header">
+  {% trans "Actions" %}
+</li>{% identities_menu user %}
+</div>{{ block.super }}{% endblock %}

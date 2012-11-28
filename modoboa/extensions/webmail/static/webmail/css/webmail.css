@@ -114,7 +114,7 @@ div.expanded {
 }
 
 #mailheader .options {
-    margin-left: 160px;
+    margin-left: 180px;
 }
 
 #add_cc {
@@ -136,7 +136,7 @@ div.expanded {
 #list {
     position: absolute;
     top: 5px;
-    left: 160px;
+    left: 180px;
     font-weight: bold;
 }
 
