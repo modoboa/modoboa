@@ -91,6 +91,7 @@ def menu(target, user):
 @events.observe("UserLogout")
 def userlogout(request):
     from lib import IMAPconnector
+    from exceptions import ImapError
 
     if not request.user.has_mailbox:
         return
@@ -99,5 +100,9 @@ def userlogout(request):
                           password=request.session["password"])
     except Exception, e:
         pass
-    else:
+    
+    # The following statement may fail under Python 2.6...
+    try:
         m.logout()
+    except ImapError:
+        pass
