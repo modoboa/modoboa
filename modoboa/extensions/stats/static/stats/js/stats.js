@@ -6,7 +6,8 @@ Stats.prototype = {
     constructor: Stats,
 
     defaults: {
-        deflocation: "graphs/"
+        deflocation: "graphs/",
+        language: "en"
     },
 
     initialize: function(options) {
@@ -44,7 +45,10 @@ Stats.prototype = {
             $("#id_to").attr("value", navobj.params.end);
         }
         $("#custom-period input").datepicker({
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true,
+            language: this.options.language
         });
         $("#searchquery").autocompleter({
             choices: get_domains_list,

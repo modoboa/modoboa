@@ -15,7 +15,8 @@ function get_domains_list(container) {
 $(document).ready(function() {
     var stats = new Stats({
         graphurl: "{% url modoboa.extensions.stats.views.graphs %}",
-        deflocation: "{{ deflocation|safe }}"
+        deflocation: "{{ deflocation|safe }}",
+        language: "{{ LANGUAGE_CODE }}"
     });
 });
 </script>
