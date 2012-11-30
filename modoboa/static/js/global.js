@@ -107,10 +107,11 @@ function simple_ajax_form_post(e, options) {
     }
     $.post($form.attr("action"), args, function(data) {
         if (data.status == "ok") {
+            $("#modalbox").modal('hide');
             if (opts.success_cb != undefined) {
                 opts.success_cb(data);
+                return;
             }
-            $("#modalbox").modal('hide');
             if (opts.reload_on_success) {
                 if (opts.reload_mode == 'full') {
                     window.location.reload();

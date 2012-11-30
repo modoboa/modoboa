@@ -70,19 +70,18 @@ def domains_menu(selection, user):
          "label" : _("Add domain"),
          "img" : "icon-plus",
          "modal" : True,
-         "modalcb" : "domainform_cb",
+         "modalcb" : "admin.domainform_cb",
          "url" : reverse("modoboa.admin.views.newdomain")},
         {"name" : "import",
          "label" : _("Import"),
          "img" : "icon-folder-open",
          "url" : reverse(admin.views.import_domains),
          "modal" : True,
-         "modalcb" : "importform_cb"}
+         "modalcb" : "admin.importform_cb"}
         ]
 
-    return render_to_string('common/menu.html', {
+    return render_to_string('common/menulist.html', {
             "entries" : entries, 
-            "css" : "nav nav-list",
             "selection" : selection,
             "user" : user
             })        
@@ -94,37 +93,36 @@ def identities_menu(user):
          "label" : _("Add account"),
          "img" : "icon-plus",
          "modal" : True,
-         "modalcb" : "newaccount_cb",
+         "modalcb" : "admin.newaccount_cb",
          "url" : reverse(admin.views.newaccount)},
         {"name" : "newalias",
          "label" : _("Add alias"),
          "img" : "icon-plus",
          "modal" : True,
-         "modalcb" : "aliasform_cb",
+         "modalcb" : "admin.aliasform_cb",
          "url" : reverse(admin.views.newalias)},
         {"name" : "newforward",
          "label" : _("Add forward"),
          "img" : "icon-plus",
          "modal" : True,
-         "modalcb" : "aliasform_cb",
+         "modalcb" : "admin.aliasform_cb",
          "url" : reverse(admin.views.newforward)},
         {"name" : "newdlist",
          "label" : _("Add distribution list"),
          "img" : "icon-plus",
          "modal" : True,
-         "modalcb" : "aliasform_cb",
+         "modalcb" : "admin.aliasform_cb",
          "url" : reverse(admin.views.newdlist)},
         {"name" : "import",
          "label" : _("Import"),
          "img" : "icon-folder-open",
          "url" : reverse(admin.views.import_identities),
          "modal" : True,
-         "modalcb" : "importform_cb"}
+         "modalcb" : "admin.importform_cb"}
         ]
 
-    return render_to_string('common/menu.html', {
+    return render_to_string('common/menulist.html', {
             "entries" : entries, 
-            "css" : "nav nav-list",
             "user" : user
             })
 

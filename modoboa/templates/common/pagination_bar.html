@@ -1,22 +1,27 @@
 <div id="pagination_bar" class="simplepagination pull-right padded5">
   <ul>
-    <li class="{% if not page.has_previous %}disabled{% endif %}">      
-      <a href="{{ baseurl }}page=1"><i class="icon-white icon-fast-backward"></i></a>
+    <li>      
+      {% if page.has_previous %}<a href="{{ baseurl }}page=1">
+        <i class="icon-white icon-fast-backward"></i></a>{% else %}
+      <i class="icon-white icon-fast-backward"></i>{% endif %}      
     </li>
-    <li class="{% if not page.has_previous %}disabled{% endif %}">      
-      <a href="{{ baseurl }}page={{ page.previous_page_number }}">
-      <i class="icon-step-backward icon-white"></i></a>
+    <li>      
+      {% if page.has_previous %}<a href="{{ baseurl }}page={{ page.previous_page_number }}">
+      <i class="icon-step-backward icon-white"></i></a>{% else %}
+      <i class="icon-step-backward icon-white"></i>{% endif %}
     </li>
     <li class="disabled">
       {{ page.number }}/{{ page.paginator.num_pages }}
     </li>
-    <li class="{% if not page.has_next %}disabled{% endif %}">
-      <a href="{{ baseurl }}page={{ page.next_page_number }}">
-      <i class="icon-step-forward icon-white"></i></a>
+    <li>
+      {% if page.has_next %}<a href="{{ baseurl }}page={{ page.next_page_number }}">
+      <i class="icon-step-forward icon-white"></i></a>{% else %}
+      <i class="icon-step-forward icon-white"></i>{% endif %}
     </li>
-    <li class="{% if not page.has_next %}disabled{% endif %}">
-      <a href="{{ baseurl }}page={{ page.paginator.num_pages }}">
-        <i class="icon-fast-forward icon-white"></i></a>
+    <li>
+      {% if page.has_next %}<a href="{{ baseurl }}page={{ page.paginator.num_pages }}">
+      <i class="icon-fast-forward icon-white"></i></a>{% else %}
+      <i class="icon-fast-forward icon-white"></i>{% endif %}
     </li>
   </ul>
 </div>

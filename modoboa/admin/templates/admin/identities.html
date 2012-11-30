@@ -24,30 +24,10 @@ function get_mboxes_list(container) {
 }
 
 $(document).ready(function() {
-   $("a[name=delaccount]").confirm({
-       question: gettext("Delete this account?"),
-       checkboxes: {keepdir: gettext("Do not delete mailbox directory")}
-   });
-   $("a[name=deldlist]").confirm({
-       question: gettext("Delete this list?")
-   });
-   $("a[name=delforward]").confirm({
-       question: gettext("Delete this forward?")
-   });
-   $("a[name=delalias]").confirm({
-       question: gettext("Delete this alias?")
-   });
-   $("#pagination_bar").find(".disabled").click(function(e) {
-       e.preventDefault();
-   });
+    admin = new Identities({
+        squery: "{{ squery }}"
+    });
 });
 </script>
 {% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">
-<li class="nav-header">
-  {% trans "Filter" %}
-</li>{% include "admin/searchform.html" %}
-<li class="nav-header">
-  {% trans "Actions" %}
-</li>{% identities_menu user %}
-</div>{{ block.super }}{% endblock %}
+{% block actions %}{% identities_menu user %}{% endblock %}

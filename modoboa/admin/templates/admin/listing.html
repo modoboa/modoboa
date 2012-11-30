@@ -3,20 +3,18 @@
 {{ block.super }}
 <script type="text/javascript" src="{{ STATIC_URL }}js/dynamic_input.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    $("#searchquery").focus(function() {
-        $(this).attr("value", "");
-    }).blur(function() {
-        var $this = $(this);
-        if ($this.attr("value") == "") {
-            $this.attr("value", {% if squery %}"{{ squery }}"{% else %}"{% trans 'Search' %}"{% endif %});
-        }
-    });
-});
+var admin;
 </script>
 {% endblock %}
-{% block leftcol %}{% get_extra_admin_content user "leftcol" selection %}{% endblock %}
-{% block apparea %}
-{{ table|safe }}
+{% block leftcol %}<div class="well sidebar-nav">
+<ul class="nav nav-list">
+  <li class="nav-header">{% trans "Filter" %}</li>
+  <li>{% include "admin/searchform.html" %}</li>
+  <li class="nav-header">{% trans "Actions" %}</li>
+  {% block actions %}{% endblock %}
+  {% get_extra_admin_content user "leftcol" selection %}
+</ul>
+</div>
 {% endblock %}
-{% block footerright %}{%  pagination_bar page %}{% endblock %}
+{% block apparea %}<div id="listing"></div>{% endblock %}
+{% block footerright %}{% endblock %}

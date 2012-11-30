@@ -1,147 +1,281 @@
-function domainform_cb() {
-    $('input:text:visible:first').focus();
-    $("#id_aliases").dynamic_input();
-    $(".submit").one('click', function(e) {
-        simple_ajax_form_post(e, {
-            formid: "domform",
-            error_cb: domainform_cb
-        });
-    });
-    $("a[name=removeperm]").click(function(e) {
-        var $tr = $(this).parent().parent();
-        simple_ajax_request.apply(this, [e, {
-            ok_cb: function(resp) {
-                $tr.remove();
-                if (!$("#domadmins").children("tr").length) {
-                    $("#admins").html('<div class="alert alert-info">'
-                        + gettext("No domain administrator defined") + "</div>");
+var Admin = function(options) {
+    this.initialize(options);
+};
+
+Admin.prototype = {
+    constructor: Admin,
+
+    defaults: {
+        deflocation: "list/",
+        squery: null
+    },
+
+    initialize: function(options) {
+        this.options = $.extend({}, this.defaults, options);
+        this.options.defcallback = $.proxy(this.list_cb, this);
+
+        this.navobj = new History(this.options);
+
+        $("#searchquery").focus(function() {
+            $(this).attr("value", "");
+        }).blur($.proxy(function(e) {
+            var $this = $(e.target);
+            if ($this.attr("value") == "") {
+                if (this.options.squery && this.options.squery == "") {
+                    $this.attr("value", this.options.squery);
+                } else {
+                    $this.attr("value", gettext("Search"));
                 }
             }
-        }]);
-    });
-    $(document).trigger('domform_init');
-}
+        }, this));
 
-function simpleuser_mode() {
-    $("#id_username").autocompleter({
-        from_character: "@",
-        choices: get_domains_list
-    });
-    $("#id_email").addClass("disabled")
-        .attr("readonly", "")
-        .autocompleter("unbind");
-}
+        this.listen();
+    },
 
-function normal_mode() {
-    $("#id_email").removeClass("disabled")
-        .attr("readonly", null)
-        .autocompleter("listen");
-}
-
-function generalform_init() {
-    $("#id_role").change(function(e) {
-        if ($(this).attr("value") == "SimpleUsers") {
-            simpleuser_mode();
-        } else {
-            normal_mode();
-        }
-    });
-}
-
-function mailform_init() {
-    $("#id_aliases").autocompleter({
-        from_character: "@",
-        choices: get_domains_list
-    }).dynamic_input();
-    $("#id_email").autocompleter({
-        from_character: "@",
-        choices: get_domains_list
-    });
-    if ($("#id_role").length) {
-        $("#id_role").trigger("change");
-    } else {
-        simpleuser_mode();
-    }
-    $("#id_domains")
-        .autocompleter({
-            choices: get_domains_list
-        })
-        .dynamic_input();
-
-}
-
-function accountform_init() {
-    generalform_init();
-    mailform_init();
-}
-
-function mailform_prefill() {
-    if (!$("#id_role").length || $("#id_role").attr("value") == "SimpleUsers") {
-        $("#id_email").attr("value", $("#id_username").attr("value"));
-    }
-}
-
-function newaccount_cb() {
-    accountform_init();
-    $("#wizard").cwizard({
-        formid: "newaccount_form",
-        transition_callbacks: {
-            1: mailform_prefill
-        },
-        error_callbacks: {
-            1: generalform_init,
-            2: mailform_init
-        }
-    });
-}
-
-function editaccount_cb() {
-    accountform_init();
-    $('.submit').one('click', function(e) {
-        simple_ajax_form_post(e, {
-            formid: "accountform",
-            error_cb: editaccount_cb
-        });
-    });
-}
-
-function aliasform_cb() {
-    $("#id_email").autocompleter({
-        from_character: "@",
-        choices: get_domains_list
-    });
-    $("#id_recipients").dynamic_input();
-    $("#id_int_recipient").autocompleter({
-        choices: get_mboxes_list
-    });
-    $(".submit").one('click', function(e) {
-        simple_ajax_form_post(e, {
-            formid: "aliasform",
-            error_cb: aliasform_cb
-        });
-    });
-}
-
-function importform_cb() {
-    $(".submit").one('click', function(e) {
-        if ($("#id_sourcefile").attr("value") == "") {
+    list_cb: function(data) {
+        $("#listing").html(data.table);
+        $("#bottom-bar-right").html(data.paginbar);
+        $("#pagination_bar").find(".disabled a").click(function(e) {
             e.preventDefault();
-            return;
+        });
+        if (data.page != this.navobj.getparam("page")) {
+            this.navobj.setparam("page", data.page).update(false, false);
         }
-        $("#import_status").css("display", "block");
-        $("#import_result").html("").removeClass("alert alert-error");
-        $("#importform").submit();
-    });
-}
+    },
 
-function importdone(status, msg) {
-    $("#import_status").css("display", "none");
-    if (status == "ok") {
-        $("#modalbox").modal('hide');
-        window.location.reload();
-    } else {
-        $("#import_result").addClass("alert alert-error");
-        $("#import_result").html(msg);
-        importform_cb();
+    listen: function() {
+        $(document).on("click", "#bottom-bar-right a",
+            $.proxy(this.getpage_loader, this));
+        $("#searchform").submit($.proxy(this.do_search, this));
+    },
+
+    do_search: function(e) {
+        e.preventDefault();
+        this.navobj.setparam("searchquery", $("#searchquery").attr("value")).update();
+    },
+
+    getpage_loader: function(e) {
+        var $link = $(e.target).parent();
+        e.preventDefault();
+        this.navobj.updateparams($link.attr("href")).update();
+    },
+
+    importform_cb: function() {
+        $(".submit").one('click', function(e) {
+            e.preventDefault();
+            if ($("#id_sourcefile").attr("value") == "") {
+                return;
+            }
+            $("#import_status").css("display", "block");
+            $("#import_result").html("").removeClass("alert alert-error");
+            $("#importform").submit();
+        });
+    },
+
+    importdone: function(status, msg) {
+        $("#import_status").css("display", "none");
+        if (status == "ok") {
+            $("#modalbox").modal('hide');
+            this.reload_listing({respmsg: msg});
+        } else {
+            $("#import_result").addClass("alert alert-error");
+            $("#import_result").html(msg);
+            this.importform_cb();
+        }
+    },
+
+    reload_listing: function(data) {
+        this.navobj.update(true);
+        if (data.respmsg) {
+            $("body").notify("success", data.respmsg, 2000);
+        }
     }
-}
+};
+
+/*
+ * Domains
+ */
+var Domains = function(options) {
+    Admin.call(this, options);
+};
+
+Domains.prototype = {
+    list_cb: function(data) {
+        Admin.prototype.list_cb.call(this, data);
+
+        $("a[name=deldomain]").confirm({
+            question: gettext("Delete this domain?"),
+            checkboxes: {keepdir: gettext("Do not delete domain directory")},
+            success_cb: $.proxy(this.reload_listing, this)
+        });
+    },
+
+    domainform_cb: function() {
+        $('input:text:visible:first').focus();
+        $("#id_aliases").dynamic_input();
+        $(".submit").one('click', $.proxy(function(e) {
+            simple_ajax_form_post(e, {
+                formid: "domform",
+                error_cb: this.domainform_cb,
+                reload_on_success: false,
+                success_cb: $.proxy(this.reload_listing, this)
+            });
+        }, this));
+        $("a[name=removeperm]").click(function(e) {
+            var $tr = $(this).parent().parent();
+            simple_ajax_request.apply(this, [e, {
+                ok_cb: function(resp) {
+                    $tr.remove();
+                    if (!$("#domadmins").children("tr").length) {
+                        $("#admins").html('<div class="alert alert-info">'
+                            + gettext("No domain administrator defined") + "</div>");
+                    }
+                }
+            }]);
+        });
+        $(document).trigger('domform_init');
+    }
+
+};
+
+Domains.prototype = $.extend({}, Admin.prototype, Domains.prototype);
+
+/*
+ * Identities
+ */
+var Identities = function(options) {
+    Admin.call(this, options);
+};
+
+Identities.prototype = {
+    list_cb: function(data) {
+        Admin.prototype.list_cb.call(this, data);
+
+        $("a[name=delaccount]").confirm({
+            question: gettext("Delete this account?"),
+            checkboxes: {keepdir: gettext("Do not delete mailbox directory")},
+            success_cb: $.proxy(this.reload_listing, this)
+        });
+        $("a[name=deldlist]").confirm({
+            question: gettext("Delete this list?"),
+            success_cb: $.proxy(this.reload_listing, this)
+        });
+        $("a[name=delforward]").confirm({
+            question: gettext("Delete this forward?"),
+            success_cb: $.proxy(this.reload_listing, this)
+        });
+        $("a[name=delalias]").confirm({
+            question: gettext("Delete this alias?"),
+            success_cb: $.proxy(this.reload_listing, this)
+        });
+    },
+
+    simpleuser_mode: function() {
+        $("#id_username").autocompleter({
+            from_character: "@",
+            choices: get_domains_list
+        });
+        $("#id_email").addClass("disabled")
+            .attr("readonly", "")
+            .autocompleter("unbind");
+    },
+
+    normal_mode: function() {
+        $("#id_email").removeClass("disabled")
+            .attr("readonly", null)
+            .autocompleter("listen");
+    },
+
+    generalform_init: function() {
+        $("#id_role").change($.proxy(function(e) {
+            var $this = $(e.target);
+            if ($this.attr("value") == "SimpleUsers") {
+                this.simpleuser_mode();
+            } else {
+                this.normal_mode();
+            }
+        }, this));
+    },
+
+    mailform_init: function() {
+        $("#id_aliases").autocompleter({
+            from_character: "@",
+            choices: get_domains_list
+        }).dynamic_input();
+        $("#id_email").autocompleter({
+            from_character: "@",
+            choices: get_domains_list
+        });
+        if ($("#id_role").length) {
+            $("#id_role").trigger("change");
+        } else {
+            this.simpleuser_mode();
+        }
+        $("#id_domains")
+            .autocompleter({
+                choices: get_domains_list
+            })
+            .dynamic_input();
+
+    },
+
+    accountform_init: function() {
+        this.generalform_init();
+        this.mailform_init();
+    },
+
+    mailform_prefill: function() {
+        if (!$("#id_role").length || $("#id_role").attr("value") == "SimpleUsers") {
+            $("#id_email").attr("value", $("#id_username").attr("value"));
+        }
+    },
+
+    newaccount_cb: function() {
+        this.accountform_init();
+        $("#wizard").cwizard({
+            formid: "newaccount_form",
+            transition_callbacks: {
+                1: this.mailform_prefill
+            },
+            error_callbacks: {
+                1: this.generalform_init,
+                2: this.mailform_init
+            },
+            success_callback: $.proxy(this.reload_listing, this)
+        });
+    },
+
+    editaccount_cb: function() {
+        this.accountform_init();
+        $('.submit').one('click', $.proxy(function(e) {
+            simple_ajax_form_post(e, {
+                formid: "accountform",
+                error_cb: this.editaccount_cb,
+                reload_on_success: false,
+                success_cb: $.proxy(this.reload_listing, this)
+            });
+        }, this));
+    },
+
+    aliasform_cb: function() {
+        $("#id_email").autocompleter({
+            from_character: "@",
+            choices: get_domains_list
+        });
+        $("#id_recipients").dynamic_input();
+        $("#id_int_recipient").autocompleter({
+            choices: get_mboxes_list
+        });
+        $(".submit").one('click', $.proxy(function(e) {
+            simple_ajax_form_post(e, {
+                formid: "aliasform",
+                error_cb: this.aliasform_cb,
+                reload_on_success: false,
+                success_cb: $.proxy(this.reload_listing, this)
+            });
+        }, this));
+    }
+
+};
+
+Identities.prototype = $.extend({}, Admin.prototype, Identities.prototype);

@@ -11,7 +11,7 @@ class DomainsTable(tables.Table):
     name = tables.LinkColumn(
         "name", label=ugettext_lazy("Name"), 
         urlpattern="modoboa.admin.views.editdomain",
-        title=_("Edit domain"), modal=True, modalcb="domainform_cb"
+        title=_("Edit domain"), modal=True, modalcb="admin.domainform_cb"
         )
     domaliases = tables.Column("domainalias_set", 
                                label=ugettext_lazy("Alias(es)"), safe=True)
@@ -55,7 +55,7 @@ class IdentitiesTable(tables.Table):
         modal=True,
         urlpattern={"User" : "modoboa.admin.views.editaccount",
                     "Alias" : "modoboa.admin.views.editalias_dispatcher"},
-        modalcb={"User" : "editaccount_cb", "Alias" : "aliasform_cb"}
+        modalcb={"User" : "admin.editaccount_cb", "Alias" : "admin.aliasform_cb"}
         )
     name_or_rcpt = tables.Column("name_or_rcpt", label=ugettext_lazy("Fullname/Recipient"))
     actions = tables.ActionColumn("actions",  label=ugettext_lazy("Actions"),

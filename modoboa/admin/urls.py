@@ -4,7 +4,8 @@ urlpatterns = patterns(
     'modoboa.admin.views',
     url(r'^$', 'domains', name="index"),
     url(r'^domains/$', 'domains', name="domains"),
-    (r'^domains/list/$', 'domains_list'),
+    (r'^domains/list/$', '_domains'),
+    (r'^domains/flatlist/$', 'domains_list'),
     (r'^domains/new/', 'newdomain'),
     (r'^domains/(?P<dom_id>\d+)/edit/$', 'editdomain'),
     (r'^domains/delete/$', 'deldomain'),
@@ -19,6 +20,7 @@ urlpatterns = patterns(
     (r'^permissions/remove/$', 'remove_permission'),
 
     (r'^identities/$', 'identities'),
+    (r'^identities/list/$', '_identities'),
     (r'^identities/import/$', 'import_identities'),
 
     (r'^accounts/list/$', 'accounts_list'),

@@ -46,11 +46,13 @@
              var ok_btn = $('<a href="#" class="btn btn-primary">Ok</a>');
 
              ok_btn.click(function(evt) {
+                 evt.preventDefault();
                  box.data('result', true);
                  box.modal('hide');
              });
 
              cancel_btn.click(function(evt) {
+                 evt.preventDefault();
                  box.modal('hide');
              });
 
@@ -76,7 +78,7 @@
                  cache: false,
                  data: params,
                  url: this.$element.attr('href'),
-                 complete: function(XMLHttpRequest, textStatus) {
+                 complete: $.proxy(function(XMLHttpRequest, textStatus) {
                      var data;
                      try {
                          data = $.parseJSON(XMLHttpRequest.responseText);
@@ -84,11 +86,15 @@
                          data = { status: 'ko', respmsg: gettext('Internal Error') };
                      }
                      if (data.status == "ok") {
+                         if (this.options.success_cb != undefined) {
+                             this.options.success_cb(data);
+                             return;
+                         }
                          window.location.reload();
                      } else {
                          $("body").notify("error", data.respmsg);
                      }
-                 }
+                 }, this)
              });
              this.box.remove();
          }

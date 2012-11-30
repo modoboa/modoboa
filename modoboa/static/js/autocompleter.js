@@ -67,9 +67,9 @@
                 position: "absolute",
                 top: coords.top + this.$element.outerHeight(),
                 left: coords.left,
-                width: this.$element.outerWidth()
+                width: this.$element.outerWidth(),
+                'z-index': 1051
             });
-
             if (this.$menu.children().length) {
                 this.$menu.show();
             } else {

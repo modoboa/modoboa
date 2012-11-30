@@ -37,7 +37,11 @@
                         this.$element.carousel('next');
                     } else {
                         $("#modalbox").modal('hide').remove();
-                        window.location.reload();
+                        if (this.options.success_callback != undefined) {
+                            this.options.success_callback(resp);
+                        } else {
+                            window.location.reload();
+                        }
                     }
                     return;
                 }

@@ -1,13 +1,13 @@
 # coding: utf-8
 from django.utils.translation import ugettext as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from modoboa.lib.webutils import _render
+from modoboa.lib.webutils import ajax_simple_response
 from modoboa.lib import parameters
+from modoboa.lib.templatetags.libextras import pagination_bar
 from modoboa.admin.tables import *
 from exceptions import *
 
-def render_listing(request, objtype, tplname="admin/listing.html",
-                   **kwargs):
+def render_listing(request, objtype, **kwargs):
     """Common function to render a listing
 
     All listing pages available into the admin application use the
@@ -15,7 +15,6 @@ def render_listing(request, objtype, tplname="admin/listing.html",
 
     :param request: a ``Request`` object
     :param objtype: the object type's name (lowercase)
-    :param tplname: the template used to render the HTML
     """
     tblclass = "%sTable" % objtype.capitalize()
     if not globals().has_key(tblclass):
@@ -26,18 +25,19 @@ def render_listing(request, objtype, tplname="admin/listing.html",
         kwargs["domid"] = request.GET["domid"]
     else:
         kwargs["domid"] = ""
-    kwargs["selection"] = objtype
     paginator = Paginator(kwargs["objects"], 
                           int(parameters.get_admin("ITEMS_PER_PAGE")))
     try:
-        page = request.GET.get("page", "1")
+        pagenum = request.GET.get("page", "1")
     except ValueError:
-        page = 1
+        pagenum = 1
     try:
-        kwargs["page"] = paginator.page(page)
+        page = paginator.page(pagenum)
     except (EmptyPage, PageNotAnInteger):
-        kwargs["page"] = paginator.page(paginator.num_pages)
-    kwargs["table"] = tblclass(request, kwargs["page"].object_list)
-    kwargs["selection"] = objtype
+        page = paginator.page(paginator.num_pages)
     
-    return _render(request, tplname, kwargs)
+    return ajax_simple_response({
+            "table" : tblclass(request, page.object_list).render(),
+            "page" : page.number,
+            "paginbar" : pagination_bar(page)
+            })

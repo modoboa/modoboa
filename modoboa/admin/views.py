@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.db.models import Q
-from django.contrib import messages
+from django.shortcuts import render
 from django.db import transaction, IntegrityError
 
 from lib import render_listing
@@ -21,7 +21,7 @@ from modoboa.lib.models import Parameter
 from modoboa.lib.permissions import *
 
 @login_required
-def domains(request):
+def _domains(request):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
             return HttpResponseRedirect(reverse(identities))
@@ -34,8 +34,13 @@ def domains(request):
         q = Q(name__contains=squery)
         q |= Q(domainalias__name__contains=squery)
         domains = domains.filter(q).distinct()
-    return render_listing(request, "domains", "admin/domains.html",
-                          objects=domains, squery=squery)
+    return render_listing(request, "domains", objects=domains, squery=squery)
+
+@login_required
+def domains(request, tplname="admin/domains.html"):
+    return render(request, tplname, {
+            "selection" : "domains"
+            })
 
 @login_required
 @permission_required("auth.add_user")
@@ -60,8 +65,7 @@ def _validate_domain(request, form, successmsg, commonctx, tplname,
         else:
             if callback is not None:
                 callback(request.user, domain)
-            messages.info(request, successmsg, fail_silently=True)
-            return ajax_response(request, url=reverse("modoboa.admin.views.domains"))
+            return ajax_simple_response({"status" : "ok", "respmsg" : successmsg})
 
     commonctx[tpl_form_name] = form
     commonctx["error"] = error
@@ -87,7 +91,7 @@ def newdomain(request, tplname="admin/newdomainform.html"):
                                 tplname, callback=newdomain_cb)
     form = DomainFormGeneral()
     commonctx["form"] = form
-    return _render(request, tplname, commonctx)
+    return render(request, tplname, commonctx)
 
 @login_required
 @permission_required("admin.view_domains")
@@ -123,7 +127,7 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
 
     commonctx["tabs"] = DomainForm(request.user, instances=instances)
     commonctx["domadmins"] = domadmins
-    return _render(request, tplname, commonctx)
+    return render(request, tplname, commonctx)
 
 @login_required
 @permission_required("admin.delete_domain")
@@ -145,8 +149,7 @@ def deldomain(request):
         dom.delete(keepdir=keepdir)
 
     msg = ungettext("Domain deleted", "Domains deleted", len(selection))
-    messages.info(request, msg, fail_silently=True)
-    return ajax_response(request)
+    return ajax_simple_response({"status" : "ok", "respmsg" : msg})
 
 def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None):
     """Alias validation
@@ -163,9 +166,7 @@ def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None
             
         if callback:
             callback(request.user, alias)
-
-        messages.info(request, successmsg)
-        return ajax_response(request, url=reverse("modoboa.admin.views.identities"))
+        return ajax_simple_response({"status" : "ok", "respmsg" : successmsg})
 
     if request.POST.has_key("targets"):
         targets = request.POST.getlist("targets")
@@ -191,7 +192,7 @@ def _new_alias(request, tplname, formclass, ctx, successmsg):
 
     form = formclass(request.user)
     ctx["form"] = form
-    return _render(request, tplname, ctx)
+    return render(request, tplname, ctx)
 
 @login_required
 @permission_required("admin.add_alias")
@@ -234,7 +235,7 @@ def _edit_alias(request, alias, tplname, formclass, ctx, successmsg):
 
     form = formclass(request.user, instance=alias)
     ctx["form"] = form
-    return _render(request, tplname, ctx)
+    return render(request, tplname, ctx)
 
 def editalias(request, alias, ctx):
     return _edit_alias(request, alias, "common/generic_modal_form.html",
@@ -268,8 +269,7 @@ def _del_alias(request, msg, msgs):
         alias.delete()
 
     msg = ungettext(msg, msgs, len(selection))
-    messages.info(request, msg)
-    return ajax_response(request)
+    return ajax_simple_response({"status" : "ok", "respmsg" : msg})
 
 @login_required
 @permission_required("admin.delete_alias")
@@ -291,7 +291,7 @@ def delforward(request):
 
 @login_required
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
-def identities(request, tplname='admin/identities.html'):
+def _identities(request):
     idents_list = request.user.get_identities()
     squery = request.GET.get("searchquery", None)
     if squery:
@@ -314,8 +314,15 @@ def identities(request, tplname='admin/identities.html'):
             if oa.content_object:
                 objects.append(oa.content_object)
     objects = sorted(objects, key=lambda o: o.identity)
-    return render_listing(request, "identities", tplname, 
-                          objects=objects, squery=squery)
+    return render_listing(request, "identities", objects=objects, squery=squery)
+
+@login_required
+@user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
+def identities(request, tplname="admin/identities.html"):
+    return render(request, tplname, {
+            "selection" : "identities",
+            "deflocation" : "list/"
+            })
 
 @login_required
 @permission_required("auth.add_user")
@@ -376,8 +383,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
                     status="ok", title=cwizard.get_title(data + 1), stepid=data
                     ))
         if retcode == 2:
-            messages.info(request, _("Account created"))
-            return ajax_simple_response(dict(status="ok"))
+            return ajax_simple_response(dict(status="ok", respmsg=_("Account created")))
 
         from modoboa.lib.templatetags.libextras import render_form
         return ajax_simple_response(dict(
@@ -387,7 +393,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
     cwizard.create_forms()
     ctx.update(steps=cwizard.steps)
     ctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
-    return _render(request, tplname, ctx)
+    return render(request, tplname, ctx)
 
 @login_required
 @permission_required("auth.change_user")
@@ -421,15 +427,14 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
             if form.is_valid(optional_only=True):
                 events.raiseEvent("AccountModified", account, form.account)
                 form.save()
-                messages.info(request, _("Account updated"))
-                return ajax_simple_response(dict(status="ok"))
+                return ajax_simple_response(dict(status="ok", respmsg=_("Account updated")))
             transaction.rollback()
 
         ctx["tabs"] = form
         return ajax_response(request, status="ko", template=tplname, **ctx)
 
     ctx["tabs"] = AccountForm(request.user, instances=instances)
-    return _render(request, tplname, ctx)
+    return render(request, tplname, ctx)
 
 @login_required
 @permission_required("auth.delete_user")
@@ -442,8 +447,7 @@ def delaccount(request):
         account.delete(request.user, keepdir)
 
     msg = ungettext("Account deleted", "Accounts deleted", len(selection))
-    messages.info(request, msg, fail_silently=True)
-    return ajax_response(request)
+    return ajax_simple_response({"status" : "ok", "respmsg" : msg})
 
 @login_required
 @permission_required("admin.add_domain")
@@ -482,7 +486,7 @@ def viewparameters(request, tplname='admin/parameters.html'):
             tmp["params"] += [newdef]
         gparams += [tmp]
 
-    return _render(request, tplname, {
+    return render(request, tplname, {
             "selection" : "settings",
             "left_selection" : "parameters",
             "gparams" : gparams
@@ -516,7 +520,7 @@ def viewextensions(request, tplname='admin/extensions.html'):
             ext["selection"] = False
             
     tbl = ExtensionsTable(request, exts)
-    return _render(request, tplname, {
+    return render(request, tplname, {
             "selection" : "settings",
             "left_selection" : "extensions",
             "extensions" : tbl
@@ -599,14 +603,14 @@ def importdata(request):
                         continue
                     fct(request.user, row)
                     cpt += 1
-                messages.info(request, _("%d objects imported successfully" % cpt))
-                return _render(request, "admin/import_done.html", {
-                        "status" : "ok", "msg" : ""
+                msg = _("%d objects imported successfully" % cpt)
+                return render(request, "admin/import_done.html", {
+                        "status" : "ok", "msg" : msg
                         })
             except (IntegrityError, ModoboaException), e:
                 error = str(e)
 
-    return _render(request, "admin/import_done.html", {
+    return render(request, "admin/import_done.html", {
             "status" : "ko", "msg" : error
             })
 
@@ -635,7 +639,7 @@ You can use a different character as separator.
         form=ImportDataForm(),
         helptext=helptext
         )
-    return _render(request, "admin/importform.html", ctx)
+    return render(request, "admin/importform.html", ctx)
 
 @login_required
 @permission_required("admin.add_domain")
@@ -661,4 +665,4 @@ You can use a different character as separator.
         helptext=helptext,
         form=ImportDataForm()
         )
-    return _render(request, "admin/importform.html", ctx)
+    return render(request, "admin/importform.html", ctx)
