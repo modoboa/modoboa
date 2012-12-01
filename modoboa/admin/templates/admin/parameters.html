@@ -1,10 +1,8 @@
-{% extends "admin/settings_header.html" %}{% load i18n %}
-{% block pagetitle %}{% trans "Parameters" %}{% endblock %}
-{% block apparea %}
+{% load i18n %}
 {% url modoboa.admin.views.saveparameters as action %}
-<form method="POST" action="{{ action }}" id="params_form" class="form-horizontal">
+<h2>{% trans "Parameters" %} <small>{% trans "Configure Modoboa" %}</small></h2><hr />
+<form id="settings_form" method="POST" action="{{ action }}" class="form-horizontal">
   {% include "common/parameters.html" %}
 </form>
 <hr>
 <a href="#" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</a>
-{% endblock %}

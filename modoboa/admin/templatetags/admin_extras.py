@@ -33,7 +33,7 @@ def admin_menu(selection, user):
         entries += [
             {"name" : "settings",
              "label" : _("Modoboa"),
-             "url" : reverse(admin.views.viewparameters)}
+             "url" : reverse(admin.views.viewsettings)}
             ]
 
     if not len(entries):
@@ -45,12 +45,14 @@ def admin_menu(selection, user):
 def settings_menu(selection, user):
     entries = [
         {"name" : "extensions",
-         "url" : reverse(admin.views.viewextensions),
+         "class" : "ajaxlink",
+         "url" : "extensions/",
          "label" : _("Extensions"),
-         "img" : static_url("pics/extensions.png")},
+         "img" : ""},
         {"name" : "parameters",
-         "url" : reverse(admin.views.viewparameters),
-         "img" : static_url("pics/domains.png"),
+         "class" : "ajaxlink",
+         "url" : "parameters/",
+         "img" : "",
          "label" : _("Parameters")},
         ]
     return render_to_string('common/menu.html', {

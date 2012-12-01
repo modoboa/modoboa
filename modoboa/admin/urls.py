@@ -11,7 +11,7 @@ urlpatterns = patterns(
     (r'^domains/delete/$', 'deldomain'),
     (r'^domains/import/$', 'import_domains'),
     
-    (r'^settings/$', 'viewparameters'),
+    (r'^settings/$', 'viewsettings'),
     (r'^settings/parameters/$', 'viewparameters'),
     (r'^settings/parameters/save/$', 'saveparameters'),
     (r'^settings/extensions/$', 'viewextensions'),

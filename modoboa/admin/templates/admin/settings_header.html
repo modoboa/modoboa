@@ -1,22 +1,14 @@
 {% extends "twocols.html" %}
 {% load i18n libextras admin_extras %}
+{% block pagetitle %}{% trans "Modoboa settings" %}{% endblock %}
 {% block html_head %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}admin/js/settings.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#update").click(function(evt) {
-        evt.preventDefault();
-        var $form = $("form");
-
-        $.post($form.attr("action"), $form.serialize(), function(data) {
-            if (data.status == "ok") {
-                if (data.reload) {
-                    window.location.reload();
-                }
-                $("body").notify("success", data.message, 2000);
-            }
-        });
-    });
+    var settings = new Settings({});
 });
 </script>
 {% endblock %}
 {% block leftcol %}<div class="well sidebar-nav">{% settings_menu left_selection user %}</div>{% endblock %}
+{% block apparea %}<div id="settings_content"></div>{% endblock %}

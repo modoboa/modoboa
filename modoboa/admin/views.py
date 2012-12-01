@@ -468,6 +468,13 @@ def remove_permission(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
+def viewsettings(request, tplname='admin/settings_header.html'):
+    return render(request, tplname, {
+            "selection" : "settings"
+            })
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
 def viewparameters(request, tplname='admin/parameters.html'):
     apps = sorted(parameters._params.keys())
     gparams = []
@@ -486,10 +493,10 @@ def viewparameters(request, tplname='admin/parameters.html'):
             tmp["params"] += [newdef]
         gparams += [tmp]
 
-    return render(request, tplname, {
-            "selection" : "settings",
+    return ajax_simple_response({
+            "status" : "ok",
             "left_selection" : "parameters",
-            "gparams" : gparams
+            "content" : render_to_string(tplname, {"gparams" : gparams})
             })
 
 @login_required
@@ -500,7 +507,7 @@ def saveparameters(request):
             continue
         app, name = pname.split('.')
         parameters.save_admin(name, v, app=app)
-    return ajax_simple_response(dict(status="ok", message=_("Parameters saved")))
+    return ajax_simple_response(dict(status="ok", respmsg=_("Parameters saved")))
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -520,10 +527,9 @@ def viewextensions(request, tplname='admin/extensions.html'):
             ext["selection"] = False
             
     tbl = ExtensionsTable(request, exts)
-    return render(request, tplname, {
-            "selection" : "settings",
-            "left_selection" : "extensions",
-            "extensions" : tbl
+    return ajax_simple_response({
+            "status" : "ok",
+            "content" : render_to_string(tplname, {"extensions" : tbl})
             })
 
 @login_required
@@ -546,7 +552,7 @@ def saveextensions(request):
             ext.off()
 
     return ajax_simple_response(dict(
-            status="ok", message=_("Modifications applied."), reload=True
+            status="ok", respmsg=_("Modifications applied.")
             ))
 
 def import_domain(user, row):

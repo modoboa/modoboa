@@ -1,8 +1,6 @@
-{% extends "admin/settings_header.html" %}{% load i18n %}
-{% block pagetitle %}{% trans "Extensions" %}{% endblock %}
-{% block apparea %}
-<form method="POST" action="{% url modoboa.admin.views.saveextensions %}">
+{% load i18n %}
+<h2>{% trans "Extensions" %} <small>{% trans "Choose the extension(s) to use" %}</small></h2><hr />
+<form id="settings_form" method="POST" action="{% url modoboa.admin.views.saveextensions %}">
   {{ extensions|safe }}
 </form>
 <a href="#" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</a>
-{% endblock %}
