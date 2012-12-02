@@ -9,6 +9,7 @@ from django.contrib.auth.decorators \
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters, events
+from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.webutils import ajax_response, ajax_simple_response
 from forms import *
 from modoboa.admin.models import Mailbox, Alias
@@ -16,19 +17,20 @@ from modoboa.admin.lib import AdminError
 from modoboa.auth.lib import encrypt
 
 @login_required
-def index(request):
-    return HttpResponseRedirect(reverse(profile))
+def index(request, tplname="userprefs/index.html"):
+    extrajs = events.raiseQueryEvent("ExtraUprefsJS")
+    return render(request, tplname, {
+            "selection" : "user",
+            "extrajs" : "".join(extrajs)
+            })
 
 @login_required
 @user_passes_test(lambda u: u.belongs_to_group('SimpleUsers'))
-def forward(request):
-    mb = request.user.mailbox_set.all()[0]
-    ctx = dict(
-        title=_("Forward"), 
-        subtitle=_("Automatically forward emails to another address"),
-        action=reverse(forward),
-        left_selection="forward",
-        )
+def forward(request, tplname='userprefs/forward.html'):
+    try:
+        mb = request.user.mailbox_set.all()[0]
+    except IndexError:
+        raise ModoboaException(_("You need a mailbox in order to define a forward"))
     try:
         al = Alias.objects.get(address=mb.address, 
                                domain__name=mb.domain.name)
@@ -53,10 +55,9 @@ def forward(request):
             except BadDestination, e:
                 error = str(e)
 
-        ctx.update(form=form, error=error)
         return ajax_simple_response(dict(
                 status="ko", 
-                content=render_to_string("userprefs/form.html", dict(form=form)),
+                content=render_to_string(tplname, {"form" : form}),
                 respmsg=error
                 ))
 
@@ -69,11 +70,15 @@ def forward(request):
             pass
         else:
             form.fields["keepcopies"].initial = True
-    ctx.update(form=form)
-    return render(request, "userprefs/section.html", ctx)
+    return ajax_simple_response({
+            "status" : "ok", 
+            "content" : render_to_string(tplname, {
+                    "form" : form
+                    })
+            })
 
 @login_required
-def profile(request):
+def profile(request, tplname='userprefs/profile.html'):
     update_password = True
     if True in events.raiseQueryEvent("PasswordChange", request.user):
         update_password = False
@@ -87,18 +92,17 @@ def profile(request):
             return ajax_simple_response(dict(
                     status="ok", respmsg=_("Profile updated")
                     ))
-        return ajax_simple_response(dict(
-                status="ko", 
-                content=render_to_string("userprefs/form.html", dict(form=form))
-                ))
+        return ajax_simple_response({
+                "status" : "ko", 
+                "content" : render_to_string(tplname, {"form" : form})
+                })
 
     form = ProfileForm(update_password, instance=request.user)
-    return render(request, 'userprefs/section.html', {
-            "title" : _("Profile"), 
-            "subtitle" : _("Update your personal information"),
-            "action" : reverse(profile),
-            "left_selection" : "profile",
-            "form" : form
+    return ajax_simple_response({
+            "status" : "ok", 
+            "content" : render_to_string(tplname, {
+                    "form" : form
+                    })
             })
 
 @login_required
@@ -111,7 +115,7 @@ def preferences(request):
             parameters.save_user(request.user, name, v, app=app)
 
         return ajax_simple_response(dict(
-                status="ok", message=_("Preferences saved")
+                status="ok", respmsg=_("Preferences saved")
                 ))
 
     apps = sorted(parameters._params.keys())
@@ -132,8 +136,9 @@ def preferences(request):
             tmp["params"] += [newdef]
         gparams += [tmp]
 
-    return render(request, 'userprefs/preferences.html', {
-            "selection" : "user",
-            "left_selection" : "preferences",
-            "gparams" : gparams
+    return ajax_simple_response({
+            "status" : "ok",
+            "content" : render_to_string("userprefs/preferences.html", {
+                    "gparams" : gparams
+                    })
             })

@@ -1,30 +1,9 @@
-{% extends "twocols.html" %}{% load i18n uprefs_extras libextras %}
-{% block pagetitle %}{% trans "Settings" %}{% endblock %}
-{% block html_head %}
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#update").click(function(evt) {
-        evt.preventDefault();
-        var $form = $("form");
-
-        $.post($form.attr("action"), $form.serialize(), function(data) {
-            if (data.status == "ok") {
-                $("body").notify("success", data.message, 2000);
-            }
-        });
-    });
-});
-</script>
-{% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu left_selection user %}</div>{% endblock %}
-{% block apparea %}
-  <h2>{% trans "Preferences" %} <small>{% trans "Customize Modoboa" %}</small></h2>
+{% load i18n %}
+<h2>{% trans "Preferences" %} <small>{% trans "Customize Modoboa" %}</small></h2>
+<hr>
+<form class="form-horizontal" method="POST" action="{% url modoboa.userprefs.views.preferences %}" 
+      id="uprefs_form">
+  {% include "common/parameters.html" %}
   <hr>
-  <form class="form-horizontal" method="POST" 
-        action="{% url modoboa.userprefs.views.preferences %}" 
-        id="uparams_form">
-    {% include "common/parameters.html" %}
-    <hr>
-    <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</button>
-  </form>
-{% endblock %}
+  <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</button>
+</form>

@@ -1,7 +1,7 @@
 # coding: utf-8
 from datetime import date
 from django.http import HttpResponse
-from django.utils import simplejson
+from django.template.loader import render_to_string
 from django.contrib.auth.decorators \
     import login_required
 from django.contrib import messages
@@ -14,7 +14,7 @@ from models import *
 
 @login_required
 @needs_mailbox()
-def autoreply(request, tplname="userprefs/section.html"):
+def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
     mb = Mailbox.objects.get(user=request.user.id)
     try:
         arm = ARmessage.objects.get(mbox=mb.id)
@@ -36,18 +36,19 @@ def autoreply(request, tplname="userprefs/section.html"):
                         status="ok", respmsg=_("Auto reply message updated successfully.")
                         ))
 
-        return ajax_response(request, status="ko", template="userprefs/form.html", form=form)
+        return ajax_simple_response({
+                "status" : "ko", 
+                "content" : render_to_string(tplname, {"form" : form}),
+                "onload_cb" : "autoreply_cb"
+                })
 
-    ctx = dict(
-        title=_("Auto-reply message"),
-        subtitle=_("Define a message to automatically send when you are off"),
-        action=reverse(autoreply),
-        left_selection="autoreply",
-        )
     form = ARmessageForm(instance=arm)
     if arm is not None:
         form.fields['untildate'].initial = arm.untildate
     else:
         form.fields['untildate'].initial = date.today()
-    ctx.update(form=form)
-    return _render(request, "postfix_autoreply/autoreply.html", ctx)
+    return ajax_simple_response({
+            "status" : "ok", 
+            "content" : render_to_string(tplname, {"form" : form}),
+            "onload_cb" : "autoreply_cb"
+            })

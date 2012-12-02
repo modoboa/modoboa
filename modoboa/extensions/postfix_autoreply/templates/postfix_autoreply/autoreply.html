@@ -1,20 +1,11 @@
-{% extends "userprefs/section.html" %}
-{% block html_head %}
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '{{ LANGUAGE_CODE }}'});
-    $(document).on("click", "#update", function(evt) {
-        evt.preventDefault();
-        var $form = $("#form");
-        $.post($form.attr("action"), $form.serialize(), function(data) {
-            if (data.status == "ok") {
-                $("body").notify("success", data.respmsg, 2000);
-            } else {
-                $("#form").html(data.content);
-                $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '{{ LANGUAGE_CODE }}'});
-            }
-        });
-    });
-});
-</script>
-{% endblock %}
+{% load i18n libextras %}
+<h2>{% trans "Auto-reply message" %} <small>{% trans "Define a message to automatically send when you are off" %}</small></h2>
+<hr>
+<form class="form-horizontal" method="POST" 
+      action="{% url modoboa.extensions.postfix_autoreply.views.autoreply %}" 
+      id="uprefs_form">
+  {% render_form form %}
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Update' %}</button>
+  </div>
+</form>

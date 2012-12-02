@@ -3,10 +3,15 @@
 {% block pagetitle %}{% trans "Modoboa settings" %}{% endblock %}
 {% block html_head %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}admin/js/settings.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/twocols_nav.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    var settings = new Settings({});
+    var settings = new TwocolsNav({
+        deflocation: "parameters/",
+        formid: "settings_form",
+        divid: "settings_content",
+        reload_exceptions: ["extensions"]
+    });
 });
 </script>
 {% endblock %}

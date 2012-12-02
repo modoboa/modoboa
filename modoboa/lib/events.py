@@ -59,6 +59,9 @@ events = [
 
     "TopNotifications",
     "ExtraAdminContent",
+
+    "ExtraUprefsRoutes",
+    "ExtraUprefsJS"
     ]
 
 callbacks = {}

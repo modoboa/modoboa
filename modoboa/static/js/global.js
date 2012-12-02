@@ -98,7 +98,7 @@ if (!Object.keys) {
 function simple_ajax_form_post(e, options) {
     e.preventDefault();
     var $form = (options.formid != undefined) ? $("#" + options.formid) : $("form");
-    var defaults = {reload_on_success: true, reload_mode: 'full'};
+    var defaults = {reload_on_success: true, reload_mode: 'full', modal: true};
     var opts = $.extend({}, defaults, options);
     var args = $form.serialize();
 
@@ -123,14 +123,16 @@ function simple_ajax_form_post(e, options) {
                 $("body").notify('success', data.respmsg, 2000);
             }
         } else {
-            if (data.content != "") {
-                $('.modal').html(data.content);
-            }
-            if (data.respmsg) {
-                $('.modal-body').prepend(build_error_alert(data.respmsg));
+            if (opts.modal) {
+                if (data.content != "") {
+                    $('.modal').html(data.content);
+                }
+                if (data.respmsg) {
+                    $('.modal-body').prepend(build_error_alert(data.respmsg));
+                }
             }
             if (opts.error_cb != undefined) {
-                opts.error_cb();
+                opts.error_cb(data);
             }
         }
     });

@@ -12,16 +12,18 @@ register = template.Library()
 def uprefs_menu(selection, user):
     entries = [
         {"name" : "profile",
-         "url" : reverse("modoboa.userprefs.views.profile"),
+         "class" : "ajaxlink",
+         "url" : "profile/",
          "label" : _("Profile")},
         {"name" : "preferences",
-         "url" : reverse("modoboa.userprefs.views.preferences"),
+         "class" : "ajaxlink",
+         "url" : "preferences/",
          "label" : _("Preferences")},
         ]
-    if user.group == 'SimpleUsers':
+    if user.group == 'SimpleUsers' and user.has_mailbox:
         entries.insert(0, {"name" : "forward",
-                           "url" : reverse("modoboa.userprefs.views.forward"),
-                           "modalcb" : "forwardform_cb",
+                           "class" : "ajaxlink",
+                           "url" : "forward/",
                            "label" : _("Forward")})
 
     entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu", user)

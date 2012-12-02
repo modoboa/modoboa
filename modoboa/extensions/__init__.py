@@ -64,9 +64,13 @@ class ExtensionsPool(object):
                     extinstance.load()
             except Extension.DoesNotExist:
                 pass
-            baseurl = extinstance.url if extinstance.url is not None else extname
-            result += [(r'^%s/' % (baseurl),
-                        include("%s.urls" % extinstance.__module__))]
+            try:
+                baseurl = extinstance.url if extinstance.url is not None else extname
+                result += [(r'^%s/' % (baseurl),
+                            include("%s.urls" % extinstance.__module__))]
+            except ImportError:
+                # No urls for this extension
+                pass
         return result
 
     def list_all(self):

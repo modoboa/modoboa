@@ -21,13 +21,12 @@ from modoboa.lib.models import Parameter
 from modoboa.lib.permissions import *
 
 @login_required
-def _domains(request):
-    if not request.user.has_perm("admin.view_domains"):
-        if request.user.has_perm("admin.view_mailboxes"):
-            return HttpResponseRedirect(reverse(identities))
+def index(request):
+    return HttpResponseRedirect(reverse(domains))
 
-        return HttpResponseRedirect(reverse("modoboa.userprefs.views.index"))
-    
+@login_required
+@user_passes_test(lambda u: u.has_perm("admin.view_domains") or u.has_perm("admin.view_mailboxes"))
+def _domains(request):
     domains = request.user.get_domains()
     squery = request.GET.get("searchquery", None)
     if squery is not None:
@@ -38,6 +37,12 @@ def _domains(request):
 
 @login_required
 def domains(request, tplname="admin/domains.html"):
+    if not request.user.has_perm("admin.view_domains"):
+        if request.user.has_perm("admin.view_mailboxes"):
+            return HttpResponseRedirect(reverse(identities))
+        
+        return HttpResponseRedirect(reverse("modoboa.userprefs.views.index"))
+    
     return render(request, tplname, {
             "selection" : "domains"
             })

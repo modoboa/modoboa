@@ -54,6 +54,17 @@ class PostfixAutoreply(ModoExtension):
 
 exts_pool.register_extension(PostfixAutoreply)
 
+@events.observe("ExtraUprefsRoutes")
+def extra_routes():
+    return [(r'^autoreply/$', 'modoboa.extensions.postfix_autoreply.views.autoreply'),]
+
+@events.observe("ExtraUprefsJS")
+def extra_js():
+    return ["""function autoreply_cb() {
+    $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '%s'});
+}
+""" % 'en']
+
 @events.observe("UserMenuDisplay")
 def menu(target, user):
     import views
@@ -64,7 +75,8 @@ def menu(target, user):
         return []
     return [
         {"name" : "autoreply",
-         "url" : reverse(views.autoreply),
+         "class" : "ajaxlink",
+         "url" : "autoreply/",
          "label" : ugettext_lazy("Auto-reply message")}
         ]
 

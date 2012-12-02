@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns(
     'modoboa.admin.views',
-    url(r'^$', 'domains', name="index"),
+    url(r'^$', 'index', name="index"),
     url(r'^domains/$', 'domains', name="domains"),
     (r'^domains/list/$', '_domains'),
     (r'^domains/flatlist/$', 'domains_list'),

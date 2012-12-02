@@ -1,0 +1,19 @@
+{% extends "twocols.html" %}{% load i18n uprefs_extras libextras %}
+{% block pagetitle %}{% trans "Settings" %}{% endblock %}
+{% block html_head %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/twocols_nav.js"></script>
+<script type="text/javascript">
+{{ extrajs|safe }}
+$(document).ready(function() {
+    var userprefs = new TwocolsNav({
+        deflocation: "profile/",
+        formid: "uprefs_form",
+        divid: "uprefs_content",
+        reload_exceptions: ["profile"]
+    });
+});
+</script>
+{% endblock %}
+{% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu left_selection user %}</div>{% endblock %}
+{% block apparea %}<div id="uprefs_content"></div>{% endblock %}

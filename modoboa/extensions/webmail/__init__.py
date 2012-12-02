@@ -99,7 +99,7 @@ def userlogout(request):
         m = IMAPconnector(user=request.user.username,
                           password=request.session["password"])
     except Exception, e:
-        pass
+        return
     
     # The following statement may fail under Python 2.6...
     try:
