@@ -133,11 +133,19 @@ def parse_fetch_response(data):
             end = 0
             if cmdname in ['BODY', 'BODYSTRUCTURE', 'FLAGS']:
                 parendepth = 0
+                instring = False
                 for pos, c in enumerate(response):
-                    if c == '(':
+                    if not instring and c == '"':
+                        instring = True
+                        continue
+                    if instring and c == '"':
+                        if pos and response[pos - 1] != '\\':
+                            instring = False
+                            continue
+                    if not instring and c == '(':
                         parendepth += 1
                         continue
-                    if c == ')':
+                    if not instring and c == ')':
                         parendepth -= 1
                         if parendepth == 0:
                             end = pos + 1
@@ -189,5 +197,7 @@ if __name__ == "__main__":
 #             'Date: Tue, 19 Dec 2006 19:50:13 +0100\r\nFrom: Antoine Nguyen <nguyen.antoine@wanadoo.fr>\r\nTo: Antoine Nguyen <tonio@koalabs.org>\r\nSubject: [Fwd: [INSCRIPTION] =?ISO-8859-1?Q?R=E9c=E9ption_de_votre_?=\r\n =?ISO-8859-1?Q?dossier_d=27inscription_Free_Haut_D=E9bit=5D?=\r\n\r\n'), ')']
 
     resp = [('123 (UID 3 BODYSTRUCTURE (((("text" "plain" ("charset" "iso-8859-1") NIL NIL "quoted-printable" 1266 30 NIL NIL NIL NIL)("text" "html" ("charset" "iso-8859-1") NIL NIL "quoted-printable" 8830 227 NIL NIL NIL NIL) "alternative" ("boundary" "_000_152AC7ECD1F8AB43A9AD95DBDDCA3118082C09GKIMA24cmcicfr_") NIL NIL NIL)("image" "png" ("name" "image005.png") "<image005.png@01CC6CAA.4FADC490>" "image005.png" "base64" 7464 NIL ("inline" ("filename" "image005.png" "size" "5453" "creation-date" "Tue, 06 Sep 2011 13:33:49 GMT" "modification-date" "Tue, 06 Sep 2011 13:33:49 GMT")) NIL NIL)("image" "jpeg" ("name" "image006.jpg") "<image006.jpg@01CC6CAA.4FADC490>" "image006.jpg" "base64" 2492 NIL ("inline" ("filename" "image006.jpg" "size" "1819" "creation-date" "Tue, 06 Sep 2011 13:33:49 GMT" "modification-date" "Tue, 06 Sep 2011 13:33:49 GMT")) NIL NIL) "related" ("boundary" "_006_152AC7ECD1F8AB43A9AD95DBDDCA3118082C09GKIMA24cmcicfr_" "type" "multipart/alternative") NIL NIL NIL)("application" "pdf" ("name" "bilan assurance CIC.PDF") NIL "bilan assurance CIC.PDF" "base64" 459532 NIL ("attachment" ("filename" "bilan assurance CIC.PDF" "size" "335811" "creation-date" "Fri, 16 Sep 2011 12:45:23 GMT" "modification-date" "Fri, 16 Sep 2011 12:45:23 GMT")) NIL NIL)(("text" "plain" ("charset" "utf-8") NIL NIL "quoted-printable" 1389 29 NIL NIL NIL NIL)("text" "html" ("charset" "utf-8") NIL NIL "quoted-printable" 1457 27 NIL NIL NIL NIL) "alternative" ("boundary" "===============0775904800==") ("inline" NIL) NIL NIL) "mixed" ("boundary" "_007_152AC7ECD1F8AB43A9AD95DBDDCA3118082C09GKIMA24cmcicfr_") NIL ("fr-FR") NIL)',), ')']
+
+    resp = [('856 (UID 11111 BODYSTRUCTURE ((("text" "plain" ("charset" "UTF-8") NIL NIL "7bit" 0 0 NIL NIL NIL NIL) "mixed" ("boundary" "----=_Part_407172_3159001.1321948277321") NIL NIL NIL)("application" "octet-stream" ("name" "26274308.pdf") NIL NIL "base64" 14906 NIL ("attachment" ("filename" "(26274308.pdf")) NIL NIL) "mixed" ("boundary" "----=_Part_407171_9686991.1321948277321") NIL NIL NIL)',), ')']
 
     print parse_fetch_response(resp)
