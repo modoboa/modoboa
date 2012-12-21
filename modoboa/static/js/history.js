@@ -7,8 +7,6 @@ History.prototype = {
 
     defaults: {
         checkinterval: 300,
-        defloadingtext: gettext("Loading..."),
-        defloadingcolor: "gray",
         deflocation: null,
         defcallback: null
     },
@@ -20,7 +18,6 @@ History.prototype = {
         this.serialized = null;
         this.updatenext = true;
         this.load_params();
-        this.reset_loading_infos();
         if (this.options.defcallback) {
             this.register_callback("default", this.options.defcallback);
             this.check_id =
@@ -28,10 +25,22 @@ History.prototype = {
         }
     },
 
-    load_params: function() {
-        var rawqs = window.location.hash.substr(1);
+    /*
+     * Return the encoded hash part of the URL (some browsers like FF
+     * automatically decode the location.hash variable).
+     */
+    get_raw_hash: function() {
+        var parts = window.location.href.split('#');
+        if (parts.length > 1) {
+            return parts[1];
+        }
+        return "";
+    },
 
-        if (rawqs.indexOf('?') == -1) {
+    load_params: function() {
+        var rawqs = this.get_raw_hash();
+
+        if (!rawqs || rawqs.indexOf('?') == -1) {
             this.params = {};
             return;
         }
@@ -43,11 +52,6 @@ History.prototype = {
 
     paramslength: function() {
         return Object.keys(this.params).length;
-    },
-
-    reset_loading_infos: function() {
-        this.loading_message = this.options.defloadingtext;
-        this.loading_color = this.options.defloadingcolor;
     },
 
     reset: function() {
@@ -103,7 +107,7 @@ History.prototype = {
                 if (args != "?") {
                     args += "&";
                 }
-                args += key + "=" + encodeURIComponent(value);
+                args += key + "=" + value;
             });
         }
         return res + args;
@@ -141,12 +145,12 @@ History.prototype = {
     },
 
     setparam: function(name, value) {
-        this.params[name] = value;
+        this.params[name] = encodeURIComponent(value);
         return this;
     },
 
     setparams: function(params) {
-        this.params = $.extend({}, this.params, params);
+        $.each(params, $.proxy(this.setparam, this));
         return this;
     },
 
@@ -203,25 +207,26 @@ History.prototype = {
     },
 
     check: function() {
-        var decodedhash = decodeURIComponent(location.hash);
+        var rawhash = this.get_raw_hash();
 
-        if (this.serialized == decodedhash && this.force === undefined) {
+
+        if (this.serialized == rawhash && this.force === undefined) {
             return;
         }
         delete(this.force);
-        this.from_string(decodedhash);
+        this.from_string(rawhash);
+
         if (!this.serialized) {
-            location.hash = this.options.deflocation;
+            window.location.hash = this.options.deflocation;
             return;
         }
         if (!this.updatenext) {
             this.updatenext = true;
             return;
         }
-        var query = this.serialized.substring(1);
 
         $.ajax({
-            url: query,
+            url: this.serialized,
             cache: false,
             complete: $.proxy(function(XMLHttpRequest, textStatus) {
                 var resp;
