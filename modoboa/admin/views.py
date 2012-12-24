@@ -560,6 +560,14 @@ def saveextensions(request):
             status="ok", respmsg=_("Modifications applied.")
             ))
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def information(request, tplname="admin/information.html"):
+    return ajax_simple_response({
+            "status" : "ok", 
+            "content" : render_to_string(tplname, {})
+            })
+
 def import_domain(user, row):
     """Specific code for domains import"""
     dom = Domain()

@@ -54,6 +54,10 @@ def settings_menu(selection, user):
          "url" : "parameters/",
          "img" : "",
          "label" : _("Parameters")},
+        {"name" : "info",
+         "class" : "ajaxlink",
+         "url" : "info/",
+         "label" : _("Information")}
         ]
     return render_to_string('common/menu.html', {
             "entries" : entries, 

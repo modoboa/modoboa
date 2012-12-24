@@ -1,12 +1,14 @@
 # coding: utf-8
 import os
-import datetime
+from django.utils import timezone
 from django.conf import settings
 from django import template
 from django.contrib import messages
 from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
+from django.contrib.sessions.models import Session
+from datetime import datetime
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events
 from modoboa.lib.sysutils import exec_cmd
@@ -16,16 +18,8 @@ register = template.Library()
 
 @register.simple_tag
 def get_version():
-    if os.path.isdir("%s/.hg" % settings.MODOBOA_DIR):
-        version = "dev-"
-        code, output = exec_cmd("hg id -i", cwd=settings.MODOBOA_DIR)
-        version += output.rstrip()
-        return version
-    elif os.path.exists("%s/VERSION" % settings.MODOBOA_DIR):
-        code, output = exec_cmd("cat %s/VERSION" % settings.MODOBOA_DIR)
-        return output.rstrip()
-    else:
-        return "Unknown"
+    import pkg_resources
+    return pkg_resources.get_distribution("modoboa").version
 
 @register.simple_tag
 def join(items, sep=','):
@@ -180,3 +174,32 @@ def progress_color(value):
 @register.filter
 def fromunix(value):
     return datetime.datetime.fromtimestamp(int(value))
+
+class ConnectedUsers(template.Node):
+    def __init__(self, varname):
+        self.varname = varname
+
+    def render(self, context):
+        from modoboa.admin.models import User
+        
+        sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        uid_list = []
+        
+        # Build a list of user ids from that query
+        for session in sessions:
+            data = session.get_decoded()
+            uid = data.get('_auth_user_id', None)
+            if uid:
+                uid_list.append(uid)
+
+        # Query all logged in users based on id list
+        context[self.varname] = [User.objects.get(pk=uid) for uid in uid_list]
+        return ''
+
+@register.tag
+def connected_users(parser, token):
+    try:
+        tag, a, varname = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError('connected_users usage: {% connected_users as users %}')
+    return ConnectedUsers(varname)
