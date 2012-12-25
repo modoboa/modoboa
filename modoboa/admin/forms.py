@@ -421,17 +421,20 @@ class AccountFormGeneral(forms.ModelForm):
                 role = self.cleaned_data["role"]
             elif self.user.group == "DomainAdmins" and self.user != account:
                 role = "SimpleUsers"
-            if role is not None:
-                account.groups.clear()
-                if role == "SuperAdmins":
-                    account.is_superuser = True
-                    self.give_all_accesses(account)
-                else:
-                    if account.is_superuser:
-                        ObjectAccess.objects.filter(user=account).delete()
-                    account.is_superuser = False
-                    account.groups.add(Group.objects.get(name=role))
-                account.save()
+
+            if role is None or account.group == role:
+                return account
+
+            account.groups.clear()
+            if role == "SuperAdmins":
+                account.is_superuser = True
+                self.give_all_accesses(account)
+            else:
+                if account.is_superuser:
+                    ObjectAccess.objects.filter(user=account).delete()
+                account.is_superuser = False
+                account.groups.add(Group.objects.get(name=role))
+            account.save()
         return account
 
 class AccountFormMail(forms.Form, DynamicForm):
