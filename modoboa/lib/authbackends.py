@@ -1,10 +1,7 @@
+from django.contrib.auth.backends import ModelBackend
 from modoboa.admin.models import User
 
-class SimpleBackend:
-
-    supports_object_permissions = False
-    supports_anonymous_user = False
-    supports_inactive_user = False
+class SimpleBackend(ModelBackend):
 
     def authenticate(self, username=None, password=None):
         try:
