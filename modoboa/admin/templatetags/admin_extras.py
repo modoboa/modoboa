@@ -49,15 +49,15 @@ def settings_menu(selection, user):
          "url" : "extensions/",
          "label" : _("Extensions"),
          "img" : ""},
+        {"name" : "info",
+         "class" : "ajaxlink",
+         "url" : "info/",
+         "label" : _("Information")},
         {"name" : "parameters",
          "class" : "ajaxlink",
          "url" : "parameters/",
          "img" : "",
          "label" : _("Parameters")},
-        {"name" : "info",
-         "class" : "ajaxlink",
-         "url" : "info/",
-         "label" : _("Information")}
         ]
     return render_to_string('common/menu.html', {
             "entries" : entries, 
@@ -201,10 +201,16 @@ def param(app, definition):
     value = definition.has_key("value") \
         and definition["value"] or definition["deflt"]
 
-    result = """<div class='control-group'>
+    extratags = ""
+    if "visible_if" in definition:
+        vfield, vvalue = definition["visible_if"].split("=")
+        extratags = "data-visibility-field='%s.%s' data-visibility-value='%s'" \
+            % (app, vfield, vvalue)
+
+    result = """<div class='control-group'%s>
   <label class="param-label" for="%s">%s</label>
   <div class="param-controls">""" \
-        % (name, definition.has_key("label") and _(definition["label"])
+        % (extratags, name, definition.has_key("label") and _(definition["label"])
            or definition["name"])
     if definition["type"] in ["string", "int"]:
         result += """

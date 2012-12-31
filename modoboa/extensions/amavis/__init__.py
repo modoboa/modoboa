@@ -54,12 +54,15 @@ class Amavis(ModoExtension):
                                   help=ugettext_lazy("Mode used to access the PDP server"))
         parameters.register_admin("AM_PDP_HOST", type="string", 
                                   deflt="localhost", 
+                                  visible_if="AM_PDP_MODE=inet",
                                   help=ugettext_lazy("PDP server address (if inet mode)"))
         parameters.register_admin("AM_PDP_PORT", type="int", 
                                   deflt=9998, 
+                                  visible_if="AM_PDP_MODE=inet",
                                   help=ugettext_lazy("PDP server port (if inet mode)"))
         parameters.register_admin("AM_PDP_SOCKET", type="string", 
                                   deflt="/var/amavis/amavisd.sock",
+                                  visible_if="AM_PDP_MODE=unix",
                                   help=ugettext_lazy("Path to the PDP server socket (if unix mode)"))
         parameters.register_admin("CHECK_REQUESTS_INTERVAL", type="int",
                                   deflt=30,

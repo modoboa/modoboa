@@ -493,8 +493,9 @@ def viewparameters(request, tplname='admin/parameters.html'):
                       "help" : param_def["help"],
                       "default" : param_def["deflt"],
                       "type" : param_def["type"]}
-            if "values" in param_def.keys():
-                newdef["values"] = param_def["values"]
+            for k in ["values", "visible_if"]:
+                if k in param_def.keys():
+                    newdef[k] = param_def[k]
             tmp["params"] += [newdef]
         gparams += [tmp]
 

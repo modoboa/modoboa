@@ -21,6 +21,7 @@ parameters.register_admin("MAILBOX_TYPE", type="list", deflt="maildir",
                           values=[("maildir", "maildir"), ("mbox", "mbox")],
                           help=ugettext_lazy("Mailboxes storage format"))
 parameters.register_admin("MAILDIR_ROOT", type="string", deflt=".maildir",
+                          visible_if="MAILBOX_TYPE=maildir",
                           help=ugettext_lazy("Sub-directory (inside the mailbox) where messages are stored when using the maildir format"))
 parameters.register_admin(
     "PASSWORD_SCHEME", type="list", deflt="md5crypt",

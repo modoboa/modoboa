@@ -37,7 +37,22 @@ TwocolsNav.prototype = {
         if (data.onload_cb) {
             eval(data.onload_cb + '()');
         }
+        $('#' + this.options.divid + ' select').change($.proxy(this.select_change, this));
         $(".help").popover().click(function(e) {e.preventDefault();});
+        $('#' + this.options.divid + ' select').change();
+    },
+
+    select_change: function(e) {
+        var $target = $(e.target);
+
+        $('div[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
+            var $this = $(this);
+            if ($this.attr("data-visibility-value") == $target.attr("value")) {
+                $this.show();
+            } else {
+                $this.hide();
+            }
+        });
     },
 
     save_cb: function(data) {
