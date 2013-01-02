@@ -481,28 +481,10 @@ def viewsettings(request, tplname='admin/settings_header.html'):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewparameters(request, tplname='admin/parameters.html'):
-    apps = sorted(parameters._params.keys())
-    gparams = []
-    for app in apps:
-        tmp = {"name" : app, "params" : []}
-        for p in parameters._params_order[app]['A']:
-
-            param_def = parameters._params[app]['A'][p]
-            newdef = {"name" : p, 
-                      "value" : parameters.get_admin(p, app=app),
-                      "help" : param_def["help"],
-                      "default" : param_def["deflt"],
-                      "type" : param_def["type"]}
-            for k in ["values", "visible_if"]:
-                if k in param_def.keys():
-                    newdef[k] = param_def[k]
-            tmp["params"] += [newdef]
-        gparams += [tmp]
-
     return ajax_simple_response({
             "status" : "ok",
             "left_selection" : "parameters",
-            "content" : render_to_string(tplname, {"gparams" : gparams})
+            "content" : render_to_string(tplname, {"gparams" : parameters.get_all_admin_parameters()})
             })
 
 @login_required

@@ -1,5 +1,4 @@
 # coding: utf-8
-import copy
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
@@ -118,27 +117,9 @@ def preferences(request):
                 status="ok", respmsg=_("Preferences saved")
                 ))
 
-    apps = sorted(parameters._params.keys())
-    gparams = []
-    for app in apps:
-        if not len(parameters._params[app]['U']):
-            continue
-        if parameters.get_app_option('U', 'needs_mailbox', False, app=app) \
-                and not request.user.has_mailbox:
-            continue
-            
-        tmp = {"name" : app, "params" : []}
-        for p in parameters._params_order[app]['U']:
-            param_def = parameters._params[app]['U'][p]
-            newdef = copy.deepcopy(param_def)
-            newdef["name"] = p
-            newdef["value"] = parameters.get_user(request.user, p, app=app)
-            tmp["params"] += [newdef]
-        gparams += [tmp]
-
     return ajax_simple_response({
             "status" : "ok",
             "content" : render_to_string("userprefs/preferences.html", {
-                    "gparams" : gparams
+                    "gparams" : parameters.get_all_user_params(request.user)
                     })
             })

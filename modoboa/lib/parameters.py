@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 import string
 import inspect
 import re
+import copy
 
 """
 This interface provides a simple way to declare and store parameters
@@ -211,6 +212,24 @@ def get_admin(name, app=None):
         return _params[app]["A"][name]["deflt"]
     return p.value.decode("unicode_escape")
 
+def get_all_admin_parameters():
+    """Retrieve all administrative parameters
+
+    Returned parameters are sorted by application
+
+    :return: a list of dictionaries
+    """
+    result = []
+    for app in sorted(_params.keys()):
+        tmp = {"name" : app, "params" : []}
+        for p in _params_order[app]['A']:
+            newdef = copy.deepcopy(_params[app]['A'][p])
+            newdef["name"] = p
+            newdef["value"] = get_admin(p, app=app)
+            tmp["params"] += [newdef]
+        result += [tmp]
+    return result
+
 def get_user(user, name, app=None):
     from models import UserParameter
 
@@ -223,7 +242,42 @@ def get_user(user, name, app=None):
         return _params[app]["U"][name]["deflt"]
     return p.value.decode("unicode_escape")
 
+def get_all_user_params(user):
+    """Retrieve all the parameters of the given user
+
+    Returned parameters are sorted by application.
+
+    :param user: a ``User`` object
+    :return: a list of dictionaries
+    """
+    result = []
+    for app in sorted(_params.keys()):
+        if not len(_params[app]['U']):
+            continue
+        if get_app_option('U', 'needs_mailbox', False, app=app) \
+                and not user.has_mailbox:
+            continue
+        tmp = {"name" : app, "params" : []}
+        for p in _params_order[app]['U']:
+            param_def = _params[app]['U'][p]
+            newdef = copy.deepcopy(param_def)
+            newdef["name"] = p
+            newdef["value"] = get_user(user, p, app=app)
+            tmp["params"] += [newdef]
+        result += [tmp]
+    return result
+
 def get_app_option(lvl, name, dflt, app=None):
+    """Retrieve a specific option for a given application
+
+    If the option is not found, a default value is returned.
+
+    :param lvl: the option's level (U or A)
+    :param name: the option's name
+    :param dflt: the default value to return
+    :param app: the application name
+    :return: the option's value
+    """
     if app is None:
         app = __guess_extension()
     if not lvl in _params[app]['options']:
