@@ -87,3 +87,8 @@ body {
 .hidden { 
     display: none;
 }
+
+.help-block { 
+    color: #999999;
+    font-style: italic;
+}

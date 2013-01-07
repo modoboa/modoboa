@@ -27,10 +27,12 @@ $(document).ready(function() {
     <li class="nav-header">
       {% trans "Filter" %}
     </li>
-    <div class="input-prepend input-append">
-      <span class="add-on"><i class="icon-search"></i></span>
-      <input class="span10" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
-    </div>
+    <li>
+      <div class="input-prepend input-append">
+        <span class="add-on"><i class="icon-search"></i></span>
+        <input class="span10" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+      </div>
+    </li>
     <li class="nav-header">
       {% trans "Predefined time ranges" %}
     </li>

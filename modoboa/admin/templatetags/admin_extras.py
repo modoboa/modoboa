@@ -209,9 +209,11 @@ def param(app, definition):
 
     result = """<div class='control-group'%s>
   <label class="param-label" for="%s">%s</label>
-  <div class="param-controls">""" \
-        % (extratags, name, definition.has_key("label") and _(definition["label"])
-           or definition["name"])
+""" % (extratags, name,
+       definition.has_key("label") and _(definition["label"])
+       or definition["name"])
+
+    result += "<div class='param-controls'>"
     if definition["type"] in ["string", "int"]:
         result += """
   <input type='text' name='%s' id='%s' value='%s' />""" % (name, name, value)
@@ -246,8 +248,9 @@ def param(app, definition):
 
     if definition.has_key("help"):
         result += """
-<p class="help-block">%s</p>
+<span class="help-block">%s</span>
 """ % _(definition["help"])
+
     result += """
   </div>
 </div>

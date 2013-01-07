@@ -68,6 +68,7 @@ class Webmail(ModoExtension):
                                  help=ugettext_lazy("The default mode used when displaying a message"))
         parameters.register_user("ENABLE_LINKS", type="list_yesno", deflt="no",
                                  label=ugettext_lazy("Enable HTML links display"),
+                                 visible_if="DISPLAYMODE=html",
                                  help=ugettext_lazy("Enable/Disable HTML links display"))
 
     def destroy(self):
