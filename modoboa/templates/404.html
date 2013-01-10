@@ -1,4 +1,7 @@
 {% extends "layout_simple.html" %}{% load i18n %}
 {% block content %}
-<div class="alert alert-info">{% trans "The requested page does not exist." %}</div>
+<div class="alert alert-info">
+  <h4>{% trans "Sorry" %}</h4>
+  <p>{% trans "The requested page does not exist." %}</p>
+</div>
 {% endblock %}
