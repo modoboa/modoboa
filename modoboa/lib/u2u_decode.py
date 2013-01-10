@@ -10,7 +10,7 @@ sre = re.compile(r'\?=[ \t]+=\?')
 # re pat for MIME encoded_word (without trailing spaces)
 mre = re.compile(r'=\?[^?]*?\?[bq]\?[^? \t]*?\?=', re.I)
 
-tre = re.compile('=\?.+\?=')
+tre = re.compile('=\?[^?]*\?=')
 
 def decode_mime(m):
     # substitute matching encoded_word with unicode equiv.
