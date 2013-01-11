@@ -799,9 +799,9 @@ class Alias(DatesAware):
                 return True
         return False
 
-    def create_from_csv(self, user, row):
-        if len(row) < 4:
-            raise AdminError(_("Invalid line"))
+    def create_from_csv(self, user, row, expected_elements=4):
+        if len(row) < expected_elements:
+            raise AdminError(_("Invalid line: %s" % row))
         localpart, domname = split_mailbox(row[1].strip())
         try:
             domain = Domain.objects.get(name=domname)

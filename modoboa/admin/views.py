@@ -567,12 +567,21 @@ def import_account(user, row):
     events.raiseEvent("AccountCreated", mb.user)
     events.raiseEvent("CreateMailbox", user, mb)
 
+def _import_alias(user, row, **kwargs):
+    """Specific code for aliases import"""
+    alias = Alias()
+    alias.create_from_csv(user, row, **kwargs)
+    grant_access_to_object(user, alias, is_owner=True)
+    events.raiseEvent("MailboxAliasCreated", user, alias)
+
+def import_alias(user, row):
+    _import_alias(user, row, expected_elements=3)
+
+def import_forward(user, row):
+    _import_alias(user, row, expected_elements=3)
+
 def import_dlist(user, row):
-    """Specific code for distribution lists import"""
-    dlist = Alias()
-    dlist.create_from_csv(user, row)
-    grant_access_to_object(user, dlist, is_owner=True)
-    events.raiseEvent("MailboxAliasCreated", user, dlist)
+    _import_alias(user, row)
 
 def importdata(request):
     """Generic import function
@@ -626,9 +635,13 @@ def import_identities(request):
     helptext = _("""Provide a CSV file where lines respect one of the following format:
 <ul>
 <li><em>account; loginname; password; first name; last name; address</em></li>
+<li><em>alias; address; internal recipient</em></li>
+<li><em>forward; address; external recipient</em></li>
 <li><em>dlist; address; recipient; recipient; ...</em></li>
 </ul>
-You can use a different character as separator.
+<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>
+
+<p>You can use a different character as separator.</p>
 """)
     ctx = dict(
         title=_("Import identities"),
@@ -650,10 +663,12 @@ def import_domains(request):
     if request.method == "POST":
         return importdata(request)
 
-    helptext = _("""Provide a CSV file where lines respect the following format:<br/>
-<em>domain; name; quota</em><br/>
-
-You can use a different character as separator.
+    helptext = _("""Provide a CSV file where lines respect the following format:
+<ul>
+  <li><em>domain; name; quota</em></li>
+</ul>
+<p>The <em>domain</em> keyword must be present for each line.</p>
+<p>You can use a different character as separator.</p>
 """)
 
     ctx = dict(
