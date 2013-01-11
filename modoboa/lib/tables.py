@@ -30,7 +30,7 @@ class Column:
             label = getattr(self, "label")
         except AttributeError:
             label = getattr(self, "name")
-        return _(label)
+        return label.encode("utf-8")
 
 class SelectionColumn(Column):
     """Specific column: selection

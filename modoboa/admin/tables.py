@@ -50,6 +50,7 @@ class ExtensionsTable(tables.Table):
 class IdentitiesTable(tables.Table):
     idkey = "id"
     styles = "table"
+    metainfo = tables.Column("metainfo", label=ugettext_lazy("Tags"), safe=True)
     identity = tables.LinkColumn(
         "identity", label=ugettext_lazy("Email/Username"),
         modal=True,
@@ -61,7 +62,7 @@ class IdentitiesTable(tables.Table):
     actions = tables.ActionColumn("actions",  label=ugettext_lazy("Actions"),
                                   defvalue=identity_actions)
 
-    cols_order = ["identity", "name_or_rcpt", "actions"]
+    cols_order = ["identity", "name_or_rcpt", "metainfo", "actions"]
 
     def __init__(self, request, identities):
         super(IdentitiesTable, self).__init__(request)

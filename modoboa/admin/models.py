@@ -177,6 +177,12 @@ class User(DUser):
         return constant_time_compare(val1, val2)
 
     @property
+    def metainfo(self):
+        ret = '<span class="label">%s</span>' % _("account")
+        ret += ' <span class="label label-info">%s</span>' % self.group
+        return ret
+
+    @property
     def has_mailbox(self):
         return len(self.mailbox_set.all()) != 0
 
@@ -759,6 +765,15 @@ class Alias(DatesAware):
         if len(rcpts) > 1:
             return "%s, ..." % rcpts[0]
         return rcpts[0]
+
+    @property
+    def metainfo(self):
+        cpt = len(self.mboxes.all())
+        if cpt:
+            label = _("alias") if cpt == 1 else _("distribution list")
+        else:
+            label = _("forward")
+        return '<span class="label">%s</span>' % label
 
     def save(self, int_rcpts, ext_rcpts, *args, **kwargs):
         if len(ext_rcpts):
