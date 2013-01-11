@@ -177,7 +177,7 @@ class User(DUser):
         return constant_time_compare(val1, val2)
 
     @property
-    def metainfo(self):
+    def tags(self):
         ret = '<span class="label">%s</span>' % _("account")
         ret += ' <span class="label label-info">%s</span>' % self.group
         return ret
@@ -767,7 +767,7 @@ class Alias(DatesAware):
         return rcpts[0]
 
     @property
-    def metainfo(self):
+    def tags(self):
         cpt = len(self.mboxes.all())
         if cpt:
             label = _("alias") if cpt == 1 else _("distribution list")
