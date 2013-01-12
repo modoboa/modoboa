@@ -513,7 +513,30 @@ class DomainAlias(DatesAware):
         ungrant_access_to_object(self)
         super(DomainAlias, self).delete()
 
+    def from_csv(self, user, row):
+        """Create a domain alias from a CSV row
+
+        Expected format: ["domainalias", domain alias name, targeted domain]
+        
+        :param user: a ``User`` object
+        :param row: a list containing the alias definition
+        """
+        if len(row) < 3:
+            raise AdminError(_("Invalid line"))
+        self.name = row[1].strip()
+        domname = row[2].strip()
+        try:
+            self.target = Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            raise AdminError(_("Unknown domain %s" % domname))
+        self.enabled = True
+        self.save()
+
     def to_csv(self, csvwriter):
+        """Export a domain alias using CSV format
+
+        :param csvwriter: a ``csv.writer`` object
+        """
         csvwriter.writerow(["domainalias", self.name, self.target.name])
 
 class Mailbox(DatesAware):

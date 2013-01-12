@@ -560,6 +560,13 @@ def import_domain(user, row):
     grant_access_to_object(user, dom, is_owner=True)
     events.raiseEvent("CreateDomain", user, dom)
 
+def import_domainalias(user, row):
+    """Specific code for domain aliases import"""
+    domalias = DomainAlias()
+    domalias.from_csv(user, row)
+    grant_access_to_object(user, domalias, is_owner=True)
+    events.raiseEvent("DomainAliasCreated", user, domalias)
+
 def import_account(user, row):
     """Specific code for accounts import"""
     mb = Mailbox()
@@ -634,7 +641,7 @@ def import_identities(request):
     if request.method == "POST":
         return importdata(request)
 
-    helptext = _("""Provide a CSV file where lines respect one of the following format:
+    helptext = _("""Provide a CSV file where lines respect one of the following formats:
 <ul>
 <li><em>account; loginname; password; first name; last name; address</em></li>
 <li><em>alias; address; internal recipient</em></li>
@@ -691,11 +698,12 @@ def import_domains(request):
     if request.method == "POST":
         return importdata(request)
 
-    helptext = _("""Provide a CSV file where lines respect the following format:
+    helptext = _("""Provide a CSV file where lines respect one of the following formats:
 <ul>
   <li><em>domain; name; quota</em></li>
+  <li><em>domainalias; name; targeted domain</em></li>
 </ul>
-<p>The <em>domain</em> keyword must be present for each line.</p>
+<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>
 <p>You can use a different character as separator.</p>
 """)
 
