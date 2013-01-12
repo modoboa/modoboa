@@ -10,6 +10,7 @@ urlpatterns = patterns(
     (r'^domains/(?P<dom_id>\d+)/edit/$', 'editdomain'),
     (r'^domains/delete/$', 'deldomain'),
     (r'^domains/import/$', 'import_domains'),
+    (r'^domains/export/$', 'export_domains'),
     
     (r'^settings/$', 'viewsettings'),
     (r'^settings/parameters/$', 'viewparameters'),
@@ -23,6 +24,7 @@ urlpatterns = patterns(
     (r'^identities/$', 'identities'),
     (r'^identities/list/$', '_identities'),
     (r'^identities/import/$', 'import_identities'),
+    (r'^identities/export/$', 'export_identities'),
 
     (r'^accounts/list/$', 'accounts_list'),
     (r'^accounts/new/$', 'newaccount'),

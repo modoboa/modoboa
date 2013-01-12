@@ -7,6 +7,8 @@ from django.contrib.auth.decorators \
 from django.db.models import Q
 from django.shortcuts import render
 from django.db import transaction, IntegrityError
+import cStringIO
+import csv
 
 from lib import render_listing
 from forms import *
@@ -656,6 +658,32 @@ def import_identities(request):
         )
     return render(request, "admin/importform.html", ctx)
 
+def _export(content, filename):
+    """Export a csv file's content
+
+    :param content: the content to export (string)
+    :param filename: the name that will appear into the response
+    :return: an ``HttpResponse`` object
+    """
+    resp = HttpResponse(content)
+    resp["Content-Type"] = "text/csv"
+    resp["Content-Length"] = len(content)
+    resp["Content-Disposition"] = 'attachment; filename="%s"' % filename
+    return resp
+
+@login_required
+@permission_required(lambda u: u.has_perm("auth.add_user") or u.has_perm("auth.add_alias"))
+def export_identities(request):
+    fp = cStringIO.StringIO()
+    csvwriter = csv.writer(fp, delimiter=';')
+    for oa in request.user.get_identities():
+        if oa.content_object:
+            oa.content_object.to_csv(csvwriter)
+    
+    content = fp.getvalue()
+    fp.close()
+    return _export(content, "modoboa-identities.csv")
+
 @login_required
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
@@ -683,3 +711,18 @@ def import_domains(request):
         form=ImportDataForm()
         )
     return render(request, "admin/importform.html", ctx)
+
+@login_required
+@permission_required("admin.add_domain")
+def export_domains(request):
+    import cStringIO
+    import csv
+
+    fp = cStringIO.StringIO()
+    csvwriter = csv.writer(fp, delimiter=';')
+    for dom in request.user.get_domains():
+        dom.to_csv(csvwriter)
+    
+    content = fp.getvalue()
+    fp.close()
+    return _export(content, "modoboa-domains.csv")

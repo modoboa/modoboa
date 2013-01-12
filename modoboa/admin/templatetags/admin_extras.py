@@ -83,7 +83,11 @@ def domains_menu(selection, user):
          "img" : "icon-folder-open",
          "url" : reverse(admin.views.import_domains),
          "modal" : True,
-         "modalcb" : "admin.importform_cb"}
+         "modalcb" : "admin.importform_cb"},
+        {"name" : "export",
+         "label" : _("Export"),
+         "img" : "icon-share-alt",
+         "url" : reverse(admin.views.export_domains),}
         ]
 
     return render_to_string('common/menulist.html', {
@@ -124,7 +128,11 @@ def identities_menu(user):
          "img" : "icon-folder-open",
          "url" : reverse(admin.views.import_identities),
          "modal" : True,
-         "modalcb" : "admin.importform_cb"}
+         "modalcb" : "admin.importform_cb"},
+        {"name" : "export",
+         "label" : _("Export"),
+         "img" : "icon-share-alt",
+         "url" : reverse(admin.views.export_identities),}
         ]
 
     return render_to_string('common/menulist.html', {

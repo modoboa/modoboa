@@ -335,6 +335,11 @@ class User(DUser):
             if ooentry.content_object.is_owner(obj):
                 return True
         return False
+
+    def to_csv(self, csvwriter):
+        csvwriter.writerow(["account", self.username.encode("utf-8"), self.password, 
+                            self.first_name.encode("utf-8"), self.last_name.encode("utf-8"), 
+                            self.email])
     
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User)
@@ -480,6 +485,9 @@ class Domain(DatesAware):
         self.quota = int(row[2].strip())
         self.enabled = True
         self.save()
+
+    def to_csv(self, csvwriter):
+        csvwriter.writerow(["domain", self.name, self.quota])
 
 class DomainAlias(DatesAware):
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
@@ -768,11 +776,13 @@ class Alias(DatesAware):
 
     @property
     def tags(self):
-        cpt = len(self.mboxes.all())
-        if cpt:
-            label = _("alias") if cpt == 1 else _("distribution list")
-        else:
+        cpt = len(self.get_recipients())
+        if cpt > 1:
+            label = _("distribution list")
+        elif self.extmboxes != "":
             label = _("forward")
+        else:
+            label = _("alias")
         return '<span class="label">%s</span>' % label
 
     def save(self, int_rcpts, ext_rcpts, *args, **kwargs):
@@ -843,6 +853,18 @@ class Alias(DatesAware):
             except Mailbox.DoesNotExist:
                 raise AdminError(_("Mailbox %s does not exist" % rcpt))
         self.save(int_rcpts, ext_rcpts)        
+
+    def to_csv(self, csvwriter):
+        cpt = len(self.get_recipients())
+        if cpt > 1:
+            altype = "dlist"
+        elif self.extmboxes != "":
+            altype = "forward"
+        else:
+            altype = "alias"
+        row = [altype, self.address]
+        row += self.get_recipients()
+        csvwriter.writerow(row)
 
 class Extension(models.Model):
     name = models.CharField(max_length=150)
