@@ -513,6 +513,9 @@ class DomainAlias(DatesAware):
         ungrant_access_to_object(self)
         super(DomainAlias, self).delete()
 
+    def to_csv(self, csvwriter):
+        csvwriter.writerow(["domainalias", self.name, self.target.name])
+
 class Mailbox(DatesAware):
     address = models.CharField(
         ugettext_lazy('address'), max_length=100,

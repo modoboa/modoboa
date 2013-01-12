@@ -722,6 +722,8 @@ def export_domains(request):
     csvwriter = csv.writer(fp, delimiter=';')
     for dom in request.user.get_domains():
         dom.to_csv(csvwriter)
+        for da in dom.domainalias_set.all():
+            da.to_csv(csvwriter)
     
     content = fp.getvalue()
     fp.close()
