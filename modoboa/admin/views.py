@@ -553,46 +553,48 @@ def information(request, tplname="admin/information.html"):
             "content" : render_to_string(tplname, {})
             })
 
-def import_domain(user, row):
+def import_domain(user, row, formopts):
     """Specific code for domains import"""
     dom = Domain()
-    dom.create_from_csv(user, row)
+    dom.from_csv(user, row)
     grant_access_to_object(user, dom, is_owner=True)
     events.raiseEvent("CreateDomain", user, dom)
 
-def import_domainalias(user, row):
+def import_domainalias(user, row, formopts):
     """Specific code for domain aliases import"""
     domalias = DomainAlias()
     domalias.from_csv(user, row)
     grant_access_to_object(user, domalias, is_owner=True)
     events.raiseEvent("DomainAliasCreated", user, domalias)
 
-def import_account(user, row):
+def import_account(user, row, formopts):
     """Specific code for accounts import"""
-    mb = Mailbox()
-    mb.create_from_csv(user, row)
-    grant_access_to_object(user, mb.user, is_owner=True)
-    grant_access_to_object(user, mb, is_owner=True)
-    events.raiseEvent("AccountCreated", mb.user)
-    events.raiseEvent("CreateMailbox", user, mb)
+    account = User()
+    account.from_csv(user, row, formopts["crypt_password"])
+    grant_access_to_object(user, account, is_owner=True)
+    events.raiseEvent("AccountCreated", account)
+    if len(row) > 5:
+        mb = account.mailbox_set.all()[0]
+        grant_access_to_object(user, mb, is_owner=True)
+        events.raiseEvent("CreateMailbox", user, mb)
 
 def _import_alias(user, row, **kwargs):
     """Specific code for aliases import"""
     alias = Alias()
-    alias.create_from_csv(user, row, **kwargs)
+    alias.from_csv(user, row, **kwargs)
     grant_access_to_object(user, alias, is_owner=True)
     events.raiseEvent("MailboxAliasCreated", user, alias)
 
-def import_alias(user, row):
+def import_alias(user, row, formopts):
     _import_alias(user, row, expected_elements=3)
 
-def import_forward(user, row):
+def import_forward(user, row, formopts):
     _import_alias(user, row, expected_elements=3)
 
-def import_dlist(user, row):
+def import_dlist(user, row, formopts):
     _import_alias(user, row)
 
-def importdata(request):
+def importdata(request, formclass=ImportDataForm):
     """Generic import function
 
     As the process of importing data from a CSV file is the same
@@ -603,7 +605,7 @@ def importdata(request):
     :return: a ``Response`` instance
     """
     error = None
-    form = ImportDataForm(request.POST, request.FILES)
+    form = formclass(request.POST, request.FILES)
     if form.is_valid():
         import csv
 
@@ -621,7 +623,7 @@ def importdata(request):
                         fct = globals()["import_%s" % row[0].strip()]
                     except KeyError:
                         continue
-                    fct(request.user, row)
+                    fct(request.user, row, form.cleaned_data)
                     cpt += 1
                 msg = _("%d objects imported successfully" % cpt)
                 return render(request, "admin/import_done.html", {
@@ -639,7 +641,7 @@ def importdata(request):
 @transaction.commit_on_success
 def import_identities(request):
     if request.method == "POST":
-        return importdata(request)
+        return importdata(request, ImportIdentitiesForm)
 
     helptext = _("""Provide a CSV file where lines respect one of the following formats:
 <ul>
@@ -660,7 +662,7 @@ def import_identities(request):
         formid="importform",
         enctype="multipart/form-data",
         target="import_target",
-        form=ImportDataForm(),
+        form=ImportIdentitiesForm(),
         helptext=helptext
         )
     return render(request, "admin/importform.html", ctx)

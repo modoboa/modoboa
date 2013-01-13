@@ -336,6 +336,38 @@ class User(DUser):
                 return True
         return False
 
+    def from_csv(self, user, row, crypt_password=True):
+        """Create a new account from a CSV file entry
+
+        The expected order is the following::
+
+          [loginname, password, first name, last name, address]
+
+        :param line: a list containing the expected information
+        """
+        if len(row) < 5:
+            raise AdminError(_("Invalid line"))
+        self.username = row[1].strip()
+        if crypt_password:
+            self.set_password(row[2].strip())
+        else:
+            self.password = row[2].strip()
+        self.first_name = row[3].strip()
+        self.last_name = row[4].strip()
+        self.save()
+        if len(row) > 5:
+            self.email = row[5].strip()
+            mailbox, domname = split_mailbox(line[5].strip())
+            try:
+                domain = Domain.objects.get(name=domname)
+            except Domain.DoesNotExist:
+                raise AdminError(_("Cannot import this account because the specified domain does not exist"))
+            if not user.can_access(domain):
+                raise PermDeniedException
+            mb = Mailbox()
+            mb.save_from_user(localpart, domain, self, owner=user)
+            self.save()
+
     def to_csv(self, csvwriter):
         csvwriter.writerow(["account", self.username.encode("utf-8"), self.password, 
                             self.first_name.encode("utf-8"), self.last_name.encode("utf-8"), 
@@ -478,7 +510,7 @@ class Domain(DatesAware):
     def __str__(self):
         return self.name
 
-    def create_from_csv(self, user, row):
+    def from_csv(self, user, row):
         if len(row) < 3:
             raise AdminError(_("Invalid line"))
         self.name = row[1].strip()
@@ -726,30 +758,6 @@ class Mailbox(DatesAware):
         self.set_quota(quota, True if (owner and owner.has_perm("admin.add_domain")) else False)
         super(Mailbox, self).save()
 
-    def create_from_csv(self, user, line):
-        """Create a new mailbox from a CSV file entry
-
-        The expected order is the following::
-
-          [loginname, password, first name, last name, address]
-
-        :param line: a list containing the expected information
-        """
-        if len(line) < 6:
-            raise AdminError(_("Invalid line"))
-        mailbox, domname = split_mailbox(line[5].strip())
-        self.address = mailbox
-        try:
-            self.domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
-            raise AdminError(_("Cannot import this mailbox because the associated domain does not exist"))
-        if not user.can_access(self.domain):
-            raise PermDeniedException
-
-        name = "%s %s" % (line[3].strip(), line[4].strip())
-        self.save(username=line[1].strip(), name=name, 
-                  password=line[2].strip(), enabled=True, quota=None)
-
     def delete(self, keepdir=False):
         from modoboa.lib.permissions import ungrant_access_to_object
 
@@ -850,7 +858,7 @@ class Alias(DatesAware):
                 return True
         return False
 
-    def create_from_csv(self, user, row, expected_elements=4):
+    def from_csv(self, user, row, expected_elements=4):
         if len(row) < expected_elements:
             raise AdminError(_("Invalid line: %s" % row))
         localpart, domname = split_mailbox(row[1].strip())
@@ -888,7 +896,7 @@ class Alias(DatesAware):
             altype = "forward"
         else:
             altype = "alias"
-        row = [altype, self.address]
+        row = [altype, self.full_address]
         row += self.get_recipients()
         csvwriter.writerow(row)
 

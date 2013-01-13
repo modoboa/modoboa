@@ -333,6 +333,12 @@ class ImportDataForm(forms.Form):
             return ";"
         return str(self.cleaned_data["sepchar"])
 
+class ImportIdentitiesForm(ImportDataForm):
+    crypt_password = forms.BooleanField(
+        label=ugettext_lazy("Crypt passwords"),
+        help_text=ugettext_lazy("Check this option if passwords contained in your file are not crypted")
+        )
+
 class AccountFormGeneral(forms.ModelForm):
     username = forms.CharField(label=ugettext_lazy("Username"), max_length=254)
     role = forms.ChoiceField(
