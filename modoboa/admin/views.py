@@ -607,8 +607,6 @@ def importdata(request, formclass=ImportDataForm):
     error = None
     form = formclass(request.POST, request.FILES)
     if form.is_valid():
-        import csv
-
         try:
             reader = csv.reader(request.FILES['sourcefile'], 
                                 delimiter=form.cleaned_data['sepchar'])
@@ -623,13 +621,18 @@ def importdata(request, formclass=ImportDataForm):
                         fct = globals()["import_%s" % row[0].strip()]
                     except KeyError:
                         continue
-                    fct(request.user, row, form.cleaned_data)
+                    try:
+                        fct(request.user, row, form.cleaned_data)
+                    except IntegrityError, e:
+                        if form.cleaned_data["continue_if_exists"]:
+                            continue
+                        raise ModoboaException(_("Object already exists: %s" % row))
                     cpt += 1
                 msg = _("%d objects imported successfully" % cpt)
                 return render(request, "admin/import_done.html", {
                         "status" : "ok", "msg" : msg
                         })
-            except (IntegrityError, ModoboaException), e:
+            except (ModoboaException), e:
                 error = str(e)
 
     return render(request, "admin/import_done.html", {
@@ -685,9 +688,12 @@ def _export(content, filename):
 def export_identities(request):
     fp = cStringIO.StringIO()
     csvwriter = csv.writer(fp, delimiter=';')
-    for oa in request.user.get_identities():
+    for oa in request.user.get_accounts():
         if oa.content_object:
             oa.content_object.to_csv(csvwriter)
+    for oa in request.user.get_aliases():
+        if oa.content_object:
+            oa.content_object.to_csv(csvwriter)  
     
     content = fp.getvalue()
     fp.close()

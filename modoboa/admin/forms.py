@@ -323,6 +323,10 @@ class ForwardForm(GenericAliasForm):
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=ugettext_lazy("Select a file"))
     sepchar = forms.CharField(label=ugettext_lazy("Separator"), max_length=1, required=False)
+    continue_if_exists = forms.BooleanField(
+        label=ugettext_lazy("Continue on error"), required=False,
+        help_text=ugettext_lazy("Don't treat duplicated objects as error")
+        )
 
     def __init__(self, *args, **kwargs):
         super(ImportDataForm, self).__init__(*args, **kwargs)
@@ -335,7 +339,7 @@ class ImportDataForm(forms.Form):
 
 class ImportIdentitiesForm(ImportDataForm):
     crypt_password = forms.BooleanField(
-        label=ugettext_lazy("Crypt passwords"),
+        label=ugettext_lazy("Crypt passwords"), required=False,
         help_text=ugettext_lazy("Check this option if passwords contained in your file are not crypted")
         )
 
