@@ -1,5 +1,7 @@
 # coding: utf-8
 from django.db import models, IntegrityError
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User as DUser, UserManager, Group
@@ -396,7 +398,6 @@ class User(DUser):
         self.email = row[7].strip()
         if self.email != "":
             mailbox, domname = split_mailbox(self.email)
-            print mailbox, domname
             try:
                 domain = Domain.objects.get(name=domname)
             except Domain.DoesNotExist:
@@ -807,18 +808,29 @@ class Mailbox(DatesAware):
         super(Mailbox, self).save()
 
     def delete(self, keepdir=False):
-        from modoboa.lib.permissions import ungrant_access_to_object
-
-        events.raiseEvent("DeleteMailbox", self)
-        ungrant_access_to_object(self)
-        for alias in self.alias_set.all():
-            alias.mboxes.remove(self)
-            if len(alias.mboxes.all()) == 0:
-                alias.delete()
         super(Mailbox, self).delete()
         if not keepdir:
             self.delete_dir()
 
+@receiver(pre_delete, sender=Mailbox)
+def mailbox_deleted_handler(sender, **kwargs):
+    """``Mailbox`` pre_delete signal receiver
+
+    In order to properly handle deletions (ie. we don't want to leave
+    orphan records into the db), we define this custom receiver.
+    
+    It manually removes the mailbox from the aliases it is linked to
+    and then remove all empty aliases.
+    """
+    from modoboa.lib.permissions import ungrant_access_to_object
+    
+    mb = kwargs['instance']
+    events.raiseEvent("DeleteMailbox", mb)
+    ungrant_access_to_object(mb)
+    for alias in mb.alias_set.all():
+        alias.mboxes.remove(mb)
+        if len(alias.mboxes.all()) == 0:
+            alias.delete()
 
 class Alias(DatesAware):
     address = models.CharField(
