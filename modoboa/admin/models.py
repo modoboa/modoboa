@@ -415,7 +415,7 @@ class User(DUser):
                self.first_name.encode("utf-8"), self.last_name.encode("utf-8"), 
                self.is_active, self.group, self.email]
         if self.group == "DomainAdmins":
-            row.append([dom.name for dom in self.get_domains()])
+            row += [dom.name for dom in self.get_domains()]
         csvwriter.writerow(row)
     
 class ObjectAccess(models.Model):
