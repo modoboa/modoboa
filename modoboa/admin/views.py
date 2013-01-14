@@ -573,7 +573,7 @@ def import_account(user, row, formopts):
     account.from_csv(user, row, formopts["crypt_password"])
     grant_access_to_object(user, account, is_owner=True)
     events.raiseEvent("AccountCreated", account)
-    if len(row) > 5:
+    if len(account.mailbox_set.all()):
         mb = account.mailbox_set.all()[0]
         grant_access_to_object(user, mb, is_owner=True)
         events.raiseEvent("CreateMailbox", user, mb)
@@ -586,10 +586,10 @@ def _import_alias(user, row, **kwargs):
     events.raiseEvent("MailboxAliasCreated", user, alias)
 
 def import_alias(user, row, formopts):
-    _import_alias(user, row, expected_elements=3)
+    _import_alias(user, row, expected_elements=4)
 
 def import_forward(user, row, formopts):
-    _import_alias(user, row, expected_elements=3)
+    _import_alias(user, row, expected_elements=4)
 
 def import_dlist(user, row, formopts):
     _import_alias(user, row)
@@ -649,9 +649,9 @@ def import_identities(request):
     helptext = _("""Provide a CSV file where lines respect one of the following formats:
 <ul>
 <li><em>account; loginname; password; first name; last name; enabled, group; address[, domain, ...]</em></li>
-<li><em>alias; address; internal recipient</em></li>
-<li><em>forward; address; external recipient</em></li>
-<li><em>dlist; address; recipient; recipient; ...</em></li>
+<li><em>alias; address; enabled; internal recipient</em></li>
+<li><em>forward; address; enabled; external recipient</em></li>
+<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>
 </ul>
 <p>The first element of each line is mandatory and must be equal to one of the previous values.</p>
 
@@ -708,8 +708,8 @@ def import_domains(request):
 
     helptext = _("""Provide a CSV file where lines respect one of the following formats:
 <ul>
-  <li><em>domain; name; quota</em></li>
-  <li><em>domainalias; name; targeted domain</em></li>
+  <li><em>domain; name; quota; enabled</em></li>
+  <li><em>domainalias; name; targeted domain; enabled</em></li>
 </ul>
 <p>The first element of each line is mandatory and must be equal to one of the previous values.</p>
 <p>You can use a different character as separator.</p>

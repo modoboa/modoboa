@@ -273,7 +273,8 @@ class AliasForm(GenericAliasForm):
         self.fields.keyOrder = ['email', 'int_recipient', 'enabled']
         if kwargs.has_key("instance"):
             alias = kwargs["instance"]
-            self.fields["int_recipient"].initial = alias.mboxes.all()[0].full_address
+            if len(alias.mboxes.all()):
+                self.fields["int_recipient"].initial = alias.mboxes.all()[0].full_address
 
     def clean_int_recipient(self):
         localpart, domname = split_mailbox(self.cleaned_data["int_recipient"])

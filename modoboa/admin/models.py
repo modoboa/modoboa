@@ -369,6 +369,8 @@ class User(DUser):
         :param row: a list containing the expected information
         :param crypt_password:
         """
+        from modoboa.lib.permissions import grant_access_to_object
+
         if len(row) < 6:
             raise AdminError(_("Invalid line"))
         self.username = row[1].strip()
@@ -393,7 +395,8 @@ class User(DUser):
 
         self.email = row[7].strip()
         if self.email != "":
-            mailbox, domname = split_mailbox(row[6].strip())
+            mailbox, domname = split_mailbox(self.email)
+            print mailbox, domname
             try:
                 domain = Domain.objects.get(name=domname)
             except Domain.DoesNotExist:
@@ -556,15 +559,15 @@ class Domain(DatesAware):
         return self.name
 
     def from_csv(self, user, row):
-        if len(row) < 3:
+        if len(row) < 4:
             raise AdminError(_("Invalid line"))
         self.name = row[1].strip()
         self.quota = int(row[2].strip())
-        self.enabled = True
+        self.enabled = (row[3].strip() == 'True')
         self.save()
 
     def to_csv(self, csvwriter):
-        csvwriter.writerow(["domain", self.name, self.quota])
+        csvwriter.writerow(["domain", self.name, self.quota, self.enabled])
 
 class DomainAlias(DatesAware):
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
@@ -593,12 +596,12 @@ class DomainAlias(DatesAware):
     def from_csv(self, user, row):
         """Create a domain alias from a CSV row
 
-        Expected format: ["domainalias", domain alias name, targeted domain]
+        Expected format: ["domainalias", domain alias name, targeted domain, enabled]
         
         :param user: a ``User`` object
         :param row: a list containing the alias definition
         """
-        if len(row) < 3:
+        if len(row) < 4:
             raise AdminError(_("Invalid line"))
         self.name = row[1].strip()
         domname = row[2].strip()
@@ -606,7 +609,7 @@ class DomainAlias(DatesAware):
             self.target = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise AdminError(_("Unknown domain %s" % domname))
-        self.enabled = True
+        self.enabled = row[3].strip() == 'True'
         self.save()
 
     def to_csv(self, csvwriter):
@@ -614,7 +617,7 @@ class DomainAlias(DatesAware):
 
         :param csvwriter: a ``csv.writer`` object
         """
-        csvwriter.writerow(["domainalias", self.name, self.target.name])
+        csvwriter.writerow(["domainalias", self.name, self.target.name, self.enabled])
 
 class Mailbox(DatesAware):
     address = models.CharField(
@@ -849,6 +852,8 @@ class Alias(DatesAware):
     @property
     def name_or_rcpt(self):
         rcpts = self.get_recipients()
+        if not len(rcpts):
+            return "---"
         if len(rcpts) > 1:
             return "%s, ..." % rcpts[0]
         return rcpts[0]
@@ -903,7 +908,7 @@ class Alias(DatesAware):
                 return True
         return False
 
-    def from_csv(self, user, row, expected_elements=4):
+    def from_csv(self, user, row, expected_elements=5):
         if len(row) < expected_elements:
             raise AdminError(_("Invalid line: %s" % row))
         localpart, domname = split_mailbox(row[1].strip())
@@ -915,10 +920,10 @@ class Alias(DatesAware):
             raise PermDeniedException
         self.address = localpart
         self.domain = domain
-        self.enabled = True
+        self.enabled = (row[2].strip() == 'True')
         int_rcpts = []
         ext_rcpts = []
-        for rcpt in row[2:]:
+        for rcpt in row[3:]:
             rcpt = rcpt.strip()
             localpart, domname = split_mailbox(rcpt)
             try:
@@ -941,7 +946,7 @@ class Alias(DatesAware):
             altype = "forward"
         else:
             altype = "alias"
-        row = [altype, self.full_address]
+        row = [altype, self.full_address, self.enabled]
         row += self.get_recipients()
         csvwriter.writerow(row)
 
