@@ -363,11 +363,13 @@ class User(DUser):
 
         The expected order is the following::
 
-          [loginname, password, first name, last name, address]
+          loginname, password, first name, last name, enabled, group, address[, domain, ...]
 
-        :param line: a list containing the expected information
+        :param user: 
+        :param row: a list containing the expected information
+        :param crypt_password:
         """
-        if len(row) < 5:
+        if len(row) < 6:
             raise AdminError(_("Invalid line"))
         self.username = row[1].strip()
         if crypt_password:
@@ -376,24 +378,45 @@ class User(DUser):
             self.password = row[2].strip()
         self.first_name = row[3].strip()
         self.last_name = row[4].strip()
-        self.save()
-        if len(row) > 5:
-            self.email = row[5].strip()
-            mailbox, domname = split_mailbox(line[5].strip())
+        self.is_active = (row[5].strip() == 'True')
+        grpname = row[6].strip()
+        if grpname == "SuperAdmins":
+            self.is_superuser = True
+            self.save()
+        else:
+            self.save()
+            try:
+                self.groups.add(Group.objects.get(name=grpname))
+            except Group.DoesNotExist:
+                self.groups.add(Group.objects.get(name="SimpleUsers"))
+            self.save()
+
+        self.email = row[7].strip()
+        if self.email != "":
+            mailbox, domname = split_mailbox(row[6].strip())
             try:
                 domain = Domain.objects.get(name=domname)
             except Domain.DoesNotExist:
-                raise AdminError(_("Cannot import this account because the specified domain does not exist"))
+                raise AdminError(_("Account import failed (%s): domain does not exist" % self.username))
             if not user.can_access(domain):
                 raise PermDeniedException
             mb = Mailbox()
-            mb.save_from_user(localpart, domain, self, owner=user)
+            mb.save_from_user(mailbox, domain, self, owner=user)
             self.save()
+        if grpname == "DomainAdmins":
+            for domname in row[8:]:
+                try:
+                    grant_access_to_object(self, Domain.objects.get(name=domname))
+                except Domain.DoesNotExist:
+                    pass
 
     def to_csv(self, csvwriter):
-        csvwriter.writerow(["account", self.username.encode("utf-8"), self.password, 
-                            self.first_name.encode("utf-8"), self.last_name.encode("utf-8"), 
-                            self.email])
+        row = ["account", self.username.encode("utf-8"), self.password, 
+               self.first_name.encode("utf-8"), self.last_name.encode("utf-8"), 
+               self.is_active, self.group, self.email]
+        if self.group == "DomainAdmins":
+            row.append([dom.name for dom in self.get_domains()])
+        csvwriter.writerow(row)
     
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User)

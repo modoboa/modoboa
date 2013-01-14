@@ -648,7 +648,7 @@ def import_identities(request):
 
     helptext = _("""Provide a CSV file where lines respect one of the following formats:
 <ul>
-<li><em>account; loginname; password; first name; last name; address</em></li>
+<li><em>account; loginname; password; first name; last name; enabled, group; address[, domain, ...]</em></li>
 <li><em>alias; address; internal recipient</em></li>
 <li><em>forward; address; external recipient</em></li>
 <li><em>dlist; address; recipient; recipient; ...</em></li>
