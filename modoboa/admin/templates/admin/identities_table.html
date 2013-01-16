@@ -1,0 +1,21 @@
+{% load i18n admin_extras %}
+<table id="{{ tableid }}" class="table {{ styles }}">
+  <thead>
+    <tr>
+      <th id="identity" width="">{% trans "Name" %}</th>
+      <th id="name_or_rcpt" width="">{% trans "Fullname/Recipient" %}</th>
+      <th id="tags" width="">{% trans "Tags" %}</th>
+      <th id="actions" width="">{% trans "Actions" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ident in identities %}
+    <tr id="{{ ident.id }}" class="{% if not ident.enabled %}muted{% endif %}" name="{{ forloop.counter }}">
+      <td name="identity">{{ ident.identity }}</td>
+      <td name="name_or_rcpt">{{ ident.name_or_rcpt }}</td>
+      <td name="tags">{{ ident.tags|safe }}</td>
+      <td name="actions">{% identity_actions user ident %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

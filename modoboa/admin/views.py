@@ -10,14 +10,14 @@ from django.db import transaction, IntegrityError
 import cStringIO
 import csv
 
-from lib import render_listing
+from lib import *
 from forms import *
 from models import * 
 from modoboa.admin.tables import *
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import *
 from modoboa.lib.webutils \
-    import _render, ajax_response, ajax_simple_response
+    import _render, ajax_response, ajax_simple_response, _render_to_string
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.models import Parameter
 from modoboa.lib.permissions import *
@@ -315,13 +315,24 @@ def _identities(request):
         else:
             q = Q(address__contains=squery)
         objects += [al for al in Alias.objects.filter(Q(pk__in=alids) & q)]
-    else:
-        objects = []
-        for oa in idents_list:
-            if oa.content_object:
-                objects.append(oa.content_object)
-    objects = sorted(objects, key=lambda o: o.identity)
-    return render_listing(request, "identities", objects=objects, squery=squery)
+
+    objects = sorted(idents_list, key=lambda o: o.identity)
+    
+    paginator = Paginator(objects, int(parameters.get_admin("ITEMS_PER_PAGE")))
+    pagenum = int(request.GET.get("page", "1"))
+    try:
+        page = paginator.page(pagenum)
+    except (EmptyPage, PageNotAnInteger):
+        page = paginator.page(paginator.num_pages)
+    
+    return ajax_simple_response({
+            "table" : _render_to_string(request, "admin/identities_table.html", {
+                    "identities" : page.object_list,
+                    "tableid" : "objects_table"
+                    }),
+            "page" : page.number,
+            "paginbar" : pagination_bar(page)
+            })
 
 @login_required
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))

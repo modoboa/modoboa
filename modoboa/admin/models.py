@@ -186,7 +186,7 @@ class User(DUser):
 
     @property
     def has_mailbox(self):
-        return len(self.mailbox_set.all()) != 0
+        return self.mailbox_set.count() != 0
 
     @property
     def fullname(self):
@@ -212,6 +212,10 @@ class User(DUser):
             return self.groups.all()[0].name
         except IndexError:
             return "?"
+    
+    @property
+    def enabled(self):
+        return self.is_active
 
     def belongs_to_group(self, name):
         """Simple shortcut to check if this user is a member of a
@@ -250,10 +254,18 @@ class User(DUser):
         :return: a queryset
         """
         from modoboa.lib.permissions import get_content_type
-    
+        from itertools import chain
+
         userct = get_content_type(self)
+        ids = self.objectaccess_set.filter(content_type=userct) \
+            .values_list('object_id', flat=True)
+        result = User.objects.select_related().filter(pk__in=ids)
+        
         alct = get_content_type(Alias)
-        return self.objectaccess_set.filter(content_type__in=[userct, alct])
+        ids = self.objectaccess_set.filter(content_type=alct) \
+            .values_list('object_id', flat=True)
+        return chain(result, Alias.objects.select_related().filter(pk__in=ids))
+
 
     def get_domains(self):
         """Return the domains belonging to this user
@@ -498,15 +510,15 @@ class Domain(DatesAware):
         
     @property
     def domainalias_count(self):
-        return len(self.domainalias_set.all())
+        return self.domainalias_set.count()
 
     @property
     def mailbox_count(self):
-        return len(self.mailbox_set.all())
+        return self.mailbox_set.count()
 
     @property
     def mbalias_count(self):
-        return len(self.alias_set.all())
+        return self.alias_set.count()
 
     @property
     def admins(self):
@@ -536,13 +548,13 @@ class Domain(DatesAware):
     def delete(self, keepdir=False):
         from modoboa.lib.permissions import ungrant_access_to_object, ungrant_access_to_objects
 
-        if len(self.domainalias_set.all()):
+        if self.domainalias_set.count():
             events.raiseEvent("DomainAliasDeleted", self.domainalias_set.all())
             ungrant_access_to_objects(self.domainalias_set.all())
-        if len(self.mailbox_set.all()):
+        if self.mailbox_set.count():
             events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
             ungrant_access_to_objects(self.mailbox_set.all())
-        if len(self.alias_set.all()):
+        if self.alias_set.count():
             events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
         events.raiseEvent("DeleteDomain", self)
@@ -670,7 +682,7 @@ class Mailbox(DatesAware):
 
     @property
     def alias_count(self):
-        return len(self.alias_set.all())
+        return self.alias_set.count()
 
     def create_dir(self):
         if self.mbtype == "mbox":
@@ -776,7 +788,7 @@ class Mailbox(DatesAware):
             raise AdminError(_("Account '%s' already exists" % user.username))
         self.user = user
 
-        if len(user.groups.all()) == 0:
+        if user.groups.count() == 0:
             user.groups.add(Group.objects.get(name="SimpleUsers"))
             user.save()
 
@@ -829,7 +841,7 @@ def mailbox_deleted_handler(sender, **kwargs):
     ungrant_access_to_object(mb)
     for alias in mb.alias_set.all():
         alias.mboxes.remove(mb)
-        if len(alias.mboxes.all()) == 0:
+        if alias.mboxes.count() == 0:
             alias.delete()
 
 class Alias(DatesAware):
@@ -863,16 +875,17 @@ class Alias(DatesAware):
 
     @property
     def name_or_rcpt(self):
-        rcpts = self.get_recipients()
-        if not len(rcpts):
+        rcpts_count = self.get_recipients_count()
+        if not rcpts_count:
             return "---"
-        if len(rcpts) > 1:
+        rcpts = self.get_recipients()
+        if rcpts_count > 1:
             return "%s, ..." % rcpts[0]
         return rcpts[0]
 
     @property
     def tags(self):
-        cpt = len(self.get_recipients())
+        cpt = self.get_recipients_count()
         if cpt > 1:
             label = _("distribution list")
         elif self.extmboxes != "":
@@ -911,6 +924,9 @@ class Alias(DatesAware):
         if self.extmboxes != "":
             result += self.extmboxes.split(',')
         return result
+
+    def get_recipients_count(self):
+        return self.mboxes.count() + len(self.extmboxes.split(','))
 
     def ui_disabled(self, user):
         if user.is_superuser:
@@ -951,7 +967,7 @@ class Alias(DatesAware):
         self.save(int_rcpts, ext_rcpts)        
 
     def to_csv(self, csvwriter):
-        cpt = len(self.get_recipients())
+        cpt = self.get_recipients_count()
         if cpt > 1:
             altype = "dlist"
         elif self.extmboxes != "":

@@ -152,8 +152,9 @@ def domain_actions(user, domid):
     return "---"
 
 @register.simple_tag
-def identity_actions(user, iid):
-    name, objid = iid.split(':')
+def identity_actions(user, ident):
+    name = ident.__class__.__name__
+    objid = ident.id
     if name == "User":
         actions = [
             {"name" : "delaccount",
@@ -162,16 +163,14 @@ def identity_actions(user, iid):
              "title" : _("Delete this account")},
             ]
     else:
-        from modoboa.admin.models import Alias
-        alias = Alias.objects.get(pk=objid)
-        if len(alias.get_recipients()) >= 2:
+        if ident.get_recipients_count() >= 2:
             actions = [
                 {"name" : "deldlist",
                  "url" : reverse(admin.views.deldlist) + "?selection=%s" % objid,
                  "img" : "icon-trash",
                  "title" : _("Delete this distribution list")},
                 ]
-        elif alias.extmboxes != "":
+        elif ident.extmboxes != "":
             actions = [
                 {"name" : "delforward",
                  "url" : reverse(admin.views.delforward) + "?selection=%s" % objid,
