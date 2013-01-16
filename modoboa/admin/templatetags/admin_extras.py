@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from modoboa import admin
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url, render_actions
+from modoboa.lib.templatetags.libextras import render_link
 
 register = template.Library()
 
@@ -185,6 +186,17 @@ def identity_actions(user, ident):
                  "title" : _("Delete this alias")},
                 ]
     return render_actions(actions)
+
+@register.simple_tag
+def identity_modify_link(identity):
+    linkdef = {"label" : identity.identity, "modal" : True}
+    if identity.__class__.__name__ == "User":
+        linkdef["url"] = reverse("modoboa.admin.views.editaccount", args=[identity.id])
+        linkdef["modalcb"] = "admin.editaccount_cb"
+    else:
+        linkdef["url"] = reverse("modoboa.admin.views.editalias_dispatcher", args=[identity.id])
+        linkdef["modalcb"] = "admin.aliasform_cb"
+    return render_link(linkdef)
 
 @register.simple_tag
 def domadmin_actions(daid, domid):

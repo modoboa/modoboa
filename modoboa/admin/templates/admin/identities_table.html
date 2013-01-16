@@ -11,7 +11,7 @@
   <tbody>
     {% for ident in identities %}
     <tr id="{{ ident.id }}" class="{% if not ident.enabled %}muted{% endif %}" name="{{ forloop.counter }}">
-      <td name="identity">{{ ident.identity }}</td>
+      <td name="identity">{% identity_modify_link ident %}</td>
       <td name="name_or_rcpt">{{ ident.name_or_rcpt }}</td>
       <td name="tags">{{ ident.tags|safe }}</td>
       <td name="actions">{% identity_actions user ident %}</td>
