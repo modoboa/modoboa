@@ -84,6 +84,14 @@ Admin.prototype = {
         }
     },
 
+    exportform_cb: function() {
+        $(".submit").one('click', function(e) {
+            e.preventDefault();
+            $("#exportform").submit();
+            $("#modalbox").modal('hide');
+        });
+    },
+
     reload_listing: function(data) {
         this.navobj.update(true);
         if (data.respmsg) {

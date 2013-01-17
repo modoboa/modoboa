@@ -697,18 +697,27 @@ def _export(content, filename):
 @login_required
 @permission_required(lambda u: u.has_perm("auth.add_user") or u.has_perm("auth.add_alias"))
 def export_identities(request):
-    fp = cStringIO.StringIO()
-    csvwriter = csv.writer(fp, delimiter=';')
-    for oa in request.user.get_accounts():
-        if oa.content_object:
-            oa.content_object.to_csv(csvwriter)
-    for oa in request.user.get_aliases():
-        if oa.content_object:
-            oa.content_object.to_csv(csvwriter)  
-    
-    content = fp.getvalue()
-    fp.close()
-    return _export(content, "modoboa-identities.csv")
+    ctx = {
+        "title" : _("Export identities"),
+        "action_label" : _("Export"),
+        "action_classes" : "submit",
+        "formid" : "exportform",
+        "action" : reverse(export_identities),
+        }
+
+    if request.method == "POST":
+        form = ExportIdentitiesForm(request.POST)
+        form.is_valid()
+        fp = cStringIO.StringIO()
+        csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
+        for ident in request.user.get_identities():
+            ident.to_csv(csvwriter)
+        content = fp.getvalue()
+        fp.close()
+        return _export(content, form.cleaned_data["filename"])
+
+    ctx["form"] = ExportIdentitiesForm()    
+    return render(request, "common/generic_modal_form.html", ctx)
 
 @login_required
 @permission_required("admin.add_domain")
@@ -742,16 +751,26 @@ def import_domains(request):
 @login_required
 @permission_required("admin.add_domain")
 def export_domains(request):
-    import cStringIO
-    import csv
+    ctx = {
+        "title" : _("Export domains"),
+        "action_label" : _("Export"),
+        "action_classes" : "submit",
+        "formid" : "exportform",
+        "action" : reverse(export_domains),
+        }
 
-    fp = cStringIO.StringIO()
-    csvwriter = csv.writer(fp, delimiter=';')
-    for dom in request.user.get_domains():
-        dom.to_csv(csvwriter)
-        for da in dom.domainalias_set.all():
-            da.to_csv(csvwriter)
-    
-    content = fp.getvalue()
-    fp.close()
-    return _export(content, "modoboa-domains.csv")
+    if request.method == "POST":
+        form = ExportDomainsForm(request.POST)
+        form.is_valid()
+        fp = cStringIO.StringIO()
+        csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
+        for dom in request.user.get_domains():
+            dom.to_csv(csvwriter)
+            for da in dom.domainalias_set.all():
+                da.to_csv(csvwriter)
+        content = fp.getvalue()
+        fp.close()
+        return _export(content, form.cleaned_data["filename"])
+
+    ctx["form"] = ExportDomainsForm()
+    return render(request, "common/generic_modal_form.html", ctx)

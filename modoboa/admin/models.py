@@ -230,24 +230,6 @@ class User(DUser):
             return False
         return True
 
-    def get_accounts(self):
-        """Return all accounts owned by this user
-
-        :return: a queryset
-        """
-        from modoboa.lib.permissions import get_content_type
-
-        return self.objectaccess_set.filter(content_type=get_content_type(self))
-
-    def get_aliases(self):
-        """Return all aliases owned by this user
-
-        :return: a queryset
-        """
-        from modoboa.lib.permissions import get_content_type
-
-        return self.objectaccess_set.filter(content_type=get_content_type(Alias))
-
     def get_identities(self):
         """Return all identities owned by this user
 
