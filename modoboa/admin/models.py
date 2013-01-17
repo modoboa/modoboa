@@ -1,5 +1,6 @@
 # coding: utf-8
 from django.db import models, IntegrityError
+from django.db.models import Q
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
@@ -230,9 +231,10 @@ class User(DUser):
             return False
         return True
 
-    def get_identities(self):
+    def get_identities(self, squery=None):
         """Return all identities owned by this user
 
+        :param squery: an optional filter
         :return: a queryset
         """
         from modoboa.lib.permissions import get_content_type
@@ -241,12 +243,22 @@ class User(DUser):
         userct = get_content_type(self)
         ids = self.objectaccess_set.filter(content_type=userct) \
             .values_list('object_id', flat=True)
-        result = User.objects.select_related().filter(pk__in=ids)
+        q = Q(pk__in=ids)
+        if squery:
+            q &= Q(username__contains=squery)
+        result = User.objects.select_related().filter(q)
         
         alct = get_content_type(Alias)
         ids = self.objectaccess_set.filter(content_type=alct) \
             .values_list('object_id', flat=True)
-        return chain(result, Alias.objects.select_related().filter(pk__in=ids))
+        q = Q(pk__in=ids)
+        if squery:
+            if squery.find('@') != -1:
+                local_part, domname = split_mailbox(squery)
+                q &= Q(address__contains=local_part, domain__name__contains=domname)
+            else:
+                q &= Q(address__contains=squery)
+        return chain(result, Alias.objects.select_related().filter(q))
 
 
     def get_domains(self):

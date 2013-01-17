@@ -299,23 +299,7 @@ def delforward(request):
 @login_required
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
 def _identities(request):
-    idents_list = request.user.get_identities()
-    squery = request.GET.get("searchquery", None)
-    if squery:
-        uct = get_content_type(User)
-        uids = idents_list.filter(content_type=uct).values_list("object_id", flat=True)
-        objects = [u for u in User.objects.filter(pk__in=uids, username__contains=squery)]
-        alct = get_content_type(Alias)
-        alids = idents_list.filter(content_type=alct).values_list("object_id", flat=True)
-        if squery.find('@') != -1:
-            local_part, domname = split_mailbox(squery)
-            mbaliases = Alias.objects.filter(address__contains=local_part,
-                                             domain__name__contains=domname)
-            q = Q(address__contains=local_part, domain__name__contains=domname)
-        else:
-            q = Q(address__contains=squery)
-        objects += [al for al in Alias.objects.filter(Q(pk__in=alids) & q)]
-
+    idents_list = request.user.get_identities(request.GET.get("searchquery", None))
     objects = sorted(idents_list, key=lambda o: o.identity)
     
     paginator = Paginator(objects, int(parameters.get_admin("ITEMS_PER_PAGE")))
