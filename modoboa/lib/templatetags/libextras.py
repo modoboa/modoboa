@@ -193,7 +193,12 @@ class ConnectedUsers(template.Node):
                 uid_list.append(uid)
 
         # Query all logged in users based on id list
-        context[self.varname] = [User.objects.get(pk=uid) for uid in uid_list]
+        context[self.varname] = []
+        for uid in uid_list:
+            try:
+                context[self.varname].append(User.objects.get(pk=uid))
+            except User.DoesNotExist:
+                print "unknown user"
         return ''
 
 @register.tag
