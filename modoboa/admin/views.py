@@ -299,7 +299,7 @@ def delforward(request):
 @login_required
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
 def _identities(request):
-    idents_list = request.user.get_identities(request.GET.get("searchquery", None))
+    idents_list = request.user.get_identities(request.GET)
     objects = sorted(idents_list, key=lambda o: o.identity)
     
     paginator = Paginator(objects, int(parameters.get_admin("ITEMS_PER_PAGE")))
@@ -567,8 +567,11 @@ def import_account(user, row, formopts):
     account = User()
     account.from_csv(user, row, formopts["crypt_password"])
     grant_access_to_object(user, account, is_owner=True)
+    if account.is_superuser:
+        # Give access to the existing user
+        grant_access_to_object(account, user)
     events.raiseEvent("AccountCreated", account)
-    if len(account.mailbox_set.all()):
+    if account.mailbox_set.count():
         mb = account.mailbox_set.all()[0]
         grant_access_to_object(user, mb, is_owner=True)
         events.raiseEvent("CreateMailbox", user, mb)

@@ -2,6 +2,7 @@
 from functools import wraps
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
+from django.db import IntegrityError
 from modoboa.admin.models import ObjectAccess, IntegrityError
 import events
 from exceptions import ModoboaException
@@ -40,8 +41,8 @@ def grant_access_to_object(user, obj, is_owner=False):
     * He is the owner (he's just created the object)
     * He is going to administrate the object (but he is not the owner)
 
-    If the user is is the owner, we also grant access to this object
-    to all super users.
+    If the user is the owner, we also grant access to this object to
+    all super users.
 
     :param user: a ``User`` object
     :param obj: an admin. object (Domain, Mailbox, ...)
@@ -63,8 +64,12 @@ def grant_access_to_object(user, obj, is_owner=False):
         if is_owner:
             from modoboa.admin.models import User
             for su in User.objects.filter(is_superuser=True):
-                if su != user and su != obj:
+                if su == user:
+                    continue
+                try:
                     ObjectAccess.objects.create(user=su, content_type=ct, object_id=obj.id)
+                except IntegrityError:
+                    pass
 
     except IntegrityError, e:
         raise ModoboaException(_("Failed to grant access (%s)" % str(e)))

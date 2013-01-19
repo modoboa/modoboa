@@ -231,34 +231,54 @@ class User(DUser):
             return False
         return True
 
-    def get_identities(self, squery=None):
+    def get_identities(self, querydict):
         """Return all identities owned by this user
 
-        :param squery: an optional filter
+        :param querydict: a querydict object
         :return: a queryset
         """
         from modoboa.lib.permissions import get_content_type
         from itertools import chain
 
-        userct = get_content_type(self)
-        ids = self.objectaccess_set.filter(content_type=userct) \
-            .values_list('object_id', flat=True)
-        q = Q(pk__in=ids)
-        if squery:
-            q &= Q(username__contains=squery)
-        result = User.objects.select_related().filter(q)
+        squery = querydict.get("searchquery", None)
+        idtfilter = querydict.getlist("idtfilter", None)
+        grpfilter = querydict.getlist("grpfilter", None)
+
+        accounts = []
+        if not idtfilter or "account" in idtfilter:
+            userct = get_content_type(self)
+            ids = self.objectaccess_set.filter(content_type=userct) \
+                .values_list('object_id', flat=True)
+            q = Q(pk__in=ids)
+            if squery:
+                q &= Q(username__contains=squery)
+            if grpfilter and len(grpfilter):
+                if "SuperAdmins" in grpfilter:
+                    q &= Q(is_superuser=True)
+                    grpfilter.remove("SuperAdmins")
+                    if len(grpfilter):
+                        q |= Q(groups__name__in=grpfilter)
+                else:
+                    q &= Q(groups__name__in=grpfilter)
+            accounts = User.objects.select_related().filter(q)
         
-        alct = get_content_type(Alias)
-        ids = self.objectaccess_set.filter(content_type=alct) \
-            .values_list('object_id', flat=True)
-        q = Q(pk__in=ids)
-        if squery:
-            if squery.find('@') != -1:
-                local_part, domname = split_mailbox(squery)
-                q &= Q(address__contains=local_part, domain__name__contains=domname)
-            else:
-                q &= Q(address__contains=squery)
-        return chain(result, Alias.objects.select_related().filter(q))
+        aliases = []
+        if not idtfilter or ("alias" in idtfilter 
+                             or "forward" in idtfilter 
+                             or "distribution list" in idtfilter):
+            alct = get_content_type(Alias)
+            ids = self.objectaccess_set.filter(content_type=alct) \
+                .values_list('object_id', flat=True)
+            q = Q(pk__in=ids)
+            if squery:
+                if squery.find('@') != -1:
+                    local_part, domname = split_mailbox(squery)
+                    q &= Q(address__contains=local_part, domain__name__contains=domname)
+                else:
+                    q &= Q(address__contains=squery)
+            aliases = Alias.objects.select_related().filter(q)
+
+        return chain(accounts, aliases)
 
 
     def get_domains(self):
