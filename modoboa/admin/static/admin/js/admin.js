@@ -124,7 +124,7 @@ Domains.prototype = {
         $(".submit").one('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "domform",
-                error_cb: this.domainform_cb,
+                error_cb: $.proxy(this.domainform_cb, this),
                 reload_on_success: false,
                 success_cb: $.proxy(this.reload_listing, this)
             });
@@ -258,7 +258,7 @@ Identities.prototype = {
         $('.submit').one('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "accountform",
-                error_cb: this.editaccount_cb,
+                error_cb: $.proxy(this.editaccount_cb, this),
                 reload_on_success: false,
                 success_cb: $.proxy(this.reload_listing, this)
             });
@@ -277,7 +277,7 @@ Identities.prototype = {
         $(".submit").one('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "aliasform",
-                error_cb: this.aliasform_cb,
+                error_cb: $.proxy(this.aliasform_cb, this),
                 reload_on_success: false,
                 success_cb: $.proxy(this.reload_listing, this)
             });

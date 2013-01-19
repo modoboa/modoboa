@@ -453,6 +453,8 @@ class AccountFormGeneral(forms.ModelForm):
 
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)
+        if self.user == account and not self.cleaned_data["is_active"]:
+            raise AdminError(_("You can't disable your own account"))
         if commit:
             if self.cleaned_data["password1"] != "":
                 account.set_password(self.cleaned_data["password1"])
