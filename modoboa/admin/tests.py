@@ -8,6 +8,7 @@ Basic tests for the 'admin' application
 from django.test import TestCase
 from django.test.client import Client
 from django.utils import simplejson
+from django.core.urlresolvers import reverse
 from models import *
 from modoboa.admin.lib import *
 from modoboa.lib import parameters
@@ -59,12 +60,12 @@ class DomainAliasTestCase(ModoTestCase):
         dom = Domain.objects.get(name="test.com")
         values = dict(name=dom.name, quota=dom.quota, enabled=dom.enabled,
                       aliases="domalias.net", aliases_1="domalias.com")
-        self.check_ajax_post("/modoboa/admin/domains/1/edit/", values)
-        self.assertEqual(len(dom.domainalias_set.all()), 2)
+        self.check_ajax_post(reverse("modoboa.admin.views.editdomain", args=[1]), values)
+        self.assertEqual(dom.domainalias_set.count(), 2)
 
         del values["aliases_1"]
-        self.check_ajax_post("/modoboa/admin/domains/1/edit/", values)
-        self.assertEqual(len(dom.domainalias_set.all()), 1)
+        self.check_ajax_post(reverse("modoboa.admin.views.editdomain", args=[1]), values)
+        self.assertEqual(dom.domainalias_set.count(), 1)
 
 class AccountTestCase(ModoTestCase):
     fixtures = ["initial_users.json", "test_content.json",]
@@ -73,7 +74,7 @@ class AccountTestCase(ModoTestCase):
         values = dict(username="tester@test.com", first_name="Tester", last_name="Toto",
                       password1="toto", password2="toto", role="SimpleUsers",
                       is_active=True, email="tester@test.com", stepid=2)
-        self.check_ajax_post("/modoboa/admin/accounts/new/", values)
+        self.check_ajax_post(reverse("modoboa.admin.views.newaccount"), values)
 
         account = User.objects.get(username="tester@test.com")
         mb = account.mailbox_set.all()[0]
@@ -88,7 +89,7 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(mb.domain.mailbox_count, 3)
 
         values["email"] = "pouet@test.com"
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % account.id, values)
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[account.id]), values)
 
         mb = Mailbox.objects.get(pk=mb.id)
         self.assertEqual(mb.path, "%s/" % mb.address)
@@ -96,7 +97,7 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(mb.full_address, "pouet@test.com")
         self.assertEqual(os.path.exists(path), True)
 
-        self.check_ajax_get("/modoboa/admin/accounts/delete/?selection=%d" \
+        self.check_ajax_get(reverse("modoboa.admin.views.delaccount") + "?selection=%d" \
                                 % account.id, {})
         self.assertEqual(os.path.exists(path), False)
 
@@ -107,7 +108,7 @@ class AccountTestCase(ModoTestCase):
         * The default admin changes his password (no associated Mailbox)
         * A normal user changes his password
         """
-        self.check_ajax_post("/modoboa/userprefs/profile/",
+        self.check_ajax_post(reverse("modoboa.userprefs.views.profile"),
                             {"oldpassword" : "password", 
                              "newpassword" : "titi", "confirmation" : "titi"})
         self.clt.logout()
@@ -116,7 +117,7 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(self.clt.login(username="user@test.com", password="toto"),
                          True)
 
-        self.check_ajax_post("/modoboa/userprefs/profile/",
+        self.check_ajax_post(reverse("modoboa.userprefs.views.profile"),
                             {"oldpassword" : "toto", 
                              "newpassword" : "tutu", "confirmation" : "tutu"})
         self.clt.logout()
@@ -132,12 +133,12 @@ class AliasTestCase(ModoTestCase):
             is_active=user.is_active, email="user@test.com",
             aliases="toto@test.com", aliases_1="titi@test.com"
             )
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % user.id, values)
-        self.assertEqual(len(user.mailbox_set.all()[0].alias_set.all()), 2)
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[user.id]), values)
+        self.assertEqual(user.mailbox_set.all()[0].alias_set.count(), 2)
 
         del values["aliases_1"]
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % user.id, values)
-        self.assertEqual(len(user.mailbox_set.all()[0].alias_set.all()), 1)
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[user.id]), values)
+        self.assertEqual(user.mailbox_set.all()[0].alias_set.count(), 1)
 
     def test_dlist(self):
         values = dict(email="all@test.com", 
@@ -145,7 +146,7 @@ class AliasTestCase(ModoTestCase):
                       recipients_1="admin@test.com",
                       recipients_2="ext@titi.com",
                       enabled=True) 
-        self.check_ajax_post("/modoboa/admin/distriblists/new/", values)
+        self.check_ajax_post(reverse("modoboa.admin.views.newdlist"), values)
         user = User.objects.get(username="user@test.com")
         self.assertEqual(len(user.mailbox_set.all()[0].alias_set.all()), 1)
         admin = User.objects.get(username="admin@test.com")
@@ -154,27 +155,27 @@ class AliasTestCase(ModoTestCase):
         dlist = Alias.objects.get(address="all", domain__name="test.com")
         self.assertEqual(len(dlist.get_recipients()), 3)
         del values["recipients_1"]
-        self.check_ajax_post("/modoboa/admin/aliases/edit/%d/" % dlist.id,
+        self.check_ajax_post(reverse("modoboa.admin.views.editalias_dispatcher", args=[dlist.id]),
                              values)
-        self.assertEqual(len(dlist.get_recipients()), 2)
+        self.assertEqual(dlist.get_recipients_count(), 2)
         
-        self.check_ajax_get("/modoboa/admin/distriblists/delete/?selection=%d" \
+        self.check_ajax_get(reverse("modoboa.admin.views.deldlist") + "?selection=%d" \
                                 % dlist.id, {})
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get, 
                           address="all", domain__name="test.com")
 
     def test_forward(self):
         values = dict(email="forward@test.com", ext_recipient="rcpt@dest.com")
-        self.check_ajax_post("/modoboa/admin/forwards/new/", values)
+        self.check_ajax_post(reverse("modoboa.admin.views.newforward"), values)
         fwd = Alias.objects.get(address="forward", domain__name="test.com")
         self.assertEqual(len(fwd.get_recipients()), 1)
         
         values["recipient"] = "rcpt2@dest.com"
-        self.check_ajax_post("/modoboa/admin/aliases/edit/%d/" % fwd.id,
+        self.check_ajax_post(reverse("modoboa.admin.views.editalias_dispatcher", args=[fwd.id]),
                              values)
-        self.assertEqual(len(fwd.get_recipients()), 1)
+        self.assertEqual(fwd.get_recipients_count(), 1)
         
-        self.check_ajax_get("/modoboa/admin/forwards/delete/?selection=%d" \
+        self.check_ajax_get(reverse("modoboa.admin.views.delforward") + "?selection=%d" \
                                 % fwd.id, {})
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get, 
                           address="forward", domain__name="test.com")
@@ -197,7 +198,7 @@ class PermissionsTestCase(ModoTestCase):
             is_active=self.user.is_active, email="user@test.com"
             )
         self.admin = User.objects.get(username="admin@test.com")
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % self.admin.id, dict(
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[self.admin.id]), dict(
                 username=self.admin.username, role="DomainAdmins", 
                 is_active=self.admin.is_active, email="admin@test.com",
                 password1="", password2="", domains="test.com"
@@ -208,23 +209,23 @@ class PermissionsTestCase(ModoTestCase):
 
     def test_domain_admins(self):
         self.values["role"] = "DomainAdmins"
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % self.user.id,
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[self.user.id]),
                              self.values)
         self.assertEqual(self.user.group == "DomainAdmins", True)
 
         self.values["role"] = "SimpleUsers"
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % self.user.id,
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[self.user.id]),
                              self.values)
         self.assertEqual(self.user.group == 'DomainAdmins', False)
 
     def test_superusers(self):
         self.values["role"] = "SuperAdmins"
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % self.user.id,
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[self.user.id]),
                              self.values)
         self.assertEqual(User.objects.get(username="user@test.com").is_superuser, True)
 
         self.values["role"] = "SimpleUsers"
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % self.user.id,
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[self.user.id]),
                              self.values)
         self.assertEqual(User.objects.get(username="user@test.com").is_superuser, False)
 
@@ -235,12 +236,12 @@ class PermissionsTestCase(ModoTestCase):
         admin = User.objects.get(username="admin@test.com")
         values = dict(username="admin@test.com", first_name="Admin", password1="", password2="",
                       is_active=True, email="admin@test.com")
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % admin.id, values)
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[admin.id]), values)
         self.assertEqual(admin.group, "DomainAdmins")
         self.assertEqual(admin.can_access(Domain.objects.get(name="test.com")), True)
 
         values["role"] = "SuperAdmins"
-        self.check_ajax_post("/modoboa/admin/accounts/edit/%d/" % admin.id, values)
+        self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[admin.id]), values)
         admin = User.objects.get(username="admin@test.com")
         self.assertEqual(admin.group, "DomainAdmins")
 
@@ -248,11 +249,11 @@ class PermissionsTestCase(ModoTestCase):
         self.clt.logout()
         self.assertEqual(self.clt.login(username="admin@test.com", password="toto"),
                          True)
-        response = self.clt.get("/modoboa/admin/domains/")
+        response = self.clt.get(reverse("modoboa.admin.views.domains"))
         self.assertEqual(response.status_code, 200)
         
         user = User.objects.get(username="user@test.com")
-        response = self.clt.get("/modoboa/admin/accounts/edit/%d/" % user.id,
+        response = self.clt.get(reverse("modoboa.admin.views.editaccount", args=[user.id]),
                                 HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response["Content-Type"], "application/json")
 
