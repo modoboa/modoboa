@@ -92,3 +92,8 @@ body {
     color: #999999;
     font-style: italic;
 }
+
+.label a {
+    color: #FFFFFF;
+    text-decoration: none;
+}

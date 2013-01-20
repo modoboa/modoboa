@@ -181,9 +181,8 @@ class User(DUser):
 
     @property
     def tags(self):
-        ret = '<span class="label">%s</span>' % _("account")
-        ret += ' <span class="label label-info">%s</span>' % self.group
-        return ret
+        return [{"name" : "account", "label" : _("account"), "type" : "idt"},
+                {"name" : self.group, "label" : self.group, "type" : "grp", "color" : "info"}]
 
     @property
     def has_mailbox(self):
@@ -265,7 +264,7 @@ class User(DUser):
         aliases = []
         if not idtfilter or ("alias" in idtfilter 
                              or "forward" in idtfilter 
-                             or "distribution list" in idtfilter):
+                             or "dlist" in idtfilter):
             alct = get_content_type(Alias)
             ids = self.objectaccess_set.filter(content_type=alct) \
                 .values_list('object_id', flat=True)
@@ -772,51 +771,6 @@ class Mailbox(DatesAware):
         else:
             self.quota = value
 
-    def save(self, *args, **kwargs):
-        if not self.create_dir():
-            raise AdminError(_("Failed to initialise mailbox, check permissions"))
-        try:
-            user = getattr(self, "user")
-        except User.DoesNotExist:
-            user = User()
-        user.email = "%s@%s" % (self.address, self.domain.name)
-        if kwargs.has_key("username"):
-            user.username = kwargs["username"]
-        else:
-            user.username = user.email
-        if kwargs.has_key("enabled"):
-            user.is_active = kwargs["enabled"]
-        if kwargs.has_key("name"):
-            try:
-                fname, lname = kwargs["name"].split()
-            except ValueError:
-                fname = kwargs["name"]
-                lname = ""
-            user.first_name = fname
-            user.last_name = lname
-        if kwargs.has_key("password"):
-            user.set_password(kwargs["password"])
-        try:
-            user.save()
-        except IntegrityError, e:
-            raise AdminError(_("Account '%s' already exists" % user.username))
-        self.user = user
-
-        if user.groups.count() == 0:
-            user.groups.add(Group.objects.get(name="SimpleUsers"))
-            user.save()
-
-        self.set_ownership()
-        if kwargs.has_key("quota"):
-            self.set_quota(kwargs["quota"])
-
-        for kw in ["username", "name", "enabled", "password", "quota"]:
-            try:
-                del kwargs[kw]
-            except KeyError:
-                pass
-        super(Mailbox, self).save(*args, **kwargs)
-
     def save_from_user(self, localpart, domain, user, quota=None, owner=None):
         """Simple save method called for automatic creations
 
@@ -901,12 +855,15 @@ class Alias(DatesAware):
     def tags(self):
         cpt = self.get_recipients_count()
         if cpt > 1:
+            name = "dlist"
             label = _("distribution list")
         elif self.extmboxes != "":
+            name = "forward"
             label = _("forward")
         else:
+            name = "alias"
             label = _("alias")
-        return '<span class="label">%s</span>' % label
+        return [{"name" : name, "label" : label, "type" : "idt"}]
 
     def save(self, int_rcpts, ext_rcpts, *args, **kwargs):
         if len(ext_rcpts):

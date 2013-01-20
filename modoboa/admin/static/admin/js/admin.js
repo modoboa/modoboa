@@ -159,6 +159,8 @@ Identities.prototype = {
     list_cb: function(data) {
         Admin.prototype.list_cb.call(this, data);
 
+        $("a.filter").click($.proxy(this.filter_by_tag, this));
+
         $("a[name=delaccount]").confirm({
             question: gettext("Delete this account?"),
             checkboxes: {keepdir: gettext("Do not delete mailbox directory")},
@@ -176,6 +178,22 @@ Identities.prototype = {
             question: gettext("Delete this alias?"),
             success_cb: $.proxy(this.reload_listing, this)
         });
+    },
+
+    filter_by_tag: function(e) {
+        var $link = $(e.target);
+        e.preventDefault();
+
+        if ($link.hasClass("idt")) {
+            this.navobj.setparam("idtfilter", $link.attr("name")).update();
+            return;
+        }
+        if ($link.hasClass("grp")) {
+            this.navobj
+                .setparam("idtfilter", "account")
+                .setparam("grpfilter", $link.attr("name"))
+                .update();
+        }
     },
 
     simpleuser_mode: function() {
