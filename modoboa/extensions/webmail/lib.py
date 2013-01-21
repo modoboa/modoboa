@@ -6,6 +6,7 @@ import time
 from datetime import datetime, timedelta
 import email
 import lxml
+import chardet
 from django.core.files.uploadhandler import FileUploadHandler, StopUpload, SkipFile
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -37,10 +38,14 @@ class WMtable(tables.Table):
     cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
 
     def parse(self, header, value):
+        res = chardet.detect(value)
         try:
-            return getattr(IMAPheader, "parse_%s" % header)(value)
+            value = getattr(IMAPheader, "parse_%s" % header)(value)
         except AttributeError:
+            pass
+        if not value or type(value) is unicode or res["encoding"] == "ascii":
             return value
+        return value.decode(res["encoding"])
 
 class IMAPheader(object):
     @staticmethod
@@ -192,7 +197,6 @@ class ImapEmail(Email):
                     try:
                         content = content.decode(charset)
                     except (UnicodeDecodeError, LookupError):
-                        import chardet
                         result = chardet.detect(content)
                         content = content.decode(result['encoding'])
                 bodyc += content
