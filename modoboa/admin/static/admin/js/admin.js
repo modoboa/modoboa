@@ -113,6 +113,7 @@ Domains.prototype = {
 
         $("a[name=deldomain]").confirm({
             question: gettext("Delete this domain?"),
+            warning: gettext("This operation will remove ALL data associated to this domain."),
             checkboxes: {keepdir: gettext("Do not delete domain directory")},
             success_cb: $.proxy(this.reload_listing, this)
         });

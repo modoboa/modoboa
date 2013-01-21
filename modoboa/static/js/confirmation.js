@@ -38,8 +38,20 @@
              });
 
              box.append($('<div class="modal-body">'
-                 + '<h4>' + this.options.question + '</h4>'
-                 + '<p>' + this.buildcheckboxes() + '</p></div>'));
+                 + '<h4>' + this.options.question + '</h4>'));
+             var $container = $("<div />", {"class" : "container-fluid"});
+             box.append($container);
+             if (this.options.warning) {
+                 $container.append($("<div />", {"class" : "row-fluid"})
+                     .append($("<div />", {
+                         "class": "alert alert-danger",
+                         html: "<h4>" + gettext("Warning") + "</h4>" + this.options.warning
+                     }))
+                 );
+             }
+
+             $container.append('<p>' + this.buildcheckboxes() + '</p>');
+             box.append("</div>");
 
              var footer = $('<div class="modal-footer" />');
              var cancel_btn = $('<a href="#" class="btn">' + gettext("Cancel") + "</a>");
@@ -117,6 +129,7 @@
 
      $.fn.confirm.defaults = {
          question: "",
+         warning: null,
          checkboxes: null
      };
 

@@ -558,7 +558,7 @@ class Domain(DatesAware):
                                         self.name))
         return True
 
-    def delete(self, keepdir=False):
+    def delete(self, fromuser, keepdir=False):
         from modoboa.lib.permissions import ungrant_access_to_object, ungrant_access_to_objects
 
         if self.domainalias_set.count():
@@ -570,6 +570,9 @@ class Domain(DatesAware):
         if self.alias_set.count():
             events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
+        if parameters.get_admin("AUTO_ACCOUNT_REMOVAL") == "yes":
+            for account in User.objects.filter(mailbox__domain__name=self.name):
+                account.delete(fromuser, keepdir)
         events.raiseEvent("DeleteDomain", self)
         ungrant_access_to_object(self)
         super(Domain, self).delete()
@@ -811,7 +814,7 @@ def mailbox_deleted_handler(sender, **kwargs):
         alias.mboxes.remove(mb)
         if alias.mboxes.count() == 0:
             alias.delete()
-
+   
 class Alias(DatesAware):
     address = models.CharField(
         ugettext_lazy('address'), max_length=254,

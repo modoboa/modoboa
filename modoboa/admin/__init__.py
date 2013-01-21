@@ -24,6 +24,10 @@ parameters.register_admin("MAILDIR_ROOT", type="string", deflt=".maildir",
                           visible_if="MAILBOX_TYPE=maildir",
                           help=ugettext_lazy("Sub-directory (inside the mailbox) where messages are stored when using the maildir format"))
 parameters.register_admin(
+    "AUTO_ACCOUNT_REMOVAL", type="list_yesno", deflt="no",
+    help=ugettext_lazy("When a mailbox is removed, also remove the associated account")
+    )
+parameters.register_admin(
     "PASSWORD_SCHEME", type="list", deflt="md5crypt",
     values=[("crypt", "crypt"),
             ("md5", "md5"), 

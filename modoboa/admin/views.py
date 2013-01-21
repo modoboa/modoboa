@@ -153,7 +153,7 @@ def deldomain(request):
             raise PermDeniedException
         if mb and mb.domain == dom:
             raise AdminError(_("You can't delete your own domain"))
-        dom.delete(keepdir=keepdir)
+        dom.delete(request.user, keepdir)
 
     msg = ungettext("Domain deleted", "Domains deleted", len(selection))
     return ajax_simple_response({"status" : "ok", "respmsg" : msg})
