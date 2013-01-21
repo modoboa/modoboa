@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import events
 from modoboa.lib.webutils import _render_to_string
+from modoboa.lib.sysutils import log_warning
 from modoboa.admin import views as admviews
 from forms import LoginForm
 from modoboa.auth.lib import *
@@ -36,6 +37,9 @@ def dologin(request):
                     next = reverse(admviews.domains)
                 return HttpResponseRedirect(next)
             error = _("Your username and password didn't match. Please try again.")
+            log_warning(_("Failed connection attempt from %s as user %s" \
+                              % (request.META["REMOTE_ADDR"], form.cleaned_data["username"])))
+
         next = request.POST.get("next", None)
         httpcode = 401
     else:

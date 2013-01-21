@@ -4,7 +4,8 @@
 This module extra functions/shortcuts to communicate with the system
 (executing commands, etc.)
 """
-
+import logging
+import logging.handlers
 from modoboa.lib import parameters
 
 def exec_cmd(cmd, **kwargs):
@@ -21,3 +22,16 @@ def exec_as_vuser(cmd):
         exec_cmd("echo '%s' >> /tmp/vmail.log" % output)
         return False
     return True
+
+def __log(msg, facility=logging.handlers.SysLogHandler.LOG_AUTH):
+    logger = logging.getLogger('modoboa')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.handlers.SysLogHandler(address='/dev/log', facility=facility)
+    formatter = logging.Formatter('%(name)s: %(levelname)s %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    return logger
+
+def log_warning(msg):
+    logger = __log(msg)
+    logger.warning(msg)
