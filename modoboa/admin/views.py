@@ -548,6 +548,7 @@ def information(request, tplname="admin/information.html"):
             "content" : render_to_string(tplname, {})
             })
 
+@transaction.commit_on_success
 def import_domain(user, row, formopts):
     """Specific code for domains import"""
     dom = Domain()
@@ -555,6 +556,7 @@ def import_domain(user, row, formopts):
     grant_access_to_object(user, dom, is_owner=True)
     events.raiseEvent("CreateDomain", user, dom)
 
+@transaction.commit_on_success
 def import_domainalias(user, row, formopts):
     """Specific code for domain aliases import"""
     domalias = DomainAlias()
@@ -562,6 +564,7 @@ def import_domainalias(user, row, formopts):
     grant_access_to_object(user, domalias, is_owner=True)
     events.raiseEvent("DomainAliasCreated", user, domalias)
 
+@transaction.commit_on_success
 def import_account(user, row, formopts):
     """Specific code for accounts import"""
     account = User()
@@ -576,6 +579,7 @@ def import_account(user, row, formopts):
         grant_access_to_object(user, mb, is_owner=True)
         events.raiseEvent("CreateMailbox", user, mb)
 
+@transaction.commit_on_success
 def _import_alias(user, row, **kwargs):
     """Specific code for aliases import"""
     alias = Alias()
@@ -639,7 +643,6 @@ def importdata(request, formclass=ImportDataForm):
 
 @login_required
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("auth.add_alias"))
-@transaction.commit_on_success
 def import_identities(request):
     if request.method == "POST":
         return importdata(request, ImportIdentitiesForm)
