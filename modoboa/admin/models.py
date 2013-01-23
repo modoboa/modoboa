@@ -281,7 +281,8 @@ class User(DUser):
                 else:
                     q &= Q(address__contains=squery)
             aliases = Alias.objects.select_related().filter(q)
-            aliases = filter(lambda a: a.type == idtfilter, aliases)
+            if idtfilter:
+                aliases = filter(lambda a: a.type == idtfilter, aliases)
 
         return chain(accounts, aliases)
 
