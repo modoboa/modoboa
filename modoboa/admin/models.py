@@ -230,7 +230,7 @@ class User(DUser):
             return False
         return True
 
-    def get_identities(self, querydict):
+    def get_identities(self, querydict=None):
         """Return all identities owned by this user
 
         :param querydict: a querydict object
@@ -239,9 +239,14 @@ class User(DUser):
         from modoboa.lib.permissions import get_content_type
         from itertools import chain
 
-        squery = querydict.get("searchquery", None)
-        idtfilter = querydict.getlist("idtfilter", None)
-        grpfilter = querydict.getlist("grpfilter", None)
+        if querydict:
+            squery = querydict.get("searchquery", None)
+            idtfilter = querydict.getlist("idtfilter", None)
+            grpfilter = querydict.getlist("grpfilter", None)
+        else:
+            squery = None
+            idtfilter = None
+            grpfilter = None
 
         accounts = []
         if not idtfilter or "account" in idtfilter:
@@ -276,6 +281,7 @@ class User(DUser):
                 else:
                     q &= Q(address__contains=squery)
             aliases = Alias.objects.select_related().filter(q)
+            aliases = filter(lambda a: a.type == idtfilter, aliases)
 
         return chain(accounts, aliases)
 
@@ -855,18 +861,23 @@ class Alias(DatesAware):
         return rcpts[0]
 
     @property
-    def tags(self):
+    def type(self):
         cpt = self.get_recipients_count()
         if cpt > 1:
-            name = "dlist"
-            label = _("distribution list")
-        elif self.extmboxes != "":
-            name = "forward"
-            label = _("forward")
-        else:
-            name = "alias"
-            label = _("alias")
-        return [{"name" : name, "label" : label, "type" : "idt"}]
+            return "dlist"
+        if self.extmboxes != "":
+            return "forward"
+        return "alias"
+
+    @property
+    def tags(self):
+        labels = {
+            "dlist" : _("distribution list"),
+            "forward" : _("forward"),
+            "alias" : _("alias")
+            }
+        altype = self.type
+        return [{"name" : altype, "label" : labels[altype], "type" : "idt"}]
 
     def save(self, int_rcpts, ext_rcpts, *args, **kwargs):
         if len(ext_rcpts):
@@ -941,14 +952,7 @@ class Alias(DatesAware):
         self.save(int_rcpts, ext_rcpts)        
 
     def to_csv(self, csvwriter):
-        cpt = self.get_recipients_count()
-        if cpt > 1:
-            altype = "dlist"
-        elif self.extmboxes != "":
-            altype = "forward"
-        else:
-            altype = "alias"
-        row = [altype, self.full_address, self.enabled]
+        row = [self.type, self.full_address, self.enabled]
         row += self.get_recipients()
         csvwriter.writerow(row)
 
