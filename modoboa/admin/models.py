@@ -912,7 +912,9 @@ class Alias(DatesAware):
         return result
 
     def get_recipients_count(self):
-        return self.mboxes.count() + len(self.extmboxes.split(','))
+        if self.extmboxes != "":
+            return self.mboxes.count() + len(self.extmboxes.split(','))
+        return self.mboxes.count()
 
     def ui_disabled(self, user):
         if user.is_superuser:
