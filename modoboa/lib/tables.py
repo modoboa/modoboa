@@ -16,7 +16,7 @@ from django.template import Template, RequestContext, Context
 from django.template.loader import render_to_string
 from templatetags.libextras import render_link
 
-class Column:
+class Column(object):
     """Simple column representation
     """
     def __init__(self, name, **kwargs):
@@ -32,6 +32,25 @@ class Column:
             label = getattr(self, "name")
         return label.encode("utf-8")
 
+    def transform(self, row, col, table):
+        if "class" in row.keys():
+            col["cssclass"] += col["cssclass"] != "" \
+                and ", %s" % row["class"] or row["class"]
+        try:
+            col["value"] = table.parse(self.name, row[self.name])
+        except AttributeError:
+            col["value"] = row[self.name]
+        try:
+            limit = getattr(self, "limit")
+            if len(col["value"]) > limit:
+                col["value"] = col["value"][0:limit] + "..."
+        except AttributeError:
+            pass
+        try:
+            col["safe"] = getattr(self, "safe")
+        except AttributeError:
+            pass
+
 class SelectionColumn(Column):
     """Specific column: selection
 
@@ -46,6 +65,11 @@ class SelectionColumn(Column):
     def render(self, value, selection):
         return "<input type='checkbox' id='%s' name='select_%s' value='%s' %s/>" \
             % (self.name, value, value, selection and "checked" or "")
+
+    def transform(self, row, col, table):
+        selection = row.has_key(self.name) and row[self.name] or False
+        col["value"] = self.render(row[table.idkey], selection)
+        col["safe"] = True
 
 class ImgColumn(Column):
     """Specific column: image
@@ -64,6 +88,17 @@ class ImgColumn(Column):
             return "".join(map(lambda i: "<img src='%s' />" % i, value))
         return "<img src='%s' />" % value
 
+    def transform(self, row, col, table):
+        key = "img_%s" % self.name
+        if key in row.keys():
+            col["value"] = self.render(row[key])
+        else:
+            try:
+                col["value"] = self.render(self.defvalue)
+            except Exception:
+                pass
+        col["safe"] = True
+
 class DivColumn(Column):
     def __str__(self):
         return ""
@@ -71,9 +106,17 @@ class DivColumn(Column):
     def render(self):
         return "<div>&nbsp;</div>"
 
+    def transform(self, row, col, table):
+        col["value"] = self.render()
+        col["safe"] = True
+
 class ActionColumn(Column):
     def render(self, fct, user, rowid):
         return fct(user, rowid)
+
+    def transform(self, row, col, table):
+        col["value"] = self.render(self.defvalue, table.request.user, row[table.idkey])
+        col["safe"] = True
 
 class LinkColumn(Column):
     def render(self, rowid, value):
@@ -86,6 +129,10 @@ class LinkColumn(Column):
             linkdef.update(url=reverse(self.urlpattern, args=[rowid]),
                            modalcb=self.modalcb)
         return render_link(linkdef)
+
+    def transform(self, row, col, table):
+        col["value"] = self.render(row[table.idkey], row[self.name])
+        col["safe"] = True
 
 class Table(object):
     tableid = ""
@@ -132,47 +179,7 @@ class Table(object):
                         newcol[key] = getattr(c, key)
                     except AttributeError:
                         newcol[key] = ""
-                if isinstance(c, SelectionColumn):
-                    selection = row.has_key(c.name) and row[c.name] or False
-                    newcol["value"] = c.render(row[self.idkey], selection)
-                    newcol["safe"] = True                  
-                elif isinstance(c, ImgColumn):
-                    key = "img_%s" % c.name
-                    if key in row.keys():
-                        newcol["value"] = c.render(row[key])
-                    else:
-                        try:
-                            newcol["value"] = c.render(c.defvalue)
-                        except Exception:
-                            pass
-                    newcol["safe"] = True
-                elif isinstance(c, DivColumn):
-                    newcol["value"] = c.render()
-                    newcol["safe"] = True
-                elif isinstance(c, ActionColumn):
-                    newcol["value"] = c.render(c.defvalue, self.request.user, nrow["id"])
-                    newcol["safe"] = True
-                elif isinstance(c, LinkColumn):
-                    newcol["value"] = c.render(nrow["id"], row[c.name])
-                    newcol["safe"] = True
-                elif row.has_key(c.name):
-                    if "class" in row.keys():
-                        newcol["cssclass"] += newcol["cssclass"] != "" \
-                            and ", %s" % row["class"] or row["class"]
-                    try:
-                        newcol["value"] = self.parse(c.name, row[c.name])
-                    except AttributeError:
-                        newcol["value"] = row[c.name]
-                    try:
-                        limit = getattr(c, "limit")
-                        if len(newcol["value"]) > limit:
-                            newcol["value"] = newcol["value"][0:limit] + "..."
-                    except AttributeError:
-                        pass
-                    try:
-                        newcol["safe"] = getattr(c, "safe")
-                    except AttributeError:
-                        pass
+                c.transform(row, newcol, self)
                 nrow["cols"] += [newcol]
             self.rows += [nrow]
             trcpt += 1
@@ -227,6 +234,7 @@ class Table(object):
                         "table" : self, "tableid" : self.tableid, "styles" : styles,
                         "withheader" : withheader
                         }))
+
         t = Template("""
 <div class="alert alert-info">%s</div>
 """ % _("No entries to display"))
