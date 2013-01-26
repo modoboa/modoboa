@@ -132,6 +132,8 @@ class SQLWrapper(object):
         rq = Q(rs='p')
         if not user.is_superuser:
             doms = user.get_domains()
+            if not doms.count():
+                return 0
             regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
             doms_q = Q(rid__email__regex=regexp)
             rq &= doms_q
@@ -191,6 +193,8 @@ class PgWrapper(SQLWrapper):
          rq = Q(rs='p')
          if not user.is_superuser:
              doms = user.get_domains()
+             if not doms.count():
+                 return 0
              regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
              return len(Msgrcpt.objects.filter(rq).extra(
                      where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], 
@@ -209,7 +213,7 @@ def get_wrapper():
 
     The result depends on the DB engine in use.
     """
-    if db_type() == 'postgres':
+    if db_type("amavis") == 'postgres':
         return PgWrapper()
     return SQLWrapper()
 

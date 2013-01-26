@@ -57,7 +57,7 @@ Quarantine.prototype = {
         var $link = $(e.target).parent();
 
         this.navobj.delparam("rcpt");
-        this.navobj.from_string($link.attr("href")).update();
+        this.navobj.parse_string($link.attr("href")).update();
     },
 
     view_requests: function(e) {
