@@ -49,6 +49,9 @@ Default values are presented below::
   potential sub-directory
   MAILDIR_ROOT = .maildir
 
+  When a mailbox is removed, also remove the associated account
+  AUTO_ACCOUNT_REMOVAL = No
+
   The encryption method used to store passwords
   PASSWORD_SCHEME = crypt
 
