@@ -20,7 +20,7 @@ def db_table_exists(table, cursor=None):
     else:
         return table in table_names
 
-def db_type():
+def db_type(connection="default"):
     """Return the type of the *default* database
 
     Supported values : 'postgres', 'mysql', 'sqlite'
@@ -28,6 +28,6 @@ def db_type():
     :return: a string or None
     """
     for t in ['postgres', 'mysql', 'sqlite']:
-        if settings.DATABASES['default']['ENGINE'].find(t) != -1:
+        if settings.DATABASES[connection]['ENGINE'].find(t) != -1:
             return t
     return None
