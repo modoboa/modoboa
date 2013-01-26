@@ -10,6 +10,7 @@ var admin;
 <ul class="nav nav-list">
   <li class="nav-header">{% trans "Filter" %}</li>
   <li>{% include "admin/searchform.html" %}</li>
+  <li id="taglist"></li>
   <li class="nav-header">{% trans "Actions" %}</li>
   {% block actions %}{% endblock %}
   {% get_extra_admin_content user "leftcol" selection %}

@@ -85,7 +85,7 @@ History.prototype = {
             var params = splits[1].split('&');
             for (var i = 0; i < params.length; i++) {
                 var tmp = params[i].split('=');
-                this.setparam(tmp[0], tmp[1]);
+                this.setparam(tmp[0], tmp[1], false);
             }
         }
         return this;
@@ -144,8 +144,12 @@ History.prototype = {
         this.params[def[0]] = def[1];
     },
 
-    setparam: function(name, value) {
-        this.params[name] = encodeURIComponent(value);
+    setparam: function(name, value, encode) {
+        if (encode == undefined || encode) {
+            this.params[name] = encodeURIComponent(value);
+        } else {
+            this.params[name] = value;
+        }
         return this;
     },
 
@@ -158,7 +162,7 @@ History.prototype = {
         if (this.params[name] === undefined) {
             return (defvalue != undefined) ? defvalue : undefined;
         }
-        return this.params[name];
+        return decodeURIComponent(this.params[name]);
     },
 
     baseurl: function(value, noreset) {

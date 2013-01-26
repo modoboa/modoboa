@@ -35,7 +35,7 @@ def _domains(request):
         q = Q(name__contains=squery)
         q |= Q(domainalias__name__contains=squery)
         domains = domains.filter(q).distinct()
-    return render_listing(request, "domains", objects=domains, squery=squery)
+    return render_listing(request, "domains", objects=domains)
 
 @login_required
 def domains(request, tplname="admin/domains.html"):

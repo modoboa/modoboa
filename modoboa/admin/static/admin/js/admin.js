@@ -28,6 +28,9 @@ Admin.prototype = {
                 }
             }
         }, this));
+        if (this.navobj.getparam("searchquery") != undefined) {
+            $("#searchquery").attr("value", this.navobj.getparam("searchquery"));
+        }
 
         this.listen();
     },
@@ -51,7 +54,13 @@ Admin.prototype = {
 
     do_search: function(e) {
         e.preventDefault();
-        this.navobj.setparam("searchquery", $("#searchquery").attr("value")).update();
+        var squery = $("#searchquery").attr("value");
+        if (squery != "") {
+            this.navobj.setparam("searchquery", squery);
+        } else {
+            this.navobj.delparam("searchquery");
+        }
+        this.navobj.update();
     },
 
     getpage_loader: function(e) {
@@ -157,6 +166,19 @@ var Identities = function(options) {
 };
 
 Identities.prototype = {
+    initialize: function(options) {
+        Admin.prototype.initialize.call(this, options);
+
+        if (this.navobj.getparam("idtfilter") != undefined) {
+            var text = this.navobj.getparam("idtfilter");
+            $("#searchform").parent().after(this.make_tag(text, "idt"));
+        }
+        if (this.navobj.getparam("grpfilter") != undefined) {
+            var text = this.navobj.getparam("grpfilter");
+            $("#searchform").parent().after(this.make_tag(text, "grp"));
+        }
+    },
+
     list_cb: function(data) {
         Admin.prototype.list_cb.call(this, data);
 
@@ -181,19 +203,45 @@ Identities.prototype = {
         });
     },
 
+    make_tag: function(text, type) {
+        var $tag = $("<a />", {"name": type, "class" : "btn btn-mini", "html": text});
+        var $i = $("<i />", {"class" : "icon-remove"}).prependTo($tag);
+
+        $tag.click($.proxy(this.remove_tag, this));
+        return $tag;
+    },
+
+    remove_tag: function(e) {
+        var $tag = $(e.target);
+
+        if ($tag.is("i")) {
+            $tag = $tag.parent();
+        }
+        e.preventDefault();
+        this.navobj.delparam($tag.attr("name") + "filter").update();
+        $tag.remove();
+    },
+
     filter_by_tag: function(e) {
         var $link = $(e.target);
         e.preventDefault();
 
-        if ($link.hasClass("idt")) {
-            this.navobj.setparam("idtfilter", $link.attr("name")).update();
+        if (this.navobj.getparam("idtfilter") == undefined && $link.hasClass("idt")) {
+            var text = $link.attr("name");
+            this.navobj.setparam("idtfilter", text).update();
+            $("#searchform").parent().after(this.make_tag(text, "idt"));
             return;
         }
-        if ($link.hasClass("grp")) {
+        if (this.navobj.getparam("grpfilter") == undefined && $link.hasClass("grp")) {
+            var text = $link.attr("name");
             this.navobj
                 .setparam("idtfilter", "account")
-                .setparam("grpfilter", $link.attr("name"))
+                .setparam("grpfilter", text)
                 .update();
+            if ($("a[name=idt]").length == 0) {
+                $("#searchform").parent().after(this.make_tag("account", "idt"));
+            }
+            $("#searchform").parent().after(this.make_tag(text, "grp"));
         }
     },
 
