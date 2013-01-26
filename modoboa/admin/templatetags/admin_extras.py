@@ -249,8 +249,8 @@ def param(app, definition):
         for idx, v in enumerate([("yes", _("Yes")), ("no", _("No"))]):
             checked = "checked" if value == v[0] else ""
             result += """<label for="%(id)s" class="radio inline">
-  %(label)s
   <input type="radio" name="%(name)s" id="%(id)s" value="%(value)s"%(checked)s />
+  %(label)s
 </label>
 """ % dict(id="%s_%d" % (name, idx), name=name, value=v[0], label=v[1], checked=checked)
 

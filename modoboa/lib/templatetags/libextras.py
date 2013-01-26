@@ -198,7 +198,7 @@ class ConnectedUsers(template.Node):
             try:
                 context[self.varname].append(User.objects.get(pk=uid))
             except User.DoesNotExist:
-                print "unknown user"
+                pass
         return ''
 
 @register.tag
