@@ -82,26 +82,29 @@
         },
 
         select_entry: function(evt) {
-            var $link;
-            if (evt != undefined) {
-                evt.preventDefault();
-                $link = $(evt.target);
-            } else {
-                $link = this.$menu.find('.active > a');
-            }
-            var curvalue = this.$element.attr("value");
-
-            if (curvalue == undefined || curvalue == "") {
-                if (this.options.empty_choice) {
-                    this.options.empty_choice();
+            if (this.$menu.is(":visible")) {
+                var $link;
+                if (evt != undefined) {
+                    evt.preventDefault();
+                    $link = $(evt.target);
+                } else {
+                    $link = this.$menu.find('.active > a');
                 }
-                return;
-            }
+                var curvalue = this.$element.attr("value");
 
-            this.$element.attr("value", curvalue.substr(
-                0, curvalue.indexOf(this.options.from_character) + 1
-            ) + $link.attr("name"));
-            this.hide_menu();
+                if (curvalue == undefined || curvalue == "") {
+                    if (this.options.empty_choice) {
+                        this.options.empty_choice();
+                    }
+                    return;
+                }
+                if ($link.length) {
+                    this.$element.attr("value", curvalue.substr(
+                        0, curvalue.indexOf(this.options.from_character) + 1
+                    ) + $link.attr("name"));
+                }
+                this.hide_menu();
+            }
             if (this.options.choice_selected) {
                 this.options.choice_selected(this.$element.attr('value'));
             }

@@ -213,7 +213,6 @@ History.prototype = {
     check: function() {
         var rawhash = this.get_raw_hash();
 
-
         if (this.serialized == rawhash && this.force === undefined) {
             return;
         }
