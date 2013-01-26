@@ -37,8 +37,9 @@ def dologin(request):
                     next = reverse(admviews.domains)
                 return HttpResponseRedirect(next)
             error = _("Your username and password didn't match. Please try again.")
-            log_warning(_("Failed connection attempt from %s as user %s" \
-                              % (request.META["REMOTE_ADDR"], form.cleaned_data["username"])))
+            log_warning("Failed connection attempt from %(addr)s as user %(user)s" \
+                            % {"addr" : request.META["REMOTE_ADDR"], 
+                               "user" : form.cleaned_data["username"]})
 
         next = request.POST.get("next", None)
         httpcode = 401

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.9.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 09:12+0200\n"
+"POT-Creation-Date: 2013-01-26 10:42+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -16,9 +16,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin/static/admin/js/admin.js:17
+#: admin/static/admin/js/admin.js:27
+msgid "Search"
+msgstr "Chercher"
+
+#: admin/static/admin/js/admin.js:124
+msgid "Delete this domain?"
+msgstr "Supprimer ce domaine?"
+
+#: admin/static/admin/js/admin.js:125
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
+
+#: admin/static/admin/js/admin.js:126
+msgid "Do not delete domain directory"
+msgstr "Ne pas supprimer le répertoire du domaine"
+
+#: admin/static/admin/js/admin.js:149
 msgid "No domain administrator defined"
 msgstr "Aucun administrateur de domaine défini"
+
+#: admin/static/admin/js/admin.js:188
+msgid "Delete this account?"
+msgstr "Supprimer ce compte?"
+
+#: admin/static/admin/js/admin.js:189
+msgid "Do not delete mailbox directory"
+msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
+
+#: admin/static/admin/js/admin.js:193
+msgid "Delete this list?"
+msgstr "Supprimer cette liste?"
+
+#: admin/static/admin/js/admin.js:197
+msgid "Delete this forward?"
+msgstr "Supprimer ce transfert?"
+
+#: admin/static/admin/js/admin.js:201
+msgid "Delete this alias?"
+msgstr "Supprimer cet alias?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:126
 msgid "Release this selection?"
@@ -67,7 +103,7 @@ msgstr "Activer ce jeu de filtres?"
 msgid "active"
 msgstr "actif"
 
-#: extensions/stats/static/stats/js/stats.js:28
+#: extensions/stats/static/stats/js/stats.js:37
 msgid "Search a domain"
 msgstr "Checher un domaine"
 
@@ -79,18 +115,43 @@ msgstr "Supprimer la boite sélectionnée?"
 msgid "Mailbox removed"
 msgstr "Boite aux lettres supprimées"
 
-#: static/js/confirmation.js:45
+#: extensions/webmail/static/webmail/js/webmail.js:847
+msgid "Message sent"
+msgstr "Message envoyé"
+
+#: extensions/webmail/static/webmail/js/webmail.js:880
+msgid "Message deleted"
+msgstr "Message supprimé"
+
+#: extensions/webmail/static/webmail/js/webmail.js:1005
+#, c-format
+msgid "%s file"
+msgid_plural "%s files"
+msgstr[0] "%s fichier"
+msgstr[1] "%s fichiers"
+
+#: extensions/webmail/static/webmail/js/webmail.js:1037
+#, c-format
+msgid "Moving %s message"
+msgid_plural "Moving %s messages"
+msgstr[0] "Déplacement de %s message"
+msgstr[1] "Déplacement de %s messages"
+
+#: static/js/confirmation.js:48
+msgid "Warning"
+msgstr "Avertissement"
+
+#: static/js/confirmation.js:57
 msgid "Cancel"
 msgstr "Annuler"
 
-#: static/js/confirmation.js:84 static/js/history.js:231
+#: static/js/confirmation.js:98 static/js/history.js:240
 msgid "Internal Error"
 msgstr "Erreur interne"
-
-#: static/js/history.js:10
-msgid "Loading..."
-msgstr "Chargement..."
 
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Chercher..."
+
+#~ msgid "Loading..."
+#~ msgstr "Chargement..."
