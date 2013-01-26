@@ -6,6 +6,11 @@ import datetime
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
 
+periods = [{"name" : "day", "label" : ugettext_lazy("Day")},
+           {"name" : "week", "label" : ugettext_lazy("Week")},
+           {"name" : "month", "label" : ugettext_lazy("Month")},
+           {"name" : "year", "label" : ugettext_lazy("Year")}]
+
 def str2Time(y, M, d, h="00", m="00", s="00"):
     """Date conversion
 
@@ -47,7 +52,7 @@ class Grapher(object):
         for v, d in graph_tpl.vars.iteritems():
             defs += [str('DEF:%s=%s:%s:%s' % (v, rrdfile, v, graph_tpl.cf)),
                      str('CDEF:%spm=%s,60,*' % (v, v)),
-                     str('VDEF:%s_total=%s,TOTAL' % (v, v)),]
+                     str('VDEF:%s_total=%s,TOTAL' % (v, v))]
             type = d.has_key("type") and d["type"] or "LINE"
             lines += [str("%s:%spm%s:%s:STACK" % (type, v, d["color"],
                                                   (d["legend"].encode("utf8")).ljust(20)))]
@@ -59,7 +64,7 @@ class Grapher(object):
         defs.append('GPRINT:%s_first:%s %%c:strftime' % (first_ds, "From"))
         defs.append('GPRINT:%s_last:%s %%c\\c:strftime' % (first_ds, "to"))
         defs.append('COMMENT:\\s')
-
+        
         params = defs + lines
         rrdtool.graph(str(path),
                       "--imgformat", "PNG",

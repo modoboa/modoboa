@@ -9,11 +9,6 @@ from modoboa.lib.exceptions import *
 from modoboa.lib import events
 from graph_templates import *
 
-periods = [{"name" : "day", "label" : ugettext_lazy("Day")},
-           {"name" : "week", "label" : ugettext_lazy("Week")},
-           {"name" : "month", "label" : ugettext_lazy("Month")},
-           {"name" : "year", "label" : ugettext_lazy("Year")}]
-
 @login_required
 @permission_required("admin.view_mailboxes")
 def index(request):
@@ -22,9 +17,7 @@ def index(request):
     """
     deflocation = "graphs/?gset=mailtraffic"
     if not request.user.is_superuser:
-        if len(request.user.get_domains()):
-            deflocation += "&searchquery=%s" % request.user.get_domains()[0].name
-        else:
+        if not len(request.user.get_domains()):
             raise ModoboaException(_("No statistics available"))
         
     period = request.GET.get("period", "day")
@@ -49,8 +42,12 @@ def graphs(request):
     tplvars = dict(graphs=[], period=period)
     if searchq in [None, "global"]:
         if not request.user.is_superuser:
-            raise PermDeniedException
-        tplvars.update(domain="global")
+            if len(request.user.get_domains()):
+                tplvars.update(domain=request.user.get_domains()[0].name)
+            else:
+                return ajax_simple_response({"status" : "ok"})
+        else:
+            tplvars.update(domain="global")
     else:
         domain = Domain.objects.filter(name__contains=searchq)
         if len(domain) != 1:
