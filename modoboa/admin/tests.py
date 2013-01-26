@@ -17,6 +17,7 @@ from modoboa.lib.tests import ModoTestCase
 import os
 
 class DomainTestCase(TestCase):
+    fixtures = ["initial_users.json"]
 
     def test(self):
         dom = Domain.objects.create(name="test.com", quota=100)
@@ -35,7 +36,7 @@ class DomainTestCase(TestCase):
         path = os.path.join(parameters.get_admin("STORAGE_PATH"), dom.name)
         self.assertEqual(os.path.exists(path), True)
 
-        dom.delete()
+        dom.delete(User.objects.get(pk=1))
         self.assertEqual(os.path.exists(path), False)
 
 class DomainAliasTestCase(ModoTestCase):
