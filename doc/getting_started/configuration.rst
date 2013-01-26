@@ -114,6 +114,44 @@ modifying the ``TIME_ZONE`` variable. For example::
 
   TIME_ZONE = 'Europe/Paris'
 
+*******************
+Sessions management
+*******************
+
+Modoboa uses `Django's session framework
+<https://docs.djangoproject.com/en/dev/topics/http/sessions/?from=olddocs>`_
+to store per-user information.
+
+Few parameters need to be set in the *settings.py* configuration
+file to make Modoboa behave as expected::
+
+  SESSION_EXPIRE_AT_BROWSER_CLOSE = False # Default value
+  SESSION_COOKIE_AGE = 600 # time in seconds
+
+The first parameter is optional but you must ensure it is set to
+``False`` (the default value).
+
+The second one tells Django that a session inactive for this time
+should be considered as closed. You are free to adjust it according to
+your need.
+
+The default configuration file provided by the *modoboa-admin.py*
+command is properly configured.
+
+Clearing the session table
+==========================
+
+Django does not provide automatic purging. Therefore, it's your job to
+purge expired sessions on a regular basis.
+
+Django provides a sample clean-up script: ``django-admin.py
+cleanup``. That script deletes any session in the session table whose
+``expire_date`` is in the past.
+
+For example, you could setup a cron job to run this script every night::
+
+  0 0 * * * <modoboa_site>/manage.py cleanup
+
 ***********************
 External authentication
 ***********************
@@ -138,7 +176,6 @@ Then, all you have to do is to modify the *settings.py* file:
     AUTHENTICATION_BACKENDS = (
       'django_auth_ldap.backend.LDAPBackend',
       'modoboa.lib.authbackends.SimpleBackend',
-      'django.contrib.auth.backends.ModelBackend',
     )
 
 * Set the required parameters to establish the communication with your

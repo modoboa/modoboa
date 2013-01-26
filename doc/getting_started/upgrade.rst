@@ -33,6 +33,13 @@ Finally, refer to this page to check if the version you're installing
 requires specific operations. If the version you're looking for is not
 present, it means nothing special is required.
 
+0.9.4: administrative panel performance improved
+================================================
+
+#. Edit the *settings.py* file and remove
+   ``'django.contrib.auth.backends.ModelBackend'`` from the
+   ``AUTHENTICATION_BACKENDS`` variable
+
 0.9.1: standard django application and more
 ===========================================
 
