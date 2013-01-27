@@ -1021,10 +1021,22 @@ def populate_callback(sender, user=None, **kwargs):
     :param sender: ??
     :param user: a ``User`` instance
     """
+    from modoboa.lib.permissions import grant_access_to_object
+
     if parameters.get_admin("AUTHENTICATION_TYPE") != "ldap":
         return
     if user is None:
         return
+
+    sadmins = User.objects.filter(is_superuser=True)
+
+    user.groups.add(Group.objects.get(name="SimpleUsers"))
+    user.save()
+    events.raiseEvent("AccountCreated", user)
+    grant_access_to_object(sadmins[0], user, True)
+    for su in sadmins[1:]:
+        grant_access_to_object(su, user)
+
     localpart, domname = split_mailbox(user.username)
     try:
         domain = Domain.objects.get(name=domname)
@@ -1034,11 +1046,20 @@ def populate_callback(sender, user=None, **kwargs):
         domain.enabled = True
         domain.quota = 0
         domain.save()
+        events.raiseEvent("CreateDomain", sadmins[0], domain)
+        grant_access_to_object(sadmins[0], domain, True)
+        for su in sadmins[1:]:
+            grant_access_to_object(su, domain)
     try:
         mb = Mailbox.objects.get(domain=domain, address=localpart)
     except Mailbox.DoesNotExist:
         mb = Mailbox()
         mb.save_from_user(localpart, domain, user)
+        events.raiseEvent("CreateMailbox", sadmins[0], mb)
+        grant_access_to_object(sadmins[0], mb, True)
+        for su in sadmins[1:]:
+            grant_access_to_object(su, domain)
+
 
 try:
     from django_auth_ldap.backend import populate_user

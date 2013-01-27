@@ -20,7 +20,6 @@ class SimpleBackend(ModelBackend):
 
 try:
     from django_auth_ldap.backend import LDAPBackend as orig_LDAPBackend, _LDAPUser
-    from modoboa.admin.models import User
 
     class LDAPBackend(orig_LDAPBackend):
 
@@ -37,13 +36,11 @@ try:
 
         def get_user(self, user_id):
             user = None
-
             try:
                 user = User.objects.get(pk=user_id)
                 _LDAPUser(self, user=user) # This sets user.ldap_user
             except User.DoesNotExist:
                 pass
-
             return user
 
 except ImportError:

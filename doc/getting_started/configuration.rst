@@ -177,7 +177,7 @@ Then, all you have to do is to modify the *settings.py* file:
   variable, like this::
 
     AUTHENTICATION_BACKENDS = (
-      'django_auth_ldap.backend.LDAPBackend',
+      'modoboa.lib.authbackends.LDAPBackend',
       'modoboa.lib.authbackends.SimpleBackend',
     )
 
@@ -187,15 +187,26 @@ Then, all you have to do is to modify the *settings.py* file:
     import ldap
     from django_auth_ldap.config import LDAPSearch
 
+    AUTH_LDAP_SERVER_URI = "ldap://<ldap server address>"
     AUTH_LDAP_BIND_DN = ""
     AUTH_LDAP_BIND_PASSWORD = ""
-    LDAP_USER_BASE = "ou=users,dc=example,dc=com"	
+    LDAP_USER_BASE = "ou=users,dc=example,dc=com"
     LDAP_USER_FILTER = "(mail=%(user)s)"
     AUTH_LDAP_USER_SEARCH = LDAPSearch(LDAP_USER_BASE,
         ldap.SCOPE_SUBTREE, LDAP_USER_FILTER)
 
+    AUTH_LDAP_USER_ATTR_MAP = {
+        "first_name": "givenName",
+        "email": "mail",
+        "last_name": "sn"
+    }
+
 You will find a detailled documentation `here
 <http://packages.python.org/django-auth-ldap/>`_.
+
+Finally, go to *Modoboa > Parameters > admin*, set the
+``AUTHENTICATION_TYPE`` parameter to ``LDAP`` and click on the *Save*
+blue button.
 
 Once the authentication is properly configured, the users defined in
 your LDAP directory will be able to connect to *Modoboa*, the associated
