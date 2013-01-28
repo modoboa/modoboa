@@ -1,68 +1,63 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 #   <miguelmclara@gmail.com>, 2012.
+# Sandra Ribeiro <sandrarib@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2013-01-26 10:42+0100\n"
-"PO-Revision-Date: 2012-07-03 16:02+0000\n"
-"Last-Translator: mikec <miguelmclara@gmail.com>\n"
+"PO-Revision-Date: 2013-01-28 00:03+0000\n"
+"Last-Translator: Sandra Ribeiro <sandrarib@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: pt_PT\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/static/admin/js/admin.js:27
-#, fuzzy
 msgid "Search"
-msgstr "Pesquisar..."
+msgstr "Procurar"
 
 #: admin/static/admin/js/admin.js:124
-#, fuzzy
 msgid "Delete this domain?"
-msgstr "Eliminar esta mensagem?"
+msgstr "Apagar este domínio?"
 
 #: admin/static/admin/js/admin.js:125
 msgid "This operation will remove ALL data associated to this domain."
-msgstr ""
+msgstr "Esta operação irá remover TODOS os dados associados a este domínio."
 
 #: admin/static/admin/js/admin.js:126
 msgid "Do not delete domain directory"
-msgstr ""
+msgstr "Não excluir o diretório do domínio"
 
 #: admin/static/admin/js/admin.js:149
 msgid "No domain administrator defined"
 msgstr "Não está definido nenhum administrador para o domínio"
 
 #: admin/static/admin/js/admin.js:188
-#, fuzzy
 msgid "Delete this account?"
-msgstr "Eliminar itens seleccionados?"
+msgstr "Apagar esta conta?"
 
 #: admin/static/admin/js/admin.js:189
 msgid "Do not delete mailbox directory"
-msgstr ""
+msgstr "Não excluir o diretório da caixa de correio"
 
 #: admin/static/admin/js/admin.js:193
-#, fuzzy
 msgid "Delete this list?"
-msgstr "Eliminar itens seleccionados?"
+msgstr "Apagar esta lista?"
 
 #: admin/static/admin/js/admin.js:197
-#, fuzzy
 msgid "Delete this forward?"
-msgstr "Eliminar esta mensagem?"
+msgstr "Apagar este reencaminhamento?"
 
 #: admin/static/admin/js/admin.js:201
-#, fuzzy
 msgid "Delete this alias?"
-msgstr "Eliminar itens seleccionados?"
+msgstr "Apagar este alias?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:126
 msgid "Release this selection?"
@@ -125,29 +120,29 @@ msgstr "Caixa removida"
 
 #: extensions/webmail/static/webmail/js/webmail.js:847
 msgid "Message sent"
-msgstr ""
+msgstr "Mensagem enviada"
 
 #: extensions/webmail/static/webmail/js/webmail.js:880
 msgid "Message deleted"
-msgstr ""
+msgstr "Mensagem apagada"
 
 #: extensions/webmail/static/webmail/js/webmail.js:1005
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s ficheiro"
+msgstr[1] "%s ficheiros"
 
 #: extensions/webmail/static/webmail/js/webmail.js:1037
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "A mover %s mensagem"
+msgstr[1] "A mover %s mensagens"
 
 #: static/js/confirmation.js:48
 msgid "Warning"
-msgstr ""
+msgstr "Aviso"
 
 #: static/js/confirmation.js:57
 msgid "Cancel"
@@ -160,6 +155,3 @@ msgstr "Erro Interno"
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Pesquisar..."
-
-#~ msgid "Loading..."
-#~ msgstr "A carregar..."
