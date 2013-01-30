@@ -137,7 +137,7 @@ class SQLWrapper(object):
             regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
             doms_q = Q(rid__email__regex=regexp)
             rq &= doms_q
-        return len(Msgrcpt.objects.filter(rq))
+        return Msgrcpt.objects.filter(rq).count()
 
     def get_mail_content(self, mailid):        
         return Quarantine.objects.filter(mail=mailid)
@@ -154,13 +154,13 @@ class PgWrapper(SQLWrapper):
             q = Q(rs='p')
         else:
             q = ~Q(rs='D')
+        where = ["U0.rid=maddr.id"]
         if request.user.group == 'SimpleUsers':
+            where.append("convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email)
             return Msgrcpt.objects.filter(q).extra(
-                where=["convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email], 
-                tables=['maddr']
+                where=where, tables=['maddr']
                 )
 
-        where = []
         if not request.user.is_superuser:
             doms = request.user.get_domains()
             regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
@@ -171,21 +171,21 @@ class PgWrapper(SQLWrapper):
 
     def get_recipient_message(self, address, mailid):
         qset = Msgrcpt.objects.filter(mail=mailid).extra(
-            where=["convert_from(maddr.email, 'UTF8') = '%s'" % address], 
+            where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') = '%s'" % address], 
             tables=['maddr']
             )
         return qset.all()[0]
 
     def get_recipient_messages(self, address, mailids):
         return Msgrcpt.objects.filter(mail__in=mailids).extra(
-            where=["convert_from(maddr.email, 'UTF8') = '%s'" % address], 
+            where=["U0.rid=maddr.id", "convert_from(maddr.email, 'UTF8') = '%s'" % address], 
             tables=['maddr']
             )
 
     def get_domains_pending_requests(self, domains):
         regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, domains))
         return Msgrcpt.objects.filter(rs='p').extra(
-            where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp], 
+            where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp], 
             tables=['maddr']
             )
 
@@ -196,10 +196,10 @@ class PgWrapper(SQLWrapper):
              if not doms.count():
                  return 0
              regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-             return len(Msgrcpt.objects.filter(rq).extra(
-                     where=["convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], 
-                     tables=['maddr']
-                     ))
+             return Msgrcpt.objects.filter(rq).extra(
+                 where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], 
+                 tables=['maddr']
+                 ).count()
          return len(Msgrcpt.objects.filter(rq))
 
 
