@@ -201,7 +201,7 @@ class LogParser(object):
         return self.__year
 
     def process(self):
-        id_expr = re.compile("(\w): (.*)")
+        id_expr = re.compile("([0-9A-F]+): (.*)")
         prev_se = -1
         prev_mi = -1
         prev_ho = -1
