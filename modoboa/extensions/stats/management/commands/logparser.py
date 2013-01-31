@@ -201,7 +201,7 @@ class LogParser(object):
         return self.__year
 
     def process(self):
-        id_expr = re.compile("(\w{9,18}): (.*)")
+        id_expr = re.compile("(\w): (.*)")
         prev_se = -1
         prev_mi = -1
         prev_ho = -1
@@ -258,6 +258,8 @@ class LogParser(object):
                         else:
                             self.inc_counter(addrto.group(2), cur_t, m.group(2))
                     continue
+                if self.debug:
+                    print "Unknown line format: %s" % line_log
             else:
                 m = re.search("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
                 if m:
@@ -265,6 +267,8 @@ class LogParser(object):
                     if addrto and addrto.group(2) in self.domains:
                         self.inc_counter(addrto.group(2), cur_t, 'reject')
                     continue
+                if self.debug:
+                    print "Unknown line format: %s" % log
 
         # Sort everything by time
         G = Grapher()
