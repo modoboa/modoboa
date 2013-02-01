@@ -218,7 +218,7 @@ class LogParser(object):
                 prev_mi = mi
                 prev_ho = ho
                 prev_se = se
-            m = id_expr.search(log)
+            m = id_expr.match(log)
             if m:
                 (line_id, line_log) = m.groups()
 
@@ -261,7 +261,7 @@ class LogParser(object):
                 if self.debug:
                     print "Unknown line format: %s" % line_log
             else:
-                m = re.search("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
+                m = re.match("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
                 if m:
                     addrto = re.match("([^@]+)@(.+)", m.group(2))
                     if addrto and addrto.group(2) in self.domains:
