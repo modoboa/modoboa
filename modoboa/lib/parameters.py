@@ -165,6 +165,17 @@ def register_user(name, **kwargs):
         app = __guess_extension()
     return __register(app, 'U', name, **kwargs)
 
+def get_param_def(app, level, name):
+    """Return the definition of a given parameter
+
+    :param app: the application's name
+    :param level: the required level (A or U)
+    :param name: the parameter's name
+    :return: a dictionnary
+    """
+    __is_defined(app, level, name)
+    return _params[app][level][name]
+
 def save_admin(name, value, app=None):
     from models import Parameter
 
@@ -178,6 +189,9 @@ def save_admin(name, value, app=None):
         p = Parameter()
         p.name = fullname
     if p.value != value:
+        pdef = get_param_def(app, 'A', name)
+        if "modify_cb" in pdef:
+            pdef["modify_cb"](value)
         p.value = value.encode("unicode_escape").strip()
         p.save()
     return True
@@ -196,6 +210,9 @@ def save_user(user, name, value, app=None):
         p.user = user
         p.name = fullname
     if p.value != value:
+        pdef = get_param_def(app, 'U', name)
+        if "modify_cb" in pdef:
+            pdef["modify_cb"](value)
         p.value = value.encode("unicode_escape").strip()
         p.save()
     return True
