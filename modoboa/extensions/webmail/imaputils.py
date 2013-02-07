@@ -357,21 +357,20 @@ class IMAPconnector(object):
         #data = self._cmd("LIST", "", "*")
         if not mailboxes: mailboxes = []
         (status, data) = self.m.list()
-        result = []
         newmboxes = []
         for mb in data:
             flags, delimiter, name = self.list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
-            pos = -1
+            mdm_found = False
             for idx, mdm in enumerate(mailboxes):
                 if mdm["name"] == name:
-                    pos = idx
+                    mdm_found = True
+                    descr = mailboxes[idx]
                     break
-            if pos == -1:
+            if not mdm_found:
                 descr = dict(name=name)
                 newmboxes += [descr]
-            else:
-                descr = mailboxes[idx]
+
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
                 if not descr.has_key("path"):
@@ -396,16 +395,15 @@ class IMAPconnector(object):
                 self.listextended_response_pattern.match(mb).groups()
             flags = flags.split(' ')
             name = name.decode("imap4-utf-7")
-            pos = -1
+            mdm_found = False
             for idx, mdm in enumerate(mailboxes):
                 if mdm["name"] == name:
-                    pos = idx
+                    mdm_found = True
+                    descr = mailboxes[idx]
                     break
-            if pos == -1:
+            if not mdm_found:
                 descr = dict(name=name)
                 newmboxes += [descr]
-            else:
-                descr = mailboxes[idx]
 
             if r'\Marked' in flags or not r'\UnMarked' in flags:
                 descr["send_status"] = True
