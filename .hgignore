@@ -7,3 +7,6 @@ modoboa.egg-info
 doc/.build
 doc/.static
 doc/.templates
+DEV
+.idea
+modoboa.iml
