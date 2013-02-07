@@ -117,15 +117,15 @@ def compact(request, name):
 def newfolder(request, tplname="webmail/folder.html"):
     mbc = IMAPconnector(user=request.user.username,
                         password=request.session["password"])
-    ctx = {"title" : _("Create a new mailbox"),
-           "formid" : "mboxform",
-           "action" : reverse(newfolder),
-           "action_label" : _("Create"),
-           "action_classes" : "submit",
-           "withunseen" : False,
-           "selectonly" : True}
+    ctx = {"title": _("Create a new mailbox"),
+           "formid": "mboxform",
+           "action": reverse(newfolder),
+           "action_label": _("Create"),
+           "action_classes": "submit",
+           "withunseen": False,
+           "selectonly": True,
+           "mboxes": mbc.getmboxes(request.user)}
 
-    ctx["mboxes"] = mbc.getmboxes(request.user)
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
