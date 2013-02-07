@@ -40,7 +40,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         }
         var $div = $('<div id="modalbox" class="modal" >' + data + '</div>')
             .one('shown', function() {
-                $(".help").popover();
+                $(".help").popover().click(function(e) {e.preventDefault();});
                 if (modalcb != undefined) {
                     if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
                 }
@@ -242,5 +242,5 @@ $(document).ready(function() {
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
     $(document).on('click', '.activator', activate_widget);
-    $(".help").popover();
+    $(".help").popover().click(function(e) {e.preventDefault();});
 });
