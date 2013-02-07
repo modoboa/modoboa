@@ -1,4 +1,6 @@
 # coding: utf-8
+from django.conf import settings
+import os
 from django.http import HttpResponse
 from django.template import Template, Context
 from django.utils.translation import ugettext as _
@@ -7,8 +9,10 @@ from django.contrib.auth.decorators import login_required
 from modoboa.lib import parameters
 from modoboa.lib.webutils import _render, _render_to_string, ajax_response, ajax_simple_response
 from modoboa.lib.decorators import needs_mailbox
-from lib import *
-from forms import *
+from exceptions import WebmailError
+from forms import FolderForm, AttachmentForm, ComposeMailForm
+from imaputils import get_imapconnector, IMAPconnector, separate_mailbox
+from lib import decode_payload, AttachmentUploadHandler, save_attachment, ImapListing, EmailSignature, clean_attachments, set_compose_session, send_mail, ImapEmail
 from templatetags import webextras
 
 @login_required
@@ -222,7 +226,7 @@ def attachments(request, tplname="webmail/attachments.html"):
                 return _render(request, "webmail/upload_done.html", {
                         "status" : "ok", "fname" : request.FILES["attachment"],
                         "tmpname" : os.path.basename(tmpname)
-                        });
+                        })
             except WebmailError, inst:
                 error = _("Failed to save attachment: ") + str(inst)
 
@@ -231,7 +235,7 @@ def attachments(request, tplname="webmail/attachments.html"):
                           % parameters.get_admin("MAX_ATTACHMENT_SIZE"))
         return _render(request, "webmail/upload_done.html", {
                 "status" : "ko", "error" : error
-                });
+                })
     ctx = {
         "title" : _("Attachments"),
         "formid" : "uploadfile",

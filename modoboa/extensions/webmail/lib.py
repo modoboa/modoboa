@@ -14,9 +14,9 @@ import re
 from modoboa.lib import u2u_decode, tables, parameters
 from modoboa.lib.webutils import size2integer
 from modoboa.lib.email_listing import EmailListing
-from modoboa.lib.emailutils import *
-from imaputils import *
-from exceptions import *
+from modoboa.extensions.webmail.exceptions import WebmailError
+from modoboa.extensions.webmail.imaputils import IMAPconnector, get_imapconnector, BodyStructure
+from modoboa.lib.emailutils import EmailAddress, Email
 
 
 class WMtable(tables.Table):

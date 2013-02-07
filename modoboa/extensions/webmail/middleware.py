@@ -1,6 +1,6 @@
 # coding: utf-8
 from modoboa.lib.webutils import ajax_response, _render_error
-from modoboa.extensions.webmail.exceptions import *
+from modoboa.extensions.webmail.exceptions import WebmailError, ImapError
 
 class WebmailErrorMiddleware(object):
     def process_exception(self, request, exception):
