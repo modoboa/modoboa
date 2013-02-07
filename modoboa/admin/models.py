@@ -755,25 +755,34 @@ class Mailbox(DatesAware):
                                         self.domain.name, self.address))
         return True
 
+    @staticmethod
+    def resolve_uid(value):
+        if value.isdigit():
+            return value
+        try:
+            uid = pwd.getpwnam(value).pw_uid
+        except KeyError:
+            raise AdminError(_("%s is not a valid uid/username" % value))
+        return uid
+
+    @staticmethod
+    def resolve_gid(value):
+        if value.isdigit():
+            return value
+        try:
+            gid = pwd.getpwnam(value).pw_gid
+        except KeyError:
+            raise AdminError(_("%s is not a valid gid/groupname" % value))
+        return gid
+
     def set_ownership(self):
-        # If we ever had numerical uid, don't resolve it
-	v_uid = parameters.get_admin("VIRTUAL_UID");
-	if v_uid.isdigit():
-            self.uid = v_uid
-	else:
-            try:
-                self.uid = pwd.getpwnam(v_uid).pw_uid
-            except KeyError:
-                raise AdminError(_("%s is not a valid uid/username" % v_uid))
-	# Just the same for gid
-	v_gid = parameters.get_admin("VIRTUAL_GID")
-	if v_gid.isdigit():
-            self.gid = v_gid
-	else:
-            try:
-                self.gid = pwd.getpwnam(v_gid).pw_gid
-            except KeyError:
-                raise AdminError(_("%s is not a valid gid/groupname" % v_gid))
+        """Set uid and gid for this mailbox
+
+        Values come from global parameters. They are resolved
+        (converted to integers) if needed.
+        """
+	self.uid = self.resolve_uid(parameters.get_admin("VIRTUAL_UID"))
+	self.gid = self.resolve_gid(parameters.get_admin("VIRTUAL_GID"))
 
     def set_quota(self, value, override_domain=False):
         if value is None or (int(value) > self.domain.quota and not override_domain):
