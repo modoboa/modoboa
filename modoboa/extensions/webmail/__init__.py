@@ -98,7 +98,8 @@ def userlogout(request):
     try:
         m = IMAPconnector(user=request.user.username,
                           password=request.session["password"])
-    except Exception, e:
+    except Exception:
+        # TODO silent exception are bad : we should at least log it
         return
 
     # The following statement may fail under Python 2.6...
