@@ -24,7 +24,6 @@ def getattachment(request):
     redemandé pour accéder aux headers de cette pièce jointe.
 
     :param request: a ``Request`` object
-    :param folder
     """
     mbox = request.GET.get("mbox", None)
     mailid = request.GET.get("mailid", None)
@@ -275,7 +274,7 @@ def render_mboxes_list(request, imapc):
     """Return the HTML representation of a mailboxes list
 
     :param request: a ``Request`` object
-    :param imap: an ``IMAPconnector` object
+    :param imapc: an ``IMAPconnector` object
     :return: a string
     """
     curmbox = request.session.get("mbox", "INBOX")

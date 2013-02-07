@@ -75,7 +75,7 @@ class BodyStructure(object):
         * Any other MIME type is considered as an attachment (for now)
 
         :param definition: a part definition (list)
-        :param prefix: the part's number
+        :param pnum: the part's number
         :param multisubtype: the multipart subtype
         """
         pnum = "1" if pnum is None else pnum
@@ -353,8 +353,9 @@ class IMAPconnector(object):
             sdescr["class"] = "subfolders"
         return True
 
-    def _listmboxes_simple(self, topmailbox='INBOX', mailboxes=[], **kwargs):
+    def _listmboxes_simple(self, topmailbox='INBOX', mailboxes=None, **kwargs):
         #data = self._cmd("LIST", "", "*")
+        if not mailboxes: mailboxes = []
         (status, data) = self.m.list()
         result = []
         newmboxes = []
@@ -385,7 +386,8 @@ class IMAPconnector(object):
         mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
     @capability('LIST-EXTENDED', '_listmboxes_simple')
-    def _listmboxes(self, topmailbox='', mailboxes=[], until_mailbox=None):
+    def _listmboxes(self, topmailbox='', mailboxes=None, until_mailbox=None):
+        if not mailboxes: mailboxes = []
         pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
@@ -628,7 +630,7 @@ class IMAPconnector(object):
         :param mbox: the mailbox containing the message
         :param mailid: the message's unique id
         :param readonly:
-        :param extraheaders:
+        :param headers:
         """
         self.select_mailbox(mbox, readonly)
         if headers is None:
