@@ -81,7 +81,7 @@ Webmail.prototype = {
         $(document).on("click", "a[name=loadfolder]",
             $.proxy(this.listmailbox_loader, this));
         $(document).on("click", "a[name=selectfolder]",
-            this.select_parent_mailbox),
+            this.select_parent_mailbox);
         $(document).on("click", "div[class*=clickbox]",
             $.proxy(this.mbox_state_callback, this));
         $(document).on("click", "a[name=newmbox]",
