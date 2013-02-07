@@ -1,3 +1,4 @@
+# coding: utf-8
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns(
@@ -6,7 +7,7 @@ urlpatterns = patterns(
     (r'^submailboxes', "submailboxes"),
     (r'^getmailcontent', 'getmailcontent'),
     (r'^unseenmsgs', 'check_unseen_messages'),
-    
+
     (r'^delete/$', 'delete'),
     (r'^move/$', "move"),
     (r'^mark/(?P<name>.+)/$', "mark"),
@@ -15,8 +16,8 @@ urlpatterns = patterns(
     (r'^newfolder/$', "newfolder"),
     (r'^editfolder/$', 'editfolder'),
     (r'^delfolder/$', 'delfolder'),
-    
+
     (r'^attachments/$', 'attachments'),
     (r'^delattachment/$', 'delattachment'),
     (r'^getattachment/$', 'getattachment'),
-    )
+)
