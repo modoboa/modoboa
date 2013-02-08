@@ -14,6 +14,7 @@ from django.template import Template, Context
 from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
 
+
 class Amavis(ModoExtension):
     name = "amavis"
     label = "Amavis frontend"
@@ -23,24 +24,24 @@ class Amavis(ModoExtension):
 
     def init(self):
         """Init function
-        
+
         Only run once, when the extension is enabled. We create records
         for existing domains to let Amavis consider them local.
         """
         from modoboa.admin.models import Domain
         from models import Users, Policy
-        
+
         for dom in Domain.objects.all():
             try:
                 u = Users.objects.get(email="@%s" % dom.name)
             except Users.DoesNotExist:
                 p = Policy.objects.create(policy_name=dom.name)
-                Users.objects.create(email="@%s" % dom.name, fullname=dom.name, 
+                Users.objects.create(email="@%s" % dom.name, fullname=dom.name,
                                      priority=7, policy=p)
 
     def load(self):
         parameters.register_admin(
-            "MAX_MESSAGES_AGE", type="int", 
+            "MAX_MESSAGES_AGE", type="int",
             deflt=14,
             help=_("Quarantine messages maximum age (in days) before deletion")
             )
@@ -48,19 +49,19 @@ class Amavis(ModoExtension):
             "RELEASED_MSGS_CLEANUP", type="list_yesno", deflt="no",
             help=_("Remove messages marked as released while cleaning up the database")
             )
-        parameters.register_admin("AM_PDP_MODE", type="list", 
+        parameters.register_admin("AM_PDP_MODE", type="list",
                                   deflt="unix",
                                   values=[("inet", "inet"), ("unix", "unix")],
                                   help=ugettext_lazy("Mode used to access the PDP server"))
-        parameters.register_admin("AM_PDP_HOST", type="string", 
-                                  deflt="localhost", 
+        parameters.register_admin("AM_PDP_HOST", type="string",
+                                  deflt="localhost",
                                   visible_if="AM_PDP_MODE=inet",
                                   help=ugettext_lazy("PDP server address (if inet mode)"))
-        parameters.register_admin("AM_PDP_PORT", type="int", 
-                                  deflt=9998, 
+        parameters.register_admin("AM_PDP_PORT", type="int",
+                                  deflt=9998,
                                   visible_if="AM_PDP_MODE=inet",
                                   help=ugettext_lazy("PDP server port (if inet mode)"))
-        parameters.register_admin("AM_PDP_SOCKET", type="string", 
+        parameters.register_admin("AM_PDP_SOCKET", type="string",
                                   deflt="/var/amavis/amavisd.sock",
                                   visible_if="AM_PDP_MODE=unix",
                                   help=ugettext_lazy("Path to the PDP server socket (if unix mode)"))
@@ -73,7 +74,7 @@ class Amavis(ModoExtension):
                                   help=ugettext_lazy("Activate the 'self-service' mode"))
         parameters.register_admin("NOTIFICATIONS_SENDER", type="string", deflt="notification@modoboa.org",
                                   help=ugettext_lazy("The e-mail address used to send notitications"))
-        
+
         parameters.register_user(
             "MESSAGES_PER_PAGE", type="int", deflt=40,
             label="Number of displayed emails per page",
@@ -86,24 +87,27 @@ class Amavis(ModoExtension):
 
 exts_pool.register_extension(Amavis)
 
+
 @events.observe("UserMenuDisplay")
 def menu(target, user):
     from modoboa.lib.webutils import static_url
 
     if target == "top_menu":
         return [
-            {"name" : "quarantine",
-             "label" : _("Quarantine"),
-             "url" : reverse('modoboa.extensions.amavis.views.index')}
+            {"name": "quarantine",
+             "label": _("Quarantine"),
+             "url": reverse('modoboa.extensions.amavis.views.index')}
             ]
     return []
+
 
 @events.observe("CreateDomain")
 def on_create_domain(user, domain):
     from models import Users, Policy
     p = Policy.objects.create(policy_name=domain.name)
-    Users.objects.create(email="@%s" % domain.name, fullname=domain.name, 
+    Users.objects.create(email="@%s" % domain.name, fullname=domain.name,
                          priority=7, policy=p)
+
 
 @events.observe("DomainModified")
 def on_domain_modified(domain):
@@ -116,6 +120,7 @@ def on_domain_modified(domain):
         u.policy.save()
         u.save()
 
+
 @events.observe("DeleteDomain")
 def on_delete_domain(domain):
     from models import Users
@@ -126,6 +131,7 @@ def on_delete_domain(domain):
         return
     u.policy.delete()
     u.delete()
+
 
 @events.observe("GetStaticContent")
 def extra_static_content(user):
@@ -160,6 +166,7 @@ $(document).ready(function() {
     interval = int(parameters.get_admin("CHECK_REQUESTS_INTERVAL")) * 1000
     return [tpl.render(Context(dict(url=url, interval=interval, text=_("pending requests"))))]
 
+
 @events.observe("TopNotifications")
 def display_requests(user):
     from sql_listing import get_wrapper
@@ -177,6 +184,7 @@ def display_requests(user):
                     label=_("%d pending requests" % nbrequests), url=url, css=css
                     )))]
 
+
 @events.observe("ExtraDomainForm")
 def extra_domain_form(user, domain):
     from forms import DomainPolicyForm
@@ -189,6 +197,7 @@ def extra_domain_form(user, domain):
             formtpl="amavis/domain_content_filter.html"
             )
         ]
+
 
 @events.observe("FillDomainInstances")
 def fill_domain_instances(user, domain, instances):

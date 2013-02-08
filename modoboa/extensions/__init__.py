@@ -1,8 +1,10 @@
 # coding: utf-8
-import os, sys
+import os
+import sys
 import re
 from django.conf import settings
 from django.conf.urls.defaults import include
+
 
 class ModoExtension(object):
     """Base extension class
@@ -25,7 +27,7 @@ class ModoExtension(object):
 
     def destroy(self):
         pass
-    
+
     def load(self):
         pass
 
@@ -40,9 +42,9 @@ class ExtensionsPool(object):
         self.extensions[ext.name] = dict(cls=ext)
 
     def get_extension(self, name):
-        if not self.extensions.has_key(name):
+        if not name in self.extensions:
             return None
-        if not self.extensions[name].has_key("instance"):
+        if not "instance" in self.extensions[name]:
             self.extensions[name]["instance"] = self.extensions[name]["cls"]()
         return self.extensions[name]["instance"]
 

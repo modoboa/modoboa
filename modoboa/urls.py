@@ -9,8 +9,8 @@ urlpatterns = patterns('',
     (r'^userprefs/', include('modoboa.userprefs.urls')),
     (r'^accounts/login/$', 'modoboa.auth.views.dologin'),
     (r'^accounts/logout/$', 'modoboa.auth.views.dologout'),
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', 
-     {'packages': ('modoboa',),}),
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog',
+     {'packages': ('modoboa', ), }),
     *exts_pool.load_all()
 )
 
