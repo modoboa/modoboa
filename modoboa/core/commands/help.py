@@ -1,3 +1,4 @@
+# coding: utf-8
 import sys
 from modoboa.core.management import Command
 
@@ -8,7 +9,7 @@ class HelpCommand(Command):
         super(HelpCommand, self).__init__(*args, **kwargs)
         self._parser.add_argument('name', type=str,
                                   help='A command name')
-    
+
     def handle(self, parsed_args):
         if not self._commands.has_key(parsed_args.name):
             print >>sys.stderr, "Unknown command: %s" % parsed_args.name

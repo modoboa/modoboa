@@ -1,3 +1,4 @@
+# coding: utf-8
 import sys
 import os
 import shutil
@@ -53,7 +54,7 @@ class DeployCommand(Command):
             output = None
         if p.returncode:
             if output:
-                print >>sys.stderr, "\n".join(filter(lambda l: l != None, output))
+                print >>sys.stderr, "\n".join(filter(lambda l: l is not None, output))
             print >>sys.stderr, "%s failed, check your configuration" % cmd
 
     def ask_db_info(self, name='default'):
@@ -65,8 +66,7 @@ class DeployCommand(Command):
         :param name: the connection name
         """
         print "Configuring database connection: %s" % name
-        info = {'conn_name' : name}
-        info['dbtype'] = raw_input('Database type (mysql or postgres): ')
+        info = {'conn_name': name, 'dbtype': raw_input('Database type (mysql or postgres): ')}
         if info['dbtype'] not in ['mysql', 'postgres']:
             info['dbtype'] = 'mysql'
         if info['dbtype'] == 'postgres':
@@ -78,7 +78,7 @@ class DeployCommand(Command):
         info['username'] = raw_input('Username: ')
         info['password'] = getpass.getpass('Password: ')
         return info
-        
+
     def handle(self, parsed_args):
         management.call_command('startproject', parsed_args.name, verbosity=False)
         if os.path.exists("%(name)s/%(name)s" % {'name' : parsed_args.name}):
@@ -90,7 +90,7 @@ class DeployCommand(Command):
             path = parsed_args.name
             sys.path.append(".")
             django14 = False
-            
+
         t = Template(dbconn_tpl)
         default_conn = t.render(Context(self.ask_db_info()))
         amavis_conn = t.render(Context(self.ask_db_info('amavis'))) if parsed_args.with_amavis \
@@ -107,10 +107,10 @@ class DeployCommand(Command):
         fp.close()
         shutil.copyfile("%s/urls.py" % self._templates_dir, "%s/urls.py" % path)
         os.mkdir("%s/media" % path)
-        
+
         if parsed_args.syncdb:
             self._exec_django_command("syncdb", parsed_args.name, '--migrate', '--noinput')
             self._exec_django_command("loaddata", parsed_args.name, 'initial_users.json')
-                
+
         if parsed_args.collectstatic:
             self._exec_django_command("collectstatic", parsed_args.name, '--noinput')

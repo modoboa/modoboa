@@ -1,3 +1,4 @@
+# coding: utf-8
 import getpass
 import inspect
 import os
@@ -84,14 +85,14 @@ class PostfixMapsCommand(Command):
                                   help='Used database type')
         self._parser.add_argument('--dbhost', type=str, default='127.0.0.1',
                                   help='Database host address')
-        self._parser.add_argument('--categories', type=str, nargs='*', default=['std'], 
+        self._parser.add_argument('--categories', type=str, nargs='*', default=['std'],
                                   help='Map file categories to generate (choices: std, autoreply)')
-    
+
     def handle(self, parsed_args):
         dbname = raw_input('Database name: ')
         dbuser = raw_input('Username: ')
         dbpass = getpass.getpass('Password: ')
-    
+
         try:
             os.mkdir(parsed_args.destdir)
         except OSError:
@@ -102,6 +103,6 @@ class PostfixMapsCommand(Command):
                 continue
             if not v.category in parsed_args.categories:
                 continue
-            v().render(parsed_args.destdir, parsed_args.dbtype, 
-                       dbname=dbname, dbuser=dbuser, dbpassword=dbpass, 
+            v().render(parsed_args.destdir, parsed_args.dbtype,
+                       dbname=dbname, dbuser=dbuser, dbpassword=dbpass,
                        dbhost=parsed_args.dbhost)
