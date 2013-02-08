@@ -1,3 +1,4 @@
+# coding: utf-8
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #     * Rearrange models' order
@@ -15,10 +16,12 @@ class Admin(models.Model):
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
+
     class Meta:
         db_table = u'admin'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Alias(models.Model):
     address = models.CharField(max_length=765, primary_key=True)
@@ -27,10 +30,12 @@ class Alias(models.Model):
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
+
     class Meta:
         db_table = u'alias'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class AliasDomain(models.Model):
     alias_domain = models.CharField(max_length=765, primary_key=True)
@@ -38,19 +43,23 @@ class AliasDomain(models.Model):
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
+
     class Meta:
         db_table = u'alias_domain'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Config(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(unique=True, max_length=60)
     value = models.CharField(max_length=60)
+
     class Meta:
         db_table = u'config'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Domain(models.Model):
     domain = models.CharField(max_length=765, primary_key=True)
@@ -64,20 +73,24 @@ class Domain(models.Model):
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
+
     class Meta:
         db_table = u'domain'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class DomainAdmins(models.Model):
     username = models.CharField(max_length=765)
     domain = models.CharField(max_length=765)
     created = models.DateTimeField(primary_key=True)
     active = models.IntegerField()
+
     class Meta:
         db_table = u'domain_admins'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Fetchmail(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -96,10 +109,12 @@ class Fetchmail(models.Model):
     returned_text = models.TextField(blank=True)
     mda = models.CharField(max_length=765)
     date = models.DateTimeField()
+
     class Meta:
         db_table = u'fetchmail'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Log(models.Model):
     timestamp = models.DateTimeField()
@@ -107,10 +122,12 @@ class Log(models.Model):
     domain = models.CharField(max_length=765)
     action = models.CharField(max_length=765)
     data = models.TextField()
+
     class Meta:
         db_table = u'log'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Mailbox(models.Model):
     username = models.CharField(max_length=765, primary_key=True)
@@ -123,28 +140,34 @@ class Mailbox(models.Model):
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
+
     class Meta:
         db_table = u'mailbox'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Quota(models.Model):
     username = models.CharField(max_length=765, primary_key=True)
     path = models.CharField(max_length=300, primary_key=True)
     current = models.BigIntegerField(null=True, blank=True)
+
     class Meta:
         db_table = u'quota'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Quota2(models.Model):
     username = models.CharField(max_length=300, primary_key=True)
     bytes = models.BigIntegerField()
     messages = models.IntegerField()
+
     class Meta:
         db_table = u'quota2'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class Vacation(models.Model):
     email = models.CharField(max_length=765)
@@ -154,16 +177,19 @@ class Vacation(models.Model):
     domain = models.CharField(max_length=765)
     created = models.DateTimeField()
     active = models.IntegerField()
+
     class Meta:
         db_table = u'vacation'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False
+
 
 class VacationNotification(models.Model):
     on_vacation = models.ForeignKey(Vacation, db_column='on_vacation')
     notified = models.CharField(max_length=765, primary_key=True)
     notified_at = models.DateTimeField()
+
     class Meta:
         db_table = u'vacation_notification'
         app_label = 'pfxadmin_migrate'
-	managed = False
+        managed = False

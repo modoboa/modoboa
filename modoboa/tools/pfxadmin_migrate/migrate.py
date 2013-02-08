@@ -12,7 +12,7 @@ As the two products do not share the same schema, some informations
 will be lost on the new database. Here is the list:
  * Description, transport and backup MX for domains
  * Logs
- * Fetchmail table 
+ * Fetchmail table
 
 Mailboxes organisation on the filesystem will change. PostfixAdmin
 uses the following layout::
@@ -42,7 +42,6 @@ compatible with PostfixAdmin ``md5crypt`` algorithm...
 
 """
 import os, sys
-from django.conf import settings
 from django.db.utils import ConnectionDoesNotExist
 from django.db.models import Q
 from django.contrib.auth.models import Group
@@ -120,7 +119,7 @@ def migrate_mailboxes(domain, options):
         new_mb.dates = migrate_dates(old_mb)
         if old_mb.quota:
             new_mb.quota = old_mb.quota / 1024000
-            
+
         new_mb.path = "%s/" % old_mb.local_part
         if options.rename_dirs:
             oldpath = os.path.join(options.mboxes_path, domain.name, old_mb.maildir)
@@ -131,7 +130,7 @@ def migrate_mailboxes(domain, options):
                 sys.exit(1)
 
         new_mb.save(name=old_mb.name, password=old_mb.password, using=options.to)
-        
+
 
 def migrate_domain(old_dom, options):
     print "Migrating domain %s" % old_dom.domain
@@ -201,9 +200,9 @@ if __name__ == "__main__":
                       help="Rename mailbox directories (default is no)")
     parser.add_option("-p", "--mboxes-path", default=None,
                       help="Path where directories are stored on the filesystem (used only if --rename-dirs)")
-    
+
     options, args = parser.parse_args()
-    
+
     if options.rename_dirs and options.mboxes_path is None:
         print "Error: you must provide the --mboxes-path option"
         sys.exit(1)
@@ -212,7 +211,3 @@ if __name__ == "__main__":
         do_migration(options)
     except ConnectionDoesNotExist, e:
         print e
-        
-    
-
-    

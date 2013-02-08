@@ -1,19 +1,14 @@
 # coding: utf-8
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators \
-    import login_required, user_passes_test
-from django.conf import settings
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.webutils import ajax_response, ajax_simple_response
-from forms import *
 from modoboa.admin.models import Mailbox, Alias
-from modoboa.admin.lib import AdminError
 from modoboa.auth.lib import encrypt
+from forms import ForwardForm, BadDestination, ProfileForm
 
 @login_required
 def index(request, tplname="userprefs/index.html"):
@@ -31,7 +26,7 @@ def forward(request, tplname='userprefs/forward.html'):
     except IndexError:
         raise ModoboaException(_("You need a mailbox in order to define a forward"))
     try:
-        al = Alias.objects.get(address=mb.address, 
+        al = Alias.objects.get(address=mb.address,
                                domain__name=mb.domain.name)
     except Alias.DoesNotExist:
         al = None
@@ -55,7 +50,7 @@ def forward(request, tplname='userprefs/forward.html'):
                 error = str(e)
 
         return ajax_simple_response(dict(
-                status="ko", 
+                status="ko",
                 content=render_to_string(tplname, {"form" : form}),
                 respmsg=error
                 ))
@@ -70,7 +65,7 @@ def forward(request, tplname='userprefs/forward.html'):
         else:
             form.fields["keepcopies"].initial = True
     return ajax_simple_response({
-            "status" : "ok", 
+            "status" : "ok",
             "content" : render_to_string(tplname, {
                     "form" : form
                     })
@@ -92,13 +87,13 @@ def profile(request, tplname='userprefs/profile.html'):
                     status="ok", respmsg=_("Profile updated")
                     ))
         return ajax_simple_response({
-                "status" : "ko", 
+                "status" : "ko",
                 "content" : render_to_string(tplname, {"form" : form})
                 })
 
     form = ProfileForm(update_password, instance=request.user)
     return ajax_simple_response({
-            "status" : "ok", 
+            "status" : "ok",
             "content" : render_to_string(tplname, {
                     "form" : form
                     })

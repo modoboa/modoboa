@@ -1,8 +1,4 @@
 # coding: utf-8
-
-import crypt, hashlib
-import string
-from random import Random
 from Crypto.Cipher import AES
 import base64
 from modoboa.lib import parameters

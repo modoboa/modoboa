@@ -12,11 +12,11 @@ class WebmailError(ModoboaException):
     errorexpr = re.compile("\[([^\]]+)\]\s*([^\.]+)")
 
     def __init__(self, reason, ajax=False):
-        m = WebmailError.errorexpr.match(reason)
-        if m is None:
+        match = WebmailError.errorexpr.match(reason)
+        if not match:
             self.reason = reason
         else:
-            self.reason = "%s: %s" % (_("Server response"), m.group(2))
+            self.reason = "%s: %s" % (_("Server response"), match.group(2))
         self.ajax = ajax
 
     def __str__(self):

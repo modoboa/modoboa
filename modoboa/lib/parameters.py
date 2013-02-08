@@ -1,10 +1,4 @@
 # coding: utf-8
-
-import string
-import inspect
-import re
-import copy
-
 """
 This interface provides a simple way to declare and store parameters
 in Modoboa's database.
@@ -14,6 +8,10 @@ will be available and modifiable directly from the web interface.
 
 Only super users will be able to access this part of the web interface.
 """
+
+import inspect
+import re
+import copy
 
 _params = {}
 _params_order = {}
@@ -57,7 +55,7 @@ def register_app(app=None, aparams_opts=None, uparams_opts=None):
         _params[app]['options']['A'] = aparams_opts
     if uparams_opts:
         _params[app]['options']['U'] = uparams_opts
-        
+
 def unregister_app(app):
     """Unregister an application
 
@@ -86,7 +84,7 @@ def __register(app, level, name, **kwargs):
     :param name: the application's name
     :param level: the level this parameter is available from
     :param name: the parameter's name
-    """ 
+    """
     if not app in _params.keys():
         register_app(app)
 

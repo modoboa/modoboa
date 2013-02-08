@@ -1,8 +1,11 @@
+# coding: utf-8
 from django import forms
-from modoboa.admin.models import User, Domain, Mailbox
 from django.utils.translation import ugettext as _, ugettext_lazy
+
+from modoboa.admin.models import User, Domain
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib import parameters
+
 
 class BadDestination(Exception):
     pass
@@ -25,7 +28,7 @@ class ProfileForm(forms.ModelForm):
             del self.fields["oldpassword"]
             del self.fields["newpassword"]
             del self.fields["confirmation"]
-        
+
     def clean_oldpassword(self):
         if self.cleaned_data["oldpassword"] == "":
             return self.cleaned_data["oldpassword"]
@@ -53,13 +56,13 @@ class ProfileForm(forms.ModelForm):
 
 class ForwardForm(forms.Form):
     dest = forms.CharField(
-        label=ugettext_lazy("Recipient(s)"), 
+        label=ugettext_lazy("Recipient(s)"),
         widget=forms.Textarea,
         required=False,
         help_text=ugettext_lazy("Indicate one or more recipients separated by a ','")
         )
     keepcopies = forms.BooleanField(
-        label=ugettext_lazy("Keep local copies"), 
+        label=ugettext_lazy("Keep local copies"),
         required=False,
         help_text=ugettext_lazy("Forward messages and store copies into your local mailbox")
         )
@@ -79,4 +82,4 @@ class ForwardForm(forms.Form):
                 self.dests += [d]
             else:
                 raise BadDestination(_("You can't define a forward to a local destination. Please ask your administrator to create an alias instead."))
-        
+

@@ -47,68 +47,42 @@ Webmail.prototype = {
     },
 
     register_navcallbacks: function() {
-        this.navobject.register_callback("listmailbox",
-            $.proxy(this.listmailbox_callback, this));
-        this.navobject.register_callback("compose",
-            $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("viewmail",
-            $.proxy(this.viewmail_callback, this));
+        this.navobject.register_callback("listmailbox", $.proxy(this.listmailbox_callback, this));
+        this.navobject.register_callback("compose", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback("viewmail", $.proxy(this.viewmail_callback, this));
 
-        this.navobject.register_callback("reply",
-            $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("replyall",
-            $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("forward",
-            $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("delete",
-            $.proxy(this.delete_callback, this));
+        this.navobject.register_callback("reply", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback("replyall", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback("forward", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback("delete", $.proxy(this.delete_callback, this));
     },
 
     listen: function() {
         $(window).resize(this.resize);
 
-        $(document).on("click", "a[name=compose]",
-            $.proxy(this.compose_loader, this));
-        $(document).on("click", "a[name*=mark-]",
-            $.proxy(this.send_mark_request, this));
-        $(document).on("click", "a[name=compress]",
-            $.proxy(this.compress, this));
-        $(document).on("click", "a[name=empty]",
-            $.proxy(this.empty, this));
-        $(document).on("click", "#bottom-bar a",
-            $.proxy(this.getpage_loader, this));
+        $(document).on("click", "a[name=compose]", $.proxy(this.compose_loader, this));
+        $(document).on("click", "a[name*=mark-]", $.proxy(this.send_mark_request, this));
+        $(document).on("click", "a[name=compress]", $.proxy(this.compress, this));
+        $(document).on("click", "a[name=empty]", $.proxy(this.empty, this));
+        $(document).on("click", "#bottom-bar a", $.proxy(this.getpage_loader, this));
 
-        $(document).on("click", "a[name=loadfolder]",
-            $.proxy(this.listmailbox_loader, this));
-        $(document).on("click", "a[name=selectfolder]",
-            this.select_parent_mailbox),
-        $(document).on("click", "div[class*=clickbox]",
-            $.proxy(this.mbox_state_callback, this));
-        $(document).on("click", "a[name=newmbox]",
-            $.proxy(this.new_mailbox, this));
-        $(document).on("click", "a[name=editmbox]",
-            $.proxy(this.edit_mbox, this));
-        $(document).on("click", "a[name=removembox]",
-            $.proxy(this.remove_mbox, this));
+        $(document).on("click", "a[name=loadfolder]", $.proxy(this.listmailbox_loader, this));
+        $(document).on("click", "a[name=selectfolder]", this.select_parent_mailbox);
+        $(document).on("click", "div[class*=clickbox]", $.proxy(this.mbox_state_callback, this));
+        $(document).on("click", "a[name=newmbox]", $.proxy(this.new_mailbox, this));
+        $(document).on("click", "a[name=editmbox]", $.proxy(this.edit_mbox, this));
+        $(document).on("click", "a[name=removembox]", $.proxy(this.remove_mbox, this));
 
-        $(document).on("dblclick", "tbody>tr",
-            $.proxy(this.viewmail_loader, this));
+        $(document).on("click", "tbody>tr", $.proxy(this.viewmail_loader, this));
 
-        $(document).on("click", "a[name=reply]",
-            $.proxy(this.reply_loader, this));
-        $(document).on("click", "a[name=replyall]",
-            $.proxy(this.reply_loader, this));
-        $(document).on("click", "a[name=forward]",
-            $.proxy(this.reply_loader, this));
-        $(document).on("click", "a[name=delete]",
-            $.proxy(this.delete_message, this));
-        $(document).on("click", "a[name=activate_links]",
-            $.proxy(function(e) { this.display_mode(e, "1"); }, this));
-        $(document).on("click", "a[name=disable_links]",
-            $.proxy(function(e) { this.disable_mode(e, "0"); }, this));
+        $(document).on("click", "a[name=reply]", $.proxy(this.reply_loader, this));
+        $(document).on("click", "a[name=replyall]", $.proxy(this.reply_loader, this));
+        $(document).on("click", "a[name=forward]", $.proxy(this.reply_loader, this));
+        $(document).on("click", "a[name=delete]", $.proxy(this.delete_message, this));
+        $(document).on("click", "a[name=activate_links]", $.proxy(function(e) { this.display_mode(e, "1"); }, this));
+        $(document).on("click", "a[name=disable_links]", $.proxy(function(e) { this.disable_mode(e, "0"); }, this));
 
-        $(document).on("click", "a[name=sendmail]",
-            $.proxy(this.sendmail, this));
+        $(document).on("click", "a[name=sendmail]", $.proxy(this.sendmail, this));
 
         $(document).on("click", "#attachments", $.proxy(function(e) {
             modalbox(e, undefined, $("#attachments").attr("name"),

@@ -9,10 +9,10 @@ import time
 from functools import wraps
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
-from modoboa.lib.connections import *
+from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.webutils import static_url
 from exceptions import ImapError, WebmailError
-from fetch_parser import *
+from fetch_parser import parse_fetch_response
 
 #imaplib.Debug = 4
 
@@ -75,12 +75,12 @@ class BodyStructure(object):
         * Any other MIME type is considered as an attachment (for now)
 
         :param definition: a part definition (list)
-        :param prefix: the part's number
+        :param pnum: the part's number
         :param multisubtype: the multipart subtype
         """
         pnum = "1" if pnum is None else pnum
         params = dict(pnum=pnum, params=definition[2], cid=definition[3],
-                      description=definition[4], encoding=definition[5], 
+                      description=definition[4], encoding=definition[5],
                       size=definition[6])
         mtype = definition[0].lower()
         subtype = definition[1].lower()
@@ -122,7 +122,7 @@ class BodyStructure(object):
             for part in struct[0]:
                 self.load_from_definition(part, struct[1])
             return
-        
+
         self.__store_part(struct, pnum, multisubtype)
 
     def has_attachments(self):
@@ -214,7 +214,7 @@ class IMAPconnector(object):
                 cpt += 1
         else:
             if bodystruct[0].lower() == mtype and bodystruct[1].lower() == stype:
-                return ("1" if not len(prefix) else prefix, 
+                return ("1" if not len(prefix) else prefix,
                         bodystruct[5], int(bodystruct[6]))
         return (None, None, 0)
 
@@ -230,12 +230,12 @@ class IMAPconnector(object):
                 if hasattr(self, "current_mailbox"):
                     del self.current_mailbox
             else:
-                return        
+                return
         self.login(user, password)
 
     def login(self, user, passwd):
         """Custom login method
-        
+
         We connect to the server, issue a LOGIN command. If
         successfull, we try to record a eventuel CAPABILITY untagged
         response. Otherwise, we issue the command.
@@ -305,9 +305,9 @@ class IMAPconnector(object):
         """Issue a SELECT/EXAMINE command to the server
 
         The given name is first 'imap-utf7' encoded.
-        
+
         :param name: mailbox's name
-        :param readonly: 
+        :param readonly:
         """
         if hasattr(self, "current_mailbox"):
             if self.current_mailbox == name and not force:
@@ -348,35 +348,35 @@ class IMAPconnector(object):
                 break
         if sdescr is None:
             sdescr = {"name" : parts[0], "path" : path, "sub" : []}
-            descr += [sdescr]            
+            descr += [sdescr]
         if self._parse_mailbox_name(sdescr["sub"], path, delimiter, parts[1:]):
             sdescr["class"] = "subfolders"
         return True
 
-    def _listmboxes_simple(self, topmailbox='INBOX', mailboxes=[], **kwargs):
+    def _listmboxes_simple(self, topmailbox='INBOX', mailboxes=None, **kwargs):
         #data = self._cmd("LIST", "", "*")
+        if not mailboxes: mailboxes = []
         (status, data) = self.m.list()
-        result = []
         newmboxes = []
         for mb in data:
             flags, delimiter, name = self.list_response_pattern.match(mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
-            pos = -1
+            mdm_found = False
             for idx, mdm in enumerate(mailboxes):
                 if mdm["name"] == name:
-                    pos = idx
+                    mdm_found = True
+                    descr = mailboxes[idx]
                     break
-            if pos == -1:
+            if not mdm_found:
                 descr = dict(name=name)
                 newmboxes += [descr]
-            else:
-                descr = mailboxes[idx]
+
             if re.search("\%s" % delimiter, name):
                 parts = name.split(".")
                 if not descr.has_key("path"):
                     descr["path"] = parts[0]
                     descr["sub"] = []
-                if self._parse_mailbox_name(descr["sub"], parts[0], delimiter, 
+                if self._parse_mailbox_name(descr["sub"], parts[0], delimiter,
                                             parts[1:]):
                     descr["class"] = "subfolders"
                 continue
@@ -385,7 +385,8 @@ class IMAPconnector(object):
         mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
     @capability('LIST-EXTENDED', '_listmboxes_simple')
-    def _listmboxes(self, topmailbox='', mailboxes=[], until_mailbox=None):
+    def _listmboxes(self, topmailbox='', mailboxes=None, until_mailbox=None):
+        if not mailboxes: mailboxes = []
         pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
@@ -394,17 +395,16 @@ class IMAPconnector(object):
                 self.listextended_response_pattern.match(mb).groups()
             flags = flags.split(' ')
             name = name.decode("imap4-utf-7")
-            pos = -1
+            mdm_found = False
             for idx, mdm in enumerate(mailboxes):
                 if mdm["name"] == name:
-                    pos = idx
+                    mdm_found = True
+                    descr = mailboxes[idx]
                     break
-            if pos == -1:
+            if not mdm_found:
                 descr = dict(name=name)
                 newmboxes += [descr]
-            else:
-                descr = mailboxes[idx]
-            
+
             if r'\Marked' in flags or not r'\UnMarked' in flags:
                 descr["send_status"] = True
             if r'\HasChildren' in flags:
@@ -433,7 +433,7 @@ class IMAPconnector(object):
             md_mailboxes = []
         else:
             md_mailboxes = [{"name" : "INBOX", "class" : "icon-inbox"},
-                            {"name" : parameters.get_user(user, "DRAFTS_FOLDER"), 
+                            {"name" : parameters.get_user(user, "DRAFTS_FOLDER"),
                              "class" : "icon-file"},
                             {"name" : 'Junk', "class" : "icon-fire"},
                             {"name" : parameters.get_user(user, "SENT_FOLDER"),
@@ -515,7 +515,7 @@ class IMAPconnector(object):
         """Compact a specific mailbox
 
         Issue an EXPUNGE command for the specified mailbox.
-        
+
         :param mbox: the mailbox's name
         """
         self.select_mailbox(mbox, False)
@@ -547,12 +547,12 @@ class IMAPconnector(object):
             self.quota_limit = self.quota_actual = None
             return
 
-        data = self._cmd("GETQUOTAROOT", self._encode_mbox_name(mailbox), 
+        data = self._cmd("GETQUOTAROOT", self._encode_mbox_name(mailbox),
                          responses=["QUOTAROOT", "QUOTA"])
         if data is None:
             self.quota_limit = self.quota_actual = None
             return
-        
+
         quotadef = data[1][0]
         m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
         if not m:
@@ -628,14 +628,14 @@ class IMAPconnector(object):
         :param mbox: the mailbox containing the message
         :param mailid: the message's unique id
         :param readonly:
-        :param extraheaders:
+        :param headers:
         """
         self.select_mailbox(mbox, readonly)
         if headers is None:
             headers = ['DATE', 'FROM', 'TO', 'CC', 'SUBJECT']
         bcmd = "BODY.PEEK" if readonly else "BODY"
         data = self._cmd(
-            "FETCH", mailid, 
+            "FETCH", mailid,
             "(BODYSTRUCTURE %s[HEADER.FIELDS (%s)])" % (bcmd, " ".join(headers))
             )
         return data[int(mailid)]
@@ -658,7 +658,7 @@ def get_imapconnector(request):
 
     :param request: a ``Request`` object
     """
-    imapc = IMAPconnector(user=request.user.username, 
+    imapc = IMAPconnector(user=request.user.username,
                           password=request.session["password"])
     return imapc
 

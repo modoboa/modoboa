@@ -1,10 +1,9 @@
+# coding: utf-8
 from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from modoboa import userprefs
 from modoboa.lib import events
-from modoboa.lib.webutils import static_url
 
 register = template.Library()
 
@@ -29,7 +28,7 @@ def uprefs_menu(selection, user):
     entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu", user)
     entries = sorted(entries, key=lambda e: e["label"])
     return render_to_string('common/menu.html', {
-            "entries" : entries, 
+            "entries" : entries,
             "css" : "nav nav-list",
             "selection" : selection,
             "user" : user
@@ -63,5 +62,5 @@ def user_menu(user, selection):
 @register.simple_tag
 def loadextmenu(selection, user):
     menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu", user)
-    return render_to_string('common/menulist.html', 
+    return render_to_string('common/menulist.html',
                             {"selection" : selection, "entries" : menu, "user" : user})
