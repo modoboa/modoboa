@@ -1,1 +1,290 @@
-[{"pk": 1, "model": "lib.parameter", "fields": {"name": "admin.STORAGE_PATH", "value": "/srv/vmail"}}, {"pk": 2, "model": "lib.parameter", "fields": {"name": "admin.PASSWORD_SCHEME", "value": "crypt"}}, {"pk": 3, "model": "lib.parameter", "fields": {"name": "admin.ITEMS_PER_PAGE", "value": "30"}}, {"pk": 4, "model": "lib.parameter", "fields": {"name": "general.DEFAULT_TOP_REDIRECTION", "value": "userprefs"}}, {"pk": 5, "model": "lib.parameter", "fields": {"name": "admin.CREATE_DIRECTORIES", "value": "yes"}}, {"pk": 6, "model": "lib.parameter", "fields": {"name": "auth.SECRET_KEY", "value": "abcdefghijklmnop"}}, {"pk": 7, "model": "lib.parameter", "fields": {"name": "admin.MAILBOX_TYPE", "value": "maildir"}}, {"pk": 8, "model": "lib.parameter", "fields": {"name": "admin.AUTHENTICATION_TYPE", "value": "local"}}, {"pk": 9, "model": "lib.parameter", "fields": {"name": "admin.VIRTUAL_UID", "value": "vmail"}}, {"pk": 10, "model": "lib.parameter", "fields": {"name": "admin.MAILDIR_ROOT", "value": ".maildir"}}, {"pk": 11, "model": "lib.parameter", "fields": {"name": "admin.VIRTUAL_GID", "value": "vmail"}}, {"pk": 12, "model": "lib.parameter", "fields": {"name": "stats.IMG_ROOTDIR", "value": "/srv/www/modoboa/media/stats"}}, {"pk": 13, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.USER_CAN_RELEASE", "value": "no"}}, {"pk": 14, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.CHECK_REQUESTS_INTERVAL", "value": "30"}}, {"pk": 15, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.AM_PDP_PORT", "value": "9998"}}, {"pk": 16, "model": "lib.parameter", "fields": {"name": "webmail.IMAP_SECURED", "value": "no"}}, {"pk": 17, "model": "lib.parameter", "fields": {"name": "postfix_autoreply.AUTOREPLIES_TIMEOUT", "value": "86400"}}, {"pk": 18, "model": "lib.parameter", "fields": {"name": "sievefilters.AUTHENTICATION_MECH", "value": "PLAIN"}}, {"pk": 19, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.AM_PDP_SOCKET", "value": "/var/amavis/amavisd.sock"}}, {"pk": 20, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.AM_PDP_MODE", "value": "inet"}}, {"pk": 21, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.SELF_SERVICE", "value": "no"}}, {"pk": 22, "model": "lib.parameter", "fields": {"name": "webmail.IMAP_PORT", "value": "143"}}, {"pk": 23, "model": "lib.parameter", "fields": {"name": "webmail.SMTP_SECURED_MODE", "value": "none"}}, {"pk": 24, "model": "lib.parameter", "fields": {"name": "sievefilters.SERVER", "value": "127.0.0.1"}}, {"pk": 25, "model": "lib.parameter", "fields": {"name": "webmail.SMTP_SERVER", "value": "127.0.0.1"}}, {"pk": 26, "model": "lib.parameter", "fields": {"name": "webmail.SMTP_AUTHENTICATION", "value": "no"}}, {"pk": 27, "model": "lib.parameter", "fields": {"name": "webmail.MAX_ATTACHMENT_SIZE", "value": "512K"}}, {"pk": 28, "model": "lib.parameter", "fields": {"name": "stats.RRD_ROOTDIR", "value": "/srv/www/modoboa/tmp"}}, {"pk": 29, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.RELEASED_MSGS_CLEANUP", "value": "no"}}, {"pk": 30, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.MAX_MESSAGES_AGE", "value": "14"}}, {"pk": 31, "model": "lib.parameter", "fields": {"name": "webmail.SMTP_PORT", "value": "25"}}, {"pk": 33, "model": "lib.parameter", "fields": {"name": "webmail.IMAP_SERVER", "value": "127.0.0.1"}}, {"pk": 34, "model": "lib.parameter", "fields": {"name": "sievefilters.STARTTLS", "value": "yes"}}, {"pk": 35, "model": "lib.parameter", "fields": {"name": "sievefilters.PORT", "value": "2000"}}, {"pk": 36, "model": "lib.parameter", "fields": {"name": "amavis_quarantine.AM_PDP_HOST", "value": "localhost"}}, {"pk": 37, "model": "lib.parameter", "fields": {"name": "stats.LOGFILE", "value": "/var/log/mail.log"}}]
+[
+    {
+        "pk": 1,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.STORAGE_PATH",
+            "value": "/srv/vmail"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.PASSWORD_SCHEME",
+            "value": "crypt"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.ITEMS_PER_PAGE",
+            "value": "30"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "general.DEFAULT_TOP_REDIRECTION",
+            "value": "userprefs"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.CREATE_DIRECTORIES",
+            "value": "yes"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "auth.SECRET_KEY",
+            "value": "abcdefghijklmnop"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.MAILBOX_TYPE",
+            "value": "maildir"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.AUTHENTICATION_TYPE",
+            "value": "local"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.VIRTUAL_UID",
+            "value": "vmail"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.MAILDIR_ROOT",
+            "value": ".maildir"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "admin.VIRTUAL_GID",
+            "value": "vmail"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "stats.IMG_ROOTDIR",
+            "value": "/srv/www/modoboa/media/stats"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.USER_CAN_RELEASE",
+            "value": "no"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.CHECK_REQUESTS_INTERVAL",
+            "value": "30"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.AM_PDP_PORT",
+            "value": "9998"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "webmail.IMAP_SECURED",
+            "value": "no"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "postfix_autoreply.AUTOREPLIES_TIMEOUT",
+            "value": "86400"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "sievefilters.AUTHENTICATION_MECH",
+            "value": "PLAIN"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.AM_PDP_SOCKET",
+            "value": "/var/amavis/amavisd.sock"
+        }
+    },
+    {
+        "pk": 20,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.AM_PDP_MODE",
+            "value": "inet"
+        }
+    },
+    {
+        "pk": 21,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.SELF_SERVICE",
+            "value": "no"
+        }
+    },
+    {
+        "pk": 22,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "webmail.IMAP_PORT",
+            "value": "143"
+        }
+    },
+    {
+        "pk": 23,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "webmail.SMTP_SECURED_MODE",
+            "value": "none"
+        }
+    },
+    {
+        "pk": 24,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "sievefilters.SERVER",
+            "value": "127.0.0.1"
+        }
+    },
+    {
+        "pk": 25,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "webmail.SMTP_SERVER",
+            "value": "127.0.0.1"
+        }
+    },
+    {
+        "pk": 26,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "webmail.SMTP_AUTHENTICATION",
+            "value": "no"
+        }
+    },
+    {
+        "pk": 27,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "webmail.MAX_ATTACHMENT_SIZE",
+            "value": "512K"
+        }
+    },
+    {
+        "pk": 28,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "stats.RRD_ROOTDIR",
+            "value": "/srv/www/modoboa/tmp"
+        }
+    },
+    {
+        "pk": 29,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.RELEASED_MSGS_CLEANUP",
+            "value": "no"
+        }
+    },
+    {
+        "pk": 30,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.MAX_MESSAGES_AGE",
+            "value": "14"
+        }
+    },
+    {
+        "pk": 31,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "webmail.SMTP_PORT",
+            "value": "25"
+        }
+    },
+    {
+        "pk": 33,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "webmail.IMAP_SERVER",
+            "value": "127.0.0.1"
+        }
+    },
+    {
+        "pk": 34,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "sievefilters.STARTTLS",
+            "value": "yes"
+        }
+    },
+    {
+        "pk": 35,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "sievefilters.PORT",
+            "value": "2000"
+        }
+    },
+    {
+        "pk": 36,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "amavis_quarantine.AM_PDP_HOST",
+            "value": "localhost"
+        }
+    },
+    {
+        "pk": 37,
+        "model": "lib.parameter",
+        "fields": {
+            "name": "stats.LOGFILE",
+            "value": "/var/log/mail.log"
+        }
+    }
+]
