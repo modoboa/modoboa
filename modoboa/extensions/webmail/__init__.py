@@ -2,7 +2,6 @@
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
-from modoboa.lib.webutils import static_url
 from modoboa.extensions import ModoExtension, exts_pool
 
 class Webmail(ModoExtension):
@@ -11,23 +10,23 @@ class Webmail(ModoExtension):
     version = "1.0"
     description = ugettext_lazy("Simple IMAP webmail")
     needs_media = True
-    
+
     def load(self):
         parameters.register_app(uparams_opts=dict(needs_mailbox=True))
-        
-        parameters.register_admin("IMAP_SERVER", type="string", 
+
+        parameters.register_admin("IMAP_SERVER", type="string",
                                   deflt="127.0.0.1",
                                   help=ugettext_lazy("Address of your IMAP server"))
-        parameters.register_admin("IMAP_SECURED", type="list_yesno", 
+        parameters.register_admin("IMAP_SECURED", type="list_yesno",
                                   deflt="no",
                                   help=ugettext_lazy("Use a secured connection to access IMAP server"))
         parameters.register_admin("IMAP_PORT", type="int", deflt="143",
                                   help=ugettext_lazy("Listening port of your IMAP server"))
-        parameters.register_admin("SMTP_SERVER", type="string", 
+        parameters.register_admin("SMTP_SERVER", type="string",
                                   deflt="127.0.0.1",
                                   help=ugettext_lazy("Address of your SMTP server"))
-        parameters.register_admin("SMTP_SECURED_MODE", type="list", 
-                                  values=[("none", ugettext_lazy("None")), 
+        parameters.register_admin("SMTP_SECURED_MODE", type="list",
+                                  values=[("none", ugettext_lazy("None")),
                                           ("starttls", "STARTTLS"),
                                           ("ssl", "SSL/TLS")],
                                   deflt="none",
@@ -39,7 +38,7 @@ class Webmail(ModoExtension):
                                   help=ugettext_lazy("Server needs authentication"))
         parameters.register_admin("MAX_ATTACHMENT_SIZE", type="int", deflt=2048,
                                   help=ugettext_lazy("Maximum attachment size in bytes (or KB, MB, GB if specified)"))
-        
+
         parameters.register_user("MESSAGES_PER_PAGE", type="int", deflt=40,
                                  label=ugettext_lazy("Number of displayed emails per page"),
                                  help=ugettext_lazy("Sets the maximum number of messages displayed in a page"))
@@ -99,9 +98,10 @@ def userlogout(request):
     try:
         m = IMAPconnector(user=request.user.username,
                           password=request.session["password"])
-    except Exception, e:
+    except Exception:
+        # TODO silent exception are bad : we should at least log it
         return
-    
+
     # The following statement may fail under Python 2.6...
     try:
         m.logout()

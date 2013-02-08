@@ -5,15 +5,13 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from modoboa.extensions import webmail
-from modoboa.extensions.webmail.lib import IMAPheader
 from modoboa.extensions.webmail.imaputils import separate_mailbox
 from modoboa.lib import parameters
-from modoboa.lib.webutils import static_url
 
 register = template.Library()
 
 @register.simple_tag
-def viewmail_menu(selection, folder, user, mail_id=None):   
+def viewmail_menu(selection, folder, user, mail_id=None):
     entries = [
         {"name" : "reply",
          "url" : "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
@@ -34,21 +32,21 @@ def viewmail_menu(selection, folder, user, mail_id=None):
         {"name" : "display_options",
          "label" : _("Display options"),
          "menu" : [
-                 {"name" : "activate_links", 
+                 {"name" : "activate_links",
                   "label" : _("Activate links")},
-                 {"name" : "disable_links", 
+                 {"name" : "disable_links",
                   "label" : _("Disable links")}
                 ]
          }
         ]
-    menu = render_to_string('common/buttons_list.html', 
-                            {"selection" : selection, "entries" : entries, 
+    menu = render_to_string('common/buttons_list.html',
+                            {"selection" : selection, "entries" : entries,
                              "user" : user, "extraclasses" : "pull-left"})
 
     entries = [{"name" : "close",
                 "title" : _("Close this message"),
                 "img" : "icon-remove"}]
-    menu += render_to_string('common/buttons_list.html', 
+    menu += render_to_string('common/buttons_list.html',
                              {"entries" : entries, "extraclasses" : "pull-right"})
 
     return menu
@@ -65,8 +63,8 @@ def compose_menu(selection, backurl, user):
          "img" : "icon-envelope",
          "label" : _("Send")},
         ]
-    return render_to_string('common/buttons_list.html', 
-                            {"selection" : selection, "entries" : entries, 
+    return render_to_string('common/buttons_list.html',
+                            {"selection" : selection, "entries" : entries,
                              "user" : user})
 
 @register.simple_tag
@@ -136,7 +134,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False):
                 ul_state = "hidden"
                 div_state = "collapsed"
             result += "<div class='clickbox %s'></div>" % div_state
-            
+
         cssclass = "block"
         extra_attrs = ""
         if withunseen and mbox.has_key("unseen"):
@@ -148,7 +146,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False):
   <i class="%s"></i>
   %s
 </a>
-""" % (mbox.has_key("path") and mbox["path"] or mbox["name"], cssclass, 
+""" % (mbox.has_key("path") and mbox["path"] or mbox["name"], cssclass,
        'selectfolder' if selectonly else 'loadfolder', extra_attrs, iclass, label)
         if mbox.has_key("sub") and len(mbox["sub"]):
             result += "<ul name='%s' class='nav nav-list %s'>" % (mbox["path"], ul_state) \

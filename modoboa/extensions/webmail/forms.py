@@ -1,3 +1,4 @@
+# coding: utf-8
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -9,7 +10,7 @@ class ComposeMailForm(forms.Form):
     subject = forms.CharField(label=_("Subject"), max_length=255, required=False)
 
     origmsgid = forms.CharField(label="", widget=forms.HiddenInput(), required=False)
-    
+
 class FolderForm(forms.Form):
     oldname = forms.CharField(label="", widget=forms.HiddenInput(), required=False)
     name = forms.CharField()
