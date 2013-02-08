@@ -1,31 +1,30 @@
 # coding: utf-8
-
-import sys, os
-import re
 import time
 from datetime import datetime, timedelta
 import email
 import lxml
 import chardet
-from django.core.files.uploadhandler import FileUploadHandler, StopUpload, SkipFile
-from django.http import HttpResponse
+
+from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf import settings
-from modoboa.lib import u2u_decode, tables, imap_utf7, parameters
-from modoboa.lib.webutils import static_url, size2integer
-from modoboa.lib.connections import ConnectionsManager
-from modoboa.lib.email_listing import MBconnector, EmailListing
-from modoboa.lib.emailutils import *
 
-from imaputils import *
-from exceptions import *
+import os
+import re
+from modoboa.lib import u2u_decode, tables, parameters
+from modoboa.lib.webutils import size2integer
+from modoboa.lib.email_listing import EmailListing
+from modoboa.extensions.webmail.exceptions import WebmailError
+from modoboa.extensions.webmail.imaputils import IMAPconnector, get_imapconnector, BodyStructure
+from modoboa.lib.emailutils import EmailAddress, Email
+
 
 class WMtable(tables.Table):
     tableid = "emails"
     styles = "table-condensed"
     idkey = "imapid"
     select = tables.ImgColumn(
-        "select", cssclass="draggable left", width="2%", 
+        "select", cssclass="draggable left", width="2%",
         defvalue="%spics/grippy.png" % settings.STATIC_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
         )
@@ -112,7 +111,7 @@ class ImapListing(EmailListing):
     deflocation = "INBOX/"
     defcallback = "wm_updatelisting"
     reset_wm_url = False
-    
+
     def __init__(self, user, password, **kwargs):
         self.user = user
         self.mbc = IMAPconnector(user=user.username, password=password)
@@ -165,7 +164,7 @@ class ImapEmail(Email):
         ('Subject', True),
         ]
 
-    def __init__(self, mbox, mailid, request, dformat="DISPLAYMODE", addrfull=False, 
+    def __init__(self, mbox, mailid, request, dformat="DISPLAYMODE", addrfull=False,
                  links=0):
         mformat = parameters.get_user(request.user, "DISPLAYMODE")
         self.dformat = parameters.get_user(request.user, dformat)
@@ -179,7 +178,7 @@ class ImapEmail(Email):
         self.mailid = mailid
         headers = msg['BODY[HEADER.FIELDS (%s)]' % self.headers_as_text]
         fallback_fmt = "html" if self.dformat == "plain" else "plain"
-        
+
         self.bs = BodyStructure(msg['BODYSTRUCTURE'])
         data = None
 
@@ -206,7 +205,7 @@ class ImapEmail(Email):
                 getattr(self, "viewmail_%s" % mformat)(bodyc, links=links)
         else:
             self.body = None
-            
+
         self._find_attachments()
 
         msg = email.message_from_string(headers)
@@ -257,7 +256,7 @@ class ImapEmail(Email):
                     att.has_key("disposition") and len(att["disposition"]) > 1:
                 params = att["disposition"][1]
                 key = "filename"
-            
+
             if key and params:
                 for pos, value in enumerate(params):
                     if value == key:
@@ -311,7 +310,7 @@ class Modifier(ImapEmail):
     def _modify_html(self):
         pass
 
-    
+
 class ReplyModifier(Modifier):
     headernames = ImapEmail.headernames + \
         [("Reply-To", True),
@@ -358,13 +357,13 @@ class ReplyModifier(Modifier):
                 body += "\n"
             body += ">%s" % l
         self.body = body
-   
+
 class ForwardModifier(Modifier):
     def __init__(self, mbox, mailid, request, form, **kwargs):
         super(ForwardModifier, self).__init__(
             mbox, mailid, request, dformat="EDITOR", **kwargs
             )
-    
+
         self._header()
         form.fields["from_"].initial = request.user.username
         form.fields["subject"].initial = "Fwd: %s" % self.Subject
@@ -488,7 +487,7 @@ def find_images_in_body(body):
                              % (ct, os.path.basename(fname)))
         p["Content-Disposition"] = "inline"
         parts.append(p)
-        
+
     return lxml.html.tostring(html), parts
 
 def set_compose_session(request):
@@ -557,7 +556,7 @@ def html2plaintext(content):
         if p is None:
             continue
         plaintext += p + "\n"
-        
+
     return plaintext
 
 def get_current_url(request):
@@ -603,7 +602,7 @@ def send_mail(request, posturl=None):
     """
     from email.mime.multipart import MIMEMultipart
     from forms import ComposeMailForm
-    from modoboa.lib.webutils import getctx, ajax_simple_response, _render_to_string
+    from modoboa.lib.webutils import _render_to_string
     from modoboa.auth.lib import get_password
 
     form = ComposeMailForm(request.POST)
@@ -623,13 +622,13 @@ def send_mail(request, posturl=None):
             submsg.attach(MIMEText(textbody.encode(charset),
                                    _subtype="plain", _charset=charset))
             body, images = find_images_in_body(body)
-            submsg.attach(MIMEText(body.encode(charset), _subtype=editormode, 
+            submsg.attach(MIMEText(body.encode(charset), _subtype=editormode,
                                    _charset=charset))
             msg.attach(submsg)
             for img in images:
                 msg.attach(img)
         else:
-            text = MIMEText(body.encode(charset), 
+            text = MIMEText(body.encode(charset),
                             _subtype=editormode, _charset=charset)
             if len(request.session["compose_mail"]["attachments"]):
                 msg = MIMEMultipart()
@@ -686,7 +685,7 @@ def send_mail(request, posturl=None):
         del request.session["compose_mail"]
         return True, dict(url=get_current_url(request))
 
-    listing = _render_to_string(request, "webmail/compose.html", 
+    listing = _render_to_string(request, "webmail/compose.html",
                                {"form" : form, "noerrors" : True,
                                 "body" : request.POST["id_body"].strip(),
                                 "posturl" : posturl})
@@ -698,19 +697,19 @@ class AttachmentUploadHandler(FileUploadHandler):
     Simple upload handler to limit the size of the attachments users
     can upload.
     """
-    
+
     def __init__(self, request=None):
         super(AttachmentUploadHandler, self).__init__(request)
         self.total_upload = 0
         self.toobig = False
         self.maxsize = size2integer(parameters.get_admin("MAX_ATTACHMENT_SIZE"))
-        
+
     def receive_data_chunk(self, raw_data, start):
         self.total_upload += len(raw_data)
         if self.total_upload >= self.maxsize:
             self.toobig = True
             raise SkipFile()
         return raw_data
-    
+
     def file_complete(self, file_size):
         return None

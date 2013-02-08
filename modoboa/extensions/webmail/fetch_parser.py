@@ -61,8 +61,7 @@ def parse_bodystructure(buf, depth=0, prefix=""):
             if nb_bodystruct == 0:
                 ret.append(subret)
             elif nb_bodystruct == 1:
-                newret = [ret.pop(-1)]
-                newret.append(subret)
+                newret = [ret.pop(-1), subret]
                 ret.append(newret)
             else:
                 ret[-1].append(subret)
@@ -97,7 +96,7 @@ def parse_fetch_response(data):
 
     We extract the message number, the UID and its value and consider
     what remains as the response data.
-    
+
     :param data: the data returned by the ``imaplib`` command
     :return: a dictionnary
     """
@@ -182,7 +181,7 @@ def dump_bodystructure(bs, depth=0):
             dump_bodystructure(part, depth + 1)
     else:
         print "%s/%s" % (struct[0], struct[1])
-        
+
 
 if __name__ == "__main__":
 #    resp = [('855 (UID 46931 BODYSTRUCTURE ((("text" "plain" ("charset" "iso-8859-1") NIL NIL "quoted-printable" 886 32 NIL NIL NIL NIL)("text" "html" ("charset" "us-ascii") NIL NIL "quoted-printable" 1208 16 NIL NIL NIL NIL) "alternative" ("boundary" "----=_NextPart_001_0003_01CCC564.B2F64FF0") NIL NIL NIL)("application" "octet-stream" ("name" "Carte Verte_2.pdf") NIL NIL "base64" 285610 NIL ("attachment" ("filename" "Carte Verte_2.pdf")) NIL NIL) "mixed" ("boundary" "----=_NextPart_000_0002_01CCC564.B2F64FF0") NIL NIL NIL) BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)] {153}', 'From: <Service.client10@maaf.fr>\r\nTo: <TONIO@NGYN.ORG>\r\nCc: \r\nSubject: Notre contact du 28/12/2011 - 192175092\r\nDate: Wed, 28 Dec 2011 13:29:17 +0100\r\n\r\n'), ')']
