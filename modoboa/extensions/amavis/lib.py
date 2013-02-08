@@ -11,6 +11,7 @@ from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException
 from models import Msgrcpt
 
+
 def selfservice(ssfunc=None):
     """Decorator used to expose views to the 'self-service' feature
 
@@ -33,6 +34,7 @@ def selfservice(ssfunc=None):
             return ssfunc(request, *args, **kwargs)
         return wrapped_f
     return decorator
+
 
 class AMrelease(object):
     def __init__(self):

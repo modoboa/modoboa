@@ -17,22 +17,25 @@ from templatetags.amextras import *
 from modoboa.lib.email_listing import parse_search_parameters
 from sql_listing import *
 
+
 def __get_current_url(request):
-    if request.session.has_key("page"):
+    if "page" in request.session:
         res = "listing?page=%s" % request.session["page"]
     else:
         res = ""
-    params = "&".join(map(lambda p: "%s=%s" % (p, request.session[p]), 
+    params = "&".join(map(lambda p: "%s=%s" % (p, request.session[p]),
                           filter(request.session.has_key, ["criteria", "pattern"])))
     if params != "":
         res += "?%s" % (params)
     return res
+
 
 def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content, navbar="",
                  menu=quar_menu(request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
 
 @login_required
 def _listing(request):
@@ -45,7 +48,7 @@ def _listing(request):
             return empty_quarantine(request)
 
     order = request.GET.get("order", "-date")
-    if not request.session.has_key("navparams"):
+    if not "navparams" in request.session:
         request.session["navparams"] = {}
     request.session["navparams"]["order"] = order
 
@@ -75,10 +78,10 @@ def _listing(request):
         if request.session.has_key("page"):
             del request.session["page"]
         pageid = 1
-    
+
     lst = SQLlisting(request.user, msgs, flt,
                      navparams=request.session["navparams"],
-                     elems_per_page=int(parameters.get_user(request.user, 
+                     elems_per_page=int(parameters.get_user(request.user,
                                                         "MESSAGES_PER_PAGE")))
     page = lst.paginator.getpage(pageid)
     if not page:
@@ -90,11 +93,13 @@ def _listing(request):
                  menu=quar_menu(request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
+
 @login_required
 def index(request):
     return _render(request, "amavis/index.html", dict(
             deflocation="listing/", defcallback="listing_cb", selection="quarantine"
             ))
+
 
 def getmailcontent_selfservice(request, mail_id):
     from sql_listing import SQLemail
@@ -106,9 +111,10 @@ def getmailcontent_selfservice(request, mail_id):
     msg = email.message_from_string(content)
     mail = SQLemail(msg, mformat="plain", links="0")
     return _render(request, "common/viewmail.html", {
-            "headers" : mail.render_headers(), 
-            "mailbody" : mail.body
+            "headers": mail.render_headers(),
+            "mailbody": mail.body
             })
+
 
 @selfservice(getmailcontent_selfservice)
 def getmailcontent(request, mail_id):
@@ -121,11 +127,12 @@ def getmailcontent(request, mail_id):
     msg = email.message_from_string(content)
     mail = SQLemail(msg, mformat="plain", links="0")
     return _render(request, "common/viewmail.html", {
-            "headers" : mail.render_headers(), 
-            "mailbody" : mail.body
+            "headers": mail.render_headers(),
+            "mailbody": mail.body
             })
 
-def viewmail_selfservice(request, mail_id, 
+
+def viewmail_selfservice(request, mail_id,
                          tplname="amavis/viewmail_selfservice.html"):
     rcpt = request.GET.get("rcpt", None)
     secret_id = request.GET.get("secret_id", "")
@@ -134,10 +141,11 @@ def viewmail_selfservice(request, mail_id,
     content = Template("""
 <iframe src="{% url modoboa.extensions.amavis.views.getmailcontent mail_id %}" id="mailcontent"></iframe>
 """).render(Context(dict(mail_id=mail_id)))
-    
+
     return _render(request, tplname, dict(
             mail_id=mail_id, rcpt=rcpt, secret_id=secret_id, content=content
             ))
+
 
 @selfservice(viewmail_selfservice)
 def viewmail(request, mail_id):
@@ -152,13 +160,14 @@ def viewmail(request, mail_id):
             msgrcpt = get_wrapper().get_recipient_message(mb.full_address, mail_id)
             msgrcpt.rs = 'V'
             msgrcpt.save()
-    
+
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
-""").render(Context({"url" : reverse(getmailcontent, args=[mail_id])}))
+""").render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
     menu = viewm_menu(request.user, mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+
 
 @login_required
 def viewheaders(request, mail_id):
@@ -167,8 +176,9 @@ def viewheaders(request, mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
     return _render(request, 'amavis/viewheader.html', {
-            "headers" : msg.items()
+            "headers": msg.items()
             })
+
 
 def check_mail_id(request, mail_id):
     if type(mail_id) in [str, unicode]:
@@ -177,6 +187,7 @@ def check_mail_id(request, mail_id):
         else:
             mail_id = [mail_id]
     return mail_id
+
 
 def delete_selfservice(request, mail_id):
     rcpt = request.GET.get("rcpt", None)
@@ -189,6 +200,7 @@ def delete_selfservice(request, mail_id):
     except Msgrcpt.DoesNotExist:
         raise ModoboaException(_("Invalid request"))
     return ajax_simple_response(dict(status="ok", respmsg=_("Message deleted")))
+
 
 @selfservice(delete_selfservice)
 def delete(request, mail_id):
@@ -210,9 +222,10 @@ def delete(request, mail_id):
 
     message = ungettext("%(count)d message deleted successfully",
                         "%(count)d messages deleted successfully",
-                        len(mail_id)) % {"count" : len(mail_id)}
+                        len(mail_id)) % {"count": len(mail_id)}
     return ajax_response(request, respmsg=message,
                          url=__get_current_url(request))
+
 
 def release_selfservice(request, mail_id):
     rcpt = request.GET.get("rcpt", None)
@@ -239,6 +252,7 @@ def release_selfservice(request, mail_id):
     msgrcpt.save()
     return ajax_simple_response(dict(status="ok", respmsg=msg))
 
+
 @selfservice(release_selfservice)
 def release(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
@@ -256,7 +270,7 @@ def release(request, mail_id):
                 msgrcpt.save()
             message = ungettext("%(count)d request sent",
                                 "%(count)d requests sent",
-                                len(mail_id)) % {"count" : len(mail_id)}
+                                len(mail_id)) % {"count": len(mail_id)}
             return ajax_response(request, "ok", respmsg=message,
                                  url=__get_current_url(request))
     else:
@@ -280,11 +294,12 @@ def release(request, mail_id):
     if not error:
         message = ungettext("%(count)d message released successfully",
                             "%(count)d messages released successfully",
-                            len(mail_id)) % {"count" : len(mail_id)}
+                            len(mail_id)) % {"count": len(mail_id)}
     else:
         message = error
     return ajax_response(request, "ko" if error else "ok", respmsg=message,
                          url=__get_current_url(request))
+
 
 @login_required
 def process(request):
@@ -295,9 +310,10 @@ def process(request):
 
     if request.POST["action"] == "release":
         return release(request, ids)
-            
+
     if request.POST["action"] == "delete":
         return delete(request, ids)
+
 
 @login_required
 @user_passes_test(lambda u: u.group != 'SimpleUsers')

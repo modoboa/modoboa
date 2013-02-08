@@ -15,7 +15,7 @@ def viewm_menu(user, mail_id, rcpt):
         {"name" : "release",
          "img" : "icon-white icon-ok",
          "class" : "btn-success",
-         "url" : reverse(amavis.views.release, args=[mail_id]) \
+         "url" : reverse(amavis.views.release, args=[mail_id])
              + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label" : _("Release")},
         {"name" : "delete",

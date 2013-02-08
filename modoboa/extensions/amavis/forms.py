@@ -8,6 +8,7 @@ from django.utils.html import conditional_escape
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 
+
 class CustomRadioInput(RadioInput):
     def __unicode__(self):
         if 'id' in self.attrs:
@@ -17,6 +18,7 @@ class CustomRadioInput(RadioInput):
         choice_label = conditional_escape(force_unicode(self.choice_label))
         return mark_safe(u'<label class="radio inline" %s>%s %s</label>' % (label_for, self.tag(), choice_label))
 
+
 class InlineRadioRenderer(RadioSelect.renderer):
     def __iter__(self):
         for i, choice in enumerate(self.choices):
@@ -25,28 +27,30 @@ class InlineRadioRenderer(RadioSelect.renderer):
     def render(self):
         return mark_safe(u'\n'.join([u'%s\n' % force_unicode(w) for w in self]))
 
+
 class InlineRadioSelect(RadioSelect):
     renderer = InlineRadioRenderer
+
 
 class DomainPolicyForm(forms.ModelForm):
     spam_subject_tag2_act = forms.BooleanField()
 
     class Meta:
         model = Policy
-        fields = ('bypass_virus_checks', 'bypass_spam_checks', 
+        fields = ('bypass_virus_checks', 'bypass_spam_checks',
                   'spam_tag2_level', 'spam_subject_tag2',
                   'spam_kill_level', 'bypass_banned_checks')
         widgets = {
-            'bypass_virus_checks' : InlineRadioSelect(),
-            'bypass_spam_checks' : InlineRadioSelect(),
-            'spam_tag2_level' : forms.TextInput(attrs={'class' : 'span1'}),
-            'spam_kill_level' : forms.TextInput(attrs={'class' : 'span1'}),
-            'spam_subject_tag2' : forms.TextInput(attrs={'class' : 'span2'}),
-            'bypass_banned_checks' : InlineRadioSelect(),
+            'bypass_virus_checks': InlineRadioSelect(),
+            'bypass_spam_checks': InlineRadioSelect(),
+            'spam_tag2_level': forms.TextInput(attrs={'class': 'span1'}),
+            'spam_kill_level': forms.TextInput(attrs={'class': 'span1'}),
+            'spam_subject_tag2': forms.TextInput(attrs={'class': 'span2'}),
+            'bypass_banned_checks': InlineRadioSelect(),
             }
 
     def __init__(self, *args, **kwargs):
-        if kwargs.has_key("instance"):
+        if "instance" in kwargs:
             self.domain = kwargs["instance"]
             try:
                 policy = Users.objects.get(email="@%s" % self.domain.name).policy
@@ -56,7 +60,7 @@ class DomainPolicyForm(forms.ModelForm):
         super(DomainPolicyForm, self).__init__(*args, **kwargs)
         for f in self.fields.keys():
             self.fields[f].required = False
-    
+
     def save(self, user, commit=True):
         p = super(DomainPolicyForm, self).save(commit=False)
         for f in ['bypass_spam_checks', 'bypass_virus_checks', 'bypass_banned_checks']:

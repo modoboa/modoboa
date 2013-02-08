@@ -10,6 +10,7 @@ from modoboa.lib.emailutils import *
 from modoboa.lib.dbutils import db_type
 from models import *
 
+
 class Qtable(tables.Table):
     tableid = "emails"
     styles = "table-condensed"
@@ -31,13 +32,14 @@ class Qtable(tables.Table):
     def parse_date(self, value):
         return datetime.fromtimestamp(value)
 
+
 class SQLconnector(MBconnector):
     orders = {
-        "from" : "mail__from_addr",
-        "subject" : "mail__subject",
-        "date" : "mail__time_num"
+        "from": "mail__from_addr",
+        "subject": "mail__subject",
+        "date": "mail__time_num"
         }
-    
+
     def __init__(self, mail_ids=None, filter=None):
         self.count = None
         self.mail_ids = mail_ids
@@ -51,7 +53,7 @@ class SQLconnector(MBconnector):
             if self.filter:
                 filter &= self.filter
             self.messages = Quarantine.objects.filter(filter)
-            if kwargs.has_key("order"):
+            if "order" in kwargs:
                 totranslate = kwargs["order"][1:]
                 sign = kwargs["order"][:1]
                 if sign == " ":
@@ -66,12 +68,12 @@ class SQLconnector(MBconnector):
         emails = []
         for qm in messages:
             for rcpt in qm.mail.msgrcpt_set.all():
-                m = {"from" : qm.mail.from_addr, 
-                     "to" : rcpt.rid.email,
-                     "subject" : qm.mail.subject,
-                     "mailid" : qm.mail_id,
-                     "date" : qm.mail.time_num,
-                     "type" : rcpt.content}
+                m = {"from": qm.mail.from_addr,
+                     "to": rcpt.rid.email,
+                     "subject": qm.mail.subject,
+                     "mailid": qm.mail_id,
+                     "date": qm.mail.time_num,
+                     "type": rcpt.content}
                 if rcpt.rs == '':
                     m["class"] = "unseen"
                 elif rcpt.rs == 'R':
@@ -100,7 +102,7 @@ class SQLWrapper(object):
             q = Q(rs='p')
         else:
             q = ~Q(rs='D')
-            
+
         if request.user.group == 'SimpleUsers':
             q &= Q(rid__email=request.user.email)
         else:
@@ -126,7 +128,7 @@ class SQLWrapper(object):
 
     def get_pending_requests(self, user):
         """Return the number of current pending requests
-        
+
         :param user: a ``User`` instance
         """
         rq = Q(rs='p')
@@ -139,8 +141,9 @@ class SQLWrapper(object):
             rq &= doms_q
         return Msgrcpt.objects.filter(rq).count()
 
-    def get_mail_content(self, mailid):        
+    def get_mail_content(self, mailid):
         return Quarantine.objects.filter(mail=mailid)
+
 
 class PgWrapper(SQLWrapper):
     """The postgres wrapper
@@ -148,7 +151,7 @@ class PgWrapper(SQLWrapper):
     Make use of ``QuerySet.extra`` and postgres ``convert_from``
     function to let the quarantine manager work as expected !
     """
-    
+
     def get_mails(self, request, rcptfilter=None):
         if request.GET.get("viewrequests", None) == "1":
             q = Q(rs='p')
@@ -171,42 +174,42 @@ class PgWrapper(SQLWrapper):
 
     def get_recipient_message(self, address, mailid):
         qset = Msgrcpt.objects.filter(mail=mailid).extra(
-            where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') = '%s'" % address], 
+            where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') = '%s'" % address],
             tables=['maddr']
             )
         return qset.all()[0]
 
     def get_recipient_messages(self, address, mailids):
         return Msgrcpt.objects.filter(mail__in=mailids).extra(
-            where=["U0.rid=maddr.id", "convert_from(maddr.email, 'UTF8') = '%s'" % address], 
+            where=["U0.rid=maddr.id", "convert_from(maddr.email, 'UTF8') = '%s'" % address],
             tables=['maddr']
             )
 
     def get_domains_pending_requests(self, domains):
         regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, domains))
         return Msgrcpt.objects.filter(rs='p').extra(
-            where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp], 
+            where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp],
             tables=['maddr']
             )
 
     def get_pending_requests(self, user):
-         rq = Q(rs='p')
-         if not user.is_superuser:
-             doms = user.get_domains()
-             if not doms.count():
-                 return 0
-             regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
-             return Msgrcpt.objects.filter(rq).extra(
-                 where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)], 
-                 tables=['maddr']
-                 ).count()
-         return len(Msgrcpt.objects.filter(rq))
-
+        rq = Q(rs='p')
+        if not user.is_superuser:
+            doms = user.get_domains()
+            if not doms.count():
+                return 0
+            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+            return Msgrcpt.objects.filter(rq).extra(
+                where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)],
+                tables=['maddr']
+                ).count()
+        return len(Msgrcpt.objects.filter(rq))
 
     def get_mail_content(self, mailid):
         return Quarantine.objects.filter(mail=mailid).extra(
-            select={'mail_text' : "convert_from(mail_text, 'UTF8')"}
+            select={'mail_text': "convert_from(mail_text, 'UTF8')"}
             )
+
 
 def get_wrapper():
     """Return the appropriate *Wrapper class
@@ -216,6 +219,7 @@ def get_wrapper():
     if db_type("amavis") == 'postgres':
         return PgWrapper()
     return SQLWrapper()
+
 
 class SQLlisting(EmailListing):
     tpl = "amavis/index.html"
@@ -230,8 +234,8 @@ class SQLlisting(EmailListing):
         else:
             Qtable.cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']
         self.mbc = SQLconnector(msgs, filter)
-        
         super(SQLlisting, self).__init__(**kwargs)
+
 
 class SQLemail(Email):
     def __init__(self, msg, *args, **kwargs):
@@ -239,7 +243,7 @@ class SQLemail(Email):
         fields = ["From", "To", "Cc", "Date", "Subject"]
         for f in fields:
             label = f
-            self.headers += [{"name" : label, "value" : self.get_header(msg, f)}]
+            self.headers += [{"name": label, "value": self.get_header(msg, f)}]
             try:
                 label = re.sub("-", "_", label)
                 setattr(self, label, msg[f])
@@ -255,18 +259,15 @@ class SQLemail(Email):
                 # Workaround for amavis <= 2.8.0 :p
                 self.qtype = "BAD HEADER SECTION"
                 self.qreason = qreason[19:]
-                
 
     def get_header(self, msg, name):
-        if msg.has_key(name):
-            return msg[name]
-        name = name.upper()
-        if msg.has_key(name):
-            return msg[name]
+        for k in [name, name.upper()]:
+            if k in msg:
+                return msg[k]
         return ""
 
     def render_headers(self, **kwargs):
         return render_to_string("amavis/mailheaders.html", {
-                "qtype" : self.qtype, "qreason" : self.qreason, 
-                "headers" : self.headers,
+                "qtype": self.qtype, "qreason": self.qreason,
+                "headers": self.headers,
                 })

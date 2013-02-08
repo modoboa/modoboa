@@ -12,22 +12,27 @@
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+
 class Maddr(models.Model):
     partition_tag = models.IntegerField(unique=True, null=True, blank=True)
     id = models.BigIntegerField(primary_key=True)
     email = models.CharField(unique=True, max_length=255)
     domain = models.CharField(max_length=765)
+
     class Meta:
         db_table = u'maddr'
         managed = False
+
 
 class Mailaddr(models.Model):
     id = models.IntegerField(primary_key=True)
     priority = models.IntegerField()
     email = models.CharField(unique=True, max_length=255)
+
     class Meta:
         db_table = u'mailaddr'
         managed = False
+
 
 class Msgs(models.Model):
     partition_tag = models.IntegerField(null=True, blank=True)
@@ -50,10 +55,12 @@ class Msgs(models.Model):
     from_addr = models.CharField(max_length=765, blank=True)
     subject = models.CharField(max_length=765, blank=True)
     host = models.CharField(max_length=765)
+
     class Meta:
         db_table = u'msgs'
         managed = False
         unique_together = ('partition_tag', 'mail_id')
+
 
 class Msgrcpt(models.Model):
     partition_tag = models.IntegerField(null=True, blank=True)
@@ -68,10 +75,12 @@ class Msgrcpt(models.Model):
     wl = models.CharField(max_length=3, blank=True)
     bspam_level = models.FloatField(null=True, blank=True)
     smtp_resp = models.CharField(max_length=765, blank=True)
+
     class Meta:
         db_table = u'msgrcpt'
         managed = False
         unique_together = ("partition_tag", "mail", "rseqnum")
+
 
 class Policy(models.Model):
     policy_name = models.CharField(max_length=96, blank=True)
@@ -82,24 +91,24 @@ class Policy(models.Model):
     bad_header_lover = models.CharField(max_length=3, blank=True, null=True)
     bypass_virus_checks = models.CharField(
         ugettext_lazy("Virus filter"), default='', null=True,
-        choices=(('N', ugettext_lazy('yes')), 
-                 ('Y', ugettext_lazy('no')), 
+        choices=(('N', ugettext_lazy('yes')),
+                 ('Y', ugettext_lazy('no')),
                  ('', ugettext_lazy('default'))),
         max_length=3,
         help_text=ugettext_lazy("Bypass virus checks or not. Choose 'default' to use global settings.")
         )
     bypass_spam_checks = models.CharField(
         ugettext_lazy("Spam filter"), default='', null=True,
-        choices=(('N', ugettext_lazy('yes')), 
-                 ('Y', ugettext_lazy('no')), 
+        choices=(('N', ugettext_lazy('yes')),
+                 ('Y', ugettext_lazy('no')),
                  ('', ugettext_lazy('default'))),
         max_length=3,
         help_text=ugettext_lazy("Bypass spam checks or not. Choose 'default' to use global settings.")
         )
     bypass_banned_checks = models.CharField(
         ugettext_lazy("Banned filter"), default='', null=True,
-        choices=(('N', ugettext_lazy('yes')), 
-                 ('Y', ugettext_lazy('no')), 
+        choices=(('N', ugettext_lazy('yes')),
+                 ('Y', ugettext_lazy('no')),
                  ('', ugettext_lazy('default'))),
         max_length=3,
         help_text=ugettext_lazy("Bypass banned checks or not. Choose 'default' to use global settings.")
@@ -148,16 +157,19 @@ class Policy(models.Model):
         db_table = u'policy'
         managed = False
 
+
 class Quarantine(models.Model):
     partition_tag = models.IntegerField(null=True, blank=True)
     mail = models.ForeignKey(Msgs, primary_key=True)
     chunk_ind = models.IntegerField()
     mail_text = models.TextField()
+
     class Meta:
         db_table = u'quarantine'
         managed = False
         ordering = ["-mail__time_num"]
         unique_together = ("partition_tag", "mail", "chunk_ind")
+
 
 class Users(models.Model):
     id = models.AutoField(primary_key=True)
@@ -165,14 +177,17 @@ class Users(models.Model):
     policy = models.ForeignKey(Policy)
     email = models.CharField(unique=True, max_length=255)
     fullname = models.CharField(max_length=765, blank=True)
+
     class Meta:
         db_table = u'users'
         managed = False
+
 
 class Wblist(models.Model):
     rid = models.IntegerField(primary_key=True)
     sid = models.IntegerField(primary_key=True)
     wb = models.CharField(max_length=30)
+
     class Meta:
         db_table = u'wblist'
         managed = False
