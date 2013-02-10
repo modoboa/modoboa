@@ -10,29 +10,30 @@ from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import *
 from modoboa.lib.permissions import *
 
+
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
     aliases = DomainNameField(
-        label=ugettext_lazy("Alias(es)"), 
+        label=ugettext_lazy("Alias(es)"),
         required=False,
         help_text=ugettext_lazy("Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input.")
-        )
+    )
 
     class Meta:
         model = Domain
         fields = ("name", "quota", "aliases", "enabled")
         widgets = dict(
-            quota=forms.widgets.TextInput(attrs={"class" : "span1"})
-            )
+            quota=forms.widgets.TextInput(attrs={"class": "span1"})
+        )
 
     def __init__(self, *args, **kwargs):
         self.oldname = None
-        if kwargs.has_key("instance"):
+        if "instance" in kwargs:
             self.oldname = kwargs["instance"].name
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", DomainNameField)
-        elif kwargs.has_key("instance"):
+        elif "instance" in kwargs:
             d = kwargs["instance"]
             for pos, dalias in enumerate(d.domainalias_set.all()):
                 name = "aliases_%d" % (pos + 1)
@@ -96,10 +97,11 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 events.raiseEvent("DomainAliasCreated", user, al)
 
             for dalias in d.domainalias_set.all():
-                if not len(filter(lambda name: self.cleaned_data[name] == dalias.name, 
+                if not len(filter(lambda name: self.cleaned_data[name] == dalias.name,
                                   self.cleaned_data.keys())):
                     dalias.delete()
         return d
+
 
 class DomainForm(TabForms):
     def __init__(self, user, *args, **kwargs):
@@ -107,12 +109,12 @@ class DomainForm(TabForms):
         self.forms = []
         if user.has_perm("admin.change_domain"):
             self.forms.append(dict(
-                    id="general", title=_("General"), formtpl="admin/domain_general_form.html",
-                    cls=DomainFormGeneral, mandatory=True
-                    ))
+                id="general", title=_("General"), formtpl="admin/domain_general_form.html",
+                cls=DomainFormGeneral, mandatory=True
+            ))
 
         cbargs = [user]
-        if kwargs.has_key("instances"):
+        if "instances" in kwargs:
             cbargs += [kwargs["instances"]["general"]]
         self.forms += events.raiseQueryEvent("ExtraDomainForm", *cbargs)
 
@@ -127,15 +129,16 @@ class DomainForm(TabForms):
         for f in self.forms:
             f["instance"].save(user)
 
+
 class DlistForm(forms.ModelForm, DynamicForm):
     email = forms.EmailField(
         label=ugettext_lazy("Email address"),
         help_text=ugettext_lazy("The distribution list address. Use the '*' character to create a 'catchall' address (ex: *@domain.tld).")
-        )
+    )
     recipients = forms.EmailField(
         label=ugettext_lazy("Recipients"), required=False,
         help_text=ugettext_lazy("Mailbox(es) this alias will point to. Indicate only one address per input, press ENTER to add a new input.")
-        )
+    )
 
     class Meta:
         model = Alias
@@ -148,7 +151,7 @@ class DlistForm(forms.ModelForm, DynamicForm):
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "recipients", forms.EmailField)
-        elif kwargs.has_key("instance"):
+        elif "instance" in kwargs:
             dlist = kwargs["instance"]
             self.fields["email"].initial = dlist.full_address
             cpt = 1
@@ -225,20 +228,21 @@ class DlistForm(forms.ModelForm, DynamicForm):
             self.save_m2m()
         return dlist
 
+
 class GenericAliasForm(forms.ModelForm):
     email = forms.EmailField(
         label=ugettext_lazy("Address"),
         help_text=ugettext_lazy("A valid e-mail address. Use the '*' character to create a 'catchall' address (ex: *@domain.tld).")
-        )
-   
+    )
+
     class Meta:
         model = Alias
-        fields = ("enabled",)
-    
+        fields = ("enabled", )
+
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(GenericAliasForm, self).__init__(*args, **kwargs)
-        if kwargs.has_key("instance"):
+        if "instance" in kwargs:
             alias = kwargs["instance"]
             self.fields["email"].initial = alias.full_address
 
@@ -262,16 +266,17 @@ class GenericAliasForm(forms.ModelForm):
         alias.domain = Domain.objects.get(name=domname)
         return alias
 
+
 class AliasForm(GenericAliasForm):
     int_recipient = forms.EmailField(
         label=ugettext_lazy("Recipient"),
         help_text=ugettext_lazy("A local recipient address")
-        )
+    )
 
     def __init__(self, *args, **kwargs):
         super(AliasForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['email', 'int_recipient', 'enabled']
-        if kwargs.has_key("instance"):
+        if "instance" in kwargs:
             alias = kwargs["instance"]
             if len(alias.mboxes.all()):
                 self.fields["int_recipient"].initial = alias.mboxes.all()[0].full_address
@@ -292,16 +297,17 @@ class AliasForm(GenericAliasForm):
             alias.save([self.rcpt_mb], [])
         return alias
 
+
 class ForwardForm(GenericAliasForm):
     ext_recipient = forms.EmailField(
         label=ugettext_lazy("Recipient"),
         help_text=ugettext_lazy("An external recipient address")
-        )
+    )
 
     def __init__(self, *args, **kwargs):
         super(ForwardForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['email', 'ext_recipient', 'enabled']
-        if kwargs.has_key("instance"):
+        if "instance" in kwargs:
             alias = kwargs["instance"]
             self.fields["ext_recipient"].initial = alias.extmboxes
 
@@ -321,38 +327,41 @@ class ForwardForm(GenericAliasForm):
             alias.save([], [self.cleaned_data["ext_recipient"]])
         return alias
 
+
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=ugettext_lazy("Select a file"))
     sepchar = forms.CharField(label=ugettext_lazy("Separator"), max_length=1, required=False)
     continue_if_exists = forms.BooleanField(
         label=ugettext_lazy("Continue on error"), required=False,
         help_text=ugettext_lazy("Don't treat duplicated objects as error")
-        )
+    )
 
     def __init__(self, *args, **kwargs):
         super(ImportDataForm, self).__init__(*args, **kwargs)
-        self.fields["sepchar"].widget.attrs = {"class" : "span1"}
+        self.fields["sepchar"].widget.attrs = {"class": "span1"}
 
     def clean_sepchar(self):
         if self.cleaned_data["sepchar"] == "":
             return ";"
         return str(self.cleaned_data["sepchar"])
 
+
 class ImportIdentitiesForm(ImportDataForm):
     crypt_password = forms.BooleanField(
         label=ugettext_lazy("Crypt passwords"), required=False,
         help_text=ugettext_lazy("Check this option if passwords contained in your file are not crypted")
-        )
+    )
+
 
 class ExportDataForm(forms.Form):
     filename = forms.CharField(
         label=ugettext_lazy("File name"), max_length=100, required=False
-        )
+    )
     sepchar = forms.CharField(label=ugettext_lazy("Separator"), max_length=1, required=False)
 
     def __init__(self, *args, **kwargs):
         super(ExportDataForm, self).__init__(*args, **kwargs)
-        self.fields["sepchar"].widget.attrs = {"class" : "span1"}
+        self.fields["sepchar"].widget.attrs = {"class": "span1"}
 
     def clean_sepchar(self):
         if self.cleaned_data["sepchar"] == "":
@@ -364,15 +373,18 @@ class ExportDataForm(forms.Form):
             return self.fields["filename"].initial
         return str(self.cleaned_data["filename"])
 
+
 class ExportDomainsForm(ExportDataForm):
     def __init__(self, *args, **kwargs):
         super(ExportDomainsForm, self).__init__(*args, **kwargs)
         self.fields["filename"].initial = "modoboa-domains.csv"
 
+
 class ExportIdentitiesForm(ExportDataForm):
     def __init__(self, *args, **kwargs):
         super(ExportIdentitiesForm, self).__init__(*args, **kwargs)
         self.fields["filename"].initial = "modoboa-identities.csv"
+
 
 class AccountFormGeneral(forms.ModelForm):
     username = forms.CharField(label=ugettext_lazy("Username"), max_length=254)
@@ -380,13 +392,13 @@ class AccountFormGeneral(forms.ModelForm):
         label=ugettext_lazy("Role"),
         choices=[('', ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
-        )
+    )
     password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
     password2 = forms.CharField(
-        label=ugettext_lazy("Confirmation"), 
+        label=ugettext_lazy("Confirmation"),
         widget=forms.PasswordInput,
         help_text=ugettext_lazy("Enter the same password as above, for verification.")
-        )
+    )
 
     class Meta:
         model = User
@@ -404,10 +416,10 @@ class AccountFormGeneral(forms.ModelForm):
             self.fields["role"].choices = \
                 [('', ugettext_lazy("Choose"))] + get_account_roles(user)
 
-        if kwargs.has_key("instance"):
+        if "instance" in kwargs:
             if len(args) \
-               and (args[0].get("password1", "") == "" \
-                    and args[0].get("password2", "") == ""):
+               and (args[0].get("password1", "") == ""
+               and args[0].get("password2", "") == ""):
                 self.fields["password1"].required = False
                 self.fields["password2"].required = False
             if user.group != "DomainAdmins":
@@ -423,7 +435,7 @@ class AccountFormGeneral(forms.ModelForm):
 
     def clean_username(self):
         from django.core.validators import validate_email
-        if not self.cleaned_data.has_key("role"):
+        if not "role" in self.cleaned_data:
             return self.cleaned_data["username"]
         if self.cleaned_data["role"] != "SimpleUsers":
             return self.cleaned_data["username"]
@@ -460,7 +472,7 @@ class AccountFormGeneral(forms.ModelForm):
                 account.set_password(self.cleaned_data["password1"])
             account.save()
             role = None
-            if self.cleaned_data.has_key("role"):
+            if "role" in self.cleaned_data:
                 role = self.cleaned_data["role"]
             elif self.user.group == "DomainAdmins" and self.user != account:
                 role = "SimpleUsers"
@@ -480,22 +492,23 @@ class AccountFormGeneral(forms.ModelForm):
             account.save()
         return account
 
+
 class AccountFormMail(forms.Form, DynamicForm):
     email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
         help_text=_("Quota in MB for this mailbox. Leave empty to use the value defined at domain level."),
-        widget=forms.widgets.TextInput(attrs={"class" : "span1"})
-        )
+        widget=forms.widgets.TextInput(attrs={"class": "span1"})
+    )
     aliases = forms.EmailField(
-        label=ugettext_lazy("Alias(es)"), 
+        label=ugettext_lazy("Alias(es)"),
         required=False,
         help_text=ugettext_lazy("Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. Use the '*' character to create a 'catchall' alias (ex: *@domain.tld).")
-        )
+    )
 
     def __init__(self, *args, **kwargs):
-        if kwargs.has_key("instance"):
+        if "instance" in kwargs:
             self.mb = kwargs["instance"]
             del kwargs["instance"]
         super(AccountFormMail, self).__init__(*args, **kwargs)
@@ -516,7 +529,7 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     def clean_email(self):
         """Ensure lower case emails"""
-	return self.cleaned_data["email"].lower()
+        return self.cleaned_data["email"].lower()
 
     def save(self, user, account):
         if self.cleaned_data["email"] == "":
@@ -537,7 +550,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             except Mailbox.DoesNotExist:
                 events.raiseEvent("CanCreate", user, "mailboxes")
                 self.mb = Mailbox()
-                self.mb.save_from_user(locpart, domain, account, 
+                self.mb.save_from_user(locpart, domain, account,
                                        self.cleaned_data["quota"],
                                        owner=user)
                 grant_access_to_object(user, self.mb, is_owner=True)
@@ -546,7 +559,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                     for admin in self.mb.domain.admins:
                         grant_access_to_object(admin, self.mb)
                         grant_access_to_object(admin, self.mb.user)
-                    
+
         else:
             if self.cleaned_data["email"] != self.mb.full_address:
                 if self.mb.rename_dir(domname, locpart):
@@ -585,7 +598,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         for alias in self.mb.alias_set.all():
             if len(alias.get_recipients()) >= 2:
                 continue
-            if not len(filter(lambda name: self.cleaned_data[name] == alias.full_address, 
+            if not len(filter(lambda name: self.cleaned_data[name] == alias.full_address,
                               self.cleaned_data.keys())):
                 events.raiseEvent("MailboxAliasDeleted", alias)
                 ungrant_access_to_object(alias)
@@ -593,18 +606,19 @@ class AccountFormMail(forms.Form, DynamicForm):
 
         return self.mb
 
+
 class AccountPermissionsForm(forms.Form, DynamicForm):
     domains = DomainNameField(
-        label=ugettext_lazy("Domain(s)"), 
+        label=ugettext_lazy("Domain(s)"),
         required=False,
         help_text=ugettext_lazy("Domain(s) that user administrates")
-        )
+    )
 
     def __init__(self, *args, **kwargs):
-        if kwargs.has_key("instance"):
+        if "instance" in kwargs:
             self.account = kwargs["instance"]
             del kwargs["instance"]
-            
+
         super(AccountPermissionsForm, self).__init__(*args, **kwargs)
 
         if not hasattr(self, "account") or self.account is None:
@@ -632,7 +646,7 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                     grant_access_to_object(self.account, al)
 
         for domain in self.account.get_domains():
-            if not len(filter(lambda name: self.cleaned_data[name] == domain.name, 
+            if not len(filter(lambda name: self.cleaned_data[name] == domain.name,
                               self.cleaned_data.keys())):
                 ungrant_access_to_object(domain, self.account)
                 for mb in domain.mailbox_set.all():
@@ -640,6 +654,7 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                     ungrant_access_to_object(mb.user, self.account)
                 for al in Alias.objects.filter(domain=domain):
                     ungrant_access_to_object(al, self.account)
+
 
 class AccountForm(TabForms):
 
@@ -652,9 +667,9 @@ class AccountForm(TabForms):
                  cls=AccountFormMail),
             dict(id="perms", title=_("Permissions"), formtpl="admin/permsform.html",
                  cls=AccountPermissionsForm)
-            ]
+        ]
         cbargs = [user]
-        if kwargs.has_key("instances"):
+        if "instances" in kwargs:
             cbargs += [kwargs["instances"]["general"]]
         self.forms += events.raiseQueryEvent("ExtraAccountForm", *cbargs)
 
@@ -693,4 +708,3 @@ class AccountForm(TabForms):
             return
         for f in self.forms[2:]:
             f["instance"].save()
-

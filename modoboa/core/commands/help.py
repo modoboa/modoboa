@@ -11,7 +11,7 @@ class HelpCommand(Command):
                                   help='A command name')
 
     def handle(self, parsed_args):
-        if not self._commands.has_key(parsed_args.name):
+        if not parsed_args.name in self._commands:
             print >>sys.stderr, "Unknown command: %s" % parsed_args.name
             sys.exit(1)
         cmd = self._commands[parsed_args.name](self._commands)

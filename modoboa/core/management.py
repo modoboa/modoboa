@@ -81,7 +81,7 @@ def handle_command_line():
                         help='A valid command name')
     (args, remaining) = parser.parse_known_args()
 
-    if not commands.has_key(args.command):
+    if not args.command in commands:
         print >>sys.stderr, "Unknown command '%s'" % args.command
         sys.exit(1)
 
