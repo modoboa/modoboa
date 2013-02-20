@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Olle Gustafsson <olle@dalnix.se>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
+"POT-Creation-Date: 2013-01-26 10:42+0100\n"
+"PO-Revision-Date: 2013-02-10 13:44+0000\n"
+"Last-Translator: ogg1980 <olle@dalnix.se>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin/static/admin/js/admin.js:27
+msgid "Search"
+msgstr "Sök"
+
+#: admin/static/admin/js/admin.js:124
+msgid "Delete this domain?"
+msgstr "Radera denna domän?"
+
+#: admin/static/admin/js/admin.js:125
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Denna åtgärd kommer radera ALL data associerad med den här domänen."
+
+#: admin/static/admin/js/admin.js:126
+msgid "Do not delete domain directory"
+msgstr "Radera inte domän katalog"
+
+#: admin/static/admin/js/admin.js:149
+msgid "No domain administrator defined"
+msgstr "Ingen domänadministratör definierad"
+
+#: admin/static/admin/js/admin.js:188
+msgid "Delete this account?"
+msgstr "Radera detta konto?"
+
+#: admin/static/admin/js/admin.js:189
+msgid "Do not delete mailbox directory"
+msgstr "Radera inte brevlådans katalog"
+
+#: admin/static/admin/js/admin.js:193
+msgid "Delete this list?"
+msgstr "Radera denna lista?"
+
+#: admin/static/admin/js/admin.js:197
+msgid "Delete this forward?"
+msgstr "Radera denna vidarebefodring?"
+
+#: admin/static/admin/js/admin.js:201
+msgid "Delete this alias?"
+msgstr "Radera detta alias?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:126
+msgid "Release this selection?"
+msgstr "Släpp markerat urval?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:130
+msgid "Delete this selection?"
+msgstr "Radera markerat urval?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:148
+#: extensions/amavis/static/amavis/js/selfservice.js:22
+msgid "Release this message?"
+msgstr "Släpp detta meddelande?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:152
+#: extensions/amavis/static/amavis/js/selfservice.js:26
+msgid "Delete this message?"
+msgstr "Radera detta meddelande?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:169
+msgid "View full headers"
+msgstr "Visa meddelandehuvud"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:174
+msgid "Hide full headers"
+msgstr "Göm meddelandehuvud"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:14
+msgid "Remove this filter?"
+msgstr "Radera detta filter?"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:117
+msgid "Save changes?"
+msgstr "Spara ändringar?"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:144
+msgid "Remove filters set?"
+msgstr "Radera filteruppsättning?"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:161
+msgid "Activate this filters set?"
+msgstr "Aktivera filteruppsättning?"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:169
+#: extensions/sievefilters/static/sievefilters/js/lib.js:224
+msgid "active"
+msgstr "aktivera"
+
+#: extensions/stats/static/stats/js/stats.js:37
+msgid "Search a domain"
+msgstr "Sök domän"
+
+#: extensions/webmail/static/webmail/js/webmail.js:511
+msgid "Remove the selected mailbox?"
+msgstr "Radera markerad brevlåda?"
+
+#: extensions/webmail/static/webmail/js/webmail.js:525
+msgid "Mailbox removed"
+msgstr "Brevlåda raderad"
+
+#: extensions/webmail/static/webmail/js/webmail.js:847
+msgid "Message sent"
+msgstr "Meddelande sänt"
+
+#: extensions/webmail/static/webmail/js/webmail.js:880
+msgid "Message deleted"
+msgstr "Meddelande raderat"
+
+#: extensions/webmail/static/webmail/js/webmail.js:1005
+#, c-format
+msgid "%s file"
+msgid_plural "%s files"
+msgstr[0] "%s fil"
+msgstr[1] "%s filer"
+
+#: extensions/webmail/static/webmail/js/webmail.js:1037
+#, c-format
+msgid "Moving %s message"
+msgid_plural "Moving %s messages"
+msgstr[0] "Flyttar %s meddelande"
+msgstr[1] "Flyttar %s meddelanden"
+
+#: static/js/confirmation.js:48
+msgid "Warning"
+msgstr "Varning"
+
+#: static/js/confirmation.js:57
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: static/js/confirmation.js:98 static/js/history.js:240
+msgid "Internal Error"
+msgstr "Internt fel"
+
+#: static/js/searchbar.js:20
+msgid "Search..."
+msgstr "Sök..."
