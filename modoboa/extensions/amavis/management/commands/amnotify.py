@@ -27,7 +27,9 @@ class Command(BaseCommand):
         make_option("--smtp_host", type="string", default="localhost",
                     help="The address of the SMTP server used to send notifications"),
         make_option("--smtp_port", type="int", default=25,
-                    help="The listening port of the SMTP server used to send notifications")
+                    help="The listening port of the SMTP server used to send notifications"),
+        make_option("--verbose", action="store_true",
+                    help="Activate verbose mode")
         )
 
     def handle(self, *args, **options):
@@ -38,14 +40,22 @@ class Command(BaseCommand):
         self.notify_admins_pending_requests()
 
     def send_pr_notification(self, rcpt, reqs):
+        if self.options["verbose"]:
+            print "Sending notification to %s" % rcpt
         total = len(reqs)
         reqs = reqs.all()[:10]
         content = render_to_string("amavis/notifications/pending_requests.html", dict(
                 total=total, requests=reqs, baseurl=self.baseurl, listingurl=self.listingurl
                 ))
-        sendmail_simple(self.sender, rcpt, subject=_("[modoboa] Pending release requests"),
-                        content=content, 
-                        server=self.options["smtp_host"], port=self.options["smtp_port"])
+        status, msg = sendmail_simple(
+            self.sender, rcpt, 
+            subject=_("[modoboa] Pending release requests"),
+            content=content, 
+            server=self.options["smtp_host"], 
+            port=self.options["smtp_port"]
+        )
+        if not status:
+            print msg
         
     def notify_admins_pending_requests(self):
         self.sender = parameters.get_admin("NOTIFICATIONS_SENDER", app="amavis")
@@ -62,6 +72,8 @@ class Command(BaseCommand):
 
         reqs = Msgrcpt.objects.filter(rs='p')
         if not len(reqs):
+            if self.options["verbose"]:
+                print "No release request currently pending"
             return
         for su in User.objects.filter(is_superuser=True):
             if not su.has_mailbox:
