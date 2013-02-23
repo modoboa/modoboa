@@ -2,7 +2,7 @@
 Upgrading an existing installation
 ##################################
 
-This section regroups all the upgrade procedures required to use
+This section contains all the upgrade procedures required to use
 newest versions of Modoboa.
 
 .. note::
