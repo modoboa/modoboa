@@ -6,6 +6,6 @@ parameters.register_user("LANG", type="list", deflt="en",
                          label=ugettext_lazy("Prefered language"),
                          values=[("de", "deutsch"), ("en", "english"),
                                  ("es", "español"), ("fr", "français"),
-                                 ("pt", "português")],
+                                 ("pt", "português"), ("sv", "svenska"),],
                          help=ugettext_lazy("Prefered language to display pages"),
                          app="general")
