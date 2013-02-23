@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys, os
+import sys
+import os
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
@@ -14,13 +15,14 @@ from modoboa.extensions.amavis import Amavis
 from modoboa.extensions.amavis.models import *
 from modoboa.extensions.amavis.sql_listing import get_wrapper
 
+
 class Command(BaseCommand):
     help = 'Amavis notification tool'
 
     sender = None
     baseurl = None
     listingurl = None
-    
+
     option_list = BaseCommand.option_list + (
         make_option("--baseurl", type="string", default=None,
                     help="The scheme and hostname used to access Modoboa"),
@@ -30,7 +32,7 @@ class Command(BaseCommand):
                     help="The listening port of the SMTP server used to send notifications"),
         make_option("--verbose", action="store_true",
                     help="Activate verbose mode")
-        )
+    )
 
     def handle(self, *args, **options):
         if options["baseurl"] is None:
@@ -44,21 +46,25 @@ class Command(BaseCommand):
             print "Sending notification to %s" % rcpt
         total = len(reqs)
         reqs = reqs.all()[:10]
-        content = render_to_string("amavis/notifications/pending_requests.html", dict(
-                total=total, requests=reqs, baseurl=self.baseurl, listingurl=self.listingurl
-                ))
+        content = render_to_string(
+            "amavis/notifications/pending_requests.html", dict(
+                total=total, requests=reqs,
+                baseurl=self.baseurl, listingurl=self.listingurl
+            )
+        )
         status, msg = sendmail_simple(
-            self.sender, rcpt, 
+            self.sender, rcpt,
             subject=_("[modoboa] Pending release requests"),
-            content=content, 
-            server=self.options["smtp_host"], 
+            content=content,
+            server=self.options["smtp_host"],
             port=self.options["smtp_port"]
         )
         if not status:
             print msg
-        
+
     def notify_admins_pending_requests(self):
-        self.sender = parameters.get_admin("NOTIFICATIONS_SENDER", app="amavis")
+        self.sender = parameters.get_admin("NOTIFICATIONS_SENDER",
+                                           app="amavis")
         self.baseurl = self.options["baseurl"].strip("/")
         self.listingurl = self.baseurl + reverse("modoboa.extensions.amavis.views._listing") + "?viewrequests=1"
 
