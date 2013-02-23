@@ -71,6 +71,7 @@ div#footer {
     /*display: table;*/
     width: 735px;
     margin-top: 35px;
+    z-index: 10;
 }
 
 #topmenubar a, #topmenubar a:visited {
