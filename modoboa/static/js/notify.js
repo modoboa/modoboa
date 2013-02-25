@@ -28,6 +28,7 @@
 
         set_position: function(box) {
             box.css({
+                'z-index': 100,
                 top: this.options.top_position,
                 left: "50%",
                 'margin-left': -box.outerWidth(true) / 2
