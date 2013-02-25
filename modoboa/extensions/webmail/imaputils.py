@@ -9,6 +9,7 @@ import time
 from functools import wraps
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
+from modoboa.lib import imap_utf7
 from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.webutils import static_url
 from exceptions import ImapError, WebmailError
@@ -385,8 +386,7 @@ class IMAPconnector(object):
         mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
     @capability('LIST-EXTENDED', '_listmboxes_simple')
-    def _listmboxes(self, topmailbox='', mailboxes=None, until_mailbox=None):
-        if not mailboxes: mailboxes = []
+    def _listmboxes(self, topmailbox, mailboxes, until_mailbox=None):
         pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
@@ -429,7 +429,7 @@ class IMAPconnector(object):
         :param unseen_messages: include unseen messages counters or not
         :return: a list
         """
-        if len(topmailbox):
+        if topmailbox:
             md_mailboxes = []
         else:
             md_mailboxes = [{"name" : "INBOX", "class" : "icon-inbox"},

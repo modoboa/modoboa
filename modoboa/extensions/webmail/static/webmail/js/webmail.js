@@ -73,7 +73,7 @@ Webmail.prototype = {
         $(document).on("click", "a[name=editmbox]", $.proxy(this.edit_mbox, this));
         $(document).on("click", "a[name=removembox]", $.proxy(this.remove_mbox, this));
 
-        $(document).on("click", "tbody>tr", $.proxy(this.viewmail_loader, this));
+        $(document).on("dblclick", "tbody>tr", $.proxy(this.viewmail_loader, this));
 
         $(document).on("click", "a[name=reply]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=replyall]", $.proxy(this.reply_loader, this));
