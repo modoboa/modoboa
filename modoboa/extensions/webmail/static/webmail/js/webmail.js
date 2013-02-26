@@ -670,7 +670,7 @@ Webmail.prototype = {
 
     listmailbox_loader: function(event) {
         this.select_mailbox(event.target);
-        this._listmailbox_loader(event, $(event.target));
+        this._listmailbox_loader(event, get_target(event, "a"));
     },
 
     /*
