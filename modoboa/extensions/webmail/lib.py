@@ -37,6 +37,8 @@ class WMtable(tables.Table):
     cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
 
     def parse(self, header, value):
+        if value is None:
+            return ""
         res = chardet.detect(value)
         try:
             value = getattr(IMAPheader, "parse_%s" % header)(value)
