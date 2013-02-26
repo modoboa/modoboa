@@ -163,8 +163,7 @@ def editfolder(request, tplname="webmail/folder.html"):
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
-            pf = request.POST.has_key("parent_folder") \
-                and request.POST["parent_folder"] or None
+            pf = request.POST.get("parent_folder", None)
             ctx["selected"] = pf
             oldname, oldparent = separate_mailbox(request.POST["oldname"])
             res = dict(status="ok", respmsg=_("Mailbox updated"))
@@ -177,7 +176,8 @@ def editfolder(request, tplname="webmail/folder.html"):
                 res["newmb"] = form.cleaned_data["name"]
                 res["oldparent"] = oldparent
                 res["newparent"] = pf
-                del request.session["mbox"]
+                if "mbox" in request.session:
+                    del request.session["mbox"]
             return ajax_simple_response(res)
 
         ctx["mboxes"] = mbc.getmboxes(request.user)

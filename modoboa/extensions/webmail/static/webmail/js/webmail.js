@@ -558,16 +558,18 @@ Webmail.prototype = {
      * If needed, the mailbox will be moved to its new location.
      */
     rename_mailbox: function(oldname, newname, oldparent, newparent) {
-        var pattern = (oldparent) ? oldparent + "." + oldname : oldname;
-        var $link = $("#folders").find('a[href="' + pattern + '"]');
+        var oldpattern = (oldparent) ? oldparent + "." + oldname : oldname;
+        var newpattern = (newparent) ? newparent + "." + newparent : newname;
+        var $link = $("#folders").find('a[href="' + oldpattern + '"]');
 
         if (oldname != newname) {
             var $i = $link.children("i");
 
             $link.html(newname);
-            $link.parent("li").attr("name", pattern);
+            $link.parent("li").attr("name", newpattern);
             $link.prepend($i);
-            $link.attr("href", pattern);
+            $link.attr("href", newpattern);
+            this.navobject.setparam("mbox", newname).update(false, true);
         }
         if (oldparent != newparent) {
             var newlocation = (newparent) ? newparent + "." + newname : newname;
