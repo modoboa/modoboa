@@ -7,12 +7,16 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from modoboa.lib import parameters
-from modoboa.lib.webutils import _render, _render_to_string, ajax_response, ajax_simple_response
+from modoboa.lib.webutils import _render, _render_to_string, \
+    ajax_response, ajax_simple_response
 from modoboa.lib.decorators import needs_mailbox
 from exceptions import WebmailError
 from forms import FolderForm, AttachmentForm, ComposeMailForm
 from imaputils import get_imapconnector, IMAPconnector, separate_mailbox
-from lib import decode_payload, AttachmentUploadHandler, save_attachment, ImapListing, EmailSignature, clean_attachments, set_compose_session, send_mail, ImapEmail
+from lib import decode_payload, AttachmentUploadHandler, \
+    save_attachment, ImapListing, EmailSignature, \
+    clean_attachments, set_compose_session, send_mail, \
+    ImapEmail, ReplyModifier, ForwardModifier
 from templatetags import webextras
 
 @login_required
@@ -31,8 +35,8 @@ def getattachment(request):
     if not mbox or not mailid or not pnum:
         raise WebmailError(_("Invalid request"))
 
-    headers = {"Content-Type" : "text/plain",
-               "Content-Transfer-Encoding" : None}
+    headers = {"Content-Type": "text/plain",
+               "Content-Transfer-Encoding": None}
     imapc = get_imapconnector(request)
     partdef, payload = imapc.fetchpart(mailid, mbox, pnum)
     resp = HttpResponse(decode_payload(partdef["encoding"], payload))
@@ -56,7 +60,7 @@ def getattachment(request):
 @needs_mailbox()
 def move(request):
     for arg in ["msgset", "to"]:
-        if not request.GET.has_key(arg):
+        if not arg in request.GET:
             raise WebmailError(_("Invalid request"))
     mbc = get_imapconnector(request)
     mbc.move(request.GET["msgset"], request.session["mbox"], request.GET["to"])
