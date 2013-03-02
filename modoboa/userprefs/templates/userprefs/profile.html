@@ -1,7 +1,7 @@
 {% load i18n libextras %}
 <h2>{% trans "Profile" %} <small>{% trans "Update your personal information" %}</small></h2>
 <hr>
-<form class="form-horizontal" method="POST" action="{% url modoboa.userprefs.views.profile %}" 
+<form class="form-horizontal" method="POST" action="{% url 'modoboa.userprefs.views.profile' %}" 
       id="uprefs_form">
   {% render_form form %}
   <div class="form-actions">

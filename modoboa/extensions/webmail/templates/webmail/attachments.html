@@ -13,7 +13,7 @@
 <div class="well" id="attachment_list">
 {% for att in attachments %}
 <div class="row-fluid">
-  <a href="{% url modoboa.extensions.webmail.views.delattachment %}?name={{ att.tmpname }}"
+  <a href="{% url 'modoboa.extensions.webmail.views.delattachment' %}?name={{ att.tmpname }}"
      name="delattachment">
     <i class="icon-remove"></i>
   </a>

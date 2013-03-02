@@ -14,9 +14,9 @@ var webmail = undefined;
 $(document).ready(function() {
     webmail = new Webmail({
         poller_interval: {{ refreshrate }},
-        poller_url: "{% url modoboa.extensions.webmail.views.check_unseen_messages %}",
-        move_url: "{% url modoboa.extensions.webmail.views.move %}",
-        submboxes_url: "{% url modoboa.extensions.webmail.views.submailboxes %}",
+        poller_url: "{% url 'modoboa.extensions.webmail.views.check_unseen_messages' %}",
+        move_url: "{% url 'modoboa.extensions.webmail.views.move' %}",
+        submboxes_url: "{% url 'modoboa.extensions.webmail.views.submailboxes' %}",
         deflocation: "{{ deflocation }}",
         defcallback: "{{ defcallback }}",
         ro_mboxes: {% tolist ro_mboxes %}

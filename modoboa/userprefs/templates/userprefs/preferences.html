@@ -1,7 +1,7 @@
 {% load i18n %}
 <h2>{% trans "Preferences" %} <small>{% trans "Customize Modoboa" %}</small></h2>
 <hr>
-<form class="form-horizontal" method="POST" action="{% url modoboa.userprefs.views.preferences %}" 
+<form class="form-horizontal" method="POST" action="{% url 'modoboa.userprefs.views.preferences' %}" 
       id="uprefs_form">
   {% include "common/parameters.html" %}
   <hr>

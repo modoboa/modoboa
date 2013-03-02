@@ -13,7 +13,7 @@
     <td>
       <a name="togglestate" 
          class={% if filter.enabled %}"green"{% else %}"red"{% endif %}
-         href="{% url modoboa.extensions.sievefilters.views.toggle_filter_state fs.name filter.name %}">
+         href="{% url 'modoboa.extensions.sievefilters.views.toggle_filter_state' fs.name filter.name %}">
         {{ filter.enabled|yesno }}
       </a>
     </td>

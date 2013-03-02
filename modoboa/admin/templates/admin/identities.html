@@ -6,19 +6,19 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
-    $.getJSON("{% url modoboa.admin.views.domains_list %}", function(data) {
+    $.getJSON("{% url 'modoboa.admin.views.domains_list' %}", function(data) {
         container.value = data;
     });
 }
 
 function get_account_list(container) {
-    $.getJSON("{% url modoboa.admin.views.accounts_list %}", function(data) {
+    $.getJSON("{% url 'modoboa.admin.views.accounts_list' %}", function(data) {
         container.value = data;
     });
 }
 
 function get_mboxes_list(container) {
-    $.getJSON("{% url modoboa.admin.views.mboxes_list %}", function(data) {
+    $.getJSON("{% url 'modoboa.admin.views.mboxes_list' %}", function(data) {
         container.value = data;
     });
 }

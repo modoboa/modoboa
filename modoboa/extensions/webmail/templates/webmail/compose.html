@@ -10,7 +10,7 @@
       {% if form.cc.value %}{% render_field form.cc %}{% else %}{% render_and_hide_field form.cc %}{% endif %}
       {% render_and_hide_field form.cci %}
       {% render_field form.subject %}
-      <div id="attachments" name="{% url modoboa.extensions.webmail.views.attachments %}">
+      <div id="attachments" name="{% url 'modoboa.extensions.webmail.views.attachments' %}">
         <div>
           <img src="{{ STATIC_URL }}pics/attachment.png" />
           {% trans "Attachments" %}

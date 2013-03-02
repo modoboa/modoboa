@@ -1,7 +1,7 @@
 {% load i18n libextras %}
 <h2>{% trans "Forward" %} <small>{% trans "Automatically forward emails to another address" %}</small></h2>
 <hr>
-<form class="form-horizontal" method="POST" action="{% url modoboa.userprefs.views.forward %}" 
+<form class="form-horizontal" method="POST" action="{% url 'modoboa.userprefs.views.forward' %}" 
       id="uprefs_form">
   {% render_form form %}
   <div class="form-actions">

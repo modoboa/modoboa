@@ -1,5 +1,5 @@
 {% load i18n %}
-{% url modoboa.admin.views.saveparameters as action %}
+{% url "modoboa.admin.views.saveparameters" as action %}
 <h2>{% trans "Parameters" %} <small>{% trans "Configure Modoboa" %}</small></h2><hr />
 <form id="settings_form" method="POST" action="{{ action }}" class="form-horizontal">
   {% include "common/parameters.html" %}

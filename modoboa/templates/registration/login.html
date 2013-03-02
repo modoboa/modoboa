@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/login.css" />
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
-    {% url django.views.i18n.javascript_catalog as catalog_url %}
+    {% url "django.views.i18n.javascript_catalog" as catalog_url %}
     <script type="text/javascript" src="{{ catalog_url }}"></script>
     <script type="text/javascript">
     $(document).ready(function() {
@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="row">
-          <form method="post" action="{% url modoboa.auth.views.dologin %}" 
+          <form method="post" action="{% url 'modoboa.auth.views.dologin' %}" 
                 class="well span3">
             {% render_field form.username %}
             {% render_field form.password %}

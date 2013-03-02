@@ -2,7 +2,7 @@
 <h2>{% trans "Auto-reply message" %} <small>{% trans "Define a message to automatically send when you are off" %}</small></h2>
 <hr>
 <form class="form-horizontal" method="POST" 
-      action="{% url modoboa.extensions.postfix_autoreply.views.autoreply %}" 
+      action="{% url 'modoboa.extensions.postfix_autoreply.views.autoreply' %}" 
       id="uprefs_form">
   {% render_form form %}
   <div class="form-actions">

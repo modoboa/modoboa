@@ -7,14 +7,14 @@
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
-    $.getJSON("{% url modoboa.admin.views.domains_list %}", function(data) {
+    $.getJSON("{% url 'modoboa.admin.views.domains_list' %}", function(data) {
         container.value = data;
     });
 }
 
 $(document).ready(function() {
     var stats = new Stats({
-        graphurl: "{% url modoboa.extensions.stats.views.graphs %}",
+        graphurl: "{% url 'modoboa.extensions.stats.views.graphs' %}",
         deflocation: "{{ deflocation|safe }}",
         language: "{{ LANGUAGE_CODE }}"
     });
