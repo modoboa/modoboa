@@ -6,7 +6,6 @@ This module provides a way to integrate Modoboa auto-reply
 functionality into Postfix.
 
 """
-from django.conf.urls.defaults import include
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events, parameters

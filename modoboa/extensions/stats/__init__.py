@@ -9,7 +9,6 @@ sent, received, bounced, rejected
 """
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.conf.urls.defaults import *
 from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
 
