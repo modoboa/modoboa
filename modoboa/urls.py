@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, include, url
 from django.conf import settings
 from modoboa.extensions import *
 from modoboa.lib import parameters
