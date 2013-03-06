@@ -108,6 +108,8 @@ class User(DUser):
 
     def _crypt_password(self, raw_value):
         scheme = parameters.get_admin("PASSWORD_SCHEME")
+        if type(raw_value) is unicode:
+            raw_value = raw_value.encode("utf-8")
         if scheme == "crypt":
             salt = "".join(Random().sample(string.letters + string.digits, 2))
             result = crypt.crypt(raw_value, salt)
@@ -163,17 +165,19 @@ class User(DUser):
         m = self.password_expr.match(self.password)
         if m is None:
             return False
+        if type(raw_value) is unicode:
+            raw_value = raw_value.encode("utf-8")
         scheme = (m.group(2) or m.group(3)).lower()
         val2 = m.group(4)
-        if scheme == "crypt":
+        if scheme == u"crypt":
             val1 = crypt.crypt(raw_value, val2)
-        elif scheme == "md5":
+        elif scheme == u"md5":
             val1 = hashlib.md5(raw_value).hexdigest()
-        elif scheme == "sha256":
+        elif scheme == u"sha256":
             val1 = base64.b64encode(hashlib.sha256(raw_value).digest())
-        elif scheme == "$1$": # md5crypt
+        elif scheme == u"$1$": # md5crypt
             salt, hashed = val2.split('$')
-            val1 = md5crypt(raw_value, salt)
+            val1 = md5crypt(raw_value, str(salt))
             val2 = self.password # re-add scheme for comparison below
         else:
             val1 = raw_value
