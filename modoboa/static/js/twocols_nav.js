@@ -33,9 +33,14 @@ TwocolsNav.prototype = {
     },
 
     update_content: function(data) {
-        $('#' + this.options.divid).html(data.content);
+        if (data.content) {
+            $('#' + this.options.divid).html(data.content);
+        }
         if (data.onload_cb) {
             eval(data.onload_cb + '()');
+        }
+        if (data.respmsg) {
+            $("body").notify("error", data.respmsg);
         }
         $('#' + this.options.divid + ' select').change($.proxy(this.select_change, this));
         $(".help").popover().click(function(e) {e.preventDefault();});

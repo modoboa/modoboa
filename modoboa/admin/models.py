@@ -760,24 +760,24 @@ class Mailbox(DatesAware):
         return True
 
     @staticmethod
-    def resolve_uid(value):
+    def resolve_id(value, idname, errmsg):
         if value.isdigit():
             return value
         try:
-            uid = pwd.getpwnam(value).pw_uid
+            rid = getattr(pwd.getpwnam(value), idname)
         except KeyError:
-            raise AdminError(_("%s is not a valid uid/username" % value))
-        return uid
+            raise AdminError(errmsg)
+        return rid
+
+    @staticmethod
+    def resolve_uid(value):
+        err = _("%s is not a valid uid/username" % value)
+        return Mailbox.resolve_id(value, "pw_uid", err)
 
     @staticmethod
     def resolve_gid(value):
-        if value.isdigit():
-            return value
-        try:
-            gid = pwd.getpwnam(value).pw_gid
-        except KeyError:
-            raise AdminError(_("%s is not a valid gid/groupname" % value))
-        return gid
+        err = _("%s is not a valid gid/groupname" % value)
+        return Mailbox.resolve_id(value, "pw_gid", err)
 
     def set_ownership(self):
         """Set uid and gid for this mailbox
