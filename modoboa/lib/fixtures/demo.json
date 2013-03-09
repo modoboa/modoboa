@@ -35,8 +35,8 @@
         "pk": 5,
         "model": "lib.parameter",
         "fields": {
-            "name": "admin.CREATE_DIRECTORIES",
-            "value": "yes"
+            "name": "admin.LDA",
+            "value": "dovecot"
         }
     },
     {

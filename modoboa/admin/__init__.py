@@ -33,24 +33,29 @@ parameters.register_admin(
     help=ugettext_lazy("The backend used for authentication")
 )
 parameters.register_admin(
-    "CREATE_DIRECTORIES", type="list_yesno", deflt="yes",
-    help=ugettext_lazy("Modoboa will handle mailbox creation on filesystem")
+    "LDA", type="list", deflt="dovecot",
+    values=[('dovecot', "Dovecot"), ('postfix', 'Postfix')],
+    help=ugettext_lazy("Local Delivery Agent")
 )
 parameters.register_admin(
     "STORAGE_PATH", type="string", deflt="/var/vmail",
+    visible_if="LDA=postfix",
     help=ugettext_lazy("Path to the root directory where messages are stored")
 )
 parameters.register_admin(
     "VIRTUAL_UID", type="string", deflt="vmail", modify_cb=update_uid,
+    visible_if="LDA=postfix",
     help=ugettext_lazy("UID of the virtual user which owns domains/mailboxes/messages on the filesystem")
 )
 parameters.register_admin(
     "VIRTUAL_GID", type="string", deflt="vmail", modify_cb=update_gid,
+    visible_if="LDA=postfix",
     help=ugettext_lazy("GID of the virtual user which owns domains/mailboxes/messages on the filesystem")
 )
 parameters.register_admin(
     "MAILBOX_TYPE", type="list", deflt="maildir",
     values=[("maildir", "maildir"), ("mbox", "mbox")],
+    visible_if="LDA=postfix",
     help=ugettext_lazy("Mailboxes storage format")
 )
 parameters.register_admin(

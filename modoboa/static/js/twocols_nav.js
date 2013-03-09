@@ -47,15 +47,30 @@ TwocolsNav.prototype = {
         $('#' + this.options.divid + ' select').change();
     },
 
+    propagate_change: function($node) {
+        var $select = $node.find("select");
+        if ($select.length) {
+            $select.change();
+        }
+    },
+
     select_change: function(e) {
+        var instance = this;
         var $target = $(e.target);
+        var $parent = $target.parents("div.control-group");
 
         $('div[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
             var $this = $(this);
-            if ($this.attr("data-visibility-value") == $target.attr("value")) {
+
+            if ($parent.attr("disabled") === undefined && 
+                $this.attr("data-visibility-value") == $target.attr("value")) {
+                $this.attr("disabled", null);
                 $this.show();
+                instance.propagate_change($this)
             } else {
                 $this.hide();
+                $this.attr("disabled", "disabled");
+                instance.propagate_change($this);
             }
         });
     },

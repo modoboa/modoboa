@@ -549,21 +549,21 @@ class Domain(DatesAware):
         return [oa.user for oa in self.owners.filter(user__is_superuser=False)]
         
     def create_dir(self):
-        if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+        if parameters.get_admin("LDA") == "postfix":
             path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
             return exec_as_vuser("mkdir -p %s" % path)
         
         return True
 
     def rename_dir(self, oldname):
-        if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+        if parameters.get_admin("LDA") == "postfix":
             stpath = parameters.get_admin("STORAGE_PATH")
             return exec_as_vuser("mv %s/%s %s/%s" \
                                      % (stpath, oldname, stpath, self.name))
         return True
 
     def delete_dir(self):
-        if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+        if parameters.get_admin("LDA") == "postfix":
             return exec_as_vuser("rm -r %s/%s" \
                                      % (parameters.get_admin("STORAGE_PATH"), 
                                         self.name))
@@ -716,7 +716,7 @@ class Mailbox(DatesAware):
             self.path = "%s/Inbox" % self.address
         else:
             self.path = "%s/" % self.address
-        if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+        if parameters.get_admin("LDA") == "postfix":
             relpath = "%s/%s" % (self.domain.name, self.address)
             abspath = os.path.join(parameters.get_admin("STORAGE_PATH"), relpath)
             if os.path.exists(abspath):
@@ -736,7 +736,7 @@ class Mailbox(DatesAware):
         return True
 
     def rename_dir(self, newdomain, newaddress):
-        if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+        if parameters.get_admin("LDA") == "postfix":
             if self.domain.name == newdomain and newaddress == self.address:
                 return True
             oldpath = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.domain.name)
@@ -753,7 +753,7 @@ class Mailbox(DatesAware):
         return True
 
     def delete_dir(self):
-        if parameters.get_admin("CREATE_DIRECTORIES") == "yes":
+        if parameters.get_admin("LDA") == "postfix":
             return exec_as_vuser("rm -r %s/%s/%s" \
                                      % (parameters.get_admin("STORAGE_PATH"),
                                         self.domain.name, self.address))
