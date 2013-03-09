@@ -138,7 +138,7 @@ def viewmail_selfservice(request, mail_id,
     secret_id = request.GET.get("secret_id", "")
     if rcpt is None:
         raise Http404
-    content = Template("""
+    content = Template("""{% load url from future %}
 <iframe src="{% url 'modoboa.extensions.amavis.views.getmailcontent' mail_id %}" id="mailcontent"></iframe>
 """).render(Context(dict(mail_id=mail_id)))
 

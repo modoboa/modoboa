@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load i18n libextras %}
+<!DOCTYPE html>{% load i18n libextras %}{% load url from future %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="row">
-          <form method="post" action="{% url 'modoboa.auth.views.dologin' %}" 
+          <form method="post" action="{% url 'modoboa.auth.views.dologin' %}"
                 class="well span3">
             {% render_field form.username %}
             {% render_field form.password %}

@@ -1,4 +1,4 @@
-{% extends "common/mailheaders.html" %}{% load i18n %}
+{% extends "common/mailheaders.html" %}{% load i18n %}{% load url from future %}
 {% block extraheaders %}{% if attachments %}
   <div class="row">
     <div class="header">{% trans "Attachments" %}</div>

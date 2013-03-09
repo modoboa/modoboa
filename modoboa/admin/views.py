@@ -479,10 +479,10 @@ def viewsettings(request, tplname='admin/settings_header.html'):
 @user_passes_test(lambda u: u.is_superuser)
 def viewparameters(request, tplname='admin/parameters.html'):
     return ajax_simple_response({
-            "status" : "ok",
-            "left_selection" : "parameters",
-            "content" : render_to_string(tplname, {"gparams" : parameters.get_all_admin_parameters()})
-            })
+        "status" : "ok",
+        "left_selection" : "parameters",
+        "content" : render_to_string(tplname, {"gparams" : parameters.get_all_admin_parameters()})
+    })
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)

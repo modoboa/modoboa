@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n %}{% load url from future %}
 <h2>{% trans "Extensions" %} <small>{% trans "Choose the extension(s) to use" %}</small></h2><hr />
 <form id="settings_form" method="POST" action="{% url 'modoboa.admin.views.saveextensions' %}">
   {{ extensions|safe }}

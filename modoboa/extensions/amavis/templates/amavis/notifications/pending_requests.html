@@ -1,4 +1,4 @@
-{% load i18n libextras %}{% blocktrans count counter=total %}
+{% load i18n libextras %}{% load url from future %}{% blocktrans count counter=total %}
 {{ counter }} release request is pending for action.
 {% plural %}
 {{ counter }} release requests are pending for action.

@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n %}{% load url from future %}
 <h2>{% trans "Preferences" %} <small>{% trans "Customize Modoboa" %}</small></h2>
 <hr>
 <form class="form-horizontal" method="POST" action="{% url 'modoboa.userprefs.views.preferences' %}" 
