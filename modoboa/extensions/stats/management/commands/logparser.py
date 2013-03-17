@@ -169,9 +169,10 @@ class LogParser(object):
         self.data[dom][cur_t] = init
 
     def inc_counter(self, dom, cur_t, counter, val=1):
-        if not self.data[dom].has_key(cur_t):
-            self.initcounters(dom, cur_t)
-        self.data[dom][cur_t][counter] += val
+        if dom is not None and dom in self.domains:
+            if not self.data[dom].has_key(cur_t):
+                self.initcounters(dom, cur_t)
+            self.data[dom][cur_t][counter] += val
 
         if not self.data["global"].has_key(cur_t):
             self.initcounters("global", cur_t)
@@ -245,19 +246,20 @@ class LogParser(object):
                         continue
 
                     addrfrom = re.match("([^@]+)@(.+)", self.workdict[line_id]['from'])
-                    if addrfrom and addrfrom.group(2) in self.domains:
+                    if addrfrom is not None and addrfrom.group(2) in self.domains:
                         self.inc_counter(addrfrom.group(2), cur_t, 'sent')
                         self.inc_counter(addrfrom.group(2), cur_t, 'size_sent',
                                          self.workdict[line_id]['size'])
                     addrto = re.match("([^@]+)@(.+)", m.group(1))
-                    if addrto.group(2) in self.domains:
-                        if m.group(2) == "sent":
-                            self.inc_counter(addrto.group(2), cur_t, 'recv')
-                            self.inc_counter(addrto.group(2), cur_t, 'size_recv',
+                    domname = addrto.group(2) if addrto is not None else None
+                    if m.group(2) == "sent":
+                        self.inc_counter(addrto.group(2), cur_t, 'recv')
+                        self.inc_counter(addrto.group(2), cur_t, 'size_recv',
                                          self.workdict[line_id]['size'])
-                        else:
-                            self.inc_counter(addrto.group(2), cur_t, m.group(2))
+                    else:
+                        self.inc_counter(domname, cur_t, m.group(2))
                     continue
+
                 if self.debug:
                     print "Unknown line format: %s" % line_log
             else:
