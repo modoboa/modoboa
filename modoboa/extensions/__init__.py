@@ -13,10 +13,11 @@ class ModoExtension(object):
     considered as valid.
     """
     name = None
-    version = "0.1"
+    version = None
     description = ""
     url = None
     needs_media = False
+    always_active = False
 
     def infos(self):
         return dict(name=self.name, label=self.label, version=self.version,
@@ -38,8 +39,8 @@ class ExtensionsPool(object):
     def __init__(self):
         self.extensions = dict()
 
-    def register_extension(self, ext):
-        self.extensions[ext.name] = dict(cls=ext)
+    def register_extension(self, ext, show=True):
+        self.extensions[ext.name] = dict(cls=ext, show=show)
 
     def get_extension(self, name):
         if not name in self.extensions:
@@ -58,14 +59,14 @@ class ExtensionsPool(object):
         result = []
         for extname, extdef in self.extensions.iteritems():
             extinstance = self.get_extension(extname)
-            try:
-                ext = Extension.objects.get(name=extname)
-                if ext is None:
+            if not extinstance.always_active:
+                try:
+                    ext = Extension.objects.get(name=extname)
+                    if not ext.enabled:
+                        continue
+                except Extension.DoesNotExist:
                     continue
-                if ext.enabled:
-                    extinstance.load()
-            except Extension.DoesNotExist:
-                pass
+            extinstance.load()
             try:
                 baseurl = extinstance.url if extinstance.url is not None else extname
                 result += [(r'^%s/' % (baseurl),
@@ -78,6 +79,8 @@ class ExtensionsPool(object):
     def list_all(self):
         result = []
         for extname, extdef in self.extensions.iteritems():
+            if not extdef["show"]:
+                continue
             infos = extdef["instance"].infos()
             infos["id"] = extname
             result += [infos]
