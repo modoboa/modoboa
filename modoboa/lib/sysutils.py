@@ -8,16 +8,19 @@ import logging
 import logging.handlers
 from modoboa.lib import parameters
 
-def exec_cmd(cmd, **kwargs):
+def exec_cmd(cmd, sudo_user=None, **kwargs):
     import subprocess
 
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, **kwargs)
+    if sudo_user is not None:
+        cmd = "sudo -u %s %s" % (sudo_user, cmd)
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, 
+                         stderr=subprocess.STDOUT, **kwargs)
     output = p.communicate()[0]
     return p.returncode, output
 
 def exec_as_vuser(cmd):
     code, output = exec_cmd("sudo -u %s %s" \
-                                % (parameters.get_admin("VIRTUAL_UID", app="admin"), cmd))
+                                % (parameters.get_admin("MAILBOXES_OWNER", app="admin"), cmd))
     if code:
         exec_cmd("echo '%s' >> /tmp/vmail.log" % output)
         return False

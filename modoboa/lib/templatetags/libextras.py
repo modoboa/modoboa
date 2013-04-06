@@ -13,6 +13,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.webutils import static_url
+from modoboa.lib.formutils import SeparatorField
 
 register = template.Library()
 
@@ -90,6 +91,9 @@ def render_form(form, tpl=None):
 
 @register.simple_tag
 def render_field(field, help_display_mode="tooltip"):
+    if type(field.form.fields[field.name]) is SeparatorField:
+        return "<h5>%s</h5>" % unicode(field.label)
+
     return render_to_string("common/generic_field.html", dict(
             field=field, help_display_mode=help_display_mode
             ))
@@ -174,6 +178,16 @@ def progress_color(value):
 @register.filter
 def fromunix(value):
     return datetime.datetime.fromtimestamp(int(value))
+
+
+@register.simple_tag
+def visirule(field):
+    if not hasattr(field.form, "visirules") or not field.html_name in field.form.visirules:
+        return ""
+    rule = field.form.visirules[field.html_name]
+    return " data-visibility-field='%s' data-visibility-value='%s' " \
+        % (rule["field"], rule["value"])
+
 
 class ConnectedUsers(template.Node):
     def __init__(self, varname):

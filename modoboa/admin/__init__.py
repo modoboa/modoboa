@@ -1,85 +1,10 @@
 # coding: utf-8
 
-from modoboa.lib import parameters, events
+from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.db.utils import DatabaseError
-from models import Extension, Mailbox
-
-
-def update_uid(value):
-    """VIRTUAL_UID modification callback
-
-    Update all mailboxes with the new UID value
-
-    :param value: the new UID
-    """
-    Mailbox.objects.all().update(uid=Mailbox.resolve_uid(value))
-
-
-def update_gid(value):
-    """VIRTUAL_GID modification callback
-
-    Update all mailboxes with the new GID value
-
-    :param value: the new GID
-    """
-    Mailbox.objects.all().update(gid=Mailbox.resolve_gid(value))
-
-
-parameters.register_admin(
-    "AUTHENTICATION_TYPE", type="list", deflt="local",
-    values=[('local', ugettext_lazy("Local")),
-            ('ldap', "LDAP")],
-    help=ugettext_lazy("The backend used for authentication")
-)
-parameters.register_admin(
-    "LDA", type="list", deflt="dovecot",
-    values=[('dovecot', "Dovecot"), ('postfix', 'Postfix')],
-    help=ugettext_lazy("Local Delivery Agent")
-)
-parameters.register_admin(
-    "STORAGE_PATH", type="string", deflt="/var/vmail",
-    visible_if="LDA=postfix",
-    help=ugettext_lazy("Path to the root directory where messages are stored")
-)
-parameters.register_admin(
-    "VIRTUAL_UID", type="string", deflt="vmail", modify_cb=update_uid,
-    visible_if="LDA=postfix",
-    help=ugettext_lazy("UID of the virtual user which owns domains/mailboxes/messages on the filesystem")
-)
-parameters.register_admin(
-    "VIRTUAL_GID", type="string", deflt="vmail", modify_cb=update_gid,
-    visible_if="LDA=postfix",
-    help=ugettext_lazy("GID of the virtual user which owns domains/mailboxes/messages on the filesystem")
-)
-parameters.register_admin(
-    "MAILBOX_TYPE", type="list", deflt="maildir",
-    values=[("maildir", "maildir"), ("mbox", "mbox")],
-    visible_if="LDA=postfix",
-    help=ugettext_lazy("Mailboxes storage format")
-)
-parameters.register_admin(
-    "MAILDIR_ROOT", type="string", deflt=".maildir",
-    visible_if="MAILBOX_TYPE=maildir",
-    help=ugettext_lazy("Sub-directory (inside the mailbox) where messages are stored when using the maildir format")
-)
-parameters.register_admin(
-    "AUTO_ACCOUNT_REMOVAL", type="list_yesno", deflt="no",
-    help=ugettext_lazy("When a mailbox is removed, also remove the associated account")
-)
-parameters.register_admin(
-    "PASSWORD_SCHEME", type="list", deflt="md5crypt",
-    values=[("crypt", "crypt"),
-            ("md5", "md5"),
-            ("md5crypt", "md5crypt"),
-            ("sha256", "sha256"),
-            ("plain", "plain")],
-    help=ugettext_lazy("Scheme used to crypt mailbox passwords")
-)
-parameters.register_admin(
-    "ITEMS_PER_PAGE", type="int", deflt=30,
-    help=ugettext_lazy("Number of displayed items per page")
-)
+from modoboa.lib import parameters, events
+from modoboa.lib.formutils import YesNoField, SeparatorField
+from modoboa.lib.sysutils import exec_cmd
 
 
 def enabled_applications():
@@ -91,6 +16,7 @@ def enabled_applications():
 
     :return: a list
     """
+    from modoboa.admin.models import Extension
     from modoboa.lib.dbutils import db_table_exists
 
     result = [("admin", "admin"), ("userprefs", "userprefs")]
@@ -100,12 +26,92 @@ def enabled_applications():
     return sorted(result, key=lambda e: e[0])
 
 
-parameters.register_admin(
-    "DEFAULT_TOP_REDIRECTION", type="list", deflt="admin",
-    app="general",
-    values=enabled_applications(),
-    help=ugettext_lazy("The default redirection used when no application is specified")
-)
+class GeneralParametersForm(parameters.AdminParametersForm):
+    app = "admin"
+
+    sep1 = SeparatorField(label=ugettext_lazy("Authentication"))
+
+    authentication_type = forms.ChoiceField(
+        label=ugettext_lazy("Authentication type"),
+        choices=[('local', ugettext_lazy("Local")),
+                 ('ldap', "LDAP")],
+        initial="local",
+        help_text=ugettext_lazy("The backend used for authentication")
+    )
+
+    password_scheme = forms.ChoiceField(
+        label=ugettext_lazy("Default password scheme"),
+        choices=[("crypt", "crypt"),
+                 ("md5", "md5"),
+                 ("md5crypt", "md5crypt"),
+                 ("sha256", "sha256"),
+                 ("plain", "plain")],
+        initial="md5crypt",
+        help_text=ugettext_lazy("Scheme used to crypt mailbox passwords")
+    )
+
+    secret_key = forms.CharField(
+        label=ugettext_lazy("Secret key"),
+        initial="abcdefghijklmnop",
+        help_text=ugettext_lazy("Key used to encrypt/decrypt passwords")
+    )
+
+    sep2 = SeparatorField(label=ugettext_lazy("Mailboxes"))
+
+    handle_mailboxes = YesNoField(
+        label=ugettext_lazy("Handle mailboxes on filesystem"),
+        initial="no",
+        help_text=ugettext_lazy("Rename or remove mailboxes on the filesystem when they get renamed or removed within Modoboa")
+    )
+
+    mailboxes_owner = forms.CharField(
+        label=ugettext_lazy("Mailboxes ower"),
+        initial="vmail",
+        help_text=ugettext_lazy("The UNIX account who owns mailboxes on the filesystem")
+    )
+
+    auto_account_removal = YesNoField(
+        label=ugettext_lazy("Automatic account removal"),
+        initial="no",
+        help_text=ugettext_lazy("When a mailbox is removed, also remove the associated account"),
+    )
+
+    sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
+
+    items_per_page = forms.IntegerField(
+        label=ugettext_lazy("Items per page"),
+        initial=30,
+        help_text=ugettext_lazy("Number of displayed items per page")
+    )
+
+    default_top_redirection = forms.ChoiceField(
+        label=ugettext_lazy("Default top redirection"),
+        choices=[],
+        initial="admin",
+        help_text=ugettext_lazy("The default redirection used when no application is specified")
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(GeneralParametersForm, self).__init__(*args, **kwargs)
+        self.fields["default_top_redirection"].choices = enabled_applications()
+        hide_fields = False
+        try:
+            code, version = exec_cmd("dovecot --version")
+        except OSError, e:
+            hide_fields = True
+        else:
+            if code or not version.strip().startswith("2"):
+                hide_fields = True
+        if hide_fields:
+            del self.fields["handle_mailboxes"]
+            del self.fields["mailboxes_owner"]
+
+    # Visibility rules
+    def visibility_mailboxes_owner(self):
+        return "handle_mailboxes=yes"
+
+
+parameters.register(GeneralParametersForm, ugettext_lazy("General"))
 
 
 @events.observe("ExtDisabled")
@@ -114,16 +120,6 @@ def unset_default_topredirection(extension):
     Simple callback to change the default redirection if the
     corresponding extension is being disabled.
     """
-    topredirection = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="general")
+    topredirection = parameters.get_admin("DEFAULT_TOP_REDIRECTION")
     if topredirection == extension.name:
-        parameters.save_admin("DEFAULT_TOP_REDIRECTION", "userprefs", app="general")
-
-
-@events.observe("ExtDisabled", "ExtEnabled")
-def update_available_applications(extension):
-    """Simple callback to update the list of available applications
-
-    Must be called each time an extension is disabled/enabled.
-    """
-    parameters.update_admin("DEFAULT_TOP_REDIRECTION", app="general",
-                            values=enabled_applications())
+        parameters.save_admin("DEFAULT_TOP_REDIRECTION", "userprefs")

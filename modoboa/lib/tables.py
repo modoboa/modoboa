@@ -57,17 +57,18 @@ class SelectionColumn(Column):
     A 'selection' column contains only checkboxes (one per row). It is
     usefull to select rows for grouped actions (modify, delete, etc.)
     """
-    def __str__(self):
+    def __unicode__(self):
         if self.header:
             return "<input type='checkbox' name='selectall' id='selectall' />"
         return ""
 
     def render(self, value, selection):
-        return "<input type='checkbox' id='%s' name='select_%s' value='%s' %s/>" \
-            % (self.name, value, value, selection and "checked" or "")
+        return "<input type='checkbox' id='%(id)s' name='select_%(value)s' value='%(value)s' %(checked)s/>" \
+            % {'id': self.name, 'value': value, 
+               "checked": "checked=''" if selection else ""}
 
     def transform(self, row, col, table):
-        selection = row.has_key(self.name) and row[self.name] or False
+        selection = row[self.name] if self.name in row else False
         col["value"] = self.render(row[table.idkey], selection)
         col["safe"] = True
 

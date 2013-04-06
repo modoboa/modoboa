@@ -3,8 +3,13 @@
 Basic tests for the 'admin' application
 =======================================
 
+TODO:
+
+* Add new tests to check domain/mailbox manipulations when
+  create_directories == yes
 
 """
+import os
 from django.test import TestCase
 from django.test.client import Client
 from django.utils import simplejson
@@ -14,7 +19,6 @@ from modoboa.admin.lib import *
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
-import os
 
 class DomainTestCase(TestCase):
     fixtures = ["initial_users.json"]
@@ -26,18 +30,12 @@ class DomainTestCase(TestCase):
         self.assertEqual(dom.quota, 100)
         self.assertEqual(dom.enabled, False)
 
-        self.assertEqual(dom.create_dir(), True)
-        path = os.path.join(parameters.get_admin("STORAGE_PATH"), dom.name)
-        self.assertEqual(os.path.exists(path), True)
-        
         dom.name = "toto.com"
         dom.save()
         self.assertEqual(dom.name, "toto.com")
-        path = os.path.join(parameters.get_admin("STORAGE_PATH"), dom.name)
-        self.assertEqual(os.path.exists(path), True)
 
         dom.delete(User.objects.get(pk=1))
-        self.assertEqual(os.path.exists(path), False)
+
 
 class DomainAliasTestCase(ModoTestCase):
     fixtures = ["initial_users.json", "test_content.json"]
@@ -68,8 +66,13 @@ class DomainAliasTestCase(ModoTestCase):
         self.check_ajax_post(reverse("modoboa.admin.views.editdomain", args=[1]), values)
         self.assertEqual(dom.domainalias_set.count(), 1)
 
+
 class AccountTestCase(ModoTestCase):
     fixtures = ["initial_users.json", "test_content.json",]
+
+    def setUp(self):
+        super(AccountTestCase, self).setUp()
+        from modoboa import admin
 
     def test(self):
         values = dict(username="tester@test.com", first_name="Tester", last_name="Toto",
@@ -80,7 +83,6 @@ class AccountTestCase(ModoTestCase):
         account = User.objects.get(username="tester@test.com")
         mb = account.mailbox_set.all()[0]
         self.assertEqual(mb.full_address, "tester@test.com")
-        self.assertEqual(os.path.exists(mb.full_path), True)
         self.assertEqual(mb.quota, 100)
         self.assertEqual(mb.enabled, True)
         self.assertEqual(account.username, mb.full_address)
@@ -93,14 +95,10 @@ class AccountTestCase(ModoTestCase):
         self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[account.id]), values)
 
         mb = Mailbox.objects.get(pk=mb.id)
-        self.assertEqual(mb.path, "%s/" % mb.address)
-        path = mb.full_path
         self.assertEqual(mb.full_address, "pouet@test.com")
-        self.assertEqual(os.path.exists(path), True)
 
         self.check_ajax_get(reverse("modoboa.admin.views.delaccount") + "?selection=%d" \
                                 % account.id, {})
-        self.assertEqual(os.path.exists(path), False)
 
     def test_update_password(self):
         """Password update
@@ -124,6 +122,7 @@ class AccountTestCase(ModoTestCase):
         self.clt.logout()
         self.assertEqual(self.clt.login(username="user@test.com", password="tutu"), True)
        
+
 class AliasTestCase(ModoTestCase):
     fixtures = ["initial_users.json", "test_content.json"]
     
@@ -180,6 +179,7 @@ class AliasTestCase(ModoTestCase):
                                 % fwd.id, {})
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get, 
                           address="forward", domain__name="test.com")
+
 
 class PermissionsTestCase(ModoTestCase):
     fixtures = ["initial_users.json", "test_content.json"]

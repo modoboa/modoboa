@@ -1,16 +1,12 @@
-{% load i18n admin_extras %}
-{% if gparams %}
-  <div class="tabbable">
-    <ul class="nav nav-tabs">
-      {% for app in gparams %}<li{% if forloop.first %} class="active"{% endif %}><a href="#{{ forloop.counter }}" data-toggle="tab">{{ app.name }}</a></li>
-      {% endfor %}
-    </ul>
-    <div class="tab-content">{% for app in gparams %}
-      <div class="tab-pane{% if forloop.first %} active{% endif %}" id="{{ forloop.counter }}">
-        {% for p in app.params %}{% param app.name p %}{% endfor %}
-      </div>{% endfor %}
-    </div>
+{% load libextras %}
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    {% for form in forms %}<li{% if forloop.first %} class="active"{% endif %}><a href="#{{ forloop.counter }}" data-toggle="tab">{{ form.label }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="tab-content">{% for form in forms %}
+    <div class="tab-pane{% if forloop.first %} active{% endif %}" id="{{ forloop.counter }}">
+      {% render_form form.form %}
+    </div>{% endfor %}
   </div>
-{% else %}
-  <div class="info">{% trans "No parameters available" %}</div>
-{% endif %}
+</div>

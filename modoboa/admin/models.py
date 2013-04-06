@@ -547,27 +547,6 @@ class Domain(DatesAware):
     @property
     def admins(self):
         return [oa.user for oa in self.owners.filter(user__is_superuser=False)]
-        
-    def create_dir(self):
-        if parameters.get_admin("LDA") == "postfix":
-            path = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.name)
-            return exec_as_vuser("mkdir -p %s" % path)
-        
-        return True
-
-    def rename_dir(self, oldname):
-        if parameters.get_admin("LDA") == "postfix":
-            stpath = parameters.get_admin("STORAGE_PATH")
-            return exec_as_vuser("mv %s/%s %s/%s" \
-                                     % (stpath, oldname, stpath, self.name))
-        return True
-
-    def delete_dir(self):
-        if parameters.get_admin("LDA") == "postfix":
-            return exec_as_vuser("rm -r %s/%s" \
-                                     % (parameters.get_admin("STORAGE_PATH"), 
-                                        self.name))
-        return True
 
     def delete(self, fromuser, keepdir=False):
         from modoboa.lib.permissions import ungrant_access_to_object, ungrant_access_to_objects
@@ -578,6 +557,10 @@ class Domain(DatesAware):
         if self.mailbox_set.count():
             events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
             ungrant_access_to_objects(self.mailbox_set.all())
+            hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False) 
+            if hm == "yes" and not keepdir:
+                for mb in self.mailbox_set.all():
+                    mb.delete_dir()
         if self.alias_set.count():
             events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
@@ -587,13 +570,6 @@ class Domain(DatesAware):
         events.raiseEvent("DeleteDomain", self)
         ungrant_access_to_object(self)
         super(Domain, self).delete()
-        if not keepdir:
-            self.delete_dir()
-
-    def save(self, *args, **kwargs):
-        if not self.create_dir():
-            raise AdminError(_("Failed to initialise domain, check permissions"))
-        super(Domain, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -665,30 +641,27 @@ class Mailbox(DatesAware):
         help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
         )
     quota = models.IntegerField()
-    uid = models.IntegerField()
-    gid = models.IntegerField()
-    path = models.CharField(max_length=255)
     domain = models.ForeignKey(Domain)
     user = models.ForeignKey(User)
 
     class Meta:
         permissions = (
             ("view_mailboxes", "View mailboxes"),
-            )
+        )
 
     def __init__(self, *args, **kwargs):
         super(Mailbox, self).__init__(*args, **kwargs)
-        self.mbtype = parameters.get_admin("MAILBOX_TYPE")
-        self.mdirroot = parameters.get_admin("MAILDIR_ROOT")
-        if not self.mdirroot.endswith('/'):
-            self.mdirroot += '/'
+        self.__mail_home = None
 
     def __str__(self):
         return self.full_address
-	
+    
+    def __full_address(self, localpart):
+        return "%s@%s" % (localpart, self.domain.name)
+        
     @property
     def full_address(self):
-        return "%s@%s" % (self.address, self.domain.name)
+        return self.__full_address(self.address)
 
     @property
     def name_and_address(self):
@@ -702,91 +675,47 @@ class Mailbox(DatesAware):
         return self.user.is_active
 
     @property
-    def full_path(self):
-        path = os.path.join(parameters.get_admin("STORAGE_PATH"),
-                            self.domain.name, self.address)
-        return os.path.abspath(path)
-
-    @property
     def alias_count(self):
         return self.alias_set.count()
 
-    def create_dir(self):
-        if self.mbtype == "mbox":
-            self.path = "%s/Inbox" % self.address
-        else:
-            self.path = "%s/" % self.address
-        if parameters.get_admin("LDA") == "postfix":
-            relpath = "%s/%s" % (self.domain.name, self.address)
-            abspath = os.path.join(parameters.get_admin("STORAGE_PATH"), relpath)
-            if os.path.exists(abspath):
-                return True
-            if not exec_as_vuser("mkdir -p %s" % abspath):
-                return False
-            if self.mbtype == "mbox":
-                template = ["Inbox", "Drafts", "Sent", "Trash", "Junk"]
-                for f in template:
-                    exec_as_vuser("touch %s/%s" % (abspath, f))
-            else:
-                template = [".Drafts/", ".Sent/", ".Trash/", ".Junk/"]
-                for dir in template:
-                    for sdir in ["cur", "new", "tmp"]:
-                        exec_as_vuser("mkdir -p %s/%s/%s/%s" \
-                                          % (abspath, self.mdirroot, dir, sdir))
-        return True
+    @property
+    def mail_home(self):
+        """
 
-    def rename_dir(self, newdomain, newaddress):
-        if parameters.get_admin("LDA") == "postfix":
-            if self.domain.name == newdomain and newaddress == self.address:
-                return True
-            oldpath = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), self.domain.name)
-            newpath = "%s/%s" % (parameters.get_admin("STORAGE_PATH"), newdomain)
-            oldpath = os.path.join(oldpath, self.address)
-            newpath = os.path.join(newpath, newaddress)
-            code = exec_as_vuser("mv %s %s" % (oldpath, newpath))
+        """
+        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
+        if hm is None or hm == "no":
+            return None
+        if self.__mail_home is None:
+            code, output = exec_cmd("doveadm user %s -f home" % self.full_address, 
+                                    sudo_user=parameters.get_admin("MAILBOXES_OWNER"))
             if code:
-                self.path = "%s/" % newaddress
-            return code
-        else:
-            self.path  ="%s/" % newaddress
+                raise AdminError(_("Failed to retrieve mailbox location"))
+            self.__mail_home = output.strip()
+        return self.__mail_home
 
-        return True
+    def rename_dir(self, old_mail_home):
+        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
+        if hm is None or hm == "no":
+            return
+        self.__mail_home = None
+        if not os.path.exists(old_mail_home):
+            return
+        code, output = exec_cmd("mv %s %s" % (old_mail_home, self.mail_home), 
+                                sudo_user=parameters.get_admin("MAILBOXES_OWNER"))
+        if code:
+            raise AdminError(_("Failed to rename mailbox: %s" % output))
 
     def delete_dir(self):
-        if parameters.get_admin("LDA") == "postfix":
-            return exec_as_vuser("rm -r %s/%s/%s" \
-                                     % (parameters.get_admin("STORAGE_PATH"),
-                                        self.domain.name, self.address))
-        return True
-
-    @staticmethod
-    def resolve_id(value, idname, errmsg):
-        if value.isdigit():
-            return value
-        try:
-            rid = getattr(pwd.getpwnam(value), idname)
-        except KeyError:
-            raise AdminError(errmsg)
-        return rid
-
-    @staticmethod
-    def resolve_uid(value):
-        err = _("%s is not a valid uid/username" % value)
-        return Mailbox.resolve_id(value, "pw_uid", err)
-
-    @staticmethod
-    def resolve_gid(value):
-        err = _("%s is not a valid gid/groupname" % value)
-        return Mailbox.resolve_id(value, "pw_gid", err)
-
-    def set_ownership(self):
-        """Set uid and gid for this mailbox
-
-        Values come from global parameters. They are resolved
-        (converted to integers) if needed.
-        """
-	self.uid = self.resolve_uid(parameters.get_admin("VIRTUAL_UID"))
-	self.gid = self.resolve_gid(parameters.get_admin("VIRTUAL_GID"))
+        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
+        if hm is None or hm == "no":
+            return
+        if not os.path.exists(self.mail_home):
+            return
+        code, output = exec_cmd("rm -r %s" % self.mail_home, 
+                                sudo_user=parameters.get_admin("MAILBOXES_OWNER"))
+        if code:
+            raise AdminError(_("Failed to remove mailbox: %s" % output))
 
     def set_quota(self, value, override_domain=False):
         if value is None or (int(value) > self.domain.quota and not override_domain):
@@ -804,9 +733,6 @@ class Mailbox(DatesAware):
         self.address = localpart
         self.domain = domain
         self.user = user
-        if not self.create_dir():
-            raise AdminError(_("Failed to initialise mailbox, check permissions"))
-        self.set_ownership()
         self.set_quota(quota, True if (owner and owner.has_perm("admin.add_domain")) else False)
         super(Mailbox, self).save()
 

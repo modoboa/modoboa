@@ -12,12 +12,14 @@ Only super users will be able to access this part of the web interface.
 import inspect
 import re
 import copy
+from django import forms
+from exceptions import ModoboaException
 
-_params = {}
-_params_order = {}
-_levels = {'A' : 'admin', 'U' : 'user'}
 
-class NotDefined(Exception):
+_params = {'A': {}, 'U': {}}
+
+
+class NotDefined(ModoboaException):
     def __init__(self, app, name):
         self.app = app
         self.name = name
@@ -26,37 +28,142 @@ class NotDefined(Exception):
         return "Application '%s' and/or parameter '%s' not defined" \
             % (self.app, self.name)
 
-def register_app(app=None, aparams_opts=None, uparams_opts=None):
-    """Manually register an application
 
-    You don't need to call this function unless you want to provide
-    specific options for your application parameters.
+class GenericParametersForm(forms.Form):
+    app = None
 
-    For example, you can indicate that user-level parameters are only
-    accessible for users that own a mailbox.
+    def __init__(self, *args, **kwargs):
+        if self.app is None:
+            raise NotImplementedError
 
-    :param app: the application's name
-    :param aparams_opts: a dict containing options applicable to admin-level params
-    :param uparams_opts: a dict containing options applicable to user-level params
+        kwargs["prefix"] = self.app
+        super(GenericParametersForm, self).__init__(*args, **kwargs)
+
+        self.visirules = {}
+        for param in self.fields.keys():
+            fname = "visibility_%s" % param
+            if not hasattr(self, fname):
+                continue
+            field, value = getattr(self, fname)().split("=")
+            visibility = {"field": "id_%s-%s" % (self.app, field), "value": value}
+            self.visirules["%s-%s" % (self.app, param)] = visibility
+
+        if not args:
+            self._load_initial_values()
+
+    def _load_initial_values(self):
+        raise NotImplementedError
+
+    def _save_parameter(self, p, name, value):
+        if p.value == value:
+            return
+        name = name.lower()
+        if hasattr(self, "update_%s" % name):
+            getattr(self, "update_%s" % name)(value)
+        if type(value) is unicode:
+            p.value = value.encode("unicode_escape").strip()
+        else:
+            p.value = str(value)
+        p.save()
+
+    def save(self):
+        raise NotImplementedError
+
+
+class AdminParametersForm(GenericParametersForm):
+    def _load_initial_values(self):
+        from models import Parameter
+
+        for name in self.fields.keys():
+            fullname = "%s.%s" % (self.app, name.upper())
+            try:
+                p = Parameter.objects.get(name=fullname)
+            except Parameter.DoesNotExist:
+                continue
+            self.fields[name].initial = p.value
+
+    def save(self):
+        from models import Parameter
+        from modoboa.lib.formutils import SeparatorField
+
+        for name, value in self.cleaned_data.items():
+            if type(self.fields[name]) is SeparatorField:
+                continue
+            fullname = "%s.%s" % (self.app, name.upper())
+            try:
+                p = Parameter.objects.get(name=fullname)
+            except Parameter.DoesNotExist:
+                p = Parameter()
+                p.name = fullname
+            self._save_parameter(p, name, value)
+
+
+class UserParametersForm(GenericParametersForm):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user") if "user" in kwargs else None
+        super(UserParametersForm, self).__init__(*args, **kwargs)
+
+    def _load_initial_values(self):
+        if self.user is None:
+            return
+        from models import UserParameter
+
+        for name in self.fields.keys():
+            fullname = "%s.%s" % (self.app, name.upper())
+            try:
+                p = UserParameter.objects.get(user=self.user, name=fullname)
+            except UserParameter.DoesNotExist:
+                continue
+            self.fields[name].initial = p.value
+
+    @staticmethod
+    def has_access(user):
+        return True
+
+    def save(self):
+        from models import UserParameter
+        from modoboa.lib.formutils import SeparatorField
+
+        for name, value in self.cleaned_data.items():
+            if type(self.fields[name]) is SeparatorField:
+                continue
+            fullname = "%s.%s" % (self.app, name.upper())
+            try:
+                p = UserParameter.objects.get(user=self.user, name=fullname)
+            except UserParameter.DoesNotExist:
+                p = UserParameter()
+                p.user = self.user
+                p.name = fullname
+            self._save_parameter(p, name, value)
+
+
+def register(formclass, label):
+    """Register a form class containing parameters
+
+    formclass must inherit from ``AdminParametersForm`` of
+    ``UserParametersForm``.
+
+    :param formclass: a form class
+    :param label: 
     """
-    if app is None:
-        app = __guess_extension()
+    from models import Parameter
+    from modoboa.lib.formutils import SeparatorField
 
-    if _params.has_key(app):
-        return
-    _params[app] = {}
-    _params[app]['options'] = {}
-    _params_order[app] = {}
-    for lvl in _levels.keys():
-        _params[app][lvl] = {}
-        _params_order[app][lvl] = []
+    if issubclass(formclass, AdminParametersForm):
+        level = 'A'
+    elif issubclass(formclass, UserParametersForm):
+        level = 'U'
+    else:
+        raise RuntimeError("Unknown parameter class")
+    _params[level][formclass.app] = {"label": label, "form": formclass, "defaults": {}}
+    form = formclass()
+    for name, field in form.fields.items():
+        if type(field) is SeparatorField:
+            continue
+        _params[level][formclass.app]["defaults"][name.upper()] = field.initial
 
-    if aparams_opts:
-        _params[app]['options']['A'] = aparams_opts
-    if uparams_opts:
-        _params[app]['options']['U'] = uparams_opts
 
-def unregister_app(app):
+def unregister(app=None):
     """Unregister an application
 
     All parameters associated to this application will also be
@@ -64,51 +171,19 @@ def unregister_app(app):
 
     :param app: the application's name (string)
     """
-    if not _params.has_key(app):
-        return False
-    del _params[app]
-    return True
+    if app is None:
+        app = __guess_extension()
+    for lvlparams in _params.values():
+        if app in lvlparams:
+            del lvlparams[app]
+
 
 def __is_defined(app, level, name):
-    if not level in _levels.keys() \
-            or not app in _params.keys() \
-            or not name in _params[app][level].keys():
+    if not level in ['A', 'U'] \
+        or not app in _params[level] \
+        or not name in _params[level][app]["defaults"]:
         raise NotDefined(app, name)
 
-def __register(app, level, name, **kwargs):
-    """Register a new parameter.
-
-    ``app`` corresponds to a core component (admin, main) or to an
-    extension.
-
-    :param name: the application's name
-    :param level: the level this parameter is available from
-    :param name: the parameter's name
-    """
-    if not app in _params.keys():
-        register_app(app)
-
-    if not level in _levels.keys():
-        return
-    if _params[app][level].has_key(name):
-        return
-    _params[app][level][name] = {}
-    _params_order[app][level] += [name]
-    for k, v in kwargs.iteritems():
-        _params[app][level][name][k] = v
-
-def __update(app, level, name, **kwargs):
-    """Update a parameter's definition
-
-    :param app: the application's name
-    :param level: the level this parameter is available from
-    :param name: the parameter's name
-    """
-    if not app in _params.keys() or not level in _levels.keys() \
-            or not _params[app][level].has_key(name):
-        return
-    for k, v in kwargs.iteritems():
-        _params[app][level][name][k] = v
 
 def __guess_extension():
     """Tries to guess the application's name by inspecting the stack
@@ -121,58 +196,6 @@ def __guess_extension():
         return m.group(1)
     return None
 
-def register_admin(name, **kwargs):
-    """Register a new parameter (admin level)
-
-    Each parameter is associated to one application. If no application
-    is provided, the function tries to guess the appropriate one.
-
-    :param name: the parameter's name
-    """
-    if kwargs.has_key("app"):
-        app = kwargs["app"]
-        del kwargs["app"]
-    else:
-        app = __guess_extension()
-    return __register(app, 'A', name, **kwargs)
-
-def update_admin(name, **kwargs):
-    """Update a parameter's definition (admin level)
-
-    Each parameter is associated to one application. If no application
-    is provided, the function tries to guess the appropriate one.
-
-    :param name: the parameter's name
-    """
-    if kwargs.has_key("app"):
-        app = kwargs["app"]
-        del kwargs["app"]
-    else:
-        app = __guess_extension()
-    return __update(app, 'A', name, **kwargs)
-
-def register_user(name, **kwargs):
-    """Register a new user-level parameter
-
-    :param name: the parameter's name
-    """
-    if kwargs.has_key("app"):
-        app = kwargs["app"]
-        del kwargs["app"]
-    else:
-        app = __guess_extension()
-    return __register(app, 'U', name, **kwargs)
-
-def get_param_def(app, level, name):
-    """Return the definition of a given parameter
-
-    :param app: the application's name
-    :param level: the required level (A or U)
-    :param name: the parameter's name
-    :return: a dictionnary
-    """
-    __is_defined(app, level, name)
-    return _params[app][level][name]
 
 def save_admin(name, value, app=None):
     from models import Parameter
@@ -186,13 +209,10 @@ def save_admin(name, value, app=None):
     except Parameter.DoesNotExist:
         p = Parameter()
         p.name = fullname
-    if p.value != value:
-        pdef = get_param_def(app, 'A', name)
-        if "modify_cb" in pdef:
-            pdef["modify_cb"](value)
-        p.value = value.encode("unicode_escape").strip()
-        p.save()
-    return True
+        p.value = None
+    f = get_parameter_form('A', name, app)
+    f()._save_parameter(p, name, value)
+
 
 def save_user(user, name, value, app=None):
     from models import UserParameter
@@ -207,96 +227,88 @@ def save_user(user, name, value, app=None):
         p = UserParameter()
         p.user = user
         p.name = fullname
-    if p.value != value:
-        pdef = get_param_def(app, 'U', name)
-        if "modify_cb" in pdef:
-            pdef["modify_cb"](value)
-        p.value = value.encode("unicode_escape").strip()
-        p.save()
-    return True
+    f = get_parameter_form('U', name, app)
+    f()._save_parameter(p, name, value)
 
-def get_admin(name, app=None):
+
+def get_admin(name, app=None, raise_error=True):
+    """Return an administrative parameter
+
+    A ``NotDefined`` exception if the parameter doesn't exist.
+
+    :param name: the parameter's name
+    :param app: the application owning the parameter
+    :return: the corresponding value as a string
+    """
     from models import Parameter
 
     if app is None:
         app = __guess_extension()
-    __is_defined(app, "A", name)
+    try:
+        __is_defined(app, "A", name)
+    except NotDefined:
+        if raise_error:
+            raise
+        return None
     try:
         p = Parameter.objects.get(name="%s.%s" % (app, name))
     except Parameter.DoesNotExist:
-        return _params[app]["A"][name]["deflt"]
+        return _params["A"][app]["defaults"][name]
     return p.value.decode("unicode_escape")
 
-def get_all_admin_parameters():
-    """Retrieve all administrative parameters
-
-    Returned parameters are sorted by application
-
-    :return: a list of dictionaries
-    """
-    result = []
-    for app in sorted(_params.keys()):
-        tmp = {"name" : app, "params" : []}
-        for p in _params_order[app]['A']:
-            newdef = copy.deepcopy(_params[app]['A'][p])
-            newdef["name"] = p
-            newdef["value"] = get_admin(p, app=app)
-            tmp["params"] += [newdef]
-        result += [tmp]
-    return result
 
 def get_user(user, name, app=None):
+    """Return a parameter for a specific user
+
+    A ``NotDefined`` exception if the parameter doesn't exist.
+
+    :param ``User`` user: the desired user
+    :param name: the parameter's name
+    :param app: the application owning the parameter
+    :return: the corresponding value as a string
+    """
     from models import UserParameter
 
     if app is None:
         app = __guess_extension()
-    __is_defined(app, "U", name)
+    try:
+        __is_defined(app, "U", name)
+    except NotDefined:
+        if raise_error:
+            raise
+        return None
     try:
         p = UserParameter.objects.get(user=user, name="%s.%s" % (app, name))
     except UserParameter.DoesNotExist:
-        return _params[app]["U"][name]["deflt"]
+        return _params["U"][app]["defaults"][name]
     return p.value.decode("unicode_escape")
 
-def get_all_user_params(user):
-    """Retrieve all the parameters of the given user
 
-    Returned parameters are sorted by application.
+def get_admin_forms(*args, **kwargs):
+    for formdef in _params['A'].values():
+        yield {"label": formdef["label"], "form": formdef["form"](*args, **kwargs)}
 
-    :param user: a ``User`` object
-    :return: a list of dictionaries
-    """
-    result = []
-    for app in sorted(_params.keys()):
-        if not len(_params[app]['U']):
-            continue
-        if get_app_option('U', 'needs_mailbox', False, app=app) \
-                and not user.has_mailbox:
-            continue
-        tmp = {"name" : app, "params" : []}
-        for p in _params_order[app]['U']:
-            param_def = _params[app]['U'][p]
-            newdef = copy.deepcopy(param_def)
-            newdef["name"] = p
-            newdef["value"] = get_user(user, p, app=app)
-            tmp["params"] += [newdef]
-        result += [tmp]
-    return result
 
-def get_app_option(lvl, name, dflt, app=None):
-    """Retrieve a specific option for a given application
+def get_user_forms(user, *args, **kwargs):
+    kwargs["user"] = user
+    def realfunc():
+        for formdef in _params['U'].values():
+            if not formdef["form"].has_access(user):
+                continue
+            yield {"label": formdef["label"], "form": formdef["form"](*args, **kwargs)}
 
-    If the option is not found, a default value is returned.
+    return realfunc
 
-    :param lvl: the option's level (U or A)
-    :param name: the option's name
-    :param dflt: the default value to return
-    :param app: the application name
-    :return: the option's value
+
+def get_parameter_form(level, name, app=None):
+    """Return the form containing a specific parameter
+
+    :param string level: associated level
+    :param string name: paremeter's name
+    :param string app: parameter's application
+    :return: a form class
     """
     if app is None:
         app = __guess_extension()
-    if not lvl in _params[app]['options']:
-        return dflt
-    if not _params[app]['options'][lvl].has_key(name):
-        return dflt
-    return _params[app]['options'][lvl][name]
+    __is_defined(app, level, name)
+    return _params[level][app]["form"]

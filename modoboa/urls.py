@@ -6,7 +6,6 @@ from modoboa.lib import parameters
 urlpatterns = patterns('',
     (r'^$', 'modoboa.lib.webutils.topredirection'),
     (r'^admin/', include('modoboa.admin.urls')),
-    (r'^userprefs/', include('modoboa.userprefs.urls')),
     (r'^accounts/login/$', 'modoboa.auth.views.dologin'),
     (r'^accounts/logout/$', 'modoboa.auth.views.dologout'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog',

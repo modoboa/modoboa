@@ -37,7 +37,8 @@ body {
     float: left;
     padding-top: 5px;
     text-align: left;
-    width: 200px;
+    width: 250px;
+    margin-left: 20px;
 }
 
 .form-horizontal .param-controls { 

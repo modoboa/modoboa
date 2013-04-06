@@ -554,7 +554,7 @@ class IMAPconnector(object):
             return
 
         quotadef = data[1][0]
-        m = re.match("[^\s]+ \(STORAGE (\d+) (\d+)\)", quotadef)
+        m = re.search("\(STORAGE (\d+) (\d+)\)", quotadef)
         if not m:
             print "Problem while parsing quota def"
             return

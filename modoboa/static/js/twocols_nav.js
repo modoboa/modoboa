@@ -26,10 +26,33 @@ TwocolsNav.prototype = {
                 formid: this.options.formid,
                 modal: false,
                 reload_on_success: false,
-                error_cb: $.proxy(this.update_content, this),
+                error_cb: $.proxy(this.display_errors, this),
                 success_cb: $.proxy(this.save_cb, this)
             });
         }, this));
+    },
+
+    display_errors: function(data) {
+        $.each(data.errors, function(id, value) {
+            var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
+            var $widget = $("#" + fullid);
+            var spanid = fullid + "-error";
+            var $span = $("#" + spanid);
+
+            if (!$widget.parents(".control-group").hasClass("error")) {
+                $widget.parents(".control-group").addClass("error");
+            }
+            if (!$span.length) {
+                $span = $("<span />", {
+                    "class": "help-inline",
+                    "html": value[0],
+                    "id": spanid
+                });
+                $widget.parents(".controls").append($span);
+            } else {
+                $span.html(value[0]);
+            }
+        });
     },
 
     update_content: function(data) {
@@ -43,14 +66,36 @@ TwocolsNav.prototype = {
             $("body").notify("error", data.respmsg);
         }
         $('#' + this.options.divid + ' select').change($.proxy(this.select_change, this));
-        $(".help").popover().click(function(e) {e.preventDefault();});
+        $('#' + this.options.divid + ' input[type=radio]').click($.proxy(this.radio_clicked, this));
+        $(".help").popover({
+            placement: 'bottom',
+            trigger: 'click'
+        }).click(function(e) {e.preventDefault();});
         $('#' + this.options.divid + ' select').change();
+        $('#' + this.options.divid + ' input[type=radio]:checked').click();
     },
 
     propagate_change: function($node) {
         var $select = $node.find("select");
+        var $radio = $node.find("input[type=radio]");
         if ($select.length) {
             $select.change();
+        }
+        if ($radio.length) {
+            $radio.click();
+        }
+    },
+
+    toggle_field_visibility: function($field, $parent, value) {
+        if ($parent.attr("idsabled") === undefined &&
+            $field.attr("data-visibility-value") == value) {
+            $field.attr("disabled", null);
+            $field.show();
+            this.propagate_change($field);
+        } else {
+            $field.hide();
+            $field.attr("disabled", "disabled");
+            this.propagate_change($field);
         }
     },
 
@@ -60,18 +105,19 @@ TwocolsNav.prototype = {
         var $parent = $target.parents("div.control-group");
 
         $('div[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
-            var $this = $(this);
+            instance.toggle_field_visibility($(this), $parent, $target.attr("value"));
+        });
+    },
 
-            if ($parent.attr("disabled") === undefined && 
-                $this.attr("data-visibility-value") == $target.attr("value")) {
-                $this.attr("disabled", null);
-                $this.show();
-                instance.propagate_change($this)
-            } else {
-                $this.hide();
-                $this.attr("disabled", "disabled");
-                instance.propagate_change($this);
-            }
+    radio_clicked: function(e) {
+        var instance = this;
+        var $target = $(e.target);
+        var $parent = $target.parents("div.control-group");
+        var realid = $target.attr("id");
+
+        realid = realid.substr(0, realid.length - 2);
+        $('div[data-visibility-field="' + realid + '"]').each(function(idx) {
+            instance.toggle_field_visibility($(this), $parent, $target.attr("value"));
         });
     },
 

@@ -102,19 +102,22 @@ def profile(request, tplname='userprefs/profile.html'):
 @login_required
 def preferences(request):
     if request.method == "POST":
-        for pname, v in request.POST.iteritems():
-            if pname == "update":
+        for formdef in parameters.get_user_forms(request.user, request.POST)():
+            form = formdef["form"]
+            if form.is_valid():
+                form.save()
                 continue
-            app, name = pname.split('.')
-            parameters.save_user(request.user, name, v, app=app)
+            return ajax_simple_response({
+                "status": "ko", "prefix": form.app, "errors": form.errors
+            })
 
-        return ajax_simple_response(dict(
-                status="ok", respmsg=_("Preferences saved")
-                ))
+        return ajax_simple_response({
+            "status": "ok", "respmsg": _("Preferences saved")
+        })
 
     return ajax_simple_response({
             "status" : "ok",
             "content" : render_to_string("userprefs/preferences.html", {
-                    "gparams" : parameters.get_all_user_params(request.user)
+                    "forms" : parameters.get_user_forms(request.user)
                     })
             })

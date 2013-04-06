@@ -75,10 +75,15 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     def save(self, user, commit=True):
         d = super(DomainFormGeneral, self).save(commit=False)
         if commit:
-            if self.oldname is not None and d.name != self.oldname:
-                if not d.rename_dir(self.oldname):
-                    raise AdminError(_("Failed to rename domain, check permissions"))
+            old_mail_homes = None
+            hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
+            if hm == "yes":
+                if self.oldname is not None and d.name != self.oldname:
+                    old_mail_homes = {mb.id: mb.mail_home for mb in d.mailbox_set.all()}
             d.save()
+            if old_mail_homes is not None:
+                for mb in d.mailbox_set.all():
+                    mb.rename_dir(old_mail_homes[mb.id])
             for k, v in self.cleaned_data.iteritems():
                 if not k.startswith("aliases"):
                     continue
@@ -561,14 +566,22 @@ class AccountFormMail(forms.Form, DynamicForm):
                         grant_access_to_object(admin, self.mb.user)
 
         else:
+            old_mail_home = None
             if self.cleaned_data["email"] != self.mb.full_address:
-                if self.mb.rename_dir(domname, locpart):
-                    self.mb.domain = domain
-                    self.mb.address = locpart
-                else:
-                    raise AdminError(_("Failed to rename mailbox, check permissions"))
+                old_mail_home = self.mb.mail_home
+                self.mb.domain = domain
+                self.mb.address = locpart
             self.mb.set_quota(self.cleaned_data["quota"], user.has_perm("admin.add_domain"))
             self.mb.save()
+            if old_mail_home is not None:
+                # Problem here: the mailbox has already been saved so,
+                # if the rename fails, we can't rollback!
+                # Maybe django-reversion could be the solution?
+                try:
+                    self.mb.rename_dir(old_mail_home)
+                except AdminError:
+                    # do rollback
+                    pass
 
         account.email = self.cleaned_data["email"]
         account.save()

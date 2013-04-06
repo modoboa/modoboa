@@ -4,7 +4,7 @@ import base64
 from modoboa.lib import parameters
 
 def encrypt(clear):
-    key = parameters.get_admin("SECRET_KEY")
+    key = parameters.get_admin("SECRET_KEY", app="admin")
     obj = AES.new(key, AES.MODE_ECB)
     clear = str(clear)
     if len(clear) % AES.block_size:
@@ -14,7 +14,7 @@ def encrypt(clear):
     return ciph
 
 def decrypt(ciph):
-    obj = AES.new(parameters.get_admin("SECRET_KEY"), AES.MODE_ECB)
+    obj = AES.new(parameters.get_admin("SECRET_KEY", app="admin"), AES.MODE_ECB)
     ciph = base64.b64decode(ciph)
     clear = obj.decrypt(ciph)
     return clear.rstrip(' ')

@@ -1,9 +1,8 @@
 # coding: utf-8
 import re
 from django.utils.translation import ugettext as _
-from django import forms
-from django.forms.widgets import MultiWidget, TextInput
-from django.forms.fields import MultiValueField
+from django.forms.widgets import RadioSelect, RadioInput
+from django.forms.fields import CharField, Field, ChoiceField
 from django.core.exceptions import ValidationError
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
@@ -149,7 +148,6 @@ def is_valid_host(host):
     """
     host = host.encode('idna').lower()
     if not hasattr(is_valid_host, '_re'):
-        import re
         is_valid_host._re = re.compile(r'^([0-9a-z][-\w]*[0-9a-z]\.)+[a-z0-9\-]{2,15}$')
     return bool(is_valid_host._re.match(host))
 
@@ -157,7 +155,8 @@ def validate_domain_name(value):
     if not is_valid_host(value):
         raise ValidationError(_('Enter a valid domain name'), 'invalid')
 
-class DomainNameField(forms.CharField):
+
+class DomainNameField(CharField):
     """
     A subclass of CharField that only accepts a valid domain name.
     """
@@ -170,3 +169,39 @@ class DomainNameField(forms.CharField):
     def clean(self, value):
         value = self.to_python(value).strip()
         return super(DomainNameField, self).clean(value)
+
+
+class CustomRadioInput(RadioInput):
+    def __unicode__(self):
+        if 'id' in self.attrs:
+            label_for = ' for="%s_%s"' % (self.attrs['id'], self.index)
+        else:
+            label_for = ''
+        choice_label = conditional_escape(force_unicode(self.choice_label))
+        return mark_safe(u'<label class="radio inline" %s>%s %s</label>' % (label_for, self.tag(), choice_label))
+
+
+class InlineRadioRenderer(RadioSelect.renderer):
+    def __iter__(self):
+        for i, choice in enumerate(self.choices):
+            yield CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
+
+    def render(self):
+        return mark_safe(u'\n'.join([u'%s\n' % force_unicode(w) for w in self]))
+
+
+class InlineRadioSelect(RadioSelect):
+    renderer = InlineRadioRenderer
+
+
+class SeparatorField(Field):
+    def __init__(self, *args, **kwargs):
+        kwargs["required"] = False
+        super(SeparatorField, self).__init__(*args, **kwargs)
+
+
+class YesNoField(ChoiceField):
+    def __init__(self, *args, **kwargs):
+        kwargs["choices"] = [("yes", _("Yes")), ("no", _("No"))]
+        kwargs["widget"] = InlineRadioSelect
+        super(YesNoField, self).__init__(*args, **kwargs)

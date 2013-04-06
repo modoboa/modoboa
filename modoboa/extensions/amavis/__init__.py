@@ -40,50 +40,13 @@ class Amavis(ModoExtension):
                                      priority=7, policy=p)
 
     def load(self):
-        parameters.register_admin(
-            "MAX_MESSAGES_AGE", type="int",
-            deflt=14,
-            help=_("Quarantine messages maximum age (in days) before deletion")
-            )
-        parameters.register_admin(
-            "RELEASED_MSGS_CLEANUP", type="list_yesno", deflt="no",
-            help=_("Remove messages marked as released while cleaning up the database")
-            )
-        parameters.register_admin("AM_PDP_MODE", type="list",
-                                  deflt="unix",
-                                  values=[("inet", "inet"), ("unix", "unix")],
-                                  help=ugettext_lazy("Mode used to access the PDP server"))
-        parameters.register_admin("AM_PDP_HOST", type="string",
-                                  deflt="localhost",
-                                  visible_if="AM_PDP_MODE=inet",
-                                  help=ugettext_lazy("PDP server address (if inet mode)"))
-        parameters.register_admin("AM_PDP_PORT", type="int",
-                                  deflt=9998,
-                                  visible_if="AM_PDP_MODE=inet",
-                                  help=ugettext_lazy("PDP server port (if inet mode)"))
-        parameters.register_admin("AM_PDP_SOCKET", type="string",
-                                  deflt="/var/amavis/amavisd.sock",
-                                  visible_if="AM_PDP_MODE=unix",
-                                  help=ugettext_lazy("Path to the PDP server socket (if unix mode)"))
-        parameters.register_admin("CHECK_REQUESTS_INTERVAL", type="int",
-                                  deflt=30,
-                                  help=ugettext_lazy("Interval between two release requests checks"))
-        parameters.register_admin("USER_CAN_RELEASE", type="list_yesno", deflt="no",
-                                  help=ugettext_lazy("Allow users to directly release their messages"))
-        parameters.register_admin("SELF_SERVICE", type="list_yesno", deflt="no",
-                                  help=ugettext_lazy("Activate the 'self-service' mode"))
-        parameters.register_admin("NOTIFICATIONS_SENDER", type="string", deflt="notification@modoboa.org",
-                                  help=ugettext_lazy("The e-mail address used to send notitications"))
-
-        parameters.register_user(
-            "MESSAGES_PER_PAGE", type="int", deflt=40,
-            label="Number of displayed emails per page",
-            help=ugettext_lazy("Sets the maximum number of messages displayed in a page")
-            )
-
+        from app_settings import ParametersForm, UserSettings
+        parameters.register(ParametersForm, "Amavis")
+        parameters.register(UserSettings, _("Quarantine"))
+       
     def destroy(self):
         events.unregister("UserMenuDisplay", menu)
-        parameters.unregister_app("amavis")
+        parameters.unregister()
 
 exts_pool.register_extension(Amavis)
 

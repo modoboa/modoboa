@@ -1,35 +1,7 @@
 # coding: utf-8
-
+from django.utils.translation import ugettext_lazy as _
 from django import forms
 from models import Policy, Users
-from django.utils.translation import ugettext_lazy
-from django.forms.widgets import RadioSelect, RadioInput
-from django.utils.html import conditional_escape
-from django.utils.encoding import force_unicode
-from django.utils.safestring import mark_safe
-
-
-class CustomRadioInput(RadioInput):
-    def __unicode__(self):
-        if 'id' in self.attrs:
-            label_for = ' for="%s_%s"' % (self.attrs['id'], self.index)
-        else:
-            label_for = ''
-        choice_label = conditional_escape(force_unicode(self.choice_label))
-        return mark_safe(u'<label class="radio inline" %s>%s %s</label>' % (label_for, self.tag(), choice_label))
-
-
-class InlineRadioRenderer(RadioSelect.renderer):
-    def __iter__(self):
-        for i, choice in enumerate(self.choices):
-            yield CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
-
-    def render(self):
-        return mark_safe(u'\n'.join([u'%s\n' % force_unicode(w) for w in self]))
-
-
-class InlineRadioSelect(RadioSelect):
-    renderer = InlineRadioRenderer
 
 
 class DomainPolicyForm(forms.ModelForm):

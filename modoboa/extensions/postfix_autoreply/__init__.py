@@ -12,6 +12,7 @@ from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
 from models import *
 
+
 class PostfixAutoreply(ModoExtension):
     name = "postfix_autoreply"
     label = "Postfix autoreply"
@@ -20,7 +21,7 @@ class PostfixAutoreply(ModoExtension):
 
     def init(self):
         from modoboa.admin.models import Domain
-        
+
         for dom in Domain.objects.all():
             try:
                 trans = Transport.objects.get(domain="autoreply.%s" % dom.name)
@@ -36,11 +37,8 @@ class PostfixAutoreply(ModoExtension):
                     onCreateMailbox(None, mb)
 
     def load(self):
-        parameters.register_admin(
-            "AUTOREPLIES_TIMEOUT", 
-            type="int", deflt=86400,
-            help=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient")
-            )
+        from app_settings import ParametersForm
+        parameters.register(ParametersForm, _("Automatic replies"))
 
     def destroy(self):
         events.unregister("CreateDomain", onCreateDomain)
@@ -49,13 +47,15 @@ class PostfixAutoreply(ModoExtension):
         events.unregister("DeleteMailbox", onDeleteMailbox)
         events.unregister("ModifyMailbox", onModifyMailbox)
         events.unregister("UserMenuDisplay", menu)
-        parameters.unregister_app("postfix_autoreply")
+        parameters.unregister()
 
 exts_pool.register_extension(PostfixAutoreply)
+
 
 @events.observe("ExtraUprefsRoutes")
 def extra_routes():
     return [(r'^autoreply/$', 'modoboa.extensions.postfix_autoreply.views.autoreply'),]
+
 
 @events.observe("ExtraUprefsJS")
 def extra_js():
@@ -64,20 +64,20 @@ def extra_js():
 }
 """ % 'en']
 
+
 @events.observe("UserMenuDisplay")
 def menu(target, user):
-    import views
-
     if target != "uprefs_menu":
         return []
     if not user.has_mailbox:
         return []
     return [
-        {"name" : "autoreply",
-         "class" : "ajaxlink",
-         "url" : "autoreply/",
-         "label" : ugettext_lazy("Auto-reply message")}
-        ]
+        {"name": "autoreply",
+         "class": "ajaxlink",
+         "url": "autoreply/",
+         "label": ugettext_lazy("Auto-reply message")}
+    ]
+
 
 @events.observe("CreateDomain")
 def onCreateDomain(user, domain):
@@ -86,10 +86,12 @@ def onCreateDomain(user, domain):
     transport.method = "autoreply:"
     transport.save()
 
+
 @events.observe("DeleteDomain")
 def onDeleteDomain(domain):
     trans = Transport.objects.get(domain="autoreply.%s" % domain.name)
     trans.delete()
+
 
 @events.observe("CreateMailbox")
 def onCreateMailbox(user, mailbox):
@@ -98,6 +100,7 @@ def onCreateMailbox(user, mailbox):
     alias.autoreply_address = \
         "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)
     alias.save()
+
 
 @events.observe("DeleteMailbox")
 def onDeleteMailbox(mailboxes):
@@ -112,6 +115,7 @@ def onDeleteMailbox(mailboxes):
             pass
         else:
             alias.delete()
+
 
 @events.observe("ModifyMailbox")
 def onModifyMailbox(mailbox, oldmailbox):

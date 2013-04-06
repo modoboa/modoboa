@@ -481,17 +481,18 @@ def viewparameters(request, tplname='admin/parameters.html'):
     return ajax_simple_response({
         "status" : "ok",
         "left_selection" : "parameters",
-        "content" : render_to_string(tplname, {"gparams" : parameters.get_all_admin_parameters()})
+        "content" : render_to_string(tplname, {"forms" : parameters.get_admin_forms})
     })
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def saveparameters(request):
-    for pname, v in request.POST.iteritems():
-        if pname == "update":
+    for formdef in parameters.get_admin_forms(request.POST):
+        form = formdef["form"]
+        if form.is_valid():
+            form.save()
             continue
-        app, name = pname.split('.')
-        parameters.save_admin(name, v, app=app)
+        return ajax_simple_response({"status": "ko", "prefix": form.app, "errors": form.errors})
     return ajax_simple_response(dict(status="ok", respmsg=_("Parameters saved")))
 
 @login_required
@@ -510,7 +511,7 @@ def viewextensions(request, tplname='admin/extensions.html'):
             dbext.enabled = False
             dbext.save()
             ext["selection"] = False
-            
+
     tbl = ExtensionsTable(request, exts)
     return ajax_simple_response({
             "status" : "ok",

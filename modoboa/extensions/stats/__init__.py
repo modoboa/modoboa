@@ -12,6 +12,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
 
+
 class Stats(ModoExtension):
     name = "stats"
     label = "Statistics"
@@ -20,32 +21,26 @@ class Stats(ModoExtension):
     needs_media = True
 
     def load(self):
+        from app_settings import ParametersForm
         events.registerEvent("GetGraphSets")
-
-        parameters.register_admin("LOGFILE", type="string", 
-                                  deflt="/var/log/mail.log",
-                                  help=ugettext_lazy("Path to log file used to collect statistics"))
-        parameters.register_admin("RRD_ROOTDIR", type="string", 
-                                  deflt="/tmp/modoboa",
-                                  help=ugettext_lazy("Path to directory where RRD files are stored"))
-        parameters.register_admin("IMG_ROOTDIR", type="string", 
-                                  deflt="/tmp/modoboa",
-                                  help=ugettext_lazy("Path to directory where PNG files are stored"))
+        parameters.register(ParametersForm, ugettext_lazy("Graphical statistics"))
 
     def destroy(self):
         events.unregister("AdminMenuDisplay", menu)
 
 exts_pool.register_extension(Stats)
 
+
 @events.observe("UserMenuDisplay")
 def menu(target, user):
     if target != "top_menu" or user.group == "SimpleUsers":
         return []
     return [
-        {"name"  : "stats",
-         "label" : _("Statistics"),
-         "url" : reverse('fullindex')}
-        ]
+        {"name": "stats",
+         "label": _("Statistics"),
+         "url": reverse('fullindex')}
+    ]
+
 
 @events.observe("GetGraphSets")
 def get_default_graph_sets():

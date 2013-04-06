@@ -224,6 +224,9 @@ def param(app, definition):
     value = definition.has_key("value") \
         and definition["value"] or definition["deflt"]
 
+    if definition["type"] == "separator":
+        return "<h5>%s</h5>" % (unicode(definition["label"]))
+
     extratags = ""
     if "visible_if" in definition:
         vfield, vvalue = definition["visible_if"].split("=")
@@ -270,9 +273,12 @@ def param(app, definition):
 """
 
     if definition.has_key("help"):
-        result += """
-<span class="help-block">%s</span>
-""" % _(definition["help"])
+        result += """<a class="help" rel="popover" data-content="%s" data-original-title="%s">
+  <i class="icon-info-sign"></i>
+</a>""" % (unicode(definition["help"]), _("Help"))
+#         result += """
+# <span class="help-block">%s</span>
+# """ % _(definition["help"])
 
     result += """
   </div>

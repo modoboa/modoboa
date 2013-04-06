@@ -93,14 +93,15 @@ def ajax_response(request, status="ok", respmsg=None,
     jsonctx["norefresh"] = norefresh
     return HttpResponse(simplejson.dumps(jsonctx), mimetype="application/json")
 
-def ajax_simple_response(content):
+def ajax_simple_response(content, **response_kwargs):
     """Simple AJAX response
 
     No extra formatting is done. The content is passed directly to simplejon.
 
     :param content: the response's content (list, dict, string)
     """
-    return HttpResponse(simplejson.dumps(content), mimetype="application/json")
+    response_kwargs["content_type"] = "application/json"
+    return HttpResponse(simplejson.dumps(content), **response_kwargs)
 
 def static_url(path):
     """Returns the correct static url for a given file
@@ -150,7 +151,7 @@ def topredirection(request):
     from modoboa.lib import parameters
     from modoboa.extensions import exts_pool
 
-    topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="general")
+    topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="admin")
     if not topredir in ["admin", "userprefs"]:
         infos = exts_pool.get_extension_infos(topredir)
         path = infos["url"] if infos["url"] else infos["name"]

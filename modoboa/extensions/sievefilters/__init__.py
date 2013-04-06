@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
-from sievelib.managesieve import SUPPORTED_AUTH_MECHS
+
 
 class SieveFilters(ModoExtension):
     name = "sievefilters"
@@ -13,32 +13,13 @@ class SieveFilters(ModoExtension):
     url = "sfilters"
 
     def load(self):
-        parameters.register_app(uparams_opts=dict(needs_mailbox=True))
-        
-        parameters.register_admin("SERVER", type="string", 
-                                  deflt="127.0.0.1",
-                                  help=ugettext_lazy("Address of your MANAGESIEVE server"))
-        parameters.register_admin("PORT", type="int", deflt="2000",
-                                  help=ugettext_lazy("Listening port of your MANAGESIEVE server"))
-        parameters.register_admin("STARTTLS", type="list_yesno", deflt="no",
-                                  help=ugettext_lazy("Use the STARTTLS extension"))
+        from app_settings import ParametersForm, UserSettings
+        parameters.register(ParametersForm, _("Sieve filters"))
+        parameters.register(UserSettings, _("Message filters"))
 
-        values = [('AUTO', 'auto')]
-        for m in SUPPORTED_AUTH_MECHS:
-            values += [(m, m.lower())]
-        parameters.register_admin("AUTHENTICATION_MECH", type="list", deflt="auto",
-                                  values=values,
-                                  help=ugettext_lazy("Prefered authentication mechanism"))
-
-        # User parameters
-        parameters.register_user("EDITOR_MODE", type="list", deflt="raw",
-                                 label=ugettext_lazy("Editor mode"),
-                                 values=[("raw", "raw"), ("gui", "simplified")],
-                                 help=ugettext_lazy("Select the mode you want the editor to work in"))
-    
     def destroy(self):
         events.unregister("UserMenuDisplay", menu)
-        parameters.unregister_app("sievefilters")
+        parameters.unregister()
 
 exts_pool.register_extension(SieveFilters)
 
