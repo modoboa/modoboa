@@ -310,13 +310,14 @@ def _identities(request):
         page = paginator.page(paginator.num_pages)
     
     return ajax_simple_response({
-            "table" : _render_to_string(request, "admin/identities_table.html", {
-                    "identities" : page.object_list,
-                    "tableid" : "objects_table"
-                    }),
-            "page" : page.number,
-            "paginbar" : pagination_bar(page)
-            })
+        "table" : _render_to_string(request, "admin/identities_table.html", {
+            "identities" : page.object_list,
+            "tableid" : "objects_table"
+        }),
+        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES", raise_error=False),
+        "page" : page.number,
+        "paginbar" : pagination_bar(page)
+    })
 
 @login_required
 @user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))

@@ -37,7 +37,10 @@ def render_listing(request, objtype, **kwargs):
         page = paginator.page(paginator.num_pages)
     
     return ajax_simple_response({
-            "table" : tblclass(request, page.object_list).render(),
-            "page" : page.number,
-            "paginbar" : pagination_bar(page)
-            })
+        "table" : tblclass(request, page.object_list).render(),
+        "page" : page.number,
+        "paginbar" : pagination_bar(page),
+        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES", 
+                                                 raise_error=False),
+        "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL")
+    })

@@ -119,11 +119,17 @@ var Domains = function(options) {
 Domains.prototype = {
     list_cb: function(data) {
         Admin.prototype.list_cb.call(this, data);
+        var deloptions = (data.handle_mailboxes)
+            ? {keepdir: gettext("Do not delete domain directory")}
+            : {};
+        var warnmsg = (data.auto_account_removal)
+            ? gettext("This operation will remove ALL data associated to this domain.")
+            : gettext("This operation will remove all data associated to this domain, excepting accounts.");
 
         $("a[name=deldomain]").confirm({
             question: gettext("Delete this domain?"),
             warning: gettext("This operation will remove ALL data associated to this domain."),
-            checkboxes: {keepdir: gettext("Do not delete domain directory")},
+            checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
         });
     },
@@ -181,12 +187,16 @@ Identities.prototype = {
 
     list_cb: function(data) {
         Admin.prototype.list_cb.call(this, data);
+        var deloptions = {};
 
+        if (data.handle_mailboxes) {
+            deloptions["checkboxes"] = {keepdir: gettext("Do not delete mailbox directory")};
+        }
         $("a.filter").click($.proxy(this.filter_by_tag, this));
 
         $("a[name=delaccount]").confirm({
             question: gettext("Delete this account?"),
-            checkboxes: {keepdir: gettext("Do not delete mailbox directory")},
+            checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
         });
         $("a[name=deldlist]").confirm({
