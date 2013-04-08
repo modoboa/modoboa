@@ -79,7 +79,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
             if hm == "yes":
                 if self.oldname is not None and d.name != self.oldname:
-                    old_mail_homes = {mb.id: mb.mail_home for mb in d.mailbox_set.all()}
+                    old_mail_homes = dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
             d.save()
             if old_mail_homes is not None:
                 for mb in d.mailbox_set.all():
