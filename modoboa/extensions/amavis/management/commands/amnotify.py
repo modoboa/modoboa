@@ -44,7 +44,7 @@ class Command(BaseCommand):
     def send_pr_notification(self, rcpt, reqs):
         if self.options["verbose"]:
             print "Sending notification to %s" % rcpt
-        total = len(reqs)
+        total = reqs.count()
         reqs = reqs.all()[:10]
         content = render_to_string(
             "amavis/notifications/pending_requests.html", dict(
@@ -73,11 +73,11 @@ class Command(BaseCommand):
                 continue
             rcpt = da.mailbox_set.all()[0].full_address
             reqs = get_wrapper().get_domains_pending_requests(da.get_domains())
-            if len(reqs):
+            if reqs.count():
                 self.send_pr_notification(rcpt, reqs)
 
         reqs = Msgrcpt.objects.filter(rs='p')
-        if not len(reqs):
+        if not reqs.count():
             if self.options["verbose"]:
                 print "No release request currently pending"
             return
