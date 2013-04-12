@@ -3,6 +3,8 @@ from django.conf import settings
 from modoboa.extensions import *
 from modoboa.lib import parameters
 
+parameters.apply_to_django_settings()
+
 urlpatterns = patterns('',
     (r'^$', 'modoboa.lib.webutils.topredirection'),
     (r'^admin/', include('modoboa.admin.urls')),

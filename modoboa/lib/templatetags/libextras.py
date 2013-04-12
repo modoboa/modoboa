@@ -92,7 +92,7 @@ def render_form(form, tpl=None):
 @register.simple_tag
 def render_field(field, help_display_mode="tooltip"):
     if type(field.form.fields[field.name]) is SeparatorField:
-        return "<h5>%s</h5>" % unicode(field.label)
+        return "<h5%s>%s</h5>" % (visirule(field), unicode(field.label))
 
     return render_to_string("common/generic_field.html", dict(
             field=field, help_display_mode=help_display_mode

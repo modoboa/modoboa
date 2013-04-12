@@ -133,8 +133,9 @@ class UserSettings(UserParametersForm):
         required=False
     )
 
-    def visibility_enable_links(self):
-        return "displaymode=html"
+    visibility_rules = {
+        "enable_links": "displaymode=html"
+    }
 
     @staticmethod
     def has_access(user):

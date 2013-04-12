@@ -40,13 +40,11 @@ class GenericParametersForm(forms.Form):
         super(GenericParametersForm, self).__init__(*args, **kwargs)
 
         self.visirules = {}
-        for param in self.fields.keys():
-            fname = "visibility_%s" % param
-            if not hasattr(self, fname):
-                continue
-            field, value = getattr(self, fname)().split("=")
-            visibility = {"field": "id_%s-%s" % (self.app, field), "value": value}
-            self.visirules["%s-%s" % (self.app, param)] = visibility
+        if hasattr(self, "visibility_rules"):
+            for key, rule in self.visibility_rules.items():
+                field, value = rule.split("=")
+                visibility = {"field": "id_%s-%s" % (self.app, field), "value": value}
+                self.visirules["%s-%s" % (self.app, key)] = visibility
 
         if not args:
             self._load_initial_values()
@@ -97,6 +95,17 @@ class AdminParametersForm(GenericParametersForm):
                 p.name = fullname
             self._save_parameter(p, name, value)
 
+    def to_django_settings(self):
+        pass
+
+    def get_current_values(self):
+        values = {}
+        for key in self.fields.keys():
+            try:
+                values[key] = get_admin(key.upper(), app=self.app)
+            except NotDefined:
+                pass
+        return values
 
 class UserParametersForm(GenericParametersForm):
     def __init__(self, *args, **kwargs):
@@ -312,3 +321,8 @@ def get_parameter_form(level, name, app=None):
         app = __guess_extension()
     __is_defined(app, level, name)
     return _params[level][app]["form"]
+
+
+def apply_to_django_settings():
+    for form in get_admin_forms():
+        form["form"].to_django_settings()

@@ -56,6 +56,83 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy("Key used to encrypt/decrypt passwords")
     )
 
+    # LDAP specific settings
+    ldap_sep = SeparatorField(label=ugettext_lazy("LDAP settings"))
+
+    ldap_server_address = forms.CharField(
+        label=ugettext_lazy("Server address"),
+        initial="localhost",
+        help_text=ugettext_lazy("The IP address of the DNS name of the LDAP server")
+    )
+
+    ldap_server_port = forms.IntegerField(
+        label=ugettext_lazy("Server port"),
+        initial=389,
+        help_text=ugettext_lazy("The TCP port number used by the LDAP server")
+    )
+
+    ldap_secured = YesNoField(
+        label=ugettext_lazy("Use a secured connection"),
+        initial="no",
+        help_text=ugettext_lazy("Use an SSL/TLS connection to access the LDAP server")
+    )
+
+    ldap_auth_method = forms.ChoiceField(
+        label=ugettext_lazy("Authentication method"),
+        choices=[('searchbind', ugettext_lazy("Search and bind")),
+                 ('directbind', ugettext_lazy("Direct bind"))],
+        initial='searchbind',
+        help_text=ugettext_lazy("Choose the authentication method to use")
+    )
+
+    ldap_bind_dn = forms.CharField(
+        label=ugettext_lazy("Bind DN"),
+        initial='',
+        help_text=ugettext_lazy("The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"),
+        required=False
+    )
+
+    ldap_bind_password = forms.CharField(
+        label=ugettext_lazy("Bind password"),
+        initial='',
+        help_text=ugettext_lazy("The password to use when binding to the LDAP server (with 'Bind DN')"),
+        widget=forms.PasswordInput,
+        required=False
+    )
+
+    ldap_search_base = forms.CharField(
+        label=ugettext_lazy("Search base"),
+        initial="",
+        help_text=ugettext_lazy("The distinguished name of the search base"),
+        required=False
+    )
+
+    ldap_search_filter = forms.CharField(
+        label=ugettext_lazy("Search filter"),
+        initial="(mail=%(user)s)",
+        help_text=ugettext_lazy("An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."),
+        required=False
+    )
+
+    ldap_user_dn_template = forms.CharField(
+        label=ugettext_lazy("User DN template"),
+        initial="",
+        help_text=ugettext_lazy("The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"),
+        required=False
+    )
+
+    ldap_password_attribute = forms.CharField(
+        label=ugettext_lazy("Password attribute"),
+        initial="userPassword",
+        help_text=ugettext_lazy("The attribute used to store user passwords")
+    )
+
+    ldap_is_active_directory = YesNoField(
+        label=ugettext_lazy("Active Directory"),
+        initial="no",
+        help_text=ugettext_lazy("Tell if the LDAP server is an Active Directory one")
+    )
+
     sep2 = SeparatorField(label=ugettext_lazy("Mailboxes"))
 
     handle_mailboxes = YesNoField(
@@ -91,6 +168,23 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy("The default redirection used when no application is specified")
     )
 
+    # Visibility rules
+    visibility_rules = {
+        "mailboxes_owner": "handle_mailboxes=yes",
+        "ldap_sep": "authentication_type=ldap",
+        "ldap_server_address": "authentication_type=ldap",
+        "ldap_server_port": "authentication_type=ldap",
+        "ldap_secured": "authentication_type=ldap",
+        "ldap_auth_method": "authentication_type=ldap",
+        "ldap_bind_dn": "ldap_auth_method=searchbind",
+        "ldap_bind_password": "ldap_auth_method=searchbind",
+        "ldap_search_base": "ldap_auth_method=searchbind",
+        "ldap_search_filter": "ldap_auth_method=searchbind",
+        "ldap_user_dn_template": "ldap_auth_method=directbind",
+        "ldap_password_attribute": "authentication_type=ldap",
+        "ldap_is_active_directory": "authentication_type=ldap"
+    }
+
     def __init__(self, *args, **kwargs):
         super(GeneralParametersForm, self).__init__(*args, **kwargs)
         self.fields["default_top_redirection"].choices = enabled_applications()
@@ -106,10 +200,59 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             del self.fields["handle_mailboxes"]
             del self.fields["mailboxes_owner"]
 
-    # Visibility rules
-    def visibility_mailboxes_owner(self):
-        return "handle_mailboxes=yes"
+    def clean(self):
+        """Custom validation method
 
+        Depending on 'ldap_auth_method' value, we check for different
+        required parameters.
+        """
+        super(GeneralParametersForm, self).clean()
+        if len(self._errors):
+            raise forms.ValidationError(self._errors)
+        cleaned_data = self.cleaned_data
+        if cleaned_data["authentication_type"] != "ldap":
+            return cleaned_data
+
+        if cleaned_data["ldap_auth_method"] == "searchbind":
+            required_fields = ["ldap_search_base", "ldap_search_filter"]
+        else:
+            required_fields = ["ldap_user_dn_template"]
+            
+        for f in required_fields:
+            if not f in cleaned_data or cleaned_data[f] == u'':
+                self._errors[f] = self.error_class([_("This field is required")])
+
+        return cleaned_data
+
+    def to_django_settings(self):
+        """Apply LDAP related parameters to Django settings
+
+        Doing so, we can use the django_auth_ldap module.
+        """
+        from django.conf import settings
+        try:
+            import ldap
+            from django_auth_ldap.config import LDAPSearch
+            ldap_available = True
+        except ImportError:
+            ldap_available = False
+
+        values = self.get_current_values()
+        if not ldap_available or values["authentication_type"] != "ldap":
+            return
+        ldap_uri = 'ldap://' if values["ldap_secured"] == "yes" else "ldaps://"
+        ldap_uri += "%s:%s" % (values["ldap_server_address"], values["ldap_server_port"])
+        setattr(settings, "AUTH_LDAP_SERVER_URI", ldap_uri)
+        if values["ldap_auth_method"] == "searchbind":
+            setattr(settings, "AUTH_LDAP_BIND_DN", values["ldap_bind_dn"])
+            setattr(settings, "AUTH_LDAP_BIND_PASSWORD", values["ldap_bind_password"])
+            search = LDAPSearch(
+                values["ldap_search_base"], ldap.SCOPE_SUBTREE,
+                values["ldap_search_filter"]
+            )
+            setattr(settings, "AUTH_LDAP_USER_SEARCH", search)
+        else:
+            setattr(settings, "AUTH_LDAP_USER_DN_TEMPLATE", values["ldap_user_dn_template"])
 
 parameters.register(GeneralParametersForm, ugettext_lazy("General"))
 

@@ -87,7 +87,7 @@ TwocolsNav.prototype = {
     },
 
     toggle_field_visibility: function($field, $parent, value) {
-        if ($parent.attr("idsabled") === undefined &&
+        if ($parent.attr("disabled") === undefined &&
             $field.attr("data-visibility-value") == value) {
             $field.attr("disabled", null);
             $field.show();
@@ -105,6 +105,9 @@ TwocolsNav.prototype = {
         var $parent = $target.parents("div.control-group");
 
         $('div[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
+            instance.toggle_field_visibility($(this), $parent, $target.attr("value"));
+        });
+        $('h5[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
             instance.toggle_field_visibility($(this), $parent, $target.attr("value"));
         });
     },

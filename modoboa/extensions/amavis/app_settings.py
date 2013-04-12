@@ -71,15 +71,11 @@ class ParametersForm(AdminParametersForm):
         help_text=_("The e-mail address used to send notitications")
     )
 
-    # Visibility rules
-    def visibility_am_pdp_host(self):
-        return "am_pdp_mode=inet"
-
-    def visibility_am_pdp_port(self):
-        return "am_pdp_mode=inet"
-
-    def visibility_am_pdp_socket(self):
-        return "am_pdp_mode=unix"
+    visibility_rules = {
+        "am_pdp_host": "am_pdp_mode=inet",
+        "am_pdp_port": "am_pdp_mode=inet",
+        "am_pdp_socket": "am_pdp_mode=unix"
+    }
 
 
 class UserSettings(UserParametersForm):
