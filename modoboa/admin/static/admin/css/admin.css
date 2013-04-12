@@ -18,6 +18,10 @@ table td[name="actions"] {
     text-align: right;
 }
 
+table .progress {
+    margin-bottom: 0 !important;
+}
+
 .search {
     width: 85%;
     -webkit-border-radius:14px;-moz-border-radius:14px;border-radius:14px;

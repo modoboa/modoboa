@@ -102,6 +102,16 @@ def domains_menu(selection, user):
 @register.simple_tag
 def identities_menu(user):
     entries = [
+        {"name": "identities",
+         "label": _("List identities"),
+         "img": "icon-user",
+         "class": "ajaxlink",
+         "url": "list/"},
+        {"name": "quotas",
+         "label": _("List quotas"),
+         "img": "icon-hdd",
+         "class": "ajaxlink",
+         "url": "quotas/"},
         {"name" : "newaccount",
          "label" : _("Add account"),
          "img" : "icon-plus",

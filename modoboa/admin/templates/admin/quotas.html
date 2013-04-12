@@ -1,0 +1,19 @@
+{% load i18n libextras %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>{% trans "Address" %}</th><th>{% trans "Current quota" %}</th><th id="actions">{% trans "Actions" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for mbox in mboxes %}<tr>
+      <td>{{ mbox.full_address }}</td>
+      <td name="quota">
+        <div id="quotabar" class="progress {% progress_color mbox.get_cur_quota %}">
+          <div class="bar" style="width: {{ mbox.get_cur_quota }}%"></div>
+        </div>
+      </td>
+      <td name="actions"></td>
+    </tr>{% endfor %}
+  </tbody>
+</table>

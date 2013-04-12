@@ -185,6 +185,17 @@ Identities.prototype = {
         }
     },
 
+    listen: function() {
+        Admin.prototype.listen.call(this);
+        $(document).on("click", "a.ajaxlink", $.proxy(this.page_loader, this));
+    },
+
+    page_loader: function(e) {
+        var $link = get_target(e);
+        e.preventDefault();
+        this.navobj.baseurl($link.attr("href")).update();
+    },
+
     list_cb: function(data) {
         Admin.prototype.list_cb.call(this, data);
         var deloptions = {};

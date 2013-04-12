@@ -23,6 +23,7 @@ urlpatterns = patterns(
 
     (r'^identities/$', 'identities'),
     (r'^identities/list/$', '_identities'),
+    (r'^identities/quotas/$', 'list_quotas'),
     (r'^identities/import/$', 'import_identities'),
     (r'^identities/export/$', 'export_identities'),
 

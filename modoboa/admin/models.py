@@ -723,6 +723,10 @@ class Mailbox(DatesAware):
         else:
             self.quota = value
 
+    def get_cur_quota(self):
+        q = Quota.objects.get(username=self.full_address)
+        return q.bytes / (self.quota * 1048576) * 100
+
     def save_from_user(self, localpart, domain, user, quota=None, owner=None):
         """Simple save method called for automatic creations
 
@@ -736,7 +740,11 @@ class Mailbox(DatesAware):
         self.set_quota(quota, True if (owner and owner.has_perm("admin.add_domain")) else False)
         super(Mailbox, self).save()
 
+        Quota.objects.create(username=self.full_address)
+
     def delete(self, keepdir=False):
+        q = Quota.objects.get(username=self.full_address)
+        q.delete()
         super(Mailbox, self).delete()
         if not keepdir:
             self.delete_dir()
@@ -761,6 +769,13 @@ def mailbox_deleted_handler(sender, **kwargs):
         if alias.mboxes.count() == 0:
             alias.delete()
    
+
+class Quota(models.Model):
+    username = models.EmailField(primary_key=True)
+    bytes = models.IntegerField(default=0)
+    messages = models.IntegerField(default=0)
+
+
 class Alias(DatesAware):
     address = models.CharField(
         ugettext_lazy('address'), max_length=254,

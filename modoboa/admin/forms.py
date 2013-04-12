@@ -79,6 +79,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
             if hm == "yes":
                 if self.oldname is not None and d.name != self.oldname:
+                    for q in Quota.objects.filter(username__contains="@%s" % self.oldname):
+                        q.username = q.username.replace('@%s' % self.oldname, '@%s' % d.name)
+                        q.save()
                     old_mail_homes = dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
             d.save()
             if old_mail_homes is not None:
@@ -571,6 +574,9 @@ class AccountFormMail(forms.Form, DynamicForm):
                 old_mail_home = self.mb.mail_home
                 self.mb.domain = domain
                 self.mb.address = locpart
+                q = Quota.objects.get(username=self.mb.full_address)
+                q.username = self.mb.full_address
+                q.save()
             self.mb.set_quota(self.cleaned_data["quota"], user.has_perm("admin.add_domain"))
             self.mb.save()
             if old_mail_home is not None:

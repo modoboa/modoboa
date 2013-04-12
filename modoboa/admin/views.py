@@ -340,6 +340,19 @@ def mboxes_list(request):
     mboxes = request.user.get_mailboxes()
     return ajax_simple_response([mb.full_address for mb in mboxes])
 
+
+@login_required
+@permission_required("admin.add_mailbox")
+def list_quotas(request, tplname="admin/quotas.html"):
+    mboxes = request.user.get_mailboxes()
+    return ajax_simple_response({
+        "status": "ok",
+        "table": _render_to_string(request, tplname, {
+            "mboxes": mboxes
+        })
+    })
+
+
 @login_required
 @permission_required("auth.add_user")
 @transaction.commit_on_success
