@@ -555,6 +555,7 @@ class Domain(DatesAware):
             events.raiseEvent("DomainAliasDeleted", self.domainalias_set.all())
             ungrant_access_to_objects(self.domainalias_set.all())
         if self.mailbox_set.count():
+            Quota.objects.filter(username__contains='@%s' % self.name).delete()
             events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
             ungrant_access_to_objects(self.mailbox_set.all())
             hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False) 
@@ -724,6 +725,8 @@ class Mailbox(DatesAware):
             self.quota = value
 
     def get_cur_quota(self):
+        if not self.quota:
+            return 0
         q = Quota.objects.get(username=self.full_address)
         return q.bytes / (self.quota * 1048576) * 100
 
@@ -743,8 +746,19 @@ class Mailbox(DatesAware):
         Quota.objects.create(username=self.full_address)
 
     def delete(self, keepdir=False):
-        q = Quota.objects.get(username=self.full_address)
-        q.delete()
+        """Custom delete method
+
+        We try to delete the associated quota in the same time (it may
+        has already been removed if we're deleting a domain).
+
+        :param bool keepdir: delete the mailbox home dir on the filesystem or not
+        """
+        try:
+            q = Quota.objects.get(username=self.full_address)
+        except Quota.DoesNotExist:
+            pass
+        else:
+            q.delete()
         super(Mailbox, self).delete()
         if not keepdir:
             self.delete_dir()

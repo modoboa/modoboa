@@ -122,13 +122,13 @@ Domains.prototype = {
         var deloptions = (data.handle_mailboxes)
             ? {keepdir: gettext("Do not delete domain directory")}
             : {};
-        var warnmsg = (data.auto_account_removal)
+        var warnmsg = (data.auto_account_removal && data.auto_account_removal == "yes")
             ? gettext("This operation will remove ALL data associated to this domain.")
             : gettext("This operation will remove all data associated to this domain, excepting accounts.");
 
         $("a[name=deldomain]").confirm({
             question: gettext("Delete this domain?"),
-            warning: gettext("This operation will remove ALL data associated to this domain."),
+            warning: warnmsg,
             checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
         });
