@@ -964,23 +964,17 @@ class Extension(models.Model):
 
         events.raiseEvent("ExtDisabled", self)
 
-def populate_callback(sender, user=None, **kwargs):
-    """Populate signal callback
+def populate_callback(user):
+    """Populate callback
 
     If the LDAP authentication backend is in use, this callback will
     be called each time a new user authenticates succesfuly to
     Modoboa. This function is in charge of creating the mailbox
     associated to the provided ``User`` object.
 
-    :param sender: ??
     :param user: a ``User`` instance
     """
     from modoboa.lib.permissions import grant_access_to_object
-
-    if parameters.get_admin("AUTHENTICATION_TYPE") != "ldap":
-        return
-    if user is None:
-        return
 
     sadmins = User.objects.filter(is_superuser=True)
 
@@ -1013,11 +1007,3 @@ def populate_callback(sender, user=None, **kwargs):
         grant_access_to_object(sadmins[0], mb, True)
         for su in sadmins[1:]:
             grant_access_to_object(su, domain)
-
-
-try:
-    from django_auth_ldap.backend import populate_user
-except ImportError, inst:
-    pass
-else:
-    populate_user.connect(populate_callback, dispatch_uid="myuid")

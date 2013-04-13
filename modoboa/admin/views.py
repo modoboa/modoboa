@@ -505,6 +505,7 @@ def saveparameters(request):
         form = formdef["form"]
         if form.is_valid():
             form.save()
+            form.to_django_settings()
             continue
         return ajax_simple_response({"status": "ko", "prefix": form.app, "errors": form.errors})
     return ajax_simple_response(dict(status="ok", respmsg=_("Parameters saved")))

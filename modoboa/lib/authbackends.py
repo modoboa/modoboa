@@ -1,5 +1,6 @@
 from django.contrib.auth.backends import ModelBackend
 from modoboa.admin.models import User
+from modoboa.lib import parameters
 
 class SimpleBackend(ModelBackend):
 
@@ -20,6 +21,8 @@ class SimpleBackend(ModelBackend):
 
 try:
     from django_auth_ldap.backend import LDAPBackend as orig_LDAPBackend, _LDAPUser
+    from modoboa.admin.models import populate_callback
+
 
     class LDAPBackend(orig_LDAPBackend):
 
@@ -29,10 +32,13 @@ try:
             username is the Django-friendly username of the user. ldap_user.dn is
             the user's DN and ldap_user.attrs contains all of their LDAP attributes.
             """
-            return User.objects.get_or_create(
+            user, created = User.objects.get_or_create(
                 username__iexact=username, 
                 defaults={'username': username.lower()}
-                )
+            )
+            if created:
+                populate_callback(user)
+            return user, created
 
         def get_user(self, user_id):
             user = None
@@ -42,6 +48,12 @@ try:
             except User.DoesNotExist:
                 pass
             return user
+
+        def authenticate(self, username, password):
+            auth_type = parameters.get_admin("AUTHENTICATION_TYPE", app="admin")
+            if auth_type == "ldap":
+                return super(LDAPBackend, self).authenticate(username, password)
+            return None
 
 except ImportError:
     pass
