@@ -728,7 +728,7 @@ class Mailbox(DatesAware):
         if not self.quota:
             return 0
         q = Quota.objects.get(username=self.full_address)
-        return q.bytes / (self.quota * 1048576) * 100
+        return int(q.bytes / float(self.quota * 1048576) * 100)
 
     def save_from_user(self, localpart, domain, user, quota=None, owner=None):
         """Simple save method called for automatic creations
