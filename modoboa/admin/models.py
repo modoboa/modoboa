@@ -555,6 +555,7 @@ class Domain(DatesAware):
             events.raiseEvent("DomainAliasDeleted", self.domainalias_set.all())
             ungrant_access_to_objects(self.domainalias_set.all())
         if self.mailbox_set.count():
+            Quota.objects.filter(username__contains='@%s' % self.name).delete()
             events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
             ungrant_access_to_objects(self.mailbox_set.all())
             hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False) 
@@ -724,8 +725,10 @@ class Mailbox(DatesAware):
             self.quota = value
 
     def get_cur_quota(self):
+        if not self.quota:
+            return 0
         q = Quota.objects.get(username=self.full_address)
-        return q.bytes / (self.quota * 1048576) * 100
+        return int(q.bytes / float(self.quota * 1048576) * 100)
 
     def save_from_user(self, localpart, domain, user, quota=None, owner=None):
         """Simple save method called for automatic creations
@@ -743,8 +746,19 @@ class Mailbox(DatesAware):
         Quota.objects.create(username=self.full_address)
 
     def delete(self, keepdir=False):
-        q = Quota.objects.get(username=self.full_address)
-        q.delete()
+        """Custom delete method
+
+        We try to delete the associated quota in the same time (it may
+        has already been removed if we're deleting a domain).
+
+        :param bool keepdir: delete the mailbox home dir on the filesystem or not
+        """
+        try:
+            q = Quota.objects.get(username=self.full_address)
+        except Quota.DoesNotExist:
+            pass
+        else:
+            q.delete()
         super(Mailbox, self).delete()
         if not keepdir:
             self.delete_dir()
@@ -964,23 +978,17 @@ class Extension(models.Model):
 
         events.raiseEvent("ExtDisabled", self)
 
-def populate_callback(sender, user=None, **kwargs):
-    """Populate signal callback
+def populate_callback(user):
+    """Populate callback
 
     If the LDAP authentication backend is in use, this callback will
     be called each time a new user authenticates succesfuly to
     Modoboa. This function is in charge of creating the mailbox
     associated to the provided ``User`` object.
 
-    :param sender: ??
     :param user: a ``User`` instance
     """
     from modoboa.lib.permissions import grant_access_to_object
-
-    if parameters.get_admin("AUTHENTICATION_TYPE") != "ldap":
-        return
-    if user is None:
-        return
 
     sadmins = User.objects.filter(is_superuser=True)
 
@@ -1013,11 +1021,3 @@ def populate_callback(sender, user=None, **kwargs):
         grant_access_to_object(sadmins[0], mb, True)
         for su in sadmins[1:]:
             grant_access_to_object(su, domain)
-
-
-try:
-    from django_auth_ldap.backend import populate_user
-except ImportError, inst:
-    pass
-else:
-    populate_user.connect(populate_callback, dispatch_uid="myuid")

@@ -240,7 +240,13 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         values = self.get_current_values()
         if not ldap_available or values["authentication_type"] != "ldap":
             return
-        ldap_uri = 'ldap://' if values["ldap_secured"] == "yes" else "ldaps://"
+        if not hasattr(settings, "AUTH_LDAP_USER_ATTR_MAP"):
+            setattr(settings, "AUTH_LDAP_USER_ATTR_MAP", {
+                "first_name": "givenName",
+                "email": "mail",
+                "last_name": "sn"
+            })
+        ldap_uri = 'ldaps://' if values["ldap_secured"] == "yes" else "ldap://"
         ldap_uri += "%s:%s" % (values["ldap_server_address"], values["ldap_server_port"])
         setattr(settings, "AUTH_LDAP_SERVER_URI", ldap_uri)
         if values["ldap_auth_method"] == "searchbind":
@@ -253,6 +259,14 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             setattr(settings, "AUTH_LDAP_USER_SEARCH", search)
         else:
             setattr(settings, "AUTH_LDAP_USER_DN_TEMPLATE", values["ldap_user_dn_template"])
+
+        if values["ldap_is_active_directory"] == "yes":
+            if not hasattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS"):
+                setattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS", {
+                    ldap.OPT_REFERRALS: False
+                })
+            else:
+                settings.AUTH_LDAP_GLOBAL_OPTIONS[ldap.OPT_REFERRALS] = False
 
 parameters.register(GeneralParametersForm, ugettext_lazy("General"))
 
