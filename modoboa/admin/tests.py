@@ -89,7 +89,7 @@ class AccountTestCase(ModoTestCase):
         self.assertTrue(account.check_password("toto"))
         self.assertEqual(account.first_name, "Tester")
         self.assertEqual(account.last_name, "Toto")
-        self.assertEqual(mb.domain.mailbox_count, 3)
+        self.assertEqual(mb.domain.mailbox_count, 4)
 
         values["email"] = "pouet@test.com"
         self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[account.id]), values)
@@ -258,6 +258,25 @@ class PermissionsTestCase(ModoTestCase):
                                 HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response["Content-Type"], "application/json")
 
+    def test_domainadmin_deletes_superadmin(self):
+        """Check domain admins restrictions about super admins
 
-
+        When a super admin owns a mailbox and a domain admin exists
+        for the associated domain, this domain admin must not be able
+        to access the super admin.
+        """
+        values = dict(username="superadmin2@test.com", first_name="Super", last_name="Admin",
+                      password1="toto", password2="toto", role="SuperAdmins",
+                      is_active=True, email="superadmin@test.com", stepid=2)
+        self.check_ajax_post(reverse("modoboa.admin.views.newaccount"), values)
+        
+        account = User.objects.get(username="superadmin2@test.com")
+        self.clt.logout()
+        self.clt.login(username="admin@test.com", password="toto")
+        self.check_ajax_get(reverse("modoboa.admin.views.delaccount") + "?selection=%d" \
+                                % account.id, {},
+                            status="ko", respmsg="Permission denied")
+        self.check_ajax_get(reverse("modoboa.admin.views.delaccount") + "?selection=%d" \
+                                % 4, {},
+                            status="ko", respmsg="Permission denied")
         
