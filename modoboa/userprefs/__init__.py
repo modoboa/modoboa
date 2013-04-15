@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.utils.translation import ugettext_lazy
 from modoboa.extensions import ModoExtension, exts_pool
-
+from modoboa.lib import parameters
 
 class UserPreferences(ModoExtension):
     name = "userprefs"
@@ -11,7 +11,6 @@ class UserPreferences(ModoExtension):
     always_active = True
 
     def load(self):
-        from modoboa.lib import parameters
         from app_settings import UserSettings
         parameters.register(UserSettings, ugettext_lazy("General"))
 

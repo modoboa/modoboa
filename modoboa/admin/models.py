@@ -724,7 +724,11 @@ class Mailbox(DatesAware):
         else:
             self.quota = value
 
-    def get_cur_quota(self):
+    def get_quota(self):
+        q = Quota.objects.get(username=self.full_address)
+        return int(q.bytes / 1048576)
+
+    def get_quota_in_percent(self):
         if not self.quota:
             return 0
         q = Quota.objects.get(username=self.full_address)

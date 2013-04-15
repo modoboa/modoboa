@@ -2,18 +2,22 @@
 <table class="table">
   <thead>
     <tr>
-      <th>{% trans "Address" %}</th><th>{% trans "Current quota" %}</th><th id="actions">{% trans "Actions" %}</th>
+      <th>{% trans "Address" %}</th>
+      <th>{% trans "Value" %}</th>
+      <th>{% trans "Limit" %}</th>
+      <th id="quotabar">{% trans "%" %}</th>
     </tr>
   </thead>
   <tbody>
     {% for mbox in mboxes %}<tr>
       <td>{{ mbox.full_address }}</td>
+      <td>{{ mbox.get_quota }}M</td>
+      <td>{{ mbox.quota }}M</td>
       <td name="quota">
-        <div id="quotabar" class="progress {% progress_color mbox.get_cur_quota %}">
-          <div class="bar" style="width: {{ mbox.get_cur_quota }}%"></div>
+        <div id="quotabar" class="progress {% progress_color mbox.get_quota_in_percent %}">
+          <div class="bar" style="width: {{ mbox.get_quota_in_percent }}%"></div>
         </div>
       </td>
-      <td name="actions"></td>
     </tr>{% endfor %}
   </tbody>
 </table>

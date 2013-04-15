@@ -345,8 +345,16 @@ def mboxes_list(request):
 @permission_required("admin.add_mailbox")
 def list_quotas(request, tplname="admin/quotas.html"):
     mboxes = request.user.get_mailboxes()
+    paginator = Paginator(mboxes, int(parameters.get_admin("ITEMS_PER_PAGE")))
+    pagenum = int(request.GET.get("page", "1"))
+    try:
+        page = paginator.page(pagenum)
+    except (EmptyPage, PageNotAnInteger):
+        page = paginator.page(paginator.num_pages)
     return ajax_simple_response({
         "status": "ok",
+        "page": page.number,
+        "paginbar": pagination_bar(page),
         "table": _render_to_string(request, tplname, {
             "mboxes": mboxes
         })
