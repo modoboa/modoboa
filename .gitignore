@@ -1,6 +1,6 @@
 .*~$
-^[^\.]+\.pyc
-^[^\.]+\.mo
+*.pyc
+*.mo
 dist
 build
 modoboa.egg-info
@@ -9,4 +9,5 @@ doc/.static
 doc/.templates
 DEV
 .idea
+.ropeproject
 modoboa.iml
