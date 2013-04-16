@@ -2,6 +2,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from models import Policy, Users
+from modoboa.lib.formutils import InlineRadioSelect
 
 
 class DomainPolicyForm(forms.ModelForm):
