@@ -8,7 +8,8 @@ class ARmessageForm(forms.ModelForm):
     untildate = forms.DateField(
         label=ugettext_lazy('Until'), 
         required=False,
-        help_text=ugettext_lazy("Activate your auto reply until this date")
+        help_text=ugettext_lazy("Activate your auto reply until this date"),
+        localize=False
         )
 
     class Meta:

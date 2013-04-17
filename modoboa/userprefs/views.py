@@ -12,7 +12,7 @@ from forms import ForwardForm, BadDestination, ProfileForm
 
 @login_required
 def index(request, tplname="userprefs/index.html"):
-    extrajs = events.raiseQueryEvent("ExtraUprefsJS")
+    extrajs = events.raiseQueryEvent("ExtraUprefsJS", request.user)
     return render(request, tplname, {
             "selection" : "user",
             "extrajs" : "".join(extrajs)

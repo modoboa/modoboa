@@ -58,11 +58,11 @@ def extra_routes():
 
 
 @events.observe("ExtraUprefsJS")
-def extra_js():
+def extra_js(user):
     return ["""function autoreply_cb() {
     $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '%s'});
 }
-""" % 'en']
+""" % parameters.get_user(user, "LANG", app="general")
 
 
 @events.observe("UserMenuDisplay")
