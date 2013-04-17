@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
-
 import sys
 import datetime
 from django.core.management.base import BaseCommand, CommandError
+from django.utils import timezone
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox, sendmail_simple
 from modoboa.admin.models import Mailbox
@@ -11,8 +11,10 @@ from modoboa.extensions.postfix_autoreply import PostfixAutoreply
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
 
 def send_autoreply(sender, mailbox, armessage):
+    today = timezone.make_aware(datetime.datetime.today(), 
+                                timezone.get_default_timezone())
     if armessage.untildate is not None \
-        and armessage.untildate < datetime.datetime.today():
+        and armessage.untildate < today:
         armessage.enabled = False
         armessage.save()
         return
@@ -23,7 +25,9 @@ def send_autoreply(sender, mailbox, armessage):
         timeout = parameters.get_admin("AUTOREPLIES_TIMEOUT", 
                                        app="postfix_autoreply")
         delta = datetime.timedelta(seconds=int(timeout))
-        if lastar.last_sent + delta > datetime.datetime.now():
+        now = timezone.make_aware(datetime.datetime.now(), 
+                                  timezone.get_default_timezone())
+        if lastar.last_sent + delta > now:
             sys.exit(0)
     except ARhistoric.DoesNotExist:
         lastar = ARhistoric()
