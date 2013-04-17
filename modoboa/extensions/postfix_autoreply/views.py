@@ -33,14 +33,14 @@ def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
             arm.mbox = mb
             arm.save()
             return ajax_simple_response(dict(
-                        status="ok", respmsg=_("Auto reply message updated successfully.")
-                        ))
+                status="ok", respmsg=_("Auto reply message updated successfully.")
+            ))
 
         return ajax_simple_response({
-                "status" : "ko", 
-                "content" : render_to_string(tplname, {"form" : form}),
-                "onload_cb" : "autoreply_cb"
-                })
+            "status": "ko", 
+            "errors": form.errors,
+            "onload_cb": "autoreply_cb"
+        })
 
     form = ARmessageForm(instance=arm)
     if arm is not None:

@@ -51,7 +51,7 @@ def forward(request, tplname='userprefs/forward.html'):
 
         return ajax_simple_response(dict(
                 status="ko",
-                content=render_to_string(tplname, {"form" : form}),
+                errors=form.errors,
                 respmsg=error
                 ))
 
@@ -84,20 +84,20 @@ def profile(request, tplname='userprefs/profile.html'):
             if update_password:
                 request.session["password"] = encrypt(form.cleaned_data["confirmation"])
             return ajax_simple_response(dict(
-                    status="ok", respmsg=_("Profile updated")
-                    ))
+                status="ok", respmsg=_("Profile updated")
+            ))
         return ajax_simple_response({
-                "status" : "ko",
-                "content" : render_to_string(tplname, {"form" : form})
-                })
+            "status": "ko",
+            "errors": form.errors
+        })
 
     form = ProfileForm(update_password, instance=request.user)
     return ajax_simple_response({
-            "status" : "ok",
-            "content" : render_to_string(tplname, {
-                    "form" : form
-                    })
-            })
+        "status": "ok",
+        "content": render_to_string(tplname, {
+            "form": form
+        })
+    })
 
 @login_required
 def preferences(request):
