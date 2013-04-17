@@ -63,6 +63,7 @@ def extra_js(user):
     $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '%s'});
 }
 """ % parameters.get_user(user, "LANG", app="general")
+    ]
 
 
 @events.observe("UserMenuDisplay")
