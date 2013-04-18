@@ -14,7 +14,8 @@
       <td>{{ mbox.get_quota }}M</td>
       <td>{{ mbox.quota }}M</td>
       <td name="quota">
-        <div id="quotabar" class="progress {% progress_color mbox.get_quota_in_percent %}">
+        <div id="quotabar" rel="tooltip" title="{{ mbox.get_quota_in_percent }}%"
+             class="progress {% progress_color mbox.get_quota_in_percent %}">
           <div class="bar" style="width: {{ mbox.get_quota_in_percent }}%"></div>
         </div>
       </td>
