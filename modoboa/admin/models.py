@@ -327,11 +327,7 @@ class User(DUser):
         """
         if self.is_superuser:
             return Mailbox.objects.all()
-        mboxes = []
-        domains = self.get_domains()
-        for dom in domains:
-            mboxes += dom.mailbox_set.all()
-        return mboxes
+        return Mailbox.objects.filter(domain__in=self.get_domains())
         
     def get_mbaliases(self):
         """Return the mailbox aliases that belong to this user
@@ -792,6 +788,8 @@ class Quota(models.Model):
     username = models.EmailField(primary_key=True)
     bytes = models.IntegerField(default=0)
     messages = models.IntegerField(default=0)
+
+    mbox = models.OneToOneField(Mailbox, related_name="quota_value", null=True)
 
 
 class Alias(DatesAware):

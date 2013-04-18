@@ -1,11 +1,11 @@
 {% load i18n libextras %}
-<table class="table">
+<table class="table table-fixed">
   <thead>
     <tr>
-      <th>{% trans "Address" %}</th>
-      <th>{% trans "Value" %}</th>
-      <th>{% trans "Limit" %}</th>
-      <th id="quotabar">{% trans "%" %}</th>
+      <th width="50%" class="sortable" data-sort_order="address">{% trans "Address" %}</th>
+      <th class="sortable" data-sort_order="quota_value__bytes">{% trans "Value" %}</th>
+      <th class="sortable" data-sort_order="quota">{% trans "Limit" %}</th>
+      <th class="sortable" data-sort_order="quota_usage" id="quotabar">{% trans "Usage (%)" %}</th>
     </tr>
   </thead>
   <tbody>

@@ -344,7 +344,22 @@ def mboxes_list(request):
 @login_required
 @permission_required("admin.add_mailbox")
 def list_quotas(request, tplname="admin/quotas.html"):
+    sort_order = request.GET.get("sort_order", "address")
     mboxes = request.user.get_mailboxes()
+    if sort_order.startswith("-"):
+        sort_dir = "-"
+        sort_order = sort_order[1:]
+    else:
+        sort_dir = ""
+    if sort_order in ["address", "quota", "quota_value__bytes"]:
+        mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
+    elif sort_order == "quota_usage":
+        mboxes.select_related().extra(
+            select={'quota_usage': 'quota_value.bytes / (quota * 1048576) * 100'},
+            order_by=["%s%s" % (sort_dir, sort_order)]
+        )
+    else:
+        raise AdminError(_("Invalid request"))
     paginator = Paginator(mboxes, int(parameters.get_admin("ITEMS_PER_PAGE")))
     pagenum = int(request.GET.get("page", "1"))
     try:
@@ -356,7 +371,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
         "page": page.number,
         "paginbar": pagination_bar(page),
         "table": _render_to_string(request, tplname, {
-            "mboxes": mboxes
+            "mboxes": page
         })
     })
 

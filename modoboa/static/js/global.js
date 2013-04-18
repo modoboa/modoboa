@@ -97,7 +97,7 @@ if (!Object.keys) {
  */
 function simple_ajax_form_post(e, options) {
     e.preventDefault();
-    var $form = (options.formid != undefined) ? $("#" + options.formid) : $("form");
+    var $form = (options.formid !== undefined) ? $("#" + options.formid) : $("form");
     var defaults = {reload_on_success: true, reload_mode: 'full', modal: true};
     var opts = $.extend({}, defaults, options);
     var args = $form.serialize();

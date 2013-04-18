@@ -37,6 +37,10 @@ Admin.prototype = {
 
     list_cb: function(data) {
         $("#listing").html(data.table);
+        $(".sortable").sortable({
+            onSortOrderChange: $.proxy(this.change_sort_order, this)
+        });
+        this.set_sort_order();
         $("#bottom-bar-right").html(data.paginbar);
         $("#pagination_bar").find(".disabled a").click(function(e) {
             e.preventDefault();
@@ -50,6 +54,29 @@ Admin.prototype = {
         $(document).on("click", "#bottom-bar-right a",
             $.proxy(this.getpage_loader, this));
         $("#searchform").submit($.proxy(this.do_search, this));
+    },
+
+    set_sort_order: function() {
+        var sort_order = this.navobj.getparam("sort_order");
+        var sort_dir;
+
+        if (!sort_order) {
+            return;
+        }
+        if (sort_order[0] == '-') {
+            sort_dir = "desc";
+            sort_order = sort_order.substr(1);
+        } else {
+            sort_dir = 'asc';
+        }
+        $("th[data-sort_order=" + sort_order + "]").sortable('select', sort_dir);
+    },
+
+    change_sort_order: function(sort_order, dir) {
+        if (dir == "desc") {
+            sort_order = "-" + sort_order;
+        }
+        this.navobj.setparam("sort_order", sort_order).update();
     },
 
     do_search: function(e) {

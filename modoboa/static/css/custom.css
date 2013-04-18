@@ -98,3 +98,7 @@ body {
     color: #FFFFFF;
     text-decoration: none;
 }
+
+.table-fixed {
+    table-layout: fixed;
+}

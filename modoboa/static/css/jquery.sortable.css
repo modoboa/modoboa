@@ -1,0 +1,7 @@
+.sort-header {
+    cursor: pointer;
+}
+
+.sort-header i {
+    margin-left: 10px;
+}
