@@ -354,7 +354,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
     if sort_order in ["address", "quota", "quota_value__bytes"]:
         mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
     elif sort_order == "quota_usage":
-        mboxes.extra(
+        mboxes = mboxes.extra(
             select={'quota_usage': 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'},
             where=["admin_quota.mbox_id=admin_mailbox.id"],
             tables=["admin_quota"],
