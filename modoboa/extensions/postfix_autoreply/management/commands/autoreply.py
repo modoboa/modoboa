@@ -11,10 +11,8 @@ from modoboa.extensions.postfix_autoreply import PostfixAutoreply
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
 
 def send_autoreply(sender, mailbox, armessage):
-    today = timezone.make_aware(datetime.datetime.today(), 
-                                timezone.get_default_timezone())
     if armessage.untildate is not None \
-        and armessage.untildate < today:
+        and armessage.untildate < datetime.date.today():
         armessage.enabled = False
         armessage.save()
         return
