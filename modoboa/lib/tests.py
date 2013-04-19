@@ -19,7 +19,7 @@ class ModoTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         obj = simplejson.loads(response.content)
         self.assertEqual(obj["status"], status)
-        for kw, v in kwargs.iteritems():
+        for kw, v in kwargs.items():
             self.assertEqual(obj[kw], v)
 
     def check_ajax_post(self, *args, **kwargs):

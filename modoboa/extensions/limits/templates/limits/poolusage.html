@@ -1,8 +1,10 @@
 {% load i18n libextras %}
-<div class="well">
-  <h6>{% trans "Resources usage" %}</h6>{% for l in limits %}
-  <div class="resource">
-    {{ l.label }} ({{ l }})
-    <div rel="tooltip" title="{{ l.curvalue }}/{{ l.maxvalue }}" class="progress {% progress_color l.usage %}"><div class="bar" style="width: {{ l }}"></div></div>
-  </div>
-{% endfor %}</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">{% trans "Resources usage" %}</li>{% for l in limits %}
+    <li class="resource">
+      {{ l.label }} ({{ l }})
+      <div rel="tooltip" title="{{ l.curvalue }}/{{ l.maxvalue }}" class="progress {% progress_color l.usage %}"><div class="bar" style="width: {{ l }}"></div></div>
+    </li>{% endfor %}
+  </ul>
+</div>

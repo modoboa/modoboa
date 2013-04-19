@@ -325,9 +325,13 @@ class User(DUser):
         
         :return: a list of ``Mailbox`` objects
         """
+        from modoboa.lib.permissions import get_content_type
+
         if self.is_superuser:
             return Mailbox.objects.all()
-        return Mailbox.objects.filter(domain__in=self.get_domains())
+        ids = self.objectaccess_set.filter(content_type=get_content_type(Mailbox)) \
+            .values_list('object_id', flat=True)
+        return Mailbox.objects.filter(pk__in=ids)
         
     def get_mbaliases(self):
         """Return the mailbox aliases that belong to this user

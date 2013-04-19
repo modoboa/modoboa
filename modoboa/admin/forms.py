@@ -563,11 +563,12 @@ class AccountFormMail(forms.Form, DynamicForm):
                                        owner=user)
                 grant_access_to_object(user, self.mb, is_owner=True)
                 events.raiseEvent("CreateMailbox", user, self.mb)
-                if user.is_superuser and not self.mb.user.is_superuser:
+                if user.is_superuser and not self.mb.user.has_perm("admin.add_domain"):
                     # A super user is creating a new mailbox. Give
                     # access to that mailbox (and the associated
                     # account) to the appropriate domain admins,
-                    # except if the new account is super user.
+                    # except if the new account has a more important
+                    # role (SuperAdmin, Reseller)
                     for admin in self.mb.domain.admins:
                         grant_access_to_object(admin, self.mb)
                         grant_access_to_object(admin, self.mb.user)
@@ -662,7 +663,9 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             if not value in current_domains:
                 domain = Domain.objects.get(name=value)
                 grant_access_to_object(self.account, domain)
-                for mb in domain.mailbox_set.filter(user__is_superuser=False).all():
+                for mb in domain.mailbox_set.all():
+                    if mb.user.has_perm("admin.add_domain"):
+                        continue
                     grant_access_to_object(self.account, mb)
                     grant_access_to_object(self.account, mb.user)
                 for al in Alias.objects.filter(domain=domain):
@@ -672,7 +675,9 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             if not len(filter(lambda name: self.cleaned_data[name] == domain.name,
                               self.cleaned_data.keys())):
                 ungrant_access_to_object(domain, self.account)
-                for mb in domain.mailbox_set.filter(user__is_superuser=False).all():
+                for mb in domain.mailbox_set.all():
+                    if mb.user.has_perm("admin.add_domain"):
+                        continue
                     ungrant_access_to_object(mb, self.account)
                     ungrant_access_to_object(mb.user, self.account)
                 for al in Alias.objects.filter(domain=domain):

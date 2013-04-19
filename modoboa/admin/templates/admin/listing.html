@@ -7,15 +7,15 @@ var admin;
 </script>
 {% endblock %}
 {% block leftcol %}<div class="well sidebar-nav">
-<ul class="nav nav-list">
-  <li class="nav-header">{% trans "Filter" %}</li>
-  <li>{% include "admin/searchform.html" %}</li>
-  <li id="taglist"></li>
-  <li class="nav-header">{% trans "Actions" %}</li>
-  {% block actions %}{% endblock %}
-  {% get_extra_admin_content user "leftcol" selection %}
-</ul>
+  <ul class="nav nav-list">
+    <li class="nav-header">{% trans "Filter" %}</li>
+    <li>{% include "admin/searchform.html" %}</li>
+    <li id="taglist"></li>
+    <li class="nav-header">{% trans "Actions" %}</li>
+    {% block actions %}{% endblock %}
+  </ul>
 </div>
+{% get_extra_admin_content user "leftcol" selection %}
 {% endblock %}
 {% block apparea %}<div id="listing"></div>{% endblock %}
 {% block footerright %}{% endblock %}
