@@ -72,13 +72,9 @@ class AdminParametersForm(GenericParametersForm):
     def _load_initial_values(self):
         from models import Parameter
 
-        for name in self.fields.keys():
-            fullname = "%s.%s" % (self.app, name.upper())
-            try:
-                p = Parameter.objects.get(name=fullname)
-            except Parameter.DoesNotExist:
-                continue
-            self.fields[name].initial = p.value
+        names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
+        for p in Parameter.objects.filter(name__in=names):
+            self.fields[p.shortname].initial = p.value
 
     def save(self):
         from models import Parameter
@@ -117,13 +113,9 @@ class UserParametersForm(GenericParametersForm):
             return
         from models import UserParameter
 
-        for name in self.fields.keys():
-            fullname = "%s.%s" % (self.app, name.upper())
-            try:
-                p = UserParameter.objects.get(user=self.user, name=fullname)
-            except UserParameter.DoesNotExist:
-                continue
-            self.fields[name].initial = p.value
+        names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
+        for p in UserParameter.objects.filter(user=self.user, name__in=names):
+            self.fields[p.shortname].initial = p.value
 
     @staticmethod
     def has_access(user):
