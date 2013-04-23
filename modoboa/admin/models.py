@@ -719,6 +719,11 @@ class Mailbox(DatesAware):
             raise AdminError(_("Failed to remove mailbox: %s" % output))
 
     def set_quota(self, value, override_domain=False):
+        """Set or update quota's value for this mailbox.
+
+        :param integer value: the quota's value
+        :param bool override_domain: allow to override domain's limit or not
+        """
         if value is None:
             self.quota = self.domain.quota
         elif int(value) > self.domain.quota and not override_domain:

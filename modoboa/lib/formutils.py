@@ -85,22 +85,23 @@ class TabForms(object):
         for fd in self.forms:
             args = []
             kwargs = {}
-            if fd.has_key("new_args"):
+            if "new_args" in fd:
                 args += fd["new_args"]
-            if data:
+            if data is not None:
                 args.append(data)
-            if instances:
+            if instances is not None:
                 if hasattr(self, "check_%s" % fd["id"]):
                     if not getattr(self, "check_%s" % fd["id"])(instances[fd["id"]]):
                         to_remove += [fd]
                         continue
                 kwargs["instance"] = instances[fd["id"]]
-            if classes and classes.has_key(fd["id"]):
+            if classes is not None and fd["id"] in classes:
                 fd["instance"] = classes[fd["id"]](*args, **kwargs)
             else:
                 fd["instance"] = fd["cls"](*args, **kwargs)
         map(lambda fd: self.forms.remove(fd), to_remove)
-        self.active_id = self.forms[0]["id"]
+        if self.forms:
+            self.active_id = self.forms[0]["id"]
 
     def _before_is_valid(self, form):
         return True

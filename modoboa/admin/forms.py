@@ -125,7 +125,8 @@ class DomainForm(TabForms):
         if "instances" in kwargs:
             cbargs += [kwargs["instances"]["general"]]
         self.forms += events.raiseQueryEvent("ExtraDomainForm", *cbargs)
-
+        if not self.forms:
+            self.active_id = "admins"
         super(DomainForm, self).__init__(*args, **kwargs)
 
     def save(self, user):
