@@ -719,8 +719,12 @@ class Mailbox(DatesAware):
             raise AdminError(_("Failed to remove mailbox: %s" % output))
 
     def set_quota(self, value, override_domain=False):
-        if value is None or (int(value) > self.domain.quota and not override_domain):
+        if value is None:
             self.quota = self.domain.quota
+        elif int(value) > self.domain.quota and not override_domain:
+            raise AdminError(
+                _("Quota is greater than the allowed domain's limit (%dM)" % self.domain.quota)
+            )
         else:
             self.quota = value
 
