@@ -54,7 +54,7 @@ class User(DUser):
         super(User, self).__init__(*args, **kwargs)
 
     def __unicode__(self):
-        return u"%s %s" % (self.first_name, self.last_name)
+        return self.fullname
 
     def delete(self, fromuser, keep_mb_dir, *args, **kwargs):
         """Custom delete method
@@ -195,7 +195,7 @@ class User(DUser):
     @property
     def fullname(self):
         if self.first_name != "":
-            return "%s %s" % (self.first_name, self.last_name)
+            return u"%s %s" % (self.first_name, self.last_name)
         return self.username
 
     @property

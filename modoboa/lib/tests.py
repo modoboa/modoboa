@@ -4,7 +4,8 @@ from django.test import TestCase
 from django.test.client import Client
 from django.utils import simplejson
 from django import forms
-import parameters
+from django.core.urlresolvers import reverse
+from modoboa.lib import parameters
 
 
 class ModoTestCase(TestCase):
@@ -34,8 +35,8 @@ class ExtTestCase(ModoTestCase):
 
     def setUp(self, *args, **kwargs):
         super(ExtTestCase, self).setUp(*args, **kwargs)
-        self.clt.get("/modoboa/admin/settings/extensions/")
-        self.clt.post("/modoboa/admin/settings/extensions/save/",
+        self.clt.get(reverse("modoboa.admin.views.viewextensions"))
+        self.clt.post(reverse("modoboa.admin.views.saveextensions"),
                       {"select_%s" % self.name : "1"})
 
 
