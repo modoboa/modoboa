@@ -213,10 +213,14 @@ class DlistForm(forms.ModelForm, DynamicForm):
                     mb = Mailbox.objects.get(domain=domain, address=local_part)
                 except Mailbox.DoesNotExist:
                     raise AdminError(_("Mailbox %s does not exist" % v))
+                if mb in self.int_rcpts:
+                    raise AdminError(_("Recipient %s already present" % v))
                 self.int_rcpts += [mb]
                 total += 1
                 continue
 
+            if v in self.ext_rcpts:
+                raise AdminError(_("Recipient %s already present" % v))
             self.ext_rcpts += [v]
             total += 1
 
