@@ -77,6 +77,7 @@ class AccountTestCase(ModoTestCase):
     def test(self):
         values = dict(username="tester@test.com", first_name="Tester", last_name="Toto",
                       password1="toto", password2="toto", role="SimpleUsers",
+                      quota_act=True,
                       is_active=True, email="tester@test.com", stepid=2)
         self.check_ajax_post(reverse("modoboa.admin.views.newaccount"), values)
 
@@ -236,7 +237,7 @@ class PermissionsTestCase(ModoTestCase):
                          True)
         admin = User.objects.get(username="admin@test.com")
         values = dict(username="admin@test.com", first_name="Admin", password1="", password2="",
-                      is_active=True, email="admin@test.com")
+                      quota=10, is_active=True, email="admin@test.com")
         self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[admin.id]), values)
         self.assertEqual(admin.group, "DomainAdmins")
         self.assertEqual(admin.can_access(Domain.objects.get(name="test.com")), True)

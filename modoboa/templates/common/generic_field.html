@@ -5,7 +5,7 @@
     {% if appended_text %}<div class="input-append">{% endif %}
     {{ field }}{% if appended_text %}<span class="add-on">{{ appended_text }}</span></div>{% endif %}{% if help_display_mode == "inline" and field.help_text %}<span class="help-inline">{{ field.help_text }}</span>{% endif %}
     {% if activator %}<label class="checkbox inline" for="id_{{ field.name }}_act">
-      <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act" {% if field.value == None %}checked='checked'{% endif %}/>{{ activator_label }}
+      <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act" {% if activator_value %}checked='checked'{% else %}{% if deactivate_if_empty and field.value == None %}checked='checked'{% endif %}{% endif %}/>{{ activator_label }}
     </label>{% endif %}
     {% if field.errors %}<p class="help-block">{% for error in field.errors %}{{ error|safe }}{% endfor %}</p>{% endif %}
   </div>

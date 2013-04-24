@@ -118,10 +118,7 @@ $(document).ready(function() {
     });
 
     $(document).bind('domform_init', function() {
-        var checked = $('#id_spam_subject_tag2_act').attr('checked');
-        if (checked && checked == 'checked') {
-            $('#id_spam_subject_tag2').attr('disabled', true);
-        }
+        activate_widget.call($('#id_spam_subject_tag2_act'));
     });
 });
 </script>""")

@@ -107,9 +107,9 @@ def render_field_appended(field, text):
 @register.simple_tag
 def render_field_with_activator(field, activator_label=ugettext_lazy("activate")):
     return render_to_string("common/generic_field.html", {
-            "field" : field, "help_display_mode" : "tooltip", "activator" : True,
-            "activator_label" : activator_label
-            })
+        "field": field, "help_display_mode": "tooltip", "activator": True,
+        "activator_label": activator_label, "deactivate_if_empty": True
+    })
 
 @register.simple_tag
 def render_and_hide_field(field):

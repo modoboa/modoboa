@@ -84,6 +84,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                         q.save()
                     old_mail_homes = dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
             d.save()
+            Mailbox.objects.filter(domain=d, use_domain_quota=True).update(quota=d.quota)
             if old_mail_homes is not None:
                 for mb in d.mailbox_set.all():
                     mb.rename_dir(old_mail_homes[mb.id])
@@ -511,9 +512,10 @@ class AccountFormMail(forms.Form, DynamicForm):
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
-        help_text=_("Quota in MB for this mailbox. Leave empty to use the value defined at domain level."),
+        help_text=_("Quota in MB for this mailbox. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."),
         widget=forms.widgets.TextInput(attrs={"class": "span1"})
     )
+    quota_act = forms.BooleanField(required=False)
     aliases = forms.EmailField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
@@ -534,8 +536,12 @@ class AccountFormMail(forms.Form, DynamicForm):
                 name = "aliases_%d" % cpt
                 self._create_field(forms.EmailField, name, alias.full_address)
                 cpt += 1
-            self.fields["email"].initial = self.mb.full_address
-            self.fields["quota"].initial = self.mb.quota
+            self.fields["email"].initial = self.mb.full_address            
+            self.fields["quota_act"].initial = self.mb.use_domain_quota
+            if not self.mb.use_domain_quota and self.mb.quota:
+                self.fields["quota"].initial = self.mb.quota
+        else:
+            self.fields["quota_act"].initial = True
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", forms.EmailField)
@@ -557,15 +563,19 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not user.can_access(domain):
             raise PermDeniedException
 
+        if self.cleaned_data["quota_act"]:
+            self.cleaned_data["quota"] = None
+
         if not hasattr(self, "mb") or self.mb is None:
             try:
                 self.mb = Mailbox.objects.get(address=locpart, domain=domain)
             except Mailbox.DoesNotExist:
                 events.raiseEvent("CanCreate", user, "mailboxes")
-                self.mb = Mailbox()
-                self.mb.save_from_user(locpart, domain, account,
-                                       self.cleaned_data["quota"],
-                                       owner=user)
+                self.mb = Mailbox(address=locpart, domain=domain, user=account,
+                                  use_domain_quota=self.cleaned_data["quota_act"])
+                self.mb.set_quota(self.cleaned_data["quota"], 
+                                  user.has_perm("admin.add_domain"))
+                self.mb.save()
                 grant_access_to_object(user, self.mb, is_owner=True)
                 events.raiseEvent("CreateMailbox", user, self.mb)
                 if user.is_superuser and not self.mb.user.has_perm("admin.add_domain"):
@@ -587,7 +597,9 @@ class AccountFormMail(forms.Form, DynamicForm):
                 self.mb.address = locpart
                 q.username = self.mb.full_address
                 q.save()
-            self.mb.set_quota(self.cleaned_data["quota"], user.has_perm("admin.add_domain"))
+            self.mb.use_domain_quota = self.cleaned_data["quota_act"]
+            override_rules = True if not self.mb.quota or user.has_perm("admin.add_domain") else False
+            self.mb.set_quota(self.cleaned_data["quota"], override_rules)
             self.mb.save()
             if old_mail_home is not None:
                 # Problem here: the mailbox has already been saved so,

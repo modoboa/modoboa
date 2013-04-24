@@ -440,8 +440,9 @@ class User(DUser):
                 raise AdminError(_("Account import failed (%s): domain does not exist" % self.username))
             if not user.can_access(domain):
                 raise PermDeniedException
-            mb = Mailbox()
-            mb.save_from_user(mailbox, domain, self, owner=user)
+            mb = Mailbox(address=mailbox, domain=domain, user=self, use_domain_quota=True)
+            mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
+            mb.save()
             self.save()
         if grpname == "DomainAdmins":
             for domname in row[8:]:
@@ -586,6 +587,7 @@ class Domain(DatesAware):
     def to_csv(self, csvwriter):
         csvwriter.writerow(["domain", self.name, self.quota, self.enabled])
 
+
 class DomainAlias(DatesAware):
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
                             help_text=ugettext_lazy("The alias name"))
@@ -641,7 +643,8 @@ class Mailbox(DatesAware):
         ugettext_lazy('address'), max_length=100,
         help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
         )
-    quota = models.IntegerField()
+    quota = models.PositiveIntegerField()
+    use_domain_quota = models.BooleanField(default=False)
     domain = models.ForeignKey(Domain)
     user = models.ForeignKey(User)
 
@@ -718,20 +721,25 @@ class Mailbox(DatesAware):
         if code:
             raise AdminError(_("Failed to remove mailbox: %s" % output))
 
-    def set_quota(self, value, override_domain=False):
+    def set_quota(self, value=None, override_rules=False):
         """Set or update quota's value for this mailbox.
 
         :param integer value: the quota's value
-        :param bool override_domain: allow to override domain's limit or not
+        :param bool override_rules: allow to override defined quota rules
         """
         if value is None:
-            self.quota = self.domain.quota
-        elif int(value) > self.domain.quota and not override_domain:
+            if self.use_domain_quota:
+                self.quota = self.domain.quota
+            else:
+                self.quota = 0
+        elif int(value) > self.domain.quota and not override_rules:
             raise AdminError(
                 _("Quota is greater than the allowed domain's limit (%dM)" % self.domain.quota)
             )
         else:
             self.quota = value
+        if not self.quota and not override_rules:
+            raise AdminError(_("A quota is required"))
 
     def get_quota(self):
         q = Quota.objects.get(username=self.full_address)
@@ -743,20 +751,9 @@ class Mailbox(DatesAware):
         q = Quota.objects.get(username=self.full_address)
         return int(q.bytes / float(self.quota * 1048576) * 100)
 
-    def save_from_user(self, localpart, domain, user, quota=None, owner=None):
-        """Simple save method called for automatic creations
-
-        :param localpart: the mailbox
-        :param domain: the associated Domain object
-        :param user: the associated User object
-        """
-        self.address = localpart
-        self.domain = domain
-        self.user = user
-        self.set_quota(quota, True if (owner and owner.has_perm("admin.add_domain")) else False)
-        super(Mailbox, self).save()
-
-        Quota.objects.create(username=self.full_address)
+    def save(self, *args, **kwargs):
+        super(Mailbox, self).save(*args, **kwargs)
+        quota, created = Quota.objects.get_or_create(username=self.full_address)
 
     def delete(self, keepdir=False):
         """Custom delete method
@@ -1030,8 +1027,9 @@ def populate_callback(user):
     try:
         mb = Mailbox.objects.get(domain=domain, address=localpart)
     except Mailbox.DoesNotExist:
-        mb = Mailbox()
-        mb.save_from_user(localpart, domain, user)
+        mb = Mailbox(address=localpart, domain=domain, user=user, use_domain_quota=True)
+        mb.set_quota()
+        mb.save()
         events.raiseEvent("CreateMailbox", sadmins[0], mb)
         grant_access_to_object(sadmins[0], mb, True)
         for su in sadmins[1:]:

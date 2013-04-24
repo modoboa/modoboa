@@ -339,7 +339,7 @@ Identities.prototype = {
                 choices: get_domains_list
             })
             .dynamic_input();
-
+        activate_widget.call($("#id_quota_act"));
     },
 
     accountform_init: function() {
