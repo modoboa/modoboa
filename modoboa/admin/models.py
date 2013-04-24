@@ -694,7 +694,7 @@ class Mailbox(DatesAware):
             code, output = exec_cmd("doveadm user %s -f home" % self.full_address, 
                                     sudo_user=parameters.get_admin("MAILBOXES_OWNER"))
             if code:
-                raise AdminError(_("Failed to retrieve mailbox location"))
+                raise AdminError(_("Failed to retrieve mailbox location (%s)" % output))
             self.__mail_home = output.strip()
         return self.__mail_home
 
@@ -769,9 +769,10 @@ class Mailbox(DatesAware):
             pass
         else:
             q.delete()
-        super(Mailbox, self).delete()
         if not keepdir:
             self.delete_dir()
+        super(Mailbox, self).delete()
+
 
 @receiver(pre_delete, sender=Mailbox)
 def mailbox_deleted_handler(sender, **kwargs):

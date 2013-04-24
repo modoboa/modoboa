@@ -228,7 +228,7 @@ Identities.prototype = {
         var deloptions = {};
 
         if (data.handle_mailboxes) {
-            deloptions["checkboxes"] = {keepdir: gettext("Do not delete mailbox directory")};
+            deloptions = {keepdir: gettext("Do not delete mailbox directory")};
         }
         $("a.filter").click($.proxy(this.filter_by_tag, this));
 
