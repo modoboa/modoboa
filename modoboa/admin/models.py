@@ -710,6 +710,19 @@ class Mailbox(DatesAware):
         if code:
             raise AdminError(_("Failed to rename mailbox: %s" % output))
 
+    def rename(self, address, domain):
+        """Rename the mailbox
+
+        :param string address: the new mailbox's address (local part)
+        :param Domain domain: the new mailbox's domain
+        """
+        old_mail_home = self.mail_home
+        qs = Quota.objects.filter(username=self.full_address)
+        self.address = address
+        self.domain = domain
+        self.rename_dir(old_mail_home)
+        qs.update(username=self.full_address)
+
     def delete_dir(self):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
@@ -753,7 +766,10 @@ class Mailbox(DatesAware):
 
     def save(self, *args, **kwargs):
         super(Mailbox, self).save(*args, **kwargs)
-        quota, created = Quota.objects.get_or_create(username=self.full_address)
+        try:
+            q = self.quota_value
+        except Quota.DoesNotExist:
+            Quota.objects.create(mbox=self, username=self.full_address)
 
     def delete(self, keepdir=False):
         """Custom delete method

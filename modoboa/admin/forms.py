@@ -554,62 +554,60 @@ class AccountFormMail(forms.Form, DynamicForm):
         if self.cleaned_data["email"] == "":
             return None
 
-        locpart, domname = split_mailbox(self.cleaned_data["email"])
-        try:
-            domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
-            raise AdminError(_("Domain does not exist"))
-
-        if not user.can_access(domain):
-            raise PermDeniedException
-
         if self.cleaned_data["quota_act"]:
             self.cleaned_data["quota"] = None
 
         if not hasattr(self, "mb") or self.mb is None:
+            locpart, domname = split_mailbox(self.cleaned_data["email"])
             try:
-                self.mb = Mailbox.objects.get(address=locpart, domain=domain)
+                domain = Domain.objects.get(name=domname)
+            except Domain.DoesNotExist:
+                raise AdminError(_("Domain does not exist"))
+            if not user.can_access(domain):
+                raise PermDeniedException
+            try:
+                mb = Mailbox.objects.get(address=locpart, domain=domain)
             except Mailbox.DoesNotExist:
-                events.raiseEvent("CanCreate", user, "mailboxes")
-                self.mb = Mailbox(address=locpart, domain=domain, user=account,
-                                  use_domain_quota=self.cleaned_data["quota_act"])
-                self.mb.set_quota(self.cleaned_data["quota"], 
-                                  user.has_perm("admin.add_domain"))
-                self.mb.save()
-                grant_access_to_object(user, self.mb, is_owner=True)
-                events.raiseEvent("CreateMailbox", user, self.mb)
-                if user.is_superuser and not self.mb.user.has_perm("admin.add_domain"):
-                    # A super user is creating a new mailbox. Give
-                    # access to that mailbox (and the associated
-                    # account) to the appropriate domain admins,
-                    # except if the new account has a more important
-                    # role (SuperAdmin, Reseller)
-                    for admin in self.mb.domain.admins:
-                        grant_access_to_object(admin, self.mb)
-                        grant_access_to_object(admin, self.mb.user)
-
+                pass
+            else:
+                raise AdminError(_("Mailbox %s already exists" % self.cleaned_data["email"]))
+            events.raiseEvent("CanCreate", user, "mailboxes")
+            self.mb = Mailbox(address=locpart, domain=domain, user=account,
+                              use_domain_quota=self.cleaned_data["quota_act"])
+            self.mb.set_quota(self.cleaned_data["quota"], 
+                              user.has_perm("admin.add_domain"))
+            self.mb.save()
+            grant_access_to_object(user, self.mb, is_owner=True)
+            events.raiseEvent("CreateMailbox", user, self.mb)
+            if user.is_superuser and not self.mb.user.has_perm("admin.add_domain"):
+                # A super user is creating a new mailbox. Give
+                # access to that mailbox (and the associated
+                # account) to the appropriate domain admins,
+                # except if the new account has a more important
+                # role (SuperAdmin, Reseller)
+                for admin in self.mb.domain.admins:
+                    grant_access_to_object(admin, self.mb)
+                    grant_access_to_object(admin, self.mb.user)
         else:
-            old_mail_home = None
+            newaddress = None
             if self.cleaned_data["email"] != self.mb.full_address:
-                old_mail_home = self.mb.mail_home
-                q = Quota.objects.get(username=self.mb.full_address)
-                self.mb.domain = domain
-                self.mb.address = locpart
-                q.username = self.mb.full_address
-                q.save()
+                newaddress = self.cleaned_data["email"]
+            elif account.group == "SimpleUsers" and account.username != self.mb.full_address:
+                newaddress = account.username
+            if newaddress is not None:
+                local_part, domname = split_mailbox(newaddress)
+                try:
+                    domain = Domain.objects.get(name=domname)
+                except Domain.DoesNotExist:
+                    raise AdminError(_("Domain does not exist"))
+                if not user.can_access(domain):
+                    raise PermDeniedException
+                self.mb.rename(local_part, domain)
+
             self.mb.use_domain_quota = self.cleaned_data["quota_act"]
             override_rules = True if not self.mb.quota or user.has_perm("admin.add_domain") else False
             self.mb.set_quota(self.cleaned_data["quota"], override_rules)
             self.mb.save()
-            if old_mail_home is not None:
-                # Problem here: the mailbox has already been saved so,
-                # if the rename fails, we can't rollback!
-                # Maybe django-reversion could be the solution?
-                try:
-                    self.mb.rename_dir(old_mail_home)
-                except AdminError:
-                    # do rollback
-                    pass
 
         account.email = self.cleaned_data["email"]
         account.save()

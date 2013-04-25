@@ -86,13 +86,14 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(mb.full_address, "tester@test.com")
         self.assertEqual(mb.quota, 100)
         self.assertEqual(mb.enabled, True)
+        self.assertEqual(mb.quota_value.username, "tester@test.com")
         self.assertEqual(account.username, mb.full_address)
         self.assertTrue(account.check_password("toto"))
         self.assertEqual(account.first_name, "Tester")
         self.assertEqual(account.last_name, "Toto")
         self.assertEqual(mb.domain.mailbox_count, 4)
 
-        values["email"] = "pouet@test.com"
+        values["username"] = "pouet@test.com"
         self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[account.id]), values)
 
         mb = Mailbox.objects.get(pk=mb.id)
@@ -268,7 +269,7 @@ class PermissionsTestCase(ModoTestCase):
         """
         values = dict(username="superadmin2@test.com", first_name="Super", last_name="Admin",
                       password1="toto", password2="toto", role="SuperAdmins",
-                      is_active=True, email="superadmin@test.com", stepid=2)
+                      is_active=True, email="superadmin2@test.com", stepid=2)
         self.check_ajax_post(reverse("modoboa.admin.views.newaccount"), values)
         
         account = User.objects.get(username="superadmin2@test.com")
