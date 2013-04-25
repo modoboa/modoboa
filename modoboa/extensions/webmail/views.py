@@ -375,7 +375,6 @@ def compose(request):
         return resp
 
     form = ComposeMailForm()
-    form.fields["from_"].initial = request.user.username
     return render_compose(request, form, url, insert_signature=True)
 
 def compose_and_send(request, action, callback=None):

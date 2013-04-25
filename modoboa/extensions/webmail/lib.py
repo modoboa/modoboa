@@ -327,7 +327,6 @@ class ReplyModifier(Modifier):
 
         self.textheader = "%s %s" % (self.From, _("wrote:"))
 
-        form.fields["from_"].initial = request.user.username
         if hasattr(self, "Message_ID"):
             form.fields["origmsgid"].initial = self.Message_ID
         if not hasattr(self, "Reply_To"):
@@ -369,7 +368,6 @@ class ForwardModifier(Modifier):
             )
 
         self._header()
-        form.fields["from_"].initial = request.user.username
         form.fields["subject"].initial = "Fwd: %s" % self.Subject
 
     def __getfunc(self, name):
@@ -666,9 +664,9 @@ def send_mail(request, posturl=None):
         msg["Subject"] = Header(form.cleaned_data["subject"], 'utf8')
         if request.user.first_name != "" or request.user.last_name != "":
             fromaddress = "%s <%s>" % (Header(request.user.fullname, 'utf8').encode(), 
-                                       form.cleaned_data["from_"])
+                                       request.user.email)
         else:
-            fromaddress = form.cleaned_data["from_"]
+            fromaddress = request.user.email
         msg["From"] = fromaddress
         msg["To"] = prepare_addresses(form.cleaned_data["to"])
         msg["Message-ID"] = make_msgid()
@@ -699,7 +697,7 @@ def send_mail(request, posturl=None):
                 s.login(request.user.username, get_password(request))
             except smtplib.SMTPAuthenticationError, e:
                 raise WebmailError(str(e))
-        s.sendmail(form.cleaned_data['from_'], rcpts, msg.as_string())
+        s.sendmail(request.user.email, rcpts, msg.as_string())
         s.quit()
         sentfolder = parameters.get_user(request.user, "SENT_FOLDER")
         IMAPconnector(user=request.user.username,
@@ -712,8 +710,7 @@ def send_mail(request, posturl=None):
                                {"form" : form, "noerrors" : True,
                                 "body" : request.POST["id_body"].strip(),
                                 "posturl" : posturl})
-    error = _("Red fields are mandatories")
-    return False, dict(status="ko", respmsg=error, listing=listing, editor=editormode)
+    return False, dict(status="ko", listing=listing, editor=editormode)
 
 class AttachmentUploadHandler(FileUploadHandler):
     """

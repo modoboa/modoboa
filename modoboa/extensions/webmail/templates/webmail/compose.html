@@ -2,11 +2,10 @@
 <form class="form-horizontal" method="POST" action="{{ posturl }}" id="composemail">
   <div id="compose-container">
     <div id="mailheader" class="well">
-      {% render_field form.from_ %}
+      {% render_field form.to %}
       <div class="options">
         {% if not form.cc.value %}<a id="add_cc" href="#">{% trans "Add Cc field" %}</a>{% endif %} <a id="add_cci" href="#">{% trans "Add Cci field" %}</a>
       </div>
-      {% render_field form.to %}
       {% if form.cc.value %}{% render_field form.cc %}{% else %}{% render_and_hide_field form.cc %}{% endif %}
       {% render_and_hide_field form.cci %}
       {% render_field form.subject %}

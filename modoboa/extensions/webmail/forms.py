@@ -4,7 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class ComposeMailForm(forms.Form):
-    from_ = forms.CharField(label=_("From"))
     to = forms.CharField(label=_("To"))
     cc = forms.CharField(label=_("Cc"), required=False)
     cci = forms.CharField(label=_("Cci"), required=False)
