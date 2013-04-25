@@ -2,6 +2,8 @@
 import time
 from datetime import datetime, timedelta
 import email
+from email.utils import parseaddr
+from email.header import Header
 import lxml
 import chardet
 
@@ -591,6 +593,26 @@ def create_mail_attachment(attdef):
     res.add_header("Content-Disposition", "attachment; filename='%s'" % attdef["fname"])
     return res
 
+
+def prepare_addresses(addresses, usage="header"):
+    """Prepare addresses before using them
+
+    :param list addresses: a list of addresses
+    :param string usage: how those addresses are going to be used
+    :return: a string or a list depending on usage value
+    """
+    result = []
+    for address in addresses.split(','):
+        name, addr = parseaddr(address)
+        if name and usage == "header":
+            result.append("%s <%s>" % (Header(name, 'utf8').encode(), addr))
+        else:
+            result.append(addr)
+    if usage == "header":
+        return ",".join(result)
+    return result
+
+
 def send_mail(request, posturl=None):
     """Email verification and sending.
 
@@ -641,25 +663,24 @@ def send_mail(request, posturl=None):
         for attdef in request.session["compose_mail"]["attachments"]:
             msg.attach(create_mail_attachment(attdef))
 
-        msg["Subject"] = form.cleaned_data["subject"]
+        msg["Subject"] = Header(form.cleaned_data["subject"], 'utf8')
         if request.user.first_name != "" or request.user.last_name != "":
-            msg["From"] = "%s %s <%s>" % (request.user.first_name,
-                                          request.user.last_name,
-                                          form.cleaned_data["from_"])
+            fromaddress = "%s <%s>" % (Header(request.user.fullname, 'utf8').encode(), 
+                                       form.cleaned_data["from_"])
         else:
-            msg["From"] = form.cleaned_data["from_"]
-        msg["To"] = form.cleaned_data["to"]
+            fromaddress = form.cleaned_data["from_"]
+        msg["From"] = fromaddress
+        msg["To"] = prepare_addresses(form.cleaned_data["to"])
         msg["Message-ID"] = make_msgid()
         msg["User-Agent"] = "Modoboa"
         msg["Date"] = formatdate(time.time(), True)
         if form.cleaned_data.has_key("origmsgid"):
             msg["References"] = msg["In-Reply-To"] = form.cleaned_data["origmsgid"]
-        rcpts = msg['To'].split(',')
+        rcpts = prepare_addresses(form.cleaned_data["to"], "envelope")
         for hdr in ["cc", "cci"]:
             if form.cleaned_data[hdr] != "":
-                msg[hdr.capitalize()] = form.cleaned_data[hdr]
-                rcpts += msg[hdr.capitalize()].split(",")
-
+                msg[hdr.capitalize()] = prepare_addresses(form.cleaned_data[hdr])
+                rcpts += prepare_addresses(form.cleaned_data[hdr], "envelope")
         try:
             secmode = parameters.get_admin("SMTP_SECURED_MODE")
             if secmode == "ssl":
@@ -678,7 +699,7 @@ def send_mail(request, posturl=None):
                 s.login(request.user.username, get_password(request))
             except smtplib.SMTPAuthenticationError, e:
                 raise WebmailError(str(e))
-        s.sendmail(msg['From'], rcpts, msg.as_string())
+        s.sendmail(form.cleaned_data['from_'], rcpts, msg.as_string())
         s.quit()
         sentfolder = parameters.get_user(request.user, "SENT_FOLDER")
         IMAPconnector(user=request.user.username,
