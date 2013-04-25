@@ -225,6 +225,9 @@ class ImapEmail(Email):
                 value = getattr(IMAPheader, "parse_%s" % key)(msg[name], full=addrfull)
             except AttributeError:
                 value = msg[name]
+            result = chardet.detect(value)
+            if result['encoding'] != 'ascii':
+                value = value.decode(result['encoding'])
             if hdr[1]:
                 self.headers += [{"name" : label, "value" : value}]
             try:
