@@ -54,13 +54,18 @@ class IMAPheader(object):
         if value is None or type(value) is unicode:
             return value
         try:
+            value = value.decode('utf-8')
+        except UnicodeDecodeError:
+            pass
+        else:
+            return value
+        try:
             res = chardet.detect(value)
         except UnicodeDecodeError:
             return value
         if res["encoding"] == "ascii":
             return value
-        return value
-        #return value.decode(res["encoding"])
+        return value.decode(res["encoding"])
 
     @staticmethod
     def parse_address(value, **kwargs):
