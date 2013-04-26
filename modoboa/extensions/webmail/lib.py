@@ -41,22 +41,34 @@ class WMtable(tables.Table):
     def parse(self, header, value):
         if value is None:
             return ""
-        res = chardet.detect(value)
         try:
             value = getattr(IMAPheader, "parse_%s" % header)(value)
         except AttributeError:
             pass
-        if not value or type(value) is unicode or res["encoding"] == "ascii":
-            return value
-        return value.decode(res["encoding"])
+        return value
+
 
 class IMAPheader(object):
+    @staticmethod
+    def to_unicode(value):
+        if value is None or type(value) is unicode:
+            return value
+        try:
+            res = chardet.detect(value)
+        except UnicodeDecodeError:
+            return value
+        if res["encoding"] == "ascii":
+            return value
+        return value
+        #return value.decode(res["encoding"])
+
     @staticmethod
     def parse_address(value, **kwargs):
         addr = EmailAddress(value)
         if "full" in kwargs.keys() and kwargs["full"]:
-            return addr.fulladdress
-        return addr.name and addr.name or addr.fulladdress
+            return IMAPheader.to_unicode(addr.fulladdress)
+        result = addr.name and addr.name or addr.fulladdress
+        return IMAPheader.to_unicode(result)
 
     @staticmethod
     def parse_address_list(values, **kwargs):
@@ -105,9 +117,11 @@ class IMAPheader(object):
     @staticmethod
     def parse_subject(value, **kwargs):
         try:
-            return u2u_decode.u2u_decode(value)
+            subject = u2u_decode.u2u_decode(value)
         except UnicodeDecodeError:
-            return value
+            subject = value
+        return IMAPheader.to_unicode(subject)
+
 
 class ImapListing(EmailListing):
     tpl = "webmail/index.html"
@@ -225,9 +239,6 @@ class ImapEmail(Email):
                 value = getattr(IMAPheader, "parse_%s" % key)(msg[name], full=addrfull)
             except AttributeError:
                 value = msg[name]
-            result = chardet.detect(value)
-            if result['encoding'] != 'ascii':
-                value = value.decode(result['encoding'])
             if hdr[1]:
                 self.headers += [{"name" : label, "value" : value}]
             try:
