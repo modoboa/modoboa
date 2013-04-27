@@ -235,6 +235,7 @@ class SQLlisting(EmailListing):
             Qtable.cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']
         self.mbc = SQLconnector(msgs, filter)
         super(SQLlisting, self).__init__(**kwargs)
+        self.show_listing_headers = True
 
 
 class SQLemail(Email):

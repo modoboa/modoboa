@@ -93,24 +93,27 @@ class EmailListing(object):
         self.elems_per_page = elems_per_page
         self.navparams = navparams
         self.extravars = {}
-        self.empty = "empty" in kwargs.keys() and kwargs["empty"] or False
-        if not self.empty:
-            if kwargs.has_key("order"):
-                order = kwargs["order"]
-            elif self.navparams.has_key("order"):
-                order = self.navparams["order"]
-            else:
-                order = None
-            self.paginator = Paginator(self.mbc.messages_count(folder=self.folder, 
-                                                               order=order), 
-                                       elems_per_page)
-            self.baseurl = baseurl
+        self.show_listing_headers = False
+        self.empty = "empty" in kwargs and kwargs["empty"] or False
+        if self.empty:
+            return
+        if "order" in kwargs:
+            order = kwargs["order"]
+        elif "order" in self.navparams:
+            order = self.navparams["order"]
+        else:
+            order = None
+        self.paginator = Paginator(
+            self.mbc.messages_count(folder=self.folder, order=order),
+            elems_per_page
+        )
+        self.baseurl = baseurl
 
     @staticmethod
     def render_navbar(page, baseurl=None):
         if page is None:
             return ""
-        context = {"page" : page, "STATIC_URL" : settings.STATIC_URL, "baseurl" : baseurl}
+        context = {"page": page, "STATIC_URL": settings.STATIC_URL, "baseurl": baseurl}
         return render_to_string("common/pagination_bar.html", context)
     
     def fetch(self, request, id_start, id_stop):
@@ -123,34 +126,10 @@ class EmailListing(object):
   {{ table }}
 </form>""")
         return tpl.render(
-            Context(
-                {"table" : table.render(withheader=False)}
-                )
-            )
-
-    # def render(self, request, pageid=1, **kwargs):
-    #     listing = ""
-    #     page = None
-    #     if not self.empty:
-    #         page = self.paginator.getpage(pageid)
-    #         if not page:
-    #             listing = _("This folder contains no messages")
-    #         else:
-    #             listing = self.fetch(request, page.id_start, page.id_stop)
-    #     elapsed = kwargs.has_key("start") and time.time() - kwargs["start"] or 0
-    #     context = {
-    #         "listing" : listing, 
-    #         "elapsed" : elapsed,
-    #         "navbar" : self.render_navbar(page),
-    #         "selection" : self.folder,
-    #         "navparams" : self.navparams,
-    #         "deflocation" : self.deflocation, 
-    #         "defcallback" : self.defcallback,
-    #         "reset_wm_url" : self.reset_wm_url
-    #         }
-    #     for k, v in self.extravars.iteritems():
-    #         context[k] = v
-    #     return _render(request, self.tpl, context)
+            Context({
+                "table" : table.render(withheader=self.show_listing_headers)
+            })
+        )
 
     def render(self, request, pageid=1, **kwargs):
         page = self.paginator.getpage(pageid)
