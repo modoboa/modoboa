@@ -201,10 +201,13 @@ def new_filters_set(request, tplname="common/generic_modal_form.html"):
             except SieveClientError, e:
                 error = str(e)
             else:
-                return ajax_response(request, 
-                                     ajaxnav=True,
-                                     url=form.cleaned_data["name"], 
-                                     respmsg=_("Filters set created"))
+                return ajax_simple_response({
+                    "status": "ok", 
+                    "url": form.cleaned_data["name"],
+                    "active": form.cleaned_data["active"],
+                    "respmsg": _("Filters set created")
+                })
+
         ctx["form"] = form
         ctx["error"] = error
         return ajax_response(request, status="ko", template=tplname, **ctx)

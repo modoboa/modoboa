@@ -147,7 +147,7 @@ function removefs(evt) {
     send_command($(this).attr("href"), function(response) {
         var $curfset = $("#curfset");
 
-        $curfset.find("option[value=" + curscript + "]").remove();
+        $curfset.find("option[value='" + curscript + "']").remove();
         history.baseurl(response.newfs, 1);
     });
 }
@@ -216,7 +216,7 @@ function filterset_created(data) {
     curfset.append(option);
     curfset.attr("value", name);
 
-    if ($("#id_active").prop("checked", true)) {
+    if (data.active) {
         curfset.find("option").each(function(index, element) {
             var $element = $(element);
 
