@@ -2,7 +2,6 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
-from modoboa import admin
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url, render_actions
 from modoboa.lib.templatetags.libextras import render_link
@@ -19,7 +18,7 @@ def admin_menu(selection, user):
     if user.has_perm("admin.view_domains"):
         entries += [
             {"name" : "domains",
-             "url" : reverse(admin.views.domains),
+             "url" : reverse("modoboa.admin.views.domains"),
              "label" : _("Domains")}
             ]
     entries += \
@@ -27,14 +26,14 @@ def admin_menu(selection, user):
     if user.has_perm("auth.add_user") or user.has_perm("admin.add_alias"):
         entries += [
             {"name" : "identities",
-             "url" : reverse(admin.views.identities),
+             "url" : reverse("modoboa.admin.views.identities"),
              "label" : _("Identities")},
             ]
     if user.is_superuser:
         entries += [
             {"name" : "settings",
              "label" : _("Modoboa"),
-             "url" : reverse(admin.views.viewsettings)}
+             "url" : reverse("modoboa.admin.views.viewsettings")}
             ]
 
     if not len(entries):
@@ -82,13 +81,13 @@ def domains_menu(selection, user):
         {"name" : "import",
          "label" : _("Import"),
          "img" : "icon-folder-open",
-         "url" : reverse(admin.views.import_domains),
+         "url" : reverse("modoboa.admin.views.import_domains"),
          "modal" : True,
          "modalcb" : "admin.importform_cb"},
         {"name" : "export",
          "label" : _("Export"),
          "img" : "icon-share-alt",
-         "url" : reverse(admin.views.export_domains),
+         "url" : reverse("modoboa.admin.views.export_domains"),
          "modal" : True,
          "modalcb" : "admin.exportform_cb"}
         ]
@@ -117,35 +116,35 @@ def identities_menu(user):
          "img" : "icon-plus",
          "modal" : True,
          "modalcb" : "admin.newaccount_cb",
-         "url" : reverse(admin.views.newaccount)},
+         "url" : reverse("modoboa.admin.views.newaccount")},
         {"name" : "newalias",
          "label" : _("Add alias"),
          "img" : "icon-plus",
          "modal" : True,
          "modalcb" : "admin.aliasform_cb",
-         "url" : reverse(admin.views.newalias)},
+         "url" : reverse("modoboa.admin.views.newalias")},
         {"name" : "newforward",
          "label" : _("Add forward"),
          "img" : "icon-plus",
          "modal" : True,
          "modalcb" : "admin.aliasform_cb",
-         "url" : reverse(admin.views.newforward)},
+         "url" : reverse("modoboa.admin.views.newforward")},
         {"name" : "newdlist",
          "label" : _("Add distribution list"),
          "img" : "icon-plus",
          "modal" : True,
          "modalcb" : "admin.aliasform_cb",
-         "url" : reverse(admin.views.newdlist)},
+         "url" : reverse("modoboa.admin.views.newdlist")},
         {"name" : "import",
          "label" : _("Import"),
          "img" : "icon-folder-open",
-         "url" : reverse(admin.views.import_identities),
+         "url" : reverse("modoboa.admin.views.import_identities"),
          "modal" : True,
          "modalcb" : "admin.importform_cb"},
         {"name" : "export",
          "label" : _("Export"),
          "img" : "icon-share-alt",
-         "url" : reverse(admin.views.export_identities),
+         "url" : reverse("modoboa.admin.views.export_identities"),
          "modal" : True,
          "modalcb" : "admin.exportform_cb"}
         ]
@@ -155,16 +154,27 @@ def identities_menu(user):
             "user" : user
             })
 
+
 @register.simple_tag
 def domain_actions(user, domid):
+    from modoboa.admin.models import Domain
+
+    domain = Domain.objects.get(pk=domid)
+    actions = [
+        {"name": "listidentities",
+         "url": reverse("modoboa.admin.views.identities") + "#list/?searchquery=@%s" % domain.name,
+         "title": _("View the domain's identities"),
+         "img": "icon-user"}
+    ]
     if user.has_perm("admin.delete_domain"):
-        actions = [
-            {"name" : "deldomain",
-             "url" : reverse(admin.views.deldomain) + "?selection=%s" % domid,
-             "img" : "icon-trash"},
-            ]
-        return render_actions(actions)
-    return "---"
+        actions.append({
+            "name": "deldomain",
+            "url": reverse("modoboa.admin.views.deldomain") + "?selection=%s" % domid,
+            "title": _("Delete the domain"),
+            "img": "icon-trash"
+        })
+    return render_actions(actions)
+
 
 @register.simple_tag
 def identity_actions(user, ident):
@@ -173,7 +183,7 @@ def identity_actions(user, ident):
     if name == "User":
         actions = [
             {"name" : "delaccount",
-             "url" : reverse(admin.views.delaccount) + "?selection=%s" % objid,
+             "url" : reverse("modoboa.admin.views.delaccount") + "?selection=%s" % objid,
              "img" : "icon-trash",
              "title" : _("Delete this account")},
             ]
@@ -181,21 +191,21 @@ def identity_actions(user, ident):
         if ident.get_recipients_count() >= 2:
             actions = [
                 {"name" : "deldlist",
-                 "url" : reverse(admin.views.deldlist) + "?selection=%s" % objid,
+                 "url" : reverse("modoboa.admin.views.deldlist") + "?selection=%s" % objid,
                  "img" : "icon-trash",
                  "title" : _("Delete this distribution list")},
                 ]
         elif ident.extmboxes != "":
             actions = [
                 {"name" : "delforward",
-                 "url" : reverse(admin.views.delforward) + "?selection=%s" % objid,
+                 "url" : reverse("modoboa.admin.views.delforward") + "?selection=%s" % objid,
                  "img" : "icon-trash",
                  "title" : _("Delete this forward")},
                 ]
         else:
             actions = [
                 {"name" : "delalias",
-                 "url" : reverse(admin.views.delalias) + "?selection=%s" % objid,
+                 "url" : reverse("modoboa.admin.views.delalias") + "?selection=%s" % objid,
                  "img" : "icon-trash",
                  "title" : _("Delete this alias")},
                 ]
@@ -216,7 +226,7 @@ def identity_modify_link(identity):
 def domadmin_actions(daid, domid):
     actions = [dict(
             name="removeperm",
-            url=reverse(admin.views.remove_permission) + "?domid=%s&daid=%s" % (domid, daid),
+            url=reverse("modoboa.admin.views.remove_permission") + "?domid=%s&daid=%s" % (domid, daid),
             img="icon-trash",
             title=_("Remove this permission")
             )]
