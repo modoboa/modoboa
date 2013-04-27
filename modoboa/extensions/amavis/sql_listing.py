@@ -18,9 +18,7 @@ class Qtable(tables.Table):
 
     type = tables.Column(
         "type", align="center", width="30px",
-        label="<input type='checkbox' name='toggleselect' id='toggleselect' />",
-        sortable=False
-        )
+    )
     rstatus = tables.ImgColumn("rstatus", width='25px')
     from_ = tables.Column("from", label=ugettext_lazy("From"), limit=30)
     subject = tables.Column("subject", label=ugettext_lazy("Subject"), limit=40)

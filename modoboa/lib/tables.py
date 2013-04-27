@@ -29,8 +29,8 @@ class Column(object):
         try:
             label = getattr(self, "label")
         except AttributeError:
-            label = getattr(self, "name")
-        return label.encode("utf-8")
+            return u''
+        return label
 
     def transform(self, row, col, table):
         if "class" in row.keys():
