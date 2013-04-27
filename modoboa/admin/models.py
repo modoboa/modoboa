@@ -317,21 +317,33 @@ class User(DUser):
             domaliases += dom.domainalias_set.all()
         return domaliases
 
-    def get_mailboxes(self):
+    def get_mailboxes(self, squery=None):
         """Return the mailboxes that belong to this user
         
         The result will contain the mailboxes defined for each domain that
         user can see.
         
+        :param string squery: a search query
         :return: a list of ``Mailbox`` objects
         """
         from modoboa.lib.permissions import get_content_type
 
-        if self.is_superuser:
-            return Mailbox.objects.all()
+        qf = None
+        if squery is not None:
+            if '@' in squery:
+                parts = squery.split('@')
+                addrfilter = '@'.join(parts[:-1])
+                domfilter = parts[-1]
+                qf = Q(address__contains=addrfilter) & Q(domain__name__contains=domfilter)
+            else:
+                qf = Q(address__contains=squery) | Q(domain__name__contains=squery)
         ids = self.objectaccess_set.filter(content_type=get_content_type(Mailbox)) \
             .values_list('object_id', flat=True)
-        return Mailbox.objects.filter(pk__in=ids)
+        if qf is not None:
+            qf = Q(pk__in=ids) & qf
+        else:
+            qf = Q(pk__in=ids)
+        return Mailbox.objects.filter(qf)
         
     def get_mbaliases(self):
         """Return the mailbox aliases that belong to this user

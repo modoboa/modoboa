@@ -1,4 +1,4 @@
-{% load i18n libextras %}
+{% load i18n libextras admin_extras %}
 <table class="table table-fixed">
   <thead>
     <tr>
@@ -10,7 +10,7 @@
   </thead>
   <tbody>
     {% for mbox in mboxes %}<tr>
-      <td>{{ mbox.full_address }}</td>
+      <td>{% identity_modify_link mbox.user "mail" %}</td>
       <td>{{ mbox.get_quota }}M</td>
       <td>{{ mbox.quota }}M</td>
       <td name="quota">

@@ -212,10 +212,11 @@ def identity_actions(user, ident):
     return render_actions(actions)
 
 @register.simple_tag
-def identity_modify_link(identity):
+def identity_modify_link(identity, active_tab='default'):
     linkdef = {"label" : identity.identity, "modal" : True}
     if identity.__class__.__name__ == "User":
         linkdef["url"] = reverse("modoboa.admin.views.editaccount", args=[identity.id])
+        linkdef["url"] += "?active_tab=%s" % active_tab
         linkdef["modalcb"] = "admin.editaccount_cb"
     else:
         linkdef["url"] = reverse("modoboa.admin.views.editalias_dispatcher", args=[identity.id])

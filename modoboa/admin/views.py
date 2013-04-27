@@ -345,7 +345,8 @@ def mboxes_list(request):
 @permission_required("admin.add_mailbox")
 def list_quotas(request, tplname="admin/quotas.html"):
     sort_order = request.GET.get("sort_order", "address")
-    mboxes = request.user.get_mailboxes()
+    mboxes = request.user.get_mailboxes(request.GET.get("searchquery", None))
+    mboxes = mboxes.exclude(quota=0)
     if sort_order.startswith("-"):
         sort_dir = "-"
         sort_order = sort_order[1:]
@@ -475,6 +476,9 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
         return ajax_response(request, status="ko", template=tplname, **ctx)
 
     ctx["tabs"] = AccountForm(request.user, instances=instances)
+    active_tab_id = request.GET.get("active_tab", "default")
+    if active_tab_id != "default":
+        ctx["tabs"].active_id = active_tab_id
     return render(request, tplname, ctx)
 
 @login_required
