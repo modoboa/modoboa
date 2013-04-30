@@ -20,7 +20,8 @@ from modoboa.lib.webutils \
     import _render, ajax_response, ajax_simple_response, _render_to_string
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.models import Parameter
-from modoboa.lib.permissions import *
+from modoboa.lib.formutils import CreationWizard
+
 
 @login_required
 def index(request):
@@ -67,8 +68,6 @@ def _validate_domain(request, form, successmsg, commonctx, tplname,
             domain = form.save(request.user)
         except AdminError, e:
             error = str(e)
-        # except IntegrityError:
-        #     error = _("An alias with this name already exists")
         else:
             if callback is not None:
                 callback(request.user, domain)
@@ -81,23 +80,49 @@ def _validate_domain(request, form, successmsg, commonctx, tplname,
 @login_required
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
-def newdomain(request, tplname="admin/newdomainform.html"):
+def newdomain(request, tplname="common/wizard_forms.html"):
     events.raiseEvent("CanCreate", request.user, "domains")
-    def newdomain_cb(user, domain):
-        grant_access_to_object(user, domain, is_owner=True)
-        events.raiseEvent("CreateDomain", user, domain)
+   
+    def newdomain_cb(steps):
+        genform = steps[0]["form"]
+        genform.is_valid()
+        domain = genform.save(request.user)
+        domain.post_create(request.user)
+        steps[1]["form"].save(request.user, domain)
 
     commonctx = {"title" : _("New domain"),
                  "action_label" : _("Create"),
                  "action_classes" : "submit",
                  "action" : reverse(newdomain),
                  "formid" : "domform"}
+    cwizard = CreationWizard(newdomain_cb)
+    cwizard.add_step(DomainFormGeneral, _("General"),
+                     [dict(classes="btn-inverse next", label=_("Next"))],
+                     formtpl="admin/domain_general_form.html")
+    cwizard.add_step(DomainFormOptions, _("Options"),
+                     [dict(classes="btn-primary submit", label=_("Create")),
+                      dict(classes="btn-inverse prev", label=_("Previous"))],
+                     formtpl="admin/domain_options_form.html")
+
     if request.method == "POST":
-        form = DomainFormGeneral(request.POST)
-        return _validate_domain(request, form, _("Domain created"), commonctx, 
-                                tplname, callback=newdomain_cb)
-    form = DomainFormGeneral()
-    commonctx["form"] = form
+        retcode, data = cwizard.validate_step(request)
+        if retcode == -1:
+            raise AdminError(data)
+        if retcode == 1:
+            return ajax_simple_response(dict(
+                status="ok", title=cwizard.get_title(data + 1), stepid=data
+            ))
+        if retcode == 2:
+            return ajax_simple_response(dict(status="ok", respmsg=_("Domain created")))
+
+        from modoboa.lib.templatetags.libextras import render_form
+        return ajax_simple_response(dict(
+            status="ko", stepid=data, form=render_form(cwizard.steps[data]["form"])
+        ))
+
+    cwizard.create_forms()
+    commonctx.update(steps=cwizard.steps)
+    commonctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
     return render(request, tplname, commonctx)
 
 @login_required
@@ -188,11 +213,7 @@ def _new_alias(request, tplname, formclass, ctx, successmsg):
     ctx.update(action_label=_("Create"), action_classes="submit")
     if request.method == "POST":
         def callback(user, alias):
-            grant_access_to_object(user, alias, is_owner=True)
-            events.raiseEvent("MailboxAliasCreated", user, alias)
-            if user.is_superuser:
-                for admin in alias.domain.admins:
-                    grant_access_to_object(admin, alias)
+            alias.post_create(user)
 
         form = formclass(request.user, request.POST)
         return _validate_alias(request, form, successmsg, tplname, ctx, callback)
@@ -382,9 +403,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
 @login_required
 @permission_required("auth.add_user")
 @transaction.commit_on_success
-def newaccount(request, tplname='admin/newaccount.html'):
-    from modoboa.lib.formutils import CreationWizard
-
+def newaccount(request, tplname='common/wizard_forms.html'):
     def create_account(steps):
         """Account creation callback
 
@@ -395,8 +414,7 @@ def newaccount(request, tplname='admin/newaccount.html'):
         genform = steps[0]["form"]
         genform.is_valid()
         account = genform.save()
-        grant_access_to_object(request.user, account, is_owner=True)
-        events.raiseEvent("AccountCreated", account)
+        account.post_create(request.user)
 
         mailform = steps[1]["form"]
         mb = mailform.save(request.user, account)
@@ -508,7 +526,7 @@ def remove_permission(request):
         raise AdminError(_("Invalid request"))
     if not request.user.can_access(account) or not request.user.can_access(domain):
         raise PermDeniedException
-    ungrant_access_to_object(domain, account)
+    domain.remove_admin(account)
     return ajax_simple_response(dict(status="ok"))
 
 @login_required
@@ -598,39 +616,24 @@ def import_domain(user, row, formopts):
     """Specific code for domains import"""
     dom = Domain()
     dom.from_csv(user, row)
-    grant_access_to_object(user, dom, is_owner=True)
-    events.raiseEvent("CreateDomain", user, dom)
 
 @transaction.commit_on_success
 def import_domainalias(user, row, formopts):
     """Specific code for domain aliases import"""
     domalias = DomainAlias()
     domalias.from_csv(user, row)
-    grant_access_to_object(user, domalias, is_owner=True)
-    events.raiseEvent("DomainAliasCreated", user, domalias)
 
 @transaction.commit_on_success
 def import_account(user, row, formopts):
     """Specific code for accounts import"""
     account = User()
     account.from_csv(user, row, formopts["crypt_password"])
-    grant_access_to_object(user, account, is_owner=True)
-    if account.is_superuser:
-        # Give access to the existing user
-        grant_access_to_object(account, user)
-    events.raiseEvent("AccountCreated", account)
-    if account.mailbox_set.count():
-        mb = account.mailbox_set.all()[0]
-        grant_access_to_object(user, mb, is_owner=True)
-        events.raiseEvent("CreateMailbox", user, mb)
 
 @transaction.commit_on_success
 def _import_alias(user, row, **kwargs):
     """Specific code for aliases import"""
     alias = Alias()
     alias.from_csv(user, row, **kwargs)
-    grant_access_to_object(user, alias, is_owner=True)
-    events.raiseEvent("MailboxAliasCreated", user, alias)
 
 def import_alias(user, row, formopts):
     _import_alias(user, row, expected_elements=4)

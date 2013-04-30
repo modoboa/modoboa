@@ -161,17 +161,35 @@ Domains.prototype = {
         });
     },
 
-    domainform_cb: function() {
+    change_inputs_state: function(value) {
+        $("#id_dom_admin_username").attr("disabled", value);
+        $("input[name=create_aliases]").attr("disabled", value);
+    },
+
+    create_dom_admin_changed: function(e) {
+        var $target = $(e.target);
+        this.change_inputs_state(($target.attr("value") == "yes") ? false : true);
+    },
+
+    generalform_init: function() {
         $('input:text:visible:first').focus();
         $("#id_aliases").dynamic_input();
-        $(".submit").one('click', $.proxy(function(e) {
-            simple_ajax_form_post(e, {
-                formid: "domform",
-                error_cb: $.proxy(this.domainform_cb, this),
-                reload_on_success: false,
-                success_cb: $.proxy(this.reload_listing, this)
-            });
-        }, this));
+    },
+
+    optionsform_init: function() {
+        $("input[name=create_dom_admin]").click($.proxy(this.create_dom_admin_changed, this));
+        this.change_inputs_state(
+            $("input[name=create_dom_admin]:checked").attr("value") == "yes" ? false : true
+        );
+        this.optionsform_prefill();
+    },
+
+    optionsform_prefill: function() {
+        var $span = $("#id_dom_admin_username").next("span");
+        $span.html("@" + $("#id_name").attr("value"));
+    },
+
+    domadminsform_init: function() {
         $("a[name=removeperm]").click(function(e) {
             var $tr = $(this).parent().parent();
             simple_ajax_request.apply(this, [e, {
@@ -184,6 +202,35 @@ Domains.prototype = {
                 }
             }]);
         });
+    },
+
+    newdomain_cb: function() {
+        this.generalform_init();
+        this.optionsform_init();
+        $("#wizard").cwizard({
+            formid: "domform",
+            transition_callbacks: {
+                1: this.optionsform_prefill
+            },
+            error_callbacks: {
+                1: this.generalform_init,
+                2: $.proxy(this.optionsform_init, this)
+            },
+            success_callback: $.proxy(this.reload_listing, this)
+        });
+    },
+
+    domainform_cb: function() {
+        this.generalform_init();
+        this.domadminsform_init();
+        $(".submit").one('click', $.proxy(function(e) {
+            simple_ajax_form_post(e, {
+                formid: "domform",
+                error_cb: $.proxy(this.domainform_cb, this),
+                reload_on_success: false,
+                success_cb: $.proxy(this.reload_listing, this)
+            });
+        }, this));
         $(document).trigger('domform_init');
     }
 

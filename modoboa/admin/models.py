@@ -14,8 +14,9 @@ from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.extensions import exts_pool
-from exceptions import *
-import os, sys
+from exceptions import AdminError
+import os
+import sys
 import pwd
 import re
 import crypt, hashlib, string, base64
@@ -26,6 +27,7 @@ try:
     ldap_available = True
 except ImportError:
     ldap_available = False
+
 
 class User(DUser):
     """Proxy for the ``User`` model.
@@ -216,7 +218,7 @@ class User(DUser):
             return self.groups.all()[0].name
         except IndexError:
             return "?"
-    
+
     @property
     def enabled(self):
         return self.is_active
@@ -269,7 +271,7 @@ class User(DUser):
                 else:
                     q &= Q(groups__name__in=grpfilter)
             accounts = User.objects.select_related().filter(q)
-        
+
         aliases = []
         if not idtfilter or ("alias" in idtfilter 
                              or "forward" in idtfilter 
@@ -289,7 +291,6 @@ class User(DUser):
                 aliases = filter(lambda a: a.type in idtfilter, aliases)
 
         return chain(accounts, aliases)
-
 
     def get_domains(self):
         """Return the domains belonging to this user
@@ -408,6 +409,54 @@ class User(DUser):
                 return True
         return False
 
+    def grant_access_to_all_objects(self):
+        """Give access to all objects defined in the database
+
+        Must be used when an account is promoted as a super user.
+        """
+        from modoboa.lib.permissions import grant_access_to_objects, get_content_type
+        grant_access_to_objects(self, User.objects.all(), get_content_type(User))
+        grant_access_to_objects(self, Domain.objects.all(), get_content_type(Domain))
+        grant_access_to_objects(self, DomainAlias.objects.all(), get_content_type(DomainAlias))
+        grant_access_to_objects(self, Mailbox.objects.all(), get_content_type(Mailbox))
+        grant_access_to_objects(self, Alias.objects.all(), get_content_type(Alias))
+
+    def set_role(self, role):
+        """Set administrative role for this account
+
+        :param string role: the role to set
+        """
+        if role is None or self.group == role:
+            return
+        self.groups.clear()
+        if role == "SuperAdmins":
+            self.is_superuser = True
+            self.grant_access_to_all_objects()
+        else:
+            if self.is_superuser:
+                ObjectAccess.objects.filter(user=self).delete()
+            self.is_superuser = False
+            try:
+                self.groups.add(Group.objects.get(name=role))
+            except Group.DoesNotExist:
+                self.groups.add(Group.objects.get(name="SimpleUsers"))
+        self.save()
+
+    def post_create(self, creator):
+        from modoboa.lib.permissions import grant_access_to_object
+        grant_access_to_object(creator, self, is_owner=True)
+        events.raiseEvent("AccountCreated", self)
+
+    def save(self, *args, **kwargs):
+        if "creator" in kwargs:
+            creator = kwargs["creator"]
+            del kwargs["creator"]
+        else:
+            creator = None
+        super(User, self).save(*args, **kwargs)
+        if creator is not None:
+            self.post_create(creator)
+
     def from_csv(self, user, row, crypt_password=True):
         """Create a new account from a CSV file entry
 
@@ -419,8 +468,6 @@ class User(DUser):
         :param row: a list containing the expected information
         :param crypt_password:
         """
-        from modoboa.lib.permissions import grant_access_to_object
-
         if len(row) < 6:
             raise AdminError(_("Invalid line"))
         self.username = row[1].strip()
@@ -431,17 +478,8 @@ class User(DUser):
         self.first_name = row[3].strip()
         self.last_name = row[4].strip()
         self.is_active = (row[5].strip() == 'True')
-        grpname = row[6].strip()
-        if grpname == "SuperAdmins":
-            self.is_superuser = True
-            self.save()
-        else:
-            self.save()
-            try:
-                self.groups.add(Group.objects.get(name=grpname))
-            except Group.DoesNotExist:
-                self.groups.add(Group.objects.get(name="SimpleUsers"))
-            self.save()
+        self.save(creator=user)
+        self.set_role(row[6].strip())
 
         self.email = row[7].strip()
         if self.email != "":
@@ -454,12 +492,11 @@ class User(DUser):
                 raise PermDeniedException
             mb = Mailbox(address=mailbox, domain=domain, user=self, use_domain_quota=True)
             mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
-            mb.save()
-            self.save()
-        if grpname == "DomainAdmins":
+            mb.save(creator=user)
+        if self.group == "DomainAdmins":
             for domname in row[8:]:
                 try:
-                    grant_access_to_object(self, Domain.objects.get(name=domname))
+                    Domain.objects.get(name=domname).add_admin(self)
                 except Domain.DoesNotExist:
                     pass
 
@@ -470,7 +507,8 @@ class User(DUser):
         if self.group == "DomainAdmins":
             row += [dom.name for dom in self.get_domains()]
         csvwriter.writerow(row)
-    
+
+
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User)
     content_type = models.ForeignKey(ContentType)
@@ -483,7 +521,8 @@ class ObjectAccess(models.Model):
 
     def __unicode__(self):
         return "%s => %s (%s)" % (self.user, self.content_object, self.content_type)
-            
+
+
 class ObjectDates(models.Model):
     """Dates recording for admin objects
 
@@ -530,21 +569,26 @@ class DatesAware(models.Model):
     def last_modification(self):
         return self.dates.last_modification
 
+
 class Domain(DatesAware):
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
-    quota = models.IntegerField(help_text=ugettext_lazy("Default quota in MB applied to mailboxes"))
-    enabled = models.BooleanField(ugettext_lazy('enabled'),
-                                  help_text=ugettext_lazy("Check to activate this domain"))
+    quota = models.IntegerField(
+        help_text=ugettext_lazy("Default quota in MB applied to mailboxes")
+    )
+    enabled = models.BooleanField(
+        ugettext_lazy('enabled'),
+        help_text=ugettext_lazy("Check to activate this domain")
+    )
     owners = generic.GenericRelation(ObjectAccess)
 
     class Meta:
         permissions = (
             ("view_domain", "View domain"),
             ("view_domains", "View domains"),
-            )
+        )
         ordering = ["name"]
-        
+
     @property
     def domainalias_count(self):
         return self.domainalias_set.count()
@@ -559,7 +603,41 @@ class Domain(DatesAware):
 
     @property
     def admins(self):
+        """Return the domain administrators of this domain
+
+        :return: a list of User objects
+        """
         return [oa.user for oa in self.owners.filter(user__is_superuser=False)]
+
+    def add_admin(self, account):
+        """Add a new administrator for this domain
+
+        :param User account: the administrotor to add
+        """
+        from modoboa.lib.permissions import grant_access_to_object
+        grant_access_to_object(account, self)
+        for mb in self.mailbox_set.all():
+            if mb.user.has_perm("admin.add_domain"):
+                continue
+            grant_access_to_object(account, mb)
+            grant_access_to_object(account, mb.user)
+        for al in self.alias_set.all():
+            grant_access_to_object(account, al)
+
+    def remove_admin(self, account):
+        """Remove an administrator for this domain
+
+        :param User account: the administrotor to remove
+        """
+        from modoboa.lib.permissions import ungrant_access_to_object
+        ungrant_access_to_object(account, self)
+        for mb in self.mailbox_set.all():
+            if mb.user.has_perm("admin.add_domain"):
+                continue
+            ungrant_access_to_object(mb, account)
+            ungrant_access_to_object(mb.user, account)
+        for al in self.alias_set.all():
+            ungrant_access_to_object(al, account)
 
     def delete(self, fromuser, keepdir=False):
         from modoboa.lib.permissions import ungrant_access_to_object, ungrant_access_to_objects
@@ -588,13 +666,28 @@ class Domain(DatesAware):
     def __str__(self):
         return self.name
 
+    def post_create(self, creator):
+        from modoboa.lib.permissions import grant_access_to_object
+        grant_access_to_object(creator, self, is_owner=True)
+        events.raiseEvent("CreateDomain", creator, self)
+
+    def save(self, *args, **kwargs):
+        if "creator" in kwargs:
+            creator = kwargs["creator"]
+            del kwargs["creator"]
+        else:
+            creator = None
+        super(Domain, self).save(*args, **kwargs)
+        if creator is not None:
+            self.post_create(creator)
+
     def from_csv(self, user, row):
         if len(row) < 4:
             raise AdminError(_("Invalid line"))
         self.name = row[1].strip()
         self.quota = int(row[2].strip())
         self.enabled = (row[3].strip() == 'True')
-        self.save()
+        self.save(creator=user)
 
     def to_csv(self, csvwriter):
         csvwriter.writerow(["domain", self.name, self.quota, self.enabled])
@@ -603,20 +696,37 @@ class Domain(DatesAware):
 class DomainAlias(DatesAware):
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
                             help_text=ugettext_lazy("The alias name"))
-    target = models.ForeignKey(Domain, verbose_name=ugettext_lazy('target'),
-                               help_text=ugettext_lazy("The domain this alias points to"))
+    target = models.ForeignKey(
+        Domain, verbose_name=ugettext_lazy('target'),
+        help_text=ugettext_lazy("The domain this alias points to")
+    )
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
         help_text=ugettext_lazy("Check to activate this alias")
-        )
+    )
 
     class Meta:
         permissions = (
             ("view_domaliases", "View domain aliases"),
-            )
+        )
 
     def __unicode__(self):
         return self.name
+
+    def post_create(self, creator):
+        from modoboa.lib.permissions import grant_access_to_object
+        grant_access_to_object(creator, self, is_owner=True)
+        events.raiseEvent("DomainAliasCreated", creator, self)
+
+    def save(self, *args, **kwargs):
+        if "creator" in kwargs:
+            creator = kwargs["creator"]
+            del kwargs["creator"]
+        else:
+            creator = None
+        super(DomainAlias, self).save(*args, **kwargs)
+        if creator is not None:
+            self.post_create(creator)
 
     def delete(self):
         from modoboa.lib.permissions import ungrant_access_to_object
@@ -628,7 +738,7 @@ class DomainAlias(DatesAware):
         """Create a domain alias from a CSV row
 
         Expected format: ["domainalias", domain alias name, targeted domain, enabled]
-        
+
         :param user: a ``User`` object
         :param row: a list containing the alias definition
         """
@@ -641,7 +751,7 @@ class DomainAlias(DatesAware):
         except Domain.DoesNotExist:
             raise AdminError(_("Unknown domain %s" % domname))
         self.enabled = row[3].strip() == 'True'
-        self.save()
+        self.save(creator=user)
 
     def to_csv(self, csvwriter):
         """Export a domain alias using CSV format
@@ -650,11 +760,12 @@ class DomainAlias(DatesAware):
         """
         csvwriter.writerow(["domainalias", self.name, self.target.name, self.enabled])
 
+
 class Mailbox(DatesAware):
     address = models.CharField(
         ugettext_lazy('address'), max_length=100,
         help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
-        )
+    )
     quota = models.PositiveIntegerField()
     use_domain_quota = models.BooleanField(default=False)
     domain = models.ForeignKey(Domain)
@@ -671,10 +782,10 @@ class Mailbox(DatesAware):
 
     def __str__(self):
         return self.full_address
-    
+
     def __full_address(self, localpart):
         return "%s@%s" % (localpart, self.domain.name)
-        
+
     @property
     def full_address(self):
         return self.__full_address(self.address)
@@ -776,8 +887,29 @@ class Mailbox(DatesAware):
         q = Quota.objects.get(username=self.full_address)
         return int(q.bytes / float(self.quota * 1048576) * 100)
 
+    def post_create(self, creator):
+        from modoboa.lib.permissions import grant_access_to_object
+        grant_access_to_object(creator, self, True)
+        events.raiseEvent("CreateMailbox", creator, self)
+        if creator.is_superuser and not self.user.has_perm("admin.add_domain"):
+            # A super user is creating a new mailbox. Give
+            # access to that mailbox (and the associated
+            # account) to the appropriate domain admins,
+            # except if the new account has a more important
+            # role (SuperAdmin, Reseller)
+            for admin in self.domain.admins:
+                grant_access_to_object(admin, self)
+                grant_access_to_object(admin, self.user)
+
     def save(self, *args, **kwargs):
+        if "creator" in kwargs:
+            creator = kwargs["creator"]
+            del kwargs["creator"]
+        else:
+            creator = None
         super(Mailbox, self).save(*args, **kwargs)
+        if creator is not None:
+            self.post_create(creator)
         try:
             q = self.quota_value
         except Quota.DoesNotExist:
@@ -889,12 +1021,27 @@ class Alias(DatesAware):
         altype = self.type
         return [{"name" : altype, "label" : labels[altype], "type" : "idt"}]
 
+    def post_create(self, creator):
+        from modoboa.lib.permissions import grant_access_to_object
+        grant_access_to_object(creator, self, is_owner=True)
+        events.raiseEvent("MailboxAliasCreated", creator, self)
+        if creator.is_superuser:
+            for admin in self.domain.admins:
+                grant_access_to_object(admin, self)
+
     def save(self, int_rcpts, ext_rcpts, *args, **kwargs):
         if len(ext_rcpts):
             self.extmboxes = ",".join(ext_rcpts)
         else:
             self.extmboxes = ""
+        if "creator" in kwargs:
+            creator = kwargs["creator"]
+            del kwargs["creator"]
+        else:
+            creator = None
         super(Alias, self).save(*args, **kwargs)
+        if creator is not None:
+            self.post_create(creator)
         curmboxes = self.mboxes.all()
         for t in int_rcpts:
             if not t in curmboxes:
@@ -961,7 +1108,7 @@ class Alias(DatesAware):
                                                   domain__name=domname)]
             except Mailbox.DoesNotExist:
                 raise AdminError(_("Mailbox %s does not exist" % rcpt))
-        self.save(int_rcpts, ext_rcpts)        
+        self.save(int_rcpts, ext_rcpts, creator=user)
 
     def to_csv(self, csvwriter):
         row = [self.type, self.full_address, self.enabled]
@@ -1032,11 +1179,8 @@ def populate_callback(user):
     from modoboa.lib.permissions import grant_access_to_object
 
     sadmins = User.objects.filter(is_superuser=True)
-
-    user.groups.add(Group.objects.get(name="SimpleUsers"))
-    user.save()
-    events.raiseEvent("AccountCreated", user)
-    grant_access_to_object(sadmins[0], user, True)
+    user.set_role("SimpleUsers")
+    user.post_create(sadmins[0])
     for su in sadmins[1:]:
         grant_access_to_object(su, user)
 
@@ -1044,13 +1188,8 @@ def populate_callback(user):
     try:
         domain = Domain.objects.get(name=domname)
     except Domain.DoesNotExist:
-        domain = Domain()
-        domain.name = domname
-        domain.enabled = True
-        domain.quota = 0
-        domain.save()
-        events.raiseEvent("CreateDomain", sadmins[0], domain)
-        grant_access_to_object(sadmins[0], domain, True)
+        domain = Domain(name=domname, enabled=True, quota=0)
+        domain.save(creator=sadmin[0])
         for su in sadmins[1:]:
             grant_access_to_object(su, domain)
     try:
@@ -1058,8 +1197,6 @@ def populate_callback(user):
     except Mailbox.DoesNotExist:
         mb = Mailbox(address=localpart, domain=domain, user=user, use_domain_quota=True)
         mb.set_quota()
-        mb.save()
-        events.raiseEvent("CreateMailbox", sadmins[0], mb)
-        grant_access_to_object(sadmins[0], mb, True)
+        mb.save(creator=sadmins[0])
         for su in sadmins[1:]:
-            grant_access_to_object(su, domain)
+            grant_access_to_object(su, mb)

@@ -8,7 +8,6 @@ from modoboa.admin.templatetags.admin_extras import gender
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import *
-from modoboa.lib.permissions import *
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
@@ -101,15 +100,74 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                     continue
                 events.raiseEvent("CanCreate", user, "domain_aliases")
                 al = DomainAlias(name=v, target=d, enabled=d.enabled)
-                al.save()
-                grant_access_to_object(user, al, is_owner=True)
-                events.raiseEvent("DomainAliasCreated", user, al)
+                al.save(creator=user)
 
             for dalias in d.domainalias_set.all():
                 if not len(filter(lambda name: self.cleaned_data[name] == dalias.name,
                                   self.cleaned_data.keys())):
                     dalias.delete()
         return d
+
+
+class DomainFormOptions(forms.Form):
+    create_dom_admin = YesNoField(
+        label=ugettext_lazy("Create a domain administrator"),
+        initial="no",
+        help_text=ugettext_lazy("Automatically create an administrator for this domain")
+    )
+
+    dom_admin_username = forms.CharField(
+        label=ugettext_lazy("Name"),
+        initial="admin",
+        help_text=ugettext_lazy("The administrator's name. Don't include the domain's name here, it will be automatically appended."),
+        widget=forms.widgets.TextInput(attrs={"class": "input-small"}),
+        required=False
+    )
+
+    create_aliases = YesNoField(
+        label=ugettext_lazy("Create aliases"),
+        initial="yes",
+        help_text=ugettext_lazy("Automatically create standard aliases for this domain"),
+        required=False
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(DomainFormOptions, self).__init__(*args, **kwargs)
+        if args:
+            if args[0].get("create_dom_admin", "no") == "yes":
+                self.fields["dom_admin_username"].required = True
+                self.fields["create_aliases"].required = True
+
+    def clean_dom_admin_username(self):
+        if '@' in self.cleaned_data["dom_admin_username"]:
+            raise forms.ValidationError(_("Invalid format"))
+        return self.cleaned_data["dom_admin_username"]
+
+    def save(self, user, domain):
+        if self.cleaned_data["create_dom_admin"] == "no":
+            return
+        username = "%s@%s" % (self.cleaned_data["dom_admin_username"], domain.name)
+        try:
+            da = User.objects.get(username=username)
+        except User.DoesNotExist:
+            pass
+        else:
+            raise AdminError(_("User '%s' already exists" % username))
+        da = User(username=username, email=username, is_active=True)
+        da.set_password("password")
+        da.save()
+        da.set_role("DomainAdmins")
+        da.post_create(user)
+        mb = Mailbox(address=self.cleaned_data["dom_admin_username"], domain=domain,
+                     user=da, use_domain_quota=True)
+        mb.set_quota()
+        mb.save(creator=user)
+
+        if self.cleaned_data["create_aliases"] == "yes":
+            al = Alias(address="postmaster", domain=domain, enabled=True)
+            al.save([mb], [], creator=user)
+
+        domain.add_admin(da)
 
 
 class DomainForm(TabForms):
@@ -464,19 +522,6 @@ class AccountFormGeneral(forms.ModelForm):
             raise forms.ValidationError(_("The two password fields didn't match."))
         return password2
 
-    def give_all_accesses(self, account):
-        """Give access to all objects defined in the database
-
-        Must be used when an account is promoted as a super user.
-
-        :param account: a ``User`` instance
-        """
-        grant_access_to_objects(account, User.objects.all(), get_content_type(User))
-        grant_access_to_objects(account, Domain.objects.all(), get_content_type(Domain))
-        grant_access_to_objects(account, DomainAlias.objects.all(), get_content_type(DomainAlias))
-        grant_access_to_objects(account, Mailbox.objects.all(), get_content_type(Mailbox))
-        grant_access_to_objects(account, Alias.objects.all(), get_content_type(Alias))
-
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)
         if self.user == account and not self.cleaned_data["is_active"]:
@@ -490,20 +535,7 @@ class AccountFormGeneral(forms.ModelForm):
                 role = self.cleaned_data["role"]
             elif self.user.group == "DomainAdmins" and self.user != account:
                 role = "SimpleUsers"
-
-            if role is None or account.group == role:
-                return account
-
-            account.groups.clear()
-            if role == "SuperAdmins":
-                account.is_superuser = True
-                self.give_all_accesses(account)
-            else:
-                if account.is_superuser:
-                    ObjectAccess.objects.filter(user=account).delete()
-                account.is_superuser = False
-                account.groups.add(Group.objects.get(name=role))
-            account.save()
+            account.set_role(role)
         return account
 
 
@@ -576,18 +608,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                               use_domain_quota=self.cleaned_data["quota_act"])
             self.mb.set_quota(self.cleaned_data["quota"], 
                               user.has_perm("admin.add_domain"))
-            self.mb.save()
-            grant_access_to_object(user, self.mb, is_owner=True)
-            events.raiseEvent("CreateMailbox", user, self.mb)
-            if user.is_superuser and not self.mb.user.has_perm("admin.add_domain"):
-                # A super user is creating a new mailbox. Give
-                # access to that mailbox (and the associated
-                # account) to the appropriate domain admins,
-                # except if the new account has a more important
-                # role (SuperAdmin, Reseller)
-                for admin in self.mb.domain.admins:
-                    grant_access_to_object(admin, self.mb)
-                    grant_access_to_object(admin, self.mb.user)
+            self.mb.save(creator=user)
         else:
             newaddress = None
             if self.cleaned_data["email"] != self.mb.full_address:
@@ -627,20 +648,13 @@ class AccountFormMail(forms.Form, DynamicForm):
             events.raiseEvent("CanCreate", user, "mailbox_aliases")
             al = Alias(address=local_part, enabled=account.is_active)
             al.domain = Domain.objects.get(name=domname)
-            al.save([self.mb], [])
-            grant_access_to_object(user, al, is_owner=True)
-            events.raiseEvent("MailboxAliasCreated", user, al)
-            if user.is_superuser:
-                for admin in al.domain.admins:
-                    grant_access_to_object(admin, al)
+            al.save([self.mb], [], creator=user)
 
         for alias in self.mb.alias_set.all():
             if len(alias.get_recipients()) >= 2:
                 continue
             if not len(filter(lambda name: self.cleaned_data[name] == alias.full_address,
                               self.cleaned_data.keys())):
-                events.raiseEvent("MailboxAliasDeleted", alias)
-                ungrant_access_to_object(alias)
                 alias.delete()
 
         return self.mb
@@ -677,26 +691,12 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                 continue
             if not value in current_domains:
                 domain = Domain.objects.get(name=value)
-                grant_access_to_object(self.account, domain)
-                for mb in domain.mailbox_set.all():
-                    if mb.user.has_perm("admin.add_domain"):
-                        continue
-                    grant_access_to_object(self.account, mb)
-                    grant_access_to_object(self.account, mb.user)
-                for al in Alias.objects.filter(domain=domain):
-                    grant_access_to_object(self.account, al)
+                domain.add_admin(self.account)
 
         for domain in self.account.get_domains():
             if not len(filter(lambda name: self.cleaned_data[name] == domain.name,
                               self.cleaned_data.keys())):
-                ungrant_access_to_object(domain, self.account)
-                for mb in domain.mailbox_set.all():
-                    if mb.user.has_perm("admin.add_domain"):
-                        continue
-                    ungrant_access_to_object(mb, self.account)
-                    ungrant_access_to_object(mb.user, self.account)
-                for al in Alias.objects.filter(domain=domain):
-                    ungrant_access_to_object(al, self.account)
+                domain.remove_admin(self.account)
 
 
 class AccountForm(TabForms):

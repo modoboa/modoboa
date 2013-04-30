@@ -76,7 +76,7 @@ def domains_menu(selection, user):
          "label" : _("Add domain"),
          "img" : "icon-plus",
          "modal" : True,
-         "modalcb" : "admin.domainform_cb",
+         "modalcb" : "admin.newdomain_cb",
          "url" : reverse("modoboa.admin.views.newdomain")},
         {"name" : "import",
          "label" : _("Import"),

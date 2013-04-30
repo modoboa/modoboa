@@ -1,7 +1,10 @@
 {% extends "admin/header.html" %}{% load i18n admin_extras libextras %}
 {% block html_head %}
 {{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.sortable.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}js/creation_wizard.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/dynamic_input.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
 <script type="text/javascript">
 var admin;
 </script>

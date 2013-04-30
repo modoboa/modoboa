@@ -2,10 +2,7 @@
 {% block pagetitle %}{% trans "Identities" %}{% endblock %}
 {% block html_head %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.sortable.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/creation_wizard.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
     $.getJSON("{% url 'modoboa.admin.views.domains_list' %}", function(data) {

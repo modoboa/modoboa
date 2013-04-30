@@ -98,7 +98,7 @@
     };
 
     $.fn.cwizard.defaults = {
-
+        transition_callbacks: {}
     };
 
 })(jQuery);

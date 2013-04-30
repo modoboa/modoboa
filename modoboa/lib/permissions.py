@@ -3,7 +3,7 @@ from functools import wraps
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.db import IntegrityError
-from modoboa.admin.models import ObjectAccess, IntegrityError
+from modoboa.admin.models import ObjectAccess
 import events
 from exceptions import ModoboaException
 
@@ -89,7 +89,8 @@ def grant_access_to_objects(user, objects, ct):
             ObjectAccess.objects.create(user=user, content_type=ct, object_id=obj.id)
         except IntegrityError:
             pass
-    
+
+
 def ungrant_access_to_object(obj, user=None):
     """Ungrant access to an object for a specific user
 
