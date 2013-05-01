@@ -667,6 +667,8 @@ def importdata(request, formclass=ImportDataForm):
             try:
                 cpt = 0
                 for row in reader:
+                    if not row:
+                        continue
                     try:
                         fct = globals()["import_%s" % row[0].strip()]
                     except KeyError:
@@ -697,7 +699,7 @@ def import_identities(request):
 
     helptext = _("""Provide a CSV file where lines respect one of the following formats:
 <ul>
-<li><em>account; loginname; password; first name; last name; enabled, group; address[, domain, ...]</em></li>
+<li><em>account; loginname; password; first name; last name; enabled; group; address[, domain, ...]</em></li>
 <li><em>alias; address; enabled; internal recipient</em></li>
 <li><em>forward; address; enabled; external recipient</em></li>
 <li><em>dlist; address; enabled; recipient; recipient; ...</em></li>

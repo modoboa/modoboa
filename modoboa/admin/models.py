@@ -496,9 +496,10 @@ class User(DUser):
         if self.group == "DomainAdmins":
             for domname in row[8:]:
                 try:
-                    Domain.objects.get(name=domname).add_admin(self)
+                    dom = Domain.objects.get(name=domname.strip())
                 except Domain.DoesNotExist:
-                    pass
+                    continue
+                dom.add_admin(self)
 
     def to_csv(self, csvwriter):
         row = ["account", self.username.encode("utf-8"), self.password, 
