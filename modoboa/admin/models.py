@@ -470,6 +470,11 @@ class User(DUser):
         """
         if len(row) < 6:
             raise AdminError(_("Invalid line"))
+        role = row[6].strip()
+        if not user.is_superuser and not role in ["SimpleUsers", "DomainAdmins"]:
+            raise PermDeniedException(
+                _("You can't import an account with a role greater than yours")
+            )
         self.username = row[1].strip()
         if crypt_password:
             self.set_password(row[2].strip())
@@ -479,7 +484,7 @@ class User(DUser):
         self.last_name = row[4].strip()
         self.is_active = (row[5].strip() == 'True')
         self.save(creator=user)
-        self.set_role(row[6].strip())
+        self.set_role(role)
 
         self.email = row[7].strip()
         if self.email != "":
@@ -487,7 +492,9 @@ class User(DUser):
             try:
                 domain = Domain.objects.get(name=domname)
             except Domain.DoesNotExist:
-                raise AdminError(_("Account import failed (%s): domain does not exist" % self.username))
+                raise AdminError(
+                    _("Account import failed (%s): domain does not exist" % self.username)
+                )
             if not user.can_access(domain):
                 raise PermDeniedException
             mb = Mailbox(address=mailbox, domain=domain, user=self, use_domain_quota=True)

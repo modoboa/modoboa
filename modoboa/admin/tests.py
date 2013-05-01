@@ -316,6 +316,12 @@ class PermissionsTestCase(ModoTestCase):
 class ImportTestCase(ModoTestCase):
     fixtures = ["initial_users.json", "test_content.json"]
 
+    def setUp(self):
+        super(ImportTestCase, self).setUp()
+        self.admin = User.objects.get(username="admin@test.com")
+        dom = Domain.objects.get(name="test.com")
+        dom.add_admin(self.admin)
+
     def test_domains_import(self):
         f = ContentFile(b"""domain; domain1.com; 100; True
 domain; domain2.com; 200; False
@@ -393,3 +399,19 @@ account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; te
         admin = User.objects.get(username="admin")
         u1 = User.objects.get(username="truc@test.com")
         self.assertTrue(admin.is_owner(u1))
+
+    def test_import_superadmin(self):
+        """Check if a domain admin can import a superadmin
+
+        Expected result: no
+        """
+        self.clt.logout()
+        self.assertTrue(self.clt.login(username="admin@test.com", password="toto"))
+        f = ContentFile(b"""
+account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com
+""", name="identities.csv")
+        self.clt.post(reverse("modoboa.admin.views.import_identities"), {
+            "sourcefile": f, "crypt_password": True, "continue_if_exists": True
+        })
+        with self.assertRaises(User.DoesNotExist):
+            User.objects.get(username="sa@test.com")

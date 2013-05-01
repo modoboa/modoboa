@@ -502,7 +502,7 @@ class AccountFormGeneral(forms.ModelForm):
                     try:
                         role = u.groups.all()[0].name
                     except IndexError:
-                        pass
+                        role = "SimpleUsers"
                 self.fields["role"].initial = role
 
     def clean_username(self):
