@@ -4,18 +4,20 @@ from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+from modoboa.lib.compat import user_model_name, user_table_name
+
 
 class Migration(DataMigration):
 
     def grant_access(self, orm, user, ct, obj, is_owner=False):
         objaccess = orm["admin.ObjectAccess"](
             user=user, content_type=ct, object_id=obj.id
-            )
+        )
         objaccess.is_owner = is_owner
         objaccess.save()
 
     def forwards(self, orm):
-        superusers = orm["auth.User"].objects.filter(is_superuser=True)
+        superusers = orm[user_model_name].objects.filter(is_superuser=True)
         if not len(superusers):
             # Empty db, nothing to do
             return
@@ -31,7 +33,7 @@ class Migration(DataMigration):
                 name='user', app_label='admin', model='user'
                 )
             uct.save()
-        for account in orm["admin.User"].objects.all():
+        for account in orm[user_model_name].objects.all():
             for i, su in enumerate(superusers):
                 self.grant_access(orm, su, uct, account, i == 0)
         domct = orm['contenttypes.ContentType'].objects.get(
@@ -60,7 +62,7 @@ class Migration(DataMigration):
                 self.grant_access(orm, su, alct, alias, i == 0)
 
         # 2: domain admins must have access to their domain's content
-        for da in orm["admin.User"].objects.filter(groups__name='DomainAdmins'):
+        for da in orm[user_model_name].objects.filter(groups__name='DomainAdmins'):
             dom = da.mailbox_set.all()[0].domain
             self.grant_access(orm, da, domct, dom)
 
@@ -117,7 +119,7 @@ class Migration(DataMigration):
             'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name})
         },
         'admin.objectaccess': {
             'Meta': {'unique_together': "(('user', 'content_type', 'object_id'),)", 'object_name': 'ObjectAccess'},
@@ -125,16 +127,13 @@ class Migration(DataMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_owner': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name})
         },
         'admin.objectdates': {
             'Meta': {'object_name': 'ObjectDates'},
             'creation': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_modification': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
-        },
-        'admin.user': {
-            'Meta': {'object_name': 'User', 'db_table': "'auth_user'", '_ormbases': ['auth.User'], 'proxy': 'True'}
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -149,7 +148,7 @@ class Migration(DataMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        'auth.user': {
+        user_model_name: {
             'Meta': {'object_name': 'User'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),

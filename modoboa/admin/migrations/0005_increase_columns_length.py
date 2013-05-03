@@ -3,12 +3,14 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from modoboa.lib.compat import user_model_name, user_table_name
+
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        db.alter_column("auth_user", "username", models.CharField(unique=True, max_length=254))
-        db.alter_column("auth_user", "email", models.CharField(max_length=254))
+        db.alter_column(user_table_name, "username", models.CharField(unique=True, max_length=254))
+        db.alter_column(user_table_name, "email", models.CharField(max_length=254))
 
     def backwards(self, orm):
         raise RuntimeError("Cannot revert this migration")
@@ -47,7 +49,7 @@ class Migration(SchemaMigration):
             'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name})
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -62,7 +64,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        'auth.user': {
+        user_model_name: {
             'Meta': {'object_name': 'User'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),

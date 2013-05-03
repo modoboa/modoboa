@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.admin.models import User
+from django.conf import settings
 
 limits_tpl = [
     ("domain_admins_limit", ugettext_lazy("Domain admins")),
@@ -14,7 +15,7 @@ limits_tpl = [
     ]
 
 class LimitsPool(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)
 
     def create_limits(self):
         for ltpl in limits_tpl:

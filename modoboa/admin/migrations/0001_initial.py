@@ -3,6 +3,8 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from modoboa.lib.compat import user_model_name
+
 
 class Migration(SchemaMigration):
     
@@ -24,7 +26,7 @@ class Migration(SchemaMigration):
             ('quota', self.gf('django.db.models.fields.IntegerField')()),
             ('full_address', self.gf('django.db.models.fields.CharField')(max_length=150)),
             ('gid', self.gf('django.db.models.fields.IntegerField')()),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_model_name])),
             ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('path', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('password', self.gf('django.db.models.fields.CharField')(max_length=100)),
@@ -42,6 +44,40 @@ class Migration(SchemaMigration):
             ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
         ))
         db.send_create_signal('admin', ['Alias'])
+
+        if user_model_name != 'admin.User':
+            return
+        # Adding model 'User'
+        db.create_table(u'admin_user', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('password', self.gf('django.db.models.fields.CharField')(max_length=128)),
+            ('last_login', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
+            ('is_superuser', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('username', self.gf('django.db.models.fields.CharField')(unique=True, max_length=254)),
+            ('first_name', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
+            ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
+            ('email', self.gf('django.db.models.fields.EmailField')(max_length=254, blank=True)),
+            ('is_staff', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('date_joined', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
+        ))
+        db.send_create_signal(u'admin', ['User'])
+        
+        # Adding M2M table for field groups on 'User'
+        db.create_table(u'admin_user_groups', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('user', models.ForeignKey(orm[u'admin.user'], null=False)),
+            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
+        ))
+        db.create_unique(u'admin_user_groups', ['user_id', 'group_id'])
+
+        # Adding M2M table for field user_permissions on 'User'
+        db.create_table(u'admin_user_user_permissions', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('user', models.ForeignKey(orm[u'admin.user'], null=False)),
+            ('permission', models.ForeignKey(orm[u'auth.permission'], null=False))
+        ))
+        db.create_unique(u'admin_user_user_permissions', ['user_id', 'permission_id'])
     
     
     def backwards(self, orm):
@@ -54,6 +90,12 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Alias'
         db.delete_table('admin_alias')
+
+        if user_model_name != 'admin.User':
+            return
+        db.delete_table('admin_user')
+        db.delete_table('admin_user_groups')
+        db.delete_table('admin_user_user_permissions')
     
     
     models = {
@@ -84,7 +126,7 @@ class Migration(SchemaMigration):
             'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name})
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -99,7 +141,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        'auth.user': {
+        user_model_name: {
             'Meta': {'object_name': 'User'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),

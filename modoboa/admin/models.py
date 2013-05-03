@@ -1,13 +1,15 @@
 # coding: utf-8
+from django.core import validators
 from django.db import models, IntegrityError
 from django.db.models import Q
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib.auth.models import User as DUser, UserManager, Group
+from django.contrib.auth.models import UserManager, Group, AbstractBaseUser, PermissionsMixin
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils.crypto import constant_time_compare
+from django.utils import timezone
 from django.conf import settings
 from modoboa.lib import md5crypt, parameters, events
 from modoboa.lib.exceptions import PermDeniedException
@@ -29,8 +31,8 @@ except ImportError:
     ldap_available = False
 
 
-class User(DUser):
-    """Proxy for the ``User`` model.
+class User(AbstractBaseUser, PermissionsMixin):
+    """Custom User model.
 
     It overloads the way passwords are stored into the database. The
     main reason to change this mechanism is to ensure the
@@ -38,22 +40,23 @@ class User(DUser):
 
     It also adds new attributes and methods.
     """
+    username = models.CharField(max_length=254, unique=True)
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    email = models.EmailField(max_length=254, blank=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
+
     class Meta:
-        proxy = True
         ordering = ["username"]
 
     password_expr = re.compile(r'(\{(\w+)\}|(\$1\$))(.+)')
-
-    def __init__(self, *args, **kwargs):
-        """Constructor
-
-        A little hack to increase the maximum length for the username
-        field.
-        """
-        max_length = 254
-        DUser._meta.get_field('username').max_length = max_length
-        DUser._meta.get_field('username').validators[0].limit_value = 254
-        super(User, self).__init__(*args, **kwargs)
 
     def __unicode__(self):
         return self.fullname

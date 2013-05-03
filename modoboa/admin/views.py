@@ -51,7 +51,7 @@ def domains(request, tplname="admin/domains.html"):
             })
 
 @login_required
-@permission_required("auth.add_user")
+@permission_required("admin.add_user")
 def domains_list(request):
     doms = map(lambda dom: dom.name, request.user.get_domains())
     return ajax_simple_response(doms)
@@ -318,7 +318,7 @@ def delforward(request):
     return _del_alias(request, "Forward deleted", "Forwards deleted")
 
 @login_required
-@user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
+@user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
 def _identities(request):
     idents_list = request.user.get_identities(request.GET)
     objects = sorted(idents_list, key=lambda o: o.identity)
@@ -341,7 +341,7 @@ def _identities(request):
     })
 
 @login_required
-@user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("admin.add_alias"))
+@user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
 def identities(request, tplname="admin/identities.html"):
     return render(request, tplname, {
             "selection" : "identities",
@@ -349,7 +349,7 @@ def identities(request, tplname="admin/identities.html"):
             })
 
 @login_required
-@permission_required("auth.add_user")
+@permission_required("admin.add_user")
 def accounts_list(request):
     accs = User.objects.filter(is_superuser=False).exclude(groups__name='SimpleUsers')
     res = map(lambda a: a.username, accs.all())
@@ -401,7 +401,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
 
 
 @login_required
-@permission_required("auth.add_user")
+@permission_required("admin.add_user")
 @transaction.commit_on_success
 def newaccount(request, tplname='common/wizard_forms.html'):
     def create_account(steps):
@@ -456,7 +456,7 @@ def newaccount(request, tplname='common/wizard_forms.html'):
     return render(request, tplname, ctx)
 
 @login_required
-@permission_required("auth.change_user")
+@permission_required("admin.change_user")
 @transaction.commit_on_success
 def editaccount(request, accountid, tplname="common/tabforms.html"):
     account = User.objects.get(pk=accountid)
@@ -500,7 +500,7 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
     return render(request, tplname, ctx)
 
 @login_required
-@permission_required("auth.delete_user")
+@permission_required("admin.delete_user")
 @transaction.commit_on_success
 def delaccount(request):
     selection = request.GET["selection"].split(",")
@@ -692,7 +692,7 @@ def importdata(request, formclass=ImportDataForm):
             })
 
 @login_required
-@user_passes_test(lambda u: u.has_perm("auth.add_user") or u.has_perm("auth.add_alias"))
+@user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
 def import_identities(request):
     if request.method == "POST":
         return importdata(request, ImportIdentitiesForm)
@@ -735,7 +735,7 @@ def _export(content, filename):
     return resp
 
 @login_required
-@permission_required(lambda u: u.has_perm("auth.add_user") or u.has_perm("auth.add_alias"))
+@permission_required(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
 def export_identities(request):
     ctx = {
         "title" : _("Export identities"),

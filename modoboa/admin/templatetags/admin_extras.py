@@ -23,7 +23,7 @@ def admin_menu(selection, user):
             ]
     entries += \
         events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user)
-    if user.has_perm("auth.add_user") or user.has_perm("admin.add_alias"):
+    if user.has_perm("admin.add_user") or user.has_perm("admin.add_alias"):
         entries += [
             {"name" : "identities",
              "url" : reverse("modoboa.admin.views.identities"),

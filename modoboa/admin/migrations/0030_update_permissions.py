@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
-from modoboa.lib.compat import user_model_name
 
-
-class Migration(SchemaMigration):
+class Migration(DataMigration):
 
     def forwards(self, orm):
-        # Adding field 'Mailbox.use_domain_quota'
-        db.add_column(u'admin_mailbox', 'use_domain_quota',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
-                      keep_default=False)
-
+        "Write your forwards methods here."
+        try:
+            orig_ct = orm["contenttypes.ContentType"].objects.get(app_label="auth", name="user")
+        except orm["contenttypes.ContentType"].DoesNotExist:
+            return
+        new_ct = orm["contenttypes.ContentType"].objects.get(app_label="admin", name="user")
+        orm["auth.Permission"].objects.filter(content_type=orig_ct).update(content_type=new_ct)
+        orig_ct.delete()
 
     def backwards(self, orm):
-        # Deleting field 'Mailbox.use_domain_quota'
-        db.delete_column(u'admin_mailbox', 'use_domain_quota')
-
+        "Write your backwards methods here."
+        raise RuntimeError("Cannot revert this migration")
 
     models = {
         u'admin.alias': {
@@ -59,9 +59,9 @@ class Migration(SchemaMigration):
             'dates': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['admin.ObjectDates']"}),
             'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['admin.Domain']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'quota': ('django.db.models.fields.IntegerField', [], {}),
+            'quota': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'use_domain_quota': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['%s']" % user_model_name})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['admin.User']"})
         },
         u'admin.objectaccess': {
             'Meta': {'unique_together': "(('user', 'content_type', 'object_id'),)", 'object_name': 'ObjectAccess'},
@@ -69,7 +69,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_owner': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['%s']" % user_model_name})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['admin.User']"})
         },
         u'admin.objectdates': {
             'Meta': {'object_name': 'ObjectDates'},
@@ -84,6 +84,22 @@ class Migration(SchemaMigration):
             'messages': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'username': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'primary_key': 'True'})
         },
+        u'admin.user': {
+            'Meta': {'ordering': "['username']", 'object_name': 'User'},
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '254', 'blank': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '254'})
+        },
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -97,22 +113,6 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        user_model_name: {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
         u'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
             'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -122,4 +122,5 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['admin']
+    complete_apps = ['admin', 'auth', 'contenttypes']
+    symmetrical = True

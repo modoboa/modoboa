@@ -155,6 +155,8 @@ INSTALLED_APPS = (
     # 'modoboa.tools.pfxadmin_migrate',
 )
 
+AUTH_USER_MODEL = 'admin.User'
+
 AUTHENTICATION_BACKENDS = (
     'modoboa.lib.authbackends.SimpleBackend',
 )

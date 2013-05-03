@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Parameter(models.Model):
@@ -12,7 +12,7 @@ class Parameter(models.Model):
 
 
 class UserParameter(models.Model):
-    user = models.ForeignKey("auth.User")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=255)
     value = models.CharField(max_length=255)
 

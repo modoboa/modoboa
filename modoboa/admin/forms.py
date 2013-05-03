@@ -722,7 +722,7 @@ class AccountForm(TabForms):
         if account.is_superuser:
             return False
         return self.user.has_perm("admin.add_domain") \
-            and account.has_perm("auth.add_user")
+            and account.has_perm("admin.add_user")
 
     def _before_is_valid(self, form):
         if form["id"] == "general":
