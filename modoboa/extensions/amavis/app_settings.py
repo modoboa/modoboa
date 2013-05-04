@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from modoboa.lib.parameters import AdminParametersForm, UserParametersForm
-from modoboa.lib.formutils import SeparatorField, YesNoField
+from modoboa.lib.formutils import SeparatorField, YesNoField, InlineRadioSelect
 
 
 class ParametersForm(AdminParametersForm):
@@ -26,7 +26,8 @@ class ParametersForm(AdminParametersForm):
         label=_("Amavis connection mode"),
         choices=[("inet", "inet"), ("unix", "unix")],
         initial="unix",
-        help_text=_("Mode used to access the PDP server")
+        help_text=_("Mode used to access the PDP server"),
+        widget=InlineRadioSelect
     )
 
     am_pdp_host = forms.CharField(

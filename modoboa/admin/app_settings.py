@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.formutils import YesNoField, SeparatorField
+from modoboa.lib.formutils import YesNoField, SeparatorField, InlineRadioSelect
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib import parameters
 
@@ -34,7 +34,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         choices=[('local', ugettext_lazy("Local")),
                  ('ldap', "LDAP")],
         initial="local",
-        help_text=ugettext_lazy("The backend used for authentication")
+        help_text=ugettext_lazy("The backend used for authentication"),
+        widget=InlineRadioSelect
     )
 
     password_scheme = forms.ChoiceField(
@@ -80,7 +81,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         choices=[('searchbind', ugettext_lazy("Search and bind")),
                  ('directbind', ugettext_lazy("Direct bind"))],
         initial='searchbind',
-        help_text=ugettext_lazy("Choose the authentication method to use")
+        help_text=ugettext_lazy("Choose the authentication method to use"),
+        widget=InlineRadioSelect
     )
 
     ldap_bind_dn = forms.CharField(

@@ -2,7 +2,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from modoboa.lib.parameters import AdminParametersForm, UserParametersForm
-from modoboa.lib.formutils import SeparatorField, YesNoField
+from modoboa.lib.formutils import SeparatorField, YesNoField, InlineRadioSelect
 
 
 class ParametersForm(AdminParametersForm):
@@ -50,7 +50,8 @@ class ParametersForm(AdminParametersForm):
                  ("starttls", "STARTTLS"),
                  ("ssl", "SSL/TLS")],
         initial="none",
-        help_text=_("Use a secured connection to access SMTP server")
+        help_text=_("Use a secured connection to access SMTP server"),
+        widget=InlineRadioSelect
     )
     
     smtp_port = forms.IntegerField(
@@ -75,7 +76,8 @@ class UserSettings(UserParametersForm):
         initial="plain",
         label=_("Default message display mode"),
         choices=[("html", "html"), ("plain", "text")],
-        help_text=_("The default mode used when displaying a message")
+        help_text=_("The default mode used when displaying a message"),
+        widget=InlineRadioSelect
     )
 
     enable_links = YesNoField(
@@ -122,7 +124,8 @@ class UserSettings(UserParametersForm):
         initial="plain",
         label=_("Default editor"),
         choices=[("html", "html"), ("plain", "text")],
-        help_text=_("The default editor to use when composing a message")
+        help_text=_("The default editor to use when composing a message"),
+        widget=InlineRadioSelect
     )
 
     signature = forms.CharField(

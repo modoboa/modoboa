@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from sievelib.managesieve import SUPPORTED_AUTH_MECHS
 from modoboa.lib.parameters import AdminParametersForm, UserParametersForm
-from modoboa.lib.formutils import SeparatorField, YesNoField
+from modoboa.lib.formutils import SeparatorField, YesNoField, InlineRadioSelect
 
 
 def supported_auth_mechs():
@@ -51,7 +51,8 @@ class UserSettings(UserParametersForm):
         initial="raw",
         label=_("Editor mode"),
         choices=[("raw", "raw"), ("gui", "simplified")],
-        help_text=_("Select the mode you want the editor to work in")
+        help_text=_("Select the mode you want the editor to work in"),
+        widget=InlineRadioSelect
     )
 
     @staticmethod
