@@ -1,46 +1,31 @@
 # coding: utf-8
-from django.utils.translation import ugettext as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from modoboa.lib.webutils import ajax_simple_response
 from modoboa.lib import parameters
-from modoboa.lib.templatetags.libextras import pagination_bar
-from modoboa.admin.tables import *
-from exceptions import *
 
-def render_listing(request, objtype, **kwargs):
-    """Common function to render a listing
 
-    All listing pages available into the admin application use the
-    same layout, rendered by this function.
+def get_sort_order(qdict, default, allowed_values=None):
+    """Return a sort order from a querydict object
 
-    :param request: a ``Request`` object
-    :param objtype: the object type's name (lowercase)
+    :param QueryDict qdict: the object to analyse
+    :param string default: the default sort order if no one is found
+    :param list allowed_values: an optional list of allowed values
+    :return: a 2uple of strings
     """
-    tblclass = "%sTable" % objtype.capitalize()
-    if not globals().has_key(tblclass):
-        raise AdminError(_("Unknown object type"))
-    tblclass = globals()[tblclass]
-    
-    if request.GET.has_key("domid"):
-        kwargs["domid"] = request.GET["domid"]
+    sort_order = qdict.get("sort_order", default)
+    if sort_order.startswith("-"):
+        sort_dir = "-"
+        sort_order = sort_order[1:]
     else:
-        kwargs["domid"] = ""
-    paginator = Paginator(kwargs["objects"], 
-                          int(parameters.get_admin("ITEMS_PER_PAGE")))
+        sort_dir = ""
+    if allowed_values is not None and not sort_order in allowed_values:
+        return (default, "")
+    return (sort_order, sort_dir)
+
+
+def get_listing_page(objects, pagenum):
+    paginator = Paginator(objects, int(parameters.get_admin("ITEMS_PER_PAGE")))
     try:
-        pagenum = request.GET.get("page", "1")
-    except ValueError:
-        pagenum = 1
-    try:
-        page = paginator.page(pagenum)
+        page = paginator.page(int(pagenum))
     except (EmptyPage, PageNotAnInteger):
         page = paginator.page(paginator.num_pages)
-    
-    return ajax_simple_response({
-        "table" : tblclass(request, page.object_list).render(),
-        "page" : page.number,
-        "paginbar" : pagination_bar(page),
-        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES", 
-                                                 raise_error=False),
-        "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL")
-    })
+    return page

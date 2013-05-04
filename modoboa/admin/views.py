@@ -6,14 +6,15 @@ from django.contrib.auth.decorators \
     import login_required, permission_required, user_passes_test
 from django.db.models import Q
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.db import transaction, IntegrityError
 import cStringIO
 import csv
 
-from lib import *
+from lib import get_sort_order, get_listing_page
 from forms import *
 from models import * 
-from modoboa.admin.tables import *
+from modoboa.admin.tables import DomainsTable
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import *
 from modoboa.lib.webutils \
@@ -21,40 +22,52 @@ from modoboa.lib.webutils \
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.models import Parameter
 from modoboa.lib.formutils import CreationWizard
+from modoboa.lib.templatetags.libextras import pagination_bar
 
 
 @login_required
 def index(request):
     return HttpResponseRedirect(reverse(domains))
 
+
 @login_required
 @user_passes_test(lambda u: u.has_perm("admin.view_domains") or u.has_perm("admin.view_mailboxes"))
 def _domains(request):
+    sort_order, sort_dir = get_sort_order(request.GET, "name")
     domains = request.user.get_domains()
     squery = request.GET.get("searchquery", None)
     if squery is not None:
         q = Q(name__contains=squery)
         q |= Q(domainalias__name__contains=squery)
         domains = domains.filter(q).distinct()
-    return render_listing(request, "domains", objects=domains)
+    if sort_order in ["name", "domainalias__name"]:
+        domains = domains.order_by("%s%s" % (sort_dir, sort_order))
+    page = get_listing_page(domains, request.GET.get("page", 1))
+    return ajax_simple_response({
+        "table": DomainsTable(request, page.object_list).render(),
+        "page": page.number,
+        "paginbar": pagination_bar(page),
+        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",
+                                                 raise_error=False),
+        "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL")
+    })
+
 
 @login_required
 def domains(request, tplname="admin/domains.html"):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
             return HttpResponseRedirect(reverse(identities))
-        
         return HttpResponseRedirect(reverse("modoboa.userprefs.views.index"))
-    
-    return render(request, tplname, {
-            "selection" : "domains"
-            })
+    return render(request, tplname, {"selection": "domains"})
+
 
 @login_required
 @permission_required("admin.add_user")
 def domains_list(request):
-    doms = map(lambda dom: dom.name, request.user.get_domains())
+    doms = [dom.name for dom in request.user.get_domains()]
     return ajax_simple_response(doms)
+
 
 def _validate_domain(request, form, successmsg, commonctx, tplname, 
                      callback=None, tpl_form_name="form"):
@@ -77,12 +90,13 @@ def _validate_domain(request, form, successmsg, commonctx, tplname,
     commonctx["error"] = error
     return ajax_response(request, status="ko", template=tplname, **commonctx)
 
+
 @login_required
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
 def newdomain(request, tplname="common/wizard_forms.html"):
     events.raiseEvent("CanCreate", request.user, "domains")
-   
+
     def newdomain_cb(steps):
         genform = steps[0]["form"]
         genform.is_valid()
@@ -311,34 +325,38 @@ def delalias(request):
 def deldlist(request):
     return _del_alias(request, "Distribution list deleted", "Distribution lists deleted")
 
+
 @login_required
 @permission_required("admin.delete_alias")
 @transaction.commit_on_success
 def delforward(request):
     return _del_alias(request, "Forward deleted", "Forwards deleted")
 
+
 @login_required
 @user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
 def _identities(request):
     idents_list = request.user.get_identities(request.GET)
-    objects = sorted(idents_list, key=lambda o: o.identity)
-    
-    paginator = Paginator(objects, int(parameters.get_admin("ITEMS_PER_PAGE")))
-    pagenum = int(request.GET.get("page", "1"))
-    try:
-        page = paginator.page(pagenum)
-    except (EmptyPage, PageNotAnInteger):
-        page = paginator.page(paginator.num_pages)
-    
+    sort_order, sort_dir = get_sort_order(request.GET, "identity",
+                                          ["identity", "name_or_rcpt", "tags"])
+    if sort_order in ["identity", "name_or_rcpt"]:
+        objects = sorted(idents_list, key=lambda o: getattr(o, sort_order),
+                         reverse=sort_dir == '-')
+    else:
+        objects = sorted(idents_list, key=lambda o: o.tags[0],
+                         reverse=sort_dir == '-')
+    page = get_listing_page(objects, request.GET.get("page", 1))
     return ajax_simple_response({
-        "table" : _render_to_string(request, "admin/identities_table.html", {
-            "identities" : page.object_list,
-            "tableid" : "objects_table"
+        "table": _render_to_string(request, "admin/identities_table.html", {
+            "identities": page.object_list,
+            "tableid": "objects_table"
         }),
-        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES", raise_error=False),
-        "page" : page.number,
-        "paginbar" : pagination_bar(page)
+        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",
+                                                 raise_error=False),
+        "page": page.number,
+        "paginbar": pagination_bar(page)
     })
+
 
 @login_required
 @user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
@@ -365,14 +383,9 @@ def mboxes_list(request):
 @login_required
 @permission_required("admin.add_mailbox")
 def list_quotas(request, tplname="admin/quotas.html"):
-    sort_order = request.GET.get("sort_order", "address")
+    sort_order, sort_dir = get_sort_order(request.GET, "address")
     mboxes = request.user.get_mailboxes(request.GET.get("searchquery", None))
     mboxes = mboxes.exclude(quota=0)
-    if sort_order.startswith("-"):
-        sort_dir = "-"
-        sort_order = sort_order[1:]
-    else:
-        sort_dir = ""
     if sort_order in ["address", "quota", "quota_value__bytes"]:
         mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
     elif sort_order == "quota_usage":

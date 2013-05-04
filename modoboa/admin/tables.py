@@ -11,10 +11,13 @@ class DomainsTable(tables.Table):
     name = tables.LinkColumn(
         "name", label=ugettext_lazy("Name"), 
         urlpattern="modoboa.admin.views.editdomain",
-        title=_("Edit domain"), modal=True, modalcb="admin.domainform_cb"
-        )
-    domaliases = tables.Column("domainalias_set", 
-                               label=ugettext_lazy("Alias(es)"), safe=True)
+        title=_("Edit domain"), modal=True, modalcb="admin.domainform_cb",
+        sortable=True, sort_order="name"
+    )
+    domaliases = tables.Column(
+        "domainalias_set", label=ugettext_lazy("Alias(es)"), safe=True,
+        sortable=True, sort_order="domainalias__name"
+    )
     actions = tables.ActionColumn("actions", label=ugettext_lazy("Actions"), 
                                   defvalue=domain_actions)
 
@@ -46,31 +49,3 @@ class ExtensionsTable(tables.Table):
     descr = tables.Column("description", label=ugettext_lazy("Description"))
     
     cols_order = ["selection", "label", "version", "descr"]
-
-class IdentitiesTable(tables.Table):
-    idkey = "id"
-    styles = "table"
-    tags = tables.Column("tags", label=ugettext_lazy("Tags"), safe=True)
-    identity = tables.LinkColumn(
-        "identity", label=ugettext_lazy("Email/Username"),
-        modal=True,
-        urlpattern={"User" : "modoboa.admin.views.editaccount",
-                    "Alias" : "modoboa.admin.views.editalias_dispatcher"},
-        modalcb={"User" : "admin.editaccount_cb", "Alias" : "admin.aliasform_cb"}
-        )
-    name_or_rcpt = tables.Column("name_or_rcpt", label=ugettext_lazy("Fullname/Recipient"))
-    actions = tables.ActionColumn("actions",  label=ugettext_lazy("Actions"),
-                                  defvalue=identity_actions)
-
-    cols_order = ["identity", "name_or_rcpt", "tags", "actions"]
-
-    def __init__(self, request, identities):
-        super(IdentitiesTable, self).__init__(request)
-        self.populate(self._rows_from_model(identities, True))
-
-    def row_class(self, request, obj):
-        if obj.__class__.__name__ == "User" and not obj.is_active:
-            return "muted"
-        if not obj.enabled:
-            return "muted"
-        return ""
