@@ -145,9 +145,8 @@ def register(formclass, label):
     ``UserParametersForm``.
 
     :param formclass: a form class
-    :param label: 
+    :param string label: the label to display in parameters or settings pages
     """
-    from models import Parameter
     from modoboa.lib.formutils import SeparatorField
 
     if issubclass(formclass, AdminParametersForm):
@@ -285,18 +284,33 @@ def get_user(user, name, app=None):
     return p.value.decode("unicode_escape")
 
 
+def get_sorted_apps(level, first="admin"):
+    sorted_apps = [first]
+    sorted_apps += sorted(
+        [app for app in _params[level].keys() if app != first],
+        key=lambda app: _params[level][app]["label"]
+    )
+    return sorted_apps
+
+
 def get_admin_forms(*args, **kwargs):
-    for formdef in _params['A'].values():
-        yield {"label": formdef["label"], "form": formdef["form"](*args, **kwargs)}
+    for app in get_sorted_apps('A'):
+        formdef = _params['A'][app]
+        yield {"label": formdef["label"],
+               "form": formdef["form"](*args, **kwargs)}
 
 
 def get_user_forms(user, *args, **kwargs):
     kwargs["user"] = user
+    sorted_apps = get_sorted_apps('U', first="general")
+
     def realfunc():
-        for formdef in _params['U'].values():
+        for app in sorted_apps:
+            formdef = _params['U'][app]
             if not formdef["form"].has_access(user):
                 continue
-            yield {"label": formdef["label"], "form": formdef["form"](*args, **kwargs)}
+            yield {"label": formdef["label"],
+                   "form": formdef["form"](*args, **kwargs)}
 
     return realfunc
 
