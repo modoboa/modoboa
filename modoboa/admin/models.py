@@ -264,7 +264,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                 .values_list('object_id', flat=True)
             q = Q(pk__in=ids)
             if squery:
-                q &= Q(username__contains=squery)
+                q &= Q(username__icontains=squery) | Q(email__icontains=squery)
             if grpfilter and len(grpfilter):
                 if "SuperAdmins" in grpfilter:
                     q &= Q(is_superuser=True)
@@ -284,11 +284,14 @@ class User(AbstractBaseUser, PermissionsMixin):
                 .values_list('object_id', flat=True)
             q = Q(pk__in=ids)
             if squery:
-                if squery.find('@') != -1:
+                if '@' in squery:
                     local_part, domname = split_mailbox(squery)
-                    q &= Q(address__contains=local_part, domain__name__contains=domname)
+                    if local_part:
+                        q &= Q(address__icontains=local_part)
+                    if domname:
+                        q &= Q(domain__name__icontains=domname)
                 else:
-                    q &= Q(address__contains=squery)
+                    q &= Q(address__icontains=squery) | Q(domain__name__icontains=squery)
             aliases = Alias.objects.select_related().filter(q)
             if idtfilter:
                 aliases = filter(lambda a: a.type in idtfilter, aliases)
