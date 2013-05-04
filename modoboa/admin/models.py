@@ -1136,6 +1136,9 @@ class Extension(models.Model):
     def __init__(self, *args, **kwargs):
         super(Extension, self).__init__(*args, **kwargs)
 
+    def __unicode__(self):
+        return self.name
+
     def __get_ext_instance(self):
         if not self.name:
             return None
@@ -1166,6 +1169,8 @@ class Extension(models.Model):
 
     def off(self):
         self.__get_ext_instance()
+        if self.instance is None:
+            return
         self.instance.destroy()
 
         self.enabled = False

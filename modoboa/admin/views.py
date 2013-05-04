@@ -13,10 +13,10 @@ import csv
 
 from lib import get_sort_order, get_listing_page
 from forms import *
-from models import * 
-from modoboa.admin.tables import DomainsTable
+from models import *
+from modoboa.admin.tables import DomainsTable, ExtensionsTable
 from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import *
+from modoboa.lib.exceptions import ModoboaException, PermDeniedException
 from modoboa.lib.webutils \
     import _render, ajax_response, ajax_simple_response, _render_to_string
 from modoboa.lib.emailutils import split_mailbox
@@ -104,11 +104,11 @@ def newdomain(request, tplname="common/wizard_forms.html"):
         domain.post_create(request.user)
         steps[1]["form"].save(request.user, domain)
 
-    commonctx = {"title" : _("New domain"),
-                 "action_label" : _("Create"),
-                 "action_classes" : "submit",
-                 "action" : reverse(newdomain),
-                 "formid" : "domform"}
+    commonctx = {"title": _("New domain"),
+                 "action_label": _("Create"),
+                 "action_classes": "submit",
+                 "action": reverse(newdomain),
+                 "formid": "domform"}
     cwizard = CreationWizard(newdomain_cb)
     cwizard.add_step(DomainFormGeneral, _("General"),
                      [dict(classes="btn-inverse next", label=_("Next"))],
@@ -127,17 +127,21 @@ def newdomain(request, tplname="common/wizard_forms.html"):
                 status="ok", title=cwizard.get_title(data + 1), stepid=data
             ))
         if retcode == 2:
-            return ajax_simple_response(dict(status="ok", respmsg=_("Domain created")))
+            return ajax_simple_response(
+                dict(status="ok", respmsg=_("Domain created"))
+            )
 
         from modoboa.lib.templatetags.libextras import render_form
         return ajax_simple_response(dict(
-            status="ko", stepid=data, form=render_form(cwizard.steps[data]["form"])
+            status="ko", stepid=data,
+            form=render_form(cwizard.steps[data]["form"])
         ))
 
     cwizard.create_forms()
     commonctx.update(steps=cwizard.steps)
     commonctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
     return render(request, tplname, commonctx)
+
 
 @login_required
 @permission_required("admin.view_domains")
@@ -149,19 +153,19 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     domadmins = filter(
         lambda u: request.user.can_access(u) and not u.is_superuser, 
         domain.admins
-        )
+    )
     if not request.user.is_superuser:
         domadmins = filter(lambda u: u.group == "DomainAdmins", domadmins)
 
     instances = dict(general=domain)
     events.raiseEvent("FillDomainInstances", request.user, domain, instances)
 
-    commonctx = {"title" : domain.name,
-                 "action_label" : _("Update"),
-                 "action_classes" : "submit",
-                 "action" : reverse(editdomain, args=[dom_id]),
-                 "formid" : "domform",
-                 "domain" : domain}
+    commonctx = {"title": domain.name,
+                 "action_label": _("Update"),
+                 "action_classes": "submit",
+                 "action": reverse(editdomain, args=[dom_id]),
+                 "formid": "domform",
+                 "domain": domain}
     if request.method == "POST":
         def editdomain_cb(user, newdomain):
             events.raiseEvent("DomainModified", domain)
@@ -175,12 +179,12 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     commonctx["domadmins"] = domadmins
     return render(request, tplname, commonctx)
 
+
 @login_required
 @permission_required("admin.delete_domain")
 @transaction.commit_on_success
 def deldomain(request):
     selection = request.GET["selection"].split(",")
-    error = None
     keepdir = True if request.GET.get("keepdir", "false") == "true" else False
     try:
         mb = Mailbox.objects.get(user__id=request.user.id)
@@ -195,7 +199,8 @@ def deldomain(request):
         dom.delete(request.user, keepdir)
 
     msg = ungettext("Domain deleted", "Domains deleted", len(selection))
-    return ajax_simple_response({"status" : "ok", "respmsg" : msg})
+    return ajax_simple_response({"status": "ok", "respmsg": msg})
+
 
 def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None):
     """Alias validation
@@ -209,18 +214,18 @@ def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None
             alias = form.save()
         except IntegrityError:
             raise AdminError(_("Alias with this name already exists"))
-            
         if callback:
             callback(request.user, alias)
-        return ajax_simple_response({"status" : "ok", "respmsg" : successmsg})
+        return ajax_simple_response({"status": "ok", "respmsg": successmsg})
 
-    if request.POST.has_key("targets"):
+    if "targets" in request.POST:
         targets = request.POST.getlist("targets")
         commonctx["targets"] = targets[:-1]
 
     commonctx["form"] = form
     commonctx["error"] = error
     return ajax_response(request, status="ko", template=tplname, **commonctx)
+
 
 def _new_alias(request, tplname, formclass, ctx, successmsg):
     events.raiseEvent("CanCreate", request.user, "mailbox_aliases")
@@ -236,35 +241,39 @@ def _new_alias(request, tplname, formclass, ctx, successmsg):
     ctx["form"] = form
     return render(request, tplname, ctx)
 
+
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
 def newdlist(request):
-    ctx = dict(title=_("New distribution list"), 
+    ctx = dict(title=_("New distribution list"),
                action=reverse(newdlist),
                formid="aliasform")
-    return _new_alias(request, "common/generic_modal_form.html", 
+    return _new_alias(request, "common/generic_modal_form.html",
                       DlistForm, ctx, _("Distribution list created"))
+
 
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
 def newalias(request):
-    ctx = dict(title=_("New alias"), 
+    ctx = dict(title=_("New alias"),
                action=reverse(newalias),
                formid="aliasform")
-    return _new_alias(request, "common/generic_modal_form.html", 
+    return _new_alias(request, "common/generic_modal_form.html",
                       AliasForm, ctx, _("Alias created"))
+
 
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
 def newforward(request):
-    ctx = dict(title=_("New forward"), 
+    ctx = dict(title=_("New forward"),
                action=reverse(newforward),
                formid="aliasform")
-    return _new_alias(request, "common/generic_modal_form.html", 
+    return _new_alias(request, "common/generic_modal_form.html",
                       ForwardForm, ctx, _("Forward created"))
+
 
 def _edit_alias(request, alias, tplname, formclass, ctx, successmsg):
     if not request.user.can_access(alias):
@@ -279,28 +288,34 @@ def _edit_alias(request, alias, tplname, formclass, ctx, successmsg):
     ctx["form"] = form
     return render(request, tplname, ctx)
 
+
 def editalias(request, alias, ctx):
     return _edit_alias(request, alias, "common/generic_modal_form.html",
                        AliasForm, ctx, _("Alias modified"))
+
 
 def editdlist(request, alias, ctx):
     return _edit_alias(request, alias, "admin/dlistform.html",
                        DlistForm, ctx, _("Distribution list modified"))
 
+
 def editforward(request, alias, ctx):
     return _edit_alias(request, alias, "common/generic_modal_form.html",
                        ForwardForm, ctx, _("Forward modified"))
+
 
 @login_required
 @permission_required("admin.change_alias")
 def editalias_dispatcher(request, alid):
     alias = Alias.objects.get(pk=alid)
-    ctx = dict(action=reverse(editalias_dispatcher, args=[alias.id]), formid="aliasform")
+    ctx = dict(action=reverse(editalias_dispatcher,
+                              args=[alias.id]), formid="aliasform")
     if len(alias.get_recipients()) >= 2:
         return editdlist(request, alias, ctx)
     if alias.extmboxes != "":
         return editforward(request, alias, ctx)
     return editalias(request, alias, ctx)
+
 
 def _del_alias(request, msg, msgs):
     selection = request.GET["selection"].split(",")
@@ -311,7 +326,8 @@ def _del_alias(request, msg, msgs):
         alias.delete()
 
     msg = ungettext(msg, msgs, len(selection))
-    return ajax_simple_response({"status" : "ok", "respmsg" : msg})
+    return ajax_simple_response({"status": "ok", "respmsg": msg})
+
 
 @login_required
 @permission_required("admin.delete_alias")
@@ -319,11 +335,13 @@ def _del_alias(request, msg, msgs):
 def delalias(request):
     return _del_alias(request, "Alias deleted", "Aliases deleted")
 
+
 @login_required
 @permission_required("admin.delete_alias")
 @transaction.commit_on_success
 def deldlist(request):
-    return _del_alias(request, "Distribution list deleted", "Distribution lists deleted")
+    return _del_alias(request, "Distribution list deleted",
+                      "Distribution lists deleted")
 
 
 @login_required
@@ -362,16 +380,18 @@ def _identities(request):
 @user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
 def identities(request, tplname="admin/identities.html"):
     return render(request, tplname, {
-            "selection" : "identities",
-            "deflocation" : "list/"
-            })
+        "selection": "identities",
+        "deflocation": "list/"
+    })
+
 
 @login_required
 @permission_required("admin.add_user")
 def accounts_list(request):
     accs = User.objects.filter(is_superuser=False).exclude(groups__name='SimpleUsers')
-    res = map(lambda a: a.username, accs.all())
+    res = [a.username for a in accs.all()]
     return ajax_simple_response(res)
+
 
 @login_required
 @permission_required("admin.add_mailbox")
@@ -397,12 +417,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
         )
     else:
         raise AdminError(_("Invalid request"))
-    paginator = Paginator(mboxes, int(parameters.get_admin("ITEMS_PER_PAGE")))
-    pagenum = int(request.GET.get("page", "1"))
-    try:
-        page = paginator.page(pagenum)
-    except (EmptyPage, PageNotAnInteger):
-        page = paginator.page(paginator.num_pages)
+    page = get_listing_page(mboxes, request.GET.get("page", 1))
     return ajax_simple_response({
         "status": "ok",
         "page": page.number,
@@ -430,7 +445,7 @@ def newaccount(request, tplname='common/wizard_forms.html'):
         account.post_create(request.user)
 
         mailform = steps[1]["form"]
-        mb = mailform.save(request.user, account)
+        mailform.save(request.user, account)
 
     ctx = dict(
         title=_("New account"),
@@ -453,20 +468,24 @@ def newaccount(request, tplname='common/wizard_forms.html'):
             raise AdminError(data)
         if retcode == 1:
             return ajax_simple_response(dict(
-                    status="ok", title=cwizard.get_title(data + 1), stepid=data
-                    ))
+                status="ok", title=cwizard.get_title(data + 1), stepid=data
+            ))
         if retcode == 2:
-            return ajax_simple_response(dict(status="ok", respmsg=_("Account created")))
+            return ajax_simple_response(dict(
+                status="ok", respmsg=_("Account created")
+            ))
 
         from modoboa.lib.templatetags.libextras import render_form
         return ajax_simple_response(dict(
-                status="ko", stepid=data, form=render_form(cwizard.steps[data]["form"])
-                ))
+            status="ko", stepid=data,
+            form=render_form(cwizard.steps[data]["form"])
+        ))
 
     cwizard.create_forms()
     ctx.update(steps=cwizard.steps)
     ctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
     return render(request, tplname, ctx)
+
 
 @login_required
 @permission_required("admin.change_user")
@@ -488,11 +507,11 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
         action=reverse(editaccount, args=[accountid]),
         action_label=_("Update"),
         action_classes="submit"
-        )
+    )
 
     if request.method == "POST":
         classes = {}
-        form = AccountForm(request.user, request.POST, 
+        form = AccountForm(request.user, request.POST,
                            instances=instances, classes=classes)
         account.oldgroup = account.group
         if form.is_valid(mandatory_only=True):
@@ -500,7 +519,9 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
             if form.is_valid(optional_only=True):
                 events.raiseEvent("AccountModified", account, form.account)
                 form.save()
-                return ajax_simple_response(dict(status="ok", respmsg=_("Account updated")))
+                return ajax_simple_response(
+                    dict(status="ok", respmsg=_("Account updated"))
+                )
             transaction.rollback()
 
         ctx["tabs"] = form
@@ -511,6 +532,7 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
     if active_tab_id != "default":
         ctx["tabs"].active_id = active_tab_id
     return render(request, tplname, ctx)
+
 
 @login_required
 @permission_required("admin.delete_user")
@@ -523,7 +545,8 @@ def delaccount(request):
         account.delete(request.user, keepdir)
 
     msg = ungettext("Account deleted", "Accounts deleted", len(selection))
-    return ajax_simple_response({"status" : "ok", "respmsg" : msg})
+    return ajax_simple_response({"status": "ok", "respmsg": msg})
+
 
 @login_required
 @permission_required("admin.add_domain")
@@ -542,21 +565,26 @@ def remove_permission(request):
     domain.remove_admin(account)
     return ajax_simple_response(dict(status="ok"))
 
+
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewsettings(request, tplname='admin/settings_header.html'):
     return render(request, tplname, {
-            "selection" : "settings"
-            })
+        "selection": "settings"
+    })
+
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewparameters(request, tplname='admin/parameters.html'):
     return ajax_simple_response({
-        "status" : "ok",
-        "left_selection" : "parameters",
-        "content" : render_to_string(tplname, {"forms" : parameters.get_admin_forms})
+        "status": "ok",
+        "left_selection": "parameters",
+        "content": render_to_string(tplname, {
+            "forms": parameters.get_admin_forms
+        })
     })
+
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -567,14 +595,19 @@ def saveparameters(request):
             form.save()
             form.to_django_settings()
             continue
-        return ajax_simple_response({"status": "ko", "prefix": form.app, "errors": form.errors})
-    return ajax_simple_response(dict(status="ok", respmsg=_("Parameters saved")))
+        return ajax_simple_response({
+            "status": "ko", "prefix": form.app, "errors": form.errors
+        })
+    return ajax_simple_response(dict(
+        status="ok", respmsg=_("Parameters saved")
+    ))
+
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewextensions(request, tplname='admin/extensions.html'):
     from modoboa.extensions import exts_pool
-        
+
     exts = exts_pool.list_all()
     for ext in exts:
         try:
@@ -589,18 +622,17 @@ def viewextensions(request, tplname='admin/extensions.html'):
 
     tbl = ExtensionsTable(request, exts)
     return ajax_simple_response({
-            "status" : "ok",
-            "content" : render_to_string(tplname, {"extensions" : tbl})
-            })
+        "status": "ok",
+        "content": render_to_string(tplname, {"extensions": tbl})
+    })
+
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def saveextensions(request):
-    from modoboa import extensions
-
     actived_exts = Extension.objects.filter(enabled=True)
     found = []
-    for k, v in request.POST.iteritems():
+    for k in request.POST.keys():
         if k.startswith("select_"):
             parts = k.split("_", 1)
             dbext = Extension.objects.get(name=parts[1])            
@@ -613,16 +645,18 @@ def saveextensions(request):
             ext.off()
 
     return ajax_simple_response(dict(
-            status="ok", respmsg=_("Modifications applied.")
-            ))
+        status="ok", respmsg=_("Modifications applied.")
+    ))
+
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def information(request, tplname="admin/information.html"):
     return ajax_simple_response({
-            "status" : "ok", 
-            "content" : render_to_string(tplname, {})
-            })
+        "status": "ok",
+        "content": render_to_string(tplname, {})
+    })
+
 
 @transaction.commit_on_success
 def import_domain(user, row, formopts):
@@ -630,11 +664,13 @@ def import_domain(user, row, formopts):
     dom = Domain()
     dom.from_csv(user, row)
 
+
 @transaction.commit_on_success
 def import_domainalias(user, row, formopts):
     """Specific code for domain aliases import"""
     domalias = DomainAlias()
     domalias.from_csv(user, row)
+
 
 @transaction.commit_on_success
 def import_account(user, row, formopts):
@@ -642,20 +678,25 @@ def import_account(user, row, formopts):
     account = User()
     account.from_csv(user, row, formopts["crypt_password"])
 
+
 @transaction.commit_on_success
 def _import_alias(user, row, **kwargs):
     """Specific code for aliases import"""
     alias = Alias()
     alias.from_csv(user, row, **kwargs)
 
+
 def import_alias(user, row, formopts):
     _import_alias(user, row, expected_elements=4)
+
 
 def import_forward(user, row, formopts):
     _import_alias(user, row, expected_elements=4)
 
+
 def import_dlist(user, row, formopts):
     _import_alias(user, row)
+
 
 def importdata(request, formclass=ImportDataForm):
     """Generic import function
@@ -671,9 +712,9 @@ def importdata(request, formclass=ImportDataForm):
     form = formclass(request.POST, request.FILES)
     if form.is_valid():
         try:
-            reader = csv.reader(request.FILES['sourcefile'], 
+            reader = csv.reader(request.FILES['sourcefile'],
                                 delimiter=form.cleaned_data['sepchar'])
-        except Exception, e:
+        except csv.Error, e:
             error = str(e)
 
         if error is None:
@@ -695,14 +736,15 @@ def importdata(request, formclass=ImportDataForm):
                     cpt += 1
                 msg = _("%d objects imported successfully" % cpt)
                 return render(request, "admin/import_done.html", {
-                        "status" : "ok", "msg" : msg
-                        })
+                    "status": "ok", "msg": msg
+                })
             except (ModoboaException), e:
                 error = str(e)
 
     return render(request, "admin/import_done.html", {
-            "status" : "ko", "msg" : error
-            })
+        "status": "ko", "msg": error
+    })
+
 
 @login_required
 @user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
@@ -731,8 +773,9 @@ def import_identities(request):
         target="import_target",
         form=ImportIdentitiesForm(),
         helptext=helptext
-        )
+    )
     return render(request, "admin/importform.html", ctx)
+
 
 def _export(content, filename):
     """Export a csv file's content
@@ -747,16 +790,17 @@ def _export(content, filename):
     resp["Content-Disposition"] = 'attachment; filename="%s"' % filename
     return resp
 
+
 @login_required
 @permission_required(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
 def export_identities(request):
     ctx = {
-        "title" : _("Export identities"),
-        "action_label" : _("Export"),
-        "action_classes" : "submit",
-        "formid" : "exportform",
-        "action" : reverse(export_identities),
-        }
+        "title": _("Export identities"),
+        "action_label": _("Export"),
+        "action_classes": "submit",
+        "formid": "exportform",
+        "action": reverse(export_identities),
+    }
 
     if request.method == "POST":
         form = ExportIdentitiesForm(request.POST)
@@ -769,8 +813,9 @@ def export_identities(request):
         fp.close()
         return _export(content, form.cleaned_data["filename"])
 
-    ctx["form"] = ExportIdentitiesForm()    
+    ctx["form"] = ExportIdentitiesForm()
     return render(request, "common/generic_modal_form.html", ctx)
+
 
 @login_required
 @permission_required("admin.add_domain")
@@ -798,19 +843,20 @@ def import_domains(request):
         target="import_target",
         helptext=helptext,
         form=ImportDataForm()
-        )
+    )
     return render(request, "admin/importform.html", ctx)
+
 
 @login_required
 @permission_required("admin.add_domain")
 def export_domains(request):
     ctx = {
-        "title" : _("Export domains"),
-        "action_label" : _("Export"),
-        "action_classes" : "submit",
-        "formid" : "exportform",
-        "action" : reverse(export_domains),
-        }
+        "title": _("Export domains"),
+        "action_label": _("Export"),
+        "action_classes": "submit",
+        "formid": "exportform",
+        "action": reverse(export_domains),
+    }
 
     if request.method == "POST":
         form = ExportDomainsForm(request.POST)
