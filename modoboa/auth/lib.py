@@ -6,7 +6,8 @@ from modoboa.lib import parameters
 def encrypt(clear):
     key = parameters.get_admin("SECRET_KEY", app="admin")
     obj = AES.new(key, AES.MODE_ECB)
-    clear = str(clear)
+    if type(clear) is unicode:
+        clear = clear.encode("utf-8")
     if len(clear) % AES.block_size:
         clear += " " * (AES.block_size - len(clear) % AES.block_size)
     ciph = obj.encrypt(clear)
