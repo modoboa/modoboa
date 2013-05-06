@@ -23,7 +23,7 @@ def dologin(request):
                     request.session.set_expiry(0)
                 login(request, user)
                 if request.user.id != 1:
-                    request.session["password"] = encrypt(request.POST["password"])
+                    request.session["password"] = encrypt(form.cleaned_data["password"])
 
                 request.session["django_language"] = \
                     parameters.get_user(request.user, "LANG", app="general")
