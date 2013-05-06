@@ -359,7 +359,8 @@ Identities.prototype = {
     generalform_init: function() {
         $("#id_role").change($.proxy(function(e) {
             var $this = $(e.target);
-            if ($this.attr("value") == "SimpleUsers") {
+            var value = $this.attr("value");
+            if (value == "SimpleUsers" || value == "") {
                 this.simpleuser_mode();
             } else {
                 this.normal_mode();
@@ -395,7 +396,8 @@ Identities.prototype = {
     },
 
     mailform_prefill: function() {
-        if (!$("#id_role").length || $("#id_role").attr("value") == "SimpleUsers") {
+        var $role = $("#id_role");
+        if (!$role.length || $role.attr("value") == "" || $role.attr("value") == "SimpleUsers") {
             $("#id_email").attr("value", $("#id_username").attr("value"));
         }
     },
@@ -434,7 +436,7 @@ Identities.prototype = {
         });
         $("#id_recipients").dynamic_input();
         $("#id_int_recipient").autocompleter({
-            choices: get_mboxes_list
+            choices: get_allowed_recipients
         });
         $(".submit").one('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {

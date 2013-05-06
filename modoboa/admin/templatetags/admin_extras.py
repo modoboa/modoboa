@@ -220,7 +220,7 @@ def identity_modify_link(identity, active_tab='default'):
         linkdef["url"] += "?active_tab=%s" % active_tab
         linkdef["modalcb"] = "admin.editaccount_cb"
     else:
-        linkdef["url"] = reverse("modoboa.admin.views.editalias_dispatcher", args=[identity.id])
+        linkdef["url"] = reverse("modoboa.admin.views.editalias", args=[identity.id])
         linkdef["modalcb"] = "admin.aliasform_cb"
     return render_link(linkdef)
 

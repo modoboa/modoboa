@@ -1,13 +1,14 @@
 # coding: utf-8
 from django import forms
 from django.contrib.auth.models import Group
-from modoboa.admin.models import *
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
 from modoboa.admin.templatetags.admin_extras import gender
+from modoboa.lib import events, parameters
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import *
+from modoboa.admin.models import User, Domain, DomainAlias, Mailbox, Alias
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
@@ -54,7 +55,6 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             self._errors["name"] = self.error_class([_("An alias with this name already exists")])
             del cleaned_data["name"]
 
-        errors = []
         for k in cleaned_data.keys():
             if not k.startswith("aliases"):
                 continue
@@ -198,7 +198,7 @@ class DomainForm(TabForms):
             f["instance"].save(user)
 
 
-class DlistForm(forms.ModelForm, DynamicForm):
+class AliasForm(forms.ModelForm, DynamicForm):
     email = forms.EmailField(
         label=ugettext_lazy("Email address"),
         help_text=ugettext_lazy("The distribution list address. Use the '*' character to create a 'catchall' address (ex: *@domain.tld).")
@@ -214,7 +214,7 @@ class DlistForm(forms.ModelForm, DynamicForm):
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
-        super(DlistForm, self).__init__(*args, **kwargs)
+        super(AliasForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['email', 'recipients', 'enabled']
 
         if len(args) and isinstance(args[0], QueryDict):
@@ -223,6 +223,10 @@ class DlistForm(forms.ModelForm, DynamicForm):
             dlist = kwargs["instance"]
             self.fields["email"].initial = dlist.full_address
             cpt = 1
+            for al in dlist.aliases.all():
+                name = "recipients_%d" % cpt
+                self._create_field(forms.EmailField, name, al.full_address, 2)
+                cpt += 1
             for mb in dlist.mboxes.all():
                 name = "recipients_%d" % (cpt)
                 self._create_field(forms.EmailField, name, mb.full_address, 2)
@@ -254,7 +258,7 @@ class DlistForm(forms.ModelForm, DynamicForm):
         self.int_rcpts = []
         total = 0
 
-        for k, v in self.cleaned_data.iteritems():
+        for k, v in self.cleaned_data.items():
             if not k.startswith("recipients"):
                 continue
             if v == "":
@@ -266,16 +270,21 @@ class DlistForm(forms.ModelForm, DynamicForm):
                 domain = Domain.objects.get(name=domname)
             except Domain.DoesNotExist:
                 domain = None
-            if domain:
+            if domain is not None:
                 if not self.user.can_access(domain):
                     raise PermDeniedException(v)
                 try:
-                    mb = Mailbox.objects.get(domain=domain, address=local_part)
-                except Mailbox.DoesNotExist:
-                    raise AdminError(_("Mailbox %s does not exist" % v))
-                if mb in self.int_rcpts:
+                    rcpt = Alias.objects.get(domain=domain, address=local_part)
+                except Alias.DoesNotExist:
+                    rcpt = None
+                if rcpt is None:
+                    try:
+                        rcpt = Mailbox.objects.get(domain=domain, address=local_part)
+                    except Mailbox.DoesNotExist:
+                        raise AdminError(_("Local recipient %s not found" % v))
+                if rcpt in self.int_rcpts:
                     raise AdminError(_("Recipient %s already present" % v))
-                self.int_rcpts += [mb]
+                self.int_rcpts += [rcpt]
                 total += 1
                 continue
 
@@ -287,122 +296,22 @@ class DlistForm(forms.ModelForm, DynamicForm):
         if total == 0:
             raise AdminError(_("No recipient defined"))
 
-        if total < 2:
-            raise AdminError(_("A distribution list must contain at least two recipients"))
-
     def save(self, commit=True):
-        dlist = super(DlistForm, self).save(commit=False)
-        localpart, domname = split_mailbox(self.cleaned_data["email"])
-        dlist.address = localpart
-        dlist.domain = Domain.objects.get(name=domname)
-        if commit:
-            dlist.save(self.int_rcpts, self.ext_rcpts)
-            self.save_m2m()
-        return dlist
-
-
-class GenericAliasForm(forms.ModelForm):
-    email = forms.EmailField(
-        label=ugettext_lazy("Address"),
-        help_text=ugettext_lazy("A valid e-mail address. Use the '*' character to create a 'catchall' address (ex: *@domain.tld).")
-    )
-
-    class Meta:
-        model = Alias
-        fields = ("enabled", )
-
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(GenericAliasForm, self).__init__(*args, **kwargs)
-        if "instance" in kwargs:
-            alias = kwargs["instance"]
-            self.fields["email"].initial = alias.full_address
-
-    def clean_email(self):
-        localpart, domname = split_mailbox(self.cleaned_data["email"])
-        try:
-            domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
-            raise forms.ValidationError(_("Domain does not exist"))
-        if not self.user.can_access(domain):
-            raise forms.ValidationError(_("You don't have access to this domain"))
-        return self.cleaned_data["email"]
-
-    def set_recipients(self):
-        pass
-
-    def _save(self):
-        alias = super(GenericAliasForm, self).save(commit=False)
+        alias = super(AliasForm, self).save(commit=False)
         localpart, domname = split_mailbox(self.cleaned_data["email"])
         alias.address = localpart
         alias.domain = Domain.objects.get(name=domname)
-        return alias
-
-
-class AliasForm(GenericAliasForm):
-    int_recipient = forms.EmailField(
-        label=ugettext_lazy("Recipient"),
-        help_text=ugettext_lazy("A local recipient address")
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(AliasForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['email', 'int_recipient', 'enabled']
-        if "instance" in kwargs:
-            alias = kwargs["instance"]
-            if len(alias.mboxes.all()):
-                self.fields["int_recipient"].initial = alias.mboxes.all()[0].full_address
-
-    def clean_int_recipient(self):
-        localpart, domname = split_mailbox(self.cleaned_data["int_recipient"])
-        try:
-            self.rcpt_mb = Mailbox.objects.get(address=localpart, domain__name=domname)
-        except Mailbox.DoesNotExist:
-            raise forms.ValidationError(_("Mailbox does not exist"))
-        if not self.user.can_access(self.rcpt_mb):
-            raise forms.ValidationError(_("You can't access this mailbox"))
-        return self.cleaned_data["int_recipient"]
-
-    def save(self, commit=True):
-        alias = self._save()
         if commit:
-            alias.save([self.rcpt_mb], [])
-        return alias
-
-
-class ForwardForm(GenericAliasForm):
-    ext_recipient = forms.EmailField(
-        label=ugettext_lazy("Recipient"),
-        help_text=ugettext_lazy("An external recipient address")
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(ForwardForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['email', 'ext_recipient', 'enabled']
-        if "instance" in kwargs:
-            alias = kwargs["instance"]
-            self.fields["ext_recipient"].initial = alias.extmboxes
-
-    def clean_ext_recipient(self):
-        local_part, domname = split_mailbox(self.cleaned_data["ext_recipient"])
-        try:
-            domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
-            pass
-        else:
-            raise forms.ValidationError(_("Local recipients are forbidden"))
-        return self.cleaned_data["ext_recipient"]
-
-    def save(self, commit=True):
-        alias = self._save()
-        if commit:
-            alias.save([], [self.cleaned_data["ext_recipient"]])
+            alias.save(self.int_rcpts, self.ext_rcpts)
+            self.save_m2m()
         return alias
 
 
 class ImportDataForm(forms.Form):
     sourcefile = forms.FileField(label=ugettext_lazy("Select a file"))
-    sepchar = forms.CharField(label=ugettext_lazy("Separator"), max_length=1, required=False)
+    sepchar = forms.CharField(
+        label=ugettext_lazy("Separator"), max_length=1, required=False
+    )
     continue_if_exists = forms.BooleanField(
         label=ugettext_lazy("Continue on error"), required=False,
         help_text=ugettext_lazy("Don't treat duplicated objects as error")
@@ -483,7 +392,11 @@ class AccountFormGeneral(forms.ModelForm):
         self.fields["is_active"].label = _("Enabled")
         self.user = user
         if user.group == "DomainAdmins":
-            del self.fields["role"]
+            #del self.fields["role"]
+            self.fields["role"] = forms.CharField(
+                label="",
+                widget=forms.HiddenInput, required=False
+            )
         else:
             self.fields["role"].choices = \
                 [('', ugettext_lazy("Choose"))] + get_account_roles(user)
@@ -494,16 +407,16 @@ class AccountFormGeneral(forms.ModelForm):
                and args[0].get("password2", "") == ""):
                 self.fields["password1"].required = False
                 self.fields["password2"].required = False
-            if user.group != "DomainAdmins":
-                u = kwargs["instance"]
-                if u.is_superuser:
-                    role = "SuperAdmins"
-                else:
-                    try:
-                        role = u.groups.all()[0].name
-                    except IndexError:
-                        role = "SimpleUsers"
-                self.fields["role"].initial = role
+
+            u = kwargs["instance"]
+            self.fields["role"].initial = u.group
+
+    def clean_role(self):
+        if self.user.group == "DomainAdmins":
+            if self.instance == self.user:
+                return "DomainAdmins"
+            return "SimpleUsers"
+        return self.cleaned_data["role"]
 
     def clean_username(self):
         from django.core.validators import validate_email
@@ -530,12 +443,12 @@ class AccountFormGeneral(forms.ModelForm):
             if self.cleaned_data["password1"] != "":
                 account.set_password(self.cleaned_data["password1"])
             account.save()
-            role = None
-            if "role" in self.cleaned_data:
-                role = self.cleaned_data["role"]
-            elif self.user.group == "DomainAdmins" and self.user != account:
-                role = "SimpleUsers"
-            account.set_role(role)
+            # role = None
+            # if "role" in self.cleaned_data:
+            #     role = self.cleaned_data["role"]
+            # elif self.user.group == "DomainAdmins" and self.user != account:
+            #     role = "SimpleUsers"
+            account.set_role(self.cleaned_data["role"])
         return account
 
 
@@ -683,8 +596,8 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             self._load_from_qdict(args[0], "domains", DomainNameField)
 
     def save(self):
-        current_domains = map(lambda dom: dom.name, self.account.get_domains())
-        for name, value in self.cleaned_data.iteritems():
+        current_domains = [dom.name for dom in self.account.get_domains()]
+        for name, value in self.cleaned_data.items():
             if not name.startswith("domains"):
                 continue
             if value in ["", None]:

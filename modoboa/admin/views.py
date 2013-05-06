@@ -69,28 +69,6 @@ def domains_list(request):
     return ajax_simple_response(doms)
 
 
-def _validate_domain(request, form, successmsg, commonctx, tplname, 
-                     callback=None, tpl_form_name="form"):
-    """Domain form validation
-
-    Common function shared between creation and modification actions.
-    """
-    error = None
-    if form.is_valid():
-        try:
-            domain = form.save(request.user)
-        except AdminError, e:
-            error = str(e)
-        else:
-            if callback is not None:
-                callback(request.user, domain)
-            return ajax_simple_response({"status" : "ok", "respmsg" : successmsg})
-
-    commonctx[tpl_form_name] = form
-    commonctx["error"] = error
-    return ajax_response(request, status="ko", template=tplname, **commonctx)
-
-
 @login_required
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
@@ -167,13 +145,21 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
                  "formid": "domform",
                  "domain": domain}
     if request.method == "POST":
-        def editdomain_cb(user, newdomain):
-            events.raiseEvent("DomainModified", domain)
-
+        error = None
         domain.oldname = domain.name
         form = DomainForm(request.user, request.POST, instances=instances)
-        return _validate_domain(request, form, _("Domain modified"), commonctx, tplname,
-                                tpl_form_name="tabs", callback=editdomain_cb)
+        if form.is_valid():
+            try:
+                domain = form.save(request.user)
+            except AdminError, e:
+                error = str(e)
+            else:
+                events.raiseEvent("DomainModified", domain)
+            return ajax_simple_response({"status": "ok", "respmsg": _("Domain modified")})
+
+        commonctx["tabs"] = form
+        commonctx["error"] = error
+        return ajax_response(request, status="ko", template=tplname, **commonctx)
 
     commonctx["tabs"] = DomainForm(request.user, instances=instances)
     commonctx["domadmins"] = domadmins
@@ -227,17 +213,26 @@ def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None
     return ajax_response(request, status="ko", template=tplname, **commonctx)
 
 
-def _new_alias(request, tplname, formclass, ctx, successmsg):
+def _new_alias(request, title, action, successmsg,
+               tplname="common/generic_modal_form.html"):
     events.raiseEvent("CanCreate", request.user, "mailbox_aliases")
-    ctx.update(action_label=_("Create"), action_classes="submit")
+    ctx = {
+        "title": title,
+        "action": action,
+        "formid": "aliasform",
+        "action_label": _("Create"),
+        "action_classes": "submit"
+    }
     if request.method == "POST":
         def callback(user, alias):
             alias.post_create(user)
 
-        form = formclass(request.user, request.POST)
-        return _validate_alias(request, form, successmsg, tplname, ctx, callback)
+        form = AliasForm(request.user, request.POST)
+        return _validate_alias(
+            request, form, successmsg, tplname, ctx, callback
+        )
 
-    form = formclass(request.user)
+    form = AliasForm(request.user)
     ctx["form"] = form
     return render(request, tplname, ctx)
 
@@ -246,75 +241,58 @@ def _new_alias(request, tplname, formclass, ctx, successmsg):
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
 def newdlist(request):
-    ctx = dict(title=_("New distribution list"),
-               action=reverse(newdlist),
-               formid="aliasform")
-    return _new_alias(request, "common/generic_modal_form.html",
-                      DlistForm, ctx, _("Distribution list created"))
+    return _new_alias(
+        request, _("New distribution list"), reverse(newdlist),
+        _("Distribution list created")
+    )
 
 
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
 def newalias(request):
-    ctx = dict(title=_("New alias"),
-               action=reverse(newalias),
-               formid="aliasform")
-    return _new_alias(request, "common/generic_modal_form.html",
-                      AliasForm, ctx, _("Alias created"))
+    return _new_alias(
+        request, _("New alias"), reverse(newalias),
+        _("Alias created")
+    )
 
 
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
 def newforward(request):
-    ctx = dict(title=_("New forward"),
-               action=reverse(newforward),
-               formid="aliasform")
-    return _new_alias(request, "common/generic_modal_form.html",
-                      ForwardForm, ctx, _("Forward created"))
-
-
-def _edit_alias(request, alias, tplname, formclass, ctx, successmsg):
-    if not request.user.can_access(alias):
-        raise PermDeniedException
-    ctx.update(title=alias.full_address, action_label=_("Update"),
-               action_classes="submit")
-    if request.method == "POST":
-        form = formclass(request.user, request.POST, instance=alias)
-        return _validate_alias(request, form, successmsg, tplname, ctx)
-
-    form = formclass(request.user, instance=alias)
-    ctx["form"] = form
-    return render(request, tplname, ctx)
-
-
-def editalias(request, alias, ctx):
-    return _edit_alias(request, alias, "common/generic_modal_form.html",
-                       AliasForm, ctx, _("Alias modified"))
-
-
-def editdlist(request, alias, ctx):
-    return _edit_alias(request, alias, "admin/dlistform.html",
-                       DlistForm, ctx, _("Distribution list modified"))
-
-
-def editforward(request, alias, ctx):
-    return _edit_alias(request, alias, "common/generic_modal_form.html",
-                       ForwardForm, ctx, _("Forward modified"))
+    return _new_alias(
+        request, _("New forward"), reverse(newforward),
+        _("Forward created")
+    )
 
 
 @login_required
 @permission_required("admin.change_alias")
-def editalias_dispatcher(request, alid):
+def editalias(request, alid, tplname="common/generic_modal_form.html"):
     alias = Alias.objects.get(pk=alid)
-    ctx = dict(action=reverse(editalias_dispatcher,
-                              args=[alias.id]), formid="aliasform")
+    if not request.user.can_access(alias):
+        raise PermDeniedException
+    ctx = dict(
+        action=reverse(editalias, args=[alias.id]),
+        formid="aliasform",
+        title=alias.full_address,
+        action_label=_("Update"),
+        action_classes="submit"
+    )
     if len(alias.get_recipients()) >= 2:
-        return editdlist(request, alias, ctx)
-    if alias.extmboxes != "":
-        return editforward(request, alias, ctx)
-    return editalias(request, alias, ctx)
+        successmsg = _("Distribution list modified")
+    elif alias.extmboxes != "":
+        successmsg = _("Forward modified")
+    else:
+        successmsg = _("Alias modified")
+    if request.method == "POST":
+        form = AliasForm(request.user, request.POST, instance=alias)
+        return _validate_alias(request, form, successmsg, tplname, ctx)
+
+    form = AliasForm(request.user, instance=alias)
+    ctx["form"] = form
+    return render(request, tplname, ctx)
 
 
 def _del_alias(request, msg, msgs):
@@ -388,16 +366,19 @@ def identities(request, tplname="admin/identities.html"):
 @login_required
 @permission_required("admin.add_user")
 def accounts_list(request):
-    accs = User.objects.filter(is_superuser=False).exclude(groups__name='SimpleUsers')
+    accs = User.objects.filter(is_superuser=False) \
+        .exclude(groups__name='SimpleUsers')
     res = [a.username for a in accs.all()]
     return ajax_simple_response(res)
 
 
 @login_required
-@permission_required("admin.add_mailbox")
-def mboxes_list(request):
-    mboxes = request.user.get_mailboxes()
-    return ajax_simple_response([mb.full_address for mb in mboxes])
+@user_passes_test(lambda u: u.has_perm("admin.add_user")
+                  or u.has_perm("admin.add_alias"))
+def allowed_recipients_list(request):
+    ret = [mb.full_address for mb in request.user.get_mailboxes()]
+    ret += [al.full_address for al in request.user.get_aliases()]
+    return ajax_simple_response(ret)
 
 
 @login_required
@@ -452,7 +433,7 @@ def newaccount(request, tplname='common/wizard_forms.html'):
         action=reverse(newaccount),
         formid="newaccount_form",
         submit_label=_("Create")
-        )
+    )
     cwizard = CreationWizard(create_account)
     cwizard.add_step(AccountFormGeneral, _("General"),
                      [dict(classes="btn-inverse next", label=_("Next"))],

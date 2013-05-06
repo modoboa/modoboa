@@ -192,7 +192,7 @@ class AliasTestCase(ModoTestCase):
         dlist = Alias.objects.get(address="all", domain__name="test.com")
         self.assertEqual(len(dlist.get_recipients()), 3)
         del values["recipients_1"]
-        self.check_ajax_post(reverse("modoboa.admin.views.editalias_dispatcher", args=[dlist.id]),
+        self.check_ajax_post(reverse("modoboa.admin.views.editalias", args=[dlist.id]),
                              values)
         self.assertEqual(dlist.get_recipients_count(), 2)
 
@@ -202,13 +202,13 @@ class AliasTestCase(ModoTestCase):
                           address="all", domain__name="test.com")
 
     def test_forward(self):
-        values = dict(email="forward@test.com", ext_recipient="rcpt@dest.com")
+        values = dict(email="forward@test.com", recipients="rcpt@dest.com")
         self.check_ajax_post(reverse("modoboa.admin.views.newforward"), values)
         fwd = Alias.objects.get(address="forward", domain__name="test.com")
-        self.assertEqual(len(fwd.get_recipients()), 1)
+        self.assertEqual(fwd.get_recipients_count(), 1)
 
-        values["recipient"] = "rcpt2@dest.com"
-        self.check_ajax_post(reverse("modoboa.admin.views.editalias_dispatcher", args=[fwd.id]),
+        values["recipients"] = "rcpt2@dest.com"
+        self.check_ajax_post(reverse("modoboa.admin.views.editalias", args=[fwd.id]),
                              values)
         self.assertEqual(fwd.get_recipients_count(), 1)
 

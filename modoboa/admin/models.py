@@ -6,7 +6,9 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib.auth.models import UserManager, Group, AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import (
+    UserManager, Group, AbstractBaseUser, PermissionsMixin
+)
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils.crypto import constant_time_compare
 from django.utils import timezone
@@ -220,7 +222,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         try:
             return self.groups.all()[0].name
         except IndexError:
-            return "?"
+            return "SimpleUsers"
 
     @property
     def enabled(self):
@@ -276,8 +278,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             accounts = User.objects.select_related().filter(q)
 
         aliases = []
-        if not idtfilter or ("alias" in idtfilter 
-                             or "forward" in idtfilter 
+        if not idtfilter or ("alias" in idtfilter
+                             or "forward" in idtfilter
                              or "dlist" in idtfilter):
             alct = get_content_type(Alias)
             ids = self.objectaccess_set.filter(content_type=alct) \
@@ -294,7 +296,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                     q &= Q(address__icontains=squery) | Q(domain__name__icontains=squery)
             aliases = Alias.objects.select_related().filter(q)
             if idtfilter:
-                aliases = filter(lambda a: a.type in idtfilter, aliases)
+                aliases = [al for al in aliases if al.type in idtfilter]
 
         return chain(accounts, aliases)
 
@@ -351,7 +353,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         else:
             qf = Q(pk__in=ids)
         return Mailbox.objects.filter(qf)
-        
+
+    def get_aliases(self):
+        from modoboa.lib.permissions import get_content_type
+        ids = self.objectaccess_set.filter(content_type=get_content_type(Alias)) \
+            .values_list('object_id', flat=True)
+        return Alias.objects.filter(pk__in=ids)
+
     def get_mbaliases(self):
         """Return the mailbox aliases that belong to this user
         
@@ -446,6 +454,9 @@ class User(AbstractBaseUser, PermissionsMixin):
                 self.groups.add(Group.objects.get(name=role))
             except Group.DoesNotExist:
                 self.groups.add(Group.objects.get(name="SimpleUsers"))
+            if self.group != "SimpleUsers" and not self.can_access(self):
+                from modoboa.lib.permissions import grant_access_to_object
+                grant_access_to_object(self, self)
         self.save()
 
     def post_create(self, creator):
@@ -515,8 +526,8 @@ class User(AbstractBaseUser, PermissionsMixin):
                 dom.add_admin(self)
 
     def to_csv(self, csvwriter):
-        row = ["account", self.username.encode("utf-8"), self.password, 
-               self.first_name.encode("utf-8"), self.last_name.encode("utf-8"), 
+        row = ["account", self.username.encode("utf-8"), self.password,
+               self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
                self.is_active, self.group, self.email]
         if self.group == "DomainAdmins":
             row += [dom.name for dom in self.get_domains()]
@@ -558,6 +569,7 @@ class ObjectDates(models.Model):
             dates = ObjectDates()
         dates.save()
         obj.dates = dates
+
 
 class DatesAware(models.Model):
     """Abstract model to support dates
@@ -954,12 +966,12 @@ def mailbox_deleted_handler(sender, **kwargs):
 
     In order to properly handle deletions (ie. we don't want to leave
     orphan records into the db), we define this custom receiver.
-    
+
     It manually removes the mailbox from the aliases it is linked to
     and then remove all empty aliases.
     """
     from modoboa.lib.permissions import ungrant_access_to_object
-    
+
     mb = kwargs['instance']
     events.raiseEvent("DeleteMailbox", mb)
     ungrant_access_to_object(mb)
@@ -967,7 +979,7 @@ def mailbox_deleted_handler(sender, **kwargs):
         alias.mboxes.remove(mb)
         if alias.mboxes.count() == 0:
             alias.delete()
-   
+
 
 class Quota(models.Model):
     username = models.EmailField(primary_key=True)
@@ -981,20 +993,26 @@ class Alias(DatesAware):
     address = models.CharField(
         ugettext_lazy('address'), max_length=254,
         help_text=ugettext_lazy("The alias address (without the domain part). For a 'catch-all' address, just enter an * character.")
-        )
+    )
     domain = models.ForeignKey(Domain)
     mboxes = models.ManyToManyField(
         Mailbox, verbose_name=ugettext_lazy('mailboxes'),
         help_text=ugettext_lazy("The mailboxes this alias points to")
-        )
+    )
+    aliases = models.ManyToManyField(
+        'Alias',
+        help_text=ugettext_lazy("The aliases this alias points to")
+    )
     extmboxes = models.TextField(blank=True)
-    enabled = models.BooleanField(ugettext_lazy('enabled'),
-                                  help_text=ugettext_lazy("Check to activate this alias"))
+    enabled = models.BooleanField(
+        ugettext_lazy('enabled'),
+        help_text=ugettext_lazy("Check to activate this alias")
+    )
 
     class Meta:
         permissions = (
             ("view_aliases", "View aliases"),
-            )
+        )
         unique_together = (("address", "domain"),)
         ordering = ["domain__name", "address"]
 
@@ -1028,12 +1046,12 @@ class Alias(DatesAware):
     @property
     def tags(self):
         labels = {
-            "dlist" : _("distribution list"),
-            "forward" : _("forward"),
-            "alias" : _("alias")
-            }
+            "dlist": _("distribution list"),
+            "forward": _("forward"),
+            "alias": _("alias")
+        }
         altype = self.type
-        return [{"name" : altype, "label" : labels[altype], "type" : "idt"}]
+        return [{"name": altype, "label": labels[altype], "type": "idt"}]
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
@@ -1056,10 +1074,18 @@ class Alias(DatesAware):
         super(Alias, self).save(*args, **kwargs)
         if creator is not None:
             self.post_create(creator)
+        curaliases = self.aliases.all()
         curmboxes = self.mboxes.all()
         for t in int_rcpts:
+            if isinstance(t, Alias):
+                if not t in curaliases:
+                    self.aliases.add(t)
+                continue
             if not t in curmboxes:
                 self.mboxes.add(t)
+        for t in curaliases:
+            if not t in int_rcpts:
+                self.aliases.remove(t)
         for t in curmboxes:
             if not t in int_rcpts:
                 self.mboxes.remove(t)
@@ -1076,15 +1102,17 @@ class Alias(DatesAware):
 
         Internal and external addresses are mixed into a single list.
         """
-        result = map(lambda mb: mb.full_address, self.mboxes.all())
+        result = [al.full_address for al in self.aliases.all()]
+        result += [mb.full_address for mb in self.mboxes.all()]
         if self.extmboxes != "":
             result += self.extmboxes.split(',')
         return result
 
     def get_recipients_count(self):
+        total = 0
         if self.extmboxes != "":
-            return self.mboxes.count() + len(self.extmboxes.split(','))
-        return self.mboxes.count()
+            total += len(self.extmboxes.split(','))
+        return total + self.aliases.count() + self.mboxes.count()  
 
     def ui_disabled(self, user):
         if user.is_superuser:
@@ -1129,12 +1157,13 @@ class Alias(DatesAware):
         row += self.get_recipients()
         csvwriter.writerow(row)
 
+
 class Extension(models.Model):
     name = models.CharField(max_length=150)
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
         help_text=ugettext_lazy("Check to enable this extension")
-        )
+    )
 
     def __init__(self, *args, **kwargs):
         super(Extension, self).__init__(*args, **kwargs)
@@ -1184,6 +1213,7 @@ class Extension(models.Model):
             exec_cmd("rm -r %s" % path)
 
         events.raiseEvent("ExtDisabled", self)
+
 
 def populate_callback(user):
     """Populate callback
