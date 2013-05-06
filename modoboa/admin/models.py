@@ -155,16 +155,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         if parameters.get_admin("AUTHENTICATION_TYPE") == "local":
             self.password = self._crypt_password(raw_value)
-            return
+        else:
+            if not ldap_available:
+                raise AdminError(_("Failed to update password: LDAP module not installed"))
 
-        if not ldap_available:
-            raise AdminError(_("Failed to update password: LDAP module not installed"))
-
-        ab = LDAPAuthBackend()
-        try:
-            ab.update_user_password(self.username, curvalue, raw_value)
-        except LDAPException, e:
-            raise AdminError(_("Failed to update password: %s" % str(e)))
+            ab = LDAPAuthBackend()
+            try:
+                ab.update_user_password(self.username, curvalue, raw_value)
+            except LDAPException, e:
+                raise AdminError(_("Failed to update password: %s" % str(e)))
+        events.raiseEvent("PasswordUpdated", self, raw_value)
 
     def check_password(self, raw_value):
         m = self.password_expr.match(self.password)

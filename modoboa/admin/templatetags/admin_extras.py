@@ -181,7 +181,8 @@ def identity_actions(user, ident):
     name = ident.__class__.__name__
     objid = ident.id
     if name == "User":
-        actions = [
+        actions = events.raiseQueryEvent("ExtraAccountActions", ident)
+        actions += [
             {"name" : "delaccount",
              "url" : reverse("modoboa.admin.views.delaccount") + "?selection=%s" % objid,
              "img" : "icon-trash",
