@@ -39,8 +39,8 @@ class DomainsAliasesMap(MapFile):
 
 class MailboxesMap(MapFile):
     filename = 'sql-mailboxes.cf'
-    mysql = "SELECT concat(dom.name, '/', mb.path) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN auth_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
-    postgres = "SELECT dom.name || '/' || mb.path FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN auth_user u ON mb.user_id=u.id WHERE dom.enabled AND dom.name='%d' AND u.is_active AND mb.address='%u'"
+    mysql = "SELECT concat(dom.name, '/', mb.path) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
+    postgres = "SELECT dom.name || '/' || mb.path FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user u ON mb.user_id=u.id WHERE dom.enabled AND dom.name='%d' AND u.is_active AND mb.address='%u'"
 
 class AliasesMap(MapFile):
     filename = 'sql-aliases.cf'
@@ -54,8 +54,8 @@ class DomainAliasesMailboxesMap(MapFile):
 
 class Email2EmailMap(MapFile):
     filename = 'sql-email2email.cf'
-    mysql = "SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN auth_user user ON mb.user_id=user.id WHERE dom.name='%d' AND dom.enabled=1 AND mb.address='%u' AND user.is_active=1"
-    postgres = "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN auth_user u ON mb.user_id=u.id WHERE dom.name='%d' AND dom.enabled AND mb.address='%u' AND u.is_active"
+    mysql = "SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.name='%d' AND dom.enabled=1 AND mb.address='%u' AND user.is_active=1"
+    postgres = "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user u ON mb.user_id=u.id WHERE dom.name='%d' AND dom.enabled AND mb.address='%u' AND u.is_active"
 
 class CatchallAliasesMap(MapFile):
     filename = 'sql-catchall-aliases.cf'
