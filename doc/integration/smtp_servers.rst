@@ -66,7 +66,7 @@ Define the following map files on your server (it should work with
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(dom.name, '/', mb.path, (SELECT value FROM lib_parameter WHERE name='admin.MAILDIR_ROOT'), '/') FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN auth_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'
+  query = SELECT concat(dom.name, '/', mb.path, (SELECT value FROM lib_parameter WHERE name='admin.MAILDIR_ROOT'), '/') FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'
 
 ``/etc/postfix/sql-aliases.cf``::
 
@@ -90,7 +90,7 @@ Define the following map files on your server (it should work with
   password = <password>
   dbname = <database>
   hosts = 127.0.0.1
-  query = SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN auth_user user ON mb.user_id=user.id WHERE dom.name='%d' AND dom.enabled=1 AND mb.address='%u' AND user.is_active=1
+  query = SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.name='%d' AND dom.enabled=1 AND mb.address='%u' AND user.is_active=1
 
 ``/etc/postfix/sql-catchall-aliases.cf``::
 
@@ -157,6 +157,6 @@ environnement, you need to modify the SQL query corresponding to the
 */etc/postfix/maps/sql-mailboxes.cf* and modify the ``query``
 parameter as follow::
 
-  query = SELECT concat(dom.name, '/', mb.path) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN auth_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'
+  query = SELECT concat(dom.name, '/', mb.path) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'
 
 Restart *Postfix*.

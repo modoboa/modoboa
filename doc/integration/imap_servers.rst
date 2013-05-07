@@ -49,8 +49,8 @@ For *MySQL* users, edit your */etc/dovecot/dovecot-sql.conf* and modify followin
   driver = mysql
   connect = host=<mysqld socket> dbname=<database> user=<user> password=<password>
   default_pass_scheme = CRYPT
-  password_query = SELECT email AS user, password FROM auth_user WHERE email='%u' and is_active=1
-  user_query = SELECT concat(dom.name, '/', mb.path) AS home, uid, gid FROM admin_mailbox mb INNER JOIN auth_user user ON mb.user_id=user.id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d' AND user.is_active=1 AND dom.enabled=1
+  password_query = SELECT email AS user, password FROM admin_user WHERE email='%u' and is_active=1
+  user_query = SELECT concat(dom.name, '/', mb.path) AS home, uid, gid FROM admin_mailbox mb INNER JOIN admin_user user ON mb.user_id=user.id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d' AND user.is_active=1 AND dom.enabled=1
 
 Enable quota support
 ====================
