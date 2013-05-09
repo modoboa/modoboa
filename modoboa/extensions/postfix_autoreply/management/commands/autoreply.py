@@ -32,7 +32,7 @@ def send_autoreply(sender, mailbox, armessage):
         lastar.armessage = armessage
         lastar.sender = sender
 
-    sendmail_simple(mailbox.name_and_address, sender, armessage.subject,
+    sendmail_simple(mailbox.user.encoded_address, sender, armessage.subject,
                     armessage.content.encode('utf-8'))
     
     lastar.last_sent = datetime.datetime.now()

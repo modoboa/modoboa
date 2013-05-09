@@ -392,7 +392,6 @@ class AccountFormGeneral(forms.ModelForm):
         self.fields["is_active"].label = _("Enabled")
         self.user = user
         if user.group == "DomainAdmins":
-            #del self.fields["role"]
             self.fields["role"] = forms.CharField(
                 label="",
                 widget=forms.HiddenInput, required=False
@@ -443,11 +442,6 @@ class AccountFormGeneral(forms.ModelForm):
             if self.cleaned_data["password1"] != "":
                 account.set_password(self.cleaned_data["password1"])
             account.save()
-            # role = None
-            # if "role" in self.cleaned_data:
-            #     role = self.cleaned_data["role"]
-            # elif self.user.group == "DomainAdmins" and self.user != account:
-            #     role = "SimpleUsers"
             account.set_role(self.cleaned_data["role"])
         return account
 

@@ -2,8 +2,6 @@
 import time
 from datetime import datetime, timedelta
 import email
-from email.utils import parseaddr
-from email.header import Header
 import lxml
 import chardet
 
@@ -18,7 +16,9 @@ from modoboa.lib.webutils import size2integer
 from modoboa.lib.email_listing import EmailListing
 from modoboa.extensions.webmail.exceptions import WebmailError
 from modoboa.extensions.webmail.imaputils import IMAPconnector, get_imapconnector, BodyStructure
-from modoboa.lib.emailutils import EmailAddress, Email
+from modoboa.lib.emailutils import (
+    EmailAddress, Email, prepare_addresses, set_email_headers
+)
 
 
 class WMtable(tables.Table):
@@ -611,25 +611,6 @@ def create_mail_attachment(attdef):
     return res
 
 
-def prepare_addresses(addresses, usage="header"):
-    """Prepare addresses before using them
-
-    :param list addresses: a list of addresses
-    :param string usage: how those addresses are going to be used
-    :return: a string or a list depending on usage value
-    """
-    result = []
-    for address in addresses.split(','):
-        name, addr = parseaddr(address)
-        if name and usage == "header":
-            result.append("%s <%s>" % (Header(name, 'utf8').encode(), addr))
-        else:
-            result.append(addr)
-    if usage == "header":
-        return ",".join(result)
-    return result
-
-
 def send_mail(request, posturl=None):
     """Email verification and sending.
 
@@ -650,7 +631,6 @@ def send_mail(request, posturl=None):
     editormode = parameters.get_user(request.user, "EDITOR")
     if form.is_valid():
         from email.mime.text import MIMEText
-        from email.utils import make_msgid, formatdate
         import smtplib
 
         body = request.POST["id_body"]
@@ -680,18 +660,11 @@ def send_mail(request, posturl=None):
         for attdef in request.session["compose_mail"]["attachments"]:
             msg.attach(create_mail_attachment(attdef))
 
-        msg["Subject"] = Header(form.cleaned_data["subject"], 'utf8')
-        if request.user.first_name != "" or request.user.last_name != "":
-            fromaddress = "%s <%s>" % (Header(request.user.fullname, 'utf8').encode(), 
-                                       request.user.email)
-        else:
-            fromaddress = request.user.email
-        msg["From"] = fromaddress
-        msg["To"] = prepare_addresses(form.cleaned_data["to"])
-        msg["Message-ID"] = make_msgid()
-        msg["User-Agent"] = "Modoboa"
-        msg["Date"] = formatdate(time.time(), True)
-        if form.cleaned_data.has_key("origmsgid"):
+        set_email_headers(
+            msg, form.cleaned_data["subject"], request.user.encoded_address,
+            form.cleaned_data['to']
+        )
+        if "origmsgid" in form.cleaned_data:
             msg["References"] = msg["In-Reply-To"] = form.cleaned_data["origmsgid"]
         rcpts = prepare_addresses(form.cleaned_data["to"], "envelope")
         for hdr in ["cc", "cci"]:

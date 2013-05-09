@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 import u2u_decode
 import smtplib
-from email.header import decode_header
+from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
 import time
@@ -214,6 +214,39 @@ def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=Non
             pass
     return s.decode('ascii', 'ignore')
 
+
+def prepare_addresses(addresses, usage="header"):
+    """Prepare addresses before using them
+
+    :param list addresses: a list of addresses
+    :param string usage: how those addresses are going to be used
+    :return: a string or a list depending on usage value
+    """
+    result = []
+    for address in addresses.split(','):
+        name, addr = parseaddr(address)
+        if name and usage == "header":
+            result.append("%s <%s>" % (Header(name, 'utf8').encode(), addr))
+        else:
+            result.append(addr)
+    if usage == "header":
+        return ",".join(result)
+    return result
+
+
+def set_email_headers(msg, subject, sender, rcpt):
+    """Set mandatory headers.
+
+    Subject, From, To, Message-ID, User-Agent, Date
+    """
+    msg["Subject"] = Header(subject, 'utf8')
+    msg["From"] = sender
+    msg["To"] = prepare_addresses(rcpt)
+    msg["Message-ID"] = make_msgid()
+    msg["User-Agent"] = "Modoboa"
+    msg["Date"] = formatdate(time.time(), True)
+
+
 def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
     """Message sending
 
@@ -250,12 +283,7 @@ def sendmail_simple(sender, rcpt, subject="Sample message", content="", **kwargs
     :return: tuple
     """
     msg = MIMEText(content, _charset='utf-8')
-    msg["Subject"] = subject
-    msg["From"] = sender
-    msg["To"] = rcpt
-    msg["Message-ID"] = make_msgid()
-    msg["Date"] = formatdate(time.time(), True)
-
+    set_email_headers(msg, subject, sender, rcpt)
     return __sendmail(sender, rcpt, msg.as_string(), **kwargs)
 
 def sendmail_fromfile(sender, rcpt, fname):

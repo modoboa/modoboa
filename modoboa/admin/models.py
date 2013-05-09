@@ -228,6 +228,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def enabled(self):
         return self.is_active
 
+    @property
+    def encoded_address(self):
+        from email.header import Header
+        if self.first_name != "" or self.last_name != "":
+            return "%s <%s>" % \
+                (Header(self.fullname, 'utf8').encode(), self.email)
+        return self.email
+
     def belongs_to_group(self, name):
         """Simple shortcut to check if this user is a member of a
         specific group.
@@ -815,13 +823,6 @@ class Mailbox(DatesAware):
     @property
     def full_address(self):
         return self.__full_address(self.address)
-
-    @property
-    def name_and_address(self):
-        if self.user.first_name != "" or self.user.last_name != "":
-            return "%s %s <%s>" % \
-                (self.user.first_name, self.user.last_name, self.full_address)
-        return self.full_address
 
     @property
     def enabled(self):
