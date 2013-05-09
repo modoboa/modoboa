@@ -293,7 +293,7 @@ class ImapEmail(Email):
                 continue
             fname = "webmail/%s_%s" % (self.mailid, cid)
             path = os.path.join(settings.MEDIA_ROOT, fname)
-            params["fname"] = settings.MEDIA_URL+"/%s" % fname
+            params["fname"] = settings.MEDIA_URL/+"%s" % fname
             if os.path.exists(path):
                 continue
 
