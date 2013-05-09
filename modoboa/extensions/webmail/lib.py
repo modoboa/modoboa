@@ -291,9 +291,9 @@ class ImapEmail(Email):
         for cid, params in self.bs.inlines.iteritems():
             if re.search("\.\.", cid):
                 continue
-            fname = "media/webmail/%s_%s" % (self.mailid, cid)
-            path = os.path.join(settings.MODOBOA_DIR, fname)
-            params["fname"] = "/%s" % fname
+            fname = "webmail/%s_%s" % (self.mailid, cid)
+            path = os.path.join(settings.MEDIA_ROOT, fname)
+            params["fname"] = settings.MEDIA_URL+"/%s" % fname
             if os.path.exists(path):
                 continue
 
