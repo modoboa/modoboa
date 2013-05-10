@@ -3,7 +3,7 @@
 <hr>
 <form class="form-horizontal" method="POST" 
       action="{% url 'modoboa.extensions.postfix_autoreply.views.autoreply' %}" 
-      id="uprefs_form">
+      id="uprefs_form">{% csrf_token %}
   {% render_form form %}
   <div class="form-actions">
     <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Update' %}</button>

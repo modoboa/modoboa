@@ -561,7 +561,7 @@ def viewparameters(request, tplname='admin/parameters.html'):
     return ajax_simple_response({
         "status": "ok",
         "left_selection": "parameters",
-        "content": render_to_string(tplname, {
+        "content": _render_to_string(request, tplname, {
             "forms": parameters.get_admin_forms
         })
     })

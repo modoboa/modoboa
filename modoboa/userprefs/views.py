@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import ModoboaException
-from modoboa.lib.webutils import ajax_response, ajax_simple_response
+from modoboa.lib.webutils import ajax_response, ajax_simple_response, _render_to_string
 from modoboa.admin.models import Mailbox, Alias
 from modoboa.auth.lib import encrypt
 from forms import ForwardForm, BadDestination, ProfileForm
@@ -94,7 +94,7 @@ def profile(request, tplname='userprefs/profile.html'):
     form = ProfileForm(update_password, instance=request.user)
     return ajax_simple_response({
         "status": "ok",
-        "content": render_to_string(tplname, {
+        "content": _render_to_string(request, tplname, {
             "form": form
         })
     })
@@ -116,8 +116,8 @@ def preferences(request):
         })
 
     return ajax_simple_response({
-            "status" : "ok",
-            "content" : render_to_string("userprefs/preferences.html", {
-                    "forms" : parameters.get_user_forms(request.user)
-                    })
-            })
+        "status" : "ok",
+        "content" : _render_to_string(request, "userprefs/preferences.html", {
+            "forms" : parameters.get_user_forms(request.user)
+        })
+    })

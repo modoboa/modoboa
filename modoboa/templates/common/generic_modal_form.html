@@ -4,7 +4,7 @@
 {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
 <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 
       method="POST" id="{{ formid }}" name="{{ formid }}"
-      target="{{ target }}">
+      target="{{ target }}">{% csrf_token %}
   {% block formbody %}
   {% render_form form %}
   {% block extrafields %}{% endblock %}

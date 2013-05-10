@@ -2,7 +2,7 @@
 <h2>{% trans "Preferences" %} <small>{% trans "Customize Modoboa" %}</small></h2>
 <hr>
 <form class="form-horizontal" method="POST" action="{% url 'modoboa.userprefs.views.preferences' %}" 
-      id="uprefs_form">
+      id="uprefs_form">{% csrf_token %}
   {% include "common/parameters.html" %}
   <hr>
   <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Save' %}</button>

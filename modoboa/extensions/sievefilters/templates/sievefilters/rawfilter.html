@@ -1,6 +1,6 @@
 {% load url from future %}
 <form action="{% url 'modoboa.extensions.sievefilters.views.savefs' name %}" 
-      method="POST" id="feditor" name="feditor">
+      method="POST" id="feditor" name="feditor">{% csrf_token %}
   <textarea id="scriptcontent" name="scriptcontent">{{ scriptcontent }}</textarea>
 </form>
 

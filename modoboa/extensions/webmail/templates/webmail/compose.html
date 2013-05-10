@@ -1,5 +1,5 @@
 {% load i18n libextras %}{% load url from future %}
-<form class="form-horizontal" method="POST" action="{{ posturl }}" id="composemail">
+<form class="form-horizontal" method="POST" action="{{ posturl }}" id="composemail">{% csrf_token %}
   <div id="compose-container">
     <div id="mailheader" class="well">
       {% render_field form.to %}

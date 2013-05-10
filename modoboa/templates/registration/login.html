@@ -27,7 +27,7 @@
         </div>
         <div class="row">
           <form method="post" action="{% url 'modoboa.auth.views.dologin' %}"
-                class="well span3">
+                class="well span3">{% csrf_token %}
             {% render_field form.username %}
             {% render_field form.password %}
             <input type="hidden" name="next" value="{{ next }}" />
