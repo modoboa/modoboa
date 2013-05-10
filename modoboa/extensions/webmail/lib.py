@@ -149,13 +149,19 @@ class ImapListing(EmailListing):
             int(parameters.get_user(user, "REFRESH_INTERVAL")) * 1000
 
     def parse_search_parameters(self, criterion, pattern):
+
         def or_criterion(old, c):
             if old == "":
                 return c
             return "OR (%s) (%s)" % (old, c)
-        if criterion == "both":
-            criterion = "from_addr, subject"
+
+        if criterion == u"both":
+            criterion = u"from_addr, subject"
         criterions = ""
+        if type(pattern) is unicode:
+            pattern = pattern.encode("utf-8")
+        if type(criterion) is unicode:
+            criterion = criterion.encode("utf-8")
         for c in criterion.split(','):
             if c == "from_addr":
                 key = "FROM"
@@ -164,8 +170,8 @@ class ImapListing(EmailListing):
             else:
                 continue
             criterions = \
-                unicode(or_criterion(criterions, '%s "%s"' % (key, pattern)))
-        self.mbc.criterions = [unicode("(%s)" % criterions)]
+                or_criterion(criterions, '(%s "%s")' % (key, pattern))
+        self.mbc.criterions = [criterions]
 
     @staticmethod
     def computequota(mbc):

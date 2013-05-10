@@ -181,7 +181,7 @@ class IMAPconnector(object):
             raise ImapError(e)
         if typ == "NO":
             raise ImapError(data)
-        if not kwargs.has_key('responses'):
+        if not 'responses' in kwargs:
             if not name in self.m.untagged_responses:
                 return None
             return self.m.untagged_responses.pop(name)
@@ -283,14 +283,14 @@ class IMAPconnector(object):
         :param order: sorting order
         :param folder: mailbox to scan
         """
-        if "order" in kwargs.keys() and kwargs["order"]:
+        if "order" in kwargs and kwargs["order"]:
             sign = kwargs["order"][:1]
             criterion = kwargs["order"][1:].upper()
             if sign == '-':
                 criterion = "REVERSE %s" % criterion
         else:
             criterion = "REVERSE DATE"
-        folder = kwargs.has_key("folder") and kwargs["folder"] or None
+        folder = kwargs["folder"] if "folder" in kwargs else None
 
         # FIXME: pourquoi suis je obligé de faire un SELECT ici?  un
         # EXAMINE plante mais je pense que c'est du à une mauvaise
