@@ -245,6 +245,10 @@ class IMAPconnector(object):
         :param passwd: password
         """
         import socket
+        if type(user) is unicode:
+            user = user.encode("utf-8")
+        if type(passwd) is unicode:
+            passwd = passwd.encode("utf-8")
         try:
             secured = parameters.get_admin("IMAP_SECURED")
             if secured == "yes":
