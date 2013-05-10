@@ -48,7 +48,7 @@ class UserSettings(UserParametersForm):
     app = "sievefilters"
 
     editor_mode = forms.ChoiceField(
-        initial="raw",
+        initial="gui",
         label=_("Editor mode"),
         choices=[("raw", "raw"), ("gui", "simplified")],
         help_text=_("Select the mode you want the editor to work in"),
