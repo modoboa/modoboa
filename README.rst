@@ -52,7 +52,7 @@ External code
 
 The following external libraries are provided with Modoboa:
 
- * jQuery version 1.7.1 (http://www.jquery.org/)
- * jQuery-UI 1.8+ (http://jqueryui.com/)
- * Bootstrap, from Twitter version 2.3.1 (http://twitter.github.com/bootstrap/)
- * Bootstrap datepicker (https://bitbucket.org/eternicode/bootstrap-datepicker)
+* jQuery version 1.9.1 (http://www.jquery.org/)
+* jQuery-UI 1.10+ (http://jqueryui.com/)
+* Bootstrap, from Twitter version 2.3.1 (http://twitter.github.com/bootstrap/)
+* Bootstrap datepicker (https://bitbucket.org/eternicode/bootstrap-datepicker)
