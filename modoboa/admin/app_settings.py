@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.formutils import YesNoField, SeparatorField, InlineRadioSelect
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib import parameters
+from modoboa.auth.lib import random_key
 
 
 def enabled_applications():
@@ -51,7 +52,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
     secret_key = forms.CharField(
         label=ugettext_lazy("Secret key"),
-        initial="abcdefghijklmnop",
+        initial=random_key(),
         help_text=ugettext_lazy("Key used to encrypt/decrypt passwords")
     )
 
