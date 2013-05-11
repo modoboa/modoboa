@@ -46,7 +46,7 @@ Admin.prototype = {
             e.preventDefault();
         });
         if (data.page != this.navobj.getparam("page")) {
-            this.navobj.setparam("page", data.page).update(false, false);
+            this.navobj.setparam("page", data.page).update(false, true);
         }
     },
 
@@ -155,6 +155,7 @@ Domains.prototype = {
 
         $("a[name=deldomain]").confirm({
             question: gettext("Delete this domain?"),
+            method: "DELETE",
             warning: warnmsg,
             checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
@@ -281,19 +282,23 @@ Identities.prototype = {
 
         $("a[name=delaccount]").confirm({
             question: gettext("Delete this account?"),
+            method: "DELETE",
             checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
         });
         $("a[name=deldlist]").confirm({
             question: gettext("Delete this list?"),
+            method: "DELETE",
             success_cb: $.proxy(this.reload_listing, this)
         });
         $("a[name=delforward]").confirm({
             question: gettext("Delete this forward?"),
+            method: "DELETE",
             success_cb: $.proxy(this.reload_listing, this)
         });
         $("a[name=delalias]").confirm({
             question: gettext("Delete this alias?"),
+            method: "DELETE",
             success_cb: $.proxy(this.reload_listing, this)
         });
     },

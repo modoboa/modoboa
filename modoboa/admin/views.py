@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.db import transaction, IntegrityError
+from django.views.decorators.csrf import ensure_csrf_cookie
 import cStringIO
 import csv
 
@@ -54,6 +55,7 @@ def _domains(request):
 
 
 @login_required
+@ensure_csrf_cookie
 def domains(request, tplname="admin/domains.html"):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
@@ -356,6 +358,7 @@ def _identities(request):
 
 @login_required
 @user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
+@ensure_csrf_cookie
 def identities(request, tplname="admin/identities.html"):
     return render(request, tplname, {
         "selection": "identities",

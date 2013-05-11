@@ -25,7 +25,7 @@
              result = '<form class="form-inline">';
              $.each(this.options.checkboxes, function(key, val) {
                  result += "<label class='checkbox'><input type='checkbox' name='" + key + "' value='' />";
-	         result += val + "</label>";
+	             result += val + "</label>";
              });
              result += '</form>';
              return result;
@@ -88,6 +88,7 @@
 
              $.ajax({
                  cache: false,
+                 method: this.options.method,
                  data: params,
                  url: this.$element.attr('href'),
                  complete: $.proxy(function(XMLHttpRequest, textStatus) {
@@ -129,6 +130,7 @@
 
      $.fn.confirm.defaults = {
          question: "",
+         method: "GET",
          warning: null,
          checkboxes: null
      };
