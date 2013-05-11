@@ -38,22 +38,31 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
             }
             return;
         }
-        var $div = $('<div id="modalbox" class="modal" >' + data + '</div>')
-            .one('shown', function() {
-                $(".help").popover({
-                    container: "#modalbox"
-                }).click(function(e) {e.preventDefault();});
-                if (modalcb != undefined) {
-                    if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
-                }
-            })
-            .on('hidden', function() {
-                $("#modalbox").remove();
-                if (closecb != undefined) {
-                    if (typeof closecb === "function") closecb(); else eval(closecb + '()');
-                }
-            })
-            .modal();
+        var $div = $('<div />', {
+            id: "modalbox", 'class': "modal", html: data
+        });
+
+        $div.modal({show: false});
+        $div.one('shown', function() {
+            $(".help").popover({
+                container: "#modalbox"
+            }).click(function(e) {e.preventDefault();});
+            if (modalcb != undefined) {
+                if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
+            }
+        })
+        .on('hidden', function(e) {
+            var $target = $(e.target);
+
+            if (!$target.is($(this))) {
+                return;
+            }
+            $("#modalbox").remove();
+            if (closecb != undefined) {
+                if (typeof closecb === "function") closecb(); else eval(closecb + '()');
+            }
+        });
+        $div.modal('show');
 
         if (css != undefined) {
             $div.css(css);
