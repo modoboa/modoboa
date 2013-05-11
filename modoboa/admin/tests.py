@@ -369,6 +369,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         da = User.objects.get(username="truc@test.com")
         self.assertEqual(da.first_name, u"René")
         self.assertEqual(da.group, "DomainAdmins")
+        self.assertEqual(da.mailbox_set.all()[0].full_address, "truc@test.com")
         dom = Domain.objects.get(name="test.com")
         self.assertIn(da, dom.admins)
         u = User.objects.get(username="user@test.com")
