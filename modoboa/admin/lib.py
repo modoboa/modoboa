@@ -26,6 +26,6 @@ def get_listing_page(objects, pagenum):
     paginator = Paginator(objects, int(parameters.get_admin("ITEMS_PER_PAGE")))
     try:
         page = paginator.page(int(pagenum))
-    except (EmptyPage, PageNotAnInteger):
+    except (EmptyPage, PageNotAnInteger, ValueError):
         page = paginator.page(paginator.num_pages)
     return page

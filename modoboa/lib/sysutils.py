@@ -18,14 +18,6 @@ def exec_cmd(cmd, sudo_user=None, **kwargs):
     output = p.communicate()[0]
     return p.returncode, output
 
-def exec_as_vuser(cmd):
-    code, output = exec_cmd("sudo -u %s %s" \
-                                % (parameters.get_admin("MAILBOXES_OWNER", app="admin"), cmd))
-    if code:
-        exec_cmd("echo '%s' >> /tmp/vmail.log" % output)
-        return False
-    return True
-
 def __log(msg, facility=logging.handlers.SysLogHandler.LOG_AUTH):
     logger = logging.getLogger('modoboa')
     logger.setLevel(logging.DEBUG)

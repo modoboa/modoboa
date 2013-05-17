@@ -37,7 +37,7 @@
         },
 
         check_user_input: function() {
-            var value = this.$element.attr("value");
+            var value = this.$element.val();
             var start = -1;
             var pattern = null;
 
@@ -90,7 +90,7 @@
                 } else {
                     $link = this.$menu.find('.active > a');
                 }
-                var curvalue = this.$element.attr("value");
+                var curvalue = this.$element.val();
 
                 if (curvalue == undefined || curvalue == "") {
                     if (this.options.empty_choice) {
@@ -99,14 +99,14 @@
                     return;
                 }
                 if ($link.length) {
-                    this.$element.attr("value", curvalue.substr(
+                    this.$element.val(curvalue.substr(
                         0, curvalue.indexOf(this.options.from_character) + 1
                     ) + $link.attr("name"));
                 }
                 this.hide_menu();
             }
             if (this.options.choice_selected) {
-                this.options.choice_selected(this.$element.attr('value'));
+                this.options.choice_selected(this.$element.val());
             }
         },
 

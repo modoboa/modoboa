@@ -106,7 +106,7 @@
             for (var cpt = 0; cpt < this.options.templates.length; cpt++) {
                 var tpl = this.options.templates[cpt];
 
-                if (tpl.name != $target.attr("value")) {
+                if (tpl.name != $target.val()) {
                     continue;
                 }
                 this.loadoperators($container, tpl);
@@ -175,7 +175,7 @@
             var $this = $(this),
                 cpt = 1,
                 start = 0,
-                value = $this.attr("value");
+                value = $this.val();
 
             while (true) {
                 var id = value.indexOf(".", start);
@@ -237,7 +237,7 @@
             this.deletePrevArgs(parts[2]);
             for (var cpt = 0; cpt < this.options.templates.length; cpt++) {
                 var tpl = this.options.templates[cpt];
-                if (tpl.name != $target.attr("value")) {
+                if (tpl.name != $target.val()) {
                     continue;
                 }
                 $.each(this.loadargs(parts[2], tpl), function(idx, arg) {

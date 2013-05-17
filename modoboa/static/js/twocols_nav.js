@@ -1,10 +1,8 @@
 var TwocolsNav = function(options) {
-    this.initialize(options);
+    Listing.call(this, options);
 };
 
 TwocolsNav.prototype = {
-    constructor: TwocolsNav,
-
     defaults: {
         deflocation: null,
         formid: "#form",
@@ -13,14 +11,15 @@ TwocolsNav.prototype = {
     },
 
     initialize: function(options) {
-        this.options = $.extend({}, this.defaults, options);
+        Listing.prototype.initialize.call(this, options);
+        this.options = $.extend({}, this.defaults, this.options);
         this.options.defcallback = $.proxy(this.default_cb, this);
         this.navobj = new History(this.options);
         this.listen();
     },
 
     listen: function() {
-        $("a.ajaxlink").click($.proxy(this.load_page, this));
+        $("a.ajaxlink").click($.proxy(this.load_section, this));
         $(document).on("click", "#update", $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: this.options.formid,
@@ -59,6 +58,7 @@ TwocolsNav.prototype = {
         if (data.content) {
             $('#' + this.options.divid).html(data.content);
         }
+        this.update_listing(data);
         if (data.onload_cb) {
             eval(data.onload_cb + '()');
         }
@@ -105,10 +105,10 @@ TwocolsNav.prototype = {
         var $parent = $target.parents("div.control-group");
 
         $('div[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
-            instance.toggle_field_visibility($(this), $parent, $target.attr("value"));
+            instance.toggle_field_visibility($(this), $parent, $target.val());
         });
         $('h5[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
-            instance.toggle_field_visibility($(this), $parent, $target.attr("value"));
+            instance.toggle_field_visibility($(this), $parent, $target.val());
         });
     },
 
@@ -120,7 +120,10 @@ TwocolsNav.prototype = {
 
         realid = realid.substr(0, realid.length - 2);
         $('div[data-visibility-field="' + realid + '"]').each(function(idx) {
-            instance.toggle_field_visibility($(this), $parent, $target.attr("value"));
+            instance.toggle_field_visibility($(this), $parent, $target.val());
+        });
+        $('h5[data-visibility-field="' + realid + '"]').each(function(idx) {
+            instance.toggle_field_visibility($(this), $parent, $target.val());
         });
     },
 
@@ -136,11 +139,12 @@ TwocolsNav.prototype = {
         $("body").notify("success", data.respmsg, 2000);
     },
 
-    load_page: function(e) {
+    load_section: function(e) {
         var $link = get_target(e);
         e.preventDefault();
         this.navobj.baseurl($link.attr("href")).update();
     },
+
 
     default_cb: function(data) {
         $("a.ajaxlink").parent().removeClass("active");
@@ -148,3 +152,5 @@ TwocolsNav.prototype = {
         this.update_content(data);
     }
 };
+
+TwocolsNav.prototype = $.extend({}, Listing.prototype, TwocolsNav.prototype);

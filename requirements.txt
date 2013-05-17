@@ -1,4 +1,5 @@
 django
+django-reversion
 south
 lxml
 pycrypto

@@ -16,12 +16,12 @@
             });
             this.$element.blur(function(e) {
                 var $this = $(this);
-                if ($this.attr("value") == "") {
-                    $this.attr("value", gettext("Search..."));
+                if ($this.val() == "") {
+                    $this.val(gettext("Search..."));
                 }
             });
             if (this.options.navobj.params.pattern != undefined) {
-                this.$element.attr("value", this.options.navobj.getparam("pattern"));
+                this.$element.val(this.options.navobj.getparam("pattern"));
             }
             if (this.options.navobj.params.criteria != undefined) {
                 $("#crit_" + this.options.navobj.params.criteria).attr("checked", "checked");
@@ -30,8 +30,8 @@
 
         pattern_change: function(e) {
             var $input = $(e.target);
-            var criteria = $("input[name=scriteria]:checked").attr("value");
-            var pattern = $input.attr("value");
+            var criteria = $("input[name=scriteria]:checked").val();
+            var pattern = $input.val();
 
             if (pattern != "") {
                 this.options.navobj.setparams({

@@ -1,3 +1,4 @@
+import re
 from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -53,6 +54,10 @@ def settings_menu(selection, user):
          "class" : "ajaxlink",
          "url" : "info/",
          "label" : _("Information")},
+        {"name" : "logs",
+         "class" : "ajaxlink",
+         "url" : "logs/",
+         "label" : _("Logs")},
         {"name" : "parameters",
          "class" : "ajaxlink",
          "url" : "parameters/",
@@ -320,3 +325,20 @@ def gender(value, target):
 def get_extra_admin_content(user, target, currentpage):
     res = events.raiseQueryEvent("ExtraAdminContent", user, target, currentpage)
     return "".join(res)
+
+
+@register.filter
+def colorize_level(level):
+    classes = {
+        "INFO": "text-info",
+        "WARNING": "text-warning",
+        "CRITICAL": "text-error"
+    }
+    if not level in classes:
+        return level
+    return "<p class='%s'>%s</p>" % (classes[level], level)
+
+
+@register.filter
+def tohtml(message):
+    return re.sub("'(.*)'", "<strong>\g<1></strong>", message)

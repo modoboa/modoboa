@@ -35,7 +35,7 @@ function removefilter(evt) {
  */
 function changefs(evt) {
     evt.preventDefault();
-    history.baseurl($(this).attr("value")).update();
+    history.baseurl($(this).val()).update();
 }
 
 /*
@@ -53,7 +53,7 @@ function init_filters_list() {
  */
 function loadfs(response) {
     curscript = history.getbaseurl();
-    $("#curfset").attr("value", curscript);
+    $("#curfset").val(curscript);
     $("#set_content").html(response.content);
 
     if ($("#filters_list") != undefined) {
@@ -165,9 +165,9 @@ function activatefs(evt) {
         $("#curfset").find("option").each(function(index, element) {
             var $element = $(element);
 
-            ($element.attr("value") == curscript)
+            ($element.val() == curscript)
                 ? $element.html(curscript + " (" + gettext("active") + ")")
-                : $element.html($element.attr("value"));
+                : $element.html($element.val());
         });
     });
 }
@@ -214,16 +214,16 @@ function filterset_created(data) {
     var curfset = $(parent.document).find("#curfset");
 
     curfset.append(option);
-    curfset.attr("value", name);
+    curfset.val(name);
 
     if (data.active) {
         curfset.find("option").each(function(index, element) {
             var $element = $(element);
 
-            if ($element.attr("value") == name) {
+            if ($element.val() == name) {
                 $element.html(name + " (" + gettext("active") + ")");
             } else {
-                $element.html($element.attr("value"));
+                $element.html($element.val());
             }
         });
     }

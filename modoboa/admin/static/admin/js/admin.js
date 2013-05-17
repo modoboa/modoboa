@@ -1,35 +1,34 @@
 var Admin = function(options) {
-    this.initialize(options);
+    Listing.call(this, options);
 };
 
 Admin.prototype = {
-    constructor: Admin,
-
     defaults: {
         deflocation: "list/",
         squery: null
     },
 
     initialize: function(options) {
-        this.options = $.extend({}, this.defaults, options);
+        Listing.prototype.initialize.call(this, options);
+        this.options = $.extend({}, this.defaults, this.options);
         this.options.defcallback = $.proxy(this.list_cb, this);
 
         this.navobj = new History(this.options);
 
         $("#searchquery").focus(function() {
-            $(this).attr("value", "");
+            $(this).val("");
         }).blur($.proxy(function(e) {
             var $this = $(e.target);
-            if ($this.attr("value") == "") {
-                if (this.options.squery && this.options.squery == "") {
-                    $this.attr("value", this.options.squery);
+            if ($this.val() == "") {
+                if (this.navobj.getparam("searchquery")) {
+                    $this.val(this.navobj.getparam("searchquery"));
                 } else {
-                    $this.attr("value", gettext("Search"));
+                    $this.val(gettext("Search"));
                 }
             }
         }, this));
         if (this.navobj.getparam("searchquery") != undefined) {
-            $("#searchquery").attr("value", this.navobj.getparam("searchquery"));
+            $("#searchquery").val(this.navobj.getparam("searchquery"));
         }
 
         this.listen();
@@ -37,51 +36,16 @@ Admin.prototype = {
 
     list_cb: function(data) {
         $("#listing").html(data.table);
-        $(".sortable").sortable({
-            onSortOrderChange: $.proxy(this.change_sort_order, this)
-        });
-        this.set_sort_order();
-        $("#bottom-bar-right").html(data.paginbar);
-        $("#pagination_bar").find(".disabled a").click(function(e) {
-            e.preventDefault();
-        });
-        if (data.page != this.navobj.getparam("page")) {
-            this.navobj.setparam("page", data.page).update(false, true);
-        }
+        this.update_listing(data);
     },
 
     listen: function() {
-        $(document).on("click", "#bottom-bar-right a",
-            $.proxy(this.getpage_loader, this));
         $("#searchform").submit($.proxy(this.do_search, this));
-    },
-
-    set_sort_order: function() {
-        var sort_order = this.navobj.getparam("sort_order");
-        var sort_dir;
-
-        if (!sort_order) {
-            return;
-        }
-        if (sort_order[0] == '-') {
-            sort_dir = "desc";
-            sort_order = sort_order.substr(1);
-        } else {
-            sort_dir = 'asc';
-        }
-        $("th[data-sort_order=" + sort_order + "]").sortable('select', sort_dir);
-    },
-
-    change_sort_order: function(sort_order, dir) {
-        if (dir == "desc") {
-            sort_order = "-" + sort_order;
-        }
-        this.navobj.setparam("sort_order", sort_order).update();
     },
 
     do_search: function(e) {
         e.preventDefault();
-        var squery = $("#searchquery").attr("value");
+        var squery = $("#searchquery").val();
         if (squery != "") {
             this.navobj.setparam("searchquery", squery);
         } else {
@@ -90,16 +54,10 @@ Admin.prototype = {
         this.navobj.update();
     },
 
-    getpage_loader: function(e) {
-        var $link = $(e.target).parent();
-        e.preventDefault();
-        this.navobj.updateparams($link.attr("href")).update();
-    },
-
     importform_cb: function() {
         $(".submit").one('click', function(e) {
             e.preventDefault();
-            if ($("#id_sourcefile").attr("value") == "") {
+            if ($("#id_sourcefile").val() == "") {
                 return;
             }
             $("#import_status").css("display", "block");
@@ -136,6 +94,8 @@ Admin.prototype = {
     }
 };
 
+Admin.prototype = $.extend({}, Listing.prototype, Admin.prototype);
+
 /*
  * Domains
  */
@@ -169,7 +129,7 @@ Domains.prototype = {
 
     create_dom_admin_changed: function(e) {
         var $target = $(e.target);
-        this.change_inputs_state(($target.attr("value") == "yes") ? false : true);
+        this.change_inputs_state(($target.val() == "yes") ? false : true);
     },
 
     generalform_init: function() {
@@ -180,14 +140,14 @@ Domains.prototype = {
     optionsform_init: function() {
         $("input[name=create_dom_admin]").click($.proxy(this.create_dom_admin_changed, this));
         this.change_inputs_state(
-            $("input[name=create_dom_admin]:checked").attr("value") == "yes" ? false : true
+            $("input[name=create_dom_admin]:checked").val() == "yes" ? false : true
         );
         this.optionsform_prefill();
     },
 
     optionsform_prefill: function() {
         var $span = $("#id_dom_admin_username").next("span");
-        $span.html("@" + $("#id_name").attr("value"));
+        $span.html("@" + $("#id_name").val());
     },
 
     domadminsform_init: function() {
@@ -249,7 +209,6 @@ var Identities = function(options) {
 Identities.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
-
         if (this.navobj.getparam("idtfilter") != undefined) {
             var text = this.navobj.getparam("idtfilter");
             $("#searchform").parent().after(this.make_tag(text, "idt"));
@@ -364,7 +323,7 @@ Identities.prototype = {
     generalform_init: function() {
         $("#id_role").change($.proxy(function(e) {
             var $this = $(e.target);
-            var value = $this.attr("value");
+            var value = $this.val();
             if (value == "SimpleUsers" || value == "") {
                 this.simpleuser_mode();
             } else {
@@ -402,8 +361,8 @@ Identities.prototype = {
 
     mailform_prefill: function() {
         var $role = $("#id_role");
-        if (!$role.length || $role.attr("value") == "" || $role.attr("value") == "SimpleUsers") {
-            $("#id_email").attr("value", $("#id_username").attr("value"));
+        if (!$role.length || $role.val() == "" || $role.val() == "SimpleUsers") {
+            $("#id_email").val($("#id_username").val());
         }
     },
 

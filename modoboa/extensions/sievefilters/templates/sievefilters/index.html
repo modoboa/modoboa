@@ -26,7 +26,7 @@ function filterform_cb() {
     }).data('dynaction');
 
     $("input[name=match_type]").click(function(e) {
-        if ($(this).attr("value") == "all") {
+        if ($(this).val() == "all") {
             $("div[id*=condition]").hide();
         } else {
             $("div[id*=condition]").show();

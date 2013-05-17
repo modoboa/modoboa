@@ -21,7 +21,7 @@ from modoboa.lib.exceptions import ModoboaException, PermDeniedException
 from modoboa.lib.webutils \
     import _render, ajax_response, ajax_simple_response, _render_to_string
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.models import Parameter
+from modoboa.lib.models import Parameter, Log
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.templatetags.libextras import pagination_bar
 
@@ -607,7 +607,7 @@ def viewextensions(request, tplname='admin/extensions.html'):
     tbl = ExtensionsTable(request, exts)
     return ajax_simple_response({
         "status": "ok",
-        "content": render_to_string(tplname, {"extensions": tbl})
+        "content": _render_to_string(request, tplname, {"extensions": tbl})
     })
 
 
@@ -639,6 +639,27 @@ def information(request, tplname="admin/information.html"):
     return ajax_simple_response({
         "status": "ok",
         "content": render_to_string(tplname, {})
+    })
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def logs(request, tplname="admin/logs.html"):
+    sort_order, sort_dir = get_sort_order(
+        request.GET, "date_created",
+        allowed_values=['date_created', 'level', 'logger', 'message']
+    )
+    page = get_listing_page(
+        Log.objects.all().order_by("%s%s" % (sort_dir, sort_order)), 
+        request.GET.get("page", 1)
+    )
+    return ajax_simple_response({
+        "status": "ok",
+        "content": render_to_string(tplname, {
+            "logs": page.object_list,
+        }),
+        "page": page.number,
+        "paginbar": pagination_bar(page),
     })
 
 

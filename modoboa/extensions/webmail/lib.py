@@ -693,7 +693,7 @@ def send_mail(request, posturl=None):
         if parameters.get_admin("SMTP_AUTHENTICATION") == "yes":
             try:
                 s.login(request.user.username, get_password(request))
-            except smtplib.SMTPAuthenticationError, e:
+            except smtplib.SMTPException, e:
                 raise WebmailError(str(e))
         s.sendmail(request.user.email, rcpts, msg.as_string())
         s.quit()

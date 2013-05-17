@@ -18,31 +18,31 @@ Stats.prototype = {
         this.navobj = navobj;
 
         if (navobj.params.searchquery != undefined) {
-            $("#searchquery").attr("value", navobj.params.searchquery);
+            $("#searchquery").val(navobj.params.searchquery);
         }
         $("#searchquery").focus(function() {
             var $this = $(this);
-            if ($this.attr("value") == undefined) {
+            if ($this.val() == undefined) {
                 return;
             }
-            $this.data("oldvalue", $this.attr("value"));
-            $this.attr("value", "");
+            $this.data("oldvalue", $this.val());
+            $this.val("");
         }).blur(function() {
             var $this = $(this);
-            if ($this.attr("value") == "") {
+            if ($this.val() == "") {
                 if ($this.data("oldvalue")) {
-                    $this.attr("value", $this.data('oldvalue'));
+                    $this.val($this.data('oldvalue'));
                     $this.data("oldvalue", null);
                 } else {
-                    $this.attr("value", gettext("Search a domain"));
+                    $this.val(gettext("Search a domain"));
                 }
             }
         });
         if (navobj.params.start) {
-            $("#id_from").attr("value", navobj.params.start);
+            $("#id_from").val(navobj.params.start);
         }
         if (navobj.params.end) {
-            $("#id_to").attr("value", navobj.params.end);
+            $("#id_to").val(navobj.params.end);
         }
         $("#custom-period input").datepicker({
             format: 'yyyy-mm-dd',
@@ -102,13 +102,13 @@ Stats.prototype = {
         var $fromdate = $("#id_from");
         var $todate = $("#id_to");
 
-        if ($fromdate.attr("value") == "" || $todate.attr("value") == "") {
+        if ($fromdate.val() == "" || $todate.val() == "") {
             return;
         }
         this.navobj.setparams({
             period: "custom",
-            start: $fromdate.attr("value"),
-            end: $todate.attr("value")
+            start: $fromdate.val(),
+            end: $todate.val()
         }).update();
     }
 };

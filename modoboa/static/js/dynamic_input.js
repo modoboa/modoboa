@@ -41,8 +41,8 @@
             var $rmlink = this.addrmlink($ninput);
 
             $ninput.focusout(this.checkempty);
-            $ninput.attr("value", this.$element.attr("value"));
-            this.$element.attr("value", this.options.emptylabel);
+            $ninput.val(this.$element.val());
+            this.$element.val(this.options.emptylabel);
             this.$element.after($ninput, $rmlink);
             this.nextid++;
         },
@@ -52,7 +52,7 @@
             var id = "#" + this.attr("id").replace("_rmbtn", "");
             var $input = $(id);
 
-            if ($input.attr("value") == "" && (force == undefined || !force)) {
+            if ($input.val() == "" && (force == undefined || !force)) {
                 return;
             }
             $input.remove();
@@ -63,7 +63,7 @@
             if (evt.keyCode != 13) {
                 return;
             }
-            if (this.$element.attr("value") == "") {
+            if (this.$element.val() == "") {
                 return;
             }
             this.addinput();
@@ -72,7 +72,7 @@
         checkempty: function(evt) {
             var $input = $(evt.target);
 
-            if ($input.attr("value") == "") {
+            if ($input.val() == "") {
                 $("#" + $input.attr("id") + "_rmbtn").trigger("click", true);
             }
         }

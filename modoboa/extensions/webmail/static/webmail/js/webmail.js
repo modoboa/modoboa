@@ -904,7 +904,7 @@ Webmail.prototype = {
     attachments_init: function() {
         $("#submit").click(function(e) {
             e.preventDefault();
-            if ($("#id_attachment").attr("value") == "") {
+            if ($("#id_attachment").val() == "") {
                 return;
             }
             $("#upload_status").css("display", "block");
@@ -931,7 +931,7 @@ Webmail.prototype = {
         var $div = $("<div />").append($delbtn, $label);
 
         $delbtn.click(this.del_attachment);
-        $("#id_attachment").attr("value", "");
+        $("#id_attachment").val("");
         $("#attachment_list").append($div);
     },
 

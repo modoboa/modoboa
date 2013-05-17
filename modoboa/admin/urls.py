@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 
+
 urlpatterns = patterns(
     'modoboa.admin.views',
     url(r'^$', 'index', name="index"),
@@ -18,6 +19,7 @@ urlpatterns = patterns(
     (r'^settings/extensions/$', 'viewextensions'),
     (r'^settings/extensions/save/$', 'saveextensions'),
     (r'^settings/info/$', 'information'),
+    (r'^settings/logs/$', 'logs'),
     
     (r'^permissions/remove/$', 'remove_permission'),
 

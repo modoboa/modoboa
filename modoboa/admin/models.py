@@ -1,6 +1,5 @@
 # coding: utf-8
-from django.core import validators
-from django.db import models, IntegrityError
+from django.db import models
 from django.db.models import Q
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
@@ -15,10 +14,11 @@ from django.utils import timezone
 from django.conf import settings
 from modoboa.lib import md5crypt, parameters, events
 from modoboa.lib.exceptions import PermDeniedException
-from modoboa.lib.sysutils import exec_cmd, exec_as_vuser
+from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.extensions import exts_pool
 from exceptions import AdminError
+import reversion
 import os
 import sys
 import pwd
@@ -182,18 +182,18 @@ class User(AbstractBaseUser, PermissionsMixin):
             val1 = hashlib.md5(raw_value).hexdigest()
         elif scheme == u"sha256":
             val1 = base64.b64encode(hashlib.sha256(raw_value).digest())
-        elif scheme == u"$1$": # md5crypt
+        elif scheme == u"$1$":  # md5crypt
             salt, hashed = val2.split('$')
             val1 = md5crypt(raw_value, str(salt))
-            val2 = self.password # re-add scheme for comparison below
+            val2 = self.password  # re-add scheme for comparison below
         else:
             val1 = raw_value
         return constant_time_compare(val1, val2)
 
     @property
     def tags(self):
-        return [{"name" : "account", "label" : _("account"), "type" : "idt"},
-                {"name" : self.group, "label" : self.group, "type" : "grp", "color" : "info"}]
+        return [{"name": "account", "label": _("account"), "type": "idt"},
+                {"name": self.group, "label": self.group, "type": "grp", "color": "info"}]
 
     @property
     def has_mailbox(self):
@@ -541,6 +541,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             row += [dom.name for dom in self.get_domains()]
         csvwriter.writerow(row)
 
+reversion.register(User)
+
 
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User)
@@ -674,7 +676,8 @@ class Domain(DatesAware):
             ungrant_access_to_object(al, account)
 
     def delete(self, fromuser, keepdir=False):
-        from modoboa.lib.permissions import ungrant_access_to_object, ungrant_access_to_objects
+        from modoboa.lib.permissions import \
+            ungrant_access_to_object, ungrant_access_to_objects
 
         if self.domainalias_set.count():
             events.raiseEvent("DomainAliasDeleted", self.domainalias_set.all())
@@ -683,7 +686,7 @@ class Domain(DatesAware):
             Quota.objects.filter(username__contains='@%s' % self.name).delete()
             events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
             ungrant_access_to_objects(self.mailbox_set.all())
-            hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False) 
+            hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
             if hm == "yes" and not keepdir:
                 for mb in self.mailbox_set.all():
                     mb.delete_dir()
@@ -725,6 +728,8 @@ class Domain(DatesAware):
 
     def to_csv(self, csvwriter):
         csvwriter.writerow(["domain", self.name, self.quota, self.enabled])
+
+reversion.register(Domain)
 
 
 class DomainAlias(DatesAware):
@@ -792,7 +797,10 @@ class DomainAlias(DatesAware):
 
         :param csvwriter: a ``csv.writer`` object
         """
-        csvwriter.writerow(["domainalias", self.name, self.target.name, self.enabled])
+        csvwriter.writerow(["domainalias", self.name,
+                            self.target.name, self.enabled])
+
+reversion.register(DomainAlias)
 
 
 class Mailbox(DatesAware):
@@ -855,8 +863,10 @@ class Mailbox(DatesAware):
         self.__mail_home = None
         if not os.path.exists(old_mail_home):
             return
-        code, output = exec_cmd("mv %s %s" % (old_mail_home, self.mail_home), 
-                                sudo_user=parameters.get_admin("MAILBOXES_OWNER"))
+        code, output = exec_cmd(
+            "mv %s %s" % (old_mail_home, self.mail_home),
+            sudo_user=parameters.get_admin("MAILBOXES_OWNER")
+        )
         if code:
             raise AdminError(_("Failed to rename mailbox: %s" % output))
 
@@ -879,8 +889,10 @@ class Mailbox(DatesAware):
             return
         if not os.path.exists(self.mail_home):
             return
-        code, output = exec_cmd("rm -r %s" % self.mail_home, 
-                                sudo_user=parameters.get_admin("MAILBOXES_OWNER"))
+        code, output = exec_cmd(
+            "rm -r %s" % self.mail_home,
+            sudo_user=parameters.get_admin("MAILBOXES_OWNER")
+        )
         if code:
             raise AdminError(_("Failed to remove mailbox: %s" % output))
 
@@ -960,6 +972,8 @@ class Mailbox(DatesAware):
             self.delete_dir()
         super(Mailbox, self).delete()
 
+reversion.register(Mailbox)
+
 
 @receiver(pre_delete, sender=Mailbox)
 def mailbox_deleted_handler(sender, **kwargs):
@@ -1016,6 +1030,9 @@ class Alias(DatesAware):
         )
         unique_together = (("address", "domain"),)
         ordering = ["domain__name", "address"]
+
+    def __unicode__(self):
+        return self.full_address
 
     @property
     def full_address(self):
@@ -1113,7 +1130,7 @@ class Alias(DatesAware):
         total = 0
         if self.extmboxes != "":
             total += len(self.extmboxes.split(','))
-        return total + self.aliases.count() + self.mboxes.count()  
+        return total + self.aliases.count() + self.mboxes.count()
 
     def ui_disabled(self, user):
         if user.is_superuser:
@@ -1157,6 +1174,8 @@ class Alias(DatesAware):
         row = [self.type, self.full_address, self.enabled]
         row += self.get_recipients()
         csvwriter.writerow(row)
+
+reversion.register(Alias)
 
 
 class Extension(models.Model):
@@ -1215,6 +1234,8 @@ class Extension(models.Model):
 
         events.raiseEvent("ExtDisabled", self)
 
+reversion.register(Extension)
+
 
 def populate_callback(user):
     """Populate callback
@@ -1250,3 +1271,27 @@ def populate_callback(user):
         mb.save(creator=sadmins[0])
         for su in sadmins[1:]:
             grant_access_to_object(su, mb)
+
+
+@receiver(reversion.post_revision_commit)
+def post_revision_commit(sender, **kwargs):
+    import logging
+
+    if kwargs["revision"].user is None:
+        return
+    logger = logging.getLogger("modoboa.admin")
+    for version in kwargs["versions"]:
+        if version.type == reversion.models.VERSION_ADD:
+            action = _("added")
+            level = "info"
+        elif version.type == reversion.models.VERSION_CHANGE:
+            action = _("modified")
+            level = "warning"
+        else:
+            action = _("deleted")
+            level = "critical"
+        message = _("%s '%s' %s by user %s") % (
+            unicode(version.content_type).capitalize(), version.object_repr, action,
+            kwargs["revision"].user.username
+        )
+        getattr(logger, level)(message)
