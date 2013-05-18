@@ -257,7 +257,7 @@ def get_admin(name, app=None, raise_error=True):
     return p.value.decode("unicode_escape")
 
 
-def get_user(user, name, app=None):
+def get_user(user, name, app=None, raise_error=True):
     """Return a parameter for a specific user
 
     A ``NotDefined`` exception if the parameter doesn't exist.
