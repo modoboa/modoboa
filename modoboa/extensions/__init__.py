@@ -56,8 +56,10 @@ class ExtensionsPool(object):
     def load_all(self):
         from modoboa.admin.models import Extension
 
+        for ext in settings.MODOBOA_EXTENSIONS:
+            __import__(ext)
         result = []
-        for extname, extdef in self.extensions.iteritems():
+        for extname in self.extensions.keys():
             extinstance = self.get_extension(extname)
             if not extinstance.always_active:
                 try:

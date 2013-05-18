@@ -140,6 +140,12 @@ INSTALLED_APPS = (
     'modoboa',
     'modoboa.auth',
     'modoboa.lib',
+
+    # Extra tools
+    # 'modoboa.tools.pfxadmin_migrate',
+)
+
+MODOBOA_EXTENSIONS = (
     'modoboa.admin',
     'modoboa.userprefs',
 
@@ -150,10 +156,9 @@ INSTALLED_APPS = (
     'modoboa.extensions.stats',
     {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
     'modoboa.extensions.sievefilters',
-
-    # Extra tools
-    # 'modoboa.tools.pfxadmin_migrate',
 )
+
+INSTALLED_APPS += MODOBOA_EXTENSIONS
 
 AUTH_USER_MODEL = 'admin.User'
 
