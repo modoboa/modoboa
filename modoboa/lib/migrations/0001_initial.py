@@ -3,6 +3,8 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from modoboa.lib.compat import user_model_name
+
 
 class Migration(SchemaMigration):
     
@@ -21,7 +23,7 @@ class Migration(SchemaMigration):
             ('value', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_model_name])),
         ))
         db.send_create_signal('lib', ['UserParameter'])
     
@@ -49,7 +51,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        'auth.user': {
+        user_model_name: {
             'Meta': {'object_name': 'User'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
@@ -82,7 +84,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'UserParameter'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name}),
             'value': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
     }

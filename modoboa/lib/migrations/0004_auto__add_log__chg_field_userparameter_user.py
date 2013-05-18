@@ -3,6 +3,8 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from modoboa.lib.dbutils import db_table_exists
+from modoboa.lib.compat import user_model_name
 
 
 class Migration(SchemaMigration):
@@ -19,16 +21,13 @@ class Migration(SchemaMigration):
         db.send_create_signal(u'lib', ['Log'])
 
 
+        if db_table_exists('admin_user'):
+            return
         # Changing field 'UserParameter.user'
-        db.alter_column(u'lib_userparameter', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.User']))
+        db.alter_column(u'lib_userparameter', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_model_name]))
 
     def backwards(self, orm):
-        # Deleting model 'Log'
-        db.delete_table(u'lib_log')
-
-
-        # Changing field 'UserParameter.user'
-        db.alter_column(u'lib_userparameter', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User']))
+        raise RuntimeError("Cannot revert this migration")
 
     models = {
         u'admin.user': {
