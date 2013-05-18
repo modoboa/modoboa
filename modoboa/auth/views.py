@@ -39,7 +39,7 @@ def dologin(request):
                     nextlocation = reverse("domains")
                 return HttpResponseRedirect(nextlocation)
             error = _("Your username and password didn't match. Please try again.")
-            logger.warning("Failed connection attempt from %(addr)s as user %(user)s" \
+            logger.warning("Failed connection attempt from '%(addr)s' as user '%(user)s'" \
                                % {"addr": request.META["REMOTE_ADDR"],
                                   "user": form.cleaned_data["username"]})
 

@@ -1,5 +1,6 @@
 # Django settings for {{ name }} project.
 import os
+from logging.handlers import SysLogHandler
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -181,11 +182,24 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },{% endif %}
+    'formatters': {
+        'syslog': {
+            'format': '%(name)s: %(levelname)s %(message)s'
+        },
+    },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',{% if django14 %}
             'filters': ['require_debug_false'],{% endif %}
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'syslog-auth': {
+            'class': 'logging.handlers.SysLogHandler',
+            'facility': SysLogHandler.LOG_AUTH,
+            'formatter': 'syslog'
+        },
+        'modoboa': {
+            'class': 'modoboa.lib.logutils.SQLHandler',
         }
     },
     'loggers': {
@@ -194,5 +208,15 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'modoboa.auth': {
+            'handlers': ['syslog-auth', 'modoboa'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'modoboa.admin': {
+            'handlers': ['modoboa'],
+            'level': 'INFO',
+            'propagate': False
+        }
     }
 }

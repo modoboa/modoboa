@@ -341,4 +341,4 @@ def colorize_level(level):
 
 @register.filter
 def tohtml(message):
-    return re.sub("'(.*)'", "<strong>\g<1></strong>", message)
+    return re.sub("'(.*?)'", "<strong>\g<1></strong>", message)
