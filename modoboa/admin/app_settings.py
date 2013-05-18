@@ -156,6 +156,12 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
 
+    log_maximum_age = forms.IntegerField(
+        label=ugettext_lazy("Maximum log record age"),
+        initial=365,
+        help_text=ugettext_lazy("The maximum age in days of a log record")
+    )
+
     items_per_page = forms.IntegerField(
         label=ugettext_lazy("Items per page"),
         initial=30,
