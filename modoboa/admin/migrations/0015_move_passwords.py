@@ -5,12 +5,15 @@ from south.v2 import DataMigration
 from django.db import models
 from modoboa.lib.models import Parameter
 from modoboa.lib.compat import user_model_name
+from modoboa.lib.dbutils import db_table_exists
 
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
+        if not db_table_exists("lib_parameter"):
+            return
         try:
             s = Parameter.objects.get(name='admin.PASSWORD_SCHEME').value
         except Parameter.DoesNotExist:

@@ -138,19 +138,21 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'reversion',
     'south',
-    'modoboa',
-    'modoboa.auth',
-    'modoboa.lib',
 
     # Extra tools
     # 'modoboa.tools.pfxadmin_migrate',
 )
 
-MODOBOA_EXTENSIONS = (
+# A dedicated place to register Modoboa applications
+# Do not delete it.
+# Do not change the order.
+MODOBOA_APPS = (
+    'modoboa',
+    'modoboa.auth',
     'modoboa.admin',
+    'modoboa.lib',
     'modoboa.userprefs',
 
-    # Modoboa extensions here.
     'modoboa.extensions.limits',
     'modoboa.extensions.postfix_autoreply',
     'modoboa.extensions.webmail',
@@ -159,7 +161,7 @@ MODOBOA_EXTENSIONS = (
     'modoboa.extensions.sievefilters',
 )
 
-INSTALLED_APPS += MODOBOA_EXTENSIONS
+INSTALLED_APPS += MODOBOA_APPS
 
 AUTH_USER_MODEL = 'admin.User'
 

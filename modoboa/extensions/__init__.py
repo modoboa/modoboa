@@ -56,7 +56,7 @@ class ExtensionsPool(object):
     def load_all(self):
         from modoboa.admin.models import Extension
 
-        for ext in settings.MODOBOA_EXTENSIONS:
+        for ext in settings.MODOBOA_APPS:
             __import__(ext)
         result = []
         for extname in self.extensions.keys():
