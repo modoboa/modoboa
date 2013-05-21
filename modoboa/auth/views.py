@@ -23,7 +23,7 @@ def dologin(request):
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
                 login(request, user)
-                if request.user.id != 1:
+                if request.user.has_mailbox:
                     request.session["password"] = encrypt(form.cleaned_data["password"])
 
                 request.session["django_language"] = \
