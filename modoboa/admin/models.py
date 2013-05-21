@@ -60,9 +60,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     password_expr = re.compile(r'(\{(\w+)\}|(\$1\$))(.+)')
 
-    def __unicode__(self):
-        return self.fullname
-
     def delete(self, fromuser, keep_mb_dir, *args, **kwargs):
         """Custom delete method
 
@@ -201,7 +198,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def fullname(self):
-        if self.first_name != "":
+        if self.first_name != u"":
             return u"%s %s" % (self.first_name, self.last_name)
         return self.username
 
