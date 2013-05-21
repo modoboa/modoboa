@@ -92,7 +92,7 @@ def profile(request, tplname='userprefs/profile.html'):
         )
         if form.is_valid():
             form.save()
-            if update_password:
+            if update_password and form.cleaned_data["confirmation"] != "":
                 request.session["password"] = encrypt(form.cleaned_data["confirmation"])
             return ajax_simple_response(dict(
                 status="ok", respmsg=_("Profile updated")
