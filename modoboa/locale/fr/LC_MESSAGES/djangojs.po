@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-0.9.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-26 10:42+0100\n"
+"POT-Creation-Date: 2013-05-22 17:39+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -17,43 +17,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/static/admin/js/admin.js:27
+#: admin/static/admin/js/admin.js:26
 msgid "Search"
 msgstr "Chercher"
 
-#: admin/static/admin/js/admin.js:124
-msgid "Delete this domain?"
-msgstr "Supprimer ce domaine?"
-
-#: admin/static/admin/js/admin.js:125
-msgid "This operation will remove ALL data associated to this domain."
-msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
-
-#: admin/static/admin/js/admin.js:126
+#: admin/static/admin/js/admin.js:110
 msgid "Do not delete domain directory"
 msgstr "Ne pas supprimer le répertoire du domaine"
 
-#: admin/static/admin/js/admin.js:149
+#: admin/static/admin/js/admin.js:113
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
+
+#: admin/static/admin/js/admin.js:114
+#, fuzzy
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
+
+#: admin/static/admin/js/admin.js:117
+msgid "Delete this domain?"
+msgstr "Supprimer ce domaine?"
+
+#: admin/static/admin/js/admin.js:161
 msgid "No domain administrator defined"
 msgstr "Aucun administrateur de domaine défini"
 
-#: admin/static/admin/js/admin.js:188
-msgid "Delete this account?"
-msgstr "Supprimer ce compte?"
-
-#: admin/static/admin/js/admin.js:189
+#: admin/static/admin/js/admin.js:238
 msgid "Do not delete mailbox directory"
 msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
-#: admin/static/admin/js/admin.js:193
+#: admin/static/admin/js/admin.js:243
+msgid "Delete this account?"
+msgstr "Supprimer ce compte?"
+
+#: admin/static/admin/js/admin.js:249
 msgid "Delete this list?"
 msgstr "Supprimer cette liste?"
 
-#: admin/static/admin/js/admin.js:197
+#: admin/static/admin/js/admin.js:254
 msgid "Delete this forward?"
 msgstr "Supprimer ce transfert?"
 
-#: admin/static/admin/js/admin.js:201
+#: admin/static/admin/js/admin.js:259
 msgid "Delete this alias?"
 msgstr "Supprimer cet alias?"
 
@@ -108,30 +115,30 @@ msgstr "actif"
 msgid "Search a domain"
 msgstr "Checher un domaine"
 
-#: extensions/webmail/static/webmail/js/webmail.js:511
+#: extensions/webmail/static/webmail/js/webmail.js:485
 msgid "Remove the selected mailbox?"
 msgstr "Supprimer la boite sélectionnée?"
 
-#: extensions/webmail/static/webmail/js/webmail.js:525
+#: extensions/webmail/static/webmail/js/webmail.js:499
 msgid "Mailbox removed"
 msgstr "Boite aux lettres supprimées"
 
-#: extensions/webmail/static/webmail/js/webmail.js:847
+#: extensions/webmail/static/webmail/js/webmail.js:823
 msgid "Message sent"
 msgstr "Message envoyé"
 
-#: extensions/webmail/static/webmail/js/webmail.js:880
+#: extensions/webmail/static/webmail/js/webmail.js:856
 msgid "Message deleted"
 msgstr "Message supprimé"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1005
+#: extensions/webmail/static/webmail/js/webmail.js:981
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s fichier"
 msgstr[1] "%s fichiers"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1037
+#: extensions/webmail/static/webmail/js/webmail.js:1013
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
@@ -146,7 +153,7 @@ msgstr "Avertissement"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: static/js/confirmation.js:98 static/js/history.js:240
+#: static/js/confirmation.js:99 static/js/history.js:239
 msgid "Internal Error"
 msgstr "Erreur interne"
 

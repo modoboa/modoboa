@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-26 10:42+0100\n"
+"POT-Creation-Date: 2013-05-22 17:39+0200\n"
 "PO-Revision-Date: 2013-02-04 12:04+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@sys4.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
@@ -17,43 +17,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin/static/admin/js/admin.js:27
+#: admin/static/admin/js/admin.js:26
 msgid "Search"
 msgstr "Suche"
 
-#: admin/static/admin/js/admin.js:124
-msgid "Delete this domain?"
-msgstr "Diese Domain löschen?"
-
-#: admin/static/admin/js/admin.js:125
-msgid "This operation will remove ALL data associated to this domain."
-msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
-
-#: admin/static/admin/js/admin.js:126
+#: admin/static/admin/js/admin.js:110
 msgid "Do not delete domain directory"
 msgstr "Verzeichnis der Domain nicht löschen"
 
-#: admin/static/admin/js/admin.js:149
+#: admin/static/admin/js/admin.js:113
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
+
+#: admin/static/admin/js/admin.js:114
+#, fuzzy
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
+
+#: admin/static/admin/js/admin.js:117
+msgid "Delete this domain?"
+msgstr "Diese Domain löschen?"
+
+#: admin/static/admin/js/admin.js:161
 msgid "No domain administrator defined"
 msgstr "Domain-Administrator fehlt"
 
-#: admin/static/admin/js/admin.js:188
-msgid "Delete this account?"
-msgstr "Diese Konto löschen?"
-
-#: admin/static/admin/js/admin.js:189
+#: admin/static/admin/js/admin.js:238
 msgid "Do not delete mailbox directory"
 msgstr "Verzeichnis der Mailbox nicht löschen"
 
-#: admin/static/admin/js/admin.js:193
+#: admin/static/admin/js/admin.js:243
+msgid "Delete this account?"
+msgstr "Diese Konto löschen?"
+
+#: admin/static/admin/js/admin.js:249
 msgid "Delete this list?"
 msgstr "Diese Liste löschen?"
 
-#: admin/static/admin/js/admin.js:197
+#: admin/static/admin/js/admin.js:254
 msgid "Delete this forward?"
 msgstr "Diese Weiterleitung löschen?"
 
-#: admin/static/admin/js/admin.js:201
+#: admin/static/admin/js/admin.js:259
 msgid "Delete this alias?"
 msgstr "Diesen Alias löschen?"
 
@@ -108,30 +115,30 @@ msgstr "aktiv"
 msgid "Search a domain"
 msgstr "Domain suchen"
 
-#: extensions/webmail/static/webmail/js/webmail.js:511
+#: extensions/webmail/static/webmail/js/webmail.js:485
 msgid "Remove the selected mailbox?"
 msgstr "Ausgewählte Mailbox entfernen?"
 
-#: extensions/webmail/static/webmail/js/webmail.js:525
+#: extensions/webmail/static/webmail/js/webmail.js:499
 msgid "Mailbox removed"
 msgstr "Mailbox entfernt"
 
-#: extensions/webmail/static/webmail/js/webmail.js:847
+#: extensions/webmail/static/webmail/js/webmail.js:823
 msgid "Message sent"
 msgstr "Nachricht gesendet"
 
-#: extensions/webmail/static/webmail/js/webmail.js:880
+#: extensions/webmail/static/webmail/js/webmail.js:856
 msgid "Message deleted"
 msgstr "Nachricht gelöscht"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1005
+#: extensions/webmail/static/webmail/js/webmail.js:981
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s Datei"
 msgstr[1] "%s Dateien"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1037
+#: extensions/webmail/static/webmail/js/webmail.js:1013
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
@@ -146,8 +153,7 @@ msgstr "Warnung"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: static/js/confirmation.js:98
-#: static/js/history.js:240
+#: static/js/confirmation.js:99 static/js/history.js:239
 msgid "Internal Error"
 msgstr "Interner Fehler"
 

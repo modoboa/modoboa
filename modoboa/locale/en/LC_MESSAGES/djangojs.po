@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-26 10:42+0100\n"
+"POT-Creation-Date: 2013-05-22 17:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,43 +17,49 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin/static/admin/js/admin.js:27
+#: admin/static/admin/js/admin.js:26
 msgid "Search"
 msgstr ""
 
-#: admin/static/admin/js/admin.js:124
-msgid "Delete this domain?"
-msgstr ""
-
-#: admin/static/admin/js/admin.js:125
-msgid "This operation will remove ALL data associated to this domain."
-msgstr ""
-
-#: admin/static/admin/js/admin.js:126
+#: admin/static/admin/js/admin.js:110
 msgid "Do not delete domain directory"
 msgstr ""
 
-#: admin/static/admin/js/admin.js:149
+#: admin/static/admin/js/admin.js:113
+msgid "This operation will remove ALL data associated to this domain."
+msgstr ""
+
+#: admin/static/admin/js/admin.js:114
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr ""
+
+#: admin/static/admin/js/admin.js:117
+msgid "Delete this domain?"
+msgstr ""
+
+#: admin/static/admin/js/admin.js:161
 msgid "No domain administrator defined"
 msgstr ""
 
-#: admin/static/admin/js/admin.js:188
-msgid "Delete this account?"
-msgstr ""
-
-#: admin/static/admin/js/admin.js:189
+#: admin/static/admin/js/admin.js:238
 msgid "Do not delete mailbox directory"
 msgstr ""
 
-#: admin/static/admin/js/admin.js:193
+#: admin/static/admin/js/admin.js:243
+msgid "Delete this account?"
+msgstr ""
+
+#: admin/static/admin/js/admin.js:249
 msgid "Delete this list?"
 msgstr ""
 
-#: admin/static/admin/js/admin.js:197
+#: admin/static/admin/js/admin.js:254
 msgid "Delete this forward?"
 msgstr ""
 
-#: admin/static/admin/js/admin.js:201
+#: admin/static/admin/js/admin.js:259
 msgid "Delete this alias?"
 msgstr ""
 
@@ -108,30 +114,30 @@ msgstr ""
 msgid "Search a domain"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:511
+#: extensions/webmail/static/webmail/js/webmail.js:485
 msgid "Remove the selected mailbox?"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:525
+#: extensions/webmail/static/webmail/js/webmail.js:499
 msgid "Mailbox removed"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:847
+#: extensions/webmail/static/webmail/js/webmail.js:823
 msgid "Message sent"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:880
+#: extensions/webmail/static/webmail/js/webmail.js:856
 msgid "Message deleted"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:1005
+#: extensions/webmail/static/webmail/js/webmail.js:981
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:1037
+#: extensions/webmail/static/webmail/js/webmail.js:1013
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
@@ -146,7 +152,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: static/js/confirmation.js:98 static/js/history.js:240
+#: static/js/confirmation.js:99 static/js/history.js:239
 msgid "Internal Error"
 msgstr ""
 

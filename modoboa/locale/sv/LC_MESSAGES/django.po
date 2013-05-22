@@ -1,88 +1,280 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Olle Gustafsson <olle@dalnix.se>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
-"POT-Creation-Date: 2013-01-26 10:41+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-22 17:38+0200\n"
 "PO-Revision-Date: 2013-02-14 22:43+0000\n"
 "Last-Translator: ogg1980 <olle@dalnix.se>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/__init__.py:9
+#, fuzzy
+msgid "Administration console"
+msgstr "Administratörer"
+
+#: admin/__init__.py:11
+msgid "Web based console to manage domains, accounts and aliases"
+msgstr ""
+
+#: admin/__init__.py:16 admin/forms.py:179 admin/forms.py:614
+#: admin/views.py:93 admin/views.py:441 extensions/webmail/app_settings.py:11
+#: userprefs/__init__.py:15
+msgid "General"
+msgstr "Generellt"
+
+#: admin/app_settings.py:31
+#, fuzzy
+msgid "Authentication"
+msgstr "Servern behöver autentisering"
+
+#: admin/app_settings.py:34
+msgid "Authentication type"
+msgstr ""
+
+#: admin/app_settings.py:35
 msgid "Local"
 msgstr "Lokal"
 
-#: admin/__init__.py:11
+#: admin/app_settings.py:38
 msgid "The backend used for authentication"
 msgstr "Autentiserings backend"
 
-#: admin/__init__.py:13
-msgid "Modoboa will handle mailbox creation on filesystem"
-msgstr "Ska Modoboa skapa brevlådor i filsystemet"
+#: admin/app_settings.py:43
+#, fuzzy
+msgid "Default password scheme"
+msgstr "Gammalt lösenord matchar inte"
 
-#: admin/__init__.py:15
-msgid "Path to the root directory where messages are stored"
-msgstr "Sökväg till rootkatalog där meddelanden lagras"
-
-#: admin/__init__.py:17
-msgid ""
-"UID of the virtual user which owns domains/mailboxes/messages on the "
-"filesystem"
-msgstr "UID för virtuell användare vilken äger domäner/brevlådor/meddelanden i filsystemet"
-
-#: admin/__init__.py:19
-msgid ""
-"GID of the virtual user which owns domains/mailboxes/messages on the "
-"filesystem"
-msgstr "GID för virtuell användare vilken äger domäner/brevlådor/meddelanden i filsystemet"
-
-#: admin/__init__.py:22
-msgid "Mailboxes storage format"
-msgstr "Brevlådans lagringsformat"
-
-#: admin/__init__.py:25
-msgid ""
-"Sub-directory (inside the mailbox) where messages are stored when using the "
-"maildir format"
-msgstr "Underkatalog (i brevlådan) där meddelanden lagras när Maildir format används"
-
-#: admin/__init__.py:28
-msgid "When a mailbox is removed, also remove the associated account"
-msgstr "När en brevlåda raderas, radera också tillhörande konto"
-
-#: admin/__init__.py:37
+#: admin/app_settings.py:50
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Krypteringsschema för lösenord"
 
-#: admin/__init__.py:40
+#: admin/app_settings.py:54
+msgid "Secret key"
+msgstr ""
+
+#: admin/app_settings.py:56
+msgid "Key used to encrypt/decrypt passwords"
+msgstr "Nyckel som används för att kryptera / dekryptera lösenord"
+
+#: admin/app_settings.py:60
+#, fuzzy
+msgid "LDAP settings"
+msgstr "Inställningar"
+
+#: admin/app_settings.py:63 extensions/sievefilters/app_settings.py:22
+#: extensions/webmail/app_settings.py:22 extensions/webmail/app_settings.py:42
+#, fuzzy
+msgid "Server address"
+msgstr "Server svar"
+
+#: admin/app_settings.py:65
+msgid "The IP address of the DNS name of the LDAP server"
+msgstr ""
+
+#: admin/app_settings.py:69 extensions/sievefilters/app_settings.py:28
+#: extensions/webmail/app_settings.py:34 extensions/webmail/app_settings.py:58
+#, fuzzy
+msgid "Server port"
+msgstr "Server svar"
+
+#: admin/app_settings.py:71
+msgid "The TCP port number used by the LDAP server"
+msgstr ""
+
+#: admin/app_settings.py:75 extensions/webmail/app_settings.py:28
+#, fuzzy
+msgid "Use a secured connection"
+msgstr "Använd säker anslutning mot IMAP-servern"
+
+#: admin/app_settings.py:77
+#, fuzzy
+msgid "Use an SSL/TLS connection to access the LDAP server"
+msgstr "Använd säker anslutning mot IMAP-servern"
+
+#: admin/app_settings.py:81
+#, fuzzy
+msgid "Authentication method"
+msgstr "Önskad autentiseringsmekanism"
+
+#: admin/app_settings.py:82
+#, fuzzy
+msgid "Search and bind"
+msgstr "Sök en domän"
+
+#: admin/app_settings.py:83
+msgid "Direct bind"
+msgstr ""
+
+#: admin/app_settings.py:85
+#, fuzzy
+msgid "Choose the authentication method to use"
+msgstr "Välj tillägg att aktivera"
+
+#: admin/app_settings.py:90
+msgid "Bind DN"
+msgstr ""
+
+#: admin/app_settings.py:92
+msgid ""
+"The distinguished name to use when binding to the LDAP server. Leave empty "
+"for an anonymous bind"
+msgstr ""
+
+#: admin/app_settings.py:97
+#, fuzzy
+msgid "Bind password"
+msgstr "Gammalt lösenord"
+
+#: admin/app_settings.py:99
+msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
+msgstr ""
+
+#: admin/app_settings.py:105
+#, fuzzy
+msgid "Search base"
+msgstr "Sök"
+
+#: admin/app_settings.py:107
+msgid "The distinguished name of the search base"
+msgstr ""
+
+#: admin/app_settings.py:112
+#, fuzzy
+msgid "Search filter"
+msgstr "Skräp filter"
+
+#: admin/app_settings.py:114
+msgid ""
+"An optional filter string (e.g. '(objectClass=person)'). In order to be "
+"valid, it must be enclosed in parentheses."
+msgstr ""
+
+#: admin/app_settings.py:119
+msgid "User DN template"
+msgstr ""
+
+#: admin/app_settings.py:121
+#, python-format
+msgid ""
+"The template used to construct a user's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr ""
+
+#: admin/app_settings.py:126
+#, fuzzy
+msgid "Password attribute"
+msgstr "Lösenord"
+
+#: admin/app_settings.py:128
+#, fuzzy
+msgid "The attribute used to store user passwords"
+msgstr "Krypteringsschema för lösenord"
+
+#: admin/app_settings.py:132
+#, fuzzy
+msgid "Active Directory"
+msgstr "Aktiva användare"
+
+#: admin/app_settings.py:134
+msgid "Tell if the LDAP server is an Active Directory one"
+msgstr ""
+
+#: admin/app_settings.py:137 admin/templates/admin/editdomainform.html:25
+#: extensions/limits/app_settings.py:31 extensions/limits/forms.py:24
+#: extensions/limits/models.py:14 extensions/webmail/app_settings.py:101
+#: extensions/webmail/templates/webmail/folders.html:4
+msgid "Mailboxes"
+msgstr "Brevlådor"
+
+#: admin/app_settings.py:140
+#, fuzzy
+msgid "Handle mailboxes on filesystem"
+msgstr "Ska Modoboa skapa brevlådor i filsystemet"
+
+#: admin/app_settings.py:142
+msgid ""
+"Rename or remove mailboxes on the filesystem when they get renamed or "
+"removed within Modoboa"
+msgstr ""
+
+#: admin/app_settings.py:146
+#, fuzzy
+msgid "Mailboxes ower"
+msgstr "Brevlådor"
+
+#: admin/app_settings.py:148
+#, fuzzy
+msgid "The UNIX account who owns mailboxes on the filesystem"
+msgstr ""
+"UID för virtuell användare vilken äger domäner/brevlådor/meddelanden i "
+"filsystemet"
+
+#: admin/app_settings.py:152
+msgid "Automatic account removal"
+msgstr ""
+
+#: admin/app_settings.py:154
+msgid "When a mailbox is removed, also remove the associated account"
+msgstr "När en brevlåda raderas, radera också tillhörande konto"
+
+#: admin/app_settings.py:157 admin/templates/admin/editdomainform.html:7
+msgid "Miscellaneous"
+msgstr "Övrigt"
+
+#: admin/app_settings.py:160
+msgid "Maximum log record age"
+msgstr ""
+
+#: admin/app_settings.py:162
+msgid "The maximum age in days of a log record"
+msgstr ""
+
+#: admin/app_settings.py:166
+msgid "Items per page"
+msgstr ""
+
+#: admin/app_settings.py:168
 msgid "Number of displayed items per page"
 msgstr "Antal poster som visas per sida"
 
-#: admin/__init__.py:62
+#: admin/app_settings.py:172
+#, fuzzy
+msgid "Default top redirection"
+msgstr "Standard editor"
+
+#: admin/app_settings.py:175
 msgid "The default redirection used when no application is specified"
 msgstr "Standard omdirigering när ingen applikation angetts"
 
-#: admin/forms.py:15 admin/forms.py:492 admin/tables.py:17
+#: admin/app_settings.py:230
+#, fuzzy
+msgid "This field is required"
+msgstr "Detta datum har varit"
+
+#: admin/forms.py:16 admin/forms.py:459 admin/tables.py:18
 msgid "Alias(es)"
 msgstr "Alias"
 
-#: admin/forms.py:17
+#: admin/forms.py:18
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr "Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att lägga till en rad."
+msgstr ""
+"Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att "
+"lägga till en rad."
 
-#: admin/forms.py:54
+#: admin/forms.py:55
 msgid "An alias with this name already exists"
 msgstr "Ett alias med detta namn finns redan"
 
@@ -90,339 +282,17 @@ msgstr "Ett alias med detta namn finns redan"
 msgid "A domain with this name already exists"
 msgstr "En domän med detta namn existerar redan"
 
-#: admin/forms.py:79
-msgid "Failed to rename domain, check permissions"
-msgstr "Det gick inte att byta namn på domänen, kontrollera behörigheter"
-
-#: admin/forms.py:110 admin/forms.py:649 admin/views.py:371
-msgid "General"
-msgstr "Generellt"
-
-#: admin/forms.py:132
-msgid "Email address"
-msgstr "E-post adress"
-
-#: admin/forms.py:133
-msgid ""
-"The distribution list address. Use the '*' character to create a 'catchall' "
-"address (ex: *@domain.tld)."
-msgstr "Distributionslistans adress. Använd '*' för att skapa en 'catchall' adress (ex: *@domain.tld)."
-
-#: admin/forms.py:136
-msgid "Recipients"
-msgstr "Mottagare"
-
-#: admin/forms.py:137
-msgid ""
-"Mailbox(es) this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr "Brevlåda/or detta alias kommer att peka på. Ange endast en adress per inlägg, tryck ENTER för att lägga till en ny inlägg."
-
-#: admin/forms.py:171 admin/forms.py:250 admin/forms.py:529
-#: admin/models.py:934
-msgid "Domain does not exist"
-msgstr "Domän existerar inte"
-
-#: admin/forms.py:173 admin/forms.py:252
-msgid "You don't have access to this domain"
-msgstr "Du har inte åtkomst till denna domän"
-
-#: admin/forms.py:193
-msgid "Invalid mailbox"
-msgstr "Ogiltig brevlåda"
-
-#: admin/forms.py:204 admin/models.py:954
-#, python-format
-msgid "Mailbox %s does not exist"
-msgstr "Brevlådan %s finns inte"
-
-#: admin/forms.py:213
-msgid "No recipient defined"
-msgstr "Ingen mottagare definierad"
-
-#: admin/forms.py:216
-msgid "A distribution list must contain at least two recipients"
-msgstr "En distributionslista måste innehålla minst två mottagare"
-
-#: admin/forms.py:230
-msgid "Address"
-msgstr "Adress"
-
-#: admin/forms.py:231
-msgid ""
-"A valid e-mail address. Use the '*' character to create a 'catchall' address"
-" (ex: *@domain.tld)."
-msgstr "En giltig e-post adress. Använd '*' tecknet för att skapa en 'catchall' adress (ex: *@domain.tld)."
-
-#: admin/forms.py:267 admin/forms.py:297 extensions/sievefilters/forms.py:70
-msgid "Recipient"
-msgstr "Mottagare"
-
-#: admin/forms.py:268
-msgid "A local recipient address"
-msgstr "En lokal mottagaradress"
-
-#: admin/forms.py:284
-msgid "Mailbox does not exist"
-msgstr "Brevlåda finns inte"
-
-#: admin/forms.py:286
-msgid "You can't access this mailbox"
-msgstr "Du kan inte komma åt den här brevlådan"
-
-#: admin/forms.py:298
-msgid "An external recipient address"
-msgstr "En extern mottagaradress"
-
-#: admin/forms.py:315
-msgid "Local recipients are forbidden"
-msgstr "Lokala mottagare är förbjudna"
-
-#: admin/forms.py:325 extensions/webmail/forms.py:18
-msgid "Select a file"
-msgstr "Välj en fil"
-
-#: admin/forms.py:326 admin/forms.py:351
-msgid "Separator"
-msgstr "Separator"
-
-#: admin/forms.py:328
-msgid "Continue on error"
-msgstr "Fortsätt vid fel"
-
-#: admin/forms.py:329
-msgid "Don't treat duplicated objects as error"
-msgstr "Behandla inte duplicerade objekt som fel"
-
-#: admin/forms.py:343
-msgid "Crypt passwords"
-msgstr "Krypterade lösenord"
-
-#: admin/forms.py:344
-msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "Markera det här alternativet om lösenord i filen inte är krypterad"
-
-#: admin/forms.py:349
-msgid "File name"
-msgstr "Filnamn"
-
-#: admin/forms.py:378 admin/templates/admin/editdomainform.html:9
-#: auth/forms.py:6
-msgid "Username"
-msgstr "Användarnamn"
-
-#: admin/forms.py:380
-msgid "Role"
-msgstr "Roll"
-
-#: admin/forms.py:381 admin/forms.py:405
-msgid "Choose"
-msgstr "Välj"
-
-#: admin/forms.py:382
-msgid "What level of permission this user will have"
-msgstr "Vilken nivå av behörighet den här användaren har"
-
-#: admin/forms.py:384 auth/forms.py:10
-msgid "Password"
-msgstr "Lösenord"
-
-#: admin/forms.py:386 userprefs/forms.py:15
-msgid "Confirmation"
-msgstr "Bekräftelse"
-
-#: admin/forms.py:388
-msgid "Enter the same password as above, for verification."
-msgstr "Ange samma lösenord som ovan för verifiering."
-
-#: admin/forms.py:399
-msgid "Enabled"
-msgstr "Aktiverad"
-
-#: admin/forms.py:438
-msgid "The two password fields didn't match."
-msgstr "Dessa två lösnordsfält matchar inte."
-
-#: admin/forms.py:457
-msgid "You can't disable your own account"
-msgstr "Du kan inte inaktivera ditt eget konto"
-
-#: admin/forms.py:484
-msgid "E-mail"
-msgstr "E-post"
-
-#: admin/forms.py:486
-msgid "Quota"
-msgstr "Kvota"
-
-#: admin/forms.py:488
-msgid ""
-"Quota in MB for this mailbox. Leave empty to use the value defined at domain"
-" level."
-msgstr "Kvot MB för den brevlådan. Lämna tomt för att använda det värde som anges på domän-nivå."
-
-#: admin/forms.py:494
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
-"*@domain.tld)."
-msgstr "Alias för denna brevlåda. Ange endast en adress per rad, tryck ENTER för att lägga till ny rad. Använd '*' för att skapa ett 'catchall' alias (ex: *@domain.tld)."
-
-#: admin/forms.py:556
-msgid "Failed to rename mailbox, check permissions"
-msgstr "Det gick inte att byta namn på brevlådan, kontrollera behörigheter"
-
-#: admin/forms.py:598
-msgid "Domain(s)"
-msgstr "Domän(er)"
-
-#: admin/forms.py:600
-msgid "Domain(s) that user administrates"
-msgstr "Domän(er) användaren administrerar"
-
-#: admin/forms.py:651 admin/views.py:374
-msgid "Mail"
-msgstr "Post"
-
-#: admin/forms.py:653
-msgid "Permissions"
-msgstr "Rättigheter"
-
-#: admin/lib.py:21
-msgid "Unknown object type"
-msgstr "Okänd objekttyp"
-
-#: admin/models.py:74
-msgid "You can't delete your own account"
-msgstr "Du kan inte radera ditt eget konto"
-
-#: admin/models.py:154
-msgid "Failed to update password: LDAP module not installed"
-msgstr "Misslyckades med att uppdatera lösenord: LDAP modul ej installerad"
-
-#: admin/models.py:160
-#, python-format
-msgid "Failed to update password: %s"
-msgstr "Misslyckades med att uppdatera lösenord: %s"
-
-#: admin/models.py:184
-msgid "account"
-msgstr "konto"
-
-#: admin/models.py:409 admin/models.py:599 admin/models.py:641
-msgid "Invalid line"
-msgstr "Ogiltig rad"
-
-#: admin/models.py:436
-#, python-format
-msgid "Account import failed (%s): domain does not exist"
-msgstr "Konto import misslyckades (%s): domänen existerar inte"
-
-#: admin/models.py:517 admin/models.py:609
-msgid "name"
-msgstr "namn"
-
-#: admin/models.py:518
-msgid "The domain name"
-msgstr "Domännamnet"
-
-#: admin/models.py:519
-msgid "Default quota in MB applied to mailboxes"
-msgstr "Standard kvota i MB applicerad för brevlådor"
-
-#: admin/models.py:520 admin/models.py:614 admin/models.py:836
-#: admin/models.py:965 extensions/postfix_autoreply/models.py:19
-msgid "enabled"
-msgstr "aktiverad"
-
-#: admin/models.py:521
-msgid "Check to activate this domain"
-msgstr "Markera för att aktivera denna domän"
-
-#: admin/models.py:591
-msgid "Failed to initialise domain, check permissions"
-msgstr "Det gick inte att initiera domän, kontrollera behörigheter"
-
-#: admin/models.py:610
-msgid "The alias name"
-msgstr "Alias namn"
-
-#: admin/models.py:611
-msgid "target"
-msgstr "mål"
-
-#: admin/models.py:612
-msgid "The domain this alias points to"
-msgstr "Domän dit detta alias pekar mot"
-
-#: admin/models.py:615 admin/models.py:837
-msgid "Check to activate this alias"
-msgstr "Markera för aktivera detta alias"
-
-#: admin/models.py:647
-#, python-format
-msgid "Unknown domain %s"
-msgstr "Okänt kommando %s"
-
-#: admin/models.py:660 admin/models.py:827
-msgid "address"
-msgstr "adress"
-
-#: admin/models.py:661
-msgid "Mailbox address (without the @domain.tld part)"
-msgstr "Brevlåde adress (utan @domain.tld)"
-
-#: admin/models.py:767
-#, python-format
-msgid "%s is not a valid uid/username"
-msgstr "%s är inte ett giltigt uid/användarnamn"
-
-#: admin/models.py:776
-#, python-format
-msgid "%s is not a valid gid/groupname"
-msgstr "%s är inte ett giltigt gid/gruppnamn"
-
-#: admin/models.py:795
-msgid "Failed to initialise mailbox, check permissions"
-msgstr "Det gick inte att initiera brevlådan, kontrollera behörigheter"
-
-#: admin/models.py:828
-msgid ""
-"The alias address (without the domain part). For a 'catch-all' address, just"
-" enter an * character."
-msgstr "Alias adress (utan domän delen). För en \"catch-all\"-adress, ange bara asterisk *."
-
-#: admin/models.py:832
-msgid "mailboxes"
-msgstr "brevlådor"
-
-#: admin/models.py:833
-msgid "The mailboxes this alias points to"
-msgstr "Brevlådorna detta alias pekar till"
-
-#: admin/models.py:876
-msgid "distribution list"
-msgstr "distributionslista"
-
-#: admin/models.py:877
-msgid "forward"
-msgstr "vidarebefordra"
-
-#: admin/models.py:878
-msgid "alias"
-msgstr "alias"
-
-#: admin/models.py:929
-#, python-format
-msgid "Invalid line: %s"
-msgstr "Ogiltig rad: %s"
-
-#: admin/models.py:966
-msgid "Check to enable this extension"
-msgstr "Markera för att aktivera detta tillägg"
-
-#: admin/tables.py:12 admin/tables.py:44
-#: admin/templates/admin/editdomainform.html:9
+#: admin/forms.py:114
+#, fuzzy
+msgid "Create a domain administrator"
+msgstr "Domän administratör"
+
+#: admin/forms.py:116
+msgid "Automatically create an administrator for this domain"
+msgstr ""
+
+#: admin/forms.py:120 admin/tables.py:12 admin/tables.py:47
+#: admin/templates/admin/editdomainform.html:13
 #: admin/templates/admin/identities_table.html:5
 #: admin/templates/admin/information.html:8
 #: extensions/sievefilters/forms.py:53
@@ -430,218 +300,596 @@ msgstr "Markera för att aktivera detta tillägg"
 msgid "Name"
 msgstr "Namn"
 
+#: admin/forms.py:122
+msgid ""
+"The administrator's name. Don't include the domain's name here, it will be "
+"automatically appended."
+msgstr ""
+
+#: admin/forms.py:128
+#, fuzzy
+msgid "Create aliases"
+msgstr "Domän alias"
+
+#: admin/forms.py:130
+msgid "Automatically create standard aliases for this domain"
+msgstr ""
+
+#: admin/forms.py:143
+#, fuzzy
+msgid "Invalid format"
+msgstr "Ogiltig gräns"
+
+#: admin/forms.py:155
+#, fuzzy, python-format
+msgid "User '%s' already exists"
+msgstr "Objektet existerar redan: %s"
+
+#: admin/forms.py:203
+msgid "Email address"
+msgstr "E-post adress"
+
+#: admin/forms.py:204
+msgid ""
+"The distribution list address. Use the '*' character to create a 'catchall' "
+"address (ex: *@domain.tld)."
+msgstr ""
+"Distributionslistans adress. Använd '*' för att skapa en 'catchall' adress "
+"(ex: *@domain.tld)."
+
+#: admin/forms.py:207
+msgid "Recipients"
+msgstr "Mottagare"
+
+#: admin/forms.py:208
+msgid ""
+"Mailbox(es) this alias will point to. Indicate only one address per input, "
+"press ENTER to add a new input."
+msgstr ""
+"Brevlåda/or detta alias kommer att peka på. Ange endast en adress per "
+"inlägg, tryck ENTER för att lägga till en ny inlägg."
+
+#: admin/forms.py:246 admin/forms.py:504 admin/forms.py:530
+#: admin/models.py:1147
+msgid "Domain does not exist"
+msgstr "Domän existerar inte"
+
+#: admin/forms.py:248
+msgid "You don't have access to this domain"
+msgstr "Du har inte åtkomst till denna domän"
+
+#: admin/forms.py:268
+msgid "Invalid mailbox"
+msgstr "Ogiltig brevlåda"
+
+#: admin/forms.py:284
+#, fuzzy, python-format
+msgid "Local recipient %s not found"
+msgstr "Lokala mottagare är förbjudna"
+
+#: admin/forms.py:286 admin/forms.py:292
+#, python-format
+msgid "Recipient %s already present"
+msgstr ""
+
+#: admin/forms.py:297
+msgid "No recipient defined"
+msgstr "Ingen mottagare definierad"
+
+#: admin/forms.py:311 extensions/webmail/forms.py:19
+msgid "Select a file"
+msgstr "Välj en fil"
+
+#: admin/forms.py:313 admin/forms.py:341
+msgid "Separator"
+msgstr "Separator"
+
+#: admin/forms.py:316
+msgid "Continue on error"
+msgstr "Fortsätt vid fel"
+
+#: admin/forms.py:317
+msgid "Don't treat duplicated objects as error"
+msgstr "Behandla inte duplicerade objekt som fel"
+
+#: admin/forms.py:332
+msgid "Crypt passwords"
+msgstr "Krypterade lösenord"
+
+#: admin/forms.py:333
+msgid "Check this option if passwords contained in your file are not crypted"
+msgstr "Markera det här alternativet om lösenord i filen inte är krypterad"
+
+#: admin/forms.py:339
+msgid "File name"
+msgstr "Filnamn"
+
+#: admin/forms.py:371 admin/templates/admin/editdomainform.html:13
+#: auth/forms.py:7
+msgid "Username"
+msgstr "Användarnamn"
+
+#: admin/forms.py:373
+msgid "Role"
+msgstr "Roll"
+
+#: admin/forms.py:374 admin/forms.py:401
+msgid "Choose"
+msgstr "Välj"
+
+#: admin/forms.py:375
+msgid "What level of permission this user will have"
+msgstr "Vilken nivå av behörighet den här användaren har"
+
+#: admin/forms.py:377 auth/forms.py:11
+msgid "Password"
+msgstr "Lösenord"
+
+#: admin/forms.py:379 userprefs/forms.py:18
+msgid "Confirmation"
+msgstr "Bekräftelse"
+
+#: admin/forms.py:381
+msgid "Enter the same password as above, for verification."
+msgstr "Ange samma lösenord som ovan för verifiering."
+
+#: admin/forms.py:392
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#: admin/forms.py:434
+msgid "The two password fields didn't match."
+msgstr "Dessa två lösnordsfält matchar inte."
+
+#: admin/forms.py:440
+msgid "You can't disable your own account"
+msgstr "Du kan inte inaktivera ditt eget konto"
+
+#: admin/forms.py:450
+msgid "E-mail"
+msgstr "E-post"
+
+#: admin/forms.py:452
+msgid "Quota"
+msgstr "Kvota"
+
+#: admin/forms.py:454
+msgid ""
+"Quota in MB for this mailbox. Define a custom value or use domain's default "
+"one. Leave empty to define an unlimited value (not allowed for domain "
+"administrators)."
+msgstr ""
+
+#: admin/forms.py:461
+msgid ""
+"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
+"to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
+"*@domain.tld)."
+msgstr ""
+"Alias för denna brevlåda. Ange endast en adress per rad, tryck ENTER för att "
+"lägga till ny rad. Använd '*' för att skapa ett 'catchall' alias (ex: "
+"*@domain.tld)."
+
+#: admin/forms.py:512
+#, fuzzy, python-format
+msgid "Mailbox %s already exists"
+msgstr "Brevlådan %s finns inte"
+
+#: admin/forms.py:572
+msgid "Domain(s)"
+msgstr "Domän(er)"
+
+#: admin/forms.py:574
+msgid "Domain(s) that user administrates"
+msgstr "Domän(er) användaren administrerar"
+
+#: admin/forms.py:616 admin/views.py:444
+msgid "Mail"
+msgstr "Post"
+
+#: admin/forms.py:618
+msgid "Permissions"
+msgstr "Rättigheter"
+
+#: admin/models.py:78
+msgid "You can't delete your own account"
+msgstr "Du kan inte radera ditt eget konto"
+
+#: admin/models.py:159
+msgid "Failed to update password: LDAP module not installed"
+msgstr "Misslyckades med att uppdatera lösenord: LDAP modul ej installerad"
+
+#: admin/models.py:165
+#, python-format
+msgid "Failed to update password: %s"
+msgstr "Misslyckades med att uppdatera lösenord: %s"
+
+#: admin/models.py:192
+msgid "account"
+msgstr "konto"
+
+#: admin/models.py:494 admin/models.py:720 admin/models.py:782
+msgid "Invalid line"
+msgstr "Ogiltig rad"
+
+#: admin/models.py:498
+msgid "You can't import an account with a role greater than yours"
+msgstr ""
+
+#: admin/models.py:518
+#, python-format
+msgid "Account import failed (%s): domain does not exist"
+msgstr "Konto import misslyckades (%s): domänen existerar inte"
+
+#: admin/models.py:607 admin/models.py:733
+msgid "name"
+msgstr "namn"
+
+#: admin/models.py:608
+msgid "The domain name"
+msgstr "Domännamnet"
+
+#: admin/models.py:610
+msgid "Default quota in MB applied to mailboxes"
+msgstr "Standard kvota i MB applicerad för brevlådor"
+
+#: admin/models.py:613 admin/models.py:740 admin/models.py:1020
+#: admin/models.py:1181 extensions/postfix_autoreply/models.py:19
+msgid "enabled"
+msgstr "aktiverad"
+
+#: admin/models.py:614
+msgid "Check to activate this domain"
+msgstr "Markera för att aktivera denna domän"
+
+#: admin/models.py:734
+msgid "The alias name"
+msgstr "Alias namn"
+
+#: admin/models.py:736
+msgid "target"
+msgstr "mål"
+
+#: admin/models.py:737
+msgid "The domain this alias points to"
+msgstr "Domän dit detta alias pekar mot"
+
+#: admin/models.py:741 admin/models.py:1021
+msgid "Check to activate this alias"
+msgstr "Markera för aktivera detta alias"
+
+#: admin/models.py:788
+#, python-format
+msgid "Unknown domain %s"
+msgstr "Okänt kommando %s"
+
+#: admin/models.py:805 admin/models.py:1006
+msgid "address"
+msgstr "adress"
+
+#: admin/models.py:806
+msgid "Mailbox address (without the @domain.tld part)"
+msgstr "Brevlåde adress (utan @domain.tld)"
+
+#: admin/models.py:852
+#, fuzzy, python-format
+msgid "Failed to retrieve mailbox location (%s)"
+msgstr "Det gick inte att hämta filteruppsättning"
+
+#: admin/models.py:868
+#, fuzzy, python-format
+msgid "Failed to rename mailbox: %s"
+msgstr "Det gick inte att byta namn på brevlådan, kontrollera behörigheter"
+
+#: admin/models.py:894
+#, fuzzy, python-format
+msgid "Failed to remove mailbox: %s"
+msgstr "Det gick inte att radera filtret"
+
+#: admin/models.py:909
+#, python-format
+msgid "Quota is greater than the allowed domain's limit (%dM)"
+msgstr ""
+
+#: admin/models.py:914
+msgid "A quota is required"
+msgstr ""
+
+#: admin/models.py:1007
+msgid ""
+"The alias address (without the domain part). For a 'catch-all' address, just "
+"enter an * character."
+msgstr ""
+"Alias adress (utan domän delen). För en \"catch-all\"-adress, ange bara "
+"asterisk *."
+
+#: admin/models.py:1011
+msgid "mailboxes"
+msgstr "brevlådor"
+
+#: admin/models.py:1012
+msgid "The mailboxes this alias points to"
+msgstr "Brevlådorna detta alias pekar till"
+
+#: admin/models.py:1016
+#, fuzzy
+msgid "The aliases this alias points to"
+msgstr "Brevlådorna detta alias pekar till"
+
+#: admin/models.py:1064
+msgid "distribution list"
+msgstr "distributionslista"
+
+#: admin/models.py:1065
+msgid "forward"
+msgstr "vidarebefordra"
+
+#: admin/models.py:1066
+msgid "alias"
+msgstr "alias"
+
+#: admin/models.py:1142
+#, python-format
+msgid "Invalid line: %s"
+msgstr "Ogiltig rad: %s"
+
+#: admin/models.py:1167
+#, python-format
+msgid "Mailbox %s does not exist"
+msgstr "Brevlådan %s finns inte"
+
+#: admin/models.py:1182
+msgid "Check to enable this extension"
+msgstr "Markera för att aktivera detta tillägg"
+
+#: admin/models.py:1282
+msgid "added"
+msgstr ""
+
+#: admin/models.py:1285
+#, fuzzy
+msgid "modified"
+msgstr "Alias ändrat"
+
+#: admin/models.py:1288
+#, fuzzy
+msgid "deleted"
+msgstr "Radera"
+
+#: admin/models.py:1290
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr ""
+
 #: admin/tables.py:14
 msgid "Edit domain"
 msgstr "Redigera domän"
 
-#: admin/tables.py:18 admin/tables.py:62
-#: admin/templates/admin/identities_table.html:8
-#: admin/templates/admin/listing.html:14 extensions/sievefilters/views.py:79
+#: admin/tables.py:21 admin/templates/admin/identities_table.html:8
+#: admin/templates/admin/listing.html:17 extensions/sievefilters/views.py:79
 #: extensions/sievefilters/templates/sievefilters/filter.html:17
 #: extensions/sievefilters/templates/sievefilters/guieditor.html:5
-#: extensions/webmail/templatetags/webextras.py:93
+#: extensions/webmail/templatetags/webextras.py:91
 msgid "Actions"
 msgstr "Åtgärder"
 
-#: admin/tables.py:45
+#: admin/tables.py:48
 msgid "Version"
 msgstr "Version"
 
-#: admin/tables.py:46
+#: admin/tables.py:49
 msgid "Description"
 msgstr "Beskrivning"
 
-#: admin/tables.py:53 admin/templates/admin/identities_table.html:7
-msgid "Tags"
-msgstr "Tagg"
-
-#: admin/tables.py:55
-msgid "Email/Username"
-msgstr "E-post/användarnamn"
-
-#: admin/tables.py:61 admin/templates/admin/identities_table.html:6
-msgid "Fullname/Recipient"
-msgstr "Fullständigt namn/Mottagare"
-
-#: admin/views.py:90
+#: admin/views.py:87
 msgid "New domain"
 msgstr "Ny domän"
 
-#: admin/views.py:91 admin/views.py:188 admin/views.py:368 admin/views.py:375
-#: extensions/sievefilters/views.py:120 extensions/sievefilters/views.py:187
-#: extensions/webmail/views.py:123
+#: admin/views.py:88 admin/views.py:97 admin/views.py:225 admin/views.py:438
+#: admin/views.py:445 extensions/sievefilters/views.py:120
+#: extensions/sievefilters/views.py:187 extensions/webmail/views.py:127
 msgid "Create"
 msgstr "Skapa"
 
-#: admin/views.py:97
+#: admin/views.py:94 admin/views.py:442
+msgid "Next"
+msgstr "Nästa"
+
+#: admin/views.py:96
+#, fuzzy
+msgid "Options"
+msgstr "Åtgärder"
+
+#: admin/views.py:98 admin/views.py:446
+msgid "Previous"
+msgstr "Föregående"
+
+#: admin/views.py:111
 msgid "Domain created"
 msgstr "Domän skapad"
 
-#: admin/views.py:121 admin/views.py:237 admin/views.py:418
+#: admin/views.py:144 admin/views.py:282 admin/views.py:492
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
-#: extensions/sievefilters/views.py:139 extensions/webmail/views.py:154
+#: extensions/sievefilters/views.py:139 extensions/webmail/views.py:158
 #: userprefs/templates/userprefs/forward.html:8
 #: userprefs/templates/userprefs/profile.html:8
 msgid "Update"
 msgstr "Uppdatera"
 
-#: admin/views.py:132
+#: admin/views.py:160
 msgid "Domain modified"
 msgstr "Domän ändrad"
 
-#: admin/views.py:155
+#: admin/views.py:186
 msgid "You can't delete your own domain"
 msgstr "Du kan inte radera din egen domän"
 
-#: admin/views.py:158
+#: admin/views.py:189
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domän raderad"
 msgstr[1] "Domäner raderade"
 
-#: admin/views.py:172
+#: admin/views.py:204
 msgid "Alias with this name already exists"
 msgstr "Alias med detta namn existerar redan"
 
-#: admin/views.py:208
+#: admin/views.py:247
 msgid "New distribution list"
 msgstr "Ny distributionslista"
 
-#: admin/views.py:212
+#: admin/views.py:248
 msgid "Distribution list created"
 msgstr "Distributionslista skapad"
 
-#: admin/views.py:218
+#: admin/views.py:257
 msgid "New alias"
 msgstr "Nytt alias"
 
-#: admin/views.py:222
+#: admin/views.py:258
 msgid "Alias created"
 msgstr "Alias skapat"
 
-#: admin/views.py:228
+#: admin/views.py:267
 msgid "New forward"
 msgstr "Ny vidarebefodring"
 
-#: admin/views.py:232
+#: admin/views.py:268
 msgid "Forward created"
 msgstr "Vidarebefodring  skapad"
 
-#: admin/views.py:249
-msgid "Alias modified"
-msgstr "Alias ändrat"
-
-#: admin/views.py:253
+#: admin/views.py:286
 msgid "Distribution list modified"
 msgstr "Distributionslista ändrad"
 
-#: admin/views.py:257
+#: admin/views.py:288
 msgid "Forward modified"
 msgstr "Vidarebefodring ändrad"
 
-#: admin/views.py:365
+#: admin/views.py:290
+msgid "Alias modified"
+msgstr "Alias ändrat"
+
+#: admin/views.py:403 admin/views.py:541 admin/views.py:546
+#: extensions/amavis/views.py:195 extensions/amavis/views.py:201
+#: extensions/amavis/views.py:234 extensions/amavis/views.py:238
+#: extensions/amavis/views.py:240 extensions/webmail/views.py:36
+#: extensions/webmail/views.py:64 extensions/webmail/views.py:77
+#: extensions/webmail/views.py:89 extensions/webmail/views.py:105
+#: extensions/webmail/views.py:189 extensions/webmail/views.py:415
+#: extensions/webmail/views.py:426 extensions/webmail/views.py:453
+#: lib/formutils.py:32 lib/formutils.py:37
+msgid "Invalid request"
+msgstr "Ogiltig förfrågan"
+
+#: admin/views.py:435
 msgid "New account"
 msgstr "Nytt konto"
 
-#: admin/views.py:372
-msgid "Next"
-msgstr "Nästa"
-
-#: admin/views.py:376
-msgid "Previous"
-msgstr "Föregående"
-
-#: admin/views.py:388
+#: admin/views.py:459
 msgid "Account created"
 msgstr "Konto skapat"
 
-#: admin/views.py:432
+#: admin/views.py:507
 msgid "Account updated"
 msgstr "Konto uppdaterat"
 
-#: admin/views.py:451
+#: admin/views.py:531
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Konto raderat"
 msgstr[1] "Konton raderade"
 
-#: admin/views.py:460 admin/views.py:465 extensions/amavis/views.py:184
-#: extensions/amavis/views.py:190 extensions/amavis/views.py:221
-#: extensions/amavis/views.py:225 extensions/amavis/views.py:227
-#: extensions/webmail/views.py:32 extensions/webmail/views.py:60
-#: extensions/webmail/views.py:73 extensions/webmail/views.py:85
-#: extensions/webmail/views.py:101 extensions/webmail/views.py:185
-#: extensions/webmail/views.py:412 extensions/webmail/views.py:423
-#: extensions/webmail/views.py:450 lib/formutils.py:33 lib/formutils.py:38
-msgid "Invalid request"
-msgstr "Ogiltig förfrågan"
-
-#: admin/views.py:495
+#: admin/views.py:586
 msgid "Parameters saved"
 msgstr "Parametrar sparade"
 
-#: admin/views.py:540
+#: admin/views.py:632
 msgid "Modifications applied."
 msgstr "Modifieringar tillämpade."
 
-#: admin/views.py:631
+#: admin/views.py:740
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Objektet existerar redan: %s"
 
-#: admin/views.py:633
+#: admin/views.py:742
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d objekt importerade"
 
-#: admin/views.py:650
+#: admin/views.py:760
+#, fuzzy
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled, group; address[, domain, ...]</em></li>\n"
+"<li><em>account; loginname; password; first name; last name; enabled; group; "
+"address[, domain, ...]</em></li>\n"
 "<li><em>alias; address; enabled; internal recipient</em></li>\n"
 "<li><em>forward; address; enabled; external recipient</em></li>\n"
 "<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of "
+"the previous values.</p>\n"
 "\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr "Tillhandahåll en CSV-fil där raderna har följande format:\n<ul>\n<li><em>konto, inloggningsnamn, lösenord, förnamn, efternamn, aktiverade, grupp, adress [, domän, ...] </ em></ li>\n<li><em> alias, adress, aktiverad, intern mottagare </ em></ li>\n<li><em> framåt, adress, aktiverad, extern mottagare </ em></ li>\n<li><em> dlist, adress, aktiverad, mottagare, mottagare, ... </ em></ li>\n</ ul>\n<p> Det första elementet i varje rad är obligatorisk och måste vara lika med en av de tidigare värdena.</ p>\n\n<p> Du kan använda ett annat tecken separator.</ p>\n"
+msgstr ""
+"Tillhandahåll en CSV-fil där raderna har följande format:\n"
+"<ul>\n"
+"<li><em>konto, inloggningsnamn, lösenord, förnamn, efternamn, aktiverade, "
+"grupp, adress [, domän, ...] </ em></ li>\n"
+"<li><em> alias, adress, aktiverad, intern mottagare </ em></ li>\n"
+"<li><em> framåt, adress, aktiverad, extern mottagare </ em></ li>\n"
+"<li><em> dlist, adress, aktiverad, mottagare, mottagare, ... </ em></ li>\n"
+"</ ul>\n"
+"<p> Det första elementet i varje rad är obligatorisk och måste vara lika med "
+"en av de tidigare värdena.</ p>\n"
+"\n"
+"<p> Du kan använda ett annat tecken separator.</ p>\n"
 
-#: admin/views.py:662
+#: admin/views.py:772
 msgid "Import identities"
 msgstr "Importera konton"
 
-#: admin/views.py:663 admin/views.py:730 admin/templatetags/admin_extras.py:83
-#: admin/templatetags/admin_extras.py:130
+#: admin/views.py:773 admin/views.py:843 admin/templatetags/admin_extras.py:87
+#: admin/templatetags/admin_extras.py:144
 msgid "Import"
 msgstr "Importera"
 
-#: admin/views.py:691
+#: admin/views.py:803
 msgid "Export identities"
 msgstr "Exportera konton"
 
-#: admin/views.py:692 admin/views.py:746 admin/templatetags/admin_extras.py:89
-#: admin/templatetags/admin_extras.py:136
+#: admin/views.py:804 admin/views.py:860 admin/templatetags/admin_extras.py:93
+#: admin/templatetags/admin_extras.py:150
 msgid "Export"
 msgstr "Exportera"
 
-#: admin/views.py:719
+#: admin/views.py:832
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
 "  <li><em>domain; name; quota; enabled</em></li>\n"
 "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of "
+"the previous values.</p>\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr "Tillhandahåll en CSV fil där raderna har följande format:\n<ul>\n<li><em>domän, namn, kvot, aktiverade</ em></ li>\n<li><em>domainalias, namn, riktad domän, aktiverade</ em></ li>\n</ ul>\n<p>det första elementet i varje rad är obligatoriskt och måste vara lika med en av de tidigare värdena.</ p>\n<p>Du kan använda ett annat tecken som separator.</ p>\n"
+msgstr ""
+"Tillhandahåll en CSV fil där raderna har följande format:\n"
+"<ul>\n"
+"<li><em>domän, namn, kvot, aktiverade</ em></ li>\n"
+"<li><em>domainalias, namn, riktad domän, aktiverade</ em></ li>\n"
+"</ ul>\n"
+"<p>det första elementet i varje rad är obligatoriskt och måste vara lika med "
+"en av de tidigare värdena.</ p>\n"
+"<p>Du kan använda ett annat tecken som separator.</ p>\n"
 
-#: admin/views.py:729
+#: admin/views.py:842
 msgid "Import domains"
 msgstr "Importera domäner"
 
-#: admin/views.py:745
+#: admin/views.py:859
 msgid "Export domains"
 msgstr "Exportera domäner"
 
@@ -652,43 +900,36 @@ msgid "MB"
 msgstr "MB"
 
 #: admin/templates/admin/domains.html:2 admin/templatetags/admin_extras.py:23
-#: extensions/limits/forms.py:14 extensions/limits/models.py:10
+#: extensions/limits/app_settings.py:19 extensions/limits/forms.py:16
+#: extensions/limits/models.py:12
 msgid "Domains"
 msgstr "Domäner"
 
-#: admin/templates/admin/editdomainform.html:3
+#: admin/templates/admin/editdomainform.html:4
 msgid "Administrators"
 msgstr "Administratörer"
 
-#: admin/templates/admin/editdomainform.html:4
-msgid "Miscellaneous"
-msgstr "Övrigt"
-
-#: admin/templates/admin/editdomainform.html:13
+#: admin/templates/admin/editdomainform.html:19
 msgid "No domain administrator defined"
 msgstr "Ingen domän administratör definierad"
 
-#: admin/templates/admin/editdomainform.html:16
+#: admin/templates/admin/editdomainform.html:22
 msgid "Creation date"
 msgstr "Skapelsedatum"
 
-#: admin/templates/admin/editdomainform.html:17
+#: admin/templates/admin/editdomainform.html:23
 msgid "Last modification date"
 msgstr "Senast ändrad"
 
-#: admin/templates/admin/editdomainform.html:18 extensions/limits/forms.py:16
-#: extensions/limits/models.py:11
+#: admin/templates/admin/editdomainform.html:24
+#: extensions/limits/app_settings.py:25 extensions/limits/forms.py:20
+#: extensions/limits/models.py:13
 msgid "Domain aliases"
 msgstr "Domän alias"
 
-#: admin/templates/admin/editdomainform.html:19 extensions/limits/forms.py:18
-#: extensions/limits/models.py:12
-#: extensions/webmail/templates/webmail/folders.html:4
-msgid "Mailboxes"
-msgstr "Brevlådor"
-
-#: admin/templates/admin/editdomainform.html:20 extensions/limits/forms.py:20
-#: extensions/limits/models.py:13
+#: admin/templates/admin/editdomainform.html:26
+#: extensions/limits/app_settings.py:37 extensions/limits/forms.py:28
+#: extensions/limits/models.py:15
 msgid "Mailbox aliases"
 msgstr "Brevlåde alias"
 
@@ -712,7 +953,16 @@ msgstr "Spara"
 msgid "Identities"
 msgstr "Konton"
 
+#: admin/templates/admin/identities_table.html:6
+msgid "Fullname/Recipient"
+msgstr "Fullständigt namn/Mottagare"
+
+#: admin/templates/admin/identities_table.html:7
+msgid "Tags"
+msgstr "Tagg"
+
 #: admin/templates/admin/importform.html:5
+#: admin/templatetags/admin_extras.py:305
 msgid "Help"
 msgstr "Hjälp"
 
@@ -745,28 +995,70 @@ msgstr "Gruppnamn"
 msgid "Last login"
 msgstr "Senaste inloggad"
 
-#: admin/templates/admin/listing.html:11
+#: admin/templates/admin/listing.html:14
 #: extensions/stats/templates/stats/index.html:28
 msgid "Filter"
 msgstr "Filter"
+
+#: admin/templates/admin/logs.html:2 admin/templatetags/admin_extras.py:60
+msgid "Logs"
+msgstr ""
+
+#: admin/templates/admin/logs.html:2
+msgid "Previously on Modoboa..."
+msgstr ""
+
+#: admin/templates/admin/logs.html:6 extensions/amavis/sql_listing.py:25
+#: extensions/webmail/lib.py:37 extensions/webmail/lib.py:406
+msgid "Date"
+msgstr "Datum"
+
+#: admin/templates/admin/logs.html:7
+msgid "Level"
+msgstr ""
+
+#: admin/templates/admin/logs.html:8
+msgid "Logger"
+msgstr ""
+
+#: admin/templates/admin/logs.html:9
+#, fuzzy
+msgid "Message"
+msgstr "Meddelande sänt"
 
 #: admin/templates/admin/mailboxes_raw.html:3
 msgid "Choose a value"
 msgstr "Välj ett värde"
 
-#: admin/templates/admin/newaccount.html:31
-#: templates/common/generic_modal.html:11
-msgid "Close"
-msgstr "Stäng"
+#: admin/templates/admin/mailform.html:3
+msgid "Use domain default value"
+msgstr ""
 
 #: admin/templates/admin/parameters.html:3
-#: admin/templatetags/admin_extras.py:61
+#: admin/templatetags/admin_extras.py:65
 msgid "Parameters"
 msgstr "Parametrar"
 
 #: admin/templates/admin/parameters.html:3
 msgid "Configure Modoboa"
 msgstr "Konfigurera Modoboa"
+
+#: admin/templates/admin/quotas.html:5
+msgid "Address"
+msgstr "Adress"
+
+#: admin/templates/admin/quotas.html:6
+msgid "Value"
+msgstr ""
+
+#: admin/templates/admin/quotas.html:7
+msgid "Limit"
+msgstr ""
+
+#: admin/templates/admin/quotas.html:8
+#, python-format
+msgid "Usage (%%)"
+msgstr ""
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -788,61 +1080,85 @@ msgstr "enabled_f"
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: admin/templatetags/admin_extras.py:77
+#: admin/templatetags/admin_extras.py:81
 msgid "Add domain"
 msgstr "Lägg till domän"
 
-#: admin/templatetags/admin_extras.py:106
+#: admin/templatetags/admin_extras.py:110
+#, fuzzy
+msgid "List identities"
+msgstr "Importera konton"
+
+#: admin/templatetags/admin_extras.py:115
+msgid "List quotas"
+msgstr ""
+
+#: admin/templatetags/admin_extras.py:120
 msgid "Add account"
 msgstr "Lägg till konto"
 
-#: admin/templatetags/admin_extras.py:112
+#: admin/templatetags/admin_extras.py:126
 msgid "Add alias"
 msgstr "Lägg till alias"
 
-#: admin/templatetags/admin_extras.py:118
+#: admin/templatetags/admin_extras.py:132
 msgid "Add forward"
 msgstr "Lägg till vidarebefodring"
 
-#: admin/templatetags/admin_extras.py:124
+#: admin/templatetags/admin_extras.py:138
 msgid "Add distribution list"
 msgstr "Lägg till distributionslista"
 
-#: admin/templatetags/admin_extras.py:168
+#: admin/templatetags/admin_extras.py:171
+msgid "View the domain's identities"
+msgstr ""
+
+#: admin/templatetags/admin_extras.py:178
+#, fuzzy
+msgid "Delete the domain"
+msgstr "Radera detta alia"
+
+#: admin/templatetags/admin_extras.py:194
 msgid "Delete this account"
 msgstr "Radera detta konto"
 
-#: admin/templatetags/admin_extras.py:176
+#: admin/templatetags/admin_extras.py:202
 msgid "Delete this distribution list"
 msgstr "Radera denna distributionslista"
 
-#: admin/templatetags/admin_extras.py:183
+#: admin/templatetags/admin_extras.py:209
 msgid "Delete this forward"
 msgstr "Radera denna vidarebefodring"
 
-#: admin/templatetags/admin_extras.py:190
+#: admin/templatetags/admin_extras.py:216
 msgid "Delete this alias"
 msgstr "Radera detta alia"
 
-#: admin/templatetags/admin_extras.py:211
+#: admin/templatetags/admin_extras.py:238
 msgid "Remove this permission"
 msgstr "Radera detta tillstånd"
 
-#: admin/templatetags/admin_extras.py:249
+#: admin/templatetags/admin_extras.py:279 lib/formutils.py:206
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/templatetags/admin_extras.py:249
+#: admin/templatetags/admin_extras.py:279 lib/formutils.py:206
 msgid "No"
 msgstr "Nej"
 
-#: auth/__init__.py:6
-msgid "Key used to encrypt/decrypt passwords"
-msgstr "Nyckel som används för att kryptera / dekryptera lösenord"
+#: auth/views.py:32
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr ""
 
-#: auth/views.py:39
+#: auth/views.py:41
 msgid "Your username and password didn't match. Please try again."
 msgstr "Ditt användarnamn och lösenord matchar inte. Var vänlig försök igen."
+
+#: auth/views.py:64
+#, python-format
+msgid "User '%s' logged out"
+msgstr ""
 
 #: demo/__init__.py:17
 msgid "Test messages"
@@ -865,196 +1181,270 @@ msgid ""
 "\n"
 "<h3>Welcome to the online demo!</h3>\n"
 "<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
-"<p>To try the demo, the following users are available (<i>username/password</i>): </p>\n"
+"<p>To try the demo, the following users are available (<i>username/password</"
+"i>): </p>\n"
 "<ul>\n"
 "  <li>A super administrator : <b>admin/password</b></li>\n"
 "  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
 "  <li>A simple user : <b>user@demo.local/user</b></li>\n"
 "</ul>\n"
 "<p>Please report any issue or give any suggestion to \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the mailing list</a>.</p>\n"
-msgstr "\n<h3>Välkommen till online-demot!</h3>\n<p><b>Varning:</b> demots innehåll återställs varannan timme</p>\n<p>För att prova demot, följande användare finns tillgängliga (<i>användarnamn/lösenord</i>): </p>\n<ul>\n<li>En super administratör: <b>admin/password</b></li>\n<li>En domän administratölr: <b>admin@demo.local/admin</b></li>\n<li>En enkel användare: <b>user@demo.local/user</b></li>\n</ul>\n<p>Var vänlig rapportera  eventuella fel eller ge förslag på <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">mailinglistan</a>.</p>\n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
+"mailing list</a>.</p>\n"
+msgstr ""
+"\n"
+"<h3>Välkommen till online-demot!</h3>\n"
+"<p><b>Varning:</b> demots innehåll återställs varannan timme</p>\n"
+"<p>För att prova demot, följande användare finns tillgängliga "
+"(<i>användarnamn/lösenord</i>): </p>\n"
+"<ul>\n"
+"<li>En super administratör: <b>admin/password</b></li>\n"
+"<li>En domän administratölr: <b>admin@demo.local/admin</b></li>\n"
+"<li>En enkel användare: <b>user@demo.local/user</b></li>\n"
+"</ul>\n"
+"<p>Var vänlig rapportera  eventuella fel eller ge förslag på <a href="
+"\"https://groups.google.com/forum/#!forum/modoboa-users\">mailinglistan</a>."
+"</p>\n"
 
-#: extensions/amavis/__init__.py:21
+#: extensions/amavis/__init__.py:22
 msgid "Simple amavis management frontend"
 msgstr "Enkel amavis hantering frontend"
 
-#: extensions/amavis/__init__.py:45
-msgid "Quarantine messages maximum age (in days) before deletion"
-msgstr "Maximalt antal dagar meddelanden behålls i karantän innan radering"
-
-#: extensions/amavis/__init__.py:49
-msgid "Remove messages marked as released while cleaning up the database"
-msgstr "Ta bort meddelanden markerade som släppta när vi städar databasen"
-
-#: extensions/amavis/__init__.py:54
-msgid "Mode used to access the PDP server"
-msgstr "Läge som används för att komma åt PDP-servern"
-
-#: extensions/amavis/__init__.py:58
-msgid "PDP server address (if inet mode)"
-msgstr "PDP-server adress (om inet läge)"
-
-#: extensions/amavis/__init__.py:62
-msgid "PDP server port (if inet mode)"
-msgstr "PDP serverport (om inet läge)"
-
-#: extensions/amavis/__init__.py:66
-msgid "Path to the PDP server socket (if unix mode)"
-msgstr "Sökväg till PDP-servern uttaget (om Unix-läge)"
-
-#: extensions/amavis/__init__.py:69
-msgid "Interval between two release requests checks"
-msgstr "Intervall mellan frisläppskontroller"
-
-#: extensions/amavis/__init__.py:71
-msgid "Allow users to directly release their messages"
-msgstr "Tillåt användare att frisläppa sina meddelanden"
-
-#: extensions/amavis/__init__.py:73
-msgid "Activate the 'self-service' mode"
-msgstr "Aktivera \"själv-service\" läge"
-
-#: extensions/amavis/__init__.py:75
-msgid "The e-mail address used to send notitications"
-msgstr "E-postadress att använda för att skicka notifikationer"
-
-#: extensions/amavis/__init__.py:80 extensions/webmail/__init__.py:45
-msgid "Sets the maximum number of messages displayed in a page"
-msgstr "Anger det maximala antalet meddelanden som visas på en sida"
-
-#: extensions/amavis/__init__.py:96
+#: extensions/amavis/__init__.py:45 extensions/amavis/__init__.py:61
 msgid "Quarantine"
 msgstr "Karantän"
 
-#: extensions/amavis/__init__.py:161
+#: extensions/amavis/__init__.py:127
 msgid "pending requests"
 msgstr "väntande förfrågningar"
 
-#: extensions/amavis/__init__.py:177
+#: extensions/amavis/__init__.py:144
 #, python-format
 msgid "%d pending requests"
 msgstr "%d väntande förfrågningar"
 
-#: extensions/amavis/__init__.py:188
+#: extensions/amavis/__init__.py:156
 msgid "Content filter"
 msgstr "Innehålls filter"
 
-#: extensions/amavis/lib.py:51
+#: extensions/amavis/app_settings.py:12
+#, fuzzy
+msgid "Maximum message age"
+msgstr "Markera meddelande"
+
+#: extensions/amavis/app_settings.py:14
+msgid "Quarantine messages maximum age (in days) before deletion"
+msgstr "Maximalt antal dagar meddelanden behålls i karantän innan radering"
+
+#: extensions/amavis/app_settings.py:17
+#, fuzzy
+msgid "Messages releasing"
+msgstr "Meddelande släppt"
+
+#: extensions/amavis/app_settings.py:20
+#, fuzzy
+msgid "Remove released messages"
+msgstr "mottagna meddelande"
+
+#: extensions/amavis/app_settings.py:22
+msgid "Remove messages marked as released while cleaning up the database"
+msgstr "Ta bort meddelanden markerade som släppta när vi städar databasen"
+
+#: extensions/amavis/app_settings.py:26
+msgid "Amavis connection mode"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:29
+msgid "Mode used to access the PDP server"
+msgstr "Läge som används för att komma åt PDP-servern"
+
+#: extensions/amavis/app_settings.py:34
+#, fuzzy
+msgid "PDP server address"
+msgstr "PDP-server adress (om inet läge)"
+
+#: extensions/amavis/app_settings.py:36
+msgid "PDP server address (if inet mode)"
+msgstr "PDP-server adress (om inet läge)"
+
+#: extensions/amavis/app_settings.py:40
+#, fuzzy
+msgid "PDP server port"
+msgstr "PDP serverport (om inet läge)"
+
+#: extensions/amavis/app_settings.py:42
+msgid "PDP server port (if inet mode)"
+msgstr "PDP serverport (om inet läge)"
+
+#: extensions/amavis/app_settings.py:46
+msgid "PDP server socket"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:48
+msgid "Path to the PDP server socket (if unix mode)"
+msgstr "Sökväg till PDP-servern uttaget (om Unix-läge)"
+
+#: extensions/amavis/app_settings.py:52
+msgid "Check requests interval"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:54
+msgid "Interval between two release requests checks"
+msgstr "Intervall mellan frisläppskontroller"
+
+#: extensions/amavis/app_settings.py:58
+#, fuzzy
+msgid "Allow direct release"
+msgstr "Tillåt användare att frisläppa sina meddelanden"
+
+#: extensions/amavis/app_settings.py:60
+msgid "Allow users to directly release their messages"
+msgstr "Tillåt användare att frisläppa sina meddelanden"
+
+#: extensions/amavis/app_settings.py:64
+#, fuzzy
+msgid "Enable self-service mode"
+msgstr "Aktivera \"själv-service\" läge"
+
+#: extensions/amavis/app_settings.py:66
+msgid "Activate the 'self-service' mode"
+msgstr "Aktivera \"själv-service\" läge"
+
+#: extensions/amavis/app_settings.py:70
+#, fuzzy
+msgid "Notifications sender"
+msgstr "Modifieringar tillämpade."
+
+#: extensions/amavis/app_settings.py:72
+msgid "The e-mail address used to send notitications"
+msgstr "E-postadress att använda för att skicka notifikationer"
+
+#: extensions/amavis/app_settings.py:87 extensions/webmail/app_settings.py:91
+msgid "Number of displayed emails per page"
+msgstr "Antalet visade e-postmeddelanden per sida"
+
+#: extensions/amavis/app_settings.py:88
+#, fuzzy
+msgid "Set the maximum number of messages displayed in a page"
+msgstr "Anger det maximala antalet meddelanden som visas på en sida"
+
+#: extensions/amavis/lib.py:53
 #, python-format
 msgid "Connection to amavis failed: %s"
 msgstr "Anslutning till amavis misslyckades: %s"
 
-#: extensions/amavis/models.py:84
+#: extensions/amavis/models.py:93
 msgid "Virus filter"
 msgstr "Virus filter"
 
-#: extensions/amavis/models.py:85 extensions/amavis/models.py:93
-#: extensions/amavis/models.py:101 extensions/sievefilters/views.py:265
+#: extensions/amavis/models.py:94 extensions/amavis/models.py:102
+#: extensions/amavis/models.py:110 extensions/sievefilters/views.py:268
 msgid "yes"
 msgstr "ja"
 
-#: extensions/amavis/models.py:86 extensions/amavis/models.py:94
-#: extensions/amavis/models.py:102 extensions/sievefilters/views.py:269
+#: extensions/amavis/models.py:95 extensions/amavis/models.py:103
+#: extensions/amavis/models.py:111 extensions/sievefilters/views.py:272
 msgid "no"
 msgstr "nej"
 
-#: extensions/amavis/models.py:87 extensions/amavis/models.py:95
-#: extensions/amavis/models.py:103
+#: extensions/amavis/models.py:96 extensions/amavis/models.py:104
+#: extensions/amavis/models.py:112
 #: extensions/amavis/templates/amavis/domain_content_filter.html:11
 msgid "default"
 msgstr "standard"
 
-#: extensions/amavis/models.py:89
+#: extensions/amavis/models.py:98
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
-msgstr "Kringgå virus kontroller eller ej. Välj \"standard\" för att använda globala inställningar."
+msgstr ""
+"Kringgå virus kontroller eller ej. Välj \"standard\" för att använda globala "
+"inställningar."
 
-#: extensions/amavis/models.py:92
+#: extensions/amavis/models.py:101
 msgid "Spam filter"
 msgstr "Skräp filter"
 
-#: extensions/amavis/models.py:97
+#: extensions/amavis/models.py:106
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
-msgstr "Kringgå skräp filter eller ej. Välj 'standard' för att använda globala inställningar."
+msgstr ""
+"Kringgå skräp filter eller ej. Välj 'standard' för att använda globala "
+"inställningar."
 
-#: extensions/amavis/models.py:100
+#: extensions/amavis/models.py:109
 msgid "Banned filter"
 msgstr "Förbjudna filter"
 
-#: extensions/amavis/models.py:105
+#: extensions/amavis/models.py:114
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
-msgstr "Kringgå förbjudna filter eller inte. Välj 'standard' för att använda globala inställningar."
+msgstr ""
+"Kringgå förbjudna filter eller inte. Välj 'standard' för att använda globala "
+"inställningar."
 
-#: extensions/amavis/models.py:135
+#: extensions/amavis/models.py:144
 msgid "Spam marker"
 msgstr "Skräp markering"
 
-#: extensions/amavis/models.py:137
+#: extensions/amavis/models.py:146
 msgid ""
-"Modify spam subject using the specified text. Choose 'default' to use global"
-" settings."
-msgstr "Ändra skräppost ämnesrad med vald text. Välj 'standard' för att använd globala inställningar."
+"Modify spam subject using the specified text. Choose 'default' to use global "
+"settings."
+msgstr ""
+"Ändra skräppost ämnesrad med vald text. Välj 'standard' för att använd "
+"globala inställningar."
 
-#: extensions/amavis/sql_listing.py:24 extensions/webmail/forms.py:5
-#: extensions/webmail/lib.py:35
+#: extensions/amavis/sql_listing.py:23 extensions/webmail/lib.py:36
 msgid "From"
 msgstr "Från"
 
-#: extensions/amavis/sql_listing.py:25 extensions/sievefilters/forms.py:68
-#: extensions/webmail/forms.py:9 extensions/webmail/lib.py:34
-#: extensions/webmail/lib.py:378 templates/common/email_searchbar.html:6
+#: extensions/amavis/sql_listing.py:24 extensions/sievefilters/forms.py:68
+#: extensions/webmail/forms.py:10 extensions/webmail/lib.py:35
+#: extensions/webmail/lib.py:404 templates/common/email_searchbar.html:6
 msgid "Subject"
 msgstr "Ämne"
 
-#: extensions/amavis/sql_listing.py:26 extensions/webmail/lib.py:36
-#: extensions/webmail/lib.py:380
-msgid "Date"
-msgstr "Datum"
-
-#: extensions/amavis/sql_listing.py:27
+#: extensions/amavis/sql_listing.py:26
 #: extensions/amavis/templatetags/amextras.py:102
-#: extensions/webmail/forms.py:6
+#: extensions/webmail/forms.py:7
 msgid "To"
 msgstr "Till"
 
-#: extensions/amavis/views.py:32
+#: extensions/amavis/views.py:34
 msgid "Empty quarantine"
 msgstr "Karantän tom"
 
-#: extensions/amavis/views.py:191
+#: extensions/amavis/views.py:202
 msgid "Message deleted"
 msgstr "Meddelande raderat"
 
-#: extensions/amavis/views.py:211
+#: extensions/amavis/views.py:223
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
 msgstr[0] "%(count)d meddelande raderadat"
 msgstr[1] "%(count)d meddelanden raderade"
 
-#: extensions/amavis/views.py:230
+#: extensions/amavis/views.py:243
 msgid "Request sent"
 msgstr "Begäran skickad"
 
-#: extensions/amavis/views.py:236
+#: extensions/amavis/views.py:249
 msgid "Message released"
 msgstr "Meddelande släppt"
 
-#: extensions/amavis/views.py:257
+#: extensions/amavis/views.py:271
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
 msgstr[0] "%(count)d förfrågning skickad"
 msgstr[1] "%(count)d förfrågningar skickadade"
 
-#: extensions/amavis/views.py:281
+#: extensions/amavis/views.py:295
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d meddelande frisläppt"
 msgstr[1] "%(count)d meddelanden frisläppta"
 
-#: extensions/amavis/management/commands/amnotify.py:46
+#: extensions/amavis/management/commands/amnotify.py:57
 msgid "[modoboa] Pending release requests"
 msgstr "[modoboa] Väntande release förfrågningar"
 
@@ -1082,8 +1472,12 @@ msgid ""
 msgid_plural ""
 "\n"
 "%(counter)s release requests are pending for action.\n"
-msgstr[0] "\n%(counter)s frisläpps förfrågning väntar på åtgärd.\n"
-msgstr[1] "\n%(counter)s frisläpps förfrågningar väntar på åtgärd.'\n"
+msgstr[0] ""
+"\n"
+"%(counter)s frisläpps förfrågning väntar på åtgärd.\n"
+msgstr[1] ""
+"\n"
+"%(counter)s frisläpps förfrågningar väntar på åtgärd.'\n"
 
 #: extensions/amavis/templates/amavis/notifications/pending_requests.html:6
 msgid "Sketch:"
@@ -1123,7 +1517,7 @@ msgstr "Släpp"
 #: extensions/amavis/templatetags/amextras.py:26
 #: extensions/amavis/templatetags/amextras.py:59
 #: extensions/amavis/templatetags/amextras.py:77
-#: extensions/webmail/templatetags/webextras.py:33
+#: extensions/webmail/templatetags/webextras.py:31
 msgid "Delete"
 msgstr "Radera"
 
@@ -1158,49 +1552,85 @@ msgstr "Dålig MIME"
 #: extensions/limits/__init__.py:23
 msgid ""
 "Per administrator resources to limit the number of objects they can create"
-msgstr "Per administratör resurser för att begränsa antalet objekt som de kan skapa"
+msgstr ""
+"Per administratör resurser för att begränsa antalet objekt som de kan skapa"
 
-#: extensions/limits/__init__.py:60
+#: extensions/limits/__init__.py:54
+msgid "Limits"
+msgstr ""
+
+#: extensions/limits/__init__.py:65
 msgid "Reseller"
 msgstr "Återförsäljare"
 
-#: extensions/limits/__init__.py:91
+#: extensions/limits/__init__.py:96
 msgid "Resources"
 msgstr "Resurser"
 
-#: extensions/limits/forms.py:11 extensions/limits/models.py:9
+#: extensions/limits/app_settings.py:10
+#, fuzzy
+msgid "Default limits"
+msgstr "Standard editor"
+
+#: extensions/limits/app_settings.py:13 extensions/limits/forms.py:12
+#: extensions/limits/models.py:11
 msgid "Domain admins"
 msgstr "Domänadministratörer"
 
-#: extensions/limits/forms.py:12
+#: extensions/limits/app_settings.py:15
+#, fuzzy
+msgid "Maximum number of allowed domain administrators for a new administrator"
+msgstr "Maximalt antal domänadministratörer den här användaren kan skapa"
+
+#: extensions/limits/app_settings.py:21
+#, fuzzy
+msgid "Maximum number of allowed domains for a new administrator"
+msgstr "Maximalt antal domäner den här användaren kan skapa"
+
+#: extensions/limits/app_settings.py:27
+#, fuzzy
+msgid "Maximum number of allowed domain aliases for a new administrator"
+msgstr "Maximalt antal domänen alias den här användaren kan skapa"
+
+#: extensions/limits/app_settings.py:33
+#, fuzzy
+msgid "Maximum number of allowed mailboxes for a new administrator"
+msgstr "Maximalt antal brevlådor den här användaren kan skapa"
+
+#: extensions/limits/app_settings.py:39
+#, fuzzy
+msgid "Maximum number of allowed aliases for a new administrator"
+msgstr "Maximalt antal brevlådealias den här användaren kan skapa"
+
+#: extensions/limits/forms.py:13
 msgid "Maximum number of domain administrators this user can create"
 msgstr "Maximalt antal domänadministratörer den här användaren kan skapa"
 
-#: extensions/limits/forms.py:15
+#: extensions/limits/forms.py:17
 msgid "Maximum number of domains this user can create"
 msgstr "Maximalt antal domäner den här användaren kan skapa"
 
-#: extensions/limits/forms.py:17
+#: extensions/limits/forms.py:21
 msgid "Maximum number of domain aliases this user can create"
 msgstr "Maximalt antal domänen alias den här användaren kan skapa"
 
-#: extensions/limits/forms.py:19
+#: extensions/limits/forms.py:25
 msgid "Maximum number of mailboxes this user can create"
 msgstr "Maximalt antal brevlådor den här användaren kan skapa"
 
-#: extensions/limits/forms.py:21
+#: extensions/limits/forms.py:29
 msgid "Maximum number of mailbox aliases this user can create"
 msgstr "Maximalt antal brevlådealias den här användaren kan skapa"
 
-#: extensions/limits/forms.py:37
+#: extensions/limits/forms.py:46
 msgid "Invalid limit"
 msgstr "Ogiltig gräns"
 
-#: extensions/limits/forms.py:61
+#: extensions/limits/forms.py:74
 msgid "Your resources are not initialized yet"
 msgstr "Dina resurser har ännu inte initierats"
 
-#: extensions/limits/forms.py:64
+#: extensions/limits/forms.py:78
 msgid "You're not allowed to define unlimited values"
 msgstr "Du har inte tillåtelse att definiera obegränsat värden"
 
@@ -1213,15 +1643,15 @@ msgstr "%s: gräns uppnådd"
 msgid "Not enough resources"
 msgstr "Inte tillräckligt med resurser"
 
-#: extensions/limits/models.py:100
+#: extensions/limits/models.py:103
 msgid "undefined"
 msgstr "odefinierad"
 
-#: extensions/limits/models.py:102
+#: extensions/limits/models.py:105
 msgid "unlimited"
 msgstr "obegränsad"
 
-#: extensions/limits/templates/limits/poolusage.html:3
+#: extensions/limits/templates/limits/poolusage.html:4
 msgid "Resources usage"
 msgstr "Resurs användande"
 
@@ -1229,14 +1659,22 @@ msgstr "Resurs användande"
 msgid "Auto-reply (vacation) functionality using Postfix"
 msgstr "Automatiskt svar (semester) funktionalitet med Postfix"
 
-#: extensions/postfix_autoreply/__init__.py:43
-msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr "Timeout i sekunder mellan två auto-svar till samma mottagare"
+#: extensions/postfix_autoreply/__init__.py:41
+msgid "Automatic replies"
+msgstr ""
 
-#: extensions/postfix_autoreply/__init__.py:80
+#: extensions/postfix_autoreply/__init__.py:79
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:2
 msgid "Auto-reply message"
 msgstr "Auto-svar meddelande"
+
+#: extensions/postfix_autoreply/app_settings.py:11
+msgid "Automatic reply timeout"
+msgstr ""
+
+#: extensions/postfix_autoreply/app_settings.py:13
+msgid "Timeout in seconds between two auto-replies to the same recipient"
+msgstr "Timeout i sekunder mellan två auto-svar till samma mottagare"
 
 #: extensions/postfix_autoreply/forms.py:9
 msgid "Until"
@@ -1270,7 +1708,7 @@ msgstr "Innehållet i skickade e-post meddelanden"
 msgid "Activate/Deactivate your auto reply"
 msgstr "Aktivera / inaktivera din autosvar"
 
-#: extensions/postfix_autoreply/views.py:36
+#: extensions/postfix_autoreply/views.py:37
 msgid "Auto reply message updated successfully."
 msgstr "Automatisk svarsmeddelande uppdaterats."
 
@@ -1282,34 +1720,54 @@ msgstr "Skriv meddelande att skicka automatiskt när du är borta"
 msgid "Plugin to easily create server-side filters"
 msgstr "Plugin för att enkelt skapa filter på serversidan"
 
-#: extensions/sievefilters/__init__.py:20
-msgid "Address of your MANAGESIEVE server"
-msgstr "Adressen till din MANAGESIEVE server"
+#: extensions/sievefilters/__init__.py:17
+#, fuzzy
+msgid "Sieve filters"
+msgstr "Spara filter uppsättning"
 
-#: extensions/sievefilters/__init__.py:22
-msgid "Listening port of your MANAGESIEVE server"
-msgstr "MANAGESIEVE server lyssnar på port"
-
-#: extensions/sievefilters/__init__.py:24
-msgid "Use the STARTTLS extension"
-msgstr "Använd STARTTLS"
-
-#: extensions/sievefilters/__init__.py:31
-msgid "Prefered authentication mechanism"
-msgstr "Önskad autentiseringsmekanism"
-
-#: extensions/sievefilters/__init__.py:35
-msgid "Editor mode"
-msgstr "Redigeringsläge"
-
-#: extensions/sievefilters/__init__.py:37
-msgid "Select the mode you want the editor to work in"
-msgstr "Välj det läge du vill redigeraren att arbeta i"
-
-#: extensions/sievefilters/__init__.py:55
+#: extensions/sievefilters/__init__.py:18
+#: extensions/sievefilters/__init__.py:36
 #: extensions/sievefilters/templates/sievefilters/index.html:2
 msgid "Message filters"
 msgstr "Meddelandefilter"
+
+#: extensions/sievefilters/app_settings.py:19
+#, fuzzy
+msgid "ManageSieve settings"
+msgstr "Modoboa inställningar"
+
+#: extensions/sievefilters/app_settings.py:24
+msgid "Address of your MANAGESIEVE server"
+msgstr "Adressen till din MANAGESIEVE server"
+
+#: extensions/sievefilters/app_settings.py:30
+msgid "Listening port of your MANAGESIEVE server"
+msgstr "MANAGESIEVE server lyssnar på port"
+
+#: extensions/sievefilters/app_settings.py:34
+msgid "Connect using STARTTLS"
+msgstr ""
+
+#: extensions/sievefilters/app_settings.py:36
+msgid "Use the STARTTLS extension"
+msgstr "Använd STARTTLS"
+
+#: extensions/sievefilters/app_settings.py:40
+#, fuzzy
+msgid "Authentication mechanism"
+msgstr "Önskad autentiseringsmekanism"
+
+#: extensions/sievefilters/app_settings.py:43
+msgid "Prefered authentication mechanism"
+msgstr "Önskad autentiseringsmekanism"
+
+#: extensions/sievefilters/app_settings.py:52
+msgid "Editor mode"
+msgstr "Redigeringsläge"
+
+#: extensions/sievefilters/app_settings.py:54
+msgid "Select the mode you want the editor to work in"
+msgstr "Välj det läge du vill redigeraren att arbeta i"
 
 #: extensions/sievefilters/forms.py:14
 msgid "Check to activate this filters set"
@@ -1347,7 +1805,11 @@ msgstr "är inte"
 msgid "Sender"
 msgstr "Avsändare"
 
-#: extensions/sievefilters/forms.py:71 extensions/webmail/forms.py:7
+#: extensions/sievefilters/forms.py:70
+msgid "Recipient"
+msgstr "Mottagare"
+
+#: extensions/sievefilters/forms.py:71 extensions/webmail/forms.py:8
 msgid "Cc"
 msgstr "Cc"
 
@@ -1373,7 +1835,9 @@ msgstr "Omdirigera meddelande till"
 
 #: extensions/sievefilters/lib.py:37
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr "Anslutning till MANAGESIEVE servern misslyckades, kontrollera din konfiguration"
+msgstr ""
+"Anslutning till MANAGESIEVE servern misslyckades, kontrollera din "
+"konfiguration"
 
 #: extensions/sievefilters/lib.py:82
 msgid "Not enough space on server"
@@ -1417,15 +1881,15 @@ msgstr "Filter uppsättning sparat"
 msgid "Create a new filters set"
 msgstr "Skapa ny filteruppsättning"
 
-#: extensions/sievefilters/views.py:207
+#: extensions/sievefilters/views.py:208
 msgid "Filters set created"
 msgstr "Filter uppsättning skapat"
 
-#: extensions/sievefilters/views.py:226
+#: extensions/sievefilters/views.py:229
 msgid "Filters set deleted"
 msgstr "Filter uppsättning raderad"
 
-#: extensions/sievefilters/views.py:238
+#: extensions/sievefilters/views.py:241
 msgid "Filters set activated"
 msgstr "Filter uppsättning aktiverad"
 
@@ -1452,7 +1916,9 @@ msgstr "aktivera"
 #: extensions/sievefilters/templates/sievefilters/index.html:73
 msgid ""
 "No filters set defined yet. You must create one in order to define filters."
-msgstr "Inga filter uppsättningar definierade. Du måste skapa en uppsättning för att kunna definiera filter."
+msgstr ""
+"Inga filter uppsättningar definierade. Du måste skapa en uppsättning för att "
+"kunna definiera filter."
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:16
 msgid "New filters set"
@@ -1490,21 +1956,38 @@ msgstr "Flytta ner detta filter"
 msgid "Graphical statistics about emails traffic using RRDtool"
 msgstr "Grafisk statistik om e-post trafik med hjälp av RRDtool"
 
-#: extensions/stats/__init__.py:28
+#: extensions/stats/__init__.py:26
+#: extensions/stats/templates/stats/index.html:2
+msgid "Graphical statistics"
+msgstr "Grafisk statistik"
+
+#: extensions/stats/__init__.py:40
+msgid "Statistics"
+msgstr "Statistik"
+
+#: extensions/stats/app_settings.py:11
+msgid "Path to the log file"
+msgstr ""
+
+#: extensions/stats/app_settings.py:13
 msgid "Path to log file used to collect statistics"
 msgstr "Sökväg till loggfil som används för att samla in statistik"
 
-#: extensions/stats/__init__.py:31
+#: extensions/stats/app_settings.py:17
+msgid "Directory to store RRD files"
+msgstr ""
+
+#: extensions/stats/app_settings.py:19
 msgid "Path to directory where RRD files are stored"
 msgstr "Sökväg till katalog där RRD filer lagras"
 
-#: extensions/stats/__init__.py:34
+#: extensions/stats/app_settings.py:23
+msgid "Directory to store PNG files"
+msgstr ""
+
+#: extensions/stats/app_settings.py:25
 msgid "Path to directory where PNG files are stored"
 msgstr "Sökväg till katalog där PNG-filer lagras"
-
-#: extensions/stats/__init__.py:47
-msgid "Statistics"
-msgstr "Statistik"
 
 #: extensions/stats/graph_templates.py:20
 msgid "Average normal traffic"
@@ -1575,21 +2058,17 @@ msgstr "År"
 msgid "Total"
 msgstr "Totalt"
 
-#: extensions/stats/views.py:23 extensions/stats/templates/stats/graphs.html:4
+#: extensions/stats/views.py:21 extensions/stats/templates/stats/graphs.html:4
 msgid "No statistics available"
 msgstr "Ingen statistik tillgänglig"
 
-#: extensions/stats/views.py:41
+#: extensions/stats/views.py:39
 msgid "Unknown graphic set"
 msgstr "Okänt grafisk uppsättning"
 
-#: extensions/stats/views.py:59
+#: extensions/stats/views.py:61
 msgid "Bad custom period"
 msgstr "Ogiltig anpassad tid"
-
-#: extensions/stats/templates/stats/index.html:2
-msgid "Graphical statistics"
-msgstr "Grafisk statistik"
 
 #: extensions/stats/templates/stats/index.html:33
 msgid "Search a domain"
@@ -1611,197 +2090,225 @@ msgstr "Applicera"
 msgid "Simple IMAP webmail"
 msgstr "Enkel IMAP webmail"
 
-#: extensions/webmail/__init__.py:20
-msgid "Address of your IMAP server"
-msgstr "Adressen till din IMAP-server"
+#: extensions/webmail/__init__.py:35
+msgid "Webmail"
+msgstr "Webmail"
 
-#: extensions/webmail/__init__.py:23
-msgid "Use a secured connection to access IMAP server"
-msgstr "Använd säker anslutning mot IMAP-servern"
+#: extensions/webmail/app_settings.py:14
+msgid "Maximum attachment size"
+msgstr ""
 
-#: extensions/webmail/__init__.py:25
-msgid "Listening port of your IMAP server"
-msgstr "IMAP-server port"
-
-#: extensions/webmail/__init__.py:28
-msgid "Address of your SMTP server"
-msgstr "Adressen till din SMTP-server"
-
-#: extensions/webmail/__init__.py:30
-msgid "None"
-msgstr "Ingen"
-
-#: extensions/webmail/__init__.py:34
-msgid "Use a secured connection to access SMTP server"
-msgstr "Använd säker anslutning mot SMTP-servern"
-
-#: extensions/webmail/__init__.py:36
-msgid "Listening port of your SMTP server"
-msgstr "SMTP-server port"
-
-#: extensions/webmail/__init__.py:39
-msgid "Server needs authentication"
-msgstr "Servern behöver autentisering"
-
-#: extensions/webmail/__init__.py:41
+#: extensions/webmail/app_settings.py:16
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
 msgstr "Största storlek på bifogad fil i byte (eller KB, MB, GB om det anges)"
 
-#: extensions/webmail/__init__.py:44
-msgid "Number of displayed emails per page"
-msgstr "Antalet visade e-postmeddelanden per sida"
+#: extensions/webmail/app_settings.py:19
+#, fuzzy
+msgid "IMAP settings"
+msgstr "Modoboa inställningar"
 
-#: extensions/webmail/__init__.py:47
-msgid "Listing refresh rate"
-msgstr "Lyssning uppdateringsfrekvens"
+#: extensions/webmail/app_settings.py:24
+msgid "Address of your IMAP server"
+msgstr "Adressen till din IMAP-server"
 
-#: extensions/webmail/__init__.py:48
-msgid "Automatic folder refresh rate (in seconds)"
-msgstr "Automatisk mapp uppdateringsfrekvens (i sekunder)"
+#: extensions/webmail/app_settings.py:30
+msgid "Use a secured connection to access IMAP server"
+msgstr "Använd säker anslutning mot IMAP-servern"
 
-#: extensions/webmail/__init__.py:50
-msgid "Trash folder"
-msgstr "Papperskorg katalog"
+#: extensions/webmail/app_settings.py:36
+msgid "Listening port of your IMAP server"
+msgstr "IMAP-server port"
 
-#: extensions/webmail/__init__.py:51
-msgid "Folder where deleted messages go"
-msgstr "Katalog där raderade meddelanden hamnar"
+#: extensions/webmail/app_settings.py:39
+#, fuzzy
+msgid "SMTP settings"
+msgstr "Inställningar"
 
-#: extensions/webmail/__init__.py:53
-msgid "Sent folder"
-msgstr "Skickat katalog"
+#: extensions/webmail/app_settings.py:44
+msgid "Address of your SMTP server"
+msgstr "Adressen till din SMTP-server"
 
-#: extensions/webmail/__init__.py:54
-msgid "Folder where copies of sent messages go"
-msgstr "Katalog där kopior av skickade meddelanden hamnar"
+#: extensions/webmail/app_settings.py:48
+msgid "Secured connection mode"
+msgstr ""
 
-#: extensions/webmail/__init__.py:56
-msgid "Drafts folder"
-msgstr "Utkast katalog"
+#: extensions/webmail/app_settings.py:49
+msgid "None"
+msgstr "Ingen"
 
-#: extensions/webmail/__init__.py:57
-msgid "Folder where drafts go"
-msgstr "Katalog där utkast hamnar"
+#: extensions/webmail/app_settings.py:53
+msgid "Use a secured connection to access SMTP server"
+msgstr "Använd säker anslutning mot SMTP-servern"
 
-#: extensions/webmail/__init__.py:59
-msgid "Signature text"
-msgstr "Signatur text"
+#: extensions/webmail/app_settings.py:60
+msgid "Listening port of your SMTP server"
+msgstr "SMTP-server port"
 
-#: extensions/webmail/__init__.py:60
-msgid "User defined email signature"
-msgstr "Användardefinierad e-post signatur"
+#: extensions/webmail/app_settings.py:64
+msgid "Authentication required"
+msgstr ""
 
-#: extensions/webmail/__init__.py:62
-msgid "Default editor"
-msgstr "Standard editor"
+#: extensions/webmail/app_settings.py:66
+msgid "Server needs authentication"
+msgstr "Servern behöver autentisering"
 
-#: extensions/webmail/__init__.py:64
-msgid "The default editor to use when composing a message"
-msgstr "Standardredigerare att använda när du skriver ett meddelande"
+#: extensions/webmail/app_settings.py:73
+#, fuzzy
+msgid "Display"
+msgstr "Visnings alternativ"
 
-#: extensions/webmail/__init__.py:66
+#: extensions/webmail/app_settings.py:77
 msgid "Default message display mode"
 msgstr "Standard visningsläge för meddelande"
 
-#: extensions/webmail/__init__.py:68
+#: extensions/webmail/app_settings.py:79
 msgid "The default mode used when displaying a message"
 msgstr "Standard visningsläge för meddelande"
 
-#: extensions/webmail/__init__.py:70
+#: extensions/webmail/app_settings.py:85
 msgid "Enable HTML links display"
 msgstr "Aktivera visning av HTML länkar"
 
-#: extensions/webmail/__init__.py:72
+#: extensions/webmail/app_settings.py:86
 msgid "Enable/Disable HTML links display"
 msgstr "Aktivera / inaktivera om HTML länkar skall visas"
 
-#: extensions/webmail/__init__.py:88
-msgid "Webmail"
-msgstr "Webmail"
+#: extensions/webmail/app_settings.py:92
+msgid "Sets the maximum number of messages displayed in a page"
+msgstr "Anger det maximala antalet meddelanden som visas på en sida"
+
+#: extensions/webmail/app_settings.py:97
+msgid "Listing refresh rate"
+msgstr "Lyssning uppdateringsfrekvens"
+
+#: extensions/webmail/app_settings.py:98
+msgid "Automatic folder refresh rate (in seconds)"
+msgstr "Automatisk mapp uppdateringsfrekvens (i sekunder)"
+
+#: extensions/webmail/app_settings.py:105
+msgid "Trash folder"
+msgstr "Papperskorg katalog"
+
+#: extensions/webmail/app_settings.py:106
+msgid "Folder where deleted messages go"
+msgstr "Katalog där raderade meddelanden hamnar"
+
+#: extensions/webmail/app_settings.py:111
+msgid "Sent folder"
+msgstr "Skickat katalog"
+
+#: extensions/webmail/app_settings.py:112
+msgid "Folder where copies of sent messages go"
+msgstr "Katalog där kopior av skickade meddelanden hamnar"
+
+#: extensions/webmail/app_settings.py:117
+msgid "Drafts folder"
+msgstr "Utkast katalog"
+
+#: extensions/webmail/app_settings.py:118
+msgid "Folder where drafts go"
+msgstr "Katalog där utkast hamnar"
+
+#: extensions/webmail/app_settings.py:121
+#, fuzzy
+msgid "Composing messages"
+msgstr "skickade meddelanden"
+
+#: extensions/webmail/app_settings.py:125
+msgid "Default editor"
+msgstr "Standard editor"
+
+#: extensions/webmail/app_settings.py:127
+msgid "The default editor to use when composing a message"
+msgstr "Standardredigerare att använda när du skriver ett meddelande"
+
+#: extensions/webmail/app_settings.py:133
+msgid "Signature text"
+msgstr "Signatur text"
+
+#: extensions/webmail/app_settings.py:134
+msgid "User defined email signature"
+msgstr "Användardefinierad e-post signatur"
 
 #: extensions/webmail/exceptions.py:19
 msgid "Server response"
 msgstr "Server svar"
 
-#: extensions/webmail/forms.py:8
+#: extensions/webmail/forms.py:9
 msgid "Cci"
 msgstr "BCC"
 
-#: extensions/webmail/imaputils.py:254
+#: extensions/webmail/imaputils.py:259
 #, python-format
 msgid "Connection to IMAP server failed: %s"
 msgstr "Anslutning till IMAP servern misslyckades: %s"
 
-#: extensions/webmail/lib.py:325
+#: extensions/webmail/lib.py:353
 msgid "wrote:"
 msgstr "skrev:"
 
-#: extensions/webmail/lib.py:392 extensions/webmail/lib.py:396
+#: extensions/webmail/lib.py:418 extensions/webmail/lib.py:422
 msgid "Original message"
 msgstr "Orginalmeddelande"
 
-#: extensions/webmail/lib.py:693
-msgid "Red fields are mandatories"
-msgstr "Röda fält är obligatoriska"
-
-#: extensions/webmail/views.py:90
+#: extensions/webmail/views.py:94
 msgid "Unknown action"
 msgstr "Okänd åtgärd"
 
-#: extensions/webmail/views.py:103 lib/email_listing.py:158
+#: extensions/webmail/views.py:107 lib/email_listing.py:137
 msgid "Empty mailbox"
 msgstr "Tom brevlåda"
 
-#: extensions/webmail/views.py:120
-#: extensions/webmail/templatetags/webextras.py:165
+#: extensions/webmail/views.py:124
+#: extensions/webmail/templatetags/webextras.py:163
 msgid "Create a new mailbox"
 msgstr "Skapa en ny brevlåda"
 
-#: extensions/webmail/views.py:135
+#: extensions/webmail/views.py:139
 msgid "Mailbox created"
 msgstr "Brevlåda skapad"
 
-#: extensions/webmail/views.py:151
+#: extensions/webmail/views.py:155
 msgid "Edit mailbox"
 msgstr "Redigera brevlåda"
 
-#: extensions/webmail/views.py:166
+#: extensions/webmail/views.py:169
 msgid "Mailbox updated"
 msgstr "Brevlåda uppdaterad"
 
-#: extensions/webmail/views.py:199 extensions/webmail/views.py:381
-#: extensions/webmail/views.py:490
+#: extensions/webmail/views.py:203 extensions/webmail/views.py:384
+#: extensions/webmail/views.py:493
 msgid "Bad request"
 msgstr "Ogiltig fråga"
 
-#: extensions/webmail/views.py:230
+#: extensions/webmail/views.py:234
 msgid "Failed to save attachment: "
 msgstr "Det gick inte att spara bilaga:"
 
-#: extensions/webmail/views.py:233
+#: extensions/webmail/views.py:237
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Bilagan är för stor (max:% s)"
 
-#: extensions/webmail/views.py:239
-#: extensions/webmail/templates/webmail/compose.html:16
+#: extensions/webmail/views.py:243
+#: extensions/webmail/templates/webmail/compose.html:15
 #: extensions/webmail/templates/webmail/headers.html:4
 msgid "Attachments"
 msgstr "Bilagor"
 
-#: extensions/webmail/views.py:255
+#: extensions/webmail/views.py:259
 msgid "Bad query"
 msgstr "Dålig fråga"
 
-#: extensions/webmail/views.py:265
+#: extensions/webmail/views.py:269
 msgid "Failed to remove attachment: "
 msgstr "Misslyckades med att radera bilaga:"
 
-#: extensions/webmail/views.py:270
+#: extensions/webmail/views.py:274
 msgid "Unknown attachment"
 msgstr "Okänd bilaa"
 
-#: extensions/webmail/views.py:486
+#: extensions/webmail/views.py:489
 msgid "Undefined action"
 msgstr "Odefinierad åtgärd"
 
@@ -1821,7 +2328,7 @@ msgstr "Lägg till CC fält"
 msgid "Add Cci field"
 msgstr "Lägg till BCC fält"
 
-#: extensions/webmail/templates/webmail/compose.html:19
+#: extensions/webmail/templates/webmail/compose.html:18
 #, python-format
 msgid "%(counter)s file"
 msgid_plural "%(counter)s files"
@@ -1836,73 +2343,73 @@ msgstr "Brevlådas förälder"
 msgid "Mailbox quota"
 msgstr "Brevlåde kvota"
 
-#: extensions/webmail/templatetags/webextras.py:21
+#: extensions/webmail/templatetags/webextras.py:19
 msgid "Reply"
 msgstr "Svara"
 
-#: extensions/webmail/templatetags/webextras.py:25
+#: extensions/webmail/templatetags/webextras.py:23
 msgid "Reply all"
 msgstr "Svara alla"
 
-#: extensions/webmail/templatetags/webextras.py:29
+#: extensions/webmail/templatetags/webextras.py:27
 #: userprefs/templates/userprefs/forward.html:2
 #: userprefs/templatetags/uprefs_extras.py:27
 msgid "Forward"
 msgstr "Vidarebefordra"
 
-#: extensions/webmail/templatetags/webextras.py:35
+#: extensions/webmail/templatetags/webextras.py:33
 msgid "Display options"
 msgstr "Visnings alternativ"
 
-#: extensions/webmail/templatetags/webextras.py:38
+#: extensions/webmail/templatetags/webextras.py:36
 msgid "Activate links"
 msgstr "Aktivera länkar"
 
-#: extensions/webmail/templatetags/webextras.py:40
+#: extensions/webmail/templatetags/webextras.py:38
 msgid "Disable links"
 msgstr "Avaktivera länkar"
 
-#: extensions/webmail/templatetags/webextras.py:49
+#: extensions/webmail/templatetags/webextras.py:47
 msgid "Close this message"
 msgstr "Stäng detta meddelande"
 
-#: extensions/webmail/templatetags/webextras.py:62
+#: extensions/webmail/templatetags/webextras.py:60
 msgid "Back"
 msgstr "Tillbaka"
 
-#: extensions/webmail/templatetags/webextras.py:66
+#: extensions/webmail/templatetags/webextras.py:64
 msgid "Send"
 msgstr "Skicka"
 
-#: extensions/webmail/templatetags/webextras.py:78
+#: extensions/webmail/templatetags/webextras.py:76
 msgid "New message"
 msgstr "Nytt meddelande"
 
-#: extensions/webmail/templatetags/webextras.py:81
+#: extensions/webmail/templatetags/webextras.py:79
 msgid "Mark messages"
 msgstr "Markera meddelande"
 
-#: extensions/webmail/templatetags/webextras.py:85
+#: extensions/webmail/templatetags/webextras.py:83
 msgid "As read"
 msgstr "Som läst"
 
-#: extensions/webmail/templatetags/webextras.py:88
+#: extensions/webmail/templatetags/webextras.py:86
 msgid "As unread"
 msgstr "Som oläst"
 
-#: extensions/webmail/templatetags/webextras.py:97
+#: extensions/webmail/templatetags/webextras.py:95
 msgid "Compress folder"
 msgstr "Komprimera katalog"
 
-#: extensions/webmail/templatetags/webextras.py:105
+#: extensions/webmail/templatetags/webextras.py:103
 msgid "Empty folder"
 msgstr "Töm katalog"
 
-#: extensions/webmail/templatetags/webextras.py:173
+#: extensions/webmail/templatetags/webextras.py:171
 msgid "Edit the selected mailbox"
 msgstr "Redigera vald brevlåda"
 
-#: extensions/webmail/templatetags/webextras.py:178
+#: extensions/webmail/templatetags/webextras.py:176
 msgid "Remove the selected mailbox"
 msgstr "Radera vald brevlåda"
 
@@ -1915,7 +2422,7 @@ msgstr "Tillstånd nekas: %s"
 msgid "Permission denied"
 msgstr "Tillstånd nekas"
 
-#: lib/formutils.py:158 lib/formutils.py:165
+#: lib/formutils.py:157 lib/formutils.py:165
 msgid "Enter a valid domain name"
 msgstr "Skriv in ett giltigt domännamn"
 
@@ -1936,11 +2443,11 @@ msgstr "Domän administratör"
 msgid "Failed to grant access (%s)"
 msgstr "Det gick inte att bevilja åtkomst (%s)"
 
-#: lib/tables.py:240
+#: lib/tables.py:241
 msgid "No entries to display"
 msgstr "Inga poster att visa"
 
-#: lib/templatetags/libextras.py:104
+#: lib/templatetags/libextras.py:108
 msgid "activate"
 msgstr "aktivera"
 
@@ -1955,6 +2462,11 @@ msgstr "Den begärda sidan finns inte."
 #: templates/500.html:5
 msgid "An internal error occured."
 msgstr "Ett internt fel uppstod."
+
+#: templates/nlayout.html:56
+#, fuzzy
+msgid "Powered by Modoboa"
+msgstr "Konfigurera Modoboa"
 
 #: templates/common/email_searchbar.html:5
 msgid "From address"
@@ -1977,81 +2489,93 @@ msgstr "Fel:"
 msgid "Help:"
 msgstr "Hjälp:"
 
-#: templates/common/parameters.html:15
-msgid "No parameters available"
-msgstr "Ingen parameter tillgänglig"
+#: templates/common/generic_modal.html:11
+#: templates/common/wizard_forms.html:29
+msgid "Close"
+msgstr "Stäng"
 
 #: templates/registration/login.html:5
 msgid "Welcome to Modoboa"
 msgstr "Välkommen till Modoboa"
 
-#: templates/registration/login.html:36
+#: templates/registration/login.html:33
 msgid "Remember me"
 msgstr "Kom ihåg mig"
 
-#: templates/registration/login.html:38
+#: templates/registration/login.html:35
 msgid "Log in"
 msgstr "Logga in"
 
-#: userprefs/__init__.py:7
+#: userprefs/__init__.py:8
+#, fuzzy
+msgid "User preferences"
+msgstr "Inställningar"
+
+#: userprefs/__init__.py:10
+msgid "Per-user settings"
+msgstr ""
+
+#: userprefs/app_settings.py:19
 msgid "Prefered language"
 msgstr "Önskat språk"
 
-#: userprefs/__init__.py:11
+#: userprefs/app_settings.py:23
 msgid "Prefered language to display pages"
 msgstr "Önskat språk för att visa sidor"
 
-#: userprefs/forms.py:11
+#: userprefs/forms.py:14
 msgid "Old password"
 msgstr "Gammalt lösenord"
 
-#: userprefs/forms.py:13
+#: userprefs/forms.py:16
 msgid "New password"
 msgstr "Nytt lösenord"
 
-#: userprefs/forms.py:37
+#: userprefs/forms.py:40
 msgid "Old password mismatchs"
 msgstr "Gammalt lösenord matchar inte"
 
-#: userprefs/forms.py:42
+#: userprefs/forms.py:45
 msgid "Passwords mismatch"
 msgstr "Lösenord matchar inte"
 
-#: userprefs/forms.py:56
+#: userprefs/forms.py:59
 msgid "Recipient(s)"
 msgstr "Mottagare"
 
-#: userprefs/forms.py:59
+#: userprefs/forms.py:62
 msgid "Indicate one or more recipients separated by a ','"
 msgstr "Ange en eller flera mottagare separerade med ett ','"
 
-#: userprefs/forms.py:62
+#: userprefs/forms.py:65
 msgid "Keep local copies"
 msgstr "Behåll lokal kopia"
 
-#: userprefs/forms.py:64
+#: userprefs/forms.py:67
 msgid "Forward messages and store copies into your local mailbox"
 msgstr "Vidarebefordra meddelande och spara kopia i din lokala brevlåda"
 
-#: userprefs/forms.py:81
+#: userprefs/forms.py:84
 msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
-msgstr "Du kan inte definiera en vidarebefordring till en lokal destination. Be din administratör att skapa ett alias istället."
+msgstr ""
+"Du kan inte definiera en vidarebefordring till en lokal destination. Be din "
+"administratör att skapa ett alias istället."
 
 #: userprefs/views.py:32
 msgid "You need a mailbox in order to define a forward"
 msgstr "Du behöver en brevlåda för att definiera en vidarebefordran"
 
-#: userprefs/views.py:53
+#: userprefs/views.py:56
 msgid "Forward updated"
 msgstr "Vidarebefordring uppdaterad"
 
-#: userprefs/views.py:92
+#: userprefs/views.py:98
 msgid "Profile updated"
 msgstr "Profil uppdaterad"
 
-#: userprefs/views.py:117
+#: userprefs/views.py:127
 msgid "Preferences saved"
 msgstr "Inställningar sparade"
 
@@ -2085,3 +2609,79 @@ msgstr "Uppdatera personlig information"
 #: userprefs/templatetags/uprefs_extras.py:57
 msgid "Logout"
 msgstr "Logga ut"
+
+#~ msgid "Path to the root directory where messages are stored"
+#~ msgstr "Sökväg till rootkatalog där meddelanden lagras"
+
+#~ msgid ""
+#~ "GID of the virtual user which owns domains/mailboxes/messages on the "
+#~ "filesystem"
+#~ msgstr ""
+#~ "GID för virtuell användare vilken äger domäner/brevlådor/meddelanden i "
+#~ "filsystemet"
+
+#~ msgid "Mailboxes storage format"
+#~ msgstr "Brevlådans lagringsformat"
+
+#~ msgid ""
+#~ "Sub-directory (inside the mailbox) where messages are stored when using "
+#~ "the maildir format"
+#~ msgstr ""
+#~ "Underkatalog (i brevlådan) där meddelanden lagras när Maildir format "
+#~ "används"
+
+#~ msgid "Failed to rename domain, check permissions"
+#~ msgstr "Det gick inte att byta namn på domänen, kontrollera behörigheter"
+
+#~ msgid "A distribution list must contain at least two recipients"
+#~ msgstr "En distributionslista måste innehålla minst två mottagare"
+
+#~ msgid ""
+#~ "A valid e-mail address. Use the '*' character to create a 'catchall' "
+#~ "address (ex: *@domain.tld)."
+#~ msgstr ""
+#~ "En giltig e-post adress. Använd '*' tecknet för att skapa en 'catchall' "
+#~ "adress (ex: *@domain.tld)."
+
+#~ msgid "A local recipient address"
+#~ msgstr "En lokal mottagaradress"
+
+#~ msgid "Mailbox does not exist"
+#~ msgstr "Brevlåda finns inte"
+
+#~ msgid "You can't access this mailbox"
+#~ msgstr "Du kan inte komma åt den här brevlådan"
+
+#~ msgid "An external recipient address"
+#~ msgstr "En extern mottagaradress"
+
+#~ msgid ""
+#~ "Quota in MB for this mailbox. Leave empty to use the value defined at "
+#~ "domain level."
+#~ msgstr ""
+#~ "Kvot MB för den brevlådan. Lämna tomt för att använda det värde som anges "
+#~ "på domän-nivå."
+
+#~ msgid "Unknown object type"
+#~ msgstr "Okänd objekttyp"
+
+#~ msgid "Failed to initialise domain, check permissions"
+#~ msgstr "Det gick inte att initiera domän, kontrollera behörigheter"
+
+#~ msgid "%s is not a valid uid/username"
+#~ msgstr "%s är inte ett giltigt uid/användarnamn"
+
+#~ msgid "%s is not a valid gid/groupname"
+#~ msgstr "%s är inte ett giltigt gid/gruppnamn"
+
+#~ msgid "Failed to initialise mailbox, check permissions"
+#~ msgstr "Det gick inte att initiera brevlådan, kontrollera behörigheter"
+
+#~ msgid "Email/Username"
+#~ msgstr "E-post/användarnamn"
+
+#~ msgid "Red fields are mandatories"
+#~ msgstr "Röda fält är obligatoriska"
+
+#~ msgid "No parameters available"
+#~ msgstr "Ingen parameter tillgänglig"

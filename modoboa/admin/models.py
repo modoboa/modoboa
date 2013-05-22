@@ -1287,8 +1287,9 @@ def post_revision_commit(sender, **kwargs):
         else:
             action = _("deleted")
             level = "critical"
-        message = _("%s '%s' %s by user %s") % (
-            unicode(version.content_type).capitalize(), version.object_repr, action,
-            kwargs["revision"].user.username
+        message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
+            "object": unicode(version.content_type).capitalize(), 
+            "name": version.object_repr, "action": action,
+            "user": kwargs["revision"].user.username
         )
         getattr(logger, level)(message)
