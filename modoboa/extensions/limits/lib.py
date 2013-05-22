@@ -15,7 +15,7 @@ class LimitReached(ModoboaException):
     def __str__(self):
         return _("%s: limit reached") % self.limit.label
 
-class UnsifficientResource(ModoboaException):
+class UnsufficientResource(ModoboaException):
     def __init__(self, limit):
         self.limit = limit
 

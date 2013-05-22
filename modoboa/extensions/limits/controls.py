@@ -123,8 +123,7 @@ def create_pool(user):
         check_limit(owner, 'domain_admins_limit')
         inc_limit(owner, 'domain_admins_limit')
 
-    if user.belongs_to_group("DomainAdmins") or \
-       user.belongs_to_group("Resellers"):
+    if user.group in ["DomainAdmins", "Resellers"]:
         p = LimitsPool(user=user)
         p.save()
         p.create_limits()

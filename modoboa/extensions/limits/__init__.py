@@ -9,7 +9,7 @@ from django.db import IntegrityError
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from modoboa.lib import events
+from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
 from models import *
 from forms import ResourcePoolForm
@@ -49,7 +49,12 @@ class Limits(ModoExtension):
             except IntegrityError:
                 pass
 
+    def load(self):
+        from app_settings import ParametersForm
+        parameters.register(ParametersForm, _("Limits"))
+
     def destroy(self):
+        parameters.unregister()
         Group.objects.get(name="Resellers").delete()
 
 exts_pool.register_extension(Limits)

@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _, ugettext_lazy
+from modoboa.lib import parameters
 from modoboa.admin.models import User
 from django.conf import settings
 
@@ -22,6 +23,7 @@ class LimitsPool(models.Model):
             l = Limit()
             l.name = ltpl[0]
             l.pool = self
+            l.maxvalue = int(parameters.get_admin("DEFLT_%s" % ltpl[0].upper()))
             l.save()
 
     def getcurvalue(self, lname):
