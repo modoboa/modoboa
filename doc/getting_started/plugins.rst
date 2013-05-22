@@ -246,13 +246,20 @@ the *vmail* user to the *www-data* group and set the read permission
 for the group.
 
 To make *postfix* use this feature, you need to update your
-configuration files as follow:
+configuration files as follows:
 
 ``/etc/postfix/main.cf``::
 
   transport_maps = mysql:/etc/postfix/maps/sql-transport.cf
   virtual_alias_maps = mysql:/etc/postfix/maps/sql-aliases.cf
-          mysql:/etc/postfix/maps/sql-autoreplies.cf
+          mysql:/etc/postfix/mapfiles/sql-domain-aliases-mailboxes.cf,
+          mysql:/etc/postfix/mapfiles/sql-email2email.cf,
+          mysql:/etc/postfix/maps/sql-autoreplies.cf,
+          mysql:/etc/postfix/mapfiles/sql-catchall-aliases.cf
+
+.. note::
+
+   The order used to define alias maps is important, please respect it
 
 ``/etc/postfix/master.cf``::
 
