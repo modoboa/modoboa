@@ -52,6 +52,8 @@ class DeployTest(unittest.TestCase):
         child.sendline(self.dbuser)
         child.expect("Password:", timeout=timeout)
         child.sendline(self.dbpassword)
+        child.expect("Under which domain do you want to deploy modoboa?", timeout=timeout)
+        child.sendline("localhost")
         child.wait()
         fout.close()
         self.assertEqual(child.exitstatus, 0)

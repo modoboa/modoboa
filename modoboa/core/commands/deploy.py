@@ -96,11 +96,14 @@ class DeployCommand(Command):
         amavis_conn = t.render(Context(self.ask_db_info('amavis'))) if parsed_args.with_amavis \
             else None
 
+        allowed_host = raw_input('Under which domain do you want to deploy modoboa? ')
+
         mod = __import__(parsed_args.name, globals(), locals(), ['settings'])
         tpl = self._render_template("%s/settings.py" % self._templates_dir, {
             'default_conn' : default_conn, 'amavis_conn' : amavis_conn,
             'secret_key' : mod.settings.SECRET_KEY,
-            'name' : parsed_args.name, 'django14' : django14
+            'name' : parsed_args.name, 'django14' : django14,
+            'allowed_host': allowed_host
             })
         fp = open("%s/settings.py" % path, "w")
         fp.write(tpl)
