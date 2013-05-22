@@ -2,7 +2,7 @@
 import os
 from logging.handlers import SysLogHandler
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 MODOBOA_DIR = os.path.dirname(__file__)
