@@ -165,6 +165,8 @@ INSTALLED_APPS += MODOBOA_APPS
 
 AUTH_USER_MODEL = 'admin.User'
 
+#CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
+
 AUTHENTICATION_BACKENDS = (
     'modoboa.lib.authbackends.SimpleBackend',
 )

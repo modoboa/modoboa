@@ -11,12 +11,17 @@ body {
     overflow: hidden;
 }
 
+#bottom-bar-middle {
+    text-align: center;
+}
+
 .navbar-text { 
     color: #999999 !important;
 }
 
 .simplepagination ul { 
     display: inline-block;
+    margin-bottom: 0;
 }
 
 .simplepagination li { 

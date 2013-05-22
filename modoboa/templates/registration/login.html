@@ -19,33 +19,28 @@
   </head>
   <body>
     <div class="container">
-      <div class="offset4">
-        <div class="row">
-          <div id="logo" class="span3">
-            <img src="{{ STATIC_URL }}css/modoboa.png" />
-          </div>
+      <div id="logo" class="row">
+        <img src="{% get_modoboa_logo %}" />
+      </div>
+      <form method="post" action="{% url 'modoboa.auth.views.dologin' %}"
+            class="login-form well">
+        {% csrf_token %}
+        {% render_field form.username %}
+        {% render_field form.password %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <div class="form-actions">
+          <label class="pull-left checkbox" for="id_rememberme">
+            <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
+          </label>
+          <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
         </div>
-        <div class="row">
-          <form method="post" action="{% url 'modoboa.auth.views.dologin' %}"
-                class="well span3">{% csrf_token %}
-            {% render_field form.username %}
-            {% render_field form.password %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <div class="form-actions">
-              <label class="pull-left checkbox" for="id_rememberme">
-                <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
-              </label>
-              <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
-            </div>
-          </form>
+      </form>
+
+        <div class="login-error">
+          {% if error %}{% alert error "error" %}{% endif %}
         </div>
-        <div class="row">
-          <div class="span4">
-            {% if error %}{% alert error "error" %}{% endif %}
-          </div>
-        </div>
-      </div>{% for annoucement in annoucements %}
-      <div class="offset3 span5 well">{{ annoucement|safe }}</div>
-      {% endfor %}</div>
+    </div>{% for annoucement in annoucements %}
+    <div class="offset3 span5 well">{{ annoucement|safe }}</div>
+    {% endfor %}</div>
   </body>
 </html>

@@ -49,13 +49,14 @@
       <div class="navbar-inner">
         <div class="container-fluid">
           <div class="row-fluid">
-          <div id="bottom-bar-left" class="pull-left">
+          <div id="bottom-bar-left" class="span4">
             {% block footerleft %}{% endblock %}
           </div>
-          <div id="bottom-bar-middle" class="">
+          <div id="bottom-bar-middle" class="span4">
+            <p class="navbar-text"><i>{% trans "Powered by Modoboa" %}</i></p>
             {% block footermiddle %}{% endblock %}
           </div>
-          <div id="bottom-bar-right" class="pull-right nav-collapse">
+          <div id="bottom-bar-right" class="span4 nav-collapse">
             {% block footerright %}{% endblock %}
           </div>
           </div>

@@ -1,14 +1,28 @@
 #logo { 
     margin-top: 60px;
+    text-align: center;
+    margin: 60px auto 20px;
+    max-width: 300px;
 }
 
 #logo img {
-    height: 100px;
+    height: auto;
 }
 
 .form-actions { 
     background-color: transparent;
     padding-right: 0px;
     padding-left: 0px;
+    margin-bottom: 0px;
 }
 
+.login-form {
+    margin: 0 auto;
+    max-width: 300px;
+    padding-bottom: 0;
+}
+
+.login-error {
+    margin: 20px auto;
+    max-width: 300px;
+}

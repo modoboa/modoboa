@@ -1,4 +1,4 @@
-<div id="pagination_bar" class="simplepagination pull-right padded5">
+<div id="pagination_bar" class="simplepagination pull-right">
   <ul>
     <li>      
       {% if page.has_previous %}<a href="{{ baseurl }}page=1">
@@ -10,7 +10,7 @@
       <i class="icon-step-backward icon-white"></i></a>{% else %}
       <i class="icon-step-backward icon-white"></i>{% endif %}
     </li>
-    <li class="disabled">
+    <li class="disabled navbar-text">
       {{ page.number }}/{{ page.paginator.num_pages }}
     </li>
     <li>

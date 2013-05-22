@@ -232,3 +232,15 @@ def render_tags(tags):
 {% endfor %}
 """)
     return t.render(Context({"tags" : tags}))
+
+
+@register.simple_tag
+def get_modoboa_logo():
+    try:
+        logo = settings.MODOBOA_CUSTOM_LOGO
+    except AttributeError:
+        logo = None
+    if logo is None:
+        return os.path.join(settings.STATIC_URL, "css/modoboa.png")
+    return logo
+
