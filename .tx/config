@@ -5,7 +5,7 @@ source_lang = en
 type = PO
 
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
 
 [modoboa.djangopo]
 file_filter = modoboa/locale/<lang>/LC_MESSAGES/django.po

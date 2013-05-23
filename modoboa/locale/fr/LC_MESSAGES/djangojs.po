@@ -1,11 +1,11 @@
 # Modoboa french translation
-# Copyright (C) 2009-2012
+# Copyright (C) 2009-2013
 # This file is distributed under the same license as the Modoboa package.
-# Antoine Nguyen <tonio@ngyn.org>, 2009-2012.
+# Antoine Nguyen <tonio@ngyn.org>, 2009-2013.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-0.9.4\n"
+"Project-Id-Version: modoboa-1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-22 17:39+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
@@ -30,11 +30,11 @@ msgid "This operation will remove ALL data associated to this domain."
 msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
 
 #: admin/static/admin/js/admin.js:114
-#, fuzzy
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
+msgstr "Cette opération supprimera toutes les données associées à ce domaine "
+"à l'excéption des comptes."
 
 #: admin/static/admin/js/admin.js:117
 msgid "Delete this domain?"
@@ -160,6 +160,3 @@ msgstr "Erreur interne"
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Chercher..."
-
-#~ msgid "Loading..."
-#~ msgstr "Chargement..."
