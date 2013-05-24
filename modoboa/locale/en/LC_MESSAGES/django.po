@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-22 17:38+0200\n"
+"POT-Creation-Date: 2013-05-24 10:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,10 @@ msgid "Web based console to manage domains, accounts and aliases"
 msgstr ""
 
 #: admin/__init__.py:16 admin/forms.py:179 admin/forms.py:614
-#: admin/views.py:93 admin/views.py:441 extensions/webmail/app_settings.py:11
+#: admin/views.py:93 admin/views.py:441
+#: extensions/postfix_autoreply/app_settings.py:11
+#: extensions/sievefilters/app_settings.py:50
+#: extensions/stats/app_settings.py:11 extensions/webmail/app_settings.py:11
 #: userprefs/__init__.py:15
 msgid "General"
 msgstr ""
@@ -1147,95 +1150,104 @@ msgstr ""
 msgid "Content filter"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:12
-msgid "Maximum message age"
+#: extensions/amavis/app_settings.py:11
+msgid "Quarantine settings"
 msgstr ""
 
 #: extensions/amavis/app_settings.py:14
+msgid "Maximum message age"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:16
 msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:17
+#: extensions/amavis/app_settings.py:19
 msgid "Messages releasing"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:20
+#: extensions/amavis/app_settings.py:22
 msgid "Remove released messages"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:22
+#: extensions/amavis/app_settings.py:24
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:26
+#: extensions/amavis/app_settings.py:28
 msgid "Amavis connection mode"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:29
+#: extensions/amavis/app_settings.py:31
 msgid "Mode used to access the PDP server"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:34
+#: extensions/amavis/app_settings.py:36
 msgid "PDP server address"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:36
+#: extensions/amavis/app_settings.py:38
 msgid "PDP server address (if inet mode)"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:40
+#: extensions/amavis/app_settings.py:42
 msgid "PDP server port"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:42
+#: extensions/amavis/app_settings.py:44
 msgid "PDP server port (if inet mode)"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:46
+#: extensions/amavis/app_settings.py:48
 msgid "PDP server socket"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:48
+#: extensions/amavis/app_settings.py:50
 msgid "Path to the PDP server socket (if unix mode)"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:52
+#: extensions/amavis/app_settings.py:54
 msgid "Check requests interval"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:54
+#: extensions/amavis/app_settings.py:56
 msgid "Interval between two release requests checks"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:58
+#: extensions/amavis/app_settings.py:60
 msgid "Allow direct release"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:60
+#: extensions/amavis/app_settings.py:62
 msgid "Allow users to directly release their messages"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:64
+#: extensions/amavis/app_settings.py:66
 msgid "Enable self-service mode"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:66
+#: extensions/amavis/app_settings.py:68
 msgid "Activate the 'self-service' mode"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:70
+#: extensions/amavis/app_settings.py:72
 msgid "Notifications sender"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:72
+#: extensions/amavis/app_settings.py:74
 msgid "The e-mail address used to send notitications"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:87 extensions/webmail/app_settings.py:91
+#: extensions/amavis/app_settings.py:87 extensions/webmail/app_settings.py:73
+#: userprefs/app_settings.py:18
+msgid "Display"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:91 extensions/webmail/app_settings.py:91
 msgid "Number of displayed emails per page"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:88
+#: extensions/amavis/app_settings.py:92
 msgid "Set the maximum number of messages displayed in a page"
 msgstr ""
 
@@ -1560,11 +1572,11 @@ msgstr ""
 msgid "Auto-reply message"
 msgstr ""
 
-#: extensions/postfix_autoreply/app_settings.py:11
+#: extensions/postfix_autoreply/app_settings.py:14
 msgid "Automatic reply timeout"
 msgstr ""
 
-#: extensions/postfix_autoreply/app_settings.py:13
+#: extensions/postfix_autoreply/app_settings.py:16
 msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgstr ""
 
@@ -1650,11 +1662,11 @@ msgstr ""
 msgid "Prefered authentication mechanism"
 msgstr ""
 
-#: extensions/sievefilters/app_settings.py:52
+#: extensions/sievefilters/app_settings.py:54
 msgid "Editor mode"
 msgstr ""
 
-#: extensions/sievefilters/app_settings.py:54
+#: extensions/sievefilters/app_settings.py:56
 msgid "Select the mode you want the editor to work in"
 msgstr ""
 
@@ -1850,27 +1862,27 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: extensions/stats/app_settings.py:11
+#: extensions/stats/app_settings.py:14
 msgid "Path to the log file"
 msgstr ""
 
-#: extensions/stats/app_settings.py:13
+#: extensions/stats/app_settings.py:16
 msgid "Path to log file used to collect statistics"
 msgstr ""
 
-#: extensions/stats/app_settings.py:17
+#: extensions/stats/app_settings.py:20
 msgid "Directory to store RRD files"
 msgstr ""
 
-#: extensions/stats/app_settings.py:19
+#: extensions/stats/app_settings.py:22
 msgid "Path to directory where RRD files are stored"
 msgstr ""
 
-#: extensions/stats/app_settings.py:23
+#: extensions/stats/app_settings.py:26
 msgid "Directory to store PNG files"
 msgstr ""
 
-#: extensions/stats/app_settings.py:25
+#: extensions/stats/app_settings.py:28
 msgid "Path to directory where PNG files are stored"
 msgstr ""
 
@@ -2033,10 +2045,6 @@ msgstr ""
 
 #: extensions/webmail/app_settings.py:66
 msgid "Server needs authentication"
-msgstr ""
-
-#: extensions/webmail/app_settings.py:73
-msgid "Display"
 msgstr ""
 
 #: extensions/webmail/app_settings.py:77
@@ -2394,11 +2402,11 @@ msgstr ""
 msgid "Per-user settings"
 msgstr ""
 
-#: userprefs/app_settings.py:19
+#: userprefs/app_settings.py:22
 msgid "Prefered language"
 msgstr ""
 
-#: userprefs/app_settings.py:23
+#: userprefs/app_settings.py:26
 msgid "Prefered language to display pages"
 msgstr ""
 

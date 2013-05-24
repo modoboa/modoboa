@@ -8,6 +8,8 @@ from modoboa.lib.formutils import SeparatorField, YesNoField, InlineRadioSelect
 class ParametersForm(AdminParametersForm):
     app = "amavis"
 
+    qsettings_sep = SeparatorField(label=_("Quarantine settings"))
+
     max_messages_age = forms.IntegerField(
         label=_("Maximum message age"),
         initial=14,
@@ -81,6 +83,8 @@ class ParametersForm(AdminParametersForm):
 
 class UserSettings(UserParametersForm):
     app = "amavis"
+
+    dsep = SeparatorField(label=_("Display"))
 
     messages_per_page = forms.IntegerField(
         initial=40,

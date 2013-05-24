@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-22 17:38+0200\n"
+"POT-Creation-Date: 2013-05-24 10:10+0200\n"
 "PO-Revision-Date: 2013-02-05 08:26+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,10 @@ msgid "Web based console to manage domains, accounts and aliases"
 msgstr ""
 
 #: admin/__init__.py:16 admin/forms.py:179 admin/forms.py:614
-#: admin/views.py:93 admin/views.py:441 extensions/webmail/app_settings.py:11
+#: admin/views.py:93 admin/views.py:441
+#: extensions/postfix_autoreply/app_settings.py:11
+#: extensions/sievefilters/app_settings.py:50
+#: extensions/stats/app_settings.py:11 extensions/webmail/app_settings.py:11
 #: userprefs/__init__.py:15
 msgid "General"
 msgstr "General"
@@ -1230,107 +1233,118 @@ msgstr "%d peticiones pendientes"
 msgid "Content filter"
 msgstr "Filtro de contenido"
 
-#: extensions/amavis/app_settings.py:12
+#: extensions/amavis/app_settings.py:11
+#, fuzzy
+msgid "Quarantine settings"
+msgstr "Cuarentena"
+
+#: extensions/amavis/app_settings.py:14
 #, fuzzy
 msgid "Maximum message age"
 msgstr "Marcar mensajes"
 
-#: extensions/amavis/app_settings.py:14
+#: extensions/amavis/app_settings.py:16
 msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr ""
 "Máxima edad (en días) de los mensajes de cuarentena antes de proceder a su "
 "eliminación"
 
-#: extensions/amavis/app_settings.py:17
+#: extensions/amavis/app_settings.py:19
 #, fuzzy
 msgid "Messages releasing"
 msgstr "Mensaje publicado"
 
-#: extensions/amavis/app_settings.py:20
+#: extensions/amavis/app_settings.py:22
 #, fuzzy
 msgid "Remove released messages"
 msgstr "mensajes recibidos"
 
-#: extensions/amavis/app_settings.py:22
+#: extensions/amavis/app_settings.py:24
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr ""
 "Eliminar los mensajes marcados como publicados cuando se haga limpieza de la "
 "base de datos"
 
-#: extensions/amavis/app_settings.py:26
+#: extensions/amavis/app_settings.py:28
 msgid "Amavis connection mode"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:29
+#: extensions/amavis/app_settings.py:31
 msgid "Mode used to access the PDP server"
 msgstr "Modo usado para acceder al servidor PDP"
 
-#: extensions/amavis/app_settings.py:34
+#: extensions/amavis/app_settings.py:36
 #, fuzzy
 msgid "PDP server address"
 msgstr "Dirección del servidor de PDP (si está en modo inet)"
 
-#: extensions/amavis/app_settings.py:36
+#: extensions/amavis/app_settings.py:38
 msgid "PDP server address (if inet mode)"
 msgstr "Dirección del servidor de PDP (si está en modo inet)"
 
-#: extensions/amavis/app_settings.py:40
+#: extensions/amavis/app_settings.py:42
 #, fuzzy
 msgid "PDP server port"
 msgstr "Puerto del servidor de PDP (si está en modo inet)"
 
-#: extensions/amavis/app_settings.py:42
+#: extensions/amavis/app_settings.py:44
 msgid "PDP server port (if inet mode)"
 msgstr "Puerto del servidor de PDP (si está en modo inet)"
 
-#: extensions/amavis/app_settings.py:46
+#: extensions/amavis/app_settings.py:48
 msgid "PDP server socket"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:48
+#: extensions/amavis/app_settings.py:50
 msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Dirección del socket del servidor de PDP (si están en modo unix)"
 
-#: extensions/amavis/app_settings.py:52
+#: extensions/amavis/app_settings.py:54
 msgid "Check requests interval"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:54
+#: extensions/amavis/app_settings.py:56
 msgid "Interval between two release requests checks"
 msgstr "Intervalo entre dos peticiones de chequeo"
 
-#: extensions/amavis/app_settings.py:58
+#: extensions/amavis/app_settings.py:60
 #, fuzzy
 msgid "Allow direct release"
 msgstr "Permitir a los usuarios enviar directamente sus mensajes"
 
-#: extensions/amavis/app_settings.py:60
+#: extensions/amavis/app_settings.py:62
 msgid "Allow users to directly release their messages"
 msgstr "Permitir a los usuarios enviar directamente sus mensajes"
 
-#: extensions/amavis/app_settings.py:64
+#: extensions/amavis/app_settings.py:66
 #, fuzzy
 msgid "Enable self-service mode"
 msgstr "Activar el modo 'auto-servicio'"
 
-#: extensions/amavis/app_settings.py:66
+#: extensions/amavis/app_settings.py:68
 msgid "Activate the 'self-service' mode"
 msgstr "Activar el modo 'auto-servicio'"
 
-#: extensions/amavis/app_settings.py:70
+#: extensions/amavis/app_settings.py:72
 #, fuzzy
 msgid "Notifications sender"
 msgstr "Modificaciones aplicadas."
 
-#: extensions/amavis/app_settings.py:72
+#: extensions/amavis/app_settings.py:74
 msgid "The e-mail address used to send notitications"
 msgstr "La dirección de correo usada para enviar notificaciones"
 
-#: extensions/amavis/app_settings.py:87 extensions/webmail/app_settings.py:91
+#: extensions/amavis/app_settings.py:87 extensions/webmail/app_settings.py:73
+#: userprefs/app_settings.py:18
+#, fuzzy
+msgid "Display"
+msgstr "Opciones de pantalla"
+
+#: extensions/amavis/app_settings.py:91 extensions/webmail/app_settings.py:91
 msgid "Number of displayed emails per page"
 msgstr "Número de emails mostrados por página"
 
-#: extensions/amavis/app_settings.py:88
+#: extensions/amavis/app_settings.py:92
 #, fuzzy
 msgid "Set the maximum number of messages displayed in a page"
 msgstr "Fija el número máximo de mensajes mostrados en una página"
@@ -1677,11 +1691,11 @@ msgstr ""
 msgid "Auto-reply message"
 msgstr "Mensaje de autorespuesta"
 
-#: extensions/postfix_autoreply/app_settings.py:11
+#: extensions/postfix_autoreply/app_settings.py:14
 msgid "Automatic reply timeout"
 msgstr ""
 
-#: extensions/postfix_autoreply/app_settings.py:13
+#: extensions/postfix_autoreply/app_settings.py:16
 msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgstr "Tiempo en segundos entre dos autorespuestas para el mismo emisor"
 
@@ -1771,11 +1785,11 @@ msgstr "Mecanismo de autenticación preferido"
 msgid "Prefered authentication mechanism"
 msgstr "Mecanismo de autenticación preferido"
 
-#: extensions/sievefilters/app_settings.py:52
+#: extensions/sievefilters/app_settings.py:54
 msgid "Editor mode"
 msgstr "Modo editor"
 
-#: extensions/sievefilters/app_settings.py:54
+#: extensions/sievefilters/app_settings.py:56
 msgid "Select the mode you want the editor to work in"
 msgstr "Seleccione el modo en el que desea que el editor trabaje"
 
@@ -1973,27 +1987,27 @@ msgstr "Estadísticas gráficas"
 msgid "Statistics"
 msgstr "Estadísticas"
 
-#: extensions/stats/app_settings.py:11
+#: extensions/stats/app_settings.py:14
 msgid "Path to the log file"
 msgstr ""
 
-#: extensions/stats/app_settings.py:13
+#: extensions/stats/app_settings.py:16
 msgid "Path to log file used to collect statistics"
 msgstr "Ruta al fichero de log usado para recolectar estadísticas"
 
-#: extensions/stats/app_settings.py:17
+#: extensions/stats/app_settings.py:20
 msgid "Directory to store RRD files"
 msgstr ""
 
-#: extensions/stats/app_settings.py:19
+#: extensions/stats/app_settings.py:22
 msgid "Path to directory where RRD files are stored"
 msgstr "Ruta al directorio dónde están almacenados los ficheros RRD"
 
-#: extensions/stats/app_settings.py:23
+#: extensions/stats/app_settings.py:26
 msgid "Directory to store PNG files"
 msgstr ""
 
-#: extensions/stats/app_settings.py:25
+#: extensions/stats/app_settings.py:28
 msgid "Path to directory where PNG files are stored"
 msgstr "Ruta al directorio dónde están almacenados los ficheros PNG"
 
@@ -2159,11 +2173,6 @@ msgstr ""
 #: extensions/webmail/app_settings.py:66
 msgid "Server needs authentication"
 msgstr "El servidor requiere autenticación"
-
-#: extensions/webmail/app_settings.py:73
-#, fuzzy
-msgid "Display"
-msgstr "Opciones de pantalla"
 
 #: extensions/webmail/app_settings.py:77
 msgid "Default message display mode"
@@ -2523,11 +2532,11 @@ msgstr "Preferencias"
 msgid "Per-user settings"
 msgstr ""
 
-#: userprefs/app_settings.py:19
+#: userprefs/app_settings.py:22
 msgid "Prefered language"
 msgstr "Idioma preferido"
 
-#: userprefs/app_settings.py:23
+#: userprefs/app_settings.py:26
 msgid "Prefered language to display pages"
 msgstr "Idioma preferido para mostrar las páginas"
 

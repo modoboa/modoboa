@@ -3,6 +3,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy
 from django.conf import settings
 from modoboa.lib.parameters import UserParametersForm
+from modoboa.lib.formutils import SeparatorField
 
 
 def translate_language_code(value):
@@ -13,6 +14,8 @@ def translate_language_code(value):
 
 class UserSettings(UserParametersForm):
     app = "general"
+
+    sep = SeparatorField(label=ugettext_lazy("Display"))
 
     lang = forms.ChoiceField(
         initial=translate_language_code(settings.LANGUAGE_CODE),

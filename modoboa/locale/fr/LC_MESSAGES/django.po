@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-22 17:38+0200\n"
+"POT-Creation-Date: 2013-05-24 10:10+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -26,7 +26,10 @@ msgid "Web based console to manage domains, accounts and aliases"
 msgstr "Console web pour gérer les domains, comptes et alias"
 
 #: admin/__init__.py:16 admin/forms.py:179 admin/forms.py:614
-#: admin/views.py:93 admin/views.py:441 extensions/webmail/app_settings.py:11
+#: admin/views.py:93 admin/views.py:441
+#: extensions/postfix_autoreply/app_settings.py:11
+#: extensions/sievefilters/app_settings.py:50
+#: extensions/stats/app_settings.py:11 extensions/webmail/app_settings.py:11
 #: userprefs/__init__.py:15
 msgid "General"
 msgstr "Général"
@@ -118,8 +121,9 @@ msgstr "ND de connexion"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr "Le nom distinctif à utiliser pour les connections au serveur LDAP. "
-"Laisser vide pour une connexion anonyme"
+msgstr ""
+"Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser "
+"vide pour une connexion anonyme"
 
 #: admin/app_settings.py:97
 msgid "Bind password"
@@ -127,8 +131,9 @@ msgstr "Mot de passe de connexion"
 
 #: admin/app_settings.py:99
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr "Le mot de passe à utiliser pour les connections au serveur LDAP "
-"(avec 'ND de connexion')"
+msgstr ""
+"Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de "
+"connexion')"
 
 #: admin/app_settings.py:105
 msgid "Search base"
@@ -146,8 +151,9 @@ msgstr "Filtre de recherche"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr "Un filtre de recherche optionel (ex. '(objectClass=person)'). "
-"Pour être valide, il doit être entouré de parenthèses."
+msgstr ""
+"Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être "
+"valide, il doit être entouré de parenthèses."
 
 #: admin/app_settings.py:119
 msgid "User DN template"
@@ -158,8 +164,9 @@ msgstr "Modèle de nom distinctif utilisateur"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr "Le modèle utilisé pour construire le nom distinctif d'un utilisateur. "
-"Il doit contenir un espace réservé (ex. %(user)s)"
+msgstr ""
+"Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il "
+"doit contenir un espace réservé (ex. %(user)s)"
 
 #: admin/app_settings.py:126
 msgid "Password attribute"
@@ -167,8 +174,7 @@ msgstr "Attribut 'mot de passe'"
 
 #: admin/app_settings.py:128
 msgid "The attribute used to store user passwords"
-msgstr ""
-"L'attribut utilisé pour stocker les mots de passe"
+msgstr "L'attribut utilisé pour stocker les mots de passe"
 
 #: admin/app_settings.py:132
 msgid "Active Directory"
@@ -193,8 +199,9 @@ msgstr "Gérer les boites sur le système de fichiers"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr "Renommer ou supprimer les boites sur le système de fichiers quand "
-"elles sont renommées ou supprimées dans Modoboa"
+msgstr ""
+"Renommer ou supprimer les boites sur le système de fichiers quand elles sont "
+"renommées ou supprimées dans Modoboa"
 
 #: admin/app_settings.py:146
 msgid "Mailboxes ower"
@@ -202,8 +209,7 @@ msgstr "Propriétaire des boites"
 
 #: admin/app_settings.py:148
 msgid "The UNIX account who owns mailboxes on the filesystem"
-msgstr ""
-"Le compte UNIX qui possède les boites sur le système de fichiers"
+msgstr "Le compte UNIX qui possède les boites sur le système de fichiers"
 
 #: admin/app_settings.py:152
 msgid "Automatic account removal"
@@ -289,8 +295,9 @@ msgstr "Nom"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr "Le nom de l'administrateur. Ne pas include un nom de domaine ici, "
-"il sera ajouté automatiquement."
+msgstr ""
+"Le nom de l'administrateur. Ne pas include un nom de domaine ici, il sera "
+"ajouté automatiquement."
 
 #: admin/forms.py:128
 msgid "Create aliases"
@@ -444,8 +451,9 @@ msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr "Quota en Mo pour cette boite. Définir une valeur spécifique ou utiliser "
-"la valeur par défaut du domaine. Laisser vide pour définir une valeur illimitée "
+msgstr ""
+"Quota en Mo pour cette boite. Définir une valeur spécifique ou utiliser la "
+"valeur par défaut du domaine. Laisser vide pour définir une valeur illimitée "
 "(interdit pour les admins. de domaine)."
 
 #: admin/forms.py:461
@@ -503,8 +511,7 @@ msgstr "Ligne invalide"
 
 #: admin/models.py:498
 msgid "You can't import an account with a role greater than yours"
-msgstr "Vous ne pouvez pas importer un compte avec un rôle supérieur "
-"au votre"
+msgstr "Vous ne pouvez pas importer un compte avec un rôle supérieur au votre"
 
 #: admin/models.py:518
 #, python-format
@@ -1212,97 +1219,106 @@ msgstr "%d requêtes en attente"
 msgid "Content filter"
 msgstr "Filtrage de contenu"
 
-#: extensions/amavis/app_settings.py:12
+#: extensions/amavis/app_settings.py:11
+msgid "Quarantine settings"
+msgstr "Paramètres de quarantaine"
+
+#: extensions/amavis/app_settings.py:14
 msgid "Maximum message age"
 msgstr "Age maximal des messages"
 
-#: extensions/amavis/app_settings.py:14
+#: extensions/amavis/app_settings.py:16
 msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr "Age maximum (en jours) des messages en quarantaine avant suppression"
 
-#: extensions/amavis/app_settings.py:17
+#: extensions/amavis/app_settings.py:19
 msgid "Messages releasing"
 msgstr "Libération des messages"
 
-#: extensions/amavis/app_settings.py:20
+#: extensions/amavis/app_settings.py:22
 msgid "Remove released messages"
 msgstr "Supprimer les messages libérés"
 
-#: extensions/amavis/app_settings.py:22
+#: extensions/amavis/app_settings.py:24
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr ""
 "Supprimer les messages marqués comme relâchés pendant le nettoyage de la "
 "base de données"
 
-#: extensions/amavis/app_settings.py:26
+#: extensions/amavis/app_settings.py:28
 msgid "Amavis connection mode"
 msgstr "Mode de connexion à Amavis"
 
-#: extensions/amavis/app_settings.py:29
+#: extensions/amavis/app_settings.py:31
 msgid "Mode used to access the PDP server"
 msgstr "Mode utilisé pour accéder au serveur PDP"
 
-#: extensions/amavis/app_settings.py:34
+#: extensions/amavis/app_settings.py:36
 msgid "PDP server address"
 msgstr "Adresse du serveur PDP"
 
-#: extensions/amavis/app_settings.py:36
+#: extensions/amavis/app_settings.py:38
 msgid "PDP server address (if inet mode)"
 msgstr "Adresse du serveur PDP (en mode inet)"
 
-#: extensions/amavis/app_settings.py:40
+#: extensions/amavis/app_settings.py:42
 msgid "PDP server port"
 msgstr "Port du serveur PDP"
 
-#: extensions/amavis/app_settings.py:42
+#: extensions/amavis/app_settings.py:44
 msgid "PDP server port (if inet mode)"
 msgstr "Port du serveur PDP (en mode inet)"
 
-#: extensions/amavis/app_settings.py:46
+#: extensions/amavis/app_settings.py:48
 msgid "PDP server socket"
 msgstr "Socket du serveur PDP"
 
-#: extensions/amavis/app_settings.py:48
+#: extensions/amavis/app_settings.py:50
 msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Emplacement de la socket du serveur PDP (en mode unix)"
 
-#: extensions/amavis/app_settings.py:52
+#: extensions/amavis/app_settings.py:54
 msgid "Check requests interval"
 msgstr "Intervalle entre deux requêtes de vérification"
 
-#: extensions/amavis/app_settings.py:54
+#: extensions/amavis/app_settings.py:56
 msgid "Interval between two release requests checks"
 msgstr "Intervalle entre deux vérifications de requêtes en attente"
 
-#: extensions/amavis/app_settings.py:58
+#: extensions/amavis/app_settings.py:60
 msgid "Allow direct release"
 msgstr "Autoriser la libération directe"
 
-#: extensions/amavis/app_settings.py:60
+#: extensions/amavis/app_settings.py:62
 msgid "Allow users to directly release their messages"
 msgstr "Autoriser les utilisateurs à relâcher directement leurs messages"
 
-#: extensions/amavis/app_settings.py:64
+#: extensions/amavis/app_settings.py:66
 msgid "Enable self-service mode"
 msgstr "Activer le mode 'libre service'"
 
-#: extensions/amavis/app_settings.py:66
+#: extensions/amavis/app_settings.py:68
 msgid "Activate the 'self-service' mode"
 msgstr "Activer le mode 'libre service'"
 
-#: extensions/amavis/app_settings.py:70
+#: extensions/amavis/app_settings.py:72
 msgid "Notifications sender"
 msgstr "Emetteur des notifications"
 
-#: extensions/amavis/app_settings.py:72
+#: extensions/amavis/app_settings.py:74
 msgid "The e-mail address used to send notitications"
 msgstr "L'adresse e-mail utilisée pour envoyer les notifications"
 
-#: extensions/amavis/app_settings.py:87 extensions/webmail/app_settings.py:91
+#: extensions/amavis/app_settings.py:87 extensions/webmail/app_settings.py:73
+#: userprefs/app_settings.py:18
+msgid "Display"
+msgstr "Afficher"
+
+#: extensions/amavis/app_settings.py:91 extensions/webmail/app_settings.py:91
 msgid "Number of displayed emails per page"
 msgstr "Nombre d'emails affichés par page"
 
-#: extensions/amavis/app_settings.py:88
+#: extensions/amavis/app_settings.py:92
 msgid "Set the maximum number of messages displayed in a page"
 msgstr "Définir le nombre maximal de messages affichés dans une page"
 
@@ -1641,11 +1657,11 @@ msgstr "Réponses automatiques"
 msgid "Auto-reply message"
 msgstr "Message de réponse automatique"
 
-#: extensions/postfix_autoreply/app_settings.py:11
+#: extensions/postfix_autoreply/app_settings.py:14
 msgid "Automatic reply timeout"
 msgstr "Délai d'expiration d'une réponse automatique"
 
-#: extensions/postfix_autoreply/app_settings.py:13
+#: extensions/postfix_autoreply/app_settings.py:16
 msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgstr ""
 "Timeout en secondes entre deux réponses automatiques pour le même "
@@ -1733,11 +1749,11 @@ msgstr "Méthode d'authentification"
 msgid "Prefered authentication mechanism"
 msgstr "Méthode d'authentification préférée"
 
-#: extensions/sievefilters/app_settings.py:52
+#: extensions/sievefilters/app_settings.py:54
 msgid "Editor mode"
 msgstr "Mode de l'editeur"
 
-#: extensions/sievefilters/app_settings.py:54
+#: extensions/sievefilters/app_settings.py:56
 msgid "Select the mode you want the editor to work in"
 msgstr "Sélectionner le mode de fonctionnement de l'éditeur"
 
@@ -1937,27 +1953,27 @@ msgstr "Statistiques graphiques"
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: extensions/stats/app_settings.py:11
+#: extensions/stats/app_settings.py:14
 msgid "Path to the log file"
 msgstr "Chemin d'accès vers le journal"
 
-#: extensions/stats/app_settings.py:13
+#: extensions/stats/app_settings.py:16
 msgid "Path to log file used to collect statistics"
 msgstr "Emplacement du log utilisé pour collecter les statistiques"
 
-#: extensions/stats/app_settings.py:17
+#: extensions/stats/app_settings.py:20
 msgid "Directory to store RRD files"
 msgstr "Répertoire où stocker les fichiers RRD"
 
-#: extensions/stats/app_settings.py:19
+#: extensions/stats/app_settings.py:22
 msgid "Path to directory where RRD files are stored"
 msgstr "Emplacement du répertoire de stockage des fichiers RRD"
 
-#: extensions/stats/app_settings.py:23
+#: extensions/stats/app_settings.py:26
 msgid "Directory to store PNG files"
 msgstr "Répertoire où stocker les fichiers PNG"
 
-#: extensions/stats/app_settings.py:25
+#: extensions/stats/app_settings.py:28
 msgid "Path to directory where PNG files are stored"
 msgstr "Emplacement du répertoire de stockage des fichiers PNG"
 
@@ -2121,10 +2137,6 @@ msgstr "Authentification requise"
 #: extensions/webmail/app_settings.py:66
 msgid "Server needs authentication"
 msgstr "Le serveur nécessite une authentification"
-
-#: extensions/webmail/app_settings.py:73
-msgid "Display"
-msgstr "Afficher"
 
 #: extensions/webmail/app_settings.py:77
 msgid "Default message display mode"
@@ -2481,11 +2493,11 @@ msgstr "Préférences utilisateur"
 msgid "Per-user settings"
 msgstr "Paramètres par utilisateur"
 
-#: userprefs/app_settings.py:19
+#: userprefs/app_settings.py:22
 msgid "Prefered language"
 msgstr "Langage préféré"
 
-#: userprefs/app_settings.py:23
+#: userprefs/app_settings.py:26
 msgid "Prefered language to display pages"
 msgstr "Langage préféré pour afficher les pages"
 

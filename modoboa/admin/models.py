@@ -1291,5 +1291,5 @@ def post_revision_commit(sender, **kwargs):
             "object": unicode(version.content_type).capitalize(), 
             "name": version.object_repr, "action": action,
             "user": kwargs["revision"].user.username
-        )
+        }
         getattr(logger, level)(message)

@@ -47,6 +47,8 @@ class ParametersForm(AdminParametersForm):
 class UserSettings(UserParametersForm):
     app = "sievefilters"
 
+    sep1 = SeparatorField(label=_("General"))
+
     editor_mode = forms.ChoiceField(
         initial="gui",
         label=_("Editor mode"),
