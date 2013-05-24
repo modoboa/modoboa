@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Modoboa-0.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-22 17:39+0200\n"
-"PO-Revision-Date: 2013-02-04 12:04+0100\n"
+"PO-Revision-Date: 2013-05-24 22:38+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@sys4.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
 "Language: de\n"
@@ -30,11 +30,8 @@ msgid "This operation will remove ALL data associated to this domain."
 msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
 
 #: admin/static/admin/js/admin.js:114
-#, fuzzy
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
+msgid "This operation will remove all data associated to this domain, excepting accounts."
+msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser Mailkonten."
 
 #: admin/static/admin/js/admin.js:117
 msgid "Delete this domain?"
@@ -153,7 +150,8 @@ msgstr "Warnung"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: static/js/confirmation.js:99 static/js/history.js:239
+#: static/js/confirmation.js:99
+#: static/js/history.js:239
 msgid "Internal Error"
 msgstr "Interner Fehler"
 
