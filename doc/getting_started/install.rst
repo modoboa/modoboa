@@ -9,7 +9,7 @@ Requirements
 ************
 
 * `Python version 2.6+ <http://python.org/>`_
-* `Django version 1.3+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
+* `Django version 1.5+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
 * `south version 0.7+ <http://south.aeracode.org/>`_
 * `lxml python module <http://codespeak.net/lxml/>`_
 * `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
@@ -17,6 +17,7 @@ Requirements
 * `sievelib python module <http://pypi.python.org/pypi/sievelib>`_
 * `chardet python module <http://pypi.python.org/pypi/chardet>`_
 * `argparse python module <http://pypi.python.org/pypi/argparse>`_
+* `reversion python module <https://github.com/etianen/django-reversion>`_
 
 .. _get_modoboa:
 

@@ -23,17 +23,17 @@ install it.
 
   $ pip install --upgrade modoboa
 
-Then, follow the common procedure::
+Then, refer to this page to check if the version you're installing
+requires specific operations. If the version you're looking for is not
+present, it means nothing special is required.
+
+Finally, follow the common procedure::
 
   $ cd <modoboa_instance_dir>
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
-Finally, refer to this page to check if the version you're installing
-requires specific operations. If the version you're looking for is not
-present, it means nothing special is required.
-
-1.0.0: production ready, at last
+  1.0.0: production ready, at last
 ================================
 
 Several modifications need to be done into *settings.py*.
