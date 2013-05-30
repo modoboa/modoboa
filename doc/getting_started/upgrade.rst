@@ -36,6 +36,133 @@ present, it means nothing special is required.
 1.0.0: production ready, at last
 ================================
 
+Several modifications need to be done into *settings.py*.
+
+#. Add the following import statement::
+
+    from logging.handlers import SysLogHandler
+
+#. Set the ``ALLOWER_HOSTS`` variable::
+
+    ALLOWED_HOSTS = [
+        '<your server fqdn>',
+    ]
+
+#. Activate the ``django.middleware.csrf.CsrfViewMiddleware``
+   middleware and add the ``reversion.middleware.RevisionMiddleware``
+   middleware to ``MIDDLEWARE_CLASSES`` like this::
+
+    MIDDLEWARE_CLASSES = (
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
+        # Uncomment the next line for simple clickjacking protection:
+        # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'reversion.middleware.RevisionMiddleware',
+    
+        'modoboa.lib.middleware.AjaxLoginRedirect',
+        'modoboa.lib.middleware.CommonExceptionCatcher',
+        'modoboa.lib.middleware.ExtControlMiddleware',
+    )
+
+#. Add the ``reversion`` application to ``INSTALLED_APPS``
+
+#. Remove all modoboa's application from ``INSTALLED_APPS`` and put
+   them into the new ``MODOBOA_APPS`` variable like this::
+    
+    INSTALLED_APPS = (
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.sites',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+        'south',
+        'reversion',
+    )
+
+    # A dedicated place to register Modoboa applications
+    # Do not delete it.
+    # Do not change the order.
+    MODOBOA_APPS = (
+        'modoboa',
+        'modoboa.auth',
+        'modoboa.admin',
+        'modoboa.lib',
+        'modoboa.userprefs',
+
+        'modoboa.extensions.limits',
+        'modoboa.extensions.postfix_autoreply',
+        'modoboa.extensions.webmail',
+        'modoboa.extensions.stats',
+        'modoboa.extensions.amavis',
+        'modoboa.extensions.sievefilters',
+    )
+    
+    INSTALLED_APPS += MODOBOA_APPS
+
+#. Set the ``AUTH_USER_MODEL`` variable like this::
+
+    AUTH_USER_MODEL = 'admin.User'
+
+#. Modify the logging configuration as follows::
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'filters': {
+            'require_debug_false': {
+                '()': 'django.utils.log.RequireDebugFalse'
+            }
+        },
+        'formatters': {
+            'syslog': {
+                'format': '%(name)s: %(levelname)s %(message)s'
+            },
+        },
+        'handlers': {
+            'mail_admins': {
+                'level': 'ERROR',
+                'filters': ['require_debug_false'],
+                'class': 'django.utils.log.AdminEmailHandler'
+            },
+            'console': {
+                # logging handler that outputs log messages to terminal
+                'class': 'logging.StreamHandler',
+                #'level': 'DEBUG', # message level to be written to console
+            },
+            'syslog-auth': {
+                'class': 'logging.handlers.SysLogHandler',
+                'facility': SysLogHandler.LOG_AUTH,
+                'formatter': 'syslog'
+            },
+            'modoboa': {
+                'class': 'modoboa.lib.logutils.SQLHandler',
+            }
+        },
+        'loggers': {
+            'django.request': {
+                'handlers': ['mail_admins'],
+                'level': 'ERROR',
+                'propagate': True,
+            },
+            'modoboa.auth': {
+                'handlers': ['syslog-auth', 'modoboa'],
+                'level': 'INFO',
+                'propagate': False
+            },
+            'modoboa.admin': {
+                'handlers': ['modoboa'],
+                'level': 'INFO',
+                'propagate': False
+            }
+        }
+    }
+
+
 0.9.4: administrative panel performance improved
 ================================================
 
