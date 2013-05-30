@@ -27,8 +27,7 @@ Integration with other softwares
 .. toctree::
    :maxdepth: 2
 
-   integration/smtp_servers
-   integration/imap_servers
+   integration/imap_and_smtp
    integration/web_servers
 
 *****************

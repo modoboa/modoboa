@@ -73,9 +73,6 @@ sure your database is using UTF8 as a default charset.
 Deployment
 **********
 
-Automatic
-=========
-
 `modoboa-admin.py`, a command line tool, let you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
@@ -89,34 +86,10 @@ Just answer the few questions and you're done. You can now go to the
    The `--with-amavis` option must be set only if you intend to use
    the :ref:`amavis_frontend`.
 
-Manual
-======
-
-As Modoboa is a set of Django applications, you need to create a new
-project. Just run the following commands::
-
-  $ cd /var/www
-  $ django-admin.py startproject modoboa_example
-  $ cd modoboa_example
-  $ rm settings.py
-  $ rm urls.py
-  $ wget http://modoboa.org/resources/settings.py
-  $ wget http://modoboa.org/resources/urls.py
-  $ mkdir media
-
-Then, edit the freshly downloaded *settings.py* file and adjust the
-database relative information. (see :ref:`database`).
-
 .. note::
 
   If you plan to serve Modoboa using a URL prefix, you must change the
   value of the ``LOGIN_URL`` parameter to ``LOGIN_URL = '/<prefix>/accounts/login/'``.
-
-Finally, run the following commands::
-
-  $ python manage.py collectstatic
-  $ python manage.py syncdb --migrate --noinput
-  $ python manage.py loaddata initial_users.json
 
 .. _first_use:
 

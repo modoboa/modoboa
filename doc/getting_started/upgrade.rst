@@ -33,6 +33,9 @@ Finally, refer to this page to check if the version you're installing
 requires specific operations. If the version you're looking for is not
 present, it means nothing special is required.
 
+1.0.0: production ready, at last
+================================
+
 0.9.4: administrative panel performance improved
 ================================================
 

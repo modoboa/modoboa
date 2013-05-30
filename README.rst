@@ -29,7 +29,7 @@ Main features
  * Webmail
  * Per-user Sieve filters
  * Autoreply messages for Postfix
- * Graphical statistics about emails traffic
+ * Graphical statistics about email traffic
 
 *************
 Documentation

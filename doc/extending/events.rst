@@ -82,6 +82,18 @@ Raised when an existing account is modified.
 
 * ``newaccount`` is the account after the modification
 
+ExtraAccountActions
+===================
+
+Raised when the account list is displayed. Let developers define new
+actions to act on a specific user.
+
+*Callback prototype*::
+
+  def callback(account): pass
+
+* ``account`` is the account being listed
+
 AdminMenuDisplay
 ================
 

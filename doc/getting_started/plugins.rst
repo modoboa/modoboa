@@ -23,11 +23,14 @@ This plugin offers a way to define limits about how many objects
 (aliases, mailboxes) a domain administrator can create.
 
 It also brings a new administrative role: ``Reseller``. A reseller is a domain
-administrator that can also manipulates domains and assign permissions
+administrator that can also manipulate domains and assign permissions
 to domain administrators.
 
 If you don't want to limit a particular object type, just set the
 associated value to -1.
+
+Default limits applied to new administrators can be changed through
+the *Modoboa > Parameters > Limits* page.
 
 .. _amavis_frontend:
 
@@ -44,6 +47,7 @@ This plugin provides a simple management frontend for `amavisd-new
   will handle traffic
 
 .. note::
+
    The per-domain policies feature only works for new
    installations. Currently, you can't use modoboa with an existing
    database (ie. with data in *users* and *policies* tables).
@@ -124,17 +128,24 @@ the network.
 
 Once *amavisd-new* is configured, just tell Modoboa where it can find
 the *release server* by modifying the following parameters in the
-online panel::
+online panel:
 
-  # "unix" or "inet"
-  AM_PDP_MODE = "inet"
-
-  # "unix" mode only
-  AM_PDP_SOCKET = "/var/amavis/amavisd.sock"
-
-  # "inet" mode only
-  AM_PDP_HOST = "127.0.0.1"
-  AM_PDP_PORT = 9998
++--------------------+--------------------+------------------------+
+|Name                |Description         |Default value           |
++====================+====================+========================+
+|Amavis connection   |Mode used to access |unix                    |
+|mode                |the PDP server      |                        |
++--------------------+--------------------+------------------------+
+|PDP server address  |PDP server address  |localhost               |
+|                    |(if inet mode)      |                        |
++--------------------+--------------------+------------------------+
+|PDP server port     |PDP server port (if |                        |
+|                    |inet mode) 9998     |                        |
++--------------------+--------------------+------------------------+
+|PDP server socket   |Path to the PDP     |/var/amavis/amavisd.sock|
+|                    |server socket (if   |                        |
+|                    |unix mode)          |                        |
++--------------------+--------------------+------------------------+
 
 Deferred release
 ----------------
@@ -155,8 +166,26 @@ You are free to change the frequency.
 .. note::
 
   If you want to let users release their messages alone (not
-  recommended), change the value of the ``USER_CAN_RELEASE`` parameter
-  into the admin panel.
+  recommended), go to the admin panel.
+
+The following parameters are available to let you customize this
+feature:
+
++--------------------+--------------------+------------------------+
+|Name                |Description         |Default value           |
++====================+====================+========================+
+|Check requests      |Interval between two|30                      |
+|interval            |release requests    |                        |
+|                    |checks              |                        |
++--------------------+--------------------+------------------------+
+|Allow direct release|Allow users to      |no                      |
+|                    |directly release    |                        |
+|                    |their messages      |                        |
++--------------------+--------------------+------------------------+
+|Notifications sender|The e-mail address  |notification@modoboa.org|
+|                    |used to send        |                        |
+|                    |notitications       |                        |
++--------------------+--------------------+------------------------+
 
 .. _selfservice:
 
@@ -181,7 +210,7 @@ notification (one per message) must embark a direct link containing
 the required identifiers.
 
 To activate this feature, go the administration panel and set the
-``SELF_SERVICE`` paramater to yes.
+**Enable self-service mode** parameter to yes.
 
 The last step is to customize the notification messages *amavis*
 sends. The most important is to embark a direct link. Take a look at
@@ -204,20 +233,27 @@ files (see `rrdtool <http://oss.oetiker.ch/rrdtool/>`_)and then
 generates graphics in PNG format.
 
 To use it, go to the online parameters panel and adapt the following
-ones to your environnement::
+ones to your environnement:
 
-  # Path to mail log file
-  LOGFILE = "/var/log/mail.log"
++--------------------+--------------------+--------------------------+
+|Name                |Description         |Default value             |
++====================+====================+==========================+
+|Path to the log file|Path to log file    |/var/log/mail.log         |
+|                    |used to collect     |                          |
+|                    |statistics          |                          |
++--------------------+--------------------+--------------------------+
+|Directory to store  |Path to directory   |/tmp/modoboa              |
+|RRD files           |where RRD files are |                          |
+|                    |stored              |                          |
++--------------------+--------------------+--------------------------+
+|Directory to store  |Path to directory   |<modoboa_site>/media/stats|
+|PNG files           |where PNG files are |                          |
+|                    |stored              |                          |
++--------------------+--------------------+--------------------------+
 
-  # Path to directory where rrd files are stored
-  RRD_ROOTDIR = "/tmp/modoboa"
-
-  # Path to directory where png files are stored
-  IMG_ROOTDIR = "<modoboa_site>/media/stats"
-
-Make sure the directory that will contain RRD files exists
-(``RRD_ROOTDIR``). If not, create it before going further. For example
-(according to the previous parameters)::
+Make sure the directory that will contain RRD files exists. If not,
+create it before going further. For example (according to the previous
+parameters)::
 
   $ mkdir /tmp/modoboa
 
@@ -279,8 +315,8 @@ few questions and you're done.
 
    Auto-reply messages are just sent one time per sender for a
    pre-defined time period. By default, this period is equal to 1 day
-   (86400s), you can adjust this value by modifying the ``AUTOREPLY_TIMEOUT``
-   parameter available in the online panel.
+   (86400s), you can adjust this value by modifying the **Automatic
+   reply timeout** parameter available in the online panel.
 
 *************
 Sieve filters
@@ -306,13 +342,25 @@ language. Don't panic, *Dovecot* supports both :-) (refer to
    activated and configured.
 
 Go the online panel and modify the following parameters in order to
-communicate with the *ManageSieve* server (default values are displayed
-below)::
+communicate with the *ManageSieve* server:
 
-  SERVER = localhost
-  PORT = 2000
-  STARTTLS = no
-  AUTHENTICATION_MECH = plain
++--------------------+--------------------+--------------------+
+|Name                |Description         |Default value       |
++====================+====================+====================+
+|Server address      |Address of your     |127.0.0.1           |
+|                    |MANAGESIEVE server  |                    |
++--------------------+--------------------+--------------------+
+|Server port         |Listening port of   |4190                |
+|                    |your MANAGESIEVE    |                    |
+|                    |server              |                    |
++--------------------+--------------------+--------------------+
+|Connect using       |Use the STARTTLS    |no                  |
+|STARTTLS            |extension           |                    |
++--------------------+--------------------+--------------------+
+|Authentication      |Prefered            |auto                |
+|mechanism           |authentication      |                    |
+|                    |mechanism           |                    |
++--------------------+--------------------+--------------------+
 
 .. _webmail:
 
@@ -329,21 +377,46 @@ Modoboa provides a simple webmail:
 * Quota display
 
 To use it, go to the online panel and modify the following parameters
-in order to communicate with your *IMAP* and *SMTP* servers (default
-values are displayed below)::
+to communicate with your *IMAP* server (under *IMAP settings*):
 
-  IMAP_SECURED = no
-  IMAP_SERVER = 127.0.0.1
-  IMAP_PORT = 143
++--------------------+--------------------+--------------------+
+|Name                |Description         |Default value       |
++====================+====================+====================+
+|Server address      |Address of your IMAP|127.0.0.1           |
+|                    |server              |                    |
++--------------------+--------------------+--------------------+
+|Use a secured       |Use a secured       |no                  |
+|connection          |connection to access|                    |
+|                    |IMAP server         |                    |
++--------------------+--------------------+--------------------+
+|Server port         |Listening port of   |143                 |
+|                    |your IMAP server    |                    |
++--------------------+--------------------+--------------------+
 
-  SMTP_SECURED_MODE = None
-  SMTP_AUTHENTICATION = no
-  SMTP_SERVER = 127.0.0.1
-  SMTP_PORT = 25
+Do the same to communicate with your SMTP server (under *SMTP settings*):
 
-The size of each attachment sent with messages is limited. You can
-change the default value by modifying the ``MAX_ATTACHMENT_SIZE``
-parameter.
++--------------------+--------------------+--------------------+
+|Name                |Description         |Default value       |
++====================+====================+====================+
+|Server address      |Address of your SMTP|127.0.0.1           |
+|                    |server              |                    |
++--------------------+--------------------+--------------------+
+|Secured connection  |Use a secured       |None                |
+|mode                |connection to access|                    |
+|                    |SMTP server         |                    |
++--------------------+--------------------+--------------------+
+|Server port         |Listening port of   |25                  |
+|                    |your SMTP server    |                    |
++--------------------+--------------------+--------------------+
+|Authentication      |Server needs        |no                  |
+|required            |authentication      |                    |
++--------------------+--------------------+--------------------+
+
+.. note::
+
+   The size of each attachment sent with messages is limited. You can
+   change the default value by modifying the **Maximum attachment
+   size** parameter.
 
 Using CKeditor
 ==============
