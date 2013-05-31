@@ -12,7 +12,7 @@ def random_key(l=16):
     :param integer l: the key's length
     :return: a string
     """
-    char_set = string.printable
+    char_set = string.digits + string.letters + string.punctuation
     return ''.join(random.sample(char_set * l, l))
 
 
