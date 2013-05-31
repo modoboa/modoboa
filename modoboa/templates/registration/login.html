@@ -35,12 +35,11 @@
           <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
         </div>
       </form>
-
-        <div class="login-error">
-          {% if error %}{% alert error "error" %}{% endif %}
-        </div>
-    </div>{% for annoucement in annoucements %}
-    <div class="offset3 span5 well">{{ annoucement|safe }}</div>
-    {% endfor %}</div>
+      <div class="login-error">
+        {% if error %}{% alert error "error" %}{% endif %}
+      </div>
+      {% for annoucement in annoucements %}
+      <div class="offset3 span5 well">{{ annoucement|safe }}</div>
+      {% endfor %}
   </body>
 </html>
