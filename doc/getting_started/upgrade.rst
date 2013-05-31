@@ -36,6 +36,9 @@ Finally, follow the common procedure::
 1.0.0: production ready, at last
 ================================
 
+Configuration file update
+-------------------------
+
 Several modifications need to be done into *settings.py*.
 
 #. Add the following import statement::
@@ -161,6 +164,23 @@ Several modifications need to be done into *settings.py*.
             }
         }
     }
+
+Migration issues
+----------------
+
+When running the ``python manage.py syncdb --migrate`` command, you
+may encounter the following issues:
+
+#. Remove useless content types
+
+   If the script asks you this question, just reply **no**.
+
+#. South fails to migrate ``reversion``
+
+   Due to the admin user model change, the script *0001_initial.py*
+   may fail. Just deactivate ``reversion`` from ``INSTALLED_APPS`` and
+   run the command again. Once done, reactivate ``reversion`` and run
+   the command one last time.
 
 
 0.9.4: administrative panel performance improved

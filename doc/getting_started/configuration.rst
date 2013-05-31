@@ -159,20 +159,6 @@ your need.
 The default configuration file provided by the *modoboa-admin.py*
 command is properly configured.
 
-Clearing the session table
-==========================
-
-Django does not provide automatic purging. Therefore, it's your job to
-purge expired sessions on a regular basis.
-
-Django provides a sample clean-up script: ``django-admin.py
-cleanup``. That script deletes any session in the session table whose
-``expire_date`` is in the past.
-
-For example, you could setup a cron job to run this script every night::
-
-  0 0 * * * <modoboa_site>/manage.py cleanup
-
 ***********************
 External authentication
 ***********************
@@ -259,3 +245,33 @@ Modoboa.
    email address change for example). Currently, the only solution is
    to manually delete the Modoboa record, it will be recreated on the
    next user login.
+
+********************
+Database maintenance
+********************
+
+Cleaning the logs table
+=======================
+
+Modoboa logs administrator specific actions into the database. A
+clean-up script is provided to automatically remove oldest
+records. The maximum log record age can be configured through the
+online panel.
+
+To use it, you can setup a cron job to run every night::
+
+  0 0 * * * <modoboa_site>/manage.py cleanlogs
+
+Cleaning the session table
+==========================
+
+Django does not provide automatic purging. Therefore, it's your job to
+purge expired sessions on a regular basis.
+
+Django provides a sample clean-up script: ``django-admin.py
+cleanup``. That script deletes any session in the session table whose
+``expire_date`` is in the past.
+
+For example, you could setup a cron job to run this script every night::
+
+  0 0 * * * <modoboa_site>/manage.py cleanup
