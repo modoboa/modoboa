@@ -107,7 +107,7 @@
         "pk": 19,
         "model": "lib.parameter",
         "fields": {
-            "name": "amavis_quarantine.AM_PDP_SOCKET",
+            "name": "amavis.AM_PDP_SOCKET",
             "value": "/var/amavis/amavisd.sock"
         }
     },
@@ -115,7 +115,7 @@
         "pk": 20,
         "model": "lib.parameter",
         "fields": {
-            "name": "amavis_quarantine.AM_PDP_MODE",
+            "name": "amavis.AM_PDP_MODE",
             "value": "inet"
         }
     },
@@ -123,7 +123,7 @@
         "pk": 21,
         "model": "lib.parameter",
         "fields": {
-            "name": "amavis_quarantine.SELF_SERVICE",
+            "name": "amavis.SELF_SERVICE",
             "value": "no"
         }
     },
@@ -187,7 +187,7 @@
         "pk": 29,
         "model": "lib.parameter",
         "fields": {
-            "name": "amavis_quarantine.RELEASED_MSGS_CLEANUP",
+            "name": "amavis.RELEASED_MSGS_CLEANUP",
             "value": "no"
         }
     },
@@ -195,7 +195,7 @@
         "pk": 30,
         "model": "lib.parameter",
         "fields": {
-            "name": "amavis_quarantine.MAX_MESSAGES_AGE",
+            "name": "amavis.MAX_MESSAGES_AGE",
             "value": "14"
         }
     },
@@ -235,7 +235,7 @@
         "pk": 36,
         "model": "lib.parameter",
         "fields": {
-            "name": "amavis_quarantine.AM_PDP_HOST",
+            "name": "amavis.AM_PDP_HOST",
             "value": "localhost"
         }
     },
