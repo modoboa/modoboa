@@ -33,7 +33,7 @@ Finally, follow the common procedure::
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
-  1.0.0: production ready, at last
+1.0.0: production ready, at last
 ================================
 
 Several modifications need to be done into *settings.py*.
