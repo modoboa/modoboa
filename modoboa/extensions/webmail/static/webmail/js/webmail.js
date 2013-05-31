@@ -61,6 +61,7 @@ Webmail.prototype = {
         $(window).resize(this.resize);
 
         $(document).on("click", "a[name=compose]", $.proxy(this.compose_loader, this));
+        $(document).on("click", "a[name=totrash]", $.proxy(this.delete_messages, this));
         $(document).on("click", "a[name*=mark-]", $.proxy(this.send_mark_request, this));
         $(document).on("click", "a[name=compress]", $.proxy(this.compress, this));
         $(document).on("click", "a[name=empty]", $.proxy(this.empty, this));
@@ -146,7 +147,7 @@ Webmail.prototype = {
         this.navobject.reset()
             .setparams({action: "listmailbox", mbox: curmb});
         this.restore_nav_params();
-        this.navobject.update();
+        this.navobject.update(true);
     },
 
     /*
@@ -639,7 +640,25 @@ Webmail.prototype = {
         e.preventDefault();
         $.ajax({
             url: $link.attr("href"),
-            dataType: 'json',
+            success: $.proxy(this.delete_callback, this)
+        });
+    },
+
+    delete_messages: function(e) {
+        e.preventDefault();
+        var $link = get_target(e, "a");
+        var msgs = this.htmltable.current_selection();
+        var selection = [];
+
+        if (!msgs.length) {
+            return;
+        }
+        $.each(msgs, function(idx, item) {
+            selection.push($(item).attr("id"));
+        });
+        $.ajax({
+            url: $link.attr("href"),
+            data: {mbox: this.get_current_mailbox(), selection: selection},
             success: $.proxy(this.delete_callback, this)
         });
     },
@@ -852,8 +871,9 @@ Webmail.prototype = {
 
     delete_callback: function(data) {
         if (data.status == "ok") {
+            var msg = (data.respmsg) ? data.respmsg : gettext("Message deleted");
             this.go_back_to_listing();
-            $("body").notify("success", gettext("Message deleted"), 2000);
+            $("body").notify("success", msg, 2000);
         } else {
             $("body").notify("error", data.respmsg);
         }
@@ -1006,7 +1026,7 @@ Webmail.prototype = {
                     'class': "well dragbox"
                 })
                 .appendTo($(document.body))
-                .css({
+                .offset({
                     top: $this.offset().top,
                     left: $this.offset().left
                 });

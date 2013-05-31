@@ -3,7 +3,7 @@ from django.conf import settings
 import os
 from django.http import HttpResponse
 from django.template import Template, Context
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from modoboa.lib import parameters
@@ -72,12 +72,16 @@ def move(request):
 @needs_mailbox()
 def delete(request):
     mbox = request.GET.get("mbox", None)
-    mailid = request.GET.get("mailid", None)
-    if mbox is None or mailid is None:
+    selection = request.GET.getlist("selection[]", None)
+    if mbox is None or selection is None:
         raise WebmailError(_("Invalid request"))
+    selection = [item for item in selection if item.isdigit()]
     mbc = get_imapconnector(request)
-    mbc.move(mailid, mbox, parameters.get_user(request.user, "TRASH_FOLDER"))
-    resp = dict(status="ok")
+    mbc.move(",".join(selection), mbox, parameters.get_user(request.user, "TRASH_FOLDER"))
+    message = ungettext("%(count)d message deleted",
+                        "%(count)d messages deleted",
+                        len(selection)) % {"count": len(selection)}
+    resp = dict(status="ok", respmsg=message)
     return ajax_simple_response(resp)
 
 @login_required

@@ -27,7 +27,7 @@ def viewmail_menu(selection, folder, user, mail_id=None):
          "label" : _("Forward")},
         {"name" : "delete",
          "img" : "icon-trash",
-         "url" : reverse(webmail.views.delete) + "?mbox=%s&mailid=%s" % (folder, mail_id),
+         "url" : reverse(webmail.views.delete) + "?mbox=%s&selection[]=%s" % (folder, mail_id),
          "label" : _("Delete")},
         {"name" : "display_options",
          "label" : _("Display options"),
@@ -75,6 +75,12 @@ def listmailbox_menu(selection, folder, user):
          "img" : "icon-edit",
          "label" : _("New message"),
          "class" : "btn"},
+        {"name": "totrash",
+         "label": "",
+         "class": "btn",
+         "img": "icon-trash",
+         "url": reverse("modoboa.extensions.webmail.views.delete"),
+        },
         {"name" : "mark",
          "label" : _("Mark messages"),
          "class" : "btn",
@@ -95,7 +101,7 @@ def listmailbox_menu(selection, folder, user):
                  "label" : _("Compress folder"),
                  "url" : "compact/%s/" % folder}
                 ]
-         }
+         },
         ]
     if folder == parameters.get_user(user, "TRASH_FOLDER"):
         entries[2]["menu"] += [
