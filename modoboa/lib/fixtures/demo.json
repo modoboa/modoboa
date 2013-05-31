@@ -1,13 +1,5 @@
 [
     {
-        "pk": 1,
-        "model": "lib.parameter",
-        "fields": {
-            "name": "admin.STORAGE_PATH",
-            "value": "/srv/vmail"
-        }
-    },
-    {
         "pk": 2,
         "model": "lib.parameter",
         "fields": {
@@ -32,27 +24,11 @@
         }
     },
     {
-        "pk": 5,
-        "model": "lib.parameter",
-        "fields": {
-            "name": "admin.LDA",
-            "value": "dovecot"
-        }
-    },
-    {
         "pk": 6,
         "model": "lib.parameter",
         "fields": {
-            "name": "auth.SECRET_KEY",
+            "name": "general.SECRET_KEY",
             "value": "abcdefghijklmnop"
-        }
-    },
-    {
-        "pk": 7,
-        "model": "lib.parameter",
-        "fields": {
-            "name": "admin.MAILBOX_TYPE",
-            "value": "maildir"
         }
     },
     {
@@ -67,23 +43,7 @@
         "pk": 9,
         "model": "lib.parameter",
         "fields": {
-            "name": "admin.VIRTUAL_UID",
-            "value": "vmail"
-        }
-    },
-    {
-        "pk": 10,
-        "model": "lib.parameter",
-        "fields": {
-            "name": "admin.MAILDIR_ROOT",
-            "value": ".maildir"
-        }
-    },
-    {
-        "pk": 11,
-        "model": "lib.parameter",
-        "fields": {
-            "name": "admin.VIRTUAL_GID",
+            "name": "admin.MAILBOXES_OWNER",
             "value": "vmail"
         }
     },
