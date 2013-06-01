@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-24 10:10+0200\n"
+"POT-Creation-Date: 2013-06-01 16:35+0200\n"
 "PO-Revision-Date: 2013-02-05 08:26+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -677,7 +677,7 @@ msgstr "Editar el dominio"
 #: admin/templates/admin/listing.html:17 extensions/sievefilters/views.py:79
 #: extensions/sievefilters/templates/sievefilters/filter.html:17
 #: extensions/sievefilters/templates/sievefilters/guieditor.html:5
-#: extensions/webmail/templatetags/webextras.py:91
+#: extensions/webmail/templatetags/webextras.py:97
 msgid "Actions"
 msgstr "Acciones"
 
@@ -695,7 +695,7 @@ msgstr "Nuevo dominio"
 
 #: admin/views.py:88 admin/views.py:97 admin/views.py:225 admin/views.py:438
 #: admin/views.py:445 extensions/sievefilters/views.py:120
-#: extensions/sievefilters/views.py:187 extensions/webmail/views.py:127
+#: extensions/sievefilters/views.py:187 extensions/webmail/views.py:131
 msgid "Create"
 msgstr "Crear"
 
@@ -718,7 +718,7 @@ msgstr "Dominio creado"
 
 #: admin/views.py:144 admin/views.py:282 admin/views.py:492
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
-#: extensions/sievefilters/views.py:139 extensions/webmail/views.py:158
+#: extensions/sievefilters/views.py:139 extensions/webmail/views.py:162
 #: userprefs/templates/userprefs/forward.html:8
 #: userprefs/templates/userprefs/profile.html:8
 msgid "Update"
@@ -783,9 +783,9 @@ msgstr "Alias modificado"
 #: extensions/amavis/views.py:234 extensions/amavis/views.py:238
 #: extensions/amavis/views.py:240 extensions/webmail/views.py:36
 #: extensions/webmail/views.py:64 extensions/webmail/views.py:77
-#: extensions/webmail/views.py:89 extensions/webmail/views.py:105
-#: extensions/webmail/views.py:189 extensions/webmail/views.py:415
-#: extensions/webmail/views.py:426 extensions/webmail/views.py:453
+#: extensions/webmail/views.py:93 extensions/webmail/views.py:109
+#: extensions/webmail/views.py:193 extensions/webmail/views.py:419
+#: extensions/webmail/views.py:430 extensions/webmail/views.py:457
 #: lib/formutils.py:32 lib/formutils.py:37
 msgid "Invalid request"
 msgstr "Petición inválida"
@@ -2268,64 +2268,71 @@ msgstr "escribió:"
 msgid "Original message"
 msgstr "Mensaje original"
 
-#: extensions/webmail/views.py:94
+#: extensions/webmail/views.py:81
+#, fuzzy, python-format
+msgid "%(count)d message deleted"
+msgid_plural "%(count)d messages deleted"
+msgstr[0] "%(count)d mensaje eliminado correctamente"
+msgstr[1] "%(count)d mensajes eliminados correctamente"
+
+#: extensions/webmail/views.py:98
 msgid "Unknown action"
 msgstr "Acción desconocida"
 
-#: extensions/webmail/views.py:107 lib/email_listing.py:137
+#: extensions/webmail/views.py:111 lib/email_listing.py:137
 msgid "Empty mailbox"
 msgstr "Mailbox vacío"
 
-#: extensions/webmail/views.py:124
-#: extensions/webmail/templatetags/webextras.py:163
+#: extensions/webmail/views.py:128
+#: extensions/webmail/templatetags/webextras.py:169
 msgid "Create a new mailbox"
 msgstr "Crear un nuevo mailbox"
 
-#: extensions/webmail/views.py:139
+#: extensions/webmail/views.py:143
 msgid "Mailbox created"
 msgstr "Mailbox creado."
 
-#: extensions/webmail/views.py:155
+#: extensions/webmail/views.py:159
 msgid "Edit mailbox"
 msgstr "Editar el mailbox"
 
-#: extensions/webmail/views.py:169
+#: extensions/webmail/views.py:173
 msgid "Mailbox updated"
 msgstr "Mailbox actualizado"
 
-#: extensions/webmail/views.py:203 extensions/webmail/views.py:384
-#: extensions/webmail/views.py:493
+#: extensions/webmail/views.py:207 extensions/webmail/views.py:388
+#: extensions/webmail/views.py:497
 msgid "Bad request"
 msgstr "Petición incorrecta"
 
-#: extensions/webmail/views.py:234
+#: extensions/webmail/views.py:238
 msgid "Failed to save attachment: "
 msgstr "Fallo al guardar el adjunto:"
 
-#: extensions/webmail/views.py:237
+#: extensions/webmail/views.py:241
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "EL adjunto es demasiado grande (límite: %s)"
 
-#: extensions/webmail/views.py:243
+#: extensions/webmail/views.py:247
 #: extensions/webmail/templates/webmail/compose.html:15
 #: extensions/webmail/templates/webmail/headers.html:4
 msgid "Attachments"
 msgstr "Adjuntos"
 
-#: extensions/webmail/views.py:259
+#: extensions/webmail/views.py:263
 msgid "Bad query"
 msgstr "Consulta errónea"
 
-#: extensions/webmail/views.py:269
+#: extensions/webmail/views.py:273
 msgid "Failed to remove attachment: "
 msgstr "Fallo al eliminar el adjunto:"
 
-#: extensions/webmail/views.py:274
+#: extensions/webmail/views.py:278
 msgid "Unknown attachment"
 msgstr "Adjunto desconocido"
 
-#: extensions/webmail/views.py:489
+#: extensions/webmail/views.py:493
 msgid "Undefined action"
 msgstr "Acción no definida"
 
@@ -2402,31 +2409,31 @@ msgstr "Enviar"
 msgid "New message"
 msgstr "Nuevo mensaje"
 
-#: extensions/webmail/templatetags/webextras.py:79
+#: extensions/webmail/templatetags/webextras.py:85
 msgid "Mark messages"
 msgstr "Marcar mensajes"
 
-#: extensions/webmail/templatetags/webextras.py:83
+#: extensions/webmail/templatetags/webextras.py:89
 msgid "As read"
 msgstr "Como leído"
 
-#: extensions/webmail/templatetags/webextras.py:86
+#: extensions/webmail/templatetags/webextras.py:92
 msgid "As unread"
 msgstr "Como no leído"
 
-#: extensions/webmail/templatetags/webextras.py:95
+#: extensions/webmail/templatetags/webextras.py:101
 msgid "Compress folder"
 msgstr "Comprimir la carpeta"
 
-#: extensions/webmail/templatetags/webextras.py:103
+#: extensions/webmail/templatetags/webextras.py:109
 msgid "Empty folder"
 msgstr "Vaciar la carpeta"
 
-#: extensions/webmail/templatetags/webextras.py:171
+#: extensions/webmail/templatetags/webextras.py:177
 msgid "Edit the selected mailbox"
 msgstr "Editar el mailbox seleccionado"
 
-#: extensions/webmail/templatetags/webextras.py:176
+#: extensions/webmail/templatetags/webextras.py:182
 msgid "Remove the selected mailbox"
 msgstr "Eliminar el mailbox seleccionado"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-24 10:10+0200\n"
+"POT-Creation-Date: 2013-06-01 16:35+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -663,7 +663,7 @@ msgstr "Editer le domaine"
 #: admin/templates/admin/listing.html:17 extensions/sievefilters/views.py:79
 #: extensions/sievefilters/templates/sievefilters/filter.html:17
 #: extensions/sievefilters/templates/sievefilters/guieditor.html:5
-#: extensions/webmail/templatetags/webextras.py:91
+#: extensions/webmail/templatetags/webextras.py:97
 msgid "Actions"
 msgstr "Actions"
 
@@ -681,7 +681,7 @@ msgstr "Nouveau domaine"
 
 #: admin/views.py:88 admin/views.py:97 admin/views.py:225 admin/views.py:438
 #: admin/views.py:445 extensions/sievefilters/views.py:120
-#: extensions/sievefilters/views.py:187 extensions/webmail/views.py:127
+#: extensions/sievefilters/views.py:187 extensions/webmail/views.py:131
 msgid "Create"
 msgstr "Créer"
 
@@ -703,7 +703,7 @@ msgstr "Domaine créé"
 
 #: admin/views.py:144 admin/views.py:282 admin/views.py:492
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
-#: extensions/sievefilters/views.py:139 extensions/webmail/views.py:158
+#: extensions/sievefilters/views.py:139 extensions/webmail/views.py:162
 #: userprefs/templates/userprefs/forward.html:8
 #: userprefs/templates/userprefs/profile.html:8
 msgid "Update"
@@ -768,9 +768,9 @@ msgstr "Alias modifié"
 #: extensions/amavis/views.py:234 extensions/amavis/views.py:238
 #: extensions/amavis/views.py:240 extensions/webmail/views.py:36
 #: extensions/webmail/views.py:64 extensions/webmail/views.py:77
-#: extensions/webmail/views.py:89 extensions/webmail/views.py:105
-#: extensions/webmail/views.py:189 extensions/webmail/views.py:415
-#: extensions/webmail/views.py:426 extensions/webmail/views.py:453
+#: extensions/webmail/views.py:93 extensions/webmail/views.py:109
+#: extensions/webmail/views.py:193 extensions/webmail/views.py:419
+#: extensions/webmail/views.py:430 extensions/webmail/views.py:457
 #: lib/formutils.py:32 lib/formutils.py:37
 msgid "Invalid request"
 msgstr "Requête invalide"
@@ -2231,64 +2231,71 @@ msgstr "a écrit :"
 msgid "Original message"
 msgstr "Message original"
 
-#: extensions/webmail/views.py:94
+#: extensions/webmail/views.py:81
+#, python-format
+msgid "%(count)d message deleted"
+msgid_plural "%(count)d messages deleted"
+msgstr[0] "%(count)d message supprimé"
+msgstr[1] "%(count)d messages supprimés"
+
+#: extensions/webmail/views.py:98
 msgid "Unknown action"
 msgstr "Action inconnue"
 
-#: extensions/webmail/views.py:107 lib/email_listing.py:137
+#: extensions/webmail/views.py:111 lib/email_listing.py:137
 msgid "Empty mailbox"
 msgstr "Boite aux lettre vide"
 
-#: extensions/webmail/views.py:124
-#: extensions/webmail/templatetags/webextras.py:163
+#: extensions/webmail/views.py:128
+#: extensions/webmail/templatetags/webextras.py:169
 msgid "Create a new mailbox"
 msgstr "Créer une nouvelle boite aux lettres"
 
-#: extensions/webmail/views.py:139
+#: extensions/webmail/views.py:143
 msgid "Mailbox created"
 msgstr "Boite aux lettres créée"
 
-#: extensions/webmail/views.py:155
+#: extensions/webmail/views.py:159
 msgid "Edit mailbox"
 msgstr "Editer la boite aux lettres"
 
-#: extensions/webmail/views.py:169
+#: extensions/webmail/views.py:173
 msgid "Mailbox updated"
 msgstr "Boite aux lettres mise à jour"
 
-#: extensions/webmail/views.py:203 extensions/webmail/views.py:384
-#: extensions/webmail/views.py:493
+#: extensions/webmail/views.py:207 extensions/webmail/views.py:388
+#: extensions/webmail/views.py:497
 msgid "Bad request"
 msgstr "Mauvaise requête"
 
-#: extensions/webmail/views.py:234
+#: extensions/webmail/views.py:238
 msgid "Failed to save attachment: "
 msgstr "Impossible d'enregistrer la pièce jointe : "
 
-#: extensions/webmail/views.py:237
+#: extensions/webmail/views.py:241
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Pièce jointe trop grosse (limite : %s)"
 
-#: extensions/webmail/views.py:243
+#: extensions/webmail/views.py:247
 #: extensions/webmail/templates/webmail/compose.html:15
 #: extensions/webmail/templates/webmail/headers.html:4
 msgid "Attachments"
 msgstr "Pièces jointes"
 
-#: extensions/webmail/views.py:259
+#: extensions/webmail/views.py:263
 msgid "Bad query"
 msgstr "Mauvaise requête"
 
-#: extensions/webmail/views.py:269
+#: extensions/webmail/views.py:273
 msgid "Failed to remove attachment: "
 msgstr "Impossible de supprimer la pièce jointe :"
 
-#: extensions/webmail/views.py:274
+#: extensions/webmail/views.py:278
 msgid "Unknown attachment"
 msgstr "Pièce jointe inconnue"
 
-#: extensions/webmail/views.py:489
+#: extensions/webmail/views.py:493
 msgid "Undefined action"
 msgstr "Action indéfinie"
 
@@ -2365,31 +2372,31 @@ msgstr "Envoyer"
 msgid "New message"
 msgstr "Nouveau message"
 
-#: extensions/webmail/templatetags/webextras.py:79
+#: extensions/webmail/templatetags/webextras.py:85
 msgid "Mark messages"
 msgstr "Marquer les messages"
 
-#: extensions/webmail/templatetags/webextras.py:83
+#: extensions/webmail/templatetags/webextras.py:89
 msgid "As read"
 msgstr "Comme lus"
 
-#: extensions/webmail/templatetags/webextras.py:86
+#: extensions/webmail/templatetags/webextras.py:92
 msgid "As unread"
 msgstr "Comme non lus"
 
-#: extensions/webmail/templatetags/webextras.py:95
+#: extensions/webmail/templatetags/webextras.py:101
 msgid "Compress folder"
 msgstr "Compresser ce dossier"
 
-#: extensions/webmail/templatetags/webextras.py:103
+#: extensions/webmail/templatetags/webextras.py:109
 msgid "Empty folder"
 msgstr "Vider ce dossier"
 
-#: extensions/webmail/templatetags/webextras.py:171
+#: extensions/webmail/templatetags/webextras.py:177
 msgid "Edit the selected mailbox"
 msgstr "Editer la boite aux lettres sélectionnée"
 
-#: extensions/webmail/templatetags/webextras.py:176
+#: extensions/webmail/templatetags/webextras.py:182
 msgid "Remove the selected mailbox"
 msgstr "Supprimer la boite aux lettres sélectionnée"
 
