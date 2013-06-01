@@ -152,7 +152,7 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
         form = DomainForm(request.user, request.POST, instances=instances)
         if form.is_valid():
             try:
-                domain = form.save(request.user)
+                form.save(request.user)
             except AdminError, e:
                 error = str(e)
             else:

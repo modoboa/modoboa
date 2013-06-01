@@ -663,7 +663,7 @@ class Domain(DatesAware):
         :param User account: the administrotor to remove
         """
         from modoboa.lib.permissions import ungrant_access_to_object
-        ungrant_access_to_object(account, self)
+        ungrant_access_to_object(self, account)
         for mb in self.mailbox_set.all():
             if mb.user.has_perm("admin.add_domain"):
                 continue
