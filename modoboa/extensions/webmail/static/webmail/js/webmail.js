@@ -647,15 +647,24 @@ Webmail.prototype = {
     delete_messages: function(e) {
         e.preventDefault();
         var $link = get_target(e, "a");
+        if ($link.hasClass("disabled")) {
+            return;
+        }
         var msgs = this.htmltable.current_selection();
         var selection = [];
+        var unseen_cnt = 0;
 
         if (!msgs.length) {
             return;
         }
         $.each(msgs, function(idx, item) {
-            selection.push($(item).attr("id"));
+            var $tr = $(item);
+            selection.push($tr.attr("id"));
+            if ($tr.hasClass("unseen")) {
+                unseen_cnt++;
+            }
         });
+        this.change_unseen_messages(this.get_current_mailbox(), -unseen_cnt);
         $.ajax({
             url: $link.attr("href"),
             data: {mbox: this.get_current_mailbox(), selection: selection},

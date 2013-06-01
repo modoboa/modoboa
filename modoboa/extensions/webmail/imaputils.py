@@ -512,6 +512,8 @@ class IMAPconnector(object):
         self.select_mailbox(mbox, False)
         resp = self._cmd("SEARCH", "ALL")
         seq = ",".join(resp[0].split())
+        if seq == "":
+            return
         self._cmd("STORE", seq, "+FLAGS", r'(\Deleted)')
         self._cmd("EXPUNGE")
 

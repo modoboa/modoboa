@@ -77,7 +77,7 @@ def listmailbox_menu(selection, folder, user):
          "class" : "btn"},
         {"name": "totrash",
          "label": "",
-         "class": "btn",
+         "class": "",
          "img": "icon-trash",
          "url": reverse("modoboa.extensions.webmail.views.delete"),
         },
@@ -104,7 +104,8 @@ def listmailbox_menu(selection, folder, user):
          },
         ]
     if folder == parameters.get_user(user, "TRASH_FOLDER"):
-        entries[2]["menu"] += [
+        entries[1]["class"] += " disabled"
+        entries[3]["menu"] += [
             {"name" : "empty",
              "label" : _("Empty folder"),
              "url" : reverse(webmail.views.empty, args=[folder])}
