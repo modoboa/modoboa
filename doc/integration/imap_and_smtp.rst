@@ -81,7 +81,15 @@ content inside::
 Make sure to activate only one backend (per type) inside your configuration
 (just comment the other ones).
 
-*MySQL* users, edit the *dovecot-sql.conf.ext* file and modify following lines::
+Edit the *dovecot-sql.conf.ext* and modify the configuration according
+to your database engine.
+
+.. _dovecot_mysql_queries:
+
+*MySQL* users
+-------------
+
+::
 
   driver = mysql
 
@@ -95,7 +103,12 @@ Make sure to activate only one backend (per type) inside your configuration
 
   iterate_query = SELECT email AS username FROM admin_user
 
-*PostgreSQL* users, here is your version::
+.. _dovecot_pg_queries:
+
+*PostgreSQL* users
+------------------
+
+::
 
   driver = postgresql
 
@@ -120,6 +133,8 @@ The LDA is activated by default but you must define a *postmaster*
 address. Open the *conf.d/15-lda.conf* file modify the following line::
 
   postmaster_address = postmaster@<domain>
+
+.. _dovecot_quota:
 
 Quota
 =====

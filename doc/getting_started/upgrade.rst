@@ -165,6 +165,18 @@ Several modifications need to be done into *settings.py*.
         }
     }
 
+Postfix and Dovecot configuration update
+----------------------------------------
+
+It is necessary to update the queries used to retrieve users and mailboxes:
+
+#. Replace all occurences of ``auth_user`` by ``admin_user``
+
+#. Into *dovecot-sql.conf*, update the ``user_query`` query, refer to
+   :ref:`dovecot_mysql_queries` or :ref:`dovecot_pg_queries`
+
+#. Update dovecot's configuration to activate the new :ref:`quota related features <dovecot_quota>`
+
 Migration issues
 ----------------
 
