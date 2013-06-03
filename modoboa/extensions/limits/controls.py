@@ -40,6 +40,11 @@ def dec_limit(user, lname):
         pass
 
 def move_pool_resource(owner, user):
+    """Move resource from one pool to another
+
+    When an account doesn't need a pool anymore, we move the
+    associated resource to the pool of its owner.
+    """
     try:
         pool = user.limitspool
     except LimitsPool.DoesNotExist:
@@ -130,19 +135,24 @@ def create_pool(user):
 
 @events.observe("AccountModified")
 def on_account_modified(old, new):
+    """Update limits when roles are updated""" 
     owner = get_object_owner(old)
     if owner.group not in ["SuperAdmins", "Resellers"]:
+        # Domain admins can't change the role so nothing to check.
         return
+
+    if new.group != "SuperAdmins":
+        # Check if account needs a pool (case: a superadmin is
+        # downgraded)
+        try:
+            pool = new.limitspool
+        except LimitsPool.DoesNotExist:
+            p = LimitsPool(user=new)
+            p.save()
+            p.create_limits()
 
     if not new.group in ["DomainAdmins", "Resellers"]:
         move_pool_resource(owner, new)
-
-    try:
-        pool = new.limitspool
-    except LimitsPool.DoesNotExist:
-        p = LimitsPool(user=new)
-        p.save()
-        p.create_limits()
 
     if old.oldgroup == "DomainAdmins":
         if new.group != "DomainAdmins":

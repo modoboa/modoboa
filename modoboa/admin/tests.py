@@ -145,8 +145,8 @@ class AccountTestCase(ModoTestCase):
         * A normal user changes his password
         """
         self.check_ajax_post(reverse("modoboa.userprefs.views.profile"),
-                            {"oldpassword" : "password", 
-                             "newpassword" : "titi", "confirmation" : "titi"})
+                             {"oldpassword" : "password", 
+                              "newpassword" : "titi", "confirmation" : "titi"})
         self.clt.logout()
 
         self.assertEqual(self.clt.login(username="admin", password="titi"), True)
