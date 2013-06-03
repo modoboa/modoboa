@@ -126,9 +126,9 @@ $(document).ready(function() {
         Context(dict(
             url=reverse("modoboa.extensions.amavis.views.nbrequests"),
             interval=int(parameters.get_admin("CHECK_REQUESTS_INTERVAL")) * 1000,
-            text=_("pending requests")),
+            text=_("pending requests"),
             user_can_release=parameters.get_admin("USER_CAN_RELEASE")
-        )
+        ))
     )]
 
 
