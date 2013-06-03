@@ -241,7 +241,7 @@ function activate_widget(e) {
     var widget_id = $this.attr("id").substr(0, $this.attr("id").length - 4);
     var $widget = $('#' + widget_id);
 
-    if ($this.attr("checked") && $this.attr("checked") == "checked") {
+    if ($this.prop("checked")) {
         $widget.attr('disabled', true);
     } else {
         $widget.attr('disabled', false);
