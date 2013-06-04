@@ -171,22 +171,21 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
 @login_required
 @permission_required("admin.delete_domain")
 @transaction.commit_on_success
-def deldomain(request):
-    selection = request.GET["selection"].split(",")
-    keepdir = True if request.GET.get("keepdir", "false") == "true" else False
+def deldomain(request, dom_id):
+    keepdir = True if request.POST.get("keepdir", "false") == "true" else False
     try:
         mb = Mailbox.objects.get(user__id=request.user.id)
     except Mailbox.DoesNotExist:
         mb = None
 
-    for dom in Domain.objects.filter(id__in=selection):
-        if not request.user.can_access(dom):
-            raise PermDeniedException
-        if mb and mb.domain == dom:
-            raise AdminError(_("You can't delete your own domain"))
-        dom.delete(request.user, keepdir)
+    dom = Domain.objects.get(pk=dom_id)
+    if not request.user.can_access(dom):
+        raise PermDeniedException
+    if mb and mb.domain == dom:
+        raise AdminError(_("You can't delete your own domain"))
+    dom.delete(request.user, keepdir)
 
-    msg = ungettext("Domain deleted", "Domains deleted", len(selection))
+    msg = ungettext("Domain deleted", "Domains deleted", 1)
     return ajax_simple_response({"status": "ok", "respmsg": msg})
 
 

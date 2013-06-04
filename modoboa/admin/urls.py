@@ -9,7 +9,7 @@ urlpatterns = patterns(
     (r'^domains/flatlist/$', 'domains_list'),
     (r'^domains/new/', 'newdomain'),
     (r'^domains/(?P<dom_id>\d+)/edit/$', 'editdomain'),
-    (r'^domains/delete/$', 'deldomain'),
+    (r'^domains/(?P<dom_id>\d+)/delete/$', 'deldomain'),
     (r'^domains/import/$', 'import_domains'),
     (r'^domains/export/$', 'export_domains'),
     

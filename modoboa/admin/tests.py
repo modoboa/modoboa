@@ -71,9 +71,7 @@ class DomainTestCase(ModoTestCase):
     def test_delete(self):
         """Test the removal of a domain
         """
-        self.check_ajax_get(reverse("modoboa.admin.views.deldomain"), {
-            "selection": 1
-        })
+        self.check_ajax_get(reverse("modoboa.admin.views.deldomain", args=[1]), {})
         with self.assertRaises(Domain.DoesNotExist):
             Domain.objects.get(pk=1)
 

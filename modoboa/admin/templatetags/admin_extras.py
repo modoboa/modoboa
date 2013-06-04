@@ -174,7 +174,7 @@ def domain_actions(user, domid):
     if user.has_perm("admin.delete_domain"):
         actions.append({
             "name": "deldomain",
-            "url": reverse("modoboa.admin.views.deldomain") + "?selection=%s" % domid,
+            "url": reverse("modoboa.admin.views.deldomain", args=[domid]),
             "title": _("Delete the domain"),
             "img": "icon-trash"
         })

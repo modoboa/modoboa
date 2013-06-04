@@ -115,7 +115,7 @@ Domains.prototype = {
 
         $("a[name=deldomain]").confirm({
             question: gettext("Delete this domain?"),
-            method: "DELETE",
+            method: "POST",
             warning: warnmsg,
             checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
