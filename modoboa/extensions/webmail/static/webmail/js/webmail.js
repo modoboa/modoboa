@@ -658,6 +658,7 @@ Webmail.prototype = {
         if (!msgs.length) {
             return;
         }
+        $link.addClass("disabled");
         $.each(msgs, function(idx, item) {
             var $tr = $(item);
             selection.push($tr.attr("id"));
@@ -884,6 +885,9 @@ Webmail.prototype = {
         if (data.status == "ok") {
             var msg = (data.respmsg) ? data.respmsg : gettext("Message deleted");
             this.go_back_to_listing();
+            if (this.get_current_mailbox() != this.options.trash) {
+                $("a[name=totrash]").removeClass("disabled");
+            }
             $("body").notify("success", msg, 2000);
         } else {
             $("body").notify("error", data.respmsg);
