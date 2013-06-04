@@ -429,7 +429,14 @@ def newaccount(request, tplname='common/wizard_forms.html'):
         account.post_create(request.user)
 
         mailform = steps[1]["form"]
-        mailform.save(request.user, account)
+        try:
+            mailform.save(request.user, account)
+        except AdminError:
+            # A bit uggly: transaction management doesn't work very
+            # well with nested functions. Need to wait for django 1.6
+            # and atomicity.
+            account.delete(request.user, False)
+            raise
 
     ctx = dict(
         title=_("New account"),
