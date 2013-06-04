@@ -234,14 +234,14 @@ Identities.prototype = {
         Admin.prototype.list_cb.call(this, data);
         var deloptions = {};
 
-        if (data.handle_mailboxes) {
+        if (data.handle_mailboxes == "yes") {
             deloptions = {keepdir: gettext("Do not delete mailbox directory")};
         }
         $("a.filter").click($.proxy(this.filter_by_tag, this));
 
         $("a[name=delaccount]").confirm({
             question: gettext("Delete this account?"),
-            method: "DELETE",
+            method: "POST",
             checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
         });

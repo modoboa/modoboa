@@ -528,14 +528,12 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 @login_required
 @permission_required("admin.delete_user")
 @transaction.commit_on_success
-def delaccount(request):
-    selection = request.GET["selection"].split(",")
-    keepdir = True if request.GET.get("keepdir", "false") == "true" else False
+def delaccount(request, accountid):
+    keepdir = True if request.POST.get("keepdir", "false") == "true" else False
 
-    for account in User.objects.filter(id__in=selection):
-        account.delete(request.user, keepdir)
+    User.objects.get(pk=accountid).delete(request.user, keepdir)
 
-    msg = ungettext("Account deleted", "Accounts deleted", len(selection))
+    msg = ungettext("Account deleted", "Accounts deleted", 1)
     return ajax_simple_response({"status": "ok", "respmsg": msg})
 
 

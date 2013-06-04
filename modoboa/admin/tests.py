@@ -134,8 +134,7 @@ class AccountTestCase(ModoTestCase):
         mb = Mailbox.objects.get(pk=mb.id)
         self.assertEqual(mb.full_address, "pouet@test.com")
 
-        self.check_ajax_get(reverse("modoboa.admin.views.delaccount") + "?selection=%d" \
-                                % account.id, {})
+        self.check_ajax_get(reverse("modoboa.admin.views.delaccount", args=[account.id]), {})
 
     def test_update_password(self):
         """Password update
@@ -305,11 +304,9 @@ class PermissionsTestCase(ModoTestCase):
         account = User.objects.get(username="superadmin2@test.com")
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")
-        self.check_ajax_get(reverse("modoboa.admin.views.delaccount") + "?selection=%d" \
-                                % account.id, {},
+        self.check_ajax_get(reverse("modoboa.admin.views.delaccount", args=[account.id]), {},
                             status="ko", respmsg="Permission denied")
-        self.check_ajax_get(reverse("modoboa.admin.views.delaccount") + "?selection=%d" \
-                                % 4, {},
+        self.check_ajax_get(reverse("modoboa.admin.views.delaccount", args=[account.id]), {},
                             status="ko", respmsg="Permission denied")
 
 

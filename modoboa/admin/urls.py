@@ -32,7 +32,7 @@ urlpatterns = patterns(
     (r'^accounts/list/$', 'accounts_list'),
     (r'^accounts/new/$', 'newaccount'),
     (r'^accounts/edit/(?P<accountid>\d+)/$', 'editaccount'),
-    (r'^accounts/delete/$', 'delaccount'),
+    (r'^accounts/delete/(?P<accountid>\d+)/$', 'delaccount'),
 
     (r'^distriblists/new/$', 'newdlist'),
     (r'^distriblists/delete/$', 'deldlist'),
