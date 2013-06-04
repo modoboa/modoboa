@@ -84,18 +84,16 @@ def display_pool_usage(user, target, currentpage):
 
 @events.observe("ExtraAccountForm")
 def extra_account_form(user, account=None):
-    if not user.is_superuser and not user.belongs_to_group("Resellers"):
+    if not user.group in ["SuperAdmins", "Resellers"]:
         return []
-    if account:
-        if not account.belongs_to_group("Resellers") and \
-           not account.belongs_to_group("DomainAdmins"):
-            return []
+    if account is not None and not account.group in ["Resellers", "DomainAdmins"]:
+        return []
 
     return [
         dict(
             id="resources", title=_("Resources"), cls=ResourcePoolForm
-            )
-        ]
+        )
+    ]
 
 @events.observe("CheckExtraAccountForm")
 def check_form_access(account, form):
