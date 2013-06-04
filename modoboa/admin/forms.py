@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
 from modoboa.admin.templatetags.admin_extras import gender
+from modoboa.admin.exceptions import AdminError
 from modoboa.lib import events, parameters
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.permissions import get_account_roles
