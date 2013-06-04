@@ -14,7 +14,8 @@ Webmail.prototype = {
         move_url: "",
         submboxes_url: "",
         delattachment_url: "",
-        ro_mboxes: ["INBOX"]
+        ro_mboxes: ["INBOX"],
+        trash: ""
     },
 
     initialize: function(options) {
@@ -665,6 +666,7 @@ Webmail.prototype = {
             }
         });
         this.change_unseen_messages(this.get_current_mailbox(), -unseen_cnt);
+        this.change_unseen_messages(this.options.trash, unseen_cnt);
         $.ajax({
             url: $link.attr("href"),
             data: {mbox: this.get_current_mailbox(), selection: selection},

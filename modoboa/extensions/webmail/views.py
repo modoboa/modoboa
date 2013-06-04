@@ -78,9 +78,10 @@ def delete(request):
     selection = [item for item in selection if item.isdigit()]
     mbc = get_imapconnector(request)
     mbc.move(",".join(selection), mbox, parameters.get_user(request.user, "TRASH_FOLDER"))
+    count = len(selection)
     message = ungettext("%(count)d message deleted",
                         "%(count)d messages deleted",
-                        len(selection)) % {"count": len(selection)}
+                        count) % {"count": count}
     resp = dict(status="ok", respmsg=message)
     return ajax_simple_response(resp)
 
@@ -506,11 +507,14 @@ def index(request):
         response["refreshrate"] = \
             int(parameters.get_user(request.user, "REFRESH_INTERVAL"))
         response["quota"] = ImapListing.computequota(imapc)
-        response["ro_mboxes"] = ["INBOX", "Junk",
-                                 parameters.get_user(request.user, "SENT_FOLDER"),
-                                 parameters.get_user(request.user, "TRASH_FOLDER"),
-                                 parameters.get_user(request.user, "DRAFTS_FOLDER")]
-
+        trash = parameters.get_user(request.user, "TRASH_FOLDER")
+        response["trash"] = trash
+        response["ro_mboxes"] = [
+            "INBOX", "Junk",
+            parameters.get_user(request.user, "SENT_FOLDER"),
+            trash,
+            parameters.get_user(request.user, "DRAFTS_FOLDER")
+        ]
         return _render(request, "webmail/index.html", response)
 
     if action in ["reply", "forward"]:

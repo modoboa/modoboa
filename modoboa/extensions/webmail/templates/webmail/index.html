@@ -19,7 +19,8 @@ $(document).ready(function() {
         submboxes_url: "{% url 'modoboa.extensions.webmail.views.submailboxes' %}",
         deflocation: "{{ deflocation }}",
         defcallback: "{{ defcallback }}",
-        ro_mboxes: {% tolist ro_mboxes %}
+        ro_mboxes: {% tolist ro_mboxes %},
+        trash: "{{ trash }}"
     });
 });
 </script>
