@@ -223,7 +223,7 @@ def prepare_addresses(addresses, usage="header"):
     :return: a string or a list depending on usage value
     """
     result = []
-    for address in addresses.split(','):
+    for address in re.split('[,;]', addresses):
         name, addr = parseaddr(address)
         if name and usage == "header":
             result.append("%s <%s>" % (Header(name, 'utf8').encode(), addr))
