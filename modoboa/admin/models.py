@@ -163,7 +163,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                 ab.update_user_password(self.username, curvalue, raw_value)
             except LDAPException, e:
                 raise AdminError(_("Failed to update password: %s" % str(e)))
-        events.raiseEvent("PasswordUpdated", self, raw_value)
+        events.raiseEvent("PasswordUpdated", self, raw_value, self.pk is None)
 
     def check_password(self, raw_value):
         m = self.password_expr.match(self.password)
@@ -1257,14 +1257,14 @@ def populate_callback(user):
         domain = Domain.objects.get(name=domname)
     except Domain.DoesNotExist:
         domain = Domain(name=domname, enabled=True, quota=0)
-        domain.save(creator=sadmin[0])
+        domain.save(creator=sadmins[0])
         for su in sadmins[1:]:
             grant_access_to_object(su, domain)
     try:
         mb = Mailbox.objects.get(domain=domain, address=localpart)
     except Mailbox.DoesNotExist:
         mb = Mailbox(address=localpart, domain=domain, user=user, use_domain_quota=True)
-        mb.set_quota()
+        mb.set_quota(override_rules=True)
         mb.save(creator=sadmins[0])
         for su in sadmins[1:]:
             grant_access_to_object(su, mb)
