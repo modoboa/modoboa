@@ -141,7 +141,6 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'reversion',
     'south',
 
     # Extra tools
@@ -167,6 +166,10 @@ MODOBOA_APPS = (
 )
 
 INSTALLED_APPS += MODOBOA_APPS
+
+INSTALLED_APPS += (
+    'reversion'
+)
 
 AUTH_USER_MODEL = 'admin.User'
 
