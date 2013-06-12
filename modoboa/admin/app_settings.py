@@ -207,6 +207,14 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             del self.fields["handle_mailboxes"]
             del self.fields["mailboxes_owner"]
 
+    def clean_ldap_user_dn_template(self):
+        tpl = self.cleaned_data["ldap_user_dn_template"]
+        try:
+            test = tpl % {"user": "toto"}
+        except ValueError:
+            raise forms.ValidationError(_("Invalid syntax"))
+        return tpl
+
     def clean(self):
         """Custom validation method
 
