@@ -34,9 +34,12 @@ def dologin(request):
                                   form.cleaned_data["username"],
                                   form.cleaned_data["password"])
 
-                nextlocation = request.POST["next"]
-                if nextlocation.strip() in ["", "None"]:
-                    nextlocation = reverse("domains")
+                nextlocation = request.POST.get("next", None)
+                if nextlocation is None or nextlocation == "None":
+                    if user.group != "SimpleUsers":
+                        nextlocation = reverse("modoboa.lib.webutils.topredirection")
+                    else:
+                        nextlocation = reverse("domains")
                 return HttpResponseRedirect(nextlocation)
             error = _("Your username and password didn't match. Please try again.")
             logger.warning("Failed connection attempt from '%(addr)s' as user '%(user)s'" \
