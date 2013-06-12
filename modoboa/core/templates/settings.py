@@ -168,7 +168,7 @@ MODOBOA_APPS = (
 INSTALLED_APPS += MODOBOA_APPS
 
 INSTALLED_APPS += (
-    'reversion'
+    'reversion',
 )
 
 AUTH_USER_MODEL = 'admin.User'
