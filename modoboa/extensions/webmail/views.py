@@ -6,6 +6,7 @@ from django.template import Template, Context
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from modoboa.lib import parameters
 from modoboa.lib.webutils import _render, _render_to_string, \
     ajax_response, ajax_simple_response
@@ -214,6 +215,7 @@ def delfolder(request):
     return ajax_response(request)
 
 @login_required
+@csrf_exempt
 @needs_mailbox()
 def attachments(request, tplname="webmail/attachments.html"):
     if request.method == "POST":
