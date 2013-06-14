@@ -218,6 +218,9 @@ def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=Non
 def prepare_addresses(addresses, usage="header"):
     """Prepare addresses before using them
 
+    FIXME: We need a real address parser here! If a name contains a
+    separator, it creates two wrong addresses.
+
     :param list addresses: a list of addresses
     :param string usage: how those addresses are going to be used
     :return: a string or a list depending on usage value

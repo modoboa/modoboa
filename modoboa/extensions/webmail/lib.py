@@ -695,8 +695,12 @@ def send_mail(request, posturl=None):
                 s.login(request.user.username, get_password(request))
             except smtplib.SMTPException, e:
                 raise WebmailError(str(e))
-        s.sendmail(request.user.email, rcpts, msg.as_string())
-        s.quit()
+        try:
+            s.sendmail(request.user.email, rcpts, msg.as_string())
+            s.quit()
+        except smtplib.SMTPException, e:
+            raise WebmailError(str(e))
+
         sentfolder = parameters.get_user(request.user, "SENT_FOLDER")
         IMAPconnector(user=request.user.username,
                       password=request.session["password"]).push_mail(sentfolder, msg)
