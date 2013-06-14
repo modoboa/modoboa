@@ -395,7 +395,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
         mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
     elif sort_order == "quota_usage":
         if db_type() == "postgres":
-            select = '(admin_quota.bytes / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
+            select = '(admin_quota.bytes::float / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
         else:
             select = 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'
         mboxes = mboxes.extra(

@@ -148,6 +148,19 @@ activated ones::
 
   mail_plugins = quota
 
+Inside *conf.d/10-master.conf*, update the *dict* service to set
+proper permissions::
+
+  service dict {
+    # If dict proxy is used, mail processes should have access to its socket.
+    # For example: mode=0660, group=vmail and global mail_access_groups=vmail
+    unix_listener dict {
+      mode = 0600
+      user = <user owning mailboxes>
+      #group = 
+    }
+  }
+
 Inside *conf.d/20-imap.conf*, activate the ``imap_quota`` plugin::
 
   protocol imap {
@@ -189,6 +202,100 @@ Finally, edit the *dovecot-dict-sql.conf* file and put the following content ins
     value_field = messages
   }
 
+*PostgreSQL* users
+------------------
+
+Database schema update
+^^^^^^^^^^^^^^^^^^^^^^
+
+The `admin_quota` table is created by *Django* but unfortunately it
+doesn't support `DEFAULT` constraints (it only simulates them when the
+ORM is used). As *PostgreSQL* is a bit strict about constraint
+violations, you must execute the following query manually::
+
+  db=> ALTER TABLE admin_quota ALTER COLUMN bytes SET DEFAULT 0;
+  db=> ALTER TABLE admin_quota ALTER COLUMN messages SET DEFAULT 0;
+
+Trigger
+^^^^^^^
+
+As indicated on `Dovecot's wiki
+<http://wiki2.dovecot.org/Quota/Dict>`_, you need a trigger to
+properly update the quota. Unfortunately, the provided example won't
+work for Modoboa. You should use the following one instead:
+
+.. sourcecode:: sql
+
+  CREATE OR REPLACE FUNCTION merge_quota() RETURNS TRIGGER AS $$
+  BEGIN
+    IF NEW.messages < 0 OR NEW.messages IS NULL THEN
+      -- ugly kludge: we came here from this function, really do try to insert
+      IF NEW.messages IS NULL THEN
+        NEW.messages = 0;
+      ELSE
+        NEW.messages = -NEW.messages;
+      END IF;
+      return NEW;
+    END IF;
+
+    LOOP
+      UPDATE admin_quota SET bytes = bytes + NEW.bytes,
+        messages = messages + NEW.messages
+        WHERE username = NEW.username;
+      IF found THEN
+        RETURN NULL;
+      END IF;
+
+      BEGIN
+        IF NEW.messages = 0 THEN
+          RETURN NEW;
+        ELSE
+          NEW.messages = - NEW.messages;
+          return NEW;
+        END IF;
+      EXCEPTION WHEN unique_violation THEN
+        -- someone just inserted the record, update it
+      END;
+    END LOOP;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  CREATE OR REPLACE FUNCTION set_mboxid() RETURNS TRIGGER AS $$
+  DECLARE
+    mboxid INTEGER;
+  BEGIN
+    SELECT admin_mailbox.id INTO STRICT mboxid FROM admin_mailbox INNER JOIN admin_user ON admin_mailbox.user_id=admin_user.id WHERE admin_user.username=NEW.username;
+    UPDATE admin_quota SET mbox_id = mboxid
+      WHERE username = NEW.username;
+    RETURN NULL;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  DROP TRIGGER IF EXISTS mergequota ON admin_quota;
+  CREATE TRIGGER mergequota BEFORE INSERT ON admin_quota
+     FOR EACH ROW EXECUTE PROCEDURE merge_quota();
+
+  DROP TRIGGER IF EXISTS setmboxid ON admin_quota;
+  CREATE TRIGGER setmboxid AFTER INSERT ON admin_quota
+     FOR EACH ROW EXECUTE PROCEDURE set_mboxid();
+
+Copy this example into a file (for example: *quota-trigger.sql*) on
+server running *postgres* and execute the following commands::
+
+  $ su - postgres
+  $ psql < /path/to/quota-trigger.sql
+  $ exit
+
+Forcing recalculation
+---------------------
+
+For existing installations, *Dovecot* (> 2) offers a command to
+recalculate the current quota usages. For example, if you want to
+update all usages, run the following command::
+
+  $ doveadmin quota recalc -A
+
+Be carefull, it can take a while to execute.
 
 ManageSieve/Sieve
 =================
