@@ -386,14 +386,20 @@ def allowed_recipients_list(request):
 @login_required
 @permission_required("admin.add_mailbox")
 def list_quotas(request, tplname="admin/quotas.html"):
+    from modoboa.lib.dbutils import db_type
+
     sort_order, sort_dir = get_sort_order(request.GET, "address")
     mboxes = request.user.get_mailboxes(request.GET.get("searchquery", None))
     mboxes = mboxes.exclude(quota=0)
     if sort_order in ["address", "quota", "quota_value__bytes"]:
         mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
     elif sort_order == "quota_usage":
+        if db_type() == "postgres":
+            select = '(admin_quota.bytes / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
+        else:
+            select = 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'
         mboxes = mboxes.extra(
-            select={'quota_usage': 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'},
+            select={'quota_usage': select},
             where=["admin_quota.mbox_id=admin_mailbox.id"],
             tables=["admin_quota"],
             order_by=["%s%s" % (sort_dir, sort_order)]
@@ -705,7 +711,6 @@ def import_forward(user, row, formopts):
 
 def import_dlist(user, row, formopts):
     _import_alias(user, row)
-
 
 def importdata(request, formclass=ImportDataForm):
     """Generic import function

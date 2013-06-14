@@ -995,7 +995,7 @@ def mailbox_deleted_handler(sender, **kwargs):
 
 class Quota(models.Model):
     username = models.EmailField(primary_key=True)
-    bytes = models.IntegerField(default=0)
+    bytes = models.BigIntegerField(default=0)
     messages = models.IntegerField(default=0)
 
     mbox = models.OneToOneField(Mailbox, related_name="quota_value", null=True)
