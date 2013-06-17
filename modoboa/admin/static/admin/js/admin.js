@@ -320,16 +320,21 @@ Identities.prototype = {
             .autocompleter("listen");
     },
 
-    generalform_init: function() {
+    generalform_init: function(notrigger) {
         $("#id_role").change($.proxy(function(e) {
             var $this = $(e.target);
             var value = $this.val();
+
             if (value == "SimpleUsers" || value == "") {
                 this.simpleuser_mode();
             } else {
                 this.normal_mode();
             }
         }, this));
+        if (notrigger != undefined && notrigger) {
+            return;
+        }
+        $("#id_role").trigger("change");
     },
 
     mailform_init: function() {
@@ -355,7 +360,7 @@ Identities.prototype = {
     },
 
     accountform_init: function() {
-        this.generalform_init();
+        this.generalform_init(true);
         this.mailform_init();
     },
 
@@ -374,8 +379,8 @@ Identities.prototype = {
                 1: this.mailform_prefill
             },
             error_callbacks: {
-                1: this.generalform_init,
-                2: this.mailform_init
+                1: $.proxy(this.generalform_init, this),
+                2: $.proxy(this.mailform_init, this)
             },
             success_callback: $.proxy(this.reload_listing, this)
         });
