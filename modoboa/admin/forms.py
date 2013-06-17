@@ -369,7 +369,7 @@ class ExportIdentitiesForm(ExportDataForm):
 
 
 class AccountFormGeneral(forms.ModelForm):
-    username = forms.CharField(label=ugettext_lazy("Username"), max_length=254)
+    username = forms.CharField(label=ugettext_lazy("Username"))
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
         choices=[('', ugettext_lazy("Choose"))],

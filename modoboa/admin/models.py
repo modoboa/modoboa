@@ -802,7 +802,7 @@ reversion.register(DomainAlias)
 
 class Mailbox(DatesAware):
     address = models.CharField(
-        ugettext_lazy('address'), max_length=100,
+        ugettext_lazy('address'), max_length=252,
         help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
     )
     quota = models.PositiveIntegerField()
@@ -994,7 +994,7 @@ def mailbox_deleted_handler(sender, **kwargs):
 
 
 class Quota(models.Model):
-    username = models.EmailField(primary_key=True)
+    username = models.EmailField(primary_key=True, max_length=254)
     bytes = models.BigIntegerField(default=0)
     messages = models.IntegerField(default=0)
 
