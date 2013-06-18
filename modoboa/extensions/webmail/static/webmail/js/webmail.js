@@ -257,18 +257,6 @@ Webmail.prototype = {
     },
 
     /*
-     * Sends a refresh request to the server. This method is called
-     * periodically to check for new messages. (not really optimized)
-     */
-    update_unseen_messages: function(mailbox) {
-        $.ajax({
-            url: this.options.poller_url + "?selection=" + mailbox,
-            dataType: 'json',
-            success: $.proxy(this.poller_cb, this)
-        });
-    },
-
-    /*
      * Poller callback.
      */
     poller_cb: function(data) {
@@ -761,6 +749,10 @@ Webmail.prototype = {
         var curmb = this.get_current_mailbox();
 
         e.preventDefault();
+        if ($tr.hasClass("disabled")) {
+            return;
+        }
+        $tr.addClass("disabled");
         if ($tr.hasClass("unseen")) {
             var mb = this.get_current_mailbox();
             this.change_unseen_messages(mb, -1);
