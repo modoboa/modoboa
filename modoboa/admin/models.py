@@ -1144,7 +1144,7 @@ class Alias(DatesAware):
         try:
             domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
-            raise AdminError(_("Domain does not exist"))
+            raise AdminError(_("Domain '%s' does not exist" % domname))
         if not user.can_access(domain):
             raise PermDeniedException
         self.address = localpart
