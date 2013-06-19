@@ -1164,16 +1164,16 @@ class Alias(DatesAware):
                 ext_rcpts += [rcpt]
                 continue
             try:
-                rcpt = Alias.objects.get(domain=domname, address=localpart)
+                target = Alias.objects.get(domain__name=domname, address=localpart)
             except Alias.DoesNotExist:
-                rcpt = None
-            if rcpt is None:
+                target = None
+            if target is None:
                 try:
-                    rcpt = Mailbox.objects.get(address=localpart, 
+                    target = Mailbox.objects.get(address=localpart, 
                                                domain__name=domname)
                 except Mailbox.DoesNotExist:
                     raise AdminError(_("Local recipient %s not found" % rcpt))
-            int_rcpts += [rcpt]
+            int_rcpts += [target]
         self.save(int_rcpts, ext_rcpts, creator=user)
 
     def to_csv(self, csvwriter):
