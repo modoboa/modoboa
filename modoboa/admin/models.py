@@ -1138,6 +1138,9 @@ class Alias(DatesAware):
         return False
 
     def from_csv(self, user, row, expected_elements=5):
+        """Create a new alias from a CSV file entry
+
+        """
         if len(row) < expected_elements:
             raise AdminError(_("Invalid line: %s" % row))
         localpart, domname = split_mailbox(row[1].strip())
@@ -1161,10 +1164,16 @@ class Alias(DatesAware):
                 ext_rcpts += [rcpt]
                 continue
             try:
-                int_rcpts += [Mailbox.objects.get(address=localpart, 
-                                                  domain__name=domname)]
-            except Mailbox.DoesNotExist:
-                raise AdminError(_("Mailbox %s does not exist" % rcpt))
+                rcpt = Alias.objects.get(domain=domname, address=localpart)
+            except Alias.DoesNotExist:
+                rcpt = None
+            if rcpt is None:
+                try:
+                    rcpt = Mailbox.objects.get(address=localpart, 
+                                               domain__name=domname)
+                except Mailbox.DoesNotExist:
+                    raise AdminError(_("Local recipient %s not found" % rcpt))
+            int_rcpts += [rcpt]
         self.save(int_rcpts, ext_rcpts, creator=user)
 
     def to_csv(self, csvwriter):
