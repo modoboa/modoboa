@@ -20,9 +20,9 @@ def dologin(request):
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
+                login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
-                login(request, user)
                 if request.user.has_mailbox:
                     request.session["password"] = encrypt(form.cleaned_data["password"])
 

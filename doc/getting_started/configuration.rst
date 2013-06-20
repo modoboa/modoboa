@@ -147,14 +147,9 @@ Few parameters need to be set in the *settings.py* configuration
 file to make Modoboa behave as expected::
 
   SESSION_EXPIRE_AT_BROWSER_CLOSE = False # Default value
-  SESSION_COOKIE_AGE = 600 # time in seconds
 
-The first parameter is optional but you must ensure it is set to
-``False`` (the default value).
-
-The second one tells Django that a session inactive for this time
-should be considered as closed. You are free to adjust it according to
-your need.
+This parameter is optional but you must ensure it is set to ``False``
+(the default value).
 
 The default configuration file provided by the *modoboa-admin.py*
 command is properly configured.
