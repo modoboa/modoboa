@@ -24,17 +24,22 @@ Listing.prototype = {
     },
 
     update_listing: function(data) {
-        $(this.options.pbar_container).html(data.paginbar);
-        $(this.options.pbar_id).find(".disabled a").click(function(e) {
-            e.preventDefault();
-        });
+        if (data.paginbar) {
+            $(this.options.pbar_container).html(data.paginbar);
+            $(this.options.pbar_id).find(".disabled a").click(function(e) {
+                e.preventDefault();
+            });
+        }
         if (data.page != this.navobj.getparam("page")) {
             this.navobj.setparam("page", data.page).update(false, true);
         }
-        $(this.options.sortable_selector).sortable({
-            onSortOrderChange: $.proxy(this.change_sort_order, this)
-        });
-        this.set_sort_order();
+        var $sortables = $(this.options.sortable_selector);
+        if ($sortables.length) {
+            $(this.options.sortable_selector).sortable({
+                onSortOrderChange: $.proxy(this.change_sort_order, this)
+            });
+            this.set_sort_order();
+        }
     },
 
     set_sort_order: function() {
