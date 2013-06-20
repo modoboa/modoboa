@@ -13,7 +13,7 @@ class AdminConsole(ModoExtension):
 
     def load(self):
         from app_settings import GeneralParametersForm
-        parameters.register(GeneralParametersForm, _("General"))
+        parameters.register(GeneralParametersForm, ugettext_lazy("General"))
 
     def destroy(self):
         parameters.unregister()

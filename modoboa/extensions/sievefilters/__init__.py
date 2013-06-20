@@ -14,8 +14,8 @@ class SieveFilters(ModoExtension):
 
     def load(self):
         from app_settings import ParametersForm, UserSettings
-        parameters.register(ParametersForm, _("Sieve filters"))
-        parameters.register(UserSettings, _("Message filters"))
+        parameters.register(ParametersForm, ugettext_lazy("Sieve filters"))
+        parameters.register(UserSettings, ugettext_lazy("Message filters"))
 
     def destroy(self):
         events.unregister("UserMenuDisplay", menu)

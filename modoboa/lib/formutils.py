@@ -1,6 +1,6 @@
 # coding: utf-8
 import re
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.forms.widgets import RadioSelect, RadioInput
 from django.forms.fields import CharField, Field, ChoiceField
 from django.core.exceptions import ValidationError
@@ -203,6 +203,6 @@ class SeparatorField(Field):
 
 class YesNoField(ChoiceField):
     def __init__(self, *args, **kwargs):
-        kwargs["choices"] = [("yes", _("Yes")), ("no", _("No"))]
+        kwargs["choices"] = [("yes", ugettext_lazy("Yes")), ("no", ugettext_lazy("No"))]
         kwargs["widget"] = InlineRadioSelect
         super(YesNoField, self).__init__(*args, **kwargs)

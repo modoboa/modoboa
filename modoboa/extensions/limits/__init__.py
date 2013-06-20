@@ -7,7 +7,7 @@ The *limits* extension
 from django.contrib.auth.models import Permission, Group
 from django.db import IntegrityError
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
 from modoboa.extensions import ModoExtension, exts_pool
@@ -51,7 +51,7 @@ class Limits(ModoExtension):
 
     def load(self):
         from app_settings import ParametersForm
-        parameters.register(ParametersForm, _("Limits"))
+        parameters.register(ParametersForm, ugettext_lazy("Limits"))
 
     def destroy(self):
         parameters.unregister()

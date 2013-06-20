@@ -38,7 +38,7 @@ class PostfixAutoreply(ModoExtension):
 
     def load(self):
         from app_settings import ParametersForm
-        parameters.register(ParametersForm, _("Automatic replies"))
+        parameters.register(ParametersForm, ugettext_lazy("Automatic replies"))
 
     def destroy(self):
         events.unregister("CreateDomain", onCreateDomain)

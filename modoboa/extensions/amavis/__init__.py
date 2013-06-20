@@ -42,7 +42,7 @@ class Amavis(ModoExtension):
     def load(self):
         from app_settings import ParametersForm, UserSettings
         parameters.register(ParametersForm, "Amavis")
-        parameters.register(UserSettings, _("Quarantine"))
+        parameters.register(UserSettings, ugettext_lazy("Quarantine"))
        
     def destroy(self):
         events.unregister("UserMenuDisplay", menu)
