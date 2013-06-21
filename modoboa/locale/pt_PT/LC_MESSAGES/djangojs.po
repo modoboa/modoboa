@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-#   <miguelmclara@gmail.com>, 2012.
-# Sandra Ribeiro <sandrarib@gmail.com>, 2013.
+# mikec <miguelmclara@gmail.com>, 2012
+# Sandra Ribeiro <sandrarib@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2013-05-22 17:39+0200\n"
-"PO-Revision-Date: 2013-01-28 00:03+0000\n"
+"PO-Revision-Date: 2013-06-03 17:44+0000\n"
 "Last-Translator: Sandra Ribeiro <sandrarib@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: pt_PT\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/modoboa/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/static/admin/js/admin.js:26
@@ -32,11 +32,10 @@ msgid "This operation will remove ALL data associated to this domain."
 msgstr "Esta operação irá remover TODOS os dados associados a este domínio."
 
 #: admin/static/admin/js/admin.js:114
-#, fuzzy
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Esta operação irá remover TODOS os dados associados a este domínio."
+msgstr "Esta operação irá remover TODOS os dados associados a este domínio, excepto as contas."
 
 #: admin/static/admin/js/admin.js:117
 msgid "Delete this domain?"
