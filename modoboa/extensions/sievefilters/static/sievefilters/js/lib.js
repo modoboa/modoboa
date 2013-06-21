@@ -236,6 +236,7 @@ function filtersetform_cb() {
     });
     $(".submit").one('click', function(e) {
         simple_ajax_form_post(e, {
+            formid: "newfiltersset",
             reload_on_success: false,
             error_cb: filtersetform_cb,
             success_cb: filterset_created

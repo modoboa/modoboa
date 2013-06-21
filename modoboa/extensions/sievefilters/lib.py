@@ -77,7 +77,7 @@ class SieveClient(object):
 
     def pushscript(self, name, content, active=False):
         if type(content) is unicode:
-            content = str(content)
+            content = content.encode("utf-8")
         if not self.msc.havespace(name, len(content)):
             error = "%s (%s)" % (_("Not enough space on server"), self.msc.errmsg)
             raise SieveClientError(error)
