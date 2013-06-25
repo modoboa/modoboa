@@ -2,6 +2,7 @@
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block pagetitle %}{% endblock %}</title>
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}css/logo-icon.png" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.css" />
@@ -30,17 +31,22 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <div class="nav-collapse">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
             <ul class="nav">{% if selection %}
               {% loadextmenu selection user %}{% admin_menu selection user %}
               {% else %}{% loadextmenu "" user %}{% admin_menu "" user %}{% endif %}
               {% load_optionalmenu user %}
             </ul>
-            <ul class="nav pull-right">
-              {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
-            </ul>
-            <div class="pull-right">{% load_notifications user %}</div>
           </div>
+          <ul class="nav pull-right">
+            {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
+          </ul>
+          <div class="pull-right">{% load_notifications user %}</div>
         </div>
       </div>
     </div>    
