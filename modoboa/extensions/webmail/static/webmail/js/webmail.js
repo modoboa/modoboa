@@ -251,7 +251,7 @@ Webmail.prototype = {
         var res = new Array();
 
         $("#folders").find("ul:visible").children("li.droppable").each(function() {
-            res.push($(this).attr("name"));
+            res.push(encodeURIComponent($(this).attr("name")));
         });
         return "mboxes=" + res.join(",");
     },
