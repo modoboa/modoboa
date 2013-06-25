@@ -806,7 +806,7 @@ def _export(content, filename):
 
 
 @login_required
-@permission_required(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
+@user_passes_test(lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias"))
 def export_identities(request):
     ctx = {
         "title": _("Export identities"),
