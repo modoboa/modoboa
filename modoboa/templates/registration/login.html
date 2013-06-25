@@ -19,6 +19,7 @@
   </head>
   <body>
     <div class="container">
+      <div id="box">
       <div id="logo" class="row">
         <img src="{% get_modoboa_logo %}" />
       </div>
@@ -38,8 +39,9 @@
       <div class="login-error">
         {% if error %}{% alert error "error" %}{% endif %}
       </div>
+      </div>
       {% for annoucement in annoucements %}
       <div class="offset3 span5 well">{{ annoucement|safe }}</div>
       {% endfor %}
-  </body>
+     </body>
 </html>

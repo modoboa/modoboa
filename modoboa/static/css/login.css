@@ -1,8 +1,13 @@
+#box {
+    margin: 0 auto;
+    max-width: 350px;
+}
+
 #logo { 
     margin-top: 60px;
     text-align: center;
-    margin: 60px auto 20px;
-    max-width: 300px;
+    margin: 60px 0 30px;
+    max-width: 260px;
 }
 
 #logo img {
@@ -17,7 +22,7 @@
 }
 
 .login-form {
-    margin: 0 auto;
+    margin: 0 ;
     max-width: 300px;
     padding-bottom: 0;
 }
