@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-27 17:24+0200\n"
-"PO-Revision-Date: 2013-06-28 12:27+0200\n"
+"PO-Revision-Date: 2013-06-28 13:50+0200\n"
 "Last-Translator: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
 "Language: it-IT\n"
@@ -805,7 +805,7 @@ msgstr ""
 "</ul>\n"
 "<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a quello dei valori precedenti.</p>\n"
 "\n"
-"<p>Come separatore puoi utilizzare un carattere diverso.</p>"
+"<p>Come separatore puoi utilizzare un carattere diverso.</p>\n"
 
 #: admin/views.py:781
 msgid "Import identities"
@@ -843,7 +843,7 @@ msgstr ""
 "</ul>\n"
 "<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a quello dei valori precedenti.</p>\n"
 "\n"
-"<p>Come separatore puoi utilizzare un carattere diverso.</p><"
+"<p>Come separatore puoi utilizzare un carattere diverso.</p>\n"
 
 #: admin/views.py:851
 msgid "Import domains"
@@ -1161,7 +1161,7 @@ msgstr ""
 "</ul>\n"
 "<p>Prego segnalare qualsiasi errore o inviare suggerimenti  \n"
 "  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">alla \n"
-"mailing list</a>.</p>"
+"mailing list</a>.</p>\n"
 
 #: extensions/amavis/__init__.py:22
 msgid "Simple amavis management frontend"
@@ -2371,7 +2371,7 @@ msgstr "Amministratore di domini"
 #: lib/permissions.py:75
 #, python-format
 msgid "Failed to grant access (%s)"
-msgstr "Accesso fallito (%S)"
+msgstr "Accesso fallito (%s)"
 
 #: lib/tables.py:241
 msgid "No entries to display"
