@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-27 17:24+0200\n"
-"PO-Revision-Date: 2013-06-28 15:41+0200\n"
+"PO-Revision-Date: 2013-06-28 17:03+0200\n"
 "Last-Translator: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
 "Language: it\n"
@@ -314,7 +314,7 @@ msgstr "Elenco degli indirizzi di smistamento"
 
 #: admin/forms.py:208
 msgid "Recipients"
-msgstr "Contenitori"
+msgstr "Destinatari"
 
 #: admin/forms.py:209
 msgid ""
@@ -337,16 +337,16 @@ msgstr "Casella di posta non valida"
 #: admin/forms.py:285 admin/models.py:1175
 #, python-format
 msgid "Local recipient %s not found"
-msgstr "Il contenitore %s non è stato trovato"
+msgstr "Il destinatario locale %s non è stato trovato"
 
 #: admin/forms.py:287 admin/forms.py:293
 #, python-format
 msgid "Recipient %s already present"
-msgstr "Il contenitore %s è già esistente"
+msgstr "Il destinatario %s è già esistente"
 
 #: admin/forms.py:298
 msgid "No recipient defined"
-msgstr "Non è stato definito un contenitore"
+msgstr "Non è stato definito un destinatario"
 
 #: admin/forms.py:312 extensions/webmail/forms.py:19
 msgid "Select a file"
@@ -799,9 +799,9 @@ msgstr ""
 "Fornire un file CSV le cui righe rispettino uno dei seguenti formati:\n"
 "<ul>\n"
 "<li><em>account; loginname; password; nome; cognome; abilitato; group; indirizzo[, dominio, ...]</em></li>\n"
-"<li><em>alias; indirizzo; abilitato; contenitore interno</em></li>\n"
-"<li><em>forward; indirizzo; abilitato; contenitore esterno</em></li>\n"
-"<li><em>dlist; indirizzo; abilitato; contenitore; contenitore; ...</em></li>\n"
+"<li><em>alias; indirizzo; abilitato; destinatario interno</em></li>\n"
+"<li><em>forward; indirizzo; abilitato; destinatario esterno</em></li>\n"
+"<li><em>dlist; indirizzo; abilitato; destinatario; destinatario; ...</em></li>\n"
 "</ul>\n"
 "<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a quello dei valori precedenti.</p>\n"
 "\n"
@@ -915,7 +915,7 @@ msgstr "Identità"
 
 #: admin/templates/admin/identities_table.html:6
 msgid "Fullname/Recipient"
-msgstr "Nome completo/Contenitore"
+msgstr "Nome completo/Destinatario"
 
 #: admin/templates/admin/identities_table.html:7
 msgid "Tags"
@@ -1612,7 +1612,7 @@ msgstr "Tempo massimo della risposta automatica"
 
 #: extensions/postfix_autoreply/app_settings.py:16
 msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr "Tempo massimo in secondi tra due risposte automatiche al medesimo contenitore"
+msgstr "Tempo massimo in secondi tra due risposte automatiche al medesimo destinatario"
 
 #: extensions/postfix_autoreply/forms.py:9
 msgid "Until"
@@ -1742,7 +1742,7 @@ msgstr "Mittente"
 
 #: extensions/sievefilters/forms.py:70
 msgid "Recipient"
-msgstr "Contenitore"
+msgstr "Destinatario"
 
 #: extensions/sievefilters/forms.py:71 extensions/webmail/forms.py:8
 msgid "Cc"
@@ -2469,11 +2469,11 @@ msgstr "La password non corrisponde"
 
 #: userprefs/forms.py:59
 msgid "Recipient(s)"
-msgstr "Contenitore(i)"
+msgstr "Destinatario(i)"
 
 #: userprefs/forms.py:62
 msgid "Indicate one or more recipients separated by a ','"
-msgstr "Indicare uno o più contenitori separati da ','"
+msgstr "Indicare uno o più destinatari separati da ','"
 
 #: userprefs/forms.py:65
 msgid "Keep local copies"
