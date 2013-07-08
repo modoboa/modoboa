@@ -22,6 +22,7 @@ class UserSettings(UserParametersForm):
         label=ugettext_lazy("Prefered language"),
         choices=[("de", "deutsch"), ("en", "english"),
                 ("es", "español"), ("fr", "français"),
-                ("pt", "português"), ("sv", "svenska"),],
+                ("it", "italiano"), ("pt", "português"),
+                ("sv", "svenska"),],
         help_text=ugettext_lazy("Prefered language to display pages")
     )
