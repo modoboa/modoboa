@@ -32,6 +32,12 @@ TwocolsNav.prototype = {
     },
 
     display_errors: function(data) {
+        if (data.errors == undefined) {
+            if (data.respmsg) {
+                $("body").notify("error", data.respmsg);
+            }
+            return;
+        }
         $.each(data.errors, function(id, value) {
             var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
             var $widget = $("#" + fullid);
