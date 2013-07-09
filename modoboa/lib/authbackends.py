@@ -34,7 +34,7 @@ try:
             """
             user, created = User.objects.get_or_create(
                 username__iexact=username, 
-                defaults={'username': username.lower()}
+                defaults={'username': username.lower(), 'is_local': False}
             )
             if created:
                 populate_callback(user)

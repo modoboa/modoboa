@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    is_local = models.BooleanField(default=True)
 
     objects = UserManager()
 
@@ -152,7 +153,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         :param raw_value: the new password's value
         :param curvalue: the current password (for LDAP authentication)
         """
-        if parameters.get_admin("AUTHENTICATION_TYPE") == "local":
+        if self.is_local:
             self.password = self._crypt_password(raw_value)
         else:
             if not ldap_available:
