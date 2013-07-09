@@ -411,6 +411,11 @@ class AccountFormGeneral(forms.ModelForm):
             u = kwargs["instance"]
             self.fields["role"].initial = u.group
 
+            if not u.is_local \
+               and parameters.get_admin("LDAP_AUTH_METHOD") == "directbind":
+                del self.fields["password1"]
+                del self.fields["password2"]
+
     def clean_role(self):
         if self.user.group == "DomainAdmins":
             if self.instance == self.user:
@@ -440,7 +445,8 @@ class AccountFormGeneral(forms.ModelForm):
         if self.user == account and not self.cleaned_data["is_active"]:
             raise AdminError(_("You can't disable your own account"))
         if commit:
-            if self.cleaned_data["password1"] != "":
+            if "password1" in self.cleaned_data \
+               and self.cleaned_data["password1"] != "":
                 account.set_password(self.cleaned_data["password1"])
             account.save()
             account.set_role(self.cleaned_data["role"])
