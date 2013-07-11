@@ -139,6 +139,7 @@ class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
 
     list_base_pattern = r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "(?P<name>[^"]*)"'
+    list_response_pattern_literal = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" \{(?P<namelen>\d+)\}')
     list_response_pattern = re.compile(list_base_pattern)
     listextended_response_pattern = \
         re.compile(list_base_pattern + r'\s*(?P<childinfo>.*)')
@@ -395,8 +396,14 @@ class IMAPconnector(object):
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
         for mb in resp:
-            flags, delimiter, name, childinfo = \
-                self.listextended_response_pattern.match(mb).groups()
+            if not mb:
+                continue
+            if type(mb) in [str, unicode]:
+                flags, delimiter, name, childinfo = \
+                    self.listextended_response_pattern.match(mb).groups()
+            else:
+                flags, delimiter, namelen = self.list_response_pattern_literal.match(mb[0]).groups()
+                name = mb[1][0:int(namelen)]
             flags = flags.split(' ')
             name = name.decode("imap4-utf-7")
             mdm_found = False
