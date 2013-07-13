@@ -485,13 +485,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         The expected order is the following::
 
-          loginname, password, first name, last name, enabled, group, address[, domain, ...]
+          "account", loginname, password, first name, last name, enabled, group, address[, domain, ...]
 
-        :param user: 
+        :param user: the user importing a new account
         :param row: a list containing the expected information
         :param crypt_password:
         """
-        if len(row) < 6:
+        if len(row) < 7:
             raise AdminError(_("Invalid line"))
         role = row[6].strip()
         if not user.is_superuser and not role in ["SimpleUsers", "DomainAdmins"]:
@@ -499,6 +499,16 @@ class User(AbstractBaseUser, PermissionsMixin):
                 _("You can't import an account with a role greater than yours")
             )
         self.username = row[1].strip()
+        if role == "SimpleUsers":
+            if (len(row) < 8 or not row[7].strip()):
+                raise AdminError(
+                    _("The simple user '%s' must have a valid email address" % self.username)
+                )
+            if self.username != row[7].strip():
+                raise AdminError(
+                    _("username and email fields must not differ for '%s'" % self.username)
+                )
+
         if crypt_password:
             self.set_password(row[2].strip())
         else:
@@ -509,8 +519,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.save(creator=user)
         self.set_role(role)
 
+        if len(row) < 8:
+            return
+
         self.email = row[7].strip()
         if self.email != "":
+            self.save()
             mailbox, domname = split_mailbox(self.email)
             try:
                 domain = Domain.objects.get(name=domname)
@@ -523,6 +537,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             mb = Mailbox(address=mailbox, domain=domain, user=self, use_domain_quota=True)
             mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
             mb.save(creator=user)
+
         if self.group == "DomainAdmins":
             for domname in row[8:]:
                 try:

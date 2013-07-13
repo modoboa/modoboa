@@ -353,6 +353,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         admin = User.objects.get(username="admin")
         u1 = User.objects.get(username="user1@test.com")
         self.assertTrue(admin.is_owner(u1))
+        self.assertEqual(u1.email, "user1@test.com")
         self.assertEqual(u1.first_name, "User")
         self.assertEqual(u1.last_name, "One")
         self.assertTrue(u1.is_active)
