@@ -276,6 +276,8 @@ class AliasForm(forms.ModelForm, DynamicForm):
                     raise PermDeniedException(v)
                 try:
                     rcpt = Alias.objects.get(domain=domain, address=local_part)
+                    if rcpt.full_address == self.cleaned_data["email"]:
+                        rcpt = None
                 except Alias.DoesNotExist:
                     rcpt = None
                 if rcpt is None:

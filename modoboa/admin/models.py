@@ -1181,12 +1181,14 @@ class Alias(DatesAware):
                 continue
             try:
                 target = Alias.objects.get(domain__name=domname, address=localpart)
+                if target.full_address == self.full_address:
+                    target = None
             except Alias.DoesNotExist:
                 target = None
             if target is None:
                 try:
                     target = Mailbox.objects.get(address=localpart, 
-                                               domain__name=domname)
+                                                 domain__name=domname)
                 except Mailbox.DoesNotExist:
                     raise AdminError(_("Local recipient %s not found" % rcpt))
             int_rcpts += [target]

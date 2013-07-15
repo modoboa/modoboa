@@ -214,6 +214,20 @@ class AliasTestCase(ModoTestCase):
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get, 
                           address="forward", domain__name="test.com")
 
+    def test_forward_and_local_copies(self):
+        values = dict(email="user@test.com", recipients="rcpt@dest.com")
+        self.check_ajax_post(reverse("modoboa.admin.views.newforward"), values)
+        fwd = Alias.objects.get(address="user", domain__name="test.com")
+        self.assertEqual(fwd.get_recipients_count(), 1)
+
+        values["recipients"] = "rcpt@dest.com"
+        values["recipients_1"] = "user@test.com"
+        self.check_ajax_post(reverse("modoboa.admin.views.editalias", args=[fwd.id]),
+                             values)
+        fwd = Alias.objects.get(pk=fwd.pk)
+        self.assertEqual(fwd.get_recipients_count(), 2)
+        self.assertEqual(fwd.aliases.count(), 0)
+
 
 class PermissionsTestCase(ModoTestCase):
     fixtures = ["initial_users.json", "test_content.json"]
