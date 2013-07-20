@@ -1,6 +1,9 @@
 from django.contrib.auth.backends import ModelBackend
+from django.utils.translation import gettext as _
 from modoboa.admin.models import User
+from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib import parameters
+from modoboa.lib.emailutils import split_mailbox
 
 class SimpleBackend(ModelBackend):
 
@@ -32,6 +35,9 @@ try:
             username is the Django-friendly username of the user. ldap_user.dn is
             the user's DN and ldap_user.attrs contains all of their LDAP attributes.
             """
+            lpart, domain = split_mailbox(username)
+            if domain is None:
+                return None
             user, created = User.objects.get_or_create(
                 username__iexact=username, 
                 defaults={'username': username.lower(), 'is_local': False}

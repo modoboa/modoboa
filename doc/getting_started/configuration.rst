@@ -154,14 +154,14 @@ This parameter is optional but you must ensure it is set to ``False``
 The default configuration file provided by the *modoboa-admin.py*
 command is properly configured.
 
-***********************
-External authentication
-***********************
+****
+LDAP
+****
 
 .. _ldap_auth:
 
-LDAP
-====
+Authentication
+==============
 
 *Modoboa* supports external LDAP authentication using the following extra components:
 
@@ -181,46 +181,67 @@ like this::
       'modoboa.lib.authbackends.SimpleBackend',
     )
 
-Then, go to *Modoboa > Parameters > General* and set *Authentication
+Finally, go to *Modoboa > Parameters > General* and set *Authentication
 type* to LDAP.
 
 From there, new parameters will appear to let you configure the way
 Modoboa should connect to your LDAP server. They are described just below:
 
-+--------------------+--------------------+--------------------+
-|Name                |Description         |Default value       |
-+====================+====================+====================+
-|Server address      |The IP address of   |localhost           |
-|                    |the DNS name of the |                    |
-|                    |LDAP server         |                    |
-+--------------------+--------------------+--------------------+
-|Server port         |The TCP port number |389                 |
-|                    |used by the LDAP    |                    |
-|                    |server              |                    |
-+--------------------+--------------------+--------------------+
-|Use a secure        |Use an SSL/TLS      |no                  |
-|connection          |connection to access|                    |
-|                    |the LDAP server     |                    |
-+--------------------+--------------------+--------------------+
-|Authentication      |Choose the          |Direct bind         |
-|method              |authentication      |                    |
-|                    |method to use       |                    |
-+--------------------+--------------------+--------------------+
-|User DN template    |The template used to|                    |
-|                    |construct a user's  |                    |
-|                    |DN. It should       |                    |
-|                    |contain one         |                    |
-|                    |placeholder         |                    |
-|                    |(ie. ``%(user)s``)  |                    |
-+--------------------+--------------------+--------------------+
-|Password attribute  |The attribute used  |userPassword        |
-|                    |to store user       |                    |
-|                    |passwords           |                    |
-+--------------------+--------------------+--------------------+
-|Active Directory    |Tell if the LDAP    |no                  |
-|                    |server is an Active |                    |
-|                    |Directory one       |                    |
-+--------------------+--------------------+--------------------+
++--------------------+---------------------------------+--------------------+
+|Name                |Description                      |Default value       |
++====================+=================================+====================+
+|Server address      |The IP address of                |localhost           |
+|                    |the DNS name of the              |                    |
+|                    |LDAP server                      |                    |
++--------------------+---------------------------------+--------------------+
+|Server port         |The TCP port number              |389                 |
+|                    |used by the LDAP                 |                    |
+|                    |server                           |                    |
++--------------------+---------------------------------+--------------------+
+|Use a secure        |Use an SSL/TLS                   |no                  |
+|connection          |connection to access             |                    |
+|                    |the LDAP server                  |                    |
++--------------------+---------------------------------+--------------------+
+|Authentication      |Choose the                       |Direct bind         |
+|method              |authentication                   |                    |
+|                    |method to use                    |                    |
++--------------------+---------------------------------+--------------------+
+|User DN template    |The template used to             |                    |
+|(direct bind mode)  |construct a user's               |                    |
+|                    |DN. It should                    |                    |
+|                    |contain one                      |                    |
+|                    |placeholder                      |                    |
+|                    |(ie. ``%(user)s``)               |                    |
++--------------------+---------------------------------+--------------------+
+|Bind BN             |The distinguished                |                    |
+|                    |name to use when                 |                    |
+|                    |binding to the LDAP              |                    |
+|                    |server. Leave empty              |                    |
+|                    |for an anonymous                 |                    |
+|                    |bind                             |                    |
++--------------------+---------------------------------+--------------------+
+|Bind password       |The password to use              |                    |
+|                    |when binding to the              |                    |
+|                    |LDAP server (with                |                    |
+|                    |'Bind DN')                       |                    |
++--------------------+---------------------------------+--------------------+
+|Search base         |The distinguished                |                    |
+|                    |name of the search               |                    |
+|                    |base                             |                    |
++--------------------+---------------------------------+--------------------+
+|Search filter       |An optional filter string        |(mail=%(user)s)     |
+|                    |(e.g. '(objectClass=person)'). In|                    |
+|                    |order to be valid, it must be    |                    |
+|                    |enclosed in parentheses.         |                    |
++--------------------+---------------------------------+--------------------+
+|Password attribute  |The attribute used               |userPassword        |
+|                    |to store user                    |                    |
+|                    |passwords                        |                    |
++--------------------+---------------------------------+--------------------+
+|Active Directory    |Tell if the LDAP                 |no                  |
+|                    |server is an Active              |                    |
+|                    |Directory one                    |                    |
++--------------------+---------------------------------+--------------------+
 
 If you need additional parameters, you will find a detailled
 documentation `here <http://packages.python.org/django-auth-ldap/>`_.
@@ -228,6 +249,13 @@ documentation `here <http://packages.python.org/django-auth-ldap/>`_.
 Once the authentication is properly configured, the users defined in
 your LDAP directory will be able to connect to *Modoboa*, the associated
 domain and mailboxes will be automatically created if needed.
+
+.. note::
+
+   Users created automatically from an LDAP directory belongs to the
+   *SimpleUsers* group and have a mailbox. To do so, usernames have to
+   be valid email addresses. If not, LDAP users won't be able to
+   access Modoboa.
 
 Users will also be able to update their LDAP password directly from
 Modoboa.

@@ -97,7 +97,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Bind password"),
         initial='',
         help_text=ugettext_lazy("The password to use when binding to the LDAP server (with 'Bind DN')"),
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(render_value=True),
         required=False
     )
 

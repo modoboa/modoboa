@@ -83,7 +83,7 @@ class LDAPAuthBackend(object):
         else:
             tpl = self._setting("AUTH_LDAP_USER_DN_TEMPLATE", "")
             self.user_dn = tpl % {"user": user}
-        self.conn = self._get_conn(self.user_dn, password)
+            self.conn = self._get_conn(self.user_dn, password)
 
     def _find_user_dn(self, user):
         sbase = parameters.get_admin("LDAP_SEARCH_BASE", app="admin")
