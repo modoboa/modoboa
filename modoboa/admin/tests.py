@@ -55,6 +55,21 @@ class DomainTestCase(ModoTestCase):
         self.assertIn(da.mailbox_set.all()[0], al.mboxes.all())
         self.assertTrue(da.can_access(al))
 
+    def test_create_with_template_and_empty_quota(self):
+        """Test the creation of a domain with a template and no quota"""
+        values = {
+            "name": "pouet.com", "quota": 0, "create_dom_admin": "yes",
+            "dom_admin_username": "toto", "create_aliases": "yes",
+            "stepid": 2
+        }
+        self.check_ajax_post(reverse("modoboa.admin.views.newdomain"), values)
+        dom = Domain.objects.get(name="pouet.com")
+        da = User.objects.get(username="toto@pouet.com")
+        self.assertIn(da, dom.admins)
+        al = Alias.objects.get(address="postmaster", domain__name="pouet.com")
+        self.assertIn(da.mailbox_set.all()[0], al.mboxes.all())
+        self.assertTrue(da.can_access(al))
+
     def test_modify(self):
         """Test the modification of a domain
 

@@ -161,7 +161,7 @@ class DomainFormOptions(forms.Form):
         da.post_create(user)
         mb = Mailbox(address=self.cleaned_data["dom_admin_username"], domain=domain,
                      user=da, use_domain_quota=True)
-        mb.set_quota()
+        mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
         mb.save(creator=user)
 
         if self.cleaned_data["create_aliases"] == "yes":
