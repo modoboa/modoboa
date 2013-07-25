@@ -376,7 +376,7 @@ Use the following configuration in the */etc/postfix/main.cf* file
 (this is just one possible configuration)::
 
   # Stuff before
-  mailbox_transport = dovecot
+  virtual_transport = dovecot
   dovecot_destination_recipient_limit = 1
 
   virtual_minimum_uid = <vmail user id> 
