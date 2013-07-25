@@ -53,6 +53,22 @@ package. On Debian/Ubuntu::
   $ apt-get install libcairo2-dev libpango1.0-dev librrd-dev
   $ pip install python-rrdtool
 
+`virtualenv <http://www.virtualenv.org/en/latest/>`_ users
+==========================================================
+
+When you deploy an application using *virtualenv*, you may have to
+compile some dependencies. For example, *modoboa* relies on *lxml*,
+which is a C python module. In order to install it, you will need to
+install the following requirements:
+
+* python development files
+* libxslt development files
+* libxml2 development files
+
+On a *Debian* like system, just run the following command::
+
+  $ apt-get instal python-dev libxml2-dev libxslt-dev
+
 .. _database:
 
 ********
