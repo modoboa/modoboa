@@ -138,7 +138,7 @@ class BodyStructure(object):
 class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
 
-    list_base_pattern = r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "(?P<name>[^"]*)"'
+    list_base_pattern = r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "?(?P<name>[^"]*)"?'
     list_response_pattern_literal = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" \{(?P<namelen>\d+)\}')
     list_response_pattern = re.compile(list_base_pattern)
     listextended_response_pattern = \
