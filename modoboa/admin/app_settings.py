@@ -207,6 +207,13 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             del self.fields["handle_mailboxes"]
             del self.fields["mailboxes_owner"]
 
+    def clean_secret_key(self):
+        if len(self.cleaned_data["secret_key"]) not in [16, 24, 32]:
+            raise forms.ValidationError(
+                _("Key must be either 16, 24, or 32 bytes long")
+            )
+        return self.cleaned_data["secret_key"]
+
     def clean_ldap_user_dn_template(self):
         tpl = self.cleaned_data["ldap_user_dn_template"]
         try:
