@@ -71,9 +71,10 @@ class DeployCommand(Command):
             info['dbtype'] = 'mysql'
         if info['dbtype'] == 'postgres':
             info['dbtype'] = 'postgresql_psycopg2'
-        info['dbhost'] = raw_input('Database host (default: localhost): ')
+        default_host = 'localhost' if info['dbtype'] == 'mysql' else ''
+        info['dbhost'] = raw_input("Database host (default: '%s'): " % default_host)
         if info['dbhost'] == '':
-            info['dbhost'] = 'localhost'
+            info['dbhost'] = default_host
         info['dbname'] = raw_input('Database name: ')
         info['username'] = raw_input('Username: ')
         info['password'] = getpass.getpass('Password: ')
