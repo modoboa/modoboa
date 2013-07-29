@@ -2,6 +2,8 @@
 Modoboa
 #######
 
+|latest-version| |downloads|
+
 Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
 as an administration panel or a webmail.
