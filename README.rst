@@ -58,3 +58,10 @@ The following external libraries are provided with Modoboa:
 * jQuery-UI 1.10+ (http://jqueryui.com/)
 * Bootstrap, from Twitter version 2.3.1 (http://twitter.github.com/bootstrap/)
 * Bootstrap datepicker (https://bitbucket.org/eternicode/bootstrap-datepicker)
+
+.. |latest-version| image:: https://pypip.in/v/modoboa/badge.png
+   :alt: Latest version on Pypi
+   :target: https://crate.io/packages/modoboa/
+.. |downloads| image:: https://pypip.in/d/modoboa/badge.png
+   :alt: Downloads from Pypi
+   :target: https://crate.io/packages/modoboa/
