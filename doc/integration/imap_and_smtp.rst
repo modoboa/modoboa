@@ -185,7 +185,7 @@ Inside *conf.d/90-quota.conf*, activate the *quota dictionary* backend::
 
 It will tell Dovecot to keep quota usage in the SQL dictionary.
 
-Finally, edit the *dovecot-dict-sql.conf* file and put the following content inside::
+Finally, edit the *dovecot-dict-sql.conf.ext* file and put the following content inside::
 
   connect = host=<db host> dbname=<db name> user=<db user> password=<password>
 
