@@ -18,7 +18,7 @@ def enabled_applications():
     from modoboa.admin.models import Extension
     from modoboa.lib.dbutils import db_table_exists
 
-    result = [("admin", "admin"), ("userprefs", "userprefs")]
+    result = [("userprefs", "userprefs")]
     if db_table_exists("admin_extension"):
         exts = Extension.objects.filter(enabled=True)
         result += [(ext.name, ext.name) for ext in exts]
@@ -171,7 +171,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     default_top_redirection = forms.ChoiceField(
         label=ugettext_lazy("Default top redirection"),
         choices=[],
-        initial="admin",
+        initial="userprefs",
         help_text=ugettext_lazy("The default redirection used when no application is specified")
     )
 
