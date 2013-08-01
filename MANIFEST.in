@@ -1,4 +1,4 @@
 include README.rst COPYING requirements.txt
 recursive-include modoboa *.html *.js *.css *.png *.po *.mo *.json *.gif
-recursive-include modoboa/core/templates *.py
+recursive-include modoboa/core/templates *.tpl
 recursive-include doc *

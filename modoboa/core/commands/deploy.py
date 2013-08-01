@@ -114,17 +114,19 @@ class DeployCommand(Command):
         )
 
         mod = __import__(parsed_args.name, globals(), locals(), ['settings'])
-        tpl = self._render_template("%s/settings.py" % self._templates_dir, {
-            'default_conn': default_conn, 'amavis_conn': amavis_conn,
-            'secret_key': mod.settings.SECRET_KEY,
-            'name': parsed_args.name, 'django14': django14,
-            'allowed_host': allowed_host
-        })
+        tpl = self._render_template(
+            "%s/settings.py.tpl" % self._templates_dir, {
+                'default_conn': default_conn, 'amavis_conn': amavis_conn,
+                'secret_key': mod.settings.SECRET_KEY,
+                'name': parsed_args.name, 'django14': django14,
+                'allowed_host': allowed_host
+            }
+        )
         fp = open("%s/settings.py" % path, "w")
         fp.write(tpl)
         fp.close()
         shutil.copyfile(
-            "%s/urls.py" % self._templates_dir, "%s/urls.py" % path
+            "%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path
         )
         os.mkdir("%s/media" % path)
 
