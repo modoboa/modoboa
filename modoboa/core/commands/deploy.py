@@ -22,6 +22,7 @@ dbconn_tpl = """
     },
 """
 
+
 class DeployCommand(Command):
     help = "Create a fresh django project (calling startproject) and apply Modoboa specific settings."
 
@@ -29,12 +30,18 @@ class DeployCommand(Command):
         super(DeployCommand, self).__init__(*args, **kwargs)
         self._parser.add_argument('name', type=str,
                                   help='The name of your Modoboa instance')
-        self._parser.add_argument('--with-amavis', action='store_true', default=False,
-                                  help='Include amavis configuration')
-        self._parser.add_argument('--syncdb', action='store_true', default=False,
-                                  help='Run django syncdb command')
-        self._parser.add_argument('--collectstatic', action='store_true', default=False,
-                                  help='Run django collectstatic command')
+        self._parser.add_argument(
+            '--with-amavis', action='store_true', default=False,
+            help='Include amavis configuration'
+        )
+        self._parser.add_argument(
+            '--syncdb', action='store_true', default=False,
+            help='Run django syncdb command'
+        )
+        self._parser.add_argument(
+            '--collectstatic', action='store_true', default=False,
+            help='Run django collectstatic command'
+        )
 
     def _exec_django_command(self, name, cwd, *args):
         """Run a django command for the freshly created project
@@ -44,9 +51,10 @@ class DeployCommand(Command):
         """
         cmd = 'python manage.py %s %s' % (name, " ".join(args))
         if not self._verbose:
-            p = subprocess.Popen(cmd,
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                 shell=True, cwd=cwd)
+            p = subprocess.Popen(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                shell=True, cwd=cwd
+            )
             output = p.communicate()
         else:
             p = subprocess.Popen(cmd, shell=True, cwd=cwd)
@@ -54,8 +62,8 @@ class DeployCommand(Command):
             output = None
         if p.returncode:
             if output:
-                print >>sys.stderr, "\n".join(filter(lambda l: l is not None, output))
-            print >>sys.stderr, "%s failed, check your configuration" % cmd
+                print >> sys.stderr, "\n".join([l for l in output if l is not None])
+            print >> sys.stderr, "%s failed, check your configuration" % cmd
 
     def ask_db_info(self, name='default'):
         """Prompt the user for database information
@@ -66,13 +74,15 @@ class DeployCommand(Command):
         :param name: the connection name
         """
         print "Configuring database connection: %s" % name
-        info = {'conn_name': name, 'dbtype': raw_input('Database type (mysql or postgres): ')}
+        info = {'conn_name': name,
+                'dbtype': raw_input('Database type (mysql or postgres): ')}
         if info['dbtype'] not in ['mysql', 'postgres']:
             info['dbtype'] = 'mysql'
         if info['dbtype'] == 'postgres':
             info['dbtype'] = 'postgresql_psycopg2'
         default_host = 'localhost' if info['dbtype'] == 'mysql' else ''
-        info['dbhost'] = raw_input("Database host (default: '%s'): " % default_host)
+        info['dbhost'] = \
+            raw_input("Database host (default: '%s'): " % default_host)
         if info['dbhost'] == '':
             info['dbhost'] = default_host
         info['dbname'] = raw_input('Database name: ')
@@ -81,10 +91,12 @@ class DeployCommand(Command):
         return info
 
     def handle(self, parsed_args):
-        management.call_command('startproject', parsed_args.name, verbosity=False)
-        if os.path.exists("%(name)s/%(name)s" % {'name' : parsed_args.name}):
+        management.call_command(
+            'startproject', parsed_args.name, verbosity=False
+        )
+        if os.path.exists("%(name)s/%(name)s" % {'name': parsed_args.name}):
             # Django 1.4+
-            path = "%(name)s/%(name)s" % {'name' : parsed_args.name}
+            path = "%(name)s/%(name)s" % {'name': parsed_args.name}
             sys.path.append(parsed_args.name)
             django14 = True
         else:
@@ -94,27 +106,37 @@ class DeployCommand(Command):
 
         t = Template(dbconn_tpl)
         default_conn = t.render(Context(self.ask_db_info()))
-        amavis_conn = t.render(Context(self.ask_db_info('amavis'))) if parsed_args.with_amavis \
-            else None
+        amavis_conn = t.render(Context(self.ask_db_info('amavis'))) \
+            if parsed_args.with_amavis else None
 
-        allowed_host = raw_input('Under which domain do you want to deploy modoboa? ')
+        allowed_host = raw_input(
+            'Under which domain do you want to deploy modoboa? '
+        )
 
         mod = __import__(parsed_args.name, globals(), locals(), ['settings'])
         tpl = self._render_template("%s/settings.py" % self._templates_dir, {
-            'default_conn' : default_conn, 'amavis_conn' : amavis_conn,
-            'secret_key' : mod.settings.SECRET_KEY,
-            'name' : parsed_args.name, 'django14' : django14,
+            'default_conn': default_conn, 'amavis_conn': amavis_conn,
+            'secret_key': mod.settings.SECRET_KEY,
+            'name': parsed_args.name, 'django14': django14,
             'allowed_host': allowed_host
-            })
+        })
         fp = open("%s/settings.py" % path, "w")
         fp.write(tpl)
         fp.close()
-        shutil.copyfile("%s/urls.py" % self._templates_dir, "%s/urls.py" % path)
+        shutil.copyfile(
+            "%s/urls.py" % self._templates_dir, "%s/urls.py" % path
+        )
         os.mkdir("%s/media" % path)
 
         if parsed_args.syncdb:
-            self._exec_django_command("syncdb", parsed_args.name, '--migrate', '--noinput')
-            self._exec_django_command("loaddata", parsed_args.name, 'initial_users.json')
+            self._exec_django_command(
+                "syncdb", parsed_args.name, '--migrate', '--noinput'
+            )
+            self._exec_django_command(
+                "loaddata", parsed_args.name, 'initial_users.json'
+            )
 
         if parsed_args.collectstatic:
-            self._exec_django_command("collectstatic", parsed_args.name, '--noinput')
+            self._exec_django_command(
+                "collectstatic", parsed_args.name, '--noinput'
+            )

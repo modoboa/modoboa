@@ -44,7 +44,7 @@ class DeployTest(unittest.TestCase):
         child.logfile = fout
         child.expect("Database type \(mysql or postgres\):", timeout=timeout)
         child.sendline(self.dbtype)
-        child.expect("Database host \(default: localhost\):", timeout=timeout)
+        child.expect("Database host \(default: 'localhost'\):", timeout=timeout)
         child.sendline(self.dbhost)
         child.expect("Database name:", timeout=timeout)
         child.sendline(self.projname)
