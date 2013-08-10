@@ -42,8 +42,11 @@ class Column(object):
             col["value"] = row[self.name]
         try:
             limit = getattr(self, "limit")
-            if len(col["value"]) > limit:
-                col["value"] = col["value"][0:limit] + "..."
+            if limit:
+                # The value is not necessarily a string, so...
+                col["value"] = str(col["value"])
+                if len(col["value"]) > limit:
+                    col["value"] = col["value"][0:limit] + "..."
         except AttributeError:
             pass
         try:
