@@ -97,7 +97,7 @@ def _listing(request):
 @login_required
 def index(request):
     return _render(request, "amavis/index.html", dict(
-            deflocation="listing/", defcallback="listing_cb", selection="quarantine"
+            deflocation="listing/?order=-date", defcallback="listing_cb", selection="quarantine"
             ))
 
 
