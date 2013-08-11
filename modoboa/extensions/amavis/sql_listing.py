@@ -36,9 +36,14 @@ class Qtable(tables.Table):
 
 
 class SQLconnector(MBconnector):
+    order_translation_table = {
+        "score": "mail__msgrcpt__bspam_level",
+        "date": "mail__time_num"
+        }
+
     def __init__(self, mail_ids=None, filter=None):
         self.count = None
-        self.emails = None
+        self.messages = None
         self.mail_ids = mail_ids
         self.filter = filter
 
@@ -49,38 +54,45 @@ class SQLconnector(MBconnector):
                 filter &= Q(mail__in=self.mail_ids)
             if self.filter:
                 filter &= self.filter
-            messages = Quarantine.objects.filter(filter)
-            self.emails = []
-            for qm in messages:
-                for rcpt in qm.mail.msgrcpt_set.all():
-                    m = {"from": qm.mail.from_addr,
-                         "to": rcpt.rid.email,
-                         "subject": qm.mail.subject,
-                         "mailid": qm.mail_id,
-                         "date": qm.mail.time_num,
-                         "type": rcpt.content,
-                         "score": rcpt.bspam_level}
-                    if rcpt.rs == '':
-                        m["class"] = "unseen"
-                    elif rcpt.rs == 'R':
-                        m["img_rstatus"] = static_url("pics/release.png")
-                    elif rcpt.rs == 'p':
-                        m["class"] = "pending"
-                    self.emails.append(m)
-
+            self.messages = Quarantine.objects.filter(filter).values("mail__from_addr",
+                                                                "mail__msgrcpt__rid__email",
+                                                                "mail__subject",
+                                                                "mail__mail_id",
+                                                                "mail__time_num",
+                                                                "mail__msgrcpt__content",
+                                                                "mail__msgrcpt__bspam_level",
+                                                                "mail__msgrcpt__rs")
             if "order" in kwargs:
                 order = kwargs["order"]
-                reverse = False
+                sign = ""
                 if order[0] == "-":
-                    reverse = True
+                    sign = "-"
                     order = order[1:]
-                self.emails.sort(None, lambda x:x[order], reverse)
+                order = self.order_translation_table[order]
+                self.messages = self.messages.order_by(sign + order)
 
-            self.count = len(self.emails)
+            self.count = len(self.messages)
         return self.count
 
     def fetch(self, start=None, stop=None, **kwargs):
-        return self.emails[start - 1:stop]
+        emails = []
+        for qm in self.messages[start - 1:stop]:
+            m = {"from": qm["mail__from_addr"],
+                 "to": qm["mail__msgrcpt__rid__email"],
+                 "subject": qm["mail__subject"],
+                 "mailid": qm["mail__mail_id"],
+                 "date": qm["mail__time_num"],
+                 "type": qm["mail__msgrcpt__content"],
+                 "score": qm["mail__msgrcpt__bspam_level"]}
+            rs = qm["mail__msgrcpt__rs"]
+            if rs == '':
+                m["class"] = "unseen"
+            elif rs == 'R':
+                m["img_rstatus"] = static_url("pics/release.png")
+            elif rs == 'p':
+                m["class"] = "pending"
+            emails.append(m)
+        return emails
 
 
 class SQLWrapper(object):
