@@ -285,7 +285,9 @@ def get_user(user, name, app=None, raise_error=True):
 
 
 def get_sorted_apps(level, first="admin"):
-    sorted_apps = [first]
+    sorted_apps = []
+    if first in _params[level]:
+        sorted_apps.append(first)
     sorted_apps += sorted(
         [app for app in _params[level].keys() if app != first],
         key=lambda app: _params[level][app]["label"]

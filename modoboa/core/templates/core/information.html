@@ -1,0 +1,17 @@
+{% load i18n libextras %}
+<h2>{% trans "Information" %} <small>{% trans "Various information about Modoboa" %}</small></h2><hr>
+<div class="alert alert-info">Modoboa <strong>{% get_version %}</strong> {% trans "is currently in use." %}</div>
+
+<h3>{% trans "Active users" %}</h3>
+<table class="table">
+  <tr>
+    <th>{% trans "Name" %}</th>
+    <th>{% trans "Group name" %}</th>
+    <th>{% trans "Last login" %}</th>
+  </tr>
+  {% connected_users as users %}{% for u in users %}<tr>
+    <td>{{ u.username }}</td>
+    <td>{{ u.group }}</td>
+    <td>{{ u.last_login }}</td>
+  </tr>{% endfor %}
+</table>

@@ -1,15 +1,31 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
-from modoboa.extensions import *
+from modoboa.core.extensions import exts_pool
 from modoboa.lib import parameters
+from modoboa.core import load_settings
 
+load_settings()
 
 urlpatterns = patterns('',
     (r'^$', 'modoboa.lib.webutils.topredirection'),
-    (r'^accounts/login/$', 'modoboa.auth.views.dologin'),
-    (r'^accounts/logout/$', 'modoboa.auth.views.dologout'),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog',
      {'packages': ('modoboa', ), }),
+
+    (r'^accounts/login/$', 'modoboa.core.views.auth.dologin'),
+    (r'^accounts/logout/$', 'modoboa.core.views.auth.dologout'),
+
+    (r'^admin/$', 'modoboa.core.views.admin.viewsettings'),
+    (r'^admin/parameters/$', 'modoboa.core.views.admin.viewparameters'),
+    (r'^admin/parameters/save/$', 'modoboa.core.views.admin.saveparameters'),
+    (r'^admin/extensions/$', 'modoboa.core.views.admin.viewextensions'),
+    (r'^admin/extensions/save/$', 'modoboa.core.views.admin.saveextensions'),
+    (r'^admin/info/$', 'modoboa.core.views.admin.information'),
+    (r'^admin/logs/$', 'modoboa.core.views.admin.logs'),
+
+    (r'^user/$', 'modoboa.core.views.user.index'),
+    (r'^user/preferences/$', 'modoboa.core.views.user.preferences'),
+    (r'^user/profile/$', 'modoboa.core.views.user.profile'),
+
     *exts_pool.load_all()
 )
 

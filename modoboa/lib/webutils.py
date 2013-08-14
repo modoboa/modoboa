@@ -149,16 +149,16 @@ def topredirection(request):
     :param request: a Request object
     """
     from modoboa.lib import parameters
-    from modoboa.extensions import exts_pool
+    from modoboa.core.extensions import exts_pool
 
-    topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="admin")
-    if not topredir in ["admin", "userprefs"]:
+    topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="core")
+    if not topredir in ["core"]:
         infos = exts_pool.get_extension_infos(topredir)
         path = infos["url"] if infos["url"] else infos["name"]
     else:
-        path = topredir
+        path = ""  # topredir
 
-    if topredir in ["admin", "stats"] and \
+    if topredir in ["core", "stats"] and \
             request.user.belongs_to_group('SimpleUsers'):
         path = "userprefs"
 

@@ -1,9 +1,8 @@
 from django.contrib.auth.backends import ModelBackend
-from django.utils.translation import gettext as _
-from modoboa.admin.models import User
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox
+
 
 class SimpleBackend(ModelBackend):
 
@@ -23,9 +22,10 @@ class SimpleBackend(ModelBackend):
             return None
 
 try:
-    from django_auth_ldap.backend import LDAPBackend as orig_LDAPBackend, _LDAPUser
+    from django_auth_ldap.backend import (
+        LDAPBackend as orig_LDAPBackend, _LDAPUser
+    )
     from modoboa.admin.models import populate_callback
-
 
     class LDAPBackend(orig_LDAPBackend):
 

@@ -194,7 +194,7 @@ class ConnectedUsers(template.Node):
         self.varname = varname
 
     def render(self, context):
-        from modoboa.admin.models import User
+        from modoboa.core.models import User
         
         sessions = Session.objects.filter(expire_date__gte=timezone.now())
         uid_list = []

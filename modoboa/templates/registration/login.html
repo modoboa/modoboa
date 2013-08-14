@@ -23,7 +23,7 @@
       <div id="logo" class="row">
         <img src="{% get_modoboa_logo %}" />
       </div>
-      <form method="post" action="{% url 'modoboa.auth.views.dologin' %}"
+      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}"
             class="login-form well">
         {% csrf_token %}
         {% render_field form.username %}
