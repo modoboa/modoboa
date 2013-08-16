@@ -43,6 +43,36 @@ def core_menu(selection, user):
 
 
 @register.simple_tag
+def settings_menu(selection, user):
+    entries = [
+        {"name": "extensions",
+         "class": "ajaxlink",
+         "url": "extensions/",
+         "label": _("Extensions"),
+         "img": ""},
+        {"name": "info",
+         "class": "ajaxlink",
+         "url": "info/",
+         "label": _("Information")},
+        {"name": "logs",
+         "class": "ajaxlink",
+         "url": "logs/",
+         "label": _("Logs")},
+        {"name": "parameters",
+         "class": "ajaxlink",
+         "url": "parameters/",
+         "img": "",
+         "label": _("Parameters")},
+    ]
+    return render_to_string('common/menu.html', {
+        "entries": entries,
+        "css": "nav nav-list",
+        "selection": selection,
+        "user": user
+    })
+
+
+@register.simple_tag
 def extensions_menu(selection, user):
     menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu", user)
     return render_to_string('common/menulist.html', {

@@ -10,66 +10,9 @@ from modoboa.lib.templatetags.libextras import render_link
 register = template.Library()
 
 genders = {
-    "Enabled" : (ugettext_lazy("enabled_m"), ugettext_lazy("enabled_f"))
+    "Enabled": (ugettext_lazy("enabled_m"), ugettext_lazy("enabled_f"))
 }
 
-@register.simple_tag
-def admin_menu(selection, user):
-    entries = []
-    if user.has_perm("admin.view_domains"):
-        entries += [
-            {"name" : "domains",
-             "url" : reverse("modoboa.admin.views.domains"),
-             "label" : _("Domains")}
-            ]
-    entries += \
-        events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user)
-    if user.has_perm("admin.add_user") or user.has_perm("admin.add_alias"):
-        entries += [
-            {"name" : "identities",
-             "url" : reverse("modoboa.admin.views.identities"),
-             "label" : _("Identities")},
-            ]
-    if user.is_superuser:
-        entries += [
-            {"name" : "settings",
-             "label" : _("Modoboa"),
-             "url" : reverse("modoboa.admin.views.viewsettings")}
-            ]
-
-    if not len(entries):
-        return ""
-    return render_to_string("common/menulist.html",
-                            {"entries" : entries, "selection" : selection, "user" : user})
-        
-@register.simple_tag
-def settings_menu(selection, user):
-    entries = [
-        {"name" : "extensions",
-         "class" : "ajaxlink",
-         "url" : "extensions/",
-         "label" : _("Extensions"),
-         "img" : ""},
-        {"name" : "info",
-         "class" : "ajaxlink",
-         "url" : "info/",
-         "label" : _("Information")},
-        {"name" : "logs",
-         "class" : "ajaxlink",
-         "url" : "logs/",
-         "label" : _("Logs")},
-        {"name" : "parameters",
-         "class" : "ajaxlink",
-         "url" : "parameters/",
-         "img" : "",
-         "label" : _("Parameters")},
-        ]
-    return render_to_string('common/menu.html', {
-            "entries" : entries, 
-            "css" : "nav nav-list",
-            "selection" : selection,
-            "user" : user
-            })
 
 @register.simple_tag
 def domains_menu(selection, user):
@@ -77,31 +20,32 @@ def domains_menu(selection, user):
         return ""
 
     entries = [
-        {"name" : "newdomain",
-         "label" : _("Add domain"),
-         "img" : "icon-plus",
-         "modal" : True,
-         "modalcb" : "admin.newdomain_cb",
-         "url" : reverse("modoboa.admin.views.newdomain")},
-        {"name" : "import",
-         "label" : _("Import"),
-         "img" : "icon-folder-open",
-         "url" : reverse("modoboa.admin.views.import_domains"),
-         "modal" : True,
-         "modalcb" : "admin.importform_cb"},
-        {"name" : "export",
-         "label" : _("Export"),
-         "img" : "icon-share-alt",
-         "url" : reverse("modoboa.admin.views.export_domains"),
-         "modal" : True,
-         "modalcb" : "admin.exportform_cb"}
-        ]
+        {"name": "newdomain",
+         "label": _("Add domain"),
+         "img": "icon-plus",
+         "modal": True,
+         "modalcb": "admin.newdomain_cb",
+         "url": reverse("modoboa.extensions.admin.views.domain.newdomain")},
+        {"name": "import",
+         "label": _("Import"),
+         "img": "icon-folder-open",
+         "url": reverse("modoboa.extensions.admin.views.import.import_domains"),
+         "modal": True,
+         "modalcb": "admin.importform_cb"},
+        {"name": "export",
+         "label": _("Export"),
+         "img": "icon-share-alt",
+         "url": reverse("modoboa.extensions.admin.views.export.export_domains"),
+         "modal": True,
+         "modalcb": "admin.exportform_cb"}
+    ]
 
     return render_to_string('common/menulist.html', {
-            "entries" : entries, 
-            "selection" : selection,
-            "user" : user
-            })        
+        "entries": entries,
+        "selection": selection,
+        "user": user
+    })
+
 
 @register.simple_tag
 def identities_menu(user):
@@ -116,48 +60,48 @@ def identities_menu(user):
          "img": "icon-hdd",
          "class": "ajaxlink",
          "url": "quotas/"},
-        {"name" : "newaccount",
-         "label" : _("Add account"),
-         "img" : "icon-plus",
-         "modal" : True,
-         "modalcb" : "admin.newaccount_cb",
-         "url" : reverse("modoboa.admin.views.newaccount")},
-        {"name" : "newalias",
-         "label" : _("Add alias"),
-         "img" : "icon-plus",
-         "modal" : True,
-         "modalcb" : "admin.aliasform_cb",
-         "url" : reverse("modoboa.admin.views.newalias")},
-        {"name" : "newforward",
-         "label" : _("Add forward"),
-         "img" : "icon-plus",
-         "modal" : True,
-         "modalcb" : "admin.aliasform_cb",
-         "url" : reverse("modoboa.admin.views.newforward")},
-        {"name" : "newdlist",
-         "label" : _("Add distribution list"),
-         "img" : "icon-plus",
-         "modal" : True,
-         "modalcb" : "admin.aliasform_cb",
-         "url" : reverse("modoboa.admin.views.newdlist")},
-        {"name" : "import",
-         "label" : _("Import"),
-         "img" : "icon-folder-open",
-         "url" : reverse("modoboa.admin.views.import_identities"),
-         "modal" : True,
-         "modalcb" : "admin.importform_cb"},
-        {"name" : "export",
-         "label" : _("Export"),
-         "img" : "icon-share-alt",
-         "url" : reverse("modoboa.admin.views.export_identities"),
-         "modal" : True,
-         "modalcb" : "admin.exportform_cb"}
-        ]
+        {"name": "newaccount",
+         "label": _("Add account"),
+         "img": "icon-plus",
+         "modal": True,
+         "modalcb": "admin.newaccount_cb",
+         "url": reverse("modoboa.extensions.admin.views.identity.newaccount")},
+        {"name": "newalias",
+         "label": _("Add alias"),
+         "img": "icon-plus",
+         "modal": True,
+         "modalcb": "admin.aliasform_cb",
+         "url": reverse("modoboa.extensions.admin.views.alias.newalias")},
+        {"name": "newforward",
+         "label": _("Add forward"),
+         "img": "icon-plus",
+         "modal": True,
+         "modalcb": "admin.aliasform_cb",
+         "url": reverse("modoboa.extensions.admin.views.alias.newforward")},
+        {"name": "newdlist",
+         "label": _("Add distribution list"),
+         "img": "icon-plus",
+         "modal": True,
+         "modalcb": "admin.aliasform_cb",
+         "url": reverse("modoboa.extensions.admin.views.alias.newdlist")},
+        {"name": "import",
+         "label": _("Import"),
+         "img": "icon-folder-open",
+         "url": reverse("modoboa.extensions.admin.views.import.import_identities"),
+         "modal": True,
+         "modalcb": "admin.importform_cb"},
+        {"name": "export",
+         "label": _("Export"),
+         "img": "icon-share-alt",
+         "url": reverse("modoboa.extensions.admin.views.export.export_identities"),
+         "modal": True,
+         "modalcb": "admin.exportform_cb"}
+    ]
 
     return render_to_string('common/menulist.html', {
-            "entries" : entries, 
-            "user" : user
-            })
+        "entries": entries,
+        "user": user
+    })
 
 
 @register.simple_tag
@@ -217,6 +161,7 @@ def identity_actions(user, ident):
                 ]
     return render_actions(actions)
 
+
 @register.simple_tag
 def identity_modify_link(identity, active_tab='default'):
     linkdef = {"label" : identity.identity, "modal" : True}
@@ -229,6 +174,7 @@ def identity_modify_link(identity, active_tab='default'):
         linkdef["modalcb"] = "admin.aliasform_cb"
     return render_link(linkdef)
 
+
 @register.simple_tag
 def domadmin_actions(daid, domid):
     actions = [dict(
@@ -239,11 +185,13 @@ def domadmin_actions(daid, domid):
             )]
     return render_actions(actions)
 
+
 @register.simple_tag
 def loadadminextmenu(user):
     menu = events.raiseQueryEvent("AdminMenuDisplay", "admin_menu_box", user)
     return render_to_string('common/menulist.html', 
                             {"entries" : menu, "user" : user})
+
 
 @register.simple_tag
 def param(app, definition):
@@ -313,6 +261,7 @@ def param(app, definition):
 """
     return result
 
+
 @register.filter
 def gender(value, target):
     if genders.has_key(value):
@@ -321,24 +270,8 @@ def gender(value, target):
             return trans
     return value
 
+
 @register.simple_tag
 def get_extra_admin_content(user, target, currentpage):
     res = events.raiseQueryEvent("ExtraAdminContent", user, target, currentpage)
     return "".join(res)
-
-
-@register.filter
-def colorize_level(level):
-    classes = {
-        "INFO": "text-info",
-        "WARNING": "text-warning",
-        "CRITICAL": "text-error"
-    }
-    if not level in classes:
-        return level
-    return "<p class='%s'>%s</p>" % (classes[level], level)
-
-
-@register.filter
-def tohtml(message):
-    return re.sub("'(.*?)'", "<strong>\g<1></strong>", message)

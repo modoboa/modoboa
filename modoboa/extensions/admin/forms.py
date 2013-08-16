@@ -3,13 +3,16 @@ from django import forms
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
-from modoboa.admin.templatetags.admin_extras import gender
-from modoboa.admin.exceptions import AdminError
 from modoboa.lib import events, parameters
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import *
-from modoboa.admin.models import User, Domain, DomainAlias, Mailbox, Alias
+from modoboa.core.models import User
+from modoboa.extensions.admin.templatetags.admin_tags import gender
+from modoboa.extensions.admin.exceptions import AdminError
+from modoboa.extensions.admin.models import (
+    Domain, DomainAlias, Mailbox, Alias
+)
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):

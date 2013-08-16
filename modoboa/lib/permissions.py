@@ -3,7 +3,7 @@ from functools import wraps
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.db import IntegrityError
-from modoboa.admin.models import ObjectAccess
+from modoboa.core.models import ObjectAccess
 import events
 from exceptions import ModoboaException
 

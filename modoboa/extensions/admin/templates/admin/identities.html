@@ -1,23 +1,23 @@
-{% extends "admin/listing.html" %}{% load admin_extras libextras i18n %}{% load url from future %}
+{% extends "admin/listing.html" %}{% load admin_tags libextras i18n %}{% load url from future %}
 {% block pagetitle %}{% trans "Identities" %}{% endblock %}
 {% block html_head %}
 {{ block.super }}
 <script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
-    $.getJSON("{% url 'modoboa.admin.views.domains_list' %}", function(data) {
+    $.getJSON("{% url 'modoboa.extensions.admin.views.domain.domains_list' %}", function(data) {
         container.value = data;
     });
 }
 
 function get_account_list(container) {
-    $.getJSON("{% url 'modoboa.admin.views.accounts_list' %}", function(data) {
+    $.getJSON("{% url 'modoboa.extensions.admin.views.identity.accounts_list' %}", function(data) {
         container.value = data;
     });
 }
 
 function get_allowed_recipients(container) {
-    $.getJSON("{% url 'modoboa.admin.views.allowed_recipients_list' %}", function(data) {
+    $.getJSON("{% url 'modoboa.extensions.admin.views.alias.allowed_recipients_list' %}", function(data) {
         container.value = data;
     });
 }

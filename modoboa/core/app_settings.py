@@ -153,7 +153,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     default_top_redirection = forms.ChoiceField(
         label=ugettext_lazy("Default top redirection"),
         choices=[],
-        initial="admin",
+        initial="core",
         help_text=ugettext_lazy("The default redirection used when no application is specified")
     )
 

@@ -50,6 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['email']
 
     class Meta:
+        db_table = "admin_user"
         ordering = ["username"]
 
     password_expr = re.compile(r'(\{(\w+)\}|(\$1\$))(.+)')

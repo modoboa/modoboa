@@ -12,15 +12,19 @@ class ModoExtension(object):
     considered as valid.
     """
     name = None
-    version = None
+    label = None
+    version = "NA"
     description = ""
     url = None
     needs_media = False
     always_active = False
 
     def infos(self):
-        return dict(name=self.name, label=self.label, version=self.version,
-                    description=self.description, url=self.url)
+        return dict(
+            name=self.name, label=self.label, version=self.version,
+            description=self.description, url=self.url,
+            always_active=self.always_active
+        )
 
     def init(self):
         pass
