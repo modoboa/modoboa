@@ -11,21 +11,8 @@ register = template.Library()
 
 @register.simple_tag
 def core_menu(selection, user):
-    entries = []
-    # if user.has_perm("admin.view_domains"):
-    #     entries += [
-    #         {"name" : "domains",
-    #          "url" : reverse("modoboa.admin.views.domains"),
-    #          "label" : _("Domains")}
-    #         ]
-    entries += \
+    entries = \
         events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user)
-    # if user.has_perm("admin.add_user") or user.has_perm("admin.add_alias"):
-    #     entries += [
-    #         {"name" : "identities",
-    #          "url" : reverse("modoboa.admin.views.identities"),
-    #          "label" : _("Identities")},
-    #         ]
     if user.is_superuser:
         entries += [
             {"name": "settings",

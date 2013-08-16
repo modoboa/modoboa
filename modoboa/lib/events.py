@@ -127,14 +127,18 @@ class observe(object):
         @wraps(f)
         def wrapped_f(*args):
             if extname:
-                from modoboa.admin.models import Extension
+                from modoboa.core.models import Extension
+                from modoboa.core.extensions import exts_pool
                 try:
                     ext = Extension.objects.get(name=extname)
                 except Extension.DoesNotExist:
-                    return []
-                if not ext.enabled:
-                    return []
-            elif not modname in settings.INSTALLED_APPS:
+                    extdef = exts_pool.get_extension(extname)
+                    if not extdef.always_active:
+                        return []
+                else:
+                    if not ext.enabled:
+                        return []
+            elif not modname in settings.MODOBOA_APPS:
                 return []
                 
             return f(*args)
