@@ -6,8 +6,10 @@
 """
 from django.utils.translation import ugettext as _
 
+
 class ModoboaException(Exception):
     pass
+
 
 class PermDeniedException(ModoboaException):
     def __init__(self, msg=None):
@@ -17,7 +19,3 @@ class PermDeniedException(ModoboaException):
         if self.msg:
             return _("Permission denied: %s" % self.msg)
         return _("Permission denied")
-
-class NeedsMailboxException(ModoboaException):
-    pass
-                              

@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from modoboa.core.extensions import exts_pool
-from modoboa.lib import parameters
+from modoboa.lib import parameters, events
 from modoboa.core import load_settings
 
 load_settings()
@@ -25,7 +25,13 @@ urlpatterns = patterns('',
     (r'^user/$', 'modoboa.core.views.user.index'),
     (r'^user/preferences/$', 'modoboa.core.views.user.preferences'),
     (r'^user/profile/$', 'modoboa.core.views.user.profile'),
+)
 
+urlpatterns += patterns('',
+    *events.raiseQueryEvent("ExtraUprefsRoutes")
+)
+
+urlpatterns += patterns('',
     *exts_pool.load_all()
 )
 

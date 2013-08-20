@@ -6,9 +6,10 @@ from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox, sendmail_simple
-from modoboa.admin.models import Mailbox
+from modoboa.extensions.admin.models import Mailbox
 from modoboa.extensions.postfix_autoreply import PostfixAutoreply
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
+
 
 def send_autoreply(sender, mailbox, armessage):
     if armessage.untildate is not None \
@@ -20,10 +21,10 @@ def send_autoreply(sender, mailbox, armessage):
     try:
         lastar = ARhistoric.objects.get(armessage=armessage.id, sender=sender)
         PostfixAutoreply().load()
-        timeout = parameters.get_admin("AUTOREPLIES_TIMEOUT", 
+        timeout = parameters.get_admin("AUTOREPLIES_TIMEOUT",
                                        app="postfix_autoreply")
         delta = datetime.timedelta(seconds=int(timeout))
-        now = timezone.make_aware(datetime.datetime.now(), 
+        now = timezone.make_aware(datetime.datetime.now(),
                                   timezone.get_default_timezone())
         if lastar.last_sent + delta > now:
             sys.exit(0)
@@ -34,7 +35,7 @@ def send_autoreply(sender, mailbox, armessage):
 
     sendmail_simple(mailbox.user.encoded_address, sender, armessage.subject,
                     armessage.content.encode('utf-8'))
-    
+
     lastar.last_sent = datetime.datetime.now()
     lastar.save()
 

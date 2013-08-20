@@ -1,17 +1,14 @@
 # coding: utf-8
 from datetime import date
-from django.http import HttpResponse
-from django.contrib.auth.decorators \
-    import login_required
-from django.contrib import messages
-from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from modoboa.lib.webutils import (
-    ajax_simple_response, ajax_response, _render_to_string
+    ajax_simple_response, _render_to_string
 )
-from modoboa.lib.decorators import needs_mailbox
-from forms import *
-from models import *
+from modoboa.extensions.admin.lib import needs_mailbox
+from modoboa.extensions.admin.models import Mailbox
+from .forms import ARmessageForm
+from .models import ARmessage
 
 
 @login_required

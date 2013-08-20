@@ -1,11 +1,29 @@
 # coding: utf-8
+from functools import wraps
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
 from modoboa.core.models import User
 from modoboa.lib import parameters
+from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.extensions.admin.models import Alias
+
+
+def needs_mailbox():
+    """Check if the current user owns at least one mailbox
+
+    Some applications (the webmail for example) need a mailbox to
+    work.
+    """
+    def decorator(f):
+        @wraps(f)
+        def wrapped_f(request, *args, **kwargs):
+            if request.user.mailbox_set.count():
+                return f(request, *args, **kwargs)
+            raise ModoboaException()
+        return wrapped_f
+    return decorator
 
 
 def get_sort_order(qdict, default, allowed_values=None):
