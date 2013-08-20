@@ -22,7 +22,7 @@ class Stats(ModoExtension):
 
     def load(self):
         from app_settings import ParametersForm
-        events.registerEvent("GetGraphSets")
+        events.declare(["GetGraphSets"])
         parameters.register(ParametersForm, ugettext_lazy("Graphical statistics"))
 
     def destroy(self):

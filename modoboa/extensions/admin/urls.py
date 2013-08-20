@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns(
     'modoboa.extensions.admin.views.domain',
+    (r'^$', 'index'),
     url(r'^domains/$', 'domains', name="domains"),
     (r'^domains/list/$', '_domains'),
     (r'^domains/flatlist/$', 'domains_list'),

@@ -10,6 +10,9 @@ class ObjectDates(models.Model):
     creation = models.DateTimeField(auto_now_add=True)
     last_modification = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        app_label = 'admin'
+
     @staticmethod
     def set_for_object(obj):
         """Initialize or update dates for a given object.

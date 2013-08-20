@@ -1,3 +1,4 @@
+import os
 import re
 import hashlib
 import crypt
@@ -15,6 +16,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.auth.models import (
     UserManager, Group, AbstractBaseUser, PermissionsMixin
 )
+from django.contrib.contenttypes.models import ContentType
 from modoboa.lib import events, md5crypt, parameters
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.core.extensions import exts_pool
@@ -43,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    is_local = models.BooleanField(default=True)
 
     objects = UserManager()
 
@@ -89,21 +92,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         events.raiseEvent("AccountDeleted", self)
         ungrant_access_to_object(self)
         super(User, self).delete(*args, **kwargs)
-
-    @staticmethod
-    def get_content_type():
-        """An uggly hack to retrieve the appropriate content_type!
-
-        The explanation is available here:
-        https://code.djangoproject.com/ticket/11154
-
-        Quickly, the content_types framework does not retrieve the
-        appropriate content type for proxy models, it retrieves the
-        one of the first parent that is not a proxy.
-        """
-        if not hasattr(User, "ct"):
-            User.ct = ContentType.objects.get(app_label="admin", model="user")
-        return User.ct
 
     def _crypt_password(self, raw_value):
         scheme = parameters.get_admin("PASSWORD_SCHEME")
@@ -252,9 +240,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         :param obj: an object inheriting from ``models.Model``
         :return: a boolean
         """
-        from modoboa.lib.permissions import get_content_type
-
-        ct = get_content_type(obj)
+        ct = ContentType.objects.get_for_model(obj)
         try:
             ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
@@ -271,12 +257,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         :param obj: a admin object
         :return: a boolean
         """
-        from modoboa.lib.permissions import get_content_type
-
         if self.is_superuser:
             return True
 
-        ct = get_content_type(obj)
+        ct = ContentType.objects.get_for_model(obj)
         try:
             ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
@@ -286,24 +270,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         if ct.model == "user":
             return False
 
-        ct = self.get_content_type()
+        ct = ContentType.objects.get_for_model(self)
         qs = self.objectaccess_set.filter(content_type=ct)
         for ooentry in qs.all():
             if ooentry.content_object.is_owner(obj):
                 return True
         return False
-
-    def grant_access_to_all_objects(self):
-        """Give access to all objects defined in the database
-
-        Must be used when an account is promoted as a super user.
-        """
-        from modoboa.lib.permissions import grant_access_to_objects, get_content_type
-        grant_access_to_objects(self, User.objects.all(), get_content_type(User))
-        grant_access_to_objects(self, Domain.objects.all(), get_content_type(Domain))
-        grant_access_to_objects(self, DomainAlias.objects.all(), get_content_type(DomainAlias))
-        grant_access_to_objects(self, Mailbox.objects.all(), get_content_type(Mailbox))
-        grant_access_to_objects(self, Alias.objects.all(), get_content_type(Alias))
 
     def set_role(self, role):
         """Set administrative role for this account
@@ -312,10 +284,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         if role is None or self.group == role:
             return
+        events.raiseEvent("RoleChanged", self, role)
         self.groups.clear()
         if role == "SuperAdmins":
             self.is_superuser = True
-            self.grant_access_to_all_objects()
         else:
             if self.is_superuser:
                 ObjectAccess.objects.filter(user=self).delete()
@@ -372,35 +344,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.is_active = (row[5].strip() == 'True')
         self.save(creator=user)
         self.set_role(role)
-
-        self.email = row[7].strip()
-        if self.email != "":
-            mailbox, domname = split_mailbox(self.email)
-            try:
-                domain = Domain.objects.get(name=domname)
-            except Domain.DoesNotExist:
-                raise AdminError(
-                    _("Account import failed (%s): domain does not exist" % self.username)
-                )
-            if not user.can_access(domain):
-                raise PermDeniedException
-            mb = Mailbox(address=mailbox, domain=domain, user=self, use_domain_quota=True)
-            mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
-            mb.save(creator=user)
-        if self.group == "DomainAdmins":
-            for domname in row[8:]:
-                try:
-                    dom = Domain.objects.get(name=domname.strip())
-                except Domain.DoesNotExist:
-                    continue
-                dom.add_admin(self)
+        events.raiseEvent("AccountImported", user, self, row[7:])
 
     def to_csv(self, csvwriter):
         row = ["account", self.username.encode("utf-8"), self.password,
                self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
                self.is_active, self.group, self.email]
-        if self.group == "DomainAdmins":
-            row += [dom.name for dom in self.get_domains()]
+        row += events.raiseQueryEvent("AccountExported", self)
         csvwriter.writerow(row)
 
 reversion.register(User)

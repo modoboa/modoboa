@@ -12,7 +12,10 @@ from modoboa.lib.webutils import ajax_simple_response, _render_to_string
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.templatetags.libextras import pagination_bar
 from modoboa.core.models import User
-from modoboa.extensions.admin.lib import get_sort_order, get_listing_page
+from modoboa.extensions.admin.models import Mailbox
+from modoboa.extensions.admin.lib import (
+    get_sort_order, get_listing_page, get_identities
+)
 from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.forms import (
     AccountForm, AccountFormGeneral, AccountFormMail
@@ -24,7 +27,7 @@ from modoboa.extensions.admin.forms import (
     lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias")
 )
 def _identities(request):
-    idents_list = request.user.get_identities(request.GET)
+    idents_list = get_identities(request.user, request.GET)
     sort_order, sort_dir = get_sort_order(request.GET, "identity",
                                           ["identity", "name_or_rcpt", "tags"])
     if sort_order in ["identity", "name_or_rcpt"]:
@@ -73,7 +76,9 @@ def list_quotas(request, tplname="admin/quotas.html"):
     from modoboa.lib.dbutils import db_type
 
     sort_order, sort_dir = get_sort_order(request.GET, "address")
-    mboxes = request.user.get_mailboxes(request.GET.get("searchquery", None))
+    mboxes = Mailbox.objects.get_for_admin(
+        request.user, request.GET.get("searchquery", None)
+    )
     mboxes = mboxes.exclude(quota=0)
     if sort_order in ["address", "quota", "quota_value__bytes"]:
         mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
@@ -175,7 +180,7 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
     if not request.user.can_access(account):
         raise PermDeniedException
     mb = None
-    if account.has_mailbox:
+    if account.mailbox_set.count():
         mb = account.mailbox_set.all()[0]
 
     instances = dict(general=account, mail=mb, perms=account)

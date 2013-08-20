@@ -8,6 +8,8 @@ from django.utils.translation import ugettext as _, ungettext
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
+from modoboa.extensions.admin.lib import get_identities
+from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.admin.forms import (
     ExportIdentitiesForm, ExportDomainsForm
 )
@@ -45,7 +47,7 @@ def export_identities(request):
         form.is_valid()
         fp = cStringIO.StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
-        for ident in request.user.get_identities():
+        for ident in get_identities(request.user):
             ident.to_csv(csvwriter)
         content = fp.getvalue()
         fp.close()
@@ -71,7 +73,7 @@ def export_domains(request):
         form.is_valid()
         fp = cStringIO.StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
-        for dom in request.user.get_domains():
+        for dom in Domain.objects.get_for_admin(request.user):
             dom.to_csv(csvwriter)
             for da in dom.domainalias_set.all():
                 da.to_csv(csvwriter)

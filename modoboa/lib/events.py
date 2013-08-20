@@ -16,47 +16,27 @@ from django.conf import settings
 events = [
     "CanCreate",
 
-    "CreateDomain",
-    "DomainModified",
-    "DeleteDomain",
-
-    "DomainAliasCreated",
-    "DomainAliasDeleted",
-
-    "CreateMailbox",
-    "DeleteMailbox",
-    "ModifyMailbox",
-
-    "MailboxAliasCreated",
-    "MailboxAliasDeleted",
-
     "AccountCreated",
     "AccountModified",
     "AccountDeleted",
+    "AccountExported",
+    "AccountImported",
     "PasswordUpdated",
     "ExtraAccountActions",
-
+    "RoleChanged",
+    "GetExtraRoles",
     "PasswordChange",
-    
+
     "UserMenuDisplay",
     "AdminMenuDisplay",
     "GetStaticContent",
 
-    "ExtraAccountForm",
-    "CheckExtraAccountForm",
-    "FillAccountInstances",
-
-    "ExtraDomainForm",
-    "FillDomainInstances",
-    
-    "GetExtraRoles",
-    
     "ExtEnabled",
     "ExtDisabled",
 
     "UserLogin",
     "UserLogout",
-    
+
     "GetAnnouncement",
 
     "TopNotifications",
@@ -64,17 +44,20 @@ events = [
 
     "ExtraUprefsRoutes",
     "ExtraUprefsJS"
-    ]
+]
 
 callbacks = {}
 
-def registerEvent(name):
-    """Register a new event
 
-    :param name: the event's name
+def declare(nevents):
+    """Declare new events
+
+    :param list nevents: a list of event names
     """
-    if not name in events:
-        events.append(name)
+    for evt in nevents:
+        if not evt in events:
+            events.append(evt)
+
 
 def register(event, callback):
     """Register a plugin callback for a specific event
@@ -90,9 +73,10 @@ def register(event, callback):
     if not event in callbacks.keys():
         callbacks[event] = {}
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
-    if not callbacks[event].has_key(fullname):
+    if not fullname in callbacks[event]:
         callbacks[event][fullname] = callback
     return 1
+
 
 class observe(object):
     """Event observing decorator
@@ -111,7 +95,7 @@ class observe(object):
     """
     def __init__(self, *evtnames, **kwargs):
         self.evtnames = evtnames
-        if kwargs.has_key("extname"):
+        if "extname" in kwargs:
             self.extname = kwargs["extname"]
 
     def __guess_extension_name(self, modname):
@@ -123,7 +107,9 @@ class observe(object):
 
     def __call__(self, f):
         modname = inspect.getmodule(inspect.stack()[1][0]).__name__
-        extname = self.extname if hasattr(self, "extname") else self.__guess_extension_name(modname)
+        extname = self.extname if hasattr(self, "extname") \
+            else self.__guess_extension_name(modname)
+
         @wraps(f)
         def wrapped_f(*args):
             if extname:
@@ -140,11 +126,11 @@ class observe(object):
                         return []
             elif not modname in settings.MODOBOA_APPS:
                 return []
-                
             return f(*args)
-
-        map(lambda evt: register(evt, wrapped_f), self.evtnames)
+        for evt in self.evtnames:
+            register(evt, wrapped_f)
         return wrapped_f
+
 
 def unregister(event, callback):
     """Unregister a callback for a specific event
@@ -154,13 +140,14 @@ def unregister(event, callback):
     """
     if not event in events:
         return False
-    if not callbacks.has_key(event):
+    if not event in callbacks:
         return False
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
     try:
         del callbacks[event][fullname]
     except KeyError:
         pass
+
 
 def raiseEvent(event, *args):
     """Raise a specific event
@@ -172,9 +159,10 @@ def raiseEvent(event, *args):
     """
     if not event in events or not event in callbacks.keys():
         return 0
-    for name, callback in callbacks[event].iteritems():
+    for callback in callbacks[event].values():
         callback(*args)
     return 1
+
 
 def raiseQueryEvent(event, *args):
     """Raise a specific event and wait for answers from callbacks
@@ -187,9 +175,10 @@ def raiseQueryEvent(event, *args):
     result = []
     if not event in events or not event in callbacks.keys():
         return result
-    for name, callback in callbacks[event].iteritems():
+    for callback in callbacks[event].values():
         result += callback(*args)
     return result
+
 
 def raiseDictEvent(event, *args):
     """Raise a specific event and return result as a dictionnary
@@ -203,7 +192,7 @@ def raiseDictEvent(event, *args):
     result = {}
     if not event in events or not event in callbacks.keys():
         return result
-    for name, callback in callbacks[event].iteritems():
+    for callback in callbacks[event].values():
         tmp = callback(*args)
         for k, v in tmp.iteritems():
             result[k] = v

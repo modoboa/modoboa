@@ -1,4 +1,4 @@
-{% extends "common/tabforms.html" %}{% load i18n libextras admin_extras %}
+{% extends "common/tabforms.html" %}{% load i18n libextras admin_tags %}
 {% block extratabs %}
   <li class="{% if tabs.active_id == 'admins' %}active{% endif %}">
     <a href="#admins" data-toggle="tab">{% trans "Administrators" %}</a>

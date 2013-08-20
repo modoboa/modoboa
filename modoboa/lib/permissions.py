@@ -7,18 +7,10 @@ from modoboa.core.models import ObjectAccess
 import events
 from exceptions import ModoboaException
 
-def get_content_type(obj):
-    """Simple function that use the right method to retrieve a content type
-
-    :param obj: a django model
-    :return: a ``ContentType`` object
-    """
-    return obj.get_content_type() if hasattr(obj, "get_content_type") \
-        else ContentType.objects.get_for_model(obj)
 
 def get_account_roles(user):
     """Return the list of supported account roles
-    
+
     This list can be extended by extensions which listen to the
     ``GetExtraRoles`` event.
 
@@ -31,6 +23,7 @@ def get_account_roles(user):
         std_roles += [("DomainAdmins", _("Domain administrator"))]
     std_roles += events.raiseQueryEvent("GetExtraRoles", user)
     return sorted(std_roles, key=lambda role: role[1])
+
 
 def grant_access_to_object(user, obj, is_owner=False):
     """Grant access to an object for a given user
@@ -48,7 +41,7 @@ def grant_access_to_object(user, obj, is_owner=False):
     :param obj: an admin. object (Domain, Mailbox, ...)
     :param is_owner: the user is the unique object's owner
     """
-    ct = get_content_type(obj)
+    ct = ContentType.objects.get_for_model(obj)
     try:
         entry = user.objectaccess_set.get(content_type=ct, object_id=obj.id)
         entry.is_owner = is_owner
@@ -62,7 +55,7 @@ def grant_access_to_object(user, obj, is_owner=False):
         ObjectAccess.objects.create(user=user, content_type=ct, 
                                     object_id=obj.id, is_owner=is_owner)
         if is_owner:
-            from modoboa.admin.models import User
+            from modoboa.core.models import User
             for su in User.objects.filter(is_superuser=True):
                 if su == user:
                     continue
@@ -73,6 +66,7 @@ def grant_access_to_object(user, obj, is_owner=False):
 
     except IntegrityError, e:
         raise ModoboaException(_("Failed to grant access (%s)" % str(e)))
+
 
 def grant_access_to_objects(user, objects, ct):
     """Grant access to a collection of objects
@@ -100,7 +94,7 @@ def ungrant_access_to_object(obj, user=None):
     :param obj: an object inheriting from ``models.Model``
     :param user: a ``User`` object
     """
-    ct = get_content_type(obj)
+    ct = ContentType.objects.get_for_model(obj)
     if user:
         try:
             ObjectAccess.objects.get(user=user, content_type=ct, object_id=obj.id).delete()
@@ -109,14 +103,16 @@ def ungrant_access_to_object(obj, user=None):
     else:
         ObjectAccess.objects.filter(content_type=ct, object_id=obj.id).delete()
 
+
 def ungrant_access_to_objects(objects):
     """Cancel all accesses for a given objects list
 
     :param objects: a list of objects inheriting from ``model.Model``
     """
     for obj in objects:
-        ct = get_content_type(obj)
+        ct = ContentType.objects.get_for_model(obj)
         ObjectAccess.objects.filter(content_type=ct, object_id=obj.id).delete()
+
 
 def get_object_owner(obj):
     """Return the unique owner of this object
@@ -124,7 +120,7 @@ def get_object_owner(obj):
     :param obj: an object inheriting from ``model.Model``
     :return: a ``User`` object
     """
-    ct = get_content_type(obj)
+    ct = ContentType.objects.get_for_model(obj)
     try:
         entry = ObjectAccess.objects.get(content_type=ct, object_id=obj.id, is_owner=True)
     except ObjectAccess.DoesNotExist:

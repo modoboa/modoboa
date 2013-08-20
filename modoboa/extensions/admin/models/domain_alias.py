@@ -23,6 +23,7 @@ class DomainAlias(DatesAware):
         permissions = (
             ("view_domaliases", "View domain aliases"),
         )
+        app_label = 'admin'
 
     def __unicode__(self):
         return self.name

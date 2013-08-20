@@ -1,10 +1,25 @@
 import reversion
 from django.db import models
+from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.contrib.contenttypes import generic
 from modoboa.lib import events, parameters
 from modoboa.core.models import ObjectAccess
+from modoboa.extensions.admin.exceptions import AdminError
 from .base import DatesAware
+
+
+class DomainManager(Manager):
+
+    def get_for_admin(self, admin):
+        """Return the domains belonging to this admin
+        
+        The result is a ``QuerySet`` object, so this function can be used
+        to fill ``ModelChoiceField`` objects.
+        """
+        if admin.is_superuser:
+            return self.get_query_set()
+        return self.get_query_set().filter(owners__user=admin)
 
 
 class Domain(DatesAware):
@@ -19,12 +34,15 @@ class Domain(DatesAware):
     )
     owners = generic.GenericRelation(ObjectAccess)
 
+    objects = DomainManager()
+
     class Meta:
         permissions = (
             ("view_domain", "View domain"),
             ("view_domains", "View domains"),
         )
         ordering = ["name"]
+        app_label = 'admin'
 
     @property
     def domainalias_count(self):
@@ -79,6 +97,7 @@ class Domain(DatesAware):
     def delete(self, fromuser, keepdir=False):
         from modoboa.lib.permissions import \
             ungrant_access_to_object, ungrant_access_to_objects
+        from .mailbox import Quota
 
         if self.domainalias_set.count():
             events.raiseEvent("DomainAliasDeleted", self.domainalias_set.all())
@@ -123,7 +142,10 @@ class Domain(DatesAware):
         if len(row) < 4:
             raise AdminError(_("Invalid line"))
         self.name = row[1].strip()
-        self.quota = int(row[2].strip())
+        try:
+            self.quota = int(row[2].strip())
+        except ValueError:
+            raise AdminError(_("Invalid quota value for domain '%s'" % self.name))
         self.enabled = (row[3].strip() == 'True')
         self.save(creator=user)
 

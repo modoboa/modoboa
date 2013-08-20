@@ -23,12 +23,17 @@ from modoboa.extensions.admin.forms import (
 
 
 @login_required
+def index(request):
+    return HttpResponseRedirect(reverse(domains))
+
+
+@login_required
 @user_passes_test(
     lambda u: u.has_perm("admin.view_domains") or u.has_perm("admin.view_mailboxes")
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
-    domains = request.user.get_domains()
+    domains = Domain.objects.get_for_admin(request.user)
     squery = request.GET.get("searchquery", None)
     if squery is not None:
         q = Q(name__contains=squery)
@@ -60,7 +65,7 @@ def domains(request, tplname="admin/domains.html"):
 @login_required
 @permission_required("admin.add_user")
 def domains_list(request):
-    doms = [dom.name for dom in request.user.get_domains()]
+    doms = [dom.name for dom in Domain.objects.get_for_admin(request.user)]
     return ajax_simple_response(doms)
 
 

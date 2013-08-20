@@ -15,10 +15,10 @@ from django.test.client import Client
 from django.utils import simplejson
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
-from models import *
-from modoboa.admin.lib import *
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
+from modoboa.extensions.admin.lib import *
+from modoboa.extensions.admin.models import *
 
 
 class DomainTestCase(ModoTestCase):

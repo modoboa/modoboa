@@ -1,6 +1,9 @@
 import os
 import reversion
 from django.db import models
+from django.db.models import Q
+from django.db.models.manager import Manager
+from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
@@ -10,6 +13,36 @@ from modoboa.core.models import User
 from modoboa.extensions.admin.exceptions import AdminError
 from .base import DatesAware
 from .domain import Domain
+
+
+class MailboxManager(Manager):
+
+    def get_for_admin(self, admin, squery=None):
+        """Return the mailboxes that belong to this admin.
+
+        The result will contain the mailboxes defined for each domain that
+        user can see.
+
+        :param string squery: a search query
+        :return: a list of ``Mailbox`` objects
+        """
+        qf = None
+        if squery is not None:
+            if '@' in squery:
+                parts = squery.split('@')
+                addrfilter = '@'.join(parts[:-1])
+                domfilter = parts[-1]
+                qf = Q(address__contains=addrfilter) & Q(domain__name__contains=domfilter)
+            else:
+                qf = Q(address__contains=squery) | Q(domain__name__contains=squery)
+        ids = admin.objectaccess_set \
+            .filter(content_type=ContentType.objects.get_for_model(Mailbox)) \
+            .values_list('object_id', flat=True)
+        if qf is not None:
+            qf = Q(pk__in=ids) & qf
+        else:
+            qf = Q(pk__in=ids)
+        return self.get_query_set().filter(qf)
 
 
 class Mailbox(DatesAware):
@@ -22,10 +55,13 @@ class Mailbox(DatesAware):
     domain = models.ForeignKey(Domain)
     user = models.ForeignKey(User)
 
+    objects = MailboxManager()
+
     class Meta:
         permissions = (
             ("view_mailboxes", "View mailboxes"),
         )
+        app_label = 'admin'
 
     def __init__(self, *args, **kwargs):
         super(Mailbox, self).__init__(*args, **kwargs)
@@ -211,3 +247,6 @@ class Quota(models.Model):
     messages = models.IntegerField(default=0)
 
     mbox = models.OneToOneField(Mailbox, related_name="quota_value", null=True)
+
+    class Meta:
+        app_label = 'admin'

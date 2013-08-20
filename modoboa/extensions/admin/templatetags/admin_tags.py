@@ -106,19 +106,19 @@ def identities_menu(user):
 
 @register.simple_tag
 def domain_actions(user, domid):
-    from modoboa.admin.models import Domain
+    from modoboa.extensions.admin.models import Domain
 
     domain = Domain.objects.get(pk=domid)
     actions = [
         {"name": "listidentities",
-         "url": reverse("modoboa.admin.views.identities") + "#list/?searchquery=@%s" % domain.name,
+         "url": reverse("modoboa.extensions.admin.views.identity.identities") + "#list/?searchquery=@%s" % domain.name,
          "title": _("View the domain's identities"),
          "img": "icon-user"}
     ]
     if user.has_perm("admin.delete_domain"):
         actions.append({
             "name": "deldomain",
-            "url": reverse("modoboa.admin.views.deldomain", args=[domid]),
+            "url": reverse("modoboa.extensions.admin.views.domain.deldomain", args=[domid]),
             "title": _("Delete the domain"),
             "img": "icon-trash"
         })
@@ -132,72 +132,78 @@ def identity_actions(user, ident):
     if name == "User":
         actions = events.raiseQueryEvent("ExtraAccountActions", ident)
         actions += [
-            {"name" : "delaccount",
-             "url" : reverse("modoboa.admin.views.delaccount", args=[objid]),
-             "img" : "icon-trash",
-             "title" : _("Delete this account")},
-            ]
+            {"name": "delaccount",
+             "url": reverse("modoboa.extensions.admin.views.identity.delaccount", args=[objid]),
+             "img": "icon-trash",
+             "title": _("Delete this account")},
+        ]
     else:
         if ident.get_recipients_count() >= 2:
             actions = [
-                {"name" : "deldlist",
-                 "url" : reverse("modoboa.admin.views.deldlist") + "?selection=%s" % objid,
-                 "img" : "icon-trash",
-                 "title" : _("Delete this distribution list")},
-                ]
+                {"name": "deldlist",
+                 "url": reverse("modoboa.extensions.admin.views.alias.deldlist") + "?selection=%s" % objid,
+                 "img": "icon-trash",
+                 "title": _("Delete this distribution list")},
+            ]
         elif ident.extmboxes != "":
             actions = [
-                {"name" : "delforward",
-                 "url" : reverse("modoboa.admin.views.delforward") + "?selection=%s" % objid,
-                 "img" : "icon-trash",
-                 "title" : _("Delete this forward")},
-                ]
+                {"name": "delforward",
+                 "url": reverse("modoboa.extensions.admin.views.alias.delforward") + "?selection=%s" % objid,
+                 "img": "icon-trash",
+                 "title": _("Delete this forward")},
+            ]
         else:
             actions = [
-                {"name" : "delalias",
-                 "url" : reverse("modoboa.admin.views.delalias") + "?selection=%s" % objid,
-                 "img" : "icon-trash",
-                 "title" : _("Delete this alias")},
-                ]
+                {"name": "delalias",
+                 "url": reverse("modoboa.extensions.admin.views.alias.delalias") + "?selection=%s" % objid,
+                 "img": "icon-trash",
+                 "title": _("Delete this alias")},
+            ]
     return render_actions(actions)
 
 
 @register.simple_tag
 def identity_modify_link(identity, active_tab='default'):
-    linkdef = {"label" : identity.identity, "modal" : True}
+    linkdef = {"label": identity.identity, "modal": True}
     if identity.__class__.__name__ == "User":
-        linkdef["url"] = reverse("modoboa.admin.views.editaccount", args=[identity.id])
+        linkdef["url"] = reverse(
+            "modoboa.extensions.admin.views.identity.editaccount",
+            args=[identity.id]
+        )
         linkdef["url"] += "?active_tab=%s" % active_tab
         linkdef["modalcb"] = "admin.editaccount_cb"
     else:
-        linkdef["url"] = reverse("modoboa.admin.views.editalias", args=[identity.id])
+        linkdef["url"] = reverse(
+            "modoboa.extensions.admin.views.alias.editalias",
+            args=[identity.id]
+        )
         linkdef["modalcb"] = "admin.aliasform_cb"
     return render_link(linkdef)
 
 
 @register.simple_tag
 def domadmin_actions(daid, domid):
-    actions = [dict(
-            name="removeperm",
-            url=reverse("modoboa.admin.views.remove_permission") + "?domid=%s&daid=%s" % (domid, daid),
-            img="icon-trash",
-            title=_("Remove this permission")
-            )]
+    actions = [{
+        "name": "removeperm",
+        "url": reverse("modoboa.extensions.admin.views.identity.remove_permission") + "?domid=%s&daid=%s" % (domid, daid),
+        "img": "icon-trash",
+        "title": _("Remove this permission")
+    }]
     return render_actions(actions)
 
 
 @register.simple_tag
 def loadadminextmenu(user):
     menu = events.raiseQueryEvent("AdminMenuDisplay", "admin_menu_box", user)
-    return render_to_string('common/menulist.html', 
-                            {"entries" : menu, "user" : user})
+    return render_to_string('common/menulist.html',
+                            {"entries": menu, "user": user})
 
 
 @register.simple_tag
 def param(app, definition):
     name = "%s.%s" % (app, definition["name"])
-    value = definition.has_key("value") \
-        and definition["value"] or definition["deflt"]
+    value = definition["value"] \
+        if "value" in definition else definition["deflt"]
 
     if definition["type"] == "separator":
         return "<h5>%s</h5>" % (unicode(definition["label"]))
@@ -211,8 +217,7 @@ def param(app, definition):
     result = """<div class='control-group'%s>
   <label class="param-label" for="%s">%s</label>
 """ % (extratags, name,
-       definition.has_key("label") and _(definition["label"])
-       or definition["name"])
+       _(definition["label"]) if "label" in definition else definition["name"])
 
     result += "<div class='param-controls'>"
     if definition["type"] in ["string", "int"]:
@@ -222,7 +227,7 @@ def param(app, definition):
     if definition["type"] == "text":
         result += "<textarea name='%s' id='%s'>%s</textarea>" \
             % (name, name, value)
-        
+
     if definition["type"] == "list_yesno":
         for idx, v in enumerate([("yes", _("Yes")), ("no", _("No"))]):
             checked = "checked" if value == v[0] else ""
@@ -230,13 +235,14 @@ def param(app, definition):
   <input type="radio" name="%(name)s" id="%(id)s" value="%(value)s"%(checked)s />
   %(label)s
 </label>
-""" % dict(id="%s_%d" % (name, idx), name=name, value=v[0], label=v[1], checked=checked)
+""" % dict(id="%s_%d" % (name, idx), name=name, value=v[0],
+           label=v[1], checked=checked)
 
     if definition["type"] == "list":
         result += """
 <select name='%s' id='%s'>""" % (name, name)
         values = []
-        if definition.has_key("values"):
+        if "values" in definition:
             values = definition["values"]
         for v in values:
             selected = ""
@@ -247,7 +253,7 @@ def param(app, definition):
 </select>
 """
 
-    if definition.has_key("help"):
+    if "help" in definition:
         result += """<a class="help" rel="popover" data-content="%s" data-original-title="%s">
   <i class="icon-info-sign"></i>
 </a>""" % (unicode(definition["help"]), _("Help"))
@@ -264,7 +270,7 @@ def param(app, definition):
 
 @register.filter
 def gender(value, target):
-    if genders.has_key(value):
+    if value in genders:
         trans = target == "m" and genders[value][0] or genders[value][1]
         if trans.find("_") == -1:
             return trans
@@ -273,5 +279,7 @@ def gender(value, target):
 
 @register.simple_tag
 def get_extra_admin_content(user, target, currentpage):
-    res = events.raiseQueryEvent("ExtraAdminContent", user, target, currentpage)
+    res = events.raiseQueryEvent(
+        "ExtraAdminContent", user, target, currentpage
+    )
     return "".join(res)

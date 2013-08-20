@@ -36,6 +36,7 @@ class Alias(DatesAware):
         )
         unique_together = (("address", "domain"),)
         ordering = ["domain__name", "address"]
+        app_label = 'admin'
 
     def __unicode__(self):
         return self.full_address
