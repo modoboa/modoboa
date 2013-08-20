@@ -10,39 +10,42 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
-from modoboa.extensions import ModoExtension, exts_pool
-from models import *
-from forms import ResourcePoolForm
+from modoboa.core.extensions import ModoExtension, exts_pool
+from .forms import ResourcePoolForm
 import controls
 import views
+
 
 class Limits(ModoExtension):
     name = "limits"
     label = "Limits"
     version = "1.0"
-    description = ugettext_lazy("Per administrator resources to limit the number of objects they can create")
+    description = ugettext_lazy(
+        "Per administrator resources to limit the number of objects they can create"
+    )
 
     def init(self):
-        from modoboa.admin.models import User, Domain
-        
+        from modoboa.core.models import User
+        from modoboa.extensions.admin.models import Domain
+
         ct = ContentType.objects.get(app_label="admin", model="domain")
         dagrp = Group.objects.get(name="DomainAdmins")
-        
+
         grp = Group(name="Resellers")
         grp.save()
         grp.permissions.add(*dagrp.permissions.all())
-        
+
         ct = ContentType.objects.get_for_model(Permission)
         for pname in ["view_permissions"]:
             perm = Permission.objects.get(content_type=ct, codename=pname)
             grp.permissions.add(perm)
-        
+
         ct = ContentType.objects.get_for_model(Domain)
         for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
             perm = Permission.objects.get(content_type=ct, codename=pname)
             grp.permissions.add(perm)
             grp.save()
-        
+
         for user in User.objects.filter(groups__name='DomainAdmins'):
             try:
                 controls.create_pool(user)
@@ -50,7 +53,7 @@ class Limits(ModoExtension):
                 pass
 
     def load(self):
-        from app_settings import ParametersForm
+        from modoboa.extensions.limits.app_settings import ParametersForm
         parameters.register(ParametersForm, ugettext_lazy("Limits"))
 
     def destroy(self):
@@ -59,11 +62,13 @@ class Limits(ModoExtension):
 
 exts_pool.register_extension(Limits)
 
+
 @events.observe("GetExtraRoles")
 def get_extra_roles(user):
     if user.is_superuser:
-        return [("Resellers", _("Reseller")),]
+        return [("Resellers", _("Reseller")), ]
     return []
+
 
 @events.observe("ExtraAdminContent")
 def display_pool_usage(user, target, currentpage):
@@ -82,6 +87,7 @@ def display_pool_usage(user, target, currentpage):
         return []
     return [render_to_string("limits/poolusage.html", dict(limits=limits))]
 
+
 @events.observe("ExtraAccountForm")
 def extra_account_form(user, account=None):
     if not user.group in ["SuperAdmins", "Resellers"]:
@@ -95,6 +101,7 @@ def extra_account_form(user, account=None):
         )
     ]
 
+
 @events.observe("CheckExtraAccountForm")
 def check_form_access(account, form):
     if form["id"] != "resources":
@@ -104,6 +111,7 @@ def check_form_access(account, form):
         return [False]
     return [True]
 
+
 @events.observe("FillAccountInstances")
 def fill_account_instances(user, account, instances):
     if not user.is_superuser and not user.belongs_to_group("Resellers"):
@@ -112,6 +120,7 @@ def fill_account_instances(user, account, instances):
        not account.belongs_to_group("DomainAdmins"):
         return
     instances["resources"] = account
+
 
 @events.observe("GetStaticContent")
 def get_static_content(user):

@@ -63,7 +63,7 @@ def domains(request, tplname="admin/domains.html"):
 
 
 @login_required
-@permission_required("admin.add_user")
+@permission_required("core.add_user")
 def domains_list(request):
     doms = [dom.name for dom in Domain.objects.get_for_admin(request.user)]
     return ajax_simple_response(doms)

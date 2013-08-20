@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from modoboa.lib.tests import ExtTestCase
-from modoboa.admin.models import User
+from modoboa.core.models import User
 
 
 class PermissionsTestCase(ExtTestCase):
@@ -21,9 +21,11 @@ class PermissionsTestCase(ExtTestCase):
         account = User.objects.get(username="reseller@test.com")
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")
-        self.check_ajax_get(reverse("modoboa.admin.views.delaccount", args=[account.id]), {},
-                            status="ko", respmsg="Permission denied")
-        self.check_ajax_get(reverse("modoboa.admin.views.delaccount", args=[4]), {},
-                            status="ko", respmsg="Permission denied")
-
-        
+        self.check_ajax_get(
+            reverse("modoboa.extensions.admin.views.identity.delaccount", args=[account.id]),
+            {}, status="ko", respmsg="Permission denied"
+        )
+        self.check_ajax_get(
+            reverse("modoboa.extensions.admin.views.identity.delaccount", args=[4]),
+            {}, status="ko", respmsg="Permission denied"
+        )

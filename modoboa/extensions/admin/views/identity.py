@@ -24,7 +24,7 @@ from modoboa.extensions.admin.forms import (
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias")
+    lambda u: u.has_perm("core.add_user") or u.has_perm("admin.add_alias")
 )
 def _identities(request):
     idents_list = get_identities(request.user, request.GET)
@@ -62,7 +62,7 @@ def identities(request, tplname="admin/identities.html"):
 
 
 @login_required
-@permission_required("admin.add_user")
+@permission_required("core.add_user")
 def accounts_list(request):
     accs = User.objects.filter(is_superuser=False) \
         .exclude(groups__name='SimpleUsers')
@@ -107,7 +107,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
 
 
 @login_required
-@permission_required("admin.add_user")
+@permission_required("core.add_user")
 @transaction.commit_on_success
 def newaccount(request, tplname='common/wizard_forms.html'):
     def create_account(steps):
@@ -173,7 +173,7 @@ def newaccount(request, tplname='common/wizard_forms.html'):
 
 
 @login_required
-@permission_required("admin.change_user")
+@permission_required("core.change_user")
 @transaction.commit_on_success
 def editaccount(request, accountid, tplname="common/tabforms.html"):
     account = User.objects.get(pk=accountid)
@@ -220,7 +220,7 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 
 
 @login_required
-@permission_required("admin.delete_user")
+@permission_required("core.delete_user")
 @transaction.commit_on_success
 def delaccount(request, accountid):
     keepdir = True if request.POST.get("keepdir", "false") == "true" else False
