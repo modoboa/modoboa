@@ -19,6 +19,7 @@ from django.contrib.auth.models import (
 from django.contrib.contenttypes.models import ContentType
 from modoboa.lib import events, md5crypt, parameters
 from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.extensions import exts_pool
 from modoboa.core.exceptions import AdminError
 

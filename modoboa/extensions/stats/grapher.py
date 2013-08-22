@@ -1,15 +1,17 @@
 # coding: utf-8
 
-import sys, os
+import sys
+import os
 import time
 import datetime
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
 
-periods = [{"name" : "day", "label" : ugettext_lazy("Day")},
-           {"name" : "week", "label" : ugettext_lazy("Week")},
-           {"name" : "month", "label" : ugettext_lazy("Month")},
-           {"name" : "year", "label" : ugettext_lazy("Year")}]
+periods = [{"name": "day", "label": ugettext_lazy("Day")},
+           {"name": "week", "label": ugettext_lazy("Week")},
+           {"name": "month", "label": ugettext_lazy("Month")},
+           {"name": "year", "label": ugettext_lazy("Year")}]
+
 
 def str2Time(y, M, d, h="00", m="00", s="00"):
     """Date conversion
@@ -20,16 +22,17 @@ def str2Time(y, M, d, h="00", m="00", s="00"):
     """
     try:
         if not M.isdigit():
-            local = time.strptime("%s %s %s %s:%s:%s" % (y, M, d, h, m, s), \
-                                      "%Y %b %d %H:%M:%S")
+            local = time.strptime("%s %s %s %s:%s:%s" % (y, M, d, h, m, s),
+                                  "%Y %b %d %H:%M:%S")
         else:
-            local = time.strptime("%s %s %s %s:%s:%s" % (y, M, d, h, m, s), \
-                                      "%Y %m %d %H:%M:%S")
+            local = time.strptime("%s %s %s %s:%s:%s" % (y, M, d, h, m, s),
+                                  "%Y %m %d %H:%M:%S")
     except ValueError:
-        print >>sys.stderr, "Error: failed to convert date and time"
+        print >> sys.stderr, "Error: failed to convert date and time"
         return 0
 
     return int(time.mktime(local))
+
 
 class Grapher(object):
     def __init__(self):
@@ -53,7 +56,7 @@ class Grapher(object):
             defs += [str('DEF:%s=%s:%s:%s' % (v, rrdfile, v, graph_tpl.cf)),
                      str('CDEF:%spm=%s,60,*' % (v, v)),
                      str('VDEF:%s_total=%s,TOTAL' % (v, v))]
-            type = d.has_key("type") and d["type"] or "LINE"
+            type = d["type"] if "type" in d else "LINE"
             lines += [str("%s:%spm%s:%s:STACK" % (type, v, d["color"],
                                                   (d["legend"].encode("utf8")).ljust(20)))]
             lines.append('GPRINT:%s_total:%s%%7.0lf%%s\\l' % (v, _("Total").encode('utf-8')))
@@ -64,23 +67,25 @@ class Grapher(object):
         defs.append('GPRINT:%s_first:%s %%c:strftime' % (first_ds, "From"))
         defs.append('GPRINT:%s_last:%s %%c\\c:strftime' % (first_ds, "to"))
         defs.append('COMMENT:\\s')
-        
+
         params = defs + lines
-        rrdtool.graph(str(path),
-                      "--imgformat", "PNG",
-                      "--width", str(graph_tpl.width),
-                      "--height", str(graph_tpl.height),
-                      "--start", start,
-                      "--end", end,
-                      "--vertical-label", graph_tpl.vertlabel.encode("utf-8"),
-                      "--lower-limit", "0",
-                      "--slope-mode",
-                      "--units-exponent", "0",
-                      "--title", str("%s: %s" % (target, graph_tpl.title.encode("utf-8"))),
-                      *params)
+        rrdtool.graph(
+            str(path),
+            "--imgformat", "PNG",
+            "--width", str(graph_tpl.width),
+            "--height", str(graph_tpl.height),
+            "--start", start,
+            "--end", end,
+            "--vertical-label", graph_tpl.vertlabel.encode("utf-8"),
+            "--lower-limit", "0",
+            "--slope-mode",
+            "--units-exponent", "0",
+            "--title", str("%s: %s" % (target, graph_tpl.title.encode("utf-8"))),
+            *params
+        )
 
         if not os.path.exists(path):
-            print "[graph] Impossible to create %s graph" %path
+            print "[graph] Impossible to create %s graph" % path
 
     def make_defaults(self, target, graph_tpl):
         end = "%d" % int(time.mktime(time.localtime()))
@@ -88,5 +93,3 @@ class Grapher(object):
         self.process(target, "week", "-1week", end, graph_tpl)
         self.process(target, "month", "-1month", end, graph_tpl)
         self.process(target, "year", "-1year", end, graph_tpl)
-        
-        
