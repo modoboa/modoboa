@@ -65,9 +65,10 @@ Raised when an existing account is deleted.
 
 *Callback prototype*::
 
-  def callback(account): pass
+  def callback(account, byuser, **options): pass
 
-* ``oldaccount`` is the account that is going to be deleted
+* ``account`` is the account that is going to be deleted
+* ``byuser`` is the adminstrator deleting ``account``
   
 AccountModified
 ===============

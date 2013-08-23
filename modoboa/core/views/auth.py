@@ -23,9 +23,6 @@ def dologin(request):
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
-                events.raiseEvent("UserLoggedIn", request, form)
-                # if request.user.has_mailbox:
-                #     request.session["password"] = encrypt(form.cleaned_data["password"])
 
                 request.session["django_language"] = \
                     parameters.get_user(request.user, "LANG")

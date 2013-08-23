@@ -59,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     password_expr = re.compile(r'(\{(\w+)\}|(\$1\$))(.+)')
 
-    def delete(self, fromuser, keep_mb_dir, *args, **kwargs):
+    def delete(self, fromuser, *args, **kwargs):
         """Custom delete method
 
         To check permissions properly, we need to make a distinction
@@ -79,18 +79,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not fromuser.can_access(self):
             raise PermDeniedException
 
-        # if self.has_mailbox:
-        #     mb = self.mailbox_set.all()[0]
-        #     if not fromuser.can_access(mb):
-        #         raise PermDeniedException
-        #     mb.delete(keepdir=keep_mb_dir)
-
         owner = get_object_owner(self)
         for ooentry in self.objectaccess_set.filter(is_owner=True):
             if ooentry.content_object is not None:
                 grant_access_to_object(owner, ooentry.content_object, True)
 
-        events.raiseEvent("AccountDeleted", self)
+        events.raiseEvent("AccountDeleted", self, fromuser, **kwargs)
         ungrant_access_to_object(self)
         super(User, self).delete(*args, **kwargs)
 

@@ -154,3 +154,22 @@ def import_account_mailbox(user, account, row):
             except Domain.DoesNotExist:
                 continue
             dom.add_admin(account)
+
+
+@events.observe("UserLogin")
+def user_logged_in(request, username, password):
+    from modoboa.lib.cryptutils import encrypt
+
+    if request.user.mailbox_set.count():
+        request.session["password"] = encrypt(password)
+
+
+@events.observe("AccountDeleted")
+def account_deleted(account, byuser, **kwargs):
+    if not account.mailbox_set.count():
+        return
+    mb = account.mailbox_set.all()[0]
+    if not byuser.can_access(mb):
+        raise PermDeniedException
+    keep_mb_dir = kwargs.get("keep_mb_dir", True)
+    mb.delete(keepdir=keep_mb_dir)

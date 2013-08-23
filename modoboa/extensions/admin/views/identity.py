@@ -225,7 +225,7 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 def delaccount(request, accountid):
     keepdir = True if request.POST.get("keepdir", "false") == "true" else False
 
-    User.objects.get(pk=accountid).delete(request.user, keepdir)
+    User.objects.get(pk=accountid).delete(request.user, keep_mb_dir=keepdir)
 
     msg = ungettext("Account deleted", "Accounts deleted", 1)
     return ajax_simple_response({"status": "ok", "respmsg": msg})

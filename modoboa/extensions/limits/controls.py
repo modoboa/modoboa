@@ -181,8 +181,7 @@ def on_account_modified(old, new):
 
 
 @events.observe("AccountDeleted")
-def on_account_deleted(account):
-    print "del"
+def on_account_deleted(account, byuser, **kwargs):
     owner = get_object_owner(account)
     if not owner.group in ["SuperAdmins", "Resellers"]:
         return
