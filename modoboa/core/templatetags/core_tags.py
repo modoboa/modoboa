@@ -135,12 +135,6 @@ def uprefs_menu(selection, user):
          "url": "preferences/",
          "label": _("Preferences")},
     ]
-    # if user.has_mailbox:
-    #     entries.insert(0, {"name": "forward",
-    #                        "class": "ajaxlink",
-    #                        "url": "forward/",
-    #                        "label": _("Forward")})
-
     entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu", user)
     entries = sorted(entries, key=lambda e: e["label"])
     return render_to_string('common/menu.html', {

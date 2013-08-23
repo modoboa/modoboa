@@ -181,10 +181,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return [{"name": "account", "label": _("account"), "type": "idt"},
                 {"name": self.group, "label": self.group, "type": "grp", "color": "info"}]
 
-    # @property
-    # def has_mailbox(self):
-    #     return self.mailbox_set.count() != 0
-
     @property
     def fullname(self):
         if self.first_name != u"":

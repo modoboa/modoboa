@@ -6,27 +6,29 @@ from django.template.loader import render_to_string
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url
 
+
 @events.observe("UserMenuDisplay")
 def menu(target, user):
     if target != "top_menu_middle":
         return []
-    if not user.has_mailbox:
+    if not user.mailbox_set.count():
         return []
     return [
-        {"name"  : "demo",
-         "label" : _("Test messages"),
-         "img" : static_url("pics/demo.png"),
-         "class" : "topdropdown",
-         "menu"  : [
-                {"name"  : "sendvirus",
-                 "label" :  _("Send virus"),
-                 "url"   : reverse("modoboa.demo.views.send_virus")},
-                {"name"  : "sendspam",
-                 "label" :  _("Send spam"),
-                 "url"   : reverse("modoboa.demo.views.send_spam")}
-                ]
+        {"name": "demo",
+         "label": _("Test messages"),
+         "img": static_url("pics/demo.png"),
+         "class": "topdropdown",
+         "menu": [
+             {"name": "sendvirus",
+              "label":  _("Send virus"),
+              "url": reverse("modoboa.demo.views.send_virus")},
+             {"name": "sendspam",
+              "label":  _("Send spam"),
+              "url": reverse("modoboa.demo.views.send_spam")}
+         ]
          }
-        ]
+    ]
+
 
 @events.observe("GetAnnouncement")
 def announcement(target):
@@ -35,13 +37,15 @@ def announcement(target):
         return [txt]
     return ""
 
+
 @events.observe("PasswordChange")
 def password_change(user):
     return [user.id == 1]
 
+
 @events.observe("GetStaticContent")
 def get_static_content(user):
-    if not user.has_mailbox:
+    if not user.mailbox_set.count():
         return []
     return """<script type="text/javascript">
 $(document).ready(function() {

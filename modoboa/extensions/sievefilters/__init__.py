@@ -33,7 +33,7 @@ def menu(target, user):
     return [
         {"name": "sievefilters",
          "label": _("Message filters"),
-         "url": reverse("modobooa.extensions.sievefilters.views.index"),
+         "url": reverse("modoboa.extensions.sievefilters.views.index"),
          "img": "icon-check"}
     ]
 
@@ -42,7 +42,7 @@ def menu(target, user):
 def userlogout(request):
     from .lib import SieveClient
 
-    if not request.user.has_mailbox:
+    if not request.user.mailbox_set.count():
         return
     try:
         sc = SieveClient(user=request.user.username,

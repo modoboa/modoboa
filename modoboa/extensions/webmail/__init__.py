@@ -43,7 +43,7 @@ def userlogout(request):
     from .lib import IMAPconnector
     from .exceptions import ImapError
 
-    if not request.user.has_mailbox:
+    if not request.user.mailbox_set.count():
         return
     try:
         m = IMAPconnector(user=request.user.username,

@@ -32,7 +32,7 @@ TwocolsNav.prototype = {
     },
 
     display_errors: function(data) {
-        if (data.errors == undefined) {
+        if (data.errors === undefined || !data.errors.length) {
             if (data.respmsg) {
                 $("body").notify("error", data.respmsg);
             }

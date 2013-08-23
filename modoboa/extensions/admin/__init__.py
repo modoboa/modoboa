@@ -53,8 +53,14 @@ class AdminConsole(ModoExtension):
 exts_pool.register_extension(AdminConsole, show=False)
 
 
+@events.observe("ExtraUprefsRoutes")
+def extra_routes():
+    return [(r'^user/forward/',
+             'modoboa.extensions.admin.views.user.forward'), ]
+
+
 @events.observe("AdminMenuDisplay")
-def menu(target, user):
+def admin_menu(target, user):
     if target != "top_menu":
         return []
     entries = []
@@ -71,6 +77,20 @@ def menu(target, user):
              "label" : _("Identities")},
         ]
     return entries
+
+
+@events.observe("UserMenuDisplay")
+def user_menu(target, user):
+    if target != "uprefs_menu":
+        return []
+    if not user.mailbox_set.count():
+        return []
+    return [
+        {"name": "forward",
+         "class": "ajaxlink",
+         "url": "forward/",
+         "label": ugettext_lazy("Forward")}
+    ]
 
 
 @events.observe("RoleChanged")

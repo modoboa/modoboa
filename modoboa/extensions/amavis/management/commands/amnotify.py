@@ -71,7 +71,7 @@ class Command(BaseCommand):
         self.listingurl = self.baseurl + reverse("modoboa.extensions.amavis.views._listing") + "?viewrequests=1"
 
         for da in User.objects.filter(groups__name="DomainAdmins"):
-            if not da.has_mailbox:
+            if not da.mailbox_set.count():
                 continue
             rcpt = da.mailbox_set.all()[0].full_address
             reqs = get_wrapper().get_domains_pending_requests(da.get_domains())
@@ -84,7 +84,7 @@ class Command(BaseCommand):
                 print "No release request currently pending"
             return
         for su in User.objects.filter(is_superuser=True):
-            if not su.has_mailbox:
+            if not su.mailbox_set.count():
                 continue
             rcpt = su.mailbox_set.all()[0].full_address
             self.send_pr_notification(rcpt, reqs)

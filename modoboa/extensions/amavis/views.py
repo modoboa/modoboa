@@ -155,7 +155,7 @@ def viewmail(request, mail_id):
     else:
         rcpt = None
 
-    if request.user.has_mailbox:
+    if request.user.mailbox_set.count():
         mb = Mailbox.objects.get(user=request.user)
         if not rcpt or rcpt == mb.full_address:
             msgrcpt = get_wrapper().get_recipient_message(mb.full_address, mail_id)

@@ -6,12 +6,15 @@ from django.http import QueryDict
 from modoboa.lib import events, parameters
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.permissions import get_account_roles
-from modoboa.lib.formutils import *
+from modoboa.lib.formutils import (
+    DomainNameField, YesNoField, DynamicForm, TabForms
+)
+from modoboa.lib.exceptions import PermDeniedException
 from modoboa.core.models import User
 from modoboa.extensions.admin.templatetags.admin_tags import gender
-from modoboa.extensions.admin.exceptions import AdminError
+from modoboa.extensions.admin.exceptions import AdminError, BadDestination
 from modoboa.extensions.admin.models import (
-    Domain, DomainAlias, Mailbox, Alias
+    Domain, DomainAlias, Mailbox, Alias, Quota
 )
 
 
@@ -670,3 +673,33 @@ class AccountForm(TabForms):
             return
         for f in self.forms[2:]:
             f["instance"].save()
+
+
+class ForwardForm(forms.Form):
+    dest = forms.CharField(
+        label=ugettext_lazy("Recipient(s)"),
+        widget=forms.Textarea,
+        required=False,
+        help_text=ugettext_lazy("Indicate one or more recipients separated by a ','")
+    )
+    keepcopies = forms.BooleanField(
+        label=ugettext_lazy("Keep local copies"),
+        required=False,
+        help_text=ugettext_lazy("Forward messages and store copies into your local mailbox")
+    )
+
+    def parse_dest(self):
+        self.dests = []
+        rawdata = self.cleaned_data["dest"].strip()
+        if rawdata == "":
+            return
+        for d in rawdata.split(","):
+            local_part, domname = split_mailbox(d)
+            if not local_part or not domname or not len(domname):
+                raise BadDestination("Invalid mailbox syntax for %s" % d)
+            try:
+                mb = Domain.objects.get(name=domname)
+            except Domain.DoesNotExist:
+                self.dests += [d]
+            else:
+                raise BadDestination(_("You can't define a forward to a local destination. Please ask your administrator to create an alias instead."))

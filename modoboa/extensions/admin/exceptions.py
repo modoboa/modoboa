@@ -13,3 +13,7 @@ class AdminError(ModoboaException):
     application.
     """
     pass
+
+
+class BadDestination(Exception):
+    pass
