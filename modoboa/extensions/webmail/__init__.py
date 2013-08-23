@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
-from modoboa.extensions import ModoExtension, exts_pool
+from modoboa.core.extensions import ModoExtension, exts_pool
 
 
 class Webmail(ModoExtension):
@@ -13,7 +13,7 @@ class Webmail(ModoExtension):
     needs_media = True
 
     def load(self):
-        from app_settings import ParametersForm, UserSettings
+        from .app_settings import ParametersForm, UserSettings
 
         parameters.register(ParametersForm, "Webmail")
         parameters.register(UserSettings, "Webmail")
@@ -24,22 +24,24 @@ class Webmail(ModoExtension):
 
 exts_pool.register_extension(Webmail)
 
+
 @events.observe("UserMenuDisplay")
 def menu(target, user):
     if target != "top_menu":
         return []
-    if not user.has_mailbox:
+    if not user.mailbox_set.count():
         return []
     return [
-        {"name" : "webmail",
-         "label" : _("Webmail"),
-         "url" : reverse("modoboa.extensions.webmail.views.index")},
-        ]
+        {"name": "webmail",
+         "label": _("Webmail"),
+         "url": reverse("modoboa.extensions.webmail.views.index")},
+    ]
+
 
 @events.observe("UserLogout")
 def userlogout(request):
-    from lib import IMAPconnector
-    from exceptions import ImapError
+    from .lib import IMAPconnector
+    from .exceptions import ImapError
 
     if not request.user.has_mailbox:
         return
