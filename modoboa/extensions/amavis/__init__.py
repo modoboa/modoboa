@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from django.template import Template, Context
 from modoboa.lib import events, parameters
-from modoboa.extensions import ModoExtension, exts_pool
+from modoboa.core.extensions import ModoExtension, exts_pool
 
 
 class Amavis(ModoExtension):
@@ -28,8 +28,8 @@ class Amavis(ModoExtension):
         Only run once, when the extension is enabled. We create records
         for existing domains to let Amavis consider them local.
         """
-        from modoboa.admin.models import Domain
-        from models import Users, Policy
+        from modoboa.extensions.admin.models import Domain
+        from .models import Users, Policy
 
         for dom in Domain.objects.all():
             try:
@@ -40,10 +40,10 @@ class Amavis(ModoExtension):
                                      priority=7, policy=p)
 
     def load(self):
-        from app_settings import ParametersForm, UserSettings
+        from .app_settings import ParametersForm, UserSettings
         parameters.register(ParametersForm, "Amavis")
         parameters.register(UserSettings, ugettext_lazy("Quarantine"))
-       
+
     def destroy(self):
         events.unregister("UserMenuDisplay", menu)
         parameters.unregister()
@@ -53,20 +53,18 @@ exts_pool.register_extension(Amavis)
 
 @events.observe("UserMenuDisplay")
 def menu(target, user):
-    from modoboa.lib.webutils import static_url
-
     if target == "top_menu":
         return [
             {"name": "quarantine",
              "label": _("Quarantine"),
              "url": reverse('modoboa.extensions.amavis.views.index')}
-            ]
+        ]
     return []
 
 
 @events.observe("CreateDomain")
 def on_create_domain(user, domain):
-    from models import Users, Policy
+    from .models import Users, Policy
     p = Policy.objects.create(policy_name=domain.name)
     Users.objects.create(email="@%s" % domain.name, fullname=domain.name,
                          priority=7, policy=p)
@@ -75,7 +73,7 @@ def on_create_domain(user, domain):
 @events.observe("DomainModified")
 def on_domain_modified(domain):
     if domain.oldname != domain.name:
-        from models import Users
+        from .models import Users
         u = Users.objects.get(email="@%s" % domain.oldname)
         u.email = "@%s" % domain.name
         u.fullname = domain.name
@@ -86,7 +84,7 @@ def on_domain_modified(domain):
 
 @events.observe("DeleteDomain")
 def on_delete_domain(domain):
-    from models import Users
+    from .models import Users
 
     try:
         u = Users.objects.get(email="@%s" % domain.name)
@@ -134,7 +132,7 @@ $(document).ready(function() {
 
 @events.observe("TopNotifications")
 def display_requests(user):
-    from sql_listing import get_wrapper
+    from .sql_listing import get_wrapper
 
     if parameters.get_admin("USER_CAN_RELEASE") == "yes" \
             or user.group == "SimpleUsers":
@@ -146,13 +144,13 @@ def display_requests(user):
     tpl = Template('<div class="btn-group {{ css }}"><a id="nbrequests" href="{{ url }}" class="btn btn-danger">{{ label }}</a></div>')
     css = "hidden" if nbrequests == 0 else ""
     return [tpl.render(Context(dict(
-                    label=_("%d pending requests" % nbrequests), url=url, css=css
-                    )))]
+        label=_("%d pending requests" % nbrequests), url=url, css=css
+    )))]
 
 
 @events.observe("ExtraDomainForm")
 def extra_domain_form(user, domain):
-    from forms import DomainPolicyForm
+    from .forms import DomainPolicyForm
 
     if not user.has_perm("admin.view_domains"):
         return []
@@ -160,8 +158,8 @@ def extra_domain_form(user, domain):
         dict(
             id="amavis", title=_("Content filter"), cls=DomainPolicyForm,
             formtpl="amavis/domain_content_filter.html"
-            )
-        ]
+        )
+    ]
 
 
 @events.observe("FillDomainInstances")

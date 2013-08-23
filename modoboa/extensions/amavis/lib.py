@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException
-from models import Msgrcpt
+from .models import Msgrcpt
 
 
 def selfservice(ssfunc=None):

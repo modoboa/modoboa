@@ -1,5 +1,6 @@
 # coding: utf-8
 import email
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.template import Template, Context
 from django.utils import simplejson
@@ -10,12 +11,14 @@ from django.contrib.auth.decorators \
 from django.db.models import Q
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException
-from modoboa.lib.webutils import _render, getctx, ajax_response, ajax_simple_response
-from modoboa.admin.models import Mailbox
-from lib import *
-from templatetags.amextras import *
+from modoboa.lib.webutils import (
+    getctx, ajax_response, ajax_simple_response
+)
 from modoboa.lib.email_listing import parse_search_parameters
-from sql_listing import *
+from modoboa.extensions.admin.models import Mailbox
+from templatetags.amextras import quar_menu, viewm_menu
+from .lib import selfservice, AMrelease
+from .sql_listing import SQLlisting, SQLemail, get_wrapper
 
 
 def __get_current_url(request):
@@ -23,8 +26,9 @@ def __get_current_url(request):
         res = "listing?page=%s" % request.session["page"]
     else:
         res = ""
-    params = "&".join(map(lambda p: "%s=%s" % (p, request.session[p]),
-                          filter(request.session.has_key, ["criteria", "pattern"])))
+    params = "&".join(["%s=%s" % (p, request.session[p])
+                       for p in ["criteria", "pattern"]
+                       if p in request.sessions])
     if params != "":
         res += "?%s" % (params)
     return res
@@ -53,7 +57,7 @@ def _listing(request):
     request.session["navparams"]["order"] = order
 
     parse_search_parameters(request)
-    if request.session.has_key("pattern"):
+    if "pattern" in request.session:
         criteria = request.session["criteria"]
         if criteria == "both":
             criteria = "from_addr,subject,to"
@@ -71,18 +75,19 @@ def _listing(request):
 
     msgs = get_wrapper().get_mails(request, rcptfilter)
 
-    if request.GET.has_key("page"):
+    if "page" in request.GET:
         request.session["page"] = request.GET["page"]
         pageid = int(request.session["page"])
     else:
-        if request.session.has_key("page"):
+        if "page" in request.session:
             del request.session["page"]
         pageid = 1
 
-    lst = SQLlisting(request.user, msgs, flt,
-                     navparams=request.session["navparams"],
-                     elems_per_page=int(parameters.get_user(request.user,
-                                                        "MESSAGES_PER_PAGE")))
+    lst = SQLlisting(
+        request.user, msgs, flt,
+        navparams=request.session["navparams"],
+        elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+    )
     page = lst.paginator.getpage(pageid)
     if not page:
         return empty_quarantine(request)
@@ -96,40 +101,36 @@ def _listing(request):
 
 @login_required
 def index(request):
-    return _render(request, "amavis/index.html", dict(
-            deflocation="listing/", defcallback="listing_cb", selection="quarantine"
-            ))
+    return render(request, "amavis/index.html", dict(
+        deflocation="listing/", defcallback="listing_cb", selection="quarantine"
+    ))
 
 
 def getmailcontent_selfservice(request, mail_id):
-    from sql_listing import SQLemail
-
     qmails = get_wrapper().get_mail_content(mail_id)
     content = ""
     for qm in qmails:
         content += qm.mail_text
     msg = email.message_from_string(content)
     mail = SQLemail(msg, mformat="plain", links="0")
-    return _render(request, "common/viewmail.html", {
-            "headers": mail.render_headers(),
-            "mailbody": mail.body
-            })
+    return render(request, "common/viewmail.html", {
+        "headers": mail.render_headers(),
+        "mailbody": mail.body
+    })
 
 
 @selfservice(getmailcontent_selfservice)
 def getmailcontent(request, mail_id):
-    from sql_listing import SQLemail
-
     qmails = get_wrapper().get_mail_content(mail_id)
     content = ""
     for qm in qmails:
         content += qm.mail_text
     msg = email.message_from_string(content)
     mail = SQLemail(msg, mformat="plain", links="0")
-    return _render(request, "common/viewmail.html", {
-            "headers": mail.render_headers(),
-            "mailbody": mail.body
-            })
+    return render(request, "common/viewmail.html", {
+        "headers": mail.render_headers(),
+        "mailbody": mail.body
+    })
 
 
 def viewmail_selfservice(request, mail_id,
@@ -142,9 +143,9 @@ def viewmail_selfservice(request, mail_id,
 <iframe src="{% url 'modoboa.extensions.amavis.views.getmailcontent' mail_id %}" id="mailcontent"></iframe>
 """).render(Context(dict(mail_id=mail_id)))
 
-    return _render(request, tplname, dict(
-            mail_id=mail_id, rcpt=rcpt, secret_id=secret_id, content=content
-            ))
+    return render(request, tplname, dict(
+        mail_id=mail_id, rcpt=rcpt, secret_id=secret_id, content=content
+    ))
 
 
 @selfservice(viewmail_selfservice)
@@ -176,13 +177,13 @@ def viewheaders(request, mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
     return _render(request, 'amavis/viewheader.html', {
-            "headers": msg.items()
-            })
+        "headers": msg.items()
+    })
 
 
 def check_mail_id(request, mail_id):
     if type(mail_id) in [str, unicode]:
-        if request.GET.has_key("rcpt"):
+        if "rcpt" in request.GET:
             mail_id = ["%s %s" % (request.GET["rcpt"], mail_id)]
         else:
             mail_id = [mail_id]
@@ -318,5 +319,5 @@ def process(request):
 @login_required
 @user_passes_test(lambda u: u.group != 'SimpleUsers')
 def nbrequests(request):
-    nbrequests = get_wrapper().get_pending_requests(request.user)
-    return ajax_simple_response(dict(status="ok", requests=nbrequests))
+    result = get_wrapper().get_pending_requests(request.user)
+    return ajax_simple_response(dict(status="ok", requests=result))

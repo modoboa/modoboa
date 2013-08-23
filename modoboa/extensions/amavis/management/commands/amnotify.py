@@ -12,7 +12,9 @@ from modoboa.lib import parameters
 from modoboa.lib.emailutils import sendmail_simple
 from modoboa.admin.models import User, Domain
 from modoboa.extensions.amavis import Amavis
-from modoboa.extensions.amavis.models import *
+from modoboa.extensions.amavis.models import (
+    Msgrcpt
+)
 from modoboa.extensions.amavis.sql_listing import get_wrapper
 
 
