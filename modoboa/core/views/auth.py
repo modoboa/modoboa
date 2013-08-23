@@ -7,8 +7,8 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import _render_to_string
+from modoboa.lib.cryptutils import encrypt
 from modoboa.core.forms import LoginForm
-from modoboa.auth.lib import encrypt
 
 
 def dologin(request):

@@ -7,11 +7,15 @@ from django.utils.html import conditional_escape
 from django.utils.encoding import force_unicode
 from modoboa.extensions.admin.templatetags.admin_tags import gender
 
+
 class FiltersSetForm(forms.Form):
     name = forms.CharField()
-    active = forms.BooleanField(label=gender("Active", "m"), required=False, 
-                                initial=False,
-                                help_text=ugettext_lazy("Check to activate this filters set"))
+    active = forms.BooleanField(
+        label=gender("Active", "m"), required=False,
+        initial=False,
+        help_text=ugettext_lazy("Check to activate this filters set")
+    )
+
 
 class CustomRadioInput(RadioInput):
     def __unicode__(self):
@@ -27,15 +31,16 @@ class CustomRadioInput(RadioInput):
             label_for = ''
         choice_label = conditional_escape(force_unicode(self.choice_label))
         return mark_safe(
-            u'<label%s class="radio inline">%s %s</label>' \
-                % (label_for, self.tag(), choice_label)
-            )
+            u'<label%s class="radio inline">%s %s</label>'
+            % (label_for, self.tag(), choice_label)
+        )
+
 
 class CustomRadioFieldRenderer(RadioFieldRenderer):
     def __iter__(self):
         for i, choice in enumerate(self.choices):
             yield CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
-            
+
     def __getitem__(self, idx):
         choice = self.choices[idx]
         return CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, idx)
@@ -43,8 +48,10 @@ class CustomRadioFieldRenderer(RadioFieldRenderer):
     def render(self):
         return mark_safe(u'\n'.join([force_unicode(w) for w in self]))
 
+
 class CustomRadioSelect(RadioSelect):
     renderer = CustomRadioFieldRenderer
+
 
 class FilterForm(forms.Form):
     def __init__(self, conditions, actions, request, *args, **kwargs):
@@ -56,30 +63,32 @@ class FilterForm(forms.Form):
                      ("anyof", _("Any of the following")),
                      ("all", _("All messages"))],
             initial="anyof",
-            widget=CustomRadioSelect(attrs={"class" : "radio inline"})
-            )
-        
-        self.header_operators = [("contains", _("contains"), "string"),
-                                 ("notcontains", _("does not contain"), "string"),
-                                 ("is", _("is"), "string"),
-                                 ("isnot", _("is not"), "string")]
-        
+            widget=CustomRadioSelect(attrs={"class": "radio inline"})
+        )
+
+        self.header_operators = [
+            ("contains", _("contains"), "string"),
+            ("notcontains", _("does not contain"), "string"),
+            ("is", _("is"), "string"),
+            ("isnot", _("is not"), "string")
+        ]
+
         self.cond_templates = [
-            {"name" : "Subject", "label" : _("Subject"), "operators" : self.header_operators},
-            {"name" : "From", "label" : _("Sender"), "operators" : self.header_operators},
-            {"name" : "To", "label" : _("Recipient"), "operators" : self.header_operators},
-            {"name" : "Cc", "label" : _("Cc"), "operators" : self.header_operators},
-            {"name" : "size", "label" : _("Size"), 
-             "operators" : [("over", _("is greater than"), "number"),
-                            ("under", _("is less than"), "number")]},
-            ]
-    
+            {"name": "Subject", "label": _("Subject"), "operators": self.header_operators},
+            {"name": "From", "label": _("Sender"), "operators": self.header_operators},
+            {"name": "To", "label": _("Recipient"), "operators": self.header_operators},
+            {"name": "Cc", "label": _("Cc"), "operators": self.header_operators},
+            {"name": "size", "label": _("Size"),
+             "operators": [("over", _("is greater than"), "number"),
+                           ("under", _("is less than"), "number")]},
+        ]
+
         self.action_templates = [
-            {"name" : "fileinto", "label" : _("Move message to"),
-             "args" : [{"type" : "list", "vloader" : "userfolders"}]},
-            {"name" : "redirect", "label" : _("Redirect message to"),
-             "args" : [{"type" : "string"}]},
-            ]
+            {"name": "fileinto", "label": _("Move message to"),
+             "args": [{"type": "list", "vloader": "userfolders"}]},
+            {"name": "redirect", "label": _("Redirect message to"),
+             "args": [{"type": "string"}]},
+        ]
 
         self.conds_cnt = 0
         for c in conditions:
@@ -93,7 +102,7 @@ class FilterForm(forms.Form):
         ops = []
         vfield = None
         for tpl in self.cond_templates:
-            targets += [(tpl["name"], tpl["label"]),]
+            targets += [(tpl["name"], tpl["label"]), ]
             if tpl["name"] != name:
                 continue
             for opdef in tpl["operators"]:
@@ -109,7 +118,7 @@ class FilterForm(forms.Form):
             forms.ChoiceField(initial=op, choices=ops)
         self.fields["cond_value_%d" % self.conds_cnt] = vfield
         self.conds_cnt += 1
-    
+
     def _build_Subject_field(self, op, value):
         self._build_header_field("Subject", op, value)
 
@@ -129,7 +138,7 @@ class FilterForm(forms.Form):
         actions = []
         args = None
         for tpl in self.action_templates:
-            actions += [(tpl["name"], tpl["label"]),]
+            actions += [(tpl["name"], tpl["label"]), ]
             if name == tpl["name"]:
                 args = tpl["args"]
         self.fields["action_name_%d" % self.actions_cnt] = \
@@ -153,12 +162,12 @@ class FilterForm(forms.Form):
     def __build_folders_list(self, folders, user, imapc, parentmb=None):
         ret = []
         for fd in folders:
-            value = fd["path"] if fd.has_key("path") else fd["name"]
+            value = fd["path"] if "path" in fd else fd["name"]
             if parentmb:
                 ret += [(value, fd["name"].replace("%s." % parentmb, ""))]
             else:
                 ret += [(value, fd["name"])]
-            if fd.has_key("sub"):
+            if "sub" in fd:
                 submboxes = imapc.getmboxes(user, value, unseen_messages=False)
                 ret += self.__build_folders_list(submboxes, user, imapc, value)
         return ret
@@ -191,7 +200,8 @@ class FilterForm(forms.Form):
             actions += [naction]
 
         return (conditions, actions)
-    
+
+
 def build_filter_form_from_qdict(request):
     conditions = []
     actions = []
@@ -204,7 +214,7 @@ def build_filter_form_from_qdict(request):
         while True:
             if cpt == int(request.POST["conds"]):
                 break
-            if request.POST.has_key("cond_target_%d" % i):
+            if "cond_target_%d" % i in request.POST:
                 qdict["cond_target_%d" % cpt] = request.POST["cond_target_%d" % i]
                 qdict["cond_operator_%d" % cpt] = request.POST["cond_operator_%d" % i]
                 qdict["cond_value_%d" % cpt] = request.POST["cond_value_%d" % i]
@@ -219,7 +229,7 @@ def build_filter_form_from_qdict(request):
     while True:
         if cpt == int(request.POST["actions"]):
             break
-        if request.POST.has_key("action_name_%d" % i):         
+        if "action_name_%d" % i in request.POST:
             qdict["action_name_%d" % cpt] = request.POST["action_name_%d" % i]
             action = request.POST["action_name_%d" % i]
             argcpt = 0
@@ -239,6 +249,7 @@ def build_filter_form_from_qdict(request):
 
     return FilterForm(conditions, actions, request, qdict)
 
+
 def build_filter_form_from_filter(request, name, fobj):
     from sievelib.commands import SizeCommand, TrueCommand
 
@@ -252,8 +263,8 @@ def build_filter_form_from_filter(request, name, fobj):
         elif isinstance(t, SizeCommand):
             conditions += [("size", t["comparator"][1:], t["limit"])]
         else:
-            conditions += [(t["header-names"].strip('"'), 
-                            t["match-type"][1:], 
+            conditions += [(t["header-names"].strip('"'),
+                            t["match-type"][1:],
                             t["key-list"].strip('"'))]
     actions = []
     for c in fobj.children:

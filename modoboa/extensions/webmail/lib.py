@@ -644,7 +644,7 @@ def send_mail(request, posturl=None):
     from email.mime.multipart import MIMEMultipart
     from .forms import ComposeMailForm
     from modoboa.lib.webutils import _render_to_string
-    from modoboa.auth.lib import get_password
+    from modoboa.lib.cryptutils import get_password
 
     form = ComposeMailForm(request.POST)
     editormode = parameters.get_user(request.user, "EDITOR")

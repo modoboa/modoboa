@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
-from modoboa.extensions import ModoExtension, exts_pool
+from modoboa.core.extensions import ModoExtension, exts_pool
 
 
 class SieveFilters(ModoExtension):
@@ -13,7 +13,7 @@ class SieveFilters(ModoExtension):
     url = "sfilters"
 
     def load(self):
-        from app_settings import ParametersForm, UserSettings
+        from .app_settings import ParametersForm, UserSettings
         parameters.register(ParametersForm, ugettext_lazy("Sieve filters"))
         parameters.register(UserSettings, ugettext_lazy("Message filters"))
 
@@ -23,31 +23,31 @@ class SieveFilters(ModoExtension):
 
 exts_pool.register_extension(SieveFilters)
 
+
 @events.observe("UserMenuDisplay")
 def menu(target, user):
-    import views
-
     if target != "options_menu":
         return []
-    if not user.has_mailbox:
+    if not user.mailbox_set.count():
         return []
     return [
-        {"name" : "sievefilters",
-         "label" : _("Message filters"),
-         "url" : reverse(views.index),
-         "img" : "icon-check"}
-        ]
+        {"name": "sievefilters",
+         "label": _("Message filters"),
+         "url": reverse("modobooa.extensions.sievefilters.views.index"),
+         "img": "icon-check"}
+    ]
+
 
 @events.observe("UserLogout")
 def userlogout(request):
-    from lib import SieveClient
+    from .lib import SieveClient
 
     if not request.user.has_mailbox:
         return
     try:
         sc = SieveClient(user=request.user.username,
                          password=request.session["password"])
-    except Exception, e:
+    except Exception:
         pass
     else:
         sc.logout()

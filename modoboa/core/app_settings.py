@@ -4,8 +4,8 @@ from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.formutils import YesNoField, SeparatorField, InlineRadioSelect
 from modoboa.lib.sysutils import exec_cmd
+from modoboa.lib.cryptutils import random_key
 from modoboa.lib import parameters
-from modoboa.auth.lib import random_key
 
 
 def enabled_applications():
