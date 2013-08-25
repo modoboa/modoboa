@@ -37,8 +37,8 @@ class DomainsMap(MapFile):
 
 class DomainsAliasesMap(MapFile):
     filename = 'sql-domain-aliases.cf'
-    mysql = "SELECT dom.name FROM admin_domain dom INNER JOIN admin_domainalias domal ON dom.id=domal.target_id WHERE domal.name='%s' AND domal.enabled=1 AND dom.enabled=1"
-    postgres = "SELECT dom.name FROM admin_domain dom INNER JOIN admin_domainalias domal ON dom.id=domal.target_id WHERE domal.name='%s' AND domal.enabled AND dom.enabled"
+    mysql = "(SELECT concat(mb.address, '@', dom.name) FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_mailbox mb ON mb.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND mb.address='%u') UNION (SELECT concat(al.address, '@', dom.name) FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_alias al ON al.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND al.address='%u')"
+    postgres = "(SELECT mb.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_mailbox mb ON mb.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled AND mb.address='%u') UNION (SELECT al.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_alias al ON al.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled AND al.address='%u')"
 
 
 class MailboxesMap(MapFile):
