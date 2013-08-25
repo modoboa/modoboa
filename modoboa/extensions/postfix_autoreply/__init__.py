@@ -88,10 +88,17 @@ def onCreateDomain(user, domain):
     transport.save()
 
 
+@events.observe("DomainModified")
+def onDomainModified(domain):
+    if domain.oldname == domain.name:
+        return
+    Transport.objects.filter(domain="autoreply.%s" % domain.oldname) \
+        .update(domain="autoreply.%s" % domain.name)
+
+
 @events.observe("DeleteDomain")
 def onDeleteDomain(domain):
-    trans = Transport.objects.get(domain="autoreply.%s" % domain.name)
-    trans.delete()
+    Transport.objects.filter(domain="autoreply.%s" % domain.name).delete()
 
 
 @events.observe("CreateMailbox")
