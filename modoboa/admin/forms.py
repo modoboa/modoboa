@@ -6,6 +6,7 @@ from django.http import QueryDict
 from modoboa.admin.templatetags.admin_extras import gender
 from modoboa.admin.exceptions import AdminError
 from modoboa.lib import events, parameters
+from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import *
@@ -272,8 +273,6 @@ class AliasForm(forms.ModelForm, DynamicForm):
             except Domain.DoesNotExist:
                 domain = None
             if domain is not None:
-                if not self.user.can_access(domain):
-                    raise PermDeniedException(v)
                 try:
                     rcpt = Alias.objects.get(domain=domain, address=local_part)
                     if rcpt.full_address == self.cleaned_data["email"]:
