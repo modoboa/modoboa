@@ -547,7 +547,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                 dom.add_admin(self)
 
     def to_csv(self, csvwriter):
-        row = ["account", self.username.encode("utf-8"), self.password,
+        row = ["account", self.username.encode("utf-8"), self.password.encode("utf-8"),
                self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
                self.is_active, self.group, self.email]
         if self.group == "DomainAdmins":
@@ -1195,7 +1195,7 @@ class Alias(DatesAware):
         self.save(int_rcpts, ext_rcpts, creator=user)
 
     def to_csv(self, csvwriter):
-        row = [self.type, self.full_address, self.enabled]
+        row = [self.type, self.full_address.encode("utf-8"), self.enabled]
         row += self.get_recipients()
         csvwriter.writerow(row)
 
