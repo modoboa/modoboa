@@ -549,7 +549,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def to_csv(self, csvwriter):
         row = ["account", self.username.encode("utf-8"), self.password.encode("utf-8"),
                self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
-               self.is_active, self.group, self.email]
+               self.is_active, self.group, self.email.encode("utf-8")]
         if self.group == "DomainAdmins":
             row += [dom.name for dom in self.get_domains()]
         csvwriter.writerow(row)
