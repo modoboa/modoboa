@@ -98,12 +98,13 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
         if match_type == "all":
             match_type = "anyof"
             conditions = [("true",)]
+        fltname = form.cleaned_data["name"].encode("utf-8")
         if not update:
-            fset.addfilter(form.cleaned_data["name"], conditions, actions,
+            fset.addfilter(fltname, conditions, actions,
                            match_type)
         else:
             fset.updatefilter(request.POST["oldname"],
-                              form.cleaned_data["name"], conditions, actions,
+                              fltname, conditions, actions,
                               match_type)
         sc.pushscript(fset.name, str(fset))
         return ajax_response(request, respmsg=okmsg, ajaxnav=True)
@@ -146,6 +147,8 @@ def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
                             update=True, sc=sc)
             
     fset = sc.getscript(setname, format="fset")
+    if type(fname) is unicode:
+        fname = fname.encode("utf-8")
     f = fset.getfilter(fname)
     form = build_filter_form_from_filter(request, fname, f)
     ctx = build_filter_ctx(ctx, form)
@@ -160,7 +163,7 @@ def removefilter(request, setname, fname):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
     fset = sc.getscript(setname, format="fset")
-    if fset.removefilter(fname):
+    if fset.removefilter(fname.encode("utf-8")):
         sc.pushscript(fset.name, str(fset))
         return ajax_response(request, respmsg=_("Filter removed"))
     return ajax_response(request, "ko", respmsg=_("Failed to remove filter"))
@@ -261,6 +264,8 @@ def download_filters_set(request, name):
 def toggle_filter_state(request, setname, fname):
     sc = SieveClient(user=request.user.username, 
                      password=request.session["password"])
+    if type(fname) is unicode:
+        fname = fname.encode("utf-8")
     try:
         fset = sc.getscript(setname, format="fset")
         if fset.is_filter_disabled(fname):
@@ -288,7 +293,7 @@ def move_filter(request, setname, fname, direction):
                      password=request.session["password"])
     try:
         fset = sc.getscript(setname, format="fset")
-        fset.movefilter(fname, direction)
+        fset.movefilter(fname.encode("utf-8"), direction)
         sc.pushscript(setname, str(fset))
     except (SieveClientError), e:
         return ajax_response(request, "ko", respmsg=str(e))
