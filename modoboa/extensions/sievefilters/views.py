@@ -106,7 +106,10 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
             fset.updatefilter(request.POST["oldname"],
                               fltname, conditions, actions,
                               match_type)
-        sc.pushscript(fset.name, str(fset))
+        try:
+            sc.pushscript(fset.name, str(fset))
+        except SieveClientError as e:
+            return ajax_response(request, "ko", respmsg=str(e))
         return ajax_response(request, respmsg=okmsg, ajaxnav=True)
     tplctx = build_filter_ctx(tplctx, form)
     return ajax_response(request, status="ko", template=tplname, **tplctx)
