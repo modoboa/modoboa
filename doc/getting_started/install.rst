@@ -51,7 +51,7 @@ Fortunately, all major distributions include a ready-to-use
 package. On Debian/Ubuntu::
 
   $ apt-get install libcairo2-dev libpango1.0-dev librrd-dev
-  $ pip install python-rrdtool
+  $ apt-get install python-rrdtool
 
 `virtualenv <http://www.virtualenv.org/en/latest/>`_ users
 ==========================================================
