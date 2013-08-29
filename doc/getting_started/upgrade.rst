@@ -170,7 +170,8 @@ Postfix and Dovecot configuration update
 
 It is necessary to update the queries used to retrieve users and mailboxes:
 
-#. Replace all occurences of ``auth_user`` by ``admin_user``
+#. Run ``modoboa-admin.py postfix_maps --dbtype <mysql|postgres> <tempdir>`` and compare the files with those that postfix currently
+   use. Make necessary updates in light of the differences
 
 #. Into *dovecot-sql.conf*, update the ``user_query`` query, refer to
    :ref:`dovecot_mysql_queries` or :ref:`dovecot_pg_queries`
