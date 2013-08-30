@@ -19,14 +19,18 @@ from sql_listing import *
 
 
 def __get_current_url(request):
+    params = []
     if "page" in request.session:
-        res = "listing?page=%s" % request.session["page"]
+        res = "listing"
+        params.append("page=%s" % request.session["page"])
     else:
-        res = ""
-    params = "&".join(map(lambda p: "%s=%s" % (p, request.session[p]),
-                          filter(request.session.has_key, ["criteria", "pattern"])))
-    if params != "":
-        res += "?%s" % (params)
+        res = "listing"
+
+    params += map(lambda p: "%s=%s" % (p, request.session[p]),
+                  filter(request.session.has_key, ["criteria", "pattern"]))
+
+    if len(params):
+        res += "?%s" % ("&".join(params))
     return res
 
 
