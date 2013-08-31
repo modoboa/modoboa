@@ -103,9 +103,10 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
             fset.addfilter(fltname, conditions, actions,
                            match_type)
         else:
-            fset.updatefilter(request.POST["oldname"],
-                              fltname, conditions, actions,
-                              match_type)
+            oldname = request.POST["oldname"].encode("utf-8")
+            fset.updatefilter(
+                oldname, fltname, conditions, actions, match_type
+            )
         try:
             sc.pushscript(fset.name, str(fset))
         except SieveClientError as e:
