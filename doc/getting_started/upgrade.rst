@@ -15,6 +15,16 @@ newest versions of Modoboa.
 Latest version
 **************
 
+.. warning::
+
+   If you use a version **prior to 0.9.5**, please migrate in two
+   steps:
+   
+   #. first migrate to 0.9.5 
+   #. then migrate to the latest version
+
+   If you try to migrate directly, the operation will fail.
+
 Starting with version 0.9.1, Modoboa comes as a standard django
 application. Fetch the latest version (see :ref:`get_modoboa`) and
 install it.
