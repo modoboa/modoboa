@@ -18,20 +18,25 @@ from modoboa.lib.email_listing import parse_search_parameters
 from sql_listing import *
 
 
-def __get_current_url(request):
+def __back_to_listing(request):
+    """Return the current listing URL.
+
+    Looks into the user's session and the current request to build the
+    URL.
+
+    :param request: a ``Request`` object
+    :return: a string
+    """
+    url = "listing"
     params = []
     if "page" in request.session:
-        res = "listing"
-        params.append("page=%s" % request.session["page"])
-    else:
-        res = "listing"
+        params += ["page=%s" % request.session["page"]]
 
-    params += map(lambda p: "%s=%s" % (p, request.session[p]),
-                  filter(request.session.has_key, ["criteria", "pattern"]))
-
-    if len(params):
-        res += "?%s" % ("&".join(params))
-    return res
+    params += ["%s=%s" % (p, request.session[p])
+               for p in ["criteria", "pattern"] if p in request.session]
+    if params:
+        url += "?%s" % ("&".join(params))
+    return url
 
 
 def empty_quarantine(request):
@@ -228,7 +233,7 @@ def delete(request, mail_id):
                         "%(count)d messages deleted successfully",
                         len(mail_id)) % {"count": len(mail_id)}
     return ajax_response(request, respmsg=message,
-                         url=__get_current_url(request))
+                         url=__back_to_listing(request))
 
 
 def release_selfservice(request, mail_id):
@@ -276,7 +281,7 @@ def release(request, mail_id):
                                 "%(count)d requests sent",
                                 len(mail_id)) % {"count": len(mail_id)}
             return ajax_response(request, "ok", respmsg=message,
-                                 url=__get_current_url(request))
+                                 url=__back_to_listing(request))
     else:
         msgrcpts = []
         wrapper = get_wrapper()
@@ -302,7 +307,7 @@ def release(request, mail_id):
     else:
         message = error
     return ajax_response(request, "ko" if error else "ok", respmsg=message,
-                         url=__get_current_url(request))
+                         url=__back_to_listing(request))
 
 
 @login_required
