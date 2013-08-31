@@ -113,7 +113,7 @@ file named *gunicorn.conf.py* inside Modoboa's root dir)::
 To start gunicorn, execute the following commands::
 
   $ cd <modoboa dir>
-  $ gunicorn_django -c gunicorn.conf.py
+  $ gunicorn -c gunicorn.conf.py
 
 Now the *nginx* part. Just create a new virtual host and use the
 following configuration::
@@ -143,7 +143,7 @@ following configuration::
                 proxy_set_header Host $http_host;
                 proxy_redirect off;
                 proxy_set_header X-Forwarded-Protocol ssl;
-		proxy_pass http://modoboa;
+		        proxy_pass http://modoboa;
         }
   }
 
