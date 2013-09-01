@@ -8,13 +8,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding unique constraint on 'ARhistoric', fields ['armessage']
-        db.create_unique(u'postfix_autoreply_arhistoric', ['armessage_id'])
+        # Adding unique constraint on 'ARhistoric', fields ['sender', 'armessage']
+        db.create_unique(u'postfix_autoreply_arhistoric', ['sender', 'armessage_id'])
 
 
     def backwards(self, orm):
-        # Removing unique constraint on 'ARhistoric', fields ['armessage']
-        db.delete_unique(u'postfix_autoreply_arhistoric', ['armessage_id'])
+        # Removing unique constraint on 'ARhistoric', fields ['sender', 'armessage']
+        db.delete_unique(u'postfix_autoreply_arhistoric', ['sender', 'armessage_id'])
 
 
     models = {
@@ -94,8 +94,8 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'postfix_autoreply.arhistoric': {
-            'Meta': {'object_name': 'ARhistoric'},
-            'armessage': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['postfix_autoreply.ARmessage']", 'unique': 'True'}),
+            'Meta': {'unique_together': "(('armessage', 'sender'),)", 'object_name': 'ARhistoric'},
+            'armessage': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['postfix_autoreply.ARmessage']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_sent': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'sender': ('django.db.models.fields.TextField', [], {})
