@@ -15,19 +15,25 @@ class Alias(models.Model):
 
 class ARmessage(models.Model):
     mbox = models.ForeignKey(Mailbox)
-    subject = models.CharField(_('subject'), max_length=255,
-                               help_text=_("The subject that will appear in sent emails"))
-    content = models.TextField(_('content'),
-                               help_text=_("The content that will appear in sent emails"))
-    enabled = models.BooleanField(_('enabled'),
-                                  help_text=_("Activate/Deactivate your auto reply"))
+    subject = models.CharField(
+        _('subject'), max_length=255,
+        help_text=_("The subject that will appear in sent emails")
+    )
+    content = models.TextField(
+        _('content'),
+        help_text=_("The content that will appear in sent emails")
+    )
+    enabled = models.BooleanField(
+        _('enabled'),
+        help_text=_("Activate/Deactivate your auto reply")
+    )
     untildate = models.DateTimeField()
 
 
 class ARhistoric(models.Model):
     armessage = models.ForeignKey(ARmessage)
     last_sent = models.DateTimeField(auto_now=True)
-    sender = models.TextField()
+    sender = models.CharField(max_length=254)
 
     class Meta:
         unique_together = ("armessage", "sender")

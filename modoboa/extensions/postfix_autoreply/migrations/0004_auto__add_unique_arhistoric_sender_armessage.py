@@ -98,7 +98,7 @@ class Migration(SchemaMigration):
             'armessage': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['postfix_autoreply.ARmessage']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_sent': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'sender': ('django.db.models.fields.TextField', [], {})
+            'sender': ('django.db.models.fields.CharField', [], {'max_length': '254'})
         },
         u'postfix_autoreply.armessage': {
             'Meta': {'object_name': 'ARmessage'},
