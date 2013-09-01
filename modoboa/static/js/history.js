@@ -134,14 +134,10 @@ History.prototype = {
         }
         var elems = str.split('&');
         for (var i = 0; i < elems.length; i++) {
-            this.setparamfromstring(elems[i]);
+            var pdef = elems[i].split('=');
+            this.setparam(pdef[0], pdef[1]);
         }
         return this;
-    },
-
-    setparamfromstring: function(str) {
-        var def = str.split('=');
-        this.params[def[0]] = def[1];
     },
 
     setparam: function(name, value, encode) {
