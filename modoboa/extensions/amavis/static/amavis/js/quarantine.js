@@ -7,7 +7,8 @@ Quarantine.prototype = {
 
     defaults: {
         deflocation: "listing",
-        defcallback: "listing_cb"
+        defcallback: "listing_cb",
+        sortable_selector: '.sortable'
     },
 
     initialize: function(options) {
@@ -34,6 +35,37 @@ Quarantine.prototype = {
                 overflow: "auto"
             });
         }
+        var $sortables = $(this.options.sortable_selector);
+        if ($sortables.length) {
+            $(this.options.sortable_selector).sortable({
+                onSortOrderChange: $.proxy(this.change_sort_order, this)
+            });
+            this.set_sort_order();
+        }
+
+    },
+
+    set_sort_order: function() {
+        var sort_order = this.navobj.getparam("order");
+        var sort_dir;
+
+        if (!sort_order) {
+            return;
+        }
+        if (sort_order[0] == '-') {
+            sort_dir = "desc";
+            sort_order = sort_order.substr(1);
+        } else {
+            sort_dir = 'asc';
+        }
+        $("th[data-sort_order=" + sort_order + "]").sortable('select', sort_dir);
+    },
+
+    change_sort_order: function(sort_order, dir) {
+        if (dir == "desc") {
+            sort_order = "-" + sort_order;
+        }
+        this.navobj.setparam("order", sort_order).update();
     },
 
     listen: function() {
