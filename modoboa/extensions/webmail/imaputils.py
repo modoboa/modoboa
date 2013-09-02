@@ -412,7 +412,6 @@ class IMAPconnector(object):
     def _listmboxes(self, topmailbox, mailboxes, until_mailbox=None):
         pattern = "%s%s%%" % (topmailbox.encode("imap4-utf-7"), self.hdelimiter) \
             if len(topmailbox) else "%"
-        print pattern
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
         for mb in resp:

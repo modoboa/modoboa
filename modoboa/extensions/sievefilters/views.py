@@ -18,6 +18,8 @@ from templatetags.sfilters_tags import fset_menu
 @login_required
 @needs_mailbox()
 def index(request, tplname="sievefilters/index.html"):
+    from modoboa.extensions.webmail.imaputils import get_imapconnector
+
     try:
         sc = SieveClient(user=request.user.username, 
                          password=request.session["password"])
@@ -39,6 +41,7 @@ def index(request, tplname="sievefilters/index.html"):
             "active_script" : active_script,
             "default_script" : default_script,
             "scripts" : sorted(scripts),
+            "hdelimiter": get_imapconnector(request).hdelimiter
             })
 
 @login_required

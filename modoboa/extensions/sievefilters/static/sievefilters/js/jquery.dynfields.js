@@ -178,7 +178,7 @@
                 value = $this.val();
 
             while (true) {
-                var id = value.indexOf(".", start);
+                var id = value.indexOf(options.hdelimiter, start);
                 if (id == -1) {
                     break;
                 }
@@ -322,6 +322,7 @@
 
     $.fn.dynaction.defaults = {
         defaultaction: "fileinto",
+        hdelimiter: '.',
         templates: []
     };
 })(jQuery);

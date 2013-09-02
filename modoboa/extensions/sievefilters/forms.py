@@ -155,7 +155,7 @@ class FilterForm(forms.Form):
         for fd in folders:
             value = fd["path"] if fd.has_key("path") else fd["name"]
             if parentmb:
-                ret += [(value, fd["name"].replace("%s." % parentmb, ""))]
+                ret += [(value, fd["name"].replace("%s%s" % (parentmb, imapc.hdelimiter), ""))]
             else:
                 ret += [(value, fd["name"])]
             if fd.has_key("sub"):

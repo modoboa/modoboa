@@ -22,7 +22,8 @@ function filterform_cb() {
         templates: cond_templates
     }).data('dyncondition');
     var $da = $("#action_0").dynaction({
-        templates: action_templates
+        templates: action_templates,
+        hdelimiter: '{{ hdelimiter }}'
     }).data('dynaction');
 
     $("input[name=match_type]").click(function(e) {
