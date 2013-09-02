@@ -504,6 +504,7 @@ def index(request):
     if not request.is_ajax():
         request.session["lastaction"] = None
         imapc = get_imapconnector(request)
+        response["hdelimiter"] = imapc.hdelimiter
         response["mboxes"] = render_mboxes_list(request, imapc)
         imapc.getquota(curmbox)
         response["refreshrate"] = \

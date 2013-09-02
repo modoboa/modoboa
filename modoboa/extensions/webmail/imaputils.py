@@ -146,6 +146,7 @@ class IMAPconnector(object):
     unseen_pattern = re.compile(r'[^\(]+\(UNSEEN (\d+)\)')
 
     def __init__(self, user=None, password=None):
+        self.__hdelimiter = None
         self.criterions = []
         self.address = parameters.get_admin("IMAP_SERVER")
         self.port = int(parameters.get_admin("IMAP_PORT"))
@@ -219,6 +220,23 @@ class IMAPconnector(object):
                 return ("1" if not len(prefix) else prefix,
                         bodystruct[5], int(bodystruct[6]))
         return (None, None, 0)
+
+    @property
+    def hdelimiter(self):
+        """Return the default hierachy delimiter.
+
+        This is a simple way to retrieve the default delimiter (see
+        http://www.imapwiki.org/ClientImplementation/MailboxList).
+
+        :return: a string
+        """
+        if self.__hdelimiter is None:
+            data = self._cmd("LIST", "", "")
+            m = self.list_response_pattern.match(data[0])
+            if m is None:
+                raise WebmailError(_("Failed to retrieve hierarchy delimiter"))
+            self.__hdelimiter = m.group('delimiter')
+        return self.__hdelimiter
 
     def refresh(self, user, password):
         """Check if current connection needs a refresh
@@ -378,7 +396,7 @@ class IMAPconnector(object):
                 newmboxes += [descr]
 
             if re.search("\%s" % delimiter, name):
-                parts = name.split(".")
+                parts = name.split(delimiter)
                 if not descr.has_key("path"):
                     descr["path"] = parts[0]
                     descr["sub"] = []
@@ -392,7 +410,9 @@ class IMAPconnector(object):
 
     @capability('LIST-EXTENDED', '_listmboxes_simple')
     def _listmboxes(self, topmailbox, mailboxes, until_mailbox=None):
-        pattern = ("%s.%%" % topmailbox.encode("imap4-utf-7")) if len(topmailbox) else "%"
+        pattern = "%s%s%%" % (topmailbox.encode("imap4-utf-7"), self.hdelimiter) \
+            if len(topmailbox) else "%"
+        print pattern
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
         for mb in resp:
@@ -452,7 +472,7 @@ class IMAPconnector(object):
                             {"name" : parameters.get_user(user, "TRASH_FOLDER"),
                              "class" : "icon-trash"}]
         if until_mailbox:
-            name, parent = separate_mailbox(until_mailbox)
+            name, parent = separate_mailbox(until_mailbox, self.hdelimiter)
             if parent:
                 until_mailbox = parent
         self._listmboxes(topmailbox, md_mailboxes, until_mailbox)
@@ -536,7 +556,7 @@ class IMAPconnector(object):
 
     def create_folder(self, name, parent=None):
         if parent is not None:
-            name = "%s.%s" % (parent, name)
+            name = "%s%s%s" % (parent, self.hdelimiter, name)
         typ, data = self.m.create(self._encode_mbox_name(name))
         if typ == "NO":
             raise WebmailError(data[0])
@@ -659,7 +679,7 @@ def separate_mailbox(fullname, sep="."):
     If a separator is found in ``fullname``, this function returns the
     corresponding name and parent mailbox name.
     """
-    if fullname.count("."):
+    if sep in fullname:
         parts = fullname.split(sep)
         name = parts[-1]
         parent = sep.join(parts[0:len(parts) - 1])
