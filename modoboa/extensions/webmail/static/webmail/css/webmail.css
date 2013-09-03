@@ -16,6 +16,10 @@ body, html {
     overflow: auto;
 }
 
+#mboxes_container .nav-list .nav-list {
+    padding-right: 0;
+}
+
 #menubar { 
     position: fixed;
     left: 215px;
