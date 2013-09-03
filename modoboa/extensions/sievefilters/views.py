@@ -261,7 +261,7 @@ def download_filters_set(request, name):
         return ajax_response(request, "ko", respmsg=str(e))
 
     resp = HttpResponse(script)
-    resp["Content-Type"] = "text/plain"
+    resp["Content-Type"] = "text/plain; charset=utf-8"
     resp["Content-Length"] = len(script)
     resp["Content-Disposition"] = 'attachment; filename="%s.txt"' % name
     return resp
