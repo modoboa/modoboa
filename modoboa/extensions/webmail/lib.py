@@ -211,7 +211,7 @@ class ImapEmail(Email):
         self.bs = BodyStructure(msg['BODYSTRUCTURE'])
         data = None
 
-        mformat = self.dformat if self.bs.contents.has_key(self.dformat) else fallback_fmt
+        mformat = self.dformat if self.dformat in self.bs.contents else fallback_fmt
 
         if len(self.bs.contents):
             bodyc = u''
@@ -613,7 +613,7 @@ def create_mail_attachment(attdef):
     res.set_payload(fp.read())
     fp.close()
     Encoders.encode_base64(res)
-    res.add_header("Content-Disposition", "attachment; filename='%s'" % attdef["fname"])
+    res.add_header("Content-Disposition", 'attachment', filename=attdef["fname"])
     return res
 
 
