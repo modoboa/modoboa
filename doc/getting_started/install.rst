@@ -67,7 +67,7 @@ install the following requirements:
 
 On a *Debian* like system, just run the following command::
 
-  $ apt-get instal python-dev libxml2-dev libxslt-dev
+  $ apt-get install python-dev libxml2-dev libxslt-dev
 
 .. _database:
 
