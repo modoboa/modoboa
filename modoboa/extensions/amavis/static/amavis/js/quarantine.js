@@ -1,18 +1,18 @@
 var Quarantine = function(options) {
-    this.initialize(options);
+    Listing.call(this, options);
 };
 
 Quarantine.prototype = {
     constructor: Quarantine,
 
     defaults: {
-        deflocation: "listing",
-        defcallback: "listing_cb",
-        sortable_selector: '.sortable'
+        deflocation: "listing"
     },
 
     initialize: function(options) {
-        this.options = $.extend({}, this.defaults, options);
+        Listing.prototype.initialize.call(this, options);
+        this.options = $.extend({}, this.defaults, this.options);
+        this.options.defcallback = $.proxy(this.listing_cb, this);
         this.navobj = new History(this.options);
 
         this.register_navcallbacks();
@@ -24,9 +24,6 @@ Quarantine.prototype = {
             $("#menubar").html(data.menu);
             $("#searchfield").searchbar({navobj: this.navobj});
         }
-        if (data.navbar) {
-            $("#bottom-bar-right").html(data.navbar);
-        }
         if (data.listing != undefined) {
             $("#listing").html(data.listing);
             $("#listing").css({
@@ -35,37 +32,7 @@ Quarantine.prototype = {
                 overflow: "auto"
             });
         }
-        var $sortables = $(this.options.sortable_selector);
-        if ($sortables.length) {
-            $(this.options.sortable_selector).sortable({
-                onSortOrderChange: $.proxy(this.change_sort_order, this)
-            });
-            this.set_sort_order();
-        }
-
-    },
-
-    set_sort_order: function() {
-        var sort_order = this.navobj.getparam("order");
-        var sort_dir;
-
-        if (!sort_order) {
-            return;
-        }
-        if (sort_order[0] == '-') {
-            sort_dir = "desc";
-            sort_order = sort_order.substr(1);
-        } else {
-            sort_dir = 'asc';
-        }
-        $("th[data-sort_order=" + sort_order + "]").sortable('select', sort_dir);
-    },
-
-    change_sort_order: function(sort_order, dir) {
-        if (dir == "desc") {
-            sort_order = "-" + sort_order;
-        }
-        this.navobj.setparam("order", sort_order).update();
+        this.update_listing(data);
     },
 
     listen: function() {
@@ -77,19 +44,14 @@ Quarantine.prototype = {
             $.proxy(this.delete_selection, this));
         $(document).on("click", "a[name=viewrequests]",
             $.proxy(this.view_requests, this));
-        $(document).on("click", "#bottom-bar a", $.proxy(this.load_page, this));
-
         $(document).on("click", "a[name=release]", $.proxy(this.release, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete, this));
         $(document).on("click", "a[name=headers]", $.proxy(this.headers, this));
     },
 
     load_page: function(e) {
-        e.preventDefault();
-        var $link = $(e.target).parent();
-
+        Listing.prototype.load_page.apply(this, arguments);
         this.navobj.delparam("rcpt");
-        this.navobj.parse_string($link.attr("href")).update();
     },
 
     view_requests: function(e) {
@@ -250,3 +212,5 @@ Quarantine.prototype = {
         }
     }
 };
+
+Quarantine.prototype = $.extend({}, Listing.prototype, Quarantine.prototype);

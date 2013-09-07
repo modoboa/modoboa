@@ -15,6 +15,7 @@ from modoboa.admin.models import Mailbox
 from lib import *
 from templatetags.amextras import *
 from modoboa.lib.email_listing import parse_search_parameters
+from modoboa.lib.templatetags.libextras import pagination_bar
 from sql_listing import *
 
 
@@ -41,7 +42,7 @@ def __back_to_listing(request):
 
 def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
-    ctx = getctx("ok", level=2, listing=content, navbar="",
+    ctx = getctx("ok", level=2, listing=content, paginbar="",
                  menu=quar_menu(request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
@@ -56,7 +57,7 @@ def _listing(request):
         if not len(request.user.get_domains()):
             return empty_quarantine(request)
 
-    order = request.GET.get("order", "-date")
+    order = request.GET.get("sort_order", "-date")
     if not "navparams" in request.session:
         request.session["navparams"] = {}
     request.session["navparams"]["order"] = order
@@ -97,8 +98,8 @@ def _listing(request):
         return empty_quarantine(request)
 
     content = lst.fetch(request, page.id_start, page.id_stop)
-    navbar = lst.render_navbar(page, "listing/?")
-    ctx = getctx("ok", listing=content, navbar=navbar,
+    paginbar = pagination_bar(page)
+    ctx = getctx("ok", listing=content, paginbar=paginbar, page=page.number,
                  menu=quar_menu(request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
@@ -106,7 +107,8 @@ def _listing(request):
 @login_required
 def index(request):
     return _render(request, "amavis/index.html", dict(
-            deflocation="listing/?order=-date", defcallback="listing_cb", selection="quarantine"
+            deflocation="listing/?sort_order=-date",
+            defcallback="listing_cb", selection="quarantine"
             ))
 
 
