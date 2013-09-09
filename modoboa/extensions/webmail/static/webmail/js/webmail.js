@@ -83,7 +83,7 @@ Webmail.prototype = {
         $(document).on("click", "a[name=forward]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete_message, this));
         $(document).on("click", "a[name=activate_links]", $.proxy(function(e) { this.display_mode(e, "1"); }, this));
-        $(document).on("click", "a[name=disable_links]", $.proxy(function(e) { this.disable_mode(e, "0"); }, this));
+        $(document).on("click", "a[name=disable_links]", $.proxy(function(e) { this.display_mode(e, "0"); }, this));
 
         $(document).on("click", "a[name=sendmail]", $.proxy(this.sendmail, this));
 

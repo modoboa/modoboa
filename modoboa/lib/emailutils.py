@@ -23,7 +23,7 @@ class EmailAddress(object):
         return self.fulladdress
 
 class Email(object):
-    def __init__(self, msg, mformat="plain", dformat="plain", links="0"):
+    def __init__(self, msg, mformat="plain", dformat="plain", links=0):
         self.attached_map = {}
         self.contents = {"html" : "", "plain" : ""}
         self.headers = []
@@ -78,7 +78,7 @@ class Email(object):
         sometimes, messages embark inline images, which means they
         must be displayed and not attached.
         """
-        if self.dformat == "html" and self.links != "0" \
+        if self.dformat == "html" and self.links \
                 and msg.has_key("Content-Disposition"):
             if msg["Content-Disposition"].startswith("inline"):
                 cid = None
@@ -167,9 +167,9 @@ class Email(object):
     def viewmail_html(self, content, **kwargs):
         if content is None or content == "":
             return ""
-        links = kwargs.has_key("links") and kwargs["links"] or "0"
-        html = lxml.html.fromstring(content) 
-        if links == "0":
+        links = kwargs.get("links", 0)
+        html = lxml.html.fromstring(content)
+        if not links:
             html.rewrite_links(lambda x: None)
         else:
             html.rewrite_links(self.map_cid)
@@ -179,7 +179,6 @@ class Email(object):
         else:
             body = lxml.html.tostring(body)
             body = re.sub("<(/?)body", lambda m: "<%sdiv" % m.group(1), body)
-        body = Template(body).render(Context({}))
         return body
 
 def split_mailbox(mailbox):
