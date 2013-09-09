@@ -134,7 +134,8 @@ def newfolder(request, tplname="webmail/folder.html"):
            "action_classes": "submit",
            "withunseen": False,
            "selectonly": True,
-           "mboxes": mbc.getmboxes(request.user)}
+           "mboxes": mbc.getmboxes(request.user),
+           "hdelimiter": mbc.hdelimiter}
 
     if request.method == "POST":
         form = FolderForm(request.POST)
@@ -164,14 +165,15 @@ def editfolder(request, tplname="webmail/folder.html"):
            "action_label" : _("Update"),
            "action_classes" : "submit",
            "withunseen" : False,
-           "selectonly" : True}
+           "selectonly" : True,
+           "hdelimiter": mbc.hdelimiter}
 
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
             pf = request.POST.get("parent_folder", None)
             ctx["selected"] = pf
-            oldname, oldparent = separate_mailbox(request.POST["oldname"])
+            oldname, oldparent = separate_mailbox(request.POST["oldname"], sep=mbc.hdelimiter)
             res = dict(status="ok", respmsg=_("Mailbox updated"))
             if form.cleaned_data["name"] != oldname \
                     or (pf != oldparent):
@@ -193,7 +195,7 @@ def editfolder(request, tplname="webmail/folder.html"):
     name = request.GET.get("name", None)
     if name is None:
         raise WebmailError(_("Invalid request"))
-    shortname, parent = separate_mailbox(name)
+    shortname, parent = separate_mailbox(name, sep=mbc.hdelimiter)
     ctx["mboxes"] = mbc.getmboxes(request.user, until_mailbox=parent)
     ctx["form"] = FolderForm()
     ctx["form"].fields["oldname"].initial = name

@@ -536,7 +536,7 @@ Webmail.prototype = {
                 return;
             }
             $parent = $ul;
-            mailbox = $parent.attr("name") + this.hdelimiter + mailbox;
+            mailbox = $parent.attr("name") + this.options.hdelimiter + mailbox;
         } else {
             $parent = $("#mboxes_container").children("ul");
         }
@@ -549,8 +549,8 @@ Webmail.prototype = {
      * If needed, the mailbox will be moved to its new location.
      */
     rename_mailbox: function(oldname, newname, oldparent, newparent) {
-        var oldpattern = (oldparent) ? oldparent + this.hdelimiter + oldname : oldname;
-        var newpattern = (newparent) ? newparent + this.hdelimiter + newparent : newname;
+        var oldpattern = (oldparent) ? oldparent + this.options.hdelimiter + oldname : oldname;
+        var newpattern = (newparent) ? newparent + this.options.hdelimiter + newname : newname;
         var $link = $("#folders").find('a[href="' + oldpattern + '"]');
 
         if (oldname != newname) {
@@ -560,14 +560,13 @@ Webmail.prototype = {
             $link.parent("li").attr("name", newpattern);
             $link.prepend($i);
             $link.attr("href", newpattern);
-            this.navobject.setparam("mbox", newname).update(false, true);
+            this.navobject.setparam("mbox", newpattern).update(false, true);
         }
         if (oldparent != newparent) {
-            var newlocation = (newparent) ? newparent + this.hdelimiter + newname : newname;
             this.remove_mbox_from_tree($link.parent("li"));
             this.add_mailbox_to_tree(newparent, newname);
             if (this.navobject.getparam("action") == "listmailbox") {
-                this.navobject.setparam("mbox", newlocation).update();
+                this.navobject.setparam("mbox", newpattern).update();
             } else {
                 this.select_mailbox("INBOX");
             }
