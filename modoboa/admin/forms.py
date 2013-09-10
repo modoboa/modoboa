@@ -10,7 +10,9 @@ from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import *
-from modoboa.admin.models import User, Domain, DomainAlias, Mailbox, Alias
+from modoboa.admin.models import (
+    User, Domain, DomainAlias, Mailbox, Alias, Quota
+)
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
