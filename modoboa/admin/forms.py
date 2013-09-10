@@ -75,17 +75,40 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         return cleaned_data
 
+    def update_mailbox_quotas(self, domain):
+        """Update all quota records associated to this domain
+
+        This methid must be called only when a domain gets renamed. As
+        the primary key used for a quota is an email address, rename a
+        domain will change all associated email addresses, so it will
+        change the primary keys used for quotas. The consequence is we
+        can't issue regular UPDATE queries using the .save() method of
+        a Quota instance (it will trigger an INSERT as the primary key
+        has changed).
+
+        So, we use this ugly hack to bypass this behaviour. It is not
+        perfomant at all as it will generate one query per quota
+        record to update.
+        """
+        for q in Quota.objects.filter(username__contains="@%s" % self.oldname).values('username'):
+            username = q['username'].replace('@%s' % self.oldname, '@%s' % domain.name)
+            Quota.objects.filter(username=q['username']).update(username=username)
+
     def save(self, user, commit=True):
+        """Custom save method
+
+        Updating a domain may have consequences on other objects
+        (domain alias, mailbox, quota). The most tricky part concerns
+        quotas update. 
+
+
+        """
         d = super(DomainFormGeneral, self).save(commit=False)
         if commit:
             old_mail_homes = None
-            hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-            if hm == "yes":
-                if self.oldname is not None and d.name != self.oldname:
-                    for q in Quota.objects.filter(username__contains="@%s" % self.oldname):
-                        q.username = q.username.replace('@%s' % self.oldname, '@%s' % d.name)
-                        q.save()
-                    old_mail_homes = dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
+            if self.oldname is not None and d.name != self.oldname:
+                self.update_mailbox_quotas(d)
+                old_mail_homes = dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
             d.save()
             Mailbox.objects.filter(domain=d, use_domain_quota=True).update(quota=d.quota)
             if old_mail_homes is not None:

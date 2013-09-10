@@ -94,6 +94,11 @@ def onDomainModified(domain):
         return
     Transport.objects.filter(domain="autoreply.%s" % domain.oldname) \
         .update(domain="autoreply.%s" % domain.name)
+    for al in Alias.objects.filter(full_address__contains="@%s" % domain.oldname):
+        new_address = al.full_address.replace("@%s" % domain.oldname, "@%s" % domain.name)
+        al.full_address = new_address
+        al.autoreply_address = "%s@autoreply.%s" % (new_address, domain.name)
+        al.save()
 
 
 @events.observe("DeleteDomain")
