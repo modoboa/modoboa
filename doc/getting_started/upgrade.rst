@@ -43,6 +43,13 @@ Finally, follow the common procedure::
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
+1.0.1: operations on mailboxes
+==============================
+
+The way Modoboa handles **rename** and **delete** operations on mailboxes has
+been improved. Make sure to consult :ref:`fs_operations`.
+
+
 1.0.0: production ready, at last
 ================================
 
