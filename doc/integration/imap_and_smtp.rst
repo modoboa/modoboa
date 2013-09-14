@@ -45,6 +45,8 @@ Then, edit the ``inbox`` namespace and add the following lines::
 It ensures all the special mailboxes will be automaticaly created for
 new accounts.
 
+.. _fs_operations:
+
 Operations on the file system
 -----------------------------
 
