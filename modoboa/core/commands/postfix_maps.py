@@ -65,6 +65,12 @@ class CatchallAliasesMap(MapFile):
     postgres = "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.id IN (SELECT al_mb.mailbox_id FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id INNER JOIN admin_alias_mboxes al_mb ON al.id=al_mb.alias_id WHERE al.enabled AND al.address='*' AND dom.name='%d' AND dom.enabled)) UNION (SELECT al.extmboxes FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id WHERE al.enabled AND al.extmboxes<>'' AND al.address='*' AND dom.name='%d' AND dom.enabled)"
 
 
+class MaintainMap(MapFile):
+    filename = 'sql-maintain.cf'
+    mysql = "SELECT '450 Requested mail action not taken: mailbox unavailable' FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_mailboxoperation mbop ON mbop.mailbox_id=mb.id WHERE dom.name='%d' AND mb.address='%u' LIMIT 1"
+    postgres = "SELECT '450 Requested mail action not taken: mailbox unavailable' FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_mailboxoperation mbop ON mbop.mailbox_id=mb.id WHERE dom.name='%d' AND mb.address='%u' LIMIT 1"
+
+
 class TransportMap(MapFile):
     category = "autoreply"
     filename = 'sql-transport.cf'
