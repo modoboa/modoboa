@@ -90,6 +90,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         perfomant at all as it will generate one query per quota
         record to update.
         """
+        Mailbox.objects.filter(domain=domain, use_domain_quota=True) \
+            .update(quota=d.quota)
         for q in Quota.objects.filter(username__contains="@%s" % self.oldname).values('username'):
             username = q['username'].replace('@%s' % self.oldname, '@%s' % domain.name)
             Quota.objects.filter(username=q['username']).update(username=username)
@@ -99,21 +101,16 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         Updating a domain may have consequences on other objects
         (domain alias, mailbox, quota). The most tricky part concerns
-        quotas update. 
-
+        quotas update.
 
         """
         d = super(DomainFormGeneral, self).save(commit=False)
         if commit:
             old_mail_homes = None
             if self.oldname is not None and d.name != self.oldname:
-                self.update_mailbox_quotas(d)
-                old_mail_homes = dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
+                old_mail_homes = \
+                    dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
             d.save()
-            Mailbox.objects.filter(domain=d, use_domain_quota=True).update(quota=d.quota)
-            if old_mail_homes is not None:
-                for mb in d.mailbox_set.all():
-                    mb.rename_dir(old_mail_homes[mb.id])
             for k, v in self.cleaned_data.iteritems():
                 if not k.startswith("aliases"):
                     continue
@@ -133,6 +130,14 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 if not len(filter(lambda name: self.cleaned_data[name] == dalias.name,
                                   self.cleaned_data.keys())):
                     dalias.delete()
+
+            self.update_mailbox_quotas(d)
+            if old_mail_homes is not None:
+                for mb in d.mailbox_set.all():
+                    MailboxOperation.objects.create(
+                        mailbox=mb, type='rename', argument=old_mail_homes[mb.id]
+                    )
+
         return d
 
 

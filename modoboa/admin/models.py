@@ -702,7 +702,9 @@ class Domain(DatesAware):
             hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
             if hm == "yes" and not keepdir:
                 for mb in self.mailbox_set.all():
-                    mb.delete_dir()
+                    MailboxOperation.objects.create(
+                        type='delete', argument=mb.mail_home
+                    )
         if self.alias_set.count():
             events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
@@ -873,15 +875,9 @@ class Mailbox(DatesAware):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
             return
-        self.__mail_home = None
-        if not os.path.exists(old_mail_home):
-            return
-        code, output = exec_cmd(
-            "mv %s %s" % (old_mail_home, self.mail_home),
-            sudo_user=parameters.get_admin("MAILBOXES_OWNER")
+        MailboxOperation.objects.create(
+            mailbox=self, type='rename', argument=old_mail_home
         )
-        if code:
-            raise AdminError(_("Failed to rename mailbox: %s" % output))
 
     def rename(self, address, domain):
         """Rename the mailbox
@@ -893,21 +889,14 @@ class Mailbox(DatesAware):
         qs = Quota.objects.filter(username=self.full_address)
         self.address = address
         self.domain = domain
-        self.rename_dir(old_mail_home)
         qs.update(username=self.full_address)
+        self.rename_dir(old_mail_home)
 
     def delete_dir(self):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
             return
-        if not os.path.exists(self.mail_home):
-            return
-        code, output = exec_cmd(
-            "rm -r %s" % self.mail_home,
-            sudo_user=parameters.get_admin("MAILBOXES_OWNER")
-        )
-        if code:
-            raise AdminError(_("Failed to remove mailbox: %s" % output))
+        MailboxOperation.objects.create(type='delete', argument=self.mail_home)
 
     def set_quota(self, value=None, override_rules=False):
         """Set or update quota's value for this mailbox.
@@ -1015,6 +1004,14 @@ class Quota(models.Model):
     messages = models.IntegerField(default=0)
 
     mbox = models.OneToOneField(Mailbox, related_name="quota_value", null=True)
+
+
+class MailboxOperation(models.Model):
+    mailbox = models.ForeignKey(Mailbox, blank=True, null=True)
+    type = models.CharField(
+        max_length=20, choices=(('rename', 'rename'), ('delete', 'delete'))
+    )
+    argument = models.TextField()
 
 
 class Alias(DatesAware):

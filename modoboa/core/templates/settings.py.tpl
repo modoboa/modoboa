@@ -208,6 +208,11 @@ LOGGING = {
             'facility': SysLogHandler.LOG_AUTH,
             'formatter': 'syslog'
         },
+        'syslog-cron': {
+            'class': 'logging.handlers.SysLogHandler',
+            'facility': SysLogHandler.LOG_CRON,
+            'formatter': 'syslog'
+        }
         'modoboa': {
             'class': 'modoboa.lib.logutils.SQLHandler',
         }
@@ -225,6 +230,11 @@ LOGGING = {
         },
         'modoboa.admin': {
             'handlers': ['modoboa'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'modoboa.cron': {
+            'handlers': ['syslog-cron'],
             'level': 'INFO',
             'propagate': False
         }
