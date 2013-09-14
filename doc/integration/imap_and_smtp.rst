@@ -45,9 +45,46 @@ Then, edit the ``inbox`` namespace and add the following lines::
 It ensures all the special mailboxes will be automaticaly created for
 new accounts.
 
-.. note::
+Operations on the file system
+-----------------------------
 
-   Modoboa is not responsible for mailboxes creation, Dovecot is.
+Three operation types are considered:
+
+#. Mailbox creation
+#. Mailbox renaming
+#. Mailbox deletion
+
+The first one is managed by Dovecot. The last two ones may be managed
+by Modoboa if it can access the file system where the mailboxes are
+stored (see :ref:`admin-params` to activate this feature).
+
+Those operations are treated asynchronously by a cron script. For
+example, when you rename an e-mail address through the web UI, the
+associated mailbox on the file system is not modified
+directly. Instead of that, a 'rename' order is created for this
+mailbox. The mailbox will be considered unavailable until the order is
+not executed (see :ref:`Postfix configuration <postfix_config>`).
+
+Edit the crontab of the user who owns the mailboxes on the file system::
+
+  $ crontab -u <user> -e
+
+And add the following line inside::
+
+  * * * * * python /var/www/mail_koalabs_org/manage.py handle_mailbox_operations
+
+.. warning::
+
+   The cron script must be executed by the system user owning the mailboxes.
+
+.. warning::
+
+   The user running the cron script must have access to the
+   *settings.py* file of the modoboa instance.
+
+The result of each order is recorded into Modoboa's log. Go to
+*Modoboa > Logs* to consult them.
+
 
 Authentication
 ==============
@@ -369,6 +406,8 @@ directory, run the following command::
 ``mapfiles`` is the directory where the files will be stored. Answer the
 few questions and you're done.
 
+.. _postfix_config:
+
 Configuration
 =============
 
@@ -392,6 +431,12 @@ Use the following configuration in the */etc/postfix/main.cf* file
         mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf,
         mysql:/etc/postfix/sql-email2email.cf,
         mysql:/etc/postfix/sql-catchall-aliases.cf
+
+  smtpd_recipient_restrictions =
+        ...
+        check_recipient_access mysql:/etc/postfix/maps/sql-maintain.cf
+        permit_mynetworks
+        ...
 
   # Stuff after
 
