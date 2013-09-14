@@ -25,9 +25,10 @@ class Command(BaseCommand):
         if not os.path.exists(operation.argument):
             return
         new_mail_home = operation.mailbox.mail_home
-        if not os.path.exists(new_mail_home):
+        dirname = os.path.dirname(new_mail_home)
+        if not os.path.exists(dirname):
             try:
-                os.makedirs(os.path.dirname(new_mail_home))
+                os.makedirs(dirname)
             except os.error as e:
                 raise OperationError(str(e))
         code, output = exec_cmd(
