@@ -14,8 +14,14 @@ class OperationError(Exception):
 
 
 class Command(BaseCommand):
-    args = ''
     help = 'Handles rename and delete operations on mailboxes'
+
+    option_list = BaseCommand.option_list + (
+        make_option(
+            '--pidfile', default='/tmp/handle_mailbox_operations.pid',
+            help='Path to the file that will contain the PID of this process'
+        ),
+    )
 
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
@@ -32,7 +38,7 @@ class Command(BaseCommand):
             except os.error as e:
                 raise OperationError(str(e))
         code, output = exec_cmd(
-            "mv %s %s" % (ope.argument, new_mail_home)
+            "mv %s %s" % (operation.argument, new_mail_home)
         )
         if code:
             raise OperationError(output)
@@ -46,9 +52,29 @@ class Command(BaseCommand):
         if code:
             raise OperationError(output)
 
+    def check_pidfile(self, path):
+        """Check if this command is already running
+
+        :param str path: path to the file containing the PID
+        :return: a boolean, True means we can go further
+        """
+        if os.path.exists(path):
+            with open(path) as fp:
+                pid = fp.read().strip()
+            code, output = exec_cmd(
+                "grep handle_mailbox_operations /proc/%s/cmdline" % pid
+            )
+            if not code:
+                return False
+        with open(path, 'w') as fp:
+            print >> fp, os.getpid()
+        return True
+
     def handle(self, *args, **options):
         AdminConsole().load()
         if parameters.get_admin("HANDLE_MAILBOXES") == 'no':
+            return
+        if not self.check_pidfile(options['pidfile']):
             return
         for ope in MailboxOperation.objects.all():
             try:
@@ -58,7 +84,9 @@ class Command(BaseCommand):
             try:
                 f(ope)
             except (OperationError, AdminError) as e:
-                self.logger.critical('%s failed (reason: %s)', ope, e)
+                self.logger.critical('%s failed (reason: %s)',
+                                     ope, str(e).encode('utf-8'))
             else:
                 self.logger.info('%s succeed', ope)
                 ope.delete()
+        os.unlink(options['pidfile'])
