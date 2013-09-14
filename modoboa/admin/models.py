@@ -1028,7 +1028,7 @@ class MailboxOperation(models.Model):
 
     def __str__(self):
         if self.type == 'rename':
-            return 'Rename %s -> %s' % (self.argument, self.mailbox.full_address)
+            return 'Rename %s -> %s' % (self.argument, self.mailbox.mail_home)
         return 'Delete %s' % self.argument
 
 

@@ -25,10 +25,11 @@ class Command(BaseCommand):
         if not os.path.exists(operation.argument):
             return
         new_mail_home = operation.mailbox.mail_home
-        try:
-            os.makedirs(os.path.dirname(new_mail_home))
-        except os.error as e:
-            raise OperationError(str(e))
+        if not os.path.exists(new_mail_home):
+            try:
+                os.makedirs(os.path.dirname(new_mail_home))
+            except os.error as e:
+                raise OperationError(str(e))
         code, output = exec_cmd(
             "mv %s %s" % (ope.argument, new_mail_home)
         )
@@ -56,7 +57,7 @@ class Command(BaseCommand):
             try:
                 f(ope)
             except (OperationError, AdminError) as e:
-                self.logger.critical('Operation failed: %s. Reason: %s', ope, str(e))
+                self.logger.critical('%s failed (reason: %s)', ope, e)
             else:
-                self.logger.info('Operation succeed: %s', ope)
+                self.logger.info('%s succeed', ope)
                 ope.delete()
