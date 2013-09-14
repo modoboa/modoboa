@@ -1013,6 +1013,11 @@ class MailboxOperation(models.Model):
     )
     argument = models.TextField()
 
+    def __str__(self):
+        if self.type == 'rename':
+            return 'Rename %s -> %s' % (self.argument, self.mailbox.full_address)
+        return 'Delete %s' % self.argument
+
 
 class Alias(DatesAware):
     address = models.CharField(

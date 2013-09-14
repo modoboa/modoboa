@@ -78,7 +78,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     def update_mailbox_quotas(self, domain):
         """Update all quota records associated to this domain
 
-        This methid must be called only when a domain gets renamed. As
+        This method must be called only when a domain gets renamed. As
         the primary key used for a quota is an email address, rename a
         domain will change all associated email addresses, so it will
         change the primary keys used for quotas. The consequence is we
@@ -90,8 +90,6 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         perfomant at all as it will generate one query per quota
         record to update.
         """
-        Mailbox.objects.filter(domain=domain, use_domain_quota=True) \
-            .update(quota=d.quota)
         for q in Quota.objects.filter(username__contains="@%s" % self.oldname).values('username'):
             username = q['username'].replace('@%s' % self.oldname, '@%s' % domain.name)
             Quota.objects.filter(username=q['username']).update(username=username)
@@ -108,9 +106,13 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if commit:
             old_mail_homes = None
             if self.oldname is not None and d.name != self.oldname:
+                d.name = self.oldname
                 old_mail_homes = \
                     dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
+                d.name = self.cleaned_data['name']
             d.save()
+            Mailbox.objects.filter(domain=d, use_domain_quota=True) \
+                .update(quota=d.quota)
             for k, v in self.cleaned_data.iteritems():
                 if not k.startswith("aliases"):
                     continue
@@ -131,12 +133,10 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                                   self.cleaned_data.keys())):
                     dalias.delete()
 
-            self.update_mailbox_quotas(d)
             if old_mail_homes is not None:
+                self.update_mailbox_quotas(d)
                 for mb in d.mailbox_set.all():
-                    MailboxOperation.objects.create(
-                        mailbox=mb, type='rename', argument=old_mail_homes[mb.id]
-                    )
+                    mb.rename_dir()
 
         return d
 

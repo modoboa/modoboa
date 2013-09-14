@@ -3,6 +3,8 @@ import logging
 from optparse import make_option
 from django.core.management.base import BaseCommand
 from modoboa.lib import parameters
+from modoboa.lib.sysutils import exec_cmd
+from modoboa.admin import AdminConsole
 from modoboa.admin.models import MailboxOperation
 
 
@@ -16,22 +18,18 @@ class Command(BaseCommand):
 
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
-        self.logger = logging.getLogger('modoboa.cron')
+        self.logger = logging.getLogger('modoboa.admin')
 
     def rename_mailbox(self, operation):
         if not os.path.exists(operation.argument):
             return
-        new_mail_home = operation.mailbox.mail_home.strip(os.sep)
-        self.logger.info("Renaming %s to %s", operation.argument, new_mail_home)
-        curpath = '/'
-        for part in new_mail_home.split(os.sep)[:-1]:
-            if not part:
-                continue
-            curpath = os.path.join(curpath, part)
-            if not os.path.exists(curpath):
-                os.mkdir(curpath)
+        new_mail_home = operation.mailbox.mail_home
+        try:
+            os.makedirs(os.path.dirname(new_mail_home))
+        except os.error as e:
+            raise OperationError(str(e))
         code, output = exec_cmd(
-            "mv %s %s" % (old_mail_home, new_mail_home)
+            "mv %s %s" % (ope.argument, new_mail_home)
         )
         if code:
             raise OperationError(output)
@@ -39,24 +37,25 @@ class Command(BaseCommand):
     def delete_mailbox(self, operation):
         if not os.path.exists(operation.argument):
             return
-        self.logger.info("Deleting %s", operation.argument)
         code, output = exec_cmd(
             "rm -r %s" % operation.argument
         )
         if code:
             raise OperationError(output)
 
-    def handle(self):
+    def handle(self, *args, **options):
+        AdminConsole().load()
         if parameters.get_admin("HANDLE_MAILBOXES") == 'no':
             return
         for ope in MailboxOperation.objects.all():
             try:
-                f = getattr(self, '%s_mailbox' % ope.optype)
+                f = getattr(self, '%s_mailbox' % ope.type)
             except AttributeError:
                 continue
             try:
                 f(ope)
             except OperationError as e:
-                self.logger.critical('Operation failed: %s', str(e))
+                self.logger.critical('Operation failed: %s. Reason: %s', ope, str(e))
             else:
+                self.logger.info('Operation succeed: %s', ope)
                 ope.delete()

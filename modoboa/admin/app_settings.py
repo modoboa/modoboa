@@ -197,11 +197,11 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         self.fields["default_top_redirection"].choices = enabled_applications()
         hide_fields = False
         try:
-            code, version = exec_cmd("dovecot --version")
+            code, output = exec_cmd("which doveadm")
         except OSError, e:
             hide_fields = True
         else:
-            if code or not version.strip().startswith("2"):
+            if code:
                 hide_fields = True
         if hide_fields:
             del self.fields["handle_mailboxes"]
