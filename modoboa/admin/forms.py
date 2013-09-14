@@ -136,7 +136,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             if old_mail_homes is not None:
                 self.update_mailbox_quotas(d)
                 for mb in d.mailbox_set.all():
-                    mb.rename_dir()
+                    mb.rename_dir(old_mail_homes[mb.id])
 
         return d
 
