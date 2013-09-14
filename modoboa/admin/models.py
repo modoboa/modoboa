@@ -24,6 +24,7 @@ import sys
 import pwd
 import re
 import crypt, hashlib, string, base64
+import pwd
 from random import Random
 
 try:
@@ -857,15 +858,27 @@ class Mailbox(DatesAware):
 
     @property
     def mail_home(self):
-        """
+        """Retrieve the home directory of this mailbox.
 
+        The home directory refers to the place on the file system
+        where the mailbox data is stored.
+
+        We ask dovecot to give us this information because there are
+        several patterns to understand and we don't want to implement
+        them.
         """
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
             return None
         if self.__mail_home is None:
-            code, output = exec_cmd("doveadm user %s -f home" % self.full_address, 
-                                    sudo_user=parameters.get_admin("MAILBOXES_OWNER"))
+            curuser = pwd.getpwuid(os.getuid()).pw_name
+            mbowner = parameters.get_admin("MAILBOXES_OWNER")
+            options = {}
+            if curuser != mbowner:
+                options['sudo_user'] = mbowner
+            code, output = exec_cmd(
+                "doveadm user %s -f home" % self.full_address, **options
+            )
             if code:
                 raise AdminError(_("Failed to retrieve mailbox location (%s)" % output))
             self.__mail_home = output.strip()

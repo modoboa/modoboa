@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.admin import AdminConsole
+from modoboa.admin.exceptions import AdminError
 from modoboa.admin.models import MailboxOperation
 
 
@@ -54,7 +55,7 @@ class Command(BaseCommand):
                 continue
             try:
                 f(ope)
-            except OperationError as e:
+            except (OperationError, AdminError) as e:
                 self.logger.critical('Operation failed: %s. Reason: %s', ope, str(e))
             else:
                 self.logger.info('Operation succeed: %s', ope)
