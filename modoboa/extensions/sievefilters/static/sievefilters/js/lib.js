@@ -44,6 +44,7 @@ function changefs(evt) {
 function init_filters_list() {
     $("a[name=togglestate]").click(toggle_filter_state);
     $("a[name*=movefilter_]").click(move_filter);
+    $("a[name=removefilter]").click(removefilter);
 }
 
 /*
@@ -63,7 +64,6 @@ function loadfs(response) {
         $("#fsetmenu").remove();
     }
     $("#menu").after($(response.menu));
-    $("a[name=removefilter]").click(removefilter);
     $("a[name=activatefs]").click(activatefs);
     $("a[name=savefs]").click(savefs);
     $("a[name=removefs]").click(removefs);
