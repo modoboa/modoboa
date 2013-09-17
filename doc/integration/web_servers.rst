@@ -10,6 +10,14 @@ Web servers
 Apache2
 *******
 
+.. note:: The following instructions are meant to help you get your
+          site up and running quickly. However it is not possible for
+          the people contributing documentation to Modoboa to test
+          every single combination of web server, wsgi server,
+          distribution, etc. So it is possible that **your**
+          installation of uwsgi or nginx or Apache or what-have-you
+          works differently. Keep this in mind.
+
 mod_wgsi
 ========
 
@@ -37,13 +45,13 @@ following content inside::
     WSGIScriptAlias / <path to your site's dir>/wsgi.py
   </VirtualHost>
 
-This is just one possible configuration. 
+This is just one possible configuration.
 
 .. note::
    *Django* 1.3 users, please consult this `page <https://docs.djangoproject.com/en/1.3/howto/deployment/modwsgi/>`_,
    it contains an example *wsgi.py* file.
 
-.. note:: 
+.. note::
    You will certainly need more configuration in order to launch
    Apache.
 
@@ -77,9 +85,9 @@ following content inside::
     </Location>
   </VirtualHost>
 
-This is just one possible configuration. 
+This is just one possible configuration.
 
-.. note:: 
+.. note::
    You will certainly need more configuration in order to launch
    Apache.
 
@@ -89,17 +97,27 @@ This is just one possible configuration.
 Nginx
 *****
 
+.. note:: The following instructions are meant to help you get your
+          site up and running quickly. However it is not possible for
+          the people contributing documentation to Modoboa to test
+          every single combination of web server, wsgi server,
+          distribution, etc. So it is possible that **your**
+          installation of uwsgi or nginx or Apache or what-have-you
+          works differently. Keep this in mind.
+
+Green Unicorn
+=============
+
 `Nginx <http://nginx.org/>`_ is a really fast HTTP server. Associated
 with `Green Unicorn <http://gunicorn.org/>`_, it gives you one of the
-best setup to serve python/Django applications. Modoboa's
-performances are really good with this configuration.
+best setups to serve python/Django applications. Modoboa's
+performance is really good with this configuration.
 
-To use this setup, first download and install those softwares
-(`Install gunicorn <http://gunicorn.org/install.html>`_ and `install
-nginx <http://wiki.nginx.org/Install>`_).
-
-Then, use the following sample *gunicorn* configuration (create a new
-file named *gunicorn.conf.py* inside Modoboa's root dir)::
+To use this setup, first download and install `nginx
+<http://wiki.nginx.org/Install>`__ and `gunicorn
+<http://gunicorn.org/install.html>`_. Then, use the following sample
+*gunicorn* configuration (create a new file named *gunicorn.conf.py*
+inside Modoboa's root dir)::
 
   backlog = 2048
   bind = "unix:/var/run/gunicorn/modoboa.sock"
@@ -123,12 +141,18 @@ following configuration::
   }
 
   server {
-        listen 443;
+        listen 443 ssl;
+        ssl on;
+        keepalive_timeout 70;
+
         server_name <host fqdn>;
         root <modoboa's root dir>;
 
         access_log  /var/log/nginx/<host fqdn>.access.log;
         error_log /var/log/nginx/<host fqdn>.error.log;
+
+        ssl_certificate     <ssl certificate for your site>;
+        ssl_certificate_key <ssl certificate key for your site>;
 
         location /sitestatic/ {
                 autoindex on;
@@ -143,10 +167,164 @@ following configuration::
                 proxy_set_header Host $http_host;
                 proxy_redirect off;
                 proxy_set_header X-Forwarded-Protocol ssl;
-		        proxy_pass http://modoboa;
+		proxy_pass http://modoboa;
         }
   }
+
+If you do not plan to use SSL then change the listen directive to
+``listen 80;`` and delete each of the following directives::
+
+    ssl on;
+    keepalive_timeout 70;
+    ssl_certificate     <ssl certificate for your site>;
+    ssl_certificate_key <ssl certificate key for your site>;
+    proxy_set_header X-Forwarded-Protocol ssl;
+
+If you do plan to use SSL, you'll have to generate a certificate and a
+key. `This article
+<http://wiki.nginx.org/HttpSslModule#Generate_Certificates>`__
+contains information about how to do it.
 
 Paste this content to your configuration (replace values between
 ``<>`` with yours), restart *nginx* and enjoy a really fast
 application!
+
+uwsgi
+=====
+
+The following setup is meant to get you started quickly. You should
+read the documentation of both nginx and uwsgi to understand how to
+optimize their configuration for your site.
+
+The Django documentation includes the following warning regarding
+uwsgi:
+
+.. warning:: Some distributions, including Debian and Ubuntu, ship an
+             outdated version of uWSGI that does not conform to the
+             WSGI specification. Versions prior to 1.2.6 do not call
+             close on the response object after handling a request. In
+             those cases the request_finished signal isn’t sent. This
+             can result in idle connections to database and memcache
+             servers.
+
+Use uwsgi 1.2.6 or newer. If you do not, you *will* run into
+problems. Modoboa will fail in obscure ways.
+
+To use this setup, first download and install `nginx
+<http://wiki.nginx.org/Install>`__ and `uwsgi
+<http://uwsgi-docs.readthedocs.org/en/latest/WSGIquickstart.html>`_.
+
+Here is a sample nginx configuration::
+
+    server {
+        listen 443 ssl;
+        ssl on;
+        keepalive_timeout 70;
+
+        server_name <host fqdn>;
+        root <modoboa's settings dir>;
+
+        ssl_certificate     <ssl certificate for your site>;
+        ssl_certificate_key <ssl certificate key for your site>;
+
+        access_log  /var/log/nginx/<host fqdn>.access.log;
+        error_log /var/log/nginx/<host fqdn>.error.log;
+
+        location <modoboa's root url>/sitestatic/ {
+                autoindex on;
+                alias <location of sitestatic on your file system>;
+        }
+
+        # Whether or not Modoboa uses a media directory depends on how
+        # you configured Modoboa. It does not hurt to have this.
+        location <modoboa's root url>/media/ {
+                autoindex on;
+                alias <location of media on your file system>;
+        }
+
+        # This denies access to any file that begins with
+        # ".ht". Apache's .htaccess and .htpasswd are such files. A
+        # Modoboa installed from scratch would not contain any such
+        # files, but you never know what the future holds.
+        location ~ /\.ht {
+            deny all;
+        }
+
+        location <modoba's root url>/ {
+            include uwsgi_params;
+            uwsgi_pass <uwsgi port>;
+            uwsgi_param UWSGI_SCRIPT modoboa_server.wsgi:application
+            uwsgi_param UWSGI_SCHEME https;
+        }
+    }
+
+If you do not plan to use SSL then change the listen directive to
+``listen 80;`` and delete each of the following directives::
+
+    ssl on;
+    keepalive_timeout 70;
+    ssl_certificate     <ssl certificate for your site>;
+    ssl_certificate_key <ssl certificate key for your site>;
+    uwsgi_param UWSGI_SCHEME https;
+
+If you do plan to use SSL, you'll have to generate a certificate and a
+key. `This article
+<http://wiki.nginx.org/HttpSslModule#Generate_Certificates>`__
+contains information about how to do it.
+
+Make sure to replace the ``<...>`` in the sample configuration with
+appropriate values. Here are some explanations for the cases that may
+not be completely self-explanatory:
+
+``<modoboa's settings dir>``
+  Where Modoboa's :file:`settings.py` resides. This is also where the
+  :file:`sitestatic` and :file:`media` directories reside.
+
+``<modoboa's root url>``
+  This is the URL which will be the root of your Modoboa site at your
+  domain. For instance, if your Modoboa installation is reachable at
+  at ``https://foo/modoboa`` then ``<modoboa's root url>`` is
+  ``/modoboa``.  In this case you probably also have to set the
+  ``alias`` directives to point to where Modoboa's sitestatic and
+  media directories are because otherwise nginx won't be able to find
+  them.
+
+  If Modoboa is at the root of your domain, then ``<modoboa root
+  url>`` is an empty string and can be deleted from the configuration
+  above. In this case, you probably do not need the ``alias``
+  directives.
+
+``<uwsgi port>``
+  The location where uwsig is listening. It could be a unix domain
+  socket or an address:port combination. Ubuntu configures uwsgi so
+  that the port is::
+
+      unix:/run/uwsgi/app/<app name>/socket
+
+  where ``<app name>`` is the name of the application.
+
+Your uwsgi configuration should be::
+
+    [uwsgi]
+    # Not needed when using uwsgi from pip
+    # plugins = python
+    chdir = <modoboa's top dir>
+    module = <name>.wsgi:application
+    master = true
+    harakiri = 30
+    sharedarea = 4
+    processes = 4
+    vhost = true
+    no-default-app = true
+
+The plugins directive should be turned on if you use a uwsgi
+installation that requires it. If uwsgi was installed from pip, it
+does not require it. In the configuration above:
+
+``<modoboa's top dir>``
+  The directory where :file:`manage.py` resides. This directory is the
+  parent of ``<modoboa's settings dir>``
+
+``<name>``
+  The name that you passed to ``modoboa-admin.py deploy`` when you
+  created your Modoboa instance.
