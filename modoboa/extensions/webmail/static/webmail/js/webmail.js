@@ -709,14 +709,14 @@ Webmail.prototype = {
      * is clicked)
      */
     compose_loader: function(e) {
-        var $link = $(e.target);
+        var $link = get_target(e, 'a');
 
         e.preventDefault();
         this.navobject.reset().setparam("action", $link.attr("href")).update();
     },
 
     reply_loader: function(e) {
-        var $link = $(e.target);
+        var $link = get_target(e, "a");
         e.preventDefault();
         this.navobject.reset().updateparams($link.attr("href")).update();
     },
