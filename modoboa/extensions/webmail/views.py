@@ -1,12 +1,14 @@
 # coding: utf-8
-from django.conf import settings
 import os
+from rfc6266 import build_header
+from django.conf import settings
 from django.http import HttpResponse
 from django.template import Template, Context
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.gzip import gzip_page
 from modoboa.lib import parameters
 from modoboa.lib.webutils import _render, _render_to_string, \
     ajax_response, ajax_simple_response
@@ -20,8 +22,10 @@ from lib import decode_payload, AttachmentUploadHandler, \
     ImapEmail, ReplyModifier, ForwardModifier
 from templatetags import webextras
 
+
 @login_required
 @needs_mailbox()
+@gzip_page
 def getattachment(request):
     """Fetch a message attachment
 
@@ -36,14 +40,11 @@ def getattachment(request):
     if not mbox or not mailid or not pnum:
         raise WebmailError(_("Invalid request"))
 
-    headers = {"Content-Type": "text/plain",
-               "Content-Transfer-Encoding": None}
     imapc = get_imapconnector(request)
     partdef, payload = imapc.fetchpart(mailid, mbox, pnum)
     resp = HttpResponse(decode_payload(partdef["encoding"], payload))
     resp["Content-Type"] = partdef["Content-Type"]
     resp["Content-Transfer-Encoding"] = partdef["encoding"]
-    print partdef
     if partdef["disposition"] != 'NIL':
         disp = partdef["disposition"]
         # FIXME : ugly hack, see fetch_parser.py for more explanation
@@ -57,6 +58,7 @@ def getattachment(request):
     resp["Content-Disposition"] = cd
     resp["Content-Length"] = partdef["size"]
     return resp
+
 
 @login_required
 @needs_mailbox()
