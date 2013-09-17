@@ -1,4 +1,7 @@
 # coding: utf-8
+import cStringIO
+import csv
+from rfc6266 import build_header
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
@@ -9,8 +12,6 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.db import transaction, IntegrityError
 from django.views.decorators.csrf import ensure_csrf_cookie
-import cStringIO
-import csv
 
 from lib import get_sort_order, get_listing_page
 from forms import *
