@@ -79,15 +79,15 @@ class Email(object):
         must be displayed and not attached.
         """
         if self.dformat == "html" and self.links \
-                and msg.has_key("Content-Disposition"):
+                and "Content-Disposition" in msg:
             if msg["Content-Disposition"].startswith("inline"):
                 cid = None
-                if msg.has_key("Content-ID"):
+                if "Content-ID" in msg:
                     m = re.match("<(.+)>", msg["Content-ID"])
                     cid = m is not None and m.group(1) or msg["Content-ID"]
                 fname = msg.get_filename()
                 if fname is None:
-                    if msg.has_key("Content-Location"):
+                    if "Content-Location" in msg:
                         fname = msg["Content-Location"]
                     elif cid is not None:
                         fname = cid

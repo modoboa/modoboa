@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import email
 import lxml
 import chardet
+from rfc6266 import build_header, parse_headers
 
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -277,20 +278,24 @@ class ImapEmail(Email):
             attname = "part_%s" % att["pnum"]
             params = None
             key = None
-            if att.has_key("params") and att["params"] != "NIL":
+            if "params" in att and att["params"] != "NIL":
                 params = att["params"]
                 key = "name"
 
-            if key is None and \
-                    att.has_key("disposition") and len(att["disposition"]) > 1:
+            if key is None and "disposition" in att and len(att["disposition"]) > 1:
                 params = att["disposition"][1]
                 key = "filename"
 
             if key and params:
                 for pos, value in enumerate(params):
-                    if value == key:
+                    if not value.startswith(key):
+                        continue
+                    header = "%s; %s=%s" % (att['disposition'][0], value,
+                                            u2u_decode.u2u_decode(params[pos + 1]).strip("\r\t\n"))
+                    attname = parse_headers(header).filename_unsafe
+                    if attname is None:
                         attname = u2u_decode.u2u_decode(params[pos + 1]).strip("\r\t\n")
-                        break
+                    break
             self.attachments[att["pnum"]] = attname
 
     def _fetch_inlines(self):
@@ -302,7 +307,7 @@ class ImapEmail(Email):
             params["fname"] = os.path.join(settings.MEDIA_URL, fname)
             if os.path.exists(path):
                 continue
-
+            
             pdef, content = self.imapc.fetchpart(self.mailid, self.mbox, params["pnum"])
             fp = open(path, "wb")
             fp.write(decode_payload(params["encoding"], content))
@@ -613,7 +618,7 @@ def create_mail_attachment(attdef):
     res.set_payload(fp.read())
     fp.close()
     Encoders.encode_base64(res)
-    res.add_header("Content-Disposition", 'attachment', filename=attdef["fname"])
+    res['Content-Disposition'] = build_header(attdef['fname'].decode('utf-8'))
     return res
 
 

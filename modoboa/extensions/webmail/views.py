@@ -43,16 +43,17 @@ def getattachment(request):
     resp = HttpResponse(decode_payload(partdef["encoding"], payload))
     resp["Content-Type"] = partdef["Content-Type"]
     resp["Content-Transfer-Encoding"] = partdef["encoding"]
+    print partdef
     if partdef["disposition"] != 'NIL':
         disp = partdef["disposition"]
         # FIXME : ugly hack, see fetch_parser.py for more explanation
         # :p
         if type(disp[1][0]) != dict:
-            cd = '%s; %s="%s"' % (disp[0], disp[1][0], disp[1][1])
+            cd = '%s; %s=%s' % (disp[0], disp[1][0], disp[1][1])
         else:
-            cd = '%s; %s="%s"' % (disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1])
+            cd = '%s; %s=%s' % (disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1])
     else:
-        cd = 'attachment; filename="%s"' % request.GET["fname"]
+        cd = build_header(request.GET["fname"])
     resp["Content-Disposition"] = cd
     resp["Content-Length"] = partdef["size"]
     return resp

@@ -804,7 +804,7 @@ def _export(content, filename):
     resp = HttpResponse(content)
     resp["Content-Type"] = "text/csv"
     resp["Content-Length"] = len(content)
-    resp["Content-Disposition"] = 'attachment; filename="%s"' % filename
+    resp["Content-Disposition"] = build_header(filename)
     return resp
 
 

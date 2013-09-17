@@ -1,5 +1,6 @@
 # coding: utf-8
 from sievelib.managesieve import Error
+from rfc6266 import build_header
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
@@ -263,7 +264,7 @@ def download_filters_set(request, name):
     resp = HttpResponse(script)
     resp["Content-Type"] = "text/plain; charset=utf-8"
     resp["Content-Length"] = len(script)
-    resp["Content-Disposition"] = 'attachment; filename="%s.txt"' % name
+    resp["Content-Disposition"] = build_header('%s.txt' % name)
     return resp
 
 @login_required
