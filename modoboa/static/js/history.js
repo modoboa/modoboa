@@ -179,7 +179,7 @@ History.prototype = {
     },
 
     getbaseurl: function() {
-        return this.base.substr(0, this.base.length - 1);
+        return decodeURIComponent(this.base.substr(0, this.base.length - 1));
     },
 
     delparam: function(name) {
