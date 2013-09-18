@@ -212,7 +212,7 @@ LOGGING = {
             'class': 'logging.handlers.SysLogHandler',
             'facility': SysLogHandler.LOG_CRON,
             'formatter': 'syslog'
-        }
+        },
         'modoboa': {
             'class': 'modoboa.lib.logutils.SQLHandler',
         }
