@@ -10,18 +10,19 @@ Web servers
 Apache2
 *******
 
-.. note:: The following instructions are meant to help you get your
-          site up and running quickly. However it is not possible for
-          the people contributing documentation to Modoboa to test
-          every single combination of web server, wsgi server,
-          distribution, etc. So it is possible that **your**
-          installation of uwsgi or nginx or Apache or what-have-you
-          works differently. Keep this in mind.
+.. note:: 
+
+   The following instructions are meant to help you get your site up
+   and running quickly. However it is not possible for the people
+   contributing documentation to Modoboa to test every single
+   combination of web server, wsgi server, distribution, etc. So it is
+   possible that **your** installation of uwsgi or nginx or Apache or
+   what-have-you works differently. Keep this in mind.
 
 mod_wgsi
 ========
 
-First, make sure that *mod_wsgi* is installed on your server.
+First, make sure that mod_wsgi is installed on your server.
 
 Create a new virtualhost in your Apache configuration and put the
 following content inside::
@@ -48,8 +49,8 @@ following content inside::
 This is just one possible configuration.
 
 .. note::
-   *Django* 1.3 users, please consult this `page <https://docs.djangoproject.com/en/1.3/howto/deployment/modwsgi/>`_,
-   it contains an example *wsgi.py* file.
+   Django 1.3 users, please consult this `page <https://docs.djangoproject.com/en/1.3/howto/deployment/modwsgi/>`_,
+   it contains an example :file:`wsgi.py` file.
 
 .. note::
    You will certainly need more configuration in order to launch
@@ -58,7 +59,7 @@ This is just one possible configuration.
 mod_python
 ==========
 
-First, make sure that *mod_python* is installed on your server.
+First, make sure that mod_python is installed on your server.
 
 Create a new virtualhost in your Apache configuration and put the
 following content inside::
@@ -97,13 +98,14 @@ This is just one possible configuration.
 Nginx
 *****
 
-.. note:: The following instructions are meant to help you get your
-          site up and running quickly. However it is not possible for
-          the people contributing documentation to Modoboa to test
-          every single combination of web server, wsgi server,
-          distribution, etc. So it is possible that **your**
-          installation of uwsgi or nginx or Apache or what-have-you
-          works differently. Keep this in mind.
+.. note:: 
+
+   The following instructions are meant to help you get your site up
+   and running quickly. However it is not possible for the people
+   contributing documentation to Modoboa to test every single
+   combination of web server, wsgi server, distribution, etc. So it is
+   possible that **your** installation of uwsgi or nginx or Apache or
+   what-have-you works differently. Keep this in mind.
 
 Green Unicorn
 =============
@@ -116,7 +118,7 @@ performance is really good with this configuration.
 To use this setup, first download and install `nginx
 <http://wiki.nginx.org/Install>`__ and `gunicorn
 <http://gunicorn.org/install.html>`_. Then, use the following sample
-*gunicorn* configuration (create a new file named *gunicorn.conf.py*
+gunicorn configuration (create a new file named :file:`gunicorn.conf.py`
 inside Modoboa's root dir)::
 
   backlog = 2048
@@ -133,7 +135,7 @@ To start gunicorn, execute the following commands::
   $ cd <modoboa dir>
   $ gunicorn -c gunicorn.conf.py <modoboa dir>.wsgi:application
 
-Now the *nginx* part. Just create a new virtual host and use the
+Now the nginx part. Just create a new virtual host and use the
 following configuration::
 
   upstream modoboa {
@@ -167,7 +169,7 @@ following configuration::
                 proxy_set_header Host $http_host;
                 proxy_redirect off;
                 proxy_set_header X-Forwarded-Protocol ssl;
-		proxy_pass http://modoboa;
+		        proxy_pass http://modoboa;
         }
   }
 
@@ -186,7 +188,7 @@ key. `This article
 contains information about how to do it.
 
 Paste this content to your configuration (replace values between
-``<>`` with yours), restart *nginx* and enjoy a really fast
+``<>`` with yours), restart nginx and enjoy a really fast
 application!
 
 uwsgi
@@ -199,13 +201,14 @@ optimize their configuration for your site.
 The Django documentation includes the following warning regarding
 uwsgi:
 
-.. warning:: Some distributions, including Debian and Ubuntu, ship an
-             outdated version of uWSGI that does not conform to the
-             WSGI specification. Versions prior to 1.2.6 do not call
-             close on the response object after handling a request. In
-             those cases the request_finished signal isn’t sent. This
-             can result in idle connections to database and memcache
-             servers.
+.. warning:: 
+
+   Some distributions, including Debian and Ubuntu, ship an outdated
+   version of uWSGI that does not conform to the WSGI
+   specification. Versions prior to 1.2.6 do not call close on the
+   response object after handling a request. In those cases the
+   request_finished signal isn’t sent. This can result in idle
+   connections to database and memcache servers.
 
 Use uwsgi 1.2.6 or newer. If you do not, you *will* run into
 problems. Modoboa will fail in obscure ways.

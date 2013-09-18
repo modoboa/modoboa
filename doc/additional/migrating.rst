@@ -16,7 +16,7 @@ existing `PostfixAdmin (version 2.3.3+)
 First, you must follow the :ref:`installation` step to create a fresh
 Modoboa database.
 
-Once done, edit the *setting.py* file. First, add a new database
+Once done, edit the :file:`settings.py` file. First, add a new database
 connection named ``pfxadmin`` into the ``DATABASES`` variable
 corresponding to your PostfixAdmin setup::
 
@@ -56,7 +56,7 @@ used by PostfixAdmin, check its configuration file if you're not sure)
 
 Click on the *Save* button.
 
-The procedure is over, edit the *settings.py* file and:
+The procedure is over, edit the :file:`settings.py` file and:
 
 * remove the ``pfxadmin`` database connection from the ``DATABASES``
   variable

@@ -33,12 +33,12 @@ The required glue
 *****************
 
 To create a new plugin, just start a new django application like
-this (into modoboa's directory)::
+this (into Modoboa's directory)::
 
   $ python manage.py startapp
 
 Then, you need to register this application using the provided
-API. Just copy/paste the following example into the *__init__.py* file
+API. Just copy/paste the following example into the :file:`__init__.py` file
 of the future extension::
 
   from modoboa.extensions import ModoExtension, exts_pool
@@ -72,7 +72,7 @@ of the future extension::
   exts_pool.register_extension(MyExtension)
 
 Once done, simply add your plugin's module name to the
-``INSTALLED_APPS`` variable located inside *settings.py*. Optionaly,
+``INSTALLED_APPS`` variable located inside :file:`settings.py`. Optionaly,
 run ``python manage.py syncdb`` if your plugin provides custom tables
 and ``python manage.py collectstatic`` to update static files.
 

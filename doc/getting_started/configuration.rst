@@ -86,7 +86,7 @@ Custom logo
 You have the possibility to use a custom logo instead of the default
 one on the login page.
 
-To do so, open the *settings.py* file and add a
+To do so, open the :file:`settings.py` file and add a
 ``MODOBOA_CUSTOM_LOGO`` variable. This variable must contain the
 relative URL of your logo under ``MEDIA_URL``. For example::
 
@@ -107,7 +107,7 @@ Host configuration
 To manipulate mailboxes on the filesystem, you must allow the user who
 runs Modoboa to execute commands as the user who owns mailboxes.
 
-To do so, edit the */etc/sudoers* file and add the following inside::
+To do so, edit the :file:`/etc/sudoers` file and add the following inside::
 
   <user_that_runs_modoboa> ALL=(<mailboxes owner>) NOPASSWD: ALL
 
@@ -121,7 +121,7 @@ Time zone and language
 
 Modoboa is available in many languages.
 
-To specify the default language to use, edit the *settings.py* file
+To specify the default language to use, edit the :file:`settings.py` file
 and modify the ``LANGUAGE_CODE`` variable::
 
   LANGUAGE_CODE = 'fr' # or 'en' for english, etc.
@@ -143,7 +143,7 @@ Modoboa uses `Django's session framework
 <https://docs.djangoproject.com/en/dev/topics/http/sessions/?from=olddocs>`_
 to store per-user information.
 
-Few parameters need to be set in the *settings.py* configuration
+Few parameters need to be set in the :file:`settings.py` configuration
 file to make Modoboa behave as expected::
 
   SESSION_EXPIRE_AT_BROWSER_CLOSE = False # Default value
@@ -151,7 +151,7 @@ file to make Modoboa behave as expected::
 This parameter is optional but you must ensure it is set to ``False``
 (the default value).
 
-The default configuration file provided by the *modoboa-admin.py*
+The default configuration file provided by the ``modoboa-admin.py``
 command is properly configured.
 
 ****
@@ -163,7 +163,7 @@ LDAP
 Authentication
 ==============
 
-*Modoboa* supports external LDAP authentication using the following extra components:
+Modoboa supports external LDAP authentication using the following extra components:
 
 * `Python LDAP client <http://www.python-ldap.org/>`_
 * `Django LDAP authentication backend <http://pypi.python.org/pypi/django-auth-ldap>`_
@@ -172,7 +172,7 @@ If you want to use this feature, you must first install those components::
 
   $ pip install python-ldap django-auth-ldap
 
-Then, all you have to do is to modify the *settings.py* file. Add a
+Then, all you have to do is to modify the :file:`settings.py` file. Add a
 new authentication backend to the `AUTHENTICATION_BACKENDS` variable,
 like this::
 
@@ -247,7 +247,7 @@ If you need additional parameters, you will find a detailled
 documentation `here <http://packages.python.org/django-auth-ldap/>`_.
 
 Once the authentication is properly configured, the users defined in
-your LDAP directory will be able to connect to *Modoboa*, the associated
+your LDAP directory will be able to connect to Modoboa, the associated
 domain and mailboxes will be automatically created if needed.
 
 .. note::

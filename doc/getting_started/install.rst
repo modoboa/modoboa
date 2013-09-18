@@ -30,8 +30,8 @@ You can choose between two options:
 * Use the Python package available on the `PyPI <http://pypi.python.org/pypi>`_
 * Download the sources tarball
 
-The easiest one is to install it from the *PyPI*. Just run the
-following command and you're done::
+The easiest one is to install it from PyPI. Just run the following
+command and you're done::
 
   $ pip install modoboa
 
@@ -56,8 +56,8 @@ package. On Debian/Ubuntu::
 `virtualenv <http://www.virtualenv.org/en/latest/>`_ users
 ==========================================================
 
-When you deploy an application using *virtualenv*, you may have to
-compile some dependencies. For example, *modoboa* relies on *lxml*,
+When you deploy an application using virtualenv, you may have to
+compile some dependencies. For example, modoboa relies on lxml,
 which is a C python module. In order to install it, you will need to
 install the following requirements:
 
@@ -65,7 +65,7 @@ install the following requirements:
 * libxslt development files
 * libxml2 development files
 
-On a *Debian* like system, just run the following command::
+On a Debian like system, just run the following command::
 
   $ apt-get install python-dev libxml2-dev libxslt-dev
 
@@ -75,7 +75,7 @@ On a *Debian* like system, just run the following command::
 Database
 ********
 
-Thanks to *django*, Modoboa supports several databases. Depending on
+Thanks to Django, Modoboa supports several databases. Depending on
 the one you will use, you must install the appropriate python package:
 
 * `mysqldb <http://mysql-python.sourceforge.net/>`_ for `MySQL <http://www.mysql.com>`_

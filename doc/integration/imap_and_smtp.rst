@@ -12,12 +12,12 @@ Modoboa works better with Dovecot 2.0 so the following documentation
 is suitable for this combination.
 
 In this section, we assume dovecot's configuration resides in
-*/etc/dovecot*, all pathes will be relative to this directory.
+:file:`/etc/dovecot`, all pathes will be relative to this directory.
 
 Mailboxes
 =========
 
-First, edit the *conf.d/10-mail.conf* and set the ``mail_location``
+First, edit the :file:`conf.d/10-mail.conf` and set the ``mail_location``
 variable::
 
   # maildir
@@ -63,7 +63,7 @@ stored (see :ref:`admin-params` to activate this feature).
 Those operations are treated asynchronously by a cron script. For
 example, when you rename an e-mail address through the web UI, the
 associated mailbox on the file system is not modified
-directly. Instead of that, a 'rename' order is created for this
+directly. Instead of that, a *rename* order is created for this
 mailbox. The mailbox will be considered unavailable until the order is
 not executed (see :ref:`Postfix configuration <postfix_config>`).
 
@@ -82,7 +82,7 @@ And add the following line inside::
 .. warning::
 
    The user running the cron script must have access to the
-   *settings.py* file of the modoboa instance.
+   :file:`settings.py` file of the modoboa instance.
 
 The result of each order is recorded into Modoboa's log. Go to
 *Modoboa > Logs* to consult them.
@@ -91,7 +91,7 @@ The result of each order is recorded into Modoboa's log. Go to
 Authentication
 ==============
 
-To make the authentication work, edit the *conf.d/10-auth.conf* and
+To make the authentication work, edit the :file:`conf.d/10-auth.conf` and
 uncomment the following line at the end::
 
   #!include auth-system.conf.ext
@@ -103,7 +103,7 @@ uncomment the following line at the end::
   #!include auth-static.conf.ext
 
 
-Then, edit the *conf.d/auth-sql.conf.ext* file and add the following
+Then, edit the :file:`conf.d/auth-sql.conf.ext` file and add the following
 content inside::
 
   passdb sql {
@@ -120,13 +120,13 @@ content inside::
 Make sure to activate only one backend (per type) inside your configuration
 (just comment the other ones).
 
-Edit the *dovecot-sql.conf.ext* and modify the configuration according
+Edit the :file:`dovecot-sql.conf.ext` and modify the configuration according
 to your database engine.
 
 .. _dovecot_mysql_queries:
 
-*MySQL* users
--------------
+MySQL users
+-----------
 
 ::
 
@@ -144,8 +144,8 @@ to your database engine.
 
 .. _dovecot_pg_queries:
 
-*PostgreSQL* users
-------------------
+PostgreSQL users
+----------------
 
 ::
 
@@ -169,7 +169,7 @@ LDA
 ===
 
 The LDA is activated by default but you must define a *postmaster*
-address. Open the *conf.d/15-lda.conf* file modify the following line::
+address. Open the :file:`conf.d/15-lda.conf` file modify the following line::
 
   postmaster_address = postmaster@<domain>
 
@@ -182,12 +182,12 @@ Modoboa lets adminstrators define per-domain and/or per-account limits
 (quota). It also lists the current quota usage of each account. Those
 features require Dovecot to be configured in a specific way.
 
-Inside *conf.d/10-mail.conf*, add the ``quota`` plugin to the default
+Inside :file:`conf.d/10-mail.conf`, add the ``quota`` plugin to the default
 activated ones::
 
   mail_plugins = quota
 
-Inside *conf.d/10-master.conf*, update the *dict* service to set
+Inside :file:`conf.d/10-master.conf`, update the ``dict`` service to set
 proper permissions::
 
   service dict {
@@ -200,7 +200,7 @@ proper permissions::
     }
   }
 
-Inside *conf.d/20-imap.conf*, activate the ``imap_quota`` plugin::
+Inside :file:`conf.d/20-imap.conf`, activate the ``imap_quota`` plugin::
 
   protocol imap {
     # ...
@@ -210,13 +210,13 @@ Inside *conf.d/20-imap.conf*, activate the ``imap_quota`` plugin::
     # ...
   }
 
-Inside *dovecot.conf*, activate the quota SQL dictionary backend::
+Inside :file:`dovecot.conf`, activate the quota SQL dictionary backend::
 
   dict {
     quota = <driver>:/etc/dovecot/dovecot-dict-sql.conf.ext
   }
 
-Inside *conf.d/90-quota.conf*, activate the *quota dictionary* backend::
+Inside :file:`conf.d/90-quota.conf`, activate the *quota dictionary* backend::
 
   plugin {
     quota = dict:User quota::proxy::quota
@@ -224,7 +224,8 @@ Inside *conf.d/90-quota.conf*, activate the *quota dictionary* backend::
 
 It will tell Dovecot to keep quota usage in the SQL dictionary.
 
-Finally, edit the *dovecot-dict-sql.conf.ext* file and put the following content inside::
+Finally, edit the :file:`dovecot-dict-sql.conf.ext` file and put the
+following content inside::
 
   connect = host=<db host> dbname=<db name> user=<db user> password=<password>
 
@@ -247,9 +248,9 @@ Finally, edit the *dovecot-dict-sql.conf.ext* file and put the following content
 Database schema update
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The `admin_quota` table is created by *Django* but unfortunately it
-doesn't support `DEFAULT` constraints (it only simulates them when the
-ORM is used). As *PostgreSQL* is a bit strict about constraint
+The ``admin_quota`` table is created by Django but unfortunately it
+doesn't support ``DEFAULT`` constraints (it only simulates them when the
+ORM is used). As PostgreSQL is a bit strict about constraint
 violations, you must execute the following query manually::
 
   db=> ALTER TABLE admin_quota ALTER COLUMN bytes SET DEFAULT 0;
@@ -318,8 +319,8 @@ work for Modoboa. You should use the following one instead:
   CREATE TRIGGER setmboxid AFTER INSERT ON admin_quota
      FOR EACH ROW EXECUTE PROCEDURE set_mboxid();
 
-Copy this example into a file (for example: *quota-trigger.sql*) on
-server running *postgres* and execute the following commands::
+Copy this example into a file (for example: :file:`quota-trigger.sql`) on
+server running postgres and execute the following commands::
 
   $ su - postgres
   $ psql < /path/to/quota-trigger.sql
@@ -332,7 +333,7 @@ For existing installations, *Dovecot* (> 2) offers a command to
 recalculate the current quota usages. For example, if you want to
 update all usages, run the following command::
 
-  $ doveadmin quota recalc -A
+  $ doveadm quota recalc -A
 
 Be carefull, it can take a while to execute.
 
@@ -342,7 +343,7 @@ ManageSieve/Sieve
 Modoboa lets users define filtering rules from the web interface. To
 do so, it requires *ManageSieve* to be activated on your server.
 
-Inside *conf.d/20-managesieve.conf*, make sure the following lines are
+Inside :file:`conf.d/20-managesieve.conf`, make sure the following lines are
 uncommented::
 
   protocols = $protocols sieve
@@ -361,7 +362,7 @@ uncommented::
 
 Messages filtering using Sieve is done by the LDA.
 
-Inside *conf.d/15-lda.conf*, activate the ``sieve`` plugin like this::
+Inside :file:`conf.d/15-lda.conf`, activate the ``sieve`` plugin like this::
 
   protocol lda {
     # Space separated list of plugins to load (default is global mail_plugins).
@@ -369,7 +370,7 @@ Inside *conf.d/15-lda.conf*, activate the ``sieve`` plugin like this::
   }
 
 Finally, configure the ``sieve`` plugin by editing the
-*conf.d/90-sieve.conf* file. Put the follwing content inside::
+:file:`conf.d/90-sieve.conf` file. Put the follwing caontent inside::
 
   plugin {
     # Location of the active script. When ManageSieve is used this is actually 
@@ -382,7 +383,7 @@ Finally, configure the ``sieve`` plugin by editing the
     sieve_dir = ~/sieve
   }
 
-Restart *Dovecot*.
+Restart Dovecot.
 
 .. _postfix:
 
@@ -398,22 +399,22 @@ Map files
 =========
 
 You first need to create configuration files (or map files) that will
-be used by *postfix* to lookup into Modoboa tables.
+be used by Postfix to lookup into Modoboa tables.
 
 To automaticaly generate the requested map files and store them in a
 directory, run the following command::
 
   $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres> mapfiles
 
-``mapfiles`` is the directory where the files will be stored. Answer the
-few questions and you're done.
+:file:`mapfiles` is the directory where the files will be
+stored. Answer the few questions and you're done.
 
 .. _postfix_config:
 
 Configuration
 =============
 
-Use the following configuration in the */etc/postfix/main.cf* file
+Use the following configuration in the :file:`/etc/postfix/main.cf` file
 (this is just one possible configuration)::
 
   # Stuff before
@@ -442,10 +443,10 @@ Use the following configuration in the */etc/postfix/main.cf* file
 
   # Stuff after
 
-Then, edit the */etc/postfix/master.cf* file and add the following
+Then, edit the :file:`/etc/postfix/master.cf` file and add the following
 definition at the end::
 
   dovecot   unix  -       n       n       -       -       pipe
     flags=DRhu user=vmail:vmail argv=/usr/lib/dovecot/deliver -f ${sender} -d ${recipient}
 
-Restart *Postfix*.
+Restart Postfix.

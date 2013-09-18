@@ -50,11 +50,11 @@ This plugin provides a simple management frontend for `amavisd-new
 
    The per-domain policies feature only works for new
    installations. Currently, you can't use modoboa with an existing
-   database (ie. with data in *users* and *policies* tables).
+   database (ie. with data in ``users`` and ``policies`` tables).
 
 .. note::
 
-   This plugin requires *amavisd-new* version **2.7.0** or higher. If
+   This plugin requires amavisd-new version **2.7.0** or higher. If
    you're planning to use the :ref:`selfservice`, you'll need version
    **2.8.0**.
 
@@ -62,7 +62,7 @@ Database
 ========
 
 You must tell to Modoboa where it can find the amavis
-database. Inside *settings.py*, add a new connection to the
+database. Inside :file:`settings.py`, add a new connection to the
 ``DATABASES`` variable like this::
 
   DATABASES = {
@@ -81,7 +81,7 @@ Replace values between ``<>`` with yours.
 
 .. note::
 
-   Modoboa doesn't create *amavis* tables. You need to install them
+   Modoboa doesn't create amavis tables. You need to install them
    following the `official documentation
    <http://www.amavis.org/#doc>`_.
 
@@ -106,7 +106,7 @@ Release messages
 
 To release messages, first take a look at `this page
 <http://www.ijs.si/software/amavisd/amavisd-new-docs.html#quar-release>`_. It
-explains how to configure *amavisd-new* to listen somewhere for the
+explains how to configure amavisd-new to listen somewhere for the
 AM.PDP protocol. This protocol is used to send requests.
 
 Below is an example of a working configuration::
@@ -126,7 +126,7 @@ Below is an example of a working configuration::
 Don't forget to update the ``inet_acl`` list if you plan to release from
 the network.
 
-Once *amavisd-new* is configured, just tell Modoboa where it can find
+Once amavisd-new is configured, just tell Modoboa where it can find
 the *release server* by modifying the following parameters in the
 online panel:
 
@@ -212,7 +212,7 @@ the required identifiers.
 To activate this feature, go the administration panel and set the
 **Enable self-service mode** parameter to yes.
 
-The last step is to customize the notification messages *amavis*
+The last step is to customize the notification messages amavis
 sends. The most important is to embark a direct link. Take a look at
 the `README.customize <http://amavis.org/README.customize.txt>`_ file to
 learn what you're allowed to do.
@@ -229,7 +229,7 @@ Graphical statistics
 
 This plugin collects various statistics about emails traffic on your
 server. It parses a log file to collect information, store it into RRD
-files (see `rrdtool <http://oss.oetiker.ch/rrdtool/>`_)and then
+files (see `rrdtool <http://oss.oetiker.ch/rrdtool/>`_) and then
 generates graphics in PNG format.
 
 To use it, go to the online parameters panel and adapt the following
@@ -273,15 +273,15 @@ Postifx auto-reply messages
 ***************************
 
 This plugin let users define an auto-reply message (*vacation*). It is
-based on *postfix* capabilities.
+based on Postfix capabilities.
 
 The user that executes the autoreply script needs to access
-*settings.py*. You must apply proper permissions on this file. For
-example, if *settings.py* belongs to *www-data:www-data*, you can add
-the *vmail* user to the *www-data* group and set the read permission
+:file:`settings.py`. You must apply proper permissions on this file. For
+example, if :file:`settings.py` belongs to ``www-data:www-data``, you can add
+the ``vmail`` user to the ``www-data`` group and set the read permission
 for the group.
 
-To make *postfix* use this feature, you need to update your
+To make Postfix use this feature, you need to update your
 configuration files as follows:
 
 ``/etc/postfix/main.cf``::
@@ -334,7 +334,7 @@ Two working modes are available:
 
 To use this plugin, your hosting setup must include a *ManageSieve*
 server and your local delivery agent must understand the *Sieve*
-language. Don't panic, *Dovecot* supports both :-) (refer to
+language. Don't panic, Dovecot supports both :-) (refer to
 :ref:`dovecot` to know how to enable those features).
 
 .. note:: 

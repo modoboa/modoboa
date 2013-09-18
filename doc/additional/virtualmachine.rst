@@ -4,9 +4,9 @@ Using the virtual machine
 Introduction
 ============
 
-A virtual machine with a ready-to-use *Modoboa* setup is available
-`here <http://modoboa.org/resources/modoboa.vmdk.bz2>`_. It is composed
-of the following components:
+A virtual machine with a ready-to-use Modoboa setup is available `here
+<http://modoboa.org/resources/modoboa.vmdk.bz2>`_. It is composed of
+the following components:
 
 * Debian 6.0 (squeeze)
 * Modoboa and its prerequisites
@@ -32,7 +32,7 @@ If you can't use the vmdk format, you can use `qemu
 Then, just use your prefered virtualization software (qemu, kvm,
 virtualbox, etc.) to start the machine. You'll need to configure at
 least one bridged network interface if you want to be able to play
-with *Modoboa*, ie. your machine must be visible from your network.
+with Modoboa, ie. your machine must be visible from your network.
 
 The default network interface of the machine (``eth0``) is configured
 to use the DHCP protocol.
@@ -49,7 +49,7 @@ root  demo     the root user
 demo  demo     an unpriviliged user
 ===== ======== ====================
 
-To connect to *Modoboa*, first connect to the system and retrieve its
+To connect to Modoboa, first connect to the system and retrieve its
 current network address like this::
 
   $ /sbin/ifconfig eth0
@@ -72,4 +72,3 @@ admin@demo.local admin    Administrator of the domain *demo.local*.
 
 user@demo.local  user     Simple user. Can access to applications.
 ================ ======== ============================================
-
