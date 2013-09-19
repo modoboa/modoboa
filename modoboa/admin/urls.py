@@ -35,10 +35,7 @@ urlpatterns = patterns(
     (r'^accounts/delete/(?P<accountid>\d+)/$', 'delaccount'),
 
     (r'^distriblists/new/$', 'newdlist'),
-    (r'^distriblists/delete/$', 'deldlist'),
-
     (r'^forwards/new/$', 'newforward'),
-    (r'^forwards/delete/$', 'delforward'),
 
     (r'^aliases/new/$', 'newalias'),
     (r'^aliases/edit/(?P<alid>\d+)/$', 'editalias'),

@@ -208,7 +208,7 @@ class AliasTestCase(ModoTestCase):
                              values)
         self.assertEqual(dlist.get_recipients_count(), 2)
 
-        self.check_ajax_get(reverse("modoboa.admin.views.deldlist") + "?selection=%d" \
+        self.check_ajax_get(reverse("modoboa.admin.views.delalias") + "?selection=%d" \
                                 % dlist.id, {})
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get, 
                           address="all", domain__name="test.com")
@@ -224,7 +224,7 @@ class AliasTestCase(ModoTestCase):
                              values)
         self.assertEqual(fwd.get_recipients_count(), 1)
 
-        self.check_ajax_get(reverse("modoboa.admin.views.delforward") + "?selection=%d" \
+        self.check_ajax_get(reverse("modoboa.admin.views.delalias") + "?selection=%d" \
                                 % fwd.id, {})
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get, 
                           address="forward", domain__name="test.com")

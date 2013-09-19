@@ -300,38 +300,28 @@ def editalias(request, alid, tplname="common/generic_modal_form.html"):
     return render(request, tplname, ctx)
 
 
-def _del_alias(request, msg, msgs):
+@login_required
+@permission_required("admin.delete_alias")
+@transaction.commit_on_success
+def delalias(request):
     selection = request.GET["selection"].split(",")
     for alid in selection:
         alias = Alias.objects.get(pk=alid)
         if not request.user.can_access(alias):
             raise PermDeniedException
+        if alias.type == 'dlist':
+            msg = "Distribution list deleted"
+            msgs =  "Distribution lists deleted"
+        elif alias.type == 'forward':
+            msg = "Forward deleted"
+            msgs = "Forwards deleted"
+        else:
+            msg = "Alias deleted"
+            msgs = "Aliases deleted"
         alias.delete()
 
     msg = ungettext(msg, msgs, len(selection))
     return ajax_simple_response({"status": "ok", "respmsg": msg})
-
-
-@login_required
-@permission_required("admin.delete_alias")
-@transaction.commit_on_success
-def delalias(request):
-    return _del_alias(request, "Alias deleted", "Aliases deleted")
-
-
-@login_required
-@permission_required("admin.delete_alias")
-@transaction.commit_on_success
-def deldlist(request):
-    return _del_alias(request, "Distribution list deleted",
-                      "Distribution lists deleted")
-
-
-@login_required
-@permission_required("admin.delete_alias")
-@transaction.commit_on_success
-def delforward(request):
-    return _del_alias(request, "Forward deleted", "Forwards deleted")
 
 
 @login_required
