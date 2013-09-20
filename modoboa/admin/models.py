@@ -700,12 +700,6 @@ class Domain(DatesAware):
             Quota.objects.filter(username__contains='@%s' % self.name).delete()
             events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
             ungrant_access_to_objects(self.mailbox_set.all())
-            hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-            if hm == "yes" and not keepdir:
-                for mb in self.mailbox_set.all():
-                    MailboxOperation.objects.create(
-                        type='delete', argument=mb.mail_home
-                    )
         if self.alias_set.count():
             events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
