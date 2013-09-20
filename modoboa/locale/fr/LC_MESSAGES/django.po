@@ -252,7 +252,7 @@ msgstr ""
 
 #: admin/app_settings.py:213
 msgid "Key must be either 16, 24, or 32 bytes long"
-msgstr ""
+msgstr "La longueur d'une clé doit être de 16, 24 ou 32 octets"
 
 #: admin/app_settings.py:222
 msgid "Invalid syntax"
@@ -523,12 +523,12 @@ msgstr "Vous ne pouvez pas importer un compte avec un rôle supérieur au votre"
 #: admin/models.py:506
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
-msgstr ""
+msgstr "L'utilisateur simple '%s' doit avoir une adresse email valide"
 
 #: admin/models.py:510
 #, python-format
 msgid "username and email fields must not differ for '%s'"
-msgstr ""
+msgstr "Les champs username et email de '%s' ne doivent pas différer"
 
 #: admin/models.py:534
 #, python-format
