@@ -50,9 +50,13 @@ def getattachment(request):
         # FIXME : ugly hack, see fetch_parser.py for more explanation
         # :p
         if type(disp[1][0]) != dict:
-            cd = '%s; %s=%s' % (disp[0], disp[1][0], disp[1][1])
+            atype, fieldname, filename = disp[0], disp[1][0], disp[1][1]
         else:
-            cd = '%s; %s=%s' % (disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1])
+            atype, fieldname, filename = disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1]
+        if fieldname.endswith('*'):
+            cd = '%s; %s=%s' % (atype, fieldname, filename)
+        else:
+            cd = '%s; %s="%s"' % (atype, fieldname, filename)
     else:
         cd = build_header(request.GET["fname"])
     resp["Content-Disposition"] = cd
