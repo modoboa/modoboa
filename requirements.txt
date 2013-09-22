@@ -7,3 +7,4 @@ sievelib
 chardet
 argparse
 rfc6266
+factory-boy

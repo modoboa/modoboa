@@ -19,10 +19,15 @@ from models import *
 from modoboa.admin.lib import *
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
+from . import factories
 
 
 class DomainTestCase(ModoTestCase):
-    fixtures = ["initial_users.json", "test_content.json"]
+    fixtures = ["initial_users.json"]
+
+    def setUp(self):
+        super(DomainTestCase, self).setUp()
+        self.dom = factories.DomainFactory(name='test.com')
 
     def test_create(self):
         """Test the creation of a domain
@@ -78,7 +83,10 @@ class DomainTestCase(ModoTestCase):
         values = {
             "name": "pouet.com", "quota": 100, "enabled": True
         }
-        self.check_ajax_post(reverse("modoboa.admin.views.editdomain", args=[1]), values)        
+        self.check_ajax_post(
+            reverse("modoboa.admin.views.editdomain", args=[self.dom.id]), 
+            values
+        )
         dom = Domain.objects.get(name="pouet.com")
         self.assertEqual(dom.name, "pouet.com")
         self.assertTrue(dom.enabled)
@@ -86,13 +94,17 @@ class DomainTestCase(ModoTestCase):
     def test_delete(self):
         """Test the removal of a domain
         """
-        self.check_ajax_get(reverse("modoboa.admin.views.deldomain", args=[1]), {})
+        self.check_ajax_get(reverse("modoboa.admin.views.deldomain", args=[self.dom.id]), {})
         with self.assertRaises(Domain.DoesNotExist):
             Domain.objects.get(pk=1)
 
 
 class DomainAliasTestCase(ModoTestCase):
-    fixtures = ["initial_users.json", "test_content.json"]
+    fixtures = ['initial_users.json']
+
+    def setUp(self):
+        super(DomainAliasTestCase, self).setUp()
+        self.dom = factories.DomainFactory(name='test.com')
 
     def test_model(self):
         dom = Domain.objects.get(name="test.com")
@@ -111,16 +123,23 @@ class DomainAliasTestCase(ModoTestCase):
         dom = Domain.objects.get(name="test.com")
         values = dict(name=dom.name, quota=dom.quota, enabled=dom.enabled,
                       aliases="domalias.net", aliases_1="domalias.com")
-        self.check_ajax_post(reverse("modoboa.admin.views.editdomain", args=[1]), values)
+        self.check_ajax_post(reverse("modoboa.admin.views.editdomain", args=[dom.id]), values)
         self.assertEqual(dom.domainalias_set.count(), 2)
 
         del values["aliases_1"]
-        self.check_ajax_post(reverse("modoboa.admin.views.editdomain", args=[1]), values)
+        self.check_ajax_post(reverse("modoboa.admin.views.editdomain", args=[dom.id]), values)
         self.assertEqual(dom.domainalias_set.count(), 1)
 
 
 class AccountTestCase(ModoTestCase):
-    fixtures = ["initial_users.json", "test_content.json",]
+    fixtures = ["initial_users.json"]
+
+    def setUp(self):
+        super(AccountTestCase, self).setUp()
+        self.dom = factories.DomainFactory(name="test.com")
+        self.account = factories.UserFactory(
+            username="user@test.com", groups=('SimpleUsers',), mailbox__domain=self.dom
+        )
 
     def test_crud(self):
         values = dict(username="tester@test.com", first_name="Tester", last_name="Toto",
@@ -132,14 +151,14 @@ class AccountTestCase(ModoTestCase):
         account = User.objects.get(username="tester@test.com")
         mb = account.mailbox_set.all()[0]
         self.assertEqual(mb.full_address, "tester@test.com")
-        self.assertEqual(mb.quota, 100)
+        self.assertEqual(mb.quota, 10)
         self.assertEqual(mb.enabled, True)
         self.assertEqual(mb.quota_value.username, "tester@test.com")
         self.assertEqual(account.username, mb.full_address)
         self.assertTrue(account.check_password("toto"))
         self.assertEqual(account.first_name, "Tester")
         self.assertEqual(account.last_name, "Toto")
-        self.assertEqual(mb.domain.mailbox_count, 4)
+        self.assertEqual(mb.domain.mailbox_count, 2)
 
         values["username"] = "pouet@test.com"
         self.check_ajax_post(reverse("modoboa.admin.views.editaccount", args=[account.id]), values)
@@ -173,7 +192,17 @@ class AccountTestCase(ModoTestCase):
 
 
 class AliasTestCase(ModoTestCase):
-    fixtures = ["initial_users.json", "test_content.json"]
+    fixtures = ["initial_users.json"]
+
+    def setUp(self):
+        super(AliasTestCase, self).setUp()
+        dom = factories.DomainFactory(name="test.com")
+        factories.UserFactory.create(
+            username="admin@test.com", groups=('DomainAdmins',), mailbox__domain=dom
+        )
+        factories.UserFactory.create(
+            username="user@test.com", groups=('SimpleUsers',), mailbox__domain=dom
+        )
 
     def test_alias(self):
         user = User.objects.get(username="user@test.com")
@@ -245,23 +274,27 @@ class AliasTestCase(ModoTestCase):
 
 
 class PermissionsTestCase(ModoTestCase):
-    fixtures = ["initial_users.json", "test_content.json"]
+    fixtures = ["initial_users.json"]
 
     def setUp(self):
-        """
-        FIXME: je n'arrive pas à générer des données de test incluant
-        déjà les permissions (cf. table ObjectAccess). C'est pour
-        cette raison que j'assigne le domaine test.com ici...
-        """
         super(PermissionsTestCase, self).setUp()
-        self.user = User.objects.get(username="user@test.com")
+        dom = factories.DomainFactory(name='test.com')
+        self.user = factories.UserFactory(
+            username="user@test.com", groups=('SimpleUsers',), mailbox__domain=dom
+        )
         self.values = dict(
             username=self.user.username, role="DomainAdmins",
             is_active=self.user.is_active, email="user@test.com"
         )
-        self.admin = User.objects.get(username="admin@test.com")
-        dom = Domain.objects.get(name="test.com")
+        self.admin = factories.UserFactory(
+            username="admin@test.com", groups=('DomainAdmins',), mailbox__domain=dom
+        )
         dom.add_admin(self.admin)
+
+        dom = factories.DomainFactory(name='test2.com')
+        factories.UserFactory(
+            username='user@test2.com', groups=('SimpleUsers',), mailbox__domain=dom
+        )
 
     def tearDown(self):
         self.clt.logout()
@@ -336,15 +369,31 @@ class PermissionsTestCase(ModoTestCase):
         self.check_ajax_get(reverse("modoboa.admin.views.delaccount", args=[account.id]), {},
                             status="ko", respmsg="Permission denied")
 
+    def test_domainadmin_dlist_local_domain_not_owned(self):
+        """Check if a domain admin can use a local mailbox he can't
+        access as a recipient in a distribution list"""
+        values = dict(
+            email="all@test.com",
+            recipients="user@test.com",
+            recipients_1="user@test2.com",
+            enabled=True
+        )
+        self.check_ajax_post(reverse("modoboa.admin.views.newdlist"), values)
+
 
 class ImportTestCase(ModoTestCase):
-    fixtures = ["initial_users.json", "test_content.json"]
+    fixtures = ["initial_users.json"]
 
     def setUp(self):
         super(ImportTestCase, self).setUp()
-        self.admin = User.objects.get(username="admin@test.com")
-        dom = Domain.objects.get(name="test.com")
+        dom = factories.DomainFactory(name="test.com")
+        self.admin = factories.UserFactory.create(
+            username="admin@test.com", groups=('DomainAdmins',), mailbox__domain=dom
+        )
         dom.add_admin(self.admin)
+        factories.UserFactory.create(
+            username="user@test.com", groups=('SimpleUsers',), mailbox__domain=dom
+        )
 
     def test_domains_import(self):
         f = ContentFile(b"""domain; domain1.com; 100; True
