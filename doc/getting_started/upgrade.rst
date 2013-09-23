@@ -43,12 +43,18 @@ Finally, follow the common procedure::
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
+
 1.0.1: operations on mailboxes
 ==============================
 
-The way Modoboa handles **rename** and **delete** operations on mailboxes has
-been improved. Make sure to consult :ref:`fs_operations`.
+The way Modoboa handles **rename** and **delete** operations on
+mailboxes has been improved. Make sure to consult :ref:`fs_operations`
+and :ref:`Postfix configuration <postfix_config>`. Look at the
+``smtpd_recipient_restrictions`` setting.
 
+Run ``modoboa-admin.py postfix_maps --dbtype <mysql|postgres>
+<tempdir>`` and compare the files with those that postfix currently
+use. Make necessary updates in light of the differences
 
 1.0.0: production ready, at last
 ================================
