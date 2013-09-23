@@ -73,7 +73,7 @@ Edit the crontab of the user who owns the mailboxes on the file system::
 
 And add the following line inside::
 
-  * * * * * python /var/www/mail_koalabs_org/manage.py handle_mailbox_operations
+  * * * * * python <modoboa_site>/manage.py handle_mailbox_operations
 
 .. warning::
 
