@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
 from modoboa.lib import events, parameters
+from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import (
@@ -78,22 +79,44 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         return cleaned_data
 
+    def update_mailbox_quotas(self, domain):
+        """Update all quota records associated to this domain
+
+        This method must be called only when a domain gets renamed. As
+        the primary key used for a quota is an email address, rename a
+        domain will change all associated email addresses, so it will
+        change the primary keys used for quotas. The consequence is we
+        can't issue regular UPDATE queries using the .save() method of
+        a Quota instance (it will trigger an INSERT as the primary key
+        has changed).
+
+        So, we use this ugly hack to bypass this behaviour. It is not
+        perfomant at all as it will generate one query per quota
+        record to update.
+        """
+        for q in Quota.objects.filter(username__contains="@%s" % self.oldname).values('username'):
+            username = q['username'].replace('@%s' % self.oldname, '@%s' % domain.name)
+            Quota.objects.filter(username=q['username']).update(username=username)
+
     def save(self, user, commit=True):
+        """Custom save method
+
+        Updating a domain may have consequences on other objects
+        (domain alias, mailbox, quota). The most tricky part concerns
+        quotas update.
+
+        """
         d = super(DomainFormGeneral, self).save(commit=False)
         if commit:
             old_mail_homes = None
-            hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-            if hm == "yes":
-                if self.oldname is not None and d.name != self.oldname:
-                    for q in Quota.objects.filter(username__contains="@%s" % self.oldname):
-                        q.username = q.username.replace('@%s' % self.oldname, '@%s' % d.name)
-                        q.save()
-                    old_mail_homes = dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
+            if self.oldname is not None and d.name != self.oldname:
+                d.name = self.oldname
+                old_mail_homes = \
+                    dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
+                d.name = self.cleaned_data['name']
             d.save()
-            Mailbox.objects.filter(domain=d, use_domain_quota=True).update(quota=d.quota)
-            if old_mail_homes is not None:
-                for mb in d.mailbox_set.all():
-                    mb.rename_dir(old_mail_homes[mb.id])
+            Mailbox.objects.filter(domain=d, use_domain_quota=True) \
+                .update(quota=d.quota)
             for k, v in self.cleaned_data.iteritems():
                 if not k.startswith("aliases"):
                     continue
@@ -113,6 +136,12 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 if not len(filter(lambda name: self.cleaned_data[name] == dalias.name,
                                   self.cleaned_data.keys())):
                     dalias.delete()
+
+            if old_mail_homes is not None:
+                self.update_mailbox_quotas(d)
+                for mb in d.mailbox_set.all():
+                    mb.rename_dir(old_mail_homes[mb.id])
+
         return d
 
 
@@ -278,8 +307,6 @@ class AliasForm(forms.ModelForm, DynamicForm):
             except Domain.DoesNotExist:
                 domain = None
             if domain is not None:
-                if not self.user.can_access(domain):
-                    raise PermDeniedException(v)
                 try:
                     rcpt = Alias.objects.get(domain=domain, address=local_part)
                     if rcpt.full_address == self.cleaned_data["email"]:

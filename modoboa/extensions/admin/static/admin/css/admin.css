@@ -22,6 +22,10 @@ table .progress {
     margin-bottom: 0 !important;
 }
 
+table tbody tr:hover {
+    background-color: #F9F9F9;
+}
+
 .search {
     width: 85%;
     -webkit-border-radius:14px;-moz-border-radius:14px;border-radius:14px;

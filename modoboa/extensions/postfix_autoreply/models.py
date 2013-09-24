@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from modoboa.extensions.admin.models import Domain, Mailbox
 
 
+
 class Transport(models.Model):
     domain = models.CharField(max_length=300)
     method = models.CharField(max_length=255)
@@ -27,10 +28,13 @@ class ARmessage(models.Model):
         _('enabled'),
         help_text=_("Activate/Deactivate your auto reply")
     )
-    untildate = models.DateField()
+    untildate = models.DateTimeField()
 
 
 class ARhistoric(models.Model):
     armessage = models.ForeignKey(ARmessage)
     last_sent = models.DateTimeField(auto_now=True)
-    sender = models.TextField()
+    sender = models.CharField(max_length=254)
+
+    class Meta:
+        unique_together = ("armessage", "sender")

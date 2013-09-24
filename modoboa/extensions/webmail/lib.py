@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import email
 import lxml
 import chardet
+from rfc6266 import build_header, parse_headers
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf import settings
@@ -29,7 +30,7 @@ class WMtable(tables.Table):
         "select", cssclass="draggable left", width="2%",
         defvalue="%spics/grippy.png" % settings.STATIC_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
-        )
+    )
     flags = tables.ImgColumn("flags", width="4%")
     withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column(
@@ -216,7 +217,7 @@ class ImapEmail(Email):
         self.bs = BodyStructure(msg['BODYSTRUCTURE'])
         data = None
 
-        mformat = self.dformat if self.bs.contents.has_key(self.dformat) else fallback_fmt
+        mformat = self.dformat if self.dformat in self.bs.contents else fallback_fmt
 
         if len(self.bs.contents):
             bodyc = u''
@@ -278,24 +279,30 @@ class ImapEmail(Email):
         return None
 
     def _find_attachments(self):
+        """Retrieve attachments from the parsed body structure.
+
+        We try to find and decode a file name for each attachment. If
+        we failed, a generic name will be used (ie. part_1, part_2, ...).
+        """
         for att in self.bs.attachments:
             attname = "part_%s" % att["pnum"]
-            params = None
-            key = None
             if "params" in att and att["params"] != "NIL":
-                params = att["params"]
-                key = "name"
-
-            if key is None and \
-                    "disposition" in att and len(att["disposition"]) > 1:
-                params = att["disposition"][1]
-                key = "filename"
-
-            if key and params:
-                for pos, value in enumerate(params):
-                    if value == key:
-                        attname = u2u_decode.u2u_decode(params[pos + 1]).strip("\r\t\n")
-                        break
+                attname = u2u_decode.u2u_decode(att["params"][1]) \
+                    .strip("\r\t\n")
+            elif "disposition" in att and len(att["disposition"]) > 1:
+                for pos, value in enumerate(att["disposition"][1]):
+                    if not value.startswith("filename"):
+                        continue
+                    header = "%s; %s=%s" \
+                        % (att['disposition'][0],
+                           value,
+                           att["disposition"][1][pos + 1].strip("\r\t\n"))
+                    attname = parse_headers(header).filename_unsafe
+                    if attname is None:
+                        attname = u2u_decode.u2u_decode(
+                            att["disposition"][1][pos + 1]
+                        ).strip("\r\t\n")
+                    break
             self.attachments[att["pnum"]] = attname
 
     def _fetch_inlines(self):
@@ -626,7 +633,7 @@ def create_mail_attachment(attdef):
     res.set_payload(fp.read())
     fp.close()
     Encoders.encode_base64(res)
-    res.add_header("Content-Disposition", "attachment; filename='%s'" % attdef["fname"])
+    res['Content-Disposition'] = build_header(attdef['fname'].decode('utf-8'))
     return res
 
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-27 17:24+0200\n"
+"POT-Creation-Date: 2013-09-20 22:30+0200\n"
 "PO-Revision-Date: 2013-06-28 17:03+0200\n"
 "Last-Translator: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
@@ -25,8 +25,8 @@ msgstr "Interfaccia amministrativa"
 msgid "Web based console to manage domains, accounts and aliases"
 msgstr "Interfaccia web per l'amministrazione di domini, account e alias"
 
-#: admin/__init__.py:16 admin/forms.py:180 admin/forms.py:615
-#: admin/views.py:93 admin/views.py:453
+#: admin/__init__.py:16 admin/forms.py:211 admin/forms.py:652
+#: admin/views.py:94 admin/views.py:447
 #: extensions/postfix_autoreply/app_settings.py:11
 #: extensions/sievefilters/app_settings.py:50
 #: extensions/stats/app_settings.py:11 extensions/webmail/app_settings.py:11
@@ -56,7 +56,8 @@ msgstr "Schema password predefinito"
 
 #: admin/app_settings.py:50
 msgid "Scheme used to crypt mailbox passwords"
-msgstr "Schema utilizzato per la criptazione delle password delle caselle di posta"
+msgstr ""
+"Schema utilizzato per la criptazione delle password delle caselle di posta"
 
 #: admin/app_settings.py:54
 msgid "Secret key"
@@ -120,7 +121,9 @@ msgstr "collega DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr "Nome particolare da usare quando ci si collega al server LDAP. Lasciare vuoto per un collegamento anonimo"
+msgstr ""
+"Nome particolare da usare quando ci si collega al server LDAP. Lasciare "
+"vuoto per un collegamento anonimo"
 
 #: admin/app_settings.py:97
 msgid "Bind password"
@@ -128,7 +131,9 @@ msgstr "Password del collegamento"
 
 #: admin/app_settings.py:99
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr "La password da utilizzare quando ci si collega al server LDAP (con 'Collega DN')"
+msgstr ""
+"La password da utilizzare quando ci si collega al server LDAP (con 'Collega "
+"DN')"
 
 #: admin/app_settings.py:105
 msgid "Search base"
@@ -146,7 +151,9 @@ msgstr "Filtro ricerca"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr "Stringa di filtraggio opzionale (p.es '(objectClass=person)'). Per essere valida deve essere racchiusa tra parentesi."
+msgstr ""
+"Stringa di filtraggio opzionale (p.es '(objectClass=person)'). Per essere "
+"valida deve essere racchiusa tra parentesi."
 
 #: admin/app_settings.py:119
 msgid "User DN template"
@@ -157,7 +164,9 @@ msgstr "Modello DN dell'utente"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr "Il modello utilizzato per comporre un DN dell'utente. Deve contenere un segnaposto (p.es. %(user)s)"
+msgstr ""
+"Il modello utilizzato per comporre un DN dell'utente. Deve contenere un "
+"segnaposto (p.es. %(user)s)"
 
 #: admin/app_settings.py:126
 msgid "Password attribute"
@@ -190,7 +199,9 @@ msgstr "Gestione delle caselle di posta nel filsystem"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr "Rinomina o rimuovi le caselle di posta nel filsystem quando sono rinominate o rimosse in Modoboa"
+msgstr ""
+"Rinomina o rimuovi le caselle di posta nel filsystem quando sono rinominate "
+"o rimosse in Modoboa"
 
 #: admin/app_settings.py:146
 msgid "Mailboxes ower"
@@ -206,7 +217,8 @@ msgstr "Rimozione automatica dell'account"
 
 #: admin/app_settings.py:154
 msgid "When a mailbox is removed, also remove the associated account"
-msgstr "Quando una casella postale viene rimossa rimuovi anche l'account associato"
+msgstr ""
+"Quando una casella postale viene rimossa rimuovi anche l'account associato"
 
 #: admin/app_settings.py:157 admin/templates/admin/editdomainform.html:7
 msgid "Miscellaneous"
@@ -234,43 +246,51 @@ msgstr "Reindirizzamento principale predefinito"
 
 #: admin/app_settings.py:175
 msgid "The default redirection used when no application is specified"
-msgstr "Redirezione predefinita utilizzata quando non è specificata alcuna applicazione"
+msgstr ""
+"Redirezione predefinita utilizzata quando non è specificata alcuna "
+"applicazione"
 
-#: admin/app_settings.py:215
+#: admin/app_settings.py:213
+msgid "Key must be either 16, 24, or 32 bytes long"
+msgstr ""
+
+#: admin/app_settings.py:222
 msgid "Invalid syntax"
 msgstr "Sintassi errata"
 
-#: admin/app_settings.py:238
+#: admin/app_settings.py:245
 msgid "This field is required"
 msgstr "Questo campo è obbligatorio"
 
-#: admin/forms.py:17 admin/forms.py:460 admin/tables.py:18
+#: admin/forms.py:20 admin/forms.py:497 admin/tables.py:18
 msgid "Alias(es)"
 msgstr "Alias"
 
-#: admin/forms.py:19
+#: admin/forms.py:22
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr "Alias per questo dominio. Inserire un solo nome alla volta, premere INVIO per aggiungere un nuovo elemento"
+msgstr ""
+"Alias per questo dominio. Inserire un solo nome alla volta, premere INVIO "
+"per aggiungere un nuovo elemento"
 
-#: admin/forms.py:56
+#: admin/forms.py:59
 msgid "An alias with this name already exists"
 msgstr "Esiste già un alias con questo nome"
 
-#: admin/forms.py:70
+#: admin/forms.py:73
 msgid "A domain with this name already exists"
 msgstr "Esiste già un dominio con questo nome"
 
-#: admin/forms.py:115
+#: admin/forms.py:146
 msgid "Create a domain administrator"
 msgstr "Crea un amministratore di dominio"
 
-#: admin/forms.py:117
+#: admin/forms.py:148
 msgid "Automatically create an administrator for this domain"
 msgstr "Crea automaticamente un amministratore per questo dominio"
 
-#: admin/forms.py:121 admin/tables.py:12 admin/tables.py:47
+#: admin/forms.py:152 admin/tables.py:12 admin/tables.py:47
 #: admin/templates/admin/editdomainform.html:13
 #: admin/templates/admin/identities_table.html:5
 #: admin/templates/admin/information.html:8
@@ -279,348 +299,362 @@ msgstr "Crea automaticamente un amministratore per questo dominio"
 msgid "Name"
 msgstr "Nome"
 
-#: admin/forms.py:123
+#: admin/forms.py:154
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr "Il nome dell'amministratore. Non includere il nome del dominio, verrà aggiunto automaticamente."
+msgstr ""
+"Il nome dell'amministratore. Non includere il nome del dominio, verrà "
+"aggiunto automaticamente."
 
-#: admin/forms.py:129
+#: admin/forms.py:160
 msgid "Create aliases"
 msgstr "Crea alias"
 
-#: admin/forms.py:131
+#: admin/forms.py:162
 msgid "Automatically create standard aliases for this domain"
 msgstr "Crea automaticamente gli alias standard per questo dominio"
 
-#: admin/forms.py:144
+#: admin/forms.py:175
 msgid "Invalid format"
 msgstr "Formato non valido"
 
-#: admin/forms.py:156
+#: admin/forms.py:187
 #, python-format
 msgid "User '%s' already exists"
 msgstr "L'utente '%s' esiste già"
 
-#: admin/forms.py:204
+#: admin/forms.py:235
 msgid "Email address"
 msgstr "Indirizzo email"
 
-#: admin/forms.py:205
+#: admin/forms.py:236
 msgid ""
 "The distribution list address. Use the '*' character to create a 'catchall' "
 "address (ex: *@domain.tld)."
 msgstr "Elenco degli indirizzi di smistamento"
 
-#: admin/forms.py:208
+#: admin/forms.py:239
 msgid "Recipients"
 msgstr "Destinatari"
 
-#: admin/forms.py:209
+#: admin/forms.py:240
 msgid ""
 "Mailbox(es) this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr "Casella(e) di posta a cui l'alias punterà. Inserire un solo indirizzo alla volta, premere INVIO per aggiungere un nuovo elemento."
+msgstr ""
+"Casella(e) di posta a cui l'alias punterà. Inserire un solo indirizzo alla "
+"volta, premere INVIO per aggiungere un nuovo elemento."
 
-#: admin/forms.py:247 admin/forms.py:505 admin/forms.py:531
+#: admin/forms.py:278 admin/forms.py:542 admin/forms.py:568
 msgid "Domain does not exist"
 msgstr "Il dominio non esiste"
 
-#: admin/forms.py:249
+#: admin/forms.py:280
 msgid "You don't have access to this domain"
 msgstr "Non hai accesso a questo dominio"
 
-#: admin/forms.py:269
+#: admin/forms.py:300
 msgid "Invalid mailbox"
 msgstr "Casella di posta non valida"
 
-#: admin/forms.py:285 admin/models.py:1175
+#: admin/forms.py:316 admin/models.py:1202
 #, python-format
 msgid "Local recipient %s not found"
 msgstr "Il destinatario locale %s non è stato trovato"
 
-#: admin/forms.py:287 admin/forms.py:293
+#: admin/forms.py:318 admin/forms.py:324
 #, python-format
 msgid "Recipient %s already present"
 msgstr "Il destinatario %s è già esistente"
 
-#: admin/forms.py:298
+#: admin/forms.py:329
 msgid "No recipient defined"
 msgstr "Non è stato definito un destinatario"
 
-#: admin/forms.py:312 extensions/webmail/forms.py:19
+#: admin/forms.py:343 extensions/webmail/forms.py:19
 msgid "Select a file"
 msgstr "Seleziona un file"
 
-#: admin/forms.py:314 admin/forms.py:342
+#: admin/forms.py:345 admin/forms.py:373
 msgid "Separator"
 msgstr "Separatore"
 
-#: admin/forms.py:317
+#: admin/forms.py:348
 msgid "Continue on error"
 msgstr "Continuare in caso di errore"
 
-#: admin/forms.py:318
+#: admin/forms.py:349
 msgid "Don't treat duplicated objects as error"
 msgstr "Non considerare errore gli oggetti duplicati"
 
-#: admin/forms.py:333
+#: admin/forms.py:364
 msgid "Crypt passwords"
 msgstr "Cripta le password"
 
-#: admin/forms.py:334
+#: admin/forms.py:365
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "Seleziona questa opzione se le password contenute nel file non sono criptate"
+msgstr ""
+"Seleziona questa opzione se le password contenute nel file non sono criptate"
 
-#: admin/forms.py:340
+#: admin/forms.py:371
 msgid "File name"
 msgstr "Nome del file"
 
-#: admin/forms.py:372 admin/templates/admin/editdomainform.html:13
+#: admin/forms.py:403 admin/templates/admin/editdomainform.html:13
 #: auth/forms.py:7
 msgid "Username"
 msgstr "Nome utente"
 
-#: admin/forms.py:374
+#: admin/forms.py:405
 msgid "Role"
 msgstr "Ruolo"
 
-#: admin/forms.py:375 admin/forms.py:402
+#: admin/forms.py:406 admin/forms.py:433
 msgid "Choose"
 msgstr "Scegli"
 
-#: admin/forms.py:376
+#: admin/forms.py:407
 msgid "What level of permission this user will have"
 msgstr "Il livello di permessi che avrà questo utente"
 
-#: admin/forms.py:378 auth/forms.py:11
+#: admin/forms.py:409 auth/forms.py:11
 msgid "Password"
 msgstr "Password"
 
-#: admin/forms.py:380 userprefs/forms.py:18
+#: admin/forms.py:411 userprefs/forms.py:18
 msgid "Confirmation"
 msgstr "Conferma"
 
-#: admin/forms.py:382
+#: admin/forms.py:413
 msgid "Enter the same password as above, for verification."
-msgstr "Inserisci la medesima password che hai inserito sopra, per la verifica."
+msgstr ""
+"Inserisci la medesima password che hai inserito sopra, per la verifica."
 
-#: admin/forms.py:393
+#: admin/forms.py:424
 msgid "Enabled"
 msgstr "Abilitato"
 
-#: admin/forms.py:435
+#: admin/forms.py:471
 msgid "The two password fields didn't match."
 msgstr "Le password nei due campi non corrispondono"
 
-#: admin/forms.py:441
+#: admin/forms.py:477
 msgid "You can't disable your own account"
 msgstr "Tu non puoi disabilitare il tuo account"
 
-#: admin/forms.py:451
+#: admin/forms.py:488
 msgid "E-mail"
 msgstr "E-mail"
 
-#: admin/forms.py:453
+#: admin/forms.py:490
 msgid "Quota"
 msgstr "Quota"
 
-#: admin/forms.py:455
+#: admin/forms.py:492
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr "Quota in MB per questo account. Stabilire un valore personalizzato o usare quello predefinito. Lasciare vuoto per non impostare limiti (non consentito per gli amministratori di dominio)."
+msgstr ""
+"Quota in MB per questo account. Stabilire un valore personalizzato o usare "
+"quello predefinito. Lasciare vuoto per non impostare limiti (non consentito "
+"per gli amministratori di dominio)."
 
-#: admin/forms.py:462
+#: admin/forms.py:499
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
 "*@domain.tld)."
-msgstr "Alias per questa casella di posta. Inserire un solo indirizzo alla volta, premere INVIO per aggiungere un nuovo elemento. Utilizzare il carattere '*' per creare un alias 'prenditutto' (p.es.: *@dominio.org)."
+msgstr ""
+"Alias per questa casella di posta. Inserire un solo indirizzo alla volta, "
+"premere INVIO per aggiungere un nuovo elemento. Utilizzare il carattere '*' "
+"per creare un alias 'prenditutto' (p.es.: *@dominio.org)."
 
-#: admin/forms.py:513
+#: admin/forms.py:550
 #, python-format
 msgid "Mailbox %s already exists"
 msgstr "La casella di posta %s esiste già"
 
-#: admin/forms.py:573
+#: admin/forms.py:610
 msgid "Domain(s)"
 msgstr "Dominio(i)"
 
-#: admin/forms.py:575
+#: admin/forms.py:612
 msgid "Domain(s) that user administrates"
 msgstr "Dominio(i) amministrato(i) dall'utente"
 
-#: admin/forms.py:617 admin/views.py:456
+#: admin/forms.py:654 admin/views.py:450
 msgid "Mail"
 msgstr "Posta"
 
-#: admin/forms.py:619
+#: admin/forms.py:656
 msgid "Permissions"
 msgstr "Permessi"
 
-#: admin/models.py:78
+#: admin/models.py:80
 msgid "You can't delete your own account"
 msgstr "Non puoi cancellare il tuo account"
 
-#: admin/models.py:159
+#: admin/models.py:161
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Aggiornamento della password fallito: il modulo LDAP non è installato"
 
-#: admin/models.py:165
+#: admin/models.py:167
 #, python-format
 msgid "Failed to update password: %s"
 msgstr "Aggiornamento della password fallito: %s"
 
-#: admin/models.py:192
+#: admin/models.py:194
 msgid "account"
 msgstr "account"
 
-#: admin/models.py:494 admin/models.py:720 admin/models.py:782
+#: admin/models.py:496 admin/models.py:733 admin/models.py:795
 msgid "Invalid line"
 msgstr "Riga non valida"
 
-#: admin/models.py:498
+#: admin/models.py:500
 msgid "You can't import an account with a role greater than yours"
 msgstr "Non puoi importare un account con un ruolo superiore al tuo"
 
-#: admin/models.py:518
+#: admin/models.py:506
+#, python-format
+msgid "The simple user '%s' must have a valid email address"
+msgstr ""
+
+#: admin/models.py:510
+#, python-format
+msgid "username and email fields must not differ for '%s'"
+msgstr ""
+
+#: admin/models.py:534
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Importazione dell'account fallito (%s): il dominio non esiste"
 
-#: admin/models.py:607 admin/models.py:733
+#: admin/models.py:624 admin/models.py:746
 msgid "name"
 msgstr "nome"
 
-#: admin/models.py:608
+#: admin/models.py:625
 msgid "The domain name"
 msgstr "Il nome del dominio"
 
-#: admin/models.py:610
+#: admin/models.py:627
 msgid "Default quota in MB applied to mailboxes"
 msgstr "Quota in MB predefinita applicata alle caselle di posta"
 
-#: admin/models.py:613 admin/models.py:740 admin/models.py:1020
-#: admin/models.py:1190 extensions/postfix_autoreply/models.py:19
+#: admin/models.py:630 admin/models.py:753 admin/models.py:1045
+#: admin/models.py:1217 extensions/postfix_autoreply/models.py:27
 msgid "enabled"
 msgstr "Attivato"
 
-#: admin/models.py:614
+#: admin/models.py:631
 msgid "Check to activate this domain"
 msgstr "Seleziona per attivare questo dominio"
 
-#: admin/models.py:734
+#: admin/models.py:747
 msgid "The alias name"
 msgstr "Il nome dell'alias"
 
-#: admin/models.py:736
+#: admin/models.py:749
 msgid "target"
 msgstr "destinazione"
 
-#: admin/models.py:737
+#: admin/models.py:750
 msgid "The domain this alias points to"
 msgstr "Il dominio a cui punta questo alias"
 
-#: admin/models.py:741 admin/models.py:1021
+#: admin/models.py:754 admin/models.py:1046
 msgid "Check to activate this alias"
 msgstr "Seleziona per attivare questo alias"
 
-#: admin/models.py:788
+#: admin/models.py:801
 #, python-format
 msgid "Unknown domain %s"
 msgstr "Dominio sconosciuto %s"
 
-#: admin/models.py:805 admin/models.py:1006
+#: admin/models.py:818 admin/models.py:1031
 msgid "address"
 msgstr "indirizzo"
 
-#: admin/models.py:806
+#: admin/models.py:819
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Indirizzo della casella di posta (senza la parte @dominio.org)"
 
-#: admin/models.py:852
+#: admin/models.py:877
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Impossibile recuperare la posizione della casella di posta (%s)"
 
-#: admin/models.py:868
-#, python-format
-msgid "Failed to rename mailbox: %s"
-msgstr "Impossibile rinominare la casella di posta: %s"
-
-#: admin/models.py:894
-#, python-format
-msgid "Failed to remove mailbox: %s"
-msgstr "Impossibile rimuovere la casella di posta: %s"
-
-#: admin/models.py:909
+#: admin/models.py:921
 #, python-format
 msgid "Quota is greater than the allowed domain's limit (%dM)"
 msgstr "La quota è maggiore del limite stabilito per il dominio (%dM)"
 
-#: admin/models.py:914
+#: admin/models.py:926
 msgid "A quota is required"
 msgstr "È richiesta una quota"
 
-#: admin/models.py:1007
+#: admin/models.py:1032
 msgid ""
 "The alias address (without the domain part). For a 'catch-all' address, just "
 "enter an * character."
-msgstr "L'indirizzo alternativo (senza la parte del dominio). Per un indirizzo 'prenditutto' inserisci un carattere '*'."
+msgstr ""
+"L'indirizzo alternativo (senza la parte del dominio). Per un indirizzo "
+"'prenditutto' inserisci un carattere '*'."
 
-#: admin/models.py:1011
+#: admin/models.py:1036
 msgid "mailboxes"
 msgstr "caselle di posta"
 
-#: admin/models.py:1012
+#: admin/models.py:1037
 msgid "The mailboxes this alias points to"
 msgstr "Le caselle di posta a cui punta questo alias"
 
-#: admin/models.py:1016
+#: admin/models.py:1041
 msgid "The aliases this alias points to"
 msgstr "Gli alias a cui questo alias puntano"
 
-#: admin/models.py:1064
+#: admin/models.py:1089
 msgid "distribution list"
 msgstr "elenco di smistamento"
 
-#: admin/models.py:1065
+#: admin/models.py:1090
 msgid "forward"
 msgstr "inoltra"
 
-#: admin/models.py:1066
+#: admin/models.py:1091
 msgid "alias"
 msgstr "alias"
 
-#: admin/models.py:1145
+#: admin/models.py:1170
 #, python-format
 msgid "Invalid line: %s"
 msgstr "Riga non valida: %s"
 
-#: admin/models.py:1150
+#: admin/models.py:1175
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "Il dominio '%s' non esiste"
 
-#: admin/models.py:1191
+#: admin/models.py:1218
 msgid "Check to enable this extension"
 msgstr "Seleziona per abilitare questa estensione"
 
-#: admin/models.py:1291
+#: admin/models.py:1318
 msgid "added"
 msgstr "aggiunto"
 
-#: admin/models.py:1294
+#: admin/models.py:1321
 msgid "modified"
 msgstr "modificato"
 
-#: admin/models.py:1297
+#: admin/models.py:1324
 msgid "deleted"
 msgstr "cancellato"
 
-#: admin/models.py:1299
+#: admin/models.py:1326
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s dell'utente %(user)s"
@@ -630,7 +664,7 @@ msgid "Edit domain"
 msgstr "Modifica dominio"
 
 #: admin/tables.py:21 admin/templates/admin/identities_table.html:8
-#: admin/templates/admin/listing.html:17 extensions/sievefilters/views.py:79
+#: admin/templates/admin/listing.html:17 extensions/sievefilters/views.py:83
 #: extensions/sievefilters/templates/sievefilters/filter.html:17
 #: extensions/sievefilters/templates/sievefilters/guieditor.html:5
 #: extensions/webmail/templatetags/webextras.py:97
@@ -645,143 +679,143 @@ msgstr "Versione"
 msgid "Description"
 msgstr "Descrizione"
 
-#: admin/views.py:87
+#: admin/views.py:88
 msgid "New domain"
 msgstr "Nuovo dominio"
 
-#: admin/views.py:88 admin/views.py:97 admin/views.py:224 admin/views.py:450
-#: admin/views.py:457 extensions/sievefilters/views.py:120
-#: extensions/sievefilters/views.py:187 extensions/webmail/views.py:133
+#: admin/views.py:89 admin/views.py:98 admin/views.py:228 admin/views.py:444
+#: admin/views.py:451 extensions/sievefilters/views.py:129
+#: extensions/sievefilters/views.py:198 extensions/webmail/views.py:136
 msgid "Create"
 msgstr "Crea"
 
-#: admin/views.py:94 admin/views.py:454
+#: admin/views.py:95 admin/views.py:448
 msgid "Next"
 msgstr "Successivo"
 
-#: admin/views.py:96
+#: admin/views.py:97
 msgid "Options"
 msgstr "Opzioni"
 
-#: admin/views.py:98 admin/views.py:458
+#: admin/views.py:99 admin/views.py:452
 msgid "Previous"
 msgstr "Precedente"
 
-#: admin/views.py:111
+#: admin/views.py:112
 msgid "Domain created"
 msgstr "Dominio creato"
 
-#: admin/views.py:144 admin/views.py:281 admin/views.py:504
+#: admin/views.py:146 admin/views.py:285 admin/views.py:498
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
-#: extensions/sievefilters/views.py:139 extensions/webmail/views.py:164
+#: extensions/sievefilters/views.py:148 extensions/webmail/views.py:168
 #: userprefs/templates/userprefs/forward.html:8
 #: userprefs/templates/userprefs/profile.html:8
 msgid "Update"
 msgstr "Aggiorna"
 
-#: admin/views.py:160
+#: admin/views.py:162
 msgid "Domain modified"
 msgstr "Dominio modificato"
 
-#: admin/views.py:185
+#: admin/views.py:189
 msgid "You can't delete your own domain"
 msgstr "Non puoi cancellare il tuo dominio"
 
-#: admin/views.py:188
+#: admin/views.py:192
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Dominio cancellato"
 msgstr[1] "Domini cancellati"
 
-#: admin/views.py:203
+#: admin/views.py:207
 msgid "Alias with this name already exists"
 msgstr "Un alias con questo nome esiste già"
 
-#: admin/views.py:246
+#: admin/views.py:250
 msgid "New distribution list"
 msgstr "Nuovo elenco di smistamento"
 
-#: admin/views.py:247
+#: admin/views.py:251
 msgid "Distribution list created"
 msgstr "Elenco di smistamento creato"
 
-#: admin/views.py:256
+#: admin/views.py:260
 msgid "New alias"
 msgstr "Nuovo alias"
 
-#: admin/views.py:257
+#: admin/views.py:261
 msgid "Alias created"
 msgstr "Alias creato"
 
-#: admin/views.py:266
+#: admin/views.py:270
 msgid "New forward"
 msgstr "Nuovo inoltro"
 
-#: admin/views.py:267
+#: admin/views.py:271
 msgid "Forward created"
 msgstr "Inoltro creato"
 
-#: admin/views.py:285
+#: admin/views.py:289
 msgid "Distribution list modified"
 msgstr "Elenco di smistamento modificato"
 
-#: admin/views.py:287
+#: admin/views.py:291
 msgid "Forward modified"
 msgstr "Inoltro modificato"
 
-#: admin/views.py:289
+#: admin/views.py:293
 msgid "Alias modified"
 msgstr "Alias modificato"
 
-#: admin/views.py:408 admin/views.py:551 admin/views.py:556
-#: extensions/amavis/views.py:195 extensions/amavis/views.py:201
-#: extensions/amavis/views.py:234 extensions/amavis/views.py:238
-#: extensions/amavis/views.py:240 extensions/webmail/views.py:37
-#: extensions/webmail/views.py:65 extensions/webmail/views.py:78
-#: extensions/webmail/views.py:95 extensions/webmail/views.py:111
-#: extensions/webmail/views.py:195 extensions/webmail/views.py:422
-#: extensions/webmail/views.py:433 extensions/webmail/views.py:460
+#: admin/views.py:402 admin/views.py:545 admin/views.py:550
+#: extensions/amavis/views.py:204 extensions/amavis/views.py:210
+#: extensions/amavis/views.py:243 extensions/amavis/views.py:247
+#: extensions/amavis/views.py:249 extensions/webmail/views.py:41
+#: extensions/webmail/views.py:68 extensions/webmail/views.py:81
+#: extensions/webmail/views.py:98 extensions/webmail/views.py:114
+#: extensions/webmail/views.py:200 extensions/webmail/views.py:427
+#: extensions/webmail/views.py:438 extensions/webmail/views.py:465
 #: lib/formutils.py:32 lib/formutils.py:37
 msgid "Invalid request"
 msgstr "Richiesta non valida"
 
-#: admin/views.py:447
+#: admin/views.py:441
 msgid "New account"
 msgstr "Nuovo account"
 
-#: admin/views.py:471
+#: admin/views.py:465
 msgid "Account created"
 msgstr "Account creato"
 
-#: admin/views.py:519
+#: admin/views.py:513
 msgid "Account updated"
 msgstr "Account aggiornato"
 
-#: admin/views.py:541
+#: admin/views.py:535
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Account cancellato"
 msgstr[1] "Account cancellati"
 
-#: admin/views.py:596
+#: admin/views.py:590
 msgid "Parameters saved"
 msgstr "Parametri salvati"
 
-#: admin/views.py:642
+#: admin/views.py:636
 msgid "Modifications applied."
 msgstr "Modifiche applicate"
 
-#: admin/views.py:749
+#: admin/views.py:743
 #, python-format
 msgid "Object already exists: %s"
 msgstr "L'oggetto esiste già: %s"
 
-#: admin/views.py:751
+#: admin/views.py:745
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d oggetti importati correttamente"
 
-#: admin/views.py:769
+#: admin/views.py:763
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
@@ -798,34 +832,37 @@ msgid ""
 msgstr ""
 "Fornire un file CSV le cui righe rispettino uno dei seguenti formati:\n"
 "<ul>\n"
-"<li><em>account; loginname; password; nome; cognome; abilitato; group; indirizzo[, dominio, ...]</em></li>\n"
+"<li><em>account; loginname; password; nome; cognome; abilitato; group; "
+"indirizzo[, dominio, ...]</em></li>\n"
 "<li><em>alias; indirizzo; abilitato; destinatario interno</em></li>\n"
 "<li><em>forward; indirizzo; abilitato; destinatario esterno</em></li>\n"
-"<li><em>dlist; indirizzo; abilitato; destinatario; destinatario; ...</em></li>\n"
+"<li><em>dlist; indirizzo; abilitato; destinatario; destinatario; ...</em></"
+"li>\n"
 "</ul>\n"
-"<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a quello dei valori precedenti.</p>\n"
+"<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a "
+"quello dei valori precedenti.</p>\n"
 "\n"
 "<p>Come separatore puoi utilizzare un carattere diverso.</p>\n"
 
-#: admin/views.py:781
+#: admin/views.py:775
 msgid "Import identities"
 msgstr "Identità di importazione"
 
-#: admin/views.py:782 admin/views.py:852 admin/templatetags/admin_extras.py:87
+#: admin/views.py:776 admin/views.py:846 admin/templatetags/admin_extras.py:87
 #: admin/templatetags/admin_extras.py:144
 msgid "Import"
 msgstr "Importa"
 
-#: admin/views.py:812
+#: admin/views.py:806
 msgid "Export identities"
 msgstr "Identità di esportazione"
 
-#: admin/views.py:813 admin/views.py:869 admin/templatetags/admin_extras.py:93
+#: admin/views.py:807 admin/views.py:863 admin/templatetags/admin_extras.py:93
 #: admin/templatetags/admin_extras.py:150
 msgid "Export"
 msgstr "Esporta"
 
-#: admin/views.py:841
+#: admin/views.py:835
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
@@ -841,15 +878,16 @@ msgstr ""
 "  <li><em>dominio; nome; quota; abilitato</em></li>\n"
 "  <li><em>aliasdominio; nome; dominio target; abilitato<em></li>\n"
 "</ul>\n"
-"<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a quello dei valori precedenti.</p>\n"
+"<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a "
+"quello dei valori precedenti.</p>\n"
 "\n"
 "<p>Come separatore puoi utilizzare un carattere diverso.</p>\n"
 
-#: admin/views.py:851
+#: admin/views.py:845
 msgid "Import domains"
 msgstr "Importa domini"
 
-#: admin/views.py:868
+#: admin/views.py:862
 msgid "Export domains"
 msgstr "Esporta domini"
 
@@ -922,7 +960,7 @@ msgid "Tags"
 msgstr "Tag"
 
 #: admin/templates/admin/importform.html:5
-#: admin/templatetags/admin_extras.py:305
+#: admin/templatetags/admin_extras.py:290
 msgid "Help"
 msgstr "Aiuto"
 
@@ -969,7 +1007,7 @@ msgid "Previously on Modoboa..."
 msgstr "Precedentemente su Modoboa ..."
 
 #: admin/templates/admin/logs.html:6 extensions/amavis/sql_listing.py:25
-#: extensions/webmail/lib.py:37 extensions/webmail/lib.py:406
+#: extensions/webmail/lib.py:38 extensions/webmail/lib.py:411
 msgid "Date"
 msgstr "Data"
 
@@ -1072,34 +1110,21 @@ msgid "View the domain's identities"
 msgstr "Visualizza le identita del dominio"
 
 #: admin/templatetags/admin_extras.py:178
-msgid "Delete the domain"
-msgstr "Cancella il dominio"
-
 #: admin/templatetags/admin_extras.py:194
-msgid "Delete this account"
-msgstr "Cancella questo account"
+#: admin/templatetags/admin_extras.py:201
+#, fuzzy, python-format
+msgid "Delete %s?"
+msgstr "Elimina"
 
-#: admin/templatetags/admin_extras.py:202
-msgid "Delete this distribution list"
-msgstr "Cancella l'elenco di smistamento"
-
-#: admin/templatetags/admin_extras.py:209
-msgid "Delete this forward"
-msgstr "Cancella questo inoltro"
-
-#: admin/templatetags/admin_extras.py:216
-msgid "Delete this alias"
-msgstr "Cancella questo alias"
-
-#: admin/templatetags/admin_extras.py:238
+#: admin/templatetags/admin_extras.py:223
 msgid "Remove this permission"
 msgstr "Rimuovi questo permesso"
 
-#: admin/templatetags/admin_extras.py:279 lib/formutils.py:206
+#: admin/templatetags/admin_extras.py:264 lib/formutils.py:206
 msgid "Yes"
 msgstr "Si"
 
-#: admin/templatetags/admin_extras.py:279 lib/formutils.py:206
+#: admin/templatetags/admin_extras.py:264 lib/formutils.py:206
 msgid "No"
 msgstr "No"
 
@@ -1151,8 +1176,10 @@ msgid ""
 msgstr ""
 "\n"
 "<h3>Benvenuti alla demo online!</h3>\n"
-"<p><b>Attenzione:</b> il contenuto della demo viene rinnovato ogni due ore.</p>\n"
-"<p>Per provare la demo sono disponibili i seguenti utenti (<i>username/password</\n"
+"<p><b>Attenzione:</b> il contenuto della demo viene rinnovato ogni due ore.</"
+"p>\n"
+"<p>Per provare la demo sono disponibili i seguenti utenti (<i>username/"
+"password</\n"
 "i>): </p>\n"
 "<ul>\n"
 "  <li>Un super amministratore : <b>admin/password</b></li>\n"
@@ -1206,7 +1233,8 @@ msgstr "Rimozione dei messaggi rilasciati"
 
 #: extensions/amavis/app_settings.py:24
 msgid "Remove messages marked as released while cleaning up the database"
-msgstr "Rimuovi i messaggi marcati come rilasciati durante la pulizia del database"
+msgstr ""
+"Rimuovi i messaggi marcati come rilasciati durante la pulizia del database"
 
 #: extensions/amavis/app_settings.py:28
 msgid "Amavis connection mode"
@@ -1295,12 +1323,12 @@ msgid "Virus filter"
 msgstr "Filtro virus"
 
 #: extensions/amavis/models.py:94 extensions/amavis/models.py:102
-#: extensions/amavis/models.py:110 extensions/sievefilters/views.py:268
+#: extensions/amavis/models.py:110 extensions/sievefilters/views.py:281
 msgid "yes"
 msgstr "si"
 
 #: extensions/amavis/models.py:95 extensions/amavis/models.py:103
-#: extensions/amavis/models.py:111 extensions/sievefilters/views.py:272
+#: extensions/amavis/models.py:111 extensions/sievefilters/views.py:285
 msgid "no"
 msgstr "no"
 
@@ -1312,7 +1340,9 @@ msgstr "predefinito"
 
 #: extensions/amavis/models.py:98
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
-msgstr "Aggirare il controllo virus o no. Scegliere 'predefinito' per utilizzare le impostazioni globali."
+msgstr ""
+"Aggirare il controllo virus o no. Scegliere 'predefinito' per utilizzare le "
+"impostazioni globali."
 
 #: extensions/amavis/models.py:101
 msgid "Spam filter"
@@ -1320,7 +1350,9 @@ msgstr "Filtro spam"
 
 #: extensions/amavis/models.py:106
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
-msgstr "Aggirare il controllo spam o no. Scegliere 'predefinito' per utilizzare le impostazioni globali."
+msgstr ""
+"Aggirare il controllo spam o no. Scegliere 'predefinito' per utilizzare le "
+"impostazioni globali."
 
 #: extensions/amavis/models.py:109
 msgid "Banned filter"
@@ -1328,7 +1360,9 @@ msgstr "Filtro banned"
 
 #: extensions/amavis/models.py:114
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
-msgstr "Aggirare il controllo banned o no. Scegliere 'predefinito' per utilizzare le impostazioni globali."
+msgstr ""
+"Aggirare il controllo banned o no. Scegliere 'predefinito' per utilizzare le "
+"impostazioni globali."
 
 #: extensions/amavis/models.py:144
 msgid "Spam marker"
@@ -1338,15 +1372,17 @@ msgstr "Contrassegno spam"
 msgid ""
 "Modify spam subject using the specified text. Choose 'default' to use global "
 "settings."
-msgstr "Modifica dell'oggetto spam utilizzando un testo specifico. Scegliere 'predefinito' per utilizzare le impostazioni globali."
+msgstr ""
+"Modifica dell'oggetto spam utilizzando un testo specifico. Scegliere "
+"'predefinito' per utilizzare le impostazioni globali."
 
-#: extensions/amavis/sql_listing.py:23 extensions/webmail/lib.py:36
+#: extensions/amavis/sql_listing.py:23 extensions/webmail/lib.py:37
 msgid "From"
 msgstr "Da"
 
 #: extensions/amavis/sql_listing.py:24 extensions/sievefilters/forms.py:68
-#: extensions/webmail/forms.py:10 extensions/webmail/lib.py:35
-#: extensions/webmail/lib.py:404 templates/common/email_searchbar.html:6
+#: extensions/webmail/forms.py:10 extensions/webmail/lib.py:36
+#: extensions/webmail/lib.py:409 templates/common/email_searchbar.html:6
 msgid "Subject"
 msgstr "Oggetto"
 
@@ -1356,37 +1392,37 @@ msgstr "Oggetto"
 msgid "To"
 msgstr "A"
 
-#: extensions/amavis/views.py:34
+#: extensions/amavis/views.py:43
 msgid "Empty quarantine"
 msgstr "Svuota quarantena"
 
-#: extensions/amavis/views.py:202
+#: extensions/amavis/views.py:211
 msgid "Message deleted"
 msgstr "Messaggio eliminato"
 
-#: extensions/amavis/views.py:223
+#: extensions/amavis/views.py:232
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
 msgstr[0] "%(count)d messaggio eliminato con successo"
 msgstr[1] "%(count)d messaggi eliminati con successo"
 
-#: extensions/amavis/views.py:243
+#: extensions/amavis/views.py:252
 msgid "Request sent"
 msgstr "Request inviata"
 
-#: extensions/amavis/views.py:249
+#: extensions/amavis/views.py:258
 msgid "Message released"
 msgstr "Messaggio rilasciato"
 
-#: extensions/amavis/views.py:271
+#: extensions/amavis/views.py:280
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
 msgstr[0] "%(count)d request inviata"
 msgstr[1] "%(count)d request inviate"
 
-#: extensions/amavis/views.py:295
+#: extensions/amavis/views.py:304
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
@@ -1421,8 +1457,12 @@ msgid ""
 msgid_plural ""
 "\n"
 "%(counter)s release requests are pending for action.\n"
-msgstr[0] "\n%(counter)s richiesta di rilascio è in attesa di azioni\n"
-msgstr[1] "\n%(counter)s richieste di rilascio sono in attesa di azioni\n"
+msgstr[0] ""
+"\n"
+"%(counter)s richiesta di rilascio è in attesa di azioni\n"
+msgstr[1] ""
+"\n"
+"%(counter)s richieste di rilascio sono in attesa di azioni\n"
 
 #: extensions/amavis/templates/amavis/notifications/pending_requests.html:6
 msgid "Sketch:"
@@ -1497,7 +1537,9 @@ msgstr "MIME errato"
 #: extensions/limits/__init__.py:23
 msgid ""
 "Per administrator resources to limit the number of objects they can create"
-msgstr "Risorse per amministratore. Limitazione del numero di oggetti che possono creare "
+msgstr ""
+"Risorse per amministratore. Limitazione del numero di oggetti che possono "
+"creare "
 
 #: extensions/limits/__init__.py:54
 msgid "Limits"
@@ -1522,7 +1564,9 @@ msgstr "Amministratori di domini"
 
 #: extensions/limits/app_settings.py:15
 msgid "Maximum number of allowed domain administrators for a new administrator"
-msgstr "Numero massimo di amministratori di domini consentiti per un nuovo amministratore"
+msgstr ""
+"Numero massimo di amministratori di domini consentiti per un nuovo "
+"amministratore"
 
 #: extensions/limits/app_settings.py:21
 msgid "Maximum number of allowed domains for a new administrator"
@@ -1530,11 +1574,13 @@ msgstr "Numero massimo di domini consentiti per un nuovo amministratore"
 
 #: extensions/limits/app_settings.py:27
 msgid "Maximum number of allowed domain aliases for a new administrator"
-msgstr "Numero massimo di alias di dominio consentiti per un nuovo amministratore"
+msgstr ""
+"Numero massimo di alias di dominio consentiti per un nuovo amministratore"
 
 #: extensions/limits/app_settings.py:33
 msgid "Maximum number of allowed mailboxes for a new administrator"
-msgstr "Numero massimo di caselle di posta consentite per un nuovo amministratore"
+msgstr ""
+"Numero massimo di caselle di posta consentite per un nuovo amministratore"
 
 #: extensions/limits/app_settings.py:39
 msgid "Maximum number of allowed aliases for a new administrator"
@@ -1542,7 +1588,8 @@ msgstr "Numero massimo di alias consentiti per un nuovo amministratore"
 
 #: extensions/limits/forms.py:13
 msgid "Maximum number of domain administrators this user can create"
-msgstr "Numero massimo di amministratori di dominio che questo utente può creare"
+msgstr ""
+"Numero massimo di amministratori di dominio che questo utente può creare"
 
 #: extensions/limits/forms.py:17
 msgid "Maximum number of domains this user can create"
@@ -1558,7 +1605,8 @@ msgstr "Numero massimo di caselle di posta che questo utente può creare"
 
 #: extensions/limits/forms.py:29
 msgid "Maximum number of mailbox aliases this user can create"
-msgstr "Numero massimo di alias di caselle di posta che questo utente può creare"
+msgstr ""
+"Numero massimo di alias di caselle di posta che questo utente può creare"
 
 #: extensions/limits/forms.py:46
 msgid "Invalid limit"
@@ -1612,7 +1660,9 @@ msgstr "Tempo massimo della risposta automatica"
 
 #: extensions/postfix_autoreply/app_settings.py:16
 msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr "Tempo massimo in secondi tra due risposte automatiche al medesimo destinatario"
+msgstr ""
+"Tempo massimo in secondi tra due risposte automatiche al medesimo "
+"destinatario"
 
 #: extensions/postfix_autoreply/forms.py:9
 msgid "Until"
@@ -1626,23 +1676,23 @@ msgstr "Attiva la tua risposta automatica fino a questa data"
 msgid "This date is over"
 msgstr "Questa data è passata"
 
-#: extensions/postfix_autoreply/models.py:15
+#: extensions/postfix_autoreply/models.py:19
 msgid "subject"
 msgstr "oggetto"
 
-#: extensions/postfix_autoreply/models.py:16
+#: extensions/postfix_autoreply/models.py:20
 msgid "The subject that will appear in sent emails"
 msgstr "L'oggetto che apparirà nelle mail inviate"
 
-#: extensions/postfix_autoreply/models.py:17
+#: extensions/postfix_autoreply/models.py:23
 msgid "content"
 msgstr "contenuto"
 
-#: extensions/postfix_autoreply/models.py:18
+#: extensions/postfix_autoreply/models.py:24
 msgid "The content that will appear in sent emails"
 msgstr "Il contenuto che apparirà nelle mail inviate"
 
-#: extensions/postfix_autoreply/models.py:20
+#: extensions/postfix_autoreply/models.py:28
 msgid "Activate/Deactivate your auto reply"
 msgstr "Attiva/disattiva la tua risposta automatica"
 
@@ -1770,59 +1820,60 @@ msgstr "Ridireziona il messaggio a"
 
 #: extensions/sievefilters/lib.py:37
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr "Connessione al server MANAGESIEVE fallita, controlla la tua configurazione"
+msgstr ""
+"Connessione al server MANAGESIEVE fallita, controlla la tua configurazione"
 
 #: extensions/sievefilters/lib.py:82
 msgid "Not enough space on server"
 msgstr "Non c'è spazio sufficiente nel server"
 
-#: extensions/sievefilters/views.py:64
+#: extensions/sievefilters/views.py:68
 msgid "Failed to retrieve filters set"
 msgstr "Recupero delle impostazioni di filtro fallito"
 
-#: extensions/sievefilters/views.py:117
+#: extensions/sievefilters/views.py:126
 #: extensions/sievefilters/templatetags/sfilters_tags.py:33
 msgid "New filter"
 msgstr "Nuovo filtro"
 
-#: extensions/sievefilters/views.py:124
+#: extensions/sievefilters/views.py:133
 msgid "Filter created"
 msgstr "Filtro creato"
 
-#: extensions/sievefilters/views.py:136
+#: extensions/sievefilters/views.py:145
 #: extensions/sievefilters/templatetags/sfilters_tags.py:77
 msgid "Edit filter"
 msgstr "Modifica filtro"
 
-#: extensions/sievefilters/views.py:145
+#: extensions/sievefilters/views.py:154
 msgid "Filter modified"
 msgstr "Filtro modificato"
 
-#: extensions/sievefilters/views.py:165
+#: extensions/sievefilters/views.py:176
 msgid "Filter removed"
 msgstr "Filtro eliminato"
 
-#: extensions/sievefilters/views.py:166
+#: extensions/sievefilters/views.py:177
 msgid "Failed to remove filter"
 msgstr "Rimozione del filtro fallita"
 
-#: extensions/sievefilters/views.py:180
+#: extensions/sievefilters/views.py:191
 msgid "Filters set saved"
 msgstr "Gruppo filtri salvato"
 
-#: extensions/sievefilters/views.py:185
+#: extensions/sievefilters/views.py:196
 msgid "Create a new filters set"
 msgstr "Crea un nuovo gruppo di filtri"
 
-#: extensions/sievefilters/views.py:208
+#: extensions/sievefilters/views.py:219
 msgid "Filters set created"
 msgstr "Gruppo filtri creato"
 
-#: extensions/sievefilters/views.py:229
+#: extensions/sievefilters/views.py:240
 msgid "Filters set deleted"
 msgstr "Gruppo filtri eliminato"
 
-#: extensions/sievefilters/views.py:241
+#: extensions/sievefilters/views.py:252
 msgid "Filters set activated"
 msgstr "Gruppo filtri attivato"
 
@@ -1838,18 +1889,20 @@ msgstr "Attivo"
 msgid "No filter defined yet"
 msgstr "Non ci sono ancora filtri definiti"
 
-#: extensions/sievefilters/templates/sievefilters/index.html:55
+#: extensions/sievefilters/templates/sievefilters/index.html:56
 msgid "Filter sets"
 msgstr "Impostazioni dei filtri"
 
-#: extensions/sievefilters/templates/sievefilters/index.html:59
+#: extensions/sievefilters/templates/sievefilters/index.html:60
 msgid "active"
 msgstr "attivo"
 
-#: extensions/sievefilters/templates/sievefilters/index.html:73
+#: extensions/sievefilters/templates/sievefilters/index.html:74
 msgid ""
 "No filters set defined yet. You must create one in order to define filters."
-msgstr "Non è ancora stato definito alcun gruppo di filtri. Devi crearne uno per definire dei filtri"
+msgstr ""
+"Non è ancora stato definito alcun gruppo di filtri. Devi crearne uno per "
+"definire dei filtri"
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:16
 msgid "New filters set"
@@ -2031,7 +2084,8 @@ msgstr "Dimensione massima degli allegati"
 
 #: extensions/webmail/app_settings.py:16
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
-msgstr "Dimensione massima degli allegati in bytes (o KB, MB, GB se specificato)"
+msgstr ""
+"Dimensione massima degli allegati in bytes (o KB, MB, GB se specificato)"
 
 #: extensions/webmail/app_settings.py:19
 msgid "IMAP settings"
@@ -2087,7 +2141,8 @@ msgstr "Modalità di visualizzazione del messaggio predefinita"
 
 #: extensions/webmail/app_settings.py:79
 msgid "The default mode used when displaying a message"
-msgstr "La modalità di visualizzazione predefinita quando viene mostrato il messaggio"
+msgstr ""
+"La modalità di visualizzazione predefinita quando viene mostrato il messaggio"
 
 #: extensions/webmail/app_settings.py:85
 msgid "Enable HTML links display"
@@ -2161,84 +2216,89 @@ msgstr "Risposta del server"
 msgid "Cci"
 msgstr "Cci"
 
-#: extensions/webmail/imaputils.py:259
+#: extensions/webmail/imaputils.py:237
+#, fuzzy
+msgid "Failed to retrieve hierarchy delimiter"
+msgstr "Recupero delle impostazioni di filtro fallito"
+
+#: extensions/webmail/imaputils.py:278
 #, python-format
 msgid "Connection to IMAP server failed: %s"
 msgstr "Connessione al server IMAP fallita: %s"
 
-#: extensions/webmail/lib.py:353
+#: extensions/webmail/lib.py:358
 msgid "wrote:"
 msgstr "scritto:"
 
-#: extensions/webmail/lib.py:418 extensions/webmail/lib.py:422
+#: extensions/webmail/lib.py:423 extensions/webmail/lib.py:427
 msgid "Original message"
 msgstr "Messaggio originale"
 
-#: extensions/webmail/views.py:83
+#: extensions/webmail/views.py:86
 #, python-format
 msgid "%(count)d message deleted"
 msgid_plural "%(count)d messages deleted"
 msgstr[0] "%(count)d messaggio cancellato"
 msgstr[1] "%(count)d messaggi cancellati"
 
-#: extensions/webmail/views.py:100
+#: extensions/webmail/views.py:103
 msgid "Unknown action"
 msgstr "Azione sconosciuta"
 
-#: extensions/webmail/views.py:113 lib/email_listing.py:137
+#: extensions/webmail/views.py:116 lib/email_listing.py:137
 msgid "Empty mailbox"
 msgstr "Casella di posta vuota"
 
-#: extensions/webmail/views.py:130
+#: extensions/webmail/views.py:133
 #: extensions/webmail/templatetags/webextras.py:170
 msgid "Create a new mailbox"
 msgstr "Crea una nuova casella di posta"
 
-#: extensions/webmail/views.py:145
+#: extensions/webmail/views.py:149
 msgid "Mailbox created"
 msgstr "Casella di posta creata"
 
-#: extensions/webmail/views.py:161
+#: extensions/webmail/views.py:165
 msgid "Edit mailbox"
 msgstr "Modifica casella di posta"
 
-#: extensions/webmail/views.py:175
+#: extensions/webmail/views.py:180
 msgid "Mailbox updated"
 msgstr "Casella di posta aggiornata"
 
-#: extensions/webmail/views.py:209 extensions/webmail/views.py:391
-#: extensions/webmail/views.py:500
+#: extensions/webmail/views.py:214 extensions/webmail/views.py:396
+#: extensions/webmail/views.py:505
 msgid "Bad request"
 msgstr "Richiesta sbagliata"
 
-#: extensions/webmail/views.py:241
+#: extensions/webmail/views.py:246
 msgid "Failed to save attachment: "
 msgstr "Salvataggio allegato fallito: "
 
-#: extensions/webmail/views.py:244
+#: extensions/webmail/views.py:249
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "L'allegato è troppo grande (limite: %s)"
 
-#: extensions/webmail/views.py:250
+#: extensions/webmail/views.py:255
 #: extensions/webmail/templates/webmail/compose.html:15
 #: extensions/webmail/templates/webmail/headers.html:4
 msgid "Attachments"
 msgstr "Allegati"
 
-#: extensions/webmail/views.py:266
+#: extensions/webmail/views.py:271
 msgid "Bad query"
 msgstr "Domanda sbagliata"
 
-#: extensions/webmail/views.py:276
+#: extensions/webmail/views.py:281
 msgid "Failed to remove attachment: "
 msgstr "Rimozione allegato fallita: "
 
-#: extensions/webmail/views.py:281
+#: extensions/webmail/views.py:286
 msgid "Unknown attachment"
 msgstr "Allegato sconosciuto"
 
-#: extensions/webmail/views.py:496
+#: extensions/webmail/views.py:501
 msgid "Undefined action"
 msgstr "Azione non definita"
 
@@ -2269,7 +2329,7 @@ msgstr[1] "%(counter)s file"
 msgid "Parent mailbox"
 msgstr "Casella di posta principale"
 
-#: extensions/webmail/templates/webmail/index.html:37
+#: extensions/webmail/templates/webmail/index.html:38
 msgid "Mailbox quota"
 msgstr "Quota casella di posta"
 
@@ -2447,7 +2507,7 @@ msgstr "Impostazioni per-utente"
 msgid "Prefered language"
 msgstr "Lingua preferita"
 
-#: userprefs/app_settings.py:26
+#: userprefs/app_settings.py:27
 msgid "Prefered language to display pages"
 msgstr "Lingua preferita per mostrare le pagine"
 
@@ -2481,13 +2541,16 @@ msgstr "Mantieni copie locali"
 
 #: userprefs/forms.py:67
 msgid "Forward messages and store copies into your local mailbox"
-msgstr "Inoltra i messaggi e memorizza le copie nella tua casella di posta locale"
+msgstr ""
+"Inoltra i messaggi e memorizza le copie nella tua casella di posta locale"
 
 #: userprefs/forms.py:84
 msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
-msgstr "Non puoi definire l'inoltro con destinazione una cartella locale. Chiedi piuttosto all'amministratore di creare un alias."
+msgstr ""
+"Non puoi definire l'inoltro con destinazione una cartella locale. Chiedi "
+"piuttosto all'amministratore di creare un alias."
 
 #: userprefs/views.py:32
 msgid "You need a mailbox in order to define a forward"
@@ -2535,3 +2598,24 @@ msgstr "Aggiorna le informazioni personali"
 #: userprefs/templatetags/uprefs_extras.py:57
 msgid "Logout"
 msgstr "Esci"
+
+#~ msgid "Failed to rename mailbox: %s"
+#~ msgstr "Impossibile rinominare la casella di posta: %s"
+
+#~ msgid "Failed to remove mailbox: %s"
+#~ msgstr "Impossibile rimuovere la casella di posta: %s"
+
+#~ msgid "Delete the domain"
+#~ msgstr "Cancella il dominio"
+
+#~ msgid "Delete this account"
+#~ msgstr "Cancella questo account"
+
+#~ msgid "Delete this distribution list"
+#~ msgstr "Cancella l'elenco di smistamento"
+
+#~ msgid "Delete this forward"
+#~ msgstr "Cancella questo inoltro"
+
+#~ msgid "Delete this alias"
+#~ msgstr "Cancella questo alias"

@@ -55,14 +55,20 @@ class AliasesMap(MapFile):
 
 class DomainAliasesMailboxesMap(MapFile):
     filename = 'sql-domain-aliases-mailboxes.cf'
-    mysql = "SELECT DISTINCT concat(mb.address, '@', dom.name) FROM admin_alias al INNER JOIN admin_domain dom ON dom.id=al.domain_id INNER JOIN admin_domainalias domal ON domal.target_id=dom.id INNER JOIN (admin_alias_mboxes almb, admin_mailbox mb) ON (almb.alias_id=al.id AND almb.mailbox_id=mb.id) WHERE domal.name='%d' AND domal.enabled=1 AND (al.address='%u' OR mb.address='%u')"
-    postgres = "SELECT DISTINCT mb.address || '@' || dom.name FROM admin_alias al INNER JOIN admin_domain dom ON dom.id=al.domain_id INNER JOIN admin_domainalias domal ON domal.target_id=dom.id INNER JOIN admin_alias_mboxes almb ON almb.alias_id=al.id INNER JOIN admin_mailbox mb ON almb.mailbox_id=mb.id WHERE domal.name='%d' AND domal.enabled AND (al.address='%u' OR mb.address='%u')"
+    mysql = "(SELECT concat(mb.address, '@', dom.name) FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_mailbox mb ON mb.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND mb.address='%u') UNION (SELECT concat(al.address, '@', dom.name) FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_alias al ON al.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND al.address='%u')"
+    postgres = "(SELECT mb.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_mailbox mb ON mb.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled AND mb.address='%u') UNION (SELECT al.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_alias al ON al.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled AND al.address='%u')"
 
 
 class CatchallAliasesMap(MapFile):
     filename = 'sql-catchall-aliases.cf'
     mysql = "(SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.id IN (SELECT al_mb.mailbox_id FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id INNER JOIN admin_alias_mboxes al_mb ON al.id=al_mb.alias_id WHERE al.enabled=1 AND al.address='*' AND dom.name='%d' AND dom.enabled=1)) UNION (SELECT al.extmboxes FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id WHERE al.enabled='1' AND al.extmboxes<>'' AND al.address='*' AND dom.name='%d' AND dom.enabled=1)"
     postgres = "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.id IN (SELECT al_mb.mailbox_id FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id INNER JOIN admin_alias_mboxes al_mb ON al.id=al_mb.alias_id WHERE al.enabled AND al.address='*' AND dom.name='%d' AND dom.enabled)) UNION (SELECT al.extmboxes FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id WHERE al.enabled AND al.extmboxes<>'' AND al.address='*' AND dom.name='%d' AND dom.enabled)"
+
+
+class MaintainMap(MapFile):
+    filename = 'sql-maintain.cf'
+    mysql = "SELECT '450 Requested mail action not taken: mailbox unavailable' FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_mailboxoperation mbop ON mbop.mailbox_id=mb.id WHERE dom.name='%d' AND mb.address='%u' LIMIT 1"
+    postgres = "SELECT '450 Requested mail action not taken: mailbox unavailable' FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_mailboxoperation mbop ON mbop.mailbox_id=mb.id WHERE dom.name='%d' AND mb.address='%u' LIMIT 1"
 
 
 class TransportMap(MapFile):

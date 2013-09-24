@@ -119,7 +119,7 @@ def domain_actions(user, domid):
         actions.append({
             "name": "deldomain",
             "url": reverse("modoboa.extensions.admin.views.domain.deldomain", args=[domid]),
-            "title": _("Delete the domain"),
+            "title": _("Delete %s?" % domain.name),
             "img": "icon-trash"
         })
     return render_actions(actions)
@@ -135,30 +135,15 @@ def identity_actions(user, ident):
             {"name": "delaccount",
              "url": reverse("modoboa.extensions.admin.views.identity.delaccount", args=[objid]),
              "img": "icon-trash",
-             "title": _("Delete this account")},
+             "title": _("Delete %s?" % ident.username)},
         ]
     else:
-        if ident.get_recipients_count() >= 2:
-            actions = [
-                {"name": "deldlist",
-                 "url": reverse("modoboa.extensions.admin.views.alias.deldlist") + "?selection=%s" % objid,
-                 "img": "icon-trash",
-                 "title": _("Delete this distribution list")},
-            ]
-        elif ident.extmboxes != "":
-            actions = [
-                {"name": "delforward",
-                 "url": reverse("modoboa.extensions.admin.views.alias.delforward") + "?selection=%s" % objid,
-                 "img": "icon-trash",
-                 "title": _("Delete this forward")},
-            ]
-        else:
-            actions = [
-                {"name": "delalias",
-                 "url": reverse("modoboa.extensions.admin.views.alias.delalias") + "?selection=%s" % objid,
-                 "img": "icon-trash",
-                 "title": _("Delete this alias")},
-            ]
+        actions = [
+            {"name": "delalias",
+             "url": reverse("modoboa.admin.views.delalias") + "?selection=%s" % objid,
+             "img": "icon-trash",
+             "title": _("Delete %s?" % ident.full_address)},
+        ]
     return render_actions(actions)
 
 

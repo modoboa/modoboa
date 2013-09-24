@@ -1,4 +1,5 @@
 import os
+import pwd
 import reversion
 from django.db import models
 from django.db.models import Q
@@ -87,15 +88,27 @@ class Mailbox(DatesAware):
 
     @property
     def mail_home(self):
-        """
+        """Retrieve the home directory of this mailbox.
+ 
+        The home directory refers to the place on the file system
+        where the mailbox data is stored.
 
+        We ask dovecot to give us this information because there are
+        several patterns to understand and we don't want to implement
+        them.        
         """
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
             return None
         if self.__mail_home is None:
-            code, output = exec_cmd("doveadm user %s -f home" % self.full_address, 
-                                    sudo_user=parameters.get_admin("MAILBOXES_OWNER"))
+            curuser = pwd.getpwuid(os.getuid()).pw_name
+            mbowner = parameters.get_admin("MAILBOXES_OWNER")
+            options = {}
+            if curuser != mbowner:
+                options['sudo_user'] = mbowner
+            code, output = exec_cmd(
+                "doveadm user %s -f home" % self.full_address, **options
+            ) 
             if code:
                 raise AdminError(_("Failed to retrieve mailbox location (%s)" % output))
             self.__mail_home = output.strip()
@@ -105,15 +118,9 @@ class Mailbox(DatesAware):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
             return
-        self.__mail_home = None
-        if not os.path.exists(old_mail_home):
-            return
-        code, output = exec_cmd(
-            "mv %s %s" % (old_mail_home, self.mail_home),
-            sudo_user=parameters.get_admin("MAILBOXES_OWNER")
+        MailboxOperation.objects.create(
+            mailbox=self, type='rename', argument=old_mail_home
         )
-        if code:
-            raise AdminError(_("Failed to rename mailbox: %s" % output))
 
     def rename(self, address, domain):
         """Rename the mailbox
@@ -125,21 +132,14 @@ class Mailbox(DatesAware):
         qs = Quota.objects.filter(username=self.full_address)
         self.address = address
         self.domain = domain
-        self.rename_dir(old_mail_home)
         qs.update(username=self.full_address)
+        self.rename_dir(old_mail_home)
 
     def delete_dir(self):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
             return
-        if not os.path.exists(self.mail_home):
-            return
-        code, output = exec_cmd(
-            "rm -r %s" % self.mail_home,
-            sudo_user=parameters.get_admin("MAILBOXES_OWNER")
-        )
-        if code:
-            raise AdminError(_("Failed to remove mailbox: %s" % output))
+        MailboxOperation.objects.create(type='delete', argument=self.mail_home)
 
     def set_quota(self, value=None, override_rules=False):
         """Set or update quota's value for this mailbox.
@@ -250,3 +250,16 @@ class Quota(models.Model):
 
     class Meta:
         app_label = 'admin'
+
+
+class MailboxOperation(models.Model):
+    mailbox = models.ForeignKey(Mailbox, blank=True, null=True)
+    type = models.CharField(
+        max_length=20, choices=(('rename', 'rename'), ('delete', 'delete'))
+    )
+    argument = models.TextField()
+
+    def __str__(self):
+        if self.type == 'rename':
+            return 'Rename %s -> %s' % (self.argument, self.mailbox.mail_home)
+        return 'Delete %s' % self.argument 

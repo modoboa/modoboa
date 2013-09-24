@@ -1,5 +1,6 @@
 import csv
 import cStringIO
+from rfc6266 import build_header
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
@@ -25,7 +26,7 @@ def _export(content, filename):
     resp = HttpResponse(content)
     resp["Content-Type"] = "text/csv"
     resp["Content-Length"] = len(content)
-    resp["Content-Disposition"] = 'attachment; filename="%s"' % filename
+    resp["Content-Disposition"] = build_header(filename)
     return resp
 
 

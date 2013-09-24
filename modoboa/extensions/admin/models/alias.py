@@ -189,7 +189,7 @@ class Alias(DatesAware):
         self.save(int_rcpts, ext_rcpts, creator=user)
 
     def to_csv(self, csvwriter):
-        row = [self.type, self.full_address, self.enabled]
+        row = [self.type, self.full_address.encode("utf-8"), self.enabled]
         row += self.get_recipients()
         csvwriter.writerow(row)
 

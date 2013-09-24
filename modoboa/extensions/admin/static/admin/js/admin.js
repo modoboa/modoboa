@@ -114,7 +114,7 @@ Domains.prototype = {
             : gettext("This operation will remove all data associated to this domain, excepting accounts.");
 
         $("a[name=deldomain]").confirm({
-            question: gettext("Delete this domain?"),
+            question: function() { return this.$element.attr('title'); },
             method: "POST",
             warning: warnmsg,
             checkboxes: deloptions,
@@ -240,23 +240,13 @@ Identities.prototype = {
         $("a.filter").click($.proxy(this.filter_by_tag, this));
 
         $("a[name=delaccount]").confirm({
-            question: gettext("Delete this account?"),
+            question: function() { return this.$element.attr('title'); },
             method: "POST",
             checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
         });
-        $("a[name=deldlist]").confirm({
-            question: gettext("Delete this list?"),
-            method: "DELETE",
-            success_cb: $.proxy(this.reload_listing, this)
-        });
-        $("a[name=delforward]").confirm({
-            question: gettext("Delete this forward?"),
-            method: "DELETE",
-            success_cb: $.proxy(this.reload_listing, this)
-        });
         $("a[name=delalias]").confirm({
-            question: gettext("Delete this alias?"),
+            question: function() { return this.$element.attr('title'); },
             method: "DELETE",
             success_cb: $.proxy(this.reload_listing, this)
         });

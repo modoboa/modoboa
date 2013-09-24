@@ -1,5 +1,6 @@
 # coding: utf-8
 import os
+from rfc6266 import build_header
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -8,6 +9,7 @@ from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.gzip import gzip_page
 from modoboa.lib import parameters
 from modoboa.lib.webutils import (
     _render_to_string, ajax_response, ajax_simple_response
@@ -27,6 +29,7 @@ from templatetags import webextras
 
 @login_required
 @needs_mailbox()
+@gzip_page
 def getattachment(request):
     """Fetch a message attachment
 
@@ -51,11 +54,15 @@ def getattachment(request):
         # FIXME : ugly hack, see fetch_parser.py for more explanation
         # :p
         if type(disp[1][0]) != dict:
-            cd = '%s; %s="%s"' % (disp[0], disp[1][0], disp[1][1])
+            atype, fieldname, filename = disp[0], disp[1][0], disp[1][1]
         else:
-            cd = '%s; %s="%s"' % (disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1])
+            atype, fieldname, filename = disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1]
+        if fieldname.endswith('*'):
+            cd = '%s; %s=%s' % (atype, fieldname, filename)
+        else:
+            cd = '%s; %s="%s"' % (atype, fieldname, filename)
     else:
-        cd = 'attachment; filename="%s"' % request.GET["fname"]
+        cd = build_header(request.GET["fname"])
     resp["Content-Disposition"] = cd
     resp["Content-Length"] = partdef["size"]
     return resp
@@ -144,7 +151,8 @@ def newfolder(request, tplname="webmail/folder.html"):
            "action_classes": "submit",
            "withunseen": False,
            "selectonly": True,
-           "mboxes": mbc.getmboxes(request.user)}
+           "mboxes": mbc.getmboxes(request.user),
+           "hdelimiter": mbc.hdelimiter}
 
     if request.method == "POST":
         form = FolderForm(request.POST)
@@ -176,14 +184,15 @@ def editfolder(request, tplname="webmail/folder.html"):
            "action_label": _("Update"),
            "action_classes": "submit",
            "withunseen": False,
-           "selectonly": True}
+           "selectonly": True,
+           "hdelimiter": mbc.hdelimiter}
 
     if request.method == "POST":
         form = FolderForm(request.POST)
         if form.is_valid():
             pf = request.POST.get("parent_folder", None)
             ctx["selected"] = pf
-            oldname, oldparent = separate_mailbox(request.POST["oldname"])
+            oldname, oldparent = separate_mailbox(request.POST["oldname"], sep=mbc.hdelimiter)
             res = dict(status="ok", respmsg=_("Mailbox updated"))
             if form.cleaned_data["name"] != oldname \
                     or (pf != oldparent):
@@ -205,7 +214,7 @@ def editfolder(request, tplname="webmail/folder.html"):
     name = request.GET.get("name", None)
     if name is None:
         raise WebmailError(_("Invalid request"))
-    shortname, parent = separate_mailbox(name)
+    shortname, parent = separate_mailbox(name, sep=mbc.hdelimiter)
     ctx["mboxes"] = mbc.getmboxes(request.user, until_mailbox=parent)
     ctx["form"] = FolderForm()
     ctx["form"].fields["oldname"].initial = name
@@ -537,6 +546,7 @@ def index(request):
     if not request.is_ajax():
         request.session["lastaction"] = None
         imapc = get_imapconnector(request)
+        response["hdelimiter"] = imapc.hdelimiter
         response["mboxes"] = render_mboxes_list(request, imapc)
         imapc.getquota(curmbox)
         response["refreshrate"] = \

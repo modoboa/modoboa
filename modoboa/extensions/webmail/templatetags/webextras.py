@@ -124,7 +124,7 @@ def listmailbox_menu(selection, folder, user):
 
 
 @register.simple_tag
-def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False):
+def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hdelimiter='.'):
     """Display a tree of mailboxes and sub-mailboxes
 
     :param tree: the mailboxes to display
@@ -134,7 +134,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False):
     for mbox in tree:
         cssclass = ""
         name = mbox["path"] if "sub" in mbox else mbox["name"]
-        label = separate_mailbox(mbox["name"])[0]
+        label = separate_mailbox(mbox["name"], hdelimiter)[0]
         if selected == name:
             cssclass = "active"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
@@ -164,7 +164,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False):
 
         if "sub" in mbox and len(mbox["sub"]):
             result += "<ul name='%s' class='nav nav-list %s'>" % (mbox["path"], ul_state) \
-                + print_mailboxes(mbox["sub"], selected, withunseen, selectonly) + "</ul>\n"
+                + print_mailboxes(mbox["sub"], selected, withunseen, selectonly, hdelimiter) + "</ul>\n"
         result += "</li>\n"
     return result
 

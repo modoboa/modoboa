@@ -164,7 +164,7 @@ class FilterForm(forms.Form):
         for fd in folders:
             value = fd["path"] if "path" in fd else fd["name"]
             if parentmb:
-                ret += [(value, fd["name"].replace("%s." % parentmb, ""))]
+                ret += [(value, fd["name"].replace("%s%s" % (parentmb, imapc.hdelimiter), ""))]
             else:
                 ret += [(value, fd["name"])]
             if "sub" in fd:

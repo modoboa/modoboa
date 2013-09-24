@@ -7,13 +7,14 @@ from modoboa.lib import events, parameters
 from modoboa.core.models import ObjectAccess
 from modoboa.extensions.admin.exceptions import AdminError
 from .base import DatesAware
+from .mailbox import MailboxOperation
 
 
 class DomainManager(Manager):
 
     def get_for_admin(self, admin):
         """Return the domains belonging to this admin
-        
+
         The result is a ``QuerySet`` object, so this function can be used
         to fill ``ModelChoiceField`` objects.
         """
@@ -106,10 +107,6 @@ class Domain(DatesAware):
             Quota.objects.filter(username__contains='@%s' % self.name).delete()
             events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
             ungrant_access_to_objects(self.mailbox_set.all())
-            hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-            if hm == "yes" and not keepdir:
-                for mb in self.mailbox_set.all():
-                    mb.delete_dir()
         if self.alias_set.count():
             events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())

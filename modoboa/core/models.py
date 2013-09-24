@@ -338,9 +338,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         events.raiseEvent("AccountImported", user, self, row[7:])
 
     def to_csv(self, csvwriter):
-        row = ["account", self.username.encode("utf-8"), self.password,
+        row = ["account", self.username.encode("utf-8"), self.password.encode("utf-8"),
                self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
-               self.is_active, self.group, self.email]
+               self.is_active, self.group, self.email.encode("utf-8")]
         row += events.raiseQueryEvent("AccountExported", self)
         csvwriter.writerow(row)
 

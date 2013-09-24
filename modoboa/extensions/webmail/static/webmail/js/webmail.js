@@ -15,7 +15,8 @@ Webmail.prototype = {
         submboxes_url: "",
         delattachment_url: "",
         ro_mboxes: ["INBOX"],
-        trash: ""
+        trash: "",
+        hdelimiter: '.'
     },
 
     initialize: function(options) {
@@ -82,7 +83,7 @@ Webmail.prototype = {
         $(document).on("click", "a[name=forward]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete_message, this));
         $(document).on("click", "a[name=activate_links]", $.proxy(function(e) { this.display_mode(e, "1"); }, this));
-        $(document).on("click", "a[name=disable_links]", $.proxy(function(e) { this.disable_mode(e, "0"); }, this));
+        $(document).on("click", "a[name=disable_links]", $.proxy(function(e) { this.display_mode(e, "0"); }, this));
 
         $(document).on("click", "a[name=sendmail]", $.proxy(this.sendmail, this));
 
@@ -217,7 +218,7 @@ Webmail.prototype = {
         }
 
         var $link = $('a[href="' + mailbox + '"]');
-        var parts = mailbox.split('.');
+        var parts = mailbox.split(this.options.hdelimiter);
         var dname = " " + parts[parts.length - 1];
         var $i = $link.children("i");
 
@@ -285,7 +286,7 @@ Webmail.prototype = {
             'class': "block",
             href: mailbox
         });
-        var parts = mailbox.split(".");
+        var parts = mailbox.split(this.options.hdelimiter);
         var linkcontent = "<i class='icon-folder-close'></i> ";
         var displayname = linkcontent + parts[parts.length - 1];
 
@@ -401,18 +402,18 @@ Webmail.prototype = {
      * to access this mailbox are also loaded)
      */
     load_and_select_mailbox: function(mailbox) {
-        if (mailbox.indexOf(".") == -1) {
+        if (mailbox.indexOf(this.options.hdelimiter) == -1) {
             this.select_mailbox(mailbox);
             return;
         }
         this.reset_mb_selection();
 
-        var parts = mailbox.split(".");
+        var parts = mailbox.split(this.options.hdelimiter);
         var curmb = parts[0], lastmb = "";
 
         for (var i = 1; i < parts.length; i++) {
             lastmb = curmb;
-            curmb += "." + parts[i];
+            curmb += this.options.hdelimiter + parts[i];
 
             var $link = $('a[href="' + curmb + '"]');
             var $container = $('li[name="' + lastmb + '"]');
@@ -535,7 +536,7 @@ Webmail.prototype = {
                 return;
             }
             $parent = $ul;
-            mailbox = $parent.attr("name") + "." + mailbox;
+            mailbox = $parent.attr("name") + this.options.hdelimiter + mailbox;
         } else {
             $parent = $("#mboxes_container").children("ul");
         }
@@ -548,8 +549,8 @@ Webmail.prototype = {
      * If needed, the mailbox will be moved to its new location.
      */
     rename_mailbox: function(oldname, newname, oldparent, newparent) {
-        var oldpattern = (oldparent) ? oldparent + "." + oldname : oldname;
-        var newpattern = (newparent) ? newparent + "." + newparent : newname;
+        var oldpattern = (oldparent) ? oldparent + this.options.hdelimiter + oldname : oldname;
+        var newpattern = (newparent) ? newparent + this.options.hdelimiter + newname : newname;
         var $link = $("#folders").find('a[href="' + oldpattern + '"]');
 
         if (oldname != newname) {
@@ -559,14 +560,13 @@ Webmail.prototype = {
             $link.parent("li").attr("name", newpattern);
             $link.prepend($i);
             $link.attr("href", newpattern);
-            this.navobject.setparam("mbox", newname).update(false, true);
+            this.navobject.setparam("mbox", newpattern).update(false, true);
         }
         if (oldparent != newparent) {
-            var newlocation = (newparent) ? newparent + "." + newname : newname;
             this.remove_mbox_from_tree($link.parent("li"));
             this.add_mailbox_to_tree(newparent, newname);
             if (this.navobject.getparam("action") == "listmailbox") {
-                this.navobject.setparam("mbox", newlocation).update();
+                this.navobject.setparam("mbox", newpattern).update();
             } else {
                 this.select_mailbox("INBOX");
             }
@@ -709,14 +709,14 @@ Webmail.prototype = {
      * is clicked)
      */
     compose_loader: function(e) {
-        var $link = $(e.target);
+        var $link = get_target(e, 'a');
 
         e.preventDefault();
         this.navobject.reset().setparam("action", $link.attr("href")).update();
     },
 
     reply_loader: function(e) {
-        var $link = $(e.target);
+        var $link = get_target(e, "a");
         e.preventDefault();
         this.navobject.reset().updateparams($link.attr("href")).update();
     },

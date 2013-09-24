@@ -9,7 +9,9 @@ from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
 from modoboa.lib import parameters, events
-from modoboa.lib.webutils import ajax_simple_response, ajax_response
+from modoboa.lib.webutils import (
+    ajax_simple_response, ajax_response, _render_to_string
+)
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.templatetags.libextras import pagination_bar
@@ -123,6 +125,7 @@ def newdomain(request, tplname="common/wizard_forms.html"):
 
 @login_required
 @permission_required("admin.view_domains")
+@transaction.commit_on_success
 def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     domain = Domain.objects.get(pk=dom_id)
     if not request.user.can_access(domain):
@@ -153,15 +156,15 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
                 error = str(e)
             else:
                 events.raiseEvent("DomainModified", domain)
-            return ajax_simple_response({
-                "status": "ok", "respmsg": _("Domain modified")
-            })
+                return ajax_simple_response({
+                    "status": "ok", "respmsg": _("Domain modified")
+                })
 
         commonctx["tabs"] = form
-        commonctx["error"] = error
-        return ajax_response(
-            request, status="ko", template=tplname, **commonctx
-        )
+        return ajax_simple_response({
+            "status": "ko", "respmsg": error,
+            "content": _render_to_string(request, tplname, commonctx)
+        })
 
     commonctx["tabs"] = DomainForm(request.user, instances=instances)
     commonctx["domadmins"] = domadmins

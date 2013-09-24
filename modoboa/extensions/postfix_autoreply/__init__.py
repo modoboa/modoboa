@@ -89,10 +89,22 @@ def onCreateDomain(user, domain):
     transport.save()
 
 
+@events.observe("DomainModified")
+def onDomainModified(domain):
+    if domain.oldname == domain.name:
+        return
+    Transport.objects.filter(domain="autoreply.%s" % domain.oldname) \
+        .update(domain="autoreply.%s" % domain.name)
+    for al in Alias.objects.filter(full_address__contains="@%s" % domain.oldname):
+        new_address = al.full_address.replace("@%s" % domain.oldname, "@%s" % domain.name)
+        al.full_address = new_address
+        al.autoreply_address = "%s@autoreply.%s" % (new_address, domain.name)
+        al.save()
+
+
 @events.observe("DeleteDomain")
 def onDeleteDomain(domain):
-    trans = Transport.objects.get(domain="autoreply.%s" % domain.name)
-    trans.delete()
+    Transport.objects.filter(domain="autoreply.%s" % domain.name).delete()
 
 
 @events.observe("CreateMailbox")
