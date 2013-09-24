@@ -1,5 +1,6 @@
 import factory
 from django.contrib.auth.models import Group
+from modoboa.core.models import User
 from . import models
 
 
@@ -17,7 +18,7 @@ class MailboxFactory(factory.DjangoModelFactory):
 
 
 class UserFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = models.User
+    FACTORY_FOR = User
 
     email = factory.LazyAttribute(lambda a: a.username)
     password = '{PLAIN}toto'

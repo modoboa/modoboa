@@ -7,7 +7,6 @@ from modoboa.lib import events, parameters
 from modoboa.core.models import ObjectAccess
 from modoboa.extensions.admin.exceptions import AdminError
 from .base import DatesAware
-from .mailbox import MailboxOperation
 
 
 class DomainManager(Manager):
