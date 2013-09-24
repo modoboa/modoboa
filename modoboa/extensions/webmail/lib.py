@@ -274,27 +274,29 @@ class ImapEmail(Email):
         return None
 
     def _find_attachments(self):
+        """Retrieve attachments from the parsed body structure.
+
+        We try to find and decode a file name for each attachment. If
+        we failed, a generic name will be used (ie. part_1, part_2, ...).
+        """
         for att in self.bs.attachments:
             attname = "part_%s" % att["pnum"]
-            params = None
-            key = None
             if "params" in att and att["params"] != "NIL":
-                params = att["params"]
-                key = "name"
-
-            if key is None and "disposition" in att and len(att["disposition"]) > 1:
-                params = att["disposition"][1]
-                key = "filename"
-
-            if key and params:
-                for pos, value in enumerate(params):
-                    if not value.startswith(key):
+                attname = u2u_decode.u2u_decode(att["params"][1]) \
+                    .strip("\r\t\n")
+            elif "disposition" in att and len(att["disposition"]) > 1:
+                for pos, value in enumerate(att["disposition"][1]):
+                    if not value.startswith("filename"):
                         continue
-                    header = "%s; %s=%s" % (att['disposition'][0], value,
-                                            u2u_decode.u2u_decode(params[pos + 1]).strip("\r\t\n"))
+                    header = "%s; %s=%s" \
+                        % (att['disposition'][0],
+                           value,
+                           att["disposition"][1][pos + 1].strip("\r\t\n"))
                     attname = parse_headers(header).filename_unsafe
                     if attname is None:
-                        attname = u2u_decode.u2u_decode(params[pos + 1]).strip("\r\t\n")
+                        attname = u2u_decode.u2u_decode(
+                            att["disposition"][1][pos + 1]
+                        ).strip("\r\t\n")
                     break
             self.attachments[att["pnum"]] = attname
 
@@ -307,7 +309,7 @@ class ImapEmail(Email):
             params["fname"] = os.path.join(settings.MEDIA_URL, fname)
             if os.path.exists(path):
                 continue
-            
+
             pdef, content = self.imapc.fetchpart(self.mailid, self.mbox, params["pnum"])
             fp = open(path, "wb")
             fp.write(decode_payload(params["encoding"], content))
