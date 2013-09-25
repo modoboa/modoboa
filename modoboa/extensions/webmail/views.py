@@ -1,6 +1,6 @@
 # coding: utf-8
 import os
-from rfc6266 import build_header, parse_headers
+from rfc6266 import build_header
 from django.conf import settings
 from django.http import HttpResponse
 from django.template import Template, Context
@@ -29,14 +29,6 @@ from templatetags import webextras
 def getattachment(request):
     """Fetch a message attachment
 
-    The tricky part here consists in properly format the
-    *Content-Disposition* header. We use the rfc6266 package to encode
-    headers according to RFC5987 and RFC6266.
-
-    Even if the header received from Dovecot is already encoded, we
-    decode and re-encode it to make sure it uses UTF-8. IE doesn't
-    support the ISO-8859-1 encoding even if it is allowed by RFCs.
-
     FIXME: par manque de caching, le bodystructure du message est
     redemandé pour accéder aux headers de cette pièce jointe.
 
@@ -45,7 +37,8 @@ def getattachment(request):
     mbox = request.GET.get("mbox", None)
     mailid = request.GET.get("mailid", None)
     pnum = request.GET.get("partnumber", None)
-    if not mbox or not mailid or not pnum:
+    fname = request.GET.get("fname", None)
+    if not mbox or not mailid or not pnum or not fname:
         raise WebmailError(_("Invalid request"))
 
     imapc = get_imapconnector(request)
@@ -53,24 +46,6 @@ def getattachment(request):
     resp = HttpResponse(decode_payload(partdef["encoding"], payload))
     resp["Content-Type"] = partdef["Content-Type"]
     resp["Content-Transfer-Encoding"] = partdef["encoding"]
-    if partdef["disposition"] != 'NIL':
-        disp = partdef["disposition"]
-        # FIXME : ugly hack, see fetch_parser.py for more explanation
-        # :p
-        if type(disp[1][0]) != dict:
-            atype, fieldname, filename = disp[0], disp[1][0], disp[1][1]
-        else:
-            atype, fieldname, filename = \
-                disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1]
-        if fieldname.endswith('*'):
-            cd = '%s; %s=%s' % (atype, fieldname, filename)
-        else:
-            cd = '%s; %s="%s"' % (atype, fieldname, filename)
-        fname = parse_headers(cd).filename_unsafe
-    else:
-        fname = request.GET.get("fname", None)
-        if fname is None:
-            raise WebmailError(_("Invalid request"))
     resp["Content-Disposition"] = build_header(fname)
     if int(partdef["size"]) < 200:
         resp["Content-Length"] = partdef["size"]
