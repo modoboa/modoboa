@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# ogg1980 <olle@dalnix.se>, 2013
 # ogg1980 <olle@dalnix.se>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: http://dev.modoboa.org/\n"
 "POT-Creation-Date: 2013-09-20 22:30+0200\n"
-"PO-Revision-Date: 2013-06-01 14:36+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/"
-"sv/)\n"
-"Language: sv\n"
+"PO-Revision-Date: 2013-09-27 08:19+0000\n"
+"Last-Translator: ogg1980 <olle@dalnix.se>\n"
+"Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/__init__.py:9
@@ -122,9 +122,7 @@ msgstr "Bind DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"Det unika namnet för att använda vid bindningar till LDAP-servern. Lämna "
-"tomt för en anonym bindning"
+msgstr "Det unika namnet för att använda vid bindningar till LDAP-servern. Lämna tomt för en anonym bindning"
 
 #: admin/app_settings.py:97
 msgid "Bind password"
@@ -132,8 +130,7 @@ msgstr "Bind lösenord"
 
 #: admin/app_settings.py:99
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Lösenordet ska användas vid bindning till LDAP-servern (med \"Bind DN ')"
+msgstr "Lösenordet ska användas vid bindning till LDAP-servern (med \"Bind DN ')"
 
 #: admin/app_settings.py:105
 msgid "Search base"
@@ -151,9 +148,7 @@ msgstr "Sökfilter"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"En valfri filtersträng (t.ex. \"(objectClass = personer) '). För att vara "
-"giltigt måste det omges av parenteser."
+msgstr "En valfri filtersträng (t.ex. \"(objectClass = personer) '). För att vara giltigt måste det omges av parenteser."
 
 #: admin/app_settings.py:119
 msgid "User DN template"
@@ -164,9 +159,7 @@ msgstr "Anvädar DN mall"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Mallen som används för att konstruera en användares DN. Den bör innehålla en "
-"platshållare (dvs. %(user)s)"
+msgstr "Mallen som används för att konstruera en användares DN. Den bör innehålla en platshållare (dvs. %(user)s)"
 
 #: admin/app_settings.py:126
 msgid "Password attribute"
@@ -199,9 +192,7 @@ msgstr "Hantera brevlådor på filsystem"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr ""
-"Byt namn på eller ta bort brevlådor på filsystemet när de kommer byta namn "
-"eller tas bort inom Modoboa"
+msgstr "Byt namn på eller ta bort brevlådor på filsystemet när de kommer byta namn eller tas bort inom Modoboa"
 
 #: admin/app_settings.py:146
 msgid "Mailboxes ower"
@@ -249,12 +240,11 @@ msgstr "Standard omdirigering när ingen applikation angetts"
 
 #: admin/app_settings.py:213
 msgid "Key must be either 16, 24, or 32 bytes long"
-msgstr ""
+msgstr "Nyckel måste vara endera 16, 24 eller 32 bytes lång"
 
 #: admin/app_settings.py:222
-#, fuzzy
 msgid "Invalid syntax"
-msgstr "Ogiltig rad"
+msgstr "Ogiltig syntax"
 
 #: admin/app_settings.py:245
 msgid "This field is required"
@@ -268,9 +258,7 @@ msgstr "Alias"
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr ""
-"Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att "
-"lägga till en rad."
+msgstr "Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att lägga till en rad."
 
 #: admin/forms.py:59
 msgid "An alias with this name already exists"
@@ -301,9 +289,7 @@ msgstr "Namn"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr ""
-"Administratörens namn. Inkludera inte domänens namn här, den kommer att "
-"läggas till automatiskt."
+msgstr "Administratörens namn. Inkludera inte domänens namn här, den kommer att läggas till automatiskt."
 
 #: admin/forms.py:160
 msgid "Create aliases"
@@ -330,9 +316,7 @@ msgstr "E-post adress"
 msgid ""
 "The distribution list address. Use the '*' character to create a 'catchall' "
 "address (ex: *@domain.tld)."
-msgstr ""
-"Distributionslistans adress. Använd '*' för att skapa en 'catchall' adress "
-"(ex: *@domain.tld)."
+msgstr "Distributionslistans adress. Använd '*' för att skapa en 'catchall' adress (ex: *@domain.tld)."
 
 #: admin/forms.py:239
 msgid "Recipients"
@@ -342,9 +326,7 @@ msgstr "Mottagare"
 msgid ""
 "Mailbox(es) this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr ""
-"Brevlåda/or detta alias kommer att peka på. Ange endast en adress per "
-"inlägg, tryck ENTER för att lägga till en ny inlägg."
+msgstr "Brevlåda/or detta alias kommer att peka på. Ange endast en adress per inlägg, tryck ENTER för att lägga till en ny inlägg."
 
 #: admin/forms.py:278 admin/forms.py:542 admin/forms.py:568
 msgid "Domain does not exist"
@@ -454,20 +436,14 @@ msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr ""
-"Kvot i MB för denna brevlåda. Definiera ett anpassat värde eller använda "
-"domänens förvalda. Lämna tomt för att definiera ett obegränsat värde (ej "
-"tillåtet för domänadministratörer)."
+msgstr "Kvot i MB för denna brevlåda. Definiera ett anpassat värde eller använda domänens förvalda. Lämna tomt för att definiera ett obegränsat värde (ej tillåtet för domänadministratörer)."
 
 #: admin/forms.py:499
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
 "*@domain.tld)."
-msgstr ""
-"Alias för denna brevlåda. Ange endast en adress per rad, tryck ENTER för att "
-"lägga till ny rad. Använd '*' för att skapa ett 'catchall' alias (ex: "
-"*@domain.tld)."
+msgstr "Alias för denna brevlåda. Ange endast en adress per rad, tryck ENTER för att lägga till ny rad. Använd '*' för att skapa ett 'catchall' alias (ex: *@domain.tld)."
 
 #: admin/forms.py:550
 #, python-format
@@ -518,12 +494,12 @@ msgstr "Du kan inte importera konto med en roll större än din"
 #: admin/models.py:506
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
-msgstr ""
+msgstr "Den enkla användaren '%s' måste ha en gällande e-postadress"
 
 #: admin/models.py:510
 #, python-format
 msgid "username and email fields must not differ for '%s'"
-msgstr ""
+msgstr "användarnamn och e-post fält får inte avvika för '%s'"
 
 #: admin/models.py:534
 #, python-format
@@ -596,11 +572,9 @@ msgstr "En kvota krävs"
 
 #: admin/models.py:1032
 msgid ""
-"The alias address (without the domain part). For a 'catch-all' address, just "
-"enter an * character."
-msgstr ""
-"Alias adress (utan domän delen). För en \"catch-all\"-adress, ange bara "
-"asterisk *."
+"The alias address (without the domain part). For a 'catch-all' address, just"
+" enter an * character."
+msgstr "Alias adress (utan domän delen). För en \"catch-all\"-adress, ange bara asterisk *."
 
 #: admin/models.py:1036
 msgid "mailboxes"
@@ -632,9 +606,9 @@ msgid "Invalid line: %s"
 msgstr "Ogiltig rad: %s"
 
 #: admin/models.py:1175
-#, fuzzy, python-format
+#, python-format
 msgid "Domain '%s' does not exist"
-msgstr "Domän existerar inte"
+msgstr "Domänen '%s' existerar inte"
 
 #: admin/models.py:1218
 msgid "Check to enable this extension"
@@ -817,29 +791,15 @@ msgstr "%d objekt importerade"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address[, domain, ...]</em></li>\n"
+"<li><em>account; loginname; password; first name; last name; enabled; group; address[, domain, ...]</em></li>\n"
 "<li><em>alias; address; enabled; internal recipient</em></li>\n"
 "<li><em>forward; address; enabled; external recipient</em></li>\n"
 "<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of "
-"the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
 "\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr ""
-"Tillhandahåll en CSV-fil där raderna har följande format:⏎\n"
-"<ul>⏎\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address[, domain, ...]</em></li>⏎\n"
-"<li><em>alias; address; enabled; internal recipient</em></li>⏎\n"
-"<li><em>forward; address; enabled; external recipient</em></li>⏎\n"
-"<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>⏎\n"
-"</ul>⏎\n"
-"<p>Det första elementet i varje rad är obligatorisk och måste vara lika med "
-"en av de tidigare värdena.</p>⏎\n"
-"⏎\n"
-"<p>Du kan använda ett annat tecken separator.</p>⏎\n"
+msgstr "Tillhandahåll en CSV-fil där raderna har följande format:⏎\n<ul>⏎\n<li><em>account; loginname; password; first name; last name; enabled; group; address[, domain, ...]</em></li>⏎\n<li><em>alias; address; enabled; internal recipient</em></li>⏎\n<li><em>forward; address; enabled; external recipient</em></li>⏎\n<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>⏎\n</ul>⏎\n<p>Det första elementet i varje rad är obligatorisk och måste vara lika med en av de tidigare värdena.</p>⏎\n⏎\n<p>Du kan använda ett annat tecken separator.</p>⏎\n"
 
 #: admin/views.py:775
 msgid "Import identities"
@@ -866,18 +826,9 @@ msgid ""
 "  <li><em>domain; name; quota; enabled</em></li>\n"
 "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of "
-"the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr ""
-"Tillhandahåll en CSV fil där raderna har följande format:\n"
-"<ul>\n"
-"<li><em>domän, namn, kvot, aktiverade</ em></ li>\n"
-"<li><em>domainalias, namn, riktad domän, aktiverade</ em></ li>\n"
-"</ ul>\n"
-"<p>det första elementet i varje rad är obligatoriskt och måste vara lika med "
-"en av de tidigare värdena.</ p>\n"
-"<p>Du kan använda ett annat tecken som separator.</ p>\n"
+msgstr "Tillhandahåll en CSV fil där raderna har följande format:\n<ul>\n<li><em>domän, namn, kvot, aktiverade</ em></ li>\n<li><em>domainalias, namn, riktad domän, aktiverade</ em></ li>\n</ ul>\n<p>det första elementet i varje rad är obligatoriskt och måste vara lika med en av de tidigare värdena.</ p>\n<p>Du kan använda ett annat tecken som separator.</ p>\n"
 
 #: admin/views.py:845
 msgid "Import domains"
@@ -1108,9 +1059,9 @@ msgstr "Visa domänens konton"
 #: admin/templatetags/admin_extras.py:178
 #: admin/templatetags/admin_extras.py:194
 #: admin/templatetags/admin_extras.py:201
-#, fuzzy, python-format
+#, python-format
 msgid "Delete %s?"
-msgstr "Radera"
+msgstr "Radera %s?"
 
 #: admin/templatetags/admin_extras.py:223
 msgid "Remove this permission"
@@ -1159,30 +1110,15 @@ msgid ""
 "\n"
 "<h3>Welcome to the online demo!</h3>\n"
 "<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
-"<p>To try the demo, the following users are available (<i>username/password</"
-"i>): </p>\n"
+"<p>To try the demo, the following users are available (<i>username/password</i>): </p>\n"
 "<ul>\n"
 "  <li>A super administrator : <b>admin/password</b></li>\n"
 "  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
 "  <li>A simple user : <b>user@demo.local/user</b></li>\n"
 "</ul>\n"
 "<p>Please report any issue or give any suggestion to \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
-"mailing list</a>.</p>\n"
-msgstr ""
-"\n"
-"<h3>Välkommen till online-demot!</h3>\n"
-"<p><b>Varning:</b> demots innehåll återställs varannan timme</p>\n"
-"<p>För att prova demot, följande användare finns tillgängliga "
-"(<i>användarnamn/lösenord</i>): </p>\n"
-"<ul>\n"
-"<li>En super administratör: <b>admin/password</b></li>\n"
-"<li>En domän administratölr: <b>admin@demo.local/admin</b></li>\n"
-"<li>En enkel användare: <b>user@demo.local/user</b></li>\n"
-"</ul>\n"
-"<p>Var vänlig rapportera  eventuella fel eller ge förslag på <a href="
-"\"https://groups.google.com/forum/#!forum/modoboa-users\">mailinglistan</a>."
-"</p>\n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the mailing list</a>.</p>\n"
+msgstr "\n<h3>Välkommen till online-demot!</h3>\n<p><b>Varning:</b> demots innehåll återställs varannan timme</p>\n<p>För att prova demot, följande användare finns tillgängliga (<i>användarnamn/lösenord</i>): </p>\n<ul>\n<li>En super administratör: <b>admin/password</b></li>\n<li>En domän administratölr: <b>admin@demo.local/admin</b></li>\n<li>En enkel användare: <b>user@demo.local/user</b></li>\n</ul>\n<p>Var vänlig rapportera  eventuella fel eller ge förslag på <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">mailinglistan</a>.</p>\n"
 
 #: extensions/amavis/__init__.py:22
 msgid "Simple amavis management frontend"
@@ -1333,9 +1269,7 @@ msgstr "standard"
 
 #: extensions/amavis/models.py:98
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
-msgstr ""
-"Kringgå virus kontroller eller ej. Välj \"standard\" för att använda globala "
-"inställningar."
+msgstr "Kringgå virus kontroller eller ej. Välj \"standard\" för att använda globala inställningar."
 
 #: extensions/amavis/models.py:101
 msgid "Spam filter"
@@ -1343,9 +1277,7 @@ msgstr "Skräp filter"
 
 #: extensions/amavis/models.py:106
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
-msgstr ""
-"Kringgå skräp filter eller ej. Välj 'standard' för att använda globala "
-"inställningar."
+msgstr "Kringgå skräp filter eller ej. Välj 'standard' för att använda globala inställningar."
 
 #: extensions/amavis/models.py:109
 msgid "Banned filter"
@@ -1353,9 +1285,7 @@ msgstr "Förbjudna filter"
 
 #: extensions/amavis/models.py:114
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
-msgstr ""
-"Kringgå förbjudna filter eller inte. Välj 'standard' för att använda globala "
-"inställningar."
+msgstr "Kringgå förbjudna filter eller inte. Välj 'standard' för att använda globala inställningar."
 
 #: extensions/amavis/models.py:144
 msgid "Spam marker"
@@ -1363,11 +1293,9 @@ msgstr "Skräp markering"
 
 #: extensions/amavis/models.py:146
 msgid ""
-"Modify spam subject using the specified text. Choose 'default' to use global "
-"settings."
-msgstr ""
-"Ändra skräppost ämnesrad med vald text. Välj 'standard' för att använd "
-"globala inställningar."
+"Modify spam subject using the specified text. Choose 'default' to use global"
+" settings."
+msgstr "Ändra skräppost ämnesrad med vald text. Välj 'standard' för att använd globala inställningar."
 
 #: extensions/amavis/sql_listing.py:23 extensions/webmail/lib.py:37
 msgid "From"
@@ -1450,12 +1378,8 @@ msgid ""
 msgid_plural ""
 "\n"
 "%(counter)s release requests are pending for action.\n"
-msgstr[0] ""
-"\n"
-"%(counter)s frisläpps förfrågning väntar på åtgärd.\n"
-msgstr[1] ""
-"\n"
-"%(counter)s frisläpps förfrågningar väntar på åtgärd.'\n"
+msgstr[0] "\n%(counter)s frisläpps förfrågning väntar på åtgärd.\n"
+msgstr[1] "\n%(counter)s frisläpps förfrågningar väntar på åtgärd.'\n"
 
 #: extensions/amavis/templates/amavis/notifications/pending_requests.html:6
 msgid "Sketch:"
@@ -1530,8 +1454,7 @@ msgstr "Dålig MIME"
 #: extensions/limits/__init__.py:23
 msgid ""
 "Per administrator resources to limit the number of objects they can create"
-msgstr ""
-"Per administratör resurser för att begränsa antalet objekt som de kan skapa"
+msgstr "Per administratör resurser för att begränsa antalet objekt som de kan skapa"
 
 #: extensions/limits/__init__.py:54
 msgid "Limits"
@@ -1555,7 +1478,8 @@ msgid "Domain admins"
 msgstr "Domänadministratörer"
 
 #: extensions/limits/app_settings.py:15
-msgid "Maximum number of allowed domain administrators for a new administrator"
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator"
 msgstr "Maximalt antal domänadministratörer den här användaren kan skapa"
 
 #: extensions/limits/app_settings.py:21
@@ -1804,9 +1728,7 @@ msgstr "Omdirigera meddelande till"
 
 #: extensions/sievefilters/lib.py:37
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr ""
-"Anslutning till MANAGESIEVE servern misslyckades, kontrollera din "
-"konfiguration"
+msgstr "Anslutning till MANAGESIEVE servern misslyckades, kontrollera din konfiguration"
 
 #: extensions/sievefilters/lib.py:82
 msgid "Not enough space on server"
@@ -1885,9 +1807,7 @@ msgstr "aktivera"
 #: extensions/sievefilters/templates/sievefilters/index.html:74
 msgid ""
 "No filters set defined yet. You must create one in order to define filters."
-msgstr ""
-"Inga filter uppsättningar definierade. Du måste skapa en uppsättning för att "
-"kunna definiera filter."
+msgstr "Inga filter uppsättningar definierade. Du måste skapa en uppsättning för att kunna definiera filter."
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:16
 msgid "New filters set"
@@ -2200,9 +2120,8 @@ msgid "Cci"
 msgstr "BCC"
 
 #: extensions/webmail/imaputils.py:237
-#, fuzzy
 msgid "Failed to retrieve hierarchy delimiter"
-msgstr "Det gick inte att hämta filteruppsättning"
+msgstr "Det gick inte att hämta hierarki avgränsare"
 
 #: extensions/webmail/imaputils.py:278
 #, python-format
@@ -2221,8 +2140,8 @@ msgstr "Orginalmeddelande"
 #, python-format
 msgid "%(count)d message deleted"
 msgid_plural "%(count)d messages deleted"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d meddelande raderat"
+msgstr[1] "%(count)d meddelanden raderade"
 
 #: extensions/webmail/views.py:103
 msgid "Unknown action"
@@ -2530,9 +2449,7 @@ msgstr "Vidarebefordra meddelande och spara kopia i din lokala brevlåda"
 msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
-msgstr ""
-"Du kan inte definiera en vidarebefordring till en lokal destination. Be din "
-"administratör att skapa ett alias istället."
+msgstr "Du kan inte definiera en vidarebefordring till en lokal destination. Be din administratör att skapa ett alias istället."
 
 #: userprefs/views.py:32
 msgid "You need a mailbox in order to define a forward"
@@ -2580,27 +2497,3 @@ msgstr "Uppdatera personlig information"
 #: userprefs/templatetags/uprefs_extras.py:57
 msgid "Logout"
 msgstr "Logga ut"
-
-#~ msgid "Failed to rename mailbox: %s"
-#~ msgstr "Kunde byta namn på brevlåda: %s"
-
-#~ msgid "Failed to remove mailbox: %s"
-#~ msgstr "Kunde inte radera brevlåda: %s"
-
-#~ msgid "Mailbox %s does not exist"
-#~ msgstr "Brevlådan %s finns inte"
-
-#~ msgid "Delete the domain"
-#~ msgstr "Radera domänen"
-
-#~ msgid "Delete this account"
-#~ msgstr "Radera detta konto"
-
-#~ msgid "Delete this distribution list"
-#~ msgstr "Radera denna distributionslista"
-
-#~ msgid "Delete this forward"
-#~ msgstr "Radera denna vidarebefodring"
-
-#~ msgid "Delete this alias"
-#~ msgstr "Radera detta alia"
