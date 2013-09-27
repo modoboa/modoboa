@@ -75,8 +75,8 @@ class DeployCommand(Command):
         """
         print "Configuring database connection: %s" % name
         info = {'conn_name': name,
-                'dbtype': raw_input('Database type (mysql or postgres): ')}
-        if info['dbtype'] not in ['mysql', 'postgres']:
+                'dbtype': raw_input('Database type (mysql, postgres or sqlite3): ')}
+        if info['dbtype'] not in ['mysql', 'postgres', 'sqlite3']:
             info['dbtype'] = 'mysql'
         if info['dbtype'] == 'postgres':
             info['dbtype'] = 'postgresql_psycopg2'
