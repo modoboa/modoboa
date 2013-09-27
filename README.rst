@@ -11,8 +11,8 @@ as an administration panel or a webmail.
 Modoboa integrates with well known software such as `Postfix
 <http://postfix.org/>`_ or `Dovecot <http://dovecot.org/>`_. A SQL
 database (`MySQL <http://www.mysql.com>`_, `PostgreSQL
-<http://www.postgresql.org/>`_) is used as a central point of
-communication between all components.
+<http://www.postgresql.org/>`_ or `SQLite <http://www.sqlite.org>`_)
+is used as a central point of communication between all components.
 
 Modoboa is developed with modularity in mind, expanding it is really
 easy. Actually, all current features are extensions.

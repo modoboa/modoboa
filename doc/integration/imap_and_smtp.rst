@@ -161,6 +161,23 @@ PostgreSQL users
 
   iterate_query = SELECT email AS username FROM admin_user
 
+SQLite users
+------------
+
+::
+
+  driver = sqlite
+
+  connect = <path to the sqlite db file>
+
+  default_pass_scheme = CRYPT
+
+  password_query = SELECT email AS user, password FROM admin_user WHERE email='%u' and is_active=1
+
+  user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, ('*:bytes=' || mb.quota || 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
+
+  iterate_query = SELECT email AS username FROM admin_user
+
 .. note::
 
    Replace values between ``<>`` with yours.
@@ -228,6 +245,8 @@ Finally, edit the :file:`dovecot-dict-sql.conf.ext` file and put the
 following content inside::
 
   connect = host=<db host> dbname=<db name> user=<db user> password=<password>
+  # SQLite users
+  # connect = /path/to/the/database.db
 
   map {
     pattern = priv/quota/storage
@@ -404,7 +423,7 @@ be used by Postfix to lookup into Modoboa tables.
 To automaticaly generate the requested map files and store them in a
 directory, run the following command::
 
-  $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres> mapfiles
+  $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres|sqlite> mapfiles
 
 :file:`mapfiles` is the directory where the files will be
 stored. Answer the few questions and you're done.
@@ -427,21 +446,23 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   virtual_mailbox_base = /var/vmail
 
   relay_domains = 
-  virtual_mailbox_domains = mysql:/etc/postfix/sql-domains.cf
-  virtual_alias_domains = mysql:/etc/postfix/sql-domain-aliases.cf
-  virtual_mailbox_maps = mysql:/etc/postfix/sql-mailboxes.cf
-  virtual_alias_maps = mysql:/etc/postfix/sql-aliases.cf,
-        mysql:/etc/postfix/sql-domain-aliases-mailboxes.cf,
-        mysql:/etc/postfix/sql-email2email.cf,
-        mysql:/etc/postfix/sql-catchall-aliases.cf
+  virtual_mailbox_domains = <driver>:/etc/postfix/sql-domains.cf
+  virtual_alias_domains = <driver>:/etc/postfix/sql-domain-aliases.cf
+  virtual_mailbox_maps = <driver>:/etc/postfix/sql-mailboxes.cf
+  virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf,
+        <driver>:/etc/postfix/sql-domain-aliases-mailboxes.cf,
+        <driver>:/etc/postfix/sql-email2email.cf,
+        <driver>:/etc/postfix/sql-catchall-aliases.cf
 
   smtpd_recipient_restrictions =
         ...
-        check_recipient_access mysql:/etc/postfix/maps/sql-maintain.cf
+        check_recipient_access <driver>:/etc/postfix/maps/sql-maintain.cf
         permit_mynetworks
         ...
 
   # Stuff after
+
+Replace ``<driver>`` by the name of the database you use.
 
 Then, edit the :file:`/etc/postfix/master.cf` file and add the following
 definition at the end::
