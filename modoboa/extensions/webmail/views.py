@@ -41,7 +41,8 @@ def getattachment(request):
     mbox = request.GET.get("mbox", None)
     mailid = request.GET.get("mailid", None)
     pnum = request.GET.get("partnumber", None)
-    if not mbox or not mailid or not pnum:
+    fname = request.GET.get("fname", None)
+    if not mbox or not mailid or not pnum or not fname:
         raise WebmailError(_("Invalid request"))
 
     imapc = get_imapconnector(request)
@@ -49,22 +50,9 @@ def getattachment(request):
     resp = HttpResponse(decode_payload(partdef["encoding"], payload))
     resp["Content-Type"] = partdef["Content-Type"]
     resp["Content-Transfer-Encoding"] = partdef["encoding"]
-    if partdef["disposition"] != 'NIL':
-        disp = partdef["disposition"]
-        # FIXME : ugly hack, see fetch_parser.py for more explanation
-        # :p
-        if type(disp[1][0]) != dict:
-            atype, fieldname, filename = disp[0], disp[1][0], disp[1][1]
-        else:
-            atype, fieldname, filename = disp[0], disp[1][0]['struct'][0], disp[1][0]['struct'][1]
-        if fieldname.endswith('*'):
-            cd = '%s; %s=%s' % (atype, fieldname, filename)
-        else:
-            cd = '%s; %s="%s"' % (atype, fieldname, filename)
-    else:
-        cd = build_header(request.GET["fname"])
-    resp["Content-Disposition"] = cd
-    resp["Content-Length"] = partdef["size"]
+    resp["Content-Disposition"] = build_header(fname)
+    if int(partdef["size"]) < 200:
+        resp["Content-Length"] = partdef["size"]
     return resp
 
 

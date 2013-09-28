@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-20 22:30+0200\n"
-"PO-Revision-Date: 2013-06-28 17:03+0200\n"
-"Last-Translator: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
+"POT-Creation-Date: 2013-09-26 23:42+0200\n"
+"PO-Revision-Date: 2013-09-27 00:07+0200\n"
+"Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -252,7 +252,7 @@ msgstr ""
 
 #: admin/app_settings.py:213
 msgid "Key must be either 16, 24, or 32 bytes long"
-msgstr ""
+msgstr "La chiave può essere lunga solo 16, 24 o 32 bytes"
 
 #: admin/app_settings.py:222
 msgid "Invalid syntax"
@@ -520,12 +520,12 @@ msgstr "Non puoi importare un account con un ruolo superiore al tuo"
 #: admin/models.py:506
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
-msgstr ""
+msgstr "L'utente '%s' deve avere un indirizzo email valido"
 
 #: admin/models.py:510
 #, python-format
 msgid "username and email fields must not differ for '%s'"
-msgstr ""
+msgstr "I campi nome utente e email di '%s' devono avere lo stesso valore"
 
 #: admin/models.py:534
 #, python-format
@@ -685,7 +685,7 @@ msgstr "Nuovo dominio"
 
 #: admin/views.py:89 admin/views.py:98 admin/views.py:228 admin/views.py:444
 #: admin/views.py:451 extensions/sievefilters/views.py:129
-#: extensions/sievefilters/views.py:198 extensions/webmail/views.py:136
+#: extensions/sievefilters/views.py:198 extensions/webmail/views.py:128
 msgid "Create"
 msgstr "Crea"
 
@@ -707,7 +707,7 @@ msgstr "Dominio creato"
 
 #: admin/views.py:146 admin/views.py:285 admin/views.py:498
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
-#: extensions/sievefilters/views.py:148 extensions/webmail/views.py:168
+#: extensions/sievefilters/views.py:148 extensions/webmail/views.py:160
 #: userprefs/templates/userprefs/forward.html:8
 #: userprefs/templates/userprefs/profile.html:8
 msgid "Update"
@@ -770,11 +770,11 @@ msgstr "Alias modificato"
 #: admin/views.py:402 admin/views.py:545 admin/views.py:550
 #: extensions/amavis/views.py:204 extensions/amavis/views.py:210
 #: extensions/amavis/views.py:243 extensions/amavis/views.py:247
-#: extensions/amavis/views.py:249 extensions/webmail/views.py:41
-#: extensions/webmail/views.py:68 extensions/webmail/views.py:81
-#: extensions/webmail/views.py:98 extensions/webmail/views.py:114
-#: extensions/webmail/views.py:200 extensions/webmail/views.py:427
-#: extensions/webmail/views.py:438 extensions/webmail/views.py:465
+#: extensions/amavis/views.py:249 extensions/webmail/views.py:42
+#: extensions/webmail/views.py:60 extensions/webmail/views.py:73
+#: extensions/webmail/views.py:90 extensions/webmail/views.py:106
+#: extensions/webmail/views.py:192 extensions/webmail/views.py:419
+#: extensions/webmail/views.py:430 extensions/webmail/views.py:457
 #: lib/formutils.py:32 lib/formutils.py:37
 msgid "Invalid request"
 msgstr "Richiesta non valida"
@@ -1007,7 +1007,7 @@ msgid "Previously on Modoboa..."
 msgstr "Precedentemente su Modoboa ..."
 
 #: admin/templates/admin/logs.html:6 extensions/amavis/sql_listing.py:25
-#: extensions/webmail/lib.py:38 extensions/webmail/lib.py:411
+#: extensions/webmail/lib.py:38 extensions/webmail/lib.py:413
 msgid "Date"
 msgstr "Data"
 
@@ -1067,11 +1067,11 @@ msgstr "Impostazioni Modoboa"
 
 #: admin/templatetags/admin_extras.py:13
 msgid "enabled_m"
-msgstr ""
+msgstr "Abilitato"
 
 #: admin/templatetags/admin_extras.py:13
 msgid "enabled_f"
-msgstr ""
+msgstr "Abilitata"
 
 #: admin/templatetags/admin_extras.py:36
 msgid "Modoboa"
@@ -1112,9 +1112,9 @@ msgstr "Visualizza le identita del dominio"
 #: admin/templatetags/admin_extras.py:178
 #: admin/templatetags/admin_extras.py:194
 #: admin/templatetags/admin_extras.py:201
-#, fuzzy, python-format
+#, python-format
 msgid "Delete %s?"
-msgstr "Elimina"
+msgstr "Eliminare %s?"
 
 #: admin/templatetags/admin_extras.py:223
 msgid "Remove this permission"
@@ -1382,7 +1382,7 @@ msgstr "Da"
 
 #: extensions/amavis/sql_listing.py:24 extensions/sievefilters/forms.py:68
 #: extensions/webmail/forms.py:10 extensions/webmail/lib.py:36
-#: extensions/webmail/lib.py:409 templates/common/email_searchbar.html:6
+#: extensions/webmail/lib.py:411 templates/common/email_searchbar.html:6
 msgid "Subject"
 msgstr "Oggetto"
 
@@ -2217,88 +2217,87 @@ msgid "Cci"
 msgstr "Cci"
 
 #: extensions/webmail/imaputils.py:237
-#, fuzzy
 msgid "Failed to retrieve hierarchy delimiter"
-msgstr "Recupero delle impostazioni di filtro fallito"
+msgstr "Impossibile recuperare il delimitatore delle gerarchie"
 
 #: extensions/webmail/imaputils.py:278
 #, python-format
 msgid "Connection to IMAP server failed: %s"
 msgstr "Connessione al server IMAP fallita: %s"
 
-#: extensions/webmail/lib.py:358
+#: extensions/webmail/lib.py:360
 msgid "wrote:"
 msgstr "scritto:"
 
-#: extensions/webmail/lib.py:423 extensions/webmail/lib.py:427
+#: extensions/webmail/lib.py:425 extensions/webmail/lib.py:429
 msgid "Original message"
 msgstr "Messaggio originale"
 
-#: extensions/webmail/views.py:86
+#: extensions/webmail/views.py:78
 #, python-format
 msgid "%(count)d message deleted"
 msgid_plural "%(count)d messages deleted"
 msgstr[0] "%(count)d messaggio cancellato"
 msgstr[1] "%(count)d messaggi cancellati"
 
-#: extensions/webmail/views.py:103
+#: extensions/webmail/views.py:95
 msgid "Unknown action"
 msgstr "Azione sconosciuta"
 
-#: extensions/webmail/views.py:116 lib/email_listing.py:137
+#: extensions/webmail/views.py:108 lib/email_listing.py:137
 msgid "Empty mailbox"
 msgstr "Casella di posta vuota"
 
-#: extensions/webmail/views.py:133
+#: extensions/webmail/views.py:125
 #: extensions/webmail/templatetags/webextras.py:170
 msgid "Create a new mailbox"
 msgstr "Crea una nuova casella di posta"
 
-#: extensions/webmail/views.py:149
+#: extensions/webmail/views.py:141
 msgid "Mailbox created"
 msgstr "Casella di posta creata"
 
-#: extensions/webmail/views.py:165
+#: extensions/webmail/views.py:157
 msgid "Edit mailbox"
 msgstr "Modifica casella di posta"
 
-#: extensions/webmail/views.py:180
+#: extensions/webmail/views.py:172
 msgid "Mailbox updated"
 msgstr "Casella di posta aggiornata"
 
-#: extensions/webmail/views.py:214 extensions/webmail/views.py:396
-#: extensions/webmail/views.py:505
+#: extensions/webmail/views.py:206 extensions/webmail/views.py:388
+#: extensions/webmail/views.py:497
 msgid "Bad request"
 msgstr "Richiesta sbagliata"
 
-#: extensions/webmail/views.py:246
+#: extensions/webmail/views.py:238
 msgid "Failed to save attachment: "
 msgstr "Salvataggio allegato fallito: "
 
-#: extensions/webmail/views.py:249
+#: extensions/webmail/views.py:241
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "L'allegato è troppo grande (limite: %s)"
 
-#: extensions/webmail/views.py:255
+#: extensions/webmail/views.py:247
 #: extensions/webmail/templates/webmail/compose.html:15
 #: extensions/webmail/templates/webmail/headers.html:4
 msgid "Attachments"
 msgstr "Allegati"
 
-#: extensions/webmail/views.py:271
+#: extensions/webmail/views.py:263
 msgid "Bad query"
 msgstr "Domanda sbagliata"
 
-#: extensions/webmail/views.py:281
+#: extensions/webmail/views.py:273
 msgid "Failed to remove attachment: "
 msgstr "Rimozione allegato fallita: "
 
-#: extensions/webmail/views.py:286
+#: extensions/webmail/views.py:278
 msgid "Unknown attachment"
 msgstr "Allegato sconosciuto"
 
-#: extensions/webmail/views.py:501
+#: extensions/webmail/views.py:493
 msgid "Undefined action"
 msgstr "Azione non definita"
 
@@ -2455,11 +2454,11 @@ msgstr "È intervenuto un errore interno"
 
 #: templates/nlayout.html:62
 msgid "Powered by Modoboa"
-msgstr ""
+msgstr "Powered by Modoboa"
 
 #: templates/common/email_searchbar.html:5
 msgid "From address"
-msgstr "Indirizzo from"
+msgstr "Mittente"
 
 #: templates/common/email_searchbar.html:10
 msgid "Both"
@@ -2598,24 +2597,3 @@ msgstr "Aggiorna le informazioni personali"
 #: userprefs/templatetags/uprefs_extras.py:57
 msgid "Logout"
 msgstr "Esci"
-
-#~ msgid "Failed to rename mailbox: %s"
-#~ msgstr "Impossibile rinominare la casella di posta: %s"
-
-#~ msgid "Failed to remove mailbox: %s"
-#~ msgstr "Impossibile rimuovere la casella di posta: %s"
-
-#~ msgid "Delete the domain"
-#~ msgstr "Cancella il dominio"
-
-#~ msgid "Delete this account"
-#~ msgstr "Cancella questo account"
-
-#~ msgid "Delete this distribution list"
-#~ msgstr "Cancella l'elenco di smistamento"
-
-#~ msgid "Delete this forward"
-#~ msgstr "Cancella questo inoltro"
-
-#~ msgid "Delete this alias"
-#~ msgstr "Cancella questo alias"
