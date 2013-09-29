@@ -8,6 +8,7 @@ from modoboa.lib.webutils import static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import *
 from modoboa.lib.dbutils import db_type
+from modoboa.extensions.admin.models import Domain
 from models import *
 
 
@@ -105,7 +106,7 @@ class SQLWrapper(object):
             q &= Q(rid__email=request.user.email)
         else:
             if not request.user.is_superuser:
-                doms = request.user.get_domains()
+                doms = Domain.objects.get_for_admin(request.user)
                 regexp = "(%s)" % '|'.join([dom.name for dom in doms])
                 doms_q = Q(rid__email__regex=regexp)
                 q &= doms_q
@@ -131,7 +132,7 @@ class SQLWrapper(object):
         """
         rq = Q(rs='p')
         if not user.is_superuser:
-            doms = user.get_domains()
+            doms = Domain.objects.get_for_admin(user)
             if not doms.count():
                 return 0
             regexp = "(%s)" % '|'.join([dom.name for dom in doms])
@@ -163,7 +164,7 @@ class PgWrapper(SQLWrapper):
             )
 
         if not request.user.is_superuser:
-            doms = request.user.get_domains()
+            doms = Domain.objects.get_for_admin(request.user)
             regexp = "(%s)" % '|'.join([dom.name for dom in doms])
             where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
         if rcptfilter is not None:
@@ -193,7 +194,7 @@ class PgWrapper(SQLWrapper):
     def get_pending_requests(self, user):
         rq = Q(rs='p')
         if not user.is_superuser:
-            doms = user.get_domains()
+            doms = Domain.objects.get_for_admin(user)
             if not doms.count():
                 return 0
             regexp = "(%s)" % '|'.join([dom.name for dom in doms])

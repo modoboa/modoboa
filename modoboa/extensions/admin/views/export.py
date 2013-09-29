@@ -32,7 +32,7 @@ def _export(content, filename):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias")
+    lambda u: u.has_perm("core.add_user") or u.has_perm("admin.add_alias")
 )
 def export_identities(request):
     ctx = {

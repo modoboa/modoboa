@@ -15,7 +15,7 @@ from modoboa.lib.webutils import (
     getctx, ajax_response, ajax_simple_response
 )
 from modoboa.lib.email_listing import parse_search_parameters
-from modoboa.extensions.admin.models import Mailbox
+from modoboa.extensions.admin.models import Mailbox, Domain
 from templatetags.amextras import quar_menu, viewm_menu
 from .lib import selfservice, AMrelease
 from .sql_listing import SQLlisting, SQLemail, get_wrapper
@@ -56,7 +56,7 @@ def _listing(request):
     msgs = None
 
     if not request.user.is_superuser and request.user.group != 'SimpleUsers':
-        if not len(request.user.get_domains()):
+        if not Domain.objects.get_for_admin(request.user).count():
             return empty_quarantine(request)
 
     order = request.GET.get("order", "-date")
@@ -184,7 +184,7 @@ def viewheaders(request, mail_id):
     for qm in get_wrapper().get_mail_content(mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
-    return _render(request, 'amavis/viewheader.html', {
+    return render(request, 'amavis/viewheader.html', {
         "headers": msg.items()
     })
 

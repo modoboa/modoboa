@@ -56,7 +56,7 @@ try:
             return user
 
         def authenticate(self, username, password):
-            auth_type = parameters.get_admin("AUTHENTICATION_TYPE", app="admin")
+            auth_type = parameters.get_admin("AUTHENTICATION_TYPE", app="core")
             if auth_type == "ldap":
                 return super(LDAPBackend, self).authenticate(username, password)
             return None

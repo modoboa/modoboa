@@ -111,7 +111,7 @@ class observe(object):
             else self.__guess_extension_name(modname)
 
         @wraps(f)
-        def wrapped_f(*args):
+        def wrapped_f(*args, **kwargs):
             if extname:
                 from modoboa.core.models import Extension
                 from modoboa.core.extensions import exts_pool
@@ -126,7 +126,7 @@ class observe(object):
                         return []
             elif not modname in settings.MODOBOA_APPS:
                 return []
-            return f(*args)
+            return f(*args, **kwargs)
         for evt in self.evtnames:
             register(evt, wrapped_f)
         return wrapped_f
@@ -149,7 +149,7 @@ def unregister(event, callback):
         pass
 
 
-def raiseEvent(event, *args):
+def raiseEvent(event, *args, **kwargs):
     """Raise a specific event
 
     Any additional keyword argument will be passed to registered
@@ -160,7 +160,7 @@ def raiseEvent(event, *args):
     if not event in events or not event in callbacks.keys():
         return 0
     for callback in callbacks[event].values():
-        callback(*args)
+        callback(*args, **kwargs)
     return 1
 
 

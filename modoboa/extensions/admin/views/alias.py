@@ -63,15 +63,6 @@ def _new_alias(request, title, action, successmsg,
 
 
 @login_required
-@user_passes_test(lambda u: u.has_perm("admin.add_user")
-                  or u.has_perm("admin.add_alias"))
-def allowed_recipients_list(request):
-    ret = [mb.full_address for mb in request.user.get_mailboxes()]
-    ret += [al.full_address for al in request.user.get_aliases()]
-    return ajax_simple_response(ret)
-
-
-@login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
 def newdlist(request):

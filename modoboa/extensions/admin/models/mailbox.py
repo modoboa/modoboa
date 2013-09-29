@@ -259,6 +259,9 @@ class MailboxOperation(models.Model):
     )
     argument = models.TextField()
 
+    class Meta:
+        app_label = 'admin'
+
     def __str__(self):
         if self.type == 'rename':
             return 'Rename %s -> %s' % (self.argument, self.mailbox.mail_home)

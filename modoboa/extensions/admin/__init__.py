@@ -70,7 +70,7 @@ def admin_menu(target, user):
              "url" : reverse("modoboa.extensions.admin.views.domain.domains"),
              "label" : _("Domains")}
         ]
-    if user.has_perm("admin.add_user") or user.has_perm("admin.add_alias"):
+    if user.has_perm("core.add_user") or user.has_perm("admin.add_alias"):
         entries += [
             {"name" : "identities",
              "url" : reverse("modoboa.extensions.admin.views.identity.identities"),
@@ -134,6 +134,7 @@ def export_admin_domains(admin):
 def import_account_mailbox(user, account, row):
     account.email = row[0].strip()
     if account.email != "":
+        account.save()
         mailbox, domname = split_mailbox(account.email)
         try:
             domain = Domain.objects.get(name=domname)

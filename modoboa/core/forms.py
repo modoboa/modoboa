@@ -49,7 +49,7 @@ class ProfileForm(forms.ModelForm):
         if self.cleaned_data["oldpassword"] == "":
             return self.cleaned_data["oldpassword"]
 
-        if parameters.get_admin("AUTHENTICATION_TYPE", app="admin") != "local":
+        if parameters.get_admin("AUTHENTICATION_TYPE") != "local":
             return self.cleaned_data["oldpassword"]
 
         if not self.instance.check_password(self.cleaned_data["oldpassword"]):

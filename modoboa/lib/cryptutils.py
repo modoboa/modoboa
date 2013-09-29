@@ -17,7 +17,7 @@ def random_key(l=16):
 
 
 def encrypt(clear):
-    key = parameters.get_admin("SECRET_KEY", app="admin")
+    key = parameters.get_admin("SECRET_KEY", app="core")
     obj = AES.new(key, AES.MODE_ECB)
     if type(clear) is unicode:
         clear = clear.encode("utf-8")
@@ -30,7 +30,7 @@ def encrypt(clear):
 
 def decrypt(ciph):
     obj = AES.new(
-        parameters.get_admin("SECRET_KEY", app="admin"), AES.MODE_ECB
+        parameters.get_admin("SECRET_KEY", app="core"), AES.MODE_ECB
     )
     ciph = base64.b64decode(ciph)
     clear = obj.decrypt(ciph)

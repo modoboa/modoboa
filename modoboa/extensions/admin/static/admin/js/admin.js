@@ -394,9 +394,6 @@ Identities.prototype = {
             choices: get_domains_list
         });
         $("#id_recipients").dynamic_input();
-        $("#id_int_recipient").autocompleter({
-            choices: get_allowed_recipients
-        });
         $(".submit").one('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "aliasform",

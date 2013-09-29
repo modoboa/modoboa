@@ -54,7 +54,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['email']
 
     class Meta:
-        db_table = "admin_user"
         ordering = ["username"]
 
     password_expr = re.compile(r'(\{(\w+)\}|(\$1\$))(.+)')
@@ -86,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         events.raiseEvent("AccountDeleted", self, fromuser, **kwargs)
         ungrant_access_to_object(self)
-        super(User, self).delete(*args, **kwargs)
+        super(User, self).delete()
 
     def _crypt_password(self, raw_value):
         scheme = parameters.get_admin("PASSWORD_SCHEME")
@@ -312,13 +311,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         The expected order is the following::
 
-          loginname, password, first name, last name, enabled, group, address[, domain, ...]
+        "account", loginname, password, first name, last name, enabled, group, address[, domain, ...]
 
         :param user: 
         :param row: a list containing the expected information
         :param crypt_password:
         """
-        if len(row) < 6:
+        if len(row) < 7:
             raise AdminError(_("Invalid line"))
         role = row[6].strip()
         if not user.is_superuser and not role in ["SimpleUsers", "DomainAdmins"]:
@@ -326,6 +325,16 @@ class User(AbstractBaseUser, PermissionsMixin):
                 _("You can't import an account with a role greater than yours")
             )
         self.username = row[1].strip()
+        if role == "SimpleUsers":
+            if (len(row) < 8 or not row[7].strip()):
+                raise AdminError(
+                    _("The simple user '%s' must have a valid email address" % self.username)
+                )
+            if self.username != row[7].strip():
+                raise AdminError(
+                    _("username and email fields must not differ for '%s'" % self.username)
+                )
+
         if crypt_password:
             self.set_password(row[2].strip())
         else:
@@ -335,6 +344,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.is_active = (row[5].strip() == 'True')
         self.save(creator=user)
         self.set_role(role)
+        if len(row) < 8:
+            return
         events.raiseEvent("AccountImported", user, self, row[7:])
 
     def to_csv(self, csvwriter):

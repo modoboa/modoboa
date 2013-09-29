@@ -625,14 +625,14 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
 
         if not hasattr(self, "account") or self.account is None:
             return
-        for pos, domain in enumerate(self.account.get_domains()):
+        for pos, domain in enumerate(Domain.objects.get_for_admin(self.account)):
             name = "domains_%d" % (pos + 1)
             self._create_field(DomainNameField, name, domain.name)
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "domains", DomainNameField)
 
     def save(self):
-        current_domains = [dom.name for dom in self.account.get_domains()]
+        current_domains = [dom.name for dom in Domain.objects.get_for_admin(self.account)]
         for name, value in self.cleaned_data.items():
             if not name.startswith("domains"):
                 continue
@@ -642,7 +642,7 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                 domain = Domain.objects.get(name=value)
                 domain.add_admin(self.account)
 
-        for domain in self.account.get_domains():
+        for domain in Domain.objects.get_for_admin(self.account):
             if not len(filter(lambda name: self.cleaned_data[name] == domain.name,
                               self.cleaned_data.keys())):
                 domain.remove_admin(self.account)
@@ -671,7 +671,7 @@ class AccountForm(TabForms):
         if account.is_superuser:
             return False
         return self.user.has_perm("admin.add_domain") \
-            and account.has_perm("admin.add_user")
+            and account.has_perm("core.add_user")
 
     def _before_is_valid(self, form):
         if form["id"] == "general":

@@ -9,13 +9,10 @@ TODO:
   create_directories == yes
 
 """
-import os
-from django.test import TestCase
-from django.test.client import Client
-from django.utils import simplejson
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
-from modoboa.lib import parameters
+from modoboa.core.models import User
+from modoboa.core.factories import UserFactory, GroupFactory
 from modoboa.lib.tests import ModoTestCase
 from modoboa.extensions.admin.lib import *
 from modoboa.extensions.admin.models import *
@@ -137,9 +134,10 @@ class AccountTestCase(ModoTestCase):
     def setUp(self):
         super(AccountTestCase, self).setUp()
         self.dom = factories.DomainFactory(name="test.com")
-        self.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',), mailbox__domain=self.dom
+        self.account = UserFactory(
+            username="user@test.com", groups=('SimpleUsers',)
         )
+        factories.MailboxFactory(address='user', domain=self.dom, user=self.account)
 
     def test_crud(self):
         values = dict(username="tester@test.com", first_name="Tester", last_name="Toto",
@@ -168,28 +166,6 @@ class AccountTestCase(ModoTestCase):
 
         self.check_ajax_get(reverse("modoboa.extensions.admin.views.identity.delaccount", args=[account.id]), {})
 
-    def test_update_password(self):
-        """Password update
-
-        Two cases:
-        * The default admin changes his password (no associated Mailbox)
-        * A normal user changes his password
-        """
-        self.check_ajax_post(reverse("modoboa.core.views.user.profile"),
-                             {"oldpassword" : "password", 
-                              "newpassword" : "titi", "confirmation" : "titi"})
-        self.clt.logout()
-
-        self.assertEqual(self.clt.login(username="admin", password="titi"), True)
-        self.assertEqual(self.clt.login(username="user@test.com", password="toto"),
-                         True)
-
-        self.check_ajax_post(reverse("modoboa.core.views.user.profile"),
-                            {"oldpassword" : "toto", 
-                             "newpassword" : "tutu", "confirmation" : "tutu"})
-        self.clt.logout()
-        self.assertEqual(self.clt.login(username="user@test.com", password="tutu"), True)
-
 
 class AliasTestCase(ModoTestCase):
     fixtures = ["initial_users.json"]
@@ -197,12 +173,14 @@ class AliasTestCase(ModoTestCase):
     def setUp(self):
         super(AliasTestCase, self).setUp()
         dom = factories.DomainFactory(name="test.com")
-        factories.UserFactory.create(
-            username="admin@test.com", groups=('DomainAdmins',), mailbox__domain=dom
+        u = UserFactory.create(
+            username="admin@test.com", groups=('DomainAdmins',)
         )
-        factories.UserFactory.create(
-            username="user@test.com", groups=('SimpleUsers',), mailbox__domain=dom
+        factories.MailboxFactory(address='admin', domain=dom, user=u)
+        u = UserFactory.create(
+            username="user@test.com", groups=('SimpleUsers',)
         )
+        factories.MailboxFactory(address='user', domain=dom, user=u)
 
     def test_alias(self):
         user = User.objects.get(username="user@test.com")
@@ -279,22 +257,25 @@ class PermissionsTestCase(ModoTestCase):
     def setUp(self):
         super(PermissionsTestCase, self).setUp()
         dom = factories.DomainFactory(name='test.com')
-        self.user = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',), mailbox__domain=dom
+        self.user = UserFactory(
+            username="user@test.com", groups=('SimpleUsers',)
         )
+        factories.MailboxFactory(address='user', domain=dom, user=self.user)
         self.values = dict(
             username=self.user.username, role="DomainAdmins",
             is_active=self.user.is_active, email="user@test.com"
         )
-        self.admin = factories.UserFactory(
-            username="admin@test.com", groups=('DomainAdmins',), mailbox__domain=dom
+        self.admin = UserFactory(
+            username="admin@test.com", groups=('DomainAdmins',)
         )
+        factories.MailboxFactory(address='admin', domain=dom, user=self.admin)
         dom.add_admin(self.admin)
 
         dom = factories.DomainFactory(name='test2.com')
-        factories.UserFactory(
-            username='user@test2.com', groups=('SimpleUsers',), mailbox__domain=dom
+        u = UserFactory(
+            username='user@test2.com', groups=('SimpleUsers',)
         )
+        factories.MailboxFactory(address='user', domain=dom, user=u)
 
     def tearDown(self):
         self.clt.logout()
@@ -387,13 +368,15 @@ class ImportTestCase(ModoTestCase):
     def setUp(self):
         super(ImportTestCase, self).setUp()
         dom = factories.DomainFactory(name="test.com")
-        self.admin = factories.UserFactory.create(
-            username="admin@test.com", groups=('DomainAdmins',), mailbox__domain=dom
+        self.admin = UserFactory.create(
+            username="admin@test.com", groups=('DomainAdmins',)
         )
+        factories.MailboxFactory(address='admin', domain=dom, user=self.admin)
         dom.add_admin(self.admin)
-        factories.UserFactory.create(
-            username="user@test.com", groups=('SimpleUsers',), mailbox__domain=dom
+        u = UserFactory.create(
+            username="user@test.com", groups=('SimpleUsers',)
         )
+        factories.MailboxFactory(address='user', domain=dom, user=u)
 
     def test_domains_import(self):
         f = ContentFile(b"""domain; domain1.com; 100; True

@@ -16,12 +16,6 @@ function get_account_list(container) {
     });
 }
 
-function get_allowed_recipients(container) {
-    $.getJSON("{% url 'modoboa.extensions.admin.views.alias.allowed_recipients_list' %}", function(data) {
-        container.value = data;
-    });
-}
-
 $(document).ready(function() {
     admin = new Identities();
 });

@@ -34,7 +34,6 @@ urlpatterns += patterns(
     (r'^aliases/new/$', 'newalias'),
     (r'^aliases/edit/(?P<alid>\d+)/$', 'editalias'),
     (r'^aliases/delete/$', 'delalias'),
-    (r'^aliases/allowed_recipients/$', 'allowed_recipients_list'),
 )
 
 urlpatterns += patterns(

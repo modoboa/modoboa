@@ -9,7 +9,9 @@ from modoboa.lib.exceptions import ModoboaException, PermDeniedException
 from modoboa.lib.webutils import (
     _render_to_string, ajax_simple_response
 )
-from modoboa.extensions.admin.models import Domain, Mailbox
+from modoboa.extensions.admin.models import (
+    Domain, Mailbox
+)
 from modoboa.extensions.stats.grapher import periods, str2Time, Grapher
 
 
@@ -21,7 +23,7 @@ def index(request):
     """
     deflocation = "graphs/?gset=mailtraffic"
     if not request.user.is_superuser:
-        if not len(request.user.get_domains()):
+        if not Domain.objects.get_for_admin(request.user).count():
             raise ModoboaException(_("No statistics available"))
 
     period = request.GET.get("period", "day")

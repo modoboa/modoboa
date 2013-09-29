@@ -140,7 +140,7 @@ def identity_actions(user, ident):
     else:
         actions = [
             {"name": "delalias",
-             "url": reverse("modoboa.admin.views.delalias") + "?selection=%s" % objid,
+             "url": reverse("modoboa.extensions.admin.views.alias.delalias") + "?selection=%s" % objid,
              "img": "icon-trash",
              "title": _("Delete %s?" % ident.full_address)},
         ]
