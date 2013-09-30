@@ -65,3 +65,9 @@ The following external libraries are provided with Modoboa:
 .. |downloads| image:: https://pypip.in/d/modoboa/badge.png
    :alt: Downloads from Pypi
    :target: https://crate.io/packages/modoboa/
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/tonioo/modoboa/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
