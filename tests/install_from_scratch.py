@@ -15,6 +15,7 @@ def runcmd(cmd, **kwargs):
     output = p.communicate()[0]
     return p.returncode, output
 
+
 class DeployTest(unittest.TestCase):
     dbtype = "mysql"
     dbhost = "localhost"
@@ -42,7 +43,7 @@ class DeployTest(unittest.TestCase):
         child = pexpect.spawn(cmd, cwd=self.workdir)
         fout = open('install_from_scratch.log','w')
         child.logfile = fout
-        child.expect("Database type \(mysql or postgres\):", timeout=timeout)
+        child.expect("Database type \(mysql, postgres or sqlite3\):", timeout=timeout)
         child.sendline(self.dbtype)
         child.expect("Database host \(default: 'localhost'\):", timeout=timeout)
         child.sendline(self.dbhost)
