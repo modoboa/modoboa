@@ -70,14 +70,14 @@ class GenericParametersForm(forms.Form):
 
 class AdminParametersForm(GenericParametersForm):
     def _load_initial_values(self):
-        from models import Parameter
+        from .models import Parameter
 
         names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
         for p in Parameter.objects.filter(name__in=names):
             self.fields[p.shortname].initial = p.value
 
     def save(self):
-        from models import Parameter
+        from .models import Parameter
         from modoboa.lib.formutils import SeparatorField
 
         for name, value in self.cleaned_data.items():
@@ -111,7 +111,7 @@ class UserParametersForm(GenericParametersForm):
     def _load_initial_values(self):
         if self.user is None:
             return
-        from models import UserParameter
+        from .models import UserParameter
 
         names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
         for p in UserParameter.objects.filter(user=self.user, name__in=names):
@@ -122,7 +122,7 @@ class UserParametersForm(GenericParametersForm):
         return True
 
     def save(self):
-        from models import UserParameter
+        from .models import UserParameter
         from modoboa.lib.formutils import SeparatorField
 
         for name, value in self.cleaned_data.items():
@@ -141,7 +141,7 @@ class UserParametersForm(GenericParametersForm):
 def register(formclass, label):
     """Register a form class containing parameters
 
-    formclass must inherit from ``AdminParametersForm`` of
+    formclass must inherit from ``AdminParametersForm`` or
     ``UserParametersForm``.
 
     :param formclass: a form class
@@ -155,7 +155,9 @@ def register(formclass, label):
         level = 'U'
     else:
         raise RuntimeError("Unknown parameter class")
-    _params[level][formclass.app] = {"label": label, "form": formclass, "defaults": {}}
+    _params[level][formclass.app] = {
+        "label": label, "form": formclass, "defaults": {}
+    }
     form = formclass()
     for name, field in form.fields.items():
         if type(field) is SeparatorField:
@@ -198,7 +200,7 @@ def __guess_extension():
 
 
 def save_admin(name, value, app=None):
-    from models import Parameter
+    from .models import Parameter
 
     if app is None:
         app = __guess_extension()
@@ -215,7 +217,7 @@ def save_admin(name, value, app=None):
 
 
 def save_user(user, name, value, app=None):
-    from models import UserParameter
+    from .models import UserParameter
 
     if app is None:
         app = __guess_extension()
@@ -240,7 +242,7 @@ def get_admin(name, app=None, raise_error=True):
     :param app: the application owning the parameter
     :return: the corresponding value as a string
     """
-    from models import Parameter
+    from .models import Parameter
 
     if app is None:
         app = __guess_extension()
@@ -267,7 +269,7 @@ def get_user(user, name, app=None, raise_error=True):
     :param app: the application owning the parameter
     :return: the corresponding value as a string
     """
-    from models import UserParameter
+    from .models import UserParameter
 
     if app is None:
         app = __guess_extension()
@@ -284,7 +286,13 @@ def get_user(user, name, app=None, raise_error=True):
     return p.value.decode("unicode_escape")
 
 
-def get_sorted_apps(level, first="admin"):
+def get_sorted_apps(level, first="core"):
+    """Retrieve the sorted list of all registerd applications.
+
+    :param str level: application level
+    :param str first: force the first item of the result
+    :rtype: list
+    """
     sorted_apps = []
     if first in _params[level]:
         sorted_apps.append(first)
@@ -296,6 +304,10 @@ def get_sorted_apps(level, first="admin"):
 
 
 def get_admin_forms(*args, **kwargs):
+    """Get all admin level forms.
+
+    Generates an instance of each declared form.
+    """
     for app in get_sorted_apps('A'):
         formdef = _params['A'][app]
         yield {"label": formdef["label"],

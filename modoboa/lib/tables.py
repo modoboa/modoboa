@@ -16,6 +16,7 @@ from django.template import Template, RequestContext, Context
 from django.template.loader import render_to_string
 from templatetags.libextras import render_link
 
+
 class Column(object):
     """Simple column representation
     """
@@ -24,7 +25,7 @@ class Column(object):
         self.sortable = True
         for k, v in kwargs.iteritems():
             setattr(self, k, v)
-            
+
     def __unicode__(self):
         try:
             label = getattr(self, "label")
@@ -51,6 +52,7 @@ class Column(object):
         except AttributeError:
             pass
 
+
 class SelectionColumn(Column):
     """Specific column: selection
 
@@ -64,7 +66,7 @@ class SelectionColumn(Column):
 
     def render(self, value, selection):
         return "<input type='checkbox' id='%(id)s' name='select_%(value)s' value='%(value)s' %(checked)s/>" \
-            % {'id': self.name, 'value': value, 
+            % {'id': self.name, 'value': value,
                "checked": "checked=''" if selection else ""}
 
     def transform(self, row, col, table):
@@ -72,9 +74,10 @@ class SelectionColumn(Column):
         col["value"] = self.render(row[table.idkey], selection)
         col["safe"] = True
 
+
 class ImgColumn(Column):
     """Specific column: image
-    
+
     This kind of column only contains images tags (<img>).
     """
     def __str__(self):
@@ -86,7 +89,7 @@ class ImgColumn(Column):
 
     def render(self, value):
         if type(value) in [list, tuple]:
-            return "".join(map(lambda i: "<img src='%s' />" % i, value))
+            return "".join(["<img src='%s' />" % i for i in value])
         return "<img src='%s' />" % value
 
     def transform(self, row, col, table):
@@ -100,6 +103,7 @@ class ImgColumn(Column):
                 pass
         col["safe"] = True
 
+
 class DivColumn(Column):
     def __str__(self):
         return ""
@@ -111,6 +115,7 @@ class DivColumn(Column):
         col["value"] = self.render()
         col["safe"] = True
 
+
 class ActionColumn(Column):
     def render(self, fct, user, rowid):
         return fct(user, rowid)
@@ -119,10 +124,11 @@ class ActionColumn(Column):
         col["value"] = self.render(self.defvalue, table.request.user, row[table.idkey])
         col["safe"] = True
 
+
 class LinkColumn(Column):
     def render(self, rowid, value):
         linkdef = dict(label=value, modal=self.modal)
-        if type(self.urlpattern) == dict:
+        if type(self.urlpattern) is dict:
             t, value = rowid.split(":")
             linkdef.update(url=reverse(self.urlpattern[t], args=[value]),
                            modalcb=self.modalcb[t])
@@ -135,12 +141,15 @@ class LinkColumn(Column):
         col["value"] = self.render(row[table.idkey], row[self.name])
         col["safe"] = True
 
+
 class Table(object):
     tableid = ""
 
-    def __init__(self, request, rows={}):
+    def __init__(self, request, rows=None):
         self.columns = []
         self.request = request
+        if rows is None:
+            rows = {}
         try:
             order = getattr(self, "cols_order")
         except AttributeError:
@@ -168,13 +177,13 @@ class Table(object):
         self.rows = []
         trcpt = 0
         for row in rows:
-            nrow = {"id" : row[self.idkey], "cols" : [], "trcpt" : trcpt}
+            nrow = {"id": row[self.idkey], "cols": [], "trcpt": trcpt}
             for name in ["style", "options"]:
-                if row.has_key(name):
+                if name in row:
                     nrow[name] = row[name]
-                
+
             for c in self.columns:
-                newcol = {"name" : c.name}
+                newcol = {"name": c.name}
                 for key in ["width", "align", "cssclass"]:
                     try:
                         newcol[key] = getattr(c, key)
@@ -184,7 +193,7 @@ class Table(object):
                 nrow["cols"] += [newcol]
             self.rows += [nrow]
             trcpt += 1
-            
+
     def _rows_from_model(self, objects, include_type_in_id=False):
         rows = []
         for obj in objects:
@@ -232,32 +241,11 @@ class Table(object):
 </table>
 """)
             return t.render(RequestContext(self.request, {
-                        "table" : self, "tableid" : self.tableid, "styles" : styles,
-                        "withheader" : withheader
-                        }))
+                "table": self, "tableid": self.tableid, "styles": styles,
+                "withheader": withheader
+            }))
 
         t = Template("""
 <div class="alert alert-info">%s</div>
 """ % _("No entries to display"))
         return t.render(Context())
-
-    def render_head(self, request):
-        t = Template("""
-<table id="{{ tableid }}">
-  {% include "common/table_head.html" %}
-</table>
-""")
-        return t.render(Context({
-                    "table" : self, "tableid" : "%s_head" % self.tableid
-                    }))
-    
-    def render_body(self, request):
-        t = Template("""
-<table id="{{ tableid }}">
-  {% include "common/table_body.html" %}
-</table>
-""")
-        return t.render(Context({
-                    "table" : self, "tableid" : "%s_body" % self.tableid
-                    }))
-                        

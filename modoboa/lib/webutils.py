@@ -15,22 +15,11 @@ from django.utils import simplejson
 from django.conf import settings
 
 
-def _render(request, tpl, user_context):
-    """Custom rendering function
+def _render_to_string(request, tpl, user_context):
+    """Custom rendering function.
 
     Just a wrapper which automatically adds a RequestContext instance
     (useful to use settings variables like STATIC_URL inside templates)
-    """
-    return render_to_response(
-        tpl, user_context,
-        context_instance=template.RequestContext(request)
-    )
-
-
-def _render_to_string(request, tpl, user_context):
-    """Custom rendering function
-
-    Same as _render.
     """
     return render_to_string(tpl, user_context,
                             context_instance=template.RequestContext(request))

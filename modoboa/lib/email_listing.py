@@ -2,17 +2,19 @@
 import time
 import re
 import os
-import time, random, hashlib
+import time
+import random
+import hashlib
 import lxml.html
 from lxml import etree
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.template import Template, Context
 from django.utils.translation import ugettext as _
-from modoboa.lib.webutils import _render
 from modoboa.lib.emailutils import decode
 
 attached_map = {}
+
 
 class MBconnector(object):
     def __init__(self, address, port):
@@ -21,6 +23,7 @@ class MBconnector(object):
 
     def messages_count(self, **kwargs):
         pass
+
 
 class Page(object):
     def __init__(self, pageid, id_start, id_stop, items, 
@@ -53,6 +56,7 @@ class Page(object):
             lid += 1
         return lid
 
+
 class Paginator(object):
     def __init__(self, total, elems_per_page):
         self.total = total
@@ -65,7 +69,7 @@ class Paginator(object):
         id_start = self.elems_per_page * page + 1
         id_stop = id_start + self.elems_per_page - 1
         return (id_start, id_stop)
-        
+
     def getpage(self, page):
         if page < 1:
             return None
@@ -84,6 +88,7 @@ class Paginator(object):
                  self.elems_per_page, has_previous, has_next)
         p.paginator = self
         return p
+
 
 class EmailListing(object):
 
@@ -113,21 +118,25 @@ class EmailListing(object):
     def render_navbar(page, baseurl=None):
         if page is None:
             return ""
-        context = {"page": page, "STATIC_URL": settings.STATIC_URL, "baseurl": baseurl}
+        context = {
+            "page": page, "STATIC_URL": settings.STATIC_URL, "baseurl": baseurl
+        }
         return render_to_string("common/pagination_bar.html", context)
-    
+
     def fetch(self, request, id_start, id_stop):
-        table = self.tbltype(request,
-                             self.mbc.fetch(start=id_start, stop=id_stop, 
-                                            mbox=self.folder, 
-                                            nbelems=self.elems_per_page))
+        table = self.tbltype(
+            request,
+            self.mbc.fetch(start=id_start, stop=id_stop,
+                           mbox=self.folder,
+                           nbelems=self.elems_per_page)
+        )
         tpl = Template("""
 <form method="POST" id="listingform">
   {{ table }}
 </form>""")
         return tpl.render(
             Context({
-                "table" : table.render(withheader=self.show_listing_headers)
+                "table": table.render(withheader=self.show_listing_headers)
             })
         )
 
@@ -139,10 +148,11 @@ class EmailListing(object):
             listing = self.fetch(request, page.id_start, page.id_stop)
         return dict(listing=listing, navbar=self.render_navbar(page, self.baseurl))
 
+
 def parse_search_parameters(request):
-    if request.GET.has_key("pattern"):
+    if 'pattern' in request.GET:
         request.session["pattern"] = re.escape(request.GET["pattern"])
-        if request.GET.has_key("criteria"):
+        if 'criteria' in request.GET:
             request.session["criteria"] = request.GET["criteria"]
         else:
             request.session["criteria"] = ["from_addr"]
@@ -150,4 +160,3 @@ def parse_search_parameters(request):
         for p in ["pattern", "criteria"]:
             if p in request.session.keys():
                 del request.session[p]
-    
