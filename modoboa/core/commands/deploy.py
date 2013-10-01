@@ -80,14 +80,17 @@ class DeployCommand(Command):
             info['dbtype'] = 'mysql'
         if info['dbtype'] == 'postgres':
             info['dbtype'] = 'postgresql_psycopg2'
-        default_host = 'localhost' if info['dbtype'] == 'mysql' else ''
-        info['dbhost'] = \
-            raw_input("Database host (default: '%s'): " % default_host)
-        if info['dbhost'] == '':
-            info['dbhost'] = default_host
-        info['dbname'] = raw_input('Database name: ')
-        info['username'] = raw_input('Username: ')
-        info['password'] = getpass.getpass('Password: ')
+        if info['dbtype'] == 'sqlite3':
+            info['dbname'] = '%s.db' % name
+        else:
+            default_host = 'localhost' if info['dbtype'] == 'mysql' else ''
+            info['dbhost'] = \
+                raw_input("Database host (default: '%s'): " % default_host)
+            if info['dbhost'] == '':
+                info['dbhost'] = default_host
+            info['dbname'] = raw_input('Database name: ')
+            info['username'] = raw_input('Username: ')
+            info['password'] = getpass.getpass('Password: ')
         return info
 
     def handle(self, parsed_args):
