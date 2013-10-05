@@ -50,7 +50,7 @@ def read(fname):
     return open(os.path.join(ROOT, fname)).read()
 
 setup(name="modoboa",
-      version='1.0.0',
+      version='1.0.1',
       url='http://modoboa.org/',
       license='MIT',
       description="Mail hosting made simple",
