@@ -52,7 +52,7 @@ mailboxes has been improved. Make sure to consult :ref:`fs_operations`
 and :ref:`Postfix configuration <postfix_config>`. Look at the
 ``smtpd_recipient_restrictions`` setting.
 
-Run ``modoboa-admin.py postfix_maps --dbtype <mysql|postgres>
+Run ``modoboa-admin.py postfix_maps --dbtype <mysql|postgres|sqlite>
 <tempdir>`` and compare the files with those that postfix currently
 use. Make necessary updates in light of the differences
 
