@@ -64,10 +64,11 @@ install the following requirements:
 * python development files
 * libxslt development files
 * libxml2 development files
+* libz development files
 
 On a Debian like system, just run the following command::
 
-  $ apt-get install python-dev libxml2-dev libxslt-dev
+  $ apt-get install python-dev libxml2-dev libxslt-dev zlib1g-dev
 
 .. _database:
 
