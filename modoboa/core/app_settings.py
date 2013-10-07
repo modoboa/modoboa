@@ -268,9 +268,9 @@ class UserSettings(parameters.UserParametersForm):
     lang = forms.ChoiceField(
         initial=translate_language_code(settings.LANGUAGE_CODE),
         label=ugettext_lazy("Prefered language"),
-        choices=[("de", "deutsch"), ("en", "english"),
-                ("es", "español"), ("fr", "français"),
-                ("it", "italiano"), ("pt", "português"),
-                ("sv", "svenska"),],
+        choices=[("cs", "čeština"), ("de", "deutsch"), 
+                 ("en", "english"), ("es", "español"),
+                 ("fr", "français"), ("it", "italiano"),
+                 ("pt", "português"), ("sv", "svenska"),],
         help_text=ugettext_lazy("Prefered language to display pages")
     )
