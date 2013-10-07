@@ -4,7 +4,6 @@ from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
-from modoboa.lib.compat import user_model_name, user_table_name
 
 
 class Migration(DataMigration):
@@ -17,7 +16,7 @@ class Migration(DataMigration):
         objaccess.save()
 
     def forwards(self, orm):
-        superusers = orm[user_model_name].objects.filter(is_superuser=True)
+        superusers = orm['auth.User'].objects.filter(is_superuser=True)
         if not len(superusers):
             # Empty db, nothing to do
             return
@@ -26,14 +25,14 @@ class Migration(DataMigration):
         # object. (user, domain, domain alias, mailbox, alias)
         try:
             uct = orm['contenttypes.ContentType'].objects.get(
-                app_label='admin', model='user'
-                )
+                app_label='auth', model='user'
+            )
         except ObjectDoesNotExist:
             uct = orm['contenttypes.ContentType'](
-                name='user', app_label='admin', model='user'
-                )
+                name='user', app_label='auth', model='user'
+            )
             uct.save()
-        for account in orm[user_model_name].objects.all():
+        for account in orm['auth.User'].objects.all():
             for i, su in enumerate(superusers):
                 self.grant_access(orm, su, uct, account, i == 0)
         domct = orm['contenttypes.ContentType'].objects.get(
@@ -62,7 +61,7 @@ class Migration(DataMigration):
                 self.grant_access(orm, su, alct, alias, i == 0)
 
         # 2: domain admins must have access to their domain's content
-        for da in orm[user_model_name].objects.filter(groups__name='DomainAdmins'):
+        for da in orm['auth.User'].objects.filter(groups__name='DomainAdmins'):
             dom = da.mailbox_set.all()[0].domain
             self.grant_access(orm, da, domct, dom)
 
@@ -119,7 +118,7 @@ class Migration(DataMigration):
             'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'admin.objectaccess': {
             'Meta': {'unique_together': "(('user', 'content_type', 'object_id'),)", 'object_name': 'ObjectAccess'},
@@ -127,7 +126,7 @@ class Migration(DataMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_owner': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'admin.objectdates': {
             'Meta': {'object_name': 'ObjectDates'},
@@ -148,8 +147,8 @@ class Migration(DataMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        user_model_name: {
-            'Meta': {'object_name': 'User', 'db_table': "'admin_user'"},
+        'auth.user': {
+            'Meta': {'object_name': 'User'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),

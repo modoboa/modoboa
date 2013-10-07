@@ -9,14 +9,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding field 'User.is_local'
-        db.add_column(u'admin_user', 'is_local',
+        db.add_column('admin_user', 'is_local',
                       self.gf('django.db.models.fields.BooleanField')(default=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
         # Deleting field 'User.is_local'
-        db.delete_column(u'admin_user', 'is_local')
+        db.delete_column('admin_user', 'is_local')
 
 
     models = {

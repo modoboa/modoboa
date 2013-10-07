@@ -141,10 +141,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'south',
-
-    # Extra tools
-    # 'modoboa.tools.pfxadmin_migrate',
+#    'south',
+    'reversion',
 )
 
 # A dedicated place to register Modoboa applications
@@ -152,26 +150,22 @@ INSTALLED_APPS = (
 # Do not change the order.
 MODOBOA_APPS = (
     'modoboa',
-    'modoboa.auth',
-    'modoboa.admin',
+    'modoboa.core',
     'modoboa.lib',
-    'modoboa.userprefs',
-
+    # Modoboa extensions here.
+    'modoboa.extensions.admin',
     'modoboa.extensions.limits',
     'modoboa.extensions.postfix_autoreply',
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',
-    {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
     'modoboa.extensions.sievefilters',
+    'modoboa.extensions.stats',
+    {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
 )
 
 INSTALLED_APPS += MODOBOA_APPS
 
-INSTALLED_APPS += (
-    'reversion',
-)
-
-AUTH_USER_MODEL = 'admin.User'
+AUTH_USER_MODEL = 'core.User'
 
 #MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
 
@@ -209,7 +203,7 @@ LOGGING = {
             'formatter': 'syslog'
         },
         'modoboa': {
-            'class': 'modoboa.lib.logutils.SQLHandler',
+            'class': 'modoboa.core.loggers.SQLHandler',
         }
     },
     'loggers': {

@@ -35,11 +35,6 @@ class Limits(ModoExtension):
         grp.save()
         grp.permissions.add(*dagrp.permissions.all())
 
-        ct = ContentType.objects.get_for_model(Permission)
-        for pname in ["view_permissions"]:
-            perm = Permission.objects.get(content_type=ct, codename=pname)
-            grp.permissions.add(perm)
-
         ct = ContentType.objects.get_for_model(Domain)
         for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
             perm = Permission.objects.get(content_type=ct, codename=pname)

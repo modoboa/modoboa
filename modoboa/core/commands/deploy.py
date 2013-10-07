@@ -6,6 +6,7 @@ import getpass
 import subprocess
 from django.core import management
 from django.template import Context, Template
+from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.management import Command
 
 dbconn_tpl = """
@@ -135,7 +136,14 @@ class DeployCommand(Command):
 
         if parsed_args.syncdb:
             self._exec_django_command(
-                "syncdb", parsed_args.name, '--migrate', '--noinput'
+                "syncdb", parsed_args.name, '--noinput'
+            )
+            exec_cmd('sed -ri "s|^#(\s+\'south)|\\1|" %s/settings.py' % path)
+            self._exec_django_command(
+                "syncdb", parsed_args.name,
+            )
+            self._exec_django_command(
+                'migrate', parsed_args.name, '--fake'
             )
             self._exec_django_command(
                 "loaddata", parsed_args.name, 'initial_users.json'

@@ -3,23 +3,20 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-from modoboa.lib.dbutils import db_table_exists
-from modoboa.lib.compat import user_model_name
 
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        if db_table_exists('admin_user'):
-            return
         db.rename_table('auth_user', 'admin_user')
         db.rename_table('auth_user_groups', 'admin_user_groups')
         db.rename_table('auth_user_user_permissions', 'admin_user_user_permissions')
+        db.send_create_signal('admin', ['User'])
 
         # Changing field 'Mailbox.user'
-        db.alter_column(u'admin_mailbox', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_model_name]))
+        db.alter_column(u'admin_mailbox', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.User']))
         # Changing field 'ObjectAccess.user'
-        db.alter_column(u'admin_objectaccess', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_model_name]))
+        db.alter_column(u'admin_objectaccess', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.User']))
 
     def backwards(self, orm):
         raise RuntimeError("Cannot revert this migration")

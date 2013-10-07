@@ -4,7 +4,6 @@ from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
-from modoboa.lib.compat import user_model_name, user_table_name
 
 
 class Migration(DataMigration):
@@ -12,11 +11,11 @@ class Migration(DataMigration):
     def forwards(self, orm):
         "Write your forwards methods here."
         try:
-            su = orm[user_model_name].objects.get(pk=1)
+            su = orm['auth.User'].objects.get(pk=1)
         except ObjectDoesNotExist:
             return
         uct = orm['contenttypes.ContentType'].objects.get(
-            app_label='admin', model='user'
+            app_label='auth', model='user'
         )
         su.objectaccess_set.filter(content_type=uct, object_id=1).update(is_owner=True)
 
@@ -67,7 +66,7 @@ class Migration(DataMigration):
             'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'quota': ('django.db.models.fields.IntegerField', [], {}),
             'uid': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'admin.objectaccess': {
             'Meta': {'unique_together': "(('user', 'content_type', 'object_id'),)", 'object_name': 'ObjectAccess'},
@@ -75,7 +74,7 @@ class Migration(DataMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_owner': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'admin.objectdates': {
             'Meta': {'object_name': 'ObjectDates'},
@@ -96,8 +95,8 @@ class Migration(DataMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        user_model_name: {
-            'Meta': {'object_name': 'User', 'db_table': "'admin_user'"},
+        'auth.user': {
+            'Meta': {'object_name': 'User'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
