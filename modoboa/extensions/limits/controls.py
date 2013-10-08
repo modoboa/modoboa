@@ -133,7 +133,6 @@ def can_create_new_object(user, objtype):
 
 @events.observe("AccountCreated")
 def create_pool(user):
-    print "pouet"
     owner = get_object_owner(user)
     if not owner.is_superuser and \
        not owner.belongs_to_group("Resellers"):

@@ -35,8 +35,8 @@ class ExtTestCase(ModoTestCase):
 
     def setUp(self, *args, **kwargs):
         super(ExtTestCase, self).setUp(*args, **kwargs)
-        self.clt.get(reverse("modoboa.admin.views.viewextensions"))
-        self.clt.post(reverse("modoboa.admin.views.saveextensions"),
+        self.clt.get(reverse("modoboa.core.views.admin.viewextensions"))
+        self.clt.post(reverse("modoboa.core.views.admin.saveextensions"),
                       {"select_%s" % self.name : "1"})
 
 
@@ -65,7 +65,7 @@ class ParameterTestCase(TestCase):
     """
 
     def setUp(self):
-        from modoboa.admin.models import User
+        from modoboa.core.models import User
         parameters.register(TestParams, "Test")
         parameters.register(TestUserParams, "TestUser")
         self.user = User.objects.create(username="tester")

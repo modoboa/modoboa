@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse
 from modoboa.lib.tests import ExtTestCase
+from modoboa.core.factories import UserFactory
+from modoboa.extensions.admin.factories import DomainFactory, MailboxFactory
 from modoboa.core.models import User
-from modoboa.admin import factories
 
 
 class PermissionsTestCase(ExtTestCase):
@@ -10,10 +11,11 @@ class PermissionsTestCase(ExtTestCase):
 
     def setUp(self):
         super(PermissionsTestCase, self).setUp()
-        dom = factories.DomainFactory(name='test.com')
-        self.admin = factories.UserFactory(
-            username='admin@test.com', groups=('DomainAdmins',), mailbox__domain=dom
+        dom = DomainFactory(name='test.com')
+        self.admin = UserFactory(
+            username='admin@test.com', groups=('DomainAdmins',)
         )
+        MailboxFactory(address='admin', domain=dom, user=self.admin)
         dom.add_admin(self.admin)
 
     def test_domainadmin_deletes_reseller(self):
@@ -26,7 +28,7 @@ class PermissionsTestCase(ExtTestCase):
             password1="toto", password2="toto", role="Resellers",
             is_active=True, email="reseller@test.com", stepid=2
         )
-        self.check_ajax_post(reverse("modoboa.admin.views.newaccount"), values)
+        self.check_ajax_post(reverse("modoboa.extensions.admin.views.identity.newaccount"), values)
         account = User.objects.get(username="reseller@test.com")
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")

@@ -33,6 +33,11 @@ install it.
 
   $ pip install --upgrade modoboa
 
+.. warning::
+
+   If you migrate to **1.1.0**, please follow the :ref:`dedicated migration
+   procedure <1.1.0>` and skip the usual one.
+
 Then, refer to this page to check if the version you're installing
 requires specific operations. If the version you're looking for is not
 present, it means nothing special is required.
@@ -41,6 +46,41 @@ Finally, follow the common procedure::
 
   $ cd <modoboa_instance_dir>
   $ python manage.py syncdb --migrate
+  $ python manage.py collectstatic
+
+.. _1.1.0:
+
+1.1.0: FIXME
+============
+
+Due to code refactoring, some modifications need to be done into
+:file:`settings.py`:
+
+#. ``MODOBOA_APPS`` must contain the following applications::
+
+    MODOBOA_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+
+      'modoboa.extensions.admin',
+      'modoboa.extensions.limits',
+      'modoboa.extensions.postfix_autoreply',
+      'modoboa.extensions.webmail',
+      'modoboa.extensions.stats',
+      'modoboa.extensions.amavis',
+      'modoboa.extensions.sievefilters',
+    )
+
+#. ``AUTH_USER_MODEL`` must be set to ``core.User``
+
+#. Into ``LOGGING``, replace ``modoboa.lib.logutils.SQLHandler`` by
+   ``modoboa.core.loggers.SQLHandler``
+
+Then, run the following commands to migrate your installation::
+
+  $ python manage.py migrate core 0001 --fake
+  $ python manage.py migrate
   $ python manage.py collectstatic
 
 
