@@ -128,7 +128,10 @@ server::
 
   $ python manage.py runserver
 
-You should be able to access Modoboa at http://locahost:8000/.
+You should be able to access Modoboa at http://localhost:8000/.
 
-For a production environnement, we recommend using a stable webserver
-like :ref:`apache2` or :ref:`nginx-label`.
+For a fully working interface using the embedded HTTP server, you need to set the ``DEBUG``
+parameter in settings.py to ``True``.
+
+For a production environment, we recommend using a stable webserver
+like :ref:`apache2` or :ref:`nginx-label`. Don't forget to set ``DEBUG`` back to ``False``.
