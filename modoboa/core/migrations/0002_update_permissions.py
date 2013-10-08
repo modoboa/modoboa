@@ -11,34 +11,15 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        oldct = orm['contenttypes.ContentType'].objects.get(
-            app_label='admin', model='user'
-        )
-        newct = orm['contenttypes.ContentType'].objects.get(
-            app_label='core', model='user'
-        )
-        orm['core.ObjectAccess'].objects.filter(content_type=oldct).update(
-            content_type=newct
-        )
-        orm['reversion.Version'].objects.filter(content_type=oldct).update(
-            content_type=newct
-        )
-        oldct.delete()
+        orm['contenttypes.ContentType'].objects.filter(
+            app_label='admin', model__in=['user', 'extension', 'objectaccess']
+        ).update(app_label='core')
 
     def backwards(self, orm):
         "Write your backwards methods here."
-        newct = orm['contenttypes.ContentType'].objects.create(
-            app_label='admin', model='user', name='user'
-        )
-        oldct = orm['contenttypes.ContentType'].objects.get(
-            app_label='core', model='user'
-        )
-        orm['core.ObjectAccess'].objects.filter(content_type=oldct).update(
-            content_type=newct
-        )
-        orm['reversion.Version'].objects.filter(content_type=oldct).update(
-            content_type=newct
-        )
+        orm['contenttypes.ContentType'].objects.filter(
+            app_label='core', model__in=['user', 'extension', 'objectaccess']
+        ).update(app_label='admin')
 
     models = {
         u'auth.group': {

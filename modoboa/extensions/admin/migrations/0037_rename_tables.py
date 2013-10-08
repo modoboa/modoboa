@@ -24,8 +24,6 @@ class Migration(SchemaMigration):
 
         db.rename_table('admin_extension', 'core_extension')
 
-        db.send_create_signal('core', ['User', 'Extension', 'ObjectAccess'])
-
     def backwards(self, orm):
         db.rename_table('core_user', 'admin_user')
         # Changing field 'Mailbox.user'
@@ -38,8 +36,6 @@ class Migration(SchemaMigration):
         db.rename_table('core_user_user_permissions', 'admin_user_user_permissions')
 
         db.rename_table('core_extension', 'admin_extension')
-
-        db.send_create_signal('admin', ['User', 'Extension', 'ObjectAccess'])
 
     models = {
         'admin.alias': {
