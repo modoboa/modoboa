@@ -7,7 +7,7 @@ import subprocess
 from django.core import management
 from django.template import Context, Template
 from modoboa.lib.sysutils import exec_cmd
-from modoboa.core.management import Command
+from . import Command
 
 dbconn_tpl = """
     '{{ conn_name }}': {

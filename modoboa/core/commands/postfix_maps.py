@@ -3,7 +3,7 @@ import getpass
 import inspect
 import os
 from django.template import Context, Template
-from modoboa.core.management import Command
+from . import Command
 
 
 class MapFilesGenerator(object):
