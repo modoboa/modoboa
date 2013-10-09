@@ -16,7 +16,7 @@ from modoboa.lib.webutils import (
 )
 from modoboa.lib.email_listing import parse_search_parameters
 from modoboa.extensions.admin.models import Mailbox, Domain
-from templatetags.amextras import quar_menu, viewm_menu
+from templatetags.amavis_tags import quar_menu, viewm_menu
 from .lib import selfservice, AMrelease
 from .sql_listing import SQLlisting, SQLemail, get_wrapper
 
