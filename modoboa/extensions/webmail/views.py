@@ -24,7 +24,7 @@ from .lib import (
     clean_attachments, set_compose_session, send_mail,
     ImapEmail, ReplyModifier, ForwardModifier
 )
-from templatetags import webextras
+from templatetags import webmail_tags
 
 
 @login_required
@@ -559,7 +559,7 @@ def index(request):
             del response["menuargs"]
         try:
             response["menu"] = \
-                getattr(webextras, "%s_menu" % action)("", curmbox, request.user, **extra_args)
+                getattr(webmail_tags, "%s_menu" % action)("", curmbox, request.user, **extra_args)
         except KeyError:
             pass
 
