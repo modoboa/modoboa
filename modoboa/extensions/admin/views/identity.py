@@ -10,7 +10,7 @@ from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.webutils import ajax_simple_response, _render_to_string
 from modoboa.lib.formutils import CreationWizard
-from modoboa.lib.templatetags.libextras import pagination_bar
+from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import Mailbox
 from modoboa.extensions.admin.lib import (
@@ -160,7 +160,7 @@ def newaccount(request, tplname='common/wizard_forms.html'):
                 status="ok", respmsg=_("Account created")
             ))
 
-        from modoboa.lib.templatetags.libextras import render_form
+        from modoboa.lib.templatetags.lib_tags import render_form
         return ajax_simple_response(dict(
             status="ko", stepid=data,
             form=render_form(cwizard.steps[data]["form"])

@@ -232,11 +232,13 @@ def get_modoboa_logo():
 
 @register.simple_tag
 def extra_head_content(user):
-    tpl = Template("{% for sc in static_content %}{{ sc|safe }}{% endfor %}")
+    tpl = template.Template(
+        "{% for sc in static_content %}{{ sc|safe }}{% endfor %}"
+    )
     return tpl.render(
-        Context(
-            dict(static_content=events.raiseQueryEvent("GetStaticContent", user))
-        )
+        template.Context({
+            'static_content': events.raiseQueryEvent("GetStaticContent", user)
+        })
     )
 
 
@@ -245,7 +247,7 @@ def load_optionalmenu(user):
     menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu_middle", user)
     return template.loader.render_to_string(
         'common/menulist.html',
-        {"entries" : menu, "user" : user}
+        {"entries": menu, "user": user}
     )
 
 

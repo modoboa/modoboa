@@ -1,4 +1,4 @@
-{% load libextras %}
+{% load lib_tags %}
 {% render_field form.email %}
 {% include "common/generic_field.html" with field=form.quota help_display_mode="tooltip" appended_text=_("MB") activator=True activator_value=form.quota_act.value deactivate_if_empty=False activator_label=_("Use domain default value") %}
 {% render_fields_group form "aliases" %}

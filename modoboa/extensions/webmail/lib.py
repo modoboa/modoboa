@@ -270,7 +270,7 @@ class ImapEmail(Email):
 
     @property
     def headers_as_text(self):
-        return " ".join(self.headers_as_list())
+        return " ".join(self.headers_as_list)
 
     def _find_content_charset(self, part):
         for pos, elem in enumerate(part["params"]):

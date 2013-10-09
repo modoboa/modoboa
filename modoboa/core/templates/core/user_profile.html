@@ -1,4 +1,4 @@
-{% load i18n libextras %}{% load url from future %}
+{% load i18n lib_tags %}{% load url from future %}
 <h2>{% trans "Profile" %} <small>{% trans "Update your personal information" %}</small></h2>
 <hr>
 <form class="form-horizontal" method="POST" action="{% url 'modoboa.core.views.user.profile' %}" 

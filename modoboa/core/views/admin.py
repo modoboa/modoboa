@@ -108,7 +108,7 @@ def information(request, tplname="core/information.html"):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def logs(request, tplname="core/logs.html"):
-    from modoboa.lib.templatetags.libextras import pagination_bar
+    from modoboa.lib.templatetags.lib_tags import pagination_bar
 
     sort_order, sort_dir = get_sort_order(
         request.GET, "date_created",

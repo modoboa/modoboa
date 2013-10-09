@@ -1,4 +1,4 @@
-{% load i18n libextras %}{% load url from future %}
+{% load i18n lib_tags %}{% load url from future %}
 <h2>{% trans "Parameters" %} <small>{% trans "Configure Modoboa" %}</small></h2><hr />
 <form id="settings_form" method="POST" action="{% url 'modoboa.core.views.admin.saveparameters' %}" class="form-horizontal">{% csrf_token %}
   {% include "common/parameters.html" %}

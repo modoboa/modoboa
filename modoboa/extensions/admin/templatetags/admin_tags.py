@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events
 from modoboa.lib.webutils import static_url, render_actions
-from modoboa.lib.templatetags.libextras import render_link
+from modoboa.lib.templatetags.lib_tags import render_link
 
 register = template.Library()
 

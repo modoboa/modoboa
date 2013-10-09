@@ -14,7 +14,7 @@ from modoboa.lib.webutils import (
 )
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.exceptions import PermDeniedException
-from modoboa.lib.templatetags.libextras import pagination_bar
+from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.extensions.admin.tables import DomainsTable
 from modoboa.extensions.admin.lib import get_sort_order, get_listing_page
 from modoboa.extensions.admin.exceptions import AdminError
@@ -111,7 +111,7 @@ def newdomain(request, tplname="common/wizard_forms.html"):
                 dict(status="ok", respmsg=_("Domain created"))
             )
 
-        from modoboa.lib.templatetags.libextras import render_form
+        from modoboa.lib.templatetags.lib_tags import render_form
         return ajax_simple_response(dict(
             status="ko", stepid=data,
             form=render_form(cwizard.steps[data]["form"])
