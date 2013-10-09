@@ -12,10 +12,11 @@ TODO:
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
 from modoboa.core.models import User
-from modoboa.core.factories import UserFactory, GroupFactory
+from modoboa.core.factories import UserFactory
 from modoboa.lib.tests import ModoTestCase
-from modoboa.extensions.admin.lib import *
-from modoboa.extensions.admin.models import *
+from modoboa.extensions.admin.models import (
+    Domain, Mailbox, Alias, DomainAlias
+)
 from . import factories
 
 

@@ -1,5 +1,4 @@
 # coding: utf-8
-import unittest
 from django.test import TestCase
 from django.test.client import Client
 from django.utils import simplejson
@@ -9,7 +8,7 @@ from modoboa.lib import parameters
 
 
 class ModoTestCase(TestCase):
-    
+
     def setUp(self, username="admin", password="password"):
         self.clt = Client()
         self.assertEqual(self.clt.login(username=username, password=password), True)

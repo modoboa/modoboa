@@ -4,7 +4,7 @@ from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.contrib.contenttypes import generic
 from modoboa.lib import events, parameters
-from modoboa.core.models import ObjectAccess
+from modoboa.core.models import User, ObjectAccess
 from modoboa.extensions.admin.exceptions import AdminError
 from .base import DatesAware
 

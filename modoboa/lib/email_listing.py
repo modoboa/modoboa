@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
-import time
 import re
-import os
-import time
-import random
-import hashlib
-import lxml.html
-from lxml import etree
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.template import Template, Context
 from django.utils.translation import ugettext as _
-from modoboa.lib.emailutils import decode
 
 attached_map = {}
 

@@ -2,7 +2,7 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from modoboa.lib.webutils import render_actions, static_url
+from modoboa.lib.webutils import render_actions
 
 register = template.Library()
 

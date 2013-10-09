@@ -8,12 +8,10 @@ from django.contrib.auth.models import Permission, Group
 from django.db import IntegrityError
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
 from .forms import ResourcePoolForm
 import controls
-import views
 
 
 class Limits(ModoExtension):

@@ -1,6 +1,5 @@
 # coding: utf-8
 from django import forms
-from django.contrib.auth.models import Group
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
 from modoboa.lib import events, parameters
@@ -10,9 +9,7 @@ from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.formutils import (
     DomainNameField, YesNoField, DynamicForm, TabForms
 )
-from modoboa.lib.exceptions import PermDeniedException
 from modoboa.core.models import User
-from modoboa.extensions.admin.templatetags.admin_tags import gender
 from modoboa.extensions.admin.exceptions import AdminError, BadDestination
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias, Quota
@@ -547,7 +544,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             if not user.can_access(domain):
                 raise PermDeniedException
             try:
-                mb = Mailbox.objects.get(address=locpart, domain=domain)
+                Mailbox.objects.get(address=locpart, domain=domain)
             except Mailbox.DoesNotExist:
                 pass
             else:
@@ -725,7 +722,7 @@ class ForwardForm(forms.Form):
             if not local_part or not domname or not len(domname):
                 raise BadDestination("Invalid mailbox syntax for %s" % d)
             try:
-                mb = Domain.objects.get(name=domname)
+                Domain.objects.get(name=domname)
             except Domain.DoesNotExist:
                 self.dests += [d]
             else:

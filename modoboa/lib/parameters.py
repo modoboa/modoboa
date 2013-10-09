@@ -8,10 +8,8 @@ will be available and modifiable directly from the web interface.
 
 Only super users will be able to access this part of the web interface.
 """
-
 import inspect
 import re
-import copy
 from django import forms
 from exceptions import ModoboaException
 

@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, include
 from django.conf import settings
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import parameters, events

@@ -9,11 +9,9 @@ output (using standard tags like <table> and co.).
 
 """
 import inspect
-import lxml
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.template import Template, RequestContext, Context
-from django.template.loader import render_to_string
 from templatetags.lib_tags import render_link
 
 

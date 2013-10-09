@@ -23,7 +23,7 @@ import os
 import re
 import rrdtool
 import string
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from optparse import make_option
 from modoboa.lib import parameters
 from modoboa.extensions.admin.models import Domain

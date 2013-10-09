@@ -4,7 +4,6 @@
 -------------------------------
 
 """
-from django.contrib.auth.models import Group
 from django.utils.translation import ugettext as _
 from modoboa.lib.exceptions import ModoboaException
 

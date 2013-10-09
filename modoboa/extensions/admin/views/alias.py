@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _, ungettext
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import (
-    login_required, permission_required, user_passes_test
+    login_required, permission_required
 )
 from modoboa.lib import events
 from modoboa.lib.webutils import ajax_response, ajax_simple_response

@@ -22,7 +22,7 @@ from .lib import (
     decode_payload, AttachmentUploadHandler,
     save_attachment, ImapListing, EmailSignature,
     clean_attachments, set_compose_session, send_mail,
-    ImapEmail, ReplyModifier, ForwardModifier
+    ImapEmail
 )
 from templatetags import webmail_tags
 

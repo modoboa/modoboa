@@ -1,10 +1,7 @@
 # coding: utf-8
-
 from django.db import models
-from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
-from modoboa.core.models import User
 from django.conf import settings
 
 limits_tpl = [

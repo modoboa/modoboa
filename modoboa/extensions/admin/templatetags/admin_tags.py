@@ -1,10 +1,9 @@
-import re
 from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events
-from modoboa.lib.webutils import static_url, render_actions
+from modoboa.lib.webutils import render_actions
 from modoboa.lib.templatetags.lib_tags import render_link
 
 register = template.Library()

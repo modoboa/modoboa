@@ -3,7 +3,6 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.formutils import YesNoField, SeparatorField, InlineRadioSelect
-from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib import parameters
 
@@ -202,7 +201,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             required_fields = ["ldap_search_base", "ldap_search_filter"]
         else:
             required_fields = ["ldap_user_dn_template"]
-            
+
         for f in required_fields:
             if not f in cleaned_data or cleaned_data[f] == u'':
                 self._errors[f] = self.error_class([_("This field is required")])
@@ -214,7 +213,6 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
         Doing so, we can use the django_auth_ldap module.
         """
-        from django.conf import settings
         try:
             import ldap
             from django_auth_ldap.config import LDAPSearch
@@ -268,9 +266,9 @@ class UserSettings(parameters.UserParametersForm):
     lang = forms.ChoiceField(
         initial=translate_language_code(settings.LANGUAGE_CODE),
         label=ugettext_lazy("Prefered language"),
-        choices=[("cs", "čeština"), ("de", "deutsch"), 
+        choices=[("cs", "čeština"), ("de", "deutsch"),
                  ("en", "english"), ("es", "español"),
                  ("fr", "français"), ("it", "italiano"),
-                 ("pt", "português"), ("sv", "svenska"),],
+                 ("pt", "português"), ("sv", "svenska")],
         help_text=ugettext_lazy("Prefered language to display pages")
     )

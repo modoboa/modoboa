@@ -33,7 +33,7 @@ class Amavis(ModoExtension):
 
         for dom in Domain.objects.all():
             try:
-                u = Users.objects.get(email="@%s" % dom.name)
+                Users.objects.get(email="@%s" % dom.name)
             except Users.DoesNotExist:
                 p = Policy.objects.create(policy_name=dom.name)
                 Users.objects.create(email="@%s" % dom.name, fullname=dom.name,

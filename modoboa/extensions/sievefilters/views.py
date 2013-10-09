@@ -8,10 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa.lib import parameters
-from modoboa.lib.webutils import _render_to_string, _render_error, \
+from modoboa.lib.webutils import _render_error, \
     ajax_response, ajax_simple_response
 from modoboa.lib.connections import ConnectionError
-from modoboa.lib.cryptutils import get_password
 from modoboa.extensions.admin.lib import needs_mailbox
 from .lib import SieveClient, SieveClientError
 from .forms import (

@@ -1,5 +1,5 @@
 import csv
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import ugettext as _
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.db import transaction, IntegrityError

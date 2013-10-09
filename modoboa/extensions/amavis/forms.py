@@ -1,5 +1,4 @@
 # coding: utf-8
-from django.utils.translation import ugettext_lazy as _
 from django import forms
 from models import Policy, Users
 from modoboa.lib.formutils import InlineRadioSelect
@@ -20,7 +19,7 @@ class DomainPolicyForm(forms.ModelForm):
             'spam_kill_level': forms.TextInput(attrs={'class': 'span1'}),
             'spam_subject_tag2': forms.TextInput(attrs={'class': 'span2'}),
             'bypass_banned_checks': InlineRadioSelect(),
-            }
+        }
 
     def __init__(self, *args, **kwargs):
         if "instance" in kwargs:
@@ -28,7 +27,7 @@ class DomainPolicyForm(forms.ModelForm):
             try:
                 policy = Users.objects.get(email="@%s" % self.domain.name).policy
                 kwargs["instance"] = policy
-            except (Users.DoesNotExist, Policy.DoesNotExist), e:
+            except (Users.DoesNotExist, Policy.DoesNotExist):
                 del kwargs["instance"]
         super(DomainPolicyForm, self).__init__(*args, **kwargs)
         for f in self.fields.keys():

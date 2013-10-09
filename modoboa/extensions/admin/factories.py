@@ -1,5 +1,4 @@
 import factory
-from django.contrib.auth.models import Group
 from . import models
 
 

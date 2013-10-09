@@ -6,7 +6,6 @@ import base64
 from random import Random
 import reversion
 from django.db import models
-from django.db.models import Q
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -16,7 +15,6 @@ from django.contrib.contenttypes import generic
 from django.contrib.auth.models import (
     UserManager, Group, AbstractBaseUser, PermissionsMixin
 )
-from django.contrib.contenttypes.models import ContentType
 from modoboa.lib import events, md5crypt, parameters
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.sysutils import exec_cmd
@@ -172,7 +170,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def tags(self):
         return [{"name": "account", "label": _("account"), "type": "idt"},
-                {"name": self.group, "label": self.group, "type": "grp", "color": "info"}]
+                {"name": self.group, "label": self.group,
+                 "type": "grp", "color": "info"}]
 
     @property
     def fullname(self):
@@ -313,7 +312,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         "account", loginname, password, first name, last name, enabled, group, address[, domain, ...]
 
-        :param user: 
+        :param user: a ``core.User`` instance
         :param row: a list containing the expected information
         :param crypt_password:
         """

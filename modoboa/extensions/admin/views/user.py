@@ -55,7 +55,7 @@ def forward(request, tplname='admin/forward.html'):
     if al is not None:
         form.fields["dest"].initial = al.extmboxes
         try:
-            selfmb = al.mboxes.get(pk=mb.id)
+            al.mboxes.get(pk=mb.id)
         except Mailbox.DoesNotExist:
             pass
         else:

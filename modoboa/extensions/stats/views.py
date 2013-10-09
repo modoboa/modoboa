@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.shortcuts import render
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import (
     login_required, user_passes_test, permission_required
 )
@@ -10,7 +10,7 @@ from modoboa.lib.webutils import (
     _render_to_string, ajax_simple_response
 )
 from modoboa.extensions.admin.models import (
-    Domain, Mailbox
+    Domain
 )
 from modoboa.extensions.stats.grapher import periods, str2Time, Grapher
 

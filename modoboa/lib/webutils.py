@@ -3,7 +3,6 @@
 """
 This module contains extra functions/shortcuts used to render HTML.
 """
-import os
 import sys
 import re
 from django.http import HttpResponse, HttpResponseRedirect

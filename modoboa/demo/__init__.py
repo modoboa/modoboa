@@ -1,5 +1,4 @@
 # coding: utf-8
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string

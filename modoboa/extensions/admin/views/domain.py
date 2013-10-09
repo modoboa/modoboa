@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.db import transaction
@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import (
 )
 from modoboa.lib import parameters, events
 from modoboa.lib.webutils import (
-    ajax_simple_response, ajax_response, _render_to_string
+    ajax_simple_response, _render_to_string
 )
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.exceptions import PermDeniedException
@@ -59,7 +59,9 @@ def _domains(request):
 def domains(request, tplname="admin/domains.html"):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
-            return HttpResponseRedirect(reverse(identities))
+            return HttpResponseRedirect(
+                reverse('modoboa.extensions.admin.views.identity.identities')
+            )
         return HttpResponseRedirect(reverse("modoboa.core.views.user.index"))
     return render(request, tplname, {"selection": "domains"})
 

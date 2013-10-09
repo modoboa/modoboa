@@ -8,11 +8,13 @@ from django.contrib.auth.decorators import (
 from django.views.decorators.csrf import ensure_csrf_cookie
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import PermDeniedException
-from modoboa.lib.webutils import ajax_simple_response, _render_to_string
+from modoboa.lib.webutils import (
+    ajax_simple_response, _render_to_string, ajax_response
+)
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.core.models import User
-from modoboa.extensions.admin.models import Mailbox
+from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.extensions.admin.lib import (
     get_sort_order, get_listing_page, get_identities
 )

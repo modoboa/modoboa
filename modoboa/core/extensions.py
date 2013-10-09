@@ -1,6 +1,3 @@
-import os
-import sys
-import re
 from django.conf import settings
 from django.conf.urls import include
 

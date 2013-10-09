@@ -1,14 +1,9 @@
 # coding: utf-8
 from datetime import datetime
 from django import template
-from django.contrib import messages
 from django.template import Template, Context
 from django.template.loader import render_to_string
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib import events
-from modoboa.lib.sysutils import exec_cmd
-from modoboa.lib.webutils import static_url
+from django.utils.translation import ugettext_lazy
 from modoboa.lib.formutils import SeparatorField
 
 register = template.Library()

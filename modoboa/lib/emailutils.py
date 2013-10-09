@@ -6,7 +6,6 @@ import smtplib
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
-from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.conf import settings
 import u2u_decode

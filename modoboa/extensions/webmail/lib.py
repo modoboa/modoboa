@@ -1,7 +1,6 @@
 # coding: utf-8
 import os
 import re
-import time
 from datetime import datetime, timedelta
 import email
 import lxml

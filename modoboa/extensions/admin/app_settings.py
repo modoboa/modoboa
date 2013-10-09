@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy
-from modoboa.lib.formutils import YesNoField, SeparatorField, InlineRadioSelect
+from modoboa.lib.formutils import YesNoField, SeparatorField
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib import parameters
 

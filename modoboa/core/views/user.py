@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import (
     ajax_simple_response, _render_to_string

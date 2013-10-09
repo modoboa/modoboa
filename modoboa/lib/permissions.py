@@ -1,5 +1,4 @@
 # coding: utf-8
-from functools import wraps
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.db import IntegrityError

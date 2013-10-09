@@ -5,7 +5,6 @@ This module extra functions/shortcuts to communicate with the system
 (executing commands, etc.)
 """
 import subprocess
-from modoboa.lib import parameters
 
 
 def exec_cmd(cmd, sudo_user=None, **kwargs):

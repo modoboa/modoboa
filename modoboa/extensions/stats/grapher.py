@@ -1,9 +1,7 @@
 # coding: utf-8
-
 import sys
 import os
 import time
-import datetime
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
 

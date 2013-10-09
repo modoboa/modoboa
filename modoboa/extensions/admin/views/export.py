@@ -4,8 +4,7 @@ from rfc6266 import build_header
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.db import transaction
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )

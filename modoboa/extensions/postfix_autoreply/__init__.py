@@ -6,8 +6,7 @@ This module provides a way to integrate Modoboa auto-reply
 functionality into Postfix.
 
 """
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
 from .models import Transport, Alias
@@ -24,7 +23,7 @@ class PostfixAutoreply(ModoExtension):
 
         for dom in Domain.objects.all():
             try:
-                trans = Transport.objects.get(domain="autoreply.%s" % dom.name)
+                Transport.objects.get(domain="autoreply.%s" % dom.name)
             except Transport.DoesNotExist:
                 onCreateDomain(None, dom)
             else:
@@ -32,7 +31,7 @@ class PostfixAutoreply(ModoExtension):
 
             for mb in dom.mailbox_set.all():
                 try:
-                    alias = Alias.objects.get(full_address=mb.full_address)
+                    Alias.objects.get(full_address=mb.full_address)
                 except Alias.DoesNotExist:
                     onCreateMailbox(None, mb)
 
