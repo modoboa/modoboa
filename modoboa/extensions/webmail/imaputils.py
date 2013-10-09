@@ -10,7 +10,7 @@ import re
 import time
 from functools import wraps
 from django.utils.translation import ugettext as _
-from modoboa.lib import parameters
+from modoboa.lib import parameters, imap_utf7
 from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.webutils import static_url
 from exceptions import ImapError, WebmailError
