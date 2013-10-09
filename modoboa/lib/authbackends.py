@@ -25,21 +25,22 @@ try:
     from django_auth_ldap.backend import (
         LDAPBackend as orig_LDAPBackend, _LDAPUser
     )
-    from modoboa.admin.models import populate_callback
+    from modoboa.core.models import populate_callback
 
     class LDAPBackend(orig_LDAPBackend):
 
         def get_or_create_user(self, username, ldap_user):
             """
-            This must return a (User, created) 2-tuple for the given LDAP user.
-            username is the Django-friendly username of the user. ldap_user.dn is
-            the user's DN and ldap_user.attrs contains all of their LDAP attributes.
+            This must return a (User, created) 2-tuple for the given
+            LDAP user.  username is the Django-friendly username of
+            the user. ldap_user.dn is the user's DN and
+            ldap_user.attrs contains all of their LDAP attributes.
             """
             lpart, domain = split_mailbox(username)
             if domain is None:
                 return None
             user, created = User.objects.get_or_create(
-                username__iexact=username, 
+                username__iexact=username,
                 defaults={'username': username.lower(), 'is_local': False}
             )
             if created:
@@ -50,7 +51,7 @@ try:
             user = None
             try:
                 user = User.objects.get(pk=user_id)
-                _LDAPUser(self, user=user) # This sets user.ldap_user
+                _LDAPUser(self, user=user)  # This sets user.ldap_user
             except User.DoesNotExist:
                 pass
             return user

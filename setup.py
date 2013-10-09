@@ -8,6 +8,7 @@ from setuptools import setup, find_packages
 ROOT = os.path.dirname(__file__)
 PIP_REQUIRES = os.path.join(ROOT, "requirements.txt")
 
+
 def parse_requirements(*filenames):
     """
     We generate our install_requires from the pip-requires and test-requires
@@ -31,6 +32,7 @@ def parse_requirements(*filenames):
                 requirements.append(line)
     return requirements
 
+
 def parse_dependency_links(*filenames):
     """
     We generate our dependency_links from the pip-requires and test-requires
@@ -46,28 +48,30 @@ def parse_dependency_links(*filenames):
                 dependency_links.append(line)
     return dependency_links
 
+
 def read(fname):
     return open(os.path.join(ROOT, fname)).read()
 
-setup(name="modoboa",
-      version='1.0.1',
-      url='http://modoboa.org/',
-      license='MIT',
-      description="Mail hosting made simple",
-      long_description=read('README.rst'),
-      author='Antoine Nguyen',
-      author_email='tonio@ngyn.org',
-      packages=find_packages(),
-      include_package_data=True,
-      scripts=["modoboa/bin/modoboa-admin.py"],
-      zip_safe=False,
-      install_requires=parse_requirements(PIP_REQUIRES),
-      dependency_links=parse_dependency_links(PIP_REQUIRES),
-      classifiers=['Development Status :: 4 - Beta',
-                   'Framework :: Django',
-                   'Intended Audience :: System Administrators',
-                   'License :: OSI Approved :: MIT License',
-                   'Operating System :: OS Independent',
-                   'Programming Language :: Python',
-                   'Topic :: Internet :: WWW/HTTP']
+setup(
+    name="modoboa",
+    version='1.0.1',
+    url='http://modoboa.org/',
+    license='MIT',
+    description="Mail hosting made simple",
+    long_description=read('README.rst'),
+    author='Antoine Nguyen',
+    author_email='tonio@ngyn.org',
+    packages=find_packages(),
+    include_package_data=True,
+    scripts=["bin/modoboa-admin.py"],
+    zip_safe=False,
+    install_requires=parse_requirements(PIP_REQUIRES),
+    dependency_links=parse_dependency_links(PIP_REQUIRES),
+    classifiers=['Development Status :: 4 - Beta',
+                 'Framework :: Django',
+                 'Intended Audience :: System Administrators',
+                 'License :: OSI Approved :: MIT License',
+                 'Operating System :: OS Independent',
+                 'Programming Language :: Python',
+                 'Topic :: Internet :: WWW/HTTP']
 )

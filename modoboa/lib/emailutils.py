@@ -1,16 +1,16 @@
 # coding: utf-8
-
+import time
 import re
 import lxml
-from django.template import Template, Context
-from django.template.loader import render_to_string
-from django.conf import settings
-import u2u_decode
 import smtplib
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
-import time
+from django.template import Template, Context
+from django.template.loader import render_to_string
+from django.conf import settings
+import u2u_decode
+
 
 class EmailAddress(object):
     def __init__(self, address):
@@ -18,14 +18,15 @@ class EmailAddress(object):
         (self.name, self.address) = parseaddr(self.fulladdress)
         if self.name == "":
             self.fulladdress = self.address
-        
+
     def __str__(self):
         return self.fulladdress
+
 
 class Email(object):
     def __init__(self, msg, mformat="plain", dformat="plain", links=0):
         self.attached_map = {}
-        self.contents = {"html" : "", "plain" : ""}
+        self.contents = {"html": "", "plain": ""}
         self.headers = []
         self.attachments = {}
         self.mformat = mformat
@@ -34,7 +35,7 @@ class Email(object):
 
         self.__parse(msg)
 
-        if not self.contents.has_key(mformat) or self.contents[mformat] == "":
+        if not mformat in self.contents or self.contents[mformat] == "":
             # Fallback
             self.mformat = mformat == "html" and "plain" or "html"
 
@@ -68,7 +69,7 @@ class Email(object):
             target = "plain"
         else:
             target = msg.get_content_subtype()
-        self.contents[target] += decode(msg.get_payload(decode=True), 
+        self.contents[target] += decode(msg.get_payload(decode=True),
                                         charset=msg.get_content_charset())
 
     def _parse_image(self, msg, level):
@@ -97,7 +98,7 @@ class Email(object):
                 self.attached_map[cid] = re.match("^http:", fname) and fname \
                     or self.__save_image(fname, msg)
                 return
-        self.__parse_default(msg, level)  
+        self.__parse_default(msg, level)
 
     def __parse(self, msg, level=None):
         """Recursive email parser
@@ -121,7 +122,7 @@ class Email(object):
                 cpt += 1
             return
 
-        if level is None: 
+        if level is None:
             level = "1"
         try:
             getattr(self, "_parse_%s" % msg.get_content_maintype())(msg, level)
@@ -148,19 +149,17 @@ class Email(object):
         return path
 
     def map_cid(self, url):
-        import re
-
         m = re.match(".*cid:(.+)", url)
         if m:
-            if self.attached_map.has_key(m.group(1)):
+            if m.group(1) in self.attached_map:
                 return self.attached_map[m.group(1)]
         return url
 
     def render_headers(self, **kwargs):
         return render_to_string("common/mailheaders.html", {
-                "headers" : self.headers,
-                })
-        
+            "headers": self.headers,
+        })
+
     def viewmail_plain(self, content, **kwargs):
         return "<pre>%s</pre>" % content
 
@@ -181,6 +180,7 @@ class Email(object):
             body = re.sub("<(/?)body", lambda m: "<%sdiv" % m.group(1), body)
         return body
 
+
 def split_mailbox(mailbox):
     """Tries to split a mailbox in two parts (local part and domain name)
 
@@ -198,6 +198,7 @@ def split_mailbox(mailbox):
         domain = parts[-1]
         address = "@".join(parts[:-1])
     return (address, domain)
+
 
 def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=None):
     if charset is not None:
@@ -270,6 +271,7 @@ def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
         return False, "SMTP error: %s" % str(e)
     return True, None
 
+
 def sendmail_simple(sender, rcpt, subject="Sample message", content="", **kwargs):
     """Simple way to send a text message
 
@@ -288,9 +290,10 @@ def sendmail_simple(sender, rcpt, subject="Sample message", content="", **kwargs
     set_email_headers(msg, subject, sender, rcpt)
     return __sendmail(sender, rcpt, msg.as_string(), **kwargs)
 
+
 def sendmail_fromfile(sender, rcpt, fname):
     """Send a message contained within a file
-    
+
     The given file name must represent a valid message structure. It
     must not include the From: and To: headers, they are automatically
     added by the function.
@@ -312,4 +315,3 @@ To: %s
     fp.close()
 
     return __sendmail(sender, rcpt, content)
-    

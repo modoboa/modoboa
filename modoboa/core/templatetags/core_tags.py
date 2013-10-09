@@ -1,8 +1,10 @@
 import re
 from django import template
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.contrib.sessions.models import Session
 from modoboa.lib import events
 
 
@@ -160,3 +162,117 @@ def colorize_level(level):
 @register.filter
 def tohtml(message):
     return re.sub("'(.*?)'", "<strong>\g<1></strong>", message)
+
+
+@register.simple_tag
+def visirule(field):
+    if not hasattr(field.form, "visirules") or not field.html_name in field.form.visirules:
+        return ""
+    rule = field.form.visirules[field.html_name]
+    return " data-visibility-field='%s' data-visibility-value='%s' " \
+        % (rule["field"], rule["value"])
+
+
+@register.simple_tag
+def get_version():
+    import pkg_resources
+    return pkg_resources.get_distribution("modoboa").version
+
+
+class ConnectedUsers(template.Node):
+    def __init__(self, varname):
+        self.varname = varname
+
+    def render(self, context):
+        from modoboa.core.models import User
+
+        sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        uid_list = []
+        # Build a list of user ids from that query
+        for session in sessions:
+            data = session.get_decoded()
+            uid = data.get('_auth_user_id', None)
+            if uid:
+                uid_list.append(uid)
+
+        # Query all logged in users based on id list
+        context[self.varname] = []
+        for uid in uid_list:
+            try:
+                context[self.varname].append(User.objects.get(pk=uid))
+            except User.DoesNotExist:
+                pass
+        return ''
+
+
+@register.tag
+def connected_users(parser, token):
+    try:
+        tag, a, varname = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError(
+            'connected_users usage: {% connected_users as users %}'
+        )
+    return ConnectedUsers(varname)
+
+
+@register.simple_tag
+def get_modoboa_logo():
+    import os
+    from django.conf import settings
+
+    try:
+        logo = settings.MODOBOA_CUSTOM_LOGO
+    except AttributeError:
+        logo = None
+    if logo is None:
+        return os.path.join(settings.STATIC_URL, "css/modoboa.png")
+    return logo
+
+
+@register.simple_tag
+def extra_head_content(user):
+    tpl = Template("{% for sc in static_content %}{{ sc|safe }}{% endfor %}")
+    return tpl.render(
+        Context(
+            dict(static_content=events.raiseQueryEvent("GetStaticContent", user))
+        )
+    )
+
+
+@register.simple_tag
+def load_optionalmenu(user):
+    menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu_middle", user)
+    return template.loader.render_to_string(
+        'common/menulist.html',
+        {"entries" : menu, "user" : user}
+    )
+
+
+@register.simple_tag
+def load_notifications(user):
+    content = events.raiseQueryEvent("TopNotifications", user)
+    return "".join(content)
+
+
+@register.simple_tag
+def display_messages(msgs):
+    text = ""
+    level = "info"
+    for m in msgs:
+        level = m.tags
+        text += unicode(m) + "\\\n"
+
+    if level == "info":
+        level = "success"
+        timeout = "2000"
+    else:
+        timeout = "undefined"
+
+    return """
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('body').notify('%s', '%s', %s);
+    });
+</script>
+""" % (level, text, timeout)

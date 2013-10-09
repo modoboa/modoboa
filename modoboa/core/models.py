@@ -358,6 +358,26 @@ class User(AbstractBaseUser, PermissionsMixin):
 reversion.register(User)
 
 
+def populate_callback(user):
+    """Populate callback
+
+    If the LDAP authentication backend is in use, this callback will
+    be called each time a new user authenticates succesfuly to
+    Modoboa. This function is in charge of creating the mailbox
+    associated to the provided ``User`` object.
+
+    :param user: a ``User`` instance
+    """
+    from modoboa.lib.permissions import grant_access_to_object
+
+    sadmins = User.objects.filter(is_superuser=True)
+    user.set_role("SimpleUsers")
+    user.post_create(sadmins[0])
+    for su in sadmins[1:]:
+        grant_access_to_object(su, user)
+    events.raiseEvent("AccountAutoCreated", user)
+
+
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User)
     content_type = models.ForeignKey(ContentType)

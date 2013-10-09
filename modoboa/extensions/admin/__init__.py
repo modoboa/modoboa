@@ -157,6 +157,32 @@ def import_account_mailbox(user, account, row):
             dom.add_admin(account)
 
 
+@events.observe("AccountAutoCreated")
+def account_auto_created(user):
+    from modoboa.core.models import User
+    from modoboa.lib.permissions import grant_access_to_object
+
+    sadmins = User.objects.filter(is_superuser=True)
+    localpart, domname = split_mailbox(user.username)
+    try:
+        domain = Domain.objects.get(name=domname)
+    except Domain.DoesNotExist:
+        domain = Domain(name=domname, enabled=True, quota=0)
+        domain.save(creator=sadmins[0])
+        for su in sadmins[1:]:
+            grant_access_to_object(su, domain)
+    try:
+        mb = Mailbox.objects.get(domain=domain, address=localpart)
+    except Mailbox.DoesNotExist:
+        mb = Mailbox(
+            address=localpart, domain=domain, user=user, use_domain_quota=True
+        )
+        mb.set_quota(override_rules=True)
+        mb.save(creator=sadmins[0])
+        for su in sadmins[1:]:
+            grant_access_to_object(su, mb)
+
+
 @events.observe("UserLogin")
 def user_logged_in(request, username, password):
     from modoboa.lib.cryptutils import encrypt

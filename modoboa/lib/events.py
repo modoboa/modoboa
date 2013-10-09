@@ -13,39 +13,7 @@ import inspect
 import re
 from django.conf import settings
 
-events = [
-    "CanCreate",
-
-    "AccountCreated",
-    "AccountModified",
-    "AccountDeleted",
-    "AccountExported",
-    "AccountImported",
-    "PasswordUpdated",
-    "ExtraAccountActions",
-    "RoleChanged",
-    "GetExtraRoles",
-    "PasswordChange",
-
-    "UserMenuDisplay",
-    "AdminMenuDisplay",
-    "GetStaticContent",
-
-    "ExtEnabled",
-    "ExtDisabled",
-
-    "UserLogin",
-    "UserLogout",
-
-    "GetAnnouncement",
-
-    "TopNotifications",
-    "ExtraAdminContent",
-
-    "ExtraUprefsRoutes",
-    "ExtraUprefsJS"
-]
-
+events = []
 callbacks = {}
 
 

@@ -139,14 +139,6 @@ class Alias(DatesAware):
             total += len(self.extmboxes.split(','))
         return total + self.aliases.count() + self.mboxes.count()
 
-    def ui_disabled(self, user):
-        if user.is_superuser:
-            return False
-        for mb in self.mboxes.all():
-            if not user.is_owner(mb.domain):
-                return True
-        return False
-
     def from_csv(self, user, row, expected_elements=5):
         """Create a new alias from a CSV file entry
 

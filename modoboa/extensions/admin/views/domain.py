@@ -60,7 +60,7 @@ def domains(request, tplname="admin/domains.html"):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
             return HttpResponseRedirect(reverse(identities))
-        return HttpResponseRedirect(reverse("modoboa.userprefs.views.index"))
+        return HttpResponseRedirect(reverse("modoboa.core.views.user.index"))
     return render(request, tplname, {"selection": "domains"})
 
 

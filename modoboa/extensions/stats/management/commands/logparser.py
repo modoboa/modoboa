@@ -26,7 +26,7 @@ import string
 from django.core.management.base import BaseCommand, CommandError
 from optparse import make_option
 from modoboa.lib import parameters
-from modoboa.admin.models import Domain
+from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.stats import Stats
 from modoboa.extensions.stats.grapher import str2Time, Grapher
 from modoboa.extensions.stats.graph_templates import MailTraffic

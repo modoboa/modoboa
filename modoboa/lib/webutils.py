@@ -41,14 +41,6 @@ def render_actions(actions):
     return t.render(template.Context(dict(actions=actions)))
 
 
-def _ctx_ok(url):
-    return {"status": "ok", "url": url}
-
-
-def _ctx_ko(tpl, ctx):
-    return {"status": "ko", "content": render_to_string(tpl, ctx)}
-
-
 def getctx(status, level=1, callback=None, **kwargs):
     if not callback:
         callername = sys._getframe(level).f_code.co_name
