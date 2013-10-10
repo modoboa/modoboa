@@ -1,7 +1,6 @@
 # coding: utf-8
 import time
 import re
-import lxml
 import smtplib
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
@@ -163,6 +162,8 @@ class Email(object):
         return "<pre>%s</pre>" % content
 
     def viewmail_html(self, content, **kwargs):
+        import lxml.html
+
         if content is None or content == "":
             return ""
         links = kwargs.get("links", 0)
