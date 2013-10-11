@@ -68,7 +68,7 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
     from itertools import chain
 
     accounts = []
-    if idtfilter is None or idtfilter == "account":
+    if idtfilter is None or not idtfilter or idtfilter == "account":
         ids = user.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(user)) \
             .values_list('object_id', flat=True)
@@ -76,7 +76,7 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
         if searchquery is not None:
             q &= Q(username__icontains=searchquery) \
                 | Q(email__icontains=searchquery)
-        if grpfilter is not None:
+        if grpfilter is not None and grpfilter:
             if grpfilter == "SuperAdmins":
                 q &= Q(is_superuser=True)
             else:
@@ -84,7 +84,8 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
         accounts = User.objects.select_related().filter(q)
 
     aliases = []
-    if idtfilter is None or (idtfilter in ["alias", "forward", "dlist"]):
+    if idtfilter is None or not idtfilter \
+            or (idtfilter in ["alias", "forward", "dlist"]):
         alct = ContentType.objects.get_for_model(Alias)
         ids = user.objectaccess_set.filter(content_type=alct) \
             .values_list('object_id', flat=True)
