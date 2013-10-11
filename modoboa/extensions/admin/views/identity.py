@@ -29,7 +29,10 @@ from modoboa.extensions.admin.forms import (
     lambda u: u.has_perm("core.add_user") or u.has_perm("admin.add_alias")
 )
 def _identities(request):
-    idents_list = get_identities(request.user, request.GET)
+    filters = dict((fname, request.GET.get(fname, None))
+                   for fname in ['searchquery', 'idtfilter', 'grpfilter'])
+    request.session['identities_filters'] = filters
+    idents_list = get_identities(request.user, **filters)
     sort_order, sort_dir = get_sort_order(request.GET, "identity",
                                           ["identity", "name_or_rcpt", "tags"])
     if sort_order in ["identity", "name_or_rcpt"]:

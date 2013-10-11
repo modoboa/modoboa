@@ -47,7 +47,7 @@ def export_identities(request):
         form.is_valid()
         fp = cStringIO.StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
-        for ident in get_identities(request.user):
+        for ident in get_identities(request.user, **request.session['identities_filters']):
             ident.to_csv(csvwriter)
         content = fp.getvalue()
         fp.close()

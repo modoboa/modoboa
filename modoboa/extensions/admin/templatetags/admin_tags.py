@@ -48,6 +48,12 @@ def domains_menu(selection, user):
 
 @register.simple_tag
 def identities_menu(user):
+    """Menu specific to the Identities page.
+
+    :param ``User`` user: the connecter user
+    :rtype: str
+    :return: the rendered menu
+    """
     entries = [
         {"name": "identities",
          "label": _("List identities"),
@@ -94,7 +100,8 @@ def identities_menu(user):
          "img": "icon-share-alt",
          "url": reverse("modoboa.extensions.admin.views.export.export_identities"),
          "modal": True,
-         "modalcb": "admin.exportform_cb"}
+         "modalcb": "admin.exportform_cb"
+         }
     ]
 
     return render_to_string('common/menulist.html', {

@@ -56,61 +56,50 @@ def get_listing_page(objects, pagenum):
     return page
 
 
-def get_identities(user, args=None):
+def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
     """Return all the identities owned by a user
 
     :param user: the desired user
-    :param args: a args object
+    :param str searchquery: search pattern
+    :param list idtfilter: identity type filters
+    :param list grpfilter: group names filters
     :return: a queryset
     """
     from itertools import chain
 
-    if args:
-        squery = args.get("searchquery", None)
-        idtfilter = args.getlist("idtfilter", None)
-        grpfilter = args.getlist("grpfilter", None)
-    else:
-        squery = None
-        idtfilter = None
-        grpfilter = None
-
     accounts = []
-    if not idtfilter or "account" in idtfilter:
+    if idtfilter is None or idtfilter == "account":
         ids = user.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(user)) \
             .values_list('object_id', flat=True)
         q = Q(pk__in=ids)
-        if squery:
-            q &= Q(username__icontains=squery) | Q(email__icontains=squery)
-        if grpfilter and len(grpfilter):
-            if "SuperAdmins" in grpfilter:
+        if searchquery is not None:
+            q &= Q(username__icontains=searchquery) \
+                | Q(email__icontains=searchquery)
+        if grpfilter is not None:
+            if grpfilter == "SuperAdmins":
                 q &= Q(is_superuser=True)
-                grpfilter.remove("SuperAdmins")
-                if len(grpfilter):
-                    q |= Q(groups__name__in=grpfilter)
             else:
-                q &= Q(groups__name__in=grpfilter)
+                q &= Q(groups__name=grpfilter)
         accounts = User.objects.select_related().filter(q)
 
     aliases = []
-    if not idtfilter or ("alias" in idtfilter
-                         or "forward" in idtfilter
-                         or "dlist" in idtfilter):
+    if idtfilter is None or (idtfilter in ["alias", "forward", "dlist"]):
         alct = ContentType.objects.get_for_model(Alias)
         ids = user.objectaccess_set.filter(content_type=alct) \
             .values_list('object_id', flat=True)
         q = Q(pk__in=ids)
-        if squery:
-            if '@' in squery:
-                local_part, domname = split_mailbox(squery)
+        if searchquery is not None:
+            if '@' in searchquery:
+                local_part, domname = split_mailbox(searchquery)
                 if local_part:
                     q &= Q(address__icontains=local_part)
                 if domname:
                     q &= Q(domain__name__icontains=domname)
             else:
-                q &= Q(address__icontains=squery) | Q(domain__name__icontains=squery)
+                q &= Q(address__icontains=searchquery) | \
+                    Q(domain__name__icontains=searchquery)
         aliases = Alias.objects.select_related().filter(q)
-        if idtfilter:
-            aliases = [al for al in aliases if al.type in idtfilter]
-
+        if idtfilter is not None:
+            aliases = [al for al in aliases if al.type == idtfilter]
     return chain(accounts, aliases)
