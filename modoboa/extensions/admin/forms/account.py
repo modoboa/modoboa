@@ -187,7 +187,9 @@ class AccountFormMail(forms.Form, DynamicForm):
                 self.mb.rename(local_part, domain)
 
             self.mb.use_domain_quota = self.cleaned_data["quota_act"]
-            override_rules = True if not self.mb.quota or user.has_perm("admin.add_domain") else False
+            override_rules = True \
+                if not self.mb.quota or user.has_perm("admin.add_domain") \
+                else False
             self.mb.set_quota(self.cleaned_data["quota"], override_rules)
             self.mb.save()
 

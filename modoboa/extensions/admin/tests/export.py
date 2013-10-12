@@ -22,7 +22,7 @@ class ExportTestCase(ModoTestCase):
 
     def test_export_identities(self):
         response = self.__export_identities()
-        self.assertEqual(response.content, "account;admin;{CRYPT}dTTsGDkA5ZHKg;;;True;SuperAdmins;\r\naccount;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;test.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com\r\nalias;alias@test.com;False;user@test.com\r\nforward;forward@test.com;False;user@external.com\r\ndlist;postmaster@test.com;False;toto@titi.com;test@truc.fr\r\n")
+        self.assertEqual(response.content, "account;admin;{CRYPT}dTTsGDkA5ZHKg;;;True;SuperAdmins;\r\naccount;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com\r\nalias;alias@test.com;False;user@test.com\r\nforward;forward@test.com;False;user@external.com\r\ndlist;postmaster@test.com;False;toto@titi.com;test@truc.fr\r\n")
 
     def test_export_simpleusers(self):
         response = self.__export_identities(
@@ -48,7 +48,7 @@ class ExportTestCase(ModoTestCase):
         )
         self.assertEqual(
             response.content.strip(),
-            "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;test.com"
+            "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;test2.com"
         )
 
     def test_export_aliases(self):

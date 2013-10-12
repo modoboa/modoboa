@@ -52,6 +52,29 @@ class AccountTestCase(ModoTestCase):
             {}
         )
 
+    def _set_quota(self, email, value, expected_status="ok"):
+        account = User.objects.get(username=email)
+        values = {
+            "username": email, "role": "SimpleUsers", "quota_act": False,
+            "is_active": True, "quota": value, "email": email
+        }
+        self.check_ajax_post(
+            reverse("modoboa.extensions.admin.views.identity.editaccount",
+                    args=[account.id]),
+            values, status=expected_status
+        )
+
+    def test_set_nul_quota_as_superadmin(self):
+        self._set_quota("user@test.com", 0)
+
+    def test_set_nul_quota_as_domainadmin(self):
+        self.clt.logout()
+        self.assertTrue(self.clt.login(username="admin@test.com", password="toto"))
+        self._set_quota("user@test.com", 0, "ko")
+        self.clt.logout()
+        self.assertTrue(self.clt.login(username="admin@test2.com", password="toto"))
+        self._set_quota("user@test2.com", 0)
+
 
 class PermissionsTestCase(ModoTestCase):
     fixtures = ["initial_users.json"]

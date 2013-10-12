@@ -144,6 +144,11 @@ class Mailbox(DatesAware):
     def set_quota(self, value=None, override_rules=False):
         """Set or update quota's value for this mailbox.
 
+        A value equal to 0 means the mailbox won't have any quota. The
+        following cases allow people to define such behaviour:
+        * The domain has no quota
+        * :keyword:`override_rules` is True
+
         :param integer value: the quota's value
         :param bool override_rules: allow to override defined quota rules
         """
@@ -158,14 +163,22 @@ class Mailbox(DatesAware):
             )
         else:
             self.quota = value
-        if not self.quota and not override_rules:
+        if not self.quota and self.domain.quota and not override_rules:
             raise AdminError(_("A quota is required"))
 
     def get_quota(self):
+        """Get quota limit.
+        
+        :rtype: int
+        """
         q = Quota.objects.get(username=self.full_address)
         return int(q.bytes / 1048576)
 
     def get_quota_in_percent(self):
+        """Get current quota usage.
+
+        :rtype: int
+        """
         if not self.quota:
             return 0
         q = Quota.objects.get(username=self.full_address)

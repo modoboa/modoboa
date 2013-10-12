@@ -1,5 +1,3 @@
-import factory
-from modoboa.core.models import User
 from modoboa.core.factories import PermissionFactory, UserFactory
 from . import models
 
@@ -14,8 +12,7 @@ class DomainFactory(PermissionFactory):
 class MailboxFactory(PermissionFactory):
     FACTORY_FOR = models.Mailbox
 
-    quota = 0
-    use_domain_quota = True
+    quota = 10
 
 
 class AliasFactory(PermissionFactory):
@@ -29,11 +26,11 @@ def populate_database():
     """
     dom = DomainFactory.create(name="test.com")
     admin = UserFactory(
-        username="admin@test.com", groups=('DomainAdmins',)
+        username="admin@test.com", groups=('DomainAdmins', ), password='{PLAIN}toto'
     )
     MailboxFactory(address='admin', domain=dom, user=admin)
     account = UserFactory.create(
-        username="user@test.com", groups=('SimpleUsers',)
+        username="user@test.com", groups=('SimpleUsers',),
     )
     MailboxFactory.create(address='user', domain=dom, user=account)
 
@@ -49,8 +46,13 @@ def populate_database():
     )
     dom.add_admin(admin)
 
-    dom2 = DomainFactory.create(name='test2.com')
+    dom2 = DomainFactory.create(name='test2.com', quota=0)
+    admin = UserFactory.create(
+        username='admin@test2.com', groups=('DomainAdmins',), password='{PLAIN}toto'
+    )
+    MailboxFactory.create(address='admin', domain=dom2, user=admin)
     u = UserFactory.create(
         username='user@test2.com', groups=('SimpleUsers',)
     )
     MailboxFactory.create(address='user', domain=dom2, user=u)
+    dom2.add_admin(admin)
