@@ -57,7 +57,7 @@ def get_listing_page(objects, pagenum):
 
 
 def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
-    """Return all the identities owned by a user
+    """Return all the identities owned by a user.
 
     :param user: the desired user
     :param str searchquery: search pattern
@@ -101,6 +101,6 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
                 q &= Q(address__icontains=searchquery) | \
                     Q(domain__name__icontains=searchquery)
         aliases = Alias.objects.select_related().filter(q)
-        if idtfilter is not None:
+        if idtfilter is not None and idtfilter:
             aliases = [al for al in aliases if al.type == idtfilter]
     return chain(accounts, aliases)

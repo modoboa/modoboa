@@ -22,25 +22,52 @@ class ExportTestCase(ModoTestCase):
 
     def test_export_identities(self):
         response = self.__export_identities()
-        self.assertEqual(response.content, "account;admin;{CRYPT}dTTsGDkA5ZHKg;;;True;SuperAdmins;\r\naccount;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;test.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com\r\n")
+        self.assertEqual(response.content, "account;admin;{CRYPT}dTTsGDkA5ZHKg;;;True;SuperAdmins;\r\naccount;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;test.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com\r\nalias;alias@test.com;False;user@test.com\r\nforward;forward@test.com;False;user@external.com\r\ndlist;postmaster@test.com;False;toto@titi.com;test@truc.fr\r\n")
 
     def test_export_simpleusers(self):
-        response = self.__export_identities(grpfilter="SimpleUsers")
+        response = self.__export_identities(
+            idtfilter="account", grpfilter="SimpleUsers"
+        )
         self.assertEqual(
             response.content.strip(),
             "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com"
         )
 
     def test_export_superadmins(self):
-        response = self.__export_identities(grpfilter="SuperAdmins")
+        response = self.__export_identities(
+            idtfilter="account", grpfilter="SuperAdmins"
+        )
         self.assertEqual(
             response.content.strip(),
             "account;admin;{CRYPT}dTTsGDkA5ZHKg;;;True;SuperAdmins;"
         )
 
     def test_export_domainadmins(self):
-        response = self.__export_identities(grpfilter="DomainAdmins")
+        response = self.__export_identities(
+            idtfilter="account", grpfilter="DomainAdmins"
+        )
         self.assertEqual(
             response.content.strip(),
             "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;test.com"
+        )
+
+    def test_export_aliases(self):
+        response = self.__export_identities(idtfilter="alias")
+        self.assertEqual(
+            response.content.strip(),
+            "alias;alias@test.com;False;user@test.com"
+        )
+
+    def test_export_forwards(self):
+        response = self.__export_identities(idtfilter="forward")
+        self.assertEqual(
+            response.content.strip(),
+            "forward;forward@test.com;False;user@external.com"
+        )
+
+    def test_export_dlists(self):
+        response = self.__export_identities(idtfilter="dlist")
+        self.assertEqual(
+            response.content.strip(),
+            "dlist;postmaster@test.com;False;toto@titi.com;test@truc.fr"
         )

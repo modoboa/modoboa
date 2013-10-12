@@ -115,6 +115,6 @@ class AliasForm(forms.ModelForm, DynamicForm):
         alias.address = localpart
         alias.domain = Domain.objects.get(name=domname)
         if commit:
-            alias.save(self.int_rcpts, self.ext_rcpts)
+            alias.save(int_rcpts=self.int_rcpts, ext_rcpts=self.ext_rcpts)
             self.save_m2m()
         return alias

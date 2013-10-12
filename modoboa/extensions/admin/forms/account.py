@@ -209,7 +209,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             events.raiseEvent("CanCreate", user, "mailbox_aliases")
             al = Alias(address=local_part, enabled=account.is_active)
             al.domain = Domain.objects.get(name=domname)
-            al.save([self.mb], [], creator=user)
+            al.save(int_rcpts=[self.mb], creator=user)
 
         for alias in self.mb.alias_set.all():
             if len(alias.get_recipients()) >= 2:

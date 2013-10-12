@@ -86,11 +86,16 @@ class Alias(DatesAware):
             for admin in self.domain.admins:
                 grant_access_to_object(admin, self)
 
-    def save(self, int_rcpts, ext_rcpts, *args, **kwargs):
-        if len(ext_rcpts):
-            self.extmboxes = ",".join(ext_rcpts)
+    def save(self, *args, **kwargs):
+        if 'ext_rcpts' in kwargs:
+            self.extmboxes = ",".join(kwargs['ext_rcpts']) \
+                if kwargs['ext_rcpts'] else ""
+            del kwargs['ext_rcpts']
+        if 'int_rcpts' in kwargs:
+            int_rcpts = kwargs['int_rcpts']
+            del kwargs['int_rcpts']
         else:
-            self.extmboxes = ""
+            int_rcpts = []
         if "creator" in kwargs:
             creator = kwargs["creator"]
             del kwargs["creator"]
@@ -134,6 +139,10 @@ class Alias(DatesAware):
         return result
 
     def get_recipients_count(self):
+        """Return the number of recipients of this alias.
+
+        :rtype: int
+        """
         total = 0
         if self.extmboxes != "":
             total += len(self.extmboxes.split(','))
@@ -178,7 +187,7 @@ class Alias(DatesAware):
                 except Mailbox.DoesNotExist:
                     raise AdminError(_("Local recipient %s not found" % rcpt))
             int_rcpts += [target]
-        self.save(int_rcpts, ext_rcpts, creator=user)
+        self.save(int_rcpts=int_rcpts, ext_rcpts=ext_rcpts, creator=user)
 
     def to_csv(self, csvwriter):
         row = [self.type, self.full_address.encode("utf-8"), self.enabled]
