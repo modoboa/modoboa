@@ -25,6 +25,8 @@ variable::
 
 Then, edit the ``inbox`` namespace and add the following lines::
 
+  inbox = yes
+
   mailbox Drafts {
     auto = create
     special_use = \Drafts
@@ -455,7 +457,7 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
 
   smtpd_recipient_restrictions =
         ...
-        check_recipient_access <driver>:/etc/postfix/maps/sql-maintain.cf
+        check_recipient_access <driver>:/etc/postfix/sql-maintain.cf
         permit_mynetworks
         ...
 
