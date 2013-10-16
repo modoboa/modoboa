@@ -94,7 +94,7 @@ Deployment
 `modoboa-admin.py`, a command line tool, let you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
-  $ modoboa-admin.py deploy modoboa_example --syncdb --collectstatic [--with-amavis]
+  $ modoboa-admin.py deploy modoboa_example --syncdb --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
 
 Just answer the few questions and you're done. You can now go to the
 :ref:`first_use` section.
@@ -103,6 +103,31 @@ Just answer the few questions and you're done. You can now go to the
 
    The `--with-amavis` option must be set only if you intend to use
    the :ref:`amavis_frontend`.
+
+
+In case you need a **silent installation**, e.g. if you're using Salt-Stack.
+It's possible to supply the database credentials as commandline arguments.
+
+.. note::
+
+   `--dburl database-url` for the modoboa database credentials
+   `--amavis_dburl database-url` for the amavis database credentials
+
+   Your database-url should meet the following syntax:
+   ``scheme://[user:pass@][host:port]/dbname``
+
+   **or**
+
+   ``sqlite:////full/path/to/your/database/file.sqlite``
+
+   Available `schemes` are:
+   * postgres
+   * postgresql
+   * postgis
+   * mysql
+   * mysql2
+   * sqlite
+
 
 .. note::
 
