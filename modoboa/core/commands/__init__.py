@@ -19,7 +19,7 @@ class Command(object):
         self._verbose = verbose
         if not settings.configured:
             settings.configure()
-        self._templates_dir = "%s/commands/templates" % os.path.dirname(__file__)
+        self._templates_dir = "%s/templates" % os.path.dirname(__file__)
 
     def _render_template(self, tplfile, env):
         fp = open(tplfile)
