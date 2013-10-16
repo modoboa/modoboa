@@ -4,6 +4,8 @@ import os
 import shutil
 import getpass
 import subprocess
+import dj_database_url
+
 from django.core import management
 from django.template import Context, Template
 from modoboa.lib.sysutils import exec_cmd
@@ -11,12 +13,12 @@ from . import Command
 
 dbconn_tpl = """
     '{{ conn_name }}': {
-        'ENGINE': 'django.db.backends.{{ dbtype }}',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '{{ dbname }}',                       # Or path to database file if using sqlite3.
-        'USER': '{{ username }}',                     # Not used with sqlite3.
-        'PASSWORD': '{{ password }}',                 # Not used with sqlite3.
-        'HOST': '{{ dbhost }}',                       # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.{% if dbtype == 'mysql' %}
+        'ENGINE': '{{ ENGINE }}',
+        'NAME': '{{ NAME }}',                       # Or path to database file if using sqlite3.
+        'USER': '{% if USER %}{{ USER }}{% endif %}',                     # Not used with sqlite3.
+        'PASSWORD': '{% if PASSWORD %}{{ PASSWORD }}{% endif %}',                 # Not used with sqlite3.
+        'HOST': '{% if HOST %}{{ HOST }}{% endif %}',                       # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '{% if PORT %}{{ PORT }}{% endif %}',                      # Set to empty string for default. Not used with sqlite3.{% if dbtype == 'django.db.backends.mysql' %}
         'OPTIONS' : {
             "init_command" : 'SET foreign_key_checks = 0;',
         },{% endif %}
@@ -43,6 +45,16 @@ class DeployCommand(Command):
             '--collectstatic', action='store_true', default=False,
             help='Run django collectstatic command'
         )
+        self._parser.add_argument(
+            '--dburl', type=str, nargs=1, default=None,
+            help='The database-url for your modoboa instance')
+        self._parser.add_argument(
+            '--amavis_dburl', type=str, nargs=1, default=None,
+            help='The database-url for your amavis instance')
+        self._parser.add_argument(
+            '--domain', type=str, nargs=1, default=None,
+            help='The domain under which you want to deploy modoboa')
+
 
     def _exec_django_command(self, name, cwd, *args):
         """Run a django command for the freshly created project
@@ -76,22 +88,28 @@ class DeployCommand(Command):
         """
         print "Configuring database connection: %s" % name
         info = {'conn_name': name,
-                'dbtype': raw_input('Database type (mysql, postgres or sqlite3): ')}
-        if info['dbtype'] not in ['mysql', 'postgres', 'sqlite3']:
-            info['dbtype'] = 'mysql'
-        if info['dbtype'] == 'postgres':
-            info['dbtype'] = 'postgresql_psycopg2'
-        if info['dbtype'] == 'sqlite3':
-            info['dbname'] = '%s.db' % name
+                'ENGINE': raw_input('Database type (mysql, postgres or sqlite3): ')}
+        if info['ENGINE'] not in ['mysql', 'postgres', 'sqlite3']:
+            info['ENGINE'] = 'django.db.backends.mysql'
+            default_port = 3306
+        if info['ENGINE'] == 'postgres':
+            info['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+            default_port = 5432
+        if info['ENGINE'] == 'sqlite3':
+            info['ENGINE'] = 'django.db.backends.sqlite3'
+            info['NAME'] = '%s.db' % name
         else:
-            default_host = 'localhost' if info['dbtype'] == 'mysql' else ''
-            info['dbhost'] = \
-                raw_input("Database host (default: '%s'): " % default_host)
-            if info['dbhost'] == '':
-                info['dbhost'] = default_host
-            info['dbname'] = raw_input('Database name: ')
-            info['username'] = raw_input('Username: ')
-            info['password'] = getpass.getpass('Password: ')
+            # No need to set HOST to localhost, since django will do this
+            # automatically if HOST is not supplied
+            info['HOST'] = raw_input("Database host (default: localhost )")
+
+            info['PORT'] = raw_input("Database port: (default: '%s'): " % default_port)
+            #leave port setting empty, if default value is supplied and leave it to django
+            if info['PORT'] == default_port:
+                info['PORT'] = ''
+            info['NAME'] = raw_input('Database name: ')
+            info['USER'] = raw_input('Username: ')
+            info['PASSWORD'] = getpass.getpass('Password: ')
         return info
 
     def handle(self, parsed_args):
@@ -109,13 +127,41 @@ class DeployCommand(Command):
             django14 = False
 
         t = Template(dbconn_tpl)
-        default_conn = t.render(Context(self.ask_db_info()))
-        amavis_conn = t.render(Context(self.ask_db_info('amavis'))) \
-            if parsed_args.with_amavis else None
 
-        allowed_host = raw_input(
-            'Under which domain do you want to deploy modoboa? '
-        )
+        if parsed_args.dburl:
+            info = dj_database_url.config(default=parsed_args.dburl[0])
+            # In case the user fails to supply a valid database url, fallback to manual mode
+            if not info:
+                print "There was a problem with your database-url. \n"
+                info = self.ask_db_info()
+            #If we set this earlier, our fallback method will never be triggered
+            info['conn_name'] = 'default'
+        else:
+            info = self.ask_db_info()
+
+        default_conn = t.render(Context(info))
+
+        if parsed_args.with_amavis:
+            if parsed_args.amavis_dburl:
+                amavis_info = dj_database_url.config(default=parsed_args.amavis_dburl[0])
+                # In case the user fails to supply a valid database url, fallback to manual mode
+                if not amavis_info:
+                    amavis_info = self.ask_db_info('amavis')
+                #If we set this earlier, our fallback method will never be triggered
+                amavis_info['conn_name'] = 'amavis'
+            else:
+                amavis_info = self.ask_db_info('amavis')
+
+            amavis_conn = t.render(Context(amavis_info))
+        else:
+            amavis_conn = None
+
+        if parsed_args.domain:
+            allowed_host = parsed_args.domain[0]
+        else:
+            allowed_host = raw_input(
+                'Under which domain do you want to deploy modoboa? '
+            )
 
         mod = __import__(parsed_args.name, globals(), locals(), ['settings'])
         tpl = self._render_template(

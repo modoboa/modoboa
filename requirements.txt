@@ -1,5 +1,6 @@
 django
 django-reversion
+dj-database-url
 south
 lxml
 pycrypto
