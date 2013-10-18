@@ -132,7 +132,7 @@ def raiseEvent(event, *args, **kwargs):
     return 1
 
 
-def raiseQueryEvent(event, *args):
+def raiseQueryEvent(event, *args, **kwargs):
     """Raise a specific event and wait for answers from callbacks
 
     Any additional keyword argument will be passed to registered
@@ -144,7 +144,7 @@ def raiseQueryEvent(event, *args):
     if not event in events or not event in callbacks.keys():
         return result
     for callback in callbacks[event].values():
-        result += callback(*args)
+        result += callback(*args, **kwargs)
     return result
 
 

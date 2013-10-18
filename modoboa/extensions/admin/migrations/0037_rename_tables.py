@@ -75,6 +75,13 @@ class Migration(SchemaMigration):
             'use_domain_quota': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.User']"})
         },
+        u'admin.mailboxoperation': {
+            'Meta': {'object_name': 'MailboxOperation'},
+            'argument': ('django.db.models.fields.TextField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'mailbox': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['admin.Mailbox']", 'null': 'True', 'blank': 'True'}),
+            'type': ('django.db.models.fields.CharField', [], {'max_length': '20'})
+        },
         'admin.objectdates': {
             'Meta': {'object_name': 'ObjectDates'},
             'creation': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),

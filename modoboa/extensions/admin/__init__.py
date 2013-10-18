@@ -15,6 +15,11 @@ admin_events = [
     "CreateDomain",
     "DomainModified",
     "DeleteDomain",
+    "ExtraDomainEntries",
+    "ExtraDomainMenuEntries",
+    "ExtraDomainFilters",
+    "GetDomainActions",
+    "GetDomainModifyLink",
 
     "DomainAliasCreated",
     "DomainAliasDeleted",

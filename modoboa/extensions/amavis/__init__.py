@@ -95,13 +95,14 @@ def on_delete_domain(domain):
 
 
 @events.observe("GetStaticContent")
-def extra_static_content(user):
+def extra_static_content(caller, user):
     if user.group == "SimpleUsers":
         return []
 
-    tpl = Template("""<script type="text/javascript">
+    if caller == 'top' and parameters.get_admin("USER_CAN_RELEASE") == 'no':
+        tpl = Template("""<script type="text/javascript">
 $(document).ready(function() {
-    {% if user_can_release == "no" %}var poller = new Poller("{{ url }}", {
+    var poller = new Poller("{{ url }}", {
         interval: {{ interval }},
         success_cb: function(data) {
             var $link = $("#nbrequests");
@@ -112,22 +113,27 @@ $(document).ready(function() {
                 $link.parent().addClass('hidden');
             }
         }
-    });{% endif %}
-
-    $(document).bind('domform_init', function() {
-        activate_widget.call($('#id_spam_subject_tag2_act'));
     });
-});
-</script>""")
+</script>
+""")
+        return [tpl.render(
+            Context({
+                'url': reverse("modoboa.extensions.amavis.views.nbrequests"),
+                'interval': int(parameters.get_admin("CHECK_REQUESTS_INTERVAL")) * 1000,
+                'text': _("pending requests"),
+            })
+        )]
 
-    return [tpl.render(
-        Context(dict(
-            url=reverse("modoboa.extensions.amavis.views.nbrequests"),
-            interval=int(parameters.get_admin("CHECK_REQUESTS_INTERVAL")) * 1000,
-            text=_("pending requests"),
-            user_can_release=parameters.get_admin("USER_CAN_RELEASE")
-        ))
-    )]
+    if caller == 'domains':
+        tpl = Template("""<script type="text/javascript">
+$(document).bind('domform_init', function() {
+    activate_widget.call($('#id_spam_subject_tag2_act'));
+});
+</script>
+""")
+
+        return [tpl.render(Context({}))]
+    return []
 
 
 @events.observe("TopNotifications")

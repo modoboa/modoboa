@@ -1,3 +1,8 @@
+/**
+ * @module admin
+ * @desc Utility classes for the admin application
+ */
+
 var Admin = function(options) {
     Listing.call(this, options);
 };
@@ -12,6 +17,7 @@ Admin.prototype = {
         Listing.prototype.initialize.call(this, options);
         this.options = $.extend({}, this.defaults, this.options);
         this.options.defcallback = $.proxy(this.list_cb, this);
+        this.tag_handlers = {};
 
         this.navobj = new History(this.options);
 
@@ -37,10 +43,59 @@ Admin.prototype = {
     list_cb: function(data) {
         $("#listing").html(data.table);
         this.update_listing(data);
+        $("a.filter").click($.proxy(this.filter_by_tag, this));
     },
 
     listen: function() {
         $("#searchform").submit($.proxy(this.do_search, this));
+    },
+
+    register_tag_handler: function(name, handler) {
+        this.tag_handlers[name] = handler;
+        if (this.navobj.getparam(name + "filter") != undefined) {
+            var text = this.navobj.getparam(name + "filter");
+            $("#searchform").parent().after(this.make_tag(text, name));
+        }
+    },
+
+    generic_tag_handler: function(tag, $link) {
+        if (this.navobj.getparam(tag + "filter") == undefined && $link.hasClass(tag)) {
+            var text = $link.attr("name");
+            this.navobj.setparam(tag + "filter", text).update();
+            $("#searchform").parent().after(this.make_tag(text, tag));
+            return true;
+        }
+        return false;
+    },
+
+    make_tag: function(text, type) {
+        var $tag = $("<a />", {"name": type, "class" : "btn btn-mini", "html": text});
+        var $i = $("<i />", {"class" : "icon-remove"}).prependTo($tag);
+
+        $tag.click($.proxy(this.remove_tag, this));
+        return $tag;
+    },
+
+    remove_tag: function(e) {
+        var $tag = $(e.target);
+
+        if ($tag.is("i")) {
+            $tag = $tag.parent();
+        }
+        e.preventDefault();
+        this.navobj.delparam($tag.attr("name") + "filter").update();
+        $tag.remove();
+    },
+
+    filter_by_tag: function(e) {
+        var $link = $(e.target);
+        e.preventDefault();
+
+        for (var name in this.tag_handlers) {
+            if (this.tag_handlers[name].apply(this, [name, $link])) {
+                break;
+            }
+        }
     },
 
     do_search: function(e) {
@@ -104,6 +159,11 @@ var Domains = function(options) {
 };
 
 Domains.prototype = {
+    initialize: function(options) {
+        Admin.prototype.initialize.call(this, options);
+        this.register_tag_handler("dom", this.generic_tag_handler);
+    },
+
     list_cb: function(data) {
         Admin.prototype.list_cb.call(this, data);
         var deloptions = (data.handle_mailboxes)
@@ -118,6 +178,11 @@ Domains.prototype = {
             method: "POST",
             warning: warnmsg,
             checkboxes: deloptions,
+            success_cb: $.proxy(this.reload_listing, this)
+        });
+        $("a[name=delrelaydomain]").confirm({
+            question: function() { return this.$element.attr('title'); },
+            method: "DELETE",
             success_cb: $.proxy(this.reload_listing, this)
         });
     },
@@ -193,6 +258,17 @@ Domains.prototype = {
             });
         }, this));
         $(document).trigger('domform_init');
+    },
+
+    rdomainform_cb: function() {
+        $(".submit").one('click', $.proxy(function(e) {
+            simple_ajax_form_post2(e, {
+                formid: "rdomform",
+                error_cb: $.proxy(this.rdomainform_cb, this),
+                reload_on_success: false,
+                success_cb: $.proxy(this.reload_listing, this)
+            });
+        }, this));
     }
 
 };
@@ -209,14 +285,8 @@ var Identities = function(options) {
 Identities.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
-        if (this.navobj.getparam("idtfilter") != undefined) {
-            var text = this.navobj.getparam("idtfilter");
-            $("#searchform").parent().after(this.make_tag(text, "idt"));
-        }
-        if (this.navobj.getparam("grpfilter") != undefined) {
-            var text = this.navobj.getparam("grpfilter");
-            $("#searchform").parent().after(this.make_tag(text, "grp"));
-        }
+        this.register_tag_handler("idt", this.generic_tag_handler);
+        this.register_tag_handler("grp", this.grp_tag_handler);
     },
 
     listen: function() {
@@ -237,7 +307,6 @@ Identities.prototype = {
         if (data.handle_mailboxes == "yes") {
             deloptions = {keepdir: gettext("Do not delete mailbox directory")};
         }
-        $("a.filter").click($.proxy(this.filter_by_tag, this));
 
         $("a[name=delaccount]").confirm({
             question: function() { return this.$element.attr('title'); },
@@ -252,46 +321,20 @@ Identities.prototype = {
         });
     },
 
-    make_tag: function(text, type) {
-        var $tag = $("<a />", {"name": type, "class" : "btn btn-mini", "html": text});
-        var $i = $("<i />", {"class" : "icon-remove"}).prependTo($tag);
-
-        $tag.click($.proxy(this.remove_tag, this));
-        return $tag;
-    },
-
-    remove_tag: function(e) {
-        var $tag = $(e.target);
-
-        if ($tag.is("i")) {
-            $tag = $tag.parent();
-        }
-        e.preventDefault();
-        this.navobj.delparam($tag.attr("name") + "filter").update();
-        $tag.remove();
-    },
-
-    filter_by_tag: function(e) {
-        var $link = $(e.target);
-        e.preventDefault();
-
-        if (this.navobj.getparam("idtfilter") == undefined && $link.hasClass("idt")) {
-            var text = $link.attr("name");
-            this.navobj.setparam("idtfilter", text).update();
-            $("#searchform").parent().after(this.make_tag(text, "idt"));
-            return;
-        }
-        if (this.navobj.getparam("grpfilter") == undefined && $link.hasClass("grp")) {
+    grp_tag_handler: function(tag, $link) {
+        if (this.navobj.getparam(tag + "filter") == undefined && $link.hasClass(tag)) {
             var text = $link.attr("name");
             this.navobj
                 .setparam("idtfilter", "account")
-                .setparam("grpfilter", text)
+                .setparam(tag + "filter", text)
                 .update();
             if ($("a[name=idt]").length == 0) {
                 $("#searchform").parent().after(this.make_tag("account", "idt"));
             }
-            $("#searchform").parent().after(this.make_tag(text, "grp"));
+            $("#searchform").parent().after(this.make_tag(text, tag));
+            return true;
         }
+        return false;
     },
 
     simpleuser_mode: function() {

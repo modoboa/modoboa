@@ -100,6 +100,17 @@ def ajax_simple_response(content, **response_kwargs):
     return HttpResponse(simplejson.dumps(content), **response_kwargs)
 
 
+def render_to_json_response(context, **response_kwargs):
+    """Simple shortcut to render a JSON response.
+
+    :param dict context: response content
+    :return: ``HttpResponse`` object
+    """
+    data = simplejson.dumps(context)
+    response_kwargs['content_type'] = 'application/json'
+    return HttpResponse(data, **response_kwargs)
+
+
 def static_url(path):
     """Returns the correct static url for a given file
 

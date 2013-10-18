@@ -8,5 +8,6 @@
       <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act" {% if activator_value %}checked='checked'{% else %}{% if deactivate_if_empty and field.value == None %}checked='checked'{% endif %}{% endif %}/>{{ activator_label }}
     </label>{% endif %}
     {% if field.errors %}<p class="help-block">{% for error in field.errors %}{{ error|safe }}{% endfor %}</p>{% endif %}
+    {% block extra_controls %}{% endblock %}
   </div>
 </div>

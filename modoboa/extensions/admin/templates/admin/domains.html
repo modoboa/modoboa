@@ -7,5 +7,6 @@ $(document).ready(function() {
     admin = new Domains();
 });
 </script>
+{% extra_static_content "domains" user %}
 {% endblock %}
 {% block actions %}{% domains_menu "domains" user %}{% endblock %}

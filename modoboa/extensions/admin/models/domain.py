@@ -57,6 +57,10 @@ class Domain(DatesAware):
         return self.alias_set.count()
 
     @property
+    def tags(self):
+        return [{"name": "domain", "label": _("Domain"), "type": "dom"}]
+
+    @property
     def admins(self):
         """Return the domain administrators of this domain
 

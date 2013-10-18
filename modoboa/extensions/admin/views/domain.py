@@ -15,13 +15,13 @@ from modoboa.lib.webutils import (
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.templatetags.lib_tags import pagination_bar
-from modoboa.extensions.admin.tables import DomainsTable
 from modoboa.extensions.admin.lib import get_sort_order, get_listing_page
 from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.admin.forms import (
     DomainForm, DomainFormGeneral, DomainFormOptions
 )
+from modoboa.extensions.admin.lib import get_domains
 
 
 @login_required
@@ -35,17 +35,28 @@ def index(request):
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
-    domains = Domain.objects.get_for_admin(request.user)
-    squery = request.GET.get("searchquery", None)
-    if squery is not None:
-        q = Q(name__contains=squery)
-        q |= Q(domainalias__name__contains=squery)
-        domains = domains.filter(q).distinct()
+    filters = dict(
+        (flt, request.GET.get(flt, None))
+        for flt in ['domfilter', 'searchquery']
+        + events.raiseQueryEvent('ExtraDomainFilters')
+    )
+    domainlist = get_domains(
+        request.user, **filters
+    )
     if sort_order in ["name", "domainalias__name"]:
-        domains = domains.order_by("%s%s" % (sort_dir, sort_order))
-    page = get_listing_page(domains, request.GET.get("page", 1))
+        domainlist = sorted(
+            domainlist,
+            key=lambda d: getattr(d, sort_order), reverse=sort_dir == '-'
+        )
+    else:
+        domainlist = sorted(domainlist, key=lambda d: d.tags[0],
+                            reverse=sort_dir == '-')
+    page = get_listing_page(domainlist, request.GET.get("page", 1))
     return ajax_simple_response({
-        "table": DomainsTable(request, page.object_list).render(),
+        "table": _render_to_string(request, 'admin/domains_table.html', {
+            'domains': domainlist,
+            'tableid': 'domains'
+        }),
         "page": page.number,
         "paginbar": pagination_bar(page),
         "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",

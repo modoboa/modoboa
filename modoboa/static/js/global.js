@@ -80,10 +80,19 @@ function modalbox_autowidth(e) {
 /*
  * Simple shorcut do create a bootstrap alert box (error mode)
  */
-function build_error_alert(msg) {
-    return $('<div class="alert alert-error"> \
+function build_alert_box(msg, level) {
+    return $('<div class="alert alert-' + level + '"> \
 <a class="close" data-dismiss="alert" href="#">&times;</a>' + msg + "</div>");
 }
+
+function build_error_alert(msg) {
+    return build_alert_box(msg, 'error');
+}
+
+function build_success_alert(msg) {
+    return build_alert_box(msg, 'success');
+}
+
 
 /*
  * '.keys()' method support for old browsers :p
@@ -145,6 +154,70 @@ function simple_ajax_form_post(e, options) {
             if (opts.error_cb != undefined) {
                 opts.error_cb(data);
             }
+        }
+    });
+}
+
+/*
+ * Replacement
+ */
+function simple_ajax_form_post2(e, options) {
+    e.preventDefault();
+    var $form = (options.formid != undefined) ? $("#" + options.formid) : $("form");
+    var defaults = {reload_on_success: true, reload_mode: 'full', modal: true};
+    var opts = $.extend({}, defaults, options);
+    var args = $form.serialize();
+
+    if (options.extradata != undefined) {
+        args += "&" + options.extradata;
+    }
+    $.ajax({
+        type: "POST",
+        url: $form.attr("action"),
+        data: args
+    }).done(function(data) {
+        $("#modalbox").modal('hide');
+        if (opts.success_cb != undefined) {
+            opts.success_cb(data);
+            return;
+        }
+        if (opts.reload_on_success) {
+            if (opts.reload_mode == 'full') {
+                window.location.reload();
+            } else {
+                history.update(true);
+            }
+        }
+        if (data.respmsg) {
+            $("body").notify('success', data.respmsg, 2000);
+        }
+    }).fail(function(jqxhr) {
+        if (jqxhr.status != 400) {
+            return;
+        }
+        var result = $.parseJSON(jqxhr.responseText);
+        $.each(result, function(id, value) {
+            var fullid = "id_" + id;
+            var $widget = $("#" + fullid);
+            var spanid = fullid + "-error";
+            var $span = $("#" + spanid);
+
+            if (!$widget.parents(".control-group").hasClass("error")) {
+                $widget.parents(".control-group").addClass("error");
+            }
+            if (!$span.length) {
+                $span = $("<span />", {
+                    "class": "help-inline",
+                    "html": value[0],
+                    "id": spanid
+                });
+                $widget.parents(".controls").append($span);
+            } else {
+                $span.html(value[0]);
+            }
+        });
+        if (opts.error_cb) {
+            opts.error_cb(result);
         }
     });
 }

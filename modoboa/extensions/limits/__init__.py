@@ -116,10 +116,12 @@ def fill_account_instances(user, account, instances):
 
 
 @events.observe("GetStaticContent")
-def get_static_content(user):
+def get_static_content(caller, user):
+    if caller not in ['domains', 'identities']:
+        return []
     if user.group == "SimpleUsers":
         return []
-    return """<style>
+    return ["""<style>
 .resource {
     margin: 5px 0;
 }
@@ -137,4 +139,4 @@ $(document).ready(function() {
     $(".progress").tooltip();
 });
 </script>
-"""
+"""]
