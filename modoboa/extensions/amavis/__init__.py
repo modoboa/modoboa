@@ -114,6 +114,7 @@ $(document).ready(function() {
             }
         }
     });
+});
 </script>
 """)
         return [tpl.render(

@@ -48,7 +48,7 @@ class ServiceManager(Manager):
         for service in self.all():
             if not service.name in services:
                 to_delete.append(service.name)
-        Service.objects.filter(name__in=to_delete()).delete()
+        Service.objects.filter(name__in=to_delete).delete()
 
 
 class Service(models.Model):
