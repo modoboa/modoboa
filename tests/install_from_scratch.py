@@ -64,5 +64,38 @@ class DeployTest(unittest.TestCase):
         self.assertEqual(code, 0)
 
 
+class SilentDeployTest(unittest.TestCase):
+    dbtype = "mysql"
+    dbhost = "localhost"
+    projname = "modoboa_silenttest"
+    dbuser = "root"
+    dbpassword = "toto"
+    dburl = "%s://%s:%s@%s/%s" % (self.dbtype, self.dbuser, self.dbpassword, self.dbhost, self.projname)
+
+    def setUp(self):
+        cmd = "mysqladmin -u %s -p%s create %s" % (self.dbuser, self.dbpassword, self.projname)
+        code, out = runcmd(cmd)
+        self.assertEqual(code, 0)
+        self.workdir = tempfile.mkdtemp()
+
+    def tearDown(self):
+        if hasattr(self, "workdir"):
+            shutil.rmtree(self.workdir)
+        child = pexpect.spawn("mysqladmin -u root -p%s drop %s" % (self.dbpassword, self.projname))
+        child.expect("\[y/N\]")
+        child.sendline("y")
+        child.expect('Database "%s" dropped' % self.projname)
+
+    def test(self):
+        timeout = 2
+        cmd = "modoboa-admin.py deploy --syncdb --collectstatic %s --dburl  --domain %s" % (self.projname, self.dburl, 'localhost')
+        child = pexpect.spawn(cmd, cwd=self.workdir)
+        fout = open('install_silently_from_scratch.log','w')
+        child.logfile = fout
+        child.wait()
+        fout.close()
+        self.assertEqual(child.exitstatus, 0)
+
+
 if __name__ == "__main__":
     unittest.main()
