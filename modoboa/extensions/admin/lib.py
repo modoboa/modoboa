@@ -49,6 +49,16 @@ def get_sort_order(qdict, default, allowed_values=None):
 
 
 def get_listing_page(objects, pagenum):
+    """Return specific a listing page.
+
+    A page contains a limited number of elements (see
+    ITEMS_PER_PAGE). If the given page number is wrong, the first page
+    will be always returned.
+
+    :param list objects: object list to paginate
+    :param int pagenum: page number
+    :return: a ``Page`` object
+    """
     paginator = Paginator(
         objects, int(parameters.get_admin("ITEMS_PER_PAGE", app="core"))
     )

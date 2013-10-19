@@ -76,7 +76,7 @@ class RelayDomain(AdminObject):
     )
     target_host = models.CharField(
         ugettext_lazy('target host'), max_length=255,
-        help_text=ugettext_lazy('')
+        help_text=ugettext_lazy('Remote destination of this domain')
     )
     service = models.ForeignKey(Service, default='relay')
     enabled = models.BooleanField(
@@ -85,7 +85,7 @@ class RelayDomain(AdminObject):
     )
     verify_recipients = models.BooleanField(
         ugettext_lazy('verify recipients'),
-        help_text=ugettext_lazy('')
+        help_text=ugettext_lazy('Check for valid recipients')
     )
 
     owners = generic.GenericRelation(ObjectAccess)

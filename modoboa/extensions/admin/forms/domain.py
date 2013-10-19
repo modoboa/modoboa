@@ -16,7 +16,10 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
-        help_text=ugettext_lazy("Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input.")
+        help_text=ugettext_lazy(
+            "Alias(es) of this domain. Indicate only one name per input, "
+            "press ENTER to add a new input."
+        )
     )
 
     class Meta:
@@ -41,35 +44,48 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 self._create_field(forms.CharField, name, dalias.name, 3)
 
     def clean(self):
+        """Custom fields validation.
+
+        We want to prevent duplicate names between domains and domain
+        aliases. Extensions have the possibility to declare other
+        objects (see *CheckDomainName* event).
+
+        The validation way is not very smart...
+        """
         super(DomainFormGeneral, self).clean()
-        if len(self._errors):
+        if self._errors:
             raise forms.ValidationError(self._errors)
 
         cleaned_data = self.cleaned_data
         name = cleaned_data["name"]
-
-        try:
-            DomainAlias.objects.get(name=name)
-        except DomainAlias.DoesNotExist:
-            pass
-        else:
-            self._errors["name"] = self.error_class([_("An alias with this name already exists")])
-            del cleaned_data["name"]
-
+        dtypes = events.raiseQueryEvent('CheckDomainName')
+        for dtype, label in [(DomainAlias, _('domain alias'))] + dtypes:
+            try:
+                dtype.objects.get(name=name)
+            except dtype.DoesNotExist:
+                pass
+            else:
+                self._errors["name"] = self.error_class(
+                    [_("A %s with this name already exists" % unicode(label))]
+                )
+                del cleaned_data["name"]
+                break
         for k in cleaned_data.keys():
             if not k.startswith("aliases"):
                 continue
             if cleaned_data[k] == "":
                 del cleaned_data[k]
                 continue
-            try:
-                Domain.objects.get(name=cleaned_data[k])
-            except Domain.DoesNotExist:
-                pass
-            else:
-                self._errors[k] = self.error_class([_("A domain with this name already exists")])
+            for dtype, label in [(Domain, _('domain'))] + dtypes:
+                try:
+                    dtype.objects.get(name=cleaned_data[k])
+                except dtype.DoesNotExist:
+                    continue
+                self._errors[k] = self.error_class(
+                    [_("A %s with this name already exists" % unicode(label))]
+                )
                 del cleaned_data[k]
-
+                break
         return cleaned_data
 
     def update_mailbox_quotas(self, domain):
@@ -148,7 +164,10 @@ class DomainFormOptions(forms.Form):
     dom_admin_username = forms.CharField(
         label=ugettext_lazy("Name"),
         initial="admin",
-        help_text=ugettext_lazy("The administrator's name. Don't include the domain's name here, it will be automatically appended."),
+        help_text=ugettext_lazy(
+            "The administrator's name. Don't include the domain's name here, "
+            "it will be automatically appended."
+        ),
         widget=forms.widgets.TextInput(attrs={"class": "input-small"}),
         required=False
     )

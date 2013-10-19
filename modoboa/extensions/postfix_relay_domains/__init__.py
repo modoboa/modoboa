@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy
 from django.db.models import Q
 from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
-from .models import RelayDomain, Service
+from .models import RelayDomain, RelayDomainAlias, Service
 
 extension_events = [
     "RelayDomainCreated",
@@ -124,3 +124,11 @@ def rdomain_actions(user, domain):
         "title": ugettext_lazy("Delete %s?" % domain.name),
         "img": "icon-trash"
     }]
+
+
+@events.observe('CheckDomainName')
+def check_domain_name():
+    return [
+        (RelayDomain, ugettext_lazy('relay domain')),
+        (RelayDomainAlias, ugettext_lazy('relay domain alias'))
+    ]

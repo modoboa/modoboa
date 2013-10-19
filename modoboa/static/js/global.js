@@ -196,6 +196,8 @@ function simple_ajax_form_post2(e, options) {
             return;
         }
         var result = $.parseJSON(jqxhr.responseText);
+        $("div.error").removeClass("error");
+        $("span.help-inline").remove();
         $.each(result, function(id, value) {
             var fullid = "id_" + id;
             var $widget = $("#" + fullid);

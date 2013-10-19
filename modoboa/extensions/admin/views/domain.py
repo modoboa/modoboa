@@ -54,7 +54,7 @@ def _domains(request):
     page = get_listing_page(domainlist, request.GET.get("page", 1))
     return ajax_simple_response({
         "table": _render_to_string(request, 'admin/domains_table.html', {
-            'domains': domainlist,
+            'domains': page.object_list,
             'tableid': 'domains'
         }),
         "page": page.number,

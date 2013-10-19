@@ -21,6 +21,7 @@ admin_events = [
     "GetDomainActions",
     "GetDomainModifyLink",
     "GetDomainAliasQuerySet",
+    "CheckDomainName",
 
     "DomainAliasCreated",
     "DomainAliasDeleted",

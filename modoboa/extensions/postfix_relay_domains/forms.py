@@ -1,8 +1,8 @@
 from django import forms
 from django.http import QueryDict
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.formutils import DynamicForm, DomainNameField
-from modoboa.extensions.admin.models import Domain
+from modoboa.extensions.admin.models import Domain, DomainAlias
 from .models import RelayDomain, RelayDomainAlias
 
 
@@ -34,37 +34,60 @@ class RelayDomainForm(forms.ModelForm, DynamicForm):
                 self._create_field(forms.CharField, name, rdalias.name, 3)
 
     def clean(self):
+        """Custom fields validaton.
+
+        We want to prevent duplicate names between domains, relay
+        domains, domain aliases and relay domain aliases.
+
+        The validation way is not very smart...
+        """
         super(RelayDomainForm, self).clean()
         if self._errors:
             raise forms.ValidationError(self._errors)
         cleaned_data = self.cleaned_data
-        # try:
-        #     DomainAlias.objects.get(name=name)
-        # except DomainAlias.DoesNotExist:
-        #     pass
-        # else:
-        #     self._errors["name"] = self.error_class([_("An alias with this name already exists")])
-        #     del cleaned_data["name"]
+        for dtype, label in [(Domain, _('domain')),
+                             (DomainAlias, _('domain alias')),
+                             (RelayDomainAlias, _('relay domain alias'))]:
+            try:
+                dtype.objects.get(name=cleaned_data['name'])
+            except dtype.DoesNotExist:
+                pass
+            else:
+                self._errors["name"] = self.error_class(
+                    [_("A %s with this name already exists" % label)]
+                )
+                del cleaned_data["name"]
+                break
 
         for k in cleaned_data.keys():
             if not k.startswith("aliases"):
                 continue
-            if cleaned_data[k] == "":
+            if not cleaned_data[k]:
                 del cleaned_data[k]
                 continue
-            try:
-                Domain.objects.get(name=cleaned_data[k])
-            except Domain.DoesNotExist:
-                pass
-            else:
-                self._errors[k] = self.error_class([_("A domain with this name already exists")])
-                del cleaned_data[k]
+            for dtype, name in [(RelayDomain, _('relay domain')),
+                                (DomainAlias, _('domain alias')),
+                                (Domain, _('domain'))]:
+                try:
+                    dtype.objects.get(name=cleaned_data[k])
+                except dtype.DoesNotExist:
+                    pass
+                else:
+                    self._errors[k] = self.error_class(
+                        [_("A %s with this name already exists" % name)]
+                    )
+                    del cleaned_data[k]
+                    break
 
         return cleaned_data
 
     def save(self, user, commit=True):
-        """Custom save method
+        """Custom save method.
 
+        As relay domain aliases are defined using the same form as
+        relay domains, we need to save them manually.
+
+        :param ``User`` user: connected user
         """
         rd = super(RelayDomainForm, self).save(commit=False)
         if commit:
