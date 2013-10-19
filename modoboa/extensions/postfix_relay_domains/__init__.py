@@ -82,6 +82,7 @@ def extra_domain_entries(user, domfilter, searchquery, **extrafilters):
     relay_domains = RelayDomain.objects.get_for_admin(user)
     if searchquery is not None:
         q = Q(name__contains=searchquery)
+        q |= Q(relaydomainalias__name__contains=searchquery)
         relay_domains = relay_domains.filter(q).distinct()
     if 'srvfilter' in extrafilters and extrafilters['srvfilter']:
         relay_domains = relay_domains.filter(
@@ -101,6 +102,13 @@ def rdomain_modify_link(domain):
         ),
         'modalcb': 'rdomain.domainform_cb'
     }
+
+
+@events.observe('GetDomainAliasQuerySet')
+def get_da_query_set(domain):
+    if domain.__class__.__name__ != 'RelayDomain':
+        return []
+    return [domain.relaydomainalias_set]
 
 
 @events.observe('GetDomainActions')

@@ -43,7 +43,7 @@ def _domains(request):
     domainlist = get_domains(
         request.user, **filters
     )
-    if sort_order in ["name", "domainalias__name"]:
+    if sort_order == 'name':
         domainlist = sorted(
             domainlist,
             key=lambda d: getattr(d, sort_order), reverse=sort_dir == '-'

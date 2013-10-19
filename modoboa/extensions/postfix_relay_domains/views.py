@@ -25,7 +25,7 @@ def create(request, tplname="postfix_relay_domains/relaydomain_form.html"):
     if request.method == 'POST':
         form = RelayDomainForm(request.POST)
         if form.is_valid():
-            rdom = form.save()
+            rdom = form.save(request.user)
             rdom.post_create(request.user)
             return render_to_json_response(
                 {"respmsg": _("Relay domain created")}
@@ -44,7 +44,7 @@ def edit(request, rdom_id, tplname='postfix_relay_domains/relaydomain_form.html'
     if request.method == 'POST':
         form = RelayDomainForm(request.POST, instance=rdom)
         if form.is_valid():
-            form.save()
+            form.save(request.user)
             events.raiseEvent('RelayDomainModified', rdom)
             return render_to_json_response(
                 {'respmsg': _('Relay domain modified')}

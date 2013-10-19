@@ -12,21 +12,22 @@ from modoboa.extensions.admin.models import (
 
 
 admin_events = [
-    "CreateDomain",
+    "DomainCreated",
     "DomainModified",
-    "DeleteDomain",
+    "DomainDeleted",
     "ExtraDomainEntries",
     "ExtraDomainMenuEntries",
     "ExtraDomainFilters",
     "GetDomainActions",
     "GetDomainModifyLink",
+    "GetDomainAliasQuerySet",
 
     "DomainAliasCreated",
     "DomainAliasDeleted",
 
-    "CreateMailbox",
-    "DeleteMailbox",
-    "ModifyMailbox",
+    "MailboxCreated",
+    "MailboxDeleted",
+    "MailboxModified",
 
     "MailboxAliasCreated",
     "MailboxAliasDeleted",

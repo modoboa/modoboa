@@ -51,10 +51,11 @@ RelayDomains.prototype = {
 
     domainform_cb: function() {
         $('#btnscan').click(this.launch_scan);
-        $(".submit").one('click', $.proxy(function(e) {
+        $('input:text:visible:first').focus();
+        $("#id_aliases").dynamic_input();
+        $(".submit").on('click', $.proxy(function(e) {
             simple_ajax_form_post2(e, {
                 formid: "rdomform",
-                error_cb: $.proxy(this.domainform_cb, this),
                 reload_on_success: false,
                 success_cb: $.proxy(admin.reload_listing, admin)
             });

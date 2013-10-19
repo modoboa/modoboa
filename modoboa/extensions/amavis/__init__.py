@@ -62,8 +62,8 @@ def menu(target, user):
     return []
 
 
-@events.observe("CreateDomain")
-def on_create_domain(user, domain):
+@events.observe("DomainCreated")
+def on_domain_created(user, domain):
     from .models import Users, Policy
     p = Policy.objects.create(policy_name=domain.name)
     Users.objects.create(email="@%s" % domain.name, fullname=domain.name,
@@ -82,8 +82,8 @@ def on_domain_modified(domain):
         u.save()
 
 
-@events.observe("DeleteDomain")
-def on_delete_domain(domain):
+@events.observe("DomainDeleted")
+def on_domain_deleted(domain):
     from .models import Users
 
     try:

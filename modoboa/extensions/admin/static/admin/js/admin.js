@@ -259,18 +259,6 @@ Domains.prototype = {
         }, this));
         $(document).trigger('domform_init');
     },
-
-    rdomainform_cb: function() {
-        $(".submit").one('click', $.proxy(function(e) {
-            simple_ajax_form_post2(e, {
-                formid: "rdomform",
-                error_cb: $.proxy(this.rdomainform_cb, this),
-                reload_on_success: false,
-                success_cb: $.proxy(this.reload_listing, this)
-            });
-        }, this));
-    }
-
 };
 
 Domains.prototype = $.extend({}, Admin.prototype, Domains.prototype);

@@ -5,12 +5,12 @@ from modoboa.lib import events
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.extensions.admin.exceptions import AdminError
-from .base import DatesAware
+from .base import AdminObject
 from .domain import Domain
 from .mailbox import Mailbox
 
 
-class Alias(DatesAware):
+class Alias(AdminObject):
     address = models.CharField(
         ugettext_lazy('address'), max_length=254,
         help_text=ugettext_lazy("The alias address (without the domain part). For a 'catch-all' address, just enter an * character.")
@@ -29,6 +29,7 @@ class Alias(DatesAware):
         ugettext_lazy('enabled'),
         help_text=ugettext_lazy("Check to activate this alias")
     )
+    _objectname = 'MailboxAlias'
 
     class Meta:
         permissions = (
@@ -80,8 +81,7 @@ class Alias(DatesAware):
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
-        grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("MailboxAliasCreated", creator, self)
+        super(Alias, self).post_create(creator)
         if creator.is_superuser:
             for admin in self.domain.admins:
                 grant_access_to_object(admin, self)
@@ -96,14 +96,7 @@ class Alias(DatesAware):
             del kwargs['int_rcpts']
         else:
             int_rcpts = []
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
         super(Alias, self).save(*args, **kwargs)
-        if creator is not None:
-            self.post_create(creator)
         curaliases = self.aliases.all()
         curmboxes = self.mboxes.all()
         for t in int_rcpts:
@@ -119,13 +112,6 @@ class Alias(DatesAware):
         for t in curmboxes:
             if not t in int_rcpts:
                 self.mboxes.remove(t)
-
-    def delete(self):
-        from modoboa.lib.permissions import ungrant_access_to_object
-
-        events.raiseEvent("MailboxAliasDeleted", self)
-        ungrant_access_to_object(self)
-        super(Alias, self).delete()
 
     def get_recipients(self):
         """Return the recipients list

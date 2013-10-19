@@ -144,8 +144,8 @@ this account is concerned by a specific form.
 Callbacks listening to this event must return a list containing one
 Boolean.
 
-CreateDomain
-============
+DomainCreated
+=============
 
 Raised when a new domain is created. 
 
@@ -156,8 +156,8 @@ Raised when a new domain is created.
 * ``user`` corresponds to the ``User`` object creating the domain (its owner)
 * ``domain`` is a ``Domain`` instance
 
-CreateMailbox
-=============
+MailboxCreated
+==============
 
 Raised when a new mailbox is created.
 
@@ -168,8 +168,8 @@ Raised when a new mailbox is created.
 * ``user`` is the new mailbox's owner (``User`` instance)
 * ``mailbox`` is the new mailbox (``Mailbox`` instance)
 
-DeleteDomain
-============
+DomainDeleted
+=============
 
 Raised when an existing domain is about to be deleted.
 
@@ -179,8 +179,8 @@ Raised when an existing domain is about to be deleted.
 
 * ``domain`` is a ``Domain`` instance
 
-DeleteMailbox
-=============
+MailboxDeleted
+==============
 
 Raised when an existing mailbox is about to be deleted. 
 

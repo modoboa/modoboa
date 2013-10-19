@@ -25,7 +25,7 @@ class PostfixAutoreply(ModoExtension):
             try:
                 Transport.objects.get(domain="autoreply.%s" % dom.name)
             except Transport.DoesNotExist:
-                onCreateDomain(None, dom)
+                onDomainCreated(None, dom)
             else:
                 continue
 
@@ -33,18 +33,18 @@ class PostfixAutoreply(ModoExtension):
                 try:
                     Alias.objects.get(full_address=mb.full_address)
                 except Alias.DoesNotExist:
-                    onCreateMailbox(None, mb)
+                    onMailboxCreated(None, mb)
 
     def load(self):
         from modoboa.extensions.postfix_autoreply.app_settings import ParametersForm
         parameters.register(ParametersForm, ugettext_lazy("Automatic replies"))
 
     def destroy(self):
-        events.unregister("CreateDomain", onCreateDomain)
-        events.unregister("DeleteDomain", onDeleteDomain)
-        events.unregister("CreateMailbox", onCreateMailbox)
-        events.unregister("DeleteMailbox", onDeleteMailbox)
-        events.unregister("ModifyMailbox", onModifyMailbox)
+        events.unregister("DomainCreated", onDomainCreated)
+        events.unregister("DomainDeleted", onDomainDeleted)
+        events.unregister("MailboxCreated", onMailboxCreated)
+        events.unregister("MailboxDeleted", onMailboxDeleted)
+        events.unregister("MailboxModified", onModifyMailbox)
         events.unregister("UserMenuDisplay", menu)
         parameters.unregister()
 
@@ -80,8 +80,8 @@ def menu(target, user):
     ]
 
 
-@events.observe("CreateDomain")
-def onCreateDomain(user, domain):
+@events.observe("DomainCreated")
+def onDomainCreated(user, domain):
     transport = Transport()
     transport.domain = "autoreply.%s" % domain.name
     transport.method = "autoreply:"
@@ -101,13 +101,13 @@ def onDomainModified(domain):
         al.save()
 
 
-@events.observe("DeleteDomain")
-def onDeleteDomain(domain):
+@events.observe("DomainDeleted")
+def onDomainDeleted(domain):
     Transport.objects.filter(domain="autoreply.%s" % domain.name).delete()
 
 
-@events.observe("CreateMailbox")
-def onCreateMailbox(user, mailbox):
+@events.observe("MailboxCreated")
+def onMailboxCreated(user, mailbox):
     alias = Alias()
     alias.full_address = mailbox.full_address
     alias.autoreply_address = \
@@ -115,8 +115,8 @@ def onCreateMailbox(user, mailbox):
     alias.save()
 
 
-@events.observe("DeleteMailbox")
-def onDeleteMailbox(mailboxes):
+@events.observe("MailboxDeleted")
+def onMailboxDeleted(mailboxes):
     from modoboa.extensions.admin.models import Mailbox
 
     if isinstance(mailboxes, Mailbox):
@@ -130,7 +130,7 @@ def onDeleteMailbox(mailboxes):
             alias.delete()
 
 
-@events.observe("ModifyMailbox")
+@events.observe("MailboxModified")
 def onModifyMailbox(mailbox, oldmailbox):
     if oldmailbox.full_address == mailbox.full_address:
         return

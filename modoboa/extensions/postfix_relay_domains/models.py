@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.core.models import ObjectAccess
 from modoboa.lib import events, parameters
 from modoboa.lib.permissions import ungrant_access_to_object
-from modoboa.extensions.admin.models import DatesAware
+from modoboa.extensions.admin.models import AdminObject
 
 
 class RelayDomainManager(Manager):
@@ -63,7 +63,7 @@ class Service(models.Model):
         return self.name
 
 
-class RelayDomain(DatesAware):
+class RelayDomain(AdminObject):
     """Relay domain.
 
     A relay domain differs from a usual domaine because its final
@@ -106,24 +106,24 @@ class RelayDomain(DatesAware):
     def __str__(self):
         return self.name
 
-    def post_create(self, creator):
-        from modoboa.lib.permissions import grant_access_to_object
-        grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("RelayDomainCreated", creator, self)
-
-    def save(self, *args, **kwargs):
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
-        super(RelayDomain, self).save(*args, **kwargs)
-        if creator is not None:
-            self.post_create(creator)
-
-    def delete(self):
-        events.raiseEvent("RelayDomainDeleted", self)
-        ungrant_access_to_object(self)
-        super(RelayDomain, self).delete()
-
 reversion.register(RelayDomain)
+
+
+class RelayDomainAlias(AdminObject):
+    name = models.CharField(
+        ugettext_lazy("name"), max_length=100, unique=True,
+        help_text=ugettext_lazy("The alias name")
+    )
+    target = models.ForeignKey(
+        RelayDomain, verbose_name=ugettext_lazy('target'),
+        help_text=ugettext_lazy("The relay domain this alias points to")
+    )
+    enabled = models.BooleanField(
+        ugettext_lazy('enabled'),
+        help_text=ugettext_lazy("Check to activate this alias")
+    )
+
+    def __str__(self):
+        return self.name
+
+reversion.register(RelayDomainAlias)

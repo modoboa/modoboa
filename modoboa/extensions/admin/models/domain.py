@@ -6,7 +6,7 @@ from django.contrib.contenttypes import generic
 from modoboa.lib import events, parameters
 from modoboa.core.models import User, ObjectAccess
 from modoboa.extensions.admin.exceptions import AdminError
-from .base import DatesAware
+from .base import AdminObject
 
 
 class DomainManager(Manager):
@@ -22,7 +22,7 @@ class DomainManager(Manager):
         return self.get_query_set().filter(owners__user=admin)
 
 
-class Domain(DatesAware):
+class Domain(AdminObject):
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
     quota = models.IntegerField(
@@ -116,27 +116,10 @@ class Domain(DatesAware):
         if parameters.get_admin("AUTO_ACCOUNT_REMOVAL") == "yes":
             for account in User.objects.filter(mailbox__domain__name=self.name):
                 account.delete(fromuser, keepdir)
-        events.raiseEvent("DeleteDomain", self)
-        ungrant_access_to_object(self)
         super(Domain, self).delete()
 
     def __str__(self):
         return self.name
-
-    def post_create(self, creator):
-        from modoboa.lib.permissions import grant_access_to_object
-        grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("CreateDomain", creator, self)
-
-    def save(self, *args, **kwargs):
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
-        super(Domain, self).save(*args, **kwargs)
-        if creator is not None:
-            self.post_create(creator)
 
     def from_csv(self, user, row):
         if len(row) < 4:

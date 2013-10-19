@@ -12,7 +12,7 @@ from modoboa.lib import parameters, events
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.models import User
 from modoboa.extensions.admin.exceptions import AdminError
-from .base import DatesAware
+from .base import AdminObject
 from .domain import Domain
 
 
@@ -46,7 +46,7 @@ class MailboxManager(Manager):
         return self.get_query_set().filter(qf)
 
 
-class Mailbox(DatesAware):
+class Mailbox(AdminObject):
     address = models.CharField(
         ugettext_lazy('address'), max_length=252,
         help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
@@ -186,8 +186,7 @@ class Mailbox(DatesAware):
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
-        grant_access_to_object(creator, self, True)
-        events.raiseEvent("CreateMailbox", creator, self)
+        super(Mailbox, self).post_create(creator)
         if creator.is_superuser and not self.user.has_perm("admin.add_domain"):
             # A super user is creating a new mailbox. Give
             # access to that mailbox (and the associated
@@ -199,14 +198,7 @@ class Mailbox(DatesAware):
                 grant_access_to_object(admin, self.user)
 
     def save(self, *args, **kwargs):
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
         super(Mailbox, self).save(*args, **kwargs)
-        if creator is not None:
-            self.post_create(creator)
         try:
             q = self.quota_value
         except Quota.DoesNotExist:

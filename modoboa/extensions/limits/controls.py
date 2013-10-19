@@ -66,12 +66,12 @@ def move_pool_resource(owner, user):
     user.limitspool.delete()
 
 
-@events.observe('CreateDomain')
+@events.observe('DomainCreated')
 def inc_nb_domains(user, domain):
     inc_limit(user, 'domains_limit')
 
 
-@events.observe('DeleteDomain')
+@events.observe('DomainDeleted')
 def dec_nb_domains(domain):
     owner = get_object_owner(domain)
     dec_limit(owner, 'domains_limit')
@@ -99,12 +99,12 @@ def dec_nb_domaliases(domainaliases):
         dec_limit(owner, 'domain_aliases_limit')
 
 
-@events.observe('CreateMailbox')
+@events.observe('MailboxCreated')
 def inc_nb_mailboxes(user, mailbox):
     inc_limit(user, 'mailboxes_limit')
 
 
-@events.observe('DeleteMailbox')
+@events.observe('MailboxDeleted')
 def dec_nb_mailboxes(mailboxes):
     from modoboa.extensions.admin.models import Mailbox
 

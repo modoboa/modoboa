@@ -195,13 +195,19 @@ def domain_aliases(domain):
     :rtype: str
     """
     if domain.__class__.__name__ == "Domain":
-        if not domain.domainalias_set.count():
+        qset = domain.domainalias_set
+    else:
+        qset = events.raiseQueryEvent('GetDomainAliasQuerySet', domain)
+        if not qset:
             return '---'
-        res = ""
-        for da in domain.domainalias_set.all():
-            res += "%s<br/>" % da.name
-        return res
-    return '---'
+        qset = qset[0]
+
+    if not qset.count():
+        return '---'
+    res = ''
+    for alias in qset.all():
+        res += '%s<br/>' % alias.name
+    return res
 
 
 @register.simple_tag
