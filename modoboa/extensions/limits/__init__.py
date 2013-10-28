@@ -10,8 +10,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
+from .models import LimitTemplates
 from .forms import ResourcePoolForm
 import controls
+
+levents = [
+    'GetExtraLimitTemplates'
+]
 
 
 class Limits(ModoExtension):
@@ -19,7 +24,8 @@ class Limits(ModoExtension):
     label = "Limits"
     version = "1.0"
     description = ugettext_lazy(
-        "Per administrator resources to limit the number of objects they can create"
+        "Per administrator resources to limit the number of objects "
+        "they can create"
     )
 
     def init(self):
@@ -48,6 +54,7 @@ class Limits(ModoExtension):
     def load(self):
         from modoboa.extensions.limits.app_settings import ParametersForm
         parameters.register(ParametersForm, ugettext_lazy("Limits"))
+        events.declare(levents)
 
     def destroy(self):
         parameters.unregister()
@@ -74,7 +81,13 @@ def display_pool_usage(user, target, currentpage):
         if user.has_perm("admin.add_domain"):
             names += ["domain_admins_limit"]
     else:
-        names = ["domains_limit", "domain_aliases_limit"]
+        names = [
+            tpl[0] for tpl in LimitTemplates().templates
+            if tpl[0] not in ["domain_admins_limit", "mailboxes_limit",
+                              "mailbox_aliases_limit"]
+            and (len(tpl) == 3 or tpl[3] == user.group)
+        ]
+
     limits = user.limitspool.limit_set.filter(name__in=names, maxvalue__gt=0)
     if len(limits) == 0:
         return []
@@ -85,7 +98,8 @@ def display_pool_usage(user, target, currentpage):
 def extra_account_form(user, account=None):
     if not user.group in ["SuperAdmins", "Resellers"]:
         return []
-    if account is not None and not account.group in ["Resellers", "DomainAdmins"]:
+    if account is not None and \
+            not account.group in ["Resellers", "DomainAdmins"]:
         return []
 
     return [
@@ -126,7 +140,7 @@ def get_static_content(caller, user):
     margin: 5px 0;
 }
 
-.resource .progress { 
+.resource .progress {
     margin-bottom: 0px;
 }
 

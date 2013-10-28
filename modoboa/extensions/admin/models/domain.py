@@ -4,8 +4,8 @@ from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.contrib.contenttypes import generic
 from modoboa.lib import events, parameters
+from modoboa.lib.exceptions import BadRequest
 from modoboa.core.models import User, ObjectAccess
-from modoboa.extensions.admin.exceptions import AdminError
 from .base import AdminObject
 
 
@@ -123,12 +123,12 @@ class Domain(AdminObject):
 
     def from_csv(self, user, row):
         if len(row) < 4:
-            raise AdminError(_("Invalid line"))
+            raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
         try:
             self.quota = int(row[2].strip())
         except ValueError:
-            raise AdminError(_("Invalid quota value for domain '%s'" % self.name))
+            raise BadRequest(_("Invalid quota value for domain '%s'" % self.name))
         self.enabled = (row[3].strip() == 'True')
         self.save(creator=user)
 

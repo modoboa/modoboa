@@ -1,19 +1,23 @@
 import reversion
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib import events
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.exceptions import PermDeniedException
-from modoboa.extensions.admin.exceptions import AdminError
+from modoboa.lib.exceptions import PermDeniedException, BadRequest
 from .base import AdminObject
 from .domain import Domain
 from .mailbox import Mailbox
 
 
 class Alias(AdminObject):
+    """
+    Mailbox alias.
+    """
     address = models.CharField(
         ugettext_lazy('address'), max_length=254,
-        help_text=ugettext_lazy("The alias address (without the domain part). For a 'catch-all' address, just enter an * character.")
+        help_text=ugettext_lazy(
+            "The alias address (without the domain part). For a 'catch-all' "
+            "address, just enter an * character."
+        )
     )
     domain = models.ForeignKey(Domain)
     mboxes = models.ManyToManyField(
@@ -139,12 +143,12 @@ class Alias(AdminObject):
 
         """
         if len(row) < expected_elements:
-            raise AdminError(_("Invalid line: %s" % row))
+            raise BadRequest(_("Invalid line: %s" % row))
         localpart, domname = split_mailbox(row[1].strip())
         try:
             domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
-            raise AdminError(_("Domain '%s' does not exist" % domname))
+            raise BadRequest(_("Domain '%s' does not exist" % domname))
         if not user.can_access(domain):
             raise PermDeniedException
         self.address = localpart
@@ -171,7 +175,7 @@ class Alias(AdminObject):
                     target = Mailbox.objects.get(address=localpart, 
                                                  domain__name=domname)
                 except Mailbox.DoesNotExist:
-                    raise AdminError(_("Local recipient %s not found" % rcpt))
+                    raise BadRequest(_("Local recipient %s not found" % rcpt))
             int_rcpts += [target]
         self.save(int_rcpts=int_rcpts, ext_rcpts=ext_rcpts, creator=user)
 

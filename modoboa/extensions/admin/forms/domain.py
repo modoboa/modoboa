@@ -2,11 +2,11 @@ from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events
+from modoboa.lib.exceptions import Conflict
 from modoboa.lib.formutils import (
     DomainNameField, YesNoField, DynamicForm, TabForms
 )
 from modoboa.core.models import User
-from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias, Quota
 )
@@ -126,25 +126,29 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             d.save()
             Mailbox.objects.filter(domain=d, use_domain_quota=True) \
                 .update(quota=d.quota)
+            aliases = []
             for k, v in self.cleaned_data.iteritems():
                 if not k.startswith("aliases"):
                     continue
                 if v in ["", None]:
                     continue
-                try:
-                    d.domainalias_set.get(name=v)
-                except DomainAlias.DoesNotExist:
-                    pass
-                else:
-                    continue
-                events.raiseEvent("CanCreate", user, "domain_aliases")
-                al = DomainAlias(name=v, target=d, enabled=d.enabled)
-                al.save(creator=user)
-
+                aliases.append(v)
             for dalias in d.domainalias_set.all():
-                if not len(filter(lambda name: self.cleaned_data[name] == dalias.name,
-                                  self.cleaned_data.keys())):
+                if not dalias.name in aliases:
                     dalias.delete()
+                else:
+                    aliases.remove(dalias.name)
+            if aliases:
+                events.raiseEvent("CanCreate", user, "domain_aliases", len(aliases))
+                for alias in aliases:
+                    try:
+                        d.domainalias_set.get(name=alias)
+                    except DomainAlias.DoesNotExist:
+                        pass
+                    else:
+                        continue
+                    al = DomainAlias(name=alias, target=d, enabled=d.enabled)
+                    al.save(creator=user)
 
             if old_mail_homes is not None:
                 self.update_mailbox_quotas(d)
@@ -179,8 +183,11 @@ class DomainFormOptions(forms.Form):
         required=False
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(DomainFormOptions, self).__init__(*args, **kwargs)
+        if False in events.raiseQueryEvent('UserCanSetRole', user, 'DomainAdmins'):
+            self.fields = {}
+            return
         if args:
             if args[0].get("create_dom_admin", "no") == "yes":
                 self.fields["dom_admin_username"].required = True
@@ -192,6 +199,8 @@ class DomainFormOptions(forms.Form):
         return self.cleaned_data["dom_admin_username"]
 
     def save(self, user, domain):
+        if not self.fields:
+            return
         if self.cleaned_data["create_dom_admin"] == "no":
             return
         username = "%s@%s" % (self.cleaned_data["dom_admin_username"], domain.name)
@@ -200,7 +209,8 @@ class DomainFormOptions(forms.Form):
         except User.DoesNotExist:
             pass
         else:
-            raise AdminError(_("User '%s' already exists" % username))
+            raise Conflict(_("User '%s' already exists" % username))
+        events.raiseEvent("CanCreate", user, "mailboxes")
         da = User(username=username, email=username, is_active=True)
         da.set_password("password")
         da.save()
@@ -212,6 +222,7 @@ class DomainFormOptions(forms.Form):
         mb.save(creator=user)
 
         if self.cleaned_data["create_aliases"] == "yes":
+            events.raiseEvent("CanCreate", user, "mailbox_aliases")
             al = Alias(address="postmaster", domain=domain, enabled=True)
             al.save(int_rcpts=[mb], creator=user)
 

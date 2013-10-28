@@ -893,13 +893,12 @@ Webmail.prototype = {
         $("#mboxform").find("input").keypress(function(e) {
             if (e.which == 13) e.preventDefault();
         });
-        $(".submit").one('click', $.proxy(function(e) {
+        $(".submit").on('click', $.proxy(function(e) {
             var $link = $("#folders2 li.active").children("a");
 
             simple_ajax_form_post(e, {
                 reload_on_success: false,
                 formid: "mboxform",
-                error_cb: this.mboxform_cb,
                 extradata: ($link.length) ? "parent_folder=" + $link.attr("href") : "",
                 success_cb: $.proxy(this.mboxform_success, this)
             });
@@ -907,6 +906,7 @@ Webmail.prototype = {
     },
 
     mboxform_success: function(data) {
+        $("body").notify('success', data.respmsg, 2000);
         if (data.oldmb === undefined) {
             this.add_mailbox_to_tree(data.parent, data.newmb);
         } else if (data.newmb) {

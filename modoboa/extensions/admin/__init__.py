@@ -3,13 +3,11 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.core.extensions import ModoExtension, exts_pool
 from modoboa.lib import parameters, events
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.exceptions import PermDeniedException, BadRequest
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias
 )
-
 
 admin_events = [
     "DomainCreated",
@@ -146,7 +144,7 @@ def import_account_mailbox(user, account, row):
         try:
             domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
-            raise AdminError(
+            raise BadRequest(
                 _("Account import failed (%s): domain does not exist" % account.username)
             )
         if not user.can_access(domain):

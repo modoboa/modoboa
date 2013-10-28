@@ -18,7 +18,9 @@ def get_account_roles(user):
     std_roles = [("SimpleUsers", _("Simple user"))]
     if user.is_superuser:
         std_roles += [("SuperAdmins",  _("Super administrator"))]
-    if user.has_perm("admin.add_domain"):
+    filters = events.raiseQueryEvent('UserCanSetRole', user, 'DomainAdmins')
+    if user.has_perm("admin.add_domain") and \
+            (not filters or True in filters):
         std_roles += [("DomainAdmins", _("Domain administrator"))]
     std_roles += events.raiseQueryEvent("GetExtraRoles", user)
     return sorted(std_roles, key=lambda role: role[1])

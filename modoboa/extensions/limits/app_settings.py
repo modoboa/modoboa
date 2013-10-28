@@ -39,3 +39,7 @@ class ParametersForm(AdminParametersForm):
         help_text=_("Maximum number of allowed aliases for a new administrator"),
         widget=forms.widgets.TextInput(attrs={"class": "span1"})
     )
+
+    def __init__(self, *args, **kwargs):
+        super(AdminParametersForm, self).__init__(*args, **kwargs)
+        self._load_extra_parameters('A')

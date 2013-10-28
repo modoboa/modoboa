@@ -11,8 +11,8 @@ Only super users will be able to access this part of the web interface.
 import inspect
 import re
 from django import forms
+from . import events
 from exceptions import ModoboaException
-
 
 _params = {'A': {}, 'U': {}}
 
@@ -28,7 +28,12 @@ class NotDefined(ModoboaException):
 
 
 class GenericParametersForm(forms.Form):
+    """Base class for parameter forms.
+
+    Each extension has the possibility to define global parameters.
+    """
     app = None
+    visibility_rules = None
 
     def __init__(self, *args, **kwargs):
         if self.app is None:
@@ -38,10 +43,12 @@ class GenericParametersForm(forms.Form):
         super(GenericParametersForm, self).__init__(*args, **kwargs)
 
         self.visirules = {}
-        if hasattr(self, "visibility_rules"):
+        if self.visibility_rules is not None:
             for key, rule in self.visibility_rules.items():
                 field, value = rule.split("=")
-                visibility = {"field": "id_%s-%s" % (self.app, field), "value": value}
+                visibility = {
+                    "field": "id_%s-%s" % (self.app, field), "value": value
+                }
                 self.visirules["%s-%s" % (self.app, key)] = visibility
 
         if not args:
@@ -49,6 +56,11 @@ class GenericParametersForm(forms.Form):
 
     def _load_initial_values(self):
         raise NotImplementedError
+
+    def _load_extra_parameters(self, level):
+        params = events.raiseDictEvent('GetExtraParameters', self.app, level)
+        for pname, pdef in params.items():
+            self.fields[pname] = pdef
 
     def _save_parameter(self, p, name, value):
         if p.value == value:
@@ -100,6 +112,7 @@ class AdminParametersForm(GenericParametersForm):
             except NotDefined:
                 pass
         return values
+
 
 class UserParametersForm(GenericParametersForm):
     def __init__(self, *args, **kwargs):

@@ -13,20 +13,17 @@ class ModoTestCase(TestCase):
         self.clt = Client()
         self.assertEqual(self.clt.login(username=username, password=password), True)
 
-    def check_ajax_request(self, method, url, params, status="ok", **kwargs):
+    def ajax_request(self, method, url, params, status=200):
         response = getattr(self.clt, method) \
             (url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        self.assertEqual(response.status_code, 200)
-        obj = simplejson.loads(response.content)
-        self.assertEqual(obj["status"], status)
-        for kw, v in kwargs.items():
-            self.assertEqual(obj[kw], v)
+        self.assertEqual(response.status_code, status)
+        return simplejson.loads(response.content)
 
-    def check_ajax_post(self, *args, **kwargs):
-        self.check_ajax_request("post", *args, **kwargs)
+    def ajax_post(self, *args, **kwargs):
+        return self.ajax_request('post', *args, **kwargs)
 
-    def check_ajax_get(self, *args, **kwargs):
-        self.check_ajax_request("get", *args, **kwargs)
+    def ajax_get(self, *args, **kwargs):
+        return self.ajax_request('get', *args, **kwargs)
 
 
 class ExtTestCase(ModoTestCase):

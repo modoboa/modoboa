@@ -3,7 +3,7 @@ from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from modoboa.lib.webutils import (
-    ajax_simple_response, _render_to_string
+    render_to_json_response, _render_to_string
 )
 from modoboa.extensions.admin.lib import needs_mailbox
 from modoboa.extensions.admin.models import Mailbox
@@ -29,24 +29,20 @@ def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
             arm.untildate = form.cleaned_data["untildate"]
             arm.mbox = mb
             arm.save()
-            return ajax_simple_response(dict(
-                status="ok",
-                respmsg=_("Auto reply message updated successfully.")
-            ))
+            return render_to_json_response(
+                _("Auto reply message updated successfully.")
+            )
 
-        return ajax_simple_response({
-            "status": "ko",
-            "errors": form.errors,
-            "onload_cb": "autoreply_cb"
-        })
+        return render_to_json_response(
+            {"form_errors": form.errors}, status=400
+        )
 
     form = ARmessageForm(instance=arm)
     if arm is not None:
         form.fields['untildate'].initial = arm.untildate
     else:
         form.fields['untildate'].initial = date.today()
-    return ajax_simple_response({
-        "status": "ok",
+    return render_to_json_response({
         "content": _render_to_string(request, tplname, {"form": form}),
         "onload_cb": "autoreply_cb"
     })

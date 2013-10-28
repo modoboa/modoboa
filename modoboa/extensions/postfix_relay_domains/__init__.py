@@ -1,5 +1,7 @@
 # coding: utf-8
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.template import Template, Context
 from django.conf import settings
 from django.utils.translation import ugettext_lazy
@@ -10,6 +12,9 @@ from .models import RelayDomain, RelayDomainAlias, Service
 
 extension_events = [
     "RelayDomainCreated",
+    "RelayDomainDeleted",
+    "RelayDomainAliasCreated",
+    "RelayDomainAliasDeleted"
 ]
 
 
@@ -27,15 +32,41 @@ class PostfixRelayDomains(ModoExtension):
         """
         for service_name in ['relay', 'smtp']:
             Service.objects.get_or_create(name=service_name)
+        if not exts_pool.is_extension_enabled('limits'):
+            return
+
+        from modoboa.core.models import User
+        from modoboa.extensions.limits import controls
+
+        for u in User.objects.all():
+            controls.create_pool(u)
+
+        grp = Group.objects.get(name='Resellers')
+        for model in [RelayDomain, RelayDomainAlias, Service]:
+            ct = ContentType.objects.get_for_model(model)
+            name = model.__name__.lower()
+            for action in ['add', 'change', 'delete']:
+                grp.permissions.add(
+                    Permission.objects.get(
+                        content_type=ct, codename='%s_%s' % (action, name)
+                    )
+                )
+        grp.save()
 
     def load(self):
         from .app_settings import AdminParametersForm
 
-        parameters.register(AdminParametersForm, ugettext_lazy("Relay domains"))
+        parameters.register(
+            AdminParametersForm, ugettext_lazy("Relay domains")
+        )
         events.declare(extension_events)
+        if not exts_pool.is_extension_enabled('limits'):
+            return
+        import limits_controls
 
     def destroy(self):
         events.unregister('GetExtraDomainEntries', extra_domain_entries)
+        events.unregister('GetExtraParameters', extra_parameters)
 
 exts_pool.register_extension(PostfixRelayDomains)
 
@@ -132,3 +163,41 @@ def check_domain_name():
         (RelayDomain, ugettext_lazy('relay domain')),
         (RelayDomainAlias, ugettext_lazy('relay domain alias'))
     ]
+
+
+@events.observe('GetExtraLimitTemplates')
+def extra_limit_templates():
+    return [
+        ('relay_domains_limit', ugettext_lazy('Relay domains'),
+         ugettext_lazy('Maximum number of relay domains this user can create'),
+         'Resellers'),
+        ("relay_domain_aliases_limit", ugettext_lazy("Relay domain aliases"),
+         ugettext_lazy('Maximum number of relay domain aliases this user can create'),
+         'Resellers'),
+    ]
+
+
+@events.observe('GetExtraParameters')
+def extra_parameters(app, level):
+    from django import forms
+
+    if app != 'limits' or level != 'A':
+        return {}
+    return {
+        'deflt_relay_domains_limit': forms.IntegerField(
+            label=ugettext_lazy("Relay domains"),
+            initial=0,
+            help_text=ugettext_lazy(
+                "Maximum number of allowed relay domains for a new administrator"
+            ),
+            widget=forms.widgets.TextInput(attrs={"class": "span1"})
+        ),
+        'deflt_relay_domain_aliases_limit': forms.IntegerField(
+            label=ugettext_lazy("Relay domain aliases"),
+            initial=0,
+            help_text=ugettext_lazy(
+                "Maximum number of allowed relay domain aliases for a new administrator"
+            ),
+            widget=forms.widgets.TextInput(attrs={"class": "span1"})
+        )
+    }

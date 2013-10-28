@@ -1,6 +1,5 @@
 from django import forms
 from django.utils.translation import ugettext_lazy
-from modoboa.lib.formutils import SeparatorField
 from modoboa.lib import parameters
 
 

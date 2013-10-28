@@ -16,6 +16,15 @@ RelayDomains.prototype = {
     initialize: function(options) {
         this.options = $.extend({}, this.defaults, options);
         admin.register_tag_handler("srv", this.srv_tag_handler);
+        $(document).bind('domain_listing_refresh', this.listing_refresh_cb);
+    },
+
+    listing_refresh_cb: function() {
+        $("a[name=delrelaydomain]").confirm({
+            question: function() { return this.$element.attr('title'); },
+            method: "DELETE",
+            success_cb: $.proxy(admin.reload_listing, admin)
+        });
     },
 
     launch_scan: function(e) {
@@ -54,7 +63,7 @@ RelayDomains.prototype = {
         $('input:text:visible:first').focus();
         $("#id_aliases").dynamic_input();
         $(".submit").on('click', $.proxy(function(e) {
-            simple_ajax_form_post2(e, {
+            simple_ajax_form_post(e, {
                 formid: "rdomform",
                 reload_on_success: false,
                 success_cb: $.proxy(admin.reload_listing, admin)

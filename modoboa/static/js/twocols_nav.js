@@ -25,39 +25,9 @@ TwocolsNav.prototype = {
                 formid: this.options.formid,
                 modal: false,
                 reload_on_success: false,
-                error_cb: $.proxy(this.display_errors, this),
                 success_cb: $.proxy(this.save_cb, this)
             });
         }, this));
-    },
-
-    display_errors: function(data) {
-        if (data.errors === undefined || !data.errors.length) {
-            if (data.respmsg) {
-                $("body").notify("error", data.respmsg);
-            }
-            return;
-        }
-        $.each(data.errors, function(id, value) {
-            var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
-            var $widget = $("#" + fullid);
-            var spanid = fullid + "-error";
-            var $span = $("#" + spanid);
-
-            if (!$widget.parents(".control-group").hasClass("error")) {
-                $widget.parents(".control-group").addClass("error");
-            }
-            if (!$span.length) {
-                $span = $("<span />", {
-                    "class": "help-inline",
-                    "html": value[0],
-                    "id": spanid
-                });
-                $widget.parents(".controls").append($span);
-            } else {
-                $span.html(value[0]);
-            }
-        });
     },
 
     update_content: function(data) {
@@ -134,6 +104,7 @@ TwocolsNav.prototype = {
     },
 
     save_cb: function(data) {
+        clean_form_errors(this.options.formid);
         if (this.options.reload_exceptions) {
             for (var i = 0; i < this.options.reload_exceptions.length; i++) {
                 if (this.navobj.getbaseurl() == this.options.reload_exceptions[i]) {
@@ -142,7 +113,7 @@ TwocolsNav.prototype = {
                 }
             }
         }
-        $("body").notify("success", data.respmsg, 2000);
+        $("body").notify("success", data, 2000);
     },
 
     load_section: function(e) {

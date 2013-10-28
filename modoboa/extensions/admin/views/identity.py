@@ -7,9 +7,12 @@ from django.contrib.auth.decorators import (
 )
 from django.views.decorators.csrf import ensure_csrf_cookie
 from modoboa.lib import parameters, events
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.exceptions import (
+    ModoboaException, PermDeniedException, BadRequest
+)
 from modoboa.lib.webutils import (
-    ajax_simple_response, _render_to_string, ajax_response
+    ajax_simple_response, _render_to_string,
+    render_to_json_response
 )
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.templatetags.lib_tags import pagination_bar
@@ -18,7 +21,6 @@ from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.extensions.admin.lib import (
     get_sort_order, get_listing_page, get_identities
 )
-from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.forms import (
     AccountForm, AccountFormGeneral, AccountFormMail
 )
@@ -99,7 +101,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
             order_by=["%s%s" % (sort_dir, sort_order)]
         )
     else:
-        raise AdminError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     page = get_listing_page(mboxes, request.GET.get("page", 1))
     return ajax_simple_response({
         "status": "ok",
@@ -115,35 +117,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
 @permission_required("core.add_user")
 @transaction.commit_on_success
 def newaccount(request, tplname='common/wizard_forms.html'):
-    def create_account(steps):
-        """Account creation callback
-
-        Called when all creation steps have been validated.
-
-        :param steps: the steps data
-        """
-        genform = steps[0]["form"]
-        genform.is_valid()
-        account = genform.save()
-        account.post_create(request.user)
-
-        mailform = steps[1]["form"]
-        try:
-            mailform.save(request.user, account)
-        except AdminError:
-            # A bit uggly: transaction management doesn't work very
-            # well with nested functions. Need to wait for django 1.6
-            # and atomicity.
-            account.delete(request.user, False)
-            raise
-
-    ctx = dict(
-        title=_("New account"),
-        action=reverse(newaccount),
-        formid="newaccount_form",
-        submit_label=_("Create")
-    )
-    cwizard = CreationWizard(create_account)
+    cwizard = CreationWizard()
     cwizard.add_step(AccountFormGeneral, _("General"),
                      [dict(classes="btn-inverse next", label=_("Next"))],
                      new_args=[request.user])
@@ -155,22 +129,35 @@ def newaccount(request, tplname='common/wizard_forms.html'):
     if request.method == "POST":
         retcode, data = cwizard.validate_step(request)
         if retcode == -1:
-            raise AdminError(data)
+            raise BadRequest(data)
         if retcode == 1:
-            return ajax_simple_response(dict(
-                status="ok", title=cwizard.get_title(data + 1), stepid=data
-            ))
+            return render_to_json_response(
+                {'title': cwizard.get_title(data + 1), 'stepid': data}
+            )
         if retcode == 2:
-            return ajax_simple_response(dict(
-                status="ok", respmsg=_("Account created")
-            ))
+            genform = cwizard.steps[0]["form"]
+            account = genform.save()
+            try:
+                account.post_create(request.user)
+                mailform = cwizard.steps[1]["form"]
+                mailform.save(request.user, account)
+            except ModoboaException:
+                # A bit uggly: transaction management doesn't work very
+                # well with nested functions. Need to wait for django 1.6
+                # and atomicity.
+                account.delete(request.user, False)
+                raise
+            return render_to_json_response(_("Account created"))
+        return render_to_json_response({
+            'stepid': data, 'form_errors': cwizard.errors
+        }, status=400)
 
-        from modoboa.lib.templatetags.lib_tags import render_form
-        return ajax_simple_response(dict(
-            status="ko", stepid=data,
-            form=render_form(cwizard.steps[data]["form"])
-        ))
-
+    ctx = {
+        'title': _("New account"),
+        'action': reverse(newaccount),
+        'formid': 'newaccount_form',
+        'submit_label': _("Create")
+    }
     cwizard.create_forms()
     ctx.update(steps=cwizard.steps)
     ctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
@@ -191,14 +178,6 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
     instances = dict(general=account, mail=mb, perms=account)
     events.raiseEvent("FillAccountInstances", request.user, account, instances)
 
-    ctx = dict(
-        title=account.username,
-        formid="accountform",
-        action=reverse(editaccount, args=[accountid]),
-        action_label=_("Update"),
-        action_classes="submit"
-    )
-
     if request.method == "POST":
         classes = {}
         form = AccountForm(request.user, request.POST,
@@ -209,15 +188,17 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
             if form.is_valid(optional_only=True):
                 events.raiseEvent("AccountModified", account, form.account)
                 form.save()
-                return ajax_simple_response(
-                    dict(status="ok", respmsg=_("Account updated"))
-                )
-            transaction.rollback()
+                return render_to_json_response(_("Account updated"))
+        return render_to_json_response({'form_errors': form.errors}, status=400)
 
-        ctx["tabs"] = form
-        return ajax_response(request, status="ko", template=tplname, **ctx)
-
-    ctx["tabs"] = AccountForm(request.user, instances=instances)
+    ctx = {
+        'title': account.username,
+        'formid': 'accountform',
+        'action': reverse(editaccount, args=[accountid]),
+        'action_label': _('Update'),
+        'action_classes': 'submit',
+        'tabs': AccountForm(request.user, instances=instances)
+    }
     active_tab_id = request.GET.get("active_tab", "default")
     if active_tab_id != "default":
         ctx["tabs"].active_id = active_tab_id
@@ -229,11 +210,10 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 @transaction.commit_on_success
 def delaccount(request, accountid):
     keepdir = True if request.POST.get("keepdir", "false") == "true" else False
-
     User.objects.get(pk=accountid).delete(request.user, keep_mb_dir=keepdir)
-
-    msg = ungettext("Account deleted", "Accounts deleted", 1)
-    return ajax_simple_response({"status": "ok", "respmsg": msg})
+    return render_to_json_response(
+        ungettext("Account deleted", "Accounts deleted", 1)
+    )
 
 
 @login_required
@@ -242,12 +222,12 @@ def remove_permission(request):
     domid = request.GET.get("domid", None)
     daid = request.GET.get("daid", None)
     if domid is None or daid is None:
-        raise AdminError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     try:
         account = User.objects.get(pk=daid)
         domain = Domain.objects.get(pk=domid)
     except (User.DoesNotExist, Domain.DoesNotExist):
-        raise AdminError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     if not request.user.can_access(account) or not request.user.can_access(domain):
         raise PermDeniedException
     domain.remove_admin(account)

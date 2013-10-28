@@ -87,29 +87,25 @@
                  }
                  params += $(this).attr("name") + "=true";
              });
-
              $.ajax({
                  cache: false,
                  method: this.options.method,
                  data: params,
-                 url: this.$element.attr('href'),
-                 complete: $.proxy(function(XMLHttpRequest, textStatus) {
-                     var data;
-                     try {
-                         data = $.parseJSON(XMLHttpRequest.responseText);
-                     } catch (e) {
-                         data = { status: 'ko', respmsg: gettext('Internal Error') };
-                     }
-                     if (data.status == "ok") {
-                         if (this.options.success_cb != undefined) {
-                             this.options.success_cb(data);
-                             return;
-                         }
-                         window.location.reload();
-                     } else {
-                         $("body").notify("error", data.respmsg);
-                     }
-                 }, this)
+                 url: this.$element.attr('href')
+             }).done($.proxy(function(data) {
+                 if (this.options.success_cb != undefined) {
+                     this.options.success_cb(data);
+                     return;
+                 }
+                 window.location.reload();
+             }, this)).fail(function(jqxhr) {
+                 var data;
+                 try {
+                     data = $.parseJSON(jqxhr.responseText);
+                 } catch (e) {
+                     data = gettext('Internal Error');
+                 }
+                 $("body").notify("error", data);
              });
              this.box.remove();
          }

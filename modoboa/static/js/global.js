@@ -31,8 +31,11 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         $(href).modal('open');
         return;
     }
-    $.get(href, function(data) {
+    $.ajax({type: "GET", url: href}).done(function(data) {
         if (typeof data === "object") {
+            /*
+             * Compatibility with the old way...
+             */
             if (data.status == "ko" && data.respmsg) {
                 $("body").notify("error", data.respmsg);
             }
@@ -67,6 +70,9 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         if (css != undefined) {
             $div.css(css);
         }
+    }).fail(function(jqxhr) {
+        var data = $.parseJSON(jqxhr.responseText);
+        $("body").notify("error", data);
     });
 }
 
@@ -111,57 +117,46 @@ if (!Object.keys) {
 }
 
 /*
- * Simple function that sends a form using an 'ajax' post request.
- *
- * The function is intended to be used in a modal environment.
+ * Clean all errors in a given form.
  */
-function simple_ajax_form_post(e, options) {
-    e.preventDefault();
-    var $form = (options.formid !== undefined) ? $("#" + options.formid) : $("form");
-    var defaults = {reload_on_success: true, reload_mode: 'full', modal: true};
-    var opts = $.extend({}, defaults, options);
-    var args = $form.serialize();
+function clean_form_errors(formid) {
+    $("#" + formid + " div.error").removeClass("error");
+    $("#" + formid + " span.help-inline").remove();
+}
 
-    if (options.extradata != undefined) {
-        args += "&" + options.extradata;
-    }
-    $.post($form.attr("action"), args, function(data) {
-        if (data.status == "ok") {
-            $("#modalbox").modal('hide');
-            if (opts.success_cb != undefined) {
-                opts.success_cb(data);
-                return;
-            }
-            if (opts.reload_on_success) {
-                if (opts.reload_mode == 'full') {
-                    window.location.reload();
-                } else {
-                    history.update(true);
-                }
-            }
-            if (data.respmsg) {
-                $("body").notify('success', data.respmsg, 2000);
-            }
+/*
+ * Display validation errors for a given form.
+ */
+function display_form_errors(formid, data) {
+    clean_form_errors(formid);
+    $.each(data.form_errors, function(id, value) {
+        var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
+        var $widget = $("#" + formid + " #" + fullid);
+        var spanid = fullid + "-error";
+        var $span = $("#" + spanid);
+
+        if (!$widget.parents(".control-group").hasClass("error")) {
+            $widget.parents(".control-group").addClass("error");
+        }
+        if (!$span.length) {
+            $span = $("<span />", {
+                "class": "help-inline",
+                "html": value[0],
+                "id": spanid
+            });
+            $widget.parents(".controls").append($span);
         } else {
-            if (opts.modal) {
-                if (data.content != "") {
-                    $('.modal').html(data.content);
-                }
-                if (data.respmsg) {
-                    $('.modal-body').prepend(build_error_alert(data.respmsg));
-                }
-            }
-            if (opts.error_cb != undefined) {
-                opts.error_cb(data);
-            }
+            $span.html(value[0]);
         }
     });
 }
 
 /*
- * Replacement
+ * Simple function that sends a form using an 'ajax' post request.
+ *
+ * The function is intended to be used in a modal environment.
  */
-function simple_ajax_form_post2(e, options) {
+function simple_ajax_form_post(e, options) {
     e.preventDefault();
     var $form = (options.formid != undefined) ? $("#" + options.formid) : $("form");
     var defaults = {reload_on_success: true, reload_mode: 'full', modal: true};
@@ -176,7 +171,9 @@ function simple_ajax_form_post2(e, options) {
         url: $form.attr("action"),
         data: args
     }).done(function(data) {
-        $("#modalbox").modal('hide');
+        if (opts.modal) {
+            $("#modalbox").modal('hide');
+        }
         if (opts.success_cb != undefined) {
             opts.success_cb(data);
             return;
@@ -188,38 +185,22 @@ function simple_ajax_form_post2(e, options) {
                 history.update(true);
             }
         }
-        if (data.respmsg) {
-            $("body").notify('success', data.respmsg, 2000);
+        if (data) {
+            $("body").notify('success', data, 2000);
         }
     }).fail(function(jqxhr) {
-        if (jqxhr.status != 400) {
-            return;
-        }
-        var result = $.parseJSON(jqxhr.responseText);
-        $("div.error").removeClass("error");
-        $("span.help-inline").remove();
-        $.each(result, function(id, value) {
-            var fullid = "id_" + id;
-            var $widget = $("#" + fullid);
-            var spanid = fullid + "-error";
-            var $span = $("#" + spanid);
-
-            if (!$widget.parents(".control-group").hasClass("error")) {
-                $widget.parents(".control-group").addClass("error");
-            }
-            if (!$span.length) {
-                $span = $("<span />", {
-                    "class": "help-inline",
-                    "html": value[0],
-                    "id": spanid
-                });
-                $widget.parents(".controls").append($span);
+        var data = $.parseJSON(jqxhr.responseText);
+        if (data.form_errors) {
+            display_form_errors(options.formid, data);
+        } else {
+            if (opts.modal) {
+                $('.modal-body').prepend(build_error_alert(data));
             } else {
-                $span.html(value[0]);
+                $('body').notify('error', data);
             }
-        });
+        }
         if (opts.error_cb) {
-            opts.error_cb(result);
+            opts.error_cb(data);
         }
     });
 }

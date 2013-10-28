@@ -12,7 +12,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
 from modoboa.lib import parameters
 from modoboa.lib.webutils import (
-    _render_to_string, ajax_response, ajax_simple_response
+    _render_to_string, ajax_response, ajax_simple_response,
+    render_to_json_response
 )
 from modoboa.extensions.admin.lib import needs_mailbox
 from .exceptions import WebmailError
@@ -132,6 +133,19 @@ def compact(request, name):
 def newfolder(request, tplname="webmail/folder.html"):
     mbc = IMAPconnector(user=request.user.username,
                         password=request.session["password"])
+
+    if request.method == "POST":
+        form = FolderForm(request.POST)
+        if form.is_valid():
+            pf = request.POST.get("parent_folder", None)
+            mbc.create_folder(form.cleaned_data["name"], pf)
+            return render_to_json_response({
+                'respmsg': _("Mailbox created"),
+                'newmb': form.cleaned_data["name"], 'parent': pf
+            })
+
+        return render_to_json_response({'form_errors': form.errors}, status=400)
+
     ctx = {"title": _("Create a new mailbox"),
            "formid": "mboxform",
            "action": reverse(newfolder),
@@ -140,24 +154,9 @@ def newfolder(request, tplname="webmail/folder.html"):
            "withunseen": False,
            "selectonly": True,
            "mboxes": mbc.getmboxes(request.user),
-           "hdelimiter": mbc.hdelimiter}
-
-    if request.method == "POST":
-        form = FolderForm(request.POST)
-        if form.is_valid():
-            pf = request.POST.get("parent_folder", None)
-            mbc.create_folder(form.cleaned_data["name"], pf)
-            return ajax_simple_response(dict(
-                status="ok", respmsg=_("Mailbox created"), 
-                newmb=form.cleaned_data["name"], parent=pf
-            ))
-
-        ctx["form"] = form
-        ctx["selected"] = None
-        return ajax_response(request, status="ko", template=tplname, **ctx)
-
-    ctx["form"] = FolderForm()
-    ctx["selected"] = None
+           "hdelimiter": mbc.hdelimiter,
+           "form": FolderForm(),
+           "selected": None}
     return render(request, tplname, ctx)
 
 
@@ -179,9 +178,10 @@ def editfolder(request, tplname="webmail/folder.html"):
         form = FolderForm(request.POST)
         if form.is_valid():
             pf = request.POST.get("parent_folder", None)
-            ctx["selected"] = pf
-            oldname, oldparent = separate_mailbox(request.POST["oldname"], sep=mbc.hdelimiter)
-            res = dict(status="ok", respmsg=_("Mailbox updated"))
+            oldname, oldparent = separate_mailbox(
+                request.POST["oldname"], sep=mbc.hdelimiter
+            )
+            res = {'respmsg': _("Mailbox updated")}
             if form.cleaned_data["name"] != oldname \
                     or (pf != oldparent):
                 newname = form.cleaned_data["name"] if pf is None \
@@ -193,21 +193,27 @@ def editfolder(request, tplname="webmail/folder.html"):
                 res["newparent"] = pf
                 if "mbox" in request.session:
                     del request.session["mbox"]
-            return ajax_simple_response(res)
+            return render_to_json_response(res)
 
-        ctx["mboxes"] = mbc.getmboxes(request.user)
-        ctx["form"] = form
-        return ajax_response(request, status="ko", template=tplname, **ctx)
+        return render_to_json_response({'form_errors': form.errors}, status=400)
 
     name = request.GET.get("name", None)
     if name is None:
         raise WebmailError(_("Invalid request"))
     shortname, parent = separate_mailbox(name, sep=mbc.hdelimiter)
-    ctx["mboxes"] = mbc.getmboxes(request.user, until_mailbox=parent)
-    ctx["form"] = FolderForm()
+    ctx = {"title": _("Edit mailbox"),
+           "formid": "mboxform",
+           "action": reverse(editfolder),
+           "action_label": _("Update"),
+           "action_classes": "submit",
+           "withunseen": False,
+           "selectonly": True,
+           "hdelimiter": mbc.hdelimiter,
+           "mboxes": mbc.getmboxes(request.user, until_mailbox=parent),
+           "form": FolderForm(),
+           "selected": parent}
     ctx["form"].fields["oldname"].initial = name
     ctx["form"].fields["name"].initial = shortname
-    ctx["selected"] = parent
     return render(request, tplname, ctx)
 
 
@@ -377,11 +383,11 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
         randid = set_compose_session(request)
 
     attachments = request.session["compose_mail"]["attachments"]
-    if len(attachments):
-        short_att_list = "(%s)" \
-            % ", ".join(map(lambda att: att["fname"],
-                            attachments[:2] + [{"fname": "..."}] \
-                                if len(attachments) > 2 else attachments))
+    if attachments:
+        short_att_list = "(%s)" % ", ".join(
+            [att['fname'] for att in (attachments[:2] + [{"fname": "..."}]
+             if len(attachments) > 2 else attachments)]
+        )
     else:
         short_att_list = ""
     content = _render_to_string(request, "webmail/compose.html", {

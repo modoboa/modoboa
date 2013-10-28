@@ -18,15 +18,13 @@ function removefilter(evt) {
 
     $.ajax({
         url: $this.attr("href"),
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == "ok") {
-                history.update(true);
-                $("body").notify('success', response.respmsg, 2000);
-            } else {
-                $("body").notify('error', response.respmsg);
-            }
-        }
+        dataType: 'json'
+    }).done(function(response) {
+        history.update(true);
+        $("body").notify('success', response, 2000);
+    }).fail(function(jqxhr) {
+        var response = $.parseJSON(jqxhr.responseText);
+        $("body").notify('error', response);
     });
 }
 
@@ -181,16 +179,14 @@ function toggle_filter_state(event) {
     event.preventDefault();
     $.ajax({
         url: $this.attr("href"),
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == "ok") {
-                $this.html(response.label);
-                $this.attr("class", "");
-                $this.addClass(response.color);
-            } else {
-                $("body").notify('error', response.respmsg);
-            }
-        }
+        dataType: 'json'
+    }).done(function(response) {
+        $this.html(response.label);
+        $this.attr("class", "");
+        $this.addClass(response.color);
+    }).fail(function(jqhxr) {
+        var response = $.parseJSON(jqxhr.responseText);
+        $("body").notify('error', response);
     });
 }
 
@@ -200,11 +196,13 @@ function move_filter(event) {
     event.preventDefault();
     $.ajax({
         url: $this.attr('href'),
-        dataType: 'json',
-        success: function(response) {
-            $("#set_content").html(response.content);
-            init_filters_list();
-        }
+        dataType: 'json'
+    }).done(function(response) {
+        $("#set_content").html(response.content);
+        init_filters_list();
+    }).fail(function(jqxhr) {
+        var response = $.parseJSON(jqxhr.responseText);
+        $("body").notify('error', response);
     });
 }
 
@@ -234,11 +232,10 @@ function filtersetform_cb() {
     $("#newfiltersset").find("input").keypress(function(e) {
         if (e.which == 13) e.preventDefault();
     });
-    $(".submit").one('click', function(e) {
+    $(".submit").on('click', function(e) {
         simple_ajax_form_post(e, {
             formid: "newfiltersset",
             reload_on_success: false,
-            error_cb: filtersetform_cb,
             success_cb: filterset_created
         });
     });

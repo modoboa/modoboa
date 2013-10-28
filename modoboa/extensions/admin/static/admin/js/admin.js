@@ -143,8 +143,8 @@ Admin.prototype = {
 
     reload_listing: function(data) {
         this.navobj.update(true);
-        if (data.respmsg) {
-            $("body").notify("success", data.respmsg, 2000);
+        if (data) {
+            $("body").notify("success", data, 2000);
         }
     }
 };
@@ -180,11 +180,7 @@ Domains.prototype = {
             checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
         });
-        $("a[name=delrelaydomain]").confirm({
-            question: function() { return this.$element.attr('title'); },
-            method: "DELETE",
-            success_cb: $.proxy(this.reload_listing, this)
-        });
+        $(document).trigger('domain_listing_refresh');
     },
 
     change_inputs_state: function(value) {
@@ -239,7 +235,7 @@ Domains.prototype = {
                 1: this.optionsform_prefill
             },
             error_callbacks: {
-                1: this.generalform_init,
+                //1: this.generalform_init,
                 2: $.proxy(this.optionsform_init, this)
             },
             success_callback: $.proxy(this.reload_listing, this)
@@ -397,11 +393,7 @@ Identities.prototype = {
         $("#wizard").cwizard({
             formid: "newaccount_form",
             transition_callbacks: {
-                1: this.mailform_prefill
-            },
-            error_callbacks: {
-                1: $.proxy(this.generalform_init, this),
-                2: $.proxy(this.mailform_init, this)
+                2: this.mailform_prefill
             },
             success_callback: $.proxy(this.reload_listing, this)
         });
@@ -409,10 +401,9 @@ Identities.prototype = {
 
     editaccount_cb: function() {
         this.accountform_init();
-        $('.submit').one('click', $.proxy(function(e) {
+        $('.submit').on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "accountform",
-                error_cb: $.proxy(this.editaccount_cb, this),
                 reload_on_success: false,
                 success_cb: $.proxy(this.reload_listing, this)
             });
@@ -425,10 +416,9 @@ Identities.prototype = {
             choices: get_domains_list
         });
         $("#id_recipients").dynamic_input();
-        $(".submit").one('click', $.proxy(function(e) {
+        $(".submit").on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "aliasform",
-                error_cb: $.proxy(this.aliasform_cb, this),
                 reload_on_success: false,
                 success_cb: $.proxy(this.reload_listing, this)
             });

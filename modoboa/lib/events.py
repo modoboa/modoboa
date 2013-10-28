@@ -91,7 +91,7 @@ class observe(object):
                         return []
                 else:
                     if not ext.enabled:
-                        return []
+                        return None
             elif not modname in settings.MODOBOA_APPS:
                 return []
             return f(*args, **kwargs)
@@ -144,7 +144,12 @@ def raiseQueryEvent(event, *args, **kwargs):
     if not event in events or not event in callbacks.keys():
         return result
     for callback in callbacks[event].values():
-        result += callback(*args, **kwargs)
+        tmp = callback(*args, **kwargs)
+        if tmp is None:
+            # Callback is registered but associated extension is
+            # disabled.
+            continue
+        result += tmp
     return result
 
 
@@ -158,10 +163,14 @@ def raiseDictEvent(event, *args):
     :return: a dictionnary
     """
     result = {}
-    if not event in events or not event in callbacks.keys():
+    if not event in events or not event in callbacks:
         return result
     for callback in callbacks[event].values():
         tmp = callback(*args)
+        if tmp is None:
+            # Callback is registered but associated extension is
+            # disabled.
+            continue
         for k, v in tmp.iteritems():
             result[k] = v
     return result

@@ -9,9 +9,9 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from modoboa.lib import parameters, events
+from modoboa.lib.exceptions import BadRequest, InternalError
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.models import User
-from modoboa.extensions.admin.exceptions import AdminError
 from .base import AdminObject
 from .domain import Domain
 
@@ -110,7 +110,7 @@ class Mailbox(AdminObject):
                 "doveadm user %s -f home" % self.full_address, **options
             ) 
             if code:
-                raise AdminError(_("Failed to retrieve mailbox location (%s)" % output))
+                raise InternalError(_("Failed to retrieve mailbox location (%s)" % output))
             self.__mail_home = output.strip()
         return self.__mail_home
 
@@ -158,13 +158,13 @@ class Mailbox(AdminObject):
             else:
                 self.quota = 0
         elif int(value) > self.domain.quota and not override_rules:
-            raise AdminError(
+            raise BadRequest(
                 _("Quota is greater than the allowed domain's limit (%dM)" % self.domain.quota)
             )
         else:
             self.quota = value
         if not self.quota and self.domain.quota and not override_rules:
-            raise AdminError(_("A quota is required"))
+            raise BadRequest(_("A quota is required"))
 
     def get_quota(self):
         """Get quota limit.

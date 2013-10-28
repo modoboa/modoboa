@@ -34,11 +34,11 @@ function filterform_cb() {
         }
     });
 
-    $(".submit").one('click', function(e) {
+    $(".submit").on('click', function(e) {
         var counters = "conds=" + $dc.fields_cnt + "&actions=" + $da.fields_cnt;
 
         simple_ajax_form_post(e, {
-            error_cb: filterform_cb,
+            formid: 'filterform',
             reload_mode: 'history',
             extradata: counters
         });

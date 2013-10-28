@@ -15,6 +15,7 @@ base_events = [
     "RoleChanged",
     "GetExtraRoles",
     "PasswordChange",
+    "UserCanSetRole",
 
     "UserMenuDisplay",
     "AdminMenuDisplay",
@@ -32,7 +33,9 @@ base_events = [
     "ExtraAdminContent",
 
     "ExtraUprefsRoutes",
-    "ExtraUprefsJS"
+    "ExtraUprefsJS",
+
+    "GetExtraParameters"
 ]
 
 

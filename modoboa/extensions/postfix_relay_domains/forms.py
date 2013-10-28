@@ -1,6 +1,7 @@
 from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
+from modoboa.lib import events
 from modoboa.lib.formutils import DynamicForm, DomainNameField
 from modoboa.extensions.admin.models import Domain, DomainAlias
 from .models import RelayDomain, RelayDomainAlias
@@ -92,23 +93,31 @@ class RelayDomainForm(forms.ModelForm, DynamicForm):
         rd = super(RelayDomainForm, self).save(commit=False)
         if commit:
             rd.save()
+            aliases = []
             for k, v in self.cleaned_data.iteritems():
                 if not k.startswith("aliases"):
                     continue
                 if v in ["", None]:
                     continue
-                try:
-                    rd.relaydomainalias_set.get(name=v)
-                except RelayDomainAlias.DoesNotExist:
-                    pass
-                else:
-                    continue
-                #events.raiseEvent("CanCreate", user, "domain_aliases")
-                al = RelayDomainAlias(name=v, target=rd, enabled=rd.enabled)
-                al.save(creator=user)
-
+                aliases.append(v)
             for rdalias in rd.relaydomainalias_set.all():
-                if not filter(lambda name: self.cleaned_data[name] == rdalias.name,
-                              self.cleaned_data.keys()):
+                if not rdalias.name in aliases:
                     rdalias.delete()
+                else:
+                    aliases.remove(rdalias.name)
+            if aliases:
+                events.raiseEvent(
+                    "CanCreate", user, "relay_domain_aliases", len(aliases)
+                )
+                for alias in aliases:
+                    try:
+                        rd.relaydomainalias_set.get(name=alias)
+                    except RelayDomainAlias.DoesNotExist:
+                        pass
+                    else:
+                        continue
+                    al = RelayDomainAlias(
+                        name=alias, target=rd, enabled=rd.enabled
+                    )
+                    al.save(creator=user)
         return rd

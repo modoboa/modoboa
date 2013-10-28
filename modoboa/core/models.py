@@ -17,10 +17,11 @@ from django.contrib.auth.models import (
     UserManager, Group, AbstractBaseUser, PermissionsMixin
 )
 from modoboa.lib import events, md5crypt, parameters
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.exceptions import (
+    PermDeniedException, InternalError, BadRequest
+)
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.extensions import exts_pool
-from modoboa.core.exceptions import AdminError
 
 try:
     from modoboa.lib.ldaputils import *
@@ -72,7 +73,9 @@ class User(AbstractBaseUser, PermissionsMixin):
             get_object_owner, grant_access_to_object, ungrant_access_to_object
 
         if fromuser == self:
-            raise AdminError(_("You can't delete your own account"))
+            raise PermDeniedException(
+                _("You can't delete your own account")
+            )
 
         if not fromuser.can_access(self):
             raise PermDeniedException
@@ -133,15 +136,15 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.password = self._crypt_password(raw_value)
         else:
             if not ldap_available:
-                raise AdminError(
+                raise InternalError(
                     _("Failed to update password: LDAP module not installed")
                 )
 
             ab = LDAPAuthBackend()
             try:
                 ab.update_user_password(self.username, curvalue, raw_value)
-            except LDAPException, e:
-                raise AdminError(_("Failed to update password: %s" % str(e)))
+            except LDAPException as e:
+                raise InternalError(_("Failed to update password: %s" % str(e)))
         events.raiseEvent(
             "PasswordUpdated", self, raw_value, self.pk is None
         )
@@ -197,7 +200,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         try:
             return self.groups.all()[0].name
         except IndexError:
-            return "SimpleUsers"
+            return "---"
 
     @property
     def enabled(self):
@@ -318,7 +321,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         :param crypt_password:
         """
         if len(row) < 7:
-            raise AdminError(_("Invalid line"))
+            raise BadRequest(_("Invalid line"))
         role = row[6].strip()
         if not user.is_superuser and not role in ["SimpleUsers", "DomainAdmins"]:
             raise PermDeniedException(
@@ -327,11 +330,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.username = row[1].strip()
         if role == "SimpleUsers":
             if (len(row) < 8 or not row[7].strip()):
-                raise AdminError(
+                raise BadRequest(
                     _("The simple user '%s' must have a valid email address" % self.username)
                 )
             if self.username != row[7].strip():
-                raise AdminError(
+                raise BadRequest(
                     _("username and email fields must not differ for '%s'" % self.username)
                 )
 

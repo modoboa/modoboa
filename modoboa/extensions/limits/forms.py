@@ -1,44 +1,26 @@
 # coding: utf-8
-
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
-from .models import limits_tpl
+from .models import LimitTemplates
 from .lib import BadLimitValue, UnsufficientResource
 
 
 class ResourcePoolForm(forms.Form):
-    domain_admins_limit = forms.IntegerField(
-        label=ugettext_lazy("Domain admins"),
-        help_text=ugettext_lazy("Maximum number of domain administrators this user can create")
-    )
-    domains_limit = forms.IntegerField(
-        label=ugettext_lazy("Domains"),
-        help_text=ugettext_lazy("Maximum number of domains this user can create")
-    )
-    domain_aliases_limit = forms.IntegerField(
-        label=ugettext_lazy("Domain aliases"),
-        help_text=ugettext_lazy("Maximum number of domain aliases this user can create")
-    )
-    mailboxes_limit = forms.IntegerField(
-        label=ugettext_lazy("Mailboxes"),
-        help_text=ugettext_lazy("Maximum number of mailboxes this user can create")
-    )
-    mailbox_aliases_limit = forms.IntegerField(
-        label=ugettext_lazy("Mailbox aliases"),
-        help_text=ugettext_lazy("Maximum number of mailbox aliases this user can create")
-    )
 
     def __init__(self, *args, **kwargs):
+        self.account = None
         if "instance" in kwargs:
             self.account = kwargs["instance"]
             del kwargs["instance"]
         super(ResourcePoolForm, self).__init__(*args, **kwargs)
+        for tpl in LimitTemplates().templates:
+            if len(tpl) > 3 and self.account is not None and self.account.group != tpl[3]:
+                continue
+            self.fields[tpl[0]] = forms.IntegerField(
+                label=tpl[1], help_text=tpl[2]
+            )
         if hasattr(self, "account"):
-            if self.account.group != "Resellers":
-                del self.fields["domain_admins_limit"]
-                del self.fields["domains_limit"]
-                del self.fields["domain_aliases_limit"]
             self.load_from_user(self.account)
 
     def check_limit_value(self, lname):
@@ -46,29 +28,30 @@ class ResourcePoolForm(forms.Form):
             raise forms.ValidationError(_("Invalid limit"))
         return self.cleaned_data[lname]
 
-    def clean_domains_limit(self):
-        return self.check_limit_value("domains_limit")
-
-    def clean_domain_aliases_limit(self):
-        return self.check_limit_value("domain_aliases_limit")
-
-    def clean_mailboxes_limit(self):
-        return self.check_limit_value("mailboxes_limit")
-
-    def clean_mailbox_aliases_limit(self):
-        return self.check_limit_value("mailbox_aliases_limit")
+    def clean(self):
+        cleaned_data = super(ResourcePoolForm, self).clean()
+        for lname in self.fields.keys():
+            if not lname in self._errors and cleaned_data[lname] < -1:
+                self._errors[lname] = self.error_class([_('Invalid limit')])
+                del cleaned_data[lname]
+        return cleaned_data
 
     def load_from_user(self, user):
-        for l in limits_tpl:
-            if not l[0] in self.fields:
-                continue
-            self.fields[l[0]].initial = user.limitspool.getmaxvalue(l[0])
+        for lname in self.fields.keys():
+            self.fields[lname].initial = user.limitspool.getmaxvalue(lname)
             # The following lines will become useless in a near
             # future.
-            if self.fields[l[0]].initial == -2:
-                self.fields[l[0]].initial = parameters.get_admin("DEFLT_%s" % l[0].upper())
+            if self.fields[lname].initial == -2:
+                self.fields[lname].initial = parameters.get_admin("DEFLT_%s" % lname.upper())
 
     def allocate_from_pool(self, limit, pool):
+        """Allocate resource using an existing pool.
+
+        When a reseller creates a domain administrator, he generally
+        assigns him resource to create new objetcs. As a reseller may
+        also be limited, the resource he gives is taken from its own
+        pool.
+        """
         ol = pool.get_limit(limit.name)
         if ol.maxvalue == -2:
             raise BadLimitValue(_("Your resources are not initialized yet"))
@@ -92,7 +75,7 @@ class ResourcePoolForm(forms.Form):
         from modoboa.lib.permissions import get_object_owner
 
         owner = get_object_owner(self.account)
-        for ltpl in limits_tpl:
+        for ltpl in LimitTemplates().templates:
             if not ltpl[0] in self.cleaned_data:
                 continue
             l = self.account.limitspool.limit_set.get(name=ltpl[0])
