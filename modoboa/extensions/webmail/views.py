@@ -12,8 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
 from modoboa.lib import parameters
 from modoboa.lib.webutils import (
-    _render_to_string, ajax_response, ajax_simple_response,
-    render_to_json_response
+    _render_to_string, ajax_response, render_to_json_response
 )
 from modoboa.extensions.admin.lib import needs_mailbox
 from .exceptions import WebmailError
@@ -23,7 +22,7 @@ from .lib import (
     decode_payload, AttachmentUploadHandler,
     save_attachment, ImapListing, EmailSignature,
     clean_attachments, set_compose_session, send_mail,
-    ImapEmail
+    ImapEmail, ReplyModifier, ForwardModifier
 )
 from templatetags import webmail_tags
 
@@ -66,8 +65,7 @@ def move(request):
     mbc = get_imapconnector(request)
     mbc.move(request.GET["msgset"], request.session["mbox"], request.GET["to"])
     resp = listmailbox(request, request.session["mbox"], update_session=False)
-    resp.update(status="ok")
-    return ajax_simple_response(resp)
+    return render_to_json_response(resp)
 
 
 @login_required
@@ -85,8 +83,7 @@ def delete(request):
     message = ungettext("%(count)d message deleted",
                         "%(count)d messages deleted",
                         count) % {"count": count}
-    resp = dict(status="ok", respmsg=message)
-    return ajax_simple_response(resp)
+    return render_to_json_response(message)
 
 
 @login_required
@@ -102,10 +99,10 @@ def mark(request, name):
     except AttributeError:
         raise WebmailError(_("Unknown action"))
 
-    return ajax_simple_response(
-        dict(status="ok", action=status, mbox=name,
-             unseen=imapc.unseen_messages(name))
-    )
+    return render_to_json_response({
+        'action': status, 'mbox': name,
+        'unseen': imapc.unseen_messages(name)
+    })
 
 
 @login_required
@@ -115,9 +112,9 @@ def empty(request, name):
         raise WebmailError(_("Invalid request"))
     get_imapconnector(request).empty(name)
     content = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
-    return ajax_simple_response(dict(
-        status="ok", listing=content, mailbox=name
-    ))
+    return render_to_json_response({
+        'listing': content, 'mailbox': name
+    })
 
 
 @login_required
@@ -125,7 +122,7 @@ def empty(request, name):
 def compact(request, name):
     imapc = get_imapconnector(request)
     imapc.compact(name)
-    return ajax_simple_response(dict(status="ok"))
+    return render_to_json_response({})
 
 
 @login_required
@@ -484,7 +481,7 @@ def viewmail(request):
 def submailboxes(request):
     topmailbox = request.GET.get('topmailbox', '')
     mboxes = get_imapconnector(request).getmboxes(request.user, topmailbox)
-    return ajax_simple_response(dict(status="ok", mboxes=mboxes))
+    return render_to_json_response(mboxes)
 
 
 @login_required
@@ -498,7 +495,7 @@ def check_unseen_messages(request):
     imapc = get_imapconnector(request)
     for mb in mboxes:
         counters[mb] = imapc.unseen_messages(mb)
-    return ajax_simple_response(dict(status="ok", counters=counters))
+    return render_to_json_response(counters)
 
 
 @login_required
@@ -570,6 +567,8 @@ def index(request):
             pass
 
     response.update(callback=action)
-    if not "status" in response:
-        response.update(status="ok")
-    return ajax_simple_response(response)
+    http_status = 200
+    if "status" in response:
+        del response['status']
+        http_status = 400
+    return render_to_json_response(response, status=http_status)

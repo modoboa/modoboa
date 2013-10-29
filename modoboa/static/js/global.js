@@ -31,7 +31,10 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         $(href).modal('open');
         return;
     }
-    $.ajax({type: "GET", url: href}).done(function(data) {
+    $.ajax({
+        type: "GET",
+        url: href
+    }).done(function(data) {
         if (typeof data === "object") {
             /*
              * Compatibility with the old way...
@@ -70,9 +73,6 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         if (css != undefined) {
             $div.css(css);
         }
-    }).fail(function(jqxhr) {
-        var data = $.parseJSON(jqxhr.responseText);
-        $("body").notify("error", data);
     });
 }
 
@@ -168,6 +168,7 @@ function simple_ajax_form_post(e, options) {
     }
     $.ajax({
         type: "POST",
+        global: false,
         url: $form.attr("action"),
         data: args
     }).done(function(data) {
@@ -264,16 +265,11 @@ function simple_ajax_request(e, uoptions) {
     if (e != undefined) e.preventDefault();
     $.ajax({
         url: $this.attr("href"),
-        dataType: 'json',
-        success: function(data) {
-            if (data.status == "ok") {
-                if (options.ok_cb) options.ok_cb(data);
-                if (data.respmsg) {
-                    $("body").notify("success", data.respmsg, 2000);
-                }
-            } else {
-                $("body").notify("error", data.respmsg);
-            }
+        dataType: 'json'
+    }).done(function(data) {
+        if (options.ok_cb) options.ok_cb(data);
+        if (data) {
+            $("body").notify("success", data, 2000);
         }
     });
 }
@@ -304,8 +300,21 @@ function activate_widget(e) {
     }
 }
 
+/*
+ * Default error handler for AJAX requests.
+ */
+function default_ajax_error_handler(event, jqxhr, settings) {
+    try {
+        var data = $.parseJSON(jqxhr.responseText);
+    } catch (x) {
+        var data = gettext("Internal error");
+    }
+    $('body').notify('error', data);
+}
+
 $(document).ready(function() {
     $(document).ajaxSuccess(function(e, xhr, settings) { ajax_login_redirect(xhr); });
+    $(document).ajaxError(default_ajax_error_handler);
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
     $(document).on('click', '.activator', activate_widget);

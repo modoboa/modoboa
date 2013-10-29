@@ -38,41 +38,41 @@
             var $form = (this.options.formid) ? $('#' + this.options.formid) : $('form');
             var data = $form.serialize() + "&stepid=" + this.get_current_step_id();
 
-            $.ajax({type: 'POST', url: $form.attr("action"), data: data})
-                .done($.proxy(function(resp) {
-                    if (!last) {
-                        var stepid = resp.stepid + 1;
-                        $('input:text:visible:first').focus();
-                        this.set_current_title(resp.title);
-                        if (this.options.transition_callbacks[stepid] != undefined) {
-                            this.options.transition_callbacks[stepid]();
-                        }
-                        this.$element.carousel('next');
+            $.ajax({
+                type: 'POST', url: $form.attr("action"), data: data, global: false
+            }).done($.proxy(function(resp) {
+                if (!last) {
+                    var stepid = resp.stepid + 1;
+                    $('input:text:visible:first').focus();
+                    this.set_current_title(resp.title);
+                    if (this.options.transition_callbacks[stepid] != undefined) {
+                        this.options.transition_callbacks[stepid]();
+                    }
+                    this.$element.carousel('next');
+                } else {
+                    $("#modalbox").modal('hide').remove();
+                    if (this.options.success_callback != undefined) {
+                        this.options.success_callback(resp);
                     } else {
-                        $("#modalbox").modal('hide').remove();
-                        if (this.options.success_callback != undefined) {
-                            this.options.success_callback(resp);
-                        } else {
-                            window.location.reload();
-                        }
+                        window.location.reload();
                     }
-                }, this))
-                .fail($.proxy(function(jqxhr) {
-                    var resp = $.parseJSON(jqxhr.responseText);
-                    if (resp.stepid != undefined) {
-                        var stepid = resp.stepid;
-                        display_form_errors("step" + stepid, resp);
-                        if (this.options.error_callbacks[stepid] != undefined) {
-                            this.options.error_callbacks[stepid]();
-                        }
-                        $('input:text:visible:first').focus();
-                        if (resp.respmsg) {
-                            $(".modal-body").prepend(build_error_alert(resp.respmsg));
-                        }
-                        return;
+                }
+            }, this)).fail($.proxy(function(jqxhr) {
+                var resp = $.parseJSON(jqxhr.responseText);
+                if (resp.stepid != undefined) {
+                    var stepid = resp.stepid;
+                    display_form_errors("step" + stepid, resp);
+                    if (this.options.error_callbacks[stepid] != undefined) {
+                        this.options.error_callbacks[stepid]();
                     }
-                    $(".modal-body").prepend(build_error_alert(resp));
-                }, this));
+                    $('input:text:visible:first').focus();
+                    if (resp.respmsg) {
+                        $(".modal-body").prepend(build_error_alert(resp.respmsg));
+                    }
+                    return;
+                }
+                $(".modal-body").prepend(build_error_alert(resp));
+            }, this));
         },
 
         update_buttons: function() {

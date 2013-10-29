@@ -9,8 +9,7 @@ from django.contrib.auth.decorators import (
 )
 from modoboa.lib import parameters, events
 from modoboa.lib.webutils import (
-    ajax_simple_response, _render_to_string,
-    render_to_json_response
+    _render_to_string, render_to_json_response
 )
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.exceptions import (
@@ -53,7 +52,7 @@ def _domains(request):
         domainlist = sorted(domainlist, key=lambda d: d.tags[0],
                             reverse=sort_dir == '-')
     page = get_listing_page(domainlist, request.GET.get("page", 1))
-    return ajax_simple_response({
+    return render_to_json_response({
         "table": _render_to_string(request, 'admin/domains_table.html', {
             'domains': page.object_list,
             'tableid': 'domains'
@@ -82,7 +81,7 @@ def domains(request, tplname="admin/domains.html"):
 @permission_required("core.add_user")
 def domains_list(request):
     doms = [dom.name for dom in Domain.objects.get_for_admin(request.user)]
-    return ajax_simple_response(doms)
+    return render_to_json_response(doms)
 
 
 @login_required

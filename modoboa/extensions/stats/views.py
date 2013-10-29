@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import (
 from modoboa.lib import events
 from modoboa.lib.exceptions import ModoboaException, PermDeniedException
 from modoboa.lib.webutils import (
-    _render_to_string, ajax_simple_response
+    _render_to_string, render_to_json_response
 )
 from modoboa.extensions.admin.models import (
     Domain
@@ -50,7 +50,7 @@ def graphs(request):
     if searchq in [None, "global"]:
         if not request.user.is_superuser:
             if not Domain.objects.get_for_admin(request.user).count():
-                return ajax_simple_response({"status": "ok"})
+                return render_to_json_response({})
             tplvars.update(
                 domain=Domain.objects.get_for_admin(request.user)[0].name
             )
@@ -59,7 +59,7 @@ def graphs(request):
     else:
         domain = Domain.objects.filter(name__contains=searchq)
         if domain.count() != 1:
-            return ajax_simple_response({"status": "ok"})
+            return render_to_json_response({})
         if not request.user.can_access(domain[0]):
             raise PermDeniedException
         tplvars.update(domain=domain[0].name)
@@ -83,7 +83,6 @@ def graphs(request):
     else:
         tplvars['graphs'] = gsets[gset].get_graph_names()
 
-    return ajax_simple_response(dict(
-        status="ok",
-        content=_render_to_string(request, "stats/graphs.html", tplvars)
-    ))
+    return render_to_json_response({
+        'content': _render_to_string(request, "stats/graphs.html", tplvars)
+    })

@@ -117,9 +117,8 @@ Quarantine.prototype = {
             url: $link.attr("href"),
             data: "action=" + name + "&selection=" + selection.join(","),
             type: 'POST',
-            dataType: 'json',
-            success: $.proxy(this.action_cb, this)
-        });
+            dataType: 'json'
+        }).done($.proxy(this.action_cb, this));
     },
 
     release_selection: function(e) {
@@ -139,9 +138,8 @@ Quarantine.prototype = {
         }
         $.ajax({
             url: $link.attr("href"),
-            dataType: 'json',
-            success: $.proxy(this.action_cb, this)
-        });
+            dataType: 'json'
+        }).done($.proxy(this.action_cb, this));
     },
 
     release: function(e) {
@@ -175,11 +173,11 @@ Quarantine.prototype = {
         if (!$rawheaders.length) {
             $.ajax({
                 url: $link.attr("href"),
-                success: $.proxy(function(data) {
-                    $mailcontent.find("#table-container").append($(data));
-                    this.show_rawheaders($mailcontent);
-                }, this)
-            });
+                global: false
+            }).done($.proxy(function(data) {
+                $mailcontent.find("#table-container").append($(data));
+                this.show_rawheaders($mailcontent);
+            }, this));
             return;
         }
         this.show_rawheaders($mailcontent);

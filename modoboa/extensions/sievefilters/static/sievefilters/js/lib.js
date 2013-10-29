@@ -22,9 +22,6 @@ function removefilter(evt) {
     }).done(function(response) {
         history.update(true);
         $("body").notify('success', response, 2000);
-    }).fail(function(jqxhr) {
-        var response = $.parseJSON(jqxhr.responseText);
-        $("body").notify('error', response);
     });
 }
 
@@ -75,20 +72,15 @@ function loadfs(response) {
 function send_command(cmd, extracb) {
     $.ajax({
         url: cmd,
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == "ko") {
-                $("body").notify('error', response.respmsg);
-            } else {
-                if (extracb != undefined) {
-                    extracb(response);
-                }
-                if (!response.norefresh) {
-                    history.update(true);
-                }
-                $("body").notify('success', response.respmsg, 2000);
-            }
+        dataType: 'json'
+    }).done(function(response) {
+        if (extracb != undefined) {
+            extracb(response);
         }
+        if (!response.norefresh) {
+            history.update(true);
+        }
+        $("body").notify('success', response.respmsg, 2000);
     });
 }
 
@@ -121,14 +113,9 @@ function savefs(evt) {
         url: $editor.attr("action"),
         type: $editor.attr("method"),
         dataType: 'json',
-        data: $editor.serialize(),
-        success: function(response) {
-            if (response.status == "ko") {
-                $("body").notify('error', response.respmsg);
-            } else {
-                $("body").notify('success', response.respmsg, 2000);
-            }
-        }
+        data: $editor.serialize()
+    }).done(function(response) {
+        $("body").notify('success', response.respmsg, 2000);
     });
 }
 
@@ -184,9 +171,6 @@ function toggle_filter_state(event) {
         $this.html(response.label);
         $this.attr("class", "");
         $this.addClass(response.color);
-    }).fail(function(jqhxr) {
-        var response = $.parseJSON(jqxhr.responseText);
-        $("body").notify('error', response);
     });
 }
 
@@ -200,9 +184,6 @@ function move_filter(event) {
     }).done(function(response) {
         $("#set_content").html(response.content);
         init_filters_list();
-    }).fail(function(jqxhr) {
-        var response = $.parseJSON(jqxhr.responseText);
-        $("body").notify('error', response);
     });
 }
 
@@ -254,8 +235,9 @@ function fetch_templates(url, container) {
     $.ajax({
         url: url,
         async: false,
-        dataType: 'json',
-        success: function(data) { result = data; }
+        dataType: 'json'
+    }).done(function(data) {
+        result = data;
     });
     return result;
 }

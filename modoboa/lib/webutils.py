@@ -89,17 +89,6 @@ def ajax_response(request, status="ok", respmsg=None,
     return HttpResponse(simplejson.dumps(jsonctx), mimetype="application/json")
 
 
-def ajax_simple_response(content, **response_kwargs):
-    """Simple AJAX response
-
-    No extra formatting is done. The content is passed directly to simplejon.
-
-    :param content: the response's content (list, dict, string)
-    """
-    response_kwargs["content_type"] = "application/json"
-    return HttpResponse(simplejson.dumps(content), **response_kwargs)
-
-
 def render_to_json_response(context, **response_kwargs):
     """Simple shortcut to render a JSON response.
 

@@ -33,7 +33,8 @@ RelayDomains.prototype = {
         e.preventDefault();
         $.ajax({
             type: "POST",
-            url: $link.attr("href")
+            url: $link.attr("href"),
+            global: false
         }).done(function(data) {
             var $widget = $('#id_service');
 
@@ -48,9 +49,6 @@ RelayDomains.prototype = {
                 build_success_alert(gettext('Services updated'))
             );
         }).fail(function(jqxhr) {
-            if (jqxhr.getResponseHeader('Content-Type') != 'application/json') {
-                return;
-            }
             var result = $.parseJSON(jqxhr.responseText);
             $('.modal-body').prepend(
                 build_error_alert(result[0])

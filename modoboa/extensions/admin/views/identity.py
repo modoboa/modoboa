@@ -11,8 +11,7 @@ from modoboa.lib.exceptions import (
     ModoboaException, PermDeniedException, BadRequest
 )
 from modoboa.lib.webutils import (
-    ajax_simple_response, _render_to_string,
-    render_to_json_response
+    _render_to_string, render_to_json_response
 )
 from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.templatetags.lib_tags import pagination_bar
@@ -44,7 +43,7 @@ def _identities(request):
         objects = sorted(idents_list, key=lambda o: o.tags[0],
                          reverse=sort_dir == '-')
     page = get_listing_page(objects, request.GET.get("page", 1))
-    return ajax_simple_response({
+    return render_to_json_response({
         "table": _render_to_string(request, "admin/identities_table.html", {
             "identities": page.object_list,
             "tableid": "objects_table"
@@ -74,7 +73,7 @@ def accounts_list(request):
     accs = User.objects.filter(is_superuser=False) \
         .exclude(groups__name='SimpleUsers')
     res = [a.username for a in accs.all()]
-    return ajax_simple_response(res)
+    return render_to_json_response(res)
 
 
 @login_required
@@ -103,8 +102,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
     else:
         raise BadRequest(_("Invalid request"))
     page = get_listing_page(mboxes, request.GET.get("page", 1))
-    return ajax_simple_response({
-        "status": "ok",
+    return render_to_json_response({
         "page": page.number,
         "paginbar": pagination_bar(page),
         "table": _render_to_string(request, tplname, {
@@ -231,4 +229,4 @@ def remove_permission(request):
     if not request.user.can_access(account) or not request.user.can_access(domain):
         raise PermDeniedException
     domain.remove_admin(account)
-    return ajax_simple_response({"status": "ok"})
+    return render_to_json_response({})

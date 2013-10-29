@@ -89,7 +89,7 @@
              });
              $.ajax({
                  cache: false,
-                 method: this.options.method,
+                 type: this.options.method,
                  data: params,
                  url: this.$element.attr('href')
              }).done($.proxy(function(data) {
@@ -98,15 +98,7 @@
                      return;
                  }
                  window.location.reload();
-             }, this)).fail(function(jqxhr) {
-                 var data;
-                 try {
-                     data = $.parseJSON(jqxhr.responseText);
-                 } catch (e) {
-                     data = gettext('Internal Error');
-                 }
-                 $("body").notify("error", data);
-             });
+             }, this));
              this.box.remove();
          }
      };
