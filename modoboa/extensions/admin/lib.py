@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
 from modoboa.core.models import User
 from modoboa.lib import parameters, events
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.extensions.admin.models import (
     Domain, Alias
@@ -24,7 +24,7 @@ def needs_mailbox():
         def wrapped_f(request, *args, **kwargs):
             if request.user.mailbox_set.count():
                 return f(request, *args, **kwargs)
-            raise ModoboaException()
+            raise PermDeniedException(_("A mailbox is required"))
         return wrapped_f
     return decorator
 

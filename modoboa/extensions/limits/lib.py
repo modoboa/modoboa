@@ -6,7 +6,7 @@
 """
 from django.utils.translation import ugettext as _
 from modoboa.lib.exceptions import ModoboaException
-from .models import LimitsPool
+from modoboa.extensions.limits.models import LimitsPool
 
 
 class LimitReached(ModoboaException):
@@ -30,7 +30,7 @@ class UnsufficientResource(ModoboaException):
 
 
 class BadLimitValue(ModoboaException):
-    pass
+    http_code = 400
 
 
 def inc_limit_usage(user, lname):

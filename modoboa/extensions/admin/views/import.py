@@ -6,7 +6,7 @@ from django.db import transaction, IntegrityError
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.exceptions import ModoboaException, Conflict
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Alias
@@ -118,7 +118,7 @@ def importdata(request, formclass=ImportDataForm):
                     except IntegrityError, e:
                         if form.cleaned_data["continue_if_exists"]:
                             continue
-                        raise ModoboaException(_("Object already exists: %s" % row))
+                        raise Conflict(_("Object already exists: %s" % row))
                     cpt += 1
                 msg = _("%d objects imported successfully" % cpt)
                 return render(request, "admin/import_done.html", {

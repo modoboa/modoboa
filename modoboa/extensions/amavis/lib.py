@@ -7,7 +7,7 @@ from functools import wraps
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.exceptions import InternalError
 
 
 def selfservice(ssfunc=None):
@@ -50,7 +50,7 @@ class AMrelease(object):
                 self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
                 self.sock.connect(path)
         except socket.error, err:
-            raise ModoboaException(
+            raise InternalError(
                 _("Connection to amavis failed: %s" % str(err))
             )
 
