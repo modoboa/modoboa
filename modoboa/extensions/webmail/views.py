@@ -11,11 +11,12 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
 from modoboa.lib import parameters
+from modoboa.lib.exceptions import ModoboaException, BadRequest
 from modoboa.lib.webutils import (
     _render_to_string, ajax_response, render_to_json_response
 )
 from modoboa.extensions.admin.lib import needs_mailbox
-from .exceptions import WebmailError
+from .exceptions import UnknownAction
 from .forms import FolderForm, AttachmentForm, ComposeMailForm
 from .imaputils import get_imapconnector, IMAPconnector, separate_mailbox
 from .lib import (
@@ -43,7 +44,7 @@ def getattachment(request):
     pnum = request.GET.get("partnumber", None)
     fname = request.GET.get("fname", None)
     if not mbox or not mailid or not pnum or not fname:
-        raise WebmailError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
 
     imapc = get_imapconnector(request)
     partdef, payload = imapc.fetchpart(mailid, mbox, pnum)
@@ -61,7 +62,7 @@ def getattachment(request):
 def move(request):
     for arg in ["msgset", "to"]:
         if not arg in request.GET:
-            raise WebmailError(_("Invalid request"))
+            raise BadRequest(_("Invalid request"))
     mbc = get_imapconnector(request)
     mbc.move(request.GET["msgset"], request.session["mbox"], request.GET["to"])
     resp = listmailbox(request, request.session["mbox"], update_session=False)
@@ -74,7 +75,7 @@ def delete(request):
     mbox = request.GET.get("mbox", None)
     selection = request.GET.getlist("selection[]", None)
     if mbox is None or selection is None:
-        raise WebmailError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     selection = [item for item in selection if item.isdigit()]
     mbc = get_imapconnector(request)
     mbc.move(",".join(selection), mbox,
@@ -92,12 +93,12 @@ def mark(request, name):
     status = request.GET.get("status", None)
     ids = request.GET.get("ids", None)
     if status is None or ids is None:
-        raise WebmailError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     imapc = get_imapconnector(request)
     try:
         getattr(imapc, "mark_messages_%s" % status)(name, ids)
     except AttributeError:
-        raise WebmailError(_("Unknown action"))
+        raise UnknownAction
 
     return render_to_json_response({
         'action': status, 'mbox': name,
@@ -109,7 +110,7 @@ def mark(request, name):
 @needs_mailbox()
 def empty(request, name):
     if name != parameters.get_user(request.user, "TRASH_FOLDER"):
-        raise WebmailError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     get_imapconnector(request).empty(name)
     content = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
     return render_to_json_response({
@@ -196,7 +197,7 @@ def editfolder(request, tplname="webmail/folder.html"):
 
     name = request.GET.get("name", None)
     if name is None:
-        raise WebmailError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     shortname, parent = separate_mailbox(name, sep=mbc.hdelimiter)
     ctx = {"title": _("Edit mailbox"),
            "formid": "mboxform",
@@ -219,7 +220,7 @@ def editfolder(request, tplname="webmail/folder.html"):
 def delfolder(request):
     name = request.GET.get("name", None)
     if name is None:
-        raise WebmailError(_("Bad request"))
+        raise BadRequest(_("Invalid request"))
     mbc = IMAPconnector(user=request.user.username,
                         password=request.session["password"])
     mbc.delete_folder(name)
@@ -251,7 +252,7 @@ def attachments(request, tplname="webmail/attachments.html"):
                     "status": "ok", "fname": request.FILES["attachment"],
                     "tmpname": os.path.basename(tmpname)
                 })
-            except WebmailError, inst:
+            except ModoboaException as inst:
                 error = _("Failed to save attachment: ") + str(inst)
 
         if csuploader.toobig:
@@ -413,7 +414,7 @@ def compose_and_send(request, action, callback=None):
     mbox = request.GET.get("mbox", None)
     mailid = request.GET.get("mailid", None)
     if mbox is None or mailid is None:
-        raise WebmailError(_("Bad request"))
+        raise BadRequest(_("Invalid request"))
     url = "?action=%s&mbox=%s&mailid=%s" % (action, mbox, mailid)
     if request.method == "POST":
         status, resp = send_mail(request, url)
@@ -447,7 +448,7 @@ def getmailcontent(request):
     mbox = request.GET.get("mbox", None)
     mailid = request.GET.get("mailid", None)
     if mbox is None or mailid is None:
-        raise WebmailError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     email = ImapEmail(mbox, mailid, request, links=int(request.GET["links"]))
     return render(request, "common/viewmail.html", {
         "headers": email.render_headers(folder=mbox, mail_id=mailid),
@@ -460,7 +461,7 @@ def viewmail(request):
     mbox = request.GET.get("mbox", None)
     mailid = request.GET.get("mailid", None)
     if mbox is None or mailid is None:
-        raise WebmailError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     links = request.GET.get("links", None)
     if links is None:
         links = 1 if parameters.get_user(request.user, "ENABLE_LINKS") == "yes" else 0
@@ -489,7 +490,7 @@ def submailboxes(request):
 def check_unseen_messages(request):
     mboxes = request.GET.get("mboxes", None)
     if not mboxes:
-        raise WebmailError(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     mboxes = mboxes.split(",")
     counters = dict()
     imapc = get_imapconnector(request)
@@ -526,11 +527,11 @@ def index(request):
 
     if action is not None:
         if not action in globals():
-            raise WebmailError(_("Undefined action"))
+            raise UnknownAction
         response = globals()[action](request)
     else:
         if request.is_ajax():
-            raise WebmailError(_("Bad request"))
+            raise BadRequest(_("Invalid request"))
         response = dict(selection="webmail")
 
     curmbox = request.session.get("mbox", "INBOX")
