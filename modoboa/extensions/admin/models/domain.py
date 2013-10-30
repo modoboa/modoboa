@@ -134,5 +134,7 @@ class Domain(AdminObject):
 
     def to_csv(self, csvwriter):
         csvwriter.writerow(["domain", self.name, self.quota, self.enabled])
+        for dalias in self.domainalias_set.all():
+            dalias.to_csv(csvwriter)
 
 reversion.register(Domain)

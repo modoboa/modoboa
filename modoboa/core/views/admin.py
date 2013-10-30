@@ -25,7 +25,6 @@ def viewsettings(request, tplname='core/settings_header.html'):
 @user_passes_test(lambda u: u.is_superuser)
 def viewparameters(request, tplname='core/parameters.html'):
     return render_to_json_response({
-        "status": "ok",
         "left_selection": "parameters",
         "content": _render_to_string(request, tplname, {
             "forms": parameters.get_admin_forms

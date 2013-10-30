@@ -4,6 +4,7 @@ from itertools import chain
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import ugettext as _
 from modoboa.core.models import User
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import PermDeniedException

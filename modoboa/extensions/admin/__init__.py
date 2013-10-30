@@ -37,6 +37,9 @@ admin_events = [
     "ExtraAccountForm",
     "CheckExtraAccountForm",
     "FillAccountInstances",
+
+    "ExtraDomainImportHelp",
+    "ImportObject"
 ]
 
 

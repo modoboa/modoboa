@@ -201,3 +201,22 @@ def extra_parameters(app, level):
             widget=forms.widgets.TextInput(attrs={"class": "span1"})
         )
     }
+
+
+@events.observe('ExtraDomainImportHelp')
+def extra_domain_import_help():
+    return [ugettext_lazy("""
+<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>
+<li><em>relaydomainalias; name; target; enabled</em></li>
+""")]
+
+
+@events.observe('ImportObject')
+def get_import_func(objtype):
+    from .lib import import_relaydomain, import_relaydomainalias
+
+    if objtype == 'relaydomain':
+        return [import_relaydomain]
+    if objtype == 'relaydomainalias':
+        return [import_relaydomainalias]
+    return []

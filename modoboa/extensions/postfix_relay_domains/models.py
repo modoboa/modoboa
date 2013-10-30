@@ -4,8 +4,8 @@ from django.db.models.manager import Manager
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.core.models import ObjectAccess
-from modoboa.lib import events, parameters
-from modoboa.lib.permissions import ungrant_access_to_object
+from modoboa.lib import parameters
+from modoboa.lib.exceptions import BadRequest, NotFound
 from modoboa.extensions.admin.models import AdminObject
 
 
@@ -52,6 +52,8 @@ class ServiceManager(Manager):
 
 
 class Service(models.Model):
+    """Postfix service.
+    """
     name = models.CharField(
         ugettext_lazy('name'), max_length=100, unique=True,
         help_text=ugettext_lazy('The service name')
@@ -106,6 +108,33 @@ class RelayDomain(AdminObject):
     def __str__(self):
         return self.name
 
+    def to_csv(self, csvwriter):
+        """Export this relay domain to CSV.
+
+        :param csvwriter:
+        """
+        csvwriter.writerow(
+            ["relaydomain", self.name, self.target_host, 
+             self.service.name, self.enabled, self.verify_recipients]
+        )
+        for rdalias in self.relaydomainalias_set.all():
+            rdalias.to_csv(csvwriter)
+
+    def from_csv(self, user, row):
+        """Import a relay domain from CSV.
+
+        :param user: user importing the relay domain
+        :param str row: relay domain definition
+        """
+        if len(row) != 6:
+            raise BadRequest(_("Invalid line"))
+        self.name = row[1].strip()
+        self.target_host = row[2].strip()
+        self.service, created = Service.objects.get_or_create(name=row[3].strip())
+        self.enabled = (row[4].strip() == 'True')
+        self.verify_recipients = (row[5].strip() == 'True')
+        self.save(creator=user)
+
 reversion.register(RelayDomain)
 
 
@@ -125,5 +154,30 @@ class RelayDomainAlias(AdminObject):
 
     def __str__(self):
         return self.name
+
+    def to_csv(self, csvwriter):
+        """Export this relay domain alias to CSV.
+
+        :param csvwriter:
+        """
+        csvwriter.writerow(
+            ['relaydomainalias', self.name, self.target.name, self.enabled]
+        )
+
+    def from_csv(self, user, row):
+        """Import a relay domain alias from CSV.
+
+        :param user: user importing the relay domain alias
+        :param str row: relay domain alias definition
+        """
+        if len(row) != 4:
+            raise BadRequest(_("Invalid line"))
+        self.name = row[1].strip()
+        try:
+            self.target = RelayDomain.objects.get(name=row[2].strip())
+        except RelayDomain.DoesNotExist:
+            raise NotFound(_("Relay domain %s does not exist" % row[2].strip()))
+        self.enabled = (row[3].strip() == 'True')
+        self.save(creator=user)
 
 reversion.register(RelayDomainAlias)

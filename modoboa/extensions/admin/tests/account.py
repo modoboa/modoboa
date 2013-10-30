@@ -70,7 +70,7 @@ class AccountTestCase(ModoTestCase):
     def test_set_nul_quota_as_domainadmin(self):
         self.clt.logout()
         self.assertTrue(self.clt.login(username="admin@test.com", password="toto"))
-        self._set_quota("user@test.com", 0, 424)
+        self._set_quota("user@test.com", 0, 400)
         self.clt.logout()
         self.assertTrue(self.clt.login(username="admin@test2.com", password="toto"))
         self._set_quota("user@test2.com", 0)

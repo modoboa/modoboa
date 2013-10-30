@@ -125,7 +125,7 @@ Admin.prototype = {
         $("#import_status").css("display", "none");
         if (status == "ok") {
             $("#modalbox").modal('hide');
-            this.reload_listing({respmsg: msg});
+            this.reload_listing(msg);
         } else {
             $("#import_result").addClass("alert alert-error");
             $("#import_result").html(msg);

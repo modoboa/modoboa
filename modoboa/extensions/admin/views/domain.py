@@ -40,6 +40,7 @@ def _domains(request):
         for flt in ['domfilter', 'searchquery']
         + events.raiseQueryEvent('ExtraDomainFilters')
     )
+    request.session['domains_filters'] = filters
     domainlist = get_domains(
         request.user, **filters
     )
