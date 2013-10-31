@@ -23,6 +23,8 @@ class DomainManager(Manager):
 
 
 class Domain(AdminObject):
+    """Mail domain.
+    """
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
     quota = models.IntegerField(
@@ -84,11 +86,15 @@ class Domain(AdminObject):
             grant_access_to_object(account, al)
 
     def remove_admin(self, account):
-        """Remove an administrator for this domain
+        """Remove an administrator of this domain.
 
-        :param User account: the administrotor to remove
+        :param User account: administrator to remove
         """
-        from modoboa.lib.permissions import ungrant_access_to_object
+        from modoboa.lib.permissions import \
+            ungrant_access_to_object, get_object_owner
+
+        if get_object_owner(self) == account:
+            events.raiseEvent('DomainOwnershipRemoved', account, self)
         ungrant_access_to_object(self, account)
         for mb in self.mailbox_set.all():
             if mb.user.has_perm("admin.add_domain"):
@@ -96,26 +102,27 @@ class Domain(AdminObject):
             ungrant_access_to_object(mb, account)
             ungrant_access_to_object(mb.user, account)
         for al in self.alias_set.all():
-            ungrant_access_to_object(al, account)
+             ungrant_access_to_object(al, account)
 
     def delete(self, fromuser, keepdir=False):
-        from modoboa.lib.permissions import \
-            ungrant_access_to_object, ungrant_access_to_objects
+        """Custom delete method.
+        """
+        from modoboa.lib.permissions import ungrant_access_to_objects
         from .mailbox import Quota
 
         if self.domainalias_set.count():
             events.raiseEvent("DomainAliasDeleted", self.domainalias_set.all())
             ungrant_access_to_objects(self.domainalias_set.all())
-        if self.mailbox_set.count():
-            Quota.objects.filter(username__contains='@%s' % self.name).delete()
-            events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
-            ungrant_access_to_objects(self.mailbox_set.all())
         if self.alias_set.count():
-            events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
+            events.raiseEvent("MailboxAliasDeleted", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
         if parameters.get_admin("AUTO_ACCOUNT_REMOVAL") == "yes":
             for account in User.objects.filter(mailbox__domain__name=self.name):
                 account.delete(fromuser, keepdir)
+        elif self.mailbox_set.count():
+            Quota.objects.filter(username__contains='@%s' % self.name).delete()
+            events.raiseEvent("MailboxDeleted", self.mailbox_set.all())
+            ungrant_access_to_objects(self.mailbox_set.all())
         super(Domain, self).delete()
 
     def __str__(self):

@@ -27,13 +27,15 @@ class ModoTestCase(TestCase):
 
 
 class ExtTestCase(ModoTestCase):
-    name = None
+    names = []
 
     def setUp(self, *args, **kwargs):
         super(ExtTestCase, self).setUp(*args, **kwargs)
         self.clt.get(reverse("modoboa.core.views.admin.viewextensions"))
-        self.clt.post(reverse("modoboa.core.views.admin.saveextensions"),
-                      {"select_%s" % self.name : "1"})
+        self.clt.post(
+            reverse("modoboa.core.views.admin.saveextensions"),
+            dict(("select_%s" % name, "1") for name in self.names)
+        )
 
 
 class TestParams(parameters.AdminParametersForm):

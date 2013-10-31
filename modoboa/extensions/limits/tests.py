@@ -12,16 +12,11 @@ from modoboa.extensions.limits.models import LimitTemplates
 
 class PermissionsTestCase(ExtTestCase):
     fixtures = ["initial_users.json"]
-    name = "limits"
+    names = ["limits"]
 
     def setUp(self):
         super(PermissionsTestCase, self).setUp()
-        dom = DomainFactory(name='test.com')
-        self.admin = UserFactory(
-            username='admin@test.com', groups=('DomainAdmins',)
-        )
-        MailboxFactory(address='admin', domain=dom, user=self.admin)
-        dom.add_admin(self.admin)
+        populate_database()
 
     def test_domainadmin_deletes_reseller(self):
         """Check if a domain admin can delete a reseller.
@@ -46,13 +41,21 @@ class PermissionsTestCase(ExtTestCase):
 
 class ResourceTestCase(ExtTestCase):
     fixtures = ["initial_users.json"]
-    name = "limits"
+    names = ["limits"]
 
     def setUp(self):
+        """Custom setUp method.
+
+        The 'limits' is manually loaded to ensure extra parameters
+        provided by 'postfix_relay_domains' are properly received.
+        """
+        from modoboa.core.extensions import exts_pool
+
         super(ResourceTestCase, self).setUp()
-        populate_database()
+        exts_pool.get_extension('limits').load()
         for tpl in LimitTemplates().templates:
             parameters.save_admin('DEFLT_%s' % tpl[0].upper(), 2, app='limits')
+        populate_database()
 
     def _create_account(self, username, role='SimpleUsers', status=200):
         values = dict(
@@ -254,6 +257,37 @@ class ResellerTestCase(ResourceTestCase):
         resp = self._create_domain('domain3.tld', status=200, withtpl=True)
         self._check_limit('domain_admins', 2, 2)
         self._check_limit('domains', 3, 3)
+
+    def test_reseller_deletes_domain(self):
+        """Check if all resources are restored after the deletion.
+        """
+        self._create_domain('domain.tld', withtpl=True)
+        dom = Domain.objects.get(name="domain.tld")
+        self.ajax_post(
+            reverse("modoboa.extensions.admin.views.domain.deldomain",
+                    args=[dom.id]),
+            {}
+        )
+        self._check_limit('domains', 0, 2)
+        self._check_limit('domain_admins', 1, 2)
+        self._check_limit('mailboxes', 0, 2)
+        self._check_limit('mailbox_aliases', 0, 2)
+
+    def test_sadmin_removes_ownership(self):
+        self._create_domain('domain.tld', withtpl=True)
+        dom = Domain.objects.get(name="domain.tld")
+        self.clt.logout()
+        self.clt.login(username='admin', password='password')
+        self.ajax_get(
+            reverse(
+                'modoboa.extensions.admin.views.identity.remove_permission'
+            ) + '?domid=%d&daid=%d' % (dom.id, self.user.id)
+            , {}
+        )
+        self._check_limit('domains', 0, 2)
+        self._check_limit('domain_admins', 0, 2)
+        self._check_limit('mailboxes', 0, 2)
+        self._check_limit('mailbox_aliases', 0, 2)
 
     def test_allocate_from_pool(self):
         self._create_domain('domain.tld')

@@ -213,11 +213,11 @@ Domains.prototype = {
 
     domadminsform_init: function() {
         $("a[name=removeperm]").click(function(e) {
-            var $tr = $(this).parent().parent();
+            var $tr = $(this).parents('tr');
             simple_ajax_request.apply(this, [e, {
                 ok_cb: function(resp) {
                     $tr.remove();
-                    if (!$("#domadmins").children("tr").length) {
+                    if (!$("#domadmins").find("tr").length) {
                         $("#admins").html('<div class="alert alert-info">'
                             + gettext("No domain administrator defined") + "</div>");
                     }
@@ -235,7 +235,6 @@ Domains.prototype = {
                 1: this.optionsform_prefill
             },
             error_callbacks: {
-                //1: this.generalform_init,
                 2: $.proxy(this.optionsform_init, this)
             },
             success_callback: $.proxy(this.reload_listing, this)
@@ -254,7 +253,7 @@ Domains.prototype = {
             });
         }, this));
         $(document).trigger('domform_init');
-    },
+    }
 };
 
 Domains.prototype = $.extend({}, Admin.prototype, Domains.prototype);

@@ -2,23 +2,27 @@
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.db import IntegrityError
-from modoboa.core.models import ObjectAccess
-import events
-from exceptions import ModoboaException
+from modoboa.core.models import ObjectAccess, User
+from modoboa.lib import events
+from modoboa.lib.exceptions import ModoboaException
 
 
-def get_account_roles(user):
-    """Return the list of supported account roles
+def get_account_roles(user, account=None):
+    """Return the list of available account roles.
 
-    This list can be extended by extensions which listen to the
-    ``GetExtraRoles`` event.
+    This function is used to create or modify an account. The returned
+    list can be extended by listening to the ``GetExtraRoles`` event.
 
+    :param ``User`` user: connected user
+    :param ``User`` account: account beeing modified (None on creation)
     :return: list of strings
     """
     std_roles = [("SimpleUsers", _("Simple user"))]
     if user.is_superuser:
         std_roles += [("SuperAdmins",  _("Super administrator"))]
-    filters = events.raiseQueryEvent('UserCanSetRole', user, 'DomainAdmins')
+    filters = events.raiseQueryEvent(
+        'UserCanSetRole', user, 'DomainAdmins', account
+    )
     if user.has_perm("admin.add_domain") and \
             (not filters or True in filters):
         std_roles += [("DomainAdmins", _("Domain administrator"))]
@@ -92,17 +96,32 @@ def ungrant_access_to_object(obj, user=None):
     If no user is provided, all entries referencing this object are
     deleted from the database.
 
+    If a user is provided, we only remove his access. If it was the
+    owner, we give the ownership to the first super admin we find.
+
     :param obj: an object inheriting from ``models.Model``
     :param user: a ``User`` object
     """
     ct = ContentType.objects.get_for_model(obj)
-    if user:
+    if user is not None:
         try:
-            ObjectAccess.objects.get(user=user, content_type=ct, object_id=obj.id).delete()
+            ObjectAccess.objects.get(
+                user=user, content_type=ct, object_id=obj.id
+            ).delete()
         except ObjectAccess.DoesNotExist:
             pass
+        try:
+            ObjectAccess.objects.get(
+                content_type=ct, object_id=obj.id, is_owner=True
+            )
+        except ObjectAccess.DoesNotExist:
+            grant_access_to_object(
+                User.objects.filter(is_superuser=True)[0], obj, True
+            )
     else:
-        ObjectAccess.objects.filter(content_type=ct, object_id=obj.id).delete()
+        ObjectAccess.objects.filter(
+            content_type=ct, object_id=obj.id
+        ).delete()
 
 
 def ungrant_access_to_objects(objects):

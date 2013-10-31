@@ -23,6 +23,7 @@ class PostfixRelayDomains(ModoExtension):
     label = "Postfix relay domains"
     version = "1.0"
     description = ugettext_lazy("Relay domains support for Postfix")
+    depends_on = ['limits']
 
     def init(self):
         """Initialisation method.

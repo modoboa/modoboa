@@ -238,7 +238,7 @@ def mailbox_deleted_handler(sender, **kwargs):
     from modoboa.lib.permissions import ungrant_access_to_object
 
     mb = kwargs['instance']
-    events.raiseEvent("DeleteMailbox", mb)
+    events.raiseEvent("MailboxDeleted", mb)
     ungrant_access_to_object(mb)
     for alias in mb.alias_set.all():
         alias.mboxes.remove(mb)

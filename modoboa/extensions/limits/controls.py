@@ -56,8 +56,9 @@ def inc_nb_domains(user, domain):
 
 
 @events.observe('DomainDeleted')
-def dec_nb_domains(domain):
-    owner = get_object_owner(domain)
+def dec_nb_domains(domain, owner=None):
+    if owner is None:
+        owner = get_object_owner(domain)
     dec_limit_usage(owner, 'domains_limit')
     for domalias in domain.domainalias_set.all():
         dec_nb_domaliases(domalias)
@@ -105,9 +106,14 @@ def inc_nb_mbaliases(user, mailboxalias):
 
 
 @events.observe('MailboxAliasDeleted')
-def dec_nb_mbaliases(mailboxalias):
-    owner = get_object_owner(mailboxalias)
-    dec_limit_usage(owner, 'mailbox_aliases_limit')
+def dec_nb_mbaliases(mailboxaliases):
+    from modoboa.extensions.admin.models import Alias
+
+    if isinstance(mailboxaliases, Alias):
+        mailboxaliases = [mailboxaliases]
+    for alias in mailboxaliases:
+        owner = get_object_owner(alias)
+        dec_limit_usage(owner, 'mailbox_aliases_limit')
 
 
 @events.observe('CanCreate')
@@ -118,21 +124,20 @@ def can_create_new_object(user, objtype, count=1):
 @events.observe("AccountCreated")
 def create_pool(user):
     owner = get_object_owner(user)
-    if not owner.is_superuser and \
-       not owner.belongs_to_group("Resellers"):
+    if not owner.group in ['SuperAdmins', 'Resellers']:
         return
 
-    if user.belongs_to_group("DomainAdmins"):
+    if user.group == 'DomainAdmins':
         check_limit(owner, 'domain_admins_limit')
         inc_limit_usage(owner, 'domain_admins_limit')
 
-    if user.group in ["DomainAdmins", "Resellers"]:
+    if user.group in ['DomainAdmins', 'Resellers']:
         p, created = LimitsPool.objects.get_or_create(user=user)
         p.create_limits(owner)
 
 
 @events.observe("UserCanSetRole")
-def user_can_set_role(user, role):
+def user_can_set_role(user, role, account=None):
     """Check if the user can still set this role.
 
     The only interesting case concerns resellers defining new domain
@@ -140,6 +145,7 @@ def user_can_set_role(user, role):
     operation before any modification is made to :keyword:`account`.
 
     :param ``User`` user: connected user
+    :param ``User`` account: account modified (None on creation)
     :param str newrole: role to check
     """
     if role == 'DomainAdmins':
@@ -147,6 +153,8 @@ def user_can_set_role(user, role):
     else:
         return [True]
     if user.is_superuser or not user.limitspool.will_be_reached(lname):
+        return [True]
+    if account is not None and account.group == role:
         return [True]
     return [False]
 
@@ -192,3 +200,20 @@ def on_account_deleted(account, byuser, **kwargs):
 
     if account.group == "DomainAdmins":
         dec_limit_usage(owner, 'domain_admins_limit')
+
+
+@events.observe('DomainOwnershipRemoved')
+def domain_ownership_removed(reseller, domain):
+    """DomainOwnershipRemoved listener.
+
+    The access :keyword:`reseller` had to :keyword:`domain` has been
+    removed by a super adminstrator. We must decrement all limit
+    usages.
+
+    :param ``User`` reseller: reseller that created :keyword:`domain`
+    :param ``Domain`` domain: domain
+    """
+    dec_nb_domains(domain, reseller)
+    for dadmin in domain.admins:
+        if reseller.is_owner(dadmin):
+            dec_limit_usage(reseller, 'domain_admins_limit')

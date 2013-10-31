@@ -13,6 +13,7 @@ admin_events = [
     "DomainCreated",
     "DomainModified",
     "DomainDeleted",
+    "DomainOwnershipRemoved",
     "ExtraDomainEntries",
     "ExtraDomainMenuEntries",
     "ExtraDomainFilters",
@@ -201,6 +202,11 @@ def user_logged_in(request, username, password):
 
 @events.observe("AccountDeleted")
 def account_deleted(account, byuser, **kwargs):
+    """'AccountDeleted' listener.
+
+    When an account is deleted, we also need to remove its mailbox (if
+    any).
+    """
     if not account.mailbox_set.count():
         return
     mb = account.mailbox_set.all()[0]

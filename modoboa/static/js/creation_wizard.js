@@ -42,11 +42,10 @@
                 type: 'POST', url: $form.attr("action"), data: data, global: false
             }).done($.proxy(function(resp) {
                 if (!last) {
-                    var stepid = resp.stepid + 1;
                     $('input:text:visible:first').focus();
                     this.set_current_title(resp.title);
-                    if (this.options.transition_callbacks[stepid] != undefined) {
-                        this.options.transition_callbacks[stepid]();
+                    if (this.options.transition_callbacks[resp.stepid] != undefined) {
+                        this.options.transition_callbacks[resp.stepid]();
                     }
                     this.$element.carousel('next');
                 } else {

@@ -37,7 +37,7 @@ class ExtensionsPool(object):
     """The extensions manager"""
 
     def __init__(self):
-        self.extensions = dict()
+        self.extensions = {}
 
     def register_extension(self, ext, show=True):
         self.extensions[ext.name] = dict(cls=ext, show=show)
@@ -63,6 +63,16 @@ class ExtensionsPool(object):
         return instance.infos()
 
     def load_all(self):
+        """Load all enabled extensions.
+
+        Each extension must be loaded in order to integrate with
+        Modoboa. Only enabled and special extensions are loaded but
+        urls are always returned. The reason is urls are imported only
+        once so must know all of them when the python process
+        starts. Otherwise, it would lead to unexpected 404 errors :p
+
+        :return: a list of url maps
+        """
         from modoboa.core.models import Extension
 
         for ext in settings.MODOBOA_APPS:
@@ -70,6 +80,14 @@ class ExtensionsPool(object):
         result = []
         for extname in self.extensions.keys():
             extinstance = self.get_extension(extname)
+            try:
+                baseurl = extinstance.url \
+                    if extinstance.url is not None else extname
+                result += [(r'^%s/' % (baseurl),
+                            include("%s.urls" % extinstance.__module__))]
+            except ImportError:
+                # No urls for this extension
+                pass
             if not extinstance.always_active:
                 try:
                     ext = Extension.objects.get(name=extname)
@@ -78,16 +96,11 @@ class ExtensionsPool(object):
                 except Extension.DoesNotExist:
                     continue
             extinstance.load()
-            try:
-                baseurl = extinstance.url if extinstance.url is not None else extname
-                result += [(r'^%s/' % (baseurl),
-                            include("%s.urls" % extinstance.__module__))]
-            except ImportError:
-                # No urls for this extension
-                pass
         return result
 
     def list_all(self):
+        """List all defined extensions.
+        """
         result = []
         for extname, extdef in self.extensions.iteritems():
             if not extdef["show"]:

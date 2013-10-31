@@ -46,20 +46,20 @@ class AccountFormGeneral(forms.ModelForm):
                 widget=forms.HiddenInput, required=False
             )
         else:
-            self.fields["role"].choices = \
-                [('', ugettext_lazy("Choose"))] + get_account_roles(user)
+            self.fields["role"].choices = [('', ugettext_lazy("Choose"))]
+            self.fields["role"].choices += \
+                get_account_roles(user, kwargs['instance']) \
+                if 'instance' in kwargs else get_account_roles(user)
 
         if "instance" in kwargs:
-            if len(args) \
+            if args \
                and (args[0].get("password1", "") == ""
                and args[0].get("password2", "") == ""):
                 self.fields["password1"].required = False
                 self.fields["password2"].required = False
-
-            u = kwargs["instance"]
-            self.fields["role"].initial = u.group
-
-            if not u.is_local \
+            account = kwargs["instance"]
+            self.fields["role"].initial = account.group
+            if not account.is_local \
                and parameters.get_admin("LDAP_AUTH_METHOD") == "directbind":
                 del self.fields["password1"]
                 del self.fields["password2"]

@@ -12,7 +12,6 @@ from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
 from .models import LimitTemplates
 from .forms import ResourcePoolForm
-import controls
 
 levents = [
     'GetExtraLimitTemplates'
@@ -53,6 +52,8 @@ class Limits(ModoExtension):
 
     def load(self):
         from modoboa.extensions.limits.app_settings import ParametersForm
+        from modoboa.extensions.limits import controls
+
         parameters.register(ParametersForm, ugettext_lazy("Limits"))
         events.declare(levents)
 

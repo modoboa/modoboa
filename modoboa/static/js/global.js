@@ -35,15 +35,6 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         type: "GET",
         url: href
     }).done(function(data) {
-        if (typeof data === "object") {
-            /*
-             * Compatibility with the old way...
-             */
-            if (data.status == "ko" && data.respmsg) {
-                $("body").notify("error", data.respmsg);
-            }
-            return;
-        }
         var $div = $('<div />', {
             id: "modalbox", 'class': "modal", html: data
         });
@@ -56,8 +47,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
             if (modalcb != undefined) {
                 if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
             }
-        })
-        .on('hidden', function(e) {
+        }).on('hidden', function(e) {
             var $target = $(e.target);
 
             if (!$target.is($(this))) {
