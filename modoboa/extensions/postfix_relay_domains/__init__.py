@@ -1,4 +1,5 @@
 # coding: utf-8
+import sys
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy
@@ -88,10 +89,16 @@ class PostfixRelayDomains(ModoExtension):
         )
         events.declare(extension_events)
         from modoboa.extensions.postfix_relay_domains import general_callbacks
+        if 'modoboa.extensions.postfix_relay_domains.general_callbacks' in sys.modules:
+            reload(general_callbacks)
         if exts_pool.is_extension_enabled('limits'):
             import limits_callbacks
+            if 'modoboa.extensions.postfix_relay_domains.limits_callbacks' in sys.modules:
+                reload(limits_callbacks)
         if exts_pool.is_extension_enabled('amavis'):
             import amavis_callbacks
+            if 'modoboa.extensions.postfix_relay_domains.amavis_callbacks' in sys.modules:
+                reload(amavis_callbacks)
 
     def destroy(self):
         events.unregister_extension()

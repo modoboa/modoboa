@@ -4,14 +4,13 @@
 The *limits* extension
 ----------------------
 """
+import sys
 from django.contrib.auth.models import Permission, Group
 from django.db import IntegrityError
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
-from .models import LimitTemplates
-from .forms import ResourcePoolForm
 
 levents = [
     'GetExtraLimitTemplates'
@@ -56,102 +55,13 @@ class Limits(ModoExtension):
 
         parameters.register(ParametersForm, ugettext_lazy("Limits"))
         events.declare(levents)
+        from modoboa.extensions.limits import general_callbacks
+        if 'modoboa.extensions.limits.general_callbacks' in sys.modules:
+            reload(general_callbacks)
 
     def destroy(self):
+        events.unregister_extension()
         parameters.unregister()
         Group.objects.get(name="Resellers").delete()
 
 exts_pool.register_extension(Limits)
-
-
-@events.observe("GetExtraRoles")
-def get_extra_roles(user):
-    if user.is_superuser:
-        return [("Resellers", _("Reseller")), ]
-    return []
-
-
-@events.observe("ExtraAdminContent")
-def display_pool_usage(user, target, currentpage):
-    from django.template.loader import render_to_string
-
-    if target != "leftcol" or user.is_superuser:
-        return []
-    if currentpage == "identities":
-        names = ["mailboxes_limit", "mailbox_aliases_limit"]
-        if user.has_perm("admin.add_domain"):
-            names += ["domain_admins_limit"]
-    else:
-        names = [
-            tpl[0] for tpl in LimitTemplates().templates
-            if tpl[0] not in ["domain_admins_limit", "mailboxes_limit",
-                              "mailbox_aliases_limit"]
-            and (len(tpl) == 3 or tpl[3] == user.group)
-        ]
-
-    limits = user.limitspool.limit_set.filter(name__in=names, maxvalue__gt=0)
-    if len(limits) == 0:
-        return []
-    return [render_to_string("limits/poolusage.html", dict(limits=limits))]
-
-
-@events.observe("ExtraAccountForm")
-def extra_account_form(user, account=None):
-    if not user.group in ["SuperAdmins", "Resellers"]:
-        return []
-    if account is not None and \
-            not account.group in ["Resellers", "DomainAdmins"]:
-        return []
-
-    return [
-        dict(
-            id="resources", title=_("Resources"), cls=ResourcePoolForm
-        )
-    ]
-
-
-@events.observe("CheckExtraAccountForm")
-def check_form_access(account, form):
-    if form["id"] != "resources":
-        return [True]
-    if not account.belongs_to_group("Resellers") and \
-       not account.belongs_to_group("DomainAdmins"):
-        return [False]
-    return [True]
-
-
-@events.observe("FillAccountInstances")
-def fill_account_instances(user, account, instances):
-    if not user.is_superuser and not user.belongs_to_group("Resellers"):
-        return
-    if not account.belongs_to_group("Resellers") and \
-       not account.belongs_to_group("DomainAdmins"):
-        return
-    instances["resources"] = account
-
-
-@events.observe("GetStaticContent")
-def get_static_content(caller, user):
-    if caller not in ['domains', 'identities']:
-        return []
-    if user.group == "SimpleUsers":
-        return []
-    return ["""<style>
-.resource {
-    margin: 5px 0;
-}
-
-.resource .progress {
-    margin-bottom: 0px;
-}
-
-.resource .progress .bar {
-    color: #000000;
-}
-</style>
-<script type="text/javascript">
-$(document).ready(function() {
-    $(".progress").tooltip();
-});
-</script>
-"""]

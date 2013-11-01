@@ -8,6 +8,7 @@ Provides:
 * Per-domain settings
 
 """
+import sys
 from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
@@ -43,6 +44,8 @@ class Amavis(ModoExtension):
         parameters.register(ParametersForm, "Amavis")
         parameters.register(UserSettings, ugettext_lazy("Quarantine"))
         from modoboa.extensions.amavis import general_callbacks
+        if 'modoboa.extensions.amavis.general_callbacks' in sys.modules:
+            reload(general_callbacks)
 
     def destroy(self):
         events.unregister_extension()

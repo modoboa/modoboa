@@ -6,13 +6,20 @@ This module provides a way to integrate Modoboa auto-reply
 functionality into Postfix.
 
 """
+import sys
 from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
-from .models import Transport, Alias
+from modoboa.extensions.postfix_autoreply.models import (
+    Transport, Alias
+)
 
 
 class PostfixAutoreply(ModoExtension):
+    """
+    Auto-reply (vacation) functionality using Postfix.
+    
+    """
     name = "postfix_autoreply"
     label = "Postfix autoreply"
     version = "1.0"
@@ -38,14 +45,12 @@ class PostfixAutoreply(ModoExtension):
     def load(self):
         from modoboa.extensions.postfix_autoreply.app_settings import ParametersForm
         parameters.register(ParametersForm, ugettext_lazy("Automatic replies"))
+        from modoboa.extensions.postfix_autoreply import general_callbacks
+        if 'modoboa.extensions.postfix_autoreply.general_callbacks' in sys.modules:
+            reload(general_callbacks)
 
     def destroy(self):
-        events.unregister("DomainCreated", onDomainCreated)
-        events.unregister("DomainDeleted", onDomainDeleted)
-        events.unregister("MailboxCreated", onMailboxCreated)
-        events.unregister("MailboxDeleted", onMailboxDeleted)
-        events.unregister("MailboxModified", onModifyMailbox)
-        events.unregister("UserMenuDisplay", menu)
+        events.unregister_extension()
         parameters.unregister()
 
 exts_pool.register_extension(PostfixAutoreply)
@@ -55,87 +60,3 @@ exts_pool.register_extension(PostfixAutoreply)
 def extra_routes():
     return [(r'^user/autoreply/$',
              'modoboa.extensions.postfix_autoreply.views.autoreply'), ]
-
-
-@events.observe("ExtraUprefsJS")
-def extra_js(user):
-    return ["""function autoreply_cb() {
-    $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '%s'});
-}
-""" % parameters.get_user(user, "LANG", app="core")
-    ]
-
-
-@events.observe("UserMenuDisplay")
-def menu(target, user):
-    if target != "uprefs_menu":
-        return []
-    if not user.mailbox_set.count():
-        return []
-    return [
-        {"name": "autoreply",
-         "class": "ajaxlink",
-         "url": "autoreply/",
-         "label": ugettext_lazy("Auto-reply message")}
-    ]
-
-
-@events.observe("DomainCreated")
-def onDomainCreated(user, domain):
-    transport = Transport()
-    transport.domain = "autoreply.%s" % domain.name
-    transport.method = "autoreply:"
-    transport.save()
-
-
-@events.observe("DomainModified")
-def onDomainModified(domain):
-    if domain.oldname == domain.name:
-        return
-    Transport.objects.filter(domain="autoreply.%s" % domain.oldname) \
-        .update(domain="autoreply.%s" % domain.name)
-    for al in Alias.objects.filter(full_address__contains="@%s" % domain.oldname):
-        new_address = al.full_address.replace("@%s" % domain.oldname, "@%s" % domain.name)
-        al.full_address = new_address
-        al.autoreply_address = "%s@autoreply.%s" % (new_address, domain.name)
-        al.save()
-
-
-@events.observe("DomainDeleted")
-def onDomainDeleted(domain):
-    Transport.objects.filter(domain="autoreply.%s" % domain.name).delete()
-
-
-@events.observe("MailboxCreated")
-def onMailboxCreated(user, mailbox):
-    alias = Alias()
-    alias.full_address = mailbox.full_address
-    alias.autoreply_address = \
-        "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)
-    alias.save()
-
-
-@events.observe("MailboxDeleted")
-def onMailboxDeleted(mailboxes):
-    from modoboa.extensions.admin.models import Mailbox
-
-    if isinstance(mailboxes, Mailbox):
-        mailboxes = [mailboxes]
-    for mailbox in mailboxes:
-        try:
-            alias = Alias.objects.get(full_address=mailbox.full_address)
-        except Alias.DoesNotExist:
-            pass
-        else:
-            alias.delete()
-
-
-@events.observe("MailboxModified")
-def onModifyMailbox(mailbox, oldmailbox):
-    if oldmailbox.full_address == mailbox.full_address:
-        return
-    alias = Alias.objects.get(full_address=oldmailbox.full_address)
-    alias.full_address = mailbox.full_address
-    alias.autoreply_address =  \
-        "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)
-    alias.save()
