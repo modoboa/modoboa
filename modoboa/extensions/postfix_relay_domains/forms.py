@@ -2,12 +2,12 @@ from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events
-from modoboa.lib.formutils import DynamicForm, DomainNameField
+from modoboa.lib.formutils import DynamicForm, DomainNameField, TabForms
 from modoboa.extensions.admin.models import Domain, DomainAlias
 from .models import RelayDomain, RelayDomainAlias
 
 
-class RelayDomainForm(forms.ModelForm, DynamicForm):
+class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
@@ -25,7 +25,7 @@ class RelayDomainForm(forms.ModelForm, DynamicForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(RelayDomainForm, self).__init__(*args, **kwargs)
+        super(RelayDomainFormGeneral, self).__init__(*args, **kwargs)
         if args and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", DomainNameField)
         elif 'instance' in kwargs:
@@ -42,7 +42,7 @@ class RelayDomainForm(forms.ModelForm, DynamicForm):
 
         The validation way is not very smart...
         """
-        super(RelayDomainForm, self).clean()
+        super(RelayDomainFormGeneral, self).clean()
         if self._errors:
             raise forms.ValidationError(self._errors)
         cleaned_data = self.cleaned_data
@@ -90,7 +90,7 @@ class RelayDomainForm(forms.ModelForm, DynamicForm):
 
         :param ``User`` user: connected user
         """
-        rd = super(RelayDomainForm, self).save(commit=False)
+        rd = super(RelayDomainFormGeneral, self).save(commit=False)
         if commit:
             rd.save()
             aliases = []
@@ -121,3 +121,35 @@ class RelayDomainForm(forms.ModelForm, DynamicForm):
                     )
                     al.save(creator=user)
         return rd
+
+
+class RelayDomainForm(TabForms):
+    """Specific edition form for relay domains.
+
+    We use a *tabs* compatible form because extensions can add their
+    own tab. (ex: amavis)
+    """
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        self.forms = []
+        if user.has_perm("postfix_relay_domains.change_relaydomain"):
+            self.forms.append({
+                'id': 'general', 'title': _("General"), 
+                'formtpl': 'postfix_relay_domains/relaydomain_form.html',
+                'cls': RelayDomainFormGeneral, 'mandatory': True
+            })
+
+        cbargs = [user]
+        if "instances" in kwargs:
+            cbargs += [kwargs["instances"]["general"]]
+        self.forms += events.raiseQueryEvent("ExtraRelayDomainForm", *cbargs)
+        super(RelayDomainForm, self).__init__(*args, **kwargs)
+
+    def save(self, user):
+        """Custom save method
+
+        As forms interact with each other, it is easier to make custom
+        code to save them.
+        """
+        for f in self.forms:
+            f["instance"].save(user)

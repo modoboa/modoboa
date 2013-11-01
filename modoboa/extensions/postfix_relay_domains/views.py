@@ -10,16 +10,16 @@ from modoboa.lib import events
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.webutils import render_to_json_response
 from .models import RelayDomain, Service
-from .forms import RelayDomainForm
+from .forms import RelayDomainForm, RelayDomainFormGeneral
 
 
 @login_required
 @permission_required("postfix_relay_domains.add_relaydomain")
 @transaction.commit_on_success
-def create(request, tplname="postfix_relay_domains/relaydomain_form.html"):
+def create(request, tplname="postfix_relay_domains/new_relaydomain_form.html"):
     events.raiseEvent("CanCreate", request.user, "relay_domains")
     if request.method == 'POST':
-        form = RelayDomainForm(request.POST)
+        form = RelayDomainFormGeneral(request.POST)
         if form.is_valid():
             rdom = form.save(request.user)
             rdom.post_create(request.user)
@@ -35,18 +35,21 @@ def create(request, tplname="postfix_relay_domains/relaydomain_form.html"):
            "action_classes": "submit",
            "action": reverse(create),
            "formid": "rdomform",
-           "form": RelayDomainForm()}
+           "form": RelayDomainFormGeneral()}
     return render(request, tplname, ctx)
 
 
 @login_required
 @permission_required("postfix_relay_domains.change_relaydomain")
-def edit(request, rdom_id, tplname='postfix_relay_domains/relaydomain_form.html'):
+def edit(request, rdom_id, tplname='common/tabforms.html'):
     rdom = RelayDomain.objects.get(pk=rdom_id)
     if not request.user.can_access(rdom):
         raise PermDeniedException
+    instances = {'general': rdom}
+    events.raiseEvent("FillRelayDomainInstances", request.user, rdom, instances)
     if request.method == 'POST':
-        form = RelayDomainForm(request.POST, instance=rdom)
+        rdom.oldname = rdom.name
+        form = RelayDomainForm(request.user, request.POST, instances=instances)
         if form.is_valid():
             form.save(request.user)
             events.raiseEvent('RelayDomainModified', rdom)
@@ -61,7 +64,7 @@ def edit(request, rdom_id, tplname='postfix_relay_domains/relaydomain_form.html'
         'title': rdom.name,
         'action_label': _("Update"),
         'action_classes': "submit",
-        'form': RelayDomainForm(instance=rdom)
+        'tabs': RelayDomainForm(request.user, instances=instances)
     }
     return render(request, tplname, ctx)
 

@@ -8,11 +8,10 @@ will be available and modifiable directly from the web interface.
 
 Only super users will be able to access this part of the web interface.
 """
-import inspect
-import re
 from django import forms
-from . import events
-from exceptions import ModoboaException
+from modoboa.lib import events
+from modoboa.lib.sysutils import guess_extension_name
+from modoboa.lib.exceptions import ModoboaException
 
 _params = {'A': {}, 'U': {}}
 
@@ -185,7 +184,7 @@ def unregister(app=None):
     :param app: the application's name (string)
     """
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     for lvlparams in _params.values():
         if app in lvlparams:
             del lvlparams[app]
@@ -198,23 +197,11 @@ def __is_defined(app, level, name):
         raise NotDefined(app, name)
 
 
-def __guess_extension():
-    """Tries to guess the application's name by inspecting the stack
-
-    :return: a string or None
-    """
-    modname = inspect.getmodule(inspect.stack()[2][0]).__name__
-    m = re.match("(?:modoboa\.)?(?:extensions\.)?([^\.$]+)", modname)
-    if m:
-        return m.group(1)
-    return None
-
-
 def save_admin(name, value, app=None):
     from .models import Parameter
 
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     __is_defined(app, 'A', name)
     fullname = "%s.%s" % (app, name)
     try:
@@ -231,7 +218,7 @@ def save_user(user, name, value, app=None):
     from .models import UserParameter
 
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     __is_defined(app, 'U', name)
     fullname = "%s.%s" % (app, name)
     try:
@@ -256,7 +243,7 @@ def get_admin(name, app=None, raise_error=True):
     from .models import Parameter
 
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     try:
         __is_defined(app, "A", name)
     except NotDefined:
@@ -283,7 +270,7 @@ def get_user(user, name, app=None, raise_error=True):
     from .models import UserParameter
 
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     try:
         __is_defined(app, "U", name)
     except NotDefined:
@@ -349,7 +336,7 @@ def get_parameter_form(level, name, app=None):
     :return: a form class
     """
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     __is_defined(app, level, name)
     return _params[level][app]["form"]
 

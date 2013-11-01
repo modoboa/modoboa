@@ -12,6 +12,7 @@ from functools import wraps
 import inspect
 import re
 from django.conf import settings
+from modoboa.lib.sysutils import guess_extension_name
 
 events = []
 callbacks = {}
@@ -115,6 +116,20 @@ def unregister(event, callback):
         del callbacks[event][fullname]
     except KeyError:
         pass
+
+
+def unregister_extension(extension=None):
+    """Unregister all callbacks declared by an extension.
+
+    :param str extension: extension full name (ie. module name)
+    """
+    if extension is None:
+        extension = guess_extension_name()
+    print extension
+    for evt, values in callbacks.items():
+        for name in values.keys():
+            if extension in name:
+                del callbacks[evt][name]
 
 
 def raiseEvent(event, *args, **kwargs):

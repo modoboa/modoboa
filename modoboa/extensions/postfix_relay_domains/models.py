@@ -139,6 +139,9 @@ reversion.register(RelayDomain)
 
 
 class RelayDomainAlias(AdminObject):
+    """Relay domain alias.
+
+    """
     name = models.CharField(
         ugettext_lazy("name"), max_length=100, unique=True,
         help_text=ugettext_lazy("The alias name")

@@ -5,6 +5,8 @@ This module extra functions/shortcuts to communicate with the system
 (executing commands, etc.)
 """
 import subprocess
+import inspect
+import re
 
 
 def exec_cmd(cmd, sudo_user=None, **kwargs):
@@ -24,3 +26,15 @@ def exec_cmd(cmd, sudo_user=None, **kwargs):
                          stderr=subprocess.STDOUT, **kwargs)
     output = p.communicate()[0]
     return p.returncode, output
+
+
+def guess_extension_name():
+    """Tries to guess the application's name by inspecting the stack.
+
+    :return: a string or None
+    """
+    modname = inspect.getmodule(inspect.stack()[2][0]).__name__
+    match = re.match(r"(?:modoboa\.)?(?:extensions\.)?([^\.$]+)", modname)
+    if match is not None:
+        return match.group(1)
+    return None

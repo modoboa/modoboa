@@ -1,7 +1,7 @@
 # coding: utf-8
 from django import forms
-from models import Policy, Users
 from modoboa.lib.formutils import InlineRadioSelect
+from modoboa.extensions.amavis.models import Policy, Users
 
 
 class DomainPolicyForm(forms.ModelForm):
@@ -34,20 +34,21 @@ class DomainPolicyForm(forms.ModelForm):
             self.fields[f].required = False
 
     def save(self, user, commit=True):
-        p = super(DomainPolicyForm, self).save(commit=False)
-        for f in ['bypass_spam_checks', 'bypass_virus_checks', 'bypass_banned_checks']:
-            if getattr(p, f) == '':
-                setattr(p, f, None)
+        policy = super(DomainPolicyForm, self).save(commit=False)
+        for field in ['bypass_spam_checks', 'bypass_virus_checks',
+                  'bypass_banned_checks']:
+            if getattr(policy, field) == '':
+                setattr(policy, field, None)
 
         if self.cleaned_data['spam_subject_tag2_act']:
-            p.spam_subject_tag2 = None
+            policy.spam_subject_tag2 = None
 
         if commit:
-            p.save()
+            policy.save()
             try:
-                u = Users.objects.get(policy=p)
+                u = Users.objects.get(fullname=policy.policy_name)
             except Users.DoesNotExist:
                 u = Users.objects.get(email="@%s" % self.domain.name)
-                u.policy = p
-                p.save()
-        return p
+                u.policy = policy
+                policy.save()
+        return policy
