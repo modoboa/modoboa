@@ -9,7 +9,7 @@ import dj_database_url
 from django.core import management
 from django.template import Context, Template
 from modoboa.lib.sysutils import exec_cmd
-from . import Command
+from modoboa.core.commands import Command
 
 dbconn_tpl = """
     '{{ conn_name }}': {
@@ -18,7 +18,7 @@ dbconn_tpl = """
         'USER': '{% if USER %}{{ USER }}{% endif %}',                     # Not used with sqlite3.
         'PASSWORD': '{% if PASSWORD %}{{ PASSWORD }}{% endif %}',                 # Not used with sqlite3.
         'HOST': '{% if HOST %}{{ HOST }}{% endif %}',                       # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '{% if PORT %}{{ PORT }}{% endif %}',                      # Set to empty string for default. Not used with sqlite3.{% if dbtype == 'django.db.backends.mysql' %}
+        'PORT': '{% if PORT %}{{ PORT }}{% endif %}',                      # Set to empty string for default. Not used with sqlite3.{% if ENGINE == 'django.db.backends.mysql' %}
         'OPTIONS' : {
             "init_command" : 'SET foreign_key_checks = 0;',
         },{% endif %}
@@ -90,26 +90,27 @@ class DeployCommand(Command):
         info = {'conn_name': name,
                 'ENGINE': raw_input('Database type (mysql, postgres or sqlite3): ')}
         if info['ENGINE'] not in ['mysql', 'postgres', 'sqlite3']:
-            info['ENGINE'] = 'django.db.backends.mysql'
-            default_port = 3306
-        if info['ENGINE'] == 'postgres':
-            info['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-            default_port = 5432
+            raise RuntimeError('Unsupported database engine')
+
         if info['ENGINE'] == 'sqlite3':
             info['ENGINE'] = 'django.db.backends.sqlite3'
             info['NAME'] = '%s.db' % name
+            return info
+        if info['ENGINE'] == 'postgres':
+            info['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+            default_port = 5432
         else:
-            # No need to set HOST to localhost, since django will do this
-            # automatically if HOST is not supplied
-            info['HOST'] = raw_input("Database host (default: localhost )")
-
-            info['PORT'] = raw_input("Database port: (default: '%s'): " % default_port)
-            #leave port setting empty, if default value is supplied and leave it to django
-            if info['PORT'] == default_port:
-                info['PORT'] = ''
-            info['NAME'] = raw_input('Database name: ')
-            info['USER'] = raw_input('Username: ')
-            info['PASSWORD'] = getpass.getpass('Password: ')
+            info['ENGINE'] = 'django.db.backends.mysql'
+            default_port = 3306
+        info['HOST'] = raw_input("Database host (default: 'localhost'): ")
+        info['PORT'] = raw_input("Database port (default: '%s'): " % default_port)
+        # leave port setting empty, if default value is supplied and
+        # leave it to django
+        if info['PORT'] == default_port:
+            info['PORT'] = ''
+        info['NAME'] = raw_input('Database name: ')
+        info['USER'] = raw_input('Username: ')
+        info['PASSWORD'] = getpass.getpass('Password: ')
         return info
 
     def handle(self, parsed_args):
@@ -172,15 +173,15 @@ class DeployCommand(Command):
                 'allowed_host': allowed_host
             }
         )
-        fp = open("%s/settings.py" % path, "w")
-        fp.write(tpl)
-        fp.close()
+        with open("%s/settings.py" % path, "w") as fp:
+            fp.write(tpl)
         shutil.copyfile(
             "%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path
         )
         os.mkdir("%s/media" % path)
 
         if parsed_args.syncdb:
+            os.unlink("%s/settings.pyc" % path)
             self._exec_django_command(
                 "syncdb", parsed_args.name, '--noinput'
             )
