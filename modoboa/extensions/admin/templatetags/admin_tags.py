@@ -194,18 +194,10 @@ def domain_aliases(domain):
     :param domain:
     :rtype: str
     """
-    if domain.__class__.__name__ == "Domain":
-        qset = domain.domainalias_set
-    else:
-        qset = events.raiseQueryEvent('GetDomainAliasQuerySet', domain)
-        if not qset:
-            return '---'
-        qset = qset[0]
-
-    if not qset.count():
+    if not domain.aliases.count():
         return '---'
     res = ''
-    for alias in qset.all():
+    for alias in domain.aliases.all():
         res += '%s<br/>' % alias.name
     return res
 

@@ -19,7 +19,6 @@ admin_events = [
     "ExtraDomainFilters",
     "GetDomainActions",
     "GetDomainModifyLink",
-    "GetDomainAliasQuerySet",
     "CheckDomainName",
 
     "DomainAliasCreated",

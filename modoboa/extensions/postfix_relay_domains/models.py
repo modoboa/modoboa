@@ -105,6 +105,10 @@ class RelayDomain(AdminObject):
              "type": "srv", "color": "info"}
         ]
 
+    @property
+    def aliases(self):
+        return self.relaydomainalias_set
+
     def __str__(self):
         return self.name
 

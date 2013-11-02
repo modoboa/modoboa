@@ -10,6 +10,7 @@ from .models import RelayDomain, RelayDomainAlias, Service
 extension_events = [
     "RelayDomainCreated",
     "RelayDomainDeleted",
+    "RelayDomainModified",
     "RelayDomainAliasCreated",
     "RelayDomainAliasDeleted",
     "ExtraRelayDomainForm",

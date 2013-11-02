@@ -125,7 +125,6 @@ def unregister_extension(extension=None):
     """
     if extension is None:
         extension = guess_extension_name()
-    print extension
     for evt, values in callbacks.items():
         for name in values.keys():
             if extension in name:

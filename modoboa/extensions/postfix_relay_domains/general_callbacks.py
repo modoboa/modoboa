@@ -71,13 +71,6 @@ def rdomain_modify_link(domain):
     }
 
 
-@events.observe('GetDomainAliasQuerySet')
-def get_da_query_set(domain):
-    if domain.__class__.__name__ != 'RelayDomain':
-        return []
-    return [domain.relaydomainalias_set]
-
-
 @events.observe('GetDomainActions')
 def rdomain_actions(user, domain):
     if not isinstance(domain, RelayDomain):

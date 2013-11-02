@@ -70,6 +70,10 @@ class Domain(AdminObject):
         """
         return [oa.user for oa in self.owners.filter(user__is_superuser=False)]
 
+    @property
+    def aliases(self):
+        return self.domainalias_set
+
     def add_admin(self, account):
         """Add a new administrator for this domain
 
