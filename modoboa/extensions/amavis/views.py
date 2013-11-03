@@ -14,9 +14,11 @@ from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.webutils import (
     getctx, ajax_response, ajax_simple_response
 )
-from modoboa.lib.email_listing import parse_search_parameters
+from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.extensions.admin.models import Mailbox, Domain
-from templatetags.amavis_tags import quar_menu, viewm_menu
+from modoboa.extensions.amavis.templatetags.amavis_tags import (
+    quar_menu, viewm_menu
+)
 from .lib import selfservice, AMrelease
 from .sql_listing import SQLlisting, SQLemail, get_wrapper
 from .models import Msgrcpt
@@ -50,6 +52,37 @@ def empty_quarantine(request):
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 
+def store_navparams(request):
+    """Store navigation paramters into session.
+
+    :param request: current request
+    """
+    import re
+
+    sessionkey = 'quarantine_navparams'
+    if not sessionkey in request.session:
+        request.session[sessionkey] = {}
+    navparams = request.session[sessionkey]
+    navparams["order"] = request.GET.get("sort_order", "-date")
+    navparams["page"] = int(request.GET.get("page", 1))
+    for param, defvalue in [('pattern', ''), ('criteria', 'from_addr')]:
+        navparams[param] = re.escape(request.GET.get(param, defvalue))
+
+
+def get_navparam(request, param, defaultvalue=None):
+    """Retrieve a navigation parameter.
+
+    Just a simple getter to avoid using the full key name to access a
+    parameter.
+
+    :param request: current request object
+    :param str param: parameter name
+    :param defaultvalue: default value if none is found
+    :return: parameter's value
+    """
+    return request.session['quarantine_navparams'].get(param, defaultvalue)
+
+
 @login_required
 def _listing(request):
     flt = None
@@ -60,14 +93,10 @@ def _listing(request):
         if not Domain.objects.get_for_admin(request.user).count():
             return empty_quarantine(request)
 
-    order = request.GET.get("sort_order", "-date")
-    if not "navparams" in request.session:
-        request.session["navparams"] = {}
-    request.session["navparams"]["order"] = order
-
-    parse_search_parameters(request)
-    if "pattern" in request.session:
-        criteria = request.session["criteria"]
+    store_navparams(request)
+    pattern = get_navparam(request, 'pattern', '')
+    if pattern:
+        criteria = get_navparam(request, 'criteria')
         if criteria == "both":
             criteria = "from_addr,subject,to"
         for c in criteria.split(","):
@@ -83,21 +112,13 @@ def _listing(request):
             flt = nfilter if flt is None else flt | nfilter
 
     msgs = get_wrapper().get_mails(request, rcptfilter)
-
-    if "page" in request.GET:
-        request.session["page"] = request.GET["page"]
-        pageid = int(request.session["page"])
-    else:
-        if "page" in request.session:
-            del request.session["page"]
-        pageid = 1
-
+    page = get_navparam(request, 'page')
     lst = SQLlisting(
         request.user, msgs, flt,
-        navparams=request.session["navparams"],
+        navparams=request.session["quarantine_navparams"],
         elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
     )
-    page = lst.paginator.getpage(pageid)
+    page = lst.paginator.getpage(page)
     if not page:
         return empty_quarantine(request)
 
@@ -110,16 +131,10 @@ def _listing(request):
 
 @login_required
 def index(request):
-<<<<<<< HEAD
-    return _render(request, "amavis/index.html", dict(
-            deflocation="listing/?sort_order=-date",
-            defcallback="listing_cb", selection="quarantine"
-            ))
-=======
     return render(request, "amavis/index.html", dict(
-        deflocation="listing/", defcallback="listing_cb", selection="quarantine"
+        deflocation="listing/?sort_order=-date", defcallback="listing_cb",
+        selection="quarantine"
     ))
->>>>>>> master
 
 
 def getmailcontent_selfservice(request, mail_id):

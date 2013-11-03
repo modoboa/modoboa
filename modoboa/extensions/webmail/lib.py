@@ -142,9 +142,10 @@ class ImapListing(EmailListing):
     def __init__(self, user, password, **kwargs):
         self.user = user
         self.mbc = IMAPconnector(user=user.username, password=password)
-        if "pattern" in kwargs:
-            self.parse_search_parameters(kwargs["criteria"],
-                                         kwargs["pattern"])
+        if "pattern" in kwargs and kwargs["pattern"]:
+            self.parse_search_parameters(
+                kwargs["criteria"], kwargs["pattern"]
+            )
         else:
             self.mbc.criterions = []
 
@@ -604,17 +605,6 @@ def html2plaintext(content):
     return plaintext
 
 
-def get_current_url(request):
-    if not "folder" in request.session:
-        return ""
-
-    res = "%s?page=%s" % (request.session["folder"], request.session["page"])
-    for p in ["criteria", "pattern", "order"]:
-        if p in request.session.keys():
-            res += "&%s=%s" % (p, request.session[p])
-    return res
-
-
 def create_mail_attachment(attdef):
     """Create the MIME part corresponding to the given attachment.
 
@@ -725,7 +715,7 @@ def send_mail(request, posturl=None):
                       password=request.session["password"]).push_mail(sentfolder, msg)
         clean_attachments(request.session["compose_mail"]["attachments"])
         del request.session["compose_mail"]
-        return True, dict(url=get_current_url(request))
+        return True, {}
 
     listing = _render_to_string(request, "webmail/compose.html",
                                 {"form": form, "noerrors": True,

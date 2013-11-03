@@ -19,17 +19,17 @@ class Qtable(tables.Table):
     idkey = "mailid"
 
     type = tables.Column(
-        "type", align="center", width="30px",
+        "type", align="center", width="30px", sort_order="type"
     )
     score = tables.Column("score", label=ugettext_lazy("Score"), limit=6,
                           sort_order="score")
     rstatus = tables.ImgColumn("rstatus", width='25px', sortable=False)
     from_ = tables.Column("from", label=ugettext_lazy("From"), limit=30,
-                          sortable=False)
+                          sort_order="from")
     subject = tables.Column("subject", label=ugettext_lazy("Subject"), limit=40,
-                            sortable=False)
+                            sort_order="subject")
     time = tables.Column("date", label=ugettext_lazy("Date"), sort_order="date")
-    to = tables.Column("to", label=ugettext_lazy("To"), sortable=False)
+    to = tables.Column("to", label=ugettext_lazy("To"), sort_order="to")
 
     cols_order = []
 
@@ -39,8 +39,12 @@ class Qtable(tables.Table):
 
 class SQLconnector(MBconnector):
     order_translation_table = {
+        "type": "mail__msgrcpt__content",
         "score": "mail__msgrcpt__bspam_level",
-        "date": "mail__time_num"
+        "date": "mail__time_num",
+        "subject": "mail__subject",
+        "from": "mail__from_addr",
+        "to": "mail__msgrcpt__rid__email"
     }
 
     def __init__(self, mail_ids=None, filter=None):
@@ -56,14 +60,16 @@ class SQLconnector(MBconnector):
                 filter &= Q(mail__in=self.mail_ids)
             if self.filter:
                 filter &= self.filter
-            self.messages = Quarantine.objects.filter(filter).values("mail__from_addr",
-                                                                "mail__msgrcpt__rid__email",
-                                                                "mail__subject",
-                                                                "mail__mail_id",
-                                                                "mail__time_num",
-                                                                "mail__msgrcpt__content",
-                                                                "mail__msgrcpt__bspam_level",
-                                                                "mail__msgrcpt__rs")
+            self.messages = Quarantine.objects.filter(filter).values(
+                "mail__from_addr",
+                "mail__msgrcpt__rid__email",
+                "mail__subject",
+                "mail__mail_id",
+                "mail__time_num",
+                "mail__msgrcpt__content",
+                "mail__msgrcpt__bspam_level",
+                "mail__msgrcpt__rs"
+            )
             if "order" in kwargs:
                 order = kwargs["order"]
                 sign = ""
