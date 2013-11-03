@@ -36,9 +36,11 @@
                  id: "confirmbox",
                  'class': "modal"
              });
+             var question = (typeof this.options.question == 'function')
+                 ? this.options.question.apply(this) : this.options.question;
 
              box.append($('<div class="modal-body">'
-                 + '<h4>' + this.options.question + '</h4>'));
+                 + '<h4>' + question + '</h4>'));
              var $container = $("<div />", {"class" : "container-fluid"});
              box.append($container);
              if (this.options.warning) {

@@ -29,7 +29,7 @@ class ParametersForm(AdminParametersForm):
         initial=4190,
         help_text=_("Listening port of your MANAGESIEVE server")
     )
-    
+
     starttls = YesNoField(
         label=_("Connect using STARTTLS"),
         initial="no",
@@ -59,4 +59,4 @@ class UserSettings(UserParametersForm):
 
     @staticmethod
     def has_access(user):
-        return user.has_mailbox
+        return user.mailbox_set.count() != 0

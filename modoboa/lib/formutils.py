@@ -8,19 +8,20 @@ from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
 
+
 class CreationWizard(object):
     def __init__(self, done_cb):
         self.steps = []
         self.done_cb = done_cb
 
     def add_step(self, cls, title, buttons, formtpl=None, new_args=None):
-        self.steps += [dict(cls=cls, title=title, buttons=buttons, 
+        self.steps += [dict(cls=cls, title=title, buttons=buttons,
                             formtpl=formtpl, new_args=new_args)]
 
     def create_forms(self, data=None):
         for step in self.steps:
             args = []
-            if step.has_key("new_args") and step["new_args"]:
+            if 'new_args' in step and step["new_args"]:
                 args += step["new_args"]
             if data:
                 args.append(data)
@@ -46,6 +47,7 @@ class CreationWizard(object):
     def get_title(self, stepid):
         return "%d. %s" % (stepid + 1, self.steps[stepid]["title"])
 
+
 class DynamicForm(object):
 
     def _create_field(self, typ, name, value=None, pos=None):
@@ -66,11 +68,12 @@ class DynamicForm(object):
         ndata = self.data.copy()
         values.reverse()
         for v in values:
-            if self.fields.has_key(v[0]):
+            if v[0] in self.fields:
                 continue
             self._create_field(typ, v[0])
             ndata[v[0]] = v[1]
         self.data = ndata
+
 
 class TabForms(object):
     """
@@ -99,21 +102,21 @@ class TabForms(object):
                 fd["instance"] = classes[fd["id"]](*args, **kwargs)
             else:
                 fd["instance"] = fd["cls"](*args, **kwargs)
-        map(lambda fd: self.forms.remove(fd), to_remove)
+        self.forms = [form for form in self.forms if not form in to_remove]
         if self.forms:
             self.active_id = self.forms[0]["id"]
 
     def _before_is_valid(self, form):
         return True
-    
+
     def is_valid(self, mandatory_only=False, optional_only=False):
         to_remove = []
         for f in self.forms:
             if mandatory_only and \
-               (not f.has_key("mandatory") or not f["mandatory"]):
+               (not 'mandatory' in f or not f["mandatory"]):
                 continue
             elif optional_only and \
-               (f.has_key("mandatory") and f["mandatory"]):
+               ('mandatory' in f and f["mandatory"]):
                 continue
             if not self._before_is_valid(f):
                 to_remove.append(f)
@@ -121,7 +124,7 @@ class TabForms(object):
             if not f["instance"].is_valid():
                 self.active_id = f["id"]
                 return False
-        map(lambda fd: self.forms.remove(fd), to_remove)
+        self.forms = [f for f in self.forms if not f in to_remove]
         return True
 
     def save(self, *args, **kwargs):
@@ -132,7 +135,7 @@ class TabForms(object):
             if f["id"] == tabid:
                 self.forms.remove(f)
                 break
-    
+
     def __iter__(self):
         return self.forward()
 
@@ -144,6 +147,7 @@ class TabForms(object):
 # Custom fields from here
 #
 
+
 def is_valid_host(host):
     """IDN compatible domain validator
     """
@@ -151,6 +155,7 @@ def is_valid_host(host):
     if not hasattr(is_valid_host, '_re'):
         is_valid_host._re = re.compile(r'^([0-9a-z][-\w]*[0-9a-z]\.)+[a-z0-9\-]{2,15}$')
     return bool(is_valid_host._re.match(host))
+
 
 def validate_domain_name(value):
     if not is_valid_host(value):
@@ -162,8 +167,8 @@ class DomainNameField(CharField):
     A subclass of CharField that only accepts a valid domain name.
     """
     default_error_messages = {
-        'invalid' : _('Enter a valid domain name')
-        }
+        'invalid': _('Enter a valid domain name')
+    }
 
     default_validators = [validate_domain_name]
 
@@ -179,16 +184,23 @@ class CustomRadioInput(RadioInput):
         else:
             label_for = ''
         choice_label = conditional_escape(force_unicode(self.choice_label))
-        return mark_safe(u'<label class="radio inline" %s>%s %s</label>' % (label_for, self.tag(), choice_label))
+        return mark_safe(
+            u'<label class="radio inline" %s>%s %s</label>'
+            % (label_for, self.tag(), choice_label)
+        )
 
 
 class InlineRadioRenderer(RadioSelect.renderer):
     def __iter__(self):
         for i, choice in enumerate(self.choices):
-            yield CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
+            yield CustomRadioInput(
+                self.name, self.value, self.attrs.copy(), choice, i
+            )
 
     def render(self):
-        return mark_safe(u'\n'.join([u'%s\n' % force_unicode(w) for w in self]))
+        return mark_safe(
+            u'\n'.join([u'%s\n' % force_unicode(w) for w in self])
+        )
 
 
 class InlineRadioSelect(RadioSelect):
@@ -203,6 +215,8 @@ class SeparatorField(Field):
 
 class YesNoField(ChoiceField):
     def __init__(self, *args, **kwargs):
-        kwargs["choices"] = [("yes", ugettext_lazy("Yes")), ("no", ugettext_lazy("No"))]
+        kwargs["choices"] = [
+            ("yes", ugettext_lazy("Yes")), ("no", ugettext_lazy("No"))
+        ]
         kwargs["widget"] = InlineRadioSelect
         super(YesNoField, self).__init__(*args, **kwargs)

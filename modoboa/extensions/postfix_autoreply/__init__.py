@@ -6,11 +6,10 @@ This module provides a way to integrate Modoboa auto-reply
 functionality into Postfix.
 
 """
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
-from modoboa.extensions import ModoExtension, exts_pool
-from models import *
+from modoboa.core.extensions import ModoExtension, exts_pool
+from .models import Transport, Alias
 
 
 class PostfixAutoreply(ModoExtension):
@@ -20,11 +19,11 @@ class PostfixAutoreply(ModoExtension):
     description = ugettext_lazy("Auto-reply (vacation) functionality using Postfix")
 
     def init(self):
-        from modoboa.admin.models import Domain
+        from modoboa.extensions.admin.models import Domain
 
         for dom in Domain.objects.all():
             try:
-                trans = Transport.objects.get(domain="autoreply.%s" % dom.name)
+                Transport.objects.get(domain="autoreply.%s" % dom.name)
             except Transport.DoesNotExist:
                 onCreateDomain(None, dom)
             else:
@@ -32,12 +31,12 @@ class PostfixAutoreply(ModoExtension):
 
             for mb in dom.mailbox_set.all():
                 try:
-                    alias = Alias.objects.get(full_address=mb.full_address)
+                    Alias.objects.get(full_address=mb.full_address)
                 except Alias.DoesNotExist:
                     onCreateMailbox(None, mb)
 
     def load(self):
-        from app_settings import ParametersForm
+        from modoboa.extensions.postfix_autoreply.app_settings import ParametersForm
         parameters.register(ParametersForm, ugettext_lazy("Automatic replies"))
 
     def destroy(self):
@@ -54,7 +53,8 @@ exts_pool.register_extension(PostfixAutoreply)
 
 @events.observe("ExtraUprefsRoutes")
 def extra_routes():
-    return [(r'^autoreply/$', 'modoboa.extensions.postfix_autoreply.views.autoreply'),]
+    return [(r'^user/autoreply/$',
+             'modoboa.extensions.postfix_autoreply.views.autoreply'), ]
 
 
 @events.observe("ExtraUprefsJS")
@@ -62,7 +62,7 @@ def extra_js(user):
     return ["""function autoreply_cb() {
     $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '%s'});
 }
-""" % parameters.get_user(user, "LANG", app="general")
+""" % parameters.get_user(user, "LANG", app="core")
     ]
 
 
@@ -70,7 +70,7 @@ def extra_js(user):
 def menu(target, user):
     if target != "uprefs_menu":
         return []
-    if not user.has_mailbox:
+    if not user.mailbox_set.count():
         return []
     return [
         {"name": "autoreply",
@@ -94,6 +94,11 @@ def onDomainModified(domain):
         return
     Transport.objects.filter(domain="autoreply.%s" % domain.oldname) \
         .update(domain="autoreply.%s" % domain.name)
+    for al in Alias.objects.filter(full_address__contains="@%s" % domain.oldname):
+        new_address = al.full_address.replace("@%s" % domain.oldname, "@%s" % domain.name)
+        al.full_address = new_address
+        al.autoreply_address = "%s@autoreply.%s" % (new_address, domain.name)
+        al.save()
 
 
 @events.observe("DeleteDomain")
@@ -112,7 +117,7 @@ def onCreateMailbox(user, mailbox):
 
 @events.observe("DeleteMailbox")
 def onDeleteMailbox(mailboxes):
-    from modoboa.admin.models import Mailbox
+    from modoboa.extensions.admin.models import Mailbox
 
     if isinstance(mailboxes, Mailbox):
         mailboxes = [mailboxes]

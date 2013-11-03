@@ -13,68 +13,19 @@ import inspect
 import re
 from django.conf import settings
 
-events = [
-    "CanCreate",
-
-    "CreateDomain",
-    "DomainModified",
-    "DeleteDomain",
-
-    "DomainAliasCreated",
-    "DomainAliasDeleted",
-
-    "CreateMailbox",
-    "DeleteMailbox",
-    "ModifyMailbox",
-
-    "MailboxAliasCreated",
-    "MailboxAliasDeleted",
-
-    "AccountCreated",
-    "AccountModified",
-    "AccountDeleted",
-    "PasswordUpdated",
-    "ExtraAccountActions",
-
-    "PasswordChange",
-    
-    "UserMenuDisplay",
-    "AdminMenuDisplay",
-    "GetStaticContent",
-
-    "ExtraAccountForm",
-    "CheckExtraAccountForm",
-    "FillAccountInstances",
-
-    "ExtraDomainForm",
-    "FillDomainInstances",
-    
-    "GetExtraRoles",
-    
-    "ExtEnabled",
-    "ExtDisabled",
-
-    "UserLogin",
-    "UserLogout",
-    
-    "GetAnnouncement",
-
-    "TopNotifications",
-    "ExtraAdminContent",
-
-    "ExtraUprefsRoutes",
-    "ExtraUprefsJS"
-    ]
-
+events = []
 callbacks = {}
 
-def registerEvent(name):
-    """Register a new event
 
-    :param name: the event's name
+def declare(nevents):
+    """Declare new events
+
+    :param list nevents: a list of event names
     """
-    if not name in events:
-        events.append(name)
+    for evt in nevents:
+        if not evt in events:
+            events.append(evt)
+
 
 def register(event, callback):
     """Register a plugin callback for a specific event
@@ -90,9 +41,10 @@ def register(event, callback):
     if not event in callbacks.keys():
         callbacks[event] = {}
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
-    if not callbacks[event].has_key(fullname):
+    if not fullname in callbacks[event]:
         callbacks[event][fullname] = callback
     return 1
+
 
 class observe(object):
     """Event observing decorator
@@ -111,7 +63,7 @@ class observe(object):
     """
     def __init__(self, *evtnames, **kwargs):
         self.evtnames = evtnames
-        if kwargs.has_key("extname"):
+        if "extname" in kwargs:
             self.extname = kwargs["extname"]
 
     def __guess_extension_name(self, modname):
@@ -123,24 +75,30 @@ class observe(object):
 
     def __call__(self, f):
         modname = inspect.getmodule(inspect.stack()[1][0]).__name__
-        extname = self.extname if hasattr(self, "extname") else self.__guess_extension_name(modname)
+        extname = self.extname if hasattr(self, "extname") \
+            else self.__guess_extension_name(modname)
+
         @wraps(f)
-        def wrapped_f(*args):
+        def wrapped_f(*args, **kwargs):
             if extname:
-                from modoboa.admin.models import Extension
+                from modoboa.core.models import Extension
+                from modoboa.core.extensions import exts_pool
                 try:
                     ext = Extension.objects.get(name=extname)
                 except Extension.DoesNotExist:
-                    return []
-                if not ext.enabled:
-                    return []
-            elif not modname in settings.INSTALLED_APPS:
+                    extdef = exts_pool.get_extension(extname)
+                    if not extdef.always_active:
+                        return []
+                else:
+                    if not ext.enabled:
+                        return []
+            elif not modname in settings.MODOBOA_APPS:
                 return []
-                
-            return f(*args)
-
-        map(lambda evt: register(evt, wrapped_f), self.evtnames)
+            return f(*args, **kwargs)
+        for evt in self.evtnames:
+            register(evt, wrapped_f)
         return wrapped_f
+
 
 def unregister(event, callback):
     """Unregister a callback for a specific event
@@ -150,7 +108,7 @@ def unregister(event, callback):
     """
     if not event in events:
         return False
-    if not callbacks.has_key(event):
+    if not event in callbacks:
         return False
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
     try:
@@ -158,7 +116,8 @@ def unregister(event, callback):
     except KeyError:
         pass
 
-def raiseEvent(event, *args):
+
+def raiseEvent(event, *args, **kwargs):
     """Raise a specific event
 
     Any additional keyword argument will be passed to registered
@@ -168,9 +127,10 @@ def raiseEvent(event, *args):
     """
     if not event in events or not event in callbacks.keys():
         return 0
-    for name, callback in callbacks[event].iteritems():
-        callback(*args)
+    for callback in callbacks[event].values():
+        callback(*args, **kwargs)
     return 1
+
 
 def raiseQueryEvent(event, *args):
     """Raise a specific event and wait for answers from callbacks
@@ -183,9 +143,10 @@ def raiseQueryEvent(event, *args):
     result = []
     if not event in events or not event in callbacks.keys():
         return result
-    for name, callback in callbacks[event].iteritems():
+    for callback in callbacks[event].values():
         result += callback(*args)
     return result
+
 
 def raiseDictEvent(event, *args):
     """Raise a specific event and return result as a dictionnary
@@ -199,7 +160,7 @@ def raiseDictEvent(event, *args):
     result = {}
     if not event in events or not event in callbacks.keys():
         return result
-    for name, callback in callbacks[event].iteritems():
+    for callback in callbacks[event].values():
         tmp = callback(*args)
         for k, v in tmp.iteritems():
             result[k] = v

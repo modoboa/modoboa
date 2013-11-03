@@ -1,5 +1,5 @@
 {% extends "common/generic_modal.html" %}
-{% load libextras %}
+{% load lib_tags %}
 {% block modalbody %}
 {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
 <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 

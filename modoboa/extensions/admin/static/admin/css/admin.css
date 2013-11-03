@@ -1,0 +1,33 @@
+#searchform { 
+    margin-bottom: 10px;
+}
+
+span.title {
+    margin-left: 40px;
+    margin-bottom: 10px;
+    float: left;
+    font-weight: bold;
+    width: 180px;
+}
+
+table th#actions {
+    text-align: right;
+}
+
+table td[name="actions"] {
+    text-align: right;
+}
+
+table .progress {
+    margin-bottom: 0 !important;
+}
+
+table tbody tr:hover {
+    background-color: #F9F9F9;
+}
+
+.search {
+    width: 85%;
+    -webkit-border-radius:14px;-moz-border-radius:14px;border-radius:14px;
+    padding-left: 14px;
+}

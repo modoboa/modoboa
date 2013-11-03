@@ -23,12 +23,12 @@ import os
 import re
 import rrdtool
 import string
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from optparse import make_option
 from modoboa.lib import parameters
-from modoboa.admin.models import Domain
+from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.stats import Stats
-from modoboa.extensions.stats.grapher import *
+from modoboa.extensions.stats.grapher import str2Time, Grapher
 from modoboa.extensions.stats.graph_templates import MailTraffic
 
 rrdstep = 60
@@ -36,6 +36,7 @@ xpoints = 540
 points_per_sample = 3
 variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
              "size_sent", "size_recv"]
+
 
 class LogParser(object):
     def __init__(self, options, workdir, year=None):
@@ -94,7 +95,6 @@ class LogParser(object):
             params += ['DS:%s:%s:%s:0:U' % (v, ds_type, rrdstep * 2)]
 
         # Set up RRD to archive data
-        rras = []
         for cf in ['AVERAGE', 'MAX']:
             for step in [day_steps, week_steps, month_steps, year_steps]:
                 params += ['RRA:%s:0.5:%s:%s' % (cf, step, realrows)]
@@ -120,14 +120,14 @@ class LogParser(object):
         if not os.path.exists(fname):
             self.lupdates[fname] = self.init_rrd(fname, m)
             if self.debug:
-                print "[rrd] create new RRD file %s" %fname
+                print "[rrd] create new RRD file %s" % fname
         else:
-            if not self.lupdates.has_key(fname):
+            if not fname in self.lupdates:
                 self.lupdates[fname] = rrdtool.last(str(fname))
 
         if m <= self.lupdates[fname]:
             if self.verbose:
-                print "[rrd] VERBOSE events at %s already recorded in RRD" %m
+                print "[rrd] VERBOSE events at %s already recorded in RRD" % m
             return False
 
         tpl = ""
@@ -140,7 +140,8 @@ class LogParser(object):
         if m > self.lupdates[fname] + rrdstep:
             values = ""
             for v in variables:
-                if values != "": values += ":"
+                if values != "":
+                    values += ":"
                 values += "0"
             for p in range(self.lupdates[fname] + rrdstep, m, rrdstep):
                 if self.verbose:
@@ -165,16 +166,17 @@ class LogParser(object):
 
     def initcounters(self, dom, cur_t):
         init = {}
-        for v in variables: init[v] = 0
+        for v in variables:
+            init[v] = 0
         self.data[dom][cur_t] = init
 
     def inc_counter(self, dom, cur_t, counter, val=1):
         if dom is not None and dom in self.domains:
-            if not self.data[dom].has_key(cur_t):
+            if not cur_t in self.data[dom]:
                 self.initcounters(dom, cur_t)
             self.data[dom][cur_t][counter] += val
 
-        if not self.data["global"].has_key(cur_t):
+        if not cur_t in self.data["global"]:
             self.initcounters("global", cur_t)
         self.data["global"][cur_t][counter] += val
 
@@ -211,7 +213,7 @@ class LogParser(object):
             if not m:
                 continue
             (mo, da, ho, mi, se, host, prog, pid, log) = m.groups()
-            se = int(int(se) / rrdstep)            # rrd step is one-minute => se = 0
+            se = int(int(se) / rrdstep)  # rrd step is one-minute => se = 0
 
             if prev_se != se or prev_mi != mi or prev_ho != ho:
                 cur_t = str2Time(self.year(mo), mo, da, ho, mi, se)
@@ -225,18 +227,18 @@ class LogParser(object):
 
                 m = re.search("message-id=<([^>]*)>", line_log)
                 if m:
-                    self.workdict[line_id] = {'from' : m.group(1), 'size' : 0}
+                    self.workdict[line_id] = {'from': m.group(1), 'size': 0}
                     continue
 
                 m = re.search("from=<([^>]*)>, size=(\d+)", line_log)
                 if m:
-                    self.workdict[line_id] = {'from' : m.group(1),
-                                             'size' : string.atoi(m.group(2))}
+                    self.workdict[line_id] = {'from': m.group(1),
+                                              'size': string.atoi(m.group(2))}
                     continue
 
                 m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
                 if m:
-                    if not self.workdict.has_key(line_id):
+                    if not line_id in self.workdict:
                         if self.debug:
                             print "Inconsistent mail (%s: %s), skipping" % (line_id, m.group(1))
                         continue
@@ -276,12 +278,13 @@ class LogParser(object):
         G = Grapher()
         for dom, data in self.data.iteritems():
             if self.debug:
-                print "[rrd] dealing with domain %s" %dom
+                print "[rrd] dealing with domain %s" % dom
             for t in sorted(data.keys()):
                 self.update_rrd(dom, t)
 
             for graph_tpl in MailTraffic().get_graphs():
                 G.make_defaults(dom, graph_tpl)
+
 
 class Command(BaseCommand):
     help = 'Log file parser'
@@ -293,7 +296,7 @@ class Command(BaseCommand):
                     dest="verbose", help="Set verbose mode"),
         make_option("--debug", default=False, action="store_true",
                     help="Set debug mode")
-        )
+    )
 
     def handle(self, *args, **options):
         Stats().load()

@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load i18n libextras %}{% load url from future %}
+<!DOCTYPE html>{% load i18n core_tags lib_tags %}{% load url from future %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
@@ -23,7 +23,7 @@
       <div id="logo" class="row">
         <img src="{% get_modoboa_logo %}" />
       </div>
-      <form method="post" action="{% url 'modoboa.auth.views.dologin' %}"
+      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}"
             class="login-form well">
         {% csrf_token %}
         {% render_field form.username %}

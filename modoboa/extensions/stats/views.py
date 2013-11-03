@@ -1,13 +1,19 @@
 # coding: utf-8
-from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.webutils import _render, _render_to_string, ajax_simple_response
-from modoboa.admin.models import Domain, Mailbox
-from django.contrib.auth.decorators \
-    import login_required, user_passes_test, permission_required
-from modoboa.extensions.stats.grapher import *
-from modoboa.lib.exceptions import *
+from django.shortcuts import render
+from django.utils.translation import ugettext as _
+from django.contrib.auth.decorators import (
+    login_required, user_passes_test, permission_required
+)
 from modoboa.lib import events
-from graph_templates import *
+from modoboa.lib.exceptions import ModoboaException, PermDeniedException
+from modoboa.lib.webutils import (
+    _render_to_string, ajax_simple_response
+)
+from modoboa.extensions.admin.models import (
+    Domain
+)
+from modoboa.extensions.stats.grapher import periods, str2Time, Grapher
+
 
 @login_required
 @permission_required("admin.view_mailboxes")
@@ -17,18 +23,19 @@ def index(request):
     """
     deflocation = "graphs/?gset=mailtraffic"
     if not request.user.is_superuser:
-        if not len(request.user.get_domains()):
+        if not Domain.objects.get_for_admin(request.user).count():
             raise ModoboaException(_("No statistics available"))
-        
+
     period = request.GET.get("period", "day")
     graph_sets = events.raiseDictEvent('GetGraphSets')
-    return _render(request, 'stats/index.html', {
-            "periods" : periods,
-            "period" : period,
-            "selection" : "stats",
-            "deflocation" : deflocation,
-            "graph_sets" : graph_sets
-            })
+    return render(request, 'stats/index.html', {
+        "periods": periods,
+        "period": period,
+        "selection": "stats",
+        "deflocation": deflocation,
+        "graph_sets": graph_sets
+    })
+
 
 @login_required
 @user_passes_test(lambda u: u.group != "SimpleUsers")
@@ -42,31 +49,34 @@ def graphs(request):
     tplvars = dict(graphs=[], period=period)
     if searchq in [None, "global"]:
         if not request.user.is_superuser:
-            if len(request.user.get_domains()):
-                tplvars.update(domain=request.user.get_domains()[0].name)
-            else:
-                return ajax_simple_response({"status" : "ok"})
+            if not Domain.objects.get_for_admin(request.user).count():
+                return ajax_simple_response({"status": "ok"})
+            tplvars.update(
+                domain=Domain.objects.get_for_admin(request.user)[0].name
+            )
         else:
             tplvars.update(domain="global")
     else:
         domain = Domain.objects.filter(name__contains=searchq)
-        if len(domain) != 1:
-            return ajax_simple_response({"status" : "ok"})
+        if domain.count() != 1:
+            return ajax_simple_response({"status": "ok"})
         if not request.user.can_access(domain[0]):
             raise PermDeniedException
         tplvars.update(domain=domain[0].name)
 
     if period == "custom":
-        if not request.GET.has_key("start") or not request.GET.has_key("end"):
+        if not "start" in request.GET or not "end" in request.GET:
             raise ModoboaException(_("Bad custom period"))
         start = request.GET["start"]
         end = request.GET["end"]
         G = Grapher()
-        period_name = "%s_%s" % (start.replace('-',''), end.replace('-',''))
+        period_name = "%s_%s" % (start.replace('-', ''), end.replace('-', ''))
         for tpl in gsets[gset].get_graphs():
             tplvars['graphs'].append(tpl.display_name)
-            G.process(tplvars["domain"], period_name, str2Time(*start.split('-')),
-                      str2Time(*end.split('-')), tpl)
+            G.process(
+                tplvars["domain"], period_name, str2Time(*start.split('-')),
+                str2Time(*end.split('-')), tpl
+            )
         tplvars["period_name"] = period_name
         tplvars["start"] = start
         tplvars["end"] = end
@@ -74,6 +84,6 @@ def graphs(request):
         tplvars['graphs'] = gsets[gset].get_graph_names()
 
     return ajax_simple_response(dict(
-            status="ok",  
-            content=_render_to_string(request, "stats/graphs.html", tplvars)
-            ))
+        status="ok",
+        content=_render_to_string(request, "stats/graphs.html", tplvars)
+    ))

@@ -25,10 +25,3 @@ class UserParameter(models.Model):
     @property
     def shortname(self):
         return self.name.split(".")[1].lower()
-
-
-class Log(models.Model):
-    date_created = models.DateTimeField(auto_now_add=True)
-    message = models.CharField(max_length=255)
-    level = models.CharField(max_length=15)
-    logger = models.CharField(max_length=30)

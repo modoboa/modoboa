@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
-
-import sys
-import os
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import sendmail_simple
-from modoboa.admin.models import User, Domain
+from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.amavis import Amavis
-from modoboa.extensions.amavis.models import *
+from modoboa.extensions.amavis.models import (
+    Msgrcpt
+)
 from modoboa.extensions.amavis.sql_listing import get_wrapper
 
 
@@ -66,13 +66,17 @@ class Command(BaseCommand):
         self.sender = parameters.get_admin("NOTIFICATIONS_SENDER",
                                            app="amavis")
         self.baseurl = self.options["baseurl"].strip("/")
-        self.listingurl = self.baseurl + reverse("modoboa.extensions.amavis.views._listing") + "?viewrequests=1"
+        self.listingurl = self.baseurl \
+            + reverse("modoboa.extensions.amavis.views._listing") \
+            + "?viewrequests=1"
 
         for da in User.objects.filter(groups__name="DomainAdmins"):
-            if not da.has_mailbox:
+            if not da.mailbox_set.count():
                 continue
             rcpt = da.mailbox_set.all()[0].full_address
-            reqs = get_wrapper().get_domains_pending_requests(da.get_domains())
+            reqs = get_wrapper().get_domains_pending_requests(
+                Domain.objects.get_for_admin(da)
+            )
             if reqs.count():
                 self.send_pr_notification(rcpt, reqs)
 
@@ -82,7 +86,7 @@ class Command(BaseCommand):
                 print "No release request currently pending"
             return
         for su in User.objects.filter(is_superuser=True):
-            if not su.has_mailbox:
+            if not su.mailbox_set.count():
                 continue
             rcpt = su.mailbox_set.all()[0].full_address
             self.send_pr_notification(rcpt, reqs)

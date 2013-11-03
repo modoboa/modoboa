@@ -1,8 +1,11 @@
 django
 django-reversion
+dj-database-url
 south
 lxml
 pycrypto
 sievelib
 chardet
 argparse
+rfc6266
+factory-boy

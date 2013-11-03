@@ -3,7 +3,6 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
-from modoboa.lib.compat import user_model_name
 
 
 class Migration(DataMigration):
@@ -38,7 +37,7 @@ class Migration(DataMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        user_model_name: {
+        'auth.user': {
             'Meta': {'object_name': 'User'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
@@ -71,7 +70,7 @@ class Migration(DataMigration):
             'Meta': {'object_name': 'UserParameter'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_model_name}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'value': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
     }

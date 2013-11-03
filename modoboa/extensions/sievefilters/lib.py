@@ -7,8 +7,10 @@ from sievelib.factory import FiltersSet
 from modoboa.lib import parameters
 from modoboa.lib.connections import ConnectionsManager, ConnectionError
 
+
 class SieveClientError(Exception):
     pass
+
 
 class SieveClient(object):
     __metaclass__ = ConnectionsManager
@@ -22,7 +24,7 @@ class SieveClient(object):
             raise ConnectionError(msg)
 
     def login(self, user, password):
-        self.msc = Client(parameters.get_admin("SERVER"), 
+        self.msc = Client(parameters.get_admin("SERVER"),
                           int(parameters.get_admin("PORT")),
                           debug=False)
         use_starttls = True if parameters.get_admin("STARTTLS") == "yes" else False
@@ -31,7 +33,7 @@ class SieveClient(object):
             authmech = None
         try:
             ret = self.msc.connect(user, password, use_starttls, authmech)
-        except Error, e:
+        except Error:
             ret = False
         if not ret:
             return False, _("Connection to MANAGESIEVE server failed, check your configuration")
@@ -40,7 +42,7 @@ class SieveClient(object):
     def logout(self):
         self.msc.logout()
         self.msc = None
-        
+
     def refresh(self, user, password):
         import ssl
 
@@ -85,7 +87,7 @@ class SieveClient(object):
             raise SieveClientError(self.msc.errmsg)
         if active and not self.msc.setactive(name):
             raise SieveClientError(self.msc.errmsg)
-            
+
     def deletescript(self, name):
         if not self.msc.deletescript(name):
             raise SieveClientError(self.msc.errmsg)

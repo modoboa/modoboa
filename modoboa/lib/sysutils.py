@@ -4,29 +4,23 @@
 This module extra functions/shortcuts to communicate with the system
 (executing commands, etc.)
 """
-import logging
-import logging.handlers
-from modoboa.lib import parameters
+import subprocess
+
 
 def exec_cmd(cmd, sudo_user=None, **kwargs):
-    import subprocess
+    """Execute a shell command.
 
+    Run a command using the current user. Set :keyword:`sudo_user` if
+    you need different privileges.
+
+    :param str cmd: the command to execute
+    :param str sudo_user: a valid system username
+    :rtype: tuple
+    :return: return code, command output
+    """
     if sudo_user is not None:
         cmd = "sudo -u %s %s" % (sudo_user, cmd)
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, 
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                          stderr=subprocess.STDOUT, **kwargs)
     output = p.communicate()[0]
     return p.returncode, output
-
-def __log(msg, facility=logging.handlers.SysLogHandler.LOG_AUTH):
-    logger = logging.getLogger('modoboa')
-    logger.setLevel(logging.DEBUG)
-    handler = logging.handlers.SysLogHandler(address='/dev/log', facility=facility)
-    formatter = logging.Formatter('%(name)s: %(levelname)s %(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    return logger
-
-def log_warning(msg):
-    logger = __log(msg)
-    logger.warning(msg)

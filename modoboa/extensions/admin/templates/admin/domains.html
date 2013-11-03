@@ -1,0 +1,11 @@
+{% extends "admin/listing.html" %}{% load i18n admin_tags lib_tags %}
+{% block pagetitle %}{% trans "Domains" %}{% endblock %}
+{% block html_head %}
+{{ block.super }}
+<script type="text/javascript">
+$(document).ready(function() {
+    admin = new Domains();
+});
+</script>
+{% endblock %}
+{% block actions %}{% domains_menu "domains" user %}{% endblock %}

@@ -7,7 +7,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
-    $.getJSON("{% url 'modoboa.admin.views.domains_list' %}", function(data) {
+    $.getJSON("{% url 'modoboa.extensions.admin.views.domain.domains_list' %}", function(data) {
         container.value = data;
     });
 }

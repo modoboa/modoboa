@@ -1,0 +1,5 @@
+{% load i18n lib_tags %}
+{% render_field form.name %}
+{% render_field_appended form.quota _("MB") %}
+{% render_fields_group form "aliases" %}
+{% render_field form.enabled %}

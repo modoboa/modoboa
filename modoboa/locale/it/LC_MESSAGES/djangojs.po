@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
-"Report-Msgid-Bugs-To: http://dev.modoboa.org\n"
-"POT-Creation-Date: 2013-06-28 16:37+0200\n"
-"PO-Revision-Date: 2013-06-28 16:58+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-26 23:44+0200\n"
+"PO-Revision-Date: 2013-09-27 00:07+0200\n"
 "Last-Translator: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "Language-Team: Italiano <LL@li.org>\n"
 "Language: it\n"
@@ -33,11 +33,9 @@ msgstr "Questa operazione eliminerà TUTTI i dati associati a questo dominio."
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Questa operazione eliminerà tutti i dati associati a questo dominio tranne gli account"
-
-#: admin/static/admin/js/admin.js:117
-msgid "Delete this domain?"
-msgstr "Elimino questo dominio?"
+msgstr ""
+"Questa operazione eliminerà tutti i dati associati a questo dominio tranne "
+"gli account"
 
 #: admin/static/admin/js/admin.js:161
 msgid "No domain administrator defined"
@@ -46,22 +44,6 @@ msgstr "Non è stato definito un amministratore di dominio"
 #: admin/static/admin/js/admin.js:238
 msgid "Do not delete mailbox directory"
 msgstr "Non eliminare la cartella della casella posta"
-
-#: admin/static/admin/js/admin.js:243
-msgid "Delete this account?"
-msgstr "Eliminare questo account"
-
-#: admin/static/admin/js/admin.js:249
-msgid "Delete this list?"
-msgstr "Eliminare questo elenco?"
-
-#: admin/static/admin/js/admin.js:254
-msgid "Delete this forward?"
-msgstr "Eliminare questo inoltro?"
-
-#: admin/static/admin/js/admin.js:259
-msgid "Delete this alias?"
-msgstr "Eliminare questo alias?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:126
 msgid "Release this selection?"
@@ -114,11 +96,11 @@ msgstr "attivo"
 msgid "Search a domain"
 msgstr "Cerca un dominio"
 
-#: extensions/webmail/static/webmail/js/webmail.js:475
+#: extensions/webmail/static/webmail/js/webmail.js:476
 msgid "Remove the selected mailbox?"
 msgstr "Rimuovere la casella di posta selezionata?"
 
-#: extensions/webmail/static/webmail/js/webmail.js:489
+#: extensions/webmail/static/webmail/js/webmail.js:490
 msgid "Mailbox removed"
 msgstr "Casella di posta rimossa"
 
@@ -144,15 +126,15 @@ msgid_plural "Moving %s messages"
 msgstr[0] "Spostato %s messaggio"
 msgstr[1] "Spostati %s messaggi"
 
-#: static/js/confirmation.js:48
+#: static/js/confirmation.js:50
 msgid "Warning"
 msgstr "Attenzione"
 
-#: static/js/confirmation.js:57
+#: static/js/confirmation.js:59
 msgid "Cancel"
 msgstr "Elimina"
 
-#: static/js/confirmation.js:99 static/js/history.js:239
+#: static/js/confirmation.js:101 static/js/history.js:235
 msgid "Internal Error"
 msgstr "Errore interno"
 

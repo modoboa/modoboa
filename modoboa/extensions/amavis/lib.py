@@ -6,10 +6,8 @@ import string
 from functools import wraps
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from django.db.models import Q
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException
-from models import Msgrcpt
 
 
 def selfservice(ssfunc=None):
@@ -30,7 +28,9 @@ def selfservice(ssfunc=None):
                 return f(request, *args, **kwargs)
             if parameters.get_admin("SELF_SERVICE") == "no":
                 from django.contrib.auth.views import redirect_to_login
-                return redirect_to_login(reverse("modoboa.extensions.amavis.views.index"))
+                return redirect_to_login(
+                    reverse("modoboa.extensions.amavis.views.index")
+                )
             return ssfunc(request, *args, **kwargs)
         return wrapped_f
     return decorator
@@ -50,7 +50,9 @@ class AMrelease(object):
                 self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
                 self.sock.connect(path)
         except socket.error, err:
-            raise ModoboaException(_("Connection to amavis failed: %s" % str(err)))
+            raise ModoboaException(
+                _("Connection to amavis failed: %s" % str(err))
+            )
 
     def decode(self, answer):
         def repl(match):

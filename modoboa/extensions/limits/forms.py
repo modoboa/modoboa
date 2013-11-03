@@ -1,10 +1,10 @@
 # coding: utf-8
 
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
-from models import *
-from lib import *
+from .models import limits_tpl
+from .lib import BadLimitValue, UnsufficientResource
 
 
 class ResourcePoolForm(forms.Form):

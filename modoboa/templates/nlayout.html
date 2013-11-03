@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load i18n admin_extras uprefs_extras libextras %}{% load url from future %}
+<!DOCTYPE html>{% load i18n core_tags lib_tags %}{% load url from future %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
@@ -38,8 +38,8 @@
           </button>
           <div class="nav-collapse collapse">
             <ul class="nav">{% if selection %}
-              {% loadextmenu selection user %}{% admin_menu selection user %}
-              {% else %}{% loadextmenu "" user %}{% admin_menu "" user %}{% endif %}
+              {% extensions_menu selection user %}{% core_menu selection user %}
+              {% else %}{% extensions_menu "" user %}{% core_menu "" user %}{% endif %}
               {% load_optionalmenu user %}
             </ul>
           </div>

@@ -1,6 +1,7 @@
 # coding: utf-8
 import sys
-from modoboa.core.management import Command
+from . import Command
+
 
 class HelpCommand(Command):
     help = "Display the help message associated to a specific command"

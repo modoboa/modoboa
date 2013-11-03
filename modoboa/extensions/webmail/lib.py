@@ -1,23 +1,23 @@
 # coding: utf-8
-import time
+import os
+import re
 from datetime import datetime, timedelta
 import email
 import lxml
 import chardet
-
+from rfc6266 import build_header, parse_headers
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf import settings
-
-import os
-import re
 from modoboa.lib import u2u_decode, tables, parameters
 from modoboa.lib.webutils import size2integer
 from modoboa.lib.email_listing import EmailListing
-from modoboa.extensions.webmail.exceptions import WebmailError
-from modoboa.extensions.webmail.imaputils import IMAPconnector, get_imapconnector, BodyStructure
 from modoboa.lib.emailutils import (
     EmailAddress, Email, prepare_addresses, set_email_headers
+)
+from modoboa.extensions.webmail.exceptions import WebmailError
+from modoboa.extensions.webmail.imaputils import (
+    IMAPconnector, get_imapconnector, BodyStructure
 )
 
 
@@ -29,11 +29,15 @@ class WMtable(tables.Table):
         "select", cssclass="draggable left", width="2%",
         defvalue="%spics/grippy.png" % settings.STATIC_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
-        )
+    )
     flags = tables.ImgColumn("flags", width="4%")
     withatts = tables.ImgColumn("withatts", width="2%")
-    subject = tables.Column("subject", label=ugettext_lazy("Subject"), width="50%", limit=60)
-    from_ = tables.Column("from", width="20%", label=ugettext_lazy("From"), limit=30)
+    subject = tables.Column(
+        "subject", label=ugettext_lazy("Subject"), width="50%", limit=60
+    )
+    from_ = tables.Column(
+        "from", width="20%", label=ugettext_lazy("From"), limit=30
+    )
     date = tables.Column("date", width="15%", label=ugettext_lazy("Date"))
 
     cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
@@ -138,7 +142,7 @@ class ImapListing(EmailListing):
     def __init__(self, user, password, **kwargs):
         self.user = user
         self.mbc = IMAPconnector(user=user.username, password=password)
-        if kwargs.has_key("pattern"):
+        if "pattern" in kwargs:
             self.parse_search_parameters(kwargs["criteria"],
                                          kwargs["pattern"])
         else:
@@ -177,12 +181,13 @@ class ImapListing(EmailListing):
     def computequota(mbc):
         try:
             return int(float(mbc.quota_actual) \
-                           / float(mbc.quota_limit) * 100)
+                / float(mbc.quota_limit) * 100)
         except (AttributeError, TypeError):
             return -1
 
     def getquota(self):
         return ImapListing.computequota(self.mbc)
+
 
 class ImapEmail(Email):
     headernames = [
@@ -191,7 +196,7 @@ class ImapEmail(Email):
         ('Cc', True),
         ('Date', True),
         ('Subject', True),
-        ]
+    ]
 
     def __init__(self, mbox, mailid, request, dformat="DISPLAYMODE", addrfull=False,
                  links=0):
@@ -251,7 +256,7 @@ class ImapEmail(Email):
             except AttributeError:
                 value = msg[name]
             if hdr[1]:
-                self.headers += [{"name" : label, "value" : value}]
+                self.headers += [{"name": label, "value": value}]
             try:
                 label = re.sub("-", "_", label)
                 setattr(self, label, value)
@@ -260,11 +265,11 @@ class ImapEmail(Email):
 
     @property
     def headers_as_list(self):
-        return map(lambda hdr: hdr[0].upper(), self.headernames)
+        return [hdr[0].upper() for hdr in self.headernames]
 
     @property
     def headers_as_text(self):
-        return " ".join(map(lambda hdr: hdr[0].upper(), self.headernames))
+        return " ".join(self.headers_as_list)
 
     def _find_content_charset(self, part):
         for pos, elem in enumerate(part["params"]):
@@ -273,24 +278,30 @@ class ImapEmail(Email):
         return None
 
     def _find_attachments(self):
+        """Retrieve attachments from the parsed body structure.
+
+        We try to find and decode a file name for each attachment. If
+        we failed, a generic name will be used (ie. part_1, part_2, ...).
+        """
         for att in self.bs.attachments:
             attname = "part_%s" % att["pnum"]
-            params = None
-            key = None
-            if att.has_key("params") and att["params"] != "NIL":
-                params = att["params"]
-                key = "name"
-
-            if key is None and \
-                    att.has_key("disposition") and len(att["disposition"]) > 1:
-                params = att["disposition"][1]
-                key = "filename"
-
-            if key and params:
-                for pos, value in enumerate(params):
-                    if value == key:
-                        attname = u2u_decode.u2u_decode(params[pos + 1]).strip("\r\t\n")
-                        break
+            if "params" in att and att["params"] != "NIL":
+                attname = u2u_decode.u2u_decode(att["params"][1]) \
+                    .strip("\r\t\n")
+            elif "disposition" in att and len(att["disposition"]) > 1:
+                for pos, value in enumerate(att["disposition"][1]):
+                    if not value.startswith("filename"):
+                        continue
+                    header = "%s; %s=%s" \
+                        % (att['disposition'][0],
+                           value,
+                           att["disposition"][1][pos + 1].strip("\r\t\n"))
+                    attname = parse_headers(header).filename_unsafe
+                    if attname is None:
+                        attname = u2u_decode.u2u_decode(
+                            att["disposition"][1][pos + 1]
+                        ).strip("\r\t\n")
+                    break
             self.attachments[att["pnum"]] = attname
 
     def _fetch_inlines(self):
@@ -308,13 +319,10 @@ class ImapEmail(Email):
             fp.write(decode_payload(params["encoding"], content))
             fp.close()
 
-
     def map_cid(self, url):
-        import re
-
         m = re.match(".*cid:(.+)", url)
         if m:
-            if self.bs.inlines.has_key(m.group(1)):
+            if m.group(1) in self.bs.inlines:
                 return self.bs.inlines[m.group(1)]["fname"]
         return url
 
@@ -322,11 +330,12 @@ class ImapEmail(Email):
         from django.template.loader import render_to_string
 
         res = render_to_string("webmail/headers.html", {
-                "headers" : self.headers,
-                "folder" : kwargs["folder"], "mail_id" : kwargs["mail_id"],
-                "attachments" : self.attachments != {} and self.attachments or None
-                })
+            "headers": self.headers,
+            "folder": kwargs["folder"], "mail_id": kwargs["mail_id"],
+            "attachments": self.attachments != {} and self.attachments or None
+        })
         return res
+
 
 class Modifier(ImapEmail):
     def __init__(self, *args, **kwargs):
@@ -348,7 +357,7 @@ class ReplyModifier(Modifier):
     def __init__(self, mbox, mailid, request, form,  **kwargs):
         super(ReplyModifier, self).__init__(
             mbox, mailid, request, dformat="EDITOR", **kwargs
-            )
+        )
 
         self.textheader = "%s %s" % (self.From, _("wrote:"))
 
@@ -358,7 +367,7 @@ class ReplyModifier(Modifier):
             form.fields["to"].initial = self.From
         else:
             form.fields["to"].initial = self.Reply_To
-        if request.GET.get("all", "0") == "1": # reply-all
+        if request.GET.get("all", "0") == "1":  # reply-all
             form.fields["cc"].initial = ""
             toparse = self.To.split(",")
             if hasattr(self, 'Cc'):
@@ -386,11 +395,12 @@ class ReplyModifier(Modifier):
             body += ">%s" % l
         self.body = body
 
+
 class ForwardModifier(Modifier):
     def __init__(self, mbox, mailid, request, form, **kwargs):
         super(ForwardModifier, self).__init__(
             mbox, mailid, request, dformat="EDITOR", **kwargs
-            )
+        )
 
         self._header()
         form.fields["subject"].initial = "Fwd: %s" % self.Subject
@@ -433,6 +443,7 @@ class ForwardModifier(Modifier):
     def _header_end_html(self):
         return "</table>"
 
+
 class EmailSignature(object):
     """User signature
 
@@ -459,6 +470,7 @@ class EmailSignature(object):
     def __repr__(self):
         return self._sig
 
+
 def decode_payload(encoding, payload):
     """Decode the payload according to the given encoding
 
@@ -476,6 +488,7 @@ def decode_payload(encoding, payload):
         import quopri
         return quopri.decodestring(payload)
     return payload
+
 
 def find_images_in_body(body):
     """Looks for images inside a HTML body
@@ -510,12 +523,13 @@ def find_images_in_body(body):
         fp.close()
         p["Content-ID"] = "<%s>" % cid
         ct = p["Content-Type"]
-        p.replace_header("Content-Type", '%s; name="%s"' \
-                             % (ct, os.path.basename(fname)))
+        p.replace_header("Content-Type", '%s; name="%s"'
+                         % (ct, os.path.basename(fname)))
         p["Content-Disposition"] = "inline"
         parts.append(p)
 
     return lxml.html.tostring(html), parts
+
 
 def set_compose_session(request):
     """Initialize a new "compose" session.
@@ -529,8 +543,9 @@ def set_compose_session(request):
     """
     import uuid
     randid = str(uuid.uuid4()).replace("-", "")
-    request.session["compose_mail"] = {"id" : randid, "attachments" : []}
+    request.session["compose_mail"] = {"id": randid, "attachments": []}
     return randid
+
 
 def save_attachment(f):
     """Save a new attachment to the filesystem.
@@ -554,6 +569,7 @@ def save_attachment(f):
     fp.close()
     return fp.name
 
+
 def clean_attachments(attlist):
     """Remove all attachments from the filesystem
 
@@ -564,8 +580,9 @@ def clean_attachments(attlist):
         fullpath = os.path.join(settings.MEDIA_ROOT, "webmail", att["tmpname"])
         try:
             os.remove(fullpath)
-        except OSError, e:
+        except OSError:
             pass
+
 
 def html2plaintext(content):
     """HTML to plain text translation
@@ -586,8 +603,9 @@ def html2plaintext(content):
 
     return plaintext
 
+
 def get_current_url(request):
-    if not request.session.has_key("folder"):
+    if not "folder" in request.session:
         return ""
 
     res = "%s?page=%s" % (request.session["folder"], request.session["page"])
@@ -595,6 +613,7 @@ def get_current_url(request):
         if p in request.session.keys():
             res += "&%s=%s" % (p, request.session[p])
     return res
+
 
 def create_mail_attachment(attdef):
     """Create the MIME part corresponding to the given attachment.
@@ -613,7 +632,7 @@ def create_mail_attachment(attdef):
     res.set_payload(fp.read())
     fp.close()
     Encoders.encode_base64(res)
-    res.add_header("Content-Disposition", 'attachment', filename=attdef["fname"])
+    res['Content-Disposition'] = build_header(attdef['fname'].decode('utf-8'))
     return res
 
 
@@ -629,9 +648,9 @@ def send_mail(request, posturl=None):
     :return: a 2-uple (True|False, HttpResponse)
     """
     from email.mime.multipart import MIMEMultipart
-    from forms import ComposeMailForm
+    from .forms import ComposeMailForm
     from modoboa.lib.webutils import _render_to_string
-    from modoboa.auth.lib import get_password
+    from modoboa.lib.cryptutils import get_password
 
     form = ComposeMailForm(request.POST)
     editormode = parameters.get_user(request.user, "EDITOR")
@@ -709,10 +728,11 @@ def send_mail(request, posturl=None):
         return True, dict(url=get_current_url(request))
 
     listing = _render_to_string(request, "webmail/compose.html",
-                               {"form" : form, "noerrors" : True,
-                                "body" : request.POST["id_body"].strip(),
-                                "posturl" : posturl})
+                                {"form": form, "noerrors": True,
+                                 "body": request.POST["id_body"].strip(),
+                                 "posturl": posturl})
     return False, dict(status="ko", listing=listing, editor=editormode)
+
 
 class AttachmentUploadHandler(FileUploadHandler):
     """

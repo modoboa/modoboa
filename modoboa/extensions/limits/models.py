@@ -1,10 +1,7 @@
 # coding: utf-8
-
 from django.db import models
-from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
-from modoboa.admin.models import User
 from django.conf import settings
 
 limits_tpl = [
@@ -13,7 +10,8 @@ limits_tpl = [
     ("domain_aliases_limit", ugettext_lazy("Domain aliases")),
     ("mailboxes_limit", ugettext_lazy("Mailboxes")),
     ("mailbox_aliases_limit", ugettext_lazy("Mailbox aliases"))
-    ]
+]
+
 
 class LimitsPool(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
@@ -73,6 +71,7 @@ class LimitsPool(models.Model):
             return self.limit_set.get(name=lname)
         except Limit.DoesNotExist:
             return None
+
 
 class Limit(models.Model):
     name = models.CharField(max_length=255)

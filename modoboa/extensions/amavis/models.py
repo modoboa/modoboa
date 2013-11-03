@@ -10,7 +10,7 @@
 # Original Amavis version : 2.6.2
 
 from django.db import models
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import ugettext_lazy
 
 
 class Maddr(models.Model):

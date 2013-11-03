@@ -55,6 +55,7 @@ def parse_next_token(buf):
     token = klass(buf[:end])
     return token, end
 
+
 def parse_bodystructure(buf, depth=0, prefix=""):
     """Special parser for BODYSTRUCTURE response
 
@@ -66,7 +67,7 @@ def parse_bodystructure(buf, depth=0, prefix=""):
              character into ``buf``
     """
     ret = []
-    pos = 1 # skip the first ')'
+    pos = 1  # skip the first ')'
     nb_bodystruct = 0
     pnum = 1
     while pos < len(buf):
@@ -96,7 +97,7 @@ def parse_bodystructure(buf, depth=0, prefix=""):
                 if type(ret[0]) == list or len(ret) >= 7:
                     partnum = prefix
             if partnum is not None:
-                return [{"partnum" : partnum, "struct" : ret}], pos
+                return [{"partnum": partnum, "struct": ret}], pos
             return ret, pos
         if c == ' ':
             pos += 1
@@ -111,6 +112,7 @@ def parse_bodystructure(buf, depth=0, prefix=""):
             ret.append(token.value.strip('"'))
 
     raise ParseError("End of buffer reached while looking for a BODY/BODYSTRUCTURE end")
+
 
 def parse_fetch_response(data):
     """Parse a FETCH response, previously issued by a UID command
@@ -185,6 +187,7 @@ def parse_fetch_response(data):
                 pass
 
     return result
+
 
 def dump_bodystructure(bs, depth=0):
     if depth:

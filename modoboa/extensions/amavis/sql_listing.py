@@ -1,14 +1,16 @@
 # coding: utf-8
-
+import re
 from datetime import datetime
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy
 from django.db.models import Q
 from modoboa.lib import tables
 from modoboa.lib.webutils import static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
-from modoboa.lib.emailutils import *
+from modoboa.lib.emailutils import Email
 from modoboa.lib.dbutils import db_type
-from models import *
+from modoboa.extensions.admin.models import Domain
+from .models import Quarantine, Msgrcpt
 
 
 class Qtable(tables.Table):
@@ -39,7 +41,7 @@ class SQLconnector(MBconnector):
     order_translation_table = {
         "score": "mail__msgrcpt__bspam_level",
         "date": "mail__time_num"
-        }
+    }
 
     def __init__(self, mail_ids=None, filter=None):
         self.count = None
@@ -118,8 +120,8 @@ class SQLWrapper(object):
             q &= Q(rid__email=request.user.email)
         else:
             if not request.user.is_superuser:
-                doms = request.user.get_domains()
-                regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+                doms = Domain.objects.get_for_admin(request.user)
+                regexp = "(%s)" % '|'.join([dom.name for dom in doms])
                 doms_q = Q(rid__email__regex=regexp)
                 q &= doms_q
             if rcptfilter is not None:
@@ -134,7 +136,7 @@ class SQLWrapper(object):
         return Msgrcpt.objects.filter(mail__in=mailids, rid__email=address)
 
     def get_domains_pending_requests(self, domains):
-        regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, domains))
+        regexp = "(%s)" % '|'.join([dom.name for dom in domains])
         return Msgrcpt.objects.filter(rs='p', rid__email__regex=regexp)
 
     def get_pending_requests(self, user):
@@ -144,10 +146,10 @@ class SQLWrapper(object):
         """
         rq = Q(rs='p')
         if not user.is_superuser:
-            doms = user.get_domains()
+            doms = Domain.objects.get_for_admin(user)
             if not doms.count():
                 return 0
-            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+            regexp = "(%s)" % '|'.join([dom.name for dom in doms])
             doms_q = Q(rid__email__regex=regexp)
             rq &= doms_q
         return Msgrcpt.objects.filter(rq).count()
@@ -173,11 +175,11 @@ class PgWrapper(SQLWrapper):
             where.append("convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email)
             return Msgrcpt.objects.filter(q).extra(
                 where=where, tables=['maddr']
-                )
+            )
 
         if not request.user.is_superuser:
-            doms = request.user.get_domains()
-            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+            doms = Domain.objects.get_for_admin(request.user)
+            regexp = "(%s)" % '|'.join([dom.name for dom in doms])
             where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
         if rcptfilter is not None:
             where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'" % rcptfilter)
@@ -187,39 +189,39 @@ class PgWrapper(SQLWrapper):
         qset = Msgrcpt.objects.filter(mail=mailid).extra(
             where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') = '%s'" % address],
             tables=['maddr']
-            )
+        )
         return qset.all()[0]
 
     def get_recipient_messages(self, address, mailids):
         return Msgrcpt.objects.filter(mail__in=mailids).extra(
             where=["U0.rid=maddr.id", "convert_from(maddr.email, 'UTF8') = '%s'" % address],
             tables=['maddr']
-            )
+        )
 
     def get_domains_pending_requests(self, domains):
-        regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, domains))
+        regexp = "(%s)" % '|'.join([dom.name for dom in domains])
         return Msgrcpt.objects.filter(rs='p').extra(
             where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp],
             tables=['maddr']
-            )
+        )
 
     def get_pending_requests(self, user):
         rq = Q(rs='p')
         if not user.is_superuser:
-            doms = user.get_domains()
+            doms = Domain.objects.get_for_admin(user)
             if not doms.count():
                 return 0
-            regexp = "(%s)" % '|'.join(map(lambda dom: dom.name, doms))
+            regexp = "(%s)" % '|'.join([dom.name for dom in doms])
             return Msgrcpt.objects.filter(rq).extra(
                 where=["msgrcpt.rid=maddr.id", "convert_from(maddr.email, 'UTF8') ~ '%s'" % (regexp,)],
                 tables=['maddr']
-                ).count()
-        return len(Msgrcpt.objects.filter(rq))
+            ).count()
+        return Msgrcpt.objects.filter(rq).count()
 
     def get_mail_content(self, mailid):
         return Quarantine.objects.filter(mail=mailid).extra(
             select={'mail_text': "convert_from(mail_text, 'UTF8')"}
-            )
+        )
 
 
 def get_wrapper():
@@ -280,6 +282,6 @@ class SQLemail(Email):
 
     def render_headers(self, **kwargs):
         return render_to_string("amavis/mailheaders.html", {
-                "qtype": self.qtype, "qreason": self.qreason,
-                "headers": self.headers,
-                })
+            "qtype": self.qtype, "qreason": self.qreason,
+            "headers": self.headers,
+        })

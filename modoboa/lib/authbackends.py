@@ -1,9 +1,8 @@
 from django.contrib.auth.backends import ModelBackend
-from django.utils.translation import gettext as _
-from modoboa.admin.models import User
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox
+
 
 class SimpleBackend(ModelBackend):
 
@@ -23,23 +22,25 @@ class SimpleBackend(ModelBackend):
             return None
 
 try:
-    from django_auth_ldap.backend import LDAPBackend as orig_LDAPBackend, _LDAPUser
-    from modoboa.admin.models import populate_callback
-
+    from django_auth_ldap.backend import (
+        LDAPBackend as orig_LDAPBackend, _LDAPUser
+    )
+    from modoboa.core.models import populate_callback
 
     class LDAPBackend(orig_LDAPBackend):
 
         def get_or_create_user(self, username, ldap_user):
             """
-            This must return a (User, created) 2-tuple for the given LDAP user.
-            username is the Django-friendly username of the user. ldap_user.dn is
-            the user's DN and ldap_user.attrs contains all of their LDAP attributes.
+            This must return a (User, created) 2-tuple for the given
+            LDAP user.  username is the Django-friendly username of
+            the user. ldap_user.dn is the user's DN and
+            ldap_user.attrs contains all of their LDAP attributes.
             """
             lpart, domain = split_mailbox(username)
             if domain is None:
                 return None
             user, created = User.objects.get_or_create(
-                username__iexact=username, 
+                username__iexact=username,
                 defaults={'username': username.lower(), 'is_local': False}
             )
             if created:
@@ -50,13 +51,13 @@ try:
             user = None
             try:
                 user = User.objects.get(pk=user_id)
-                _LDAPUser(self, user=user) # This sets user.ldap_user
+                _LDAPUser(self, user=user)  # This sets user.ldap_user
             except User.DoesNotExist:
                 pass
             return user
 
         def authenticate(self, username, password):
-            auth_type = parameters.get_admin("AUTHENTICATION_TYPE", app="admin")
+            auth_type = parameters.get_admin("AUTHENTICATION_TYPE", app="core")
             if auth_type == "ldap":
                 return super(LDAPBackend, self).authenticate(username, password)
             return None

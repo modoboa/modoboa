@@ -6,7 +6,10 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from modoboa.lib import parameters
 from modoboa.extensions.amavis import Amavis
-from modoboa.extensions.amavis.models import *
+from modoboa.extensions.amavis.models import (
+    Msgrcpt, Msgs, Maddr
+)
+
 
 class Command(BaseCommand):
     args = ''
@@ -21,7 +24,7 @@ class Command(BaseCommand):
                     action='store_true',
                     default=False,
                     help='Display informational messages')
-        )
+    )
 
     def __vprint(self, msg):
         if not self.verbose:
@@ -42,7 +45,7 @@ class Command(BaseCommand):
                                                     app="amavis"))
 
         flags = ['D']
-        if parameters.get_admin("RELEASED_MSGS_CLEANUP", 
+        if parameters.get_admin("RELEASED_MSGS_CLEANUP",
                                 app="amavis") == "yes":
             flags += ['R']
 
@@ -51,14 +54,14 @@ class Command(BaseCommand):
         for msg in Msgs.objects.filter(mail_id__in=ids):
             if not msg.msgrcpt_set.exclude(rs__in=flags).count():
                 msg.delete()
-        
+
         self.__vprint("Deleting messages older than %d days..." % max_messages_age)
         limit = int(time.time()) - (max_messages_age * 24 * 3600)
         Msgs.objects.filter(time_num__lt=limit).delete()
 
         self.__vprint("Deleting unreferenced e-mail addresses...")
         for maddr in Maddr.objects.all():
-            if not len(maddr.msgs_set.all()) and not len(maddr.msgrcpt_set.all()):
+            if not maddr.msgs_set.count() and not maddr.msgrcpt_set.count():
                 maddr.delete()
-    
+
         self.__vprint("Done.")

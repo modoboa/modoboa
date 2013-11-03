@@ -30,8 +30,8 @@ You can choose between two options:
 * Use the Python package available on the `PyPI <http://pypi.python.org/pypi>`_
 * Download the sources tarball
 
-The easiest one is to install it from the *PyPI*. Just run the
-following command and you're done::
+The easiest one is to install it from PyPI. Just run the following
+command and you're done::
 
   $ pip install modoboa
 
@@ -56,18 +56,19 @@ package. On Debian/Ubuntu::
 `virtualenv <http://www.virtualenv.org/en/latest/>`_ users
 ==========================================================
 
-When you deploy an application using *virtualenv*, you may have to
-compile some dependencies. For example, *modoboa* relies on *lxml*,
+When you deploy an application using virtualenv, you may have to
+compile some dependencies. For example, modoboa relies on lxml,
 which is a C python module. In order to install it, you will need to
 install the following requirements:
 
 * python development files
 * libxslt development files
 * libxml2 development files
+* libz development files
 
-On a *Debian* like system, just run the following command::
+On a Debian like system, just run the following command::
 
-  $ apt-get install python-dev libxml2-dev libxslt-dev
+  $ apt-get install python-dev libxml2-dev libxslt-dev zlib1g-dev
 
 .. _database:
 
@@ -75,7 +76,7 @@ On a *Debian* like system, just run the following command::
 Database
 ********
 
-Thanks to *django*, Modoboa supports several databases. Depending on
+Thanks to Django, Modoboa supports several databases. Depending on
 the one you will use, you must install the appropriate python package:
 
 * `mysqldb <http://mysql-python.sourceforge.net/>`_ for `MySQL <http://www.mysql.com>`_
@@ -93,7 +94,7 @@ Deployment
 `modoboa-admin.py`, a command line tool, let you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
-  $ modoboa-admin.py deploy modoboa_example --syncdb --collectstatic [--with-amavis]
+  $ modoboa-admin.py deploy modoboa_example --syncdb --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
 
 Just answer the few questions and you're done. You can now go to the
 :ref:`first_use` section.
@@ -102,6 +103,31 @@ Just answer the few questions and you're done. You can now go to the
 
    The `--with-amavis` option must be set only if you intend to use
    the :ref:`amavis_frontend`.
+
+
+In case you need a **silent installation**, e.g. if you're using Salt-Stack.
+It's possible to supply the database credentials as commandline arguments.
+
+.. note::
+
+   `--dburl database-url` for the modoboa database credentials
+   `--amavis_dburl database-url` for the amavis database credentials
+
+   Your database-url should meet the following syntax:
+   ``scheme://[user:pass@][host:port]/dbname``
+
+   **or**
+
+   ``sqlite:////full/path/to/your/database/file.sqlite``
+
+   Available `schemes` are:
+   * postgres
+   * postgresql
+   * postgis
+   * mysql
+   * mysql2
+   * sqlite
+
 
 .. note::
 
@@ -127,7 +153,10 @@ server::
 
   $ python manage.py runserver
 
-You should be able to access Modoboa at http://locahost:8000/.
+You should be able to access Modoboa at http://localhost:8000/.
 
-For a production environnement, we recommend using a stable webserver
-like :ref:`apache2` or :ref:`nginx-label`.
+For a fully working interface using the embedded HTTP server, you need to set the ``DEBUG``
+parameter in settings.py to ``True``.
+
+For a production environment, we recommend using a stable webserver
+like :ref:`apache2` or :ref:`nginx-label`. Don't forget to set ``DEBUG`` back to ``False``.

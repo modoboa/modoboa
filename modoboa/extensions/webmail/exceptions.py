@@ -8,6 +8,7 @@ import re
 from django.utils.translation import ugettext as _
 from modoboa.lib.exceptions import ModoboaException
 
+
 class WebmailError(ModoboaException):
     errorexpr = re.compile("\[([^\]]+)\]\s*([^\.]+)")
 
@@ -21,6 +22,7 @@ class WebmailError(ModoboaException):
 
     def __str__(self):
         return self.reason
+
 
 class ImapError(ModoboaException):
     def __init__(self, reason):

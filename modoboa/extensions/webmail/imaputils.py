@@ -3,19 +3,21 @@
 :mod:`imaputils` --- Extra IMAPv4 utilities
 -------------------------------------------
 """
-import imaplib, ssl, email
+import imaplib
+import ssl
+import email
 import re
 import time
 from functools import wraps
 from django.utils.translation import ugettext as _
-from modoboa.lib import parameters
-from modoboa.lib import imap_utf7
+from modoboa.lib import parameters, imap_utf7
 from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.webutils import static_url
 from exceptions import ImapError, WebmailError
 from fetch_parser import parse_fetch_response
 
 #imaplib.Debug = 4
+
 
 class capability(object):
     """
@@ -37,6 +39,7 @@ class capability(object):
             return getattr(cls, self.fallback_method)(cls, **kwargs)
 
         return wrapped_func
+
 
 class BodyStructure(object):
     """
@@ -87,7 +90,7 @@ class BodyStructure(object):
         subtype = definition[1].lower()
         ftype = "%s/%s" % (definition[0].lower(), subtype)
         if ftype in ("text/plain", "text/html"):
-            if not self.contents.has_key(subtype):
+            if not subtype in self.contents:
                 self.contents[subtype] = [params]
             else:
                 self.contents[subtype].append(params)
@@ -134,6 +137,7 @@ class BodyStructure(object):
             if pnum == att["pnum"]:
                 return att
         return None
+
 
 class IMAPconnector(object):
     __metaclass__ = ConnectionsManager
@@ -246,7 +250,7 @@ class IMAPconnector(object):
         if self.m is not None:
             try:
                 self._cmd("CHECK")
-            except ImapError, e:
+            except ImapError:
                 if hasattr(self, "current_mailbox"):
                     del self.current_mailbox
             else:
@@ -279,7 +283,7 @@ class IMAPconnector(object):
 
         data = self._cmd("LOGIN", user, passwd)
         self.m.state = "AUTH"
-        if self.m.untagged_responses.has_key("CAPABILITY"):
+        if "CAPABILITY" in self.m.untagged_responses:
             self.capabilities = \
                 self.m.untagged_responses.pop('CAPABILITY')[0].split()
         else:
@@ -289,7 +293,7 @@ class IMAPconnector(object):
     def logout(self):
         try:
             self._cmd("CHECK")
-        except ImapError, e:
+        except ImapError:
             pass
         self._cmd("LOGOUT")
         del self.m
@@ -371,7 +375,7 @@ class IMAPconnector(object):
                 sdescr = d
                 break
         if sdescr is None:
-            sdescr = {"name" : parts[0], "path" : path, "sub" : []}
+            sdescr = {"name": parts[0], "path": path, "sub": []}
             descr += [sdescr]
         if self._parse_mailbox_name(sdescr["sub"], path, delimiter, parts[1:]):
             sdescr["class"] = "subfolders"
@@ -397,7 +401,7 @@ class IMAPconnector(object):
 
             if re.search("\%s" % delimiter, name):
                 parts = name.split(delimiter)
-                if not descr.has_key("path"):
+                if not "path" in descr:
                     descr["path"] = parts[0]
                     descr["sub"] = []
                 if self._parse_mailbox_name(descr["sub"], parts[0], delimiter,
@@ -462,14 +466,16 @@ class IMAPconnector(object):
         if topmailbox:
             md_mailboxes = []
         else:
-            md_mailboxes = [{"name" : "INBOX", "class" : "icon-inbox"},
-                            {"name" : parameters.get_user(user, "DRAFTS_FOLDER"),
-                             "class" : "icon-file"},
-                            {"name" : 'Junk', "class" : "icon-fire"},
-                            {"name" : parameters.get_user(user, "SENT_FOLDER"),
-                             "class" : "icon-envelope"},
-                            {"name" : parameters.get_user(user, "TRASH_FOLDER"),
-                             "class" : "icon-trash"}]
+            md_mailboxes = [
+                {"name": "INBOX", "class": "icon-inbox"},
+                {"name": parameters.get_user(user, "DRAFTS_FOLDER"),
+                 "class": "icon-file"},
+                {"name": 'Junk', "class": "icon-fire"},
+                {"name": parameters.get_user(user, "SENT_FOLDER"),
+                 "class": "icon-envelope"},
+                {"name": parameters.get_user(user, "TRASH_FOLDER"),
+                 "class": "icon-trash"}
+            ]
         if until_mailbox:
             name, parent = separate_mailbox(until_mailbox, self.hdelimiter)
             if parent:
@@ -478,10 +484,10 @@ class IMAPconnector(object):
 
         if unseen_messages:
             for mb in md_mailboxes:
-                if not mb.has_key("send_status"):
+                if not "send_status" in mb:
                     continue
                 del mb["send_status"]
-                key = mb.has_key("path") and "path" or "name"
+                key = "path" if "path" in mb else "name"
                 count = self.unseen_messages(mb[key])
                 if count == 0:
                     continue
@@ -638,7 +644,7 @@ class IMAPconnector(object):
             if r'\Answered' in data[int(uid)]['FLAGS']:
                 msg['img_flags'] = [static_url('pics/answered.png')]
             if r'$Forwarded' in data[int(uid)]['FLAGS']:
-                if msg.has_key('img_flags'):
+                if 'img_flags' in msg:
                     msg['img_flags'] += [static_url('pics/forwarded.png')]
                 else:
                     msg['img_flags'] = [static_url('pics/forwarded.png')]
@@ -669,8 +675,9 @@ class IMAPconnector(object):
         data = self._cmd(
             "FETCH", mailid,
             "(BODYSTRUCTURE %s[HEADER.FIELDS (%s)])" % (bcmd, " ".join(headers))
-            )
+        )
         return data[int(mailid)]
+
 
 def separate_mailbox(fullname, sep="."):
     """Split a mailbox name
@@ -685,6 +692,7 @@ def separate_mailbox(fullname, sep="."):
         return name, parent
     return fullname, None
 
+
 def get_imapconnector(request):
     """Simple shortcut to create a connector
 
@@ -698,4 +706,3 @@ def get_imapconnector(request):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-

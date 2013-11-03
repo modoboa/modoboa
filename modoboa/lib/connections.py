@@ -1,23 +1,24 @@
-from modoboa.auth.lib import decrypt
+from modoboa.lib.cryptutils import decrypt
+
 
 class ConnectionsManager(type):
     """Singleton pattern implementation
 
     This class is specialized in connection management.
     """
-    def __init__(cls, name, bases, dict):
-        super(ConnectionsManager, cls).__init__(name, bases, dict)
+    def __init__(cls, name, bases, ctx):
+        super(ConnectionsManager, cls).__init__(name, bases, ctx)
         cls.instances = {}
 
     def __call__(cls, **kwargs):
         key = None
-        if kwargs.has_key("user"):
+        if "user" in kwargs:
             key = kwargs["user"]
         else:
             return None
-        if not cls.instances.has_key(key):
+        if not key in cls.instances:
             cls.instances[key] = None
-        if kwargs.has_key("password"):
+        if "password" in kwargs:
             kwargs["password"] = decrypt(kwargs["password"])
 
         if cls.instances[key] is None:
@@ -26,6 +27,7 @@ class ConnectionsManager(type):
         else:
             cls.instances[key].refresh(key, kwargs["password"])
         return cls.instances[key]
+
 
 class ConnectionError(Exception):
     pass

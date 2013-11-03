@@ -1,4 +1,4 @@
-{% load libextras %}
+{% load lib_tags %}
 <div class="btn-toolbar {{ extraclasses }}">{% for entry in entries %}
   <div class="btn-group">{% if entry.menu %}
     <a class="btn dropdown-toggle" data-toggle="dropdown">{% if entry.img %}<i class="{{ entry.img}}"></i>{% endif %}{{ entry.label }}<span class="caret"></span></a>  

@@ -10,7 +10,7 @@ sent, received, bounced, rejected
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events, parameters
-from modoboa.extensions import ModoExtension, exts_pool
+from modoboa.core.extensions import ModoExtension, exts_pool
 
 
 class Stats(ModoExtension):
@@ -21,9 +21,11 @@ class Stats(ModoExtension):
     needs_media = True
 
     def load(self):
-        from app_settings import ParametersForm
-        events.registerEvent("GetGraphSets")
-        parameters.register(ParametersForm, ugettext_lazy("Graphical statistics"))
+        from modoboa.extensions.stats.app_settings import ParametersForm
+        events.declare(["GetGraphSets"])
+        parameters.register(
+            ParametersForm, ugettext_lazy("Graphical statistics")
+        )
 
     def destroy(self):
         events.unregister("AdminMenuDisplay", menu)
@@ -44,7 +46,7 @@ def menu(target, user):
 
 @events.observe("GetGraphSets")
 def get_default_graph_sets():
-    from graph_templates import MailTraffic
+    from modoboa.extensions.stats.graph_templates import MailTraffic
 
     gset = MailTraffic()
     return {gset.html_id: gset}

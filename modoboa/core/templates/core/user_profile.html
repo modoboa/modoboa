@@ -1,0 +1,10 @@
+{% load i18n lib_tags %}{% load url from future %}
+<h2>{% trans "Profile" %} <small>{% trans "Update your personal information" %}</small></h2>
+<hr>
+<form class="form-horizontal" method="POST" action="{% url 'modoboa.core.views.user.profile' %}" 
+      id="uprefs_form">{% csrf_token %}
+  {% render_form form %}
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Update' %}</button>
+  </div>
+</form>
