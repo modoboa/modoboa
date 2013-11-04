@@ -17,12 +17,16 @@ def enabled_applications():
     :return: a list
     """
     from modoboa.core.models import Extension
+    from modoboa.core.extensions import exts_pool
     from modoboa.lib.dbutils import db_table_exists
 
     result = [("user", "user")]
     if db_table_exists("core_extension"):
         exts = Extension.objects.filter(enabled=True)
-        result += [(ext.name, ext.name) for ext in exts]
+        for ext in exts:
+            extclass = exts_pool.get_extension(ext.name)
+            if extclass.available_for_topredirection:
+                result.append((ext.name, ext.name))
     return sorted(result, key=lambda e: e[0])
 
 

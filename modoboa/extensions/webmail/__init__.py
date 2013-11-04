@@ -11,6 +11,7 @@ class Webmail(ModoExtension):
     version = "1.0"
     description = ugettext_lazy("Simple IMAP webmail")
     needs_media = True
+    available_for_topredirection = True
 
     def load(self):
         from .app_settings import ParametersForm, UserSettings
