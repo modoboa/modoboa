@@ -75,7 +75,7 @@ TwocolsNav.prototype = {
         $('#' + this.options.divid + ' input[type=radio]').click($.proxy(this.radio_clicked, this));
         $(".help").popover({
             placement: 'bottom',
-            trigger: 'click'
+            trigger: 'hover'
         }).click(function(e) {e.preventDefault();});
         $('#' + this.options.divid + ' select').change();
         $('#' + this.options.divid + ' input[type=radio]:checked').click();

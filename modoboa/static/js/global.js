@@ -45,7 +45,8 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         $div.modal({show: false});
         $div.one('shown', function() {
             $(".help").popover({
-                container: "#modalbox"
+                container: "#modalbox",
+                trigger: "hover"
             }).click(function(e) {e.preventDefault();});
             if (modalcb != undefined) {
                 if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
@@ -253,5 +254,5 @@ $(document).ready(function() {
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
     $(document).on('click', '.activator', activate_widget);
-    $(".help").popover().click(function(e) {e.preventDefault();});
+    $(".help").popover({trigger: 'hover'}).click(function(e) {e.preventDefault();});
 });
