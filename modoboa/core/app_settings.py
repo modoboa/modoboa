@@ -19,7 +19,7 @@ def enabled_applications():
     from modoboa.core.models import Extension
     from modoboa.lib.dbutils import db_table_exists
 
-    result = [("core", "core")]
+    result = [("user", "user")]
     if db_table_exists("core_extension"):
         exts = Extension.objects.filter(enabled=True)
         result += [(ext.name, ext.name) for ext in exts]
@@ -98,7 +98,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Bind password"),
         initial='',
         help_text=ugettext_lazy("The password to use when binding to the LDAP server (with 'Bind DN')"),
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(render_value=True),
         required=False
     )
 
@@ -152,7 +152,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     default_top_redirection = forms.ChoiceField(
         label=ugettext_lazy("Default top redirection"),
         choices=[],
-        initial="core",
+        initial="user",
         help_text=ugettext_lazy("The default redirection used when no application is specified")
     )
 
@@ -175,6 +175,13 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     def __init__(self, *args, **kwargs):
         super(GeneralParametersForm, self).__init__(*args, **kwargs)
         self.fields["default_top_redirection"].choices = enabled_applications()
+
+    def clean_secret_key(self):
+        if len(self.cleaned_data["secret_key"]) not in [16, 24, 32]:
+            raise forms.ValidationError(
+                _("Key must be either 16, 24, or 32 bytes long")
+            )
+        return self.cleaned_data["secret_key"]
 
     def clean_ldap_user_dn_template(self):
         tpl = self.cleaned_data["ldap_user_dn_template"]
