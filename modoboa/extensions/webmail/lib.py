@@ -10,7 +10,7 @@ from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf import settings
 from modoboa.lib import u2u_decode, tables, parameters
-from modoboa.lib.webutils import size2integer
+from modoboa.lib.webutils import size2integer, NavigationParameters
 from modoboa.lib.email_listing import EmailListing
 from modoboa.lib.emailutils import (
     EmailAddress, Email, prepare_addresses, set_email_headers
@@ -745,3 +745,15 @@ class AttachmentUploadHandler(FileUploadHandler):
 
     def file_complete(self, file_size):
         return None
+
+
+class WebmailNavigationParameters(NavigationParameters):
+    """
+    Specific NavigationParameters subclass for the webmail.
+    """
+    def __init__(self, request, defmailbox=None):
+        super(WebmailNavigationParameters, self).__init__(
+            request, 'webmail_navparams'
+        )
+        if defmailbox is not None:
+            self.parameters += [('mbox', defmailbox)]

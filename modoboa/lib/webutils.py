@@ -162,3 +162,48 @@ def topredirection(request):
         path = "userprefs"
 
     return HttpResponseRedirect(path)
+
+
+class NavigationParameters(object):
+    """
+    Just a simple object to manipulate navigation parameters.
+    """
+
+    def __init__(self, request, sessionkey):
+        self.request = request
+        self.sessionkey = sessionkey
+        self.parameters = [('pattern', ''), ('criteria', 'from_addr')]
+
+    def store(self):
+        """Store navigation parameters into session.
+        """
+        if not self.sessionkey in self.request.session:
+            self.request.session[self.sessionkey] = {}
+        navparams = self.request.session[self.sessionkey]
+        navparams["order"] = self.request.GET.get("sort_order", "-date")
+        navparams["page"] = int(self.request.GET.get("page", 1))
+        for param, defvalue in self.parameters:
+            navparams[param] = re.escape(self.request.GET.get(param, defvalue))
+
+    def get(self, param, default_value=None):
+        """Retrieve a navigation parameter.
+
+        Just a simple getter to avoid using the full key name to
+        access a parameter.
+
+        :param str param: parameter name
+        :param defaultvalue: default value if none is found
+        :return: parameter's value
+        """
+        if not self.sessionkey in self.request.session:
+            return default_value
+        return self.request.session[self.sessionkey].get(param, default_value)
+
+    def remove(self, param):
+        """Remove a navigation parameter from session.
+
+        :param str param: parameter name
+        """
+        navparams = self.request.session[self.sessionkey]
+        if param in navparams:
+            del navparams[param]

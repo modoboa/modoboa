@@ -19,30 +19,9 @@ from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.extensions.amavis.templatetags.amavis_tags import (
     quar_menu, viewm_menu
 )
-from .lib import selfservice, AMrelease
+from .lib import selfservice, AMrelease, QuarantineNavigationParameters
 from .sql_listing import SQLlisting, SQLemail, get_wrapper
 from .models import Msgrcpt
-
-
-def __back_to_listing(request):
-    """Return the current listing URL.
-
-    Looks into the user's session and the current request to build the
-    URL.
-
-    :param request: a ``Request`` object
-    :return: a string
-    """
-    url = "listing"
-    params = []
-    if "page" in request.session:
-        params += ["page=%s" % request.session["page"]]
-
-    params += ["%s=%s" % (p, request.session[p])
-               for p in ["criteria", "pattern"] if p in request.session]
-    if params:
-        url += "?%s" % ("&".join(params))
-    return url
 
 
 def empty_quarantine(request):
@@ -50,37 +29,6 @@ def empty_quarantine(request):
     ctx = getctx("ok", level=2, listing=content, paginbar="",
                  menu=quar_menu(request.user))
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-
-
-def store_navparams(request):
-    """Store navigation paramters into session.
-
-    :param request: current request
-    """
-    import re
-
-    sessionkey = 'quarantine_navparams'
-    if not sessionkey in request.session:
-        request.session[sessionkey] = {}
-    navparams = request.session[sessionkey]
-    navparams["order"] = request.GET.get("sort_order", "-date")
-    navparams["page"] = int(request.GET.get("page", 1))
-    for param, defvalue in [('pattern', ''), ('criteria', 'from_addr')]:
-        navparams[param] = re.escape(request.GET.get(param, defvalue))
-
-
-def get_navparam(request, param, defaultvalue=None):
-    """Retrieve a navigation parameter.
-
-    Just a simple getter to avoid using the full key name to access a
-    parameter.
-
-    :param request: current request object
-    :param str param: parameter name
-    :param defaultvalue: default value if none is found
-    :return: parameter's value
-    """
-    return request.session['quarantine_navparams'].get(param, defaultvalue)
 
 
 @login_required
@@ -93,26 +41,27 @@ def _listing(request):
         if not Domain.objects.get_for_admin(request.user).count():
             return empty_quarantine(request)
 
-    store_navparams(request)
-    pattern = get_navparam(request, 'pattern', '')
+    navparams = QuarantineNavigationParameters(request)
+    navparams.store()
+    pattern = navparams.get('pattern', '')
     if pattern:
-        criteria = get_navparam(request, 'criteria')
+        criteria = navparams.get('criteria')
         if criteria == "both":
             criteria = "from_addr,subject,to"
         for c in criteria.split(","):
             if c == "from_addr":
-                nfilter = Q(mail__from_addr__contains=request.session["pattern"])
+                nfilter = Q(mail__from_addr__contains=pattern)
             elif c == "subject":
-                nfilter = Q(mail__subject__contains=request.session["pattern"])
+                nfilter = Q(mail__subject__contains=pattern)
             elif c == "to":
-                rcptfilter = request.session["pattern"]
+                rcptfilter = pattern
                 continue
             else:
                 raise Exception("unsupported search criteria %s" % c)
             flt = nfilter if flt is None else flt | nfilter
 
     msgs = get_wrapper().get_mails(request, rcptfilter)
-    page = get_navparam(request, 'page')
+    page = navparams.get('page')
     lst = SQLlisting(
         request.user, msgs, flt,
         navparams=request.session["quarantine_navparams"],
@@ -255,8 +204,10 @@ def delete(request, mail_id):
     message = ungettext("%(count)d message deleted successfully",
                         "%(count)d messages deleted successfully",
                         len(mail_id)) % {"count": len(mail_id)}
-    return ajax_response(request, respmsg=message,
-                         url=__back_to_listing(request))
+    return ajax_response(
+        request, respmsg=message,
+        url=QuarantineNavigationParameters(request).back_to_listing()
+    )
 
 
 def release_selfservice(request, mail_id):
@@ -303,8 +254,10 @@ def release(request, mail_id):
             message = ungettext("%(count)d request sent",
                                 "%(count)d requests sent",
                                 len(mail_id)) % {"count": len(mail_id)}
-            return ajax_response(request, "ok", respmsg=message,
-                                 url=__back_to_listing(request))
+            return ajax_response(
+                request, "ok", respmsg=message,
+                url=QuarantineNavigationParameters(request).back_to_listing()
+            )
     else:
         msgrcpts = []
         wrapper = get_wrapper()
@@ -329,8 +282,10 @@ def release(request, mail_id):
                             len(mail_id)) % {"count": len(mail_id)}
     else:
         message = error
-    return ajax_response(request, "ko" if error else "ok", respmsg=message,
-                         url=__back_to_listing(request))
+    return ajax_response(
+        request, "ko" if error else "ok", respmsg=message,
+        url=QuarantineNavigationParameters(request).back_to_listing()
+    )
 
 
 @login_required
