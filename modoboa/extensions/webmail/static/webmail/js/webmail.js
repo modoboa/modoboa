@@ -16,7 +16,8 @@ Webmail.prototype = {
         delattachment_url: "",
         ro_mboxes: ["INBOX"],
         trash: "",
-        hdelimiter: '.'
+        hdelimiter: '.',
+        mboxes_col_width: 200
     },
 
     initialize: function(options) {
@@ -36,11 +37,30 @@ Webmail.prototype = {
         this.record_unseen_messages();
 
         $("#folders").css({
-            bottom: $("#bottom-bar").outerHeight(true)
+            bottom: $("#bottom-bar").outerHeight(true),
+            width: this.options.mboxes_col_width + 'px'
         });
         $("#mboxactions").css({
             bottom: $("#bottom-bar").outerHeight(true) + 10
         });
+        $("#folders").resizable({
+            start: function(event, ui) {
+                $('#listing iframe').css('pointer-events','none');
+            },
+            handles: "e",
+            minWidth: parseInt($("#folders").css("width").replace("px", "")),
+            maxWidth: 400,
+            stop: function(event, ui) {
+                $('#listing iframe').css('pointer-events','auto');
+            }
+        });
+        $("#folders").bind("resize", function(event, ui) {
+            if (typeof(ui.size) != "undefined") {
+                $("#menubar").css("left", ui.size.width + 15 + "px");
+                $("#listing").css("left", ui.size.width + 15 + "px");
+            }
+        });
+
         this.resize();
 
         this.init_droppables();

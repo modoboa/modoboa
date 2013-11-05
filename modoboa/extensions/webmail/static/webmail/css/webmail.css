@@ -8,8 +8,27 @@ body, html {
     top: 60px;
     left: 15px;
     width: 200px;
+    background-image: url("../../pics/grippy.png");
+    background-position: right center;
+    background-repeat: no-repeat;
     overflow-y: auto;
     margin-bottom: 5px;
+}
+
+#folders .ui-resizable-n {
+    top: 0px;
+}
+
+#folders .ui-resizable-s {
+    bottom: 0px;
+}
+
+#folders .ui-resizable-e {
+    right: 0px;
+}
+
+#folders .ui-resizable-w {
+    left: 0px;
 }
 
 #mboxes_container { 
@@ -18,6 +37,13 @@ body, html {
 
 #mboxes_container .nav-list .nav-list {
     padding-right: 0;
+}
+
+#mboxes_container a[name=loadfolder] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
 }
 
 #menubar { 

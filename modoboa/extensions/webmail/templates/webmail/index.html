@@ -1,6 +1,7 @@
 {% extends "fixed.html" %}{% load i18n lib_tags %}{% load url from future %}
 {% block pagetitle %}Webmail{% endblock %}
 {% block html_head %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}webmail/css/webmail.css" />
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/ckeditor/ckeditor.js"></script>
@@ -21,7 +22,8 @@ $(document).ready(function() {
         defcallback: "{{ defcallback }}",
         ro_mboxes: {% tolist ro_mboxes %},
         trash: "{{ trash }}",
-        hdelimiter: '{{ hdelimiter }}'
+        hdelimiter: '{{ hdelimiter }}',
+        mboxes_col_width: {{ mboxes_col_width }}
     });
 });
 </script>

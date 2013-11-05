@@ -98,6 +98,12 @@ class UserSettings(UserParametersForm):
         help_text=_("Automatic folder refresh rate (in seconds)")
     )
 
+    mboxes_col_width = forms.IntegerField(
+        initial=200,
+        label=_("Mailboxes column width"),
+        help_text=_("The width of the column containing the mailbox list")
+    )
+
     sep2 = SeparatorField(label=_("Mailboxes"))
 
     trash_folder = forms.CharField(
@@ -143,3 +149,14 @@ class UserSettings(UserParametersForm):
     @staticmethod
     def has_access(user):
         return user.mailbox_set.count() != 0
+
+    def clean_mboxes_col_width(self):
+        """Check if the entered value is a positive integer.
+
+        It must also be different from 0.
+        """
+        if self.cleaned_data['mboxes_col_width'] <= 0:
+            raise forms.ValidationError(
+                _('Value must be a positive integer (> 0)')
+            )
+        return self.cleaned_data['mboxes_col_width']

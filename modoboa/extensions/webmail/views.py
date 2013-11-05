@@ -548,6 +548,8 @@ def index(request):
             trash,
             parameters.get_user(request.user, "DRAFTS_FOLDER")
         ]
+        response['mboxes_col_width'] = \
+            int(parameters.get_user(request.user, 'MBOXES_COL_WIDTH'))
         return render(request, "webmail/index.html", response)
 
     if action in ["reply", "forward"]:
