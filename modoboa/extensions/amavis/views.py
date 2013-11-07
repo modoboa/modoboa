@@ -26,8 +26,7 @@ from .models import Msgrcpt
 
 def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
-    ctx = getctx("ok", level=2, listing=content, paginbar="",
-                 menu=quar_menu(request.user))
+    ctx = getctx("ok", level=2, listing=content, paginbar="")
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 
@@ -60,6 +59,11 @@ def _listing(request):
                 raise Exception("unsupported search criteria %s" % c)
             flt = nfilter if flt is None else flt | nfilter
 
+    msgtype = navparams.get('msgtype', None)
+    if msgtype is not None:
+        nfilter = Q(mail__msgrcpt__content=msgtype)
+        flt = flt | nfilter if flt is not None else nfilter
+
     msgs = get_wrapper().get_mails(request, rcptfilter)
     page = navparams.get('page')
     lst = SQLlisting(
@@ -73,8 +77,10 @@ def _listing(request):
 
     content = lst.fetch(request, page.id_start, page.id_stop)
     paginbar = pagination_bar(page)
-    ctx = getctx("ok", listing=content, paginbar=paginbar, page=page.number,
-                 menu=quar_menu(request.user))
+    ctx = getctx("ok", listing=content, paginbar=paginbar, page=page.number)
+    if request.session.get('location', 'listing') != 'listing':
+        ctx['menu'] = quar_menu(request.user)
+    request.session['location'] = 'listing'
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 
@@ -147,6 +153,7 @@ def viewmail(request, mail_id):
 """).render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
     menu = viewm_menu(request.user, mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
+    request.session['location'] = 'viewmail'
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 
 

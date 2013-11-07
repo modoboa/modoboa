@@ -17,6 +17,25 @@ Quarantine.prototype = {
 
         this.register_navcallbacks();
         this.listen();
+        this.set_msgtype();
+
+        $("#searchfield").searchbar({navobj: this.navobj});
+    },
+
+    /*
+     * Activate the button corresponding to the current message type
+     * filter. If no message type is found, the 'All' button is
+     * selected.
+     */
+    set_msgtype: function() {
+        var msgtype = this.navobj.getparam('msgtype');
+
+        $("button[name*=msgtype]").removeClass('active');
+        if (msgtype != undefined) {
+            $("button[name=msgtype_" + msgtype + "]").addClass('active');
+        } else {
+            $("button[name=msgtype_all]").addClass('active');
+        }
     },
 
     update_page: function(data) {
@@ -47,11 +66,13 @@ Quarantine.prototype = {
         $(document).on("click", "a[name=release]", $.proxy(this.release, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete, this));
         $(document).on("click", "a[name=headers]", $.proxy(this.headers, this));
+        $(document).on("click", "td[name=type] span", $.proxy(this.filter_by_type, this));
+        $(document).on("click", "#filters button", $.proxy(this.filter_by_type, this));
     },
 
     load_page: function(e) {
         Listing.prototype.load_page.apply(this, arguments);
-        this.navobj.delparam("rcpt");
+        this.navobj.delparam("rcpt").update();
     },
 
     view_requests: function(e) {
@@ -81,10 +102,24 @@ Quarantine.prototype = {
         }
         $("td[name=type]").each(function() {
             var $this = $(this);
-            if ($this.html().trim() == type) {
+            if ($this.find('span').html().trim() == type) {
                 $("#emails").htmltable("select_row", $this.parent());
             }
         });
+    },
+
+    /*
+     * Filter listing by message type (spam, virus, etc.)
+     */
+    filter_by_type: function(evt) {
+        var msgtype = $(evt.target).html().trim();
+
+        if (msgtype != 'All') {
+            this.navobj.setparam('msgtype', msgtype);
+        } else {
+            this.navobj.delparam('msgtype');
+        }
+        this.navobj.update();
     },
 
     _send_selection: function(e, name, message) {
@@ -194,6 +229,8 @@ Quarantine.prototype = {
 
     listing_cb: function(data) {
         this.update_page(data);
+        this.navobj.delparam("rcpt").update();
+        this.set_msgtype();
         $("#emails").htmltable();
         this.htmltable = $("#emails").data("htmltable");
     },

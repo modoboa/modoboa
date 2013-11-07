@@ -172,7 +172,8 @@ class NavigationParameters(object):
     def __init__(self, request, sessionkey):
         self.request = request
         self.sessionkey = sessionkey
-        self.parameters = [('pattern', ''), ('criteria', 'from_addr')]
+        self.parameters = [('pattern', '', True),
+                           ('criteria', 'from_addr', False)]
 
     def store(self):
         """Store navigation parameters into session.
@@ -182,8 +183,13 @@ class NavigationParameters(object):
         navparams = self.request.session[self.sessionkey]
         navparams["order"] = self.request.GET.get("sort_order", "-date")
         navparams["page"] = int(self.request.GET.get("page", 1))
-        for param, defvalue in self.parameters:
-            navparams[param] = re.escape(self.request.GET.get(param, defvalue))
+        for param, defvalue, escape in self.parameters:
+            value = self.request.GET.get(param, defvalue)
+            if value is None:
+                if param in navparams:
+                    del navparams[param]
+                continue
+            navparams[param] = re.escape(value) if escape else value
 
     def get(self, param, default_value=None):
         """Retrieve a navigation parameter.

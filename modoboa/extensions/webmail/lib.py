@@ -756,4 +756,4 @@ class WebmailNavigationParameters(NavigationParameters):
             request, 'webmail_navparams'
         )
         if defmailbox is not None:
-            self.parameters += [('mbox', defmailbox)]
+            self.parameters += [('mbox', defmailbox, False)]

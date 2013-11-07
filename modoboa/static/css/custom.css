@@ -116,3 +116,8 @@ body {
 .table-fixed {
     table-layout: fixed;
 }
+
+.menubar-text {
+    display: inline;
+    vertical-align: middle;
+}

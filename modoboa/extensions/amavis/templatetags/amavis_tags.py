@@ -3,6 +3,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from modoboa.lib.webutils import _render_to_string
 
 register = template.Library()
 
@@ -103,11 +104,8 @@ def quar_menu(user):
         extraopts = [{"name": "to", "label": _("To")}]
     else:
         extraopts = []
-    extracontent = render_to_string('common/email_searchbar.html', {
-        "STATIC_URL": settings.STATIC_URL,
-        "extraopts": extraopts
+    
+    return render_to_string('amavis/main_action_bar.html', {
+        'entries': entries, 'extraopts': extraopts,
+        'STATIC_URL': settings.STATIC_URL, 'extraclasses': 'pull-left'
     })
-
-    return render_to_string('common/buttons_list.html', dict(
-        entries=entries, extracontent=extracontent
-    ))

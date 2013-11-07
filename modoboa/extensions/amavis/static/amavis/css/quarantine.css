@@ -27,9 +27,18 @@
     color: #0088cc;
 }
 
+#filters_bar {
+    /*padding-top: 5px;*/
+    padding-left: 15px;
+}
+
 thead tr {
     position: relative;
     z-index: 1;
+}
+
+td[name=type] span {
+    cursor: pointer;
 }
 
 td.unseen { 

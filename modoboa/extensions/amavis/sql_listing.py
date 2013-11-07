@@ -19,7 +19,7 @@ class Qtable(tables.Table):
     idkey = "mailid"
 
     type = tables.Column(
-        "type", align="center", width="30px", sort_order="type"
+        "type", align="center", width="30px", sort_order="type", safe=True
     )
     score = tables.Column("score", label=ugettext_lazy("Score"), limit=6,
                           sort_order="score")
@@ -32,6 +32,13 @@ class Qtable(tables.Table):
     to = tables.Column("to", label=ugettext_lazy("To"), sort_order="to")
 
     cols_order = []
+
+    def parse_type(self, value):
+        if value in ['S', 'V']:
+            color = 'important'
+        else:
+            color = 'warning'
+        return '<span class="label label-%s">%s</span>' % (color, value)
 
     def parse_date(self, value):
         return datetime.fromtimestamp(value)

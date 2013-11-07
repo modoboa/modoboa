@@ -7,5 +7,6 @@
       {% endfor %}</ul>
     {% else %}{% render_link entry "btn" %}{% endif %}
   </div>
-{% endfor %}{{ extracontent }}</div>
+{% endfor %}{% block extracontent %}{% endblock %}
+</div>
 

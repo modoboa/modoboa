@@ -87,6 +87,7 @@ class QuarantineNavigationParameters(NavigationParameters):
         super(QuarantineNavigationParameters, self).__init__(
             request, 'quarantine_navparams'
         )
+        self.parameters += [('msgtype', None, False)]
 
     def back_to_listing(self):
         """Return the current listing URL.
