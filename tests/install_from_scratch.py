@@ -23,7 +23,7 @@ class DeployTest(unittest.TestCase):
 
     def tearDown(self):
         path = os.path.join(self.workdir, self.projname)
-        code, output = exec_cmd("python manage.py test admin", cwd=path)
+        code, output = exec_cmd("python manage.py test lib admin limits", cwd=path)
         self.assertEqual(code, 0)
 
         if hasattr(self, "workdir"):
