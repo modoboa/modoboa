@@ -13,4 +13,4 @@ before_script:
   - mysql -e 'create database modoboa_test;'
 
 script: 
-  - PYTHONPATH=tests python -m unittest install_from_scratch
+  - PYTHONPATH=tests python -m unittest install_from_scratch.DeployTest.test_silent
