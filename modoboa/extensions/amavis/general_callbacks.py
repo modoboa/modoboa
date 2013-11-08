@@ -4,7 +4,8 @@ from django.template import Template, Context
 
 from modoboa.lib import events, parameters
 from modoboa.extensions.amavis.lib import (
-    create_user_and_policy, update_user_and_policy, delete_user_and_policy
+    create_user_and_policy, update_user_and_policy, delete_user_and_policy,
+    create_user_and_use_policy, delete_user
 )
 
 
@@ -32,6 +33,16 @@ def on_domain_modified(domain):
 @events.observe("DomainDeleted")
 def on_domain_deleted(domain):
     delete_user_and_policy(domain.name)
+
+
+@events.observe("DomainAliasCreated")
+def on_relay_domain_alias_created(user, domainalias):
+    create_user_and_use_policy(domainalias.name, domainalias.target.name)
+
+
+@events.observe("DomainAliasDeleted")
+def on_relay_domain_alias_deleted(domainalias):
+    delete_user(domainalias.name)
 
 
 @events.observe("GetStaticContent")

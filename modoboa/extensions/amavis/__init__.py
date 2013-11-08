@@ -29,15 +29,21 @@ class Amavis(ModoExtension):
         for existing domains to let Amavis consider them local.
         """
         from modoboa.extensions.admin.models import Domain
-        from .models import Users, Policy
+        from modoboa.extensions.amavis.models import Users
+        from modoboa.extensions.amavis.lib import (
+            create_user_and_policy, create_user_and_use_policy
+        )
 
         for dom in Domain.objects.all():
             try:
                 Users.objects.get(email="@%s" % dom.name)
             except Users.DoesNotExist:
-                p = Policy.objects.create(policy_name=dom.name)
-                Users.objects.create(email="@%s" % dom.name, fullname=dom.name,
-                                     priority=7, policy=p)
+                create_user_and_policy(dom.name)
+            for domalias in dom.domainalias_set.all():
+                try:
+                    Users.objects.get(email='@%s' % domalias.name)
+                except Users.DoesNotExist:
+                    create_user_and_use_policy(domalias.name, dom.name)
 
     def load(self):
         from .app_settings import ParametersForm, UserSettings
