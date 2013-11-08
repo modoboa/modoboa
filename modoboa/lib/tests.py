@@ -27,15 +27,20 @@ class ModoTestCase(TestCase):
 
 
 class ExtTestCase(ModoTestCase):
-    names = []
 
     def setUp(self, *args, **kwargs):
         super(ExtTestCase, self).setUp(*args, **kwargs)
         self.clt.get(reverse("modoboa.core.views.admin.viewextensions"))
-        self.clt.post(
+
+    def activate_extensions(self, *names):
+        from modoboa.core.extensions import exts_pool
+
+        self.ajax_post(
             reverse("modoboa.core.views.admin.saveextensions"),
-            dict(("select_%s" % name, "1") for name in self.names)
+            dict(("select_%s" % name, "1") for name in names)
         )
+        for name in names:
+            exts_pool.get_extension(name).load()
 
 
 class TestParams(parameters.AdminParametersForm):

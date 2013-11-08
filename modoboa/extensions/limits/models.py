@@ -10,7 +10,7 @@ from modoboa.lib import events
 class LimitTemplates(Singleton):
 
     def __init__(self):
-        self.templates = [
+        self.__templates = [
             ("domain_admins_limit", ugettext_lazy("Domain admins"),
              ugettext_lazy("Maximum number of domain administrators this user can create"),
              'Resellers'),
@@ -25,7 +25,10 @@ class LimitTemplates(Singleton):
             ("mailbox_aliases_limit", ugettext_lazy("Mailbox aliases"),
              ugettext_lazy("Maximum number of mailbox aliases this user can create"))
         ]
-        self.templates += events.raiseQueryEvent('GetExtraLimitTemplates')
+    
+    @property
+    def templates(self):
+        return self.__templates + events.raiseQueryEvent('GetExtraLimitTemplates')
 
 
 class LimitsPool(models.Model):

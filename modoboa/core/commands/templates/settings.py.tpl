@@ -155,6 +155,7 @@ MODOBOA_APPS = (
     # Modoboa extensions here.
     'modoboa.extensions.admin',
     'modoboa.extensions.limits',
+    'modoboa.extensions.postfix_relay_domains',
     'modoboa.extensions.postfix_autoreply',
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',

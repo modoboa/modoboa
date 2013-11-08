@@ -12,10 +12,10 @@ from modoboa.extensions.limits.models import LimitTemplates
 
 class PermissionsTestCase(ExtTestCase):
     fixtures = ["initial_users.json"]
-    names = ["limits"]
 
     def setUp(self):
         super(PermissionsTestCase, self).setUp()
+        self.activate_extensions('limits')
         populate_database()
 
     def test_domainadmin_deletes_reseller(self):
@@ -41,7 +41,6 @@ class PermissionsTestCase(ExtTestCase):
 
 class ResourceTestCase(ExtTestCase):
     fixtures = ["initial_users.json"]
-    names = ["limits"]
 
     def setUp(self):
         """Custom setUp method.
@@ -49,10 +48,8 @@ class ResourceTestCase(ExtTestCase):
         The 'limits' is manually loaded to ensure extra parameters
         provided by 'postfix_relay_domains' are properly received.
         """
-        from modoboa.core.extensions import exts_pool
-
         super(ResourceTestCase, self).setUp()
-        exts_pool.get_extension('limits').load()
+        self.activate_extensions('limits')
         for tpl in LimitTemplates().templates:
             parameters.save_admin('DEFLT_%s' % tpl[0].upper(), 2, app='limits')
         populate_database()

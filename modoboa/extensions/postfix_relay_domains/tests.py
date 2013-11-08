@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from modoboa.core.factories import UserFactory
+from modoboa.lib import parameters
 from modoboa.lib.tests import ExtTestCase
 from modoboa.extensions.admin import factories
 from modoboa.extensions.limits.tests import ResourceTestCase
@@ -40,13 +41,18 @@ class Operations(object):
             values, status
         )
 
+    def _check_limit(self, name, curvalue, maxvalue):
+        l = self.user.limitspool.get_limit('%s_limit' % name)
+        self.assertEqual(l.curvalue, curvalue)
+        self.assertEqual(l.maxvalue, maxvalue)
+
 
 class RelayDomainsTestCase(ExtTestCase, Operations):
     fixtures = ['initial_users.json']
-    names = ['postfix_relay_domains']
 
     def setUp(self):
         super(RelayDomainsTestCase, self).setUp()
+        self.activate_extensions('postfix_relay_domains')
         factories.populate_database()
         self.rdom = RelayDomainFactory(name='relaydomain.tld')
         RelayDomainAliasFactory(name='relaydomainalias.tld', target=self.rdom)
@@ -156,12 +162,17 @@ class RelayDomainsTestCase(ExtTestCase, Operations):
             RelayDomain.objects.get(name='relaydomainalias.tld')
 
 
-class LimitsTestCase(ResourceTestCase, Operations):
-    names = ['limits', 'postfix_relay_domains']
+class LimitsTestCase(ExtTestCase, Operations):
+    fixtures = ['initial_users.json']
 
     def setUp(self):
         super(LimitsTestCase, self).setUp()
-        self.user = UserFactory(
+        from modoboa.extensions.limits.models import LimitTemplates
+
+        self.activate_extensions('limits', 'postfix_relay_domains')
+        for tpl in LimitTemplates().templates:
+            parameters.save_admin('DEFLT_%s' % tpl[0].upper(), 2, app='limits')
+        self.user = UserFactory.create(
             username='reseller', groups=('Resellers',)
         )
         self.clt.logout()

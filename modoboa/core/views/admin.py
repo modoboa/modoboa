@@ -78,7 +78,7 @@ def saveextensions(request):
     for k in request.POST.keys():
         if k.startswith("select_"):
             parts = k.split("_", 1)
-            dbext = Extension.objects.get(name=parts[1])            
+            dbext = Extension.objects.get(name=parts[1])
             if not dbext in actived_exts:
                 dbext.on()
             else:
