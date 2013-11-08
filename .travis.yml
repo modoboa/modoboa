@@ -3,9 +3,13 @@ python:
   - "2.6"
   - "2.7"
 
-install: 
+env:
+  - DJANGO=1.5
+
+install:
+  - pip install -q Django==$DJANGO --use-mirrors
   - python setup.py -q install
-  - pip install -q pexpect
+  - pip install -q pexpect --use-mirrors
 
 before_script:
   - mysql -e 'create database modoboa_test;'
