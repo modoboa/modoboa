@@ -159,13 +159,14 @@ MODOBOA_APPS = (
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',
     'modoboa.extensions.sievefilters',
-    'modoboa.extensions.stats',
     {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
 )
 
 INSTALLED_APPS += MODOBOA_APPS
 
 AUTH_USER_MODEL = 'core.User'
+
+SOUTH_TESTS_MIGRATE = False
 
 #MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
 

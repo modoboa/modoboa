@@ -15,6 +15,7 @@ class ModoExtension(object):
     url = None
     needs_media = False
     always_active = False
+    available_for_topredirection = False
 
     def infos(self):
         return dict(

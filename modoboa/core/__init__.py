@@ -60,4 +60,4 @@ def unset_default_topredirection(extension):
     """
     topredirection = parameters.get_admin("DEFAULT_TOP_REDIRECTION")
     if topredirection == extension.name:
-        parameters.save_admin("DEFAULT_TOP_REDIRECTION", "userprefs")
+        parameters.save_admin("DEFAULT_TOP_REDIRECTION", "core")

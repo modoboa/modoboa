@@ -138,12 +138,14 @@ def size2integer(value):
 
 @login_required
 def topredirection(request):
-    """Simple view to redirect the request when no application is specified
+    """Simple view to redirect the request when no application is specified.
 
     The default "top redirection" can be specified in the *Admin >
     Settings* panel. It is the application that will be launched by
     default. Users that are not allowed to access this application
     will be redirected to the "User preferences" application.
+
+    This feature only applies to simple users.
 
     :param request: a Request object
     """
@@ -151,14 +153,6 @@ def topredirection(request):
     from modoboa.core.extensions import exts_pool
 
     topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="core")
-    if not topredir in ["core"]:
-        infos = exts_pool.get_extension_infos(topredir)
-        path = infos["url"] if infos["url"] else infos["name"]
-    else:
-        path = "admin"  # topredir
-
-    if topredir in ["core", "stats"] and \
-            request.user.belongs_to_group('SimpleUsers'):
-        path = "userprefs"
-
+    infos = exts_pool.get_extension_infos(topredir)
+    path = infos["url"] if infos["url"] else infos["name"]
     return HttpResponseRedirect(path)

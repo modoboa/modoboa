@@ -20,6 +20,7 @@ class Amavis(ModoExtension):
     version = "1.0"
     description = ugettext_lazy("Simple amavis management frontend")
     url = "quarantine"
+    available_for_topredirection = True
 
     def init(self):
         """Init function

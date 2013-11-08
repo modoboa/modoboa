@@ -1,19 +1,11 @@
 # coding: utf-8
 
 import os
-import sys
-import subprocess
 import tempfile
 import pexpect
 import shutil
 import unittest
-
-
-def runcmd(cmd, **kwargs):
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                         shell=True, **kwargs)
-    output = p.communicate()[0]
-    return p.returncode, output
+from modoboa.lib.sysutils import exec_cmd
 
 
 class DeployTest(unittest.TestCase):
@@ -25,19 +17,23 @@ class DeployTest(unittest.TestCase):
 
     def setUp(self):
         cmd = "mysqladmin -u %s -p%s create %s" % (self.dbuser, self.dbpassword, self.projname)
-        code, out = runcmd(cmd)
+        code, out = exec_cmd(cmd)
         self.assertEqual(code, 0)
         self.workdir = tempfile.mkdtemp()
 
     def tearDown(self):
+        path = os.path.join(self.workdir, self.projname)
+        code, output = exec_cmd("python manage.py test admin", cwd=path)
+        self.assertEqual(code, 0)
+
         if hasattr(self, "workdir"):
-            shutil.rmtree(self.workdir)
+           shutil.rmtree(self.workdir)
         child = pexpect.spawn("mysqladmin -u root -p%s drop %s" % (self.dbpassword, self.projname))
         child.expect("\[y/N\]")
         child.sendline("y")
         child.expect('Database "%s" dropped' % self.projname)
 
-    def test(self):
+    def test_standard(self):
         timeout = 2
         cmd = "modoboa-admin.py deploy --syncdb --collectstatic %s" % self.projname
         child = pexpect.spawn(cmd, cwd=self.workdir)
@@ -47,6 +43,8 @@ class DeployTest(unittest.TestCase):
         child.sendline(self.dbtype)
         child.expect("Database host \(default: 'localhost'\):", timeout=timeout)
         child.sendline(self.dbhost)
+        child.expect("Database port \(default: '3306'\):", timeout=timeout)
+        child.sendline('3306')
         child.expect("Database name:", timeout=timeout)
         child.sendline(self.projname)
         child.expect("Username:", timeout=timeout)
@@ -59,8 +57,13 @@ class DeployTest(unittest.TestCase):
         fout.close()
         self.assertEqual(child.exitstatus, 0)
 
-        path = os.path.join(self.workdir, self.projname)
-        code, output = runcmd("python manage.py test admin", cwd=path)
+    def test_silent(self):
+        dburl = "%s://%s:%s@%s/%s" \
+            % (self.dbtype, self.dbuser, self.dbpassword,
+               self.dbhost, self.projname)
+        cmd = "modoboa-admin.py deploy --syncdb --collectstatic --dburl %s --domain %s %s" \
+            % (dburl, 'localhost', self.projname)
+        code, output = exec_cmd(cmd, cwd=self.workdir)
         self.assertEqual(code, 0)
 
 

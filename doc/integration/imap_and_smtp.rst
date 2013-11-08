@@ -25,6 +25,8 @@ variable::
 
 Then, edit the ``inbox`` namespace and add the following lines::
 
+  inbox = yes
+
   mailbox Drafts {
     auto = create
     special_use = \Drafts
@@ -111,7 +113,7 @@ content inside::
     # Path for SQL configuration file, see example-config/dovecot-sql.conf.ext
     args = /etc/dovecot/dovecot-sql.conf.ext
   }
-    
+
   userdb sql {
     driver = sql
     args = /etc/dovecot/dovecot-sql.conf.ext
@@ -149,7 +151,7 @@ PostgreSQL users
 
 ::
 
-  driver = postgresql
+  driver = pgsql
 
   connect = host=<postgres socket> dbname=<database> user=<user> password=<password>
 
@@ -213,7 +215,7 @@ proper permissions::
     unix_listener dict {
       mode = 0600
       user = <user owning mailboxes>
-      #group = 
+      #group =
     }
   }
 
@@ -392,12 +394,12 @@ Finally, configure the ``sieve`` plugin by editing the
 :file:`conf.d/90-sieve.conf` file. Put the follwing caontent inside::
 
   plugin {
-    # Location of the active script. When ManageSieve is used this is actually 
+    # Location of the active script. When ManageSieve is used this is actually
     # a symlink pointing to the active script in the sieve storage directory.
     sieve = ~/.dovecot.sieve
 
     #
-    # The path to the directory where the personal Sieve scripts are stored. For 
+    # The path to the directory where the personal Sieve scripts are stored. For
     # ManageSieve this is where the uploaded scripts are stored.
     sieve_dir = ~/sieve
   }
@@ -440,12 +442,12 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   virtual_transport = dovecot
   dovecot_destination_recipient_limit = 1
 
-  virtual_minimum_uid = <vmail user id> 
+  virtual_minimum_uid = <vmail user id>
   virtual_gid_maps = static:<vmail group id>
   virtual_uid_maps = static:<vmail user id>
   virtual_mailbox_base = /var/vmail
 
-  relay_domains = 
+  relay_domains =
   virtual_mailbox_domains = <driver>:/etc/postfix/sql-domains.cf
   virtual_alias_domains = <driver>:/etc/postfix/sql-domain-aliases.cf
   virtual_mailbox_maps = <driver>:/etc/postfix/sql-mailboxes.cf
@@ -455,7 +457,7 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
 
   smtpd_recipient_restrictions =
         ...
-        check_recipient_access <driver>:/etc/postfix/maps/sql-maintain.cf
+        check_recipient_access <driver>:/etc/postfix/sql-maintain.cf
         permit_mynetworks
         ...
 
