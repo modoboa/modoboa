@@ -9,6 +9,7 @@ env:
 install:
   - pip install -q Django==$DJANGO --use-mirrors
   - python setup.py -q install
+  - pip install -q MySQL-python --use-mirrors
   - pip install -q pexpect --use-mirrors
 
 before_script:
