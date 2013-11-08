@@ -21,6 +21,7 @@ class DeployTest(unittest.TestCase):
     def tearDown(self):
         path = os.path.join(self.workdir, self.projname)
         code, output = exec_cmd("python manage.py test lib admin limits postfix_relay_domains", cwd=path)
+        print output
         self.assertEqual(code, 0)
 
     def test_standard(self):
