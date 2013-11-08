@@ -14,24 +14,22 @@ var history = new History({
 var cond_templates = null;
 var action_templates = null;
 
-function display_form_errors(data) {
+function display_filter_errors(data) {
+    $("ul.errors").remove();
     $.each(data.form_errors, function(id, value) {
-        var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
-        var $widget = $("#" + formid + " #" + fullid);
-        var ulid = fullid + "-error";
-        var $ul = $("#" + ulid);
-
-        if (!$ul.length) {
-            $ul = $("<span />", {
-                "class": "errors",
-                "id": ulid
-            }).append($("<li />", {
-                html: value[0]
-            });
-            $widget.after($ul);
-        } else {
-            $ul.find('li').html(value[0]);
+        if (id.indexOf('cond') && id.indexOf('action')) {
+            return;                     
         }
+        var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
+        var $widget = $("#" + fullid);
+        var ulid = fullid + "-error";
+        var $ul = $("<ul />", {
+            "class": "errors",
+            "id": ulid
+        }).append($("<li />", {
+            html: value[0]
+        }));
+        $widget.after($ul);
     });
 }
 
