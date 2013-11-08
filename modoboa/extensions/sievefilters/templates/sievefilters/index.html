@@ -14,6 +14,27 @@ var history = new History({
 var cond_templates = null;
 var action_templates = null;
 
+function display_form_errors(data) {
+    $.each(data.form_errors, function(id, value) {
+        var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
+        var $widget = $("#" + formid + " #" + fullid);
+        var ulid = fullid + "-error";
+        var $ul = $("#" + ulid);
+
+        if (!$ul.length) {
+            $ul = $("<span />", {
+                "class": "errors",
+                "id": ulid
+            }).append($("<li />", {
+                html: value[0]
+            });
+            $widget.after($ul);
+        } else {
+            $ul.find('li').html(value[0]);
+        }
+    });
+}
+
 function filterform_cb() {
     cond_templates = fetch_templates("{% url 'modoboa.extensions.sievefilters.views.get_templates' 'condition' %}", cond_templates);
     action_templates = fetch_templates("{% url 'modoboa.extensions.sievefilters.views.get_templates' 'action' %}", action_templates);
@@ -40,7 +61,8 @@ function filterform_cb() {
         simple_ajax_form_post(e, {
             formid: 'filterform',
             reload_mode: 'history',
-            extradata: counters
+            extradata: counters,
+            error_cb: display_filter_errors
         });
     });
 }
