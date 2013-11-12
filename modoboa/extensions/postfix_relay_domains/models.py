@@ -139,6 +139,15 @@ class RelayDomain(AdminObject):
         self.verify_recipients = (row[5].strip() == 'True')
         self.save(creator=user)
 
+    def post_create(self, creator):
+        """Post creation actions.
+
+        :param ``User`` creator: user whos created this relay domain
+        """
+        super(RelayDomain, self).post_create(creator)
+        for rdomalias in self.relaydomainalias_set.all():
+            rdomalias.post_create(creator)
+
 reversion.register(RelayDomain)
 
 

@@ -1,5 +1,5 @@
 django
-django-reversion==1.7.1
+django-reversion>=1.8.0
 dj-database-url
 south
 lxml

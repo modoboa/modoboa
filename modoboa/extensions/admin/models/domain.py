@@ -148,4 +148,13 @@ class Domain(AdminObject):
         for dalias in self.domainalias_set.all():
             dalias.to_csv(csvwriter)
 
+    def post_create(self, creator):
+        """Post creation actions.
+
+        :param ``User`` creator: user whos created this domain
+        """
+        super(Domain, self).post_create(creator)
+        for domalias in self.domainalias_set.all():
+            domalias.post_create(creator)
+
 reversion.register(Domain)

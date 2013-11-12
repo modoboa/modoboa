@@ -82,7 +82,7 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
 
         return cleaned_data
 
-    def save(self, user, commit=True):
+    def save(self, user, commit=True, rdomalias_post_create=False):
         """Custom save method.
 
         As relay domain aliases are defined using the same form as
@@ -119,7 +119,8 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
                     al = RelayDomainAlias(
                         name=alias, target=rd, enabled=rd.enabled
                     )
-                    al.save(creator=user)
+                    al.save(creator=user) \
+                        if rdomalias_post_create else al.save()
         return rd
 
 
@@ -151,5 +152,6 @@ class RelayDomainForm(TabForms):
         As forms interact with each other, it is easier to make custom
         code to save them.
         """
-        for f in self.forms:
+        self.forms[0]['instance'].save(user, rdomalias_post_create=True)
+        for f in self.forms[1:]:
             f["instance"].save(user)

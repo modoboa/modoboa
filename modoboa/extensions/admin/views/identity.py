@@ -115,6 +115,14 @@ def list_quotas(request, tplname="admin/quotas.html"):
 @permission_required("core.add_user")
 @transaction.commit_on_success
 def newaccount(request, tplname='common/wizard_forms.html'):
+    """Create a new account.
+
+    .. note:: An issue still remains int this code: if all validation
+       steps are successful but an error occurs after we call 'save',
+       the account will be created. It happens transaction management
+       doesn't work very well with nested functions. Need to wait for
+       django 1.6 and atomicity.
+    """
     cwizard = CreationWizard()
     cwizard.add_step(AccountFormGeneral, _("General"),
                      [dict(classes="btn-inverse next", label=_("Next"))],
@@ -135,16 +143,9 @@ def newaccount(request, tplname='common/wizard_forms.html'):
         if retcode == 2:
             genform = cwizard.steps[0]["form"]
             account = genform.save()
-            try:
-                account.post_create(request.user)
-                mailform = cwizard.steps[1]["form"]
-                mailform.save(request.user, account)
-            except ModoboaException:
-                # A bit uggly: transaction management doesn't work very
-                # well with nested functions. Need to wait for django 1.6
-                # and atomicity.
-                account.delete(request.user, False)
-                raise
+            account.post_create(request.user)
+            mailform = cwizard.steps[1]["form"]
+            mailform.save(request.user, account)
             return render_to_json_response(_("Account created"))
         return render_to_json_response({
             'stepid': data, 'form_errors': cwizard.errors

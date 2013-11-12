@@ -106,32 +106,6 @@ def extra_limit_templates():
     ]
 
 
-@events.observe('GetExtraParameters')
-def extra_parameters(app, level):
-    from django import forms
-
-    if app != 'limits' or level != 'A':
-        return {}
-    return {
-        'deflt_relay_domains_limit': forms.IntegerField(
-            label=ugettext_lazy("Relay domains"),
-            initial=0,
-            help_text=ugettext_lazy(
-                "Maximum number of allowed relay domains for a new administrator"
-            ),
-            widget=forms.widgets.TextInput(attrs={"class": "span1"})
-        ),
-        'deflt_relay_domain_aliases_limit': forms.IntegerField(
-            label=ugettext_lazy("Relay domain aliases"),
-            initial=0,
-            help_text=ugettext_lazy(
-                "Maximum number of allowed relay domain aliases for a new administrator"
-            ),
-            widget=forms.widgets.TextInput(attrs={"class": "span1"})
-        )
-    }
-
-
 @events.observe('ExtraDomainImportHelp')
 def extra_domain_import_help():
     return [ugettext_lazy("""

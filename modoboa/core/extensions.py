@@ -76,11 +76,13 @@ class ExtensionsPool(object):
         """
         from modoboa.core.models import Extension
 
+        result = []
         for ext in settings.MODOBOA_APPS:
             __import__(ext)
-        result = []
-        for extname in self.extensions.keys():
+            extname = ext.split('.')[-1]
             extinstance = self.get_extension(extname)
+            if extinstance is None:
+                continue
             try:
                 baseurl = extinstance.url \
                     if extinstance.url is not None else extname
@@ -106,7 +108,7 @@ class ExtensionsPool(object):
         for extname, extdef in self.extensions.iteritems():
             if not extdef["show"]:
                 continue
-            infos = extdef["instance"].infos()
+            infos = self.get_extension_infos(extname)
             infos["id"] = extname
             result += [infos]
         return sorted(result, key=lambda i: i["name"])

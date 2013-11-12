@@ -107,7 +107,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             username = q['username'].replace('@%s' % self.oldname, '@%s' % domain.name)
             Quota.objects.filter(username=q['username']).update(username=username)
 
-    def save(self, user, commit=True):
+    def save(self, user, commit=True, domalias_post_create=False):
         """Custom save method
 
         Updating a domain may have consequences on other objects
@@ -148,7 +148,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                     else:
                         continue
                     al = DomainAlias(name=alias, target=d, enabled=d.enabled)
-                    al.save(creator=user)
+                    al.save(creator=user) if domalias_post_create else al.save()
 
             if old_mail_homes is not None:
                 self.update_mailbox_quotas(d)
@@ -253,5 +253,6 @@ class DomainForm(TabForms):
         As forms interact with each other, it is easier to make custom
         code to save them.
         """
-        for f in self.forms:
+        self.forms[0]['instance'].save(user, domalias_post_create=True)
+        for f in self.forms[1:]:
             f["instance"].save(user)

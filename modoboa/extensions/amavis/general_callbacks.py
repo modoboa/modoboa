@@ -1,8 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.template import Template, Context
-
 from modoboa.lib import events, parameters
+from modoboa.extensions.admin.models import DomainAlias
 from modoboa.extensions.amavis.lib import (
     create_user_and_policy, update_user_and_policy, delete_user_and_policy,
     create_user_and_use_policy, delete_user
@@ -36,13 +36,16 @@ def on_domain_deleted(domain):
 
 
 @events.observe("DomainAliasCreated")
-def on_relay_domain_alias_created(user, domainalias):
+def on_domain_alias_created(user, domainalias):
     create_user_and_use_policy(domainalias.name, domainalias.target.name)
 
 
 @events.observe("DomainAliasDeleted")
-def on_relay_domain_alias_deleted(domainalias):
-    delete_user(domainalias.name)
+def on_domain_alias_deleted(domainaliases):
+    if isinstance(domainaliases, DomainAlias):
+        domainaliases = [domainaliases]
+    for domainalias in domainaliases:
+        delete_user(domainalias.name)
 
 
 @events.observe("GetStaticContent")

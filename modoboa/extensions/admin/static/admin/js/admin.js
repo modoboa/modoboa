@@ -392,7 +392,7 @@ Identities.prototype = {
         $("#wizard").cwizard({
             formid: "newaccount_form",
             transition_callbacks: {
-                2: this.mailform_prefill
+                1: this.mailform_prefill
             },
             success_callback: $.proxy(this.reload_listing, this)
         });

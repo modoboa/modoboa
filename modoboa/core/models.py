@@ -4,9 +4,11 @@ import re
 import hashlib
 import crypt
 import base64
+import logging
 from random import Random
 import reversion
 from django.db import models
+from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -463,24 +465,44 @@ class Log(models.Model):
 
 @receiver(reversion.post_revision_commit)
 def post_revision_commit(sender, **kwargs):
-    import logging
-
     if kwargs["revision"].user is None:
         return
     logger = logging.getLogger("modoboa.admin")
     for version in kwargs["versions"]:
-        if version.type == reversion.models.VERSION_ADD:
+        prev_revisions = reversion.get_for_object(version.object)
+        if prev_revisions.count() == 1:
             action = _("added")
             level = "info"
-        elif version.type == reversion.models.VERSION_CHANGE:
+        else:
             action = _("modified")
             level = "warning"
-        else:
-            action = _("deleted")
-            level = "critical"
         message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
             "object": unicode(version.content_type).capitalize(),
             "name": version.object_repr, "action": action,
             "user": kwargs["revision"].user.username
         }
         getattr(logger, level)(message)
+
+
+@receiver(post_delete)
+def post_delete_hook(sender, instance, **kwargs):
+    """Custom post-delete hook.
+
+    We want to know who was responsible for an object deletion.
+    """
+    from reversion.models import Version
+
+    if not reversion.is_registered(sender):
+        return
+    del_list = reversion.get_deleted(sender)
+    try:
+        version = del_list.get(object_id=instance.id)
+    except Version.DoesNotExist:
+        return
+    logger = logging.getLogger("modoboa.admin")
+    msg = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
+        "object": unicode(version.content_type).capitalize(),
+        "name": version.object_repr, "action": _("deleted"),
+        "user": version.revision.user.username
+    }
+    logger.critical(msg)

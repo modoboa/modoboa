@@ -23,9 +23,7 @@ def create(request, tplname="postfix_relay_domains/new_relaydomain_form.html"):
         if form.is_valid():
             rdom = form.save(request.user)
             rdom.post_create(request.user)
-            return render_to_json_response(
-                {"respmsg": _("Relay domain created")}
-            )
+            return render_to_json_response(_("Relay domain created"))
         return render_to_json_response(
             {'form_errors': form.errors}, status=400
         )

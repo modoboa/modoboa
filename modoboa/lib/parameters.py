@@ -17,6 +17,8 @@ _params = {'A': {}, 'U': {}}
 
 
 class NotDefined(ModoboaException):
+    http_code = 404
+
     def __init__(self, app, name):
         self.app = app
         self.name = name

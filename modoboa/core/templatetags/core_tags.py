@@ -45,7 +45,7 @@ def settings_menu(selection, user):
          "label": _("Information")},
         {"name": "logs",
          "class": "ajaxlink",
-         "url": "logs/",
+         "url": "logs/&sort_order=-date_created",
          "label": _("Logs")},
         {"name": "parameters",
          "class": "ajaxlink",
