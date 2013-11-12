@@ -26,7 +26,7 @@ from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.extensions import exts_pool
 
 try:
-    from modoboa.lib.ldaputils import *
+    from modoboa.lib.ldaputils import LDAPAuthBackend
     ldap_available = True
 except ImportError:
     ldap_available = False
@@ -110,6 +110,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         elif scheme == "md5crypt":
             # The salt may vary from 12 to 48 bits. (Using all six bytes here
             # with a subset of characters means we get only 35 random bits.)
+            import string
             salt = "".join(Random().sample(string.letters + string.digits, 6))
             result = md5crypt(raw_value, salt)
             prefix = ""  # the result already has $1$ prepended to it
@@ -141,12 +142,9 @@ class User(AbstractBaseUser, PermissionsMixin):
                 raise InternalError(
                     _("Failed to update password: LDAP module not installed")
                 )
-
-            ab = LDAPAuthBackend()
-            try:
-                ab.update_user_password(self.username, curvalue, raw_value)
-            except LDAPException as e:
-                raise InternalError(_("Failed to update password: %s" % str(e)))
+            LDAPAuthBackend().update_user_password(
+                self.username, curvalue, raw_value
+            )
         events.raiseEvent(
             "PasswordUpdated", self, raw_value, self.pk is None
         )
