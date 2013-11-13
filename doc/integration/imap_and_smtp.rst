@@ -138,11 +138,11 @@ MySQL users
 
   default_pass_scheme = CRYPT
 
-  password_query = SELECT email AS user, password FROM admin_user WHERE email='%u' and is_active=1
+  password_query = SELECT email AS user, password FROM core_user WHERE email='%u' and is_active=1
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, concat('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM admin_user
+  iterate_query = SELECT email AS username FROM core_user
 
 .. _dovecot_pg_queries:
 
@@ -157,11 +157,11 @@ PostgreSQL users
 
   default_pass_scheme = CRYPT
 
-  password_query = SELECT email AS user, password FROM admin_user WHERE email='%u' and is_active
+  password_query = SELECT email AS user, password FROM core_user WHERE email='%u' and is_active
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM admin_user
+  iterate_query = SELECT email AS username FROM core_user
 
 SQLite users
 ------------
@@ -174,11 +174,11 @@ SQLite users
 
   default_pass_scheme = CRYPT
 
-  password_query = SELECT email AS user, password FROM admin_user WHERE email='%u' and is_active=1
+  password_query = SELECT email AS user, password FROM core_user WHERE email='%u' and is_active=1
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, ('*:bytes=' || mb.quota || 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM admin_user
+  iterate_query = SELECT email AS username FROM core_user
 
 .. note::
 
@@ -325,7 +325,7 @@ work for Modoboa. You should use the following one instead:
   DECLARE
     mboxid INTEGER;
   BEGIN
-    SELECT admin_mailbox.id INTO STRICT mboxid FROM admin_mailbox INNER JOIN admin_user ON admin_mailbox.user_id=admin_user.id WHERE admin_user.username=NEW.username;
+    SELECT admin_mailbox.id INTO STRICT mboxid FROM admin_mailbox INNER JOIN core_user ON admin_mailbox.user_id=core_user.id WHERE core_user.username=NEW.username;
     UPDATE admin_quota SET mbox_id = mboxid
       WHERE username = NEW.username;
     RETURN NULL;

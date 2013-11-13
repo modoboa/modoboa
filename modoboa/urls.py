@@ -2,9 +2,9 @@ from django.conf.urls import patterns, include
 from django.conf import settings
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import parameters, events
-from modoboa.core import load_settings
+from modoboa.core import load_core_settings
 
-load_settings()
+load_core_settings()
 
 urlpatterns = patterns(
     '',

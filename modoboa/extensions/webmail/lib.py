@@ -11,11 +11,12 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf import settings
 from modoboa.lib import u2u_decode, tables, parameters
 from modoboa.lib.webutils import size2integer, NavigationParameters
+from modoboa.lib.exceptions import InternalError
 from modoboa.lib.email_listing import EmailListing
 from modoboa.lib.emailutils import (
     EmailAddress, Email, prepare_addresses, set_email_headers
 )
-from modoboa.extensions.webmail.exceptions import WebmailError
+from modoboa.extensions.webmail.exceptions import WebmailInternalError
 from modoboa.extensions.webmail.imaputils import (
     IMAPconnector, get_imapconnector, BodyStructure
 )
@@ -563,8 +564,8 @@ def save_attachment(f):
     dstdir = os.path.join(settings.MEDIA_ROOT, "webmail")
     try:
         fp = NamedTemporaryFile(dir=dstdir, delete=False)
-    except Exception, e:
-        raise WebmailError(str(e))
+    except Exception as e:
+        raise InternalError(str(e))
     for chunk in f.chunks():
         fp.write(chunk)
     fp.close()
@@ -696,19 +697,19 @@ def send_mail(request, posturl=None):
                                  int(parameters.get_admin("SMTP_PORT")))
                 if secmode == "starttls":
                     s.starttls()
-        except Exception, text:
-            raise WebmailError(str(text))
+        except Exception as text:
+            raise WebmailInternalError(str(text))
 
         if parameters.get_admin("SMTP_AUTHENTICATION") == "yes":
             try:
                 s.login(request.user.username, get_password(request))
             except smtplib.SMTPException, e:
-                raise WebmailError(str(e))
+                raise WebmailInternalError(str(e))
         try:
             s.sendmail(request.user.email, rcpts, msg.as_string())
             s.quit()
         except smtplib.SMTPException, e:
-            raise WebmailError(str(e))
+            raise WebmailInternalError(str(e))
 
         sentfolder = parameters.get_user(request.user, "SENT_FOLDER")
         IMAPconnector(user=request.user.username,

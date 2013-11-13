@@ -79,10 +79,6 @@ Stats.prototype = {
     },
 
     graphs_cb: function(data) {
-        if (data.status == "ko") {
-            $("body").notify("error", data.respmsg);
-            return;
-        }
         if (data.content) {
             $(".tab-pane.active").html(data.content);
         }

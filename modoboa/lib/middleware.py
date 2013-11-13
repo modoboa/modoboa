@@ -3,7 +3,9 @@ import re
 from django.http import Http404, HttpResponseRedirect
 from modoboa.core.models import Extension
 from modoboa.core.extensions import exts_pool
-from modoboa.lib.webutils import _render_error, ajax_response
+from modoboa.lib.webutils import (
+    _render_error, ajax_response, render_to_json_response
+)
 from modoboa.lib.exceptions import ModoboaException
 
 
@@ -41,6 +43,10 @@ class CommonExceptionCatcher(object):
             return _render_error(
                 request, user_context=dict(error=str(exception))
             )
-        return ajax_response(
-            request, status="ko", respmsg=unicode(exception), norefresh=True
+        if exception.http_code is None:
+            return ajax_response(
+                request, status="ko", respmsg=unicode(exception), norefresh=True
+            )
+        return render_to_json_response(
+            unicode(exception), status=exception.http_code
         )

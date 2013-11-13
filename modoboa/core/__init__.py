@@ -15,6 +15,7 @@ base_events = [
     "RoleChanged",
     "GetExtraRoles",
     "PasswordChange",
+    "UserCanSetRole",
 
     "UserMenuDisplay",
     "AdminMenuDisplay",
@@ -32,12 +33,19 @@ base_events = [
     "ExtraAdminContent",
 
     "ExtraUprefsRoutes",
-    "ExtraUprefsJS"
+    "ExtraUprefsJS",
+
+    "GetExtraParameters"
 ]
 
 
-def load_settings():
-    from .app_settings import GeneralParametersForm, UserSettings
+def load_core_settings():
+    """Load core settings.
+
+    This function must be manually called (see :file:`urls.py`) in
+    order to load base settings.
+    """
+    from modoboa.core.app_settings import GeneralParametersForm, UserSettings
 
     parameters.register(GeneralParametersForm, ugettext_lazy("General"))
     parameters.register(UserSettings, ugettext_lazy("General"))
@@ -52,4 +60,4 @@ def unset_default_topredirection(extension):
     """
     topredirection = parameters.get_admin("DEFAULT_TOP_REDIRECTION")
     if topredirection == extension.name:
-        parameters.save_admin("DEFAULT_TOP_REDIRECTION", "userprefs")
+        parameters.save_admin("DEFAULT_TOP_REDIRECTION", "core")

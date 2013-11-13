@@ -6,59 +6,50 @@ from django.contrib.auth.decorators import (
     login_required, permission_required
 )
 from modoboa.lib import events
-from modoboa.lib.webutils import ajax_response, ajax_simple_response
-from modoboa.lib.exceptions import PermDeniedException
-from modoboa.extensions.admin.exceptions import AdminError
+from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.exceptions import PermDeniedException, Conflict
 from modoboa.extensions.admin.forms import AliasForm
 from modoboa.extensions.admin.models import Alias
 
 
-def _validate_alias(request, form, successmsg, tplname, commonctx, callback=None):
+def _validate_alias(request, form, successmsg, callback=None):
     """Alias validation
 
     Common function shared between creation and modification actions.
     """
-    error = None
     if form.is_valid():
         form.set_recipients()
         try:
             alias = form.save()
         except IntegrityError:
-            raise AdminError(_("Alias with this name already exists"))
+            raise Conflict(_("Alias with this name already exists"))
         if callback:
             callback(request.user, alias)
-        return ajax_simple_response({"status": "ok", "respmsg": successmsg})
+        return render_to_json_response(successmsg)
 
-    if "targets" in request.POST:
-        targets = request.POST.getlist("targets")
-        commonctx["targets"] = targets[:-1]
-
-    commonctx["form"] = form
-    commonctx["error"] = error
-    return ajax_response(request, status="ko", template=tplname, **commonctx)
+    return render_to_json_response({'form_errors': form.errors}, status=400)
 
 
 def _new_alias(request, title, action, successmsg,
-               tplname="common/generic_modal_form.html"):
+               tplname="admin/aliasform.html"):
     events.raiseEvent("CanCreate", request.user, "mailbox_aliases")
-    ctx = {
-        "title": title,
-        "action": action,
-        "formid": "aliasform",
-        "action_label": _("Create"),
-        "action_classes": "submit"
-    }
     if request.method == "POST":
         def callback(user, alias):
             alias.post_create(user)
 
         form = AliasForm(request.user, request.POST)
         return _validate_alias(
-            request, form, successmsg, tplname, ctx, callback
+            request, form, successmsg, callback
         )
 
-    form = AliasForm(request.user)
-    ctx["form"] = form
+    ctx = {
+        "title": title,
+        "action": action,
+        "formid": "aliasform",
+        "action_label": _("Create"),
+        "action_classes": "submit",
+        "form": AliasForm(request.user)
+    }
     return render(request, tplname, ctx)
 
 
@@ -94,29 +85,29 @@ def newforward(request):
 
 @login_required
 @permission_required("admin.change_alias")
-def editalias(request, alid, tplname="common/generic_modal_form.html"):
+@transaction.commit_on_success
+def editalias(request, alid, tplname="admin/aliasform.html"):
     alias = Alias.objects.get(pk=alid)
     if not request.user.can_access(alias):
         raise PermDeniedException
-    ctx = dict(
-        action=reverse(editalias, args=[alias.id]),
-        formid="aliasform",
-        title=alias.full_address,
-        action_label=_("Update"),
-        action_classes="submit"
-    )
-    if len(alias.get_recipients()) >= 2:
-        successmsg = _("Distribution list modified")
-    elif alias.extmboxes != "":
-        successmsg = _("Forward modified")
-    else:
-        successmsg = _("Alias modified")
     if request.method == "POST":
+        if len(alias.get_recipients()) >= 2:
+            successmsg = _("Distribution list modified")
+        elif alias.extmboxes != "":
+            successmsg = _("Forward modified")
+        else:
+            successmsg = _("Alias modified")
         form = AliasForm(request.user, request.POST, instance=alias)
-        return _validate_alias(request, form, successmsg, tplname, ctx)
+        return _validate_alias(request, form, successmsg)
 
-    form = AliasForm(request.user, instance=alias)
-    ctx["form"] = form
+    ctx = {
+        'action': reverse(editalias, args=[alias.id]),
+        'formid': 'aliasform',
+        'title': alias.full_address,
+        'action_label': _('Update'),
+        'action_classes': 'submit',
+        'form': AliasForm(request.user, instance=alias)
+    }
     return render(request, tplname, ctx)
 
 
@@ -141,4 +132,4 @@ def delalias(request):
         alias.delete()
 
     msg = ungettext(msg, msgs, len(selection))
-    return ajax_simple_response({"status": "ok", "respmsg": msg})
+    return render_to_json_response(msg)

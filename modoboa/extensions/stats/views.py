@@ -5,9 +5,9 @@ from django.contrib.auth.decorators import (
     login_required, user_passes_test, permission_required
 )
 from modoboa.lib import events
-from modoboa.lib.exceptions import ModoboaException, PermDeniedException
+from modoboa.lib.exceptions import BadRequest, PermDeniedException, NotFound
 from modoboa.lib.webutils import (
-    _render_to_string, ajax_simple_response
+    _render_to_string, render_to_json_response
 )
 from modoboa.extensions.admin.models import (
     Domain
@@ -24,7 +24,7 @@ def index(request):
     deflocation = "graphs/?gset=mailtraffic"
     if not request.user.is_superuser:
         if not Domain.objects.get_for_admin(request.user).count():
-            raise ModoboaException(_("No statistics available"))
+            raise NotFound(_("No statistics available"))
 
     period = request.GET.get("period", "day")
     graph_sets = events.raiseDictEvent('GetGraphSets')
@@ -43,14 +43,14 @@ def graphs(request):
     gset = request.GET.get("gset", None)
     gsets = events.raiseDictEvent("GetGraphSets")
     if not gset in gsets:
-        raise ModoboaException(_("Unknown graphic set"))
+        raise NotFound(_("Unknown graphic set"))
     searchq = request.GET.get("searchquery", None)
     period = request.GET.get("period", "day")
     tplvars = dict(graphs=[], period=period)
     if searchq in [None, "global"]:
         if not request.user.is_superuser:
             if not Domain.objects.get_for_admin(request.user).count():
-                return ajax_simple_response({"status": "ok"})
+                return render_to_json_response({})
             tplvars.update(
                 domain=Domain.objects.get_for_admin(request.user)[0].name
             )
@@ -59,14 +59,14 @@ def graphs(request):
     else:
         domain = Domain.objects.filter(name__contains=searchq)
         if domain.count() != 1:
-            return ajax_simple_response({"status": "ok"})
+            return render_to_json_response({})
         if not request.user.can_access(domain[0]):
             raise PermDeniedException
         tplvars.update(domain=domain[0].name)
 
     if period == "custom":
         if not "start" in request.GET or not "end" in request.GET:
-            raise ModoboaException(_("Bad custom period"))
+            raise BadRequest(_("Bad custom period"))
         start = request.GET["start"]
         end = request.GET["end"]
         G = Grapher()
@@ -83,7 +83,6 @@ def graphs(request):
     else:
         tplvars['graphs'] = gsets[gset].get_graph_names()
 
-    return ajax_simple_response(dict(
-        status="ok",
-        content=_render_to_string(request, "stats/graphs.html", tplvars)
-    ))
+    return render_to_json_response({
+        'content': _render_to_string(request, "stats/graphs.html", tplvars)
+    })

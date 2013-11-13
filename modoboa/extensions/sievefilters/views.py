@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa.lib import parameters
 from modoboa.lib.webutils import _render_error, \
-    ajax_response, ajax_simple_response
+    ajax_response, render_to_json_response
 from modoboa.lib.connections import ConnectionError
 from modoboa.extensions.admin.lib import needs_mailbox
 from .lib import SieveClient, SieveClientError
@@ -54,8 +54,12 @@ def index(request, tplname="sievefilters/index.html"):
 @needs_mailbox()
 def get_templates(request, ftype):
     if ftype == "condition":
-        return ajax_simple_response(FilterForm([], [], request).cond_templates)
-    return ajax_simple_response(FilterForm([], [], request).action_templates)
+        return render_to_json_response(
+            FilterForm([], [], request).cond_templates
+        )
+    return render_to_json_response(
+        FilterForm([], [], request).action_templates
+    )
 
 
 @login_required
@@ -87,8 +91,8 @@ def getfs(request, name):
 
     menu = '<ul id="fsetmenu" class="nav nav-list"><li class="nav-header">%s</li>%s</ul>' % \
         (_("Actions"), fset_menu(editormode, name))
-    resp = dict(status="ok", menu=menu, content=htmlcontent)
-    return ajax_simple_response(resp)
+    resp = dict(menu=menu, content=htmlcontent)
+    return render_to_json_response(resp)
 
 
 def build_filter_ctx(ctx, form):
@@ -119,13 +123,12 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
             fset.updatefilter(
                 oldname, fltname, conditions, actions, match_type
             )
-        try:
-            sc.pushscript(fset.name, str(fset))
-        except SieveClientError as e:
-            return ajax_response(request, "ko", respmsg=str(e))
-        return ajax_response(request, respmsg=okmsg, ajaxnav=True)
-    tplctx = build_filter_ctx(tplctx, form)
-    return ajax_response(request, status="ko", template=tplname, **tplctx)
+        sc.pushscript(fset.name, str(fset))
+        return render_to_json_response(okmsg)
+    #tplctx = build_filter_ctx(tplctx, form)
+    #return ajax_response(request, status="ko", template=tplname, **tplctx)
+
+    return render_to_json_response({'form_errors': form.errors}, status=400)
 
 
 @login_required
@@ -186,8 +189,8 @@ def removefilter(request, setname, fname):
     fset = sc.getscript(setname, format="fset")
     if fset.removefilter(fname.encode("utf-8")):
         sc.pushscript(fset.name, str(fset))
-        return ajax_response(request, respmsg=_("Filter removed"))
-    return ajax_response(request, "ko", respmsg=_("Failed to remove filter"))
+        return render_to_json_response(_("Filter removed"))
+    return render_to_json_response(_("Failed to remove filter"), status=500)
 
 
 @login_required
@@ -208,37 +211,28 @@ def savefs(request, name):
 @login_required
 @needs_mailbox()
 def new_filters_set(request, tplname="common/generic_modal_form.html"):
+    if request.method == "POST":
+        form = FiltersSetForm(request.POST)
+        if form.is_valid():
+            sc = SieveClient(user=request.user.username,
+                             password=request.session["password"])
+            sc.pushscript(form.cleaned_data["name"], "# Empty script",
+                          form.cleaned_data["active"])
+            return render_to_json_response({
+                "url": form.cleaned_data["name"],
+                "active": form.cleaned_data["active"],
+                "respmsg": _("Filters set created")
+            })
+        return render_to_json_response({'form_errors': form.errors}, status=400)
+
     ctx = {"title": _("Create a new filters set"),
            "formid": "newfiltersset",
            "action_label": _("Create"),
            "action_classes": "submit",
            "action": reverse(new_filters_set),
            "withmenu": False,
-           "withunseen": False}
-    if request.method == "POST":
-        form = FiltersSetForm(request.POST)
-        error = None
-        if form.is_valid():
-            sc = SieveClient(user=request.user.username,
-                             password=request.session["password"])
-            try:
-                sc.pushscript(form.cleaned_data["name"], "# Empty script",
-                              form.cleaned_data["active"])
-            except SieveClientError, e:
-                error = str(e)
-            else:
-                return ajax_simple_response({
-                    "status": "ok",
-                    "url": form.cleaned_data["name"],
-                    "active": form.cleaned_data["active"],
-                    "respmsg": _("Filters set created")
-                })
-
-        ctx["form"] = form
-        ctx["error"] = error
-        return ajax_response(request, status="ko", template=tplname, **ctx)
-
-    ctx["form"] = FiltersSetForm()
+           "withunseen": False,
+           "form": FiltersSetForm()}
     return render(request, tplname, ctx)
 
 
@@ -247,13 +241,10 @@ def new_filters_set(request, tplname="common/generic_modal_form.html"):
 def remove_filters_set(request, name):
     sc = SieveClient(user=request.user.username,
                      password=request.session["password"])
-    try:
-        sc.deletescript(name)
-    except SieveClientError, e:
-        return ajax_simple_response(dict(status="ko", respmsg=str(e)))
+    sc.deletescript(name)
     acs, scripts = sc.listscripts()
-    return ajax_simple_response(dict(
-        status="ok", respmsg=_("Filters set deleted"), newfs=acs
+    return render_to_json_response(dict(
+        respmsg=_("Filters set deleted"), newfs=acs
     ))
 
 
@@ -293,24 +284,19 @@ def toggle_filter_state(request, setname, fname):
                      password=request.session["password"])
     if type(fname) is unicode:
         fname = fname.encode("utf-8")
-    try:
-        fset = sc.getscript(setname, format="fset")
-        if fset.is_filter_disabled(fname):
-            ret = fset.enablefilter(fname)
-            newstate = _("yes")
-            color = "green"
-        else:
-            ret = fset.disablefilter(fname)
-            newstate = _("no")
-            color = "red"
-        if not ret:
-            pass
-        sc.pushscript(setname, str(fset))
-    except SieveClientError, e:
-        return ajax_response(request, "ko", respmsg=str(e))
-
-    return ajax_simple_response({
-        "status": "ok",
+    fset = sc.getscript(setname, format="fset")
+    if fset.is_filter_disabled(fname):
+        ret = fset.enablefilter(fname)
+        newstate = _("yes")
+        color = "green"
+    else:
+        ret = fset.disablefilter(fname)
+        newstate = _("no")
+        color = "red"
+    if not ret:
+        pass
+    sc.pushscript(setname, str(fset))
+    return render_to_json_response({
         "label": newstate,
         "color": color
     })
@@ -319,12 +305,9 @@ def toggle_filter_state(request, setname, fname):
 def move_filter(request, setname, fname, direction):
     sc = SieveClient(user=request.user.username,
                      password=request.session["password"])
-    try:
-        fset = sc.getscript(setname, format="fset")
-        fset.movefilter(fname.encode("utf-8"), direction)
-        sc.pushscript(setname, str(fset))
-    except (SieveClientError), e:
-        return ajax_response(request, "ko", respmsg=str(e))
+    fset = sc.getscript(setname, format="fset")
+    fset.movefilter(fname.encode("utf-8"), direction)
+    sc.pushscript(setname, str(fset))
     return ajax_response(
         request, template="sievefilters/guieditor.html", fs=fset
     )

@@ -11,10 +11,10 @@ Introduction
 Modoboa provides a simple API to interact with events. It understands
 two kinds of events: 
  
-* Those that return a value
-* Those that return nothing
+* Those returning a value
+* Those returning nothing
 
-Listening to a specific event is achieved as follow::
+Listening to a specific event is achieved as follows::
 
     from modoboa.lib import events
     
@@ -41,11 +41,31 @@ To stop listening to as specific event, you must use the
 
 The parameters are the same than those used with ``register``.
 
+To unregister all events declared by a specific extension, use the
+``unregister_extension`` function::
+
+  events.unregister_extension([name])
+
+``name`` is the extension's name but it is optional. Leave it empty to
+let the function guess the name.
+
 Read further to get a complete list and description of all available events.
 
 ****************
 Supported events
 ****************
+
+AccountAutoCreated
+==================
+
+Raised when a new account is automatically created (example: LDAP
+synchronization).
+
+*Callback prototype*::
+
+  def callback(account): pass
+
+* ``account`` is the newly created account (``User`` instance)
 
 AccountCreated
 ==============
@@ -69,6 +89,32 @@ Raised when an existing account is deleted.
 
 * ``account`` is the account that is going to be deleted
 * ``byuser`` is the adminstrator deleting ``account``
+
+AccountExported
+===============
+
+Raised when an account is exported to CSV.
+
+*Callback prototype*::
+
+  def callback(account): pass
+
+* ``account`` is the account being exported
+
+Must return a list of values to include in the export.
+
+AccountImported
+===============
+
+Raised when an account is imported from CSV.
+
+*Callback prototype*::
+
+  def callback(user, account, row): pass
+
+* ``user`` is the user importing the account
+* ``account`` is the account being imported
+* ``row`` is a list containing what remains from the CSV definition
   
 AccountModified
 ===============
@@ -127,6 +173,21 @@ Raised just before a user tries to create a new object.
 Return ``True`` or ``False`` to indicate if this user can respectively
 create or not create a new ``Domain`` object.
 
+CheckDomainName
+===============
+
+Raised before the unicity of a domain name is checked. By default,
+modoboa prevents duplicate names between domains and domain aliases
+but extensions have the possibility to extend this rule using this
+event.
+
+*Callback prototype*::
+
+  def callback(): pass
+
+Must return a list of 2uple, each one containing a model class and an
+associated label.
+
 CheckExtraAccountForm
 =====================
 
@@ -143,52 +204,6 @@ this account is concerned by a specific form.
 
 Callbacks listening to this event must return a list containing one
 Boolean.
-
-CreateDomain
-============
-
-Raised when a new domain is created. 
-
-*Callback prototype*::
-
-  def callback(user, domain): pass
-
-* ``user`` corresponds to the ``User`` object creating the domain (its owner)
-* ``domain`` is a ``Domain`` instance
-
-CreateMailbox
-=============
-
-Raised when a new mailbox is created.
-
-*Callback prototype*::
-
-  def callback(user, mailbox): pass
-
-* ``user`` is the new mailbox's owner (``User`` instance)
-* ``mailbox`` is the new mailbox (``Mailbox`` instance)
-
-DeleteDomain
-============
-
-Raised when an existing domain is about to be deleted.
-
-*Callback prototype*::
-
-  def callback(domain): pass
-
-* ``domain`` is a ``Domain`` instance
-
-DeleteMailbox
-=============
-
-Raised when an existing mailbox is about to be deleted. 
-
-*Callback prototype*::
-
-  def callback(mailbox): pass
-
-* ``mailbox`` is a ``Mailbox`` instance
 
 DomainAliasCreated
 ==================
@@ -213,6 +228,29 @@ Raised when an existing domain alias is about to be deleted.
 
 * ``domain_alias`` is a ``DomainAlias`` instance
 
+DomainCreated
+=============
+
+Raised when a new domain is created. 
+
+*Callback prototype*::
+
+  def callback(user, domain): pass
+
+* ``user`` corresponds to the ``User`` object creating the domain (its owner)
+* ``domain`` is a ``Domain`` instance
+
+DomainDeleted
+=============
+
+Raised when an existing domain is about to be deleted.
+
+*Callback prototype*::
+
+  def callback(domain): pass
+
+* ``domain`` is a ``Domain`` instance
+
 DomainModified
 ==============
 
@@ -223,7 +261,20 @@ Raised when a domain has been modified.
   def callback(domain): pass
 
 * ``domain`` is the modified ``Domain`` instance, it contains an extra
-  ``oldname`` field which contains the old domain name
+  ``oldname`` field which contains the old name
+
+DomainOwnershipRemoved
+======================
+
+Raised before the ownership of a domain is removed from its original
+creator.
+
+*Callback prototype*::
+
+  def callback(owner, domain): pass
+
+* ``owner`` is the original creator
+* ``domain`` is the ``Domain`` instance being modified
 
 ExtDisabled
 ===========
@@ -289,6 +340,37 @@ Let extensions add extra content into the admin panel.
 
 Callbacks listening to this event must return a list of string.
 
+ExtraDomainEntries
+==================
+
+Raised to request extra entries to display inside the *domains*
+listing.
+
+*Callback prototype*::
+
+  def callback(user, domfilter, searchquery, **extrafilters): pass
+
+* ``user`` is the ``User`` instance corresponding to the currently
+  logged in user
+* ``domfilter`` is a string indicating which domain type the user needs
+* ``searchquery`` is a string containing a search query
+* ``extrafilters`` is a set of keyword arguments that may contain additional filters
+
+Must return a valid ``QuerySet``.
+
+ExtraDomainFilters
+==================
+
+Raised to request extra filters for the *domains* listing page. For
+example, the *postfix_relay_domains* extension let users filter
+entries based on service types.
+
+*Callback prototype*::
+
+  def callback(): pass
+
+Must return a list of valid filter names (string).
+
 ExtraDomainForm
 ===============
 
@@ -303,6 +385,59 @@ tabs).
   logged in user
 
 * ``domain`` is the domain beeing modified (``Domain`` instance)
+
+Callbacks listening to the event must return a list of dictionnaries,
+each one must contain at least three keys::
+
+  {"id" : "<the form's id>",
+   "title" : "<the title used to present the form>",
+   "cls" : TheFormClassName}
+
+ExtraDomainImportHelp
+=====================
+
+Raised to request extra help text to display inside the domain import
+form.
+
+*Callback prototype*::
+
+  def callback(): pass
+
+Must return a list a string.
+
+ExtraDomainMenuEntries
+======================
+
+Raised to request extra entries to include in the left menu of the
+*domains* listing page.
+
+*Callback prototype*::
+
+  def callback(user): pass
+
+* ``user`` is the ``User`` instance corresponding to the currently
+  logged in user
+
+Must return a list of dictionaries. Each dictionary must contain at
+least three keys::
+
+  {"name": "<menu name>",
+   "label": "<menu label>",
+   "url": "<menu url>"}
+
+ExtraRelayDomainForm
+====================
+
+Let extensions add new forms to the relay domain edition form (the one
+with tabs).
+
+*Callback prototype*::
+
+  def callback(user, rdomain): pass
+
+* ``user`` is the ``User`` instance corresponding to the currently
+  logged in user
+* ``rdomain`` is the relay domain being modified (``RelayDomain`` instance)
 
 Callbacks listening to the event must return a list of dictionnaries,
 each one must contain at least three keys::
@@ -347,6 +482,24 @@ forms.
 * ``instances`` is a dictionnary where the callback will add
   information needed to fill a specific form
 
+FillRelayDomainInstances
+========================
+
+When a relay domain is being modified, this event is raised to fill extra
+forms.
+
+*Callback prototype*::
+
+  def callback(user, rdomain, instances): pass
+
+* ``user`` is the ``User`` instance corresponding to the currently
+  logged in user
+
+* ``rdomain`` is the ``RelayDomain`` instance being modified
+
+* ``instances`` is a dictionnary where the callback will add
+  information needed to fill a specific form
+
 GetAnnouncement
 ===============
 
@@ -363,6 +516,73 @@ Some places in the interface let plugins add their own announcement
 * ``loginpage`` : corresponds to the login page
 
 Callbacks listening to this event must return a list of string.
+
+GetDomainActions
+================
+
+Raised to request the list of actions available for the *domains*
+listing entry being displayed.
+
+*Callback prototype*::
+
+  def callback(user, rdomain): pass
+
+* ``user`` is the ``User`` instance corresponding to the currently
+  logged in user
+* ``rdomain`` is the ``RelayDomain`` instance being displayed
+
+Must return a list of dictionaries, each dictionary containing at
+least the following entries::
+
+  {"name": "<action name>",
+   "url": "<action url>",
+   "title": "<action title>",
+   "img": "<action icon>"}
+
+GetDomainModifyLink
+===================
+
+Raised to request the modification url of the *domains* listing entry
+being displayed.
+
+*Callback prototype*::
+
+  def callback(domain): pass
+
+* ``domain`` is a model instance (``RelayDomain`` for example)
+
+Must return a dictionary containing at least the following entry::
+
+  {'url': '<modification url>'}
+
+GetExtraLimitTemplates
+======================
+
+Raised to request extra limit templates. For example, the
+*postfix_relay_domains* extension define a template to limit the
+number of relay domains an administrator can create.
+
+*Callback prototype*::
+
+  def callback(): pass
+
+Must return a list of set. Each set must contain at least three entries::
+
+  [('<limit_name>', '<limit label>', '<limit help text>')]
+
+GetExtraParameters
+==================
+
+Raised to request extra parameters for a given parameters form.
+
+*Callback prototype*::
+
+  def callback(application, level): pass
+
+* ``application`` is the name of the form's application (ie. admin, amavis, etc.)
+* ``level`` is the form's level: ``A`` for admin or ``U`` for user
+
+Must return a dictionary. Each entry must be a valid Django form field.
 
 .. _getextraroles:
 
@@ -397,6 +617,27 @@ template but need javascript stuff.
 
 Callbacks listening to this event must return a list of string.
 
+ImportObject
+============
+
+Raised to request the function handling an object being imported from CSV.
+
+*Callback prototype*::
+
+  def callback(objtype): pass
+
+``objtype`` is the type of object being imported
+
+Must return a list of function. A valid import function must respect
+the following prototype::
+
+  def import_function(user, row, formopts): pass
+
+* ``user`` is the ``User`` instance corresponding to the currently
+  logged in user
+* ``row`` is a string containing the object's definition (CSV format)
+* ``formopts`` is a dictionary that may contain options
+
 MailboxAliasCreated
 ===================
 
@@ -420,8 +661,31 @@ Raised when an existing mailbox alias is about to be deleted.
 
 * ``mailbox_alias`` is an ``Alias`` instance
 
-ModifyMailbox
-=============
+MailboxCreated
+==============
+
+Raised when a new mailbox is created.
+
+*Callback prototype*::
+
+  def callback(user, mailbox): pass
+
+* ``user`` is the new mailbox's owner (``User`` instance)
+* ``mailbox`` is the new mailbox (``Mailbox`` instance)
+
+MailboxDeleted
+==============
+
+Raised when an existing mailbox is about to be deleted. 
+
+*Callback prototype*::
+
+  def callback(mailbox): pass
+
+* ``mailbox`` is a ``Mailbox`` instance
+
+MailboxModified
+===============
 
 Raised when an existing mailbox is modified. 
 
@@ -506,3 +770,90 @@ contain at least the following keys::
   {"name" : "a_name_without_spaces",
    "label" : _("The menu label"),
    "url" : reverse("your_view")}
+
+RelayDomainAliasCreated
+=======================
+
+Raised when a new relay domain alias is created.
+
+*Callback prototype*::
+
+  def callback(user, rdomain_alias): pass
+
+* ``user`` is the new relay domain alias owner (``User`` instance)
+* ``rdomain_alias`` is the new relay domain alias (``DomainAlias`` instance)
+
+RelayDomainAliasDeleted
+=======================
+
+Raised when an existing relay domain alias is about to be deleted. 
+
+*Callback prototype*::
+
+  def callback(rdomain_alias): pass
+
+* ``rdomain_alias`` is a ``RelayDomainAlias`` instance
+
+RelayDomainCreated
+==================
+
+Raised when a new relay domain is created.
+
+*Callback prototype*::
+
+  def callback(user, rdomain): pass
+
+* ``user`` corresponds to the ``User`` object creating the relay domain (its owner)
+* ``rdomain`` is a ``RelayDomain`` instance
+
+RelayDomainDeleted
+==================
+
+Raised when an existing relay domain is about to be deleted.
+
+*Callback prototype*::
+
+  def callback(rdomain): pass
+
+* ``rdomain`` is a ``RelayDomain`` instance
+
+RelayDomainModified
+===================
+
+Raised when a relay domain has been modified.
+
+*Callback prototype*::
+
+  def callback(rdomain): pass
+
+* ``rdomain`` is the modified ``RelayDomain`` instance, it contains an
+   extra ``oldname`` field which contains the old name
+
+RoleChanged
+===========
+
+Raised when the role of an account is about to be changed.
+
+*Callback prototype*::
+
+  def callback(account, role): pass
+
+* ``account`` is the account being modified
+* ``role`` is the new role (string)
+
+UserCanSetRole
+==============
+
+Raised to check if a user is allowed to set a given role to an
+account.
+
+*Callback prototype*::
+
+  def callback(account, role): pass
+
+* ``user`` is the ``User`` instance corresponding to the currently
+  logged in user
+* ``role`` is the role ``user`` tries to set
+
+Must return a list containing ``True`` or ``False`` to indicate if
+this user can is allowed to set ``role``.

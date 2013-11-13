@@ -18,15 +18,10 @@ function removefilter(evt) {
 
     $.ajax({
         url: $this.attr("href"),
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == "ok") {
-                history.update(true);
-                $("body").notify('success', response.respmsg, 2000);
-            } else {
-                $("body").notify('error', response.respmsg);
-            }
-        }
+        dataType: 'json'
+    }).done(function(response) {
+        history.update(true);
+        $("body").notify('success', response, 2000);
     });
 }
 
@@ -77,20 +72,15 @@ function loadfs(response) {
 function send_command(cmd, extracb) {
     $.ajax({
         url: cmd,
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == "ko") {
-                $("body").notify('error', response.respmsg);
-            } else {
-                if (extracb != undefined) {
-                    extracb(response);
-                }
-                if (!response.norefresh) {
-                    history.update(true);
-                }
-                $("body").notify('success', response.respmsg, 2000);
-            }
+        dataType: 'json'
+    }).done(function(response) {
+        if (extracb != undefined) {
+            extracb(response);
         }
+        if (!response.norefresh) {
+            history.update(true);
+        }
+        $("body").notify('success', response.respmsg, 2000);
     });
 }
 
@@ -123,14 +113,9 @@ function savefs(evt) {
         url: $editor.attr("action"),
         type: $editor.attr("method"),
         dataType: 'json',
-        data: $editor.serialize(),
-        success: function(response) {
-            if (response.status == "ko") {
-                $("body").notify('error', response.respmsg);
-            } else {
-                $("body").notify('success', response.respmsg, 2000);
-            }
-        }
+        data: $editor.serialize()
+    }).done(function(response) {
+        $("body").notify('success', response.respmsg, 2000);
     });
 }
 
@@ -181,16 +166,11 @@ function toggle_filter_state(event) {
     event.preventDefault();
     $.ajax({
         url: $this.attr("href"),
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == "ok") {
-                $this.html(response.label);
-                $this.attr("class", "");
-                $this.addClass(response.color);
-            } else {
-                $("body").notify('error', response.respmsg);
-            }
-        }
+        dataType: 'json'
+    }).done(function(response) {
+        $this.html(response.label);
+        $this.attr("class", "");
+        $this.addClass(response.color);
     });
 }
 
@@ -200,11 +180,10 @@ function move_filter(event) {
     event.preventDefault();
     $.ajax({
         url: $this.attr('href'),
-        dataType: 'json',
-        success: function(response) {
-            $("#set_content").html(response.content);
-            init_filters_list();
-        }
+        dataType: 'json'
+    }).done(function(response) {
+        $("#set_content").html(response.content);
+        init_filters_list();
     });
 }
 
@@ -234,11 +213,10 @@ function filtersetform_cb() {
     $("#newfiltersset").find("input").keypress(function(e) {
         if (e.which == 13) e.preventDefault();
     });
-    $(".submit").one('click', function(e) {
+    $(".submit").on('click', function(e) {
         simple_ajax_form_post(e, {
             formid: "newfiltersset",
             reload_on_success: false,
-            error_cb: filtersetform_cb,
             success_cb: filterset_created
         });
     });
@@ -257,8 +235,9 @@ function fetch_templates(url, container) {
     $.ajax({
         url: url,
         async: false,
-        dataType: 'json',
-        success: function(data) { result = data; }
+        dataType: 'json'
+    }).done(function(data) {
+        result = data;
     });
     return result;
 }

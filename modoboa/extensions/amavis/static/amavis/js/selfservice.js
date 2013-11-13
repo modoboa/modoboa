@@ -7,14 +7,9 @@ function send_action(e, message) {
     }
     $.ajax({
         url: $link.attr("href"),
-        dataType: 'json',
-        success: function(data) {
-            if (data.status == "ok") {
-                $("body").notify("success", data.respmsg, 2000);
-            } else {
-                $("body").notify("error", data.respmsg);
-            }
-        }
+        dataType: 'json'
+    }).done(function(data) {
+        $("body").notify("success", data, 2000);
     });
 }
 

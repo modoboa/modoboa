@@ -19,9 +19,9 @@ class AccountTestCase(ModoTestCase):
             username="tester@test.com", first_name="Tester", last_name="Toto",
             password1="toto", password2="toto", role="SimpleUsers",
             quota_act=True,
-            is_active=True, email="tester@test.com", stepid=2
+            is_active=True, email="tester@test.com", stepid='step2'
         )
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.newaccount"),
             values
         )
@@ -39,26 +39,26 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(mb.domain.mailbox_count, 3)
 
         values["username"] = "pouet@test.com"
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.editaccount",
                     args=[account.id]),
             values
         )
         mb = Mailbox.objects.get(pk=mb.id)
         self.assertEqual(mb.full_address, "pouet@test.com")
-        self.check_ajax_get(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.delaccount",
                     args=[account.id]),
             {}
         )
 
-    def _set_quota(self, email, value, expected_status="ok"):
+    def _set_quota(self, email, value, expected_status=200):
         account = User.objects.get(username=email)
         values = {
             "username": email, "role": "SimpleUsers", "quota_act": False,
             "is_active": True, "quota": value, "email": email
         }
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.editaccount",
                     args=[account.id]),
             values, status=expected_status
@@ -70,7 +70,7 @@ class AccountTestCase(ModoTestCase):
     def test_set_nul_quota_as_domainadmin(self):
         self.clt.logout()
         self.assertTrue(self.clt.login(username="admin@test.com", password="toto"))
-        self._set_quota("user@test.com", 0, "ko")
+        self._set_quota("user@test.com", 0, 400)
         self.clt.logout()
         self.assertTrue(self.clt.login(username="admin@test2.com", password="toto"))
         self._set_quota("user@test2.com", 0)
@@ -92,25 +92,24 @@ class PermissionsTestCase(ModoTestCase):
         self.clt.logout()
 
     def test_domain_admins(self):
-        self.values["role"] = "DomainAdmins"
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.editaccount",
                     args=[self.user.id]),
             self.values
         )
-        self.assertEqual(self.user.group == "DomainAdmins", True)
+        self.assertEqual(self.user.group, "DomainAdmins")
 
         self.values["role"] = "SimpleUsers"
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.editaccount",
                     args=[self.user.id]),
             self.values
         )
-        self.assertEqual(self.user.group == 'DomainAdmins', False)
+        self.assertNotEqual(self.user.group, 'DomainAdmins')
 
     def test_superusers(self):
         self.values["role"] = "SuperAdmins"
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.editaccount",
                     args=[self.user.id]),
             self.values
@@ -118,7 +117,7 @@ class PermissionsTestCase(ModoTestCase):
         self.assertEqual(User.objects.get(username="user@test.com").is_superuser, True)
 
         self.values["role"] = "SimpleUsers"
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.editaccount",
                     args=[self.user.id]),
             self.values
@@ -135,7 +134,7 @@ class PermissionsTestCase(ModoTestCase):
             password1="", password2="",
             quota=10, is_active=True, email="admin@test.com"
         )
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.editaccount",
                     args=[admin.id]),
             values
@@ -144,7 +143,7 @@ class PermissionsTestCase(ModoTestCase):
         self.assertEqual(admin.can_access(Domain.objects.get(name="test.com")), True)
 
         values["role"] = "SuperAdmins"
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.editaccount",
                     args=[admin.id]),
             values
@@ -178,25 +177,23 @@ class PermissionsTestCase(ModoTestCase):
             username="superadmin2@test.com", first_name="Super",
             last_name="Admin", password1="toto", password2="toto",
             role="SuperAdmins", is_active=True,
-            email="superadmin2@test.com", stepid=2
+            email="superadmin2@test.com", stepid='step2'
         )
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.newaccount"),
             values
         )
         account = User.objects.get(username="superadmin2@test.com")
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")
-        self.check_ajax_get(
+        self.ajax_get(
             reverse("modoboa.extensions.admin.views.identity.delaccount",
                     args=[account.id]),
-            {},
-            status="ko", respmsg="Permission denied"
+            {}, 403
         )
-        self.check_ajax_get(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.delaccount",
-                    args=[account.id]), {},
-            status="ko", respmsg="Permission denied"
+                    args=[account.id]), {}, 403
         )
 
     def test_domainadmin_dlist_local_domain_not_owned(self):
@@ -208,6 +205,6 @@ class PermissionsTestCase(ModoTestCase):
             recipients_1="user@test2.com",
             enabled=True
         )
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.alias.newdlist"), values
         )

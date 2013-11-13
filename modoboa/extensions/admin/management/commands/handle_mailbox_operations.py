@@ -4,8 +4,8 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd
+from modoboa.lib.exceptions import InternalError
 from modoboa.extensions.admin import AdminConsole
-from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.models import MailboxOperation
 
 
@@ -83,7 +83,7 @@ class Command(BaseCommand):
                 continue
             try:
                 f(ope)
-            except (OperationError, AdminError) as e:
+            except (OperationError, InternalError) as e:
                 self.logger.critical('%s failed (reason: %s)',
                                      ope, str(e).encode('utf-8'))
             else:

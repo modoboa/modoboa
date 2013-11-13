@@ -40,11 +40,9 @@ import string
 import crypt
 from random import Random
 from django.conf import settings
+from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
-
-
-class LDAPException(Exception):
-    pass
+from modoboa.lib.exceptions import InternalError
 
 
 class LDAPAuthBackend(object):
@@ -126,5 +124,5 @@ class LDAPAuthBackend(object):
                      self.pwd_attr,
                      self._crypt_password(newpassword))]
             self.conn.modify_s(self.user_dn, ldif)
-        except ldap.LDAPError, e:
-            raise LDAPException(str(e))
+        except ldap.LDAPError as e:
+            raise InternalError(_("Failed to update password: %s" % str(e)))

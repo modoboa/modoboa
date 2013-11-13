@@ -12,26 +12,17 @@ class DeployTest(unittest.TestCase):
     dbtype = "mysql"
     dbhost = "localhost"
     projname = "modoboa_test"
-    dbuser = "root"
-    dbpassword = "toto"
+    dbuser = "travis"
+    dbpassword = ""
 
     def setUp(self):
-        cmd = "mysqladmin -u %s -p%s create %s" % (self.dbuser, self.dbpassword, self.projname)
-        code, out = exec_cmd(cmd)
-        self.assertEqual(code, 0)
         self.workdir = tempfile.mkdtemp()
 
     def tearDown(self):
         path = os.path.join(self.workdir, self.projname)
-        code, output = exec_cmd("python manage.py test admin", cwd=path)
+        code, output = exec_cmd("python manage.py test lib admin limits postfix_relay_domains", cwd=path)
+        print output
         self.assertEqual(code, 0)
-
-        if hasattr(self, "workdir"):
-           shutil.rmtree(self.workdir)
-        child = pexpect.spawn("mysqladmin -u root -p%s drop %s" % (self.dbpassword, self.projname))
-        child.expect("\[y/N\]")
-        child.sendline("y")
-        child.expect('Database "%s" dropped' % self.projname)
 
     def test_standard(self):
         timeout = 2

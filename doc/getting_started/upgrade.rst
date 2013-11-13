@@ -53,6 +53,9 @@ Finally, follow the common procedure::
 1.1.0: FIXME
 ============
 
+#. Add ``'modoboa.extensions.postfix_relay_domains'`` to
+ ``MODOBOA_APPS``
+
 Due to code refactoring, some modifications need to be done into
 :file:`settings.py`:
 

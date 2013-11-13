@@ -35,7 +35,7 @@ def dologin(request):
 
                 nextlocation = request.POST.get("next", None)
                 if nextlocation is None or nextlocation == "None":
-                    if user.group != "SimpleUsers":
+                    if user.group == "SimpleUsers":
                         nextlocation = reverse("modoboa.lib.webutils.topredirection")
                     else:
                         nextlocation = reverse("domains")

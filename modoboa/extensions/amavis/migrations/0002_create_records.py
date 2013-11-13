@@ -10,9 +10,12 @@ class Migration(DataMigration):
     def forwards(self, orm):
         "Write your forwards methods here."
         orm["amavis.Users"].objects.all().delete()
-        orm["amavis.Policy"].objects.create(id=1, policy_name='default', bypass_virus_checks=None,
-                                            bypass_spam_checks=None, bypass_banned_checks=None,
-                                            spam_subject_tag2=None)
+        if not orm['amavis.Policy'].objects.all():
+            orm["amavis.Policy"].objects.create(
+                id=1, policy_name='default', bypass_virus_checks=None,
+                bypass_spam_checks=None, bypass_banned_checks=None,
+                spam_subject_tag2=None
+            )
         for dom in orm["admin.Domain"].objects.all():
             orm["amavis.Users"].objects.create(email="@%s" % dom.name, fullname=dom.name,
                                                priority=7, policy_id=1)

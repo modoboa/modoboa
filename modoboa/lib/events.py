@@ -12,6 +12,7 @@ from functools import wraps
 import inspect
 import re
 from django.conf import settings
+from modoboa.lib.sysutils import guess_extension_name
 
 events = []
 callbacks = {}
@@ -91,7 +92,7 @@ class observe(object):
                         return []
                 else:
                     if not ext.enabled:
-                        return []
+                        return None
             elif not modname in settings.MODOBOA_APPS:
                 return []
             return f(*args, **kwargs)
@@ -117,6 +118,19 @@ def unregister(event, callback):
         pass
 
 
+def unregister_extension(extension=None):
+    """Unregister all callbacks declared by an extension.
+
+    :param str extension: extension full name (ie. module name)
+    """
+    if extension is None:
+        extension = guess_extension_name()
+    for evt, values in callbacks.items():
+        for name in values.keys():
+            if extension in name:
+                del callbacks[evt][name]
+
+
 def raiseEvent(event, *args, **kwargs):
     """Raise a specific event
 
@@ -132,7 +146,7 @@ def raiseEvent(event, *args, **kwargs):
     return 1
 
 
-def raiseQueryEvent(event, *args):
+def raiseQueryEvent(event, *args, **kwargs):
     """Raise a specific event and wait for answers from callbacks
 
     Any additional keyword argument will be passed to registered
@@ -144,7 +158,12 @@ def raiseQueryEvent(event, *args):
     if not event in events or not event in callbacks.keys():
         return result
     for callback in callbacks[event].values():
-        result += callback(*args)
+        tmp = callback(*args, **kwargs)
+        if tmp is None:
+            # Callback is registered but associated extension is
+            # disabled.
+            continue
+        result += tmp
     return result
 
 
@@ -158,10 +177,14 @@ def raiseDictEvent(event, *args):
     :return: a dictionnary
     """
     result = {}
-    if not event in events or not event in callbacks.keys():
+    if not event in events or not event in callbacks:
         return result
     for callback in callbacks[event].values():
         tmp = callback(*args)
+        if tmp is None:
+            # Callback is registered but associated extension is
+            # disabled.
+            continue
         for k, v in tmp.iteritems():
             result[k] = v
     return result

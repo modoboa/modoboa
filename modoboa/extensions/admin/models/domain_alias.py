@@ -1,13 +1,12 @@
 import reversion
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib import events
-from modoboa.extensions.admin.exceptions import AdminError
-from .base import DatesAware
+from modoboa.lib.exceptions import BadRequest
+from .base import AdminObject
 from .domain import Domain
 
 
-class DomainAlias(DatesAware):
+class DomainAlias(AdminObject):
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
                             help_text=ugettext_lazy("The alias name"))
     target = models.ForeignKey(
@@ -28,27 +27,6 @@ class DomainAlias(DatesAware):
     def __unicode__(self):
         return self.name
 
-    def post_create(self, creator):
-        from modoboa.lib.permissions import grant_access_to_object
-        grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("DomainAliasCreated", creator, self)
-
-    def save(self, *args, **kwargs):
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
-        super(DomainAlias, self).save(*args, **kwargs)
-        if creator is not None:
-            self.post_create(creator)
-
-    def delete(self):
-        from modoboa.lib.permissions import ungrant_access_to_object
-        events.raiseEvent("DomainAliasDeleted", self)
-        ungrant_access_to_object(self)
-        super(DomainAlias, self).delete()
-
     def from_csv(self, user, row):
         """Create a domain alias from a CSV row
 
@@ -58,13 +36,13 @@ class DomainAlias(DatesAware):
         :param row: a list containing the alias definition
         """
         if len(row) < 4:
-            raise AdminError(_("Invalid line"))
+            raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
         domname = row[2].strip()
         try:
             self.target = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
-            raise AdminError(_("Unknown domain %s" % domname))
+            raise BadRequest(_("Unknown domain %s" % domname))
         self.enabled = row[3].strip() == 'True'
         self.save(creator=user)
 

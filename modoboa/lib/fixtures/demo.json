@@ -20,7 +20,7 @@
         "model": "lib.parameter",
         "fields": {
             "name": "general.DEFAULT_TOP_REDIRECTION",
-            "value": "userprefs"
+            "value": "user"
         }
     },
     {

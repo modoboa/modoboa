@@ -6,7 +6,8 @@ from django.db import transaction, IntegrityError
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib import events
+from modoboa.lib.exceptions import ModoboaException, Conflict
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Alias
@@ -39,10 +40,11 @@ def import_domains(request):
 <ul>
   <li><em>domain; name; quota; enabled</em></li>
   <li><em>domainalias; name; targeted domain; enabled</em></li>
+  %s
 </ul>
 <p>The first element of each line is mandatory and must be equal to one of the previous values.</p>
 <p>You can use a different character as separator.</p>
-""")
+""" % ''.join([unicode(hlp) for hlp in events.raiseQueryEvent('ExtraDomainImportHelp')]))
 
     ctx = dict(
         title=_("Import domains"),
@@ -100,8 +102,8 @@ def importdata(request, formclass=ImportDataForm):
         try:
             reader = csv.reader(request.FILES['sourcefile'],
                                 delimiter=form.cleaned_data['sepchar'])
-        except csv.Error, e:
-            error = str(e)
+        except csv.Error as inst:
+            error = str(inst)
 
         if error is None:
             try:
@@ -112,13 +114,21 @@ def importdata(request, formclass=ImportDataForm):
                     try:
                         fct = globals()["import_%s" % row[0].strip()]
                     except KeyError:
-                        continue
+                        fct = events.raiseQueryEvent(
+                            'ImportObject', row[0].strip()
+                        )
+                        if not fct:
+                            continue
+                        fct = fct[0]
                     try:
                         fct(request.user, row, form.cleaned_data)
                     except IntegrityError, e:
                         if form.cleaned_data["continue_if_exists"]:
                             continue
-                        raise ModoboaException(_("Object already exists: %s" % row))
+                        raise Conflict(
+                            _("Object already exists: %s"
+                              % form.cleaned_data['sepchar'].join(row[:2]))
+                        )
                     cpt += 1
                 msg = _("%d objects imported successfully" % cpt)
                 return render(request, "admin/import_done.html", {

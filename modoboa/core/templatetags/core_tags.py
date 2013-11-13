@@ -45,7 +45,7 @@ def settings_menu(selection, user):
          "label": _("Information")},
         {"name": "logs",
          "class": "ajaxlink",
-         "url": "logs/",
+         "url": "logs/&sort_order=-date_created",
          "label": _("Logs")},
         {"name": "parameters",
          "class": "ajaxlink",
@@ -228,18 +228,6 @@ def get_modoboa_logo():
     if logo is None:
         return os.path.join(settings.STATIC_URL, "css/modoboa.png")
     return logo
-
-
-@register.simple_tag
-def extra_head_content(user):
-    tpl = template.Template(
-        "{% for sc in static_content %}{{ sc|safe }}{% endfor %}"
-    )
-    return tpl.render(
-        template.Context({
-            'static_content': events.raiseQueryEvent("GetStaticContent", user)
-        })
-    )
 
 
 @register.simple_tag

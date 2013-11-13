@@ -4,9 +4,11 @@ import re
 import hashlib
 import crypt
 import base64
+import logging
 from random import Random
 import reversion
 from django.db import models
+from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -17,13 +19,14 @@ from django.contrib.auth.models import (
     UserManager, Group, AbstractBaseUser, PermissionsMixin
 )
 from modoboa.lib import events, md5crypt, parameters
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.exceptions import (
+    PermDeniedException, InternalError, BadRequest
+)
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.extensions import exts_pool
-from modoboa.core.exceptions import AdminError
 
 try:
-    from modoboa.lib.ldaputils import *
+    from modoboa.lib.ldaputils import LDAPAuthBackend
     ldap_available = True
 except ImportError:
     ldap_available = False
@@ -72,7 +75,9 @@ class User(AbstractBaseUser, PermissionsMixin):
             get_object_owner, grant_access_to_object, ungrant_access_to_object
 
         if fromuser == self:
-            raise AdminError(_("You can't delete your own account"))
+            raise PermDeniedException(
+                _("You can't delete your own account")
+            )
 
         if not fromuser.can_access(self):
             raise PermDeniedException
@@ -105,6 +110,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         elif scheme == "md5crypt":
             # The salt may vary from 12 to 48 bits. (Using all six bytes here
             # with a subset of characters means we get only 35 random bits.)
+            import string
             salt = "".join(Random().sample(string.letters + string.digits, 6))
             result = md5crypt(raw_value, salt)
             prefix = ""  # the result already has $1$ prepended to it
@@ -133,15 +139,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.password = self._crypt_password(raw_value)
         else:
             if not ldap_available:
-                raise AdminError(
+                raise InternalError(
                     _("Failed to update password: LDAP module not installed")
                 )
-
-            ab = LDAPAuthBackend()
-            try:
-                ab.update_user_password(self.username, curvalue, raw_value)
-            except LDAPException, e:
-                raise AdminError(_("Failed to update password: %s" % str(e)))
+            LDAPAuthBackend().update_user_password(
+                self.username, curvalue, raw_value
+            )
         events.raiseEvent(
             "PasswordUpdated", self, raw_value, self.pk is None
         )
@@ -197,7 +200,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         try:
             return self.groups.all()[0].name
         except IndexError:
-            return "SimpleUsers"
+            return "---"
 
     @property
     def enabled(self):
@@ -318,7 +321,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         :param crypt_password:
         """
         if len(row) < 7:
-            raise AdminError(_("Invalid line"))
+            raise BadRequest(_("Invalid line"))
         role = row[6].strip()
         if not user.is_superuser and not role in ["SimpleUsers", "DomainAdmins"]:
             raise PermDeniedException(
@@ -327,11 +330,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.username = row[1].strip()
         if role == "SimpleUsers":
             if (len(row) < 8 or not row[7].strip()):
-                raise AdminError(
+                raise BadRequest(
                     _("The simple user '%s' must have a valid email address" % self.username)
                 )
             if self.username != row[7].strip():
-                raise AdminError(
+                raise BadRequest(
                     _("username and email fields must not differ for '%s'" % self.username)
                 )
 
@@ -460,24 +463,44 @@ class Log(models.Model):
 
 @receiver(reversion.post_revision_commit)
 def post_revision_commit(sender, **kwargs):
-    import logging
-
     if kwargs["revision"].user is None:
         return
     logger = logging.getLogger("modoboa.admin")
     for version in kwargs["versions"]:
-        if version.type == reversion.models.VERSION_ADD:
+        prev_revisions = reversion.get_for_object(version.object)
+        if prev_revisions.count() == 1:
             action = _("added")
             level = "info"
-        elif version.type == reversion.models.VERSION_CHANGE:
+        else:
             action = _("modified")
             level = "warning"
-        else:
-            action = _("deleted")
-            level = "critical"
         message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
             "object": unicode(version.content_type).capitalize(),
             "name": version.object_repr, "action": action,
             "user": kwargs["revision"].user.username
         }
         getattr(logger, level)(message)
+
+
+@receiver(post_delete)
+def post_delete_hook(sender, instance, **kwargs):
+    """Custom post-delete hook.
+
+    We want to know who was responsible for an object deletion.
+    """
+    from reversion.models import Version
+
+    if not reversion.is_registered(sender):
+        return
+    del_list = reversion.get_deleted(sender)
+    try:
+        version = del_list.get(object_id=instance.id)
+    except Version.DoesNotExist:
+        return
+    logger = logging.getLogger("modoboa.admin")
+    msg = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
+        "object": unicode(version.content_type).capitalize(),
+        "name": version.object_repr, "action": _("deleted"),
+        "user": version.revision.user.username
+    }
+    logger.critical(msg)

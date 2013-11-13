@@ -31,7 +31,7 @@ class DomainAliasTestCase(ModoTestCase):
         dom = Domain.objects.get(name="test.com")
         values = dict(name=dom.name, quota=dom.quota, enabled=dom.enabled,
                       aliases="domalias.net", aliases_1="domalias.com")
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.domain.editdomain",
                     args=[dom.id]),
             values
@@ -39,7 +39,7 @@ class DomainAliasTestCase(ModoTestCase):
         self.assertEqual(dom.domainalias_set.count(), 2)
 
         del values["aliases_1"]
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.domain.editdomain",
                     args=[dom.id]),
             values

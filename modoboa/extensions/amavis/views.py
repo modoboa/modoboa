@@ -10,9 +10,9 @@ from django.contrib.auth.decorators \
     import login_required, user_passes_test
 from django.db.models import Q
 from modoboa.lib import parameters
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.exceptions import ModoboaException, BadRequest
 from modoboa.lib.webutils import (
-    getctx, ajax_response, ajax_simple_response
+    getctx, ajax_response, render_to_json_response
 )
 from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.extensions.admin.models import Mailbox, Domain
@@ -56,7 +56,7 @@ def _listing(request):
                 rcptfilter = pattern
                 continue
             else:
-                raise Exception("unsupported search criteria %s" % c)
+                raise BadRequest("unsupported search criteria %s" % c)
             flt = nfilter if flt is None else flt | nfilter
 
     msgtype = navparams.get('msgtype', None)
@@ -180,14 +180,14 @@ def check_mail_id(request, mail_id):
 def delete_selfservice(request, mail_id):
     rcpt = request.GET.get("rcpt", None)
     if rcpt is None:
-        raise ModoboaException(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     try:
         msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
         msgrcpt.rs = 'D'
         msgrcpt.save()
     except Msgrcpt.DoesNotExist:
-        raise ModoboaException(_("Invalid request"))
-    return ajax_simple_response(dict(status="ok", respmsg=_("Message deleted")))
+        raise BadRequest(_("Invalid request"))
+    return render_to_json_response(_("Message deleted"))
 
 
 @selfservice(delete_selfservice)
@@ -221,13 +221,13 @@ def release_selfservice(request, mail_id):
     rcpt = request.GET.get("rcpt", None)
     secret_id = request.GET.get("secret_id", None)
     if rcpt is None or secret_id is None:
-        raise ModoboaException(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     try:
         msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
     except Msgrcpt.DoesNotExist:
-        raise ModoboaException(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     if secret_id != msgrcpt.mail.secret_id:
-        raise ModoboaException(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     if parameters.get_admin("USER_CAN_RELEASE") == "no":
         msgrcpt.rs = 'p'
         msg = _("Request sent")
@@ -238,9 +238,9 @@ def release_selfservice(request, mail_id):
             rcpt.rs = 'R'
             msg = _("Message released")
         else:
-            raise ModoboaException(result)
+            raise BadRequest(result)
     msgrcpt.save()
-    return ajax_simple_response(dict(status="ok", respmsg=msg))
+    return render_to_json_response(msg)
 
 
 @selfservice(release_selfservice)
@@ -313,4 +313,4 @@ def process(request):
 @user_passes_test(lambda u: u.group != 'SimpleUsers')
 def nbrequests(request):
     result = get_wrapper().get_pending_requests(request.user)
-    return ajax_simple_response(dict(status="ok", requests=result))
+    return render_to_json_response({'requests': result})

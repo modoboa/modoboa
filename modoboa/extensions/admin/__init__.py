@@ -3,25 +3,30 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.core.extensions import ModoExtension, exts_pool
 from modoboa.lib import parameters, events
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.exceptions import PermDeniedException, BadRequest
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias
 )
 
-
 admin_events = [
-    "CreateDomain",
+    "DomainCreated",
     "DomainModified",
-    "DeleteDomain",
+    "DomainDeleted",
+    "DomainOwnershipRemoved",
+    "ExtraDomainEntries",
+    "ExtraDomainMenuEntries",
+    "ExtraDomainFilters",
+    "GetDomainActions",
+    "GetDomainModifyLink",
+    "CheckDomainName",
 
     "DomainAliasCreated",
     "DomainAliasDeleted",
 
-    "CreateMailbox",
-    "DeleteMailbox",
-    "ModifyMailbox",
+    "MailboxCreated",
+    "MailboxDeleted",
+    "MailboxModified",
 
     "MailboxAliasCreated",
     "MailboxAliasDeleted",
@@ -32,6 +37,9 @@ admin_events = [
     "ExtraAccountForm",
     "CheckExtraAccountForm",
     "FillAccountInstances",
+
+    "ExtraDomainImportHelp",
+    "ImportObject"
 ]
 
 
@@ -139,7 +147,7 @@ def import_account_mailbox(user, account, row):
         try:
             domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
-            raise AdminError(
+            raise BadRequest(
                 _("Account import failed (%s): domain does not exist" % account.username)
             )
         if not user.can_access(domain):
@@ -193,6 +201,11 @@ def user_logged_in(request, username, password):
 
 @events.observe("AccountDeleted")
 def account_deleted(account, byuser, **kwargs):
+    """'AccountDeleted' listener.
+
+    When an account is deleted, we also need to remove its mailbox (if
+    any).
+    """
     if not account.mailbox_set.count():
         return
     mb = account.mailbox_set.all()[0]

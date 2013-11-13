@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import (
 )
 from modoboa.lib import parameters
 from modoboa.lib.webutils import (
-    ajax_simple_response, _render_to_string
+    _render_to_string, render_to_json_response
 )
 from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.core.models import Extension, Log
@@ -24,8 +24,7 @@ def viewsettings(request, tplname='core/settings_header.html'):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewparameters(request, tplname='core/parameters.html'):
-    return ajax_simple_response({
-        "status": "ok",
+    return render_to_json_response({
         "left_selection": "parameters",
         "content": _render_to_string(request, tplname, {
             "forms": parameters.get_admin_forms
@@ -42,12 +41,10 @@ def saveparameters(request):
             form.save()
             form.to_django_settings()
             continue
-        return ajax_simple_response({
-            "status": "ko", "prefix": form.app, "errors": form.errors
-        })
-    return ajax_simple_response(dict(
-        status="ok", respmsg=_("Parameters saved")
-    ))
+        return render_to_json_response(
+            {'form_errors': form.errors, 'prefix': form.app}, status=400
+        )
+    return render_to_json_response(_("Parameters saved"))
 
 
 @login_required
@@ -68,8 +65,7 @@ def viewextensions(request, tplname='core/extensions.html'):
             ext["selection"] = False
 
     tbl = ExtensionsTable(request, exts)
-    return ajax_simple_response({
-        "status": "ok",
+    return render_to_json_response({
         "content": _render_to_string(request, tplname, {"extensions": tbl})
     })
 
@@ -82,7 +78,7 @@ def saveextensions(request):
     for k in request.POST.keys():
         if k.startswith("select_"):
             parts = k.split("_", 1)
-            dbext = Extension.objects.get(name=parts[1])            
+            dbext = Extension.objects.get(name=parts[1])
             if not dbext in actived_exts:
                 dbext.on()
             else:
@@ -91,16 +87,13 @@ def saveextensions(request):
         if not ext in found:
             ext.off()
 
-    return ajax_simple_response(dict(
-        status="ok", respmsg=_("Modifications applied.")
-    ))
+    return render_to_json_response(_("Modifications applied."))
 
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def information(request, tplname="core/information.html"):
-    return ajax_simple_response({
-        "status": "ok",
+    return render_to_json_response({
         "content": render_to_string(tplname, {})
     })
 
@@ -118,8 +111,7 @@ def logs(request, tplname="core/logs.html"):
         Log.objects.all().order_by("%s%s" % (sort_dir, sort_order)),
         request.GET.get("page", 1)
     )
-    return ajax_simple_response({
-        "status": "ok",
+    return render_to_json_response({
         "content": render_to_string(tplname, {
             "logs": page.object_list,
         }),

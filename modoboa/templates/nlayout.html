@@ -23,7 +23,7 @@
     <script type="text/javascript">
       set_static_url("{{ STATIC_URL }}");
     </script>
-    {% extra_head_content user %}
+    {% extra_static_content "top" user %}
     {% block html_head %}{% endblock %}
   </head>
 

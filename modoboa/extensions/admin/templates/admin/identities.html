@@ -20,5 +20,6 @@ $(document).ready(function() {
     admin = new Identities();
 });
 </script>
+{% extra_static_content "identities" user %}
 {% endblock %}
 {% block actions %}{% identities_menu user %}{% endblock %}

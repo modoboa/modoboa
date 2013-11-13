@@ -6,39 +6,23 @@
 """
 from modoboa.lib import events
 from modoboa.lib.permissions import get_object_owner
-from .lib import LimitReached
-from .models import limits_tpl, LimitsPool
+from .lib import LimitReached, inc_limit_usage, dec_limit_usage
+from .models import LimitTemplates, LimitsPool
 
 
-def check_limit(user, lname):
+def check_limit(user, lname, count=1):
     """Check if a user has reached a defined limit
 
     We check if the user will not reach the given limit after this
     creation.
 
-    Raise a ``LimitReached`` exception if the limit is reached.
-
     :param user: a ``User`` object
+    :param int count: the number of objects the user tries to create
+    :raises: ``LimitReached``
     """
     try:
-        if user.limitspool.will_be_reached(lname):
+        if user.limitspool.will_be_reached(lname, count):
             raise LimitReached(user.limitspool.get_limit(lname))
-    except LimitsPool.DoesNotExist:
-        pass
-
-
-def inc_limit(user, lname):
-    try:
-        user.limitspool.inc_curvalue(lname)
-    except LimitsPool.DoesNotExist:
-        pass
-
-
-def dec_limit(user, lname):
-    if user is None:
-        return
-    try:
-        user.limitspool.dec_curvalue(lname)
     except LimitsPool.DoesNotExist:
         pass
 
@@ -54,7 +38,7 @@ def move_pool_resource(owner, user):
     except LimitsPool.DoesNotExist:
         return
     if not owner.is_superuser:
-        for ltpl in limits_tpl:
+        for ltpl in LimitTemplates().templates:
             l = user.limitspool.get_limit(ltpl[0])
             if l.maxvalue < 0:
                 continue
@@ -66,15 +50,16 @@ def move_pool_resource(owner, user):
     user.limitspool.delete()
 
 
-@events.observe('CreateDomain')
+@events.observe('DomainCreated')
 def inc_nb_domains(user, domain):
-    inc_limit(user, 'domains_limit')
+    inc_limit_usage(user, 'domains_limit')
 
 
-@events.observe('DeleteDomain')
-def dec_nb_domains(domain):
-    owner = get_object_owner(domain)
-    dec_limit(owner, 'domains_limit')
+@events.observe('DomainDeleted')
+def dec_nb_domains(domain, owner=None):
+    if owner is None:
+        owner = get_object_owner(domain)
+    dec_limit_usage(owner, 'domains_limit')
     for domalias in domain.domainalias_set.all():
         dec_nb_domaliases(domalias)
     for mailbox in domain.mailbox_set.all():
@@ -85,7 +70,7 @@ def dec_nb_domains(domain):
 
 @events.observe('DomainAliasCreated')
 def inc_nb_domaliases(user, domalias):
-    inc_limit(user, 'domain_aliases_limit')
+    inc_limit_usage(user, 'domain_aliases_limit')
 
 
 @events.observe('DomainAliasDeleted')
@@ -96,15 +81,15 @@ def dec_nb_domaliases(domainaliases):
         domainaliases = [domainaliases]
     for domainalias in domainaliases:
         owner = get_object_owner(domainalias)
-        dec_limit(owner, 'domain_aliases_limit')
+        dec_limit_usage(owner, 'domain_aliases_limit')
 
 
-@events.observe('CreateMailbox')
+@events.observe('MailboxCreated')
 def inc_nb_mailboxes(user, mailbox):
-    inc_limit(user, 'mailboxes_limit')
+    inc_limit_usage(user, 'mailboxes_limit')
 
 
-@events.observe('DeleteMailbox')
+@events.observe('MailboxDeleted')
 def dec_nb_mailboxes(mailboxes):
     from modoboa.extensions.admin.models import Mailbox
 
@@ -112,40 +97,66 @@ def dec_nb_mailboxes(mailboxes):
         mailboxes = [mailboxes]
     for mailbox in mailboxes:
         owner = get_object_owner(mailbox)
-        dec_limit(owner, 'mailboxes_limit')
+        dec_limit_usage(owner, 'mailboxes_limit')
 
 
 @events.observe('MailboxAliasCreated')
 def inc_nb_mbaliases(user, mailboxalias):
-    inc_limit(user, 'mailbox_aliases_limit')
+    inc_limit_usage(user, 'mailbox_aliases_limit')
 
 
 @events.observe('MailboxAliasDeleted')
-def dec_nb_mbaliases(mailboxalias):
-    owner = get_object_owner(mailboxalias)
-    dec_limit(owner, 'mailbox_aliases_limit')
+def dec_nb_mbaliases(mailboxaliases):
+    from modoboa.extensions.admin.models import Alias
+
+    if isinstance(mailboxaliases, Alias):
+        mailboxaliases = [mailboxaliases]
+    for alias in mailboxaliases:
+        owner = get_object_owner(alias)
+        dec_limit_usage(owner, 'mailbox_aliases_limit')
 
 
 @events.observe('CanCreate')
-def can_create_new_object(user, objtype):
-    check_limit(user, '%s_limit' % objtype)
+def can_create_new_object(user, objtype, count=1):
+    check_limit(user, '%s_limit' % objtype, count)
 
 
 @events.observe("AccountCreated")
 def create_pool(user):
     owner = get_object_owner(user)
-    if not owner.is_superuser and \
-       not owner.belongs_to_group("Resellers"):
+    if not owner.group in ['SuperAdmins', 'Resellers']:
         return
 
-    if user.belongs_to_group("DomainAdmins"):
+    if user.group == 'DomainAdmins':
         check_limit(owner, 'domain_admins_limit')
-        inc_limit(owner, 'domain_admins_limit')
+        inc_limit_usage(owner, 'domain_admins_limit')
 
-    if user.group in ["DomainAdmins", "Resellers"]:
-        p = LimitsPool(user=user)
-        p.save()
-        p.create_limits()
+    if user.group in ['DomainAdmins', 'Resellers']:
+        p, created = LimitsPool.objects.get_or_create(user=user)
+        p.create_limits(owner)
+
+
+@events.observe("UserCanSetRole")
+def user_can_set_role(user, role, account=None):
+    """Check if the user can still set this role.
+
+    The only interesting case concerns resellers defining new domain
+    administrators. We want to check if they are allowed to do this
+    operation before any modification is made to :keyword:`account`.
+
+    :param ``User`` user: connected user
+    :param ``User`` account: account modified (None on creation)
+    :param str newrole: role to check
+    """
+    if role == 'DomainAdmins':
+        lname = 'domain_admins_limit'
+    else:
+        return [True]
+    if user.is_superuser or not user.limitspool.will_be_reached(lname):
+        return [True]
+    if account is not None and account.group == role:
+        return [True]
+    return [False]
 
 
 @events.observe("AccountModified")
@@ -164,19 +175,19 @@ def on_account_modified(old, new):
         except LimitsPool.DoesNotExist:
             p = LimitsPool(user=new)
             p.save()
-            p.create_limits()
+            p.create_limits(owner)
 
     if not new.group in ["DomainAdmins", "Resellers"]:
         move_pool_resource(owner, new)
 
     if old.oldgroup == "DomainAdmins":
         if new.group != "DomainAdmins":
-            dec_limit(owner, 'domain_admins_limit')
+            dec_limit_usage(owner, 'domain_admins_limit')
         return
 
     if new.group == "DomainAdmins":
         check_limit(owner, 'domain_admins_limit')
-        inc_limit(owner, 'domain_admins_limit')
+        inc_limit_usage(owner, 'domain_admins_limit')
 
 
 @events.observe("AccountDeleted")
@@ -188,4 +199,21 @@ def on_account_deleted(account, byuser, **kwargs):
     move_pool_resource(owner, account)
 
     if account.group == "DomainAdmins":
-        dec_limit(owner, 'domain_admins_limit')
+        dec_limit_usage(owner, 'domain_admins_limit')
+
+
+@events.observe('DomainOwnershipRemoved')
+def domain_ownership_removed(reseller, domain):
+    """DomainOwnershipRemoved listener.
+
+    The access :keyword:`reseller` had to :keyword:`domain` has been
+    removed by a super adminstrator. We must decrement all limit
+    usages.
+
+    :param ``User`` reseller: reseller that created :keyword:`domain`
+    :param ``Domain`` domain: domain
+    """
+    dec_nb_domains(domain, reseller)
+    for dadmin in domain.admins:
+        if reseller.is_owner(dadmin):
+            dec_limit_usage(reseller, 'domain_admins_limit')

@@ -62,19 +62,18 @@ Poller.prototype = {
         $.ajax({
             url: this.url + args,
             dataType: 'json',
-            success: function(data) {
-                poller.running_request = false;
-                if (data.status == "ok") {
-                    if (poller.options.success_cb) {
-                        poller.options.success_cb(data);
-                    }
-                    poller.reset();
-                } else {
-                    $("body").notify("error", data.respmsg);
-                    if (poller.options.error_cb) {
-                        poller.options.error_cb(data);
-                    }
-                }
+            global: false
+        }).done(function(data) {
+            poller.running_request = false;
+            if (poller.options.success_cb) {
+                poller.options.success_cb(data);
+            }
+            poller.reset();
+        }).fail(function(jqxhr) {
+            var data = $.parseJSON(jqxhr.responseText);
+            $("body").notify("error", data);
+            if (poller.options.error_cb) {
+                poller.options.error_cb(data);
             }
         });
     }

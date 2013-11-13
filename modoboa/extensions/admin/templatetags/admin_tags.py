@@ -15,6 +15,16 @@ genders = {
 
 @register.simple_tag
 def domains_menu(selection, user):
+    """Specific menu for domain related operations.
+
+    Corresponds to the menu visible on the left column when you go to
+    Domains.
+
+    :param str selection: menu entry currently selected
+    :param ``User`` user: connected user
+    :rtype: str
+    :return: rendered menu (as HTML)
+    """
     if not user.has_perm("admin.add_domain"):
         return ""
 
@@ -25,6 +35,9 @@ def domains_menu(selection, user):
          "modal": True,
          "modalcb": "admin.newdomain_cb",
          "url": reverse("modoboa.extensions.admin.views.domain.newdomain")},
+    ]
+    entries += events.raiseQueryEvent("ExtraDomainMenuEntries", user)
+    entries += [
         {"name": "import",
          "label": _("Import"),
          "img": "icon-folder-open",
@@ -111,23 +124,28 @@ def identities_menu(user):
 
 
 @register.simple_tag
-def domain_actions(user, domid):
-    from modoboa.extensions.admin.models import Domain
+def domain_actions(user, domain):
+    actions = []
+    if domain.__class__.__name__ == 'Domain':
+        actions = [
+            {"name": "listidentities",
+             "url": reverse("modoboa.extensions.admin.views.identity.identities") + "#list/?searchquery=@%s" % domain.name,
+             "title": _("View the domain's identities"),
+             "img": "icon-user"}
+        ]
+        if user.has_perm("admin.delete_domain"):
+            actions.append({
+                "name": "deldomain",
+                "url": reverse(
+                    "modoboa.extensions.admin.views.domain.deldomain",
+                    args=[domain.id]
+                ),
+                "title": _("Delete %s?" % domain.name),
+                "img": "icon-trash"
+            })
+    else:
+        actions = events.raiseQueryEvent('GetDomainActions', user, domain)
 
-    domain = Domain.objects.get(pk=domid)
-    actions = [
-        {"name": "listidentities",
-         "url": reverse("modoboa.extensions.admin.views.identity.identities") + "#list/?searchquery=@%s" % domain.name,
-         "title": _("View the domain's identities"),
-         "img": "icon-user"}
-    ]
-    if user.has_perm("admin.delete_domain"):
-        actions.append({
-            "name": "deldomain",
-            "url": reverse("modoboa.extensions.admin.views.domain.deldomain", args=[domid]),
-            "title": _("Delete %s?" % domain.name),
-            "img": "icon-trash"
-        })
     return render_actions(actions)
 
 
@@ -154,7 +172,47 @@ def identity_actions(user, ident):
 
 
 @register.simple_tag
+def domain_modify_link(domain):
+    linkdef = {"label": domain.name, "modal": True}
+    if domain.__class__.__name__ == "Domain":
+        linkdef["url"] = reverse(
+            "modoboa.extensions.admin.views.domain.editdomain",
+            args=[domain.id]
+        )
+        linkdef["modalcb"] = "admin.domainform_cb"
+    else:
+        tmp = events.raiseDictEvent('GetDomainModifyLink', domain)
+        for key in ['url', 'modalcb']:
+            linkdef[key] = tmp[key]
+    return render_link(linkdef)
+
+
+@register.simple_tag
+def domain_aliases(domain):
+    """Display domain aliases of this domain.
+
+    :param domain:
+    :rtype: str
+    """
+    if not domain.aliases.count():
+        return '---'
+    res = ''
+    for alias in domain.aliases.all():
+        res += '%s<br/>' % alias.name
+    return res
+
+
+@register.simple_tag
 def identity_modify_link(identity, active_tab='default'):
+    """Return the appropriate modification link.
+
+    According to the identity type, a specific modification link (URL)
+    must be used.
+
+    :param identity: a ``User`` or ``Alias`` instance
+    :param str active_tab: the tab to display
+    :rtype: str
+    """
     linkdef = {"label": identity.identity, "modal": True}
     if identity.__class__.__name__ == "User":
         linkdef["url"] = reverse(

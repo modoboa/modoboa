@@ -7,8 +7,10 @@ from functools import wraps
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.exceptions import InternalError
 from modoboa.lib.webutils import NavigationParameters
+from modoboa.extensions.amavis.models import Users, Policy
+
 
 
 def selfservice(ssfunc=None):
@@ -51,7 +53,7 @@ class AMrelease(object):
                 self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
                 self.sock.connect(path)
         except socket.error, err:
-            raise ModoboaException(
+            raise InternalError(
                 _("Connection to amavis failed: %s" % str(err))
             )
 
@@ -107,3 +109,71 @@ class QuarantineNavigationParameters(NavigationParameters):
         if params:
             url += "?%s" % ("&".join(params))
         return url
+
+
+def create_user_and_policy(name):
+    """Create records.
+
+    Create two records (a user and a policy) using :keyword:`name` as
+    an identifier.
+
+    :param str name: name
+    """
+    policy = Policy.objects.create(policy_name=name)
+    Users.objects.create(
+        email="@%s" % name, fullname=name,
+        priority=7, policy=policy
+    )
+
+
+def create_user_and_use_policy(name, policy_name):
+    """Create a *users* record and use an existing policy.
+
+    :param str name: user record name
+    :param str policy_name: policy name
+    """
+    policy = Policy.objects.get(policy_name=policy_name)
+    Users.objects.create(
+        email="@%s" % name, fullname=name,
+        priority=7, policy=policy
+    )
+
+
+def update_user_and_policy(oldname, newname):
+    """Update records.
+
+    :param str oldname: old name
+    :param str newname: new name
+    """
+    if oldname == newname:
+        return
+    u = Users.objects.get(email="@%s" % oldname)
+    u.email = "@%s" % newname
+    u.fullname = newname
+    u.policy.policy_name = newname
+    u.policy.save()
+    u.save()
+
+
+def delete_user_and_policy(name):
+    """Delete records.
+
+    :param str name: identifier
+    """
+    try:
+        u = Users.objects.get(email="@%s" % name)
+    except Users.DoesNotExist:
+        return
+    u.policy.delete()
+    u.delete()
+
+
+def delete_user(name):
+    """Delete a *users* record.
+
+    :param str name: user record name
+    """
+    try:
+        Users.objects.get(email="@%s" % name).delete()
+    except Users.DoesNotExist:
+        pass

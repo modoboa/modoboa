@@ -106,6 +106,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -154,6 +155,7 @@ MODOBOA_APPS = (
     'modoboa.lib',
     # Modoboa extensions here.
     'modoboa.extensions.admin',
+    'modoboa.extensions.postfix_relay_domains',
     'modoboa.extensions.limits',
     'modoboa.extensions.postfix_autoreply',
     'modoboa.extensions.webmail',
