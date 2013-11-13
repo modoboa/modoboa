@@ -43,7 +43,7 @@ class Column(object):
             limit = getattr(self, "limit")
             if limit:
                 # The value is not necessarily a string, so...
-                col["value"] = unicode(col["value"])
+                col["value"] = unicode(col["value"], "utf-8") if isinstance(col["value"], str) else unicode(col["value"])
                 if len(col["value"]) > limit:
                     col["value"] = col["value"][0:limit] + "..."
         except AttributeError:
