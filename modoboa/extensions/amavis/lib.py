@@ -94,8 +94,8 @@ class QuarantineNavigationParameters(NavigationParameters):
     def back_to_listing(self):
         """Return the current listing URL.
 
-        Looks into the user's session and the current request to build the
-        URL.
+        Looks into the user's session and the current request to build
+        the URL.
 
         :return: a string
         """
@@ -104,8 +104,10 @@ class QuarantineNavigationParameters(NavigationParameters):
         navparams = self.request.session[self.sessionkey]
         if "page" in navparams:
             params += ["page=%s" % navparams["page"]]
-        params += ["%s=%s" % (p, navparams[p])
-                   for p in ["criteria", "pattern"] if p in navparams]
+        if "order" in navparams:
+            params += ["sort_order=%s" % navparams["order"]]
+        params += ["%s=%s" % (p[0], navparams[p[0]])
+                   for p in self.parameters if p[0] in navparams]
         if params:
             url += "?%s" % ("&".join(params))
         return url
