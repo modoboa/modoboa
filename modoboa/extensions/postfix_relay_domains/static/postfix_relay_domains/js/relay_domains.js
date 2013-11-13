@@ -67,6 +67,10 @@ RelayDomains.prototype = {
                 success_cb: $.proxy(admin.reload_listing, admin)
             });
         }, this));
+    },
+
+    editdomain_form_cb: function() {
+        this.domainform_cb();
         $(document).trigger('domform_init');
     },
 
