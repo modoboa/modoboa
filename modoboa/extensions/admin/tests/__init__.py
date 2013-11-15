@@ -4,9 +4,10 @@ from .account import AccountTestCase, PermissionsTestCase
 from .alias import AliasTestCase
 from .import_ import ImportTestCase
 from .export import ExportTestCase
+from .password_schemes import PasswordSchemesTestCase
 
 __all__ = [
     'DomainTestCase', 'DomainAliasTestCase', 'AccountTestCase',
     'PermissionsTestCase', 'AliasTestCase', 'ImportTestCase',
-    'ExportTestCase'
+    'ExportTestCase', 'PasswordSchemesTestCase'
 ]

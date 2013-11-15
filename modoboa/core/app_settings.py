@@ -46,13 +46,24 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
     password_scheme = forms.ChoiceField(
         label=ugettext_lazy("Default password scheme"),
-        choices=[("crypt", "crypt"),
-                 ("md5", "md5"),
-                 ("md5crypt", "md5crypt"),
-                 ("sha256", "sha256"),
-                 ("plain", "plain")],
-        initial="md5crypt",
+        choices=[("sha512crypt", "sha512crypt"),
+                 ("sha256crypt", "sha256crypt"),
+                 ("md5crypt", ugettext_lazy("md5crypt (weak)")),
+                 ("sha256", ugettext_lazy("sha256 (weak)")),
+                 ("md5", ugettext_lazy("md5 (weak)")),
+                 ("crypt", ugettext_lazy("crypt (weak)")),
+                 ("plain", ugettext_lazy("plain (weak)"))],
+        initial="sha512crypt",
         help_text=ugettext_lazy("Scheme used to crypt mailbox passwords")
+    )
+
+    rounds_number = forms.IntegerField(
+        label=ugettext_lazy("Rounds"),
+        initial=70000,
+        help_text=ugettext_lazy(
+            "Number of rounds to use (only used by sha256crypt and "
+            "sha512crypt). Must be between 1000 and 999999999, inclusive."
+        )
     )
 
     secret_key = forms.CharField(
@@ -173,7 +184,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         "ldap_search_filter": "ldap_auth_method=searchbind",
         "ldap_user_dn_template": "ldap_auth_method=directbind",
         "ldap_password_attribute": "authentication_type=ldap",
-        "ldap_is_active_directory": "authentication_type=ldap"
+        "ldap_is_active_directory": "authentication_type=ldap",
     }
 
     def __init__(self, *args, **kwargs):
@@ -194,6 +205,12 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         except ValueError:
             raise forms.ValidationError(_("Invalid syntax"))
         return tpl
+
+    def clean_rounds_number(self):
+        value = self.cleaned_data["rounds_number"]
+        if value < 1000 or value > 999999999:
+            raise forms.ValidationError(_("Invalid rounds number"))
+        return value
 
     def clean(self):
         """Custom validation method
