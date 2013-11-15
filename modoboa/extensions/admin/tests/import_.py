@@ -40,6 +40,17 @@ domainalias; domalias1.com; domain1.com; True
         self.assertFalse(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
 
+    def test_import_domains_with_conflict(self):
+        f = ContentFile(b"""domain;test.alias;10;True
+domainalias;test.alias;test.com;True
+""", name="domains.csv")
+        resp = self.clt.post(
+            reverse("modoboa.extensions.admin.views.import.import_domains"), {
+                "sourcefile": f
+            }
+        )
+        self.assertIn('A domain test.alias already exists', resp.content)
+
     def test_identities_import(self):
         f = ContentFile(b"""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
