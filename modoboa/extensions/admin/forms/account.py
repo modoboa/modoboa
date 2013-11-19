@@ -15,7 +15,12 @@ from modoboa.extensions.admin.models import (
 
 
 class AccountFormGeneral(forms.ModelForm):
-    username = forms.CharField(label=ugettext_lazy("Username"))
+    username = forms.CharField(
+        label=ugettext_lazy("Username"),
+        help_text=ugettext_lazy(
+            "The user's name. Must be a valid e-mail address for simple users."
+        )
+    )
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
         choices=[('', ugettext_lazy("Choose"))],

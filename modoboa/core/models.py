@@ -1,29 +1,26 @@
 import sys
 import os
 import re
-import hashlib
-import crypt
-import base64
 import logging
-from random import Random
 import reversion
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.utils.crypto import constant_time_compare
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import (
-    UserManager, Group, AbstractBaseUser, PermissionsMixin
+    UserManager, Group, PermissionsMixin
 )
-from modoboa.lib import events, md5crypt, parameters
+from django.contrib.auth.hashers import make_password, is_password_usable
+from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest
 )
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.extensions import exts_pool
+from modoboa.core.password_hashers import get_password_hasher
 
 try:
     from modoboa.lib.ldaputils import LDAPAuthBackend
@@ -32,7 +29,7 @@ except ImportError:
     ldap_available = False
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(PermissionsMixin):
     """Custom User model.
 
     It overloads the way passwords are stored into the database. The
@@ -49,6 +46,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_local = models.BooleanField(default=True)
+    password = models.CharField(ugettext_lazy('password'), max_length=256)
+    last_login = models.DateTimeField(
+        ugettext_lazy('last login'), default=timezone.now
+    )
 
     objects = UserManager()
 
@@ -58,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         ordering = ["username"]
 
-    password_expr = re.compile(r'(\{(\w+)\}|(\$1\$))(.+)')
+    password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
 
     def delete(self, fromuser, *args, **kwargs):
         """Custom delete method
@@ -95,35 +96,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         scheme = parameters.get_admin("PASSWORD_SCHEME")
         if type(raw_value) is unicode:
             raw_value = raw_value.encode("utf-8")
-        if scheme == "crypt":
-            salt = "".join(Random().sample(string.letters + string.digits, 2))
-            result = crypt.crypt(raw_value, salt)
-            prefix = "{CRYPT}"
-        elif scheme == "md5":
-            obj = hashlib.md5(raw_value)
-            result = obj.hexdigest()
-            prefix = "{MD5}"
-        # The md5crypt scheme is the only supported method that has both:
-        # (a) a salt ("crypt" has this too),
-        # (b) supports passwords lengths of more than 8 characters (all except
-        #     "crypt").
-        elif scheme == "md5crypt":
-            # The salt may vary from 12 to 48 bits. (Using all six bytes here
-            # with a subset of characters means we get only 35 random bits.)
-            import string
-            salt = "".join(Random().sample(string.letters + string.digits, 6))
-            result = md5crypt(raw_value, salt)
-            prefix = ""  # the result already has $1$ prepended to it
-                         # to signify what this is
-        elif scheme == "sha256":
-            obj = hashlib.sha256(raw_value)
-            result = base64.b64encode(obj.digest())
-            prefix = "{SHA256}"
-        else:
-            scheme = "plain"
-            result = raw_value
-            prefix = "{PLAIN}"
-        return "%s%s" % (prefix, result)
+        return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
     def set_password(self, raw_value, curvalue=None):
         """Password update
@@ -150,26 +123,46 @@ class User(AbstractBaseUser, PermissionsMixin):
         )
 
     def check_password(self, raw_value):
-        m = self.password_expr.match(self.password)
-        if m is None:
+        match = self.password_expr.match(self.password)
+        if match is None:
             return False
         if type(raw_value) is unicode:
             raw_value = raw_value.encode("utf-8")
-        scheme = (m.group(2) or m.group(3)).lower()
-        val2 = m.group(4)
-        if scheme == u"crypt":
-            val1 = crypt.crypt(raw_value, val2)
-        elif scheme == u"md5":
-            val1 = hashlib.md5(raw_value).hexdigest()
-        elif scheme == u"sha256":
-            val1 = base64.b64encode(hashlib.sha256(raw_value).digest())
-        elif scheme == u"$1$":  # md5crypt
-            salt, hashed = val2.split('$')
-            val1 = md5crypt(raw_value, str(salt))
-            val2 = self.password  # re-add scheme for comparison below
-        else:
-            val1 = raw_value
-        return constant_time_compare(val1, val2)
+        scheme = match.group(1)
+        val2 = match.group(2)
+        hasher = get_password_hasher(scheme)
+        return hasher().verify(raw_value, val2)
+
+    def get_username(self):
+        "Return the identifying username for this User"
+        return getattr(self, self.USERNAME_FIELD)
+
+    def __str__(self):
+        return self.get_username()
+
+    def natural_key(self):
+        return (self.get_username(),)
+
+    def is_anonymous(self):
+        """
+        Always returns False. This is a way of comparing User objects to
+        anonymous users.
+        """
+        return False
+
+    def is_authenticated(self):
+        """
+        Always return True. This is a way to tell if the user has been
+        authenticated in templates.
+        """
+        return True
+
+    def set_unusable_password(self):
+        # Sets a value that will never be a valid hash
+        self.password = make_password(None)
+
+    def has_usable_password(self):
+        return is_password_usable(self.password)
 
     @property
     def tags(self):
@@ -243,9 +236,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def can_access(self, obj):
         """Check if the user can access a specific object
 
-        This function is recursive : if the given user hasn't got direct
-        access to this object and if he has got access other ``User``
-        objects, we check if one of those users owns the object.
+        This function is recursive: if the given user hasn't got
+        direct access to this object and if he has got access to other
+        ``User`` objects, we check if one of those users owns the
+        object.
 
         :param obj: a admin object
         :return: a boolean

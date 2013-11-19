@@ -119,7 +119,7 @@ TwocolsNav.prototype = {
     load_section: function(e) {
         var $link = get_target(e);
         e.preventDefault();
-        this.navobj.baseurl($link.attr("href")).update();
+        this.navobj.parse_string($link.attr("href"), true).update();
     },
 
 

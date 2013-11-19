@@ -67,7 +67,7 @@ def rdomain_modify_link(domain):
             'modoboa.extensions.postfix_relay_domains.views.edit',
             args=[domain.id]
         ),
-        'modalcb': 'rdomain.domainform_cb'
+        'modalcb': 'rdomain.editdomain_form_cb'
     }
 
 

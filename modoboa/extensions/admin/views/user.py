@@ -31,9 +31,9 @@ def forward(request, tplname='admin/forward.html'):
             if form.cleaned_data["keepcopies"]:
                 intdests += [mb]
             form.parse_dest()
-            al.save(int_rcpts=intdests, ext_rcpts=form.dests)
-            if request.user.group != "SimpleUsers":
-                al.post_create(request.user)
+            al.save(
+                int_rcpts=intdests, ext_rcpts=form.dests, creator=request.user
+            )
             return render_to_json_response(_("Forward updated"))
 
         return render_to_json_response(

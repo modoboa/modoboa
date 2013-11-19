@@ -1,7 +1,7 @@
 import reversion
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.exceptions import BadRequest
+from modoboa.lib.exceptions import BadRequest, Conflict
 from .base import AdminObject
 from .domain import Domain
 
@@ -38,6 +38,12 @@ class DomainAlias(AdminObject):
         if len(row) < 4:
             raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
+        try:
+            Domain.objects.get(name=self.name)
+        except Domain.DoesNotExist:
+            pass
+        else:
+            raise Conflict(_("A domain %s already exists" % self.name))
         domname = row[2].strip()
         try:
             self.target = Domain.objects.get(name=domname)
