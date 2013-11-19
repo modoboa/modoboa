@@ -236,9 +236,10 @@ class User(PermissionsMixin):
     def can_access(self, obj):
         """Check if the user can access a specific object
 
-        This function is recursive : if the given user hasn't got direct
-        access to this object and if he has got access other ``User``
-        objects, we check if one of those users owns the object.
+        This function is recursive: if the given user hasn't got
+        direct access to this object and if he has got access to other
+        ``User`` objects, we check if one of those users owns the
+        object.
 
         :param obj: a admin object
         :return: a boolean
