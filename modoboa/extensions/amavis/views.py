@@ -147,7 +147,7 @@ def viewmail(request, mail_id):
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
-    menu = viewm_menu(request.user, mail_id, rcpt)
+    menu = viewm_menu(mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
     request.session['location'] = 'viewmail'
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")

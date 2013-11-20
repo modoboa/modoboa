@@ -234,6 +234,19 @@ function parse_qs(raw) {
 }
 
 /*
+ * Extract a specific URL parameter using its name.
+ *
+ * Ref: http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
+ */
+function get_parameter_by_name(url, name) {
+    var name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(url);
+
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+/*
  * Return the target associated to an event object.
  */
 function get_target(e, tag) {

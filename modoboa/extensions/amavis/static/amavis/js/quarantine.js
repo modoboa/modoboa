@@ -167,7 +167,9 @@ Quarantine.prototype = {
         }
         $.ajax({
             url: $link.attr("href"),
-            dataType: 'json'
+            dataType: 'json',
+            type: 'POST',
+            data: {rcpt: get_parameter_by_name($link.attr("href"), 'rcpt')}
         }).done($.proxy(this.action_cb, this));
     },
 

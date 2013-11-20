@@ -9,7 +9,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def viewm_menu(user, mail_id, rcpt):
+def viewm_menu(mail_id, rcpt):
     entries = [
         {"name": "release",
          "img": "icon-white icon-ok",
