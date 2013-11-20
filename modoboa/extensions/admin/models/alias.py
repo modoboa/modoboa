@@ -117,14 +117,18 @@ class Alias(AdminObject):
             if not t in int_rcpts:
                 self.mboxes.remove(t)
 
-    def get_recipients(self):
-        """Return the recipients list
+    def get_recipients(self, with_external=True):
+        """Return the recipients list.
 
         Internal and external addresses are mixed into a single list.
+
+        :param bool with_external: include external addresses or not
+        :rtype: list
+        :return: a list of addresses
         """
         result = [al.full_address for al in self.aliases.all()]
         result += [mb.full_address for mb in self.mboxes.all()]
-        if self.extmboxes != "":
+        if with_external and self.extmboxes != "":
             result += self.extmboxes.split(',')
         return result
 

@@ -114,6 +114,17 @@ class Mailbox(AdminObject):
             self.__mail_home = output.strip()
         return self.__mail_home
 
+    @property
+    def alias_addresses(self):
+        """Return all alias address of this mailbox.
+
+        :rtype: list of string
+        """
+        aliases = []
+        for alias in self.alias_set.all():
+            aliases += [alias.full_address]
+        return aliases
+
     def rename_dir(self, old_mail_home):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":

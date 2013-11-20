@@ -10,7 +10,7 @@ from django.contrib.auth.decorators \
     import login_required, user_passes_test
 from django.db.models import Q
 from modoboa.lib import parameters
-from modoboa.lib.exceptions import ModoboaException, BadRequest
+from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.webutils import (
     getctx, ajax_response, render_to_json_response
 )
@@ -136,15 +136,11 @@ def viewmail_selfservice(request, mail_id,
 
 @selfservice(viewmail_selfservice)
 def viewmail(request, mail_id):
-    if request.user.group != 'SimpleUsers':
-        rcpt = request.GET["rcpt"]
-    else:
-        rcpt = None
-
+    rcpt = request.GET["rcpt"]
     if request.user.mailbox_set.count():
         mb = Mailbox.objects.get(user=request.user)
-        if not rcpt or rcpt == mb.full_address:
-            msgrcpt = get_wrapper().get_recipient_message(mb.full_address, mail_id)
+        if rcpt in mb.alias_addresses:
+            msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
             msgrcpt.rs = 'V'
             msgrcpt.save()
 
@@ -170,8 +166,8 @@ def viewheaders(request, mail_id):
 
 def check_mail_id(request, mail_id):
     if type(mail_id) in [str, unicode]:
-        if "rcpt" in request.GET:
-            mail_id = ["%s %s" % (request.GET["rcpt"], mail_id)]
+        if "rcpt" in request.POST:
+            mail_id = ["%s %s" % (request.POST["rcpt"], mail_id)]
         else:
             mail_id = [mail_id]
     return mail_id
@@ -193,21 +189,16 @@ def delete_selfservice(request, mail_id):
 @selfservice(delete_selfservice)
 def delete(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
-    if request.user.group == 'SimpleUsers':
-        mb = Mailbox.objects.get(user=request.user)
-        msgrcpts = get_wrapper().get_recipient_messages(mb.full_address, mail_id)
-        #msgrcpts.update(rs='D')
-        for msgrcpt in msgrcpts:
-            msgrcpt.rs = 'D'
-            msgrcpt.save()
-    else:
-        wrapper = get_wrapper()
-        for mid in mail_id:
-            r, i = mid.split()
-            msgrcpt = wrapper.get_recipient_message(r, i)
-            msgrcpt.rs = 'D'
-            msgrcpt.save()
-
+    wrapper = get_wrapper()
+    mb = Mailbox.objects.get(user=request.user) \
+        if request.user.group == 'SimpleUsers' else None
+    for mid in mail_id:
+        r, i = mid.split()
+        if mb is not None and not r in mb.alias_addresses:
+            continue
+        msgrcpt = wrapper.get_recipient_message(r, i)
+        msgrcpt.rs = 'D'
+        msgrcpt.save()
     message = ungettext("%(count)d message deleted successfully",
                         "%(count)d messages deleted successfully",
                         len(mail_id)) % {"count": len(mail_id)}
@@ -245,32 +236,36 @@ def release_selfservice(request, mail_id):
 
 @selfservice(release_selfservice)
 def release(request, mail_id):
+    """Release message selection.
+
+    :param str mail_id: message unique identifier
+    """
     mail_id = check_mail_id(request, mail_id)
-    if request.user.group == 'SimpleUsers':
-        mb = Mailbox.objects.get(user=request.user)
-        msgrcpts = get_wrapper().get_recipient_messages(mb.full_address, mail_id)
-        if parameters.get_admin("USER_CAN_RELEASE") == "no":
-            # FIXME : can't use this syntax because extra SQL (using
-            # .extra() for postgres) is not propagated (the 'tables'
-            # parameter is lost somewhere...)
-            #
-            # msgrcpts.update(rs='p')
-            for msgrcpt in msgrcpts:
-                msgrcpt.rs = 'p'
-                msgrcpt.save()
-            message = ungettext("%(count)d request sent",
-                                "%(count)d requests sent",
-                                len(mail_id)) % {"count": len(mail_id)}
-            return ajax_response(
-                request, "ok", respmsg=message,
-                url=QuarantineNavigationParameters(request).back_to_listing()
-            )
-    else:
-        msgrcpts = []
-        wrapper = get_wrapper()
-        for mid in mail_id:
-            r, i = mid.split()
-            msgrcpts += [wrapper.get_recipient_message(r, i)]
+    msgrcpts = []
+    wrapper = get_wrapper()
+    mb = Mailbox.objects.get(user=request.user) \
+        if request.user.group == 'SimpleUsers' else None
+    for mid in mail_id:
+        r, i = mid.split()
+        if mb is not None and not r in mb.alias_addresses:
+            continue
+        msgrcpts += [wrapper.get_recipient_message(r, i)]
+    if mb is not None and parameters.get_admin("USER_CAN_RELEASE") == "no":
+        # FIXME : can't use this syntax because extra SQL (using
+        # .extra() for postgres) is not propagated (the 'tables'
+        # parameter is lost somewhere...)
+        #
+        # msgrcpts.update(rs='p')
+        for msgrcpt in msgrcpts:
+            msgrcpt.rs = 'p'
+            msgrcpt.save()
+        message = ungettext("%(count)d request sent",
+                            "%(count)d requests sent",
+                            len(mail_id)) % {"count": len(mail_id)}
+        return ajax_response(
+            request, "ok", respmsg=message,
+            url=QuarantineNavigationParameters(request).back_to_listing()
+        )
 
     amr = AMrelease()
     error = None

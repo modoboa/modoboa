@@ -25,7 +25,6 @@
         },
 
         listen: function() {
-
             $(document)
                 .off("click", "tbody>tr")
                 .on("click", "tbody>tr",

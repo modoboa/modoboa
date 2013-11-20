@@ -99,12 +99,7 @@ def quar_menu(user):
               "label": _("Bad MIME")}
          ]}
     ]
-
-    if user.group != 'SimpleUsers':
-        extraopts = [{"name": "to", "label": _("To")}]
-    else:
-        extraopts = []
-    
+    extraopts = [{"name": "to", "label": _("To")}]   
     return render_to_string('amavis/main_action_bar.html', {
         'entries': entries, 'extraopts': extraopts,
         'STATIC_URL': settings.STATIC_URL, 'extraclasses': 'pull-left'

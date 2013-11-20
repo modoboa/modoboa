@@ -9,7 +9,7 @@ from modoboa.lib.webutils import static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import Email
 from modoboa.lib.dbutils import db_type
-from modoboa.extensions.admin.models import Domain
+from modoboa.extensions.admin.models import Domain, Alias
 from .models import Quarantine, Msgrcpt
 
 
@@ -34,10 +34,7 @@ class Qtable(tables.Table):
     cols_order = []
 
     def parse_type(self, value):
-        if value in ['S', 'V']:
-            color = 'important'
-        else:
-            color = 'warning'
+        color = 'important' if value in ['S', 'V'] else 'warning'
         return '<span class="label label-%s">%s</span>' % (color, value)
 
     def parse_date(self, value):
@@ -124,22 +121,25 @@ class SQLWrapper(object):
     """
 
     def get_mails(self, request, rcptfilter=None):
-        if request.GET.get("viewrequests", None) == "1":
-            q = Q(rs='p')
-        else:
-            q = ~Q(rs='D')
+        """Retrieve all messages visible by a user.
 
+        Simple users can only see the messages 
+
+        :rtype: QuerySet
+        """
+        q = Q(rs='p') \
+            if request.GET.get("viewrequests", None) == "1" else ~Q(rs='D')
         if request.user.group == 'SimpleUsers':
-            q &= Q(rid__email=request.user.email)
-        else:
-            if not request.user.is_superuser:
-                doms = Domain.objects.get_for_admin(request.user)
-                regexp = "(%s)" % '|'.join([dom.name for dom in doms])
-                doms_q = Q(rid__email__regex=regexp)
-                q &= doms_q
-            if rcptfilter is not None:
-                q &= Q(rid__email__contains=rcptfilter)
-
+            rcpts = [request.user.email] \
+                + request.user.mailbox_set.all()[0].alias_addresses
+            q &= Q(rid__email__in=rcpts)
+        elif not request.user.is_superuser:
+            doms = Domain.objects.get_for_admin(request.user)
+            regexp = "(%s)" % '|'.join([dom.name for dom in doms])
+            doms_q = Q(rid__email__regex=regexp)
+            q &= doms_q
+        if rcptfilter is not None:
+            q &= Q(rid__email__contains=rcptfilter)
         return Msgrcpt.objects.filter(q).values("mail_id")
 
     def get_recipient_message(self, address, mailid):
@@ -179,24 +179,23 @@ class PgWrapper(SQLWrapper):
     """
 
     def get_mails(self, request, rcptfilter=None):
-        if request.GET.get("viewrequests", None) == "1":
-            q = Q(rs='p')
-        else:
-            q = ~Q(rs='D')
+        q = Q(rs='p') \
+            if request.GET.get("viewrequests", None) == "1" else ~Q(rs='D')
         where = ["U0.rid=maddr.id"]
         if request.user.group == 'SimpleUsers':
-            where.append("convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email)
-            return Msgrcpt.objects.filter(q).extra(
-                where=where, tables=['maddr']
-            )
-
-        if not request.user.is_superuser:
+            rcpts = [request.user.email] \
+                + request.user.mailbox_set.all()[0].alias_addresses
+            where.append("convert_from(maddr.email, 'UTF8') IN (%s)" \
+                             % (','.join(["'%s'" % rcpt for rcpt in rcpts])))
+        elif not request.user.is_superuser:
             doms = Domain.objects.get_for_admin(request.user)
             regexp = "(%s)" % '|'.join([dom.name for dom in doms])
             where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
         if rcptfilter is not None:
-            where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'" % rcptfilter)
-        return Msgrcpt.objects.filter(q).extra(where=where, tables=['maddr']).values("mail_id")
+            where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'"
+                         % rcptfilter)
+        return Msgrcpt.objects.filter(q)\
+            .extra(where=where, tables=['maddr']).values("mail_id")
 
     def get_recipient_message(self, address, mailid):
         qset = Msgrcpt.objects.filter(mail=mailid).extra(
@@ -255,10 +254,8 @@ class SQLlisting(EmailListing):
     reset_wm_url = True
 
     def __init__(self, user, msgs, filter, **kwargs):
-        if user.group == 'SimpleUsers':
-            Qtable.cols_order = ['type', 'score', 'rstatus', 'from_', 'subject', 'time']
-        else:
-            Qtable.cols_order = ['type', 'score', 'rstatus', 'to', 'from_', 'subject', 'time']
+        Qtable.cols_order = ['type', 'score', 'rstatus', 'to', 'from_',
+                             'subject', 'time']
         self.mbc = SQLconnector(msgs, filter)
         super(SQLlisting, self).__init__(**kwargs)
         self.show_listing_headers = True
