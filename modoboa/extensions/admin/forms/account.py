@@ -192,6 +192,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         elif account.group == "SimpleUsers" and account.username != self.mb.full_address:
             newaddress = account.username
         if newaddress is not None:
+            self.mb.old_full_address = self.mb.full_address
             local_part, domname = split_mailbox(newaddress)
             try:
                 domain = Domain.objects.get(name=domname)
@@ -207,6 +208,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             else False
         self.mb.set_quota(self.cleaned_data["quota"], override_rules)
         self.mb.save()
+        events.raiseEvent('MailboxModified', self.mb)
 
     def save(self, user, account):
         if self.cleaned_data["email"] == "":

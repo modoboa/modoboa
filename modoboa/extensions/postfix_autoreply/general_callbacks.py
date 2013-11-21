@@ -85,10 +85,10 @@ def onMailboxDeleted(mailboxes):
 
 
 @events.observe("MailboxModified")
-def onModifyMailbox(mailbox, oldmailbox):
-    if oldmailbox.full_address == mailbox.full_address:
+def onMailboxModified(mailbox):
+    if mailbox.full_address == mailbox.old_full_address:
         return
-    alias = Alias.objects.get(full_address=oldmailbox.full_address)
+    alias = Alias.objects.get(full_address=mailbox.old_full_address)
     alias.full_address = mailbox.full_address
     alias.autoreply_address =  \
         "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)

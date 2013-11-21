@@ -29,7 +29,7 @@ class ARmessage(models.Model):
         help_text=_("Activate/Deactivate your auto reply")
     )
     fromdate = models.DateTimeField(default=timezone.now)
-    untildate = models.DateTimeField()
+    untildate = models.DateTimeField(null=True, blank=True)
 
 
 class ARhistoric(models.Model):
