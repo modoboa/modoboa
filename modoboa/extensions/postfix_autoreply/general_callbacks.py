@@ -1,6 +1,8 @@
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.extensions.postfix_autoreply.models import Transport, Alias
+from .models import ARmessage
 
 
 @events.observe("ExtraUprefsJS")
@@ -91,3 +93,52 @@ def onModifyMailbox(mailbox, oldmailbox):
     alias.autoreply_address =  \
         "%s@autoreply.%s" % (mailbox.full_address, mailbox.domain.name)
     alias.save()
+
+
+@events.observe("ExtraFormFields")
+def extra_mailform_fields(form_name, mailbox=None):
+    """Define extra fields to include in mail forms.
+
+    For now, only the auto-reply state can be modified.
+
+    :param str form_name: form name (must be 'mailform')
+    :param Mailbox mailbox: mailbox
+    """
+    from modoboa.lib.formutils import YesNoField
+
+    if form_name != "mailform":
+        return []
+    status = False
+    if mailbox is not None and mailbox.armessage_set.count():
+        status = mailbox.armessage_set.all()[0].enabled
+    return [
+        ('autoreply', YesNoField(
+            label=ugettext_lazy("Enable auto-reply"),
+            initial="yes" if status else "no",
+            help_text=ugettext_lazy("Enable or disable Postfix auto-reply")
+        ))
+    ]
+
+
+@events.observe("SaveExtraFormFields")
+def save_extra_mailform_fields(form_name, mailbox, values):
+    """Set the auto-reply status for a mailbox.
+
+    If a corresponding auto-reply message exists, we update its
+    status. Otherwise, we create a message using default values.
+
+    :param str form_name: form name (must be 'mailform')
+    :param Mailbox mailbox: mailbox
+    :param dict values: form values
+    """
+    if form_name != 'mailform':
+        return
+    if mailbox.armessage_set.count():
+        arm = mailbox.armessage_set.all()[0]
+    else:
+        arm = ARmessage(mbox=mailbox)
+        arm.subject = parameters.get_admin("DEFAULT_SUBJECT")
+        arm.content = parameters.get_admin("DEFAULT_CONTENT")
+        arm.fromdate = timezone.now()
+    arm.enabled = True if values['autoreply'] == 'yes' else False
+    arm.save()

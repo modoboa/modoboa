@@ -1,8 +1,9 @@
 # coding: utf-8
 import re
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.forms import ChoiceField
 from django.forms.widgets import RadioSelect, RadioInput
-from django.forms.fields import CharField, Field, ChoiceField
+from django.forms.fields import CharField, Field
 from django.core.exceptions import ValidationError
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
