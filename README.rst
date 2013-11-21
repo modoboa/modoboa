@@ -26,12 +26,12 @@ frameworks.
 Main features
 *************
 
- * Administration panel
- * `Amavisd-new <http://www.amavis.org>`_ frontend
- * Webmail
- * Per-user Sieve filters
- * Autoreply messages for Postfix
- * Graphical statistics about email traffic
+* Administration panel
+* `Amavisd-new <http://www.amavis.org>`_ frontend
+* Webmail
+* Per-user Sieve filters
+* Autoreply messages for Postfix
+* Graphical statistics about email traffic
 
 *************
 Documentation
