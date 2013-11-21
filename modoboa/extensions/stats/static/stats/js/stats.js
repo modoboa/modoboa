@@ -44,10 +44,11 @@ Stats.prototype = {
         if (navobj.params.end) {
             $("#id_to").val(navobj.params.end);
         }
-        $("#custom-period input").datepicker({
-            format: 'yyyy-mm-dd',
+        $("#custom-period input").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
             autoclose: true,
             todayHighlight: true,
+            todayBtn: 'linked',
             language: this.options.language
         });
         $("#searchquery").autocompleter({

@@ -26,6 +26,7 @@ def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
             form = ARmessageForm(request.POST)
         if form.is_valid():
             arm = form.save(commit=False)
+            arm.fromdate = form.cleaned_data["fromdate"]
             arm.untildate = form.cleaned_data["untildate"]
             arm.mbox = mb
             arm.save()
@@ -38,10 +39,10 @@ def autoreply(request, tplname="postfix_autoreply/autoreply.html"):
         )
 
     form = ARmessageForm(instance=arm)
-    if arm is not None:
-        form.fields['untildate'].initial = arm.untildate
-    else:
-        form.fields['untildate'].initial = date.today()
+    # if arm is not None:
+    #     form.fields['untildate'].initial = arm.untildate
+    # else:
+    #     form.fields['untildate'].initial = date.today()
     return render_to_json_response({
         "content": _render_to_string(request, tplname, {"form": form}),
         "onload_cb": "autoreply_cb"

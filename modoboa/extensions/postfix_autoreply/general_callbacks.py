@@ -6,9 +6,15 @@ from modoboa.extensions.postfix_autoreply.models import Transport, Alias
 @events.observe("ExtraUprefsJS")
 def extra_js(user):
     return ["""function autoreply_cb() {
-    $('#id_untildate').datepicker({format: 'yyyy-mm-dd', language: '%s'});
+    $('.datefield').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss',
+        language: '%(lang)s',
+        autoclose: true,
+        todayHighlight: true,
+        todayBtn: 'linked'
+    });
 }
-""" % parameters.get_user(user, "LANG", app="core")
+""" % {'lang': parameters.get_user(user, "LANG", app="core")}
     ]
 
 
