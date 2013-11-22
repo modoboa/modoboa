@@ -138,7 +138,8 @@ def save_extra_mailform_fields(form_name, mailbox, values):
     else:
         arm = ARmessage(mbox=mailbox)
         arm.subject = parameters.get_admin("DEFAULT_SUBJECT")
-        arm.content = parameters.get_admin("DEFAULT_CONTENT")
+        arm.content = parameters.get_admin("DEFAULT_CONTENT") \
+            % {'name': mailbox.user.fullname}
         arm.fromdate = timezone.now()
     arm.enabled = True if values['autoreply'] == 'yes' else False
     arm.save()

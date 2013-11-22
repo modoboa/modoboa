@@ -39,3 +39,16 @@ Best regards,
         ),
         widget=forms.widgets.Textarea
     )
+
+    def clean_default_content(self):
+        """Check if the provided value is valid.
+
+        Must be a valid format string which will be used with the %
+        operator.
+        """
+        tpl = self.cleaned_data["default_content"]
+        try:
+            test = tpl % {"name": "Antoine Nguyen"}
+        except (KeyError, ValueError):
+            raise forms.ValidationError(ugettext_lazy("Invalid syntax"))
+        return tpl
