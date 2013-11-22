@@ -1,7 +1,7 @@
 # coding: utf-8
+import json
 from django.test import TestCase
 from django.test.client import Client
-from django.utils import simplejson
 from django import forms
 from django.core.urlresolvers import reverse
 from modoboa.lib import parameters
@@ -17,7 +17,7 @@ class ModoTestCase(TestCase):
         response = getattr(self.clt, method) \
             (url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, status)
-        return simplejson.loads(response.content)
+        return json.loads(response.content)
 
     def ajax_post(self, *args, **kwargs):
         return self.ajax_request('post', *args, **kwargs)

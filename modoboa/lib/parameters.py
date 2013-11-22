@@ -58,6 +58,9 @@ class GenericParametersForm(forms.Form):
     def _load_initial_values(self):
         raise NotImplementedError
 
+    def _decode_value(self, value):
+        return value.decode('unicode_escape').replace('\\r\\n', '\n')
+
     def _load_extra_parameters(self, level):
         params = events.raiseDictEvent('GetExtraParameters', self.app, level)
         for pname, pdef in params.items():
@@ -85,7 +88,7 @@ class AdminParametersForm(GenericParametersForm):
 
         names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
         for p in Parameter.objects.filter(name__in=names):
-            self.fields[p.shortname].initial = p.value
+            self.fields[p.shortname].initial = self._decode_value(p.value)
 
     def save(self):
         from .models import Parameter
@@ -127,7 +130,7 @@ class UserParametersForm(GenericParametersForm):
 
         names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
         for p in UserParameter.objects.filter(user=self.user, name__in=names):
-            self.fields[p.shortname].initial = p.value
+            self.fields[p.shortname].initial = self._decode_value(p.value)
 
     @staticmethod
     def has_access(user):
@@ -256,7 +259,7 @@ def get_admin(name, app=None, raise_error=True):
         p = Parameter.objects.get(name="%s.%s" % (app, name))
     except Parameter.DoesNotExist:
         return _params["A"][app]["defaults"][name]
-    return p.value.decode("unicode_escape")
+    return p.value.decode("unicode_escape").replace('\\r\\n', '\n')
 
 
 def get_user(user, name, app=None, raise_error=True):
