@@ -1,16 +1,15 @@
 # coding: utf-8
 import email
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, Http404
 from django.template import Template, Context
-from django.utils import simplejson
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, user_passes_test
 from django.db.models import Q
 from modoboa.lib import parameters
-from modoboa.lib.exceptions import ModoboaException, BadRequest
+from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.webutils import (
     getctx, ajax_response, render_to_json_response
 )
@@ -49,7 +48,7 @@ def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content, navbar="",
                  menu=quar_menu(request.user))
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return render_to_json_response(ctx)
 
 
 @login_required
@@ -107,7 +106,7 @@ def _listing(request):
     navbar = lst.render_navbar(page, "listing/?")
     ctx = getctx("ok", listing=content, navbar=navbar,
                  menu=quar_menu(request.user))
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return render_to_json_response(ctx)
 
 
 @login_required
@@ -178,7 +177,7 @@ def viewmail(request, mail_id):
 """).render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
     menu = viewm_menu(request.user, mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return render_to_json_response(ctx)
 
 
 @login_required

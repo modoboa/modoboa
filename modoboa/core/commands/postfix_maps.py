@@ -2,6 +2,8 @@
 import getpass
 import inspect
 import os
+import sys
+import datetime
 from django.template import Context, Template
 from . import Command
 
@@ -46,6 +48,12 @@ query = {{ query|safe }}
                              query=getattr(v, args.dbtype)))
             )
             with open("%s/%s" % (args.destdir, v.filename), "w") as fp:
+                print >> fp, """# This file was generated on %s by running:
+# %s %s
+# DO NOT EDIT!
+""" % (datetime.datetime.now().isoformat(),
+       os.path.basename(sys.argv[0]),
+       ' '.join(sys.argv[1:]))
                 print >> fp, content
 
 

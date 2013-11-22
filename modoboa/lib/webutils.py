@@ -5,12 +5,12 @@ This module contains extra functions/shortcuts used to render HTML.
 """
 import sys
 import re
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django import template
-from django.utils import simplejson
 from django.conf import settings
 
 
@@ -86,7 +86,7 @@ def ajax_response(request, status="ok", respmsg=None,
     if url is not None:
         jsonctx["url"] = url
     jsonctx["norefresh"] = norefresh
-    return HttpResponse(simplejson.dumps(jsonctx), mimetype="application/json")
+    return HttpResponse(json.dumps(jsonctx), mimetype="application/json")
 
 
 def render_to_json_response(context, **response_kwargs):
@@ -95,7 +95,7 @@ def render_to_json_response(context, **response_kwargs):
     :param dict context: response content
     :return: ``HttpResponse`` object
     """
-    data = simplejson.dumps(context)
+    data = json.dumps(context)
     response_kwargs['content_type'] = 'application/json'
     return HttpResponse(data, **response_kwargs)
 
