@@ -136,7 +136,9 @@ def tohtml(message):
 
 @register.simple_tag
 def visirule(field):
-    if not hasattr(field.form, "visirules") or not field.html_name in field.form.visirules:
+    if not hasattr(field, 'form') or \
+            not hasattr(field.form, "visirules") or \
+            not field.html_name in field.form.visirules:
         return ""
     rule = field.form.visirules[field.html_name]
     return " data-visibility-field='%s' data-visibility-value='%s' " \

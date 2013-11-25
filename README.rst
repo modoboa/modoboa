@@ -26,12 +26,12 @@ frameworks.
 Main features
 *************
 
- * Administration panel
- * `Amavisd-new <http://www.amavis.org>`_ frontend
- * Webmail
- * Per-user Sieve filters
- * Autoreply messages for Postfix
- * Graphical statistics about email traffic
+* Administration panel
+* `Amavisd-new <http://www.amavis.org>`_ frontend
+* Webmail
+* Per-user Sieve filters
+* Autoreply messages for Postfix
+* Graphical statistics about email traffic
 
 *************
 Documentation
@@ -54,10 +54,10 @@ External code
 
 The following external libraries are provided with Modoboa:
 
-* jQuery version 1.9.1 (http://www.jquery.org/)
-* jQuery-UI 1.10+ (http://jqueryui.com/)
-* Bootstrap, from Twitter version 2.3.1 (http://twitter.github.com/bootstrap/)
-* Bootstrap datepicker (https://bitbucket.org/eternicode/bootstrap-datepicker)
+* `jQuery version 1.9.1 <http://www.jquery.org/>`_
+* `jQuery-UI 1.10+ <http://jqueryui.com/>`_
+* `Bootstrap, from Twitter version 2.3.2 <http://twitter.github.com/bootstrap/>`_
+* `Bootstrap datetimepicker <http://www.malot.fr/bootstrap-datetimepicker/index.php>`_
 
 .. |latest-version| image:: https://pypip.in/v/modoboa/badge.png
    :alt: Latest version on Pypi

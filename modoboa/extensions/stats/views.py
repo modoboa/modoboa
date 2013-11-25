@@ -1,4 +1,5 @@
 # coding: utf-8
+import re
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import (
@@ -70,12 +71,13 @@ def graphs(request):
         start = request.GET["start"]
         end = request.GET["end"]
         G = Grapher()
-        period_name = "%s_%s" % (start.replace('-', ''), end.replace('-', ''))
+        expr = re.compile(r'[:\- ]')
+        period_name = "%s_%s" % (expr.sub('', start), expr.sub('', end))
         for tpl in gsets[gset].get_graphs():
             tplvars['graphs'].append(tpl.display_name)
             G.process(
-                tplvars["domain"], period_name, str2Time(*start.split('-')),
-                str2Time(*end.split('-')), tpl
+                tplvars["domain"], period_name, str2Time(*expr.split(start)),
+                str2Time(*expr.split(end)), tpl
             )
         tplvars["period_name"] = period_name
         tplvars["start"] = start

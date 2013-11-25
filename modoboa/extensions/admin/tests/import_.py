@@ -53,8 +53,8 @@ domainalias;test.alias;test.com;True
 
     def test_identities_import(self):
         f = ContentFile(b"""
-account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
-account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; test.com
+account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 0
+account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 5; test.com
 alias; alias1@test.com; True; user1@test.com
 forward; fwd1@test.com; True; user@extdomain.com
 dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
@@ -65,20 +65,26 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         )
         admin = User.objects.get(username="admin")
         u1 = User.objects.get(username="user1@test.com")
+        mb1 = u1.mailbox_set.all()[0]
         self.assertTrue(admin.is_owner(u1))
         self.assertEqual(u1.email, "user1@test.com")
         self.assertEqual(u1.first_name, "User")
         self.assertEqual(u1.last_name, "One")
         self.assertTrue(u1.is_active)
         self.assertEqual(u1.group, "SimpleUsers")
-        self.assertTrue(admin.is_owner(u1.mailbox_set.all()[0]))
-        self.assertEqual(u1.mailbox_set.all()[0].full_address, "user1@test.com")
+        self.assertTrue(mb1.use_domain_quota)
+        self.assertEqual(mb1.quota, 0)
+        self.assertTrue(admin.is_owner(mb1))
+        self.assertEqual(mb1.full_address, "user1@test.com")
         self.assertTrue(self.clt.login(username="user1@test.com", password="toto"))
 
         da = User.objects.get(username="truc@test.com")
+        damb = da.mailbox_set.all()[0]
         self.assertEqual(da.first_name, u"René")
         self.assertEqual(da.group, "DomainAdmins")
-        self.assertEqual(da.mailbox_set.all()[0].full_address, "truc@test.com")
+        self.assertEqual(damb.quota, 5)
+        self.assertFalse(damb.use_domain_quota)
+        self.assertEqual(damb.full_address, "truc@test.com")
         dom = Domain.objects.get(name="test.com")
         self.assertIn(da, dom.admins)
         u = User.objects.get(username="user@test.com")
@@ -97,10 +103,22 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         self.assertIn("user@extdomain.com", dlist.extmboxes)
         self.assertTrue(admin.is_owner(dlist))
 
+    def test_import_invalid_quota(self):
+        self.clt.logout()
+        self.clt.login(username="admin@test.com", password="toto")
+        f = ContentFile(b"""
+account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 20
+""", name="identities.csv")
+        resp = self.clt.post(
+            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            {"sourcefile": f, "crypt_password": True}
+        )
+        self.assertIn('Quota is greater than the allowed', resp.content)
+
     def test_import_duplicate(self):
         f = ContentFile(b"""
-account; admin@test.com; toto; Admin; ; True; DomainAdmins; admin@test.com; test.com
-account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; test.com
+account; admin@test.com; toto; Admin; ; True; DomainAdmins; admin@test.com; 0; test.com
+account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0; test.com
 """, name="identities.csv")
         self.clt.post(
             reverse("modoboa.extensions.admin.views.import.import_identities"),
@@ -119,7 +137,7 @@ account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; te
         self.clt.logout()
         self.assertTrue(self.clt.login(username="admin@test.com", password="toto"))
         f = ContentFile(b"""
-account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com
+account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com; 50
 """, name="identities.csv")
         self.clt.post(
             reverse("modoboa.extensions.admin.views.import.import_identities"),

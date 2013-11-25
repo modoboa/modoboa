@@ -304,11 +304,13 @@ class User(PermissionsMixin):
             self.post_create(creator)
 
     def from_csv(self, user, row, crypt_password=True):
-        """Create a new account from a CSV file entry
+        """Create a new account from a CSV file entry.
 
         The expected order is the following::
 
-        "account", loginname, password, first name, last name, enabled, group, address[, domain, ...]
+        "account", loginname, password, first name, last name, enabled, group
+
+        Additional fields can be added using the *AccountImported* event.
 
         :param user: a ``core.User`` instance
         :param row: a list containing the expected information
@@ -346,6 +348,12 @@ class User(PermissionsMixin):
         events.raiseEvent("AccountImported", user, self, row[7:])
 
     def to_csv(self, csvwriter):
+        """Export this account.
+
+        The CSV format is used to export.
+
+        :param csvwriter: csv object
+        """
         row = ["account", self.username.encode("utf-8"), self.password.encode("utf-8"),
                self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
                self.is_active, self.group, self.email.encode("utf-8")]

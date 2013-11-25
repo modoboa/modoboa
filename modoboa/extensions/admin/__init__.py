@@ -133,13 +133,25 @@ def grant_access_to_all_objects(user, role):
 
 @events.observe("AccountExported")
 def export_admin_domains(admin):
+    result = [admin.mailbox_set.all()[0].quota] \
+        if admin.mailbox_set.count() else ['']
     if admin.group != "DomainAdmins":
-        return []
-    return [dom.name for dom in Domain.objects.get_for_admin(admin)]
+        return result
+    return result + [dom.name for dom in Domain.objects.get_for_admin(admin)]
 
 
 @events.observe("AccountImported")
 def import_account_mailbox(user, account, row):
+    """Handle extra fields when an account is imported.
+
+    Expected fields:
+
+    email address; quota; [domain; ...]
+
+    :param User user: user importing the account
+    :param User account: account being imported
+    :param list rom: list of fields (strings)
+    """
     account.email = row[0].strip()
     if account.email != "":
         account.save()
@@ -152,12 +164,14 @@ def import_account_mailbox(user, account, row):
             )
         if not user.can_access(domain):
             raise PermDeniedException
+        quota = int(row[1].strip())
+        use_domain_quota = True if not quota else False
         mb = Mailbox(address=mailbox, domain=domain,
-                     user=account, use_domain_quota=True)
-        mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
+                     user=account, use_domain_quota=use_domain_quota)
+        mb.set_quota(quota, override_rules=user.has_perm("admin.change_domain"))
         mb.save(creator=user)
     if account.group == "DomainAdmins":
-        for domname in row[1:]:
+        for domname in row[2:]:
             try:
                 dom = Domain.objects.get(name=domname.strip())
             except Domain.DoesNotExist:

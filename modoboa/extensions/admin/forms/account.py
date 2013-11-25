@@ -6,7 +6,7 @@ from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.formutils import (
-    DomainNameField, DynamicForm, TabForms
+    DomainNameField, DynamicForm, TabForms, YesNoField
 )
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
@@ -132,8 +132,14 @@ class AccountFormMail(forms.Form, DynamicForm):
         if "instance" in kwargs:
             self.mb = kwargs["instance"]
             del kwargs["instance"]
+        else:
+            self.mb = None
         super(AccountFormMail, self).__init__(*args, **kwargs)
-        if hasattr(self, "mb") and self.mb is not None:
+        self.extra_fields = []
+        for fname, field in events.raiseQueryEvent('ExtraFormFields', 'mailform', self.mb):
+            self.fields[fname] = field
+            self.extra_fields.append(fname)
+        if self.mb is not None:
             self.fields["email"].required = True
             cpt = 1
             for alias in self.mb.alias_set.all():
@@ -186,6 +192,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         elif account.group == "SimpleUsers" and account.username != self.mb.full_address:
             newaddress = account.username
         if newaddress is not None:
+            self.mb.old_full_address = self.mb.full_address
             local_part, domname = split_mailbox(newaddress)
             try:
                 domain = Domain.objects.get(name=domname)
@@ -201,6 +208,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             else False
         self.mb.set_quota(self.cleaned_data["quota"], override_rules)
         self.mb.save()
+        events.raiseEvent('MailboxModified', self.mb)
 
     def save(self, user, account):
         if self.cleaned_data["email"] == "":
@@ -213,6 +221,9 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.create_mailbox(user, account)
         else:
             self.update_mailbox(user, account)
+        events.raiseEvent(
+            'SaveExtraFormFields', 'mailform', self.mb, self.cleaned_data
+        )
 
         account.email = self.cleaned_data["email"]
         account.save()

@@ -95,6 +95,16 @@ def render_fields_group(form, pattern):
 
 
 @register.simple_tag
+def render_extra_fields(form):
+    result = ''
+    for fname in form.extra_fields:
+        result += render_to_string("common/generic_field.html", {
+            'field': form[fname], 'help_display_mode': 'tooltip'
+        })
+    return result
+
+
+@register.simple_tag
 def pagination_bar(page):
     return render_to_string("common/pagination_bar.html", dict(
         page=page, baseurl="?"

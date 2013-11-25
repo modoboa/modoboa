@@ -35,7 +35,9 @@ base_events = [
     "ExtraUprefsRoutes",
     "ExtraUprefsJS",
 
-    "GetExtraParameters"
+    "GetExtraParameters",
+    "ExtraFormFields",
+    "SaveExtraFormFields"
 ]
 
 

@@ -202,7 +202,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         tpl = self.cleaned_data["ldap_user_dn_template"]
         try:
             test = tpl % {"user": "toto"}
-        except ValueError:
+        except (KeyError, ValueError):
             raise forms.ValidationError(_("Invalid syntax"))
         return tpl
 

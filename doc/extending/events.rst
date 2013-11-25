@@ -129,18 +129,6 @@ Raised when an existing account is modified.
 
 * ``newaccount`` is the account after the modification
 
-ExtraAccountActions
-===================
-
-Raised when the account list is displayed. Let developers define new
-actions to act on a specific user.
-
-*Callback prototype*::
-
-  def callback(account): pass
-
-* ``account`` is the account being listed
-
 AdminMenuDisplay
 ================
 
@@ -298,6 +286,18 @@ Raised just after an extension has been activated.
 
 * ``extension`` is an ``Extension`` instance
 
+ExtraAccountActions
+===================
+
+Raised when the account list is displayed. Let developers define new
+actions to act on a specific user.
+
+*Callback prototype*::
+
+  def callback(account): pass
+
+* ``account`` is the account being listed
+
 ExtraAccountForm
 ================
 
@@ -424,6 +424,25 @@ least three keys::
   {"name": "<menu name>",
    "label": "<menu label>",
    "url": "<menu url>"}
+
+.. _extraformfields:
+
+ExtraFormFields
+===============
+
+Raised to request extra fields to include in a django form.
+
+*Callback prototype*::
+
+  def callback(form_name, instance=None): pass
+
+* ``form_name`` is a string used to distinguish a specific form
+* ``instance`` is a django model instance related to ``form_name``
+
+Must return a list of 2uple, each one containing the following
+information::
+
+  ('field name', <Django form field instance>)
 
 ExtraRelayDomainForm
 ====================
@@ -840,6 +859,19 @@ Raised when the role of an account is about to be changed.
 
 * ``account`` is the account being modified
 * ``role`` is the new role (string)
+
+SaveExtraFormFields
+===================
+
+Raised to save extra fields declared using :ref:`extraformfields`.
+
+*Callback prototype*::
+
+  def callback(form_name, instance, values): pass
+
+* ``form_name`` is a string used to distinguish a specific form
+* ``instance`` is a django model instance related to ``form_name``
+* ``values`` is a dictionary containing the form's values
 
 UserCanSetRole
 ==============

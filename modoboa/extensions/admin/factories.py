@@ -13,11 +13,13 @@ class MailboxFactory(PermissionFactory):
     FACTORY_FOR = models.Mailbox
 
     quota = 10
+    enabled = True
 
 
 class AliasFactory(PermissionFactory):
     FACTORY_FOR = models.Alias
 
+    enabled = True
 
 def populate_database():
     """Create test data.
