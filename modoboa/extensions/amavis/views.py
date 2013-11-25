@@ -79,7 +79,7 @@ def _listing(request):
     paginbar = pagination_bar(page)
     ctx = getctx("ok", listing=content, paginbar=paginbar, page=page.number)
     if request.session.get('location', 'listing') != 'listing':
-        ctx['menu'] = quar_menu(request.user)
+        ctx['menu'] = quar_menu()
     request.session['location'] = 'listing'
     return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
 

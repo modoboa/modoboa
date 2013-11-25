@@ -66,41 +66,13 @@ def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
 
 
 @register.simple_tag
-def quar_menu(user):
-    entries = [
-        {"name": "release-multi",
-         "url": reverse('modoboa.extensions.amavis.views.process'),
-         "img": "icon-white icon-ok",
-         "class": "btn-success",
-         "label": _("Release")},
-        {"name": "delete-multi",
-         "img": "icon-white icon-trash",
-         "class": "btn-danger",
-         "url": reverse('modoboa.extensions.amavis.views.process'),
-         "label": _("Delete")},
-        {"name": "select",
-         "url": "",
-         "label": _("Content Class"),
-         "menu": [
-             {"name": "selectmsgs",
-              "url": "",
-              "label": _("Nothing")},
-             {"name": "selectmsgs",
-              "url": "S",
-              "label": _("Spam")},
-             {"name": "selectmsgs",
-              "url": "V",
-              "label": _("Virus")},
-             {"name": "selectmsgs",
-              "url": "H",
-              "label": _("Bad header")},
-             {"name": "selectmsgs",
-              "url": "M",
-              "label": _("Bad MIME")}
-         ]}
-    ]
-    extraopts = [{"name": "to", "label": _("To")}]   
+def quar_menu():
+    """Render the quarantine listing menu.
+
+    :rtype: str
+    :return: resulting HTML
+    """
+    extraopts = [{"name": "to", "label": _("To")}]
     return render_to_string('amavis/main_action_bar.html', {
-        'entries': entries, 'extraopts': extraopts,
-        'STATIC_URL': settings.STATIC_URL, 'extraclasses': 'pull-left'
+        'extraopts': extraopts
     })

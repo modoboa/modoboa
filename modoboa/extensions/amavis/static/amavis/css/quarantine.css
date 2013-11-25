@@ -8,6 +8,10 @@
     z-index: 10;
 }
 
+#menubar input[type="checkbox"] {
+    margin: 0;
+}
+
 #listing { 
     position: fixed;
     padding: 0 15px;

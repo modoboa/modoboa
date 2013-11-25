@@ -19,6 +19,7 @@ Quarantine.prototype = {
         this.listen();
         this.set_msgtype();
 
+        $(document).on('click', '#selectall', this.toggle_selection);
         $("#searchfield").searchbar({navobj: this.navobj});
     },
 
@@ -92,20 +93,42 @@ Quarantine.prototype = {
         this.navobj.update();
     },
 
-    selectmsgs: function(e) {
-        e.preventDefault();
-        var type = $(e.target).attr("href");
-
-        if (type == "") {
+    /*
+     * Toggle message selection when the top checkbox's state is
+     * modified.
+     *
+     * If it is checked, all messages are selected. Otherwise, the
+     * current selection is resetted.
+     */
+    toggle_selection: function(e) {
+        if (!$('#selectall').prop('checked')) {
             $("#emails").htmltable("clear_selection");
             return;
         }
         $("td[name=type]").each(function() {
             var $this = $(this);
+            $("#emails").htmltable("select_row", $this.parent());
+        });
+    },
+
+    /*
+     * Select all messages of a specific type.
+     */
+    selectmsgs: function(e) {
+        e.preventDefault();
+        var type = get_target(e, 'a').attr("href");
+        var counter = 0;
+
+        $("td[name=type]").each(function() {
+            var $this = $(this);
             if ($this.find('span').html().trim() == type) {
                 $("#emails").htmltable("select_row", $this.parent());
+                counter++;
             }
         });
+        if (counter) {
+            $("#selectall").prop('checked', true);
+        }
     },
 
     /*
@@ -227,12 +250,28 @@ Quarantine.prototype = {
             $.proxy(this.viewmail_cb, this));
     },
 
+    activate_buttons: function($tr) {
+        $("a[name=release-multi]").removeClass('disabled');
+        $("a[name=delete-multi]").removeClass('disabled');
+    },
+
+    deactivate_buttons: function($tr) {
+        if (!this.htmltable.current_selection().length) {
+            $("a[name=release-multi]").addClass('disabled');
+            $("a[name=delete-multi]").addClass('disabled');
+        }
+    },
+
     listing_cb: function(data) {
         this.update_page(data);
         this.navobj.delparam("rcpt").update();
         this.set_msgtype();
-        $("#emails").htmltable();
+        $("#emails").htmltable({
+            tr_selected_event: this.activate_buttons,
+            tr_unselected_event: $.proxy(this.deactivate_buttons, this)
+        });
         this.htmltable = $("#emails").data("htmltable");
+        this.deactivate_buttons();
     },
 
     viewmail_cb: function(data) {

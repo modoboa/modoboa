@@ -121,3 +121,8 @@ body {
     display: inline;
     vertical-align: middle;
 }
+
+.label-title {
+    vertical-align: middle;
+    margin: 0 10px;
+}

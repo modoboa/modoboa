@@ -37,8 +37,14 @@
             this.last_selection = $tr;
             if ($tr.hasClass(this.options.tr_selected_class)) {
                 $tr.removeClass(this.options.tr_selected_class);
+                if (this.options.tr_unselected_event != undefined) {
+                    this.options.tr_unselected_event($tr);
+                }
             } else {
                 $tr.addClass(this.options.tr_selected_class);
+                if (this.options.tr_selected_event != undefined) {
+                    this.options.tr_selected_event($tr);
+                }
             }
         },
 
