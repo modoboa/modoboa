@@ -41,6 +41,10 @@ thead tr {
     z-index: 1;
 }
 
+td > input[type=checkbox] {
+    margin: 0;
+}
+
 td[name=type] span {
     cursor: pointer;
 }
@@ -49,6 +53,10 @@ td.unseen {
     font-weight: bold;
 }
 
-td.pending { 
+td[class*=pending] {
     font-style: italic;
+}
+
+td[class*=openable] {
+    cursor: pointer;
 }

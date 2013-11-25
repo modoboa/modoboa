@@ -56,7 +56,7 @@ Quarantine.prototype = {
     },
 
     listen: function() {
-        $(document).on("dblclick", "tbody>tr", $.proxy(this.viewmail_loader, this));
+        $(document).on("click", "td[class*=openable]", $.proxy(this.viewmail_loader, this));
         $(document).on("click", "a[name=selectmsgs]", $.proxy(this.selectmsgs, this));
         $(document).on("click", "a[name=release-multi]",
             $.proxy(this.release_selection, this));
@@ -105,9 +105,10 @@ Quarantine.prototype = {
             $("#emails").htmltable("clear_selection");
             return;
         }
-        $("td[name=type]").each(function() {
-            var $this = $(this);
-            $("#emails").htmltable("select_row", $this.parent());
+        $("td[name*=selection]").each(function() {
+            var $input = $(this).children('input');
+            $input.prop('checked', true);
+            $('#emails').htmltable('select_row', $(this).parent());
         });
     },
 
@@ -122,7 +123,9 @@ Quarantine.prototype = {
         $("td[name=type]").each(function() {
             var $this = $(this);
             if ($this.find('span').html().trim() == type) {
-                $("#emails").htmltable("select_row", $this.parent());
+                var $input = $this.parent().children('td[name=selection]').children('input');
+                $input.prop('checked', true);
+                $('#emails').htmltable('select_row', $this.parent());
                 counter++;
             }
         });
@@ -253,12 +256,14 @@ Quarantine.prototype = {
     activate_buttons: function($tr) {
         $("a[name=release-multi]").removeClass('disabled');
         $("a[name=delete-multi]").removeClass('disabled');
+        $("#selectall").prop('checked', true);
     },
 
     deactivate_buttons: function($tr) {
         if (!this.htmltable.current_selection().length) {
             $("a[name=release-multi]").addClass('disabled');
             $("a[name=delete-multi]").addClass('disabled');
+            $("#selectall").prop('checked', false);
         }
     },
 

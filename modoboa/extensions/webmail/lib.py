@@ -26,22 +26,29 @@ class WMtable(tables.Table):
     tableid = "emails"
     styles = "table-condensed"
     idkey = "imapid"
-    select = tables.ImgColumn(
-        "select", cssclass="draggable left", width="2%",
+    drag = tables.ImgColumn(
+        "drag", cssclass="draggable left", width="1%",
         defvalue="%spics/grippy.png" % settings.STATIC_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
     )
-    flags = tables.ImgColumn("flags", width="4%")
+    selection = tables.SelectionColumn(
+        "selection", safe=True, width='1%', header=None, sortable=False
+    )
+    flags = tables.ImgColumn("flags", width="2%")
     withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column(
-        "subject", label=ugettext_lazy("Subject"), width="50%", limit=60
+        "subject", label=ugettext_lazy("Subject"), width="50%", limit=60,
+        cssclass="openable"
     )
     from_ = tables.Column(
-        "from", width="20%", label=ugettext_lazy("From"), limit=30
+        "from", width="20%", label=ugettext_lazy("From"), limit=30,
+        cssclass="openable"
     )
-    date = tables.Column("date", width="15%", label=ugettext_lazy("Date"))
+    date = tables.Column(
+        "date", width="15%", label=ugettext_lazy("Date"), cssclass="openable"
+    )
 
-    cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
+    cols_order = ["drag", "selection", "withatts", "flags", "subject", "from_", "date"]
 
     def parse(self, header, value):
         if value is None:

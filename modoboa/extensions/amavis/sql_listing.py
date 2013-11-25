@@ -18,20 +18,38 @@ class Qtable(tables.Table):
     styles = "table-condensed"
     idkey = "mailid"
 
+    selection = tables.SelectionColumn(
+        "selection", safe=True, width='5px', header=None, sortable=False
+    )
     type = tables.Column(
         "type", align="center", width="30px", sort_order="type", safe=True
     )
-    score = tables.Column("score", label=ugettext_lazy("Score"), limit=6,
-                          sort_order="score")
-    rstatus = tables.ImgColumn("rstatus", width='25px', sortable=False)
-    from_ = tables.Column("from", label=ugettext_lazy("From"), limit=30,
-                          sort_order="from")
-    subject = tables.Column("subject", label=ugettext_lazy("Subject"), limit=40,
-                            sort_order="subject")
-    time = tables.Column("date", label=ugettext_lazy("Date"), sort_order="date")
-    to = tables.Column("to", label=ugettext_lazy("To"), sort_order="to")
-
-    cols_order = []
+    rstatus = tables.ImgColumn(
+        "rstatus", width='25px', sortable=False
+    )
+    score = tables.Column(
+        "score", label=ugettext_lazy("Score"), limit=6,
+        sort_order="score", cssclass="openable"
+    )
+    to = tables.Column(
+        "to", label=ugettext_lazy("To"), sort_order="to", cssclass="openable"
+    )
+    from_ = tables.Column(
+        "from", label=ugettext_lazy("From"), limit=30,
+        sort_order="from", cssclass="openable"
+    )
+    subject = tables.Column(
+        "subject", label=ugettext_lazy("Subject"), limit=40,
+        sort_order="subject", cssclass="openable"
+    )
+    time = tables.Column(
+        "date", label=ugettext_lazy("Date"), sort_order="date",
+        cssclass="openable"
+    )
+    
+    cols_order = [
+        'selection', 'type', 'rstatus', 'score', 'to', 'from_', 'subject', 'time'
+    ]
 
     def parse_type(self, value):
         color = 'important' if value in ['S', 'V'] else 'warning'
@@ -254,8 +272,6 @@ class SQLlisting(EmailListing):
     reset_wm_url = True
 
     def __init__(self, user, msgs, filter, **kwargs):
-        Qtable.cols_order = ['type', 'score', 'rstatus', 'to', 'from_',
-                             'subject', 'time']
         self.mbc = SQLconnector(msgs, filter)
         super(SQLlisting, self).__init__(**kwargs)
         self.show_listing_headers = True

@@ -25,7 +25,7 @@ from .models import Msgrcpt
 
 def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
-    ctx = getctx("ok", level=2, listing=content, navbar="")
+    ctx = getctx("ok", level=2, listing=content)
     return render_to_json_response(ctx)
 
 
@@ -75,19 +75,13 @@ def _listing(request):
         return empty_quarantine(request)
 
     content = lst.fetch(request, page.id_start, page.id_stop)
-<<<<<<< HEAD
-    paginbar = pagination_bar(page)
-    ctx = getctx("ok", listing=content, paginbar=paginbar, page=page.number)
+    ctx = getctx(
+        "ok", listing=content, paginbar=pagination_bar(page), page=page.number
+    )
     if request.session.get('location', 'listing') != 'listing':
         ctx['menu'] = quar_menu()
     request.session['location'] = 'listing'
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-=======
-    navbar = lst.render_navbar(page, "listing/?")
-    ctx = getctx("ok", listing=content, navbar=navbar,
-                 menu=quar_menu(request.user))
     return render_to_json_response(ctx)
->>>>>>> master
 
 
 @login_required
@@ -155,12 +149,8 @@ def viewmail(request, mail_id):
 """).render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
     menu = viewm_menu(mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
-<<<<<<< HEAD
     request.session['location'] = 'viewmail'
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
-=======
     return render_to_json_response(ctx)
->>>>>>> master
 
 
 @login_required
