@@ -184,8 +184,10 @@ def account_auto_created(user):
     from modoboa.core.models import User
     from modoboa.lib.permissions import grant_access_to_object
 
-    sadmins = User.objects.filter(is_superuser=True)
     localpart, domname = split_mailbox(user.username)
+    if user.group != 'SimpleUsers' and domname is None:
+        return
+    sadmins = User.objects.filter(is_superuser=True)
     try:
         domain = Domain.objects.get(name=domname)
     except Domain.DoesNotExist:

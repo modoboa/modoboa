@@ -34,13 +34,9 @@ Extracted from `this blog
 
 """
 import ldap
-import base64
-import hashlib
-import string
-import crypt
-from random import Random
 from django.conf import settings
 from django.utils.translation import ugettext as _
+from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import InternalError
 
@@ -71,7 +67,7 @@ class LDAPAuthBackend(object):
         return conn
 
     def connect_to_server(self, user, password):
-        if parameters.get_admin("LDAP_AUTH_METHOD", app="admin") == "searchbind":
+        if parameters.get_admin("LDAP_AUTH_METHOD", app="core") == "searchbind":
             bind_dn = self._setting("AUTH_LDAP_BIND_DN", "")
             bind_pwd = self._setting("AUTH_LDAP_BIND_PASSWORD", "")
             self.conn = self._get_conn(bind_dn, bind_pwd)
@@ -82,8 +78,8 @@ class LDAPAuthBackend(object):
             self.conn = self._get_conn(self.user_dn, password)
 
     def _find_user_dn(self, user):
-        sbase = parameters.get_admin("LDAP_SEARCH_BASE", app="admin")
-        sfilter = parameters.get_admin("LDAP_SEARCH_FILTER", app="admin")
+        sbase = parameters.get_admin("LDAP_SEARCH_BASE", app="core")
+        sfilter = parameters.get_admin("LDAP_SEARCH_FILTER", app="core")
         sfilter = sfilter % {"user": user}
         res = self.conn.search_s(sbase, ldap.SCOPE_SUBTREE, sfilter)
         try:
@@ -95,25 +91,12 @@ class LDAPAuthBackend(object):
     def _crypt_password(self, clearpassword):
         """Overidding of the crypt_password function (LDAP compliant)
 
-        The crypted password in base64 encoded and we prepend the used
-        algorithm to the returned value. (between {})
-
         :param clearpassword: the clear password
         :return: the encrypted password
         """
-        scheme = parameters.get_admin("PASSWORD_SCHEME", app="admin")
-        if scheme == "crypt":
-            salt = ''.join(Random().sample(string.letters + string.digits, 2))
-            result = crypt.crypt(clearpassword, salt)
-        elif scheme == "md5":
-            obj = hashlib.md5(clearpassword)
-            result = obj.digest()
-        elif scheme == "sha256":
-            obj = hashlib.sha256(clearpassword)
-            result = obj.digest()
-        else:
-            return str(clearpassword)
-        return str("{%s}%s" % (scheme.upper(), base64.b64encode(result)))
+        scheme = parameters.get_admin("PASSWORD_SCHEME", app="core")
+        hasher = get_password_hasher(scheme.upper())('ldap')
+        return hasher.encrypt(clearpassword)
 
     def update_user_password(self, user, password, newpassword):
         try:

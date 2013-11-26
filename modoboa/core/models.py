@@ -108,7 +108,7 @@ class User(PermissionsMixin):
         :param raw_value: the new password's value
         :param curvalue: the current password (for LDAP authentication)
         """
-        if parameters.get_admin("AUTHENTICATION_TYPE") == "local":
+        if self.is_local:
             self.password = self._crypt_password(raw_value)
         else:
             if not ldap_available:
@@ -363,7 +363,7 @@ class User(PermissionsMixin):
 reversion.register(User)
 
 
-def populate_callback(user):
+def populate_callback(user, group='SimpleUsers'):
     """Populate callback
 
     If the LDAP authentication backend is in use, this callback will
@@ -376,7 +376,7 @@ def populate_callback(user):
     from modoboa.lib.permissions import grant_access_to_object
 
     sadmins = User.objects.filter(is_superuser=True)
-    user.set_role("SimpleUsers")
+    user.set_role(group)
     user.post_create(sadmins[0])
     for su in sadmins[1:]:
         grant_access_to_object(su, user)

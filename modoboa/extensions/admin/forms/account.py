@@ -65,7 +65,7 @@ class AccountFormGeneral(forms.ModelForm):
             account = kwargs["instance"]
             self.fields["role"].initial = account.group
             if not account.is_local \
-               and parameters.get_admin("LDAP_AUTH_METHOD") == "directbind":
+               and parameters.get_admin("LDAP_AUTH_METHOD", app="core") == "directbind":
                 del self.fields["password1"]
                 del self.fields["password2"]
 
