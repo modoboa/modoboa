@@ -1,5 +1,5 @@
 django
-django-reversion
+django-reversion>=1.8.0
 dj-database-url
 south
 lxml
@@ -9,3 +9,4 @@ chardet
 argparse
 rfc6266
 factory-boy
+passlib

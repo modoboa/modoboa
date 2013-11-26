@@ -9,10 +9,10 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from modoboa.lib import parameters, events
+from modoboa.lib.exceptions import BadRequest, InternalError
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.models import User
-from modoboa.extensions.admin.exceptions import AdminError
-from .base import DatesAware
+from .base import AdminObject
 from .domain import Domain
 
 
@@ -46,7 +46,7 @@ class MailboxManager(Manager):
         return self.get_query_set().filter(qf)
 
 
-class Mailbox(DatesAware):
+class Mailbox(AdminObject):
     address = models.CharField(
         ugettext_lazy('address'), max_length=252,
         help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
@@ -110,7 +110,7 @@ class Mailbox(DatesAware):
                 "doveadm user %s -f home" % self.full_address, **options
             ) 
             if code:
-                raise AdminError(_("Failed to retrieve mailbox location (%s)" % output))
+                raise InternalError(_("Failed to retrieve mailbox location (%s)" % output))
             self.__mail_home = output.strip()
         return self.__mail_home
 
@@ -158,13 +158,13 @@ class Mailbox(DatesAware):
             else:
                 self.quota = 0
         elif int(value) > self.domain.quota and not override_rules:
-            raise AdminError(
+            raise BadRequest(
                 _("Quota is greater than the allowed domain's limit (%dM)" % self.domain.quota)
             )
         else:
             self.quota = value
         if not self.quota and self.domain.quota and not override_rules:
-            raise AdminError(_("A quota is required"))
+            raise BadRequest(_("A quota is required"))
 
     def get_quota(self):
         """Get quota limit.
@@ -186,8 +186,7 @@ class Mailbox(DatesAware):
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
-        grant_access_to_object(creator, self, True)
-        events.raiseEvent("CreateMailbox", creator, self)
+        super(Mailbox, self).post_create(creator)
         if creator.is_superuser and not self.user.has_perm("admin.add_domain"):
             # A super user is creating a new mailbox. Give
             # access to that mailbox (and the associated
@@ -199,14 +198,7 @@ class Mailbox(DatesAware):
                 grant_access_to_object(admin, self.user)
 
     def save(self, *args, **kwargs):
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
         super(Mailbox, self).save(*args, **kwargs)
-        if creator is not None:
-            self.post_create(creator)
         try:
             q = self.quota_value
         except Quota.DoesNotExist:
@@ -246,7 +238,7 @@ def mailbox_deleted_handler(sender, **kwargs):
     from modoboa.lib.permissions import ungrant_access_to_object
 
     mb = kwargs['instance']
-    events.raiseEvent("DeleteMailbox", mb)
+    events.raiseEvent("MailboxDeleted", mb)
     ungrant_access_to_object(mb)
     for alias in mb.alias_set.all():
         alias.mboxes.remove(mb)

@@ -8,16 +8,17 @@ will be available and modifiable directly from the web interface.
 
 Only super users will be able to access this part of the web interface.
 """
-import inspect
-import re
 from django import forms
-from exceptions import ModoboaException
-
+from modoboa.lib import events
+from modoboa.lib.sysutils import guess_extension_name
+from modoboa.lib.exceptions import ModoboaException
 
 _params = {'A': {}, 'U': {}}
 
 
 class NotDefined(ModoboaException):
+    http_code = 404
+
     def __init__(self, app, name):
         self.app = app
         self.name = name
@@ -28,7 +29,12 @@ class NotDefined(ModoboaException):
 
 
 class GenericParametersForm(forms.Form):
+    """Base class for parameter forms.
+
+    Each extension has the possibility to define global parameters.
+    """
     app = None
+    visibility_rules = None
 
     def __init__(self, *args, **kwargs):
         if self.app is None:
@@ -38,10 +44,12 @@ class GenericParametersForm(forms.Form):
         super(GenericParametersForm, self).__init__(*args, **kwargs)
 
         self.visirules = {}
-        if hasattr(self, "visibility_rules"):
+        if self.visibility_rules is not None:
             for key, rule in self.visibility_rules.items():
                 field, value = rule.split("=")
-                visibility = {"field": "id_%s-%s" % (self.app, field), "value": value}
+                visibility = {
+                    "field": "id_%s-%s" % (self.app, field), "value": value
+                }
                 self.visirules["%s-%s" % (self.app, key)] = visibility
 
         if not args:
@@ -49,6 +57,14 @@ class GenericParametersForm(forms.Form):
 
     def _load_initial_values(self):
         raise NotImplementedError
+
+    def _decode_value(self, value):
+        return value.decode('unicode_escape').replace('\\r\\n', '\n')
+
+    def _load_extra_parameters(self, level):
+        params = events.raiseDictEvent('GetExtraParameters', self.app, level)
+        for pname, pdef in params.items():
+            self.fields[pname] = pdef
 
     def _save_parameter(self, p, name, value):
         if p.value == value:
@@ -72,7 +88,7 @@ class AdminParametersForm(GenericParametersForm):
 
         names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
         for p in Parameter.objects.filter(name__in=names):
-            self.fields[p.shortname].initial = p.value
+            self.fields[p.shortname].initial = self._decode_value(p.value)
 
     def save(self):
         from .models import Parameter
@@ -101,6 +117,7 @@ class AdminParametersForm(GenericParametersForm):
                 pass
         return values
 
+
 class UserParametersForm(GenericParametersForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user") if "user" in kwargs else None
@@ -113,7 +130,7 @@ class UserParametersForm(GenericParametersForm):
 
         names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
         for p in UserParameter.objects.filter(user=self.user, name__in=names):
-            self.fields[p.shortname].initial = p.value
+            self.fields[p.shortname].initial = self._decode_value(p.value)
 
     @staticmethod
     def has_access(user):
@@ -172,7 +189,7 @@ def unregister(app=None):
     :param app: the application's name (string)
     """
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     for lvlparams in _params.values():
         if app in lvlparams:
             del lvlparams[app]
@@ -185,23 +202,11 @@ def __is_defined(app, level, name):
         raise NotDefined(app, name)
 
 
-def __guess_extension():
-    """Tries to guess the application's name by inspecting the stack
-
-    :return: a string or None
-    """
-    modname = inspect.getmodule(inspect.stack()[2][0]).__name__
-    m = re.match("(?:modoboa\.)?(?:extensions\.)?([^\.$]+)", modname)
-    if m:
-        return m.group(1)
-    return None
-
-
 def save_admin(name, value, app=None):
     from .models import Parameter
 
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     __is_defined(app, 'A', name)
     fullname = "%s.%s" % (app, name)
     try:
@@ -218,7 +223,7 @@ def save_user(user, name, value, app=None):
     from .models import UserParameter
 
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     __is_defined(app, 'U', name)
     fullname = "%s.%s" % (app, name)
     try:
@@ -243,7 +248,7 @@ def get_admin(name, app=None, raise_error=True):
     from .models import Parameter
 
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     try:
         __is_defined(app, "A", name)
     except NotDefined:
@@ -254,7 +259,7 @@ def get_admin(name, app=None, raise_error=True):
         p = Parameter.objects.get(name="%s.%s" % (app, name))
     except Parameter.DoesNotExist:
         return _params["A"][app]["defaults"][name]
-    return p.value.decode("unicode_escape")
+    return p.value.decode("unicode_escape").replace('\\r\\n', '\n')
 
 
 def get_user(user, name, app=None, raise_error=True):
@@ -270,7 +275,7 @@ def get_user(user, name, app=None, raise_error=True):
     from .models import UserParameter
 
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     try:
         __is_defined(app, "U", name)
     except NotDefined:
@@ -336,7 +341,7 @@ def get_parameter_form(level, name, app=None):
     :return: a form class
     """
     if app is None:
-        app = __guess_extension()
+        app = guess_extension_name()
     __is_defined(app, level, name)
     return _params[level][app]["form"]
 

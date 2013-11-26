@@ -1,35 +1,35 @@
 import sys
 import os
 import re
-import hashlib
-import crypt
-import base64
-from random import Random
+import logging
 import reversion
 from django.db import models
+from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.utils.crypto import constant_time_compare
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import (
-    UserManager, Group, AbstractBaseUser, PermissionsMixin
+    UserManager, Group, PermissionsMixin
 )
-from modoboa.lib import events, md5crypt, parameters
-from modoboa.lib.exceptions import PermDeniedException
+from django.contrib.auth.hashers import make_password, is_password_usable
+from modoboa.lib import events, parameters
+from modoboa.lib.exceptions import (
+    PermDeniedException, InternalError, BadRequest
+)
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.extensions import exts_pool
-from modoboa.core.exceptions import AdminError
+from modoboa.core.password_hashers import get_password_hasher
 
 try:
-    from modoboa.lib.ldaputils import *
+    from modoboa.lib.ldaputils import LDAPAuthBackend
     ldap_available = True
 except ImportError:
     ldap_available = False
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(PermissionsMixin):
     """Custom User model.
 
     It overloads the way passwords are stored into the database. The
@@ -46,6 +46,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_local = models.BooleanField(default=True)
+    password = models.CharField(ugettext_lazy('password'), max_length=256)
+    last_login = models.DateTimeField(
+        ugettext_lazy('last login'), default=timezone.now
+    )
 
     objects = UserManager()
 
@@ -55,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         ordering = ["username"]
 
-    password_expr = re.compile(r'(\{(\w+)\}|(\$1\$))(.+)')
+    password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
 
     def delete(self, fromuser, *args, **kwargs):
         """Custom delete method
@@ -72,7 +76,9 @@ class User(AbstractBaseUser, PermissionsMixin):
             get_object_owner, grant_access_to_object, ungrant_access_to_object
 
         if fromuser == self:
-            raise AdminError(_("You can't delete your own account"))
+            raise PermDeniedException(
+                _("You can't delete your own account")
+            )
 
         if not fromuser.can_access(self):
             raise PermDeniedException
@@ -90,34 +96,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         scheme = parameters.get_admin("PASSWORD_SCHEME")
         if type(raw_value) is unicode:
             raw_value = raw_value.encode("utf-8")
-        if scheme == "crypt":
-            salt = "".join(Random().sample(string.letters + string.digits, 2))
-            result = crypt.crypt(raw_value, salt)
-            prefix = "{CRYPT}"
-        elif scheme == "md5":
-            obj = hashlib.md5(raw_value)
-            result = obj.hexdigest()
-            prefix = "{MD5}"
-        # The md5crypt scheme is the only supported method that has both:
-        # (a) a salt ("crypt" has this too),
-        # (b) supports passwords lengths of more than 8 characters (all except
-        #     "crypt").
-        elif scheme == "md5crypt":
-            # The salt may vary from 12 to 48 bits. (Using all six bytes here
-            # with a subset of characters means we get only 35 random bits.)
-            salt = "".join(Random().sample(string.letters + string.digits, 6))
-            result = md5crypt(raw_value, salt)
-            prefix = ""  # the result already has $1$ prepended to it
-                         # to signify what this is
-        elif scheme == "sha256":
-            obj = hashlib.sha256(raw_value)
-            result = base64.b64encode(obj.digest())
-            prefix = "{SHA256}"
-        else:
-            scheme = "plain"
-            result = raw_value
-            prefix = "{PLAIN}"
-        return "%s%s" % (prefix, result)
+        return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
     def set_password(self, raw_value, curvalue=None):
         """Password update
@@ -129,44 +108,61 @@ class User(AbstractBaseUser, PermissionsMixin):
         :param raw_value: the new password's value
         :param curvalue: the current password (for LDAP authentication)
         """
-        if parameters.get_admin("AUTHENTICATION_TYPE") == "local":
+        if self.is_local:
             self.password = self._crypt_password(raw_value)
         else:
             if not ldap_available:
-                raise AdminError(
+                raise InternalError(
                     _("Failed to update password: LDAP module not installed")
                 )
-
-            ab = LDAPAuthBackend()
-            try:
-                ab.update_user_password(self.username, curvalue, raw_value)
-            except LDAPException, e:
-                raise AdminError(_("Failed to update password: %s" % str(e)))
+            LDAPAuthBackend().update_user_password(
+                self.username, curvalue, raw_value
+            )
         events.raiseEvent(
             "PasswordUpdated", self, raw_value, self.pk is None
         )
 
     def check_password(self, raw_value):
-        m = self.password_expr.match(self.password)
-        if m is None:
+        match = self.password_expr.match(self.password)
+        if match is None:
             return False
         if type(raw_value) is unicode:
             raw_value = raw_value.encode("utf-8")
-        scheme = (m.group(2) or m.group(3)).lower()
-        val2 = m.group(4)
-        if scheme == u"crypt":
-            val1 = crypt.crypt(raw_value, val2)
-        elif scheme == u"md5":
-            val1 = hashlib.md5(raw_value).hexdigest()
-        elif scheme == u"sha256":
-            val1 = base64.b64encode(hashlib.sha256(raw_value).digest())
-        elif scheme == u"$1$":  # md5crypt
-            salt, hashed = val2.split('$')
-            val1 = md5crypt(raw_value, str(salt))
-            val2 = self.password  # re-add scheme for comparison below
-        else:
-            val1 = raw_value
-        return constant_time_compare(val1, val2)
+        scheme = match.group(1)
+        val2 = match.group(2)
+        hasher = get_password_hasher(scheme)
+        return hasher().verify(raw_value, val2)
+
+    def get_username(self):
+        "Return the identifying username for this User"
+        return getattr(self, self.USERNAME_FIELD)
+
+    def __str__(self):
+        return self.get_username()
+
+    def natural_key(self):
+        return (self.get_username(),)
+
+    def is_anonymous(self):
+        """
+        Always returns False. This is a way of comparing User objects to
+        anonymous users.
+        """
+        return False
+
+    def is_authenticated(self):
+        """
+        Always return True. This is a way to tell if the user has been
+        authenticated in templates.
+        """
+        return True
+
+    def set_unusable_password(self):
+        # Sets a value that will never be a valid hash
+        self.password = make_password(None)
+
+    def has_usable_password(self):
+        return is_password_usable(self.password)
 
     @property
     def tags(self):
@@ -197,7 +193,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         try:
             return self.groups.all()[0].name
         except IndexError:
-            return "SimpleUsers"
+            return "---"
 
     @property
     def enabled(self):
@@ -240,9 +236,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def can_access(self, obj):
         """Check if the user can access a specific object
 
-        This function is recursive : if the given user hasn't got direct
-        access to this object and if he has got access other ``User``
-        objects, we check if one of those users owns the object.
+        This function is recursive: if the given user hasn't got
+        direct access to this object and if he has got access to other
+        ``User`` objects, we check if one of those users owns the
+        object.
 
         :param obj: a admin object
         :return: a boolean
@@ -307,18 +304,20 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.post_create(creator)
 
     def from_csv(self, user, row, crypt_password=True):
-        """Create a new account from a CSV file entry
+        """Create a new account from a CSV file entry.
 
         The expected order is the following::
 
-        "account", loginname, password, first name, last name, enabled, group, address[, domain, ...]
+        "account", loginname, password, first name, last name, enabled, group
+
+        Additional fields can be added using the *AccountImported* event.
 
         :param user: a ``core.User`` instance
         :param row: a list containing the expected information
         :param crypt_password:
         """
         if len(row) < 7:
-            raise AdminError(_("Invalid line"))
+            raise BadRequest(_("Invalid line"))
         role = row[6].strip()
         if not user.is_superuser and not role in ["SimpleUsers", "DomainAdmins"]:
             raise PermDeniedException(
@@ -327,11 +326,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.username = row[1].strip()
         if role == "SimpleUsers":
             if (len(row) < 8 or not row[7].strip()):
-                raise AdminError(
+                raise BadRequest(
                     _("The simple user '%s' must have a valid email address" % self.username)
                 )
             if self.username != row[7].strip():
-                raise AdminError(
+                raise BadRequest(
                     _("username and email fields must not differ for '%s'" % self.username)
                 )
 
@@ -349,6 +348,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         events.raiseEvent("AccountImported", user, self, row[7:])
 
     def to_csv(self, csvwriter):
+        """Export this account.
+
+        The CSV format is used to export.
+
+        :param csvwriter: csv object
+        """
         row = ["account", self.username.encode("utf-8"), self.password.encode("utf-8"),
                self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
                self.is_active, self.group, self.email.encode("utf-8")]
@@ -358,7 +363,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 reversion.register(User)
 
 
-def populate_callback(user):
+def populate_callback(user, group='SimpleUsers'):
     """Populate callback
 
     If the LDAP authentication backend is in use, this callback will
@@ -371,7 +376,7 @@ def populate_callback(user):
     from modoboa.lib.permissions import grant_access_to_object
 
     sadmins = User.objects.filter(is_superuser=True)
-    user.set_role("SimpleUsers")
+    user.set_role(group)
     user.post_create(sadmins[0])
     for su in sadmins[1:]:
         grant_access_to_object(su, user)
@@ -460,24 +465,44 @@ class Log(models.Model):
 
 @receiver(reversion.post_revision_commit)
 def post_revision_commit(sender, **kwargs):
-    import logging
-
     if kwargs["revision"].user is None:
         return
     logger = logging.getLogger("modoboa.admin")
     for version in kwargs["versions"]:
-        if version.type == reversion.models.VERSION_ADD:
+        prev_revisions = reversion.get_for_object(version.object)
+        if prev_revisions.count() == 1:
             action = _("added")
             level = "info"
-        elif version.type == reversion.models.VERSION_CHANGE:
+        else:
             action = _("modified")
             level = "warning"
-        else:
-            action = _("deleted")
-            level = "critical"
         message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
             "object": unicode(version.content_type).capitalize(),
             "name": version.object_repr, "action": action,
             "user": kwargs["revision"].user.username
         }
         getattr(logger, level)(message)
+
+
+@receiver(post_delete)
+def post_delete_hook(sender, instance, **kwargs):
+    """Custom post-delete hook.
+
+    We want to know who was responsible for an object deletion.
+    """
+    from reversion.models import Version
+
+    if not reversion.is_registered(sender):
+        return
+    del_list = reversion.get_deleted(sender)
+    try:
+        version = del_list.get(object_id=instance.id)
+    except Version.DoesNotExist:
+        return
+    logger = logging.getLogger("modoboa.admin")
+    msg = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
+        "object": unicode(version.content_type).capitalize(),
+        "name": version.object_repr, "action": _("deleted"),
+        "user": version.revision.user.username
+    }
+    logger.critical(msg)

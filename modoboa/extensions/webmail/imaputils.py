@@ -11,9 +11,10 @@ import time
 from functools import wraps
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters, imap_utf7
+from modoboa.lib.exceptions import InternalError
 from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.webutils import static_url
-from exceptions import ImapError, WebmailError
+from exceptions import ImapError, WebmailInternalError
 from fetch_parser import parse_fetch_response
 
 #imaplib.Debug = 4
@@ -238,7 +239,7 @@ class IMAPconnector(object):
             data = self._cmd("LIST", "", "")
             m = self.list_response_pattern.match(data[0])
             if m is None:
-                raise WebmailError(_("Failed to retrieve hierarchy delimiter"))
+                raise InternalError(_("Failed to retrieve hierarchy delimiter"))
             self.__hdelimiter = m.group('delimiter')
         return self.__hdelimiter
 
@@ -564,20 +565,20 @@ class IMAPconnector(object):
             name = "%s%s%s" % (parent, self.hdelimiter, name)
         typ, data = self.m.create(self._encode_mbox_name(name))
         if typ == "NO":
-            raise WebmailError(data[0])
+            raise WebmailInternalError(data[0])
         return True
 
     def rename_folder(self, oldname, newname):
         typ, data = self.m.rename(self._encode_mbox_name(oldname),
                                   self._encode_mbox_name(newname))
         if typ == "NO":
-            raise WebmailError(data[0], ajax=True)
+            raise WebmailInternalError(data[0], ajax=True)
         return True
 
     def delete_folder(self, name):
         typ, data = self.m.delete(self._encode_mbox_name(name))
         if typ == "NO":
-            raise WebmailError(data[0])
+            raise WebmailInternalError(data[0])
         return True
 
     def getquota(self, mailbox):

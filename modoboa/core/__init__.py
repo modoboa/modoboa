@@ -15,6 +15,7 @@ base_events = [
     "RoleChanged",
     "GetExtraRoles",
     "PasswordChange",
+    "UserCanSetRole",
 
     "UserMenuDisplay",
     "AdminMenuDisplay",
@@ -32,12 +33,21 @@ base_events = [
     "ExtraAdminContent",
 
     "ExtraUprefsRoutes",
-    "ExtraUprefsJS"
+    "ExtraUprefsJS",
+
+    "GetExtraParameters",
+    "ExtraFormFields",
+    "SaveExtraFormFields"
 ]
 
 
-def load_settings():
-    from .app_settings import GeneralParametersForm, UserSettings
+def load_core_settings():
+    """Load core settings.
+
+    This function must be manually called (see :file:`urls.py`) in
+    order to load base settings.
+    """
+    from modoboa.core.app_settings import GeneralParametersForm, UserSettings
 
     parameters.register(GeneralParametersForm, ugettext_lazy("General"))
     parameters.register(UserSettings, ugettext_lazy("General"))

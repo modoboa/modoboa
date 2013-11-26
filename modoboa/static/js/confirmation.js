@@ -87,30 +87,18 @@
                  }
                  params += $(this).attr("name") + "=true";
              });
-
              $.ajax({
                  cache: false,
-                 method: this.options.method,
+                 type: this.options.method,
                  data: params,
-                 url: this.$element.attr('href'),
-                 complete: $.proxy(function(XMLHttpRequest, textStatus) {
-                     var data;
-                     try {
-                         data = $.parseJSON(XMLHttpRequest.responseText);
-                     } catch (e) {
-                         data = { status: 'ko', respmsg: gettext('Internal Error') };
-                     }
-                     if (data.status == "ok") {
-                         if (this.options.success_cb != undefined) {
-                             this.options.success_cb(data);
-                             return;
-                         }
-                         window.location.reload();
-                     } else {
-                         $("body").notify("error", data.respmsg);
-                     }
-                 }, this)
-             });
+                 url: this.$element.attr('href')
+             }).done($.proxy(function(data) {
+                 if (this.options.success_cb != undefined) {
+                     this.options.success_cb(data);
+                     return;
+                 }
+                 window.location.reload();
+             }, this));
              this.box.remove();
          }
      };

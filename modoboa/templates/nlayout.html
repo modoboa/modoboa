@@ -7,12 +7,12 @@
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}css/logo-icon.png" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/custom.css" />
     <script src="{{ STATIC_URL }}js/jquery.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}js/bootstrap-datepicker.js" type="text/javascript"></script>
-    {% if LANGUAGE_CODE != "en" %}<script src="{{ STATIC_URL }}js/locales/bootstrap-datepicker.{{ LANGUAGE_CODE }}.js" type="text/javascript"></script>{% endif %}
+    <script src="{{ STATIC_URL }}js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    {% if LANGUAGE_CODE != "en" %}<script src="{{ STATIC_URL }}js/locales/bootstrap-datetimepicker.{{ LANGUAGE_CODE }}.js" type="text/javascript"></script>{% endif %}
     <script src="{{ STATIC_URL }}js/global.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/csrf.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/confirmation.js" type="text/javascript"></script>
@@ -23,7 +23,7 @@
     <script type="text/javascript">
       set_static_url("{{ STATIC_URL }}");
     </script>
-    {% extra_head_content user %}
+    {% extra_static_content "top" user %}
     {% block html_head %}{% endblock %}
   </head>
 

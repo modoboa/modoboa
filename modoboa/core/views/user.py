@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 from modoboa.lib import events, parameters
 from modoboa.lib.webutils import (
-    ajax_simple_response, _render_to_string
+    _render_to_string, render_to_json_response
 )
 from modoboa.lib.cryptutils import encrypt
 from modoboa.core.forms import ProfileForm
@@ -32,17 +32,11 @@ def profile(request, tplname='core/user_profile.html'):
             form.save()
             if update_password and form.cleaned_data["confirmation"] != "":
                 request.session["password"] = encrypt(form.cleaned_data["confirmation"])
-            return ajax_simple_response(dict(
-                status="ok", respmsg=_("Profile updated")
-            ))
-        return ajax_simple_response({
-            "status": "ko",
-            "errors": form.errors
-        })
+            return render_to_json_response(_("Profile updated"))
+        return render_to_json_response({'form_errors': form.errors}, status=400)
 
     form = ProfileForm(update_password, instance=request.user)
-    return ajax_simple_response({
-        "status": "ok",
+    return render_to_json_response({
         "content": _render_to_string(request, tplname, {
             "form": form
         })
@@ -57,16 +51,13 @@ def preferences(request):
             if form.is_valid():
                 form.save()
                 continue
-            return ajax_simple_response({
-                "status": "ko", "prefix": form.app, "errors": form.errors
-            })
+            return render_to_json_response({
+                "prefix": form.app, "form_errors": form.errors
+            }, status=400)
 
-        return ajax_simple_response({
-            "status": "ok", "respmsg": _("Preferences saved")
-        })
+        return render_to_json_response(_("Preferences saved"))
 
-    return ajax_simple_response({
-        "status": "ok",
+    return render_to_json_response({
         "content": _render_to_string(request, "core/user_preferences.html", {
             "forms": parameters.get_user_forms(request.user)
         })

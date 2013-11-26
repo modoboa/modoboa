@@ -2,11 +2,11 @@ from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events
+from modoboa.lib.exceptions import Conflict
 from modoboa.lib.formutils import (
     DomainNameField, YesNoField, DynamicForm, TabForms
 )
 from modoboa.core.models import User
-from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias, Quota
 )
@@ -16,7 +16,10 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
-        help_text=ugettext_lazy("Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input.")
+        help_text=ugettext_lazy(
+            "Alias(es) of this domain. Indicate only one name per input, "
+            "press ENTER to add a new input."
+        )
     )
 
     class Meta:
@@ -41,35 +44,48 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 self._create_field(forms.CharField, name, dalias.name, 3)
 
     def clean(self):
+        """Custom fields validation.
+
+        We want to prevent duplicate names between domains and domain
+        aliases. Extensions have the possibility to declare other
+        objects (see *CheckDomainName* event).
+
+        The validation way is not very smart...
+        """
         super(DomainFormGeneral, self).clean()
-        if len(self._errors):
+        if self._errors:
             raise forms.ValidationError(self._errors)
 
         cleaned_data = self.cleaned_data
         name = cleaned_data["name"]
-
-        try:
-            DomainAlias.objects.get(name=name)
-        except DomainAlias.DoesNotExist:
-            pass
-        else:
-            self._errors["name"] = self.error_class([_("An alias with this name already exists")])
-            del cleaned_data["name"]
-
+        dtypes = events.raiseQueryEvent('CheckDomainName')
+        for dtype, label in [(DomainAlias, _('domain alias'))] + dtypes:
+            try:
+                dtype.objects.get(name=name)
+            except dtype.DoesNotExist:
+                pass
+            else:
+                self._errors["name"] = self.error_class(
+                    [_("A %s with this name already exists" % unicode(label))]
+                )
+                del cleaned_data["name"]
+                break
         for k in cleaned_data.keys():
             if not k.startswith("aliases"):
                 continue
             if cleaned_data[k] == "":
                 del cleaned_data[k]
                 continue
-            try:
-                Domain.objects.get(name=cleaned_data[k])
-            except Domain.DoesNotExist:
-                pass
-            else:
-                self._errors[k] = self.error_class([_("A domain with this name already exists")])
+            for dtype, label in [(Domain, _('domain'))] + dtypes:
+                try:
+                    dtype.objects.get(name=cleaned_data[k])
+                except dtype.DoesNotExist:
+                    continue
+                self._errors[k] = self.error_class(
+                    [_("A %s with this name already exists" % unicode(label))]
+                )
                 del cleaned_data[k]
-
+                break
         return cleaned_data
 
     def update_mailbox_quotas(self, domain):
@@ -91,7 +107,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             username = q['username'].replace('@%s' % self.oldname, '@%s' % domain.name)
             Quota.objects.filter(username=q['username']).update(username=username)
 
-    def save(self, user, commit=True):
+    def save(self, user, commit=True, domalias_post_create=False):
         """Custom save method
 
         Updating a domain may have consequences on other objects
@@ -110,25 +126,29 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             d.save()
             Mailbox.objects.filter(domain=d, use_domain_quota=True) \
                 .update(quota=d.quota)
+            aliases = []
             for k, v in self.cleaned_data.iteritems():
                 if not k.startswith("aliases"):
                     continue
                 if v in ["", None]:
                     continue
-                try:
-                    d.domainalias_set.get(name=v)
-                except DomainAlias.DoesNotExist:
-                    pass
-                else:
-                    continue
-                events.raiseEvent("CanCreate", user, "domain_aliases")
-                al = DomainAlias(name=v, target=d, enabled=d.enabled)
-                al.save(creator=user)
-
+                aliases.append(v)
             for dalias in d.domainalias_set.all():
-                if not len(filter(lambda name: self.cleaned_data[name] == dalias.name,
-                                  self.cleaned_data.keys())):
+                if not dalias.name in aliases:
                     dalias.delete()
+                else:
+                    aliases.remove(dalias.name)
+            if aliases:
+                events.raiseEvent("CanCreate", user, "domain_aliases", len(aliases))
+                for alias in aliases:
+                    try:
+                        d.domainalias_set.get(name=alias)
+                    except DomainAlias.DoesNotExist:
+                        pass
+                    else:
+                        continue
+                    al = DomainAlias(name=alias, target=d, enabled=d.enabled)
+                    al.save(creator=user) if domalias_post_create else al.save()
 
             if old_mail_homes is not None:
                 self.update_mailbox_quotas(d)
@@ -148,7 +168,10 @@ class DomainFormOptions(forms.Form):
     dom_admin_username = forms.CharField(
         label=ugettext_lazy("Name"),
         initial="admin",
-        help_text=ugettext_lazy("The administrator's name. Don't include the domain's name here, it will be automatically appended."),
+        help_text=ugettext_lazy(
+            "The administrator's name. Don't include the domain's name here, "
+            "it will be automatically appended."
+        ),
         widget=forms.widgets.TextInput(attrs={"class": "input-small"}),
         required=False
     )
@@ -160,8 +183,11 @@ class DomainFormOptions(forms.Form):
         required=False
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(DomainFormOptions, self).__init__(*args, **kwargs)
+        if False in events.raiseQueryEvent('UserCanSetRole', user, 'DomainAdmins'):
+            self.fields = {}
+            return
         if args:
             if args[0].get("create_dom_admin", "no") == "yes":
                 self.fields["dom_admin_username"].required = True
@@ -173,6 +199,8 @@ class DomainFormOptions(forms.Form):
         return self.cleaned_data["dom_admin_username"]
 
     def save(self, user, domain):
+        if not self.fields:
+            return
         if self.cleaned_data["create_dom_admin"] == "no":
             return
         username = "%s@%s" % (self.cleaned_data["dom_admin_username"], domain.name)
@@ -181,7 +209,8 @@ class DomainFormOptions(forms.Form):
         except User.DoesNotExist:
             pass
         else:
-            raise AdminError(_("User '%s' already exists" % username))
+            raise Conflict(_("User '%s' already exists" % username))
+        events.raiseEvent("CanCreate", user, "mailboxes")
         da = User(username=username, email=username, is_active=True)
         da.set_password("password")
         da.save()
@@ -193,6 +222,7 @@ class DomainFormOptions(forms.Form):
         mb.save(creator=user)
 
         if self.cleaned_data["create_aliases"] == "yes":
+            events.raiseEvent("CanCreate", user, "mailbox_aliases")
             al = Alias(address="postmaster", domain=domain, enabled=True)
             al.save(int_rcpts=[mb], creator=user)
 
@@ -223,5 +253,6 @@ class DomainForm(TabForms):
         As forms interact with each other, it is easier to make custom
         code to save them.
         """
-        for f in self.forms:
+        self.forms[0]['instance'].save(user, domalias_post_create=True)
+        for f in self.forms[1:]:
             f["instance"].save(user)

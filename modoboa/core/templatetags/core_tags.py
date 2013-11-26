@@ -32,36 +32,6 @@ def core_menu(selection, user):
 
 
 @register.simple_tag
-def settings_menu(selection, user):
-    entries = [
-        {"name": "extensions",
-         "class": "ajaxlink",
-         "url": "extensions/",
-         "label": _("Extensions"),
-         "img": ""},
-        {"name": "info",
-         "class": "ajaxlink",
-         "url": "info/",
-         "label": _("Information")},
-        {"name": "logs",
-         "class": "ajaxlink",
-         "url": "logs/",
-         "label": _("Logs")},
-        {"name": "parameters",
-         "class": "ajaxlink",
-         "url": "parameters/",
-         "img": "",
-         "label": _("Parameters")},
-    ]
-    return render_to_string('common/menu.html', {
-        "entries": entries,
-        "css": "nav nav-list",
-        "selection": selection,
-        "user": user
-    })
-
-
-@register.simple_tag
 def extensions_menu(selection, user):
     menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu", user)
     return render_to_string('common/menulist.html', {
@@ -83,7 +53,7 @@ def admin_menu(selection, user):
          "label": _("Information")},
         {"name": "logs",
          "class": "ajaxlink",
-         "url": "logs/",
+         "url": "logs/?sort_order=-date_created",
          "label": _("Logs")},
         {"name": "parameters",
          "class": "ajaxlink",
@@ -166,7 +136,9 @@ def tohtml(message):
 
 @register.simple_tag
 def visirule(field):
-    if not hasattr(field.form, "visirules") or not field.html_name in field.form.visirules:
+    if not hasattr(field, 'form') or \
+            not hasattr(field.form, "visirules") or \
+            not field.html_name in field.form.visirules:
         return ""
     rule = field.form.visirules[field.html_name]
     return " data-visibility-field='%s' data-visibility-value='%s' " \
@@ -228,18 +200,6 @@ def get_modoboa_logo():
     if logo is None:
         return os.path.join(settings.STATIC_URL, "css/modoboa.png")
     return logo
-
-
-@register.simple_tag
-def extra_head_content(user):
-    tpl = template.Template(
-        "{% for sc in static_content %}{{ sc|safe }}{% endfor %}"
-    )
-    return tpl.render(
-        template.Context({
-            'static_content': events.raiseQueryEvent("GetStaticContent", user)
-        })
-    )
 
 
 @register.simple_tag

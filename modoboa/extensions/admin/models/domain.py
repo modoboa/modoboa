@@ -4,9 +4,9 @@ from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.contrib.contenttypes import generic
 from modoboa.lib import events, parameters
+from modoboa.lib.exceptions import BadRequest
 from modoboa.core.models import User, ObjectAccess
-from modoboa.extensions.admin.exceptions import AdminError
-from .base import DatesAware
+from .base import AdminObject
 
 
 class DomainManager(Manager):
@@ -22,7 +22,9 @@ class DomainManager(Manager):
         return self.get_query_set().filter(owners__user=admin)
 
 
-class Domain(DatesAware):
+class Domain(AdminObject):
+    """Mail domain.
+    """
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
     quota = models.IntegerField(
@@ -57,12 +59,20 @@ class Domain(DatesAware):
         return self.alias_set.count()
 
     @property
+    def tags(self):
+        return [{"name": "domain", "label": _("Domain"), "type": "dom"}]
+
+    @property
     def admins(self):
         """Return the domain administrators of this domain
 
         :return: a list of User objects
         """
         return [oa.user for oa in self.owners.filter(user__is_superuser=False)]
+
+    @property
+    def aliases(self):
+        return self.domainalias_set
 
     def add_admin(self, account):
         """Add a new administrator for this domain
@@ -80,11 +90,15 @@ class Domain(DatesAware):
             grant_access_to_object(account, al)
 
     def remove_admin(self, account):
-        """Remove an administrator for this domain
+        """Remove an administrator of this domain.
 
-        :param User account: the administrotor to remove
+        :param User account: administrator to remove
         """
-        from modoboa.lib.permissions import ungrant_access_to_object
+        from modoboa.lib.permissions import \
+            ungrant_access_to_object, get_object_owner
+
+        if get_object_owner(self) == account:
+            events.raiseEvent('DomainOwnershipRemoved', account, self)
         ungrant_access_to_object(self, account)
         for mb in self.mailbox_set.all():
             if mb.user.has_perm("admin.add_domain"):
@@ -92,60 +106,55 @@ class Domain(DatesAware):
             ungrant_access_to_object(mb, account)
             ungrant_access_to_object(mb.user, account)
         for al in self.alias_set.all():
-            ungrant_access_to_object(al, account)
+             ungrant_access_to_object(al, account)
 
     def delete(self, fromuser, keepdir=False):
-        from modoboa.lib.permissions import \
-            ungrant_access_to_object, ungrant_access_to_objects
+        """Custom delete method.
+        """
+        from modoboa.lib.permissions import ungrant_access_to_objects
         from .mailbox import Quota
 
         if self.domainalias_set.count():
             events.raiseEvent("DomainAliasDeleted", self.domainalias_set.all())
             ungrant_access_to_objects(self.domainalias_set.all())
-        if self.mailbox_set.count():
-            Quota.objects.filter(username__contains='@%s' % self.name).delete()
-            events.raiseEvent("DeleteMailbox", self.mailbox_set.all())
-            ungrant_access_to_objects(self.mailbox_set.all())
         if self.alias_set.count():
-            events.raiseEvent("MailboxAliasDelete", self.alias_set.all())
+            events.raiseEvent("MailboxAliasDeleted", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
         if parameters.get_admin("AUTO_ACCOUNT_REMOVAL") == "yes":
             for account in User.objects.filter(mailbox__domain__name=self.name):
                 account.delete(fromuser, keepdir)
-        events.raiseEvent("DeleteDomain", self)
-        ungrant_access_to_object(self)
+        elif self.mailbox_set.count():
+            Quota.objects.filter(username__contains='@%s' % self.name).delete()
+            events.raiseEvent("MailboxDeleted", self.mailbox_set.all())
+            ungrant_access_to_objects(self.mailbox_set.all())
         super(Domain, self).delete()
 
     def __str__(self):
         return self.name
 
-    def post_create(self, creator):
-        from modoboa.lib.permissions import grant_access_to_object
-        grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("CreateDomain", creator, self)
-
-    def save(self, *args, **kwargs):
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
-        super(Domain, self).save(*args, **kwargs)
-        if creator is not None:
-            self.post_create(creator)
-
     def from_csv(self, user, row):
         if len(row) < 4:
-            raise AdminError(_("Invalid line"))
+            raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
         try:
             self.quota = int(row[2].strip())
         except ValueError:
-            raise AdminError(_("Invalid quota value for domain '%s'" % self.name))
+            raise BadRequest(_("Invalid quota value for domain '%s'" % self.name))
         self.enabled = (row[3].strip() == 'True')
         self.save(creator=user)
 
     def to_csv(self, csvwriter):
         csvwriter.writerow(["domain", self.name, self.quota, self.enabled])
+        for dalias in self.domainalias_set.all():
+            dalias.to_csv(csvwriter)
+
+    def post_create(self, creator):
+        """Post creation actions.
+
+        :param ``User`` creator: user whos created this domain
+        """
+        super(Domain, self).post_create(creator)
+        for domalias in self.domainalias_set.all():
+            domalias.post_create(creator)
 
 reversion.register(Domain)

@@ -227,20 +227,14 @@ History.prototype = {
         $.ajax({
             url: this.serialized,
             cache: false,
-            complete: $.proxy(function(XMLHttpRequest, textStatus) {
-                var resp;
-                try {
-                    resp = $.parseJSON(XMLHttpRequest.responseText);
-                } catch (e) {
-                    resp = { status: 'ko', respmsg: gettext('Internal Error') };
-                }
-                if (resp.status == "ko") {
-                    $("body").notify("error", resp.respmsg);
-                    return;
-                }
-                var callback = (resp.callback != undefined) ? resp.callback : "default";
-                this.callbacks[callback](resp);
-            }, this)
-        });
+            dataType: 'json'
+        }).done($.proxy(function(resp) {
+            var callback = (resp.callback != undefined) ? resp.callback : "default";
+
+            this.callbacks[callback](resp);
+            if (resp.respmsg) {
+                $("body").notify("success", resp.respmsg, 2000);
+            }
+        }, this));
     }
 };

@@ -19,9 +19,9 @@ class ProfileTestCase(ModoTestCase):
         * The default admin changes his password (no associated Mailbox)
         * A normal user changes his password
         """
-        self.check_ajax_post(reverse("modoboa.core.views.user.profile"),
-                             {"oldpassword": "password",
-                              "newpassword": "titi", "confirmation": "titi"})
+        self.ajax_post(reverse("modoboa.core.views.user.profile"),
+                       {"oldpassword": "password",
+                        "newpassword": "titi", "confirmation": "titi"})
         self.clt.logout()
 
         self.assertEqual(
@@ -31,12 +31,12 @@ class ProfileTestCase(ModoTestCase):
             self.clt.login(username="user@test.com", password="toto"), True
         )
 
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.core.views.user.profile"),
             {"oldpassword": "toto",
              "newpassword": "tutu", "confirmation": "tutu"}
         )
         self.clt.logout()
-        self.assertEqual(
-            self.clt.login(username="user@test.com", password="tutu"), True
+        self.assertTrue(
+            self.clt.login(username="user@test.com", password="tutu")
         )

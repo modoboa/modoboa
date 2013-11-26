@@ -1,22 +1,23 @@
 # coding: utf-8
 import email
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, Http404
 from django.template import Template, Context
-from django.utils import simplejson
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, user_passes_test
 from django.db.models import Q
 from modoboa.lib import parameters
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.webutils import (
-    getctx, ajax_response, ajax_simple_response
+    getctx, ajax_response, render_to_json_response
 )
 from modoboa.lib.email_listing import parse_search_parameters
 from modoboa.extensions.admin.models import Mailbox, Domain
-from templatetags.amavis_tags import quar_menu, viewm_menu
+from modoboa.extensions.amavis.templatetags.amavis_tags import (
+    quar_menu, viewm_menu
+)
 from .lib import selfservice, AMrelease
 from .sql_listing import SQLlisting, SQLemail, get_wrapper
 from .models import Msgrcpt
@@ -47,7 +48,7 @@ def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content, navbar="",
                  menu=quar_menu(request.user))
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return render_to_json_response(ctx)
 
 
 @login_required
@@ -79,7 +80,7 @@ def _listing(request):
                 rcptfilter = request.session["pattern"]
                 continue
             else:
-                raise Exception("unsupported search criteria %s" % c)
+                raise BadRequest("unsupported search criteria %s" % c)
             flt = nfilter if flt is None else flt | nfilter
 
     msgs = get_wrapper().get_mails(request, rcptfilter)
@@ -105,7 +106,7 @@ def _listing(request):
     navbar = lst.render_navbar(page, "listing/?")
     ctx = getctx("ok", listing=content, navbar=navbar,
                  menu=quar_menu(request.user))
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return render_to_json_response(ctx)
 
 
 @login_required
@@ -176,7 +177,7 @@ def viewmail(request, mail_id):
 """).render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
     menu = viewm_menu(request.user, mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
-    return HttpResponse(simplejson.dumps(ctx), mimetype="application/json")
+    return render_to_json_response(ctx)
 
 
 @login_required
@@ -202,14 +203,14 @@ def check_mail_id(request, mail_id):
 def delete_selfservice(request, mail_id):
     rcpt = request.GET.get("rcpt", None)
     if rcpt is None:
-        raise ModoboaException(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     try:
         msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
         msgrcpt.rs = 'D'
         msgrcpt.save()
     except Msgrcpt.DoesNotExist:
-        raise ModoboaException(_("Invalid request"))
-    return ajax_simple_response(dict(status="ok", respmsg=_("Message deleted")))
+        raise BadRequest(_("Invalid request"))
+    return render_to_json_response(_("Message deleted"))
 
 
 @selfservice(delete_selfservice)
@@ -241,13 +242,13 @@ def release_selfservice(request, mail_id):
     rcpt = request.GET.get("rcpt", None)
     secret_id = request.GET.get("secret_id", None)
     if rcpt is None or secret_id is None:
-        raise ModoboaException(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     try:
         msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
     except Msgrcpt.DoesNotExist:
-        raise ModoboaException(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     if secret_id != msgrcpt.mail.secret_id:
-        raise ModoboaException(_("Invalid request"))
+        raise BadRequest(_("Invalid request"))
     if parameters.get_admin("USER_CAN_RELEASE") == "no":
         msgrcpt.rs = 'p'
         msg = _("Request sent")
@@ -258,9 +259,9 @@ def release_selfservice(request, mail_id):
             rcpt.rs = 'R'
             msg = _("Message released")
         else:
-            raise ModoboaException(result)
+            raise BadRequest(result)
     msgrcpt.save()
-    return ajax_simple_response(dict(status="ok", respmsg=msg))
+    return render_to_json_response(msg)
 
 
 @selfservice(release_selfservice)
@@ -329,4 +330,4 @@ def process(request):
 @user_passes_test(lambda u: u.group != 'SimpleUsers')
 def nbrequests(request):
     result = get_wrapper().get_pending_requests(request.user)
-    return ajax_simple_response(dict(status="ok", requests=result))
+    return render_to_json_response({'requests': result})

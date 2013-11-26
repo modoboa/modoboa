@@ -1,8 +1,9 @@
 # coding: utf-8
 import re
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.forms import ChoiceField
 from django.forms.widgets import RadioSelect, RadioInput
-from django.forms.fields import CharField, Field, ChoiceField
+from django.forms.fields import CharField, Field
 from django.core.exceptions import ValidationError
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
@@ -10,9 +11,19 @@ from django.utils.html import conditional_escape
 
 
 class CreationWizard(object):
-    def __init__(self, done_cb):
+    def __init__(self, done_cb=None):
         self.steps = []
         self.done_cb = done_cb
+
+    @property
+    def errors(self):
+        result = {}
+        for step in self.steps:
+            for name, value in step['form'].errors.items():
+                if name == '__all__':
+                    continue
+                result[name] = value
+        return result
 
     def add_step(self, cls, title, buttons, formtpl=None, new_args=None):
         self.steps += [dict(cls=cls, title=title, buttons=buttons,
@@ -33,19 +44,23 @@ class CreationWizard(object):
             return -1, _("Invalid request")
 
         stepid = stepid.replace("step", "")
-        stepid = int(stepid) - 1
-        if stepid < 0 or stepid >= len(self.steps):
+        stepid = int(stepid)
+        if stepid < 0 or stepid > len(self.steps):
             return -1, _("Invalid request")
         self.create_forms(request.POST)
-        if self.steps[stepid]["form"].is_valid():
-            if stepid == len(self.steps) - 1:
+        statuses = []
+        for cpt in xrange(0, stepid):
+            statuses.append(self.steps[cpt]["form"].is_valid())
+        if False in statuses:
+            return 0, stepid
+        if stepid == len(self.steps):
+            if self.done_cb is not None:
                 self.done_cb(self.steps)
-                return 2, None
-            return 1, stepid
-        return 0, stepid
+            return 2, None
+        return 1, stepid
 
     def get_title(self, stepid):
-        return "%d. %s" % (stepid + 1, self.steps[stepid]["title"])
+        return "%d. %s" % (stepid, self.steps[stepid - 1]["title"])
 
 
 class DynamicForm(object):
@@ -109,6 +124,16 @@ class TabForms(object):
     def _before_is_valid(self, form):
         return True
 
+    @property
+    def errors(self):
+        result = {}
+        for f in self.forms:
+            for name, value in f['instance'].errors.items():
+                if name == '__all__':
+                    continue
+                result[name] = value
+        return result
+    
     def is_valid(self, mandatory_only=False, optional_only=False):
         to_remove = []
         for f in self.forms:

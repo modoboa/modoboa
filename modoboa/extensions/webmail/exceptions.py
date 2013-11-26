@@ -6,14 +6,14 @@
 """
 import re
 from django.utils.translation import ugettext as _
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.exceptions import ModoboaException, InternalError
 
 
-class WebmailError(ModoboaException):
-    errorexpr = re.compile("\[([^\]]+)\]\s*([^\.]+)")
+class WebmailInternalError(InternalError):
+    errorexpr = re.compile(r'\[([^\]]+)\]\s*([^\.]+)')
 
     def __init__(self, reason, ajax=False):
-        match = WebmailError.errorexpr.match(reason)
+        match = WebmailInternalError.errorexpr.match(reason)
         if not match:
             self.reason = reason
         else:
@@ -22,6 +22,16 @@ class WebmailError(ModoboaException):
 
     def __str__(self):
         return self.reason
+
+
+class UnknownAction(ModoboaException):
+    """
+    Use this exception when the webmail encounter an unknown action.
+    """
+    http_code = 404
+
+    def __init__(self):
+        super(UnknownAction, self).__init__(_("Unknown action"))
 
 
 class ImapError(ModoboaException):

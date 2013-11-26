@@ -1,0 +1,18 @@
+language: python
+python:
+  - "2.7"
+
+env:
+  - DJANGO=1.5
+
+install:
+  - pip install -q Django==$DJANGO --use-mirrors
+  - python setup.py -q install
+  - pip install -q MySQL-python --use-mirrors
+  - pip install -q pexpect --use-mirrors
+
+before_script:
+  - mysql -e 'create database modoboa_test;'
+
+script: 
+  - PYTHONPATH=tests python -m unittest install_from_scratch.DeployTest.test_silent

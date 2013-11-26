@@ -1,4 +1,8 @@
 from django.db import models
+from modoboa.lib import events
+from modoboa.lib.permissions import (
+    grant_access_to_object, ungrant_access_to_object
+)
 
 
 class ObjectDates(models.Model):
@@ -27,7 +31,7 @@ class ObjectDates(models.Model):
         obj.dates = dates
 
 
-class DatesAware(models.Model):
+class AdminObject(models.Model):
     """Abstract model to support dates
 
     Inherit from this model to automatically add the "dates" feature
@@ -35,13 +39,10 @@ class DatesAware(models.Model):
     saves.
     """
     dates = models.ForeignKey(ObjectDates)
+    _objectname = None
 
     class Meta:
         abstract = True
-
-    def save(self, *args, **kwargs):
-        ObjectDates.set_for_object(self)
-        super(DatesAware, self).save(*args, **kwargs)
 
     @property
     def creation(self):
@@ -50,3 +51,29 @@ class DatesAware(models.Model):
     @property
     def last_modification(self):
         return self.dates.last_modification
+
+    @property
+    def objectname(self):
+        if self._objectname is None:
+            return self.__class__.__name__
+        return self._objectname
+
+    def post_create(self, creator):
+        grant_access_to_object(creator, self, is_owner=True)
+        events.raiseEvent("%sCreated" % self.objectname, creator, self)
+
+    def save(self, *args, **kwargs):
+        ObjectDates.set_for_object(self)
+        if "creator" in kwargs:
+            creator = kwargs["creator"]
+            del kwargs["creator"]
+        else:
+            creator = None
+        super(AdminObject, self).save(*args, **kwargs)
+        if creator is not None:
+            self.post_create(creator)
+
+    def delete(self):
+        events.raiseEvent("%sDeleted" % self.objectname, self)
+        ungrant_access_to_object(self)
+        super(AdminObject, self).delete()

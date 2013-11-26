@@ -32,6 +32,20 @@ associated value to -1.
 Default limits applied to new administrators can be changed through
 the *Modoboa > Parameters > Limits* page.
 
+*****************************
+Postfix relay domains support
+*****************************
+
+This plugin adds the support for relay domains using postfix. This
+feature is useful when the MTA managed by Modoboa is not the final
+destination of one or many domains.
+
+If activated, two new objects will be available from the *domains*
+listing page: *relay domain* and *relay domain alias*.
+
+This extension is compatible with the *amavis* and *limits*
+ones. Resellers will be able to create both new objects.
+
 .. _amavis_frontend:
 
 ********************

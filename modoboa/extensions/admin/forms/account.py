@@ -2,27 +2,33 @@ from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
 from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.formutils import (
-    DomainNameField, DynamicForm, TabForms
+    DomainNameField, DynamicForm, TabForms, YesNoField
 )
 from modoboa.core.models import User
-from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.models import (
     Domain, Mailbox, Alias
 )
 
 
 class AccountFormGeneral(forms.ModelForm):
-    username = forms.CharField(label=ugettext_lazy("Username"))
+    username = forms.CharField(
+        label=ugettext_lazy("Username"),
+        help_text=ugettext_lazy(
+            "The user's name. Must be a valid e-mail address for simple users."
+        )
+    )
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
         choices=[('', ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
     )
-    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        label=_("Password"), widget=forms.PasswordInput
+    )
     password2 = forms.CharField(
         label=ugettext_lazy("Confirmation"),
         widget=forms.PasswordInput,
@@ -45,21 +51,21 @@ class AccountFormGeneral(forms.ModelForm):
                 widget=forms.HiddenInput, required=False
             )
         else:
-            self.fields["role"].choices = \
-                [('', ugettext_lazy("Choose"))] + get_account_roles(user)
+            self.fields["role"].choices = [('', ugettext_lazy("Choose"))]
+            self.fields["role"].choices += \
+                get_account_roles(user, kwargs['instance']) \
+                if 'instance' in kwargs else get_account_roles(user)
 
         if "instance" in kwargs:
-            if len(args) \
+            if args \
                and (args[0].get("password1", "") == ""
                and args[0].get("password2", "") == ""):
                 self.fields["password1"].required = False
                 self.fields["password2"].required = False
-
-            u = kwargs["instance"]
-            self.fields["role"].initial = u.group
-
-            if not u.is_local \
-               and parameters.get_admin("LDAP_AUTH_METHOD") == "directbind":
+            account = kwargs["instance"]
+            self.fields["role"].initial = account.group
+            if not account.is_local \
+               and parameters.get_admin("LDAP_AUTH_METHOD", app="core") == "directbind":
                 del self.fields["password1"]
                 del self.fields["password2"]
 
@@ -90,7 +96,7 @@ class AccountFormGeneral(forms.ModelForm):
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)
         if self.user == account and not self.cleaned_data["is_active"]:
-            raise AdminError(_("You can't disable your own account"))
+            raise PermDeniedException(_("You can't disable your own account"))
         if commit:
             if "password1" in self.cleaned_data \
                and self.cleaned_data["password1"] != "":
@@ -105,22 +111,35 @@ class AccountFormMail(forms.Form, DynamicForm):
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
-        help_text=_("Quota in MB for this mailbox. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."),
+        help_text=_("Quota in MB for this mailbox. Define a custom value or "
+                    "use domain's default one. Leave empty to define an "
+                    "unlimited value (not allowed for domain "
+                    "administrators)."),
         widget=forms.widgets.TextInput(attrs={"class": "span1"})
     )
     quota_act = forms.BooleanField(required=False)
     aliases = forms.EmailField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
-        help_text=ugettext_lazy("Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. Use the '*' character to create a 'catchall' alias (ex: *@domain.tld).")
+        help_text=ugettext_lazy(
+            "Alias(es) of this mailbox. Indicate only one address per input, "
+            "press ENTER to add a new input. Use the '*' character to create "
+            "a 'catchall' alias (ex: *@domain.tld)."
+        )
     )
 
     def __init__(self, *args, **kwargs):
         if "instance" in kwargs:
             self.mb = kwargs["instance"]
             del kwargs["instance"]
+        else:
+            self.mb = None
         super(AccountFormMail, self).__init__(*args, **kwargs)
-        if hasattr(self, "mb") and self.mb is not None:
+        self.extra_fields = []
+        for fname, field in events.raiseQueryEvent('ExtraFormFields', 'mailform', self.mb):
+            self.fields[fname] = field
+            self.extra_fields.append(fname)
+        if self.mb is not None:
             self.fields["email"].required = True
             cpt = 1
             for alias in self.mb.alias_set.all():
@@ -143,6 +162,54 @@ class AccountFormMail(forms.Form, DynamicForm):
         """Ensure lower case emails"""
         return self.cleaned_data["email"].lower()
 
+    def create_mailbox(self, user, account):
+        locpart, domname = split_mailbox(self.cleaned_data["email"])
+        try:
+            domain = Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            raise NotFound(_("Domain does not exist"))
+        if not user.can_access(domain):
+            raise PermDeniedException
+        try:
+            Mailbox.objects.get(address=locpart, domain=domain)
+        except Mailbox.DoesNotExist:
+            pass
+        else:
+            raise Conflict(
+                _("Mailbox %s already exists" % self.cleaned_data["email"])
+            )
+        events.raiseEvent("CanCreate", user, "mailboxes")
+        self.mb = Mailbox(address=locpart, domain=domain, user=account,
+                          use_domain_quota=self.cleaned_data["quota_act"])
+        self.mb.set_quota(self.cleaned_data["quota"], 
+                          user.has_perm("admin.add_domain"))
+        self.mb.save(creator=user)
+
+    def update_mailbox(self, user, account):
+        newaddress = None
+        if self.cleaned_data["email"] != self.mb.full_address:
+            newaddress = self.cleaned_data["email"]
+        elif account.group == "SimpleUsers" and account.username != self.mb.full_address:
+            newaddress = account.username
+        if newaddress is not None:
+            self.mb.old_full_address = self.mb.full_address
+            local_part, domname = split_mailbox(newaddress)
+            try:
+                domain = Domain.objects.get(name=domname)
+            except Domain.DoesNotExist:
+                raise NotFound(_("Domain does not exist"))
+            if not user.can_access(domain):
+                raise PermDeniedException
+            self.mb.rename(local_part, domain)
+
+        self.mb.use_domain_quota = self.cleaned_data["quota_act"]
+        override_rules = True \
+            if not self.mb.quota or user.has_perm("admin.add_domain") \
+            else False
+        self.mb.set_quota(self.cleaned_data["quota"], override_rules)
+        self.mb.save()
+        events.raiseEvent('MailboxModified', self.mb)
+
     def save(self, user, account):
         if self.cleaned_data["email"] == "":
             return None
@@ -151,74 +218,46 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.cleaned_data["quota"] = None
 
         if not hasattr(self, "mb") or self.mb is None:
-            locpart, domname = split_mailbox(self.cleaned_data["email"])
-            try:
-                domain = Domain.objects.get(name=domname)
-            except Domain.DoesNotExist:
-                raise AdminError(_("Domain does not exist"))
-            if not user.can_access(domain):
-                raise PermDeniedException
-            try:
-                Mailbox.objects.get(address=locpart, domain=domain)
-            except Mailbox.DoesNotExist:
-                pass
-            else:
-                raise AdminError(_("Mailbox %s already exists" % self.cleaned_data["email"]))
-            events.raiseEvent("CanCreate", user, "mailboxes")
-            self.mb = Mailbox(address=locpart, domain=domain, user=account,
-                              use_domain_quota=self.cleaned_data["quota_act"])
-            self.mb.set_quota(self.cleaned_data["quota"], 
-                              user.has_perm("admin.add_domain"))
-            self.mb.save(creator=user)
+            self.create_mailbox(user, account)
         else:
-            newaddress = None
-            if self.cleaned_data["email"] != self.mb.full_address:
-                newaddress = self.cleaned_data["email"]
-            elif account.group == "SimpleUsers" and account.username != self.mb.full_address:
-                newaddress = account.username
-            if newaddress is not None:
-                local_part, domname = split_mailbox(newaddress)
-                try:
-                    domain = Domain.objects.get(name=domname)
-                except Domain.DoesNotExist:
-                    raise AdminError(_("Domain does not exist"))
-                if not user.can_access(domain):
-                    raise PermDeniedException
-                self.mb.rename(local_part, domain)
-
-            self.mb.use_domain_quota = self.cleaned_data["quota_act"]
-            override_rules = True \
-                if not self.mb.quota or user.has_perm("admin.add_domain") \
-                else False
-            self.mb.set_quota(self.cleaned_data["quota"], override_rules)
-            self.mb.save()
+            self.update_mailbox(user, account)
+        events.raiseEvent(
+            'SaveExtraFormFields', 'mailform', self.mb, self.cleaned_data
+        )
 
         account.email = self.cleaned_data["email"]
         account.save()
 
+        aliases = []
         for name, value in self.cleaned_data.iteritems():
             if not name.startswith("aliases"):
                 continue
             if value == "":
                 continue
-            local_part, domname = split_mailbox(value)
-            try:
-                self.mb.alias_set.get(address=local_part, domain__name=domname)
-            except Alias.DoesNotExist:
-                pass
-            else:
-                continue
-            events.raiseEvent("CanCreate", user, "mailbox_aliases")
-            al = Alias(address=local_part, enabled=account.is_active)
-            al.domain = Domain.objects.get(name=domname)
-            al.save(int_rcpts=[self.mb], creator=user)
+            aliases.append(value)
 
         for alias in self.mb.alias_set.all():
-            if len(alias.get_recipients()) >= 2:
-                continue
-            if not len(filter(lambda name: self.cleaned_data[name] == alias.full_address,
-                              self.cleaned_data.keys())):
+            if not alias.full_address in aliases:
+                if len(alias.get_recipients()) >= 2:
+                    continue
                 alias.delete()
+            else:
+                aliases.remove(alias.full_address)
+        if aliases:
+            events.raiseEvent(
+                "CanCreate", user, "mailbox_aliases", len(aliases)
+            )
+            for alias in aliases:
+                local_part, domname = split_mailbox(alias)
+                try:
+                    self.mb.alias_set.get(address=local_part, domain__name=domname)
+                except Alias.DoesNotExist:
+                    pass
+                else:
+                    continue
+                al = Alias(address=local_part, enabled=account.is_active)
+                al.domain = Domain.objects.get(name=domname)
+                al.save(int_rcpts=[self.mb], creator=user)
 
         return self.mb
 

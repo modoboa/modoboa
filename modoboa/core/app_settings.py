@@ -46,13 +46,24 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
     password_scheme = forms.ChoiceField(
         label=ugettext_lazy("Default password scheme"),
-        choices=[("crypt", "crypt"),
-                 ("md5", "md5"),
-                 ("md5crypt", "md5crypt"),
-                 ("sha256", "sha256"),
-                 ("plain", "plain")],
-        initial="md5crypt",
+        choices=[("sha512crypt", "sha512crypt"),
+                 ("sha256crypt", "sha256crypt"),
+                 ("md5crypt", ugettext_lazy("md5crypt (weak)")),
+                 ("sha256", ugettext_lazy("sha256 (weak)")),
+                 ("md5", ugettext_lazy("md5 (weak)")),
+                 ("crypt", ugettext_lazy("crypt (weak)")),
+                 ("plain", ugettext_lazy("plain (weak)"))],
+        initial="sha512crypt",
         help_text=ugettext_lazy("Scheme used to crypt mailbox passwords")
+    )
+
+    rounds_number = forms.IntegerField(
+        label=ugettext_lazy("Rounds"),
+        initial=70000,
+        help_text=ugettext_lazy(
+            "Number of rounds to use (only used by sha256crypt and "
+            "sha512crypt). Must be between 1000 and 999999999, inclusive."
+        )
     )
 
     secret_key = forms.CharField(
@@ -107,9 +118,9 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     )
 
     ldap_search_base = forms.CharField(
-        label=ugettext_lazy("Search base"),
+        label=ugettext_lazy("Users search base"),
         initial="",
-        help_text=ugettext_lazy("The distinguished name of the search base"),
+        help_text=ugettext_lazy("The distinguished name of the search base used to find users"),
         required=False
     )
 
@@ -137,6 +148,25 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Active Directory"),
         initial="no",
         help_text=ugettext_lazy("Tell if the LDAP server is an Active Directory one")
+    )
+
+    ldap_admin_groups = forms.CharField(
+        label=ugettext_lazy("Administrator groups"),
+        initial="",
+        help_text=ugettext_lazy(
+            "Members of those LDAP Posix groups will be created as domain "
+            "administrators. Use ';' characters to separate groups."
+        ),
+        required=False
+    )
+
+    ldap_groups_search_base = forms.CharField(
+        label=ugettext_lazy("Groups search base"),
+        initial="",
+        help_text=ugettext_lazy(
+            "The distinguished name of the search base used to find groups"
+        ),
+        required=False
     )
 
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
@@ -173,7 +203,9 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         "ldap_search_filter": "ldap_auth_method=searchbind",
         "ldap_user_dn_template": "ldap_auth_method=directbind",
         "ldap_password_attribute": "authentication_type=ldap",
-        "ldap_is_active_directory": "authentication_type=ldap"
+        "ldap_is_active_directory": "authentication_type=ldap",
+        "ldap_admin_groups": "authentication_type=ldap",
+        "ldap_groups_search_base": "authentication_type=ldap",
     }
 
     def __init__(self, *args, **kwargs):
@@ -191,9 +223,15 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         tpl = self.cleaned_data["ldap_user_dn_template"]
         try:
             test = tpl % {"user": "toto"}
-        except ValueError:
+        except (KeyError, ValueError):
             raise forms.ValidationError(_("Invalid syntax"))
         return tpl
+
+    def clean_rounds_number(self):
+        value = self.cleaned_data["rounds_number"]
+        if value < 1000 or value > 999999999:
+            raise forms.ValidationError(_("Invalid rounds number"))
+        return value
 
     def clean(self):
         """Custom validation method
@@ -226,7 +264,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         """
         try:
             import ldap
-            from django_auth_ldap.config import LDAPSearch
+            from django_auth_ldap.config import LDAPSearch, PosixGroupType
             ldap_available = True
         except ImportError:
             ldap_available = False
@@ -243,6 +281,11 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         ldap_uri = 'ldaps://' if values["ldap_secured"] == "yes" else "ldap://"
         ldap_uri += "%s:%s" % (values["ldap_server_address"], values["ldap_server_port"])
         setattr(settings, "AUTH_LDAP_SERVER_URI", ldap_uri)
+        setattr(settings, "AUTH_LDAP_GROUP_TYPE", PosixGroupType())
+        setattr(settings, "AUTH_LDAP_GROUP_SEARCH", LDAPSearch(
+            values["ldap_groups_search_base"], ldap.SCOPE_SUBTREE,
+            "(objectClass=posixGroup)"
+        ))
         if values["ldap_auth_method"] == "searchbind":
             setattr(settings, "AUTH_LDAP_BIND_DN", values["ldap_bind_dn"])
             setattr(settings, "AUTH_LDAP_BIND_PASSWORD", values["ldap_bind_password"])
@@ -253,7 +296,6 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             setattr(settings, "AUTH_LDAP_USER_SEARCH", search)
         else:
             setattr(settings, "AUTH_LDAP_USER_DN_TEMPLATE", values["ldap_user_dn_template"])
-
         if values["ldap_is_active_directory"] == "yes":
             if not hasattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS"):
                 setattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS", {

@@ -19,9 +19,9 @@ class DomainTestCase(ModoTestCase):
         """
         values = {
             "name": "pouet.com", "quota": 100, "create_dom_admin": "no",
-            "stepid": 2
+            "stepid": 'step2'
         }
-        self.check_ajax_post(reverse("modoboa.extensions.admin.views.domain.newdomain"), values)
+        self.ajax_post(reverse("modoboa.extensions.admin.views.domain.newdomain"), values)
         dom = Domain.objects.get(name="pouet.com")
         self.assertEqual(dom.name, "pouet.com")
         self.assertEqual(dom.quota, 100)
@@ -35,9 +35,9 @@ class DomainTestCase(ModoTestCase):
         values = {
             "name": "pouet.com", "quota": 100, "create_dom_admin": "yes",
             "dom_admin_username": "toto", "create_aliases": "yes",
-            "stepid": 2
+            "stepid": 'step2'
         }
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.domain.newdomain"),
             values
         )
@@ -53,9 +53,9 @@ class DomainTestCase(ModoTestCase):
         values = {
             "name": "pouet.com", "quota": 0, "create_dom_admin": "yes",
             "dom_admin_username": "toto", "create_aliases": "yes",
-            "stepid": 2
+            "stepid": 'step2'
         }
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.domain.newdomain"),
             values
         )
@@ -75,7 +75,7 @@ class DomainTestCase(ModoTestCase):
             "name": "pouet.com", "quota": 100, "enabled": True
         }
         dom = Domain.objects.get(name="test.com")
-        self.check_ajax_post(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.domain.editdomain",
                     args=[dom.id]), 
             values
@@ -88,7 +88,7 @@ class DomainTestCase(ModoTestCase):
         """Test the removal of a domain
         """
         dom = Domain.objects.get(name="test.com")
-        self.check_ajax_get(
+        self.ajax_post(
             reverse("modoboa.extensions.admin.views.domain.deldomain",
                     args=[dom.id]),
             {}

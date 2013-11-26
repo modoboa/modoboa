@@ -1,7 +1,7 @@
 # coding: utf-8
+import json
 from django.test import TestCase
 from django.test.client import Client
-from django.utils import simplejson
 from django import forms
 from django.core.urlresolvers import reverse
 from modoboa.lib import parameters
@@ -13,30 +13,34 @@ class ModoTestCase(TestCase):
         self.clt = Client()
         self.assertEqual(self.clt.login(username=username, password=password), True)
 
-    def check_ajax_request(self, method, url, params, status="ok", **kwargs):
+    def ajax_request(self, method, url, params, status=200):
         response = getattr(self.clt, method) \
             (url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        self.assertEqual(response.status_code, 200)
-        obj = simplejson.loads(response.content)
-        self.assertEqual(obj["status"], status)
-        for kw, v in kwargs.items():
-            self.assertEqual(obj[kw], v)
+        self.assertEqual(response.status_code, status)
+        return json.loads(response.content)
 
-    def check_ajax_post(self, *args, **kwargs):
-        self.check_ajax_request("post", *args, **kwargs)
+    def ajax_post(self, *args, **kwargs):
+        return self.ajax_request('post', *args, **kwargs)
 
-    def check_ajax_get(self, *args, **kwargs):
-        self.check_ajax_request("get", *args, **kwargs)
+    def ajax_get(self, *args, **kwargs):
+        return self.ajax_request('get', *args, **kwargs)
 
 
 class ExtTestCase(ModoTestCase):
-    name = None
 
     def setUp(self, *args, **kwargs):
         super(ExtTestCase, self).setUp(*args, **kwargs)
         self.clt.get(reverse("modoboa.core.views.admin.viewextensions"))
-        self.clt.post(reverse("modoboa.core.views.admin.saveextensions"),
-                      {"select_%s" % self.name : "1"})
+
+    def activate_extensions(self, *names):
+        from modoboa.core.extensions import exts_pool
+
+        self.ajax_post(
+            reverse("modoboa.core.views.admin.saveextensions"),
+            dict(("select_%s" % name, "1") for name in names)
+        )
+        for name in names:
+            exts_pool.get_extension(name).load()
 
 
 class TestParams(parameters.AdminParametersForm):

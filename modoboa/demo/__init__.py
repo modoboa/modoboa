@@ -43,12 +43,13 @@ def password_change(user):
 
 
 @events.observe("GetStaticContent")
-def get_static_content(user):
-    if not user.mailbox_set.count():
+def get_static_content(caller, user):
+    if caller != 'top' and not user.mailbox_set.count():
         return []
-    return """<script type="text/javascript">
+
+    return ["""<script type="text/javascript">
 $(document).ready(function() {
     $(document).on('click', 'a[name=sendspam]', simple_ajax_request);
     $(document).on('click', 'a[name=sendvirus]', simple_ajax_request);
 });
-</script>"""
+</script>"""]

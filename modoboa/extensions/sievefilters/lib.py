@@ -5,11 +5,12 @@ from sievelib.managesieve import Client, Error
 from sievelib.parser import Parser
 from sievelib.factory import FiltersSet
 from modoboa.lib import parameters
+from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.connections import ConnectionsManager, ConnectionError
 
 
-class SieveClientError(Exception):
-    pass
+class SieveClientError(ModoboaException):
+    http_code = 424
 
 
 class SieveClient(object):

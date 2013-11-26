@@ -12,6 +12,7 @@
             this.$element.carousel({pause: true});
             this.$element.carousel("pause");
             this.listen();
+            this.titles = {};
             $('input:text:visible:first').focus();
         },
 
@@ -21,41 +22,55 @@
             $(".submit").on("click", $.proxy(this.submit, this));
         },
 
+        get_current_step_id: function() {
+            return $(".item.active").attr("id");
+        },
+
+        get_current_title: function() {
+            return $(".modal-header").find("small").html();
+        },
+
+        set_current_title: function(title) {
+            $(".modal-header").find("small").html(title);
+        },
+
         post: function(last) {
             var $form = (this.options.formid) ? $('#' + this.options.formid) : $('form');
-            var data = $form.serialize() + "&stepid=" + $(".item.active").attr("id");
+            var data = $form.serialize() + "&stepid=" + this.get_current_step_id();
 
-            $.post($form.attr("action"), data, $.proxy(function(resp) {
-                if (resp.status == "ok") {
-                    if (!last) {
-                        var stepid = resp.stepid + 1;
-                        $('input:text:visible:first').focus();
-                        $(".modal-header").find("small").html(resp.title);
-                        if (this.options.transition_callbacks[stepid] != undefined) {
-                            this.options.transition_callbacks[stepid]();
-                        }
-                        this.$element.carousel('next');
-                    } else {
-                        $("#modalbox").modal('hide').remove();
-                        if (this.options.success_callback != undefined) {
-                            this.options.success_callback(resp);
-                        } else {
-                            window.location.reload();
-                        }
+            $.ajax({
+                type: 'POST', url: $form.attr("action"), data: data, global: false
+            }).done($.proxy(function(resp) {
+                if (!last) {
+                    $('input:text:visible:first').focus();
+                    this.set_current_title(resp.title);
+                    if (this.options.transition_callbacks[resp.stepid] != undefined) {
+                        this.options.transition_callbacks[resp.stepid]();
                     }
-                    return;
+                    this.$element.carousel('next');
+                } else {
+                    $("#modalbox").modal('hide').remove();
+                    if (this.options.success_callback != undefined) {
+                        this.options.success_callback(resp);
+                    } else {
+                        window.location.reload();
+                    }
                 }
-                if (resp.stepid != undefined && resp.form != undefined) {
-                    var stepid = resp.stepid + 1;
-                    $("#step" + stepid).html(resp.form);
+            }, this)).fail($.proxy(function(jqxhr) {
+                var resp = $.parseJSON(jqxhr.responseText);
+                if (resp.stepid != undefined) {
+                    var stepid = resp.stepid;
+                    display_form_errors("step" + stepid, resp);
                     if (this.options.error_callbacks[stepid] != undefined) {
                         this.options.error_callbacks[stepid]();
                     }
                     $('input:text:visible:first').focus();
+                    if (resp.respmsg) {
+                        $(".modal-body").prepend(build_error_alert(resp.respmsg));
+                    }
+                    return;
                 }
-                if (resp.respmsg) {
-                    $(".modal-body").prepend(build_error_alert(resp.respmsg));
-                }
+                $(".modal-body").prepend(build_error_alert(resp));
             }, this));
         },
 
@@ -66,6 +81,8 @@
 
         next: function(evt) {
             evt.preventDefault();
+            var step_id = this.get_current_step_id();
+            this.titles[step_id] = this.get_current_title();
             this.$element.on('slid', this.update_buttons);
             this.post(false);
         },
@@ -74,6 +91,7 @@
             evt.preventDefault();
             this.$element.on('slid', this.update_buttons);
             this.$element.carousel('prev');
+            this.set_current_title(this.titles[this.get_current_step_id()]);
         },
 
         submit: function(evt) {
@@ -98,7 +116,8 @@
     };
 
     $.fn.cwizard.defaults = {
-        transition_callbacks: {}
+        transition_callbacks: {},
+        error_callbacks: {}
     };
 
 })(jQuery);

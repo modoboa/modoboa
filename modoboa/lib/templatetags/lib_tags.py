@@ -4,6 +4,7 @@ from django import template
 from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy
+from modoboa.lib import events
 from modoboa.lib.formutils import SeparatorField
 
 register = template.Library()
@@ -94,6 +95,16 @@ def render_fields_group(form, pattern):
 
 
 @register.simple_tag
+def render_extra_fields(form):
+    result = ''
+    for fname in form.extra_fields:
+        result += render_to_string("common/generic_field.html", {
+            'field': form[fname], 'help_display_mode': 'tooltip'
+        })
+    return result
+
+
+@register.simple_tag
 def pagination_bar(page):
     return render_to_string("common/pagination_bar.html", dict(
         page=page, baseurl="?"
@@ -146,3 +157,20 @@ def render_tags(tags):
 {% endfor %}
 """)
     return t.render(Context({"tags": tags}))
+
+
+@register.simple_tag
+def extra_static_content(caller, user):
+    """Get extra static content from extensions.
+
+    :param str caller: the application (location) responsible for the call
+    :param ``User`` user: connected user
+    """
+    tpl = template.Template(
+        "{% for sc in static_content %}{{ sc|safe }}{% endfor %}"
+    )
+    return tpl.render(
+        template.Context({
+            'static_content': events.raiseQueryEvent("GetStaticContent", caller, user)
+        })
+    )

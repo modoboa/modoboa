@@ -3,25 +3,30 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.core.extensions import ModoExtension, exts_pool
 from modoboa.lib import parameters, events
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.exceptions import PermDeniedException, BadRequest
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.extensions.admin.exceptions import AdminError
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias
 )
 
-
 admin_events = [
-    "CreateDomain",
+    "DomainCreated",
     "DomainModified",
-    "DeleteDomain",
+    "DomainDeleted",
+    "DomainOwnershipRemoved",
+    "ExtraDomainEntries",
+    "ExtraDomainMenuEntries",
+    "ExtraDomainFilters",
+    "GetDomainActions",
+    "GetDomainModifyLink",
+    "CheckDomainName",
 
     "DomainAliasCreated",
     "DomainAliasDeleted",
 
-    "CreateMailbox",
-    "DeleteMailbox",
-    "ModifyMailbox",
+    "MailboxCreated",
+    "MailboxDeleted",
+    "MailboxModified",
 
     "MailboxAliasCreated",
     "MailboxAliasDeleted",
@@ -32,6 +37,9 @@ admin_events = [
     "ExtraAccountForm",
     "CheckExtraAccountForm",
     "FillAccountInstances",
+
+    "ExtraDomainImportHelp",
+    "ImportObject"
 ]
 
 
@@ -125,13 +133,25 @@ def grant_access_to_all_objects(user, role):
 
 @events.observe("AccountExported")
 def export_admin_domains(admin):
+    result = [admin.mailbox_set.all()[0].quota] \
+        if admin.mailbox_set.count() else ['']
     if admin.group != "DomainAdmins":
-        return []
-    return [dom.name for dom in Domain.objects.get_for_admin(admin)]
+        return result
+    return result + [dom.name for dom in Domain.objects.get_for_admin(admin)]
 
 
 @events.observe("AccountImported")
 def import_account_mailbox(user, account, row):
+    """Handle extra fields when an account is imported.
+
+    Expected fields:
+
+    email address; quota; [domain; ...]
+
+    :param User user: user importing the account
+    :param User account: account being imported
+    :param list rom: list of fields (strings)
+    """
     account.email = row[0].strip()
     if account.email != "":
         account.save()
@@ -139,17 +159,19 @@ def import_account_mailbox(user, account, row):
         try:
             domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
-            raise AdminError(
+            raise BadRequest(
                 _("Account import failed (%s): domain does not exist" % account.username)
             )
         if not user.can_access(domain):
             raise PermDeniedException
+        quota = int(row[1].strip())
+        use_domain_quota = True if not quota else False
         mb = Mailbox(address=mailbox, domain=domain,
-                     user=account, use_domain_quota=True)
-        mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
+                     user=account, use_domain_quota=use_domain_quota)
+        mb.set_quota(quota, override_rules=user.has_perm("admin.change_domain"))
         mb.save(creator=user)
     if account.group == "DomainAdmins":
-        for domname in row[1:]:
+        for domname in row[2:]:
             try:
                 dom = Domain.objects.get(name=domname.strip())
             except Domain.DoesNotExist:
@@ -162,8 +184,10 @@ def account_auto_created(user):
     from modoboa.core.models import User
     from modoboa.lib.permissions import grant_access_to_object
 
-    sadmins = User.objects.filter(is_superuser=True)
     localpart, domname = split_mailbox(user.username)
+    if user.group != 'SimpleUsers' and domname is None:
+        return
+    sadmins = User.objects.filter(is_superuser=True)
     try:
         domain = Domain.objects.get(name=domname)
     except Domain.DoesNotExist:
@@ -193,6 +217,11 @@ def user_logged_in(request, username, password):
 
 @events.observe("AccountDeleted")
 def account_deleted(account, byuser, **kwargs):
+    """'AccountDeleted' listener.
+
+    When an account is deleted, we also need to remove its mailbox (if
+    any).
+    """
     if not account.mailbox_set.count():
         return
     mb = account.mailbox_set.all()[0]

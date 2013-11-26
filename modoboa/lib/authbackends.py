@@ -36,15 +36,23 @@ try:
             the user. ldap_user.dn is the user's DN and
             ldap_user.attrs contains all of their LDAP attributes.
             """
-            lpart, domain = split_mailbox(username)
-            if domain is None:
-                return None
+            group = 'SimpleUsers'
+            admin_groups = parameters \
+                .get_admin('LDAP_ADMIN_GROUPS', app='core').split(';')
+            for grp in admin_groups:
+                if grp.strip() in ldap_user.group_names:
+                    group = 'DomainAdmins'
+                    break
+            if group == 'SimpleUsers':
+                lpart, domain = split_mailbox(username)
+                if domain is None:
+                    return None
             user, created = User.objects.get_or_create(
                 username__iexact=username,
                 defaults={'username': username.lower(), 'is_local': False}
             )
             if created:
-                populate_callback(user)
+                populate_callback(user, group)
             return user, created
 
         def get_user(self, user_id):

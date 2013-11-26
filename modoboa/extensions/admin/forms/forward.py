@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
+from modoboa.lib.exceptions import BadRequest, PermDeniedException
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.extensions.admin.exceptions import BadDestination
 from modoboa.extensions.admin.models import (
     Domain
 )
@@ -28,10 +28,14 @@ class ForwardForm(forms.Form):
         for d in rawdata.split(","):
             local_part, domname = split_mailbox(d)
             if not local_part or not domname or not len(domname):
-                raise BadDestination("Invalid mailbox syntax for %s" % d)
+                raise BadRequest("Invalid mailbox syntax for %s" % d)
             try:
                 Domain.objects.get(name=domname)
             except Domain.DoesNotExist:
                 self.dests += [d]
             else:
-                raise BadDestination(_("You can't define a forward to a local destination. Please ask your administrator to create an alias instead."))
+                raise PermDeniedException(
+                    _("You can't define a forward to a local destination. "
+                      "Please ask your administrator to create an alias "
+                      "instead.")
+                )

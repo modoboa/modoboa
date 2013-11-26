@@ -5,12 +5,12 @@ This module contains extra functions/shortcuts used to render HTML.
 """
 import sys
 import re
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from django.template.loader import render_to_string
 from django import template
-from django.utils import simplejson
 from django.conf import settings
 
 
@@ -27,9 +27,8 @@ def _render_to_string(request, tpl, user_context):
 def _render_error(request, errortpl="error", user_context=None):
     if user_context is None:
         user_context = {}
-    return render_to_response(
-        "common/%s.html" % errortpl, user_context,
-        context_instance=template.RequestContext(request)
+    return render(
+        request, "common/%s.html" % errortpl, user_context
     )
 
 
@@ -86,18 +85,18 @@ def ajax_response(request, status="ok", respmsg=None,
     if url is not None:
         jsonctx["url"] = url
     jsonctx["norefresh"] = norefresh
-    return HttpResponse(simplejson.dumps(jsonctx), mimetype="application/json")
+    return HttpResponse(json.dumps(jsonctx), mimetype="application/json")
 
 
-def ajax_simple_response(content, **response_kwargs):
-    """Simple AJAX response
+def render_to_json_response(context, **response_kwargs):
+    """Simple shortcut to render a JSON response.
 
-    No extra formatting is done. The content is passed directly to simplejon.
-
-    :param content: the response's content (list, dict, string)
+    :param dict context: response content
+    :return: ``HttpResponse`` object
     """
-    response_kwargs["content_type"] = "application/json"
-    return HttpResponse(simplejson.dumps(content), **response_kwargs)
+    data = json.dumps(context)
+    response_kwargs['content_type'] = 'application/json'
+    return HttpResponse(data, **response_kwargs)
 
 
 def static_url(path):

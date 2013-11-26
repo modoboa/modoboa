@@ -7,8 +7,8 @@ This module provides support to retrieve statistics from postfix log :
 sent, received, bounced, rejected
 
 """
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _, ugettext_lazy
+import sys
+from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
 from modoboa.core.extensions import ModoExtension, exts_pool
 
@@ -17,7 +17,9 @@ class Stats(ModoExtension):
     name = "stats"
     label = "Statistics"
     version = "1.0"
-    description = ugettext_lazy("Graphical statistics about emails traffic using RRDtool")
+    description = ugettext_lazy(
+        "Graphical statistics about emails traffic using RRDtool"
+    )
     needs_media = True
 
     def load(self):
@@ -26,27 +28,12 @@ class Stats(ModoExtension):
         parameters.register(
             ParametersForm, ugettext_lazy("Graphical statistics")
         )
+        from modoboa.extensions.stats import general_callbacks
+        if 'modoboa.extensions.stats.general_callbacks' in sys.modules:
+            reload(general_callbacks)
 
     def destroy(self):
-        events.unregister("AdminMenuDisplay", menu)
+        events.unregister_extension()
+        parameters.unregister()
 
 exts_pool.register_extension(Stats)
-
-
-@events.observe("UserMenuDisplay")
-def menu(target, user):
-    if target != "top_menu" or user.group == "SimpleUsers":
-        return []
-    return [
-        {"name": "stats",
-         "label": _("Statistics"),
-         "url": reverse('fullindex')}
-    ]
-
-
-@events.observe("GetGraphSets")
-def get_default_graph_sets():
-    from modoboa.extensions.stats.graph_templates import MailTraffic
-
-    gset = MailTraffic()
-    return {gset.html_id: gset}

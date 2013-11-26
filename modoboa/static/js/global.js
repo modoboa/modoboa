@@ -31,13 +31,10 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         $(href).modal('open');
         return;
     }
-    $.get(href, function(data) {
-        if (typeof data === "object") {
-            if (data.status == "ko" && data.respmsg) {
-                $("body").notify("error", data.respmsg);
-            }
-            return;
-        }
+    $.ajax({
+        type: "GET",
+        url: href
+    }).done(function(data) {
         var $div = $('<div />', {
             id: "modalbox", 'class': "modal", html: data
         });
@@ -51,8 +48,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
             if (modalcb != undefined) {
                 if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
             }
-        })
-        .on('hidden', function(e) {
+        }).on('hidden', function(e) {
             var $target = $(e.target);
 
             if (!$target.is($(this))) {
@@ -81,10 +77,19 @@ function modalbox_autowidth(e) {
 /*
  * Simple shorcut do create a bootstrap alert box (error mode)
  */
-function build_error_alert(msg) {
-    return $('<div class="alert alert-error"> \
+function build_alert_box(msg, level) {
+    return $('<div class="alert alert-' + level + '"> \
 <a class="close" data-dismiss="alert" href="#">&times;</a>' + msg + "</div>");
 }
+
+function build_error_alert(msg) {
+    return build_alert_box(msg, 'error');
+}
+
+function build_success_alert(msg) {
+    return build_alert_box(msg, 'success');
+}
+
 
 /*
  * '.keys()' method support for old browsers :p
@@ -103,13 +108,48 @@ if (!Object.keys) {
 }
 
 /*
+ * Clean all errors in a given form.
+ */
+function clean_form_errors(formid) {
+    $("#" + formid + " div.error").removeClass("error");
+    $("#" + formid + " span.help-inline").remove();
+}
+
+/*
+ * Display validation errors for a given form.
+ */
+function display_form_errors(formid, data) {
+    clean_form_errors(formid);
+    $.each(data.form_errors, function(id, value) {
+        var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
+        var $widget = $("#" + formid + " #" + fullid);
+        var spanid = fullid + "-error";
+        var $span = $("#" + spanid);
+
+        if (!$widget.parents(".control-group").hasClass("error")) {
+            $widget.parents(".control-group").addClass("error");
+        }
+        if (!$span.length) {
+            $span = $("<span />", {
+                "class": "help-inline",
+                "html": value[0],
+                "id": spanid
+            });
+            $widget.parents(".controls").append($span);
+        } else {
+            $span.html(value[0]);
+        }
+    });
+}
+
+/*
  * Simple function that sends a form using an 'ajax' post request.
  *
  * The function is intended to be used in a modal environment.
  */
 function simple_ajax_form_post(e, options) {
     e.preventDefault();
-    var $form = (options.formid !== undefined) ? $("#" + options.formid) : $("form");
+    var $form = (options.formid != undefined) ? $("#" + options.formid) : $("form");
     var defaults = {reload_on_success: true, reload_mode: 'full', modal: true};
     var opts = $.extend({}, defaults, options);
     var args = $form.serialize();
@@ -117,35 +157,42 @@ function simple_ajax_form_post(e, options) {
     if (options.extradata != undefined) {
         args += "&" + options.extradata;
     }
-    $.post($form.attr("action"), args, function(data) {
-        if (data.status == "ok") {
+    $.ajax({
+        type: "POST",
+        global: false,
+        url: $form.attr("action"),
+        data: args
+    }).done(function(data) {
+        if (opts.modal) {
             $("#modalbox").modal('hide');
-            if (opts.success_cb != undefined) {
-                opts.success_cb(data);
-                return;
+        }
+        if (opts.success_cb != undefined) {
+            opts.success_cb(data);
+            return;
+        }
+        if (opts.reload_on_success) {
+            if (opts.reload_mode == 'full') {
+                window.location.reload();
+            } else {
+                history.update(true);
             }
-            if (opts.reload_on_success) {
-                if (opts.reload_mode == 'full') {
-                    window.location.reload();
-                } else {
-                    history.update(true);
-                }
-            }
-            if (data.respmsg) {
-                $("body").notify('success', data.respmsg, 2000);
-            }
+        }
+        if (data) {
+            $("body").notify('success', data, 2000);
+        }
+    }).fail(function(jqxhr) {
+        var data = $.parseJSON(jqxhr.responseText);
+        if (data.form_errors) {
+            display_form_errors(options.formid, data);
         } else {
             if (opts.modal) {
-                if (data.content != "") {
-                    $('.modal').html(data.content);
-                }
-                if (data.respmsg) {
-                    $('.modal-body').prepend(build_error_alert(data.respmsg));
-                }
+                $('.modal-body').prepend(build_error_alert(data));
+            } else {
+                $('body').notify('error', data);
             }
-            if (opts.error_cb != undefined) {
-                opts.error_cb(data);
-            }
+        }
+        if (opts.error_cb) {
+            opts.error_cb(data);
         }
     });
 }
@@ -209,16 +256,11 @@ function simple_ajax_request(e, uoptions) {
     if (e != undefined) e.preventDefault();
     $.ajax({
         url: $this.attr("href"),
-        dataType: 'json',
-        success: function(data) {
-            if (data.status == "ok") {
-                if (options.ok_cb) options.ok_cb(data);
-                if (data.respmsg) {
-                    $("body").notify("success", data.respmsg, 2000);
-                }
-            } else {
-                $("body").notify("error", data.respmsg);
-            }
+        dataType: 'json'
+    }).done(function(data) {
+        if (options.ok_cb) options.ok_cb(data);
+        if (data) {
+            $("body").notify("success", data, 2000);
         }
     });
 }
@@ -249,8 +291,21 @@ function activate_widget(e) {
     }
 }
 
+/*
+ * Default error handler for AJAX requests.
+ */
+function default_ajax_error_handler(event, jqxhr, settings) {
+    try {
+        var data = $.parseJSON(jqxhr.responseText);
+    } catch (x) {
+        var data = gettext("Internal error");
+    }
+    $('body').notify('error', data);
+}
+
 $(document).ready(function() {
     $(document).ajaxSuccess(function(e, xhr, settings) { ajax_login_redirect(xhr); });
+    $(document).ajaxError(default_ajax_error_handler);
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
     $(document).on('click', '.activator', activate_widget);

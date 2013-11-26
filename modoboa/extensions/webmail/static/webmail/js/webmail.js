@@ -281,8 +281,8 @@ Webmail.prototype = {
      * Poller callback.
      */
     poller_cb: function(data) {
-        for (var mb in data.counters) {
-            this.set_unseen_messages(mb, parseInt(data.counters[mb]));
+        for (var mb in data) {
+            this.set_unseen_messages(mb, parseInt(data[mb]));
         }
     },
 
@@ -361,14 +361,10 @@ Webmail.prototype = {
             url: this.options.submboxes_url,
             dataType: 'json',
             async: async,
-            data: "topmailbox=" + parent.attr("name"),
-            success: $.proxy(function(data) {
-                if (data.status == "ko") {
-                    return;
-                }
-                this.inject_mailboxes(parent, data.mboxes);
-            }, this)
-        });
+            data: "topmailbox=" + parent.attr("name")
+        }).done($.proxy(function(data) {
+            this.inject_mailboxes(parent, data);
+        }, this));
     },
 
     /*
@@ -502,17 +498,12 @@ Webmail.prototype = {
 
         $.ajax({
             url: $link.attr("href") + "?name=" + $selected.attr("href"),
-            dataType: 'json',
-            success: $.proxy(function(data) {
-                if (data.status == "ok") {
-                    this.remove_mbox_from_tree(this.navobject.getparam("mbox"));
-                    this.poller.resume();
-                    $("body").notify("success", gettext("Mailbox removed"), 2000);
-                } else {
-                    $("body").notify("error", data.respmsg);
-                }
-            }, this)
-        });
+            dataType: 'json'
+        }).done($.proxy(function(data) {
+            this.remove_mbox_from_tree(this.navobject.getparam("mbox"));
+            this.poller.resume();
+            $("body").notify("success", gettext("Mailbox removed"), 2000);
+        }, this));
     },
 
     /*
@@ -607,25 +598,19 @@ Webmail.prototype = {
         $.ajax({
             url: $link.attr("href"),
             data: "ids=" + selection.join(","),
-            dataType: 'json',
-            success: $.proxy(this.mark_callback, this)
-        });
+            dataType: 'json'
+        }).done($.proxy(this.mark_callback, this));
     },
 
     send_mb_action: function(url, cb) {
         $.ajax({
             url: url,
-            dataType: 'json',
-            success: $.proxy(function(data) {
-                if (data.status == "ko") {
-                    $("body").notify("error", data.respmsg);
-                    return;
-                }
-                if (cb != undefined) {
-                    cb.apply(this, [data]);
-                }
-            }, this)
-        });
+            dataType: 'json'
+        }).done($.proxy(function(data) {
+            if (cb != undefined) {
+                cb.apply(this, [data]);
+            }
+        }, this));
     },
 
     empty: function(e) {
@@ -649,8 +634,8 @@ Webmail.prototype = {
         e.preventDefault();
         $.ajax({
             url: $link.attr("href"),
-            success: $.proxy(this.delete_callback, this)
-        });
+            dataType: 'json'
+        }).done($.proxy(this.delete_callback, this));
     },
 
     delete_messages: function(e) {
@@ -678,9 +663,8 @@ Webmail.prototype = {
         this.change_unseen_messages(this.options.trash, unseen_cnt);
         $.ajax({
             url: $link.attr("href"),
-            data: {mbox: this.get_current_mailbox(), selection: selection},
-            success: $.proxy(this.delete_callback, this)
-        });
+            data: {mbox: this.get_current_mailbox(), selection: selection}
+        }).done($.proxy(this.delete_callback, this));
     },
 
     display_mode: function(e, value) {
@@ -757,8 +741,18 @@ Webmail.prototype = {
             data: args,
             dataType: 'json',
             type: 'POST',
-            success: $.proxy(this.sendmail_callback, this)
-        });
+            global: false
+        }).done($.proxy(function(data) {
+            this._listmailbox_loader(null, $("#folders").find("li[class*=active]").children("a"));
+            $("body").notify("success", gettext("Message sent"), 2000);
+        }, this)).fail($.proxy(function(jqxhr) {
+            var data = $.parseJSON(jqxhr.responseText);
+            this.navobject.get_callback("compose")(data);
+            if (data.respmsg != undefined) {
+                $("body").notify("error", data.respmsg);
+            }
+            $("a[name=sendmail]").attr("disabled", null);
+        }, this));
     },
 
     /*
@@ -853,19 +847,6 @@ Webmail.prototype = {
         });
     },
 
-    sendmail_callback: function(data) {
-        if (data.status == "ko") {
-            this.navobject.get_callback("compose")(data);
-            if (data.respmsg != undefined) {
-                $("body").notify("error", data.respmsg);
-            }
-            $("a[name=sendmail]").attr("disabled", null);
-            return;
-        }
-        this._listmailbox_loader(null, $("#folders").find("li[class*=active]").children("a"));
-        $("body").notify("success", gettext("Message sent"), 2000);
-    },
-
     /*
      * Callback of the 'viewmail' action
      */
@@ -879,10 +860,6 @@ Webmail.prototype = {
     },
 
     mark_callback: function(data) {
-        if (data.status == "ko") {
-            $("body").notify("error", data.respmsg);
-            return;
-        }
         if (data.action == "read") {
             this.htmltable.current_selection().removeClass("unseen");
         } else {
@@ -894,16 +871,13 @@ Webmail.prototype = {
     },
 
     delete_callback: function(data) {
-        if (data.status == "ok") {
-            var msg = (data.respmsg) ? data.respmsg : gettext("Message deleted");
-            this.go_back_to_listing();
-            if (this.get_current_mailbox() != this.options.trash) {
-                $("a[name=totrash]").removeClass("disabled");
-            }
-            $("body").notify("success", msg, 2000);
-        } else {
-            $("body").notify("error", data.respmsg);
+        var msg = (data.respmsg) ? data.respmsg : gettext("Message deleted");
+
+        this.go_back_to_listing();
+        if (this.get_current_mailbox() != this.options.trash) {
+            $("a[name=totrash]").removeClass("disabled");
         }
+        $("body").notify("success", msg, 2000);
     },
 
     /*
@@ -913,13 +887,12 @@ Webmail.prototype = {
         $("#mboxform").find("input").keypress(function(e) {
             if (e.which == 13) e.preventDefault();
         });
-        $(".submit").one('click', $.proxy(function(e) {
+        $(".submit").on('click', $.proxy(function(e) {
             var $link = $("#folders2 li.active").children("a");
 
             simple_ajax_form_post(e, {
                 reload_on_success: false,
                 formid: "mboxform",
-                error_cb: this.mboxform_cb,
                 extradata: ($link.length) ? "parent_folder=" + $link.attr("href") : "",
                 success_cb: $.proxy(this.mboxform_success, this)
             });
@@ -927,6 +900,7 @@ Webmail.prototype = {
     },
 
     mboxform_success: function(data) {
+        $("body").notify('success', data.respmsg, 2000);
         if (data.oldmb === undefined) {
             this.add_mailbox_to_tree(data.parent, data.newmb);
         } else if (data.newmb) {
@@ -992,10 +966,9 @@ Webmail.prototype = {
         var $this = $(this);
 
         $.ajax({
-            url: $this.attr("href"),
-            success: function() {
-                $this.parent().remove();
-            }
+            url: $this.attr("href")
+        }).done(function() {
+            $this.parent().remove();
         });
     },
 
@@ -1089,18 +1062,13 @@ Webmail.prototype = {
                 $.ajax({
                     url: plug.options.move_url,
                     data: "msgset=" + selection.join() + "&to=" + to,
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.status == "ok") {
-                            if (unseen_cnt) {
-                                plug.change_unseen_messages(from, -unseen_cnt);
-                                plug.change_unseen_messages(to, unseen_cnt);
-                            }
-                            plug.listmailbox_callback(data);
-                        } else {
-                            $("body").notify("error", data.respmsg);
-                        }
+                    dataType: 'json'
+                }).done(function(data) {
+                    if (unseen_cnt) {
+                        plug.change_unseen_messages(from, -unseen_cnt);
+                        plug.change_unseen_messages(to, unseen_cnt);
                     }
+                    plug.listmailbox_callback(data);
                 });
             }
         });

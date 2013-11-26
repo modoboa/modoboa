@@ -2,7 +2,7 @@
 Modoboa
 #######
 
-|latest-version| |downloads|
+|travis| |latest-version| |downloads|
 
 Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
@@ -26,12 +26,12 @@ frameworks.
 Main features
 *************
 
- * Administration panel
- * `Amavisd-new <http://www.amavis.org>`_ frontend
- * Webmail
- * Per-user Sieve filters
- * Autoreply messages for Postfix
- * Graphical statistics about email traffic
+* Administration panel
+* `Amavisd-new <http://www.amavis.org>`_ frontend
+* Webmail
+* Per-user Sieve filters
+* Autoreply messages for Postfix
+* Graphical statistics about email traffic
 
 *************
 Documentation
@@ -54,10 +54,10 @@ External code
 
 The following external libraries are provided with Modoboa:
 
-* jQuery version 1.9.1 (http://www.jquery.org/)
-* jQuery-UI 1.10+ (http://jqueryui.com/)
-* Bootstrap, from Twitter version 2.3.1 (http://twitter.github.com/bootstrap/)
-* Bootstrap datepicker (https://bitbucket.org/eternicode/bootstrap-datepicker)
+* `jQuery version 1.9.1 <http://www.jquery.org/>`_
+* `jQuery-UI 1.10+ <http://jqueryui.com/>`_
+* `Bootstrap, from Twitter version 2.3.2 <http://twitter.github.com/bootstrap/>`_
+* `Bootstrap datetimepicker <http://www.malot.fr/bootstrap-datetimepicker/index.php>`_
 
 .. |latest-version| image:: https://pypip.in/v/modoboa/badge.png
    :alt: Latest version on Pypi
@@ -65,9 +65,9 @@ The following external libraries are provided with Modoboa:
 .. |downloads| image:: https://pypip.in/d/modoboa/badge.png
    :alt: Downloads from Pypi
    :target: https://crate.io/packages/modoboa/
-
+.. |travis| image:: https://travis-ci.org/tonioo/modoboa.png?branch=master
+   :target: https://travis-ci.org/tonioo/modoboa
 
 .. image:: https://d2weczhvl823v0.cloudfront.net/tonioo/modoboa/trend.png
    :alt: Bitdeli badge
    :target: https://bitdeli.com/free
-
