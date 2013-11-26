@@ -147,10 +147,16 @@ class Email(object):
         return path
 
     def map_cid(self, url):
-        m = re.match(".*cid:(.+)", url)
-        if m:
-            if m.group(1) in self.attached_map:
-                return self.attached_map[m.group(1)]
+        """Replace attachment links.
+
+        :param str url: original url
+        :rtype: string
+        :return: internal link
+        """
+        match = re.match(".*cid:(.+)", url)
+        if match is not None:
+            if match.group(1) in self.attached_map:
+                return self.attached_map[match.group(1)]
         return url
 
     def render_headers(self, **kwargs):
@@ -172,6 +178,8 @@ class Email(object):
             html.rewrite_links(lambda x: None)
         else:
             html.rewrite_links(self.map_cid)
+            for link in html.iterlinks():
+                link[0].set('target', '_blank')
         body = html.find("body")
         if body is None:
             body = lxml.html.tostring(html)
