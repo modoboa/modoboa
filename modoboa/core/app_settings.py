@@ -154,8 +154,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Administrator groups"),
         initial="",
         help_text=ugettext_lazy(
-            "Members of those LDAP groups will be created as domain "
-            "administrators. Use a ';' characters to separate groups"
+            "Members of those LDAP Posix groups will be created as domain "
+            "administrators. Use ';' characters to separate groups."
         ),
         required=False
     )
