@@ -8,7 +8,7 @@ import re
 import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from django.template.loader import render_to_string
 from django import template
 from django.conf import settings
@@ -27,9 +27,8 @@ def _render_to_string(request, tpl, user_context):
 def _render_error(request, errortpl="error", user_context=None):
     if user_context is None:
         user_context = {}
-    return render_to_response(
-        "common/%s.html" % errortpl, user_context,
-        context_instance=template.RequestContext(request)
+    return render(
+        request, "common/%s.html" % errortpl, user_context
     )
 
 
