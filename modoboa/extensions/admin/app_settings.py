@@ -22,10 +22,20 @@ class AdminParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy("The UNIX account who owns mailboxes on the filesystem")
     )
 
+    default_domain_quota = forms.IntegerField(
+        label=ugettext_lazy("Default domain quota"),
+        initial=0,
+        help_text=ugettext_lazy(
+            "Default quota (in MB) applied to freshly created domains with no "
+            "value specified. A value of 0 means no quota."
+        ),
+        widget=forms.TextInput(attrs={'class': 'span2'})
+    )
+
     auto_account_removal = YesNoField(
         label=ugettext_lazy("Automatic account removal"),
         initial="no",
-        help_text=ugettext_lazy("When a mailbox is removed, also remove the associated account"),
+        help_text=ugettext_lazy("When a mailbox is removed, also remove the associated account")
     )
 
     # Visibility rules
@@ -46,3 +56,11 @@ class AdminParametersForm(parameters.AdminParametersForm):
         if hide_fields:
             del self.fields["handle_mailboxes"]
             del self.fields["mailboxes_owner"]
+
+    def clean_default_domain_quota(self):
+        """Ensure quota is a positive integer."""
+        if self.cleaned_data['default_domain_quota'] < 0:
+            raise forms.ValidationError(
+                ugettext_lazy('Must be a positive integer')
+            )
+        return self.cleaned_data['default_domain_quota']

@@ -85,7 +85,8 @@ class PermissionsTestCase(ModoTestCase):
         self.user = User.objects.get(username='user@test.com')
         self.values = dict(
             username=self.user.username, role="DomainAdmins",
-            is_active=self.user.is_active, email="user@test.com"
+            is_active=self.user.is_active, email="user@test.com",
+            quota_act=True
         )
 
     def tearDown(self):
