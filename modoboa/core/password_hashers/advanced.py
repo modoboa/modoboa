@@ -16,7 +16,10 @@ class MD5CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{MD5-CRYPT}'
+        return '{MD5-CRYPT}' if self._target == 'local' else '{CRYPT}'
+
+    def _b64encode(self, pwhash):
+        return pwhash
 
     def _encrypt(self, clearvalue, salt=None):
         return md5_crypt.encrypt(clearvalue)
@@ -34,7 +37,10 @@ class SHA256CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{SHA256-CRYPT}'
+        return '{SHA256-CRYPT}' if self._target == 'local' else '{CRYPT}'
+
+    def _b64encode(self, pwhash):
+        return pwhash
 
     def _encrypt(self, clearvalue, salt=None):
         rounds = int(parameters.get_admin('ROUNDS_NUMBER'))
@@ -53,7 +59,10 @@ class SHA512CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{SHA512-CRYPT}'
+        return '{SHA512-CRYPT}' if self._target == 'local' else '{CRYPT}'
+
+    def _b64encode(self, pwhash):
+        return pwhash
 
     def _encrypt(self, clearvalue, salt=None):
         rounds = int(parameters.get_admin('ROUNDS_NUMBER'))

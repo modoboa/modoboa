@@ -1,7 +1,10 @@
 # coding: utf-8
 from django.db import connection
 from django.conf import settings
-            
+from django.utils.translation import ugettext as _
+from modoboa.lib.exceptions import InternalError
+
+
 def db_table_exists(table, cursor=None):
     """Check if table exists
 
@@ -20,14 +23,18 @@ def db_table_exists(table, cursor=None):
     else:
         return table in table_names
 
-def db_type(connection="default"):
+
+def db_type(cname="default"):
     """Return the type of the *default* database
 
     Supported values : 'postgres', 'mysql', 'sqlite'
 
+    :param str cname: connection name
     :return: a string or None
     """
+    if not cname in settings.DATABASES:
+        raise InternalError(_("Connection to database %s not configured" % cname))
     for t in ['postgres', 'mysql', 'sqlite']:
-        if settings.DATABASES[connection]['ENGINE'].find(t) != -1:
+        if settings.DATABASES[cname]['ENGINE'].find(t) != -1:
             return t
     return None

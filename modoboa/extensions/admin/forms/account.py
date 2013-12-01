@@ -65,7 +65,7 @@ class AccountFormGeneral(forms.ModelForm):
             account = kwargs["instance"]
             self.fields["role"].initial = account.group
             if not account.is_local \
-               and parameters.get_admin("LDAP_AUTH_METHOD") == "directbind":
+               and parameters.get_admin("LDAP_AUTH_METHOD", app="core") == "directbind":
                 del self.fields["password1"]
                 del self.fields["password2"]
 
@@ -161,6 +161,22 @@ class AccountFormMail(forms.Form, DynamicForm):
     def clean_email(self):
         """Ensure lower case emails"""
         return self.cleaned_data["email"].lower()
+
+    def clean(self):
+        """Custom fields validation.
+
+        Check if quota is >= 0 only when the domain value is not used.
+        """
+        super(AccountFormMail, self).clean()
+        if self._errors:
+            raise forms.ValidationError(self._errors)
+        if not self.cleaned_data["quota_act"] \
+                and self.cleaned_data['quota'] is not None:
+            if self.cleaned_data["quota"] < 0:
+                self._errors["quota"] = self.error_class(
+                    [_("Must be a valid integer")])
+                del self.cleaned_data["quota"]
+        return self.cleaned_data
 
     def create_mailbox(self, user, account):
         locpart, domname = split_mailbox(self.cleaned_data["email"])

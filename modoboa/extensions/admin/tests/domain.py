@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from modoboa.core.models import User
+from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 from modoboa.extensions.admin.models import (
     Domain, Alias
@@ -65,6 +66,22 @@ class DomainTestCase(ModoTestCase):
         al = Alias.objects.get(address="postmaster", domain__name="pouet.com")
         self.assertIn(da.mailbox_set.all()[0], al.mboxes.all())
         self.assertTrue(da.can_access(al))
+
+    def test_create_using_default_quota(self):
+        parameters.save_admin('DEFAULT_DOMAIN_QUOTA', 50, app='admin')
+        values = {
+            "name": "pouet.com", "create_dom_admin": "yes",
+            "dom_admin_username": "toto", "create_aliases": "yes",
+            "stepid": 'step2'
+        }
+        self.ajax_post(
+            reverse("modoboa.extensions.admin.views.domain.newdomain"),
+            values
+        )
+        dom = Domain.objects.get(name="pouet.com")
+        self.assertEqual(dom.quota, 50)
+        da = User.objects.get(username="toto@pouet.com")
+        self.assertEqual(da.mailbox_set.all()[0].quota, 50)
 
     def test_modify(self):
         """Test the modification of a domain

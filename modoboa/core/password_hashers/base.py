@@ -15,6 +15,22 @@ class PasswordHasher(object):
     """
     Base class of all hashers.
     """
+    def __init__(self, target='local'):
+        self._target = target
+
+    def _encrypt(self, clearvalue, salt=None):
+        raise NotImplementedError
+
+    def _b64encode(self, pwhash):
+        """Encode :keyword:`pwhash` using base64 if needed.
+
+        :param str pwhash: password hash
+        :return: base64 encoded hash or original hash
+        """
+        if self._target == 'ldap':
+            return base64.b64encode(pwhash)
+        return pwhash
+
     def encrypt(self, clearvalue):
         """Encrypt a password.
 
@@ -28,7 +44,8 @@ class PasswordHasher(object):
         :rtype: str
         :return: encrypted password
         """
-        return '%s%s' % (self.scheme, self._encrypt(clearvalue))
+        pwhash = self._b64encode(self._encrypt(clearvalue))
+        return '%s%s' % (self.scheme, pwhash)
 
     def verify(self, clearvalue, hashed_value):
         """Verify a password against a hashed value.
@@ -38,7 +55,7 @@ class PasswordHasher(object):
         :return: True if passwords match, False otherwise
         """
         return constant_time_compare(
-            self._encrypt(clearvalue, hashed_value),
+            self._b64encode(self._encrypt(clearvalue, hashed_value)),
             hashed_value
         )
 
@@ -97,4 +114,12 @@ class SHA256Hasher(PasswordHasher):
         return '{SHA256}'
 
     def _encrypt(self, clearvalue, salt=None):
-        return base64.b64encode(hashlib.sha256(clearvalue).digest())
+        return hashlib.sha256(clearvalue).digest()
+
+    def _b64encode(self, pwhash):
+        """Encode :keyword:`pwhash` using base64.
+
+        :param str pwhash: password hash
+        :return: base64 encoded hash
+        """
+        return base64.b64encode(pwhash)

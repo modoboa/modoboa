@@ -1,7 +1,7 @@
 from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib import events
+from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import Conflict
 from modoboa.lib.formutils import (
     DomainNameField, YesNoField, DynamicForm, TabForms
@@ -13,6 +13,15 @@ from modoboa.extensions.admin.models import (
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
+    quota = forms.IntegerField(
+        label=ugettext_lazy("Quota"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Default quota in MB applied to mailboxes. Leave empty to use the "
+            "default value."
+        ),
+        widget=forms.TextInput(attrs={"class": "span1"})
+    )
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
@@ -25,9 +34,6 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     class Meta:
         model = Domain
         fields = ("name", "quota", "aliases", "enabled")
-        widgets = dict(
-            quota=forms.widgets.TextInput(attrs={"class": "span1"})
-        )
 
     def __init__(self, *args, **kwargs):
         self.oldname = None
@@ -42,6 +48,13 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             for pos, dalias in enumerate(d.domainalias_set.all()):
                 name = "aliases_%d" % (pos + 1)
                 self._create_field(forms.CharField, name, dalias.name, 3)
+
+    def clean_quota(self):
+        if self.cleaned_data['quota'] is None:
+            return int(parameters.get_admin('DEFAULT_DOMAIN_QUOTA'))
+        if self.cleaned_data['quota'] < 0:
+            raise forms.ValidationError(_("Must be a positive integer"))
+        return self.cleaned_data['quota']
 
     def clean(self):
         """Custom fields validation.
