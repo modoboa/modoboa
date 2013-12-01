@@ -260,7 +260,7 @@ Quarantine.prototype = {
     },
 
     deactivate_buttons: function($tr) {
-        if (!this.htmltable.current_selection().length) {
+        if (!this.htmltable || !this.htmltable.current_selection().length) {
             $("a[name=release-multi]").addClass('disabled');
             $("a[name=delete-multi]").addClass('disabled');
             $("#selectall").prop('checked', false);

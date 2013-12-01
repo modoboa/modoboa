@@ -97,6 +97,9 @@
             this.last_selection = null;
             this.current_selection().removeClass(this.options.tr_selected_class);
             $("tbody input[type=checkbox]").prop('checked', false);
+            if (this.options.tr_unselected_event != undefined) {
+                this.options.tr_unselected_event();
+            }
         },
 
         /*
@@ -104,7 +107,9 @@
          */
         select_row: function($row) {
             $row.addClass(this.options.tr_selected_class);
-
+            if (this.options.tr_selected_event != undefined) {
+                this.options.tr_selected_event($row);
+            }
         },
 
         keydown: function(e) {
