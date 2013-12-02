@@ -188,13 +188,18 @@ def delete_selfservice(request, mail_id):
 
 @selfservice(delete_selfservice)
 def delete(request, mail_id):
+    """Delete message selection.
+
+    :param str mail_id: message unique identifier
+    """
     mail_id = check_mail_id(request, mail_id)
     wrapper = get_wrapper()
     mb = Mailbox.objects.get(user=request.user) \
         if request.user.group == 'SimpleUsers' else None
     for mid in mail_id:
         r, i = mid.split()
-        if mb is not None and not r in mb.alias_addresses:
+        if mb is not None and r != mb.full_address \
+                and not r in mb.alias_addresses:
             continue
         msgrcpt = wrapper.get_recipient_message(r, i)
         msgrcpt.rs = 'D'
@@ -247,7 +252,8 @@ def release(request, mail_id):
         if request.user.group == 'SimpleUsers' else None
     for mid in mail_id:
         r, i = mid.split()
-        if mb is not None and not r in mb.alias_addresses:
+        if mb is not None and r != mb.full_address \
+                and not r in mb.alias_addresses:
             continue
         msgrcpts += [wrapper.get_recipient_message(r, i)]
     if mb is not None and parameters.get_admin("USER_CAN_RELEASE") == "no":
