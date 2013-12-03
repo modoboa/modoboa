@@ -34,7 +34,7 @@ class WMtable(tables.Table):
     selection = tables.SelectionColumn(
         "selection", safe=True, width='1%', header=None, sortable=False
     )
-    flags = tables.ImgColumn("flags", width="2%")
+    flags = tables.ImgColumn("flags", width="3%")
     withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column(
         "subject", label=ugettext_lazy("Subject"), width="50%", limit=60,

@@ -89,6 +89,7 @@ And add the following line inside::
 The result of each order is recorded into Modoboa's log. Go to
 *Modoboa > Logs* to consult them.
 
+.. _dovecot_authentication:
 
 Authentication
 ==============

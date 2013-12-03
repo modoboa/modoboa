@@ -53,8 +53,6 @@ Finally, follow the common procedure::
 1.1.0: FIXME
 ============
 
-#. Add ``'modoboa.extensions.postfix_relay_domains'`` to ``MODOBOA_APPS``
-
 Due to code refactoring, some modifications need to be done into
 :file:`settings.py`:
 
@@ -74,6 +72,8 @@ Due to code refactoring, some modifications need to be done into
       'modoboa.extensions.sievefilters',
     )
 
+#. Add ``'modoboa.extensions.postfix_relay_domains'`` to ``MODOBOA_APPS``
+
 #. ``AUTH_USER_MODEL`` must be set to ``core.User``
 
 #. Into ``LOGGING``, replace ``modoboa.lib.logutils.SQLHandler`` by
@@ -85,6 +85,8 @@ Then, run the following commands to migrate your installation::
   $ python manage.py migrate
   $ python manage.py collectstatic
 
+Finally, update both :ref:`Dovecot <dovecot_authentication>` and
+:ref:`Postfix <postfix>` queries.
 
 1.0.1: operations on mailboxes
 ==============================

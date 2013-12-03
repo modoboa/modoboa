@@ -46,13 +46,18 @@ class AdminParametersForm(parameters.AdminParametersForm):
     def __init__(self, *args, **kwargs):
         super(AdminParametersForm, self).__init__(*args, **kwargs)
         hide_fields = False
-        try:
-            code, version = exec_cmd("dovecot --version")
-        except OSError:
-            hide_fields = True
-        else:
-            if code or not version.strip().startswith("2"):
+        code, output = exec_cmd("which dovecot")
+        if not code:
+            dpath = output.strip()
+            try:
+                code, version = exec_cmd("%s --version" % dpath)
+            except OSError:
                 hide_fields = True
+            else:
+                if code or not version.strip().startswith("2"):
+                    hide_fields = True
+        else:
+            hide_fields = True
         if hide_fields:
             del self.fields["handle_mailboxes"]
             del self.fields["mailboxes_owner"]
