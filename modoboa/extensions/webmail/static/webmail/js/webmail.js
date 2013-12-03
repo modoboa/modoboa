@@ -56,7 +56,6 @@ Webmail.prototype = {
         this.navobject.register_callback("reply", $.proxy(this.compose_callback, this));
         this.navobject.register_callback("replyall", $.proxy(this.compose_callback, this));
         this.navobject.register_callback("forward", $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("delete", $.proxy(this.delete_callback, this));
     },
 
     listen: function() {
@@ -851,13 +850,11 @@ Webmail.prototype = {
     },
 
     delete_callback: function(data) {
-        var msg = (data.respmsg) ? data.respmsg : gettext("Message deleted");
-
         this.go_back_to_listing();
         if (this.get_current_mailbox() != this.options.trash) {
             $("a[name=totrash]").removeClass("disabled");
         }
-        $("body").notify("success", msg, 2000);
+        $("body").notify("success", data, 2000);
     },
 
     /*
