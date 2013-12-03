@@ -3,12 +3,13 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from modoboa.lib.webutils import _render_to_string
 
 register = template.Library()
 
 
 @register.simple_tag
-def viewm_menu(user, mail_id, rcpt):
+def viewm_menu(mail_id, rcpt):
     entries = [
         {"name": "release",
          "img": "icon-white icon-ok",
@@ -65,49 +66,13 @@ def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
 
 
 @register.simple_tag
-def quar_menu(user):
-    entries = [
-        {"name": "release-multi",
-         "url": reverse('modoboa.extensions.amavis.views.process'),
-         "img": "icon-white icon-ok",
-         "class": "btn-success",
-         "label": _("Release")},
-        {"name": "delete-multi",
-         "img": "icon-white icon-trash",
-         "class": "btn-danger",
-         "url": reverse('modoboa.extensions.amavis.views.process'),
-         "label": _("Delete")},
-        {"name": "select",
-         "url": "",
-         "label": _("Content Class"),
-         "menu": [
-             {"name": "selectmsgs",
-              "url": "",
-              "label": _("Nothing")},
-             {"name": "selectmsgs",
-              "url": "S",
-              "label": _("Spam")},
-             {"name": "selectmsgs",
-              "url": "V",
-              "label": _("Virus")},
-             {"name": "selectmsgs",
-              "url": "H",
-              "label": _("Bad header")},
-             {"name": "selectmsgs",
-              "url": "M",
-              "label": _("Bad MIME")}
-         ]}
-    ]
+def quar_menu():
+    """Render the quarantine listing menu.
 
-    if user.group != 'SimpleUsers':
-        extraopts = [{"name": "to", "label": _("To")}]
-    else:
-        extraopts = []
-    extracontent = render_to_string('common/email_searchbar.html', {
-        "STATIC_URL": settings.STATIC_URL,
-        "extraopts": extraopts
+    :rtype: str
+    :return: resulting HTML
+    """
+    extraopts = [{"name": "to", "label": _("To")}]
+    return render_to_string('amavis/main_action_bar.html', {
+        'extraopts': extraopts
     })
-
-    return render_to_string('common/buttons_list.html', dict(
-        entries=entries, extracontent=extracontent
-    ))

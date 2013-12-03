@@ -1,0 +1,38 @@
+{% load lib_tags i18n %}
+<div class="btn-toolbar pull-left">
+  <div class="btn-group" title="{% trans 'Select' %}">
+    <a class="btn"><input type="checkbox" id="selectall" /></a>
+    <button class="btn dropdown-toggle" data-toggle="dropdown">
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a name="selectmsgs" href="S">{% trans "Spam" %}</a></li>
+      <li><a name="selectmsgs" href="V">{% trans "Virus" %}</a></li>
+      <li><a name="selectmsgs" href="H">{% trans "Bad Header" %}</a></li>
+      <li><a name="selectmsgs" href="M">{% trans "Bad MIME" %}</a></li>
+      <li><a name="selectmsgs" href="B">{% trans "Banned" %}</a></li>
+    </ul>
+  </div>
+  <div class="btn-group">
+    <a name="release-multi" href="{% url 'modoboa.extensions.amavis.views.process' %}" class="btn btn-success">
+      <i class="icon-white icon-ok"></i> {% trans "Release" %}
+    </a>
+  </div>
+  <div class="btn-group">
+    <a name="delete-multi" href="{% url 'modoboa.extensions.amavis.views.process' %}" class="btn btn-danger">
+      <i class="icon-white icon-trash"></i> {% trans "Delete" %}
+    </a>
+  </div>
+  {% include "common/email_searchbar.html" with extraopts=extraopts %}
+</div>
+<div id="filters_bar" class="btn-toolbar pull-right">
+  <span class="label label-title">{% trans "Display" %}</span>
+  <div id="filters" class="btn-group" data-toggle="buttons-radio">
+    <button name="msgtype_all" class="btn" title="{% trans 'All messages' %}">{% trans "All" %}</button>
+    <button name="msgtype_S" class="btn btn-danger" title="{% trans 'Spam only' %}">S</button>
+    <button name="msgtype_V" class="btn btn-danger" title="{% trans 'Virus only' %}">V</button>
+    <button name="msgtype_H" class="btn btn-warning" title="{% trans 'Bad Header only' %}">H</button>
+    <button name="msgtype_M" class="btn btn-warning" title="{% trans 'Bad MIME only' %}">M</button>
+    <button name="msgtype_B" class="btn btn-warning" title="{% trans 'Banned only' %}">B</button>
+  </div>
+</div>

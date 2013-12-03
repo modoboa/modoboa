@@ -13,41 +13,19 @@ from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.webutils import (
     getctx, ajax_response, render_to_json_response
 )
-from modoboa.lib.email_listing import parse_search_parameters
+from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.extensions.amavis.templatetags.amavis_tags import (
     quar_menu, viewm_menu
 )
-from .lib import selfservice, AMrelease
+from .lib import selfservice, AMrelease, QuarantineNavigationParameters
 from .sql_listing import SQLlisting, SQLemail, get_wrapper
 from .models import Msgrcpt
 
 
-def __back_to_listing(request):
-    """Return the current listing URL.
-
-    Looks into the user's session and the current request to build the
-    URL.
-
-    :param request: a ``Request`` object
-    :return: a string
-    """
-    url = "listing"
-    params = []
-    if "page" in request.session:
-        params += ["page=%s" % request.session["page"]]
-
-    params += ["%s=%s" % (p, request.session[p])
-               for p in ["criteria", "pattern"] if p in request.session]
-    if params:
-        url += "?%s" % ("&".join(params))
-    return url
-
-
 def empty_quarantine(request):
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
-    ctx = getctx("ok", level=2, listing=content, navbar="",
-                 menu=quar_menu(request.user))
+    ctx = getctx("ok", level=2, listing=content)
     return render_to_json_response(ctx)
 
 
@@ -61,58 +39,56 @@ def _listing(request):
         if not Domain.objects.get_for_admin(request.user).count():
             return empty_quarantine(request)
 
-    order = request.GET.get("order", "-date")
-    if not "navparams" in request.session:
-        request.session["navparams"] = {}
-    request.session["navparams"]["order"] = order
-
-    parse_search_parameters(request)
-    if "pattern" in request.session:
-        criteria = request.session["criteria"]
+    navparams = QuarantineNavigationParameters(request)
+    navparams.store()
+    pattern = navparams.get('pattern', '')
+    if pattern:
+        criteria = navparams.get('criteria')
         if criteria == "both":
             criteria = "from_addr,subject,to"
         for c in criteria.split(","):
             if c == "from_addr":
-                nfilter = Q(mail__from_addr__contains=request.session["pattern"])
+                nfilter = Q(mail__from_addr__contains=pattern)
             elif c == "subject":
-                nfilter = Q(mail__subject__contains=request.session["pattern"])
+                nfilter = Q(mail__subject__contains=pattern)
             elif c == "to":
-                rcptfilter = request.session["pattern"]
+                rcptfilter = pattern
                 continue
             else:
                 raise BadRequest("unsupported search criteria %s" % c)
             flt = nfilter if flt is None else flt | nfilter
 
+    msgtype = navparams.get('msgtype', None)
+    if msgtype is not None:
+        nfilter = Q(mail__msgrcpt__content=msgtype)
+        flt = flt | nfilter if flt is not None else nfilter
+
     msgs = get_wrapper().get_mails(request, rcptfilter)
-
-    if "page" in request.GET:
-        request.session["page"] = request.GET["page"]
-        pageid = int(request.session["page"])
-    else:
-        if "page" in request.session:
-            del request.session["page"]
-        pageid = 1
-
+    page = navparams.get('page')
     lst = SQLlisting(
         request.user, msgs, flt,
-        navparams=request.session["navparams"],
+        navparams=request.session["quarantine_navparams"],
         elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
     )
-    page = lst.paginator.getpage(pageid)
+    page = lst.paginator.getpage(page)
     if not page:
         return empty_quarantine(request)
 
     content = lst.fetch(request, page.id_start, page.id_stop)
-    navbar = lst.render_navbar(page, "listing/?")
-    ctx = getctx("ok", listing=content, navbar=navbar,
-                 menu=quar_menu(request.user))
+    ctx = getctx(
+        "ok", listing=content, paginbar=pagination_bar(page), page=page.number
+    )
+    if request.session.get('location', 'listing') != 'listing':
+        ctx['menu'] = quar_menu()
+    request.session['location'] = 'listing'
     return render_to_json_response(ctx)
 
 
 @login_required
 def index(request):
     return render(request, "amavis/index.html", dict(
-        deflocation="listing/", defcallback="listing_cb", selection="quarantine"
+        deflocation="listing/?sort_order=-date", defcallback="listing_cb",
+        selection="quarantine"
     ))
 
 
@@ -160,23 +136,20 @@ def viewmail_selfservice(request, mail_id,
 
 @selfservice(viewmail_selfservice)
 def viewmail(request, mail_id):
-    if request.user.group != 'SimpleUsers':
-        rcpt = request.GET["rcpt"]
-    else:
-        rcpt = None
-
+    rcpt = request.GET["rcpt"]
     if request.user.mailbox_set.count():
         mb = Mailbox.objects.get(user=request.user)
-        if not rcpt or rcpt == mb.full_address:
-            msgrcpt = get_wrapper().get_recipient_message(mb.full_address, mail_id)
+        if rcpt in mb.alias_addresses:
+            msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
             msgrcpt.rs = 'V'
             msgrcpt.save()
 
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
-    menu = viewm_menu(request.user, mail_id, rcpt)
+    menu = viewm_menu(mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
+    request.session['location'] = 'viewmail'
     return render_to_json_response(ctx)
 
 
@@ -193,8 +166,8 @@ def viewheaders(request, mail_id):
 
 def check_mail_id(request, mail_id):
     if type(mail_id) in [str, unicode]:
-        if "rcpt" in request.GET:
-            mail_id = ["%s %s" % (request.GET["rcpt"], mail_id)]
+        if "rcpt" in request.POST:
+            mail_id = ["%s %s" % (request.POST["rcpt"], mail_id)]
         else:
             mail_id = [mail_id]
     return mail_id
@@ -215,27 +188,29 @@ def delete_selfservice(request, mail_id):
 
 @selfservice(delete_selfservice)
 def delete(request, mail_id):
-    mail_id = check_mail_id(request, mail_id)
-    if request.user.group == 'SimpleUsers':
-        mb = Mailbox.objects.get(user=request.user)
-        msgrcpts = get_wrapper().get_recipient_messages(mb.full_address, mail_id)
-        #msgrcpts.update(rs='D')
-        for msgrcpt in msgrcpts:
-            msgrcpt.rs = 'D'
-            msgrcpt.save()
-    else:
-        wrapper = get_wrapper()
-        for mid in mail_id:
-            r, i = mid.split()
-            msgrcpt = wrapper.get_recipient_message(r, i)
-            msgrcpt.rs = 'D'
-            msgrcpt.save()
+    """Delete message selection.
 
+    :param str mail_id: message unique identifier
+    """
+    mail_id = check_mail_id(request, mail_id)
+    wrapper = get_wrapper()
+    mb = Mailbox.objects.get(user=request.user) \
+        if request.user.group == 'SimpleUsers' else None
+    for mid in mail_id:
+        r, i = mid.split()
+        if mb is not None and r != mb.full_address \
+                and not r in mb.alias_addresses:
+            continue
+        msgrcpt = wrapper.get_recipient_message(r, i)
+        msgrcpt.rs = 'D'
+        msgrcpt.save()
     message = ungettext("%(count)d message deleted successfully",
                         "%(count)d messages deleted successfully",
                         len(mail_id)) % {"count": len(mail_id)}
-    return ajax_response(request, respmsg=message,
-                         url=__back_to_listing(request))
+    return ajax_response(
+        request, respmsg=message,
+        url=QuarantineNavigationParameters(request).back_to_listing()
+    )
 
 
 def release_selfservice(request, mail_id):
@@ -266,30 +241,37 @@ def release_selfservice(request, mail_id):
 
 @selfservice(release_selfservice)
 def release(request, mail_id):
+    """Release message selection.
+
+    :param str mail_id: message unique identifier
+    """
     mail_id = check_mail_id(request, mail_id)
-    if request.user.group == 'SimpleUsers':
-        mb = Mailbox.objects.get(user=request.user)
-        msgrcpts = get_wrapper().get_recipient_messages(mb.full_address, mail_id)
-        if parameters.get_admin("USER_CAN_RELEASE") == "no":
-            # FIXME : can't use this syntax because extra SQL (using
-            # .extra() for postgres) is not propagated (the 'tables'
-            # parameter is lost somewhere...)
-            #
-            # msgrcpts.update(rs='p')
-            for msgrcpt in msgrcpts:
-                msgrcpt.rs = 'p'
-                msgrcpt.save()
-            message = ungettext("%(count)d request sent",
-                                "%(count)d requests sent",
-                                len(mail_id)) % {"count": len(mail_id)}
-            return ajax_response(request, "ok", respmsg=message,
-                                 url=__back_to_listing(request))
-    else:
-        msgrcpts = []
-        wrapper = get_wrapper()
-        for mid in mail_id:
-            r, i = mid.split()
-            msgrcpts += [wrapper.get_recipient_message(r, i)]
+    msgrcpts = []
+    wrapper = get_wrapper()
+    mb = Mailbox.objects.get(user=request.user) \
+        if request.user.group == 'SimpleUsers' else None
+    for mid in mail_id:
+        r, i = mid.split()
+        if mb is not None and r != mb.full_address \
+                and not r in mb.alias_addresses:
+            continue
+        msgrcpts += [wrapper.get_recipient_message(r, i)]
+    if mb is not None and parameters.get_admin("USER_CAN_RELEASE") == "no":
+        # FIXME : can't use this syntax because extra SQL (using
+        # .extra() for postgres) is not propagated (the 'tables'
+        # parameter is lost somewhere...)
+        #
+        # msgrcpts.update(rs='p')
+        for msgrcpt in msgrcpts:
+            msgrcpt.rs = 'p'
+            msgrcpt.save()
+        message = ungettext("%(count)d request sent",
+                            "%(count)d requests sent",
+                            len(mail_id)) % {"count": len(mail_id)}
+        return ajax_response(
+            request, "ok", respmsg=message,
+            url=QuarantineNavigationParameters(request).back_to_listing()
+        )
 
     amr = AMrelease()
     error = None
@@ -308,8 +290,10 @@ def release(request, mail_id):
                             len(mail_id)) % {"count": len(mail_id)}
     else:
         message = error
-    return ajax_response(request, "ko" if error else "ok", respmsg=message,
-                         url=__back_to_listing(request))
+    return ajax_response(
+        request, "ko" if error else "ok", respmsg=message,
+        url=QuarantineNavigationParameters(request).back_to_listing()
+    )
 
 
 @login_required

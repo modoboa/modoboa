@@ -1,30 +1,48 @@
 var Quarantine = function(options) {
-    this.initialize(options);
+    Listing.call(this, options);
 };
 
 Quarantine.prototype = {
     constructor: Quarantine,
 
     defaults: {
-        deflocation: "listing",
-        defcallback: "listing_cb"
+        deflocation: "listing"
     },
 
     initialize: function(options) {
-        this.options = $.extend({}, this.defaults, options);
+        Listing.prototype.initialize.call(this, options);
+        this.options = $.extend({}, this.defaults, this.options);
+        this.options.defcallback = $.proxy(this.listing_cb, this);
         this.navobj = new History(this.options);
 
         this.register_navcallbacks();
         this.listen();
+        this.set_msgtype();
+
+        $(document).on('click', '#selectall', this.toggle_selection);
+        $("#searchfield").searchbar({navobj: this.navobj});
+    },
+
+    /*
+     * Activate the button corresponding to the current message type
+     * filter. If no message type is found, the 'All' button is
+     * selected.
+     */
+    set_msgtype: function() {
+        var msgtype = this.navobj.getparam('msgtype');
+
+        $("button[name*=msgtype]").removeClass('active');
+        if (msgtype != undefined) {
+            $("button[name=msgtype_" + msgtype + "]").addClass('active');
+        } else {
+            $("button[name=msgtype_all]").addClass('active');
+        }
     },
 
     update_page: function(data) {
         if (data.menu != undefined) {
             $("#menubar").html(data.menu);
             $("#searchfield").searchbar({navobj: this.navobj});
-        }
-        if (data.navbar) {
-            $("#bottom-bar-right").html(data.navbar);
         }
         if (data.listing != undefined) {
             $("#listing").html(data.listing);
@@ -34,10 +52,11 @@ Quarantine.prototype = {
                 overflow: "auto"
             });
         }
+        this.update_listing(data);
     },
 
     listen: function() {
-        $(document).on("dblclick", "tbody>tr", $.proxy(this.viewmail_loader, this));
+        $(document).on("click", "td[class*=openable]", $.proxy(this.viewmail_loader, this));
         $(document).on("click", "a[name=selectmsgs]", $.proxy(this.selectmsgs, this));
         $(document).on("click", "a[name=release-multi]",
             $.proxy(this.release_selection, this));
@@ -45,19 +64,16 @@ Quarantine.prototype = {
             $.proxy(this.delete_selection, this));
         $(document).on("click", "a[name=viewrequests]",
             $.proxy(this.view_requests, this));
-        $(document).on("click", "#bottom-bar a", $.proxy(this.load_page, this));
-
         $(document).on("click", "a[name=release]", $.proxy(this.release, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete, this));
         $(document).on("click", "a[name=headers]", $.proxy(this.headers, this));
+        $(document).on("click", "td[name=type] span", $.proxy(this.filter_by_type, this));
+        $(document).on("click", "#filters button", $.proxy(this.filter_by_type, this));
     },
 
     load_page: function(e) {
-        e.preventDefault();
-        var $link = $(e.target).parent();
-
-        this.navobj.delparam("rcpt");
-        this.navobj.parse_string($link.attr("href")).update();
+        Listing.prototype.load_page.apply(this, arguments);
+        this.navobj.delparam("rcpt").update();
     },
 
     view_requests: function(e) {
@@ -77,20 +93,59 @@ Quarantine.prototype = {
         this.navobj.update();
     },
 
-    selectmsgs: function(e) {
-        e.preventDefault();
-        var type = $(e.target).attr("href");
-
-        if (type == "") {
+    /*
+     * Toggle message selection when the top checkbox's state is
+     * modified.
+     *
+     * If it is checked, all messages are selected. Otherwise, the
+     * current selection is resetted.
+     */
+    toggle_selection: function(e) {
+        if (!$('#selectall').prop('checked')) {
             $("#emails").htmltable("clear_selection");
             return;
         }
+        $("td[name*=selection]").each(function() {
+            var $input = $(this).children('input');
+            $input.prop('checked', true);
+            $('#emails').htmltable('select_row', $(this).parent());
+        });
+    },
+
+    /*
+     * Select all messages of a specific type.
+     */
+    selectmsgs: function(e) {
+        e.preventDefault();
+        var type = get_target(e, 'a').attr("href");
+        var counter = 0;
+
         $("td[name=type]").each(function() {
             var $this = $(this);
-            if ($this.html().trim() == type) {
-                $("#emails").htmltable("select_row", $this.parent());
+            if ($this.find('span').html().trim() == type) {
+                var $input = $this.parent().children('td[name=selection]').children('input');
+                $input.prop('checked', true);
+                $('#emails').htmltable('select_row', $this.parent());
+                counter++;
             }
         });
+        if (counter) {
+            $("#selectall").prop('checked', true);
+        }
+    },
+
+    /*
+     * Filter listing by message type (spam, virus, etc.)
+     */
+    filter_by_type: function(evt) {
+        var msgtype = $(evt.target).html().trim();
+
+        if (msgtype != 'All') {
+            this.navobj.setparam('msgtype', msgtype);
+        } else {
+            this.navobj.delparam('msgtype');
+        }
+        this.navobj.update();
     },
 
     _send_selection: function(e, name, message) {
@@ -138,7 +193,9 @@ Quarantine.prototype = {
         }
         $.ajax({
             url: $link.attr("href"),
-            dataType: 'json'
+            dataType: 'json',
+            type: 'POST',
+            data: {rcpt: get_parameter_by_name($link.attr("href"), 'rcpt')}
         }).done($.proxy(this.action_cb, this));
     },
 
@@ -196,10 +253,30 @@ Quarantine.prototype = {
             $.proxy(this.viewmail_cb, this));
     },
 
+    activate_buttons: function($tr) {
+        $("a[name=release-multi]").removeClass('disabled');
+        $("a[name=delete-multi]").removeClass('disabled');
+        $("#selectall").prop('checked', true);
+    },
+
+    deactivate_buttons: function($tr) {
+        if (!this.htmltable || !this.htmltable.current_selection().length) {
+            $("a[name=release-multi]").addClass('disabled');
+            $("a[name=delete-multi]").addClass('disabled');
+            $("#selectall").prop('checked', false);
+        }
+    },
+
     listing_cb: function(data) {
         this.update_page(data);
-        $("#emails").htmltable();
+        this.navobj.delparam("rcpt").update();
+        this.set_msgtype();
+        $("#emails").htmltable({
+            tr_selected_event: this.activate_buttons,
+            tr_unselected_event: $.proxy(this.deactivate_buttons, this)
+        });
         this.htmltable = $("#emails").data("htmltable");
+        this.deactivate_buttons();
     },
 
     viewmail_cb: function(data) {
@@ -216,3 +293,5 @@ Quarantine.prototype = {
         }
     }
 };
+
+Quarantine.prototype = $.extend({}, Listing.prototype, Quarantine.prototype);

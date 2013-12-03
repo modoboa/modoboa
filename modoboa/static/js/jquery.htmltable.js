@@ -10,6 +10,7 @@
             this.$element = $(element);
             this.options = $.extend({}, $.fn.htmltable.defaults, options);
             this.shift_pressed = false;
+            this.ctrl_pressed = false;
             this.last_selection = null;
             this.prev_dir = null;
             this.listen();
@@ -25,10 +26,9 @@
         },
 
         listen: function() {
-
             $(document)
-                .off("click", "tbody>tr")
-                .on("click", "tbody>tr",
+                .off("change", "tbody input[type=checkbox]")
+                .on("change", "tbody input[type=checkbox]",
                     $.proxy(this.toggle_select, this));
             $(document).on("keydown", "body", $.proxy(this.keydown, this));
             $(document).on("keyup", "body", $.proxy(this.keyup, this));
@@ -37,17 +37,28 @@
         _toggle_select: function($tr) {
             this.last_selection = $tr;
             if ($tr.hasClass(this.options.tr_selected_class)) {
+                $tr.children('td[name=selection]').children('input').prop('checked', false);
                 $tr.removeClass(this.options.tr_selected_class);
+                if (this.options.tr_unselected_event != undefined) {
+                    this.options.tr_unselected_event($tr);
+                }
             } else {
+                $tr.children('td[name=selection]').children('input').prop('checked', true);
                 $tr.addClass(this.options.tr_selected_class);
+                if (this.options.tr_selected_event != undefined) {
+                    this.options.tr_selected_event($tr);
+                }
             }
         },
 
         toggle_select: function(e) {
-            e.preventDefault();
-            var $tr = $(e.target).parent();
+            var $tr = $(e.target).parents('tr');
 
             if (this.shift_pressed && this.last_selection) {
+                if ($tr.is(this.last_selection)) {
+                    $tr.children('td[name=selection]').children('input').prop('checked', true);
+                    return;
+                }
                 var itfunc = ($tr.index() >= this.last_selection.index())
                     ? "next" : "prev";
                 var $curtr = null;
@@ -65,6 +76,8 @@
                 }
                 this.prev_dir = itfunc;
                 return;
+            } else if (!this.ctrl_pressed && (!this.last_selection || !this.last_selection.is($tr))) {
+                this.clear_selection();
             }
             this._toggle_select($tr);
         },
@@ -81,7 +94,12 @@
          * Cancel the current selection
          */
         clear_selection: function() {
+            this.last_selection = null;
             this.current_selection().removeClass(this.options.tr_selected_class);
+            $("tbody input[type=checkbox]").prop('checked', false);
+            if (this.options.tr_unselected_event != undefined) {
+                this.options.tr_unselected_event();
+            }
         },
 
         /*
@@ -89,6 +107,9 @@
          */
         select_row: function($row) {
             $row.addClass(this.options.tr_selected_class);
+            if (this.options.tr_selected_event != undefined) {
+                this.options.tr_selected_event($row);
+            }
         },
 
         keydown: function(e) {
@@ -96,6 +117,9 @@
             case 16:
                 e.preventDefault();
                 this.shift_pressed = true;
+                break;
+            case 17:
+                this.ctrl_pressed = true;
                 break;
             }
         },
@@ -105,6 +129,9 @@
             case 16:
                 e.preventDefault();
                 this.shift_pressed = false;
+                break;
+            case 17:
+                this.ctrl_pressed = false;
                 break;
             }
         }

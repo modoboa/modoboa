@@ -10,8 +10,8 @@ from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.conf import settings
 from modoboa.lib import u2u_decode, tables, parameters
+from modoboa.lib.webutils import size2integer, NavigationParameters
 from modoboa.lib.exceptions import InternalError
-from modoboa.lib.webutils import size2integer
 from modoboa.lib.email_listing import EmailListing
 from modoboa.lib.emailutils import (
     EmailAddress, Email, prepare_addresses, set_email_headers
@@ -26,22 +26,29 @@ class WMtable(tables.Table):
     tableid = "emails"
     styles = "table-condensed"
     idkey = "imapid"
-    select = tables.ImgColumn(
-        "select", cssclass="draggable left", width="2%",
+    drag = tables.ImgColumn(
+        "drag", cssclass="draggable left", width="1%",
         defvalue="%spics/grippy.png" % settings.STATIC_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
     )
-    flags = tables.ImgColumn("flags", width="4%")
+    selection = tables.SelectionColumn(
+        "selection", safe=True, width='1%', header=None, sortable=False
+    )
+    flags = tables.ImgColumn("flags", width="2%")
     withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column(
-        "subject", label=ugettext_lazy("Subject"), width="50%", limit=60
+        "subject", label=ugettext_lazy("Subject"), width="50%", limit=60,
+        cssclass="openable"
     )
     from_ = tables.Column(
-        "from", width="20%", label=ugettext_lazy("From"), limit=30
+        "from", width="20%", label=ugettext_lazy("From"), limit=30,
+        cssclass="openable"
     )
-    date = tables.Column("date", width="15%", label=ugettext_lazy("Date"))
+    date = tables.Column(
+        "date", width="15%", label=ugettext_lazy("Date"), cssclass="openable"
+    )
 
-    cols_order = ["select", "withatts", "flags", "subject", "from_", "date"]
+    cols_order = ["drag", "selection", "withatts", "flags", "subject", "from_", "date"]
 
     def parse(self, header, value):
         if value is None:
@@ -143,9 +150,10 @@ class ImapListing(EmailListing):
     def __init__(self, user, password, **kwargs):
         self.user = user
         self.mbc = IMAPconnector(user=user.username, password=password)
-        if "pattern" in kwargs:
-            self.parse_search_parameters(kwargs["criteria"],
-                                         kwargs["pattern"])
+        if "pattern" in kwargs and kwargs["pattern"]:
+            self.parse_search_parameters(
+                kwargs["criteria"], kwargs["pattern"]
+            )
         else:
             self.mbc.criterions = []
 
@@ -605,17 +613,6 @@ def html2plaintext(content):
     return plaintext
 
 
-def get_current_url(request):
-    if not "folder" in request.session:
-        return ""
-
-    res = "%s?page=%s" % (request.session["folder"], request.session["page"])
-    for p in ["criteria", "pattern", "order"]:
-        if p in request.session.keys():
-            res += "&%s=%s" % (p, request.session[p])
-    return res
-
-
 def create_mail_attachment(attdef):
     """Create the MIME part corresponding to the given attachment.
 
@@ -726,7 +723,7 @@ def send_mail(request, posturl=None):
                       password=request.session["password"]).push_mail(sentfolder, msg)
         clean_attachments(request.session["compose_mail"]["attachments"])
         del request.session["compose_mail"]
-        return True, dict(url=get_current_url(request))
+        return True, {}
 
     listing = _render_to_string(request, "webmail/compose.html",
                                 {"form": form, "noerrors": True,
@@ -756,3 +753,15 @@ class AttachmentUploadHandler(FileUploadHandler):
 
     def file_complete(self, file_size):
         return None
+
+
+class WebmailNavigationParameters(NavigationParameters):
+    """
+    Specific NavigationParameters subclass for the webmail.
+    """
+    def __init__(self, request, defmailbox=None):
+        super(WebmailNavigationParameters, self).__init__(
+            request, 'webmail_navparams'
+        )
+        if defmailbox is not None:
+            self.parameters += [('mbox', defmailbox, False)]

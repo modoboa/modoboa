@@ -23,7 +23,7 @@ from .lib import (
     decode_payload, AttachmentUploadHandler,
     save_attachment, ImapListing, EmailSignature,
     clean_attachments, set_compose_session, send_mail,
-    ImapEmail, ReplyModifier, ForwardModifier
+    ImapEmail, WebmailNavigationParameters, ReplyModifier, ForwardModifier
 )
 from templatetags import webmail_tags
 
@@ -64,8 +64,9 @@ def move(request):
         if not arg in request.GET:
             raise BadRequest(_("Invalid request"))
     mbc = get_imapconnector(request)
-    mbc.move(request.GET["msgset"], request.session["mbox"], request.GET["to"])
-    resp = listmailbox(request, request.session["mbox"], update_session=False)
+    navparams = WebmailNavigationParameters(request)
+    mbc.move(request.GET["msgset"], navparams.get('mbox'), request.GET["to"])
+    resp = listmailbox(request, navparams.get('mbox'), update_session=False)
     return render_to_json_response(resp)
 
 
@@ -189,8 +190,7 @@ def editfolder(request, tplname="webmail/folder.html"):
                 res["newmb"] = form.cleaned_data["name"]
                 res["oldparent"] = oldparent
                 res["newparent"] = pf
-                if "mbox" in request.session:
-                    del request.session["mbox"]
+                WebmailNavigationParameters(request).remove('mbox')
             return render_to_json_response(res)
 
         return render_to_json_response({'form_errors': form.errors}, status=400)
@@ -224,8 +224,7 @@ def delfolder(request):
     mbc = IMAPconnector(user=request.user.username,
                         password=request.session["password"])
     mbc.delete_folder(name)
-    if "mbox" in request.session:
-        del request.session["mbox"]
+    WebmailNavigationParameters(request).remove('mbox')
     return ajax_response(request)
 
 
@@ -307,31 +306,12 @@ def render_mboxes_list(request, imapc):
     :param imapc: an ``IMAPconnector` object
     :return: a string
     """
-    curmbox = request.session.get("mbox", "INBOX")
+    curmbox = WebmailNavigationParameters(request).get("mbox", "INBOX")
     return _render_to_string(request, "webmail/folders.html", {
         "selected": curmbox,
         "mboxes": imapc.getmboxes(request.user),
         "withunseen": True
     })
-
-
-def set_nav_params(request):
-    if not "navparams" in request.session:
-        request.session["navparams"] = {}
-
-    request.session["pageid"] = \
-        int(request.GET.get("page", 1))
-    if not request.GET.get("order", False):
-        if not "order" in request.session["navparams"]:
-            request.session["navparams"]["order"] = "-date"
-    else:
-        request.session["navparams"]["order"] = request.GET.get("order")
-
-    for p in ["pattern", "criteria"]:
-        if request.GET.get(p, False):
-            request.session["navparams"][p] = request.GET[p]
-        elif p in request.session["navparams"]:
-            del request.session["navparams"][p]
 
 
 def listmailbox(request, defmailbox="INBOX", update_session=True):
@@ -345,19 +325,18 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
     :param defmailbox: the default mailbox (when not present inside request arguments)
     :return: a dictionnary
     """
-    mbox = request.GET.get("mbox", defmailbox)
+    navparams = WebmailNavigationParameters(request, defmailbox)
     if update_session:
-        set_nav_params(request)
-        request.session["mbox"] = mbox
-
+        navparams.store()
+    mbox = navparams.get('mbox')
     lst = ImapListing(
         request.user, request.session["password"],
         baseurl="?action=listmailbox&mbox=%s&" % mbox,
         folder=mbox,
         elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
-        **request.session["navparams"]
+        **request.session["webmail_navparams"]
     )
-    return lst.render(request, request.session["pageid"])
+    return lst.render(request, navparams.get('page'))
 
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):
@@ -534,7 +513,7 @@ def index(request):
             raise BadRequest(_("Invalid request"))
         response = dict(selection="webmail")
 
-    curmbox = request.session.get("mbox", "INBOX")
+    curmbox = WebmailNavigationParameters(request).get("mbox", "INBOX")
     if not request.is_ajax():
         request.session["lastaction"] = None
         imapc = get_imapconnector(request)

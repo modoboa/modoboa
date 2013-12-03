@@ -8,6 +8,10 @@
     z-index: 10;
 }
 
+#menubar input[type="checkbox"] {
+    margin: 0;
+}
+
 #listing { 
     position: fixed;
     padding: 0 15px;
@@ -27,15 +31,32 @@
     color: #0088cc;
 }
 
+#filters_bar {
+    /*padding-top: 5px;*/
+    padding-left: 15px;
+}
+
 thead tr {
     position: relative;
     z-index: 1;
+}
+
+td > input[type=checkbox] {
+    margin: 0;
+}
+
+td[name=type] span {
+    cursor: pointer;
 }
 
 td.unseen { 
     font-weight: bold;
 }
 
-td.pending { 
+td[class*=pending] {
     font-style: italic;
+}
+
+td[class*=openable] {
+    cursor: pointer;
 }

@@ -30,7 +30,7 @@ Listing.prototype = {
                 e.preventDefault();
             });
         }
-        if (data.page != this.navobj.getparam("page")) {
+        if (data.page && data.page != this.navobj.getparam("page")) {
             this.navobj.setparam("page", data.page).update(false, true);
         }
         var $sortables = $(this.options.sortable_selector);
