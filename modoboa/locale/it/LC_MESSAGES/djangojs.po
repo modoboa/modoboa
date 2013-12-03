@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 23:44+0200\n"
+"POT-Creation-Date: 2013-12-03 10:32+0100\n"
 "PO-Revision-Date: 2013-09-27 00:07+0200\n"
 "Last-Translator: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "Language-Team: Italiano <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/static/admin/js/admin.js:26
+#: extensions/admin/static/admin/js/admin.js:32
 msgid "Search"
 msgstr "Ricerca"
 
-#: admin/static/admin/js/admin.js:110
+#: extensions/admin/static/admin/js/admin.js:170
 msgid "Do not delete domain directory"
 msgstr "Non eliminare la cartella dei domini"
 
-#: admin/static/admin/js/admin.js:113
+#: extensions/admin/static/admin/js/admin.js:173
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "Questa operazione eliminerà TUTTI i dati associati a questo dominio."
 
-#: admin/static/admin/js/admin.js:114
+#: extensions/admin/static/admin/js/admin.js:174
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -37,58 +37,62 @@ msgstr ""
 "Questa operazione eliminerà tutti i dati associati a questo dominio tranne "
 "gli account"
 
-#: admin/static/admin/js/admin.js:161
+#: extensions/admin/static/admin/js/admin.js:222
 msgid "No domain administrator defined"
 msgstr "Non è stato definito un amministratore di dominio"
 
-#: admin/static/admin/js/admin.js:238
+#: extensions/admin/static/admin/js/admin.js:291
 msgid "Do not delete mailbox directory"
 msgstr "Non eliminare la cartella della casella posta"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:126
+#: extensions/amavis/static/amavis/js/quarantine.js:180
 msgid "Release this selection?"
 msgstr "Rilasciare questa selezione?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:130
+#: extensions/amavis/static/amavis/js/quarantine.js:184
 msgid "Delete this selection?"
 msgstr "Eliminare questa selezione?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:148
-#: extensions/amavis/static/amavis/js/selfservice.js:22
+#: extensions/amavis/static/amavis/js/quarantine.js:203
+#: extensions/amavis/static/amavis/js/selfservice.js:17
 msgid "Release this message?"
 msgstr "Rilasciare questo messaggio?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:152
-#: extensions/amavis/static/amavis/js/selfservice.js:26
+#: extensions/amavis/static/amavis/js/quarantine.js:207
+#: extensions/amavis/static/amavis/js/selfservice.js:21
 msgid "Delete this message?"
 msgstr "Eliminare questo messaggio?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:169
+#: extensions/amavis/static/amavis/js/quarantine.js:224
 msgid "View full headers"
 msgstr "Visualizza tutte le intestazioni"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:174
+#: extensions/amavis/static/amavis/js/quarantine.js:229
 msgid "Hide full headers"
 msgstr "Nascondi le intestazioni"
+
+#: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
+msgid "Services updated"
+msgstr ""
 
 #: extensions/sievefilters/static/sievefilters/js/lib.js:14
 msgid "Remove this filter?"
 msgstr "Rimuovere questo filtro?"
 
-#: extensions/sievefilters/static/sievefilters/js/lib.js:117
+#: extensions/sievefilters/static/sievefilters/js/lib.js:107
 msgid "Save changes?"
 msgstr "Salvare le modifiche?"
 
-#: extensions/sievefilters/static/sievefilters/js/lib.js:144
+#: extensions/sievefilters/static/sievefilters/js/lib.js:129
 msgid "Remove filters set?"
 msgstr "Rimuovere il gruppo di filtri?"
 
-#: extensions/sievefilters/static/sievefilters/js/lib.js:161
+#: extensions/sievefilters/static/sievefilters/js/lib.js:146
 msgid "Activate this filters set?"
 msgstr "Attivare il gruppo di filtri?"
 
-#: extensions/sievefilters/static/sievefilters/js/lib.js:169
-#: extensions/sievefilters/static/sievefilters/js/lib.js:224
+#: extensions/sievefilters/static/sievefilters/js/lib.js:154
+#: extensions/sievefilters/static/sievefilters/js/lib.js:203
 msgid "active"
 msgstr "attivo"
 
@@ -96,30 +100,30 @@ msgstr "attivo"
 msgid "Search a domain"
 msgstr "Cerca un dominio"
 
-#: extensions/webmail/static/webmail/js/webmail.js:476
+#: extensions/webmail/static/webmail/js/webmail.js:472
 msgid "Remove the selected mailbox?"
 msgstr "Rimuovere la casella di posta selezionata?"
 
-#: extensions/webmail/static/webmail/js/webmail.js:490
+#: extensions/webmail/static/webmail/js/webmail.js:485
 msgid "Mailbox removed"
 msgstr "Casella di posta rimossa"
 
-#: extensions/webmail/static/webmail/js/webmail.js:846
+#: extensions/webmail/static/webmail/js/webmail.js:727
 msgid "Message sent"
 msgstr "Messaggio inviato"
 
-#: extensions/webmail/static/webmail/js/webmail.js:878
+#: extensions/webmail/static/webmail/js/webmail.js:854
 msgid "Message deleted"
 msgstr "Messaggio eliminato"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1008
+#: extensions/webmail/static/webmail/js/webmail.js:981
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s file"
 msgstr[1] "%s file"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1040
+#: extensions/webmail/static/webmail/js/webmail.js:1013
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
@@ -134,8 +138,9 @@ msgstr "Attenzione"
 msgid "Cancel"
 msgstr "Elimina"
 
-#: static/js/confirmation.js:101 static/js/history.js:235
-msgid "Internal Error"
+#: static/js/global.js:314
+#, fuzzy
+msgid "Internal error"
 msgstr "Errore interno"
 
 #: static/js/searchbar.js:20

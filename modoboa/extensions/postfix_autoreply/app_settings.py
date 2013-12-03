@@ -33,7 +33,7 @@ Best regards,
 %(name)s
 """),
         help_text=ugettext_lazy(
-            "Default content user when an auto-reply message is created "
+            "Default content used when an auto-reply message is created "
             "automatically. The '%(name)s' macro will be replaced by the "
             "user's full name."
         ),

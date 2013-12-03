@@ -174,7 +174,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                 and self.cleaned_data['quota'] is not None:
             if self.cleaned_data["quota"] < 0:
                 self._errors["quota"] = self.error_class(
-                    [_("Must be a valid integer")])
+                    [_("Must be a positive integer")])
                 del self.cleaned_data["quota"]
         return self.cleaned_data
 
