@@ -36,15 +36,26 @@ the *Modoboa > Parameters > Limits* page.
 Postfix relay domains support
 *****************************
 
-This plugin adds the support for relay domains using postfix. This
-feature is useful when the MTA managed by Modoboa is not the final
-destination of one or many domains.
+This plugin adds the support for relay domains using postfix. You can
+use it when the MTA managed by Modoboa is not the final destination of
+one or several domains.
 
-If activated, two new objects will be available from the *domains*
+If activated, two new objects will be available from the *Domains*
 listing page: *relay domain* and *relay domain alias*.
 
-This extension is compatible with the *amavis* and *limits*
+The extension is compatible with the *amavis* and *limits*
 ones. Resellers will be able to create both new objects.
+
+To tell Postfix this feature exists, you must generate two new map
+files and then update your configuration.
+
+To generate the map files, run the following command::
+
+  $ modoboa-admin.py postfix_maps --categories relaydomains --dbtype <the database you use> <path>
+
+Replace values between ``<>`` by yours.
+
+Edit the :file:`/etc/postfix/main.cf` file.
 
 .. _amavis_frontend:
 
