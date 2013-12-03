@@ -993,7 +993,9 @@ Webmail.prototype = {
                 var $tr = $this.parent();
 
                 if (!plug.htmltable.is_selected($tr)) {
+                    var $input = $tr.find('#selection');
                     plug.htmltable.select_row($tr);
+                    $input.prop('checked', true);
                 }
 
                 var nmsgs = plug.htmltable.current_selection().length;
