@@ -503,7 +503,6 @@ def index(request):
 
     """
     action = request.GET.get("action", None)
-
     if action is not None:
         if not action in globals():
             raise UnknownAction

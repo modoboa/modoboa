@@ -183,6 +183,7 @@ class NavigationParameters(object):
                     del navparams[param]
                 continue
             navparams[param] = re.escape(value) if escape else value
+        self.request.session.modified = True
 
     def get(self, param, default_value=None):
         """Retrieve a navigation parameter.
