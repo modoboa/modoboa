@@ -1,6 +1,6 @@
-#######
-Modoboa
-#######
+################################
+`Modoboa <http://modoboa.org/>`_
+################################
 
 |travis| |latest-version| |downloads|
 
