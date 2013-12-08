@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Modoboa-0.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-03 10:33+0100\n"
-"PO-Revision-Date: 2013-05-24 22:38+0100\n"
+"PO-Revision-Date: 2013-12-08 23:34+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@sys4.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
 "Language: de\n"
@@ -30,12 +30,8 @@ msgid "This operation will remove ALL data associated to this domain."
 msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
 
 #: extensions/admin/static/admin/js/admin.js:174
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr ""
-"Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser "
-"Mailkonten."
+msgid "This operation will remove all data associated to this domain, excepting accounts."
+msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser Mailkonten."
 
 #: extensions/admin/static/admin/js/admin.js:222
 msgid "No domain administrator defined"
@@ -73,7 +69,7 @@ msgstr "Vollansicht Header ausblenden"
 
 #: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
 msgid "Services updated"
-msgstr ""
+msgstr "'service'-Liste aktualisiert"
 
 #: extensions/sievefilters/static/sievefilters/js/lib.js:14
 msgid "Remove this filter?"
@@ -139,7 +135,6 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: static/js/global.js:314
-#, fuzzy
 msgid "Internal error"
 msgstr "Interner Fehler"
 
