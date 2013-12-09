@@ -106,9 +106,9 @@ class DomainsAliasesMap(MapFile):
 
 class MailboxesMap(MapFile):
     filename = 'sql-mailboxes.cf'
-    mysql = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
-    postgres = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user u ON mb.user_id=u.id WHERE dom.enabled AND dom.name='%d' AND u.is_active AND mb.address='%u'"
-    sqlite = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
+    mysql = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
+    postgres = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON mb.user_id=u.id WHERE dom.enabled AND dom.name='%d' AND u.is_active AND mb.address='%u'"
+    sqlite = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
 
 
 class AliasesMap(MapFile):
