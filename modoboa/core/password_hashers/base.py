@@ -55,7 +55,7 @@ class PasswordHasher(object):
         :return: True if passwords match, False otherwise
         """
         return constant_time_compare(
-            self._encrypt(clearvalue, hashed_value),
+            self._b64encode(self._encrypt(clearvalue, hashed_value)),
             hashed_value
         )
 

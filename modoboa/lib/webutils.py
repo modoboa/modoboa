@@ -155,3 +155,55 @@ def topredirection(request):
     infos = exts_pool.get_extension_infos(topredir)
     path = infos["url"] if infos["url"] else infos["name"]
     return HttpResponseRedirect(path)
+
+
+class NavigationParameters(object):
+    """
+    Just a simple object to manipulate navigation parameters.
+    """
+
+    def __init__(self, request, sessionkey):
+        self.request = request
+        self.sessionkey = sessionkey
+        self.parameters = [('pattern', '', True),
+                           ('criteria', 'from_addr', False)]
+
+    def store(self):
+        """Store navigation parameters into session.
+        """
+        if not self.sessionkey in self.request.session:
+            self.request.session[self.sessionkey] = {}
+        navparams = self.request.session[self.sessionkey]
+        navparams["order"] = self.request.GET.get("sort_order", "-date")
+        navparams["page"] = int(self.request.GET.get("page", 1))
+        for param, defvalue, escape in self.parameters:
+            value = self.request.GET.get(param, defvalue)
+            if value is None:
+                if param in navparams:
+                    del navparams[param]
+                continue
+            navparams[param] = re.escape(value) if escape else value
+        self.request.session.modified = True
+
+    def get(self, param, default_value=None):
+        """Retrieve a navigation parameter.
+
+        Just a simple getter to avoid using the full key name to
+        access a parameter.
+
+        :param str param: parameter name
+        :param defaultvalue: default value if none is found
+        :return: parameter's value
+        """
+        if not self.sessionkey in self.request.session:
+            return default_value
+        return self.request.session[self.sessionkey].get(param, default_value)
+
+    def remove(self, param):
+        """Remove a navigation parameter from session.
+
+        :param str param: parameter name
+        """
+        navparams = self.request.session[self.sessionkey]
+        if param in navparams:
+            del navparams[param]

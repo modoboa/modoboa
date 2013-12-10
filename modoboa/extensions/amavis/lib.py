@@ -8,7 +8,9 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import InternalError
+from modoboa.lib.webutils import NavigationParameters
 from modoboa.extensions.amavis.models import Users, Policy
+
 
 
 def selfservice(ssfunc=None):
@@ -77,6 +79,38 @@ recipient=%s
         if re.search("250 [\d\.]+ Ok", answer):
             return True
         return False
+
+
+class QuarantineNavigationParameters(NavigationParameters):
+    """
+    Specific NavigationParameters subclass for the quarantine.
+    """
+    def __init__(self, request):
+        super(QuarantineNavigationParameters, self).__init__(
+            request, 'quarantine_navparams'
+        )
+        self.parameters += [('msgtype', None, False)]
+
+    def back_to_listing(self):
+        """Return the current listing URL.
+
+        Looks into the user's session and the current request to build
+        the URL.
+
+        :return: a string
+        """
+        url = "listing"
+        params = []
+        navparams = self.request.session[self.sessionkey]
+        if "page" in navparams:
+            params += ["page=%s" % navparams["page"]]
+        if "order" in navparams:
+            params += ["sort_order=%s" % navparams["order"]]
+        params += ["%s=%s" % (p[0], navparams[p[0]])
+                   for p in self.parameters if p[0] in navparams]
+        if params:
+            url += "?%s" % ("&".join(params))
+        return url
 
 
 def create_user_and_policy(name):

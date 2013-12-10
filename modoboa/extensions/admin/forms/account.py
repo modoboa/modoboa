@@ -162,6 +162,22 @@ class AccountFormMail(forms.Form, DynamicForm):
         """Ensure lower case emails"""
         return self.cleaned_data["email"].lower()
 
+    def clean(self):
+        """Custom fields validation.
+
+        Check if quota is >= 0 only when the domain value is not used.
+        """
+        super(AccountFormMail, self).clean()
+        if self._errors:
+            raise forms.ValidationError(self._errors)
+        if not self.cleaned_data["quota_act"] \
+                and self.cleaned_data['quota'] is not None:
+            if self.cleaned_data["quota"] < 0:
+                self._errors["quota"] = self.error_class(
+                    [_("Must be a positive integer")])
+                del self.cleaned_data["quota"]
+        return self.cleaned_data
+
     def create_mailbox(self, user, account):
         locpart, domname = split_mailbox(self.cleaned_data["email"])
         try:

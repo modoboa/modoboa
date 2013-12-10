@@ -1,6 +1,6 @@
-#######
-Modoboa
-#######
+################################
+`Modoboa <http://modoboa.org/>`_
+################################
 
 |travis| |latest-version| |downloads|
 
@@ -39,14 +39,6 @@ Documentation
 
 A detailled `documentation <https://modoboa.readthedocs.org/>`_ will help you
 to install, use or extend Modoboa.
-
-******
-Issues
-******
-
-Modoboa is currently using redmine for project management and issues
-tracking. Report issues and/or ask for enhancements on
-`dev.modoboa.org <http://dev.modoboa.org/>`_.
 
 *************
 External code

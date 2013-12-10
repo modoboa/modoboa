@@ -9,7 +9,7 @@ from modoboa.lib.webutils import static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import Email
 from modoboa.lib.dbutils import db_type
-from modoboa.extensions.admin.models import Domain
+from modoboa.extensions.admin.models import Domain, Alias
 from .models import Quarantine, Msgrcpt
 
 
@@ -18,30 +18,60 @@ class Qtable(tables.Table):
     styles = "table-condensed"
     idkey = "mailid"
 
-    type = tables.Column(
-        "type", align="center", width="30px",
+    selection = tables.SelectionColumn(
+        "selection", safe=True, width='5px', header=None, sortable=False
     )
-    rstatus = tables.ImgColumn("rstatus", width='25px')
-    from_ = tables.Column("from", label=ugettext_lazy("From"), limit=30)
-    subject = tables.Column("subject", label=ugettext_lazy("Subject"), limit=40)
-    time = tables.Column("date", label=ugettext_lazy("Date"))
-    to = tables.Column("to", label=ugettext_lazy("To"), sortable=False)
+    type = tables.Column(
+        "type", align="center", width="30px", sort_order="type", safe=True
+    )
+    rstatus = tables.ImgColumn(
+        "rstatus", width='25px', sortable=False
+    )
+    score = tables.Column(
+        "score", label=ugettext_lazy("Score"), limit=6,
+        sort_order="score", cssclass="openable"
+    )
+    to = tables.Column(
+        "to", label=ugettext_lazy("To"), sort_order="to", cssclass="openable"
+    )
+    from_ = tables.Column(
+        "from", label=ugettext_lazy("From"), limit=30,
+        sort_order="from", cssclass="openable"
+    )
+    subject = tables.Column(
+        "subject", label=ugettext_lazy("Subject"), limit=40,
+        sort_order="subject", cssclass="openable"
+    )
+    time = tables.Column(
+        "date", label=ugettext_lazy("Date"), sort_order="date",
+        cssclass="openable"
+    )
+    
+    cols_order = [
+        'selection', 'type', 'rstatus', 'score', 'to', 'from_', 'subject', 'time'
+    ]
 
-    cols_order = []
+    def parse_type(self, value):
+        color = 'important' if value in ['S', 'V'] else 'warning'
+        return '<span class="label label-%s">%s</span>' % (color, value)
 
     def parse_date(self, value):
         return datetime.fromtimestamp(value)
 
 
 class SQLconnector(MBconnector):
-    orders = {
-        "from": "mail__from_addr",
+    order_translation_table = {
+        "type": "mail__msgrcpt__content",
+        "score": "mail__msgrcpt__bspam_level",
+        "date": "mail__time_num",
         "subject": "mail__subject",
-        "date": "mail__time_num"
+        "from": "mail__from_addr",
+        "to": "mail__msgrcpt__rid__email"
     }
 
     def __init__(self, mail_ids=None, filter=None):
         self.count = None
+        self.messages = None
         self.mail_ids = mail_ids
         self.filter = filter
 
@@ -52,35 +82,46 @@ class SQLconnector(MBconnector):
                 filter &= Q(mail__in=self.mail_ids)
             if self.filter:
                 filter &= self.filter
-            self.messages = Quarantine.objects.filter(filter)
+            self.messages = Quarantine.objects.filter(filter).values(
+                "mail__from_addr",
+                "mail__msgrcpt__rid__email",
+                "mail__subject",
+                "mail__mail_id",
+                "mail__time_num",
+                "mail__msgrcpt__content",
+                "mail__msgrcpt__bspam_level",
+                "mail__msgrcpt__rs"
+            )
             if "order" in kwargs:
-                totranslate = kwargs["order"][1:]
-                sign = kwargs["order"][:1]
-                if sign == " ":
-                    sign = ""
-                order = sign + self.orders[totranslate]
-                self.messages = self.messages.order_by(order)
-            self.count = self.messages.count()
+                order = kwargs["order"]
+                sign = ""
+                if order[0] == "-":
+                    sign = "-"
+                    order = order[1:]
+                order = self.order_translation_table[order]
+                self.messages = self.messages.order_by(sign + order)
+
+            self.count = len(self.messages)
         return self.count
 
     def fetch(self, start=None, stop=None, **kwargs):
-        messages = self.messages[start - 1:stop]
         emails = []
-        for qm in messages:
-            for rcpt in qm.mail.msgrcpt_set.all():
-                m = {"from": qm.mail.from_addr,
-                     "to": rcpt.rid.email,
-                     "subject": qm.mail.subject,
-                     "mailid": qm.mail_id,
-                     "date": qm.mail.time_num,
-                     "type": rcpt.content}
-                if rcpt.rs == '':
-                    m["class"] = "unseen"
-                elif rcpt.rs == 'R':
-                    m["img_rstatus"] = static_url("pics/release.png")
-                elif rcpt.rs == 'p':
-                    m["class"] = "pending"
-                emails.append(m)
+        for qm in self.messages[start - 1:stop]:
+            m = {"from": qm["mail__from_addr"],
+                 "to": qm["mail__msgrcpt__rid__email"],
+                 "subject": qm["mail__subject"],
+                 "mailid": qm["mail__mail_id"],
+                 "date": qm["mail__time_num"],
+                 "type": qm["mail__msgrcpt__content"],
+                 "score": qm["mail__msgrcpt__bspam_level"]}
+            rs = qm["mail__msgrcpt__rs"]
+            if rs == '':
+                m["class"] = "unseen"
+            elif rs == 'R':
+                m["img_rstatus"] = static_url("pics/release.png")
+            elif rs == 'p':
+                m["class"] = "pending"
+            emails.append(m)
         return emails
 
 
@@ -98,22 +139,25 @@ class SQLWrapper(object):
     """
 
     def get_mails(self, request, rcptfilter=None):
-        if request.GET.get("viewrequests", None) == "1":
-            q = Q(rs='p')
-        else:
-            q = ~Q(rs='D')
+        """Retrieve all messages visible by a user.
 
+        Simple users can only see the messages 
+
+        :rtype: QuerySet
+        """
+        q = Q(rs='p') \
+            if request.GET.get("viewrequests", None) == "1" else ~Q(rs='D')
         if request.user.group == 'SimpleUsers':
-            q &= Q(rid__email=request.user.email)
-        else:
-            if not request.user.is_superuser:
-                doms = Domain.objects.get_for_admin(request.user)
-                regexp = "(%s)" % '|'.join([dom.name for dom in doms])
-                doms_q = Q(rid__email__regex=regexp)
-                q &= doms_q
-            if rcptfilter is not None:
-                q &= Q(rid__email__contains=rcptfilter)
-
+            rcpts = [request.user.email] \
+                + request.user.mailbox_set.all()[0].alias_addresses
+            q &= Q(rid__email__in=rcpts)
+        elif not request.user.is_superuser:
+            doms = Domain.objects.get_for_admin(request.user)
+            regexp = "(%s)" % '|'.join([dom.name for dom in doms])
+            doms_q = Q(rid__email__regex=regexp)
+            q &= doms_q
+        if rcptfilter is not None:
+            q &= Q(rid__email__contains=rcptfilter)
         return Msgrcpt.objects.filter(q).values("mail_id")
 
     def get_recipient_message(self, address, mailid):
@@ -153,24 +197,23 @@ class PgWrapper(SQLWrapper):
     """
 
     def get_mails(self, request, rcptfilter=None):
-        if request.GET.get("viewrequests", None) == "1":
-            q = Q(rs='p')
-        else:
-            q = ~Q(rs='D')
+        q = Q(rs='p') \
+            if request.GET.get("viewrequests", None) == "1" else ~Q(rs='D')
         where = ["U0.rid=maddr.id"]
         if request.user.group == 'SimpleUsers':
-            where.append("convert_from(maddr.email, 'UTF8') = '%s'" % request.user.email)
-            return Msgrcpt.objects.filter(q).extra(
-                where=where, tables=['maddr']
-            )
-
-        if not request.user.is_superuser:
+            rcpts = [request.user.email] \
+                + request.user.mailbox_set.all()[0].alias_addresses
+            where.append("convert_from(maddr.email, 'UTF8') IN (%s)" \
+                             % (','.join(["'%s'" % rcpt for rcpt in rcpts])))
+        elif not request.user.is_superuser:
             doms = Domain.objects.get_for_admin(request.user)
             regexp = "(%s)" % '|'.join([dom.name for dom in doms])
             where.append("convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
         if rcptfilter is not None:
-            where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'" % rcptfilter)
-        return Msgrcpt.objects.filter(q).extra(where=where, tables=['maddr']).values("mail_id")
+            where.append("convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'"
+                         % rcptfilter)
+        return Msgrcpt.objects.filter(q)\
+            .extra(where=where, tables=['maddr']).values("mail_id")
 
     def get_recipient_message(self, address, mailid):
         qset = Msgrcpt.objects.filter(mail=mailid).extra(
@@ -229,10 +272,6 @@ class SQLlisting(EmailListing):
     reset_wm_url = True
 
     def __init__(self, user, msgs, filter, **kwargs):
-        if user.group == 'SimpleUsers':
-            Qtable.cols_order = ['type', 'rstatus', 'from_', 'subject', 'time']
-        else:
-            Qtable.cols_order = ['type', 'rstatus', 'to', 'from_', 'subject', 'time']
         self.mbc = SQLconnector(msgs, filter)
         super(SQLlisting, self).__init__(**kwargs)
         self.show_listing_headers = True

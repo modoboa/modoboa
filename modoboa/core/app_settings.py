@@ -322,6 +322,7 @@ class UserSettings(parameters.UserParametersForm):
         choices=[("cs", "čeština"), ("de", "deutsch"),
                  ("en", "english"), ("es", "español"),
                  ("fr", "français"), ("it", "italiano"),
-                 ("pt", "português"), ("sv", "svenska")],
+                 ("pt", "português"), ("ru", "русский"),
+                 ("sv", "svenska")],
         help_text=ugettext_lazy("Prefered language to display pages")
     )

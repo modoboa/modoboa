@@ -229,3 +229,14 @@ div.expanded {
 #folders2 li { 
     position: relative;
 }
+
+/*
+ * Table
+ */
+td > input[type=checkbox] {
+    margin: 0;
+}
+
+td[class*=openable] {
+    cursor: pointer;
+}

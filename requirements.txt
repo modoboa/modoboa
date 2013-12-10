@@ -1,4 +1,4 @@
-django
+django>=1.5,<1.6
 django-reversion>=1.8.0
 dj-database-url
 south

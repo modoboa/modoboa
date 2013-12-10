@@ -86,6 +86,8 @@ def onMailboxDeleted(mailboxes):
 
 @events.observe("MailboxModified")
 def onMailboxModified(mailbox):
+    if not hasattr(mailbox, 'old_full_address'):
+        return
     if mailbox.full_address == mailbox.old_full_address:
         return
     alias = Alias.objects.get(full_address=mailbox.old_full_address)

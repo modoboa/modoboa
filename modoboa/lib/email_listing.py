@@ -139,16 +139,3 @@ class EmailListing(object):
         else:
             listing = self.fetch(request, page.id_start, page.id_stop)
         return dict(listing=listing, navbar=self.render_navbar(page, self.baseurl))
-
-
-def parse_search_parameters(request):
-    if 'pattern' in request.GET:
-        request.session["pattern"] = re.escape(request.GET["pattern"])
-        if 'criteria' in request.GET:
-            request.session["criteria"] = request.GET["criteria"]
-        else:
-            request.session["criteria"] = ["from_addr"]
-    else:
-        for p in ["pattern", "criteria"]:
-            if p in request.session.keys():
-                del request.session[p]

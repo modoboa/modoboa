@@ -60,11 +60,14 @@ $(document).ready(function() {
         interval: {{ interval }},
         success_cb: function(data) {
             var $link = $("#nbrequests");
+            var $maincounter = $("#alerts-counter");
+
             if (data.requests > 0) {
-                $link.html(data.requests + " " + "{{ text }}");
-                $link.parent().removeClass('hidden');
+                $maincounter.html(data.requests);
+                $link.children("span").html(data.requests);
+                $maincounter.closest('div').removeClass('hidden');
             } else {
-                $link.parent().addClass('hidden');
+                $maincounter.closest('div').addClass('hidden');
             }
         }
     });
@@ -102,10 +105,24 @@ def display_requests(user):
 
     url = reverse("modoboa.extensions.amavis.views.index")
     url += "#listing/?viewrequests=1"
-    tpl = Template('<div class="btn-group {{ css }}"><a id="nbrequests" href="{{ url }}" class="btn btn-danger">{{ label }}</a></div>')
+    tpl = Template("""<ul class="nav pull-right {{ css }}">
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-white icon-bell"></i> <span id="alerts-counter" class="label label-important">{{ nbrequests }}</span>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a id="nbrequests" href="{{ url }}">
+          <span class="label label-important">{{ nbrequests }}</span> {{ label }}
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>""")
     css = "hidden" if nbrequests == 0 else ""
     return [tpl.render(Context(dict(
-        label=_("%d pending requests" % nbrequests), url=url, css=css
+        label=_("Pending requests"), url=url, css=css,
+        nbrequests=nbrequests
     )))]
 
 

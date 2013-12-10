@@ -114,13 +114,10 @@ def listmailbox_menu(selection, folder, user):
              "label": _("Empty folder"),
              "url": reverse(webmail.views.empty, args=[folder])}
         ]
-    searchbar = render_to_string('common/email_searchbar.html', {
-        "STATIC_URL": settings.STATIC_URL
+    return render_to_string('webmail/main_action_bar.html', {
+        'selection': selection, 'entries': entries, 'user': user, 'css': "nav",
+        'STATIC_URL': settings.STATIC_URL
     })
-    return render_to_string('common/buttons_list.html', dict(
-        selection=selection, entries=entries, extracontent=searchbar,
-        user=user, css="nav"
-    ))
 
 
 @register.simple_tag

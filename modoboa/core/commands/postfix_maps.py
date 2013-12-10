@@ -26,6 +26,43 @@ query = {{ query|safe }}
         if not self.tpl_context['dbhost']:
             self.tpl_context['dbhost'] = '127.0.0.1'
 
+    def __render_map(self, args, mapobject):
+        """Render a map file.
+
+        :param args: command line arguments
+        :param mapobject: a ``MapFile`` subclass
+        """
+        content = self.template.render(
+            Context(dict(
+                self.tpl_context.items(),
+                query=getattr(mapobject, args.dbtype)
+            ))
+        )
+        with open("%s/%s" % (args.destdir, mapobject.filename), "w") as fp:
+            print >> fp, """# This file was generated on %s by running:
+# %s %s
+# DO NOT EDIT!
+""" % (datetime.datetime.now().isoformat(),
+       os.path.basename(sys.argv[0]),
+       ' '.join(sys.argv[1:]))
+            print >> fp, content
+
+    def __render_std_maps(self, args):
+        """Render standard map files.
+
+        (ie. the ones belonging to the 'std' category)
+
+        :param args: command line arguments
+        """
+        for v in globals().values():
+            if not inspect.isclass(v) or not issubclass(v, MapFile):
+                continue
+            if v is MapFile:
+                continue
+            if not v.category in args.categories:
+                continue
+            self.__render_map(args, v)
+
     def render(self, args):
         """Render all map files.
 
@@ -35,26 +72,7 @@ query = {{ query|safe }}
             os.mkdir(args.destdir)
         except OSError:
             pass
-
-        for v in globals().values():
-            if not inspect.isclass(v) or not issubclass(v, MapFile):
-                continue
-            if v is MapFile:
-                continue
-            if not v.category in args.categories:
-                continue
-            content = self.template.render(
-                Context(dict(self.tpl_context.items(),
-                             query=getattr(v, args.dbtype)))
-            )
-            with open("%s/%s" % (args.destdir, v.filename), "w") as fp:
-                print >> fp, """# This file was generated on %s by running:
-# %s %s
-# DO NOT EDIT!
-""" % (datetime.datetime.now().isoformat(),
-       os.path.basename(sys.argv[0]),
-       ' '.join(sys.argv[1:]))
-                print >> fp, content
+        self.__render_std_maps(args)
 
 
 class SQLiteMapFilesGenerator(MapFilesGenerator):
@@ -88,9 +106,9 @@ class DomainsAliasesMap(MapFile):
 
 class MailboxesMap(MapFile):
     filename = 'sql-mailboxes.cf'
-    mysql = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
-    postgres = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user u ON mb.user_id=u.id WHERE dom.enabled AND dom.name='%d' AND u.is_active AND mb.address='%u'"
-    sqlite = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN admin_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
+    mysql = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
+    postgres = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON mb.user_id=u.id WHERE dom.enabled AND dom.name='%d' AND u.is_active AND mb.address='%u'"
+    sqlite = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
 
 
 class AliasesMap(MapFile):
@@ -135,6 +153,22 @@ class AutoRepliesMap(MapFile):
     mysql = "SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'"
     postgres = "SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'"
     sqlite = "SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'"
+
+
+class RelayDomainsTransportMap(MapFile):
+    category = "relaydomains"
+    filename = "sql-relaydomains-transport.cf"
+    mysql = "SELECT CONCAT(srv.name, ':') FROM postfix_relaydomains_service AS srv INNER JOIN postfix_relaydomains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled=1 AND rdom.name='%s'"
+    postgres = "SELECT srv.name || ':' FROM postfix_relaydomains_service AS srv INNER JOIN postfix_relaydomains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled AND rdom.name='%s'"
+    sqlite = "SELECT srv.name || ':' FROM postfix_relaydomains_service AS srv INNER JOIN postfix_relaydomains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled=1 AND rdom.name='%s'"
+
+
+class RelayDomainAliasesTransportMap(MapFile):
+    category = "relaydomains"
+    filename = "sql-relaydomain-aliases-transport.cf"
+    mysql = "SELECT CONCAT(srv.name, ':') FROM postfix_relaydomains_service AS srv INNER JOIN postfix_relaydomains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relaydomains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled=1 AND rdomalias.enabled=1 AND rdomalias.name='%s'"
+    postgres = "SELECT srv.name || ':' FROM postfix_relaydomains_service AS srv INNER JOIN postfix_relaydomains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relaydomains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled AND rdomalias.enabled AND rdomalias.name='%s'"
+    sqlite = "SELECT srv.name || ':' FROM postfix_relaydomains_service AS srv INNER JOIN postfix_relaydomains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relaydomains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled=1 AND rdomalias.enabled=1 AND rdomalias.name='%s'"
 
 
 class PostfixMapsCommand(Command):

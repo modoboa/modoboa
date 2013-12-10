@@ -37,7 +37,7 @@ base_events = [
 
     "GetExtraParameters",
     "ExtraFormFields",
-    "SaveExtraFormFields"
+    "SaveExtraFormFields",
 ]
 
 
