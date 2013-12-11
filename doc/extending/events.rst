@@ -629,8 +629,10 @@ template but need javascript stuff.
 
 *Callback prototype*::
 
-  def callback(user): pass
+  def callback(caller, user): pass
 
+* ``caller`` is name of the application (or the location) responsible
+  for the call
 * ``user`` is a ``User`` instance corresponding to the currently
   logged in user
 
