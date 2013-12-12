@@ -6,8 +6,6 @@
 Modoboa's documentation!
 ========================
 
-This documentation refers to version |release|.
-
 ***************
 Getting started
 ***************
@@ -49,12 +47,3 @@ Additional resource
 
    additional/migrating
    additional/virtualmachine
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-

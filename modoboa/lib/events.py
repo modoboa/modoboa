@@ -139,7 +139,7 @@ def raiseEvent(event, *args, **kwargs):
 
     :param event: the event to raise
     """
-    if not event in events or not event in callbacks.keys():
+    if not event in events or not event in callbacks:
         return 0
     for callback in callbacks[event].values():
         callback(*args, **kwargs)
@@ -155,7 +155,7 @@ def raiseQueryEvent(event, *args, **kwargs):
     :param event: the event to raise
     """
     result = []
-    if not event in events or not event in callbacks.keys():
+    if not event in events or not event in callbacks:
         return result
     for callback in callbacks[event].values():
         tmp = callback(*args, **kwargs)
