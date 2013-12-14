@@ -8,11 +8,13 @@ body, html {
     top: 60px;
     left: 15px;
     width: 200px;
-    background-image: url("../../pics/grippy.png");
-    background-position: right center;
-    background-repeat: no-repeat;
     overflow-y: auto;
     margin-bottom: 5px;
+}
+
+#folders .ui-resizable-handle {
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 #folders .ui-resizable-n {
@@ -25,10 +27,14 @@ body, html {
 
 #folders .ui-resizable-e {
     right: 0px;
+    background-image: url("../../pics/grippy.png");
+    width: 8px;
 }
 
 #folders .ui-resizable-w {
     left: 0px;
+    background-image: url("../../pics/grippy.png");
+    width: 8px;
 }
 
 #mboxes_container { 
