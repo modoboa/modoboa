@@ -1,21 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 10:32+0100\n"
+"POT-Creation-Date: 2013-12-15 10:16+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/ru/)\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
+"ru/)\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: extensions/admin/static/admin/js/admin.js:32
 msgid "Search"
@@ -33,7 +35,9 @@ msgstr "Эта операция удалит ВСЕ данные, связанн
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом, за исключением аккаунтов."
+msgstr ""
+"Эта операция удалит ВСЕ данные, связанные с этим доменом, за исключением "
+"аккаунтов."
 
 #: extensions/admin/static/admin/js/admin.js:222
 msgid "No domain administrator defined"
@@ -98,23 +102,19 @@ msgstr "активно"
 msgid "Search a domain"
 msgstr "Найти домен"
 
-#: extensions/webmail/static/webmail/js/webmail.js:472
+#: extensions/webmail/static/webmail/js/webmail.js:491
 msgid "Remove the selected mailbox?"
 msgstr "Удалить выбранные почтовые ящики?"
 
-#: extensions/webmail/static/webmail/js/webmail.js:485
+#: extensions/webmail/static/webmail/js/webmail.js:504
 msgid "Mailbox removed"
 msgstr "Почтовый ящик удален"
 
-#: extensions/webmail/static/webmail/js/webmail.js:727
+#: extensions/webmail/static/webmail/js/webmail.js:746
 msgid "Message sent"
 msgstr "Сообщение послано"
 
-#: extensions/webmail/static/webmail/js/webmail.js:854
-msgid "Message deleted"
-msgstr "Сообщение удалено"
-
-#: extensions/webmail/static/webmail/js/webmail.js:981
+#: extensions/webmail/static/webmail/js/webmail.js:997
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
@@ -122,7 +122,7 @@ msgstr[0] "%s файл"
 msgstr[1] "%s файла"
 msgstr[2] "%s файлов"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1013
+#: extensions/webmail/static/webmail/js/webmail.js:1031
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
@@ -145,3 +145,6 @@ msgstr ""
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Поиск..."
+
+#~ msgid "Message deleted"
+#~ msgstr "Сообщение удалено"

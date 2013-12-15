@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 10:33+0100\n"
+"POT-Creation-Date: 2013-12-15 10:16+0100\n"
 "PO-Revision-Date: 2013-12-08 23:34+0100\n"
 "Last-Translator: Patrick Ben Koetter <p@sys4.de>\n"
 "Language-Team: DE <p@state-of-mind.fr>\n"
@@ -30,8 +30,12 @@ msgid "This operation will remove ALL data associated to this domain."
 msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
 
 #: extensions/admin/static/admin/js/admin.js:174
-msgid "This operation will remove all data associated to this domain, excepting accounts."
-msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser Mailkonten."
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr ""
+"Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser "
+"Mailkonten."
 
 #: extensions/admin/static/admin/js/admin.js:222
 msgid "No domain administrator defined"
@@ -96,30 +100,26 @@ msgstr "aktiv"
 msgid "Search a domain"
 msgstr "Domain suchen"
 
-#: extensions/webmail/static/webmail/js/webmail.js:472
+#: extensions/webmail/static/webmail/js/webmail.js:491
 msgid "Remove the selected mailbox?"
 msgstr "Ausgewählte Mailbox entfernen?"
 
-#: extensions/webmail/static/webmail/js/webmail.js:485
+#: extensions/webmail/static/webmail/js/webmail.js:504
 msgid "Mailbox removed"
 msgstr "Mailbox entfernt"
 
-#: extensions/webmail/static/webmail/js/webmail.js:727
+#: extensions/webmail/static/webmail/js/webmail.js:746
 msgid "Message sent"
 msgstr "Nachricht gesendet"
 
-#: extensions/webmail/static/webmail/js/webmail.js:854
-msgid "Message deleted"
-msgstr "Nachricht gelöscht"
-
-#: extensions/webmail/static/webmail/js/webmail.js:981
+#: extensions/webmail/static/webmail/js/webmail.js:997
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s Datei"
 msgstr[1] "%s Dateien"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1013
+#: extensions/webmail/static/webmail/js/webmail.js:1031
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
@@ -141,6 +141,9 @@ msgstr "Interner Fehler"
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Suchen..."
+
+#~ msgid "Message deleted"
+#~ msgstr "Nachricht gelöscht"
 
 #~ msgid "Delete this domain?"
 #~ msgstr "Diese Domain löschen?"

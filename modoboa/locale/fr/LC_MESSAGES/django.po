@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 10:32+0100\n"
+"POT-Creation-Date: 2013-12-15 10:20+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: core/__init__.py:52 core/__init__.py:53
-#: extensions/admin/forms/account.py:325 extensions/admin/forms/domain.py:251
+#: extensions/admin/forms/account.py:326 extensions/admin/forms/domain.py:251
 #: extensions/admin/views/domain.py:95 extensions/admin/views/identity.py:127
 #: extensions/postfix_autoreply/app_settings.py:11
 #: extensions/postfix_relay_domains/forms.py:138
@@ -290,7 +290,7 @@ msgstr "Afficher"
 msgid "Prefered language"
 msgstr "Langage préféré"
 
-#: core/app_settings.py:326
+#: core/app_settings.py:327
 msgid "Prefered language to display pages"
 msgstr "Langage préféré pour afficher les pages"
 
@@ -299,7 +299,7 @@ msgstr "Langage préféré pour afficher les pages"
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: core/forms.py:14 extensions/admin/forms/account.py:30
+#: core/forms.py:14 extensions/admin/forms/account.py:31
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -311,7 +311,7 @@ msgstr "Ancien mot de passe"
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: core/forms.py:33 extensions/admin/forms/account.py:33
+#: core/forms.py:33 extensions/admin/forms/account.py:34
 msgid "Confirmation"
 msgstr "Confirmation"
 
@@ -323,49 +323,49 @@ msgstr "L'ancien mot de passe est incorrect"
 msgid "Passwords mismatch"
 msgstr "Les mots de passe diffèrent"
 
-#: core/models.py:49
+#: core/models.py:50
 msgid "password"
 msgstr "mot de passe"
 
-#: core/models.py:51
+#: core/models.py:52
 msgid "last login"
 msgstr "dernière connexion"
 
-#: core/models.py:80
+#: core/models.py:81
 msgid "You can't delete your own account"
 msgstr "Vous ne pouvez pas supprimer votre propre compte"
 
-#: core/models.py:116
+#: core/models.py:117
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
 
-#: core/models.py:169
+#: core/models.py:170
 msgid "account"
 msgstr "compte"
 
-#: core/models.py:320 extensions/admin/models/domain.py:135
+#: core/models.py:321 extensions/admin/models/domain.py:135
 #: extensions/admin/models/domain_alias.py:39
 #: extensions/postfix_relay_domains/models.py:134
 #: extensions/postfix_relay_domains/models.py:190
 msgid "Invalid line"
 msgstr "Ligne invalide"
 
-#: core/models.py:324
+#: core/models.py:325
 msgid "You can't import an account with a role greater than yours"
 msgstr "Vous ne pouvez pas importer un compte avec un rôle supérieur au votre"
 
-#: core/models.py:330
+#: core/models.py:331
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "L'utilisateur simple '%s' doit avoir une adresse email valide"
 
-#: core/models.py:334
+#: core/models.py:335
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Les champs username et email de '%s' ne doivent pas différer"
 
-#: core/models.py:403 extensions/admin/models/alias.py:33
+#: core/models.py:404 extensions/admin/models/alias.py:33
 #: extensions/admin/models/domain.py:32
 #: extensions/admin/models/domain_alias.py:17
 #: extensions/postfix_autoreply/models.py:28
@@ -374,24 +374,24 @@ msgstr "Les champs username et email de '%s' ne doivent pas différer"
 msgid "enabled"
 msgstr "Activé"
 
-#: core/models.py:404
+#: core/models.py:405
 msgid "Check to enable this extension"
 msgstr "Cocher pour activer cette extension"
 
-#: core/models.py:474
+#: core/models.py:475
 msgid "added"
 msgstr "ajouté"
 
-#: core/models.py:477
+#: core/models.py:478
 msgid "modified"
 msgstr "modifié"
 
-#: core/models.py:479 core/models.py:503
+#: core/models.py:480 core/models.py:504
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s par l'utilisateur %(user)s"
 
-#: core/models.py:505
+#: core/models.py:506
 msgid "deleted"
 msgstr "Supprimé"
 
@@ -643,7 +643,7 @@ msgstr "L'import du compte a échoué (%s): le domaine n'existe pas"
 #: extensions/admin/app_settings.py:11
 #: extensions/admin/templates/admin/editdomainform.html:25
 #: extensions/limits/app_settings.py:31 extensions/limits/models.py:23
-#: extensions/webmail/app_settings.py:101
+#: extensions/webmail/app_settings.py:107
 #: extensions/webmail/templates/webmail/folders.html:4
 msgid "Mailboxes"
 msgstr "Boites"
@@ -690,7 +690,7 @@ msgstr ""
 "Lorsqu'une boite aux lettres est supprimée, supprimer le compte associé en "
 "même temps"
 
-#: extensions/admin/app_settings.py:64 extensions/admin/forms/account.py:177
+#: extensions/admin/app_settings.py:69 extensions/admin/forms/account.py:178
 #: extensions/admin/forms/domain.py:56
 msgid "Must be a positive integer"
 msgstr "Doit être un entier positif"
@@ -700,48 +700,50 @@ msgid "A mailbox is required"
 msgstr "Une boite aux lettres est requise"
 
 #: extensions/admin/forms/account.py:21
-msgid "The user's name. Must be a valid e-mail address for simple users."
+msgid ""
+"The user's name. Must be a valid e-mail address for simple users or "
+"administrators with a mailbox."
 msgstr ""
 "Le nom de l'utilisateur. Doit être une adresse e-mail valide pour les "
-"utilisateurs simples."
+"utilisateurs simples ou les administrateurs avec une boite aux lettres."
 
-#: extensions/admin/forms/account.py:25
+#: extensions/admin/forms/account.py:26
 msgid "Role"
 msgstr "Rôle"
 
-#: extensions/admin/forms/account.py:26 extensions/admin/forms/account.py:54
+#: extensions/admin/forms/account.py:27 extensions/admin/forms/account.py:55
 msgid "Choose"
 msgstr "Choisir"
 
-#: extensions/admin/forms/account.py:27
+#: extensions/admin/forms/account.py:28
 msgid "What level of permission this user will have"
 msgstr "Quel niveau de permission cet utilisateur aura"
 
-#: extensions/admin/forms/account.py:35
+#: extensions/admin/forms/account.py:36
 msgid "Enter the same password as above, for verification."
 msgstr "Entrer le même mot de passe, pour vérification."
 
-#: extensions/admin/forms/account.py:46
+#: extensions/admin/forms/account.py:47
 msgid "Enabled"
 msgstr "Activé"
 
-#: extensions/admin/forms/account.py:93
+#: extensions/admin/forms/account.py:94
 msgid "The two password fields didn't match."
 msgstr "Les deux mots de passe ne correspondent pas."
 
-#: extensions/admin/forms/account.py:99
+#: extensions/admin/forms/account.py:100
 msgid "You can't disable your own account"
 msgstr "Vous ne pouvez pas désactiver votre propre compte"
 
-#: extensions/admin/forms/account.py:110
+#: extensions/admin/forms/account.py:111
 msgid "E-mail"
 msgstr "E-mail"
 
-#: extensions/admin/forms/account.py:112 extensions/admin/forms/domain.py:17
+#: extensions/admin/forms/account.py:113 extensions/admin/forms/domain.py:17
 msgid "Quota"
 msgstr "Quota"
 
-#: extensions/admin/forms/account.py:114
+#: extensions/admin/forms/account.py:115
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
@@ -751,13 +753,13 @@ msgstr ""
 "valeur par défaut du domaine. Laisser vide pour définir une valeur illimitée "
 "(interdit pour les admins. de domaine)."
 
-#: extensions/admin/forms/account.py:122 extensions/admin/forms/domain.py:26
+#: extensions/admin/forms/account.py:123 extensions/admin/forms/domain.py:26
 #: extensions/admin/templates/admin/domains_table.html:6
 #: extensions/postfix_relay_domains/forms.py:12
 msgid "Alias(es)"
 msgstr "Alias"
 
-#: extensions/admin/forms/account.py:125
+#: extensions/admin/forms/account.py:126
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
@@ -767,30 +769,30 @@ msgstr ""
 "ENTREE pour ajouter un nouveau champ. Utiliser le caractère '*' pour créer "
 "une adresse 'attrape tout' (ex: *@domain.tld)."
 
-#: extensions/admin/forms/account.py:186 extensions/admin/forms/account.py:216
+#: extensions/admin/forms/account.py:187 extensions/admin/forms/account.py:217
 #: extensions/admin/forms/alias.py:65
 msgid "Domain does not exist"
 msgstr "Domain inexistant"
 
-#: extensions/admin/forms/account.py:195
+#: extensions/admin/forms/account.py:196
 #, python-format
 msgid "Mailbox %s already exists"
 msgstr "La boite %s existe déjà"
 
-#: extensions/admin/forms/account.py:283
+#: extensions/admin/forms/account.py:284
 msgid "Domain(s)"
 msgstr "Domaine(s)"
 
-#: extensions/admin/forms/account.py:285
+#: extensions/admin/forms/account.py:286
 msgid "Domain(s) that user administrates"
 msgstr "Domaine(s) que cet utilisateur administre"
 
-#: extensions/admin/forms/account.py:327
+#: extensions/admin/forms/account.py:328
 #: extensions/admin/views/identity.py:130
 msgid "Mail"
 msgstr "Courrier"
 
-#: extensions/admin/forms/account.py:329
+#: extensions/admin/forms/account.py:330
 msgid "Permissions"
 msgstr "Permissions"
 
@@ -1349,7 +1351,7 @@ msgstr "Export de domaines"
 #: extensions/webmail/views.py:114 extensions/webmail/views.py:200
 #: extensions/webmail/views.py:223 extensions/webmail/views.py:396
 #: extensions/webmail/views.py:430 extensions/webmail/views.py:443
-#: extensions/webmail/views.py:472 extensions/webmail/views.py:513
+#: extensions/webmail/views.py:472 extensions/webmail/views.py:512
 #: lib/formutils.py:44 lib/formutils.py:49
 msgid "Invalid request"
 msgstr "Requête invalide"
@@ -1973,8 +1975,9 @@ msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
 msgstr ""
-"Contenu par défaut utilisé quand un message d'absence est créé automatiquement."
-"La macro '%(name)s' sera remplacée par le nom complet de l'utilisateur."
+"Contenu par défaut utilisé quand un message d'absence est créé "
+"automatiquement.La macro '%(name)s' sera remplacée par le nom complet de "
+"l'utilisateur."
 
 #: extensions/postfix_autoreply/forms.py:13
 msgid "Activate your auto reply from this date"
@@ -2524,7 +2527,7 @@ msgstr "Période de temps pré-définie"
 msgid "Custom time range"
 msgstr "Période de temps personnalisée"
 
-#: extensions/stats/templates/stats/index.html:55
+#: extensions/stats/templates/stats/index.html:57
 msgid "Apply"
 msgstr "Appliquer"
 
@@ -2616,49 +2619,61 @@ msgstr "Taux de rafraichissement de la liste"
 msgid "Automatic folder refresh rate (in seconds)"
 msgstr "Taux de rafraichissement automatique du dossier (en secondes)"
 
-#: extensions/webmail/app_settings.py:105
+#: extensions/webmail/app_settings.py:103
+msgid "Mailboxes container's width"
+msgstr "Largeur du conteneur de boites aux lettres"
+
+#: extensions/webmail/app_settings.py:104
+msgid "The width of the mailbox list container"
+msgstr "La largeur du conteneur de boites aux lettres"
+
+#: extensions/webmail/app_settings.py:111
 msgid "Trash folder"
 msgstr "Dossier 'poubelle'"
 
-#: extensions/webmail/app_settings.py:106
+#: extensions/webmail/app_settings.py:112
 msgid "Folder where deleted messages go"
 msgstr "Dossier de destination des messages supprimés"
 
-#: extensions/webmail/app_settings.py:111
+#: extensions/webmail/app_settings.py:117
 msgid "Sent folder"
 msgstr "Dossier 'envoyé'"
 
-#: extensions/webmail/app_settings.py:112
+#: extensions/webmail/app_settings.py:118
 msgid "Folder where copies of sent messages go"
 msgstr "Dossier de destination des copies de messages envoyés"
 
-#: extensions/webmail/app_settings.py:117
+#: extensions/webmail/app_settings.py:123
 msgid "Drafts folder"
 msgstr "Dossier 'brouillons'"
 
-#: extensions/webmail/app_settings.py:118
+#: extensions/webmail/app_settings.py:124
 msgid "Folder where drafts go"
 msgstr "Dossier de destination des brouillons"
 
-#: extensions/webmail/app_settings.py:121
+#: extensions/webmail/app_settings.py:127
 msgid "Composing messages"
 msgstr "Composer des messages"
 
-#: extensions/webmail/app_settings.py:125
+#: extensions/webmail/app_settings.py:131
 msgid "Default editor"
 msgstr "Editeur par défaut"
 
-#: extensions/webmail/app_settings.py:127
+#: extensions/webmail/app_settings.py:133
 msgid "The default editor to use when composing a message"
 msgstr "L'éditeur a utiliser par défaut pour écrire un message"
 
-#: extensions/webmail/app_settings.py:133
+#: extensions/webmail/app_settings.py:139
 msgid "Signature text"
 msgstr "Texte de signature"
 
-#: extensions/webmail/app_settings.py:134
+#: extensions/webmail/app_settings.py:140
 msgid "User defined email signature"
 msgstr "Signature personnalisée"
+
+#: extensions/webmail/app_settings.py:160
+msgid "Value must be a positive integer (> 0)"
+msgstr "La valeur doit être un entier positif (> 0)"
 
 #: extensions/webmail/exceptions.py:20
 msgid "Server response"
@@ -2775,7 +2790,7 @@ msgstr[1] "%(counter)s fichiers"
 msgid "Parent mailbox"
 msgstr "Boite aux lettres parente"
 
-#: extensions/webmail/templates/webmail/index.html:38
+#: extensions/webmail/templates/webmail/index.html:40
 msgid "Mailbox quota"
 msgstr "Quota de la boite aux lettres"
 

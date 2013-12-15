@@ -100,8 +100,8 @@ class UserSettings(UserParametersForm):
 
     mboxes_col_width = forms.IntegerField(
         initial=200,
-        label=_("Mailboxes column width"),
-        help_text=_("The width of the column containing the mailbox list")
+        label=_("Mailboxes container's width"),
+        help_text=_("The width of the mailbox list container")
     )
 
     sep2 = SeparatorField(label=_("Mailboxes"))

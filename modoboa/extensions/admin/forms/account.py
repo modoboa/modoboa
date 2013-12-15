@@ -18,7 +18,8 @@ class AccountFormGeneral(forms.ModelForm):
     username = forms.CharField(
         label=ugettext_lazy("Username"),
         help_text=ugettext_lazy(
-            "The user's name. Must be a valid e-mail address for simple users."
+            "The user's name. Must be a valid e-mail address for simple users "
+            "or administrators with a mailbox."
         )
     )
     role = forms.ChoiceField(

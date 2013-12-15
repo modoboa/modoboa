@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 10:32+0100\n"
+"POT-Creation-Date: 2013-12-15 10:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,30 +98,26 @@ msgstr ""
 msgid "Search a domain"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:472
+#: extensions/webmail/static/webmail/js/webmail.js:491
 msgid "Remove the selected mailbox?"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:485
+#: extensions/webmail/static/webmail/js/webmail.js:504
 msgid "Mailbox removed"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:727
+#: extensions/webmail/static/webmail/js/webmail.js:746
 msgid "Message sent"
 msgstr ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:854
-msgid "Message deleted"
-msgstr ""
-
-#: extensions/webmail/static/webmail/js/webmail.js:981
+#: extensions/webmail/static/webmail/js/webmail.js:997
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: extensions/webmail/static/webmail/js/webmail.js:1013
+#: extensions/webmail/static/webmail/js/webmail.js:1031
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"

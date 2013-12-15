@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-03 10:32+0100\n"
+"POT-Creation-Date: 2013-12-15 10:16+0100\n"
 "PO-Revision-Date: 2013-09-27 00:07+0200\n"
 "Last-Translator: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
 "Language-Team: Italiano <LL@li.org>\n"
@@ -100,30 +100,26 @@ msgstr "attivo"
 msgid "Search a domain"
 msgstr "Cerca un dominio"
 
-#: extensions/webmail/static/webmail/js/webmail.js:472
+#: extensions/webmail/static/webmail/js/webmail.js:491
 msgid "Remove the selected mailbox?"
 msgstr "Rimuovere la casella di posta selezionata?"
 
-#: extensions/webmail/static/webmail/js/webmail.js:485
+#: extensions/webmail/static/webmail/js/webmail.js:504
 msgid "Mailbox removed"
 msgstr "Casella di posta rimossa"
 
-#: extensions/webmail/static/webmail/js/webmail.js:727
+#: extensions/webmail/static/webmail/js/webmail.js:746
 msgid "Message sent"
 msgstr "Messaggio inviato"
 
-#: extensions/webmail/static/webmail/js/webmail.js:854
-msgid "Message deleted"
-msgstr "Messaggio eliminato"
-
-#: extensions/webmail/static/webmail/js/webmail.js:981
+#: extensions/webmail/static/webmail/js/webmail.js:997
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s file"
 msgstr[1] "%s file"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1013
+#: extensions/webmail/static/webmail/js/webmail.js:1031
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
@@ -146,3 +142,6 @@ msgstr "Errore interno"
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Ricerca ..."
+
+#~ msgid "Message deleted"
+#~ msgstr "Messaggio eliminato"
