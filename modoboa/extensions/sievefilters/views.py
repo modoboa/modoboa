@@ -1,5 +1,6 @@
 # coding: utf-8
 from sievelib.managesieve import Error
+from sievelib.commands import BadArgument, BadValue
 from rfc6266 import build_header
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -11,6 +12,7 @@ from modoboa.lib import parameters
 from modoboa.lib.webutils import _render_error, \
     ajax_response, render_to_json_response
 from modoboa.lib.connections import ConnectionError
+from modoboa.lib.exceptions import BadRequest
 from modoboa.extensions.admin.lib import needs_mailbox
 from .lib import SieveClient, SieveClientError
 from .forms import (
@@ -115,18 +117,19 @@ def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None
             match_type = "anyof"
             conditions = [("true",)]
         fltname = form.cleaned_data["name"].encode("utf-8")
-        if not update:
-            fset.addfilter(fltname, conditions, actions,
-                           match_type)
-        else:
-            oldname = request.POST["oldname"].encode("utf-8")
-            fset.updatefilter(
-                oldname, fltname, conditions, actions, match_type
-            )
+        try:
+            if not update:
+                fset.addfilter(fltname, conditions, actions,
+                               match_type)
+            else:
+                oldname = request.POST["oldname"].encode("utf-8")
+                fset.updatefilter(
+                    oldname, fltname, conditions, actions, match_type
+                )
+        except (BadArgument, BadValue) as inst:
+            raise BadRequest(str(inst))
         sc.pushscript(fset.name, str(fset))
         return render_to_json_response(okmsg)
-    #tplctx = build_filter_ctx(tplctx, form)
-    #return ajax_response(request, status="ko", template=tplname, **tplctx)
 
     return render_to_json_response({'form_errors': form.errors}, status=400)
 
