@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-15 10:20+0100\n"
-"PO-Revision-Date: 2013-09-27 00:07+0200\n"
+"POT-Creation-Date: 2013-12-22 23:15+0100\n"
+"PO-Revision-Date: 2013-12-23 00:56+0100\n"
 "Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
 "Language: it\n"
@@ -49,23 +49,23 @@ msgstr "Schema password predefinito"
 
 #: core/app_settings.py:51
 msgid "md5crypt (weak)"
-msgstr ""
+msgstr "md5crypt (debole)"
 
 #: core/app_settings.py:52
 msgid "sha256 (weak)"
-msgstr ""
+msgstr "sha256 (debole)"
 
 #: core/app_settings.py:53
 msgid "md5 (weak)"
-msgstr ""
+msgstr "md5 (debole)"
 
 #: core/app_settings.py:54
 msgid "crypt (weak)"
-msgstr ""
+msgstr "crypt (debole)"
 
 #: core/app_settings.py:55
 msgid "plain (weak)"
-msgstr ""
+msgstr "plain (debole)"
 
 #: core/app_settings.py:57
 msgid "Scheme used to crypt mailbox passwords"
@@ -74,13 +74,13 @@ msgstr ""
 
 #: core/app_settings.py:61
 msgid "Rounds"
-msgstr ""
+msgstr "Cicli"
 
 #: core/app_settings.py:64
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
+msgstr "Numero di cicli da utilizzare (valido per sha256crypt e sha512crypt). Dev'essere tra 1000 e 999999999, inclusivo."
 
 #: core/app_settings.py:70
 msgid "Secret key"
@@ -159,14 +159,12 @@ msgstr ""
 "DN')"
 
 #: core/app_settings.py:121
-#, fuzzy
 msgid "Users search base"
-msgstr "Ricerca base"
+msgstr "Base ricerca per gli utenti"
 
 #: core/app_settings.py:123
-#, fuzzy
 msgid "The distinguished name of the search base used to find users"
-msgstr "Nome particolare della ricerca base"
+msgstr "L'identificativo (dn:) della base di ricerca utilizzata per cercare gli utenti"
 
 #: core/app_settings.py:128
 msgid "Search filter"
@@ -210,25 +208,22 @@ msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Segnala se il server LDAP è una Active Directory"
 
 #: core/app_settings.py:154
-#, fuzzy
 msgid "Administrator groups"
-msgstr "Amministratori"
+msgstr "Gruppi degli amministratori"
 
 #: core/app_settings.py:157
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
-msgstr ""
+msgstr "Gli appartenenti a questi gruppi LDAP Posix avranno i privilegi di amministratori di dominio. Utilizza il carattere ';' per separare valori multipli."
 
 #: core/app_settings.py:164
-#, fuzzy
 msgid "Groups search base"
-msgstr "Ricerca base"
+msgstr "Base ricerca per i gruppi"
 
 #: core/app_settings.py:167
-#, fuzzy
 msgid "The distinguished name of the search base used to find groups"
-msgstr "Nome particolare della ricerca base"
+msgstr "L'identificatore  (dn:) della base di ricerca utilizzato per trovare i gruppi"
 
 #: core/app_settings.py:172
 #: extensions/admin/templates/admin/editdomainform.html:7
@@ -270,9 +265,8 @@ msgid "Invalid syntax"
 msgstr "Sintassi errata"
 
 #: core/app_settings.py:233
-#, fuzzy
 msgid "Invalid rounds number"
-msgstr "Richiesta non valida"
+msgstr "Numero di cicli non valido"
 
 #: core/app_settings.py:256
 msgid "This field is required"
@@ -322,14 +316,12 @@ msgid "Passwords mismatch"
 msgstr "La password non corrisponde"
 
 #: core/models.py:50
-#, fuzzy
 msgid "password"
-msgstr "Password"
+msgstr "password"
 
 #: core/models.py:52
-#, fuzzy
 msgid "last login"
-msgstr "Ultimo login"
+msgstr "ultimo login"
 
 #: core/models.py:81
 msgid "You can't delete your own account"
@@ -513,7 +505,7 @@ msgstr "Aggiorna le informazioni personali"
 #: extensions/admin/views/identity.py:197
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
 #: extensions/postfix_relay_domains/views.py:63
-#: extensions/sievefilters/views.py:163 extensions/webmail/views.py:170
+#: extensions/sievefilters/views.py:166 extensions/webmail/views.py:170
 #: extensions/webmail/views.py:205
 msgid "Update"
 msgstr "Aggiorna"
@@ -613,9 +605,8 @@ msgid "Web based console to manage domains, accounts and aliases"
 msgstr "Interfaccia web per l'amministrazione di domini, account e alias"
 
 #: extensions/admin/__init__.py:55
-#, fuzzy
 msgid "Administration"
-msgstr "Amministratori"
+msgstr "Amministrazione"
 
 #: extensions/admin/__init__.py:79
 #: extensions/admin/templates/admin/domains.html:2
@@ -668,15 +659,14 @@ msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "L'account UNIX a cui appartengono le caselle postali nel filsystem"
 
 #: extensions/admin/app_settings.py:26
-#, fuzzy
 msgid "Default domain quota"
-msgstr "Limiti predefiniti"
+msgstr "Quota predefinita per il domini"
 
 #: extensions/admin/app_settings.py:29
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr ""
+msgstr "Quota predefinita (in MB) applicata ai nuovi domini che non la specificano. Un valore 0 implica nessuna quota."
 
 #: extensions/admin/app_settings.py:36
 msgid "Automatic account removal"
@@ -690,19 +680,17 @@ msgstr ""
 #: extensions/admin/app_settings.py:69 extensions/admin/forms/account.py:178
 #: extensions/admin/forms/domain.py:56
 msgid "Must be a positive integer"
-msgstr ""
+msgstr "Dev'essere un intero positivo"
 
 #: extensions/admin/lib.py:28
-#, fuzzy
 msgid "A mailbox is required"
-msgstr "È richiesta una quota"
+msgstr "É necessaria una casella"
 
 #: extensions/admin/forms/account.py:21
-#, fuzzy
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr "L'utente '%s' deve avere un indirizzo email valido"
+msgstr "Il nome dell'utente. Dev'essere un indirizzo e-mail per gli utenti semplici o gli amministratori che posseggono una casella"
 
 #: extensions/admin/forms/account.py:26
 msgid "Role"
@@ -839,11 +827,10 @@ msgid "No recipient defined"
 msgstr "Non è stato definito un destinatario"
 
 #: extensions/admin/forms/domain.py:20
-#, fuzzy
 msgid ""
 "Default quota in MB applied to mailboxes. Leave empty to use the default "
 "value."
-msgstr "Quota in MB predefinita applicata alle caselle di posta"
+msgstr "Quota in MB predefinita applicata alle caselle di posta. Lascialo vuoto se vuoi applicare il valore predefinito."
 
 #: extensions/admin/forms/domain.py:29
 msgid ""
@@ -856,23 +843,21 @@ msgstr ""
 #: extensions/admin/forms/domain.py:75
 #: extensions/postfix_relay_domains/forms.py:50
 #: extensions/postfix_relay_domains/forms.py:70
-#, fuzzy
 msgid "domain alias"
-msgstr "Alias del dominio"
+msgstr "alias del dominio"
 
 #: extensions/admin/forms/domain.py:82 extensions/admin/forms/domain.py:98
 #: extensions/postfix_relay_domains/forms.py:58
 #: extensions/postfix_relay_domains/forms.py:78
-#, fuzzy, python-format
+#, python-format
 msgid "A %s with this name already exists"
-msgstr "Un alias con questo nome esiste già"
+msgstr "Un %s con questo nome esiste già"
 
 #: extensions/admin/forms/domain.py:92
 #: extensions/postfix_relay_domains/forms.py:49
 #: extensions/postfix_relay_domains/forms.py:71
-#, fuzzy
 msgid "domain"
-msgstr "Domini"
+msgstr "dominio"
 
 #: extensions/admin/forms/domain.py:176
 msgid "Create a domain administrator"
@@ -1032,14 +1017,13 @@ msgid "Check to activate this domain"
 msgstr "Seleziona per attivare questo dominio"
 
 #: extensions/admin/models/domain.py:61
-#, fuzzy
 msgid "Domain"
-msgstr "Domini"
+msgstr "Dominio"
 
 #: extensions/admin/models/domain.py:140
 #, python-format
 msgid "Invalid quota value for domain '%s'"
-msgstr ""
+msgstr "Valore della quota non valido per il dominio '%s'"
 
 #: extensions/admin/models/domain_alias.py:11
 #: extensions/postfix_relay_domains/models.py:160
@@ -1056,9 +1040,9 @@ msgid "The domain this alias points to"
 msgstr "Il dominio a cui punta questo alias"
 
 #: extensions/admin/models/domain_alias.py:46
-#, fuzzy, python-format
+#, python-format
 msgid "A domain %s already exists"
-msgstr "La casella di posta %s esiste già"
+msgstr "Esiste già un dominio %s"
 
 #: extensions/admin/models/domain_alias.py:51
 #, python-format
@@ -1090,9 +1074,8 @@ msgid "MB"
 msgstr "MB"
 
 #: extensions/admin/templates/admin/domain_options_form.html:5
-#, fuzzy
 msgid "You can't create a new domain administrator"
-msgstr "Crea un amministratore di dominio"
+msgstr "Non ti è possibile creare un amministratore di dominio"
 
 #: extensions/admin/templates/admin/domains_table.html:7
 #: extensions/admin/templates/admin/identities_table.html:7
@@ -1102,7 +1085,7 @@ msgstr "Tag"
 #: extensions/admin/templates/admin/domains_table.html:8
 #: extensions/admin/templates/admin/identities_table.html:8
 #: extensions/admin/templates/admin/listing.html:17
-#: extensions/sievefilters/views.py:93
+#: extensions/sievefilters/views.py:95
 #: extensions/sievefilters/templates/sievefilters/filter.html:17
 #: extensions/sievefilters/templates/sievefilters/guieditor.html:5
 #: extensions/webmail/templatetags/webmail_tags.py:101
@@ -1257,7 +1240,7 @@ msgstr "Un alias con questo nome esiste già"
 #: extensions/admin/views/domain.py:129 extensions/admin/views/identity.py:131
 #: extensions/admin/views/identity.py:158
 #: extensions/postfix_relay_domains/views.py:32
-#: extensions/sievefilters/views.py:141 extensions/sievefilters/views.py:230
+#: extensions/sievefilters/views.py:144 extensions/sievefilters/views.py:233
 #: extensions/webmail/views.py:151
 msgid "Create"
 msgstr "Crea"
@@ -1374,7 +1357,7 @@ msgstr[0] "Account cancellato"
 msgstr[1] "Account cancellati"
 
 #: extensions/admin/views/import.py:39
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
@@ -1389,10 +1372,9 @@ msgstr ""
 "Fornire un file CSV le cui righe rispettino uno dei seguenti formati:\n"
 "<ul>\n"
 "  <li><em>dominio; nome; quota; abilitato</em></li>\n"
-"  <li><em>aliasdominio; nome; dominio target; abilitato<em></li>\n"
+"  <li><em>aliasdominio; nome; dominio di destinazione; abilitato<em></li>\n"
 "</ul>\n"
-"<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a "
-"quello dei valori precedenti.</p>\n"
+"<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a quello dei valori precedenti.</p>\n"
 "\n"
 "<p>Come separatore puoi utilizzare un carattere diverso.</p>\n"
 
@@ -1411,7 +1393,6 @@ msgid "%d objects imported successfully"
 msgstr "%d oggetti importati correttamente"
 
 #: extensions/admin/views/import.py:153
-#, fuzzy
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
@@ -1428,15 +1409,12 @@ msgid ""
 msgstr ""
 "Fornire un file CSV le cui righe rispettino uno dei seguenti formati:\n"
 "<ul>\n"
-"<li><em>account; loginname; password; nome; cognome; abilitato; group; "
-"indirizzo[, dominio, ...]</em></li>\n"
+"<li><em>account; id utente; password; nome; cognome; abilitato; gruppo; indirizzo; quota; [, dominio, ...]</em></li>\n"
 "<li><em>alias; indirizzo; abilitato; destinatario interno</em></li>\n"
 "<li><em>forward; indirizzo; abilitato; destinatario esterno</em></li>\n"
-"<li><em>dlist; indirizzo; abilitato; destinatario; destinatario; ...</em></"
-"li>\n"
+"<li><em>dlist; indirizzo; abilitato; destinatario; destinatario; ...</em></li>\n"
 "</ul>\n"
-"<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a "
-"quello dei valori precedenti.</p>\n"
+"<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a quello dei valori precedenti.</p>\n"
 "\n"
 "<p>Come separatore puoi utilizzare un carattere diverso.</p>\n"
 
@@ -1558,9 +1536,8 @@ msgid "pending requests"
 msgstr "richieste in sospeso"
 
 #: extensions/amavis/general_callbacks.py:124
-#, fuzzy
 msgid "Pending requests"
-msgstr "richieste in sospeso"
+msgstr "Richieste in sospeso"
 
 #: extensions/amavis/general_callbacks.py:134
 msgid "Content filter"
@@ -1576,12 +1553,12 @@ msgid "Virus filter"
 msgstr "Filtro virus"
 
 #: extensions/amavis/models.py:94 extensions/amavis/models.py:102
-#: extensions/amavis/models.py:110 extensions/sievefilters/views.py:290
+#: extensions/amavis/models.py:110 extensions/sievefilters/views.py:293
 msgid "yes"
 msgstr "si"
 
 #: extensions/amavis/models.py:95 extensions/amavis/models.py:103
-#: extensions/amavis/models.py:111 extensions/sievefilters/views.py:294
+#: extensions/amavis/models.py:111 extensions/sievefilters/views.py:297
 msgid "no"
 msgstr "no"
 
@@ -1631,7 +1608,7 @@ msgstr ""
 
 #: extensions/amavis/sql_listing.py:31
 msgid "Score"
-msgstr ""
+msgstr "Punteggio"
 
 #: extensions/amavis/sql_listing.py:35
 #: extensions/amavis/templatetags/amavis_tags.py:75
@@ -1708,9 +1685,8 @@ msgid "Quarantine management"
 msgstr "Gestione quarantena"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:3
-#, fuzzy
 msgid "Select"
-msgstr "Seleziona un file"
+msgstr "Seleziona"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:9
 msgid "Spam"
@@ -1721,7 +1697,6 @@ msgid "Virus"
 msgstr "Virus"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:11
-#, fuzzy
 msgid "Bad Header"
 msgstr "Intestazione errata"
 
@@ -1730,9 +1705,8 @@ msgid "Bad MIME"
 msgstr "MIME errato"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:13
-#, fuzzy
 msgid "Banned"
-msgstr "Filtro banned"
+msgstr "Banditi"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:18
 #: extensions/amavis/templatetags/amavis_tags.py:19
@@ -1754,32 +1728,27 @@ msgstr "Tutti i messaggi"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:31
 msgid "All"
-msgstr ""
+msgstr "Tutti"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:32
-#, fuzzy
 msgid "Spam only"
-msgstr "Spam"
+msgstr "Solo messaggi di spam"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:33
-#, fuzzy
 msgid "Virus only"
-msgstr "Virus"
+msgstr "Solo messaggi con virus"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:34
-#, fuzzy
 msgid "Bad Header only"
-msgstr "Intestazione errata"
+msgstr "Solo messaggi con intestazione errata"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:35
-#, fuzzy
 msgid "Bad MIME only"
-msgstr "MIME errato"
+msgstr "Solo messaggi con struttura MIME errata"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:36
-#, fuzzy
 msgid "Banned only"
-msgstr "Filtro banned"
+msgstr "Solo messaggi banditi"
 
 #: extensions/amavis/templates/amavis/notifications/pending_requests.html:1
 #, python-format
@@ -1954,23 +1923,21 @@ msgstr ""
 "destinatario"
 
 #: extensions/postfix_autoreply/app_settings.py:20
-#, fuzzy
 msgid "Default subject"
-msgstr "Editor predefinito"
+msgstr "Oggetto predefinito"
 
 #: extensions/postfix_autoreply/app_settings.py:21
 msgid "I'm off"
-msgstr ""
+msgstr "Sono via"
 
 #: extensions/postfix_autoreply/app_settings.py:23
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
-msgstr ""
+msgstr "Oggetto predefinito utilizzato nei messaggi di risposta automatica"
 
 #: extensions/postfix_autoreply/app_settings.py:28
-#, fuzzy
 msgid "Default content"
-msgstr "Editor predefinito"
+msgstr "Corpo del messaggio predefinito"
 
 #: extensions/postfix_autoreply/app_settings.py:30
 #, python-format
@@ -1980,18 +1947,21 @@ msgid ""
 "Best regards,\n"
 "%(name)s\n"
 msgstr ""
+"Al momento non posso rispondere. Risponderò al mio ritorno.\n"
+"\n"
+"Distinti saluti,\n"
+"%(name)s"
 
 #: extensions/postfix_autoreply/app_settings.py:36
 #, python-format
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
-msgstr ""
+msgstr "Corpo del messaggio predefinito per i messaggi di risposta automatica. La macro '%(name)s' verrà sostituita con il nome dell'utente. "
 
 #: extensions/postfix_autoreply/forms.py:13
-#, fuzzy
 msgid "Activate your auto reply from this date"
-msgstr "Attiva la tua risposta automatica fino a questa data"
+msgstr "Attiva la risposta automatica da questa data"
 
 #: extensions/postfix_autoreply/forms.py:19
 msgid "Until"
@@ -2007,9 +1977,8 @@ msgid "This date is over"
 msgstr "Questa data è passata"
 
 #: extensions/postfix_autoreply/forms.py:59
-#, fuzzy
 msgid "Must be greater than start date"
-msgstr "è maggiore di"
+msgstr "Dev'essere successiva alla data di inizio"
 
 #: extensions/postfix_autoreply/general_callbacks.py:33
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:2
@@ -2018,11 +1987,11 @@ msgstr "Messaggio di risposta automatica"
 
 #: extensions/postfix_autoreply/general_callbacks.py:118
 msgid "Enable auto-reply"
-msgstr ""
+msgstr "Abilita la risposta automatica"
 
 #: extensions/postfix_autoreply/general_callbacks.py:120
 msgid "Enable or disable Postfix auto-reply"
-msgstr ""
+msgstr "Abilita o disabilita la risposta automatica di Postfix"
 
 #: extensions/postfix_autoreply/models.py:20
 msgid "subject"
@@ -2054,65 +2023,54 @@ msgstr "Definisci un messaggio da inviare automaticamente quando sei via"
 
 #: extensions/postfix_relay_domains/__init__.py:72
 msgid "Relay domains support for Postfix"
-msgstr ""
+msgstr "Supporto ai \"domini relè\" per Postfix"
 
 #: extensions/postfix_relay_domains/__init__.py:89
 #: extensions/postfix_relay_domains/general_callbacks.py:100
 #: extensions/postfix_relay_domains/limits_callbacks.py:16
-#, fuzzy
 msgid "Relay domains"
-msgstr "Nuovo dominio"
+msgstr "Domini relè"
 
 #: extensions/postfix_relay_domains/app_settings.py:10
 msgid "Postfix's master.cf path"
-msgstr ""
+msgstr "Percorso del file master.cf di Postfix"
 
 #: extensions/postfix_relay_domains/app_settings.py:12
-#, fuzzy
 msgid "Path to the master.cf configuration file"
-msgstr "Percorso del file di log"
+msgstr "Percorso del file di configurazione master.cf"
 
 #: extensions/postfix_relay_domains/forms.py:15
-#, fuzzy
 msgid ""
 "Alias(es) of this relay domain. Indicate only one name per input, press "
 "ENTER to add a new input."
-msgstr ""
-"Alias per questo dominio. Inserire un solo nome alla volta, premere INVIO "
-"per aggiungere un nuovo elemento"
+msgstr "Alias per questo dominio relè. Inserisci un solo nome per casella, premi INVIO per aggiungere un nuovo elemento."
 
 #: extensions/postfix_relay_domains/forms.py:51
 #: extensions/postfix_relay_domains/general_callbacks.py:93
-#, fuzzy
 msgid "relay domain alias"
-msgstr "Alias del dominio"
+msgstr "Alias del dominio relè"
 
 #: extensions/postfix_relay_domains/forms.py:69
 #: extensions/postfix_relay_domains/general_callbacks.py:92
-#, fuzzy
 msgid "relay domain"
-msgstr "Nuovo dominio"
+msgstr "Dominio relè"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:35
-#, fuzzy
 msgid "Add relay domain"
-msgstr "Aggiungi dominio"
+msgstr "Aggiungi dominio relè"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:101
-#, fuzzy
 msgid "Maximum number of relay domains this user can create"
-msgstr "Numero massimo di domini che questo utente può creare"
+msgstr "Numero massimo di domini relè che questo utente può creare"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:103
 #: extensions/postfix_relay_domains/limits_callbacks.py:24
-#, fuzzy
 msgid "Relay domain aliases"
-msgstr "Alias del dominio"
+msgstr "Alias del dominio relè"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:104
-#, fuzzy
 msgid "Maximum number of relay domain aliases this user can create"
-msgstr "Numero massimo di alias di dominio che questo utente può creare"
+msgstr "Numero massimo di alias di un dominio relè che questo utente può creare"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:111
 msgid ""
@@ -2121,80 +2079,70 @@ msgid ""
 "em></li>\n"
 "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
 msgstr ""
+"\n"
+"<li><em>dominio relè; nome; host di destinazione; servizio; abilitato; verifica caselle</em></li>\n"
+"<li><em> alias dominio relè; nome; destinazione; abilitato</em></li>\n"
 
 #: extensions/postfix_relay_domains/limits_callbacks.py:19
-#, fuzzy
 msgid "Maximum number of allowed relay domains for a new administrator"
-msgstr "Numero massimo di domini consentiti per un nuovo amministratore"
+msgstr "Numero massimo di domini relè consentiti per un nuovo amministratore"
 
 #: extensions/postfix_relay_domains/limits_callbacks.py:27
-#, fuzzy
 msgid "Maximum number of allowed relay domain aliases for a new administrator"
-msgstr ""
-"Numero massimo di alias di dominio consentiti per un nuovo amministratore"
+msgstr "Numero massimo di alias di dominio relè consentiti per un nuovo amministratore"
 
 #: extensions/postfix_relay_domains/models.py:59
-#, fuzzy
 msgid "The service name"
-msgstr "Il nome dell'alias"
+msgstr "Il nome del servizio"
 
 #: extensions/postfix_relay_domains/models.py:80
-#, fuzzy
 msgid "target host"
 msgstr "destinazione"
 
 #: extensions/postfix_relay_domains/models.py:81
-#, fuzzy
 msgid "Remote destination of this domain"
-msgstr "Seleziona per attivare questo dominio"
+msgstr "Destinazione remota per questo dominio"
 
 #: extensions/postfix_relay_domains/models.py:89
-#, fuzzy
 msgid "verify recipients"
-msgstr "Destinatari"
+msgstr "Verifica destinatari"
 
 #: extensions/postfix_relay_domains/models.py:90
 msgid "Check for valid recipients"
-msgstr ""
+msgstr "Verifica validità destinatari"
 
 #: extensions/postfix_relay_domains/models.py:103
-#, fuzzy
 msgid "Relay Domain"
-msgstr "Nuovo dominio"
+msgstr "Dominio relè"
 
 #: extensions/postfix_relay_domains/models.py:164
-#, fuzzy
 msgid "The relay domain this alias points to"
-msgstr "Il dominio a cui punta questo alias"
+msgstr "Il dominio relè a cui punta questo alias"
 
 #: extensions/postfix_relay_domains/models.py:195
-#, fuzzy, python-format
+#, python-format
 msgid "Relay domain %s does not exist"
-msgstr "Il dominio '%s' non esiste"
+msgstr "Il dominio relè '%s' non esiste"
 
 #: extensions/postfix_relay_domains/views.py:26
-#, fuzzy
 msgid "Relay domain created"
-msgstr "Dominio creato"
+msgstr "Dominio relè creato"
 
 #: extensions/postfix_relay_domains/views.py:31
-#, fuzzy
 msgid "New relay domain"
-msgstr "Nuovo dominio"
+msgstr "Nuovo dominio relè"
 
 #: extensions/postfix_relay_domains/views.py:54
-#, fuzzy
 msgid "Relay domain modified"
-msgstr "Dominio modificato"
+msgstr "Dominio relè modificato"
 
 #: extensions/postfix_relay_domains/views.py:77
-#, fuzzy
 msgid "Relay domain deleted"
-msgstr "Dominio cancellato"
+msgstr "Dominio relè cancellato"
 
 #: extensions/postfix_relay_domains/templates/postfix_relay_domains/service_field.html:2
 msgid "Scan"
-msgstr ""
+msgstr "Cerca"
 
 #: extensions/sievefilters/__init__.py:12
 msgid "Plugin to easily create server-side filters"
@@ -2315,53 +2263,53 @@ msgstr ""
 msgid "Not enough space on server"
 msgstr "Non c'è spazio sufficiente nel server"
 
-#: extensions/sievefilters/views.py:78
+#: extensions/sievefilters/views.py:80
 msgid "Failed to retrieve filters set"
 msgstr "Recupero delle impostazioni di filtro fallito"
 
-#: extensions/sievefilters/views.py:138
+#: extensions/sievefilters/views.py:141
 #: extensions/sievefilters/templatetags/sfilters_tags.py:33
 msgid "New filter"
 msgstr "Nuovo filtro"
 
-#: extensions/sievefilters/views.py:146
+#: extensions/sievefilters/views.py:149
 msgid "Filter created"
 msgstr "Filtro creato"
 
-#: extensions/sievefilters/views.py:160
+#: extensions/sievefilters/views.py:163
 #: extensions/sievefilters/templatetags/sfilters_tags.py:78
 msgid "Edit filter"
 msgstr "Modifica filtro"
 
-#: extensions/sievefilters/views.py:169
+#: extensions/sievefilters/views.py:172
 msgid "Filter modified"
 msgstr "Filtro modificato"
 
-#: extensions/sievefilters/views.py:192
+#: extensions/sievefilters/views.py:195
 msgid "Filter removed"
 msgstr "Filtro eliminato"
 
-#: extensions/sievefilters/views.py:193
+#: extensions/sievefilters/views.py:196
 msgid "Failed to remove filter"
 msgstr "Rimozione del filtro fallita"
 
-#: extensions/sievefilters/views.py:208
+#: extensions/sievefilters/views.py:211
 msgid "Filters set saved"
 msgstr "Gruppo filtri salvato"
 
-#: extensions/sievefilters/views.py:224
+#: extensions/sievefilters/views.py:227
 msgid "Filters set created"
 msgstr "Gruppo filtri creato"
 
-#: extensions/sievefilters/views.py:228
+#: extensions/sievefilters/views.py:231
 msgid "Create a new filters set"
 msgstr "Crea un nuovo gruppo di filtri"
 
-#: extensions/sievefilters/views.py:247
+#: extensions/sievefilters/views.py:250
 msgid "Filters set deleted"
 msgstr "Gruppo filtri eliminato"
 
-#: extensions/sievefilters/views.py:260
+#: extensions/sievefilters/views.py:263
 msgid "Filters set activated"
 msgstr "Gruppo filtri attivato"
 
@@ -2649,13 +2597,12 @@ msgid "Automatic folder refresh rate (in seconds)"
 msgstr "Frequenza di aggiornamento automatico delle cartelle (in secondi)"
 
 #: extensions/webmail/app_settings.py:103
-#, fuzzy
 msgid "Mailboxes container's width"
-msgstr "Proprietario delle caselle postali"
+msgstr "Larghezza del contenitore delle caselle"
 
 #: extensions/webmail/app_settings.py:104
 msgid "The width of the mailbox list container"
-msgstr ""
+msgstr "Larghezza della lista delle caselle"
 
 #: extensions/webmail/app_settings.py:111
 msgid "Trash folder"
@@ -2703,7 +2650,7 @@ msgstr "Signature delle e-mail personalizzato dall'utente"
 
 #: extensions/webmail/app_settings.py:160
 msgid "Value must be a positive integer (> 0)"
-msgstr ""
+msgstr "Il valore dev'essere un intero positivo"
 
 #: extensions/webmail/exceptions.py:20
 msgid "Server response"
@@ -2889,9 +2836,9 @@ msgid "Remove the selected mailbox"
 msgstr "Elimina la cartella di posta selezionata"
 
 #: lib/dbutils.py:36
-#, fuzzy, python-format
+#, python-format
 msgid "Connection to database %s not configured"
-msgstr "Connessione ad amavis fallita: %s"
+msgstr "La connessione con il database %s non è configurata"
 
 #: lib/exceptions.py:67
 #, python-format
@@ -2997,36 +2944,3 @@ msgstr "Ricordami"
 #: templates/registration/login.html:36
 msgid "Log in"
 msgstr "Registrati"
-
-#~ msgid "An alias with this name already exists"
-#~ msgstr "Esiste già un alias con questo nome"
-
-#~ msgid "A domain with this name already exists"
-#~ msgstr "Esiste già un dominio con questo nome"
-
-#~ msgid "Edit domain"
-#~ msgstr "Modifica dominio"
-
-#~ msgid "%d pending requests"
-#~ msgstr "%d richieste in sospeso"
-
-#~ msgid "Content Class"
-#~ msgstr "Classe dei contenuti"
-
-#~ msgid "Nothing"
-#~ msgstr "Nulla"
-
-#~ msgid "Bad request"
-#~ msgstr "Richiesta sbagliata"
-
-#~ msgid "Undefined action"
-#~ msgstr "Azione non definita"
-
-#~ msgid "User preferences"
-#~ msgstr "Preferenze utente"
-
-#~ msgid "Per-user settings"
-#~ msgstr "Impostazioni per-utente"
-
-#~ msgid "You need a mailbox in order to define a forward"
-#~ msgstr "Hai bisogno di una casella di posta per definire un inoltro"

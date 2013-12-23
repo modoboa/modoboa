@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-15 10:16+0100\n"
-"PO-Revision-Date: 2013-09-27 00:07+0200\n"
-"Last-Translator: Giancarlo Gaifas <lallo@artiemestieri.tn.it>\n"
+"POT-Creation-Date: 2013-12-22 23:16+0100\n"
+"PO-Revision-Date: 2013-12-23 00:58+0100\n"
+"Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: Italiano <LL@li.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr "Nascondi le intestazioni"
 
 #: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
 msgid "Services updated"
-msgstr ""
+msgstr "Servizi aggiornati"
 
 #: extensions/sievefilters/static/sievefilters/js/lib.js:14
 msgid "Remove this filter?"
@@ -135,13 +135,9 @@ msgid "Cancel"
 msgstr "Elimina"
 
 #: static/js/global.js:314
-#, fuzzy
 msgid "Internal error"
 msgstr "Errore interno"
 
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Ricerca ..."
-
-#~ msgid "Message deleted"
-#~ msgstr "Messaggio eliminato"
