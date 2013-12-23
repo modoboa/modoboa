@@ -2,8 +2,11 @@
 import sys
 import os
 import time
+from lxml import etree
+from lxml import objectify
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import parameters
+from modoboa.lib.sysutils import exec_cmd
 
 periods = [{"name": "day", "label": ugettext_lazy("Day")},
            {"name": "week", "label": ugettext_lazy("Week")},
@@ -84,6 +87,39 @@ class Grapher(object):
 
         if not os.path.exists(path):
             print "[graph] Impossible to create %s graph" % path
+
+    def export(self, target, suffix, start, end, graph_tpl):
+        rrdfile = "%s/%s.rrd" % (self.rrd_rootdir, target)
+        if not os.path.exists(rrdfile):
+            print 'pouet'
+            return []
+        start = str(start)
+        end = str(end)
+        defs = []
+        result = []
+        for v, d in graph_tpl.vars.iteritems():
+            result += [{'key': d['legend'].encode('utf-8'), 'values': [], 'color': d['color']}]
+            defs += [str('DEF:%s=%s:%s:%s' % (v, rrdfile, v, graph_tpl.cf)),
+                     str('CDEF:%spm=%s,60,*' % (v, v)),
+                     str('XPORT:%spm:"%s"' % (v, d['legend'].encode('utf-8')))]
+        
+        cmd = "rrdtool xport --start %s --end %s " % (start, end)
+        cmd += " ".join(defs)
+        code, output = exec_cmd(cmd)
+        tree = etree.fromstring(output)
+        start = int(tree.xpath('/xport/meta/start')[0].text)
+        end = int(tree.xpath('/xport/meta/end')[0].text)
+        step = int(tree.xpath('/xport/meta/step')[0].text)
+        for pos, r in enumerate(tree.xpath('/xport/data/row')):
+            ts = int(r.find('t').text) - start
+            for vindex, value in enumerate(r.findall('v')):
+                if value.text == 'NaN':
+                    result[vindex]['values'].append({'x': pos, 'y': 0})
+                else:
+                    result[vindex]['values'].append(
+                        {'x': pos, 'y': float(value.text)}
+                    )
+        return result
 
     def make_defaults(self, target, graph_tpl):
         end = "%d" % int(time.mktime(time.localtime()))

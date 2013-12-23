@@ -6,7 +6,7 @@ Stats.prototype = {
     constructor: Stats,
 
     defaults: {
-        deflocation: "graphs/",
+        deflocation: "d3graphs/",
         language: "en"
     },
 
@@ -80,9 +80,26 @@ Stats.prototype = {
     },
 
     graphs_cb: function(data) {
-        if (data.content) {
+        /*if (data.content) {
             $(".tab-pane.active").html(data.content);
-        }
+        }*/
+        var $container = $("#graphs_mailtraffic");
+        $.each(data.graphs, function(id, data) {
+            var chart = nv.models.stackedAreaChart();
+            //var $svg = $("<svg />", {id: id});
+
+            //$container.append($svg);
+            chart.xAxis.axisLabel('Time (s)')
+                .tickFormat(d3.format(',r'));
+            chart.yAxis.axisLabel('Mail')
+                .tickFormat(d3.format('.02f'));
+            d3.select('#' + id + ' svg')
+                .datum(data)
+                .transition().duration(500)
+                .call(chart);
+
+            //nv.utils.windowResize(chart.update);
+        });
     },
 
     search_domain: function(value) {
