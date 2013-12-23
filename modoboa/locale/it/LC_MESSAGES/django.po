@@ -1373,6 +1373,7 @@ msgstr ""
 "<ul>\n"
 "  <li><em>dominio; nome; quota; abilitato</em></li>\n"
 "  <li><em>aliasdominio; nome; dominio di destinazione; abilitato<em></li>\n"
+"  %s\n"
 "</ul>\n"
 "<p>Il primo elemento di ogni riga è obbligatorio e deve essere uguale a quello dei valori precedenti.</p>\n"
 "\n"
@@ -1950,7 +1951,7 @@ msgstr ""
 "Al momento non posso rispondere. Risponderò al mio ritorno.\n"
 "\n"
 "Distinti saluti,\n"
-"%(name)s"
+"%(name)s\n"
 
 #: extensions/postfix_autoreply/app_settings.py:36
 #, python-format
