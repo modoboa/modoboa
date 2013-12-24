@@ -443,15 +443,9 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   virtual_transport = dovecot
   dovecot_destination_recipient_limit = 1
 
-  virtual_minimum_uid = <vmail user id>
-  virtual_gid_maps = static:<vmail group id>
-  virtual_uid_maps = static:<vmail user id>
-  virtual_mailbox_base = /var/vmail
-
   relay_domains =
   virtual_mailbox_domains = <driver>:/etc/postfix/sql-domains.cf
   virtual_alias_domains = <driver>:/etc/postfix/sql-domain-aliases.cf
-  virtual_mailbox_maps = <driver>:/etc/postfix/sql-mailboxes.cf
   virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf,
         <driver>:/etc/postfix/sql-domain-aliases-mailboxes.cf,
         <driver>:/etc/postfix/sql-catchall-aliases.cf

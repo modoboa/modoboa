@@ -50,8 +50,8 @@ Finally, follow the common procedure::
 
 .. _1.1.0:
 
-1.1.0: FIXME
-============
+1.1.0: relay domains and better passwords encryption
+====================================================
 
 Due to code refactoring, some modifications need to be done into
 :file:`settings.py`:

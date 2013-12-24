@@ -104,13 +104,6 @@ class DomainsAliasesMap(MapFile):
     sqlite = "SELECT dom.name FROM admin_domain dom INNER JOIN admin_domainalias domal ON dom.id=domal.target_id WHERE domal.name='%s' AND domal.enabled=1 AND dom.enabled=1"
 
 
-class MailboxesMap(MapFile):
-    filename = 'sql-mailboxes.cf'
-    mysql = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
-    postgres = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON mb.user_id=u.id WHERE dom.enabled AND dom.name='%d' AND u.is_active AND mb.address='%u'"
-    sqlite = "SELECT 1 FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user user ON mb.user_id=user.id WHERE dom.enabled=1 AND dom.name='%d' AND user.is_active=1 AND mb.address='%u'"
-
-
 class AliasesMap(MapFile):
     filename = 'sql-aliases.cf'
     mysql = "(SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.id IN (SELECT al_mb.mailbox_id FROM admin_alias_mboxes al_mb INNER JOIN admin_alias al ON al_mb.alias_id=al.id INNER JOIN admin_domain dom ON al.domain_id=dom.id WHERE dom.name='%d' AND dom.enabled=1 AND al.address='%u' AND al.enabled=1)) UNION (SELECT concat(al.address, '@', dom.name) FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id WHERE al.id IN (SELECT al_al.to_alias_id FROM admin_alias_aliases al_al INNER JOIN admin_alias al ON al_al.from_alias_id=al.id INNER JOIN admin_domain dom ON al.domain_id=dom.id WHERE dom.name='%d' AND dom.enabled=1 AND al.address='%u' AND al.enabled=1)) UNION (SELECT al.extmboxes FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id WHERE dom.name='%d' AND dom.enabled=1 AND al.address='%u' AND al.enabled=1 AND al.extmboxes<>'')"
@@ -141,7 +134,7 @@ class MaintainMap(MapFile):
 
 class TransportMap(MapFile):
     category = "autoreply"
-    filename = 'sql-transport.cf'
+    filename = 'sql-autoreplies-transport.cf'
     mysql = "SELECT method FROM postfix_autoreply_transport WHERE domain='%s'"
     postgres = "SELECT method FROM postfix_autoreply_transport WHERE domain='%s'"
     sqlite = "SELECT method FROM postfix_autoreply_transport WHERE domain='%s'"
@@ -155,20 +148,28 @@ class AutoRepliesMap(MapFile):
     sqlite = "SELECT full_address, autoreply_address FROM postfix_autoreply_alias WHERE full_address='%s'"
 
 
+class RelayDomainsMap(MapFile):
+    category = "relaydomains"
+    filename = "sql-relaydomains.cf"
+    mysql = "SELECT name FROM postfix_relay_domains_domain WHERE name='%s' AND enabled=1"
+    postgres = "SELECT name FROM postfix_relay_domains_domain WHERE name='%s' AND enabled"
+    sqlite = "SELECT name FROM postfix_relay_domains_domain WHERE name='%s' AND enabled=1"
+
+
 class RelayDomainsTransportMap(MapFile):
     category = "relaydomains"
     filename = "sql-relaydomains-transport.cf"
-    mysql = "SELECT CONCAT(srv.name, ':') FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled=1 AND rdom.name='%s'"
-    postgres = "SELECT srv.name || ':' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled AND rdom.name='%s'"
-    sqlite = "SELECT srv.name || ':' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled=1 AND rdom.name='%s'"
+    mysql = "SELECT CONCAT(srv.name, ':[', rdom.target_host, ']') FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled=1 AND rdom.name='%s'"
+    postgres = "SELECT srv.name || ':[' || rdom.target_host || ']' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled AND rdom.name='%s'"
+    sqlite = "SELECT srv.name || ':[' || rdom.target_host || ']' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id WHERE rdom.enabled=1 AND rdom.name='%s'"
 
 
 class RelayDomainAliasesTransportMap(MapFile):
     category = "relaydomains"
     filename = "sql-relaydomain-aliases-transport.cf"
-    mysql = "SELECT CONCAT(srv.name, ':') FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relay_domains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled=1 AND rdomalias.enabled=1 AND rdomalias.name='%s'"
-    postgres = "SELECT srv.name || ':' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relay_domains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled AND rdomalias.enabled AND rdomalias.name='%s'"
-    sqlite = "SELECT srv.name || ':' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relay_domains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled=1 AND rdomalias.enabled=1 AND rdomalias.name='%s'"
+    mysql = "SELECT CONCAT(srv.name, ':[', rdom.target_host, ']') FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relay_domains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled=1 AND rdomalias.enabled=1 AND rdomalias.name='%s'"
+    postgres = "SELECT srv.name || ':[' || rdom.target_host || ']' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relay_domains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled AND rdomalias.enabled AND rdomalias.name='%s'"
+    sqlite = "SELECT srv.name || ':[' || rdom.target_host || ']' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relay_domains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled=1 AND rdomalias.enabled=1 AND rdomalias.name='%s'"
 
 
 class PostfixMapsCommand(Command):
