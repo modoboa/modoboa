@@ -63,14 +63,13 @@ lines inside::
       <driver>:/etc/postfix/maps/sql-relaydomains-transport.cf
       <driver>:/etc/postfix/maps/sql-relaydomain-aliases-transport.cf
 
-Replace ``<driver>`` by the name of the database you use.
-
-Ensure that ``smtpd_recipient_restrictions`` contains at least the
-following options::
-
   smtpd_recipient_restrictions =
       permit_mynetworks
       reject_unauth_destination
+      check_recipient_access 
+          <driver>:/etc/postfix/maps/sql-relay-recipient-verification.cf
+
+Replace ``<driver>`` by the name of the database you use.
 
 Reload postfix.
 
