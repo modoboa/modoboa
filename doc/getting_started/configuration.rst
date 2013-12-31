@@ -242,6 +242,17 @@ Modoboa should connect to your LDAP server. They are described just below:
 |                    |server is an Active              |                    |
 |                    |Directory one                    |                    |
 +--------------------+---------------------------------+--------------------+
+|Administrator groups|Members of those LDAP Posix      |                    |
+|                    |groups will be created ad domain |                    |
+|                    |administrators. Use ';'          |                    |
+|                    |characters to separate groups.   |                    |
++--------------------+---------------------------------+--------------------+
+|Groups search base  |The distinguished name of the    |                    |
+|                    |search base used to find groups  |                    |
+|                    |                                 |                    |
+|                    |                                 |                    |
++--------------------+---------------------------------+--------------------+
+
 
 If you need additional parameters, you will find a detailled
 documentation `here <http://packages.python.org/django-auth-ldap/>`_.
@@ -250,12 +261,14 @@ Once the authentication is properly configured, the users defined in
 your LDAP directory will be able to connect to Modoboa, the associated
 domain and mailboxes will be automatically created if needed.
 
-.. note::
+The first time a user connects to Modoboa, a local account is created
+if the LDAP username is a valid email address. By default, this
+account belongs to the *SimpleUsers* group and it has a mailbox.
 
-   Users created automatically from an LDAP directory belongs to the
-   *SimpleUsers* group and have a mailbox. To do so, usernames have to
-   be valid email addresses. If not, LDAP users won't be able to
-   access Modoboa.
+To automatically create domain administrators, you can use the
+**Administrator groups** setting. If a LDAP user belongs to one the
+listed groups, its local account will belong to the *DomainAdmins*
+group. In this case, the username is not necessarily an email address.
 
 Users will also be able to update their LDAP password directly from
 Modoboa.
