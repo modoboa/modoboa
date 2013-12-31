@@ -172,7 +172,7 @@ class RelayDomainAliasesTransportMap(MapFile):
     sqlite = "SELECT srv.name || ':[' || rdom.target_host || ']' FROM postfix_relay_domains_service AS srv INNER JOIN postfix_relay_domains_relaydomain AS rdom ON rdom.service_id=srv.id INNER JOIN postfix_relay_domains_relaydomainalias AS rdomalias ON rdom.id=rdomalias.target_id WHERE rdom.enabled=1 AND rdomalias.enabled=1 AND rdomalias.name='%s'"
 
 
-class RelayRecipientVerification(Mapfile):
+class RelayRecipientVerification(MapFile):
     category = "relaydomains"
     filename = "sql-relay-recipient-verification.cf"
     mysql = "SELECT 'reject_unverified_recipient' FROM postfix_relay_domains_relaydomain WHERE verify_recipients=1 AND name='%d'"
