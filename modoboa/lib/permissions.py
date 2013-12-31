@@ -56,21 +56,18 @@ def grant_access_to_object(user, obj, is_owner=False):
     else:
         return
 
-    try:
-        ObjectAccess.objects.create(user=user, content_type=ct, 
-                                    object_id=obj.id, is_owner=is_owner)
-        if is_owner:
-            from modoboa.core.models import User
-            for su in User.objects.filter(is_superuser=True):
-                if su == user:
-                    continue
-                try:
-                    ObjectAccess.objects.create(user=su, content_type=ct, object_id=obj.id)
-                except IntegrityError:
-                    pass
-
-    except IntegrityError, e:
-        raise ModoboaException(_("Failed to grant access (%s)" % str(e)))
+    ObjectAccess.objects.create(
+        user=user, content_type=ct, object_id=obj.id, is_owner=is_owner
+    )
+    if not is_owner:
+        return
+    from modoboa.core.models import User
+    for su in User.objects.filter(is_superuser=True):
+        if su == user:
+            continue
+        ObjectAccess.objects.get_or_create(
+            user=su, content_type=ct, object_id=obj.id
+        )
 
 
 def grant_access_to_objects(user, objects, ct):

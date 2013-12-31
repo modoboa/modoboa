@@ -122,7 +122,7 @@ def importdata(request, formclass=ImportDataForm):
                         fct = fct[0]
                     try:
                         fct(request.user, row, form.cleaned_data)
-                    except IntegrityError, e:
+                    except Conflict:
                         if form.cleaned_data["continue_if_exists"]:
                             continue
                         raise Conflict(

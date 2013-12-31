@@ -38,12 +38,13 @@ class DomainAlias(AdminObject):
         if len(row) < 4:
             raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
-        try:
-            Domain.objects.get(name=self.name)
-        except Domain.DoesNotExist:
-            pass
-        else:
-            raise Conflict(_("A domain %s already exists" % self.name))
+        for model in [DomainAlias, Domain]:
+            try:
+                model.objects.get(name=self.name)
+            except model.DoesNotExist:
+                pass
+            else:
+                raise Conflict
         domname = row[2].strip()
         try:
             self.target = Domain.objects.get(name=domname)

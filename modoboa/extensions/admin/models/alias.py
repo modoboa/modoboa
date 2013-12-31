@@ -2,7 +2,9 @@ import reversion
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.exceptions import PermDeniedException, BadRequest
+from modoboa.lib.exceptions import (
+    PermDeniedException, BadRequest, Conflict
+)
 from .base import AdminObject
 from .domain import Domain
 from .mailbox import Mailbox
@@ -155,6 +157,12 @@ class Alias(AdminObject):
             raise BadRequest(_("Domain '%s' does not exist" % domname))
         if not user.can_access(domain):
             raise PermDeniedException
+        try:
+            Alias.objects.get(address=localpart, domain__name=domain)
+        except Alias.DoesNotExist:
+            pass
+        else:
+            raise Conflict
         self.address = localpart
         self.domain = domain
         self.enabled = (row[2].strip() == 'True')
