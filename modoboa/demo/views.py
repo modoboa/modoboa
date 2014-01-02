@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from modoboa.lib.webutils import render_to_json_response
 from modoboa.lib.emailutils import sendmail_simple, sendmail_fromfile
-from modoboa.lib.decorators import needs_mailbox
+from modoboa.extensions.admin.lib import needs_mailbox
 
 
 @login_required
