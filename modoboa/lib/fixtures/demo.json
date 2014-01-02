@@ -24,14 +24,6 @@
         }
     },
     {
-        "pk": 6,
-        "model": "lib.parameter",
-        "fields": {
-            "name": "core.SECRET_KEY",
-            "value": ""
-        }
-    },
-    {
         "pk": 8,
         "model": "lib.parameter",
         "fields": {
