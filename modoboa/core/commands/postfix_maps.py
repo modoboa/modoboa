@@ -151,9 +151,9 @@ class AutoRepliesMap(MapFile):
 class RelayDomainsMap(MapFile):
     category = "relaydomains"
     filename = "sql-relaydomains.cf"
-    mysql = "SELECT name FROM postfix_relay_domains_domain WHERE name='%s' AND enabled=1"
-    postgres = "SELECT name FROM postfix_relay_domains_domain WHERE name='%s' AND enabled"
-    sqlite = "SELECT name FROM postfix_relay_domains_domain WHERE name='%s' AND enabled=1"
+    mysql = "SELECT name FROM postfix_relay_domains_relaydomain WHERE name='%s' AND enabled=1"
+    postgres = "SELECT name FROM postfix_relay_domains_relaydomain WHERE name='%s' AND enabled"
+    sqlite = "SELECT name FROM postfix_relay_domains_relaydomain WHERE name='%s' AND enabled=1"
 
 
 class RelayDomainsTransportMap(MapFile):
