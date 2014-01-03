@@ -44,8 +44,11 @@ Then, edit the ``inbox`` namespace and add the following lines::
     special_use = \Trash
   }
 
-It ensures all the special mailboxes will be automaticaly created for
-new accounts.
+With dovecot 2.1+, it ensures all the special mailboxes will be
+automaticaly created for new accounts.
+
+For dovecot 2.0 and older, use the `autocreate
+<http://wiki2.dovecot.org/Plugins/Autocreate>`_ plugin.
 
 .. _fs_operations:
 
