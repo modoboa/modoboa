@@ -12,7 +12,7 @@ from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
 
 
 def send_autoreply(sender, mailbox, armessage):
-    if armessage.fromdate < timezone.now():
+    if armessage.fromdate > timezone.now():
         return
     if armessage.untildate is not None \
         and armessage.untildate < timezone.now():
