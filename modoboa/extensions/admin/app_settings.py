@@ -47,6 +47,7 @@ class AdminParametersForm(parameters.AdminParametersForm):
     def __init__(self, *args, **kwargs):
         super(AdminParametersForm, self).__init__(*args, **kwargs)
         hide_fields = False
+        dpath = None
         code, output = exec_cmd("which dovecot")
         known_paths = ("/usr/sbin/dovecot", "/usr/local/sbin/dovecot")
         if not code:
