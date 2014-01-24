@@ -280,10 +280,9 @@ class LogParser(object):
             return
         (line_id, line_log) = m.groups()
         if line_id == "NOQUEUE":
-            self._dprint("NOQUEUE found")
-            addrto = re.search("to=<([^@]+)@([>]+)>", line_log)
-            if addrto and addrto.group(2) in self.domains:
-                self.inc_counter(addrto.group(2), 'reject')
+            m = re.match("reject: .*from=<.*> to=<[^@]+@([^>]+)>", line_log)
+            if addrto and addrto.group(1) in self.domains:
+                self.inc_counter(addrto.group(1), 'reject')
             return
         m = re.search("message-id=<([^>]*)>", line_log)
         if m is not None:
