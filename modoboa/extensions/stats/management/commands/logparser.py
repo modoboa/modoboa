@@ -39,18 +39,20 @@ variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
 
 
 class LogParser(object):
+
     def __init__(self, options, workdir, year=None):
+        """Constructor
+        """
         self.logfile = options["logfile"]
+        self.debug = options["debug"]
+        self.verbose = options["verbose"]
         try:
             self.f = open(self.logfile)
-        except IOError, errno:
-            if options["debug"]:
-                print "%s" % errno
+        except IOError as errno:
+            self._dprint("%s" % errno)
             sys.exit(1)
         self.workdir = workdir
         self.__year = year
-        self.debug = options["debug"]
-        self.verbose = options["verbose"]
         self.cfs = ['AVERAGE', 'MAX']
 
         curtime = time.localtime()
@@ -59,16 +61,74 @@ class LogParser(object):
         self.curmonth = curtime.tm_mon
 
         self.data = {}
-        domains = Domain.objects.all()
         self.domains = []
-        for dom in domains:
+        for dom in Domain.objects.all():
             self.domains += [str(dom.name)]
             self.data[str(dom.name)] = {}
         self.data["global"] = {}
 
         self.workdict = {}
         self.lupdates = {}
-        self.line_expr = re.compile("(\w+)\s+(\d+)\s+(\d+):(\d+):(\d+)\s+([-\w]+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
+        self._s_date_expr = \
+            re.compile(r"(?P<month>\w+)\s+(?P<day>\d+)\s+(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)(?P<eol>.*)")
+        self._hp_date_expr = \
+            re.compile(r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)T(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)\.\d+\+\d+:\d+(?P<eol>.*)")
+        self.date_expr = None
+        self.line_expr = \
+            re.compile(r"\s+([-\w]+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
+        self._id_expr = re.compile(r"(\w+): (.*)")
+        self._prev_se = -1
+        self._prev_mi = -1
+        self._prev_ho = -1
+        self.cur_t = 0
+
+    def _dprint(self, msg):
+        """Print a debug message if required.
+
+        :param str msg: debug message
+        """
+        if not self.debug:
+            return
+        print msg
+
+    def _parse_date(self, line):
+        """Try to match a date inside :kw:`line` and to convert it to
+        a timestamp.
+
+        We try different date format until we find valid one. We then
+        store it for future use.
+
+        :param str line: a log entry
+        :return: the remaining part of the line or None
+        """
+        match = None
+        if self.date_expr is None:
+            for expr in [self._s_date_expr, self._hp_date_expr]:
+                match = expr.match(line)
+                if match is not None:
+                    self.date_expr = expr
+                    break
+        else:
+            match = self.date_expr.match(line)
+        if match is None:
+            return None
+        ho = match.group("hour")
+        mi = match.group("min")
+        se = match.group("sec")
+        se = int(int(se) / rrdstep)  # rrd step is one-minute => se = 0
+        if self._prev_se != se or self._prev_mi != mi or self._prev_ho != ho:
+            mo = match.group("month")
+            da = match.group("day")
+            try:
+                ye = match.group("year")
+            except IndexError:
+                ye = self.year(mo)
+            self.cur_t = str2Time(ye, mo, da, ho, mi, se)
+            self.cur_t = self.cur_t - self.cur_t % rrdstep
+            self._prev_mi = mi
+            self._prev_ho = ho
+            self._prev_se = se
+        return match.group('eol')
 
     def init_rrd(self, fname, m):
         """init_rrd
@@ -119,8 +179,7 @@ class LogParser(object):
         m = t - (t % rrdstep)
         if not os.path.exists(fname):
             self.lupdates[fname] = self.init_rrd(fname, m)
-            if self.debug:
-                print "[rrd] create new RRD file %s" % fname
+            self._dprint("[rrd] create new RRD file %s" % fname)
         else:
             if not fname in self.lupdates:
                 self.lupdates[fname] = rrdtool.last(str(fname))
@@ -164,21 +223,21 @@ class LogParser(object):
         self.lupdates[fname] = m
         return True
 
-    def initcounters(self, dom, cur_t):
+    def initcounters(self, dom):
         init = {}
         for v in variables:
             init[v] = 0
-        self.data[dom][cur_t] = init
+        self.data[dom][self.cur_t] = init
 
-    def inc_counter(self, dom, cur_t, counter, val=1):
+    def inc_counter(self, dom, counter, val=1):
         if dom is not None and dom in self.domains:
-            if not cur_t in self.data[dom]:
-                self.initcounters(dom, cur_t)
-            self.data[dom][cur_t][counter] += val
+            if not self.cur_t in self.data[dom]:
+                self.initcounters(dom)
+            self.data[dom][self.cur_t][counter] += val
 
-        if not cur_t in self.data["global"]:
-            self.initcounters("global", cur_t)
-        self.data["global"][cur_t][counter] += val
+        if not self.cur_t in self.data["global"]:
+            self.initcounters("global")
+        self.data["global"][self.cur_t][counter] += val
 
     def year(self, month):
         """Return the appropriate year
@@ -203,82 +262,76 @@ class LogParser(object):
             return self.__year - 1
         return self.__year
 
-    def process(self):
-        id_expr = re.compile("([0-9A-F]+): (.*)")
-        prev_se = -1
-        prev_mi = -1
-        prev_ho = -1
-        for line in self.f.readlines():
-            m = self.line_expr.match(line)
-            if not m:
-                continue
-            (mo, da, ho, mi, se, host, prog, pid, log) = m.groups()
-            se = int(int(se) / rrdstep)  # rrd step is one-minute => se = 0
+    def _parse_line(self, line):
+        """Parse a single log line.
 
-            if prev_se != se or prev_mi != mi or prev_ho != ho:
-                cur_t = str2Time(self.year(mo), mo, da, ho, mi, se)
-                cur_t = cur_t - cur_t % rrdstep
-                prev_mi = mi
-                prev_ho = ho
-                prev_se = se
-            m = id_expr.match(log)
-            if m:
-                (line_id, line_log) = m.groups()
+        :param str line: log line
+        """
+        line = self._parse_date(line)
+        if line is None:
+            return
+        m = self.line_expr.match(line)
+        if not m:
+            return
+        host, prog, pid, log = m.groups()
+        m = self._id_expr.match(log)
+        if m is None:
+            self._dprint("Unknown line format: %s" % log)
+            return
+        (line_id, line_log) = m.groups()
+        if line_id == "NOQUEUE":
+            addrto = re.match("reject: .*from=<.*> to=<[^@]+@([^>]+)>", line_log)
+            if addrto and addrto.group(1) in self.domains:
+                self.inc_counter(addrto.group(1), 'reject')
+            return
+        m = re.search("message-id=<([^>]*)>", line_log)
+        if m is not None:
+            self.workdict[line_id] = {'from': m.group(1), 'size': 0}
+            return
+        m = re.search("from=<([^>]*)>, size=(\d+)", line_log)
+        if m is not None:
+            self.workdict[line_id] = {
+                'from': m.group(1), 'size': string.atoi(m.group(2))
+            }
+            return
 
-                m = re.search("message-id=<([^>]*)>", line_log)
-                if m:
-                    self.workdict[line_id] = {'from': m.group(1), 'size': 0}
-                    continue
-
-                m = re.search("from=<([^>]*)>, size=(\d+)", line_log)
-                if m:
-                    self.workdict[line_id] = {'from': m.group(1),
-                                              'size': string.atoi(m.group(2))}
-                    continue
-
-                m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
-                if m:
-                    if not line_id in self.workdict:
-                        if self.debug:
-                            print "Inconsistent mail (%s: %s), skipping" % (line_id, m.group(1))
-                        continue
-                    if not m.group(2) in variables:
-                        if self.debug:
-                            print "Unsupported status %s, skipping" % m.group(2)
-                        continue
-
-                    addrfrom = re.match("([^@]+)@(.+)", self.workdict[line_id]['from'])
-                    if addrfrom is not None and addrfrom.group(2) in self.domains:
-                        self.inc_counter(addrfrom.group(2), cur_t, 'sent')
-                        self.inc_counter(addrfrom.group(2), cur_t, 'size_sent',
-                                         self.workdict[line_id]['size'])
-                    addrto = re.match("([^@]+)@(.+)", m.group(1))
-                    domname = addrto.group(2) if addrto is not None else None
-                    if m.group(2) == "sent":
-                        self.inc_counter(addrto.group(2), cur_t, 'recv')
-                        self.inc_counter(addrto.group(2), cur_t, 'size_recv',
-                                         self.workdict[line_id]['size'])
-                    else:
-                        self.inc_counter(domname, cur_t, m.group(2))
-                    continue
-
-                if self.debug:
-                    print "Unknown line format: %s" % line_log
+        m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
+        if m is not None:
+            if not line_id in self.workdict:
+                self._dprint("Inconsistent mail (%s: %s), skipping" \
+                                 % (line_id, m.group(1)))
+                return
+            if not m.group(2) in variables:
+                self._dprint("Unsupported status %s, skipping" % m.group(2))
+                return
+            addrfrom = re.match("([^@]+)@(.+)", self.workdict[line_id]['from'])
+            if addrfrom is not None and addrfrom.group(2) in self.domains:
+                self.inc_counter(addrfrom.group(2), 'sent')
+                self.inc_counter(addrfrom.group(2), 'size_sent',
+                                 self.workdict[line_id]['size'])
+            addrto = re.match("([^@]+)@(.+)", m.group(1))
+            domname = addrto.group(2) if addrto is not None else None
+            if m.group(2) == "sent":
+                self.inc_counter(addrto.group(2), 'recv')
+                self.inc_counter(addrto.group(2), 'size_recv',
+                                 self.workdict[line_id]['size'])
             else:
-                m = re.match("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
-                if m:
-                    addrto = re.match("([^@]+)@(.+)", m.group(2))
-                    if addrto and addrto.group(2) in self.domains:
-                        self.inc_counter(addrto.group(2), cur_t, 'reject')
-                    continue
-                if self.debug:
-                    print "Unknown line format: %s" % log
+                self.inc_counter(domname, m.group(2))
+            return
+        self._dprint("Unknown line format: %s" % line_log)
 
-        # Sort everything by time
+    def process(self):
+        """Process the log file.
+
+        We parse it and then generate standard graphics (day, week,
+        month).
+        """
+        for line in self.f.readlines():
+            self._parse_line(line)
+
         G = Grapher()
         for dom, data in self.data.iteritems():
-            if self.debug:
-                print "[rrd] dealing with domain %s" % dom
+            self._dprint("[rrd] dealing with domain %s" % dom)
             for t in sorted(data.keys()):
                 self.update_rrd(dom, t)
 

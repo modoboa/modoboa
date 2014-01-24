@@ -12,7 +12,6 @@ from modoboa.lib.webutils import NavigationParameters
 from modoboa.extensions.amavis.models import Users, Policy
 
 
-
 def selfservice(ssfunc=None):
     """Decorator used to expose views to the 'self-service' feature
 
@@ -121,7 +120,7 @@ def create_user_and_policy(name):
 
     :param str name: name
     """
-    policy = Policy.objects.create(policy_name=name)
+    policy = Policy.objects.create(policy_name=name[:32])
     Users.objects.create(
         email="@%s" % name, fullname=name,
         priority=7, policy=policy
@@ -134,7 +133,7 @@ def create_user_and_use_policy(name, policy_name):
     :param str name: user record name
     :param str policy_name: policy name
     """
-    policy = Policy.objects.get(policy_name=policy_name)
+    policy = Policy.objects.get(policy_name=policy_name[:32])
     Users.objects.create(
         email="@%s" % name, fullname=name,
         priority=7, policy=policy
@@ -152,7 +151,7 @@ def update_user_and_policy(oldname, newname):
     u = Users.objects.get(email="@%s" % oldname)
     u.email = "@%s" % newname
     u.fullname = newname
-    u.policy.policy_name = newname
+    u.policy.policy_name = newname[:32]
     u.policy.save()
     u.save()
 

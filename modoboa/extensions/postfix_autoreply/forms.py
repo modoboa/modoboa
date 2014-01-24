@@ -30,9 +30,12 @@ class ARmessageForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ARmessageForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['subject', 'content', 'fromdate', 'untildate', 'enabled']
+        self.fields.keyOrder = [
+            'subject', 'content', 'fromdate', 'untildate', 'enabled'
+        ]
         if 'instance' in kwargs and kwargs['instance'] is not None:
-            self.fields['fromdate'].initial = kwargs['instance'].fromdate
+            self.fields['fromdate'].initial = \
+                kwargs['instance'].fromdate.replace(second=0, microsecond=0)
             self.fields['untildate'].initial = kwargs['instance'].untildate
 
     def clean(self):
@@ -46,7 +49,7 @@ class ARmessageForm(forms.ModelForm):
             raise forms.ValidationError(self._errors)
         if self.cleaned_data["fromdate"] is not None:
             if self.cleaned_data["fromdate"] < timezone.now():
-                self._errrors["fromdate"] = self.error_class([_("This date is over")])
+                self._errors["fromdate"] = self.error_class([_("This date is over")])
                 del self.cleaned_data['fromdate']
         else:
             self.cleaned_data['fromdate'] = timezone.now()
@@ -54,7 +57,8 @@ class ARmessageForm(forms.ModelForm):
             if self.cleaned_data["untildate"] < timezone.now():
                 self._errors["untildate"] = self.error_class([_("This date is over")])
                 del self.cleaned_data['untildate']
-            elif self.cleaned_data['untildate'] < self.cleaned_data['fromdate']:
+            elif 'fromdate' in self.cleaned_data and \
+                    self.cleaned_data['untildate'] < self.cleaned_data['fromdate']:
                 self._errors["untildate"] = \
                     self.error_class([_("Must be greater than start date")])
                 del self.cleaned_data['untildate']

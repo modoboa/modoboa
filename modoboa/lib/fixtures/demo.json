@@ -3,7 +3,7 @@
         "pk": 2,
         "model": "lib.parameter",
         "fields": {
-            "name": "admin.PASSWORD_SCHEME",
+            "name": "core.PASSWORD_SCHEME",
             "value": "crypt"
         }
     },
@@ -11,7 +11,7 @@
         "pk": 3,
         "model": "lib.parameter",
         "fields": {
-            "name": "admin.ITEMS_PER_PAGE",
+            "name": "core.ITEMS_PER_PAGE",
             "value": "30"
         }
     },
@@ -19,23 +19,15 @@
         "pk": 4,
         "model": "lib.parameter",
         "fields": {
-            "name": "general.DEFAULT_TOP_REDIRECTION",
+            "name": "core.DEFAULT_TOP_REDIRECTION",
             "value": "user"
-        }
-    },
-    {
-        "pk": 6,
-        "model": "lib.parameter",
-        "fields": {
-            "name": "general.SECRET_KEY",
-            "value": "abcdefghijklmnop"
         }
     },
     {
         "pk": 8,
         "model": "lib.parameter",
         "fields": {
-            "name": "admin.AUTHENTICATION_TYPE",
+            "name": "core.AUTHENTICATION_TYPE",
             "value": "local"
         }
     },

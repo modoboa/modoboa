@@ -20,7 +20,7 @@ def get_password_hasher(scheme):
     """
     try:
         scheme = scheme.replace('-', '')
-        hasher = globals()['%sHasher' % scheme]
-    except AttributeError:
+        hasher = globals()['%sHasher' % scheme.upper()]
+    except KeyError:
         hasher = PLAINHasher
     return hasher

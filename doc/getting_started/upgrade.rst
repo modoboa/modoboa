@@ -50,8 +50,8 @@ Finally, follow the common procedure::
 
 .. _1.1.0:
 
-1.1.0: FIXME
-============
+1.1.0: relay domains and better passwords encryption
+====================================================
 
 Due to code refactoring, some modifications need to be done into
 :file:`settings.py`:
@@ -72,7 +72,9 @@ Due to code refactoring, some modifications need to be done into
       'modoboa.extensions.sievefilters',
     )
 
-#. Add ``'modoboa.extensions.postfix_relay_domains'`` to ``MODOBOA_APPS``
+#. Add ``'modoboa.extensions.postfix_relay_domains'`` to
+   ``MODOBOA_APPS``, just before
+   ``'modoboa.extensions.limits'``
 
 #. ``AUTH_USER_MODEL`` must be set to ``core.User``
 
@@ -81,6 +83,7 @@ Due to code refactoring, some modifications need to be done into
 
 Then, run the following commands to migrate your installation::
 
+  $ python manage.py syncdb
   $ python manage.py migrate core 0001 --fake
   $ python manage.py migrate
   $ python manage.py collectstatic

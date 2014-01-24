@@ -1,8 +1,10 @@
 from django import forms
+from django.conf import settings
 from django.utils.translation import ugettext_lazy
 from modoboa.lib.formutils import YesNoField, SeparatorField
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib import parameters
+import os
 
 
 class AdminParametersForm(parameters.AdminParametersForm):
@@ -46,9 +48,19 @@ class AdminParametersForm(parameters.AdminParametersForm):
     def __init__(self, *args, **kwargs):
         super(AdminParametersForm, self).__init__(*args, **kwargs)
         hide_fields = False
+        dpath = None
         code, output = exec_cmd("which dovecot")
         if not code:
             dpath = output.strip()
+        else:
+            known_paths = getattr(
+                settings, "DOVECOT_LOOKUP_PATH",
+                ("/usr/sbin/dovecot", "/usr/local/sbin/dovecot")
+            )
+            for fpath in known_paths:
+                if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
+                    dpath = fpath
+        if dpath:
             try:
                 code, version = exec_cmd("%s --version" % dpath)
             except OSError:

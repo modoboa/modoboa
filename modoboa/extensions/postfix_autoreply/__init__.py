@@ -27,6 +27,8 @@ class PostfixAutoreply(ModoExtension):
 
     def init(self):
         from modoboa.extensions.admin.models import Domain
+        from modoboa.extensions.postfix_autoreply.general_callbacks \
+            import onDomainCreated, onMailboxCreated
 
         for dom in Domain.objects.all():
             try:

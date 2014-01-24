@@ -83,7 +83,7 @@ class Msgrcpt(models.Model):
 
 
 class Policy(models.Model):
-    policy_name = models.CharField(max_length=96, blank=True)
+    policy_name = models.CharField(max_length=32, blank=True)
     virus_lover = models.CharField(max_length=3, blank=True, null=True)
     spam_lover = models.CharField(max_length=3, blank=True, null=True)
     unchecked_lover = models.CharField(max_length=3, blank=True, null=True)

@@ -4,7 +4,7 @@ from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.contrib.contenttypes import generic
 from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import BadRequest
+from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.core.models import User, ObjectAccess
 from .base import AdminObject
 
@@ -131,9 +131,24 @@ class Domain(AdminObject):
         return self.name
 
     def from_csv(self, user, row):
+        """Create a new domain from a CSV entry.
+
+        The expected fields order is the following::
+
+          "domain", name, quota, enabled
+
+        :param ``core.User`` user: user creating the domain
+        :param str row: a list containing domain's definition
+        """
         if len(row) < 4:
             raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
+        try:
+            Domain.objects.get(name=self.name)
+        except Domain.DoesNotExist:
+            pass
+        else:
+            raise Conflict
         try:
             self.quota = int(row[2].strip())
         except ValueError:

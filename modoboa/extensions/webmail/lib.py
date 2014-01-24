@@ -582,8 +582,8 @@ def save_attachment(f):
 def clean_attachments(attlist):
     """Remove all attachments from the filesystem
 
-    :param attlist: a list of 2-uple. Each element must contain the following information :
-                    (random name, real name).
+    :param attlist: a list of 2-uple. Each element must contain the
+                    following information : (random name, real name).
     """
     for att in attlist:
         fullpath = os.path.join(settings.MEDIA_ROOT, "webmail", att["tmpname"])

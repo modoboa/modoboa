@@ -49,7 +49,7 @@ domainalias;test.alias;test.com;True
                 "sourcefile": f
             }
         )
-        self.assertIn('A domain test.alias already exists', resp.content)
+        self.assertIn('Object already exists: domainalias', resp.content)
 
     def test_identities_import(self):
         f = ContentFile(b"""

@@ -20,17 +20,27 @@ class ExportTestCase(ModoTestCase):
             {"filename": "test.csv"}
         )
 
+    def assertListEqual(self, list1, list2):
+        list2 = list2.split('\r\n')
+        for entry in list1.split('\r\n'):
+            if not entry:
+                continue
+            self.assertIn(entry, list2)
+
     def test_export_identities(self):
         response = self.__export_identities()
-        self.assertEqual(response.content, "account;admin;{CRYPT}dTTsGDkA5ZHKg;;;True;SuperAdmins;;\r\naccount;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nforward;forward@test.com;True;user@external.com\r\ndlist;postmaster@test.com;True;toto@titi.com;test@truc.fr\r\n")
+        self.assertListEqual(
+            "account;admin;{CRYPT}dTTsGDkA5ZHKg;;;True;SuperAdmins;;\r\naccount;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nforward;forward@test.com;True;user@external.com\r\ndlist;postmaster@test.com;True;toto@titi.com;test@truc.fr\r\n",
+            response.content.strip()
+        )
 
     def test_export_simpleusers(self):
         response = self.__export_identities(
             idtfilter="account", grpfilter="SimpleUsers"
         )
-        self.assertEqual(
-            response.content.strip(),
-            "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10"
+        self.assertListEqual(
+            "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10", 
+            response.content.strip()
         )
 
     def test_export_superadmins(self):
@@ -46,9 +56,9 @@ class ExportTestCase(ModoTestCase):
         response = self.__export_identities(
             idtfilter="account", grpfilter="DomainAdmins"
         )
-        self.assertEqual(
-            response.content.strip(),
-            "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com"
+        self.assertListEqual(
+            "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com",
+            response.content.strip()
         )
 
     def test_export_aliases(self):

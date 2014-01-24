@@ -46,7 +46,7 @@ listing page: *relay domain* and *relay domain alias*.
 The extension is compatible with the *amavis* and *limits*
 ones. Resellers will be able to create both new objects.
 
-To tell Postfix this feature exists, you must generate two new map
+Replace <driver> by the name of the database you use.To tell Postfix this feature exists, you must generate two new map
 files and then update your configuration.
 
 To generate the map files, run the following command::
@@ -55,7 +55,23 @@ To generate the map files, run the following command::
 
 Replace values between ``<>`` by yours.
 
-Edit the :file:`/etc/postfix/main.cf` file.
+Edit the :file:`/etc/postfix/main.cf` file and copy the following
+lines inside::
+
+  relay_domains = <driver>:/etc/postfix/maps/sql-relaydomains.cf
+  transport_maps = 
+      <driver>:/etc/postfix/maps/sql-relaydomains-transport.cf
+      <driver>:/etc/postfix/maps/sql-relaydomain-aliases-transport.cf
+
+  smtpd_recipient_restrictions =
+      permit_mynetworks
+      reject_unauth_destination
+      check_recipient_access 
+          <driver>:/etc/postfix/maps/sql-relay-recipient-verification.cf
+
+Replace ``<driver>`` by the name of the database you use.
+
+Reload postfix.
 
 .. _amavis_frontend:
 
@@ -311,12 +327,11 @@ configuration files as follows:
 
 ``/etc/postfix/main.cf``::
 
-  transport_maps = mysql:/etc/postfix/maps/sql-transport.cf
-  virtual_alias_maps = mysql:/etc/postfix/maps/sql-aliases.cf
-          mysql:/etc/postfix/mapfiles/sql-domain-aliases-mailboxes.cf,
-          mysql:/etc/postfix/mapfiles/sql-email2email.cf,
-          mysql:/etc/postfix/maps/sql-autoreplies.cf,
-          mysql:/etc/postfix/mapfiles/sql-catchall-aliases.cf
+  transport_maps = mysql:/etc/postfix/maps/sql-autoreplies-transport.cf
+  virtual_alias_maps = <driver>:/etc/postfix/maps/sql-aliases.cf
+          <driver>:/etc/postfix/mapfiles/sql-domain-aliases-mailboxes.cf,
+          <driver>:/etc/postfix/maps/sql-autoreplies.cf,
+          <driver>:/etc/postfix/mapfiles/sql-catchall-aliases.cf
 
 .. note::
 
@@ -327,7 +342,8 @@ configuration files as follows:
   autoreply unix        -       n       n       -       -       pipe
             flags= user=vmail:<group> argv=<modoboa_site>/manage.py autoreply $sender $mailbox
 
-``<modoboa_site>`` is the path of your Modoboa instance.
+Replace ``<driver>`` by the name of the database you
+use. ``<modoboa_site>`` is the path of your Modoboa instance.
 
 Then, create the requested map files::
 

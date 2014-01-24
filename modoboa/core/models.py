@@ -17,7 +17,7 @@ from django.contrib.auth.models import (
 from django.contrib.auth.hashers import make_password, is_password_usable
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import (
-    PermDeniedException, InternalError, BadRequest
+    PermDeniedException, InternalError, BadRequest, Conflict
 )
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.extensions import exts_pool
@@ -325,6 +325,12 @@ class User(PermissionsMixin):
                 _("You can't import an account with a role greater than yours")
             )
         self.username = row[1].strip()
+        try:
+            User.objects.get(username=self.username)
+        except User.DoesNotExist:
+            pass
+        else:
+            raise Conflict
         if role == "SimpleUsers":
             if (len(row) < 8 or not row[7].strip()):
                 raise BadRequest(

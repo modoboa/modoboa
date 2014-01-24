@@ -187,11 +187,6 @@ class PermissionsTestCase(ModoTestCase):
         account = User.objects.get(username="superadmin2@test.com")
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")
-        self.ajax_get(
-            reverse("modoboa.extensions.admin.views.identity.delaccount",
-                    args=[account.id]),
-            {}, 403
-        )
         self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.delaccount",
                     args=[account.id]), {}, 403

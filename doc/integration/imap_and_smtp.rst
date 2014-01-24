@@ -44,13 +44,25 @@ Then, edit the ``inbox`` namespace and add the following lines::
     special_use = \Trash
   }
 
-It ensures all the special mailboxes will be automaticaly created for
-new accounts.
+With dovecot 2.1+, it ensures all the special mailboxes will be
+automaticaly created for new accounts.
+
+For dovecot 2.0 and older, use the `autocreate
+<http://wiki2.dovecot.org/Plugins/Autocreate>`_ plugin.
 
 .. _fs_operations:
 
 Operations on the file system
 -----------------------------
+
+.. warning::
+
+   Modoboa needs to access the ``dovecot`` binary to check its
+   version. To find the binary path, we use the ``which`` command
+   first and then try known locations (:file:`/usr/sbin/dovecot` and
+   :file:`/usr/local/sbin/dovecot`). If you installed dovecot in a
+   custom location, please tell us where the binary is by using the
+   ``DOVECOT_LOOKUP_PATH`` setting (see :file:`settings.py`).
 
 Three operation types are considered:
 
@@ -443,15 +455,9 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   virtual_transport = dovecot
   dovecot_destination_recipient_limit = 1
 
-  virtual_minimum_uid = <vmail user id>
-  virtual_gid_maps = static:<vmail group id>
-  virtual_uid_maps = static:<vmail user id>
-  virtual_mailbox_base = /var/vmail
-
   relay_domains =
   virtual_mailbox_domains = <driver>:/etc/postfix/sql-domains.cf
   virtual_alias_domains = <driver>:/etc/postfix/sql-domain-aliases.cf
-  virtual_mailbox_maps = <driver>:/etc/postfix/sql-mailboxes.cf
   virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf,
         <driver>:/etc/postfix/sql-domain-aliases-mailboxes.cf,
         <driver>:/etc/postfix/sql-catchall-aliases.cf
