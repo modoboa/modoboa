@@ -172,6 +172,8 @@ SOUTH_TESTS_MIGRATE = False
 
 #MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
 
+#DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
+
 AUTHENTICATION_BACKENDS = (
     'modoboa.lib.authbackends.SimpleBackend',
 )

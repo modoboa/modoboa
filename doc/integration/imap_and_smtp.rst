@@ -55,6 +55,15 @@ For dovecot 2.0 and older, use the `autocreate
 Operations on the file system
 -----------------------------
 
+.. warning::
+
+   Modoboa needs to access the ``dovecot`` binary to check its
+   version. To find the binary path, we use the ``which`` command
+   first and then try known locations (:file:`/usr/sbin/dovecot` and
+   :file:`/usr/local/sbin/dovecot`). If you installed dovecot in a
+   custom location, please tell us where the binary is by using the
+   ``DOVECOT_LOOKUP_PATH`` setting (see :file:`settings.py`).
+
 Three operation types are considered:
 
 #. Mailbox creation
