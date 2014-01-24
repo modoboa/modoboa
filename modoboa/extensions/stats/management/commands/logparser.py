@@ -280,7 +280,7 @@ class LogParser(object):
             return
         (line_id, line_log) = m.groups()
         if line_id == "NOQUEUE":
-            m = re.match("reject: .*from=<.*> to=<[^@]+@([^>]+)>", line_log)
+            addrto = re.match("reject: .*from=<.*> to=<[^@]+@([^>]+)>", line_log)
             if addrto and addrto.group(1) in self.domains:
                 self.inc_counter(addrto.group(1), 'reject')
             return
