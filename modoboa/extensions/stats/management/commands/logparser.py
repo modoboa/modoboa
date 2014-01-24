@@ -275,52 +275,51 @@ class LogParser(object):
             return
         host, prog, pid, log = m.groups()
         m = self._id_expr.match(log)
-        if m:
-            (line_id, line_log) = m.groups()
-            m = re.search("message-id=<([^>]*)>", line_log)
-            if m:
-                self.workdict[line_id] = {'from': m.group(1), 'size': 0}
-                return
-            m = re.search("from=<([^>]*)>, size=(\d+)", line_log)
-            if m:
-                self.workdict[line_id] = {'from': m.group(1),
-                                          'size': string.atoi(m.group(2))}
-                return
-
-            m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
-            if m:
-                if not line_id in self.workdict:
-                    self._dprint("Inconsistent mail (%s: %s), skipping" \
-                                     % (line_id, m.group(1)))
-                    return
-                if not m.group(2) in variables:
-                    self._dprint("Unsupported status %s, skipping" % m.group(2))
-                    return
-
-                addrfrom = re.match("([^@]+)@(.+)", self.workdict[line_id]['from'])
-                if addrfrom is not None and addrfrom.group(2) in self.domains:
-                    self.inc_counter(addrfrom.group(2), 'sent')
-                    self.inc_counter(addrfrom.group(2), 'size_sent',
-                                     self.workdict[line_id]['size'])
-                addrto = re.match("([^@]+)@(.+)", m.group(1))
-                domname = addrto.group(2) if addrto is not None else None
-                if m.group(2) == "sent":
-                    self.inc_counter(addrto.group(2), 'recv')
-                    self.inc_counter(addrto.group(2), 'size_recv',
-                                     self.workdict[line_id]['size'])
-                else:
-                    self.inc_counter(domname, m.group(2))
-                return
-            self._dprint("Unknown line format: %s" % line_log)
+        if m is None:
+            self._dprint("Unknown line format: %s" % log)
             return
-
-        m = re.match("NOQUEUE: reject: .*from=<(.*)> to=<([^>]*)>", log)
-        if m:
-            addrto = re.match("([^@]+)@(.+)", m.group(2))
+        (line_id, line_log) = m.groups()
+        if line_id == "NOQUEUE":
+            self._dprint("NOQUEUE found")
+            addrto = re.search("to=<([^@]+)@([>]+)>", line_log)
             if addrto and addrto.group(2) in self.domains:
                 self.inc_counter(addrto.group(2), 'reject')
             return
-        self._dprint("Unknown line format: %s" % log)
+        m = re.search("message-id=<([^>]*)>", line_log)
+        if m is not None:
+            self.workdict[line_id] = {'from': m.group(1), 'size': 0}
+            return
+        m = re.search("from=<([^>]*)>, size=(\d+)", line_log)
+        if m is not None:
+            self.workdict[line_id] = {
+                'from': m.group(1), 'size': string.atoi(m.group(2))
+            }
+            return
+
+        m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
+        if m is not None:
+            if not line_id in self.workdict:
+                self._dprint("Inconsistent mail (%s: %s), skipping" \
+                                 % (line_id, m.group(1)))
+                return
+            if not m.group(2) in variables:
+                self._dprint("Unsupported status %s, skipping" % m.group(2))
+                return
+            addrfrom = re.match("([^@]+)@(.+)", self.workdict[line_id]['from'])
+            if addrfrom is not None and addrfrom.group(2) in self.domains:
+                self.inc_counter(addrfrom.group(2), 'sent')
+                self.inc_counter(addrfrom.group(2), 'size_sent',
+                                 self.workdict[line_id]['size'])
+            addrto = re.match("([^@]+)@(.+)", m.group(1))
+            domname = addrto.group(2) if addrto is not None else None
+            if m.group(2) == "sent":
+                self.inc_counter(addrto.group(2), 'recv')
+                self.inc_counter(addrto.group(2), 'size_recv',
+                                 self.workdict[line_id]['size'])
+            else:
+                self.inc_counter(domname, m.group(2))
+            return
+        self._dprint("Unknown line format: %s" % line_log)
 
     def process(self):
         """Process the log file.
@@ -331,7 +330,6 @@ class LogParser(object):
         for line in self.f.readlines():
             self._parse_line(line)
 
-        # Sort everything by time
         G = Grapher()
         for dom, data in self.data.iteritems():
             self._dprint("[rrd] dealing with domain %s" % dom)
