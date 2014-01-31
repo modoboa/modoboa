@@ -1,6 +1,0 @@
-{% load i18n %}
-{% for name in graphs %}
-<p><img src="{{ MEDIA_URL }}stats/{{ name }}_{{ domain }}_AVERAGE_{% ifequal period 'custom' %}{{ period_name }}{% else %}{{ period }}{% endifequal %}.png" 
-        alt="{% trans 'No statistics available' %}" /></p>
-<div id="chart_{{ name }}"><svg></svg></div>
-{% endfor %}

@@ -1,3 +1,68 @@
-svg {
-    height: 400px;
+/*svg { 
+    width: 100%;
+}*/
+
+.graph_container {
+    position: relative;
+    margin-bottom: 10px;
+    padding-right: 40px;
 }
+
+.legend { 
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    background-color: transparent;
+    color: #404040;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+/*.area { 
+    fill-opacity: .85;
+    clip-path: url(#clip);
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.legend rect {
+  fill: white;
+  stroke: black;
+  opacity: 0.8;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}*/
