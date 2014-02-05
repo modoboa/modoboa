@@ -2,18 +2,26 @@
     width: 100%;
 }*/
 
-.graph_container {
+.chart {
     position: relative;
-    margin-bottom: 10px;
-    padding-right: 40px;
+    /*margin-bottom: 10px;
+    padding-right: 40px;*/
 }
 
-.legend { 
+/*.legend { 
     position: absolute;
     right: 10px;
     top: 0px;
     background-color: transparent;
     color: #404040;
+}*/
+
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
+.grid path {
+    stroke-width: 0;
 }
 
 .axis path,
@@ -23,9 +31,8 @@
     shape-rendering: crispEdges;
 }
 
-/*.area { 
-    fill-opacity: .85;
-    clip-path: url(#clip);
+.area, .area2 { 
+    fill-opacity: .6;
 }
 
 .brush .extent {
@@ -65,4 +72,4 @@
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
-}*/
+}

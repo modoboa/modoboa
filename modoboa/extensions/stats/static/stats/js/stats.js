@@ -80,12 +80,13 @@ Stats.prototype = {
     },
 
     graphs_cb: function(data) {
-        //this.graphicset = new GraphicSet("#gset", data);
-        if (this.graphic === undefined) {
+        this.graphicset = new GraphicSet("#gset", data);
+        
+        /*if (this.graphic === undefined) {
             this.graphic = new Graphic(data, {});
         } else {
             this.graphic.update(data);
-        }
+        }*/
     },
 
     search_domain: function(value) {

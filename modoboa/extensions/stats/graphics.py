@@ -104,7 +104,7 @@ class AverageTraffic(Graphic):
     bounced = Curve("bounced", "yellow", ugettext_lazy("bounced messages"))
     reject = Curve("reject", "tomato", ugettext_lazy("rejected messages"))
 
-    order = ['bounced', 'recv', 'sent', 'reject']
+    order = ['reject', 'bounced', 'recv', 'sent']
 
 
 class AverageTrafficSize(Graphic):
