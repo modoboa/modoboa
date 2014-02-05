@@ -18,6 +18,7 @@ $(document).ready(function() {
         poller_url: "{% url 'modoboa.extensions.webmail.views.check_unseen_messages' %}",
         move_url: "{% url 'modoboa.extensions.webmail.views.move' %}",
         submboxes_url: "{% url 'modoboa.extensions.webmail.views.submailboxes' %}",
+        delattachment_url: "{% url 'modoboa.extensions.webmail.views.delattachment' %}",
         deflocation: "{{ deflocation }}",
         defcallback: "{{ defcallback }}",
         ro_mboxes: {% tolist ro_mboxes %},
