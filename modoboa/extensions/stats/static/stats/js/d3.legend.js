@@ -42,13 +42,20 @@
                 .call(function(d) { d.exit().remove(); })
                 .attr("cy", function(d, i) { return i - 0.25 + "em"; })
                 .attr("cx", 0)
-                .attr("r", "0.4em")
+                .attr("r", "4px")
+                .style("stroke", function(d) { return d.value.color; })
+                .style("stroke-width", "1px")
+                .style("stroke-opacity", 0.8)
                 .style("fill", function(d) { return d.value.color; })
                 .on("click", function(d) {
-                    var curve = d3.select("[data-legend='" + d.key + "']");
-                    var state = (curve.style("display") == "none") ? "block" : "none";
+                    var curve = d3.selectAll("[data-legend='" + d.key + "']");
+                    var state = (curve.style("display") == "none") 
+                        ? "block" : "none";
 
                     curve.style("display", state);
+                    d3.select(this).style(
+                        "fill", (state == "none") ? "none" : d.value.color
+                    );
                 });
     
             // Reposition and resize the box

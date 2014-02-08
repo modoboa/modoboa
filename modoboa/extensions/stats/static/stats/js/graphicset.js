@@ -61,11 +61,13 @@ Graphic.prototype = {
             xAxis2 = d3.svg.axis().scale(x2).orient("bottom");
         var y = d3.scale.linear().range([this.options.height, 0]),
             y2 = d3.scale.linear().range([this.options.preview_height, 0]);
+        var bisectDate = d3.bisector(function(d) { return d.x * 1000; }).left;
 
-        
         var brush = d3.svg.brush()
             .x(x2)
             .on("brush", brushed);
+
+        var points = [];
         
         x.domain(d3.extent(this.data[0].data.map(function(d) { return d.x * 1000; })));
         y.domain([
@@ -91,6 +93,9 @@ Graphic.prototype = {
 
         var focus = svg.append("g")
             .attr("class", "focus")
+            .attr("width", width - 2 * this.options.margin.left)
+            .attr("height", this.options.height)
+            .attr("pointer-events", "all")
             .attr("transform",
                   "translate(" + this.options.margin.left + ",0)");// + this.options.margin.top * 2 + ")");
 
@@ -111,14 +116,41 @@ Graphic.prototype = {
             .enter().append("g")
             .attr("class", "curve");
 
-        curve.append("path")
+        var line = focus.append("line")
+            .attr("class", "line_over")
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", 0)
+            .attr("y2", 300);
+
+        var rect = focus.append("rect")
+            .attr("fill", "none")
+            .attr("width", width - 2 * this.options.margin.left)
+            .attr("height", this.options.height);
+
+        var tooltip = d3.select(".chart")
+            .append("div")
+            .attr("id", "tooltip")
+            .attr("class", "remove")
+            .attr("class", "tip");
+
+        var path = curve.append("path")
             .attr("class", "area")
-            .attr("d", function(d) { 
+            .attr("d", function(d, i) {
+                var path = this;
+
+                points[path] = {};
+                d.data.forEach(function(d) {
+                    points[path][d.x] = d.y;
+                });
+                focus.append("circle")
+                    .attr("class", "tracker tracker-" + i)
+                    .attr("r", 4);
                 return area(d.data);
             })
             .attr("data-legend", function(d) { return d.name; })
             .attr("stroke", function(d) { return d.color; })
-            .attr("stroke-width", "3px")
+            .attr("stroke-width", "2px")
             .attr("stroke-opacity", 0.8)
             .style("fill", function(d) { return d.color; });
 
@@ -157,35 +189,67 @@ Graphic.prototype = {
             .attr("class", "y axis")
             .call(yAxis);
 
-        var tooltip = d3.select(".chart")
-            .append("div")
-            .attr("class", "remove")
-            .style("position", "absolute")
-            .style("z-index", "20")
-            .style("display", "none")
-            .style("top", "0px")
-            .style("right", "10px");
-
-        var datearray = [];
-
-        focus.selectAll(".area")
+        var data = this.data;
+        rect
+            .on("mouseover", function(d) {
+                line.style("display", "block");
+                tooltip.style("display", "block");
+                data.forEach(function(d, cid) {
+                    var display = d3.selectAll("[data-legend='" + d.name + "']")
+                        .style("display");
+                    if (display == "none") {
+                        return;
+                    }
+                    focus.select(".tracker-" + cid).style("display", "block");    
+                });
+            })
             .on("mousemove", function(d) {
-                var mousex = d3.mouse(this)[0];
+                var mousex = d3.mouse(this)[0],
+                    mousey = d3.mouse(this)[1];
                 var date = x.invert(mousex);
+                var element = document.getElementById("tooltip");
+                var text = "";
 
-                for (var k = 0; k < d.data.length; k++) {
-                    datearray[k] = x.invert(d.data[k].x).value;
+                line.attr("x1", mousex)
+                    .attr("x2", mousex);
+
+                data.forEach(function(d, cid) {
+                    var display = d3.selectAll("[data-legend='" + d.name + "']")
+                        .style("display");
+                    if (display == "none") {
+                        return;
+                    }
+                    var i = bisectDate(d.data, date.getTime(), 1),
+                        d0 = d.data[i - 1],
+                        d1 = d.data[i],
+                        point = date.getTime() - (d0.x * 1000) > (d1.x * 1000) - date.getTime() ? d1 : d0;
+                    text += "<p>" + d.name + ": " + point.y.toFixed(3) + "</p>";
+
+                    var tracker_x = x(point.x * 1000),
+                        tracker_y = y(point.y);
+
+                    focus.selectAll(".tracker-" + cid)
+                        .style("fill", d.color)
+                        .attr("cx", tracker_x)
+                        .attr("cy", tracker_y);
+                });
+                if (mousex + element.clientWidth >= width - 2 * 40) {
+                    tooltip
+                        .style("left", (mousex - (element.clientWidth - 30)) + "px");
+                } else {
+                    tooltip.style("left", (mousex + 50) + "px");
                 }
-                var mousedate = datearray.indexOf(date.value);
-                var pro = d.data[mousedate].y;
-
-                tooltip.html( "<p>" + date + "<br>" + pro + "</p>" )
-                        .style("display", "block");
+                tooltip.html("<p>" + date + "</p>" + text);
+            })
+            .on("mouseout", function(d) {
+                tooltip.style("display", "none");
+                line.style("display", "none");
+                focus.selectAll(".tracker").style("display", "none");
             });
 
         var legend = focus.append("g")
             .attr("class", "legend")
-            .attr("transform", "translate(50,30)")
+            .attr("transform", "translate(50,10)")
             .style("font-size", "12px")
             .call(d3.legend);
 
@@ -195,6 +259,7 @@ Graphic.prototype = {
             .attr("stroke", function(d) { return d.color; })
             .attr("stroke-width", "2px")
             .attr("stroke-opacity", 0.8)
+            .attr("data-legend", function(d) { return d.name; })
             .style("fill", function(d) { return d.color; });
 
         context.append("g")
