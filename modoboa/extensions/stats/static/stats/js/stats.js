@@ -80,13 +80,17 @@ Stats.prototype = {
     },
 
     graphs_cb: function(data) {
-        this.graphicset = new GraphicSet("#gset", data);
-        
-        /*if (this.graphic === undefined) {
-            this.graphic = new Graphic(data, {});
-        } else {
-            this.graphic.update(data);
-        }*/
+        if (this.graphics !== undefined) {
+             $.each(this.graphics, function(id, graphic) {
+                 graphic.remove();
+             });
+        }
+        this.graphics = [];
+        $.each(data.graphs, $.proxy(function(id, graphdef) {
+            this.graphics.push(
+                new Graphic("#gset", graphdef)
+            );
+        }, this));
     },
 
     search_domain: function(value) {

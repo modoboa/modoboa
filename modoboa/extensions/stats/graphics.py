@@ -141,10 +141,13 @@ class GraphicSet(object):
         return [graphic.display_name for graphic in self._graphics]
 
     def export(self, rrdfile, start, end):
-        return dict(
-            (graph.display_name, graph.export(rrdfile, start, end))
-            for graph in self.graphics
-        )
+        result = {}
+        for graph in self.graphics:
+            result[graph.display_name] = {
+                "title": graph.title.encode("utf-8"),
+                "curves": graph.export(rrdfile, start, end)
+            }
+        return result
 
 
 class MailTraffic(GraphicSet):
