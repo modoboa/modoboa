@@ -1,16 +1,12 @@
 {% extends "twocols.html" %}{% load i18n %}{% load url from future %}
 {% block pagetitle %}{% trans "Graphical statistics" %}{% endblock %}
 {% block html_head %}
-<!--<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}stats/css/rickshaw.css" />-->
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}stats/css/stats.css" />
 <script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/d3.v3.js"></script>
-
-<!--<script type="text/javascript" src="{{ STATIC_URL }}stats/js/rickshaw.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}stats/js/graphic.js"></script>-->
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/d3.legend.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}stats/js/graphicset.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}stats/js/graphic.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
