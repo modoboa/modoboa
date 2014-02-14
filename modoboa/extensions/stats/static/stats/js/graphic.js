@@ -104,7 +104,7 @@ Graphic.prototype = {
             .attr("height", this.options.height)
             .attr("pointer-events", "all")
             .attr("transform",
-                  "translate(" + this.options.margin.left + ",0)");
+                  "translate(" + this.options.margin.left + "," + this.options.margin.top + ")");
 
         var context = svg.append("g")
             .attr("class", "context")
