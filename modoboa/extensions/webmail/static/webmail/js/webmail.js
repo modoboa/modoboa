@@ -945,7 +945,7 @@ Webmail.prototype = {
             html: "<i class='icon-remove'></i>"
         });
         var $label = $("<label />", {html: fname});
-        var $div = $("<div />").append($delbtn, $label);
+        var $div = $("<div />", {'class': "row-fluid"}).append($delbtn, $label);
 
         $delbtn.click(this.del_attachment);
         $("#id_attachment").val("");

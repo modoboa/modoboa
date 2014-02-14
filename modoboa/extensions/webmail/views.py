@@ -184,7 +184,7 @@ def editfolder(request, tplname="webmail/folder.html"):
             if form.cleaned_data["name"] != oldname \
                     or (pf != oldparent):
                 newname = form.cleaned_data["name"] if pf is None \
-                    else "%s.%s" % (pf, form.cleaned_data["name"])
+                    else mbc.hdelimiter.join([pf, form.cleaned_data["name"]])
                 mbc.rename_folder(request.POST["oldname"], newname)
                 res["oldmb"] = oldname
                 res["newmb"] = form.cleaned_data["name"]
