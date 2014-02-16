@@ -12,7 +12,7 @@ Stats.prototype = {
 
     initialize: function(options) {
         this.options = $.extend({}, this.defaults, options);
-        this.options.defcallback = $.proxy(this.graphs_cb, this);
+        this.options.defcallback = $.proxy(this.charts_cb, this);
 
         var navobj = new History(this.options);
         this.navobj = navobj;
@@ -63,12 +63,13 @@ Stats.prototype = {
 
     listen: function() {
         $(".period_selector").click($.proxy(this.change_period, this));
-        $("#customsend").on("click", $.proxy(this.customgraphs, this));
+        $("#customsend").on("click", $.proxy(this.custom_period, this));
+        $(window).resize($.proxy(this.resize_charts, this));
     },
 
     register_nav_callbacks: function() {
         this.navobj.register_callback("graphs",
-            $.proxy(this.graphs_cb, this));
+            $.proxy(this.charts_cb, this));
     },
 
     change_period: function(e) {
@@ -79,18 +80,38 @@ Stats.prototype = {
         this.navobj.setparam("period", $link.attr("data-period")).update();
     },
 
-    graphs_cb: function(data) {
-        if (this.graphics !== undefined) {
-             $.each(this.graphics, function(id, graphic) {
-                 graphic.remove();
+    /**
+     * Update all charts on resize event.
+     *
+     * @this {Stats}
+     */
+    resize_charts: function() {
+        var data = this.data;
+        $.each(this.charts, function(id, mychart) {
+            mychart.update(data.graphs[id]);
+        });
+    },
+
+    /**
+     * Create or update charts.
+     *
+     * @this {Stats}
+     * @param {Object} data
+     */
+    charts_cb: function(data) {
+        this.data = data;
+        if (this.charts !== undefined) {
+             $.each(this.charts, function(id, mychart) {
+                 mychart.update(data.graphs[id]);
              });
+        } else {
+            this.charts = {};
+            $.each(data.graphs, $.proxy(function(id, graphdef) {
+                var mychart = ModoChart("#gset");
+                this.charts[id] = mychart;
+                mychart(graphdef);
+            }, this));
         }
-        this.graphics = [];
-        $.each(data.graphs, $.proxy(function(id, graphdef) {
-            this.graphics.push(
-                new Graphic("#gset", graphdef)
-            );
-        }, this));
     },
 
     search_domain: function(value) {
@@ -102,7 +123,7 @@ Stats.prototype = {
         this.navobj.delparam("searchquery").update();
     },
 
-    customgraphs: function(e) {
+    custom_period: function(e) {
         e.preventDefault();
         var $fromdate = $("#id_from");
         var $todate = $("#id_to");
