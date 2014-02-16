@@ -126,6 +126,11 @@ Replace values between ``<>`` with yours.
    following the `official documentation
    <http://www.amavis.org/#doc>`_.
 
+.. note::
+
+   Amavis configuration allows for separate lookup and storage
+   databases but Modoboa doesn't support it yet.
+
 Cleanup
 -------
 
