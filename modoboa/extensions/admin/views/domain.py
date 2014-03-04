@@ -16,6 +16,7 @@ from modoboa.lib.exceptions import (
     ModoboaException, PermDeniedException, BadRequest
 )
 from modoboa.lib.templatetags.lib_tags import pagination_bar
+from modoboa.core.models import log_object_removal
 from modoboa.extensions.admin.lib import get_sort_order, get_listing_page
 from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.admin.forms import (
