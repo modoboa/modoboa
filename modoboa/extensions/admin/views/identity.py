@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import (
 from django.views.decorators.csrf import ensure_csrf_cookie
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import (
-    ModoboaException, PermDeniedException, BadRequest
+    PermDeniedException, BadRequest
 )
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response

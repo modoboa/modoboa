@@ -492,12 +492,13 @@ def post_revision_commit(sender, **kwargs):
 
 
 @receiver(post_delete)
-def post_delete_hook(sender, instance, **kwargs):
+def log_object_removal(sender, instance, **kwargs):
     """Custom post-delete hook.
 
     We want to know who was responsible for an object deletion.
     """
     from reversion.models import Version
+    from modoboa.lib.signals import get_request
 
     if not reversion.is_registered(sender):
         return
@@ -510,6 +511,6 @@ def post_delete_hook(sender, instance, **kwargs):
     msg = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
         "object": unicode(version.content_type).capitalize(),
         "name": version.object_repr, "action": _("deleted"),
-        "user": version.revision.user.username
+        "user": get_request().user.username
     }
     logger.critical(msg)
