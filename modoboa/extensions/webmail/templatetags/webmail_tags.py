@@ -132,7 +132,9 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
         cssclass = ""
         name = mbox["path"] if "sub" in mbox else mbox["name"]
         label = separate_mailbox(mbox["name"], hdelimiter)[0]
-        if selected == name:
+        if mbox.get("removed", False):
+            cssclass = "disabled"
+        elif selected == name:
             cssclass = "active"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
         if "sub" in mbox:
