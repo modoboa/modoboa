@@ -693,8 +693,14 @@ Webmail.prototype = {
     },
 
     listmailbox_loader: function(event) {
+        var $target = get_target(event, "a");
+
+        if ($target.parent().hasClass("disabled")) {
+            event.preventDefault();
+            return;
+        }
         this.select_mailbox(event.target);
-        this._listmailbox_loader(event, get_target(event, "a"));
+        this._listmailbox_loader(event, $target);
     },
 
     /*
