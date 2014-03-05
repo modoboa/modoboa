@@ -118,6 +118,7 @@ MIDDLEWARE_CLASSES = (
     'modoboa.lib.middleware.AjaxLoginRedirect',
     'modoboa.lib.middleware.CommonExceptionCatcher',
     'modoboa.lib.middleware.ExtControlMiddleware',
+    'modoboa.lib.middleware.RequestCatcherMiddleware',
 )
 
 ROOT_URLCONF = '{{ name }}.urls'
