@@ -48,13 +48,16 @@ Finally, follow the common procedure::
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
-1.1.2: Audit trail issue
-========================
+1.1.2: Audit trail issues
+=========================
 
-A new middleware is necessary to retrieve the current user. To
- activate it, add
- ``'modoboa.lib.middleware.RequestCatcherMiddleware'`` at the end of
- the ``MIDDLEWARE_CLASSES`` variable in the :file:`settings.py` file.
+Update the :file:`settings.py` file as follows:
+
+#. Remove the ``'reversion.middleware.RevisionMiddleware'``
+   middleware from the ``MIDDLEWARE_CLASSES`` variable
+
+#. Add the new ``'modoboa.lib.middleware.RequestCatcherMiddleware'``
+   middleware at the end of the ``MIDDLEWARE_CLASSES`` variable
 
 1.1.1: Few bugfixes
 ===================
