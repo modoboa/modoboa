@@ -1,3 +1,4 @@
+import reversion
 from django.db import transaction, IntegrityError
 from django.utils.translation import ugettext as _, ungettext
 from django.shortcuts import render
@@ -56,6 +57,7 @@ def _new_alias(request, title, action, successmsg,
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
+@reversion.create_revision()
 def newdlist(request):
     return _new_alias(
         request, _("New distribution list"), reverse(newdlist),
@@ -66,6 +68,7 @@ def newdlist(request):
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
+@reversion.create_revision()
 def newalias(request):
     return _new_alias(
         request, _("New alias"), reverse(newalias),
@@ -76,6 +79,7 @@ def newalias(request):
 @login_required
 @permission_required("admin.add_alias")
 @transaction.commit_on_success
+@reversion.create_revision()
 def newforward(request):
     return _new_alias(
         request, _("New forward"), reverse(newforward),
@@ -86,6 +90,7 @@ def newforward(request):
 @login_required
 @permission_required("admin.change_alias")
 @transaction.commit_on_success
+@reversion.create_revision()
 def editalias(request, alid, tplname="admin/aliasform.html"):
     alias = Alias.objects.get(pk=alid)
     if not request.user.can_access(alias):

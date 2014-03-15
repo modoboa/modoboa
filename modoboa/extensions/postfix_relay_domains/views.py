@@ -1,3 +1,4 @@
+import reversion
 from django.shortcuts import render
 from django.db import transaction
 from django.core.urlresolvers import reverse
@@ -16,6 +17,7 @@ from .forms import RelayDomainForm, RelayDomainFormGeneral
 @login_required
 @permission_required("postfix_relay_domains.add_relaydomain")
 @transaction.commit_on_success
+@reversion.create_revision()
 def create(request, tplname="postfix_relay_domains/new_relaydomain_form.html"):
     events.raiseEvent("CanCreate", request.user, "relay_domains")
     if request.method == 'POST':
@@ -39,6 +41,7 @@ def create(request, tplname="postfix_relay_domains/new_relaydomain_form.html"):
 
 @login_required
 @permission_required("postfix_relay_domains.change_relaydomain")
+@reversion.create_revision()
 def edit(request, rdom_id, tplname='common/tabforms.html'):
     rdom = RelayDomain.objects.get(pk=rdom_id)
     if not request.user.can_access(rdom):

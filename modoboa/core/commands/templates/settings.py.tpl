@@ -113,7 +113,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'reversion.middleware.RevisionMiddleware',
 
     'modoboa.lib.middleware.AjaxLoginRedirect',
     'modoboa.lib.middleware.CommonExceptionCatcher',
