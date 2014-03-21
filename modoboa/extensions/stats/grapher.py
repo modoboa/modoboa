@@ -3,6 +3,7 @@ import sys
 import os
 import time
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.conf import settings
 from modoboa.lib import parameters
 
 periods = [{"name": "day", "label": ugettext_lazy("Day")},
@@ -35,7 +36,7 @@ def str2Time(y, M, d, h="00", m="00", s="00"):
 class Grapher(object):
     def __init__(self):
         self.rrd_rootdir = parameters.get_admin("RRD_ROOTDIR")
-        self.img_rootdir = parameters.get_admin("IMG_ROOTDIR")
+        self.img_rootdir = os.path.join(settings.MEDIA_ROOT, "stats")
 
     def process(self, target, suffix, start, end, graph_tpl):
         import rrdtool
