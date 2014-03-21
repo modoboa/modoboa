@@ -161,6 +161,7 @@ MODOBOA_APPS = (
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',
     'modoboa.extensions.sievefilters',
+    'modoboa.extensions.radicale',
     {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
 )
 
