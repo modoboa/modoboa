@@ -6,7 +6,7 @@ from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.formutils import (
-    DomainNameField, DynamicForm, TabForms, YesNoField
+    DomainNameField, DynamicForm, TabForms, WizardForm
 )
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
@@ -370,3 +370,25 @@ class AccountForm(TabForms):
             return
         for f in self.forms[2:]:
             f["instance"].save()
+
+
+class AccountWizard(WizardForm):
+    """Account creation wizard.
+    """
+    def __init__(self, request):
+        super(AccountWizard, self).__init__(request)
+        self.add_step(
+            AccountFormGeneral, _("General"), new_args=[request.user]
+        )
+        self.add_step(
+            AccountFormMail, _("Mail"), formtpl="admin/mailform.html"
+        )
+
+    def done(self):
+        from modoboa.lib.webutils import render_to_json_response
+
+        account = self.first_step.form.save()
+        account.post_create(self.request.user)
+        mailform = self.steps[1].form
+        mailform.save(self.request.user, account)
+        return render_to_json_response(_("Account created"))

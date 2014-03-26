@@ -14,7 +14,7 @@ from modoboa.lib.exceptions import (
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
-from modoboa.lib.formutils import CreationWizard
+from modoboa.lib.formutils import WizardForm
 from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import Mailbox, Domain
@@ -125,43 +125,17 @@ def newaccount(request, tplname='common/wizard_forms.html'):
        doesn't work very well with nested functions. Need to wait for
        django 1.6 and atomicity.
     """
-    cwizard = CreationWizard()
-    cwizard.add_step(AccountFormGeneral, _("General"),
-                     [dict(classes="btn-inverse next", label=_("Next"))],
-                     new_args=[request.user])
-    cwizard.add_step(AccountFormMail, _("Mail"),
-                     [dict(classes="btn-primary submit", label=_("Create")),
-                      dict(classes="btn-inverse prev", label=_("Previous"))],
-                     formtpl="admin/mailform.html")
-
+    from modoboa.extensions.admin.forms import AccountWizard
+    wizard = AccountWizard(request)
     if request.method == "POST":
-        retcode, data = cwizard.validate_step(request)
-        if retcode == -1:
-            raise BadRequest(data)
-        if retcode == 1:
-            return render_to_json_response(
-                {'title': cwizard.get_title(data + 1), 'stepid': data}
-            )
-        if retcode == 2:
-            genform = cwizard.steps[0]["form"]
-            account = genform.save()
-            account.post_create(request.user)
-            mailform = cwizard.steps[1]["form"]
-            mailform.save(request.user, account)
-            return render_to_json_response(_("Account created"))
-        return render_to_json_response({
-            'stepid': data, 'form_errors': cwizard.errors
-        }, status=400)
-
+        return wizard.validate_step()
     ctx = {
         'title': _("New account"),
         'action': reverse(newaccount),
-        'formid': 'newaccount_form',
-        'submit_label': _("Create")
+        'formid': 'newaccount_form'
     }
-    cwizard.create_forms()
-    ctx.update(steps=cwizard.steps)
-    ctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
+    wizard.create_forms()
+    ctx.update(wizard=wizard)
     return render(request, tplname, ctx)
 
 

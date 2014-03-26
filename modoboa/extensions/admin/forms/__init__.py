@@ -1,7 +1,9 @@
-from .domain import DomainFormGeneral, DomainFormOptions, DomainForm
+from .domain import (
+    DomainFormGeneral, DomainFormOptions, DomainForm, DomainWizard
+)
 from .account import (
     AccountFormGeneral, AccountFormMail, AccountPermissionsForm,
-    AccountForm
+    AccountForm, AccountWizard
 )
 from .alias import AliasForm
 from .forward import ForwardForm
@@ -13,5 +15,5 @@ __all__ = [
     'AccountFormGeneral', 'AccountFormMail', 'AccountPermissionsForm',
     'AccountForm', 'AliasForm', 'ImportDataForm', 'ImportIdentitiesForm',
     'ExportDataForm', 'ExportDomainsForm', 'ExportIdentitiesForm',
-    'ForwardForm'
+    'ForwardForm', 'DomainWizard', 'AccountWizard'
 ]

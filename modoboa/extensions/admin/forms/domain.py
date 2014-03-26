@@ -2,10 +2,11 @@ from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import Conflict
+from modoboa.lib.exceptions import ModoboaException, Conflict
 from modoboa.lib.formutils import (
-    DomainNameField, YesNoField, DynamicForm, TabForms
+    DomainNameField, YesNoField, WizardForm, DynamicForm, TabForms
 )
+from modoboa.lib.webutils import render_to_json_response
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias, Quota
@@ -269,3 +270,31 @@ class DomainForm(TabForms):
         self.forms[0]['instance'].save(user, domalias_post_create=True)
         for f in self.forms[1:]:
             f["instance"].save(user)
+
+
+class DomainWizard(WizardForm):
+    """Domain creation wizard.
+    """
+    def __init__(self, request):
+        super(DomainWizard, self).__init__(request)
+        self.add_step(
+            DomainFormGeneral, _("General"),
+            formtpl="admin/domain_general_form.html"
+        )
+        self.add_step(
+            DomainFormOptions, _("Options"),
+            formtpl="admin/domain_options_form.html",
+            new_args=[self.request.user]
+        )
+
+    def done(self):
+        genform = self.first_step.form
+        domain = genform.save(self.request.user)
+        domain.post_create(self.request.user)
+        try:
+            self.steps[1].form.save(self.request.user, domain)
+        except ModoboaException:
+            from django.db import transaction
+            transaction.rollback()
+            raise
+        return render_to_json_response(_("Domain created"))
