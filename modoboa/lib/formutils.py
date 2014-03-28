@@ -1,14 +1,18 @@
 # coding: utf-8
 import re
 import abc
+
+from django.shortcuts import render
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.forms import ChoiceField
 from django.forms.widgets import RadioSelect, RadioInput
 from django.forms.fields import CharField, Field
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
+
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.webutils import render_to_json_response
 
@@ -63,6 +67,10 @@ class WizardStep(object):
 class WizardForm(object):
     """Custom wizard.
     """
+    __metaclass__  = abc.ABCMeta
+
+    template_name = "common/wizard_forms.html"
+
     def __init__(self, request, submit_button_label=None):
         self.request = request
         self.steps = []
@@ -125,6 +133,21 @@ class WizardForm(object):
             {'title': self.steps[stepid].title, 'stepid': stepid}
         )
 
+    def extra_context(self, context):
+        """Provide additional information to template's context.
+        """
+        pass
+
+    def process(self):
+        """Process the request.
+        """
+        if self.request.method == "POST":
+            return self.validate_step()
+        self.create_forms()
+        context = {"wizard": self}
+        self.extra_context(context)
+        return render(self.request, self.template_name, context)
+
     @abc.abstractmethod
     def done(self):
         """Method to exexute when all steps are validated.
@@ -170,16 +193,20 @@ class TabForms(object):
     displayed using tabs. It is different from a classical formset
     because it can contain different forms.
     """
-    def __init__(self, data=None, instances=None, classes=None):
+    template_name = "common/tabforms.html"
+
+    def __init__(self, request, instances=None, classes=None):
+        self.request = request
         to_remove = []
         for fd in self.forms:
             args = []
             kwargs = {}
             if "new_args" in fd:
                 args += fd["new_args"]
-            if data is not None:
-                args.append(data)
+            if request.method == "POST":
+                args.append(request.POST)
             if instances is not None:
+                self.instances = instances
                 if hasattr(self, "check_%s" % fd["id"]):
                     if not getattr(self, "check_%s" % fd["id"])(instances[fd["id"]]):
                         to_remove += [fd]
@@ -198,6 +225,12 @@ class TabForms(object):
 
     @property
     def errors(self):
+        """Return validation errors.
+
+        We aggregate all form errors into one dictionary.
+
+        :rtype: dict
+        """
         result = {}
         for f in self.forms:
             for name, value in f['instance'].errors.items():
@@ -205,8 +238,13 @@ class TabForms(object):
                     continue
                 result[name] = value
         return result
-    
+
     def is_valid(self, mandatory_only=False, optional_only=False):
+        """Check if the form is valid.
+
+        :param boolean mandatory_only:
+        :param boolean optional_only:
+        """
         to_remove = []
         for f in self.forms:
             if mandatory_only and \
@@ -224,8 +262,10 @@ class TabForms(object):
         self.forms = [f for f in self.forms if not f in to_remove]
         return True
 
-    def save(self, *args, **kwargs):
-        raise RuntimeError
+    @abc.abstractmethod
+    def save(self):
+        """Save objects here.
+        """
 
     def remove_tab(self, tabid):
         for f in self.forms:
@@ -239,6 +279,39 @@ class TabForms(object):
     def forward(self):
         for form in self.forms:
             yield form
+
+    def extra_context(self, context):
+        """"Provide additional information to template's context.
+        """
+        pass
+
+    @abc.abstractmethod
+    def done(self):
+        """Actions to execute after the form has been validated and saved.
+
+        :rtype: HttpResponse instance
+        """
+
+    def process(self):
+        """Process the received request.
+        """
+        if self.request.method == "POST":
+            if self.is_valid():
+                self.save()
+                return self.done()
+            return render_to_json_response(
+                {'form_errors': self.errors}, status=400
+            )
+        context = {
+            "tabs": self,
+            "action_label": _("Update"),
+            "action_classes": "submit",
+        }
+        self.extra_context(context)
+        active_tab_id = self.request.GET.get("active_tab", "default")
+        if active_tab_id != "default":
+            context["tabs"].active_id = active_tab_id
+        return render(self.request, self.template_name, context)
 
 #
 # Custom fields from here

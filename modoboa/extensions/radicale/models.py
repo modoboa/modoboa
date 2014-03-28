@@ -3,9 +3,10 @@ Radicale extension models.
 """
 from __future__ import unicode_literals
 
-import abc
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext as _
+from modoboa.extensions.admin.models import Domain
 
 
 @python_2_unicode_compatible
@@ -21,9 +22,27 @@ class Calendar(models.Model):
         return self.name
 
     @property
-    @abc.abstractmethod
     def url(self):
         """Return the calendar URL"""
+        raise NotImplementedError
+
+    @property
+    def type(self):
+        """Return calendar type"""
+        raise NotImplementedError
+
+
+class UserCalendarManager(models.Manager):
+    """Custom UserCalendar manager.
+    """
+
+    def get_for_admin(self, admin):
+        """Return the list of calendars this admin can access.
+
+        :param ``core.User`` admin: administrator
+        """
+        domains = Domain.objects.get_for_admin(admin)
+        return self.get_query_set().filter(mailbox__domain__in=domains)
 
 
 class UserCalendar(Calendar):
@@ -35,6 +54,8 @@ class UserCalendar(Calendar):
     """
     mailbox = models.ForeignKey("admin.Mailbox")
 
+    objects = UserCalendarManager()
+
     @property
     def url(self):
         """Return the calendar URL.
@@ -44,6 +65,23 @@ class UserCalendar(Calendar):
         return "%s/user/%s/%s" % (
             self.mailbox.domain.name, self.mailbox.address, self.name
         )
+
+    @property
+    def type(self):
+        return _("user")
+
+
+class SharedCalendarManager(models.Manager):
+    """Custom SharedCalendar manager.
+    """
+
+    def get_for_admin(self, admin):
+        """Return the list of calendars this admin can access.
+
+        :param ``core.User`` admin: administrator
+        """
+        domains = Domain.objects.get_for_admin(admin)
+        return self.get_query_set().filter(domain__in=domains)
 
 
 class SharedCalendar(Calendar):
@@ -55,6 +93,8 @@ class SharedCalendar(Calendar):
     """
     domain = models.ForeignKey("admin.Domain")
 
+    objects = SharedCalendarManager()
+
     @property
     def url(self):
         """Return the calendar URL.
@@ -62,5 +102,9 @@ class SharedCalendar(Calendar):
         <domain>/shared/<name>
         """
         return "%s/shared/%s" % (
-            self.mailbox.domain.name, self.name
+            self.domain.name, self.name
         )
+
+    @property
+    def type(self):
+        return _("shared")

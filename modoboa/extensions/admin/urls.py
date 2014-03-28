@@ -7,8 +7,8 @@ urlpatterns = patterns(
     url(r'^domains/$', 'domains', name="domains"),
     (r'^domains/list/$', '_domains'),
     (r'^domains/flatlist/$', 'domains_list'),
-    (r'^domains/new/', 'newdomain'),
-    (r'^domains/(?P<dom_id>\d+)/edit/$', 'editdomain'),
+    url(r'^domains/new/', 'newdomain', name='new_domain'),
+    url(r'^domains/(?P<dom_id>\d+)/edit/$', 'editdomain', name="edit_domain"),
     (r'^domains/(?P<dom_id>\d+)/delete/$', 'deldomain'),
 )
 
@@ -21,8 +21,9 @@ urlpatterns += patterns(
     (r'^identities/quotas/$', 'list_quotas'),
 
     (r'^accounts/list/$', 'accounts_list'),
-    (r'^accounts/new/$', 'newaccount'),
-    (r'^accounts/edit/(?P<accountid>\d+)/$', 'editaccount'),
+    url(r'^accounts/new/$', 'newaccount', name="new_account"),
+    url(r'^accounts/edit/(?P<accountid>\d+)/$', 'editaccount',
+        name="edit_account"),
     (r'^accounts/delete/(?P<accountid>\d+)/$', 'delaccount'),
 )
 

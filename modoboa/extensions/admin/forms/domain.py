@@ -1,6 +1,8 @@
 from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.core.urlresolvers import reverse
+
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import ModoboaException, Conflict
 from modoboa.lib.formutils import (
@@ -244,32 +246,68 @@ class DomainFormOptions(forms.Form):
 
 
 class DomainForm(TabForms):
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        self.forms = []
-        if user.has_perm("admin.change_domain"):
-            self.forms.append(dict(
-                id="general", title=_("General"), formtpl="admin/domain_general_form.html",
-                cls=DomainFormGeneral, mandatory=True
-            ))
+    """Domain edition form.
 
-        cbargs = [user]
+    """
+    def __init__(self, request, *args, **kwargs):
+        self.user = request.user
+        self.forms = []
+        if self.user.has_perm("admin.change_domain"):
+            self.forms.append({
+                "id": "general",
+                "title": _("General"),
+                "formtpl": "admin/domain_general_form.html",
+                "cls": DomainFormGeneral,
+                "mandatory": True
+            })
+
+        cbargs = [self.user]
         if "instances" in kwargs:
             cbargs += [kwargs["instances"]["general"]]
         self.forms += events.raiseQueryEvent("ExtraDomainForm", *cbargs)
         if not self.forms:
             self.active_id = "admins"
-        super(DomainForm, self).__init__(*args, **kwargs)
+        super(DomainForm, self).__init__(request, *args, **kwargs)
 
-    def save(self, user):
-        """Custom save method
+    def extra_context(self, context):
+        domain = self.instances["general"]
+        domadmins = [u for u in domain.admins
+                     if self.request.user.can_access(u) and not u.is_superuser]
+        if not self.request.user.is_superuser:
+            domadmins = [u for u in domadmins if u.group == "DomainAdmins"]
+        context.update({
+            "title": domain.name,
+            "action": reverse("edit_domain", args=[domain.pk]),
+            "formid": "domform",
+            "domain": domain,
+            "domadmins": domadmins
+        })
+
+    def is_valid(self):
+        """Custom validation.
+
+        We just save the current name before it is potentially
+        modified.
+
+        """
+        self.instances["general"].oldname = self.instances["general"].name
+        return super(DomainForm, self).is_valid()
+
+    def save(self):
+        """Custom save method.
 
         As forms interact with each other, it is easier to make custom
         code to save them.
         """
-        self.forms[0]['instance'].save(user, domalias_post_create=True)
+        self.forms[0]['instance'].save(
+            self.request.user, domalias_post_create=True
+        )
         for f in self.forms[1:]:
-            f["instance"].save(user)
+            f["instance"].save(self.request.user)
+
+    def done(self):
+        events.raiseEvent("DomainModified", self.instances["general"])
+        return render_to_json_response(_("Domain modified"))
 
 
 class DomainWizard(WizardForm):
@@ -286,6 +324,13 @@ class DomainWizard(WizardForm):
             formtpl="admin/domain_options_form.html",
             new_args=[self.request.user]
         )
+
+    def extra_context(self, context):
+        context.update({
+            "title": _("New domain"),
+            "action": reverse("new_domain"),
+            "formid": "domform"
+        })
 
     def done(self):
         genform = self.first_step.form

@@ -48,26 +48,7 @@ def edit(request, rdom_id, tplname='common/tabforms.html'):
         raise PermDeniedException
     instances = {'general': rdom}
     events.raiseEvent("FillRelayDomainInstances", request.user, rdom, instances)
-    if request.method == 'POST':
-        rdom.oldname = rdom.name
-        form = RelayDomainForm(request.user, request.POST, instances=instances)
-        if form.is_valid():
-            form.save(request.user)
-            events.raiseEvent('RelayDomainModified', rdom)
-            return render_to_json_response(_('Relay domain modified'))
-
-        return render_to_json_response(
-            {'form_errors': form.errors}, status=400
-        )
-    ctx = {
-        'action': reverse(edit, args=[rdom.id]),
-        'formid': 'rdomform',
-        'title': rdom.name,
-        'action_label': _("Update"),
-        'action_classes': "submit",
-        'tabs': RelayDomainForm(request.user, instances=instances)
-    }
-    return render(request, tplname, ctx)
+    return RelayDomainForm(request, instances=instances).process()
 
 
 @login_required

@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
+from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
 from modoboa.lib.permissions import get_account_roles
@@ -8,6 +9,7 @@ from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.formutils import (
     DomainNameField, DynamicForm, TabForms, WizardForm
 )
+from modoboa.lib.webutils import render_to_json_response
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
     Domain, Mailbox, Alias
@@ -319,23 +321,33 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
 
 
 class AccountForm(TabForms):
+    """Account edition form.
 
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
+    """
+    def __init__(self, request, *args, **kwargs):
+        self.user = request.user
         self.forms = [
             dict(id="general", title=_("General"), cls=AccountFormGeneral,
-                 new_args=[user], mandatory=True),
+                 new_args=[self.user], mandatory=True),
             dict(id="mail", title=_("Mail"), formtpl="admin/mailform.html",
                  cls=AccountFormMail),
             dict(id="perms", title=_("Permissions"), formtpl="admin/permsform.html",
                  cls=AccountPermissionsForm)
         ]
-        cbargs = [user]
+        cbargs = [self.user]
         if "instances" in kwargs:
             cbargs += [kwargs["instances"]["general"]]
         self.forms += events.raiseQueryEvent("ExtraAccountForm", *cbargs)
 
-        super(AccountForm, self).__init__(*args, **kwargs)
+        super(AccountForm, self).__init__(request, *args, **kwargs)
+
+    def extra_context(self, context):
+        account = self.instances["general"]
+        context.update({
+            'title': account.username,
+            'formid': 'accountform',
+            'action': reverse("edit_account", args=[account.id]),
+        })
 
     def check_perms(self, account):
         if account.is_superuser:
@@ -356,8 +368,14 @@ class AccountForm(TabForms):
             return False
         return True
 
-    def save_general_form(self):
-        self.account = self.forms[0]["instance"].save()
+    def is_valid(self):
+        """Two steps validation.
+        """
+        self.instances["general"].oldgroup = self.instances["general"].group
+        if super(AccountForm, self).is_valid(mandatory_only=True):
+            self.account = self.forms[0]["instance"].save()
+            return super(AccountForm, self).is_valid(optional_only=True)
+        return False
 
     def save(self):
         """Custom save method
@@ -365,11 +383,17 @@ class AccountForm(TabForms):
         As forms interact with each other, it is simpler to make
         custom code to save them.
         """
+        events.raiseEvent(
+            "AccountModified", self.instances["general"], self.account
+        )
         self.forms[1]["instance"].save(self.user, self.account)
         if len(self.forms) <= 2:
             return
         for f in self.forms[2:]:
             f["instance"].save()
+
+    def done(self):
+        return render_to_json_response(_("Account updated"))
 
 
 class AccountWizard(WizardForm):
@@ -383,6 +407,13 @@ class AccountWizard(WizardForm):
         self.add_step(
             AccountFormMail, _("Mail"), formtpl="admin/mailform.html"
         )
+
+    def extra_context(self, context):
+        context.update({
+            'title': _("New account"),
+            'action': reverse("new_account"),
+            'formid': 'newaccount_form'
+        })
 
     def done(self):
         from modoboa.lib.webutils import render_to_json_response

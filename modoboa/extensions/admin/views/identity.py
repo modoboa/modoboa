@@ -2,7 +2,6 @@ import reversion
 from django.shortcuts import render
 from django.db import transaction
 from django.utils.translation import ugettext as _, ungettext
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
@@ -14,7 +13,6 @@ from modoboa.lib.exceptions import (
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
-from modoboa.lib.formutils import WizardForm
 from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import Mailbox, Domain
@@ -22,7 +20,7 @@ from modoboa.extensions.admin.lib import (
     get_sort_order, get_listing_page, get_identities
 )
 from modoboa.extensions.admin.forms import (
-    AccountForm, AccountFormGeneral, AccountFormMail
+    AccountForm
 )
 
 
@@ -116,7 +114,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
 @permission_required("core.add_user")
 @transaction.commit_on_success
 @reversion.create_revision()
-def newaccount(request, tplname='common/wizard_forms.html'):
+def newaccount(request):
     """Create a new account.
 
     .. note:: An issue still remains int this code: if all validation
@@ -126,17 +124,7 @@ def newaccount(request, tplname='common/wizard_forms.html'):
        django 1.6 and atomicity.
     """
     from modoboa.extensions.admin.forms import AccountWizard
-    wizard = AccountWizard(request)
-    if request.method == "POST":
-        return wizard.validate_step()
-    ctx = {
-        'title': _("New account"),
-        'action': reverse(newaccount),
-        'formid': 'newaccount_form'
-    }
-    wizard.create_forms()
-    ctx.update(wizard=wizard)
-    return render(request, tplname, ctx)
+    return AccountWizard(request).process()
 
 
 @login_required
@@ -153,32 +141,33 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 
     instances = dict(general=account, mail=mb, perms=account)
     events.raiseEvent("FillAccountInstances", request.user, account, instances)
+    return AccountForm(request, instances=instances).process()
 
-    if request.method == "POST":
-        classes = {}
-        form = AccountForm(request.user, request.POST,
-                           instances=instances, classes=classes)
-        account.oldgroup = account.group
-        if form.is_valid(mandatory_only=True):
-            form.save_general_form()
-            if form.is_valid(optional_only=True):
-                events.raiseEvent("AccountModified", account, form.account)
-                form.save()
-                return render_to_json_response(_("Account updated"))
-        return render_to_json_response({'form_errors': form.errors}, status=400)
+    # if request.method == "POST":
+    #     classes = {}
+    #     form = AccountForm(request.user, request.POST,
+    #                        instances=instances, classes=classes)
+    #     account.oldgroup = account.group
+    #     if form.is_valid(mandatory_only=True):
+    #         form.save_general_form()
+    #         if form.is_valid(optional_only=True):
+    #             events.raiseEvent("AccountModified", account, form.account)
+    #             form.save()
+    #             return render_to_json_response(_("Account updated"))
+    #     return render_to_json_response({'form_errors': form.errors}, status=400)
 
-    ctx = {
-        'title': account.username,
-        'formid': 'accountform',
-        'action': reverse(editaccount, args=[accountid]),
-        'action_label': _('Update'),
-        'action_classes': 'submit',
-        'tabs': AccountForm(request.user, instances=instances)
-    }
-    active_tab_id = request.GET.get("active_tab", "default")
-    if active_tab_id != "default":
-        ctx["tabs"].active_id = active_tab_id
-    return render(request, tplname, ctx)
+    # ctx = {
+    #     'title': account.username,
+    #     'formid': 'accountform',
+    #     'action': reverse(editaccount, args=[accountid]),
+    #     'action_label': _('Update'),
+    #     'action_classes': 'submit',
+    #     'tabs': AccountForm(request.user, instances=instances)
+    # }
+    # active_tab_id = request.GET.get("active_tab", "default")
+    # if active_tab_id != "default":
+    #     ctx["tabs"].active_id = active_tab_id
+    # return render(request, tplname, ctx)
 
 
 @login_required

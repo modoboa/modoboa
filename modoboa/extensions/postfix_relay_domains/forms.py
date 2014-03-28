@@ -1,8 +1,13 @@
+"""
+Postfix relay domains extension forms.
+"""
 from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.core.urlresolvers import reverse
 from modoboa.lib import events
 from modoboa.lib.formutils import DynamicForm, DomainNameField, TabForms
+from modoboa.lib.webutils import render_to_json_response
 from modoboa.extensions.admin.models import Domain, DomainAlias
 from .models import RelayDomain, RelayDomainAlias
 
@@ -130,28 +135,44 @@ class RelayDomainForm(TabForms):
     We use a *tabs* compatible form because extensions can add their
     own tab. (ex: amavis)
     """
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
+    def __init__(self, request, *args, **kwargs):
+        self.user = request.user
         self.forms = []
-        if user.has_perm("postfix_relay_domains.change_relaydomain"):
+        if self.user.has_perm("postfix_relay_domains.change_relaydomain"):
             self.forms.append({
-                'id': 'general', 'title': _("General"), 
+                'id': 'general', 'title': _("General"),
                 'formtpl': 'postfix_relay_domains/relaydomain_form.html',
                 'cls': RelayDomainFormGeneral, 'mandatory': True
             })
 
-        cbargs = [user]
+        cbargs = [self.user]
         if "instances" in kwargs:
             cbargs += [kwargs["instances"]["general"]]
         self.forms += events.raiseQueryEvent("ExtraRelayDomainForm", *cbargs)
-        super(RelayDomainForm, self).__init__(*args, **kwargs)
+        super(RelayDomainForm, self).__init__(request, *args, **kwargs)
 
-    def save(self, user):
+    def extra_context(self, context):
+        """Additional content.
+        """
+        rdom = self.instances["general"]
+        context.update({
+            'action': reverse("edit_relaydomain", args=[rdom.id]),
+            'formid': 'rdomform',
+            'title': rdom.name
+        })
+
+    def save(self):
         """Custom save method
 
         As forms interact with each other, it is easier to make custom
         code to save them.
         """
-        self.forms[0]['instance'].save(user, rdomalias_post_create=True)
+        self.forms[0]['instance'].save(
+            self.request.user, rdomalias_post_create=True
+        )
         for f in self.forms[1:]:
-            f["instance"].save(user)
+            f["instance"].save(self.request.user)
+
+    def done(self):
+        events.raiseEvent('RelayDomainModified', self.instances["general"])
+        return render_to_json_response(_('Relay domain modified'))

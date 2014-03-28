@@ -89,21 +89,11 @@ def domains_list(request):
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
 @reversion.create_revision()
-def newdomain(request, tplname="common/wizard_forms.html"):
+def newdomain(request):
     from modoboa.extensions.admin.forms import DomainWizard
 
     events.raiseEvent("CanCreate", request.user, "domains")
-    wizard = DomainWizard(request)
-    if request.method == "POST":
-        return wizard.validate_step()
-    ctx = {"title": _("New domain"),
-           "action_label": _("Create"),
-           "action_classes": "submit",
-           "action": reverse(newdomain),
-           "formid": "domform"}
-    wizard.create_forms()
-    ctx.update(wizard=wizard)
-    return render(request, tplname, ctx)
+    return DomainWizard(request).process()
 
 
 @login_required
@@ -117,30 +107,7 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
 
     instances = dict(general=domain)
     events.raiseEvent("FillDomainInstances", request.user, domain, instances)
-    if request.method == "POST":
-        domain.oldname = domain.name
-        form = DomainForm(request.user, request.POST, instances=instances)
-        if form.is_valid():
-            form.save(request.user)
-            events.raiseEvent("DomainModified", domain)
-            return render_to_json_response(_("Domain modified"))
-        return render_to_json_response({
-            'form_errors': form.errors
-        }, status=400)
-
-    domadmins = [u for u in domain.admins
-                 if request.user.can_access(u) and not u.is_superuser]
-    if not request.user.is_superuser:
-        domadmins = [u for u in domadmins if u.group == "DomainAdmins"]
-    ctx = {"title": domain.name,
-           "action_label": _("Update"),
-           "action_classes": "submit",
-           "action": reverse(editdomain, args=[dom_id]),
-           "formid": "domform",
-           "domain": domain,
-           "tabs": DomainForm(request.user, instances=instances),
-           "domadmins": domadmins}
-    return render(request, tplname, ctx)
+    return DomainForm(request, instances=instances).process()
 
 
 @login_required
