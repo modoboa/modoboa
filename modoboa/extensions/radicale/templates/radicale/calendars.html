@@ -1,10 +1,14 @@
 {% extends "twocols.html" %}{% load i18n radicale_tags %}
 {% block html_head %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/creation_wizard.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/listing.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}radicale/js/jquery.dynamicrule.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}radicale/js/radicale.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    radicale = new Radicale();
+    radicale = new Radicale({});
 });
 </script>
 {% endblock %}
@@ -18,27 +22,4 @@ $(document).ready(function() {
   </ul>
 </div>
 {% endblock %}
-{% block apparea %}{% load lib_tags %}
-<table id="{{ tableid }}" class="table {{ styles }}">
-  <thead>
-    <tr>
-      <th id="name" class="sortable" data-sort_order="identity" width="">{% trans "Name" %}</th>
-      <th id="type">{% trans "Type" %}</th>
-      <th id="url">{% trans "Address" %}</th>
-      <th id="actions" width="">{% trans "Actions" %}</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for cal in calendars %}
-    <tr id="{{ cal.id }}" class="" name="{{ forloop.counter }}">
-      <td name="name">{% calendar_modify_link cal %}</td>
-      <td name="type">
-        <span class="label label-info"><a href="#" class="filter">{{ cal.type }}</a></span>
-      </td>
-      <td name="url">{{ cal.url }}</td>
-      <td name="actions">{% calendar_actions cal %}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% endblock %}
+{% block apparea %}<div id="listing"></div>{% endblock %}

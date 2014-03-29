@@ -108,3 +108,17 @@ class SharedCalendar(Calendar):
     @property
     def type(self):
         return _("shared")
+
+
+@python_2_unicode_compatible
+class AccessRule(models.Model):
+    mailbox = models.ForeignKey("admin.Mailbox")
+    read = models.BooleanField(default=False)
+    write = models.BooleanField(default=False)
+    calendar = models.ForeignKey(UserCalendar)
+
+    def __str__(self):
+        access = "r" if self.read else ""
+        access += "w" if self.write else ""
+        return "%s access rule to %s -> " \
+            % (self.mailbox, self.calendar, access if access else "no access")

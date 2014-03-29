@@ -5,7 +5,7 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib.webutils import render_to_json_response
-from modoboa.lib.formutils import WizardForm, TabForms
+from modoboa.lib.formutils import WizardForm, TabForms, DynamicForm
 from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
 
 
@@ -26,8 +26,30 @@ class SharedCalendarForm(forms.ModelForm):
         model = SharedCalendar
 
 
-class RightsForm(forms.Form):
+class RightsForm(forms.Form, DynamicForm):
+    """
+    """
     username = forms.CharField(required=False)
+    read_access = forms.BooleanField(initial=False, label=_("Read"))
+    write_access = forms.BooleanField(initial=False, label=_("Write"))
+
+    def __init__(self, *args, **kwargs):
+        from django.http import QueryDict
+
+        if "instance" in kwargs:
+            self.calendar = kwargs["instance"]
+            del kwargs["instance"]
+        else:
+            self.calendar = None
+        super(RightsForm, self).__init__(*args, **kwargs)
+
+        if args and isinstance(args[0], QueryDict):
+            self._load_from_qdict(args[0], "username", forms.EmailField)
+
+    def _create_field(self, typ, name, value=None, pos=None):
+        """
+        """
+        super(RightsForm, self)._create_field(typ, name, value, pos)
 
 
 class UserCalendarWizard(WizardForm):
@@ -61,8 +83,14 @@ class UserCalendarEditionForm(TabForms):
         self.forms.append({
             "id": "general",
             "title": _("General"),
-            "formtpl": "",
             "cls": UserCalendarForm,
+            "mandatory": True
+        })
+        self.forms.append({
+            "id": "rights",
+            "title": _("Rights"),
+            "cls": RightsForm,
+            "formtpl": "radicale/rightsform.html",
             "mandatory": True
         })
         super(UserCalendarEditionForm, self).__init__(*args, **kwargs)

@@ -159,8 +159,15 @@ class WizardForm(object):
 
 
 class DynamicForm(object):
+    """A form which accepts dynamic fields.
 
+    We consider a field to be dynamic when it can appear multiple
+    times within the same request.
+
+    """
     def _create_field(self, typ, name, value=None, pos=None):
+        """Create a new form field.
+        """
         self.fields[name] = typ(label="", required=False)
         if value is not None:
             self.fields[name].initial = value
@@ -169,6 +176,12 @@ class DynamicForm(object):
             self.fields.keyOrder.insert(pos, name)
 
     def _load_from_qdict(self, qdict, pattern, typ):
+        """Load all instances of a field from a ``QueryDict`` object.
+
+        :param ``QueryDict`` qdict: a QueryDict object
+        :param string pattern: pattern used to find field instances
+        :param typ: a form field class
+        """
         expr = re.compile(r'%s_\d+' % pattern)
         values = []
         for k, v in qdict.iteritems():

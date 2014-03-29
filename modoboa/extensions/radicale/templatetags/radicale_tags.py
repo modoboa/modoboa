@@ -51,7 +51,7 @@ def calendar_modify_link(calendar):
         linkdef["url"] = reverse(
             "user_calendar", args=[calendar.pk]
         )
-        #linkdef["modalcb"] = "admin.domainform_cb"
+        linkdef["modalcb"] = "radicale.edit_calendar_cb"
     else:
         linkdef["url"] = reverse(
             "shared_calendar", args=[calendar.pk]

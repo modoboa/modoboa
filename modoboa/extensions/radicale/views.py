@@ -5,13 +5,14 @@ from itertools import chain
 
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import (
     login_required
 )
 from django.utils.translation import ugettext as _
 
-from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.webutils import (
+    _render_to_string, render_to_json_response
+)
 from modoboa.lib.exceptions import NotFound, PermDeniedException
 from modoboa.extensions.radicale.forms import (
     UserCalendarWizard, SharedCalendarForm, UserCalendarEditionForm
@@ -21,11 +22,13 @@ from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
 
 @login_required
 def index(request):
-    return HttpResponseRedirect(reverse(calendars))
+    return render(request, "radicale/calendars.html", {
+        "selection": "radicale"
+    })
 
 
 @login_required
-def calendars(request, tplname="radicale/calendars.html"):
+def calendars(request, tplname="radicale/calendar_list.html"):
     if request.user.group == "SimpleUsers":
         cals = UserCalendar.objects.filter(
             mailbox=request.user.mailbox_set.all()[0]
@@ -35,9 +38,10 @@ def calendars(request, tplname="radicale/calendars.html"):
             UserCalendar.objects.get_for_admin(request.user),
             SharedCalendar.objects.get_for_admin(request.user)
         )
-    return render(request, tplname, {
-        "selection": "radicale",
-        "calendars": cals
+    return render_to_json_response({
+        "table": _render_to_string(request, tplname, {
+            "calendars": cals
+        })
     })
 
 
@@ -54,18 +58,12 @@ def user_calendar(request, pk):
         ucal = UserCalendar.objects.get(pk=pk)
     except UserCalendar.DoesNotExist:
         raise NotFound
-    instances = {"general": ucal}
+    instances = {"general": ucal, "rights": None}
     if request.method == "DELETE":
         # Check ownership
         ucal.delete()
         return render_to_json_response(_("Calendar removed"))
     return UserCalendarEditionForm(request, instances=instances).process()
-    # if request.method == "POST":
-    #     pass
-    # form = UserCalendarEditionForm(instances=instances)
-    # return render(request, "common/tabforms.html", {
-    #     "title": ucal.name, "tabs": form
-    # })
 
 
 @login_required

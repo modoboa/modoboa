@@ -151,7 +151,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                 name = "aliases_%d" % cpt
                 self._create_field(forms.EmailField, name, alias.full_address)
                 cpt += 1
-            self.fields["email"].initial = self.mb.full_address            
+            self.fields["email"].initial = self.mb.full_address
             self.fields["quota_act"].initial = self.mb.use_domain_quota
             if not self.mb.use_domain_quota and self.mb.quota:
                 self.fields["quota"].initial = self.mb.quota
