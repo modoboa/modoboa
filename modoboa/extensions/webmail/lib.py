@@ -3,7 +3,7 @@ import os
 import re
 from datetime import datetime, timedelta
 import email
-import lxml
+import lxml.html
 import chardet
 from rfc6266 import build_header, parse_headers
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
