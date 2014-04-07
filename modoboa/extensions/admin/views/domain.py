@@ -1,3 +1,4 @@
+import reversion
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
@@ -88,6 +89,7 @@ def domains_list(request):
 @login_required
 @permission_required("admin.add_domain")
 @transaction.commit_on_success
+@reversion.create_revision()
 def newdomain(request, tplname="common/wizard_forms.html"):
     events.raiseEvent("CanCreate", request.user, "domains")
 
@@ -139,6 +141,7 @@ def newdomain(request, tplname="common/wizard_forms.html"):
 @login_required
 @permission_required("admin.view_domains")
 @transaction.commit_on_success
+@reversion.create_revision()
 def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     domain = Domain.objects.get(pk=dom_id)
     if not request.user.can_access(domain):

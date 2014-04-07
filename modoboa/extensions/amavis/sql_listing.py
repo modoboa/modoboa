@@ -9,7 +9,7 @@ from modoboa.lib.webutils import static_url
 from modoboa.lib.email_listing import MBconnector, EmailListing
 from modoboa.lib.emailutils import Email
 from modoboa.lib.dbutils import db_type
-from modoboa.extensions.admin.models import Domain, Alias
+from modoboa.extensions.admin.models import Domain
 from .models import Quarantine, Msgrcpt
 
 
@@ -46,9 +46,10 @@ class Qtable(tables.Table):
         "date", label=ugettext_lazy("Date"), sort_order="date",
         cssclass="openable"
     )
-    
+
     cols_order = [
-        'selection', 'type', 'rstatus', 'score', 'to', 'from_', 'subject', 'time'
+        'selection', 'type', 'rstatus', 'score', 'to', 'from_', 'subject',
+        'time'
     ]
 
     def parse_type(self, value):
@@ -101,7 +102,7 @@ class SQLconnector(MBconnector):
                 order = self.order_translation_table[order]
                 self.messages = self.messages.order_by(sign + order)
 
-            self.count = len(self.messages)
+            self.count = self.messages.count()
         return self.count
 
     def fetch(self, start=None, stop=None, **kwargs):
@@ -115,7 +116,9 @@ class SQLconnector(MBconnector):
                  "type": qm["mail__msgrcpt__content"],
                  "score": qm["mail__msgrcpt__bspam_level"]}
             rs = qm["mail__msgrcpt__rs"]
-            if rs == '':
+            if rs == 'D':
+                continue
+            elif rs == '':
                 m["class"] = "unseen"
             elif rs == 'R':
                 m["img_rstatus"] = static_url("pics/release.png")
@@ -137,6 +140,18 @@ class SQLWrapper(object):
 
     See ``PgWrapper`` for the real mess...
     """
+
+    def _exec(self, query, args):
+        """Execute a raw SQL query.
+
+        :param string query: query to execute
+        :param list args: a list of arguments to replace in :kw:`query`
+        """
+        from django.db import connections, transaction
+
+        cursor = connections['amavis'].cursor()
+        cursor.execute(query, args)
+        transaction.commit_unless_managed(using='amavis')
 
     def get_mails(self, request, rcptfilter=None):
         """Retrieve all messages visible by a user.
@@ -162,6 +177,19 @@ class SQLWrapper(object):
 
     def get_recipient_message(self, address, mailid):
         return Msgrcpt.objects.get(mail=mailid, rid__email=address)
+
+    def set_msgrcpt_status(self, address, mailid, status):
+        """Change the status (rs field) of a message recipient.
+
+        :param string status: status
+        """
+        from modoboa.extensions.amavis.models import Maddr
+
+        addr = Maddr.objects.get(email=address)
+        self._exec(
+            "UPDATE msgrcpt SET rs=%s WHERE mail_id=%s AND rid=%s",
+            [status, mailid, addr.id]
+        )
 
     def get_recipient_messages(self, address, mailids):
         return Msgrcpt.objects.filter(mail__in=mailids, rid__email=address)

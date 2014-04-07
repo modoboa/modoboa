@@ -28,19 +28,19 @@ Then, edit the ``inbox`` namespace and add the following lines::
   inbox = yes
 
   mailbox Drafts {
-    auto = create
+    auto = subscribe
     special_use = \Drafts
   }
   mailbox Junk {
-    auto = create
+    auto = subscribe
     special_use = \Junk
   }
   mailbox Sent {
-    auto = create
+    auto = subscribe
     special_use = \Sent
   }
   mailbox Trash {
-    auto = create
+    auto = subscribe
     special_use = \Trash
   }
 
@@ -357,8 +357,10 @@ Copy this example into a file (for example: :file:`quota-trigger.sql`) on
 server running postgres and execute the following commands::
 
   $ su - postgres
-  $ psql < /path/to/quota-trigger.sql
+  $ psql [modoboa database] < /path/to/quota-trigger.sql
   $ exit
+  
+Replace ``[modoboa database]`` by the appropriate value.
 
 Forcing recalculation
 ---------------------

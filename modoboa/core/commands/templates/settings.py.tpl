@@ -113,11 +113,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'reversion.middleware.RevisionMiddleware',
 
     'modoboa.lib.middleware.AjaxLoginRedirect',
     'modoboa.lib.middleware.CommonExceptionCatcher',
     'modoboa.lib.middleware.ExtControlMiddleware',
+    'modoboa.lib.middleware.RequestCatcherMiddleware',
 )
 
 ROOT_URLCONF = '{{ name }}.urls'

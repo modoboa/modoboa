@@ -48,6 +48,27 @@ Finally, follow the common procedure::
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
+1.1.2: Audit trail issues
+=========================
+
+Update the :file:`settings.py` file as follows:
+
+#. Remove the ``'reversion.middleware.RevisionMiddleware'``
+   middleware from the ``MIDDLEWARE_CLASSES`` variable
+
+#. Add the new ``'modoboa.lib.middleware.RequestCatcherMiddleware'``
+   middleware at the end of the ``MIDDLEWARE_CLASSES`` variable
+
+1.1.1: Few bugfixes
+===================
+
+For those who installed Dovecot in a non-standard location, it is now
+possible to tell Modoboa where to find it. Just define a variable
+named ``DOVECOT_LOOKUP_PATH`` in the :file:`settings.py` file and
+include the appropriate lookup path inside::
+
+  DOVECOT_LOOKUP_PATH = ("/usr/sbin/dovecot", "/usr/local/sbin/dovecot")
+
 .. _1.1.0:
 
 1.1.0: relay domains and better passwords encryption

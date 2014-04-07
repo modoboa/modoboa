@@ -41,7 +41,7 @@ Then, you need to register this application using the provided
 API. Just copy/paste the following example into the :file:`__init__.py` file
 of the future extension::
 
-  from modoboa.extensions import ModoExtension, exts_pool
+  from modoboa.core.extensions import ModoExtension, exts_pool
   
   class MyExtension(ModoExtension):
       name = "myext"

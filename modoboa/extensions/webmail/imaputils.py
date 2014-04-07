@@ -415,6 +415,9 @@ class IMAPconnector(object):
 
     @capability('LIST-EXTENDED', '_listmboxes_simple')
     def _listmboxes(self, topmailbox, mailboxes, until_mailbox=None):
+        """Retrieve mailboxes list.
+        
+        """
         pattern = "%s%s%%" % (topmailbox.encode("imap4-utf-7"), self.hdelimiter) \
             if len(topmailbox) else "%"
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
@@ -443,6 +446,8 @@ class IMAPconnector(object):
             if r'\Marked' in flags or not r'\UnMarked' in flags:
                 descr["send_status"] = True
             if r'\HasChildren' in flags:
+                if r'\NonExistent' in flags:
+                    descr["removed"] = True
                 descr["path"] = name
                 descr["sub"] = []
                 if until_mailbox and until_mailbox.startswith(name):
@@ -489,7 +494,8 @@ class IMAPconnector(object):
                     continue
                 del mb["send_status"]
                 key = "path" if "path" in mb else "name"
-                count = self.unseen_messages(mb[key])
+                if not mb.get("removed", False):
+                    count = self.unseen_messages(mb[key])
                 if count == 0:
                     continue
                 mb["unseen"] = count

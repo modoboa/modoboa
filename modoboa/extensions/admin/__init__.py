@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.core.extensions import ModoExtension, exts_pool
 from modoboa.lib import parameters, events
-from modoboa.lib.exceptions import PermDeniedException, BadRequest
+from modoboa.lib.exceptions import PermDeniedException, BadRequest, Conflict
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias
@@ -164,6 +164,12 @@ def import_account_mailbox(user, account, row):
             )
         if not user.can_access(domain):
             raise PermDeniedException
+        try:
+            mb = Mailbox.objects.get(address=mailbox, domain=domain)
+        except Mailbox.DoesNotExist:
+            pass
+        else:
+            raise Conflict(_("Mailbox %s already exists" % account.email))
         quota = int(row[1].strip())
         use_domain_quota = True if not quota else False
         mb = Mailbox(address=mailbox, domain=domain,

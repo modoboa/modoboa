@@ -472,10 +472,20 @@ class Log(models.Model):
 
 @receiver(reversion.post_revision_commit)
 def post_revision_commit(sender, **kwargs):
-    if kwargs["revision"].user is None:
-        return
+    """Custom post-revision hook.
+
+    We want to track all creations and modifications of admin. objects
+    (alias, mailbox, user, domain, domain alias, etc.) so we use
+    django-reversion for that.
+
+    """
+    from modoboa.lib.signals import get_request
+
+    current_user = get_request().user.username 
     logger = logging.getLogger("modoboa.admin")
     for version in kwargs["versions"]:
+        if version.object is None:
+            continue
         prev_revisions = reversion.get_for_object(version.object)
         if prev_revisions.count() == 1:
             action = _("added")
@@ -486,18 +496,19 @@ def post_revision_commit(sender, **kwargs):
         message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
             "object": unicode(version.content_type).capitalize(),
             "name": version.object_repr, "action": action,
-            "user": kwargs["revision"].user.username
+            "user": current_user
         }
         getattr(logger, level)(message)
 
 
 @receiver(post_delete)
-def post_delete_hook(sender, instance, **kwargs):
+def log_object_removal(sender, instance, **kwargs):
     """Custom post-delete hook.
 
     We want to know who was responsible for an object deletion.
     """
     from reversion.models import Version
+    from modoboa.lib.signals import get_request
 
     if not reversion.is_registered(sender):
         return
@@ -510,6 +521,6 @@ def post_delete_hook(sender, instance, **kwargs):
     msg = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
         "object": unicode(version.content_type).capitalize(),
         "name": version.object_repr, "action": _("deleted"),
-        "user": version.revision.user.username
+        "user": get_request().user.username
     }
     logger.critical(msg)

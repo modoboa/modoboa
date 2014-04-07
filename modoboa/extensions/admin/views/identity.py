@@ -1,3 +1,4 @@
+import reversion
 from django.shortcuts import render
 from django.db import transaction
 from django.utils.translation import ugettext as _, ungettext
@@ -8,7 +9,7 @@ from django.contrib.auth.decorators import (
 from django.views.decorators.csrf import ensure_csrf_cookie
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import (
-    ModoboaException, PermDeniedException, BadRequest
+    PermDeniedException, BadRequest
 )
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
@@ -114,6 +115,7 @@ def list_quotas(request, tplname="admin/quotas.html"):
 @login_required
 @permission_required("core.add_user")
 @transaction.commit_on_success
+@reversion.create_revision()
 def newaccount(request, tplname='common/wizard_forms.html'):
     """Create a new account.
 
@@ -166,6 +168,7 @@ def newaccount(request, tplname='common/wizard_forms.html'):
 @login_required
 @permission_required("core.change_user")
 @transaction.commit_on_success
+@reversion.create_revision()
 def editaccount(request, accountid, tplname="common/tabforms.html"):
     account = User.objects.get(pk=accountid)
     if not request.user.can_access(account):

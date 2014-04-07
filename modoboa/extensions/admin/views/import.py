@@ -1,8 +1,9 @@
 import csv
+import reversion
 from django.utils.translation import ugettext as _
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.db import transaction, IntegrityError
+from django.db import transaction
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
@@ -86,6 +87,7 @@ def import_dlist(user, row, formopts):
     _import_alias(user, row)
 
 
+@reversion.create_revision()
 def importdata(request, formclass=ImportDataForm):
     """Generic import function
 

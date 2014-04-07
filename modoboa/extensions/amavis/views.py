@@ -57,7 +57,6 @@ def _listing(request):
             else:
                 raise BadRequest("unsupported search criteria %s" % c)
             flt = nfilter if flt is None else flt | nfilter
-
     msgtype = navparams.get('msgtype', None)
     if msgtype is not None:
         nfilter = Q(mail__msgrcpt__content=msgtype)
@@ -140,9 +139,7 @@ def viewmail(request, mail_id):
     if request.user.mailbox_set.count():
         mb = Mailbox.objects.get(user=request.user)
         if rcpt in mb.alias_addresses:
-            msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
-            msgrcpt.rs = 'V'
-            msgrcpt.save()
+            get_wrapper().set_msgrcpt_status(rcpt, mail_id, 'V')
 
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
@@ -178,9 +175,7 @@ def delete_selfservice(request, mail_id):
     if rcpt is None:
         raise BadRequest(_("Invalid request"))
     try:
-        msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
-        msgrcpt.rs = 'D'
-        msgrcpt.save()
+        get_wrapper().set_msgrcpt_status(rcpt, mail_id, 'D')
     except Msgrcpt.DoesNotExist:
         raise BadRequest(_("Invalid request"))
     return render_to_json_response(_("Message deleted"))
@@ -201,9 +196,7 @@ def delete(request, mail_id):
         if mb is not None and r != mb.full_address \
                 and not r in mb.alias_addresses:
             continue
-        msgrcpt = wrapper.get_recipient_message(r, i)
-        msgrcpt.rs = 'D'
-        msgrcpt.save()
+        wrapper.set_msgrcpt_status(r, i, 'D')
     message = ungettext("%(count)d message deleted successfully",
                         "%(count)d messages deleted successfully",
                         len(mail_id)) % {"count": len(mail_id)}
@@ -218,24 +211,24 @@ def release_selfservice(request, mail_id):
     secret_id = request.GET.get("secret_id", None)
     if rcpt is None or secret_id is None:
         raise BadRequest(_("Invalid request"))
+    wrapper = get_wrapper()
     try:
-        msgrcpt = get_wrapper().get_recipient_message(rcpt, mail_id)
+        msgrcpt = wrapper.get_recipient_message(rcpt, mail_id)
     except Msgrcpt.DoesNotExist:
         raise BadRequest(_("Invalid request"))
     if secret_id != msgrcpt.mail.secret_id:
         raise BadRequest(_("Invalid request"))
     if parameters.get_admin("USER_CAN_RELEASE") == "no":
-        msgrcpt.rs = 'p'
+        wrapper.set_msgrcpt_status(rcpt, mail_id, 'p')
         msg = _("Request sent")
     else:
         amr = AMrelease()
         result = amr.sendreq(mail_id, secret_id, rcpt)
         if result:
-            rcpt.rs = 'R'
+            wrapper.set_msgrcpt_status(rcpt, mail_id, 'R')
             msg = _("Message released")
         else:
             raise BadRequest(result)
-    msgrcpt.save()
     return render_to_json_response(msg)
 
 
@@ -257,14 +250,10 @@ def release(request, mail_id):
             continue
         msgrcpts += [wrapper.get_recipient_message(r, i)]
     if mb is not None and parameters.get_admin("USER_CAN_RELEASE") == "no":
-        # FIXME : can't use this syntax because extra SQL (using
-        # .extra() for postgres) is not propagated (the 'tables'
-        # parameter is lost somewhere...)
-        #
-        # msgrcpts.update(rs='p')
         for msgrcpt in msgrcpts:
-            msgrcpt.rs = 'p'
-            msgrcpt.save()
+            wrapper.set_msgrcpt_status(
+                msgrcpt.rid.email, msgrcpt.mail.mail_id, 'p'
+            )
         message = ungettext("%(count)d request sent",
                             "%(count)d requests sent",
                             len(mail_id)) % {"count": len(mail_id)}
@@ -276,10 +265,11 @@ def release(request, mail_id):
     amr = AMrelease()
     error = None
     for rcpt in msgrcpts:
-        result = amr.sendreq(rcpt.mail.mail_id, rcpt.mail.secret_id, rcpt.rid.email)
+        result = amr.sendreq(
+            rcpt.mail.mail_id, rcpt.mail.secret_id, rcpt.rid.email
+        )
         if result:
-            rcpt.rs = 'R'
-            rcpt.save()
+            wrapper.set_msgrcpt_status(rcpt.rid.email, rcpt.mail.mail_id, 'R')
         else:
             error = result
             break
