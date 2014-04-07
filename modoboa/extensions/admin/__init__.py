@@ -153,7 +153,7 @@ def import_account_mailbox(user, account, row):
     :param list rom: list of fields (strings)
     """
     account.email = row[0].strip()
-    if account.email != "":
+    if account.email:
         account.save()
         mailbox, domname = split_mailbox(account.email)
         try:
@@ -169,8 +169,16 @@ def import_account_mailbox(user, account, row):
         except Mailbox.DoesNotExist:
             pass
         else:
-            raise Conflict(_("Mailbox %s already exists" % account.email))
-        quota = int(row[1].strip())
+            raise  Conflict(_("Mailbox %s already exists" % account.email))
+        if len(row) == 1:
+            quota = None
+        else:
+            try:
+                quota = int(row[1].strip())
+            except ValueError:
+                raise BadRequest(
+                    _("Account import failed (%s): wrong quota value" % account.username)
+                )
         use_domain_quota = True if not quota else False
         mb = Mailbox(address=mailbox, domain=domain,
                      user=account, use_domain_quota=use_domain_quota)
