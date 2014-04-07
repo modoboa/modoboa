@@ -170,3 +170,17 @@ account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com
         )
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(username="sa@test.com")
+
+    def test_import_alias_with_empty_values(self):
+        f = ContentFile(b"""
+alias;user.alias@test.com;True;user@test.com;;;;;;;;;;;;;;;;
+""", name="identities.csv")
+        self.clt.post(
+            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            {"sourcefile": f, "crypt_password": True,
+             "continue_if_exists": True}
+        )
+        alias = Alias.objects.get(
+            domain__name="test.com", address="user.alias"
+        )
+        self.assertEqual(alias.type, "alias")
