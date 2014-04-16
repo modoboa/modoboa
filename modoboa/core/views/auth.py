@@ -61,8 +61,11 @@ dologin = never_cache(dologin)
 
 
 def dologout(request):
-    events.raiseEvent("UserLogout", request)
-    logger = logging.getLogger("modoboa.auth")
-    logger.info(_("User '%s' logged out" % request.user.username))
-    logout(request)
+    """Logout the current user.
+    """
+    if not request.user.is_anonymous():
+        events.raiseEvent("UserLogout", request)
+        logger = logging.getLogger("modoboa.auth")
+        logger.info(_("User '%s' logged out" % request.user.username))
+        logout(request)
     return HttpResponseRedirect(reverse(dologin))
