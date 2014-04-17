@@ -598,6 +598,8 @@ def html2plaintext(content):
 
     :param content: some HTML content
     """
+    if not content:
+        return ""
     html = lxml.html.fromstring(content)
     plaintext = ""
     for ch in html.iter():
@@ -662,10 +664,14 @@ def send_mail(request, posturl=None):
         if editormode == "html":
             msg = MIMEMultipart(_subtype="related")
             submsg = MIMEMultipart(_subtype="alternative")
-            textbody = html2plaintext(body)
+            if body:
+                textbody = html2plaintext(body)
+                body, images = find_images_in_body(body)
+            else:
+                textbody = ""
+                images = []
             submsg.attach(MIMEText(textbody.encode(charset),
                                    _subtype="plain", _charset=charset))
-            body, images = find_images_in_body(body)
             submsg.attach(MIMEText(body.encode(charset), _subtype=editormode,
                                    _charset=charset))
             msg.attach(submsg)
