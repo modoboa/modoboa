@@ -5,9 +5,10 @@ import smtplib
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
+import lxml.html
 from django.template.loader import render_to_string
 from django.conf import settings
-import u2u_decode
+from modoboa.lib import u2u_decode
 
 
 class EmailAddress(object):
@@ -22,26 +23,49 @@ class EmailAddress(object):
 
 
 class Email(object):
-    def __init__(self, msg, mformat="plain", dformat="plain", links=0):
+    def __init__(self, mailid, mformat="plain", dformat="plain", links=0):
         self.attached_map = {}
         self.contents = {"html": "", "plain": ""}
         self.headers = []
         self.attachments = {}
+        self.mailid = mailid
         self.mformat = mformat
         self.dformat = dformat
         self.links = links
-
-        self.__parse(msg)
+        self._msg = None
+        self._body = None
 
         if not mformat in self.contents or self.contents[mformat] == "":
             # Fallback
             self.mformat = mformat == "html" and "plain" or "html"
 
-        self.body = \
-            getattr(self, "viewmail_%s" % self.mformat) \
-            (self.contents[self.mformat], links=links)
+    @property
+    def msg(self):
+        """Return an email.message object.
+        """
+        raise NotImplementedError
 
-    def __parse_default(self, msg, level):
+    @property
+    def body(self):
+        """Return email's body.
+        """
+        if self._body is None:
+            self._body = getattr(self, "viewmail_%s" % self.mformat) \
+                (self.contents[self.mformat], links=self.links)
+        return self._body
+
+    def get_header(self, msg, hdrname):
+        """Look for a particular header.
+
+        :param string hdrname: header name
+        :return: header avalue
+        """
+        for name in [hdrname, hdrname.upper()]:
+            if name in msg:
+                return msg[name]
+        return ""
+
+    def _parse_default(self, msg, level):
         """Default parser
 
         All parts handled by this parser will be consireded as
@@ -63,7 +87,7 @@ class Email(object):
         inside a navigator.
         """
         if msg.get_content_subtype() not in ["plain", "html"]:
-            self.__parse_default(msg, level)
+            self._parse_default(msg, level)
             target = "plain"
         else:
             target = msg.get_content_subtype()
@@ -96,9 +120,9 @@ class Email(object):
                 self.attached_map[cid] = re.match("^http:", fname) and fname \
                     or self.__save_image(fname, msg)
                 return
-        self.__parse_default(msg, level)
+        self._parse_default(msg, level)
 
-    def __parse(self, msg, level=None):
+    def _parse(self, msg, level=None):
         """Recursive email parser
 
         A message structure can be complex. To correctly handle
@@ -116,7 +140,7 @@ class Email(object):
             for part in msg.get_payload():
                 nlevel = level is None and ("%d" % cpt) \
                     or "%s.%d" % (level, cpt)
-                self.__parse(part, nlevel)
+                self._parse(part, nlevel)
                 cpt += 1
             return
 
@@ -125,7 +149,7 @@ class Email(object):
         try:
             getattr(self, "_parse_%s" % msg.get_content_maintype())(msg, level)
         except AttributeError:
-            self.__parse_default(msg, level)
+            self._parse_default(msg, level)
 
     def __save_image(self, fname, part):
         """Save an inline image on the filesystem.
@@ -138,7 +162,7 @@ class Email(object):
         :param fname: the image associated filename
         :param part: the email part that contains the image payload
         """
-        if re.search("\.\.", fname):
+        if re.search(r"\.\.", fname):
             return None
         path = "/static/tmp/" + fname
         fp = open(settings.MODOBOA_DIR + path, "wb")

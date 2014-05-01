@@ -92,12 +92,7 @@ def index(request):
 
 
 def getmailcontent_selfservice(request, mail_id):
-    qmails = get_wrapper().get_mail_content(mail_id)
-    content = ""
-    for qm in qmails:
-        content += qm.mail_text
-    msg = email.message_from_string(content)
-    mail = SQLemail(msg, mformat="plain", links="0")
+    mail = SQLemail(mail_id, mformat="plain", links="0")
     return render(request, "common/viewmail.html", {
         "headers": mail.render_headers(),
         "mailbody": mail.body
@@ -106,12 +101,7 @@ def getmailcontent_selfservice(request, mail_id):
 
 @selfservice(getmailcontent_selfservice)
 def getmailcontent(request, mail_id):
-    qmails = get_wrapper().get_mail_content(mail_id)
-    content = ""
-    for qm in qmails:
-        content += qm.mail_text
-    msg = email.message_from_string(content)
-    mail = SQLemail(msg, mformat="plain", links="0")
+    mail = SQLemail(mail_id, mformat="plain", links="0")
     return render(request, "common/viewmail.html", {
         "headers": mail.render_headers(),
         "mailbody": mail.body
