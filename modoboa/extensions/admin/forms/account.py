@@ -6,7 +6,7 @@ from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.formutils import (
-    DomainNameField, DynamicForm, TabForms, YesNoField
+    DomainNameField, DynamicForm, TabForms
 )
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
@@ -58,17 +58,34 @@ class AccountFormGeneral(forms.ModelForm):
                 if 'instance' in kwargs else get_account_roles(user)
 
         if "instance" in kwargs:
-            if args \
-               and (args[0].get("password1", "") == ""
-               and args[0].get("password2", "") == ""):
-                self.fields["password1"].required = False
-                self.fields["password2"].required = False
             account = kwargs["instance"]
+            domain_disabled = account.mailbox_set.count() and \
+                not account.mailbox_set.all()[0].domain.enabled
+            if domain_disabled:
+                self.fields["is_active"].widget.attrs['disabled'] = "disabled"
+            if args:
+                if args[0].get("password1", "") == "" \
+                   and args[0].get("password2", "") == "":
+                    self.fields["password1"].required = False
+                    self.fields["password2"].required = False
+                if domain_disabled:
+                    del self.fields["is_active"]
             self.fields["role"].initial = account.group
             if not account.is_local \
                and parameters.get_admin("LDAP_AUTH_METHOD", app="core") == "directbind":
                 del self.fields["password1"]
                 del self.fields["password2"]
+
+    def domain_is_disabled(self):
+        """Little shortcut to get the domain's state.
+
+        We need this information inside a template and the form is the
+        only object available...
+
+        """
+        if not self.instance.mailbox_set.count():
+            return False
+        return self.instance.mailbox_set.all()[0].domain.enabled == False
 
     def clean_role(self):
         if self.user.group == "DomainAdmins":
@@ -323,7 +340,9 @@ class AccountForm(TabForms):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         self.forms = [
-            dict(id="general", title=_("General"), cls=AccountFormGeneral,
+            dict(id="general", title=_("General"),
+                 formtpl="admin/account_general_form.html",
+                 cls=AccountFormGeneral,
                  new_args=[user], mandatory=True),
             dict(id="mail", title=_("Mail"), formtpl="admin/mailform.html",
                  cls=AccountFormMail),
