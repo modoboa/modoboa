@@ -85,7 +85,9 @@ def create_mail_attachment(attdef, payload=None):
     else:
         res.set_payload(payload)
     Encoders.encode_base64(res)
-    res['Content-Disposition'] = build_header(attdef['fname'].decode('utf-8'))
+    if type(attdef['fname']) is str:
+        attdef['fname'] = attdef['fname'].decode('utf-8')
+    res['Content-Disposition'] = build_header(attdef['fname'])
     return res
 
 
