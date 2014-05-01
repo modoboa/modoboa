@@ -173,7 +173,7 @@ class FilterForm(forms.Form):
         return ret
 
     def userfolders(self, request):
-        from modoboa.extensions.webmail.imaputils import get_imapconnector
+        from modoboa.extensions.webmail.lib import get_imapconnector
 
         mbc = get_imapconnector(request)
         ret = mbc.getmboxes(request.user, unseen_messages=False)
