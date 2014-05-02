@@ -344,15 +344,10 @@ class AccountForm(TabForms):
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
         self.forms = [
-<<<<<<< HEAD
-            dict(id="general", title=_("General"), cls=AccountFormGeneral,
-                 new_args=[self.user], mandatory=True),
-=======
             dict(id="general", title=_("General"),
                  formtpl="admin/account_general_form.html",
                  cls=AccountFormGeneral,
-                 new_args=[user], mandatory=True),
->>>>>>> master
+                 new_args=[self.user], mandatory=True),
             dict(id="mail", title=_("Mail"), formtpl="admin/mailform.html",
                  cls=AccountFormMail),
             dict(id="perms", title=_("Permissions"), formtpl="admin/permsform.html",

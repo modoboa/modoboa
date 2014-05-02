@@ -49,6 +49,13 @@ Radicale.prototype = {
 
     edit_calendar_cb: function() {
         $("#original_row").dynamicrule();
+        $('.submit').on('click', $.proxy(function(e) {
+            simple_ajax_form_post(e, {
+                formid: "ucal_form",
+                reload_on_success: false,
+                success_cb: $.proxy(this.reload_listing, this)
+            });
+        }, this));
     },
 
     add_shared_calendar_cb: function() {

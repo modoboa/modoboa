@@ -143,32 +143,6 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
     events.raiseEvent("FillAccountInstances", request.user, account, instances)
     return AccountForm(request, instances=instances).process()
 
-    # if request.method == "POST":
-    #     classes = {}
-    #     form = AccountForm(request.user, request.POST,
-    #                        instances=instances, classes=classes)
-    #     account.oldgroup = account.group
-    #     if form.is_valid(mandatory_only=True):
-    #         form.save_general_form()
-    #         if form.is_valid(optional_only=True):
-    #             events.raiseEvent("AccountModified", account, form.account)
-    #             form.save()
-    #             return render_to_json_response(_("Account updated"))
-    #     return render_to_json_response({'form_errors': form.errors}, status=400)
-
-    # ctx = {
-    #     'title': account.username,
-    #     'formid': 'accountform',
-    #     'action': reverse(editaccount, args=[accountid]),
-    #     'action_label': _('Update'),
-    #     'action_classes': 'submit',
-    #     'tabs': AccountForm(request.user, instances=instances)
-    # }
-    # active_tab_id = request.GET.get("active_tab", "default")
-    # if active_tab_id != "default":
-    #     ctx["tabs"].active_id = active_tab_id
-    # return render(request, tplname, ctx)
-
 
 @login_required
 @permission_required("core.delete_user")

@@ -3,7 +3,7 @@ Radicale extension forms.
 """
 from django import forms
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.webutils import render_to_json_response
 from modoboa.lib.formutils import WizardForm, TabForms, DynamicForm
 from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
@@ -29,9 +29,17 @@ class SharedCalendarForm(forms.ModelForm):
 class RightsForm(forms.Form, DynamicForm):
     """
     """
-    username = forms.CharField(required=False)
-    read_access = forms.BooleanField(initial=False, label=_("Read"))
-    write_access = forms.BooleanField(initial=False, label=_("Write"))
+    username = forms.CharField(
+        required=False, widget=forms.widgets.TextInput(
+            attrs={"placeholder": ugettext_lazy("Username")}
+        )
+    )
+    read_access = forms.BooleanField(
+        initial=False, label=_("Read"), required=False
+    )
+    write_access = forms.BooleanField(
+        initial=False, label=_("Write"), required=False
+    )
 
     def __init__(self, *args, **kwargs):
         from django.http import QueryDict
@@ -43,13 +51,65 @@ class RightsForm(forms.Form, DynamicForm):
             self.calendar = None
         super(RightsForm, self).__init__(*args, **kwargs)
 
+        if self.calendar:
+            cpt = 1
+            for rule in self.calendar.rules.all():
+                self._create_field(
+                    forms.EmailField, "username_%d" % cpt,
+                    rule.mailbox.full_address
+                )
+                self._create_field(
+                    forms.BooleanField, "read_access_%d" % cpt, rule.read
+                )
+                self._create_field(
+                    forms.BooleanField, "write_access_%d" % cpt, rule.write
+                )
+                cpt += 1
+
         if args and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "username", forms.EmailField)
+            self._load_from_qdict(args[0], "read_access", forms.BooleanField)
+            self._load_from_qdict(args[0], "write_access", forms.BooleanField)
 
-    def _create_field(self, typ, name, value=None, pos=None):
+    def save(self):
+        """Custom save method.
         """
-        """
-        super(RightsForm, self)._create_field(typ, name, value, pos)
+        import re
+        from modoboa.lib.emailutils import split_mailbox
+        from modoboa.lib.exceptions import BadRequest
+        from modoboa.extensions.admin.models import Mailbox
+        from .models import AccessRule
+
+        usernames = {}
+        for name, value in self.cleaned_data.iteritems():
+            if not name.startswith("username") or not value:
+                continue
+            res = re.match(r"[^_]+_(\d+)$", name)
+            pos = int(res.group(1)) if res else None
+            usernames[value] = pos
+        for rule in self.calendar.rules.select_related().all():
+            if not rule.mailbox.full_address in usernames:
+                rule.delete()
+        for username, pos in usernames.iteritems():
+            local_part, domname = split_mailbox(username)
+            try:
+                mbox = Mailbox.objects.get(
+                    address=local_part, domain__name=domname
+                )
+            except Mailbox.DoesNotExist:
+                raise BadRequest(_("Mailbox %s does not exist"))
+            if pos:
+                raccess = self.cleaned_data.get("read_access_%d" % pos, False)
+                waccess = self.cleaned_data.get("write_access_%d" % pos, False)
+            else:
+                raccess = self.cleaned_data.get("read_access", False)
+                waccess = self.cleaned_data.get("write_access", False)
+            acr, created = AccessRule.objects.get_or_create(
+                mailbox=mbox, calendar=self.calendar
+            )
+            acr.read = raccess
+            acr.write = waccess
+            acr.save()
 
 
 class UserCalendarWizard(WizardForm):
@@ -96,7 +156,18 @@ class UserCalendarEditionForm(TabForms):
         super(UserCalendarEditionForm, self).__init__(*args, **kwargs)
 
     def extra_context(self, context):
+        calendar = self.instances["general"]
         context.update({
             "title": self.instances["general"].name,
-            "formid": "ucal_form"
+            "formid": "ucal_form",
+            "action": reverse("user_calendar", args=[calendar.id])
         })
+
+    def save(self):
+        """Custom save method.
+        """
+        calendar = self.forms[0]["instance"].save()
+        self.forms[1]["instance"].save()
+
+    def done(self):
+        return render_to_json_response(_("Calendar updated"))

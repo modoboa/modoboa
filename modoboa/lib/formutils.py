@@ -8,7 +8,6 @@ from django.forms import ChoiceField
 from django.forms.widgets import RadioSelect, RadioInput
 from django.forms.fields import CharField, Field
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
@@ -67,7 +66,7 @@ class WizardStep(object):
 class WizardForm(object):
     """Custom wizard.
     """
-    __metaclass__  = abc.ABCMeta
+    __metaclass__ = abc.ABCMeta
 
     template_name = "common/wizard_forms.html"
 

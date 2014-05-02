@@ -115,7 +115,11 @@ class AccessRule(models.Model):
     mailbox = models.ForeignKey("admin.Mailbox")
     read = models.BooleanField(default=False)
     write = models.BooleanField(default=False)
-    calendar = models.ForeignKey(UserCalendar)
+    calendar = models.ForeignKey(UserCalendar, related_name="rules")
+    last_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('mailbox', 'calendar')
 
     def __str__(self):
         access = "r" if self.read else ""

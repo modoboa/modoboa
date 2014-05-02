@@ -58,7 +58,7 @@ def user_calendar(request, pk):
         ucal = UserCalendar.objects.get(pk=pk)
     except UserCalendar.DoesNotExist:
         raise NotFound
-    instances = {"general": ucal, "rights": None}
+    instances = {"general": ucal, "rights": ucal}
     if request.method == "DELETE":
         # Check ownership
         ucal.delete()

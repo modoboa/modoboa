@@ -52,11 +52,14 @@
             $btn.find("i").removeClass("icon-plus").addClass("icon-trash");
             $btn.removeClass("addrule").addClass("delrule");
             $clone.find("#id_username")
-                .attr("id", "id_username_" + this.rules_counter);
+                .attr("id", "id_username_" + this.rules_counter)
+                .attr("name", "username_" + this.rules_counter);
             $clone.find("#id_read_access")
-                .attr("id", "id_read_access_" + this.rules_counter);
+                .attr("id", "id_read_access_" + this.rules_counter)
+                .attr("name", "read_access_" + this.rules_counter);
             $clone.find("#id_write_access")
-                .attr("id", "id_write_access_" + this.rules_counter);
+                .attr("id", "id_write_access_" + this.rules_counter)
+                .attr("name", "write_access_" + this.rules_counter);
             $clone.insertAfter(this.$element);
             this.rules_counter++;
             this.reset_original_rule();
@@ -69,7 +72,7 @@
             event.preventDefault();
             var $link = get_target(event, "a");
 
-            $link.parents("tr").remove();
+            $link.parent().remove();
         }
     };
 

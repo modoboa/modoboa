@@ -1,23 +1,12 @@
-{% load lib_tags %}
+{% load lib_tags radicale_tags %}
 {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
 <form action="{{ action }}" method="POST" id="{{ formid }}">
   {% csrf_token %}
-  <table class="table table-condensed">
-    <thead>
-      <tr>
-        <th>{{ form.username.label }}</th>
-        <th>{{ form.read_access.label }}</th>
-        <th>{{ form.write_access.label }}</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr id="original_row">
-        <td>{{ form.username }}</td>
-        <td>{{ form.read_access }}</td>
-        <td>{{ form.write_access }}</td>
-        <td><a href="#" class="addrule"><i class="icon-plus"></i></a></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="form-inline" id="original_row">
+    {{ form.username }}
+    <label class="checkbox">{{ form.read_access }} {{ form.read_access.label }}</label>
+    <label class="checkbox">{{ form.write_access }} {{ form.write_access.label }}</label>
+    <a href="#" class="addrule"><i class="icon-plus"></i></a>
+  </div>
+  {% render_rule_fields form %}
 </form>

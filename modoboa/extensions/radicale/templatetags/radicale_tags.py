@@ -73,3 +73,28 @@ def calendar_actions(calendar):
     else:
         actions[0]["url"] = reverse("shared_calendar", args=[calendar.id])
     return render_actions(actions)
+
+
+@register.simple_tag
+def render_rule_fields(form):
+    """Render access rules for a given calendar.
+    """
+    from django.forms import forms
+
+    cpt = 1
+    result = ""
+    while True:
+        fname = "username_%d" % cpt
+        if not fname in form.fields:
+            break
+        rfieldname = "read_access_%d" % cpt
+        wfieldname = "write_access_%d" % cpt
+        result += render_to_string('radicale/accessrule.html', {
+            "username": forms.BoundField(form, form.fields[fname], fname),
+            "read_access": forms.BoundField(
+                form, form.fields[rfieldname], rfieldname),
+            "write_access": forms.BoundField(
+                form, form.fields[wfieldname], wfieldname)
+        })
+        cpt += 1
+    return result
