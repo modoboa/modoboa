@@ -19,13 +19,13 @@ from .forms import (
     FilterForm, build_filter_form_from_qdict, build_filter_form_from_filter,
     FiltersSetForm
 )
-from templatetags.sfilters_tags import fset_menu
+from .templatetags.sfilters_tags import fset_menu
 
 
 @login_required
 @needs_mailbox()
 def index(request, tplname="sievefilters/index.html"):
-    from modoboa.extensions.webmail.imaputils import get_imapconnector
+    from modoboa.extensions.webmail.lib import get_imapconnector
 
     try:
         sc = SieveClient(user=request.user.username,

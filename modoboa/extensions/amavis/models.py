@@ -65,7 +65,7 @@ class Msgs(models.Model):
 class Msgrcpt(models.Model):
     partition_tag = models.IntegerField(null=True, blank=True)
     mail = models.ForeignKey(Msgs, primary_key=True)
-    rid = models.ForeignKey(Maddr, db_column='rid', primary_key=True)
+    rid = models.ForeignKey(Maddr, db_column='rid')
     rseqnum = models.IntegerField(default=0)
     is_local = models.CharField(max_length=3)
     content = models.CharField(max_length=3)

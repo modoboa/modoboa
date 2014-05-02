@@ -50,7 +50,7 @@ class Command(BaseCommand):
             flags += ['R']
 
         self.__vprint("Deleting marked messages...")
-        ids = Msgrcpt.objects.filter(rs__in=flags).values("mail_id")
+        ids = Msgrcpt.objects.filter(rs__in=flags).values("mail_id").distinct()
         for msg in Msgs.objects.filter(mail_id__in=ids):
             if not msg.msgrcpt_set.exclude(rs__in=flags).count():
                 msg.delete()

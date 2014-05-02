@@ -40,14 +40,6 @@
         }
     },
     {
-        "pk": 12,
-        "model": "lib.parameter",
-        "fields": {
-            "name": "stats.IMG_ROOTDIR",
-            "value": "/srv/www/modoboa/media/stats"
-        }
-    },
-    {
         "pk": 13,
         "model": "lib.parameter",
         "fields": {

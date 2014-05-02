@@ -58,16 +58,16 @@ Replace values between ``<>`` by yours.
 Edit the :file:`/etc/postfix/main.cf` file and copy the following
 lines inside::
 
-  relay_domains = <driver>:/etc/postfix/maps/sql-relaydomains.cf
+  relay_domains = <driver>:/etc/postfix/sql-relaydomains.cf
   transport_maps = 
-      <driver>:/etc/postfix/maps/sql-relaydomains-transport.cf
-      <driver>:/etc/postfix/maps/sql-relaydomain-aliases-transport.cf
+      <driver>:/etc/postfix/sql-relaydomains-transport.cf
+      <driver>:/etc/postfix/sql-relaydomain-aliases-transport.cf
 
   smtpd_recipient_restrictions =
       permit_mynetworks
       reject_unauth_destination
       check_recipient_access 
-          <driver>:/etc/postfix/maps/sql-relay-recipient-verification.cf
+          <driver>:/etc/postfix/sql-relay-recipient-verification.cf
 
 Replace ``<driver>`` by the name of the database you use.
 
@@ -332,11 +332,11 @@ configuration files as follows:
 
 ``/etc/postfix/main.cf``::
 
-  transport_maps = mysql:/etc/postfix/maps/sql-autoreplies-transport.cf
-  virtual_alias_maps = <driver>:/etc/postfix/maps/sql-aliases.cf
-          <driver>:/etc/postfix/mapfiles/sql-domain-aliases-mailboxes.cf,
-          <driver>:/etc/postfix/maps/sql-autoreplies.cf,
-          <driver>:/etc/postfix/mapfiles/sql-catchall-aliases.cf
+  transport_maps = <driver>:/etc/postfix/sql-autoreplies-transport.cf
+  virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf
+          <driver>:/etc/postfix/sql-domain-aliases-mailboxes.cf,
+          <driver>:/etc/postfix/sql-autoreplies.cf,
+          <driver>:/etc/postfix/sql-catchall-aliases.cf
 
 .. note::
 
@@ -345,7 +345,7 @@ configuration files as follows:
 ``/etc/postfix/master.cf``::
 
   autoreply unix        -       n       n       -       -       pipe
-            flags= user=vmail:<group> argv=<modoboa_site>/manage.py autoreply $sender $mailbox
+            flags= user=vmail:<group> argv=python <modoboa_site>/manage.py autoreply $sender $mailbox
 
 Replace ``<driver>`` by the name of the database you
 use. ``<modoboa_site>`` is the path of your Modoboa instance.

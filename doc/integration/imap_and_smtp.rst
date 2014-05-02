@@ -28,19 +28,19 @@ Then, edit the ``inbox`` namespace and add the following lines::
   inbox = yes
 
   mailbox Drafts {
-    auto = create
+    auto = subscribe
     special_use = \Drafts
   }
   mailbox Junk {
-    auto = create
+    auto = subscribe
     special_use = \Junk
   }
   mailbox Sent {
-    auto = create
+    auto = subscribe
     special_use = \Sent
   }
   mailbox Trash {
-    auto = create
+    auto = subscribe
     special_use = \Trash
   }
 

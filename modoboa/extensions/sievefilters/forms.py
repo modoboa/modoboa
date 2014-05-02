@@ -97,6 +97,13 @@ class FilterForm(forms.Form):
         for a in actions:
             getattr(self, "_build_%s_field" % a[0])(request, a[1])
 
+    def clean_name(self):
+        """Check that name does not contain strange chars.
+        """
+        if '#' in self.cleaned_data["name"]:
+            raise forms.ValidationError(_("Wrong filter name"))
+        return self.cleaned_data["name"]
+
     def _build_header_field(self, name, op, value):
         targets = []
         ops = []
@@ -173,7 +180,7 @@ class FilterForm(forms.Form):
         return ret
 
     def userfolders(self, request):
-        from modoboa.extensions.webmail.imaputils import get_imapconnector
+        from modoboa.extensions.webmail.lib import get_imapconnector
 
         mbc = get_imapconnector(request)
         ret = mbc.getmboxes(request.user, unseen_messages=False)

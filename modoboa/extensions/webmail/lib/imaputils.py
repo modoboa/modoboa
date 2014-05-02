@@ -14,8 +14,8 @@ from modoboa.lib import parameters, imap_utf7
 from modoboa.lib.exceptions import InternalError
 from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.webutils import static_url
-from exceptions import ImapError, WebmailInternalError
-from fetch_parser import parse_fetch_response
+from ..exceptions import ImapError, WebmailInternalError
+from .fetch_parser import parse_fetch_response
 
 #imaplib.Debug = 4
 

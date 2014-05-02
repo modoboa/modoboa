@@ -21,9 +21,3 @@ class ParametersForm(AdminParametersForm):
         initial="/tmp/modoboa",
         help_text=ugettext_lazy("Path to directory where RRD files are stored")
     )
-
-    img_rootdir = forms.CharField(
-        label=ugettext_lazy("Directory to store PNG files"),
-        initial="/tmp/modoboa",
-        help_text=ugettext_lazy("Path to directory where PNG files are stored")
-    )

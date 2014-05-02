@@ -753,7 +753,7 @@ Webmail.prototype = {
         }, this)).fail($.proxy(function(jqxhr) {
             var data = $.parseJSON(jqxhr.responseText);
             if (data != undefined) {
-                $("body").notify("error", data);
+                this.compose_callback(data);
             }
             $("a[name=sendmail]").attr("disabled", null);
         }, this));
