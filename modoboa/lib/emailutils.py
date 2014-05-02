@@ -5,7 +5,6 @@ import smtplib
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
-import lxml.html
 from django.template.loader import render_to_string
 from django.conf import settings
 from modoboa.lib import u2u_decode
@@ -274,11 +273,14 @@ def set_email_headers(msg, subject, sender, rcpt):
 
     Subject, From, To, Message-ID, User-Agent, Date
     """
+    import pkg_resources
+
     msg["Subject"] = Header(subject, 'utf8')
     msg["From"] = sender
     msg["To"] = prepare_addresses(rcpt)
     msg["Message-ID"] = make_msgid()
-    msg["User-Agent"] = "Modoboa"
+    msg["User-Agent"] = "Modoboa %s" % \
+        (pkg_resources.get_distribution("modoboa").version)
     msg["Date"] = formatdate(time.time(), True)
 
 
