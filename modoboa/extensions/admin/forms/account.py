@@ -28,7 +28,7 @@ class AccountFormGeneral(forms.ModelForm):
         help_text=ugettext_lazy("What level of permission this user will have")
     )
     password1 = forms.CharField(
-        label=_("Password"), widget=forms.PasswordInput
+        label=ugettext_lazy("Password"), widget=forms.PasswordInput
     )
     password2 = forms.CharField(
         label=ugettext_lazy("Confirmation"),
