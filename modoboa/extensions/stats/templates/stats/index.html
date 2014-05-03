@@ -74,12 +74,6 @@ $(document).ready(function() {
   <div class="tab-content">{% for id, gset in graph_sets.items %}
     <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}">
       <div id="gset"></div>
-      <!--{% for graph in gset.graphics %}<h6>{{ graph.title }}</h6>
-      <div class="graph_container">
-        <div id="{{ graph.display_name }}"></div>
-        <div id="{{ graph.display_name }}_preview"></div>
-        <div id="{{ graph.display_name }}_legend" class="legend"></div>
-      </div>{% endfor %}-->
     </div>
   </div>{% endfor %}
 </div>
