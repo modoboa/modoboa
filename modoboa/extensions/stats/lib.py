@@ -11,8 +11,11 @@ def date_to_timestamp(timetuple):
     :param list timetuple: list containing date
     :return: an integer
     """
-    date = " ".join(timetuple)
-    fmt = "%Y %m %d %H:%M:%S" if timetuple[1].isdigit() else "%Y %b %d %H:%M:%S"
+    date = " ".join(
+        [("%d" % elem) if type(elem) is int else elem for elem in timetuple]
+    )
+    fmt = "%Y %m %d %H %M %S" \
+          if timetuple[1].isdigit() else "%Y %b %d %H %M %S"
     try:
         local = time.strptime(date, fmt)
     except ValueError:
