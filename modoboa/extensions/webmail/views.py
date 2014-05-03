@@ -17,13 +17,15 @@ from modoboa.lib.webutils import (
 )
 from modoboa.extensions.admin.lib import needs_mailbox
 from .exceptions import UnknownAction
-from .forms import FolderForm, AttachmentForm, ComposeMailForm
-from .imaputils import get_imapconnector, IMAPconnector, separate_mailbox
+from .forms import (
+    FolderForm, AttachmentForm, ComposeMailForm, ForwardMailForm
+)
 from .lib import (
     decode_payload, AttachmentUploadHandler,
     save_attachment, ImapListing, EmailSignature,
     clean_attachments, set_compose_session, send_mail,
-    ImapEmail, WebmailNavigationParameters, ReplyModifier, ForwardModifier
+    ImapEmail, WebmailNavigationParameters, ReplyModifier, ForwardModifier,
+    get_imapconnector, IMAPconnector, separate_mailbox
 )
 from templatetags import webmail_tags
 
@@ -382,43 +384,62 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
 def compose(request):
     url = "?action=compose"
     if request.method == "POST":
-        status, resp = send_mail(request, posturl=url)
+        form = ComposeMailForm(request.POST)
+        status, resp = send_mail(request, form, posturl=url)
         return resp
 
     form = ComposeMailForm()
     return render_compose(request, form, url, insert_signature=True)
 
 
-def compose_and_send(request, action, callback=None):
+def get_mail_info(request):
+    """Retrieve a mailbox and an email ID from a request.
+    """
     mbox = request.GET.get("mbox", None)
     mailid = request.GET.get("mailid", None)
     if mbox is None or mailid is None:
         raise BadRequest(_("Invalid request"))
-    url = "?action=%s&mbox=%s&mailid=%s" % (action, mbox, mailid)
-    if request.method == "POST":
-        status, resp = send_mail(request, url)
-        if status and callback:
-            callback(mbox, mailid)
-        return resp
+    return mbox, mailid
 
+
+def new_compose_form(request, action, mbox, mailid):
+    """Return a new composition form.
+
+    Valid for reply and forward actions only.
+    """
     form = ComposeMailForm()
     modclass = globals()["%sModifier" % action.capitalize()]
-    email = modclass(mbox, mailid, request, form, addrfull=True, links="1")
+    email = modclass(form, request, True, "%s:%s" % (mbox, mailid), links="1")
+    url = "?action=%s&mbox=%s&mailid=%s" % (action, mbox, mailid)
     return render_compose(request, form, url, email)
 
 
 def reply(request):
-    def msg_replied(mbox, mailid):
-        get_imapconnector(request).msg_answered(mbox, mailid)
-
-    return compose_and_send(request, "reply", msg_replied)
+    """Reply to email.
+    """
+    mbox, mailid = get_mail_info(request)
+    if request.method == "POST":
+        url = "?action=reply&mbox=%s&mailid=%s" % (mbox, mailid)
+        form = ComposeMailForm(request.POST)
+        status, resp = send_mail(request, form, url)
+        if status:
+            get_imapconnector(request).msg_answered(mbox, mailid)
+        return resp
+    return new_compose_form(request, "reply", mbox, mailid)
 
 
 def forward(request):
-    def msg_forwarded(mbox, mailid):
-        get_imapconnector(request).msg_forwarded(mbox, mailid)
-
-    return compose_and_send(request, "forward", msg_forwarded)
+    """Forward email.
+    """
+    mbox, mailid = get_mail_info(request)
+    if request.method == "POST":
+        url = "?action=forward&mbox=%s&mailid=%s" % (mbox, mailid)
+        form = ForwardMailForm(request.POST)
+        status, resp = send_mail(request, form, url)
+        if status:
+            get_imapconnector(request).msg_forwarded(mbox, mailid)
+        return resp
+    return new_compose_form(request, "forward", mbox, mailid)
 
 
 @login_required
@@ -428,7 +449,10 @@ def getmailcontent(request):
     mailid = request.GET.get("mailid", None)
     if mbox is None or mailid is None:
         raise BadRequest(_("Invalid request"))
-    email = ImapEmail(mbox, mailid, request, links=int(request.GET["links"]))
+    email = ImapEmail(
+        request, False, "%s:%s" % (mbox, mailid), dformat="DISPLAYMODE",
+        links=int(request.GET["links"])
+    )
     return render(request, "common/viewmail.html", {
         "headers": email.render_headers(folder=mbox, mail_id=mailid),
         "folder": mbox, "imapid": mailid,

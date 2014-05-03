@@ -37,10 +37,15 @@ class AliasForm(forms.ModelForm, DynamicForm):
         self.fields.keyOrder = ['email', 'recipients', 'enabled']
 
         if len(args) and isinstance(args[0], QueryDict):
+            if "instance" in kwargs:
+                if not kwargs["instance"].domain.enabled:
+                    del self.fields["enabled"]
             self._load_from_qdict(args[0], "recipients", forms.EmailField)
         elif "instance" in kwargs:
             dlist = kwargs["instance"]
             self.fields["email"].initial = dlist.full_address
+            if not dlist.domain.enabled:
+                self.fields["enabled"].widget.attrs["disabled"] = "disabled"
             cpt = 1
             for al in dlist.aliases.all():
                 name = "recipients_%d" % cpt

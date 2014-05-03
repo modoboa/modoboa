@@ -27,7 +27,10 @@ def decode_mime(m):
     """substitute matching encoded_word with unicode equiv.
     """
     h = decode_header(clean_spaces(m))
-    u = unicode(make_header(h))
+    try:
+        u = unicode(make_header(h))
+    except UnicodeDecodeError:
+        return m.group(0)
     return u
 
 

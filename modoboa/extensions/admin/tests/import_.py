@@ -104,6 +104,16 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         self.assertTrue(admin.is_owner(dlist))
 
     def test_import_invalid_quota(self):
+        f = ContentFile(b"""
+account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; test.com
+""", name="identities.csv")
+        resp = self.clt.post(
+            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            {"sourcefile": f, "crypt_password": True}
+        )
+        self.assertIn('wrong quota value', resp.content)
+
+    def test_import_quota_too_big(self):
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")
         f = ContentFile(b"""
@@ -114,6 +124,20 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 20
             {"sourcefile": f, "crypt_password": True}
         )
         self.assertIn('Quota is greater than the allowed', resp.content)
+
+    def test_import_missing_quota(self):
+        f = ContentFile(b"""
+account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
+""", name="identities.csv")
+        resp = self.clt.post(
+            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            {"sourcefile": f, "crypt_password": True}
+        )
+        account = User.objects.get(username="user1@test.com")
+        self.assertEqual(
+            account.mailbox_set.all()[0].quota,
+            account.mailbox_set.all()[0].domain.quota
+        )
 
     def test_import_duplicate(self):
         f = ContentFile(b"""
@@ -146,3 +170,17 @@ account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com
         )
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(username="sa@test.com")
+
+    def test_import_alias_with_empty_values(self):
+        f = ContentFile(b"""
+alias;user.alias@test.com;True;user@test.com;;;;;;;;;;;;;;;;
+""", name="identities.csv")
+        self.clt.post(
+            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            {"sourcefile": f, "crypt_password": True,
+             "continue_if_exists": True}
+        )
+        alias = Alias.objects.get(
+            domain__name="test.com", address="user.alias"
+        )
+        self.assertEqual(alias.type, "alias")

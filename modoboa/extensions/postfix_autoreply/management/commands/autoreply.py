@@ -56,7 +56,7 @@ class Command(BaseCommand):
             try:
                 mbox = Mailbox.objects.get(address=address, domain__name=domain)
             except Mailbox.DoesNotExist:
-                print "Unknown recipient %s" % (mbox)
+                print "Unknown recipient %s" % (fulladdress)
                 continue
             try:
                 armessage = ARmessage.objects.get(mbox=mbox.id, enabled=True)

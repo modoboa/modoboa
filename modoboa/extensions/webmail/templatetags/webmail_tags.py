@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from modoboa.extensions import webmail
-from modoboa.extensions.webmail.imaputils import separate_mailbox
+from modoboa.extensions.webmail.lib import separate_mailbox
 from modoboa.lib import parameters
 
 register = template.Library()

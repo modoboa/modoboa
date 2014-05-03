@@ -306,18 +306,16 @@ class SQLlisting(EmailListing):
 
 
 class SQLemail(Email):
-    def __init__(self, msg, *args, **kwargs):
-        super(SQLemail, self).__init__(msg, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(SQLemail, self).__init__(*args, **kwargs)
         fields = ["From", "To", "Cc", "Date", "Subject"]
         for f in fields:
             label = f
-            self.headers += [{"name": label, "value": self.get_header(msg, f)}]
-            try:
-                label = re.sub("-", "_", label)
-                setattr(self, label, msg[f])
-            except:
-                pass
-        qreason = self.get_header(msg, "X-Amavis-Alert")
+            self.headers += [
+                {"name": label, "value": self.get_header(self.msg, f)}
+            ]
+            setattr(self, label, self.msg[f])
+        qreason = self.get_header(self.msg, "X-Amavis-Alert")
         self.qtype = ""
         self.qreason = ""
         if qreason != "":
@@ -328,11 +326,19 @@ class SQLemail(Email):
                 self.qtype = "BAD HEADER SECTION"
                 self.qreason = qreason[19:]
 
-    def get_header(self, msg, name):
-        for k in [name, name.upper()]:
-            if k in msg:
-                return msg[k]
-        return ""
+    @property
+    def msg(self):
+        """
+        """
+        import email
+
+        if self._msg is None:
+            qmails = get_wrapper().get_mail_content(self.mailid)
+            self._msg = email.message_from_string(
+                "".join([qm.mail_text for qm in qmails])
+            )
+            self._parse(self._msg)
+        return self._msg
 
     def render_headers(self, **kwargs):
         return render_to_string("amavis/mailheaders.html", {

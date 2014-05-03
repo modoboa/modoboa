@@ -170,6 +170,8 @@ class Alias(AdminObject):
         ext_rcpts = []
         for rcpt in row[3:]:
             rcpt = rcpt.strip()
+            if not rcpt:
+                continue
             localpart, domname = split_mailbox(rcpt)
             try:
                 Domain.objects.get(name=domname)
@@ -177,14 +179,16 @@ class Alias(AdminObject):
                 ext_rcpts += [rcpt]
                 continue
             try:
-                target = Alias.objects.get(domain__name=domname, address=localpart)
+                target = Alias.objects.get(
+                    domain__name=domname, address=localpart
+                )
                 if target.full_address == self.full_address:
                     target = None
             except Alias.DoesNotExist:
                 target = None
             if target is None:
                 try:
-                    target = Mailbox.objects.get(address=localpart, 
+                    target = Mailbox.objects.get(address=localpart,
                                                  domain__name=domname)
                 except Mailbox.DoesNotExist:
                     raise BadRequest(_("Local recipient %s not found" % rcpt))
