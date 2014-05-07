@@ -502,6 +502,7 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
         ...
         check_recipient_access <driver>:/etc/postfix/sql-maintain.cf
         permit_mynetworks
+        reject_unverified_recipient
         ...
 
   # Stuff after
