@@ -2,7 +2,6 @@ import reversion
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
-from django.db import transaction
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import (
@@ -88,7 +87,6 @@ def domains_list(request):
 
 @login_required
 @permission_required("admin.add_domain")
-@transaction.commit_on_success
 @reversion.create_revision()
 def newdomain(request, tplname="common/wizard_forms.html"):
     events.raiseEvent("CanCreate", request.user, "domains")
@@ -120,7 +118,7 @@ def newdomain(request, tplname="common/wizard_forms.html"):
             try:
                 cwizard.steps[1]["form"].save(request.user, domain)
             except ModoboaException as e:
-                transaction.rollback()
+                #transaction.rollback()
                 raise
             return render_to_json_response(_("Domain created"))
         return render_to_json_response({
@@ -140,7 +138,6 @@ def newdomain(request, tplname="common/wizard_forms.html"):
 
 @login_required
 @permission_required("admin.view_domains")
-@transaction.commit_on_success
 @reversion.create_revision()
 def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
     domain = Domain.objects.get(pk=dom_id)
@@ -177,7 +174,6 @@ def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
 
 @login_required
 @permission_required("admin.delete_domain")
-@transaction.commit_on_success
 def deldomain(request, dom_id):
     keepdir = True if request.POST.get("keepdir", "false") == "true" else False
     try:

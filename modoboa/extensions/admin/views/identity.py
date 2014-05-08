@@ -1,6 +1,5 @@
 import reversion
 from django.shortcuts import render
-from django.db import transaction
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import (
@@ -114,7 +113,6 @@ def list_quotas(request, tplname="admin/quotas.html"):
 
 @login_required
 @permission_required("core.add_user")
-@transaction.commit_on_success
 @reversion.create_revision()
 def newaccount(request, tplname='common/wizard_forms.html'):
     """Create a new account.
@@ -167,7 +165,6 @@ def newaccount(request, tplname='common/wizard_forms.html'):
 
 @login_required
 @permission_required("core.change_user")
-@transaction.commit_on_success
 @reversion.create_revision()
 def editaccount(request, accountid, tplname="common/tabforms.html"):
     account = User.objects.get(pk=accountid)
@@ -209,7 +206,6 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 
 @login_required
 @permission_required("core.delete_user")
-@transaction.commit_on_success
 def delaccount(request, accountid):
     keepdir = True if request.POST.get("keepdir", "false") == "true" else False
     User.objects.get(pk=accountid).delete(request.user, keep_mb_dir=keepdir)

@@ -3,7 +3,6 @@ import reversion
 from django.utils.translation import ugettext as _
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.db import transaction
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
@@ -16,14 +15,12 @@ from modoboa.extensions.admin.models import (
 from modoboa.extensions.admin.forms import ImportIdentitiesForm, ImportDataForm
 
 
-@transaction.commit_on_success
 def import_domain(user, row, formopts):
     """Specific code for domains import"""
     dom = Domain()
     dom.from_csv(user, row)
 
 
-@transaction.commit_on_success
 def import_domainalias(user, row, formopts):
     """Specific code for domain aliases import"""
     domalias = DomainAlias()
@@ -32,7 +29,6 @@ def import_domainalias(user, row, formopts):
 
 @login_required
 @permission_required("admin.add_domain")
-@transaction.commit_on_success
 def import_domains(request):
     if request.method == "POST":
         return importdata(request)
@@ -61,14 +57,12 @@ def import_domains(request):
     return render(request, "admin/importform.html", ctx)
 
 
-@transaction.commit_on_success
 def import_account(user, row, formopts):
     """Specific code for accounts import"""
     account = User()
     account.from_csv(user, row, formopts["crypt_password"])
 
 
-@transaction.commit_on_success
 def _import_alias(user, row, **kwargs):
     """Specific code for aliases import"""
     alias = Alias()
