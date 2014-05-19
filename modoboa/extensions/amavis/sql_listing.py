@@ -118,7 +118,7 @@ class SQLconnector(MBconnector):
             rs = qm["mail__msgrcpt__rs"]
             if rs == 'D':
                 continue
-            elif rs == '':
+            elif rs == ' ':
                 m["class"] = "unseen"
             elif rs == 'R':
                 m["img_rstatus"] = static_url("pics/release.png")
