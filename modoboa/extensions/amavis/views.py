@@ -128,7 +128,7 @@ def viewmail(request, mail_id):
     rcpt = request.GET["rcpt"]
     if request.user.mailbox_set.count():
         mb = Mailbox.objects.get(user=request.user)
-        if rcpt in mb.alias_addresses:
+        if rcpt == mb.full_address or rcpt in mb.alias_addresses:
             get_wrapper().set_msgrcpt_status(rcpt, mail_id, 'V')
 
     content = Template("""

@@ -4,6 +4,9 @@
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}stats/css/stats.css" />
 <script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/d3.v3.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}stats/js/d3.legend.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}stats/js/graphic.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
@@ -69,7 +72,9 @@ $(document).ready(function() {
     </li>
   </ul>{% endfor %}
   <div class="tab-content">{% for id, gset in graph_sets.items %}
-    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}"></div>
+    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}">
+      <div id="gset"></div>
+    </div>
   </div>{% endfor %}
 </div>
 {% endblock %}

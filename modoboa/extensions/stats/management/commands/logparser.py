@@ -28,8 +28,8 @@ from optparse import make_option
 from modoboa.lib import parameters
 from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.stats import Stats
-from modoboa.extensions.stats.grapher import str2Time, Grapher
-from modoboa.extensions.stats.graph_templates import MailTraffic
+from modoboa.extensions.stats.lib import date_to_timestamp
+
 
 rrdstep = 60
 xpoints = 540
@@ -123,7 +123,7 @@ class LogParser(object):
                 ye = match.group("year")
             except IndexError:
                 ye = self.year(mo)
-            self.cur_t = str2Time(ye, mo, da, ho, mi, se)
+            self.cur_t = date_to_timestamp([ye, mo, da, ho, mi, se])
             self.cur_t = self.cur_t - self.cur_t % rrdstep
             self._prev_mi = mi
             self._prev_ho = ho
@@ -329,14 +329,10 @@ class LogParser(object):
         for line in self.f.readlines():
             self._parse_line(line)
 
-        G = Grapher()
         for dom, data in self.data.iteritems():
             self._dprint("[rrd] dealing with domain %s" % dom)
             for t in sorted(data.keys()):
                 self.update_rrd(dom, t)
-
-            for graph_tpl in MailTraffic().get_graphs():
-                G.make_defaults(dom, graph_tpl)
 
 
 class Command(BaseCommand):

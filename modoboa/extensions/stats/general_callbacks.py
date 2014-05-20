@@ -15,8 +15,8 @@ def menu(target, user):
 
 
 @events.observe("GetGraphSets")
-def get_default_graph_sets():
-    from modoboa.extensions.stats.graph_templates import MailTraffic
+def get_default_graphic_sets():
+    from modoboa.extensions.stats.graphics import MailTraffic
 
     gset = MailTraffic()
     return {gset.html_id: gset}
