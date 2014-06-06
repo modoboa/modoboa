@@ -107,13 +107,13 @@ Nginx
    possible that **your** installation of uwsgi or nginx or Apache or
    what-have-you works differently. Keep this in mind.
 
+This section covers two different ways of running Modoboa behind
+`Nginx <http://nginx.org/>`_ using a WSGI application server. Choose
+the one you prefer between `Green Unicorn <http://gunicorn.org/>`_ or
+`uWSGI <https://github.com/unbit/uwsgi>`_.
+
 Green Unicorn
 =============
-
-`Nginx <http://nginx.org/>`_ is a really fast HTTP server. Associated
-with `Green Unicorn <http://gunicorn.org/>`_, it gives you one of the
-best setups to serve python/Django applications. Modoboa's
-performance is really good with this configuration.
 
 To use this setup, first download and install `nginx
 <http://wiki.nginx.org/Install>`__ and `gunicorn
@@ -191,7 +191,7 @@ Paste this content to your configuration (replace values between
 ``<>`` with yours), restart nginx and enjoy a really fast
 application!
 
-uwsgi
+uWSGI
 =====
 
 The following setup is meant to get you started quickly. You should
