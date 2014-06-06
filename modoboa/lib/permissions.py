@@ -139,7 +139,23 @@ def get_object_owner(obj):
     """
     ct = ContentType.objects.get_for_model(obj)
     try:
-        entry = ObjectAccess.objects.get(content_type=ct, object_id=obj.id, is_owner=True)
+        entry = ObjectAccess.objects.get(
+            content_type=ct, object_id=obj.id, is_owner=True
+        )
     except ObjectAccess.DoesNotExist:
         return None
     return entry.user
+
+
+def add_permissions_to_group(groupname, permissions):
+    """Add the specified permissions to a django group.
+    """
+    from django.contrib.auth.models import Group, Permission
+
+    grp = Group.objects.get(name=groupname)
+    for appname, permname in permissions:
+        ct = ContentType.objects.get_by_natural_key(
+            appname, permname.split("_")[1])
+        grp.permissions.add(
+            Permission.objects.get(content_type=ct, codename=permname)
+        )

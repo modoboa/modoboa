@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.webutils import render_to_json_response
 from modoboa.lib.formutils import WizardForm, TabForms, DynamicForm
+from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
 
 
@@ -24,6 +25,14 @@ class SharedCalendarForm(forms.ModelForm):
     """
     class Meta:
         model = SharedCalendar
+
+    def __init__(self, user, *args, **kwargs):
+        """Custom constructor.
+
+        We need the current user to filter the domain list.
+        """
+        super(SharedCalendarForm, self).__init__(*args, **kwargs)
+        self.fields["domain"].queryset = Domain.objects.get_for_admin(user)
 
 
 class RightsForm(forms.Form, DynamicForm):

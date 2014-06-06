@@ -57,7 +57,7 @@ def new_user_calendar(request):
 
 @login_required
 def user_calendar(request, pk):
-    """
+    """Edit or remove a calendar.
     """
     try:
         ucal = UserCalendar.objects.get(pk=pk)
@@ -77,14 +77,14 @@ def new_shared_calendar(request):
     """Shared calendar creation view.
     """
     if request.method == "POST":
-        form = SharedCalendarForm(request.POST)
+        form = SharedCalendarForm(request.user, request.POST)
         if form.is_valid():
             form.save()
             return render_to_json_response(_("Calendar created"))
         return render_to_json_response(
             {"form_errors": form.errors}, status=400
         )
-    form = SharedCalendarForm()
+    form = SharedCalendarForm(request.user)
     return render(request, "common/generic_modal_form.html", {
         "form": form,
         "formid": "sharedcal_form",
@@ -96,13 +96,12 @@ def new_shared_calendar(request):
 
 
 @login_required
-@permission_required("radicale.add_sharedcalendar")
 @user_passes_test(
     lambda u: u.has_perm("radicale.change_sharedcalendar")
               or u.has_perm("radicale.delete_sharedcalendar")
 )
 def shared_calendar(request, pk):
-    """
+    """Edit or remove a shared calendar.
     """
     try:
         scal = SharedCalendar.objects.get(pk=pk)
@@ -114,14 +113,14 @@ def shared_calendar(request, pk):
         scal.delete()
         return render_to_json_response(_("Calendar removed"))
     if request.method == "POST":
-        form = SharedCalendarForm(request.POST, instance=scal)
+        form = SharedCalendarForm(request.user, request.POST, instance=scal)
         if form.is_valid():
             form.save()
             return render_to_json_response(_("Calendar updated"))
         return render_to_json_response(
             {"form_errors": form.errors}, status=400
         )
-    form = SharedCalendarForm(instance=scal)
+    form = SharedCalendarForm(request.user, instance=scal)
     return render(request, "common/generic_modal_form.html", {
         "form": form,
         "formid": "sharedcal_form",
@@ -136,9 +135,17 @@ def shared_calendar(request, pk):
 def username_list(request):
     """Get the list of username the current user can see.
     """
-    from modoboa.extensions.admin.models import Mailbox
+    from modoboa.extensions.admin.models import Domain, Mailbox
 
     result = []
-    for mb in Mailbox.objects.prefetch_related("user").all():
-        result.append(mb.user.username)
+    qset = Mailbox.objects.select_related("user")
+    if request.user.has_perm("admin.add_mailbox"):
+        qset = qset.filter(
+            domain__in=Domain.objects.get_for_admin(request.user)
+        )
+    else:
+        user_domain = request.user.mailbox_set.all()[0].domain
+        qset = qset.filter(domain=user_domain)
+    for mbox in qset:
+        result.append(mbox.user.username)
     return render_to_json_response(result)

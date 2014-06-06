@@ -3,8 +3,11 @@ Radicale management frontend.
 
 """
 import sys
+from django.contrib.auth.models import Permission, Group
+from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
+from modoboa.lib.permissions import add_permissions_to_group
 from modoboa.core.extensions import ModoExtension, exts_pool
 
 
@@ -21,7 +24,14 @@ class Radicale(ModoExtension):
     def init(self):
         """Plugin initialization.
         """
-        pass
+        add_permissions_to_group(
+            "DomainAdmins", [("radicale", "add_usercalendar"),
+                             ("radicale", "change_usercalendar"),
+                             ("radicale", "delete_usercalendar"),
+                             ("radicale", "add_sharedcalendar"),
+                             ("radicale", "change_sharedcalendar"),
+                             ("radicale", "delete_sharedcalendar")]
+        )
 
     def load(self):
         """Plugin loading.
