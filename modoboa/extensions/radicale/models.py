@@ -112,6 +112,8 @@ class SharedCalendar(Calendar):
 
 @python_2_unicode_compatible
 class AccessRule(models.Model):
+    """Access rules to user calendars
+    """
     mailbox = models.ForeignKey("admin.Mailbox")
     read = models.BooleanField(default=False)
     write = models.BooleanField(default=False)

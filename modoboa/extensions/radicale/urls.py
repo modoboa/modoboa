@@ -10,4 +10,5 @@ urlpatterns = patterns(
         name='new_shared_calendar'),
     url(r'^sharedcalendar/(?P<pk>\d+)/$', 'shared_calendar',
         name='shared_calendar'),
+    url(r'^usernames/$', 'username_list', name='usernames'),
 )

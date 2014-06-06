@@ -25,7 +25,7 @@ Admin.prototype = {
             $(this).val("");
         }).blur($.proxy(function(e) {
             var $this = $(e.target);
-            if ($this.val() == "") {
+            if ($this.val() === "") {
                 if (this.navobj.getparam("searchquery")) {
                     $this.val(this.navobj.getparam("searchquery"));
                 } else {
@@ -33,7 +33,7 @@ Admin.prototype = {
                 }
             }
         }, this));
-        if (this.navobj.getparam("searchquery") != undefined) {
+        if (this.navobj.getparam("searchquery") !== undefined) {
             $("#searchquery").val(this.navobj.getparam("searchquery"));
         }
 
@@ -52,14 +52,14 @@ Admin.prototype = {
 
     register_tag_handler: function(name, handler) {
         this.tag_handlers[name] = handler;
-        if (this.navobj.getparam(name + "filter") != undefined) {
+        if (this.navobj.getparam(name + "filter") !== undefined) {
             var text = this.navobj.getparam(name + "filter");
             $("#searchform").parent().after(this.make_tag(text, name));
         }
     },
 
     generic_tag_handler: function(tag, $link) {
-        if (this.navobj.getparam(tag + "filter") == undefined && $link.hasClass(tag)) {
+        if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
             var text = $link.attr("name");
             this.navobj.setparam(tag + "filter", text).update();
             $("#searchform").parent().after(this.make_tag(text, tag));
@@ -101,7 +101,7 @@ Admin.prototype = {
     do_search: function(e) {
         e.preventDefault();
         var squery = $("#searchquery").val();
-        if (squery != "") {
+        if (squery !== "") {
             this.navobj.setparam("searchquery", squery);
         } else {
             this.navobj.delparam("searchquery");
@@ -112,7 +112,7 @@ Admin.prototype = {
     importform_cb: function() {
         $(".submit").one('click', function(e) {
             e.preventDefault();
-            if ($("#id_sourcefile").val() == "") {
+            if ($("#id_sourcefile").val() === "") {
                 return;
             }
             $("#import_status").css("display", "block");
@@ -305,13 +305,13 @@ Identities.prototype = {
     },
 
     grp_tag_handler: function(tag, $link) {
-        if (this.navobj.getparam(tag + "filter") == undefined && $link.hasClass(tag)) {
+        if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
             var text = $link.attr("name");
             this.navobj
                 .setparam("idtfilter", "account")
                 .setparam(tag + "filter", text)
                 .update();
-            if ($("a[name=idt]").length == 0) {
+            if ($("a[name=idt]").length === 0) {
                 $("#searchform").parent().after(this.make_tag("account", "idt"));
             }
             $("#searchform").parent().after(this.make_tag(text, tag));
@@ -341,13 +341,13 @@ Identities.prototype = {
             var $this = $(e.target);
             var value = $this.val();
 
-            if (value == "SimpleUsers" || value == "") {
+            if (value == "SimpleUsers" || value === "") {
                 this.simpleuser_mode();
             } else {
                 this.normal_mode();
             }
         }, this));
-        if (notrigger != undefined && notrigger) {
+        if (notrigger !== undefined && notrigger) {
             return;
         }
         $("#id_role").trigger("change");
@@ -382,7 +382,7 @@ Identities.prototype = {
 
     mailform_prefill: function() {
         var $role = $("#id_role");
-        if (!$role.length || $role.val() == "" || $role.val() == "SimpleUsers") {
+        if (!$role.length || $role.val() === "" || $role.val() == "SimpleUsers") {
             $("#id_email").val($("#id_username").val());
         }
     },

@@ -47,8 +47,27 @@ Radicale.prototype = {
         });
     },
 
+    /**
+     * Retrieve a list of username from the server.
+     */
+    get_username_list: function() {
+        var result;
+
+        $.ajax({
+            url: this.options.username_list_url,
+            dataType: "json",
+            async: false
+        }).done(function(data) {
+            result = data;
+        });
+        return result;
+    },
+
     edit_calendar_cb: function() {
         $("#original_row").dynamicrule();
+        $("#id_username").autocompleter({
+            choices: $.proxy(this.get_username_list, this)
+        });
         $('.submit').on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "ucal_form",
@@ -58,10 +77,10 @@ Radicale.prototype = {
         }, this));
     },
 
-    add_shared_calendar_cb: function() {
+    shared_calendar_cb: function() {
         $('.submit').on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
-                formid: "newsharedcal_form",
+                formid: "sharedcal_form",
                 reload_on_success: false,
                 success_cb: $.proxy(this.reload_listing, this)
             });

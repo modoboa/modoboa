@@ -33,7 +33,7 @@ def radicale_left_menu(user):
              "label": _("Add shared calendar"),
              "img": "icon-plus",
              "modal": True,
-             "modalcb": "radicale.add_shared_calendar_cb",
+             "modalcb": "radicale.shared_calendar_cb",
              "url": reverse("new_shared_calendar")},
         ]
     return render_to_string('common/menulist.html', {
@@ -56,6 +56,7 @@ def calendar_modify_link(calendar):
         linkdef["url"] = reverse(
             "shared_calendar", args=[calendar.pk]
         )
+        linkdef["modalcb"] = "radicale.shared_calendar_cb"
     return render_link(linkdef)
 
 
