@@ -19,7 +19,7 @@ Apache2
    possible that **your** installation of uwsgi or nginx or Apache or
    what-have-you works differently. Keep this in mind.
 
-mod_wgsi
+mod_wsgi
 ========
 
 First, make sure that mod_wsgi is installed on your server.
