@@ -2,6 +2,7 @@
 # coding: utf-8
 import datetime
 from optparse import make_option
+from django import db
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from modoboa.core import load_core_settings
@@ -42,4 +43,5 @@ class Command(BaseCommand):
         self.__vprint("Deleting logs older than %d days..." % log_maximum_age)
         limit = timezone.now() - datetime.timedelta(log_maximum_age)
         Log.objects.filter(date_created__lt=limit).delete()
+        db.close_connection()
         self.__vprint("Done.")

@@ -2,6 +2,7 @@
 # coding: utf-8
 import sys
 import datetime
+from django import db
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
 from modoboa.lib import parameters
@@ -64,3 +65,4 @@ class Command(BaseCommand):
                 continue
 
             send_autoreply(sender, mbox, armessage)
+        db.close_connection()

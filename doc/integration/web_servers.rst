@@ -19,7 +19,7 @@ Apache2
    possible that **your** installation of uwsgi or nginx or Apache or
    what-have-you works differently. Keep this in mind.
 
-mod_wgsi
+mod_wsgi
 ========
 
 First, make sure that mod_wsgi is installed on your server.
@@ -107,19 +107,21 @@ Nginx
    possible that **your** installation of uwsgi or nginx or Apache or
    what-have-you works differently. Keep this in mind.
 
+This section covers two different ways of running Modoboa behind
+`Nginx <http://nginx.org/>`_ using a WSGI application server. Choose
+the one you prefer between `Green Unicorn <http://gunicorn.org/>`_ or
+`uWSGI <https://github.com/unbit/uwsgi>`_.
+
+In both cases, you'll need to download and `install nginx
+<http://wiki.nginx.org/Install>`_.
+
 Green Unicorn
 =============
 
-`Nginx <http://nginx.org/>`_ is a really fast HTTP server. Associated
-with `Green Unicorn <http://gunicorn.org/>`_, it gives you one of the
-best setups to serve python/Django applications. Modoboa's
-performance is really good with this configuration.
-
-To use this setup, first download and install `nginx
-<http://wiki.nginx.org/Install>`__ and `gunicorn
+Firstly, `Download and install gunicorn
 <http://gunicorn.org/install.html>`_. Then, use the following sample
-gunicorn configuration (create a new file named :file:`gunicorn.conf.py`
-inside Modoboa's root dir)::
+gunicorn configuration (create a new file named
+:file:`gunicorn.conf.py` inside Modoboa's root dir)::
 
   backlog = 2048
   bind = "unix:/var/run/gunicorn/modoboa.sock"
@@ -191,7 +193,7 @@ Paste this content to your configuration (replace values between
 ``<>`` with yours), restart nginx and enjoy a really fast
 application!
 
-uwsgi
+uWSGI
 =====
 
 The following setup is meant to get you started quickly. You should
@@ -213,8 +215,7 @@ uwsgi:
 Use uwsgi 1.2.6 or newer. If you do not, you *will* run into
 problems. Modoboa will fail in obscure ways.
 
-To use this setup, first download and install `nginx
-<http://wiki.nginx.org/Install>`__ and `uwsgi
+To use this setup, first `download and install uwsgi
 <http://uwsgi-docs.readthedocs.org/en/latest/WSGIquickstart.html>`_.
 
 Here is a sample nginx configuration::
@@ -256,10 +257,13 @@ Here is a sample nginx configuration::
         location <modoba's root url>/ {
             include uwsgi_params;
             uwsgi_pass <uwsgi port>;
-            uwsgi_param UWSGI_SCRIPT modoboa_server.wsgi:application
+            uwsgi_param UWSGI_SCRIPT <modoboa instance name>.wsgi:application
             uwsgi_param UWSGI_SCHEME https;
         }
     }
+
+``<modoboa instance name>`` must be replaced by the value you used
+when :ref:`you deployed your instance <deployment>`.
 
 If you do not plan to use SSL then change the listen directive to
 ``listen 80;`` and delete each of the following directives::
@@ -272,7 +276,7 @@ If you do not plan to use SSL then change the listen directive to
 
 If you do plan to use SSL, you'll have to generate a certificate and a
 key. `This article
-<http://wiki.nginx.org/HttpSslModule#Generate_Certificates>`__
+<http://wiki.nginx.org/HttpSslModule#Generate_Certificates>`_
 contains information about how to do it.
 
 Make sure to replace the ``<...>`` in the sample configuration with

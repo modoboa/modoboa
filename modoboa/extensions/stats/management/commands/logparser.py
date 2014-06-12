@@ -23,8 +23,9 @@ import os
 import re
 import rrdtool
 import string
-from django.core.management.base import BaseCommand
 from optparse import make_option
+from django import db
+from django.core.management.base import BaseCommand
 from modoboa.lib import parameters
 from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.stats import Stats
@@ -353,3 +354,4 @@ class Command(BaseCommand):
             options["logfile"] = parameters.get_admin("LOGFILE", app="stats")
         p = LogParser(options, parameters.get_admin("RRD_ROOTDIR", app="stats"))
         p.process()
+        db.close_connection()

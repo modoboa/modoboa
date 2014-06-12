@@ -3,6 +3,7 @@
 
 import time
 from optparse import make_option
+from django import db
 from django.core.management.base import BaseCommand
 from modoboa.lib import parameters
 from modoboa.extensions.amavis import Amavis
@@ -63,5 +64,6 @@ class Command(BaseCommand):
         for maddr in Maddr.objects.all():
             if not maddr.msgs_set.count() and not maddr.msgrcpt_set.count():
                 maddr.delete()
+        db.close_connection()
 
         self.__vprint("Done.")
