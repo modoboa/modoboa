@@ -34,6 +34,7 @@ class WizardStep(object):
 
     @property
     def title(self):
+        """Return step title"""
         if self.index is None:
             return self._title
         return "%d. %s" % (self.index + 1, self._title)

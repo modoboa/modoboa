@@ -128,7 +128,9 @@ class UserCalendarWizard(WizardForm):
     def __init__(self, request):
         super(UserCalendarWizard, self).__init__(request)
         self.add_step(UserCalendarForm, _("General"))
-        self.add_step(RightsForm, _("Rights"))
+        self.add_step(
+            RightsForm, _("Rights"), formtpl="radicale/rightsform.html"
+        )
 
     def extra_context(self, context):
         context.update({
@@ -141,6 +143,8 @@ class UserCalendarWizard(WizardForm):
         calendar = self.first_step.form.save(commit=False)
         calendar.mailbox = self.request.user.mailbox_set.all()[0]
         calendar.save()
+        self.steps[1].form.calendar = calendar
+        self.steps[1].form.save()
         return render_to_json_response(_("Calendar created"))
 
 

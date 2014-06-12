@@ -36,14 +36,16 @@ def calendars(request, tplname="radicale/calendar_list.html"):
     if request.user.group == "SimpleUsers":
         mbox = request.user.mailbox_set.all()[0]
         cals = UserCalendar.objects.filter(mailbox=mbox).select_related().all()
+        with_owner = False
     else:
         cals = chain(
             UserCalendar.objects.get_for_admin(request.user),
             SharedCalendar.objects.get_for_admin(request.user)
         )
+        with_owner = True
     return render_to_json_response({
         "table": _render_to_string(request, tplname, {
-            "calendars": cals
+            "calendars": cals, "with_owner": with_owner
         })
     })
 
@@ -60,12 +62,14 @@ def user_calendar(request, pk):
     """Edit or remove a calendar.
     """
     try:
-        ucal = UserCalendar.objects.get(pk=pk)
+        ucal = UserCalendar.objects.select_related().get(pk=pk)
     except UserCalendar.DoesNotExist:
         raise NotFound
+    if request.user != ucal.mailbox.user and \
+       not request.user.can_access(ucal.mailbox.domain):
+        raise PermDeniedException
     instances = {"general": ucal, "rights": ucal}
     if request.method == "DELETE":
-        # Check ownership
         ucal.delete()
         return render_to_json_response(_("Calendar removed"))
     return UserCalendarEditionForm(request, instances=instances).process()
@@ -104,12 +108,14 @@ def shared_calendar(request, pk):
     """Edit or remove a shared calendar.
     """
     try:
-        scal = SharedCalendar.objects.get(pk=pk)
+        scal = SharedCalendar.objects.select_related().get(pk=pk)
     except SharedCalendar.DoesNotExist:
         raise NotFound
     if not request.user.can_access(scal.domain):
         raise PermDeniedException
     if request.method == "DELETE":
+        if not request.user.can_access(scal.domain):
+            raise PermDeniedException
         scal.delete()
         return render_to_json_response(_("Calendar removed"))
     if request.method == "POST":

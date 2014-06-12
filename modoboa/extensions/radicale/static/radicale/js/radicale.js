@@ -19,7 +19,7 @@ Radicale.prototype = {
         this.options.defcallback = $.proxy(this.list_cb, this);
         this.navobj = new History(this.options);
         $(document).on(
-            "click", "a[name=delcalendar]", this.del_calendar
+            "click", "a[name=delcalendar]", $.proxy(this.del_calendar, this)
         );
     },
 
@@ -34,13 +34,25 @@ Radicale.prototype = {
      *
      */
     reload_listing: function(data) {
+        console.log("reload");
         this.navobj.update(true);
         if (data) {
             $("body").notify("success", data, 2000);
         }
     },
 
+    /**
+     * Rights form initialization.
+     */
+    rightsform_init: function() {
+        $("#original_row").dynamicrule();
+        $("#id_username").autocompleter({
+            choices: $.proxy(this.get_username_list, this)
+        });
+    },
+
     add_calendar_cb: function() {
+        this.rightsform_init();
         $("#wizard").cwizard({
             formid: "newcal_form",
             success_callback: $.proxy(this.reload_listing, this)
@@ -64,10 +76,7 @@ Radicale.prototype = {
     },
 
     edit_calendar_cb: function() {
-        $("#original_row").dynamicrule();
-        $("#id_username").autocompleter({
-            choices: $.proxy(this.get_username_list, this)
-        });
+        this.rightsform_init();
         $('.submit').on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "ucal_form",
@@ -92,7 +101,7 @@ Radicale.prototype = {
      */
     del_calendar: function(event) {
         event.preventDefault();
-        var $link = $(this);
+        var $link = get_target(event, "a");
 
         if (!confirm($link.attr("title"))) {
             return;

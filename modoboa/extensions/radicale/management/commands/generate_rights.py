@@ -86,6 +86,10 @@ permission = %s
             "domain-shared-calendars", r"^(.+)@(.+)$", r"{1}/shared/.+$",
             comment="Access rule to domain shared calendars"
         )
+        self._generate_acr(
+            "owners-access", r"^(.+)@(.+)$", r"{1}/user/{0}/.+$",
+            comment="Read/Write permission for calendar owners"
+        )
 
         self._user_access_rules()
         self._cfgfile.close()

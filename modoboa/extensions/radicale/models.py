@@ -31,6 +31,11 @@ class Calendar(models.Model):
         """Return calendar type"""
         raise NotImplementedError
 
+    @property
+    def owner(self):
+        """Return calendar owner"""
+        raise NotImplementedError
+
 
 class UserCalendarManager(models.Manager):
     """Custom UserCalendar manager.
@@ -70,6 +75,10 @@ class UserCalendar(Calendar):
     def type(self):
         return _("user")
 
+    @property
+    def owner(self):
+        return self.mailbox.user
+
 
 class SharedCalendarManager(models.Manager):
     """Custom SharedCalendar manager.
@@ -108,6 +117,10 @@ class SharedCalendar(Calendar):
     @property
     def type(self):
         return _("shared")
+
+    @property
+    def owner(self):
+        return self.domain
 
 
 @python_2_unicode_compatible
