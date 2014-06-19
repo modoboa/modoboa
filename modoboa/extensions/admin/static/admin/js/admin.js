@@ -6,7 +6,7 @@
 var Admin = function(options) {
     Listing.call(this, options);
 };
-
+    
 Admin.prototype = {
     defaults: {
         deflocation: "list/",
@@ -17,7 +17,6 @@ Admin.prototype = {
         Listing.prototype.initialize.call(this, options);
         this.options = $.extend({}, this.defaults, this.options);
         this.options.defcallback = $.proxy(this.list_cb, this);
-        this.tag_handlers = {};
 
         this.navobj = new History(this.options);
 
@@ -48,54 +47,6 @@ Admin.prototype = {
 
     listen: function() {
         $("#searchform").submit($.proxy(this.do_search, this));
-    },
-
-    register_tag_handler: function(name, handler) {
-        this.tag_handlers[name] = handler;
-        if (this.navobj.getparam(name + "filter") !== undefined) {
-            var text = this.navobj.getparam(name + "filter");
-            $("#searchform").parent().after(this.make_tag(text, name));
-        }
-    },
-
-    generic_tag_handler: function(tag, $link) {
-        if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
-            var text = $link.attr("name");
-            this.navobj.setparam(tag + "filter", text).update();
-            $("#searchform").parent().after(this.make_tag(text, tag));
-            return true;
-        }
-        return false;
-    },
-
-    make_tag: function(text, type) {
-        var $tag = $("<a />", {"name": type, "class" : "btn btn-mini", "html": text});
-        var $i = $("<i />", {"class" : "icon-remove"}).prependTo($tag);
-
-        $tag.click($.proxy(this.remove_tag, this));
-        return $tag;
-    },
-
-    remove_tag: function(e) {
-        var $tag = $(e.target);
-
-        if ($tag.is("i")) {
-            $tag = $tag.parent();
-        }
-        e.preventDefault();
-        this.navobj.delparam($tag.attr("name") + "filter").update();
-        $tag.remove();
-    },
-
-    filter_by_tag: function(e) {
-        var $link = $(e.target);
-        e.preventDefault();
-
-        for (var name in this.tag_handlers) {
-            if (this.tag_handlers[name].apply(this, [name, $link])) {
-                break;
-            }
-        }
     },
 
     do_search: function(e) {

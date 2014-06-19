@@ -18,6 +18,7 @@ Radicale.prototype = {
         this.options = $.extend({}, this.defaults, this.options);
         this.options.defcallback = $.proxy(this.list_cb, this);
         this.navobj = new History(this.options);
+        this.register_tag_handler("cal", this.generic_tag_handler);
         $(document).on(
             "click", "a[name=delcalendar]", $.proxy(this.del_calendar, this)
         );

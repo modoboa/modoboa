@@ -16,7 +16,7 @@ from modoboa.lib.exceptions import (
     PermDeniedException
 )
 from modoboa.lib.templatetags.lib_tags import pagination_bar
-from modoboa.extensions.admin.lib import get_sort_order, get_listing_page
+from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.admin.forms import (
     DomainForm

@@ -10,10 +10,12 @@ from django.contrib.auth.decorators import (
 )
 from django.utils.translation import ugettext as _
 
+from modoboa.lib.listing import get_sort_order
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
 from modoboa.lib.exceptions import NotFound, PermDeniedException
+
 from modoboa.extensions.radicale.forms import (
     UserCalendarWizard, SharedCalendarForm, UserCalendarEditionForm
 )
@@ -33,16 +35,24 @@ def calendars(request, tplname="radicale/calendar_list.html"):
 
     The content depends on current user's role.
     """
+    sort_order, sort_dir = get_sort_order(request.GET, "name")
+    calfilter = request.GET.get("calfilter", None)
     if request.user.group == "SimpleUsers":
         mbox = request.user.mailbox_set.all()[0]
         cals = UserCalendar.objects.filter(mailbox=mbox).select_related().all()
         with_owner = False
     else:
-        cals = chain(
-            UserCalendar.objects.get_for_admin(request.user),
-            SharedCalendar.objects.get_for_admin(request.user)
-        )
+        ucals = []
+        if calfilter is None or calfilter == "user":
+            ucals = UserCalendar.objects.get_for_admin(request.user)
+        scals = []
+        if calfilter is None or calfilter == "shared":
+            scals = SharedCalendar.objects.get_for_admin(request.user)
+        cals = chain(ucals, scals)
         with_owner = True
+    cals = sorted(
+        cals, key=lambda c: getattr(c, sort_order), reverse=sort_dir == '-'
+    )
     return render_to_json_response({
         "table": _render_to_string(request, tplname, {
             "calendars": cals, "with_owner": with_owner

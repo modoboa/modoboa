@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.webutils import render_to_json_response
 from modoboa.lib.formutils import WizardForm, TabForms, DynamicForm
-from modoboa.extensions.admin.models import Domain
+from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
 
 
@@ -16,7 +16,24 @@ class UserCalendarForm(forms.ModelForm):
     """
     class Meta:
         model = UserCalendar
-        fields = ('name', )
+        fields = ('name', 'mailbox', )
+        widgets = {
+            'mailbox': forms.widgets.Select(
+                attrs={"class": "selectpicker", "data-live-search": "true"}
+            )
+        }
+
+    def __init__(self, user, *args, **kwargs):
+        """Custom constructor.
+
+        We need the current user to filter the mailbox list.
+        """
+        super(UserCalendarForm, self).__init__(*args, **kwargs)
+        if user.group == 'SimpleUsers':
+            del self.fields['mailbox']
+        else:
+            self.fields['mailbox'].queryset = \
+                Mailbox.objects.get_for_admin(user)
 
 
 class SharedCalendarForm(forms.ModelForm):
@@ -25,6 +42,11 @@ class SharedCalendarForm(forms.ModelForm):
     """
     class Meta:
         model = SharedCalendar
+        widgets = {
+            "domain": forms.widgets.Select(
+                attrs={"class": "selectpicker", "data-live-search": "true"}
+            )
+        }
 
     def __init__(self, user, *args, **kwargs):
         """Custom constructor.
@@ -127,9 +149,9 @@ class UserCalendarWizard(WizardForm):
     """
     def __init__(self, request):
         super(UserCalendarWizard, self).__init__(request)
-        self.add_step(UserCalendarForm, _("General"))
+        self.add_step(UserCalendarForm, _("General"), new_args=[request.user])
         self.add_step(
-            RightsForm, _("Rights"), formtpl="radicale/rightsform.html"
+            RightsForm, _("Rights"), formtpl="radicale/rightsform.html",
         )
 
     def extra_context(self, context):
@@ -141,7 +163,8 @@ class UserCalendarWizard(WizardForm):
 
     def done(self):
         calendar = self.first_step.form.save(commit=False)
-        calendar.mailbox = self.request.user.mailbox_set.all()[0]
+        if self.request.user.group == 'SimpleUsers':
+            calendar.mailbox = self.request.user.mailbox_set.all()[0]
         calendar.save()
         self.steps[1].form.calendar = calendar
         self.steps[1].form.save()
@@ -151,13 +174,14 @@ class UserCalendarWizard(WizardForm):
 class UserCalendarEditionForm(TabForms):
     """User calendar edition form.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         self.forms = []
         self.forms.append({
             "id": "general",
             "title": _("General"),
             "cls": UserCalendarForm,
-            "mandatory": True
+            "mandatory": True,
+            "new_args": [request.user]
         })
         self.forms.append({
             "id": "rights",
@@ -166,7 +190,7 @@ class UserCalendarEditionForm(TabForms):
             "formtpl": "radicale/rightsform.html",
             "mandatory": True
         })
-        super(UserCalendarEditionForm, self).__init__(*args, **kwargs)
+        super(UserCalendarEditionForm, self).__init__(request, *args, **kwargs)
 
     def extra_context(self, context):
         calendar = self.instances["general"]

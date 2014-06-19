@@ -23,11 +23,11 @@ function get_static_url(value) {
 function modalbox(e, css, defhref, defcb, defclosecb) {
     e.preventDefault();
     var $this = $(this);
-    var href = (defhref != undefined) ? defhref : $this.attr('href');
-    var modalcb = (defcb != undefined) ? defcb : $this.attr('modalcb');
-    var closecb = (defclosecb != undefined) ? defclosecb : $this.attr("closecb");
+    var href = (defhref !== undefined) ? defhref : $this.attr('href');
+    var modalcb = (defcb !== undefined) ? defcb : $this.attr('modalcb');
+    var closecb = (defclosecb !== undefined) ? defclosecb : $this.attr("closecb");
 
-    if (href.indexOf('#') == 0) {
+    if (href.indexOf('#') === 0) {
         $(href).modal('open');
         return;
     }
@@ -41,6 +41,9 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
 
         $div.modal({show: false});
         $div.one('shown', function() {
+            $(".selectpicker").selectpicker({
+                container: 'body'
+            });
             $(".help").popover({
                 container: "#modalbox",
                 trigger: "hover"

@@ -27,8 +27,8 @@ class Calendar(models.Model):
         raise NotImplementedError
 
     @property
-    def type(self):
-        """Return calendar type"""
+    def tags(self):
+        """Return calendar tags"""
         raise NotImplementedError
 
     @property
@@ -72,8 +72,8 @@ class UserCalendar(Calendar):
         )
 
     @property
-    def type(self):
-        return _("user")
+    def tags(self):
+        return [{"name": "user", "label": _("User"), "type": "cal"}]
 
     @property
     def owner(self):
@@ -115,8 +115,9 @@ class SharedCalendar(Calendar):
         )
 
     @property
-    def type(self):
-        return _("shared")
+    def tags(self):
+        return [{"name": "shared", "label": _("Shared"), "type": "cal"}]
+
 
     @property
     def owner(self):

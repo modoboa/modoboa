@@ -3,8 +3,8 @@
   <thead>
     <tr>
       <th id="name" class="sortable" data-sort_order="name" width="">{% trans "Name" %}</th>
-      {% if with_owner %}<th id="owner" class="sortable" data-sort_order="mailbox">{% trans "Owner" %}</th>{% endif %}
-      <th id="type">{% trans "Type" %}</th>
+      {% if with_owner %}<th id="owner" class="sortable" data-sort_order="owner">{% trans "Owner" %}</th>{% endif %}
+      <th id="tags">{% trans "Tags" %}</th>
       <th id="url">{% trans "Address" %}</th>
       <th id="actions" width="">{% trans "Actions" %}</th>
     </tr>
@@ -14,9 +14,7 @@
     <tr id="{{ cal.id }}" class="" name="{{ forloop.counter }}">
       <td name="name">{% calendar_modify_link cal %}</td>
       {% if with_owner %}<td name="owner">{{ cal.owner }}</td>{% endif %}
-      <td name="type">
-        <span class="label label-info"><a href="#" class="filter">{{ cal.type }}</a></span>
-      </td>
+      <td name="tags">{% render_tags cal.tags %}</td>
       <td name="url">{{ cal.url }}</td>
       <td name="actions">{% calendar_actions cal %}</td>
     </tr>

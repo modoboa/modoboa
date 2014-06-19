@@ -16,9 +16,10 @@ from modoboa.lib.webutils import (
 from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import Mailbox, Domain
-from modoboa.extensions.admin.lib import (
-    get_sort_order, get_listing_page, get_identities
+from modoboa.lib.listing import (
+    get_sort_order, get_listing_page
 )
+from modoboa.extensions.admin.lib import get_identities
 from modoboa.extensions.admin.forms import (
     AccountForm
 )
