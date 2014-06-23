@@ -14,28 +14,9 @@ Admin.prototype = {
     },
 
     initialize: function(options) {
-        Listing.prototype.initialize.call(this, options);
-        this.options = $.extend({}, this.defaults, this.options);
+        this.options = $.extend({}, this.defaults, options);
         this.options.defcallback = $.proxy(this.list_cb, this);
-
-        this.navobj = new History(this.options);
-
-        $("#searchquery").focus(function() {
-            $(this).val("");
-        }).blur($.proxy(function(e) {
-            var $this = $(e.target);
-            if ($this.val() === "") {
-                if (this.navobj.getparam("searchquery")) {
-                    $this.val(this.navobj.getparam("searchquery"));
-                } else {
-                    $this.val(gettext("Search"));
-                }
-            }
-        }, this));
-        if (this.navobj.getparam("searchquery") !== undefined) {
-            $("#searchquery").val(this.navobj.getparam("searchquery"));
-        }
-
+        Listing.prototype.initialize.call(this, this.options);
         this.listen();
     },
 
@@ -45,19 +26,10 @@ Admin.prototype = {
         $("a.filter").click($.proxy(this.filter_by_tag, this));
     },
 
+    /**
+     * Children must override this method.
+     */
     listen: function() {
-        $("#searchform").submit($.proxy(this.do_search, this));
-    },
-
-    do_search: function(e) {
-        e.preventDefault();
-        var squery = $("#searchquery").val();
-        if (squery !== "") {
-            this.navobj.setparam("searchquery", squery);
-        } else {
-            this.navobj.delparam("searchquery");
-        }
-        this.navobj.update();
     },
 
     importform_cb: function() {

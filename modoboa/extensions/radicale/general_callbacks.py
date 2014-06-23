@@ -9,7 +9,7 @@ def top_menu(target, user):
     if target == "top_menu":
         return [
             {"name": "radicale",
-             "label": _("Radicale"),
+             "label": _("Calendars"),
              "url": reverse('modoboa.extensions.radicale.views.index')}
         ]
     return []

@@ -11,10 +11,9 @@ TwocolsNav.prototype = {
     },
 
     initialize: function(options) {
-        Listing.prototype.initialize.call(this, options);
-        this.options = $.extend({}, this.defaults, this.options);
+        this.options = $.extend({}, this.defaults, options);
         this.options.defcallback = $.proxy(this.default_cb, this);
-        this.navobj = new History(this.options);
+        Listing.prototype.initialize.call(this, this.options);
         this.listen();
     },
 

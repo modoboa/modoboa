@@ -37,17 +37,25 @@ def calendars(request, tplname="radicale/calendar_list.html"):
     """
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     calfilter = request.GET.get("calfilter", None)
+    searchquery = request.GET.get("searchquery", None)
     if request.user.group == "SimpleUsers":
         mbox = request.user.mailbox_set.all()[0]
-        cals = UserCalendar.objects.filter(mailbox=mbox).select_related().all()
+        cals = UserCalendar.objects.filter(mailbox=mbox)
+        if searchquery is not None:
+            cals = cals.filter(name__icontains=searchquery)
+        cals = cals.select_related().all()
         with_owner = False
     else:
         ucals = []
         if calfilter is None or calfilter == "user":
             ucals = UserCalendar.objects.get_for_admin(request.user)
+            if searchquery is not None:
+                ucals = ucals.filter(name__icontains=searchquery)
         scals = []
         if calfilter is None or calfilter == "shared":
             scals = SharedCalendar.objects.get_for_admin(request.user)
+            if searchquery is not None:
+                scals = scals.filter(name__icontains=searchquery)
         cals = chain(ucals, scals)
         with_owner = True
     cals = sorted(

@@ -8,15 +8,57 @@ Listing.prototype = {
     listing_defaults: {
         pbar_container: '#bottom-bar-right',
         pbar_id: '#pagination_bar',
-        sortable_selector: '.sortable'
+        sortable_selector: '.sortable',
+        with_searchform: true
     },
 
     initialize: function(options) {
         this.options = $.extend({}, this.listing_defaults, options);
         this.tag_handlers = {};
+        this.navobj = new History(this.options);
         $(document).on("click", this.options.pbar_container + " a",
             $.proxy(this.load_page, this));
+        if (this.options.with_searchform) {
+            this.init_searchform();
+        }
     },
+
+    /**
+     * Initialize the search form.
+     */
+    init_searchform: function() {
+        $("#searchquery").focus(function() {
+            $(this).val("");
+        }).blur($.proxy(function(e) {
+            var $this = $(e.target);
+            if ($this.val() === "") {
+                if (this.navobj.getparam("searchquery")) {
+                    $this.val(this.navobj.getparam("searchquery"));
+                } else {
+                    $this.val(gettext("Search"));
+                }
+            }
+        }, this));
+        if (this.navobj.getparam("searchquery") !== undefined) {
+            $("#searchquery").val(this.navobj.getparam("searchquery"));
+        }
+        $("#searchform").submit($.proxy(this.do_search, this));
+    },
+
+    /**
+     * Apply the current search pattern.
+     */
+    do_search: function(e) {
+        e.preventDefault();
+        var squery = $("#searchquery").val();
+        if (squery !== "") {
+            this.navobj.setparam("searchquery", squery);
+        } else {
+            this.navobj.delparam("searchquery");
+        }
+        this.navobj.update();
+    },
+
 
     load_page: function(e) {
         var $link = get_target(e, "a");

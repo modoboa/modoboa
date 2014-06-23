@@ -17,7 +17,7 @@ class ParametersForm(AdminParametersForm):
     )
 
     sep1 = SeparatorField(label=_("Messages releasing"))
-                          
+
     released_msgs_cleanup = YesNoField(
         label=_("Remove released messages"),
         initial="no",
@@ -49,7 +49,7 @@ class ParametersForm(AdminParametersForm):
         initial="/var/amavis/amavisd.sock",
         help_text=_("Path to the PDP server socket (if unix mode)")
     )
-    
+
     check_requests_interval = forms.IntegerField(
         label=_("Check requests interval"),
         initial=30,
