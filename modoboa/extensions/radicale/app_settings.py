@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy
 from django import forms
 from modoboa.lib.parameters import AdminParametersForm
-from modoboa.lib.formutils import SeparatorField
+from modoboa.lib.formutils import SeparatorField, YesNoField
 
 
 class ParametersForm(AdminParametersForm):
@@ -16,9 +16,9 @@ class ParametersForm(AdminParametersForm):
         help_text=ugettext_lazy("Path to file that contains rights definition")
     )
 
-    allow_calendars_administration = forms.BooleanField(
+    allow_calendars_administration = YesNoField(
         label=ugettext_lazy("Allow calendars administration"),
-        initial=False,
+        initial="no",
         help_text=ugettext_lazy(
             "Allow domain administrators to manage user calendars (read an write)"
         )

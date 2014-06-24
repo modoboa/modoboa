@@ -79,8 +79,11 @@ permission = %s
 # DO NOT EDIT MANUALLY!
         """ % datetime.datetime.today())
 
-        #self._super_admin_rules()
-        #self._domain_admin_rules()
+        allow_calendars_administration = parameters.get_admin(
+            "ALLOW_CALENDARS_ADMINISTRATION", app="radicale")
+        if allow_calendars_administration == "yes":
+            self._super_admin_rules()
+            self._domain_admin_rules()
 
         self._generate_acr(
             "domain-shared-calendars", r"^(.+)@(.+)$", r"{1}/shared/.+$",
