@@ -330,69 +330,16 @@ Trigger
 
 As indicated on `Dovecot's wiki
 <http://wiki2.dovecot.org/Quota/Dict>`_, you need a trigger to
-properly update the quota. Unfortunately, the provided example won't
-work for Modoboa. You should use the following one instead:
+properly update the quota.
 
-.. sourcecode:: sql
+A working copy of this trigger is available on `Modoboa's website
+<http://modoboa.org/resources/modoboa_postgres_trigger.sql>`_.
 
-  CREATE OR REPLACE FUNCTION merge_quota() RETURNS TRIGGER AS $$
-  BEGIN
-    IF NEW.messages < 0 OR NEW.messages IS NULL THEN
-      -- ugly kludge: we came here from this function, really do try to insert
-      IF NEW.messages IS NULL THEN
-        NEW.messages = 0;
-      ELSE
-        NEW.messages = -NEW.messages;
-      END IF;
-      return NEW;
-    END IF;
-
-    LOOP
-      UPDATE admin_quota SET bytes = bytes + NEW.bytes,
-        messages = messages + NEW.messages
-        WHERE username = NEW.username;
-      IF found THEN
-        RETURN NULL;
-      END IF;
-
-      BEGIN
-        IF NEW.messages = 0 THEN
-          RETURN NEW;
-        ELSE
-          NEW.messages = - NEW.messages;
-          return NEW;
-        END IF;
-      EXCEPTION WHEN unique_violation THEN
-        -- someone just inserted the record, update it
-      END;
-    END LOOP;
-  END;
-  $$ LANGUAGE plpgsql;
-
-  CREATE OR REPLACE FUNCTION set_mboxid() RETURNS TRIGGER AS $$
-  DECLARE
-    mboxid INTEGER;
-  BEGIN
-    SELECT admin_mailbox.id INTO STRICT mboxid FROM admin_mailbox INNER JOIN core_user ON admin_mailbox.user_id=core_user.id WHERE core_user.username=NEW.username;
-    UPDATE admin_quota SET mbox_id = mboxid
-      WHERE username = NEW.username;
-    RETURN NULL;
-  END;
-  $$ LANGUAGE plpgsql;
-
-  DROP TRIGGER IF EXISTS mergequota ON admin_quota;
-  CREATE TRIGGER mergequota BEFORE INSERT ON admin_quota
-     FOR EACH ROW EXECUTE PROCEDURE merge_quota();
-
-  DROP TRIGGER IF EXISTS setmboxid ON admin_quota;
-  CREATE TRIGGER setmboxid AFTER INSERT ON admin_quota
-     FOR EACH ROW EXECUTE PROCEDURE set_mboxid();
-
-Copy this example into a file (for example: :file:`quota-trigger.sql`) on
-server running postgres and execute the following commands::
+Download this file and copy it on the server running postgres. Then,
+execute the following commands::
 
   $ su - postgres
-  $ psql [modoboa database] < /path/to/quota-trigger.sql
+  $ psql [modoboa database] < /path/to/modoboa_postgres_trigger.sql
   $ exit
   
 Replace ``[modoboa database]`` by the appropriate value.
