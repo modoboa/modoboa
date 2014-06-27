@@ -13,7 +13,9 @@ class ModoTestCase(TestCase):
         self.clt = Client()
         self.assertEqual(self.clt.login(username=username, password=password), True)
 
-    def ajax_request(self, method, url, params, status=200):
+    def ajax_request(self, method, url, params=None, status=200):
+        if params is None:
+            params = {}
         response = getattr(self.clt, method) \
             (url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, status)
@@ -21,6 +23,12 @@ class ModoTestCase(TestCase):
 
     def ajax_post(self, *args, **kwargs):
         return self.ajax_request('post', *args, **kwargs)
+
+    def ajax_put(self, *args, **kwargs):
+        return self.ajax_request('put', *args, **kwargs)
+
+    def ajax_delete(self, *args, **kwargs):
+        return self.ajax_request('delete', *args, **kwargs)
 
     def ajax_get(self, *args, **kwargs):
         return self.ajax_request('get', *args, **kwargs)

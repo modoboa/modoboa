@@ -4,9 +4,9 @@ from modoboa.lib import parameters
 from modoboa.core.models import User
 from modoboa.core.factories import UserFactory
 from modoboa.extensions.admin.factories import (
-    DomainFactory, MailboxFactory, populate_database
+    populate_database
 )
-from modoboa.extensions.admin.models import Alias, Domain, DomainAlias
+from modoboa.extensions.admin.models import Alias, Domain
 from modoboa.extensions.limits.models import LimitTemplates
 
 

@@ -4,7 +4,9 @@ from optparse import make_option
 
 from django.core.management.base import BaseCommand
 
+from modoboa.core.models import User
 from modoboa.lib import parameters
+from modoboa.extensions.admin import Domain
 from modoboa.extensions.radicale import Radicale
 from modoboa.extensions.radicale.models import (
     AccessRule
@@ -24,14 +26,14 @@ class Command(BaseCommand):
     def _generate_acr(self, name, user, collection, perm="rw", comment=None):
         """Write a new access control rule to the config file.
         """
+        if comment is not None:
+            self._cfgfile.write("\n# %s" % comment)
         self._cfgfile.write("""
-%s
 [%s]
 user = %s
 collection = %s
 permission = %s
-    """ % ("" if comment is None else ("# %s" % comment),
-           name, user, collection, perm)
+""" % (name, user, collection, perm)
         )
 
     def _user_access_rules(self):
@@ -39,7 +41,7 @@ permission = %s
         """
         for acr in AccessRule.objects.select_related().all():
             section = "%s-to-%s-acr" % (
-                acr.calendar.mailbox, acr.mailbox
+                acr.mailbox, acr.calendar
             )
             permission = ""
             if acr.read:
@@ -54,7 +56,7 @@ permission = %s
         """Generate access rules for super administrators.
         """
         for sa in User.objects.filter(is_superuser=True):
-            section = "[sa-%s-acr]" % sa.username
+            section = "sa-%s-acr" % sa.username
             self._generate_acr(
                 section, sa.username, ".*"
             )
@@ -64,7 +66,7 @@ permission = %s
         """
         for da in User.objects.filter(groups__name="DomainAdmins"):
             for domain in Domain.objects.get_for_admin(da):
-                section = "[da-%s-to-%s-acr]" % (da.email, da.name)
+                section = "da-%s-to-%s-acr" % (da.email, domain.name)
                 self._generate_acr(
                     section, da.email, "%s/user/.*" % domain.name
                 )
