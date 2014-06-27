@@ -11,6 +11,21 @@ from modoboa.lib.permissions import add_permissions_to_group
 from modoboa.core.extensions import ModoExtension, exts_pool
 
 
+def init_limits_dependant_features():
+    """Custom initialization if the limits extension activated.
+
+    We mainly define extra permissions.
+    """
+    add_permissions_to_group(
+        "Resellers", [("radicale", "add_usercalendar"),
+                      ("radicale", "change_usercalendar"),
+                      ("radicale", "delete_usercalendar"),
+                      ("radicale", "add_sharedcalendar"),
+                      ("radicale", "change_sharedcalendar"),
+                      ("radicale", "delete_sharedcalendar")]
+    )
+
+
 class Radicale(ModoExtension):
     """
     """
@@ -32,6 +47,8 @@ class Radicale(ModoExtension):
                              ("radicale", "change_sharedcalendar"),
                              ("radicale", "delete_sharedcalendar")]
         )
+        if exts_pool.is_extension_enabled('limits'):
+            init_limits_dependant_features()
 
     def load(self):
         """Plugin loading.

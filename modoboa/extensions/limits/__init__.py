@@ -10,6 +10,7 @@ from django.db import IntegrityError
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy
 from modoboa.lib import events, parameters
+from modoboa.lib.permissions import add_permissions_to_group
 from modoboa.core.extensions import ModoExtension, exts_pool
 
 levents = [
@@ -38,10 +39,12 @@ class Limits(ModoExtension):
         grp.permissions.add(*dagrp.permissions.all())
 
         ct = ContentType.objects.get_for_model(Domain)
-        for pname in ["view_domains", "add_domain", "change_domain", "delete_domain"]:
-            perm = Permission.objects.get(content_type=ct, codename=pname)
-            grp.permissions.add(perm)
-            grp.save()
+        add_permissions_to_group(
+            "Resellers", [("admin", "view_domains"),
+                          ("admin", "add_domain"),
+                          ("admin", "change_domain"),
+                          ("admin", "delete_domain")]
+        )
 
         for user in User.objects.filter(groups__name='DomainAdmins'):
             try:
