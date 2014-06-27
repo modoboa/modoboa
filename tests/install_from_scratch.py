@@ -20,7 +20,7 @@ class DeployTest(unittest.TestCase):
 
     def tearDown(self):
         path = os.path.join(self.workdir, self.projname)
-        code, output = exec_cmd("python manage.py test core lib admin limits postfix_relay_domains", cwd=path)
+        code, output = exec_cmd("python manage.py test core lib admin limits postfix_relay_domains radicale", cwd=path)
         self.assertEqual(code, 0)
 
     def test_standard(self):
