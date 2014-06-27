@@ -155,7 +155,7 @@ MySQL users
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, concat('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM core_user
+  iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
 .. _dovecot_pg_queries:
 
@@ -174,7 +174,7 @@ PostgreSQL users
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM core_user
+  iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
 SQLite users
 ------------
@@ -191,7 +191,7 @@ SQLite users
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, ('*:bytes=' || mb.quota || 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM core_user
+  iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
 .. note::
 
