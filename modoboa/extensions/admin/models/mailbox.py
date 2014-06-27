@@ -64,7 +64,7 @@ class Mailbox(AdminObject):
     )
     quota = models.PositiveIntegerField()
     use_domain_quota = models.BooleanField(default=False)
-    quota_value = models.ForeignKey(Quota, to_field="username")
+    quota_value = models.OneToOneField(Quota, to_field="username")
     domain = models.ForeignKey(Domain)
     user = models.ForeignKey(User)
 
@@ -146,16 +146,25 @@ class Mailbox(AdminObject):
         )
 
     def rename(self, address, domain):
-        """Rename the mailbox
+        """Rename the mailbox.
+
+        To update the associated Quota record, we must create a new
+        one first, update the foreign key and then we can delete the
+        original record!
 
         :param string address: the new mailbox's address (local part)
         :param Domain domain: the new mailbox's domain
+
         """
         old_mail_home = self.mail_home
-        qs = Quota.objects.filter(username=self.full_address)
         self.address = address
         self.domain = domain
-        qs.update(username=self.full_address)
+        old_qvalue = self.quota_value
+        self.quota_value = Quota.objects.create(
+            username=self.full_address, bytes=old_qvalue.bytes,
+            messages=old_qvalue.messages
+        )
+        old_qvalue.delete()
         self.rename_dir(old_mail_home)
 
     def delete_dir(self):

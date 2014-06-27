@@ -46,6 +46,7 @@ class AccountTestCase(ModoTestCase):
         )
         mb = Mailbox.objects.get(pk=mb.id)
         self.assertEqual(mb.full_address, "pouet@test.com")
+        self.assertEqual(mb.quota_value.username, "pouet@test.com")
         self.ajax_post(
             reverse("modoboa.extensions.admin.views.identity.delaccount",
                     args=[account.id]),
