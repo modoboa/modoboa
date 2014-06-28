@@ -155,8 +155,9 @@ server::
 
 You should be able to access Modoboa at http://localhost:8000/.
 
-For a fully working interface using the embedded HTTP server, you need to set the ``DEBUG``
-parameter in settings.py to ``True``.
+For a fully working interface using the embedded HTTP server, you need
+to set the ``DEBUG`` parameter in settings.py to ``True``.
 
 For a production environment, we recommend using a stable webserver
-like :ref:`apache2` or :ref:`nginx-label`. Don't forget to set ``DEBUG`` back to ``False``.
+like :ref:`apache2` or :ref:`nginx-label`. Don't forget to set
+``DEBUG`` back to ``False``.

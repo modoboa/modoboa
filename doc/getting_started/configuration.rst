@@ -68,6 +68,14 @@ The *admin* application exposes several parameters, they are presented below:
 
 .. note::
 
+   If you are not familiar with virtual domain hosting, you should
+   take a look at `postfix's documentation
+   <http://www.postfix.org/VIRTUAL_README.html>`_. This `How to
+   <https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto>`_
+   also contains useful information.
+
+.. note::
+
    A random secret key will be generated each time the *Parameters*
    page is refreshed and until you save parameters at least once.
 
