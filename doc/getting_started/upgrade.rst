@@ -560,7 +560,7 @@ requires a migration.
 
      $ python manage.py migrate admin
 
-#. Update SQL queries used in your environnement (see
+#. Update SQL queries used in your environment (see
    :ref:`postfix` or :ref:`dovecot`).
 
 #. Update Postfix configuration so that it can handle domain aliases

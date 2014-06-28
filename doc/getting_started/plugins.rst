@@ -140,6 +140,9 @@ purge the quarantine database. To use it, add the following line
 inside root's crontab::
 
   0 0 * * * <modoboa_site>/manage.py qcleanup
+  #
+  # Or like this if you use a virtual environment:
+  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py qcleanup
 
 Replace ``modoboa_site`` with the path of your Modoboa instance.
 
@@ -206,6 +209,9 @@ administrators or domain administrators. To use it, add the following
 example line to root's crontab::
 
   0 12 * * * <modoboa_site>/manage.py amnotify --baseurl='<modoboa_url>'
+  #
+  # Or like this if you use a virtual environment:
+  # 0 12 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py amnotify --baseurl='<modoboa_url>'
 
 You are free to change the frequency.
 
@@ -279,7 +285,7 @@ files (see `rrdtool <http://oss.oetiker.ch/rrdtool/>`_) and then
 generates graphics in PNG format.
 
 To use it, go to the online parameters panel and adapt the following
-ones to your environnement:
+ones to your environment:
 
 +--------------------+--------------------+--------------------------+
 |Name                |Description         |Default value             |
@@ -307,6 +313,9 @@ To finish, you need to collect information periodically in order to
 feed the RRD files. Add the following line into root's crontab::
 
   */5 * * * * <modoboa_site>/manage.py logparser &> /dev/null
+  #
+  # Or like this if you use a virtual environment:
+  # 0/5 * * * * <virtualenv path/bin/python> <modoboa_site>/manage.py logparser &> /dev/null
 
 Replace ``<modoboa_site>`` with the path of your Modoboa instance.
 
