@@ -68,6 +68,14 @@ The *admin* application exposes several parameters, they are presented below:
 
 .. note::
 
+   If you are not familiar with virtual domain hosting, you should
+   take a look at `postfix's documentation
+   <http://www.postfix.org/VIRTUAL_README.html>`_. This `How to
+   <https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto>`_
+   also contains useful information.
+
+.. note::
+
    A random secret key will be generated each time the *Parameters*
    page is refreshed and until you save parameters at least once.
 
@@ -297,6 +305,9 @@ online panel.
 To use it, you can setup a cron job to run every night::
 
   0 0 * * * <modoboa_site>/manage.py cleanlogs
+  #
+  # Or like this if you use a virtual environment:
+  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py cleanlogs
 
 Cleaning the session table
 ==========================
@@ -311,3 +322,6 @@ cleanup``. That script deletes any session in the session table whose
 For example, you could setup a cron job to run this script every night::
 
   0 0 * * * <modoboa_site>/manage.py cleanup
+  #
+  # Or like this if you use a virtual environment:
+  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py cleanup
