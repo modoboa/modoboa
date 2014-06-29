@@ -48,45 +48,15 @@ following content inside::
 
 This is just one possible configuration.
 
-.. note::
-   Django 1.3 users, please consult this `page <https://docs.djangoproject.com/en/1.3/howto/deployment/modwsgi/>`_,
-   it contains an example :file:`wsgi.py` file.
+To use mod_wsgi daemon mode, add the two following directives just
+under ``WSGIScriptAlias``::
 
-.. note::
-   You will certainly need more configuration in order to launch
-   Apache.
+  WSGIDaemonProcess example.com python-path=<path to your site's dir>:<virtualenv path>/lib/python2.7/site-packages
+  WSGIProcessGroup example.com
 
-mod_python
-==========
-
-First, make sure that mod_python is installed on your server.
-
-Create a new virtualhost in your Apache configuration and put the
-following content inside::
-
-  <VirtualHost *:80>
-    ServerName <your value>
-    DocumentRoot <path to your site's dir>
-
-    <Location "/">
-      SetHandler mod_python
-      PythonHandler django.core.handlers.modpython
-      PythonPath "['<path to directory that contains your site's dir>'] + sys.path"
-      SetEnv DJANGO_SETTINGS_MODULE <your site's name>.settings
-    </Location>
-
-    Alias "/sitestatic" "<path to your site's dir>/sitestatic"
-    <Location "/sitestatic/">
-      SetHandler None
-    </Location>
-
-    Alias "/media" "<path to your site's dir>/media"
-    <Location "/media/">
-      SetHandler None
-    </Location>
-  </VirtualHost>
-
-This is just one possible configuration.
+Replace values between ``<>`` with yours. If you don't use a
+`virtualenv <http://virtualenv.readthedocs.org/en/latest/>`_, just
+remove the last part of the ``WSGIDaemonProcess`` directive.
 
 .. note::
    You will certainly need more configuration in order to launch
