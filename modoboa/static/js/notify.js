@@ -15,7 +15,7 @@
                 id: bid,
                 click: $.proxy(this.destroy_box, this)
             }).css({
-                position: "absolute"
+                position: "fixed"
             });
 
             return div;
