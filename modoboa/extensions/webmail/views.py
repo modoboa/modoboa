@@ -344,14 +344,14 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
 def render_compose(request, form, posturl, email=None, insert_signature=False):
     editor = parameters.get_user(request.user, "EDITOR")
     if email is None:
-        body = ""
-        textheader = ""
+        body = u""
+        textheader = u""
     else:
         body = email.body
         textheader = email.textheader
     if insert_signature:
         signature = EmailSignature(request.user)
-        body += str(signature)
+        body += unicode(signature)
     randid = None
     if not "id" in request.GET:
         if "compose_mail" in request.session:
