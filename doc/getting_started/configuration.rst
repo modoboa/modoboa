@@ -84,6 +84,20 @@ The *admin* application exposes several parameters, they are presented below:
    Specific LDAP parameters are also available, see :ref:`LDAP
    authentication <ldap_auth>`.
 
+***********
+Media files
+***********
+
+Modoboa uses a specific directory to upload files (ie. when the
+webmail is in use) or to create ones (ex: graphical statistics). This
+directory is named ``media`` and is located inside modoboa's
+installation directory (called ``modoboa_site`` in this
+documentation).
+
+To work properly, the system user which runs modoboa (``www-data``,
+``apache``, whatever) must have write access to this directory.
+
+
 *************
 Customization
 *************
