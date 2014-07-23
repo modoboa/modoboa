@@ -73,11 +73,11 @@ def admin_menu(selection, user):
 def user_menu(user, selection):
     entries = [
         {"name": "user",
-         "img": "icon-user icon-white",
+         "img": "glyphicon glyphicon-user",
          "label": user.fullname,
          "menu": [
                 {"name": "settings",
-                 "img": "icon-list",
+                 "img": "glyphicon glyphicon-list",
                  "label": _("Settings"),
                  "url": reverse("modoboa.core.views.user.index")}
          ]}
@@ -88,7 +88,7 @@ def user_menu(user, selection):
         + [{"name": "logout",
             "url": reverse("modoboa.core.views.auth.dologout"),
             "label": _("Logout"),
-            "img": "icon-off"}]
+            "img": "glyphicon glyphicon-off"}]
 
     return render_to_string("common/menulist.html", {
         "selection": selection, "entries": entries, "user": user
