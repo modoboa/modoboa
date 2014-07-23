@@ -43,9 +43,15 @@ h5{
     font-size:15px;
     font-weight: bold;
 }
+
 label{
     font-weight: normal;
 }
+
+div.input-group{
+    margin-bottom:8px;
+}
+
 /* end Global*/
 
 #fixed_content {
@@ -55,7 +61,6 @@ label{
     left: 0;
     overflow: hidden;
 }
-
 
 .form-horizontal .param-label {
     float: left;

@@ -1,8 +1,8 @@
 {% load i18n %}
-<form id="searchform" class="form-horizontal">
-  <div class="input-prepend input-append">
-    <span class="add-on"><i class="icon-search"></i></span>
-    <input class="span10" type="text"
+<form id="searchform">
+  <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+    <input class="form-control" type="text"
            value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search' %}"{% endif %}
            id="searchquery" name="searchquery" />
   </div>
