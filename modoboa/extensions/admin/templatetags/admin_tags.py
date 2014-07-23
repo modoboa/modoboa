@@ -31,7 +31,7 @@ def domains_menu(selection, user):
     entries = [
         {"name": "newdomain",
          "label": _("Add domain"),
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "modal": True,
          "modalcb": "admin.newdomain_cb",
          "url": reverse("modoboa.extensions.admin.views.domain.newdomain")},
@@ -40,13 +40,13 @@ def domains_menu(selection, user):
     entries += [
         {"name": "import",
          "label": _("Import"),
-         "img": "icon-folder-open",
+         "img": "glyphicon glyphicon-folder-open",
          "url": reverse("modoboa.extensions.admin.views.import.import_domains"),
          "modal": True,
          "modalcb": "admin.importform_cb"},
         {"name": "export",
          "label": _("Export"),
-         "img": "icon-share-alt",
+         "img": "glyphicon glyphicon-share-alt",
          "url": reverse("modoboa.extensions.admin.views.export.export_domains"),
          "modal": True,
          "modalcb": "admin.exportform_cb"}
@@ -70,47 +70,47 @@ def identities_menu(user):
     entries = [
         {"name": "identities",
          "label": _("List identities"),
-         "img": "icon-user",
+         "img": "glyphicon glyphicon-user",
          "class": "ajaxlink",
          "url": "list/"},
         {"name": "quotas",
          "label": _("List quotas"),
-         "img": "icon-hdd",
+         "img": "glyphicon glyphicon-hdd",
          "class": "ajaxlink",
          "url": "quotas/"},
         {"name": "newaccount",
          "label": _("Add account"),
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "modal": True,
          "modalcb": "admin.newaccount_cb",
          "url": reverse("modoboa.extensions.admin.views.identity.newaccount")},
         {"name": "newalias",
          "label": _("Add alias"),
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "modal": True,
          "modalcb": "admin.aliasform_cb",
          "url": reverse("modoboa.extensions.admin.views.alias.newalias")},
         {"name": "newforward",
          "label": _("Add forward"),
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "modal": True,
          "modalcb": "admin.aliasform_cb",
          "url": reverse("modoboa.extensions.admin.views.alias.newforward")},
         {"name": "newdlist",
          "label": _("Add distribution list"),
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "modal": True,
          "modalcb": "admin.aliasform_cb",
          "url": reverse("modoboa.extensions.admin.views.alias.newdlist")},
         {"name": "import",
          "label": _("Import"),
-         "img": "icon-folder-open",
+         "img": "glyphicon glyphicon-folder-open",
          "url": reverse("modoboa.extensions.admin.views.import.import_identities"),
          "modal": True,
          "modalcb": "admin.importform_cb"},
         {"name": "export",
          "label": _("Export"),
-         "img": "icon-share-alt",
+         "img": "glyphicon glyphicon-share-alt",
          "url": reverse("modoboa.extensions.admin.views.export.export_identities"),
          "modal": True,
          "modalcb": "admin.exportform_cb"
@@ -131,7 +131,7 @@ def domain_actions(user, domain):
             {"name": "listidentities",
              "url": reverse("modoboa.extensions.admin.views.identity.identities") + "#list/?searchquery=@%s" % domain.name,
              "title": _("View the domain's identities"),
-             "img": "icon-user"}
+             "img": "glyphicon glyphicon-user"}
         ]
         if user.has_perm("admin.delete_domain"):
             actions.append({
@@ -141,7 +141,7 @@ def domain_actions(user, domain):
                     args=[domain.id]
                 ),
                 "title": _("Delete %s?" % domain.name),
-                "img": "icon-trash"
+                "img": "glyphicon glyphicon-trash"
             })
     else:
         actions = events.raiseQueryEvent('GetDomainActions', user, domain)
@@ -158,14 +158,14 @@ def identity_actions(user, ident):
         actions += [
             {"name": "delaccount",
              "url": reverse("modoboa.extensions.admin.views.identity.delaccount", args=[objid]),
-             "img": "icon-trash",
+             "img": "glyphicon glyphicon-trash",
              "title": _("Delete %s?" % ident.username)},
         ]
     else:
         actions = [
             {"name": "delalias",
              "url": reverse("modoboa.extensions.admin.views.alias.delalias") + "?selection=%s" % objid,
-             "img": "icon-trash",
+             "img": "glyphicon glyphicon-trash",
              "title": _("Delete %s?" % ident.full_address)},
         ]
     return render_actions(actions)
@@ -235,7 +235,7 @@ def domadmin_actions(daid, domid):
     actions = [{
         "name": "removeperm",
         "url": reverse("modoboa.extensions.admin.views.identity.remove_permission") + "?domid=%s&daid=%s" % (domid, daid),
-        "img": "icon-trash",
+        "img": "glyphicon glyphicon-trash",
         "title": _("Remove this permission")
     }]
     return render_actions(actions)
@@ -256,18 +256,3 @@ def get_extra_admin_content(user, target, currentpage):
         "ExtraAdminContent", user, target, currentpage
     )
     return "".join(res)
-
-
-@register.simple_tag
-def disable_identity(identity):
-    """Disable an identity.
-
-    Finding this information depends on the identity type.
-    """
-    if identity.__class__.__name__ == "User":
-        if identity.is_active and identity.mailbox_set.count() \
-           and identity.mailbox_set.all()[0].domain.enabled:
-            return ""
-    elif identity.enabled and identity.domain.enabled:
-        return ""
-    return "muted"
