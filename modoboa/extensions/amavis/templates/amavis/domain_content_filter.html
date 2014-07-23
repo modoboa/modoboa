@@ -1,7 +1,7 @@
 {% load i18n lib_tags %}
 {% render_field form.bypass_virus_checks %}
 {% render_field form.bypass_spam_checks %}
-<div class="control-group"> 
+<div class="input-group">
   <label class="control-label">{% trans "Thresholds" %}</label>
   <div class="controls spaced">
     {{ form.spam_tag2_level }} <span class="help-inline">{% trans "or more is spam" %}</span><br>
