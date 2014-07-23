@@ -1,18 +1,54 @@
-body {
-    padding-top: 60px;
-    padding-bottom: 60px;
-}
+ /* Media */
 
-@media (max-width: 980px) {
-    /* Enable use of floated navbar text */
-    .navbar-text.pull-right {
-        float: none;
-        padding-left: 5px;
-        padding-right: 5px;
+@media (max-width: 440px) {
+    #bottom-bar #bottom-bar-right{
+        text-align: center;
+    }
+
+    .navbar .nav li a, .navbar .btn-group li .dropdown-toggle{
+        padding-right:0;
+    }
+
+    .navbar .col-xs-8{
+        padding-right:0;
+    }
+    html body div#bottom-bar{
+        display: none;
     }
 }
 
-#fixed_content { 
+@media (max-width: 1200px) and (min-width: 440px) {
+
+}
+
+@media (max-width: 1200px){
+    .dropdown{
+        margin:0px;
+    }
+    .btn-group{
+        margin:0px;
+    }
+}
+
+
+
+
+     /*Global*/
+
+.container-fluid{
+    padding:0;
+}
+
+h5{
+    font-size:15px;
+    font-weight: bold;
+}
+label{
+    font-weight: normal;
+}
+/* end Global*/
+
+#fixed_content {
     position: absolute;
     top: 60px;
     right: 0;
@@ -20,34 +56,8 @@ body {
     overflow: hidden;
 }
 
-#bottom-bar-middle {
-    text-align: center;
-}
 
-.navbar-text { 
-    color: #999999 !important;
-}
-
-.simplepagination ul { 
-    display: inline-block;
-    margin-bottom: 0;
-}
-
-.simplepagination li { 
-    display: inline;
-}
-
-.simplepagination .disabled a,
-.simplepagination .disabled a:hover { 
-    background-color: transparent;
-    cursor: default;
-}
-
-.sidebar-nav { 
-    padding: 9px 0;
-}
-
-.form-horizontal .param-label { 
+.form-horizontal .param-label {
     float: left;
     padding-top: 5px;
     text-align: left;
@@ -55,23 +65,27 @@ body {
     margin-left: 20px;
 }
 
-.form-horizontal .param-controls { 
+.form-horizontal .param-controls {
     margin-left: 210px;
 }
 
-.form-horizontal .control-group { 
+.form-horizontal .control-group {
     margin-bottom: 8px;
+}
+
+.dropdown{
+    margin-right: 20px;
 }
 
 .dropdown-menu .radio {
     padding: 3px 33px;
 }
 
-.no-margin { 
+.no-margin {
     margin: 0 !important;
 }
 
-.dropdown-menu label:hover { 
+.dropdown-menu label:hover {
     background-color: #0088CC;
     color: white;
 }
@@ -83,27 +97,27 @@ body {
     margin-bottom: 8px;
 }
 
-.padded5 { 
+.padded5 {
     padding: 5px;
 }
 
-.buttons_list .bset { 
+.buttons_list .bset {
     display: none;
 }
 
-.buttons_list .active { 
+.buttons_list .active {
     display: inline;
 }
 
-.tr-selected { 
+.tr-selected {
     background-color: #F5F5F5;
 }
 
-.hidden { 
+.hidden {
     display: none;
 }
 
-.help-block { 
+.help-block {
     color: #999999;
     font-style: italic;
 }
@@ -125,4 +139,195 @@ body {
 .label-title {
     vertical-align: middle;
     margin: 0 10px;
+}
+
+/* Buttons */
+
+/* links */
+.navbar .nav li a,
+.navbar .btn-group li a {
+  color: #A8A8A8;
+  cursor: pointer;
+  font-weight: 400;
+}
+ .navbar .nav li a:hover,
+ .navbar .btn-group li a:hover {
+     color: white;
+ }
+div.container-fluid div.row-fluid div.col-md-2 div.well ul.nav div.side-bar-responsive li a{
+    color: #0088CC;
+}
+
+
+
+/* --------- main page --------- */
+/*left navSideBar */
+
+.container-fluid .well{
+    padding:0;
+}
+
+.container-fluid .well .side-bar-responsive{
+    padding:16px;
+}
+
+.nav-header {
+    color: #959595;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top:10px;
+}
+
+.container-fluid .well .nav li{
+    display: block;
+    margin-top: 8px;
+}
+
+.container-fluid .well .nav > li > a:hover,
+.container-fluid .well .nav > li > a:focus{
+    background-color: #0088CC;
+    color:white;
+    border-radius: 5px;
+}
+div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
+    color: black;
+    text-decoration: none;
+}
+div.container-fluid .row-fluid .well ul.nav div.side-bar-responsive li a i.glyphicon{
+    color:black;
+    margin-right: 7px;
+}
+
+/* Bottom navBar*/
+
+.navbar-fixed-bottom {
+    bottom: -6px;
+    position: fixed;
+}
+
+#bottom-bar-middle {
+    text-align: center;
+}
+
+#bottom-bar-right{
+    text-align: right;
+}
+
+.navbar-text {
+    color: #999999 !important;
+    float:none;
+ }
+
+.simplepagination ul {
+    margin-bottom: 0;
+}
+
+.simplepagination li {
+    display: inline;
+    cursor: pointer;
+}
+.simplepagination li i{
+    color: white;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.simplepagination .disabled a,
+.simplepagination .disabled a:hover {
+    cursor: default;
+}
+
+/* Top navbar section */
+
+.top-navbar{
+    border-radius: 0;
+    min-height: 26px;
+}
+.navbar .nav{
+    float: none;
+    display: inline-block;
+}
+
+.nav > li > a {
+    display: inline-block;
+}
+ .navbar .nav > li > a:hover,
+ .navbar .nav > li > a:focus{
+     background-color: #222222;
+ }
+
+ .navbar-inverse .navbar-nav .nav > a,
+ .navbar-inverse .navbar-nav .nav> a:hover,
+ .navbar-inverse .navbar-nav .nav> a:focus{
+    background-color: transparent;
+    color:white;
+}
+
+.nav > li{
+    display: inline-block;
+}
+
+.nav .dropdown-menu{
+    color:white
+}
+
+.btn-group{
+    margin-left: 20px;
+}
+ html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.dropdown a.dropdown-toggle,
+ html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.active a{
+    background-color: black;
+    color: white;
+}
+
+                /* Top navbar section -> user */
+
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:focus > a {
+    background-color: #0081C2;
+    background-image: linear-gradient(to bottom, #0088CC, #0077B3);
+    background-repeat: repeat-x;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.nav .dropdown-menu{
+    background-color: #FFFFFF;
+}
+
+.navbar li > .dropdown-menu, .navbar .nav > li > .dropdown-menu{
+    left: auto;
+    right: 0;
+}
+
+
+html body div.navbar div.container-fluid ul.nav li.dropdown ul.dropdown-menu li a{
+    color: black;
+}
+
+
+html body div.navbar div.container-fluid ul.nav li.dropdown ul.dropdown-menu li a:hover{
+    color: white;
+}
+
+                    /* Top navbar section -> Button xs */
+ .navbar-toggle{
+     background-color: #5B5B5B;
+     margin-bottom: 4px;
+     margin-right: 18px;
+     margin-top: 2px;
+     padding: 9px 10px;
+ }
+
+
+/* listing */
+
+#listing{
+    margin-bottom:60px;
+}
+
+.table > thead > tr > th {
+    border-bottom: 2px solid #FBFBFB;
 }
