@@ -2,8 +2,8 @@
 <div class="input-group {% if field.errors %}error{% endif %}{{ extra_classes }}"{% visirule field %}{% if hidden %}style="display: none"{% endif %}>
   {% if field.label %}<label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>{% endif %}{% if help_display_mode == "tooltip" and field.help_text %}<a href="#" class="help pull-left" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>{% endif %}
   <div class="controls spaced">
-    {% if appended_text %}<div class="input-append">{% endif %}
-    {{ field }}{% if appended_text %}<span class="add-on">{{ appended_text }}</span></div>{% endif %}{% if help_display_mode == "inline" and field.help_text %}<span class="help-inline">{{ field.help_text }}</span>{% endif %}{% if inline_message %}<span class="help-inline">{{ inline_message }}</span>{% endif %}
+    {% if appended_text %}<div class="input-group">{% endif %}
+    {{ field }}{% if appended_text %}<span class="input-group-addon">{{ appended_text }}</span></div>{% endif %}{% if help_display_mode == "inline" and field.help_text %}<span class="help-inline">{{ field.help_text }}</span>{% endif %}{% if inline_message %}<span class="help-inline">{{ inline_message }}</span>{% endif %}
     {% if activator %}<label class="checkbox inline" for="id_{{ field.name }}_act">
       <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act" {% if activator_value %}checked='checked'{% else %}{% if deactivate_if_empty and field.value == None %}checked='checked'{% endif %}{% endif %}/>{{ activator_label }}
     </label>{% endif %}
