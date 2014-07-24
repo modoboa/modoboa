@@ -170,6 +170,19 @@ def identity_actions(user, ident):
         ]
     return render_actions(actions)
 
+@register.simple_tag
+def disable_identity(identity):
+    """Disable an identity.
+
+    Finding this information depends on the identity type.
+    """
+    if identity.__class__.__name__ == "User":
+        if identity.is_active and identity.mailbox_set.count() \
+           and identity.mailbox_set.all()[0].domain.enabled:
+            return ""
+    elif identity.enabled and identity.domain.enabled:
+        return ""
+    return "muted"
 
 @register.simple_tag
 def domain_modify_link(domain):
@@ -256,3 +269,5 @@ def get_extra_admin_content(user, target, currentpage):
         "ExtraAdminContent", user, target, currentpage
     )
     return "".join(res)
+
+
