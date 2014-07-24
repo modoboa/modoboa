@@ -12,14 +12,14 @@ register = template.Library()
 def viewm_menu(mail_id, rcpt):
     entries = [
         {"name": "release",
-         "img": "icon-white icon-ok",
+         "img": "glyphicon glyphicon-ok",
          "class": "btn-success",
          "url": reverse('modoboa.extensions.amavis.views.release', args=[mail_id])
          + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label": _("Release")},
         {"name": "delete",
          "class": "btn-danger",
-         "img": "icon-white icon-trash",
+         "img": "glyphicon glyphicon-trash",
          "url": reverse('modoboa.extensions.amavis.views.delete', args=[mail_id])
          + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label": _("Delete")},
@@ -46,14 +46,14 @@ def viewm_menu(mail_id, rcpt):
 def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
     entries = [
         {"name": "release",
-         "img": "icon-white icon-ok",
+         "img": "glyphicon glyphicon-ok",
          "class": "btn-success",
          "url": reverse('modoboa.extensions.amavis.views.release', args=[mail_id]) \
              + ("?rcpt=%s" % rcpt \
                     + (("&secret_id=%s" % secret_id) if secret_id != "" else "")),
          "label": _("Release")},
         {"name": "delete",
-         "img": "icon-white icon-trash",
+         "img": "glyphicon glyphicon-trash",
          "class": "btn-danger",
          "url": reverse('modoboa.extensions.amavis.views.delete', args=[mail_id]) \
              + "?rcpt=%s" % rcpt \

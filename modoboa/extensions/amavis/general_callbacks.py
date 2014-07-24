@@ -109,7 +109,7 @@ def display_requests(user):
     tpl = Template("""<ul class="nav pull-right {{ css }}">
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-      <i class="icon-white icon-bell"></i> <span id="alerts-counter" class="label label-important">{{ nbrequests }}</span>
+      <i class="glyphicon glyphicon-bell"></i> <span id="alerts-counter" class="label label-important">{{ nbrequests }}</span>
     </a>
     <ul class="dropdown-menu">
       <li>

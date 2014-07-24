@@ -15,12 +15,12 @@
   </div>
   <div class="btn-group">
     <a name="release-multi" href="{% url 'modoboa.extensions.amavis.views.process' %}" class="btn btn-success disabled">
-      <i class="icon-white icon-ok"></i> {% trans "Release" %}
+      <i class="glyphicon glyphicon-ok"></i> {% trans "Release" %}
     </a>
   </div>
   <div class="btn-group">
     <a name="delete-multi" href="{% url 'modoboa.extensions.amavis.views.process' %}" class="btn btn-danger disabled">
-      <i class="icon-white icon-trash"></i> {% trans "Delete" %}
+      <i class="glyphicon glyphicon-trash"></i> {% trans "Delete" %}
     </a>
   </div>
   {% include "common/email_searchbar.html" with extraopts=extraopts %}
