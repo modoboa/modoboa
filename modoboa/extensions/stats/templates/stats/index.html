@@ -27,49 +27,51 @@ $(document).ready(function() {
 {% block leftcol %}
 <div id="periods" class="well sidebar-nav">
   <ul class="nav nav-list">
-    <li class="nav-header">
-      {% trans "Filter" %}
-    </li>
-    <li>
-      <div class="input-prepend input-append">
-        <span class="add-on"><i class="icon-search"></i></span>
-        <input class="span10" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
-      </div>
-    </li>
-    <li class="nav-header">
-      {% trans "Predefined time ranges" %}
-    </li>
-    {% for p in periods %}<li class="period">
-      <a href="#" class="period_selector" data-period="{{ p.name }}">{% trans p.label %}</a>
-    </li>
-    {% endfor %}
-    <li class="nav-header">
-      {% trans "Custom time range" %}
-    </li>
-    <li>
-      <form class="form-inline">
-        <span id="custom-period">
-          <div class="input-prepend">
-            <span class="add-on"><i class="icon-indent-left"></i></span>
-            <input id="id_from" class="span10" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
-          </div>
-          <div class="input-prepend">
-            <span class="add-on"><i class="icon-indent-right"></i></span>
-            <input id="id_to" class="span10" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
-          </div>
-          <button class="btn" id="customsend">{% trans "Apply" %}</button>
-        </span>
-      </form>
-    </li>
-  </ul>
-</div>
-{% endblock %}
-{% block apparea %}
-<div id="graphs" class="tabbable">
-  <ul class="nav nav-tabs">{% for id, gset in graph_sets.items %}
-    <li {% if forloop.first %}class="active"{% endif %}>
-      <a href="#graphs_{{ gset.html_id }}" data-toggle="tab">{{ gset.title }}</a>
-    </li>
+      <div class="side-bar-responsive">
+            <li class="nav-header">
+              {% trans "Filter" %}
+            </li>
+            <li>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                <input class="col-lg-10 form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+              </div>
+            </li>
+            <li class="nav-header">
+              {% trans "Predefined time ranges" %}
+            </li>
+            {% for p in periods %}<li class="period">
+              <a href="#" class="period_selector" data-period="{{ p.name }}">{% trans p.label %}</a>
+            </li>
+            {% endfor %}
+            <li class="nav-header">
+              {% trans "Custom time range" %}
+            </li>
+            <li>
+              <form class="form-inline">
+                <span id="custom-period">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-indent-left"></i></span>
+                    <input id="id_from" class="col-lg-10 form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
+                  </div>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-indent-right"></i></span>
+                    <input id="id_to" class="col-lg-10 form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
+                  </div>
+                  <button class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
+                </span>
+              </form>
+            </li>
+        </div>
+      </ul>
+    </div>
+    {% endblock %}
+    {% block apparea %}
+    <div id="graphs" class="tabbable">
+      <ul class="nav nav-tabs">{% for id, gset in graph_sets.items %}
+        <li {% if forloop.first %}class="active"{% endif %}>
+          <a href="#graphs_{{ gset.html_id }}" data-toggle="tab">{{ gset.title }}</a>
+        </li>
   </ul>{% endfor %}
   <div class="tab-content">{% for id, gset in graph_sets.items %}
     <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}">

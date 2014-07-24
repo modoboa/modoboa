@@ -281,8 +281,7 @@ div.container-fluid .row-fluid .well ul.nav div.side-bar-responsive li a i.glyph
 .btn-group{
     margin-left: 20px;
 }
- html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.dropdown a.dropdown-toggle,
- html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.active a{
+ html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.dropdown a.dropdown-toggle{
     background-color: black;
     color: white;
 }
