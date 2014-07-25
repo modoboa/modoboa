@@ -40,7 +40,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         });
 
         $div.modal({show: false});
-        $div.one('shown', function() {
+        $div.one('shown.bs.modal', function() {
             $(".help").popover({
                 container: "#modalbox",
                 trigger: "hover"
@@ -48,7 +48,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
             if (modalcb != undefined) {
                 if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
             }
-        }).on('hidden', function(e) {
+        }).on('hidden.bs.modal', function(e) {
             var $target = $(e.target);
 
             if (!$target.is($(this))) {
