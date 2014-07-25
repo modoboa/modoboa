@@ -218,6 +218,11 @@ class Modifier(ImapEmail):
     def _modify_html(self):
         pass
 
+    @property
+    def subject(self):
+        """Just a shortcut to return a subject in any case."""
+        return self.Subject if hasattr(self, "Subject") else ""
+
 
 class ReplyModifier(Modifier):
     headernames = ImapEmail.headernames + \
@@ -246,11 +251,11 @@ class ReplyModifier(Modifier):
                 if self.form.fields["cc"].initial != "":
                     self.form.fields["cc"].initial += ", "
                 self.form.fields["cc"].initial += tmp.fulladdress
-        m = re.match(r"re\s*:\s*.+", self.Subject.lower())
+        m = re.match(r"re\s*:\s*.+", self.subject.lower())
         if m:
-            self.form.fields["subject"].initial = self.Subject
+            self.form.fields["subject"].initial = self.subject
         else:
-            self.form.fields["subject"].initial = "Re: %s" % self.Subject
+            self.form.fields["subject"].initial = "Re: %s" % self.subject
 
     def _modify_plain(self):
         super(ReplyModifier, self)._modify_plain()
@@ -264,10 +269,15 @@ class ReplyModifier(Modifier):
 
 
 class ForwardModifier(Modifier):
+
+    """
+    Modify a message so it can be forwarded.
+    """
+
     def __init__(self, *args, **kwargs):
         super(ForwardModifier, self).__init__(*args, **kwargs)
         self._header()
-        self.form.fields["subject"].initial = "Fwd: %s" % self.Subject
+        self.form.fields["subject"].initial = "Fwd: %s" % self.subject
 
     def __getfunc(self, name):
         return getattr(self, "%s_%s" % (name, self.dformat))
@@ -275,7 +285,7 @@ class ForwardModifier(Modifier):
     def _header(self):
         self.textheader = self.__getfunc("_header_begin")() + "\n"
         self.textheader += \
-            self.__getfunc("_header_line")(_("Subject"), self.Subject)
+            self.__getfunc("_header_line")(_("Subject"), self.subject)
         self.textheader += \
             self.__getfunc("_header_line")(_("Date"), self.Date)
         for hdr in ["From", "To", "Reply-To"]:
