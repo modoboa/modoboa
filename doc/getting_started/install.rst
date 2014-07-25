@@ -91,7 +91,7 @@ sure your database is using UTF8 as a default charset.
 Deployment
 **********
 
-`modoboa-admin.py`, a command line tool, let you deploy a
+`modoboa-admin.py`, a command line tool, lets you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
   $ modoboa-admin.py deploy modoboa_example --syncdb --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
