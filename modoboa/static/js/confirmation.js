@@ -13,7 +13,7 @@
 
              this.box = this.buildbox();
              this.box.modal();
-             this.box.on('hidden', $.proxy(this.hidden_callback, this));
+             this.box.on('hidden.bs.modal', $.proxy(this.hidden_callback, this));
          },
 
          buildcheckboxes: function() {
