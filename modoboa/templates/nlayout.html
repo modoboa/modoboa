@@ -26,47 +26,52 @@
     {% extra_static_content "top" user %}
     {% block html_head %}{% endblock %}
   </head>
-
   <body>
     <div class="navbar navbar-inverse top-navbar" role="navigation">
         <div class="container-fluid">
-                <div class="navbar-header">
-                    <button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="glyphicon glyphicon-bar"></span>
-                        <span class="glyphicon glyphicon-bar"></span>
-                        <span class="glyphicon glyphicon-bar"></span>
-                    </button>
-                </div>
-                <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
-                    <ul class="nav">{% if selection %}
-                      {% extensions_menu selection user %}{% core_menu selection user %}
-                      {% else %}{% extensions_menu "" user %}{% core_menu "" user %}{% endif %}
-                      {% load_optionalmenu user %}
-                    </ul>
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-target="#action" data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span> Action </span>
+                </button>
+                <button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+                <ul class="nav">{% if selection %}
+                  {% extensions_menu selection user %}{% core_menu selection user %}
+                  {% else %}{% extensions_menu "" user %}{% core_menu "" user %}{% endif %}
+                  {% load_optionalmenu user %}
+                </ul>
                 <ul class="nav pull-right">
                 {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
-              </ul>
+                </ul>
               <div class="pull-right">{% load_notifications user %}
               </div>
             </div>
         </div>
     </div>
     {% block content %}{% endblock %}
+    <div id="action" class="collapse navbar-collapse">
     <div id="bottom-bar" class="navbar navbar-inverse navbar-fixed-bottom">
         <div class="navbar-inner">
             <div class="container-fluid">
                 <div class="row-fluid">
-                    <div id="bottom-bar-middle" class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
-            <p class="navbar-text"><i>{% trans "Powered by Modoboa" %}</i></p>
-            {% block footermiddle %}{% endblock %}
-          </div>
-          <div id="bottom-bar-right" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            {% block footerright %}{% endblock %}
-          </div>
-          </div>
+                    <div id="bottom-bar-middle" class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-0 col-xs-offset-0">
+                        <p class="navbar-text"><i>{% trans "Powered by Modoboa" %}</i></p>
+                        {% block footermiddle %}{% endblock %}
+                    </div>
+                    <div id="bottom-bar-right" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    {% block footerright %}{% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
     </div>
   </body>
 </html>

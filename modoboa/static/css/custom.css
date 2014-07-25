@@ -1,10 +1,6 @@
  /* Media */
 
 @media (max-width: 440px) {
-    #bottom-bar #bottom-bar-right{
-        text-align: center;
-    }
-
     .navbar .nav li a, .navbar .btn-group li .dropdown-toggle{
         padding-right:0;
     }
@@ -12,15 +8,17 @@
     .navbar .col-xs-8{
         padding-right:0;
     }
-    html body div#bottom-bar{
-        display: none;
-    }
 }
 
-@media (max-width: 1200px) and (min-width: 440px) {
+ @media (max-width: 750px) {
 
-}
-
+     #bottom-bar-middle{
+         display: none;
+     }
+     #bottom-bar #bottom-bar-right{
+         text-align: center;
+     }
+ }
 @media (max-width: 1200px){
     .dropdown{
         margin:0px;
@@ -31,7 +29,23 @@
 }
 
 
+     /* Colapse Nav */
 
+ .navbar-inverse .navbar-toggle {
+     border-color: #999999;
+ }
+
+ .navbar-inverse .navbar-toggle span{
+     color: white;
+ }
+
+ .navbar-toggle{
+     background-color: #000;
+     margin-bottom: 4px;
+     margin-right: 18px;
+     margin-top: 2px;
+     padding: 9px 10px;
+ }
 
      /*Global*/
 
@@ -244,6 +258,8 @@ div.container-fluid .row-fluid .well ul.nav div.side-bar-responsive li a i.glyph
     cursor: default;
 }
 
+
+
 /* Top navbar section */
 
 .top-navbar{
@@ -281,8 +297,9 @@ div.container-fluid .row-fluid .well ul.nav div.side-bar-responsive li a i.glyph
 .btn-group{
     margin-left: 20px;
 }
+
+ html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.active a,
  html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.dropdown a.dropdown-toggle{
-    background-color: black;
     color: white;
 }
 
@@ -315,16 +332,6 @@ html body div.navbar div.container-fluid ul.nav li.dropdown ul.dropdown-menu li 
 html body div.navbar div.container-fluid ul.nav li.dropdown ul.dropdown-menu li a:hover{
     color: white;
 }
-
-                    /* Top navbar section -> Button xs */
- .navbar-toggle{
-     background-color: #5B5B5B;
-     margin-bottom: 4px;
-     margin-right: 18px;
-     margin-top: 2px;
-     padding: 9px 10px;
- }
-
 
 /* listing */
 
