@@ -4,12 +4,13 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import (
     login_required, user_passes_test
 )
-from modoboa.lib import parameters
+from modoboa.lib import events, parameters
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
 from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.core.models import Extension, Log
+from modoboa.core.utils import new_version_available
 from modoboa.core.tables import ExtensionsTable
 
 
@@ -94,7 +95,9 @@ def saveextensions(request):
 @user_passes_test(lambda u: u.is_superuser)
 def information(request, tplname="core/information.html"):
     return render_to_json_response({
-        "content": render_to_string(tplname, {})
+        "content": render_to_string(tplname, {
+            "new_version": new_version_available() 
+        }),
     })
 
 
@@ -118,3 +121,12 @@ def logs(request, tplname="core/logs.html"):
         "page": page.number,
         "paginbar": pagination_bar(page),
     })
+
+@login_required
+def check_top_notifications(request):
+    """
+    AJAX service to check for new top notifications to display.
+    """
+    return render_to_json_response(
+        events.raiseQueryEvent("TopNotifications", request.user, True)
+    )

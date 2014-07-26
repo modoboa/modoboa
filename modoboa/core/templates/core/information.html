@@ -1,5 +1,13 @@
 {% load i18n core_tags lib_tags %}
 <h2>{% trans "Information" %} <small>{% trans "Various information about Modoboa" %}</small></h2><hr>
+{% if new_version %}
+<div class="alert alert-block alert-success">
+  <h4>{% trans "An update is available!" %}</h4>
+  {% blocktrans with version=new_version.version changelog_url=new_version.changelog_url %}
+  Modoboa <strong>{{ version }}</strong> is available for download. The list of all changes is available <a href="{{ changelog_url }}" target="_blank">here</a>.
+  {% endblocktrans %}
+</div>
+{% endif %}
 <div class="alert alert-info">Modoboa <strong>{% get_version %}</strong> {% trans "is currently in use." %}</div>
 
 <h3>{% trans "Active users" %}</h3>

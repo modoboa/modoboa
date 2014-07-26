@@ -1,7 +1,12 @@
-from django.utils.translation import ugettext_lazy
+import os
+
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _, ugettext_lazy
+
+from modoboa.core.utils import new_version_available
 from modoboa.lib import parameters, events
 
-base_events = [
+BASE_EVENTS = [
     "CanCreate",
 
     "AccountCreated",
@@ -51,7 +56,7 @@ def load_core_settings():
 
     parameters.register(GeneralParametersForm, ugettext_lazy("General"))
     parameters.register(UserSettings, ugettext_lazy("General"))
-    events.declare(base_events)
+    events.declare(BASE_EVENTS)
 
 
 @events.observe("ExtDisabled")
@@ -63,3 +68,20 @@ def unset_default_topredirection(extension):
     topredirection = parameters.get_admin("DEFAULT_TOP_REDIRECTION")
     if topredirection == extension.name:
         parameters.save_admin("DEFAULT_TOP_REDIRECTION", "core")
+
+
+@events.observe("TopNotifications")
+def check_for_new_version(user, include_all):
+    """
+    Check if a new version of Modoboa is available.
+    """
+    if not user.is_superuser:
+        return []
+    if new_version_available() is None:
+        return [{"id": "newversionavailable"}] if include_all else []
+    return [{
+        "id": "newversionavailable",
+        "url": reverse("admin_index") + "#info/",
+        "text": _("New Modoboa version available"),
+        "level": "info",
+    }]

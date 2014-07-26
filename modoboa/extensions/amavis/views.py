@@ -288,10 +288,3 @@ def process(request):
 
     if request.POST["action"] == "delete":
         return delete(request, ids)
-
-
-@login_required
-@user_passes_test(lambda u: u.group != 'SimpleUsers')
-def nbrequests(request):
-    result = get_wrapper().get_pending_requests(request.user)
-    return render_to_json_response({'requests': result})
