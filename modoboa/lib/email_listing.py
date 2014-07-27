@@ -1,20 +1,10 @@
 # -*- coding: utf-8 -*-
-import re
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.template import Template, Context
 from django.utils.translation import ugettext as _
 
 attached_map = {}
-
-
-class MBconnector(object):
-    def __init__(self, address, port):
-        self.address = address
-        self.port = port
-
-    def messages_count(self, **kwargs):
-        pass
 
 
 class Page(object):

@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.template import Template, Context
+
 from modoboa.lib import events, parameters
 from modoboa.extensions.admin.models import DomainAlias
 from modoboa.extensions.amavis.lib import (
@@ -96,12 +97,12 @@ $(document).bind('domform_init', function() {
 
 @events.observe("TopNotifications")
 def display_requests(user):
-    from .sql_listing import get_wrapper
+    from .sql_connector import get_connector
 
     if parameters.get_admin("USER_CAN_RELEASE") == "yes" \
             or user.group == "SimpleUsers":
         return []
-    nbrequests = get_wrapper().get_pending_requests(user)
+    nbrequests = get_connector(user=user).get_pending_requests()
 
     url = reverse("modoboa.extensions.amavis.views.index")
     url += "#listing/?viewrequests=1"
