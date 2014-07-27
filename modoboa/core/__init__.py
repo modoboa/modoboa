@@ -3,7 +3,6 @@ import os
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from modoboa.core.utils import new_version_available
 from modoboa.lib import parameters, events
 
 BASE_EVENTS = [
@@ -75,6 +74,8 @@ def check_for_new_version(user, include_all):
     """
     Check if a new version of Modoboa is available.
     """
+    from modoboa.core.utils import new_version_available
+
     if not user.is_superuser:
         return []
     if new_version_available() is None:
