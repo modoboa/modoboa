@@ -5,6 +5,7 @@ import os
 import pkg_resources
 
 import requests
+from requests.exceptions import RequestException
 
 from django.conf import settings
 
@@ -20,9 +21,12 @@ def new_version_available():
         return None
     local_version = pkg_resources.get_distribution("modoboa").version
     url = os.path.join(settings.MODOBOA_API_URL, "current_version/")
-    resp = requests.get(url, params={
-        "client_version": pkg_resources.get_distribution("modoboa").version
-    })
+    try:
+        resp = requests.get(url, params={
+            "client_version": pkg_resources.get_distribution("modoboa").version
+        })
+    except RequestException:
+        return None
     if resp.status_code != 200:
         return None
     resp = resp.json()
