@@ -1,17 +1,25 @@
+@media (max-width: 760px) {
+    form.login-form div.checkbox button.btn{
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+}
+
+@media (min-width: 760px) {
+    #logo {
+        margin-top: 60px;
+        text-align: center;
+        margin: 30px 46px 30px 0;
+        max-width: 380px;
+    }
+    #logo img {
+        height: 100px;
+    }
+}
+
 #box {
     margin: 0 auto;
     max-width: 350px;
-}
-
-#logo { 
-    margin-top: 60px;
-    text-align: center;
-    margin: 60px 0 30px;
-    max-width: 260px;
-}
-
-#logo img {
-    height: auto;
 }
 
 .form-actions { 
@@ -30,4 +38,32 @@
 .login-error {
     margin: 20px auto;
     max-width: 300px;
+}
+
+html body div.container div#box div#logo.row ul.thumbnails li{
+    list-style-type: none;
+}
+
+.thumbnail{
+    border: none;
+}
+
+.thumbnails{
+    padding-left: 0;
+}
+
+.input-group {
+    border-collapse: separate;
+    display: table;
+    position: relative;
+}
+
+
+form.login-form div.checkbox button.btn{
+    margin-bottom:20px;
+}
+
+.divider{
+    height: 20px;
+    border-bottom: 1px solid #E8E8E8;
 }

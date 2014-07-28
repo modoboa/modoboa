@@ -21,19 +21,29 @@
     <div class="container">
       <div id="box">
       <div id="logo" class="row">
-        <img src="{% get_modoboa_logo %}" />
+          <ul class="thumbnails">
+              <li>
+                  <a href="#" class="thumbnail">
+                      <img src="{% get_modoboa_logo %}" />
+                  </a>
+              </li>
+          </ul>
       </div>
-      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}"
-            class="login-form well">
+      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}" class="login-form well">
         {% csrf_token %}
         {% render_field form.username %}
         {% render_field form.password %}
         <input type="hidden" name="next" value="{{ next }}" />
-        <div class="form-actions">
-          <label class="pull-left checkbox" for="id_rememberme">
-            <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
-          </label>
-          <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
+        <div class=" divider"></div>
+        <div class="input-group">
+            <div class="checkbox">
+              <label class="col-lg-9 col-md-9 col-sm-8 checkbox" for="id_rememberme">
+                  <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
+              </label>
+            <div class="col-lg-3 col-md-3 col-sm-4">
+                <button class="btn btn-primary type="submit">{% trans "Log in" %}</button>
+            </div>
+            </div>
         </div>
       </form>
       <div class="login-error">
