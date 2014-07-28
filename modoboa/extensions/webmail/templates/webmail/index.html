@@ -30,11 +30,11 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block fixed_content %}
-<div id="leftcol">
+<div id="leftcol" class="col-lg-2">
   <div id="folders" class="well sidebar-nav">{{ mboxes }}</div>
 </div>
-<div id="menubar"></div>
-<div id="listing"></div>
+<div id="menubar" class="col-lg-10"></div>
+<div id="listing" class="col-lg-10"></div>
 {% endblock %}
 {% block footerleft %}
 {% if quota != -1 %}
