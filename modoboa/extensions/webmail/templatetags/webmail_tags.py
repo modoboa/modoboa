@@ -16,18 +16,22 @@ def viewmail_menu(selection, folder, user, mail_id=None):
     entries = [
         {"name": "reply",
          "url": "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
-         "img": "icon-share",
+         "img": "glyphicon glyphicon-share",
+         "class": "btn-default",
          "label": _("Reply")},
         {"name": "replyall",
          "url": "action=reply&mbox=%s&mailid=%s&all=1" % (folder, mail_id),
          "img": "",
+         "class": "btn-default",
          "label": _("Reply all")},
         {"name": "forward",
          "url": "action=forward&mbox=%s&mailid=%s" % (folder, mail_id),
-         "img": "icon-arrow-right",
+         "img": "glyphicon glyphicon-arrow-right",
+         "class": "btn-default",
          "label": _("Forward")},
         {"name": "delete",
-         "img": "icon-trash",
+         "img": "glyphicon glyphicon-trash",
+         "class": "btn-default",
          "url": reverse(webmail.views.delete) + "?mbox=%s&selection[]=%s" % (folder, mail_id),
          "label": _("Delete")},
         {"name": "display_options",
@@ -46,7 +50,7 @@ def viewmail_menu(selection, folder, user, mail_id=None):
 
     entries = [{"name": "close",
                 "title": _("Close this message"),
-                "img": "icon-remove"}]
+                "img": "glyphicon glyphicon-remove"}]
     menu += render_to_string(
         'common/buttons_list.html',
         {"entries": entries, "extraclasses": "pull-right"}
@@ -59,11 +63,13 @@ def compose_menu(selection, backurl, user):
     entries = [
         {"name": "back",
          "url": "javascript:history.go(-2);",
-         "img": "icon-arrow-left",
+         "img": "glyphicon glyphicon-arrow-left",
+         "class": "btn-default",
          "label": _("Back")},
         {"name": "sendmail",
          "url": "",
-         "img": "icon-envelope",
+         "img": "glyphicon glyphicon-envelope",
+         "class": "btn-default",
          "label": _("Send")},
     ]
     return render_to_string('common/buttons_list.html',
@@ -76,18 +82,18 @@ def listmailbox_menu(selection, folder, user):
     entries = [
         {"name": "compose",
          "url": "compose",
-         "img": "icon-edit",
+         "img": "glyphicon glyphicon-edit",
          "label": _("New message"),
-         "class": "btn"},
+         "class": "btn btn-default"},
         {"name": "totrash",
          "label": "",
-         "class": "",
-         "img": "icon-trash",
+         "class": "btn btn-default",
+         "img": "glyphicon glyphicon-trash",
          "url": reverse("modoboa.extensions.webmail.views.delete"),
          },
         {"name": "mark",
          "label": _("Mark messages"),
-         "class": "btn",
+         "class": "btn btn-default",
          "menu": [
              {"name": "mark-read",
               "label": _("As read"),
@@ -152,7 +158,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
             label += " (%d)" % mbox["unseen"]
             cssclass += " unseen"
             extra_attrs = ' data-toggle="%d"' % mbox["unseen"]
-        iclass = mbox["class"] if "class" in mbox else "icon-folder-close"
+        iclass = mbox["class"] if "class" in mbox else "glyphicon glyphicon-folder-close"
         result += """<a href='%s' class='%s' name='%s'%s>
   <i class="%s"></i>
   %s
@@ -173,22 +179,22 @@ def mboxes_menu():
     entries = [
         {"name": "newmbox",
          "url": reverse(webmail.views.newfolder),
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "title": _("Create a new mailbox"),
          "modal": True,
          "modalcb": "webmail.mboxform_cb",
          "closecb": "webmail.mboxform_close",
-         "class": "btn btn-mini"},
+         "class": "btn-default btn-xs"},
         {"name": "editmbox",
          "url": reverse(webmail.views.editfolder),
-         "img": "icon-edit",
+         "img": "glyphicon glyphicon-edit",
          "title": _("Edit the selected mailbox"),
-         "class": "btn btn-mini"},
+         "class": "btn-default btn-xs"},
         {"name": "removembox",
          "url": reverse(webmail.views.delfolder),
-         "img": "icon-remove",
+         "img": "glyphicon glyphicon-remove",
          "title": _("Remove the selected mailbox"),
-         "class": "btn btn-mini"}
+         "class": "btn-default btn-xs"}
     ]
 
     return render_to_string('common/buttons_list.html', dict(
