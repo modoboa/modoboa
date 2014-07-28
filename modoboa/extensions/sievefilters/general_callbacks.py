@@ -13,7 +13,7 @@ def menu(target, user):
         {"name": "sievefilters",
          "label": _("Message filters"),
          "url": reverse("modoboa.extensions.sievefilters.views.index"),
-         "img": "icon-check"}
+         "img": "glyphicon glyphicon-check"}
     ]
 
 
