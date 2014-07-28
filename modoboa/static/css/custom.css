@@ -1,22 +1,34 @@
  /* Media */
 
 @media (max-width: 440px) {
-    .navbar .nav li a, .navbar .btn-group li .dropdown-toggle{
-        padding-right:0;
-    }
+
 
     .navbar .col-xs-8{
         padding-right:0;
     }
 }
 
- @media (max-width: 750px) {
+ @media (max-width: 760px) {
 
      #bottom-bar-middle{
          display: none;
      }
      #bottom-bar #bottom-bar-right{
          text-align: center;
+     }
+
+     tr th#tags,
+     tr.muted td[name="tags"]{
+         display: none;
+     }
+     button.navbar-toggle[data-target="#action"]{
+         float: left;
+         margin-left: 20px;
+     }
+
+     .container > .navbar-header, .container-fluid > .navbar-header, .container > .navbar-collapse, .container-fluid > .navbar-collapse {
+         margin-left: 0;
+         margin-right: 0;
      }
  }
 @media (max-width: 1200px){
@@ -42,9 +54,12 @@
  .navbar-toggle{
      background-color: #000;
      margin-bottom: 4px;
-     margin-right: 18px;
      margin-top: 2px;
      padding: 9px 10px;
+ }
+
+ button.navbar-toggle[data-target="#bs-example-navbar-collapse-1"]{
+     margin-right: 18px;
  }
 
      /*Global*/
@@ -160,29 +175,32 @@ div.input-group{
     margin: 0 10px;
 }
 
+/* Form */
+
+ .form-horizontal .form-group {
+     margin-left: -15px;
+ }
+
 /* Buttons */
 
 /* links */
-.navbar .nav li a,
-.navbar .btn-group li a {
-  color: #A8A8A8;
-  cursor: pointer;
-  font-weight: 400;
-}
- .navbar .nav li a:hover,
- .navbar .btn-group li a:hover {
-     color: white;
+ a{
+     color: #0088CC;
  }
+
+ a:hover{
+     color: #0088CC;
+ }
+
 div.container-fluid div.row-fluid div.col-md-2 div.well ul.nav div.side-bar-responsive li a{
     color: #0088CC;
 }
 
 
-
 /* --------- main page --------- */
 /*left navSideBar */
 
-.container-fluid .well{
+.well{
     padding:0;
 }
 
@@ -211,10 +229,10 @@ div.container-fluid div.row-fluid div.col-md-2 div.well ul.nav div.side-bar-resp
     border-radius: 5px;
 }
 div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
-    color: black;
+    color: #428BCA;
     text-decoration: none;
 }
-div.container-fluid .row-fluid .well ul.nav div.side-bar-responsive li a i.glyphicon{
+.well ul.nav li a i.glyphicon{
     color:black;
     margin-right: 7px;
 }
@@ -266,72 +284,13 @@ div.container-fluid .row-fluid .well ul.nav div.side-bar-responsive li a i.glyph
     border-radius: 0;
     min-height: 26px;
 }
-.navbar .nav{
-    float: none;
-    display: inline-block;
-}
 
-.nav > li > a {
-    display: inline-block;
-}
- .navbar .nav > li > a:hover,
- .navbar .nav > li > a:focus{
-     background-color: #222222;
- }
-
- .navbar-inverse .navbar-nav .nav > a,
- .navbar-inverse .navbar-nav .nav> a:hover,
- .navbar-inverse .navbar-nav .nav> a:focus{
-    background-color: transparent;
-    color:white;
-}
-
-.nav > li{
-    display: inline-block;
-}
-
-.nav .dropdown-menu{
-    color:white
-}
-
-.btn-group{
-    margin-left: 20px;
-}
-
- html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.active a,
  html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.dropdown a.dropdown-toggle{
-    color: white;
-}
+     color: white;
+ }
 
                 /* Top navbar section -> user */
 
-
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:focus > a {
-    background-color: #0081C2;
-    background-image: linear-gradient(to bottom, #0088CC, #0077B3);
-    background-repeat: repeat-x;
-    color: #FFFFFF;
-    text-decoration: none;
-}
-
-.nav .dropdown-menu{
-    background-color: #FFFFFF;
-}
-
-.navbar li > .dropdown-menu, .navbar .nav > li > .dropdown-menu{
-    left: auto;
-    right: 0;
-}
-
-
-html body div.navbar div.container-fluid ul.nav li.dropdown ul.dropdown-menu li a{
-    color: black;
-}
-
-
-html body div.navbar div.container-fluid ul.nav li.dropdown ul.dropdown-menu li a:hover{
-    color: white;
-}
 
 /* listing */
 
@@ -341,4 +300,19 @@ html body div.navbar div.container-fluid ul.nav li.dropdown ul.dropdown-menu li 
 
 .table > thead > tr > th {
     border-bottom: 2px solid #FBFBFB;
+}
+
+/* identities tables */
+
+.muted a:hover{
+    color: black;
+    text-decoration: none;
+}
+
+.label .idt{
+        color: gray;
+}
+
+.label{
+    margin-left:1px;
 }
