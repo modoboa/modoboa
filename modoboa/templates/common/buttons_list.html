@@ -1,12 +1,30 @@
 {% load lib_tags %}
-<div class="btn-toolbar {{ extraclasses }}">{% for entry in entries %}
-  <div class="btn-group">{% if entry.menu %}
-    <a class="btn dropdown-toggle" data-toggle="dropdown">{% if entry.img %}<i class="{{ entry.img}}"></i>{% endif %}{{ entry.label }} <span class="caret"></span></a>  
-    <ul class="dropdown-menu">{% for sentry in entry.menu %}
-      <li>{% render_link sentry %}</li>
-      {% endfor %}</ul>
-    {% else %}{% render_link entry "btn" %}{% endif %}
-  </div>
-{% endfor %}{% block extracontent %}{% endblock %}
-</div>
+<nav class="navbar" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="btn-toolbar {{ extraclasses }}">{% for entry in entries %}
+                <ul class=" nav navbar-nav btn-group">{% if entry.menu %}
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">{% if entry.img %}<i class="{{ entry.img}}"></i>{% endif %}{{ entry.label }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">{% for sentry in entry.menu %}
+                      <li>{% render_link sentry %}</li>
+                      {% endfor %}</ul>
+                    {% else %}{% render_link entry "btn" %}{% endif %}
+                </ul>
+                {% endfor %}
+                <ul class="nav navbar-nav navbar-right">
+                    {% block extracontent %}{% endblock %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
 

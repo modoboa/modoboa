@@ -1,6 +1,6 @@
 {% load i18n %}
-<div id="searchbox" class="btn-group">
-  <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-search" id="searchopts"></i></a>
+<div id="searchbox" class="input-group">
+  <a href="#" class="input-group-addon btn btn-default" data-toggle="dropdown"><i class="glyphicon glyphicon-search" id="searchopts"></i></a>
   <ul class="dropdown-menu" id="searchparams">
     <li><label class="radio"><input type="radio" id="crit_from_addr" name="scriteria" value="from_addr" checked>{% trans "From address" %}</label></li>
     <li><label class="radio"><input type="radio" id="crit_subject" name="scriteria" value="subject">{% trans "Subject" %}</label></li>
@@ -9,5 +9,5 @@
     {% endfor %}
     <li><label class="radio"><input type="radio" id="crit_both" name="scriteria" value="both">{% trans "Both" %}</label></li>
   </ul>
-  <input type="text" class="no-margin" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
+  <input type="text" class="no-margin form-control" name="searchfield" id="searchfield" value="{% trans "Search..." %}" />
 </div>

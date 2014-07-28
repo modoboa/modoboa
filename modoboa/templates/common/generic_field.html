@@ -1,5 +1,5 @@
 {% load i18n core_tags lib_tags %}
-<div class="input-group {% if field.errors %}error{% endif %}{{ extra_classes }}"{% visirule field %}{% if hidden %}style="display: none"{% endif %}>
+<div class="form-group {% if field.errors %}error{% endif %}{{ extra_classes }}"{% visirule field %}{% if hidden %}style="display: none"{% endif %}>
   {% if field.label %}<label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>{% endif %}{% if help_display_mode == "tooltip" and field.help_text %}<a href="#" class="help pull-left" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>{% endif %}
   <div class="controls spaced">
     {% if appended_text %}<div class="input-group">{% endif %}
