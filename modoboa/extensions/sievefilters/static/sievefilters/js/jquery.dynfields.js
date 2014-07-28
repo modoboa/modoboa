@@ -8,7 +8,7 @@
         var $addlink = $('<a />', {
             href: '#',
             id: this.$element.attr("id") + '_rmbtn',
-            html: '<i class="icon-plus"></i>'
+            html: '<i class="glyphicon glyphicon-plus"></i>'
         });
         $("select[name*=cond_target_]").change($.proxy(this.target_change, this));
         $addlink.click($.proxy(this.addfields, this));
@@ -154,7 +154,7 @@
         var $addlink = $('<a />', {
             href: '#',
             id: this.$element.attr("id") + '_rmbtn',
-            html: '<i class="icon-plus"></i>'
+            html: '<i class="glyphicon glyphicon-plus"></i>'
         });
         $("select[name*=action_name_]").change($.proxy(this.name_change, this));
         $addlink.click($.proxy(this.addfields, this));
