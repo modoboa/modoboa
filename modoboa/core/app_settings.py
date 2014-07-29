@@ -41,7 +41,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ('ldap', "LDAP")],
         initial="local",
         help_text=ugettext_lazy("The backend used for authentication"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect(attrs={"class": "form-control"})
     )
 
     password_scheme = forms.ChoiceField(
@@ -99,7 +99,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ('directbind', ugettext_lazy("Direct bind"))],
         initial='searchbind',
         help_text=ugettext_lazy("Choose the authentication method to use"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect(attrs={"class": "form-control"})
     )
 
     ldap_bind_dn = forms.CharField(

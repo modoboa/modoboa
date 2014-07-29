@@ -23,15 +23,15 @@ class LoginForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     oldpassword = forms.CharField(
         label=ugettext_lazy("Old password"), required=False,
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     newpassword = forms.CharField(
         label=ugettext_lazy("New password"), required=False,
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     confirmation = forms.CharField(
         label=ugettext_lazy("Confirmation"), required=False,
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
 
     class Meta:
