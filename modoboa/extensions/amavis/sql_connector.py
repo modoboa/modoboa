@@ -75,7 +75,7 @@ class SQLconnector(object):
         return None
 
     def _apply_extra_select_filters(self, messages):
-        pass
+        return messages
 
     def _get_quarantine_content(self):
         """Fetch quarantine content.
@@ -113,7 +113,7 @@ class SQLconnector(object):
         )
 
         messages = Msgrcpt.objects.select_related().filter(flt)
-        self._apply_extra_select_filters(messages)
+        messages = self._apply_extra_select_filters(messages)
         return messages
 
     def messages_count(self, **kwargs):
@@ -215,7 +215,7 @@ class PgSQLconnector(SQLconnector):
         """Return filters based on user's role.
 
         """
-        self._where = ["U0.rid=maddr.id"]
+        self._where = []
         if self.user.group == 'SimpleUsers':
             rcpts = [self.user.email] \
                     + self.user.mailbox_set.all()[0].alias_addresses
@@ -236,7 +236,7 @@ class PgSQLconnector(SQLconnector):
         return None
 
     def _apply_extra_select_filters(self, messages):
-        messages = messages.extra(where=self._where, tables=['maddr'])
+        return messages.extra(where=self._where)
 
     def get_recipient_message(self, address, mailid):
         qset = Msgrcpt.objects.filter(mail=mailid).extra(

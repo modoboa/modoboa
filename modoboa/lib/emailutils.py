@@ -34,10 +34,6 @@ class Email(object):
         self._msg = None
         self._body = None
 
-        if not mformat in self.contents or self.contents[mformat] == "":
-            # Fallback
-            self.mformat = mformat == "html" and "plain" or "html"
-
     @property
     def msg(self):
         """Return an email.message object.
