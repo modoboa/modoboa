@@ -219,7 +219,6 @@ div.container-fluid div.row-fluid div.col-md-2 div.well ul.nav div.side-bar-resp
 
 .container-fluid .well .nav li{
     display: block;
-    margin-top: 8px;
 }
 
 .container-fluid .well .nav > li > a:hover,
