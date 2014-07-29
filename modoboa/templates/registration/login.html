@@ -19,29 +19,32 @@
   </head>
   <body>
     <div class="container">
-      <div id="box">
+      <div id="box" class="col-lg-7 col-lg-offset-2">
       <div id="logo" class="row">
           <ul class="thumbnails">
               <li>
-                  <a href="#" class="thumbnail">
-                      <img src="{% get_modoboa_logo %}" />
-                  </a>
+                  <div class="col-lg-offset-1 col-lg-10">
+                      <a href="#" class="thumbnail">
+                          <img src="{% get_modoboa_logo %}" />
+                      </a>
+                  </div>
               </li>
           </ul>
       </div>
-      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}" class="login-form well">
+      <div class=" divider"></div>
+      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}" class="login-form form-horizontal">
         {% csrf_token %}
         {% render_field form.username %}
         {% render_field form.password %}
         <input type="hidden" name="next" value="{{ next }}" />
         <div class=" divider"></div>
-        <div class="input-group">
+        <div class="form-group">
             <div class="checkbox">
-              <label class="col-lg-9 col-md-9 col-sm-8 checkbox" for="id_rememberme">
+              <label class="col-sm-offset-4 col-lg-5 col-md-5 col-sm-4 checkbox" for="id_rememberme">
                   <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
               </label>
-            <div class="col-lg-3 col-md-3 col-sm-4">
-                <button class="btn btn-primary type="submit">{% trans "Log in" %}</button>
+            <div class="col-lg-3 col-md-2 col-sm-3">
+                <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
             </div>
             </div>
         </div>

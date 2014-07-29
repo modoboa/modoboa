@@ -5,34 +5,22 @@
     }
 }
 
-@media (min-width: 760px) {
-    #logo {
-        margin-top: 60px;
-        text-align: center;
-        margin: 30px 46px 30px 0;
-        max-width: 380px;
-    }
-    #logo img {
-        height: 100px;
-    }
+body{
+    background-color: #EDEDEC;
 }
 
-#box {
-    margin: 0 auto;
-    max-width: 350px;
+#logo{
+    margin-bottom: 5%;
 }
 
+.thumbnail{
+    background-color: transparent;
+}
 .form-actions { 
     background-color: transparent;
     padding-right: 0px;
     padding-left: 0px;
     margin-bottom: 0px;
-}
-
-.login-form {
-    margin: 0 ;
-    max-width: 300px;
-    padding-bottom: 0;
 }
 
 .login-error {
@@ -64,6 +52,5 @@ form.login-form div.checkbox button.btn{
 }
 
 .divider{
-    height: 12px;
-    border-bottom: 1px solid #E8E8E8;
+    height: 2%;
 }
