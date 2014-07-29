@@ -1,7 +1,7 @@
 {% load i18n core_tags lib_tags %}
 <div class="form-group {% if field.errors %}error{% endif %}{{ extra_classes }}"{% visirule field %}{% if hidden %}style="display: none"{% endif %}>
-  {% if field.label %}<label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label>{% endif %}{% if help_display_mode == "tooltip" and field.help_text %}<a href="#" class="help pull-left" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>{% endif %}
-  <div class="controls spaced">
+  {% if field.label %}<label class="control-label col-lg-3 col-md-2 col-sm-2" for="id_{{ field.html_name }}">{{ field.label }}</label>{% endif %}{% if help_display_mode == "tooltip" and field.help_text %}<a href="#" class="help pull-left" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>{% endif %}
+  <div class="col-lg-9 col-md-9 col-sm-9">
     {% if appended_text %}<div class="input-group">{% endif %}
     {{ field }}{% if appended_text %}<span class="input-group-addon">{{ appended_text }}</span></div>{% endif %}{% if help_display_mode == "inline" and field.help_text %}<span class="help-inline">{{ field.help_text }}</span>{% endif %}{% if inline_message %}<span class="help-inline">{{ inline_message }}</span>{% endif %}
     {% if activator %}<label class="checkbox inline" for="id_{{ field.name }}_act">
