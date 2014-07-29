@@ -57,7 +57,7 @@ class SQLconnector(object):
         transaction.commit_unless_managed(using='amavis')
 
     def _apply_msgrcpt_filters(self, flt):
-        """Return filters based on user's role.
+        """Apply filters based on user's role.
 
         """
         if self.user.group == 'SimpleUsers':
@@ -70,11 +70,17 @@ class SQLconnector(object):
             flt &= Q(rid__email__regex=regexp)
 
     def _apply_extra_search_filter(self, crit, pattern):
+        """Apply search filters using additional criterias.
+
+        """
         if crit == "to":
             return Q(rid__email__contains=pattern)
         return None
 
     def _apply_extra_select_filters(self, messages):
+        """Just a hook to apply additional filters to the queryset.
+
+        """
         return messages
 
     def _get_quarantine_content(self):
@@ -165,6 +171,11 @@ class SQLconnector(object):
             emails.append(m)
         return emails
 
+    def get_recipient_message(self, address, mailid):
+        """Retrieve a message for a given recipient.
+        """
+        return Msgrcpt.objects.get(mail=mailid, rid__email=address)
+
     def set_msgrcpt_status(self, address, mailid, status):
         """Change the status (rs field) of a message recipient.
 
@@ -176,18 +187,14 @@ class SQLconnector(object):
             [status, mailid, addr.id]
         )
 
-    def get_recipient_messages(self, address, mailids):
-        return Msgrcpt.objects.filter(mail__in=mailids, rid__email=address)
-
     def get_domains_pending_requests(self, domains):
+        """Retrieve pending release requests for a list of domains.
+        """
         regexp = "(%s)" % '|'.join([dom.name for dom in domains])
         return Msgrcpt.objects.filter(rs='p', rid__email__regex=regexp)
 
     def get_pending_requests(self):
-        """Return the number of requests currently pending.
-
-        :param user: a ``User`` instance
-        """
+        """Return the number of requests currently pending."""
         rq = Q(rs='p')
         if not self.user.is_superuser:
             doms = Domain.objects.get_for_admin(self.user)
@@ -199,6 +206,8 @@ class SQLconnector(object):
         return Msgrcpt.objects.filter(rq).count()
 
     def get_mail_content(self, mailid):
+        """Retrieve the content of a message.
+        """
         return Quarantine.objects.filter(mail=mailid)
 
 
@@ -229,6 +238,9 @@ class PgSQLconnector(SQLconnector):
                 "convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
 
     def _apply_extra_search_filter(self, crit, pattern):
+        """Apply search filters using additional criterias.
+
+        """
         if crit == "to":
             self._where.append(
                 "convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'"
@@ -236,9 +248,14 @@ class PgSQLconnector(SQLconnector):
         return None
 
     def _apply_extra_select_filters(self, messages):
+        """Just a hook to apply additional filters to the queryset.
+
+        """
         return messages.extra(where=self._where)
 
     def get_recipient_message(self, address, mailid):
+        """Retrieve a message for a given recipient.
+        """
         qset = Msgrcpt.objects.filter(mail=mailid).extra(
             where=["msgrcpt.rid=maddr.id",
                    "convert_from(maddr.email, 'UTF8') = '%s'" % address],
@@ -246,14 +263,9 @@ class PgSQLconnector(SQLconnector):
         )
         return qset.all()[0]
 
-    def get_recipient_messages(self, address, mailids):
-        return Msgrcpt.objects.filter(mail__in=mailids).extra(
-            where=["U0.rid=maddr.id",
-                   "convert_from(maddr.email, 'UTF8') = '%s'" % address],
-            tables=['maddr']
-        )
-
     def get_domains_pending_requests(self, domains):
+        """Retrieve pending release requests for a list of domains.
+        """
         regexp = "(%s)" % '|'.join([dom.name for dom in domains])
         return Msgrcpt.objects.filter(rs='p').extra(
             where=["msgrcpt.rid=maddr.id",
@@ -262,6 +274,7 @@ class PgSQLconnector(SQLconnector):
         )
 
     def get_pending_requests(self):
+        """Return the number of requests currently pending."""
         rq = Q(rs='p')
         if not self.user.is_superuser:
             doms = Domain.objects.get_for_admin(self.user)
@@ -276,6 +289,7 @@ class PgSQLconnector(SQLconnector):
         return Msgrcpt.objects.filter(rq).count()
 
     def get_mail_content(self, mailid):
+        """Retrieve the content of a message."""
         return Quarantine.objects.filter(mail=mailid).extra(
             select={'mail_text': "convert_from(mail_text, 'UTF8')"}
         )
