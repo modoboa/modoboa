@@ -1,3 +1,29 @@
+
+@media (max-width: 500px) {
+    #menubar .Actions{
+        display: none;
+    }
+
+}
+
+@media (max-width: 760px) {
+    #searchbox{
+        margin-left: 20px;
+    }
+}
+
+@media (max-width: 1198px) {
+    #leftcol{
+        display: none;
+    }
+    .navbar .display-less-1198{
+        display: inline-block;
+    }
+    .display-up-1198{
+        display: none;
+    }
+}
+
 body, html {
     overflow: hidden; 
     height: 100%;
@@ -50,22 +76,6 @@ body, html {
     overflow: hidden;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
-}
-
-#menubar { 
-    position: fixed;
-    left: 215px;
-    right: 0;
-    padding-left: 15px;
-    padding-right: 15px;
-    z-index: 10;
-}
-
-#listing { 
-    position: fixed;
-    left: 215px;
-    right: 0;
-    padding-left: 15px;
 }
 
 #mailcontent {
@@ -127,6 +137,11 @@ div.expanded {
     background-repeat: no-repeat;
 }
 
+/* listing */
+
+#listing{
+    height:1000px;
+}
 /*
  * Compose form
  */
@@ -178,14 +193,11 @@ div.expanded {
 }
 
 #body_container {
-    position: absolute;
-    left: 15px;
-    right: 0px;
-    bottom: 15px;
+    position: static;
 }
 
 #id_body {
-    width: 99%;
+    width: 100%;
     height: 100%;
 }
 
@@ -245,4 +257,16 @@ td > input[type=checkbox] {
 
 td[class*=openable] {
     cursor: pointer;
+}
+
+/* Action buttons */
+
+.action-buttons {
+    margin-bottom: 10px;
+}
+
+/* send mail */
+
+#body_container{
+    height: 600px;
 }
