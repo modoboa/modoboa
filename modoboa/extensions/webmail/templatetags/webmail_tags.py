@@ -173,7 +173,6 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
         result += "</li>\n"
     return result
 
-
 @register.simple_tag
 def mboxes_menu():
     entries = [
@@ -184,17 +183,17 @@ def mboxes_menu():
          "modal": True,
          "modalcb": "webmail.mboxform_cb",
          "closecb": "webmail.mboxform_close",
-         "class": "btn-default btn-xs"},
+         "class": "btn-default btn-sm"},
         {"name": "editmbox",
          "url": reverse(webmail.views.editfolder),
          "img": "glyphicon glyphicon-edit",
          "title": _("Edit the selected mailbox"),
-         "class": "btn-default btn-xs"},
+         "class": "btn-default btn-sm"},
         {"name": "removembox",
          "url": reverse(webmail.views.delfolder),
          "img": "glyphicon glyphicon-remove",
          "title": _("Remove the selected mailbox"),
-         "class": "btn-default btn-xs"}
+         "class": "btn-default btn-sm"}
     ]
 
     return render_to_string('common/buttons_list.html', dict(
