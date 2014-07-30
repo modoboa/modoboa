@@ -36,13 +36,20 @@ Webmail.prototype = {
         });
         this.record_unseen_messages();
 
-        $("#folders").css({
-            bottom: $("#bottom-bar").outerHeight(true),
-            width: this.options.mboxes_col_width + 'px'
-        });
+
         $("#mboxactions").css({
             bottom: $("#bottom-bar").outerHeight(true) + 10
         });
+        if ($( window ).width()>1198){
+            $("#folders").css({
+                bottom: $("#bottom-bar").outerHeight(true),
+                width: this.options.mboxes_col_width + 'px'
+            });
+            $("#rightcol").css({
+                marginLeft: 200 + 48 + 'px'
+            });
+        }
+
         $("#folders").resizable({
             start: function(event, ui) {
                 $('#listing iframe').css('pointer-events','none');
@@ -54,10 +61,16 @@ Webmail.prototype = {
                 $('#listing iframe').css('pointer-events','auto');
             }
         });
-        $("#folders").bind("resize", function(event, ui) {
-            if (typeof(ui.size) != "undefined") {
-                $("#menubar").css("left", ui.size.width + 15 + "px");
-                $("#listing").css("left", ui.size.width + 15 + "px");
+
+        $( "#folders" ).resizable({
+            resize: function(event, ui) {
+                if ($( window ).width()>760){
+                    var width = ui.size.width;
+                    $("#rightcol").css({
+                        marginLeft: width + 48 + 'px',
+                        paddingRight: width - 260 + 'px'
+                    });
+                }
             }
         });
 
@@ -209,9 +222,6 @@ Webmail.prototype = {
         }
         $("#listing").html(response.listing);
         $("#listing").css({
-            top: $("#menubar").outerHeight(true) + 60 + "px",
-            bottom: $("#bottom-bar").outerHeight(true) + "px",
-            overflow: "auto"
         });
     },
 
