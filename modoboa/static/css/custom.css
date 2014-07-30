@@ -21,7 +21,7 @@
      tr.muted td[name="tags"]{
          display: none;
      }
-     button.navbar-toggle[data-target="#action"]{
+     button.navbar-toggle[data-target="#navigate-navbar-collapse"]{
          float: left;
          margin-left: 20px;
      }
@@ -58,7 +58,7 @@
      padding: 9px 10px;
  }
 
- button.navbar-toggle[data-target="#bs-example-navbar-collapse-1"]{
+ button.navbar-toggle[data-target="#navigate-navbar-collapse"]{
      margin-right: 18px;
  }
 
@@ -82,14 +82,6 @@ div.input-group{
 }
 
 /* end Global*/
-
-#fixed_content {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    left: 0;
-    overflow: hidden;
-}
 
 .form-horizontal .param-label {
     float: left;
@@ -196,11 +188,10 @@ div.container-fluid div.row-fluid div.col-md-2 div.well ul.nav div.side-bar-resp
     color: #0088CC;
 }
 
-
 /* --------- main page --------- */
 /*left navSideBar */
 
-.well{
+div.container-fluid div.well{
     padding:0;
 }
 
@@ -276,7 +267,6 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
 }
 
 
-
 /* Top navbar section */
 
 .top-navbar{
@@ -284,11 +274,16 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
     min-height: 26px;
 }
 
- html body div.navbar div.container-fluid div#bs-example-navbar-collapse-1.collapse ul.nav li.dropdown a.dropdown-toggle{
-     color: white;
+ .display-less-1198{
+     display: none;
  }
 
-                /* Top navbar section -> user */
+ div#navigate-navbar-collapse.navbar-collapse{
+     z-index: 9999;
+ }
+ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse ul.nav li.dropdown a.dropdown-toggle{
+     color: white;
+ }
 
 
 /* listing */
