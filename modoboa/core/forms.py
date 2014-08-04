@@ -37,6 +37,10 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("first_name", "last_name")
+        widgets = {
+                    'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+                    'last_name': forms.TextInput(attrs={'class': 'form-control'})
+                 }
 
     def __init__(self, update_password, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)

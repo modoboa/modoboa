@@ -38,6 +38,12 @@ class AccountFormGeneral(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"class": "form-control"}),
         help_text=ugettext_lazy("Enter the same password as above, for verification.")
     )
+    first_name= forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+    last_name= forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
 
     class Meta:
         model = User
