@@ -27,7 +27,8 @@ class ParametersForm(AdminParametersForm):
     port = forms.IntegerField(
         label=_("Server port"),
         initial=4190,
-        help_text=_("Listening port of your MANAGESIEVE server")
+        help_text=_("Listening port of your MANAGESIEVE server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     starttls = YesNoField(

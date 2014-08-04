@@ -20,7 +20,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             "Default quota in MB applied to mailboxes. Leave empty to use the "
             "default value."
         ),
-        widget=forms.TextInput(attrs={"class": "span1"})
+        widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
     )
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),

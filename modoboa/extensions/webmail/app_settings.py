@@ -33,7 +33,8 @@ class ParametersForm(AdminParametersForm):
     imap_port = forms.IntegerField(
         label=_("Server port"),
         initial=143,
-        help_text=_("Listening port of your IMAP server")
+        help_text=_("Listening port of your IMAP server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     sep2 = SeparatorField(label=_("SMTP settings"))
@@ -57,7 +58,8 @@ class ParametersForm(AdminParametersForm):
     smtp_port = forms.IntegerField(
         label=_("Server port"),
         initial=25,
-        help_text=_("Listening port of your SMTP server")
+        help_text=_("Listening port of your SMTP server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     smtp_authentication = YesNoField(
@@ -89,19 +91,22 @@ class UserSettings(UserParametersForm):
     messages_per_page = forms.IntegerField(
         initial=40,
         label=_("Number of displayed emails per page"),
-        help_text=_("Sets the maximum number of messages displayed in a page")
+        help_text=_("Sets the maximum number of messages displayed in a page"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     refresh_interval = forms.IntegerField(
         initial=300,
         label=_("Listing refresh rate"),
-        help_text=_("Automatic folder refresh rate (in seconds)")
+        help_text=_("Automatic folder refresh rate (in seconds)"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     mboxes_col_width = forms.IntegerField(
         initial=200,
         label=_("Mailboxes container's width"),
-        help_text=_("The width of the mailbox list container")
+        help_text=_("The width of the mailbox list container"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     sep2 = SeparatorField(label=_("Mailboxes"))

@@ -13,7 +13,8 @@ class ParametersForm(AdminParametersForm):
     autoreplies_timeout = forms.IntegerField(
         label=ugettext_lazy("Automatic reply timeout"),
         initial=86400,
-        help_text=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient")
+        help_text=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     default_subject = forms.CharField(

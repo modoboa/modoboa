@@ -134,7 +134,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                     "use domain's default one. Leave empty to define an "
                     "unlimited value (not allowed for domain "
                     "administrators)."),
-        widget=forms.widgets.TextInput(attrs={"class": "span1"})
+        widget=forms.widgets.TextInput(attrs={"class": "col-md-1 form-control"})
     )
     quota_act = forms.BooleanField(required=False)
     aliases = forms.EmailField(

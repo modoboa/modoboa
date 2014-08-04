@@ -31,7 +31,7 @@ class AdminParametersForm(parameters.AdminParametersForm):
             "Default quota (in MB) applied to freshly created domains with no "
             "value specified. A value of 0 means no quota."
         ),
-        widget=forms.TextInput(attrs={'class': 'span2'})
+        widget=forms.TextInput(attrs={'class': 'col-md-2 form-control'})
     )
 
     auto_account_removal = YesNoField(

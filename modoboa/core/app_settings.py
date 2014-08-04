@@ -64,7 +64,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy(
             "Number of rounds to use (only used by sha256crypt and "
             "sha512crypt). Must be between 1000 and 999999999, inclusive."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     secret_key = forms.CharField(
@@ -85,7 +86,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     ldap_server_port = forms.IntegerField(
         label=ugettext_lazy("Server port"),
         initial=389,
-        help_text=ugettext_lazy("The TCP port number used by the LDAP server")
+        help_text=ugettext_lazy("The TCP port number used by the LDAP server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_secured = YesNoField(
@@ -175,13 +177,15 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     log_maximum_age = forms.IntegerField(
         label=ugettext_lazy("Maximum log record age"),
         initial=365,
-        help_text=ugettext_lazy("The maximum age in days of a log record")
+        help_text=ugettext_lazy("The maximum age in days of a log record"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     items_per_page = forms.IntegerField(
         label=ugettext_lazy("Items per page"),
         initial=30,
-        help_text=ugettext_lazy("Number of displayed items per page")
+        help_text=ugettext_lazy("Number of displayed items per page"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     default_top_redirection = forms.ChoiceField(

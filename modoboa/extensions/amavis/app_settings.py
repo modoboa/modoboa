@@ -13,7 +13,8 @@ class ParametersForm(AdminParametersForm):
     max_messages_age = forms.IntegerField(
         label=_("Maximum message age"),
         initial=14,
-        help_text=_("Quarantine messages maximum age (in days) before deletion")
+        help_text=_("Quarantine messages maximum age (in days) before deletion"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     sep1 = SeparatorField(label=_("Messages releasing"))
@@ -41,7 +42,8 @@ class ParametersForm(AdminParametersForm):
     am_pdp_port = forms.IntegerField(
         label=_("PDP server port"),
         initial=9998,
-        help_text=_("PDP server port (if inet mode)")
+        help_text=_("PDP server port (if inet mode)"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     am_pdp_socket = forms.CharField(
@@ -53,7 +55,8 @@ class ParametersForm(AdminParametersForm):
     check_requests_interval = forms.IntegerField(
         label=_("Check requests interval"),
         initial=30,
-        help_text=_("Interval between two release requests checks")
+        help_text=_("Interval between two release requests checks"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     user_can_release = YesNoField(
@@ -89,5 +92,6 @@ class UserSettings(UserParametersForm):
     messages_per_page = forms.IntegerField(
         initial=40,
         label=_("Number of displayed emails per page"),
-        help_text=_("Set the maximum number of messages displayed in a page")
+        help_text=_("Set the maximum number of messages displayed in a page"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
