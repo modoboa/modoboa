@@ -20,6 +20,8 @@ Webmail.prototype = {
         mboxes_col_width: 200
     },
 
+
+
     initialize: function(options) {
         this.options = $.extend({}, this.defaults, options);
         this.rtimer = null;
@@ -40,16 +42,97 @@ Webmail.prototype = {
         $("#mboxactions").css({
             bottom: $("#bottom-bar").outerHeight(true) + 10
         });
+
+
+
+        /* Responsive */
+
+        /* Responsive -> init */
+
+        /*if ($( window ).width()<760){
+            $("tr td[name='from']").css({
+                width: 35 + '%'
+            });
+        }*/
+
+        if ($( window ).width()<1198){
+            $("#leftcol").addClass(
+                "leftcol-display-none"
+            );
+            $("#listing").addClass(
+                "col-lg-12 col-md-12 col-ms-12 col-xs-12"
+            );
+            $("#listing").css({
+                height: $(window).height() - 200 + 'px'
+            });
+        }
+
         if ($( window ).width()>1198){
             $("#folders").css({
                 bottom: $("#bottom-bar").outerHeight(true),
                 width: this.options.mboxes_col_width + 'px'
             });
+            $("#listing").addClass(
+                "listing-up-1198"
+            );
+
+            $("#listing").css({
+                height: $(window).height() - 180 + 'px'
+            });
+
             $("#rightcol").css({
                 marginLeft: 200 + 48 + 'px'
             });
         }
 
+        /* Responsive -> on resizing window */
+        var that = this;
+        $(window).resize(function(){
+
+            if ($( window ).width()<760){
+                $("tr td[name='from']").css({
+                    width: 35 + '%'
+                });
+            }
+
+            if ($( window ).width()<1198){
+                $("#leftcol").addClass(
+                    "leftcol-display-none"
+                );
+                $("#listing").addClass(
+                    "col-lg-12 col-md-12 col-ms-12 col-xs-12"
+                );
+                $("#listing").css({
+                    height: $(window).height() - 200 + 'px'
+                });
+                $("#listing").removeClass(
+                    "listing-up-1198"
+                );
+                $("#rightcol").css({
+                    marginLeft: 0 + 'px',
+                    paddingRight: 0 + 'px'
+                });
+            }
+
+            if ($( window ).width()>1198){
+                $("#folders").css({
+                    bottom: $("#bottom-bar").outerHeight(true),
+                    width: that.options.mboxes_col_width + 'px'
+                });
+                $("#listing").addClass(
+                    "listing-up-1198"
+                );
+                $("#listing").css({
+                    height: $(window).height() - 180 + 'px'
+                });
+
+                $("#rightcol").css({
+                    marginLeft: 200 + 48 + 'px'
+                });
+            }
+        });
+
+        /* Responsive -> on resizing folders (leftcol) */
         $("#folders").resizable({
             start: function(event, ui) {
                 $('#listing iframe').css('pointer-events','none');
@@ -64,15 +147,26 @@ Webmail.prototype = {
 
         $( "#folders" ).resizable({
             resize: function(event, ui) {
-                if ($( window ).width()>760){
+                if ($( window ).width()>1198){
                     var width = ui.size.width;
                     $("#rightcol").css({
-                        marginLeft: width + 48 + 'px',
-                        paddingRight: width - 260 + 'px'
+                        marginLeft: width + 48 + 'px'
                     });
+                    $("#folders").css({
+                        width : width + 'px'
+                    });
+                    $("#rightcol").css({
+                        paddingRight: width - 250 + 'px'
+                    });
+                    if ($( window ).width()<1800){
+                        $("#rightcol").css({
+                            paddingRight: width - 180 + 'px'
+                        });
+                    }
                 }
             }
         });
+        /* end Responsive */
 
         this.resize();
 
@@ -202,7 +296,7 @@ Webmail.prototype = {
     page_update: function(response) {
         var curmb = this.get_current_mailbox();
 
-        $(window).unbind("resize");
+//       $(window).unbind("resize");
         if (!$('li[name="' + curmb + '"]').hasClass("active")) {
             this.load_and_select_mailbox(curmb);
         }
@@ -316,7 +410,7 @@ Webmail.prototype = {
             href: mailbox
         });
         var parts = mailbox.split(this.options.hdelimiter);
-        var linkcontent = "<i class='icon-folder-close'></i> ";
+        var linkcontent = "<i class='glyphicon glyphicon-folder-close'></i> ";
         var displayname = linkcontent + parts[parts.length - 1];
 
         $li.append($link);
