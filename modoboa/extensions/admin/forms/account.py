@@ -135,7 +135,7 @@ class AccountFormGeneral(forms.ModelForm):
 
 
 class AccountFormMail(forms.Form, DynamicForm):
-    email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
+    email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
@@ -153,7 +153,8 @@ class AccountFormMail(forms.Form, DynamicForm):
             "Alias(es) of this mailbox. Indicate only one address per input, "
             "press ENTER to add a new input. Use the '*' character to create "
             "a 'catchall' alias (ex: *@domain.tld)."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     def __init__(self, *args, **kwargs):

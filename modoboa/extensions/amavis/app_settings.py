@@ -76,7 +76,8 @@ class ParametersForm(AdminParametersForm):
     notifications_sender = forms.EmailField(
         label=_("Notifications sender"),
         initial="notification@modoboa.org",
-        help_text=_("The e-mail address used to send notitications")
+        help_text=_("The e-mail address used to send notitications"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     visibility_rules = {
