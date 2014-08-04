@@ -63,7 +63,7 @@ class FilterForm(forms.Form):
                      ("anyof", _("Any of the following")),
                      ("all", _("All messages"))],
             initial="anyof",
-            widget=CustomRadioSelect(attrs={"class": "radio inline"})
+            widget=CustomRadioSelect(attrs={"class": "inline", "type": "checkbox"})
         )
 
         self.header_operators = [

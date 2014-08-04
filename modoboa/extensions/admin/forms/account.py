@@ -25,7 +25,8 @@ class AccountFormGeneral(forms.ModelForm):
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
         choices=[('', ugettext_lazy("Choose"))],
-        help_text=ugettext_lazy("What level of permission this user will have")
+        help_text=ugettext_lazy("What level of permission this user will have"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )
     password1 = forms.CharField(
         label=ugettext_lazy("Password"), widget=forms.PasswordInput

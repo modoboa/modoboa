@@ -40,7 +40,8 @@ class ParametersForm(AdminParametersForm):
         label=_("Authentication mechanism"),
         choices=supported_auth_mechs(),
         initial="auto",
-        help_text=_("Prefered authentication mechanism")
+        help_text=_("Prefered authentication mechanism"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
 
@@ -54,7 +55,7 @@ class UserSettings(UserParametersForm):
         label=_("Editor mode"),
         choices=[("raw", "raw"), ("gui", "simplified")],
         help_text=_("Select the mode you want the editor to work in"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect(attrs={"type": "checkbox"})
     )
 
     @staticmethod

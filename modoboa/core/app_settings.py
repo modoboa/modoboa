@@ -41,7 +41,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ('ldap', "LDAP")],
         initial="local",
         help_text=ugettext_lazy("The backend used for authentication"),
-        widget=InlineRadioSelect(attrs={"class": "form-control"})
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     password_scheme = forms.ChoiceField(
@@ -54,7 +54,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ("crypt", ugettext_lazy("crypt (weak)")),
                  ("plain", ugettext_lazy("plain (weak)"))],
         initial="sha512crypt",
-        help_text=ugettext_lazy("Scheme used to crypt mailbox passwords")
+        help_text=ugettext_lazy("Scheme used to crypt mailbox passwords"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     rounds_number = forms.IntegerField(
@@ -99,7 +100,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ('directbind', ugettext_lazy("Direct bind"))],
         initial='searchbind',
         help_text=ugettext_lazy("Choose the authentication method to use"),
-        widget=InlineRadioSelect(attrs={"class": "form-control"})
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     ldap_bind_dn = forms.CharField(
@@ -187,7 +188,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Default top redirection"),
         choices=[],
         initial="user",
-        help_text=ugettext_lazy("The default redirection used when no application is specified")
+        help_text=ugettext_lazy("The default redirection used when no application is specified"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     # Visibility rules
@@ -324,5 +326,6 @@ class UserSettings(parameters.UserParametersForm):
                  ("fr", "français"), ("it", "italiano"),
                  ("nl", "nederlands"), ("pt", "português"),
                  ("ru", "русский"), ("sv", "svenska")],
-        help_text=ugettext_lazy("Prefered language to display pages")
+        help_text=ugettext_lazy("Prefered language to display pages"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )

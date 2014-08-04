@@ -51,7 +51,7 @@ class ParametersForm(AdminParametersForm):
                  ("ssl", "SSL/TLS")],
         initial="none",
         help_text=_("Use a secured connection to access SMTP server"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect(attrs={"type": "checkbox"})
     )
     
     smtp_port = forms.IntegerField(
@@ -77,7 +77,7 @@ class UserSettings(UserParametersForm):
         label=_("Default message display mode"),
         choices=[("html", "html"), ("plain", "text")],
         help_text=_("The default mode used when displaying a message"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect(attrs={"type": "checkbox"})
     )
 
     enable_links = YesNoField(
@@ -131,7 +131,7 @@ class UserSettings(UserParametersForm):
         label=_("Default editor"),
         choices=[("html", "html"), ("plain", "text")],
         help_text=_("The default editor to use when composing a message"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect(attrs={"type": "checkbox"})
     )
 
     signature = forms.CharField(

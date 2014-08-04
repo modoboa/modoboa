@@ -29,7 +29,7 @@ class ParametersForm(AdminParametersForm):
         choices=[("inet", "inet"), ("unix", "unix")],
         initial="unix",
         help_text=_("Mode used to access the PDP server"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect(attrs={"type": "checkbox"})
     )
 
     am_pdp_host = forms.CharField(
