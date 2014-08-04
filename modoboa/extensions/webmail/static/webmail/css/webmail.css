@@ -10,14 +10,23 @@
     #searchbox{
         margin-left: 20px;
     }
-}
-
-@media (max-width: 1198px) {
-    #leftcol{
+    td[name="date"] {
         display: none;
     }
     .navbar .display-less-1198{
+        display: inherit;
+    }
+}
+
+@media (min-width: 760px) and (max-width: 1198px) {
+    .navbar .display-less-1198{
         display: inline-block;
+    }
+}
+
+@media (max-width: 1198px) {
+    #leftcol.leftcol-display-none{
+        display: none;
     }
     .display-up-1198{
         display: none;
@@ -138,9 +147,28 @@ div.expanded {
 }
 
 /* listing */
-
 #listing{
-    height:1000px;
+    overflow: auto;
+}
+#listing.listing-up-1198{
+    padding-left: 15px;
+}
+#listing.listing-less-1198{
+    bottom: 0px;
+    left: 0px;
+    padding-left: 0px;
+    right: 0;
+    top: 0px;
+    overflow-y: hidden;
+}
+
+#listing .test{
+    overflow-y: scroll;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 41px;
+    bottom: 41px;
 }
 /*
  * Compose form
@@ -261,6 +289,10 @@ td[class*=openable] {
 
 /* Action buttons */
 
+#menubar .btn-toolbar{
+    margin-left: 1px;
+    margin-right: 1px;
+}
 .action-buttons {
     margin-bottom: 10px;
 }
