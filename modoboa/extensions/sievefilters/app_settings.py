@@ -21,7 +21,8 @@ class ParametersForm(AdminParametersForm):
     server = forms.CharField(
         label=_("Server address"),
         initial="127.0.0.1",
-        help_text=_("Address of your MANAGESIEVE server")
+        help_text=_("Address of your MANAGESIEVE server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     port = forms.IntegerField(

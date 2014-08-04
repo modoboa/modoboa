@@ -36,7 +36,8 @@ class ParametersForm(AdminParametersForm):
     am_pdp_host = forms.CharField(
         label=_("PDP server address"),
         initial="localhost",
-        help_text=_("PDP server address (if inet mode)")
+        help_text=_("PDP server address (if inet mode)"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     am_pdp_port = forms.IntegerField(
@@ -49,7 +50,8 @@ class ParametersForm(AdminParametersForm):
     am_pdp_socket = forms.CharField(
         label=_("PDP server socket"),
         initial="/var/amavis/amavisd.sock",
-        help_text=_("Path to the PDP server socket (if unix mode)")
+        help_text=_("Path to the PDP server socket (if unix mode)"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
     
     check_requests_interval = forms.IntegerField(

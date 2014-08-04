@@ -79,16 +79,21 @@ def make_body_images_inline(body):
 class ComposeMailForm(forms.Form):
     """Compose mail form.
     """
-    to = forms.CharField(label=_("To"))
-    cc = forms.CharField(label=_("Cc"), required=False)
-    cci = forms.CharField(label=_("Cci"), required=False)
+    to = forms.CharField(label=_("To"), widget=forms.TextInput(attrs={"class": "form-control"}))
+    cc = forms.CharField(label=_("Cc"), required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
+    cci = forms.CharField(label=_("Cci"), required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
     subject = forms.CharField(
-        label=_("Subject"), max_length=255, required=False
+        label=_("Subject"),
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
     origmsgid = forms.CharField(
-        label="", widget=forms.HiddenInput(), required=False
+        label="",
+        widget=forms.HiddenInput(attrs={"class": "form-control"}),
+        required=False
     )
-    body = forms.CharField(widget=forms.widgets.Textarea)
+    body = forms.CharField(widget=forms.widgets.Textarea(attrs={"class": "form-control"}))
 
     def _html_msg(self):
         """Create a multipart message.
@@ -189,9 +194,11 @@ class ForwardMailForm(ComposeMailForm):
 
 class FolderForm(forms.Form):
     oldname = forms.CharField(
-        label="", widget=forms.HiddenInput(), required=False
+        label="",
+        widget=forms.HiddenInput(attrs={"class": "form-control"}),
+        required=False
     )
-    name = forms.CharField()
+    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
 
 
 class AttachmentForm(forms.Form):

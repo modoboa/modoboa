@@ -4,10 +4,16 @@ from django.utils.translation import ugettext_lazy
 
 class ExportDataForm(forms.Form):
     filename = forms.CharField(
-        label=ugettext_lazy("File name"), max_length=100, required=False
+        label=ugettext_lazy("File name"),
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
     sepchar = forms.CharField(
-        label=ugettext_lazy("Separator"), max_length=1, required=False
+        label=ugettext_lazy("Separator"),
+        max_length=1,
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     def __init__(self, *args, **kwargs):

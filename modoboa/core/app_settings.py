@@ -71,7 +71,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     secret_key = forms.CharField(
         label=ugettext_lazy("Secret key"),
         initial=random_key(),
-        help_text=ugettext_lazy("Key used to encrypt/decrypt passwords")
+        help_text=ugettext_lazy("Key used to encrypt/decrypt passwords"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     # LDAP specific settings
@@ -80,7 +81,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     ldap_server_address = forms.CharField(
         label=ugettext_lazy("Server address"),
         initial="localhost",
-        help_text=ugettext_lazy("The IP address of the DNS name of the LDAP server")
+        help_text=ugettext_lazy("The IP address of the DNS name of the LDAP server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_server_port = forms.IntegerField(
@@ -109,14 +111,15 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Bind DN"),
         initial='',
         help_text=ugettext_lazy("The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_bind_password = forms.CharField(
         label=ugettext_lazy("Bind password"),
         initial='',
         help_text=ugettext_lazy("The password to use when binding to the LDAP server (with 'Bind DN')"),
-        widget=forms.PasswordInput(render_value=True),
+        widget=forms.PasswordInput(attrs={"class": "form-control"}, render_value=True),
         required=False
     )
 
@@ -124,27 +127,31 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Users search base"),
         initial="",
         help_text=ugettext_lazy("The distinguished name of the search base used to find users"),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_search_filter = forms.CharField(
         label=ugettext_lazy("Search filter"),
         initial="(mail=%(user)s)",
         help_text=ugettext_lazy("An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_user_dn_template = forms.CharField(
         label=ugettext_lazy("User DN template"),
         initial="",
         help_text=ugettext_lazy("The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_password_attribute = forms.CharField(
         label=ugettext_lazy("Password attribute"),
         initial="userPassword",
-        help_text=ugettext_lazy("The attribute used to store user passwords")
+        help_text=ugettext_lazy("The attribute used to store user passwords"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_is_active_directory = YesNoField(
@@ -160,7 +167,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "Members of those LDAP Posix groups will be created as domain "
             "administrators. Use ';' characters to separate groups."
         ),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_groups_search_base = forms.CharField(
@@ -169,7 +177,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy(
             "The distinguished name of the search base used to find groups"
         ),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))

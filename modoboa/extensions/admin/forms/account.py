@@ -20,7 +20,8 @@ class AccountFormGeneral(forms.ModelForm):
         help_text=ugettext_lazy(
             "The user's name. Must be a valid e-mail address for simple users "
             "or administrators with a mailbox."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
@@ -29,11 +30,12 @@ class AccountFormGeneral(forms.ModelForm):
         widget=forms.Select(attrs={"class": "form-control"})
     )
     password1 = forms.CharField(
-        label=ugettext_lazy("Password"), widget=forms.PasswordInput
+        label=ugettext_lazy("Password"),
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     password2 = forms.CharField(
         label=ugettext_lazy("Confirmation"),
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
         help_text=ugettext_lazy("Enter the same password as above, for verification.")
     )
 
@@ -50,7 +52,8 @@ class AccountFormGeneral(forms.ModelForm):
         if user.group == "DomainAdmins":
             self.fields["role"] = forms.CharField(
                 label="",
-                widget=forms.HiddenInput, required=False
+                widget=forms.HiddenInput(attrs={"class": "form-control"}),
+                required=False
             )
         else:
             self.fields["role"].choices = [('', ugettext_lazy("Choose"))]

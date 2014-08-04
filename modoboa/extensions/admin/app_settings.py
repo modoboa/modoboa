@@ -21,7 +21,8 @@ class AdminParametersForm(parameters.AdminParametersForm):
     mailboxes_owner = forms.CharField(
         label=ugettext_lazy("Mailboxes ower"),
         initial="vmail",
-        help_text=ugettext_lazy("The UNIX account who owns mailboxes on the filesystem")
+        help_text=ugettext_lazy("The UNIX account who owns mailboxes on the filesystem"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     default_domain_quota = forms.IntegerField(

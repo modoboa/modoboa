@@ -9,7 +9,7 @@ from modoboa.extensions.admin.templatetags.admin_tags import gender
 
 
 class FiltersSetForm(forms.Form):
-    name = forms.CharField()
+    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
     active = forms.BooleanField(
         label=gender("Active", "m"), required=False,
         initial=False,
@@ -57,7 +57,7 @@ class FilterForm(forms.Form):
     def __init__(self, conditions, actions, request, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)
 
-        self.fields["name"] = forms.CharField(label=_("Name"))
+        self.fields["name"] = forms.CharField(label=_("Name"), widget=forms.TextInput(attrs={"class": "form-control"}))
         self.fields["match_type"] = forms.ChoiceField(
             choices=[("allof", _("All of the following")),
                      ("anyof", _("Any of the following")),
@@ -117,7 +117,7 @@ class FilterForm(forms.Form):
                 if op != opdef[0]:
                     continue
                 if opdef[2] in ["string", "number"]:
-                    vfield = forms.CharField(max_length=255, initial=value)
+                    vfield = forms.CharField(max_length=255, initial=value, widget=forms.TextInput(attrs={"class": "form-control"}))
 
         self.fields["cond_target_%d" % self.conds_cnt] = \
             forms.ChoiceField(initial=name, choices=targets)
@@ -154,7 +154,7 @@ class FilterForm(forms.Form):
             arg = args[cnt]
             aname = "action_arg_%d_%d" % (self.actions_cnt, cnt)
             if arg["type"] == "string":
-                self.fields[aname] = forms.CharField(max_length=255, initial=value)
+                self.fields[aname] = forms.CharField(max_length=255, initial=value, widget=forms.TextInput(attrs={"class": "form-control"}))
             elif arg["type"] == "list":
                 choices = getattr(self, arg["vloader"])(request)
                 self.fields[aname] = forms.ChoiceField(initial=value, choices=choices)

@@ -190,7 +190,7 @@ class DomainFormOptions(forms.Form):
             "The administrator's name. Don't include the domain's name here, "
             "it will be automatically appended."
         ),
-        widget=forms.widgets.TextInput(attrs={"class": "input-small"}),
+        widget=forms.widgets.TextInput(attrs={"class": "form-control input-small"}),
         required=False
     )
 

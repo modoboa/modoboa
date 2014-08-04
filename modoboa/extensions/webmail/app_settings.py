@@ -13,7 +13,8 @@ class ParametersForm(AdminParametersForm):
     max_attachment_size = forms.CharField(
         label=_("Maximum attachment size"),
         initial="2048",
-        help_text=_("Maximum attachment size in bytes (or KB, MB, GB if specified)")
+        help_text=_("Maximum attachment size in bytes (or KB, MB, GB if specified)"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     sep1 = SeparatorField(label=_("IMAP settings"))
@@ -21,7 +22,8 @@ class ParametersForm(AdminParametersForm):
     imap_server = forms.CharField(
         label=_("Server address"),
         initial="127.0.0.1",
-        help_text=_("Address of your IMAP server")
+        help_text=_("Address of your IMAP server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     imap_secured = YesNoField(
@@ -42,7 +44,8 @@ class ParametersForm(AdminParametersForm):
     smtp_server = forms.CharField(
         label=_("Server address"),
         initial="127.0.0.1",
-        help_text=_("Address of your SMTP server")
+        help_text=_("Address of your SMTP server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     smtp_secured_mode = forms.ChoiceField(
@@ -114,19 +117,22 @@ class UserSettings(UserParametersForm):
     trash_folder = forms.CharField(
         initial="Trash",
         label=_("Trash folder"),
-        help_text=_("Folder where deleted messages go")
+        help_text=_("Folder where deleted messages go"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     sent_folder = forms.CharField(
         initial="Sent",
         label=_("Sent folder"),
-        help_text=_("Folder where copies of sent messages go")
+        help_text=_("Folder where copies of sent messages go"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     drafts_folder = forms.CharField(
         initial="Drafts",
         label=_("Drafts folder"),
-        help_text=_("Folder where drafts go")
+        help_text=_("Folder where drafts go"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     sep3 = SeparatorField(label=_("Composing messages"))
@@ -143,7 +149,7 @@ class UserSettings(UserParametersForm):
         initial="",
         label=_("Signature text"),
         help_text=_("User defined email signature"),
-        widget=forms.widgets.Textarea,
+        widget=forms.widgets.Textarea(attrs={"class": "form-control"}),
         required=False
     )
 
