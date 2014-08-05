@@ -297,6 +297,10 @@ td[class*=openable] {
     margin-bottom: 10px;
 }
 
+#menubar .btn-toolbar ul.navbar-right{
+    margin-right: 3%;
+}
+
 /* send mail */
 
 #body_container{
