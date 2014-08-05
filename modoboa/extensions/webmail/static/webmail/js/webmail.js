@@ -951,7 +951,7 @@ Webmail.prototype = {
         var top = $mailheader.outerHeight(true);
 
         $("#body_container").css({
-            top: top + "px"
+            height: $(window).height()*0.58 + "px"
         });
     },
 
