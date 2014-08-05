@@ -17,12 +17,13 @@ def init_limits_dependant_features():
     We mainly define extra permissions.
     """
     add_permissions_to_group(
-        "Resellers", [("radicale", "add_usercalendar"),
-                      ("radicale", "change_usercalendar"),
-                      ("radicale", "delete_usercalendar"),
-                      ("radicale", "add_sharedcalendar"),
-                      ("radicale", "change_sharedcalendar"),
-                      ("radicale", "delete_sharedcalendar")]
+        "Resellers",
+        [("radicale", "usercalendar", "add_usercalendar"),
+         ("radicale", "usercalendar", "change_usercalendar"),
+         ("radicale", "usercalendar", "delete_usercalendar"),
+         ("radicale", "sharedcalendar", "add_sharedcalendar"),
+         ("radicale", "sharedcalendar", "change_sharedcalendar"),
+         ("radicale", "sharedcalendar", "delete_sharedcalendar")]
     )
 
 
@@ -40,12 +41,13 @@ class Radicale(ModoExtension):
         """Plugin initialization.
         """
         add_permissions_to_group(
-            "DomainAdmins", [("radicale", "add_usercalendar"),
-                             ("radicale", "change_usercalendar"),
-                             ("radicale", "delete_usercalendar"),
-                             ("radicale", "add_sharedcalendar"),
-                             ("radicale", "change_sharedcalendar"),
-                             ("radicale", "delete_sharedcalendar")]
+            "DomainAdmins",
+            [("radicale", "usercalendar", "add_usercalendar"),
+             ("radicale", "usercalendar", "change_usercalendar"),
+             ("radicale", "usercalendar", "delete_usercalendar"),
+             ("radicale", "sharedcalendar", "add_sharedcalendar"),
+             ("radicale", "sharedcalendar", "change_sharedcalendar"),
+             ("radicale", "sharedcalendar", "delete_sharedcalendar")]
         )
         if exts_pool.is_extension_enabled('limits'):
             init_limits_dependant_features()

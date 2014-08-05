@@ -153,9 +153,9 @@ def add_permissions_to_group(groupname, permissions):
     from django.contrib.auth.models import Group, Permission
 
     grp = Group.objects.get(name=groupname)
-    for appname, permname in permissions:
+    for appname, modelname, permname in permissions:
         ct = ContentType.objects.get_by_natural_key(
-            appname, permname.split("_")[1])
+            appname, modelname)
         grp.permissions.add(
             Permission.objects.get(content_type=ct, codename=permname)
         )

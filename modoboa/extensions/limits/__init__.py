@@ -40,10 +40,10 @@ class Limits(ModoExtension):
 
         ct = ContentType.objects.get_for_model(Domain)
         add_permissions_to_group(
-            "Resellers", [("admin", "view_domains"),
-                          ("admin", "add_domain"),
-                          ("admin", "change_domain"),
-                          ("admin", "delete_domain")]
+            "Resellers", [("admin", "domain", "view_domains"),
+                          ("admin", "domain", "add_domain"),
+                          ("admin", "domain", "change_domain"),
+                          ("admin", "domain", "delete_domain")]
         )
 
         for user in User.objects.filter(groups__name='DomainAdmins'):
