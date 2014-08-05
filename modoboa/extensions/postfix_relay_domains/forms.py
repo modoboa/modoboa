@@ -14,14 +14,17 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=ugettext_lazy(
             "Alias(es) of this relay domain. Indicate only one name per input"
             ", press ENTER to add a new input."
-        )
+        ),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     class Meta:
         model = RelayDomain
         exclude = ['dates']
         widgets = {
-            'service': forms.Select(attrs={'class': 'span2'})
+            'service': forms.Select(attrs={'class': 'col-mg-2 form-control'}),
+            'target_host': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'})
         }
 
     def __init__(self, *args, **kwargs):

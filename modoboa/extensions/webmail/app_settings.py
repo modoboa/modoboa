@@ -55,7 +55,7 @@ class ParametersForm(AdminParametersForm):
                  ("ssl", "SSL/TLS")],
         initial="none",
         help_text=_("Use a secured connection to access SMTP server"),
-        widget=InlineRadioSelect(attrs={"type": "checkbox"})
+        widget=forms.Select(attrs={"class": "form-control"})
     )
     
     smtp_port = forms.IntegerField(

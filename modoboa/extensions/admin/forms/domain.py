@@ -28,7 +28,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=ugettext_lazy(
             "Alias(es) of this domain. Indicate only one name per input, "
             "press ENTER to add a new input."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
     )
 
     class Meta:

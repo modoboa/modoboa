@@ -9,7 +9,9 @@ from modoboa.extensions.admin.templatetags.admin_tags import gender
 
 
 class FiltersSetForm(forms.Form):
-    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
     active = forms.BooleanField(
         label=gender("Active", "m"), required=False,
         initial=False,
