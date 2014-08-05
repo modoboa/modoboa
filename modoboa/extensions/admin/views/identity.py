@@ -127,11 +127,11 @@ def newaccount(request, tplname='common/wizard_forms.html'):
     """
     cwizard = CreationWizard()
     cwizard.add_step(AccountFormGeneral, _("General"),
-                     [dict(classes="btn-inverse next", label=_("Next"))],
+                     [dict(classes="btn-primary next", label=_("Next"))],
                      new_args=[request.user])
     cwizard.add_step(AccountFormMail, _("Mail"),
                      [dict(classes="btn-primary submit", label=_("Create")),
-                      dict(classes="btn-inverse prev", label=_("Previous"))],
+                      dict(classes="btn-primary prev", label=_("Previous"))],
                      formtpl="admin/mailform.html")
 
     if request.method == "POST":

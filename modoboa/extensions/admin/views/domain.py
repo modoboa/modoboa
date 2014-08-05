@@ -95,12 +95,12 @@ def newdomain(request, tplname="common/wizard_forms.html"):
 
     cwizard = CreationWizard()
     cwizard.add_step(DomainFormGeneral, _("General"),
-                     [dict(classes="btn-inverse next", label=_("Next"))],
+                     [dict(classes="btn-primary next", label=_("Next"))],
                      formtpl="admin/domain_general_form.html")
     cwizard.add_step(
         DomainFormOptions, _("Options"),
         [dict(classes="btn-primary submit", label=_("Create")),
-         dict(classes="btn-inverse prev", label=_("Previous"))],
+         dict(classes="btn-primary prev", label=_("Previous"))],
         formtpl="admin/domain_options_form.html",
         new_args=[request.user]
     )
