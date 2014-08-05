@@ -105,7 +105,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         return cleaned_data
 
     def update_mailbox_quotas(self, domain):
-        """Update all quota records associated to this domain
+        """Update all quota records associated to this domain.
 
         This method must be called only when a domain gets renamed. As
         the primary key used for a quota is an email address, rename a
@@ -119,9 +119,14 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         perfomant at all as it will generate one query per quota
         record to update.
         """
-        for q in Quota.objects.filter(username__contains="@%s" % self.oldname).values('username'):
-            username = q['username'].replace('@%s' % self.oldname, '@%s' % domain.name)
-            Quota.objects.filter(username=q['username']).update(username=username)
+        for q in Quota.objects.filter(username__contains="@%s" % self.oldname):
+            username = q.username.replace(
+                '@%s' % self.oldname, '@%s' % domain.name)
+            newq = Quota.objects.create(
+                username=username, bytes=q.bytes, messages=q.messages)
+            q.mailbox.quota_value = newq
+            q.mailbox.save()
+            q.delete()
 
     def save(self, user, commit=True, domalias_post_create=False):
         """Custom save method

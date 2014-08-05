@@ -37,6 +37,7 @@ $(document).ready(function() {
 <div id="listing"></div>
 {% endblock %}
 {% block footerleft %}
+{% if quota != -1 %}
 <div id="quotabox">
   <label class="pull-left navbar-text">{% trans "Mailbox quota" %}</label>
   <div id="quotabar" class="pull-left progress {% progress_color quota %}">
@@ -44,5 +45,6 @@ $(document).ready(function() {
   </div>
   <label id="quotaraw" class="pull-left navbar-text">{{ quota }}%</label>
 </div>
+{% endif %}
 {% endblock %}
 

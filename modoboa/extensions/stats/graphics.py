@@ -95,8 +95,7 @@ class Graphic(object):
 class AverageTraffic(Graphic):
     """Average traffic.
     """
-    title = ugettext_lazy('Average traffic')
-    vertlabel = ugettext_lazy('msgs/min')
+    title = ugettext_lazy('Average traffic (msgs/min)')
 
     # Curve definitions
     sent = Curve("sent", "lawngreen", ugettext_lazy("sent messages"))
@@ -110,8 +109,7 @@ class AverageTraffic(Graphic):
 class AverageTrafficSize(Graphic):
     """Average traffic size.
     """
-    title = ugettext_lazy('Average normal traffic size')
-    vertlabel = ugettext_lazy('bytes/min')
+    title = ugettext_lazy('Average normal traffic size (bytes/min)')
 
     # Curve definitions
     size_recv = Curve("size_recv", "orange", ugettext_lazy("received size"))
