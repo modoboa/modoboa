@@ -4,8 +4,8 @@
 <form class="form-horizontal" method="POST" action="{% url 'modoboa.core.views.user.profile' %}" 
       id="uprefs_form">{% csrf_token %}
   {% render_form form %}
-  <div class="form-actions col-lg-3  col-md-2 col-sm-3 col-lg-offset-9  col-md-offset-9 col-sm-offset-9 pull-right">
-    <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Update' %}</button>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary col-lg-offset-7 col-md-offset-8 col-sm-offset-7 col-lg-1 col-md-1 col-sm-2" id="update" name="update">{% trans 'Update' %}</button>
   </div>
   </div>
 </form>

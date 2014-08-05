@@ -74,8 +74,8 @@ $(document).ready(function() {
 <div class="well sidebar-nav">
   <ul id="menu" class="nav nav-list">
     <li class="nav-header">{% trans "Filter sets" %}</li>
-    <li class="form-group">
-      <select id="curfset" class="col-sm-12 form-control">
+    <li class="form-group col-lg-11 col-md-11 col-sm-11">
+      <select id="curfset" class="form-control">
         {% if active_script %}
         <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
         {% endif %}
@@ -84,7 +84,9 @@ $(document).ready(function() {
         {% endfor %}
       </select>
     </li>
-    {% sfilters_menu user %}
+    <div class="form-group col-lg-11 col-md-11 col-sm-11">
+        {% sfilters_menu user %}
+    </div>
   </ul>
 </div>
 {% endblock %}
