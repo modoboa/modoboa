@@ -19,11 +19,11 @@
   </head>
   <body>
     <div class="container">
-      <div id="box" class="col-lg-7 col-lg-offset-2">
+      <div id="box" class="col-lg-9 col-lg-offset-2">
       <div id="logo" class="row">
           <ul class="thumbnails">
               <li>
-                  <div class="col-lg-offset-1 col-lg-10">
+                  <div class="col-lg-offset-3 col-lg-5">
                       <a href="#" class="thumbnail">
                           <img src="{% get_modoboa_logo %}" />
                       </a>
@@ -37,14 +37,16 @@
         {% render_field form.username %}
         {% render_field form.password %}
         <input type="hidden" name="next" value="{{ next }}" />
-        <div class=" divider"></div>
         <div class="form-group">
+            <div class="control-label col-lg-3 col-md-4 col-sm-4 ">
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5">
             <div class="checkbox">
-              <label class="col-sm-offset-4 col-lg-5 col-md-5 col-sm-4 checkbox" for="id_rememberme">
+              <label class="checkbox" for="id_rememberme">
                   <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
               </label>
-            <div class="col-lg-3 col-md-2 col-sm-3">
-                <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
+
+                <button class="btn btn-primary col-lg-12" type="submit">{% trans "Log in" %}</button>
             </div>
             </div>
         </div>

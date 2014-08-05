@@ -15,6 +15,7 @@ body{
 
 .thumbnail{
     background-color: transparent;
+    border-color: transparent;
 }
 .form-actions { 
     background-color: transparent;
@@ -32,9 +33,6 @@ html body div.container div#box div#logo.row ul.thumbnails li{
     list-style-type: none;
 }
 
-.thumbnail{
-    border: none;
-}
 
 .thumbnails{
     padding-left: 0;
@@ -51,6 +49,7 @@ form.login-form div.checkbox button.btn{
     margin-bottom:20px;
 }
 
-.divider{
-    height: 2%;
+.login-form .form-group div.checkbox label{
+    padding-top: 0;
+    padding-bottom: 10px;
 }
