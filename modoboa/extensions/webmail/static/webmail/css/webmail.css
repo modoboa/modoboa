@@ -146,6 +146,14 @@ div.expanded {
     background-repeat: no-repeat;
 }
 
+div#leftcol #mboxes_container .nav .droppable div.clickbox{
+    z-index:800;
+}
+
+li.droppable li{
+    margin-left: 10px;
+}
+
 /* listing */
 #listing{
     overflow: auto;
