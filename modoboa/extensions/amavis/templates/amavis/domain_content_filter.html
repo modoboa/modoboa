@@ -4,8 +4,8 @@
 <div class="input-group">
   <label class="control-label col-lg-1 col-md-2 col-sm-3">{% trans "Thresholds" %}</label>
   <div class="col-lg-11 col-md-10 col-sm-9">
-    {{ form.spam_tag2_level }} <span class="help-inline">{% trans "or more is spam" %}</span><br>
-    {{ form.spam_kill_level }} <span class="help-inline">{% trans "or more throw spam message away" %}</span>
+    {{ form.spam_tag2_level }} <span class="help-inline pull-right">{% trans "or more is spam" %}</span><br>
+    {{ form.spam_kill_level }} <span class="help-inline pull-right">{% trans "or more throw spam message away" %}</span>
   </div>
 </div>
 {% render_field_with_activator form.spam_subject_tag2 _("default") %}

@@ -229,8 +229,11 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
 
 /* Bottom navBar*/
 
+ .nav-bottom {
+     margin-top: 80px;
+ }
+
 .navbar-fixed-bottom {
-    bottom: -6px;
     position: fixed;
 }
 
@@ -310,3 +313,16 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
 .label{
     margin-left:1px;
 }
+
+
+
+
+ /* modals */
+
+.modal-body .form-group input[type='checkbox'] {
+     margin: 11px 0 0;
+ }
+
+ .modal-body .form-group span.help-inline{
+    margin-top: 8px;
+ }
