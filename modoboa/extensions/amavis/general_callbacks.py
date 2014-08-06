@@ -109,12 +109,12 @@ def display_requests(user):
     tpl = Template("""<ul class="nav pull-right {{ css }}">
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-      <i class="glyphicon glyphicon-bell"></i> <span id="alerts-counter" class="label label-important">{{ nbrequests }}</span>
+      <i class="glyphicon glyphicon-bell"></i> <span id="alerts-counter" class="label label-danger">{{ nbrequests }}</span>
     </a>
     <ul class="dropdown-menu">
       <li>
         <a id="nbrequests" href="{{ url }}">
-          <span class="label label-important">{{ nbrequests }}</span> {{ label }}
+          <span class="label label-danger">{{ nbrequests }}</span> {{ label }}
         </a>
       </li>
     </ul>
