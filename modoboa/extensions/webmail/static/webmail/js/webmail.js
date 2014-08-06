@@ -49,11 +49,6 @@ Webmail.prototype = {
 
         /* Responsive -> init */
 
-        /*if ($( window ).width()<760){
-            $("tr td[name='from']").css({
-                width: 35 + '%'
-            });
-        }*/
 
         if ($( window ).width()<1198){
             $("#leftcol").addClass(
@@ -89,7 +84,7 @@ Webmail.prototype = {
         var that = this;
         $(window).resize(function(){
 
-            if ($( window ).width()<760){
+            if ($( window ).width()<770){
                 $("tr td[name='from']").css({
                     width: 35 + '%'
                 });
@@ -343,7 +338,7 @@ Webmail.prototype = {
         var $link = $('a[href="' + mailbox + '"]');
         var parts = mailbox.split(this.options.hdelimiter);
         var dname = " " + parts[parts.length - 1];
-        var $i = $link.children("i");
+        var $i = $link.children("i:visible");
 
         this.unseen_counters[mailbox] = value;
         if (value) {
@@ -688,6 +683,7 @@ Webmail.prototype = {
     },
 
     send_mark_request: function(e) {
+
         e.preventDefault();
         if (!this.htmltable.current_selection().length) {
             return;
