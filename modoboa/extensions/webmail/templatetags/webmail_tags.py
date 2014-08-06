@@ -14,6 +14,11 @@ register = template.Library()
 @register.simple_tag
 def viewmail_menu(selection, folder, user, mail_id=None):
     entries = [
+        {"name": "back",
+             "url": "javascript:history.go(-2);",
+             "img": "glyphicon glyphicon-arrow-left",
+             "class": "btn-primary",
+             "label": _("Back")},
         {"name": "reply",
          "url": "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
          "img": "glyphicon glyphicon-share",
@@ -64,7 +69,7 @@ def compose_menu(selection, backurl, user):
         {"name": "back",
          "url": "javascript:history.go(-2);",
          "img": "glyphicon glyphicon-arrow-left",
-         "class": "btn-default",
+         "class": "btn-primary",
          "label": _("Back")},
         {"name": "sendmail",
          "url": "",
@@ -105,7 +110,7 @@ def listmailbox_menu(selection, folder, user):
          },
         {"name": "actions",
          "label": _("Actions"),
-         "class": "btn",
+         "class": "btn btn-default",
          "menu": [
              {"name": "compress",
               "label": _("Compress folder"),

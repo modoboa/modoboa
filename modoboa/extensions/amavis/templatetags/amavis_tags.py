@@ -11,6 +11,11 @@ register = template.Library()
 @register.simple_tag
 def viewm_menu(mail_id, rcpt):
     entries = [
+        {"name": "back",
+                 "url": "javascript:history.go(-2);",
+                 "img": "glyphicon glyphicon-arrow-left",
+                 "class": "btn-primary",
+                 "label": _("Back")},
         {"name": "release",
          "img": "glyphicon glyphicon-ok",
          "class": "btn-success",
@@ -24,6 +29,7 @@ def viewm_menu(mail_id, rcpt):
          + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label": _("Delete")},
         {"name": "headers",
+         "class": "btn-default",
          "url": reverse('modoboa.extensions.amavis.views.viewheaders', args=[mail_id]),
          "label": _("View full headers")},
     ]
