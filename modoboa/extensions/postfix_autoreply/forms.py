@@ -22,6 +22,16 @@ class ARmessageForm(forms.ModelForm):
             attrs={'class': 'datefield form-control', 'readonly': 'readonly'}
         )
     )
+    subject = forms.CharField(
+            widget=forms.TextInput(
+                    attrs={'class': 'form-control'}
+                )
+    )
+    content = forms.CharField(
+                widget=forms.Textarea(
+                        attrs={'class': 'form-control'}
+                    )
+        )
 
     class Meta:
         model = ARmessage
