@@ -44,13 +44,20 @@ Quarantine.prototype = {
             $("#menubar").html(data.menu);
             $("#searchfield").searchbar({navobj: this.navobj});
         }
+
         if (data.listing != undefined) {
+
+
             $("#listing").html(data.listing);
-            $("#listing").css({
-                top: $("#menubar").outerHeight() + 60 + "px",
-                bottom: $("#bottom-bar").outerHeight() + "px",
-                overflow: "auto"
-            });
+            $("#listing:has(iframe)").addClass('fluid-content-quarantine');
+            if ($( window ).width()>1198){
+                $("#listing").css({
+                    top: $("#menubar").outerHeight() + 60 + "px",
+                    bottom: $("#bottom-bar").outerHeight() + "px",
+                    overflow: "auto"
+                });
+            }
+
         }
         this.update_listing(data);
     },
