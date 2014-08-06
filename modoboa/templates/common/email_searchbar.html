@@ -1,7 +1,8 @@
 {% load i18n %}
-<div id="searchbox" class="input-group col-lg-12 col-md-12 col-sm-8 col-xs-5">
-    <input type="text" class="no-margin form-control" name="searchfield" id="searchfield" placeholder="{% trans "Search..." %}" />
-  <ul class="dropdown-menu" id="searchparams">
+<div id="searchbox" class="navbar-form navbar-left">
+    <div class="input-group">
+    <input type="text" class="form-control" name="searchfield" id="searchfield" placeholder="{% trans "Search..." %}" />
+  <ul class="dropdown-menu pull-right" id="searchparams">
     <li><label class="radio"><input type="radio" id="crit_from_addr" name="scriteria" value="from_addr" checked>{% trans "From address" %}</label></li>
     <li><label class="radio"><input type="radio" id="crit_subject" name="scriteria" value="subject">{% trans "Subject" %}</label></li>
     {% for opt in extraopts %}
@@ -9,5 +10,6 @@
     {% endfor %}
     <li><label class="radio"><input type="radio" id="crit_both" name="scriteria" value="both">{% trans "Both" %}</label></li>
   </ul>
-    <a href="#" class="input-group-addon btn btn-default" data-toggle="dropdown"><i class="glyphicon glyphicon-search" id="searchopts"></i></a>
+        <a href="#" class="input-group-addon" data-toggle="dropdown"><i class="glyphicon glyphicon-search" id="searchopts"></i></a>
+    </div>
 </div>
