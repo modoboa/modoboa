@@ -6,7 +6,7 @@
 
 }
 
-@media (max-width: 760px) {
+@media (max-width: 770px) {
     #searchbox{
         margin-left: 20px;
     }
@@ -18,7 +18,7 @@
     }
 }
 
-@media (min-width: 760px) and (max-width: 1198px) {
+@media (min-width: 770px) and (max-width: 1198px) {
     .navbar .display-less-1198{
         display: inline-block;
     }
@@ -307,6 +307,10 @@ td[class*=openable] {
 
 #menubar .btn-toolbar ul.navbar-right{
     margin-right: 3%;
+}
+
+#menubar .btn-toolbar .navbar-form{
+    margin: 0px;
 }
 
 /* send mail */
