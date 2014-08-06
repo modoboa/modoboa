@@ -8,8 +8,7 @@
     }
 }
 
- @media (max-width: 760px) {
-
+ @media (max-width: 770px) {
      #bottom-bar-middle{
          display: none;
      }
@@ -77,7 +76,7 @@ label{
     font-weight: normal;
 }
 
-div.input-group{
+.modals div.input-group{
     margin-bottom:8px;
 }
 
@@ -174,6 +173,11 @@ div.input-group{
  }
 
 /* Buttons */
+
+.btn-back{
+    color: #EBEAE9;
+    background-color: #222222;
+}
 
 /* links */
  a{
@@ -325,4 +329,10 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
 
  .modal-body .form-group span.help-inline{
     margin-top: 8px;
+ }
+
+ /* settings */
+
+ .container-fluid #uprefs_content .form-horizontal .form-actions{
+     margin-right: 16px;
  }
