@@ -1,7 +1,7 @@
 {% load i18n core_tags lib_tags %}
 <div class="form-group {% if field.errors %}error{% endif %}{{ extra_classes }}"{% visirule field %}{% if hidden %}style="display: none"{% endif %}>
   {% if field.label %}<label class="control-label col-lg-3 col-md-4 col-sm-4" for="id_{{ field.html_name }}">{{ field.label }}</label>{% endif %}{% if help_display_mode == "tooltip" and field.help_text %}<a href="#" class="help" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>{% endif %}
-  <div class="controls spaced col-lg-5 col-md-5 col-sm-5">
+  <div class="controls col-lg-5 col-md-5 col-sm-5">
     {% if appended_text %}<div class="input-group">{% endif %}
     {{ field }}{% if appended_text %}<span class="input-group-addon">{{ appended_text }}</span></div>{% endif %}{% if help_display_mode == "inline" and field.help_text %}<span class="help-inline pull-right">{{ field.help_text }}</span>{% endif %}{% if inline_message %}<span class="help-inline pull-right">{{ inline_message }}</span>{% endif %}
     {% if activator %}<div class="checkbox"><label class="checkbox inline" for="id_{{ field.name }}_act">
