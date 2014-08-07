@@ -34,10 +34,12 @@
                     <span class="sr-only">Toggle navigation</span>
                     <span class="">Mailbox</span>
                 </button>
-                <button class="navbar-toggle" data-target="#action" data-toggle="collapse" type="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span> Page </span>
-                </button>
+            </div>
+            <div class="display-less-1198 pull-right">
+                <a href="{{ baseurl }}page={{ page.previous_page_number }}" class="btn btn-lg btn-link glyphicon glyphicon-chevron-left" type="button">
+                </a>
+                <a href="{{ baseurl }}page={{ page.next_page_number }}" class="btn btn-lg btn-link glyphicon glyphicon-chevron-right" type="button">
+                </a>
             </div>
             <div id="navigate-navbar-collapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav display-less-1198">
@@ -87,9 +89,8 @@
         </div>
     </div>
     {% block content %}{% endblock %}
-    <div id="action" class="collapse navbar-collapse nav-bottom">
-    <div id="bottom-bar" class="navbar navbar-inverse navbar-fixed-bottom">
-        <div class="navbar-inner">
+    <div class="display-up-1198 nav-bottom">
+        <div id="bottom-bar" class="navbar navbar-inverse navbar-fixed-bottom">
             <div class="container-fluid">
                 <div class="row-fluid">
                     <div id="bottom-bar-middle" class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-0 col-xs-offset-0">
@@ -102,7 +103,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
   </body>
 </html>

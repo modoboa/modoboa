@@ -1,40 +1,56 @@
+@media (max-width: 400px) {
+    td#subject,
+    td[name='subject']
+    {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
 
 @media (max-width: 500px) {
+    th#date,
+    td[name="date"],
     #menubar .Actions{
         display: none;
     }
-
 }
 
 @media (max-width: 770px) {
     #searchbox{
         margin-left: 20px;
     }
-    td[name="date"] {
-        display: none;
+}
+
+@media (max-width: 1198px) {
+    th#date,
+    td[name="date"]{
+        max-width: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .navbar .display-less-1198{
         display: inherit;
     }
-}
-
-@media (min-width: 770px) and (max-width: 1198px) {
-    .navbar .display-less-1198{
-        display: inline-block;
+    th#withatts,
+    td[name="withatts"],
+    th#drag,
+    td[name="drag"]{
+        display: none;
     }
-}
-
-@media (max-width: 1198px) {
     #leftcol.leftcol-display-none{
         display: none;
     }
     .display-up-1198{
         display: none;
     }
+
 }
 
 body, html {
-    overflow: hidden; 
+    overflow: hidden;
     height: 100%;
 }
 
@@ -72,7 +88,7 @@ body, html {
     width: 8px;
 }
 
-#mboxes_container { 
+#mboxes_container {
     overflow: auto;
 }
 
@@ -95,36 +111,49 @@ body, html {
     height: 100%;
 }
 
-.unseen { 
+.unseen {
     font-weight: bold;
 }
 
-td[name="date"] { 
+td[name="date"] {
     text-align: right;
 }
 
-#quotabar { 
+#quotabar {
     margin: 12px 0 0 15px;
     width: 200px;
 }
 
-#quotaraw { 
+#quotaraw {
     margin-left: 10px;
 }
 
 /*
+ * Top navbar
+ */
+
+.navbar-header{
+    display: inline-block;
+}
+.navbar .btn-link:hover,
+.navbar .btn-link:focus{
+    text-decoration: none;
+}
+
+
+/*
  * Mailboxes list
  */
-#mboxactions { 
+#mboxactions {
     position: fixed;
     padding-left: 14px;
 }
 
-#mboxactions .btn-toolbar { 
+#mboxactions .btn-toolbar {
     margin-bottom: 0px;
 }
 
-#folders li { 
+#folders li {
     position: relative;
 }
 
@@ -186,23 +215,23 @@ li.droppable li{
     padding-bottom: 5px;
 }
 
-#mailheader input { 
+#mailheader input {
     width: 99%;
     padding: 2px 0;
 }
 
-#mailheader textarea { 
+#mailheader textarea {
     width: 99%;
     height: 40px;
     padding: 2px 0;
 }
 
-#mailheader label { 
+#mailheader label {
     text-align: left;
 }
 
 #mailheader .options {
-    margin-left: 180px;
+    margin-bottom: 8px;
 }
 
 #add_cc {
@@ -240,7 +269,7 @@ li.droppable li{
 /*
  * Attachments form
  */
-#submit { 
+#submit {
     margin: 0 auto;
 }
 
@@ -253,7 +282,7 @@ li.droppable li{
 }
 
 #attachment_list i,
-#attachment_list label { 
+#attachment_list label {
     float: left;
 }
 
@@ -275,12 +304,12 @@ li.droppable li{
 /*
  * Folder form
  */
-.modal-body { 
+.modal-body {
     max-height: 300px;
     overflow-y: auto;
 }
 
-#folders2 li { 
+#folders2 li {
     position: relative;
 }
 
@@ -301,9 +330,6 @@ td[class*=openable] {
     margin-left: 1px;
     margin-right: 1px;
 }
-.action-buttons {
-    margin-bottom: 10px;
-}
 
 #menubar .btn-toolbar ul.navbar-right{
     margin-right: 3%;
@@ -311,6 +337,10 @@ td[class*=openable] {
 
 #menubar .btn-toolbar .navbar-form{
     margin: 0px;
+}
+
+#rightcol #menubar #searchbox #searchfield{
+    margin-left:5px;
 }
 
 /* send mail */
