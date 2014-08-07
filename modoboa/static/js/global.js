@@ -174,7 +174,7 @@ function simple_ajax_form_post(e, options) {
             if (opts.reload_mode == 'full') {
                 window.location.reload();
             } else {
-                history.update(true);
+                histomanager.update(true);
             }
         }
         if (data) {
