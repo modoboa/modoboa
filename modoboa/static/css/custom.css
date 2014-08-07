@@ -8,14 +8,7 @@
     }
 }
 
- @media (max-width: 770px) {
-     #bottom-bar-middle{
-         display: none;
-     }
-     #bottom-bar #bottom-bar-right{
-         text-align: center;
-     }
-
+ @media (max-width: 768px) {
      tr th#tags,
      tr.muted td[name="tags"]{
          display: none;
@@ -115,13 +108,6 @@ label{
     color: white;
 }
 
-.spaced select,
-.spaced input[type="text"],
-.spaced input[type="password"],
-.spaced span {
-    margin-bottom: 8px;
-}
-
 .padded5 {
     padding: 5px;
 }
@@ -210,6 +196,7 @@ div.container-fluid div.well{
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-top:10px;
+    margin-left: 6px;
 }
 
 .container-fluid .well .nav li{
@@ -230,6 +217,12 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
     color:black;
     margin-right: 7px;
 }
+
+ /* Action buttons */
+
+ .action-buttons {
+     margin-bottom: 4px;
+ }
 
 /* Bottom navBar*/
 
