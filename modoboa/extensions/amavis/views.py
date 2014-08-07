@@ -7,7 +7,6 @@ from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators \
     import login_required, user_passes_test
-from django.db.models import Q
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.webutils import (
@@ -19,8 +18,9 @@ from modoboa.extensions.amavis.templatetags.amavis_tags import (
     quar_menu, viewm_menu
 )
 from .lib import selfservice, AMrelease, QuarantineNavigationParameters
-from .sql_listing import SQLlisting, SQLemail, get_wrapper
 from .models import Msgrcpt
+from .sql_connector import get_connector
+from .sql_listing import SQLlisting, SQLemail
 
 
 def empty_quarantine(request):
@@ -31,45 +31,21 @@ def empty_quarantine(request):
 
 @login_required
 def _listing(request):
-    flt = None
-    rcptfilter = None
-    msgs = None
-
     if not request.user.is_superuser and request.user.group != 'SimpleUsers':
         if not Domain.objects.get_for_admin(request.user).count():
             return empty_quarantine(request)
 
     navparams = QuarantineNavigationParameters(request)
     navparams.store()
-    pattern = navparams.get('pattern', '')
-    if pattern:
-        criteria = navparams.get('criteria')
-        if criteria == "both":
-            criteria = "from_addr,subject,to"
-        for c in criteria.split(","):
-            if c == "from_addr":
-                nfilter = Q(mail__from_addr__contains=pattern)
-            elif c == "subject":
-                nfilter = Q(mail__subject__contains=pattern)
-            elif c == "to":
-                rcptfilter = pattern
-                continue
-            else:
-                raise BadRequest("unsupported search criteria %s" % c)
-            flt = nfilter if flt is None else flt | nfilter
-    msgtype = navparams.get('msgtype', None)
-    if msgtype is not None:
-        nfilter = Q(mail__msgrcpt__content=msgtype)
-        flt = flt | nfilter if flt is not None else nfilter
 
-    msgs = get_wrapper().get_mails(request, rcptfilter)
-    page = navparams.get('page')
     lst = SQLlisting(
-        request.user, msgs, flt,
-        navparams=request.session["quarantine_navparams"],
-        elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+        request.user,
+        navparams=navparams,
+        elems_per_page=int(
+            parameters.get_user(request.user, "MESSAGES_PER_PAGE")
+        )
     )
-    page = lst.paginator.getpage(page)
+    page = lst.paginator.getpage(navparams.get('page'))
     if not page:
         return empty_quarantine(request)
 
@@ -129,7 +105,7 @@ def viewmail(request, mail_id):
     if request.user.mailbox_set.count():
         mb = Mailbox.objects.get(user=request.user)
         if rcpt == mb.full_address or rcpt in mb.alias_addresses:
-            get_wrapper().set_msgrcpt_status(rcpt, mail_id, 'V')
+            get_connector().set_msgrcpt_status(rcpt, mail_id, 'V')
 
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
@@ -143,7 +119,7 @@ def viewmail(request, mail_id):
 @login_required
 def viewheaders(request, mail_id):
     content = ""
-    for qm in get_wrapper().get_mail_content(mail_id):
+    for qm in get_connector().get_mail_content(mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
     return render(request, 'amavis/viewheader.html', {
@@ -165,7 +141,7 @@ def delete_selfservice(request, mail_id):
     if rcpt is None:
         raise BadRequest(_("Invalid request"))
     try:
-        get_wrapper().set_msgrcpt_status(rcpt, mail_id, 'D')
+        get_connector().set_msgrcpt_status(rcpt, mail_id, 'D')
     except Msgrcpt.DoesNotExist:
         raise BadRequest(_("Invalid request"))
     return render_to_json_response(_("Message deleted"))
@@ -178,7 +154,7 @@ def delete(request, mail_id):
     :param str mail_id: message unique identifier
     """
     mail_id = check_mail_id(request, mail_id)
-    wrapper = get_wrapper()
+    connector = get_connector()
     mb = Mailbox.objects.get(user=request.user) \
         if request.user.group == 'SimpleUsers' else None
     for mid in mail_id:
@@ -186,7 +162,7 @@ def delete(request, mail_id):
         if mb is not None and r != mb.full_address \
                 and not r in mb.alias_addresses:
             continue
-        wrapper.set_msgrcpt_status(r, i, 'D')
+        connector.set_msgrcpt_status(r, i, 'D')
     message = ungettext("%(count)d message deleted successfully",
                         "%(count)d messages deleted successfully",
                         len(mail_id)) % {"count": len(mail_id)}
@@ -201,21 +177,21 @@ def release_selfservice(request, mail_id):
     secret_id = request.GET.get("secret_id", None)
     if rcpt is None or secret_id is None:
         raise BadRequest(_("Invalid request"))
-    wrapper = get_wrapper()
+    connector = get_connector()
     try:
-        msgrcpt = wrapper.get_recipient_message(rcpt, mail_id)
+        msgrcpt = connector.get_recipient_message(rcpt, mail_id)
     except Msgrcpt.DoesNotExist:
         raise BadRequest(_("Invalid request"))
     if secret_id != msgrcpt.mail.secret_id:
         raise BadRequest(_("Invalid request"))
     if parameters.get_admin("USER_CAN_RELEASE") == "no":
-        wrapper.set_msgrcpt_status(rcpt, mail_id, 'p')
+        connector.set_msgrcpt_status(rcpt, mail_id, 'p')
         msg = _("Request sent")
     else:
         amr = AMrelease()
         result = amr.sendreq(mail_id, secret_id, rcpt)
         if result:
-            wrapper.set_msgrcpt_status(rcpt, mail_id, 'R')
+            connector.set_msgrcpt_status(rcpt, mail_id, 'R')
             msg = _("Message released")
         else:
             raise BadRequest(result)
@@ -230,7 +206,7 @@ def release(request, mail_id):
     """
     mail_id = check_mail_id(request, mail_id)
     msgrcpts = []
-    wrapper = get_wrapper()
+    connector = get_connector()
     mb = Mailbox.objects.get(user=request.user) \
         if request.user.group == 'SimpleUsers' else None
     for mid in mail_id:
@@ -238,10 +214,10 @@ def release(request, mail_id):
         if mb is not None and r != mb.full_address \
                 and not r in mb.alias_addresses:
             continue
-        msgrcpts += [wrapper.get_recipient_message(r, i)]
+        msgrcpts += [connector.get_recipient_message(r, i)]
     if mb is not None and parameters.get_admin("USER_CAN_RELEASE") == "no":
         for msgrcpt in msgrcpts:
-            wrapper.set_msgrcpt_status(
+            connector.set_msgrcpt_status(
                 msgrcpt.rid.email, msgrcpt.mail.mail_id, 'p'
             )
         message = ungettext("%(count)d request sent",
@@ -259,7 +235,7 @@ def release(request, mail_id):
             rcpt.mail.mail_id, rcpt.mail.secret_id, rcpt.rid.email
         )
         if result:
-            wrapper.set_msgrcpt_status(rcpt.rid.email, rcpt.mail.mail_id, 'R')
+            connector.set_msgrcpt_status(rcpt.rid.email, rcpt.mail.mail_id, 'R')
         else:
             error = result
             break
@@ -293,5 +269,5 @@ def process(request):
 @login_required
 @user_passes_test(lambda u: u.group != 'SimpleUsers')
 def nbrequests(request):
-    result = get_wrapper().get_pending_requests(request.user)
+    result = get_connector(user=request.user).get_pending_requests()
     return render_to_json_response({'requests': result})
