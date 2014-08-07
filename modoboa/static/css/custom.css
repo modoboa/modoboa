@@ -1,4 +1,4 @@
- /* Media */
+ /* ------- Media ------- */
 
 @media (max-width: 440px) {
 
@@ -32,8 +32,35 @@
     }
 }
 
+ /* --------- general --------- */
 
-     /* Colapse Nav */
+ /* Form */
+
+ .form-horizontal .form-group {
+     margin-left: -15px;
+ }
+
+ /* Buttons */
+
+ .btn-back{
+     color: #EBEAE9;
+     background-color: #222222;
+ }
+
+ /* links */
+ a{
+     color: #0088CC;
+ }
+
+ a:hover{
+     color: #0088CC;
+ }
+
+ div.container-fluid div.row-fluid div.col-md-2 div.well ul.nav div.side-bar-responsive li a{
+     color: #0088CC;
+ }
+
+ /* Colapse Nav */
 
  .navbar-inverse .navbar-toggle {
      border-color: #999999;
@@ -54,7 +81,7 @@
      margin-right: 18px;
  }
 
-     /*Global*/
+ /* Global */
 
 .container-fluid{
     padding:0;
@@ -72,8 +99,6 @@ label{
 .modals div.input-group{
     margin-bottom:8px;
 }
-
-/* end Global*/
 
 .form-horizontal .param-label {
     float: left;
@@ -152,34 +177,31 @@ label{
     margin: 0 10px;
 }
 
-/* Form */
 
- .form-horizontal .form-group {
-     margin-left: -15px;
- }
 
-/* Buttons */
-
-.btn-back{
-    color: #EBEAE9;
-    background-color: #222222;
-}
-
-/* links */
- a{
-     color: #0088CC;
- }
-
- a:hover{
-     color: #0088CC;
- }
-
-div.container-fluid div.row-fluid div.col-md-2 div.well ul.nav div.side-bar-responsive li a{
-    color: #0088CC;
-}
 
 /* --------- main page --------- */
-/*left navSideBar */
+
+
+ /* Top navbar section */
+
+ .top-navbar{
+     border-radius: 0;
+     min-height: 26px;
+ }
+
+ .display-less-1198{
+     display: none;
+ }
+
+ div#navigate-navbar-collapse.navbar-collapse{
+     z-index: 9999;
+ }
+ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse ul.nav li.dropdown a.dropdown-toggle{
+     color: white;
+ }
+
+ /*left navSideBar */
 
 div.container-fluid div.well{
     padding:0;
@@ -222,6 +244,17 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
 
  .action-buttons {
      margin-bottom: 4px;
+ }
+
+
+ /* listing */
+
+ #listing{
+     margin-bottom:60px;
+ }
+
+ .table > thead > tr > th {
+     border-bottom: 2px solid #FBFBFB;
  }
 
 /* Bottom navBar*/
@@ -267,34 +300,7 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
 }
 
 
-/* Top navbar section */
-
-.top-navbar{
-    border-radius: 0;
-    min-height: 26px;
-}
-
- .display-less-1198{
-     display: none;
- }
-
- div#navigate-navbar-collapse.navbar-collapse{
-     z-index: 9999;
- }
- html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse ul.nav li.dropdown a.dropdown-toggle{
-     color: white;
- }
-
-
-/* listing */
-
-#listing{
-    margin-bottom:60px;
-}
-
-.table > thead > tr > th {
-    border-bottom: 2px solid #FBFBFB;
-}
+/* --------- specific pages --------- */
 
 /* identities tables */
 
@@ -310,8 +316,6 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
 .label{
     margin-left:1px;
 }
-
-
 
 
  /* modals */

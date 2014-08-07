@@ -1,3 +1,4 @@
+    /* MEDIA */
 @media (max-width: 400px) {
     td#subject,
     td[name='subject']
@@ -49,6 +50,7 @@
 
 }
 
+    /* GENERAL */
 body, html {
     overflow: hidden;
     height: 100%;
@@ -128,8 +130,9 @@ td[name="date"] {
     margin-left: 10px;
 }
 
+
 /*
- * Top navbar
+ *TOP NAVBAR
  */
 
 .navbar-header{
@@ -140,6 +143,34 @@ td[name="date"] {
     text-decoration: none;
 }
 
+
+
+/*
+ *listing
+ */
+#listing{
+    overflow: auto;
+}
+#listing.listing-up-1198{
+    padding-left: 15px;
+}
+#listing.listing-less-1198{
+    bottom: 0px;
+    left: 0px;
+    padding-left: 0px;
+    right: 0;
+    top: 0px;
+    overflow-y: hidden;
+}
+
+#listing .test{
+    overflow-y: scroll;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 41px;
+    bottom: 41px;
+}
 
 /*
  * Mailboxes list
@@ -183,30 +214,6 @@ li.droppable li{
     margin-left: 10px;
 }
 
-/* listing */
-#listing{
-    overflow: auto;
-}
-#listing.listing-up-1198{
-    padding-left: 15px;
-}
-#listing.listing-less-1198{
-    bottom: 0px;
-    left: 0px;
-    padding-left: 0px;
-    right: 0;
-    top: 0px;
-    overflow-y: hidden;
-}
-
-#listing .test{
-    overflow-y: scroll;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 41px;
-    bottom: 41px;
-}
 /*
  * Compose form
  */
@@ -324,7 +331,9 @@ td[class*=openable] {
     cursor: pointer;
 }
 
-/* Action buttons */
+/*
+ *Action buttons
+ */
 
 #menubar .btn-toolbar{
     margin-left: 1px;
@@ -343,7 +352,9 @@ td[class*=openable] {
     margin-left:5px;
 }
 
-/* send mail */
+/*
+ *send mail
+ */
 
 #body_container{
     height: 600px;
