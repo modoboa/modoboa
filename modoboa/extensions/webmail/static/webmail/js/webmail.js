@@ -58,7 +58,7 @@ Webmail.prototype = {
                 "col-lg-12 col-md-12 col-ms-12 col-xs-12"
             );
             $("#listing").css({
-                height: $(window).height() - 200 + 'px'
+                height: $(window).height() - 150 + 'px'
             });
         }
 
@@ -84,7 +84,7 @@ Webmail.prototype = {
         var that = this;
         $(window).resize(function(){
 
-            if ($( window ).width()<770){
+            if ($( window ).width()<767){
                 $("tr td[name='from']").css({
                     width: 35 + '%'
                 });
@@ -98,7 +98,7 @@ Webmail.prototype = {
                     "col-lg-12 col-md-12 col-ms-12 col-xs-12"
                 );
                 $("#listing").css({
-                    height: $(window).height() - 200 + 'px'
+                    height: $(window).height() - 150 + 'px'
                 });
                 $("#listing").removeClass(
                     "listing-up-1198"
