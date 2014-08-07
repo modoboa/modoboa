@@ -4,7 +4,7 @@
     <div id="mailheader" class="well">
       {% render_field form.to %}
       <div class="options">
-        {% if not form.cc.value %}<a id="add_cc" href="#">{% trans "Add Cc field" %}</a>{% endif %} <a id="add_cci" href="#">{% trans "Add Cci field" %}</a>
+        {% if not form.cc.value %}<a id="add_cc" href="#" class="btn btn-xs btn-default glyphicon glyphicon-plus">{% trans "Cc field" %}</a>{% endif %} <a id="add_cci" href="#" class="btn btn-xs btn-default glyphicon glyphicon-plus">{% trans "Cci field" %}</a>
       </div>
       {% if form.cc.value %}{% render_field form.cc %}{% else %}{% render_and_hide_field form.cc %}{% endif %}
       {% render_and_hide_field form.cci %}
