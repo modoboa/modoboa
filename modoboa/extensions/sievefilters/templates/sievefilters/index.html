@@ -72,7 +72,7 @@ $(document).ready(function() {
 {% endblock %}
 {% block leftcol %}
 <div class="well sidebar-nav">
-  <ul id="menu" class="nav nav-list">
+  <ul id="menu" class="nav nav-pills nav-stacked">
     <li class="nav-header">{% trans "Filter sets" %}</li>
     <li class="form-group col-lg-11 col-md-11 col-sm-11">
       <select id="curfset" class="form-control">
@@ -84,9 +84,9 @@ $(document).ready(function() {
         {% endfor %}
       </select>
     </li>
-    <div class="form-group col-lg-11 col-md-11 col-sm-11">
-        {% sfilters_menu user %}
-    </div>
+    {# It will add a li item : #}
+    {% sfilters_menu user %}
+
   </ul>
 </div>
 {% endblock %}
