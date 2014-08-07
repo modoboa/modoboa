@@ -31,6 +31,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         ),
         widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
     )
+    name = DomainNameField(
+            widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
+        )
 
     class Meta:
         model = Domain
