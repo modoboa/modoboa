@@ -1,10 +1,18 @@
+@media (max-width: 400px){
+    th#rstatus,
+    td[name='rstatus'],
+    th#type,
+    td[name='type']{
+        display: none;
+    }
+}
 @media (max-width: 600px){
     th#subject,
     td[name='subject']{
         display: none;
     }
 }
-@media (max-width: 770px){
+@media (max-width: 767px){
     th#to,
     td[name='to']{
         display: none;
@@ -23,6 +31,7 @@
     top: 60px;
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom:10px;
     left: 0;
     right: 0;
     z-index: 10;

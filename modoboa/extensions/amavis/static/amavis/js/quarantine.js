@@ -49,14 +49,7 @@ Quarantine.prototype = {
 
 
             $("#listing").html(data.listing);
-            $("#listing:has(iframe)").addClass('fluid-content-quarantine');
-            if ($( window ).width()>1198){
-                $("#listing").css({
-                    top: $("#menubar").outerHeight() + 60 + "px",
-                    bottom: $("#bottom-bar").outerHeight() + "px",
-                    overflow: "auto"
-                });
-            }
+            $("#listing:has(iframe)").addClass("fluid-content-quarantine");
 
         }
         this.update_listing(data);
