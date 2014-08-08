@@ -651,7 +651,7 @@ msgstr ""
 "o rimosse in Modoboa"
 
 #: extensions/admin/app_settings.py:20
-msgid "Mailboxes ower"
+msgid "Mailboxes owner"
 msgstr "Proprietario delle caselle postali"
 
 #: extensions/admin/app_settings.py:22

@@ -658,7 +658,7 @@ msgid "Rename or remove mailboxes on the filesystem when they get renamed or rem
 msgstr "Mailboxen auch in Dateisystem umbenennen oder entfernen wenn sie in Modoboa umbenannt oder entfernt werden"
 
 #: extensions/admin/app_settings.py:20
-msgid "Mailboxes ower"
+msgid "Mailboxes owner"
 msgstr "Mailbox-Besitzer"
 
 #: extensions/admin/app_settings.py:22
