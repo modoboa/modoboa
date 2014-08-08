@@ -623,7 +623,7 @@ msgid ""
 msgstr ""
 
 #: extensions/admin/app_settings.py:20
-msgid "Mailboxes ower"
+msgid "Mailboxes owner"
 msgstr ""
 
 #: extensions/admin/app_settings.py:22

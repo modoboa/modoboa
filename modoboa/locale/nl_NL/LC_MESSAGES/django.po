@@ -622,7 +622,7 @@ msgid ""
 msgstr "Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of verwijderd worden in Modoboa."
 
 #: extensions/admin/app_settings.py:20
-msgid "Mailboxes ower"
+msgid "Mailboxes owner"
 msgstr "Eigenaar van mailboxen"
 
 #: extensions/admin/app_settings.py:22

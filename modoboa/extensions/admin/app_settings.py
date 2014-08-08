@@ -19,7 +19,7 @@ class AdminParametersForm(parameters.AdminParametersForm):
     )
 
     mailboxes_owner = forms.CharField(
-        label=ugettext_lazy("Mailboxes ower"),
+        label=ugettext_lazy("Mailboxes owner"),
         initial="vmail",
         help_text=ugettext_lazy("The UNIX account who owns mailboxes on the filesystem")
     )

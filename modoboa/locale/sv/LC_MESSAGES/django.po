@@ -657,7 +657,7 @@ msgstr ""
 "eller tas bort inom Modoboa"
 
 #: extensions/admin/app_settings.py:20
-msgid "Mailboxes ower"
+msgid "Mailboxes owner"
 msgstr "Brevlådors ägare"
 
 #: extensions/admin/app_settings.py:22
