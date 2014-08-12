@@ -83,7 +83,7 @@ class Alias(AdminObject):
             "alias": _("alias")
         }
         altype = self.type
-        return [{"name": altype, "label": labels[altype], "type": "idt"}]
+        return [{"name": altype, "label": labels[altype], "type": "idt label label-default"}]
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
