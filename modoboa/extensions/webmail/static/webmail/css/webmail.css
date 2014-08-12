@@ -32,9 +32,6 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .navbar .display-less-1198{
-        display: inherit;
-    }
     th#withatts,
     td[name="withatts"],
     th#drag,
@@ -44,8 +41,11 @@
     #leftcol.leftcol-display-none{
         display: none;
     }
-    .display-up-1198{
+    .display-up-1198-webmail{
         display: none;
+    }
+    .display-less-1198{
+        display: inherit;
     }
 
 }
@@ -138,12 +138,6 @@ td[name="date"] {
 .navbar-header{
     display: inline-block;
 }
-.navbar .btn-link:hover,
-.navbar .btn-link:focus{
-    text-decoration: none;
-}
-
-
 
 /*
  *listing

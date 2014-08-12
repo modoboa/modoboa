@@ -35,7 +35,11 @@
                     <span class="">Mailbox</span>
                 </button>
             </div>
-            {% block pagination_responsive %}{% endblock %}
+
+            <div id="pagination-responsive" class="pull-right">
+
+            </div>
+
             <div id="navigate-navbar-collapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav display-less-1198">
                     <li class="droppable active ui-droppable" name="INBOX">
@@ -69,7 +73,7 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav display-up-1198">{% if selection %}
+                <ul class="nav navbar-nav display-up-1198-webmail">{% if selection %}
                   {% extensions_menu selection user %}{% core_menu selection user %}
                   {% else %}{% extensions_menu "" user %}{% core_menu "" user %}{% endif %}
                   {% load_optionalmenu user %}

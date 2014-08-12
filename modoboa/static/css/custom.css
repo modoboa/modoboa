@@ -9,6 +9,12 @@
 }
 
  @media (max-width: 768px) {
+
+     .navbar .navbar-header,
+     .navbar #pagination-responsive{
+         display: inline-block;
+     }
+
      tr th#tags,
      tr.muted td[name="tags"]{
          display: none;
@@ -23,13 +29,20 @@
          margin-right: 0;
      }
  }
-@media (max-width: 1200px){
-    .dropdown{
-        margin:0px;
-    }
-    .btn-group{
-        margin:0px;
-    }
+
+ @media (max-width: 1198px) {
+     #pagination-responsive .display-less-1198{
+         display: inherit;
+     }
+     .display-up-1198{
+         display: none;
+     }
+     .dropdown{
+         margin:0px;
+     }
+     .btn-group{
+         margin:0px;
+     }
 }
 
  /* --------- general --------- */
@@ -45,6 +58,11 @@
  .btn-back{
      color: #EBEAE9;
      background-color: #222222;
+ }
+
+ .navbar .btn-link:hover,
+ .navbar .btn-link:focus{
+     text-decoration: none;
  }
 
  /* links */
@@ -153,11 +171,6 @@ label{
     display: none;
 }
 
-.help-block {
-    color: #999999;
-    font-style: italic;
-}
-
 .label a {
     color: #FFFFFF;
     text-decoration: none;
@@ -199,6 +212,10 @@ label{
  }
  html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse ul.nav li.dropdown a.dropdown-toggle{
      color: white;
+ }
+
+ #pagination-responsive #pagination_bar{
+     display: none;
  }
 
  /*left navSideBar */
@@ -263,10 +280,6 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
      margin-top: 80px;
  }
 
-.navbar-fixed-bottom {
-    position: fixed;
-}
-
 #bottom-bar-middle {
     text-align: center;
 }
@@ -322,10 +335,6 @@ div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
 
 .modal-body .form-group input[type='checkbox'] {
      margin: 11px 0 0;
- }
-
- .modal-body .form-group span.help-inline{
-    margin-top: 8px;
  }
 
  /* settings */
