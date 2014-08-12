@@ -428,7 +428,7 @@ Webmail.prototype = {
     inject_mailboxes: function($parent, mboxes) {
         var $ul = $("<ul />", {
             name: $parent.attr("name"),
-            'class': "hidden nav nav-list"
+            'class': "hidden nav nav-pills nav-stacked"
         });
         var $plink = $parent.children("a");
 

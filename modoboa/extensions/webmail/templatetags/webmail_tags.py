@@ -173,7 +173,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
        extra_attrs, iclass, label)
 
         if "sub" in mbox and len(mbox["sub"]):
-            result += "<ul name='%s' class='nav nav-list %s'>" % (mbox["path"], ul_state) \
+            result += "<ul name='%s' class='nav nav-pills nav-stacked %s'>" % (mbox["path"], ul_state) \
                 + print_mailboxes(mbox["sub"], selected, withunseen, selectonly, hdelimiter) + "</ul>\n"
         result += "</li>\n"
     return result

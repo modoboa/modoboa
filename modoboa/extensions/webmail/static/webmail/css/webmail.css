@@ -94,10 +94,6 @@ body, html {
     overflow: auto;
 }
 
-#mboxes_container .nav-list .nav-list {
-    padding-right: 0;
-}
-
 #mboxes_container a[name=loadfolder] {
     white-space: nowrap;
     overflow: hidden;
@@ -176,10 +172,6 @@ td[name="date"] {
 
 #mboxactions .btn-toolbar {
     margin-bottom: 0px;
-}
-
-#folders li {
-    position: relative;
 }
 
 div.clickbox {

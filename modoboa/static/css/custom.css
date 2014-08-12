@@ -65,19 +65,6 @@
      text-decoration: none;
  }
 
- /* links */
- a{
-     color: #0088CC;
- }
-
- a:hover{
-     color: #0088CC;
- }
-
- div.container-fluid div.row-fluid div.col-md-2 div.well ul.nav div.side-bar-responsive li a{
-     color: #0088CC;
- }
-
  /* Colapse Nav */
 
  .navbar-inverse .navbar-toggle {
@@ -220,38 +207,14 @@ label{
 
  /*left navSideBar */
 
-div.container-fluid div.well{
-    padding:0;
-}
-
-.container-fluid .well .side-bar-responsive{
-    padding:16px;
-}
-
 .nav-header {
     color: #959595;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    margin-top:10px;
-    margin-left: 6px;
 }
 
-.container-fluid .well .nav li{
-    display: block;
-}
-
-.container-fluid .well .nav > li > a:hover,
-.container-fluid .well .nav > li > a:focus{
-    background-color: #0088CC;
-    color:white;
-    border-radius: 5px;
-}
-div.container-fluid div.row-fluid .well  div.side-bar-responsive li:hover a{
-    color: #428BCA;
-    text-decoration: none;
-}
 .well ul.nav li a i.glyphicon{
     color:black;
     margin-right: 7px;

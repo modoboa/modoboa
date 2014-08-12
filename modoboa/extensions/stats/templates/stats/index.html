@@ -25,44 +25,42 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block leftcol %}
-<div id="periods" class="well sidebar-nav">
-  <ul class="nav nav-list">
-      <div class="side-bar-responsive">
-            <li class="nav-header">
-              {% trans "Filter" %}
-            </li>
-            <li>
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                <input class="col-lg-10 form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+<div id="periods" class="well">
+  <ul class="nav nav-pills nav-stacked">
+        <li class="nav-header">
+          {% trans "Filter" %}
+        </li>
+        <li>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+            <input class="form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+          </div>
+        </li>
+        <li class="nav-header">
+          {% trans "Predefined time ranges" %}
+        </li>
+        {% for p in periods %}<li class="period">
+          <a href="#" class="period_selector" data-period="{{ p.name }}">{% trans p.label %}</a>
+        </li>
+        {% endfor %}
+        <li class="nav-header">
+                {% trans "Custom time range" %}
+        </li>
+        <li>
+          <form class="form-horizontal">
+            <span id="custom-period">
+              <div class="input-group input-group-sm">
+                <div class="input-group-addon"><i class="glyphicon glyphicon-indent-left"></i></div>
+                <input id="id_from" class="col-lg-10 form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
               </div>
-            </li>
-            <li class="nav-header">
-              {% trans "Predefined time ranges" %}
-            </li>
-            {% for p in periods %}<li class="period">
-              <a href="#" class="period_selector" data-period="{{ p.name }}">{% trans p.label %}</a>
-            </li>
-            {% endfor %}
-            <li class="nav-header">
-              {% trans "Custom time range" %}
-            </li>
-            <li>
-              <form class="form-horizontal">
-                <span id="custom-period">
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-addon"><i class="glyphicon glyphicon-indent-left"></i></div>
-                    <input id="id_from" class="col-lg-10 form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
-                  </div>
-                  <div class="input-group input-group-sm">
-                    <div class="input-group-addon"><i class="glyphicon glyphicon-indent-right"></i></div>
-                    <input id="id_to" class="col-lg-10 form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
-                  </div>
-                  <button class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
-                </span>
-              </form>
-            </li>
-        </div>
+              <div class="input-group input-group-sm">
+                <div class="input-group-addon"><i class="glyphicon glyphicon-indent-right"></i></div>
+                <input id="id_to" class="col-lg-10 form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
+              </div>
+              <button class="btn btn-primary pull-right" id="customsend">{% trans "Apply" %}</button>
+            </span>
+          </form>
+        </li>
       </ul>
     </div>
     {% endblock %}
