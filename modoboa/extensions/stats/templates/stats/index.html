@@ -48,14 +48,14 @@ $(document).ready(function() {
               {% trans "Custom time range" %}
             </li>
             <li>
-              <form class="form-inline">
+              <form class="form-horizontal">
                 <span id="custom-period">
                   <div class="input-group input-group-sm">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-indent-left"></i></span>
+                    <div class="input-group-addon"><i class="glyphicon glyphicon-indent-left"></i></div>
                     <input id="id_from" class="col-lg-10 form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
                   </div>
                   <div class="input-group input-group-sm">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-indent-right"></i></span>
+                    <div class="input-group-addon"><i class="glyphicon glyphicon-indent-right"></i></div>
                     <input id="id_to" class="col-lg-10 form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
                   </div>
                   <button class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
