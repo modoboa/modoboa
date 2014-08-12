@@ -112,7 +112,7 @@ if (!Object.keys) {
  */
 function clean_form_errors(formid) {
     $("#" + formid + " div.error").removeClass("error");
-    $("#" + formid + " span.help-inline").remove();
+    $("#" + formid + " span.help-block").remove();
 }
 
 /*
@@ -131,7 +131,7 @@ function display_form_errors(formid, data) {
         }
         if (!$span.length) {
             $span = $("<span />", {
-                "class": "help-inline",
+                "class": "help-block",
                 "html": value[0],
                 "id": spanid
             });
