@@ -6,6 +6,7 @@ Listing.prototype = {
     constructor: Listing,
 
     listing_defaults: {
+        presp_container: '#pagination-responsive',
         pbar_container: '#bottom-bar-right',
         pbar_id: '#pagination_bar',
         sortable_selector: '.sortable'
@@ -14,6 +15,8 @@ Listing.prototype = {
     initialize: function(options) {
         this.options = $.extend({}, this.listing_defaults, options);
         $(document).on("click", this.options.pbar_container + " a",
+            $.proxy(this.load_page, this));
+        $(document).on("click", this.options.presp_container + " a",
             $.proxy(this.load_page, this));
     },
 
@@ -26,6 +29,7 @@ Listing.prototype = {
     update_listing: function(data) {
         if (data.paginbar) {
             $(this.options.pbar_container).html(data.paginbar);
+            $(this.options.presp_container).html(data.paginbar);
             $(this.options.pbar_id).find(".disabled a").click(function(e) {
                 e.preventDefault();
             });

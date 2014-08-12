@@ -308,6 +308,7 @@ Webmail.prototype = {
         }
         if (response.navbar) {
             $("#bottom-bar-right").html(response.navbar);
+            $("#pagination-responsive").html(response.navbar);
         }
         $("#listing").html(response.listing);
         $("#listing").css({

@@ -30,15 +30,6 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 
-{% block pagination_responsive %}
-<div class="display-less-1198 pull-right">
-    <a href="{{ baseurl }}page={{ page.previous_page_number }}" class="btn btn-lg btn-link glyphicon glyphicon-chevron-left" type="button">
-    </a>
-    <a href="{{ baseurl }}page={{ page.next_page_number }}" class="btn btn-lg btn-link glyphicon glyphicon-chevron-right" type="button">
-    </a>
-</div>
-{% endblock %}
-
 {% block fixed_content %}
 <div class="row">
     <div id="leftcol" class="col-lg-2 col-md-3 col-ms-3 col-xs-0">
