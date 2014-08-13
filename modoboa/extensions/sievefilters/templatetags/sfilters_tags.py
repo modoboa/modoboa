@@ -127,7 +127,10 @@ def display_condition(form, cnt):
     value = form["cond_value_%d" % cnt]
     t = template.Template("""
 <div id="condition_{{ idx }}" class="item">
-  {{ tfield }}{{ofield}}{{ vfield }}{{ verrors }}
+  <div class="col-lg-3 col-md-3 col-sm-3">{{ tfield }}</div>
+  <div class="col-lg-3 col-md-3 col-sm-3">{{ofield}}</div>
+  <div class="col-lg-4 col-md-4 col-sm-4">{{ vfield }}</div>
+  {{ verrors }}
 </div>
 """)
     return t.render(template.Context({
@@ -155,7 +158,12 @@ def display_action(form, cnt):
             break
     t = template.Template("""
 <div id="action_{{ idx }}" class="item">
-  {{ afield }}{% for v in values %}{{ v }}{% endfor %}{{ verrors }}
+<div class="col-lg-5 col-md-5 col-sm-5">
+  {{ afield }}
+  </div>
+  {% for v in values %}
+    <div class="col-lg-5 col-md-5 col-sm-5">{{ v }}</div>
+  {% endfor %}{{ verrors }}
 </div>
 """)
     return t.render(template.Context({

@@ -65,16 +65,19 @@
             });
             var $condtarget = $("<select />", {
                 id: "id_cond_target_" + this.nextid,
-                name: "cond_target_" + this.nextid
+                name: "cond_target_" + this.nextid,
+                class: "form-control element-inline-block"
             }).change($.proxy(this.target_change, this));
             var $condoperator = $("<select />", {
                 id: "id_cond_operator_" + this.nextid,
-                name: "cond_operator_" + this.nextid
+                name: "cond_operator_" + this.nextid,
+                class: "form-control element-inline-block"
             });
             var $condvalue = $("<input />", {
                 id: "id_cond_value_" + this.nextid,
                 name: "cond_value_" + this.nextid,
-                type: "text"
+                type: "text",
+                class: "form-control element-inline-block"
             });
             var $rmlink = this.newrmlink();
 
@@ -93,6 +96,9 @@
             }
 
             $div.append($condtarget, $condoperator, $condvalue, $rmlink);
+            $condtarget.wrap('<div class="col-lg-3 col-md-3 col-sm-3"/>');
+            $condoperator.wrap('<div class="col-lg-3 col-md-3 col-sm-3"/>');
+            $condvalue.wrap('<div class="col-lg-4 col-md-4 col-sm-4"/>');
             this.$element.after($div);
             this.nextid++;
             this.fields_cnt++;
@@ -202,7 +208,7 @@
                 var $child = null;
 
                 if (tpl.args[acpt].type == "list") {
-                    $child = $("<select />", {id: "id_" + argname, name: argname});
+                    $child = $("<select />", {id: "id_" + argname, name: argname, class: "form-control"});
                     if (tpl.args[acpt].vloader != undefined) {
                         this[tpl.args[acpt].vloader]($child);
                     }
@@ -210,7 +216,8 @@
                     $child = $("<input />", {
                         type: "text",
                         id: "id_" + argname,
-                        name: argname
+                        name: argname,
+                        class: "form-control"
                     });
                 }
                 res.push($child);
@@ -259,7 +266,8 @@
             var $div = $("<div />", {id: "action_" + this.nextid, "class": "item"});
             var $actioname = $("<select />", {
                 id: "id_action_name_" + this.nextid,
-                name: "action_name_" + this.nextid
+                name: "action_name_" + this.nextid,
+                class: "form-control element-inline-block"
             });
             var $rmlink = this.newrmlink();
             var args = null;
@@ -281,7 +289,10 @@
             $actioname.change($.proxy(this.name_change, this));
             $.each(args, function(idx, element) {
                 $div.append(element);
+                element.wrap('<div class="col-lg-5 col-md-5 col-sm-5"/>');
             });
+
+            $actioname.wrap('<div class="col-lg-5 col-md-5 col-sm-5"/>');
             $div.append($rmlink);
             this.$element.after($div);
             this.nextid++;

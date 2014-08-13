@@ -85,14 +85,6 @@ div.item {
     overflow: auto;
 }
 
-div.item input[type=text], div.item select {
-    width: 190px;
-}
-
-div.item input, div.item select {
-    margin: 0 2px;
-}
-
 ul.errors {
     list-style: none;
     display: inline;
