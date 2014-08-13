@@ -54,7 +54,7 @@
             return $('<a />', {
                 href: '#',
                 id: 'condition_' + this.nextid + '_rmbtn',
-                html: '<i class="icon-trash"></i>'
+                html: '<i class="glyphicon glyphicon-trash"></i>'
             }).click($.proxy(this.removefields, this));
         },
 
@@ -250,7 +250,7 @@
             return $('<a />', {
                 href: '#',
                 id: 'action_' + this.nextid + '_rmbtn',
-                html: '<i class="icon-trash"></i>'
+                html: '<i class="glyphicon glyphicon-trash"></i>'
             }).click($.proxy(this.removefields, this));
         },
 

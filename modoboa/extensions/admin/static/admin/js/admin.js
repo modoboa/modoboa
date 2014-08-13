@@ -69,8 +69,8 @@ Admin.prototype = {
     },
 
     make_tag: function(text, type) {
-        var $tag = $("<a />", {"name": type, "class" : "btn btn-mini", "html": text});
-        var $i = $("<i />", {"class" : "icon-remove"}).prependTo($tag);
+        var $tag = $("<a />", {"name": type, "class" : "btn btn-xs", "html": text});
+        var $i = $("<i />", {"class" : "glyphicon glyphicon-remove"}).prependTo($tag);
 
         $tag.click($.proxy(this.remove_tag, this));
         return $tag;
@@ -116,7 +116,7 @@ Admin.prototype = {
                 return;
             }
             $("#import_status").css("display", "block");
-            $("#import_result").html("").removeClass("alert alert-error");
+            $("#import_result").html("").removeClass("alert alert-danger");
             $("#importform").submit();
         });
     },
@@ -127,7 +127,7 @@ Admin.prototype = {
             $("#modalbox").modal('hide');
             this.reload_listing(msg);
         } else {
-            $("#import_result").addClass("alert alert-error");
+            $("#import_result").addClass("alert alert-danger");
             $("#import_result").html(msg);
             this.importform_cb();
         }

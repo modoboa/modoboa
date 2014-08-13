@@ -33,7 +33,7 @@ class CustomRadioInput(RadioInput):
             label_for = ''
         choice_label = conditional_escape(force_unicode(self.choice_label))
         return mark_safe(
-            u'<label%s class="radio inline">%s %s</label>'
+            u'<label%s class="radio-inline">%s %s</label>'
             % (label_for, self.tag(), choice_label)
         )
 
@@ -65,7 +65,7 @@ class FilterForm(forms.Form):
                      ("anyof", _("Any of the following")),
                      ("all", _("All messages"))],
             initial="anyof",
-            widget=CustomRadioSelect(attrs={"class": "inline", "type": "checkbox"})
+            widget=CustomRadioSelect(attrs={"class": "checkbox-inline", "type": "checkbox"})
         )
 
         self.header_operators = [

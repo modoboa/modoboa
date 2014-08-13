@@ -8,11 +8,11 @@ from modoboa.lib import parameters
 class LoginForm(forms.Form):
     username = forms.CharField(
         label=ugettext_lazy("Username"),
-        widget=forms.TextInput(attrs={"class": "input-block-level form-control"})
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
     password = forms.CharField(
         label=ugettext_lazy("Password"),
-        widget=forms.PasswordInput(attrs={"class": "input-block-level form-control"})
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     rememberme = forms.BooleanField(
         initial=False,

@@ -44,7 +44,7 @@
              var $container = $("<div />", {"class" : "container-fluid"});
              box.append($container);
              if (this.options.warning) {
-                 $container.append($("<div />", {"class" : "row-fluid"})
+                 $container.append($("<div />", {"class" : "row"})
                      .append($("<div />", {
                          "class": "alert alert-danger",
                          html: "<h4>" + gettext("Warning") + "</h4>" + this.options.warning

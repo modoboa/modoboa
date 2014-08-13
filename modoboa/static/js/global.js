@@ -126,8 +126,8 @@ function display_form_errors(formid, data) {
         var spanid = fullid + "-error";
         var $span = $("#" + spanid);
 
-        if (!$widget.parents(".control-group").hasClass("error")) {
-            $widget.parents(".control-group").addClass("error");
+        if (!$widget.parents(".form-group").hasClass("has-error")) {
+            $widget.parents(".form-group").addClass("has-error");
         }
         if (!$span.length) {
             $span = $("<span />", {

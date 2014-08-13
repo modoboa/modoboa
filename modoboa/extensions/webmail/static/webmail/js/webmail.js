@@ -1049,10 +1049,10 @@ Webmail.prototype = {
         var $delbtn = $("<a />", {
             name: "delattachment",
             href: this.options.delattachment_url + "?name=" + tmpname,
-            html: "<i class='icon-remove'></i>"
+            html: "<i class='glyphicon glyphicon-remove'></i>"
         });
         var $label = $("<label />", {html: fname});
-        var $div = $("<div />", {'class': "row-fluid"}).append($delbtn, $label);
+        var $div = $("<div />", {'class': "row"}).append($delbtn, $label);
 
         $delbtn.click(this.del_attachment);
         $("#id_attachment").val("");

@@ -12,7 +12,7 @@
         style="width:0;height:0;border:0px solid #fff;"></iframe>
 <div class="well" id="attachment_list">
 {% for att in attachments %}
-<div class="row-fluid">
+<div class="row">
   <a href="{% url 'modoboa.extensions.webmail.views.delattachment' %}?name={{ att.tmpname }}"
      name="delattachment">
     <i class="glyphicon glyphicon-remove"></i>

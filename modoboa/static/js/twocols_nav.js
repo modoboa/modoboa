@@ -78,7 +78,7 @@ TwocolsNav.prototype = {
     select_change: function(e) {
         var instance = this;
         var $target = $(e.target);
-        var $parent = $target.parents("div.control-group");
+        var $parent = $target.parents("div.form-group");
 
         $('div[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
             instance.toggle_field_visibility($(this), $parent, $target.val());
@@ -91,7 +91,7 @@ TwocolsNav.prototype = {
     radio_clicked: function(e) {
         var instance = this;
         var $target = $(e.target);
-        var $parent = $target.parents("div.control-group");
+        var $parent = $target.parents("div.form-group");
         var realid = $target.attr("id");
 
         realid = realid.substr(0, realid.length - 2);
