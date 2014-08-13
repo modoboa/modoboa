@@ -68,10 +68,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
 }
 
 function modalbox_autowidth(e) {
-    modalbox.apply(this, [e, {
-        width: 'auto',
-        'margin-left': function() { return -($(this).width() / 2); }
-    }]);
+    modalbox.apply(this, [e]);
 }
 
 /*
