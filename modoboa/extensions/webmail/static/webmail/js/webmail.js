@@ -76,7 +76,8 @@ Webmail.prototype = {
             });
 
             $("#rightcol").css({
-                marginLeft: 200 + 48 + 'px'
+                marginLeft: 200 + 'px',
+                paddingRight: 90 + 'px'
             });
         }
 
@@ -87,6 +88,11 @@ Webmail.prototype = {
             if ($( window ).width()<767){
                 $("tr td[name='from']").css({
                     width: 35 + '%'
+                });
+            }
+            if ($( window ).width()>767){
+                $("tr td[name='from']").css({
+                    width: 20 + '%'
                 });
             }
 
@@ -122,7 +128,8 @@ Webmail.prototype = {
                 });
 
                 $("#rightcol").css({
-                    marginLeft: 200 + 48 + 'px'
+                    marginLeft: 200 + 'px',
+                    paddingRight: 90 + 'px'
                 });
             }
         });
@@ -145,17 +152,17 @@ Webmail.prototype = {
                 if ($( window ).width()>1198){
                     var width = ui.size.width;
                     $("#rightcol").css({
-                        marginLeft: width + 48 + 'px'
+                        marginLeft: width + 'px'
                     });
                     $("#folders").css({
                         width : width + 'px'
                     });
                     $("#rightcol").css({
-                        paddingRight: width - 250 + 'px'
+                        paddingRight: width - 110 + 'px'
                     });
                     if ($( window ).width()<1800){
                         $("#rightcol").css({
-                            paddingRight: width - 180 + 'px'
+                            paddingRight: width - 110 + 'px'
                         });
                     }
                 }
