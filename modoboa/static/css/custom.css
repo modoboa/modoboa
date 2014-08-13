@@ -65,6 +65,10 @@
      text-decoration: none;
  }
 
+ .well .nav > li > a {
+     padding: 2px 5px;
+ }
+
  /* Colapse Nav */
 
  .navbar-inverse .navbar-toggle {
@@ -87,10 +91,6 @@
  }
 
  /* Global */
-
-.container-fluid{
-    padding:0;
-}
 
 h5{
     font-size:15px;

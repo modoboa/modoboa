@@ -25,6 +25,9 @@
 }
 
 @media (max-width: 1198px) {
+    .container-fluid{
+        padding:0;
+    }
     th#date,
     td[name="date"]{
         max-width: 60px;
