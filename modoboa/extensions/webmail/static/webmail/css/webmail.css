@@ -121,8 +121,8 @@ td[name="date"] {
 }
 
 #quotabar {
-    margin: 15px 0 0 15px;
-    width: 200px;
+    margin: 15px 0 0;
+    width: 190px;
 }
 
 #quotaraw {
