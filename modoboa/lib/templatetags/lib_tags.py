@@ -137,10 +137,10 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 def progress_color(value):
     value = int(value)
     if value < 50:
-        return "progress-success"
+        return "progress-bar-success"
     if value < 80:
-        return "progress-warning"
-    return "progress-danger"
+        return "progress-bar-warning"
+    return "progress-bar-danger"
 
 
 @register.filter
