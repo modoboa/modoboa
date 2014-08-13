@@ -4,7 +4,7 @@
     <li class="nav-header">{% trans "Resources usage" %}</li>{% for l in limits %}
     <li class="resource">
       {{ l.label }} ({{ l }})
-      <div rel="tooltip" title="{{ l.curvalue }}/{{ l.maxvalue }}" class="progress {% progress_color l.usage %}"><div class="bar" style="width: {{ l }}"></div></div>
+      <div rel="tooltip" title="{{ l.curvalue }}/{{ l.maxvalue }}" class="progress"><div class="{% progress_color l.usage %}" style="width: {{ l }}"></div></div>
     </li>{% endfor %}
   </ul>
 </div>
