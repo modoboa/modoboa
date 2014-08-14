@@ -56,14 +56,11 @@
     /* GENERAL */
 body, html {
     overflow: hidden;
-    height: 100%;
 }
 
 #folders {
     position: fixed;
-    top: 60px;
-    left: 15px;
-    width: 200px;
+    top: 73px;
     overflow-y: auto;
     margin-bottom: 5px;
 }
@@ -170,11 +167,7 @@ td[name="date"] {
  */
 #mboxactions {
     position: fixed;
-    padding-left: 14px;
-}
-
-#mboxactions .btn-toolbar {
-    margin-bottom: 0px;
+    padding-left: 20px;
 }
 
 div.clickbox {
@@ -323,11 +316,6 @@ td[class*=openable] {
 /*
  *Action buttons
  */
-
-#menubar .btn-toolbar{
-    margin-left: 1px;
-    margin-right: 1px;
-}
 
 #menubar .btn-toolbar ul.navbar-right{
     margin-right: 3%;
