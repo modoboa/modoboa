@@ -205,6 +205,10 @@ label{
 
  /*left navSideBar */
 
+.well{
+    padding: 11px;
+}
+
 .nav-header {
     color: #959595;
     font-size: 12px;
