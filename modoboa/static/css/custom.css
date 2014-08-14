@@ -20,7 +20,6 @@
          display: none;
      }
      button.navbar-toggle[data-target="#navigate-navbar-collapse"]{
-         float: left;
          margin-left: 20px;
      }
 
@@ -58,11 +57,6 @@
  }
  /* Buttons */
 
- .btn-back{
-     color: #EBEAE9;
-     background-color: #222222;
- }
-
  .navbar .btn-link:hover,
  .navbar .btn-link:focus{
      text-decoration: none;
@@ -86,12 +80,8 @@
      background-color: #000;
      margin-bottom: 4px;
      margin-top: 2px;
-     padding: 9px 10px;
  }
 
- button.navbar-toggle[data-target="#navigate-navbar-collapse"]{
-     margin-right: 18px;
- }
 
  /* Global */
 
@@ -137,16 +127,8 @@ label{
     color: white;
 }
 
-.padded5 {
-    padding: 5px;
-}
-
 .buttons_list .bset {
     display: none;
-}
-
-.buttons_list .active {
-    display: inline;
 }
 
 .tr-selected {
@@ -165,17 +147,6 @@ label{
 .table-fixed {
     table-layout: fixed;
 }
-
-.menubar-text {
-    display: inline;
-    vertical-align: middle;
-}
-
-.label-title {
-    vertical-align: middle;
-    margin: 0 10px;
-}
-
 
 
 
@@ -217,9 +188,12 @@ label{
     text-transform: uppercase;
 }
 
-.well ul.nav li a i.glyphicon{
+.well ul.nav li i.glyphicon{
     color:black;
 }
+ .well ul.nav li.active i.glyphicon{
+     color:white;
+ }
 
  /* Action buttons */
 
