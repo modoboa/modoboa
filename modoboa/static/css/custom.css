@@ -48,9 +48,6 @@
 
  /* Form */
 
- .form-horizontal .form-group {
-     margin-left: -15px;
- }
  #uprefs_content input[type="checkbox"],
  .modal input[type="checkbox"]{
      margin-top: 10px;
