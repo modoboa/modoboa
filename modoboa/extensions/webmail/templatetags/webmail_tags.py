@@ -17,7 +17,7 @@ def viewmail_menu(selection, folder, user, mail_id=None):
         {"name": "back",
              "url": "javascript:history.go(-2);",
              "img": "glyphicon glyphicon-arrow-left",
-             "class": "btn-primary",
+             "class": "btn-primary sm-margin-left-back",
              "label": _("Back")},
         {"name": "reply",
          "url": "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
@@ -53,13 +53,6 @@ def viewmail_menu(selection, folder, user, mail_id=None):
                             {"selection": selection, "entries": entries,
                              "user": user, "extraclasses": "pull-left"})
 
-    entries = [{"name": "close",
-                "title": _("Close this message"),
-                "img": "glyphicon glyphicon-remove"}]
-    menu += render_to_string(
-        'common/buttons_list.html',
-        {"entries": entries, "extraclasses": "pull-right"}
-    )
     return menu
 
 
@@ -69,7 +62,7 @@ def compose_menu(selection, backurl, user):
         {"name": "back",
          "url": "javascript:history.go(-2);",
          "img": "glyphicon glyphicon-arrow-left",
-         "class": "btn-primary",
+         "class": "btn-primary md-margin-left-back",
          "label": _("Back")},
         {"name": "sendmail",
          "url": "",

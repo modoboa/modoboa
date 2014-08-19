@@ -204,11 +204,6 @@ li.droppable li{
     padding-bottom: 5px;
 }
 
-#mailheader input {
-    width: 99%;
-    padding: 2px 0;
-}
-
 #mailheader textarea {
     width: 99%;
     height: 40px;
@@ -328,6 +323,15 @@ td[class*=openable] {
 #rightcol #menubar #searchbox #searchfield{
     margin-left:5px;
 }
+
+#menubar .sm-margin-left-back{
+    margin-left: 6px;
+}
+
+#menubar .md-margin-left-back{
+    margin-left: 16px;
+}
+
 
 /*
  *send mail
