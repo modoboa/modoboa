@@ -1,6 +1,6 @@
 {% load i18n lib_tags %}{% load url from future %}
 <form class="form-horizontal" method="POST" action="{{ posturl }}" id="composemail">{% csrf_token %}
-  <div id="compose-container">
+  <div id="compose-container" class="col-lg-12">
     <div id="mailheader" class="well">
       {% render_field form.to %}
       <div class="options">
