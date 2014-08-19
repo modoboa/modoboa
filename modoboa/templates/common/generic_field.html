@@ -1,13 +1,54 @@
 {% load i18n core_tags lib_tags %}
-<div class="form-group {% if field.errors %}error{% endif %}{{ extra_classes }}"{% visirule field %}{% if hidden %}style="display: none"{% endif %}>
-  {% if field.label %}<label class="control-label col-lg-3 col-md-4 col-sm-4" for="id_{{ field.html_name }}">{{ field.label }}</label>{% endif %}{% if help_display_mode == "tooltip" and field.help_text %}<a href="#" class="help" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>{% endif %}
-  <div class="col-lg-5 col-md-5 col-sm-5">
-    {% if appended_text %}<div class="input-group">{% endif %}
-    {{ field }}{% if appended_text %}<span class="input-group-addon">{{ appended_text }}</span></div>{% endif %}{% if help_display_mode == "inline" and field.help_text %}<span class="help-block pull-right">{{ field.help_text }}</span>{% endif %}{% if inline_message %}<span class="help-block pull-right">{{ inline_message }}</span>{% endif %}
-    {% if activator %}<div class="checkbox"><label class="checkbox-inline" for="id_{{ field.name }}_act">
-      <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act" {% if activator_value %}checked='checked'{% else %}{% if deactivate_if_empty and field.value == None %}checked='checked'{% endif %}{% endif %}/>{{ activator_label }}
-    </label></div>{% endif %}
-    {% if field.errors %}<p class="help-block">{% for error in field.errors %}{{ error|safe }}{% endfor %}</p>{% endif %}
-    {% block extra_controls %}{% endblock %}
-  </div>
+<div class="form-group
+    {% if field.errors %}error{% endif %}
+    {{ extra_classes }}"{% visirule field %}
+    {% if hidden %}style="display: none"{% endif %}
+>
+
+    {% if field.label %}
+        <label class="control-label col-lg-4 col-md-4 col-sm-4" for="id_{{ field.html_name }}">{{ field.label }}
+        {% if help_display_mode == "tooltip" and field.help_text %}
+            <a href="#" class="help" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>
+        {% endif %}
+        </label>
+    {% endif %}
+
+    <div class="col-lg-5 col-md-5 col-sm-5">
+    {% if appended_text %}
+        <div class="input-group">
+    {% endif %}
+    {{ field }}
+    {% if appended_text %}
+            <span class="input-group-addon">{{ appended_text }}</span></div>
+    {% endif %}
+    {% if help_display_mode == "inline" and field.help_text %}
+        <span class="help-block pull-right">{{ field.help_text }}</span>
+    {% endif %}
+    {% if inline_message %}
+        <span class="help-block pull-right">{{ inline_message }}</span>
+    {% endif %}
+    {% if activator %}
+        <div class="checkbox">
+            <label class="checkbox-inline" for="id_{{ field.name }}_act">
+                <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act"
+                    {% if activator_value %}checked='checked'
+                    {% else %}
+                        {% if deactivate_if_empty and field.value == None %}
+                            checked='checked'
+                        {% endif %}
+                    {% endif %}/>
+                  {{ activator_label }}
+            </label>
+        </div>
+        {% endif %}
+    {% if field.errors %}
+        <p class="help-block">
+            {% for error in field.errors %}
+                {{ error|safe }}
+            {% endfor %}
+        </p>
+        {% endif %}
+        {% block extra_controls %}
+        {% endblock %}
+    </div>
 </div>
