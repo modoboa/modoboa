@@ -40,7 +40,7 @@ Webmail.prototype = {
 
 
         $("#mboxactions").css({
-            bottom: $("#bottom-bar").outerHeight(true) + 10
+            bottom: $("#bottom-bar").outerHeight(true) + 30
         });
 
 
@@ -64,7 +64,7 @@ Webmail.prototype = {
 
         if ($( window ).width()>1198){
             $("#folders").css({
-                bottom: $("#bottom-bar").outerHeight(true),
+                bottom: $("#bottom-bar").outerHeight(true) + 10,
                 width: this.options.mboxes_col_width + 'px'
             });
             $("#listing").addClass(
@@ -117,7 +117,7 @@ Webmail.prototype = {
 
             if ($( window ).width()>1198){
                 $("#folders").css({
-                    bottom: $("#bottom-bar").outerHeight(true),
+                    bottom: $("#bottom-bar").outerHeight(true) + 10,
                     width: that.options.mboxes_col_width + 'px'
                 });
                 $("#listing").addClass(
