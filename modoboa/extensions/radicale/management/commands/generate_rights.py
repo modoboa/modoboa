@@ -49,7 +49,8 @@ permission = %s
             if acr.write:
                 permission += "w"
             self._generate_acr(
-                section, acr.mailbox.full_address, acr.calendar.url, permission,
+                section, acr.mailbox.full_address, acr.calendar.path,
+                permission,
             )
 
     def _super_admin_rules(self):
