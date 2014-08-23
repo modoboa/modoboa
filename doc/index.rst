@@ -16,7 +16,22 @@ Getting started
    getting_started/install
    getting_started/upgrade
    getting_started/configuration
-   getting_started/plugins
+
+*******
+Plugins
+*******
+
+.. toctree::
+   :maxdepth: 2
+
+   plugins/overview
+   plugins/limits
+   plugins/postfix_relay_domains
+   plugins/amavis
+   plugins/statistics
+   plugins/postfix_autoreply
+   plugins/sievefilters
+   plugins/webmail
 
 ********************************
 Integration with other softwares
