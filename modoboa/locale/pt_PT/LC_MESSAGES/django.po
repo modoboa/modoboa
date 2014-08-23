@@ -627,7 +627,7 @@ msgid ""
 msgstr "Renomear ou remover as caixas de correio no sistema de ficheiros quando estas são renomeadas no Modoboa"
 
 #: extensions/admin/app_settings.py:20
-msgid "Mailboxes ower"
+msgid "Mailboxes owner"
 msgstr "Detentor das Caixas de Correio (Owner)"
 
 #: extensions/admin/app_settings.py:22

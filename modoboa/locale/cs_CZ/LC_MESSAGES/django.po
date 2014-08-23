@@ -661,7 +661,7 @@ msgstr ""
 "přejmenovány nebo odstraněny v Modoboa"
 
 #: extensions/admin/app_settings.py:20
-msgid "Mailboxes ower"
+msgid "Mailboxes owner"
 msgstr "Vlastník schránek"
 
 #: extensions/admin/app_settings.py:22

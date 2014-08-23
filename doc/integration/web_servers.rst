@@ -227,7 +227,7 @@ Here is a sample nginx configuration::
         location <modoba's root url>/ {
             include uwsgi_params;
             uwsgi_pass <uwsgi port>;
-            uwsgi_param UWSGI_SCRIPT <modoboa instance name>.wsgi:application
+            uwsgi_param UWSGI_SCRIPT <modoboa instance name>.wsgi:application;
             uwsgi_param UWSGI_SCHEME https;
         }
     }
