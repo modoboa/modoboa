@@ -3,8 +3,8 @@
 import os
 import tempfile
 import pexpect
-import shutil
 import unittest
+
 from modoboa.lib.sysutils import exec_cmd
 
 
@@ -20,7 +20,11 @@ class DeployTest(unittest.TestCase):
 
     def tearDown(self):
         path = os.path.join(self.workdir, self.projname)
-        code, output = exec_cmd("python manage.py test core lib admin limits postfix_relay_domains radicale", cwd=path)
+        code, output = exec_cmd(
+            "python manage.py test core lib admin limits postfix_relay_domains radicale",
+            capture_output=False,
+            cwd=path
+        )
         self.assertEqual(code, 0)
 
     def test_standard(self):

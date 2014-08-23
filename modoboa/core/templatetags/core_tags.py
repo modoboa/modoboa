@@ -212,12 +212,6 @@ def load_optionalmenu(user):
 
 
 @register.simple_tag
-def load_notifications(user):
-    content = events.raiseQueryEvent("TopNotifications", user)
-    return "".join(content)
-
-
-@register.simple_tag
 def display_messages(msgs):
     text = ""
     level = "info"

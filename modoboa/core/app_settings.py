@@ -171,6 +171,19 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
 
+    top_notifications_check_interval = forms.IntegerField(
+        label=_("Top notifications check interval"),
+        initial=30,
+        help_text=_("Interval between two top notification checks")
+    )
+
+    check_new_versions = YesNoField(
+        label=ugettext_lazy("Check for new versions"),
+        initial="yes",
+        help_text=ugettext_lazy(
+            "Automatically checks if newer versions are available")
+    )
+
     log_maximum_age = forms.IntegerField(
         label=ugettext_lazy("Maximum log record age"),
         initial=365,

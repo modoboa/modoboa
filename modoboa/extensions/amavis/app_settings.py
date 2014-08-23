@@ -50,12 +50,6 @@ class ParametersForm(AdminParametersForm):
         help_text=_("Path to the PDP server socket (if unix mode)")
     )
 
-    check_requests_interval = forms.IntegerField(
-        label=_("Check requests interval"),
-        initial=30,
-        help_text=_("Interval between two release requests checks")
-    )
-
     user_can_release = YesNoField(
         label=_("Allow direct release"),
         initial="no",

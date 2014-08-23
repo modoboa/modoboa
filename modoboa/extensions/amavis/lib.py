@@ -75,7 +75,7 @@ recipient=%s
 """ % (mailid, secretid, recipient))
         answer = self.sock.recv(1024)
         answer = self.decode(answer)
-        if re.search("250 [\d\.]+ Ok", answer):
+        if re.search(r"250 [\d\.]+ Ok", answer):
             return True
         return False
 
@@ -88,7 +88,9 @@ class QuarantineNavigationParameters(NavigationParameters):
         super(QuarantineNavigationParameters, self).__init__(
             request, 'quarantine_navparams'
         )
-        self.parameters += [('msgtype', None, False)]
+        self.parameters += [
+            ('msgtype', None, False), ('viewrequests', None, False)
+        ]
 
     def back_to_listing(self):
         """Return the current listing URL.

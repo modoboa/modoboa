@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.template import Template, Context
+
 from modoboa.lib import events, parameters
 from modoboa.extensions.admin.models import DomainAlias
 from modoboa.extensions.amavis.lib import (
@@ -53,35 +54,6 @@ def extra_static_content(caller, user):
     if user.group == "SimpleUsers":
         return []
 
-    if caller == 'top' and parameters.get_admin("USER_CAN_RELEASE") == 'no':
-        tpl = Template("""<script type="text/javascript">
-$(document).ready(function() {
-    var poller = new Poller("{{ url }}", {
-        interval: {{ interval }},
-        success_cb: function(data) {
-            var $link = $("#nbrequests");
-            var $maincounter = $("#alerts-counter");
-
-            if (data.requests > 0) {
-                $maincounter.html(data.requests);
-                $link.children("span").html(data.requests);
-                $maincounter.closest('div').removeClass('hidden');
-            } else {
-                $maincounter.closest('div').addClass('hidden');
-            }
-        }
-    });
-});
-</script>
-""")
-        return [tpl.render(
-            Context({
-                'url': reverse("modoboa.extensions.amavis.views.nbrequests"),
-                'interval': int(parameters.get_admin("CHECK_REQUESTS_INTERVAL")) * 1000,
-                'text': _("pending requests"),
-            })
-        )]
-
     if caller == 'domains':
         tpl = Template("""<script type="text/javascript">
 $(document).bind('domform_init', function() {
@@ -95,35 +67,27 @@ $(document).bind('domform_init', function() {
 
 
 @events.observe("TopNotifications")
-def display_requests(user):
-    from .sql_listing import get_wrapper
+def check_for_pending_requests(user, include_all):
+    """
+    Check if release requests are pending.
+    """
+    from .sql_connector import get_connector
 
     if parameters.get_admin("USER_CAN_RELEASE") == "yes" \
             or user.group == "SimpleUsers":
         return []
-    nbrequests = get_wrapper().get_pending_requests(user)
+
+    nbrequests = get_connector(user=user).get_pending_requests()
+    if not nbrequests:
+        return [{"id": "nbrequests", "counter": 0}] if include_all \
+            else []
 
     url = reverse("modoboa.extensions.amavis.views.index")
     url += "#listing/?viewrequests=1"
-    tpl = Template("""<ul class="nav pull-right {{ css }}">
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-      <i class="icon-white icon-bell"></i> <span id="alerts-counter" class="label label-important">{{ nbrequests }}</span>
-    </a>
-    <ul class="dropdown-menu">
-      <li>
-        <a id="nbrequests" href="{{ url }}">
-          <span class="label label-important">{{ nbrequests }}</span> {{ label }}
-        </a>
-      </li>
-    </ul>
-  </li>
-</ul>""")
-    css = "hidden" if nbrequests == 0 else ""
-    return [tpl.render(Context(dict(
-        label=_("Pending requests"), url=url, css=css,
-        nbrequests=nbrequests
-    )))]
+    return [{
+        "id": "nbrequests", "url": url, "text": _("Pending requests"),
+        "counter": nbrequests, "level": "important"
+    }]
 
 
 def send_amavis_form():

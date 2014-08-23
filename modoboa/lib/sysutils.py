@@ -9,7 +9,7 @@ import inspect
 import re
 
 
-def exec_cmd(cmd, sudo_user=None, **kwargs):
+def exec_cmd(cmd, sudo_user=None, capture_output=True, **kwargs):
     """Execute a shell command.
 
     Run a command using the current user. Set :keyword:`sudo_user` if
@@ -22,10 +22,15 @@ def exec_cmd(cmd, sudo_user=None, **kwargs):
     """
     if sudo_user is not None:
         cmd = "sudo -u %s %s" % (sudo_user, cmd)
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT, **kwargs)
-    output = p.communicate()[0]
-    return p.returncode, output
+    kwargs["shell"] = True
+    if capture_output:
+        kwargs.update(stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        p = subprocess.Popen(cmd, **kwargs)
+        output = p.communicate()[0]
+        return p.returncode, output
+    p = subprocess.Popen(cmd, **kwargs)
+    p.wait()
+    return p.returncode, None
 
 
 def guess_extension_name():

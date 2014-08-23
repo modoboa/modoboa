@@ -736,16 +736,30 @@ this user is disabled).
 TopNotifications
 ================
 
-Let extensions add custom content into the top bar.
+Lets extensions subscribe to the global notification service (located
+inside the top bar).
 
 *Callback prototype*::
 
-  def callback(user): pass
+  def callback(user, include_all): pass
 
 * ``user`` is a ``User`` instance corresponding to the currently
   logged in user
+* ``include_all`` is a boolean indicating if empty notifications must
+  be included into the result or not
 
-Callbacks listening to this event must return a list of string.
+Callbacks listening to this event must return a list of dictionary,
+each dictionary containing at least the following entries::
+
+  {"id": "<notification entry ID>",
+   "url": "<associated URL>",
+   "text": "<text to display>"}
+
+If your notification needs a counter, you can specify it by adding the
+two following entries in the dictionary:
+
+  {"counter": <associated counter>,
+   "level": "<info|success|warning|error>"}
 
 UserLogin
 =========

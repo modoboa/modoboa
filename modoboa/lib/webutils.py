@@ -175,6 +175,16 @@ class NavigationParameters(object):
         self.parameters = [('pattern', '', True),
                            ('criteria', 'from_addr', False)]
 
+    def __getitem__(self, key):
+        """
+        """
+        return self.request.session[self.sessionkey][key]
+
+    def __contains__(self, key):
+        """
+        """
+        return key in self.request.session[self.sessionkey]
+
     def store(self):
         """Store navigation parameters into session.
         """

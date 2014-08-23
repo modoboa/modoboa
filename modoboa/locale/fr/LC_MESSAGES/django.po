@@ -661,7 +661,7 @@ msgstr ""
 "renommées ou supprimées dans Modoboa"
 
 #: extensions/admin/app_settings.py:20
-msgid "Mailboxes ower"
+msgid "Mailboxes owner"
 msgstr "Propriétaire des boites"
 
 #: extensions/admin/app_settings.py:22

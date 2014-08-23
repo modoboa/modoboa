@@ -20,10 +20,19 @@
     <script src="{{ STATIC_URL }}js/confirmation.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/notify.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/poller.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/top_notifications.js" type="text/javascript"></script>
     {% url "django.views.i18n.javascript_catalog" as catalog_url %}
     <script type="text/javascript" src="{{ catalog_url }}"></script>
     <script type="text/javascript">
+      var top_notifications;
+
       set_static_url("{{ STATIC_URL }}");
+      $(document).ready(function() {
+          top_notifications = new TopNotifications({
+              url: "{% url 'check_top_notifications' %}",
+              interval: {{ notifications_check_interval }}
+          });
+      });
     </script>
     {% extra_static_content "top" user %}
     {% block html_head %}{% endblock %}
@@ -48,7 +57,7 @@
           <ul class="nav pull-right">
             {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
           </ul>
-          <div class="pull-right">{% load_notifications user %}</div>
+          <div class="pull-right">{% include "common/top_notifications.html" %}</div>
         </div>
       </div>
     </div>    
