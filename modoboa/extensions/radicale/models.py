@@ -3,16 +3,21 @@ Radicale extension models.
 """
 from __future__ import unicode_literals
 
+import os
+
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
+
 from modoboa.extensions.admin.models import Domain
+from modoboa.lib import parameters
 
 
 @python_2_unicode_compatible
 class Calendar(models.Model):
-    """Abstract calendar definition.
-    """
+
+    """Abstract calendar definition."""
+
     name = models.CharField(max_length=200)
 
     class Meta:
@@ -22,24 +27,34 @@ class Calendar(models.Model):
         return self.name
 
     @property
-    def url(self):
-        """Return the calendar URL"""
+    def path(self):
+        """Return the calendar path."""
         raise NotImplementedError
 
     @property
+    def url(self):
+        """Return the calendar URL."""
+        if not hasattr(self, "_url"):
+            self._url = os.path.join(
+                parameters.get_admin("SERVER_LOCATION"),
+                self.path
+            )
+        return self._url
+
+    @property
     def tags(self):
-        """Return calendar tags"""
+        """Return calendar tags."""
         raise NotImplementedError
 
     @property
     def owner(self):
-        """Return calendar owner"""
+        """Return calendar owner."""
         raise NotImplementedError
 
 
 class UserCalendarManager(models.Manager):
-    """Custom UserCalendar manager.
-    """
+
+    """Custom UserCalendar manager."""
 
     def get_for_admin(self, admin):
         """Return the list of calendars this admin can access.
@@ -51,6 +66,7 @@ class UserCalendarManager(models.Manager):
 
 
 class UserCalendar(Calendar):
+
     """User calendar.
 
     We associate the calendar to a mailbox because we need to access
@@ -62,14 +78,16 @@ class UserCalendar(Calendar):
     objects = UserCalendarManager()
 
     @property
-    def url(self):
-        """Return the calendar URL.
+    def path(self):
+        """Return the calendar path.
 
         <domain>/user/<localpart>/<name>
         """
-        return "%s/user/%s/%s" % (
-            self.mailbox.domain.name, self.mailbox.address, self.name
-        )
+        if not hasattr(self, "_path"):
+            self._path = "%s/user/%s/%s" % (
+                self.mailbox.domain.name, self.mailbox.address, self.name
+            )
+        return self._path
 
     @property
     def tags(self):
@@ -81,8 +99,8 @@ class UserCalendar(Calendar):
 
 
 class SharedCalendarManager(models.Manager):
-    """Custom SharedCalendar manager.
-    """
+
+    """Custom SharedCalendar manager."""
 
     def get_for_admin(self, admin):
         """Return the list of calendars this admin can access.
@@ -94,40 +112,43 @@ class SharedCalendarManager(models.Manager):
 
 
 class SharedCalendar(Calendar):
+
     """Shared calendar.
 
     A shared calendar is associated to a domain and is readable and
     writable by all domain members.
 
     """
+
     domain = models.ForeignKey("admin.Domain")
 
     objects = SharedCalendarManager()
 
     @property
-    def url(self):
-        """Return the calendar URL.
+    def path(self):
+        """Return the calendar path.
 
         <domain>/shared/<name>
         """
-        return "%s/shared/%s" % (
-            self.domain.name, self.name
-        )
+        if not hasattr(self, "_path"):
+            self._path = "%s/shared/%s" % (self.domain.name, self.name)
+        return self._path
 
     @property
     def tags(self):
         return [{"name": "shared", "label": _("Shared"), "type": "cal"}]
 
-
     @property
     def owner(self):
+        """Return calendar owner."""
         return self.domain
 
 
 @python_2_unicode_compatible
 class AccessRule(models.Model):
-    """Access rules to user calendars
-    """
+
+    """Access rules to user calendars."""
+
     mailbox = models.ForeignKey("admin.Mailbox")
     read = models.BooleanField(default=False)
     write = models.BooleanField(default=False)

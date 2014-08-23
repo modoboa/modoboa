@@ -31,7 +31,7 @@ class Radicale(ModoExtension):
     """
     """
     name = "radicale"
-    label = ugettext_lazy("Radicale management frontend")
+    label = ugettext_lazy("Radicale frontend")
     version = "1.0"
     description = ugettext_lazy(
         "Management frontend for Radicale, a simple calendar and contact server."

@@ -7,6 +7,18 @@ from modoboa.lib.formutils import SeparatorField, YesNoField
 class ParametersForm(AdminParametersForm):
     app = "radicale"
 
+    server_settings = SeparatorField(
+        label=ugettext_lazy("Server settings")
+    )
+
+    server_location = forms.CharField(
+        label=ugettext_lazy("Server location"),
+        help_text=ugettext_lazy(
+            "The URL of your Radicale server. "
+            "It will be used to construct calendar URLs."
+        )
+    )
+
     rights_management_sep = SeparatorField(
         label=ugettext_lazy("Rights management"))
 
