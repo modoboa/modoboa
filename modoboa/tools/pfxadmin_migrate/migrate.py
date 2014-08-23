@@ -43,10 +43,12 @@ compatible with PostfixAdmin ``md5crypt`` algorithm...
 """
 import os
 import sys
+from django.db import transaction
 from django.db.utils import ConnectionDoesNotExist
 from django.db.models import Q
 from django.contrib.auth.models import Group
-import modoboa.admin.models as md_models
+import modoboa.extensions.admin.models as admin_models
+import modoboa.core.models as core_models
 import models as pf_models
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.emailutils import split_mailbox
@@ -61,31 +63,38 @@ def migrate_dates(oldobj):
 
     :param oldobj: the PostfixAdmin record which is beeing migrated.
     """
-    dates = md_models.ObjectDates()
+    dates = admin_models.base.ObjectDates()
     dates.save()
 
     dates.creation = oldobj.created
     dates.save()
     return dates
 
-def migrate_domain_aliases(domain, options):
+def migrate_domain_aliases(domain, options, creator):
     print "\tMigrating domain aliases"
     old_domain_aliases = pf_models.AliasDomain.objects.using(options._from).filter(target_domain=domain.name)
     for old_da in old_domain_aliases:
-        new_da = md_models.DomainAlias()
-        new_da.name = old_da.alias_domain
-        new_da.target = old_da.target_domain
-        new_da.enabled = new_da.active
-        new_da.dates = migrate_dates(old_da)
-        new_da.save(using=options.to)
+        try:
+            target_domain = admin_models.Domain.objects.using(options._to).get(name=old_da.target_domain)
+            new_da = admin_models.DomainAlias()
+            new_da.name = old_da.alias_domain
+            new_da.target = target_domain
+            new_da.enabled = old_da.active
+            new_da.dates = migrate_dates(old_da)
+            new_da.save(using=options._to)
+            new_da.post_create(creator)
+        except core_models.Domain.DoesNotExist as e:
+            print "Warning: target domain %s does not exists, not creating alias domain %s" \
+                % old_da.target_domain, old_da.alias_domain
+            continue
 
-def migrate_mailbox_aliases(domain, options):
+def migrate_mailbox_aliases(domain, options, creator):
     print "\tMigrating mailbox aliases"
     old_aliases = pf_models.Alias.objects.using(options._from).filter(domain=domain.name)
     for old_al in old_aliases:
         if old_al.address == old_al.goto:
             continue
-        new_al = md_models.Alias()
+        new_al = admin_models.Alias()
         local_part, tmp = split_mailbox(old_al.address)
         if local_part is None or not len(local_part):
             if tmp is None or not len(tmp):
@@ -102,26 +111,40 @@ You will need to recreate it manually.
         intmboxes = []
         for goto in old_al.goto.split(","):
             try:
-                mb = md_models.Mailbox.objects.using(options.to).get(user__username=goto)
-            except md_models.Mailbox.DoesNotExist:
+                mb = admin_models.Mailbox.objects.using(options._to).get(user__username=goto)
+            except admin_models.Mailbox.DoesNotExist:
                 extmboxes += [goto]
             else:
                 intmboxes += [mb]
         new_al.dates = migrate_dates(old_al)
-        new_al.save(intmboxes, extmboxes, using=options.to)
+        new_al.save(int_rcpts=intmboxes, ext_rcpts=extmboxes, creator=creator, using=options._to)
 
-def migrate_mailboxes(domain, options):
+def migrate_mailboxes(domain, options, creator):
     print "\tMigrating mailboxes"
     old_mboxes = pf_models.Mailbox.objects.using(options._from).filter(domain=domain.name)
     for old_mb in old_mboxes:
-        new_mb = md_models.Mailbox()
+        new_user = core_models.User()
+        new_user.username = old_mb.username
+        new_user.first_name = old_mb.name.partition(' ')[0]
+        new_user.last_name = old_mb.name.partition(' ')[2]
+        new_user.email = old_mb.username
+        new_user.is_active = old_mb.active
+        new_user.date_joined = old_mb.created
+        new_user.password = old_mb.password
+        new_user.dates = migrate_dates(old_mb)
+        new_user.save(creator=creator, using=options._to)
+        new_user.set_role("SimpleUsers")
+
+        new_mb = admin_models.Mailbox()
+        new_mb.user = new_user
         new_mb.address = old_mb.local_part
         new_mb.domain = domain
         new_mb.dates = migrate_dates(old_mb)
         if old_mb.quota:
             new_mb.quota = old_mb.quota / 1024000
+        else:
+            new_mb.quota = 0
 
-        new_mb.path = "%s/" % old_mb.local_part
         if options.rename_dirs:
             oldpath = os.path.join(options.mboxes_path, domain.name, old_mb.maildir)
             newpath = os.path.join(options.mboxes_path, domain.name, new_mb.path)
@@ -130,25 +153,24 @@ def migrate_mailboxes(domain, options):
                 print "Error: cannot rename mailbox directory\n%s" % output
                 sys.exit(1)
 
-        new_mb.save(name=old_mb.name, password=old_mb.password, using=options.to)
+        new_mb.save(creator=creator, using=options._to)
 
-
-def migrate_domain(old_dom, options):
+def migrate_domain(old_dom, options, creator):
     print "Migrating domain %s" % old_dom.domain
-    newdom = md_models.Domain()
+    newdom = admin_models.Domain()
     newdom.name = old_dom.domain
     newdom.enabled = old_dom.active
     newdom.quota = old_dom.maxquota
     newdom.dates = migrate_dates(old_dom)
-    newdom.save(using=options.to)
-    migrate_mailboxes(newdom, options)
-    migrate_mailbox_aliases(newdom, options)
-    migrate_domain_aliases(newdom, options)
+    newdom.save(creator=creator, using=options._to)
+    migrate_mailboxes(newdom, options, creator)
+    migrate_mailbox_aliases(newdom, options, creator)
+    migrate_domain_aliases(newdom, options, creator)
 
-def migrate_admins(options):
+def migrate_admins(options, creator):
     print "Migrating administrators"
 
-    dagroup = Group.objects.using(options.to).get(name="DomainAdmins")
+    dagroup = Group.objects.using(options._to).get(name="DomainAdmins")
     for old_admin in pf_models.Admin.objects.using(options._from).all():
         local_part, domname = split_mailbox(old_admin.username)
         try:
@@ -159,44 +181,55 @@ def migrate_admins(options):
             print "Warning: skipping useless admin %s" % (old_admin.username)
             continue
         try:
-            user = md_models.User.objects.using(options.to).get(username=old_admin.username)
-        except md_models.User.DoesNotExist:
+            user = core_models.User.objects.using(options._to).get(username=old_admin.username)
+        except core_models.User.DoesNotExist:
             try:
-                domain = md_models.Domain.objects.using(options.to).get(name=domname)
-            except md_models.Domain.DoesNotExist:
+                domain = admin_models.Domain.objects.using(options._to).get(name=domname)
+            except admin_models.Domain.DoesNotExist:
                 print "Warning: skipping domain admin %s, domain not found" \
                     % old_admin.username
                 continue
-            user = md_models.User()
+            user = core_models.User()
             user.username = old_admin.username
             user.email = old_admin.username
             user.password = old_admin.password
             user.is_active = old_admin.active
-            user.save(using=options.to)
+            user.save(creator=creator, using=options._to)
 
         user.date_joined = old_admin.modified
         if creds.domain == "ALL":
             user.is_superuser = True
         else:
             user.groups.add(dagroup)
-        user.save(using=options.to)
+        user.save(using=options._to)
 
-def do_migration(options):
+@transaction.commit_on_success
+def do_migration(options, creator_username='admin'):
     pf_domains = pf_models.Domain.objects.using(options._from).all()
-    for olddom in pf_domains:
-        if olddom.domain == "ALL":
+    creator = core_models.User.objects.using(options._to).get(username=creator_username)
+    for pf_domain in pf_domains:
+
+        if pf_domain.domain == "ALL":
             continue
-        migrate_domain(olddom, options)
-    migrate_admins(options)
+
+        try:
+            #Skip this domain if it's an alias
+            is_domain_alias = pf_models.AliasDomain.objects.using(options._from).get(alias_domain=pf_domain.domain)
+            print "Info: %s looks like an alias domain, skipping it" \
+                    % pf_domain.domain
+            continue
+        except pf_models.AliasDomain.DoesNotExist:
+            migrate_domain(pf_domain, options, creator)
+            migrate_admins(options, creator)
 
 if __name__ == "__main__":
     from optparse import OptionParser
 
     parser = OptionParser()
     parser.add_option("-f", "--from", dest="_from", default="pfxadmin",
-                      help="Name of postfixadmin db connection declared in settings.py")
-    parser.add_option("-t", "--to", default="default",
-                      help="Name of the Modoboa db connection declared in settings.py")
+                      help="Name of postfixadmin db connection declared in settings.py (default is pfxadmin)")
+    parser.add_option("-t", "--to", dest="_to", default="default",
+                      help="Name of the Modoboa db connection declared in settings.py (default is default)")
     parser.add_option("-r", "--rename-dirs", action="store_true",
                       help="Rename mailbox directories (default is no)")
     parser.add_option("-p", "--mboxes-path", default=None,
