@@ -11,3 +11,4 @@ rfc6266
 factory-boy
 passlib
 -e git+https://github.com/tonioo/django-versionfield.git#egg=django-versionfield
+requests
