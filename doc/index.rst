@@ -29,6 +29,7 @@ Plugins
    plugins/postfix_relay_domains
    plugins/amavis
    plugins/statistics
+   plugins/radicale
    plugins/postfix_autoreply
    plugins/sievefilters
    plugins/webmail
