@@ -6,7 +6,7 @@ Migrating from other software
 PostfixAdmin
 ************
 
-Since version 0.8.5, Modoboa provides a simple script to migrate an
+Modoboa provides a simple script to migrate an
 existing `PostfixAdmin (version 2.3.3+)
 <http://postfixadmin.sourceforge.net/>`_ database to a Modoboa one.
 
@@ -21,40 +21,37 @@ connection named ``pfxadmin`` into the ``DATABASES`` variable
 corresponding to your PostfixAdmin setup::
 
   DATABASES = {
-    "default" : {
-      # default connection definition
-    },
-    "pfxadmin" : {
-      "ENGINE" : "<engine>",
-      "NAME" : "<database name>",
-      "USER" : "<database user>",
-      "PASSWORD" : "<user password>",
-    }  
+      "default" : {
+          # default connection definition
+      },
+      "pfxadmin" : {
+          "ENGINE" : "<engine>",
+          "NAME" : "<database name>",
+          "USER" : "<database user>",
+          "PASSWORD" : "<user password>",
+      }  
   }
 
 This connection should correspond to the one defined in PostfixAdmin's
 configuration file.
 
-You are now ready to start the migration. Enter Modoboa's root
-directory and execute the following command::
+Then, uncomment the line containing
+``'modoboa.tools.pfxadmin_migrate'`` inside the ``MODOBOA_APPS``
+variable and save your changes.
 
-  $ PYTHONPATH=$PWD/.. DJANGO_SETTINGS_MODULE=modoboa.settings \
-      ./tools/pfxadmin_migrate/migrate.py -r -p <directory that stores mailboxes>
+You are now ready to start the migration so run the following commands::
+
+  $ cd <modoboa_site>
+  $ python manage.py migrate_from_postfixadmin -r -p <directory that stores mailboxes>
 
 Depending on how many domains/mailboxes your existing setup contains,
 the migration can be long. Just wait for the script's ending.
 
-Once the migration has succeed, go the *Admin > Configuration* panel,
-click on the *admin* row and modify the value of ``MAILDIR_ROOT`` as
-follow::
+.. note::
 
-  MAILDIR_ROOT =
-
-The corresponding field must be empty. Don't touch other fields except
-``PASSWORD_SCHEME``, if needed. (set it to the same method as the one
-used by PostfixAdmin, check its configuration file if you're not sure)
-
-Click on the *Save* button.
+   The rename operation is not synchronous. If you choose this option,
+   you must enable **Handle mailboxes on filesystem** option. See
+   :ref:`fs_operations`.
 
 The procedure is over, edit the :file:`settings.py` file and:
 
