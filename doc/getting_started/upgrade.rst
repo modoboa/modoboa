@@ -48,6 +48,17 @@ Finally, follow the common procedure::
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
+1.1.6: Few bugfixes
+===================
+
+Catchall aliases were not really functional until this version as they
+were eating all domain traffic.
+
+To fix them, a postfix map file (``sql-mailboxes-self-aliases.cf``)
+has been re-introduced and must be listed into the
+``virtual_alias_maps`` setting. See :ref:`postfix_config` for the
+order.
+
 1.1.2: Audit trail issues
 =========================
 
