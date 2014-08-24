@@ -10,7 +10,7 @@ from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.extensions.admin.models import (
-    Domain, Alias
+    Domain, DomainAlias, Alias
 )
 
 
@@ -137,3 +137,21 @@ def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
         'ExtraDomainEntries', user, domfilter, searchquery, **extrafilters
     )
     return chain(domains, extra_domain_entries)
+
+
+def check_if_domain_exists(name):
+    """Check if a domain already exists.
+
+    We not only look for domains, we also look for every object that
+    could conflict with a domain (domain alias, etc.)
+
+    """
+    dtypes = events.raiseQueryEvent('CheckDomainName')
+    for dtype, label in [(DomainAlias, _('domain alias'))] + dtypes:
+        try:
+            dtype.objects.get(name=name)
+        except dtype.DoesNotExist:
+            pass
+        else:
+            return label
+    return None

@@ -196,6 +196,7 @@ def import_account_mailbox(user, account, row):
 @events.observe("AccountAutoCreated")
 def account_auto_created(user):
     from modoboa.core.models import User
+    from modoboa.extensions.admin.lib import check_if_domain_exists
     from modoboa.lib.permissions import grant_access_to_object
 
     if parameters.get_admin("LDAP_CREATE_DOMAIN_MAILBOX", app="core") == "no":
@@ -207,6 +208,9 @@ def account_auto_created(user):
     try:
         domain = Domain.objects.get(name=domname)
     except Domain.DoesNotExist:
+        label = check_if_domain_exists(domname)
+        if label is not None:
+            return
         domain = Domain(name=domname, enabled=True, quota=0)
         domain.save(creator=sadmins[0])
         for su in sadmins[1:]:
