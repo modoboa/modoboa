@@ -198,6 +198,8 @@ def account_auto_created(user):
     from modoboa.core.models import User
     from modoboa.lib.permissions import grant_access_to_object
 
+    if parameters.get_admin("LDAP_CREATE_DOMAIN_MAILBOX", app="core") == "no":
+        return
     localpart, domname = split_mailbox(user.username)
     if user.group != 'SimpleUsers' and domname is None:
         return

@@ -31,6 +31,9 @@ def enabled_applications():
 
 
 class GeneralParametersForm(parameters.AdminParametersForm):
+
+    """General parameters."""
+
     app = "core"
 
     sep1 = SeparatorField(label=ugettext_lazy("Authentication"))
@@ -78,7 +81,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     ldap_server_address = forms.CharField(
         label=ugettext_lazy("Server address"),
         initial="localhost",
-        help_text=ugettext_lazy("The IP address of the DNS name of the LDAP server")
+        help_text=ugettext_lazy(
+            "The IP address of the DNS name of the LDAP server")
     )
 
     ldap_server_port = forms.IntegerField(
@@ -90,7 +94,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     ldap_secured = YesNoField(
         label=ugettext_lazy("Use a secured connection"),
         initial="no",
-        help_text=ugettext_lazy("Use an SSL/TLS connection to access the LDAP server")
+        help_text=ugettext_lazy(
+            "Use an SSL/TLS connection to access the LDAP server")
     )
 
     ldap_auth_method = forms.ChoiceField(
@@ -105,14 +110,20 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     ldap_bind_dn = forms.CharField(
         label=ugettext_lazy("Bind DN"),
         initial='',
-        help_text=ugettext_lazy("The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"),
+        help_text=ugettext_lazy(
+            "The distinguished name to use when binding to the LDAP server. "
+            "Leave empty for an anonymous bind"
+        ),
         required=False
     )
 
     ldap_bind_password = forms.CharField(
         label=ugettext_lazy("Bind password"),
         initial='',
-        help_text=ugettext_lazy("The password to use when binding to the LDAP server (with 'Bind DN')"),
+        help_text=ugettext_lazy(
+            "The password to use when binding to the LDAP server "
+            "(with 'Bind DN')"
+        ),
         widget=forms.PasswordInput(render_value=True),
         required=False
     )
@@ -120,21 +131,29 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     ldap_search_base = forms.CharField(
         label=ugettext_lazy("Users search base"),
         initial="",
-        help_text=ugettext_lazy("The distinguished name of the search base used to find users"),
+        help_text=ugettext_lazy(
+            "The distinguished name of the search base used to find users"
+        ),
         required=False
     )
 
     ldap_search_filter = forms.CharField(
         label=ugettext_lazy("Search filter"),
         initial="(mail=%(user)s)",
-        help_text=ugettext_lazy("An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."),
+        help_text=ugettext_lazy(
+            "An optional filter string (e.g. '(objectClass=person)'). "
+            "In order to be valid, it must be enclosed in parentheses."
+        ),
         required=False
     )
 
     ldap_user_dn_template = forms.CharField(
         label=ugettext_lazy("User DN template"),
         initial="",
-        help_text=ugettext_lazy("The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"),
+        help_text=ugettext_lazy(
+            "The template used to construct a user's DN. It should contain "
+            "one placeholder (ie. %(user)s)"
+        ),
         required=False
     )
 
@@ -147,7 +166,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     ldap_is_active_directory = YesNoField(
         label=ugettext_lazy("Active Directory"),
         initial="no",
-        help_text=ugettext_lazy("Tell if the LDAP server is an Active Directory one")
+        help_text=ugettext_lazy(
+            "Tell if the LDAP server is an Active Directory one")
     )
 
     ldap_admin_groups = forms.CharField(
@@ -169,6 +189,15 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         required=False
     )
 
+    ldap_create_domain_mailbox = YesNoField(
+        label=ugettext_lazy("Domain/mailbox creation"),
+        initial="yes",
+        help_text=ugettext_lazy(
+            "Automatically create a domain and a mailbox when a new user "
+            "is created just after the first successful authentication."
+        )
+    )
+
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
 
     log_maximum_age = forms.IntegerField(
@@ -187,7 +216,9 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Default top redirection"),
         choices=[],
         initial="user",
-        help_text=ugettext_lazy("The default redirection used when no application is specified")
+        help_text=ugettext_lazy(
+            "The default redirection used when no application is specified"
+        )
     )
 
     # Visibility rules
@@ -279,7 +310,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                 "last_name": "sn"
             })
         ldap_uri = 'ldaps://' if values["ldap_secured"] == "yes" else "ldap://"
-        ldap_uri += "%s:%s" % (values["ldap_server_address"], values["ldap_server_port"])
+        ldap_uri += "%s:%s" % (
+            values["ldap_server_address"], values["ldap_server_port"])
         setattr(settings, "AUTH_LDAP_SERVER_URI", ldap_uri)
         setattr(settings, "AUTH_LDAP_GROUP_TYPE", PosixGroupType())
         setattr(settings, "AUTH_LDAP_GROUP_SEARCH", LDAPSearch(

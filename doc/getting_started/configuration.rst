@@ -274,6 +274,14 @@ Modoboa should connect to your LDAP server. They are described just below:
 |                    |                                 |                    |
 |                    |                                 |                    |
 +--------------------+---------------------------------+--------------------+
+|Domain/mailbox      |Automatically create a domain and|yes                 |
+|creation            |a mailbox when a new user is     |                    |
+|                    |created just after the first     |                    |
+|                    |successful authentication. You   |                    |
+|                    |will generally want to disable   |                    |
+|                    |this feature when the relay      |                    |
+|                    |domains extension is in use      |                    |
++--------------------+---------------------------------+--------------------+
 
 
 If you need additional parameters, you will find a detailled
