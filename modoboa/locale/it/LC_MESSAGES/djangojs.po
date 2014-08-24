@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-22 23:16+0100\n"
+"POT-Creation-Date: 2014-08-24 12:32+0200\n"
 "PO-Revision-Date: 2013-12-23 00:58+0100\n"
 "Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: Italiano <LL@li.org>\n"
@@ -108,18 +108,18 @@ msgstr "Rimuovere la casella di posta selezionata?"
 msgid "Mailbox removed"
 msgstr "Casella di posta rimossa"
 
-#: extensions/webmail/static/webmail/js/webmail.js:746
+#: extensions/webmail/static/webmail/js/webmail.js:752
 msgid "Message sent"
 msgstr "Messaggio inviato"
 
-#: extensions/webmail/static/webmail/js/webmail.js:997
+#: extensions/webmail/static/webmail/js/webmail.js:1003
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s file"
 msgstr[1] "%s file"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1031
+#: extensions/webmail/static/webmail/js/webmail.js:1037
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
