@@ -61,13 +61,15 @@ class SQLconnector(object):
 
         """
         if self.user.group == 'SimpleUsers':
-            rcpts = [self.user.email] \
-                    + self.user.mailbox_set.all()[0].alias_addresses
-            flt &= Q(rid__email__in=rcpts)
+            rcpts = [self.user.email]
+            if self.user.mailbox_set.count():
+                rcpts += self.user.mailbox_set.all()[0].alias_addresses
+            return  flt & Q(rid__email__in=rcpts)
         elif not self.user.is_superuser:
             doms = Domain.objects.get_for_admin(self.user)
             regexp = "(%s)" % '|'.join([dom.name for dom in doms])
-            flt &= Q(rid__email__regex=regexp)
+            return flt & Q(rid__email__regex=regexp)
+        return flt
 
     def _apply_extra_search_filter(self, crit, pattern):
         """Apply search filters using additional criterias.
@@ -90,7 +92,7 @@ class SQLconnector(object):
         """
         flt = Q(rs__in=[' ', 'V', 'R', 'p']) \
             if self.navparams.get('viewrequests', '0') != '1' else Q(rs='p')
-        self._apply_msgrcpt_filters(flt)
+        flt = self._apply_msgrcpt_filters(flt)
         pattern = self.navparams.get("pattern", "")
         if pattern:
             criteria = self.navparams.get('criteria')
@@ -226,8 +228,9 @@ class PgSQLconnector(SQLconnector):
         """
         self._where = []
         if self.user.group == 'SimpleUsers':
-            rcpts = [self.user.email] \
-                    + self.user.mailbox_set.all()[0].alias_addresses
+            rcpts = [self.user.email]
+            if self.user.mailbox_set.count():
+                rcpts += self.user.mailbox_set.all()[0].alias_addresses
             self._where.append(
                 "convert_from(maddr.email, 'UTF8') IN (%s)" \
                 % (','.join(["'%s'" % rcpt for rcpt in rcpts])))
@@ -236,6 +239,7 @@ class PgSQLconnector(SQLconnector):
             regexp = "(%s)" % '|'.join([dom.name for dom in doms])
             self._where.append(
                 "convert_from(maddr.email, 'UTF8') ~ '%s'" % regexp)
+        return flt
 
     def _apply_extra_search_filter(self, crit, pattern):
         """Apply search filters using additional criterias.

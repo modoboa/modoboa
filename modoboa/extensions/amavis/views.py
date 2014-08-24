@@ -102,7 +102,9 @@ def viewmail_selfservice(request, mail_id,
 @selfservice(viewmail_selfservice)
 def viewmail(request, mail_id):
     rcpt = request.GET["rcpt"]
-    if request.user.mailbox_set.count():
+    if request.user.email == rcpt:
+        get_connector().set_msgrcpt_status(rcpt, mail_id, 'V')
+    elif request.user.mailbox_set.count():
         mb = Mailbox.objects.get(user=request.user)
         if rcpt == mb.full_address or rcpt in mb.alias_addresses:
             get_connector().set_msgrcpt_status(rcpt, mail_id, 'V')

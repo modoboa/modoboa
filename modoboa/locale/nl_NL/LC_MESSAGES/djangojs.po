@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # TuxBrother <vrijwilligerswerk@wij.rs>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-15 10:16+0100\n"
+"POT-Creation-Date: 2014-08-24 12:33+0200\n"
 "PO-Revision-Date: 2014-04-16 12:58+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/modoboa/language/nl_NL/)\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
+"modoboa/language/nl_NL/)\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: extensions/admin/static/admin/js/admin.js:32
@@ -28,13 +29,17 @@ msgstr "De map van dit domein niet verwijderen (Zal de data ervan behouden)"
 
 #: extensions/admin/static/admin/js/admin.js:173
 msgid "This operation will remove ALL data associated to this domain."
-msgstr "Deze actie zal ALLE data verwijderen die bij dit domein hoort. Wilt u doorgaan?"
+msgstr ""
+"Deze actie zal ALLE data verwijderen die bij dit domein hoort. Wilt u "
+"doorgaan?"
 
 #: extensions/admin/static/admin/js/admin.js:174
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Deze actie zal alle data die bij dit domein hoort verwijderen, behalve de gebruikers."
+msgstr ""
+"Deze actie zal alle data die bij dit domein hoort verwijderen, behalve de "
+"gebruikers."
 
 #: extensions/admin/static/admin/js/admin.js:222
 msgid "No domain administrator defined"
@@ -107,18 +112,18 @@ msgstr "Geselecteerde mailbox verwijderen?"
 msgid "Mailbox removed"
 msgstr "Mailbox verwijderd"
 
-#: extensions/webmail/static/webmail/js/webmail.js:746
+#: extensions/webmail/static/webmail/js/webmail.js:752
 msgid "Message sent"
 msgstr "Bericht verstuurd"
 
-#: extensions/webmail/static/webmail/js/webmail.js:997
+#: extensions/webmail/static/webmail/js/webmail.js:1003
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s bestanden"
 msgstr[1] "%s bestanden"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1031
+#: extensions/webmail/static/webmail/js/webmail.js:1037
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"

@@ -133,6 +133,13 @@ class DomainAliasesMailboxesMap(MapFile):
     sqlite = "(SELECT mb.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_mailbox mb ON mb.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND mb.address='%u') UNION (SELECT al.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_alias al ON al.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND al.address='%u')"
 
 
+class MailboxesSelfAliasesMap(MapFile):
+    filename = "sql-mailboxes-self-aliases.cf"
+    mysql = "SELECT email FROM core_user u INNER JOIN admin_mailbox mb ON mb.user_id=u.id WHERE u.email='%s' AND u.is_active=1"
+    postgres = "SELECT email FROM core_user u INNER JOIN admin_mailbox mb ON mb.user_id=u.id WHERE u.email='%s' AND u.is_active"
+    sqlite = "SELECT email FROM core_user u INNER JOIN admin_mailbox mb ON mb.user_id=u.id WHERE u.email='%s' AND u.is_active=1"
+
+
 class CatchallAliasesMap(MapFile):
     filename = 'sql-catchall-aliases.cf'
     mysql = "(SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.id IN (SELECT al_mb.mailbox_id FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id INNER JOIN admin_alias_mboxes al_mb ON al.id=al_mb.alias_id WHERE al.enabled=1 AND al.address='*' AND dom.name='%d' AND dom.enabled=1)) UNION (SELECT al.extmboxes FROM admin_alias al INNER JOIN admin_domain dom ON al.domain_id=dom.id WHERE al.enabled='1' AND al.extmboxes<>'' AND al.address='*' AND dom.name='%d' AND dom.enabled=1)"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-15 10:16+0100\n"
+"POT-Creation-Date: 2014-08-24 12:32+0200\n"
 "PO-Revision-Date: 2013-06-03 16:32+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -111,18 +111,18 @@ msgstr "¿Eliminar el mailbox seleccionado?"
 msgid "Mailbox removed"
 msgstr "Mailbox eliminado"
 
-#: extensions/webmail/static/webmail/js/webmail.js:746
+#: extensions/webmail/static/webmail/js/webmail.js:752
 msgid "Message sent"
 msgstr "Mensaje enviado"
 
-#: extensions/webmail/static/webmail/js/webmail.js:997
+#: extensions/webmail/static/webmail/js/webmail.js:1003
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s fichero"
 msgstr[1] "%s ficheros"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1031
+#: extensions/webmail/static/webmail/js/webmail.js:1037
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
