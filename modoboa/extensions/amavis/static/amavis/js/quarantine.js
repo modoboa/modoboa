@@ -138,9 +138,16 @@ Quarantine.prototype = {
      * Filter listing by message type (spam, virus, etc.)
      */
     filter_by_type: function(evt) {
-        var msgtype = $(evt.target).html().trim();
+        var $target = $(evt.target);
+        var msgtype;
 
-        if (msgtype != 'All') {
+        if ($target.is("span")) {
+            msgtype = $target.html().trim();
+        } else {
+            msgtype = $target.attr("name").replace("msgtype_", "");
+        }
+
+        if (msgtype != 'all') {
             this.navobj.setparam('msgtype', msgtype);
         } else {
             this.navobj.delparam('msgtype');
