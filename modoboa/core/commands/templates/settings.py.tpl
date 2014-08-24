@@ -162,6 +162,9 @@ MODOBOA_APPS = (
     'modoboa.extensions.stats',
     'modoboa.extensions.sievefilters',
     {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
+
+    # Tools from here
+    #'modoboa.tools.pfxadmin_migrate',
 )
 
 INSTALLED_APPS += MODOBOA_APPS

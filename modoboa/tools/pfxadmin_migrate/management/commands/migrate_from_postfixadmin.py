@@ -56,7 +56,7 @@ import modoboa.core.models as core_models
 import modoboa.extensions.admin.models as admin_models
 from modoboa.lib.emailutils import split_mailbox
 
-from . import models as pf_models
+from modoboa.tools.pfxadmin_migrate import models as pf_models
 
 
 class Command(BaseCommand):
