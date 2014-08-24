@@ -139,7 +139,7 @@ def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
     return chain(domains, extra_domain_entries)
 
 
-def check_if_domain_exists(name):
+def check_if_domain_exists(name, extra_checks=None):
     """Check if a domain already exists.
 
     We not only look for domains, we also look for every object that
@@ -147,7 +147,9 @@ def check_if_domain_exists(name):
 
     """
     dtypes = events.raiseQueryEvent('CheckDomainName')
-    for dtype, label in [(DomainAlias, _('domain alias'))] + dtypes:
+    if extra_checks is not None:
+        dtypes = extra_checks + dtypes
+    for dtype, label in dtypes:
         try:
             dtype.objects.get(name=name)
         except dtype.DoesNotExist:

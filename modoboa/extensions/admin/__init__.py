@@ -208,7 +208,8 @@ def account_auto_created(user):
     try:
         domain = Domain.objects.get(name=domname)
     except Domain.DoesNotExist:
-        label = check_if_domain_exists(domname)
+        label = check_if_domain_exists(
+            domname, [(DomainAlias, _('domain alias'))])
         if label is not None:
             return
         domain = Domain(name=domname, enabled=True, quota=0)

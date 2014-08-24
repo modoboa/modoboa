@@ -72,7 +72,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         cleaned_data = self.cleaned_data
         name = cleaned_data["name"]
-        label = check_if_domain_exists(name)
+        label = check_if_domain_exists(name, [(DomainAlias, _('domain alias'))])
         if label is not None:
             self._errors["name"] = self.error_class(
                 [_("A %s with this name already exists" % unicode(label))]
@@ -85,16 +85,14 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             if cleaned_data[k] == "":
                 del cleaned_data[k]
                 continue
-            for dtype, label in [(Domain, _('domain'))] + dtypes:
-                try:
-                    dtype.objects.get(name=cleaned_data[k])
-                except dtype.DoesNotExist:
-                    continue
+            label = check_if_domain_exists(
+                cleaned_data[k], [(Domain, _('domain'))])
+            if label is not None:
                 self._errors[k] = self.error_class(
                     [_("A %s with this name already exists" % unicode(label))]
                 )
                 del cleaned_data[k]
-                break
+
         return cleaned_data
 
     def update_mailbox_quotas(self, domain):
