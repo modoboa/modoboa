@@ -31,8 +31,10 @@ $(document).ready(function() {
           {% trans "Filter" %}
         </li>
         <li>
-          <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-search"></span>
+            </span>
             <input class="form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
           </div>
         </li>
@@ -50,11 +52,11 @@ $(document).ready(function() {
           <form class="form-horizontal">
             <span id="custom-period">
               <div class="input-group input-group-sm">
-                <div class="input-group-addon"><i class="glyphicon glyphicon-indent-left"></i></div>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-indent-left"></span></div>
                 <input id="id_from" class="col-lg-10 form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
               </div>
               <div class="input-group input-group-sm">
-                <div class="input-group-addon"><i class="glyphicon glyphicon-indent-right"></i></div>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-indent-right"></span></div>
                 <input id="id_to" class="col-lg-10 form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
               </div>
               <button class="btn btn-primary pull-right" id="customsend">{% trans "Apply" %}</button>

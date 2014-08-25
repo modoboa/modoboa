@@ -46,9 +46,8 @@ $(document).ready(function() {
 <div id="quotabox">
   <label class="pull-left navbar-text">{% trans "Mailbox quota" %}</label>
   <div id="quotabar" class="pull-left progress">
-    <div class="{% progress_color quota %}" style="width: {{ quota }}%"></div>
+    <div class="{% progress_color quota %}" role="progressbar" style="width: {{ quota }}%" aria-valuenow="{{ quota }}" aria-valuemin="0" aria-valuemax="100">{{ quota }}%</div>
   </div>
-  <label id="quotaraw" class="pull-left navbar-text">{{ quota }}%</label>
 </div>
 {% endif %}
 {% endblock %}

@@ -67,7 +67,7 @@ def calendar_actions(calendar):
     actions = [{
         "name": "delcalendar",
         "title": _("Delete %s?" % calendar),
-        "img": "icon-trash"
+        "img": "glyphicon glyphicon-trash"
     }]
     if calendar.__class__.__name__ == 'UserCalendar':
         actions[0]["url"] = reverse("user_calendar", args=[calendar.id])

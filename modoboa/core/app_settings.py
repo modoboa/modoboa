@@ -152,6 +152,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "An optional filter string (e.g. '(objectClass=person)'). "
             "In order to be valid, it must be enclosed in parentheses."
         ),
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
@@ -162,6 +163,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "The template used to construct a user's DN. It should contain "
             "one placeholder (ie. %(user)s)"
         ),
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 

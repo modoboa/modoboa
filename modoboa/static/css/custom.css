@@ -261,12 +261,8 @@ label{
     text-decoration: none;
 }
 
-.label .idt{
-        color: gray;
-}
-
 .label{
-    margin-left:1px;
+    margin-left: 1px;
 }
 
 

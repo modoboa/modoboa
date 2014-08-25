@@ -167,9 +167,9 @@ class User(PermissionsMixin):
 
     @property
     def tags(self):
-        return [{"name": "account", "label": _("account"), "type": "label label-default idt"},
+        return [{"name": "account", "label": _("account"), "type": "idt"},
                 {"name": self.group, "label": self.group,
-                 "type": "grp label label-info"}]
+                 "type": "grp", "color": "info"}]
 
     @property
     def fullname(self):

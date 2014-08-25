@@ -111,7 +111,7 @@ if (!Object.keys) {
  * Clean all errors in a given form.
  */
 function clean_form_errors(formid) {
-    $("#" + formid + " div.error").removeClass("error");
+    $("#" + formid + " div.has-error").removeClass("has-error");
     $("#" + formid + " span.help-block").remove();
 }
 
@@ -135,7 +135,7 @@ function display_form_errors(formid, data) {
                 "html": value[0],
                 "id": spanid
             });
-            $widget.parents(".controls").append($span);
+            $widget.parents(".form-group").append($span);
         } else {
             $span.html(value[0]);
         }

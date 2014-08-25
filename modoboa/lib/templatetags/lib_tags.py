@@ -151,7 +151,9 @@ def fromunix(value):
 @register.simple_tag
 def render_tags(tags):
     t = Template("""{% for tag in tags %}
+<span class="label label-{% if tag.color %}{{ tag.color }}{% else %}default{% endif %}">
   <a href="#" class="filter {{ tag.type }}" name="{{ tag.name }}">{{ tag.label }}</a>
+</span>
 {% endfor %}
 """)
     return t.render(Context({"tags": tags}))
