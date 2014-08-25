@@ -36,7 +36,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         url: href
     }).done(function(data) {
         var $div = $('<div />', {
-            id: "modalbox", 'class': "modal", html: data
+            id: "modalbox", 'class': "modal fade", html: data
         });
 
         $div.modal({show: false});

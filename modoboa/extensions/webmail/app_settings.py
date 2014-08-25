@@ -31,7 +31,7 @@ class ParametersForm(AdminParametersForm):
         initial="no",
         help_text=_("Use a secured connection to access IMAP server")
     )
-    
+
     imap_port = forms.IntegerField(
         label=_("Server port"),
         initial=143,
@@ -55,9 +55,9 @@ class ParametersForm(AdminParametersForm):
                  ("ssl", "SSL/TLS")],
         initial="none",
         help_text=_("Use a secured connection to access SMTP server"),
-        widget=forms.Select(attrs={"class": "form-control"})
+        widget=InlineRadioSelect
     )
-    
+
     smtp_port = forms.IntegerField(
         label=_("Server port"),
         initial=25,
@@ -76,7 +76,7 @@ class UserSettings(UserParametersForm):
     app = "webmail"
 
     sep1 = SeparatorField(label=_("Display"))
-    
+
     displaymode = forms.ChoiceField(
         initial="plain",
         label=_("Default message display mode"),

@@ -44,13 +44,13 @@
                 if (!last) {
                     $('input:text:visible:first').focus();
                     this.set_current_title(resp.title);
-                    if (this.options.transition_callbacks[resp.stepid] != undefined) {
+                    if (this.options.transition_callbacks[resp.stepid] !== undefined) {
                         this.options.transition_callbacks[resp.stepid]();
                     }
                     this.$element.carousel('next');
                 } else {
-                    $("#modalbox").modal('hide').remove();
-                    if (this.options.success_callback != undefined) {
+                    $("#modalbox").modal('hide');
+                    if (this.options.success_callback !== undefined) {
                         this.options.success_callback(resp);
                     } else {
                         window.location.reload();
@@ -58,10 +58,10 @@
                 }
             }, this)).fail($.proxy(function(jqxhr) {
                 var resp = $.parseJSON(jqxhr.responseText);
-                if (resp.stepid != undefined) {
+                if (resp.stepid !== undefined) {
                     var stepid = resp.stepid;
                     display_form_errors("step" + stepid, resp);
-                    if (this.options.error_callbacks[stepid] != undefined) {
+                    if (this.options.error_callbacks[stepid] !== undefined) {
                         this.options.error_callbacks[stepid]();
                     }
                     $('input:text:visible:first').focus();
