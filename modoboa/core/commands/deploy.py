@@ -54,7 +54,10 @@ class DeployCommand(Command):
         self._parser.add_argument(
             '--domain', type=str, nargs=1, default=None,
             help='The domain under which you want to deploy modoboa')
-
+        self._parser.add_argument(
+            '--extensions', type=str, nargs='*',
+            help='Deploy with those extensions already enabled'
+        )
 
     def _exec_django_command(self, name, cwd, *args):
         """Run a django command for the freshly created project
@@ -75,7 +78,8 @@ class DeployCommand(Command):
             output = None
         if p.returncode:
             if output:
-                print >> sys.stderr, "\n".join([l for l in output if l is not None])
+                print >> sys.stderr, "\n".join(
+                    [l for l in output if l is not None])
             print >> sys.stderr, "%s failed, check your configuration" % cmd
 
     def ask_db_info(self, name='default'):
@@ -87,8 +91,10 @@ class DeployCommand(Command):
         :param name: the connection name
         """
         print "Configuring database connection: %s" % name
-        info = {'conn_name': name,
-                'ENGINE': raw_input('Database type (mysql, postgres or sqlite3): ')}
+        info = {
+            'conn_name': name,
+            'ENGINE': raw_input('Database type (mysql, postgres or sqlite3): ')
+        }
         if info['ENGINE'] not in ['mysql', 'postgres', 'sqlite3']:
             raise RuntimeError('Unsupported database engine')
 
@@ -103,7 +109,8 @@ class DeployCommand(Command):
             info['ENGINE'] = 'django.db.backends.mysql'
             default_port = 3306
         info['HOST'] = raw_input("Database host (default: 'localhost'): ")
-        info['PORT'] = raw_input("Database port (default: '%s'): " % default_port)
+        info['PORT'] = raw_input(
+            "Database port (default: '%s'): " % default_port)
         # leave port setting empty, if default value is supplied and
         # leave it to django
         if info['PORT'] == default_port:
@@ -131,11 +138,13 @@ class DeployCommand(Command):
 
         if parsed_args.dburl:
             info = dj_database_url.config(default=parsed_args.dburl[0])
-            # In case the user fails to supply a valid database url, fallback to manual mode
+            # In case the user fails to supply a valid database url,
+            # fallback to manual mode
             if not info:
                 print "There was a problem with your database-url. \n"
                 info = self.ask_db_info()
-            #If we set this earlier, our fallback method will never be triggered
+            # If we set this earlier, our fallback method will never
+            # be triggered
             info['conn_name'] = 'default'
         else:
             info = self.ask_db_info()
@@ -144,11 +153,14 @@ class DeployCommand(Command):
 
         if parsed_args.with_amavis:
             if parsed_args.amavis_dburl:
-                amavis_info = dj_database_url.config(default=parsed_args.amavis_dburl[0])
-                # In case the user fails to supply a valid database url, fallback to manual mode
+                amavis_info = dj_database_url.config(
+                    default=parsed_args.amavis_dburl[0])
+                # In case the user fails to supply a valid database
+                # url, fallback to manual mode
                 if not amavis_info:
                     amavis_info = self.ask_db_info('amavis')
-                #If we set this earlier, our fallback method will never be triggered
+                # If we set this earlier, our fallback method will
+                # never be triggered
                 amavis_info['conn_name'] = 'amavis'
             else:
                 amavis_info = self.ask_db_info('amavis')
@@ -199,4 +211,9 @@ class DeployCommand(Command):
         if parsed_args.collectstatic:
             self._exec_django_command(
                 "collectstatic", parsed_args.name, '--noinput'
+            )
+
+        if parsed_args.extensions:
+            self._exec_django_command(
+                "manage_extensions", parsed_args.name, *parsed_args.extensions
             )
