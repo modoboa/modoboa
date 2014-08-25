@@ -91,7 +91,7 @@ def getfs(request, name):
             fs=content
         ))
 
-    menu = '<ul id="fsetmenu" class="nav nav-list"><li class="nav-header">%s</li>%s</ul>' % \
+    menu = '<ul id="fsetmenu" class="nav nav-pills nav-stacked"><li class="nav-header">%s</li>%s</ul>' % \
         (_("Actions"), fset_menu(editormode, name))
     resp = dict(menu=menu, content=htmlcontent)
     return render_to_json_response(resp)

@@ -24,7 +24,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             "Default quota in MB applied to mailboxes. Leave empty to use the "
             "default value."
         ),
-        widget=forms.TextInput(attrs={"class": "span1"})
+        widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
     )
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),
@@ -32,8 +32,12 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=ugettext_lazy(
             "Alias(es) of this domain. Indicate only one name per input, "
             "press ENTER to add a new input."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
     )
+    name = DomainNameField(
+            widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
+        )
 
     class Meta:
         model = Domain
@@ -187,7 +191,7 @@ class DomainFormOptions(forms.Form):
             "The administrator's name. Don't include the domain's name here, "
             "it will be automatically appended."
         ),
-        widget=forms.widgets.TextInput(attrs={"class": "input-small"}),
+        widget=forms.widgets.TextInput(attrs={"class": "form-control input-small"}),
         required=False
     )
 

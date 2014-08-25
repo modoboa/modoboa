@@ -1,13 +1,66 @@
+    /* MEDIA */
+@media (max-width: 400px) {
+    td#subject,
+    td[name='subject']
+    {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 500px) {
+    th#date,
+    td[name="date"],
+    #menubar .Actions{
+        display: none;
+    }
+}
+
+@media (max-width: 770px) {
+    #searchbox{
+        margin-left: 20px;
+    }
+}
+
+@media (max-width: 1198px) {
+    .container-fluid{
+        padding:0;
+    }
+    th#date,
+    td[name="date"]{
+        max-width: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    th#withatts,
+    td[name="withatts"],
+    th#drag,
+    td[name="drag"]{
+        display: none;
+    }
+    #leftcol.leftcol-display-none{
+        display: none;
+    }
+    .display-up-1198-webmail{
+        display: none;
+    }
+    .display-less-1198{
+        display: inherit;
+    }
+
+}
+
+    /* GENERAL */
 body, html {
-    overflow: hidden; 
-    height: 100%;
+    overflow: hidden;
 }
 
 #folders {
     position: fixed;
-    top: 60px;
-    left: 15px;
-    width: 200px;
+    top: 73px;
     overflow-y: auto;
     margin-bottom: 5px;
 }
@@ -37,12 +90,8 @@ body, html {
     width: 8px;
 }
 
-#mboxes_container { 
+#mboxes_container {
     overflow: auto;
-}
-
-#mboxes_container .nav-list .nav-list {
-    padding-right: 0;
 }
 
 #mboxes_container a[name=loadfolder] {
@@ -50,22 +99,6 @@ body, html {
     overflow: hidden;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
-}
-
-#menubar { 
-    position: fixed;
-    left: 215px;
-    right: 0;
-    padding-left: 15px;
-    padding-right: 15px;
-    z-index: 10;
-}
-
-#listing { 
-    position: fixed;
-    left: 215px;
-    right: 0;
-    padding-left: 15px;
 }
 
 #mailcontent {
@@ -76,37 +109,65 @@ body, html {
     height: 100%;
 }
 
-.unseen { 
+.unseen {
     font-weight: bold;
 }
 
-td[name="date"] { 
+td[name="date"] {
     text-align: right;
 }
 
-#quotabar { 
-    margin: 12px 0 0 15px;
-    width: 200px;
+#quotabar {
+    margin: 15px 0 0;
+    width: 190px;
 }
 
-#quotaraw { 
+#quotaraw {
     margin-left: 10px;
+}
+
+
+/*
+ *TOP NAVBAR
+ */
+
+.navbar-header{
+    display: inline-block;
+}
+
+/*
+ *listing
+ */
+#listing{
+    overflow: auto;
+}
+#listing.listing-up-1198{
+    padding-left: 15px;
+}
+#listing.listing-less-1198{
+    bottom: 0px;
+    left: 0px;
+    padding-left: 0px;
+    right: 0;
+    top: 0px;
+    overflow-y: hidden;
+}
+
+#listing .test{
+    overflow-y: scroll;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 41px;
+    bottom: 41px;
 }
 
 /*
  * Mailboxes list
  */
-#mboxactions { 
+#mboxactions {
     position: fixed;
-    padding-left: 14px;
-}
-
-#mboxactions .btn-toolbar { 
-    margin-bottom: 0px;
-}
-
-#folders li { 
-    position: relative;
+    padding-left: 30px;
 }
 
 div.clickbox {
@@ -127,6 +188,14 @@ div.expanded {
     background-repeat: no-repeat;
 }
 
+div#leftcol #mboxes_container .nav .droppable div.clickbox{
+    z-index:800;
+}
+
+li.droppable li{
+    margin-left: 10px;
+}
+
 /*
  * Compose form
  */
@@ -135,23 +204,18 @@ div.expanded {
     padding-bottom: 5px;
 }
 
-#mailheader input { 
-    width: 99%;
-    padding: 2px 0;
-}
-
-#mailheader textarea { 
+#mailheader textarea {
     width: 99%;
     height: 40px;
     padding: 2px 0;
 }
 
-#mailheader label { 
+#mailheader label {
     text-align: left;
 }
 
 #mailheader .options {
-    margin-left: 180px;
+    margin-bottom: 8px;
 }
 
 #add_cc {
@@ -178,21 +242,18 @@ div.expanded {
 }
 
 #body_container {
-    position: absolute;
-    left: 15px;
-    right: 0px;
-    bottom: 15px;
+    position: static;
 }
 
 #id_body {
-    width: 99%;
+    width: 100%;
     height: 100%;
 }
 
 /*
  * Attachments form
  */
-#submit { 
+#submit {
     margin: 0 auto;
 }
 
@@ -205,7 +266,7 @@ div.expanded {
 }
 
 #attachment_list i,
-#attachment_list label { 
+#attachment_list label {
     float: left;
 }
 
@@ -227,22 +288,52 @@ div.expanded {
 /*
  * Folder form
  */
-.modal-body { 
+.modal-body {
     max-height: 300px;
     overflow-y: auto;
 }
 
-#folders2 li { 
+#folders2 li {
     position: relative;
 }
 
 /*
  * Table
  */
-td > input[type=checkbox] {
-    margin: 0;
-}
 
 td[class*=openable] {
     cursor: pointer;
+}
+
+/*
+ *Action buttons
+ */
+
+#menubar .btn-toolbar ul.navbar-right{
+    margin-right: 3%;
+}
+
+#menubar .btn-toolbar .navbar-form{
+    margin: 0px;
+}
+
+#rightcol #menubar #searchbox #searchfield{
+    margin-left:5px;
+}
+
+#menubar .sm-margin-left-back{
+    margin-left: 6px;
+}
+
+#menubar .md-margin-left-back{
+    margin-left: 16px;
+}
+
+
+/*
+ *send mail
+ */
+
+#body_container{
+    height: 600px;
 }

@@ -6,6 +6,7 @@ Listing.prototype = {
     constructor: Listing,
 
     listing_defaults: {
+        presp_container: '#pagination-responsive',
         pbar_container: '#bottom-bar-right',
         pbar_id: '#pagination_bar',
         sortable_selector: '.sortable',
@@ -17,6 +18,8 @@ Listing.prototype = {
         this.tag_handlers = {};
         this.navobj = new History(this.options);
         $(document).on("click", this.options.pbar_container + " a",
+            $.proxy(this.load_page, this));
+        $(document).on("click", this.options.presp_container + " a",
             $.proxy(this.load_page, this));
         if (this.options.with_searchform) {
             this.init_searchform();
@@ -69,6 +72,7 @@ Listing.prototype = {
     update_listing: function(data) {
         if (data.paginbar) {
             $(this.options.pbar_container).html(data.paginbar);
+            $(this.options.presp_container).html(data.paginbar);
             $(this.options.pbar_id).find(".disabled a").click(function(e) {
                 e.preventDefault();
             });
@@ -127,8 +131,8 @@ Listing.prototype = {
     },
 
     make_tag: function(text, type) {
-        var $tag = $("<a />", {"name": type, "class" : "btn btn-mini", "html": text});
-        var $i = $("<i />", {"class" : "icon-remove"}).prependTo($tag);
+        var $tag = $("<a />", {"name": type, "class" : "btn btn-xs", "html": text});
+        var $i = $("<i />", {"class" : "glyphicon glyphicon-remove"}).prependTo($tag);
 
         $tag.click($.proxy(this.remove_tag, this));
         return $tag;

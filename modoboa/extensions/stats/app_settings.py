@@ -13,11 +13,13 @@ class ParametersForm(AdminParametersForm):
     logfile = forms.CharField(
         label=ugettext_lazy("Path to the log file"),
         initial="/var/log/mail.log",
-        help_text=ugettext_lazy("Path to log file used to collect statistics")
+        help_text=ugettext_lazy("Path to log file used to collect statistics"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     rrd_rootdir = forms.CharField(
         label=ugettext_lazy("Directory to store RRD files"),
         initial="/tmp/modoboa",
-        help_text=ugettext_lazy("Path to directory where RRD files are stored")
+        help_text=ugettext_lazy("Path to directory where RRD files are stored"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )

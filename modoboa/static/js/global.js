@@ -40,7 +40,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         });
 
         $div.modal({show: false});
-        $div.one('shown', function() {
+        $div.one('shown.bs.modal', function() {
             $(".selectpicker").selectpicker({
                 container: 'body'
             });
@@ -48,33 +48,30 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
                 container: "#modalbox",
                 trigger: "hover"
             }).click(function(e) {e.preventDefault();});
-            if (modalcb != undefined) {
+            if (modalcb !== undefined) {
                 if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
             }
-        }).on('hidden', function(e) {
+        }).on('hidden.bs.modal', function(e) {
             var $target = $(e.target);
 
             if (!$target.is($(this))) {
                 return;
             }
             $("#modalbox").remove();
-            if (closecb != undefined) {
+            if (closecb !== undefined) {
                 if (typeof closecb === "function") closecb(); else eval(closecb + '()');
             }
         });
         $div.modal('show');
 
-        if (css != undefined) {
+        if (css !== undefined) {
             $div.css(css);
         }
     });
 }
 
 function modalbox_autowidth(e) {
-    modalbox.apply(this, [e, {
-        width: 'auto',
-        'margin-left': function() { return -($(this).width() / 2); }
-    }]);
+    modalbox.apply(this, [e]);
 }
 
 /*
@@ -115,7 +112,7 @@ if (!Object.keys) {
  */
 function clean_form_errors(formid) {
     $("#" + formid + " div.error").removeClass("error");
-    $("#" + formid + " span.help-inline").remove();
+    $("#" + formid + " span.help-block").remove();
 }
 
 /*
@@ -129,12 +126,12 @@ function display_form_errors(formid, data) {
         var spanid = fullid + "-error";
         var $span = $("#" + spanid);
 
-        if (!$widget.parents(".control-group").hasClass("error")) {
-            $widget.parents(".control-group").addClass("error");
+        if (!$widget.parents(".form-group").hasClass("has-error")) {
+            $widget.parents(".form-group").addClass("has-error");
         }
         if (!$span.length) {
             $span = $("<span />", {
-                "class": "help-inline",
+                "class": "help-block",
                 "html": value[0],
                 "id": spanid
             });

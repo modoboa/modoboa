@@ -71,11 +71,11 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block leftcol %}
-<div class="well sidebar-nav">
-  <ul id="menu" class="nav nav-list">
+<div class="well">
+  <ul id="menu" class="nav nav-pills nav-stacked">
     <li class="nav-header">{% trans "Filter sets" %}</li>
-    <li>
-      <select id="curfset" class="span12">
+    <li class="form-group">
+      <select id="curfset" class="form-control">
         {% if active_script %}
         <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
         {% endif %}
@@ -84,7 +84,9 @@ $(document).ready(function() {
         {% endfor %}
       </select>
     </li>
+    {# It will add a li item : #}
     {% sfilters_menu user %}
+
   </ul>
 </div>
 {% endblock %}

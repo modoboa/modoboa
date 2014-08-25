@@ -114,7 +114,7 @@ def pagination_bar(page):
 @register.simple_tag
 def alert(msg, typ):
     t = Template("""<div class="alert alert-{{ type }}">
-<a class="close" data-dismiss="alert">×</a>
+<a class="btn btn-default close" data-dismiss="alert">×</a>
 {{ msg }}
 </div>""")
     return t.render(Context(dict(type=typ, msg=msg)))
@@ -137,10 +137,10 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 def progress_color(value):
     value = int(value)
     if value < 50:
-        return "progress-success"
+        return "progress-bar progress-bar-primary"
     if value < 80:
-        return "progress-warning"
-    return "progress-danger"
+        return "progress-bar progress-bar-warning"
+    return "progress-bar-danger"
 
 
 @register.filter
@@ -151,9 +151,7 @@ def fromunix(value):
 @register.simple_tag
 def render_tags(tags):
     t = Template("""{% for tag in tags %}
-<span class="label{% if tag.color %} label-{{ tag.color }}{% endif %}">
   <a href="#" class="filter {{ tag.type }}" name="{{ tag.name }}">{{ tag.label }}</a>
-</span>
 {% endfor %}
 """)
     return t.render(Context({"tags": tags}))

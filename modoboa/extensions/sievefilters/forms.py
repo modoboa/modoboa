@@ -9,7 +9,9 @@ from modoboa.extensions.admin.templatetags.admin_tags import gender
 
 
 class FiltersSetForm(forms.Form):
-    name = forms.CharField()
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
     active = forms.BooleanField(
         label=gender("Active", "m"), required=False,
         initial=False,
@@ -31,7 +33,7 @@ class CustomRadioInput(RadioInput):
             label_for = ''
         choice_label = conditional_escape(force_unicode(self.choice_label))
         return mark_safe(
-            u'<label%s class="radio inline">%s %s</label>'
+            u'<label%s">%s %s</label>'
             % (label_for, self.tag(), choice_label)
         )
 
@@ -57,13 +59,13 @@ class FilterForm(forms.Form):
     def __init__(self, conditions, actions, request, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)
 
-        self.fields["name"] = forms.CharField(label=_("Name"))
+        self.fields["name"] = forms.CharField(label=_("Name"), widget=forms.TextInput(attrs={"class": "form-control"}))
         self.fields["match_type"] = forms.ChoiceField(
             choices=[("allof", _("All of the following")),
                      ("anyof", _("Any of the following")),
                      ("all", _("All messages"))],
             initial="anyof",
-            widget=CustomRadioSelect(attrs={"class": "radio inline"})
+            widget=CustomRadioSelect(attrs={"class": "checkbox-inline", "type": "checkbox"})
         )
 
         self.header_operators = [
@@ -117,12 +119,12 @@ class FilterForm(forms.Form):
                 if op != opdef[0]:
                     continue
                 if opdef[2] in ["string", "number"]:
-                    vfield = forms.CharField(max_length=255, initial=value)
+                    vfield = forms.CharField(max_length=255, initial=value, widget=forms.TextInput(attrs={"class": "form-control"}))
 
         self.fields["cond_target_%d" % self.conds_cnt] = \
-            forms.ChoiceField(initial=name, choices=targets)
+            forms.ChoiceField(initial=name, choices=targets, widget=forms.Select(attrs={"class": "form-control"}))
         self.fields["cond_operator_%d" % self.conds_cnt] = \
-            forms.ChoiceField(initial=op, choices=ops)
+            forms.ChoiceField(initial=op, choices=ops, widget=forms.Select(attrs={"class": "form-control"}))
         self.fields["cond_value_%d" % self.conds_cnt] = vfield
         self.conds_cnt += 1
 
@@ -149,15 +151,15 @@ class FilterForm(forms.Form):
             if name == tpl["name"]:
                 args = tpl["args"]
         self.fields["action_name_%d" % self.actions_cnt] = \
-            forms.ChoiceField(initial=name, choices=actions)
+            forms.ChoiceField(initial=name, choices=actions, widget=forms.Select(attrs={"class": "form-control"}))
         for cnt in xrange(0, len(args)):
             arg = args[cnt]
             aname = "action_arg_%d_%d" % (self.actions_cnt, cnt)
             if arg["type"] == "string":
-                self.fields[aname] = forms.CharField(max_length=255, initial=value)
+                self.fields[aname] = forms.CharField(max_length=255, initial=value, widget=forms.TextInput(attrs={"class": "form-control"}))
             elif arg["type"] == "list":
                 choices = getattr(self, arg["vloader"])(request)
-                self.fields[aname] = forms.ChoiceField(initial=value, choices=choices)
+                self.fields[aname] = forms.ChoiceField(initial=value, choices=choices, widget=forms.Select(attrs={"class": "form-control"}))
         self.actions_cnt += 1
 
     def _build_redirect_field(self, request, value):

@@ -1,27 +1,40 @@
-<div id="pagination_bar" class="simplepagination pull-right">
+<div id="pagination_bar" class="simplepagination">
   <ul>
-    <li>      
+    <li>
       {% if page.has_previous %}<a href="{{ baseurl }}page=1">
-        <i class="icon-white icon-fast-backward"></i></a>{% else %}
-      <i class="icon-white icon-fast-backward"></i>{% endif %}      
+        <i class="glyphicon glyphicon-fast-backward"></i></a>{% else %}
+      <i class="glyphicon glyphicon-fast-backward"></i>{% endif %}
     </li>
-    <li>      
+    <li>
       {% if page.has_previous %}<a href="{{ baseurl }}page={{ page.previous_page_number }}">
-      <i class="icon-step-backward icon-white"></i></a>{% else %}
-      <i class="icon-step-backward icon-white"></i>{% endif %}
+      <i class="glyphicon glyphicon-step-backward"></i></a>{% else %}
+      <i class="glyphicon glyphicon-step-backward"></i>{% endif %}
     </li>
     <li class="disabled navbar-text">
       {{ page.number }}/{{ page.paginator.num_pages }}
     </li>
     <li>
       {% if page.has_next %}<a href="{{ baseurl }}page={{ page.next_page_number }}">
-      <i class="icon-step-forward icon-white"></i></a>{% else %}
-      <i class="icon-step-forward icon-white"></i>{% endif %}
+      <i class="glyphicon glyphicon-step-forward"></i></a>{% else %}
+      <i class="glyphicon glyphicon-step-forward"></i>{% endif %}
     </li>
     <li>
       {% if page.has_next %}<a href="{{ baseurl }}page={{ page.paginator.num_pages }}">
-      <i class="icon-fast-forward icon-white"></i></a>{% else %}
-      <i class="icon-fast-forward icon-white"></i>{% endif %}
+      <i class="glyphicon glyphicon-fast-forward"></i></a>{% else %}
+      <i class="glyphicon glyphicon-fast-forward"></i>{% endif %}
     </li>
   </ul>
+</div>
+
+<div class="display-less-1198 pull-right">
+    {% if page.has_previous %}
+        <a href="{{ baseurl }}page={{ page.previous_page_number }}" class="btn btn-lg btn-link glyphicon glyphicon-chevron-left" type="button"></a>
+    {% else %}
+        <a class="btn btn-lg btn-link glyphicon glyphicon-chevron-left" type="button"></a>
+    {% endif %}
+    {% if page.has_next %}
+        <a href="{{ baseurl }}page={{ page.next_page_number }}" class="btn btn-lg btn-link glyphicon glyphicon-chevron-right" type="button"></a>
+    {% else %}
+        <a class="btn btn-lg btn-link glyphicon glyphicon-chevron-right" type="button"></a>
+    {% endif %}
 </div>

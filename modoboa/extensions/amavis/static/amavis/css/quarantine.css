@@ -1,8 +1,36 @@
-#menubar { 
-    position: fixed;
+@media (max-width: 400px){
+    th#rstatus,
+    td[name='rstatus'],
+    th#type,
+    td[name='type']{
+        display: none;
+    }
+}
+@media (max-width: 600px){
+    th#subject,
+    td[name='subject']{
+        display: none;
+    }
+}
+@media (max-width: 767px){
+    th#to,
+    td[name='to']{
+        display: none;
+    }
+}
+
+@media (max-width: 990px){
+    #filters_bar,
+    th#date,
+    td[name='date']{
+        display: none;
+    }
+}
+
+#menubar {
     top: 60px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 6px;
+    padding-bottom:10px;
     left: 0;
     right: 0;
     z-index: 10;
@@ -12,11 +40,21 @@
     margin: 0;
 }
 
-#listing { 
-    position: fixed;
-    padding: 0 15px;
-    right: 0;
+#listing.fluid-content-quarantine{
+    position: relative;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 56.25%; /* proportion value to aspect ratio 16:9 (9 / 16 = 0.5625 or 56.25%) */
+}
+
+
+#listing.fluid-content-quarantine iframe {
+    position: absolute;
+    top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 #mailcontent {
@@ -27,29 +65,22 @@
     height: 100%;
 }
 
-#emails tbody tr:hover { 
+#emails tbody tr:hover {
     color: #0088cc;
 }
 
-#filters_bar {
-    /*padding-top: 5px;*/
-    padding-left: 15px;
-}
+
 
 thead tr {
     position: relative;
     z-index: 1;
 }
 
-td > input[type=checkbox] {
-    margin: 0;
-}
-
 td[name=type] span {
     cursor: pointer;
 }
 
-td.unseen { 
+td.unseen {
     font-weight: bold;
 }
 

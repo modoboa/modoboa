@@ -9,5 +9,6 @@ class AdminParametersForm(parameters.AdminParametersForm):
     master_cf_path = forms.CharField(
         label=ugettext_lazy("Postfix's master.cf path"),
         initial="/etc/postfix/master.cf",
-        help_text=ugettext_lazy('Path to the master.cf configuration file')
+        help_text=ugettext_lazy('Path to the master.cf configuration file'),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )

@@ -58,7 +58,7 @@ class Domain(AdminObject):
 
     @property
     def tags(self):
-        return [{"name": "domain", "label": _("Domain"), "type": "dom"}]
+        return [{"name": "domain", "label": _("Domain"), "type": "label label-default dom"}]
 
     @property
     def admins(self):

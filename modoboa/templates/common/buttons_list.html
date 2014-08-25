@@ -1,12 +1,17 @@
 {% load lib_tags %}
-<div class="btn-toolbar {{ extraclasses }}">{% for entry in entries %}
-  <div class="btn-group">{% if entry.menu %}
-    <a class="btn dropdown-toggle" data-toggle="dropdown">{% if entry.img %}<i class="{{ entry.img}}"></i>{% endif %}{{ entry.label }} <span class="caret"></span></a>  
-    <ul class="dropdown-menu">{% for sentry in entry.menu %}
-      <li>{% render_link sentry %}</li>
-      {% endfor %}</ul>
-    {% else %}{% render_link entry "btn" %}{% endif %}
-  </div>
-{% endfor %}{% block extracontent %}{% endblock %}
-</div>
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="btn-toolbar {{ extraclasses }}">{% for entry in entries %}
+                <ul class="nav navbar-nav action-buttons btn-group">{% if entry.menu %}
+                    <a class="btn btn-default dropdown-toggle {{ entry.label }}" data-toggle="dropdown">{% if entry.img %}<i class="{{ entry.img}}"></i>{% endif %}{{ entry.label }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">{% for sentry in entry.menu %}
+                      <li>{% render_link sentry %}</li>
+                      {% endfor %}</ul>
+                    {% else %}{% render_link entry "btn" %}{% endif %}
+                </ul>
+                {% endfor %}
+                <ul class="nav navbar-nav action-buttons navbar-right">
+                    {% block extracontent %}{% endblock %}
+                </ul>
+            </div>
 

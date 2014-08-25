@@ -83,13 +83,13 @@
             evt.preventDefault();
             var step_id = this.get_current_step_id();
             this.titles[step_id] = this.get_current_title();
-            this.$element.on('slid', this.update_buttons);
+            this.$element.on('slid.bs.carousel', this.update_buttons);
             this.post(false);
         },
 
         prev: function(evt) {
             evt.preventDefault();
-            this.$element.on('slid', this.update_buttons);
+            this.$element.on('slid.bs.carousel', this.update_buttons);
             this.$element.carousel('prev');
             this.set_current_title(this.titles[this.get_current_step_id()]);
         },

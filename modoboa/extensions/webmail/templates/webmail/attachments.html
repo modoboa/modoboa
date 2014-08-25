@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block modalbody %}
 {{ block.super }}
-<div id="test" style="text-align: center">
+<div id="test" class="col-lg-offset-1 col-md-offset-2 col-sm-offset-2">
 <input type="button" class="btn btn-primary" id="submit" name="submit" value="{% trans 'Attach' %}" />
 </div>
 <div id="upload_status" style="display:none">
@@ -12,10 +12,10 @@
         style="width:0;height:0;border:0px solid #fff;"></iframe>
 <div class="well" id="attachment_list">
 {% for att in attachments %}
-<div class="row-fluid">
+<div class="row">
   <a href="{% url 'modoboa.extensions.webmail.views.delattachment' %}?name={{ att.tmpname }}"
      name="delattachment">
-    <i class="icon-remove"></i>
+    <i class="glyphicon glyphicon-remove"></i>
   </a>
   <label>{{ att.fname }}</label>
 </div>

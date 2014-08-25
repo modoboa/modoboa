@@ -22,20 +22,29 @@ class AccountFormGeneral(forms.ModelForm):
         help_text=ugettext_lazy(
             "The user's name. Must be a valid e-mail address for simple users "
             "or administrators with a mailbox."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
         choices=[('', ugettext_lazy("Choose"))],
-        help_text=ugettext_lazy("What level of permission this user will have")
+        help_text=ugettext_lazy("What level of permission this user will have"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )
     password1 = forms.CharField(
-        label=ugettext_lazy("Password"), widget=forms.PasswordInput
+        label=ugettext_lazy("Password"),
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     password2 = forms.CharField(
         label=ugettext_lazy("Confirmation"),
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
         help_text=ugettext_lazy("Enter the same password as above, for verification.")
+    )
+    first_name= forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+    last_name= forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
     class Meta:
@@ -51,7 +60,8 @@ class AccountFormGeneral(forms.ModelForm):
         if user.group == "DomainAdmins":
             self.fields["role"] = forms.CharField(
                 label="",
-                widget=forms.HiddenInput, required=False
+                widget=forms.HiddenInput(attrs={"class": "form-control"}),
+                required=False
             )
         else:
             self.fields["role"].choices = [('', ugettext_lazy("Choose"))]
@@ -127,7 +137,7 @@ class AccountFormGeneral(forms.ModelForm):
 
 
 class AccountFormMail(forms.Form, DynamicForm):
-    email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
+    email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
@@ -135,7 +145,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                     "use domain's default one. Leave empty to define an "
                     "unlimited value (not allowed for domain "
                     "administrators)."),
-        widget=forms.widgets.TextInput(attrs={"class": "span1"})
+        widget=forms.widgets.TextInput(attrs={"class": "col-md-1 form-control"})
     )
     quota_act = forms.BooleanField(required=False)
     aliases = forms.EmailField(
@@ -145,7 +155,8 @@ class AccountFormMail(forms.Form, DynamicForm):
             "Alias(es) of this mailbox. Indicate only one address per input, "
             "press ENTER to add a new input. Use the '*' character to create "
             "a 'catchall' alias (ex: *@domain.tld)."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     def __init__(self, *args, **kwargs):

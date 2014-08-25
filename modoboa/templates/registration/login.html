@@ -19,21 +19,36 @@
   </head>
   <body>
     <div class="container">
-      <div id="box">
+      <div id="box" class="col-lg-9 col-lg-offset-1">
       <div id="logo" class="row">
-        <img src="{% get_modoboa_logo %}" />
+          <ul class="thumbnails">
+              <li>
+                  <div class="col-lg-offset-4 col-lg-5 col-md-offset-4 col-md-5 col-sm-offset-4 col-sm-5">
+                      <a href="#" class="thumbnail">
+                          <img src="{% get_modoboa_logo %}" />
+                      </a>
+                  </div>
+              </li>
+          </ul>
       </div>
-      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}"
-            class="login-form well">
+      <div class=" divider"></div>
+      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}" class="login-form form-horizontal">
         {% csrf_token %}
         {% render_field form.username %}
         {% render_field form.password %}
         <input type="hidden" name="next" value="{{ next }}" />
-        <div class="form-actions">
-          <label class="pull-left checkbox" for="id_rememberme">
-            <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
-          </label>
-          <button class="btn btn-primary pull-right" type="submit">{% trans "Log in" %}</button>
+        <div class="form-group">
+            <div class="control-label col-lg-4 col-md-4 col-sm-4 ">
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5">
+            <div class="checkbox">
+              <label class="checkbox" for="id_rememberme">
+                  <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
+              </label>
+
+                <button class="btn btn-primary col-lg-12" type="submit">{% trans "Log in" %}</button>
+            </div>
+            </div>
         </div>
       </form>
       <div class="login-error">
@@ -41,7 +56,7 @@
       </div>
       </div>
       {% for annoucement in annoucements %}
-      <div class="offset3 span5 well">{{ annoucement|safe }}</div>
+      <div class="col-lg-offset-3 col-lg-5 well">{{ annoucement|safe }}</div>
       {% endfor %}
      </body>
 </html>

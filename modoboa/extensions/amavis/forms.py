@@ -15,9 +15,9 @@ class DomainPolicyForm(forms.ModelForm):
         widgets = {
             'bypass_virus_checks': InlineRadioSelect(),
             'bypass_spam_checks': InlineRadioSelect(),
-            'spam_tag2_level': forms.TextInput(attrs={'class': 'span1'}),
-            'spam_kill_level': forms.TextInput(attrs={'class': 'span1'}),
-            'spam_subject_tag2': forms.TextInput(attrs={'class': 'span2'}),
+            'spam_tag2_level': forms.TextInput(attrs={'class': 'col-md-1 form-control'}),
+            'spam_kill_level': forms.TextInput(attrs={'class': 'col-md-1 form-control'}),
+            'spam_subject_tag2': forms.TextInput(attrs={'class': 'col-md-2 form-control'}),
             'bypass_banned_checks': InlineRadioSelect(),
         }
 

@@ -9,8 +9,7 @@
       {% if entry.img %}<i class="{{ entry.img }}"></i>{% endif %}
       {{ entry.label }}
     </a>
-    <ul class="dropdown-menu"
-        {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
+    <ul class="dropdown-menu" {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
       {% for sentry in entry.menu %}
       <li>{% render_link sentry %}</li>
       {% endfor %}

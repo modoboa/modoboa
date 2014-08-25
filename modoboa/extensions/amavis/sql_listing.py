@@ -51,7 +51,7 @@ class Qtable(tables.Table):
     ]
 
     def parse_type(self, value):
-        color = 'important' if value in ['S', 'V'] else 'warning'
+        color = 'danger' if value in ['S', 'V'] else 'warning'
         return '<span class="label label-%s">%s</span>' % (color, value)
 
     def parse_date(self, value):

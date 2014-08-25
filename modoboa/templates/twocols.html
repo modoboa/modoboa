@@ -1,8 +1,8 @@
 {% extends "fluid.html" %}
 {% load core_tags %}
 {% block rowcontent %}
-<div class="span2">{% block leftcol %}{% endblock %}</div>
-<div class="span10">
+<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">{% block leftcol %}{% endblock %}</div>
+<div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
   {% if messages %}{% display_messages messages %}{% endif %}
   {% block apparea %}{% endblock %}
 </div>

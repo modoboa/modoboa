@@ -33,7 +33,7 @@ def extra_domain_menu_entries(user):
     return [
         {"name": "newrelaydomain",
          "label": ugettext_lazy("Add relay domain"),
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "modal": True,
          "modalcb": "rdomain.domainform_cb",
          "url": reverse(
@@ -82,7 +82,7 @@ def rdomain_actions(user, domain):
         "url": reverse("modoboa.extensions.postfix_relay_domains.views.delete",
                        args=[domain.id]),
         "title": ugettext_lazy("Delete %s?" % domain.name),
-        "img": "icon-trash"
+        "img": "glyphicon glyphicon-trash"
     }]
 
 

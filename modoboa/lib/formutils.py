@@ -368,7 +368,7 @@ class CustomRadioInput(RadioInput):
             label_for = ''
         choice_label = conditional_escape(force_unicode(self.choice_label))
         return mark_safe(
-            u'<label class="radio inline" %s>%s %s</label>'
+            u'<label class="radio-inline" %s>%s %s</label>'
             % (label_for, self.tag(), choice_label)
         )
 

@@ -13,7 +13,8 @@ class ParametersForm(AdminParametersForm):
     autoreplies_timeout = forms.IntegerField(
         label=ugettext_lazy("Automatic reply timeout"),
         initial=86400,
-        help_text=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient")
+        help_text=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     default_subject = forms.CharField(
@@ -21,7 +22,8 @@ class ParametersForm(AdminParametersForm):
         initial=ugettext_lazy("I'm off"),
         help_text=ugettext_lazy(
             "Default subject used when an auto-reply message is created automatically"
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     default_content = forms.CharField(
@@ -37,7 +39,7 @@ Best regards,
             "automatically. The '%(name)s' macro will be replaced by the "
             "user's full name."
         ),
-        widget=forms.widgets.Textarea
+        widget=forms.widgets.Textarea(attrs={"class": "form-control"})
     )
 
     def clean_default_content(self):

@@ -17,14 +17,16 @@ class AliasForm(forms.ModelForm, DynamicForm):
         help_text=ugettext_lazy(
             "The distribution list address. Use the '*' character to create a "
             "'catchall' address (ex: *@domain.tld)."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
     recipients = forms.EmailField(
         label=ugettext_lazy("Recipients"), required=False,
         help_text=ugettext_lazy(
             "Mailbox(es) this alias will point to. Indicate only one address "
             "per input, press ENTER to add a new input."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     class Meta:

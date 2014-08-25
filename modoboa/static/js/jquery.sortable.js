@@ -51,7 +51,7 @@
                  }
              }
              this.$element.append($("<i/>", {
-                 "class": "sort-selection icon-chevron-" + ((dir == 'asc') ? 'up' : 'down')
+                 "class": "sort-selection glyphicon glyphicon-chevron-" + ((dir == 'asc') ? 'up' : 'down')
              }));
              return dir;
          }

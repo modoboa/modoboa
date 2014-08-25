@@ -8,7 +8,7 @@ body{margin:5px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-siz
 .alert-heading{color:inherit;}
 .alert .close{position:relative;top:-2px;right:-21px;line-height:18px;}
 .alert-success{background-color:#dff0d8;border-color:#d6e9c6;color:#468847;}
-.alert-danger,.alert-error{background-color:#f2dede;border-color:#eed3d7;color:#b94a48;}
+.alert-danger{background-color:#f2dede;border-color:#eed3d7;color:#b94a48;}
 .alert-info{background-color:#d9edf7;border-color:#bce8f1;color:#3a87ad;}
 .alert-block{padding-top:14px;padding-bottom:14px;}
 .alert-block>p,.alert-block>ul{margin-bottom:0;}
@@ -49,6 +49,6 @@ pre {
     margin-left: 10px;
     margin-right: 20px;
     font-weight: bold;
-    width: 7.5%;
+    width: 13.5%;
     padding: 0 0 2px 0;
 }

@@ -37,45 +37,79 @@
     {% extra_static_content "top" user %}
     {% block html_head %}{% endblock %}
   </head>
-
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+    <div class="navbar navbar-inverse top-navbar" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button class="navbar-toggle" data-target="#navigate-navbar-collapse" data-toggle="collapse" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="">Mailbox</span>
           </button>
-          <div class="nav-collapse collapse">
-            <ul class="nav">{% if selection %}
-              {% extensions_menu selection user %}{% core_menu selection user %}
-              {% else %}{% extensions_menu "" user %}{% core_menu "" user %}{% endif %}
-              {% load_optionalmenu user %}
-            </ul>
-          </div>
-          <ul class="nav pull-right">
+        </div>
+
+        <div id="pagination-responsive" class="pull-right">
+
+        </div>
+
+        <div id="navigate-navbar-collapse" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav display-less-1198">
+            <li class="droppable active ui-droppable" name="INBOX">
+              <a class="block" name="loadfolder" href="INBOX">
+                <i class="glyphicon glyphicon-inbox"></i>
+                INBOX
+              </a>
+            </li>
+            <li class="droppable ui-droppable" name="Drafts">
+              <a class="block" name="loadfolder" href="Drafts">
+                <i class="glyphicon glyphicon-file"></i>
+                Drafts
+              </a>
+            </li>
+            <li class="droppable ui-droppable" name="Junk">
+              <a class="block" name="loadfolder" href="Junk">
+                <i class="glyphicon glyphicon-fire"></i>
+                Junk
+              </a>
+            </li>
+            <li class="droppable ui-droppable" name="Sent">
+              <a class="block" name="loadfolder" href="Sent">
+                <i class="glyphicon glyphicon-envelope"></i>
+                Sent
+              </a>
+            </li>
+            <li class="droppable ui-droppable" name="Trash">
+              <a class="block" name="loadfolder" href="Trash">
+                <i class="glyphicon glyphicon-trash"></i>
+                Trash
+              </a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav display-up-1198-webmail">{% if selection %}
+            {% extensions_menu selection user %}{% core_menu selection user %}
+            {% else %}{% extensions_menu "" user %}{% core_menu "" user %}{% endif %}
+            {% load_optionalmenu user %}
+            <li class="divider"></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
             {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
           </ul>
           <div class="pull-right">{% include "common/top_notifications.html" %}</div>
         </div>
       </div>
-    </div>    
+    </div>
     {% block content %}{% endblock %}
-    <div id="bottom-bar" class="navbar navbar-inverse navbar-fixed-bottom">
-      <div class="navbar-inner">
+    <div class="display-up-1198 nav-bottom">
+      <div id="bottom-bar" class="navbar navbar-inverse navbar-fixed-bottom">
         <div class="container-fluid">
-          <div class="row-fluid">
-          <div id="bottom-bar-left" class="span4">
+          <div id="bottom-bar-left" class="col-lg-4 col-md-4 col-sm-4 col-xs-0">
             {% block footerleft %}{% endblock %}
           </div>
-          <div id="bottom-bar-middle" class="span4">
+          <div id="bottom-bar-middle" class="col-lg-4 col-md-4 col-sm-4 col-xs-0 col-xs-offset-0">
             <p class="navbar-text"><i>{% trans "Powered by Modoboa" %}</i></p>
             {% block footermiddle %}{% endblock %}
           </div>
-          <div id="bottom-bar-right" class="span4 nav-collapse">
+          <div id="bottom-bar-right" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             {% block footerright %}{% endblock %}
-          </div>
           </div>
         </div>
       </div>

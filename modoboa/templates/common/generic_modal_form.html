@@ -1,7 +1,7 @@
 {% extends "common/generic_modal.html" %}
 {% load lib_tags %}
 {% block modalbody %}
-{% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
 <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 
       method="POST" id="{{ formid }}" name="{{ formid }}"
       target="{{ target }}">{% csrf_token %}

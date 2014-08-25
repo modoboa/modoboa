@@ -44,7 +44,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ('ldap', "LDAP")],
         initial="local",
         help_text=ugettext_lazy("The backend used for authentication"),
-        widget=InlineRadioSelect
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     password_scheme = forms.ChoiceField(
@@ -57,7 +57,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ("crypt", ugettext_lazy("crypt (weak)")),
                  ("plain", ugettext_lazy("plain (weak)"))],
         initial="sha512crypt",
-        help_text=ugettext_lazy("Scheme used to crypt mailbox passwords")
+        help_text=ugettext_lazy("Scheme used to crypt mailbox passwords"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     rounds_number = forms.IntegerField(
@@ -66,13 +67,15 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy(
             "Number of rounds to use (only used by sha256crypt and "
             "sha512crypt). Must be between 1000 and 999999999, inclusive."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     secret_key = forms.CharField(
         label=ugettext_lazy("Secret key"),
         initial=random_key(),
-        help_text=ugettext_lazy("Key used to encrypt/decrypt passwords")
+        help_text=ugettext_lazy("Key used to encrypt/decrypt passwords"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     # LDAP specific settings
@@ -82,13 +85,15 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Server address"),
         initial="localhost",
         help_text=ugettext_lazy(
-            "The IP address of the DNS name of the LDAP server")
+            "The IP address of the DNS name of the LDAP server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_server_port = forms.IntegerField(
         label=ugettext_lazy("Server port"),
         initial=389,
-        help_text=ugettext_lazy("The TCP port number used by the LDAP server")
+        help_text=ugettext_lazy("The TCP port number used by the LDAP server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_secured = YesNoField(
@@ -104,7 +109,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ('directbind', ugettext_lazy("Direct bind"))],
         initial='searchbind',
         help_text=ugettext_lazy("Choose the authentication method to use"),
-        widget=InlineRadioSelect
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     ldap_bind_dn = forms.CharField(
@@ -114,7 +119,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "The distinguished name to use when binding to the LDAP server. "
             "Leave empty for an anonymous bind"
         ),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_bind_password = forms.CharField(
@@ -124,7 +130,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "The password to use when binding to the LDAP server "
             "(with 'Bind DN')"
         ),
-        widget=forms.PasswordInput(render_value=True),
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control"}, render_value=True),
         required=False
     )
 
@@ -134,7 +141,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy(
             "The distinguished name of the search base used to find users"
         ),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_search_filter = forms.CharField(
@@ -144,7 +152,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "An optional filter string (e.g. '(objectClass=person)'). "
             "In order to be valid, it must be enclosed in parentheses."
         ),
-        required=False
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_user_dn_template = forms.CharField(
@@ -154,13 +162,14 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "The template used to construct a user's DN. It should contain "
             "one placeholder (ie. %(user)s)"
         ),
-        required=False
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_password_attribute = forms.CharField(
         label=ugettext_lazy("Password attribute"),
         initial="userPassword",
-        help_text=ugettext_lazy("The attribute used to store user passwords")
+        help_text=ugettext_lazy("The attribute used to store user passwords"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_is_active_directory = YesNoField(
@@ -177,7 +186,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "Members of those LDAP Posix groups will be created as domain "
             "administrators. Use ';' characters to separate groups."
         ),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_groups_search_base = forms.CharField(
@@ -186,7 +196,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy(
             "The distinguished name of the search base used to find groups"
         ),
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_create_domain_mailbox = YesNoField(
@@ -203,7 +214,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     top_notifications_check_interval = forms.IntegerField(
         label=_("Top notifications check interval"),
         initial=30,
-        help_text=_("Interval between two top notification checks")
+        help_text=_("Interval between two top notification checks"),
+        widget=forms.NumberInput(attrs={"class": "form-control"})
     )
 
     check_new_versions = YesNoField(
@@ -216,13 +228,15 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     log_maximum_age = forms.IntegerField(
         label=ugettext_lazy("Maximum log record age"),
         initial=365,
-        help_text=ugettext_lazy("The maximum age in days of a log record")
+        help_text=ugettext_lazy("The maximum age in days of a log record"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     items_per_page = forms.IntegerField(
         label=ugettext_lazy("Items per page"),
         initial=30,
-        help_text=ugettext_lazy("Number of displayed items per page")
+        help_text=ugettext_lazy("Number of displayed items per page"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     default_top_redirection = forms.ChoiceField(
@@ -232,6 +246,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy(
             "The default redirection used when no application is specified"
         )
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     # Visibility rules
@@ -369,5 +384,6 @@ class UserSettings(parameters.UserParametersForm):
                  ("fr", "français"), ("it", "italiano"),
                  ("nl", "nederlands"), ("pt", "português"),
                  ("ru", "русский"), ("sv", "svenska")],
-        help_text=ugettext_lazy("Prefered language to display pages")
+        help_text=ugettext_lazy("Prefered language to display pages"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )

@@ -11,7 +11,7 @@ register = template.Library()
 def sfilters_menu(user):
     entries = [
         {"name": "newfilterset",
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "label": _("New filters set"),
          "url": reverse("modoboa.extensions.sievefilters.views.new_filters_set"),
          "modal": True,
@@ -29,7 +29,7 @@ def fset_menu(mode, setname):
     if mode == "gui":
         entries += [
             {"name": "newfilter",
-             "img": "icon-plus",
+             "img": "glyphicon glyphicon-plus",
              "label": _("New filter"),
              "url": reverse("modoboa.extensions.sievefilters.views.newfilter",
                              args=[setname]),
@@ -40,7 +40,7 @@ def fset_menu(mode, setname):
     if mode == "raw":
         entries += [
             {"name": "savefs",
-             "img": "icon-download-alt",
+             "img": "glyphicon glyphicon-download-alt",
              "label": _("Save filters set"),
              "url": reverse("modoboa.extensions.sievefilters.views.savefs",
                              args=[setname])},
@@ -48,17 +48,17 @@ def fset_menu(mode, setname):
 
     entries += [
         {"name": "activatefs",
-         "img": "icon-ok",
+         "img": "glyphicon glyphicon-ok",
          "label": _("Activate filters set"),
          "url": reverse("modoboa.extensions.sievefilters.views.activate_filters_set",
                          args=[setname])},
         {"name": "removefs",
-         "img": "icon-trash",
+         "img": "glyphicon glyphicon-trash",
          "label": _("Remove filters set"),
          "url": reverse("modoboa.extensions.sievefilters.views.remove_filters_set",
                          args=[setname])},
         {"name": "downloadfs",
-         "img": "icon-download",
+         "img": "glyphicon glyphicon-download",
          "label": _("Download"),
          "url": reverse("modoboa.extensions.sievefilters.views.download_filters_set",
                          args=[setname])}
@@ -74,7 +74,7 @@ def filter_actions(setname, f, position, islast):
         {"name": "editfilter",
          "url": reverse("modoboa.extensions.sievefilters.views.editfilter",
                          args=[setname, f["name"]]),
-         "img": "icon-edit",
+         "img": "glyphicon glyphicon-edit",
          "title": _("Edit filter"),
          "modal": True,
          "autowidth": True,
@@ -82,7 +82,7 @@ def filter_actions(setname, f, position, islast):
         {"name": "removefilter",
          "url": reverse("modoboa.extensions.sievefilters.views.removefilter",
                          args=[setname, f["name"]]),
-         "img": "icon-trash",
+         "img": "glyphicon glyphicon-trash",
          "title": _("Remove this filter")}
     ]
     if position != 1:
@@ -90,7 +90,7 @@ def filter_actions(setname, f, position, islast):
             {"name": "movefilter_up",
              "url": reverse("modoboa.extensions.sievefilters.views.move_filter_up",
                              args=[setname, f["name"]]),
-             "img": "icon-arrow-up",
+             "img": "glyphicon glyphicon-arrow-up",
              "title": _("Move this filter up")}
         ]
     if not islast:
@@ -98,7 +98,7 @@ def filter_actions(setname, f, position, islast):
             {"name": "movefilter_down",
              "url": reverse("modoboa.extensions.sievefilters.views.move_filter_down",
                              args=[setname, f["name"]]),
-             "img": "icon-arrow-down",
+             "img": "glyphicon glyphicon-arrow-down",
              "title": _("Move this filter down")},
         ]
     return render_actions(actions)
@@ -127,7 +127,10 @@ def display_condition(form, cnt):
     value = form["cond_value_%d" % cnt]
     t = template.Template("""
 <div id="condition_{{ idx }}" class="item">
-  {{ tfield }}{{ofield}}{{ vfield }}{{ verrors }}
+  <div class="col-lg-3 col-md-3 col-sm-3">{{ tfield }}</div>
+  <div class="col-lg-3 col-md-3 col-sm-3">{{ofield}}</div>
+  <div class="col-lg-4 col-md-4 col-sm-4">{{ vfield }}</div>
+  {{ verrors }}
 </div>
 """)
     return t.render(template.Context({
@@ -155,7 +158,12 @@ def display_action(form, cnt):
             break
     t = template.Template("""
 <div id="action_{{ idx }}" class="item">
-  {{ afield }}{% for v in values %}{{ v }}{% endfor %}{{ verrors }}
+<div class="col-lg-5 col-md-5 col-sm-5">
+  {{ afield }}
+  </div>
+  {% for v in values %}
+    <div class="col-lg-5 col-md-5 col-sm-5">{{ v }}</div>
+  {% endfor %}{{ verrors }}
 </div>
 """)
     return t.render(template.Context({

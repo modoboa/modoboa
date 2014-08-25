@@ -21,13 +21,15 @@ class ParametersForm(AdminParametersForm):
     server = forms.CharField(
         label=_("Server address"),
         initial="127.0.0.1",
-        help_text=_("Address of your MANAGESIEVE server")
+        help_text=_("Address of your MANAGESIEVE server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     port = forms.IntegerField(
         label=_("Server port"),
         initial=4190,
-        help_text=_("Listening port of your MANAGESIEVE server")
+        help_text=_("Listening port of your MANAGESIEVE server"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     starttls = YesNoField(
@@ -40,7 +42,8 @@ class ParametersForm(AdminParametersForm):
         label=_("Authentication mechanism"),
         choices=supported_auth_mechs(),
         initial="auto",
-        help_text=_("Prefered authentication mechanism")
+        help_text=_("Prefered authentication mechanism"),
+        widget=forms.Select(attrs={"class": "form-control"})
     )
 
 
@@ -54,7 +57,7 @@ class UserSettings(UserParametersForm):
         label=_("Editor mode"),
         choices=[("raw", "raw"), ("gui", "simplified")],
         help_text=_("Select the mode you want the editor to work in"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect(attrs={"type": "checkbox"})
     )
 
     @staticmethod
