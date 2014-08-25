@@ -44,7 +44,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                  ('ldap', "LDAP")],
         initial="local",
         help_text=ugettext_lazy("The backend used for authentication"),
-        widget=forms.Select(attrs={"class": "form-control"})
+        widget=InlineRadioSelect
     )
 
     password_scheme = forms.ChoiceField(
@@ -215,7 +215,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=_("Top notifications check interval"),
         initial=30,
         help_text=_("Interval between two top notification checks"),
-        widget=forms.NumberInput(attrs={"class": "form-control"})
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     check_new_versions = YesNoField(
@@ -245,7 +245,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         initial="user",
         help_text=ugettext_lazy(
             "The default redirection used when no application is specified"
-        )
+        ),
         widget=forms.Select(attrs={"class": "form-control"})
     )
 

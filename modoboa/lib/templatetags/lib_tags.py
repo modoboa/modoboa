@@ -113,8 +113,8 @@ def pagination_bar(page):
 
 @register.simple_tag
 def alert(msg, typ):
-    t = Template("""<div class="alert alert-{{ type }}">
-<a class="btn btn-default close" data-dismiss="alert">×</a>
+    t = Template("""<div class="alert alert-{{ type }}" role="alert">
+<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 {{ msg }}
 </div>""")
     return t.render(Context(dict(type=typ, msg=msg)))
