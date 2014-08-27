@@ -1,4 +1,4 @@
-{% load lib_tags %}
+{% load form_tags %}
 {% render_field form.name %}
 {% render_field form.target_host %}
 {% include "postfix_relay_domains/service_field.html" with field=form.service %}

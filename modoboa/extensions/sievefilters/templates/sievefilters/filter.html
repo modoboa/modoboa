@@ -1,5 +1,5 @@
 {% extends "common/generic_modal_form.html" %}
-{% load i18n lib_tags sfilters_tags %}
+{% load i18n form_tags sfilters_tags %}
 {% block formbody %}
   {% if oldname %}<input type="hidden" name="oldname" value="{{ oldname }}" />{% endif %}
   {% render_field form.name %}

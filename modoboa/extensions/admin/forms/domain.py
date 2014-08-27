@@ -23,8 +23,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=ugettext_lazy(
             "Default quota in MB applied to mailboxes. Leave empty to use the "
             "default value."
-        ),
-        widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
+        )
     )
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),
@@ -32,12 +31,11 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=ugettext_lazy(
             "Alias(es) of this domain. Indicate only one name per input, "
             "press ENTER to add a new input."
-        ),
-        widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
+        )
     )
     name = DomainNameField(
-            widget=forms.TextInput(attrs={"class": "col-md-1 form-control"})
-        )
+        widget=forms.TextInput()
+    )
 
     class Meta:
         model = Domain
@@ -48,6 +46,10 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if "instance" in kwargs:
             self.oldname = kwargs["instance"].name
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
+
+        self.field_widths = {
+            "quota": 3
+        }
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", DomainNameField)

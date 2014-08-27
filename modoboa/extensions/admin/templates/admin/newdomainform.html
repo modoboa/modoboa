@@ -1,4 +1,4 @@
-{% extends "common/generic_modal_form.html" %}{% load lib_tags %}{% block formbody %}
+{% extends "common/generic_modal_form.html" %}{% load form_tags %}{% block formbody %}
 {% render_field form.name %}
 {% render_field_appended form.quota _("MB") %}
 {% render_fields_group form "aliases" %}

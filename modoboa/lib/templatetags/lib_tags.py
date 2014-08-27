@@ -1,11 +1,11 @@
 # coding: utf-8
 from datetime import datetime
+
 from django import template
 from django.template import Template, Context
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy
+
 from modoboa.lib import events
-from modoboa.lib.formutils import SeparatorField
 
 register = template.Library()
 
@@ -23,85 +23,6 @@ def join(items, sep=','):
 @register.simple_tag
 def tolist(values):
     return "[%s]" % ",".join(['"%s"' % v for v in values])
-
-
-@register.simple_tag
-def render_form(form, tpl=None):
-    if tpl is not None:
-        return render_to_string(tpl, dict(form=form))
-
-    ret = ""
-    for field in form:
-        ret += "%s\n" % render_field(field)
-    return ret
-
-
-@register.simple_tag
-def render_field(field, help_display_mode="tooltip"):
-    from modoboa.core.templatetags.core_tags import visirule
-
-    if type(field.form.fields[field.name]) is SeparatorField:
-        return "<h5%s>%s</h5>" % (visirule(field), unicode(field.label))
-
-    return render_to_string("common/generic_field.html", dict(
-        field=field, help_display_mode=help_display_mode
-    ))
-
-
-@register.simple_tag
-def render_field_appended(field, text):
-    return render_to_string("common/generic_field.html", dict(
-        field=field, help_display_mode="tooltip", appended_text=text
-    ))
-
-
-@register.simple_tag
-def render_field_with_activator(field, activator_label=ugettext_lazy("activate")):
-    return render_to_string("common/generic_field.html", {
-        "field": field, "help_display_mode": "tooltip", "activator": True,
-        "activator_label": activator_label, "deactivate_if_empty": True
-    })
-
-
-@register.simple_tag
-def render_and_hide_field(field):
-    return render_to_string("common/generic_field.html", dict(
-        field=field, hidden=True
-    ))
-
-
-@register.simple_tag
-def render_fields_group(form, pattern):
-    from django.forms import forms
-
-    first = forms.BoundField(form, form.fields[pattern], pattern)
-    label = first.label
-    group = [first]
-    cpt = 1
-    haserror = len(first.errors) != 0
-    while True:
-        fname = "%s_%d" % (pattern, cpt)
-        if not fname in form.fields:
-            break
-        bfield = forms.BoundField(form, form.fields[fname], fname)
-        if len(bfield.errors):
-            haserror = True
-        group += [bfield]
-        cpt += 1
-
-    return render_to_string("common/generic_fields_group.html", dict(
-        label=label, help_text=first.help_text, group=group, haserror=haserror
-    ))
-
-
-@register.simple_tag
-def render_extra_fields(form):
-    result = ''
-    for fname in form.extra_fields:
-        result += render_to_string("common/generic_field.html", {
-            'field': form[fname], 'help_display_mode': 'tooltip'
-        })
-    return result
 
 
 @register.simple_tag

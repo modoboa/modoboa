@@ -1,4 +1,4 @@
-{% load i18n lib_tags %}{% load url from future %}
+{% load i18n form_tags %}{% load url from future %}
 <h2>{% trans "Forward" %} <small>{% trans "Automatically forward emails to another address" %}</small></h2>
 <hr>
 <form class="form-horizontal" method="POST" action="{% url 'modoboa.extensions.admin.views.user.forward' %}" 

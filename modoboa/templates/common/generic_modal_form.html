@@ -1,10 +1,13 @@
 {% extends "common/generic_modal.html" %}
-{% load lib_tags %}
+
+{% load form_tags %}
+
 {% block modalbody %}
-{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+  {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
 <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 
       method="POST" id="{{ formid }}" name="{{ formid }}"
-      target="{{ target }}">{% csrf_token %}
+      target="{{ target }}">
+  {% csrf_token %}
   {% block formbody %}
   {% render_form form %}
   {% block extrafields %}{% endblock %}
