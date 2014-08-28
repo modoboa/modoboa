@@ -58,6 +58,7 @@ def render_field_appended(field, text):
 
 @register.simple_tag
 def render_field_with_activator(field, activator_label=ugettext_lazy("activate")):
+    configure_field_classes(field)
     return render_to_string("common/generic_field.html", {
         "field": field, "help_display_mode": "tooltip", "activator": True,
         "activator_label": activator_label, "deactivate_if_empty": True
@@ -73,7 +74,7 @@ def render_and_hide_field(field):
 
 @register.simple_tag
 def render_fields_group(form, pattern):
-    first = forms.BoundField(form, form.fields[pattern], pattern)
+    first = forms.forms.BoundField(form, form.fields[pattern], pattern)
     configure_field_classes(first)
     label = first.label
     group = [first]
@@ -83,7 +84,7 @@ def render_fields_group(form, pattern):
         fname = "%s_%d" % (pattern, cpt)
         if not fname in form.fields:
             break
-        bfield = forms.BoundField(form, form.fields[fname], fname)
+        bfield = forms.forms.BoundField(form, form.fields[fname], fname)
         if len(bfield.errors):
             haserror = True
         configure_field_classes(bfield)

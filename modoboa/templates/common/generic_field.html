@@ -26,21 +26,7 @@
     <span class="help-block pull-right">{{ field.help_text }}</span>
     {% endif %}
     {% if inline_message %}
-    <span class="help-block pull-right">{{ inline_message }}</span>
-    {% endif %}
-    {% if activator %}
-    <div class="checkbox">
-      <label class="checkbox-inline" for="id_{{ field.name }}_act">
-        <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act"
-               {% if activator_value %}checked='checked'
-               {% else %}
-               {% if deactivate_if_empty and field.value == None %}
-               checked='checked'
-               {% endif %}
-               {% endif %}/>
-        {{ activator_label }}
-      </label>
-    </div>
+    <span class="">{{ inline_message }}</span>
     {% endif %}
     {% if field.errors %}
     <p class="help-block">
@@ -49,7 +35,24 @@
       {% endfor %}
     </p>
     {% endif %}
-    {% block extra_controls %}
-    {% endblock %}
   </div>
+
+  {% if activator %}
+  <div class="checkbox">
+    <label for="id_{{ field.name }}_act">
+      <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act"
+             {% if activator_value %}checked='checked'
+             {% else %}
+             {% if deactivate_if_empty and field.value == None %}
+             checked='checked'
+             {% endif %}
+             {% endif %}/>
+      {{ activator_label }}
+    </label>
+  </div>
+  {% endif %}
+
+  {% block extra_controls %}
+  {% endblock %}
+
 </div>

@@ -183,7 +183,9 @@ class DomainFormOptions(forms.Form):
     create_dom_admin = YesNoField(
         label=ugettext_lazy("Create a domain administrator"),
         initial="no",
-        help_text=ugettext_lazy("Automatically create an administrator for this domain")
+        help_text=ugettext_lazy(
+            "Automatically create an administrator for this domain"
+        )
     )
 
     dom_admin_username = forms.CharField(
@@ -193,14 +195,15 @@ class DomainFormOptions(forms.Form):
             "The administrator's name. Don't include the domain's name here, "
             "it will be automatically appended."
         ),
-        widget=forms.widgets.TextInput(attrs={"class": "form-control input-small"}),
         required=False
     )
 
     create_aliases = YesNoField(
         label=ugettext_lazy("Create aliases"),
         initial="yes",
-        help_text=ugettext_lazy("Automatically create standard aliases for this domain"),
+        help_text=ugettext_lazy(
+            "Automatically create standard aliases for this domain"
+        ),
         required=False
     )
 

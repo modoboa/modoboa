@@ -316,6 +316,18 @@ function default_ajax_error_handler(event, jqxhr, settings) {
     $('body').notify('error', data);
 }
 
+/**
+ * An equivalent of python .format() method.
+ */
+String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/\{\{|\}\}|\{(\d+)\}/g, function (m, n) {
+        if (m == "{{") { return "{"; }
+        if (m == "}}") { return "}"; }
+        return args[n];
+    });
+};
+
 $(document).ready(function() {
     $(document).ajaxSuccess(function(e, xhr, settings) { ajax_login_redirect(xhr); });
     $(document).ajaxError(default_ajax_error_handler);
