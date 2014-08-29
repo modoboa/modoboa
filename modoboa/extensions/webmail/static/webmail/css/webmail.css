@@ -189,7 +189,7 @@ div.expanded {
 }
 
 div#leftcol #mboxes_container .nav .droppable div.clickbox{
-    z-index:800;
+    z-index: 800;
 }
 
 li.droppable li{

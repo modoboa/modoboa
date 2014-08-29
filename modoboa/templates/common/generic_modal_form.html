@@ -5,7 +5,7 @@
 {% block modalbody %}
   {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
 <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 
-      method="POST" id="{{ formid }}" name="{{ formid }}"
+      method="POST" id="{{ formid }}" name="{{ formid }}" role="form"
       target="{{ target }}">
   {% csrf_token %}
   {% block formbody %}

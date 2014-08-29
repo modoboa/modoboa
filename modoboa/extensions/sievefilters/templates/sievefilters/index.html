@@ -71,24 +71,25 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block leftcol %}
-<div class="well">
-  <ul id="menu" class="nav nav-pills nav-stacked">
-    <li class="nav-header">{% trans "Filter sets" %}</li>
-    <li class="form-group">
-      <select id="curfset" class="form-control">
-        {% if active_script %}
-        <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
-        {% endif %}
-        {% for script in scripts %}
-        <option value="{{ script }}">{{ script }}</option>
-        {% endfor %}
-      </select>
-    </li>
-    {# It will add a li item : #}
-    {% sfilters_menu user %}
-
-  </ul>
-</div>
+<ul id="menu" class="nav nav-sidebar">
+  <li class="nav-header">{% trans "Filter sets" %}</li>
+  <li class="">
+    <div class="row">
+      <div class="col-md-offset-1 col-md-10">
+    <select id="curfset" class="form-control">
+      {% if active_script %}
+      <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
+      {% endif %}
+      {% for script in scripts %}
+      <option value="{{ script }}">{{ script }}</option>
+      {% endfor %}
+    </select>
+      </div>
+    </div>
+  </li>
+  {# It will add a li item : #}
+  {% sfilters_menu user %}
+</ul>
 {% endblock %}
 {% block apparea %}
 <div id="set_content">

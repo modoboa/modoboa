@@ -17,13 +17,19 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">
-  <ul class="nav nav-list">
-    <li class="nav-header">{% trans "Filter" %}</li>
-    <li>{% include "admin/searchform.html" %}</li>
-    <li class="nav-header">{% trans "Actions" %}</li>
-    {% radicale_left_menu user %}
-  </ul>
-</div>
+{% block leftcol %}
+<ul class="nav nav-sidebar">
+  {% radicale_left_menu user %}
+</ul>
 {% endblock %}
-{% block apparea %}<div id="listing"></div>{% endblock %}
+{% block apparea %}
+<div class="row">
+  <div class="col-sm-5">
+    {% include "admin/searchform.html" %}
+  </div>
+  <div id="taglist" class="col-sm-5 col-md-5">
+    
+  </div>
+</div>
+<div id="listing"></div>
+{% endblock %}

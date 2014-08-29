@@ -116,7 +116,7 @@ Listing.prototype = {
         this.tag_handlers[name] = handler;
         if (this.navobj.getparam(name + "filter") !== undefined) {
             var text = this.navobj.getparam(name + "filter");
-            $("#searchform").parent().after(this.make_tag(text, name));
+            $("#taglist").append(this.make_tag(text, name));
         }
     },
 
@@ -124,16 +124,19 @@ Listing.prototype = {
         if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
             var text = $link.attr("name");
             this.navobj.setparam(tag + "filter", text).update();
-            $("#searchform").parent().after(this.make_tag(text, tag));
+            $("#taglist").append(this.make_tag(text, tag));
             return true;
         }
         return false;
     },
 
     make_tag: function(text, type) {
-        var $tag = $("<a />", {"name": type, "class" : "btn btn-xs", "html": text});
-        var $i = $("<i />", {"class" : "glyphicon glyphicon-remove"}).prependTo($tag);
-
+        var $tag = $("<a />", {
+            "name": type, "class" : "btn btn-default btn-xs",
+            "html": text
+        });
+        
+        $("<span />", {"class" : "glyphicon glyphicon-remove"}).prependTo($tag);
         $tag.click($.proxy(this.remove_tag, this));
         return $tag;
     },

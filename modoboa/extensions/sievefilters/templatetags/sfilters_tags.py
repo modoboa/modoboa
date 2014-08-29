@@ -1,8 +1,10 @@
 from django import template
+from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
+
 from modoboa.lib.webutils import render_actions
+from modoboa.lib.templatetags.form_tags import configure_field_classes
 
 register = template.Library()
 
@@ -123,8 +125,11 @@ def display_errors(errors):
 @register.simple_tag
 def display_condition(form, cnt):
     target = form["cond_target_%d" % cnt]
+    configure_field_classes(target)
     operator = form["cond_operator_%d" % cnt]
+    configure_field_classes(operator)
     value = form["cond_value_%d" % cnt]
+    configure_field_classes(value)
     t = template.Template("""
 <div id="condition_{{ idx }}" class="item">
   <div class="col-lg-3 col-md-3 col-sm-3">{{ tfield }}</div>
@@ -145,14 +150,17 @@ def display_condition(form, cnt):
 @register.simple_tag
 def display_action(form, cnt):
     action = form["action_name_%d" % cnt]
+    configure_field_classes(action)
     values = []
     acnt = 0
     verrors = []
     while True:
         try:
-            values += [form["action_arg_%d_%d" % (cnt, acnt)]]
-            if len(form["action_arg_%d_%d" % (cnt, acnt)].errors):
-                verrors += form["action_arg_%d_%d" % (cnt, acnt)].errors
+            field = form["action_arg_%d_%d" % (cnt, acnt)]
+            configure_field_classes(field)
+            values += [field]
+            if field.errors:
+                verrors += field.errors
             acnt += 1
         except KeyError:
             break

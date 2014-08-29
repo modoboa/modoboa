@@ -31,6 +31,9 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         $(href).modal('open');
         return;
     }
+    if ($("#modalbox").length) {
+        return;
+    }
     $.ajax({
         type: "GET",
         url: href

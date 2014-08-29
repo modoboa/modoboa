@@ -13,8 +13,7 @@ class ParametersForm(AdminParametersForm):
     max_attachment_size = forms.CharField(
         label=_("Maximum attachment size"),
         initial="2048",
-        help_text=_("Maximum attachment size in bytes (or KB, MB, GB if specified)"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Maximum attachment size in bytes (or KB, MB, GB if specified)")
     )
 
     sep1 = SeparatorField(label=_("IMAP settings"))
@@ -22,8 +21,7 @@ class ParametersForm(AdminParametersForm):
     imap_server = forms.CharField(
         label=_("Server address"),
         initial="127.0.0.1",
-        help_text=_("Address of your IMAP server"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Address of your IMAP server")
     )
 
     imap_secured = YesNoField(
@@ -35,8 +33,7 @@ class ParametersForm(AdminParametersForm):
     imap_port = forms.IntegerField(
         label=_("Server port"),
         initial=143,
-        help_text=_("Listening port of your IMAP server"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Listening port of your IMAP server")
     )
 
     sep2 = SeparatorField(label=_("SMTP settings"))
@@ -44,8 +41,7 @@ class ParametersForm(AdminParametersForm):
     smtp_server = forms.CharField(
         label=_("Server address"),
         initial="127.0.0.1",
-        help_text=_("Address of your SMTP server"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Address of your SMTP server")
     )
 
     smtp_secured_mode = forms.ChoiceField(
@@ -61,8 +57,7 @@ class ParametersForm(AdminParametersForm):
     smtp_port = forms.IntegerField(
         label=_("Server port"),
         initial=25,
-        help_text=_("Listening port of your SMTP server"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Listening port of your SMTP server")
     )
 
     smtp_authentication = YesNoField(
@@ -82,7 +77,7 @@ class UserSettings(UserParametersForm):
         label=_("Default message display mode"),
         choices=[("html", "html"), ("plain", "text")],
         help_text=_("The default mode used when displaying a message"),
-        widget=InlineRadioSelect(attrs={"type": "checkbox"})
+        widget=InlineRadioSelect()
     )
 
     enable_links = YesNoField(
@@ -94,22 +89,19 @@ class UserSettings(UserParametersForm):
     messages_per_page = forms.IntegerField(
         initial=40,
         label=_("Number of displayed emails per page"),
-        help_text=_("Sets the maximum number of messages displayed in a page"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Sets the maximum number of messages displayed in a page")
     )
 
     refresh_interval = forms.IntegerField(
         initial=300,
         label=_("Listing refresh rate"),
-        help_text=_("Automatic folder refresh rate (in seconds)"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Automatic folder refresh rate (in seconds)")
     )
 
     mboxes_col_width = forms.IntegerField(
         initial=200,
         label=_("Mailboxes container's width"),
-        help_text=_("The width of the mailbox list container"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("The width of the mailbox list container")
     )
 
     sep2 = SeparatorField(label=_("Mailboxes"))
@@ -117,22 +109,19 @@ class UserSettings(UserParametersForm):
     trash_folder = forms.CharField(
         initial="Trash",
         label=_("Trash folder"),
-        help_text=_("Folder where deleted messages go"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Folder where deleted messages go")
     )
 
     sent_folder = forms.CharField(
         initial="Sent",
         label=_("Sent folder"),
-        help_text=_("Folder where copies of sent messages go"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Folder where copies of sent messages go")
     )
 
     drafts_folder = forms.CharField(
         initial="Drafts",
         label=_("Drafts folder"),
-        help_text=_("Folder where drafts go"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Folder where drafts go")
     )
 
     sep3 = SeparatorField(label=_("Composing messages"))
@@ -142,14 +131,13 @@ class UserSettings(UserParametersForm):
         label=_("Default editor"),
         choices=[("html", "html"), ("plain", "text")],
         help_text=_("The default editor to use when composing a message"),
-        widget=InlineRadioSelect(attrs={"type": "checkbox"})
+        widget=InlineRadioSelect()
     )
 
     signature = forms.CharField(
         initial="",
         label=_("Signature text"),
         help_text=_("User defined email signature"),
-        widget=forms.widgets.Textarea(attrs={"class": "form-control"}),
         required=False
     )
 

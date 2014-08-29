@@ -30,6 +30,9 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.oldname = None
+        if "instance" in kwargs:
+            self.oldname = kwargs["instance"].name
         super(RelayDomainFormGeneral, self).__init__(*args, **kwargs)
         self.field_widths = {
             "service": 3
@@ -100,6 +103,7 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
         """
         rd = super(RelayDomainFormGeneral, self).save(commit=False)
         if commit:
+            rd.oldname = self.oldname
             rd.save()
             aliases = []
             for k, v in self.cleaned_data.iteritems():

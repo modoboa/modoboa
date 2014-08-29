@@ -63,7 +63,7 @@ def admin_menu(selection, user):
     ]
     return render_to_string('common/menu.html', {
         "entries": entries,
-        "css": "nav nav-pills nav-stacked",
+        "css": "nav nav-sidebar",
         "selection": selection,
         "user": user
     })
@@ -111,7 +111,7 @@ def uprefs_menu(selection, user):
     entries = sorted(entries, key=lambda e: e["label"])
     return render_to_string('common/menu.html', {
         "entries": entries,
-        "css": "nav nav-pills nav-stacked",
+        "css": "nav nav-sidebar",
         "selection": selection,
         "user": user
     })

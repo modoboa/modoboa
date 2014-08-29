@@ -51,7 +51,6 @@
              var title_patten = '<div class="{0}"><h3 class="modal-title">{1}</h3></div>';
 
              if (body !== "") {
-                 console.log(body);
                  content += title_patten.format("modal-header", question);
                  content += '<div class="modal-body">{0}</div>'.format(body);
              } else {

@@ -1,9 +1,11 @@
 {% load i18n %}
-<form id="searchform">
-  <div class="input-group input-group-sm">
-    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-    <input class="form-control" type="text"
-           value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search' %}"{% endif %}
-           id="searchquery" name="searchquery" />
+<form id="searchform" class="form-horizontal" role="form">
+  <div class="form-group has-feedback">
+    <div class="col-sm-12">
+      <input class="form-control" type="text"
+             value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search' %}"{% endif %}
+             id="searchquery" name="searchquery" />
+      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+    </div>
   </div>
 </form>

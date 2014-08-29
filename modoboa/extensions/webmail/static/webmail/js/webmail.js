@@ -40,7 +40,7 @@ Webmail.prototype = {
 
 
         $("#mboxactions").css({
-            bottom: $("#bottom-bar").outerHeight(true) + 30
+            bottom: $("#bottom-bar").outerHeight(true) + "px"
         });
 
 
@@ -48,9 +48,7 @@ Webmail.prototype = {
         /* Responsive */
 
         /* Responsive -> init */
-
-
-        if ($( window ).width()<1198){
+        if ($(window).width() < 1198) {
             $("#leftcol").addClass(
                 "leftcol-display-none"
             );
@@ -62,11 +60,12 @@ Webmail.prototype = {
             });
         }
 
-        if ($( window ).width()>1198){
+        if ($(window).width() > 1198) {
             $("#folders").css({
                 bottom: $("#bottom-bar").outerHeight(true) + 10,
                 width: this.options.mboxes_col_width + 'px'
             });
+              
             $("#listing").addClass(
                 "listing-up-1198"
             );
@@ -83,20 +82,20 @@ Webmail.prototype = {
 
         /* Responsive -> on resizing window */
         var that = this;
-        $(window).resize(function(){
+        $(window).resize(function() {
 
-            if ($( window ).width()<767){
+            if ($(window).width() < 767) {
                 $("tr td[name='from']").css({
                     width: 35 + '%'
                 });
             }
-            if ($( window ).width()>767){
+            if ($(window).width() > 767) {
                 $("tr td[name='from']").css({
                     width: 20 + '%'
                 });
             }
 
-            if ($( window ).width()<1198){
+            if ($(window).width() < 1198) {
                 $("#leftcol").addClass(
                     "leftcol-display-none"
                 );
@@ -115,7 +114,7 @@ Webmail.prototype = {
                 });
             }
 
-            if ($( window ).width()>1198){
+            if ($(window).width() > 1198) {
                 $("#folders").css({
                     bottom: $("#bottom-bar").outerHeight(true) + 10,
                     width: that.options.mboxes_col_width + 'px'
@@ -147,9 +146,9 @@ Webmail.prototype = {
             }
         });
 
-        $( "#folders" ).resizable({
+        $("#folders").resizable({
             resize: function(event, ui) {
-                if ($( window ).width()>1198){
+                if ($(window).width() > 1198) {
                     var width = ui.size.width;
                     $("#rightcol").css({
                         marginLeft: width + 'px'
@@ -160,7 +159,7 @@ Webmail.prototype = {
                     $("#rightcol").css({
                         paddingRight: width - 110 + 'px'
                     });
-                    if ($( window ).width()<1800){
+                    if ($(window).width() < 1800) {
                         $("#rightcol").css({
                             paddingRight: width - 110 + 'px'
                         });
@@ -232,7 +231,8 @@ Webmail.prototype = {
     },
 
     resize: function() {
-        $("#mboxes_container").height($("#folders").height() - $("#mboxactions").height());
+        $("#mboxes_container").height(
+            $("#folders").height() - $("#mboxactions").height());
     },
 
     /*
@@ -298,7 +298,6 @@ Webmail.prototype = {
     page_update: function(response) {
         var curmb = this.get_current_mailbox();
 
-//       $(window).unbind("resize");
         if (!$('li[name="' + curmb + '"]').hasClass("active")) {
             this.load_and_select_mailbox(curmb);
         }
@@ -318,8 +317,6 @@ Webmail.prototype = {
             $("#pagination-responsive").html(response.navbar);
         }
         $("#listing").html(response.listing);
-        $("#listing").css({
-        });
     },
 
     /*
@@ -955,7 +952,7 @@ Webmail.prototype = {
         var top = $mailheader.outerHeight(true);
 
         $("#body_container").css({
-            height: $(window).height()*0.58 + "px"
+            height: $(window).height() * 0.58 + "px"
         });
     },
 

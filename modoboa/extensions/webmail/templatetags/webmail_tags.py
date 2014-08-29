@@ -181,17 +181,17 @@ def mboxes_menu():
          "modal": True,
          "modalcb": "webmail.mboxform_cb",
          "closecb": "webmail.mboxform_close",
-         "class": "btn-default btn-sm"},
+         "class": "btn-default btn-xs"},
         {"name": "editmbox",
          "url": reverse(webmail.views.editfolder),
          "img": "glyphicon glyphicon-edit",
          "title": _("Edit the selected mailbox"),
-         "class": "btn-default btn-sm"},
+         "class": "btn-default btn-xs"},
         {"name": "removembox",
          "url": reverse(webmail.views.delfolder),
          "img": "glyphicon glyphicon-remove",
          "title": _("Remove the selected mailbox"),
-         "class": "btn-default btn-sm"}
+         "class": "btn-default btn-xs"}
     ]
 
     return render_to_string('common/buttons_list.html', dict(
