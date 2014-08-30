@@ -224,7 +224,7 @@ function gethref(obj) {
  * http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
  */
 function parse_qs(raw) {
-    if (raw == "") return {};
+    if (raw === "") return {};
     var res = {};
 
     for (var i = 0; i < raw.length; i++) {
@@ -242,11 +242,11 @@ function parse_qs(raw) {
  * Ref: http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
  */
 function get_parameter_by_name(url, name) {
-    var name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(url);
 
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 /*

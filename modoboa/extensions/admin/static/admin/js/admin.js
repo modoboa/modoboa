@@ -203,6 +203,10 @@ Identities.prototype = {
     page_loader: function(e) {
         var $link = get_target(e);
         e.preventDefault();
+        if ($link.hasClass("navigation")) {
+            $(".sidebar li.active").removeClass("active");
+            $link.parent().addClass("active");
+        }
         this.navobj.baseurl($link.attr("href")).update();
     },
 

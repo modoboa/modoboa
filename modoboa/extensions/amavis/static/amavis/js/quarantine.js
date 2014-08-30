@@ -286,7 +286,8 @@ Quarantine.prototype = {
 
     viewmail_cb: function(data) {
         this.update_page(data);
-        $("#listing").css("overflow", "hidden");
+        /*$("#listing").css("overflow", "hidden");*/
+        $("body").css("overflow", "hidden");
     },
 
     action_cb: function(data) {

@@ -60,7 +60,7 @@ def domains_menu(selection, user):
 
 
 @register.simple_tag
-def identities_menu(user):
+def identities_menu(user, selection=None):
     """Menu specific to the Identities page.
 
     :param ``User`` user: the connecter user
@@ -71,12 +71,12 @@ def identities_menu(user):
         {"name": "identities",
          "label": _("List identities"),
          "img": "glyphicon glyphicon-user",
-         "class": "ajaxlink",
+         "class": "ajaxlink navigation",
          "url": "list/"},
         {"name": "quotas",
          "label": _("List quotas"),
          "img": "glyphicon glyphicon-hdd",
-         "class": "ajaxlink",
+         "class": "ajaxlink navigation",
          "url": "quotas/"},
         {"name": "newaccount",
          "label": _("Add account"),
@@ -119,7 +119,8 @@ def identities_menu(user):
 
     return render_to_string('common/menulist.html', {
         "entries": entries,
-        "user": user
+        "user": user,
+        "selection": selection
     })
 
 

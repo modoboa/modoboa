@@ -9,15 +9,10 @@
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/graphic.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
 <script type="text/javascript">
-function get_domains_list(container) {
-    $.getJSON("{% url 'modoboa.extensions.admin.views.domain.domains_list' %}", function(data) {
-        container.value = data;
-    });
-}
-
 $(document).ready(function() {
     var stats = new Stats({
         graphurl: "{% url 'modoboa.extensions.stats.views.graphs' %}",
+        domain_list_url: "{% url 'modoboa.extensions.admin.views.domain.domains_list' %}",
         deflocation: "{{ deflocation|safe }}",
         language: "{{ LANGUAGE_CODE }}"
     });
@@ -25,61 +20,65 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block leftcol %}
-<div id="periods">
-  <ul class="nav nav-sidebar">
-    <li class="nav-header">
-      {% trans "Filter" %}
-    </li>
-    <li>
-      <div class="input-group input-group-sm">
-        <span class="input-group-addon">
-          <span class="glyphicon glyphicon-search"></span>
-        </span>
-        <input class="form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+<ul class="nav nav-sidebar">
+  {% for id, gset in graph_sets.items %}
+  <li id="menu_{{ gset.html_id }}"><a href="#">{{ gset.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+{% block apparea %}
+<div class="row">
+  <div class="col-sm-5">
+    <form class="form-horizontal" role="form">
+      <div class="form-group has-feedback">
+        <div class="col-sm-12">
+          <input class="form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+          <span class="glyphicon glyphicon-search form-control-feedback"></span>
+        </div>
       </div>
-    </li>
-    <li class="nav-header">
-      {% trans "Predefined time ranges" %}
-    </li>
-    {% for p in periods %}<li class="period">
-      <a href="#" class="period_selector" data-period="{{ p.name }}">{% trans p.label %}</a>
-    </li>
-    {% endfor %}
-    <li class="nav-header">
-      {% trans "Custom time range" %}
-    </li>
-  </ul>
-  <div class="row">
-    <div class="col-md-12">
-      <form class="form-horizontal">
-        <span id="custom-period">
-          <div class="input-group input-group-sm">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-indent-left"></span></div>
-            <input id="id_from" class="col-lg-10 form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
-          </div>
-          <div class="input-group input-group-sm">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-indent-right"></span></div>
-            <input id="id_to" class="col-lg-10 form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
-          </div>
-          <button class="btn btn-primary pull-right" id="customsend">{% trans "Apply" %}</button>
-        </span>
-      </form>
+    </form>
+  </div>
+
+  <div class="col-md-3">
+    <div class="btn-group" data-toggle="buttons">
+      {% for p in periods %}
+      <label class="btn btn-primary period_selector">
+        <input type="radio" data-period="{{ p.name }}"> {% trans p.label %}
+      </label>
+      {% endfor %}
     </div>
   </div>
 </div>
-{% endblock %}
-{% block apparea %}
-<div id="graphs" class="tabbable">
-  <ul class="nav nav-tabs">{% for id, gset in graph_sets.items %}
-    <li {% if forloop.first %}class="active"{% endif %}>
-      <a href="#graphs_{{ gset.html_id }}" data-toggle="tab">{{ gset.title }}</a>
-    </li>
-  </ul>{% endfor %}
-  <div class="tab-content">{% for id, gset in graph_sets.items %}
-    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}">
-      <div id="gset"></div>
-    </div>
-  </div>{% endfor %}
+
+<div class="row hidden">
+  <div class="col-md-7">
+    <form class="form-inline">
+      <span id="custom-period">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-indent-left"></span></div>
+            <input id="id_from" class="form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-indent-right"></span></div>
+            <input id="id_to" class="form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
+          </div>
+        </div>
+        <button class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
+      </span>
+    </form>
+  </div>
 </div>
+
+<div id="graphs">
+  {% for id, gset in graph_sets.items %}
+  <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}">
+    <div id="gset"></div>
+  </div>
+  {% endfor %}
+</div>
+
 {% endblock %}
- 

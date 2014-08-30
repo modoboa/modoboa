@@ -33,11 +33,17 @@ $(document).ready(function() {
 {% block fixed_content %}
 <div class="row">
   <div id="leftcol" class="col-lg-2 col-md-3 col-ms-3 col-xs-0 sidebar">
-    <div id="folders">{{ mboxes }}</div>
+    <!--<div class="row">-->
+      {{ mboxes }}
+    <!--</div>-->
   </div>
-  <div id="rightcol" class="col-lg-11 col-md-12 col-ms-12 col-xs-12">
-    <div id="menubar" class="col-lg-12 col-md-12 col-ms-12 col-xs-12"></div>
-    <div id="listing" class=""></div>
+  <div id="rightcol" class="col-lg-offset-2 col-lg-10 col-md-offset-3 col-md-9 col-ms-offset-3 col-ms-9 col-xs-12">
+    <div class="row">
+      <div id="menubar" role="navbar" class="col-lg-12 col-md-12 col-ms-12 col-xs-12"></div>
+    </div>
+    <div class="row">
+    <div id="listing" class="col-lg-12 col-md-12 col-ms-12 col-xs-12"></div>
+    </div>
   </div>
 </div>
 {% endblock %}

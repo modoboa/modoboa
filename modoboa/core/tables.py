@@ -4,6 +4,7 @@ from modoboa.lib import tables
 
 class ExtensionsTable(tables.Table):
     idkey = "id"
+    styles = "table-hover"
     selection = tables.SelectionColumn("selection", width="4%", header=False)
     label = tables.Column("label", label=ugettext_lazy("Name"), width="15%")
     version = tables.Column(

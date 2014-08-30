@@ -52,32 +52,31 @@ Webmail.prototype = {
             $("#leftcol").addClass(
                 "leftcol-display-none"
             );
-            $("#listing").addClass(
-                "col-lg-12 col-md-12 col-ms-12 col-xs-12"
-            );
             $("#listing").css({
                 height: $(window).height() - 150 + 'px'
             });
         }
 
         if ($(window).width() > 1198) {
-            $("#folders").css({
+            /*$("#folders").css({
                 bottom: $("#bottom-bar").outerHeight(true) + 10,
                 width: this.options.mboxes_col_width + 'px'
-            });
+            });*/
+            /*$("#folders").innerWidth(this.options.mboxes_col_width);*/
               
             $("#listing").addClass(
                 "listing-up-1198"
             );
 
-            $("#listing").css({
-                height: $(window).height() - 180 + 'px'
-            });
 
-            $("#rightcol").css({
+            /*$("#listing").css({
+                height: $(window).height() - 180 + 'px'
+            });*/
+
+            /*$("#rightcol").css({
                 marginLeft: 200 + 'px',
                 paddingRight: 90 + 'px'
-            });
+            });*/
         }
 
         /* Responsive -> on resizing window */
@@ -102,34 +101,26 @@ Webmail.prototype = {
                 $("#listing").addClass(
                     "col-lg-12 col-md-12 col-ms-12 col-xs-12"
                 );
-                $("#listing").css({
+                /*$("#listing").css({
                     height: $(window).height() - 150 + 'px'
-                });
+                });*/
                 $("#listing").removeClass(
                     "listing-up-1198"
                 );
-                $("#rightcol").css({
-                    marginLeft: 0 + 'px',
-                    paddingRight: 0 + 'px'
-                });
             }
 
             if ($(window).width() > 1198) {
                 $("#folders").css({
-                    bottom: $("#bottom-bar").outerHeight(true) + 10,
+                    /*bottom: $("#bottom-bar").outerHeight(true) + 10,*/
                     width: that.options.mboxes_col_width + 'px'
                 });
                 $("#listing").addClass(
                     "listing-up-1198"
                 );
-                $("#listing").css({
-                    height: $(window).height() - 180 + 'px'
-                });
-
-                $("#rightcol").css({
-                    marginLeft: 200 + 'px',
-                    paddingRight: 90 + 'px'
-                });
+                //$("#listing").height($(window).height());
+                // $("#listing").css({
+                //     height: $(window).height() + 'px'
+                // });
             }
         });
 
@@ -150,20 +141,20 @@ Webmail.prototype = {
             resize: function(event, ui) {
                 if ($(window).width() > 1198) {
                     var width = ui.size.width;
-                    $("#rightcol").css({
+                    /*$("#rightcol").css({
                         marginLeft: width + 'px'
-                    });
+                    });*/
                     $("#folders").css({
                         width : width + 'px'
                     });
-                    $("#rightcol").css({
+                    /*$("#rightcol").css({
                         paddingRight: width - 110 + 'px'
                     });
                     if ($(window).width() < 1800) {
                         $("#rightcol").css({
                             paddingRight: width - 110 + 'px'
                         });
-                    }
+                    }*/
                 }
             }
         });
@@ -231,8 +222,8 @@ Webmail.prototype = {
     },
 
     resize: function() {
-        $("#mboxes_container").height(
-            $("#folders").height() - $("#mboxactions").height());
+        /*$("#mboxes_container").height(
+            $("#folders").height() - $("#mboxactions").height());*/
     },
 
     /*
@@ -308,7 +299,7 @@ Webmail.prototype = {
                 break;
             }
         }
-        if (response.menu != undefined) {
+        if (response.menu !== undefined) {
             $("#menubar").html(response.menu);
             $("#searchfield").searchbar({navobj: this.navobject});
         }
@@ -317,6 +308,7 @@ Webmail.prototype = {
             $("#pagination-responsive").html(response.navbar);
         }
         $("#listing").html(response.listing);
+        $("body").css("overflow", "auto");
     },
 
     /*
@@ -328,8 +320,8 @@ Webmail.prototype = {
         if (this.poller.running_request) {
             return;
         }
-        if (this.unseen_counters[mailbox] != undefined
-            && value == this.unseen_counters[mailbox]) {
+        if (this.unseen_counters[mailbox] !== undefined &&
+            value == this.unseen_counters[mailbox]) {
             return;
         }
 
@@ -372,7 +364,7 @@ Webmail.prototype = {
      * the left tree).
      */
     get_visible_mailboxes: function() {
-        var res = new Array();
+        var res = [];
 
         $("#folders").find("ul:visible").children("li.droppable").each(function() {
             res.push(encodeURIComponent($(this).attr("name")));
@@ -416,7 +408,7 @@ Webmail.prototype = {
         $li.append($link);
         $parent.append($li);
 
-        if (unseen != undefined) {
+        if (unseen !== undefined) {
             $link.addClass("unseen");
             $link.html(displayname + " (" + unseen + ")");
             this.unseen_counters[$link.attr("href")] = unseen;
@@ -432,7 +424,7 @@ Webmail.prototype = {
     inject_mailboxes: function($parent, mboxes) {
         var $ul = $("<ul />", {
             name: $parent.attr("name"),
-            'class': "hidden nav nav-pills nav-stacked"
+            'class': "hidden nav nav-sidebar"
         });
         var $plink = $parent.children("a");
 
@@ -445,7 +437,7 @@ Webmail.prototype = {
                 continue;
             }
             this.inject_mailbox($ul, mboxes[i].name, $plink.attr("name"), mboxes[i].unseen);
-            if (mboxes[i].sub != undefined) {
+            if (mboxes[i].sub !== undefined) {
                 this.inject_clickbox($('li[name="' + mboxes[i].name + '"]'));
             }
         }
@@ -464,7 +456,7 @@ Webmail.prototype = {
             url: this.options.submboxes_url,
             dataType: 'json',
             async: async,
-            data: "topmailbox=" + parent.attr("name")
+            data: "topmailbox=" + parent.parents("li").attr("name")
         }).done($.proxy(function(data) {
             this.inject_mailboxes(parent, data);
         }, this));
@@ -941,19 +933,18 @@ Webmail.prototype = {
                 this.resize_editor();
             }, this));
         }
-        if (resp.id != undefined) {
+        if (resp.id !== undefined) {
             this.navobject.setparam("id", resp.id).update(false, true);
         }
         this.position_body();
     },
 
     position_body: function() {
-        var $mailheader = $("#mailheader");
-        var top = $mailheader.outerHeight(true);
+        var $container = $("#body_container");
+        var top = $container.offset().top;
+        var bottom = $("#bottom-bar").offset().top;
 
-        $("#body_container").css({
-            height: $(window).height() * 0.58 + "px"
-        });
+        $("#body_container").height(bottom - top - 30);
     },
 
     /*
@@ -962,6 +953,7 @@ Webmail.prototype = {
     viewmail_callback: function(resp) {
         this.page_update(resp);
         $("#listing").css("overflow", "hidden");
+        $("body").css("overflow", "hidden");
         $("a[name=close]").click($.proxy(function(e) {
             e.preventDefault();
             this.go_back_to_listing();

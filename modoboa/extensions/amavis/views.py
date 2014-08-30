@@ -1,12 +1,13 @@
 # coding: utf-8
 import email
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404
 from django.template import Template, Context
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators \
-    import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
+
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.webutils import (

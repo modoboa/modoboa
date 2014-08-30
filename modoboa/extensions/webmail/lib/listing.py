@@ -7,11 +7,11 @@ from . import IMAPconnector, imapheader
 
 
 class WMtable(tables.Table):
-    """
-    Webmail listing table.
-    """
+
+    """Webmail listing table."""
+
     tableid = "emails"
-    styles = "table-condensed"
+    styles = "table-hover"
     idkey = "imapid"
     drag = tables.ImgColumn(
         "drag", cssclass="draggable left", width="1%",
@@ -24,7 +24,7 @@ class WMtable(tables.Table):
     flags = tables.ImgColumn("flags", width="3%")
     withatts = tables.ImgColumn("withatts", width="2%")
     subject = tables.Column(
-        "subject", label=ugettext_lazy("Subject"), width="50%", limit=60,
+        "subject", label=ugettext_lazy("Subject"), limit=60,
         cssclass="openable"
     )
     from_ = tables.Column(
@@ -36,7 +36,7 @@ class WMtable(tables.Table):
     )
 
     cols_order = [
-        "drag", "selection", "withatts", "flags", "subject", "from_", "date"
+        "drag", "selection", "flags", "from_", "subject", "withatts", "date"
     ]
 
     def parse(self, header, value):

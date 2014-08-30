@@ -53,8 +53,8 @@
 
     .sidebar {
         position: fixed;
-        top: 52px;
-        bottom: 0;
+        top: 51px;
+        bottom: 51px;
         left: 0;
         z-index: 1000;
         display: block;
@@ -104,13 +104,16 @@
 
 
 /* Global */
+body { 
+    padding-top: 50px;
+}
 
-h5{
-    font-size:15px;
+h5 {
+    font-size: 15px;
     font-weight: bold;
 }
 
-label{
+label {
     font-weight: normal;
 }
 
@@ -233,22 +236,21 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
      margin-bottom: 4px;
  }
 
+.main { 
+    padding: 20px;
+}
 
  /* listing */
 
- #listing{
-     margin-bottom:60px;
- }
-
- .table > thead > tr > th {
-     border-bottom: 2px solid #FBFBFB;
- }
+#listing {
+    /*margin-bottom:60px;*/
+}
 
 /* Bottom navBar*/
 
- .nav-bottom {
+.nav-bottom {
      margin-top: 80px;
- }
+}
 
 #bottom-bar-middle {
     text-align: center;
@@ -261,7 +263,7 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
 .navbar-text {
     color: #999999 !important;
     float:none;
- }
+}
 
 .simplepagination ul {
     margin-bottom: 0;

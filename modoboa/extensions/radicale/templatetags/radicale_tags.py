@@ -22,7 +22,7 @@ def radicale_left_menu(user):
     entries = [
         {"name": "newusercalendar",
          "label": _("Add calendar"),
-         "img": "icon-plus",
+         "img": "glyphicon glyphicon-plus",
          "modal": True,
          "modalcb": "radicale.add_calendar_cb",
          "url": reverse("new_user_calendar")},
@@ -31,7 +31,7 @@ def radicale_left_menu(user):
         entries += [
             {"name": "newsharedcalendar",
              "label": _("Add shared calendar"),
-             "img": "icon-plus",
+             "img": "glyphicon glyphicon-plus",
              "modal": True,
              "modalcb": "radicale.shared_calendar_cb",
              "url": reverse("new_shared_calendar")},

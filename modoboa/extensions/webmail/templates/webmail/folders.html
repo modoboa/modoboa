@@ -1,8 +1,7 @@
 {% load i18n webmail_tags %}
-<div id="mboxes_container">
-  <ul class="nav nav-sidebar">
-    <li class="nav-header">{% trans "Mailboxes" %}</li>
-    {% print_mailboxes mboxes selected withunseen %}
-  </ul>
-</div>
+<!--<div id="mboxes_container">-->
+<ul id="folders" class="nav nav-sidebar">
+  {% print_mailboxes mboxes selected withunseen %}
+</ul>
+<!--</div>-->
 <div id="mboxactions">{% mboxes_menu %}</div>

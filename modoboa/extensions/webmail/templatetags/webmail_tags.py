@@ -141,6 +141,17 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
         elif selected == name:
             cssclass = "active"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
+        cssclass = "block"
+        extra_attrs = ""
+        if withunseen and "unseen" in mbox:
+            label += " (%d)" % mbox["unseen"]
+            cssclass += " unseen"
+            extra_attrs = ' data-toggle="%d"' % mbox["unseen"]
+
+        result += "<a href='%s' class='%s' name='%s'%s>" % (
+            "path" in mbox and mbox["path"] or mbox["name"], cssclass,
+            'selectfolder' if selectonly else 'loadfolder', extra_attrs
+        )
         if "sub" in mbox:
             if selected is not None and selected != name and selected.count(name):
                 ul_state = "visible"
@@ -150,24 +161,15 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
                 div_state = "collapsed"
             result += "<div class='clickbox %s'></div>" % div_state
 
-        cssclass = "block"
-        extra_attrs = ""
-        if withunseen and "unseen" in mbox:
-            label += " (%d)" % mbox["unseen"]
-            cssclass += " unseen"
-            extra_attrs = ' data-toggle="%d"' % mbox["unseen"]
-        iclass = mbox["class"] if "class" in mbox else "glyphicon glyphicon-folder-close"
-        result += """<a href='%s' class='%s' name='%s'%s>
-  <i class="%s"></i>
-  %s
-</a>
-""" % ("path" in mbox and mbox["path"] or mbox["name"], cssclass,
-       'selectfolder' if selectonly else 'loadfolder',
-       extra_attrs, iclass, label)
+        iclass = mbox["class"] if "class" in mbox \
+            else "glyphicon glyphicon-folder-close"
+        result += "<span class='%s'></span> %s</a>" % (iclass, label)
 
-        if "sub" in mbox and len(mbox["sub"]):
-            result += "<ul name='%s' class='nav nav-pills nav-stacked %s'>" % (mbox["path"], ul_state) \
-                + print_mailboxes(mbox["sub"], selected, withunseen, selectonly, hdelimiter) + "</ul>\n"
+        if "sub" in mbox and mbox["sub"]:
+            result += "<ul name='%s' class='nav nav-pills nav-stacked %s'>" % (
+                mbox["path"], ul_state) + print_mailboxes(
+                    mbox["sub"], selected, withunseen, selectonly, hdelimiter
+                ) + "</ul>\n"
         result += "</li>\n"
     return result
 

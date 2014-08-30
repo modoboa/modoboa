@@ -53,14 +53,18 @@
 
 }
 
-    /* GENERAL */
+/* GENERAL */
 body, html {
-    overflow: hidden;
+    /*overflow: hidden;*/
+}
+
+#rightcol { 
+/*    padding-top: 20px;*/
 }
 
 #folders {
-    position: fixed;
-    top: 73px;
+    /*position: fixed;
+    top: 73px;*/
     overflow-y: auto;
     margin-bottom: 5px;
 }
@@ -91,8 +95,13 @@ body, html {
 }
 
 #mboxes_container {
-    overflow: auto;
+    /*overflow: auto;*/
 }
+
+.nav-sidebar > li > a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+} 
 
 #mboxes_container a[name=loadfolder] {
     white-space: nowrap;
@@ -138,13 +147,14 @@ td[name="date"] {
 /*
  *listing
  */
-#listing{
+#listing {
     overflow: auto;
+    padding-top: 60px;
 }
-#listing.listing-up-1198{
+#listing.listing-up-1198 {
     padding-left: 15px;
 }
-#listing.listing-less-1198{
+#listing.listing-less-1198 {
     bottom: 0px;
     left: 0px;
     padding-left: 0px;
@@ -153,7 +163,7 @@ td[name="date"] {
     overflow-y: hidden;
 }
 
-#listing .test{
+#listing .test {
     overflow-y: scroll;
     position: absolute;
     left: 0;
@@ -172,10 +182,11 @@ td[name="date"] {
 
 div.clickbox {
     position: absolute;
-    left: 0px;
-    top: 2px;
+    left: 15px;
+    top: 5px;
     width: 14px;
     height: 14px;
+    z-index: 100;
 }
 
 div.collapsed {
@@ -243,6 +254,7 @@ li.droppable li{
 
 #body_container {
     position: static;
+    /*height: 600px;*/
 }
 
 #id_body {
@@ -309,6 +321,13 @@ td[class*=openable] {
  *Action buttons
  */
 
+#menubar { 
+    background-color: #fff;
+    position: fixed;
+    padding-top: 20px;
+    z-index: 100;
+}
+
 #menubar .btn-toolbar ul.navbar-right{
     margin-right: 3%;
 }
@@ -327,13 +346,4 @@ td[class*=openable] {
 
 #menubar .md-margin-left-back{
     margin-left: 16px;
-}
-
-
-/*
- *send mail
- */
-
-#body_container{
-    height: 600px;
 }

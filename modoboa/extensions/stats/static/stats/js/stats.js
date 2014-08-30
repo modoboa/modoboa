@@ -7,7 +7,8 @@ Stats.prototype = {
 
     defaults: {
         deflocation: "graphs/",
-        language: "en"
+        language: "en",
+        domain_list_url: null
     },
 
     initialize: function(options) {
@@ -17,19 +18,19 @@ Stats.prototype = {
         var navobj = new History(this.options);
         this.navobj = navobj;
 
-        if (navobj.params.searchquery != undefined) {
+        if (navobj.params.searchquery !== undefined) {
             $("#searchquery").val(navobj.params.searchquery);
         }
         $("#searchquery").focus(function() {
             var $this = $(this);
-            if ($this.val() == undefined) {
+            if ($this.val() === undefined) {
                 return;
             }
             $this.data("oldvalue", $this.val());
             $this.val("");
         }).blur(function() {
             var $this = $(this);
-            if ($this.val() == "") {
+            if ($this.val() === "") {
                 if ($this.data("oldvalue")) {
                     $this.val($this.data('oldvalue'));
                     $this.data("oldvalue", null);
@@ -52,7 +53,7 @@ Stats.prototype = {
             language: this.options.language
         });
         $("#searchquery").autocompleter({
-            choices: get_domains_list,
+            choices: $.proxy(this.get_domain_list, this),
             choice_selected: $.proxy(this.search_domain, this),
             empty_choice: $.proxy(this.reset_search, this)
         });
@@ -72,9 +73,25 @@ Stats.prototype = {
             $.proxy(this.charts_cb, this));
     },
 
+    /**
+     * Retrieve a list of domain from the server.
+     */
+    get_domain_list: function() {
+        var result;
+
+         $.ajax({
+            url: this.options.domain_list_url,
+            dataType: "json",
+            async: false
+        }).done(function(data) {
+            result = data;
+        });
+        return result;
+    },
+
     change_period: function(e) {
         e.preventDefault();
-        var $link = $(e.target);
+        var $link = $(e.target).children("input");
 
         this.navobj.delparam("start").delparam("end");
         this.navobj.setparam("period", $link.attr("data-period")).update();
@@ -99,6 +116,9 @@ Stats.prototype = {
      * @param {Object} data
      */
     charts_cb: function(data) {
+        var menuid = "menu_" + this.navobj.getparam("gset");
+
+        $("#" + menuid).addClass("active");
         this.data = data;
         if (this.charts !== undefined) {
              $.each(this.charts, function(id, mychart) {
@@ -128,7 +148,7 @@ Stats.prototype = {
         var $fromdate = $("#id_from");
         var $todate = $("#id_to");
 
-        if ($fromdate.val() == "" || $todate.val() == "") {
+        if ($fromdate.val() === "" || $todate.val() === "") {
             return;
         }
         this.navobj.setparams({
