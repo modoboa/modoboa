@@ -1,10 +1,10 @@
 {% extends "fluid.html" %}
 {% load core_tags %}
 {% block rowcontent %}
-<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 sidebar">
+<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 sidebar">
   {% block leftcol %}{% endblock %}
 </div>
-<div class="main col-lg-offset-2 col-lg-10 col-md-offset-3 col-md-9 col-sm-offset-4 col-sm-8 col-xs-12">
+<div class="main col-lg-offset-2 col-lg-10 col-md-offset-2 col-md-10 col-sm-offset-3 col-sm-9 col-xs-12">
   {% if messages %}{% display_messages messages %}{% endif %}
   {% block apparea %}{% endblock %}
 </div>

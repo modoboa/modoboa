@@ -67,6 +67,7 @@ def render_field_with_activator(field, activator_label=ugettext_lazy("activate")
 
 @register.simple_tag
 def render_and_hide_field(field):
+    configure_field_classes(field)
     return render_to_string("common/generic_field.html", dict(
         field=field, hidden=True
     ))

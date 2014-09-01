@@ -43,87 +43,6 @@ Webmail.prototype = {
             bottom: $("#bottom-bar").outerHeight(true) + "px"
         });
 
-
-
-        /* Responsive */
-
-        /* Responsive -> init */
-        if ($(window).width() < 1198) {
-            $("#leftcol").addClass(
-                "leftcol-display-none"
-            );
-            $("#listing").css({
-                height: $(window).height() - 150 + 'px'
-            });
-        }
-
-        if ($(window).width() > 1198) {
-            /*$("#folders").css({
-                bottom: $("#bottom-bar").outerHeight(true) + 10,
-                width: this.options.mboxes_col_width + 'px'
-            });*/
-            /*$("#folders").innerWidth(this.options.mboxes_col_width);*/
-              
-            $("#listing").addClass(
-                "listing-up-1198"
-            );
-
-
-            /*$("#listing").css({
-                height: $(window).height() - 180 + 'px'
-            });*/
-
-            /*$("#rightcol").css({
-                marginLeft: 200 + 'px',
-                paddingRight: 90 + 'px'
-            });*/
-        }
-
-        /* Responsive -> on resizing window */
-        var that = this;
-        $(window).resize(function() {
-
-            if ($(window).width() < 767) {
-                $("tr td[name='from']").css({
-                    width: 35 + '%'
-                });
-            }
-            if ($(window).width() > 767) {
-                $("tr td[name='from']").css({
-                    width: 20 + '%'
-                });
-            }
-
-            if ($(window).width() < 1198) {
-                $("#leftcol").addClass(
-                    "leftcol-display-none"
-                );
-                $("#listing").addClass(
-                    "col-lg-12 col-md-12 col-ms-12 col-xs-12"
-                );
-                /*$("#listing").css({
-                    height: $(window).height() - 150 + 'px'
-                });*/
-                $("#listing").removeClass(
-                    "listing-up-1198"
-                );
-            }
-
-            if ($(window).width() > 1198) {
-                $("#folders").css({
-                    /*bottom: $("#bottom-bar").outerHeight(true) + 10,*/
-                    width: that.options.mboxes_col_width + 'px'
-                });
-                $("#listing").addClass(
-                    "listing-up-1198"
-                );
-                //$("#listing").height($(window).height());
-                // $("#listing").css({
-                //     height: $(window).height() + 'px'
-                // });
-            }
-        });
-
         /* Responsive -> on resizing folders (leftcol) */
         $("#folders").resizable({
             start: function(event, ui) {
@@ -178,7 +97,7 @@ Webmail.prototype = {
     },
 
     listen: function() {
-        $(window).resize(this.resize);
+        $(window).resize($.proxy(this.resize, this));
 
         $(document).on("click", "a[name=compose]", $.proxy(this.compose_loader, this));
         $(document).on("click", "a[name=totrash]", $.proxy(this.delete_messages, this));
@@ -221,9 +140,63 @@ Webmail.prototype = {
         this.unseen_counters = unseen_counters;
     },
 
+    /**
+     * Global resize event callback.
+     */
     resize: function() {
         /*$("#mboxes_container").height(
             $("#folders").height() - $("#mboxactions").height());*/
+        var $window = $(window);
+        var current_action = this.navobject.getparam("action");
+
+        if ($window.width() > 1198) {
+            $("#folders").css({
+                /*bottom: $("#bottom-bar").outerHeight(true) + 10,*/
+                width: this.options.mboxes_col_width + 'px'
+            });
+        }
+        if (current_action == "listmailbox") {
+            this.resize_listing("auto");
+        } else if (current_action == "viewmail") {
+            this.resize_listing("hidden");
+        } else if (current_action == "compose") {
+            this.resize_compose_body();
+        }
+    },
+
+    /**
+     * Resize the "listing" div.
+     */
+    resize_listing: function(overflow) {
+        $("#listing").css("overflow", overflow);
+        $("#listing").height(
+            $("#bottom-bar").offset().top - 
+            ($("#menubar").offset().top + $("#menubar").outerHeight())
+        );
+    },
+
+    /**
+     * Resize the textarea used to write plain/text messages.
+     */
+    resize_compose_body: function() {
+        var $container = $("#body_container");
+
+        if ($container.length) {
+            var top = $container.offset().top;
+            var bottom = $("#bottom-bar").offset().top;
+
+            $("#body_container").innerHeight(bottom - top - 10);
+        }
+    },
+
+    /*
+     * Callback of the 'compose' action.
+     *
+     * It is also shared with other similar actions : reply, forward.
+     */
+    resize_editor: function() {
+        CKEDITOR.instances[this.editorid].resize("100%",
+            $("#body_container").outerHeight(true));
     },
 
     /*
@@ -308,7 +281,6 @@ Webmail.prototype = {
             $("#pagination-responsive").html(response.navbar);
         }
         $("#listing").html(response.listing);
-        $("body").css("overflow", "auto");
     },
 
     /*
@@ -402,7 +374,7 @@ Webmail.prototype = {
             href: mailbox
         });
         var parts = mailbox.split(this.options.hdelimiter);
-        var linkcontent = "<i class='glyphicon glyphicon-folder-close'></i> ";
+        var linkcontent = "<span class='glyphicon glyphicon-folder-close'></span> ";
         var displayname = linkcontent + parts[parts.length - 1];
 
         $li.append($link);
@@ -703,7 +675,7 @@ Webmail.prototype = {
             url: url,
             dataType: 'json'
         }).done($.proxy(function(data) {
-            if (cb != undefined) {
+            if (cb !== undefined) {
                 cb.apply(this, [data]);
             }
         }, this));
@@ -892,28 +864,24 @@ Webmail.prototype = {
         $("#emails").htmltable();
         this.htmltable = $("#emails").data("htmltable");
         this.init_draggables();
+        this.resize_listing("auto");
     },
 
-    /*
-     * Callback of the 'compose' action.
-     *
-     * It is also shared with other similar actions : reply, forward.
-     */
-    resize_editor: function() {
-        CKEDITOR.instances[this.editorid].resize("100%",
-            $("#body_container").outerHeight(true));
-    },
+   
 
     add_field: function(e, name) {
         e.preventDefault();
         $("label[for=id_" + name + "]").parent().show();
         $(e.target).hide();
-        this.position_body();
+        this.resize_compose_body();
         if (this.editormode == "html") {
             this.resize_editor();
         }
     },
 
+    /**
+     * Compose form loading and initialization.
+     */
     compose_callback: function(resp) {
         this.page_update(resp);
         $("#add_cc").click($.proxy(function(e) { this.add_field(e, "cc"); }, this));
@@ -936,15 +904,7 @@ Webmail.prototype = {
         if (resp.id !== undefined) {
             this.navobject.setparam("id", resp.id).update(false, true);
         }
-        this.position_body();
-    },
-
-    position_body: function() {
-        var $container = $("#body_container");
-        var top = $container.offset().top;
-        var bottom = $("#bottom-bar").offset().top;
-
-        $("#body_container").height(bottom - top - 30);
+        this.resize_compose_body();
     },
 
     /*
@@ -952,9 +912,8 @@ Webmail.prototype = {
      */
     viewmail_callback: function(resp) {
         this.page_update(resp);
-        $("#listing").css("overflow", "hidden");
-        $("body").css("overflow", "hidden");
-        $("a[name=close]").click($.proxy(function(e) {
+        this.resize_listing("hidden");
+        $("a[name=back]").click($.proxy(function(e) {
             e.preventDefault();
             this.go_back_to_listing();
         }, this));
@@ -966,7 +925,7 @@ Webmail.prototype = {
         } else {
             this.htmltable.current_selection().addClass("unseen");
         }
-        if (data.unseen != undefined && data.mbox) {
+        if (data.unseen !== undefined && data.mbox) {
             this.set_unseen_messages(data.mbox, data.unseen);
         }
     },

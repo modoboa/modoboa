@@ -19,7 +19,7 @@
      }
 
      tr th#tags,
-     tr.muted td[name="tags"]{
+     td[name="tags"] {
          display: none;
      }
      button.navbar-toggle[data-target="#navigate-navbar-collapse"]{
@@ -106,6 +106,7 @@
 /* Global */
 body { 
     padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 h5 {
@@ -197,7 +198,7 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     color: white;
 }
 
-#pagination-responsive #pagination_bar{
+#pagination-responsive #pagination_bar {
     display: none;
 }
 
@@ -242,10 +243,6 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
 
  /* listing */
 
-#listing {
-    /*margin-bottom:60px;*/
-}
-
 /* Bottom navBar*/
 
 .nav-bottom {
@@ -273,7 +270,7 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     display: inline;
     cursor: pointer;
 }
-.simplepagination li i{
+.simplepagination li span {
     color: white;
     margin-bottom: 15px;
     margin-top: 15px;

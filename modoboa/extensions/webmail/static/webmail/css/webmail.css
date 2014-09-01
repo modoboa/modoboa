@@ -1,4 +1,12 @@
-    /* MEDIA */
+/* MEDIA */
+#listing {
+    position: absolute;
+    overflow: auto;
+    top: 60px;
+    padding: 0;
+    margin: 0;
+}
+
 @media (max-width: 400px) {
     td#subject,
     td[name='subject']
@@ -18,14 +26,24 @@
     }
 }
 
-@media (max-width: 770px) {
-    #searchbox{
+@media (max-width: 768px) {
+    #searchbox {
         margin-left: 20px;
+    }
+
+    td[name=from] { 
+        width: 35%;
+    }
+}
+
+@media (min-width: 768px) {
+    td[name=from] { 
+        width: 20%;
     }
 }
 
 @media (max-width: 1198px) {
-    .container-fluid{
+    .container-fluid {
         padding:0;
     }
     th#date,
@@ -38,13 +56,11 @@
     th#withatts,
     td[name="withatts"],
     th#drag,
-    td[name="drag"]{
+    td[name="drag"] {
         display: none;
     }
-    #leftcol.leftcol-display-none{
-        display: none;
-    }
-    .display-up-1198-webmail{
+  
+    .display-up-1198-webmail {
         display: none;
     }
     .display-less-1198{
@@ -53,13 +69,20 @@
 
 }
 
+@media (min-width: 1198px) { 
+
+    #listing {
+        padding-left: 15px;
+    }
+}
+
 /* GENERAL */
 body, html {
     /*overflow: hidden;*/
 }
 
 #rightcol { 
-/*    padding-top: 20px;*/
+    position: relative;
 }
 
 #folders {
@@ -99,8 +122,8 @@ body, html {
 }
 
 .nav-sidebar > li > a {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
 } 
 
 #mboxes_container a[name=loadfolder] {
@@ -142,34 +165,6 @@ td[name="date"] {
 
 .navbar-header{
     display: inline-block;
-}
-
-/*
- *listing
- */
-#listing {
-    overflow: auto;
-    padding-top: 60px;
-}
-#listing.listing-up-1198 {
-    padding-left: 15px;
-}
-#listing.listing-less-1198 {
-    bottom: 0px;
-    left: 0px;
-    padding-left: 0px;
-    right: 0;
-    top: 0px;
-    overflow-y: hidden;
-}
-
-#listing .test {
-    overflow-y: scroll;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 41px;
-    bottom: 41px;
 }
 
 /*
@@ -322,8 +317,9 @@ td[class*=openable] {
  */
 
 #menubar { 
-    background-color: #fff;
-    position: fixed;
+    /*background-color: #fff;*/
+    position: absolute;
+    top: 0;
     padding-top: 20px;
     z-index: 100;
 }
