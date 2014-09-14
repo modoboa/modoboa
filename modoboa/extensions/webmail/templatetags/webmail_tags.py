@@ -4,8 +4,11 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
+
 from modoboa.extensions import webmail
-from modoboa.extensions.webmail.lib import separate_mailbox
+from modoboa.extensions.webmail.lib import (
+    imapheader, separate_mailbox
+)
 from modoboa.lib import parameters
 
 register = template.Library()
@@ -15,10 +18,10 @@ register = template.Library()
 def viewmail_menu(selection, folder, user, mail_id=None):
     entries = [
         {"name": "back",
-             "url": "javascript:history.go(-2);",
-             "img": "glyphicon glyphicon-arrow-left",
-             "class": "btn-primary sm-margin-left-back",
-             "label": _("Back")},
+         "url": "javascript:history.go(-1);",
+         "img": "glyphicon glyphicon-arrow-left",
+         "class": "btn-primary sm-margin-left-back",
+         "label": _("Back")},
         {"name": "reply",
          "url": "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
          "img": "glyphicon glyphicon-share",
@@ -78,33 +81,23 @@ def compose_menu(selection, backurl, user):
 @register.simple_tag
 def listmailbox_menu(selection, folder, user):
     entries = [
-        {"name": "compose",
-         "url": "compose",
-         "img": "glyphicon glyphicon-edit",
-         "label": _("New message"),
-         "class": "btn btn-default"},
         {"name": "totrash",
          "label": "",
          "class": "btn btn-default",
          "img": "glyphicon glyphicon-trash",
          "url": reverse("modoboa.extensions.webmail.views.delete"),
          },
-        {"name": "mark",
-         "label": _("Mark messages"),
-         "class": "btn btn-default",
-         "menu": [
-             {"name": "mark-read",
-              "label": _("As read"),
-              "url": reverse(webmail.views.mark, args=[folder]) + "?status=read"},
-             {"name": "mark-unread",
-              "label": _("As unread"),
-              "url": reverse(webmail.views.mark, args=[folder]) + "?status=unread"}
-         ]
-         },
         {"name": "actions",
          "label": _("Actions"),
          "class": "btn btn-default",
          "menu": [
+             {"name": "mark-read",
+              "label": _("Mark as read"),
+              "url": reverse(webmail.views.mark, args=[folder]) + "?status=read"},
+             {"name": "mark-unread",
+              "label": _("Mark as unread"),
+              "url": reverse(webmail.views.mark, args=[folder]) + "?status=unread"},
+             {"divider": True},
              {"name": "compress",
               "label": _("Compress folder"),
               "url": "compact/%s/" % folder}
@@ -179,7 +172,7 @@ def mboxes_menu():
         {"name": "newmbox",
          "url": reverse(webmail.views.newfolder),
          "img": "glyphicon glyphicon-plus",
-         "title": _("Create a new mailbox"),
+         "label": _("Create a new mailbox"),
          "modal": True,
          "modalcb": "webmail.mboxform_cb",
          "closecb": "webmail.mboxform_close",
@@ -187,15 +180,25 @@ def mboxes_menu():
         {"name": "editmbox",
          "url": reverse(webmail.views.editfolder),
          "img": "glyphicon glyphicon-edit",
-         "title": _("Edit the selected mailbox"),
+         "label": _("Edit the selected mailbox"),
          "class": "btn-default btn-xs"},
         {"name": "removembox",
          "url": reverse(webmail.views.delfolder),
          "img": "glyphicon glyphicon-remove",
-         "title": _("Remove the selected mailbox"),
+         "label": _("Remove the selected mailbox"),
          "class": "btn-default btn-xs"}
     ]
 
-    return render_to_string('common/buttons_list.html', dict(
-        entries=entries, css="nav"
+    return render_to_string('common/menu.html', dict(
+        entries=entries, css="dropdown-menu"
     ))
+
+
+@register.filter
+def parse_imap_header(value, header):
+    """Simple template tag to display a IMAP header."""
+    try:
+        value = getattr(imapheader, "parse_%s" % header)(value)
+    except AttributeError:
+        pass
+    return value

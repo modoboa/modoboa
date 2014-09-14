@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load webmail_tags %}
+
+<div id="emails">
+  {% for email in emails %}
+  <div id="{{ email.imapid }}" class="row email{% if email.style %} {{ email.style }}{% endif %}">
+    <div class="col-xs-1 col-lg-1 text-center">
+      <input type="checkbox" />
+    </div>
+    <div class="col-xs-9 col-lg-9 openable">
+      {{ email.from|parse_imap_header:"from" }}
+      <p class="text-muted">
+        {{ email.subject|parse_imap_header:"subject" }}
+      </p>
+    </div>
+    <div class="col-xs-2 col-lg-2 text-right">
+      {{ email.date|parse_imap_header:"date" }}
+      <p>{% if email.answered %}<span class="glyphicon glyphicon-share-alt"></span>{% endif %}{% if email.attachments %}<span class="glyphicon glyphicon-paperclip"></span>{% endif %}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>

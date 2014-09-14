@@ -649,15 +649,12 @@ class IMAPconnector(object):
             if not r'\Seen' in data[int(uid)]['FLAGS']:
                 msg['style'] = 'unseen'
             if r'\Answered' in data[int(uid)]['FLAGS']:
-                msg['img_flags'] = [static_url('pics/answered.png')]
+                msg['answered'] = True
             if r'$Forwarded' in data[int(uid)]['FLAGS']:
-                if 'img_flags' in msg:
-                    msg['img_flags'] += [static_url('pics/forwarded.png')]
-                else:
-                    msg['img_flags'] = [static_url('pics/forwarded.png')]
+                msg['forwarded'] = True
             bs = BodyStructure(data[int(uid)]['BODYSTRUCTURE'])
             if bs.has_attachments():
-                msg['img_withatts'] = static_url('pics/attachment.png')
+                msg['attachments'] = True
             result += [msg]
         return result
 

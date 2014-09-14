@@ -14,25 +14,25 @@ class WMtable(tables.Table):
     styles = "table-hover"
     idkey = "imapid"
     drag = tables.ImgColumn(
-        "drag", cssclass="draggable left", width="1%",
+        "drag", cssclass="draggable left",
         defvalue="%spics/grippy.png" % settings.STATIC_URL,
         header="<input type='checkbox' name='toggleselect' id='toggleselect' />"
     )
     selection = tables.SelectionColumn(
-        "selection", safe=True, width='1%', header=None, sortable=False
+        "selection", safe=True, header=None, sortable=False
     )
-    flags = tables.ImgColumn("flags", width="3%")
-    withatts = tables.ImgColumn("withatts", width="2%")
+    flags = tables.ImgColumn("flags")
+    withatts = tables.ImgColumn("withatts")
     subject = tables.Column(
         "subject", label=ugettext_lazy("Subject"), limit=60,
         cssclass="openable"
     )
     from_ = tables.Column(
-        "from", width="20%", label=ugettext_lazy("From"), limit=30,
+        "from", label=ugettext_lazy("From"), limit=30,
         cssclass="openable"
     )
     date = tables.Column(
-        "date", width="15%", label=ugettext_lazy("Date"), cssclass="openable"
+        "date", label=ugettext_lazy("Date"), cssclass="openable"
     )
 
     cols_order = [

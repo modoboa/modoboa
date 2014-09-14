@@ -1,3 +1,13 @@
 {% extends "common/buttons_list.html" %}{% load i18n %}
-{% block extracontent %}{% include "common/email_searchbar.html" with extraopts=extraopts %}
+
+{% block before_menubar %}
+<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+  {% include "common/email_searchbar.html" with extraopts=extraopts %}
+</div>
+{% endblock %}
+
+{% block menubar_classes %}col-lg-2{% endblock %}
+
+{% block after_menubar %}
+<div id="pagination" class="col-lg-2"></div>
 {% endblock %}

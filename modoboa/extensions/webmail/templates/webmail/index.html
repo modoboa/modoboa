@@ -1,4 +1,4 @@
-{% extends "fixed.html" %}{% load i18n lib_tags %}{% load url from future %}
+{% extends "fixed.html" %}{% load i18n lib_tags webmail_tags %}{% load url from future %}
 {% block pagetitle %}Webmail{% endblock %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui.css" />
@@ -8,6 +8,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.htmltable.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/searchbar.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.infinitescroll.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}webmail/js/webmail.js"></script>
 <script type="text/javascript">
 var webmail = undefined;
@@ -16,6 +17,7 @@ $(document).ready(function() {
     webmail = new Webmail({
         poller_interval: {{ refreshrate }},
         poller_url: "{% url 'modoboa.extensions.webmail.views.check_unseen_messages' %}",
+        listing_url: "{% url 'modoboa.extensions.webmail.views.index' %}?action=listmailbox",
         move_url: "{% url 'modoboa.extensions.webmail.views.move' %}",
         submboxes_url: "{% url 'modoboa.extensions.webmail.views.submailboxes' %}",
         delattachment_url: "{% url 'modoboa.extensions.webmail.views.delattachment' %}",
@@ -33,9 +35,40 @@ $(document).ready(function() {
 {% block fixed_content %}
 <div class="row">
   <div id="leftcol" class="col-lg-2 col-md-3 col-sm-3 col-xs-0 sidebar">
-    <!--<div class="row">-->
-      {{ mboxes }}
-    <!--</div>-->
+    <div class="leftcol-heading text-center">
+      <a name="compose" class="btn btn-success btn-lg" href="compose">
+        <span class="glyphicon glyphicon-edit"></span>
+        {% trans "Compose" %}
+      </a>
+    </div>
+
+    <div id="folders" class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        {{ mboxes }}
+      </div>
+    </div>
+
+
+    <div id="left-toolbar" class="row">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <div id="mboxactions" class="btn-group dropup">
+          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-cog"></span>
+          </button>
+          {% mboxes_menu %}
+        </div>
+      </div>
+      {% if quota != -1 %}
+      <div id="quotabox" class="col-sm-10 col-md-10 col-lg-10">
+        <!--<label class="pull-left navbar-text">{% trans "Mailbox quota" %}</label>-->
+        <div id="quotabar" class="progress">
+          <div class="progress-bar {% progress_color quota %}" role="progressbar" style="width: {{ quota }}%" aria-valuenow="{{ quota }}" aria-valuemin="0" aria-valuemax="100">{{ quota }}%</div>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+    
   </div>
   <div id="rightcol" class="col-lg-offset-2 col-lg-10 col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-9 col-xs-12">
     <div class="row">
@@ -47,13 +80,4 @@ $(document).ready(function() {
   </div>
 </div>
 {% endblock %}
-{% block footerleft %}
-{% if quota != -1 %}
-<div id="quotabox">
-  <label class="pull-left navbar-text">{% trans "Mailbox quota" %}</label>
-  <div id="quotabar" class="pull-left progress">
-    <div class="{% progress_color quota %}" role="progressbar" style="width: {{ quota }}%" aria-valuenow="{{ quota }}" aria-valuemin="0" aria-valuemax="100">{{ quota }}%</div>
-  </div>
-</div>
-{% endif %}
-{% endblock %}
+

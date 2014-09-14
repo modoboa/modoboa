@@ -20,8 +20,6 @@ Webmail.prototype = {
         mboxes_col_width: 200
     },
 
-
-
     initialize: function(options) {
         this.options = $.extend({}, this.defaults, options);
         this.rtimer = null;
@@ -38,88 +36,116 @@ Webmail.prototype = {
         });
         this.record_unseen_messages();
 
+        $("#mboxactions").on("shown.bs.dropdown", function() {
+            var $menu = $("ul", this);
+            var offset = $menu.offset();
 
-        $("#mboxactions").css({
-            bottom: $("#bottom-bar").outerHeight(true) + "px"
+            $("body").append($menu);
+            $menu.show();
+            $menu.css("position", "absolute");
+            $menu.css("top", offset.top + "px");
+            $menu.css("left", offset.left + "px");
+            $(this).data("original_menu", $menu);
+        }).on("hide.bs.dropdown", function() {
+            var $this = $(this);
+            $this.append($this.data("original_menu"));
+            $this.data("original_menu").removeAttr("style");
         });
+
+        /*$("#mboxactions").css({
+            bottom: $("#bottom-bar").outerHeight(true) + "px"
+        });*/
 
         /* Responsive -> on resizing folders (leftcol) */
-        $("#folders").resizable({
-            start: function(event, ui) {
-                $('#listing iframe').css('pointer-events','none');
-            },
-            handles: "e",
-            minWidth: parseInt($("#folders").css("width").replace("px", "")),
-            maxWidth: 400,
-            stop: function(event, ui) {
-                $('#listing iframe').css('pointer-events','auto');
-            }
-        });
+        // $("#folders").resizable({
+        //     start: function(event, ui) {
+        //         $('#listing iframe').css('pointer-events','none');
+        //     },
+        //     handles: "e",
+        //     minWidth: $("#folders").width(),
+        //     maxWidth: 400,
+        //     stop: function(event, ui) {
+        //         $('#listing iframe').css('pointer-events','auto');
+        //     }
+        // });
 
-        $("#folders").resizable({
-            resize: function(event, ui) {
-                if ($(window).width() > 1198) {
-                    var width = ui.size.width;
-                    /*$("#rightcol").css({
-                        marginLeft: width + 'px'
-                    });*/
-                    $("#folders").css({
-                        width : width + 'px'
-                    });
-                    /*$("#rightcol").css({
-                        paddingRight: width - 110 + 'px'
-                    });
-                    if ($(window).width() < 1800) {
-                        $("#rightcol").css({
-                            paddingRight: width - 110 + 'px'
-                        });
-                    }*/
-                }
-            }
-        });
+        // $("#folders").resizable({
+        //     resize: function(event, ui) {
+        //         if ($(window).width() > 1198) {
+        //             var width = ui.size.width;
+        //             /*$("#rightcol").css({
+        //                 marginLeft: width + 'px'
+        //             });*/
+        //             $("#folders").css({
+        //                 width : width + 'px'
+        //             });
+        //             /*$("#rightcol").css({
+        //                 paddingRight: width - 110 + 'px'
+        //             });
+        //             if ($(window).width() < 1800) {
+        //                 $("#rightcol").css({
+        //                     paddingRight: width - 110 + 'px'
+        //                 });
+        //             }*/
+        //         }
+        //     }
+        // });
         /* end Responsive */
 
         this.resize();
 
+        this.setup_infinite_scroll();
         this.init_droppables();
         this.register_navcallbacks();
         this.listen();
     },
 
     register_navcallbacks: function() {
-        this.navobject.register_callback("listmailbox", $.proxy(this.listmailbox_callback, this));
-        this.navobject.register_callback("compose", $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("viewmail", $.proxy(this.viewmail_callback, this));
+        this.navobject.register_callback(
+            "listmailbox", $.proxy(this.listmailbox_callback, this));
+        this.navobject.register_callback(
+            "compose", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback(
+            "viewmail", $.proxy(this.viewmail_callback, this));
 
-        this.navobject.register_callback("reply", $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("replyall", $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("forward", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback(
+            "reply", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback(
+            "replyall", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback(
+            "forward", $.proxy(this.compose_callback, this));
     },
 
     listen: function() {
         $(window).resize($.proxy(this.resize, this));
 
-        $(document).on("click", "a[name=compose]", $.proxy(this.compose_loader, this));
-        $(document).on("click", "a[name=totrash]", $.proxy(this.delete_messages, this));
-        $(document).on("click", "a[name*=mark-]", $.proxy(this.send_mark_request, this));
+        $(document).on(
+            "click", "a[name=compose]", $.proxy(this.compose_loader, this));
+        $(document).on(
+            "click", "a[name=totrash]", $.proxy(this.delete_messages, this));
+        $(document).on(
+            "click", "a[name*=mark-]", $.proxy(this.send_mark_request, this));
         $(document).on("click", "a[name=compress]", $.proxy(this.compress, this));
         $(document).on("click", "a[name=empty]", $.proxy(this.empty, this));
         $(document).on("click", "#bottom-bar a", $.proxy(this.getpage_loader, this));
 
-        $(document).on("click", "a[name=loadfolder]", $.proxy(this.listmailbox_loader, this));
+        $(document).on(
+            "click", "a[name=loadfolder]", $.proxy(this.listmailbox_loader, this));
         $(document).on("click", "a[name=selectfolder]", this.select_parent_mailbox);
-        $(document).on("click", "div[class*=clickbox]", $.proxy(this.mbox_state_callback, this));
+        $(document).on(
+            "click", "div[class*=clickbox]", $.proxy(this.mbox_state_callback, this));
         $(document).on("click", "a[name=newmbox]", $.proxy(this.new_mailbox, this));
         $(document).on("click", "a[name=editmbox]", $.proxy(this.edit_mbox, this));
         $(document).on("click", "a[name=removembox]", $.proxy(this.remove_mbox, this));
 
-        $(document).on("click", "td[class*=openable]", $.proxy(this.viewmail_loader, this));
+        $(document).on("click", "div.openable", $.proxy(this.viewmail_loader, this));
 
         $(document).on("click", "a[name=reply]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=replyall]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=forward]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete_message, this));
-        $(document).on("click", "a[name=activate_links]", $.proxy(function(e) { this.display_mode(e, "1"); }, this));
+        $(document).on(
+            "click", "a[name=activate_links]", $.proxy(function(e) { this.display_mode(e, "1"); }, this));
         $(document).on("click", "a[name=disable_links]", $.proxy(function(e) { this.display_mode(e, "0"); }, this));
 
         $(document).on("click", "a[name=sendmail]", $.proxy(this.sendmail, this));
@@ -128,6 +154,28 @@ Webmail.prototype = {
             modalbox(e, undefined, $("#attachments").attr("name"),
                 $.proxy(this.attachments_init, this));
         }, this));
+    },
+
+    /**
+     * Setup an "infinite scroll" behaviour for the email list.
+     */
+    setup_infinite_scroll: function() {
+        var that = this;
+
+        $("#listing").infinite_scroll({
+            url: this.options.listing_url,
+            calculate_bottom: function($element) {
+                return $("#emails").height() - $element.height();
+            },
+            get_args: function() {
+                return that.navparams;
+            },
+            process_results: function(data) {
+                var content = $("#emails").html() + data.listing;
+
+                $("#emails").html(content);
+            }
+        });
     },
 
     record_unseen_messages: function() {
@@ -144,35 +192,21 @@ Webmail.prototype = {
      * Global resize event callback.
      */
     resize: function() {
-        /*$("#mboxes_container").height(
-            $("#folders").height() - $("#mboxactions").height());*/
         var $window = $(window);
         var current_action = this.navobject.getparam("action");
 
+        $("#folders").height(
+            $("#left-toolbar").offset().top - $("#folders").offset().top
+        );
+
         if ($window.width() > 1198) {
-            $("#folders").css({
-                /*bottom: $("#bottom-bar").outerHeight(true) + 10,*/
-                width: this.options.mboxes_col_width + 'px'
-            });
+            // $("#folders").css({
+            //     width: this.options.mboxes_col_width + 'px'
+            // });
         }
-        if (current_action == "listmailbox") {
-            this.resize_listing("auto");
-        } else if (current_action == "viewmail") {
-            this.resize_listing("hidden");
-        } else if (current_action == "compose") {
+        if (current_action == "compose") {
             this.resize_compose_body();
         }
-    },
-
-    /**
-     * Resize the "listing" div.
-     */
-    resize_listing: function(overflow) {
-        $("#listing").css("overflow", overflow);
-        $("#listing").height(
-            $("#bottom-bar").offset().top - 
-            ($("#menubar").offset().top + $("#menubar").outerHeight())
-        );
     },
 
     /**
@@ -183,13 +217,12 @@ Webmail.prototype = {
 
         if ($container.length) {
             var top = $container.offset().top;
-            var bottom = $("#bottom-bar").offset().top;
 
-            $("#body_container").innerHeight(bottom - top - 10);
+            $("#body_container").innerHeight($(window).height() - top - 10);
         }
     },
 
-    /*
+    /**
      * Callback of the 'compose' action.
      *
      * It is also shared with other similar actions : reply, forward.
@@ -199,14 +232,14 @@ Webmail.prototype = {
             $("#body_container").outerHeight(true));
     },
 
-    /*
+    /**
      * Simple helper to retrieve the currently selected mailbox.
      */
     get_current_mailbox: function() {
         return this.navobject.getparam("mbox", "INBOX");
     },
 
-    /*
+    /**
      * Keep track of interesting navigation parameters in order to
      * restore them later.
      */
@@ -276,10 +309,10 @@ Webmail.prototype = {
             $("#menubar").html(response.menu);
             $("#searchfield").searchbar({navobj: this.navobject});
         }
-        if (response.navbar) {
-            $("#bottom-bar-right").html(response.navbar);
+        /*if (response.navbar) {
+            $("#pagination").html(response.navbar);
             $("#pagination-responsive").html(response.navbar);
-        }
+        }*/
         $("#listing").html(response.listing);
     },
 
@@ -832,22 +865,22 @@ Webmail.prototype = {
      * Loader of the 'viewmail' action
      */
     viewmail_loader: function(e) {
-        var $tr = $(e.target).parent();
+        var $div = $(e.target).parents(".email");
         var curmb = this.get_current_mailbox();
 
         e.preventDefault();
-        if ($tr.hasClass("disabled")) {
+        if ($div.hasClass("disabled")) {
             return;
         }
-        $tr.addClass("disabled");
-        if ($tr.hasClass("unseen")) {
+        $div.addClass("disabled");
+        if ($div.hasClass("unseen")) {
             var mb = this.get_current_mailbox();
             this.change_unseen_messages(mb, -1);
         }
         this.navobject.reset().setparams({
             action: "viewmail",
             mbox: curmb,
-            mailid: $tr.attr("id")
+            mailid: $div.attr("id")
         }).update();
     },
 
@@ -861,13 +894,13 @@ Webmail.prototype = {
     listmailbox_callback: function(resp) {
         this.store_nav_params();
         this.page_update(resp);
-        $("#emails").htmltable();
+        $("#emails").htmltable({
+            row_selector: "div.email"
+        });
         this.htmltable = $("#emails").data("htmltable");
         this.init_draggables();
-        this.resize_listing("auto");
+        $("#listing").css("overflow", "auto");
     },
-
-   
 
     add_field: function(e, name) {
         e.preventDefault();
@@ -912,7 +945,7 @@ Webmail.prototype = {
      */
     viewmail_callback: function(resp) {
         this.page_update(resp);
-        this.resize_listing("hidden");
+        $("#listing").css("overflow", "hidden");
         $("a[name=back]").click($.proxy(function(e) {
             e.preventDefault();
             this.go_back_to_listing();

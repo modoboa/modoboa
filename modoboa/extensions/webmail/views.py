@@ -1,6 +1,12 @@
 # coding: utf-8
+"""
+Webmail extension views.
+"""
+
 import os
+
 from rfc6266 import build_header
+
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -10,6 +16,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
+
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException, BadRequest
 from modoboa.lib.webutils import (
@@ -27,7 +34,7 @@ from .lib import (
     ImapEmail, WebmailNavigationParameters, ReplyModifier, ForwardModifier,
     get_imapconnector, IMAPconnector, separate_mailbox
 )
-from templatetags import webmail_tags
+from .templatetags import webmail_tags
 
 
 @login_required
@@ -338,7 +345,15 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
         elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
         **request.session["webmail_navparams"]
     )
-    return lst.render(request, navparams.get('page'))
+    page = lst.paginator.getpage(navparams.get('page'))
+    if page is not None:
+        content = _render_to_string(request, "webmail/email_list.html", {
+            "emails": lst.mbc.fetch(page.id_start, page.id_stop, mbox, nbelems=40)
+        })
+    else:
+        content = ""
+    return {"listing": content, "length": len(content)}
+    #return lst.render(request, navparams.get('page'))
 
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):

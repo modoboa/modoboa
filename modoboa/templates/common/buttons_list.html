@@ -1,18 +1,28 @@
 {% load lib_tags %}
 
 <!-- Brand and toggle get grouped for better mobile display -->
-<div class="btn-toolbar {{ extraclasses }}">
-  {% for entry in entries %}
-  <ul class="nav navbar-nav action-buttons btn-group">{% if entry.menu %}
-    <a class="btn btn-default dropdown-toggle {{ entry.label }}" data-toggle="dropdown">{% if entry.img %}<i class="{{ entry.img}}"></i>{% endif %}{{ entry.label }} <span class="caret"></span></a>
-    <ul class="dropdown-menu">{% for sentry in entry.menu %}
-      <li>{% render_link sentry %}</li>
-      {% endfor %}</ul>
-    {% else %}{% render_link entry "btn" %}{% endif %}
-  </ul>
-  {% endfor %}
-  <ul class="nav navbar-nav action-buttons navbar-right">
-    {% block extracontent %}{% endblock %}
-  </ul>
+<div class="row">
+  {% block before_menubar %}{% endblock %}
+  <div class="btn-toolbar {{ extraclasses }}{% block menubar_classes %}col-xs-12 col-sm-12 col-md-12 col-lg-12{% endblock %}">
+    {% for entry in entries %}
+    <ul class="nav navbar-nav action-buttons btn-group">
+      {% if entry.menu %}
+      <a class="btn btn-default dropdown-toggle {{ entry.label }}" data-toggle="dropdown">{% if entry.img %}<i class="{{ entry.img}}"></i>{% endif %}{{ entry.label }} <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        {% for sentry in entry.menu %}
+          {% if sentry.divider %}
+        <li class="divider"></li>
+          {% else %}
+        <li>{% render_link sentry %}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% else %}
+        {% render_link entry "btn" %}
+      {% endif %}
+    </ul>
+    {% endfor %}
+  </div>
+  {% block after_menubar %}{% endblock %}
 </div>
 
