@@ -89,14 +89,18 @@ def list_quotas(request, tplname="admin/quotas.html"):
     if sort_order in ["address", "quota", "quota_value__bytes"]:
         mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
     elif sort_order == "quota_usage":
-        if db_type() == "postgres":
+        where = "admin_mailbox.address||'@'||admin_domain.name"
+        db_type = db_type()
+        if db_type == "postgres":
             select = '(admin_quota.bytes::float / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
         else:
             select = 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'
+            if db_type == "mysql":
+                where = "CONCAT(admin_mailbox.address,'@',admin_domain.name)"
         mboxes = mboxes.extra(
             select={'quota_usage': select},
-            where=["admin_quota.mbox_id=admin_mailbox.id"],
-            tables=["admin_quota"],
+            where=["admin_quota.username=%s" % where],
+            tables=["admin_quota", "admin_domain"],
             order_by=["%s%s" % (sort_dir, sort_order)]
         )
     else:
