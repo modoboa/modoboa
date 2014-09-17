@@ -209,7 +209,7 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     margin-right: -21px; /* 20px padding + 1px border */
     margin-left: -20px;
 }
-.nav-sidebar > li > a {
+.nav-sidebar li > a {
     padding-right: 20px;
     padding-left: 20px;
 }
@@ -218,9 +218,9 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     background-color: #eee;
 }
 
-.nav-sidebar > .active > a,
-.nav-sidebar > .active > a:hover,
-.nav-sidebar > .active > a:focus {
+.nav-sidebar .active > a,
+.nav-sidebar .active > a:hover,
+.nav-sidebar .active > a:focus {
     color: #fff;
     background-color: #428bca;
 }

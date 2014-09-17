@@ -324,7 +324,7 @@ def render_mboxes_list(request, imapc):
 
 
 def listmailbox(request, defmailbox="INBOX", update_session=True):
-    """Mailbox content listing
+    """Mailbox content listing.
 
     Return a list of messages contained in the specified mailbox. The
     number of elements returned depends on the ``MESSAGES_PER_PAGE``
@@ -351,7 +351,7 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
             "emails": lst.mbc.fetch(page.id_start, page.id_stop, mbox, nbelems=40)
         })
     else:
-        content = ""
+        content = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
     return {"listing": content, "length": len(content)}
     #return lst.render(request, navparams.get('page'))
 

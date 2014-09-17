@@ -424,15 +424,17 @@ Webmail.prototype = {
 
     /*
      * Inject new mailboxes under a given parent in the tree.
+     *
+     * $parent must be a <li> node.
      */
     inject_mailboxes: function($parent, mboxes) {
         var $ul = $("<ul />", {
             name: $parent.attr("name"),
-            'class': "hidden nav nav-sidebar"
+            'class': "hidden nav"
         });
         var $plink = $parent.children("a");
 
-        $parent.after($ul);
+        $parent.append($ul);
         if (!$parent.children("div").length) {
             this.inject_clickbox($parent);
         }
@@ -440,7 +442,9 @@ Webmail.prototype = {
             if ($parent.find('li[name="' + mboxes[i].name + '"]').length) {
                 continue;
             }
-            this.inject_mailbox($ul, mboxes[i].name, $plink.attr("name"), mboxes[i].unseen);
+            this.inject_mailbox(
+                $ul, mboxes[i].name, $plink.attr("name"), mboxes[i].unseen
+            );
             if (mboxes[i].sub !== undefined) {
                 this.inject_clickbox($('li[name="' + mboxes[i].name + '"]'));
             }
@@ -449,8 +453,8 @@ Webmail.prototype = {
         this.toggle_mbox_state($parent.children("div"), $ul);
     },
 
-    /*
-     * Download sub-mailboxes from the server
+    /**
+     * Download mailboxes from the server.
      */
     get_mailboxes: function(parent, async) {
         if (async === undefined) {
@@ -460,14 +464,16 @@ Webmail.prototype = {
             url: this.options.submboxes_url,
             dataType: 'json',
             async: async,
-            data: "topmailbox=" + parent.parents("li").attr("name")
+            data: "topmailbox=" + parent.attr("name")
         }).done($.proxy(function(data) {
             this.inject_mailboxes(parent, data);
         }, this));
     },
 
-    /*
-     * Open/Close a mailbox with children
+    /**
+     * Open/Close a mailbox with children.
+     *
+     * This is an internal method.
      */
     toggle_mbox_state: function($div, $ul) {
         if ($ul.hasClass("hidden")) {
@@ -479,10 +485,16 @@ Webmail.prototype = {
         }
     },
 
+    /**
+     * Open or close a mailbox (user triggered).
+     *
+     * The first time it is opened, sub mailboxes will be downloaded
+     * from the server and injected into the tree.
+     */
     mbox_state_callback: function(e) {
         e.preventDefault();
         var $div = $(e.target);
-        var $parent = $div.parent();
+        var $parent = $div.parents("li");
         var $ul = $parent.find('ul[name="' + $parent.attr("name") + '"]');
 
         if (!$ul.length) {
@@ -499,7 +511,7 @@ Webmail.prototype = {
         $("a[name=loadfolder]").parent().removeClass("active").addClass("droppable");
     },
 
-    /*
+    /**
      * Select a particular mailbox (one already present in the DOM)
      */
     select_mailbox: function(obj) {

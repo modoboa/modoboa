@@ -94,7 +94,7 @@ body, html {
     /*overflow: auto;*/
 }
 
-.nav-sidebar > li > a {
+.nav-sidebar li > a {
     padding-top: 7px;
     padding-bottom: 7px;
 } 
