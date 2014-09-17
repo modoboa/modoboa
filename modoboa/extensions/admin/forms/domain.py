@@ -115,8 +115,6 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 '@%s' % self.oldname, '@%s' % domain.name)
             newq = Quota.objects.create(
                 username=username, bytes=q.bytes, messages=q.messages)
-            q.mailbox.quota_value = newq
-            q.mailbox.save()
             q.delete()
 
     def save(self, user, commit=True, domalias_post_create=False):
