@@ -184,9 +184,9 @@ class Mailbox(AdminObject):
 
         """
         old_mail_home = self.mail_home
+        old_qvalue = self.quota_value
         self.address = address
         self.domain = domain
-        old_qvalue = self.quota_value
         self.quota_value = Quota.objects.create(
             username=self.full_address, bytes=old_qvalue.bytes,
             messages=old_qvalue.messages
@@ -218,7 +218,8 @@ class Mailbox(AdminObject):
                 self.quota = 0
         elif int(value) > self.domain.quota and not override_rules:
             raise BadRequest(
-                _("Quota is greater than the allowed domain's limit (%dM)" % self.domain.quota)
+                _("Quota is greater than the allowed domain's limit (%dM)"
+                  % self.domain.quota)
             )
         else:
             self.quota = value
@@ -261,9 +262,7 @@ class Mailbox(AdminObject):
 
         We just make sure a quota record is defined for this mailbox.
         """
-        try:
-            q = self.quota_value
-        except Quota.DoesNotExist:
+        if self.quota_value is None:
             self.quota_value, created = Quota.objects.get_or_create(
                 username=self.full_address)
         super(Mailbox, self).save(*args, **kwargs)
