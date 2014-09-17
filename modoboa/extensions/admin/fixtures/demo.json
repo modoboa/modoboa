@@ -213,8 +213,7 @@
             "quota": 10,
             "user": 2,
             "domain": 1,
-            "address": "admin",
-            "quota_value": "admin@demo.local"
+            "address": "admin"
         }
     },
     {
@@ -225,8 +224,7 @@
             "quota": 10,
             "user": 4,
             "domain": 1,
-            "address": "user",
-            "quota_value": "user@demo.local"
+            "address": "user"
         }
     },
     {

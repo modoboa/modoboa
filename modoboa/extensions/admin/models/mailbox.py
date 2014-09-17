@@ -17,8 +17,9 @@ from .domain import Domain
 
 
 class Quota(models.Model):
-    """Mailbox current quota usage.
-    """
+
+    """Keeps track of Mailbox current quota."""
+
     username = models.EmailField(primary_key=True, max_length=254)
     bytes = models.BigIntegerField(default=0)
     messages = models.IntegerField(default=0)
@@ -28,6 +29,8 @@ class Quota(models.Model):
 
 
 class MailboxManager(Manager):
+
+    """Custom manager for Mailbox."""
 
     def get_for_admin(self, admin, squery=None):
         """Return the mailboxes that belong to this admin.
@@ -44,9 +47,15 @@ class MailboxManager(Manager):
                 parts = squery.split('@')
                 addrfilter = '@'.join(parts[:-1])
                 domfilter = parts[-1]
-                qf = Q(address__contains=addrfilter) & Q(domain__name__contains=domfilter)
+                qf = (
+                    Q(address__contains=addrfilter) &
+                    Q(domain__name__contains=domfilter)
+                )
             else:
-                qf = Q(address__contains=squery) | Q(domain__name__contains=squery)
+                qf = (
+                    Q(address__contains=squery) |
+                    Q(domain__name__contains=squery)
+                )
         ids = admin.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(Mailbox)) \
             .values_list('object_id', flat=True)
@@ -58,13 +67,15 @@ class MailboxManager(Manager):
 
 
 class Mailbox(AdminObject):
+
+    """User mailbox."""
+
     address = models.CharField(
         ugettext_lazy('address'), max_length=252,
         help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
     )
     quota = models.PositiveIntegerField()
     use_domain_quota = models.BooleanField(default=False)
-    quota_value = models.OneToOneField(Quota, to_field="username")
     domain = models.ForeignKey(Domain)
     user = models.ForeignKey(User)
 
@@ -137,6 +148,22 @@ class Mailbox(AdminObject):
             aliases += [alias.full_address]
         return aliases
 
+    @property
+    def quota_value(self):
+        """Retrieve the ``Quota`` instance associated to this mailbox."""
+        if not hasattr(self, "_quota_value"):
+            try:
+                self._quota_value = Quota.objects.get(
+                    username=self.full_address)
+            except Quota.DoesNotExist:
+                return None
+        return self._quota_value
+
+    @quota_value.setter
+    def quota_value(self, instance):
+        """Set the ``Quota`` for this mailbox."""
+        self._quota_value = instance
+
     def rename_dir(self, old_mail_home):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
@@ -157,9 +184,9 @@ class Mailbox(AdminObject):
 
         """
         old_mail_home = self.mail_home
+        old_qvalue = self.quota_value
         self.address = address
         self.domain = domain
-        old_qvalue = self.quota_value
         self.quota_value = Quota.objects.create(
             username=self.full_address, bytes=old_qvalue.bytes,
             messages=old_qvalue.messages
@@ -191,7 +218,8 @@ class Mailbox(AdminObject):
                 self.quota = 0
         elif int(value) > self.domain.quota and not override_rules:
             raise BadRequest(
-                _("Quota is greater than the allowed domain's limit (%dM)" % self.domain.quota)
+                _("Quota is greater than the allowed domain's limit (%dM)"
+                  % self.domain.quota)
             )
         else:
             self.quota = value
@@ -234,9 +262,7 @@ class Mailbox(AdminObject):
 
         We just make sure a quota record is defined for this mailbox.
         """
-        try:
-            q = self.quota_value
-        except Quota.DoesNotExist:
+        if self.quota_value is None:
             self.quota_value, created = Quota.objects.get_or_create(
                 username=self.full_address)
         super(Mailbox, self).save(*args, **kwargs)

@@ -199,6 +199,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         return self.cleaned_data
 
     def create_mailbox(self, user, account):
+        """Create a mailbox associated to :kw:`account`."""
         locpart, domname = split_mailbox(self.cleaned_data["email"])
         try:
             domain = Domain.objects.get(name=domname)
