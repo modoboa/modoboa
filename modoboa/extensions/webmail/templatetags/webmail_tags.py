@@ -19,31 +19,33 @@ def viewmail_menu(selection, folder, user, mail_id=None):
     entries = [
         {"name": "back",
          "url": "javascript:history.go(-1);",
-         "img": "glyphicon glyphicon-arrow-left",
-         "class": "btn-primary sm-margin-left-back",
+         "img": "fa fa-arrow-left",
+         "class": "btn-default sm-margin-left-back",
          "label": _("Back")},
         {"name": "reply",
          "url": "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
-         "img": "glyphicon glyphicon-share",
-         "class": "btn-default",
-         "label": _("Reply")},
-        {"name": "replyall",
-         "url": "action=reply&mbox=%s&mailid=%s&all=1" % (folder, mail_id),
-         "img": "",
-         "class": "btn-default",
-         "label": _("Reply all")},
-        {"name": "forward",
-         "url": "action=forward&mbox=%s&mailid=%s" % (folder, mail_id),
-         "img": "glyphicon glyphicon-arrow-right",
-         "class": "btn-default",
-         "label": _("Forward")},
+         "img": "fa fa-mail-reply",
+         "class": "btn-primary",
+         "label": _("Reply"),
+         "menu": [
+             {"name": "replyall",
+              "url": "action=reply&mbox=%s&mailid=%s&all=1" % (folder, mail_id),
+              "img": "fa fa-mail-reply-all",
+              "label": _("Reply all")},
+             {"name": "forward",
+              "url": "action=forward&mbox=%s&mailid=%s" % (folder, mail_id),
+              "img": "fa fa-mail-forward",
+              "label": _("Forward")},
+        ]},
         {"name": "delete",
-         "img": "glyphicon glyphicon-trash",
-         "class": "btn-default",
+         "img": "fa fa-trash",
+         "class": "btn-danger",
          "url": reverse(webmail.views.delete) + "?mbox=%s&selection[]=%s" % (folder, mail_id),
-         "label": _("Delete")},
+         "title": _("Delete")
+        },
         {"name": "display_options",
-         "label": _("Display options"),
+         "title": _("Display options"),
+         "img": "fa fa-cog",
          "menu": [
              {"name": "activate_links",
               "label": _("Activate links")},
@@ -60,31 +62,34 @@ def viewmail_menu(selection, folder, user, mail_id=None):
 
 
 @register.simple_tag
-def compose_menu(selection, backurl, user):
+def compose_menu(selection, backurl, user, **kwargs):
+    """The menu of the compose action."""
     entries = [
         {"name": "back",
          "url": "javascript:history.go(-2);",
-         "img": "glyphicon glyphicon-arrow-left",
-         "class": "btn-primary md-margin-left-back",
+         "img": "fa fa-arrow-left",
+         "class": "md-margin-left-back btn-default",
          "label": _("Back")},
         {"name": "sendmail",
          "url": "",
-         "img": "glyphicon glyphicon-envelope",
-         "class": "btn-default",
+         "img": "fa fa-send",
+         "class": "btn-default btn-primary",
          "label": _("Send")},
     ]
-    return render_to_string('common/buttons_list.html',
-                            {"selection": selection, "entries": entries,
-                             "user": user})
+    context = {
+        "selection": selection, "entries": entries, "user": user
+    }
+    context.update(kwargs)
+    return render_to_string('webmail/compose_menubar.html', context)
 
 
 @register.simple_tag
 def listmailbox_menu(selection, folder, user):
     entries = [
         {"name": "totrash",
-         "label": "",
-         "class": "btn btn-default",
-         "img": "glyphicon glyphicon-trash",
+         "title": _("Delete"),
+         "class": "btn-danger",
+         "img": "fa fa-trash",
          "url": reverse("modoboa.extensions.webmail.views.delete"),
          },
         {"name": "actions",
@@ -105,8 +110,8 @@ def listmailbox_menu(selection, folder, user):
          },
     ]
     if folder == parameters.get_user(user, "TRASH_FOLDER"):
-        entries[1]["class"] += " disabled"
-        entries[3]["menu"] += [
+        entries[0]["class"] += " disabled"
+        entries[1]["menu"] += [
             {"name": "empty",
              "label": _("Empty folder"),
              "url": reverse(webmail.views.empty, args=[folder])}
@@ -134,7 +139,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
         elif selected == name:
             cssclass = "active"
         result += "<li name='%s' class='droppable %s'>\n" % (name, cssclass)
-        cssclass = "block"
+        cssclass = ""
         extra_attrs = ""
         if withunseen and "unseen" in mbox:
             label += " (%d)" % mbox["unseen"]
@@ -155,7 +160,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
             result += "<div class='clickbox %s'></div>" % div_state
 
         iclass = mbox["class"] if "class" in mbox \
-            else "glyphicon glyphicon-folder-close"
+            else "fa fa-folder"
         result += "<span class='%s'></span> %s</a>" % (iclass, label)
 
         if "sub" in mbox and mbox["sub"]:
@@ -171,7 +176,7 @@ def mboxes_menu():
     entries = [
         {"name": "newmbox",
          "url": reverse(webmail.views.newfolder),
-         "img": "glyphicon glyphicon-plus",
+         "img": "fa fa-plus",
          "label": _("Create a new mailbox"),
          "modal": True,
          "modalcb": "webmail.mboxform_cb",
@@ -179,12 +184,12 @@ def mboxes_menu():
          "class": "btn-default btn-xs"},
         {"name": "editmbox",
          "url": reverse(webmail.views.editfolder),
-         "img": "glyphicon glyphicon-edit",
+         "img": "fa fa-edit",
          "label": _("Edit the selected mailbox"),
          "class": "btn-default btn-xs"},
         {"name": "removembox",
          "url": reverse(webmail.views.delfolder),
-         "img": "glyphicon glyphicon-remove",
+         "img": "fa fa-trash",
          "label": _("Remove the selected mailbox"),
          "class": "btn-default btn-xs"}
     ]

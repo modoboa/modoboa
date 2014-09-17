@@ -12,10 +12,10 @@ register = template.Library()
 def viewm_menu(mail_id, rcpt):
     entries = [
         {"name": "back",
-                 "url": "javascript:history.go(-2);",
-                 "img": "glyphicon glyphicon-arrow-left",
-                 "class": "btn-primary",
-                 "label": _("Back")},
+         "url": "javascript:history.go(-2);",
+         "img": "glyphicon glyphicon-arrow-left",
+         "class": "btn-primary",
+         "label": _("Back")},
         {"name": "release",
          "img": "glyphicon glyphicon-ok",
          "class": "btn-success",

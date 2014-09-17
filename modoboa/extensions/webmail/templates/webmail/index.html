@@ -37,7 +37,7 @@ $(document).ready(function() {
   <div id="leftcol" class="col-lg-2 col-md-3 col-sm-3 col-xs-0 sidebar">
     <div class="leftcol-heading text-center">
       <a name="compose" class="btn btn-success btn-lg" href="compose">
-        <span class="glyphicon glyphicon-edit"></span>
+        <span class="fa fa-edit"></span>
         {% trans "Compose" %}
       </a>
     </div>
@@ -53,14 +53,13 @@ $(document).ready(function() {
       <div class="col-sm-2 col-md-2 col-lg-2">
         <div id="mboxactions" class="btn-group dropup">
           <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-            <span class="glyphicon glyphicon-cog"></span>
+            <span class="fa fa-cog"></span>
           </button>
           {% mboxes_menu %}
         </div>
       </div>
       {% if quota != -1 %}
       <div id="quotabox" class="col-sm-10 col-md-10 col-lg-10">
-        <!--<label class="pull-left navbar-text">{% trans "Mailbox quota" %}</label>-->
         <div id="quotabar" class="progress">
           <div class="progress-bar {% progress_color quota %}" role="progressbar" style="width: {{ quota }}%" aria-valuenow="{{ quota }}" aria-valuemin="0" aria-valuemax="100">{{ quota }}%</div>
         </div>

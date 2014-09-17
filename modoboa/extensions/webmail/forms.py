@@ -91,6 +91,15 @@ class ComposeMailForm(forms.Form):
     origmsgid = forms.CharField(label="", required=False)
     body = forms.CharField()
 
+    def __init__(self, *args, **kwargs):
+        """Custom constructor."""
+        super(ComposeMailForm, self).__init__(*args, **kwargs)
+        self.field_widths = {
+            "cc": "11",
+            "cci": "11",
+            "subject": "11"
+        }
+
     def _html_msg(self):
         """Create a multipart message.
 

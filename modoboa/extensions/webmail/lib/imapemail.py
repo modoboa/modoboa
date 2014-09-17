@@ -20,9 +20,11 @@ from .utils import decode_payload
 
 
 class ImapEmail(Email):
+
     """
     A class to represent an email fetched from an IMAP server.
     """
+
     headernames = [
         ('From', True),
         ('To', True),
@@ -206,6 +208,9 @@ class ImapEmail(Email):
 
 
 class Modifier(ImapEmail):
+
+    """Message modifier."""
+
     def __init__(self, form, *args, **kwargs):
         kwargs["dformat"] = "EDITOR"
         super(Modifier, self).__init__(*args, **kwargs)
@@ -216,7 +221,9 @@ class Modifier(ImapEmail):
         self.body = re.sub("</?pre>", "", self.body)
 
     def _modify_html(self):
-        pass
+        if self.dformat == "html" and self.mformat != self.dformat:
+            self.body = re.sub("</?pre>", "", self.body)
+            self.body = re.sub("\n", "<br>", self.body)
 
     @property
     def subject(self):
@@ -225,6 +232,9 @@ class Modifier(ImapEmail):
 
 
 class ReplyModifier(Modifier):
+
+    """Modify a message to reply to it."""
+
     headernames = ImapEmail.headernames + \
         [("Reply-To", True),
          ("Message-ID", False)]

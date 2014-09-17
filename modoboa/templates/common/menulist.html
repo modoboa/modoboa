@@ -6,8 +6,7 @@
     {% if entry.menu %}
   <li class="dropdown {{ entry.class }}{% if selection == entry.name %} active{% endif %}"> 
     <a class="dropdown-toggle" name="{{ entry.name }}" data-toggle="dropdown" href="{{ entry.url }}">
-      {% if entry.img %}<i class="{{ entry.img }}"></i>{% endif %}
-      {{ entry.label }}
+      {% if entry.img %}<span class="{{ entry.img }}"></span> {% endif %}{{ entry.label }}
     </a>
     <ul class="dropdown-menu" {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
       {% for sentry in entry.menu %}

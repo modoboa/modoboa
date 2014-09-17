@@ -357,7 +357,8 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
 
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):
-    editor = parameters.get_user(request.user, "EDITOR")
+    """Render the compose form."""
+    resp = {}
     if email is None:
         body = u""
         textheader = u""
@@ -376,24 +377,22 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
             or request.session["compose_mail"]["id"] != request.GET["id"]:
         randid = set_compose_session(request)
 
-    attachments = request.session["compose_mail"]["attachments"]
-    if attachments:
-        short_att_list = "(%s)" % ", ".join(
-            [att['fname'] for att in (attachments[:2] + [{"fname": "..."}]
-             if len(attachments) > 2 else attachments)]
-        )
-    else:
-        short_att_list = ""
+    attachment_list = request.session["compose_mail"]["attachments"]
+    if attachment_list:
+        resp["menuargs"] = {"attachment_counter": len(attachment_list)}
+
     content = _render_to_string(request, "webmail/compose.html", {
         "form": form, "bodyheader": textheader,
-        "body": body, "posturl": posturl,
-        "attachments": attachments, "short_att_list": short_att_list
+        "body": body, "posturl": posturl
     })
 
-    ctx = dict(listing=content, editor=editor)
+    resp.update({
+        "listing": content,
+        "editor": parameters.get_user(request.user, "EDITOR")
+    })
     if randid is not None:
-        ctx["id"] = randid
-    return ctx
+        resp["id"] = randid
+    return resp
 
 
 def compose(request):
@@ -581,8 +580,8 @@ def index(request):
             extra_args = response["menuargs"]
             del response["menuargs"]
         try:
-            response["menu"] = \
-                getattr(webmail_tags, "%s_menu" % action)("", curmbox, request.user, **extra_args)
+            menu = getattr(webmail_tags, "%s_menu" % action)
+            response["menu"] = menu("", curmbox, request.user, **extra_args)
         except KeyError:
             pass
 

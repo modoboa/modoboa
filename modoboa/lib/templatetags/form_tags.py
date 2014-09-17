@@ -36,7 +36,9 @@ def configure_field_classes(field):
 
 
 @register.simple_tag
-def render_field(field, help_display_mode="tooltip"):
+def render_field(
+        field, help_display_mode="tooltip", label_width="col-sm-4",
+        hidden=False):
     """Render a field."""
     from modoboa.core.templatetags.core_tags import visirule
 
@@ -44,7 +46,8 @@ def render_field(field, help_display_mode="tooltip"):
         return "<h5%s>%s</h5>" % (visirule(field), unicode(field.label))
     configure_field_classes(field)
     return render_to_string("common/generic_field.html", dict(
-        field=field, help_display_mode=help_display_mode
+        field=field, help_display_mode=help_display_mode,
+        label_width=label_width, hidden=hidden
     ))
 
 

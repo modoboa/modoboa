@@ -207,13 +207,17 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
 /* Sidebar navigation */
 .nav-sidebar {
     margin-right: -21px; /* 20px padding + 1px border */
-    margin-bottom: 20px;
     margin-left: -20px;
 }
 .nav-sidebar > li > a {
     padding-right: 20px;
     padding-left: 20px;
 }
+
+.nav-sidebar > li > a:hover { 
+    background-color: #eee;
+}
+
 .nav-sidebar > .active > a,
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {

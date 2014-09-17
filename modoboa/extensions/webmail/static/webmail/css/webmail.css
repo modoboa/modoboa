@@ -9,61 +9,27 @@
     padding-right: 15px;     
 }
 
-td[name=drag], td[name=selection] { 
-    width: 1%;
-}
-
 @media (max-width: 400px) {
-    td#subject,
-    td[name='subject']
-    {
-        max-width: 120px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+   
 }
 
 @media (max-width: 500px) {
-    th#date,
-    td[name="date"],
-    #menubar .actions {
-        display: none;
-    }
+    
 }
 
 @media (max-width: 768px) {
     #searchbox {
         margin-left: 20px;
     }
-
-    td[name=from] { 
-        width: 35%;
-    }
 }
 
 @media (min-width: 768px) {
-    td[name=from] { 
-        width: 25%;
-    }
+  
 }
 
 @media (max-width: 1198px) {
     .container-fluid {
         padding:0;
-    }
-    th#date,
-    td[name="date"]{
-        max-width: 100px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    th#withatts,
-    td[name="withatts"],
-    th#drag,
-    td[name="drag"] {
-        display: none;
     }
   
     .display-up-1198-webmail {
@@ -150,10 +116,6 @@ body, html {
 
 .unseen {
     font-weight: bold;
-}
-
-td[name="date"] {
-    text-align: right;
 }
 
 #left-toolbar { 
@@ -244,22 +206,12 @@ li.droppable li{
     padding-bottom: 5px;
 }
 
-#mailheader textarea {
-    width: 99%;
-    height: 40px;
-    padding: 2px 0;
+#mailheader label {
+    text-align: left;
 }
-
-/* #mailheader label { */
-/*     text-align: left; */
-/* } */
 
 #mailheader .options {
     margin-bottom: 8px;
-}
-
-#add_cc {
-    margin-right: 20px;
 }
 
 #attachments {
@@ -311,19 +263,13 @@ list {
     float: left;
 }
 
-.shortlist {
-    font-weight: normal !important;
-    font-style: italic;
-}
-
 /*
  * Drap & Drop
  */
 .dragbox {
     padding : 5px;
     text-align : center;
-    background : white;
-    z-index : 3;
+    z-index : 1001;
 }
 
 /*

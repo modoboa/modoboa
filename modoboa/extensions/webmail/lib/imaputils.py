@@ -473,14 +473,14 @@ class IMAPconnector(object):
             md_mailboxes = []
         else:
             md_mailboxes = [
-                {"name": "INBOX", "class": "glyphicon glyphicon-inbox"},
+                {"name": "INBOX", "class": "fa fa-inbox"},
                 {"name": parameters.get_user(user, "DRAFTS_FOLDER"),
-                 "class": "glyphicon glyphicon-file"},
-                {"name": 'Junk', "class": "glyphicon glyphicon-fire"},
+                 "class": "fa fa-file"},
+                {"name": 'Junk', "class": "fa fa-fire"},
                 {"name": parameters.get_user(user, "SENT_FOLDER"),
-                 "class": "glyphicon glyphicon-envelope"},
+                 "class": "fa fa-envelope"},
                 {"name": parameters.get_user(user, "TRASH_FOLDER"),
-                 "class": "glyphicon glyphicon-trash"}
+                 "class": "fa fa-trash"}
             ]
         if until_mailbox:
             name, parent = separate_mailbox(until_mailbox, self.hdelimiter)

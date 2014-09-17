@@ -2,23 +2,27 @@
 {% load i18n %}
 {% block modalbody %}
 {{ block.super }}
-<div id="test" class="col-lg-offset-1 col-md-offset-2 col-sm-offset-2">
-<input type="button" class="btn btn-primary" id="submit" name="submit" value="{% trans 'Attach' %}" />
+
+<div class="col-sm-12 text-center">
+  <input type="button" class="btn btn-primary" id="submit" name="submit" value="{% trans 'Attach' %}" />
 </div>
+
 <div id="upload_status" style="display:none">
   <img src="{{ STATIC_URL }}css/spinner.gif" /> {% trans "Uploading.." %}
 </div>
 <iframe id="upload_target" name="upload_target" src="#" 
         style="width:0;height:0;border:0px solid #fff;"></iframe>
 <div class="well" id="attachment_list">
-{% for att in attachments %}
-<div class="row">
-  <a href="{% url 'modoboa.extensions.webmail.views.delattachment' %}?name={{ att.tmpname }}"
-     name="delattachment">
-    <i class="glyphicon glyphicon-remove"></i>
-  </a>
-  <label>{{ att.fname }}</label>
-</div>
-{% endfor %}
+  {% for att in attachments %}
+  <div class="row">
+    <div class="col-sm-12">
+      <a href="{% url 'modoboa.extensions.webmail.views.delattachment' %}?name={{ att.tmpname }}"
+         name="delattachment">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+      <label>{{ att.fname }}</label>
+    </div>
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}

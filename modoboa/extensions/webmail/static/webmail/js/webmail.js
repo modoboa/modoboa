@@ -150,8 +150,8 @@ Webmail.prototype = {
 
         $(document).on("click", "a[name=sendmail]", $.proxy(this.sendmail, this));
 
-        $(document).on("click", "#attachments", $.proxy(function(e) {
-            modalbox(e, undefined, $("#attachments").attr("name"),
+        $(document).on("click", "a[name=attachments]", $.proxy(function(e) {
+            modalbox(e, undefined, $("a[name=attachments]").attr("href"),
                 $.proxy(this.attachments_init, this));
         }, this));
     },
@@ -340,7 +340,7 @@ Webmail.prototype = {
         var $link = $('a[href="' + mailbox + '"]');
         var parts = mailbox.split(this.options.hdelimiter);
         var dname = " " + parts[parts.length - 1];
-        var $i = $link.children("i:visible");
+        var $span = $link.children("span:visible");
 
         this.unseen_counters[mailbox] = value;
         if (value) {
@@ -350,7 +350,7 @@ Webmail.prototype = {
             $link.html(dname);
             $link.removeClass("unseen");
         }
-        $link.prepend($i);
+        $link.prepend($span);
     },
 
     /*
@@ -403,11 +403,10 @@ Webmail.prototype = {
         });
         var $link = $("<a />", {
             name: linkname,
-            'class': "block",
             href: mailbox
         });
         var parts = mailbox.split(this.options.hdelimiter);
-        var linkcontent = "<span class='glyphicon glyphicon-folder-close'></span> ";
+        var linkcontent = "<span class='fa fa-folder'></span> ";
         var displayname = linkcontent + parts[parts.length - 1];
 
         $li.append($link);
@@ -433,7 +432,7 @@ Webmail.prototype = {
         });
         var $plink = $parent.children("a");
 
-        $parent.append($ul);
+        $parent.after($ul);
         if (!$parent.children("div").length) {
             this.inject_clickbox($parent);
         }
@@ -649,7 +648,7 @@ Webmail.prototype = {
             $parent = $ul;
             mailbox = $parent.attr("name") + this.options.hdelimiter + mailbox;
         } else {
-            $parent = $("#mboxes_container").children("ul");
+            $parent = $("#folders > div > ul");
         }
         var $li = this.inject_mailbox($parent, mailbox, "loadfolder");
         this.init_droppables($li);
@@ -665,11 +664,11 @@ Webmail.prototype = {
         var $link = $("#folders").find('a[href="' + oldpattern + '"]');
 
         if (oldname != newname) {
-            var $i = $link.children("i");
+            var $span = $link.children("span");
 
-            $link.html(newname);
+            $link.html(" " + newname);
             $link.parent("li").attr("name", newpattern);
-            $link.prepend($i);
+            $link.prepend($span);
             $link.attr("href", newpattern);
             this.navobject.setparam("mbox", newpattern).update(false, true);
         }
@@ -937,6 +936,7 @@ Webmail.prototype = {
         if (resp.id !== undefined) {
             this.navobject.setparam("id", resp.id).update(false, true);
         }
+
         this.resize_compose_body();
     },
 
@@ -1016,7 +1016,7 @@ Webmail.prototype = {
     attachments_init: function() {
         $("#submit").click(function(e) {
             e.preventDefault();
-            if ($("#id_attachment").val() == "") {
+            if ($("#id_attachment").val() === "") {
                 return;
             }
             $("#upload_status").css("display", "block");
@@ -1024,7 +1024,7 @@ Webmail.prototype = {
             $("#uploadfile").submit();
         });
         $("a[name=delattachment]").click(this.del_attachment);
-        $(".modal").one("hide", this.close_attachments);
+        $(".modal").one("hide.bs.modal", $.proxy(this.close_attachments, this));
     },
 
     _reset_upload_form: function() {
@@ -1037,10 +1037,12 @@ Webmail.prototype = {
         var $delbtn = $("<a />", {
             name: "delattachment",
             href: this.options.delattachment_url + "?name=" + tmpname,
-            html: "<i class='glyphicon glyphicon-remove'></i>"
+            html: "<span class='fa fa-remove'></span>"
         });
         var $label = $("<label />", {html: fname});
-        var $div = $("<div />", {'class': "row"}).append($delbtn, $label);
+        var $div = $("<div />", {'class': "row"}).append(
+            $("<div />", {"class": "col-sm-12"}).append($delbtn, $label)
+        );
 
         $delbtn.click(this.del_attachment);
         $("#id_attachment").val("");
@@ -1063,35 +1065,20 @@ Webmail.prototype = {
         });
     },
 
+    /**
+     * Update the counter of currently attached files.
+     */
+    update_files_counter: function() {
+        var nfiles = $("a[name=delattachment]").length;
+
+        $("#attachment_counter").html("(" + nfiles + ")");
+    },
+
+    /**
+     * Attachments form "on close" callback.
+     */
     close_attachments: function() {
-        var nfiles = 0;
-        var shortlist = "";
-        var html;
-
-        $("a[name=delattachment]").each(function() {
-            var $this = $(this);
-            var $label = $this.next("label");
-
-            nfiles++;
-            if (nfiles <= 2) {
-                if (shortlist != "") {
-                    shortlist += ", ";
-                } else {
-                    shortlist = "(";
-                }
-                shortlist += $label.html();
-                return;
-            }
-            if (nfiles == 3) {
-                shortlist += ", ...";
-            }
-        });
-        if (shortlist != "") {
-            shortlist += ")";
-        }
-        html = interpolate(ngettext("%s file", "%s files", nfiles), [nfiles]);
-        html += " <span class='shortlist'>" + shortlist + "</span>";
-        $("#list").html(html);
+        this.update_files_counter();
     },
 
     /*
@@ -1100,15 +1087,15 @@ Webmail.prototype = {
     init_draggables: function() {
         var plug = this;
 
-        $("td[name=drag]").draggable({
-            opacity: 0.8,
+        $("img[name=drag]").draggable({
+            opacity: 0.9,
             helper: function(e) {
                 var $this = $(this);
-                var $tr = $this.parent();
+                var $row = $this.parents("div.email");
 
-                if (!plug.htmltable.is_selected($tr)) {
-                    var $input = $tr.find('#selection');
-                    plug.htmltable.select_row($tr);
+                if (!plug.htmltable.is_selected($row)) {
+                    var $input = $row.find('input[type=checkbox]');
+                    plug.htmltable.select_row($row);
                     $input.prop('checked', true);
                 }
 
@@ -1140,7 +1127,7 @@ Webmail.prototype = {
 
             drop: function(e, ui) {
                 var $this = $(this);
-                var selection = new Array();
+                var selection = [];
                 var unseen_cnt = 0;
                 var from = plug.get_current_mailbox();
                 var to = gethref($this.find("a"));
