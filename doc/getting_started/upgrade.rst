@@ -47,6 +47,7 @@ Finally, follow the common procedure::
   $ cd <modoboa_instance_dir>
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
+  $ service uwsgi restart
 
 1.1.6: Few bugfixes
 ===================
