@@ -1,8 +1,8 @@
 {% load i18n %}
 {% load webmail_tags %}
 
-<div id="emails">
-  {% for email in emails %}
+{% if with_top_div %}<div id="emails">{% endif %}
+  {% for email in email_list %}
   <div id="{{ email.imapid }}" class="row email{% if email.style %} {{ email.style }}{% endif %}">
     <div class="hidden-xs col-sm-1">
       <img name="drag" src="{{ STATIC_URL }}pics/grippy.png" class="draggable" />
@@ -21,4 +21,4 @@
     </div>
   </div>
   {% endfor %}
-</div>
+{% if with_top_div %}</div>{% endif %}

@@ -345,13 +345,18 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
         elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
         **request.session["webmail_navparams"]
     )
-    page = lst.paginator.getpage(navparams.get('page'))
+    page_id = int(navparams.get('page'))
+    page = lst.paginator.getpage(page_id)
     if page is not None:
+        email_list = lst.mbc.fetch(
+            page.id_start, page.id_stop, mbox,
+            nbelems=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+        )
         content = _render_to_string(request, "webmail/email_list.html", {
-            "emails": lst.mbc.fetch(page.id_start, page.id_stop, mbox, nbelems=40)
+            "email_list": email_list, "with_top_div": page_id == 1
         })
     else:
-        content = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
+        content = ""
     return {"listing": content, "length": len(content)}
     #return lst.render(request, navparams.get('page'))
 

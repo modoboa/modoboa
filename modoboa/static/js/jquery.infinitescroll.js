@@ -44,7 +44,7 @@
                     $this.$options.process_results(data);
                     if (data.length === 0) {
                         $this.end_of_results = true;
-                        /*$this.$element.find('#end-of-results').removeClass('hide');*/
+                        $this.$options.end_of_list_reached($this.$element);
                     }
                     //$this.$element.find('.spinner').addClass('hide');
                     $this.executing = false;

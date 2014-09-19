@@ -11,7 +11,7 @@
             if (bid === undefined) {
                 bid = "notifybox";
             }
-            var div = $("<div class='alert' />", {
+            var div = $("<div class='alert alert-dismissible' role='alert' />", {
                 id: bid,
                 click: $.proxy(this.destroy_box, this)
             }).css({

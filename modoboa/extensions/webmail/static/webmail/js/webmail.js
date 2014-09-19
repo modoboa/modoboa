@@ -94,7 +94,6 @@ Webmail.prototype = {
 
         this.resize();
 
-        this.setup_infinite_scroll();
         this.init_droppables();
         this.register_navcallbacks();
         this.listen();
@@ -174,6 +173,13 @@ Webmail.prototype = {
                 var content = $("#emails").html() + data.listing;
 
                 $("#emails").html(content);
+            },
+            end_of_list_reached: function($element) {
+                $element.append(
+                    $("<div class='alert alert-info text-center' />").html(
+                        gettext("No more message in this mailbox.")
+                    )
+                );
             }
         });
     },
@@ -911,6 +917,7 @@ Webmail.prototype = {
         this.htmltable = $("#emails").data("htmltable");
         this.init_draggables();
         $("#listing").css("overflow", "auto");
+        this.setup_infinite_scroll();
     },
 
     add_field: function(e, name) {
