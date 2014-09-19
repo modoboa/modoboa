@@ -77,8 +77,9 @@ def make_body_images_inline(body):
 
 
 class ComposeMailForm(forms.Form):
-    """Compose mail form.
-    """
+
+    """Compose mail form."""
+
     to = forms.CharField(label=_("To"))
     cc = forms.CharField(label=_("Cc"), required=False)
     cci = forms.CharField(label=_("Cci"), required=False)
@@ -88,7 +89,8 @@ class ComposeMailForm(forms.Form):
     origmsgid = forms.CharField(
         label="", widget=forms.HiddenInput(), required=False
     )
-    body = forms.CharField(widget=forms.widgets.Textarea)
+    body = forms.CharField(
+        widget=forms.widgets.Textarea, required=False)
 
     def _html_msg(self):
         """Create a multipart message.
