@@ -42,11 +42,14 @@ Then, refer to this page to check if the version you're installing
 requires specific operations. If the version you're looking for is not
 present, it means nothing special is required.
 
-Finally, follow the common procedure::
+Then, follow the common procedure::
 
   $ cd <modoboa_instance_dir>
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
+
+Eventually, restart the web server process according to the environment
+you did choose. See :ref:`webservers` for more details.
 
 1.1.6: Few bugfixes
 ===================

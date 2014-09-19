@@ -89,7 +89,7 @@ class ComposeMailForm(forms.Form):
         required=False
     )
     origmsgid = forms.CharField(label="", required=False)
-    body = forms.CharField()
+    body = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         """Custom constructor."""
