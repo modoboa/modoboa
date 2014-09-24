@@ -18,7 +18,9 @@ register = template.Library()
 def viewmail_menu(selection, folder, user, mail_id=None):
     entries = [
         {"name": "back",
-         "url": "javascript:history.go(-1);",
+         # "url": reverse("modoboa.extensions.webmail.views.index")
+         # + "#?action=listmailbox&mbox=%s" % folder,
+         "url": "javascript:history.go(-1)",
          "img": "fa fa-arrow-left",
          "class": "btn-default sm-margin-left-back",
          "label": _("Back")},

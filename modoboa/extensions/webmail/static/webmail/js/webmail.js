@@ -26,7 +26,7 @@ Webmail.prototype = {
         this.editorid = "id_body";
 
         this.navobject = new History({
-            deflocation: "?action=listmailbox",
+            deflocation: "?action=listmailbox&reset_page=true",
             defcallback: $.proxy(this.listmailbox_callback, this)
         });
         this.poller = new Poller(this.options.poller_url, {
@@ -158,21 +158,42 @@ Webmail.prototype = {
     /**
      * Setup an "infinite scroll" behaviour for the email list.
      */
-    setup_infinite_scroll: function() {
+    setup_infinite_scroll: function(data) {
+        var $container = $("#listing");
         var that = this;
 
-        $("#listing").infinite_scroll({
+        if ($container.data("infinite-scroll") !== undefined) {
+            $container.scrollTop(10);
+            $container.infinite_scroll(
+                "reset_loaded_pages", parseInt(data.page));
+            $container.infinite_scroll("resume");
+            return;
+        }
+
+        $container.infinite_scroll({
+            initial_page: parseInt(data.page),
             url: this.options.listing_url,
             calculate_bottom: function($element) {
                 return $("#emails").height() - $element.height();
             },
             get_args: function() {
-                return that.navparams;
+                var args = that.navparams;
+                args.scroll = true;
+                return args;
             },
-            process_results: function(data) {
-                var content = $("#emails").html() + data.listing;
+            process_results: function(data, direction) {
+                var $emails = $("#emails");
 
-                $("#emails").html(content);
+                if (direction === "down") {
+                    $emails.html($emails.html() + data.listing);
+                } else {
+                    var row_id = $emails.children(".email").first().attr("id");
+
+                    $emails.html(data.listing + $emails.html());
+
+                    var $row = $("#" + row_id);
+                    $("#listing").scrollTop($row.offset().top);
+                }
             },
             end_of_list_reached: function($element) {
                 $element.append(
@@ -182,6 +203,17 @@ Webmail.prototype = {
                 );
             }
         });
+    },
+
+    /**
+     * Disable the infinite scroll mode.
+     */
+    disable_infinite_scroll: function() {
+        var $container = $("#listing");
+
+        if ($container.data("infinite-scroll") !== undefined) {
+            $container.infinite_scroll("pause");
+        }
     },
 
     record_unseen_messages: function() {
@@ -319,7 +351,14 @@ Webmail.prototype = {
             $("#pagination").html(response.navbar);
             $("#pagination-responsive").html(response.navbar);
         }*/
+
         $("#listing").html(response.listing);
+
+        if (this.navobject.getparam("action") == "listmailbox") {
+            this.setup_infinite_scroll(response);
+        } else {
+            this.disable_infinite_scroll();
+        }
     },
 
     /*
@@ -871,7 +910,7 @@ Webmail.prototype = {
             $("body").notify("success", gettext("Message sent"), 2000);
         }, this)).fail($.proxy(function(jqxhr) {
             var data = $.parseJSON(jqxhr.responseText);
-            if (data != undefined) {
+            if (data !== undefined) {
                 this.compose_callback(data);
             }
             $("a[name=sendmail]").attr("disabled", null);
@@ -917,7 +956,9 @@ Webmail.prototype = {
         this.htmltable = $("#emails").data("htmltable");
         this.init_draggables();
         $("#listing").css("overflow", "auto");
-        this.setup_infinite_scroll();
+        if (this.navobject.hasparam("reset_page")) {
+            this.navobject.delparam("reset_page").update(false, true);
+        }
     },
 
     add_field: function(e, name) {
@@ -965,10 +1006,10 @@ Webmail.prototype = {
     viewmail_callback: function(resp) {
         this.page_update(resp);
         $("#listing").css("overflow", "hidden");
-        $("a[name=back]").click($.proxy(function(e) {
-            e.preventDefault();
-            this.go_back_to_listing();
-        }, this));
+        // $("a[name=back]").click($.proxy(function(e) {
+        //     e.preventDefault();
+        //     this.go_back_to_listing();
+        // }, this));
     },
 
     mark_callback: function(data) {

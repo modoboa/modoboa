@@ -181,18 +181,25 @@ class NavigationParameters(object):
         return self.request.session[self.sessionkey][key]
 
     def __contains__(self, key):
-        """
-        """
+        """Check if key is present."""
         return key in self.request.session[self.sessionkey]
+
+    def __setitem__(self, key, value):
+        """Set a new item."""
+        self.request.session[self.sessionkey][key] = value
+
+    def _store_page(self):
+        """Specific method to store the current page."""
+        self["page"] = int(self.request.GET.get("page", 1))
 
     def store(self):
         """Store navigation parameters into session.
         """
         if not self.sessionkey in self.request.session:
             self.request.session[self.sessionkey] = {}
+        self._store_page()
         navparams = self.request.session[self.sessionkey]
         navparams["order"] = self.request.GET.get("sort_order", "-date")
-        navparams["page"] = int(self.request.GET.get("page", 1))
         for param, defvalue, escape in self.parameters:
             value = self.request.GET.get(param, defvalue)
             if value is None:

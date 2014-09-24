@@ -335,6 +335,7 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
     :return: a dictionnary
     """
     navparams = WebmailNavigationParameters(request, defmailbox)
+    previous_page_id = int(navparams["page"])
     if update_session:
         navparams.store()
     mbox = navparams.get('mbox')
@@ -345,7 +346,7 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
         elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
         **request.session["webmail_navparams"]
     )
-    page_id = int(navparams.get('page'))
+    page_id = int(navparams["page"])
     page = lst.paginator.getpage(page_id)
     if page is not None:
         email_list = lst.mbc.fetch(
@@ -353,11 +354,14 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
             nbelems=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
         )
         content = _render_to_string(request, "webmail/email_list.html", {
-            "email_list": email_list, "with_top_div": page_id == 1
+            "email_list": email_list,
+            "page": page_id,
+            "with_top_div": request.GET.get("scroll", "false") == "false"
         })
     else:
         content = ""
-    return {"listing": content, "length": len(content)}
+        navparams["page"] = previous_page_id
+    return {"listing": content, "length": len(content), "page": page_id}
     #return lst.render(request, navparams.get('page'))
 
 
