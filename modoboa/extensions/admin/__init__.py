@@ -47,7 +47,9 @@ class AdminConsole(ModoExtension):
     name = "admin"
     label = ugettext_lazy("Administration console")
     version = "1.0"
-    description = ugettext_lazy("Web based console to manage domains, accounts and aliases")
+    description = ugettext_lazy(
+        "Web based console to manage domains, accounts and aliases"
+    )
     always_active = True
 
     def load(self):
@@ -63,8 +65,12 @@ exts_pool.register_extension(AdminConsole, show=False)
 
 @events.observe("ExtraUprefsRoutes")
 def extra_routes():
-    return [(r'^user/forward/',
-             'modoboa.extensions.admin.views.user.forward'), ]
+    from django.conf.urls import url
+    return [
+        url(r'^user/forward/',
+            'modoboa.extensions.admin.views.user.forward',
+            name="user_forward"),
+    ]
 
 
 @events.observe("AdminMenuDisplay")
@@ -75,13 +81,13 @@ def admin_menu(target, user):
     if user.has_perm("admin.view_domains"):
         entries += [
             {"name" : "domains",
-             "url" : reverse("modoboa.extensions.admin.views.domain.domains"),
+             "url" : reverse("admin:domain_list"),
              "label" : _("Domains")}
         ]
     if user.has_perm("core.add_user") or user.has_perm("admin.add_alias"):
         entries += [
             {"name" : "identities",
-             "url" : reverse("modoboa.extensions.admin.views.identity.identities"),
+             "url" : reverse("admin:identity_list"),
              "label" : _("Identities")},
         ]
     return entries

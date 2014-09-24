@@ -5,7 +5,6 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from modoboa.extensions import webmail
 from modoboa.extensions.webmail.lib import (
     imapheader, separate_mailbox
 )
@@ -16,6 +15,7 @@ register = template.Library()
 
 @register.simple_tag
 def viewmail_menu(selection, folder, user, mail_id=None):
+    """Menu of the viewmail location."""
     entries = [
         {"name": "back",
          # "url": reverse("modoboa.extensions.webmail.views.index")
@@ -42,7 +42,8 @@ def viewmail_menu(selection, folder, user, mail_id=None):
         {"name": "delete",
          "img": "fa fa-trash",
          "class": "btn-danger",
-         "url": reverse(webmail.views.delete) + "?mbox=%s&selection[]=%s" % (folder, mail_id),
+         "url": "{}?mbox={}&selection[]={}".format(
+             reverse("webmail:mail_delete"), folder, mail_id),
          "title": _("Delete")
         },
         {"name": "display_options",
@@ -87,12 +88,13 @@ def compose_menu(selection, backurl, user, **kwargs):
 
 @register.simple_tag
 def listmailbox_menu(selection, folder, user):
+    """The menu of the listmailbox action."""
     entries = [
         {"name": "totrash",
          "title": _("Delete"),
          "class": "btn-danger",
          "img": "fa fa-trash",
-         "url": reverse("modoboa.extensions.webmail.views.delete"),
+         "url": reverse("webmail:mail_delete")
          },
         {"name": "actions",
          "label": _("Actions"),
@@ -100,14 +102,12 @@ def listmailbox_menu(selection, folder, user):
          "menu": [
              {"name": "mark-read",
               "label": _("Mark as read"),
-              "url": reverse(webmail.views.mark, args=[folder]) + "?status=read"},
+              "url": "{}?status=read".format(
+                  reverse("webmail:mail_mark", args=[folder]))},
              {"name": "mark-unread",
               "label": _("Mark as unread"),
-              "url": reverse(webmail.views.mark, args=[folder]) + "?status=unread"},
-             {"divider": True},
-             {"name": "compress",
-              "label": _("Compress folder"),
-              "url": "compact/%s/" % folder}
+              "url": "{}?status=unread".format(
+                  reverse("webmail:mail_mark", args=[folder]))},
          ]
          },
     ]
@@ -116,7 +116,7 @@ def listmailbox_menu(selection, folder, user):
         entries[1]["menu"] += [
             {"name": "empty",
              "label": _("Empty folder"),
-             "url": reverse(webmail.views.empty, args=[folder])}
+             "url": "{}?name={}".format(reverse("webmail:trash_empty"), folder)}
         ]
     return render_to_string('webmail/main_action_bar.html', {
         'selection': selection, 'entries': entries, 'user': user, 'css': "nav",
@@ -175,9 +175,10 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
 
 @register.simple_tag
 def mboxes_menu():
+    """Mailboxes menu."""
     entries = [
         {"name": "newmbox",
-         "url": reverse(webmail.views.newfolder),
+         "url": reverse("webmail:folder_add"),
          "img": "fa fa-plus",
          "label": _("Create a new mailbox"),
          "modal": True,
@@ -185,15 +186,20 @@ def mboxes_menu():
          "closecb": "webmail.mboxform_close",
          "class": "btn-default btn-xs"},
         {"name": "editmbox",
-         "url": reverse(webmail.views.editfolder),
+         "url": reverse("webmail:folder_change"),
          "img": "fa fa-edit",
          "label": _("Edit the selected mailbox"),
          "class": "btn-default btn-xs"},
         {"name": "removembox",
-         "url": reverse(webmail.views.delfolder),
+         "url": reverse("webmail:folder_delete"),
          "img": "fa fa-trash",
          "label": _("Remove the selected mailbox"),
-         "class": "btn-default btn-xs"}
+         "class": "btn-default btn-xs"},
+        {"name": "compress",
+         "img": "fa fa-compress",
+         "label": _("Compress folder"),
+         "class": "btn-default btn-xs",
+         "url": reverse("webmail:folder_compress")}
     ]
 
     return render_to_string('common/menu.html', dict(

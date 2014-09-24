@@ -111,7 +111,7 @@ def new_shared_calendar(request):
         "form": form,
         "formid": "sharedcal_form",
         "title": _("New shared calendar"),
-        "action": reverse("new_shared_calendar"),
+        "action": reverse("radicale:shared_calendar_add"),
         "action_classes": "submit",
         "action_label": _("Submit")
     })
@@ -149,7 +149,7 @@ def shared_calendar(request, pk):
         "form": form,
         "formid": "sharedcal_form",
         "title": scal.name,
-        "action": reverse("shared_calendar", args=[scal.pk]),
+        "action": reverse("radicale:shared_calendar", args=[scal.pk]),
         "action_classes": "submit",
         "action_label": _("Submit")
     })

@@ -31,7 +31,7 @@ def selfservice(ssfunc=None):
             if parameters.get_admin("SELF_SERVICE") == "no":
                 from django.contrib.auth.views import redirect_to_login
                 return redirect_to_login(
-                    reverse("modoboa.extensions.amavis.views.index")
+                    reverse("amavis:index")
                 )
             return ssfunc(request, *args, **kwargs)
         return wrapped_f

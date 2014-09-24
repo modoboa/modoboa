@@ -30,16 +30,14 @@ def extra_domain_filters():
 
 @events.observe('ExtraDomainMenuEntries')
 def extra_domain_menu_entries(user):
-    return [
-        {"name": "newrelaydomain",
-         "label": ugettext_lazy("Add relay domain"),
-         "img": "glyphicon glyphicon-plus",
-         "modal": True,
-         "modalcb": "rdomain.domainform_cb",
-         "url": reverse(
-             "modoboa.extensions.postfix_relay_domains.views.create"
-         )},
-    ]
+    return [{
+        "name": "newrelaydomain",
+        "label": ugettext_lazy("Add relay domain"),
+        "img": "fa fa-plus",
+        "modal": True,
+        "modalcb": "rdomain.domainform_cb",
+        "url": reverse("postfix_relay_domains:relaydomain_add")
+    }]
 
 
 @events.observe('ExtraDomainEntries')
@@ -64,7 +62,7 @@ def rdomain_modify_link(domain):
         return {}
     return {
         'url': reverse(
-            'modoboa.extensions.postfix_relay_domains.views.edit',
+            "postfix_relay_domains:relaydomain_change",
             args=[domain.id]
         ),
         'modalcb': 'rdomain.editdomain_form_cb'
@@ -79,10 +77,12 @@ def rdomain_actions(user, domain):
         return []
     return [{
         "name": "delrelaydomain",
-        "url": reverse("modoboa.extensions.postfix_relay_domains.views.delete",
-                       args=[domain.id]),
+        "url": reverse(
+            "postfix_relay_domains:relaydomain_delete",
+            args=[domain.id]
+        ),
         "title": ugettext_lazy("Delete %s?" % domain.name),
-        "img": "glyphicon glyphicon-trash"
+        "img": "fa fa-trash"
     }]
 
 

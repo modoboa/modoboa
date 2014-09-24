@@ -29,7 +29,7 @@
       set_static_url("{{ STATIC_URL }}");
       $(document).ready(function() {
           top_notifications = new TopNotifications({
-              url: "{% url 'check_top_notifications' %}",
+              url: "{% url 'core:top_notifications_check' %}",
               interval: {{ notifications_check_interval }}
           });
       });

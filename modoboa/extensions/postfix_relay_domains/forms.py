@@ -163,7 +163,8 @@ class RelayDomainForm(TabForms):
         """
         rdom = self.instances["general"]
         context.update({
-            'action': reverse("edit_relaydomain", args=[rdom.id]),
+            'action': reverse(
+                "postfix_relay_domains:relaydomain_change", args=[rdom.id]),
             'formid': 'rdomform',
             'title': rdom.name
         })

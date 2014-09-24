@@ -60,5 +60,10 @@ exts_pool.register_extension(PostfixAutoreply)
 
 @events.observe("ExtraUprefsRoutes")
 def extra_routes():
-    return [(r'^user/autoreply/$',
-             'modoboa.extensions.postfix_autoreply.views.autoreply'), ]
+    from django.conf.urls import url
+
+    return [
+        url(r'^user/autoreply/$',
+            'modoboa.extensions.postfix_autoreply.views.autoreply',
+            name="autoreply")
+    ]

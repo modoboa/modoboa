@@ -16,7 +16,7 @@ def menu(target, user):
         return [
             {"name": "quarantine",
              "label": _("Quarantine"),
-             "url": reverse('modoboa.extensions.amavis.views.index')}
+             "url": reverse('amavis:index')}
         ]
     return []
 
@@ -82,7 +82,7 @@ def check_for_pending_requests(user, include_all):
         return [{"id": "nbrequests", "counter": 0}] if include_all \
             else []
 
-    url = reverse("modoboa.extensions.amavis.views.index")
+    url = reverse("amavis:index")
     url += "#listing/?viewrequests=1"
     return [{
         "id": "nbrequests", "url": url, "text": _("Pending requests"),

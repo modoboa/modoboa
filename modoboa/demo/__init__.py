@@ -20,10 +20,10 @@ def menu(target, user):
          "menu": [
              {"name": "sendvirus",
               "label":  _("Send virus"),
-              "url": reverse("modoboa.demo.views.send_virus")},
+              "url": reverse("demo:virus_send")},
              {"name": "sendspam",
               "label":  _("Send spam"),
-              "url": reverse("modoboa.demo.views.send_spam")}
+              "url": reverse("demo:spam_send")}
          ]
          }
     ]

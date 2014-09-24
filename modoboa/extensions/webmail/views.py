@@ -118,7 +118,9 @@ def mark(request, name):
 
 @login_required
 @needs_mailbox()
-def empty(request, name):
+def empty(request):
+    """Empty the trash folder."""
+    name = request.GET.get("name", None)
     if name != parameters.get_user(request.user, "TRASH_FOLDER"):
         raise BadRequest(_("Invalid request"))
     get_imapconnector(request).empty(name)
@@ -130,7 +132,11 @@ def empty(request, name):
 
 @login_required
 @needs_mailbox()
-def compact(request, name):
+def folder_compress(request):
+    """Compress a mailbox."""
+    name = request.GET.get("name", None)
+    if name is None:
+        raise BadRequest(_("Invalid request"))
     imapc = get_imapconnector(request)
     imapc.compact(name)
     return render_to_json_response({})
@@ -156,7 +162,7 @@ def newfolder(request, tplname="webmail/folder.html"):
 
     ctx = {"title": _("Create a new mailbox"),
            "formid": "mboxform",
-           "action": reverse(newfolder),
+           "action": reverse("webmail:folder_add"),
            "action_label": _("Create"),
            "action_classes": "submit",
            "withunseen": False,
@@ -175,7 +181,7 @@ def editfolder(request, tplname="webmail/folder.html"):
                         password=request.session["password"])
     ctx = {"title": _("Edit mailbox"),
            "formid": "mboxform",
-           "action": reverse(editfolder),
+           "action": reverse("webmail:folder_change"),
            "action_label": _("Update"),
            "action_classes": "submit",
            "withunseen": False,
@@ -210,7 +216,7 @@ def editfolder(request, tplname="webmail/folder.html"):
     shortname, parent = separate_mailbox(name, sep=mbc.hdelimiter)
     ctx = {"title": _("Edit mailbox"),
            "formid": "mboxform",
-           "action": reverse(editfolder),
+           "action": reverse("webmail:folder_change"),
            "action_label": _("Update"),
            "action_classes": "submit",
            "withunseen": False,
@@ -275,7 +281,7 @@ def attachments(request, tplname="webmail/attachments.html"):
         "target": "upload_target",
         "enctype": "multipart/form-data",
         "form": AttachmentForm(),
-        "action": reverse(attachments),
+        "action": reverse("webmail:attachment_list"),
         "attachments": request.session["compose_mail"]["attachments"]
     }
     return render(request, tplname, ctx)
@@ -490,12 +496,13 @@ def viewmail(request):
         raise BadRequest(_("Invalid request"))
     links = request.GET.get("links", None)
     if links is None:
-        links = 1 if parameters.get_user(request.user, "ENABLE_LINKS") == "yes" else 0
+        links = 1 if parameters.get_user(
+            request.user, "ENABLE_LINKS") == "yes" else 0
     else:
         links = int(links)
 
-    url = reverse(getmailcontent) + "?mbox=%s&mailid=%s&links=%d" % \
-        (mbox, mailid, links)
+    url = "{}?mbox={}&mailid={}&links={}".format(
+        reverse("webmail:mailcontent_get"), mbox, mailid, links)
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url": url}))

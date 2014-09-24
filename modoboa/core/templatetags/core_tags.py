@@ -19,7 +19,7 @@ def core_menu(selection, user):
         entries += [
             {"name": "settings",
              "label": _("Modoboa"),
-             "url": reverse("modoboa.core.views.admin.viewsettings")}
+             "url": reverse("core:index")}
         ]
 
     if not len(entries):
@@ -79,14 +79,14 @@ def user_menu(user, selection):
                 {"name": "settings",
                  "img": "glyphicon glyphicon-list",
                  "label": _("Settings"),
-                 "url": reverse("modoboa.core.views.user.index")}
+                 "url": reverse("core:user_index")}
          ]}
     ]
 
     entries[0]["menu"] += \
         events.raiseQueryEvent("UserMenuDisplay", "options_menu", user) \
         + [{"name": "logout",
-            "url": reverse("modoboa.core.views.auth.dologout"),
+            "url": reverse("core:logout"),
             "label": _("Logout"),
             "img": "glyphicon glyphicon-off"}]
 

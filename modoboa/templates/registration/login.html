@@ -32,7 +32,7 @@
           </ul>
       </div>
       <div class=" divider"></div>
-      <form method="post" action="{% url 'modoboa.core.views.auth.dologin' %}" class="login-form form-horizontal">
+      <form method="post" action="{% url 'core:login' %}" class="login-form form-horizontal">
         {% csrf_token %}
         {% render_field form.username %}
         {% render_field form.password %}

@@ -780,10 +780,20 @@ Webmail.prototype = {
         });
     },
 
+    /**
+     * Compress the currently selected mailbox.
+     *
+     * @this {Webmail}
+     * @param {object} e - event object
+     */
     compress: function(e) {
         e.preventDefault();
         var $link = $(e.target);
-        this.send_mb_action($link.attr("href"));
+        var $selected = $("#folders li.active").children("a");
+
+        this.send_mb_action(
+            "{0}?name={1}".format($link.attr("href"), $selected.attr("href"))
+        );
     },
 
     delete_message: function(e) {

@@ -15,7 +15,7 @@ def sfilters_menu(user):
         {"name": "newfilterset",
          "img": "glyphicon glyphicon-plus",
          "label": _("New filters set"),
-         "url": reverse("modoboa.extensions.sievefilters.views.new_filters_set"),
+         "url": reverse("sievefilters:fs_add"),
          "modal": True,
          "modalcb": "filtersetform_cb"
          }
@@ -33,7 +33,7 @@ def fset_menu(mode, setname):
             {"name": "newfilter",
              "img": "glyphicon glyphicon-plus",
              "label": _("New filter"),
-             "url": reverse("modoboa.extensions.sievefilters.views.newfilter",
+             "url": reverse("sievefilters:filter_add",
                              args=[setname]),
              "modal": True,
              "autowidth": True,
@@ -44,7 +44,7 @@ def fset_menu(mode, setname):
             {"name": "savefs",
              "img": "glyphicon glyphicon-download-alt",
              "label": _("Save filters set"),
-             "url": reverse("modoboa.extensions.sievefilters.views.savefs",
+             "url": reverse("sievefilters:fs_save",
                              args=[setname])},
         ]
 
@@ -52,18 +52,16 @@ def fset_menu(mode, setname):
         {"name": "activatefs",
          "img": "glyphicon glyphicon-ok",
          "label": _("Activate filters set"),
-         "url": reverse("modoboa.extensions.sievefilters.views.activate_filters_set",
+         "url": reverse("sievefilters:fs_activate",
                          args=[setname])},
         {"name": "removefs",
          "img": "glyphicon glyphicon-trash",
          "label": _("Remove filters set"),
-         "url": reverse("modoboa.extensions.sievefilters.views.remove_filters_set",
-                         args=[setname])},
+         "url": reverse("sievefilters:fs_delete", args=[setname])},
         {"name": "downloadfs",
          "img": "glyphicon glyphicon-download",
          "label": _("Download"),
-         "url": reverse("modoboa.extensions.sievefilters.views.download_filters_set",
-                         args=[setname])}
+         "url": reverse("sievefilters:fs_download", args=[setname])}
     ]
 
     return render_to_string('common/menulist.html',
@@ -74,32 +72,32 @@ def fset_menu(mode, setname):
 def filter_actions(setname, f, position, islast):
     actions = [
         {"name": "editfilter",
-         "url": reverse("modoboa.extensions.sievefilters.views.editfilter",
-                         args=[setname, f["name"]]),
+         "url": reverse(
+             "sievefilters:filter_change", args=[setname, f["name"]]),
          "img": "glyphicon glyphicon-edit",
          "title": _("Edit filter"),
          "modal": True,
          "autowidth": True,
          "modalcb": "filterform_cb"},
         {"name": "removefilter",
-         "url": reverse("modoboa.extensions.sievefilters.views.removefilter",
-                         args=[setname, f["name"]]),
+         "url": reverse(
+             "sievefilters:filter_delete", args=[setname, f["name"]]),
          "img": "glyphicon glyphicon-trash",
          "title": _("Remove this filter")}
     ]
     if position != 1:
         actions += [
             {"name": "movefilter_up",
-             "url": reverse("modoboa.extensions.sievefilters.views.move_filter_up",
-                             args=[setname, f["name"]]),
+             "url": reverse(
+                 "sievefilters:filter_move_up", args=[setname, f["name"]]),
              "img": "glyphicon glyphicon-arrow-up",
              "title": _("Move this filter up")}
         ]
     if not islast:
         actions += [
             {"name": "movefilter_down",
-             "url": reverse("modoboa.extensions.sievefilters.views.move_filter_down",
-                             args=[setname, f["name"]]),
+             "url": reverse(
+                 "sievefilters:filter_move_down", args=[setname, f["name"]]),
              "img": "glyphicon glyphicon-arrow-down",
              "title": _("Move this filter down")},
         ]

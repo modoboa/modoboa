@@ -21,10 +21,7 @@ class AccountTestCase(ModoTestCase):
             quota_act=True,
             is_active=True, email="tester@test.com", stepid='step2'
         )
-        self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.newaccount"),
-            values
-        )
+        self.ajax_post(reverse("admin:account_add"), values)
 
         account = User.objects.get(username="tester@test.com")
         mb = account.mailbox_set.all()[0]
@@ -40,17 +37,13 @@ class AccountTestCase(ModoTestCase):
 
         values["username"] = "pouet@test.com"
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[account.id]),
-            values
+            reverse("admin:account_change", args=[account.id]), values
         )
         mb = Mailbox.objects.get(pk=mb.id)
         self.assertEqual(mb.full_address, "pouet@test.com")
         self.assertEqual(mb.quota_value.username, "pouet@test.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.delaccount",
-                    args=[account.id]),
-            {}
+            reverse("admin:account_delete", args=[account.id]), {}
         )
 
     def _set_quota(self, email, value, expected_status=200):
@@ -60,8 +53,7 @@ class AccountTestCase(ModoTestCase):
             "is_active": True, "quota": value, "email": email
         }
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[account.id]),
+            reverse("admin:account_change", args=[account.id]),
             values, status=expected_status
         )
 
@@ -95,16 +87,14 @@ class PermissionsTestCase(ModoTestCase):
 
     def test_domain_admins(self):
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[self.user.id]),
+            reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
         self.assertEqual(self.user.group, "DomainAdmins")
 
         self.values["role"] = "SimpleUsers"
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[self.user.id]),
+            reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
         self.assertNotEqual(self.user.group, 'DomainAdmins')
@@ -112,19 +102,20 @@ class PermissionsTestCase(ModoTestCase):
     def test_superusers(self):
         self.values["role"] = "SuperAdmins"
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[self.user.id]),
+            reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
-        self.assertEqual(User.objects.get(username="user@test.com").is_superuser, True)
+        self.assertEqual(
+            User.objects.get(username="user@test.com").is_superuser, True
+        )
 
         self.values["role"] = "SimpleUsers"
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[self.user.id]),
+            reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
-        self.assertEqual(User.objects.get(username="user@test.com").is_superuser, False)
+        self.assertEqual(User.objects.get(
+            username="user@test.com").is_superuser, False)
 
     def test_self_modif(self):
         self.clt.logout()
@@ -137,8 +128,7 @@ class PermissionsTestCase(ModoTestCase):
             quota=10, is_active=True, email="admin@test.com"
         )
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[admin.id]),
+            reverse("admin:account_change", args=[admin.id]),
             values
         )
         self.assertEqual(admin.group, "DomainAdmins")
@@ -146,8 +136,7 @@ class PermissionsTestCase(ModoTestCase):
 
         values["role"] = "SuperAdmins"
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[admin.id]),
+            reverse("admin:account_change", args=[admin.id]),
             values
         )
         admin = User.objects.get(username="admin@test.com")
@@ -155,16 +144,14 @@ class PermissionsTestCase(ModoTestCase):
 
     def test_domadmin_access(self):
         self.clt.logout()
-        self.assertEqual(self.clt.login(username="admin@test.com", password="toto"),
-                         True)
-        response = self.clt.get(
-            reverse("modoboa.extensions.admin.views.domain.domains")
-        )
+        self.assertEqual(
+            self.clt.login(username="admin@test.com", password="toto"),
+            True)
+        response = self.clt.get(reverse("admin:domain_list"))
         self.assertEqual(response.status_code, 200)
 
         response = self.clt.get(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[self.user.id]),
+            reverse("admin:account_change", args=[self.user.id]),
             HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response["Content-Type"], "application/json")
 
@@ -182,15 +169,14 @@ class PermissionsTestCase(ModoTestCase):
             email="superadmin2@test.com", stepid='step2'
         )
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.newaccount"),
+            reverse("admin:account_add"),
             values
         )
         account = User.objects.get(username="superadmin2@test.com")
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.delaccount",
-                    args=[account.id]), {}, 403
+            reverse("admin:account_delete", args=[account.id]), {}, 403
         )
 
     def test_domainadmin_dlist_local_domain_not_owned(self):
@@ -202,6 +188,4 @@ class PermissionsTestCase(ModoTestCase):
             recipients_1="user@test2.com",
             enabled=True
         )
-        self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.newdlist"), values
-        )
+        self.ajax_post(reverse("admin:dlist_add"), values)

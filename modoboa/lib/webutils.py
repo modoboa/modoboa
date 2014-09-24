@@ -158,9 +158,9 @@ def topredirection(request):
             infos = exts_pool.get_extension_infos(topredir)
             path = infos["url"] if infos["url"] else infos["name"]
         else:
-            path = reverse("modoboa.core.views.user.index")
+            path = reverse("core:user_index")
     else:
-        path = reverse("domains")
+        path = reverse("admin:domain_list")
     return HttpResponseRedirect(path)
 
 

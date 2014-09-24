@@ -9,6 +9,6 @@
 {% trans "To:" %} {{ msg.rid.email }}
 {% trans "Date:" %} {{ msg.mail.time_num|fromunix|date:"DATETIME_FORMAT" }}
 {% trans "Subject:" %} {{ msg.mail.subject }}
-{% trans "Act on this message:" %} {{ baseurl }}{% url "modoboa.extensions.amavis.views.index" %}#{{ msg.mail.mail_id }}/?rcpt={{ msg.rid.email }}
+{% trans "Act on this message:" %} {{ baseurl }}{% url "amavis:index" %}#{{ msg.mail.mail_id }}/?rcpt={{ msg.rid.email }}
 {% endfor %}
 {% blocktrans %}Please visit {{ listingurl }} for a full listing.{% endblocktrans %}

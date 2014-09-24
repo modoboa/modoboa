@@ -16,11 +16,11 @@ class ForwardTestCase(ModoTestCase):
         self.clt.logout()
         self.clt.login(username='user@test.com', password='toto')
         self.ajax_post(
-            reverse('modoboa.extensions.admin.views.user.forward'),
+            reverse('user_forward'),
             {'dest': 'user@extdomain.com', 'keepcopies': True}
         )
         forward = Alias.objects.get(address='user', domain__name='test.com')
         sadmin = User.objects.get(username='admin')
-        self.assertTrue(sadmin.can_access(forward))        
+        self.assertTrue(sadmin.can_access(forward))
         domadmin = User.objects.get(username='admin@test.com')
         self.assertTrue(domadmin.can_access(forward))

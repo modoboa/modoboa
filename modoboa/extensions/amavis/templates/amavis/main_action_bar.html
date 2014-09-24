@@ -17,12 +17,12 @@
                 </ul>
             </div>
             <div class="btn-group">
-              <a name="release-multi" href="{% url 'modoboa.extensions.amavis.views.process' %}" class="btn btn-success disabled">
+              <a name="release-multi" href="{% url 'amavis:mail_process' %}" class="btn btn-success disabled">
                 <i class="glyphicon glyphicon-ok"></i> <span>{% trans "Release" %}</span>
               </a>
             </div>
             <div class="btn-group">
-              <a name="delete-multi" href="{% url 'modoboa.extensions.amavis.views.process' %}" class="btn btn-danger disabled">
+              <a name="delete-multi" href="{% url 'amavis:mail_process' %}" class="btn btn-danger disabled">
                 <i class="glyphicon glyphicon-trash"></i> <span>{% trans "Delete" %}</span>
               </a>
             </div>

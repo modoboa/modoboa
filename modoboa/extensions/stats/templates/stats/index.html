@@ -11,8 +11,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
     var stats = new Stats({
-        graphurl: "{% url 'modoboa.extensions.stats.views.graphs' %}",
-        domain_list_url: "{% url 'modoboa.extensions.admin.views.domain.domains_list' %}",
+        graphurl: "{% url 'stats:graph_list' %}",
+        domain_list_url: "{% url 'admin:domain_flat_list' %}",
         deflocation: "{{ deflocation|safe }}",
         language: "{{ LANGUAGE_CODE }}"
     });

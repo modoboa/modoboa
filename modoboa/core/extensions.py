@@ -86,8 +86,11 @@ class ExtensionsPool(object):
             try:
                 baseurl = extinstance.url \
                     if extinstance.url is not None else extname
-                result += [(r'^%s/' % (baseurl),
-                            include("%s.urls" % extinstance.__module__))]
+                result += [
+                    (r'^%s/' % (baseurl),
+                     include("%s.urls" % extinstance.__module__,
+                             namespace=extname))
+                ]
             except ImportError:
                 # No urls for this extension
                 pass

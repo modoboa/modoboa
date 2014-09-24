@@ -36,14 +36,17 @@ def dologin(request):
                 nextlocation = request.POST.get("next", None)
                 if nextlocation is None or nextlocation == "None":
                     if user.group == "SimpleUsers":
-                        nextlocation = reverse("modoboa.lib.webutils.topredirection")
+                        nextlocation = reverse("topredirection")
                     else:
-                        nextlocation = reverse("domains")
+                        nextlocation = reverse("admin:domain_list")
                 return HttpResponseRedirect(nextlocation)
-            error = _("Your username and password didn't match. Please try again.")
-            logger.warning("Failed connection attempt from '%(addr)s' as user '%(user)s'" \
-                               % {"addr": request.META["REMOTE_ADDR"],
-                                  "user": form.cleaned_data["username"]})
+            error = _(
+                "Your username and password didn't match. Please try again.")
+            logger.warning(
+                "Failed connection attempt from '%(addr)s' as user '%(user)s'" \
+                % {"addr": request.META["REMOTE_ADDR"],
+                   "user": form.cleaned_data["username"]}
+            )
 
         nextlocation = request.POST.get("next", None)
         httpcode = 401
@@ -68,4 +71,4 @@ def dologout(request):
         logger = logging.getLogger("modoboa.auth")
         logger.info(_("User '%s' logged out" % request.user.username))
         logout(request)
-    return HttpResponseRedirect(reverse(dologin))
+    return HttpResponseRedirect(reverse("core:login"))

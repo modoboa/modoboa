@@ -25,7 +25,7 @@ class ProfileTestCase(ModoTestCase):
         * The default admin changes his password (no associated Mailbox)
         * A normal user changes his password
         """
-        self.ajax_post(reverse("modoboa.core.views.user.profile"),
+        self.ajax_post(reverse("core:user_profile"),
                        {"oldpassword": "password",
                         "newpassword": "titi", "confirmation": "titi"})
         self.clt.logout()
@@ -38,7 +38,7 @@ class ProfileTestCase(ModoTestCase):
         )
 
         self.ajax_post(
-            reverse("modoboa.core.views.user.profile"),
+            reverse("core:user_profile"),
             {"oldpassword": "toto",
              "newpassword": "tutu", "confirmation": "tutu"}
         )

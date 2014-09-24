@@ -5,13 +5,13 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
 <script type="text/javascript">
 function get_domains_list(container) {
-    $.getJSON("{% url 'modoboa.extensions.admin.views.domain.domains_list' %}", function(data) {
+    $.getJSON("{% url 'admin:domain_flat_list' %}", function(data) {
         container.value = data;
     });
 }
 
 function get_account_list(container) {
-    $.getJSON("{% url 'modoboa.extensions.admin.views.identity.accounts_list' %}", function(data) {
+    $.getJSON("{% url 'admin:account_list' %}", function(data) {
         container.value = data;
     });
 }

@@ -26,7 +26,7 @@ from modoboa.extensions.admin.lib import get_domains
 
 @login_required
 def index(request):
-    return HttpResponseRedirect(reverse(domains))
+    return HttpResponseRedirect(reverse("admin:domain_list"))
 
 
 @login_required
@@ -72,9 +72,9 @@ def domains(request, tplname="admin/domains.html"):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
             return HttpResponseRedirect(
-                reverse('modoboa.extensions.admin.views.identity.identities')
+                reverse("admin:identity_list")
             )
-        return HttpResponseRedirect(reverse("modoboa.core.views.user.index"))
+        return HttpResponseRedirect(reverse("core:user_index"))
     return render(request, tplname, {"selection": "domains"})
 
 

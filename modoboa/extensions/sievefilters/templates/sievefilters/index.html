@@ -34,8 +34,8 @@ function display_filter_errors(data) {
 }
 
 function filterform_cb() {
-    cond_templates = fetch_templates("{% url 'modoboa.extensions.sievefilters.views.get_templates' 'condition' %}", cond_templates);
-    action_templates = fetch_templates("{% url 'modoboa.extensions.sievefilters.views.get_templates' 'action' %}", action_templates);
+    cond_templates = fetch_templates("{% url 'sievefilters:templates_get' 'condition' %}", cond_templates);
+    action_templates = fetch_templates("{% url 'sievefilters:templates_get' 'action' %}", action_templates);
 
     var $dc = $("#condition_0").dyncondition({
         templates: cond_templates

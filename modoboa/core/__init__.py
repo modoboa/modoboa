@@ -82,7 +82,7 @@ def check_for_new_version(user, include_all):
         return [{"id": "newversionavailable"}] if include_all else []
     return [{
         "id": "newversionavailable",
-        "url": reverse("admin_index") + "#info/",
+        "url": reverse("core:index") + "#info/",
         "text": _("New Modoboa version available"),
         "level": "info",
     }]

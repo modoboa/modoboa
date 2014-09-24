@@ -71,7 +71,7 @@ class Command(BaseCommand):
                                            app="amavis")
         self.baseurl = self.options["baseurl"].strip("/")
         self.listingurl = self.baseurl \
-            + reverse("modoboa.extensions.amavis.views._listing") \
+            + reverse("amavis:_mail_list") \
             + "?viewrequests=1"
 
         for da in User.objects.filter(groups__name="DomainAdmins"):

@@ -283,7 +283,7 @@ class DomainForm(TabForms):
             domadmins = [u for u in domadmins if u.group == "DomainAdmins"]
         context.update({
             "title": domain.name,
-            "action": reverse("edit_domain", args=[domain.pk]),
+            "action": reverse("admin:domain_change", args=[domain.pk]),
             "formid": "domform",
             "domain": domain,
             "domadmins": domadmins
@@ -334,7 +334,7 @@ class DomainWizard(WizardForm):
     def extra_context(self, context):
         context.update({
             "title": _("New domain"),
-            "action": reverse("new_domain"),
+            "action": reverse("admin:domain_add"),
             "formid": "domform"
         })
 

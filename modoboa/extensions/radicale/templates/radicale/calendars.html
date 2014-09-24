@@ -12,7 +12,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     radicale = new Radicale({
-        "username_list_url": "{% url 'usernames' %}"
+        "username_list_url": "{% url 'radicale:username_list' %}"
     });
 });
 </script>

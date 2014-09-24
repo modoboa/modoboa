@@ -12,7 +12,7 @@ def menu(target, user):
     return [
         {"name": "sievefilters",
          "label": _("Message filters"),
-         "url": reverse("modoboa.extensions.sievefilters.views.index"),
+         "url": reverse("sievefilters:index"),
          "img": "glyphicon glyphicon-check"}
     ]
 

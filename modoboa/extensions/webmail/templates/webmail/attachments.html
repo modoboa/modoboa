@@ -16,7 +16,7 @@
   {% for att in attachments %}
   <div class="row">
     <div class="col-sm-12">
-      <a href="{% url 'modoboa.extensions.webmail.views.delattachment' %}?name={{ att.tmpname }}"
+      <a href="{% url 'webmail:attachment_delete' %}?name={{ att.tmpname }}"
          name="delattachment">
         <span class="glyphicon glyphicon-remove"></span>
       </a>

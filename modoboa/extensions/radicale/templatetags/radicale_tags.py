@@ -25,7 +25,7 @@ def radicale_left_menu(user):
          "img": "glyphicon glyphicon-plus",
          "modal": True,
          "modalcb": "radicale.add_calendar_cb",
-         "url": reverse("new_user_calendar")},
+         "url": reverse("radicale:user_calendar_add")},
     ]
     if user.group != "SimpleUsers":
         entries += [
@@ -34,7 +34,7 @@ def radicale_left_menu(user):
              "img": "glyphicon glyphicon-plus",
              "modal": True,
              "modalcb": "radicale.shared_calendar_cb",
-             "url": reverse("new_shared_calendar")},
+             "url": reverse("radicale:shared_calendar_add")},
         ]
     return render_to_string('common/menulist.html', {
         "entries": entries,
@@ -49,12 +49,12 @@ def calendar_modify_link(calendar):
     linkdef = {"label": calendar.name, "modal": True}
     if calendar.__class__.__name__ == "UserCalendar":
         linkdef["url"] = reverse(
-            "user_calendar", args=[calendar.pk]
+            "radicale:user_calendar", args=[calendar.pk]
         )
         linkdef["modalcb"] = "radicale.edit_calendar_cb"
     else:
         linkdef["url"] = reverse(
-            "shared_calendar", args=[calendar.pk]
+            "radicale:shared_calendar", args=[calendar.pk]
         )
         linkdef["modalcb"] = "radicale.shared_calendar_cb"
     return render_link(linkdef)
@@ -70,9 +70,11 @@ def calendar_actions(calendar):
         "img": "glyphicon glyphicon-trash"
     }]
     if calendar.__class__.__name__ == 'UserCalendar':
-        actions[0]["url"] = reverse("user_calendar", args=[calendar.id])
+        actions[0]["url"] = reverse(
+            "radicale:user_calendar", args=[calendar.id])
     else:
-        actions[0]["url"] = reverse("shared_calendar", args=[calendar.id])
+        actions[0]["url"] = reverse(
+            "radicale:shared_calendar", args=[calendar.id])
     return render_actions(actions)
 
 

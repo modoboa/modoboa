@@ -16,11 +16,11 @@ var webmail = undefined;
 $(document).ready(function() {
     webmail = new Webmail({
         poller_interval: {{ refreshrate }},
-        poller_url: "{% url 'modoboa.extensions.webmail.views.check_unseen_messages' %}",
-        listing_url: "{% url 'modoboa.extensions.webmail.views.index' %}?action=listmailbox",
-        move_url: "{% url 'modoboa.extensions.webmail.views.move' %}",
-        submboxes_url: "{% url 'modoboa.extensions.webmail.views.submailboxes' %}",
-        delattachment_url: "{% url 'modoboa.extensions.webmail.views.delattachment' %}",
+        poller_url: "{% url 'webmail:unseen_messages_check' %}",
+        listing_url: "{% url 'webmail:index' %}?action=listmailbox",
+        move_url: "{% url 'webmail:mail_move' %}",
+        submboxes_url: "{% url 'webmail:submailboxes_get' %}",
+        delattachment_url: "{% url 'webmail:attachment_delete' %}",
         deflocation: "{{ deflocation }}",
         defcallback: "{{ defcallback }}",
         ro_mboxes: {% tolist ro_mboxes %},

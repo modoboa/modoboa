@@ -92,7 +92,7 @@ def viewmail_selfservice(request, mail_id,
     if rcpt is None:
         raise Http404
     content = Template("""{% load url from future %}
-<iframe src="{% url 'modoboa.extensions.amavis.views.getmailcontent' mail_id %}" id="mailcontent"></iframe>
+<iframe src="{% url 'amavis:mailcontent_get' mail_id %}" id="mailcontent"></iframe>
 """).render(Context(dict(mail_id=mail_id)))
 
     return render(request, tplname, dict(
@@ -112,7 +112,7 @@ def viewmail(request, mail_id):
 
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
-""").render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
+""").render(Context({"url": reverse("amavis:mailcontent_get", args=[mail_id])}))
     menu = viewm_menu(mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
     request.session['location'] = 'viewmail'
@@ -260,7 +260,7 @@ def process(request):
     ids = request.POST.get("selection", "")
     ids = ids.split(",")
     if not len(ids):
-        return HttpResponseRedirect(reverse(index))
+        return HttpResponseRedirect(reverse("amavis:index"))
 
     if request.POST["action"] == "release":
         return release(request, ids)

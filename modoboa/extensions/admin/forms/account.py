@@ -36,8 +36,6 @@ class AccountFormGeneral(forms.ModelForm):
         label=ugettext_lazy("Confirmation"),
         help_text=ugettext_lazy("Enter the same password as above, for verification.")
     )
-    first_name = forms.CharField()
-    last_name = forms.CharField()
 
     class Meta:
         model = User
@@ -373,7 +371,7 @@ class AccountForm(TabForms):
         context.update({
             'title': account.username,
             'formid': 'accountform',
-            'action': reverse("edit_account", args=[account.id]),
+            'action': reverse("admin:account_change", args=[account.id]),
         })
 
     def check_perms(self, account):
@@ -438,7 +436,7 @@ class AccountWizard(WizardForm):
     def extra_context(self, context):
         context.update({
             'title': _("New account"),
-            'action': reverse("new_account"),
+            'action': reverse("admin:account_add"),
             'formid': 'newaccount_form'
         })
 

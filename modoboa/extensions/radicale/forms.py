@@ -160,7 +160,7 @@ class UserCalendarWizard(WizardForm):
     def extra_context(self, context):
         context.update({
             "title": _("New calendar"),
-            "action": reverse("new_user_calendar"),
+            "action": reverse("radicale:user_calendar_add"),
             "formid": "newcal_form"
         })
 
@@ -200,7 +200,7 @@ class UserCalendarEditionForm(TabForms):
         context.update({
             "title": self.instances["general"].name,
             "formid": "ucal_form",
-            "action": reverse("user_calendar", args=[calendar.id])
+            "action": reverse("radicale:user_calendar", args=[calendar.id])
         })
 
     def save(self):

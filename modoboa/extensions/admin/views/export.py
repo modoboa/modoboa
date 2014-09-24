@@ -38,7 +38,7 @@ def export_identities(request):
         "action_label": _("Export"),
         "action_classes": "submit",
         "formid": "exportform",
-        "action": reverse(export_identities),
+        "action": reverse("admin:identity_export"),
     }
 
     if request.method == "POST":
@@ -64,7 +64,7 @@ def export_domains(request):
         "action_label": _("Export"),
         "action_classes": "submit",
         "formid": "exportform",
-        "action": reverse(export_domains),
+        "action": reverse("admin:domain_export"),
     }
 
     if request.method == "POST":
