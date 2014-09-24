@@ -178,11 +178,13 @@ class NavigationParameters(object):
     def __getitem__(self, key):
         """Retrieve an item."""
         if self.sessionkey not in self.request.session:
-            return None
+            raise KeyError
         return self.request.session[self.sessionkey][key]
 
     def __contains__(self, key):
         """Check if key is present."""
+        if self.sessionkey not in self.request.session:
+            return False
         return key in self.request.session[self.sessionkey]
 
     def __setitem__(self, key, value):

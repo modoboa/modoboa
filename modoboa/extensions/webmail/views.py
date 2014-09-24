@@ -335,7 +335,7 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
     :return: a dictionnary
     """
     navparams = WebmailNavigationParameters(request, defmailbox)
-    previous_page_id = int(navparams["page"])
+    previous_page_id = int(navparams["page"]) if "page" in navparams else None
     if update_session:
         navparams.store()
     mbox = navparams.get('mbox')
