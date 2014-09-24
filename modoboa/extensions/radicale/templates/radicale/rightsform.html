@@ -1,5 +1,5 @@
 {% load lib_tags radicale_tags %}
-{% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
 <form action="{{ action }}" method="POST" id="{{ formid }}">
   {% csrf_token %}
   <div class="form-inline" id="original_row">

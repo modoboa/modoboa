@@ -38,42 +38,19 @@ def configure_field_classes(field):
 @register.simple_tag
 def render_field(
         field, help_display_mode="tooltip", label_width="col-sm-4",
-        hidden=False):
+        **options):
     """Render a field."""
     from modoboa.core.templatetags.core_tags import visirule
 
     if type(field.field) is SeparatorField:
         return "<h5%s>%s</h5>" % (visirule(field), unicode(field.label))
     configure_field_classes(field)
-    return render_to_string("common/generic_field.html", dict(
-        field=field, help_display_mode=help_display_mode,
-        label_width=label_width, hidden=hidden
-    ))
-
-
-@register.simple_tag
-def render_field_appended(field, text):
-    configure_field_classes(field)
-    return render_to_string("common/generic_field.html", dict(
-        field=field, help_display_mode="tooltip", appended_text=text
-    ))
-
-
-@register.simple_tag
-def render_field_with_activator(field, activator_label=ugettext_lazy("activate")):
-    configure_field_classes(field)
-    return render_to_string("common/generic_field.html", {
-        "field": field, "help_display_mode": "tooltip", "activator": True,
-        "activator_label": activator_label, "deactivate_if_empty": True
-    })
-
-
-@register.simple_tag
-def render_and_hide_field(field):
-    configure_field_classes(field)
-    return render_to_string("common/generic_field.html", dict(
-        field=field, hidden=True
-    ))
+    context = {
+        "field": field, "help_display_mode": help_display_mode,
+        "label_width": label_width, "deactivate_if_empty": True
+    }
+    context.update(options)
+    return render_to_string("common/generic_field.html", context)
 
 
 @register.simple_tag

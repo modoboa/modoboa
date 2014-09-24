@@ -3,7 +3,7 @@
 {% load form_tags %}
 
 {% block modalbody %}
-  {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+  {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
 <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 
       method="POST" id="{{ formid }}" name="{{ formid }}" role="form"
       target="{{ target }}">

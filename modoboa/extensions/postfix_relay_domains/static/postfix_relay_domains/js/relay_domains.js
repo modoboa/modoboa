@@ -75,13 +75,13 @@ RelayDomains.prototype = {
     },
 
     srv_tag_handler: function(tag, $link) {
-        if (this.navobj.getparam(tag + "filter") == undefined && $link.hasClass(tag)) {
+        if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
             var text = $link.attr("name");
             this.navobj
                 .setparam("domfilter", "relaydomain")
                 .setparam(tag + "filter", text)
                 .update();
-            if ($("a[name=dom]").length == 0) {
+            if ($("a[name=dom]").length === 0) {
                 $("#searchform").parent().after(this.make_tag("relaydomain", "dom"));
             }
             $("#searchform").parent().after(this.make_tag(text, tag));

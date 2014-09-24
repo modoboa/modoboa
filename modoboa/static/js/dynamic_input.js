@@ -25,7 +25,7 @@
         addrmlink: function(input) {
             var $rmlink = $('<a href="#"'
                 + 'id="' + input.attr("id") + '_rmbtn' + '"'
-                + '"><i class="glyphicon glyphicon-remove"></i></a>');
+                + '"><i class="fa fa-remove"></i></a>');
 
             $rmlink.click($.proxy(this.removeinput, $rmlink));
             return $rmlink;

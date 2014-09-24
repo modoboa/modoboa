@@ -14,5 +14,5 @@
   </div>
   <span class="help-block">{% trans "or more throw spam message away" %}</span>
 </div>
-{% render_field_with_activator form.spam_subject_tag2 _("default") %}
+{% render_field form.spam_subject_tag2 activator=True activator_label=_("default") %}
 {% render_field form.bypass_banned_checks %}

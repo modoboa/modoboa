@@ -86,7 +86,7 @@ function build_alert_box(msg, level) {
 }
 
 function build_error_alert(msg) {
-    return build_alert_box(msg, 'error');
+    return build_alert_box(msg, 'danger');
 }
 
 function build_success_alert(msg) {
@@ -152,12 +152,12 @@ function display_form_errors(formid, data) {
  */
 function simple_ajax_form_post(e, options) {
     e.preventDefault();
-    var $form = (options.formid != undefined) ? $("#" + options.formid) : $("form");
+    var $form = (options.formid !== undefined) ? $("#" + options.formid) : $("form");
     var defaults = {reload_on_success: true, reload_mode: 'full', modal: true};
     var opts = $.extend({}, defaults, options);
     var args = $form.serialize();
 
-    if (options.extradata != undefined) {
+    if (options.extradata !== undefined) {
         args += "&" + options.extradata;
     }
     $.ajax({
@@ -210,12 +210,12 @@ function gethref(obj) {
     var re = new RegExp("^(https?):");
     var scheme = re.exec(url);
 
-    if (scheme != null) {
+    if (scheme !== null) {
         var baseurl = scheme[0] + "://" + location.host + location.pathname;
         return url.replace(baseurl, "");
     }
     return url;
-};
+}
 
 /*
  * Extract the current URL parameters into a dictionnary.
