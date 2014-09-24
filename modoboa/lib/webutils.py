@@ -176,8 +176,9 @@ class NavigationParameters(object):
                            ('criteria', 'from_addr', False)]
 
     def __getitem__(self, key):
-        """
-        """
+        """Retrieve an item."""
+        if self.sessionkey not in self.request.session:
+            return None
         return self.request.session[self.sessionkey][key]
 
     def __contains__(self, key):
