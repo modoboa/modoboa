@@ -199,6 +199,7 @@ class DynamicForm(object):
 
 
 class TabForms(object):
+
     """
     Simple forms container
 
@@ -206,6 +207,7 @@ class TabForms(object):
     displayed using tabs. It is different from a classical formset
     because it can contain different forms.
     """
+
     template_name = "common/tabforms.html"
 
     def __init__(self, request, instances=None, classes=None):

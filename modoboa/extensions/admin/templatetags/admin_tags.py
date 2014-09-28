@@ -238,7 +238,7 @@ def domadmin_actions(daid, domid):
     actions = [{
         "name": "removeperm",
         "url": "{}?domid={}&daid={}".format(
-            reverse("admin:permission_delete"), domid, daid),
+            reverse("admin:permission_remove"), domid, daid),
         "img": "fa fa-trash",
         "title": _("Remove this permission")
     }]

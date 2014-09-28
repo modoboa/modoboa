@@ -100,7 +100,8 @@ def newdomain(request):
 @permission_required("admin.view_domains")
 @transaction.commit_on_success
 @reversion.create_revision()
-def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
+def editdomain(request, dom_id):
+    """Edit domain view."""
     domain = Domain.objects.get(pk=dom_id)
     if not request.user.can_access(domain):
         raise PermDeniedException

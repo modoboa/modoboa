@@ -16,6 +16,7 @@ urlpatterns = patterns(
 
 urlpatterns += patterns(
     'modoboa.extensions.admin.views.identity',
+
     url(r'^permissions/remove/$', 'remove_permission',
         name="permission_remove"),
 
