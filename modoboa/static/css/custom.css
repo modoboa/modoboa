@@ -302,6 +302,9 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
 
  /* modals */
 
+.modal-body .nav-pills { 
+    margin-bottom: 15px;
+}
 
  /* settings */
 

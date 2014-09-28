@@ -5,6 +5,6 @@
 {% if form.instance.domain.enabled %}
 {% render_field form.enabled %}
 {% else %}
-{% include "common/generic_field.html" with field=form.enabled inline_message=_("Domain is disabled") extra_classes="info" %}
+{% include "common/generic_field.html" with field=form.enabled label_width="col-sm-4" inline_message=_("Domain is disabled") extra_classes="info" %}
 {% endif %}
 {% endblock %}
