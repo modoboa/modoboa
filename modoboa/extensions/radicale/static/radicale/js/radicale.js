@@ -1,6 +1,10 @@
 /**
- * @module radicale
- * @desc Utility class for the radicale extension
+ * Creates an instance of Radicale.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ * @classdesc This class contains a set of methods used by the
+ * Radicale application.
  */
 var Radicale = function(options) {
     Listing.call(this, options);
@@ -32,9 +36,10 @@ Radicale.prototype = {
     /**
      * Refresh the listing.
      *
+     * @this Radicale
+     * @param {Object} data - the ajax call response (JSON)
      */
     reload_listing: function(data) {
-        console.log("reload");
         this.navobj.update(true);
         if (data) {
             $("body").notify("success", data, 2000);
@@ -43,6 +48,8 @@ Radicale.prototype = {
 
     /**
      * Rights form initialization.
+     *
+     * @this Radicale
      */
     rightsform_init: function() {
         $("#original_row").dynamicrule();

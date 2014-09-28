@@ -1,8 +1,11 @@
 /**
- * @module admin
- * @desc Utility classes for the admin application
+ * Creates an instance of Admin.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ * @classdesc This class contains utility methods used by the admin
+ * application.
  */
-
 var Admin = function(options) {
     Listing.call(this, options);
 };
@@ -74,8 +77,13 @@ Admin.prototype = {
 
 Admin.prototype = $.extend({}, Listing.prototype, Admin.prototype);
 
-/*
- * Domains
+/**
+ * Creates an instance of Domains.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ * @classdesc This class extends the Admin one by adding methods
+ * specific to domains management.
  */
 var Domains = function(options) {
     Admin.call(this, options);
@@ -116,9 +124,22 @@ Domains.prototype = {
         this.change_inputs_state(($target.val() == "yes") ? false : true);
     },
 
+    /**
+     * Initialize the main form contained in the domain edition modal.
+     *
+     * @this Domains
+     */
     generalform_init: function() {
         $('input:text:visible:first').focus();
-        $("#id_aliases").dynamic_input();
+        $("#original_aliases").dynamic_input({
+            input_added: function($row) {
+                $row.find("label").html("");
+            },
+            input_removed: function($input) {
+                $input.parents(".form-group").remove();
+                return true;
+            }
+        });
     },
 
     optionsform_init: function() {
@@ -181,8 +202,13 @@ Domains.prototype = {
 
 Domains.prototype = $.extend({}, Admin.prototype, Domains.prototype);
 
-/*
- * Identities
+/**
+ * Creates an instance of Identities.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ * @classdesc This class extends the Admin one by adding methods
+ * specific to identities management.
  */
 var Identities = function(options) {
     Admin.call(this, options);
@@ -191,6 +217,7 @@ var Identities = function(options) {
 Identities.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
+        this.domain_list = [];
         this.register_tag_handler("idt", this.generic_tag_handler);
         this.register_tag_handler("grp", this.grp_tag_handler);
     },
@@ -247,10 +274,29 @@ Identities.prototype = {
         return false;
     },
 
+    /**
+     * Retrieve a list of domain from the server.
+     *
+     * @this Identities
+     * @return {Array} a list of domain names
+     */
+    get_domain_list: function() {
+        if (!this.domain_list.length) {
+            $.ajax({
+                url: this.options.domain_list_url,
+                dataType: "json",
+                async: false
+            }).done($.proxy(function(data) {
+                this.domain_list = data;
+            }, this));
+        }
+        return this.domain_list;
+    },
+
     simpleuser_mode: function() {
         $("#id_username").autocompleter({
             from_character: "@",
-            choices: get_domains_list
+            choices: $.proxy(this.get_domain_list, this)
         });
         $("#id_email").addClass("disabled")
             .attr("readonly", "")
@@ -283,22 +329,38 @@ Identities.prototype = {
     mailform_init: function() {
         $("#id_aliases").autocompleter({
             from_character: "@",
-            choices: get_domains_list
-        }).dynamic_input();
+            choices: $.proxy(this.get_domain_list, this)
+        });
+        $("#original_aliases").dynamic_input({
+            input_added: function($row) {
+                $row.find("label").html("");
+            },
+            input_removed: function($input) {
+                $input.parents(".form-group").remove();
+                return true;
+            }
+        });
         $("#id_email").autocompleter({
             from_character: "@",
-            choices: get_domains_list
+            choices: $.proxy(this.get_domain_list, this)
         });
         if ($("#id_role").length) {
             $("#id_role").trigger("change");
         } else {
             this.simpleuser_mode();
         }
-        $("#id_domains")
-            .autocompleter({
-                choices: get_domains_list
-            })
-            .dynamic_input();
+        $("#id_domains").autocompleter({
+            choices: $.proxy(this.get_domain_list, this)
+        });
+        $("#original_domains").dynamic_input({
+            input_added: function($row) {
+                $row.find("label").html("");
+            },
+            input_removed: function($input) {
+                $input.parents(".form-group").remove();
+                return true;
+            }
+        });
         activate_widget.call($("#id_quota_act"));
     },
 
@@ -339,9 +401,17 @@ Identities.prototype = {
     aliasform_cb: function() {
         $("#id_email").autocompleter({
             from_character: "@",
-            choices: get_domains_list
+            choices: $.proxy(this.get_domain_list, this)
         });
-        $("#id_recipients").dynamic_input();
+        $("#original_recipients").dynamic_input({
+            input_added: function($row) {
+                $row.find("label").html("");
+            },
+            input_removed: function($input) {
+                $input.parents(".form-group").remove();
+                return true;
+            }
+        });
         $(".submit").on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "aliasform",

@@ -5,7 +5,6 @@ Form rendering tags.
 from django import forms
 from django import template
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy
 
 from modoboa.lib.formutils import SeparatorField
 
@@ -55,6 +54,7 @@ def render_field(
 
 @register.simple_tag
 def render_fields_group(form, pattern):
+    """Render a group of fields."""
     first = forms.forms.BoundField(form, form.fields[pattern], pattern)
     configure_field_classes(first)
     label = first.label
@@ -73,7 +73,8 @@ def render_fields_group(form, pattern):
         cpt += 1
 
     return render_to_string("common/generic_fields_group.html", dict(
-        label=label, help_text=first.help_text, group=group, haserror=haserror
+        label=label, help_text=first.help_text, group=group, haserror=haserror,
+        pattern=pattern
     ))
 
 
@@ -82,7 +83,8 @@ def render_extra_fields(form):
     result = ''
     for fname in form.extra_fields:
         result += render_to_string("common/generic_field.html", {
-            'field': form[fname], 'help_display_mode': 'tooltip'
+            'field': form[fname], 'help_display_mode': 'tooltip',
+            'label_width': 'col-sm-4'
         })
     return result
 

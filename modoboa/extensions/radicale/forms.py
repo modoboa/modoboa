@@ -18,7 +18,6 @@ class UserCalendarForm(forms.ModelForm):
         model = UserCalendar
         fields = ('name', 'mailbox', )
         widgets = {
-            'name': forms.TextInput(attrs={"class": "form-control"}),
             'mailbox': forms.widgets.Select(
                 attrs={"class": "selectpicker", "data-live-search": "true"}
             )
@@ -63,9 +62,8 @@ class RightsForm(forms.Form, DynamicForm):
     """
     """
     username = forms.CharField(
-        required=False, widget=forms.widgets.TextInput(
-            attrs={"placeholder": ugettext_lazy("Username"),
-                   "class": "form-control"}
+        label="", required=False, widget=forms.widgets.TextInput(
+            attrs={"placeholder": ugettext_lazy("Username")}
         )
     )
     read_access = forms.BooleanField(

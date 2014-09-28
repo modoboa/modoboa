@@ -80,8 +80,7 @@ def calendar_actions(calendar):
 
 @register.simple_tag
 def render_rule_fields(form):
-    """Render access rules for a given calendar.
-    """
+    """Render access rules for a given calendar."""
     from django.forms import forms
 
     cpt = 1

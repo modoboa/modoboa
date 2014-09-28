@@ -249,8 +249,14 @@ function get_parameter_by_name(url, name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-/*
- * Return the target associated to an event object.
+/**
+ * Return the target associated to an event object. You will generally
+ * use this function within a click event handler configured on a <a/>
+ * tag containg an image. (because e.target will often point to the
+ * image...)
+ *
+ * @param {Object} e - event object
+ * @param {string} tag - desired tag
  */
 function get_target(e, tag) {
     var $target = $(e.target);
@@ -261,7 +267,7 @@ function get_target(e, tag) {
     return $target.parent();
 }
 
-/*
+/**
  * Send a simple AJAX request.
  */
 function simple_ajax_request(e, uoptions) {
@@ -269,7 +275,7 @@ function simple_ajax_request(e, uoptions) {
     var defaults = {};
     var options = $.extend({}, defaults, uoptions);
 
-    if (e != undefined) e.preventDefault();
+    if (e !== undefined) e.preventDefault();
     $.ajax({
         url: $this.attr("href"),
         dataType: 'json'

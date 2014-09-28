@@ -228,7 +228,7 @@ def identity_modify_link(identity, active_tab='default'):
         linkdef["url"] += "?active_tab=%s" % active_tab
         linkdef["modalcb"] = "admin.editaccount_cb"
     else:
-        linkdef["url"] = reverse("admin:alias_change", args=[identity.id]),
+        linkdef["url"] = reverse("admin:alias_change", args=[identity.id])
         linkdef["modalcb"] = "admin.aliasform_cb"
     return render_link(linkdef)
 
@@ -237,7 +237,8 @@ def identity_modify_link(identity, active_tab='default'):
 def domadmin_actions(daid, domid):
     actions = [{
         "name": "removeperm",
-        "url": reverse("admin:permission_delete") + "?domid=%s&daid=%s" % (domid, daid),
+        "url": "{}?domid={}&daid={}".format(
+            reverse("admin:permission_delete"), domid, daid),
         "img": "fa fa-trash",
         "title": _("Remove this permission")
     }]

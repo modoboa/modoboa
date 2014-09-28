@@ -1,5 +1,5 @@
 /**
- * @module
+ * @module jquery.dynamicrule
  */
 
 (function($) {
@@ -11,7 +11,12 @@
         constructor: DynamicRule,
 
         /**
-         * Constructor.
+         * Creates an instance of DynamicRule.
+         *
+         * @constructor
+         * @this {DynamicRule}
+         * @param {object} element -
+         * @param {dictionary} options - instance options
          */
         initialize: function(element, options) {
             this.$element = $(element);
@@ -49,7 +54,8 @@
             var $clone = this.$element.clone();
             var $btn = $clone.find("a");
 
-            $btn.find("i").removeClass("icon-plus").addClass("icon-trash");
+            $clone.attr("id", "");
+            $btn.find("span").removeClass("fa-plus").addClass("fa-trash");
             $btn.removeClass("addrule").addClass("delrule");
             $clone.find("#id_username")
                 .attr("id", "id_username_" + this.rules_counter)
@@ -67,6 +73,8 @@
 
         /**
          * Delete a given rule.
+         *
+         * @param {object} event - event object
          */
         delete_rule: function(event) {
             event.preventDefault();
