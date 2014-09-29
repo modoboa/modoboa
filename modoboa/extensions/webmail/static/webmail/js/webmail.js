@@ -1,5 +1,9 @@
-/*
- * The javascript code that brings the webmail to life!
+/**
+ * Creates an instance of Webmail.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ * @classdesc The javascript code that brings the webmail to life!
  */
 var Webmail = function(options) {
     this.initialize(options);
@@ -99,6 +103,11 @@ Webmail.prototype = {
         this.listen();
     },
 
+    /**
+     * Register navigation callbacks.
+     *
+     * @this Webmail
+     */
     register_navcallbacks: function() {
         this.navobject.register_callback(
             "listmailbox", $.proxy(this.listmailbox_callback, this));
@@ -330,6 +339,12 @@ Webmail.prototype = {
         }
     },
 
+    /**
+     * Update the current displayed content.
+     *
+     * @this Webmail
+     * @param {Object} response - object containing the new content
+     */
     page_update: function(response) {
         var curmb = this.get_current_mailbox();
 
@@ -431,8 +446,11 @@ Webmail.prototype = {
         }
     },
 
-    /*
-     * Inject a new *clickbox* somewhere in the tree
+    /**
+     * Inject a new *clickbox* somewhere in the tree.
+     *
+     * @this Webmail
+     * @param {Object} $container - box container
      */
     inject_clickbox: function($container) {
         $container.prepend($("<div />", {'class' : 'clickbox collapsed'}));
@@ -467,10 +485,12 @@ Webmail.prototype = {
         return $li;
     },
 
-    /*
+    /**
      * Inject new mailboxes under a given parent in the tree.
      *
-     * $parent must be a <li> node.
+     * @this Webmail
+     * @param {Object} $parent - an existing <li> node.
+     * @param {Array} mboxes - list of mailboxes to inject
      */
     inject_mailboxes: function($parent, mboxes) {
         var $ul = $("<ul />", {
@@ -500,6 +520,10 @@ Webmail.prototype = {
 
     /**
      * Download mailboxes from the server.
+     *
+     * @this Webmail
+     * @param {Object} parent - parent node where mailboxes will be appended
+     * @param {boolean} async - if true, the ajax call will be asynchronous
      */
     get_mailboxes: function(parent, async) {
         if (async === undefined) {
@@ -519,6 +543,10 @@ Webmail.prototype = {
      * Open/Close a mailbox with children.
      *
      * This is an internal method.
+     *
+     * @this Webmail
+     * @param {Object} $div - the <div/> that was clicked
+     * @param {Object} $ul - the <ul/> element to show/hide
      */
     toggle_mbox_state: function($div, $ul) {
         if ($ul.hasClass("hidden")) {
@@ -531,15 +559,19 @@ Webmail.prototype = {
     },
 
     /**
-     * Open or close a mailbox (user triggered).
+     * Click event : open or close a mailbox (user triggered).
      *
      * The first time it is opened, sub mailboxes will be downloaded
      * from the server and injected into the tree.
+     *
+     * @this Webmail
+     * @param {Object} e - event object
      */
     mbox_state_callback: function(e) {
         e.preventDefault();
+        e.stopPropagation();
         var $div = $(e.target);
-        var $parent = $div.parents("li");
+        var $parent = $div.parents("li").first();
         var $ul = $parent.find('ul[name="' + $parent.attr("name") + '"]');
 
         if (!$ul.length) {
@@ -549,15 +581,18 @@ Webmail.prototype = {
         this.toggle_mbox_state($div, $ul);
     },
 
-    /*
-     * Unselect every selected mailbox
+    /**
+     * Unselect every selected mailbox.
      */
     reset_mb_selection: function() {
         $("a[name=loadfolder]").parent().removeClass("active").addClass("droppable");
     },
 
     /**
-     * Select a particular mailbox (one already present in the DOM)
+     * Select a particular mailbox (one already present in the DOM).
+     *
+     * @this Webmail
+     * @param {Object|string} obj - mailbox to select
      */
     select_mailbox: function(obj) {
         var $obj = (typeof obj != "string") ? $(obj) : $('a[href="' + obj + '"]');
@@ -568,10 +603,13 @@ Webmail.prototype = {
         $obj.parent().addClass("active");
     },
 
-    /*
-     * Tries to select a particular sub-mailbox and loads it from the
+    /**
+     * Try to select a particular sub-mailbox and load it from the
      * server if it's not present in the DOM. (nb: all parents needed
      * to access this mailbox are also loaded)
+     *
+     * @this Webmail
+     * @param {string} mailbox - mailbox to select
      */
     load_and_select_mailbox: function(mailbox) {
         if (mailbox.indexOf(this.options.hdelimiter) == -1) {
@@ -847,7 +885,7 @@ Webmail.prototype = {
      * Onclick callback used to load the content of a particular
      * mailbox. (activated when clicking on a mailbox's name)
      */
-    _listmailbox_loader: function(event, obj) {
+    _listmailbox_loader: function(event, obj, reset_page) {
         if (event) {
             event.preventDefault();
         }
@@ -856,10 +894,20 @@ Webmail.prototype = {
         }
         this.navobject.reset().setparams({
            action: "listmailbox",
-           mbox: obj.attr("href")
-        }).update();
+           mbox: obj.attr("href"),
+        });
+        if (reset_page) {
+            this.navobject.setparam("reset_page", reset_page);
+        }
+        this.navobject.update();
     },
 
+    /**
+     * Click event: list the content of a particular mailbox.
+     *
+     * @this Webmail
+     * @param {Object} event - event object
+     */
     listmailbox_loader: function(event) {
         var $target = get_target(event, "a");
 
@@ -868,7 +916,7 @@ Webmail.prototype = {
             return;
         }
         this.select_mailbox(event.target);
-        this._listmailbox_loader(event, $target);
+        this._listmailbox_loader(event, $target, true);
     },
 
     /*
@@ -954,8 +1002,11 @@ Webmail.prototype = {
      * Ajax navigation callbacks
      */
 
-    /*
-     * 'listmailbox' callback
+    /**
+     * Navigation callback: listmailbox.
+     *
+     * @this Webmail
+     * @param {Object} resp - ajax response (JSON)
      */
     listmailbox_callback: function(resp) {
         this.store_nav_params();

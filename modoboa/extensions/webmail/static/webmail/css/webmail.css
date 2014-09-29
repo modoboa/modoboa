@@ -97,7 +97,11 @@ body, html {
 .nav-sidebar li > a {
     padding-top: 7px;
     padding-bottom: 7px;
-} 
+}
+
+.nav-sidebar li li { 
+    margin-left: 10px;
+}
 
 #mboxes_container a[name=loadfolder] {
     white-space: nowrap;
@@ -190,12 +194,8 @@ div.expanded {
     background-repeat: no-repeat;
 }
 
-div#leftcol #mboxes_container .nav .droppable div.clickbox{
+div#leftcol #mboxes_container .nav .droppable div.clickbox {
     z-index: 800;
-}
-
-li.droppable li{
-    margin-left: 10px;
 }
 
 /*

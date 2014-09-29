@@ -125,8 +125,10 @@ def listmailbox_menu(selection, folder, user):
 
 
 @register.simple_tag
-def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hdelimiter='.'):
-    """Display a tree of mailboxes and sub-mailboxes
+def print_mailboxes(
+        tree, selected=None, withunseen=False, selectonly=False,
+        hdelimiter='.'):
+    """Display a tree of mailboxes and sub-mailboxes.
 
     :param tree: the mailboxes to display
     """
@@ -148,10 +150,6 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
             cssclass += " unseen"
             extra_attrs = ' data-toggle="%d"' % mbox["unseen"]
 
-        result += "<a href='%s' class='%s' name='%s'%s>" % (
-            "path" in mbox and mbox["path"] or mbox["name"], cssclass,
-            'selectfolder' if selectonly else 'loadfolder', extra_attrs
-        )
         if "sub" in mbox:
             if selected is not None and selected != name and selected.count(name):
                 ul_state = "visible"
@@ -160,6 +158,11 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
                 ul_state = "hidden"
                 div_state = "collapsed"
             result += "<div class='clickbox %s'></div>" % div_state
+
+        result += "<a href='%s' class='%s' name='%s'%s>" % (
+            "path" in mbox and mbox["path"] or mbox["name"], cssclass,
+            'selectfolder' if selectonly else 'loadfolder', extra_attrs
+        )
 
         iclass = mbox["class"] if "class" in mbox \
             else "fa fa-folder"
@@ -172,6 +175,7 @@ def print_mailboxes(tree, selected=None, withunseen=False, selectonly=False, hde
                 ) + "</ul>\n"
         result += "</li>\n"
     return result
+
 
 @register.simple_tag
 def mboxes_menu():
