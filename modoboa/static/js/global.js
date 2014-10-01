@@ -20,6 +20,11 @@ function get_static_url(value) {
     return static_url + value;
 }
 
+/**
+ * Open a modal box and load its content using an AJAX request.
+ *
+ * @param {Object} e - event object
+ */
 function modalbox(e, css, defhref, defcb, defclosecb) {
     e.preventDefault();
     var $this = $(this);
@@ -39,7 +44,8 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         url: href
     }).done(function(data) {
         var $div = $('<div />', {
-            id: "modalbox", 'class': "modal fade", html: data
+            id: "modalbox", 'class': "modal fade", role: "modal",
+            html: data, 'aria-hidden': true
         });
 
         $div.modal({show: false});

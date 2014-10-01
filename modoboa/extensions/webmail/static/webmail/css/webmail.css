@@ -46,9 +46,6 @@
 }
 
 /* GENERAL */
-body, html {
-    /*overflow: hidden;*/
-}
 
 #rightcol { 
     position: fixed;
@@ -88,10 +85,6 @@ body, html {
     left: 0px;
     background-image: url("../../pics/grippy.png");
     width: 8px;
-}
-
-#mboxes_container {
-    /*overflow: auto;*/
 }
 
 .nav-sidebar li > a {
@@ -273,8 +266,9 @@ list {
 }
 
 /*
- * Folder form
+ * Folders form
  */
+
 .modal-body {
     max-height: 300px;
     overflow-y: auto;
@@ -282,6 +276,22 @@ list {
 
 #folders2 li {
     position: relative;
+}
+
+#folders2 div.clickbox { 
+    left: 0;
+    top: 0px;
+}
+
+#folders2 li li { 
+    margin-left: 10px;
+}
+
+#folders2 .active > a,
+#folders2 .active > a:hover,
+#folders2 .active > a:focus {
+    color: #fff;
+    background-color: #428bca;
 }
 
 /*

@@ -186,7 +186,7 @@ Webmail.prototype = {
                 return $("#emails").height() - $element.height();
             },
             get_args: function() {
-                var args = that.navparams;
+                var args = $.extend({}, that.navparams);
                 args.scroll = true;
                 return args;
             },
@@ -281,6 +281,8 @@ Webmail.prototype = {
 
     /**
      * Simple helper to retrieve the currently selected mailbox.
+     *
+     * @this Webmail
      */
     get_current_mailbox: function() {
         return this.navobject.getparam("mbox", "INBOX");
@@ -289,9 +291,11 @@ Webmail.prototype = {
     /**
      * Keep track of interesting navigation parameters in order to
      * restore them later.
+     *
+     * @this Webmail
      */
     store_nav_params: function() {
-        var params = new Array("page", "order", "pattern", "criteria");
+        var params = new Array("order", "pattern", "criteria");
 
         this.navparams = {};
         for (var idx in params) {
@@ -299,9 +303,11 @@ Webmail.prototype = {
         }
     },
 
-    /*
+    /**
      * Restore navigation parameters previously stored via
      * store_nav_params.
+     *
+     * @this Webmail
      */
     restore_nav_params: function() {
         if (this.navparams === undefined) {
@@ -360,12 +366,13 @@ Webmail.prototype = {
         }
         if (response.menu !== undefined) {
             $("#menubar").html(response.menu);
-            $("#searchfield").searchbar({navobj: this.navobject});
+            $("#searchfield").searchbar({
+                navobj: this.navobject,
+                pattern_changed: function(navobj) {
+                    navobj.setparam("reset_page", "true");
+                }
+            });
         }
-        /*if (response.navbar) {
-            $("#pagination").html(response.navbar);
-            $("#pagination-responsive").html(response.navbar);
-        }*/
 
         $("#listing").html(response.listing);
 
@@ -525,7 +532,12 @@ Webmail.prototype = {
      * @param {Object} parent - parent node where mailboxes will be appended
      * @param {boolean} async - if true, the ajax call will be asynchronous
      */
-    get_mailboxes: function(parent, async) {
+    get_mailboxes: function(parent, async, with_unseen) {
+        var args = "topmailbox=" + parent.attr("name");
+
+        if (with_unseen) {
+            args += "&unseen=true";
+        }
         if (async === undefined) {
             async = true;
         }
@@ -533,7 +545,7 @@ Webmail.prototype = {
             url: this.options.submboxes_url,
             dataType: 'json',
             async: async,
-            data: "topmailbox=" + parent.attr("name")
+            data: args
         }).done($.proxy(function(data) {
             this.inject_mailboxes(parent, data);
         }, this));
@@ -575,7 +587,9 @@ Webmail.prototype = {
         var $ul = $parent.find('ul[name="' + $parent.attr("name") + '"]');
 
         if (!$ul.length) {
-            this.get_mailboxes($parent);
+            var $link = $div.next();
+            var with_unseen = ($link.attr("name") == "loadfolder") ? true : false;
+            this.get_mailboxes($parent, true, with_unseen);
             return;
         }
         this.toggle_mbox_state($div, $ul);
@@ -642,6 +656,12 @@ Webmail.prototype = {
         $('li[name="' + mailbox + '"]').addClass("active");
     },
 
+    /**
+     * Click handler : select the parent mailbox of the mailbox being
+     * created/modified.
+     *
+     * @param {Object} e - event object
+     */
     select_parent_mailbox: function(e) {
         e.preventDefault();
         var $this = $(this);
@@ -808,6 +828,12 @@ Webmail.prototype = {
         }, this));
     },
 
+    /**
+     * Click event: empty Trash folder.
+     *
+     * @this Webmail
+     * @param {Object} e - event object
+     */
     empty: function(e) {
         e.preventDefault();
         var $link = $(e.target);
@@ -894,7 +920,7 @@ Webmail.prototype = {
         }
         this.navobject.reset().setparams({
            action: "listmailbox",
-           mbox: obj.attr("href"),
+           mbox: obj.attr("href")
         });
         if (reset_page) {
             this.navobject.setparam("reset_page", reset_page);
@@ -1061,16 +1087,19 @@ Webmail.prototype = {
         this.resize_compose_body();
     },
 
-    /*
+    /**
      * Callback of the 'viewmail' action
+     *
+     * @this Webmail
+     * @param {Object} resp - AJAX call response (JSON)
      */
     viewmail_callback: function(resp) {
         this.page_update(resp);
         $("#listing").css("overflow", "hidden");
-        // $("a[name=back]").click($.proxy(function(e) {
-        //     e.preventDefault();
-        //     this.go_back_to_listing();
-        // }, this));
+        $("a[name=back]").click($.proxy(function(e) {
+            e.preventDefault();
+            this.go_back_to_listing();
+        }, this));
     },
 
     mark_callback: function(data) {

@@ -1,4 +1,12 @@
 (function($) {
+
+    /**
+     * Return an instance of SearchBar.
+     *
+     * @constructor
+     * @param {Object} element - 
+     * @param {Object} options - instance options
+     */
     var SearchBar = function(element, options) {
         this.initialize(element, options);
     };
@@ -16,24 +24,30 @@
             });
             this.$element.blur(function(e) {
                 var $this = $(this);
-                if ($this.val() == "") {
+                if ($this.val() === "") {
                     $this.val(gettext("Search..."));
                 }
             });
-            if (this.options.navobj.params.pattern != undefined) {
+            if (this.options.navobj.params.pattern !== undefined) {
                 this.$element.val(this.options.navobj.getparam("pattern"));
             }
-            if (this.options.navobj.params.criteria != undefined) {
+            if (this.options.navobj.params.criteria !== undefined) {
                 $("#crit_" + this.options.navobj.params.criteria).attr("checked", "checked");
             }
         },
 
+        /**
+         * Change event: apply search criterion.
+         *
+         * @this SearchBar
+         * @param {Object} e - event object
+         */
         pattern_change: function(e) {
             var $input = $(e.target);
             var criteria = $("input[name=scriteria]:checked").val();
             var pattern = $input.val();
 
-            if (pattern != "") {
+            if (pattern !== "") {
                 this.options.navobj.setparams({
                     pattern: pattern,
                     criteria: criteria
@@ -42,6 +56,9 @@
                 this.options.navobj.delparam("pattern");
                 this.options.navobj.delparam("criteria");
                 this.options.navobj.delparam("page");
+            }
+            if (this.options.pattern_changed) {
+                this.options.pattern_changed(this.options.navobj);
             }
             this.options.navobj.update();
         }
@@ -63,6 +80,7 @@
     };
 
     $.fn.searchbar.defaults = {
-        navobj: null
+        navobj: null,
+        pattern_changed: null
     };
 })(jQuery);

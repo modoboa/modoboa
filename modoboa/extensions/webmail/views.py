@@ -19,6 +19,7 @@ from django.views.decorators.gzip import gzip_page
 
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException, BadRequest
+from modoboa.lib.paginator import Paginator
 from modoboa.lib.webutils import (
     _render_to_string, ajax_response, render_to_json_response
 )
@@ -29,7 +30,7 @@ from .forms import (
 )
 from .lib import (
     decode_payload, AttachmentUploadHandler,
-    save_attachment, ImapListing, EmailSignature,
+    save_attachment, EmailSignature,
     clean_attachments, set_compose_session, send_mail,
     ImapEmail, WebmailNavigationParameters, ReplyModifier, ForwardModifier,
     get_imapconnector, IMAPconnector, separate_mailbox
@@ -337,7 +338,8 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
     parameter. (user preferences)
 
     :param request: a ``Request`` object
-    :param defmailbox: the default mailbox (when not present inside request arguments)
+    :param defmailbox: the default mailbox (when not present inside
+                       request arguments)
     :return: a dictionnary
     """
     navparams = WebmailNavigationParameters(request, defmailbox)
@@ -345,30 +347,34 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
     if update_session:
         navparams.store()
     mbox = navparams.get('mbox')
-    lst = ImapListing(
-        request.user, request.session["password"],
-        baseurl="?action=listmailbox&mbox=%s&" % mbox,
-        folder=mbox,
-        elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
-        **request.session["webmail_navparams"]
-    )
     page_id = int(navparams["page"])
-    page = lst.paginator.getpage(page_id)
+    mbc = get_imapconnector(request)
+    mbc.parse_search_parameters(
+        navparams.get("criteria"), navparams.get("pattern"))
+
+    paginator = Paginator(
+        mbc.messages_count(folder=mbox, order=navparams.get("order")),
+        int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+    )
+    page = paginator.getpage(page_id)
+
     if page is not None:
-        email_list = lst.mbc.fetch(
-            page.id_start, page.id_stop, mbox,
-            nbelems=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+        email_list = mbc.fetch(
+            page.id_start, page.id_stop, mbox, nbelems=page.items
         )
         content = _render_to_string(request, "webmail/email_list.html", {
             "email_list": email_list,
             "page": page_id,
             "with_top_div": request.GET.get("scroll", "false") == "false"
         })
+        length = len(content)
     else:
-        content = ""
+        content = "<div class='alert alert-info'>{}</div>".format(
+            _("Empty mailbox")
+        )
+        length = 0
         navparams["page"] = previous_page_id
-    return {"listing": content, "length": len(content), "page": page_id}
-    #return lst.render(request, navparams.get('page'))
+    return {"listing": content, "length": length, "page": page_id}
 
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):
@@ -513,8 +519,11 @@ def viewmail(request):
 @login_required
 @needs_mailbox()
 def submailboxes(request):
+    """Retrieve the sub mailboxes of a mailbox."""
     topmailbox = request.GET.get('topmailbox', '')
-    mboxes = get_imapconnector(request).getmboxes(request.user, topmailbox)
+    with_unseen = request.GET.get('unseen', None)
+    mboxes = get_imapconnector(request).getmboxes(
+        request.user, topmailbox, unseen_messages=with_unseen == 'true')
     return render_to_json_response(mboxes)
 
 
@@ -575,7 +584,7 @@ def index(request):
         imapc.getquota(curmbox)
         response["refreshrate"] = \
             int(parameters.get_user(request.user, "REFRESH_INTERVAL"))
-        response["quota"] = ImapListing.computequota(imapc)
+        response["quota"] = imapc.quota_usage
         trash = parameters.get_user(request.user, "TRASH_FOLDER")
         response["trash"] = trash
         response["ro_mboxes"] = [

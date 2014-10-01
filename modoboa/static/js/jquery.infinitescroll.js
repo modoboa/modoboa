@@ -10,7 +10,7 @@
      * Creates an instance of InfiniteScroll.
      *
      * @constructor
-     * @this {InfiniteScroll}
+     * @this InfiniteScroll
      * @param {object} element
      * @param {dictionary} options - instance options
      */
@@ -33,7 +33,7 @@
         /**
          * Scroll event handler.
          *
-         * @this {InfiniteScroll}
+         * @this InfiniteScroll
          */
         on_scroll: function() {
             var bottom = this.$options.calculate_bottom(this.$element);
@@ -49,7 +49,7 @@
          * Load the previous page from the server.
          *
          * @private
-         * @this {InfiniteScroll}
+         * @this InfiniteScroll
          */
         load_previous_page: function() {
             var $this = this;
@@ -74,7 +74,7 @@
         /**
          * Load the next page from the server.
          *
-         * @this {InfiniteScroll}
+         * @this InfiniteScroll
          */
         load_next_page: function() {
             var $this = this;
@@ -95,7 +95,7 @@
          * Load a page's content.
          *
          * @private
-         * @this {InfiniteScroll}
+         * @this InfiniteScroll
          * @param {string} direction - direction of the scroll (up or down)
          */
         load_page: function(direction) {
@@ -117,7 +117,6 @@
                     }
                     $this.executing = false;
                     $this.loaded_pages.push($this.current_page);
-                    console.log("page", $this.current_page, "loaded successfuly");
                 }
             });
         },
@@ -125,18 +124,19 @@
         /**
          * Reset the loaded pages cache.
          *
-         * @this {InfiniteScroll}
+         * @this InfiniteScroll
          * @param {Array} current_page - the new current_page
          */
         reset_loaded_pages: function(current_page) {
             this.current_page = current_page;
             this.loaded_pages = [this.current_page];
+            this.end_of_results = false;
         },
 
         /**
          * Suspend the "infinite scroll" mode.
          *
-         * @this {InfiniteScroll}
+         * @this InfiniteScroll
          */
         pause: function() {
             this.$element.unbind("scroll");
@@ -145,7 +145,7 @@
         /**
          * Resume the "infinite scroll" mode.
          *
-         * @this {InfiniteScroll}
+         * @this InfiniteScroll
          */
         resume: function() {
             this.$element.scroll($.proxy(this.on_scroll, this));

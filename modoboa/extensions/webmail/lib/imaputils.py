@@ -141,6 +141,9 @@ class BodyStructure(object):
 
 
 class IMAPconnector(object):
+
+    """The IMAPv4 connector."""
+
     __metaclass__ = ConnectionsManager
 
     list_base_pattern = r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "?(?P<name>[^"]*)"?'
@@ -300,6 +303,32 @@ class IMAPconnector(object):
         del self.m
         self.m = None
 
+    def parse_search_parameters(self, criterion, pattern):
+        """Parse search information and apply them."""
+
+        def or_criterion(old, c):
+            if old == "":
+                return c
+            return "OR (%s) (%s)" % (old, c)
+
+        if criterion == u"both":
+            criterion = u"from_addr, subject"
+        criterions = ""
+        if type(pattern) is unicode:
+            pattern = pattern.encode("utf-8")
+        if type(criterion) is unicode:
+            criterion = criterion.encode("utf-8")
+        for c in criterion.split(','):
+            if c == "from_addr":
+                key = "FROM"
+            elif c == "subject":
+                key = "SUBJECT"
+            else:
+                continue
+            criterions = \
+                or_criterion(criterions, '(%s "%s")' % (key, pattern))
+        self.criterions = [criterions]
+
     def messages_count(self, **kwargs):
         """An enhanced version of messages_count
 
@@ -456,7 +485,9 @@ class IMAPconnector(object):
         from operator import itemgetter
         mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
-    def getmboxes(self, user, topmailbox='', until_mailbox=None, unseen_messages=True):
+    def getmboxes(
+            self, user, topmailbox='', until_mailbox=None,
+            unseen_messages=True):
         """Returns a list of mailboxes for a particular user
 
         By default, only the first level of mailboxes under
@@ -588,23 +619,33 @@ class IMAPconnector(object):
         return True
 
     def getquota(self, mailbox):
+        """Retrieve quota information from the server.
+
+        We also compute the current usage.
+        """
         if not "QUOTA" in self.capabilities:
-            self.quota_limit = self.quota_actual = None
+            self.quota_limit = self.quota_current = None
             return
 
         data = self._cmd("GETQUOTAROOT", self._encode_mbox_name(mailbox),
                          responses=["QUOTAROOT", "QUOTA"])
         if data is None:
-            self.quota_limit = self.quota_actual = None
+            self.quota_limit = self.quota_current = None
             return
 
         quotadef = data[1][0]
-        m = re.search("\(STORAGE (\d+) (\d+)\)", quotadef)
+        m = re.search(r"\(STORAGE (\d+) (\d+)\)", quotadef)
         if not m:
             print "Problem while parsing quota def"
             return
         self.quota_limit = int(m.group(2))
-        self.quota_actual = int(m.group(1))
+        self.quota_current = int(m.group(1))
+        try:
+            self.quota_usage = (
+                int(float(self.quota_current) / float(self.quota_limit) * 100)
+            )
+        except TypeError:
+            self.quota_usage = -1
 
     def fetchpart(self, uid, mbox, partnum):
         """Retrieve a specific message part
