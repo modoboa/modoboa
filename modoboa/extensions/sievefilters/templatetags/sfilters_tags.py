@@ -13,7 +13,7 @@ register = template.Library()
 def sfilters_menu(user):
     entries = [
         {"name": "newfilterset",
-         "img": "glyphicon glyphicon-plus",
+         "img": "fa fa-plus",
          "label": _("New filters set"),
          "url": reverse("sievefilters:fs_add"),
          "modal": True,
@@ -31,7 +31,7 @@ def fset_menu(mode, setname):
     if mode == "gui":
         entries += [
             {"name": "newfilter",
-             "img": "glyphicon glyphicon-plus",
+             "img": "fa fa-plus",
              "label": _("New filter"),
              "url": reverse("sievefilters:filter_add",
                              args=[setname]),
@@ -42,7 +42,7 @@ def fset_menu(mode, setname):
     if mode == "raw":
         entries += [
             {"name": "savefs",
-             "img": "glyphicon glyphicon-download-alt",
+             "img": "fa fa-download-alt",
              "label": _("Save filters set"),
              "url": reverse("sievefilters:fs_save",
                              args=[setname])},
@@ -50,16 +50,16 @@ def fset_menu(mode, setname):
 
     entries += [
         {"name": "activatefs",
-         "img": "glyphicon glyphicon-ok",
+         "img": "fa fa-check",
          "label": _("Activate filters set"),
          "url": reverse("sievefilters:fs_activate",
                          args=[setname])},
         {"name": "removefs",
-         "img": "glyphicon glyphicon-trash",
+         "img": "fa fa-trash",
          "label": _("Remove filters set"),
          "url": reverse("sievefilters:fs_delete", args=[setname])},
         {"name": "downloadfs",
-         "img": "glyphicon glyphicon-download",
+         "img": "fa fa-download",
          "label": _("Download"),
          "url": reverse("sievefilters:fs_download", args=[setname])}
     ]
@@ -74,7 +74,7 @@ def filter_actions(setname, f, position, islast):
         {"name": "editfilter",
          "url": reverse(
              "sievefilters:filter_change", args=[setname, f["name"]]),
-         "img": "glyphicon glyphicon-edit",
+         "img": "fa fa-edit",
          "title": _("Edit filter"),
          "modal": True,
          "autowidth": True,
@@ -82,7 +82,7 @@ def filter_actions(setname, f, position, islast):
         {"name": "removefilter",
          "url": reverse(
              "sievefilters:filter_delete", args=[setname, f["name"]]),
-         "img": "glyphicon glyphicon-trash",
+         "img": "fa fa-trash",
          "title": _("Remove this filter")}
     ]
     if position != 1:
@@ -90,7 +90,7 @@ def filter_actions(setname, f, position, islast):
             {"name": "movefilter_up",
              "url": reverse(
                  "sievefilters:filter_move_up", args=[setname, f["name"]]),
-             "img": "glyphicon glyphicon-arrow-up",
+             "img": "fa fa-chevron-up",
              "title": _("Move this filter up")}
         ]
     if not islast:
@@ -98,7 +98,7 @@ def filter_actions(setname, f, position, islast):
             {"name": "movefilter_down",
              "url": reverse(
                  "sievefilters:filter_move_down", args=[setname, f["name"]]),
-             "img": "glyphicon glyphicon-arrow-down",
+             "img": "fa fa-chevron-down",
              "title": _("Move this filter down")},
         ]
     return render_actions(actions)

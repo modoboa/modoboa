@@ -3,18 +3,18 @@
     {% if page.has_previous %}
     <li>
       <a href="{{ baseurl }}page=1">
-        <span class="glyphicon glyphicon-fast-backward"></span></a>
+        <span class="fa fa-fast-backward"></span></a>
     </li>
     <li>
       <a href="{{ baseurl }}page={{ page.previous_page_number }}">
-        <span class="glyphicon glyphicon-step-backward"></span></a>
+        <span class="fa fa-step-backward"></span></a>
     </li>
     {% else %}
     <li>
-      <span class="glyphicon glyphicon-fast-backward"></span>
+      <span class="fa fa-fast-backward"></span>
     </li>
     <li>
-      <span class="glyphicon glyphicon-step-backward"></span>
+      <span class="fa fa-step-backward"></span>
     </li>
     {% endif %}
     <li class="disabled navbar-text">
@@ -23,18 +23,18 @@
     {% if page.has_next %}
     <li>
       <a href="{{ baseurl }}page={{ page.next_page_number }}">
-      <span class="glyphicon glyphicon-step-forward"></span></a>
+      <span class="fa fa-step-forward"></span></a>
     </li>
     <li>
       <a href="{{ baseurl }}page={{ page.paginator.num_pages }}">
-      <span class="glyphicon glyphicon-fast-forward"></span></a>
+      <span class="fa fa-fast-forward"></span></a>
     </li>
     {% else %}
     <li>
-      <span class="glyphicon glyphicon-step-forward"></span>
+      <span class="fa fa-step-forward"></span>
     </li>
     <li>
-      <span class="glyphicon glyphicon-fast-forward"></span>
+      <span class="fa fa-fast-forward"></span>
     </li>
     {% endif %}
   </ul>
@@ -42,13 +42,13 @@
 
 <div class="display-less-1198 pull-right">
     {% if page.has_previous %}
-        <a href="{{ baseurl }}page={{ page.previous_page_number }}" class="btn btn-lg btn-link glyphicon glyphicon-chevron-left" type="button"></a>
+        <a href="{{ baseurl }}page={{ page.previous_page_number }}" class="btn btn-lg btn-link fa fa-chevron-left" type="button"></a>
     {% else %}
-        <a class="btn btn-lg btn-link glyphicon glyphicon-chevron-left" type="button"></a>
+        <a class="btn btn-lg btn-link fa fa-chevron-left" type="button"></a>
     {% endif %}
     {% if page.has_next %}
-        <a href="{{ baseurl }}page={{ page.next_page_number }}" class="btn btn-lg btn-link glyphicon glyphicon-chevron-right" type="button"></a>
+        <a href="{{ baseurl }}page={{ page.next_page_number }}" class="btn btn-lg btn-link fa fa-chevron-right" type="button"></a>
     {% else %}
-        <a class="btn btn-lg btn-link glyphicon glyphicon-chevron-right" type="button"></a>
+        <a class="btn btn-lg btn-link fa fa-chevron-right" type="button"></a>
     {% endif %}
 </div>

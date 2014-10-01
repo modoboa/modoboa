@@ -136,7 +136,7 @@ Listing.prototype = {
             "html": text
         });
         
-        $("<span />", {"class" : "glyphicon glyphicon-remove"}).prependTo($tag);
+        $("<span />", {"class" : "fa fa-remove"}).prependTo($tag);
         $tag.click($.proxy(this.remove_tag, this));
         return $tag;
     },

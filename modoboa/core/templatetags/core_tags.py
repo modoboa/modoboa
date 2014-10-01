@@ -73,11 +73,11 @@ def admin_menu(selection, user):
 def user_menu(user, selection):
     entries = [
         {"name": "user",
-         "img": "glyphicon glyphicon-user",
+         "img": "fa fa-user",
          "label": user.fullname,
          "menu": [
                 {"name": "settings",
-                 "img": "glyphicon glyphicon-list",
+                 "img": "fa fa-list",
                  "label": _("Settings"),
                  "url": reverse("core:user_index")}
          ]}
@@ -88,7 +88,7 @@ def user_menu(user, selection):
         + [{"name": "logout",
             "url": reverse("core:logout"),
             "label": _("Logout"),
-            "img": "glyphicon glyphicon-off"}]
+            "img": "fa fa-off"}]
 
     return render_to_string("common/menulist.html", {
         "selection": selection, "entries": entries, "user": user

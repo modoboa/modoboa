@@ -13,18 +13,18 @@ def viewm_menu(mail_id, rcpt):
     entries = [
         {"name": "back",
          "url": "javascript:history.go(-2);",
-         "img": "glyphicon glyphicon-arrow-left",
+         "img": "fa fa-arrow-left",
          "class": "btn-primary",
          "label": _("Back")},
         {"name": "release",
-         "img": "glyphicon glyphicon-ok",
+         "img": "fa fa-check",
          "class": "btn-success",
          "url": reverse('amavis:mail_release', args=[mail_id])
          + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label": _("Release")},
         {"name": "delete",
          "class": "btn-danger",
-         "img": "glyphicon glyphicon-trash",
+         "img": "fa fa-trash",
          "url": reverse('amavis:mail_delete', args=[mail_id])
          + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label": _("Delete")},
@@ -52,14 +52,14 @@ def viewm_menu(mail_id, rcpt):
 def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
     entries = [
         {"name": "release",
-         "img": "glyphicon glyphicon-ok",
+         "img": "fa fa-check",
          "class": "btn-success",
          "url": reverse('amavis:mail_release', args=[mail_id]) \
              + ("?rcpt=%s" % rcpt \
                     + (("&secret_id=%s" % secret_id) if secret_id != "" else "")),
          "label": _("Release")},
         {"name": "delete",
-         "img": "glyphicon glyphicon-trash",
+         "img": "fa fa-trash",
          "class": "btn-danger",
          "url": reverse('amavis:mail_delete', args=[mail_id]) \
              + "?rcpt=%s" % rcpt \

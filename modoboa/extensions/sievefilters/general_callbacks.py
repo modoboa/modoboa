@@ -13,7 +13,7 @@ def menu(target, user):
         {"name": "sievefilters",
          "label": _("Message filters"),
          "url": reverse("sievefilters:index"),
-         "img": "glyphicon glyphicon-check"}
+         "img": "fa fa-filter"}
     ]
 
 

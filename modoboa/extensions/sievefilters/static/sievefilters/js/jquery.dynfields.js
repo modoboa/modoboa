@@ -8,7 +8,7 @@
         var $addlink = $('<a />', {
             href: '#',
             id: this.$element.attr("id") + '_rmbtn',
-            html: '<i class="glyphicon glyphicon-plus"></i>'
+            html: '<i class="fa fa-plus"></i>'
         });
         $("select[name*=cond_target_]").change($.proxy(this.target_change, this));
         $addlink.click($.proxy(this.addfields, this));
@@ -54,7 +54,7 @@
             return $('<a />', {
                 href: '#',
                 id: 'condition_' + this.nextid + '_rmbtn',
-                html: '<i class="glyphicon glyphicon-trash"></i>'
+                html: '<i class="fa fa-trash"></i>'
             }).click($.proxy(this.removefields, this));
         },
 
@@ -160,7 +160,7 @@
         var $addlink = $('<a />', {
             href: '#',
             id: this.$element.attr("id") + '_rmbtn',
-            html: '<i class="glyphicon glyphicon-plus"></i>'
+            html: '<i class="fa fa-plus"></i>'
         });
         $("select[name*=action_name_]").change($.proxy(this.name_change, this));
         $addlink.click($.proxy(this.addfields, this));
@@ -257,7 +257,7 @@
             return $('<a />', {
                 href: '#',
                 id: 'action_' + this.nextid + '_rmbtn',
-                html: '<i class="glyphicon glyphicon-trash"></i>'
+                html: '<i class="fa fa-trash"></i>'
             }).click($.proxy(this.removefields, this));
         },
 

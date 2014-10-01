@@ -50,8 +50,8 @@
                      dir = "desc";
                  }
              }
-             this.$element.append($("<i/>", {
-                 "class": "sort-selection glyphicon glyphicon-chevron-" + ((dir == 'asc') ? 'up' : 'down')
+             this.$element.append($("<span/>", {
+                 "class": "sort-selection fa fa-chevron-" + ((dir == 'asc') ? 'up' : 'down')
              }));
              return dir;
          }
