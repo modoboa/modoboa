@@ -23,12 +23,16 @@ Admin.prototype = {
         this.listen();
     },
 
+    /**
+     * Callback used when the initial content of the listing is
+     * received.
+     *
+     * @this Admin
+     * @param {Object} data - response of the ajax call (JSON)
+     */
     list_cb: function(data) {
-        $("#objects_table tbody").html(function(pos, oldhtml) {
-            return oldhtml + data.rows;
-        });
+        $("#objects_table tbody").html(data.rows);
         this.update_listing(data);
-        $("a.filter").click($.proxy(this.filter_by_tag, this));
     },
 
     /**
@@ -47,6 +51,7 @@ Admin.prototype = {
      * Children must override this method.
      */
     listen: function() {
+        $(document).on("click", "a.filter", $.proxy(this.filter_by_tag, this));
     },
 
     importform_cb: function() {
@@ -106,7 +111,8 @@ var Domains = function(options) {
 Domains.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
-        this.register_tag_handler("dom", this.generic_tag_handler);
+        this.options.navigation_params.push("domfilter", "srvfilter");
+        this.register_tag_handler("dom");
     },
 
     end_of_list_reached: function(element) {
@@ -239,8 +245,9 @@ var Identities = function(options) {
 Identities.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
+        this.options.navigation_params.push("idtfilter", "grpfilter");
         this.domain_list = [];
-        this.register_tag_handler("idt", this.generic_tag_handler);
+        this.register_tag_handler("idt");
         this.register_tag_handler("grp", this.grp_tag_handler);
     },
 
@@ -289,16 +296,17 @@ Identities.prototype = {
     },
 
     grp_tag_handler: function(tag, $link) {
-        if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
+        if (this.navobj.getparam(tag + "filter") === undefined &&
+            $link.hasClass(tag)) {
             var text = $link.attr("name");
             this.navobj
                 .setparam("idtfilter", "account")
                 .setparam(tag + "filter", text)
                 .update();
             if ($("a[name=idt]").length === 0) {
-                $("#searchform").parent().after(this.make_tag("account", "idt"));
+                $("#taglist").append(this.make_tag("account", "idt"));
             }
-            $("#searchform").parent().after(this.make_tag(text, tag));
+            $("#taglist").append(this.make_tag(text, tag));
             return true;
         }
         return false;

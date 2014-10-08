@@ -90,9 +90,9 @@ RelayDomains.prototype = {
                 .setparam(tag + "filter", text)
                 .update();
             if ($("a[name=dom]").length === 0) {
-                $("#searchform").parent().after(this.make_tag("relaydomain", "dom"));
+                $("#taglist").append(this.make_tag("relaydomain", "dom"));
             }
-            $("#searchform").parent().after(this.make_tag(text, tag));
+            $("#taglist").append(this.make_tag(text, tag));
             return true;
         }
         return false;

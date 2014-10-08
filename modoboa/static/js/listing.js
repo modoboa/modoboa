@@ -17,7 +17,8 @@ Listing.prototype = {
         pbar_id: '#pagination_bar',
         sortable_selector: '.sortable',
         with_searchform: true,
-        load_page_url: null
+        load_page_url: null,
+        navigation_params: ["sort_order", "searchquery"]
     },
 
     initialize: function(options) {
@@ -77,22 +78,43 @@ Listing.prototype = {
     },
 
     /**
+     * Return extra arguments used to fetch a page.
+     *
+     * @this Listing
+     */
+    get_load_page_args: function() {
+        var $this = this;
+        var args = {};
+
+        $.each(this.options.navigation_params, function(pos, param) {
+            if ($this.navobj.hasparam(param)) {
+                args[param] = $this.navobj.getparam(param);
+            }
+        });
+        return args;
+    },
+
+    /**
      * Update the listing with the received data.
      *
      * @this Listing
      * @param {Object} data - new content
      */
     update_listing: function(data) {
-        $(window).infinite_scroll({
-            url: this.options.load_page_url,
-            calculate_bottom: function($element) {
-                var $last_row = $("#objects_table").find("tr").last();
-
-                return $last_row.offset().top - $element.height();
-            },
-            process_results: this.add_new_page,
-            end_of_list_reached: this.end_of_list_reached
-        });
+        if ($(window).data("infinite-scroll") !== undefined) {
+            $(window).infinite_scroll("reset_loaded_pages", data.page);
+        } else {
+            $(window).infinite_scroll({
+                url: this.options.load_page_url,
+                get_args: $.proxy(this.get_load_page_args, this),
+                calculate_bottom: function($element) {
+                    var $last_row = $("#objects_table").find("tr").last();
+                    return $last_row.offset().top - $element.height();
+                },
+                process_results: this.add_new_page,
+                end_of_list_reached: this.end_of_list_reached
+            });
+        }
 
         var $sortables = $(this.options.sortable_selector);
         if ($sortables.length) {
@@ -136,7 +158,17 @@ Listing.prototype = {
         this.navobj.setparam("sort_order", sort_order).update();
     },
 
+    /**
+     * Register a new tag handler.
+     *
+     * @this Listing
+     * @param {string} name - name of the tag
+     * @param {function} handler - reference to a function (optional)
+     */
     register_tag_handler: function(name, handler) {
+        if (handler === undefined) {
+            handler = this.generic_tag_handler;
+        }
         this.tag_handlers[name] = handler;
         if (this.navobj.getparam(name + "filter") !== undefined) {
             var text = this.navobj.getparam(name + "filter");
@@ -144,6 +176,14 @@ Listing.prototype = {
         }
     },
 
+    /**
+     * Default tag handler.
+     *
+     * @this Listing
+     * @param {string} tag - name of the tag
+     * @param {Object} $link - tag that was clicked
+     * @return {boolean} - return true if handler has been executed
+     */
     generic_tag_handler: function(tag, $link) {
         if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
             var text = $link.attr("name");
@@ -154,10 +194,18 @@ Listing.prototype = {
         return false;
     },
 
+    /**
+     * Build a button to remove a specific filter.
+     *
+     * @this Listing
+     * @param {string} text - text of the button
+     * @param {string} type - tag type
+     * @return {Object} - new button object
+     */
     make_tag: function(text, type) {
         var $tag = $("<a />", {
             "name": type, "class" : "btn btn-default btn-xs",
-            "html": text
+            "html": " " + text
         });
         
         $("<span />", {"class" : "fa fa-remove"}).prependTo($tag);
@@ -165,6 +213,12 @@ Listing.prototype = {
         return $tag;
     },
 
+    /**
+     * Click event : remove a tag button.
+     *
+     * @this Listing
+     * @param {Object} e - event object
+     */
     remove_tag: function(e) {
         var $tag = $(e.target);
 
@@ -176,6 +230,12 @@ Listing.prototype = {
         $tag.remove();
     },
 
+    /**
+     * Click event: filter the listing when a tag is clicked.
+     *
+     * @this Listing
+     * @param {Object} e - event object
+     */
     filter_by_tag: function(e) {
         var $link = $(e.target);
         e.preventDefault();
