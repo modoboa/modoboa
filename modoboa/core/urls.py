@@ -22,6 +22,8 @@ urlpatterns = patterns(
     url(r'^core/info/$', 'modoboa.core.views.admin.information',
         name="information"),
     url(r'^core/logs/$', 'modoboa.core.views.admin.logs', name="log_list"),
+    url(r'^core/logs/page/$', 'modoboa.core.views.admin.logs_page',
+        name="logs_page"),
     url(r'^core/top_notifications/check/$',
         'modoboa.core.views.admin.check_top_notifications',
         name='top_notifications_check'),

@@ -36,18 +36,6 @@ Admin.prototype = {
     },
 
     /**
-     * A new page has been received, inject it.
-     *
-     * @param {Object} data - page content
-     * @param {string} direction - 
-     */
-    add_new_page: function(data, direction) {
-        $("#objects_table tbody").html(function(pos, oldhtml) {
-            return oldhtml + data.rows;
-        });
-    },
-
-    /**
      * Children must override this method.
      */
     listen: function() {

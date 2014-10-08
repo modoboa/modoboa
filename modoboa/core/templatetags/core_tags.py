@@ -119,10 +119,11 @@ def uprefs_menu(selection, user):
 
 @register.filter
 def colorize_level(level):
+    """A simple filter a text using a boostrap color."""
     classes = {
         "INFO": "text-info",
         "WARNING": "text-warning",
-        "CRITICAL": "text-error"
+        "CRITICAL": "text-danger"
     }
     if not level in classes:
         return level
@@ -131,7 +132,8 @@ def colorize_level(level):
 
 @register.filter
 def tohtml(message):
-    return re.sub("'(.*?)'", "<strong>\g<1></strong>", message)
+    """Simple tag to format a text using HTML."""
+    return re.sub(r"'(.*?)'", "<strong>\g<1></strong>", message)
 
 
 @register.simple_tag

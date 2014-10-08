@@ -1,3 +1,8 @@
+/**
+ * Return an instance of TwocolsNav.
+ *
+ * @constructor
+ */
 var TwocolsNav = function(options) {
     Listing.call(this, options);
 };
@@ -33,7 +38,7 @@ TwocolsNav.prototype = {
         if (data.content) {
             $('#' + this.options.divid).html(data.content);
         }
-        this.update_listing(data);
+        this.update_listing(data, false);
         if (data.onload_cb) {
             eval(data.onload_cb + '()');
         }
@@ -121,10 +126,16 @@ TwocolsNav.prototype = {
         this.navobj.parse_string($link.attr("href"), true).update();
     },
 
-
-    default_cb: function(data) {
+    /**
+     * Select an entry in the left menu based on current url.
+     */
+    select_left_menu: function() {
         $("a.ajaxlink").parent().removeClass("active");
         $("a[name=" + this.navobj.getbaseurl() + "]").parent().addClass("active");
+    },
+
+    default_cb: function(data) {
+        this.select_left_menu();
         this.update_content(data);
     }
 };

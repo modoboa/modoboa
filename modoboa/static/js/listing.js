@@ -18,7 +18,8 @@ Listing.prototype = {
         sortable_selector: '.sortable',
         with_searchform: true,
         load_page_url: null,
-        navigation_params: ["sort_order", "searchquery"]
+        navigation_params: ["sort_order", "searchquery"],
+        main_table_id: "objects_table"
     },
 
     initialize: function(options) {
@@ -95,25 +96,45 @@ Listing.prototype = {
     },
 
     /**
+     * A new page has been received, inject it.
+     *
+     * @param {Object} data - page content
+     * @param {string} direction - 
+     */
+    add_new_page: function(data, direction) {
+        console.log("new page");
+        console.log(this.options.main_table_id);
+        $("#{0} tbody".format(this.options.main_table_id))
+            .html(function(pos, oldhtml) {
+                return oldhtml + data.rows;
+            });
+    },
+
+    /**
      * Update the listing with the received data.
      *
      * @this Listing
      * @param {Object} data - new content
      */
-    update_listing: function(data) {
-        if ($(window).data("infinite-scroll") !== undefined) {
-            $(window).infinite_scroll("reset_loaded_pages", data.page);
-        } else {
-            $(window).infinite_scroll({
-                url: this.options.load_page_url,
-                get_args: $.proxy(this.get_load_page_args, this),
-                calculate_bottom: function($element) {
-                    var $last_row = $("#objects_table").find("tr").last();
-                    return $last_row.offset().top - $element.height();
-                },
-                process_results: this.add_new_page,
-                end_of_list_reached: this.end_of_list_reached
-            });
+    update_listing: function(data, with_infinite_scroll) {
+        var $this = this;
+
+        if (with_infinite_scroll || with_infinite_scroll === undefined) {
+            if ($(window).data("infinite-scroll") !== undefined) {
+                $(window).infinite_scroll("reset_loaded_pages", data.page);
+            } else {
+                $(window).infinite_scroll({
+                    url: this.options.load_page_url,
+                    get_args: $.proxy(this.get_load_page_args, this),
+                    calculate_bottom: function($element) {
+                        var $last_row = $("#" + $this.options.main_table_id)
+                            .find("tr").last();
+                        return $last_row.offset().top - $element.height();
+                    },
+                    process_results: $.proxy(this.add_new_page, this),
+                    end_of_list_reached: this.end_of_list_reached
+                });
+            }
         }
 
         var $sortables = $(this.options.sortable_selector);
