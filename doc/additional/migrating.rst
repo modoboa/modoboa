@@ -42,23 +42,20 @@ variable and save your changes.
 You are now ready to start the migration so run the following commands::
 
   $ cd <modoboa_site>
-  $ python manage.py migrate_from_postfixadmin -r -p <directory that stores mailboxes>
+  $ python manage.py migrate_from_postfixadmin -s <password scheme>
+
+``<password scheme>`` must be replaced by the scheme used within
+postfixadmin (``crypt`` most of the time).
 
 Depending on how many domains/mailboxes your existing setup contains,
 the migration can be long. Just wait for the script's ending.
-
-.. note::
-
-   The rename operation is not synchronous. If you choose this option,
-   you must enable **Handle mailboxes on filesystem** option. See
-   :ref:`fs_operations`.
 
 The procedure is over, edit the :file:`settings.py` file and:
 
 * remove the ``pfxadmin`` database connection from the ``DATABASES``
   variable
 * remove the ``'modoboa.tools.pfxadmin_migrate',`` from the
-  ``INSTALLED_APPS`` variable
+  ``MODOBOA_APPS`` variable
 
 You should be able to connect to Modoboa using the same credentials
 you were using to connect to PostfixAdmin.
