@@ -11,8 +11,8 @@
 from django.db import models
 
 class Admin(models.Model):
-    username = models.CharField(max_length=765, primary_key=True)
-    password = models.CharField(max_length=765)
+    username = models.CharField(max_length=255, primary_key=True)
+    password = models.CharField(max_length=255)
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
@@ -24,9 +24,9 @@ class Admin(models.Model):
 
 
 class Alias(models.Model):
-    address = models.CharField(max_length=765, primary_key=True)
+    address = models.CharField(max_length=255, primary_key=True)
     goto = models.TextField()
-    domain = models.CharField(max_length=765)
+    domain = models.CharField(max_length=255)
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
@@ -38,8 +38,8 @@ class Alias(models.Model):
 
 
 class AliasDomain(models.Model):
-    alias_domain = models.CharField(max_length=765, primary_key=True)
-    target_domain = models.CharField(max_length=765)
+    alias_domain = models.CharField(max_length=255, primary_key=True)
+    target_domain = models.CharField(max_length=255)
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
@@ -62,17 +62,18 @@ class Config(models.Model):
 
 
 class Domain(models.Model):
-    domain = models.CharField(max_length=765, primary_key=True)
-    description = models.CharField(max_length=765)
+    domain = models.CharField(max_length=255, primary_key=True)
+    description = models.CharField(max_length=255)
     aliases = models.IntegerField()
     mailboxes = models.IntegerField()
     maxquota = models.BigIntegerField()
     quota = models.BigIntegerField()
-    transport = models.CharField(max_length=765)
+    transport = models.CharField(max_length=255)
     backupmx = models.IntegerField()
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
+    admins = models.ManyToManyField(Admin, through='DomainAdmins')
 
     class Meta:
         db_table = u'domain'
@@ -81,8 +82,8 @@ class Domain(models.Model):
 
 
 class DomainAdmins(models.Model):
-    username = models.CharField(max_length=765)
-    domain = models.CharField(max_length=765)
+    username = models.ForeignKey(Admin, db_column='username')
+    domain = models.ForeignKey(Domain, db_column='domain')
     created = models.DateTimeField(primary_key=True)
     active = models.IntegerField()
 
@@ -94,12 +95,12 @@ class DomainAdmins(models.Model):
 
 class Fetchmail(models.Model):
     id = models.IntegerField(primary_key=True)
-    mailbox = models.CharField(max_length=765)
-    src_server = models.CharField(max_length=765)
+    mailbox = models.CharField(max_length=255)
+    src_server = models.CharField(max_length=255)
     src_auth = models.CharField(max_length=33, blank=True)
-    src_user = models.CharField(max_length=765)
-    src_password = models.CharField(max_length=765)
-    src_folder = models.CharField(max_length=765)
+    src_user = models.CharField(max_length=255)
+    src_password = models.CharField(max_length=255)
+    src_folder = models.CharField(max_length=255)
     poll_time = models.IntegerField()
     fetchall = models.IntegerField()
     keep = models.IntegerField()
@@ -107,7 +108,7 @@ class Fetchmail(models.Model):
     usessl = models.IntegerField()
     extra_options = models.TextField(blank=True)
     returned_text = models.TextField(blank=True)
-    mda = models.CharField(max_length=765)
+    mda = models.CharField(max_length=255)
     date = models.DateTimeField()
 
     class Meta:
@@ -118,9 +119,9 @@ class Fetchmail(models.Model):
 
 class Log(models.Model):
     timestamp = models.DateTimeField()
-    username = models.CharField(max_length=765)
-    domain = models.CharField(max_length=765)
-    action = models.CharField(max_length=765)
+    username = models.CharField(max_length=255)
+    domain = models.CharField(max_length=255)
+    action = models.CharField(max_length=255)
     data = models.TextField()
 
     class Meta:
@@ -130,13 +131,13 @@ class Log(models.Model):
 
 
 class Mailbox(models.Model):
-    username = models.CharField(max_length=765, primary_key=True)
-    password = models.CharField(max_length=765)
-    name = models.CharField(max_length=765)
-    maildir = models.CharField(max_length=765)
+    username = models.CharField(max_length=255, primary_key=True)
+    password = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    maildir = models.CharField(max_length=255)
     quota = models.BigIntegerField()
-    local_part = models.CharField(max_length=765)
-    domain = models.CharField(max_length=765)
+    local_part = models.CharField(max_length=255)
+    domain = models.CharField(max_length=255)
     created = models.DateTimeField()
     modified = models.DateTimeField()
     active = models.IntegerField()
@@ -148,7 +149,7 @@ class Mailbox(models.Model):
 
 
 class Quota(models.Model):
-    username = models.CharField(max_length=765, primary_key=True)
+    username = models.CharField(max_length=255, primary_key=True)
     path = models.CharField(max_length=300, primary_key=True)
     current = models.BigIntegerField(null=True, blank=True)
 
@@ -170,11 +171,11 @@ class Quota2(models.Model):
 
 
 class Vacation(models.Model):
-    email = models.CharField(max_length=765)
-    subject = models.CharField(max_length=765)
+    email = models.CharField(max_length=255)
+    subject = models.CharField(max_length=255)
     body = models.TextField()
     cache = models.TextField()
-    domain = models.CharField(max_length=765)
+    domain = models.CharField(max_length=255)
     created = models.DateTimeField()
     active = models.IntegerField()
 
@@ -186,7 +187,7 @@ class Vacation(models.Model):
 
 class VacationNotification(models.Model):
     on_vacation = models.ForeignKey(Vacation, db_column='on_vacation')
-    notified = models.CharField(max_length=765, primary_key=True)
+    notified = models.CharField(max_length=255, primary_key=True)
     notified_at = models.DateTimeField()
 
     class Meta:
