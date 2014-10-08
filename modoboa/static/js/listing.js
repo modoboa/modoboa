@@ -19,7 +19,8 @@ Listing.prototype = {
         with_searchform: true,
         load_page_url: null,
         navigation_params: ["sort_order", "searchquery"],
-        main_table_id: "objects_table"
+        main_table_id: "objects_table",
+        eor_message: gettext("No more entry to show")
     },
 
     initialize: function(options) {
@@ -102,12 +103,23 @@ Listing.prototype = {
      * @param {string} direction - 
      */
     add_new_page: function(data, direction) {
-        console.log("new page");
-        console.log(this.options.main_table_id);
         $("#{0} tbody".format(this.options.main_table_id))
             .html(function(pos, oldhtml) {
                 return oldhtml + data.rows;
             });
+    },
+
+    /**
+     * Callback called when no more page can be loaded.
+     *
+     * @this Listing
+     */
+    end_of_list_reached: function(element) {
+        $("#" + this.options.main_table_id).after(
+            $("<div class='alert alert-info'>{0}</div>".format(
+                this.options.eor_message
+            ))
+        );
     },
 
     /**
@@ -122,6 +134,7 @@ Listing.prototype = {
         if (with_infinite_scroll || with_infinite_scroll === undefined) {
             if ($(window).data("infinite-scroll") !== undefined) {
                 $(window).infinite_scroll("reset_loaded_pages", data.page);
+                $(window).infinite_scroll("resume");
             } else {
                 $(window).infinite_scroll({
                     url: this.options.load_page_url,
@@ -132,9 +145,11 @@ Listing.prototype = {
                         return $last_row.offset().top - $element.height();
                     },
                     process_results: $.proxy(this.add_new_page, this),
-                    end_of_list_reached: this.end_of_list_reached
+                    end_of_list_reached: $.proxy(this.end_of_list_reached, this)
                 });
             }
+        } else if ($(window).data("infinite-scroll") !== undefined) {
+            $(window).infinite_scroll("pause");
         }
 
         var $sortables = $(this.options.sortable_selector);

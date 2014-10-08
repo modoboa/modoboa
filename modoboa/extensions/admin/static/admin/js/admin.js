@@ -100,22 +100,18 @@ Domains.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
         this.options.navigation_params.push("domfilter", "srvfilter");
+        this.options.eor_message = gettext("No more domain to show");
         this.register_tag_handler("dom");
     },
 
-    end_of_list_reached: function(element) {
-        $("#objects_table").after(
-            $("<div class='alert alert-info'>{0}</div>".format(
-                gettext("No more domain to show")
-            ))
-        );
-    },
-
-    list_cb: function(data) {
-        Admin.prototype.list_cb.call(this, data);
-        var deloptions = (data.handle_mailboxes)
-            ? {keepdir: gettext("Do not delete domain directory")}
-            : {};
+    /**
+     * Initialize the domain links embedded within a page.
+     *
+     * @param {Object} data - options
+     */
+    init_domain_links: function(data) {
+        var deloptions = (data.handle_mailboxes) ?
+            {keepdir: gettext("Do not delete domain directory")} : {};
         var warnmsg = (data.auto_account_removal && data.auto_account_removal == "yes")
             ? gettext("This operation will remove ALL data associated to this domain.")
             : gettext("This operation will remove all data associated to this domain, excepting accounts.");
@@ -128,6 +124,27 @@ Domains.prototype = {
             success_cb: $.proxy(this.reload_listing, this)
         });
         $(document).trigger('domain_listing_refresh');
+    },
+
+    /**
+     * Navigation callback: default.
+     *
+     * @param {Object} data - response of the ajax call (JSON)
+     */
+    list_cb: function(data) {
+        Admin.prototype.list_cb.call(this, data);
+        this.init_domain_links(data);
+    },
+
+    /**
+     * A new page has been received, inject it.
+     *
+     * @param {Object} data - page content
+     * @param {string} direction - 
+     */
+    add_new_page: function(data, direction) {
+        Admin.prototype.add_new_page.call(this, data, direction);
+        this.init_domain_links(data);
     },
 
     change_inputs_state: function(value) {
@@ -234,6 +251,7 @@ Identities.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
         this.options.navigation_params.push("idtfilter", "grpfilter");
+        this.options.eor_message = gettext("No more identity to show");
         this.domain_list = [];
         this.register_tag_handler("idt");
         this.register_tag_handler("grp", this.grp_tag_handler);
@@ -254,16 +272,12 @@ Identities.prototype = {
         this.navobj.baseurl($link.attr("href")).update();
     },
 
-    end_of_list_reached: function(element) {
-        $("#objects_table").after(
-            $("<div class='alert alert-info'>{0}</div>".format(
-                gettext("No more identity to show")
-            ))
-        );
-    },
-
-    list_cb: function(data) {
-        Admin.prototype.list_cb.call(this, data);
+    /**
+     * Initialize the links embedded within a page.
+     *
+     * @param {Object} data - options
+     */
+    init_identity_links: function(data) {
         var deloptions = {};
 
         if (data.handle_mailboxes == "yes") {
@@ -281,6 +295,27 @@ Identities.prototype = {
             method: "DELETE",
             success_cb: $.proxy(this.reload_listing, this)
         });
+    },
+
+    /**
+     * A new page has been received, inject it.
+     *
+     * @param {Object} data - page content
+     * @param {string} direction - 
+     */
+    add_new_page: function(data, direction) {
+        Admin.prototype.add_new_page.call(this, data, direction);
+        this.init_identity_links(data);
+    },
+
+    /**
+     * Navigation callback: default.
+     *
+     * @param {Object} data - response of the ajax call (JSON)
+     */
+    list_cb: function(data) {
+        Admin.prototype.list_cb.call(this, data);
+        this.init_identity_links(data);
     },
 
     grp_tag_handler: function(tag, $link) {

@@ -10,7 +10,8 @@ var Settings = function(options) {
 
 Settings.prototype = {
     defaults: {
-        main_table_id: "logs_table"
+        main_table_id: "logs_table",
+        eor_message: gettext("No more log entry to show")
     },
 
     initialize: function(options) {
