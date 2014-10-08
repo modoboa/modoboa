@@ -1,4 +1,7 @@
-import reversion
+"""
+Domain related views.
+"""
+
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
@@ -8,6 +11,9 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
+
+import reversion
+
 from modoboa.lib import parameters, events
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
@@ -31,7 +37,8 @@ def index(request):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domains") or u.has_perm("admin.view_mailboxes")
+    lambda u: u.has_perm("admin.view_domains")
+    or u.has_perm("admin.view_mailboxes")
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
@@ -41,9 +48,7 @@ def _domains(request):
         + events.raiseQueryEvent('ExtraDomainFilters')
     )
     request.session['domains_filters'] = filters
-    domainlist = get_domains(
-        request.user, **filters
-    )
+    domainlist = get_domains(request.user, **filters)
     if sort_order == 'name':
         domainlist = sorted(
             domainlist,
@@ -52,18 +57,22 @@ def _domains(request):
     else:
         domainlist = sorted(domainlist, key=lambda d: d.tags[0],
                             reverse=sort_dir == '-')
-    page = get_listing_page(domainlist, request.GET.get("page", 1))
-    return render_to_json_response({
-        "table": _render_to_string(request, 'admin/domains_table.html', {
-            'domains': page.object_list,
-            'tableid': 'domains'
-        }),
-        "page": page.number,
-        "paginbar": pagination_bar(page),
-        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",
-                                                 raise_error=False),
+    context = {
+        "handle_mailboxes": parameters.get_admin(
+            "HANDLE_MAILBOXES", raise_error=False),
         "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL")
-    })
+    }
+    page = get_listing_page(domainlist, request.GET.get("page", 1))
+    if page is None:
+        context["length"] = 0
+    else:
+        context["rows"] = _render_to_string(
+            request, 'admin/domains_table.html', {
+                'domains': page.object_list,
+            }
+        )
+        context["page"] = page.number
+    return render_to_json_response(context)
 
 
 @login_required

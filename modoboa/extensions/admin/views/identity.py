@@ -1,4 +1,6 @@
-import reversion
+"""
+Identity related views.
+"""
 from django.shortcuts import render
 from django.db import transaction
 from django.utils.translation import ugettext as _, ungettext
@@ -6,6 +8,9 @@ from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
 from django.views.decorators.csrf import ensure_csrf_cookie
+
+import reversion
+
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest
@@ -42,17 +47,21 @@ def _identities(request):
     else:
         objects = sorted(idents_list, key=lambda o: o.tags[0],
                          reverse=sort_dir == '-')
+    context = {
+        "handle_mailboxes": parameters.get_admin(
+            "HANDLE_MAILBOXES", raise_error=False)
+    }
     page = get_listing_page(objects, request.GET.get("page", 1))
-    return render_to_json_response({
-        "table": _render_to_string(request, "admin/identities_table.html", {
-            "identities": page.object_list,
-            "tableid": "objects_table"
-        }),
-        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",
-                                                 raise_error=False),
-        "page": page.number,
-        "paginbar": pagination_bar(page)
-    })
+    if page is None:
+        context["length"] = 0
+    else:
+        context["rows"] = _render_to_string(
+            request, "admin/identities_table.html", {
+                "identities": page.object_list
+            }
+        )
+        context["page"] = page.number
+    return render_to_json_response(context)
 
 
 @login_required

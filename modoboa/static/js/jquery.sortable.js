@@ -1,4 +1,11 @@
 (function($) {
+    /**
+     * Return an instance of Sortable.
+     *
+     * @constructor
+     * @param {Object} element -
+     * @param {Object} options - instance options
+     */
      var Sortable = function(element, options) {
          this.initialize(element, options);
      };
@@ -32,8 +39,15 @@
              }
          },
 
+         /**
+          * Mark a column as the one used to sort content.
+          *
+          * @this Sortable
+          * @param {string} dir - optional sort direction (up or down)
+          * @return {string} - new sort direction
+          */
          select: function(dir) {
-             $("i.sort-selection").remove();
+             $("span.sort-selection").remove();
              if (dir !== undefined) {
                  this.$element.removeClass("sort-header-" + ((dir == "asc") ? "desc" : "asc"));
                  this.$element.addClass("sort-header-" + dir);

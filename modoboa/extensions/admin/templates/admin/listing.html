@@ -5,6 +5,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/creation_wizard.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/dynamic_input.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.infinitescroll.js"></script>
 <script type="text/javascript">
 var admin;
 </script>
@@ -21,10 +22,19 @@ var admin;
   <div class="col-sm-5">
     {% include "admin/searchform.html" %}
   </div>
-  <div id="taglist" class="col-sm-5 col-md-5">
-    
-  </div>
+  <div id="taglist" class="col-sm-5"> </div>
 </div>
-<div id="listing"></div>
+
+<div id="listing">
+  <table id="objects_table" class="table {{ styles }}">
+    <thead>
+      <tr>
+        {% block table_header %}{% endblock %}
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
 {% endblock %}
 {% block footerright %}{% endblock %}

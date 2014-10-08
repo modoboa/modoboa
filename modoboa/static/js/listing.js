@@ -1,3 +1,9 @@
+/**
+ * Return an instance of Listing.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ */
 var Listing = function(options) {
     this.initialize(options);
 };
@@ -10,7 +16,8 @@ Listing.prototype = {
         pbar_container: '#bottom-bar-right',
         pbar_id: '#pagination_bar',
         sortable_selector: '.sortable',
-        with_searchform: true
+        with_searchform: true,
+        load_page_url: null
     },
 
     initialize: function(options) {
@@ -69,17 +76,24 @@ Listing.prototype = {
         this.navobj.updateparams($link.attr("href")).update();
     },
 
+    /**
+     * Update the listing with the received data.
+     *
+     * @this Listing
+     * @param {Object} data - new content
+     */
     update_listing: function(data) {
-        if (data.paginbar) {
-            $(this.options.pbar_container).html(data.paginbar);
-            $(this.options.presp_container).html(data.paginbar);
-            $(this.options.pbar_id).find(".disabled a").click(function(e) {
-                e.preventDefault();
-            });
-        }
-        if (data.page && data.page != this.navobj.getparam("page")) {
-            this.navobj.setparam("page", data.page).update(false, true);
-        }
+        $(window).infinite_scroll({
+            url: this.options.load_page_url,
+            calculate_bottom: function($element) {
+                var $last_row = $("#objects_table").find("tr").last();
+
+                return $last_row.offset().top - $element.height();
+            },
+            process_results: this.add_new_page,
+            end_of_list_reached: this.end_of_list_reached
+        });
+
         var $sortables = $(this.options.sortable_selector);
         if ($sortables.length) {
             $(this.options.sortable_selector).sortable({
@@ -89,6 +103,11 @@ Listing.prototype = {
         }
     },
 
+    /**
+     * Set current sort order.
+     *
+     * @this Listing
+     */
     set_sort_order: function() {
         var sort_order = this.navobj.getparam("sort_order");
         var sort_dir;
@@ -105,6 +124,11 @@ Listing.prototype = {
         $("th[data-sort_order=" + sort_order + "]").sortable('select', sort_dir);
     },
 
+    /**
+     * Change current sort order.
+     *
+     * @this Listing
+     */
     change_sort_order: function(sort_order, dir) {
         if (dir == "desc") {
             sort_order = "-" + sort_order;

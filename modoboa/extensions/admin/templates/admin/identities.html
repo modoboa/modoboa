@@ -6,10 +6,18 @@
 <script type="text/javascript">
 $(document).ready(function() {
     admin = new Identities({
-        domain_list_url: "{% url 'admin:domain_flat_list' %}"
+        domain_list_url: "{% url 'admin:domain_flat_list' %}",
+        load_page_url: "{% url 'admin:_identity_list' %}"
     });
 });
 </script>
 {% extra_static_content "identities" user %}
 {% endblock %}
 {% block actions %}{% identities_menu user "identities" %}{% endblock %}
+
+{% block table_header %}
+<th id="identity" class="sortable" data-sort_order="identity" width="">{% trans "Name" %}</th>
+<th id="name_or_rcpt" class="sortable" data-sort_order="name_or_rcpt" width="">{% trans "Fullname/Recipient" %}</th>
+<th id="tags" class="sortable" data-sort_order="tags" width="">{% trans "Tags" %}</th>
+<th id="actions" width="">{% trans "Actions" %}</th>
+{% endblock %}

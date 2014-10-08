@@ -24,9 +24,23 @@ Admin.prototype = {
     },
 
     list_cb: function(data) {
-        $("#listing").html(data.table);
+        $("#objects_table tbody").html(function(pos, oldhtml) {
+            return oldhtml + data.rows;
+        });
         this.update_listing(data);
         $("a.filter").click($.proxy(this.filter_by_tag, this));
+    },
+
+    /**
+     * A new page has been received, inject it.
+     *
+     * @param {Object} data - page content
+     * @param {string} direction - 
+     */
+    add_new_page: function(data, direction) {
+        $("#objects_table tbody").html(function(pos, oldhtml) {
+            return oldhtml + data.rows;
+        });
     },
 
     /**
@@ -93,6 +107,14 @@ Domains.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
         this.register_tag_handler("dom", this.generic_tag_handler);
+    },
+
+    end_of_list_reached: function(element) {
+        $("#objects_table").after(
+            $("<div class='alert alert-info'>{0}</div>".format(
+                gettext("No more domain to show")
+            ))
+        );
     },
 
     list_cb: function(data) {
@@ -235,6 +257,14 @@ Identities.prototype = {
             $link.parent().addClass("active");
         }
         this.navobj.baseurl($link.attr("href")).update();
+    },
+
+    end_of_list_reached: function(element) {
+        $("#objects_table").after(
+            $("<div class='alert alert-info'>{0}</div>".format(
+                gettext("No more identity to show")
+            ))
+        );
     },
 
     list_cb: function(data) {

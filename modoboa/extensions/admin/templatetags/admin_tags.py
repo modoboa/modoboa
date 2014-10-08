@@ -105,7 +105,7 @@ def identities_menu(user, selection=None):
         {"name": "import",
          "label": _("Import"),
          "img": "fa fa-folder-open",
-         "url": reverse("admin:domain_import"),
+         "url": reverse("admin:identity_import"),
          "modal": True,
          "modalcb": "admin.importform_cb"},
         {"name": "export",

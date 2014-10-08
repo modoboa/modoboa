@@ -99,7 +99,7 @@
          * @param {string} direction - direction of the scroll (up or down)
          */
         load_page: function(direction) {
-            var args = this.$options.get_args();
+            var args = (this.$options.get_args) ? this.$options.get_args() : {};
             var $this = this;
 
             this.executing = true;

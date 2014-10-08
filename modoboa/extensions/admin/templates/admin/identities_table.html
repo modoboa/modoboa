@@ -1,21 +1,9 @@
 {% load i18n admin_tags lib_tags %}
-<table id="{{ tableid }}" class="table {{ styles }}">
-  <thead>
-    <tr>
-      <th id="identity" class="sortable" data-sort_order="identity" width="">{% trans "Name" %}</th>
-      <th id="name_or_rcpt" class="sortable" data-sort_order="name_or_rcpt" width="">{% trans "Fullname/Recipient" %}</th>
-      <th id="tags" class="sortable" data-sort_order="tags" width="">{% trans "Tags" %}</th>
-      <th id="actions" width="">{% trans "Actions" %}</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for ident in identities %}
-    <tr id="{{ ident.id }}" class="{% disable_identity ident %}" name="{{ forloop.counter }}">
-      <td name="identity">{% identity_modify_link ident %}</td>
-      <td name="name_or_rcpt">{{ ident.name_or_rcpt }}</td>
-      <td name="tags">{% render_tags ident.tags %}</td>
-      <td name="actions">{% identity_actions user ident %}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% for ident in identities %}
+<tr id="{{ ident.id }}" class="{% disable_identity ident %}" name="{{ forloop.counter }}">
+  <td name="identity">{% identity_modify_link ident %}</td>
+  <td name="name_or_rcpt">{{ ident.name_or_rcpt }}</td>
+  <td name="tags">{% render_tags ident.tags %}</td>
+  <td name="actions">{% identity_actions user ident %}</td>
+</tr>
+{% endfor %}
