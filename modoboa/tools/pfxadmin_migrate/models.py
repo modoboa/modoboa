@@ -150,7 +150,7 @@ class Mailbox(models.Model):
 
 class Quota(models.Model):
     username = models.CharField(max_length=255, primary_key=True)
-    path = models.CharField(max_length=300, primary_key=True)
+    path = models.CharField(max_length=100, primary_key=True)
     current = models.BigIntegerField(null=True, blank=True)
 
     class Meta:
@@ -160,7 +160,7 @@ class Quota(models.Model):
 
 
 class Quota2(models.Model):
-    username = models.CharField(max_length=300, primary_key=True)
+    username = models.CharField(max_length=100, primary_key=True)
     bytes = models.BigIntegerField()
     messages = models.IntegerField()
 
