@@ -39,7 +39,6 @@ Admin.prototype = {
      * Children must override this method.
      */
     listen: function() {
-        $(document).on("click", "a.filter", $.proxy(this.filter_by_tag, this));
     },
 
     importform_cb: function() {

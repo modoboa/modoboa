@@ -31,6 +31,7 @@ Listing.prototype = {
             $.proxy(this.load_page, this));
         $(document).on("click", this.options.presp_container + " a",
             $.proxy(this.load_page, this));
+        $(document).on("click", "a.filter", $.proxy(this.filter_by_tag, this));
         if (this.options.with_searchform) {
             this.init_searchform();
         }
@@ -131,6 +132,7 @@ Listing.prototype = {
     update_listing: function(data, with_infinite_scroll) {
         var $this = this;
 
+        $(window).scrollTop(0);
         if (with_infinite_scroll || with_infinite_scroll === undefined) {
             if ($(window).data("infinite-scroll") !== undefined) {
                 $(window).infinite_scroll("reset_loaded_pages", data.page);

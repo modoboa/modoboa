@@ -14,13 +14,16 @@ Radicale.prototype = {
     constructor: Radicale,
 
     defaults: {
-        deflocation: "calendars/"
+        deflocation: "list/",
+        main_table_id: "calendar_table",
+        eor_message: gettext("No more calendar to show")
     },
 
     initialize: function(options) {
         this.options = $.extend({}, this.defaults, options);
         this.options.defcallback = $.proxy(this.list_cb, this);
         Listing.prototype.initialize.call(this, this.options);
+        this.options.navigation_params.push("calfilter");
         this.register_tag_handler("cal", this.generic_tag_handler);
         $(document).on(
             "click", "a[name=delcalendar]", $.proxy(this.del_calendar, this)
@@ -28,9 +31,8 @@ Radicale.prototype = {
     },
 
     list_cb: function(data) {
-        $("#listing").html(data.table);
+        $("#{0} tbody".format(this.options.main_table_id)).html(data.rows);
         this.update_listing(data);
-        $("a.filter").click($.proxy(this.filter_by_tag, this));
     },
 
     /**

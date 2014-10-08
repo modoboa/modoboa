@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.sortable.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}radicale/css/radicale.css" />
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.infinitescroll.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/creation_wizard.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/listing.js"></script>
@@ -12,7 +13,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
     radicale = new Radicale({
-        "username_list_url": "{% url 'radicale:username_list' %}"
+        "username_list_url": "{% url 'radicale:username_list' %}",
+        "load_page_url": "{% url 'radicale:calendars_page' %}"
     });
 });
 </script>
@@ -31,5 +33,20 @@ $(document).ready(function() {
     
   </div>
 </div>
-<div id="listing"></div>
+<div id="listing">
+  <table id="calendar_table" class="table">
+    <thead>
+      <tr>
+        <th id="name" class="sortable" data-sort_order="name" width="">{% trans "Name" %}</th>
+        {% if with_owner %}<th id="owner" class="sortable" data-sort_order="owner">{% trans "Owner" %}</th>{% endif %}
+        <th id="tags">{% trans "Tags" %}</th>
+        <th id="url">{% trans "Address" %}</th>
+        <th id="actions" width="">{% trans "Actions" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+</div>
 {% endblock %}

@@ -3,7 +3,7 @@ from django.conf.urls import include
 
 
 class ModoExtension(object):
-    """Base extension class
+    """Base extension class.
 
     Each Modoboa extension must inherit from this class to be
     considered as valid.

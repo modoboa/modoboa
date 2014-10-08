@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import (
 )
 from django.utils.translation import ugettext as _
 
-from modoboa.lib.listing import get_sort_order
+from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
@@ -24,27 +24,25 @@ from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
 
 @login_required
 def index(request):
+    """Calendar list entry point."""
     return render(request, "radicale/calendars.html", {
-        "selection": "radicale"
+        "selection": "radicale",
+        "with_owner": request.user.group != "SimpleUsers"
     })
 
 
-@login_required
-def calendars(request, tplname="radicale/calendar_list.html"):
-    """Display calendars list.
-
-    The content depends on current user's role.
-    """
+def get_calendar_page(request, page_id=None):
+    """Return a page containing calendars."""
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     calfilter = request.GET.get("calfilter", None)
     searchquery = request.GET.get("searchquery", None)
+    page_id = request.GET.get("page", 1)
     if request.user.group == "SimpleUsers":
         mbox = request.user.mailbox_set.all()[0]
         cals = UserCalendar.objects.filter(mailbox=mbox)
         if searchquery is not None:
             cals = cals.filter(name__icontains=searchquery)
         cals = cals.select_related().all()
-        with_owner = False
     else:
         ucals = []
         if calfilter is None or calfilter == "user":
@@ -57,15 +55,30 @@ def calendars(request, tplname="radicale/calendar_list.html"):
             if searchquery is not None:
                 scals = scals.filter(name__icontains=searchquery)
         cals = chain(ucals, scals)
-        with_owner = True
     cals = sorted(
         cals, key=lambda c: getattr(c, sort_order), reverse=sort_dir == '-'
     )
-    return render_to_json_response({
-        "table": _render_to_string(request, tplname, {
-            "calendars": cals, "with_owner": with_owner
-        })
-    })
+    return get_listing_page(cals, page_id)
+
+
+@login_required
+def calendars_page(request, tplname="radicale/calendars_page.html"):
+    """Return a page of calendars.
+
+    The content depends on current user's role.
+    """
+    page = get_calendar_page(request)
+    if page is None:
+        context = {"length": 0}
+    else:
+        context = {
+            "rows": _render_to_string(request, tplname, {
+                "calendars": page.object_list,
+                "with_owner": request.user.group != "SimpleUsers"
+            }),
+            "page": page.number
+        }
+    return render_to_json_response(context)
 
 
 @login_required
