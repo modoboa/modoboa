@@ -12,17 +12,6 @@ will be lost on the new database. Here is the list:
  * Logs
  * Fetchmail table
 
-Mailboxes organisation on the filesystem will change. PostfixAdmin
-uses the following layout::
-
-  <topdir>/domain.tld/user@domain.tld/
-
-Whereas Modoboa uses the following::
-
-  <topdir>/domain.tld/user/
-
-To rename directories, you'll need the appropriate permissions.
-
 Domain administrators that manage more than one domain will not be
 completly restored. They will only be administrator of the domain that
 corresponds to their username.
@@ -44,9 +33,7 @@ used by PostfixAdmin.
 
 """
 from optparse import make_option
-import os
 import re
-import sys
 
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
@@ -88,15 +75,6 @@ class Command(BaseCommand):
             "-t", "--to", dest="_to", default="default",
             help="Name of the Modoboa db connection declared in settings.py"
             " (default is default)"
-        ),
-        make_option(
-            "-r", "--rename-dirs", action="store_true", default=False,
-            help="Rename mailbox directories (default is no)"
-        ),
-        make_option(
-            "-p", "--mboxes-path", default=None,
-            help="Path where directories are stored on the filesystem"
-            "(used only if --rename-dirs)"
         ),
         make_option(
             "-s", "--passwords-scheme", default="crypt",
@@ -184,14 +162,7 @@ class Command(BaseCommand):
             )
 
     def _migrate_mailboxes(self, domain, options, creator):
-        """Migrate mailboxes of a single domain.
-
-        .. note::
-
-           Mailboxes rename will be done later by the
-           handle_mailboxes_operation script.
-
-        """
+        """Migrate mailboxes of a single domain."""
         print "\tMigrating mailboxes"
         old_mboxes = pf_models.Mailbox.objects \
             .using(options["_from"]).filter(domain=domain.name)
@@ -216,11 +187,6 @@ class Command(BaseCommand):
             new_mb.dates = self._migrate_dates(old_mb)
             new_mb.set_quota(old_mb.quota / 1024000, override_rules=True)
             new_mb.save(creator=creator, using=options["_to"])
-
-            if options["rename_dirs"]:
-                oldpath = os.path.join(
-                    options["mboxes_path"], domain.name, old_mb.maildir)
-                new_mb.rename_dir(oldpath)
 
     def _migrate_domain(self, pf_domain, options, creator):
         """Single domain migration."""
@@ -313,15 +279,12 @@ class Command(BaseCommand):
             except pf_models.AliasDomain.DoesNotExist:
                 self._migrate_domain(pf_domain, options, creator)
 
-        #Handle the ALL domain
+        # Handle the ALL domain
         pf_domain = pf_models.Domain.objects.using(
             options["_from"]).get(domain='ALL')
         self._migrate_admins(options, creator, pf_domain)
 
     def handle(self, *args, **options):
         """Command entry point."""
-        if options["rename_dirs"] and options["mboxes_path"] is None:
-            print "Error: you must provide the --mboxes-path option"
-            sys.exit(1)
         with transaction.commit_on_success():
             self._do_migration(options)
