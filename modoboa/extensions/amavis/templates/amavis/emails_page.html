@@ -1,0 +1,26 @@
+{% load amavis_tags %}
+
+{% for email in email_list %}
+<tr id="{{ email.mailid }}" name="{{ forloop.counter }}">
+  <td name="selection" width="5px">
+    <input id="selection" type="checkbox" name="select_{{ email.mailid }}" value="{{ email.mailid }}">
+  </td>
+  <td align="center" width="30px" name="type" class="{{ email.class }}">
+    {{ email.type|msgtype_to_html }}
+  </td>
+  <td width="25px" name="rstatus">
+    {% if email.img_rstatus %}<img src="{{ email.img_rstatus }}" />{% endif %}
+  </td>
+  <td class="openable {{ email.class }}" name="score">{{ email.score }}</td>
+  <td class="openable {{ email.class }}" name="to">{{ email.to }}</td>
+  <td class="openable {{ email.class }}" name="from">
+    {{ email.from|truncatechars:30 }}
+  </td>
+  <td class="openable {{ email.class }}" name="subject">
+    {{ email.subject|truncatechars:30 }}
+  </td>
+  <td class="openable {{ email.class }}" name="date">
+    {{ email.date|date:"SHORT_DATETIME_FORMAT" }}
+  </td>
+</tr>
+{% endfor %}

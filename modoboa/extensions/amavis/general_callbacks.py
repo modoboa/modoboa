@@ -86,7 +86,7 @@ def check_for_pending_requests(user, include_all):
     url += "#listing/?viewrequests=1"
     return [{
         "id": "nbrequests", "url": url, "text": _("Pending requests"),
-        "counter": nbrequests, "level": "important"
+        "counter": nbrequests, "level": "danger"
     }]
 
 

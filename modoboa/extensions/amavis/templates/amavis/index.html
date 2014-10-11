@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}amavis/css/quarantine.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.sortable.css" />
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.htmltable.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.infinitescroll.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/searchbar.js"></script>
@@ -12,17 +13,18 @@
 <script type="text/javascript">
 $(document).ready(function() {
     var qm = new Quarantine({
-        deflocation: "{{ deflocation }}",
-        defcallback: "{{ defcallback }}"
+        deflocation: "listing/?sort_order=-date&reset_page=true",
+        defcallback: "listing_cb",
+        load_page_url: "{% url 'amavis:mail_page' %}"
     });
 });
 </script>
 {% endblock %}
 {% block fixed_content %}
-<div class="row" style="padding-top: 20px">
-  <div id="menubar">{% quar_menu %}</div>
+<div id="menubar" class="row" style="padding-top: 20px">
+  {% quar_menu %}
 </div>
 <div class="row">
-  <div id="listing" class="col-xs-12 fluid-content-quarantine"></div>
+  <div id="listing" class="col-xs-12"></div>
 </div>
 {% endblock %}

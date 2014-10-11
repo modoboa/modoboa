@@ -177,6 +177,12 @@ History.prototype = {
         return this;
     },
 
+    /**
+     * Set several parameters.
+     *
+     * @param {Object} params - a dictionary of parameters
+     * @return {Object} - History instance
+     */
     setparams: function(params) {
         $.each(params, $.proxy(this.setparam, this));
         return this;

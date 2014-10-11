@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>{% block pagetitle %}{% endblock %}</title>
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}css/logo-icon.png" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome/css/font-awesome.min.css">
@@ -15,6 +16,7 @@
     <script src="{{ STATIC_URL }}js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-select.min.js" type="text/javascript"></script>
     {% if LANGUAGE_CODE != "en" %}<script src="{{ STATIC_URL }}js/locales/bootstrap-datetimepicker.{{ LANGUAGE_CODE }}.js" type="text/javascript"></script>{% endif %}
+    <script src="//maxcdn.bootstrapcdn.com/bootlint/0.4.0/bootlint.min.js"></script>
     <script src="{{ STATIC_URL }}js/global.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/csrf.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/confirmation.js" type="text/javascript"></script>
@@ -45,10 +47,6 @@
             <span class="sr-only">Toggle navigation</span>
             <span class="">{% trans "Menu" %}</span>
           </button>
-        </div>
-
-        <div id="pagination-responsive" class="pull-right">
-
         </div>
 
         <div id="navigate-navbar-collapse" class="collapse navbar-collapse">
@@ -93,7 +91,7 @@
           <ul class="nav navbar-nav navbar-right">
             {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
           </ul>
-          <div class="pull-right">{% include "common/top_notifications.html" %}</div>
+          {% include "common/top_notifications.html" %}
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@ Listing.prototype = {
         with_searchform: true,
         load_page_url: null,
         navigation_params: ["sort_order", "searchquery"],
+        scroll_container: null,
         main_table_id: "objects_table",
         eor_message: gettext("No more entry to show")
     },
@@ -98,16 +99,34 @@ Listing.prototype = {
     },
 
     /**
+     * Calculate the bottom position of the scroll container.
+     *
+     * @param {Object} $element - scroll container object
+     */
+    calculate_bottom: function($element) {
+        var $last_row = $("#" + this.options.main_table_id)
+            .find("tr").last();
+        return $last_row.offset().top - $element.height();
+    },
+
+    /**
      * A new page has been received, inject it.
      *
      * @param {Object} data - page content
-     * @param {string} direction - 
+     * @param {string} direction - scroll direction (up or down)
      */
     add_new_page: function(data, direction) {
-        $("#{0} tbody".format(this.options.main_table_id))
-            .html(function(pos, oldhtml) {
+        var $container = $("#{0} tbody".format(this.options.main_table_id));
+
+        if (direction == "down") {
+            $container.html(function(pos, oldhtml) {
                 return oldhtml + data.rows;
             });
+        } else {
+            $container.html(function(pos, oldhtml) {
+                return data.rows + oldhtml;
+            });
+        }
     },
 
     /**
@@ -131,27 +150,25 @@ Listing.prototype = {
      */
     update_listing: function(data, with_infinite_scroll) {
         var $this = this;
+        var $scroll_container = (this.options.scroll_container) ?
+            $(this.options.scroll_container) : $(window);
 
-        $(window).scrollTop(0);
+        $scroll_container.scrollTop(0);
         if (with_infinite_scroll || with_infinite_scroll === undefined) {
-            if ($(window).data("infinite-scroll") !== undefined) {
-                $(window).infinite_scroll("reset_loaded_pages", data.page);
-                $(window).infinite_scroll("resume");
+            if ($scroll_container.data("infinite-scroll") !== undefined) {
+                $scroll_container.infinite_scroll("reset_loaded_pages", data.page);
+                $scroll_container.infinite_scroll("resume");
             } else {
-                $(window).infinite_scroll({
+                $scroll_container.infinite_scroll({
                     url: this.options.load_page_url,
                     get_args: $.proxy(this.get_load_page_args, this),
-                    calculate_bottom: function($element) {
-                        var $last_row = $("#" + $this.options.main_table_id)
-                            .find("tr").last();
-                        return $last_row.offset().top - $element.height();
-                    },
+                    calculate_bottom: $.proxy(this.calculate_bottom, this),
                     process_results: $.proxy(this.add_new_page, this),
                     end_of_list_reached: $.proxy(this.end_of_list_reached, this)
                 });
             }
-        } else if ($(window).data("infinite-scroll") !== undefined) {
-            $(window).infinite_scroll("pause");
+        } else if ($scroll_container.data("infinite-scroll") !== undefined) {
+            $scroll_container.infinite_scroll("pause");
         }
 
         var $sortables = $(this.options.sortable_selector);

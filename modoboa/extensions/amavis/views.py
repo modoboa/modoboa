@@ -1,4 +1,7 @@
 # coding: utf-8
+"""
+Amavis quarantine views.
+"""
 import email
 
 from django.shortcuts import render
@@ -10,10 +13,10 @@ from django.contrib.auth.decorators import login_required
 
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest
+from modoboa.lib.paginator import Paginator
 from modoboa.lib.webutils import (
-    getctx, ajax_response, render_to_json_response
+    getctx, ajax_response, render_to_json_response, _render_to_string
 )
-from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.extensions.amavis.templatetags.amavis_tags import (
     quar_menu, viewm_menu
@@ -21,13 +24,49 @@ from modoboa.extensions.amavis.templatetags.amavis_tags import (
 from .lib import selfservice, AMrelease, QuarantineNavigationParameters
 from .models import Msgrcpt
 from .sql_connector import get_connector
-from .sql_listing import SQLlisting, SQLemail
+from .sql_listing import SQLemail
 
 
 def empty_quarantine(request):
+    """Shortcut to use when no content can be displayed."""
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content)
     return render_to_json_response(ctx)
+
+
+def get_listing_page(request, connector):
+    """."""
+    paginator = Paginator(
+        connector.messages_count(),
+        int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+    )
+    page_id = int(connector.navparams.get("page"))
+    page = paginator.getpage(page_id)
+    if not page:
+        return None
+    return page
+
+
+@login_required
+def listing_page(request):
+    """Return a listing page."""
+    navparams = QuarantineNavigationParameters(request)
+    previous_page_id = int(navparams["page"]) if "page" in navparams else None
+    navparams.store()
+
+    connector = get_connector(user=request.user, navparams=navparams)
+    page = get_listing_page(request, connector)
+    if page is None:
+        context = {"length": 0}
+        navparams["page"] = previous_page_id
+    else:
+        context = {
+            "rows": _render_to_string(request, "amavis/emails_page.html", {
+                "email_list": connector.fetch(page.id_start, page.id_stop)
+            }),
+            "page": page.number
+        }
+    return render_to_json_response(context)
 
 
 @login_required
@@ -39,21 +78,15 @@ def _listing(request):
     navparams = QuarantineNavigationParameters(request)
     navparams.store()
 
-    lst = SQLlisting(
-        request.user,
-        navparams=navparams,
-        elems_per_page=int(
-            parameters.get_user(request.user, "MESSAGES_PER_PAGE")
-        )
-    )
-    page = lst.paginator.getpage(navparams.get('page'))
-    if not page:
+    connector = get_connector(user=request.user, navparams=navparams)
+    page = get_listing_page(request, connector)
+    if page is None:
         return empty_quarantine(request)
 
-    content = lst.fetch(request, page.id_start, page.id_stop)
-    ctx = getctx(
-        "ok", listing=content, paginbar=pagination_bar(page), page=page.number
-    )
+    content = _render_to_string(request, "amavis/email_list.html", {
+        "email_list": connector.fetch(page.id_start, page.id_stop),
+    })
+    ctx = getctx("ok", listing=content, page=page.number)
     if request.session.get('location', 'listing') != 'listing':
         ctx['menu'] = quar_menu()
     request.session['location'] = 'listing'
@@ -62,8 +95,8 @@ def _listing(request):
 
 @login_required
 def index(request):
+    """Default view."""
     return render(request, "amavis/index.html", dict(
-        deflocation="listing/?sort_order=-date", defcallback="listing_cb",
         selection="quarantine"
     ))
 

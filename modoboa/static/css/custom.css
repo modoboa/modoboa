@@ -139,16 +139,11 @@ label {
 }
 
 .dropdown-menu .radio {
-    padding: 3px 33px;
+    padding: 3px 15px;
 }
 
 .no-margin {
     margin: 0 !important;
-}
-
-.dropdown-menu label:hover {
-    background-color: #0088CC;
-    color: white;
 }
 
 .buttons_list .bset {

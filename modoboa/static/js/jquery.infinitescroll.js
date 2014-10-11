@@ -38,6 +38,9 @@
         on_scroll: function() {
             var bottom = this.$options.calculate_bottom(this.$element);
 
+            if (bottom === undefined) {
+                return;
+            }
             if (this.$element.scrollTop() >= bottom) {
                 this.load_next_page();
             } else if (this.$element.scrollTop() === 0) {

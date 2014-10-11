@@ -5,6 +5,7 @@ urlpatterns = patterns(
 
     url(r'^$', 'index', name="index"),
     url(r'^listing/$', '_listing', name="_mail_list"),
+    url(r'^listing/page/$', 'listing_page', name="mail_page"),
     url(r'^getmailcontent/(?P<mail_id>[\w\-\+]+)/$', 'getmailcontent',
         name="mailcontent_get"),
     url(r'^process/$', 'process', name="mail_process"),

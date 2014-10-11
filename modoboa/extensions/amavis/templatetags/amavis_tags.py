@@ -1,9 +1,9 @@
 from django import template
-from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.conf import settings
-from modoboa.lib.webutils import _render_to_string
+from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _
+
 
 register = template.Library()
 
@@ -12,7 +12,7 @@ register = template.Library()
 def viewm_menu(mail_id, rcpt):
     entries = [
         {"name": "back",
-         "url": "javascript:history.go(-2);",
+         "url": "javascript:history.go(-1);",
          "img": "fa fa-arrow-left",
          "class": "btn-primary",
          "label": _("Back")},
@@ -82,3 +82,12 @@ def quar_menu():
     return render_to_string('amavis/main_action_bar.html', {
         'extraopts': extraopts
     })
+
+
+@register.filter
+def msgtype_to_html(msgtype):
+    """Transform a message type to a bootstrap label."""
+    color = 'danger' if msgtype in ['S', 'V'] else 'warning'
+    return mark_safe(
+        '<span class="label label-%s">%s</span>' % (color, msgtype)
+    )
