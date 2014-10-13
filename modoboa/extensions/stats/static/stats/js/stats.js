@@ -7,7 +7,8 @@ Stats.prototype = {
 
     defaults: {
         deflocation: "graphs/",
-        language: "en"
+        language: "en",
+        domain_list_url: null
     },
 
     initialize: function(options) {
@@ -52,7 +53,7 @@ Stats.prototype = {
             language: this.options.language
         });
         $("#searchquery").autocompleter({
-            choices: get_domains_list,
+            choices: $.proxy(this.get_domain_list, this),
             choice_selected: $.proxy(this.search_domain, this),
             empty_choice: $.proxy(this.reset_search, this)
         });
@@ -69,6 +70,21 @@ Stats.prototype = {
     register_nav_callbacks: function() {
         this.navobj.register_callback("graphs",
             $.proxy(this.graphs_cb, this));
+    },
+
+    /**
+     * Retrieve a list of domain from the server.
+     */
+    get_domain_list: function() {
+        var result;
+        $.ajax({
+            url: this.options.domain_list_url,
+            dataType: "json",
+            async: false
+        }).done(function(data) {
+            result = data;
+        });
+        return result;
     },
 
     change_period: function(e) {
