@@ -196,7 +196,7 @@ def delete(request, mail_id):
     for mid in mail_id:
         r, i = mid.split()
         if mb is not None and r != mb.full_address \
-                and not r in mb.alias_addresses:
+                and r not in mb.alias_addresses:
             continue
         connector.set_msgrcpt_status(r, i, 'D')
     message = ungettext("%(count)d message deleted successfully",
@@ -248,7 +248,7 @@ def release(request, mail_id):
     for mid in mail_id:
         r, i = mid.split()
         if mb is not None and r != mb.full_address \
-                and not r in mb.alias_addresses:
+                and r not in mb.alias_addresses:
             continue
         msgrcpts += [connector.get_recipient_message(r, i)]
     if mb is not None and parameters.get_admin("USER_CAN_RELEASE") == "no":
@@ -300,4 +300,3 @@ def process(request):
 
     if request.POST["action"] == "delete":
         return delete(request, ids)
-
