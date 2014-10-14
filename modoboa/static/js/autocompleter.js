@@ -9,13 +9,10 @@
         initialize: function(element, options) {
             this.$element = $(element);
             this.options = $.extend({}, $.fn.autocompleter.defaults, options);
-            this.choices = {
-                value: null
-            };
             if (typeof this.options.choices === "function") {
-                this.options.choices(this.choices);
+                this.choices = this.options.choices();
             } else {
-                this.choices.value = this.options.choices();
+                this.choices = this.options.choices;
             }
             this.$menu =
                 $('<ul class="dropdown-menu autocompleter" data-toggle="dropdown" />');
@@ -54,7 +51,7 @@
             var exp = new RegExp("^" + pattern);
 
             this.$menu.empty();
-            $.each(this.choices.value, $.proxy(function(index, value) {
+            $.each(this.choices, $.proxy(function(index, value) {
                 if (exp.test(value)) {
                     this.$menu.append($('<li><a href="#" name="' + value
                         + '">' + value + '</a></li>'));
@@ -148,7 +145,7 @@
                     evt.preventDefault();
                     this.activate_next();
                     break;
-            };
+            }
         },
 
         keyup: function(evt) {

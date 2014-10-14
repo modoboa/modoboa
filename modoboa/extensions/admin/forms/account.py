@@ -6,7 +6,7 @@ from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.formutils import (
-    DomainNameField, DynamicForm, TabForms, YesNoField
+    DomainNameField, DynamicForm, TabForms
 )
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (

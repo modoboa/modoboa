@@ -4,7 +4,6 @@ from django.utils.translation import ugettext as _
 from django.db import IntegrityError
 from modoboa.core.models import ObjectAccess, User
 from modoboa.lib import events
-from modoboa.lib.exceptions import ModoboaException
 
 
 def get_account_roles(user, account=None):
@@ -19,7 +18,7 @@ def get_account_roles(user, account=None):
     """
     std_roles = [("SimpleUsers", _("Simple user"))]
     if user.is_superuser:
-        std_roles += [("SuperAdmins",  _("Super administrator"))]
+        std_roles += [("SuperAdmins", _("Super administrator"))]
     filters = events.raiseQueryEvent(
         'UserCanSetRole', user, 'DomainAdmins', account
     )

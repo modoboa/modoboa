@@ -4,20 +4,11 @@
 {{ block.super }}
 <script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
 <script type="text/javascript">
-function get_domains_list(container) {
-    $.getJSON("{% url 'modoboa.extensions.admin.views.domain.domains_list' %}", function(data) {
-        container.value = data;
-    });
-}
-
-function get_account_list(container) {
-    $.getJSON("{% url 'modoboa.extensions.admin.views.identity.accounts_list' %}", function(data) {
-        container.value = data;
-    });
-}
-
 $(document).ready(function() {
-    admin = new Identities();
+    admin = new Identities({
+        domain_list_url: "{% url 'modoboa.extensions.admin.views.domain.domains_list' %}",
+        load_page_url: "{% url 'modoboa.extensions.admin.views.identity._identities' %}"
+    });
 });
 </script>
 {% extra_static_content "identities" user %}
