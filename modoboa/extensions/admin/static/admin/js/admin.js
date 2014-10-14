@@ -191,6 +191,7 @@ var Identities = function(options) {
 Identities.prototype = {
     initialize: function(options) {
         Admin.prototype.initialize.call(this, options);
+        this.domain_list = [];
         this.register_tag_handler("idt", this.generic_tag_handler);
         this.register_tag_handler("grp", this.grp_tag_handler);
     },
@@ -243,10 +244,29 @@ Identities.prototype = {
         return false;
     },
 
+    /**
+     * Retrieve a list of domain from the server.
+     *
+     * @this Identities
+     * @return {Array} a list of domain names
+     */
+    get_domain_list: function() {
+        if (!this.domain_list.length) {
+            $.ajax({
+            url: this.options.domain_list_url,
+                dataType: "json",
+                async: false
+            }).done($.proxy(function(data) {
+                this.domain_list = data;
+            }, this));
+        }
+        return this.domain_list;
+    },
+
     simpleuser_mode: function() {
         $("#id_username").autocompleter({
             from_character: "@",
-            choices: get_domains_list
+            choices: $.proxy(this.get_domain_list, this)
         });
         $("#id_email").addClass("disabled")
             .attr("readonly", "")
@@ -279,11 +299,11 @@ Identities.prototype = {
     mailform_init: function() {
         $("#id_aliases").autocompleter({
             from_character: "@",
-            choices: get_domains_list
+            choices: $.proxy(this.get_domain_list, this)
         }).dynamic_input();
         $("#id_email").autocompleter({
             from_character: "@",
-            choices: get_domains_list
+            choices: $.proxy(this.get_domain_list, this)
         });
         if ($("#id_role").length) {
             $("#id_role").trigger("change");
@@ -292,7 +312,7 @@ Identities.prototype = {
         }
         $("#id_domains")
             .autocompleter({
-                choices: get_domains_list
+                choices: $.proxy(this.get_domain_list, this)
             })
             .dynamic_input();
         activate_widget.call($("#id_quota_act"));
@@ -335,7 +355,7 @@ Identities.prototype = {
     aliasform_cb: function() {
         $("#id_email").autocompleter({
             from_character: "@",
-            choices: get_domains_list
+            choices: $.proxy(this.get_domain_list, this)
         });
         $("#id_recipients").dynamic_input();
         $(".submit").on('click', $.proxy(function(e) {

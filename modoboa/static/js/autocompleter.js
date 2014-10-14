@@ -148,7 +148,7 @@
                     evt.preventDefault();
                     this.activate_next();
                     break;
-            };
+            }
         },
 
         keyup: function(evt) {
