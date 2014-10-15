@@ -129,7 +129,7 @@ Listing.prototype = {
      */
     end_of_list_reached: function(element) {
         $("#" + this.options.main_table_id).after(
-            $("<div class='alert alert-info text-center'>{0}</div>".format(
+            $("<div id='eor_message' class='alert alert-info text-center'>{0}</div>".format(
                 this.options.eor_message
             ))
         );
@@ -151,6 +151,7 @@ Listing.prototype = {
             if ($scroll_container.data("infinite-scroll") !== undefined) {
                 $scroll_container.infinite_scroll("reset_loaded_pages", data.pages);
                 $scroll_container.infinite_scroll("resume");
+                $("#eor_message").remove();
             } else {
                 $scroll_container.infinite_scroll({
                     initial_pages: data.pages,

@@ -23,6 +23,7 @@ urlpatterns += patterns(
     url(r'^identities/$', 'identities', name="identity_list"),
     url(r'^identities/list/$', '_identities', name="_identity_list"),
     url(r'^identities/quotas/$', 'list_quotas', name="quota_list"),
+    url(r'^identities/page/$', 'get_next_page', name="identity_page"),
 
     url(r'^accounts/list/$', 'accounts_list', name="account_list"),
     url(r'^accounts/new/$', 'newaccount', name="account_add"),

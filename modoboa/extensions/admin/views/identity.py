@@ -54,6 +54,8 @@ def _identities(request):
     if page is None:
         context["length"] = 0
     else:
+        context["headers"] = _render_to_string(
+            request, "admin/identity_headers.html", {})
         context["rows"] = _render_to_string(
             request, "admin/identities_table.html", {
                 "identities": page.object_list
@@ -64,29 +66,8 @@ def _identities(request):
 
 
 @login_required
-@user_passes_test(
-    lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias")
-)
-@ensure_csrf_cookie
-def identities(request, tplname="admin/identities.html"):
-    return render(request, tplname, {
-        "selection": "identities",
-        "deflocation": "list/"
-    })
-
-
-@login_required
-@permission_required("core.add_user")
-def accounts_list(request):
-    accs = User.objects.filter(is_superuser=False) \
-        .exclude(groups__name='SimpleUsers')
-    res = [a.username for a in accs.all()]
-    return render_to_json_response(res)
-
-
-@login_required
 @permission_required("admin.add_mailbox")
-def list_quotas(request, tplname="admin/quotas.html"):
+def list_quotas(request):
     from modoboa.lib.dbutils import db_type
 
     sort_order, sort_dir = get_sort_order(request.GET, "address")
@@ -118,13 +99,48 @@ def list_quotas(request, tplname="admin/quotas.html"):
     if page is None:
         context["length"] = 0
     else:
+        context["headers"] = _render_to_string(
+            request, "admin/quota_headers.html", {})
         context["rows"] = _render_to_string(
-            request, tplname, {
+            request, "admin/quotas.html", {
                 "mboxes": page
             }
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)
+
+
+@login_required
+@user_passes_test(
+    lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias")
+    or u.has_perm("admin.add_mailbox")
+)
+def get_next_page(request):
+    """Return the next page of the identity list."""
+    if request.GET.get("objtype", "identity") == "identity":
+        return _identities(request)
+    return list_quotas(request)
+
+
+@login_required
+@user_passes_test(
+    lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias")
+)
+@ensure_csrf_cookie
+def identities(request, tplname="admin/identities.html"):
+    return render(request, tplname, {
+        "selection": "identities",
+        "deflocation": "list/"
+    })
+
+
+@login_required
+@permission_required("core.add_user")
+def accounts_list(request):
+    accs = User.objects.filter(is_superuser=False) \
+        .exclude(groups__name='SimpleUsers')
+    res = [a.username for a in accs.all()]
+    return render_to_json_response(res)
 
 
 @login_required

@@ -297,6 +297,24 @@ Identities.prototype = {
     },
 
     /**
+     * Add a type to let the server know what kind of object we expect.
+     *
+     * @this Listing
+     */
+    get_load_page_args: function() {
+        var args = Admin.prototype.get_load_page_args.call(this);
+
+        if (this.navobj.getbaseurl() == "list") {
+            args.objtype = "identity";
+            this.options.eor_message = gettext("No more identity to show");
+        } else {
+            args.objtype = "quota";
+            this.options.eor_message = gettext("No more quota to show");
+        }
+        return args;
+    },
+
+    /**
      * A new page has been received, inject it.
      *
      * @param {Object} data - page content
@@ -313,6 +331,14 @@ Identities.prototype = {
      * @param {Object} data - response of the ajax call (JSON)
      */
     list_cb: function(data) {
+        if ($(".sidebar li.active").length === 0) {
+            var menu = this.navobj.getbaseurl();
+            if (menu == "list") {
+                menu = "identities";
+            }
+            $("a[name={0}]".format(menu)).parent().addClass("active");
+        }
+        $("#objects_table thead tr").html(data.headers);
         Admin.prototype.list_cb.call(this, data);
         this.init_identity_links(data);
     },

@@ -119,8 +119,7 @@ def identities_menu(user, selection=None):
 
     return render_to_string('common/menulist.html', {
         "entries": entries,
-        "user": user,
-        "selection": selection
+        "user": user
     })
 
 

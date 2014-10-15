@@ -3,7 +3,6 @@ from datetime import datetime
 
 from django import template
 from django.template import Template, Context
-from django.template.loader import render_to_string
 
 from modoboa.lib import events
 
