@@ -49,19 +49,19 @@ $(document).ready(function() {
   </div>
 </div>
 
-<div class="row hidden">
-  <div class="col-md-7">
+<div id="custom_period" class="row hidden">
+  <div class="col-sm-7">
     <form class="form-inline">
       <span id="custom-period">
         <div class="form-group">
           <div class="input-group">
-            <div class="input-group-addon"><span class="fa fa-indent-left"></span></div>
+            <div class="input-group-addon"><span class="fa fa-indent"></span></div>
             <input id="id_from" class="form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
           </div>
         </div>
         <div class="form-group">
           <div class="input-group">
-            <div class="input-group-addon"><span class="fa fa-indent-right"></span></div>
+            <div class="input-group-addon"><span class="fa fa-outdent"></span></div>
             <input id="id_to" class="form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
           </div>
         </div>

@@ -1,3 +1,8 @@
+/**
+ * Create an instance of Stats.
+ *
+ * @constructor
+ */
 var Stats = function(options) {
     this.initialize(options);
 };
@@ -44,6 +49,14 @@ Stats.prototype = {
         }
         if (navobj.params.end) {
             $("#id_to").val(navobj.params.end);
+        }
+        if (navobj.params.period) {
+            $("input[data-period={0}]".format(navobj.params.period))
+                .attr("checked", true)
+                .parent().addClass("active");
+            if (navobj.params.period == "custom") {
+                $("#custom_period").removeClass("hidden");
+            }
         }
         $("#custom-period input").datetimepicker({
             format: 'yyyy-mm-dd hh:ii:ss',
@@ -92,9 +105,15 @@ Stats.prototype = {
     change_period: function(e) {
         e.preventDefault();
         var $link = $(e.target).children("input");
+        var period = $link.attr("data-period");
 
-        this.navobj.delparam("start").delparam("end");
-        this.navobj.setparam("period", $link.attr("data-period")).update();
+        if (period != "custom") {
+            $("#custom_period").addClass("hidden");
+            this.navobj.delparam("start").delparam("end");
+            this.navobj.setparam("period", $link.attr("data-period")).update();
+        } else {
+            $("#custom_period").removeClass("hidden");
+        }
     },
 
     /**

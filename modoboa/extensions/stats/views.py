@@ -29,10 +29,13 @@ def index(request):
             raise NotFound(_("No statistics available"))
 
     graph_sets = events.raiseDictEvent('GetGraphSets')
-    periods = [{"name": "day", "label": _("Day")},
-               {"name": "week", "label": _("Week")},
-               {"name": "month", "label": _("Month")},
-               {"name": "year", "label": _("Year")}]
+    periods = [
+        {"name": "day", "label": _("Day")},
+        {"name": "week", "label": _("Week")},
+        {"name": "month", "label": _("Month")},
+        {"name": "year", "label": _("Year")},
+        {"name": "custom", "label": _("Custom")}
+    ]
     return render(request, 'stats/index.html', {
         "periods": periods,
         "selection": "stats",
