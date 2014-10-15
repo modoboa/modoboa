@@ -79,7 +79,7 @@ Stats.prototype = {
     get_domain_list: function() {
         var result;
 
-         $.ajax({
+        $.ajax({
             url: this.options.domain_list_url,
             dataType: "json",
             async: false

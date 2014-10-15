@@ -12,17 +12,6 @@ will be lost on the new database. Here is the list:
  * Logs
  * Fetchmail table
 
-Mailboxes organisation on the filesystem will change. PostfixAdmin
-uses the following layout::
-
-  <topdir>/domain.tld/user@domain.tld/
-
-Whereas Modoboa uses the following::
-
-  <topdir>/domain.tld/user/
-
-To rename directories, you'll need the appropriate permissions.
-
 Domain administrators that manage more than one domain will not be
 completly restored. They will only be administrator of the domain that
 corresponds to their username.
@@ -44,19 +33,31 @@ used by PostfixAdmin.
 
 """
 from optparse import make_option
-import os
-import sys
+import re
 
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from django.db.models import Q
 
 import modoboa.core.models as core_models
 import modoboa.extensions.admin.models as admin_models
 from modoboa.lib.emailutils import split_mailbox
+from modoboa.extensions.admin import grant_access_to_all_objects
 
 from modoboa.tools.pfxadmin_migrate import models as pf_models
+
+
+def set_account_password(account, password, scheme):
+    """Correclty format the password before storing it.
+
+    It seems postfixadmin sometimes prepend the scheme... but not
+    always :p
+
+    """
+    if re.search(r"\{[\w-]+\}", password):
+        account.password = password
+    else:
+        account.password = "{%s}%s" % (scheme.upper(), password)
 
 
 class Command(BaseCommand):
@@ -74,15 +75,6 @@ class Command(BaseCommand):
             "-t", "--to", dest="_to", default="default",
             help="Name of the Modoboa db connection declared in settings.py"
             " (default is default)"
-        ),
-        make_option(
-            "-r", "--rename-dirs", action="store_true", default=False,
-            help="Rename mailbox directories (default is no)"
-        ),
-        make_option(
-            "-p", "--mboxes-path", default=None,
-            help="Path where directories are stored on the filesystem"
-            "(used only if --rename-dirs)"
         ),
         make_option(
             "-s", "--passwords-scheme", default="crypt",
@@ -170,14 +162,7 @@ class Command(BaseCommand):
             )
 
     def _migrate_mailboxes(self, domain, options, creator):
-        """Migrate mailboxes of a single domain.
-
-        .. note::
-
-           Mailboxes rename will be done later by the
-           handle_mailboxes_operation script.
-
-        """
+        """Migrate mailboxes of a single domain."""
         print "\tMigrating mailboxes"
         old_mboxes = pf_models.Mailbox.objects \
             .using(options["_from"]).filter(domain=domain.name)
@@ -189,8 +174,8 @@ class Command(BaseCommand):
             new_user.email = old_mb.username
             new_user.is_active = old_mb.active
             new_user.date_joined = old_mb.created
-            new_user.password = "{%s}%s" % \
-                (options["passwords_scheme"].upper(), old_mb.password)
+            set_account_password(
+                new_user, old_mb.password, options["passwords_scheme"])
             new_user.dates = self._migrate_dates(old_mb)
             new_user.save(creator=creator, using=options["_to"])
             new_user.set_role("SimpleUsers")
@@ -203,78 +188,86 @@ class Command(BaseCommand):
             new_mb.set_quota(old_mb.quota / 1024000, override_rules=True)
             new_mb.save(creator=creator, using=options["_to"])
 
-            if options["rename_dirs"]:
-                oldpath = os.path.join(
-                    options["mboxes_path"], domain.name, old_mb.maildir)
-                new_mb.rename_dir(oldpath)
-
-    def _migrate_domain(self, old_dom, options, creator):
+    def _migrate_domain(self, pf_domain, options, creator):
         """Single domain migration."""
-        print "Migrating domain %s" % old_dom.domain
+        print "\nMigrating domain %s" % pf_domain.domain
         newdom = admin_models.Domain()
-        newdom.name = old_dom.domain
-        newdom.enabled = old_dom.active
-        newdom.quota = old_dom.maxquota
-        newdom.dates = self._migrate_dates(old_dom)
+        newdom.name = pf_domain.domain
+        newdom.enabled = pf_domain.active
+        newdom.quota = pf_domain.maxquota
+        newdom.dates = self._migrate_dates(pf_domain)
         newdom.save(creator=creator, using=options["_to"])
+        self._migrate_domain_aliases(newdom, options, creator)
         self._migrate_mailboxes(newdom, options, creator)
         self._migrate_mailbox_aliases(newdom, options, creator)
-        self._migrate_domain_aliases(newdom, options, creator)
+        self._migrate_admins(options, creator, pf_domain, newdom)
 
-    def _migrate_admins(self, options, creator):
-        """Administrators migration."""
-        print "Migrating administrators"
+    def _migrate_admins(self, options, creator, pf_domain, newdom=None):
+        """Administrators migration.
+
+        :param pf_domain: The ``pf_models.Domain`` to get the admins to migrate.
+        :param newdom:    If None the admins will not be linked to any domain
+                          and they will be SuperAdmins. Otherwise link them to
+                          this domain and make them DomainAdmins.
+        """
+
+        if newdom is None:
+            print "\nMigrating super administrators"
+        else:
+            print "\tMigrating administrators"
 
         dagroup = Group.objects.using(options["_to"]).get(name="DomainAdmins")
-        for old_admin in pf_models.Admin.objects.using(options["_from"]).all():
-            local_part, domname = split_mailbox(old_admin.username)
-            try:
-                query = Q(username=old_admin.username) & \
-                        (Q(domain="ALL") | Q(domain=domname))
-                creds = pf_models.DomainAdmins.objects \
-                    .using(options["_from"]).get(query)
-            except pf_models.DomainAdmins.DoesNotExist:
-                print (
-                    "Warning: skipping useless admin %s" % (old_admin.username)
-                )
-                continue
-            try:
-                domain = admin_models.Domain.objects \
-                    .using(options["_to"]).get(name=domname)
-            except admin_models.Domain.DoesNotExist:
-                print (
-                    "Warning: skipping domain admin %s, domain not found"
-                    % old_admin.username
-                )
-                continue
+        for old_admin in pf_domain.admins.all():
+            if newdom is None:
+                print "\tMigrating %s" % old_admin.username
+
+            # In postfixadmin, it's possible to have an admin account
+            # and a user account with the same username but they are
+            # completely different entities, so they do not have a
+            # common password. In Modoboa this does not makes sense, so
+            # we actually merge these two entities into a single user
+            # if both are found. Question is, which password should we
+            # use?. The admin password is used to be on the secure
+            # side.
             try:
                 user = core_models.User.objects \
                     .using(options["_to"]).get(username=old_admin.username)
+
+                if "SimpleUsers" == user.group:
+                    print (
+                        "Warning: Found an admin account with the same "
+                        "username as normal user '%s'. The existing user will "
+                        "be promoted to admin and it's password changed to the "
+                        "admin's account password. " % user.username
+                    )
+
             except core_models.User.DoesNotExist:
                 user = core_models.User()
                 user.username = old_admin.username
                 user.email = old_admin.username
-                user.password = old_admin.password
                 user.is_active = old_admin.active
                 user.save(creator=creator, using=options["_to"])
 
             user.date_joined = old_admin.modified
-            if creds.domain == "ALL":
+            set_account_password(
+                user, old_admin.password, options["passwords_scheme"])
+
+            if newdom is None:
+                grant_access_to_all_objects(user, "SuperAdmins")
                 user.is_superuser = True
             else:
                 user.groups.add(dagroup)
-                domain.add_admin(user)
+                newdom.add_admin(user)
+
             user.save(using=options["_to"])
 
     def _do_migration(self, options, creator_username='admin'):
         """Run the complete migration."""
-        pf_domains = pf_models.Domain.objects.using(options["_from"]).all()
+        pf_domains = pf_models.Domain.objects.using(
+            options["_from"]).exclude(domain='ALL')
         creator = core_models.User.objects.using(options["_to"]).get(
             username=creator_username)
         for pf_domain in pf_domains:
-
-            if pf_domain.domain == "ALL":
-                continue
 
             try:
                 # Skip this domain if it's an alias
@@ -285,12 +278,13 @@ class Command(BaseCommand):
                 continue
             except pf_models.AliasDomain.DoesNotExist:
                 self._migrate_domain(pf_domain, options, creator)
-                self._migrate_admins(options, creator)
+
+        # Handle the ALL domain
+        pf_domain = pf_models.Domain.objects.using(
+            options["_from"]).get(domain='ALL')
+        self._migrate_admins(options, creator, pf_domain)
 
     def handle(self, *args, **options):
         """Command entry point."""
-        if options["rename_dirs"] and options["mboxes_path"] is None:
-            print "Error: you must provide the --mboxes-path option"
-            sys.exit(1)
         with transaction.commit_on_success():
             self._do_migration(options)
