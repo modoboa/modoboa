@@ -1,4 +1,4 @@
-{% extends "fixed.html" %}{% load i18n lib_tags webmail_tags %}{% load url from future %}
+{% extends "twocols.html" %}{% load i18n lib_tags webmail_tags %}{% load url from future %}
 {% block pagetitle %}Webmail{% endblock %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui.css" />
@@ -32,51 +32,40 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 
-{% block fixed_content %}
-<div class="row">
-  <div id="leftcol" class="col-xs-0 col-sm-3 col-lg-2 sidebar">
-    <div class="leftcol-heading text-center">
-      <a name="compose" class="btn btn-success btn-lg" href="compose">
-        <span class="fa fa-edit"></span>
-        {% trans "Compose" %}
-      </a>
-    </div>
-
-    <div id="folders" class="row">
-      <div class="col-sm-12">
-        {{ mboxes }}
-      </div>
-    </div>
-
-
-    <div id="left-toolbar" class="row">
-      <div class="col-sm-2">
-        <div id="mboxactions" class="btn-group dropup">
-          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-cog"></span>
-          </button>
-          {% mboxes_menu %}
-        </div>
-      </div>
-      {% if quota != -1 %}
-      <div id="quotabox" class="col-sm-10">
-        <div id="quotabar" class="progress">
-          <div class="progress-bar {% progress_color quota %}" role="progressbar" style="width: {{ quota }}%" aria-valuenow="{{ quota }}" aria-valuemin="0" aria-valuemax="100">{{ quota }}%</div>
-        </div>
-      </div>
-      {% endif %}
-
-    </div>
-    
-  </div>
-  <div id="rightcol" class="col-lg-offset-2 col-lg-10 col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-9 col-xs-12">
-    <div class="row">
-      <div id="menubar" role="navbar" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
-    </div>
-    <div class="row">
-    <div id="listing" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
-    </div>
-  </div>
+{% block leftcol %}
+<div class="leftcol-heading text-center">
+  <a name="compose" class="btn btn-success btn-lg" href="compose">
+    <span class="fa fa-edit"></span>
+    {% trans "Compose" %}
+  </a>
 </div>
+
+<div id="folders">
+  {{ mboxes }}
+</div>
+
+<div id="left-toolbar" class="row">
+  <div class="col-sm-2">
+    <div id="mboxactions" class="btn-group dropup">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+        <span class="fa fa-cog"></span>
+      </button>
+      {% mboxes_menu %}
+    </div>
+  </div>
+  {% if quota != -1 %}
+  <div id="quotabox" class="col-sm-10">
+    <div id="quotabar" class="progress">
+      <div class="progress-bar {% progress_color quota %}" role="progressbar" style="width: {{ quota }}%" aria-valuenow="{{ quota }}" aria-valuemin="0" aria-valuemax="100">{{ quota }}%</div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block apparea %}
+<div id="menubar" role="navbar"></div>
+<div id="listing"></div>
+
 {% endblock %}
 

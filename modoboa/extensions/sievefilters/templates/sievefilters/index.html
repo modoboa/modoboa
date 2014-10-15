@@ -73,9 +73,7 @@ $(document).ready(function() {
 {% block leftcol %}
 <ul id="menu" class="nav nav-sidebar">
   <li class="nav-header">{% trans "Filter sets" %}</li>
-  <li class="">
-    <div class="row">
-      <div class="col-md-offset-1 col-md-10">
+  <li class="fset_container">
     <select id="curfset" class="form-control">
       {% if active_script %}
       <option value="{{ active_script }}">{{ active_script }} ({% trans "active" %})</option>
@@ -84,8 +82,6 @@ $(document).ready(function() {
       <option value="{{ script }}">{{ script }}</option>
       {% endfor %}
     </select>
-      </div>
-    </div>
   </li>
   {# It will add a li item : #}
   {% sfilters_menu user %}

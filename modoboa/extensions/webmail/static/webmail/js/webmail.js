@@ -56,45 +56,22 @@ Webmail.prototype = {
             $this.data("original_menu").removeAttr("style");
         });
 
-        /*$("#mboxactions").css({
-            bottom: $("#bottom-bar").outerHeight(true) + "px"
-        });*/
-
-        /* Responsive -> on resizing folders (leftcol) */
-        // $("#folders").resizable({
-        //     start: function(event, ui) {
-        //         $('#listing iframe').css('pointer-events','none');
-        //     },
-        //     handles: "e",
-        //     minWidth: $("#folders").width(),
-        //     maxWidth: 400,
-        //     stop: function(event, ui) {
-        //         $('#listing iframe').css('pointer-events','auto');
-        //     }
-        // });
-
-        // $("#folders").resizable({
-        //     resize: function(event, ui) {
-        //         if ($(window).width() > 1198) {
-        //             var width = ui.size.width;
-        //             /*$("#rightcol").css({
-        //                 marginLeft: width + 'px'
-        //             });*/
-        //             $("#folders").css({
-        //                 width : width + 'px'
-        //             });
-        //             /*$("#rightcol").css({
-        //                 paddingRight: width - 110 + 'px'
-        //             });
-        //             if ($(window).width() < 1800) {
-        //                 $("#rightcol").css({
-        //                     paddingRight: width - 110 + 'px'
-        //                 });
-        //             }*/
-        //         }
-        //     }
-        // });
-        /* end Responsive */
+        $(".sidebar").resizable({
+            start: function(event, ui) {
+                $('#listing iframe').css('pointer-events', 'none');
+            },
+            handles: "e",
+            minWidth: $(".sidebar").width(),
+            maxWidth: 400,
+            stop: function(event, ui) {
+                $('#listing iframe').css('pointer-events', 'auto');
+            },
+            resize: function(event, ui) {               
+                $(".main").css({
+                    marginLeft: ui.size.width + "px"
+                });
+            }
+        });
 
         this.resize();
 
@@ -247,11 +224,11 @@ Webmail.prototype = {
             $("#left-toolbar").offset().top - $("#folders").offset().top
         );
 
-        if ($window.width() > 1198) {
-            // $("#folders").css({
-            //     width: this.options.mboxes_col_width + 'px'
-            // });
-        }
+        // if ($window.width() <= 768) {        
+        //     $(".main").css("margin-left", "0");
+        // } else {
+        //     $(".main").css("margin-left", $(".sidebar").width() + "px");
+        // }
         if (current_action == "compose") {
             this.resize_compose_body();
         }
@@ -1043,7 +1020,7 @@ Webmail.prototype = {
         });
         this.htmltable = $("#emails").data("htmltable");
         this.init_draggables();
-        $("#listing").css("overflow", "auto");
+        $("#listing").css("overflow-y", "auto");
         if (this.navobject.hasparam("reset_page")) {
             this.navobject.delparam("reset_page").update(false, true);
         }
@@ -1096,7 +1073,7 @@ Webmail.prototype = {
      */
     viewmail_callback: function(resp) {
         this.page_update(resp);
-        $("#listing").css("overflow", "hidden");
+        $("#listing").css("overflow-y", "hidden");
         $("a[name=back]").click($.proxy(function(e) {
             e.preventDefault();
             this.go_back_to_listing();

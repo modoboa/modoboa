@@ -3,7 +3,7 @@
 <!-- Brand and toggle get grouped for better mobile display -->
 <div class="row">
   {% block before_menubar %}{% endblock %}
-  <div class="btn-toolbar {{ extraclasses }}{% block menubar_classes %}col-xs-12 col-sm-12{% endblock %}">
+  <div class="btn-toolbar {{ extraclasses }} {% block menubar_classes %}col-xs-12{% endblock %}">
     {% for entry in entries %}
     <div class="btn-group">
       {% if entry.menu %}

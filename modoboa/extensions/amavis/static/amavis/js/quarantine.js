@@ -352,11 +352,12 @@ Quarantine.prototype = {
         if (this.navobj.hasparam("reset_page")) {
             this.navobj.delparam("reset_page").update(false, true);
         }
+        $("#listing").css("overflow", "auto");
     },
 
     viewmail_cb: function(data) {
         this.update_page(data);
-        $("body").css("overflow", "hidden");
+        $("#listing").css("overflow", "hidden");
     },
 
     action_cb: function(data) {

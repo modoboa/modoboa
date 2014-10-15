@@ -28,11 +28,15 @@
 }
 
 #menubar {
-    top: 60px;
+    position: absolute;
+    top: 51px;
     padding-left: 6px;
-    padding-bottom:10px;
+    padding-right: 15px;
+    padding-top: 20px;
+    padding-bottom: 10px;
     left: 0;
     right: 0;
+    margin: 0;
     z-index: 10;
 }
 
@@ -43,11 +47,13 @@
 #listing {
     position: absolute;
     top: 125px;
+    left: 0;
+    right: 0;
     bottom: 0;
     margin: 0;
     overflow: auto;
     padding-left: 15px;
-    padding-right: 15px;   
+    padding-right: 15px;
 }
 
 #mailcontent {
@@ -61,8 +67,6 @@
 #emails tbody tr:hover {
     color: #0088cc;
 }
-
-
 
 thead tr {
     position: relative;

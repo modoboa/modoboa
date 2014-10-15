@@ -1,4 +1,4 @@
-{% extends "fixed.html" %}{% load i18n amavis_tags %}
+{% extends "fluid.html" %}{% load i18n amavis_tags %}
 {% block pagetitle %}{% trans "Quarantine management" %}{% endblock %}
 {% block html_head %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}amavis/css/quarantine.css" />
@@ -20,11 +20,11 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block fixed_content %}
-<div id="menubar" class="row" style="padding-top: 20px">
+
+{% block container_content %}
+<div id="menubar">
   {% quar_menu %}
 </div>
-<div class="row">
-  <div id="listing" class="col-xs-12"></div>
-</div>
+
+<div id="listing"></div>
 {% endblock %}

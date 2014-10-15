@@ -1,7 +1,7 @@
 {% load amavis_tags %}
 
 {% for email in email_list %}
-<tr id="{{ email.mailid }}" name="{{ forloop.counter }}">
+<tr id="{{ email.mailid }}">
   <td name="selection" width="5px">
     <input id="selection" type="checkbox" name="select_{{ email.mailid }}" value="{{ email.mailid }}">
   </td>

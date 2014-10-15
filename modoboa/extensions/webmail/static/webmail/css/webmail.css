@@ -1,35 +1,15 @@
 /* MEDIA */
-#listing {
-    position: absolute;
-    top: 75px;
-    bottom: 0;
-    margin: 0;
-    overflow: auto;
-    padding-left: 15px;
-    padding-right: 15px;     
-}
-
-@media (max-width: 400px) {
-   
-}
-
-@media (max-width: 500px) {
-    
-}
-
-@media (max-width: 768px) {
-    #searchbox {
-        margin-left: 20px;
-    }
-}
 
 @media (min-width: 768px) {
-  
+    .main {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }
 
 @media (max-width: 1198px) {
     .container-fluid {
-        padding:0;
+        padding: 0;
     }
   
     .display-up-1198-webmail {
@@ -41,47 +21,57 @@
 
 }
 
-@media (min-width: 1198px) { 
-
-}
-
 /* GENERAL */
 
-#rightcol { 
-    position: fixed;
+.main {
+    position: absolute;
     top: 51px;
+    left: 0;
+    right: 0;
     bottom: 0;
+    overflow-x: hidden;
+}
+
+#listing {
+    position: absolute;
+    top: 75px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 #folders {
-    position: absolute;
     top: 73px;
     left: 15px;
     right: 15px;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
 }
 
-#folders .ui-resizable-handle {
+.sidebar .ui-resizable-handle {
     background-position: center center;
     background-repeat: no-repeat;
 }
 
-#folders .ui-resizable-n {
+.sidebar .ui-resizable-n {
     top: 0px;
 }
 
-#folders .ui-resizable-s {
+.sidebar .ui-resizable-s {
     bottom: 0px;
 }
 
-#folders .ui-resizable-e {
+.sidebar .ui-resizable-e {
     right: 0px;
     background-image: url("../../pics/grippy.png");
     width: 8px;
 }
 
-#folders .ui-resizable-w {
+.sidebar .ui-resizable-w {
     left: 0px;
     background-image: url("../../pics/grippy.png");
     width: 8px;
@@ -93,12 +83,12 @@
 }
 
 .nav-sidebar li li { 
-    margin-left: 10px;
+    padding-left: 10px;
 }
 
 #mboxes_container a[name=loadfolder] {
     white-space: nowrap;
-    overflow: hidden;
+    overflow: auto;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
 }
@@ -117,7 +107,9 @@
 
 #left-toolbar { 
     position: absolute;
+    margin-left: 0px;
     width: 100%;
+    left: 0;
     bottom: 0;
 }
 
@@ -136,20 +128,11 @@
 
 
 /*
- * TOP NAVBAR
- */
-
-.navbar-header{
-    display: inline-block;
-}
-
-/*
  * Mailboxes list
  */
 .email {
     border-top: 1px solid #ddd;
     padding-top: 10px;
-   
 }
 
 div.email:hover { 
@@ -170,7 +153,7 @@ div.email:hover {
 
 div.clickbox {
     position: absolute;
-    left: 15px;
+    left: 10px;
     top: 5px;
     width: 14px;
     height: 14px;
@@ -187,7 +170,7 @@ div.expanded {
     background-repeat: no-repeat;
 }
 
-div#leftcol #mboxes_container .nav .droppable div.clickbox {
+#mboxes_container .nav .droppable div.clickbox {
     z-index: 800;
 }
 
@@ -301,13 +284,12 @@ list {
 
 
 /*
- *Action buttons
+ * Action buttons
  */
 
-#menubar { 
-    position: absolute;
-    top: 0;
-    padding-top: 20px;
+#menubar {
+    padding-left: 15px;
+    padding-bottom: 20px;
     z-index: 100;
 }
 
@@ -319,14 +301,3 @@ list {
     margin: 0px;
 }
 
-#rightcol #menubar #searchbox #searchfield{
-    margin-left:5px;
-}
-
-#menubar .sm-margin-left-back{
-    margin-left: 6px;
-}
-
-#menubar .md-margin-left-back{
-    margin-left: 16px;
-}

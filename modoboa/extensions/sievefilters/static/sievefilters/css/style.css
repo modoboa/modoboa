@@ -1,3 +1,7 @@
+.fset_container { 
+    padding: 0 15px;
+}
+
 #set_content textarea {
     width: 100%;
     height: 500px;

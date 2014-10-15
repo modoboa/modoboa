@@ -18,11 +18,9 @@ def viewmail_menu(selection, folder, user, mail_id=None):
     """Menu of the viewmail location."""
     entries = [
         {"name": "back",
-         # "url": reverse("modoboa.extensions.webmail.views.index")
-         # + "#?action=listmailbox&mbox=%s" % folder,
          "url": "javascript:history.go(-1)",
          "img": "fa fa-arrow-left",
-         "class": "btn-default sm-margin-left-back",
+         "class": "btn-default",
          "label": _("Back")},
         {"name": "reply",
          "url": "action=reply&mbox=%s&mailid=%s" % (folder, mail_id),
@@ -71,7 +69,7 @@ def compose_menu(selection, backurl, user, **kwargs):
         {"name": "back",
          "url": "javascript:history.go(-2);",
          "img": "fa fa-arrow-left",
-         "class": "md-margin-left-back btn-default",
+         "class": "btn-default",
          "label": _("Back")},
         {"name": "sendmail",
          "url": "",

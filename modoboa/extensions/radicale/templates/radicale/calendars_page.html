@@ -1,6 +1,6 @@
 {% load i18n lib_tags radicale_tags %}
 {% for cal in calendars %}
-<tr id="{{ cal.id }}" class="" name="{{ forloop.counter }}">
+<tr id="{{ cal.id }}">
   <td name="name">{% calendar_modify_link cal %}</td>
   {% if with_owner %}<td name="owner">{{ cal.owner }}</td>{% endif %}
   <td name="tags">{% render_tags cal.tags %}</td>

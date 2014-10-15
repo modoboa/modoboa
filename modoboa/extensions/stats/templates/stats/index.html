@@ -28,19 +28,17 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block apparea %}
-<div class="row">
+<div id="menubar" class="row">
   <div class="col-sm-5">
     <form class="form-horizontal" role="form">
       <div class="form-group has-feedback">
-        <div class="col-sm-12">
-          <input class="form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
-          <span class="fa fa-search form-control-feedback"></span>
-        </div>
+        <input class="form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+        <span class="fa fa-search form-control-feedback"></span>
       </div>
     </form>
   </div>
 
-  <div class="col-md-3">
+  <div class="col-sm-7">
     <div class="btn-group" data-toggle="buttons">
       {% for p in periods %}
       <label class="btn btn-primary period_selector">
@@ -67,7 +65,7 @@ $(document).ready(function() {
             <input id="id_to" class="form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
           </div>
         </div>
-        <button class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
+        <button type="submit" class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
       </span>
     </form>
   </div>

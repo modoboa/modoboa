@@ -88,7 +88,7 @@ def user_menu(user, selection):
         + [{"name": "logout",
             "url": reverse("core:logout"),
             "label": _("Logout"),
-            "img": "fa fa-off"}]
+            "img": "fa fa-sign-out"}]
 
     return render_to_string("common/menulist.html", {
         "selection": selection, "entries": entries, "user": user
