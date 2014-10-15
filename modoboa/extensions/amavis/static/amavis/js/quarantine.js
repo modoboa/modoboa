@@ -344,8 +344,8 @@ Quarantine.prototype = {
         this.navobj.delparam("rcpt").update();
         this.set_msgtype();
         $("#emails").htmltable({
-            tr_selected_event: this.activate_buttons,
-            tr_unselected_event: $.proxy(this.deactivate_buttons, this)
+            row_selected_event: this.activate_buttons,
+            row_unselected_event: $.proxy(this.deactivate_buttons, this)
         });
         this.htmltable = $("#emails").data("htmltable");
         this.deactivate_buttons();
