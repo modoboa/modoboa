@@ -26,13 +26,6 @@ def tolist(values):
 
 
 @register.simple_tag
-def pagination_bar(page):
-    return render_to_string("common/pagination_bar.html", dict(
-        page=page, baseurl="?"
-    ))
-
-
-@register.simple_tag
 def alert(msg, typ):
     t = Template("""<div class="alert alert-{{ type }}" role="alert">
 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

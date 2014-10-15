@@ -18,7 +18,6 @@ from modoboa.lib.exceptions import (
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
-from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.lib.listing import (
@@ -115,13 +114,17 @@ def list_quotas(request, tplname="admin/quotas.html"):
     else:
         raise BadRequest(_("Invalid request"))
     page = get_listing_page(mboxes, request.GET.get("page", 1))
-    return render_to_json_response({
-        "page": page.number,
-        "paginbar": pagination_bar(page),
-        "table": _render_to_string(request, tplname, {
-            "mboxes": page
-        })
-    })
+    context = {}
+    if page is None:
+        context["length"] = 0
+    else:
+        context["rows"] = _render_to_string(
+            request, tplname, {
+                "mboxes": page
+            }
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
 
 
 @login_required

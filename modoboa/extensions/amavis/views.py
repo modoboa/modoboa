@@ -24,7 +24,7 @@ from modoboa.extensions.amavis.templatetags.amavis_tags import (
 from .lib import selfservice, AMrelease, QuarantineNavigationParameters
 from .models import Msgrcpt
 from .sql_connector import get_connector
-from .sql_listing import SQLemail
+from .sql_email import SQLemail
 
 
 def empty_quarantine():

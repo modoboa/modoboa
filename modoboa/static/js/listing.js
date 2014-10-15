@@ -12,9 +12,6 @@ Listing.prototype = {
     constructor: Listing,
 
     listing_defaults: {
-        presp_container: '#pagination-responsive',
-        pbar_container: '#bottom-bar-right',
-        pbar_id: '#pagination_bar',
         sortable_selector: '.sortable',
         with_searchform: true,
         load_page_url: null,
@@ -28,10 +25,6 @@ Listing.prototype = {
         this.options = $.extend({}, this.listing_defaults, options);
         this.tag_handlers = {};
         this.navobj = new History(this.options);
-        $(document).on("click", this.options.pbar_container + " a",
-            $.proxy(this.load_page, this));
-        $(document).on("click", this.options.presp_container + " a",
-            $.proxy(this.load_page, this));
         $(document).on("click", "a.filter", $.proxy(this.filter_by_tag, this));
         if (this.options.with_searchform) {
             this.init_searchform();

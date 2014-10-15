@@ -14,9 +14,6 @@
 @media (max-width: 768px) {
 
      .navbar .navbar-header,
-     .navbar #pagination-responsive{
-         display: inline-block;
-     }
 
      tr th#tags,
      td[name="tags"] {
@@ -35,9 +32,6 @@
 
 @media (max-width: 1198px) {
 
-     #pagination-responsive .display-less-1198{
-         display: inherit;
-     }
      .display-up-1198{
          display: none;
      }
@@ -193,10 +187,6 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     color: white;
 }
 
-#pagination-responsive #pagination_bar {
-    display: none;
-}
-
 /* left sidebar */
 
 /* Sidebar navigation */
@@ -260,26 +250,6 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     color: #999999 !important;
     float:none;
 }
-
-.simplepagination ul {
-    margin-bottom: 0;
-}
-
-.simplepagination li {
-    display: inline;
-    cursor: pointer;
-}
-.simplepagination li span {
-    color: white;
-    margin-bottom: 15px;
-    margin-top: 15px;
-}
-
-.simplepagination .disabled a,
-.simplepagination .disabled a:hover {
-    cursor: default;
-}
-
 
 /* --------- specific pages --------- */
 
