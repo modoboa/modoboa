@@ -2,33 +2,31 @@
 <div class="row">
   <div class="col-lg-9 col-md-8 col-xs-12">
     <div class="navbar-nav">
-      <div>
-        <div class="btn-group" title="{% trans 'Select' %}">
-          <a class="btn btn-default"><input type="checkbox" id="selectall" /></a>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a name="selectmsgs" href="S">{% trans "Spam" %}</a></li>
-            <li><a name="selectmsgs" href="V">{% trans "Virus" %}</a></li>
-            <li><a name="selectmsgs" href="H">{% trans "Bad Header" %}</a></li>
-            <li><a name="selectmsgs" href="M">{% trans "Bad MIME" %}</a></li>
-            <li><a name="selectmsgs" href="B">{% trans "Banned" %}</a></li>
-          </ul>
-        </div>
-        <div class="btn-group">
-          <a name="release-multi" href="{% url 'amavis:mail_process' %}" class="btn btn-success disabled">
-            <span class="fa fa-check"></span> <span>{% trans "Release" %}</span>
-          </a>
-        </div>
-        <div class="btn-group">
-          <a name="delete-multi" href="{% url 'amavis:mail_process' %}" class="btn btn-danger disabled">
-            <span class="fa fa-trash"></span> <span>{% trans "Delete" %}</span>
-          </a>
-        </div>
-        <div class="btn-group">
-          {% include "common/email_searchbar.html" with extraopts=extraopts %}
-        </div>
+      <div class="btn-group" title="{% trans 'Select' %}">
+        <a class="btn btn-default"><input type="checkbox" id="selectall" /></a>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a name="selectmsgs" href="S">{% trans "Spam" %}</a></li>
+          <li><a name="selectmsgs" href="V">{% trans "Virus" %}</a></li>
+          <li><a name="selectmsgs" href="H">{% trans "Bad Header" %}</a></li>
+          <li><a name="selectmsgs" href="M">{% trans "Bad MIME" %}</a></li>
+          <li><a name="selectmsgs" href="B">{% trans "Banned" %}</a></li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <a name="release-multi" href="{% url 'amavis:mail_process' %}" class="btn btn-success disabled">
+          <span class="fa fa-check"></span> <span>{% trans "Release" %}</span>
+        </a>
+      </div>
+      <div class="btn-group">
+        <a name="delete-multi" href="{% url 'amavis:mail_process' %}" class="btn btn-danger disabled">
+          <span class="fa fa-trash"></span> <span>{% trans "Delete" %}</span>
+        </a>
+      </div>
+      <div class="btn-group">
+        {% include "common/email_searchbar.html" with extraopts=extraopts %}
       </div>
     </div>
   </div>
