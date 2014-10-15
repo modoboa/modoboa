@@ -25,8 +25,8 @@ class Page(object):
 
     @property
     def items(self):
-        """The total number of items. (shortcut)"""
-        return self.paginator.total
+        """The number of items in this page."""
+        return self.id_stop - self.id_start
 
     @property
     def has_previous(self):
@@ -61,10 +61,10 @@ class Page(object):
     @property
     def last_page(self):
         """Retrieve the id of the last page."""
-        lid = self.items / self.items_per_page
+        lid = self.paginator.total / self.items_per_page
         if not lid:
             return 1
-        if self.items % self.items_per_page:
+        if self.paginator.total % self.items_per_page:
             lid += 1
         return lid
 

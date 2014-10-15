@@ -143,7 +143,7 @@ def logs_page(request, tplname="core/logs_page.html"):
     else:
         context = {
             "rows": render_to_string(tplname, {"logs": page.object_list}),
-            "page": page.number
+            "pages": [page.number]
         }
     return render_to_json_response(context)
 

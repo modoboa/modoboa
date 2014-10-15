@@ -71,7 +71,7 @@ def _domains(request):
                 'domains': page.object_list,
             }
         )
-        context["page"] = page.number
+        context["pages"] = [page.number]
     return render_to_json_response(context)
 
 

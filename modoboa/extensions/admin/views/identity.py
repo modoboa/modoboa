@@ -60,7 +60,7 @@ def _identities(request):
                 "identities": page.object_list
             }
         )
-        context["page"] = page.number
+        context["pages"] = [page.number]
     return render_to_json_response(context)
 
 

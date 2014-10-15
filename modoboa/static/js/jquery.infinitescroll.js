@@ -20,10 +20,14 @@
         this.$options = options;
         this.executing = false;
         this.end_of_results = false;
-        this.current_page = (isNaN(this.$options.initial_page)) ? 
-            1 : this.$options.initial_page;
-        this.loaded_pages = [this.current_page];
-
+        if (this.$options.initial_pages !== undefined &&
+            this.$options.initial_pages.length > 0) {
+            this.current_page = this.$options.initial_pages[0];
+            this.loaded_pages = this.$options.initial_pages;
+        } else {
+            this.current_page = 1;
+            this.loaded_pages = [this.current_page];
+        }
         this.resume();
     };
 
@@ -38,7 +42,7 @@
         on_scroll: function() {
             var bottom = this.$options.calculate_bottom(this.$element);
 
-            if (bottom === undefined) {
+            if (bottom === undefined || bottom < 0) {
                 return;
             }
             if (this.$element.scrollTop() >= bottom) {
@@ -128,11 +132,11 @@
          * Reset the loaded pages cache.
          *
          * @this InfiniteScroll
-         * @param {Array} current_page - the new current_page
+         * @param {Array} new_pages - the new loaded pages
          */
-        reset_loaded_pages: function(current_page) {
-            this.current_page = current_page;
-            this.loaded_pages = [this.current_page];
+        reset_loaded_pages: function(new_pages) {
+            this.current_page = new_pages[0];
+            this.loaded_pages = new_pages;
             this.end_of_results = false;
         },
 

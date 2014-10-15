@@ -27,15 +27,15 @@ from .sql_connector import get_connector
 from .sql_listing import SQLemail
 
 
-def empty_quarantine(request):
+def empty_quarantine():
     """Shortcut to use when no content can be displayed."""
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content)
     return render_to_json_response(ctx)
 
 
-def get_listing_page(request, connector):
-    """."""
+def get_listing_pages(request, connector):
+    """Return listing pages."""
     paginator = Paginator(
         connector.messages_count(),
         int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
@@ -44,7 +44,13 @@ def get_listing_page(request, connector):
     page = paginator.getpage(page_id)
     if not page:
         return None
-    return page
+    pages = [page]
+    if not page.has_next and page.has_previous and page.items < 40:
+        pages = [paginator.getpage(page_id - 1)] + pages
+    email_list = []
+    for page in pages:
+        email_list += connector.fetch(page.id_start, page.id_stop)
+    return {"pages": [page.number for page in pages], "rows": email_list}
 
 
 @login_required
@@ -55,42 +61,42 @@ def listing_page(request):
     navparams.store()
 
     connector = get_connector(user=request.user, navparams=navparams)
-    page = get_listing_page(request, connector)
-    if page is None:
+    context = get_listing_pages(request, connector)
+    if context is None:
         context = {"length": 0}
         navparams["page"] = previous_page_id
     else:
-        context = {
-            "rows": _render_to_string(request, "amavis/emails_page.html", {
-                "email_list": connector.fetch(page.id_start, page.id_stop)
-            }),
-            "page": page.number
-        }
+        context["rows"] = _render_to_string(
+            request, "amavis/emails_page.html", {"email_list": context["rows"]}
+        )
     return render_to_json_response(context)
 
 
 @login_required
 def _listing(request):
+    """Listing initial view.
+
+    Called the first time the listing page is displayed.
+    """
     if not request.user.is_superuser and request.user.group != 'SimpleUsers':
         if not Domain.objects.get_for_admin(request.user).count():
-            return empty_quarantine(request)
+            return empty_quarantine()
 
     navparams = QuarantineNavigationParameters(request)
     navparams.store()
 
     connector = get_connector(user=request.user, navparams=navparams)
-    page = get_listing_page(request, connector)
-    if page is None:
-        return empty_quarantine(request)
-
-    content = _render_to_string(request, "amavis/email_list.html", {
-        "email_list": connector.fetch(page.id_start, page.id_stop),
-    })
-    ctx = getctx("ok", listing=content, page=page.number)
+    context = get_listing_pages(request, connector)
+    if context is None:
+        return empty_quarantine()
+    context["listing"] = _render_to_string(
+        request, "amavis/email_list.html", {"email_list": context["rows"]}
+    )
+    del context["rows"]
     if request.session.get('location', 'listing') != 'listing':
-        ctx['menu'] = quar_menu()
-    request.session['location'] = 'listing'
-    return render_to_json_response(ctx)
+        context["menu"] = quar_menu()
+    request.session["location"] = "listingx"
+    return render_to_json_response(context)
 
 
 @login_required

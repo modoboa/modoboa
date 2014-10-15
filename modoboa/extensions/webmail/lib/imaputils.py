@@ -664,7 +664,7 @@ class IMAPconnector(object):
         attdef = bs.find_attachment(partnum)
         return attdef, data[int(uid)]["BODY[%s]" % partnum]
 
-    def fetch(self, start, stop=None, mbox=None, **kwargs):
+    def fetch(self, start, stop=None, mbox=None):
         """Retrieve information about messages from the server
 
         Issue a FETCH command to retrieve information about one or
@@ -685,7 +685,9 @@ class IMAPconnector(object):
         data = self._cmd("FETCH", range, query)
         result = []
         for uid in submessages:
-            msg = email.message_from_string(data[int(uid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]'])
+            msg = email.message_from_string(
+                data[int(uid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]']
+            )
             msg['imapid'] = uid
             if not r'\Seen' in data[int(uid)]['FLAGS']:
                 msg['style'] = 'unseen'

@@ -172,15 +172,16 @@ Webmail.prototype = {
         var that = this;
 
         if ($container.data("infinite-scroll") !== undefined) {
-            $container.scrollTop(10);
-            $container.infinite_scroll(
-                "reset_loaded_pages", parseInt(data.page));
+            if (data.pages && data.pages[0] != 1) {
+                $container.scrollTop(10);
+            }
+            $container.infinite_scroll("reset_loaded_pages", data.pages);
             $container.infinite_scroll("resume");
             return;
         }
 
         $container.infinite_scroll({
-            initial_page: parseInt(data.page),
+            initial_pages: data.pages,
             url: this.options.listing_url,
             calculate_bottom: function($element) {
                 return $("#emails").height() - $element.height();

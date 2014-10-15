@@ -127,7 +127,7 @@ def empty(request):
     get_imapconnector(request).empty(name)
     content = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
     return render_to_json_response({
-        'listing': content, 'mailbox': name
+        'listing': content, 'mailbox': name, 'pages': [1]
     })
 
 
@@ -357,11 +357,9 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
         int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
     )
     page = paginator.getpage(page_id)
-
+    content = ""
     if page is not None:
-        email_list = mbc.fetch(
-            page.id_start, page.id_stop, mbox, nbelems=page.items
-        )
+        email_list = mbc.fetch(page.id_start, page.id_stop, mbox)
         content = _render_to_string(request, "webmail/email_list.html", {
             "email_list": email_list,
             "page": page_id,
@@ -369,12 +367,13 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
         })
         length = len(content)
     else:
-        content = "<div class='alert alert-info'>{}</div>".format(
-            _("Empty mailbox")
-        )
+        if page_id == 1:
+            content = "<div class='alert alert-info'>{}</div>".format(
+                _("Empty mailbox")
+            )
         length = 0
         navparams["page"] = previous_page_id
-    return {"listing": content, "length": length, "page": page_id}
+    return {"listing": content, "length": length, "pages": [page_id]}
 
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):

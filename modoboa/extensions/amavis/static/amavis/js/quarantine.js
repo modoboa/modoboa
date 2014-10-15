@@ -83,7 +83,6 @@ Quarantine.prototype = {
             $(this.options.scroll_container).scrollTop(10);
         } else {
             this.update_listing(data, false);
-            $(this.options.scroll_container).infinite_scroll("pause");
         }
     },
 

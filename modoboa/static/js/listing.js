@@ -136,7 +136,7 @@ Listing.prototype = {
      */
     end_of_list_reached: function(element) {
         $("#" + this.options.main_table_id).after(
-            $("<div class='alert alert-info'>{0}</div>".format(
+            $("<div class='alert alert-info text-center'>{0}</div>".format(
                 this.options.eor_message
             ))
         );
@@ -156,10 +156,11 @@ Listing.prototype = {
         $scroll_container.scrollTop(0);
         if (with_infinite_scroll || with_infinite_scroll === undefined) {
             if ($scroll_container.data("infinite-scroll") !== undefined) {
-                $scroll_container.infinite_scroll("reset_loaded_pages", data.page);
+                $scroll_container.infinite_scroll("reset_loaded_pages", data.pages);
                 $scroll_container.infinite_scroll("resume");
             } else {
                 $scroll_container.infinite_scroll({
+                    initial_pages: data.pages,
                     url: this.options.load_page_url,
                     get_args: $.proxy(this.get_load_page_args, this),
                     calculate_bottom: $.proxy(this.calculate_bottom, this),
