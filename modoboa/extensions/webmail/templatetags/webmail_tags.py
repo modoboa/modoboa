@@ -40,7 +40,7 @@ def viewmail_menu(selection, folder, user, mail_id=None):
         {"name": "delete",
          "img": "fa fa-trash",
          "class": "btn-danger",
-         "url": "{}?mbox={}&selection[]={}".format(
+         "url": "{0}?mbox={1}&selection[]={2}".format(
              reverse("webmail:mail_delete"), folder, mail_id),
          "title": _("Delete")
         },
@@ -100,11 +100,11 @@ def listmailbox_menu(selection, folder, user):
          "menu": [
              {"name": "mark-read",
               "label": _("Mark as read"),
-              "url": "{}?status=read".format(
+              "url": "{0}?status=read".format(
                   reverse("webmail:mail_mark", args=[folder]))},
              {"name": "mark-unread",
               "label": _("Mark as unread"),
-              "url": "{}?status=unread".format(
+              "url": "{0}?status=unread".format(
                   reverse("webmail:mail_mark", args=[folder]))},
          ]
          },
@@ -114,7 +114,8 @@ def listmailbox_menu(selection, folder, user):
         entries[1]["menu"] += [
             {"name": "empty",
              "label": _("Empty folder"),
-             "url": "{}?name={}".format(reverse("webmail:trash_empty"), folder)}
+             "url": "{0}?name={1}".format(
+                 reverse("webmail:trash_empty"), folder)}
         ]
     return render_to_string('webmail/main_action_bar.html', {
         'selection': selection, 'entries': entries, 'user': user, 'css': "nav",

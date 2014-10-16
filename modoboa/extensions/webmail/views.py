@@ -368,7 +368,7 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
         length = len(content)
     else:
         if page_id == 1:
-            content = "<div class='alert alert-info'>{}</div>".format(
+            content = "<div class='alert alert-info'>{0}</div>".format(
                 _("Empty mailbox")
             )
         length = 0
@@ -506,7 +506,7 @@ def viewmail(request):
     else:
         links = int(links)
 
-    url = "{}?mbox={}&mailid={}&links={}".format(
+    url = "{0}?mbox={1}&mailid={2}&links={3}".format(
         reverse("webmail:mailcontent_get"), mbox, mailid, links)
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>

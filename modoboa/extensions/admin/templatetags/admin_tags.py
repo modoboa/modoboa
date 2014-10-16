@@ -236,7 +236,7 @@ def identity_modify_link(identity, active_tab='default'):
 def domadmin_actions(daid, domid):
     actions = [{
         "name": "removeperm",
-        "url": "{}?domid={}&daid={}".format(
+        "url": "{0}?domid={1}&daid={2}".format(
             reverse("admin:permission_remove"), domid, daid),
         "img": "fa fa-trash",
         "title": _("Remove this permission")

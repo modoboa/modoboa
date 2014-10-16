@@ -270,7 +270,7 @@ class ResellerTestCase(ResourceTestCase):
         self.clt.logout()
         self.clt.login(username='admin', password='password')
         self.ajax_get(
-            "{}?domid={}&daid={}".format(
+            "{0}?domid={1}&daid={2}".format(
                 reverse('admin:permission_remove'), dom.id, self.user.id
             ), {}
         )
