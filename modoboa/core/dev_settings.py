@@ -7,7 +7,7 @@ BOWER_COMPONENTS_ROOT = os.path.join(
 
 BOWER_INSTALLED_APPS = (
     "jquery#1.9",
-    "jquery.ui#1.9",
+    "jquery-ui#1.11",
     "bootstrap#3.2.0",
     "bootstrap-select#1.5.4",
     "d3#3.3.13",

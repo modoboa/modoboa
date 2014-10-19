@@ -1,5 +1,6 @@
 {% extends "common/generic_modal_form.html" %}{% load url from future %}
 {% load i18n %}
+{% load static %}
 {% block modalbody %}
 {{ block.super }}
 
@@ -8,7 +9,7 @@
 </div>
 
 <div id="upload_status" style="display:none">
-  <img src="{{ STATIC_URL }}css/spinner.gif" /> {% trans "Uploading.." %}
+  <img src="{% static 'css/spinner.gif' %}" /> {% trans "Uploading.." %}
 </div>
 <iframe id="upload_target" name="upload_target" src="#" 
         style="width:0;height:0;border:0px solid #fff;"></iframe>

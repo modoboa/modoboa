@@ -1,15 +1,17 @@
-{% extends "twocols.html" %}{% load i18n radicale_tags %}
+{% extends "twocols.html" %}
+{% load i18n radicale_tags %}
+{% load static %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.sortable.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}radicale/css/radicale.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.infinitescroll.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/creation_wizard.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/listing.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}radicale/js/jquery.dynamicrule.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}radicale/js/radicale.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.sortable.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'radicale/css/radicale.css' %}" />
+<script type="text/javascript" src="{% static 'js/jquery.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.infinitescroll.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/creation_wizard.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/autocompleter.js' %}"></script>
+<script type="text/javascript" src="{% static 'radicale/js/jquery.dynamicrule.js' %}"></script>
+<script type="text/javascript" src="{% static 'radicale/js/radicale.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     radicale = new Radicale({

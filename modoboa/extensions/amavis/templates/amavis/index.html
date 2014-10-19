@@ -1,15 +1,16 @@
 {% extends "fluid.html" %}{% load i18n amavis_tags %}
+{% load static %}
 {% block pagetitle %}{% trans "Quarantine management" %}{% endblock %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}amavis/css/quarantine.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.sortable.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.htmltable.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.infinitescroll.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/searchbar.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/listing.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}amavis/js/quarantine.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'amavis/css/quarantine.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.sortable.css' %}" />
+<script type="text/javascript" src="{% static 'js/jquery.htmltable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.infinitescroll.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/searchbar.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
+<script type="text/javascript" src="{% static 'amavis/js/quarantine.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     var qm = new Quarantine({

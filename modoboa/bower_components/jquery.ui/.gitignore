@@ -1,9 +1,0 @@
-dist
-node_modules
-docs
-.project
-*~
-*.diff
-*.patch
-.DS_Store
-.settings

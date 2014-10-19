@@ -59,12 +59,8 @@ Stats.prototype = {
             }
         }
         $("#custom-period .datetime_picker").datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            autoclose: true,
-            todayHighlight: true,
-            todayBtn: 'linked',
-            language: this.options.language,
-            forceParse: false
+            format: 'YYYY-MM-DD hh:mm:ss',
+            language: this.options.language
         });
         $("#searchquery").autocompleter({
             choices: $.proxy(this.get_domain_list, this),

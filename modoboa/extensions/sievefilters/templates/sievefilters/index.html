@@ -1,11 +1,12 @@
 {% extends "twocols.html" %}{% load i18n sfilters_tags %}{% load url from future %}
+{% load static %}
 {% block pagetitle %}{% trans "Message filters" %}{% endblock %}
 {% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}sievefilters/css/style.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}sievefilters/js/lib.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/dynamic_input.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}sievefilters/js/jquery.dynfields.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'sievefilters/css/style.css' %}" />
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'sievefilters/js/lib.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/dynamic_input.js' %}"></script>
+<script type="text/javascript" src="{% static 'sievefilters/js/jquery.dynfields.js' %}"></script>
 <script type="text/javascript">
 var histomanager = new History({
     deflocation: "{{ default_script }}",

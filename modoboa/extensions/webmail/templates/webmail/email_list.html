@@ -1,11 +1,12 @@
 {% load i18n %}
 {% load webmail_tags %}
+{% load static %}
 
 {% if with_top_div %}<div id="emails">{% endif %}
   {% for email in email_list %}
   <div id="{{ email.imapid }}" class="row email{% if email.style %} {{ email.style }}{% endif %}" data-page="{{ page }}">
     <div class="hidden-xs col-sm-1">
-      <img name="drag" src="{{ STATIC_URL }}pics/grippy.png" class="draggable" />
+      <img name="drag" src="{% static 'pics/grippy.png' %}" class="draggable" />
 
       <input type="checkbox" />
     </div>
