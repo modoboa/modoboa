@@ -94,7 +94,20 @@ class User(PermissionsMixin):
         super(User, self).delete()
 
     def _crypt_password(self, raw_value):
-        scheme = parameters.get_admin("PASSWORD_SCHEME")
+        """Crypt the local password using the appropriate scheme.
+
+        In case we don't find the scheme (for example when the
+        management framework is used), we load the parameters and try
+        one more time.
+
+        """
+        try:
+            scheme = parameters.get_admin("PASSWORD_SCHEME")
+        except parameters.NotDefined:
+            from modoboa.core import load_core_settings
+            load_core_settings()
+            scheme = parameters.get_admin("PASSWORD_SCHEME")
+
         if type(raw_value) is unicode:
             raw_value = raw_value.encode("utf-8")
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
