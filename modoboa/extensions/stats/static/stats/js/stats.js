@@ -58,12 +58,13 @@ Stats.prototype = {
                 $("#custom_period").removeClass("hidden");
             }
         }
-        $("#custom-period input").datetimepicker({
+        $("#custom-period .datetime_picker").datetimepicker({
             format: 'yyyy-mm-dd hh:ii:ss',
             autoclose: true,
             todayHighlight: true,
             todayBtn: 'linked',
-            language: this.options.language
+            language: this.options.language,
+            forceParse: false
         });
         $("#searchquery").autocompleter({
             choices: $.proxy(this.get_domain_list, this),

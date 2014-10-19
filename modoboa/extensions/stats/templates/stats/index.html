@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}stats/css/stats.css" />
 <script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/d3.v3.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}d3/js/d3.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/d3.legend.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/graphic.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
@@ -54,16 +54,20 @@ $(document).ready(function() {
     <form class="form-inline">
       <span id="custom-period">
         <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-addon"><span class="fa fa-indent"></span></div>
-            <input id="id_from" class="form-control" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
+          <div class="input-group datetime_picker" data-link-field="id_from">
+
+            <input class="form-control" value="" type="text" readonly="readonly">
+            <span class="add-on"><i class="fa fa-remove"></i></span>
+            <span class="add-on"><i class="fa fa-th"></i></span>
           </div>
+          <input type="hidden" id="id_from" name="date_from" value="{{ start }}" /><br/>
         </div>
         <div class="form-group">
-          <div class="input-group">
+          <div class="input-group datetime_picker">
             <div class="input-group-addon"><span class="fa fa-outdent"></span></div>
-            <input id="id_to" class="form-control" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
+            <input class="form-control" type="text" readonly="readonly" />
           </div>
+          <input type="hidden" id="id_to" name="date_to" value="{{ end }}" /><br/>
         </div>
         <button type="submit" class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
       </span>

@@ -144,11 +144,14 @@ class DeployCommand(Command):
 
         if parsed_args.with_amavis:
             if parsed_args.amavis_dburl:
-                amavis_info = dj_database_url.config(default=parsed_args.amavis_dburl[0])
-                # In case the user fails to supply a valid database url, fallback to manual mode
+                amavis_info = dj_database_url.config(
+                    default=parsed_args.amavis_dburl[0])
+                # In case the user fails to supply a valid database
+                # url, fallback to manual mode
                 if not amavis_info:
                     amavis_info = self.ask_db_info('amavis')
-                #If we set this earlier, our fallback method will never be triggered
+                # If we set this earlier, our fallback method will
+                # never be triggered
                 amavis_info['conn_name'] = 'amavis'
             else:
                 amavis_info = self.ask_db_info('amavis')
@@ -164,13 +167,19 @@ class DeployCommand(Command):
                 'Under which domain do you want to deploy modoboa? '
             )
 
+        bower_components_dir = os.path.realpath(
+            os.path.join(os.path.dirname(__file__), "../../bower_components")
+        )
+
         mod = __import__(parsed_args.name, globals(), locals(), ['settings'])
         tpl = self._render_template(
             "%s/settings.py.tpl" % self._templates_dir, {
                 'default_conn': default_conn, 'amavis_conn': amavis_conn,
                 'secret_key': mod.settings.SECRET_KEY,
                 'name': parsed_args.name, 'django14': django14,
-                'allowed_host': allowed_host
+                'allowed_host': allowed_host,
+                'bower_components_dir': bower_components_dir,
+                'devmode': False
             }
         )
         with open("%s/settings.py" % path, "w") as fp:
