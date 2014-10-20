@@ -1,8 +1,13 @@
 {% extends "admin/header.html" %}{% load i18n admin_tags %}
 {% load static %}
-{% block html_head %}
+
+{% block extra_css %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.sortable.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
 <script type="text/javascript" src="{% static 'js/creation_wizard.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/dynamic_input.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.sortable.js' %}"></script>
@@ -11,6 +16,7 @@
 var admin;
 </script>
 {% endblock %}
+
 {% block leftcol %}
 <ul class="nav nav-sidebar">
   {% block actions %}{% endblock %}
@@ -18,6 +24,7 @@ var admin;
 
 {% get_extra_admin_content user "leftcol" selection %}
 {% endblock %}
+
 {% block apparea %}
 <div class="row">
   <div class="col-sm-5">

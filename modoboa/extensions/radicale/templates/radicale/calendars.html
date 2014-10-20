@@ -1,9 +1,13 @@
 {% extends "twocols.html" %}
 {% load i18n radicale_tags %}
 {% load static %}
-{% block html_head %}
+
+{% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.sortable.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'radicale/css/radicale.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
 <script type="text/javascript" src="{% static 'js/jquery.sortable.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.infinitescroll.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/history.js' %}"></script>
@@ -21,11 +25,13 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
+
 {% block leftcol %}
 <ul class="nav nav-sidebar">
   {% radicale_left_menu user %}
 </ul>
 {% endblock %}
+
 {% block apparea %}
 <div class="row">
   <div class="col-sm-5">

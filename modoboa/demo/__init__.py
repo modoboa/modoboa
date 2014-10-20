@@ -43,8 +43,8 @@ def password_change(user):
 
 
 @events.observe("GetStaticContent")
-def get_static_content(caller, user):
-    if caller != 'top' and not user.mailbox_set.count():
+def get_static_content(caller, st_type, user):
+    if caller != 'top' or st_type != 'js' or not user.mailbox_set.count():
         return []
 
     return ["""<script type="text/javascript">

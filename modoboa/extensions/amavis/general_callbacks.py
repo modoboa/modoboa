@@ -50,8 +50,8 @@ def on_domain_alias_deleted(domainaliases):
 
 
 @events.observe("GetStaticContent")
-def extra_static_content(caller, user):
-    if user.group == "SimpleUsers":
+def extra_static_content(caller, st_type, user):
+    if user.group == "SimpleUsers" or st_type != "js":
         return []
 
     if caller == 'domains':

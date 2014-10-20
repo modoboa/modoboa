@@ -1,9 +1,12 @@
 {% extends "twocols.html" %}{% load i18n lib_tags webmail_tags %}{% load url from future %}
 {% load static %}
 {% block pagetitle %}Webmail{% endblock %}
-{% block html_head %}
+{% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'jquery-ui/themes/base/all.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'webmail/css/webmail.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
 <script type="text/javascript" src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/ckeditor/ckeditor.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/history.js' %}"></script>

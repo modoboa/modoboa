@@ -73,10 +73,11 @@ def render_tags(tags):
 
 
 @register.simple_tag
-def extra_static_content(caller, user):
+def extra_static_content(caller, st_type, user):
     """Get extra static content from extensions.
 
     :param str caller: the application (location) responsible for the call
+    :param str st_type: content type (css or js)
     :param ``User`` user: connected user
     """
     tpl = template.Template(
@@ -84,6 +85,7 @@ def extra_static_content(caller, user):
     )
     return tpl.render(
         template.Context({
-            'static_content': events.raiseQueryEvent("GetStaticContent", caller, user)
+            'static_content': events.raiseQueryEvent(
+                "GetStaticContent", caller, st_type, user)
         })
     )

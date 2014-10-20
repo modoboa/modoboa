@@ -1,8 +1,13 @@
 {% extends "twocols.html" %}{% load i18n sfilters_tags %}{% load url from future %}
 {% load static %}
+
 {% block pagetitle %}{% trans "Message filters" %}{% endblock %}
-{% block html_head %}
+
+{% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'sievefilters/css/style.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
 <script type="text/javascript" src="{% static 'js/history.js' %}"></script>
 <script type="text/javascript" src="{% static 'sievefilters/js/lib.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/dynamic_input.js' %}"></script>
@@ -71,6 +76,7 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
+
 {% block leftcol %}
 <ul id="menu" class="nav nav-sidebar">
   <li class="nav-header">{% trans "Filter sets" %}</li>
@@ -88,6 +94,7 @@ $(document).ready(function() {
   {% sfilters_menu user %}
 </ul>
 {% endblock %}
+
 {% block apparea %}
 <div id="set_content">
   {% if not active_script and not scripts %}

@@ -1,8 +1,13 @@
 {% extends "twocols.html" %}{% load i18n %}{% load url from future %}
 {% load static %}
+
 {% block pagetitle %}{% trans "Graphical statistics" %}{% endblock %}
-{% block html_head %}
+
+{% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'stats/css/stats.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
 <script type="text/javascript" src="{% static 'js/history.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/autocompleter.js' %}"></script>
 <script type="text/javascript" src="{% static 'd3/d3.min.js' %}"></script>
@@ -20,6 +25,7 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
+
 {% block leftcol %}
 <ul class="nav nav-sidebar">
   {% for id, gset in graph_sets.items %}

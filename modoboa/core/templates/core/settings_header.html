@@ -1,10 +1,15 @@
 {% extends "twocols.html" %}
 {% load i18n lib_tags core_tags %}
 {% load static %}
+
 {% block pagetitle %}{% trans "Modoboa settings" %}{% endblock %}
-{% block html_head %}
+
+{% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/settings.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.sortable.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
 <script type="text/javascript" src="{% static 'js/jquery.infinitescroll.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/history.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
@@ -23,5 +28,7 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
+
 {% block leftcol %}{% admin_menu left_selection user %}{% endblock %}
+
 {% block apparea %}<div id="settings_content"></div>{% endblock %}

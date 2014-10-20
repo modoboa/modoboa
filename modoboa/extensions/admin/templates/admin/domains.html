@@ -1,6 +1,12 @@
 {% extends "admin/listing.html" %}{% load i18n admin_tags lib_tags %}
+
 {% block pagetitle %}{% trans "Domains" %}{% endblock %}
-{% block html_head %}
+
+{% block extra_css %}
+{% extra_static_content "domains" "css" user %}
+{% endblock %}
+
+{% block extra_js %}
 {{ block.super }}
 <script type="text/javascript">
 $(document).ready(function() {
@@ -9,8 +15,9 @@ $(document).ready(function() {
     });
 });
 </script>
-{% extra_static_content "domains" user %}
+{% extra_static_content "domains" "js" user %}
 {% endblock %}
+
 {% block actions %}{% domains_menu "domains" user %}{% endblock %}
 
 {% block table_header %}

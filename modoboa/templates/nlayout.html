@@ -13,7 +13,42 @@
     <link rel="stylesheet" href="{% static 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css' %}" />
     <link rel="stylesheet" href="{% static 'bootstrap-select/bootstrap-select.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
+    {% block extra_css %}{% endblock %}
+  </head>
 
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button class="navbar-toggle collapsed" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <div id="navigate-navbar-collapse" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            {% if selection %}
+              {% extensions_menu selection user %}{% core_menu selection user %}
+            {% else %}
+              {% extensions_menu "" user %}{% core_menu "" user %}
+            {% endif %}
+            {% load_optionalmenu user %}
+            <li class="divider"></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
+          </ul>
+          {% include "common/top_notifications.html" %}
+        </div>
+      </div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <!-- Javascript -->
     <script src="{% static 'jquery/jquery.js' %}" type="text/javascript"></script>
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}" type="text/javascript"></script>
     <script type="text/javascript" src="{% static 'moment/min/moment.min.js' %}"></script>
@@ -42,73 +77,7 @@
           });
       });
     </script>
-    {% extra_static_content "top" user %}
-    {% block html_head %}{% endblock %}
-  </head>
-  <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button class="navbar-toggle collapsed" data-target=".navbar-collapse" data-toggle="collapse" type="button">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-
-        <div id="navigate-navbar-collapse" class="navbar-collapse collapse">
-
-          <!--<ul class="nav navbar-nav display-less-1198">
-            <li class="droppable active ui-droppable" name="INBOX">
-              <a class="block" name="loadfolder" href="INBOX">
-                <i class="fa fa-inbox"></i>
-                INBOX
-              </a>
-            </li>
-            <li class="droppable ui-droppable" name="Drafts">
-              <a class="block" name="loadfolder" href="Drafts">
-                <i class="fa fa-file"></i>
-                Drafts
-              </a>
-            </li>
-            <li class="droppable ui-droppable" name="Junk">
-              <a class="block" name="loadfolder" href="Junk">
-                <i class="fa fa-fire"></i>
-                Junk
-              </a>
-            </li>
-            <li class="droppable ui-droppable" name="Sent">
-              <a class="block" name="loadfolder" href="Sent">
-                <i class="fa fa-envelope"></i>
-                Sent
-              </a>
-            </li>
-            <li class="droppable ui-droppable" name="Trash">
-              <a class="block" name="loadfolder" href="Trash">
-                <i class="fa fa-trash"></i>
-                Trash
-              </a>
-            </li>
-          </ul> -->
-
-          <ul class="nav navbar-nav">
-            {% if selection %}
-              {% extensions_menu selection user %}{% core_menu selection user %}
-            {% else %}
-              {% extensions_menu "" user %}{% core_menu "" user %}
-            {% endif %}
-            {% load_optionalmenu user %}
-            <li class="divider"></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
-          </ul>
-          {% include "common/top_notifications.html" %}
-        </div>
-      </div>
-    </div>
-    {% block content %}{% endblock %}
-
+    {% extra_static_content "top" "js" user %}
+    {% block extra_js %}{% endblock %}
   </body>
 </html>

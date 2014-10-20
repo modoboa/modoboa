@@ -1,7 +1,13 @@
 {% extends "admin/listing.html" %}{% load admin_tags lib_tags i18n %}{% load url from future %}
 {% load static %}
+
 {% block pagetitle %}{% trans "Identities" %}{% endblock %}
-{% block html_head %}
+
+{% block extra_css %}
+{% extra_static_content "identities" "css" user %}
+{% endblock %}
+
+{% block extra_js %}
 {{ block.super }}
 <script type="text/javascript" src="{% static 'js/autocompleter.js' %}"></script>
 <script type="text/javascript">
@@ -12,6 +18,7 @@ $(document).ready(function() {
     });
 });
 </script>
-{% extra_static_content "identities" user %}
+{% extra_static_content "identities" "js" user %}
 {% endblock %}
+
 {% block actions %}{% identities_menu user "identities" %}{% endblock %}

@@ -8,8 +8,8 @@ from .models import RelayDomain, RelayDomainAlias
 
 
 @events.observe('GetStaticContent')
-def static_content(caller, user):
-    if caller != 'domains':
+def static_content(caller, st_type, user):
+    if caller != 'domains' or st_type != 'js':
         return []
 
     t = Template("""<script src="{{ STATIC_URL }}postfix_relay_domains/js/relay_domains.js" type="text/javascript"></script>
