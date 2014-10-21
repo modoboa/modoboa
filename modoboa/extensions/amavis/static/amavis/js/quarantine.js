@@ -62,10 +62,18 @@ Quarantine.prototype = {
             $.proxy(this.release_selection, this));
         $(document).on("click", "a[name=delete-multi]",
             $.proxy(this.delete_selection, this));
+        $(document).on("click", "a[name=mark-as-spam-multi]",
+            $.proxy(this.mark_selection_as_spam, this));
+        $(document).on("click", "a[name=mark-as-ham-multi]",
+            $.proxy(this.mark_selection_as_ham, this));
         $(document).on("click", "a[name=viewrequests]",
             $.proxy(this.view_requests, this));
         $(document).on("click", "a[name=release]", $.proxy(this.release, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete, this));
+        $(document).on("click", "a[name=mark-as-spam]",
+            $.proxy(this.mark_as_spam, this));
+        $(document).on("click", "a[name=mark-as-ham]",
+            $.proxy(this.mark_as_ham, this));
         $(document).on("click", "a[name=headers]", $.proxy(this.headers, this));
         $(document).on("click", "td[name=type] span", $.proxy(this.filter_by_type, this));
         $(document).on("click", "#filters button", $.proxy(this.filter_by_type, this));
@@ -191,6 +199,26 @@ Quarantine.prototype = {
         this._send_selection(e, "delete", gettext("Delete this selection?"));
     },
 
+    /**
+     * Mark the current selection as spam.
+     *
+     * @param {Object} e - event object
+     */
+    mark_selection_as_spam: function(e) {
+        this._send_selection(
+            e, "mark_as_spam", gettext("Mark this selection as spam?"));
+    },
+
+    /**
+     * Mark the current selection as ham.
+     *
+     * @param {Object} e - event object
+     */
+    mark_selection_as_ham: function(e) {
+        this._send_selection(
+            e, "mark_as_ham", gettext("Mark this selection as non-spam?"));
+    },
+
     _send_action: function(e, message) {
         var $link = get_target(e, "a");
 
@@ -206,12 +234,30 @@ Quarantine.prototype = {
         }).done($.proxy(this.action_cb, this));
     },
 
-    release: function(e) {
+        release : function(e) {
         this._send_action(e, gettext("Release this message?"));
     },
 
     delete: function(e) {
         this._send_action(e, gettext("Delete this message?"));
+    },
+
+    /**
+     * Mark the current message as spam.
+     *
+     * @param {Object} e - event object
+     */
+    mark_as_spam: function(e) {
+        this._send_action(e, gettext("Mark as spam?"));
+    },
+
+    /**
+     * Mark the current message as ham.
+     *
+     * @param {Object} e - event object
+     */
+    mark_as_ham: function(e) {
+        this._send_action(e, gettext("Mark as non-spam?"));
     },
 
     show_rawheaders: function($mailcontent) {
@@ -261,15 +307,13 @@ Quarantine.prototype = {
     },
 
     activate_buttons: function($tr) {
-        $("a[name=release-multi]").removeClass('disabled');
-        $("a[name=delete-multi]").removeClass('disabled');
+        $("a[name*=-multi]").removeClass('disabled');
         $("#selectall").prop('checked', true);
     },
 
     deactivate_buttons: function($tr) {
         if (!this.htmltable || !this.htmltable.current_selection().length) {
-            $("a[name=release-multi]").addClass('disabled');
-            $("a[name=delete-multi]").addClass('disabled');
+            $("a[name*=-multi]").addClass('disabled');
             $("#selectall").prop('checked', false);
         }
     },

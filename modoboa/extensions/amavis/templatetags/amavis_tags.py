@@ -2,8 +2,6 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.conf import settings
-from modoboa.lib.webutils import _render_to_string
 
 register = template.Library()
 
@@ -23,8 +21,24 @@ def viewm_menu(mail_id, rcpt):
          "url": reverse('modoboa.extensions.amavis.views.delete', args=[mail_id])
          + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label": _("Delete")},
+        {"name": "process",
+         "img": "icon-cog",
+         "menu": [
+             {"name": "mark-as-spam",
+              "label": _("Mark as spam"),
+              "url": reverse(
+                  "modoboa.extensions.amavis.views.mark_as_spam", args=[mail_id]
+              ) + ("?rcpt=%s" % rcpt if rcpt else "")},
+             {"name": "mark-as-ham",
+              "label": _("Mark as non-spam"),
+              "url": reverse(
+                  "modoboa.extensions.amavis.views.mark_as_ham", args=[mail_id]
+              ) + ("?rcpt=%s" % rcpt if rcpt else "")}
+         ]},
         {"name": "headers",
-         "url": reverse('modoboa.extensions.amavis.views.viewheaders', args=[mail_id]),
+         "url": reverse(
+             'modoboa.extensions.amavis.views.viewheaders', args=[mail_id]
+         ),
          "label": _("View full headers")},
     ]
 

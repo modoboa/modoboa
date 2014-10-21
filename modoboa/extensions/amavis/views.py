@@ -17,7 +17,10 @@ from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.extensions.amavis.templatetags.amavis_tags import (
     quar_menu, viewm_menu
 )
-from .lib import selfservice, AMrelease, QuarantineNavigationParameters
+from .lib import (
+    selfservice, AMrelease, QuarantineNavigationParameters,
+    SpamassassinClient
+)
 from .models import Msgrcpt
 from .sql_connector import get_connector
 from .sql_listing import SQLlisting, SQLemail
@@ -254,11 +257,67 @@ def release(request, mail_id):
     )
 
 
+def mark_messages(request, selection, mtype):
+    """Mark a selection of messages as spam.
+
+    :param str selection: message unique identifier
+    :param str mtype: type of marking (spam or ham)
+    """
+    selection = check_mail_id(request, selection)
+    connector = get_connector()
+    per_user_bayesian_filter = parameters.get_admin("PER_USER_BAYESIAN_FILTER")
+    if per_user_bayesian_filter == "yes" \
+       and request.user.group == "SimpleUsers":
+        username = request.user.email
+    else:
+        username = None
+    saclient = SpamassassinClient(username)
+    for item in selection:
+        rcpt, mail_id = item.split()
+        content = "".join(
+            [msg.mail_text for msg in connector.get_mail_content(mail_id)]
+        )
+        result = saclient.learn_spam(content) if mtype == "spam" \
+            else saclient.learn_ham(content)
+        if not result:
+            break
+    if saclient.error is None:
+        saclient.done()
+        message = ungettext("%(count)d message processed successfully",
+                            "%(count)d messages processed successfully",
+                            len(selection)) % {"count": len(selection)}
+    else:
+        message = saclient.error
+    return ajax_response(
+        request, "ko" if saclient.error else "ok", respmsg=message,
+        url=QuarantineNavigationParameters(request).back_to_listing()
+    )
+
+
+@login_required
+def mark_as_spam(request, mail_id):
+    """Mark a single message as spam."""
+    return mark_messages(request, mail_id, "spam")
+
+
+@login_required
+def mark_as_ham(request, mail_id):
+    """Mark a single message as ham."""
+    return mark_messages(request, mail_id, "ham")
+
+
 @login_required
 def process(request):
+    """Process a selection of messages.
+
+    The request must specify an action to execute against the
+    selection.
+
+    """
+    action = request.POST.get("action", None)
     ids = request.POST.get("selection", "")
     ids = ids.split(",")
-    if not len(ids):
+    if not ids or action is None:
         return HttpResponseRedirect(reverse(index))
 
     if request.POST["action"] == "release":
@@ -266,6 +325,12 @@ def process(request):
 
     if request.POST["action"] == "delete":
         return delete(request, ids)
+
+    if request.POST["action"] == "mark_as_spam":
+        return mark_messages(request, ids, "spam")
+
+    if request.POST["action"] == "mark_as_ham":
+        return mark_messages(request, ids, "ham")
 
 
 @login_required

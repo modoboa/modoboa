@@ -23,6 +23,15 @@
       <i class="icon-white icon-trash"></i> {% trans "Delete" %}
     </a>
   </div>
+  <div class="btn-group" title="{% trans 'More actions' %}">
+    <button class="btn dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-cog"></i> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a name="mark-as-spam-multi" href="{% url 'modoboa.extensions.amavis.views.process' %}">{% trans "Mark as spam" %}</a></li>
+      <li><a name="mark-as-ham-multi" href="{% url 'modoboa.extensions.amavis.views.process' %}">{% trans "Mark as non-spam" %}</a></li>
+    </ul>
+  </div>
   {% include "common/email_searchbar.html" with extraopts=extraopts %}
 </div>
 <div id="filters_bar" class="btn-toolbar pull-right">

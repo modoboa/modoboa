@@ -1,13 +1,17 @@
 # coding: utf-8
-import socket
-import re
-import struct
-import string
+
 from functools import wraps
-from django.core.urlresolvers import reverse
+import re
+import socket
+import string
+import struct
+
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
+
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import InternalError
+from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.webutils import NavigationParameters
 from modoboa.extensions.amavis.models import Users, Policy
 
@@ -80,6 +84,58 @@ recipient=%s
         return False
 
 
+class SpamassassinClient(object):
+
+    """A stupid spamassassin client."""
+
+    def __init__(self, username=None):
+        """Constructor."""
+        self._amavis_is_local = parameters.get_admin("AMAVIS_IS_LOCAL")
+        if username is None:
+            self._username = parameters.get_admin("DEFAULT_USER")
+        else:
+            self._username = username
+        self.error = None
+        if self._amavis_is_local == "yes":
+            self._learn_cmd = "sa-learn --{0} --no-sync -u {1}"
+            self._learn_cmd_kwargs = {}
+            # self._learn_cmd_kwargs = {
+            #     "sudo_user": parameters.get_admin("AMAVIS_SYSTEM_USER")
+            # }
+            self._expected_exit_codes = [0]
+        else:
+            self._learn_cmd = "spamc -d {0} -p {1}".format(
+                parameters.get_admin("SPAMD_ADDRESS"),
+                parameters.get_admin("SPAMD_PORT")
+            )
+            self._learn_cmd += " -L {0} -u {1}"
+            self._learn_cmd_kwargs = {}
+            self._expected_exit_codes = [5, 6]
+
+    def _learn(self, msg, mtype):
+        """Internal method to call the learning command."""
+        cmd = self._learn_cmd.format(mtype, self._username)
+        code, output = exec_cmd(cmd, pinput=msg, **self._learn_cmd_kwargs)
+        if code in self._expected_exit_codes:
+            return True
+        self.error = output
+        return False
+
+    def learn_spam(self, msg):
+        """Learn new spam."""
+        return self._learn(msg, "spam")
+
+    def learn_ham(self, msg):
+        """Learn new ham."""
+        return self._learn(msg, "ham")
+
+    def done(self):
+        """Call this method at the end of the processing."""
+        if self._amavis_is_local:
+            exec_cmd("sa-learn -u {0} --sync".format(self._username),
+                     **self._learn_cmd_kwargs)
+
+
 class QuarantineNavigationParameters(NavigationParameters):
     """
     Specific NavigationParameters subclass for the quarantine.
@@ -114,7 +170,7 @@ class QuarantineNavigationParameters(NavigationParameters):
         return url
 
 
-def create_user_and_policy(name):
+def create_user_and_policy(name, priority=7):
     """Create records.
 
     Create two records (a user and a policy) using :keyword:`name` as
@@ -124,12 +180,11 @@ def create_user_and_policy(name):
     """
     policy = Policy.objects.create(policy_name=name[:32])
     Users.objects.create(
-        email="@%s" % name, fullname=name,
-        priority=7, policy=policy
+        email=name, fullname=name, priority=priority, policy=policy
     )
 
 
-def create_user_and_use_policy(name, policy_name):
+def create_user_and_use_policy(name, policy_name, priority=7):
     """Create a *users* record and use an existing policy.
 
     :param str name: user record name
@@ -137,8 +192,7 @@ def create_user_and_use_policy(name, policy_name):
     """
     policy = Policy.objects.get(policy_name=policy_name[:32])
     Users.objects.create(
-        email="@%s" % name, fullname=name,
-        priority=7, policy=policy
+        email=name, fullname=name, priority=priority, policy=policy
     )
 
 
@@ -150,8 +204,8 @@ def update_user_and_policy(oldname, newname):
     """
     if oldname == newname:
         return
-    u = Users.objects.get(email="@%s" % oldname)
-    u.email = "@%s" % newname
+    u = Users.objects.get(email=oldname)
+    u.email = newname
     u.fullname = newname
     u.policy.policy_name = newname[:32]
     u.policy.save()
@@ -164,7 +218,7 @@ def delete_user_and_policy(name):
     :param str name: identifier
     """
     try:
-        u = Users.objects.get(email="@%s" % name)
+        u = Users.objects.get(email=name)
     except Users.DoesNotExist:
         return
     u.policy.delete()
@@ -177,6 +231,6 @@ def delete_user(name):
     :param str name: user record name
     """
     try:
-        Users.objects.get(email="@%s" % name).delete()
+        Users.objects.get(email=name).delete()
     except Users.DoesNotExist:
         pass

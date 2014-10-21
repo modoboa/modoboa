@@ -9,6 +9,8 @@ urlpatterns = patterns(
     (r'^nbrequests/$', 'nbrequests'),
     (r'^delete/(?P<mail_id>[\w\-\+]+)/$', 'delete'),
     (r'^release/(?P<mail_id>[\w\-\+]+)/$', 'release'),
+    (r'^markspam/(?P<mail_id>[\w\-\+]+)/$', 'mark_as_spam'),
+    (r'^markham/(?P<mail_id>[\w\-\+]+)/$', 'mark_as_ham'),
     (r'^(?P<mail_id>[\w\-\+]+)/$', 'viewmail'),
     (r'^(?P<mail_id>[\w\-\+]+)/headers/$', 'viewheaders'),
-    )
+)

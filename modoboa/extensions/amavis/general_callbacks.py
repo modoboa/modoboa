@@ -23,22 +23,27 @@ def menu(target, user):
 
 @events.observe("DomainCreated")
 def on_domain_created(user, domain):
-    create_user_and_policy(domain.name)
+    create_user_and_policy("@{0}".format(domain.name))
 
 
 @events.observe("DomainModified")
 def on_domain_modified(domain):
-    update_user_and_policy(domain.oldname, domain.name)
+    update_user_and_policy(
+        "@{0}".format(domain.oldname),
+        "@{0}".format(domain.name)
+    )
 
 
 @events.observe("DomainDeleted")
 def on_domain_deleted(domain):
-    delete_user_and_policy(domain.name)
+    delete_user_and_policy("@{0}".format(domain.name))
 
 
 @events.observe("DomainAliasCreated")
 def on_domain_alias_created(user, domainalias):
-    create_user_and_use_policy(domainalias.name, domainalias.target.name)
+    create_user_and_use_policy(
+        "@{0}".format(domainalias.name), domainalias.target.name
+    )
 
 
 @events.observe("DomainAliasDeleted")
@@ -46,7 +51,19 @@ def on_domain_alias_deleted(domainaliases):
     if isinstance(domainaliases, DomainAlias):
         domainaliases = [domainaliases]
     for domainalias in domainaliases:
-        delete_user(domainalias.name)
+        delete_user("@{0}".format(domainalias.name))
+
+
+@events.observe("MailboxCreated")
+def on_mailbox_created(user, mailbox):
+    """Create amavis records for the new mailbox."""
+    create_user_and_policy(mailbox.full_address)
+
+
+@events.observe("MailboxDeleted")
+def on_mailbox_deleted(mailbox):
+    """Delete amavis records related to this mailbox."""
+    delete_user_and_policy(mailbox.full_address)
 
 
 @events.observe("GetStaticContent")
