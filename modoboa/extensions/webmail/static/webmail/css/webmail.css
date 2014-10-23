@@ -52,30 +52,30 @@
     overflow-y: auto;
 }
 
-.sidebar .ui-resizable-handle {
-    background-position: center center;
-    background-repeat: no-repeat;
-}
+/* .sidebar .ui-resizable-handle { */
+/*     background-position: center center; */
+/*     background-repeat: no-repeat; */
+/* } */
 
-.sidebar .ui-resizable-n {
-    top: 0px;
-}
+/* .sidebar .ui-resizable-n { */
+/*     top: 0px; */
+/* } */
 
-.sidebar .ui-resizable-s {
-    bottom: 0px;
-}
+/* .sidebar .ui-resizable-s { */
+/*     bottom: 0px; */
+/* } */
 
-.sidebar .ui-resizable-e {
-    right: 0px;
-    background-image: url("../../pics/grippy.png");
-    width: 8px;
-}
+/* .sidebar .ui-resizable-e { */
+/*     right: 0px; */
+/*     background-image: url("../../pics/grippy.png"); */
+/*     width: 8px; */
+/* } */
 
-.sidebar .ui-resizable-w {
-    left: 0px;
-    background-image: url("../../pics/grippy.png");
-    width: 8px;
-}
+/* .sidebar .ui-resizable-w { */
+/*     left: 0px; */
+/*     background-image: url("../../pics/grippy.png"); */
+/*     width: 8px; */
+/* } */
 
 .nav-sidebar li > a {
     padding-top: 7px;
