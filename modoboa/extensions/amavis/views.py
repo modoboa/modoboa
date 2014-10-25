@@ -19,7 +19,7 @@ from modoboa.extensions.amavis.templatetags.amavis_tags import (
 )
 from .lib import (
     selfservice, AMrelease, QuarantineNavigationParameters,
-    SpamassassinClient
+    SpamassassinClient, manual_learning_enabled
 )
 from .models import Msgrcpt
 from .sql_connector import get_connector
@@ -57,7 +57,7 @@ def _listing(request):
         "ok", listing=content, paginbar=pagination_bar(page), page=page.number
     )
     if request.session.get('location', 'listing') != 'listing':
-        ctx['menu'] = quar_menu()
+        ctx['menu'] = quar_menu(request.user)
     request.session['location'] = 'listing'
     return render_to_json_response(ctx)
 
@@ -115,7 +115,7 @@ def viewmail(request, mail_id):
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
-    menu = viewm_menu(mail_id, rcpt)
+    menu = viewm_menu(request.user, mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
     request.session['location'] = 'viewmail'
     return render_to_json_response(ctx)
@@ -263,15 +263,11 @@ def mark_messages(request, selection, mtype):
     :param str selection: message unique identifier
     :param str mtype: type of marking (spam or ham)
     """
+    if not manual_learning_enabled(request.user):
+        return render_to_json_response({"status": "ok"})
     selection = check_mail_id(request, selection)
     connector = get_connector()
-    per_user_bayesian_filter = parameters.get_admin("PER_USER_BAYESIAN_FILTER")
-    if per_user_bayesian_filter == "yes" \
-       and request.user.group == "SimpleUsers":
-        username = request.user.email
-    else:
-        username = None
-    saclient = SpamassassinClient(username)
+    saclient = SpamassassinClient(request.user)
     for item in selection:
         rcpt, mail_id = item.split()
         content = "".join(

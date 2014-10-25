@@ -74,12 +74,22 @@ class ParametersForm(AdminParametersForm):
         help_text=_("The e-mail address used to send notitications")
     )
 
-    lsep = SeparatorField(label=_("Learning from messages"))
+    lsep = SeparatorField(label=_("Manual learning"))
 
-    amavis_is_local = YesNoField(
-        label=_("Is amavis local?"),
+    manual_learning = YesNoField(
+        label=_("Enable manual learning"),
         initial="yes",
-        help_text=_("Tell if amavis is running on the same server than modoboa")
+        help_text=_(
+            "Allow users to manually train Spamassassin about spam and non-spam"
+        )
+    )
+
+    sa_is_local = YesNoField(
+        label=_("Is Spamassassin local?"),
+        initial="yes",
+        help_text=_(
+            "Tell if spamassassin is running on the same server than modoboa"
+        )
     )
 
     default_user = forms.CharField(
@@ -88,12 +98,6 @@ class ParametersForm(AdminParametersForm):
         help_text=_(
             "Name of the user used to store default bayesian filter data"
         )
-    )
-
-    per_user_bayesian_filter = YesNoField(
-        label=_("Enable per-user bayesian filters?"),
-        initial="no",
-        help_text=_("Allow users to personally train spamassassin")
     )
 
     spamd_address = forms.CharField(
@@ -108,12 +112,23 @@ class ParametersForm(AdminParametersForm):
         help_text=_("The TCP port spamd is listening on")
     )
 
+    user_manual_learning = YesNoField(
+        label=_("Enable per-user manual learning"),
+        initial="no",
+        help_text=_("Allow users to personally tell Spamassassin about "
+                    "spam and non-spam")
+    )
+
     visibility_rules = {
         "am_pdp_host": "am_pdp_mode=inet",
         "am_pdp_port": "am_pdp_mode=inet",
         "am_pdp_socket": "am_pdp_mode=unix",
-        "spamd_address": "amavis_is_local=no",
-        "spamd_port": "amavis_is_local=no",
+
+        "sa_is_local": "manual_learning=yes",
+        "default_user": "manual_learning=yes",
+        "spamd_address": "sa_is_local=no",
+        "spamd_port": "sa_is_local=no",
+        "user_manual_learning": "manual_learning=yes"
     }
 
 

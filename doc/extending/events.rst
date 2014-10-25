@@ -712,10 +712,11 @@ Raised when an existing mailbox is modified.
 
 *Callback prototype*::
 
-  def callback(newmailbox, oldmailbox): pass
+  def callback(mailbox): pass
 
-* ``newmailbox`` is a ``Mailbox`` instance containing the new values
-* ``oldmailbox`` is a ``Mailbox`` instance containing the old values
+* ``mailbox`` is the ``Mailbox`` modified instance. It contains a
+  ``old_full_address`` extra field to check if the address was
+  modified.
 
 PasswordChange
 ==============

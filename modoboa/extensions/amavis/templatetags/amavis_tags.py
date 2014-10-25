@@ -1,13 +1,20 @@
+"""
+Amavis frontend template tags.
+"""
+
 from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 
+from ..lib import manual_learning_enabled
+
 register = template.Library()
 
 
 @register.simple_tag
-def viewm_menu(mail_id, rcpt):
+def viewm_menu(user, mail_id, rcpt):
+    """Menu displayed within the viewmail action."""
     entries = [
         {"name": "release",
          "img": "icon-white icon-ok",
@@ -21,26 +28,30 @@ def viewm_menu(mail_id, rcpt):
          "url": reverse('modoboa.extensions.amavis.views.delete', args=[mail_id])
          + ("?rcpt=%s" % rcpt if rcpt else ""),
          "label": _("Delete")},
-        {"name": "process",
-         "img": "icon-cog",
-         "menu": [
-             {"name": "mark-as-spam",
-              "label": _("Mark as spam"),
-              "url": reverse(
-                  "modoboa.extensions.amavis.views.mark_as_spam", args=[mail_id]
-              ) + ("?rcpt=%s" % rcpt if rcpt else "")},
-             {"name": "mark-as-ham",
-              "label": _("Mark as non-spam"),
-              "url": reverse(
-                  "modoboa.extensions.amavis.views.mark_as_ham", args=[mail_id]
-              ) + ("?rcpt=%s" % rcpt if rcpt else "")}
-         ]},
         {"name": "headers",
          "url": reverse(
              'modoboa.extensions.amavis.views.viewheaders', args=[mail_id]
          ),
          "label": _("View full headers")},
     ]
+
+    if manual_learning_enabled(user):
+        entries.insert(1, {
+            "name": "process",
+            "img": "icon-cog",
+            "menu": [
+                {"name": "mark-as-spam",
+                 "label": _("Mark as spam"),
+                 "url": reverse(
+                     "modoboa.extensions.amavis.views.mark_as_spam", args=[mail_id]
+                 ) + ("?rcpt=%s" % rcpt if rcpt else "")},
+                {"name": "mark-as-ham",
+                 "label": _("Mark as non-spam"),
+                 "url": reverse(
+                     "modoboa.extensions.amavis.views.mark_as_ham", args=[mail_id]
+                 ) + ("?rcpt=%s" % rcpt if rcpt else "")}
+            ]
+        })
 
     menu = render_to_string('common/buttons_list.html',
                             {"entries": entries, "extraclasses": "pull-left"})
@@ -80,13 +91,14 @@ def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
 
 
 @register.simple_tag
-def quar_menu():
+def quar_menu(user):
     """Render the quarantine listing menu.
 
     :rtype: str
     :return: resulting HTML
     """
     extraopts = [{"name": "to", "label": _("To")}]
-    return render_to_string('amavis/main_action_bar.html', {
-        'extraopts': extraopts
+    return render_to_string("amavis/main_action_bar.html", {
+        "extraopts": extraopts,
+        "manual_learning": manual_learning_enabled(user)
     })

@@ -88,20 +88,20 @@ class SpamassassinClient(object):
 
     """A stupid spamassassin client."""
 
-    def __init__(self, username=None):
+    def __init__(self, user):
         """Constructor."""
-        self._amavis_is_local = parameters.get_admin("AMAVIS_IS_LOCAL")
-        if username is None:
-            self._username = parameters.get_admin("DEFAULT_USER")
+        self._sa_is_local = parameters.get_admin("SA_IS_LOCAL")
+        if user.group == "SimpleUsers":
+            user_manual_learning = parameters.get_admin("USER_MANUAL_LEARNING")
+            if user_manual_learning == "yes":
+                self._username = user.email
         else:
-            self._username = username
+            self._username = parameters.get_admin("DEFAULT_USER")
+        setup_manual_learning(user)
         self.error = None
-        if self._amavis_is_local == "yes":
+        if self._sa_is_local == "yes":
             self._learn_cmd = "sa-learn --{0} --no-sync -u {1}"
             self._learn_cmd_kwargs = {}
-            # self._learn_cmd_kwargs = {
-            #     "sudo_user": parameters.get_admin("AMAVIS_SYSTEM_USER")
-            # }
             self._expected_exit_codes = [0]
         else:
             self._learn_cmd = "spamc -d {0} -p {1}".format(
@@ -131,7 +131,7 @@ class SpamassassinClient(object):
 
     def done(self):
         """Call this method at the end of the processing."""
-        if self._amavis_is_local:
+        if self._sa_is_local:
             exec_cmd("sa-learn -u {0} --sync".format(self._username),
                      **self._learn_cmd_kwargs)
 
@@ -177,11 +177,13 @@ def create_user_and_policy(name, priority=7):
     an identifier.
 
     :param str name: name
+    :return: the new ``Policy`` object
     """
     policy = Policy.objects.create(policy_name=name[:32])
     Users.objects.create(
         email=name, fullname=name, priority=priority, policy=policy
     )
+    return policy
 
 
 def create_user_and_use_policy(name, policy_name, priority=7):
@@ -234,3 +236,31 @@ def delete_user(name):
         Users.objects.get(email=name).delete()
     except Users.DoesNotExist:
         pass
+
+
+def manual_learning_enabled(user):
+    """Check if manual learning is enabled or not.
+
+    Also check for :kw:`user` if necessary.
+
+    :return: True if learning is enabled, False otherwise.
+    """
+    manual_learning = parameters.get_admin("MANUAL_LEARNING") == "yes"
+    if manual_learning and user.group == "SimpleUsers":
+        manual_learning = parameters.get_admin("USER_MANUAL_LEARNING") == "yes"
+    return manual_learning
+
+
+def setup_manual_learning(user):
+    """Setup manual learning if necessary.
+
+    :return: True if learning has been setup, False otherwise
+    """
+    result = False
+    if user.group == "SimpleUsers":
+        if not Policy.objects.exists(email=user.email):
+            policy = create_user_and_policy(user.email)
+            for alias in user.mailbox_set.all()[0].alias_addresses:
+                create_user_and_use_policy(alias.full_address, policy)
+            result = True
+    return result
