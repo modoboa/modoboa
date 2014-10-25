@@ -79,7 +79,7 @@ def get_static_content(caller, st_type, user):
     if st_type == "css":
         return ["""<style>
 .resource {
-    margin: 5px 0;
+    padding: 10px 15px;
 }
 
 .resource .progress {

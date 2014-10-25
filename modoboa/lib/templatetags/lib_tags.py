@@ -50,7 +50,7 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 def progress_color(value):
     value = int(value)
     if value < 50:
-        return "progress-bar progress-bar-primary"
+        return "progress-bar progress-bar-info"
     if value < 80:
         return "progress-bar progress-bar-warning"
     return "progress-bar-danger"

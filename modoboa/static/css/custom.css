@@ -220,7 +220,8 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    padding-left: 20px;
+    padding-left: 10px;
+    margin-top: 10px;
     margin-bottom: 5px;
 }
 
