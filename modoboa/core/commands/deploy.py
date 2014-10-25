@@ -11,7 +11,7 @@ from django.template import Context, Template
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.commands import Command
 
-dbconn_tpl = """
+DBCONN_TPL = """
     '{{ conn_name }}': {
         'ENGINE': '{{ ENGINE }}',
         'NAME': '{{ NAME }}',                       # Or path to database file if using sqlite3.
@@ -27,7 +27,13 @@ dbconn_tpl = """
 
 
 class DeployCommand(Command):
-    help = "Create a fresh django project (calling startproject) and apply Modoboa specific settings."
+
+    """The ``deploy`` command."""
+
+    help = (
+        "Create a fresh django project (calling startproject)"
+        " and apply Modoboa specific settings."
+    )
 
     def __init__(self, *args, **kwargs):
         super(DeployCommand, self).__init__(*args, **kwargs)
@@ -54,6 +60,10 @@ class DeployCommand(Command):
         self._parser.add_argument(
             '--domain', type=str, nargs=1, default=None,
             help='The domain under which you want to deploy modoboa')
+        self._parser.add_argument(
+            '--devel', action='store_true', default=False,
+            help='Create a development instance'
+        )
 
 
     def _exec_django_command(self, name, cwd, *args):
@@ -127,7 +137,7 @@ class DeployCommand(Command):
             sys.path.append(".")
             django14 = False
 
-        t = Template(dbconn_tpl)
+        t = Template(DBCONN_TPL)
 
         if parsed_args.dburl:
             info = dj_database_url.config(default=parsed_args.dburl[0])
@@ -179,7 +189,7 @@ class DeployCommand(Command):
                 'name': parsed_args.name, 'django14': django14,
                 'allowed_host': allowed_host,
                 'bower_components_dir': bower_components_dir,
-                'devmode': False
+                'devmode': parsed_args.devel
             }
         )
         with open("%s/settings.py" % path, "w") as fp:

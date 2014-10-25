@@ -51,6 +51,7 @@ Extending Modoboa
 .. toctree::
    :maxdepth: 2
 
+   extending/getting_started
    extending/plugin_api
    extending/events
 
