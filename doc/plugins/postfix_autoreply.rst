@@ -1,3 +1,5 @@
+.. _postfix_ar:
+
 ###########################
 Postifx auto-reply messages
 ###########################
