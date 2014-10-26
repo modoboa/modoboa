@@ -444,11 +444,11 @@ class IMAPconnector(object):
 
     @capability('LIST-EXTENDED', '_listmboxes_simple')
     def _listmboxes(self, topmailbox, mailboxes, until_mailbox=None):
-        """Retrieve mailboxes list.
-        
-        """
-        pattern = "%s%s%%" % (topmailbox.encode("imap4-utf-7"), self.hdelimiter) \
-            if len(topmailbox) else "%"
+        """Retrieve mailboxes list."""
+        pattern = (
+            "{0}{1}%".format(topmailbox.encode("imap4-utf-7"), self.hdelimiter)
+            if topmailbox else "%"
+        )
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
         for mb in resp:
@@ -458,7 +458,9 @@ class IMAPconnector(object):
                 flags, delimiter, name, childinfo = \
                     self.listextended_response_pattern.match(mb).groups()
             else:
-                flags, delimiter, namelen = self.list_response_pattern_literal.match(mb[0]).groups()
+                flags, delimiter, namelen = (
+                    self.list_response_pattern_literal.match(mb[0]).groups()
+                )
                 name = mb[1][0:int(namelen)]
             flags = flags.split(' ')
             name = name.decode("imap4-utf-7")
@@ -677,12 +679,15 @@ class IMAPconnector(object):
         self.select_mailbox(mbox, False)
         if start and stop:
             submessages = self.messages[start - 1:stop]
-            range = ",".join(submessages)
+            mrange = ",".join(submessages)
         else:
             submessages = [start]
-            range = start
-        query = '(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
-        data = self._cmd("FETCH", range, query)
+            mrange = start
+        query = (
+            "(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC "
+            "SUBJECT)])"
+        )
+        data = self._cmd("FETCH", mrange, query)
         result = []
         for uid in submessages:
             msg = email.message_from_string(
@@ -695,8 +700,8 @@ class IMAPconnector(object):
                 msg['answered'] = True
             if r'$Forwarded' in data[int(uid)]['FLAGS']:
                 msg['forwarded'] = True
-            bs = BodyStructure(data[int(uid)]['BODYSTRUCTURE'])
-            if bs.has_attachments():
+            bstruct = BodyStructure(data[int(uid)]['BODYSTRUCTURE'])
+            if bstruct.has_attachments():
                 msg['attachments'] = True
             result += [msg]
         return result
