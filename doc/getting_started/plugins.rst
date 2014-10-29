@@ -353,16 +353,19 @@ learning levels:
 #. Global: available to administrators only. A single (global) bayes
    database is shared between everyone.
 
+#. Per domain: available to administrators and domain
+   administrators. Each domain can have a dedicated database.
+
 #. Per user: each user can create its own database to customize the
    way SpamAssassin will detect spam.
 
-The per-user level is not activated by default, a dedicated parameter
-is available through the panel.
+The domain and user levels are not activated by default, dedicated
+parameters are available through the panel.
 
 .. note::
 
-   A user database is only created the first time that user calls the
-   learning feature through the quarantine.
+   Domain and user databases are only created the first time someone
+   calls the learning feature through the quarantine.
 
 .. warning::
 
