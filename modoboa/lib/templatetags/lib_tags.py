@@ -127,7 +127,9 @@ def render_link(linkdef, mdclass=""):
 {% if link.modalcb %}modalcb="{{ link.modalcb }}"{% endif %}
 {% if link.closecb %}closecb="{{ link.closecb }}"{% endif %}
 class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
-{% if link.confirm %} onclick="return confirm('{{ link.confirm }}')"{% endif %}>
+{% if link.confirm %} onclick="return confirm('{{ link.confirm }}')"{% endif %}
+{% for attr, value in link.extra_attributes.items %} {{ attr }}="{{ value }}"{% endfor %}
+>
 {% if link.img %}<i class="{{ link.img }}"></i>{% endif %}
 {{ link.label }}</a>""")
     return t.render(Context(dict(link=linkdef, mdclass=mdclass)))

@@ -100,6 +100,7 @@ class SQLconnector(object):
                 criteria = "from_addr,subject,to"
             search_flt = None
             for crit in criteria.split(","):
+                print crit
                 if crit == "from_addr":
                     nfilter = Q(mail__from_addr__contains=pattern)
                 elif crit == "subject":
@@ -120,7 +121,7 @@ class SQLconnector(object):
             mail__in=Quarantine.objects.filter(chunk_ind=1).values("mail_id")
         )
 
-        messages = Msgrcpt.objects.select_related().filter(flt)
+        messages = Msgrcpt.objects.select_related("mail", "rid").filter(flt)
         messages = self._apply_extra_select_filters(messages)
         return messages
 
@@ -220,6 +221,11 @@ class PgSQLconnector(SQLconnector):
 
     Make use of ``QuerySet.extra`` and postgres ``convert_from``
     function to let the quarantine manager work as expected !
+
+    The T4 alias is not a random choice. The generated query was
+    dumped to found it. Be careful since it can changes with
+    future Django versions...
+
     """
 
     def _apply_msgrcpt_filters(self, flt):
@@ -244,11 +250,13 @@ class PgSQLconnector(SQLconnector):
     def _apply_extra_search_filter(self, crit, pattern):
         """Apply search filters using additional criterias.
 
+
         """
         if crit == "to":
             self._where.append(
-                "convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'"
-                % pattern)
+                "convert_from(maddr.email, 'UTF8') LIKE '%%{0}%%'".format(
+                    pattern)
+            )
         return None
 
     def _apply_extra_select_filters(self, messages):

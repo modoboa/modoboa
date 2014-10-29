@@ -6,6 +6,9 @@ from modoboa.lib.formutils import SeparatorField, YesNoField, InlineRadioSelect
 
 
 class ParametersForm(AdminParametersForm):
+
+    """Extension settings."""
+
     app = "amavis"
 
     qsettings_sep = SeparatorField(label=_("Quarantine settings"))
@@ -21,7 +24,8 @@ class ParametersForm(AdminParametersForm):
     released_msgs_cleanup = YesNoField(
         label=_("Remove released messages"),
         initial="no",
-        help_text=_("Remove messages marked as released while cleaning up the database")
+        help_text=_("Remove messages marked as released while cleaning up "
+                    "the database")
     )
 
     am_pdp_mode = forms.ChoiceField(
@@ -80,7 +84,7 @@ class ParametersForm(AdminParametersForm):
         label=_("Enable manual learning"),
         initial="yes",
         help_text=_(
-            "Allow users to manually train Spamassassin about spam and non-spam"
+            "Allow super administrators to manually train Spamassassin"
         )
     )
 
@@ -88,7 +92,7 @@ class ParametersForm(AdminParametersForm):
         label=_("Is Spamassassin local?"),
         initial="yes",
         help_text=_(
-            "Tell if spamassassin is running on the same server than modoboa"
+            "Tell if Spamassassin is running on the same server than modoboa"
         )
     )
 
@@ -96,7 +100,7 @@ class ParametersForm(AdminParametersForm):
         label=_("Default user"),
         initial="amavis",
         help_text=_(
-            "Name of the user used to store default bayesian filter data"
+            "Name of the user owning the default bayesian database"
         )
     )
 
@@ -112,11 +116,22 @@ class ParametersForm(AdminParametersForm):
         help_text=_("The TCP port spamd is listening on")
     )
 
-    user_manual_learning = YesNoField(
+    domain_level_learning = YesNoField(
+        label=_("Enable per-domain manual learning"),
+        initial="no",
+        help_text=_(
+            "Allow domain administrators to train Spamassassin "
+            "(within dedicated per-domain databases)"
+        )
+    )
+
+    user_level_learning = YesNoField(
         label=_("Enable per-user manual learning"),
         initial="no",
-        help_text=_("Allow users to personally tell Spamassassin about "
-                    "spam and non-spam")
+        help_text=_(
+            "Allow simple users to personally train Spamassassin "
+            "(within a dedicated database)"
+        )
     )
 
     visibility_rules = {
@@ -128,11 +143,15 @@ class ParametersForm(AdminParametersForm):
         "default_user": "manual_learning=yes",
         "spamd_address": "sa_is_local=no",
         "spamd_port": "sa_is_local=no",
-        "user_manual_learning": "manual_learning=yes"
+        "domain_level_learning": "manual_learning=yes",
+        "user_level_learning": "manual_learning=yes"
     }
 
 
 class UserSettings(UserParametersForm):
+
+    """Per-user settings."""
+
     app = "amavis"
 
     dsep = SeparatorField(label=_("Display"))

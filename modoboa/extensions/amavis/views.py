@@ -21,6 +21,7 @@ from .lib import (
     selfservice, AMrelease, QuarantineNavigationParameters,
     SpamassassinClient, manual_learning_enabled
 )
+from .forms import LearningRecipientForm
 from .models import Msgrcpt
 from .sql_connector import get_connector
 from .sql_listing import SQLlisting, SQLemail
@@ -64,9 +65,18 @@ def _listing(request):
 
 @login_required
 def index(request):
+    check_learning_rcpt = "false"
+    if parameters.get_admin("MANUAL_LEARNING") == "yes":
+        if request.user.group != "SimpleUsers":
+            user_level_learning = parameters.get_admin(
+                "USER_LEVEL_LEARNING") == "yes"
+            domain_level_learning = parameters.get_admin(
+                "DOMAIN_LEVEL_LEARNING") == "yes"
+            if user_level_learning or domain_level_learning:
+                check_learning_rcpt = "true"
     return render(request, "amavis/index.html", dict(
         deflocation="listing/?sort_order=-date", defcallback="listing_cb",
-        selection="quarantine"
+        selection="quarantine", check_learning_rcpt=check_learning_rcpt
     ))
 
 
@@ -171,10 +181,10 @@ def delete(request, mail_id):
     message = ungettext("%(count)d message deleted successfully",
                         "%(count)d messages deleted successfully",
                         len(mail_id)) % {"count": len(mail_id)}
-    return ajax_response(
-        request, respmsg=message,
-        url=QuarantineNavigationParameters(request).back_to_listing()
-    )
+    return render_to_json_response({
+        "message": message,
+        "url": QuarantineNavigationParameters(request).back_to_listing()
+    })
 
 
 def release_selfservice(request, mail_id):
@@ -251,13 +261,14 @@ def release(request, mail_id):
                             len(mail_id)) % {"count": len(mail_id)}
     else:
         message = error
-    return ajax_response(
-        request, "ko" if error else "ok", respmsg=message,
-        url=QuarantineNavigationParameters(request).back_to_listing()
-    )
+    status = 400 if error else 200
+    return render_to_json_response({
+        "message": message,
+        "url": QuarantineNavigationParameters(request).back_to_listing()
+    }, status=status)
 
 
-def mark_messages(request, selection, mtype):
+def mark_messages(request, selection, mtype, recipient_db=None):
     """Mark a selection of messages as spam.
 
     :param str selection: message unique identifier
@@ -265,16 +276,20 @@ def mark_messages(request, selection, mtype):
     """
     if not manual_learning_enabled(request.user):
         return render_to_json_response({"status": "ok"})
+    if recipient_db is None:
+        recipient_db = (
+            "user" if request.user.group == "SimpleUsers" else "global"
+        )
     selection = check_mail_id(request, selection)
     connector = get_connector()
-    saclient = SpamassassinClient(request.user)
+    saclient = SpamassassinClient(request.user, recipient_db)
     for item in selection:
         rcpt, mail_id = item.split()
         content = "".join(
             [msg.mail_text for msg in connector.get_mail_content(mail_id)]
         )
-        result = saclient.learn_spam(content) if mtype == "spam" \
-            else saclient.learn_ham(content)
+        result = saclient.learn_spam(rcpt, content) if mtype == "spam" \
+            else saclient.learn_ham(rcpt, content)
         if not result:
             break
     if saclient.error is None:
@@ -284,10 +299,40 @@ def mark_messages(request, selection, mtype):
                             len(selection)) % {"count": len(selection)}
     else:
         message = saclient.error
-    return ajax_response(
-        request, "ko" if saclient.error else "ok", respmsg=message,
-        url=QuarantineNavigationParameters(request).back_to_listing()
-    )
+    status = 400 if saclient.error else 200
+    return render_to_json_response({"message": message}, status=status)
+
+
+@login_required
+def learning_recipient(request):
+    """A view to select the recipient database of a learning action."""
+    if request.method == "POST":
+        form = LearningRecipientForm(request.user, request.POST)
+        if form.is_valid():
+            return mark_messages(
+                request,
+                form.cleaned_data["selection"].split(","),
+                form.cleaned_data["ltype"],
+                form.cleaned_data["recipient"]
+            )
+        return render_to_json_response(
+            {"form_errors": form.errors}, status=400
+        )
+    ltype = request.GET.get("type", None)
+    selection = request.GET.get("selection", None)
+    if ltype is None or selection is None:
+        raise BadRequest
+    form = LearningRecipientForm(request.user)
+    form.fields["ltype"].initial = ltype
+    form.fields["selection"].initial = selection
+    return render(request, "common/generic_modal_form.html", {
+        "title": _("Select a database"),
+        "formid": "learning_recipient_form",
+        "action": reverse("modoboa.extensions.amavis.views.learning_recipient"),
+        "action_classes": "submit",
+        "action_label": _("Valider"),
+        "form": form
+    })
 
 
 @login_required

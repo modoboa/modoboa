@@ -13,12 +13,14 @@
 $(document).ready(function() {
     var qm = new Quarantine({
         deflocation: "{{ deflocation }}",
-        defcallback: "{{ defcallback }}"
+        defcallback: "{{ defcallback }}",
+        check_learning_rcpt: {{ check_learning_rcpt }},
+        learning_recipient_url: "{% url 'modoboa.extensions.amavis.views.learning_recipient' %}"
     });
 });
 </script>
 {% endblock %}
 {% block fixed_content %}
-<div id="menubar">{% quar_menu %}</div>
+<div id="menubar">{% quar_menu user %}</div>
 <div id="listing"></div>
 {% endblock %}

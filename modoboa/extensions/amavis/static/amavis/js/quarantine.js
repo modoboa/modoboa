@@ -163,14 +163,12 @@ Quarantine.prototype = {
         this.navobj.update();
     },
 
-    _send_selection: function(e, name, message) {
-        var $link = $(e.target);
-
-        e.preventDefault();
-        if (!this.htmltable.current_selection().length ||
-            !confirm(message)) {
-            return;
-        }
+    /**
+     * Return the list of currently selected messages.
+     *
+     * @return {Array} - list of message IDs
+     */
+    get_current_selection: function() {
         var selection = [];
 
         this.htmltable.current_selection().each(function() {
@@ -183,12 +181,30 @@ Quarantine.prototype = {
                 selection.push($tr.attr("id"));
             }
         });
+        return selection;
+    },
+
+    _send_selection: function(e, name, message) {
+        var $link = $(e.target);
+
+        e.preventDefault();
+        if (!this.htmltable.current_selection().length ||
+            !confirm(message)) {
+            return;
+        }
+        var selection = this.get_current_selection();
+
         $.ajax({
             url: $link.attr("href"),
             data: "action=" + name + "&selection=" + selection.join(","),
             type: 'POST',
             dataType: 'json'
-        }).done($.proxy(this.action_cb, this));
+        }).done(
+            $.proxy(this.action_cb, this)
+        ).fail(function(jqxhr) {
+            var data = $.parseJSON(jqxhr.responseText);
+            $("body").notify("error", data.message);
+        });
     },
 
     release_selection: function(e) {
@@ -200,13 +216,44 @@ Quarantine.prototype = {
     },
 
     /**
+     * Show the recipient selection form inside a modal box.
+     *
+     * @param {Object} evt - event object
+     * @param {string} ltype - learning type (spam or ham)
+     */
+    show_select_rcpt_form: function(evt, ltype, selection) {
+        if (selection === undefined) {
+            selection = this.get_current_selection();
+        }
+        var url = this.options.learning_recipient_url +
+            "?type=" + ltype + "&selection=" +
+            selection.join(","); 
+        var $this = this;
+
+        modalbox(evt, null, url, function() {
+            $(".submit").on("click", function(evt) {
+                simple_ajax_form_post(evt, {
+                    formid: "learning_recipient_form",
+                    reload_on_success: false,
+                    success_cb: $this.action_cb
+                });
+            });
+        });
+    },
+
+    /**
      * Mark the current selection as spam.
      *
      * @param {Object} e - event object
      */
     mark_selection_as_spam: function(e) {
-        this._send_selection(
-            e, "mark_as_spam", gettext("Mark this selection as spam?"));
+        if (this.options.check_learning_rcpt &&
+            this.htmltable.current_selection().length) {
+            this.show_select_rcpt_form(e, "spam");
+        } else {
+            this._send_selection(
+                e, "mark_as_spam", gettext("Mark this selection as spam?"));
+        }
     },
 
     /**
@@ -215,8 +262,13 @@ Quarantine.prototype = {
      * @param {Object} e - event object
      */
     mark_selection_as_ham: function(e) {
-        this._send_selection(
-            e, "mark_as_ham", gettext("Mark this selection as non-spam?"));
+        if (this.options.check_learning_rcpt &&
+            this.htmltable.current_selection().length) {
+            this.show_select_rcpt_form(e, "ham");
+        } else {
+            this._send_selection(
+                e, "mark_as_ham", gettext("Mark this selection as non-spam?"));
+        }
     },
 
     _send_action: function(e, message) {
@@ -231,10 +283,15 @@ Quarantine.prototype = {
             dataType: 'json',
             type: 'POST',
             data: {rcpt: get_parameter_by_name($link.attr("href"), 'rcpt')}
-        }).done($.proxy(this.action_cb, this));
+        }).done(
+            $.proxy(this.action_cb, this)
+        ).fail(function(jqxhr) {
+            var data = $.parseJSON(jqxhr.responseText);
+            $("body").notify("error", data.message);
+        });
     },
 
-        release : function(e) {
+    release : function(e) {
         this._send_action(e, gettext("Release this message?"));
     },
 
@@ -248,7 +305,14 @@ Quarantine.prototype = {
      * @param {Object} e - event object
      */
     mark_as_spam: function(e) {
-        this._send_action(e, gettext("Mark as spam?"));
+        if (this.options.check_learning_rcpt) {
+            var $link = get_target(e, "a");
+            var selection = get_parameter_by_name($link.attr("href"), "rcpt") +
+                " " + $link.attr("data-mail-id");
+            this.show_select_rcpt_form(e, "spam", [selection]);
+        } else {
+            this._send_action(e, gettext("Mark as spam?"));
+        }
     },
 
     /**
@@ -257,7 +321,14 @@ Quarantine.prototype = {
      * @param {Object} e - event object
      */
     mark_as_ham: function(e) {
-        this._send_action(e, gettext("Mark as non-spam?"));
+        if (this.options.check_learning_rcpt) {
+            var $link = get_target(e, "a");
+            var selection = get_parameter_by_name($link.attr("href"), "rcpt") +
+                " " + $link.attr("data-mail-id");
+            this.show_select_rcpt_form(e, "ham", [selection]);
+        } else {
+            this._send_action(e, gettext("Mark as non-spam?"));
+        }
     },
 
     show_rawheaders: function($mailcontent) {
@@ -336,12 +407,10 @@ Quarantine.prototype = {
     },
 
     action_cb: function(data) {
-        if (data.status == "ok") {
+        if (data.url) {
             this.navobj.parse_string(data.url, true).update(true);
-            $("body").notify("success", data.respmsg, 2000);
-        } else {
-            $("body").notify("error", data.respmsg);
         }
+        $("body").notify("success", data.message, 2000);
     }
 };
 

@@ -9,11 +9,13 @@ import struct
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 
+from modoboa.extensions.admin.models import Mailbox, Alias
 from modoboa.lib import parameters
+from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.exceptions import InternalError
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.webutils import NavigationParameters
-from modoboa.extensions.amavis.models import Users, Policy
+from .models import Users, Policy
 
 
 def selfservice(ssfunc=None):
@@ -88,16 +90,18 @@ class SpamassassinClient(object):
 
     """A stupid spamassassin client."""
 
-    def __init__(self, user):
+    def __init__(self, user, recipient_db):
         """Constructor."""
         self._sa_is_local = parameters.get_admin("SA_IS_LOCAL")
+        self._default_username = parameters.get_admin("DEFAULT_USER")
+        self._recipient_db = recipient_db
+        self._setup_cache = {}
         if user.group == "SimpleUsers":
-            user_manual_learning = parameters.get_admin("USER_MANUAL_LEARNING")
-            if user_manual_learning == "yes":
+            user_level_learning = parameters.get_admin("USER_LEVEL_LEARNING")
+            if user_level_learning == "yes":
                 self._username = user.email
         else:
-            self._username = parameters.get_admin("DEFAULT_USER")
-        setup_manual_learning(user)
+            self._username = None
         self.error = None
         if self._sa_is_local == "yes":
             self._learn_cmd = "sa-learn --{0} --no-sync -u {1}"
@@ -112,22 +116,58 @@ class SpamassassinClient(object):
             self._learn_cmd_kwargs = {}
             self._expected_exit_codes = [5, 6]
 
-    def _learn(self, msg, mtype):
+    def _get_mailbox_from_rcpt(self, rcpt):
+        """Retrieve a mailbox from a recipient address."""
+        local_part, domname = split_mailbox(rcpt)
+        try:
+            mailbox = Mailbox.objects.select_related("domain").get(
+                address=local_part, domain__name=domname)
+        except Mailbox.DoesNotExist:
+            try:
+                alias = Alias.objects.select_related("domain").get(
+                    address=local_part, domain__name=domname)
+            except Alias.DoesNotExist:
+                raise InternalError(_("No recipient found"))
+            if alias.type != "alias":
+                return None
+            mailbox = alias.mboxes.all()[0]
+        return mailbox
+
+    def _learn(self, rcpt, msg, mtype):
         """Internal method to call the learning command."""
-        cmd = self._learn_cmd.format(mtype, self._username)
+        if self._username is None:
+            if self._recipient_db == "global":
+                username = self._default_username
+            else:
+                mbox = self._get_mailbox_from_rcpt(rcpt)
+                if mbox is None:
+                    username = self._default_username
+                if self._recipient_db == "domain":
+                    username = mbox.domain.name
+                    if username not in self._setup_cache and \
+                       setup_manual_learning_for_domain(mbox.domain):
+                        self._setup_cache[username] = True
+                else:
+                    username = mbox.full_address
+                    if username not in self._setup_cache and \
+                       setup_manual_learning_for_mbox(mbox):
+                        self._setup_cache[username] = True
+        else:
+            username = self._username
+        cmd = self._learn_cmd.format(mtype, username)
         code, output = exec_cmd(cmd, pinput=msg, **self._learn_cmd_kwargs)
         if code in self._expected_exit_codes:
             return True
         self.error = output
         return False
 
-    def learn_spam(self, msg):
+    def learn_spam(self, rcpt, msg):
         """Learn new spam."""
-        return self._learn(msg, "spam")
+        return self._learn(rcpt, msg, "spam")
 
-    def learn_ham(self, msg):
+    def learn_ham(self, rcpt, msg):
         """Learn new ham."""
-        return self._learn(msg, "ham")
+        return self._learn(rcpt, msg, "ham")
 
     def done(self):
         """Call this method at the end of the processing."""
@@ -246,21 +286,40 @@ def manual_learning_enabled(user):
     :return: True if learning is enabled, False otherwise.
     """
     manual_learning = parameters.get_admin("MANUAL_LEARNING") == "yes"
-    if manual_learning and user.group == "SimpleUsers":
-        manual_learning = parameters.get_admin("USER_MANUAL_LEARNING") == "yes"
+    if manual_learning:
+        domain_level_learning = parameters.get_admin(
+            "DOMAIN_LEVEL_LEARNING") == "yes"
+        user_level_learning = parameters.get_admin(
+            "USER_LEVEL_LEARNING") == "yes"
+        if user.has_perm("admin.view_domains"):
+            manual_learning = domain_level_learning or user_level_learning
+        else:
+            manual_learning = user_level_learning
     return manual_learning
 
 
-def setup_manual_learning(user):
+def setup_manual_learning_for_domain(domain):
+    """Setup manual learning if necessary.
+
+    :return: True if learning has been setup, False otherwise
+    """
+    if Policy.objects.filter(sa_username=domain.name).count():
+        return False
+    policy = Policy.objects.get(policy_name=domain.name)
+    policy.sa_username = domain.name
+    policy.save()
+    return True
+
+
+def setup_manual_learning_for_mbox(mbox):
     """Setup manual learning if necessary.
 
     :return: True if learning has been setup, False otherwise
     """
     result = False
-    if user.group == "SimpleUsers":
-        if not Policy.objects.exists(email=user.email):
-            policy = create_user_and_policy(user.email)
-            for alias in user.mailbox_set.all()[0].alias_addresses:
-                create_user_and_use_policy(alias.full_address, policy)
-            result = True
+    if not Policy.objects.filter(policy_name=mbox.full_address).exists():
+        policy = create_user_and_policy(mbox.full_address)
+        for alias in mbox.alias_addresses:
+            create_user_and_use_policy(alias, policy)
+        result = True
     return result

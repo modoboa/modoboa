@@ -11,6 +11,7 @@ urlpatterns = patterns(
     (r'^release/(?P<mail_id>[\w\-\+]+)/$', 'release'),
     (r'^markspam/(?P<mail_id>[\w\-\+]+)/$', 'mark_as_spam'),
     (r'^markham/(?P<mail_id>[\w\-\+]+)/$', 'mark_as_ham'),
+    (r'^learning_recipient/$', 'learning_recipient'),
     (r'^(?P<mail_id>[\w\-\+]+)/$', 'viewmail'),
     (r'^(?P<mail_id>[\w\-\+]+)/headers/$', 'viewheaders'),
 )

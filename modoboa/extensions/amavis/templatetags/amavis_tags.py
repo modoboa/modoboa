@@ -36,7 +36,7 @@ def viewm_menu(user, mail_id, rcpt):
     ]
 
     if manual_learning_enabled(user):
-        entries.insert(1, {
+        entries.insert(2, {
             "name": "process",
             "img": "icon-cog",
             "menu": [
@@ -44,12 +44,18 @@ def viewm_menu(user, mail_id, rcpt):
                  "label": _("Mark as spam"),
                  "url": reverse(
                      "modoboa.extensions.amavis.views.mark_as_spam", args=[mail_id]
-                 ) + ("?rcpt=%s" % rcpt if rcpt else "")},
+                 ) + ("?rcpt=%s" % rcpt if rcpt else ""),
+                 "extra_attributes": {
+                     "data-mail-id": mail_id
+                 }},
                 {"name": "mark-as-ham",
                  "label": _("Mark as non-spam"),
                  "url": reverse(
                      "modoboa.extensions.amavis.views.mark_as_ham", args=[mail_id]
-                 ) + ("?rcpt=%s" % rcpt if rcpt else "")}
+                 ) + ("?rcpt=%s" % rcpt if rcpt else ""),
+                 "extra_attributes": {
+                     "data-mail-id": mail_id
+                 }}
             ]
         })
 
