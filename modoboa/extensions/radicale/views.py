@@ -90,8 +90,7 @@ def new_user_calendar(request):
 
 @login_required
 def user_calendar(request, pk):
-    """Edit or remove a calendar.
-    """
+    """Edit or remove a calendar."""
     try:
         ucal = UserCalendar.objects.select_related().get(pk=pk)
     except UserCalendar.DoesNotExist:
@@ -107,10 +106,24 @@ def user_calendar(request, pk):
 
 
 @login_required
+def user_calendar_detail(request, pk):
+    """Display user calendar's detail."""
+    try:
+        ucal = UserCalendar.objects.select_related().get(pk=pk)
+    except UserCalendar.DoesNotExist:
+        raise NotFound
+    if request.user != ucal.mailbox.user and \
+       not request.user.can_access(ucal.mailbox.domain):
+        raise PermDeniedException
+    return render(request, "radicale/calendar_detail.html", {
+        "title": ucal.name, "calendar": ucal
+    })
+
+
+@login_required
 @permission_required("radicale.add_sharedcalendar")
 def new_shared_calendar(request):
-    """Shared calendar creation view.
-    """
+    """Shared calendar creation view."""
     if request.method == "POST":
         form = SharedCalendarForm(request.user, request.POST)
         if form.is_valid():
@@ -133,11 +146,10 @@ def new_shared_calendar(request):
 @login_required
 @user_passes_test(
     lambda u: u.has_perm("radicale.change_sharedcalendar")
-              or u.has_perm("radicale.delete_sharedcalendar")
+    or u.has_perm("radicale.delete_sharedcalendar")
 )
 def shared_calendar(request, pk):
-    """Edit or remove a shared calendar.
-    """
+    """Edit or remove a shared calendar."""
     try:
         scal = SharedCalendar.objects.select_related().get(pk=pk)
     except SharedCalendar.DoesNotExist:
@@ -165,6 +177,23 @@ def shared_calendar(request, pk):
         "action": reverse("radicale:shared_calendar", args=[scal.pk]),
         "action_classes": "submit",
         "action_label": _("Submit")
+    })
+
+
+@login_required
+@user_passes_test(
+    lambda u: u.has_perm("radicale.change_sharedcalendar")
+)
+def shared_calendar_detail(request, pk):
+    """Display shared calendar's detail."""
+    try:
+        scal = SharedCalendar.objects.select_related().get(pk=pk)
+    except SharedCalendar.DoesNotExist:
+        raise NotFound
+    if not request.user.can_access(scal.domain):
+        raise PermDeniedException
+    return render(request, "radicale/calendar_detail.html", {
+        "title": scal.name, "calendar": scal
     })
 
 

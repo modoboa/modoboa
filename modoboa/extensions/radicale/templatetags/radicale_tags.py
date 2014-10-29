@@ -43,37 +43,46 @@ def radicale_left_menu(user):
 
 
 @register.simple_tag
-def calendar_modify_link(calendar):
-    """
-    """
-    linkdef = {"label": calendar.name, "modal": True}
+def calendar_view_link(calendar):
+    """Render a link to view calendar detail."""
+    linkdef = {
+        "label": calendar.name, "modal": True,
+        "title": _("View calendar detail")
+    }
     if calendar.__class__.__name__ == "UserCalendar":
         linkdef["url"] = reverse(
-            "radicale:user_calendar", args=[calendar.pk]
+            "radicale:user_calendar_detail", args=[calendar.pk]
         )
-        linkdef["modalcb"] = "radicale.edit_calendar_cb"
     else:
         linkdef["url"] = reverse(
-            "radicale:shared_calendar", args=[calendar.pk]
+            "radicale:shared_calendar_detail", args=[calendar.pk]
         )
-        linkdef["modalcb"] = "radicale.shared_calendar_cb"
     return render_link(linkdef)
 
 
 @register.simple_tag
 def calendar_actions(calendar):
-    """
-    """
-    actions = [{
-        "name": "delcalendar",
-        "title": _("Delete %s?" % calendar),
-        "img": "fa fa-trash"
-    }]
+    """Render per-calendar actions."""
+    actions = [
+        {"name": "editcalendar",
+         "title": _("Edit %s" % calendar),
+         "modal": True,
+         "img": "fa fa-edit"},
+        {"name": "delcalendar",
+         "title": _("Delete %s?" % calendar),
+         "img": "fa fa-trash"}
+    ]
     if calendar.__class__.__name__ == 'UserCalendar':
         actions[0]["url"] = reverse(
+            "radicale:user_calendar", args=[calendar.pk])
+        actions[0]["modalcb"] = "radicale.edit_calendar_cb"
+        actions[1]["url"] = reverse(
             "radicale:user_calendar", args=[calendar.id])
     else:
         actions[0]["url"] = reverse(
+            "radicale:shared_calendar", args=[calendar.pk])
+        actions[0]["modalcb"] = "radicale.shared_calendar_cb"
+        actions[1]["url"] = reverse(
             "radicale:shared_calendar", args=[calendar.id])
     return render_actions(actions)
 

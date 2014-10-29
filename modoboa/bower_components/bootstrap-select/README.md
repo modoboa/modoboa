@@ -6,39 +6,40 @@ A custom select / multiselect for Bootstrap using button dropdown, designed to b
 ## Demo and Documentation
 
 See a Bootstrap 2.3.2 example [here](http://silviomoreto.github.com/bootstrap-select/). <br/>
-See a Bootstrap 3.0.2 example [here](http://silviomoreto.github.com/bootstrap-select/3) (work-in-progress).
+See a Bootstrap 3.0.3 example [here](http://silviomoreto.github.com/bootstrap-select/3) (work-in-progress).
 
 ## Authors
 
 [Silvio Moreto](http://github.com/silviomoreto),
 [Ana Carolina](http://github.com/anacarolinats),
-[caseyjhol](https://github.com/caseyjhol), and
-[Matt Bryson](https://github.com/mattbryson).
+[caseyjhol](https://github.com/caseyjhol),
+[Matt Bryson](https://github.com/mattbryson), and
+[t0xicCode](https://github.com/t0xicCode).
 
 ## Usage
 
 Create your `<select>` with the `.selectpicker` class.
-
-    <select class="selectpicker">
-      <option>Mustard</option>
-      <option>Ketchup</option>
-      <option>Barbecue</option>
-    </select>
-    
+```html
+<select class="selectpicker">
+  <option>Mustard</option>
+  <option>Ketchup</option>
+  <option>Barbecue</option>
+</select>
+```
 Enable Bootstrap-Select via JavaScript:
-
-    $('.selectpicker').selectpicker();
-
+```js
+$('.selectpicker').selectpicker();
+```
 Or just
-
-    $('select').selectpicker();
-
+```js
+$('select').selectpicker();
+```
 Checkout the [documentation](http://silviomoreto.github.com/bootstrap-select/) for further information.
 
 ## CDN
 
-* https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.3.5/bootstrap-select.min.js
-* https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.3.5/bootstrap-select.min.css
+* https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js
+* https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css
 
 ## Bugs and feature requests
 

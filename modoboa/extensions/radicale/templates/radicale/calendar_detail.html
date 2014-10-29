@@ -1,0 +1,10 @@
+{% extends "common/generic_modal.html" %}
+
+{% load i18n %}
+
+{% block modalbody %}
+<p>{% trans "To access this calendar, use the following address:" %}
+<div class="alert alert-info" role="alert">
+  <p><strong>{{ calendar.url }}</strong></p>
+</div>
+{% endblock %}

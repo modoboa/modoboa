@@ -361,10 +361,11 @@ Webmail.prototype = {
         }
     },
 
-    /*
-     *  Set the *unseen messages* counter for a particular mailbox in
-     *  the list. If the mailbox is currently selected, we update the
-     *  listing.
+    /**
+     * Set the *unseen messages* counter for a particular mailbox in
+     * the list. If the mailbox is currently selected, we force a
+     * listing update.
+     *
      */
     set_unseen_messages: function(mailbox, value) {
         if (this.poller.running_request) {
@@ -378,7 +379,7 @@ Webmail.prototype = {
         if (this.navobject.params.action == "listmailbox") {
             var curmb = this.get_current_mailbox();
             if (curmb == mailbox) {
-                this.navobject.update(true);
+                this.navobject.setparam("reset_page", "true").update(true);
             }
         }
 

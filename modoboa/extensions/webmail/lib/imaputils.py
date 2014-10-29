@@ -253,12 +253,13 @@ class IMAPconnector(object):
         """
         if self.m is not None:
             try:
-                self._cmd("CHECK")
+                self._cmd("NOOP")
             except ImapError:
                 if hasattr(self, "current_mailbox"):
                     del self.current_mailbox
             else:
                 return
+
         self.login(user, password)
 
     def login(self, user, passwd):
@@ -272,6 +273,7 @@ class IMAPconnector(object):
         :param passwd: password
         """
         import socket
+
         if type(user) is unicode:
             user = user.encode("utf-8")
         if type(passwd) is unicode:

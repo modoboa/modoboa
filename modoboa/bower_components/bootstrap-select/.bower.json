@@ -1,10 +1,11 @@
 {
   "name": "bootstrap-select",
   "main": [
-    "bootstrap-select.css",
-    "bootstrap-select.js"
+    "less/bootstrap-select.less",
+    "dist/css/bootstrap-select.css",
+    "dist/js/bootstrap-select.js"
   ],
-  "version": "1.5.4",
+  "version": "1.6.0",
   "homepage": "https://github.com/silviomoreto/bootstrap-select",
   "authors": [
     "silviomoreto"
@@ -16,7 +17,7 @@
     "replacement"
   ],
   "dependencies": {
-    "jquery": ">=1.7"
+    "jquery": ">=1.8"
   },
   "license": "MIT",
   "ignore": [
@@ -26,14 +27,14 @@
     "test",
     "tests"
   ],
-  "_release": "1.5.4",
+  "_release": "1.6.0",
   "_resolution": {
     "type": "version",
-    "tag": "1.5.4",
-    "commit": "1e01fb7355face50b199780d3d60baa5d799bfce"
+    "tag": "v1.6.0",
+    "commit": "32032e001d1ac735ed0a8c00c00c50ddaacefbdd"
   },
   "_source": "git://github.com/silviomoreto/bootstrap-select.git",
-  "_target": "1.5.4",
+  "_target": "1.6.0",
   "_originalSource": "bootstrap-select",
   "_direct": true
 }

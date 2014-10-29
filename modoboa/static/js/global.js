@@ -175,7 +175,7 @@ function simple_ajax_form_post(e, options) {
         if (opts.modal) {
             $("#modalbox").modal('hide');
         }
-        if (opts.success_cb != undefined) {
+        if (opts.success_cb !== undefined) {
             opts.success_cb(data);
             return;
         }
