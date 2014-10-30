@@ -1,21 +1,22 @@
-# Modoboa German translation.
-# Copyright (C) 2012
-# This file is distributed under the same license as the Modoboa package.
-#
-# Patrick Ben Koetter <p@state-of-mind.de>, 2010-2012.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Patrick Koetter <p@state-of-mind.de>, 2010
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa-0.9\n"
+"Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-24 12:33+0200\n"
-"PO-Revision-Date: 2013-12-08 23:34+0100\n"
-"Last-Translator: Patrick Ben Koetter <p@sys4.de>\n"
-"Language-Team: DE <p@state-of-mind.fr>\n"
-"Language: de\n"
+"POT-Creation-Date: 2014-08-24 12:32+0200\n"
+"PO-Revision-Date: 2013-12-15 09:23+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: extensions/admin/static/admin/js/admin.js:32
 msgid "Search"
@@ -33,9 +34,7 @@ msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr ""
-"Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser "
-"Mailkonten."
+msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser Mailkonten."
 
 #: extensions/admin/static/admin/js/admin.js:222
 msgid "No domain administrator defined"
@@ -141,24 +140,3 @@ msgstr "Interner Fehler"
 #: static/js/searchbar.js:20
 msgid "Search..."
 msgstr "Suchen..."
-
-#~ msgid "Message deleted"
-#~ msgstr "Nachricht gelöscht"
-
-#~ msgid "Delete this domain?"
-#~ msgstr "Diese Domain löschen?"
-
-#~ msgid "Delete this account?"
-#~ msgstr "Diese Konto löschen?"
-
-#~ msgid "Delete this list?"
-#~ msgstr "Diese Liste löschen?"
-
-#~ msgid "Delete this forward?"
-#~ msgstr "Diese Weiterleitung löschen?"
-
-#~ msgid "Delete this alias?"
-#~ msgstr "Diesen Alias löschen?"
-
-#~ msgid "Loading..."
-#~ msgstr "Lade..."

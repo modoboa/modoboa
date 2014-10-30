@@ -1,24 +1,29 @@
 {% extends "common/generic_modal_form.html" %}{% load url from future %}
 {% load i18n %}
+{% load static %}
 {% block modalbody %}
 {{ block.super }}
-<div id="test" style="text-align: center">
-<input type="button" class="btn btn-primary" id="submit" name="submit" value="{% trans 'Attach' %}" />
+
+<div class="col-sm-12 text-center">
+  <input type="button" class="btn btn-primary" id="submit" name="submit" value="{% trans 'Attach' %}" />
 </div>
+
 <div id="upload_status" style="display:none">
-  <img src="{{ STATIC_URL }}css/spinner.gif" /> {% trans "Uploading.." %}
+  <img src="{% static 'css/spinner.gif' %}" /> {% trans "Uploading.." %}
 </div>
 <iframe id="upload_target" name="upload_target" src="#" 
         style="width:0;height:0;border:0px solid #fff;"></iframe>
 <div class="well" id="attachment_list">
-{% for att in attachments %}
-<div class="row-fluid">
-  <a href="{% url 'modoboa.extensions.webmail.views.delattachment' %}?name={{ att.tmpname }}"
-     name="delattachment">
-    <i class="icon-remove"></i>
-  </a>
-  <label>{{ att.fname }}</label>
-</div>
-{% endfor %}
+  {% for att in attachments %}
+  <div class="row">
+    <div class="col-sm-12">
+      <a href="{% url 'webmail:attachment_delete' %}?name={{ att.tmpname }}"
+         name="delattachment">
+        <span class="fa fa-remove"></span>
+      </a>
+      <label>{{ att.fname }}</label>
+    </div>
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}

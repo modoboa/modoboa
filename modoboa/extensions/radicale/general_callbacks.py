@@ -1,7 +1,10 @@
+"""
+General callbacks.
+"""
+
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from django.template import Template, Context
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 
 
 @events.observe("UserMenuDisplay")
@@ -10,7 +13,7 @@ def top_menu(target, user):
         return [
             {"name": "radicale",
              "label": _("Calendars"),
-             "url": reverse('modoboa.extensions.radicale.views.index')}
+             "url": reverse('radicale:index')}
         ]
     return []
 

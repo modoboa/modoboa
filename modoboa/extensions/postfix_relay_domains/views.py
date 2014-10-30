@@ -33,7 +33,7 @@ def create(request, tplname="postfix_relay_domains/new_relaydomain_form.html"):
     ctx = {"title": _("New relay domain"),
            "action_label": _("Create"),
            "action_classes": "submit",
-           "action": reverse(create),
+           "action": reverse("postfix_relay_domains:relaydomain_add"),
            "formid": "rdomform",
            "form": RelayDomainFormGeneral()}
     return render(request, tplname, ctx)

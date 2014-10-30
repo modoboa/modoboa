@@ -5,6 +5,7 @@ from modoboa.extensions.amavis.models import Policy, Users
 
 
 class DomainPolicyForm(forms.ModelForm):
+
     spam_subject_tag2_act = forms.BooleanField()
 
     class Meta:
@@ -15,9 +16,12 @@ class DomainPolicyForm(forms.ModelForm):
         widgets = {
             'bypass_virus_checks': InlineRadioSelect(),
             'bypass_spam_checks': InlineRadioSelect(),
-            'spam_tag2_level': forms.TextInput(attrs={'class': 'span1'}),
-            'spam_kill_level': forms.TextInput(attrs={'class': 'span1'}),
-            'spam_subject_tag2': forms.TextInput(attrs={'class': 'span2'}),
+            'spam_tag2_level': forms.TextInput(
+                attrs={'class': 'form-control'}),
+            'spam_kill_level': forms.TextInput(
+                attrs={'class': 'form-control'}),
+            'spam_subject_tag2': forms.TextInput(
+                attrs={'class': 'form-control'}),
             'bypass_banned_checks': InlineRadioSelect(),
         }
 
@@ -25,13 +29,14 @@ class DomainPolicyForm(forms.ModelForm):
         if "instance" in kwargs:
             self.domain = kwargs["instance"]
             try:
-                policy = Users.objects.get(email="@%s" % self.domain.name).policy
+                policy = Users.objects.get(
+                    email="@%s" % self.domain.name).policy
                 kwargs["instance"] = policy
             except (Users.DoesNotExist, Policy.DoesNotExist):
                 del kwargs["instance"]
         super(DomainPolicyForm, self).__init__(*args, **kwargs)
-        for f in self.fields.keys():
-            self.fields[f].required = False
+        for field in self.fields.keys():
+            self.fields[field].required = False
 
     def save(self, user, commit=True):
         policy = super(DomainPolicyForm, self).save(commit=False)

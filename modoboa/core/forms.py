@@ -8,11 +8,11 @@ from modoboa.lib import parameters
 class LoginForm(forms.Form):
     username = forms.CharField(
         label=ugettext_lazy("Username"),
-        widget=forms.TextInput(attrs={"class": "input-block-level"})
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
     password = forms.CharField(
         label=ugettext_lazy("Password"),
-        widget=forms.PasswordInput(attrs={"class": "input-block-level"})
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     rememberme = forms.BooleanField(
         initial=False,
@@ -23,20 +23,24 @@ class LoginForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     oldpassword = forms.CharField(
         label=ugettext_lazy("Old password"), required=False,
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     newpassword = forms.CharField(
         label=ugettext_lazy("New password"), required=False,
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     confirmation = forms.CharField(
         label=ugettext_lazy("Confirmation"), required=False,
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
 
     class Meta:
         model = User
         fields = ("first_name", "last_name")
+        widgets = {
+                    'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+                    'last_name': forms.TextInput(attrs={'class': 'form-control'})
+                 }
 
     def __init__(self, update_password, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)

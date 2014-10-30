@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include
+from django.conf.urls import patterns, include, url
 from django.conf import settings
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import parameters, events
@@ -8,10 +8,10 @@ load_core_settings()
 
 urlpatterns = patterns(
     '',
-    (r'^$', 'modoboa.lib.webutils.topredirection'),
+    url(r'^$', 'modoboa.lib.webutils.topredirection', name="topredirection"),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog',
      {'packages': ('modoboa', ), }),
-    ('', include('modoboa.core.urls')),
+    ('', include('modoboa.core.urls', namespace="core")),
 )
 
 urlpatterns += patterns(
@@ -29,7 +29,7 @@ parameters.apply_to_django_settings()
 if 'modoboa.demo' in settings.INSTALLED_APPS:
     urlpatterns += patterns(
         '',
-        (r'^demo/', include('modoboa.demo.urls'))
+        (r'^demo/', include('modoboa.demo.urls', namespace="demo"))
     )
 
 if settings.DEBUG:

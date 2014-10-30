@@ -16,7 +16,7 @@ def menu(target, user):
         return [
             {"name": "quarantine",
              "label": _("Quarantine"),
-             "url": reverse('modoboa.extensions.amavis.views.index')}
+             "url": reverse('amavis:index')}
         ]
     return []
 
@@ -50,8 +50,8 @@ def on_domain_alias_deleted(domainaliases):
 
 
 @events.observe("GetStaticContent")
-def extra_static_content(caller, user):
-    if user.group == "SimpleUsers":
+def extra_static_content(caller, st_type, user):
+    if user.group == "SimpleUsers" or st_type != "js":
         return []
 
     if caller == 'domains':
@@ -82,11 +82,11 @@ def check_for_pending_requests(user, include_all):
         return [{"id": "nbrequests", "counter": 0}] if include_all \
             else []
 
-    url = reverse("modoboa.extensions.amavis.views.index")
+    url = reverse("amavis:index")
     url += "#listing/?viewrequests=1"
     return [{
         "id": "nbrequests", "url": url, "text": _("Pending requests"),
-        "counter": nbrequests, "level": "important"
+        "counter": nbrequests, "level": "danger"
     }]
 
 

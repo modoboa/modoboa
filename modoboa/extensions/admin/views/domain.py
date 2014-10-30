@@ -1,4 +1,7 @@
-import reversion
+"""
+Domain related views.
+"""
+
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
@@ -8,6 +11,9 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
+
+import reversion
+
 from modoboa.lib import parameters, events
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
@@ -15,7 +21,6 @@ from modoboa.lib.webutils import (
 from modoboa.lib.exceptions import (
     PermDeniedException
 )
-from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.admin.forms import (
@@ -26,12 +31,13 @@ from modoboa.extensions.admin.lib import get_domains
 
 @login_required
 def index(request):
-    return HttpResponseRedirect(reverse(domains))
+    return HttpResponseRedirect(reverse("admin:domain_list"))
 
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domains") or u.has_perm("admin.view_mailboxes")
+    lambda u: u.has_perm("admin.view_domains")
+    or u.has_perm("admin.view_mailboxes")
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
@@ -41,9 +47,7 @@ def _domains(request):
         + events.raiseQueryEvent('ExtraDomainFilters')
     )
     request.session['domains_filters'] = filters
-    domainlist = get_domains(
-        request.user, **filters
-    )
+    domainlist = get_domains(request.user, **filters)
     if sort_order == 'name':
         domainlist = sorted(
             domainlist,
@@ -52,18 +56,22 @@ def _domains(request):
     else:
         domainlist = sorted(domainlist, key=lambda d: d.tags[0],
                             reverse=sort_dir == '-')
-    page = get_listing_page(domainlist, request.GET.get("page", 1))
-    return render_to_json_response({
-        "table": _render_to_string(request, 'admin/domains_table.html', {
-            'domains': page.object_list,
-            'tableid': 'domains'
-        }),
-        "page": page.number,
-        "paginbar": pagination_bar(page),
-        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",
-                                                 raise_error=False),
+    context = {
+        "handle_mailboxes": parameters.get_admin(
+            "HANDLE_MAILBOXES", raise_error=False),
         "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL")
-    })
+    }
+    page = get_listing_page(domainlist, request.GET.get("page", 1))
+    if page is None:
+        context["length"] = 0
+    else:
+        context["rows"] = _render_to_string(
+            request, 'admin/domains_table.html', {
+                'domains': page.object_list,
+            }
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
 
 
 @login_required
@@ -72,9 +80,9 @@ def domains(request, tplname="admin/domains.html"):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
             return HttpResponseRedirect(
-                reverse('modoboa.extensions.admin.views.identity.identities')
+                reverse("admin:identity_list")
             )
-        return HttpResponseRedirect(reverse("modoboa.core.views.user.index"))
+        return HttpResponseRedirect(reverse("core:user_index"))
     return render(request, tplname, {"selection": "domains"})
 
 
@@ -100,7 +108,8 @@ def newdomain(request):
 @permission_required("admin.view_domains")
 @transaction.commit_on_success
 @reversion.create_revision()
-def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
+def editdomain(request, dom_id):
+    """Edit domain view."""
     domain = Domain.objects.get(pk=dom_id)
     if not request.user.can_access(domain):
         raise PermDeniedException

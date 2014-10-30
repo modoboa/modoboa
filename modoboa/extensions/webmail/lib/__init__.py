@@ -6,7 +6,6 @@ from .imapemail import ImapEmail, ReplyModifier, ForwardModifier
 from .imaputils import (
     BodyStructure, IMAPconnector, get_imapconnector, separate_mailbox
 )
-from .listing import ImapListing
 from .signature import EmailSignature
 from .utils import decode_payload, WebmailNavigationParameters
 from .sendmail import send_mail
@@ -20,7 +19,6 @@ __all__ = [
     'ForwardModifier',
     'IMAPconnector',
     'ImapEmail',
-    'ImapListing',
     'ReplyModifier',
     'WebmailNavigationParameters',
     'clean_attachments',

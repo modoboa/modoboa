@@ -1,4 +1,5 @@
 CKEDITOR.editorConfig = function(config) {
+    config.allowedContent = true;
     config.toolbar = "Modoboa";
     config.toolbar_Modoboa = [
         ['Bold','Italic','Underline'],

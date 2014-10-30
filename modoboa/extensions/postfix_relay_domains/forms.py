@@ -26,11 +26,17 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
         model = RelayDomain
         exclude = ['dates']
         widgets = {
-            'service': forms.Select(attrs={'class': 'span2'})
+            "service": forms.Select(attrs={"class": "form-control"})
         }
 
     def __init__(self, *args, **kwargs):
+        self.oldname = None
+        if "instance" in kwargs:
+            self.oldname = kwargs["instance"].name
         super(RelayDomainFormGeneral, self).__init__(*args, **kwargs)
+        self.field_widths = {
+            "service": 3
+        }
         if args and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", DomainNameField)
         elif 'instance' in kwargs:
@@ -97,6 +103,7 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
         """
         rd = super(RelayDomainFormGeneral, self).save(commit=False)
         if commit:
+            rd.oldname = self.oldname
             rd.save()
             aliases = []
             for k, v in self.cleaned_data.iteritems():
@@ -156,7 +163,8 @@ class RelayDomainForm(TabForms):
         """
         rdom = self.instances["general"]
         context.update({
-            'action': reverse("edit_relaydomain", args=[rdom.id]),
+            'action': reverse(
+                "postfix_relay_domains:relaydomain_change", args=[rdom.id]),
             'formid': 'rdomform',
             'title': rdom.name
         })

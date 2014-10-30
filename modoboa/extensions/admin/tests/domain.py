@@ -22,7 +22,7 @@ class DomainTestCase(ModoTestCase):
             "name": "pouet.com", "quota": 100, "create_dom_admin": "no",
             "stepid": 'step2'
         }
-        self.ajax_post(reverse("modoboa.extensions.admin.views.domain.newdomain"), values)
+        self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
         self.assertEqual(dom.name, "pouet.com")
         self.assertEqual(dom.quota, 100)
@@ -39,7 +39,7 @@ class DomainTestCase(ModoTestCase):
             "stepid": 'step2'
         }
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.newdomain"),
+            reverse("admin:domain_add"),
             values
         )
         dom = Domain.objects.get(name="pouet.com")
@@ -57,7 +57,7 @@ class DomainTestCase(ModoTestCase):
             "stepid": 'step2'
         }
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.newdomain"),
+            reverse("admin:domain_add"),
             values
         )
         dom = Domain.objects.get(name="pouet.com")
@@ -75,7 +75,7 @@ class DomainTestCase(ModoTestCase):
             "stepid": 'step2'
         }
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.newdomain"),
+            reverse("admin:domain_add"),
             values
         )
         dom = Domain.objects.get(name="pouet.com")
@@ -93,8 +93,7 @@ class DomainTestCase(ModoTestCase):
         }
         dom = Domain.objects.get(name="test.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.editdomain",
-                    args=[dom.id]), 
+            reverse("admin:domain_change", args=[dom.id]),
             values
         )
         dom = Domain.objects.get(name="pouet.com")
@@ -106,8 +105,7 @@ class DomainTestCase(ModoTestCase):
         """
         dom = Domain.objects.get(name="test.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.deldomain",
-                    args=[dom.id]),
+            reverse("admin:domain_delete", args=[dom.id]),
             {}
         )
         with self.assertRaises(Domain.DoesNotExist):

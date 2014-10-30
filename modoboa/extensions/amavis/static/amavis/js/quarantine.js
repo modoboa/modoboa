@@ -1,3 +1,9 @@
+/**
+ * Return an instance of Quarantine.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ */
 var Quarantine = function(options) {
     Listing.call(this, options);
 };
@@ -6,7 +12,11 @@ Quarantine.prototype = {
     constructor: Quarantine,
 
     defaults: {
-        deflocation: "listing"
+        deflocation: "listing",
+        main_table_id: "emails",
+        scroll_container: "#listing",
+        navigation_params: ["sort_order", "pattern", "criteria", "msgtype"],
+        eor_message: gettext("No more message to show")
     },
 
     initialize: function(options) {
@@ -18,10 +28,22 @@ Quarantine.prototype = {
         this.set_msgtype();
 
         $(document).on('click', '#selectall', this.toggle_selection);
-        $("#searchfield").searchbar({navobj: this.navobj});
+        this.initialize_searchfield();
     },
 
-    /*
+    /**
+     * Search field initialization.
+     */
+    initialize_searchfield: function() {
+        $("#searchfield").searchbar({
+            navobj: this.navobj,
+            pattern_changed: function(navobj) {
+                navobj.setparam("reset_page", "true");
+            }
+        });
+    },
+
+    /**
      * Activate the button corresponding to the current message type
      * filter. If no message type is found, the 'All' button is
      * selected.
@@ -29,28 +51,39 @@ Quarantine.prototype = {
     set_msgtype: function() {
         var msgtype = this.navobj.getparam('msgtype');
 
-        $("button[name*=msgtype]").removeClass('active');
-        if (msgtype != undefined) {
-            $("button[name=msgtype_" + msgtype + "]").addClass('active');
+        $("input[name*=msgtype]").attr("checked", false)
+            .parent().removeClass('active');
+        
+        if (msgtype !== undefined) {
+            $("input[name=msgtype_" + msgtype + "]").attr("checked", true)
+                .parent().addClass('active');
         } else {
-            $("button[name=msgtype_all]").addClass('active');
+            $("button[name=msgtype_all]").attr("checked", true)
+                .parent().addClass('active');
         }
     },
 
+    /**
+     * Update the main page content.
+     *
+     * @this Quarantine
+     * @param {Object} data - new content
+     */
     update_page: function(data) {
-        if (data.menu != undefined) {
+        if (data.menu !== undefined) {
             $("#menubar").html(data.menu);
-            $("#searchfield").searchbar({navobj: this.navobj});
+            this.initialize_searchfield();
         }
-        if (data.listing != undefined) {
+
+        if (data.listing !== undefined) {
             $("#listing").html(data.listing);
-            $("#listing").css({
-                top: $("#menubar").outerHeight() + 60 + "px",
-                bottom: $("#bottom-bar").outerHeight() + "px",
-                overflow: "auto"
-            });
         }
-        this.update_listing(data);
+        if (this.navobj.getbaseurl() == "listing") {
+            this.update_listing(data);
+            $(this.options.scroll_container).scrollTop(10);
+        } else {
+            this.update_listing(data, false);
+        }
     },
 
     listen: function() {
@@ -66,12 +99,38 @@ Quarantine.prototype = {
         $(document).on("click", "a[name=delete]", $.proxy(this.delete, this));
         $(document).on("click", "a[name=headers]", $.proxy(this.headers, this));
         $(document).on("click", "td[name=type] span", $.proxy(this.filter_by_type, this));
-        $(document).on("click", "#filters button", $.proxy(this.filter_by_type, this));
+        $(document).on("click", "#filters label", $.proxy(this.filter_by_type, this));
     },
 
     load_page: function(e) {
         Listing.prototype.load_page.apply(this, arguments);
         this.navobj.delparam("rcpt").update();
+    },
+
+    /**
+     * Return extra arguments used to fetch a page.
+     *
+     * @this Listing
+     */
+    get_load_page_args: function() {
+        var args = Listing.prototype.get_load_page_args.call(this);
+
+        args.scroll = true;
+        return args;
+    },
+
+    /**
+     * Calculate the bottom position of the scroll container.
+     *
+     * @param {Object} $element - scroll container object
+     */
+    calculate_bottom: function($element) {
+        var emails_height = $("#emails").height();
+
+        if (!emails_height) {
+            return undefined;
+        }
+        return $("#emails").height() - $element.height();
     },
 
     view_requests: function(e) {
@@ -132,8 +191,10 @@ Quarantine.prototype = {
         }
     },
 
-    /*
+    /**
      * Filter listing by message type (spam, virus, etc.)
+     *
+     * @param {Object} evt - event object
      */
     filter_by_type: function(evt) {
         var $target = $(evt.target);
@@ -142,7 +203,7 @@ Quarantine.prototype = {
         if ($target.is("span")) {
             msgtype = $target.html().trim();
         } else {
-            msgtype = $target.attr("name").replace("msgtype_", "");
+            msgtype = $target.children("input").attr("name").replace("msgtype_", "");
         }
 
         if (msgtype != 'all') {
@@ -272,16 +333,26 @@ Quarantine.prototype = {
         }
     },
 
+    /**
+     * Navigation callback: listing.
+     *
+     * @this Quarantine
+     * @param {Object} data - ajax call response (JSON)
+     */
     listing_cb: function(data) {
         this.update_page(data);
         this.navobj.delparam("rcpt").update();
         this.set_msgtype();
         $("#emails").htmltable({
-            tr_selected_event: this.activate_buttons,
-            tr_unselected_event: $.proxy(this.deactivate_buttons, this)
+            row_selected_event: this.activate_buttons,
+            row_unselected_event: $.proxy(this.deactivate_buttons, this)
         });
         this.htmltable = $("#emails").data("htmltable");
         this.deactivate_buttons();
+        if (this.navobj.hasparam("reset_page")) {
+            this.navobj.delparam("reset_page").update(false, true);
+        }
+        $("#listing").css("overflow", "auto");
     },
 
     viewmail_cb: function(data) {

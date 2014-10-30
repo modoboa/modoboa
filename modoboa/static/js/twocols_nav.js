@@ -1,3 +1,8 @@
+/**
+ * Return an instance of TwocolsNav.
+ *
+ * @constructor
+ */
 var TwocolsNav = function(options) {
     Listing.call(this, options);
 };
@@ -33,7 +38,7 @@ TwocolsNav.prototype = {
         if (data.content) {
             $('#' + this.options.divid).html(data.content);
         }
-        this.update_listing(data);
+        this.update_listing(data, false);
         if (data.onload_cb) {
             eval(data.onload_cb + '()');
         }
@@ -77,7 +82,7 @@ TwocolsNav.prototype = {
     select_change: function(e) {
         var instance = this;
         var $target = $(e.target);
-        var $parent = $target.parents("div.control-group");
+        var $parent = $target.parents("div.form-group");
 
         $('div[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
             instance.toggle_field_visibility($(this), $parent, $target.val());
@@ -90,7 +95,7 @@ TwocolsNav.prototype = {
     radio_clicked: function(e) {
         var instance = this;
         var $target = $(e.target);
-        var $parent = $target.parents("div.control-group");
+        var $parent = $target.parents("div.form-group");
         var realid = $target.attr("id");
 
         realid = realid.substr(0, realid.length - 2);
@@ -121,10 +126,16 @@ TwocolsNav.prototype = {
         this.navobj.parse_string($link.attr("href"), true).update();
     },
 
-
-    default_cb: function(data) {
+    /**
+     * Select an entry in the left menu based on current url.
+     */
+    select_left_menu: function() {
         $("a.ajaxlink").parent().removeClass("active");
         $("a[name=" + this.navobj.getbaseurl() + "]").parent().addClass("active");
+    },
+
+    default_cb: function(data) {
+        this.select_left_menu();
         this.update_content(data);
     }
 };

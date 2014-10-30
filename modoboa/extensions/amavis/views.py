@@ -1,18 +1,22 @@
 # coding: utf-8
+"""
+Amavis quarantine views.
+"""
 import email
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404
 from django.template import Template, Context
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators \
-    import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
+
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest
+from modoboa.lib.paginator import Paginator
 from modoboa.lib.webutils import (
-    getctx, ajax_response, render_to_json_response
+    getctx, ajax_response, render_to_json_response, _render_to_string
 )
-from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.extensions.amavis.templatetags.amavis_tags import (
     quar_menu, viewm_menu
@@ -20,49 +24,85 @@ from modoboa.extensions.amavis.templatetags.amavis_tags import (
 from .lib import selfservice, AMrelease, QuarantineNavigationParameters
 from .models import Msgrcpt
 from .sql_connector import get_connector
-from .sql_listing import SQLlisting, SQLemail
+from .sql_email import SQLemail
 
 
-def empty_quarantine(request):
+def empty_quarantine():
+    """Shortcut to use when no content can be displayed."""
     content = "<div class='alert alert-info'>%s</div>" % _("Empty quarantine")
     ctx = getctx("ok", level=2, listing=content)
     return render_to_json_response(ctx)
 
 
+def get_listing_pages(request, connector):
+    """Return listing pages."""
+    paginator = Paginator(
+        connector.messages_count(),
+        int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
+    )
+    page_id = int(connector.navparams.get("page"))
+    page = paginator.getpage(page_id)
+    if not page:
+        return None
+    pages = [page]
+    if not page.has_next and page.has_previous and page.items < 40:
+        pages = [paginator.getpage(page_id - 1)] + pages
+    email_list = []
+    for page in pages:
+        email_list += connector.fetch(page.id_start, page.id_stop)
+    return {"pages": [page.number for page in pages], "rows": email_list}
+
+
+@login_required
+def listing_page(request):
+    """Return a listing page."""
+    navparams = QuarantineNavigationParameters(request)
+    previous_page_id = int(navparams["page"]) if "page" in navparams else None
+    navparams.store()
+
+    connector = get_connector(user=request.user, navparams=navparams)
+    context = get_listing_pages(request, connector)
+    if context is None:
+        context = {"length": 0}
+        navparams["page"] = previous_page_id
+    else:
+        context["rows"] = _render_to_string(
+            request, "amavis/emails_page.html", {"email_list": context["rows"]}
+        )
+    return render_to_json_response(context)
+
+
 @login_required
 def _listing(request):
+    """Listing initial view.
+
+    Called the first time the listing page is displayed.
+    """
     if not request.user.is_superuser and request.user.group != 'SimpleUsers':
         if not Domain.objects.get_for_admin(request.user).count():
-            return empty_quarantine(request)
+            return empty_quarantine()
 
     navparams = QuarantineNavigationParameters(request)
     navparams.store()
 
-    lst = SQLlisting(
-        request.user,
-        navparams=navparams,
-        elems_per_page=int(
-            parameters.get_user(request.user, "MESSAGES_PER_PAGE")
-        )
+    connector = get_connector(user=request.user, navparams=navparams)
+    context = get_listing_pages(request, connector)
+    if context is None:
+        return empty_quarantine()
+    context["listing"] = _render_to_string(
+        request, "amavis/email_list.html", {"email_list": context["rows"]}
     )
-    page = lst.paginator.getpage(navparams.get('page'))
-    if not page:
-        return empty_quarantine(request)
-
-    content = lst.fetch(request, page.id_start, page.id_stop)
-    ctx = getctx(
-        "ok", listing=content, paginbar=pagination_bar(page), page=page.number
-    )
+    del context["rows"]
     if request.session.get('location', 'listing') != 'listing':
-        ctx['menu'] = quar_menu()
-    request.session['location'] = 'listing'
-    return render_to_json_response(ctx)
+        context["menu"] = quar_menu()
+    request.session["location"] = "listingx"
+    return render_to_json_response(context)
 
 
 @login_required
 def index(request):
+    """Default view."""
     return render(request, "amavis/index.html", dict(
-        deflocation="listing/?sort_order=-date", defcallback="listing_cb",
         selection="quarantine"
     ))
 
@@ -91,7 +131,7 @@ def viewmail_selfservice(request, mail_id,
     if rcpt is None:
         raise Http404
     content = Template("""{% load url from future %}
-<iframe src="{% url 'modoboa.extensions.amavis.views.getmailcontent' mail_id %}" id="mailcontent"></iframe>
+<iframe src="{% url 'amavis:mailcontent_get' mail_id %}" id="mailcontent"></iframe>
 """).render(Context(dict(mail_id=mail_id)))
 
     return render(request, tplname, dict(
@@ -111,7 +151,7 @@ def viewmail(request, mail_id):
 
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
-""").render(Context({"url": reverse(getmailcontent, args=[mail_id])}))
+""").render(Context({"url": reverse("amavis:mailcontent_get", args=[mail_id])}))
     menu = viewm_menu(mail_id, rcpt)
     ctx = getctx("ok", menu=menu, listing=content)
     request.session['location'] = 'viewmail'
@@ -162,7 +202,7 @@ def delete(request, mail_id):
     for mid in mail_id:
         r, i = mid.split()
         if mb is not None and r != mb.full_address \
-                and not r in mb.alias_addresses:
+                and r not in mb.alias_addresses:
             continue
         connector.set_msgrcpt_status(r, i, 'D')
     message = ungettext("%(count)d message deleted successfully",
@@ -214,7 +254,7 @@ def release(request, mail_id):
     for mid in mail_id:
         r, i = mid.split()
         if mb is not None and r != mb.full_address \
-                and not r in mb.alias_addresses:
+                and r not in mb.alias_addresses:
             continue
         msgrcpts += [connector.get_recipient_message(r, i)]
     if mb is not None and parameters.get_admin("USER_CAN_RELEASE") == "no":
@@ -259,11 +299,10 @@ def process(request):
     ids = request.POST.get("selection", "")
     ids = ids.split(",")
     if not len(ids):
-        return HttpResponseRedirect(reverse(index))
+        return HttpResponseRedirect(reverse("amavis:index"))
 
     if request.POST["action"] == "release":
         return release(request, ids)
 
     if request.POST["action"] == "delete":
         return delete(request, ids)
-

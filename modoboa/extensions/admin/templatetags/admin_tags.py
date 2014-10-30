@@ -31,23 +31,23 @@ def domains_menu(selection, user):
     entries = [
         {"name": "newdomain",
          "label": _("Add domain"),
-         "img": "icon-plus",
+         "img": "fa fa-plus",
          "modal": True,
          "modalcb": "admin.newdomain_cb",
-         "url": reverse("modoboa.extensions.admin.views.domain.newdomain")},
+         "url": reverse("admin:domain_add")},
     ]
     entries += events.raiseQueryEvent("ExtraDomainMenuEntries", user)
     entries += [
         {"name": "import",
          "label": _("Import"),
-         "img": "icon-folder-open",
-         "url": reverse("modoboa.extensions.admin.views.import.import_domains"),
+         "img": "fa fa-folder-open",
+         "url": reverse("admin:domain_import"),
          "modal": True,
          "modalcb": "admin.importform_cb"},
         {"name": "export",
          "label": _("Export"),
-         "img": "icon-share-alt",
-         "url": reverse("modoboa.extensions.admin.views.export.export_domains"),
+         "img": "fa fa-share-alt",
+         "url": reverse("admin:domain_export"),
          "modal": True,
          "modalcb": "admin.exportform_cb"}
     ]
@@ -60,7 +60,7 @@ def domains_menu(selection, user):
 
 
 @register.simple_tag
-def identities_menu(user):
+def identities_menu(user, selection=None):
     """Menu specific to the Identities page.
 
     :param ``User`` user: the connecter user
@@ -70,48 +70,48 @@ def identities_menu(user):
     entries = [
         {"name": "identities",
          "label": _("List identities"),
-         "img": "icon-user",
-         "class": "ajaxlink",
+         "img": "fa fa-user",
+         "class": "ajaxlink navigation",
          "url": "list/"},
         {"name": "quotas",
          "label": _("List quotas"),
-         "img": "icon-hdd",
-         "class": "ajaxlink",
+         "img": "fa fa-hdd-o",
+         "class": "ajaxlink navigation",
          "url": "quotas/"},
         {"name": "newaccount",
          "label": _("Add account"),
-         "img": "icon-plus",
+         "img": "fa fa-plus",
          "modal": True,
          "modalcb": "admin.newaccount_cb",
-         "url": reverse("modoboa.extensions.admin.views.identity.newaccount")},
+         "url": reverse("admin:account_add")},
         {"name": "newalias",
          "label": _("Add alias"),
-         "img": "icon-plus",
+         "img": "fa fa-plus",
          "modal": True,
          "modalcb": "admin.aliasform_cb",
-         "url": reverse("modoboa.extensions.admin.views.alias.newalias")},
+         "url": reverse("admin:alias_add")},
         {"name": "newforward",
          "label": _("Add forward"),
-         "img": "icon-plus",
+         "img": "fa fa-plus",
          "modal": True,
          "modalcb": "admin.aliasform_cb",
-         "url": reverse("modoboa.extensions.admin.views.alias.newforward")},
+         "url": reverse("admin:forward_add")},
         {"name": "newdlist",
          "label": _("Add distribution list"),
-         "img": "icon-plus",
+         "img": "fa fa-plus",
          "modal": True,
          "modalcb": "admin.aliasform_cb",
-         "url": reverse("modoboa.extensions.admin.views.alias.newdlist")},
+         "url": reverse("admin:dlist_add")},
         {"name": "import",
          "label": _("Import"),
-         "img": "icon-folder-open",
-         "url": reverse("modoboa.extensions.admin.views.import.import_identities"),
+         "img": "fa fa-folder-open",
+         "url": reverse("admin:identity_import"),
          "modal": True,
          "modalcb": "admin.importform_cb"},
         {"name": "export",
          "label": _("Export"),
-         "img": "icon-share-alt",
-         "url": reverse("modoboa.extensions.admin.views.export.export_identities"),
+         "img": "fa fa-share-alt",
+         "url": reverse("admin:identity_export"),
          "modal": True,
          "modalcb": "admin.exportform_cb"
          }
@@ -129,19 +129,16 @@ def domain_actions(user, domain):
     if domain.__class__.__name__ == 'Domain':
         actions = [
             {"name": "listidentities",
-             "url": reverse("modoboa.extensions.admin.views.identity.identities") + "#list/?searchquery=@%s" % domain.name,
+             "url": reverse("admin:identity_list") + "#list/?searchquery=@%s" % domain.name,
              "title": _("View the domain's identities"),
-             "img": "icon-user"}
+             "img": "fa fa-user"}
         ]
         if user.has_perm("admin.delete_domain"):
             actions.append({
                 "name": "deldomain",
-                "url": reverse(
-                    "modoboa.extensions.admin.views.domain.deldomain",
-                    args=[domain.id]
-                ),
+                "url": reverse("admin:domain_delete", args=[domain.id]),
                 "title": _("Delete %s?" % domain.name),
-                "img": "icon-trash"
+                "img": "fa fa-trash"
             })
     else:
         actions = events.raiseQueryEvent('GetDomainActions', user, domain)
@@ -157,28 +154,39 @@ def identity_actions(user, ident):
         actions = events.raiseQueryEvent("ExtraAccountActions", ident)
         actions += [
             {"name": "delaccount",
-             "url": reverse("modoboa.extensions.admin.views.identity.delaccount", args=[objid]),
-             "img": "icon-trash",
+             "url": reverse("admin:account_delete", args=[objid]),
+             "img": "fa fa-trash",
              "title": _("Delete %s?" % ident.username)},
         ]
     else:
         actions = [
             {"name": "delalias",
-             "url": reverse("modoboa.extensions.admin.views.alias.delalias") + "?selection=%s" % objid,
-             "img": "icon-trash",
+             "url": reverse("admin:alias_delete") + "?selection=%s" % objid,
+             "img": "fa fa-trash",
              "title": _("Delete %s?" % ident.full_address)},
         ]
     return render_actions(actions)
 
 
 @register.simple_tag
+def disable_identity(identity):
+    """Disable an identity.
+
+    Finding this information depends on the identity type.
+    """
+    if identity.__class__.__name__ == "User":
+        if identity.is_active and identity.mailbox_set.count() \
+           and identity.mailbox_set.all()[0].domain.enabled:
+            return ""
+    elif identity.enabled and identity.domain.enabled:
+        return ""
+    return "muted"
+
+@register.simple_tag
 def domain_modify_link(domain):
     linkdef = {"label": domain.name, "modal": True}
     if domain.__class__.__name__ == "Domain":
-        linkdef["url"] = reverse(
-            "modoboa.extensions.admin.views.domain.editdomain",
-            args=[domain.id]
-        )
+        linkdef["url"] = reverse("admin:domain_change", args=[domain.id])
         linkdef["modalcb"] = "admin.domainform_cb"
     else:
         tmp = events.raiseDictEvent('GetDomainModifyLink', domain)
@@ -215,17 +223,11 @@ def identity_modify_link(identity, active_tab='default'):
     """
     linkdef = {"label": identity.identity, "modal": True}
     if identity.__class__.__name__ == "User":
-        linkdef["url"] = reverse(
-            "modoboa.extensions.admin.views.identity.editaccount",
-            args=[identity.id]
-        )
+        linkdef["url"] = reverse("admin:account_change", args=[identity.id])
         linkdef["url"] += "?active_tab=%s" % active_tab
         linkdef["modalcb"] = "admin.editaccount_cb"
     else:
-        linkdef["url"] = reverse(
-            "modoboa.extensions.admin.views.alias.editalias",
-            args=[identity.id]
-        )
+        linkdef["url"] = reverse("admin:alias_change", args=[identity.id])
         linkdef["modalcb"] = "admin.aliasform_cb"
     return render_link(linkdef)
 
@@ -234,8 +236,9 @@ def identity_modify_link(identity, active_tab='default'):
 def domadmin_actions(daid, domid):
     actions = [{
         "name": "removeperm",
-        "url": reverse("modoboa.extensions.admin.views.identity.remove_permission") + "?domid=%s&daid=%s" % (domid, daid),
-        "img": "icon-trash",
+        "url": "{0}?domid={1}&daid={2}".format(
+            reverse("admin:permission_remove"), domid, daid),
+        "img": "fa fa-trash",
         "title": _("Remove this permission")
     }]
     return render_actions(actions)
@@ -258,16 +261,3 @@ def get_extra_admin_content(user, target, currentpage):
     return "".join(res)
 
 
-@register.simple_tag
-def disable_identity(identity):
-    """Disable an identity.
-
-    Finding this information depends on the identity type.
-    """
-    if identity.__class__.__name__ == "User":
-        if identity.is_active and identity.mailbox_set.count() \
-           and identity.mailbox_set.all()[0].domain.enabled:
-            return ""
-    elif identity.enabled and identity.domain.enabled:
-        return ""
-    return "muted"

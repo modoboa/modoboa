@@ -43,6 +43,11 @@ quarantined messages storing. Here is a working configuration sample::
   @storage_sql_dsn =
     (['DBI:<driver>:database=<database>;host=<dbhost>;port=<dbport>', '<dbuser>', '<password>]']);
 
+  # PostgreSQL users NEED this parameter!
+  # MySQL users only need this parameter is email addresses are stored
+  # using the VARBINARY type.
+  $sql_allow_8bit_address = 1;
+
   $virus_quarantine_method = 'sql:';
   $spam_quarantine_method = 'sql:';
   $banned_files_quarantine_method = 'sql:';

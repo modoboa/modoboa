@@ -1,4 +1,6 @@
-import reversion
+"""
+Identity related views.
+"""
 from django.shortcuts import render
 from django.db import transaction
 from django.utils.translation import ugettext as _, ungettext
@@ -6,6 +8,9 @@ from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
 from django.views.decorators.csrf import ensure_csrf_cookie
+
+import reversion
+
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest
@@ -13,7 +18,6 @@ from modoboa.lib.exceptions import (
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
-from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.lib.listing import (
@@ -42,17 +46,80 @@ def _identities(request):
     else:
         objects = sorted(idents_list, key=lambda o: o.tags[0],
                          reverse=sort_dir == '-')
+    context = {
+        "handle_mailboxes": parameters.get_admin(
+            "HANDLE_MAILBOXES", raise_error=False)
+    }
     page = get_listing_page(objects, request.GET.get("page", 1))
-    return render_to_json_response({
-        "table": _render_to_string(request, "admin/identities_table.html", {
-            "identities": page.object_list,
-            "tableid": "objects_table"
-        }),
-        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",
-                                                 raise_error=False),
-        "page": page.number,
-        "paginbar": pagination_bar(page)
-    })
+    if page is None:
+        context["length"] = 0
+    else:
+        context["headers"] = _render_to_string(
+            request, "admin/identity_headers.html", {})
+        context["rows"] = _render_to_string(
+            request, "admin/identities_table.html", {
+                "identities": page.object_list
+            }
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
+
+
+@login_required
+@permission_required("admin.add_mailbox")
+def list_quotas(request):
+    from modoboa.lib.dbutils import db_type
+
+    sort_order, sort_dir = get_sort_order(request.GET, "address")
+    mboxes = Mailbox.objects.get_for_admin(
+        request.user, request.GET.get("searchquery", None)
+    )
+    mboxes = mboxes.exclude(quota=0)
+    if sort_order in ["address", "quota", "quota_value__bytes"]:
+        mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
+    elif sort_order == "quota_usage":
+        where = "admin_mailbox.address||'@'||admin_domain.name"
+        db_type = db_type()
+        if db_type == "postgres":
+            select = '(admin_quota.bytes::float / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
+        else:
+            select = 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'
+            if db_type == "mysql":
+                where = "CONCAT(admin_mailbox.address,'@',admin_domain.name)"
+        mboxes = mboxes.extra(
+            select={'quota_usage': select},
+            where=["admin_quota.username=%s" % where],
+            tables=["admin_quota", "admin_domain"],
+            order_by=["%s%s" % (sort_dir, sort_order)]
+        )
+    else:
+        raise BadRequest(_("Invalid request"))
+    page = get_listing_page(mboxes, request.GET.get("page", 1))
+    context = {}
+    if page is None:
+        context["length"] = 0
+    else:
+        context["headers"] = _render_to_string(
+            request, "admin/quota_headers.html", {})
+        context["rows"] = _render_to_string(
+            request, "admin/quotas.html", {
+                "mboxes": page
+            }
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
+
+
+@login_required
+@user_passes_test(
+    lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias")
+    or u.has_perm("admin.add_mailbox")
+)
+def get_next_page(request):
+    """Return the next page of the identity list."""
+    if request.GET.get("objtype", "identity") == "identity":
+        return _identities(request)
+    return list_quotas(request)
 
 
 @login_required
@@ -74,41 +141,6 @@ def accounts_list(request):
         .exclude(groups__name='SimpleUsers')
     res = [a.username for a in accs.all()]
     return render_to_json_response(res)
-
-
-@login_required
-@permission_required("admin.add_mailbox")
-def list_quotas(request, tplname="admin/quotas.html"):
-    from modoboa.lib.dbutils import db_type
-
-    sort_order, sort_dir = get_sort_order(request.GET, "address")
-    mboxes = Mailbox.objects.get_for_admin(
-        request.user, request.GET.get("searchquery", None)
-    )
-    mboxes = mboxes.exclude(quota=0)
-    if sort_order in ["address", "quota", "quota_value__bytes"]:
-        mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
-    elif sort_order == "quota_usage":
-        if db_type() == "postgres":
-            select = '(admin_quota.bytes::float / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
-        else:
-            select = 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'
-        mboxes = mboxes.extra(
-            select={'quota_usage': select},
-            where=["admin_quota.mbox_id=admin_mailbox.id"],
-            tables=["admin_quota"],
-            order_by=["%s%s" % (sort_dir, sort_order)]
-        )
-    else:
-        raise BadRequest(_("Invalid request"))
-    page = get_listing_page(mboxes, request.GET.get("page", 1))
-    return render_to_json_response({
-        "page": page.number,
-        "paginbar": pagination_bar(page),
-        "table": _render_to_string(request, tplname, {
-            "mboxes": page
-        })
-    })
 
 
 @login_required

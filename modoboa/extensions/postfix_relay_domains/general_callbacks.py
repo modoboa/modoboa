@@ -8,8 +8,8 @@ from .models import RelayDomain, RelayDomainAlias
 
 
 @events.observe('GetStaticContent')
-def static_content(caller, user):
-    if caller != 'domains':
+def static_content(caller, st_type, user):
+    if caller != 'domains' or st_type != 'js':
         return []
 
     t = Template("""<script src="{{ STATIC_URL }}postfix_relay_domains/js/relay_domains.js" type="text/javascript"></script>
@@ -30,16 +30,14 @@ def extra_domain_filters():
 
 @events.observe('ExtraDomainMenuEntries')
 def extra_domain_menu_entries(user):
-    return [
-        {"name": "newrelaydomain",
-         "label": ugettext_lazy("Add relay domain"),
-         "img": "icon-plus",
-         "modal": True,
-         "modalcb": "rdomain.domainform_cb",
-         "url": reverse(
-             "modoboa.extensions.postfix_relay_domains.views.create"
-         )},
-    ]
+    return [{
+        "name": "newrelaydomain",
+        "label": ugettext_lazy("Add relay domain"),
+        "img": "fa fa-plus",
+        "modal": True,
+        "modalcb": "rdomain.domainform_cb",
+        "url": reverse("postfix_relay_domains:relaydomain_add")
+    }]
 
 
 @events.observe('ExtraDomainEntries')
@@ -64,7 +62,7 @@ def rdomain_modify_link(domain):
         return {}
     return {
         'url': reverse(
-            'modoboa.extensions.postfix_relay_domains.views.edit',
+            "postfix_relay_domains:relaydomain_change",
             args=[domain.id]
         ),
         'modalcb': 'rdomain.editdomain_form_cb'
@@ -79,10 +77,12 @@ def rdomain_actions(user, domain):
         return []
     return [{
         "name": "delrelaydomain",
-        "url": reverse("modoboa.extensions.postfix_relay_domains.views.delete",
-                       args=[domain.id]),
+        "url": reverse(
+            "postfix_relay_domains:relaydomain_delete",
+            args=[domain.id]
+        ),
         "title": ugettext_lazy("Delete %s?" % domain.name),
-        "img": "icon-trash"
+        "img": "fa fa-trash"
     }]
 
 

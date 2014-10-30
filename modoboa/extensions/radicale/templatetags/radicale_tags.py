@@ -22,19 +22,19 @@ def radicale_left_menu(user):
     entries = [
         {"name": "newusercalendar",
          "label": _("Add calendar"),
-         "img": "icon-plus",
+         "img": "fa fa-plus",
          "modal": True,
          "modalcb": "radicale.add_calendar_cb",
-         "url": reverse("new_user_calendar")},
+         "url": reverse("radicale:user_calendar_add")},
     ]
     if user.group != "SimpleUsers":
         entries += [
             {"name": "newsharedcalendar",
              "label": _("Add shared calendar"),
-             "img": "icon-plus",
+             "img": "fa fa-plus",
              "modal": True,
              "modalcb": "radicale.shared_calendar_cb",
-             "url": reverse("new_shared_calendar")},
+             "url": reverse("radicale:shared_calendar_add")},
         ]
     return render_to_string('common/menulist.html', {
         "entries": entries,
@@ -43,43 +43,53 @@ def radicale_left_menu(user):
 
 
 @register.simple_tag
-def calendar_modify_link(calendar):
-    """
-    """
-    linkdef = {"label": calendar.name, "modal": True}
+def calendar_view_link(calendar):
+    """Render a link to view calendar detail."""
+    linkdef = {
+        "label": calendar.name, "modal": True,
+        "title": _("View calendar detail")
+    }
     if calendar.__class__.__name__ == "UserCalendar":
         linkdef["url"] = reverse(
-            "user_calendar", args=[calendar.pk]
+            "radicale:user_calendar_detail", args=[calendar.pk]
         )
-        linkdef["modalcb"] = "radicale.edit_calendar_cb"
     else:
         linkdef["url"] = reverse(
-            "shared_calendar", args=[calendar.pk]
+            "radicale:shared_calendar_detail", args=[calendar.pk]
         )
-        linkdef["modalcb"] = "radicale.shared_calendar_cb"
     return render_link(linkdef)
 
 
 @register.simple_tag
 def calendar_actions(calendar):
-    """
-    """
-    actions = [{
-        "name": "delcalendar",
-        "title": _("Delete %s?" % calendar),
-        "img": "icon-trash"
-    }]
+    """Render per-calendar actions."""
+    actions = [
+        {"name": "editcalendar",
+         "title": _("Edit %s" % calendar),
+         "modal": True,
+         "img": "fa fa-edit"},
+        {"name": "delcalendar",
+         "title": _("Delete %s?" % calendar),
+         "img": "fa fa-trash"}
+    ]
     if calendar.__class__.__name__ == 'UserCalendar':
-        actions[0]["url"] = reverse("user_calendar", args=[calendar.id])
+        actions[0]["url"] = reverse(
+            "radicale:user_calendar", args=[calendar.pk])
+        actions[0]["modalcb"] = "radicale.edit_calendar_cb"
+        actions[1]["url"] = reverse(
+            "radicale:user_calendar", args=[calendar.id])
     else:
-        actions[0]["url"] = reverse("shared_calendar", args=[calendar.id])
+        actions[0]["url"] = reverse(
+            "radicale:shared_calendar", args=[calendar.pk])
+        actions[0]["modalcb"] = "radicale.shared_calendar_cb"
+        actions[1]["url"] = reverse(
+            "radicale:shared_calendar", args=[calendar.id])
     return render_actions(actions)
 
 
 @register.simple_tag
 def render_rule_fields(form):
-    """Render access rules for a given calendar.
-    """
+    """Render access rules for a given calendar."""
     from django.forms import forms
 
     cpt = 1

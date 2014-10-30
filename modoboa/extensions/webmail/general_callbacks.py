@@ -12,7 +12,7 @@ def menu(target, user):
     return [
         {"name": "webmail",
          "label": _("Webmail"),
-         "url": reverse("modoboa.extensions.webmail.views.index")},
+         "url": reverse("webmail:index")},
     ]
 
 

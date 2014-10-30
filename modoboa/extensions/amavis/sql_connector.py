@@ -1,6 +1,8 @@
 """
 SQL connector module.
 """
+import datetime
+
 from django.db.models import Q
 
 from modoboa.extensions.admin.models import Domain
@@ -124,7 +126,7 @@ class SQLconnector(object):
         messages = self._apply_extra_select_filters(messages)
         return messages
 
-    def messages_count(self, **kwargs):
+    def messages_count(self):
         """Return the total number of messages living in the quarantine.
 
         We also store the built queryset for a later use.
@@ -148,7 +150,7 @@ class SQLconnector(object):
 
         return self._messages_count
 
-    def fetch(self, start=None, stop=None, **kwargs):
+    def fetch(self, start=None, stop=None):
         """Fetch a range of messages from the internal cache.
 
         """
@@ -158,7 +160,7 @@ class SQLconnector(object):
                  "to": qm["rid__email"],
                  "subject": qm["mail__subject"],
                  "mailid": qm["mail__mail_id"],
-                 "date": qm["mail__time_num"],
+                 "date": datetime.datetime.fromtimestamp(qm["mail__time_num"]),
                  "type": qm["content"],
                  "score": qm["bspam_level"]}
             rs = qm["rs"]

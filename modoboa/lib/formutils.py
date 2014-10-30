@@ -199,6 +199,7 @@ class DynamicForm(object):
 
 
 class TabForms(object):
+
     """
     Simple forms container
 
@@ -206,6 +207,7 @@ class TabForms(object):
     displayed using tabs. It is different from a classical formset
     because it can contain different forms.
     """
+
     template_name = "common/tabforms.html"
 
     def __init__(self, request, instances=None, classes=None):
@@ -368,7 +370,7 @@ class CustomRadioInput(RadioInput):
             label_for = ''
         choice_label = conditional_escape(force_unicode(self.choice_label))
         return mark_safe(
-            u'<label class="radio inline" %s>%s %s</label>'
+            u'<label class="radio-inline" %s>%s %s</label>'
             % (label_for, self.tag(), choice_label)
         )
 

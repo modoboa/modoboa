@@ -43,6 +43,7 @@ class SharedCalendarForm(forms.ModelForm):
     class Meta:
         model = SharedCalendar
         widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
             "domain": forms.widgets.Select(
                 attrs={"class": "selectpicker", "data-live-search": "true"}
             )
@@ -61,7 +62,7 @@ class RightsForm(forms.Form, DynamicForm):
     """
     """
     username = forms.CharField(
-        required=False, widget=forms.widgets.TextInput(
+        label="", required=False, widget=forms.widgets.TextInput(
             attrs={"placeholder": ugettext_lazy("Username")}
         )
     )
@@ -157,7 +158,7 @@ class UserCalendarWizard(WizardForm):
     def extra_context(self, context):
         context.update({
             "title": _("New calendar"),
-            "action": reverse("new_user_calendar"),
+            "action": reverse("radicale:user_calendar_add"),
             "formid": "newcal_form"
         })
 
@@ -197,7 +198,7 @@ class UserCalendarEditionForm(TabForms):
         context.update({
             "title": self.instances["general"].name,
             "formid": "ucal_form",
-            "action": reverse("user_calendar", args=[calendar.id])
+            "action": reverse("radicale:user_calendar", args=[calendar.id])
         })
 
     def save(self):

@@ -22,16 +22,14 @@ class AliasTestCase(ModoTestCase):
             aliases="toto@test.com", aliases_1="titi@test.com"
         )
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[user.id]),
+            reverse("admin:account_change", args=[user.id]),
             values
         )
         self.assertEqual(user.mailbox_set.all()[0].alias_set.count(), 2)
 
         del values["aliases_1"]
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[user.id]),
+            reverse("admin:account_change", args=[user.id]),
             values
         )
         self.assertEqual(user.mailbox_set.all()[0].alias_set.count(), 1)
@@ -43,7 +41,7 @@ class AliasTestCase(ModoTestCase):
                       recipients_2="ext@titi.com",
                       enabled=True)
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.newdlist"), values
+            reverse("admin:dlist_add"), values
         )
         user = User.objects.get(username="user@test.com")
         self.assertEqual(user.mailbox_set.all()[0].alias_set.count(), 2)
@@ -54,15 +52,13 @@ class AliasTestCase(ModoTestCase):
         self.assertEqual(len(dlist.get_recipients()), 3)
         del values["recipients_1"]
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.editalias",
-                    args=[dlist.id]),
+            reverse("admin:alias_change", args=[dlist.id]),
             values
         )
         self.assertEqual(dlist.get_recipients_count(), 2)
 
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.delalias") + "?selection=%d" \
-                % dlist.id, {}
+            reverse("admin:alias_delete") + "?selection=%d" % dlist.id, {}
         )
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get,
                           address="all", domain__name="test.com")
@@ -70,21 +66,21 @@ class AliasTestCase(ModoTestCase):
     def test_forward(self):
         values = dict(email="forward2@test.com", recipients="rcpt@dest.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.newforward"), values
+            reverse("admin:forward_add"), values
         )
         fwd = Alias.objects.get(address="forward2", domain__name="test.com")
         self.assertEqual(fwd.get_recipients_count(), 1)
 
         values["recipients"] = "rcpt2@dest.com"
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.editalias",
+            reverse("admin:alias_change",
                     args=[fwd.id]),
             values
         )
         self.assertEqual(fwd.get_recipients_count(), 1)
 
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.delalias") + "?selection=%d" \
+            reverse("admin:alias_delete") + "?selection=%d" \
                 % fwd.id, {}
         )
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get,
@@ -93,7 +89,7 @@ class AliasTestCase(ModoTestCase):
     def test_forward_and_local_copies(self):
         values = dict(email="user@test.com", recipients="rcpt@dest.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.newforward"), values
+            reverse("admin:forward_add"), values
         )
         fwd = Alias.objects.get(address="user", domain__name="test.com")
         self.assertEqual(fwd.get_recipients_count(), 1)
@@ -101,7 +97,7 @@ class AliasTestCase(ModoTestCase):
         values["recipients"] = "rcpt@dest.com"
         values["recipients_1"] = "user@test.com"
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.alias.editalias", args=[fwd.id]),
+            reverse("admin:alias_change", args=[fwd.id]),
             values
         )
         fwd = Alias.objects.get(pk=fwd.pk)

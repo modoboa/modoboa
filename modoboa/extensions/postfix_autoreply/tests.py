@@ -24,8 +24,7 @@ class EventsTestCase(ExtTestCase):
             "stepid": 'step2'
         }
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.newdomain"),
-            values
+            reverse("admin:domain_add"), values
         )
         trans = Transport.objects.get(domain='autoreply.domain.tld')
 
@@ -33,8 +32,7 @@ class EventsTestCase(ExtTestCase):
         dom = Domain.objects.get(name="test.com")
         trans = Transport.objects.get(domain='autoreply.test.com')
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.deldomain",
-                    args=[dom.id]),
+            reverse("admin:domain_delete", args=[dom.id]),
             {}
         )
         with self.assertRaises(Transport.DoesNotExist):
@@ -46,8 +44,7 @@ class EventsTestCase(ExtTestCase):
         }
         dom = Domain.objects.get(name="test.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.editdomain",
-                    args=[dom.id]),
+            reverse("admin:domain_change", args=[dom.id]),
             values
         )
         trans = Transport.objects.get(domain='autoreply.test.fr')
@@ -59,42 +56,44 @@ class EventsTestCase(ExtTestCase):
 
     def test_mailbox_created_event(self):
         values = {
-            'username': "tester@test.com", 'first_name': 'Tester', 'last_name': 'Toto',
+            'username': "tester@test.com",
+            'first_name': 'Tester', 'last_name': 'Toto',
             'password1': 'toto', 'password2': 'toto', 'role': 'SimpleUsers',
             'quota_act': True, 'is_active': True, 'email': 'tester@test.com',
             'stepid': 'step2', 'autoreply': 'no'
         }
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.newaccount"),
-            values
+            reverse("admin:account_add"), values
         )
         al = Alias.objects.get(full_address='tester@test.com')
-        self.assertEqual(al.autoreply_address, 'tester@test.com@autoreply.test.com')
+        self.assertEqual(
+            al.autoreply_address, 'tester@test.com@autoreply.test.com')
         arm = ARmessage.objects.get(mbox__address='tester')
 
     def test_mailbox_deleted_event(self):
         account = User.objects.get(username="user@test.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.delaccount",
-                    args=[account.id]),
+            reverse("admin:account_delete", args=[account.id]),
             {}
         )
         with self.assertRaises(Alias.DoesNotExist):
             Alias.objects.get(full_address='user@test.com')
         with self.assertRaises(ARmessage.DoesNotExist):
-            ARmessage.objects.get(mbox__address='user', mbox__domain__name='test.com')
+            ARmessage.objects.get(
+                mbox__address='user', mbox__domain__name='test.com')
 
 
     def test_modify_mailbox_event(self):
         values = {
-            'username': "leon@test.com", 'first_name': 'Tester', 'last_name': 'Toto',
-            'role': 'SimpleUsers', 'quota_act': True, 'is_active': True, 
-            'email': 'leon@test.com', 'autoreply': 'no'
+            'username': "leon@test.com",
+            'first_name': 'Tester', 'last_name': 'Toto',
+            'role': 'SimpleUsers', 'quota_act': True,
+            'is_active': True, 'email': 'leon@test.com',
+            'autoreply': 'no'
         }
         account = User.objects.get(username="user@test.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.editaccount",
-                    args=[account.id]),
+            reverse("admin:account_change", args=[account.id]),
             values
         )
         with self.assertRaises(Alias.DoesNotExist):

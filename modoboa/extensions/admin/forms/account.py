@@ -30,12 +30,14 @@ class AccountFormGeneral(forms.ModelForm):
         help_text=ugettext_lazy("What level of permission this user will have")
     )
     password1 = forms.CharField(
-        label=ugettext_lazy("Password"), widget=forms.PasswordInput
+        label=ugettext_lazy("Password"), widget=forms.widgets.PasswordInput
     )
     password2 = forms.CharField(
         label=ugettext_lazy("Confirmation"),
-        widget=forms.PasswordInput,
-        help_text=ugettext_lazy("Enter the same password as above, for verification.")
+        widget=forms.widgets.PasswordInput,
+        help_text=ugettext_lazy(
+            "Enter the same password as above, for verification."
+        )
     )
 
     class Meta:
@@ -51,7 +53,8 @@ class AccountFormGeneral(forms.ModelForm):
         if user.group == "DomainAdmins":
             self.fields["role"] = forms.CharField(
                 label="",
-                widget=forms.HiddenInput, required=False
+                widget=forms.HiddenInput(attrs={"class": "form-control"}),
+                required=False
             )
         else:
             self.fields["role"].choices = [('', ugettext_lazy("Choose"))]
@@ -135,7 +138,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                     "use domain's default one. Leave empty to define an "
                     "unlimited value (not allowed for domain "
                     "administrators)."),
-        widget=forms.widgets.TextInput(attrs={"class": "span1"})
+        widget=forms.widgets.TextInput(attrs={"class": "form-control"})
     )
     quota_act = forms.BooleanField(required=False)
     aliases = forms.EmailField(
@@ -155,6 +158,9 @@ class AccountFormMail(forms.Form, DynamicForm):
         else:
             self.mb = None
         super(AccountFormMail, self).__init__(*args, **kwargs)
+        self.field_widths = {
+            "quota": 3
+        }
         self.extra_fields = []
         for fname, field in events.raiseQueryEvent('ExtraFormFields', 'mailform', self.mb):
             self.fields[fname] = field
@@ -199,6 +205,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         return self.cleaned_data
 
     def create_mailbox(self, user, account):
+        """Create a mailbox associated to :kw:`account`."""
         locpart, domname = split_mailbox(self.cleaned_data["email"])
         try:
             domain = Domain.objects.get(name=domname)
@@ -321,7 +328,9 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             self._load_from_qdict(args[0], "domains", DomainNameField)
 
     def save(self):
-        current_domains = [dom.name for dom in Domain.objects.get_for_admin(self.account)]
+        current_domains = [
+            dom.name for dom in Domain.objects.get_for_admin(self.account)
+        ]
         for name, value in self.cleaned_data.items():
             if not name.startswith("domains"):
                 continue
@@ -365,7 +374,7 @@ class AccountForm(TabForms):
         context.update({
             'title': account.username,
             'formid': 'accountform',
-            'action': reverse("edit_account", args=[account.id]),
+            'action': reverse("admin:account_change", args=[account.id]),
         })
 
     def check_perms(self, account):
@@ -430,7 +439,7 @@ class AccountWizard(WizardForm):
     def extra_context(self, context):
         context.update({
             'title': _("New account"),
-            'action': reverse("new_account"),
+            'action': reverse("admin:account_add"),
             'formid': 'newaccount_form'
         })
 

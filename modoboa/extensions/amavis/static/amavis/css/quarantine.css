@@ -1,10 +1,42 @@
-#menubar { 
-    position: fixed;
-    top: 60px;
+@media (max-width: 400px){
+    th#rstatus,
+    td[name='rstatus'],
+    th#type,
+    td[name='type']{
+        display: none;
+    }
+}
+@media (max-width: 600px){
+    th#subject,
+    td[name='subject']{
+        display: none;
+    }
+}
+@media (max-width: 767px){
+    th#to,
+    td[name='to']{
+        display: none;
+    }
+}
+
+@media (max-width: 990px){
+    #filters_bar,
+    th#date,
+    td[name='date']{
+        display: none;
+    }
+}
+
+#menubar {
+    position: absolute;
+    top: 51px;
     padding-left: 15px;
     padding-right: 15px;
+    padding-top: 20px;
+    padding-bottom: 10px;
     left: 0;
     right: 0;
+    margin: 0;
     z-index: 10;
 }
 
@@ -12,11 +44,16 @@
     margin: 0;
 }
 
-#listing { 
-    position: fixed;
-    padding: 0 15px;
-    right: 0;
+#listing {
+    position: absolute;
+    top: 125px;
     left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    overflow: auto;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 #mailcontent {
@@ -27,13 +64,8 @@
     height: 100%;
 }
 
-#emails tbody tr:hover { 
+#emails tbody tr:hover {
     color: #0088cc;
-}
-
-#filters_bar {
-    /*padding-top: 5px;*/
-    padding-left: 15px;
 }
 
 thead tr {
@@ -41,15 +73,11 @@ thead tr {
     z-index: 1;
 }
 
-td > input[type=checkbox] {
-    margin: 0;
-}
-
 td[name=type] span {
     cursor: pointer;
 }
 
-td.unseen { 
+td.unseen {
     font-weight: bold;
 }
 

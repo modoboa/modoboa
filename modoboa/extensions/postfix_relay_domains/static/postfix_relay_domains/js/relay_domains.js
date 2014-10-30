@@ -59,7 +59,15 @@ RelayDomains.prototype = {
     domainform_cb: function() {
         $('#btnscan').click(this.launch_scan);
         $('input:text:visible:first').focus();
-        $("#id_aliases").dynamic_input();
+        $("#original_aliases").dynamic_input({
+            input_added: function($row) {
+                $row.find("label").html("");
+            },
+            input_removed: function($input) {
+                $input.parents(".form-group").remove();
+                return true;
+            }
+        });
         $(".submit").on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: "rdomform",
@@ -75,16 +83,16 @@ RelayDomains.prototype = {
     },
 
     srv_tag_handler: function(tag, $link) {
-        if (this.navobj.getparam(tag + "filter") == undefined && $link.hasClass(tag)) {
+        if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
             var text = $link.attr("name");
             this.navobj
                 .setparam("domfilter", "relaydomain")
                 .setparam(tag + "filter", text)
                 .update();
-            if ($("a[name=dom]").length == 0) {
-                $("#searchform").parent().after(this.make_tag("relaydomain", "dom"));
+            if ($("a[name=dom]").length === 0) {
+                $("#taglist").append(this.make_tag("relaydomain", "dom"));
             }
-            $("#searchform").parent().after(this.make_tag(text, tag));
+            $("#taglist").append(this.make_tag(text, tag));
             return true;
         }
         return false;

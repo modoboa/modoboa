@@ -38,5 +38,5 @@ def get_listing_page(objects, pagenum):
     try:
         page = paginator.page(int(pagenum))
     except (EmptyPage, PageNotAnInteger, ValueError):
-        page = paginator.page(paginator.num_pages)
+        page = None
     return page

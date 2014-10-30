@@ -1,6 +1,6 @@
-{% load i18n core_tags %}
+{% load i18n %}
 <h2>{% trans "Logs" %} <small>{% trans "Previously on Modoboa..." %}</small></h2><hr>
-<table class="table">
+<table id="logs_table" class="table">
   <thead>
     <tr>
       <th class="sortable" data-sort_order="date_created" width="20%">{% trans "Date" %}</th>
@@ -10,11 +10,6 @@
     </tr>
   </thead>
   <tbody>
-    {% for l in logs %}<tr>
-      <td>{{ l.date_created }}</td>
-      <td>{{ l.level|colorize_level|safe }}</td>
-      <td>{{ l.logger }}</td>
-      <td>{{ l.message|tohtml|safe }}</td>
-    </tr>{% endfor %}
+    {% include "core/logs_page.html" %}
   </tbody>
 </table>

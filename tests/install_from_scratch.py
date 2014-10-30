@@ -18,10 +18,11 @@ class DeployTest(unittest.TestCase):
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self): 
         path = os.path.join(self.workdir, self.projname)
         code, output = exec_cmd(
-            "python manage.py test core lib admin limits postfix_relay_domains radicale",
+            "python manage.py test core lib admin limits postfix_relay_domains"
+            " radicale postfix_autoreply",
             capture_output=False,
             cwd=path
         )

@@ -25,7 +25,7 @@ class ProfileTestCase(ModoTestCase):
         * The default admin changes his password (no associated Mailbox)
         * A normal user changes his password
         """
-        self.ajax_post(reverse("modoboa.core.views.user.profile"),
+        self.ajax_post(reverse("core:user_profile"),
                        {"oldpassword": "password",
                         "newpassword": "titi", "confirmation": "titi"})
         self.clt.logout()
@@ -38,7 +38,7 @@ class ProfileTestCase(ModoTestCase):
         )
 
         self.ajax_post(
-            reverse("modoboa.core.views.user.profile"),
+            reverse("core:user_profile"),
             {"oldpassword": "toto",
              "newpassword": "tutu", "confirmation": "tutu"}
         )
@@ -67,21 +67,21 @@ class ModoboaAdminCommandTestCase(TestCase):
         self.workdir = tempfile.mkdtemp()
 
     def tearDown(self):
-        exec_cmd("rm -rf {}".format(self.workdir))
+        exec_cmd("rm -rf {0}".format(self.workdir))
 
     def _test_maps_generation(self, engine, categories=None):
         if categories is None:
             categories = ["std", "autoreply", "relaydomains"]
-        dburl = "{}://user:password@localhost/testdb".format(engine)
+        dburl = "{0}://user:password@localhost/testdb".format(engine)
         code, output = exec_cmd(
-            "modoboa-admin.py postfix_maps --categories {} --dburl {} {}".format(
+            "modoboa-admin.py postfix_maps --categories {0} --dburl {1} {2}".format(
                 " ".join(categories), dburl, self.workdir
             )
         )
         self.assertEqual(code, 0)
         for category in categories:
             for mapfile in self.MAP_FILES[category]:
-                path = "{}/{}".format(self.workdir, mapfile)
+                path = "{0}/{1}".format(self.workdir, mapfile)
                 self.assertTrue(os.path.exists(path))
                 with open(path) as fpo:
                     content = fpo.read()

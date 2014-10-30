@@ -158,9 +158,9 @@ def topredirection(request):
             infos = exts_pool.get_extension_infos(topredir)
             path = infos["url"] if infos["url"] else infos["name"]
         else:
-            path = reverse("modoboa.core.views.user.index")
+            path = reverse("core:user_index")
     else:
-        path = reverse("domains")
+        path = reverse("admin:domain_list")
     return HttpResponseRedirect(path)
 
 
@@ -176,23 +176,33 @@ class NavigationParameters(object):
                            ('criteria', 'from_addr', False)]
 
     def __getitem__(self, key):
-        """
-        """
+        """Retrieve an item."""
+        if self.sessionkey not in self.request.session:
+            raise KeyError
         return self.request.session[self.sessionkey][key]
 
     def __contains__(self, key):
-        """
-        """
+        """Check if key is present."""
+        if self.sessionkey not in self.request.session:
+            return False
         return key in self.request.session[self.sessionkey]
+
+    def __setitem__(self, key, value):
+        """Set a new item."""
+        self.request.session[self.sessionkey][key] = value
+
+    def _store_page(self):
+        """Specific method to store the current page."""
+        self["page"] = int(self.request.GET.get("page", 1))
 
     def store(self):
         """Store navigation parameters into session.
         """
         if not self.sessionkey in self.request.session:
             self.request.session[self.sessionkey] = {}
+        self._store_page()
         navparams = self.request.session[self.sessionkey]
         navparams["order"] = self.request.GET.get("sort_order", "-date")
-        navparams["page"] = int(self.request.GET.get("page", 1))
         for param, defvalue, escape in self.parameters:
             value = self.request.GET.get(param, defvalue)
             if value is None:

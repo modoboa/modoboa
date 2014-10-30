@@ -23,8 +23,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=ugettext_lazy(
             "Default quota in MB applied to mailboxes. Leave empty to use the "
             "default value."
-        ),
-        widget=forms.TextInput(attrs={"class": "span1"})
+        )
     )
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),
@@ -33,6 +32,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             "Alias(es) of this domain. Indicate only one name per input, "
             "press ENTER to add a new input."
         )
+    )
+    name = DomainNameField(
+        widget=forms.TextInput()
     )
 
     class Meta:
@@ -44,6 +46,10 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if "instance" in kwargs:
             self.oldname = kwargs["instance"].name
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
+
+        self.field_widths = {
+            "quota": 3
+        }
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", DomainNameField)
@@ -118,8 +124,6 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 '@%s' % self.oldname, '@%s' % domain.name)
             newq = Quota.objects.create(
                 username=username, bytes=q.bytes, messages=q.messages)
-            q.mailbox.quota_value = newq
-            q.mailbox.save()
             q.delete()
 
     def save(self, user, commit=True, domalias_post_create=False):
@@ -177,7 +181,9 @@ class DomainFormOptions(forms.Form):
     create_dom_admin = YesNoField(
         label=ugettext_lazy("Create a domain administrator"),
         initial="no",
-        help_text=ugettext_lazy("Automatically create an administrator for this domain")
+        help_text=ugettext_lazy(
+            "Automatically create an administrator for this domain"
+        )
     )
 
     dom_admin_username = forms.CharField(
@@ -187,14 +193,15 @@ class DomainFormOptions(forms.Form):
             "The administrator's name. Don't include the domain's name here, "
             "it will be automatically appended."
         ),
-        widget=forms.widgets.TextInput(attrs={"class": "input-small"}),
         required=False
     )
 
     create_aliases = YesNoField(
         label=ugettext_lazy("Create aliases"),
         initial="yes",
-        help_text=ugettext_lazy("Automatically create standard aliases for this domain"),
+        help_text=ugettext_lazy(
+            "Automatically create standard aliases for this domain"
+        ),
         required=False
     )
 
@@ -245,9 +252,11 @@ class DomainFormOptions(forms.Form):
 
 
 class DomainForm(TabForms):
-    """Domain edition form.
 
-    """
+    """Domain edition form."""
+
+    template_name = "admin/editdomainform.html"
+
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
         self.forms = []
@@ -276,7 +285,7 @@ class DomainForm(TabForms):
             domadmins = [u for u in domadmins if u.group == "DomainAdmins"]
         context.update({
             "title": domain.name,
-            "action": reverse("edit_domain", args=[domain.pk]),
+            "action": reverse("admin:domain_change", args=[domain.pk]),
             "formid": "domform",
             "domain": domain,
             "domadmins": domadmins
@@ -327,7 +336,7 @@ class DomainWizard(WizardForm):
     def extra_context(self, context):
         context.update({
             "title": _("New domain"),
-            "action": reverse("new_domain"),
+            "action": reverse("admin:domain_add"),
             "formid": "domform"
         })
 

@@ -1,3 +1,7 @@
+#menubar { 
+    padding-left: 15px;
+}
+
 .chart {
     position: relative;
     margin-bottom: 20px;

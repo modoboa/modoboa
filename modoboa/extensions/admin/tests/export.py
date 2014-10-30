@@ -12,11 +12,11 @@ class ExportTestCase(ModoTestCase):
 
     def __export_identities(self, idtfilter="", grpfilter=""):
         self.clt.get(
-            reverse("modoboa.extensions.admin.views.identity._identities") \
+            reverse("admin:_identity_list") \
                 + "?grpfilter=%s&idtfilter=%s" % (grpfilter, idtfilter)
         )
         return self.clt.post(
-            reverse("modoboa.extensions.admin.views.export.export_identities"),
+            reverse("admin:identity_export"),
             {"filename": "test.csv"}
         )
 

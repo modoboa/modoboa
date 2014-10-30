@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import (
 )
 from django.utils.translation import ugettext as _
 
-from modoboa.lib.listing import get_sort_order
+from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
@@ -24,27 +24,25 @@ from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
 
 @login_required
 def index(request):
+    """Calendar list entry point."""
     return render(request, "radicale/calendars.html", {
-        "selection": "radicale"
+        "selection": "radicale",
+        "with_owner": request.user.group != "SimpleUsers"
     })
 
 
-@login_required
-def calendars(request, tplname="radicale/calendar_list.html"):
-    """Display calendars list.
-
-    The content depends on current user's role.
-    """
+def get_calendar_page(request, page_id=None):
+    """Return a page containing calendars."""
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     calfilter = request.GET.get("calfilter", None)
     searchquery = request.GET.get("searchquery", None)
+    page_id = request.GET.get("page", 1)
     if request.user.group == "SimpleUsers":
         mbox = request.user.mailbox_set.all()[0]
         cals = UserCalendar.objects.filter(mailbox=mbox)
         if searchquery is not None:
             cals = cals.filter(name__icontains=searchquery)
         cals = cals.select_related().all()
-        with_owner = False
     else:
         ucals = []
         if calfilter is None or calfilter == "user":
@@ -57,15 +55,30 @@ def calendars(request, tplname="radicale/calendar_list.html"):
             if searchquery is not None:
                 scals = scals.filter(name__icontains=searchquery)
         cals = chain(ucals, scals)
-        with_owner = True
     cals = sorted(
         cals, key=lambda c: getattr(c, sort_order), reverse=sort_dir == '-'
     )
-    return render_to_json_response({
-        "table": _render_to_string(request, tplname, {
-            "calendars": cals, "with_owner": with_owner
-        })
-    })
+    return get_listing_page(cals, page_id)
+
+
+@login_required
+def calendars_page(request, tplname="radicale/calendars_page.html"):
+    """Return a page of calendars.
+
+    The content depends on current user's role.
+    """
+    page = get_calendar_page(request)
+    if page is None:
+        context = {"length": 0}
+    else:
+        context = {
+            "rows": _render_to_string(request, tplname, {
+                "calendars": page.object_list,
+                "with_owner": request.user.group != "SimpleUsers"
+            }),
+            "page": page.number
+        }
+    return render_to_json_response(context)
 
 
 @login_required
@@ -77,8 +90,7 @@ def new_user_calendar(request):
 
 @login_required
 def user_calendar(request, pk):
-    """Edit or remove a calendar.
-    """
+    """Edit or remove a calendar."""
     try:
         ucal = UserCalendar.objects.select_related().get(pk=pk)
     except UserCalendar.DoesNotExist:
@@ -94,10 +106,24 @@ def user_calendar(request, pk):
 
 
 @login_required
+def user_calendar_detail(request, pk):
+    """Display user calendar's detail."""
+    try:
+        ucal = UserCalendar.objects.select_related().get(pk=pk)
+    except UserCalendar.DoesNotExist:
+        raise NotFound
+    if request.user != ucal.mailbox.user and \
+       not request.user.can_access(ucal.mailbox.domain):
+        raise PermDeniedException
+    return render(request, "radicale/calendar_detail.html", {
+        "title": ucal.name, "calendar": ucal
+    })
+
+
+@login_required
 @permission_required("radicale.add_sharedcalendar")
 def new_shared_calendar(request):
-    """Shared calendar creation view.
-    """
+    """Shared calendar creation view."""
     if request.method == "POST":
         form = SharedCalendarForm(request.user, request.POST)
         if form.is_valid():
@@ -111,7 +137,7 @@ def new_shared_calendar(request):
         "form": form,
         "formid": "sharedcal_form",
         "title": _("New shared calendar"),
-        "action": reverse("new_shared_calendar"),
+        "action": reverse("radicale:shared_calendar_add"),
         "action_classes": "submit",
         "action_label": _("Submit")
     })
@@ -120,11 +146,10 @@ def new_shared_calendar(request):
 @login_required
 @user_passes_test(
     lambda u: u.has_perm("radicale.change_sharedcalendar")
-              or u.has_perm("radicale.delete_sharedcalendar")
+    or u.has_perm("radicale.delete_sharedcalendar")
 )
 def shared_calendar(request, pk):
-    """Edit or remove a shared calendar.
-    """
+    """Edit or remove a shared calendar."""
     try:
         scal = SharedCalendar.objects.select_related().get(pk=pk)
     except SharedCalendar.DoesNotExist:
@@ -149,9 +174,26 @@ def shared_calendar(request, pk):
         "form": form,
         "formid": "sharedcal_form",
         "title": scal.name,
-        "action": reverse("shared_calendar", args=[scal.pk]),
+        "action": reverse("radicale:shared_calendar", args=[scal.pk]),
         "action_classes": "submit",
         "action_label": _("Submit")
+    })
+
+
+@login_required
+@user_passes_test(
+    lambda u: u.has_perm("radicale.change_sharedcalendar")
+)
+def shared_calendar_detail(request, pk):
+    """Display shared calendar's detail."""
+    try:
+        scal = SharedCalendar.objects.select_related().get(pk=pk)
+    except SharedCalendar.DoesNotExist:
+        raise NotFound
+    if not request.user.can_access(scal.domain):
+        raise PermDeniedException
+    return render(request, "radicale/calendar_detail.html", {
+        "title": scal.name, "calendar": scal
     })
 
 

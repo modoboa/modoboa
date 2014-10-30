@@ -629,10 +629,13 @@ template but need javascript stuff.
 
 *Callback prototype*::
 
-  def callback(caller, user): pass
+  def callback(caller, st_type, user): pass
 
 * ``caller`` is name of the application (or the location) responsible
   for the call
+
+* ``st_type`` is the expected static content type (``css`` or ``js``)
+
 * ``user`` is a ``User`` instance corresponding to the currently
   logged in user
 

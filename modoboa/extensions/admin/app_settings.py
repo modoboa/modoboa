@@ -15,13 +15,18 @@ class AdminParametersForm(parameters.AdminParametersForm):
     handle_mailboxes = YesNoField(
         label=ugettext_lazy("Handle mailboxes on filesystem"),
         initial="no",
-        help_text=ugettext_lazy("Rename or remove mailboxes on the filesystem when they get renamed or removed within Modoboa")
+        help_text=ugettext_lazy(
+            "Rename or remove mailboxes on the filesystem when they get"
+            "renamed or removed within Modoboa"
+        )
     )
 
     mailboxes_owner = forms.CharField(
         label=ugettext_lazy("Mailboxes owner"),
         initial="vmail",
-        help_text=ugettext_lazy("The UNIX account who owns mailboxes on the filesystem")
+        help_text=ugettext_lazy(
+            "The UNIX account who owns mailboxes on the filesystem"
+        )
     )
 
     default_domain_quota = forms.IntegerField(
@@ -30,14 +35,14 @@ class AdminParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy(
             "Default quota (in MB) applied to freshly created domains with no "
             "value specified. A value of 0 means no quota."
-        ),
-        widget=forms.TextInput(attrs={'class': 'span2'})
+        )
     )
 
     auto_account_removal = YesNoField(
         label=ugettext_lazy("Automatic account removal"),
         initial="no",
-        help_text=ugettext_lazy("When a mailbox is removed, also remove the associated account")
+        help_text=ugettext_lazy(
+            "When a mailbox is removed, also remove the associated account")
     )
 
     # Visibility rules
@@ -47,6 +52,9 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
     def __init__(self, *args, **kwargs):
         super(AdminParametersForm, self).__init__(*args, **kwargs)
+        self.field_widths = {
+            "default_domain_quota": 2
+        }
         hide_fields = False
         dpath = None
         code, output = exec_cmd("which dovecot")

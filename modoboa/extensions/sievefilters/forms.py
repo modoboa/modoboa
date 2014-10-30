@@ -9,7 +9,9 @@ from modoboa.extensions.admin.templatetags.admin_tags import gender
 
 
 class FiltersSetForm(forms.Form):
-    name = forms.CharField()
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
     active = forms.BooleanField(
         label=gender("Active", "m"), required=False,
         initial=False,
@@ -31,7 +33,7 @@ class CustomRadioInput(RadioInput):
             label_for = ''
         choice_label = conditional_escape(force_unicode(self.choice_label))
         return mark_safe(
-            u'<label%s class="radio inline">%s %s</label>'
+            u'<label%s class="radio-inline">%s %s</label>'
             % (label_for, self.tag(), choice_label)
         )
 
@@ -57,13 +59,17 @@ class FilterForm(forms.Form):
     def __init__(self, conditions, actions, request, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)
 
+        self.field_widths = {
+            "match_type": 8
+        }
+
         self.fields["name"] = forms.CharField(label=_("Name"))
         self.fields["match_type"] = forms.ChoiceField(
             choices=[("allof", _("All of the following")),
                      ("anyof", _("Any of the following")),
                      ("all", _("All messages"))],
             initial="anyof",
-            widget=CustomRadioSelect(attrs={"class": "radio inline"})
+            widget=CustomRadioSelect()
         )
 
         self.header_operators = [

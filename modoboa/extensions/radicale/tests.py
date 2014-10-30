@@ -54,7 +54,7 @@ class UserCalendarTestCase(ExtTestCase):
             "stepid": "step2"
         }
         self.ajax_post(
-            reverse("new_user_calendar"), values)
+            reverse("radicale:user_calendar_add"), values)
         self.clt.logout()
         self.assertRuleEqual("Test calendar", "admin@test.com", read=True)
 
@@ -69,7 +69,7 @@ class UserCalendarTestCase(ExtTestCase):
             "stepid": "step2"
         }
         self.ajax_post(
-            reverse("new_user_calendar"), values)
+            reverse("radicale:user_calendar_add"), values)
         self.clt.logout()
         self.assertRuleEqual(
             "Test calendar 2", "admin@test.com", read=True, write=True
@@ -87,7 +87,7 @@ class UserCalendarTestCase(ExtTestCase):
             "stepid": "step2"
         }
         self.ajax_post(
-            reverse("new_user_calendar"), values)
+            reverse("radicale:user_calendar_add"), values)
         UserCalendar.objects.get(name="My calendar")
         self.assertRuleEqual(
             "My calendar", "admin@test.com", read=True, write=True)
@@ -101,7 +101,7 @@ class UserCalendarTestCase(ExtTestCase):
             "name": "Modified", "mailbox": cal.mailbox.pk
         }
         self.ajax_post(
-            reverse("user_calendar", args=[cal.pk]), values
+            reverse("radicale:user_calendar", args=[cal.pk]), values
         )
 
     def test_del_calendar(self):
@@ -109,7 +109,7 @@ class UserCalendarTestCase(ExtTestCase):
             mailbox__user__username='test@modoboa.org',
             mailbox__address='test', mailbox__domain__name='modoboa.org')
         self.ajax_delete(
-            reverse("user_calendar", args=[cal.pk])
+            reverse("radicale:user_calendar", args=[cal.pk])
         )
         with self.assertRaises(ObjectDoesNotExist):
             UserCalendar.objects.get(pk=cal.pk)
@@ -121,7 +121,7 @@ class UserCalendarTestCase(ExtTestCase):
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")
         self.ajax_delete(
-            reverse("user_calendar", args=[cal.pk]), status=403
+            reverse("radicale:user_calendar", args=[cal.pk]), status=403
         )
 
     def test_add_calendar_denied(self):
@@ -134,7 +134,7 @@ class UserCalendarTestCase(ExtTestCase):
             "stepid": "step2"
         }
         self.ajax_post(
-            reverse("new_user_calendar"), values, status=400)
+            reverse("radicale:user_calendar_add"), values, status=400)
 
 
 class SharedCalendarTestCase(ExtTestCase):
@@ -153,7 +153,7 @@ class SharedCalendarTestCase(ExtTestCase):
             "domain": domain.pk,
         }
         self.ajax_post(
-            reverse("new_shared_calendar"), values)
+            reverse("radicale:shared_calendar_add"), values)
         self.clt.logout()
 
         # As a domain administrator
@@ -163,7 +163,7 @@ class SharedCalendarTestCase(ExtTestCase):
             "domain": domain.pk
         }
         self.ajax_post(
-            reverse("new_shared_calendar"), values)
+            reverse("radicale:shared_calendar_add"), values)
         self.clt.logout()
 
     def test_add_calendar_denied(self):
@@ -174,7 +174,7 @@ class SharedCalendarTestCase(ExtTestCase):
             "domain": Domain.objects.get(name="test2.com")
         }
         self.ajax_post(
-            reverse("new_shared_calendar"), values, status=400)
+            reverse("radicale:shared_calendar_add"), values, status=400)
 
     def test_edit_calendar(self):
         cal = SharedCalendarFactory(
@@ -183,7 +183,7 @@ class SharedCalendarTestCase(ExtTestCase):
             "name": "Modified", "domain": cal.domain.pk
         }
         self.ajax_post(
-            reverse("shared_calendar", args=[cal.pk]), values
+            reverse("radicale:shared_calendar", args=[cal.pk]), values
         )
         cal = SharedCalendar.objects.get(pk=cal.pk)
         self.assertEqual(cal.name, "Modified")
@@ -191,7 +191,7 @@ class SharedCalendarTestCase(ExtTestCase):
     def test_del_calendar(self):
         cal = SharedCalendarFactory(domain__name='modoboa.org')
         self.ajax_delete(
-            reverse("shared_calendar", args=[cal.pk])
+            reverse("radicale:shared_calendar", args=[cal.pk])
         )
         with self.assertRaises(ObjectDoesNotExist):
             SharedCalendar.objects.get(pk=cal.pk)
@@ -201,7 +201,7 @@ class SharedCalendarTestCase(ExtTestCase):
         self.clt.logout()
         self.clt.login(username="admin@test.com", password="toto")
         self.ajax_delete(
-            reverse("shared_calendar", args=[cal.pk]), status=403
+            reverse("radicale:shared_calendar", args=[cal.pk]), status=403
         )
 
 

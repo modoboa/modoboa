@@ -1,0 +1,25 @@
+{% load i18n %}
+{% load webmail_tags %}
+{% load static %}
+
+{% if with_top_div %}<div id="emails">{% endif %}
+  {% for email in email_list %}
+  <div id="{{ email.imapid }}" class="row email{% if email.style %} {{ email.style }}{% endif %}" data-page="{{ page }}">
+    <div class="hidden-xs col-sm-1">
+      <img name="drag" src="{% static 'pics/grippy.png' %}" class="draggable" />
+
+      <input type="checkbox" />
+    </div>
+    <div class="col-xs-9 col-sm-9 openable">
+      {{ email.subject|parse_imap_header:"subject" }}
+      <p class="text-muted">
+        {{ email.from|parse_imap_header:"from" }}
+      </p>
+    </div>
+    <div class="col-xs-3 col-sm-2 text-right">
+      {{ email.date|parse_imap_header:"date" }}
+      <p>{% if email.answered %}<span class="fa fa-mail-reply"></span>{% endif %}{% if email.forwarded %} <span class="fa fa-mail-forward"></span>{% endif %}{% if email.attachments %} <span class="fa fa-paperclip"></span>{% endif %}</p>
+    </div>
+  </div>
+  {% endfor %}
+{% if with_top_div %}</div>{% endif %}

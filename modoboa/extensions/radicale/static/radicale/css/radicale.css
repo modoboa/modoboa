@@ -14,3 +14,8 @@
 .addrule, .delrule { 
     margin-left: 10px;
 }
+
+table tr td[name=actions],
+table tr th#actions { 
+    text-align: right;
+}

@@ -16,7 +16,8 @@ class ParametersForm(AdminParametersForm):
         help_text=ugettext_lazy(
             "The URL of your Radicale server. "
             "It will be used to construct calendar URLs."
-        )
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     rights_management_sep = SeparatorField(
@@ -25,7 +26,8 @@ class ParametersForm(AdminParametersForm):
     rights_file_path = forms.CharField(
         label=ugettext_lazy("Radicale rights file path"),
         initial="/etc/radicale/rights",
-        help_text=ugettext_lazy("Path to file that contains rights definition")
+        help_text=ugettext_lazy("Path to file that contains rights definition"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     allow_calendars_administration = YesNoField(

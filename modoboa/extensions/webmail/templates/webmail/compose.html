@@ -1,35 +1,43 @@
-{% load i18n lib_tags %}{% load url from future %}
-<form class="form-horizontal" method="POST" action="{{ posturl }}" id="composemail">{% csrf_token %}
-  <div id="compose-container">
-    <div id="mailheader" class="well">
-      {% render_field form.to %}
-      <div class="options">
-        {% if not form.cc.value %}<a id="add_cc" href="#">{% trans "Add Cc field" %}</a>{% endif %} <a id="add_cci" href="#">{% trans "Add Cci field" %}</a>
-      </div>
-      {% if form.cc.value %}{% render_field form.cc %}{% else %}{% render_and_hide_field form.cc %}{% endif %}
-      {% render_and_hide_field form.cci %}
-      {% render_field form.subject %}
-      <div id="attachments" name="{% url 'modoboa.extensions.webmail.views.attachments' %}">
-        <div>
-          <img src="{{ STATIC_URL }}pics/attachment.png" />
-          {% trans "Attachments" %}
-        </div>
-        <div id="list">
-          {% blocktrans count attachments|length as counter %}{{ counter }} file{% plural %}{{ counter }} files{% endblocktrans %}
-          <span class="shortlist">{{ short_att_list }}</span>
-        </div>
-      </div>
-    </div>
+{% load i18n form_tags %}{% load url from future %}
 
+<form class="form-horizontal" method="POST" action="{{ posturl }}" id="composemail">
+  {% csrf_token %}
+
+  <div id="compose-container">
+    <div id="mailheader">
+      <div class="form-group{% if form.errors.to %} has-error{% endif %}">
+        <label class="col-sm-1 control-label" for="id_to">{% trans "To" %}</label>
+        <div class="col-sm-8">
+          <input id="id_to" name="to" class="form-control" value="{% if form.to.value %}{{ form.to.value }}{% endif %}"{% if form.to.errors %} placeholder="{% for error in form.to.errors %}{{ error }}{% endfor %}"{% endif %}>
+        </div>
+        {% if not form.cc.value %}
+        <div class="col-sm-2">
+          <button id="add_cc" class="btn btn-default btn-xs"><span class="fa fa-plus"></span> {% trans "Cc" %}</button>
+          <button id="add_cci" class="btn btn-default btn-xs"><span class="fa fa-plus"> {% trans "Cci" %}</span></button>
+        </div>
+        {% endif %}
+      </div>
+      {% if form.cc.value %}
+        {% render_field form.cc label_width="col-sm-1" %}
+        {% render_field form.cci label_width="col-sm-1" %}
+      {% else %}
+        {% render_field form.cc label_width="col-sm-1" hidden=True %}
+        {% render_field form.cci label_width="col-sm-1" hidden=True %}
+      {% endif %}
+      {% render_field form.subject label_width="col-sm-1" %}
+      
+    </div>
+    
     <div id="body_container">
-    {% if body %}
-    <textarea id="id_body" name="body" class="editor">{% if bodyheader %}{{ bodyheader }}{% endif %}
-{{ body }}
-</textarea>
-    {% else %}
-    <textarea id="id_body" name="body" class="editor"></textarea>
-    {% endif %}
+      {% if body %}
+      <textarea id="id_body" name="body" class="form-control editor">{% if bodyheader %}{{ bodyheader }}{% endif %}
+        {{ body }}
+      </textarea>
+      {% else %}
+      <textarea id="id_body" name="body" class="form-control editor"></textarea>
+      {% endif %}
     </div>
   </div>
+
 </form>
 

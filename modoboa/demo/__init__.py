@@ -20,10 +20,10 @@ def menu(target, user):
          "menu": [
              {"name": "sendvirus",
               "label":  _("Send virus"),
-              "url": reverse("modoboa.demo.views.send_virus")},
+              "url": reverse("demo:virus_send")},
              {"name": "sendspam",
               "label":  _("Send spam"),
-              "url": reverse("modoboa.demo.views.send_spam")}
+              "url": reverse("demo:spam_send")}
          ]
          }
     ]
@@ -43,8 +43,8 @@ def password_change(user):
 
 
 @events.observe("GetStaticContent")
-def get_static_content(caller, user):
-    if caller != 'top' and not user.mailbox_set.count():
+def get_static_content(caller, st_type, user):
+    if caller != 'top' or st_type != 'js' or not user.mailbox_set.count():
         return []
 
     return ["""<script type="text/javascript">

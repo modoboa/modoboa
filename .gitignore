@@ -1,8 +1,6 @@
 .*~$
 *.pyc
 *.mo
-dist
-build
 modoboa.egg-info
 doc/.build
 doc/.static

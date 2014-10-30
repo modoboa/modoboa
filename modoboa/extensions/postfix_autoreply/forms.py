@@ -11,7 +11,7 @@ class ARmessageForm(forms.ModelForm):
         required=False,
         help_text=ugettext_lazy("Activate your auto reply from this date"),
         widget=forms.TextInput(
-            attrs={'class': 'datefield', 'readonly': 'readonly'}
+            attrs={'class': 'datefield form-control', 'readonly': 'readonly'}
         )
     )
     untildate = forms.DateTimeField(
@@ -19,9 +19,19 @@ class ARmessageForm(forms.ModelForm):
         required=False,
         help_text=ugettext_lazy("Activate your auto reply until this date"),
         widget=forms.TextInput(
-            attrs={'class': 'datefield', 'readonly': 'readonly'}
+            attrs={'class': 'datefield form-control', 'readonly': 'readonly'}
         )
     )
+    subject = forms.CharField(
+            widget=forms.TextInput(
+                    attrs={'class': 'form-control'}
+                )
+    )
+    content = forms.CharField(
+                widget=forms.Textarea(
+                        attrs={'class': 'form-control'}
+                    )
+        )
 
     class Meta:
         model = ARmessage

@@ -31,7 +31,7 @@ def selfservice(ssfunc=None):
             if parameters.get_admin("SELF_SERVICE") == "no":
                 from django.contrib.auth.views import redirect_to_login
                 return redirect_to_login(
-                    reverse("modoboa.extensions.amavis.views.index")
+                    reverse("amavis:index")
                 )
             return ssfunc(request, *args, **kwargs)
         return wrapped_f
@@ -91,6 +91,15 @@ class QuarantineNavigationParameters(NavigationParameters):
         self.parameters += [
             ('msgtype', None, False), ('viewrequests', None, False)
         ]
+
+    def _store_page(self):
+        """Specific method to store the current page."""
+        if self.request.GET.get("reset_page", None) or "page" not in self:
+            self["page"] = 1
+        else:
+            page = self.request.GET.get("page", None)
+            if page is not None:
+                self["page"] = int(page)
 
     def back_to_listing(self):
         """Return the current listing URL.
