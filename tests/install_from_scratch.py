@@ -56,8 +56,11 @@ class DeployTest(unittest.TestCase):
         dburl = "%s://%s:%s@%s/%s" \
             % (self.dbtype, self.dbuser, self.dbpassword,
                self.dbhost, self.projname)
-        cmd = "modoboa-admin.py deploy --syncdb --collectstatic --dburl %s --domain %s %s" \
+        cmd = (
+            "modoboa-admin.py deploy --syncdb --collectstatic --dburl %s "
+            "--domain %s --extensions all %s"
             % (dburl, 'localhost', self.projname)
+        )
         code, output = exec_cmd(cmd, cwd=self.workdir)
         self.assertEqual(code, 0)
 
