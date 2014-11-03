@@ -241,7 +241,7 @@ def release(request, mail_id):
         if valid_addresses is not None and r not in valid_addresses:
             continue
         msgrcpts += [connector.get_recipient_message(r, i)]
-    if request.group == "SimpleUsers" and \
+    if request.user.group == "SimpleUsers" and \
        parameters.get_admin("USER_CAN_RELEASE") == "no":
         for msgrcpt in msgrcpts:
             connector.set_msgrcpt_status(
