@@ -286,7 +286,7 @@ def manual_learning_enabled(user):
     :return: True if learning is enabled, False otherwise.
     """
     manual_learning = parameters.get_admin("MANUAL_LEARNING") == "yes"
-    if manual_learning:
+    if manual_learning and user.group != 'SuperAdmins':
         domain_level_learning = parameters.get_admin(
             "DOMAIN_LEVEL_LEARNING") == "yes"
         user_level_learning = parameters.get_admin(
