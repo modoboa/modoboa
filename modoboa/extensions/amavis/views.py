@@ -170,12 +170,19 @@ def delete(request, mail_id):
     """
     mail_id = check_mail_id(request, mail_id)
     connector = get_connector()
-    mb = Mailbox.objects.get(user=request.user) \
-        if request.user.group == 'SimpleUsers' else None
+    if request.user.group == 'SimpleUsers':
+        valid_addresses = request.user.email
+        try:
+            mb = Mailbox.objects.get(user=request.user)
+        except Mailbox.DoesNotExist:
+            pass
+        else:
+            valid_addresses += mb.alias_addresses
+    else:
+        valid_addresses = None
     for mid in mail_id:
         r, i = mid.split()
-        if mb is not None and r != mb.full_address \
-                and not r in mb.alias_addresses:
+        if valid_addresses is not None and r not in valid_addresses:
             continue
         connector.set_msgrcpt_status(r, i, 'D')
     message = ungettext("%(count)d message deleted successfully",
@@ -222,12 +229,19 @@ def release(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
     msgrcpts = []
     connector = get_connector()
-    mb = Mailbox.objects.get(user=request.user) \
-        if request.user.group == 'SimpleUsers' else None
+    if request.user.group == 'SimpleUsers':
+        valid_addresses = request.user.email
+        try:
+            mb = Mailbox.objects.get(user=request.user)
+        except Mailbox.DoesNotExist:
+            pass
+        else:
+            valid_addresses += mb.alias_addresses
+    else:
+        valid_addresses = None
     for mid in mail_id:
         r, i = mid.split()
-        if mb is not None and r != mb.full_address \
-                and not r in mb.alias_addresses:
+        if valid_addresses is not None and r not in valid_addresses:
             continue
         msgrcpts += [connector.get_recipient_message(r, i)]
     if mb is not None and parameters.get_admin("USER_CAN_RELEASE") == "no":
