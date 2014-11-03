@@ -151,6 +151,21 @@ def check_mail_id(request, mail_id):
     return mail_id
 
 
+def get_user_valid_addresses(user):
+    """Retrieve all valid addresses of a user."""
+    if request.user.group == 'SimpleUsers':
+        valid_addresses = request.user.email
+        try:
+            mb = Mailbox.objects.get(user=request.user)
+        except Mailbox.DoesNotExist:
+            pass
+        else:
+            valid_addresses += mb.alias_addresses
+    else:
+        valid_addresses = None
+    return valid_addresses
+
+
 def delete_selfservice(request, mail_id):
     rcpt = request.GET.get("rcpt", None)
     if rcpt is None:
@@ -170,16 +185,7 @@ def delete(request, mail_id):
     """
     mail_id = check_mail_id(request, mail_id)
     connector = get_connector()
-    if request.user.group == 'SimpleUsers':
-        valid_addresses = request.user.email
-        try:
-            mb = Mailbox.objects.get(user=request.user)
-        except Mailbox.DoesNotExist:
-            pass
-        else:
-            valid_addresses += mb.alias_addresses
-    else:
-        valid_addresses = None
+    valid_addresses = get_user_valid_addresses(request.user)
     for mid in mail_id:
         r, i = mid.split()
         if valid_addresses is not None and r not in valid_addresses:
@@ -229,16 +235,7 @@ def release(request, mail_id):
     mail_id = check_mail_id(request, mail_id)
     msgrcpts = []
     connector = get_connector()
-    if request.user.group == 'SimpleUsers':
-        valid_addresses = request.user.email
-        try:
-            mb = Mailbox.objects.get(user=request.user)
-        except Mailbox.DoesNotExist:
-            pass
-        else:
-            valid_addresses += mb.alias_addresses
-    else:
-        valid_addresses = None
+    valid_addresses = get_user_valid_addresses(request.user)
     for mid in mail_id:
         r, i = mid.split()
         if valid_addresses is not None and r not in valid_addresses:
