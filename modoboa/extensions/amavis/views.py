@@ -250,10 +250,10 @@ def release(request, mail_id):
         message = ungettext("%(count)d request sent",
                             "%(count)d requests sent",
                             len(mail_id)) % {"count": len(mail_id)}
-        return ajax_response(
-            request, "ok", respmsg=message,
-            url=QuarantineNavigationParameters(request).back_to_listing()
-        )
+        return render_to_json_response({
+            "message": message,
+            "url": QuarantineNavigationParameters(request).back_to_listing()
+        })
 
     amr = AMrelease()
     error = None
