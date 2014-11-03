@@ -153,10 +153,10 @@ def check_mail_id(request, mail_id):
 
 def get_user_valid_addresses(user):
     """Retrieve all valid addresses of a user."""
-    if request.user.group == 'SimpleUsers':
-        valid_addresses = request.user.email
+    if user.group == 'SimpleUsers':
+        valid_addresses = user.email
         try:
-            mb = Mailbox.objects.get(user=request.user)
+            mb = Mailbox.objects.get(user=user)
         except Mailbox.DoesNotExist:
             pass
         else:
