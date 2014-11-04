@@ -1314,7 +1314,7 @@ msgstr "Alias modifié"
 
 #: extensions/admin/views/domain.py:98 extensions/admin/views/identity.py:134
 msgid "Next"
-msgstr "Suivante"
+msgstr "Suivant"
 
 #: extensions/admin/views/domain.py:101
 msgid "Options"
@@ -1322,7 +1322,7 @@ msgstr "Options"
 
 #: extensions/admin/views/domain.py:103 extensions/admin/views/identity.py:138
 msgid "Previous"
-msgstr "Précédente"
+msgstr "Précédent"
 
 #: extensions/admin/views/domain.py:125
 msgid "Domain created"

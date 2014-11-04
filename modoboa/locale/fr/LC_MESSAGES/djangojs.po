@@ -81,7 +81,7 @@ msgstr "Marquer comme non-spam?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:348
 msgid "View full headers"
-msgstr "Voir les entêtes complets"
+msgstr "Afficher tous les entêtes"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:353
 msgid "Hide full headers"
