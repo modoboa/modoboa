@@ -189,7 +189,10 @@ class QuarantineNavigationParameters(NavigationParameters):
             request, 'quarantine_navparams'
         )
         self.parameters += [
-            ('msgtype', None, False), ('viewrequests', None, False)
+            ('pattern', '', False),
+            ('criteria', 'from_addr', False),
+            ('msgtype', None, False),
+            ('viewrequests', None, False)
         ]
 
     def back_to_listing(self):

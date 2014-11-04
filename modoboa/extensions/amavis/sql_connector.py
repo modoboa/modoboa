@@ -100,7 +100,6 @@ class SQLconnector(object):
                 criteria = "from_addr,subject,to"
             search_flt = None
             for crit in criteria.split(","):
-                print crit
                 if crit == "from_addr":
                     nfilter = Q(mail__from_addr__contains=pattern)
                 elif crit == "subject":
