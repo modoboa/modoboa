@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-29 13:25+0100\n"
+"POT-Creation-Date: 2014-11-04 11:51+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -280,8 +280,8 @@ msgstr ""
 msgid "This field is required"
 msgstr "Это поле обязательно для заполнеия"
 
-#: core/app_settings.py:349 extensions/amavis/app_settings.py:149
-#: extensions/amavis/templates/amavis/main_action_bar.html:40
+#: core/app_settings.py:349 extensions/amavis/app_settings.py:157
+#: extensions/amavis/templates/amavis/main_action_bar.html:41
 #: extensions/webmail/app_settings.py:73
 msgid "Display"
 msgstr "Отображение"
@@ -1333,9 +1333,9 @@ msgstr "Экспорт доменов"
 
 #: extensions/admin/views/identity.py:108
 #: extensions/admin/views/identity.py:231
-#: extensions/admin/views/identity.py:236 extensions/amavis/views.py:147
-#: extensions/amavis/views.py:151 extensions/amavis/views.py:184
-#: extensions/amavis/views.py:189 extensions/amavis/views.py:191
+#: extensions/admin/views/identity.py:236 extensions/amavis/views.py:172
+#: extensions/amavis/views.py:176 extensions/amavis/views.py:207
+#: extensions/amavis/views.py:212 extensions/amavis/views.py:214
 #: extensions/webmail/views.py:49 extensions/webmail/views.py:67
 #: extensions/webmail/views.py:81 extensions/webmail/views.py:99
 #: extensions/webmail/views.py:116 extensions/webmail/views.py:202
@@ -1425,171 +1425,184 @@ msgstr "Простой интерфейс управления AMaViS"
 msgid "Quarantine"
 msgstr "Карантин"
 
-#: extensions/amavis/app_settings.py:11
+#: extensions/amavis/app_settings.py:14
 msgid "Quarantine settings"
 msgstr "Настройки карантина"
 
-#: extensions/amavis/app_settings.py:14
+#: extensions/amavis/app_settings.py:17
 msgid "Maximum message age"
 msgstr "Максимальное время жизни сообщения"
 
-#: extensions/amavis/app_settings.py:16
+#: extensions/amavis/app_settings.py:19
 msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr ""
 "Максимальный срок хранения сообщений в карантине (в днях) перед удалением"
 
-#: extensions/amavis/app_settings.py:19
+#: extensions/amavis/app_settings.py:22
 msgid "Messages releasing"
 msgstr "Сообщение деблокировано"
 
-#: extensions/amavis/app_settings.py:22
+#: extensions/amavis/app_settings.py:25
 msgid "Remove released messages"
 msgstr "Удалить деблокированные сообщения"
 
-#: extensions/amavis/app_settings.py:24
+#: extensions/amavis/app_settings.py:27
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr "Удалить сообщения отмеченные как деблокированные при очистке базы"
 
-#: extensions/amavis/app_settings.py:28
+#: extensions/amavis/app_settings.py:32
 msgid "Amavis connection mode"
 msgstr "Режим подключения Amavis"
 
-#: extensions/amavis/app_settings.py:31
+#: extensions/amavis/app_settings.py:35
 msgid "Mode used to access the PDP server"
 msgstr "Режим подключения к PDP серверу"
 
-#: extensions/amavis/app_settings.py:36
+#: extensions/amavis/app_settings.py:40
 msgid "PDP server address"
 msgstr "Адрес сервера PDP"
 
-#: extensions/amavis/app_settings.py:38
+#: extensions/amavis/app_settings.py:42
 msgid "PDP server address (if inet mode)"
 msgstr "Адрес PDP сервера (интернет режим)"
 
-#: extensions/amavis/app_settings.py:42
+#: extensions/amavis/app_settings.py:46
 msgid "PDP server port"
 msgstr "Порт сервера PDP"
 
-#: extensions/amavis/app_settings.py:44
+#: extensions/amavis/app_settings.py:48
 msgid "PDP server port (if inet mode)"
 msgstr "Порт PDP сервера (интернет режим)"
 
-#: extensions/amavis/app_settings.py:48
+#: extensions/amavis/app_settings.py:52
 msgid "PDP server socket"
 msgstr "Сокет сервера PDP"
 
-#: extensions/amavis/app_settings.py:50
+#: extensions/amavis/app_settings.py:54
 msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Путь к PDP сокету сервера (для UNIX режима)"
 
-#: extensions/amavis/app_settings.py:54
+#: extensions/amavis/app_settings.py:58
 msgid "Check requests interval"
 msgstr "Интервал проверки запросов"
 
-#: extensions/amavis/app_settings.py:56
+#: extensions/amavis/app_settings.py:60
 msgid "Interval between two release requests checks"
 msgstr "Интервал между запросами на деблокирование для доставки"
 
-#: extensions/amavis/app_settings.py:60
+#: extensions/amavis/app_settings.py:64
 msgid "Allow direct release"
 msgstr "Разрешить прямое деблокирование"
 
-#: extensions/amavis/app_settings.py:62
+#: extensions/amavis/app_settings.py:66
 msgid "Allow users to directly release their messages"
 msgstr ""
 "Позволить пользователю самостоятельно деблокировать сообщения для доставки"
 
-#: extensions/amavis/app_settings.py:66
+#: extensions/amavis/app_settings.py:70
 msgid "Enable self-service mode"
 msgstr "Разрешить режим самообслуживания"
 
-#: extensions/amavis/app_settings.py:68
+#: extensions/amavis/app_settings.py:72
 msgid "Activate the 'self-service' mode"
 msgstr "Активировать режим 'самообслуживания'"
 
-#: extensions/amavis/app_settings.py:72
+#: extensions/amavis/app_settings.py:76
 msgid "Notifications sender"
 msgstr "Уведомления отправителю"
 
-#: extensions/amavis/app_settings.py:74
+#: extensions/amavis/app_settings.py:78
 msgid "The e-mail address used to send notitications"
 msgstr "Адрес для отправки уведомлений"
 
-#: extensions/amavis/app_settings.py:77
-#: extensions/amavis/templates/amavis/main_action_bar.html:27
+#: extensions/amavis/app_settings.py:81
+#: extensions/amavis/templates/amavis/main_action_bar.html:28
 msgid "Manual learning"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:80
+#: extensions/amavis/app_settings.py:84
 msgid "Enable manual learning"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:83
+#: extensions/amavis/app_settings.py:87
 msgid "Allow super administrators to manually train Spamassassin"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:88
+#: extensions/amavis/app_settings.py:92
 msgid "Is Spamassassin local?"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:91
+#: extensions/amavis/app_settings.py:95
 msgid "Tell if Spamassassin is running on the same server than modoboa"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:96
+#: extensions/amavis/app_settings.py:100
 #, fuzzy
 msgid "Default user"
 msgstr "Редактор по умолчанию"
 
-#: extensions/amavis/app_settings.py:99
+#: extensions/amavis/app_settings.py:103
 msgid "Name of the user owning the default bayesian database"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:104
+#: extensions/amavis/app_settings.py:108
 #, fuzzy
 msgid "Spamd address"
 msgstr "Адрес отправителя"
 
-#: extensions/amavis/app_settings.py:106
+#: extensions/amavis/app_settings.py:110
 msgid "The IP address where spamd can be reached"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:110
+#: extensions/amavis/app_settings.py:114
 #, fuzzy
 msgid "Spamd port"
 msgstr "Импорт"
 
-#: extensions/amavis/app_settings.py:112
+#: extensions/amavis/app_settings.py:116
 msgid "The TCP port spamd is listening on"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:116
+#: extensions/amavis/app_settings.py:120
 msgid "Enable per-domain manual learning"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:119
+#: extensions/amavis/app_settings.py:123
 msgid ""
 "Allow domain administrators to train Spamassassin (within dedicated per-"
 "domain databases)"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:125
+#: extensions/amavis/app_settings.py:129
 msgid "Enable per-user manual learning"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:128
+#: extensions/amavis/app_settings.py:132
 msgid ""
 "Allow simple users to personally train Spamassassin (within a dedicated "
 "database)"
 msgstr ""
 
-#: extensions/amavis/app_settings.py:153 extensions/webmail/app_settings.py:91
+#: extensions/amavis/app_settings.py:161 extensions/webmail/app_settings.py:91
 msgid "Number of displayed emails per page"
 msgstr "Количество отображаемых сообщений на странице"
 
-#: extensions/amavis/app_settings.py:154
+#: extensions/amavis/app_settings.py:162
 msgid "Set the maximum number of messages displayed in a page"
 msgstr "Установить максимальное количество сообщений показываемых на странице"
+
+#: extensions/amavis/forms.py:83
+msgid "Global database"
+msgstr ""
+
+#: extensions/amavis/forms.py:89
+#, fuzzy
+msgid "Domain's database"
+msgstr "Синонимы доменов"
+
+#: extensions/amavis/forms.py:91
+msgid "User's database"
+msgstr ""
 
 #: extensions/amavis/general_callbacks.py:136
 msgid "pending requests"
@@ -1603,10 +1616,15 @@ msgstr ""
 msgid "Content filter"
 msgstr "Фильтр содержания"
 
-#: extensions/amavis/lib.py:60
+#: extensions/amavis/lib.py:62
 #, python-format
 msgid "Connection to amavis failed: %s"
 msgstr "Ошибка соединания с Amavis  %s"
+
+#: extensions/amavis/lib.py:131
+#, fuzzy
+msgid "No recipient found"
+msgstr "Получатель не определен"
 
 #: extensions/amavis/models.py:93
 msgid "Virus filter"
@@ -1671,7 +1689,7 @@ msgid "Score"
 msgstr ""
 
 #: extensions/amavis/sql_listing.py:33
-#: extensions/amavis/templatetags/amavis_tags.py:100
+#: extensions/amavis/templatetags/amavis_tags.py:106
 #: extensions/webmail/forms.py:83
 msgid "To"
 msgstr "Кому"
@@ -1689,15 +1707,15 @@ msgstr "От кого"
 msgid "Subject"
 msgstr "Тема"
 
-#: extensions/amavis/views.py:30
+#: extensions/amavis/views.py:31
 msgid "Empty quarantine"
 msgstr "очистить карантин"
 
-#: extensions/amavis/views.py:152
+#: extensions/amavis/views.py:177
 msgid "Message deleted"
 msgstr "Сообщение удалено"
 
-#: extensions/amavis/views.py:171
+#: extensions/amavis/views.py:194
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
@@ -1705,15 +1723,15 @@ msgstr[0] "%(count)d сообщение успешно удалено"
 msgstr[1] "%(count)d сообщения успешно удалено"
 msgstr[2] "%(count)d сообщений успешно удалено"
 
-#: extensions/amavis/views.py:194
+#: extensions/amavis/views.py:217
 msgid "Request sent"
 msgstr "Запрос послан"
 
-#: extensions/amavis/views.py:200
+#: extensions/amavis/views.py:223
 msgid "Message released"
 msgstr "Сообщение деблокировано"
 
-#: extensions/amavis/views.py:228
+#: extensions/amavis/views.py:250
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
@@ -1721,7 +1739,7 @@ msgstr[0] "%(count)d запрос послан"
 msgstr[1] "%(count)d запроса полано"
 msgstr[2] "%(count)d запросов послано"
 
-#: extensions/amavis/views.py:249
+#: extensions/amavis/views.py:271
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
@@ -1729,13 +1747,22 @@ msgstr[0] "%(count)d сообщение успешно деблокирован�
 msgstr[1] "%(count)d сообщения успешно деблокировано"
 msgstr[2] "%(count)d сообщений успешно деблокировано"
 
-#: extensions/amavis/views.py:282
+#: extensions/amavis/views.py:309
 #, fuzzy, python-format
 msgid "%(count)d message processed successfully"
 msgid_plural "%(count)d messages processed successfully"
 msgstr[0] "%(count)d сообщение успешно деблокировано"
 msgstr[1] "%(count)d сообщения успешно деблокировано"
 msgstr[2] "%(count)d сообщений успешно деблокировано"
+
+#: extensions/amavis/views.py:341
+#, fuzzy
+msgid "Select a database"
+msgstr "Выберите файл"
+
+#: extensions/amavis/views.py:345
+msgid "Validate"
+msgstr ""
 
 #: extensions/amavis/management/commands/amnotify.py:61
 msgid "[modoboa] Pending release requests"
@@ -1762,75 +1789,83 @@ msgid "Select"
 msgstr ""
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:9
+msgid "Clean"
+msgstr ""
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:10
 msgid "Spam"
 msgstr "Спам"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:10
+#: extensions/amavis/templates/amavis/main_action_bar.html:11
 msgid "Virus"
 msgstr "Вирус"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:11
+#: extensions/amavis/templates/amavis/main_action_bar.html:12
 msgid "Bad Header"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:12
+#: extensions/amavis/templates/amavis/main_action_bar.html:13
 msgid "Bad MIME"
 msgstr "Ошибка MIME"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:13
+#: extensions/amavis/templates/amavis/main_action_bar.html:14
 msgid "Banned"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:18
+#: extensions/amavis/templates/amavis/main_action_bar.html:19
 #: extensions/amavis/templatetags/amavis_tags.py:24
-#: extensions/amavis/templatetags/amavis_tags.py:79
+#: extensions/amavis/templatetags/amavis_tags.py:85
 msgid "Release"
 msgstr "Деблокировать"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:23
+#: extensions/amavis/templates/amavis/main_action_bar.html:24
 #: extensions/amavis/templatetags/amavis_tags.py:30
-#: extensions/amavis/templatetags/amavis_tags.py:86
+#: extensions/amavis/templatetags/amavis_tags.py:92
 #: extensions/webmail/templatetags/webmail_tags.py:32
 msgid "Delete"
 msgstr "Удалить"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:32
+#: extensions/amavis/templates/amavis/main_action_bar.html:33
 #: extensions/amavis/templatetags/amavis_tags.py:44
 #, fuzzy
 msgid "Mark as spam"
 msgstr "Пометить сообщение"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:33
-#: extensions/amavis/templatetags/amavis_tags.py:49
+#: extensions/amavis/templates/amavis/main_action_bar.html:34
+#: extensions/amavis/templatetags/amavis_tags.py:52
 msgid "Mark as non-spam"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:42
+#: extensions/amavis/templates/amavis/main_action_bar.html:43
 #: extensions/sievefilters/forms.py:64
 msgid "All messages"
 msgstr "Все сообщения"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:42
+#: extensions/amavis/templates/amavis/main_action_bar.html:43
 msgid "All"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:43
-msgid "Spam only"
-msgstr ""
-
-#: extensions/amavis/templates/amavis/main_action_bar.html:44
-msgid "Virus only"
-msgstr ""
-
 #: extensions/amavis/templates/amavis/main_action_bar.html:45
-msgid "Bad Header only"
-msgstr ""
-
-#: extensions/amavis/templates/amavis/main_action_bar.html:46
-msgid "Bad MIME only"
+msgid "Clean only"
 msgstr ""
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:47
+msgid "Spam only"
+msgstr ""
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:48
+msgid "Virus only"
+msgstr ""
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:49
+msgid "Bad Header only"
+msgstr ""
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:50
+msgid "Bad MIME only"
+msgstr ""
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:51
 msgid "Banned only"
 msgstr ""
 

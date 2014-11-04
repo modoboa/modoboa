@@ -96,6 +96,7 @@ class SpamassassinClient(object):
         self._default_username = parameters.get_admin("DEFAULT_USER")
         self._recipient_db = recipient_db
         self._setup_cache = {}
+        self._username_cache = []
         if user.group == "SimpleUsers":
             user_level_learning = parameters.get_admin("USER_LEVEL_LEARNING")
             if user_level_learning == "yes":
@@ -154,6 +155,8 @@ class SpamassassinClient(object):
                         self._setup_cache[username] = True
         else:
             username = self._username
+        if username not in self._username_cache:
+            self._username_cache.append(username)
         cmd = self._learn_cmd.format(mtype, username)
         code, output = exec_cmd(cmd, pinput=msg, **self._learn_cmd_kwargs)
         if code in self._expected_exit_codes:
@@ -172,8 +175,9 @@ class SpamassassinClient(object):
     def done(self):
         """Call this method at the end of the processing."""
         if self._sa_is_local:
-            exec_cmd("sa-learn -u {0} --sync".format(self._username),
-                     **self._learn_cmd_kwargs)
+            for username in self._username_cache:
+                exec_cmd("sa-learn -u {0} --sync".format(username),
+                         **self._learn_cmd_kwargs)
 
 
 class QuarantineNavigationParameters(NavigationParameters):

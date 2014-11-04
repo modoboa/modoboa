@@ -342,7 +342,7 @@ def learning_recipient(request):
         "formid": "learning_recipient_form",
         "action": reverse("modoboa.extensions.amavis.views.learning_recipient"),
         "action_classes": "submit",
-        "action_label": _("Valider"),
+        "action_label": _("Validate"),
         "form": form
     })
 
