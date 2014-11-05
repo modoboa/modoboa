@@ -307,11 +307,14 @@ Here is a link example::
 
   http://<modoboa_url>/quarantine/%i/?rcpt=%R&secret_id=[:secret_id]
 
+.. _sa_manual_learning:
+
 Manual SpamAssassin learning
 ============================
 
-It is possible to manually train SpamAssassin (FIXME: URL) using
-the quarantine's content. By train, we mean:
+It is possible to manually train `SpamAssassin
+<http://spamassassin.apache.org/>`_ using the quarantine's content. By
+train, we mean:
 
 * Mark message(s) as spam (false negative(s))
 
@@ -341,7 +344,7 @@ inside:
 Replace values between ``<>`` by yours. Possible values for ``Driver``
 are ``PgSQL`` or ``MySQL`` (non exhaustive list). The syntax for
 ``DSN`` depends on the driver you choose. Please consult the official
-documentation. (FIXME: URL)
+documentation.
 
 Enable the feature through Modoboa
 ----------------------------------

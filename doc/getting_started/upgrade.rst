@@ -48,6 +48,14 @@ Finally, follow the common procedure::
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
 
+1.1.7: manual learning for SpamAssassin
+=======================================
+
+A new feature allows administrators and users to manually train
+SpamAssassin in order to customize its behaviour.
+
+Check :ref:`sa_manual_learning` to know more about this feature.
+
 1.1.6: Few bugfixes
 ===================
 
