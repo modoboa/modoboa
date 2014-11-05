@@ -63,7 +63,7 @@ def check_domain_access(user, pattern):
         return "global"
 
     for target in targets:
-        results = target.objects.filter(name__contains=pattern)
+        results = target.objects.filter(name__startswith=pattern)
         if results.count() != 1:
             continue
         if not user.can_access(results[0]):
