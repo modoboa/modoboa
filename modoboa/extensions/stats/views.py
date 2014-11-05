@@ -5,6 +5,8 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import (
     login_required, user_passes_test, permission_required
 )
+
+from modoboa.core.extensions import exts_pool
 from modoboa.lib import events
 from modoboa.lib.exceptions import BadRequest, PermDeniedException, NotFound
 from modoboa.lib.webutils import (
@@ -38,6 +40,38 @@ def index(request):
     })
 
 
+def check_domain_access(user, pattern):
+    """Check if an administrator can access a domain/relay domain.
+
+    If a non super administrator asks for the global view, we give him
+    a view on the first domain he manage instead.
+
+    :return: a domain name (str) or None.
+    """
+    targets = [Domain]
+    if exts_pool.is_extension_enabled("postfix_relay_domains"):
+        from modoboa.extensions.postfix_relay_domains.models import RelayDomain
+        targets.append(RelayDomain)
+
+    if pattern in [None, "global"]:
+        if not user.is_superuser:
+            for target in targets:
+                if not target.objects.get_for_admin(user).count():
+                    continue
+                return target.objects.get_for_admin(user)[0].name
+            return None
+        return "global"
+
+    for target in targets:
+        results = target.objects.filter(name__contains=pattern)
+        if results.count() != 1:
+            continue
+        if not user.can_access(results[0]):
+            raise PermDeniedException
+        return results[0].name
+    return None
+
+
 @login_required
 @user_passes_test(lambda u: u.group != "SimpleUsers")
 def graphs(request):
@@ -48,22 +82,10 @@ def graphs(request):
     searchq = request.GET.get("searchquery", None)
     period = request.GET.get("period", "day")
     tplvars = dict(graphs=[], period=period)
-    if searchq in [None, "global"]:
-        if not request.user.is_superuser:
-            if not Domain.objects.get_for_admin(request.user).count():
-                return render_to_json_response({})
-            tplvars.update(
-                domain=Domain.objects.get_for_admin(request.user)[0].name
-            )
-        else:
-            tplvars.update(domain="global")
-    else:
-        domain = Domain.objects.filter(name__contains=searchq)
-        if domain.count() != 1:
-            return render_to_json_response({})
-        if not request.user.can_access(domain[0]):
-            raise PermDeniedException
-        tplvars.update(domain=domain[0].name)
+    domain = check_domain_access(request.user, searchq)
+    if domain is None:
+        return render_to_json_response({})
+    tplvars["domain"] = domain
 
     if period == "custom":
         if not "start" in request.GET or not "end" in request.GET:
@@ -88,3 +110,17 @@ def graphs(request):
     return render_to_json_response({
         'content': _render_to_string(request, "stats/graphs.html", tplvars)
     })
+
+
+@login_required
+@user_passes_test(lambda u: u.group != "SimpleUsers")
+def get_domain_list(request):
+    """Get the list of domains (and relay domains) the user can see."""
+    doms = [dom.name for dom in Domain.objects.get_for_admin(request.user)]
+    if exts_pool.is_extension_enabled("postfix_relay_domains"):
+        from modoboa.extensions.postfix_relay_domains.models import RelayDomain
+        doms += [
+            rdom.name for rdom in
+            RelayDomain.objects.get_for_admin(request.user)
+        ]
+    return render_to_json_response(doms)

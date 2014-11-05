@@ -30,7 +30,6 @@ from django.core.management.base import BaseCommand
 
 from modoboa.core.extensions import exts_pool
 from modoboa.extensions.admin.models import Domain
-from modoboa.extensions.postfix_relay_domains.models import RelayDomain
 from modoboa.extensions.stats import Stats
 from modoboa.extensions.stats.grapher import str2Time, Grapher
 from modoboa.extensions.stats.graph_templates import MailTraffic
@@ -98,6 +97,7 @@ class LogParser(object):
             self.data[str(dom.name)] = {}
         if not exts_pool.is_extension_enabled("postfix_relay_domains"):
             return
+        from modoboa.extensions.postfix_relay_domains.models import RelayDomain
         for rdom in RelayDomain.objects.all():
             self.domains += [str(rdom.name)]
             self.data[str(rdom.name)] = {}
