@@ -141,9 +141,9 @@ def viewheaders(request, mail_id):
     msg = email.message_from_string(content)
     headers = []
     for name, value in msg.items():
-        if value and type(value) is unicode:
+        if value:
             result = chardet.detect(value)
-            if chardet["encoding"] is not None:
+            if result["encoding"] is not None:
                 value = value.decode(result["encoding"])
         headers += [(name, value)]
     return render(request, 'amavis/viewheader.html', {
