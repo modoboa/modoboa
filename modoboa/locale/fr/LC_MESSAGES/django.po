@@ -1828,7 +1828,7 @@ msgstr "Sélectionner"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:9
 msgid "Clean"
-msgstr ""
+msgstr "Propre"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:10
 msgid "Spam"
