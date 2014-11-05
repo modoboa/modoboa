@@ -407,6 +407,9 @@ Quarantine.prototype = {
     },
 
     action_cb: function(data) {
+        if (data.reload) {
+            this.navobj.update(true);
+        }
         if (data.url) {
             this.navobj.parse_string(data.url, true).update(true);
         }

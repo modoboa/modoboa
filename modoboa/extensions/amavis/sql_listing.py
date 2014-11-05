@@ -23,7 +23,7 @@ class Qtable(tables.Table):
         "type", align="center", width="30px", sort_order="type", safe=True
     )
     rstatus = tables.ImgColumn(
-        "rstatus", width='25px', sortable=False
+        "rstatus", width='25px', sortable=False, bootstrap=True
     )
     score = tables.Column(
         "score", label=ugettext_lazy("Score"), limit=6,

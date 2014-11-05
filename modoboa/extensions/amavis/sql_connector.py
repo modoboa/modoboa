@@ -90,7 +90,7 @@ class SQLconnector(object):
 
         Filters: rs, rid, content
         """
-        flt = Q(rs__in=[' ', 'V', 'R', 'p']) \
+        flt = Q(rs__in=[' ', 'V', 'R', 'p', 'S', 'H']) \
             if self.navparams.get('viewrequests', '0') != '1' else Q(rs='p')
         flt = self._apply_msgrcpt_filters(flt)
         pattern = self.navparams.get("pattern", "")
@@ -168,6 +168,10 @@ class SQLconnector(object):
                 m["class"] = "unseen"
             elif rs == 'R':
                 m["img_rstatus"] = static_url("pics/release.png")
+            elif rs == 'H':
+                m["img_rstatus"] = "icon-thumbs-up"
+            elif rs == 'S':
+                m["img_rstatus"] = "icon-thumbs-down"
             elif rs == 'p':
                 m["class"] = "pending"
             emails.append(m)

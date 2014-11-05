@@ -89,6 +89,8 @@ class ImgColumn(Column):
             return ""
 
     def render(self, value):
+        if getattr(self, "bootstrap", False) and value.startswith("icon"):
+            return "<i class='%s'></i>" % value
         if type(value) in [list, tuple]:
             return "".join(["<img src='%s' />" % i for i in value])
         return "<img src='%s' />" % value
