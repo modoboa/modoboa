@@ -133,12 +133,16 @@ def viewmail(request, mail_id):
 
 @login_required
 def viewheaders(request, mail_id):
+    """Display message headers."""
     content = ""
     for qm in get_connector().get_mail_content(mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
+    headers = [
+        (name, value.encode("utf-8")) for name, value in msg.items()
+    ]
     return render(request, 'amavis/viewheader.html', {
-        "headers": msg.items()
+        "headers": headers
     })
 
 
