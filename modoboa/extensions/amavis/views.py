@@ -1,5 +1,6 @@
 # coding: utf-8
 import email
+import chardet
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404
 from django.template import Template, Context
@@ -138,9 +139,13 @@ def viewheaders(request, mail_id):
     for qm in get_connector().get_mail_content(mail_id):
         content += qm.mail_text
     msg = email.message_from_string(content)
-    headers = [
-        (name, value.encode("utf-8")) for name, value in msg.items()
-    ]
+    headers = []
+    for name, value in msg.items():
+        if value and type(value) is unicode:
+            result = chardet.detect(value)
+            if chardet["encoding"] is not None:
+                value = value.decode(result["encoding"])
+        headers += [(name, value)]
     return render(request, 'amavis/viewheader.html', {
         "headers": headers
     })
