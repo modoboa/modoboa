@@ -21,7 +21,7 @@ $(document).ready(function() {
     var qm = new Quarantine({
         deflocation: "listing/?sort_order=-date&reset_page=true",
         defcallback: "listing_cb",
-        load_page_url: "{% url 'amavis:mail_page' %}"
+        load_page_url: "{% url 'amavis:mail_page' %}",
         check_learning_rcpt: {{ check_learning_rcpt }},
         learning_recipient_url: "{% url 'amavis:learning_recipient_set' %}"
     });

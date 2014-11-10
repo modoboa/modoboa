@@ -248,7 +248,7 @@ def create_user_and_use_policy(name, policy_name, priority=7):
     :param str name: user record name
     :param str policy_name: policy name
     """
-    policy = Policy.objects.get(policy_name=policy_name[:32])
+    policy = Policy.objects.get(policy_name="@{0}".format(policy_name[:32]))
     Users.objects.create(
         email=name, fullname=name, priority=priority, policy=policy
     )

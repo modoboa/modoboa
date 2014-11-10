@@ -116,7 +116,7 @@ def index(request):
             domain_level_learning = parameters.get_admin(
                 "DOMAIN_LEVEL_LEARNING") == "yes"
             if user_level_learning or domain_level_learning:
-                check_learning_rcpt = "true"    
+                check_learning_rcpt = "true"
     return render(request, "amavis/index.html", dict(
         selection="quarantine", check_learning_rcpt=check_learning_rcpt
     ))

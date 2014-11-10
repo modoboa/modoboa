@@ -9,7 +9,7 @@ from modoboa.extensions.amavis.lib import (
     create_user_and_use_policy, delete_user
 )
 from .lib import manual_learning_enabled
-from .models import Users
+from .models import Policy, Users
 
 
 @events.observe("UserMenuDisplay")
@@ -76,7 +76,7 @@ def on_mailbox_deleted(mailbox):
     """Clean amavis database when a mailbox is removed."""
     if parameters.get_admin("MANUAL_LEARNING") == "no":
         return
-    delete_user_and_policy(mailbox.full_address)
+    delete_user_and_policy("@{0}".format(mailbox.full_address))
 
 
 @events.observe("MailboxAliasCreated")
@@ -87,11 +87,15 @@ def on_mailboxalias_created(user, alias):
     """
     if not manual_learning_enabled(user) or alias.type != "alias":
         return
-    policy = Policy.objects.get(
-        policy_name=alias.mboxes.all()[0].full_address
-    )
-    email = alias.full_address
-    Users.objects.create(email=email, policy=policy, fullname=email)
+    try:
+        policy = Policy.objects.get(
+            policy_name=alias.mboxes.all()[0].full_address
+        )
+    except Policy.DoesNotExist:
+        return
+    else:
+        email = alias.full_address
+        Users.objects.create(email=email, policy=policy, fullname=email)
 
 
 @events.observe("MailboxAliasDeleted")

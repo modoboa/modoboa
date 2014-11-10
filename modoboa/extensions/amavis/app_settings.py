@@ -18,8 +18,9 @@ class ParametersForm(AdminParametersForm):
     max_messages_age = forms.IntegerField(
         label=_("Maximum message age"),
         initial=14,
-        help_text=_("Quarantine messages maximum age (in days) before deletion"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_(
+            "Quarantine messages maximum age (in days) before deletion"
+        )
     )
 
     sep1 = SeparatorField(label=_("Messages releasing"))
@@ -49,15 +50,13 @@ class ParametersForm(AdminParametersForm):
     am_pdp_port = forms.IntegerField(
         label=_("PDP server port"),
         initial=9998,
-        help_text=_("PDP server port (if inet mode)"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("PDP server port (if inet mode)")
     )
 
     am_pdp_socket = forms.CharField(
         label=_("PDP server socket"),
         initial="/var/amavis/amavisd.sock",
-        help_text=_("Path to the PDP server socket (if unix mode)"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Path to the PDP server socket (if unix mode)")
     )
 
     user_can_release = YesNoField(
@@ -75,8 +74,7 @@ class ParametersForm(AdminParametersForm):
     notifications_sender = forms.EmailField(
         label=_("Notifications sender"),
         initial="notification@modoboa.org",
-        help_text=_("The e-mail address used to send notitications"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("The e-mail address used to send notitications")
     )
 
     lsep = SeparatorField(label=_("Manual learning"))
@@ -160,6 +158,5 @@ class UserSettings(UserParametersForm):
     messages_per_page = forms.IntegerField(
         initial=40,
         label=_("Number of displayed emails per page"),
-        help_text=_("Set the maximum number of messages displayed in a page"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=_("Set the maximum number of messages displayed in a page")
     )
