@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load amavis_tags %}
 {% load static %}
 
@@ -11,11 +12,11 @@
   </td>
   <td width="25px" name="rstatus">
     {% if email.status == 'R' %}
-    <img src="{% static 'pics/release.png' %}" />
+    <span class="fa fa-mail-reply" title="{% trans 'Released' %}"></span>
     {% elif email.status == 'S' %}
-    <span class="fa fa-thumbs-ip"></span>
+    <span class="fa fa-thumbs-down" title="{% trans 'Marked as spam' %}"></span>
     {% elif email.status == 'H' %}
-    <span class="fa fa-thumbs-down"></span>
+    <span class="fa fa-thumbs-up" title="{% trans 'Marked as non-spam' %}"></span>
     {% endif %}
   </td>
   <td class="openable {{ email.class }}" name="score">{{ email.score }}</td>
