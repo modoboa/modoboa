@@ -1,15 +1,21 @@
+"""
+Amavis frontend template tags.
+"""
+
 from django import template
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
+from ..lib import manual_learning_enabled
 
 register = template.Library()
 
 
 @register.simple_tag
-def viewm_menu(mail_id, rcpt):
+def viewm_menu(user, mail_id, rcpt):
+    """Menu displayed within the viewmail action."""
     entries = [
         {"name": "back",
          "url": "javascript:history.go(-1);",
@@ -33,6 +39,30 @@ def viewm_menu(mail_id, rcpt):
          "url": reverse('amavis:headers_detail', args=[mail_id]),
          "label": _("View full headers")},
     ]
+
+    if manual_learning_enabled(user):
+        entries.insert(2, {
+            "name": "process",
+            "img": "icon-cog",
+            "menu": [
+                {"name": "mark-as-spam",
+                 "label": _("Mark as spam"),
+                 "url": reverse(
+                     "amavis:mail_mark_as_spam", args=[mail_id]
+                 ) + ("?rcpt=%s" % rcpt if rcpt else ""),
+                 "extra_attributes": {
+                     "data-mail-id": mail_id
+                 }},
+                {"name": "mark-as-ham",
+                 "label": _("Mark as non-spam"),
+                 "url": reverse(
+                     "amavis:mail_mark_as_ham", args=[mail_id]
+                 ) + ("?rcpt=%s" % rcpt if rcpt else ""),
+                 "extra_attributes": {
+                     "data-mail-id": mail_id
+                 }}
+            ]
+        })
 
     menu = render_to_string('common/buttons_list.html',
                             {"entries": entries, "extraclasses": "pull-left"})
@@ -72,22 +102,28 @@ def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
 
 
 @register.simple_tag
-def quar_menu():
+def quar_menu(user):
     """Render the quarantine listing menu.
 
     :rtype: str
     :return: resulting HTML
     """
     extraopts = [{"name": "to", "label": _("To")}]
-    return render_to_string('amavis/main_action_bar.html', {
-        'extraopts': extraopts
+    return render_to_string("amavis/main_action_bar.html", {
+        "extraopts": extraopts,
+        "manual_learning": manual_learning_enabled(user)
     })
 
 
 @register.filter
 def msgtype_to_html(msgtype):
     """Transform a message type to a bootstrap label."""
-    color = 'danger' if msgtype in ['S', 'V'] else 'warning'
+    if msgtype in ["S", "V"]:
+        color = 'danger'
+    elif msgtype == "C":
+        color = "success"
+    else:
+        color = "warning"
     return mark_safe(
         '<span class="label label-%s">%s</span>' % (color, msgtype)
     )

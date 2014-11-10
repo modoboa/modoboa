@@ -22,6 +22,8 @@ $(document).ready(function() {
         deflocation: "listing/?sort_order=-date&reset_page=true",
         defcallback: "listing_cb",
         load_page_url: "{% url 'amavis:mail_page' %}"
+        check_learning_rcpt: {{ check_learning_rcpt }},
+        learning_recipient_url: "{% url 'amavis:learning_recipient_set' %}"
     });
 });
 </script>
@@ -29,8 +31,7 @@ $(document).ready(function() {
 
 {% block container_content %}
 <div id="menubar">
-  {% quar_menu %}
+  {% quar_menu user %}
 </div>
-
 <div id="listing"></div>
 {% endblock %}

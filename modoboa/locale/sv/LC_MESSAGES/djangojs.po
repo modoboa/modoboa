@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-24 12:32+0200\n"
+"POT-Creation-Date: 2014-10-29 20:22+0100\n"
 "PO-Revision-Date: 2013-05-23 08:22+0000\n"
 "Last-Translator: ogg1980 <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -43,33 +43,51 @@ msgstr ""
 msgid "No domain administrator defined"
 msgstr "Ingen domänadministratör definierad"
 
-#: extensions/admin/static/admin/js/admin.js:291
+#: extensions/admin/static/admin/js/admin.js:292
 msgid "Do not delete mailbox directory"
 msgstr "Radera inte brevlådans katalog"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:180
+#: extensions/amavis/static/amavis/js/quarantine.js:211
 msgid "Release this selection?"
 msgstr "Släpp markerat urval?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:184
+#: extensions/amavis/static/amavis/js/quarantine.js:215
 msgid "Delete this selection?"
 msgstr "Radera markerat urval?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:203
+#: extensions/amavis/static/amavis/js/quarantine.js:255
+#, fuzzy
+msgid "Mark this selection as spam?"
+msgstr "Släpp markerat urval?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:270
+#, fuzzy
+msgid "Mark this selection as non-spam?"
+msgstr "Släpp markerat urval?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:295
 #: extensions/amavis/static/amavis/js/selfservice.js:17
 msgid "Release this message?"
 msgstr "Släpp detta meddelande?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:207
+#: extensions/amavis/static/amavis/js/quarantine.js:299
 #: extensions/amavis/static/amavis/js/selfservice.js:21
 msgid "Delete this message?"
 msgstr "Radera detta meddelande?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:224
+#: extensions/amavis/static/amavis/js/quarantine.js:314
+msgid "Mark as spam?"
+msgstr ""
+
+#: extensions/amavis/static/amavis/js/quarantine.js:330
+msgid "Mark as non-spam?"
+msgstr ""
+
+#: extensions/amavis/static/amavis/js/quarantine.js:348
 msgid "View full headers"
 msgstr "Visa meddelandehuvud"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:229
+#: extensions/amavis/static/amavis/js/quarantine.js:353
 msgid "Hide full headers"
 msgstr "Göm meddelandehuvud"
 
@@ -98,7 +116,7 @@ msgstr "Aktivera filteruppsättning?"
 msgid "active"
 msgstr "aktivera"
 
-#: extensions/stats/static/stats/js/stats.js:37
+#: extensions/stats/static/stats/js/stats.js:38
 msgid "Search a domain"
 msgstr "Sök domän"
 

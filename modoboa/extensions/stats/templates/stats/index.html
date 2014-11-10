@@ -18,7 +18,7 @@
 $(document).ready(function() {
     var stats = new Stats({
         graphurl: "{% url 'stats:graph_list' %}",
-        domain_list_url: "{% url 'admin:domain_flat_list' %}",
+        domain_list_url: "{% url 'stats:domain_list' %}",
         deflocation: "{{ deflocation|safe }}",
         language: "{{ LANGUAGE_CODE }}"
     });

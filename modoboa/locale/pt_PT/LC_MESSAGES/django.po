@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-24 12:29+0200\n"
+"POT-Creation-Date: 2014-11-04 11:51+0100\n"
 "PO-Revision-Date: 2013-12-23 11:25+0000\n"
 "Last-Translator: lusitan <lusitan@hushmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -25,8 +25,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: core/__init__.py:52 core/__init__.py:53
-#: extensions/admin/forms/account.py:326 extensions/admin/forms/domain.py:256
-#: extensions/admin/views/domain.py:97 extensions/admin/views/identity.py:129
+#: extensions/admin/forms/account.py:327 extensions/admin/forms/domain.py:248
+#: extensions/admin/views/domain.py:97 extensions/admin/views/identity.py:133
 #: extensions/postfix_autoreply/app_settings.py:11
 #: extensions/postfix_relay_domains/forms.py:138
 #: extensions/sievefilters/app_settings.py:50
@@ -288,8 +288,8 @@ msgstr ""
 msgid "This field is required"
 msgstr "Este campo é obrigatório"
 
-#: core/app_settings.py:349 extensions/amavis/app_settings.py:87
-#: extensions/amavis/templates/amavis/main_action_bar.html:29
+#: core/app_settings.py:349 extensions/amavis/app_settings.py:157
+#: extensions/amavis/templates/amavis/main_action_bar.html:41
 #: extensions/webmail/app_settings.py:73
 msgid "Display"
 msgstr "Exibir"
@@ -343,38 +343,38 @@ msgstr ""
 msgid "You can't delete your own account"
 msgstr "Não pode apagar a sua própria conta"
 
-#: core/models.py:117
+#: core/models.py:130
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Falha ao actualizar password: Modulo  LDAP não instalado"
 
-#: core/models.py:170
+#: core/models.py:183
 msgid "account"
 msgstr "conta"
 
-#: core/models.py:321 extensions/admin/models/domain.py:144
+#: core/models.py:334 extensions/admin/models/domain.py:144
 #: extensions/admin/models/domain_alias.py:39
 #: extensions/postfix_relay_domains/models.py:134
 #: extensions/postfix_relay_domains/models.py:190
 msgid "Invalid line"
 msgstr "Linha inválida"
 
-#: core/models.py:325
+#: core/models.py:338
 msgid "You can't import an account with a role greater than yours"
 msgstr "Não é possível importa uma conta com permissões superiores"
 
-#: core/models.py:337
+#: core/models.py:350
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "O simple utilizador '%s' deve ter endereço de e-mail válido"
 
-#: core/models.py:341
+#: core/models.py:354
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
 "Os campos nome de utilizador e endereço de email não deve ser diferente para "
 "'%s'"
 
-#: core/models.py:410 extensions/admin/models/alias.py:35
+#: core/models.py:423 extensions/admin/models/alias.py:35
 #: extensions/admin/models/domain.py:32
 #: extensions/admin/models/domain_alias.py:17
 #: extensions/postfix_autoreply/models.py:28
@@ -383,29 +383,29 @@ msgstr ""
 msgid "enabled"
 msgstr "ativo"
 
-#: core/models.py:411
+#: core/models.py:424
 msgid "Check to enable this extension"
 msgstr "Marque para ativar esta extensão"
 
-#: core/models.py:491
+#: core/models.py:504
 msgid "added"
 msgstr "acrescentado"
 
-#: core/models.py:494
+#: core/models.py:507
 msgid "modified"
 msgstr "modificado"
 
-#: core/models.py:496 core/models.py:521
+#: core/models.py:509 core/models.py:534
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s pelo utilizador %(user)s"
 
-#: core/models.py:523
+#: core/models.py:536
 msgid "deleted"
 msgstr "apagado"
 
 #: core/tables.py:8 core/templates/core/information.html:8
-#: extensions/admin/tables.py:9 extensions/admin/forms/domain.py:187
+#: extensions/admin/tables.py:9 extensions/admin/forms/domain.py:179
 #: extensions/admin/templates/admin/domains_table.html:5
 #: extensions/admin/templates/admin/editdomainform.html:13
 #: extensions/admin/templates/admin/identities_table.html:5
@@ -521,7 +521,7 @@ msgstr "Atualizar o sua informação pessoal"
 #: core/templates/core/user_profile.html:8
 #: extensions/admin/templates/admin/forward.html:8
 #: extensions/admin/views/alias.py:112 extensions/admin/views/domain.py:168
-#: extensions/admin/views/identity.py:200
+#: extensions/admin/views/identity.py:204
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
 #: extensions/postfix_relay_domains/views.py:66
 #: extensions/sievefilters/views.py:166 extensions/webmail/views.py:172
@@ -648,7 +648,7 @@ msgstr "Reencaminhar"
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Importação da conta falhou (%s): domínio não existe"
 
-#: extensions/admin/__init__.py:172 extensions/admin/forms/account.py:196
+#: extensions/admin/__init__.py:172 extensions/admin/forms/account.py:197
 #, python-format
 msgid "Mailbox %s already exists"
 msgstr "Caixa de correio %s já existe"
@@ -657,6 +657,12 @@ msgstr "Caixa de correio %s já existe"
 #, fuzzy, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Importação da conta falhou (%s): domínio não existe"
+
+#: extensions/admin/__init__.py:212 extensions/admin/forms/domain.py:75
+#: extensions/postfix_relay_domains/forms.py:50
+#: extensions/postfix_relay_domains/forms.py:70
+msgid "domain alias"
+msgstr ""
 
 #: extensions/admin/app_settings.py:13
 #: extensions/admin/templates/admin/editdomainform.html:25
@@ -706,7 +712,7 @@ msgstr ""
 "Ao remover uma caixa de correio estará também a remover a conta associada"
 
 #: extensions/admin/app_settings.py:81 extensions/admin/forms/account.py:178
-#: extensions/admin/forms/domain.py:56
+#: extensions/admin/forms/domain.py:57
 msgid "Must be a positive integer"
 msgstr ""
 
@@ -752,7 +758,7 @@ msgstr "Não pode desativar a sua própria conta"
 msgid "E-mail"
 msgstr "E-mail"
 
-#: extensions/admin/forms/account.py:113 extensions/admin/forms/domain.py:17
+#: extensions/admin/forms/account.py:113 extensions/admin/forms/domain.py:18
 msgid "Quota"
 msgstr "Quota"
 
@@ -766,7 +772,7 @@ msgstr ""
 "usar o valor predefinido pelo domínio. Deixar em branco para definir uma "
 "valor ilimitado (não permitido para administradores do domínio)."
 
-#: extensions/admin/forms/account.py:123 extensions/admin/forms/domain.py:26
+#: extensions/admin/forms/account.py:123 extensions/admin/forms/domain.py:27
 #: extensions/admin/templates/admin/domains_table.html:6
 #: extensions/postfix_relay_domains/forms.py:12
 msgid "Alias(es)"
@@ -782,25 +788,25 @@ msgstr ""
 "clique ENTER para adicionar uma nova entrada. Use o '*' para criar um alias "
 "'catchall' (ex: *@domain.tld)."
 
-#: extensions/admin/forms/account.py:187 extensions/admin/forms/account.py:217
+#: extensions/admin/forms/account.py:188 extensions/admin/forms/account.py:218
 #: extensions/admin/forms/alias.py:65
 msgid "Domain does not exist"
 msgstr "O domínio não existe"
 
-#: extensions/admin/forms/account.py:284
+#: extensions/admin/forms/account.py:285
 msgid "Domain(s)"
 msgstr "Domínio(s)"
 
-#: extensions/admin/forms/account.py:286
+#: extensions/admin/forms/account.py:287
 msgid "Domain(s) that user administrates"
 msgstr "Domínio(s) administrado pelo utilizador"
 
-#: extensions/admin/forms/account.py:328
-#: extensions/admin/views/identity.py:132
+#: extensions/admin/forms/account.py:329
+#: extensions/admin/views/identity.py:136
 msgid "Mail"
 msgstr "Correio"
 
-#: extensions/admin/forms/account.py:330
+#: extensions/admin/forms/account.py:331
 msgid "Permissions"
 msgstr "Permissões"
 
@@ -850,13 +856,13 @@ msgstr "O destinatário %s já existe"
 msgid "No recipient defined"
 msgstr "Sem destinatário definido"
 
-#: extensions/admin/forms/domain.py:20
+#: extensions/admin/forms/domain.py:21
 msgid ""
 "Default quota in MB applied to mailboxes. Leave empty to use the default "
 "value."
 msgstr ""
 
-#: extensions/admin/forms/domain.py:29
+#: extensions/admin/forms/domain.py:30
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
@@ -864,34 +870,28 @@ msgstr ""
 "Alias(es) deste domínio. Indicar apenas um nome por entrada, pressionar "
 "ENTER para acrescentar uma nova entrada."
 
-#: extensions/admin/forms/domain.py:75
-#: extensions/postfix_relay_domains/forms.py:50
-#: extensions/postfix_relay_domains/forms.py:70
-msgid "domain alias"
-msgstr ""
-
-#: extensions/admin/forms/domain.py:82 extensions/admin/forms/domain.py:98
+#: extensions/admin/forms/domain.py:78 extensions/admin/forms/domain.py:92
 #: extensions/postfix_relay_domains/forms.py:58
 #: extensions/postfix_relay_domains/forms.py:78
 #, python-format
 msgid "A %s with this name already exists"
 msgstr ""
 
-#: extensions/admin/forms/domain.py:92
+#: extensions/admin/forms/domain.py:89
 #: extensions/postfix_relay_domains/forms.py:49
 #: extensions/postfix_relay_domains/forms.py:71
 msgid "domain"
 msgstr ""
 
-#: extensions/admin/forms/domain.py:181
+#: extensions/admin/forms/domain.py:173
 msgid "Create a domain administrator"
 msgstr "Criar um administrador de domínio"
 
-#: extensions/admin/forms/domain.py:183
+#: extensions/admin/forms/domain.py:175
 msgid "Automatically create an administrator for this domain"
 msgstr "Criar automaticamente um administrador para este domínio"
 
-#: extensions/admin/forms/domain.py:190
+#: extensions/admin/forms/domain.py:182
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
@@ -899,19 +899,19 @@ msgstr ""
 "O nome do administrador. Não inclua o nome do domínio já que este será "
 "automaticamente anexado."
 
-#: extensions/admin/forms/domain.py:198
+#: extensions/admin/forms/domain.py:190
 msgid "Create aliases"
 msgstr " Criar aliases"
 
-#: extensions/admin/forms/domain.py:200
+#: extensions/admin/forms/domain.py:192
 msgid "Automatically create standard aliases for this domain"
 msgstr "Criar automaticamente aliases para este domínio"
 
-#: extensions/admin/forms/domain.py:216
+#: extensions/admin/forms/domain.py:208
 msgid "Invalid format"
 msgstr "Formato inválido"
 
-#: extensions/admin/forms/domain.py:230
+#: extensions/admin/forms/domain.py:222
 #, python-format
 msgid "User '%s' already exists"
 msgstr "O utilizador '%s' já existe"
@@ -949,7 +949,7 @@ msgstr ""
 "Não é possível definir um reencaminhamento para um destino local. Por favor "
 "informe-se junto de um administrador para criar um alias."
 
-#: extensions/admin/forms/import_.py:6 extensions/webmail/forms.py:198
+#: extensions/admin/forms/import_.py:6 extensions/webmail/forms.py:200
 msgid "Select a file"
 msgstr "Escolha um ficheiro"
 
@@ -969,7 +969,7 @@ msgstr "Passwords encriptadas"
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr "Marque esta opção se as senhas contidas no arquivo não são encriptadas"
 
-#: extensions/admin/models/alias.py:18 extensions/admin/models/mailbox.py:62
+#: extensions/admin/models/alias.py:18 extensions/admin/models/mailbox.py:74
 msgid "address"
 msgstr "endereços"
 
@@ -1067,21 +1067,21 @@ msgstr "O domínio para o qual este alias irá apontar"
 msgid "Unknown domain %s"
 msgstr "Domínio desconhecido: %s"
 
-#: extensions/admin/models/mailbox.py:63
+#: extensions/admin/models/mailbox.py:75
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Endereços das caixas de correio (sem a parte @domain.tld)"
 
-#: extensions/admin/models/mailbox.py:125
+#: extensions/admin/models/mailbox.py:136
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Falha ao recuperar a localização da caixa de correio (%s)"
 
-#: extensions/admin/models/mailbox.py:194
+#: extensions/admin/models/mailbox.py:221
 #, python-format
 msgid "Quota is greater than the allowed domain's limit (%dM)"
 msgstr "A quota excede o limite permitido pelo domínio (%dM)"
 
-#: extensions/admin/models/mailbox.py:199
+#: extensions/admin/models/mailbox.py:227
 msgid "A quota is required"
 msgstr "É necessário uma quota"
 
@@ -1153,7 +1153,7 @@ msgid "Importing..."
 msgstr "A importar..."
 
 #: extensions/admin/templates/admin/listing.html:14
-#: extensions/stats/templates/stats/index.html:28
+#: extensions/stats/templates/stats/index.html:23
 msgid "Filter"
 msgstr "Filtro"
 
@@ -1255,8 +1255,8 @@ msgid "Alias with this name already exists"
 msgstr "Já existe um 'alias' com este nome"
 
 #: extensions/admin/views/alias.py:50 extensions/admin/views/domain.py:102
-#: extensions/admin/views/domain.py:131 extensions/admin/views/identity.py:133
-#: extensions/admin/views/identity.py:160
+#: extensions/admin/views/domain.py:131 extensions/admin/views/identity.py:137
+#: extensions/admin/views/identity.py:164
 #: extensions/postfix_relay_domains/views.py:34
 #: extensions/sievefilters/views.py:144 extensions/sievefilters/views.py:233
 #: extensions/webmail/views.py:153
@@ -1299,7 +1299,7 @@ msgstr "Reencaminhamento modificado"
 msgid "Alias modified"
 msgstr "'Alias' modificado"
 
-#: extensions/admin/views/domain.py:98 extensions/admin/views/identity.py:130
+#: extensions/admin/views/domain.py:98 extensions/admin/views/identity.py:134
 msgid "Next"
 msgstr "Seguinte"
 
@@ -1307,7 +1307,7 @@ msgstr "Seguinte"
 msgid "Options"
 msgstr "Opções"
 
-#: extensions/admin/views/domain.py:103 extensions/admin/views/identity.py:134
+#: extensions/admin/views/domain.py:103 extensions/admin/views/identity.py:138
 msgid "Previous"
 msgstr "Anterior"
 
@@ -1341,11 +1341,11 @@ msgstr "Exportar identidades"
 msgid "Export domains"
 msgstr "Exportar domínios"
 
-#: extensions/admin/views/identity.py:104
-#: extensions/admin/views/identity.py:227
-#: extensions/admin/views/identity.py:232 extensions/amavis/views.py:144
-#: extensions/amavis/views.py:148 extensions/amavis/views.py:181
-#: extensions/amavis/views.py:186 extensions/amavis/views.py:188
+#: extensions/admin/views/identity.py:108
+#: extensions/admin/views/identity.py:231
+#: extensions/admin/views/identity.py:236 extensions/amavis/views.py:172
+#: extensions/amavis/views.py:176 extensions/amavis/views.py:207
+#: extensions/amavis/views.py:212 extensions/amavis/views.py:214
 #: extensions/webmail/views.py:49 extensions/webmail/views.py:67
 #: extensions/webmail/views.py:81 extensions/webmail/views.py:99
 #: extensions/webmail/views.py:116 extensions/webmail/views.py:202
@@ -1356,19 +1356,19 @@ msgstr "Exportar domínios"
 msgid "Invalid request"
 msgstr "Pedido inválido"
 
-#: extensions/admin/views/identity.py:151
+#: extensions/admin/views/identity.py:155
 msgid "Account created"
 msgstr "Conta criada"
 
-#: extensions/admin/views/identity.py:157
+#: extensions/admin/views/identity.py:161
 msgid "New account"
 msgstr "Nova conta"
 
-#: extensions/admin/views/identity.py:193
+#: extensions/admin/views/identity.py:197
 msgid "Account updated"
 msgstr "Conta actualizada"
 
-#: extensions/admin/views/identity.py:217
+#: extensions/admin/views/identity.py:221
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Conta eliminada"
@@ -1430,126 +1430,212 @@ msgstr "Reencaminhamento atualizado"
 msgid "Simple amavis management frontend"
 msgstr "Interface de gestão básica do amavis"
 
-#: extensions/amavis/__init__.py:52 extensions/amavis/general_callbacks.py:18
+#: extensions/amavis/__init__.py:52 extensions/amavis/general_callbacks.py:20
 msgid "Quarantine"
 msgstr "Quarentena"
 
-#: extensions/amavis/app_settings.py:11
+#: extensions/amavis/app_settings.py:14
 msgid "Quarantine settings"
 msgstr "Definições de quarentena"
 
-#: extensions/amavis/app_settings.py:14
+#: extensions/amavis/app_settings.py:17
 msgid "Maximum message age"
 msgstr "Idade maxima da messagem"
 
-#: extensions/amavis/app_settings.py:16
+#: extensions/amavis/app_settings.py:19
 msgid "Quarantine messages maximum age (in days) before deletion"
 msgstr ""
 "Tempo máximo que as mensagens ficam na quarentena (em dias) até serem "
 "eliminadas"
 
-#: extensions/amavis/app_settings.py:19
+#: extensions/amavis/app_settings.py:22
 msgid "Messages releasing"
 msgstr "Libertar mensagens"
 
-#: extensions/amavis/app_settings.py:22
+#: extensions/amavis/app_settings.py:25
 msgid "Remove released messages"
 msgstr "Remover mensagens libertadas"
 
-#: extensions/amavis/app_settings.py:24
+#: extensions/amavis/app_settings.py:27
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr ""
 "Remova as mensagens, marcadas como enviadas, durante a limpeza da base de "
 "dados"
 
-#: extensions/amavis/app_settings.py:28
+#: extensions/amavis/app_settings.py:32
 msgid "Amavis connection mode"
 msgstr "Modo de ligação ao amavis"
 
-#: extensions/amavis/app_settings.py:31
+#: extensions/amavis/app_settings.py:35
 msgid "Mode used to access the PDP server"
 msgstr "Método usado para aceder ao servidor PDP"
 
-#: extensions/amavis/app_settings.py:36
+#: extensions/amavis/app_settings.py:40
 msgid "PDP server address"
 msgstr "Endereço do servidor PDP"
 
-#: extensions/amavis/app_settings.py:38
+#: extensions/amavis/app_settings.py:42
 msgid "PDP server address (if inet mode)"
 msgstr "Endereço do servidor PDP (método inet)"
 
-#: extensions/amavis/app_settings.py:42
+#: extensions/amavis/app_settings.py:46
 msgid "PDP server port"
 msgstr "Porta do servidor PDP"
 
-#: extensions/amavis/app_settings.py:44
+#: extensions/amavis/app_settings.py:48
 msgid "PDP server port (if inet mode)"
 msgstr "Porta do servidor PDP (método inet)"
 
-#: extensions/amavis/app_settings.py:48
+#: extensions/amavis/app_settings.py:52
 msgid "PDP server socket"
 msgstr "Socket do servidor PDP"
 
-#: extensions/amavis/app_settings.py:50
+#: extensions/amavis/app_settings.py:54
 msgid "Path to the PDP server socket (if unix mode)"
 msgstr "Caminho para a socket do servidor PDP (método unix)"
 
-#: extensions/amavis/app_settings.py:54
+#: extensions/amavis/app_settings.py:58
 msgid "Check requests interval"
 msgstr "Intervalo de verificação de pedidos"
 
-#: extensions/amavis/app_settings.py:56
+#: extensions/amavis/app_settings.py:60
 msgid "Interval between two release requests checks"
 msgstr "Intervalo entre dois pedidos "
 
-#: extensions/amavis/app_settings.py:60
+#: extensions/amavis/app_settings.py:64
 msgid "Allow direct release"
 msgstr "Permitir envio direto"
 
-#: extensions/amavis/app_settings.py:62
+#: extensions/amavis/app_settings.py:66
 msgid "Allow users to directly release their messages"
 msgstr "Permitir que aos utilizadores libertar mensagens diretamente"
 
-#: extensions/amavis/app_settings.py:66
+#: extensions/amavis/app_settings.py:70
 msgid "Enable self-service mode"
 msgstr "Ativar o modo de self-service"
 
-#: extensions/amavis/app_settings.py:68
+#: extensions/amavis/app_settings.py:72
 msgid "Activate the 'self-service' mode"
 msgstr "Ativar o modo 'self-service'"
 
-#: extensions/amavis/app_settings.py:72
+#: extensions/amavis/app_settings.py:76
 msgid "Notifications sender"
 msgstr "Notificações de remetente"
 
-#: extensions/amavis/app_settings.py:74
+#: extensions/amavis/app_settings.py:78
 msgid "The e-mail address used to send notitications"
 msgstr "O endereço de e-mail usado para enviar notificações"
 
-#: extensions/amavis/app_settings.py:91 extensions/webmail/app_settings.py:91
+#: extensions/amavis/app_settings.py:81
+#: extensions/amavis/templates/amavis/main_action_bar.html:28
+msgid "Manual learning"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:84
+msgid "Enable manual learning"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:87
+msgid "Allow super administrators to manually train Spamassassin"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:92
+msgid "Is Spamassassin local?"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:95
+msgid "Tell if Spamassassin is running on the same server than modoboa"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:100
+#, fuzzy
+msgid "Default user"
+msgstr "Editor predefinido"
+
+#: extensions/amavis/app_settings.py:103
+msgid "Name of the user owning the default bayesian database"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:108
+#, fuzzy
+msgid "Spamd address"
+msgstr "Do endereço"
+
+#: extensions/amavis/app_settings.py:110
+msgid "The IP address where spamd can be reached"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:114
+#, fuzzy
+msgid "Spamd port"
+msgstr "Importar"
+
+#: extensions/amavis/app_settings.py:116
+msgid "The TCP port spamd is listening on"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:120
+msgid "Enable per-domain manual learning"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:123
+msgid ""
+"Allow domain administrators to train Spamassassin (within dedicated per-"
+"domain databases)"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:129
+msgid "Enable per-user manual learning"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:132
+msgid ""
+"Allow simple users to personally train Spamassassin (within a dedicated "
+"database)"
+msgstr ""
+
+#: extensions/amavis/app_settings.py:161 extensions/webmail/app_settings.py:91
 msgid "Number of displayed emails per page"
 msgstr "Número de e-mails a visíveis por página"
 
-#: extensions/amavis/app_settings.py:92
+#: extensions/amavis/app_settings.py:162
 msgid "Set the maximum number of messages displayed in a page"
 msgstr "Definir o número máximo de mensagens apresentadas por página"
 
-#: extensions/amavis/general_callbacks.py:82
+#: extensions/amavis/forms.py:83
+msgid "Global database"
+msgstr ""
+
+#: extensions/amavis/forms.py:89
+#, fuzzy
+msgid "Domain's database"
+msgstr "Aliases de domínio"
+
+#: extensions/amavis/forms.py:91
+msgid "User's database"
+msgstr ""
+
+#: extensions/amavis/general_callbacks.py:136
 msgid "pending requests"
 msgstr "pedidos pendentes"
 
-#: extensions/amavis/general_callbacks.py:125
+#: extensions/amavis/general_callbacks.py:179
 msgid "Pending requests"
 msgstr ""
 
-#: extensions/amavis/general_callbacks.py:135
+#: extensions/amavis/general_callbacks.py:189
 msgid "Content filter"
 msgstr "Filtro de conteúdo"
 
-#: extensions/amavis/lib.py:56
+#: extensions/amavis/lib.py:62
 #, python-format
 msgid "Connection to amavis failed: %s"
 msgstr "Não foi possível estabelecer ligação com o amavis: %s"
+
+#: extensions/amavis/lib.py:131
+#, fuzzy
+msgid "No recipient found"
+msgstr "Sem destinatário definido"
 
 #: extensions/amavis/models.py:93
 msgid "Virus filter"
@@ -1614,8 +1700,8 @@ msgid "Score"
 msgstr ""
 
 #: extensions/amavis/sql_listing.py:33
-#: extensions/amavis/templatetags/amavis_tags.py:75
-#: extensions/webmail/forms.py:82
+#: extensions/amavis/templatetags/amavis_tags.py:106
+#: extensions/webmail/forms.py:83
 msgid "To"
 msgstr "Para"
 
@@ -1626,48 +1712,64 @@ msgid "From"
 msgstr "De"
 
 #: extensions/amavis/sql_listing.py:40 extensions/sievefilters/forms.py:77
-#: extensions/webmail/forms.py:86 extensions/webmail/lib/imapemail.py:288
+#: extensions/webmail/forms.py:87 extensions/webmail/lib/imapemail.py:288
 #: extensions/webmail/lib/listing.py:27 extensions/webmail/lib/tables.py:26
 #: templates/common/email_searchbar.html:6
 msgid "Subject"
 msgstr "Assunto"
 
-#: extensions/amavis/views.py:27
+#: extensions/amavis/views.py:31
 msgid "Empty quarantine"
 msgstr "Quarentena vazia"
 
-#: extensions/amavis/views.py:149
+#: extensions/amavis/views.py:177
 msgid "Message deleted"
 msgstr "Mensagem apagada"
 
-#: extensions/amavis/views.py:168
+#: extensions/amavis/views.py:194
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
 msgstr[0] "%(count)d mensagem eliminada com sucesso"
 msgstr[1] "%(count)d mensagens eliminadas com sucesso"
 
-#: extensions/amavis/views.py:191
+#: extensions/amavis/views.py:217
 msgid "Request sent"
 msgstr "Pedido enviado"
 
-#: extensions/amavis/views.py:197
+#: extensions/amavis/views.py:223
 msgid "Message released"
 msgstr "Mensagem libertada"
 
-#: extensions/amavis/views.py:225
+#: extensions/amavis/views.py:250
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
 msgstr[0] "%(count)d pedido enviado"
 msgstr[1] "%(count)d pedidos enviados"
 
-#: extensions/amavis/views.py:246
+#: extensions/amavis/views.py:271
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d mensagem libertada com sucesso"
 msgstr[1] "%(count)d mensagens libertadas com sucesso"
+
+#: extensions/amavis/views.py:309
+#, fuzzy, python-format
+msgid "%(count)d message processed successfully"
+msgid_plural "%(count)d messages processed successfully"
+msgstr[0] "%(count)d mensagem libertada com sucesso"
+msgstr[1] "%(count)d mensagens libertadas com sucesso"
+
+#: extensions/amavis/views.py:341
+#, fuzzy
+msgid "Select a database"
+msgstr "Escolha um ficheiro"
+
+#: extensions/amavis/views.py:345
+msgid "Validate"
+msgstr ""
 
 #: extensions/amavis/management/commands/amnotify.py:61
 msgid "[modoboa] Pending release requests"
@@ -1694,64 +1796,83 @@ msgid "Select"
 msgstr ""
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:9
+msgid "Clean"
+msgstr ""
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:10
 msgid "Spam"
 msgstr "Spam"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:10
+#: extensions/amavis/templates/amavis/main_action_bar.html:11
 msgid "Virus"
 msgstr "Vírus"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:11
+#: extensions/amavis/templates/amavis/main_action_bar.html:12
 msgid "Bad Header"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:12
+#: extensions/amavis/templates/amavis/main_action_bar.html:13
 msgid "Bad MIME"
 msgstr "Formato MIME inválido"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:13
+#: extensions/amavis/templates/amavis/main_action_bar.html:14
 msgid "Banned"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:18
-#: extensions/amavis/templatetags/amavis_tags.py:19
-#: extensions/amavis/templatetags/amavis_tags.py:54
+#: extensions/amavis/templates/amavis/main_action_bar.html:19
+#: extensions/amavis/templatetags/amavis_tags.py:24
+#: extensions/amavis/templatetags/amavis_tags.py:85
 msgid "Release"
 msgstr "Libertar"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:23
-#: extensions/amavis/templatetags/amavis_tags.py:25
-#: extensions/amavis/templatetags/amavis_tags.py:61
+#: extensions/amavis/templates/amavis/main_action_bar.html:24
+#: extensions/amavis/templatetags/amavis_tags.py:30
+#: extensions/amavis/templatetags/amavis_tags.py:92
 #: extensions/webmail/templatetags/webmail_tags.py:32
 msgid "Delete"
 msgstr "Eliminar"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:31
+#: extensions/amavis/templates/amavis/main_action_bar.html:33
+#: extensions/amavis/templatetags/amavis_tags.py:44
+#, fuzzy
+msgid "Mark as spam"
+msgstr "Marcar mensagens"
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:34
+#: extensions/amavis/templatetags/amavis_tags.py:52
+msgid "Mark as non-spam"
+msgstr ""
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:43
 #: extensions/sievefilters/forms.py:64
 msgid "All messages"
 msgstr "Todas as mensagens"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:31
+#: extensions/amavis/templates/amavis/main_action_bar.html:43
 msgid "All"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:32
+#: extensions/amavis/templates/amavis/main_action_bar.html:45
+msgid "Clean only"
+msgstr ""
+
+#: extensions/amavis/templates/amavis/main_action_bar.html:47
 msgid "Spam only"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:33
+#: extensions/amavis/templates/amavis/main_action_bar.html:48
 msgid "Virus only"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:34
+#: extensions/amavis/templates/amavis/main_action_bar.html:49
 msgid "Bad Header only"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:35
+#: extensions/amavis/templates/amavis/main_action_bar.html:50
 msgid "Bad MIME only"
 msgstr ""
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:36
+#: extensions/amavis/templates/amavis/main_action_bar.html:51
 msgid "Banned only"
 msgstr ""
 
@@ -1799,7 +1920,7 @@ msgstr "Atuar nesta mensagem:"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr "Por favor visitar %(listingurl)s para uma listagem completa."
 
-#: extensions/amavis/templatetags/amavis_tags.py:28
+#: extensions/amavis/templatetags/amavis_tags.py:35
 msgid "View full headers"
 msgstr "Ver todos os cabeçalhos"
 
@@ -2225,7 +2346,7 @@ msgstr "Remetente"
 msgid "Recipient"
 msgstr "Destinatário"
 
-#: extensions/sievefilters/forms.py:80 extensions/webmail/forms.py:83
+#: extensions/sievefilters/forms.py:80 extensions/webmail/forms.py:84
 msgid "Cc"
 msgstr "Cc"
 
@@ -2480,19 +2601,19 @@ msgstr "Conjunto de gráficos desconhecido"
 msgid "Bad custom period"
 msgstr "Período personalizado inválido"
 
-#: extensions/stats/templates/stats/index.html:33
+#: extensions/stats/templates/stats/index.html:28
 msgid "Search a domain"
 msgstr "Procurar um domínio"
 
-#: extensions/stats/templates/stats/index.html:37
+#: extensions/stats/templates/stats/index.html:32
 msgid "Predefined time ranges"
 msgstr "Intervalos de tempo pré-definidos"
 
-#: extensions/stats/templates/stats/index.html:44
+#: extensions/stats/templates/stats/index.html:39
 msgid "Custom time range"
 msgstr "Intervalo de tempo personalizado"
 
-#: extensions/stats/templates/stats/index.html:57
+#: extensions/stats/templates/stats/index.html:52
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -2648,7 +2769,7 @@ msgstr "Resposta do servidor"
 msgid "Unknown action"
 msgstr "Acção desconhecida"
 
-#: extensions/webmail/forms.py:84
+#: extensions/webmail/forms.py:85
 msgid "Cci"
 msgstr "Cci"
 
@@ -2855,15 +2976,15 @@ msgstr "Não"
 msgid "Failed to update password: %s"
 msgstr "Falha ao actualizar a password: %s"
 
-#: lib/permissions.py:20
+#: lib/permissions.py:19
 msgid "Simple user"
 msgstr "Utilizador simples"
 
-#: lib/permissions.py:22
+#: lib/permissions.py:21
 msgid "Super administrator"
 msgstr "Super Administrador"
 
-#: lib/permissions.py:28
+#: lib/permissions.py:27
 msgid "Domain administrator"
 msgstr "Administrador de domínio"
 

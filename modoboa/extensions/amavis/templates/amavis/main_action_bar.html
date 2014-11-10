@@ -8,6 +8,7 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
+        {% if manual_learning %}<li><a name="selectmsgs" href="C">{% trans "Clean" %}</a></li>{% endif %}
         <li><a name="selectmsgs" href="S">{% trans "Spam" %}</a></li>
         <li><a name="selectmsgs" href="V">{% trans "Virus" %}</a></li>
         <li><a name="selectmsgs" href="H">{% trans "Bad Header" %}</a></li>
@@ -25,7 +26,19 @@
       <a name="delete-multi" href="{% url 'amavis:mail_process' %}" class="btn btn-danger disabled">
         <span class="fa fa-trash"></span> {% trans 'Delete' %}
       </a>
-    </div>  
+    </div>
+    {% if manual_learning %}
+    <div class="btn-group" title="{% trans 'Manual learning' %}">
+      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="fa fa-cog"></span> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a name="mark-as-spam-multi" href="{% url 'amavis:mail_process' %}">{% trans "Mark as spam" %}</a></li>
+        <li><a name="mark-as-ham-multi" href="{% url 'amavis:mail_process' %}">{% trans "Mark as non-spam" %}</a></li>
+      </ul>
+    </div>
+    {% endif %}
+
   </div>
 
   <div class="col-xs-4">
@@ -40,6 +53,11 @@
           <label class="btn btn-default active">
             <input type="radio" name="msgtype_all" title="{% trans 'All messages' %}" checked> {% trans "All" %}
           </label>
+          {% if manual_learning %}
+          <label class="btn btn-success">
+            <input type="radio" name="msgtype_C" title="{% trans 'Clean only' %}"> C
+          </label>
+          {% endif %}
           <label class="btn btn-danger">
             <input type="radio" name="msgtype_S" title="{% trans 'Spam only' %}"> S
           </label>
