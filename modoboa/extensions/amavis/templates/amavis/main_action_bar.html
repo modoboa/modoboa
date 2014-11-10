@@ -1,7 +1,7 @@
 {% load lib_tags i18n %}
 <div class="row">
 
-  <div class="col-xs-3">
+  <div class="col-xs-4">
     <div class="btn-group" title="{% trans 'Select' %}">
       <a class="btn btn-default"><input type="checkbox" id="selectall" /></a>
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -45,7 +45,7 @@
     {% include "common/email_searchbar.html" with extraopts=extraopts %}
   </div>
 
-  <div class="col-sm-5">
+  <div class="col-sm-4">
     <div class="btn-group">
       <div id="filters_bar" class="navbar-nav navbar-right">
         <span class="label label-default">{% trans "Display" %}</span>

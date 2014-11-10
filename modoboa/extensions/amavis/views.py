@@ -393,7 +393,7 @@ def learning_recipient(request):
     return render(request, "common/generic_modal_form.html", {
         "title": _("Select a database"),
         "formid": "learning_recipient_form",
-        "action": reverse("modoboa.extensions.amavis.views.learning_recipient"),
+        "action": reverse("amavis:learning_recipient_set"),
         "action_classes": "submit",
         "action_label": _("Validate"),
         "form": form

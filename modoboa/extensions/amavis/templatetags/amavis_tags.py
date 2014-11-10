@@ -43,7 +43,7 @@ def viewm_menu(user, mail_id, rcpt):
     if manual_learning_enabled(user):
         entries.insert(2, {
             "name": "process",
-            "img": "icon-cog",
+            "img": "fa fa-cog",
             "menu": [
                 {"name": "mark-as-spam",
                  "label": _("Mark as spam"),

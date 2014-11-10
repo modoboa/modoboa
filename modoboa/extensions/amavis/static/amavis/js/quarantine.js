@@ -294,7 +294,7 @@ Quarantine.prototype = {
                 simple_ajax_form_post(evt, {
                     formid: "learning_recipient_form",
                     reload_on_success: false,
-                    success_cb: $this.action_cb
+                    success_cb: $.proxy($this.action_cb, $this)
                 });
             });
         });

@@ -12,9 +12,9 @@
   <td width="25px" name="rstatus">
     {% if email.status == 'R' %}
     <img src="{% static 'pics/release.png' %}" />
-    {% else if email.status == 'S' %}
+    {% elif email.status == 'S' %}
     <span class="fa fa-thumbs-ip"></span>
-    {% else if email.status == 'H' %}
+    {% elif email.status == 'H' %}
     <span class="fa fa-thumbs-down"></span>
     {% endif %}
   </td>
