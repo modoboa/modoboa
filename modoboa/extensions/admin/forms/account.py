@@ -130,6 +130,9 @@ class AccountFormGeneral(forms.ModelForm):
 
 
 class AccountFormMail(forms.Form, DynamicForm):
+
+    """Form to handle mail part."""
+
     email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
@@ -253,7 +256,43 @@ class AccountFormMail(forms.Form, DynamicForm):
         self.mb.save()
         events.raiseEvent('MailboxModified', self.mb)
 
+    def _update_aliases(self, user):
+        """Update mailbox aliases."""
+        aliases = []
+        for name, value in self.cleaned_data.iteritems():
+            if not name.startswith("aliases"):
+                continue
+            if value == "":
+                continue
+            aliases.append(value)
+
+        for alias in self.mb.alias_set.all():
+            if not alias.full_address in aliases:
+                if len(alias.get_recipients()) >= 2:
+                    continue
+                alias.delete()
+            else:
+                aliases.remove(alias.full_address)
+        if not aliases:
+            return
+        events.raiseEvent(
+            "CanCreate", user, "mailbox_aliases", len(aliases)
+        )
+        for alias in aliases:
+            local_part, domname = split_mailbox(alias)
+            try:
+                self.mb.alias_set.get(address=local_part, domain__name=domname)
+            except Alias.DoesNotExist:
+                pass
+            else:
+                continue
+            al = Alias(address=local_part, enabled=account.is_active)
+            al.domain = Domain.objects.get(name=domname)
+            al.save(int_rcpts=[self.mb])
+            al.post_create(user)
+
     def save(self, user, account):
+        """Save or update account mailbox."""
         if self.cleaned_data["email"] == "":
             return None
 
@@ -271,36 +310,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         account.email = self.cleaned_data["email"]
         account.save()
 
-        aliases = []
-        for name, value in self.cleaned_data.iteritems():
-            if not name.startswith("aliases"):
-                continue
-            if value == "":
-                continue
-            aliases.append(value)
-
-        for alias in self.mb.alias_set.all():
-            if not alias.full_address in aliases:
-                if len(alias.get_recipients()) >= 2:
-                    continue
-                alias.delete()
-            else:
-                aliases.remove(alias.full_address)
-        if aliases:
-            events.raiseEvent(
-                "CanCreate", user, "mailbox_aliases", len(aliases)
-            )
-            for alias in aliases:
-                local_part, domname = split_mailbox(alias)
-                try:
-                    self.mb.alias_set.get(address=local_part, domain__name=domname)
-                except Alias.DoesNotExist:
-                    pass
-                else:
-                    continue
-                al = Alias(address=local_part, enabled=account.is_active)
-                al.domain = Domain.objects.get(name=domname)
-                al.save(int_rcpts=[self.mb], creator=user)
+        self._update_aliases()
 
         return self.mb
 

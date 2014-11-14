@@ -41,7 +41,7 @@ def viewm_menu(user, mail_id, rcpt):
     ]
 
     if manual_learning_enabled(user):
-        entries.insert(2, {
+        entries.insert(3, {
             "name": "process",
             "img": "fa fa-cog",
             "menu": [

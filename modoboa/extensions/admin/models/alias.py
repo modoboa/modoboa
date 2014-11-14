@@ -93,6 +93,7 @@ class Alias(AdminObject):
                 grant_access_to_object(admin, self)
 
     def save(self, *args, **kwargs):
+        """Custom save method."""
         if 'ext_rcpts' in kwargs:
             self.extmboxes = ",".join(kwargs['ext_rcpts']) \
                 if kwargs['ext_rcpts'] else ""
@@ -105,19 +106,19 @@ class Alias(AdminObject):
         super(Alias, self).save(*args, **kwargs)
         curaliases = self.aliases.all()
         curmboxes = self.mboxes.all()
-        for t in int_rcpts:
-            if isinstance(t, Alias):
-                if not t in curaliases:
-                    self.aliases.add(t)
+        for rcpt in int_rcpts:
+            if isinstance(rcpt, Alias):
+                if not rcpt in curaliases:
+                    self.aliases.add(rcpt)
                 continue
-            if not t in curmboxes:
-                self.mboxes.add(t)
-        for t in curaliases:
-            if not t in int_rcpts:
-                self.aliases.remove(t)
-        for t in curmboxes:
-            if not t in int_rcpts:
-                self.mboxes.remove(t)
+            if not rcpt in curmboxes:
+                self.mboxes.add(rcpt)
+        for rcpt in curaliases:
+            if not rcpt in int_rcpts:
+                self.aliases.remove(rcpt)
+        for rcpt in curmboxes:
+            if not rcpt in int_rcpts:
+                self.mboxes.remove(rcpt)
 
     def get_recipients(self, with_external=True):
         """Return the recipients list.

@@ -38,7 +38,7 @@
   </div>
 
   {% if activator %}
-  <div class="checkbox">
+  <div class="checkbox {{ activator_size }}">
     <label for="id_{{ field.name }}_act">
       <input type="checkbox" class="activator" id="id_{{ field.name }}_act" name="{{ field.name }}_act"
              {% if activator_value %}checked='checked'

@@ -95,7 +95,9 @@ def on_mailboxalias_created(user, alias):
         return
     else:
         email = alias.full_address
-        Users.objects.create(email=email, policy=policy, fullname=email)
+        Users.objects.create(
+            email=email, policy=policy, fullname=email, priority=7
+        )
 
 
 @events.observe("MailboxAliasDeleted")

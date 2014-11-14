@@ -51,6 +51,19 @@ Then, follow the common procedure::
 Eventually, restart the web server process according to the environment
 you did choose. See :ref:`webservers` for more details.
 
+1.2.0: radicale extension, bootstrap3 and more
+==============================================
+
+A new notification service let administrator know about new Modoboa
+versions. To activate it, you need to:
+
+#. Add `'modoboa.core.context_processors.top_notifications'`` to the
+   ``TEMPLATE_CONTEXT_PROCESSORS`` variable
+
+#. Define the ``MODOBOA_API_URL``::
+        
+    MODOBOA_API_URL = 'http://api.modoboa.org/1/'
+     
 1.1.7: manual learning for SpamAssassin
 =======================================
 
