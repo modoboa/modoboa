@@ -51,7 +51,7 @@ class Command(BaseCommand):
             return
 
         for extname in args:
-            fullname = "modoboa.extensions.{}".format(extname)
+            fullname = "modoboa.extensions.{0}".format(extname)
             if not fullname in settings.MODOBOA_APPS:
                 continue
             self._change_extension_state(extname, options)

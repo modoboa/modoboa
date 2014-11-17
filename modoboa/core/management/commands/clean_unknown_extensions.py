@@ -19,6 +19,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Entry point."""
         for extension in Extension.objects.all():
-            fullname = "modoboa.extensions.{}".format(extension.name)
+            fullname = "modoboa.extensions.{0}".format(extension.name)
             if not fullname in settings.MODOBOA_APPS:
                 extension.delete()
