@@ -25,14 +25,20 @@ class Command(BaseCommand):
 
     def _change_extension_state(self, name, options):
         """Change the state of an extension."""
-        extension, created = Extension.objects.get_or_create(name=name)
         newstate = options["action"] == "enable"
-        if extension.enabled == newstate:
-            return
-        if newstate:
-            extension.on()
+        update_db = True
+        try:
+            extension = Extension.objects.get(name=name)
+        except Extension.DoesNotExist:
+            extension = Extension.objects.create(name=name, enabled=newstate)
+            update_db = False
         else:
-            extension.off()
+            if extension.enabled == newstate:
+                return
+        if newstate:
+            extension.on(update_db)
+        else:
+            extension.off(update_db)
 
     def handle(self, *args, **options):
         """Entry point."""

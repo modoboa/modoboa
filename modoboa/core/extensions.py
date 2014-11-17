@@ -51,11 +51,16 @@ class ExtensionsPool(object):
         return self.extensions[name]["instance"]
 
     def is_extension_enabled(self, name):
+        """Check if an extension is enabled or not."""
         from modoboa.core.models import Extension
 
         if not name in self.extensions:
             return False
-        return Extension.objects.get(name=name).enabled
+        try:
+            state = Extension.objects.get(name=name).enabled
+        except Extension.DoesNotExist:
+            state = False
+        return state
 
     def get_extension_infos(self, name):
         instance = self.get_extension(name)

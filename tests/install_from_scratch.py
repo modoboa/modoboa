@@ -58,7 +58,7 @@ class DeployTest(unittest.TestCase):
                self.dbhost, self.projname)
         cmd = (
             "modoboa-admin.py deploy --syncdb --collectstatic --dburl %s "
-            "--domain %s --extensions all %s"
+            "--extensions all --domain %s %s"
             % (dburl, 'localhost', self.projname)
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)

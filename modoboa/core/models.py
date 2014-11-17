@@ -418,6 +418,9 @@ class ObjectAccess(models.Model):
 
 
 class Extension(models.Model):
+
+    """A modoboa extension."""
+
     name = models.CharField(max_length=150)
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
@@ -444,9 +447,11 @@ class Extension(models.Model):
         path = os.path.realpath(sys.modules[modname].__file__)
         self.extdir = os.path.dirname(path)
 
-    def on(self):
-        self.enabled = True
-        self.save()
+    def on(self, update_db=True):
+        """Activate this extension."""
+        if update_db:
+            self.enabled = True
+            self.save()
 
         self.__get_ext_instance()
         self.instance.load()
@@ -458,14 +463,16 @@ class Extension(models.Model):
 
         events.raiseEvent("ExtEnabled", self)
 
-    def off(self):
+    def off(self, update_db=True):
+        """Disable this extension."""
         self.__get_ext_instance()
         if self.instance is None:
             return
         self.instance.destroy()
 
-        self.enabled = False
-        self.save()
+        if update_db:
+            self.enabled = False
+            self.save()
 
         if self.instance.needs_media:
             path = os.path.join(settings.MEDIA_ROOT, self.name)
