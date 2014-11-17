@@ -59,7 +59,7 @@ def _new_alias(request, title, action, successmsg,
 @reversion.create_revision()
 def newdlist(request):
     return _new_alias(
-        request, _("New distribution list"), reverse(newdlist),
+        request, _("New distribution list"), reverse("admin:dlist_add"),
         _("Distribution list created")
     )
 
@@ -69,7 +69,7 @@ def newdlist(request):
 @reversion.create_revision()
 def newalias(request):
     return _new_alias(
-        request, _("New alias"), reverse(newalias),
+        request, _("New alias"), reverse("admin:alias_add"),
         _("Alias created")
     )
 
@@ -79,7 +79,7 @@ def newalias(request):
 @reversion.create_revision()
 def newforward(request):
     return _new_alias(
-        request, _("New forward"), reverse(newforward),
+        request, _("New forward"), reverse("admin:forward_add"),
         _("Forward created")
     )
 
@@ -102,7 +102,7 @@ def editalias(request, alid, tplname="admin/aliasform.html"):
         return _validate_alias(request, form, successmsg)
 
     ctx = {
-        'action': reverse(editalias, args=[alias.id]),
+        'action': reverse("admin:alias_change", args=[alias.id]),
         'formid': 'aliasform',
         'title': alias.full_address,
         'action_label': _('Update'),

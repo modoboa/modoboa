@@ -1,24 +1,37 @@
-{% extends "fixed.html" %}{% load i18n amavis_tags %}
+{% extends "fluid.html" %}{% load i18n amavis_tags %}
+{% load static %}
+
 {% block pagetitle %}{% trans "Quarantine management" %}{% endblock %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}amavis/css/quarantine.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.sortable.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.htmltable.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sortable.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/searchbar.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/listing.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}amavis/js/quarantine.js"></script>
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'amavis/css/quarantine.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.sortable.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/jquery.htmltable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.infinitescroll.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/searchbar.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
+<script type="text/javascript" src="{% static 'amavis/js/quarantine.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     var qm = new Quarantine({
-        deflocation: "{{ deflocation }}",
-        defcallback: "{{ defcallback }}"
+        deflocation: "listing/?sort_order=-date&reset_page=true",
+        defcallback: "listing_cb",
+        load_page_url: "{% url 'amavis:mail_page' %}",
+        check_learning_rcpt: {{ check_learning_rcpt }},
+        learning_recipient_url: "{% url 'amavis:learning_recipient_set' %}"
     });
 });
 </script>
 {% endblock %}
-{% block fixed_content %}
-<div id="menubar">{% quar_menu %}</div>
+
+{% block container_content %}
+<div id="menubar">
+  {% quar_menu user %}
+</div>
 <div id="listing"></div>
 {% endblock %}

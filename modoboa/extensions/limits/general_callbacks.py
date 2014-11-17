@@ -71,14 +71,15 @@ def fill_account_instances(user, account, instances):
 
 
 @events.observe("GetStaticContent")
-def get_static_content(caller, user):
+def get_static_content(caller, st_type, user):
     if caller not in ['domains', 'identities']:
         return []
     if user.group == "SimpleUsers":
         return []
-    return ["""<style>
+    if st_type == "css":
+        return ["""<style>
 .resource {
-    margin: 5px 0;
+    padding: 10px 15px;
 }
 
 .resource .progress {
@@ -89,6 +90,8 @@ def get_static_content(caller, user):
     color: #000000;
 }
 </style>
+"""]
+    return ["""
 <script type="text/javascript">
 $(document).ready(function() {
     $(".progress").tooltip();

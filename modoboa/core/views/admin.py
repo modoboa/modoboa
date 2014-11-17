@@ -4,12 +4,13 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import (
     login_required, user_passes_test
 )
-from modoboa.lib import parameters
+from modoboa.lib import events, parameters
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
 from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.core.models import Extension, Log
+from modoboa.core.utils import new_version_available
 from modoboa.core.tables import ExtensionsTable
 
 
@@ -94,27 +95,64 @@ def saveextensions(request):
 @user_passes_test(lambda u: u.is_superuser)
 def information(request, tplname="core/information.html"):
     return render_to_json_response({
-        "content": render_to_string(tplname, {})
+        "content": render_to_string(tplname, {
+            "new_version": new_version_available() 
+        }),
     })
+
+
+def get_logs_page(request, page_id=None):
+    """Return a page of logs."""
+    sort_order, sort_dir = get_sort_order(
+        request.GET, "date_created",
+        allowed_values=['date_created', 'level', 'logger', 'message']
+    )
+    if page_id is None:
+        page_id = request.GET.get("page", None)
+        if page_id is None:
+            return None
+    return get_listing_page(
+        Log.objects.all().order_by("%s%s" % (sort_dir, sort_order)),
+        page_id
+    )
 
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def logs(request, tplname="core/logs.html"):
-    from modoboa.lib.templatetags.lib_tags import pagination_bar
+    """Return a list of log entries.
 
-    sort_order, sort_dir = get_sort_order(
-        request.GET, "date_created",
-        allowed_values=['date_created', 'level', 'logger', 'message']
-    )
-    page = get_listing_page(
-        Log.objects.all().order_by("%s%s" % (sort_dir, sort_order)),
-        request.GET.get("page", 1)
-    )
+    This view is only called the first time the page is displayed.
+
+    """
+    page = get_logs_page(request, 1)
     return render_to_json_response({
-        "content": render_to_string(tplname, {
-            "logs": page.object_list,
-        }),
-        "page": page.number,
-        "paginbar": pagination_bar(page),
+        "callback": "logs",
+        "content": render_to_string(tplname, {"logs": page.object_list}),
+        "page": page.number
     })
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def logs_page(request, tplname="core/logs_page.html"):
+    """Return a page containing logs."""
+    page = get_logs_page(request)
+    if page is None:
+        context = {"length": 0}
+    else:
+        context = {
+            "rows": render_to_string(tplname, {"logs": page.object_list}),
+            "pages": [page.number]
+        }
+    return render_to_json_response(context)
+
+
+@login_required
+def check_top_notifications(request):
+    """
+    AJAX service to check for new top notifications to display.
+    """
+    return render_to_json_response(
+        events.raiseQueryEvent("TopNotifications", request.user, True)
+    )

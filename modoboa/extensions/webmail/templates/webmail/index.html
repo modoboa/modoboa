@@ -1,24 +1,30 @@
-{% extends "fixed.html" %}{% load i18n lib_tags %}{% load url from future %}
+{% extends "twocols.html" %}{% load i18n lib_tags webmail_tags %}{% load url from future %}
+{% load static %}
 {% block pagetitle %}Webmail{% endblock %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}webmail/css/webmail.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.htmltable.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/searchbar.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}webmail/js/webmail.js"></script>
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'jquery-ui/themes/base/all.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'webmail/css/webmail.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/ckeditor/ckeditor.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.htmltable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/searchbar.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.infinitescroll.js' %}"></script>
+<script type="text/javascript" src="{% static 'webmail/js/webmail.js' %}"></script>
 <script type="text/javascript">
 var webmail = undefined;
 
 $(document).ready(function() {
     webmail = new Webmail({
         poller_interval: {{ refreshrate }},
-        poller_url: "{% url 'modoboa.extensions.webmail.views.check_unseen_messages' %}",
-        move_url: "{% url 'modoboa.extensions.webmail.views.move' %}",
-        submboxes_url: "{% url 'modoboa.extensions.webmail.views.submailboxes' %}",
-        delattachment_url: "{% url 'modoboa.extensions.webmail.views.delattachment' %}",
+        poller_url: "{% url 'webmail:unseen_messages_check' %}",
+        listing_url: "{% url 'webmail:index' %}?action=listmailbox",
+        move_url: "{% url 'webmail:mail_move' %}",
+        submboxes_url: "{% url 'webmail:submailboxes_get' %}",
+        delattachment_url: "{% url 'webmail:attachment_delete' %}",
         deflocation: "{{ deflocation }}",
         defcallback: "{{ defcallback }}",
         ro_mboxes: {% tolist ro_mboxes %},
@@ -29,20 +35,41 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block fixed_content %}
-<div id="leftcol">
-  <div id="folders" class="well sidebar-nav">{{ mboxes }}</div>
+
+{% block leftcol %}
+<div class="leftcol-heading text-center">
+  <a name="compose" class="btn btn-success btn-lg" href="compose">
+    <span class="fa fa-edit"></span>
+    {% trans "Compose" %}
+  </a>
 </div>
-<div id="menubar"></div>
-<div id="listing"></div>
-{% endblock %}
-{% block footerleft %}
-<div id="quotabox">
-  <label class="pull-left navbar-text">{% trans "Mailbox quota" %}</label>
-  <div id="quotabar" class="pull-left progress {% progress_color quota %}">
-    <div class="bar" style="width: {{ quota }}%"></div>
+
+<div id="folders">
+  {{ mboxes }}
+</div>
+
+<div id="left-toolbar" class="row">
+  <div class="col-sm-2">
+    <div id="mboxactions" class="btn-group dropup">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+        <span class="fa fa-cog"></span>
+      </button>
+      {% mboxes_menu %}
+    </div>
   </div>
-  <label id="quotaraw" class="pull-left navbar-text">{{ quota }}%</label>
+  {% if quota != -1 %}
+  <div id="quotabox" class="col-sm-10">
+    <div id="quotabar" class="progress">
+      <div class="progress-bar {% progress_color quota %}" role="progressbar" style="width: {{ quota }}%" aria-valuenow="{{ quota }}" aria-valuemin="0" aria-valuemax="100">{{ quota }}%</div>
+    </div>
+  </div>
+  {% endif %}
 </div>
+{% endblock %}
+
+{% block apparea %}
+<div id="menubar" role="navbar"></div>
+<div id="listing"></div>
+
 {% endblock %}
 

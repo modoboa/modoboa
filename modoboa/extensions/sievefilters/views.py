@@ -91,7 +91,7 @@ def getfs(request, name):
             fs=content
         ))
 
-    menu = '<ul id="fsetmenu" class="nav nav-list"><li class="nav-header">%s</li>%s</ul>' % \
+    menu = '<ul id="fsetmenu" class="nav nav-sidebar"><li class="nav-header">%s</li>%s</ul>' % \
         (_("Actions"), fset_menu(editormode, name))
     resp = dict(menu=menu, content=htmlcontent)
     return render_to_json_response(resp)
@@ -140,7 +140,7 @@ def newfilter(request, setname, tplname="sievefilters/filter.html"):
     ctx = dict(
         title=_("New filter"),
         formid="filterform",
-        action=reverse(newfilter, args=[setname]),
+        action=reverse("sievefilters:filter_add", args=[setname]),
         action_label=_("Create"),
         action_classes="submit"
     )
@@ -162,7 +162,7 @@ def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
     ctx = dict(
         title=_("Edit filter"),
         formid="filterform",
-        action=reverse(editfilter, args=[setname, fname]),
+        action=reverse("sievefilters:filter_change", args=[setname, fname]),
         action_label=_("Update"),
         action_classes="submit"
     )
@@ -232,7 +232,7 @@ def new_filters_set(request, tplname="common/generic_modal_form.html"):
            "formid": "newfiltersset",
            "action_label": _("Create"),
            "action_classes": "submit",
-           "action": reverse(new_filters_set),
+           "action": reverse("sievefilters:fs_add"),
            "withmenu": False,
            "withunseen": False,
            "form": FiltersSetForm()}

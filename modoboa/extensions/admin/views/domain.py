@@ -1,4 +1,7 @@
-import reversion
+"""
+Domain related views.
+"""
+
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
@@ -7,31 +10,33 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
+
+import reversion
+
 from modoboa.lib import parameters, events
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
-from modoboa.lib.formutils import CreationWizard
 from modoboa.lib.exceptions import (
-    ModoboaException, PermDeniedException, BadRequest
+    PermDeniedException
 )
-from modoboa.lib.templatetags.lib_tags import pagination_bar
-from modoboa.extensions.admin.lib import get_sort_order, get_listing_page
+from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.admin.forms import (
-    DomainForm, DomainFormGeneral, DomainFormOptions
+    DomainForm
 )
 from modoboa.extensions.admin.lib import get_domains
 
 
 @login_required
 def index(request):
-    return HttpResponseRedirect(reverse(domains))
+    return HttpResponseRedirect(reverse("admin:domain_list"))
 
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domains") or u.has_perm("admin.view_mailboxes")
+    lambda u: u.has_perm("admin.view_domains")
+    or u.has_perm("admin.view_mailboxes")
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
@@ -41,9 +46,7 @@ def _domains(request):
         + events.raiseQueryEvent('ExtraDomainFilters')
     )
     request.session['domains_filters'] = filters
-    domainlist = get_domains(
-        request.user, **filters
-    )
+    domainlist = get_domains(request.user, **filters)
     if sort_order == 'name':
         domainlist = sorted(
             domainlist,
@@ -52,18 +55,22 @@ def _domains(request):
     else:
         domainlist = sorted(domainlist, key=lambda d: d.tags[0],
                             reverse=sort_dir == '-')
-    page = get_listing_page(domainlist, request.GET.get("page", 1))
-    return render_to_json_response({
-        "table": _render_to_string(request, 'admin/domains_table.html', {
-            'domains': page.object_list,
-            'tableid': 'domains'
-        }),
-        "page": page.number,
-        "paginbar": pagination_bar(page),
-        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",
-                                                 raise_error=False),
+    context = {
+        "handle_mailboxes": parameters.get_admin(
+            "HANDLE_MAILBOXES", raise_error=False),
         "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL")
-    })
+    }
+    page = get_listing_page(domainlist, request.GET.get("page", 1))
+    if page is None:
+        context["length"] = 0
+    else:
+        context["rows"] = _render_to_string(
+            request, 'admin/domains_table.html', {
+                'domains': page.object_list,
+            }
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
 
 
 @login_required
@@ -72,9 +79,9 @@ def domains(request, tplname="admin/domains.html"):
     if not request.user.has_perm("admin.view_domains"):
         if request.user.has_perm("admin.view_mailboxes"):
             return HttpResponseRedirect(
-                reverse('modoboa.extensions.admin.views.identity.identities')
+                reverse("admin:identity_list")
             )
-        return HttpResponseRedirect(reverse("modoboa.core.views.user.index"))
+        return HttpResponseRedirect(reverse("core:user_index"))
     return render(request, tplname, {"selection": "domains"})
 
 
@@ -88,88 +95,25 @@ def domains_list(request):
 @login_required
 @permission_required("admin.add_domain")
 @reversion.create_revision()
-def newdomain(request, tplname="common/wizard_forms.html"):
+def newdomain(request):
+    from modoboa.extensions.admin.forms import DomainWizard
+
     events.raiseEvent("CanCreate", request.user, "domains")
-
-    cwizard = CreationWizard()
-    cwizard.add_step(DomainFormGeneral, _("General"),
-                     [dict(classes="btn-inverse next", label=_("Next"))],
-                     formtpl="admin/domain_general_form.html")
-    cwizard.add_step(
-        DomainFormOptions, _("Options"),
-        [dict(classes="btn-primary submit", label=_("Create")),
-         dict(classes="btn-inverse prev", label=_("Previous"))],
-        formtpl="admin/domain_options_form.html",
-        new_args=[request.user]
-    )
-
-    if request.method == "POST":
-        retcode, data = cwizard.validate_step(request)
-        if retcode == -1:
-            raise BadRequest(data)
-        if retcode == 1:
-            return render_to_json_response(
-                {'title': cwizard.get_title(data + 1), 'stepid': data}
-            )
-        if retcode == 2:
-            genform = cwizard.steps[0]["form"]
-            domain = genform.save(request.user)
-            domain.post_create(request.user)
-            try:
-                cwizard.steps[1]["form"].save(request.user, domain)
-            except ModoboaException as e:
-                #transaction.rollback()
-                raise
-            return render_to_json_response(_("Domain created"))
-        return render_to_json_response({
-            'stepid': data, 'form_errors': cwizard.errors
-        }, status=400)
-
-    ctx = {"title": _("New domain"),
-           "action_label": _("Create"),
-           "action_classes": "submit",
-           "action": reverse(newdomain),
-           "formid": "domform"}
-    cwizard.create_forms()
-    ctx.update(steps=cwizard.steps)
-    ctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
-    return render(request, tplname, ctx)
+    return DomainWizard(request).process()
 
 
 @login_required
 @permission_required("admin.view_domains")
 @reversion.create_revision()
-def editdomain(request, dom_id, tplname="admin/editdomainform.html"):
+def editdomain(request, dom_id):
+    """Edit domain view."""
     domain = Domain.objects.get(pk=dom_id)
     if not request.user.can_access(domain):
         raise PermDeniedException
 
     instances = dict(general=domain)
     events.raiseEvent("FillDomainInstances", request.user, domain, instances)
-    if request.method == "POST":
-        domain.oldname = domain.name
-        form = DomainForm(request.user, request.POST, instances=instances)
-        if form.is_valid():
-            form.save(request.user)
-            events.raiseEvent("DomainModified", domain)
-            return render_to_json_response(_("Domain modified"))
-        return render_to_json_response({
-            'form_errors': form.errors
-        }, status=400)
-
-    domadmins = [u for u in domain.admins
-                 if request.user.can_access(u) and not u.is_superuser]
-    if not request.user.is_superuser:
-        domadmins = [u for u in domadmins if u.group == "DomainAdmins"]
-    ctx = {"title": domain.name,
-           "action_label": _("Update"),
-           "action_classes": "submit",
-           "action": reverse(editdomain, args=[dom_id]),
-           "formid": "domform",
-           "domain": domain,
-           "tabs": DomainForm(request.user, instances=instances),
-           "domadmins": domadmins}
-    return render(request, tplname, ctx)
+    return DomainForm(request, instances=instances).process()
 
 
 @login_required

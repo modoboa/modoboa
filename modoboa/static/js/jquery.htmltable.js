@@ -26,35 +26,37 @@
         },
 
         listen: function() {
-            $(document)
-                .off("change", "tbody input[type=checkbox]")
-                .on("change", "tbody input[type=checkbox]",
+            this.$element
+                .off("change", "input[type=checkbox]")
+                .on("change", "input[type=checkbox]",
                     $.proxy(this.toggle_select, this));
             $(document).on("keydown", "body", $.proxy(this.keydown, this));
             $(document).on("keyup", "body", $.proxy(this.keyup, this));
         },
 
         /**
-         * Effective change of a table row's state.
+         * Effective change of a row's state.
          */
-        _toggle_select: function($tr) {
-            if ($tr.hasClass(this.options.tr_selected_class)) {
-                $tr.children('td[name=selection]').children('input').prop('checked', false);
-                $tr.removeClass(this.options.tr_selected_class);
-                if (this.options.tr_unselected_event != undefined) {
-                    this.options.tr_unselected_event($tr);
+        _toggle_select: function($row) {
+            var $input = $row.find(this.options.input_selector);
+
+            if ($row.hasClass(this.options.row_selected_class)) {
+                $input.prop('checked', false);
+                $row.removeClass(this.options.row_selected_class);
+                if (this.options.row_unselected_event !== undefined) {
+                    this.options.row_unselected_event($row);
                 }
             } else {
-                $tr.children('td[name=selection]').children('input').prop('checked', true);
-                $tr.addClass(this.options.tr_selected_class);
-                if (this.options.tr_selected_event != undefined) {
-                    this.options.tr_selected_event($tr);
+                $input.prop('checked', true);
+                $row.addClass(this.options.row_selected_class);
+                if (this.options.row_selected_event !== undefined) {
+                    this.options.row_selected_event($row);
                 }
             }
         },
 
         /**
-         * Change the selection state of a given table row.
+         * Change the selection state of a given row.
          *
          * Holding the shift key between two selections let users
          * select all rows between those two locations.
@@ -63,49 +65,50 @@
          * an additive selection.
          */
         toggle_select: function(e) {
-            var $tr = $(e.target).parents('tr');
+            var $row = $(e.target).parents(this.options.row_selector);
 
             if (this.shift_pressed && this.last_selection) {
                 var start = this.last_selection;
 
                 this.clear_selection();
                 this.last_selection = start;
-                var itfunc = ($tr.index() >= this.last_selection.index())
-                    ? "next" : "prev";
-                var $curtr = null;
+
+                var itfunc = ($row.index() >= this.last_selection.index()) ? 
+                    "next" : "prev";
+                var $cur_row = null;
 
                 if (this.prev_dir && itfunc != this.prev_dir) {
-                    $curtr = this.last_selection;
+                    $cur_row = this.last_selection;
                 } else {
-                    $curtr = this.last_selection;
+                    $cur_row = this.last_selection;
                 }
-                for (; $curtr.length; $curtr = $curtr[itfunc]("tr")) {
-                    this._toggle_select($curtr);
-                    if ($tr.attr("id") == $curtr.attr("id")) {
+                for (; $cur_row.length; $cur_row = $cur_row[itfunc](this.options.row_selector)) {
+                    this._toggle_select($cur_row);
+                    if ($row.attr("id") == $cur_row.attr("id")) {
                         break;
                     }
                 }
                 this.prev_dir = itfunc;
                 return;
-            } else if (!this.ctrl_pressed && (!this.last_selection || !this.last_selection.is($tr))) {
+            } else if (!this.ctrl_pressed && (!this.last_selection || !this.last_selection.is($row))) {
                 this.clear_selection();
             }
-            this.last_selection = $tr;
-            this._toggle_select($tr);
+            this.last_selection = $row;
+            this._toggle_select($row);
         },
 
         /**
          * Check if $row is selected or not.
          */
         is_selected: function($row) {
-            return $row.hasClass(this.options.tr_selected_class);
+            return $row.hasClass(this.options.row_selected_class);
         },
 
         /**
          * Return the current selection. (jQuery object)
          */
         current_selection: function() {
-            return $("tr[class*=" + this.options.tr_selected_class + "]");
+            return this.$element.find("." + this.options.row_selected_class);
         },
 
         /**
@@ -113,23 +116,23 @@
          */
         clear_selection: function() {
             this.last_selection = null;
-            this.current_selection().removeClass(this.options.tr_selected_class);
-            $("tbody input[type=checkbox]").prop('checked', false);
-            if (this.options.tr_unselected_event != undefined) {
-                this.options.tr_unselected_event();
+            this.current_selection().removeClass(this.options.row_selected_class);
+            this.$element.find(this.options.input_selector).prop('checked', false);
+            if (this.options.row_unselected_event !== undefined) {
+                this.options.row_unselected_event();
             }
         },
 
         /**
-         * Manually select a table row.
+         * Manually select a row.
          */
         select_row: function($row) {
             if (!this.last_selection) {
                 this.last_selection = $row;
             }
-            $row.addClass(this.options.tr_selected_class);
-            if (this.options.tr_selected_event != undefined) {
-                this.options.tr_selected_event($row);
+            $row.addClass(this.options.row_selected_class);
+            if (this.options.row_selected_event !== undefined) {
+                this.options.row_selected_event($row);
             }
         },
 
@@ -177,6 +180,8 @@
     };
 
     $.fn.htmltable.defaults = {
-        tr_selected_class: 'tr-selected'
+        row_selector: 'tr',
+        input_selector: "input[type=checkbox]",
+        row_selected_class: 'tr-selected'
     };
 })(jQuery);

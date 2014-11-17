@@ -141,6 +141,9 @@ class BodyStructure(object):
 
 
 class IMAPconnector(object):
+
+    """The IMAPv4 connector."""
+
     __metaclass__ = ConnectionsManager
 
     list_base_pattern = r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "?(?P<name>[^"]*)"?'
@@ -250,12 +253,13 @@ class IMAPconnector(object):
         """
         if self.m is not None:
             try:
-                self._cmd("CHECK")
+                self._cmd("NOOP")
             except ImapError:
                 if hasattr(self, "current_mailbox"):
                     del self.current_mailbox
             else:
                 return
+
         self.login(user, password)
 
     def login(self, user, passwd):
@@ -269,6 +273,7 @@ class IMAPconnector(object):
         :param passwd: password
         """
         import socket
+
         if type(user) is unicode:
             user = user.encode("utf-8")
         if type(passwd) is unicode:
@@ -299,6 +304,32 @@ class IMAPconnector(object):
         self._cmd("LOGOUT")
         del self.m
         self.m = None
+
+    def parse_search_parameters(self, criterion, pattern):
+        """Parse search information and apply them."""
+
+        def or_criterion(old, c):
+            if old == "":
+                return c
+            return "OR (%s) (%s)" % (old, c)
+
+        if criterion == u"both":
+            criterion = u"from_addr, subject"
+        criterions = ""
+        if type(pattern) is unicode:
+            pattern = pattern.encode("utf-8")
+        if type(criterion) is unicode:
+            criterion = criterion.encode("utf-8")
+        for c in criterion.split(','):
+            if c == "from_addr":
+                key = "FROM"
+            elif c == "subject":
+                key = "SUBJECT"
+            else:
+                continue
+            criterions = \
+                or_criterion(criterions, '(%s "%s")' % (key, pattern))
+        self.criterions = [criterions]
 
     def messages_count(self, **kwargs):
         """An enhanced version of messages_count
@@ -415,11 +446,11 @@ class IMAPconnector(object):
 
     @capability('LIST-EXTENDED', '_listmboxes_simple')
     def _listmboxes(self, topmailbox, mailboxes, until_mailbox=None):
-        """Retrieve mailboxes list.
-        
-        """
-        pattern = "%s%s%%" % (topmailbox.encode("imap4-utf-7"), self.hdelimiter) \
-            if len(topmailbox) else "%"
+        """Retrieve mailboxes list."""
+        pattern = (
+            "{0}{1}%".format(topmailbox.encode("imap4-utf-7"), self.hdelimiter)
+            if topmailbox else "%"
+        )
         resp = self._cmd("LIST", "", pattern, "RETURN", "(CHILDREN)")
         newmboxes = []
         for mb in resp:
@@ -429,7 +460,9 @@ class IMAPconnector(object):
                 flags, delimiter, name, childinfo = \
                     self.listextended_response_pattern.match(mb).groups()
             else:
-                flags, delimiter, namelen = self.list_response_pattern_literal.match(mb[0]).groups()
+                flags, delimiter, namelen = (
+                    self.list_response_pattern_literal.match(mb[0]).groups()
+                )
                 name = mb[1][0:int(namelen)]
             flags = flags.split(' ')
             name = name.decode("imap4-utf-7")
@@ -456,7 +489,9 @@ class IMAPconnector(object):
         from operator import itemgetter
         mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
-    def getmboxes(self, user, topmailbox='', until_mailbox=None, unseen_messages=True):
+    def getmboxes(
+            self, user, topmailbox='', until_mailbox=None,
+            unseen_messages=True):
         """Returns a list of mailboxes for a particular user
 
         By default, only the first level of mailboxes under
@@ -473,14 +508,14 @@ class IMAPconnector(object):
             md_mailboxes = []
         else:
             md_mailboxes = [
-                {"name": "INBOX", "class": "icon-inbox"},
+                {"name": "INBOX", "class": "fa fa-inbox"},
                 {"name": parameters.get_user(user, "DRAFTS_FOLDER"),
-                 "class": "icon-file"},
-                {"name": 'Junk', "class": "icon-fire"},
+                 "class": "fa fa-file"},
+                {"name": 'Junk', "class": "fa fa-fire"},
                 {"name": parameters.get_user(user, "SENT_FOLDER"),
-                 "class": "icon-envelope"},
+                 "class": "fa fa-envelope"},
                 {"name": parameters.get_user(user, "TRASH_FOLDER"),
-                 "class": "icon-trash"}
+                 "class": "fa fa-trash"}
             ]
         if until_mailbox:
             name, parent = separate_mailbox(until_mailbox, self.hdelimiter)
@@ -588,23 +623,33 @@ class IMAPconnector(object):
         return True
 
     def getquota(self, mailbox):
+        """Retrieve quota information from the server.
+
+        We also compute the current usage.
+        """
         if not "QUOTA" in self.capabilities:
-            self.quota_limit = self.quota_actual = None
+            self.quota_limit = self.quota_current = None
             return
 
         data = self._cmd("GETQUOTAROOT", self._encode_mbox_name(mailbox),
                          responses=["QUOTAROOT", "QUOTA"])
         if data is None:
-            self.quota_limit = self.quota_actual = None
+            self.quota_limit = self.quota_current = None
             return
 
         quotadef = data[1][0]
-        m = re.search("\(STORAGE (\d+) (\d+)\)", quotadef)
+        m = re.search(r"\(STORAGE (\d+) (\d+)\)", quotadef)
         if not m:
             print "Problem while parsing quota def"
             return
         self.quota_limit = int(m.group(2))
-        self.quota_actual = int(m.group(1))
+        self.quota_current = int(m.group(1))
+        try:
+            self.quota_usage = (
+                int(float(self.quota_current) / float(self.quota_limit) * 100)
+            )
+        except TypeError:
+            self.quota_usage = -1
 
     def fetchpart(self, uid, mbox, partnum):
         """Retrieve a specific message part
@@ -623,7 +668,7 @@ class IMAPconnector(object):
         attdef = bs.find_attachment(partnum)
         return attdef, data[int(uid)]["BODY[%s]" % partnum]
 
-    def fetch(self, start, stop=None, mbox=None, **kwargs):
+    def fetch(self, start, stop=None, mbox=None):
         """Retrieve information about messages from the server
 
         Issue a FETCH command to retrieve information about one or
@@ -636,28 +681,30 @@ class IMAPconnector(object):
         self.select_mailbox(mbox, False)
         if start and stop:
             submessages = self.messages[start - 1:stop]
-            range = ",".join(submessages)
+            mrange = ",".join(submessages)
         else:
             submessages = [start]
-            range = start
-        query = '(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC SUBJECT)])'
-        data = self._cmd("FETCH", range, query)
+            mrange = start
+        query = (
+            "(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (DATE FROM TO CC "
+            "SUBJECT)])"
+        )
+        data = self._cmd("FETCH", mrange, query)
         result = []
         for uid in submessages:
-            msg = email.message_from_string(data[int(uid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]'])
+            msg = email.message_from_string(
+                data[int(uid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]']
+            )
             msg['imapid'] = uid
             if not r'\Seen' in data[int(uid)]['FLAGS']:
                 msg['style'] = 'unseen'
             if r'\Answered' in data[int(uid)]['FLAGS']:
-                msg['img_flags'] = [static_url('pics/answered.png')]
+                msg['answered'] = True
             if r'$Forwarded' in data[int(uid)]['FLAGS']:
-                if 'img_flags' in msg:
-                    msg['img_flags'] += [static_url('pics/forwarded.png')]
-                else:
-                    msg['img_flags'] = [static_url('pics/forwarded.png')]
-            bs = BodyStructure(data[int(uid)]['BODYSTRUCTURE'])
-            if bs.has_attachments():
-                msg['img_withatts'] = static_url('pics/attachment.png')
+                msg['forwarded'] = True
+            bstruct = BodyStructure(data[int(uid)]['BODYSTRUCTURE'])
+            if bstruct.has_attachments():
+                msg['attachments'] = True
             result += [msg]
         return result
 

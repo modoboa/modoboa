@@ -11,9 +11,10 @@ from modoboa.extensions.admin.lib import needs_mailbox
 @login_required
 @needs_mailbox()
 def send_virus(request):
-    status, error = sendmail_fromfile("virus@example.net", request.user.username,
-                                      os.path.join(settings.MODOBOA_DIR,
-                                                   "tmp/virus.msg"))
+    status, error = sendmail_fromfile(
+        "virus@example.net", request.user.username,
+        os.path.join(settings.MODOBOA_DIR, "tmp/virus.msg")
+    )
     if status:
         return render_to_json_response(_("Message sent"))
     return render_to_json_response(error, status=500)
@@ -22,7 +23,8 @@ def send_virus(request):
 @login_required
 @needs_mailbox()
 def send_spam(request):
-    status, error = sendmail_simple("spam@example.net", request.user.username, content="""
+    status, error = sendmail_simple(
+        "spam@example.net", request.user.username, content="""
 This is the GTUBE, the
         Generic
         Test for

@@ -13,7 +13,9 @@ class ModoTestCase(TestCase):
         self.clt = Client()
         self.assertEqual(self.clt.login(username=username, password=password), True)
 
-    def ajax_request(self, method, url, params, status=200):
+    def ajax_request(self, method, url, params=None, status=200):
+        if params is None:
+            params = {}
         response = getattr(self.clt, method) \
             (url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, status)
@@ -21,6 +23,12 @@ class ModoTestCase(TestCase):
 
     def ajax_post(self, *args, **kwargs):
         return self.ajax_request('post', *args, **kwargs)
+
+    def ajax_put(self, *args, **kwargs):
+        return self.ajax_request('put', *args, **kwargs)
+
+    def ajax_delete(self, *args, **kwargs):
+        return self.ajax_request('delete', *args, **kwargs)
 
     def ajax_get(self, *args, **kwargs):
         return self.ajax_request('get', *args, **kwargs)
@@ -30,13 +38,13 @@ class ExtTestCase(ModoTestCase):
 
     def setUp(self, *args, **kwargs):
         super(ExtTestCase, self).setUp(*args, **kwargs)
-        self.clt.get(reverse("modoboa.core.views.admin.viewextensions"))
+        self.clt.get(reverse("core:extension_list"))
 
     def activate_extensions(self, *names):
         from modoboa.core.extensions import exts_pool
 
         self.ajax_post(
-            reverse("modoboa.core.views.admin.saveextensions"),
+            reverse("core:extension_save"),
             dict(("select_%s" % name, "1") for name in names)
         )
         for name in names:
@@ -81,7 +89,10 @@ class ParameterTestCase(TestCase):
         self.assertNotIn("test", parameters._params['A'])
 
     def test_get_parameter_form(self):
-        self.assertIs(parameters.get_parameter_form('A', 'PARAM1', 'test'), TestParams)
+        self.assertIs(
+            parameters.get_parameter_form('A', 'PARAM1', 'test'),
+            TestParams
+        )
 
     def test_save_admin(self):
         parameters.save_admin("PARAM1", "45", app="test")
@@ -97,10 +108,12 @@ class ParameterTestCase(TestCase):
             parameters.get_admin("TOTO", "test")
 
     def test_get_user(self):
-        self.assertEqual(parameters.get_user(self.user, "PARAM1", "test"), "titi")
+        self.assertEqual(
+            parameters.get_user(self.user, "PARAM1", "test"), "titi")
         with self.assertRaises(parameters.NotDefined):
             parameters.get_user(self.user, "TOTO", "test")
 
     def test_save_user(self):
         parameters.save_user(self.user, "PARAM1", "pouet", "test")
-        self.assertEqual(parameters.get_user(self.user, "PARAM1", "test"), "pouet")
+        self.assertEqual(
+            parameters.get_user(self.user, "PARAM1", "test"), "pouet")

@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<form method="POST" id="listingform">
+  <table id="emails" class="table table-condensed">
+    <thead>
+      <tr>
+        <th id="selection" width="5px"></th>
+        <th id="type" width="30px" class="sortable sort-header" align="center" data-sort_order="type"></th>
+        <th id="rstatus" width="25px"></th>
+        <th id="score" class="sortable sort-header" data-sort_order="score">
+          {% trans "Score" %}
+        </th>
+        <th id="to" class="sortable sort-header" data-sort_order="to">
+          {% trans "To" %}
+        </th>
+        <th id="from" class="sortable sort-header" data-sort_order="from">
+          {% trans "From" %}
+        </th>
+        <th id="subject" class="sortable sort-header" data-sort_order="subject">
+          {% trans "Subject" %}
+        </th>
+        <th id="date" class="sortable sort-header" data-sort_order="date">
+          {% trans "Date" %}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% include "amavis/emails_page.html" %}
+    </tbody>
+  </table>
+</form>

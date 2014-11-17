@@ -22,7 +22,7 @@ domain; domain2.com; 200; False
 domainalias; domalias1.com; domain1.com; True
 """, name="domains.csv")
         self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_domains"), {
+            reverse("admin:domain_import"), {
                 "sourcefile": f
             }
         )
@@ -45,7 +45,7 @@ domainalias; domalias1.com; domain1.com; True
 domainalias;test.alias;test.com;True
 """, name="domains.csv")
         resp = self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_domains"), {
+            reverse("admin:domain_import"), {
                 "sourcefile": f
             }
         )
@@ -60,7 +60,7 @@ forward; fwd1@test.com; True; user@extdomain.com
 dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
 """, name="identities.csv")
         self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
         admin = User.objects.get(username="admin")
@@ -108,7 +108,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; test.com
 """, name="identities.csv")
         resp = self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
         self.assertIn('wrong quota value', resp.content)
@@ -120,7 +120,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; t
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 20
 """, name="identities.csv")
         resp = self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
         self.assertIn('Quota is greater than the allowed', resp.content)
@@ -130,7 +130,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 20
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
 """, name="identities.csv")
         resp = self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
         account = User.objects.get(username="user1@test.com")
@@ -145,7 +145,7 @@ account; admin@test.com; toto; Admin; ; True; DomainAdmins; admin@test.com; 0; t
 account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0; test.com
 """, name="identities.csv")
         self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
              "continue_if_exists": True}
         )
@@ -164,7 +164,7 @@ account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0;
 account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com; 50
 """, name="identities.csv")
         self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
              "continue_if_exists": True}
         )
@@ -176,7 +176,7 @@ account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com
 alias;user.alias@test.com;True;user@test.com;;;;;;;;;;;;;;;;
 """, name="identities.csv")
         self.clt.post(
-            reverse("modoboa.extensions.admin.views.import.import_identities"),
+            reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
              "continue_if_exists": True}
         )

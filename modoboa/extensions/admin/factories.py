@@ -1,9 +1,15 @@
+"""
+Fixtures factories.
+"""
+import factory
+
 from modoboa.core.factories import PermissionFactory, UserFactory
 from . import models
 
 
 class DomainFactory(PermissionFactory):
     FACTORY_FOR = models.Domain
+    FACTORY_DJANGO_GET_OR_CREATE = ("name", )
 
     quota = 10
     enabled = True
@@ -12,6 +18,8 @@ class DomainFactory(PermissionFactory):
 class MailboxFactory(PermissionFactory):
     FACTORY_FOR = models.Mailbox
 
+    domain = factory.SubFactory(DomainFactory)
+    user = factory.SubFactory(UserFactory)
     quota = 10
     enabled = True
 
@@ -20,6 +28,7 @@ class AliasFactory(PermissionFactory):
     FACTORY_FOR = models.Alias
 
     enabled = True
+
 
 def populate_database():
     """Create test data.

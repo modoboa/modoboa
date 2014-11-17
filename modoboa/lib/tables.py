@@ -9,10 +9,12 @@ output (using standard tags like <table> and co.).
 
 """
 import inspect
+
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.template import Template, RequestContext, Context
-from templatetags.lib_tags import render_link
+
+from .templatetags.lib_tags import render_link
 
 
 class Column(object):
@@ -89,6 +91,8 @@ class ImgColumn(Column):
             return ""
 
     def render(self, value):
+        if getattr(self, "bootstrap", False) and value.startswith("icon"):
+            return "<i class='%s'></i>" % value
         if type(value) in [list, tuple]:
             return "".join(["<img src='%s' />" % i for i in value])
         return "<img src='%s' />" % value

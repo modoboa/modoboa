@@ -3,7 +3,7 @@ from django.conf.urls import include
 
 
 class ModoExtension(object):
-    """Base extension class
+    """Base extension class.
 
     Each Modoboa extension must inherit from this class to be
     considered as valid.
@@ -51,11 +51,16 @@ class ExtensionsPool(object):
         return self.extensions[name]["instance"]
 
     def is_extension_enabled(self, name):
+        """Check if an extension is enabled or not."""
         from modoboa.core.models import Extension
 
         if not name in self.extensions:
             return False
-        return Extension.objects.get(name=name).enabled
+        try:
+            state = Extension.objects.get(name=name).enabled
+        except Extension.DoesNotExist:
+            state = False
+        return state
 
     def get_extension_infos(self, name):
         instance = self.get_extension(name)
@@ -86,8 +91,11 @@ class ExtensionsPool(object):
             try:
                 baseurl = extinstance.url \
                     if extinstance.url is not None else extname
-                result += [(r'^%s/' % (baseurl),
-                            include("%s.urls" % extinstance.__module__))]
+                result += [
+                    (r'^%s/' % (baseurl),
+                     include("%s.urls" % extinstance.__module__,
+                             namespace=extname))
+                ]
             except ImportError:
                 # No urls for this extension
                 pass

@@ -77,18 +77,28 @@ def make_body_images_inline(body):
 
 
 class ComposeMailForm(forms.Form):
-    """Compose mail form.
-    """
+
+    """Compose mail form."""
+
     to = forms.CharField(label=_("To"))
     cc = forms.CharField(label=_("Cc"), required=False)
     cci = forms.CharField(label=_("Cci"), required=False)
     subject = forms.CharField(
-        label=_("Subject"), max_length=255, required=False
+        label=_("Subject"),
+        max_length=255,
+        required=False
     )
-    origmsgid = forms.CharField(
-        label="", widget=forms.HiddenInput(), required=False
-    )
-    body = forms.CharField(widget=forms.widgets.Textarea)
+    origmsgid = forms.CharField(label="", required=False)
+    body = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        """Custom constructor."""
+        super(ComposeMailForm, self).__init__(*args, **kwargs)
+        self.field_widths = {
+            "cc": "11",
+            "cci": "11",
+            "subject": "11"
+        }
 
     def _html_msg(self):
         """Create a multipart message.
@@ -189,9 +199,11 @@ class ForwardMailForm(ComposeMailForm):
 
 class FolderForm(forms.Form):
     oldname = forms.CharField(
-        label="", widget=forms.HiddenInput(), required=False
+        label="",
+        widget=forms.HiddenInput(attrs={"class": "form-control"}),
+        required=False
     )
-    name = forms.CharField()
+    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
 
 
 class AttachmentForm(forms.Form):

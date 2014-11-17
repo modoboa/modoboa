@@ -22,7 +22,7 @@ class PasswordSchemesTestCase(ModoTestCase):
             is_active=True, email="tester@test.com", stepid='step2'
         )
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.identity.newaccount"),
+            reverse("admin:account_add"),
             values
         )
 
@@ -35,7 +35,7 @@ class PasswordSchemesTestCase(ModoTestCase):
 
     def test_sha512crypt_scheme(self):
         self._test_scheme('sha512crypt', '{SHA512-CRYPT}')
-        
+
     def test_sha256crypt_scheme(self):
         self._test_scheme('sha256crypt', '{SHA256-CRYPT}')
 

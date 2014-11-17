@@ -1,5 +1,9 @@
-/*
- * The javascript code that brings the webmail to life!
+/**
+ * Creates an instance of Webmail.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ * @classdesc The javascript code that brings the webmail to life!
  */
 var Webmail = function(options) {
     this.initialize(options);
@@ -26,7 +30,7 @@ Webmail.prototype = {
         this.editorid = "id_body";
 
         this.navobject = new History({
-            deflocation: "?action=listmailbox",
+            deflocation: "?action=listmailbox&reset_page=true",
             defcallback: $.proxy(this.listmailbox_callback, this)
         });
         this.poller = new Poller(this.options.poller_url, {
@@ -36,28 +40,36 @@ Webmail.prototype = {
         });
         this.record_unseen_messages();
 
-        $("#folders").css({
-            bottom: $("#bottom-bar").outerHeight(true),
-            width: this.options.mboxes_col_width + 'px'
+        $("#mboxactions").on("shown.bs.dropdown", function() {
+            var $menu = $("ul", this);
+            var offset = $menu.offset();
+
+            $("body").append($menu);
+            $menu.show();
+            $menu.css("position", "absolute");
+            $menu.css("top", offset.top + "px");
+            $menu.css("left", offset.left + "px");
+            $(this).data("original_menu", $menu);
+        }).on("hide.bs.dropdown", function() {
+            var $this = $(this);
+            $this.append($this.data("original_menu"));
+            $this.data("original_menu").removeAttr("style");
         });
-        $("#mboxactions").css({
-            bottom: $("#bottom-bar").outerHeight(true) + 10
-        });
-        $("#folders").resizable({
+
+        $(".sidebar").resizable({
             start: function(event, ui) {
-                $('#listing iframe').css('pointer-events','none');
+                $('#listing iframe').css('pointer-events', 'none');
             },
             handles: "e",
-            minWidth: parseInt($("#folders").css("width").replace("px", "")),
+            minWidth: $(".sidebar").width(),
             maxWidth: 400,
             stop: function(event, ui) {
-                $('#listing iframe').css('pointer-events','auto');
-            }
-        });
-        $("#folders").bind("resize", function(event, ui) {
-            if (typeof(ui.size) != "undefined") {
-                $("#menubar").css("left", ui.size.width + 15 + "px");
-                $("#listing").css("left", ui.size.width + 15 + "px");
+                $('#listing iframe').css('pointer-events', 'auto');
+            },
+            resize: function(event, ui) {               
+                $(".main").css({
+                    marginLeft: ui.size.width + "px"
+                });
             }
         });
 
@@ -68,48 +80,127 @@ Webmail.prototype = {
         this.listen();
     },
 
+    /**
+     * Register navigation callbacks.
+     *
+     * @this Webmail
+     */
     register_navcallbacks: function() {
-        this.navobject.register_callback("listmailbox", $.proxy(this.listmailbox_callback, this));
-        this.navobject.register_callback("compose", $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("viewmail", $.proxy(this.viewmail_callback, this));
+        this.navobject.register_callback(
+            "listmailbox", $.proxy(this.listmailbox_callback, this));
+        this.navobject.register_callback(
+            "compose", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback(
+            "viewmail", $.proxy(this.viewmail_callback, this));
 
-        this.navobject.register_callback("reply", $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("replyall", $.proxy(this.compose_callback, this));
-        this.navobject.register_callback("forward", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback(
+            "reply", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback(
+            "replyall", $.proxy(this.compose_callback, this));
+        this.navobject.register_callback(
+            "forward", $.proxy(this.compose_callback, this));
     },
 
     listen: function() {
-        $(window).resize(this.resize);
+        $(window).resize($.proxy(this.resize, this));
 
-        $(document).on("click", "a[name=compose]", $.proxy(this.compose_loader, this));
-        $(document).on("click", "a[name=totrash]", $.proxy(this.delete_messages, this));
-        $(document).on("click", "a[name*=mark-]", $.proxy(this.send_mark_request, this));
+        $(document).on(
+            "click", "a[name=compose]", $.proxy(this.compose_loader, this));
+        $(document).on(
+            "click", "a[name=totrash]", $.proxy(this.delete_messages, this));
+        $(document).on(
+            "click", "a[name*=mark-]", $.proxy(this.send_mark_request, this));
         $(document).on("click", "a[name=compress]", $.proxy(this.compress, this));
         $(document).on("click", "a[name=empty]", $.proxy(this.empty, this));
         $(document).on("click", "#bottom-bar a", $.proxy(this.getpage_loader, this));
 
-        $(document).on("click", "a[name=loadfolder]", $.proxy(this.listmailbox_loader, this));
+        $(document).on(
+            "click", "a[name=loadfolder]", $.proxy(this.listmailbox_loader, this));
         $(document).on("click", "a[name=selectfolder]", this.select_parent_mailbox);
-        $(document).on("click", "div[class*=clickbox]", $.proxy(this.mbox_state_callback, this));
+        $(document).on(
+            "click", "div[class*=clickbox]", $.proxy(this.mbox_state_callback, this));
         $(document).on("click", "a[name=newmbox]", $.proxy(this.new_mailbox, this));
         $(document).on("click", "a[name=editmbox]", $.proxy(this.edit_mbox, this));
         $(document).on("click", "a[name=removembox]", $.proxy(this.remove_mbox, this));
 
-        $(document).on("click", "td[class*=openable]", $.proxy(this.viewmail_loader, this));
+        $(document).on("click", "div.openable", $.proxy(this.viewmail_loader, this));
 
         $(document).on("click", "a[name=reply]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=replyall]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=forward]", $.proxy(this.reply_loader, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete_message, this));
-        $(document).on("click", "a[name=activate_links]", $.proxy(function(e) { this.display_mode(e, "1"); }, this));
+        $(document).on(
+            "click", "a[name=activate_links]", $.proxy(function(e) { this.display_mode(e, "1"); }, this));
         $(document).on("click", "a[name=disable_links]", $.proxy(function(e) { this.display_mode(e, "0"); }, this));
 
         $(document).on("click", "a[name=sendmail]", $.proxy(this.sendmail, this));
 
-        $(document).on("click", "#attachments", $.proxy(function(e) {
-            modalbox(e, undefined, $("#attachments").attr("name"),
+        $(document).on("click", "a[name=attachments]", $.proxy(function(e) {
+            modalbox(e, undefined, $("a[name=attachments]").attr("href"),
                 $.proxy(this.attachments_init, this));
         }, this));
+    },
+
+    /**
+     * Setup an "infinite scroll" behaviour for the email list.
+     */
+    setup_infinite_scroll: function(data) {
+        var $container = $("#listing");
+        var that = this;
+
+        if ($container.data("infinite-scroll") !== undefined) {
+            if (data.pages && data.pages[0] != 1) {
+                $container.scrollTop(10);
+            }
+            $container.infinite_scroll("reset_loaded_pages", data.pages);
+            $container.infinite_scroll("resume");
+            return;
+        }
+
+        $container.infinite_scroll({
+            initial_pages: data.pages,
+            url: this.options.listing_url,
+            calculate_bottom: function($element) {
+                return $("#emails").height() - $element.height();
+            },
+            get_args: function() {
+                var args = $.extend({}, that.navparams);
+                args.scroll = true;
+                return args;
+            },
+            process_results: function(data, direction) {
+                var $emails = $("#emails");
+
+                if (direction === "down") {
+                    $emails.html($emails.html() + data.listing);
+                } else {
+                    var row_id = $emails.children(".email").first().attr("id");
+
+                    $emails.html(data.listing + $emails.html());
+
+                    var $row = $("#" + row_id);
+                    $("#listing").scrollTop($row.offset().top);
+                }
+            },
+            end_of_list_reached: function($element) {
+                $element.append(
+                    $("<div class='alert alert-info text-center' />").html(
+                        gettext("No more message in this mailbox.")
+                    )
+                );
+            }
+        });
+    },
+
+    /**
+     * Disable the infinite scroll mode.
+     */
+    disable_infinite_scroll: function() {
+        var $container = $("#listing");
+
+        if ($container.data("infinite-scroll") !== undefined) {
+            $container.infinite_scroll("pause");
+        }
     },
 
     record_unseen_messages: function() {
@@ -122,23 +213,67 @@ Webmail.prototype = {
         this.unseen_counters = unseen_counters;
     },
 
+    /**
+     * Global resize event callback.
+     */
     resize: function() {
-        $("#mboxes_container").height($("#folders").height() - $("#mboxactions").height());
+        var $window = $(window);
+        var current_action = this.navobject.getparam("action");
+
+        $("#folders").height(
+            $("#left-toolbar").offset().top - $("#folders").offset().top
+        );
+
+        // if ($window.width() <= 768) {        
+        //     $(".main").css("margin-left", "0");
+        // } else {
+        //     $(".main").css("margin-left", $(".sidebar").width() + "px");
+        // }
+        if (current_action == "compose") {
+            this.resize_compose_body();
+        }
     },
 
-    /*
+    /**
+     * Resize the textarea used to write plain/text messages.
+     */
+    resize_compose_body: function() {
+        var $container = $("#body_container");
+
+        if ($container.length) {
+            var top = $container.offset().top;
+
+            $("#body_container").innerHeight($(window).height() - top - 10);
+        }
+    },
+
+    /**
+     * Callback of the 'compose' action.
+     *
+     * It is also shared with other similar actions : reply, forward.
+     */
+    resize_editor: function() {
+        CKEDITOR.instances[this.editorid].resize("100%",
+            $("#body_container").outerHeight(true));
+    },
+
+    /**
      * Simple helper to retrieve the currently selected mailbox.
+     *
+     * @this Webmail
      */
     get_current_mailbox: function() {
         return this.navobject.getparam("mbox", "INBOX");
     },
 
-    /*
+    /**
      * Keep track of interesting navigation parameters in order to
      * restore them later.
+     *
+     * @this Webmail
      */
     store_nav_params: function() {
-        var params = new Array("page", "order", "pattern", "criteria");
+        var params = new Array("order", "pattern", "criteria");
 
         this.navparams = {};
         for (var idx in params) {
@@ -146,9 +281,11 @@ Webmail.prototype = {
         }
     },
 
-    /*
+    /**
      * Restore navigation parameters previously stored via
      * store_nav_params.
+     *
+     * @this Webmail
      */
     restore_nav_params: function() {
         if (this.navparams === undefined) {
@@ -186,10 +323,15 @@ Webmail.prototype = {
         }
     },
 
+    /**
+     * Update the current displayed content.
+     *
+     * @this Webmail
+     * @param {Object} response - object containing the new content
+     */
     page_update: function(response) {
         var curmb = this.get_current_mailbox();
 
-        $(window).unbind("resize");
         if (!$('li[name="' + curmb + '"]').hasClass("active")) {
             this.load_and_select_mailbox(curmb);
         }
@@ -200,46 +342,51 @@ Webmail.prototype = {
                 break;
             }
         }
-        if (response.menu != undefined) {
+        if (response.menu !== undefined) {
             $("#menubar").html(response.menu);
-            $("#searchfield").searchbar({navobj: this.navobject});
+            $("#searchfield").searchbar({
+                navobj: this.navobject,
+                pattern_changed: function(navobj) {
+                    navobj.setparam("reset_page", "true");
+                }
+            });
         }
-        if (response.navbar) {
-            $("#bottom-bar-right").html(response.navbar);
-        }
+
         $("#listing").html(response.listing);
-        $("#listing").css({
-            top: $("#menubar").outerHeight(true) + 60 + "px",
-            bottom: $("#bottom-bar").outerHeight(true) + "px",
-            overflow: "auto"
-        });
+
+        if (this.navobject.getparam("action") == "listmailbox") {
+            this.setup_infinite_scroll(response);
+        } else {
+            this.disable_infinite_scroll();
+        }
     },
 
-    /*
-     *  Set the *unseen messages* counter for a particular mailbox in
-     *  the list. If the mailbox is currently selected, we update the
-     *  listing.
+    /**
+     * Set the *unseen messages* counter for a particular mailbox in
+     * the list. If the mailbox is currently selected, we force a
+     * listing update.
+     *
      */
     set_unseen_messages: function(mailbox, value) {
         if (this.poller.running_request) {
             return;
         }
-        if (this.unseen_counters[mailbox] != undefined
-            && value == this.unseen_counters[mailbox]) {
+        if (this.unseen_counters[mailbox] !== undefined &&
+            value == this.unseen_counters[mailbox]) {
             return;
         }
 
         if (this.navobject.params.action == "listmailbox") {
             var curmb = this.get_current_mailbox();
             if (curmb == mailbox) {
-                this.navobject.update(true);
+                this.navobject.setparam("reset_page", "true").update(true);
             }
         }
 
         var $link = $('a[href="' + mailbox + '"]');
         var parts = mailbox.split(this.options.hdelimiter);
         var dname = " " + parts[parts.length - 1];
-        var $i = $link.children("i");
+        var $span = $link.children("span:visible");
 
         this.unseen_counters[mailbox] = value;
         if (value) {
@@ -249,7 +396,7 @@ Webmail.prototype = {
             $link.html(dname);
             $link.removeClass("unseen");
         }
-        $link.prepend($i);
+        $link.prepend($span);
     },
 
     /*
@@ -268,7 +415,7 @@ Webmail.prototype = {
      * the left tree).
      */
     get_visible_mailboxes: function() {
-        var res = new Array();
+        var res = [];
 
         $("#folders").find("ul:visible").children("li.droppable").each(function() {
             res.push(encodeURIComponent($(this).attr("name")));
@@ -285,8 +432,11 @@ Webmail.prototype = {
         }
     },
 
-    /*
-     * Inject a new *clickbox* somewhere in the tree
+    /**
+     * Inject a new *clickbox* somewhere in the tree.
+     *
+     * @this Webmail
+     * @param {Object} $container - box container
      */
     inject_clickbox: function($container) {
         $container.prepend($("<div />", {'class' : 'clickbox collapsed'}));
@@ -302,17 +452,16 @@ Webmail.prototype = {
         });
         var $link = $("<a />", {
             name: linkname,
-            'class': "block",
             href: mailbox
         });
         var parts = mailbox.split(this.options.hdelimiter);
-        var linkcontent = "<i class='icon-folder-close'></i> ";
+        var linkcontent = "<span class='fa fa-folder'></span> ";
         var displayname = linkcontent + parts[parts.length - 1];
 
         $li.append($link);
         $parent.append($li);
 
-        if (unseen != undefined) {
+        if (unseen !== undefined) {
             $link.addClass("unseen");
             $link.html(displayname + " (" + unseen + ")");
             this.unseen_counters[$link.attr("href")] = unseen;
@@ -322,13 +471,17 @@ Webmail.prototype = {
         return $li;
     },
 
-    /*
+    /**
      * Inject new mailboxes under a given parent in the tree.
+     *
+     * @this Webmail
+     * @param {Object} $parent - an existing <li> node.
+     * @param {Array} mboxes - list of mailboxes to inject
      */
     inject_mailboxes: function($parent, mboxes) {
         var $ul = $("<ul />", {
             name: $parent.attr("name"),
-            'class': "hidden nav nav-list"
+            'class': "hidden nav"
         });
         var $plink = $parent.children("a");
 
@@ -340,8 +493,10 @@ Webmail.prototype = {
             if ($parent.find('li[name="' + mboxes[i].name + '"]').length) {
                 continue;
             }
-            this.inject_mailbox($ul, mboxes[i].name, $plink.attr("name"), mboxes[i].unseen);
-            if (mboxes[i].sub != undefined) {
+            this.inject_mailbox(
+                $ul, mboxes[i].name, $plink.attr("name"), mboxes[i].unseen
+            );
+            if (mboxes[i].sub !== undefined) {
                 this.inject_clickbox($('li[name="' + mboxes[i].name + '"]'));
             }
         }
@@ -349,10 +504,19 @@ Webmail.prototype = {
         this.toggle_mbox_state($parent.children("div"), $ul);
     },
 
-    /*
-     * Download sub-mailboxes from the server
+    /**
+     * Download mailboxes from the server.
+     *
+     * @this Webmail
+     * @param {Object} parent - parent node where mailboxes will be appended
+     * @param {boolean} async - if true, the ajax call will be asynchronous
      */
-    get_mailboxes: function(parent, async) {
+    get_mailboxes: function(parent, async, with_unseen) {
+        var args = "topmailbox=" + parent.attr("name");
+
+        if (with_unseen) {
+            args += "&unseen=true";
+        }
         if (async === undefined) {
             async = true;
         }
@@ -360,14 +524,20 @@ Webmail.prototype = {
             url: this.options.submboxes_url,
             dataType: 'json',
             async: async,
-            data: "topmailbox=" + parent.attr("name")
+            data: args
         }).done($.proxy(function(data) {
             this.inject_mailboxes(parent, data);
         }, this));
     },
 
-    /*
-     * Open/Close a mailbox with children
+    /**
+     * Open/Close a mailbox with children.
+     *
+     * This is an internal method.
+     *
+     * @this Webmail
+     * @param {Object} $div - the <div/> that was clicked
+     * @param {Object} $ul - the <ul/> element to show/hide
      */
     toggle_mbox_state: function($div, $ul) {
         if ($ul.hasClass("hidden")) {
@@ -379,28 +549,43 @@ Webmail.prototype = {
         }
     },
 
+    /**
+     * Click event : open or close a mailbox (user triggered).
+     *
+     * The first time it is opened, sub mailboxes will be downloaded
+     * from the server and injected into the tree.
+     *
+     * @this Webmail
+     * @param {Object} e - event object
+     */
     mbox_state_callback: function(e) {
         e.preventDefault();
+        e.stopPropagation();
         var $div = $(e.target);
-        var $parent = $div.parent();
+        var $parent = $div.parents("li").first();
         var $ul = $parent.find('ul[name="' + $parent.attr("name") + '"]');
 
         if (!$ul.length) {
-            this.get_mailboxes($parent);
+            var $link = $div.next();
+            var with_unseen = ($link.attr("name") == "loadfolder") ? true : false;
+            this.get_mailboxes($parent, true, with_unseen);
             return;
         }
         this.toggle_mbox_state($div, $ul);
     },
 
-    /*
-     * Unselect every selected mailbox
+    /**
+     * Unselect every selected mailbox.
      */
     reset_mb_selection: function() {
         $("a[name=loadfolder]").parent().removeClass("active").addClass("droppable");
     },
 
-    /*
-     * Select a particular mailbox (one already present in the DOM)
+    /**
+     * Select a particular mailbox (one already present in the DOM).
+     *
+     * @this Webmail
+     * @param {Object|string} obj - mailbox to select
      */
     select_mailbox: function(obj) {
         var $obj = (typeof obj != "string") ? $(obj) : $('a[href="' + obj + '"]');
@@ -411,10 +596,13 @@ Webmail.prototype = {
         $obj.parent().addClass("active");
     },
 
-    /*
-     * Tries to select a particular sub-mailbox and loads it from the
+    /**
+     * Try to select a particular sub-mailbox and load it from the
      * server if it's not present in the DOM. (nb: all parents needed
      * to access this mailbox are also loaded)
+     *
+     * @this Webmail
+     * @param {string} mailbox - mailbox to select
      */
     load_and_select_mailbox: function(mailbox) {
         if (mailbox.indexOf(this.options.hdelimiter) == -1) {
@@ -447,6 +635,12 @@ Webmail.prototype = {
         $('li[name="' + mailbox + '"]').addClass("active");
     },
 
+    /**
+     * Click handler : select the parent mailbox of the mailbox being
+     * created/modified.
+     *
+     * @param {Object} e - event object
+     */
     select_parent_mailbox: function(e) {
         e.preventDefault();
         var $this = $(this);
@@ -548,7 +742,7 @@ Webmail.prototype = {
             $parent = $ul;
             mailbox = $parent.attr("name") + this.options.hdelimiter + mailbox;
         } else {
-            $parent = $("#mboxes_container").children("ul");
+            $parent = $("#folders > div > ul");
         }
         var $li = this.inject_mailbox($parent, mailbox, "loadfolder");
         this.init_droppables($li);
@@ -564,11 +758,11 @@ Webmail.prototype = {
         var $link = $("#folders").find('a[href="' + oldpattern + '"]');
 
         if (oldname != newname) {
-            var $i = $link.children("i");
+            var $span = $link.children("span");
 
-            $link.html(newname);
+            $link.html(" " + newname);
             $link.parent("li").attr("name", newpattern);
-            $link.prepend($i);
+            $link.prepend($span);
             $link.attr("href", newpattern);
             this.navobject.setparam("mbox", newpattern).update(false, true);
         }
@@ -584,6 +778,7 @@ Webmail.prototype = {
     },
 
     send_mark_request: function(e) {
+
         e.preventDefault();
         if (!this.htmltable.current_selection().length) {
             return;
@@ -606,12 +801,18 @@ Webmail.prototype = {
             url: url,
             dataType: 'json'
         }).done($.proxy(function(data) {
-            if (cb != undefined) {
+            if (cb !== undefined) {
                 cb.apply(this, [data]);
             }
         }, this));
     },
 
+    /**
+     * Click event: empty Trash folder.
+     *
+     * @this Webmail
+     * @param {Object} e - event object
+     */
     empty: function(e) {
         e.preventDefault();
         var $link = $(e.target);
@@ -622,10 +823,20 @@ Webmail.prototype = {
         });
     },
 
+    /**
+     * Compress the currently selected mailbox.
+     *
+     * @this {Webmail}
+     * @param {object} e - event object
+     */
     compress: function(e) {
         e.preventDefault();
         var $link = $(e.target);
-        this.send_mb_action($link.attr("href"));
+        var $selected = $("#folders li.active").children("a");
+
+        this.send_mb_action(
+            "{0}?name={1}".format($link.attr("href"), $selected.attr("href"))
+        );
     },
 
     delete_message: function(e) {
@@ -679,7 +890,7 @@ Webmail.prototype = {
      * Onclick callback used to load the content of a particular
      * mailbox. (activated when clicking on a mailbox's name)
      */
-    _listmailbox_loader: function(event, obj) {
+    _listmailbox_loader: function(event, obj, reset_page) {
         if (event) {
             event.preventDefault();
         }
@@ -689,9 +900,19 @@ Webmail.prototype = {
         this.navobject.reset().setparams({
            action: "listmailbox",
            mbox: obj.attr("href")
-        }).update();
+        });
+        if (reset_page) {
+            this.navobject.setparam("reset_page", reset_page);
+        }
+        this.navobject.update();
     },
 
+    /**
+     * Click event: list the content of a particular mailbox.
+     *
+     * @this Webmail
+     * @param {Object} event - event object
+     */
     listmailbox_loader: function(event) {
         var $target = get_target(event, "a");
 
@@ -700,7 +921,7 @@ Webmail.prototype = {
             return;
         }
         this.select_mailbox(event.target);
-        this._listmailbox_loader(event, $target);
+        this._listmailbox_loader(event, $target, true);
     },
 
     /*
@@ -752,7 +973,7 @@ Webmail.prototype = {
             $("body").notify("success", gettext("Message sent"), 2000);
         }, this)).fail($.proxy(function(jqxhr) {
             var data = $.parseJSON(jqxhr.responseText);
-            if (data != undefined) {
+            if (data !== undefined) {
                 this.compose_callback(data);
             }
             $("a[name=sendmail]").attr("disabled", null);
@@ -763,22 +984,22 @@ Webmail.prototype = {
      * Loader of the 'viewmail' action
      */
     viewmail_loader: function(e) {
-        var $tr = $(e.target).parent();
+        var $div = $(e.target).parents(".email");
         var curmb = this.get_current_mailbox();
 
         e.preventDefault();
-        if ($tr.hasClass("disabled")) {
+        if ($div.hasClass("disabled")) {
             return;
         }
-        $tr.addClass("disabled");
-        if ($tr.hasClass("unseen")) {
+        $div.addClass("disabled");
+        if ($div.hasClass("unseen")) {
             var mb = this.get_current_mailbox();
             this.change_unseen_messages(mb, -1);
         }
         this.navobject.reset().setparams({
             action: "viewmail",
             mbox: curmb,
-            mailid: $tr.attr("id")
+            mailid: $div.attr("id")
         }).update();
     },
 
@@ -786,37 +1007,39 @@ Webmail.prototype = {
      * Ajax navigation callbacks
      */
 
-    /*
-     * 'listmailbox' callback
+    /**
+     * Navigation callback: listmailbox.
+     *
+     * @this Webmail
+     * @param {Object} resp - ajax response (JSON)
      */
     listmailbox_callback: function(resp) {
         this.store_nav_params();
         this.page_update(resp);
-        $("#emails").htmltable();
+        $("#emails").htmltable({
+            row_selector: "div.email"
+        });
         this.htmltable = $("#emails").data("htmltable");
         this.init_draggables();
-    },
-
-    /*
-     * Callback of the 'compose' action.
-     *
-     * It is also shared with other similar actions : reply, forward.
-     */
-    resize_editor: function() {
-        CKEDITOR.instances[this.editorid].resize("100%",
-            $("#body_container").outerHeight(true));
+        $("#listing").css("overflow-y", "auto");
+        if (this.navobject.hasparam("reset_page")) {
+            this.navobject.delparam("reset_page").update(false, true);
+        }
     },
 
     add_field: function(e, name) {
         e.preventDefault();
         $("label[for=id_" + name + "]").parent().show();
         $(e.target).hide();
-        this.position_body();
+        this.resize_compose_body();
         if (this.editormode == "html") {
             this.resize_editor();
         }
     },
 
+    /**
+     * Compose form loading and initialization.
+     */
     compose_callback: function(resp) {
         this.page_update(resp);
         $("#add_cc").click($.proxy(function(e) { this.add_field(e, "cc"); }, this));
@@ -836,28 +1059,23 @@ Webmail.prototype = {
                 this.resize_editor();
             }, this));
         }
-        if (resp.id != undefined) {
+        if (resp.id !== undefined) {
             this.navobject.setparam("id", resp.id).update(false, true);
         }
-        this.position_body();
+
+        this.resize_compose_body();
     },
 
-    position_body: function() {
-        var $mailheader = $("#mailheader");
-        var top = $mailheader.outerHeight(true);
-
-        $("#body_container").css({
-            top: top + "px"
-        });
-    },
-
-    /*
+    /**
      * Callback of the 'viewmail' action
+     *
+     * @this Webmail
+     * @param {Object} resp - AJAX call response (JSON)
      */
     viewmail_callback: function(resp) {
         this.page_update(resp);
-        $("#listing").css("overflow", "hidden");
-        $("a[name=close]").click($.proxy(function(e) {
+        $("#listing").css("overflow-y", "hidden");
+        $("a[name=back]").click($.proxy(function(e) {
             e.preventDefault();
             this.go_back_to_listing();
         }, this));
@@ -869,7 +1087,7 @@ Webmail.prototype = {
         } else {
             this.htmltable.current_selection().addClass("unseen");
         }
-        if (data.unseen != undefined && data.mbox) {
+        if (data.unseen !== undefined && data.mbox) {
             this.set_unseen_messages(data.mbox, data.unseen);
         }
     },
@@ -927,7 +1145,7 @@ Webmail.prototype = {
     attachments_init: function() {
         $("#submit").click(function(e) {
             e.preventDefault();
-            if ($("#id_attachment").val() == "") {
+            if ($("#id_attachment").val() === "") {
                 return;
             }
             $("#upload_status").css("display", "block");
@@ -935,7 +1153,7 @@ Webmail.prototype = {
             $("#uploadfile").submit();
         });
         $("a[name=delattachment]").click(this.del_attachment);
-        $(".modal").one("hide", this.close_attachments);
+        $(".modal").one("hide.bs.modal", $.proxy(this.close_attachments, this));
     },
 
     _reset_upload_form: function() {
@@ -948,10 +1166,12 @@ Webmail.prototype = {
         var $delbtn = $("<a />", {
             name: "delattachment",
             href: this.options.delattachment_url + "?name=" + tmpname,
-            html: "<i class='icon-remove'></i>"
+            html: "<span class='fa fa-remove'></span>"
         });
         var $label = $("<label />", {html: fname});
-        var $div = $("<div />", {'class': "row-fluid"}).append($delbtn, $label);
+        var $div = $("<div />", {'class': "row"}).append(
+            $("<div />", {"class": "col-sm-12"}).append($delbtn, $label)
+        );
 
         $delbtn.click(this.del_attachment);
         $("#id_attachment").val("");
@@ -974,35 +1194,20 @@ Webmail.prototype = {
         });
     },
 
+    /**
+     * Update the counter of currently attached files.
+     */
+    update_files_counter: function() {
+        var nfiles = $("a[name=delattachment]").length;
+
+        $("#attachment_counter").html("(" + nfiles + ")");
+    },
+
+    /**
+     * Attachments form "on close" callback.
+     */
     close_attachments: function() {
-        var nfiles = 0;
-        var shortlist = "";
-        var html;
-
-        $("a[name=delattachment]").each(function() {
-            var $this = $(this);
-            var $label = $this.next("label");
-
-            nfiles++;
-            if (nfiles <= 2) {
-                if (shortlist != "") {
-                    shortlist += ", ";
-                } else {
-                    shortlist = "(";
-                }
-                shortlist += $label.html();
-                return;
-            }
-            if (nfiles == 3) {
-                shortlist += ", ...";
-            }
-        });
-        if (shortlist != "") {
-            shortlist += ")";
-        }
-        html = interpolate(ngettext("%s file", "%s files", nfiles), [nfiles]);
-        html += " <span class='shortlist'>" + shortlist + "</span>";
-        $("#list").html(html);
+        this.update_files_counter();
     },
 
     /*
@@ -1011,15 +1216,15 @@ Webmail.prototype = {
     init_draggables: function() {
         var plug = this;
 
-        $("td[name=drag]").draggable({
-            opacity: 0.8,
+        $("img[name=drag]").draggable({
+            opacity: 0.9,
             helper: function(e) {
                 var $this = $(this);
-                var $tr = $this.parent();
+                var $row = $this.parents("div.email");
 
-                if (!plug.htmltable.is_selected($tr)) {
-                    var $input = $tr.find('#selection');
-                    plug.htmltable.select_row($tr);
+                if (!plug.htmltable.is_selected($row)) {
+                    var $input = $row.find('input[type=checkbox]');
+                    plug.htmltable.select_row($row);
                     $input.prop('checked', true);
                 }
 
@@ -1051,7 +1256,7 @@ Webmail.prototype = {
 
             drop: function(e, ui) {
                 var $this = $(this);
-                var selection = new Array();
+                var selection = [];
                 var unseen_cnt = 0;
                 var from = plug.get_current_mailbox();
                 var to = gethref($this.find("a"));

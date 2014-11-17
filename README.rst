@@ -19,7 +19,7 @@ easy. Actually, all current features are extensions.
 
 It is written in Python and uses the `Django
 <https://www.djangoproject.com>`_, `jQuery <http://jquery.com>`_ and
-`Bootstap, from Twitter <http://twitter.github.com/bootstrap/>`_
+`Bootstrap, from Twitter <http://twitter.github.com/bootstrap/>`_
 frameworks.
 
 *************
@@ -37,7 +37,7 @@ Main features
 Documentation
 *************
 
-A detailled `documentation <https://modoboa.readthedocs.org/>`_ will help you
+A detailed `documentation <https://modoboa.readthedocs.org/>`_ will help you
 to install, use or extend Modoboa.
 
 *************
@@ -59,7 +59,3 @@ The following external libraries are provided with Modoboa:
    :target: https://crate.io/packages/modoboa/
 .. |travis| image:: https://travis-ci.org/tonioo/modoboa.png?branch=master
    :target: https://travis-ci.org/tonioo/modoboa
-
-.. image:: https://d2weczhvl823v0.cloudfront.net/tonioo/modoboa/trend.png
-   :alt: Bitdeli badge
-   :target: https://bitdeli.com/free

@@ -1,8 +1,11 @@
 # Django settings for {{ name }} project.
 import os
 from logging.handlers import SysLogHandler
+{% if devmode %}
+from modoboa.core.dev_settings import *
+{% endif %}
 
-DEBUG = False
+DEBUG = {{ devmode }}
 TEMPLATE_DEBUG = DEBUG
 
 MODOBOA_DIR = os.path.dirname(__file__)
@@ -83,6 +86,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    "{{ bower_components_dir }}",
 )
 
 # List of finder classes that know how to find static files in
@@ -101,6 +105,18 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+
+    'modoboa.core.context_processors.top_notifications',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -161,7 +177,11 @@ MODOBOA_APPS = (
     'modoboa.extensions.webmail',
     'modoboa.extensions.stats',
     'modoboa.extensions.sievefilters',
+    'modoboa.extensions.radicale',
     {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
+
+    # Tools from here
+    #'modoboa.tools.pfxadmin_migrate',
 )
 
 INSTALLED_APPS += MODOBOA_APPS
@@ -173,6 +193,8 @@ SOUTH_TESTS_MIGRATE = False
 #MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
 
 #DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
+
+MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
 AUTHENTICATION_BACKENDS = (
     'modoboa.lib.authbackends.SimpleBackend',

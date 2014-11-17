@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-15 10:16+0100\n"
+"POT-Creation-Date: 2014-10-29 20:22+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -41,33 +41,49 @@ msgstr ""
 msgid "No domain administrator defined"
 msgstr "Aucun administrateur de domaine défini"
 
-#: extensions/admin/static/admin/js/admin.js:291
+#: extensions/admin/static/admin/js/admin.js:292
 msgid "Do not delete mailbox directory"
 msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:180
+#: extensions/amavis/static/amavis/js/quarantine.js:211
 msgid "Release this selection?"
 msgstr "Relâcher cette sélection?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:184
+#: extensions/amavis/static/amavis/js/quarantine.js:215
 msgid "Delete this selection?"
 msgstr "Supprimer cette sélection?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:203
+#: extensions/amavis/static/amavis/js/quarantine.js:255
+msgid "Mark this selection as spam?"
+msgstr "Marquer cette sélection comme étant du spam?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:270
+msgid "Mark this selection as non-spam?"
+msgstr "Marquer cette sélection comme n'étant pas du spam?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:295
 #: extensions/amavis/static/amavis/js/selfservice.js:17
 msgid "Release this message?"
 msgstr "Relâcher cette message?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:207
+#: extensions/amavis/static/amavis/js/quarantine.js:299
 #: extensions/amavis/static/amavis/js/selfservice.js:21
 msgid "Delete this message?"
 msgstr "Supprimer ce message?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:224
-msgid "View full headers"
-msgstr "Voir les entêtes complets"
+#: extensions/amavis/static/amavis/js/quarantine.js:314
+msgid "Mark as spam?"
+msgstr "Marquer comme spam?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:229
+#: extensions/amavis/static/amavis/js/quarantine.js:330
+msgid "Mark as non-spam?"
+msgstr "Marquer comme non-spam?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:348
+msgid "View full headers"
+msgstr "Afficher tous les entêtes"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:353
 msgid "Hide full headers"
 msgstr "Cacher les entêtes complets"
 
@@ -96,7 +112,7 @@ msgstr "Activer ce jeu de filtres?"
 msgid "active"
 msgstr "actif"
 
-#: extensions/stats/static/stats/js/stats.js:37
+#: extensions/stats/static/stats/js/stats.js:38
 msgid "Search a domain"
 msgstr "Checher un domaine"
 
@@ -108,18 +124,18 @@ msgstr "Supprimer la boite sélectionnée?"
 msgid "Mailbox removed"
 msgstr "Boite aux lettres supprimées"
 
-#: extensions/webmail/static/webmail/js/webmail.js:746
+#: extensions/webmail/static/webmail/js/webmail.js:752
 msgid "Message sent"
 msgstr "Message envoyé"
 
-#: extensions/webmail/static/webmail/js/webmail.js:997
+#: extensions/webmail/static/webmail/js/webmail.js:1003
 #, c-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s fichier"
 msgstr[1] "%s fichiers"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1031
+#: extensions/webmail/static/webmail/js/webmail.js:1037
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"

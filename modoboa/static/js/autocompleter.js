@@ -1,4 +1,6 @@
 (function($) {
+    "use strict";
+
     var Autocompleter = function(element, options) {
         this.initialize(element, options);
     };
@@ -9,13 +11,10 @@
         initialize: function(element, options) {
             this.$element = $(element);
             this.options = $.extend({}, $.fn.autocompleter.defaults, options);
-            this.choices = {
-                value: null
-            };
             if (typeof this.options.choices === "function") {
-                this.options.choices(this.choices);
+                this.choices = this.options.choices();
             } else {
-                this.choices.value = this.options.choices();
+                this.choices = this.options.choices;
             }
             this.$menu =
                 $('<ul class="dropdown-menu autocompleter" data-toggle="dropdown" />');
@@ -54,10 +53,11 @@
             var exp = new RegExp("^" + pattern);
 
             this.$menu.empty();
-            $.each(this.choices.value, $.proxy(function(index, value) {
+            $.each(this.choices, $.proxy(function(index, value) {
                 if (exp.test(value)) {
-                    this.$menu.append($('<li><a href="#" name="' + value
-                        + '">' + value + '</a></li>'));
+                    this.$menu.append(
+                        $('<li><a href="#" name="' + value + '">' + value + '</a></li>')
+                    );
                 }
             }, this));
 
@@ -71,6 +71,7 @@
                 'z-index': 1051
             });
             if (this.$menu.children().length) {
+                this.$menu.children().first().addClass("active");
                 this.$menu.show();
             } else {
                 this.$menu.hide();
@@ -84,7 +85,7 @@
         select_entry: function(evt) {
             if (this.$menu.is(":visible")) {
                 var $link;
-                if (evt != undefined) {
+                if (evt !== undefined) {
                     evt.preventDefault();
                     $link = $(evt.target);
                 } else {
@@ -92,7 +93,7 @@
                 }
                 var curvalue = this.$element.val();
 
-                if (curvalue == undefined || curvalue == "") {
+                if (curvalue === undefined || curvalue === "") {
                     if (this.options.empty_choice) {
                         this.options.empty_choice();
                     }
@@ -111,19 +112,18 @@
         },
 
         activate_next: function() {
-            var active = this.$menu.find('.active').removeClass('active')
-                , next = active.next();
+            var active = this.$menu.find('.active').removeClass('active'),
+                next = active.next();
 
             if (!next.length) {
                 next = $(this.$menu.find('li').first());
             }
-
             next.addClass('active');
         },
 
         activate_prev: function() {
-            var active = this.$menu.find('.active').removeClass('active')
-                , prev = active.prev();
+            var active = this.$menu.find('.active').removeClass('active'),
+                prev = active.prev();
 
             if (!prev.length) {
                 prev = this.$menu.find('li').last();
@@ -148,7 +148,7 @@
                     evt.preventDefault();
                     this.activate_next();
                     break;
-            };
+            }
         },
 
         keyup: function(evt) {
@@ -170,7 +170,7 @@
 
             default:
                 this.check_user_input();
-            };
+            }
         }
     };
 

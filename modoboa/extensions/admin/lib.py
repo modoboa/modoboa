@@ -2,11 +2,10 @@
 from functools import wraps
 from itertools import chain
 from django.db.models import Q
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from modoboa.core.models import User
-from modoboa.lib import parameters, events
+from modoboa.lib import events
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.emailutils import split_mailbox
 from modoboa.extensions.admin.models import (
@@ -28,46 +27,6 @@ def needs_mailbox():
             raise PermDeniedException(_("A mailbox is required"))
         return wrapped_f
     return decorator
-
-
-def get_sort_order(qdict, default, allowed_values=None):
-    """Return a sort order from a querydict object
-
-    :param QueryDict qdict: the object to analyse
-    :param string default: the default sort order if no one is found
-    :param list allowed_values: an optional list of allowed values
-    :return: a 2uple of strings
-    """
-    sort_order = qdict.get("sort_order", default)
-    if sort_order.startswith("-"):
-        sort_dir = "-"
-        sort_order = sort_order[1:]
-    else:
-        sort_dir = ""
-    if allowed_values is not None and not sort_order in allowed_values:
-        return (default, "")
-    return (sort_order, sort_dir)
-
-
-def get_listing_page(objects, pagenum):
-    """Return specific a listing page.
-
-    A page contains a limited number of elements (see
-    ITEMS_PER_PAGE). If the given page number is wrong, the first page
-    will be always returned.
-
-    :param list objects: object list to paginate
-    :param int pagenum: page number
-    :return: a ``Page`` object
-    """
-    paginator = Paginator(
-        objects, int(parameters.get_admin("ITEMS_PER_PAGE", app="core"))
-    )
-    try:
-        page = paginator.page(int(pagenum))
-    except (EmptyPage, PageNotAnInteger, ValueError):
-        page = paginator.page(paginator.num_pages)
-    return page
 
 
 def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
@@ -137,3 +96,23 @@ def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
         'ExtraDomainEntries', user, domfilter, searchquery, **extrafilters
     )
     return chain(domains, extra_domain_entries)
+
+
+def check_if_domain_exists(name, extra_checks=None):
+    """Check if a domain already exists.
+
+    We not only look for domains, we also look for every object that
+    could conflict with a domain (domain alias, etc.)
+
+    """
+    dtypes = events.raiseQueryEvent('CheckDomainName')
+    if extra_checks is not None:
+        dtypes = extra_checks + dtypes
+    for dtype, label in dtypes:
+        try:
+            dtype.objects.get(name=name)
+        except dtype.DoesNotExist:
+            pass
+        else:
+            return label
+    return None

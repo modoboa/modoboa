@@ -1,0 +1,20 @@
+<ul id="top_notifications" class="nav navbar-nav navbar-right{% if not top_notifications %} hidden{% endif %}">
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <span class="fa fa-bell"></span> <span id="alerts-counter" class="label label-danger">{{ top_notifications|length }}</span>
+    </a>
+    <ul class="dropdown-menu">
+      {% for notification in top_notifications %}
+      <li>
+        <a id="{{ notification.id }}" href="{{ notification.url }}">
+          {% if notification.counter %}
+          <span class="label label-{{ notification.level }}"> {{ notification.counter }}</span> {{ notification.text|safe }}
+          {% else %}
+          <span class="fa fa-info-circle"></span> {{ notification.text|safe }}
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </li>
+</ul>

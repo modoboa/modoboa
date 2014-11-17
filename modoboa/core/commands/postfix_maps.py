@@ -10,19 +10,29 @@ from . import Command
 
 class MapFilesGenerator(object):
 
-    def __init__(self):
+    def __init__(self, dbinfo=None):
+        """Constructor.
+        """
         self.template = Template("""user = {{ dbuser }}
 password = {{ dbpass }}
 dbname = {{ dbname }}
 hosts = {{ dbhost }}
 query = {{ query|safe }}
 """)
-        self.tpl_context = {
-            'dbhost': raw_input('Database host: '),
-            'dbname': raw_input('Database name: '),
-            'dbuser': raw_input('Username: '),
-            'dbpass': getpass.getpass('Password: ')
-        }
+        if dbinfo is None:
+            self.tpl_context = {
+                'dbhost': raw_input('Database host: '),
+                'dbname': raw_input('Database name: '),
+                'dbuser': raw_input('Username: '),
+                'dbpass': getpass.getpass('Password: ')
+            }
+        else:
+            self.tpl_context = {
+                'dbhost': dbinfo['HOST'],
+                'dbname': dbinfo['NAME'],
+                'dbuser': dbinfo['USER'],
+                'dbpass': dbinfo['PASSWORD']
+            }
         if not self.tpl_context['dbhost']:
             self.tpl_context['dbhost'] = '127.0.0.1'
 
@@ -77,13 +87,18 @@ query = {{ query|safe }}
 
 class SQLiteMapFilesGenerator(MapFilesGenerator):
 
-    def __init__(self):
+    def __init__(self, dbinfo=None):
         self.template = Template("""dbpath = {{ dbpath }}
 query = {{ query|safe }}
 """)
-        self.tpl_context = {
-            'dbpath': raw_input('Database path: ')
-        }
+        if dbinfo is None:
+            self.tpl_context = {
+                'dbpath': raw_input('Database path: ')
+            }
+        else:
+            self.tpl_context = {
+                'dbpath': dbinfo['NAME']
+            }
 
 
 class MapFile(object):
@@ -116,6 +131,13 @@ class DomainAliasesMailboxesMap(MapFile):
     mysql = "(SELECT concat(mb.address, '@', dom.name) FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_mailbox mb ON mb.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND mb.address='%u') UNION (SELECT concat(al.address, '@', dom.name) FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_alias al ON al.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND al.address='%u')"
     postgres = "(SELECT mb.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_mailbox mb ON mb.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled AND mb.address='%u') UNION (SELECT al.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_alias al ON al.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled AND al.address='%u')"
     sqlite = "(SELECT mb.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_mailbox mb ON mb.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND mb.address='%u') UNION (SELECT al.address || '@' || dom.name FROM admin_domainalias domal INNER JOIN admin_domain dom ON domal.target_id=dom.id INNER JOIN admin_alias al ON al.domain_id=dom.id WHERE domal.name='%d' AND dom.enabled=1 AND al.address='%u')"
+
+
+class MailboxesSelfAliasesMap(MapFile):
+    filename = "sql-mailboxes-self-aliases.cf"
+    mysql = "SELECT email FROM core_user u INNER JOIN admin_mailbox mb ON mb.user_id=u.id WHERE u.email='%s' AND u.is_active=1"
+    postgres = "SELECT email FROM core_user u INNER JOIN admin_mailbox mb ON mb.user_id=u.id WHERE u.email='%s' AND u.is_active"
+    sqlite = "SELECT email FROM core_user u INNER JOIN admin_mailbox mb ON mb.user_id=u.id WHERE u.email='%s' AND u.is_active=1"
 
 
 class CatchallAliasesMap(MapFile):
@@ -195,13 +217,29 @@ class PostfixMapsCommand(Command):
             help='Used database type'
         )
         self._parser.add_argument(
+            '--dburl', type=str, nargs=1, default=None,
+            help="url of Modoboa's database"
+        )
+        self._parser.add_argument(
             '--categories', type=str, nargs='*', default=['std'],
             help='Map file categories to generate (choices: std, autoreply)'
         )
 
     def handle(self, parsed_args):
+        """Command entry point.
+        """
+        dbinfo = None
+        if parsed_args.dburl:
+            import dj_database_url
+            dbinfo = dj_database_url.config(default=parsed_args.dburl[0])
+            if 'sqlite' in dbinfo['ENGINE']:
+                parsed_args.dbtype = 'sqlite'
+            elif 'psycopg2' in dbinfo['ENGINE']:
+                parsed_args.dbtype = 'postgres'
+            else:
+                parsed_args.dbtype = 'mysql'
         if parsed_args.dbtype == 'sqlite':
-            g = SQLiteMapFilesGenerator()
+            g = SQLiteMapFilesGenerator(dbinfo)
         else:
-            g = MapFilesGenerator()
+            g = MapFilesGenerator(dbinfo)
         g.render(parsed_args)

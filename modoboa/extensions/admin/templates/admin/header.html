@@ -1,7 +1,12 @@
 {% extends "twocols.html" %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}admin/css/admin.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/listing.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}admin/js/admin.js"></script>
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/admin.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin.js' %}"></script>
 {% endblock %}

@@ -68,6 +68,14 @@ The *admin* application exposes several parameters, they are presented below:
 
 .. note::
 
+   If you are not familiar with virtual domain hosting, you should
+   take a look at `postfix's documentation
+   <http://www.postfix.org/VIRTUAL_README.html>`_. This `How to
+   <https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto>`_
+   also contains useful information.
+
+.. note::
+
    A random secret key will be generated each time the *Parameters*
    page is refreshed and until you save parameters at least once.
 
@@ -75,6 +83,20 @@ The *admin* application exposes several parameters, they are presented below:
 
    Specific LDAP parameters are also available, see :ref:`LDAP
    authentication <ldap_auth>`.
+
+***********
+Media files
+***********
+
+Modoboa uses a specific directory to upload files (ie. when the
+webmail is in use) or to create ones (ex: graphical statistics). This
+directory is named ``media`` and is located inside modoboa's
+installation directory (called ``modoboa_site`` in this
+documentation).
+
+To work properly, the system user which runs modoboa (``www-data``,
+``apache``, whatever) must have write access to this directory.
+
 
 *************
 Customization
@@ -252,6 +274,14 @@ Modoboa should connect to your LDAP server. They are described just below:
 |                    |                                 |                    |
 |                    |                                 |                    |
 +--------------------+---------------------------------+--------------------+
+|Domain/mailbox      |Automatically create a domain and|yes                 |
+|creation            |a mailbox when a new user is     |                    |
+|                    |created just after the first     |                    |
+|                    |successful authentication. You   |                    |
+|                    |will generally want to disable   |                    |
+|                    |this feature when the relay      |                    |
+|                    |domains extension is in use      |                    |
++--------------------+---------------------------------+--------------------+
 
 
 If you need additional parameters, you will find a detailled
@@ -297,6 +327,9 @@ online panel.
 To use it, you can setup a cron job to run every night::
 
   0 0 * * * <modoboa_site>/manage.py cleanlogs
+  #
+  # Or like this if you use a virtual environment:
+  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py cleanlogs
 
 Cleaning the session table
 ==========================
@@ -311,3 +344,6 @@ cleanup``. That script deletes any session in the session table whose
 For example, you could setup a cron job to run this script every night::
 
   0 0 * * * <modoboa_site>/manage.py cleanup
+  #
+  # Or like this if you use a virtual environment:
+  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py cleanup

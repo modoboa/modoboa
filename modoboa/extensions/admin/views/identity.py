@@ -1,11 +1,15 @@
-import reversion
+"""
+Identity related views.
+"""
 from django.shortcuts import render
 from django.utils.translation import ugettext as _, ungettext
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
 from django.views.decorators.csrf import ensure_csrf_cookie
+
+import reversion
+
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest
@@ -13,15 +17,14 @@ from modoboa.lib.exceptions import (
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
-from modoboa.lib.formutils import CreationWizard
-from modoboa.lib.templatetags.lib_tags import pagination_bar
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import Mailbox, Domain
-from modoboa.extensions.admin.lib import (
-    get_sort_order, get_listing_page, get_identities
+from modoboa.lib.listing import (
+    get_sort_order, get_listing_page
 )
+from modoboa.extensions.admin.lib import get_identities
 from modoboa.extensions.admin.forms import (
-    AccountForm, AccountFormGeneral, AccountFormMail
+    AccountForm
 )
 
 
@@ -42,17 +45,80 @@ def _identities(request):
     else:
         objects = sorted(idents_list, key=lambda o: o.tags[0],
                          reverse=sort_dir == '-')
+    context = {
+        "handle_mailboxes": parameters.get_admin(
+            "HANDLE_MAILBOXES", raise_error=False)
+    }
     page = get_listing_page(objects, request.GET.get("page", 1))
-    return render_to_json_response({
-        "table": _render_to_string(request, "admin/identities_table.html", {
-            "identities": page.object_list,
-            "tableid": "objects_table"
-        }),
-        "handle_mailboxes": parameters.get_admin("HANDLE_MAILBOXES",
-                                                 raise_error=False),
-        "page": page.number,
-        "paginbar": pagination_bar(page)
-    })
+    if page is None:
+        context["length"] = 0
+    else:
+        context["headers"] = _render_to_string(
+            request, "admin/identity_headers.html", {})
+        context["rows"] = _render_to_string(
+            request, "admin/identities_table.html", {
+                "identities": page.object_list
+            }
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
+
+
+@login_required
+@permission_required("admin.add_mailbox")
+def list_quotas(request):
+    from modoboa.lib.dbutils import db_type
+
+    sort_order, sort_dir = get_sort_order(request.GET, "address")
+    mboxes = Mailbox.objects.get_for_admin(
+        request.user, request.GET.get("searchquery", None)
+    )
+    mboxes = mboxes.exclude(quota=0)
+    if sort_order in ["address", "quota", "quota_value__bytes"]:
+        mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
+    elif sort_order == "quota_usage":
+        where = "admin_mailbox.address||'@'||admin_domain.name"
+        db_type = db_type()
+        if db_type == "postgres":
+            select = '(admin_quota.bytes::float / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
+        else:
+            select = 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'
+            if db_type == "mysql":
+                where = "CONCAT(admin_mailbox.address,'@',admin_domain.name)"
+        mboxes = mboxes.extra(
+            select={'quota_usage': select},
+            where=["admin_quota.username=%s" % where],
+            tables=["admin_quota", "admin_domain"],
+            order_by=["%s%s" % (sort_dir, sort_order)]
+        )
+    else:
+        raise BadRequest(_("Invalid request"))
+    page = get_listing_page(mboxes, request.GET.get("page", 1))
+    context = {}
+    if page is None:
+        context["length"] = 0
+    else:
+        context["headers"] = _render_to_string(
+            request, "admin/quota_headers.html", {})
+        context["rows"] = _render_to_string(
+            request, "admin/quotas.html", {
+                "mboxes": page
+            }
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
+
+
+@login_required
+@user_passes_test(
+    lambda u: u.has_perm("admin.add_user") or u.has_perm("admin.add_alias")
+    or u.has_perm("admin.add_mailbox")
+)
+def get_next_page(request):
+    """Return the next page of the identity list."""
+    if request.GET.get("objtype", "identity") == "identity":
+        return _identities(request)
+    return list_quotas(request)
 
 
 @login_required
@@ -77,44 +143,9 @@ def accounts_list(request):
 
 
 @login_required
-@permission_required("admin.add_mailbox")
-def list_quotas(request, tplname="admin/quotas.html"):
-    from modoboa.lib.dbutils import db_type
-
-    sort_order, sort_dir = get_sort_order(request.GET, "address")
-    mboxes = Mailbox.objects.get_for_admin(
-        request.user, request.GET.get("searchquery", None)
-    )
-    mboxes = mboxes.exclude(quota=0)
-    if sort_order in ["address", "quota", "quota_value__bytes"]:
-        mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
-    elif sort_order == "quota_usage":
-        if db_type() == "postgres":
-            select = '(admin_quota.bytes::float / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
-        else:
-            select = 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'
-        mboxes = mboxes.extra(
-            select={'quota_usage': select},
-            where=["admin_quota.mbox_id=admin_mailbox.id"],
-            tables=["admin_quota"],
-            order_by=["%s%s" % (sort_dir, sort_order)]
-        )
-    else:
-        raise BadRequest(_("Invalid request"))
-    page = get_listing_page(mboxes, request.GET.get("page", 1))
-    return render_to_json_response({
-        "page": page.number,
-        "paginbar": pagination_bar(page),
-        "table": _render_to_string(request, tplname, {
-            "mboxes": page
-        })
-    })
-
-
-@login_required
 @permission_required("core.add_user")
 @reversion.create_revision()
-def newaccount(request, tplname='common/wizard_forms.html'):
+def newaccount(request):
     """Create a new account.
 
     .. note:: An issue still remains int this code: if all validation
@@ -123,44 +154,8 @@ def newaccount(request, tplname='common/wizard_forms.html'):
        doesn't work very well with nested functions. Need to wait for
        django 1.6 and atomicity.
     """
-    cwizard = CreationWizard()
-    cwizard.add_step(AccountFormGeneral, _("General"),
-                     [dict(classes="btn-inverse next", label=_("Next"))],
-                     new_args=[request.user])
-    cwizard.add_step(AccountFormMail, _("Mail"),
-                     [dict(classes="btn-primary submit", label=_("Create")),
-                      dict(classes="btn-inverse prev", label=_("Previous"))],
-                     formtpl="admin/mailform.html")
-
-    if request.method == "POST":
-        retcode, data = cwizard.validate_step(request)
-        if retcode == -1:
-            raise BadRequest(data)
-        if retcode == 1:
-            return render_to_json_response(
-                {'title': cwizard.get_title(data + 1), 'stepid': data}
-            )
-        if retcode == 2:
-            genform = cwizard.steps[0]["form"]
-            account = genform.save()
-            account.post_create(request.user)
-            mailform = cwizard.steps[1]["form"]
-            mailform.save(request.user, account)
-            return render_to_json_response(_("Account created"))
-        return render_to_json_response({
-            'stepid': data, 'form_errors': cwizard.errors
-        }, status=400)
-
-    ctx = {
-        'title': _("New account"),
-        'action': reverse(newaccount),
-        'formid': 'newaccount_form',
-        'submit_label': _("Create")
-    }
-    cwizard.create_forms()
-    ctx.update(steps=cwizard.steps)
-    ctx.update(subtitle="1. %s" % cwizard.steps[0]['title'])
-    return render(request, tplname, ctx)
+    from modoboa.extensions.admin.forms import AccountWizard
+    return AccountWizard(request).process()
 
 
 @login_required
@@ -176,32 +171,7 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 
     instances = dict(general=account, mail=mb, perms=account)
     events.raiseEvent("FillAccountInstances", request.user, account, instances)
-
-    if request.method == "POST":
-        classes = {}
-        form = AccountForm(request.user, request.POST,
-                           instances=instances, classes=classes)
-        account.oldgroup = account.group
-        if form.is_valid(mandatory_only=True):
-            form.save_general_form()
-            if form.is_valid(optional_only=True):
-                events.raiseEvent("AccountModified", account, form.account)
-                form.save()
-                return render_to_json_response(_("Account updated"))
-        return render_to_json_response({'form_errors': form.errors}, status=400)
-
-    ctx = {
-        'title': account.username,
-        'formid': 'accountform',
-        'action': reverse(editaccount, args=[accountid]),
-        'action_label': _('Update'),
-        'action_classes': 'submit',
-        'tabs': AccountForm(request.user, instances=instances)
-    }
-    active_tab_id = request.GET.get("active_tab", "default")
-    if active_tab_id != "default":
-        ctx["tabs"].active_id = active_tab_id
-    return render(request, tplname, ctx)
+    return AccountForm(request, instances=instances).process()
 
 
 @login_required

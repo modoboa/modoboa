@@ -94,7 +94,20 @@ class User(PermissionsMixin):
         super(User, self).delete()
 
     def _crypt_password(self, raw_value):
-        scheme = parameters.get_admin("PASSWORD_SCHEME")
+        """Crypt the local password using the appropriate scheme.
+
+        In case we don't find the scheme (for example when the
+        management framework is used), we load the parameters and try
+        one more time.
+
+        """
+        try:
+            scheme = parameters.get_admin("PASSWORD_SCHEME")
+        except parameters.NotDefined:
+            from modoboa.core import load_core_settings
+            load_core_settings()
+            scheme = parameters.get_admin("PASSWORD_SCHEME")
+
         if type(raw_value) is unicode:
             raw_value = raw_value.encode("utf-8")
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
@@ -405,6 +418,9 @@ class ObjectAccess(models.Model):
 
 
 class Extension(models.Model):
+
+    """A modoboa extension."""
+
     name = models.CharField(max_length=150)
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
@@ -431,9 +447,11 @@ class Extension(models.Model):
         path = os.path.realpath(sys.modules[modname].__file__)
         self.extdir = os.path.dirname(path)
 
-    def on(self):
-        self.enabled = True
-        self.save()
+    def on(self, update_db=True):
+        """Activate this extension."""
+        if update_db:
+            self.enabled = True
+            self.save()
 
         self.__get_ext_instance()
         self.instance.load()
@@ -445,14 +463,16 @@ class Extension(models.Model):
 
         events.raiseEvent("ExtEnabled", self)
 
-    def off(self):
+    def off(self, update_db=True):
+        """Disable this extension."""
         self.__get_ext_instance()
         if self.instance is None:
             return
         self.instance.destroy()
 
-        self.enabled = False
-        self.save()
+        if update_db:
+            self.enabled = False
+            self.save()
 
         if self.instance.needs_media:
             path = os.path.join(settings.MEDIA_ROOT, self.name)

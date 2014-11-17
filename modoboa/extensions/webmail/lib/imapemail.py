@@ -20,9 +20,11 @@ from .utils import decode_payload
 
 
 class ImapEmail(Email):
+
     """
     A class to represent an email fetched from an IMAP server.
     """
+
     headernames = [
         ('From', True),
         ('To', True),
@@ -206,6 +208,9 @@ class ImapEmail(Email):
 
 
 class Modifier(ImapEmail):
+
+    """Message modifier."""
+
     def __init__(self, form, *args, **kwargs):
         kwargs["dformat"] = "EDITOR"
         super(Modifier, self).__init__(*args, **kwargs)
@@ -216,10 +221,20 @@ class Modifier(ImapEmail):
         self.body = re.sub("</?pre>", "", self.body)
 
     def _modify_html(self):
-        pass
+        if self.dformat == "html" and self.mformat != self.dformat:
+            self.body = re.sub("</?pre>", "", self.body)
+            self.body = re.sub("\n", "<br>", self.body)
+
+    @property
+    def subject(self):
+        """Just a shortcut to return a subject in any case."""
+        return self.Subject if hasattr(self, "Subject") else ""
 
 
 class ReplyModifier(Modifier):
+
+    """Modify a message to reply to it."""
+
     headernames = ImapEmail.headernames + \
         [("Reply-To", True),
          ("Message-ID", False)]
@@ -246,11 +261,11 @@ class ReplyModifier(Modifier):
                 if self.form.fields["cc"].initial != "":
                     self.form.fields["cc"].initial += ", "
                 self.form.fields["cc"].initial += tmp.fulladdress
-        m = re.match(r"re\s*:\s*.+", self.Subject.lower())
+        m = re.match(r"re\s*:\s*.+", self.subject.lower())
         if m:
-            self.form.fields["subject"].initial = self.Subject
+            self.form.fields["subject"].initial = self.subject
         else:
-            self.form.fields["subject"].initial = "Re: %s" % self.Subject
+            self.form.fields["subject"].initial = "Re: %s" % self.subject
 
     def _modify_plain(self):
         super(ReplyModifier, self)._modify_plain()
@@ -264,10 +279,15 @@ class ReplyModifier(Modifier):
 
 
 class ForwardModifier(Modifier):
+
+    """
+    Modify a message so it can be forwarded.
+    """
+
     def __init__(self, *args, **kwargs):
         super(ForwardModifier, self).__init__(*args, **kwargs)
         self._header()
-        self.form.fields["subject"].initial = "Fwd: %s" % self.Subject
+        self.form.fields["subject"].initial = "Fwd: %s" % self.subject
 
     def __getfunc(self, name):
         return getattr(self, "%s_%s" % (name, self.dformat))
@@ -275,7 +295,7 @@ class ForwardModifier(Modifier):
     def _header(self):
         self.textheader = self.__getfunc("_header_begin")() + "\n"
         self.textheader += \
-            self.__getfunc("_header_line")(_("Subject"), self.Subject)
+            self.__getfunc("_header_line")(_("Subject"), self.subject)
         self.textheader += \
             self.__getfunc("_header_line")(_("Date"), self.Date)
         for hdr in ["From", "To", "Reply-To"]:

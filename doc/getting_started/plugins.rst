@@ -99,8 +99,51 @@ This plugin provides a simple management frontend for `amavisd-new
    you're planning to use the :ref:`selfservice`, you'll need version
    **2.8.0**.
 
-Database
-========
+Quick Amavis setup
+==================
+
+By default, amavis doesn't use a database. To configure this
+behaviour, you first need to create a dedicated database. This step is a
+bit manual since no *ready-to-use* SQL schema is provided by
+amavis. The information is located inside README files, one for `MySQL
+<http://www.amavis.org/README.sql-mysql.txt>`_ and one for `PostgreSQL
+<http://www.amavis.org/README.sql-pg.txt>`_.
+
+Then, you must tell amavis to use this database for lookups and
+quarantined messages storing. Here is a working configuration sample::
+
+  @lookup_sql_dsn =
+    (['DBI:<driver>:database=<database>;host=<dbhost>;port=<dbport>', '<dbuser>', '<password>]']);
+
+  @storage_sql_dsn =
+    (['DBI:<driver>:database=<database>;host=<dbhost>;port=<dbport>', '<dbuser>', '<password>]']);
+
+  # PostgreSQL users NEED this parameter!
+  # MySQL users only need this parameter is email addresses are stored
+  # using the VARBINARY type.
+  $sql_allow_8bit_address = 1;
+
+  $virus_quarantine_method = 'sql:';
+  $spam_quarantine_method = 'sql:';
+  $banned_files_quarantine_method = 'sql:';
+  $bad_header_quarantine_method = 'sql:';
+
+  $virus_quarantine_to = 'virus-quarantine';
+  $banned_quarantine_to = 'banned-quarantine';
+  $bad_header_quarantine_to = 'bad-header-quarantine';
+  $spam_quarantine_to = 'spam-quarantine';
+
+Replace values between ``<>`` by yours. To know how to configure
+amavis to allow quarantined messages release, read this :ref:`section
+<amavis_release>`.
+
+.. note::
+
+   Amavis configuration allows for separate lookup and storage
+   databases but Modoboa doesn't support it yet.
+
+Connect Modoboa and Amavis
+==========================
 
 You must tell to Modoboa where it can find the amavis
 database. Inside :file:`settings.py`, add a new connection to the
@@ -120,17 +163,6 @@ database. Inside :file:`settings.py`, add a new connection to the
 
 Replace values between ``<>`` with yours.
 
-.. note::
-
-   Modoboa doesn't create amavis tables. You need to install them
-   following the `official documentation
-   <http://www.amavis.org/#doc>`_.
-
-.. note::
-
-   Amavis configuration allows for separate lookup and storage
-   databases but Modoboa doesn't support it yet.
-
 Cleanup
 -------
 
@@ -140,12 +172,17 @@ purge the quarantine database. To use it, add the following line
 inside root's crontab::
 
   0 0 * * * <modoboa_site>/manage.py qcleanup
+  #
+  # Or like this if you use a virtual environment:
+  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py qcleanup
 
 Replace ``modoboa_site`` with the path of your Modoboa instance.
 
 By default, messages older than 14 days are automatically purged. You
 can modify this value by changing the ``MAX_MESSAGES_AGE`` parameter
 in the online panel.
+
+.. _amavis_release:
 
 Release messages
 ================
@@ -206,6 +243,9 @@ administrators or domain administrators. To use it, add the following
 example line to root's crontab::
 
   0 12 * * * <modoboa_site>/manage.py amnotify --baseurl='<modoboa_url>'
+  #
+  # Or like this if you use a virtual environment:
+  # 0 12 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py amnotify --baseurl='<modoboa_url>'
 
 You are free to change the frequency.
 
@@ -238,7 +278,7 @@ feature:
 Self-service mode
 =================
 
-The *self-service* mode let users act on quarantined messages without
+The *self-service* mode lets users act on quarantined messages without
 beeing authenticated. They can:
 
 * View messages
@@ -279,7 +319,7 @@ files (see `rrdtool <http://oss.oetiker.ch/rrdtool/>`_) and then
 generates graphics in PNG format.
 
 To use it, go to the online parameters panel and adapt the following
-ones to your environnement:
+ones to your environment:
 
 +--------------------+--------------------+--------------------------+
 |Name                |Description         |Default value             |
@@ -307,6 +347,9 @@ To finish, you need to collect information periodically in order to
 feed the RRD files. Add the following line into root's crontab::
 
   */5 * * * * <modoboa_site>/manage.py logparser &> /dev/null
+  #
+  # Or like this if you use a virtual environment:
+  # 0/5 * * * * <virtualenv path/bin/python> <modoboa_site>/manage.py logparser &> /dev/null
 
 Replace ``<modoboa_site>`` with the path of your Modoboa instance.
 

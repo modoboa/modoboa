@@ -10,7 +10,7 @@ def menu(target, user):
     return [
         {"name": "stats",
          "label": _("Statistics"),
-         "url": reverse('fullindex')}
+         "url": reverse('stats:fullindex')}
     ]
 
 

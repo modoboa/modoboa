@@ -32,7 +32,7 @@ class DomainAliasTestCase(ModoTestCase):
         values = dict(name=dom.name, quota=dom.quota, enabled=dom.enabled,
                       aliases="domalias.net", aliases_1="domalias.com")
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.editdomain",
+            reverse("admin:domain_change",
                     args=[dom.id]),
             values
         )
@@ -40,7 +40,7 @@ class DomainAliasTestCase(ModoTestCase):
 
         del values["aliases_1"]
         self.ajax_post(
-            reverse("modoboa.extensions.admin.views.domain.editdomain",
+            reverse("admin:domain_change",
                     args=[dom.id]),
             values
         )

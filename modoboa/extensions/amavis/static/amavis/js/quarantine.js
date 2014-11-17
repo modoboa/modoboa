@@ -1,3 +1,9 @@
+/**
+ * Return an instance of Quarantine.
+ *
+ * @constructor
+ * @param {Object} options - instance options
+ */
 var Quarantine = function(options) {
     Listing.call(this, options);
 };
@@ -6,24 +12,38 @@ Quarantine.prototype = {
     constructor: Quarantine,
 
     defaults: {
-        deflocation: "listing"
+        deflocation: "listing",
+        main_table_id: "emails",
+        scroll_container: "#listing",
+        navigation_params: ["sort_order", "pattern", "criteria", "msgtype"],
+        eor_message: gettext("No more message to show")
     },
 
     initialize: function(options) {
-        Listing.prototype.initialize.call(this, options);
-        this.options = $.extend({}, this.defaults, this.options);
+        this.options = $.extend({}, this.defaults, options);
         this.options.defcallback = $.proxy(this.listing_cb, this);
-        this.navobj = new History(this.options);
-
+        Listing.prototype.initialize.call(this, this.options);
         this.register_navcallbacks();
         this.listen();
         this.set_msgtype();
 
         $(document).on('click', '#selectall', this.toggle_selection);
-        $("#searchfield").searchbar({navobj: this.navobj});
+        this.initialize_searchfield();
     },
 
-    /*
+    /**
+     * Search field initialization.
+     */
+    initialize_searchfield: function() {
+        $("#searchfield").searchbar({
+            navobj: this.navobj,
+            pattern_changed: function(navobj) {
+                navobj.setparam("reset_page", "true");
+            }
+        });
+    },
+
+    /**
      * Activate the button corresponding to the current message type
      * filter. If no message type is found, the 'All' button is
      * selected.
@@ -31,28 +51,39 @@ Quarantine.prototype = {
     set_msgtype: function() {
         var msgtype = this.navobj.getparam('msgtype');
 
-        $("button[name*=msgtype]").removeClass('active');
-        if (msgtype != undefined) {
-            $("button[name=msgtype_" + msgtype + "]").addClass('active');
+        $("input[name*=msgtype]").attr("checked", false)
+            .parent().removeClass('active');
+        
+        if (msgtype !== undefined) {
+            $("input[name=msgtype_" + msgtype + "]").attr("checked", true)
+                .parent().addClass('active');
         } else {
-            $("button[name=msgtype_all]").addClass('active');
+            $("button[name=msgtype_all]").attr("checked", true)
+                .parent().addClass('active');
         }
     },
 
+    /**
+     * Update the main page content.
+     *
+     * @this Quarantine
+     * @param {Object} data - new content
+     */
     update_page: function(data) {
-        if (data.menu != undefined) {
+        if (data.menu !== undefined) {
             $("#menubar").html(data.menu);
-            $("#searchfield").searchbar({navobj: this.navobj});
+            this.initialize_searchfield();
         }
-        if (data.listing != undefined) {
+
+        if (data.listing !== undefined) {
             $("#listing").html(data.listing);
-            $("#listing").css({
-                top: $("#menubar").outerHeight() + 60 + "px",
-                bottom: $("#bottom-bar").outerHeight() + "px",
-                overflow: "auto"
-            });
         }
-        this.update_listing(data);
+        if (this.navobj.getbaseurl() == "listing") {
+            this.update_listing(data);
+            $(this.options.scroll_container).scrollTop(10);
+        } else {
+            this.update_listing(data, false);
+        }
     },
 
     listen: function() {
@@ -62,18 +93,52 @@ Quarantine.prototype = {
             $.proxy(this.release_selection, this));
         $(document).on("click", "a[name=delete-multi]",
             $.proxy(this.delete_selection, this));
+        $(document).on("click", "a[name=mark-as-spam-multi]",
+            $.proxy(this.mark_selection_as_spam, this));
+        $(document).on("click", "a[name=mark-as-ham-multi]",
+            $.proxy(this.mark_selection_as_ham, this));
         $(document).on("click", "a[name=viewrequests]",
             $.proxy(this.view_requests, this));
         $(document).on("click", "a[name=release]", $.proxy(this.release, this));
         $(document).on("click", "a[name=delete]", $.proxy(this.delete, this));
+        $(document).on("click", "a[name=mark-as-spam]",
+            $.proxy(this.mark_as_spam, this));
+        $(document).on("click", "a[name=mark-as-ham]",
+            $.proxy(this.mark_as_ham, this));
         $(document).on("click", "a[name=headers]", $.proxy(this.headers, this));
         $(document).on("click", "td[name=type] span", $.proxy(this.filter_by_type, this));
-        $(document).on("click", "#filters button", $.proxy(this.filter_by_type, this));
+        $(document).on("click", "#filters label", $.proxy(this.filter_by_type, this));
     },
 
     load_page: function(e) {
         Listing.prototype.load_page.apply(this, arguments);
         this.navobj.delparam("rcpt").update();
+    },
+
+    /**
+     * Return extra arguments used to fetch a page.
+     *
+     * @this Listing
+     */
+    get_load_page_args: function() {
+        var args = Listing.prototype.get_load_page_args.call(this);
+
+        args.scroll = true;
+        return args;
+    },
+
+    /**
+     * Calculate the bottom position of the scroll container.
+     *
+     * @param {Object} $element - scroll container object
+     */
+    calculate_bottom: function($element) {
+        var emails_height = $("#emails").height();
+
+        if (!emails_height) {
+            return undefined;
+        }
+        return $("#emails").height() - $element.height();
     },
 
     view_requests: function(e) {
@@ -134,13 +199,22 @@ Quarantine.prototype = {
         }
     },
 
-    /*
+    /**
      * Filter listing by message type (spam, virus, etc.)
+     *
+     * @param {Object} evt - event object
      */
     filter_by_type: function(evt) {
-        var msgtype = $(evt.target).html().trim();
+        var $target = $(evt.target);
+        var msgtype;
 
-        if (msgtype != 'All') {
+        if ($target.is("span")) {
+            msgtype = $target.html().trim();
+        } else {
+            msgtype = $target.children("input").attr("name").replace("msgtype_", "");
+        }
+
+        if (msgtype != 'all') {
             this.navobj.setparam('msgtype', msgtype);
         } else {
             this.navobj.delparam('msgtype');
@@ -148,14 +222,12 @@ Quarantine.prototype = {
         this.navobj.update();
     },
 
-    _send_selection: function(e, name, message) {
-        var $link = $(e.target);
-
-        e.preventDefault();
-        if (!this.htmltable.current_selection().length ||
-            !confirm(message)) {
-            return;
-        }
+    /**
+     * Return the list of currently selected messages.
+     *
+     * @return {Array} - list of message IDs
+     */
+    get_current_selection: function() {
         var selection = [];
 
         this.htmltable.current_selection().each(function() {
@@ -168,12 +240,30 @@ Quarantine.prototype = {
                 selection.push($tr.attr("id"));
             }
         });
+        return selection;
+    },
+
+    _send_selection: function(e, name, message) {
+        var $link = $(e.target);
+
+        e.preventDefault();
+        if (!this.htmltable.current_selection().length ||
+            !confirm(message)) {
+            return;
+        }
+        var selection = this.get_current_selection();
+
         $.ajax({
             url: $link.attr("href"),
             data: "action=" + name + "&selection=" + selection.join(","),
             type: 'POST',
             dataType: 'json'
-        }).done($.proxy(this.action_cb, this));
+        }).done(
+            $.proxy(this.action_cb, this)
+        ).fail(function(jqxhr) {
+            var data = $.parseJSON(jqxhr.responseText);
+            $("body").notify("error", data.message);
+        });
     },
 
     release_selection: function(e) {
@@ -182,6 +272,62 @@ Quarantine.prototype = {
 
     delete_selection: function(e) {
         this._send_selection(e, "delete", gettext("Delete this selection?"));
+    },
+
+    /**
+     * Show the recipient selection form inside a modal box.
+     *
+     * @param {Object} evt - event object
+     * @param {string} ltype - learning type (spam or ham)
+     */
+    show_select_rcpt_form: function(evt, ltype, selection) {
+        if (selection === undefined) {
+            selection = this.get_current_selection();
+        }
+        var url = this.options.learning_recipient_url +
+            "?type=" + ltype + "&selection=" +
+            selection.join(","); 
+        var $this = this;
+
+        modalbox(evt, null, url, function() {
+            $(".submit").on("click", function(evt) {
+                simple_ajax_form_post(evt, {
+                    formid: "learning_recipient_form",
+                    reload_on_success: false,
+                    success_cb: $.proxy($this.action_cb, $this)
+                });
+            });
+        });
+    },
+
+    /**
+     * Mark the current selection as spam.
+     *
+     * @param {Object} e - event object
+     */
+    mark_selection_as_spam: function(e) {
+        if (this.options.check_learning_rcpt &&
+            this.htmltable.current_selection().length) {
+            this.show_select_rcpt_form(e, "spam");
+        } else {
+            this._send_selection(
+                e, "mark_as_spam", gettext("Mark this selection as spam?"));
+        }
+    },
+
+    /**
+     * Mark the current selection as ham.
+     *
+     * @param {Object} e - event object
+     */
+    mark_selection_as_ham: function(e) {
+        if (this.options.check_learning_rcpt &&
+            this.htmltable.current_selection().length) {
+            this.show_select_rcpt_form(e, "ham");
+        } else {
+            this._send_selection(
+                e, "mark_as_ham", gettext("Mark this selection as non-spam?"));
+        }
     },
 
     _send_action: function(e, message) {
@@ -196,15 +342,52 @@ Quarantine.prototype = {
             dataType: 'json',
             type: 'POST',
             data: {rcpt: get_parameter_by_name($link.attr("href"), 'rcpt')}
-        }).done($.proxy(this.action_cb, this));
+        }).done(
+            $.proxy(this.action_cb, this)
+        ).fail(function(jqxhr) {
+            var data = $.parseJSON(jqxhr.responseText);
+            $("body").notify("error", data.message);
+        });
     },
 
-    release: function(e) {
+    release : function(e) {
         this._send_action(e, gettext("Release this message?"));
     },
 
     delete: function(e) {
         this._send_action(e, gettext("Delete this message?"));
+    },
+
+    /**
+     * Mark the current message as spam.
+     *
+     * @param {Object} e - event object
+     */
+    mark_as_spam: function(e) {
+        if (this.options.check_learning_rcpt) {
+            var $link = get_target(e, "a");
+            var selection = get_parameter_by_name($link.attr("href"), "rcpt") +
+                " " + $link.attr("data-mail-id");
+            this.show_select_rcpt_form(e, "spam", [selection]);
+        } else {
+            this._send_action(e, gettext("Mark as spam?"));
+        }
+    },
+
+    /**
+     * Mark the current message as ham.
+     *
+     * @param {Object} e - event object
+     */
+    mark_as_ham: function(e) {
+        if (this.options.check_learning_rcpt) {
+            var $link = get_target(e, "a");
+            var selection = get_parameter_by_name($link.attr("href"), "rcpt") +
+                " " + $link.attr("data-mail-id");
+            this.show_select_rcpt_form(e, "ham", [selection]);
+        } else {
+            this._send_action(e, gettext("Mark as non-spam?"));
+        }
     },
 
     show_rawheaders: function($mailcontent) {
@@ -254,29 +437,37 @@ Quarantine.prototype = {
     },
 
     activate_buttons: function($tr) {
-        $("a[name=release-multi]").removeClass('disabled');
-        $("a[name=delete-multi]").removeClass('disabled');
+        $("a[name*=-multi]").removeClass('disabled');
         $("#selectall").prop('checked', true);
     },
 
     deactivate_buttons: function($tr) {
         if (!this.htmltable || !this.htmltable.current_selection().length) {
-            $("a[name=release-multi]").addClass('disabled');
-            $("a[name=delete-multi]").addClass('disabled');
+            $("a[name*=-multi]").addClass('disabled');
             $("#selectall").prop('checked', false);
         }
     },
 
+    /**
+     * Navigation callback: listing.
+     *
+     * @this Quarantine
+     * @param {Object} data - ajax call response (JSON)
+     */
     listing_cb: function(data) {
         this.update_page(data);
         this.navobj.delparam("rcpt").update();
         this.set_msgtype();
         $("#emails").htmltable({
-            tr_selected_event: this.activate_buttons,
-            tr_unselected_event: $.proxy(this.deactivate_buttons, this)
+            row_selected_event: this.activate_buttons,
+            row_unselected_event: $.proxy(this.deactivate_buttons, this)
         });
         this.htmltable = $("#emails").data("htmltable");
         this.deactivate_buttons();
+        if (this.navobj.hasparam("reset_page")) {
+            this.navobj.delparam("reset_page").update(false, true);
+        }
+        $("#listing").css("overflow", "auto");
     },
 
     viewmail_cb: function(data) {
@@ -285,12 +476,13 @@ Quarantine.prototype = {
     },
 
     action_cb: function(data) {
-        if (data.status == "ok") {
-            this.navobj.parse_string(data.url, true).update(true);
-            $("body").notify("success", data.respmsg, 2000);
-        } else {
-            $("body").notify("error", data.respmsg);
+        if (data.reload) {
+            this.navobj.update(true);
         }
+        if (data.url) {
+            this.navobj.parse_string(data.url, true).update(true);
+        }
+        $("body").notify("success", data.message, 2000);
     }
 };
 

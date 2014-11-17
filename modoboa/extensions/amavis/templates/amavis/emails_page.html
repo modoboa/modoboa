@@ -1,0 +1,34 @@
+{% load i18n %}
+{% load amavis_tags %}
+{% load static %}
+
+{% for email in email_list %}
+<tr id="{{ email.mailid }}">
+  <td name="selection" width="5px">
+    <input id="selection" type="checkbox" name="select_{{ email.mailid }}" value="{{ email.mailid }}">
+  </td>
+  <td align="center" width="30px" name="type" class="{{ email.class }}">
+    {{ email.type|msgtype_to_html }}
+  </td>
+  <td width="25px" name="rstatus">
+    {% if email.status == 'R' %}
+    <span class="fa fa-mail-reply" title="{% trans 'Released' %}"></span>
+    {% elif email.status == 'S' %}
+    <span class="fa fa-thumbs-down" title="{% trans 'Marked as spam' %}"></span>
+    {% elif email.status == 'H' %}
+    <span class="fa fa-thumbs-up" title="{% trans 'Marked as non-spam' %}"></span>
+    {% endif %}
+  </td>
+  <td class="openable {{ email.class }}" name="score">{{ email.score }}</td>
+  <td class="openable {{ email.class }}" name="to">{{ email.to }}</td>
+  <td class="openable {{ email.class }}" name="from">
+    {{ email.from|truncatechars:30 }}
+  </td>
+  <td class="openable {{ email.class }}" name="subject">
+    {{ email.subject|truncatechars:30 }}
+  </td>
+  <td class="openable {{ email.class }}" name="date">
+    {{ email.date|date:"SHORT_DATETIME_FORMAT" }}
+  </td>
+</tr>
+{% endfor %}

@@ -29,7 +29,7 @@ class ParametersForm(AdminParametersForm):
         initial="no",
         help_text=_("Use a secured connection to access IMAP server")
     )
-    
+
     imap_port = forms.IntegerField(
         label=_("Server port"),
         initial=143,
@@ -53,7 +53,7 @@ class ParametersForm(AdminParametersForm):
         help_text=_("Use a secured connection to access SMTP server"),
         widget=InlineRadioSelect
     )
-    
+
     smtp_port = forms.IntegerField(
         label=_("Server port"),
         initial=25,
@@ -71,13 +71,13 @@ class UserSettings(UserParametersForm):
     app = "webmail"
 
     sep1 = SeparatorField(label=_("Display"))
-    
+
     displaymode = forms.ChoiceField(
         initial="plain",
         label=_("Default message display mode"),
         choices=[("html", "html"), ("plain", "text")],
         help_text=_("The default mode used when displaying a message"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect()
     )
 
     enable_links = YesNoField(
@@ -131,14 +131,13 @@ class UserSettings(UserParametersForm):
         label=_("Default editor"),
         choices=[("html", "html"), ("plain", "text")],
         help_text=_("The default editor to use when composing a message"),
-        widget=InlineRadioSelect
+        widget=InlineRadioSelect()
     )
 
     signature = forms.CharField(
         initial="",
         label=_("Signature text"),
         help_text=_("User defined email signature"),
-        widget=forms.widgets.Textarea,
         required=False
     )
 

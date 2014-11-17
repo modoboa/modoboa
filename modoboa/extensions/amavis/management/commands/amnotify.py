@@ -1,19 +1,23 @@
 #!/usr/bin/env python
 # coding: utf-8
 from optparse import make_option
+
+from django import db
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+
 from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import sendmail_simple
 from modoboa.extensions.admin.models import Domain
+
 from modoboa.extensions.amavis import Amavis
 from modoboa.extensions.amavis.models import (
     Msgrcpt
 )
-from modoboa.extensions.amavis.sql_listing import get_wrapper
+from modoboa.extensions.amavis.sql_connector import get_connector
 
 
 class Command(BaseCommand):
@@ -67,14 +71,14 @@ class Command(BaseCommand):
                                            app="amavis")
         self.baseurl = self.options["baseurl"].strip("/")
         self.listingurl = self.baseurl \
-            + reverse("modoboa.extensions.amavis.views._listing") \
+            + reverse("amavis:_mail_list") \
             + "?viewrequests=1"
 
         for da in User.objects.filter(groups__name="DomainAdmins"):
             if not da.mailbox_set.count():
                 continue
             rcpt = da.mailbox_set.all()[0].full_address
-            reqs = get_wrapper().get_domains_pending_requests(
+            reqs = get_connector().get_domains_pending_requests(
                 Domain.objects.get_for_admin(da)
             )
             if reqs.count():
@@ -90,3 +94,4 @@ class Command(BaseCommand):
                 continue
             rcpt = su.mailbox_set.all()[0].full_address
             self.send_pr_notification(rcpt, reqs)
+        db.close_connection()

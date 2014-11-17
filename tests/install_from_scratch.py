@@ -3,8 +3,8 @@
 import os
 import tempfile
 import pexpect
-import shutil
 import unittest
+
 from modoboa.lib.sysutils import exec_cmd
 
 
@@ -18,9 +18,14 @@ class DeployTest(unittest.TestCase):
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self): 
         path = os.path.join(self.workdir, self.projname)
-        code, output = exec_cmd("python manage.py test core lib admin limits postfix_relay_domains", cwd=path)
+        code, output = exec_cmd(
+            "python manage.py test core lib admin limits postfix_relay_domains"
+            " radicale postfix_autoreply",
+            capture_output=False,
+            cwd=path
+        )
         self.assertEqual(code, 0)
 
     def test_standard(self):
@@ -51,8 +56,11 @@ class DeployTest(unittest.TestCase):
         dburl = "%s://%s:%s@%s/%s" \
             % (self.dbtype, self.dbuser, self.dbpassword,
                self.dbhost, self.projname)
-        cmd = "modoboa-admin.py deploy --syncdb --collectstatic --dburl %s --domain %s %s" \
+        cmd = (
+            "modoboa-admin.py deploy --syncdb --collectstatic --dburl %s "
+            "--extensions all --domain %s %s"
             % (dburl, 'localhost', self.projname)
+        )
         code, output = exec_cmd(cmd, cwd=self.workdir)
         self.assertEqual(code, 0)
 

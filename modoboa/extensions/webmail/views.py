@@ -1,6 +1,12 @@
 # coding: utf-8
+"""
+Webmail extension views.
+"""
+
 import os
+
 from rfc6266 import build_header
+
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -10,8 +16,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
+
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException, BadRequest
+from modoboa.lib.paginator import Paginator
 from modoboa.lib.webutils import (
     _render_to_string, ajax_response, render_to_json_response
 )
@@ -22,12 +30,12 @@ from .forms import (
 )
 from .lib import (
     decode_payload, AttachmentUploadHandler,
-    save_attachment, ImapListing, EmailSignature,
+    save_attachment, EmailSignature,
     clean_attachments, set_compose_session, send_mail,
     ImapEmail, WebmailNavigationParameters, ReplyModifier, ForwardModifier,
     get_imapconnector, IMAPconnector, separate_mailbox
 )
-from templatetags import webmail_tags
+from .templatetags import webmail_tags
 
 
 @login_required
@@ -111,19 +119,25 @@ def mark(request, name):
 
 @login_required
 @needs_mailbox()
-def empty(request, name):
+def empty(request):
+    """Empty the trash folder."""
+    name = request.GET.get("name", None)
     if name != parameters.get_user(request.user, "TRASH_FOLDER"):
         raise BadRequest(_("Invalid request"))
     get_imapconnector(request).empty(name)
     content = "<div class='alert alert-info'>%s</div>" % _("Empty mailbox")
     return render_to_json_response({
-        'listing': content, 'mailbox': name
+        'listing': content, 'mailbox': name, 'pages': [1]
     })
 
 
 @login_required
 @needs_mailbox()
-def compact(request, name):
+def folder_compress(request):
+    """Compress a mailbox."""
+    name = request.GET.get("name", None)
+    if name is None:
+        raise BadRequest(_("Invalid request"))
     imapc = get_imapconnector(request)
     imapc.compact(name)
     return render_to_json_response({})
@@ -149,7 +163,7 @@ def newfolder(request, tplname="webmail/folder.html"):
 
     ctx = {"title": _("Create a new mailbox"),
            "formid": "mboxform",
-           "action": reverse(newfolder),
+           "action": reverse("webmail:folder_add"),
            "action_label": _("Create"),
            "action_classes": "submit",
            "withunseen": False,
@@ -168,7 +182,7 @@ def editfolder(request, tplname="webmail/folder.html"):
                         password=request.session["password"])
     ctx = {"title": _("Edit mailbox"),
            "formid": "mboxform",
-           "action": reverse(editfolder),
+           "action": reverse("webmail:folder_change"),
            "action_label": _("Update"),
            "action_classes": "submit",
            "withunseen": False,
@@ -203,7 +217,7 @@ def editfolder(request, tplname="webmail/folder.html"):
     shortname, parent = separate_mailbox(name, sep=mbc.hdelimiter)
     ctx = {"title": _("Edit mailbox"),
            "formid": "mboxform",
-           "action": reverse(editfolder),
+           "action": reverse("webmail:folder_change"),
            "action_label": _("Update"),
            "action_classes": "submit",
            "withunseen": False,
@@ -268,7 +282,7 @@ def attachments(request, tplname="webmail/attachments.html"):
         "target": "upload_target",
         "enctype": "multipart/form-data",
         "form": AttachmentForm(),
-        "action": reverse(attachments),
+        "action": reverse("webmail:attachment_list"),
         "attachments": request.session["compose_mail"]["attachments"]
     }
     return render(request, tplname, ctx)
@@ -317,41 +331,63 @@ def render_mboxes_list(request, imapc):
 
 
 def listmailbox(request, defmailbox="INBOX", update_session=True):
-    """Mailbox content listing
+    """Mailbox content listing.
 
     Return a list of messages contained in the specified mailbox. The
     number of elements returned depends on the ``MESSAGES_PER_PAGE``
     parameter. (user preferences)
 
     :param request: a ``Request`` object
-    :param defmailbox: the default mailbox (when not present inside request arguments)
+    :param defmailbox: the default mailbox (when not present inside
+                       request arguments)
     :return: a dictionnary
     """
     navparams = WebmailNavigationParameters(request, defmailbox)
+    previous_page_id = int(navparams["page"]) if "page" in navparams else None
     if update_session:
         navparams.store()
     mbox = navparams.get('mbox')
-    lst = ImapListing(
-        request.user, request.session["password"],
-        baseurl="?action=listmailbox&mbox=%s&" % mbox,
-        folder=mbox,
-        elems_per_page=int(parameters.get_user(request.user, "MESSAGES_PER_PAGE")),
-        **request.session["webmail_navparams"]
+    page_id = int(navparams["page"])
+    mbc = get_imapconnector(request)
+    mbc.parse_search_parameters(
+        navparams.get("criteria"), navparams.get("pattern"))
+
+    paginator = Paginator(
+        mbc.messages_count(folder=mbox, order=navparams.get("order")),
+        int(parameters.get_user(request.user, "MESSAGES_PER_PAGE"))
     )
-    return lst.render(request, navparams.get('page'))
+    page = paginator.getpage(page_id)
+    content = ""
+    if page is not None:
+        email_list = mbc.fetch(page.id_start, page.id_stop, mbox)
+        content = _render_to_string(request, "webmail/email_list.html", {
+            "email_list": email_list,
+            "page": page_id,
+            "with_top_div": request.GET.get("scroll", "false") == "false"
+        })
+        length = len(content)
+    else:
+        if page_id == 1:
+            content = "<div class='alert alert-info'>{0}</div>".format(
+                _("Empty mailbox")
+            )
+        length = 0
+        navparams["page"] = previous_page_id
+    return {"listing": content, "length": length, "pages": [page_id]}
 
 
 def render_compose(request, form, posturl, email=None, insert_signature=False):
-    editor = parameters.get_user(request.user, "EDITOR")
+    """Render the compose form."""
+    resp = {}
     if email is None:
-        body = ""
-        textheader = ""
+        body = u""
+        textheader = u""
     else:
         body = email.body
         textheader = email.textheader
     if insert_signature:
         signature = EmailSignature(request.user)
-        body += str(signature)
+        body += unicode(signature)
     randid = None
     if not "id" in request.GET:
         if "compose_mail" in request.session:
@@ -361,24 +397,22 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
             or request.session["compose_mail"]["id"] != request.GET["id"]:
         randid = set_compose_session(request)
 
-    attachments = request.session["compose_mail"]["attachments"]
-    if attachments:
-        short_att_list = "(%s)" % ", ".join(
-            [att['fname'] for att in (attachments[:2] + [{"fname": "..."}]
-             if len(attachments) > 2 else attachments)]
-        )
-    else:
-        short_att_list = ""
+    attachment_list = request.session["compose_mail"]["attachments"]
+    if attachment_list:
+        resp["menuargs"] = {"attachment_counter": len(attachment_list)}
+
     content = _render_to_string(request, "webmail/compose.html", {
         "form": form, "bodyheader": textheader,
-        "body": body, "posturl": posturl,
-        "attachments": attachments, "short_att_list": short_att_list
+        "body": body, "posturl": posturl
     })
 
-    ctx = dict(listing=content, editor=editor)
+    resp.update({
+        "listing": content,
+        "editor": parameters.get_user(request.user, "EDITOR")
+    })
     if randid is not None:
-        ctx["id"] = randid
-    return ctx
+        resp["id"] = randid
+    return resp
 
 
 def compose(request):
@@ -467,12 +501,13 @@ def viewmail(request):
         raise BadRequest(_("Invalid request"))
     links = request.GET.get("links", None)
     if links is None:
-        links = 1 if parameters.get_user(request.user, "ENABLE_LINKS") == "yes" else 0
+        links = 1 if parameters.get_user(
+            request.user, "ENABLE_LINKS") == "yes" else 0
     else:
         links = int(links)
 
-    url = reverse(getmailcontent) + "?mbox=%s&mailid=%s&links=%d" % \
-        (mbox, mailid, links)
+    url = "{0}?mbox={1}&mailid={2}&links={3}".format(
+        reverse("webmail:mailcontent_get"), mbox, mailid, links)
     content = Template("""
 <iframe src="{{ url }}" id="mailcontent"></iframe>
 """).render(Context({"url": url}))
@@ -483,8 +518,11 @@ def viewmail(request):
 @login_required
 @needs_mailbox()
 def submailboxes(request):
+    """Retrieve the sub mailboxes of a mailbox."""
     topmailbox = request.GET.get('topmailbox', '')
-    mboxes = get_imapconnector(request).getmboxes(request.user, topmailbox)
+    with_unseen = request.GET.get('unseen', None)
+    mboxes = get_imapconnector(request).getmboxes(
+        request.user, topmailbox, unseen_messages=with_unseen == 'true')
     return render_to_json_response(mboxes)
 
 
@@ -545,7 +583,7 @@ def index(request):
         imapc.getquota(curmbox)
         response["refreshrate"] = \
             int(parameters.get_user(request.user, "REFRESH_INTERVAL"))
-        response["quota"] = ImapListing.computequota(imapc)
+        response["quota"] = imapc.quota_usage
         trash = parameters.get_user(request.user, "TRASH_FOLDER")
         response["trash"] = trash
         response["ro_mboxes"] = [
@@ -566,8 +604,8 @@ def index(request):
             extra_args = response["menuargs"]
             del response["menuargs"]
         try:
-            response["menu"] = \
-                getattr(webmail_tags, "%s_menu" % action)("", curmbox, request.user, **extra_args)
+            menu = getattr(webmail_tags, "%s_menu" % action)
+            response["menu"] = menu("", curmbox, request.user, **extra_args)
         except KeyError:
             pass
 

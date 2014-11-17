@@ -1,81 +1,89 @@
 {% extends "twocols.html" %}{% load i18n %}{% load url from future %}
-{% block pagetitle %}{% trans "Graphical statistics" %}{% endblock %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}stats/css/stats.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/autocompleter.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/d3.v3.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}stats/js/d3.legend.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}stats/js/graphic.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}stats/js/stats.js"></script>
-<script type="text/javascript">
-function get_domains_list(container) {
-    $.getJSON("{% url 'modoboa.extensions.admin.views.domain.domains_list' %}", function(data) {
-        container.value = data;
-    });
-}
+{% load static %}
 
+{% block pagetitle %}{% trans "Graphical statistics" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/stats.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/autocompleter.js' %}"></script>
+<script type="text/javascript" src="{% static 'd3/d3.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'stats/js/d3.legend.js' %}"></script>
+<script type="text/javascript" src="{% static 'stats/js/graphic.js' %}"></script>
+<script type="text/javascript" src="{% static 'stats/js/stats.js' %}"></script>
+<script type="text/javascript">
 $(document).ready(function() {
     var stats = new Stats({
-        graphurl: "{% url 'modoboa.extensions.stats.views.graphs' %}",
+        graphurl: "{% url 'stats:graph_list' %}",
+        domain_list_url: "{% url 'stats:domain_list' %}",
         deflocation: "{{ deflocation|safe }}",
         language: "{{ LANGUAGE_CODE }}"
     });
 });
 </script>
 {% endblock %}
+
 {% block leftcol %}
-<div id="periods" class="well sidebar-nav">
-  <ul class="nav nav-list">
-    <li class="nav-header">
-      {% trans "Filter" %}
-    </li>
-    <li>
-      <div class="input-prepend input-append">
-        <span class="add-on"><i class="icon-search"></i></span>
-        <input class="span10" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
-      </div>
-    </li>
-    <li class="nav-header">
-      {% trans "Predefined time ranges" %}
-    </li>
-    {% for p in periods %}<li class="period">
-      <a href="#" class="period_selector" data-period="{{ p.name }}">{% trans p.label %}</a>
-    </li>
-    {% endfor %}
-    <li class="nav-header">
-      {% trans "Custom time range" %}
-    </li>
-    <li>
-      <form class="form-inline">
-        <span id="custom-period">
-          <div class="input-prepend">
-            <span class="add-on"><i class="icon-indent-left"></i></span>
-            <input id="id_from" class="span10" name="date_from" value="{{ start }}" type="text" readonly="readonly" />
-          </div>
-          <div class="input-prepend">
-            <span class="add-on"><i class="icon-indent-right"></i></span>
-            <input id="id_to" class="span10" name="date_to" value="{{ end }}" type="text" readonly="readonly" />
-          </div>
-          <button class="btn" id="customsend">{% trans "Apply" %}</button>
-        </span>
-      </form>
-    </li>
-  </ul>
-</div>
+<ul class="nav nav-sidebar">
+  {% for id, gset in graph_sets.items %}
+  <li id="menu_{{ gset.html_id }}"><a href="#">{{ gset.title }}</a></li>
+  {% endfor %}
+</ul>
 {% endblock %}
+
 {% block apparea %}
-<div id="graphs" class="tabbable">
-  <ul class="nav nav-tabs">{% for id, gset in graph_sets.items %}
-    <li {% if forloop.first %}class="active"{% endif %}>
-      <a href="#graphs_{{ gset.html_id }}" data-toggle="tab">{{ gset.title }}</a>
-    </li>
-  </ul>{% endfor %}
-  <div class="tab-content">{% for id, gset in graph_sets.items %}
-    <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}">
-      <div id="gset"></div>
+<div id="menubar" class="row">
+  <div class="col-sm-5">
+    <form class="form-horizontal" role="form">
+      <div class="form-group has-feedback">
+        <input class="form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+        <span class="fa fa-search form-control-feedback"></span>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-sm-7">
+    <div class="btn-group" data-toggle="buttons">
+      {% for p in periods %}
+      <label class="btn btn-primary period_selector">
+        <input type="radio" data-period="{{ p.name }}"> {% trans p.label %}
+      </label>
+      {% endfor %}
     </div>
-  </div>{% endfor %}
+  </div>
 </div>
+
+<div id="custom_period" class="row hidden">
+  <div class="col-sm-7">
+    <form class="form-inline">
+      <span id="custom-period">
+        <div class="form-group">
+          <div class="input-group datetime_picker">
+            <div class="input-group-addon"><span class="fa fa-outdent"></span></div>
+            <input id="id_from" name="date_form" class="form-control" value="{{ start }}" type="text" readonly="readonly">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group datetime_picker">
+            <div class="input-group-addon"><span class="fa fa-outdent"></span></div>
+            <input id="id_to" name="date_to" value="{{ end }}" class="form-control" type="text" readonly="readonly" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
+      </span>
+    </form>
+  </div>
+</div>
+
+<div id="graphs">
+  {% for id, gset in graph_sets.items %}
+  <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}">
+    <div id="gset"></div>
+  </div>
+  {% endfor %}
+</div>
+
 {% endblock %}
- 

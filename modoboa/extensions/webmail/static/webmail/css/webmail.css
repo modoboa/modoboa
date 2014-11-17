@@ -1,71 +1,96 @@
-body, html {
-    overflow: hidden; 
-    height: 100%;
+/* MEDIA */
+
+@media (min-width: 768px) {
+    .main {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 1198px) {
+    .container-fluid {
+        padding: 0;
+    }
+  
+    .display-up-1198-webmail {
+        display: none;
+    }
+    .display-less-1198{
+        display: inherit;
+    }
+
+}
+
+/* GENERAL */
+
+.main {
+    position: absolute;
+    top: 51px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-x: hidden;
+}
+
+#listing {
+    position: absolute;
+    top: 75px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 #folders {
-    position: fixed;
-    top: 60px;
+    top: 73px;
     left: 15px;
-    width: 200px;
+    right: 15px;
+    overflow-x: auto;
     overflow-y: auto;
-    margin-bottom: 5px;
 }
 
-#folders .ui-resizable-handle {
-    background-position: center center;
-    background-repeat: no-repeat;
+/* .sidebar .ui-resizable-handle { */
+/*     background-position: center center; */
+/*     background-repeat: no-repeat; */
+/* } */
+
+/* .sidebar .ui-resizable-n { */
+/*     top: 0px; */
+/* } */
+
+/* .sidebar .ui-resizable-s { */
+/*     bottom: 0px; */
+/* } */
+
+/* .sidebar .ui-resizable-e { */
+/*     right: 0px; */
+/*     background-image: url("../../pics/grippy.png"); */
+/*     width: 8px; */
+/* } */
+
+/* .sidebar .ui-resizable-w { */
+/*     left: 0px; */
+/*     background-image: url("../../pics/grippy.png"); */
+/*     width: 8px; */
+/* } */
+
+.nav-sidebar li > a {
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
 
-#folders .ui-resizable-n {
-    top: 0px;
-}
-
-#folders .ui-resizable-s {
-    bottom: 0px;
-}
-
-#folders .ui-resizable-e {
-    right: 0px;
-    background-image: url("../../pics/grippy.png");
-    width: 8px;
-}
-
-#folders .ui-resizable-w {
-    left: 0px;
-    background-image: url("../../pics/grippy.png");
-    width: 8px;
-}
-
-#mboxes_container { 
-    overflow: auto;
-}
-
-#mboxes_container .nav-list .nav-list {
-    padding-right: 0;
+.nav-sidebar li li { 
+    padding-left: 10px;
 }
 
 #mboxes_container a[name=loadfolder] {
     white-space: nowrap;
-    overflow: hidden;
+    overflow: auto;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
-}
-
-#menubar { 
-    position: fixed;
-    left: 215px;
-    right: 0;
-    padding-left: 15px;
-    padding-right: 15px;
-    z-index: 10;
-}
-
-#listing { 
-    position: fixed;
-    left: 215px;
-    right: 0;
-    padding-left: 15px;
 }
 
 #mailcontent {
@@ -76,45 +101,63 @@ body, html {
     height: 100%;
 }
 
-.unseen { 
+.unseen {
     font-weight: bold;
 }
 
-td[name="date"] { 
-    text-align: right;
+#left-toolbar { 
+    position: absolute;
+    margin-left: 0px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
 }
 
-#quotabar { 
-    margin: 12px 0 0 15px;
-    width: 200px;
+#quotabox {
+    padding-top: 15px;
 }
 
-#quotaraw { 
+#quotabar {
+    height: 5px;
+    margin-bottom: 0;
+}
+
+#quotaraw {
     margin-left: 10px;
 }
+
 
 /*
  * Mailboxes list
  */
-#mboxactions { 
-    position: fixed;
-    padding-left: 14px;
+.email {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
 }
 
-#mboxactions .btn-toolbar { 
-    margin-bottom: 0px;
+div.email:hover { 
+    background-color: #f5f5f5;
 }
 
-#folders li { 
-    position: relative;
+.openable {
+    cursor: pointer;
+}
+
+.leftcol-heading { 
+    margin-bottom: 15px;
+}
+
+#mboxactions {
+    margin: 5px 0;
 }
 
 div.clickbox {
     position: absolute;
-    left: 0px;
-    top: 2px;
+    left: 10px;
+    top: 5px;
     width: 14px;
     height: 14px;
+    z-index: 100;
 }
 
 div.collapsed {
@@ -127,6 +170,10 @@ div.expanded {
     background-repeat: no-repeat;
 }
 
+#mboxes_container .nav .droppable div.clickbox {
+    z-index: 800;
+}
+
 /*
  * Compose form
  */
@@ -135,27 +182,12 @@ div.expanded {
     padding-bottom: 5px;
 }
 
-#mailheader input { 
-    width: 99%;
-    padding: 2px 0;
-}
-
-#mailheader textarea { 
-    width: 99%;
-    height: 40px;
-    padding: 2px 0;
-}
-
-#mailheader label { 
+#mailheader label {
     text-align: left;
 }
 
 #mailheader .options {
-    margin-left: 180px;
-}
-
-#add_cc {
-    margin-right: 20px;
+    margin-bottom: 8px;
 }
 
 #attachments {
@@ -170,7 +202,7 @@ div.expanded {
     float: left;
 }
 
-#list {
+list {
     position: absolute;
     top: 5px;
     left: 180px;
@@ -178,21 +210,19 @@ div.expanded {
 }
 
 #body_container {
-    position: absolute;
-    left: 15px;
-    right: 0px;
-    bottom: 15px;
+    position: static;
+    /*height: 600px;*/
 }
 
 #id_body {
-    width: 99%;
+    width: 100%;
     height: 100%;
 }
 
 /*
  * Attachments form
  */
-#submit { 
+#submit {
     margin: 0 auto;
 }
 
@@ -205,13 +235,8 @@ div.expanded {
 }
 
 #attachment_list i,
-#attachment_list label { 
+#attachment_list label {
     float: left;
-}
-
-.shortlist {
-    font-weight: normal !important;
-    font-style: italic;
 }
 
 /*
@@ -220,29 +245,59 @@ div.expanded {
 .dragbox {
     padding : 5px;
     text-align : center;
-    background : white;
-    z-index : 3;
+    z-index : 1001;
 }
 
 /*
- * Folder form
+ * Folders form
  */
-.modal-body { 
+
+.modal-body {
     max-height: 300px;
     overflow-y: auto;
 }
 
-#folders2 li { 
+#folders2 li {
     position: relative;
+}
+
+#folders2 div.clickbox { 
+    left: 0;
+    top: 0px;
+}
+
+#folders2 li li { 
+    margin-left: 10px;
+}
+
+#folders2 .active > a,
+#folders2 .active > a:hover,
+#folders2 .active > a:focus {
+    color: #fff;
+    background-color: #428bca;
 }
 
 /*
  * Table
  */
-td > input[type=checkbox] {
-    margin: 0;
+
+
+
+/*
+ * Action buttons
+ */
+
+#menubar {
+    padding-left: 15px;
+    padding-bottom: 20px;
+    z-index: 100;
 }
 
-td[class*=openable] {
-    cursor: pointer;
+#menubar .btn-toolbar ul.navbar-right{
+    margin-right: 3%;
 }
+
+#menubar .btn-toolbar .navbar-form{
+    margin: 0px;
+}
+

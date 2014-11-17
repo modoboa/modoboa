@@ -4,7 +4,6 @@ from django.utils.translation import ugettext as _
 from django.db import IntegrityError
 from modoboa.core.models import ObjectAccess, User
 from modoboa.lib import events
-from modoboa.lib.exceptions import ModoboaException
 
 
 def get_account_roles(user, account=None):
@@ -19,7 +18,7 @@ def get_account_roles(user, account=None):
     """
     std_roles = [("SimpleUsers", _("Simple user"))]
     if user.is_superuser:
-        std_roles += [("SuperAdmins",  _("Super administrator"))]
+        std_roles += [("SuperAdmins", _("Super administrator"))]
     filters = events.raiseQueryEvent(
         'UserCanSetRole', user, 'DomainAdmins', account
     )
@@ -139,7 +138,23 @@ def get_object_owner(obj):
     """
     ct = ContentType.objects.get_for_model(obj)
     try:
-        entry = ObjectAccess.objects.get(content_type=ct, object_id=obj.id, is_owner=True)
+        entry = ObjectAccess.objects.get(
+            content_type=ct, object_id=obj.id, is_owner=True
+        )
     except ObjectAccess.DoesNotExist:
         return None
     return entry.user
+
+
+def add_permissions_to_group(groupname, permissions):
+    """Add the specified permissions to a django group.
+    """
+    from django.contrib.auth.models import Group, Permission
+
+    grp = Group.objects.get(name=groupname)
+    for appname, modelname, permname in permissions:
+        ct = ContentType.objects.get_by_natural_key(
+            appname, modelname)
+        grp.permissions.add(
+            Permission.objects.get(content_type=ct, codename=permname)
+        )

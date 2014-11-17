@@ -21,6 +21,7 @@ class GroupFactory(factory.DjangoModelFactory):
 
 class UserFactory(PermissionFactory):
     FACTORY_FOR = models.User
+    FACTORY_DJANGO_GET_OR_CREATE = ("username", )
 
     email = factory.LazyAttribute(lambda a: a.username)
     password = '{PLAIN}toto'

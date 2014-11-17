@@ -14,7 +14,7 @@
     {% for da in domadmins %}<tr>
       <td>{{ da.username }}</td>
       <td>{{ da.fullname }}</td>
-      <td name="actions">{% if perms.admin.change_domain%}{% domadmin_actions da.id domain.id %}{% endif %}</td>
+      <td name="actions">{% if perms.admin.change_domain %}{% domadmin_actions da.id domain.id %}{% endif %}</td>
     </tr>{% endfor %}
   </table>{% else %}<div class="alert alert-info">{% trans "No domain administrator defined" %}</div>{% endif %}
 </div>

@@ -1,73 +1,90 @@
-<!DOCTYPE html>{% load i18n core_tags lib_tags %}{% load url from future %}
+<!DOCTYPE html>
+{% load static %}
+{% load i18n core_tags lib_tags %}{% load url from future %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>{% block pagetitle %}{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{{ STATIC_URL }}css/logo-icon.png" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-datetimepicker.css" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/custom.css" />
-    <script src="{{ STATIC_URL }}js/jquery.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}js/bootstrap.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}js/bootstrap-datetimepicker.js" type="text/javascript"></script>
-    {% if LANGUAGE_CODE != "en" %}<script src="{{ STATIC_URL }}js/locales/bootstrap-datetimepicker.{{ LANGUAGE_CODE }}.js" type="text/javascript"></script>{% endif %}
-    <script src="{{ STATIC_URL }}js/global.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}js/csrf.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}js/confirmation.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}js/notify.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}js/poller.js" type="text/javascript"></script>
-    {% url "django.views.i18n.javascript_catalog" as catalog_url %}
-    <script type="text/javascript" src="{{ catalog_url }}"></script>
-    <script type="text/javascript">
-      set_static_url("{{ STATIC_URL }}");
-    </script>
-    {% extra_static_content "top" user %}
-    {% block html_head %}{% endblock %}
+    <link rel="icon" type="image/png" href="{% static 'css/logo-icon.png' %}" />
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'bootstrap-select/dist/css/bootstrap-select.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
+    {% block extra_css %}{% endblock %}
   </head>
 
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+
+          <button class="navbar-toggle collapsed pull-right" data-target="#topmenu" data-toggle="collapse" type="button">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <div class="nav-collapse collapse">
-            <ul class="nav">{% if selection %}
+
+          <button class="navbar-toggle collapsed pull-left" data-target="#leftcol" data-toggle="collapse" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+
+        <div id="topmenu" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% if selection %}
               {% extensions_menu selection user %}{% core_menu selection user %}
-              {% else %}{% extensions_menu "" user %}{% core_menu "" user %}{% endif %}
-              {% load_optionalmenu user %}
-            </ul>
-          </div>
-          <ul class="nav pull-right">
+            {% else %}
+              {% extensions_menu "" user %}{% core_menu "" user %}
+            {% endif %}
+            {% load_optionalmenu user %}
+            <li class="divider"></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
             {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
           </ul>
-          <div class="pull-right">{% load_notifications user %}</div>
-        </div>
-      </div>
-    </div>    
-    {% block content %}{% endblock %}
-    <div id="bottom-bar" class="navbar navbar-inverse navbar-fixed-bottom">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <div class="row-fluid">
-          <div id="bottom-bar-left" class="span4">
-            {% block footerleft %}{% endblock %}
-          </div>
-          <div id="bottom-bar-middle" class="span4">
-            <p class="navbar-text"><i>{% trans "Powered by Modoboa" %}</i></p>
-            {% block footermiddle %}{% endblock %}
-          </div>
-          <div id="bottom-bar-right" class="span4 nav-collapse">
-            {% block footerright %}{% endblock %}
-          </div>
-          </div>
+          {% include "common/top_notifications.html" %}
         </div>
       </div>
     </div>
+
+    {% block content %}{% endblock %}
+
+    <!-- Javascript -->
+    <script src="{% static 'jquery/jquery.js' %}" type="text/javascript"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}" type="text/javascript"></script>
+    <script type="text/javascript" src="{% static 'moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'bootstrap-select/dist/js/bootstrap-select.min.js' %}" type="text/javascript"></script>
+    {% if LANGUAGE_CODE != "en" %}<script src="{% static 'moment/locale/{{ LANGUAGE_CODE }}.js' %}" type="text/javascript"></script>{% endif %}
+    {% if TEMPLATE_DEBUG %}
+    <script src="//maxcdn.bootstrapcdn.com/bootlint/0.4.0/bootlint.min.js"></script>
+    {% endif %}
+    <script src="{% static 'js/global.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/csrf.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/confirmation.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/notify.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/poller.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/top_notifications.js' %}" type="text/javascript"></script>
+    {% url "django.views.i18n.javascript_catalog" as catalog_url %}
+    <script type="text/javascript" src="{{ catalog_url }}"></script>
+    <script type="text/javascript">
+      var top_notifications;
+
+      set_static_url("{{ STATIC_URL }}");
+      $(document).ready(function() {
+          top_notifications = new TopNotifications({
+              url: "{% url 'core:top_notifications_check' %}",
+              interval: {{ notifications_check_interval }}
+          });
+      });
+    </script>
+    {% extra_static_content "top" "js" user %}
+    {% block extra_js %}{% endblock %}
   </body>
 </html>

@@ -1,0 +1,21 @@
+#searchform { 
+    margin-bottom: 10px;
+}
+
+#original_row { 
+    margin-left: 100px;
+}
+
+.access-rule {
+    margin-top: 5px;
+    margin-left: 100px;
+}
+
+.addrule, .delrule { 
+    margin-left: 10px;
+}
+
+table tr td[name=actions],
+table tr th#actions { 
+    text-align: right;
+}

@@ -2,7 +2,7 @@
 {% block extraheaders %}{% if attachments %}
   <div class="row">
     <div class="header">{% trans "Attachments" %}</div>
-    <div class="value">{% url "modoboa.extensions.webmail.views.getattachment" as url %}
+    <div class="value">{% url "webmail:attachment_get" as url %}
       {% for key, fname in attachments.items %}
       <a href="{{ url }}?mbox={{ folder }}&mailid={{ mail_id }}&fname={{ fname }}&partnumber={{ key }}">{{ fname }}</a>
       {% endfor %}

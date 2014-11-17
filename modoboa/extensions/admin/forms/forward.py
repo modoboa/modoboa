@@ -10,7 +10,7 @@ from modoboa.extensions.admin.models import (
 class ForwardForm(forms.Form):
     dest = forms.CharField(
         label=ugettext_lazy("Recipient(s)"),
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={"class": "form-control"}),
         required=False,
         help_text=ugettext_lazy("Indicate one or more recipients separated by a ','")
     )

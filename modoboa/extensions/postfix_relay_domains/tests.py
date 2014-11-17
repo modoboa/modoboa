@@ -17,7 +17,7 @@ class Operations(object):
             'service': srv.id, 'enabled': True
         }
         return self.ajax_post(
-            reverse("modoboa.extensions.postfix_relay_domains.views.create"),
+            reverse("postfix_relay_domains:relaydomain_add"),
             values, status
         )
 
@@ -36,7 +36,7 @@ class Operations(object):
             fname = 'aliases' if not cpt else 'aliases_%d' % cpt
             values[fname] = alias
         return self.ajax_post(
-            reverse("modoboa.extensions.postfix_relay_domains.views.edit",
+            reverse("postfix_relay_domains:relaydomain_change",
                     args=[rdom.id]),
             values, status
         )
@@ -117,7 +117,7 @@ class RelayDomainsTestCase(ExtTestCase, Operations):
             'service': self.rdom.service.id
         }
         self.ajax_post(
-            reverse('modoboa.extensions.postfix_relay_domains.views.edit',
+            reverse('postfix_relay_domains:relaydomain_change',
                     args=[self.rdom.id]),
             values
         )
@@ -133,7 +133,7 @@ class RelayDomainsTestCase(ExtTestCase, Operations):
             'service': self.rdom.service.id, 'aliases': 'relaydomainalias.net'
         }
         self.ajax_post(
-            reverse('modoboa.extensions.postfix_relay_domains.views.edit',
+            reverse('postfix_relay_domains:relaydomain_change',
                     args=[self.rdom.id]),
             values
         )
@@ -145,7 +145,7 @@ class RelayDomainsTestCase(ExtTestCase, Operations):
         """Test the removal of a relay domain
         """
         self.ajax_post(
-            reverse("modoboa.extensions.postfix_relay_domains.views.delete",
+            reverse("postfix_relay_domains:relaydomain_delete",
                     args=[self.rdom.id]),
             {}
         )
@@ -186,7 +186,7 @@ class LimitsTestCase(ExtTestCase, Operations):
         resp = self._create_relay_domain('relaydomain3.tld', 403)
         self._check_limit('relay_domains', 2, 2)
         self.ajax_post(
-            reverse('modoboa.extensions.postfix_relay_domains.views.delete',
+            reverse('postfix_relay_domains:relaydomain_delete',
                     args=[RelayDomain.objects.get(name='relaydomain2.tld').id]),
             {}
         )

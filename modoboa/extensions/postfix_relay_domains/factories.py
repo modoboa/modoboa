@@ -14,6 +14,8 @@ class RelayDomainFactory(PermissionFactory):
     FACTORY_FOR = models.RelayDomain
 
     target_host = 'external.host.tld'
+    enabled = True
+    verify_recipients = True
     service = factory.SubFactory(ServiceFactory)
 
 

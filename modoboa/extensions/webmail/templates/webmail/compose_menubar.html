@@ -1,0 +1,13 @@
+{% extends "common/buttons_list.html" %}
+
+{% load i18n %}
+
+{% block extra_buttons %}
+<div class="nav navbar-nav action-buttons btn-group">
+  <a name="attachments" href="{% url 'webmail:attachment_list' %}" class="btn btn-default">
+    <span class="fa fa-paperclip"></span>
+    {% trans "Attachments" %}
+    <span id="attachment_counter">{% if attachment_counter %}({{ attachment_counter }}){% endif %}</span>
+  </a>
+</div>
+{% endblock %}

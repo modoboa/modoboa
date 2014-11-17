@@ -28,7 +28,8 @@ class SieveClient(object):
         self.msc = Client(parameters.get_admin("SERVER"),
                           int(parameters.get_admin("PORT")),
                           debug=False)
-        use_starttls = True if parameters.get_admin("STARTTLS") == "yes" else False
+        use_starttls = True if parameters.get_admin("STARTTLS") == "yes" \
+            else False
         authmech = parameters.get_admin("AUTHENTICATION_MECH")
         if authmech == "AUTO":
             authmech = None

@@ -19,7 +19,7 @@ def core_menu(selection, user):
         entries += [
             {"name": "settings",
              "label": _("Modoboa"),
-             "url": reverse("modoboa.core.views.admin.viewsettings")}
+             "url": reverse("core:index")}
         ]
 
     if not len(entries):
@@ -63,7 +63,7 @@ def admin_menu(selection, user):
     ]
     return render_to_string('common/menu.html', {
         "entries": entries,
-        "css": "nav nav-list",
+        "css": "nav nav-sidebar",
         "selection": selection,
         "user": user
     })
@@ -73,22 +73,22 @@ def admin_menu(selection, user):
 def user_menu(user, selection):
     entries = [
         {"name": "user",
-         "img": "icon-user icon-white",
+         "img": "fa fa-user",
          "label": user.fullname,
          "menu": [
                 {"name": "settings",
-                 "img": "icon-list",
+                 "img": "fa fa-list",
                  "label": _("Settings"),
-                 "url": reverse("modoboa.core.views.user.index")}
+                 "url": reverse("core:user_index")}
          ]}
     ]
 
     entries[0]["menu"] += \
         events.raiseQueryEvent("UserMenuDisplay", "options_menu", user) \
         + [{"name": "logout",
-            "url": reverse("modoboa.core.views.auth.dologout"),
+            "url": reverse("core:logout"),
             "label": _("Logout"),
-            "img": "icon-off"}]
+            "img": "fa fa-sign-out"}]
 
     return render_to_string("common/menulist.html", {
         "selection": selection, "entries": entries, "user": user
@@ -111,7 +111,7 @@ def uprefs_menu(selection, user):
     entries = sorted(entries, key=lambda e: e["label"])
     return render_to_string('common/menu.html', {
         "entries": entries,
-        "css": "nav nav-list",
+        "css": "nav nav-sidebar",
         "selection": selection,
         "user": user
     })
@@ -119,10 +119,11 @@ def uprefs_menu(selection, user):
 
 @register.filter
 def colorize_level(level):
+    """A simple filter a text using a boostrap color."""
     classes = {
         "INFO": "text-info",
         "WARNING": "text-warning",
-        "CRITICAL": "text-error"
+        "CRITICAL": "text-danger"
     }
     if not level in classes:
         return level
@@ -131,7 +132,8 @@ def colorize_level(level):
 
 @register.filter
 def tohtml(message):
-    return re.sub("'(.*?)'", "<strong>\g<1></strong>", message)
+    """Simple tag to format a text using HTML."""
+    return re.sub(r"'(.*?)'", "<strong>\g<1></strong>", message)
 
 
 @register.simple_tag
@@ -209,12 +211,6 @@ def load_optionalmenu(user):
         'common/menulist.html',
         {"entries": menu, "user": user}
     )
-
-
-@register.simple_tag
-def load_notifications(user):
-    content = events.raiseQueryEvent("TopNotifications", user)
-    return "".join(content)
 
 
 @register.simple_tag

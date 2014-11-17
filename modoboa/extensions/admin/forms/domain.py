@@ -1,12 +1,16 @@
 from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.core.urlresolvers import reverse
+
 from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import Conflict
+from modoboa.lib.exceptions import ModoboaException, Conflict
 from modoboa.lib.formutils import (
-    DomainNameField, YesNoField, DynamicForm, TabForms
+    DomainNameField, YesNoField, WizardForm, DynamicForm, TabForms
 )
+from modoboa.lib.webutils import render_to_json_response
 from modoboa.core.models import User
+from modoboa.extensions.admin.lib import check_if_domain_exists
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias, Quota
 )
@@ -19,8 +23,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=ugettext_lazy(
             "Default quota in MB applied to mailboxes. Leave empty to use the "
             "default value."
-        ),
-        widget=forms.TextInput(attrs={"class": "span1"})
+        )
     )
     aliases = DomainNameField(
         label=ugettext_lazy("Alias(es)"),
@@ -29,6 +32,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             "Alias(es) of this domain. Indicate only one name per input, "
             "press ENTER to add a new input."
         )
+    )
+    name = DomainNameField(
+        widget=forms.TextInput()
     )
 
     class Meta:
@@ -40,6 +46,10 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if "instance" in kwargs:
             self.oldname = kwargs["instance"].name
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
+
+        self.field_widths = {
+            "quota": 3
+        }
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", DomainNameField)
@@ -71,38 +81,31 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         cleaned_data = self.cleaned_data
         name = cleaned_data["name"]
-        dtypes = events.raiseQueryEvent('CheckDomainName')
-        for dtype, label in [(DomainAlias, _('domain alias'))] + dtypes:
-            try:
-                dtype.objects.get(name=name)
-            except dtype.DoesNotExist:
-                pass
-            else:
-                self._errors["name"] = self.error_class(
-                    [_("A %s with this name already exists" % unicode(label))]
-                )
-                del cleaned_data["name"]
-                break
+        label = check_if_domain_exists(name, [(DomainAlias, _('domain alias'))])
+        if label is not None:
+            self._errors["name"] = self.error_class(
+                [_("A %s with this name already exists" % unicode(label))]
+            )
+            del cleaned_data["name"]
+
         for k in cleaned_data.keys():
             if not k.startswith("aliases"):
                 continue
             if cleaned_data[k] == "":
                 del cleaned_data[k]
                 continue
-            for dtype, label in [(Domain, _('domain'))] + dtypes:
-                try:
-                    dtype.objects.get(name=cleaned_data[k])
-                except dtype.DoesNotExist:
-                    continue
+            label = check_if_domain_exists(
+                cleaned_data[k], [(Domain, _('domain'))])
+            if label is not None:
                 self._errors[k] = self.error_class(
                     [_("A %s with this name already exists" % unicode(label))]
                 )
                 del cleaned_data[k]
-                break
+
         return cleaned_data
 
     def update_mailbox_quotas(self, domain):
-        """Update all quota records associated to this domain
+        """Update all quota records associated to this domain.
 
         This method must be called only when a domain gets renamed. As
         the primary key used for a quota is an email address, rename a
@@ -116,9 +119,12 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         perfomant at all as it will generate one query per quota
         record to update.
         """
-        for q in Quota.objects.filter(username__contains="@%s" % self.oldname).values('username'):
-            username = q['username'].replace('@%s' % self.oldname, '@%s' % domain.name)
-            Quota.objects.filter(username=q['username']).update(username=username)
+        for q in Quota.objects.filter(username__contains="@%s" % self.oldname):
+            username = q.username.replace(
+                '@%s' % self.oldname, '@%s' % domain.name)
+            newq = Quota.objects.create(
+                username=username, bytes=q.bytes, messages=q.messages)
+            q.delete()
 
     def save(self, user, commit=True, domalias_post_create=False):
         """Custom save method
@@ -175,7 +181,9 @@ class DomainFormOptions(forms.Form):
     create_dom_admin = YesNoField(
         label=ugettext_lazy("Create a domain administrator"),
         initial="no",
-        help_text=ugettext_lazy("Automatically create an administrator for this domain")
+        help_text=ugettext_lazy(
+            "Automatically create an administrator for this domain"
+        )
     )
 
     dom_admin_username = forms.CharField(
@@ -185,14 +193,15 @@ class DomainFormOptions(forms.Form):
             "The administrator's name. Don't include the domain's name here, "
             "it will be automatically appended."
         ),
-        widget=forms.widgets.TextInput(attrs={"class": "input-small"}),
         required=False
     )
 
     create_aliases = YesNoField(
         label=ugettext_lazy("Create aliases"),
         initial="yes",
-        help_text=ugettext_lazy("Automatically create standard aliases for this domain"),
+        help_text=ugettext_lazy(
+            "Automatically create standard aliases for this domain"
+        ),
         required=False
     )
 
@@ -207,6 +216,7 @@ class DomainFormOptions(forms.Form):
                 self.fields["create_aliases"].required = True
 
     def clean_dom_admin_username(self):
+        """Ensure admin username is an email address."""
         if '@' in self.cleaned_data["dom_admin_username"]:
             raise forms.ValidationError(_("Invalid format"))
         return self.cleaned_data["dom_admin_username"]
@@ -216,7 +226,8 @@ class DomainFormOptions(forms.Form):
             return
         if self.cleaned_data["create_dom_admin"] == "no":
             return
-        username = "%s@%s" % (self.cleaned_data["dom_admin_username"], domain.name)
+        username = "%s@%s" % (
+            self.cleaned_data["dom_admin_username"], domain.name)
         try:
             da = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -229,43 +240,119 @@ class DomainFormOptions(forms.Form):
         da.save()
         da.set_role("DomainAdmins")
         da.post_create(user)
-        mb = Mailbox(address=self.cleaned_data["dom_admin_username"], domain=domain,
-                     user=da, use_domain_quota=True)
+        mb = Mailbox(
+            address=self.cleaned_data["dom_admin_username"], domain=domain,
+            user=da, use_domain_quota=True
+        )
         mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
         mb.save(creator=user)
 
         if self.cleaned_data["create_aliases"] == "yes":
             events.raiseEvent("CanCreate", user, "mailbox_aliases")
-            al = Alias(address="postmaster", domain=domain, enabled=True)
-            al.save(int_rcpts=[mb], creator=user)
+            alias = Alias(address="postmaster", domain=domain, enabled=True)
+            alias.save(int_rcpts=[mb])
+            alias.post_create(user)
 
         domain.add_admin(da)
 
 
 class DomainForm(TabForms):
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        self.forms = []
-        if user.has_perm("admin.change_domain"):
-            self.forms.append(dict(
-                id="general", title=_("General"), formtpl="admin/domain_general_form.html",
-                cls=DomainFormGeneral, mandatory=True
-            ))
 
-        cbargs = [user]
+    """Domain edition form."""
+
+    template_name = "admin/editdomainform.html"
+
+    def __init__(self, request, *args, **kwargs):
+        self.user = request.user
+        self.forms = []
+        if self.user.has_perm("admin.change_domain"):
+            self.forms.append({
+                "id": "general",
+                "title": _("General"),
+                "formtpl": "admin/domain_general_form.html",
+                "cls": DomainFormGeneral,
+                "mandatory": True
+            })
+
+        cbargs = [self.user]
         if "instances" in kwargs:
             cbargs += [kwargs["instances"]["general"]]
         self.forms += events.raiseQueryEvent("ExtraDomainForm", *cbargs)
         if not self.forms:
             self.active_id = "admins"
-        super(DomainForm, self).__init__(*args, **kwargs)
+        super(DomainForm, self).__init__(request, *args, **kwargs)
 
-    def save(self, user):
-        """Custom save method
+    def extra_context(self, context):
+        domain = self.instances["general"]
+        domadmins = [u for u in domain.admins
+                     if self.request.user.can_access(u) and not u.is_superuser]
+        if not self.request.user.is_superuser:
+            domadmins = [u for u in domadmins if u.group == "DomainAdmins"]
+        context.update({
+            "title": domain.name,
+            "action": reverse("admin:domain_change", args=[domain.pk]),
+            "formid": "domform",
+            "domain": domain,
+            "domadmins": domadmins
+        })
+
+    def is_valid(self):
+        """Custom validation.
+
+        We just save the current name before it is potentially
+        modified.
+
+        """
+        self.instances["general"].oldname = self.instances["general"].name
+        return super(DomainForm, self).is_valid()
+
+    def save(self):
+        """Custom save method.
 
         As forms interact with each other, it is easier to make custom
         code to save them.
         """
-        self.forms[0]['instance'].save(user, domalias_post_create=True)
+        self.forms[0]['instance'].save(
+            self.request.user, domalias_post_create=True
+        )
         for f in self.forms[1:]:
-            f["instance"].save(user)
+            f["instance"].save(self.request.user)
+
+    def done(self):
+        events.raiseEvent("DomainModified", self.instances["general"])
+        return render_to_json_response(_("Domain modified"))
+
+
+class DomainWizard(WizardForm):
+    """Domain creation wizard.
+    """
+    def __init__(self, request):
+        super(DomainWizard, self).__init__(request)
+        self.add_step(
+            DomainFormGeneral, _("General"),
+            formtpl="admin/domain_general_form.html"
+        )
+        self.add_step(
+            DomainFormOptions, _("Options"),
+            formtpl="admin/domain_options_form.html",
+            new_args=[self.request.user]
+        )
+
+    def extra_context(self, context):
+        context.update({
+            "title": _("New domain"),
+            "action": reverse("admin:domain_add"),
+            "formid": "domform"
+        })
+
+    def done(self):
+        genform = self.first_step.form
+        domain = genform.save(self.request.user)
+        domain.post_create(self.request.user)
+        try:
+            self.steps[1].form.save(self.request.user, domain)
+        except ModoboaException:
+            from django.db import transaction
+            transaction.rollback()
+            raise
+        return render_to_json_response(_("Domain created"))

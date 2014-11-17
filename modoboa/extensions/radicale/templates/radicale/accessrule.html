@@ -1,0 +1,9 @@
+{% load i18n %}
+{% load form_tags %}
+
+<div class="form-inline access-rule">
+  {% render_field username %}
+  <label class="checkbox">{{ read_access }} {% trans "Read" %}</label>
+  <label class="checkbox">{{ write_access }} {% trans "Write" %}</label>
+  <a href="#" class="delrule"><span class="fa fa-trash"></span></a>
+</div>

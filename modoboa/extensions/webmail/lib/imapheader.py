@@ -85,11 +85,11 @@ def parse_date(value, **kwargs):
     tmp = email.utils.parsedate_tz(value)
     if not tmp:
         return value
-    ndate = datetime.datetime(*(tmp)[:7])
-    now = datetime.datetime.now()
     try:
+        ndate = datetime.datetime(*(tmp)[:7])
+        now = datetime.datetime.now()
         if now - ndate > datetime.timedelta(7):
-            return ndate.strftime("%d.%m.%Y %H:%M")
+            return ndate.strftime("%d/%m/%Y %H:%M")
         return ndate.strftime("%a %H:%M")
     except ValueError:
         return value

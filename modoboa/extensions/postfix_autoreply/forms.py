@@ -1,5 +1,4 @@
 # coding: utf-8
-import datetime
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils import timezone
@@ -12,7 +11,7 @@ class ARmessageForm(forms.ModelForm):
         required=False,
         help_text=ugettext_lazy("Activate your auto reply from this date"),
         widget=forms.TextInput(
-            attrs={'class': 'datefield', 'readonly': 'readonly'}
+            attrs={'class': 'datefield form-control', 'readonly': 'readonly'}
         )
     )
     untildate = forms.DateTimeField(
@@ -20,9 +19,19 @@ class ARmessageForm(forms.ModelForm):
         required=False,
         help_text=ugettext_lazy("Activate your auto reply until this date"),
         widget=forms.TextInput(
-            attrs={'class': 'datefield', 'readonly': 'readonly'}
+            attrs={'class': 'datefield form-control', 'readonly': 'readonly'}
         )
     )
+    subject = forms.CharField(
+            widget=forms.TextInput(
+                    attrs={'class': 'form-control'}
+                )
+    )
+    content = forms.CharField(
+                widget=forms.Textarea(
+                        attrs={'class': 'form-control'}
+                    )
+        )
 
     class Meta:
         model = ARmessage
@@ -42,20 +51,25 @@ class ARmessageForm(forms.ModelForm):
         """Custom fields validaton.
 
         We want to be sure that fromdate < untildate and that they are
-        both in the future.
+        both in the future ONLY IF the autoreply is beeing activated.
+
         """
         super(ARmessageForm, self).clean()
         if self._errors:
             raise forms.ValidationError(self._errors)
+        if not self.cleaned_data["enabled"]:
+            return self.cleaned_data
         if self.cleaned_data["fromdate"] is not None:
             if self.cleaned_data["fromdate"] < timezone.now():
-                self._errors["fromdate"] = self.error_class([_("This date is over")])
+                self._errors["fromdate"] = self.error_class(
+                    [_("This date is over")])
                 del self.cleaned_data['fromdate']
         else:
             self.cleaned_data['fromdate'] = timezone.now()
         if self.cleaned_data["untildate"] is not None:
             if self.cleaned_data["untildate"] < timezone.now():
-                self._errors["untildate"] = self.error_class([_("This date is over")])
+                self._errors["untildate"] = self.error_class(
+                    [_("This date is over")])
                 del self.cleaned_data['untildate']
             elif 'fromdate' in self.cleaned_data and \
                     self.cleaned_data['untildate'] < self.cleaned_data['fromdate']:

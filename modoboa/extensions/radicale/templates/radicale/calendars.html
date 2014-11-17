@@ -1,0 +1,59 @@
+{% extends "twocols.html" %}
+{% load i18n radicale_tags %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.sortable.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'radicale/css/radicale.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/jquery.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.infinitescroll.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/creation_wizard.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/autocompleter.js' %}"></script>
+<script type="text/javascript" src="{% static 'radicale/js/jquery.dynamicrule.js' %}"></script>
+<script type="text/javascript" src="{% static 'radicale/js/radicale.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    radicale = new Radicale({
+        "username_list_url": "{% url 'radicale:username_list' %}",
+        "load_page_url": "{% url 'radicale:calendars_page' %}"
+    });
+});
+</script>
+{% endblock %}
+
+{% block leftcol %}
+<ul class="nav nav-sidebar">
+  {% radicale_left_menu user %}
+</ul>
+{% endblock %}
+
+{% block apparea %}
+<div class="row">
+  <div class="col-sm-5">
+    {% include "admin/searchform.html" %}
+  </div>
+  <div id="taglist" class="col-sm-5">
+    
+  </div>
+</div>
+<div id="listing">
+  <table id="calendar_table" class="table">
+    <thead>
+      <tr>
+        <th id="name" class="sortable" data-sort_order="name" width="">{% trans "Name" %}</th>
+        {% if with_owner %}<th id="owner" class="sortable" data-sort_order="owner">{% trans "Owner" %}</th>{% endif %}
+        <th id="tags">{% trans "Tags" %}</th>
+        <th id="actions" width="">{% trans "Actions" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+</div>
+{% endblock %}

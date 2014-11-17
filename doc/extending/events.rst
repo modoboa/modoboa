@@ -629,10 +629,13 @@ template but need javascript stuff.
 
 *Callback prototype*::
 
-  def callback(caller, user): pass
+  def callback(caller, st_type, user): pass
 
 * ``caller`` is name of the application (or the location) responsible
   for the call
+
+* ``st_type`` is the expected static content type (``css`` or ``js``)
+
 * ``user`` is a ``User`` instance corresponding to the currently
   logged in user
 
@@ -712,10 +715,11 @@ Raised when an existing mailbox is modified.
 
 *Callback prototype*::
 
-  def callback(newmailbox, oldmailbox): pass
+  def callback(mailbox): pass
 
-* ``newmailbox`` is a ``Mailbox`` instance containing the new values
-* ``oldmailbox`` is a ``Mailbox`` instance containing the old values
+* ``mailbox`` is the ``Mailbox`` modified instance. It contains a
+  ``old_full_address`` extra field to check if the address was
+  modified.
 
 PasswordChange
 ==============
@@ -736,16 +740,30 @@ this user is disabled).
 TopNotifications
 ================
 
-Let extensions add custom content into the top bar.
+Lets extensions subscribe to the global notification service (located
+inside the top bar).
 
 *Callback prototype*::
 
-  def callback(user): pass
+  def callback(user, include_all): pass
 
 * ``user`` is a ``User`` instance corresponding to the currently
   logged in user
+* ``include_all`` is a boolean indicating if empty notifications must
+  be included into the result or not
 
-Callbacks listening to this event must return a list of string.
+Callbacks listening to this event must return a list of dictionary,
+each dictionary containing at least the following entries::
+
+  {"id": "<notification entry ID>",
+   "url": "<associated URL>",
+   "text": "<text to display>"}
+
+If your notification needs a counter, you can specify it by adding the
+two following entries in the dictionary:
+
+  {"counter": <associated counter>,
+   "level": "<info|success|warning|error>"}
 
 UserLogin
 =========

@@ -47,7 +47,9 @@ class AdminConsole(ModoExtension):
     name = "admin"
     label = ugettext_lazy("Administration console")
     version = "1.0"
-    description = ugettext_lazy("Web based console to manage domains, accounts and aliases")
+    description = ugettext_lazy(
+        "Web based console to manage domains, accounts and aliases"
+    )
     always_active = True
 
     def load(self):
@@ -63,8 +65,12 @@ exts_pool.register_extension(AdminConsole, show=False)
 
 @events.observe("ExtraUprefsRoutes")
 def extra_routes():
-    return [(r'^user/forward/',
-             'modoboa.extensions.admin.views.user.forward'), ]
+    from django.conf.urls import url
+    return [
+        url(r'^user/forward/',
+            'modoboa.extensions.admin.views.user.forward',
+            name="user_forward"),
+    ]
 
 
 @events.observe("AdminMenuDisplay")
@@ -75,13 +81,13 @@ def admin_menu(target, user):
     if user.has_perm("admin.view_domains"):
         entries += [
             {"name" : "domains",
-             "url" : reverse("modoboa.extensions.admin.views.domain.domains"),
+             "url" : reverse("admin:domain_list"),
              "label" : _("Domains")}
         ]
     if user.has_perm("core.add_user") or user.has_perm("admin.add_alias"):
         entries += [
             {"name" : "identities",
-             "url" : reverse("modoboa.extensions.admin.views.identity.identities"),
+             "url" : reverse("admin:identity_list"),
              "label" : _("Identities")},
         ]
     return entries
@@ -196,8 +202,11 @@ def import_account_mailbox(user, account, row):
 @events.observe("AccountAutoCreated")
 def account_auto_created(user):
     from modoboa.core.models import User
+    from modoboa.extensions.admin.lib import check_if_domain_exists
     from modoboa.lib.permissions import grant_access_to_object
 
+    if parameters.get_admin("LDAP_CREATE_DOMAIN_MAILBOX", app="core") == "no":
+        return
     localpart, domname = split_mailbox(user.username)
     if user.group != 'SimpleUsers' and domname is None:
         return
@@ -205,6 +214,10 @@ def account_auto_created(user):
     try:
         domain = Domain.objects.get(name=domname)
     except Domain.DoesNotExist:
+        label = check_if_domain_exists(
+            domname, [(DomainAlias, _('domain alias'))])
+        if label is not None:
+            return
         domain = Domain(name=domname, enabled=True, quota=0)
         domain.save(creator=sadmins[0])
         for su in sadmins[1:]:

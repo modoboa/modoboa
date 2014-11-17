@@ -34,10 +34,6 @@ class Email(object):
         self._msg = None
         self._body = None
 
-        if not mformat in self.contents or self.contents[mformat] == "":
-            # Fallback
-            self.mformat = mformat == "html" and "plain" or "html"
-
     @property
     def msg(self):
         """Return an email.message object.
@@ -72,9 +68,13 @@ class Email(object):
         """
         fname = msg.get_filename()
         if fname is not None:
+            if type(fname) is unicode:
+                fname = fname.encode("utf-8")
             decoded = decode_header(fname)
-            value = decoded[0][1] is None and decoded[0][0] \
-                or unicode(decoded[0][0], decoded[0][1])
+            value = (
+                decoded[0][0] if decoded[0][1] is None
+                else unicode(decoded[0][0], decoded[0][1])
+            )
         else:
             value = "part_%s" % level
         self.attachments[level] = value

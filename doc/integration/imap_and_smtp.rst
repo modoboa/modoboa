@@ -155,7 +155,7 @@ MySQL users
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, concat('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM core_user
+  iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
 .. _dovecot_pg_queries:
 
@@ -174,7 +174,7 @@ PostgreSQL users
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM core_user
+  iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
 SQLite users
 ------------
@@ -191,19 +191,54 @@ SQLite users
 
   user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, ('*:bytes=' || mb.quota || 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
 
-  iterate_query = SELECT email AS username FROM core_user
+  iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
 .. note::
 
    Replace values between ``<>`` with yours.
 
-LDA
-===
+LMTP
+====
 
-The LDA is activated by default but you must define a *postmaster*
-address. Open the :file:`conf.d/15-lda.conf` file modify the following line::
+`Local Mail Transport Protocol
+<http://en.wikipedia.org/wiki/Local_Mail_Transfer_Protocol>`_ is used
+to let Postfix deliver messages to Dovecot.
 
-  postmaster_address = postmaster@<domain>
+First, make sure the protocol is activated by looking at the
+``protocols`` setting (generally inside
+:file:`dovecot.conf`). It should be similar to the following example::
+
+  protocols = imap pop3 lmtp
+
+Then, open the :file:`conf.d/10-master.conf`, look for ``lmtp``
+service definition and add the following content inside::
+
+  service lmtp {
+    # stuff before
+    unix_listener /var/spool/postfix/private/dovecot-lmtp {
+      mode = 0600
+      user = postfix
+      group = postfix
+    }
+    # stuff after
+  }
+
+We assume here that Postfix is *chrooted* within
+:file:`/var/spool/postfix`.
+
+Finally, open the :file:`conf.d/20-lmtp.conf` and modify it as follows::
+
+  protocol lmtp {
+    postmaster_address = postmaster@<domain>
+    mail_plugins = $mail_plugins quota sieve
+  }
+
+Replace ``<domain>`` by the appropriate value.
+
+.. note::
+
+   If you don't plan to apply quota or to use filters, just adapt the
+   content of the ``mail_plugins`` setting.
 
 .. _dovecot_quota:
 
@@ -295,69 +330,16 @@ Trigger
 
 As indicated on `Dovecot's wiki
 <http://wiki2.dovecot.org/Quota/Dict>`_, you need a trigger to
-properly update the quota. Unfortunately, the provided example won't
-work for Modoboa. You should use the following one instead:
+properly update the quota.
 
-.. sourcecode:: sql
+A working copy of this trigger is available on `Modoboa's website
+<http://modoboa.org/resources/modoboa_postgres_trigger.sql>`_.
 
-  CREATE OR REPLACE FUNCTION merge_quota() RETURNS TRIGGER AS $$
-  BEGIN
-    IF NEW.messages < 0 OR NEW.messages IS NULL THEN
-      -- ugly kludge: we came here from this function, really do try to insert
-      IF NEW.messages IS NULL THEN
-        NEW.messages = 0;
-      ELSE
-        NEW.messages = -NEW.messages;
-      END IF;
-      return NEW;
-    END IF;
-
-    LOOP
-      UPDATE admin_quota SET bytes = bytes + NEW.bytes,
-        messages = messages + NEW.messages
-        WHERE username = NEW.username;
-      IF found THEN
-        RETURN NULL;
-      END IF;
-
-      BEGIN
-        IF NEW.messages = 0 THEN
-          RETURN NEW;
-        ELSE
-          NEW.messages = - NEW.messages;
-          return NEW;
-        END IF;
-      EXCEPTION WHEN unique_violation THEN
-        -- someone just inserted the record, update it
-      END;
-    END LOOP;
-  END;
-  $$ LANGUAGE plpgsql;
-
-  CREATE OR REPLACE FUNCTION set_mboxid() RETURNS TRIGGER AS $$
-  DECLARE
-    mboxid INTEGER;
-  BEGIN
-    SELECT admin_mailbox.id INTO STRICT mboxid FROM admin_mailbox INNER JOIN core_user ON admin_mailbox.user_id=core_user.id WHERE core_user.username=NEW.username;
-    UPDATE admin_quota SET mbox_id = mboxid
-      WHERE username = NEW.username;
-    RETURN NULL;
-  END;
-  $$ LANGUAGE plpgsql;
-
-  DROP TRIGGER IF EXISTS mergequota ON admin_quota;
-  CREATE TRIGGER mergequota BEFORE INSERT ON admin_quota
-     FOR EACH ROW EXECUTE PROCEDURE merge_quota();
-
-  DROP TRIGGER IF EXISTS setmboxid ON admin_quota;
-  CREATE TRIGGER setmboxid AFTER INSERT ON admin_quota
-     FOR EACH ROW EXECUTE PROCEDURE set_mboxid();
-
-Copy this example into a file (for example: :file:`quota-trigger.sql`) on
-server running postgres and execute the following commands::
+Download this file and copy it on the server running postgres. Then,
+execute the following commands::
 
   $ su - postgres
-  $ psql [modoboa database] < /path/to/quota-trigger.sql
+  $ psql [modoboa database] < /path/to/modoboa_postgres_trigger.sql
   $ exit
   
 Replace ``[modoboa database]`` by the appropriate value.
@@ -454,30 +436,25 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
 (this is just one possible configuration)::
 
   # Stuff before
-  virtual_transport = dovecot
-  dovecot_destination_recipient_limit = 1
+  virtual_transport = lmtp:unix:private/dovecot-lmtp
 
   relay_domains =
   virtual_mailbox_domains = <driver>:/etc/postfix/sql-domains.cf
   virtual_alias_domains = <driver>:/etc/postfix/sql-domain-aliases.cf
   virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf,
         <driver>:/etc/postfix/sql-domain-aliases-mailboxes.cf,
+        <driver>:/etc/postfix/sql-mailboxes-self-aliases.cf,
         <driver>:/etc/postfix/sql-catchall-aliases.cf
 
   smtpd_recipient_restrictions =
         ...
         check_recipient_access <driver>:/etc/postfix/sql-maintain.cf
         permit_mynetworks
+        reject_unverified_recipient
         ...
 
   # Stuff after
 
 Replace ``<driver>`` by the name of the database you use.
-
-Then, edit the :file:`/etc/postfix/master.cf` file and add the following
-definition at the end::
-
-  dovecot   unix  -       n       n       -       -       pipe
-    flags=DRhu user=vmail:vmail argv=/usr/lib/dovecot/deliver -f ${sender} -d ${recipient}
 
 Restart Postfix.

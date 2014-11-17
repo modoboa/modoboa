@@ -20,7 +20,7 @@ function removefilter(evt) {
         url: $this.attr("href"),
         dataType: 'json'
     }).done(function(response) {
-        history.update(true);
+        histomanager.update(true);
         $("body").notify('success', response, 2000);
     });
 }
@@ -30,7 +30,7 @@ function removefilter(evt) {
  */
 function changefs(evt) {
     evt.preventDefault();
-    history.baseurl($(this).val()).update();
+    histomanager.baseurl($(this).val()).update();
 }
 
 /*
@@ -48,7 +48,7 @@ function init_filters_list() {
  * It updates the middle DIV and initializes the user interface.
  */
 function loadfs(response) {
-    curscript = history.getbaseurl();
+    curscript = histomanager.getbaseurl();
     $("#curfset").val(curscript);
     $("#set_content").html(response.content);
 
@@ -78,7 +78,7 @@ function send_command(cmd, extracb) {
             extracb(response);
         }
         if (!response.norefresh) {
-            history.update(true);
+            histomanager.update(true);
         }
         $("body").notify('success', response.respmsg, 2000);
     });
@@ -133,7 +133,7 @@ function removefs(evt) {
         var $curfset = $("#curfset");
 
         $curfset.find("option[value='" + curscript + "']").remove();
-        history.baseurl(response.newfs, 1);
+        histomanager.baseurl(response.newfs, 1);
     });
 }
 
@@ -206,7 +206,7 @@ function filterset_created(data) {
             }
         });
     }
-    history.baseurl(data.url, 1).update(1);
+    histomanager.baseurl(data.url, 1).update(1);
 }
 
 function filtersetform_cb() {

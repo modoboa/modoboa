@@ -16,7 +16,21 @@ from .base import AdminObject
 from .domain import Domain
 
 
+class Quota(models.Model):
+
+    """Keeps track of Mailbox current quota."""
+
+    username = models.EmailField(primary_key=True, max_length=254)
+    bytes = models.BigIntegerField(default=0)
+    messages = models.IntegerField(default=0)
+
+    class Meta:
+        app_label = 'admin'
+
+
 class MailboxManager(Manager):
+
+    """Custom manager for Mailbox."""
 
     def get_for_admin(self, admin, squery=None):
         """Return the mailboxes that belong to this admin.
@@ -33,9 +47,15 @@ class MailboxManager(Manager):
                 parts = squery.split('@')
                 addrfilter = '@'.join(parts[:-1])
                 domfilter = parts[-1]
-                qf = Q(address__contains=addrfilter) & Q(domain__name__contains=domfilter)
+                qf = (
+                    Q(address__contains=addrfilter) &
+                    Q(domain__name__contains=domfilter)
+                )
             else:
-                qf = Q(address__contains=squery) | Q(domain__name__contains=squery)
+                qf = (
+                    Q(address__contains=squery) |
+                    Q(domain__name__contains=squery)
+                )
         ids = admin.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(Mailbox)) \
             .values_list('object_id', flat=True)
@@ -43,10 +63,13 @@ class MailboxManager(Manager):
             qf = Q(pk__in=ids) & qf
         else:
             qf = Q(pk__in=ids)
-        return self.get_query_set().filter(qf)
+        return self.get_query_set().select_related().filter(qf)
 
 
 class Mailbox(AdminObject):
+
+    """User mailbox."""
+
     address = models.CharField(
         ugettext_lazy('address'), max_length=252,
         help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
@@ -95,7 +118,7 @@ class Mailbox(AdminObject):
 
         We ask dovecot to give us this information because there are
         several patterns to understand and we don't want to implement
-        them.        
+        them.
         """
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
@@ -125,6 +148,22 @@ class Mailbox(AdminObject):
             aliases += [alias.full_address]
         return aliases
 
+    @property
+    def quota_value(self):
+        """Retrieve the ``Quota`` instance associated to this mailbox."""
+        if not hasattr(self, "_quota_value"):
+            try:
+                self._quota_value = Quota.objects.get(
+                    username=self.full_address)
+            except Quota.DoesNotExist:
+                return None
+        return self._quota_value
+
+    @quota_value.setter
+    def quota_value(self, instance):
+        """Set the ``Quota`` for this mailbox."""
+        self._quota_value = instance
+
     def rename_dir(self, old_mail_home):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
@@ -134,16 +173,25 @@ class Mailbox(AdminObject):
         )
 
     def rename(self, address, domain):
-        """Rename the mailbox
+        """Rename the mailbox.
+
+        To update the associated Quota record, we must create a new
+        one first, update the foreign key and then we can delete the
+        original record!
 
         :param string address: the new mailbox's address (local part)
         :param Domain domain: the new mailbox's domain
+
         """
         old_mail_home = self.mail_home
-        qs = Quota.objects.filter(username=self.full_address)
+        old_qvalue = self.quota_value
         self.address = address
         self.domain = domain
-        qs.update(username=self.full_address)
+        self.quota_value = Quota.objects.create(
+            username=self.full_address, bytes=old_qvalue.bytes,
+            messages=old_qvalue.messages
+        )
+        old_qvalue.delete()
         self.rename_dir(old_mail_home)
 
     def delete_dir(self):
@@ -170,7 +218,8 @@ class Mailbox(AdminObject):
                 self.quota = 0
         elif int(value) > self.domain.quota and not override_rules:
             raise BadRequest(
-                _("Quota is greater than the allowed domain's limit (%dM)" % self.domain.quota)
+                _("Quota is greater than the allowed domain's limit (%dM)"
+                  % self.domain.quota)
             )
         else:
             self.quota = value
@@ -179,11 +228,10 @@ class Mailbox(AdminObject):
 
     def get_quota(self):
         """Get quota limit.
-        
+
         :rtype: int
         """
-        q = Quota.objects.get(username=self.full_address)
-        return int(q.bytes / 1048576)
+        return int(self.quota_value.bytes / 1048576)
 
     def get_quota_in_percent(self):
         """Get current quota usage.
@@ -192,8 +240,9 @@ class Mailbox(AdminObject):
         """
         if not self.quota:
             return 0
-        q = Quota.objects.get(username=self.full_address)
-        return int(q.bytes / float(self.quota * 1048576) * 100)
+        return int(
+            self.quota_value.bytes / float(self.quota * 1048576) * 100
+        )
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
@@ -209,11 +258,14 @@ class Mailbox(AdminObject):
                 grant_access_to_object(admin, self.user)
 
     def save(self, *args, **kwargs):
+        """Custom save.
+
+        We just make sure a quota record is defined for this mailbox.
+        """
+        if self.quota_value is None:
+            self.quota_value, created = Quota.objects.get_or_create(
+                username=self.full_address)
         super(Mailbox, self).save(*args, **kwargs)
-        try:
-            q = self.quota_value
-        except Quota.DoesNotExist:
-            Quota.objects.create(mbox=self, username=self.full_address)
 
     def delete(self, keepdir=False):
         """Custom delete method
@@ -255,17 +307,6 @@ def mailbox_deleted_handler(sender, **kwargs):
         alias.mboxes.remove(mb)
         if alias.mboxes.count() == 0:
             alias.delete()
-
-
-class Quota(models.Model):
-    username = models.EmailField(primary_key=True, max_length=254)
-    bytes = models.BigIntegerField(default=0)
-    messages = models.IntegerField(default=0)
-
-    mbox = models.OneToOneField(Mailbox, related_name="quota_value", null=True)
-
-    class Meta:
-        app_label = 'admin'
 
 
 class MailboxOperation(models.Model):

@@ -1,5 +1,5 @@
 django>=1.5,<1.6
-django-reversion>=1.8.0
+django-reversion==1.8.0
 dj-database-url
 south
 lxml
@@ -8,5 +8,7 @@ sievelib
 chardet
 argparse
 rfc6266
-factory-boy
+factory-boy<2.4
 passlib
+-e git+https://github.com/tonioo/django-versionfield.git#egg=django-versionfield
+requests

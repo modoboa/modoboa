@@ -18,7 +18,7 @@ def extra_parameters(app, level):
             help_text=ugettext_lazy(
                 "Maximum number of allowed relay domains for a new administrator"
             ),
-            widget=forms.widgets.TextInput(attrs={"class": "span1"})
+            widget=forms.widgets.TextInput(attrs={"class": "col-md-1 form-control"})
         ),
         'deflt_relay_domain_aliases_limit': forms.IntegerField(
             label=ugettext_lazy("Relay domain aliases"),
@@ -26,7 +26,7 @@ def extra_parameters(app, level):
             help_text=ugettext_lazy(
                 "Maximum number of allowed relay domain aliases for a new administrator"
             ),
-            widget=forms.widgets.TextInput(attrs={"class": "span1"})
+            widget=forms.widgets.TextInput(attrs={"class": "col-md-1 form-control"})
         )
     }
 

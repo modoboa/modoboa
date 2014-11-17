@@ -42,11 +42,46 @@ Then, refer to this page to check if the version you're installing
 requires specific operations. If the version you're looking for is not
 present, it means nothing special is required.
 
-Finally, follow the common procedure::
+Then, follow the common procedure::
 
   $ cd <modoboa_instance_dir>
   $ python manage.py syncdb --migrate
   $ python manage.py collectstatic
+
+Eventually, restart the web server process according to the environment
+you did choose. See :ref:`webservers` for more details.
+
+1.2.0: radicale extension, bootstrap3 and more
+==============================================
+
+A new notification service let administrator know about new Modoboa
+versions. To activate it, you need to:
+
+#. Add `'modoboa.core.context_processors.top_notifications'`` to the
+   ``TEMPLATE_CONTEXT_PROCESSORS`` variable
+
+#. Define the ``MODOBOA_API_URL``::
+        
+    MODOBOA_API_URL = 'http://api.modoboa.org/1/'
+     
+1.1.7: manual learning for SpamAssassin
+=======================================
+
+A new feature allows administrators and users to manually train
+SpamAssassin in order to customize its behaviour.
+
+Check :ref:`sa_manual_learning` to know more about this feature.
+
+1.1.6: Few bugfixes
+===================
+
+Catchall aliases were not really functional until this version as they
+were eating all domain traffic.
+
+To fix them, a postfix map file (``sql-mailboxes-self-aliases.cf``)
+has been re-introduced and must be listed into the
+``virtual_alias_maps`` setting. See :ref:`postfix_config` for the
+order.
 
 1.1.2: Audit trail issues
 =========================
@@ -560,7 +595,7 @@ requires a migration.
 
      $ python manage.py migrate admin
 
-#. Update SQL queries used in your environnement (see
+#. Update SQL queries used in your environment (see
    :ref:`postfix` or :ref:`dovecot`).
 
 #. Update Postfix configuration so that it can handle domain aliases
