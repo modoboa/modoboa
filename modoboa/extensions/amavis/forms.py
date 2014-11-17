@@ -1,7 +1,14 @@
 # coding: utf-8
+"""
+Amavis forms.
+"""
+
 from django import forms
+from django.utils.translation import ugettext as _
+
+from modoboa.lib import parameters
 from modoboa.lib.formutils import InlineRadioSelect
-from modoboa.extensions.amavis.models import Policy, Users
+from .models import Policy, Users
 
 
 class DomainPolicyForm(forms.ModelForm):
@@ -57,3 +64,34 @@ class DomainPolicyForm(forms.ModelForm):
                 u.policy = policy
                 policy.save()
         return policy
+
+
+class LearningRecipientForm(forms.Form):
+
+    """A form to select the recipient of a learning request."""
+
+    recipient = forms.ChoiceField(
+        label=None, choices=[]
+    )
+    ltype = forms.ChoiceField(
+        label="", choices=[("spam", "spam"), ("ham", "ham")],
+        widget=forms.widgets.HiddenInput
+    )
+    selection = forms.CharField(
+        label="", widget=forms.widgets.HiddenInput)
+
+    def __init__(self, user, *args, **kwargs):
+        """Constructor."""
+        super(LearningRecipientForm, self).__init__(*args, **kwargs)
+        choices = []
+        if user.group == "SuperAdmins":
+            choices.append(("global", _("Global database")))
+        domain_level_learning = parameters.get_admin(
+            "DOMAIN_LEVEL_LEARNING") == "yes"
+        user_level_learning = parameters.get_admin(
+            "USER_LEVEL_LEARNING") == "yes"
+        if domain_level_learning:
+            choices.append(("domain", _("Domain's database")))
+        if user_level_learning:
+            choices.append(("user", _("User's database")))
+        self.fields["recipient"].choices = choices

@@ -216,6 +216,7 @@ class DomainFormOptions(forms.Form):
                 self.fields["create_aliases"].required = True
 
     def clean_dom_admin_username(self):
+        """Ensure admin username is an email address."""
         if '@' in self.cleaned_data["dom_admin_username"]:
             raise forms.ValidationError(_("Invalid format"))
         return self.cleaned_data["dom_admin_username"]
@@ -225,7 +226,8 @@ class DomainFormOptions(forms.Form):
             return
         if self.cleaned_data["create_dom_admin"] == "no":
             return
-        username = "%s@%s" % (self.cleaned_data["dom_admin_username"], domain.name)
+        username = "%s@%s" % (
+            self.cleaned_data["dom_admin_username"], domain.name)
         try:
             da = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -238,15 +240,18 @@ class DomainFormOptions(forms.Form):
         da.save()
         da.set_role("DomainAdmins")
         da.post_create(user)
-        mb = Mailbox(address=self.cleaned_data["dom_admin_username"], domain=domain,
-                     user=da, use_domain_quota=True)
+        mb = Mailbox(
+            address=self.cleaned_data["dom_admin_username"], domain=domain,
+            user=da, use_domain_quota=True
+        )
         mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
         mb.save(creator=user)
 
         if self.cleaned_data["create_aliases"] == "yes":
             events.raiseEvent("CanCreate", user, "mailbox_aliases")
-            al = Alias(address="postmaster", domain=domain, enabled=True)
-            al.save(int_rcpts=[mb], creator=user)
+            alias = Alias(address="postmaster", domain=domain, enabled=True)
+            alias.save(int_rcpts=[mb])
+            alias.post_create(user)
 
         domain.add_admin(da)
 

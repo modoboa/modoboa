@@ -68,9 +68,13 @@ class Email(object):
         """
         fname = msg.get_filename()
         if fname is not None:
+            if type(fname) is unicode:
+                fname = fname.encode("utf-8")
             decoded = decode_header(fname)
-            value = decoded[0][1] is None and decoded[0][0] \
-                or unicode(decoded[0][0], decoded[0][1])
+            value = (
+                decoded[0][0] if decoded[0][1] is None
+                else unicode(decoded[0][0], decoded[0][1])
+            )
         else:
             value = "part_%s" % level
         self.attachments[level] = value

@@ -1,15 +1,21 @@
 # coding: utf-8
-import socket
-import re
-import struct
-import string
+
 from functools import wraps
-from django.core.urlresolvers import reverse
+import re
+import socket
+import string
+import struct
+
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
+
+from modoboa.extensions.admin.models import Mailbox, Alias
 from modoboa.lib import parameters
+from modoboa.lib.emailutils import split_mailbox
 from modoboa.lib.exceptions import InternalError
+from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.webutils import NavigationParameters
-from modoboa.extensions.amavis.models import Users, Policy
+from .models import Users, Policy
 
 
 def selfservice(ssfunc=None):
@@ -80,6 +86,100 @@ recipient=%s
         return False
 
 
+class SpamassassinClient(object):
+
+    """A stupid spamassassin client."""
+
+    def __init__(self, user, recipient_db):
+        """Constructor."""
+        self._sa_is_local = parameters.get_admin("SA_IS_LOCAL")
+        self._default_username = parameters.get_admin("DEFAULT_USER")
+        self._recipient_db = recipient_db
+        self._setup_cache = {}
+        self._username_cache = []
+        if user.group == "SimpleUsers":
+            user_level_learning = parameters.get_admin("USER_LEVEL_LEARNING")
+            if user_level_learning == "yes":
+                self._username = user.email
+        else:
+            self._username = None
+        self.error = None
+        if self._sa_is_local == "yes":
+            self._learn_cmd = "sa-learn --{0} --no-sync -u {1}"
+            self._learn_cmd_kwargs = {}
+            self._expected_exit_codes = [0]
+        else:
+            self._learn_cmd = "spamc -d {0} -p {1}".format(
+                parameters.get_admin("SPAMD_ADDRESS"),
+                parameters.get_admin("SPAMD_PORT")
+            )
+            self._learn_cmd += " -L {0} -u {1}"
+            self._learn_cmd_kwargs = {}
+            self._expected_exit_codes = [5, 6]
+
+    def _get_mailbox_from_rcpt(self, rcpt):
+        """Retrieve a mailbox from a recipient address."""
+        local_part, domname = split_mailbox(rcpt)
+        try:
+            mailbox = Mailbox.objects.select_related("domain").get(
+                address=local_part, domain__name=domname)
+        except Mailbox.DoesNotExist:
+            try:
+                alias = Alias.objects.select_related("domain").get(
+                    address=local_part, domain__name=domname)
+            except Alias.DoesNotExist:
+                raise InternalError(_("No recipient found"))
+            if alias.type != "alias":
+                return None
+            mailbox = alias.mboxes.all()[0]
+        return mailbox
+
+    def _learn(self, rcpt, msg, mtype):
+        """Internal method to call the learning command."""
+        if self._username is None:
+            if self._recipient_db == "global":
+                username = self._default_username
+            else:
+                mbox = self._get_mailbox_from_rcpt(rcpt)
+                if mbox is None:
+                    username = self._default_username
+                if self._recipient_db == "domain":
+                    username = mbox.domain.name
+                    if username not in self._setup_cache and \
+                       setup_manual_learning_for_domain(mbox.domain):
+                        self._setup_cache[username] = True
+                else:
+                    username = mbox.full_address
+                    if username not in self._setup_cache and \
+                       setup_manual_learning_for_mbox(mbox):
+                        self._setup_cache[username] = True
+        else:
+            username = self._username
+        if username not in self._username_cache:
+            self._username_cache.append(username)
+        cmd = self._learn_cmd.format(mtype, username)
+        code, output = exec_cmd(cmd, pinput=msg, **self._learn_cmd_kwargs)
+        if code in self._expected_exit_codes:
+            return True
+        self.error = output
+        return False
+
+    def learn_spam(self, rcpt, msg):
+        """Learn new spam."""
+        return self._learn(rcpt, msg, "spam")
+
+    def learn_ham(self, rcpt, msg):
+        """Learn new ham."""
+        return self._learn(rcpt, msg, "ham")
+
+    def done(self):
+        """Call this method at the end of the processing."""
+        if self._sa_is_local:
+            for username in self._username_cache:
+                exec_cmd("sa-learn -u {0} --sync".format(username),
+                         **self._learn_cmd_kwargs)
+
+
 class QuarantineNavigationParameters(NavigationParameters):
     """
     Specific NavigationParameters subclass for the quarantine.
@@ -89,7 +189,10 @@ class QuarantineNavigationParameters(NavigationParameters):
             request, 'quarantine_navparams'
         )
         self.parameters += [
-            ('msgtype', None, False), ('viewrequests', None, False)
+            ('pattern', '', False),
+            ('criteria', 'from_addr', False),
+            ('msgtype', None, False),
+            ('viewrequests', None, False)
         ]
 
     def _store_page(self):
@@ -123,31 +226,31 @@ class QuarantineNavigationParameters(NavigationParameters):
         return url
 
 
-def create_user_and_policy(name):
+def create_user_and_policy(name, priority=7):
     """Create records.
 
     Create two records (a user and a policy) using :keyword:`name` as
     an identifier.
 
     :param str name: name
+    :return: the new ``Policy`` object
     """
     policy = Policy.objects.create(policy_name=name[:32])
     Users.objects.create(
-        email="@%s" % name, fullname=name,
-        priority=7, policy=policy
+        email=name, fullname=name, priority=priority, policy=policy
     )
+    return policy
 
 
-def create_user_and_use_policy(name, policy_name):
+def create_user_and_use_policy(name, policy_name, priority=7):
     """Create a *users* record and use an existing policy.
 
     :param str name: user record name
     :param str policy_name: policy name
     """
-    policy = Policy.objects.get(policy_name=policy_name[:32])
+    policy = Policy.objects.get(policy_name="@{0}".format(policy_name[:32]))
     Users.objects.create(
-        email="@%s" % name, fullname=name,
-        priority=7, policy=policy
+        email=name, fullname=name, priority=priority, policy=policy
     )
 
 
@@ -159,8 +262,8 @@ def update_user_and_policy(oldname, newname):
     """
     if oldname == newname:
         return
-    u = Users.objects.get(email="@%s" % oldname)
-    u.email = "@%s" % newname
+    u = Users.objects.get(email=oldname)
+    u.email = newname
     u.fullname = newname
     u.policy.policy_name = newname[:32]
     u.policy.save()
@@ -173,7 +276,7 @@ def delete_user_and_policy(name):
     :param str name: identifier
     """
     try:
-        u = Users.objects.get(email="@%s" % name)
+        u = Users.objects.get(email=name)
     except Users.DoesNotExist:
         return
     u.policy.delete()
@@ -186,6 +289,53 @@ def delete_user(name):
     :param str name: user record name
     """
     try:
-        Users.objects.get(email="@%s" % name).delete()
+        Users.objects.get(email=name).delete()
     except Users.DoesNotExist:
         pass
+
+
+def manual_learning_enabled(user):
+    """Check if manual learning is enabled or not.
+
+    Also check for :kw:`user` if necessary.
+
+    :return: True if learning is enabled, False otherwise.
+    """
+    manual_learning = parameters.get_admin("MANUAL_LEARNING") == "yes"
+    if manual_learning and user.group != 'SuperAdmins':
+        domain_level_learning = parameters.get_admin(
+            "DOMAIN_LEVEL_LEARNING") == "yes"
+        user_level_learning = parameters.get_admin(
+            "USER_LEVEL_LEARNING") == "yes"
+        if user.has_perm("admin.view_domains"):
+            manual_learning = domain_level_learning or user_level_learning
+        else:
+            manual_learning = user_level_learning
+    return manual_learning
+
+
+def setup_manual_learning_for_domain(domain):
+    """Setup manual learning if necessary.
+
+    :return: True if learning has been setup, False otherwise
+    """
+    if Policy.objects.filter(sa_username=domain.name).count():
+        return False
+    policy = Policy.objects.get(policy_name=domain.name)
+    policy.sa_username = domain.name
+    policy.save()
+    return True
+
+
+def setup_manual_learning_for_mbox(mbox):
+    """Setup manual learning if necessary.
+
+    :return: True if learning has been setup, False otherwise
+    """
+    result = False
+    if not Policy.objects.filter(policy_name=mbox.full_address).exists():
+        policy = create_user_and_policy(mbox.full_address)
+        for alias in mbox.alias_addresses:
+            create_user_and_use_policy(alias, policy)
+        result = True
+    return result

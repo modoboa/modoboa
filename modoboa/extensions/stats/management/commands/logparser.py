@@ -24,13 +24,15 @@ import re
 import rrdtool
 import string
 from optparse import make_option
+
 from django import db
 from django.core.management.base import BaseCommand
-from modoboa.lib import parameters
+
+from modoboa.core.extensions import exts_pool
 from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.stats import Stats
 from modoboa.extensions.stats.lib import date_to_timestamp
-
+from modoboa.lib import parameters
 
 rrdstep = 60
 xpoints = 540
@@ -63,9 +65,7 @@ class LogParser(object):
 
         self.data = {}
         self.domains = []
-        for dom in Domain.objects.all():
-            self.domains += [str(dom.name)]
-            self.data[str(dom.name)] = {}
+        self._load_domain_list()
         self.data["global"] = {}
 
         self.workdict = {}
@@ -82,6 +82,24 @@ class LogParser(object):
         self._prev_mi = -1
         self._prev_ho = -1
         self.cur_t = 0
+
+    def _load_domain_list(self):
+        """Load the list of allowed domains.
+
+        Since the relay domains feature is an extension of the admin
+        panel, we don't use an event to get the list of all supported
+        domains...
+
+        """
+        for dom in Domain.objects.all():
+            self.domains += [str(dom.name)]
+            self.data[str(dom.name)] = {}
+        if not exts_pool.is_extension_enabled("postfix_relay_domains"):
+            return
+        from modoboa.extensions.postfix_relay_domains.models import RelayDomain
+        for rdom in RelayDomain.objects.all():
+            self.domains += [str(rdom.name)]
+            self.data[str(rdom.name)] = {}
 
     def _dprint(self, msg):
         """Print a debug message if required.

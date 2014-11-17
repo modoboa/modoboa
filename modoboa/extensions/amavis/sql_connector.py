@@ -7,7 +7,6 @@ from django.db.models import Q
 
 from modoboa.extensions.admin.models import Domain
 from modoboa.lib.dbutils import db_type
-from modoboa.lib.webutils import static_url
 
 from .models import Quarantine, Msgrcpt, Maddr
 
@@ -92,7 +91,7 @@ class SQLconnector(object):
 
         Filters: rs, rid, content
         """
-        flt = Q(rs__in=[' ', 'V', 'R', 'p']) \
+        flt = Q(rs__in=[' ', 'V', 'R', 'p', 'S', 'H']) \
             if self.navparams.get('viewrequests', '0') != '1' else Q(rs='p')
         flt = self._apply_msgrcpt_filters(flt)
         pattern = self.navparams.get("pattern", "")
@@ -122,7 +121,7 @@ class SQLconnector(object):
             mail__in=Quarantine.objects.filter(chunk_ind=1).values("mail_id")
         )
 
-        messages = Msgrcpt.objects.select_related().filter(flt)
+        messages = Msgrcpt.objects.select_related("mail", "rid").filter(flt)
         messages = self._apply_extra_select_filters(messages)
         return messages
 
@@ -156,21 +155,21 @@ class SQLconnector(object):
         """
         emails = []
         for qm in self.messages[start - 1:stop]:
-            m = {"from": qm["mail__from_addr"],
-                 "to": qm["rid__email"],
-                 "subject": qm["mail__subject"],
-                 "mailid": qm["mail__mail_id"],
-                 "date": datetime.datetime.fromtimestamp(qm["mail__time_num"]),
-                 "type": qm["content"],
-                 "score": qm["bspam_level"]}
-            rs = qm["rs"]
-            if rs == 'D':
+            if qm["rs"] == 'D':
                 continue
-            elif rs in ['', ' ']:
+            m = {
+                "from": qm["mail__from_addr"],
+                "to": qm["rid__email"],
+                "subject": qm["mail__subject"],
+                "mailid": qm["mail__mail_id"],
+                "date": datetime.datetime.fromtimestamp(qm["mail__time_num"]),
+                "type": qm["content"],
+                "score": qm["bspam_level"],
+                "status": qm["rs"]
+            }
+            if qm["rs"] in ['', ' ']:
                 m["class"] = "unseen"
-            elif rs == 'R':
-                m["img_rstatus"] = static_url("pics/release.png")
-            elif rs == 'p':
+            elif qm["rs"] == 'p':
                 m["class"] = "pending"
             emails.append(m)
         return emails
@@ -222,6 +221,11 @@ class PgSQLconnector(SQLconnector):
 
     Make use of ``QuerySet.extra`` and postgres ``convert_from``
     function to let the quarantine manager work as expected !
+
+    The T4 alias is not a random choice. The generated query was
+    dumped to found it. Be careful since it can changes with
+    future Django versions...
+
     """
 
     def _apply_msgrcpt_filters(self, flt):
@@ -246,11 +250,13 @@ class PgSQLconnector(SQLconnector):
     def _apply_extra_search_filter(self, crit, pattern):
         """Apply search filters using additional criterias.
 
+
         """
         if crit == "to":
             self._where.append(
-                "convert_from(maddr.email, 'UTF8') LIKE '%%%s%%'"
-                % pattern)
+                "convert_from(maddr.email, 'UTF8') LIKE '%%{0}%%'".format(
+                    pattern)
+            )
         return None
 
     def _apply_extra_select_filters(self, messages):

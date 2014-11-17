@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Patrick Koetter <p@state-of-mind.de>, 2010
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-24 12:32+0200\n"
+"POT-Creation-Date: 2014-10-29 20:22+0100\n"
 "PO-Revision-Date: 2013-12-15 09:23+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/de/)\n"
+"Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
+"de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: extensions/admin/static/admin/js/admin.js:32
@@ -34,39 +35,59 @@ msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser Mailkonten."
+msgstr ""
+"Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser "
+"Mailkonten."
 
 #: extensions/admin/static/admin/js/admin.js:222
 msgid "No domain administrator defined"
 msgstr "Domain-Administrator fehlt"
 
-#: extensions/admin/static/admin/js/admin.js:291
+#: extensions/admin/static/admin/js/admin.js:292
 msgid "Do not delete mailbox directory"
 msgstr "Verzeichnis der Mailbox nicht löschen"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:180
+#: extensions/amavis/static/amavis/js/quarantine.js:211
 msgid "Release this selection?"
 msgstr "Diese Auswahl freilassen?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:184
+#: extensions/amavis/static/amavis/js/quarantine.js:215
 msgid "Delete this selection?"
 msgstr "Diese Auswahl löschen?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:203
+#: extensions/amavis/static/amavis/js/quarantine.js:255
+#, fuzzy
+msgid "Mark this selection as spam?"
+msgstr "Diese Auswahl freilassen?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:270
+#, fuzzy
+msgid "Mark this selection as non-spam?"
+msgstr "Diese Auswahl freilassen?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:295
 #: extensions/amavis/static/amavis/js/selfservice.js:17
 msgid "Release this message?"
 msgstr "Diese Nachricht freilassen?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:207
+#: extensions/amavis/static/amavis/js/quarantine.js:299
 #: extensions/amavis/static/amavis/js/selfservice.js:21
 msgid "Delete this message?"
 msgstr "Diese Nachricht löschen?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:224
+#: extensions/amavis/static/amavis/js/quarantine.js:314
+msgid "Mark as spam?"
+msgstr ""
+
+#: extensions/amavis/static/amavis/js/quarantine.js:330
+msgid "Mark as non-spam?"
+msgstr ""
+
+#: extensions/amavis/static/amavis/js/quarantine.js:348
 msgid "View full headers"
 msgstr "Vollansicht Header anzeigen"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:229
+#: extensions/amavis/static/amavis/js/quarantine.js:353
 msgid "Hide full headers"
 msgstr "Vollansicht Header ausblenden"
 
@@ -95,7 +116,7 @@ msgstr "Diesen Filter aktivieren?"
 msgid "active"
 msgstr "aktiv"
 
-#: extensions/stats/static/stats/js/stats.js:37
+#: extensions/stats/static/stats/js/stats.js:38
 msgid "Search a domain"
 msgstr "Domain suchen"
 

@@ -32,7 +32,7 @@ class Curve(object):
             'DEF:%s=%s:%s:%s' %
             (self.dsname, rrdfile, self.dsname, self.cfunc),
             'CDEF:%(ds)spm=%(ds)s,60,*' % {"ds": self.dsname},
-            'XPORT:%spm:"%s"' % (self.dsname, self.legend)
+            'XPORT:%spm:"%s"' % (self.dsname, self.legend.decode("utf-8"))
         ]
 
 

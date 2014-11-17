@@ -59,7 +59,3 @@ The following external libraries are provided with Modoboa:
    :target: https://crate.io/packages/modoboa/
 .. |travis| image:: https://travis-ci.org/tonioo/modoboa.png?branch=master
    :target: https://travis-ci.org/tonioo/modoboa
-
-.. image:: https://d2weczhvl823v0.cloudfront.net/tonioo/modoboa/trend.png
-   :alt: Bitdeli badge
-   :target: https://bitdeli.com/free

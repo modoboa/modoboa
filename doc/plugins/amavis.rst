@@ -203,7 +203,7 @@ feature:
 Self-service mode
 =================
 
-The *self-service* mode let users act on quarantined messages without
+The *self-service* mode lets users act on quarantined messages without
 beeing authenticated. They can:
 
 * View messages
@@ -232,3 +232,76 @@ Here is a link example::
 
   http://<modoboa_url>/quarantine/%i/?rcpt=%R&secret_id=[:secret_id]
 
+.. _sa_manual_learning:
+
+Manual SpamAssassin learning
+============================
+
+It is possible to manually train `SpamAssassin
+<http://spamassassin.apache.org/>`_ using the quarantine's content. By
+train, we mean:
+
+* Mark message(s) as spam (false negative(s))
+
+* Mark message(s) as non-spam (false positive(s))
+
+This feature is available to all users (from super administrators to
+simple users) but not enabled by default.
+
+SpamAssassin configuration
+--------------------------
+
+For better performance and to enable the per-user level, SpamAssassin
+must store bayes information into a SQL database.
+
+Create a new database and a new user/password (using your favorite
+database server) and edit the default configuration file
+(:file:`/etc/spamassassin/local.cf`) to add the following lines
+inside:
+
+.. sourcecode:: perl
+
+  bayes_store_module    Mail::SpamAssassin::BayesStore::<Driver>
+  bayes_sql_dsn         <DSN>
+  bayes_sql_username    <db username>
+  bayes_sql_password    <db password>
+
+Replace values between ``<>`` by yours. Possible values for ``Driver``
+are ``PgSQL`` or ``MySQL`` (non exhaustive list). The syntax for
+``DSN`` depends on the driver you choose. Please consult the official
+documentation.
+
+Enable the feature through Modoboa
+----------------------------------
+
+Manual learning is disabled by default. You can activate it through
+the administration panel (*Modoboa > Paremeters > Amavis*). There two
+learning levels:
+
+#. Global: available to administrators only. A single (global) bayes
+   database is shared between everyone.
+
+#. Per domain: available to administrators and domain
+   administrators. Each domain can have a dedicated database.
+
+#. Per user: each user can create its own database to customize the
+   way SpamAssassin will detect spam.
+
+The domain and user levels are not activated by default, dedicated
+parameters are available through the panel.
+
+.. note::
+
+   Domain and user databases are only created the first time someone
+   calls the learning feature through the quarantine.
+
+.. warning::
+
+   A bayes database needs to reach pre-defined thresholds before it
+   can be used by SpamAssassin. The default values are **200** spams
+   and **200** hams.
+
+You will find other paramaters related to this feature. You won't need
+to change them most of the time, unless SpamAssassin is hosted on a
+different machine than Modoboa. (in this case, ``spamc`` will be used
+instead of ``sa-learn``).

@@ -8,6 +8,8 @@ from modoboa.extensions.amavis.lib import (
     create_user_and_policy, update_user_and_policy, delete_user_and_policy,
     create_user_and_use_policy, delete_user
 )
+from .lib import manual_learning_enabled
+from .models import Policy, Users
 
 
 @events.observe("UserMenuDisplay")
@@ -23,22 +25,27 @@ def menu(target, user):
 
 @events.observe("DomainCreated")
 def on_domain_created(user, domain):
-    create_user_and_policy(domain.name)
+    create_user_and_policy("@{0}".format(domain.name))
 
 
 @events.observe("DomainModified")
 def on_domain_modified(domain):
-    update_user_and_policy(domain.oldname, domain.name)
+    update_user_and_policy(
+        "@{0}".format(domain.oldname),
+        "@{0}".format(domain.name)
+    )
 
 
 @events.observe("DomainDeleted")
 def on_domain_deleted(domain):
-    delete_user_and_policy(domain.name)
+    delete_user_and_policy("@{0}".format(domain.name))
 
 
 @events.observe("DomainAliasCreated")
 def on_domain_alias_created(user, domainalias):
-    create_user_and_use_policy(domainalias.name, domainalias.target.name)
+    create_user_and_use_policy(
+        "@{0}".format(domainalias.name), domainalias.target.name
+    )
 
 
 @events.observe("DomainAliasDeleted")
@@ -46,7 +53,60 @@ def on_domain_alias_deleted(domainaliases):
     if isinstance(domainaliases, DomainAlias):
         domainaliases = [domainaliases]
     for domainalias in domainaliases:
-        delete_user(domainalias.name)
+        delete_user("@{0}".format(domainalias.name))
+
+
+@events.observe("MailboxModified")
+def on_mailbox_modified(mailbox):
+    """Update amavis records if address has changed."""
+    if parameters.get_admin("MANUAL_LEARNING") == "no" or \
+       mailbox.full_address == mailbox.old_full_address:
+        return
+    user = Users.objects.select_related.get(email=mailbox.old_full_address)
+    full_address = mailbox.full_address
+    user.email = full_address
+    user.policy.policy_name = full_address[:32]
+    user.policy.sa_username = full_address
+    user.policy.save()
+    user.save()
+
+
+@events.observe("MailboxDeleted")
+def on_mailbox_deleted(mailbox):
+    """Clean amavis database when a mailbox is removed."""
+    if parameters.get_admin("MANUAL_LEARNING") == "no":
+        return
+    delete_user_and_policy("@{0}".format(mailbox.full_address))
+
+
+@events.observe("MailboxAliasCreated")
+def on_mailboxalias_created(user, alias):
+    """Create amavis record for the new alias.
+
+    FIXME: how to deal with distibution lists ?
+    """
+    if not manual_learning_enabled(user) or alias.type != "alias":
+        return
+    try:
+        policy = Policy.objects.get(
+            policy_name=alias.mboxes.all()[0].full_address
+        )
+    except Policy.DoesNotExist:
+        return
+    else:
+        email = alias.full_address
+        Users.objects.create(
+            email=email, policy=policy, fullname=email, priority=7
+        )
+
+
+@events.observe("MailboxAliasDeleted")
+def on_mailboxalias_deleted(alias):
+    """Clean amavis database when an alias is removed."""
+    if parameters.get_admin("MANUAL_LEARNING") == "no":
+        return
+    if Users.objects.exists(email=alias.fullname):
+        Users.objects.delete(email=alias.fullname)
 
 
 @events.observe("GetStaticContent")
