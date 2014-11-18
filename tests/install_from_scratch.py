@@ -25,8 +25,8 @@ class DeployTest(unittest.TestCase):
             "radicale", "postfix_autoreply"
         ]
         cmd = "python manage.py test {0}".format(
-            ["modoboa.extensions.{0}".format(extension)
-             for extension in extensions]
+            " ".join(["modoboa.extensions.{0}".format(extension)
+                      for extension in extensions])
         )
         code, output = exec_cmd(cmd, capture_output=False, cwd=path)
         self.assertEqual(code, 0)
