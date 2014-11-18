@@ -18,21 +18,25 @@ class DeployTest(unittest.TestCase):
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
 
-    def tearDown(self): 
+    def tearDown(self):
         path = os.path.join(self.workdir, self.projname)
-        code, output = exec_cmd(
-            "python manage.py test core lib admin limits postfix_relay_domains"
-            " radicale postfix_autoreply",
-            capture_output=False,
-            cwd=path
+        extensions = [
+            "core", "lib", "admin", "limits", "postfix_relay_domains",
+            "radicale", "postfix_autoreply"
+        ]
+        cmd = "python manage.py test {0}".format(
+            ["modoboa.extensions.{0}".format(extension)
+             for extension in extensions]
         )
+        code, output = exec_cmd(cmd, capture_output=False, cwd=path)
         self.assertEqual(code, 0)
 
     def test_standard(self):
         timeout = 2
-        cmd = "modoboa-admin.py deploy --syncdb --collectstatic %s" % self.projname
+        cmd = "modoboa-admin.py deploy --syncdb --collectstatic {0}".format(
+            self.projname)
         child = pexpect.spawn(cmd, cwd=self.workdir)
-        fout = open('install_from_scratch.log','w')
+        fout = open('install_from_scratch.log', 'w')
         child.logfile = fout
         child.expect("Database type \(mysql, postgres or sqlite3\):", timeout=timeout)
         child.sendline(self.dbtype)

@@ -3,7 +3,7 @@ python:
   - "2.7"
 
 env:
-  - DJANGO=1.5
+  - DJANGO=1.6
 
 install:
   - pip install -q Django==$DJANGO --use-mirrors
