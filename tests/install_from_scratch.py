@@ -20,11 +20,13 @@ class DeployTest(unittest.TestCase):
 
     def tearDown(self):
         path = os.path.join(self.workdir, self.projname)
+        core_apps = ["modoboa.core", "modoboa.lib"]
         extensions = [
-            "core", "lib", "admin", "limits", "postfix_relay_domains",
-            "radicale", "postfix_autoreply"
+            "admin", "limits", "postfix_relay_domains", "radicale",
+            "postfix_autoreply"
         ]
-        cmd = "python manage.py test {0}".format(
+        cmd = "python manage.py test {0} {1}".format(
+            " ".join(core_apps),
             " ".join(["modoboa.extensions.{0}".format(extension)
                       for extension in extensions])
         )
