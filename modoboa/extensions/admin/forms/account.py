@@ -256,7 +256,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         self.mb.save()
         events.raiseEvent('MailboxModified', self.mb)
 
-    def _update_aliases(self, user):
+    def _update_aliases(self, user, account):
         """Update mailbox aliases."""
         aliases = []
         for name, value in self.cleaned_data.iteritems():
@@ -310,7 +310,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         account.email = self.cleaned_data["email"]
         account.save()
 
-        self._update_aliases()
+        self._update_aliases(user, account)
 
         return self.mb
 
