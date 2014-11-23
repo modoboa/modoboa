@@ -60,6 +60,7 @@ def on_domain_alias_deleted(domainaliases):
 def on_mailbox_modified(mailbox):
     """Update amavis records if address has changed."""
     if parameters.get_admin("MANUAL_LEARNING") == "no" or \
+       not hasattr(mailbox, "old_full_address") or \
        mailbox.full_address == mailbox.old_full_address:
         return
     user = Users.objects.select_related.get(email=mailbox.old_full_address)
