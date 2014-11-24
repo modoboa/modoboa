@@ -24,6 +24,7 @@
     </div>
     <div class="modal-footer">
       <div class="buttons_list">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
         {% for step in wizard.steps %}
         <div id="step{{ forloop.counter }}_buttons" 
              class="bset{% if forloop.first %} active{% endif %}">
@@ -31,7 +32,6 @@
           {% if step.next %}<a href="#" class="btn btn-primary next">{% trans "Next" %}</a>{% else %}<a href="#" class="btn btn-primary submit">{{ wizard.submit_button_label }}</a>{% endif %}
         </div>
         {% endfor %}
-        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
       </div>
     </div>
   </div>
