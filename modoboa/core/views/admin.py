@@ -1,17 +1,23 @@
+"""
+Views available to super administrators only.
+"""
+
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
+
 from django.contrib.auth.decorators import (
     login_required, user_passes_test
 )
+
+
+from modoboa.core.models import Extension, Log
+from modoboa.core.utils import new_version_available
 from modoboa.lib import events, parameters
+from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
 )
-from modoboa.lib.listing import get_sort_order, get_listing_page
-from modoboa.core.models import Extension, Log
-from modoboa.core.utils import new_version_available
-from modoboa.core.tables import ExtensionsTable
 
 
 @login_required
@@ -51,6 +57,7 @@ def saveparameters(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def viewextensions(request, tplname='core/extensions.html'):
+    """List available extensions."""
     from modoboa.core.extensions import exts_pool
 
     exts = exts_pool.list_all()
@@ -65,15 +72,16 @@ def viewextensions(request, tplname='core/extensions.html'):
             dbext.save()
             ext["selection"] = False
 
-    tbl = ExtensionsTable(request, exts)
     return render_to_json_response({
-        "content": _render_to_string(request, tplname, {"extensions": tbl})
+        "callback": "extensions",
+        "content": _render_to_string(request, tplname, {"extensions": exts})
     })
 
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def saveextensions(request):
+    """Enable of disable extension(s)."""
     actived_exts = Extension.objects.filter(enabled=True)
     found = []
     for k in request.POST.keys():
