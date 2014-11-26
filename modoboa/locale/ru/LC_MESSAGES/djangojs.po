@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-29 20:22+0100\n"
+"POT-Creation-Date: 2014-11-25 14:23+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,19 +19,23 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: extensions/admin/static/admin/js/admin.js:32
-msgid "Search"
-msgstr "Поиск"
+#: core/static/core/js/settings.js:14
+msgid "No more log entry to show"
+msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:170
+#: extensions/admin/static/admin/js/admin.js:102
+msgid "No more domain to show"
+msgstr ""
+
+#: extensions/admin/static/admin/js/admin.js:113
 msgid "Do not delete domain directory"
 msgstr "Не удаляйте каталог домена"
 
-#: extensions/admin/static/admin/js/admin.js:173
+#: extensions/admin/static/admin/js/admin.js:115
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом."
 
-#: extensions/admin/static/admin/js/admin.js:174
+#: extensions/admin/static/admin/js/admin.js:116
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -39,60 +43,77 @@ msgstr ""
 "Эта операция удалит ВСЕ данные, связанные с этим доменом, за исключением "
 "аккаунтов."
 
-#: extensions/admin/static/admin/js/admin.js:222
+#: extensions/admin/static/admin/js/admin.js:198
 msgid "No domain administrator defined"
 msgstr "Не указан администратор домена"
 
-#: extensions/admin/static/admin/js/admin.js:292
+#: extensions/admin/static/admin/js/admin.js:253
+#: extensions/admin/static/admin/js/admin.js:309
+msgid "No more identity to show"
+msgstr ""
+
+#: extensions/admin/static/admin/js/admin.js:283
 msgid "Do not delete mailbox directory"
 msgstr "Не удаляйте каталог почтовых ящиков"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:211
+#: extensions/admin/static/admin/js/admin.js:312
+msgid "No more quota to show"
+msgstr ""
+
+#: extensions/amavis/static/amavis/js/quarantine.js:19
+msgid "No more message to show"
+msgstr ""
+
+#: extensions/amavis/static/amavis/js/quarantine.js:270
 msgid "Release this selection?"
 msgstr "Деблокировать отмеченные?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:215
+#: extensions/amavis/static/amavis/js/quarantine.js:274
 msgid "Delete this selection?"
 msgstr "Удалить отмеченные?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:255
+#: extensions/amavis/static/amavis/js/quarantine.js:314
 #, fuzzy
 msgid "Mark this selection as spam?"
 msgstr "Деблокировать отмеченные?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:270
+#: extensions/amavis/static/amavis/js/quarantine.js:329
 #, fuzzy
 msgid "Mark this selection as non-spam?"
 msgstr "Деблокировать отмеченные?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:295
+#: extensions/amavis/static/amavis/js/quarantine.js:354
 #: extensions/amavis/static/amavis/js/selfservice.js:17
 msgid "Release this message?"
 msgstr "Деблокировать сообщение?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:299
+#: extensions/amavis/static/amavis/js/quarantine.js:358
 #: extensions/amavis/static/amavis/js/selfservice.js:21
 msgid "Delete this message?"
 msgstr "Удалить сообщение?"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:314
+#: extensions/amavis/static/amavis/js/quarantine.js:373
 msgid "Mark as spam?"
 msgstr ""
 
-#: extensions/amavis/static/amavis/js/quarantine.js:330
+#: extensions/amavis/static/amavis/js/quarantine.js:389
 msgid "Mark as non-spam?"
 msgstr ""
 
-#: extensions/amavis/static/amavis/js/quarantine.js:348
+#: extensions/amavis/static/amavis/js/quarantine.js:407
 msgid "View full headers"
 msgstr "Просмотр всех заголовков"
 
-#: extensions/amavis/static/amavis/js/quarantine.js:353
+#: extensions/amavis/static/amavis/js/quarantine.js:412
 msgid "Hide full headers"
 msgstr "Скрыть все заголовки"
 
 #: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
 msgid "Services updated"
+msgstr ""
+
+#: extensions/radicale/static/radicale/js/radicale.js:19
+msgid "No more calendar to show"
 msgstr ""
 
 #: extensions/sievefilters/static/sievefilters/js/lib.js:14
@@ -116,31 +137,27 @@ msgstr "Активировать набор фильтров?"
 msgid "active"
 msgstr "активно"
 
-#: extensions/stats/static/stats/js/stats.js:38
+#: extensions/stats/static/stats/js/stats.js:43
 msgid "Search a domain"
 msgstr "Найти домен"
 
-#: extensions/webmail/static/webmail/js/webmail.js:491
+#: extensions/webmail/static/webmail/js/webmail.js:188
+msgid "No more message in this mailbox."
+msgstr ""
+
+#: extensions/webmail/static/webmail/js/webmail.js:685
 msgid "Remove the selected mailbox?"
 msgstr "Удалить выбранные почтовые ящики?"
 
-#: extensions/webmail/static/webmail/js/webmail.js:504
+#: extensions/webmail/static/webmail/js/webmail.js:698
 msgid "Mailbox removed"
 msgstr "Почтовый ящик удален"
 
-#: extensions/webmail/static/webmail/js/webmail.js:752
+#: extensions/webmail/static/webmail/js/webmail.js:973
 msgid "Message sent"
 msgstr "Сообщение послано"
 
-#: extensions/webmail/static/webmail/js/webmail.js:1003
-#, c-format
-msgid "%s file"
-msgid_plural "%s files"
-msgstr[0] "%s файл"
-msgstr[1] "%s файла"
-msgstr[2] "%s файлов"
-
-#: extensions/webmail/static/webmail/js/webmail.js:1037
+#: extensions/webmail/static/webmail/js/webmail.js:1242
 #, c-format
 msgid "Moving %s message"
 msgid_plural "Moving %s messages"
@@ -148,7 +165,7 @@ msgstr[0] "Перемещается %s сообщение"
 msgstr[1] "Перемещается %s сообщения"
 msgstr[2] "Перемещается %s сообщений"
 
-#: static/js/confirmation.js:50
+#: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Внимание"
 
@@ -156,13 +173,27 @@ msgstr "Внимание"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: static/js/global.js:314
+#: static/js/global.js:329
 msgid "Internal error"
 msgstr ""
 
-#: static/js/searchbar.js:20
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr ""
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "Поиск"
+
+#: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Поиск..."
+
+#~ msgid "%s file"
+#~ msgid_plural "%s files"
+#~ msgstr[0] "%s файл"
+#~ msgstr[1] "%s файла"
+#~ msgstr[2] "%s файлов"
 
 #~ msgid "Message deleted"
 #~ msgstr "Сообщение удалено"

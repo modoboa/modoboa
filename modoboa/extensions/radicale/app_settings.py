@@ -34,6 +34,7 @@ class ParametersForm(AdminParametersForm):
         label=ugettext_lazy("Allow calendars administration"),
         initial="no",
         help_text=ugettext_lazy(
-            "Allow domain administrators to manage user calendars (read an write)"
+            "Allow domain administrators to manage user calendars "
+            "(read and write)"
         )
     )

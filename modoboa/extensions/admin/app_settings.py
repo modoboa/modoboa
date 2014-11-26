@@ -17,7 +17,7 @@ class AdminParametersForm(parameters.AdminParametersForm):
         initial="no",
         help_text=ugettext_lazy(
             "Rename or remove mailboxes on the filesystem when they get"
-            "renamed or removed within Modoboa"
+            " renamed or removed within Modoboa"
         )
     )
 
