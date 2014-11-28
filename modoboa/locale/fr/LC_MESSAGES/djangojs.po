@@ -60,7 +60,7 @@ msgstr "Plus de quota à afficher"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:19
 msgid "No more message to show"
-msgstr ""
+msgstr "Plus de message à afficher"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:270
 msgid "Release this selection?"
