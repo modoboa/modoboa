@@ -176,6 +176,8 @@ event.
 Must return a list of 2uple, each one containing a model class and an
 associated label.
 
+.. _event_checkextraaccountform:
+
 CheckExtraAccountForm
 =====================
 
@@ -298,6 +300,8 @@ actions to act on a specific user.
 
 * ``account`` is the account being listed
 
+.. _event_extraaccountform:
+  
 ExtraAccountForm
 ================
 
@@ -370,6 +374,8 @@ entries based on service types.
   def callback(): pass
 
 Must return a list of valid filter names (string).
+
+.. _event_extradomainform:
 
 ExtraDomainForm
 ===============
@@ -465,6 +471,8 @@ each one must contain at least three keys::
    "title" : "<the title used to present the form>",
    "cls" : TheFormClassName}
 
+.. _event_fillaccountinstances:
+   
 FillAccountInstances
 ====================
 
@@ -483,6 +491,8 @@ forms.
 * ``instances`` is a dictionnary where the callback will add
   information needed to fill a specific form
 
+.. _event_filldomaininstances:
+  
 FillDomainInstances
 ===================
 

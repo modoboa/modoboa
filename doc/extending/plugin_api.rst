@@ -130,3 +130,66 @@ If an extension needs to add new roles, it needs to follow those steps:
 
 #. A a new listener for the :ref:`getextraroles` event that will return
    the group's name
+
+*********************
+Extending admin forms
+*********************
+
+the forms used to edit objects (account, domain, etc.) through the admin
+panel are composed of tabs. You can extend those forms (ie. add new
+tabs) in a pretty easy way by defining events.
+
+Account
+=======
+
+To add a new tab to the account edition form, define new listeners
+(handlers) for the following events:
+
+* :ref:`event_extraaccountform`
+
+* :ref:`event_fillaccountinstances`
+
+* :ref:`event_checkextraaccountform` (optional)
+
+Example:
+  
+.. sourcecode:: python
+
+   from modoboa.lib import events
+
+   @events.observe("ExtraAccountForm")
+   def extra_account_form(user, account=None):
+       return [
+           {"id": "tabid", "title": "Title", "cls": MyFormClass}
+       ]
+
+   @events.observe("FillAccountInstances")
+   def fill_my_tab(user, account, instances):
+       instances["id"] = my_instance
+       
+       
+Domain
+======
+
+To add a new tab to the domain edition form, define new listeners
+(handlers) for the following events:
+
+* :ref:`event_extradomainform`
+
+* :ref:`event_filldomaininstances`
+
+Example:
+
+.. sourcecode:: python
+
+   from modoboa.lib import events
+
+   @events.observe("ExtraDomainForm")
+   def extra_domain_form(user, domain):
+       return [
+           {"id": "tabid", "title": "Title", "cls": MyFormClass}
+       ]
+
+   @events.observe("FillDomainInstances")
+   def fill_my_tab(user, domain, instances):
+       instances["id"] = my_instance
