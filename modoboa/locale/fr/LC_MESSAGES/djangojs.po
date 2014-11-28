@@ -19,11 +19,11 @@ msgstr ""
 
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
-msgstr ""
+msgstr "Plus d'entrée de journal à afficher"
 
 #: extensions/admin/static/admin/js/admin.js:102
 msgid "No more domain to show"
-msgstr ""
+msgstr "Plus de domaine à afficher"
 
 #: extensions/admin/static/admin/js/admin.js:113
 msgid "Do not delete domain directory"
@@ -48,7 +48,7 @@ msgstr "Aucun administrateur de domaine défini"
 #: extensions/admin/static/admin/js/admin.js:253
 #: extensions/admin/static/admin/js/admin.js:309
 msgid "No more identity to show"
-msgstr ""
+msgstr "Plus d'identité à afficher"
 
 #: extensions/admin/static/admin/js/admin.js:283
 msgid "Do not delete mailbox directory"
@@ -56,7 +56,7 @@ msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
 #: extensions/admin/static/admin/js/admin.js:312
 msgid "No more quota to show"
-msgstr ""
+msgstr "Plus de quota à afficher"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:19
 msgid "No more message to show"
@@ -110,7 +110,7 @@ msgstr "Services mis à jour"
 
 #: extensions/radicale/static/radicale/js/radicale.js:19
 msgid "No more calendar to show"
-msgstr ""
+msgstr "Plus de calendrier à afficher"
 
 #: extensions/sievefilters/static/sievefilters/js/lib.js:14
 msgid "Remove this filter?"
@@ -139,7 +139,7 @@ msgstr "Checher un domaine"
 
 #: extensions/webmail/static/webmail/js/webmail.js:188
 msgid "No more message in this mailbox."
-msgstr ""
+msgstr "Plus aucun message dans cette boite aux lettres"
 
 #: extensions/webmail/static/webmail/js/webmail.js:685
 msgid "Remove the selected mailbox?"
@@ -174,7 +174,7 @@ msgstr "Erreur interne"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr ""
+msgstr "Plus d'entrée à afficher"
 
 #: static/js/listing.js:46
 msgid "Search"
@@ -183,8 +183,3 @@ msgstr "Chercher"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Chercher..."
-
-#~ msgid "%s file"
-#~ msgid_plural "%s files"
-#~ msgstr[0] "%s fichier"
-#~ msgstr[1] "%s fichiers"

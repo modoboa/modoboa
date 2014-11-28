@@ -257,23 +257,20 @@ msgid "Miscellaneous"
 msgstr "Divers"
 
 #: core/app_settings.py:217
-#, fuzzy
 msgid "Top notifications check interval"
-msgstr "Emetteur des notifications"
+msgstr "Intervalle de vérification des notifications"
 
 #: core/app_settings.py:219
-#, fuzzy
 msgid "Interval between two top notification checks"
-msgstr "Intervalle entre deux vérifications de requêtes en attente"
+msgstr "Intervalle entre deux vérifications de notification"
 
 #: core/app_settings.py:224
-#, fuzzy
-msgid "Check for new versions"
-msgstr "Vérifie si les destinataires sont valides (existent)"
+msgid "Check new versions"
+msgstr "Vérifier les nouvelles versions"
 
 #: core/app_settings.py:227
-msgid "Automatically checks if newer versions are available"
-msgstr ""
+msgid "Automatically checks if a newer version is available"
+msgstr "Vérifie automatiquement si une nouvelle version est disponible"
 
 #: core/app_settings.py:231
 msgid "Maximum log record age"
@@ -475,9 +472,8 @@ msgid "Various information about Modoboa"
 msgstr "Informations variées à propos de Modoboa"
 
 #: core/templates/core/information.html:5
-#, fuzzy
 msgid "An update is available!"
-msgstr "Aucune statistique disponible"
+msgstr "Une mise à jour est disponible!"
 
 #: core/templates/core/information.html:6
 #, python-format
@@ -2357,12 +2353,13 @@ msgstr "Paramètres serveur"
 #: extensions/radicale/app_settings.py:15
 #, fuzzy
 msgid "Server location"
-msgstr "Port utilisé par le serveur"
+msgstr ""
 
 #: extensions/radicale/app_settings.py:17
 msgid ""
 "The URL of your Radicale server. It will be used to construct calendar URLs."
 msgstr ""
+"L'URL de votre serveur Radicale. Elle sera utilisée pour construire l'URL des calendriers."
 
 #: extensions/radicale/app_settings.py:24
 msgid "Rights management"
@@ -2374,7 +2371,7 @@ msgstr ""
 
 #: extensions/radicale/app_settings.py:29
 msgid "Path to file that contains rights definition"
-msgstr ""
+msgstr "Chemin d'accès du fichier qui contient la définition des droits"
 
 #: extensions/radicale/app_settings.py:34
 msgid "Allow calendars administration"
@@ -2397,9 +2394,9 @@ msgid "Write"
 msgstr "Ecriture"
 
 #: extensions/radicale/forms.py:132
-#, fuzzy, python-format
+#, python-format
 msgid "Mailbox %s does not exist"
-msgstr "Domaine '%s' inexistant"
+msgstr "Boite '%s' inexistante"
 
 #: extensions/radicale/forms.py:155 extensions/radicale/forms.py:189
 msgid "Rights"
@@ -2435,38 +2432,37 @@ msgstr "Calendrier supprimé"
 
 #: extensions/radicale/views.py:139
 msgid "New shared calendar"
-msgstr ""
+msgstr "Nouveau calendrier partagé"
 
 #: extensions/radicale/views.py:142 extensions/radicale/views.py:179
 #: lib/formutils.py:82
 msgid "Submit"
-msgstr ""
+msgstr "Soumettre"
 
 #: extensions/radicale/templates/radicale/calendar_detail.html:6
 msgid "To access this calendar, use the following address:"
-msgstr ""
+msgstr "Pour accéder à ce calendrier, utilisez l'adresse suivante :"
 
 #: extensions/radicale/templates/radicale/calendars.html:49
 msgid "Owner"
-msgstr ""
+msgstr "Propriétaire"
 
 #: extensions/radicale/templatetags/radicale_tags.py:24
-#, fuzzy
 msgid "Add calendar"
-msgstr "Ajouter un alias"
+msgstr "Ajouter un calendrier"
 
 #: extensions/radicale/templatetags/radicale_tags.py:33
 msgid "Add shared calendar"
-msgstr ""
+msgstr "Ajouter un calendar partagé"
 
 #: extensions/radicale/templatetags/radicale_tags.py:50
 msgid "View calendar detail"
-msgstr ""
+msgstr "Voir le détail du calendrier"
 
 #: extensions/radicale/templatetags/radicale_tags.py:68
 #, python-format
 msgid "Edit %s"
-msgstr ""
+msgstr "Editer %s"
 
 #: extensions/sievefilters/__init__.py:12
 msgid "Plugin to easily create server-side filters"
@@ -2732,9 +2728,8 @@ msgid "Statistics"
 msgstr "Statistiques"
 
 #: extensions/stats/graphics.py:98
-#, fuzzy
 msgid "Average traffic (msgs/min)"
-msgstr "Taille moyenne du trafic normal"
+msgstr "Trafic moyen (msgs/min)"
 
 #: extensions/stats/graphics.py:101
 msgid "sent messages"
@@ -2753,9 +2748,8 @@ msgid "rejected messages"
 msgstr "messages rejetés"
 
 #: extensions/stats/graphics.py:112
-#, fuzzy
 msgid "Average normal traffic size (bytes/min)"
-msgstr "Taille moyenne du trafic normal"
+msgstr "Taille moyenne du trafic normal (octets/min)"
 
 #: extensions/stats/graphics.py:115
 msgid "received size"
@@ -3084,14 +3078,12 @@ msgid "Send"
 msgstr "Envoyer"
 
 #: extensions/webmail/templatetags/webmail_tags.py:102
-#, fuzzy
 msgid "Mark as read"
-msgstr "Marquer comme spam"
+msgstr "Marquer comme lu"
 
 #: extensions/webmail/templatetags/webmail_tags.py:106
-#, fuzzy
 msgid "Mark as unread"
-msgstr "Comme non lus"
+msgstr "Marquer comme non lu"
 
 #: extensions/webmail/templatetags/webmail_tags.py:116
 msgid "Empty folder"

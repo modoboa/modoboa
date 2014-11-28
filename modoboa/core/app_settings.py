@@ -221,10 +221,10 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     )
 
     check_new_versions = YesNoField(
-        label=ugettext_lazy("Check for new versions"),
+        label=ugettext_lazy("Check new versions"),
         initial="yes",
         help_text=ugettext_lazy(
-            "Automatically checks if newer versions are available")
+            "Automatically checks if a newer version is available")
     )
 
     log_maximum_age = forms.IntegerField(
