@@ -81,7 +81,7 @@ msgstr "Marquer cette sélection comme n'étant pas du spam?"
 #: extensions/amavis/static/amavis/js/quarantine.js:354
 #: extensions/amavis/static/amavis/js/selfservice.js:17
 msgid "Release this message?"
-msgstr "Débloquer cette message?"
+msgstr "Débloquer ce message?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:358
 #: extensions/amavis/static/amavis/js/selfservice.js:21
