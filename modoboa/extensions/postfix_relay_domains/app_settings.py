@@ -1,10 +1,21 @@
+"""
+Relay domains settings definition.
+"""
+
 from django import forms
 from django.utils.translation import ugettext_lazy
+
 from modoboa.lib import parameters
+from modoboa.lib.formutils import SeparatorField
 
 
 class AdminParametersForm(parameters.AdminParametersForm):
+
+    """Admin parameters definition."""
+
     app = "postfix_relay_domains"
+
+    general_sep = SeparatorField(label=ugettext_lazy("General"))
 
     master_cf_path = forms.CharField(
         label=ugettext_lazy("Postfix's master.cf path"),

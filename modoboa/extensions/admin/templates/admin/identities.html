@@ -1,9 +1,11 @@
-{% extends "admin/listing.html" %}{% load admin_tags lib_tags i18n %}{% load url from future %}
+{% extends "admin/listing.html" %}
+{% load admin_tags lib_tags i18n %}{% load url from future %}
 {% load static %}
 
 {% block pagetitle %}{% trans "Identities" %}{% endblock %}
 
 {% block extra_css %}
+{{ block.super }}
 {% extra_static_content "identities" "css" user %}
 {% endblock %}
 

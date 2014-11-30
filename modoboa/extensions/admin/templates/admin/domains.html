@@ -3,6 +3,7 @@
 {% block pagetitle %}{% trans "Domains" %}{% endblock %}
 
 {% block extra_css %}
+{{ block.super }}
 {% extra_static_content "domains" "css" user %}
 {% endblock %}
 

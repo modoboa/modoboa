@@ -55,7 +55,7 @@ def progress_color(value):
         return "progress-bar progress-bar-info"
     if value < 80:
         return "progress-bar progress-bar-warning"
-    return "progress-bar-danger"
+    return "progress-bar progress-bar-danger"
 
 
 @register.filter

@@ -135,8 +135,13 @@
          * @param {Array} new_pages - the new loaded pages
          */
         reset_loaded_pages: function(new_pages) {
-            this.current_page = new_pages[0];
-            this.loaded_pages = new_pages;
+            if (new_pages !== undefined) {
+                this.current_page = new_pages[0];
+                this.loaded_pages = new_pages;
+            } else {
+                this.current_page = this.$options.initial_page;
+                this.loaded_pages = [this.$options.initial_pages];
+            }
             this.end_of_results = false;
         },
 
