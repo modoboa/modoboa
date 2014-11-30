@@ -304,6 +304,7 @@ class IMAPconnector(object):
         self._cmd("LOGOUT")
         del self.m
         self.m = None
+        del self.current_mailbox
 
     def parse_search_parameters(self, criterion, pattern):
         """Parse search information and apply them."""
