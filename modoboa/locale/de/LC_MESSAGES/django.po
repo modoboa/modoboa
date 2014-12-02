@@ -49,7 +49,7 @@ msgstr "Lokal"
 
 #: core/app_settings.py:46
 msgid "The backend used for authentication"
-msgstr "Das backend, das zur Authentifizierung genutzt wird"
+msgstr "Das Backend, das zur Authentifizierung genutzt wird"
 
 #: core/app_settings.py:51
 msgid "Default password scheme"
@@ -2898,17 +2898,17 @@ msgstr "Der Standard Modus zum Betrachten einer Nachricht"
 
 #: extensions/webmail/app_settings.py:85
 msgid "Enable HTML links display"
-msgstr "Aktiviere Darstellung von HTML-Links"
+msgstr "Aktiviere Anzeige von HTML-Links"
 
 #: extensions/webmail/app_settings.py:86
 msgid "Enable/Disable HTML links display"
-msgstr "Aktiviere/Deaktiviere Darstellung von HTML-Links"
+msgstr "Aktiviere/Deaktiviere Anzeige von HTML-Links"
 
 #: extensions/webmail/app_settings.py:92
 msgid "Sets the maximum number of messages displayed in a page"
 msgstr ""
-"Legt die maximale Anzahl von Nachrichten fest, die in einer Seite "
-"dargestellt werden"
+"Legt die maximale Anzahl von Nachrichten fest, die pro Seite "
+"angezeigt werden"
 
 #: extensions/webmail/app_settings.py:97
 msgid "Listing refresh rate"
@@ -2924,7 +2924,7 @@ msgstr "Breite des Mailboxcontainers"
 
 #: extensions/webmail/app_settings.py:104
 msgid "The width of the mailbox list container"
-msgstr "Die Breite der Mailbox-Liste"
+msgstr "Breite der Mailbox-Liste"
 
 #: extensions/webmail/app_settings.py:111
 msgid "Trash folder"
@@ -2972,7 +2972,7 @@ msgstr "Benutzerdefinierte E-Mail-Signatur"
 
 #: extensions/webmail/app_settings.py:159
 msgid "Value must be a positive integer (> 0)"
-msgstr "Wert muss eine positive Integer sein (>0)"
+msgstr "Wert muss eine positive Ganzzahl sein (>0)"
 
 #: extensions/webmail/exceptions.py:20
 msgid "Server response"
@@ -3040,7 +3040,7 @@ msgstr "Fehlerhafte Anfrage"
 
 #: extensions/webmail/views.py:309
 msgid "Failed to remove attachment: "
-msgstr "Konnte Anhang nicht entfernen:"
+msgstr "Konnte Anhang nicht löschen:"
 
 #: extensions/webmail/views.py:314
 msgid "Unknown attachment"
@@ -3048,16 +3048,16 @@ msgstr "Unbekannter Anhang"
 
 #: extensions/webmail/lib/imapemail.py:245
 msgid "wrote:"
-msgstr "schrieb:"
+msgstr "hat geschrieben:"
 
 #: extensions/webmail/lib/imapemail.py:312
 #: extensions/webmail/lib/imapemail.py:315
 msgid "Original message"
-msgstr "Gesendete Nachrichten"
+msgstr "Ursprüngliche Nachricht"
 
 #: extensions/webmail/lib/imaputils.py:245
 msgid "Failed to retrieve hierarchy delimiter"
-msgstr "Konnte Trenner für Hierarchie nicht in Erfahrung bringen"
+msgstr "Trennzeichen für Hierarchie nicht gefunden"
 
 #: extensions/webmail/lib/imaputils.py:288
 #, python-format
@@ -3074,11 +3074,11 @@ msgstr "Lade hoch …"
 
 #: extensions/webmail/templates/webmail/folder.html:6
 msgid "Parent mailbox"
-msgstr "Eltern-Mailbox"
+msgstr "Übergeordnete Mailbox"
 
 #: extensions/webmail/templates/webmail/index.html:43
 msgid "Compose"
-msgstr ""
+msgstr "Verfassen"
 
 #: extensions/webmail/templatetags/webmail_tags.py:29
 msgid "Reply"
@@ -3090,7 +3090,7 @@ msgstr "Allen Antworten"
 
 #: extensions/webmail/templatetags/webmail_tags.py:48
 msgid "Display options"
-msgstr "Optionen darstellen"
+msgstr "Optionen anzeigen"
 
 #: extensions/webmail/templatetags/webmail_tags.py:52
 msgid "Activate links"
@@ -3098,7 +3098,7 @@ msgstr "Links aktivieren"
 
 #: extensions/webmail/templatetags/webmail_tags.py:54
 msgid "Disable links"
-msgstr "Links aktivieren"
+msgstr "Links deaktivieren"
 
 #: extensions/webmail/templatetags/webmail_tags.py:78
 msgid "Send"
@@ -3107,16 +3107,16 @@ msgstr "Senden"
 #: extensions/webmail/templatetags/webmail_tags.py:102
 #, fuzzy
 msgid "Mark as read"
-msgstr "Markiere Nachrichten"
+msgstr "Als gelesen markieren"
 
 #: extensions/webmail/templatetags/webmail_tags.py:106
 #, fuzzy
 msgid "Mark as unread"
-msgstr "Als ungelesen"
+msgstr "Als ungelesen markieren"
 
 #: extensions/webmail/templatetags/webmail_tags.py:116
 msgid "Empty folder"
-msgstr "Leerer Ordner"
+msgstr "Ordner leeren"
 
 #: extensions/webmail/templatetags/webmail_tags.py:194
 msgid "Edit the selected mailbox"
@@ -3280,7 +3280,7 @@ msgstr "Anmelden"
 #~ msgstr "Nachricht schliessen"
 
 #~ msgid "New message"
-#~ msgstr "Neue Nachrichten"
+#~ msgstr "Neue Nachricht"
 
 #~ msgid "Mark messages"
 #~ msgstr "Markiere Nachrichten"
