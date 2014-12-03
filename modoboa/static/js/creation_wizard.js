@@ -47,6 +47,7 @@
                     if (this.options.transition_callbacks[resp.stepid] !== undefined) {
                         this.options.transition_callbacks[resp.stepid]();
                     }
+                    $(".carousel-inner").css("overflow", "hidden");
                     this.$element.carousel('next');
                 } else {
                     $("#modalbox").modal('hide');
@@ -75,6 +76,7 @@
         },
 
         update_buttons: function() {
+            $(".carousel-inner").css("overflow", "visible");
             $('.bset.active').removeClass("active");
             $("#" + $(".item.active").attr("id") + "_buttons").addClass("active");
         },
@@ -90,6 +92,7 @@
         prev: function(evt) {
             evt.preventDefault();
             this.$element.on('slid.bs.carousel', this.update_buttons);
+            $(".carousel-inner").css("overflow", "hidden");
             this.$element.carousel('prev');
             this.set_current_title(this.titles[this.get_current_step_id()]);
         },
