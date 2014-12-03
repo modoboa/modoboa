@@ -297,6 +297,7 @@ class IMAPconnector(object):
             self.capabilities = data[0].split()
 
     def logout(self):
+        """Logout from server."""
         try:
             self._cmd("CHECK")
         except ImapError:
@@ -304,7 +305,8 @@ class IMAPconnector(object):
         self._cmd("LOGOUT")
         del self.m
         self.m = None
-        del self.current_mailbox
+        if hasattr(self, "current_mailbox"):
+            del self.current_mailbox
 
     def parse_search_parameters(self, criterion, pattern):
         """Parse search information and apply them."""

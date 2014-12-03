@@ -40,6 +40,7 @@ Settings.prototype = {
      * Navigation callback: extensions.
      */
     extensions_callback: function(data) {
+        this.select_left_menu();        
         if (data.content) {
             $('#' + this.options.divid).html(data.content);
         }
