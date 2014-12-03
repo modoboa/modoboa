@@ -19,7 +19,7 @@ easy. Actually, all current features are extensions.
 
 It is written in Python and uses the `Django
 <https://www.djangoproject.com>`_, `jQuery <http://jquery.com>`_ and
-`Bootstrap, from Twitter <http://twitter.github.com/bootstrap/>`_
+`Bootstrap, from Twitter <http://getbootstrap.com/>`_
 frameworks.
 
 *************
@@ -48,8 +48,8 @@ The following external libraries are provided with Modoboa:
 
 * `jQuery version 1.9.1 <http://www.jquery.org/>`_
 * `jQuery-UI 1.10+ <http://jqueryui.com/>`_
-* `Bootstrap, from Twitter version 2.3.2 <http://twitter.github.com/bootstrap/>`_
-* `Bootstrap datetimepicker <http://www.malot.fr/bootstrap-datetimepicker/index.php>`_
+* `Bootstrap, from Twitter version 3.3.1 <http://getbootstrap.com/>`_
+* `Bootstrap datetimepicker <http://eonasdan.github.io/bootstrap-datetimepicker/>`_
 
 .. |latest-version| image:: https://pypip.in/v/modoboa/badge.png
    :alt: Latest version on Pypi
