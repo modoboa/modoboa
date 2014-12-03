@@ -194,7 +194,7 @@ SOUTH_TESTS_MIGRATE = False
 
 #DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
 
-MODOBOA_API_URL = 'https://api.modoboa.org/1/'
+MODOBOA_API_URL = 'http://api.modoboa.org/1/'
 
 AUTHENTICATION_BACKENDS = (
     'modoboa.lib.authbackends.SimpleBackend',

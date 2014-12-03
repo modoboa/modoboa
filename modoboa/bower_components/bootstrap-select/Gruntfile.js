@@ -12,11 +12,11 @@ module.exports = function (grunt) {
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*!\n' +
-        ' * Bootstrap-select v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
-        ' *\n' +
-        ' * Copyright 2013-<%= grunt.template.today("yyyy") %> bootstrap-select\n' +
-        ' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
-        ' */\n',
+    ' * Bootstrap-select v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
+    ' *\n' +
+    ' * Copyright 2013-<%= grunt.template.today(\'yyyy\') %> bootstrap-select\n' +
+    ' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n' +
+    ' */\n',
 
     // Task configuration.
 
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
       },
       gruntfile: {
         options: {
-          "node": true
+          'node': true
         },
         src: 'Gruntfile.js'
       },
@@ -130,24 +130,24 @@ module.exports = function (grunt) {
 
     csslint: {
       options: {
-        "adjoining-classes": false,
-        "box-sizing": false,
-        "box-model": false,
-        "compatible-vendor-prefixes": false,
-        "floats": false,
-        "font-sizes": false,
-        "gradients": false,
-        "important": false,
-        "known-properties": false,
-        "outline-none": false,
-        "qualified-headings": false,
-        "regex-selectors": false,
-        "shorthand": false,
-        "text-indent": false,
-        "unique-headings": false,
-        "universal-selector": false,
-        "unqualified-attributes": false,
-        "overqualified-elements": false
+        'adjoining-classes': false,
+        'box-sizing': false,
+        'box-model': false,
+        'compatible-vendor-prefixes': false,
+        'floats': false,
+        'font-sizes': false,
+        'gradients': false,
+        'important': false,
+        'known-properties': false,
+        'outline-none': false,
+        'qualified-headings': false,
+        'regex-selectors': false,
+        'shorthand': false,
+        'text-indent': false,
+        'unique-headings': false,
+        'universal-selector': false,
+        'unqualified-attributes': false,
+        'overqualified-elements': false
       },
       css: {
         src: '<%= less.css.dest %>'
@@ -157,12 +157,12 @@ module.exports = function (grunt) {
     sed: {
       versionNumber: {
         path: [
-          "less",
-          "js",
-          "bootstrap-select.jquery.json",
-          "bower.json",
-          "composer.json",
-          "package.json"
+          'less',
+          'js',
+          'bootstrap-select.jquery.json',
+          'bower.json',
+          'composer.json',
+          'package.json'
         ],
         pattern: (function () {
           var old = grunt.option('old');
@@ -170,6 +170,43 @@ module.exports = function (grunt) {
         })(),
         replacement: grunt.option('new'),
         recursive: true
+      }
+    },
+
+    autoprefixer: {
+      options: {
+        browsers: [
+          'Android 2.3',
+          'Android >= 4',
+          'Chrome >= 20',
+          'Firefox >= 24', // Firefox 24 is the latest ESR
+          'Explorer >= 8',
+          'iOS >= 6',
+          'Opera >= 12',
+          'Safari >= 6'
+        ]
+      },
+      css: {
+        options: {
+          map: true
+        },
+        src: '<%= less.css.dest %>'
+      }
+    },
+
+    compress: {
+      main: {
+        options: {
+          archive: 'bootstrap-select-<%= pkg.version %>.zip',
+          mode: 'zip'
+        },
+        files: [
+          {expand: true, cwd: 'dist/', src: ['**'], dest: 'bootstrap-select-<%= pkg.version %>/'},
+          {
+            src: ['bootstrap-select.jquery.json', 'bower.json', 'composer.json', 'package.json'],
+            dest: 'bootstrap-select-<%= pkg.version %>/'
+          }
+        ]
       }
     },
 
@@ -198,15 +235,15 @@ module.exports = function (grunt) {
   grunt.registerTask('change-version-number', 'sed');
 
   // CSS distribution
-  grunt.registerTask('dist-css', ['less', 'usebanner', 'cssmin']);
+  grunt.registerTask('dist-css', ['clean:css', 'less', 'autoprefixer', 'usebanner', 'cssmin']);
 
   // JS distribution
-  grunt.registerTask('dist-js', ['concat', 'uglify']);
+  grunt.registerTask('dist-js', ['clean:js', 'concat', 'uglify']);
 
   // Full distribution
-  grunt.registerTask('dist', ['dist-css', 'dist-js']);
+  grunt.registerTask('dist', ['dist-css', 'dist-js', 'compress']);
 
   // Default task.
-  grunt.registerTask('default', ['clean', 'dist']);
+  grunt.registerTask('default', ['clean', 'dist-css', 'dist-js']);
 
 };

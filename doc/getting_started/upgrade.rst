@@ -54,13 +54,13 @@ you did choose. See :ref:`webservers` for more details.
 1.2.0: radicale extension, bootstrap3 and more
 ==============================================
 
-A new notification service let administrator know about new Modoboa
+A new notification service let administrators know about new Modoboa
 versions. To activate it, you need to:
 
 #. Add `'modoboa.core.context_processors.top_notifications'`` to the
    ``TEMPLATE_CONTEXT_PROCESSORS`` variable
 
-#. Define the ``MODOBOA_API_URL``::
+#. Define the ``MODOBOA_API_URL`` variable::
         
     MODOBOA_API_URL = 'http://api.modoboa.org/1/'
      
