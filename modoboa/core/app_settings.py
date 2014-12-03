@@ -188,8 +188,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "Members of those LDAP Posix groups will be created as domain "
             "administrators. Use ';' characters to separate groups."
         ),
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        required=False
     )
 
     ldap_groups_search_base = forms.CharField(
@@ -198,17 +197,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         help_text=ugettext_lazy(
             "The distinguished name of the search base used to find groups"
         ),
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-
-    ldap_create_domain_mailbox = YesNoField(
-        label=ugettext_lazy("Domain/mailbox creation"),
-        initial="yes",
-        help_text=ugettext_lazy(
-            "Automatically create a domain and a mailbox when a new user "
-            "is created just after the first successful authentication."
-        )
+        required=False
     )
 
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))

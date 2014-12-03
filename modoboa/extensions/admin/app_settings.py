@@ -45,6 +45,15 @@ class AdminParametersForm(parameters.AdminParametersForm):
             "When a mailbox is removed, also remove the associated account")
     )
 
+    auto_create_domain_and_mailbox = YesNoField(
+        label=ugettext_lazy("Automatic domain/mailbox creation"),
+        initial="yes",
+        help_text=ugettext_lazy(
+            "Create a domain and a mailbox when an account is automatically "
+            "created."
+        )
+    )
+
     # Visibility rules
     visibility_rules = {
         "mailboxes_owner": "handle_mailboxes=yes",

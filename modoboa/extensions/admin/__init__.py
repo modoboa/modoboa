@@ -205,7 +205,7 @@ def account_auto_created(user):
     from modoboa.extensions.admin.lib import check_if_domain_exists
     from modoboa.lib.permissions import grant_access_to_object
 
-    if parameters.get_admin("LDAP_CREATE_DOMAIN_MAILBOX", app="core") == "no":
+    if parameters.get_admin("AUTO_CREATE_DOMAIN_AND_MAILBOX") == "no":
         return
     localpart, domname = split_mailbox(user.username)
     if user.group != 'SimpleUsers' and domname is None:
