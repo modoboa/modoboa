@@ -168,19 +168,19 @@ def identity_actions(user, ident):
     return render_actions(actions)
 
 
-@register.simple_tag
-def disable_identity(identity):
-    """Disable an identity.
-
-    Finding this information depends on the identity type.
-    """
+@register.assignment_tag
+def check_identity_status(identity):
+    """Check if identity is enabled or not."""
     if identity.__class__.__name__ == "User":
-        if identity.is_active and identity.mailbox_set.count() \
-           and identity.mailbox_set.all()[0].domain.enabled:
-            return ""
-    elif identity.enabled and identity.domain.enabled:
-        return ""
-    return "muted"
+        if identity.mailbox_set.count() \
+           and not identity.mailbox_set.all()[0].domain.enabled:
+            return False
+        elif not identity.is_active:
+            return False
+    elif not identity.enabled or not identity.domain.enabled:
+        return False
+    return True
+
 
 @register.simple_tag
 def domain_modify_link(domain):

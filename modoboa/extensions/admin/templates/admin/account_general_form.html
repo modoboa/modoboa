@@ -6,7 +6,7 @@
 {% render_field form.password1 %}
 {% render_field form.password2 %}
 {% if form.domain_is_disabled %}
-{% include "common/generic_field.html" with field=form.is_active inline_message=_("Domain is disabled") extra_classes="info" %}
+{% include "common/generic_field.html" with field=form.is_active label_width="col-sm-4" inline_message=_("Domain is disabled") %}
 {% else %}
 {% render_field form.is_active %}
 {% endif %}
