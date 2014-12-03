@@ -10,7 +10,7 @@
       <form class="form-horizontal" action="{{ action }}" enctype="{{ enctype }}" 
             method="POST" id="{{ formid }}" name="{{ formid }}">
         {% csrf_token %}
-        <div id="wizard" class="carousel">
+        <div id="wizard" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner">
             {% for step in wizard.steps %}
             <div id="step{{ forloop.counter }}"

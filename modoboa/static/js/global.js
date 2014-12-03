@@ -51,9 +51,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         $div.modal({show: false});
         $div.one('shown.bs.modal', function() {
             if ($(".selectpicker").length) {
-                $(".selectpicker").selectpicker({
-                    container: 'body'
-                });
+                $(".selectpicker").selectpicker();
             }
             $(".help").popover({
                 container: "#modalbox",

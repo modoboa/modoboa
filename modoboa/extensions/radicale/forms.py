@@ -11,15 +11,17 @@ from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
 
 
 class UserCalendarForm(forms.ModelForm):
-    """
-    User calendar form.
-    """
+
+    """User calendar form."""
+
     class Meta:
         model = UserCalendar
         fields = ('name', 'mailbox', )
         widgets = {
             'mailbox': forms.widgets.Select(
-                attrs={"class": "selectpicker", "data-live-search": "true"}
+                attrs={
+                    "class": "selectpicker", "data-live-search": "true"
+                }
             )
         }
 
@@ -37,9 +39,9 @@ class UserCalendarForm(forms.ModelForm):
 
 
 class SharedCalendarForm(forms.ModelForm):
-    """
-    Shared calendar form.
-    """
+
+    """Shared calendar form."""
+
     class Meta:
         model = SharedCalendar
         widgets = {
@@ -59,8 +61,9 @@ class SharedCalendarForm(forms.ModelForm):
 
 
 class RightsForm(forms.Form, DynamicForm):
-    """
-    """
+
+    """Rights definition form."""
+
     username = forms.CharField(
         label="", required=False, widget=forms.widgets.TextInput(
             attrs={"placeholder": ugettext_lazy("Username")}
@@ -104,8 +107,7 @@ class RightsForm(forms.Form, DynamicForm):
             self._load_from_qdict(args[0], "write_access", forms.BooleanField)
 
     def save(self):
-        """Custom save method.
-        """
+        """Custom save method."""
         import re
         from modoboa.lib.emailutils import split_mailbox
         from modoboa.lib.exceptions import BadRequest
@@ -145,9 +147,9 @@ class RightsForm(forms.Form, DynamicForm):
 
 
 class UserCalendarWizard(WizardForm):
-    """Custom wizard to create a new calendar.
 
-    """
+    """Calendar creation wizard."""
+
     def __init__(self, request):
         super(UserCalendarWizard, self).__init__(request)
         self.add_step(UserCalendarForm, _("General"), new_args=[request.user])
@@ -173,8 +175,9 @@ class UserCalendarWizard(WizardForm):
 
 
 class UserCalendarEditionForm(TabForms):
-    """User calendar edition form.
-    """
+
+    """User calendar edition form."""
+
     def __init__(self, request, *args, **kwargs):
         self.forms = []
         self.forms.append({
@@ -202,8 +205,7 @@ class UserCalendarEditionForm(TabForms):
         })
 
     def save(self):
-        """Custom save method.
-        """
+        """Custom save method."""
         calendar = self.forms[0]["instance"].save()
         self.forms[1]["instance"].save()
 

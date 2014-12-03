@@ -265,7 +265,7 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     text-decoration: none;
 }
 
-.label{
+.label {
     margin-left: 1px;
 }
 
@@ -281,3 +281,8 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
  .container-fluid #uprefs_content .form-horizontal .form-actions {
      margin-right: 16px;
  }
+
+ /* Wizard */
+#wizard .carousel-inner {
+    overflow: visible; 
+}
