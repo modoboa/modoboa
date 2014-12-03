@@ -12,7 +12,7 @@ class ParametersForm(AdminParametersForm):
     )
 
     server_location = forms.CharField(
-        label=ugettext_lazy("Server location"),
+        label=ugettext_lazy("Server URL"),
         help_text=ugettext_lazy(
             "The URL of your Radicale server. "
             "It will be used to construct calendar URLs."
@@ -24,9 +24,11 @@ class ParametersForm(AdminParametersForm):
         label=ugettext_lazy("Rights management"))
 
     rights_file_path = forms.CharField(
-        label=ugettext_lazy("Radicale rights file path"),
+        label=ugettext_lazy("Rights file's path"),
         initial="/etc/radicale/rights",
-        help_text=ugettext_lazy("Path to file that contains rights definition"),
+        help_text=ugettext_lazy(
+            "Path to the file that contains rights definition"
+        ),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 

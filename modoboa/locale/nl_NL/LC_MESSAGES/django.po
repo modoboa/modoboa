@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 14:31+0100\n"
+"POT-Creation-Date: 2014-12-03 11:55+0100\n"
 "PO-Revision-Date: 2014-09-13 11:49+0000\n"
 "Last-Translator: Andrew <buddha@cryptolab.net>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -24,6 +24,7 @@ msgstr ""
 #: extensions/admin/forms/account.py:366 extensions/admin/forms/account.py:443
 #: extensions/admin/forms/domain.py:271 extensions/admin/forms/domain.py:332
 #: extensions/postfix_autoreply/app_settings.py:11
+#: extensions/postfix_relay_domains/app_settings.py:18
 #: extensions/postfix_relay_domains/forms.py:150
 #: extensions/radicale/forms.py:153 extensions/radicale/forms.py:182
 #: extensions/sievefilters/app_settings.py:53
@@ -228,103 +229,91 @@ msgstr ""
 "Leden van deze LDAP POSIX groepen zullen aangemaakt worden als domein "
 "administrators. Gebruik ';' karakters om groepen te scheiden."
 
-#: core/app_settings.py:196
+#: core/app_settings.py:195
 msgid "Groups search base"
 msgstr "Groepen zoek basis"
 
-#: core/app_settings.py:199
+#: core/app_settings.py:198
 msgid "The distinguished name of the search base used to find groups"
 msgstr "De gedistingeerde naam van de zoekbasis om groepen te vinden"
 
-#: core/app_settings.py:206
-msgid "Domain/mailbox creation"
-msgstr "Domein/mailbox creatie"
-
-#: core/app_settings.py:209
-msgid ""
-"Automatically create a domain and a mailbox when a new user is created just "
-"after the first successful authentication."
-msgstr ""
-"Maak automatisch een domein en een mailbox wanneer een nieuwe gebruiker "
-"wordt aangemaakt vlak na de eerste succesvolle authenticatie."
-
-#: core/app_settings.py:214
+#: core/app_settings.py:203
 #: extensions/admin/templates/admin/editdomainform.html:7
 msgid "Miscellaneous"
 msgstr "Diversen"
 
-#: core/app_settings.py:217
+#: core/app_settings.py:206
 #, fuzzy
 msgid "Top notifications check interval"
 msgstr "Afzender van notificaties"
 
-#: core/app_settings.py:219
+#: core/app_settings.py:208
 #, fuzzy
 msgid "Interval between two top notification checks"
 msgstr "Periode tussen twee vrijgeef verzoeken controles"
 
-#: core/app_settings.py:224
+#: core/app_settings.py:213
 #, fuzzy
-msgid "Check for new versions"
+msgid "Check new versions"
 msgstr "Controleer geldigheid ontvangers"
 
-#: core/app_settings.py:227
-msgid "Automatically checks if newer versions are available"
+#: core/app_settings.py:216
+msgid "Automatically checks if a newer version is available"
 msgstr ""
 
-#: core/app_settings.py:231
+#: core/app_settings.py:220
 msgid "Maximum log record age"
 msgstr "Maximum bewaartijd van logs"
 
-#: core/app_settings.py:233
+#: core/app_settings.py:222
 msgid "The maximum age in days of a log record"
 msgstr "De maximum bewaartijd in dagen van een log record"
 
-#: core/app_settings.py:238
+#: core/app_settings.py:227
 msgid "Items per page"
 msgstr "Items per pagina"
 
-#: core/app_settings.py:240
+#: core/app_settings.py:229
 msgid "Number of displayed items per page"
 msgstr "Hoeveelheid items per pagina"
 
-#: core/app_settings.py:245
+#: core/app_settings.py:234
 msgid "Default top redirection"
 msgstr "Standaard top omleiding"
 
-#: core/app_settings.py:249
+#: core/app_settings.py:238
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "De standaard omleiding die gebruikt word als er geen andere applicatie is "
 "opgegeven"
 
-#: core/app_settings.py:279
+#: core/app_settings.py:268
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Sleutelwaarde moet 16, 24 of 32 bytes lang zijn"
 
-#: core/app_settings.py:288 extensions/postfix_autoreply/app_settings.py:55
+#: core/app_settings.py:277 extensions/postfix_autoreply/app_settings.py:55
 msgid "Invalid syntax"
 msgstr "Ongeldige zinsbouw"
 
-#: core/app_settings.py:294
+#: core/app_settings.py:283
 msgid "Invalid rounds number"
 msgstr "Ongeldig nummer van rondes"
 
-#: core/app_settings.py:317
+#: core/app_settings.py:306
 msgid "This field is required"
 msgstr "Dit veld is benodigd"
 
-#: core/app_settings.py:379 extensions/amavis/app_settings.py:156
+#: core/app_settings.py:368 extensions/amavis/app_settings.py:156
 #: extensions/amavis/templates/amavis/main_action_bar.html:51
 #: extensions/webmail/app_settings.py:73
 msgid "Display"
 msgstr "Weergeven"
 
-#: core/app_settings.py:383
+#: core/app_settings.py:372
 msgid "Prefered language"
 msgstr "Voorkeurs taal"
 
-#: core/app_settings.py:389
+#: core/app_settings.py:378
 msgid "Prefered language to display pages"
 msgstr "Voorkeurstaal om pagina's weer te geven"
 
@@ -440,7 +429,7 @@ msgstr "Kies de extensie(s) om te gebruiken"
 #: core/templates/core/extensions.html:9
 #: core/templates/core/information.html:16 extensions/admin/tables.py:9
 #: extensions/admin/forms/domain.py:190
-#: extensions/admin/templates/admin/domains.html:24
+#: extensions/admin/templates/admin/domains.html:25
 #: extensions/admin/templates/admin/editdomainform.html:13
 #: extensions/admin/templates/admin/identity_headers.html:2
 #: extensions/radicale/templates/radicale/calendars.html:48
@@ -458,7 +447,7 @@ msgid "Description"
 msgstr "Beschrijving"
 
 #: core/templates/core/extensions.html:26
-#: core/templates/core/parameters.html:7
+#: core/templates/core/parameters.html:6
 #: core/templates/core/user_preferences.html:8
 msgid "Save"
 msgstr "Opslaan"
@@ -677,7 +666,7 @@ msgid "Domains"
 msgstr "Domeinen"
 
 #: extensions/admin/__init__.py:91
-#: extensions/admin/templates/admin/identities.html:4
+#: extensions/admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Identiteiten"
 
@@ -758,7 +747,16 @@ msgid "When a mailbox is removed, also remove the associated account"
 msgstr ""
 "Als een mailbox word verwijderd, verwijder dan ook de bijbehorende account"
 
-#: extensions/admin/app_settings.py:89 extensions/admin/forms/account.py:206
+#: extensions/admin/app_settings.py:49
+#, fuzzy
+msgid "Automatic domain/mailbox creation"
+msgstr "Domein/mailbox creatie"
+
+#: extensions/admin/app_settings.py:52
+msgid "Create a domain and a mailbox when an account is automatically created."
+msgstr ""
+
+#: extensions/admin/app_settings.py:98 extensions/admin/forms/account.py:206
 #: extensions/admin/forms/domain.py:66
 msgid "Must be a positive integer"
 msgstr "Dit moet een positive integer zijn."
@@ -822,7 +820,7 @@ msgstr ""
 "definieren (niet toegestaan voor domein administrators)."
 
 #: extensions/admin/forms/account.py:148 extensions/admin/forms/domain.py:29
-#: extensions/admin/templates/admin/domains.html:25
+#: extensions/admin/templates/admin/domains.html:26
 #: extensions/postfix_relay_domains/forms.py:17
 msgid "Alias(es)"
 msgstr "Alias(sen)"
@@ -1178,13 +1176,13 @@ msgstr "MB"
 msgid "You can't create a new domain administrator"
 msgstr "U kunt geen nieuwe domein administrator aanmaken"
 
-#: extensions/admin/templates/admin/domains.html:26
+#: extensions/admin/templates/admin/domains.html:27
 #: extensions/admin/templates/admin/identity_headers.html:4
 #: extensions/radicale/templates/radicale/calendars.html:50
 msgid "Tags"
 msgstr "Labels"
 
-#: extensions/admin/templates/admin/domains.html:27
+#: extensions/admin/templates/admin/domains.html:28
 #: extensions/admin/templates/admin/identity_headers.html:5
 #: extensions/radicale/templates/radicale/calendars.html:51
 #: extensions/sievefilters/views.py:95
@@ -1929,28 +1927,28 @@ msgstr "Alle berichten"
 msgid "All"
 msgstr "Alles"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:58
+#: extensions/amavis/templates/amavis/main_action_bar.html:57
 #, fuzzy
 msgid "Clean only"
 msgstr "Alleen geband"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:62
+#: extensions/amavis/templates/amavis/main_action_bar.html:60
 msgid "Spam only"
 msgstr "Alleen spam"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:65
+#: extensions/amavis/templates/amavis/main_action_bar.html:63
 msgid "Virus only"
 msgstr "Alleen virussen"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:68
+#: extensions/amavis/templates/amavis/main_action_bar.html:66
 msgid "Bad Header only"
 msgstr "Alleen ongeldige headers"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:71
+#: extensions/amavis/templates/amavis/main_action_bar.html:69
 msgid "Bad MIME only"
 msgstr "Alleen ongeldige MIME's"
 
-#: extensions/amavis/templates/amavis/main_action_bar.html:74
+#: extensions/amavis/templates/amavis/main_action_bar.html:72
 msgid "Banned only"
 msgstr "Alleen geband"
 
@@ -2239,11 +2237,11 @@ msgstr "Activeer doorstuur domeinen ondersteuning voor Postfix"
 msgid "Relay domains"
 msgstr "Doorstuur domeinen"
 
-#: extensions/postfix_relay_domains/app_settings.py:10
+#: extensions/postfix_relay_domains/app_settings.py:21
 msgid "Postfix's master.cf path"
 msgstr "Map waarin Postfix's master.cf staat"
 
-#: extensions/postfix_relay_domains/app_settings.py:12
+#: extensions/postfix_relay_domains/app_settings.py:23
 msgid "Path to the master.cf configuration file"
 msgstr "Locatie van Postfix's master.cf"
 
@@ -2357,8 +2355,9 @@ msgid "Scan"
 msgstr "Scan"
 
 #: extensions/radicale/__init__.py:34
-msgid "Radicale frontend"
-msgstr ""
+#, fuzzy
+msgid "Radicale management"
+msgstr "Quarantaine beheer"
 
 #: extensions/radicale/__init__.py:38
 msgid "Management frontend for Radicale, a simple calendar and contact server."
@@ -2371,7 +2370,7 @@ msgstr "ManageSieve instellingen"
 
 #: extensions/radicale/app_settings.py:15
 #, fuzzy
-msgid "Server location"
+msgid "Server URL"
 msgstr "Server poort"
 
 #: extensions/radicale/app_settings.py:17
@@ -2385,19 +2384,19 @@ msgid "Rights management"
 msgstr "Quarantaine beheer"
 
 #: extensions/radicale/app_settings.py:27
-msgid "Radicale rights file path"
+msgid "Rights file's path"
 msgstr ""
 
-#: extensions/radicale/app_settings.py:29
-msgid "Path to file that contains rights definition"
+#: extensions/radicale/app_settings.py:30
+msgid "Path to the file that contains rights definition"
 msgstr ""
 
-#: extensions/radicale/app_settings.py:34
+#: extensions/radicale/app_settings.py:36
 #, fuzzy
 msgid "Allow calendars administration"
 msgstr "Domein administrator"
 
-#: extensions/radicale/app_settings.py:37
+#: extensions/radicale/app_settings.py:39
 #, fuzzy
 msgid "Allow domain administrators to manage user calendars (read and write)"
 msgstr "Maximum aantal domein administrators die deze gebruiker aan kan maken"
@@ -3231,6 +3230,17 @@ msgstr "Onthoud mij"
 #: templates/registration/login.html:42
 msgid "Log in"
 msgstr "Inloggen"
+
+#, fuzzy
+#~ msgid "Server location"
+#~ msgstr "Server poort"
+
+#~ msgid ""
+#~ "Automatically create a domain and a mailbox when a new user is created "
+#~ "just after the first successful authentication."
+#~ msgstr ""
+#~ "Maak automatisch een domein en een mailbox wanneer een nieuwe gebruiker "
+#~ "wordt aangemaakt vlak na de eerste succesvolle authenticatie."
 
 #~ msgid "Filter"
 #~ msgstr "Filter"
