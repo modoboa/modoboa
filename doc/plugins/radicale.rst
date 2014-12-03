@@ -37,3 +37,10 @@ example::
   #
   # Or like this if you use a virtual environment:
   # */2 * * * * <virtualenv path/bin/python> <modoboa_site>/manage.py generate_rights
+
+.. note::
+
+   In some cases, the modifications you make on Modoboa may not be
+   applied to the rights file. In order to force the generation,
+   manually run the ``generate_rights`` command using the ``--force``
+   option.
