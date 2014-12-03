@@ -1,5 +1,5 @@
 django>=1.6,<1.7
-django-reversion==1.8.0
+django-reversion==1.8.5
 dj-database-url
 south
 lxml
