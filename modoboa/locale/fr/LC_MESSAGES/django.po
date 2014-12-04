@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-03 11:55+0100\n"
+"POT-Creation-Date: 2014-12-04 13:25+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 #: extensions/postfix_autoreply/app_settings.py:11
 #: extensions/postfix_relay_domains/app_settings.py:18
 #: extensions/postfix_relay_domains/forms.py:150
-#: extensions/radicale/forms.py:153 extensions/radicale/forms.py:182
+#: extensions/radicale/forms.py:155 extensions/radicale/forms.py:185
 #: extensions/sievefilters/app_settings.py:53
 #: extensions/stats/app_settings.py:11 extensions/webmail/app_settings.py:11
 msgid "General"
@@ -318,7 +318,7 @@ msgstr "Langage préféré pour afficher les pages"
 
 #: core/forms.py:10 extensions/admin/forms/account.py:21
 #: extensions/admin/templates/admin/editdomainform.html:13
-#: extensions/radicale/forms.py:66
+#: extensions/radicale/forms.py:69
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -367,7 +367,7 @@ msgstr ""
 msgid "account"
 msgstr "compte"
 
-#: core/models.py:334 extensions/admin/models/domain.py:144
+#: core/models.py:334 extensions/admin/models/domain.py:149
 #: extensions/admin/models/domain_alias.py:39
 #: extensions/postfix_relay_domains/models.py:134
 #: extensions/postfix_relay_domains/models.py:190
@@ -663,12 +663,15 @@ msgid "Administration"
 msgstr "Administration"
 
 #: extensions/admin/__init__.py:85
+#: extensions/admin/templates/admin/domain_statistics.html:30
 #: extensions/admin/templates/admin/domains.html:3
 #: extensions/limits/app_settings.py:19 extensions/limits/models.py:17
 msgid "Domains"
 msgstr "Domaines"
 
 #: extensions/admin/__init__.py:91
+#: extensions/admin/templates/admin/domain_statistics.html:36
+#: extensions/admin/templates/admin/domain_statistics.html:50
 #: extensions/admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Identités"
@@ -1119,11 +1122,12 @@ msgstr "Le nom du domaine"
 msgid "Check to activate this domain"
 msgstr "Cocher pour activer ce domaine"
 
-#: extensions/admin/models/domain.py:61
+#: extensions/admin/models/domain.py:66
+#: extensions/admin/templates/admin/domain_statistics.html:49
 msgid "Domain"
 msgstr "Domaine"
 
-#: extensions/admin/models/domain.py:155
+#: extensions/admin/models/domain.py:160
 #, python-format
 msgid "Invalid quota value for domain '%s'"
 msgstr "Quota invalide pour le domaine '%s'"
@@ -1180,6 +1184,38 @@ msgstr "Mo"
 msgid "You can't create a new domain administrator"
 msgstr "Vous ne pouvez pas créer de nouvel administrateur de domaine"
 
+#: extensions/admin/templates/admin/domain_statistics.html:15
+#: extensions/admin/templatetags/admin_tags.py:43
+#: extensions/stats/general_callbacks.py:12
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: extensions/admin/templates/admin/domain_statistics.html:15
+msgid "Domains and identities"
+msgstr "Domaines et identités"
+
+#: extensions/admin/templates/admin/domain_statistics.html:22
+msgid "Global counters"
+msgstr "Compteurs globaux"
+
+#: extensions/admin/templates/admin/domain_statistics.html:26
+msgid "Type"
+msgstr "Type"
+
+#: extensions/admin/templates/admin/domain_statistics.html:27
+msgid "Quantity"
+msgstr "Quantité"
+
+#: extensions/admin/templates/admin/domain_statistics.html:33
+#: extensions/admin/templates/admin/editdomainform.html:24
+#: extensions/limits/app_settings.py:25 extensions/limits/models.py:20
+msgid "Domain aliases"
+msgstr "Alias de domaine"
+
+#: extensions/admin/templates/admin/domain_statistics.html:45
+msgid "Per-domain counters"
+msgstr "Compteurs par domaine"
+
 #: extensions/admin/templates/admin/domains.html:27
 #: extensions/admin/templates/admin/identity_headers.html:4
 #: extensions/radicale/templates/radicale/calendars.html:50
@@ -1196,6 +1232,10 @@ msgstr "Tags"
 msgid "Actions"
 msgstr "Actions"
 
+#: extensions/admin/templates/admin/domains_table.html:4
+msgid "disabled"
+msgstr "Desactivé"
+
 #: extensions/admin/templates/admin/editdomainform.html:4
 msgid "Administrators"
 msgstr "Administrateurs"
@@ -1211,11 +1251,6 @@ msgstr "Date de création"
 #: extensions/admin/templates/admin/editdomainform.html:23
 msgid "Last modification date"
 msgstr "Date de dernière modification"
-
-#: extensions/admin/templates/admin/editdomainform.html:24
-#: extensions/limits/app_settings.py:25 extensions/limits/models.py:20
-msgid "Domain aliases"
-msgstr "Alias de domaine"
 
 #: extensions/admin/templates/admin/editdomainform.html:26
 #: extensions/limits/app_settings.py:37 extensions/limits/models.py:25
@@ -1267,68 +1302,72 @@ msgstr "Utilisation (%%)"
 msgid "Search"
 msgstr "Chercher"
 
-#: extensions/admin/templatetags/admin_tags.py:12
+#: extensions/admin/templatetags/admin_tags.py:17
 msgid "enabled_m"
 msgstr "Activé"
 
-#: extensions/admin/templatetags/admin_tags.py:12
+#: extensions/admin/templatetags/admin_tags.py:17
 msgid "enabled_f"
 msgstr "Activée"
 
-#: extensions/admin/templatetags/admin_tags.py:33
+#: extensions/admin/templatetags/admin_tags.py:38
+msgid "List domains"
+msgstr "Lister les domaines"
+
+#: extensions/admin/templatetags/admin_tags.py:51
 msgid "Add domain"
 msgstr "Ajouter un domaine"
 
-#: extensions/admin/templatetags/admin_tags.py:42
-#: extensions/admin/templatetags/admin_tags.py:106
+#: extensions/admin/templatetags/admin_tags.py:60
+#: extensions/admin/templatetags/admin_tags.py:124
 #: extensions/admin/views/import.py:48 extensions/admin/views/import.py:162
 msgid "Import"
 msgstr "Importer"
 
-#: extensions/admin/templatetags/admin_tags.py:48
-#: extensions/admin/templatetags/admin_tags.py:112
+#: extensions/admin/templatetags/admin_tags.py:66
+#: extensions/admin/templatetags/admin_tags.py:130
 #: extensions/admin/views/export.py:38 extensions/admin/views/export.py:64
 msgid "Export"
 msgstr "Exporter"
 
-#: extensions/admin/templatetags/admin_tags.py:72
+#: extensions/admin/templatetags/admin_tags.py:90
 msgid "List identities"
 msgstr "Lister les identités"
 
-#: extensions/admin/templatetags/admin_tags.py:77
+#: extensions/admin/templatetags/admin_tags.py:95
 msgid "List quotas"
 msgstr "Lister les quotas"
 
-#: extensions/admin/templatetags/admin_tags.py:82
+#: extensions/admin/templatetags/admin_tags.py:100
 msgid "Add account"
 msgstr "Ajouter un compte"
 
-#: extensions/admin/templatetags/admin_tags.py:88
+#: extensions/admin/templatetags/admin_tags.py:106
 msgid "Add alias"
 msgstr "Ajouter un alias"
 
-#: extensions/admin/templatetags/admin_tags.py:94
+#: extensions/admin/templatetags/admin_tags.py:112
 msgid "Add forward"
 msgstr "Ajouter un transfert"
 
-#: extensions/admin/templatetags/admin_tags.py:100
+#: extensions/admin/templatetags/admin_tags.py:118
 msgid "Add distribution list"
 msgstr "Ajouter une liste de distribution"
 
-#: extensions/admin/templatetags/admin_tags.py:133
+#: extensions/admin/templatetags/admin_tags.py:151
 msgid "View the domain's identities"
 msgstr "Voir les identités du domaine"
 
-#: extensions/admin/templatetags/admin_tags.py:140
-#: extensions/admin/templatetags/admin_tags.py:159
-#: extensions/admin/templatetags/admin_tags.py:166
+#: extensions/admin/templatetags/admin_tags.py:158
+#: extensions/admin/templatetags/admin_tags.py:177
+#: extensions/admin/templatetags/admin_tags.py:184
 #: extensions/postfix_relay_domains/general_callbacks.py:84
 #: extensions/radicale/templatetags/radicale_tags.py:72
 #, python-format
 msgid "Delete %s?"
 msgstr "Supprimer %s ?"
 
-#: extensions/admin/templatetags/admin_tags.py:242
+#: extensions/admin/templatetags/admin_tags.py:260
 msgid "Remove this permission"
 msgstr "Supprimer cette permission"
 
@@ -1379,11 +1418,11 @@ msgstr "Transfert modifié"
 msgid "Alias modified"
 msgstr "Alias modifié"
 
-#: extensions/admin/views/domain.py:132
+#: extensions/admin/views/domain.py:135
 msgid "You can't delete your own domain"
 msgstr "Vous ne pouvez pas supprimer votre propre domaine"
 
-#: extensions/admin/views/domain.py:135
+#: extensions/admin/views/domain.py:138
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domaine supprimé"
@@ -2389,34 +2428,34 @@ msgstr ""
 "Autorise les administrateurs de domaine à gérer les calendriers des "
 "utilisateurs (lecture et écriture)"
 
-#: extensions/radicale/forms.py:70
+#: extensions/radicale/forms.py:73
 #: extensions/radicale/templates/radicale/accessrule.html:6
 msgid "Read"
 msgstr "Lecture"
 
-#: extensions/radicale/forms.py:73
+#: extensions/radicale/forms.py:76
 #: extensions/radicale/templates/radicale/accessrule.html:7
 msgid "Write"
 msgstr "Ecriture"
 
-#: extensions/radicale/forms.py:132
+#: extensions/radicale/forms.py:134
 #, python-format
 msgid "Mailbox %s does not exist"
 msgstr "Boite '%s' inexistante"
 
-#: extensions/radicale/forms.py:155 extensions/radicale/forms.py:189
+#: extensions/radicale/forms.py:157 extensions/radicale/forms.py:192
 msgid "Rights"
 msgstr "Droits"
 
-#: extensions/radicale/forms.py:160
+#: extensions/radicale/forms.py:162
 msgid "New calendar"
 msgstr "Nouveau calendrier"
 
-#: extensions/radicale/forms.py:172 extensions/radicale/views.py:131
+#: extensions/radicale/forms.py:174 extensions/radicale/views.py:131
 msgid "Calendar created"
 msgstr "Calendrier créé"
 
-#: extensions/radicale/forms.py:211 extensions/radicale/views.py:168
+#: extensions/radicale/forms.py:213 extensions/radicale/views.py:168
 msgid "Calendar updated"
 msgstr "Calendrier mis à jour"
 
@@ -2728,10 +2767,6 @@ msgstr "Répertoire où stocker les fichiers RRD"
 #: extensions/stats/app_settings.py:23
 msgid "Path to directory where RRD files are stored"
 msgstr "Emplacement du répertoire de stockage des fichiers RRD"
-
-#: extensions/stats/general_callbacks.py:12
-msgid "Statistics"
-msgstr "Statistiques"
 
 #: extensions/stats/graphics.py:98
 msgid "Average traffic (msgs/min)"
