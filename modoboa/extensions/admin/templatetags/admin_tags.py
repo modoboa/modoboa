@@ -1,10 +1,15 @@
+"""
+Admin extension tags.
+"""
+
 from django import template
+from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.core.urlresolvers import reverse
+
 from modoboa.lib import events
-from modoboa.lib.webutils import render_actions
 from modoboa.lib.templatetags.lib_tags import render_link
+from modoboa.lib.webutils import render_actions
 
 register = template.Library()
 
@@ -18,39 +23,52 @@ def domains_menu(selection, user):
     """Specific menu for domain related operations.
 
     Corresponds to the menu visible on the left column when you go to
-    Domains.
+    *Domains*.
 
     :param str selection: menu entry currently selected
     :param ``User`` user: connected user
     :rtype: str
     :return: rendered menu (as HTML)
     """
-    if not user.has_perm("admin.add_domain"):
-        return ""
-
+    domain_list_url = (
+        "list/" if selection != "statistics" else reverse("admin:domain_list")
+    )
     entries = [
-        {"name": "newdomain",
-         "label": _("Add domain"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.newdomain_cb",
-         "url": reverse("admin:domain_add")},
+        {"name": "domains",
+         "label": _("List domains"),
+         "img": "fa fa-user",
+         "class": "ajaxlink navigation",
+         "url": domain_list_url},
+        {"name": "statistics",
+         "label": _("Statistics"),
+         "img": "fa fa-line-chart",
+         "class": "navigation",
+         "url": reverse("admin:domain_statistics")}
     ]
-    entries += events.raiseQueryEvent("ExtraDomainMenuEntries", user)
-    entries += [
-        {"name": "import",
-         "label": _("Import"),
-         "img": "fa fa-folder-open",
-         "url": reverse("admin:domain_import"),
-         "modal": True,
-         "modalcb": "admin.importform_cb"},
-        {"name": "export",
-         "label": _("Export"),
-         "img": "fa fa-share-alt",
-         "url": reverse("admin:domain_export"),
-         "modal": True,
-         "modalcb": "admin.exportform_cb"}
-    ]
+    if user.has_perm("admin.add_domain"):
+        entries += [
+            {"name": "newdomain",
+             "label": _("Add domain"),
+             "img": "fa fa-plus",
+             "modal": True,
+             "modalcb": "admin.newdomain_cb",
+             "url": reverse("admin:domain_add")},
+        ]
+        entries += events.raiseQueryEvent("ExtraDomainMenuEntries", user)
+        entries += [
+            {"name": "import",
+             "label": _("Import"),
+             "img": "fa fa-folder-open",
+             "url": reverse("admin:domain_import"),
+             "modal": True,
+             "modalcb": "admin.importform_cb"},
+            {"name": "export",
+             "label": _("Export"),
+             "img": "fa fa-share-alt",
+             "url": reverse("admin:domain_export"),
+             "modal": True,
+             "modalcb": "admin.exportform_cb"}
+        ]
 
     return render_to_string('common/menulist.html', {
         "entries": entries,

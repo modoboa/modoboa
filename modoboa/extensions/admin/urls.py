@@ -8,6 +8,7 @@ urlpatterns = patterns(
     url(r'^domains/$', 'domains', name="domain_list"),
     url(r'^domains/list/$', '_domains', name="_domain_list"),
     url(r'^domains/flatlist/$', 'domains_list', name="domain_flat_list"),
+    url(r'^domains/stats/$', 'domain_statistics', name="domain_statistics"),
     url(r'^domains/new/', 'newdomain', name='domain_add'),
     url(r'^domains/(?P<dom_id>\d+)/edit/$', 'editdomain', name="domain_change"),
     url(r'^domains/(?P<dom_id>\d+)/delete/$', 'deldomain',

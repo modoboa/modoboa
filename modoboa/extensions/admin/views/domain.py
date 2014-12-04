@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import (
 
 import reversion
 
+from modoboa.core.models import User
 from modoboa.lib import parameters, events
 from modoboa.lib.webutils import (
     _render_to_string, render_to_json_response
@@ -21,7 +22,9 @@ from modoboa.lib.exceptions import (
     PermDeniedException
 )
 from modoboa.lib.listing import get_sort_order, get_listing_page
-from modoboa.extensions.admin.models import Domain, Mailbox
+from modoboa.extensions.admin.models import (
+    Domain, DomainAlias, Mailbox, Alias
+)
 from modoboa.extensions.admin.forms import (
     DomainForm
 )
@@ -134,3 +137,18 @@ def deldomain(request, dom_id):
 
     msg = ungettext("Domain deleted", "Domains deleted", 1)
     return render_to_json_response(msg)
+
+
+@login_required
+@permission_required("admin.view_domains")
+def domain_statistics(request):
+    """A simple page to present domain statistics."""
+    context = {}
+    if request.user.group == "SuperAdmins":
+        context.update({
+            "domains_counter": Domain.objects.count(),
+            "domain_aliases_counter": DomainAlias.objects.count(),
+            "identities_counter": User.objects.count() + Alias.objects.count(),
+        })
+    context.update({"domains": Domain.objects.get_for_admin(request.user)})
+    return render(request, "admin/domain_statistics.html", context)

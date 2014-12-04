@@ -57,6 +57,11 @@ class Domain(AdminObject):
         return self.alias_set.count()
 
     @property
+    def identities_count(self):
+        """Total number of identities in this domain."""
+        return self.mailbox_set.count() + self.alias_set.count()
+
+    @property
     def tags(self):
         return [{"name": "domain", "label": _("Domain"), "type": "dom"}]
 
