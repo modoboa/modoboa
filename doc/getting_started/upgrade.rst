@@ -62,7 +62,13 @@ versions. To activate it, you need to:
 
 #. Define the ``MODOBOA_API_URL`` variable::
         
-    MODOBOA_API_URL = 'http://api.modoboa.org/1/'
+     MODOBOA_API_URL = 'http://api.modoboa.org/1/'
+
+#. Run the following commands to define the hostname of your
+   instance::
+
+     $ cd <modoboa_instance_dir>
+     $ python manage.py set_default_site <hostname>
      
 1.1.7: manual learning for SpamAssassin
 =======================================

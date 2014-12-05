@@ -1,13 +1,16 @@
 # coding: utf-8
-import sys
+import getpass
 import os
 import shutil
-import getpass
+import sys
+
 import subprocess
-import dj_database_url
 
 from django.core import management
 from django.template import Context, Template
+
+import dj_database_url
+
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.commands import Command
 
@@ -183,7 +186,7 @@ class DeployCommand(Command):
             allowed_host = parsed_args.domain[0]
         else:
             allowed_host = raw_input(
-                'Under which domain do you want to deploy modoboa? '
+                'What will be the hostname used to access Modoboa? '
             )
 
         bower_components_dir = os.path.realpath(
@@ -233,3 +236,7 @@ class DeployCommand(Command):
             self._exec_django_command(
                 "manage_extensions", parsed_args.name, *parsed_args.extensions
             )
+
+        self._exec_django_command(
+            "set_default_site", parsed_args.name, allowed_host
+        )
