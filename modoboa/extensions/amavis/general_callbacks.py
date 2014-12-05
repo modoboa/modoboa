@@ -128,17 +128,17 @@ $(document).bind('domform_init', function() {
 
 
 @events.observe("TopNotifications")
-def check_for_pending_requests(user, include_all):
+def check_for_pending_requests(request, include_all):
     """
     Check if release requests are pending.
     """
     from .sql_connector import get_connector
 
     if parameters.get_admin("USER_CAN_RELEASE") == "yes" \
-            or user.group == "SimpleUsers":
+            or request.user.group == "SimpleUsers":
         return []
 
-    nbrequests = get_connector(user=user).get_pending_requests()
+    nbrequests = get_connector(user=request.user).get_pending_requests()
     if not nbrequests:
         return [{"id": "nbrequests", "counter": 0}] if include_all \
             else []

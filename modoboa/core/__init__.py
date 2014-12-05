@@ -70,15 +70,15 @@ def unset_default_topredirection(extension):
 
 
 @events.observe("TopNotifications")
-def check_for_new_version(user, include_all):
+def check_for_new_version(request, include_all):
     """
     Check if a new version of Modoboa is available.
     """
     from modoboa.core.utils import new_version_available
 
-    if not user.is_superuser:
+    if not request.user.is_superuser:
         return []
-    if new_version_available() is None:
+    if new_version_available(request) is None:
         return [{"id": "newversionavailable"}] if include_all else []
     return [{
         "id": "newversionavailable",

@@ -162,5 +162,5 @@ def check_top_notifications(request):
     AJAX service to check for new top notifications to display.
     """
     return render_to_json_response(
-        events.raiseQueryEvent("TopNotifications", request.user, True)
+        events.raiseQueryEvent("TopNotifications", request, True)
     )

@@ -14,5 +14,5 @@ def top_notifications(request):
         "notifications_check_interval":
         int(parameters.get_admin("TOP_NOTIFICATIONS_CHECK_INTERVAL")) * 1000,
         "top_notifications": events.raiseQueryEvent(
-            "TopNotifications", request.user, False)
+            "TopNotifications", request, False)
     }

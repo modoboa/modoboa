@@ -757,8 +757,7 @@ inside the top bar).
 
   def callback(user, include_all): pass
 
-* ``user`` is a ``User`` instance corresponding to the currently
-  logged in user
+* ``request`` is a ``Request`` instance
 * ``include_all`` is a boolean indicating if empty notifications must
   be included into the result or not
 
