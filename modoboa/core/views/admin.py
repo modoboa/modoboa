@@ -104,7 +104,7 @@ def saveextensions(request):
 def information(request, tplname="core/information.html"):
     return render_to_json_response({
         "content": render_to_string(tplname, {
-            "new_version": new_version_available() 
+            "new_version": new_version_available(request)
         }),
     })
 
