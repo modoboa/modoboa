@@ -31,7 +31,9 @@ install it.
 
 ``pip`` users, just run the following command::
 
-  $ pip install --upgrade modoboa
+  $ pip install modoboa==<VERSION>
+
+Replace ``<VERSION>`` by the appropriate value.
 
 .. warning::
 
@@ -59,6 +61,16 @@ versions. To activate it, you need to:
 
 #. Add `'modoboa.core.context_processors.top_notifications'`` to the
    ``TEMPLATE_CONTEXT_PROCESSORS`` variable
+
+#. Add a new path to the ``STATICFILES_DIRS``::
+
+     # Additional locations of static files
+     STATICFILES_DIRS = (
+       # Put strings here, like "/home/html/static" or "C:/www/django/static".
+       # Always use forward slashes, even on Windows.
+       # Don't forget to use absolute paths, not relative paths.
+       "<path/to/modoboa/install/dir>/bower_components",
+     )
 
 #. Define the ``MODOBOA_API_URL`` variable::
         
