@@ -372,7 +372,8 @@ def listmailbox(request, defmailbox="INBOX", update_session=True):
                 _("Empty mailbox")
             )
         length = 0
-        navparams["page"] = previous_page_id
+        if previous_page_id is not None:
+            navparams["page"] = previous_page_id
     return {"listing": content, "length": length, "pages": [page_id]}
 
 
