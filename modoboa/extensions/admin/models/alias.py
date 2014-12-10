@@ -166,7 +166,7 @@ class Alias(AdminObject):
             raise Conflict
         self.address = localpart
         self.domain = domain
-        self.enabled = (row[2].strip() == 'True')
+        self.enabled = (row[2].strip() in ["True", "1", "yes", "y"])
         int_rcpts = []
         ext_rcpts = []
         for rcpt in row[3:]:

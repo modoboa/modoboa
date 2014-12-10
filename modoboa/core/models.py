@@ -360,7 +360,7 @@ class User(PermissionsMixin):
             self.password = row[2].strip()
         self.first_name = row[3].strip()
         self.last_name = row[4].strip()
-        self.is_active = (row[5].strip() == 'True')
+        self.is_active = (row[5].strip() in ["True", "1", "yes", "y"])
         self.save(creator=user)
         self.set_role(role)
         if len(row) < 8:

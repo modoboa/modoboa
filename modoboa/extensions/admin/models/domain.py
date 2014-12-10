@@ -158,7 +158,7 @@ class Domain(AdminObject):
             self.quota = int(row[2].strip())
         except ValueError:
             raise BadRequest(_("Invalid quota value for domain '%s'" % self.name))
-        self.enabled = (row[3].strip() == 'True')
+        self.enabled = (row[3].strip() in ["True", "1", "yes", "y"])
         self.save(creator=user)
 
     def to_csv(self, csvwriter):

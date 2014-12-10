@@ -50,7 +50,7 @@ class DomainAlias(AdminObject):
             self.target = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise BadRequest(_("Unknown domain %s" % domname))
-        self.enabled = row[3].strip() == 'True'
+        self.enabled = row[3].strip() in ["True", "1", "yes", "y"]
         self.save(creator=user)
 
     def to_csv(self, csvwriter):
