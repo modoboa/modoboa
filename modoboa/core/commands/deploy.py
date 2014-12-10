@@ -17,12 +17,12 @@ from modoboa.core.commands import Command
 DBCONN_TPL = """
     '{{ conn_name }}': {
         'ENGINE': '{{ ENGINE }}',
-        'NAME': '{{ NAME }}',                       # Or path to database file if using sqlite3.
-        'USER': '{% if USER %}{{ USER }}{% endif %}',                     # Not used with sqlite3.
-        'PASSWORD': '{% if PASSWORD %}{{ PASSWORD }}{% endif %}',                 # Not used with sqlite3.
-        'HOST': '{% if HOST %}{{ HOST }}{% endif %}',                       # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '{% if PORT %}{{ PORT }}{% endif %}',                      # Set to empty string for default. Not used with sqlite3.{% if ENGINE == 'django.db.backends.mysql' %}
-        'OPTIONS' : {
+        'NAME': '{{ NAME }}',
+        'USER': '{% if USER %}{{ USER }}{% endif %}',
+        'PASSWORD': '{% if PASSWORD %}{{ PASSWORD }}{% endif %}',
+        'HOST': '{% if HOST %}{{ HOST }}{% endif %}',
+        'PORT': '{% if PORT %}{{ PORT }}{% endif %}',
+        {% if ENGINE == 'django.db.backends.mysql' %}'OPTIONS' : {
             "init_command" : 'SET foreign_key_checks = 0;',
         },{% endif %}
     },
@@ -61,11 +61,19 @@ class DeployCommand(Command):
             '--amavis_dburl', type=str, nargs=1, default=None,
             help='The database-url for your amavis instance')
         self._parser.add_argument(
-            '--domain', type=str, nargs=1, default=None,
+            '--domain', type=str, default=None,
             help='The domain under which you want to deploy modoboa')
         self._parser.add_argument(
             '--extensions', type=str, nargs='*',
             help='Deploy with those extensions already enabled'
+        )
+        self._parser.add_argument(
+            '--lang', type=str, default="en-us",
+            help="Set the default language"
+        )
+        self._parser.add_argument(
+            '--timezone', type=str, default="UTC",
+            help="Set the local timezone"
         )
         self._parser.add_argument(
             '--devel', action='store_true', default=False,
@@ -137,15 +145,8 @@ class DeployCommand(Command):
         management.call_command(
             'startproject', parsed_args.name, verbosity=False
         )
-        if os.path.exists("%(name)s/%(name)s" % {'name': parsed_args.name}):
-            # Django 1.4+
-            path = "%(name)s/%(name)s" % {'name': parsed_args.name}
-            sys.path.append(parsed_args.name)
-            django14 = True
-        else:
-            path = parsed_args.name
-            sys.path.append(".")
-            django14 = False
+        path = "%(name)s/%(name)s" % {'name': parsed_args.name}
+        sys.path.append(parsed_args.name)
 
         t = Template(DBCONN_TPL)
 
@@ -183,11 +184,13 @@ class DeployCommand(Command):
             amavis_conn = None
 
         if parsed_args.domain:
-            allowed_host = parsed_args.domain[0]
+            allowed_host = parsed_args.domain
         else:
             allowed_host = raw_input(
                 'What will be the hostname used to access Modoboa? '
             )
+            if not allowed_host:
+                allowed_host = "localhost"
 
         bower_components_dir = os.path.realpath(
             os.path.join(os.path.dirname(__file__), "../../bower_components")
@@ -198,8 +201,10 @@ class DeployCommand(Command):
             "%s/settings.py.tpl" % self._templates_dir, {
                 'default_conn': default_conn, 'amavis_conn': amavis_conn,
                 'secret_key': mod.settings.SECRET_KEY,
-                'name': parsed_args.name, 'django14': django14,
+                'name': parsed_args.name,
                 'allowed_host': allowed_host,
+                'lang': parsed_args.lang,
+                'timezone': parsed_args.timezone,
                 'bower_components_dir': bower_components_dir,
                 'devmode': parsed_args.devel
             }

@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'', include('modoboa.urls')),
 )
