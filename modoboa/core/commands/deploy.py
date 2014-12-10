@@ -47,8 +47,8 @@ class DeployCommand(Command):
             help='Include amavis configuration'
         )
         self._parser.add_argument(
-            '--syncdb', action='store_true', default=False,
-            help='Run django syncdb command'
+            '--dbaction', type=str, default="install",
+            help='Action to take on the database (install|upgrade)'
         )
         self._parser.add_argument(
             '--collectstatic', action='store_true', default=False,
@@ -216,7 +216,7 @@ class DeployCommand(Command):
         )
         os.mkdir("%s/media" % path)
 
-        if parsed_args.syncdb:
+        if parsed_args.dbaction == "install":
             os.unlink("%s/settings.pyc" % path)
             self._exec_django_command(
                 "syncdb", parsed_args.name, '--noinput'
@@ -230,6 +230,11 @@ class DeployCommand(Command):
             )
             self._exec_django_command(
                 "loaddata", parsed_args.name, 'initial_users.json'
+            )
+        elif parsed_args.dbaction == "upgrade":
+            exec_cmd('sed -ri "s|^#(\s+\'south)|\\1|" %s/settings.py' % path)
+            self._exec_django_command(
+                "syncdb", parsed_args.name, "--migrate"
             )
 
         if parsed_args.collectstatic:

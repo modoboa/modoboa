@@ -9,7 +9,7 @@ Requirements
 ************
 
 * `Python version 2.6+ <http://python.org/>`_
-* `Django version 1.5+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
+* `Django version 1.6+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
 * `south version 0.7+ <http://south.aeracode.org/>`_
 * `lxml python module <http://lxml.de/installation.html>`_
 * `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
@@ -94,7 +94,7 @@ Deployment
 `modoboa-admin.py`, a command line tool, lets you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
-  $ modoboa-admin.py deploy modoboa_example --syncdb --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
+  $ modoboa-admin.py deploy modoboa_example --dbaction install --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
 
 Just answer the few questions and you're done. You can now go to the
 :ref:`first_use` section.
@@ -103,10 +103,14 @@ Just answer the few questions and you're done. You can now go to the
 
    The `--with-amavis` option must be set only if you intend to use
    the :ref:`amavis_frontend`.
+   
+In case you need a **silent installation** (e.g. if you're using
+Salt-Stack, Ansible or whatever), it's possible to supply the database
+credentials as commandline arguments.
 
+You can see the complete option list by running the following command::
 
-In case you need a **silent installation**, e.g. if you're using Salt-Stack.
-It's possible to supply the database credentials as commandline arguments.
+  $ modoboa-admin.py help deploy
 
 .. note::
 
