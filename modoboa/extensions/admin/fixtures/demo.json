@@ -282,6 +282,14 @@
         }
     },
     {
+        "pk": 8,
+        "model": "core.extension",
+        "fields": {
+            "enabled": true,
+            "name": "radicale"
+        }
+    },
+    {
         "pk": "admin@demo.local",
         "model": "admin.quota",
         "fields": {
