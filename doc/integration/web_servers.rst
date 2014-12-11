@@ -141,7 +141,7 @@ following configuration::
                 proxy_set_header Host $http_host;
                 proxy_redirect off;
                 proxy_set_header X-Forwarded-Protocol ssl;
-		        proxy_pass http://modoboa;
+                proxy_pass http://modoboa;
         }
   }
 
@@ -288,8 +288,7 @@ Your uwsgi configuration should be::
     chdir = <modoboa's top dir>
     module = <name>.wsgi:application
     master = true
-    harakiri = 30
-    sharedarea = 4
+    harakiri = 60
     processes = 4
     vhost = true
     no-default-app = true
