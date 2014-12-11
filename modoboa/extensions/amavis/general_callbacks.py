@@ -106,8 +106,8 @@ def on_mailboxalias_deleted(alias):
     """Clean amavis database when an alias is removed."""
     if parameters.get_admin("MANUAL_LEARNING") == "no":
         return
-    if Users.objects.exists(email=alias.fullname):
-        Users.objects.delete(email=alias.fullname)
+    if Users.objects.exists(email=alias.full_address):
+        Users.objects.delete(email=alias.full_address)
 
 
 @events.observe("GetStaticContent")
