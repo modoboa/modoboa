@@ -76,6 +76,8 @@ class Graphic(object):
             cmdargs += curve.to_rrd_command_args(rrdfile)
         cmd = "rrdtool xport --start %s --end %s " % (str(start), str(end))
         cmd += " ".join(cmdargs)
+        if type(cmd) is unicode:
+            cmd = cmd.encode("utf-8")
         code, output = exec_cmd(cmd)
         if code:
             return []
