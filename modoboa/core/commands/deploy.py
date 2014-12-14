@@ -214,7 +214,7 @@ class DeployCommand(Command):
         shutil.copyfile(
             "%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path
         )
-        os.mkdir("%s/media" % path)
+        os.mkdir("%s/media" % parsed_args.name)
 
         os.unlink("%s/settings.pyc" % path)
         if parsed_args.dbaction == "install":
