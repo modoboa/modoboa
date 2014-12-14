@@ -1,0 +1,184 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Paulino Michelazzo <paulino@michelazzo.com.br>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-25 14:23+0100\n"
+"PO-Revision-Date: 2014-12-13 09:14+0000\n"
+"Last-Translator: Paulino Michelazzo <paulino@michelazzo.com.br>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/modoboa/language/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: core/static/core/js/settings.js:14
+msgid "No more log entry to show"
+msgstr "Nenhuma entrada de log a mais para mostrar"
+
+#: extensions/admin/static/admin/js/admin.js:102
+msgid "No more domain to show"
+msgstr "Nenhum domínio a mais para mostrar"
+
+#: extensions/admin/static/admin/js/admin.js:113
+msgid "Do not delete domain directory"
+msgstr "Não remova o diretório de domínio"
+
+#: extensions/admin/static/admin/js/admin.js:115
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Esta operação removerá TODOS os dados associados com este domínio."
+
+#: extensions/admin/static/admin/js/admin.js:116
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr "Esta operação removerá todos os dados associados com este domínio, exceto contas."
+
+#: extensions/admin/static/admin/js/admin.js:198
+msgid "No domain administrator defined"
+msgstr "Nenhum administrador de domínio definido"
+
+#: extensions/admin/static/admin/js/admin.js:253
+#: extensions/admin/static/admin/js/admin.js:309
+msgid "No more identity to show"
+msgstr "Nenhuma identidade a mais para mostrar"
+
+#: extensions/admin/static/admin/js/admin.js:283
+msgid "Do not delete mailbox directory"
+msgstr "Não remova o diretório de caixas de mensagens"
+
+#: extensions/admin/static/admin/js/admin.js:312
+msgid "No more quota to show"
+msgstr "Nenhuma quota a mais para mostrar"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:19
+msgid "No more message to show"
+msgstr "Nenhuma mensagem a mais para mostrar"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:270
+msgid "Release this selection?"
+msgstr "Liberar esta seleção?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:274
+msgid "Delete this selection?"
+msgstr "Apagar esta seleção?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:314
+msgid "Mark this selection as spam?"
+msgstr "Marcar esta seleção como spam?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:329
+msgid "Mark this selection as non-spam?"
+msgstr "Marcar esta seleção como não-spam?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:354
+#: extensions/amavis/static/amavis/js/selfservice.js:17
+msgid "Release this message?"
+msgstr "Liberar esta mensagem?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:358
+#: extensions/amavis/static/amavis/js/selfservice.js:21
+msgid "Delete this message?"
+msgstr "Apagar esta mensagem?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:373
+msgid "Mark as spam?"
+msgstr "Marcar como spam?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:389
+msgid "Mark as non-spam?"
+msgstr "Marcar como não-spam?"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:407
+msgid "View full headers"
+msgstr "Exibir cabeçalhos completos"
+
+#: extensions/amavis/static/amavis/js/quarantine.js:412
+msgid "Hide full headers"
+msgstr "Esconder cabeçalhos completos"
+
+#: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
+msgid "Services updated"
+msgstr "Serviços atualizados"
+
+#: extensions/radicale/static/radicale/js/radicale.js:19
+msgid "No more calendar to show"
+msgstr "Nenhum calendário a mais para mostrar"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:14
+msgid "Remove this filter?"
+msgstr "Remover este filtro?"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:107
+msgid "Save changes?"
+msgstr "Salvar alterações?"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:129
+msgid "Remove filters set?"
+msgstr "Remover conjunto de filtros?"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:146
+msgid "Activate this filters set?"
+msgstr "Ativar este conjunto de filtros?"
+
+#: extensions/sievefilters/static/sievefilters/js/lib.js:154
+#: extensions/sievefilters/static/sievefilters/js/lib.js:203
+msgid "active"
+msgstr "ativo"
+
+#: extensions/stats/static/stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "Buscar um domínio"
+
+#: extensions/webmail/static/webmail/js/webmail.js:188
+msgid "No more message in this mailbox."
+msgstr "Nenhuma mensagem a mais nesra caixa de correio"
+
+#: extensions/webmail/static/webmail/js/webmail.js:685
+msgid "Remove the selected mailbox?"
+msgstr "Remover a caixa de mensagens selecionada?"
+
+#: extensions/webmail/static/webmail/js/webmail.js:698
+msgid "Mailbox removed"
+msgstr "Caixa de mensagens removida"
+
+#: extensions/webmail/static/webmail/js/webmail.js:973
+msgid "Message sent"
+msgstr "Mensagem enviada"
+
+#: extensions/webmail/static/webmail/js/webmail.js:1242
+#, c-format
+msgid "Moving %s message"
+msgid_plural "Moving %s messages"
+msgstr[0] "Movendo %s mensagem"
+msgstr[1] "Movendo %s mensagens"
+
+#: static/js/confirmation.js:44
+msgid "Warning"
+msgstr "Atenção"
+
+#: static/js/confirmation.js:59
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: static/js/global.js:329
+msgid "Internal error"
+msgstr "Erro interno"
+
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr "Nenhuma entrada a mais para mostrar"
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "Busca"
+
+#: static/js/searchbar.js:28
+msgid "Search..."
+msgstr "Buscar..."
