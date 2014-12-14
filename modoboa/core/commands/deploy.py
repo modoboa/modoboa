@@ -216,8 +216,8 @@ class DeployCommand(Command):
         )
         os.mkdir("%s/media" % path)
 
+        os.unlink("%s/settings.pyc" % path)
         if parsed_args.dbaction == "install":
-            os.unlink("%s/settings.pyc" % path)
             self._exec_django_command(
                 "syncdb", parsed_args.name, '--noinput'
             )
