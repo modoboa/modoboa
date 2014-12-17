@@ -277,7 +277,7 @@ Identities.prototype = {
      */
     send_call: function(evt) {
         var $link = get_target(evt, "a");
-        var $this = $(this);
+        var $this = this;
         var method = $link.attr("data-call_method");
 
         if (method === undefined) {
