@@ -25,7 +25,7 @@ def menu(target, user):
         return []
     return [
         {"name": "autoreply",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "autoreply/",
          "label": ugettext_lazy("Auto-reply message")}
     ]

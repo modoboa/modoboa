@@ -101,7 +101,7 @@ def user_menu(target, user):
         return []
     return [
         {"name": "forward",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "forward/",
          "label": ugettext_lazy("Forward")}
     ]

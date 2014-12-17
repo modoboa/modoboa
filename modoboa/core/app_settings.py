@@ -25,6 +25,8 @@ def enabled_applications():
         exts = Extension.objects.filter(enabled=True)
         for ext in exts:
             extclass = exts_pool.get_extension(ext.name)
+            if extclass is None:
+                continue
             if extclass.available_for_topredirection:
                 result.append((ext.name, ext.name))
     return sorted(result, key=lambda e: e[0])

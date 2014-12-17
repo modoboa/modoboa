@@ -43,20 +43,20 @@ def extensions_menu(selection, user):
 def admin_menu(selection, user):
     entries = [
         {"name": "extensions",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "extensions/",
          "label": _("Extensions"),
          "img": ""},
         {"name": "info",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "info/",
          "label": _("Information")},
         {"name": "logs",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "logs/?sort_order=-date_created",
          "label": _("Logs")},
         {"name": "parameters",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "parameters/",
          "img": "",
          "label": _("Parameters")},
@@ -99,11 +99,11 @@ def user_menu(user, selection):
 def uprefs_menu(selection, user):
     entries = [
         {"name": "profile",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "profile/",
          "label": _("Profile")},
         {"name": "preferences",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "preferences/",
          "label": _("Preferences")},
     ]

@@ -23,7 +23,7 @@ TwocolsNav.prototype = {
     },
 
     listen: function() {
-        $("a.ajaxlink").click($.proxy(this.load_section, this));
+        $("a.ajaxnav").click($.proxy(this.load_section, this));
         $(document).on("click", "#update", $.proxy(function(e) {
             simple_ajax_form_post(e, {
                 formid: this.options.formid,
@@ -130,7 +130,7 @@ TwocolsNav.prototype = {
      * Select an entry in the left menu based on current url.
      */
     select_left_menu: function() {
-        $("a.ajaxlink").parent().removeClass("active");
+        $("a.ajaxnav").parent().removeClass("active");
         $("a[name=" + this.navobj.getbaseurl() + "]").parent().addClass("active");
     },
 

@@ -258,7 +258,8 @@ Identities.prototype = {
 
     listen: function() {
         Admin.prototype.listen.call(this);
-        $(document).on("click", "a.ajaxlink", $.proxy(this.page_loader, this));
+        $(document).on("click", "a.ajaxnav", $.proxy(this.page_loader, this));
+        $(document).on("click", "a.ajaxcall", $.proxy(this.send_call, this));
     },
 
     page_loader: function(e) {
@@ -269,6 +270,27 @@ Identities.prototype = {
             $link.parent().addClass("active");
         }
         this.navobj.baseurl($link.attr("href")).update();
+    },
+
+    /**
+     * Send an ajax call.
+     */
+    send_call: function(evt) {
+        var $link = get_target(evt, "a");
+        var $this = $(this);
+        var method = $link.attr("data-call_method");
+
+        if (method === undefined) {
+            method = "GET";
+        }
+        evt.preventDefault();
+        $.ajax({
+            url: $link.attr("href"),
+            type: method,
+            dataType: "json"
+        }).done(function(data) {
+            $this.reload_listing(data.respmsg);
+        });
     },
 
     /**
