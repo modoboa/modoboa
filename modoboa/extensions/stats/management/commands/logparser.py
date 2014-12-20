@@ -331,8 +331,8 @@ class LogParser(object):
             addrto = re.match("([^@]+)@(.+)", m.group(1))
             domname = addrto.group(2) if addrto is not None else None
             if m.group(2) == "sent":
-                self.inc_counter(addrto.group(2), 'recv')
-                self.inc_counter(addrto.group(2), 'size_recv',
+                self.inc_counter(domname, 'recv')
+                self.inc_counter(domname, 'size_recv',
                                  self.workdict[line_id]['size'])
             else:
                 self.inc_counter(domname, m.group(2))
