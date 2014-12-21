@@ -10,5 +10,5 @@ argparse
 rfc6266
 factory-boy<2.4
 passlib
--e git+https://github.com/tonioo/django-versionfield.git#egg=django-versionfield
+django-versionfield2>=0.3.3
 requests
