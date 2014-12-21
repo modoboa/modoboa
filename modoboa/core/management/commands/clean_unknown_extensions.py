@@ -6,6 +6,7 @@ database.
 """
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.db import connection
 
 from modoboa.core.models import Extension
 
@@ -22,3 +23,4 @@ class Command(BaseCommand):
             fullname = "modoboa.extensions.{0}".format(extension.name)
             if not fullname in settings.MODOBOA_APPS:
                 extension.delete()
+        connection.close()

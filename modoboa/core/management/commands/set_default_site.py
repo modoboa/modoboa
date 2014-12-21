@@ -6,6 +6,7 @@ See `https://docs.djangoproject.com/en/dev/ref/contrib/sites/`_.
 """
 
 from django.core.management.base import BaseCommand, CommandError
+from django.db import connection
 
 from django.contrib.sites.models import Site
 
@@ -24,3 +25,4 @@ class Command(BaseCommand):
         site.domain = args[0]
         site.name = args[0]
         site.save()
+        connection.close()

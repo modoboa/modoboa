@@ -1,8 +1,11 @@
-import os
+
 import logging
 from optparse import make_option
-from django import db
+import os
+
 from django.core.management.base import BaseCommand
+from django.db import connection
+
 from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.exceptions import InternalError
@@ -91,4 +94,4 @@ class Command(BaseCommand):
                 self.logger.info('%s succeed', ope)
                 ope.delete()
         os.unlink(options['pidfile'])
-        db.close_connection()
+        connection.close()

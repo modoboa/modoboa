@@ -2,9 +2,11 @@
 # coding: utf-8
 import sys
 import datetime
-from django import db
+
+from django.db import connection
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
+
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox, sendmail_simple
 from modoboa.extensions.admin.models import Mailbox
@@ -65,4 +67,4 @@ class Command(BaseCommand):
                 continue
 
             send_autoreply(sender, mbox, armessage)
-        db.close_connection()
+        connection.close()

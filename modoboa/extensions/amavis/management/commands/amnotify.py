@@ -2,7 +2,7 @@
 # coding: utf-8
 from optparse import make_option
 
-from django import db
+from django.db import connection
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
@@ -94,4 +94,4 @@ class Command(BaseCommand):
                 continue
             rcpt = su.mailbox_set.all()[0].full_address
             self.send_pr_notification(rcpt, reqs)
-        db.close_connection()
+        connection.close()
