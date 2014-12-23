@@ -22,26 +22,24 @@ it. ``pip`` users, just run the following command::
 
 Replace ``<VERSION>`` by the appropriate value.
 
-.. warning::
-
-   If you migrate to **1.1.0**, please follow the :ref:`dedicated migration
-   procedure <1.1.0>` and skip the usual one.
-
-As for a fresh installation, ``modoboa-admin.py`` is used to upgrade
-your local configuration. To do so, remove the directory where your
-instance was first deployed::
+As for a fresh installation, ``modoboa-admin.py`` can be used to
+upgrade your local configuration. To do so, remove the directory where
+your instance was first deployed::
 
   $ rm -rf <modoboa_instance_dir>
 
-If you customized your configuration file (:file:`settings.py`) with
-non-standard settings, you'll have to re-apply them.
+.. warning::
+     
+   If you customized your configuration file (:file:`settings.py`) with
+   non-standard settings, you'll have to re-apply them.
 
 Then, run ``modoboa-admin.py deploy``::
 
   $ modoboa-admin.py deploy <modoboa_instance_dir> --dbaction upgrade --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url] [--domain hostname] [--lang lang] [--timezone timezone]
 
-According to the version you're installing, check if
-:ref:`specific_upgrade_instructions` are required.
+If you prefer the manual way, check if
+:ref:`specific_upgrade_instructions` are required according to the
+version you're installing.
 
 To finish, restart the web server process according to the environment
 you did choose. See :ref:`webservers` for more details.
@@ -51,6 +49,43 @@ you did choose. See :ref:`webservers` for more details.
 *****************************
 Specific upgrade instructions
 *****************************
+
+1.2.0
+=====
+
+A new notification service let administrators know about new Modoboa
+versions. To activate it, you need to update the
+``TEMPLATE_CONTEXT_PROCESSORS`` variable like this::
+
+  from django.conf import global_settings
+  
+  TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'modoboa.core.context_processors.top_notifications',
+  )
+
+and to define the new ``MODOBOA_API_URL`` variable::
+
+  MODOBOA_API_URL = 'http://api.modoboa.org/1/'
+
+The location of external static files has changed. To use them, add a
+new path to the ``STATICFILES_DIRS``::
+
+  # Additional locations of static files
+  STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    "<path/to/modoboa/install/dir>/bower_components",
+  )
+
+Run the following commands to define the hostname of your instance::
+
+  $ cd <modoboa_instance_dir>
+  $ python manage.py set_default_site <hostname>
+
+If you plan to use the Radicale extension, add
+``'modoboa.extensions.radicale'`` to the ``MODOBOA_APPS`` variable.
+
      
 1.1.7: manual learning for SpamAssassin
 =======================================
