@@ -25,10 +25,10 @@ import rrdtool
 import string
 from optparse import make_option
 
-from django.db import connection
 from django.core.management.base import BaseCommand
 
 from modoboa.core.extensions import exts_pool
+from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.stats import Stats
 from modoboa.extensions.stats.lib import date_to_timestamp
@@ -354,7 +354,7 @@ class LogParser(object):
                 self.update_rrd(dom, t)
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CloseConnectionMixin):
     help = 'Log file parser'
 
     option_list = BaseCommand.option_list + (
@@ -372,4 +372,3 @@ class Command(BaseCommand):
             options["logfile"] = parameters.get_admin("LOGFILE", app="stats")
         p = LogParser(options, parameters.get_admin("RRD_ROOTDIR", app="stats"))
         p.process()
-        connection.close()

@@ -6,12 +6,12 @@ from optparse import make_option
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from django.db import connection
 
 from modoboa.core.models import Extension
+from . import CloseConnectionMixin
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CloseConnectionMixin):
 
     """Command definition."""
 
@@ -56,5 +56,3 @@ class Command(BaseCommand):
             if not fullname in settings.MODOBOA_APPS:
                 continue
             self._change_extension_state(extname, options)
-
-        connection.close()

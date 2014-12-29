@@ -4,8 +4,8 @@ from optparse import make_option
 import os
 
 from django.core.management.base import BaseCommand
-from django.db import connection
 
+from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.exceptions import InternalError
@@ -17,7 +17,7 @@ class OperationError(Exception):
     pass
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CloseConnectionMixin):
     help = 'Handles rename and delete operations on mailboxes'
 
     option_list = BaseCommand.option_list + (
@@ -76,7 +76,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         AdminConsole().load()
-        if parameters.get_admin("HANDLE_MAILBOXES") == 'no':
+        try:
+            if parameters.get_admin("HANDLE_MAILBOXES") == 'no':
+                return
+        except parameters.NotDefined:
             return
         if not self.check_pidfile(options['pidfile']):
             return
@@ -94,4 +97,3 @@ class Command(BaseCommand):
                 self.logger.info('%s succeed', ope)
                 ope.delete()
         os.unlink(options['pidfile'])
-        connection.close()

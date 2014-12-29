@@ -3,16 +3,18 @@
 
 import time
 from optparse import make_option
-from django.db import connection
+
 from django.core.management.base import BaseCommand
-from modoboa.lib import parameters
+
+from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.extensions.amavis import Amavis
 from modoboa.extensions.amavis.models import (
     Msgrcpt, Msgs, Maddr
 )
+from modoboa.lib import parameters
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CloseConnectionMixin):
     args = ''
     help = 'Amavis quarantine cleanup'
 
@@ -56,7 +58,8 @@ class Command(BaseCommand):
             if not msg.msgrcpt_set.exclude(rs__in=flags).count():
                 msg.delete()
 
-        self.__vprint("Deleting messages older than %d days..." % max_messages_age)
+        self.__vprint(
+            "Deleting messages older than %d days..." % max_messages_age)
         limit = int(time.time()) - (max_messages_age * 24 * 3600)
         Msgs.objects.filter(time_num__lt=limit).delete()
 
@@ -64,6 +67,5 @@ class Command(BaseCommand):
         for maddr in Maddr.objects.all():
             if not maddr.msgs_set.count() and not maddr.msgrcpt_set.count():
                 maddr.delete()
-        connection.close()
 
         self.__vprint("Done.")

@@ -4,6 +4,7 @@ from optparse import make_option
 
 from django.core.management.base import BaseCommand
 
+from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.extensions.admin import Domain
@@ -13,7 +14,7 @@ from modoboa.extensions.radicale.models import (
 )
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CloseConnectionMixin):
     help = "Generate Radicale rights file"
 
     option_list = BaseCommand.option_list + (

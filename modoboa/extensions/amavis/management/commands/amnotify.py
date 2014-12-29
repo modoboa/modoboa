@@ -2,12 +2,12 @@
 # coding: utf-8
 from optparse import make_option
 
-from django.db import connection
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
+from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import sendmail_simple
@@ -20,7 +20,7 @@ from modoboa.extensions.amavis.models import (
 from modoboa.extensions.amavis.sql_connector import get_connector
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CloseConnectionMixin):
     help = 'Amavis notification tool'
 
     sender = None
@@ -94,4 +94,3 @@ class Command(BaseCommand):
                 continue
             rcpt = su.mailbox_set.all()[0].full_address
             self.send_pr_notification(rcpt, reqs)
-        connection.close()

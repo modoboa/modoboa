@@ -3,7 +3,6 @@
 import datetime
 from optparse import make_option
 
-from django.db import connection
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
@@ -11,8 +10,10 @@ from modoboa.core import load_core_settings
 from modoboa.core.models import Log
 from modoboa.lib import parameters
 
+from . import CloseConnectionMixin
 
-class Command(BaseCommand):
+
+class Command(BaseCommand, CloseConnectionMixin):
     args = ''
     help = 'Log table cleanup'
 
@@ -45,5 +46,4 @@ class Command(BaseCommand):
         self.__vprint("Deleting logs older than %d days..." % log_maximum_age)
         limit = timezone.now() - datetime.timedelta(log_maximum_age)
         Log.objects.filter(date_created__lt=limit).delete()
-        connection.close()
         self.__vprint("Done.")

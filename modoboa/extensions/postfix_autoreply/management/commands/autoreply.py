@@ -3,10 +3,10 @@
 import sys
 import datetime
 
-from django.db import connection
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
 
+from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox, sendmail_simple
 from modoboa.extensions.admin.models import Mailbox
@@ -45,7 +45,7 @@ def send_autoreply(sender, mailbox, armessage):
     lastar.save()
 
 
-class Command(BaseCommand):
+class Command(BaseCommand, CloseConnectionMixin):
     args = '<sender> <recipient ...>'
     help = 'Send autoreply emails'
 
@@ -67,4 +67,3 @@ class Command(BaseCommand):
                 continue
 
             send_autoreply(sender, mbox, armessage)
-        connection.close()
