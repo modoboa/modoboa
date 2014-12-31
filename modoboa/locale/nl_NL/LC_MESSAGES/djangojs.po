@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # TuxBrother <vrijwilligerswerk@wij.rs>, 2014
 # TuxBrother <vrijwilligerswerk@wij.rs>, 2014
@@ -10,23 +10,22 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-25 14:23+0100\n"
-"PO-Revision-Date: 2014-04-16 12:58+0000\n"
+"PO-Revision-Date: 2014-12-31 11:42+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
-"modoboa/language/nl_NL/)\n"
-"Language: nl_NL\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/modoboa/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
-msgstr ""
+msgstr "Geen log bericht meer om te weergeven"
 
 #: extensions/admin/static/admin/js/admin.js:102
 msgid "No more domain to show"
-msgstr ""
+msgstr "Geen domein meer om te weergeven"
 
 #: extensions/admin/static/admin/js/admin.js:113
 msgid "Do not delete domain directory"
@@ -34,17 +33,13 @@ msgstr "De map van dit domein niet verwijderen (Zal de data ervan behouden)"
 
 #: extensions/admin/static/admin/js/admin.js:115
 msgid "This operation will remove ALL data associated to this domain."
-msgstr ""
-"Deze actie zal ALLE data verwijderen die bij dit domein hoort. Wilt u "
-"doorgaan?"
+msgstr "Deze actie zal ALLE data verwijderen die bij dit domein hoort. Wilt u doorgaan?"
 
 #: extensions/admin/static/admin/js/admin.js:116
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr ""
-"Deze actie zal alle data die bij dit domein hoort verwijderen, behalve de "
-"gebruikers."
+msgstr "Deze actie zal alle data die bij dit domein hoort verwijderen, behalve de gebruikers."
 
 #: extensions/admin/static/admin/js/admin.js:198
 msgid "No domain administrator defined"
@@ -53,7 +48,7 @@ msgstr "Geen administrator toegewezen"
 #: extensions/admin/static/admin/js/admin.js:253
 #: extensions/admin/static/admin/js/admin.js:309
 msgid "No more identity to show"
-msgstr ""
+msgstr "Geen identiteiten meer om te weergeven"
 
 #: extensions/admin/static/admin/js/admin.js:283
 msgid "Do not delete mailbox directory"
@@ -61,11 +56,11 @@ msgstr "Verwijder de map van deze mailbox niet (zal de data ervan behouden)"
 
 #: extensions/admin/static/admin/js/admin.js:312
 msgid "No more quota to show"
-msgstr ""
+msgstr "Geen quota meer om te weergeven"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:19
 msgid "No more message to show"
-msgstr ""
+msgstr "Geen berichten meer om te weergeven"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:270
 msgid "Release this selection?"
@@ -76,14 +71,12 @@ msgid "Delete this selection?"
 msgstr "Selectie verwijderen?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:314
-#, fuzzy
 msgid "Mark this selection as spam?"
-msgstr "Wilt u deze selectie loslaten?"
+msgstr "Markeer deze selectie als ongewenst?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:329
-#, fuzzy
 msgid "Mark this selection as non-spam?"
-msgstr "Wilt u deze selectie loslaten?"
+msgstr "Markeer deze selectie als gewenst?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:354
 #: extensions/amavis/static/amavis/js/selfservice.js:17
@@ -97,11 +90,11 @@ msgstr "Dit bericht verwijderen?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:373
 msgid "Mark as spam?"
-msgstr ""
+msgstr "Markeer als ongewenst?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:389
 msgid "Mark as non-spam?"
-msgstr ""
+msgstr "Markeer als gewenst?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:407
 msgid "View full headers"
@@ -117,7 +110,7 @@ msgstr "Services upgedate"
 
 #: extensions/radicale/static/radicale/js/radicale.js:19
 msgid "No more calendar to show"
-msgstr ""
+msgstr "Geen kalenders meer om te weergeven"
 
 #: extensions/sievefilters/static/sievefilters/js/lib.js:14
 msgid "Remove this filter?"
@@ -146,7 +139,7 @@ msgstr "Zoek een domein"
 
 #: extensions/webmail/static/webmail/js/webmail.js:188
 msgid "No more message in this mailbox."
-msgstr ""
+msgstr "Geen berichten meer in deze mailbox."
 
 #: extensions/webmail/static/webmail/js/webmail.js:685
 msgid "Remove the selected mailbox?"
@@ -181,7 +174,7 @@ msgstr "Interne fout"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr ""
+msgstr "Geen bericht meer om te weergeven"
 
 #: static/js/listing.js:46
 msgid "Search"
@@ -190,8 +183,3 @@ msgstr "Zoeken"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Zoeken..."
-
-#~ msgid "%s file"
-#~ msgid_plural "%s files"
-#~ msgstr[0] "%s bestanden"
-#~ msgstr[1] "%s bestanden"

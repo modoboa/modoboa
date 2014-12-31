@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Andrew <buddha@cryptolab.net>, 2014
 # TuxBrother <vrijwilligerswerk@wij.rs>, 2014
@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-04 13:25+0100\n"
-"PO-Revision-Date: 2014-09-13 11:49+0000\n"
-"Last-Translator: Andrew <buddha@cryptolab.net>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
-"modoboa/language/nl_NL/)\n"
-"Language: nl_NL\n"
+"PO-Revision-Date: 2014-12-31 11:37+0000\n"
+"Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/modoboa/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: core/__init__.py:56 core/__init__.py:57
@@ -34,7 +33,7 @@ msgstr "Algemeen"
 
 #: core/__init__.py:86
 msgid "New Modoboa version available"
-msgstr ""
+msgstr "Er is een nieuwe versie van Modoboa beschikbaar!"
 
 #: core/app_settings.py:39
 msgid "Authentication"
@@ -88,9 +87,7 @@ msgstr "Rondes"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Nummer van te gebruiken randomizeringsrondes (alleen bij sha256crypt en "
-"sha512crypt). Moet tussen de 1000 en 999999999 liggen."
+msgstr "Nummer van te gebruiken randomizeringsrondes (alleen bij sha256crypt en sha512crypt). Moet tussen de 1000 en 999999999 liggen."
 
 #: core/app_settings.py:75
 msgid "Secret key"
@@ -154,9 +151,7 @@ msgstr "Koppeling DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"De gedistingeerde naam om te gebruiken bij het koppeling met de LDAP server. "
-"Laat leeg voor een anonieme koppeling."
+msgstr "De gedistingeerde naam om te gebruiken bij het koppeling met de LDAP server. Laat leeg voor een anonieme koppeling."
 
 #: core/app_settings.py:127
 msgid "Bind password"
@@ -164,9 +159,7 @@ msgstr "Koppel wachtwoord"
 
 #: core/app_settings.py:130
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Het wachtwoord om te gebruiken tijdens het koppelen met de LDAP server (met "
-"'koppel DN')"
+msgstr "Het wachtwoord om te gebruiken tijdens het koppelen met de LDAP server (met 'koppel DN')"
 
 #: core/app_settings.py:139
 msgid "Users search base"
@@ -184,9 +177,7 @@ msgstr "Zoek filter"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Een optionele filter string (zoals '(objectClass=person)'). Om geldig te "
-"kunnen zijn, moet het ingesloten zijn tussen haakjes."
+msgstr "Een optionele filter string (zoals '(objectClass=person)'). Om geldig te kunnen zijn, moet het ingesloten zijn tussen haakjes."
 
 #: core/app_settings.py:160
 msgid "User DN template"
@@ -197,9 +188,7 @@ msgstr "Gebruiker DN template"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Het template dat gebruikt word om een gebruiker zijn/haar DN op te bouwen. "
-"Het moet een placeholder bevatten (bijvoorbeeld. %(user)s)"
+msgstr "Het template dat gebruikt word om een gebruiker zijn/haar DN op te bouwen. Het moet een placeholder bevatten (bijvoorbeeld. %(user)s)"
 
 #: core/app_settings.py:171
 msgid "Password attribute"
@@ -223,11 +212,9 @@ msgstr "Administrator groepen"
 
 #: core/app_settings.py:188
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Leden van deze LDAP POSIX groepen zullen aangemaakt worden als domein "
-"administrators. Gebruik ';' karakters om groepen te scheiden."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Leden van deze LDAP POSIX groepen zullen aangemaakt worden als domein administrators. Gebruik ';' karakters om groepen te scheiden."
 
 #: core/app_settings.py:195
 msgid "Groups search base"
@@ -243,23 +230,20 @@ msgid "Miscellaneous"
 msgstr "Diversen"
 
 #: core/app_settings.py:206
-#, fuzzy
 msgid "Top notifications check interval"
-msgstr "Afzender van notificaties"
+msgstr "Top notificaties controle interval"
 
 #: core/app_settings.py:208
-#, fuzzy
 msgid "Interval between two top notification checks"
-msgstr "Periode tussen twee vrijgeef verzoeken controles"
+msgstr "Interval tussen twee top notificatie checks"
 
 #: core/app_settings.py:213
-#, fuzzy
 msgid "Check new versions"
-msgstr "Controleer geldigheid ontvangers"
+msgstr "Controleer of er een nieuwe versie beschikbaar is"
 
 #: core/app_settings.py:216
 msgid "Automatically checks if a newer version is available"
-msgstr ""
+msgstr "Automatische controle voor nieuwe versies"
 
 #: core/app_settings.py:220
 msgid "Maximum log record age"
@@ -283,9 +267,7 @@ msgstr "Standaard top omleiding"
 
 #: core/app_settings.py:238
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"De standaard omleiding die gebruikt word als er geen andere applicatie is "
-"opgegeven"
+msgstr "De standaard omleiding die gebruikt word als er geen andere applicatie is opgegeven"
 
 #: core/app_settings.py:268
 msgid "Key must be either 16, 24, or 32 bytes long"
@@ -461,19 +443,16 @@ msgid "Various information about Modoboa"
 msgstr "Informatie over Modoboa"
 
 #: core/templates/core/information.html:5
-#, fuzzy
 msgid "An update is available!"
-msgstr "Geen statistieken beschikbaar"
+msgstr "Er is een update beschikbaar!"
 
 #: core/templates/core/information.html:6
 #, python-format
 msgid ""
 "\n"
-"  Modoboa <strong>%(version)s</strong> is available for download. The list "
-"of all changes is available <a href=\"%(changelog_url)s\" target=\"_blank"
-"\">here</a>.\n"
+"  Modoboa <strong>%(version)s</strong> is available for download. The list of all changes is available <a href=\"%(changelog_url)s\" target=\"_blank\">here</a>.\n"
 "  "
-msgstr ""
+msgstr "\nModoboa <strong>%(version)s</strong> is beschikbaar om te downloaden. De lijst met alle veranderingen is <a href=\"%(changelog_url)s\" target=\"_blank\">hier</a> beschikbaar."
 
 #: core/templates/core/information.html:11
 msgid "is currently in use."
@@ -582,9 +561,7 @@ msgstr "Gebruiker '%s' successvol aangemeld"
 
 #: core/views/auth.py:44
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Uw gebruikersnaam en wachtwoord komen niet overeen. Probeer het alstublief "
-"opnieuw."
+msgstr "Uw gebruikersnaam en wachtwoord komen niet overeen. Probeer het alstublief opnieuw."
 
 #: core/views/auth.py:72
 #, python-format
@@ -620,32 +597,15 @@ msgid ""
 "\n"
 "<h3>Welcome to the online demo!</h3>\n"
 "<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
-"<p>To try the demo, the following users are available (<i>username/password</"
-"i>): </p>\n"
+"<p>To try the demo, the following users are available (<i>username/password</i>): </p>\n"
 "<ul>\n"
 "  <li>A super administrator : <b>admin/password</b></li>\n"
 "  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
 "  <li>A simple user : <b>user@demo.local/user</b></li>\n"
 "</ul>\n"
 "<p>Please report any issue or give any suggestion to \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
-"mailing list</a>.</p>\n"
-msgstr ""
-"\n"
-"<h3>Welkom in de online demo!</h3>\n"
-"<p><b>Waarschuwing:</b> de content van de demo word elke 2 uur gewist.</p>\n"
-"<p>Om de demo te proberen, zijn de volgende gebruikers beschikbaar "
-"(<i>gebruikersnaam/wachtwoord</i>): </p>\n"
-"<ul>\n"
-"<li>De hoofdbeheerder : <b>admin/password</b></li>\n"
-"<li>De domein administrator : <b>admin@demo.local/admin</b></li>\n"
-"<li>Een gewone gebruiker : <b>user@demo.local/user</b></li>\n"
-"</ul>\n"
-"<p>Aarzel niet om problemen of suggesties door te geven aan \n"
-"<a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">de "
-"maillijst</a>.</p>\n"
-"<p>Fouten gevonden in de Nederlandse vertaling? Geef uw opmerkingen of "
-"suggesties door aan: foss at waut punt nl</p>\n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the mailing list</a>.</p>\n"
+msgstr "\n<h3>Welkom in de online demo!</h3>\n<p><b>Waarschuwing:</b> de content van de demo word elke 2 uur gewist.</p>\n<p>Om de demo te proberen, zijn de volgende gebruikers beschikbaar (<i>gebruikersnaam/wachtwoord</i>): </p>\n<ul>\n<li>De hoofdbeheerder : <b>admin/password</b></li>\n<li>De domein administrator : <b>admin@demo.local/admin</b></li>\n<li>Een gewone gebruiker : <b>user@demo.local/user</b></li>\n</ul>\n<p>Aarzel niet om problemen of suggesties door te geven aan \n<a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">de maillijst</a>.</p>\n<p>Fouten gevonden in de Nederlandse vertaling? Geef uw opmerkingen of suggesties door aan: foss at waut punt nl</p>\n"
 
 #: extensions/admin/__init__.py:48
 msgid "Administration console"
@@ -712,22 +672,18 @@ msgid "Handle mailboxes on filesystem"
 msgstr "Pas mailboxen op het bestandssysteem aan"
 
 #: extensions/admin/app_settings.py:19
-#, fuzzy
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr ""
-"Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of "
-"verwijderd worden in Modoboa."
+msgstr "Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of verwijderd worden in Modoboa."
 
 #: extensions/admin/app_settings.py:25
 msgid "Mailboxes owner"
-msgstr "Eigenaar van mailboxen"
+msgstr "Eigenaar van de mailboxen"
 
 #: extensions/admin/app_settings.py:28
 msgid "The UNIX account who owns mailboxes on the filesystem"
-msgstr ""
-"De UNIX account die de rechten heeft tot de mailboxen op het bestandssysteem"
+msgstr "De UNIX account die de rechten heeft tot de mailboxen op het bestandssysteem"
 
 #: extensions/admin/app_settings.py:33
 msgid "Default domain quota"
@@ -737,9 +693,7 @@ msgstr "Standaard domein quota"
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr ""
-"Standaard quota (in MB) om op nieuw aangemaakte domeinen zonder waarde toe "
-"te passen. Een waarde van 0 betekend geen quota."
+msgstr "Standaard quota (in MB) om op nieuw aangemaakte domeinen zonder waarde toe te passen. Een waarde van 0 betekend geen quota."
 
 #: extensions/admin/app_settings.py:42
 msgid "Automatic account removal"
@@ -747,17 +701,16 @@ msgstr "Automatish een account verwijderen"
 
 #: extensions/admin/app_settings.py:45
 msgid "When a mailbox is removed, also remove the associated account"
-msgstr ""
-"Als een mailbox word verwijderd, verwijder dan ook de bijbehorende account"
+msgstr "Als een mailbox word verwijderd, verwijder dan ook de bijbehorende account"
 
 #: extensions/admin/app_settings.py:49
-#, fuzzy
 msgid "Automatic domain/mailbox creation"
-msgstr "Domein/mailbox creatie"
+msgstr "Domein en mailbox automatisch aanmaken"
 
 #: extensions/admin/app_settings.py:52
-msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr ""
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
+msgstr "Maak een domein en mailbox aan wanneer een account automatisch is aangemaakt."
 
 #: extensions/admin/app_settings.py:98 extensions/admin/forms/account.py:206
 #: extensions/admin/forms/domain.py:66
@@ -772,9 +725,7 @@ msgstr "Een mailbox is benodigd"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr ""
-"De naam van de gebruiker. Moet een geldig e-mail adres zijn voor gebruikers "
-"of administrators met een mailbox."
+msgstr "De naam van de gebruiker. Moet een geldig e-mail adres zijn voor gebruikers of administrators met een mailbox."
 
 #: extensions/admin/forms/account.py:28
 msgid "Role"
@@ -817,10 +768,7 @@ msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr ""
-"Quota in MB voor deze mailbox. Geef een aangepaste waarde of gebruik de "
-"stanaard waarde van het domein. Laat leeg om een ongelimiteerde waarde te "
-"definieren (niet toegestaan voor domein administrators)."
+msgstr "Quota in MB voor deze mailbox. Geef een aangepaste waarde of gebruik de stanaard waarde van het domein. Laat leeg om een ongelimiteerde waarde te definieren (niet toegestaan voor domein administrators)."
 
 #: extensions/admin/forms/account.py:148 extensions/admin/forms/domain.py:29
 #: extensions/admin/templates/admin/domains.html:26
@@ -833,10 +781,7 @@ msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
 "*@domain.tld)."
-msgstr ""
-"Alias(en) van deze mailbox. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen. Gebruik een wildcard '*' om een 'catch-"
-"all' adres te maken (bijvoorbeeld: *@domein.tld)."
+msgstr "Alias(en) van deze mailbox. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen. Gebruik een wildcard '*' om een 'catch-all' adres te maken (bijvoorbeeld: *@domein.tld)."
 
 #: extensions/admin/forms/account.py:216 extensions/admin/forms/account.py:246
 #: extensions/admin/forms/alias.py:72
@@ -879,9 +824,7 @@ msgstr "Email adres"
 msgid ""
 "The distribution list address. Use the '*' character to create a 'catchall' "
 "address (ex: *@domain.tld)."
-msgstr ""
-"Het adres van de distributielijst . Gebruik een wildcard '*' om een 'catch-"
-"all' adres te maken (bijvoorbeeld: *@domein.tld)"
+msgstr "Het adres van de distributielijst . Gebruik een wildcard '*' om een 'catch-all' adres te maken (bijvoorbeeld: *@domein.tld)"
 
 #: extensions/admin/forms/alias.py:24
 msgid "Recipients"
@@ -891,9 +834,7 @@ msgstr "Ontvangers"
 msgid ""
 "Mailbox(es) this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr ""
-"Mailbox(en) waarnaar deze alias zal verwijzen. Geef slechts een adres per "
-"regel op, en toets ENTER om een nieuwe regel te krijgen."
+msgstr "Mailbox(en) waarnaar deze alias zal verwijzen. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: extensions/admin/forms/alias.py:75
 msgid "You don't have access to this domain"
@@ -921,17 +862,13 @@ msgstr "Geen ontvanger opgegeven"
 msgid ""
 "Default quota in MB applied to mailboxes. Leave empty to use the default "
 "value."
-msgstr ""
-"Standaard quota in MB toegepast op mailboxen. Laat leeg om de standaard "
-"waarde te gebruiken."
+msgstr "Standaard quota in MB toegepast op mailboxen. Laat leeg om de standaard waarde te gebruiken."
 
 #: extensions/admin/forms/domain.py:32
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr ""
-"Alias(sen) van dit domein. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen."
+msgstr "Alias(sen) van dit domein. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: extensions/admin/forms/domain.py:87 extensions/admin/forms/domain.py:101
 #: extensions/postfix_relay_domains/forms.py:69
@@ -958,8 +895,7 @@ msgstr "Automatisch een administrator aanmaken voor dit domein"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr ""
-"De naam van de administrator. De domeinnaam word automatisch toegevoegd."
+msgstr "De naam van de administrator. De domeinnaam word automatisch toegevoegd."
 
 #: extensions/admin/forms/domain.py:200
 msgid "Create aliases"
@@ -1022,9 +958,7 @@ msgstr "Stuur berichten door en sla een kopie op in uw mailbox"
 msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
-msgstr ""
-"U kunt mail niet doorsturen naar een lokaal adres. Vraag uw systeembeheerder "
-"om een alias voor u aan te maken."
+msgstr "U kunt mail niet doorsturen naar een lokaal adres. Vraag uw systeembeheerder om een alias voor u aan te maken."
 
 #: extensions/admin/forms/import_.py:6 extensions/webmail/forms.py:210
 msgid "Select a file"
@@ -1044,8 +978,7 @@ msgstr "Versleutel wachtwoorden"
 
 #: extensions/admin/forms/import_.py:31
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Vink deze optie aan als wachtwoorden in uw bestand niet versleuteld zijn"
+msgstr "Vink deze optie aan als wachtwoorden in uw bestand niet versleuteld zijn"
 
 #: extensions/admin/models/alias.py:18 extensions/admin/models/mailbox.py:74
 msgid "address"
@@ -1053,11 +986,9 @@ msgstr "adres"
 
 #: extensions/admin/models/alias.py:20
 msgid ""
-"The alias address (without the domain part). For a 'catch-all' address, just "
-"enter an * character."
-msgstr ""
-"Het alias adres (zonder het domein deel). Voor een 'catch-all' adres, vul "
-"een * in."
+"The alias address (without the domain part). For a 'catch-all' address, just"
+" enter an * character."
+msgstr "Het alias adres (zonder het domein deel). Voor een 'catch-all' adres, vul een * in."
 
 #: extensions/admin/models/alias.py:26
 msgid "mailboxes"
@@ -1166,9 +1097,8 @@ msgstr "Een quota is vereist"
 
 #: extensions/admin/templates/admin/account_general_form.html:9
 #: extensions/admin/templates/admin/aliasform.html:8
-#, fuzzy
 msgid "Domain is disabled"
-msgstr "Domeinen verwijderd"
+msgstr "Domein is gedeactiveerd"
 
 #: extensions/admin/templates/admin/domain_general_form.html:3
 #: extensions/admin/templates/admin/mailform.html:3
@@ -1187,22 +1117,20 @@ msgid "Statistics"
 msgstr "Statistieken"
 
 #: extensions/admin/templates/admin/domain_statistics.html:15
-#, fuzzy
 msgid "Domains and identities"
-msgstr "Weergeef identiteiten"
+msgstr "Domeinen en identiteiten"
 
 #: extensions/admin/templates/admin/domain_statistics.html:22
 msgid "Global counters"
-msgstr ""
+msgstr "Globale statistieken"
 
 #: extensions/admin/templates/admin/domain_statistics.html:26
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: extensions/admin/templates/admin/domain_statistics.html:27
-#, fuzzy
 msgid "Quantity"
-msgstr "Quarantaine"
+msgstr "Hoeveelheid"
 
 #: extensions/admin/templates/admin/domain_statistics.html:33
 #: extensions/admin/templates/admin/editdomainform.html:24
@@ -1212,7 +1140,7 @@ msgstr "Domein aliassen"
 
 #: extensions/admin/templates/admin/domain_statistics.html:45
 msgid "Per-domain counters"
-msgstr ""
+msgstr "Statistieken per domein"
 
 #: extensions/admin/templates/admin/domains.html:27
 #: extensions/admin/templates/admin/identity_headers.html:4
@@ -1231,9 +1159,8 @@ msgid "Actions"
 msgstr "Acties"
 
 #: extensions/admin/templates/admin/domains_table.html:4
-#, fuzzy
 msgid "disabled"
-msgstr "actief"
+msgstr "uitgeschakeld"
 
 #: extensions/admin/templates/admin/editdomainform.html:4
 msgid "Administrators"
@@ -1310,9 +1237,8 @@ msgid "enabled_f"
 msgstr "geactiveerd_f"
 
 #: extensions/admin/templatetags/admin_tags.py:38
-#, fuzzy
 msgid "List domains"
-msgstr "Weergeef quota's"
+msgstr "Weergeef domeinen"
 
 #: extensions/admin/templatetags/admin_tags.py:51
 msgid "Add domain"
@@ -1466,23 +1392,9 @@ msgid ""
 "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
 "  %s\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of "
-"the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr ""
-"Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende "
-"formaten:\n"
-"<ul>\n"
-"<li><em>domain; name; quota; enabled</em></li>\n"
-"<li><em>domainalias; name; targeted domain; enabled</em></li>\n"
-"%s\n"
-"</ul>\n"
-"<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan "
-"een van de vorige waarden.</p>\n"
-"<p>U kunt een eigen scheidingsteken gebruiken.</p>\n"
-"<p>Let op! Zorg dat het 'line-encoding format' Unix is - anders gaat het "
-"importeren mis</p>\n"
-"\n"
+msgstr "Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende formaten:\n<ul>\n<li><em>domain; name; quota; enabled</em></li>\n<li><em>domainalias; name; targeted domain; enabled</em></li>\n%s\n</ul>\n<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan een van de vorige waarden.</p>\n<p>U kunt een eigen scheidingsteken gebruiken.</p>\n<p>Let op! Zorg dat het 'line-encoding format' Unix is - anders gaat het importeren mis</p>\n\n"
 
 #: extensions/admin/views/import.py:47
 msgid "Import domains"
@@ -1502,31 +1414,15 @@ msgstr "%d objecten successvol geimporteerd"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li>\n"
+"<li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>\n"
 "<li><em>alias; address; enabled; internal recipient</em></li>\n"
 "<li><em>forward; address; enabled; external recipient</em></li>\n"
 "<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of "
-"the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
 "\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr ""
-"Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende "
-"formaten:\n"
-"<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li>\n"
-"<li><em>alias; address; enabled; internal recipient</em></li>\n"
-"<li><em>forward; address; enabled; external recipient</em></li>\n"
-"<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
-"</ul>\n"
-"<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan "
-"een van de vorige waarden.</p>\n"
-"<p>U kunt een eigen scheidingsteken gebruiken.</p>\n"
-"<p>Let op! Zorg dat het 'line-encoding format' Unix is - anders gaat het "
-"importeren mis</p>\n"
+msgstr "Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende formaten:\n<ul>\n<li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>\n<li><em>alias; address; enabled; internal recipient</em></li>\n<li><em>forward; address; enabled; external recipient</em></li>\n<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n</ul>\n<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan een van de vorige waarden.</p>\n<p>U kunt een eigen scheidingsteken gebruiken.</p>\n<p>Let op! Zorg dat het 'line-encoding format' Unix is - anders gaat het importeren mis</p>\n"
 
 #: extensions/admin/views/import.py:161
 msgid "Import identities"
@@ -1554,9 +1450,7 @@ msgstr "Maximum bericht bewaartijd"
 
 #: extensions/amavis/app_settings.py:22
 msgid "Quarantine messages maximum age (in days) before deletion"
-msgstr ""
-"Maximum bewaartijd quarantaine berichten (in dagen) voordat ze verwijderd "
-"worden"
+msgstr "Maximum bewaartijd quarantaine berichten (in dagen) voordat ze verwijderd worden"
 
 #: extensions/amavis/app_settings.py:26
 msgid "Messages releasing"
@@ -1568,9 +1462,7 @@ msgstr "Verwijderde vrijgegeven berichten"
 
 #: extensions/amavis/app_settings.py:31
 msgid "Remove messages marked as released while cleaning up the database"
-msgstr ""
-"Verwijder berichten gemarkeerd als vrijgegeven tijdens het opruimen van de "
-"database"
+msgstr "Verwijder berichten gemarkeerd als vrijgegeven tijdens het opruimen van de database"
 
 #: extensions/amavis/app_settings.py:36
 msgid "Amavis connection mode"
@@ -1602,8 +1494,7 @@ msgstr "PDP server socket"
 
 #: extensions/amavis/app_settings.py:59
 msgid "Path to the PDP server socket (if unix mode)"
-msgstr ""
-"Locatie naar de PDP server socket (indien unix socket mode gebruikt word)"
+msgstr "Locatie naar de PDP server socket (indien unix socket mode gebruikt word)"
 
 #: extensions/amavis/app_settings.py:63
 msgid "Allow direct release"
@@ -1632,70 +1523,67 @@ msgstr "E-mail adres dat gebruikt word om notificaties te versturen"
 #: extensions/amavis/app_settings.py:80
 #: extensions/amavis/templates/amavis/main_action_bar.html:31
 msgid "Manual learning"
-msgstr ""
+msgstr "Handmatig leren"
 
 #: extensions/amavis/app_settings.py:83
 msgid "Enable manual learning"
-msgstr ""
+msgstr "Handmatig leren inschakelen"
 
 #: extensions/amavis/app_settings.py:86
 msgid "Allow super administrators to manually train Spamassassin"
-msgstr ""
+msgstr "Sta super administrators toe om SpamAssasin handmatig te trainen"
 
 #: extensions/amavis/app_settings.py:91
 msgid "Is Spamassassin local?"
-msgstr ""
+msgstr "Is SpamAssisin lokaal geïnstalleerd?"
 
 #: extensions/amavis/app_settings.py:94
 msgid "Tell if Spamassassin is running on the same server than modoboa"
-msgstr ""
+msgstr "Draait SpamAssasin op dezelfde server als Modoboa?"
 
 #: extensions/amavis/app_settings.py:99
-#, fuzzy
 msgid "Default user"
-msgstr "Standaard editor"
+msgstr "Standaard gebruiker"
 
 #: extensions/amavis/app_settings.py:102
 msgid "Name of the user owning the default bayesian database"
-msgstr ""
+msgstr "Naam van de systeemgebruiker die rechten over de 'bayesian database' heeft"
 
 #: extensions/amavis/app_settings.py:107
-#, fuzzy
 msgid "Spamd address"
-msgstr "Van adres"
+msgstr "Spamd adres"
 
 #: extensions/amavis/app_settings.py:109
 msgid "The IP address where spamd can be reached"
-msgstr ""
+msgstr "Het IP adres waar spamd beschikbaar is"
 
 #: extensions/amavis/app_settings.py:113
-#, fuzzy
 msgid "Spamd port"
-msgstr "Alleen spam"
+msgstr "Spamd poort"
 
 #: extensions/amavis/app_settings.py:115
 msgid "The TCP port spamd is listening on"
-msgstr ""
+msgstr "De TCP-poort waar spamd naar luistert"
 
 #: extensions/amavis/app_settings.py:119
 msgid "Enable per-domain manual learning"
-msgstr ""
+msgstr "Zet per-domein handmatig leren aan"
 
 #: extensions/amavis/app_settings.py:122
 msgid ""
 "Allow domain administrators to train Spamassassin (within dedicated per-"
 "domain databases)"
-msgstr ""
+msgstr "Sta domein administrators toe om SpamAssassin te trainen (binnen losstaande databases per domein)"
 
 #: extensions/amavis/app_settings.py:128
 msgid "Enable per-user manual learning"
-msgstr ""
+msgstr "Zet handmatig leren per-gebruiker aan"
 
 #: extensions/amavis/app_settings.py:131
 msgid ""
 "Allow simple users to personally train Spamassassin (within a dedicated "
 "database)"
-msgstr ""
+msgstr "Sta simpele gebruikers toe om zelf SpamAssasin te trainen (binnen een losstaande database)"
 
 #: extensions/amavis/app_settings.py:160 extensions/webmail/app_settings.py:91
 msgid "Number of displayed emails per page"
@@ -1707,17 +1595,15 @@ msgstr "Stelt het maximum aantal weergegeven berichten per pagina in"
 
 #: extensions/amavis/forms.py:88
 msgid "Global database"
-msgstr ""
+msgstr "Globale database"
 
 #: extensions/amavis/forms.py:94
-#, fuzzy
 msgid "Domain's database"
-msgstr "Domein aliassen"
+msgstr "Database van domein"
 
 #: extensions/amavis/forms.py:96
-#, fuzzy
 msgid "User's database"
-msgstr "Gebruikers zoekbasis"
+msgstr "Database van gebruiker"
 
 #: extensions/amavis/general_callbacks.py:149
 msgid "Pending requests"
@@ -1733,9 +1619,8 @@ msgid "Connection to amavis failed: %s"
 msgstr "Verbinding met amavis mislukt: %s"
 
 #: extensions/amavis/lib.py:131
-#, fuzzy
 msgid "No recipient found"
-msgstr "Geen ontvanger opgegeven"
+msgstr "Geen geaddresseerde gevonden"
 
 #: extensions/amavis/models.py:93
 msgid "Virus filter"
@@ -1759,9 +1644,7 @@ msgstr "standaard"
 
 #: extensions/amavis/models.py:98
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
-msgstr ""
-"Optie om virusscans over te slaan. Kies 'default' om de systeeminstelling te "
-"gebruiken."
+msgstr "Optie om virusscans over te slaan. Kies 'default' om de systeeminstelling te gebruiken."
 
 #: extensions/amavis/models.py:101
 msgid "Spam filter"
@@ -1769,9 +1652,7 @@ msgstr "Spam filter"
 
 #: extensions/amavis/models.py:106
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
-msgstr ""
-"Optie om spamfilter over te slaan. Kies 'default' om de systeeminstelling te "
-"gebruiken."
+msgstr "Optie om spamfilter over te slaan. Kies 'default' om de systeeminstelling te gebruiken."
 
 #: extensions/amavis/models.py:109
 msgid "Banned filter"
@@ -1779,9 +1660,7 @@ msgstr "Zwarte lijst"
 
 #: extensions/amavis/models.py:114
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
-msgstr ""
-"Optie om zwarte lijst over te slaan. Kies 'default' om de systeeminstelling "
-"te gebruiken."
+msgstr "Optie om zwarte lijst over te slaan. Kies 'default' om de systeeminstelling te gebruiken."
 
 #: extensions/amavis/models.py:144
 msgid "Spam marker"
@@ -1789,11 +1668,9 @@ msgstr "Spam indicator"
 
 #: extensions/amavis/models.py:146
 msgid ""
-"Modify spam subject using the specified text. Choose 'default' to use global "
-"settings."
-msgstr ""
-"Wijzig standaard spam voorvoegsel met de opgegeven text. Kies 'default' om "
-"de systeeminstelling te gebruiken. Geef niets op als u geen voorvoegsel wilt."
+"Modify spam subject using the specified text. Choose 'default' to use global"
+" settings."
+msgstr "Wijzig standaard spam voorvoegsel met de opgegeven text. Kies 'default' om de systeeminstelling te gebruiken. Geef niets op als u geen voorvoegsel wilt."
 
 #: extensions/amavis/views.py:38
 msgid "Empty quarantine"
@@ -1807,7 +1684,7 @@ msgstr "Bericht verwijderd"
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
-msgstr[0] "%(count)d berichten successvol verwijderd"
+msgstr[0] "%(count)d bericht successvol verwijderd"
 msgstr[1] "%(count)d berichten successvol verwijderd"
 
 #: extensions/amavis/views.py:267
@@ -1829,24 +1706,23 @@ msgstr[1] "%(count)d verzoeken ingediend"
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
-msgstr[0] "%(count)d berichten successvol vrijgegeven"
+msgstr[0] "%(count)d bericht successvol vrijgegeven"
 msgstr[1] "%(count)d berichten successvol vrijgegeven"
 
 #: extensions/amavis/views.py:360
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)d message processed successfully"
 msgid_plural "%(count)d messages processed successfully"
-msgstr[0] "%(count)d berichten successvol vrijgegeven"
-msgstr[1] "%(count)d berichten successvol vrijgegeven"
+msgstr[0] "%(count)d bericht succesvol verwerkt"
+msgstr[1] "%(count)d berichten succesvol verwerkt"
 
 #: extensions/amavis/views.py:394
-#, fuzzy
 msgid "Select a database"
-msgstr "Bestand selecteren"
+msgstr "Selecteer een database"
 
 #: extensions/amavis/views.py:398
 msgid "Validate"
-msgstr ""
+msgstr "Valideer"
 
 #: extensions/amavis/management/commands/amnotify.py:61
 msgid "[modoboa] Pending release requests"
@@ -1888,19 +1764,16 @@ msgid "Subject"
 msgstr "Onderwerp"
 
 #: extensions/amavis/templates/amavis/emails_page.html:15
-#, fuzzy
 msgid "Released"
-msgstr "Vrijgeven"
+msgstr "Vrijgegeven"
 
 #: extensions/amavis/templates/amavis/emails_page.html:17
-#, fuzzy
 msgid "Marked as spam"
-msgstr "Markeer berichten"
+msgstr "Gemarkeerd als ongewenst"
 
 #: extensions/amavis/templates/amavis/emails_page.html:19
-#, fuzzy
 msgid "Marked as non-spam"
-msgstr "Markeer berichten"
+msgstr "Gemarkeerd als gewenst"
 
 #: extensions/amavis/templates/amavis/index.html:4
 msgid "Quarantine management"
@@ -1912,7 +1785,7 @@ msgstr "Selecteren"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:11
 msgid "Clean"
-msgstr ""
+msgstr "Schoon"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:12
 msgid "Spam"
@@ -1952,14 +1825,13 @@ msgstr "Verwijderen"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:36
 #: extensions/amavis/templatetags/amavis_tags.py:49
-#, fuzzy
 msgid "Mark as spam"
-msgstr "Markeer berichten"
+msgstr "Markeer als ongewenst"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:37
 #: extensions/amavis/templatetags/amavis_tags.py:57
 msgid "Mark as non-spam"
-msgstr ""
+msgstr "Markeer als gewenst"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:54
 #: extensions/sievefilters/forms.py:70
@@ -1971,9 +1843,8 @@ msgid "All"
 msgstr "Alles"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:57
-#, fuzzy
 msgid "Clean only"
-msgstr "Alleen geband"
+msgstr "Alleen schoon"
 
 #: extensions/amavis/templates/amavis/main_action_bar.html:60
 msgid "Spam only"
@@ -2003,12 +1874,8 @@ msgid ""
 msgid_plural ""
 "\n"
 "%(counter)s release requests are pending for action.\n"
-msgstr[0] ""
-"\n"
-"%(counter)s vrijgeef verzoek ingediend.\n"
-msgstr[1] ""
-"\n"
-"%(counter)s vrijgeef verzoeken ingediend.\n"
+msgstr[0] "\n%(counter)s vrijgeef verzoek ingediend.\n"
+msgstr[1] "\n%(counter)s vrijgeef verzoeken ingediend.\n"
 
 #: extensions/amavis/templates/amavis/notifications/pending_requests.html:6
 msgid "Sketch:"
@@ -2052,8 +1919,7 @@ msgstr "Volledige headers weergeven"
 #: extensions/limits/__init__.py:26
 msgid ""
 "Per administrator resources to limit the number of objects they can create"
-msgstr ""
-"Administrators limiteren in de hoeveelheid objecten die ze kunnen aanmaken"
+msgstr "Administrators limiteren in de hoeveelheid objecten die ze kunnen aanmaken"
 
 #: extensions/limits/__init__.py:59
 msgid "Limits"
@@ -2068,9 +1934,9 @@ msgid "Domain admins"
 msgstr "Domein administrators"
 
 #: extensions/limits/app_settings.py:15
-msgid "Maximum number of allowed domain administrators for a new administrator"
-msgstr ""
-"Maximum aantal toegestane domein administrators voor een nieuwe administrator"
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator"
+msgstr "Maximum aantal toegestane domein administrators voor een nieuwe administrator"
 
 #: extensions/limits/app_settings.py:21
 msgid "Maximum number of allowed domains for a new administrator"
@@ -2176,9 +2042,7 @@ msgstr "Ik ben niet aanwezig"
 #: extensions/postfix_autoreply/app_settings.py:24
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
-msgstr ""
-"Standaard onderwerp gebruikt wanneer een automatisch antwoord automatisch is "
-"aangemaakt"
+msgstr "Standaard onderwerp gebruikt wanneer een automatisch antwoord automatisch is aangemaakt"
 
 #: extensions/postfix_autoreply/app_settings.py:30
 msgid "Default content"
@@ -2191,21 +2055,14 @@ msgid ""
 "\n"
 "Best regards,\n"
 "%(name)s\n"
-msgstr ""
-"Momenteel ben ik niet aanwezig. Ik zal antwoorden zodra ik terug kom.\n"
-"\n"
-"Met vriendelijke groet,\n"
-"%(name)s\n"
+msgstr "Momenteel ben ik niet aanwezig. Ik zal antwoorden zodra ik terug kom.\n\nMet vriendelijke groet,\n%(name)s\n"
 
 #: extensions/postfix_autoreply/app_settings.py:38
 #, python-format
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
-msgstr ""
-"Standaard inhoud gebruikt wanneer een automatisch antwoord bericht "
-"automatisch is aangemaakt. De '%(name)s' macro zal vervangen worden door de "
-"naam van de gebruiker."
+msgstr "Standaard inhoud gebruikt wanneer een automatisch antwoord bericht automatisch is aangemaakt. De '%(name)s' macro zal vervangen worden door de naam van de gebruiker."
 
 #: extensions/postfix_autoreply/forms.py:12
 msgid "Activate your auto reply from this date"
@@ -2267,8 +2124,7 @@ msgstr "Auto antwoord bericht successvol aangepast."
 
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:2
 msgid "Define a message to automatically send when you are off"
-msgstr ""
-"Maak een bericht dat automatisch verstuurd word wanneer u niet aanwezig bent"
+msgstr "Maak een bericht dat automatisch verstuurd word wanneer u niet aanwezig bent"
 
 #: extensions/postfix_relay_domains/__init__.py:72
 msgid "Relay domains support for Postfix"
@@ -2292,9 +2148,7 @@ msgstr "Locatie van Postfix's master.cf"
 msgid ""
 "Alias(es) of this relay domain. Indicate only one name per input, press "
 "ENTER to add a new input."
-msgstr ""
-"Alias(sen) van dit doorstuur domein. Geef slechts een adres per regel op, en "
-"toets ENTER om een nieuwe regel te krijgen."
+msgstr "Alias(sen) van dit doorstuur domein. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: extensions/postfix_relay_domains/forms.py:62
 #: extensions/postfix_relay_domains/general_callbacks.py:93
@@ -2330,19 +2184,13 @@ msgstr "Maximum aantal van doorstuur domeinen die deze gebruiker aan kan maken"
 #: extensions/postfix_relay_domains/general_callbacks.py:111
 msgid ""
 "\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
+"<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>\n"
 "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
-msgstr ""
-"\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
-"<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+msgstr "\n<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>\n<li><em>relaydomainalias; name; target; enabled</em></li>\n"
 
 #: extensions/postfix_relay_domains/limits_callbacks.py:19
 msgid "Maximum number of allowed relay domains for a new administrator"
-msgstr ""
-"Maximum aantal toegestane doorstuur domeinen voor een nieuwe administrator"
+msgstr "Maximum aantal toegestane doorstuur domeinen voor een nieuwe administrator"
 
 #: extensions/postfix_relay_domains/limits_callbacks.py:27
 msgid "Maximum number of allowed relay domain aliases for a new administrator"
@@ -2398,144 +2246,131 @@ msgid "Scan"
 msgstr "Scan"
 
 #: extensions/radicale/__init__.py:34
-#, fuzzy
 msgid "Radicale management"
-msgstr "Quarantaine beheer"
+msgstr "Radicale beheer"
 
 #: extensions/radicale/__init__.py:38
-msgid "Management frontend for Radicale, a simple calendar and contact server."
-msgstr ""
+msgid ""
+"Management frontend for Radicale, a simple calendar and contact server."
+msgstr "Beheermodule voor Radicale, een simpele server kalenders en contacten."
 
 #: extensions/radicale/app_settings.py:11
-#, fuzzy
 msgid "Server settings"
-msgstr "ManageSieve instellingen"
+msgstr "Server instellingen"
 
 #: extensions/radicale/app_settings.py:15
-#, fuzzy
 msgid "Server URL"
-msgstr "Server poort"
+msgstr "Server URL"
 
 #: extensions/radicale/app_settings.py:17
 msgid ""
 "The URL of your Radicale server. It will be used to construct calendar URLs."
-msgstr ""
+msgstr "De URL van de Radicale server. Het zal gebruikt worden om kalender URL's samen te stellen."
 
 #: extensions/radicale/app_settings.py:24
-#, fuzzy
 msgid "Rights management"
-msgstr "Quarantaine beheer"
+msgstr "Rechten beheer"
 
 #: extensions/radicale/app_settings.py:27
 msgid "Rights file's path"
-msgstr ""
+msgstr "Locatie van het rechtenbestand"
 
 #: extensions/radicale/app_settings.py:30
 msgid "Path to the file that contains rights definition"
-msgstr ""
+msgstr "Locatie van het bestand dat de rechtendefinitie bevat"
 
 #: extensions/radicale/app_settings.py:36
-#, fuzzy
 msgid "Allow calendars administration"
-msgstr "Domein administrator"
+msgstr "Sta het beheer van kalenders toe"
 
 #: extensions/radicale/app_settings.py:39
-#, fuzzy
 msgid "Allow domain administrators to manage user calendars (read and write)"
-msgstr "Maximum aantal domein administrators die deze gebruiker aan kan maken"
+msgstr "Sta domein administrators toe om kalenders van gebruikers te beheren (lezen en schrijven)"
 
 #: extensions/radicale/forms.py:73
 #: extensions/radicale/templates/radicale/accessrule.html:6
 msgid "Read"
-msgstr ""
+msgstr "Lezen"
 
 #: extensions/radicale/forms.py:76
 #: extensions/radicale/templates/radicale/accessrule.html:7
 msgid "Write"
-msgstr ""
+msgstr "Schrijven"
 
 #: extensions/radicale/forms.py:134
-#, fuzzy, python-format
+#, python-format
 msgid "Mailbox %s does not exist"
-msgstr "Domein '%s' bestaat niet"
+msgstr "Mailbox %s bestaat niet"
 
 #: extensions/radicale/forms.py:157 extensions/radicale/forms.py:192
 msgid "Rights"
-msgstr ""
+msgstr "Rechten"
 
 #: extensions/radicale/forms.py:162
-#, fuzzy
 msgid "New calendar"
-msgstr "Nieuwe alias"
+msgstr "Nieuwe kalender"
 
 #: extensions/radicale/forms.py:174 extensions/radicale/views.py:131
-#, fuzzy
 msgid "Calendar created"
-msgstr "Filter aangemaakt"
+msgstr "Kalender aangemaakt"
 
 #: extensions/radicale/forms.py:213 extensions/radicale/views.py:168
-#, fuzzy
 msgid "Calendar updated"
-msgstr "Profiel aangepast"
+msgstr "Kalender bijgewerkt"
 
 #: extensions/radicale/general_callbacks.py:15
 msgid "Calendars"
-msgstr ""
+msgstr "Kalenders"
 
 #: extensions/radicale/models.py:94
-#, fuzzy
 msgid "User"
-msgstr "Gebruikersnaam"
+msgstr "Gebruiker"
 
 #: extensions/radicale/models.py:139
 msgid "Shared"
-msgstr ""
+msgstr "Gedeeld"
 
 #: extensions/radicale/views.py:104 extensions/radicale/views.py:163
-#, fuzzy
 msgid "Calendar removed"
-msgstr "Filter verwijderd"
+msgstr "Kalender verwijderd"
 
 #: extensions/radicale/views.py:139
 msgid "New shared calendar"
-msgstr ""
+msgstr "Nieuwe gedeelde kalender"
 
 #: extensions/radicale/views.py:142 extensions/radicale/views.py:179
 #: lib/formutils.py:82
 msgid "Submit"
-msgstr ""
+msgstr "Versturen"
 
 #: extensions/radicale/templates/radicale/calendar_detail.html:6
 msgid "To access this calendar, use the following address:"
-msgstr ""
+msgstr "Deze kalender heeft het volgende adres:"
 
 #: extensions/radicale/templates/radicale/calendars.html:49
 msgid "Owner"
-msgstr ""
+msgstr "Eigenaar"
 
 #: extensions/radicale/templatetags/radicale_tags.py:24
-#, fuzzy
 msgid "Add calendar"
-msgstr "Alias toevoegen"
+msgstr "Kalender toevoegen"
 
 #: extensions/radicale/templatetags/radicale_tags.py:33
 msgid "Add shared calendar"
-msgstr ""
+msgstr "Gedeelde kalender toevoegen"
 
 #: extensions/radicale/templatetags/radicale_tags.py:50
 msgid "View calendar detail"
-msgstr ""
+msgstr "Laat de kalender details zien"
 
 #: extensions/radicale/templatetags/radicale_tags.py:68
 #, python-format
 msgid "Edit %s"
-msgstr ""
+msgstr "Bewerk %s"
 
 #: extensions/sievefilters/__init__.py:12
 msgid "Plugin to easily create server-side filters"
-msgstr ""
-"Plugin om gemakkelijk filters op de server in te stellen (bijvoorbeeld om uw "
-"mail te sorteren)"
+msgstr "Plugin om gemakkelijk filters op de server in te stellen (bijvoorbeeld om uw mail te sorteren)"
 
 #: extensions/sievefilters/__init__.py:18
 msgid "Sieve filters"
@@ -2729,9 +2564,7 @@ msgstr "actief"
 #: extensions/sievefilters/templates/sievefilters/index.html:101
 msgid ""
 "No filters set defined yet. You must create one in order to define filters."
-msgstr ""
-"Nog geen filterset gedefinieerd. U moet een filterset aanmaken om filters in "
-"te kunnen stellen."
+msgstr "Nog geen filterset gedefinieerd. U moet een filterset aanmaken om filters in te kunnen stellen."
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:17
 msgid "New filters set"
@@ -2791,9 +2624,8 @@ msgid "Path to directory where RRD files are stored"
 msgstr "Locatie van map waar RRD bestanden staan"
 
 #: extensions/stats/graphics.py:98
-#, fuzzy
 msgid "Average traffic (msgs/min)"
-msgstr "Gemiddeld normaal verkeer grootte"
+msgstr "Gemiddeld verkeer per minuut (berichten)"
 
 #: extensions/stats/graphics.py:101
 msgid "sent messages"
@@ -2812,9 +2644,8 @@ msgid "rejected messages"
 msgstr "geweigerde berichten"
 
 #: extensions/stats/graphics.py:112
-#, fuzzy
 msgid "Average normal traffic size (bytes/min)"
-msgstr "Gemiddeld normaal verkeer grootte"
+msgstr "Gemiddelde bandbreette per minuut (bytes)"
 
 #: extensions/stats/graphics.py:115
 msgid "received size"
@@ -2850,7 +2681,7 @@ msgstr "Jaar"
 
 #: extensions/stats/views.py:39
 msgid "Custom"
-msgstr ""
+msgstr "Aangepast"
 
 #: extensions/stats/views.py:87
 msgid "Unknown graphic set"
@@ -3116,7 +2947,7 @@ msgstr "Hoofd mailbox"
 
 #: extensions/webmail/templates/webmail/index.html:43
 msgid "Compose"
-msgstr ""
+msgstr "Samenstellen"
 
 #: extensions/webmail/templatetags/webmail_tags.py:29
 msgid "Reply"
@@ -3143,14 +2974,12 @@ msgid "Send"
 msgstr "Versturen"
 
 #: extensions/webmail/templatetags/webmail_tags.py:102
-#, fuzzy
 msgid "Mark as read"
-msgstr "Markeer berichten"
+msgstr "Markeer als gelezen"
 
 #: extensions/webmail/templatetags/webmail_tags.py:106
-#, fuzzy
 msgid "Mark as unread"
-msgstr "Als ongelezen"
+msgstr "Markeer als ongelezen"
 
 #: extensions/webmail/templatetags/webmail_tags.py:116
 msgid "Empty folder"
@@ -3269,79 +3098,3 @@ msgstr "Onthoud mij"
 #: templates/registration/login.html:42
 msgid "Log in"
 msgstr "Inloggen"
-
-#, fuzzy
-#~ msgid "Server location"
-#~ msgstr "Server poort"
-
-#~ msgid ""
-#~ "Automatically create a domain and a mailbox when a new user is created "
-#~ "just after the first successful authentication."
-#~ msgstr ""
-#~ "Maak automatisch een domein en een mailbox wanneer een nieuwe gebruiker "
-#~ "wordt aangemaakt vlak na de eerste succesvolle authenticatie."
-
-#~ msgid "Filter"
-#~ msgstr "Filter"
-
-#~ msgid "Check requests interval"
-#~ msgstr "Controleer tijdspanne tussen verzoeken"
-
-#~ msgid "pending requests"
-#~ msgstr "openstaande verzoeken"
-
-#~ msgid "Average normal traffic"
-#~ msgstr "Gemiddeld normaal verkeer"
-
-#~ msgid "msgs/min"
-#~ msgstr "berichten/min"
-
-#~ msgid "Average bad traffic"
-#~ msgstr "Gemiddeld slecht verkeer"
-
-#~ msgid "bytes/min"
-#~ msgstr "bytes/min"
-
-#~ msgid "Total"
-#~ msgstr "Totaal"
-
-#~ msgid "Predefined time ranges"
-#~ msgstr "Voorgedefinieerde tijdspannes"
-
-#~ msgid "Custom time range"
-#~ msgstr "Aangepaste tijdspanne"
-
-#~ msgid "Add Cc field"
-#~ msgstr "Cc veld toevoegen"
-
-#~ msgid "Add Cci field"
-#~ msgstr "BCc veld toevoegen"
-
-#~ msgid "%(counter)s file"
-#~ msgid_plural "%(counter)s files"
-#~ msgstr[0] "%(counter)s bestand"
-#~ msgstr[1] "%(counter)s bestanden"
-
-#~ msgid "Mailbox quota"
-#~ msgstr "Mailbox limiet"
-
-#~ msgid "Close this message"
-#~ msgstr "Sluit dit bericht"
-
-#~ msgid "New message"
-#~ msgstr "Nieuw bericht"
-
-#~ msgid "Mark messages"
-#~ msgstr "Markeer berichten"
-
-#~ msgid "As read"
-#~ msgstr "Als gelezen"
-
-#~ msgid "No entries to display"
-#~ msgstr "Niets om weer te geven"
-
-#~ msgid "activate"
-#~ msgstr "activeren"
-
-#~ msgid "Powered by Modoboa"
-#~ msgstr "Mogelijk gemaakt dankzij Modoboa"
