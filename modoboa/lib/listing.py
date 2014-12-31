@@ -33,7 +33,8 @@ def get_listing_page(objects, pagenum):
     :return: a ``Page`` object
     """
     paginator = Paginator(
-        objects, int(parameters.get_admin("ITEMS_PER_PAGE", app="core"))
+        objects, int(parameters.get_admin("ITEMS_PER_PAGE", app="core")),
+        allow_empty_first_page=False
     )
     try:
         page = paginator.page(int(pagenum))

@@ -94,12 +94,14 @@ def list_quotas(request):
     else:
         raise BadRequest(_("Invalid request"))
     page = get_listing_page(mboxes, request.GET.get("page", 1))
-    context = {}
+    context = {
+        "headers": _render_to_string(
+            request, "admin/quota_headers.html", {}
+        )
+    }
     if page is None:
         context["length"] = 0
     else:
-        context["headers"] = _render_to_string(
-            request, "admin/quota_headers.html", {})
         context["rows"] = _render_to_string(
             request, "admin/quotas.html", {
                 "mboxes": page
@@ -146,14 +148,7 @@ def accounts_list(request):
 @permission_required("core.add_user")
 @reversion.create_revision()
 def newaccount(request):
-    """Create a new account.
-
-    .. note:: An issue still remains int this code: if all validation
-       steps are successful but an error occurs after we call 'save',
-       the account will be created. It happens transaction management
-       doesn't work very well with nested functions. Need to wait for
-       django 1.6 and atomicity.
-    """
+    """Create a new account."""
     from modoboa.extensions.admin.forms import AccountWizard
     return AccountWizard(request).process()
 

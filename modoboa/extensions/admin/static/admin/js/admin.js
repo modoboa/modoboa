@@ -31,8 +31,16 @@ Admin.prototype = {
      * @param {Object} data - response of the ajax call (JSON)
      */
     list_cb: function(data) {
-        $("#objects_table tbody").html(data.rows);
+        if (data.rows) {
+            $("#objects_table tbody").html(data.rows);
+        } else {
+            $("#objects_table tbody").html("");
+        }
         this.update_listing(data);
+        if (data.length === 0) {
+            this.get_load_page_args();
+            this.end_of_list_reached();
+        }
     },
 
     /**
