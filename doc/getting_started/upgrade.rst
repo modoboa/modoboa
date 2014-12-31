@@ -83,8 +83,14 @@ Run the following commands to define the hostname of your instance::
   $ cd <modoboa_instance_dir>
   $ python manage.py set_default_site <hostname>
 
-If you plan to use the Radicale extension, add
-``'modoboa.extensions.radicale'`` to the ``MODOBOA_APPS`` variable.
+If you plan to use the Radicale extension:
+
+#. Add ``'modoboa.extensions.radicale'`` to the ``MODOBOA_APPS`` variable
+
+#. Run the following commands::
+
+     $ cd <modoboa_instance_dir>
+     $ python manage.py syncdb
 
      
 1.1.7: manual learning for SpamAssassin
