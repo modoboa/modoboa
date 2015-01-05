@@ -1,7 +1,7 @@
 .. _postfix_ar:
 
 ###########################
-Postifx auto-reply messages
+Postfix auto-reply messages
 ###########################
 
 This plugin let users define an auto-reply message (*vacation*). It is
