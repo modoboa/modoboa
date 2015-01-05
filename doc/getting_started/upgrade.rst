@@ -44,6 +44,13 @@ version you're installing.
 To finish, restart the web server process according to the environment
 you did choose. See :ref:`webservers` for more details.
 
+.. warning::
+
+    You also have to note that the :file:`sitestatic` directory has moved from
+    ``<path to your site's dir>`` to ``<modoboa's root url>`` (it's probably
+    the parent directory). You have to adapt your web server configuration
+    to reflect this change.
+
 .. _specific_upgrade_instructions:
 
 *****************************
