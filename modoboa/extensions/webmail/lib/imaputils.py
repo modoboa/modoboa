@@ -155,6 +155,7 @@ class IMAPconnector(object):
 
     def __init__(self, user=None, password=None):
         self.__hdelimiter = None
+        self.quota_usage = -1
         self.criterions = []
         self.address = parameters.get_admin("IMAP_SERVER")
         self.port = int(parameters.get_admin("IMAP_PORT"))
