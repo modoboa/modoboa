@@ -92,6 +92,12 @@ If you plan to use the Radicale extension:
      $ cd <modoboa_instance_dir>
      $ python manage.py syncdb
 
+.. warning::
+
+    You also have to note that the :file:`sitestatic` directory has moved from
+    ``<path to your site's dir>`` to ``<modoboa's root url>`` (it's probably
+    the parent directory). You have to adapt your web server configuration
+    to reflect this change.
      
 1.1.7: manual learning for SpamAssassin
 =======================================
