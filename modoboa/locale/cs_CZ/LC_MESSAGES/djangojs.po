@@ -1,30 +1,30 @@
-# Modoboa Czech translation
-# Copyright (C) 2013
-# This file is distributed under the same license as the Modoboa package.
-#
-# Miroslav Abrahám <miris@kunago.com>, 2013.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Miroslav Abrahám <miris@kunago.com>, 2013,2015
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-1.0.0\n"
+"Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-25 14:23+0100\n"
-"PO-Revision-Date: 2013-09-29 22:13+0100\n"
+"PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
-"Language-Team: CS <miris@kunago.com>\n"
-"Language: Čeština\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/modoboa/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs_CZ\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 1.5.7\n"
 
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
-msgstr ""
+msgstr "Žádný další záznam logu k zobrazení"
 
 #: extensions/admin/static/admin/js/admin.js:102
 msgid "No more domain to show"
-msgstr ""
+msgstr "Žádná další doména k zobrazení"
 
 #: extensions/admin/static/admin/js/admin.js:113
 msgid "Do not delete domain directory"
@@ -38,8 +38,7 @@ msgstr "Tento krok odstraní VŠECHNA data související s touto doménou."
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr ""
-"Tento krok odstraní VŠECHNA data související s touto doménou, vyjma účtů."
+msgstr "Tento krok odstraní VŠECHNA data související s touto doménou, vyjma účtů."
 
 #: extensions/admin/static/admin/js/admin.js:198
 msgid "No domain administrator defined"
@@ -48,7 +47,7 @@ msgstr "Není určen správce domény"
 #: extensions/admin/static/admin/js/admin.js:253
 #: extensions/admin/static/admin/js/admin.js:309
 msgid "No more identity to show"
-msgstr ""
+msgstr "Žádná další identita k zobrazení"
 
 #: extensions/admin/static/admin/js/admin.js:283
 msgid "Do not delete mailbox directory"
@@ -56,11 +55,11 @@ msgstr "Nemazat adresář schránky"
 
 #: extensions/admin/static/admin/js/admin.js:312
 msgid "No more quota to show"
-msgstr ""
+msgstr "Žádná další kvóta k zobrazení"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:19
 msgid "No more message to show"
-msgstr ""
+msgstr "Žádná další zpráva k zobrazení"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:270
 msgid "Release this selection?"
@@ -71,14 +70,12 @@ msgid "Delete this selection?"
 msgstr "Smazat tento výběr?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:314
-#, fuzzy
 msgid "Mark this selection as spam?"
-msgstr "Odblokovat tento výběr?"
+msgstr "Označit výběr jako spam?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:329
-#, fuzzy
 msgid "Mark this selection as non-spam?"
-msgstr "Odblokovat tento výběr?"
+msgstr "Označit výběr jako vyžádané zprávy?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:354
 #: extensions/amavis/static/amavis/js/selfservice.js:17
@@ -92,11 +89,11 @@ msgstr "Smazat tuto zprávu?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:373
 msgid "Mark as spam?"
-msgstr ""
+msgstr "Označit jako spam?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:389
 msgid "Mark as non-spam?"
-msgstr ""
+msgstr "Označit jako vyžádanou zprávu?"
 
 #: extensions/amavis/static/amavis/js/quarantine.js:407
 msgid "View full headers"
@@ -108,11 +105,11 @@ msgstr "Skrýt záhlaví"
 
 #: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
 msgid "Services updated"
-msgstr ""
+msgstr "Služby aktualizovány"
 
 #: extensions/radicale/static/radicale/js/radicale.js:19
 msgid "No more calendar to show"
-msgstr ""
+msgstr "Žádný další kalendář k zobrazení"
 
 #: extensions/sievefilters/static/sievefilters/js/lib.js:14
 msgid "Remove this filter?"
@@ -141,7 +138,7 @@ msgstr "Vyhledat doménu"
 
 #: extensions/webmail/static/webmail/js/webmail.js:188
 msgid "No more message in this mailbox."
-msgstr ""
+msgstr "Ve schránce není žádná další zpráva."
 
 #: extensions/webmail/static/webmail/js/webmail.js:685
 msgid "Remove the selected mailbox?"
@@ -172,13 +169,12 @@ msgid "Cancel"
 msgstr "Zrušit"
 
 #: static/js/global.js:329
-#, fuzzy
 msgid "Internal error"
 msgstr "Interní chyba"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr ""
+msgstr "Žádná další informace k zobrazení"
 
 #: static/js/listing.js:46
 msgid "Search"
@@ -187,27 +183,3 @@ msgstr "Hledat"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Hledat..."
-
-#~ msgid "%s file"
-#~ msgid_plural "%s files"
-#~ msgstr[0] "%s soubor"
-#~ msgstr[1] "%s soubory"
-#~ msgstr[2] "%s souborů"
-
-#~ msgid "Message deleted"
-#~ msgstr "Zpráva smazána"
-
-#~ msgid "Delete this domain?"
-#~ msgstr "Smazat tuto doménu?"
-
-#~ msgid "Delete this account?"
-#~ msgstr "Smazat tento účet?"
-
-#~ msgid "Delete this list?"
-#~ msgstr "Smazat tento seznam?"
-
-#~ msgid "Delete this forward?"
-#~ msgstr "Smazat toto přeposílání?"
-
-#~ msgid "Delete this alias?"
-#~ msgstr "Smazat tento alias?"
