@@ -49,6 +49,22 @@ Admin.prototype = {
     listen: function() {
     },
 
+    /**
+     * Load a new page using an AJAX request.
+     *
+     * @this Admin
+     * @param {Object} e - event object
+     */
+    page_loader: function(e) {
+        var $link = get_target(e);
+        e.preventDefault();
+        if ($link.hasClass("navigation")) {
+            $(".sidebar li.active").removeClass("active");
+            $link.parent().addClass("active");
+        }
+        this.navobj.baseurl($link.attr("href")).update();
+    },
+
     importform_cb: function() {
         $(".submit").one('click', function(e) {
             e.preventDefault();
@@ -109,6 +125,14 @@ Domains.prototype = {
         this.options.navigation_params.push("domfilter", "srvfilter");
         this.options.eor_message = gettext("No more domain to show");
         this.register_tag_handler("dom");
+    },
+
+    /**
+     * Custom callbacks declaration.
+     */
+    listen: function() {
+        Admin.prototype.listen.call(this);
+        $(document).on("click", "a.ajaxnav", $.proxy(this.page_loader, this));
     },
 
     /**
@@ -268,16 +292,6 @@ Identities.prototype = {
         Admin.prototype.listen.call(this);
         $(document).on("click", "a.ajaxnav", $.proxy(this.page_loader, this));
         $(document).on("click", "a.ajaxcall", $.proxy(this.send_call, this));
-    },
-
-    page_loader: function(e) {
-        var $link = get_target(e);
-        e.preventDefault();
-        if ($link.hasClass("navigation")) {
-            $(".sidebar li.active").removeClass("active");
-            $link.parent().addClass("active");
-        }
-        this.navobj.baseurl($link.attr("href")).update();
     },
 
     /**
