@@ -34,7 +34,7 @@ def db_type(cname="default"):
     :param str cname: connection name
     :return: a string or None
     """
-    if not cname in settings.DATABASES:
+    if cname not in settings.DATABASES:
         raise InternalError(
             _("Connection to database %s not configured" % cname))
     for t in ['postgres', 'mysql', 'sqlite']:

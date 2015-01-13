@@ -63,7 +63,7 @@ def render_fields_group(form, pattern):
     haserror = len(first.errors) != 0
     while True:
         fname = "%s_%d" % (pattern, cpt)
-        if not fname in form.fields:
+        if fname not in form.fields:
             break
         bfield = forms.forms.BoundField(form, form.fields[fname], fname)
         if len(bfield.errors):

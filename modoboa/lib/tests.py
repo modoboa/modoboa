@@ -11,13 +11,14 @@ class ModoTestCase(TestCase):
 
     def setUp(self, username="admin", password="password"):
         self.clt = Client()
-        self.assertEqual(self.clt.login(username=username, password=password), True)
+        self.assertEqual(
+            self.clt.login(username=username, password=password), True)
 
     def ajax_request(self, method, url, params=None, status=200):
         if params is None:
             params = {}
-        response = getattr(self.clt, method) \
-            (url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = getattr(self.clt, method)(
+            url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, status)
         return json.loads(response.content)
 

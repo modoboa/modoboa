@@ -34,14 +34,17 @@ Extracted from `this blog
 
 """
 import ldap
+
 from django.conf import settings
 from django.utils.translation import ugettext as _
+
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import InternalError
 
 
 class LDAPAuthBackend(object):
+
     def __init__(self):
         self.server_uri = self._setting(
             "AUTH_LDAP_SERVER_URI", "ldap://localhost"
@@ -102,7 +105,9 @@ class LDAPAuthBackend(object):
         try:
             self.connect_to_server(user, password)
             if self.ldap_ad:
-                newpassword = ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
+                newpassword = (
+                    ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
+                )
             ldif = [(ldap.MOD_REPLACE,
                      self.pwd_attr,
                      self._crypt_password(newpassword))]
