@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import (
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import events
 from modoboa.lib.exceptions import BadRequest, PermDeniedException, NotFound
-from modoboa.lib.webutils import (
+from modoboa.lib.web_utils import (
     render_to_json_response
 )
 from modoboa.extensions.admin.models import (

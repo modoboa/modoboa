@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.exceptions import BadRequest, PermDeniedException
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.extensions.admin.models import (
     Domain
 )

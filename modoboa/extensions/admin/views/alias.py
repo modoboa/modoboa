@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import (
     login_required, permission_required
 )
 from modoboa.lib import events
-from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response
 from modoboa.lib.exceptions import PermDeniedException, Conflict
 from modoboa.extensions.admin.forms import AliasForm
 from modoboa.extensions.admin.models import Alias

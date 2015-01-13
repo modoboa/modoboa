@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from modoboa.lib import parameters
-from modoboa.lib.webutils import _render_error, \
+from modoboa.lib.web_utils import _render_error, \
     ajax_response, render_to_json_response
 from modoboa.lib.connections import ConnectionError
 from modoboa.lib.exceptions import BadRequest

@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import split_mailbox, sendmail_simple
+from modoboa.lib.email_utils import split_mailbox, sendmail_simple
 from modoboa.extensions.admin.models import Mailbox
 from modoboa.extensions.postfix_autoreply import PostfixAutoreply
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric

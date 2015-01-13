@@ -2,7 +2,7 @@
 Set of functions used to parse and transform email headers.
 """
 import chardet
-from modoboa.lib.emailutils import EmailAddress
+from modoboa.lib.email_utils import EmailAddress
 
 __all__ = [
     'parse_from', 'parse_to', 'parse_message_id', 'parse_date',

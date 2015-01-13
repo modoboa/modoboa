@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from modoboa.core.extensions import ModoExtension, exts_pool
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import PermDeniedException, BadRequest, Conflict
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias
 )

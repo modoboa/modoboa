@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
 from modoboa.lib.exceptions import BadRequest, NotFound, Conflict
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.form_utils import (
     DynamicForm
 )

@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import events, parameters
-from modoboa.lib.webutils import _render_to_string
+from modoboa.lib.web_utils import _render_to_string
 from modoboa.core.forms import LoginForm
 
 

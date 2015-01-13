@@ -1,7 +1,7 @@
 import smtplib
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import prepare_addresses
-from modoboa.lib.webutils import _render_to_string
+from modoboa.lib.email_utils import prepare_addresses
+from modoboa.lib.web_utils import _render_to_string
 from modoboa.lib.cryptutils import get_password
 from modoboa.extensions.webmail.exceptions import WebmailInternalError
 from . import get_imapconnector, clean_attachments

@@ -16,7 +16,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib.exceptions import BadRequest
-from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response
 
 
 class WizardStep(object):

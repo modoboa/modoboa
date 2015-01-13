@@ -2,10 +2,13 @@ from modoboa.lib.cryptutils import decrypt
 
 
 class ConnectionsManager(type):
-    """Singleton pattern implementation
+
+    """
+    Singleton pattern implementation.
 
     This class is specialized in connection management.
     """
+
     def __init__(cls, name, bases, ctx):
         super(ConnectionsManager, cls).__init__(name, bases, ctx)
         cls.instances = {}
@@ -16,7 +19,7 @@ class ConnectionsManager(type):
             key = kwargs["user"]
         else:
             return None
-        if not key in cls.instances:
+        if key not in cls.instances:
             cls.instances[key] = None
         if "password" in kwargs:
             kwargs["password"] = decrypt(kwargs["password"])

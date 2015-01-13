@@ -1,7 +1,7 @@
 """
 Misc. utilities.
 """
-from modoboa.lib.webutils import NavigationParameters
+from modoboa.lib.web_utils import NavigationParameters
 
 
 def decode_payload(encoding, payload):

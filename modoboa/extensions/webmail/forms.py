@@ -9,7 +9,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import set_email_headers
+from modoboa.lib.email_utils import set_email_headers
 from .lib import (
     ImapEmail, create_mail_attachment
 )

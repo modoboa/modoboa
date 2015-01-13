@@ -4,7 +4,7 @@ Radicale extension forms.
 from django import forms
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response
 from modoboa.lib.form_utils import WizardForm, TabForms, DynamicForm
 from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
@@ -109,7 +109,7 @@ class RightsForm(forms.Form, DynamicForm):
     def save(self):
         """Custom save method."""
         import re
-        from modoboa.lib.emailutils import split_mailbox
+        from modoboa.lib.email_utils import split_mailbox
         from modoboa.lib.exceptions import BadRequest
         from modoboa.extensions.admin.models import Mailbox
         from .models import AccessRule

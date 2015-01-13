@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
-from modoboa.lib.webutils import render_actions
+from modoboa.lib.web_utils import render_actions
 from modoboa.lib.templatetags.form_tags import configure_field_classes
 
 register = template.Library()

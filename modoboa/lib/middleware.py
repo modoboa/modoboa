@@ -1,21 +1,24 @@
 # coding: utf-8
-"""
-Custom middlewares.
-"""
+
+"""Custom middlewares."""
+
 import re
+
 from django.http import Http404, HttpResponseRedirect
-from modoboa.core.models import Extension
+
 from modoboa.core.extensions import exts_pool
-from modoboa.lib.webutils import (
-    _render_error, ajax_response, render_to_json_response
-)
+from modoboa.core.models import Extension
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.signals import request_accessor
+from modoboa.lib.web_utils import (
+    _render_error, ajax_response, render_to_json_response
+)
 
 
 class ExtControlMiddleware(object):
+
     def process_view(self, request, view, args, kwargs):
-        m = re.match("modoboa\.extensions\.(\w+)", view.__module__)
+        m = re.match(r"modoboa\.extensions\.(\w+)", view.__module__)
         if m is None:
             return None
         try:
@@ -31,6 +34,7 @@ class ExtControlMiddleware(object):
 
 
 class AjaxLoginRedirect(object):
+
     def process_response(self, request, response):
         if request.is_ajax():
             if type(response) == HttpResponseRedirect:
@@ -39,6 +43,7 @@ class AjaxLoginRedirect(object):
 
 
 class CommonExceptionCatcher(object):
+
     def process_exception(self, request, exception):
         if not isinstance(exception, ModoboaException):
             return None
@@ -57,6 +62,7 @@ class CommonExceptionCatcher(object):
 
 
 class RequestCatcherMiddleware(object):
+
     """
     Simple middleware to store the current request.
     """

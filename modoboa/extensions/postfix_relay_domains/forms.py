@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
 from modoboa.lib import events
 from modoboa.lib.form_utils import DynamicForm, DomainNameField, TabForms
-from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response
 from modoboa.extensions.admin.models import Domain, DomainAlias
 from .models import RelayDomain, RelayDomainAlias
 

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import InternalError
-from modoboa.lib.webutils import size2integer
+from modoboa.lib.web_utils import size2integer
 
 
 def set_compose_session(request):

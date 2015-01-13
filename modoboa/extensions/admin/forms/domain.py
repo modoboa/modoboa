@@ -8,7 +8,7 @@ from modoboa.lib.exceptions import ModoboaException, Conflict
 from modoboa.lib.form_utils import (
     DomainNameField, YesNoField, WizardForm, DynamicForm, TabForms
 )
-from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response
 from modoboa.core.models import User
 from modoboa.extensions.admin.lib import check_if_domain_exists
 from modoboa.extensions.admin.models import (

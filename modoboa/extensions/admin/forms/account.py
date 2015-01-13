@@ -5,11 +5,11 @@ from django.core.urlresolvers import reverse
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
 from modoboa.lib.permissions import get_account_roles
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.form_utils import (
     DomainNameField, DynamicForm, TabForms, WizardForm
 )
-from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
     Domain, Mailbox, Alias
@@ -454,7 +454,7 @@ class AccountWizard(WizardForm):
         })
 
     def done(self):
-        from modoboa.lib.webutils import render_to_json_response
+        from modoboa.lib.web_utils import render_to_json_response
 
         account = self.first_step.form.save()
         account.post_create(self.request.user)

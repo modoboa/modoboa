@@ -1,7 +1,7 @@
 import reversion
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest, Conflict
 )

@@ -14,7 +14,7 @@ from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest
 )
-from modoboa.lib.webutils import (
+from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
 from modoboa.core.models import User

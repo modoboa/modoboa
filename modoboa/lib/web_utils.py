@@ -3,16 +3,18 @@
 """
 This module contains extra functions/shortcuts used to render HTML.
 """
-import sys
-import re
+
 import json
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.template.loader import render_to_string
+import re
+import sys
+
 from django import template
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.template.loader import render_to_string
 
 
 def _render_to_string(request, tpl, user_context):
@@ -52,7 +54,7 @@ def getctx(status, level=1, callback=None, **kwargs):
 
 
 def ajax_response(request, status="ok", respmsg=None,
-                  url=None, ajaxnav=False, norefresh=False, 
+                  url=None, ajaxnav=False, norefresh=False,
                   template=None, **kwargs):
     """Ajax response shortcut
 
@@ -74,7 +76,7 @@ def ajax_response(request, status="ok", respmsg=None,
         ctx[k] = v
     if template is not None:
         content = _render_to_string(request, template, ctx)
-    elif kwargs.has_key("content"):
+    elif "content" in kwargs:
         content = kwargs["content"]
     else:
         content = ""
@@ -198,7 +200,7 @@ class NavigationParameters(object):
     def store(self):
         """Store navigation parameters into session.
         """
-        if not self.sessionkey in self.request.session:
+        if self.sessionkey not in self.request.session:
             self.request.session[self.sessionkey] = {}
         self._store_page()
         navparams = self.request.session[self.sessionkey]
@@ -222,7 +224,7 @@ class NavigationParameters(object):
         :param defaultvalue: default value if none is found
         :return: parameter's value
         """
-        if not self.sessionkey in self.request.session:
+        if self.sessionkey not in self.request.session:
             return default_value
         return self.request.session[self.sessionkey].get(param, default_value)
 

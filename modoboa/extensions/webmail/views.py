@@ -20,7 +20,7 @@ from django.views.decorators.gzip import gzip_page
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import ModoboaException, BadRequest
 from modoboa.lib.paginator import Paginator
-from modoboa.lib.webutils import (
+from modoboa.lib.web_utils import (
     _render_to_string, ajax_response, render_to_json_response
 )
 from modoboa.extensions.admin.lib import needs_mailbox

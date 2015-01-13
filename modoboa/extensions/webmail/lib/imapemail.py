@@ -12,7 +12,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from modoboa.lib import parameters, u2u_decode
-from modoboa.lib.emailutils import Email, EmailAddress
+from modoboa.lib.email_utils import Email, EmailAddress
 from .imaputils import (
     get_imapconnector, BodyStructure
 )

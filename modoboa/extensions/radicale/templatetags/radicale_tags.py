@@ -5,7 +5,7 @@ from django import template
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from modoboa.lib.webutils import render_actions
+from modoboa.lib.web_utils import render_actions
 from modoboa.lib.templatetags.lib_tags import render_link
 
 

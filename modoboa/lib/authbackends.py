@@ -4,7 +4,7 @@ from django.contrib.auth.backends import ModelBackend
 
 from modoboa.core.models import User
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 
 
 class SimpleBackend(ModelBackend):

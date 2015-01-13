@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib import events
 from modoboa.lib.templatetags.lib_tags import render_link
-from modoboa.lib.webutils import render_actions
+from modoboa.lib.web_utils import render_actions
 
 register = template.Library()
 

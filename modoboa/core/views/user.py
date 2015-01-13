@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 from modoboa.lib import events, parameters
-from modoboa.lib.webutils import (
+from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
 from modoboa.lib.cryptutils import encrypt

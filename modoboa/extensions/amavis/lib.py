@@ -11,10 +11,10 @@ from django.core.urlresolvers import reverse
 
 from modoboa.extensions.admin.models import Mailbox, Alias
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import InternalError
 from modoboa.lib.sysutils import exec_cmd
-from modoboa.lib.webutils import NavigationParameters
+from modoboa.lib.web_utils import NavigationParameters
 from .models import Users, Policy
 
 
