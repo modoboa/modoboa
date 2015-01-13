@@ -1,4 +1,5 @@
 # coding: utf-8
+
 """
 This interface provides a simple way to declare and store parameters
 in Modoboa's database.
@@ -8,6 +9,7 @@ will be available and modifiable directly from the web interface.
 
 Only super users will be able to access this part of the web interface.
 """
+
 from django import forms
 
 from modoboa.lib import events
@@ -85,10 +87,13 @@ class GenericParametersForm(forms.Form):
 
 
 class AdminParametersForm(GenericParametersForm):
+
     def _load_initial_values(self):
         from .models import Parameter
 
-        names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
+        names = [
+            "%s.%s" % (self.app, name.upper()) for name in self.fields.keys()
+        ]
         for p in Parameter.objects.filter(name__in=names):
             self.fields[p.shortname].initial = self._decode_value(p.value)
 
@@ -121,6 +126,7 @@ class AdminParametersForm(GenericParametersForm):
 
 
 class UserParametersForm(GenericParametersForm):
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user") if "user" in kwargs else None
         super(UserParametersForm, self).__init__(*args, **kwargs)
@@ -130,7 +136,9 @@ class UserParametersForm(GenericParametersForm):
             return
         from .models import UserParameter
 
-        names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
+        names = [
+            "%s.%s" % (self.app, name.upper()) for name in self.fields.keys()
+        ]
         for p in UserParameter.objects.filter(user=self.user, name__in=names):
             self.fields[p.shortname].initial = self._decode_value(p.value)
 
@@ -198,9 +206,12 @@ def unregister(app=None):
 
 
 def __is_defined(app, level, name):
-    if not level in ['A', 'U'] \
-        or not app in _params[level] \
-        or not name in _params[level][app]["defaults"]:
+    not_defined = (
+        level not in ['A', 'U']
+        or app not in _params[level]
+        or name not in _params[level][app]["defaults"]
+    )
+    if not_defined:
         raise NotDefined(app, name)
 
 
