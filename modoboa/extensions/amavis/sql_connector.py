@@ -6,7 +6,7 @@ import datetime
 from django.db.models import Q
 
 from modoboa.extensions.admin.models import Domain
-from modoboa.lib.dbutils import db_type
+from modoboa.lib.db_utils import db_type
 
 from .models import Quarantine, Msgrcpt, Maddr
 

@@ -18,7 +18,7 @@ def enabled_applications():
     """
     from modoboa.core.models import Extension
     from modoboa.core.extensions import exts_pool
-    from modoboa.lib.dbutils import db_table_exists
+    from modoboa.lib.db_utils import db_table_exists
 
     result = [("user", "user")]
     if db_table_exists("core_extension"):

@@ -67,7 +67,7 @@ def _identities(request):
 @login_required
 @permission_required("admin.add_mailbox")
 def list_quotas(request):
-    from modoboa.lib.dbutils import db_type
+    from modoboa.lib.db_utils import db_type
 
     sort_order, sort_dir = get_sort_order(request.GET, "address")
     mboxes = Mailbox.objects.get_for_admin(
