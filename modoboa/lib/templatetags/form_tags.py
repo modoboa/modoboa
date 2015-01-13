@@ -6,7 +6,7 @@ from django import forms
 from django import template
 from django.template.loader import render_to_string
 
-from modoboa.lib.formutils import SeparatorField
+from modoboa.lib.form_utils import SeparatorField
 
 register = template.Library()
 

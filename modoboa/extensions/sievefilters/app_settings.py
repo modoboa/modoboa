@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from sievelib.managesieve import SUPPORTED_AUTH_MECHS
 from modoboa.lib.parameters import AdminParametersForm, UserParametersForm
-from modoboa.lib.formutils import SeparatorField, YesNoField, InlineRadioSelect
+from modoboa.lib.form_utils import SeparatorField, YesNoField, InlineRadioSelect
 
 
 def supported_auth_mechs():

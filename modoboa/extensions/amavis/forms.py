@@ -7,7 +7,7 @@ from django import forms
 from django.utils.translation import ugettext as _
 
 from modoboa.lib import parameters
-from modoboa.lib.formutils import InlineRadioSelect
+from modoboa.lib.form_utils import InlineRadioSelect
 from .models import Policy, Users
 
 

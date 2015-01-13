@@ -9,9 +9,11 @@ will be available and modifiable directly from the web interface.
 Only super users will be able to access this part of the web interface.
 """
 from django import forms
+
 from modoboa.lib import events
-from modoboa.lib.sysutils import guess_extension_name
 from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.sysutils import guess_extension_name
+
 
 _params = {'A': {}, 'U': {}}
 
@@ -92,7 +94,7 @@ class AdminParametersForm(GenericParametersForm):
 
     def save(self):
         from .models import Parameter
-        from modoboa.lib.formutils import SeparatorField
+        from modoboa.lib.form_utils import SeparatorField
 
         for name, value in self.cleaned_data.items():
             if type(self.fields[name]) is SeparatorField:
@@ -138,7 +140,7 @@ class UserParametersForm(GenericParametersForm):
 
     def save(self):
         from .models import UserParameter
-        from modoboa.lib.formutils import SeparatorField
+        from modoboa.lib.form_utils import SeparatorField
 
         for name, value in self.cleaned_data.items():
             if type(self.fields[name]) is SeparatorField:
@@ -162,7 +164,7 @@ def register(formclass, label):
     :param formclass: a form class
     :param string label: the label to display in parameters or settings pages
     """
-    from modoboa.lib.formutils import SeparatorField
+    from modoboa.lib.form_utils import SeparatorField
 
     if issubclass(formclass, AdminParametersForm):
         level = 'A'

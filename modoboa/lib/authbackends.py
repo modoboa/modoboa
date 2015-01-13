@@ -1,10 +1,15 @@
+"""Custom authentication backends."""
+
 from django.contrib.auth.backends import ModelBackend
+
 from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.emailutils import split_mailbox
 
 
 class SimpleBackend(ModelBackend):
+
+    """Simple authentication backend."""
 
     def authenticate(self, username=None, password=None):
         try:

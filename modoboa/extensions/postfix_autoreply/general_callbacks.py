@@ -103,7 +103,7 @@ def extra_mailform_fields(form_name, mailbox=None):
     :param str form_name: form name (must be 'mailform')
     :param Mailbox mailbox: mailbox
     """
-    from modoboa.lib.formutils import YesNoField
+    from modoboa.lib.form_utils import YesNoField
 
     if form_name != "mailform":
         return []

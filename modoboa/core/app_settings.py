@@ -2,7 +2,7 @@
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.formutils import YesNoField, SeparatorField, InlineRadioSelect
+from modoboa.lib.form_utils import YesNoField, SeparatorField, InlineRadioSelect
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib import parameters
 

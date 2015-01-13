@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import ModoboaException, Conflict
-from modoboa.lib.formutils import (
+from modoboa.lib.form_utils import (
     DomainNameField, YesNoField, WizardForm, DynamicForm, TabForms
 )
 from modoboa.lib.webutils import render_to_json_response

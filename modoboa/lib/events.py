@@ -8,11 +8,14 @@ This module provides a simple way of managing events between Modoboa
 core application and additional components.
 
 """
-from functools import wraps
 import inspect
 import re
+from functools import wraps
+
 from django.conf import settings
+
 from modoboa.lib.sysutils import guess_extension_name
+
 
 events = []
 callbacks = {}

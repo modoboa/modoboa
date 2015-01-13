@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from modoboa.lib.parameters import AdminParametersForm
-from modoboa.lib.formutils import SeparatorField
+from modoboa.lib.form_utils import SeparatorField
 
 
 class ParametersForm(AdminParametersForm):

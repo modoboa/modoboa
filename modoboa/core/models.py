@@ -24,7 +24,7 @@ from modoboa.core.extensions import exts_pool
 from modoboa.core.password_hashers import get_password_hasher
 
 try:
-    from modoboa.lib.ldaputils import LDAPAuthBackend
+    from modoboa.lib.ldap_utils import LDAPAuthBackend
     ldap_available = True
 except ImportError:
     ldap_available = False

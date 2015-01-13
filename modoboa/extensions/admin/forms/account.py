@@ -6,7 +6,7 @@ from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.formutils import (
+from modoboa.lib.form_utils import (
     DomainNameField, DynamicForm, TabForms, WizardForm
 )
 from modoboa.lib.webutils import render_to_json_response

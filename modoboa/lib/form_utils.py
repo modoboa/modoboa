@@ -1,24 +1,28 @@
 # coding: utf-8
-import re
-import abc
 
-from django.shortcuts import render
-from django.utils.translation import ugettext as _, ugettext_lazy
-from django.forms import ChoiceField
-from django.forms.widgets import RadioSelect, RadioInput
-from django.forms.fields import CharField, Field
+"""Form management utilities."""
+
+import abc
+import re
+
 from django.core.exceptions import ValidationError
+from django.forms import ChoiceField
+from django.forms.fields import CharField, Field
+from django.forms.widgets import RadioSelect, RadioInput
+from django.shortcuts import render
 from django.utils.encoding import force_unicode
-from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.webutils import render_to_json_response
 
 
 class WizardStep(object):
-    """A wizard step.
-    """
+
+    """A wizard step."""
+
     def __init__(self, cls, title, formtpl=None, new_args=None):
         """Constructor.
 
@@ -65,8 +69,9 @@ class WizardStep(object):
 
 
 class WizardForm(object):
-    """Custom wizard.
-    """
+
+    """Custom wizard."""
+
     __metaclass__ = abc.ABCMeta
 
     template_name = "common/wizard_forms.html"
@@ -159,12 +164,15 @@ class WizardForm(object):
 
 
 class DynamicForm(object):
-    """A form which accepts dynamic fields.
+
+    """
+    A form which accepts dynamic fields.
 
     We consider a field to be dynamic when it can appear multiple
     times within the same request.
 
     """
+
     def _create_field(self, typ, name, value=None, pos=None):
         """Create a new form field.
         """
@@ -222,8 +230,9 @@ class TabForms(object):
                 args.append(request.POST)
             if instances is not None:
                 self.instances = instances
-                if hasattr(self, "check_%s" % fd["id"]):
-                    if not getattr(self, "check_%s" % fd["id"])(instances[fd["id"]]):
+                mname = "check_%s" % fd["id"]
+                if hasattr(self, mname):
+                    if not getattr(self, mname)(instances[fd["id"]]):
                         to_remove += [fd]
                         continue
                 kwargs["instance"] = instances[fd["id"]]
@@ -231,7 +240,7 @@ class TabForms(object):
                 fd["instance"] = classes[fd["id"]](*args, **kwargs)
             else:
                 fd["instance"] = fd["cls"](*args, **kwargs)
-        self.forms = [form for form in self.forms if not form in to_remove]
+        self.forms = [form for form in self.forms if form not in to_remove]
         if self.forms:
             self.active_id = self.forms[0]["id"]
 
@@ -263,10 +272,9 @@ class TabForms(object):
         to_remove = []
         for f in self.forms:
             if mandatory_only and \
-               (not 'mandatory' in f or not f["mandatory"]):
+               ('mandatory' not in f or not f["mandatory"]):
                 continue
-            elif optional_only and \
-               ('mandatory' in f and f["mandatory"]):
+            elif optional_only and ('mandatory' in f and f["mandatory"]):
                 continue
             if not self._before_is_valid(f):
                 to_remove.append(f)
@@ -274,7 +282,7 @@ class TabForms(object):
             if not f["instance"].is_valid():
                 self.active_id = f["id"]
                 return False
-        self.forms = [f for f in self.forms if not f in to_remove]
+        self.forms = [f for f in self.forms if f not in to_remove]
         return True
 
     @abc.abstractmethod
@@ -334,11 +342,11 @@ class TabForms(object):
 
 
 def is_valid_host(host):
-    """IDN compatible domain validator
-    """
+    """IDN compatible domain validator."""
     host = host.encode('idna').lower()
     if not hasattr(is_valid_host, '_re'):
-        is_valid_host._re = re.compile(r'^([0-9a-z][-\w]*[0-9a-z]\.)+[a-z0-9\-]{2,15}$')
+        is_valid_host._re = re.compile(
+            r'^([0-9a-z][-\w]*[0-9a-z]\.)+[a-z0-9\-]{2,15}$')
     return bool(is_valid_host._re.match(host))
 
 

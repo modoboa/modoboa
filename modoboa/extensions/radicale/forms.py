@@ -5,7 +5,7 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.webutils import render_to_json_response
-from modoboa.lib.formutils import WizardForm, TabForms, DynamicForm
+from modoboa.lib.form_utils import WizardForm, TabForms, DynamicForm
 from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
 
