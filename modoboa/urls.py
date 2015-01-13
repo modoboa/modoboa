@@ -1,14 +1,16 @@
-from django.conf.urls import patterns, include, url
 from django.conf import settings
+from django.conf.urls import patterns, include, url
+
+from modoboa.core import load_core_settings
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import parameters, events
-from modoboa.core import load_core_settings
+
 
 load_core_settings()
 
 urlpatterns = patterns(
     '',
-    url(r'^$', 'modoboa.lib.webutils.topredirection', name="topredirection"),
+    url(r'^$', 'modoboa.lib.web_utils.topredirection', name="topredirection"),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog',
      {'packages': ('modoboa', ), }),
     ('', include('modoboa.core.urls', namespace="core")),
