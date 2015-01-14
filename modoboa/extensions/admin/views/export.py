@@ -1,17 +1,22 @@
-import csv
+"""Export related views."""
+
 import cStringIO
+import csv
+
 from rfc6266 import build_header
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
+
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from modoboa.extensions.admin.lib import get_domains, get_identities
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.utils.translation import ugettext as _
+
 from modoboa.extensions.admin.forms import (
     ExportIdentitiesForm, ExportDomainsForm
 )
+from modoboa.extensions.admin.lib import get_domains, get_identities
 
 
 def _export(content, filename):
@@ -46,7 +51,9 @@ def export_identities(request):
         form.is_valid()
         fp = cStringIO.StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
-        for ident in get_identities(request.user, **request.session['identities_filters']):
+        identities = get_identities(
+            request.user, **request.session['identities_filters'])
+        for ident in identities:
             ident.to_csv(csvwriter)
         content = fp.getvalue()
         fp.close()

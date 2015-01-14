@@ -1,10 +1,11 @@
 from django.core.urlresolvers import reverse
+
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase
+from modoboa.extensions.admin import factories
 from modoboa.extensions.admin.models import (
     Domain, Mailbox
 )
-from modoboa.extensions.admin import factories
+from modoboa.lib.tests import ModoTestCase
 
 
 class AccountTestCase(ModoTestCase):
@@ -62,10 +63,14 @@ class AccountTestCase(ModoTestCase):
 
     def test_set_nul_quota_as_domainadmin(self):
         self.clt.logout()
-        self.assertTrue(self.clt.login(username="admin@test.com", password="toto"))
+        self.assertTrue(
+            self.clt.login(username="admin@test.com", password="toto")
+        )
         self._set_quota("user@test.com", 0, 400)
         self.clt.logout()
-        self.assertTrue(self.clt.login(username="admin@test2.com", password="toto"))
+        self.assertTrue(
+            self.clt.login(username="admin@test2.com", password="toto")
+        )
         self._set_quota("user@test2.com", 0)
 
 
@@ -119,8 +124,9 @@ class PermissionsTestCase(ModoTestCase):
 
     def test_self_modif(self):
         self.clt.logout()
-        self.assertEqual(self.clt.login(username="admin@test.com", password="toto"),
-                         True)
+        self.assertTrue(
+            self.clt.login(username="admin@test.com", password="toto")
+        )
         admin = User.objects.get(username="admin@test.com")
         values = dict(
             username="admin@test.com", first_name="Admin",
@@ -132,7 +138,7 @@ class PermissionsTestCase(ModoTestCase):
             values
         )
         self.assertEqual(admin.group, "DomainAdmins")
-        self.assertEqual(admin.can_access(Domain.objects.get(name="test.com")), True)
+        self.assertTrue(admin.can_access(Domain.objects.get(name="test.com")))
 
         values["role"] = "SuperAdmins"
         self.ajax_post(

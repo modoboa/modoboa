@@ -1,18 +1,23 @@
+"""Import related views."""
+
 import csv
-import reversion
-from django.utils.translation import ugettext as _
-from django.shortcuts import render
-from django.core.urlresolvers import reverse
+
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from modoboa.lib import events
-from modoboa.lib.exceptions import ModoboaException, Conflict
+from django.core.urlresolvers import reverse
+from django.shortcuts import render
+from django.utils.translation import ugettext as _
+
+import reversion
+
 from modoboa.core.models import User
+from modoboa.extensions.admin.forms import ImportIdentitiesForm, ImportDataForm
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Alias
 )
-from modoboa.extensions.admin.forms import ImportIdentitiesForm, ImportDataForm
+from modoboa.lib import events
+from modoboa.lib.exceptions import ModoboaException, Conflict
 
 
 def import_domain(user, row, formopts):
@@ -41,7 +46,8 @@ def import_domains(request):
 </ul>
 <p>The first element of each line is mandatory and must be equal to one of the previous values.</p>
 <p>You can use a different character as separator.</p>
-""" % ''.join([unicode(hlp) for hlp in events.raiseQueryEvent('ExtraDomainImportHelp')]))
+""" % ''.join([unicode(hlp) for hlp in
+               events.raiseQueryEvent('ExtraDomainImportHelp')]))
 
     ctx = dict(
         title=_("Import domains"),

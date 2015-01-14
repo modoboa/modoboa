@@ -1,10 +1,11 @@
 from django.core.urlresolvers import reverse
+
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase
+from modoboa.extensions.admin import factories
 from modoboa.extensions.admin.models import (
     Alias
 )
-from modoboa.extensions.admin import factories
+from modoboa.lib.tests import ModoTestCase
 
 
 class AliasTestCase(ModoTestCase):
@@ -80,8 +81,8 @@ class AliasTestCase(ModoTestCase):
         self.assertEqual(fwd.get_recipients_count(), 1)
 
         self.ajax_post(
-            reverse("admin:alias_delete") + "?selection=%d" \
-                % fwd.id, {}
+            reverse("admin:alias_delete") + "?selection=%d"
+            % fwd.id, {}
         )
         self.assertRaises(Alias.DoesNotExist, Alias.objects.get,
                           address="forward2", domain__name="test.com")

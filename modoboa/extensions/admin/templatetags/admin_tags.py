@@ -147,7 +147,8 @@ def domain_actions(user, domain):
     if domain.__class__.__name__ == 'Domain':
         actions = [
             {"name": "listidentities",
-             "url": reverse("admin:identity_list") + "#list/?searchquery=@%s" % domain.name,
+             "url": "{0}#list/?searchquery=@{1}".format(
+                 reverse("admin:identity_list"), domain.name),
              "title": _("View the domain's identities"),
              "img": "fa fa-user"}
         ]
@@ -277,5 +278,3 @@ def get_extra_admin_content(user, target, currentpage):
         "ExtraAdminContent", user, target, currentpage
     )
     return "".join(res)
-
-

@@ -1,12 +1,13 @@
 # coding: utf-8
-from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
+from django.core.urlresolvers import reverse
+
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase
+from modoboa.extensions.admin import factories
 from modoboa.extensions.admin.models import (
     Domain, Alias, DomainAlias
 )
-from modoboa.extensions.admin import factories
+from modoboa.lib.tests import ModoTestCase
 
 
 class ImportTestCase(ModoTestCase):
@@ -76,7 +77,9 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         self.assertEqual(mb1.quota, 0)
         self.assertTrue(admin.is_owner(mb1))
         self.assertEqual(mb1.full_address, "user1@test.com")
-        self.assertTrue(self.clt.login(username="user1@test.com", password="toto"))
+        self.assertTrue(
+            self.clt.login(username="user1@test.com", password="toto")
+        )
 
         da = User.objects.get(username="truc@test.com")
         damb = da.mailbox_set.all()[0]
@@ -159,7 +162,9 @@ account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0;
         Expected result: no
         """
         self.clt.logout()
-        self.assertTrue(self.clt.login(username="admin@test.com", password="toto"))
+        self.assertTrue(
+            self.clt.login(username="admin@test.com", password="toto")
+        )
         f = ContentFile(b"""
 account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com; 50
 """, name="identities.csv")
