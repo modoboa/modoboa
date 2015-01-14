@@ -74,7 +74,8 @@ class ModoboaAdminCommandTestCase(TestCase):
             categories = ["std", "autoreply", "relaydomains"]
         dburl = "{0}://user:password@localhost/testdb".format(engine)
         code, output = exec_cmd(
-            "modoboa-admin.py postfix_maps --categories {0} --dburl {1} {2}".format(
+            "modoboa-admin.py postfix_maps --categories {0}"
+            " --dburl {1} {2}".format(
                 " ".join(categories), dburl, self.workdir
             )
         )

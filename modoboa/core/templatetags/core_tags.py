@@ -1,10 +1,14 @@
+"""Custom tags for Core application."""
+
 import re
+
 from django import template
+from django.contrib.sessions.models import Session
+from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
-from django.contrib.sessions.models import Session
+
 from modoboa.lib import events
 
 
@@ -125,7 +129,7 @@ def colorize_level(level):
         "WARNING": "text-warning",
         "CRITICAL": "text-danger"
     }
-    if not level in classes:
+    if level not in classes:
         return level
     return "<p class='%s'>%s</p>" % (classes[level], level)
 
@@ -140,7 +144,7 @@ def tohtml(message):
 def visirule(field):
     if not hasattr(field, 'form') or \
             not hasattr(field.form, "visirules") or \
-            not field.html_name in field.form.visirules:
+            field.html_name not in field.form.visirules:
         return ""
     rule = field.form.visirules[field.html_name]
     return " data-visibility-field='%s' data-visibility-value='%s' " \

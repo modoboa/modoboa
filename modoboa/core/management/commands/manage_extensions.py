@@ -53,6 +53,6 @@ class Command(BaseCommand, CloseConnectionMixin):
 
         for extname in args:
             fullname = "modoboa.extensions.{0}".format(extname)
-            if not fullname in settings.MODOBOA_APPS:
+            if fullname not in settings.MODOBOA_APPS:
                 continue
             self._change_extension_state(extname, options)

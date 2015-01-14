@@ -2,9 +2,10 @@
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.form_utils import YesNoField, SeparatorField, InlineRadioSelect
-from modoboa.lib.cryptutils import random_key
+
 from modoboa.lib import parameters
+from modoboa.lib.cryptutils import random_key
+from modoboa.lib.form_utils import YesNoField, SeparatorField, InlineRadioSelect
 
 
 def enabled_applications():
@@ -304,8 +305,9 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             required_fields = ["ldap_user_dn_template"]
 
         for f in required_fields:
-            if not f in cleaned_data or cleaned_data[f] == u'':
-                self._errors[f] = self.error_class([_("This field is required")])
+            if f not in cleaned_data or cleaned_data[f] == u'':
+                self._errors[f] = self.error_class(
+                    [_("This field is required")])
 
         return cleaned_data
 
@@ -341,14 +343,20 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         ))
         if values["ldap_auth_method"] == "searchbind":
             setattr(settings, "AUTH_LDAP_BIND_DN", values["ldap_bind_dn"])
-            setattr(settings, "AUTH_LDAP_BIND_PASSWORD", values["ldap_bind_password"])
+            setattr(
+                settings, "AUTH_LDAP_BIND_PASSWORD",
+                values["ldap_bind_password"]
+            )
             search = LDAPSearch(
                 values["ldap_search_base"], ldap.SCOPE_SUBTREE,
                 values["ldap_search_filter"]
             )
             setattr(settings, "AUTH_LDAP_USER_SEARCH", search)
         else:
-            setattr(settings, "AUTH_LDAP_USER_DN_TEMPLATE", values["ldap_user_dn_template"])
+            setattr(
+                settings, "AUTH_LDAP_USER_DN_TEMPLATE",
+                values["ldap_user_dn_template"]
+            )
         if values["ldap_is_active_directory"] == "yes":
             if not hasattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS"):
                 setattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS", {

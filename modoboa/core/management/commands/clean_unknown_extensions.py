@@ -21,6 +21,6 @@ class Command(BaseCommand):
         """Entry point."""
         for extension in Extension.objects.all():
             fullname = "modoboa.extensions.{0}".format(extension.name)
-            if not fullname in settings.MODOBOA_APPS:
+            if fullname not in settings.MODOBOA_APPS:
                 extension.delete()
         connection.close()

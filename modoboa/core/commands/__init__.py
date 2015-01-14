@@ -1,7 +1,9 @@
 # coding: utf-8
+
+import argparse
 import os
 import sys
-import argparse
+
 from django.conf import settings
 from django.template import Context, Template
 
@@ -71,6 +73,7 @@ def scan_for_commands(dirname=""):
 
 
 def handle_command_line():
+    """Parse the command line."""
     commands = scan_for_commands()
     parser = argparse.ArgumentParser(
         description="A set of utilities to ease the installation of Modoboa.",
@@ -83,7 +86,7 @@ def handle_command_line():
                         help='A valid command name')
     (args, remaining) = parser.parse_known_args()
 
-    if not args.command in commands:
+    if args.command not in commands:
         print >> sys.stderr, "Unknown command '%s'" % args.command
         sys.exit(1)
 
