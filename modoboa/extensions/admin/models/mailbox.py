@@ -1,19 +1,24 @@
+"""Models related to mailboxes management."""
+
 import os
 import pwd
-import reversion
+
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.db.models.manager import Manager
-from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _, ugettext_lazy
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from django.utils.translation import ugettext as _, ugettext_lazy
+
+import reversion
+
+from .base import AdminObject
+from .domain import Domain
+from modoboa.core.models import User
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import BadRequest, InternalError
 from modoboa.lib.sysutils import exec_cmd
-from modoboa.core.models import User
-from .base import AdminObject
-from .domain import Domain
 
 
 class Quota(models.Model):
@@ -72,7 +77,8 @@ class Mailbox(AdminObject):
 
     address = models.CharField(
         ugettext_lazy('address'), max_length=252,
-        help_text=ugettext_lazy("Mailbox address (without the @domain.tld part)")
+        help_text=ugettext_lazy(
+            "Mailbox address (without the @domain.tld part)")
     )
     quota = models.PositiveIntegerField()
     use_domain_quota = models.BooleanField(default=False)
@@ -112,7 +118,7 @@ class Mailbox(AdminObject):
     @property
     def mail_home(self):
         """Retrieve the home directory of this mailbox.
- 
+
         The home directory refers to the place on the file system
         where the mailbox data is stored.
 
@@ -131,9 +137,10 @@ class Mailbox(AdminObject):
                 options['sudo_user'] = mbowner
             code, output = exec_cmd(
                 "doveadm user %s -f home" % self.full_address, **options
-            ) 
+            )
             if code:
-                raise InternalError(_("Failed to retrieve mailbox location (%s)" % output))
+                raise InternalError(
+                    _("Failed to retrieve mailbox location (%s)" % output))
             self.__mail_home = output.strip()
         return self.__mail_home
 
@@ -273,7 +280,9 @@ class Mailbox(AdminObject):
         We try to delete the associated quota in the same time (it may
         has already been removed if we're deleting a domain).
 
-        :param bool keepdir: delete the mailbox home dir on the filesystem or not
+        :param bool keepdir: delete the mailbox home dir on the
+                             filesystem or not
+
         """
         try:
             q = Quota.objects.get(username=self.full_address)
@@ -322,4 +331,4 @@ class MailboxOperation(models.Model):
     def __str__(self):
         if self.type == 'rename':
             return 'Rename %s -> %s' % (self.argument, self.mailbox.mail_home)
-        return 'Delete %s' % self.argument 
+        return 'Delete %s' % self.argument

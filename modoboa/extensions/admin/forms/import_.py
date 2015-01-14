@@ -1,8 +1,13 @@
+"""Forms related to import operations."""
+
 from django import forms
 from django.utils.translation import ugettext_lazy
 
 
 class ImportDataForm(forms.Form):
+
+    """Base form to import objects."""
+
     sourcefile = forms.FileField(label=ugettext_lazy("Select a file"))
     sepchar = forms.CharField(
         label=ugettext_lazy("Separator"),
@@ -26,7 +31,13 @@ class ImportDataForm(forms.Form):
 
 
 class ImportIdentitiesForm(ImportDataForm):
+
+    """A form to import identities."""
+
     crypt_password = forms.BooleanField(
         label=ugettext_lazy("Crypt passwords"), required=False,
-        help_text=ugettext_lazy("Check this option if passwords contained in your file are not crypted")
+        help_text=ugettext_lazy(
+            "Check this option if passwords contained in your file "
+            "are not crypted"
+        )
     )

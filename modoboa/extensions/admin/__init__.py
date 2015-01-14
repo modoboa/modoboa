@@ -1,13 +1,15 @@
 # coding: utf-8
-from django.utils.translation import ugettext as _, ugettext_lazy
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from modoboa.core.extensions import ModoExtension, exts_pool
-from modoboa.lib import parameters, events
-from modoboa.lib.exceptions import PermDeniedException, BadRequest, Conflict
-from modoboa.lib.email_utils import split_mailbox
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias
 )
+from modoboa.lib import parameters, events
+from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib.exceptions import PermDeniedException, BadRequest, Conflict
+
 
 admin_events = [
     "DomainCreated",
@@ -54,7 +56,8 @@ class AdminConsole(ModoExtension):
 
     def load(self):
         from modoboa.extensions.admin.app_settings import AdminParametersForm
-        parameters.register(AdminParametersForm, ugettext_lazy("Administration"))
+        parameters.register(
+            AdminParametersForm, ugettext_lazy("Administration"))
         events.declare(admin_events)
 
     def destroy(self):
@@ -80,15 +83,15 @@ def admin_menu(target, user):
     entries = []
     if user.has_perm("admin.view_domains"):
         entries += [
-            {"name" : "domains",
-             "url" : reverse("admin:domain_list"),
-             "label" : _("Domains")}
+            {"name": "domains",
+             "url": reverse("admin:domain_list"),
+             "label": _("Domains")}
         ]
     if user.has_perm("core.add_user") or user.has_perm("admin.add_alias"):
         entries += [
-            {"name" : "identities",
-             "url" : reverse("admin:identity_list"),
-             "label" : _("Identities")},
+            {"name": "identities",
+             "url": reverse("admin:identity_list"),
+             "label": _("Identities")},
         ]
     return entries
 
@@ -166,7 +169,8 @@ def import_account_mailbox(user, account, row):
             domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise BadRequest(
-                _("Account import failed (%s): domain does not exist" % account.username)
+                _("Account import failed (%s): domain does not exist"
+                  % account.username)
             )
         if not user.can_access(domain):
             raise PermDeniedException
@@ -175,7 +179,7 @@ def import_account_mailbox(user, account, row):
         except Mailbox.DoesNotExist:
             pass
         else:
-            raise  Conflict(_("Mailbox %s already exists" % account.email))
+            raise Conflict(_("Mailbox %s already exists" % account.email))
         if len(row) == 1:
             quota = None
         else:
@@ -183,7 +187,8 @@ def import_account_mailbox(user, account, row):
                 quota = int(row[1].strip())
             except ValueError:
                 raise BadRequest(
-                    _("Account import failed (%s): wrong quota value" % account.username)
+                    _("Account import failed (%s): wrong quota value"
+                      % account.username)
                 )
         use_domain_quota = True if not quota else False
         mb = Mailbox(address=mailbox, domain=domain,
