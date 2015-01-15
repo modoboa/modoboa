@@ -19,10 +19,9 @@ class ResourcePoolForm(forms.Form):
             del kwargs["instance"]
         super(ResourcePoolForm, self).__init__(*args, **kwargs)
         for tpl in LimitTemplates().templates:
-            if len(tpl) <= 3:
-                continue
-            if self.account is not None and self.account.group != tpl[3]:
-                continue
+            if len(tpl) > 3:
+                if self.account is not None and self.account.group != tpl[3]:
+                    continue
             self.fields[tpl[0]] = forms.IntegerField(
                 label=tpl[1], help_text=tpl[2]
             )
