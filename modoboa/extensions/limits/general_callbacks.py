@@ -1,7 +1,10 @@
+"""General event callbacks."""
+
 from django.utils.translation import ugettext as _
-from modoboa.lib import events
-from modoboa.extensions.limits.models import LimitTemplates
+
 from modoboa.extensions.limits.forms import ResourcePoolForm
+from modoboa.extensions.limits.models import LimitTemplates
+from modoboa.lib import events
 
 
 @events.observe("GetExtraRoles")
@@ -37,10 +40,10 @@ def display_pool_usage(user, target, currentpage):
 
 @events.observe("ExtraAccountForm")
 def extra_account_form(user, account=None):
-    if not user.group in ["SuperAdmins", "Resellers"]:
+    if user.group not in ["SuperAdmins", "Resellers"]:
         return []
     if account is not None and \
-            not account.group in ["Resellers", "DomainAdmins"]:
+            account.group not in ["Resellers", "DomainAdmins"]:
         return []
 
     return [

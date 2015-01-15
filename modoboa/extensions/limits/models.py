@@ -1,10 +1,13 @@
 # coding: utf-8
+
+"""Models for the limits extensions."""
+
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib import parameters
+
+from modoboa.lib import parameters, events
 from modoboa.lib.singleton import Singleton
-from django.conf import settings
-from modoboa.lib import events
 
 
 class LimitTemplates(Singleton):
@@ -12,23 +15,27 @@ class LimitTemplates(Singleton):
     def __init__(self):
         self.__templates = [
             ("domain_admins_limit", ugettext_lazy("Domain admins"),
-             ugettext_lazy("Maximum number of domain administrators this user can create"),
+             ugettext_lazy("Maximum number of domain administrators this user "
+                           "can create"),
              'Resellers'),
             ("domains_limit", ugettext_lazy("Domains"),
              ugettext_lazy("Maximum number of domains this user can create"),
              'Resellers'),
             ("domain_aliases_limit", ugettext_lazy("Domain aliases"),
-             ugettext_lazy("Maximum number of domain aliases this user can create"),
+             ugettext_lazy(
+                 "Maximum number of domain aliases this user can create"),
              'Resellers'),
             ("mailboxes_limit", ugettext_lazy("Mailboxes"),
              ugettext_lazy("Maximum number of mailboxes this user can create")),
             ("mailbox_aliases_limit", ugettext_lazy("Mailbox aliases"),
-             ugettext_lazy("Maximum number of mailbox aliases this user can create"))
+             ugettext_lazy("Maximum number of mailbox aliases this user "
+                           "can create"))
         ]
-    
+
     @property
     def templates(self):
-        return self.__templates + events.raiseQueryEvent('GetExtraLimitTemplates')
+        return self.__templates + \
+            events.raiseQueryEvent('GetExtraLimitTemplates')
 
 
 class LimitsPool(models.Model):
@@ -47,8 +54,10 @@ class LimitsPool(models.Model):
             try:
                 Limit.objects.get(name=ltpl[0], pool=self)
             except Limit.DoesNotExist:
-                maxvalue = int(parameters.get_admin("DEFLT_%s" % ltpl[0].upper())) \
+                maxvalue = (
+                    int(parameters.get_admin("DEFLT_%s" % ltpl[0].upper()))
                     if creator.is_superuser else 0
+                )
                 Limit.objects.create(
                     name=ltpl[0], pool=self, maxvalue=maxvalue
                 )

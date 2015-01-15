@@ -1,9 +1,13 @@
 # coding: utf-8
+
+"""Custom forms."""
+
 from django import forms
-from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib import parameters
-from .models import LimitTemplates
+from django.utils.translation import ugettext as _
+
 from .lib import BadLimitValue, UnsufficientResource
+from .models import LimitTemplates
+from modoboa.lib import parameters
 
 
 class ResourcePoolForm(forms.Form):
@@ -15,7 +19,9 @@ class ResourcePoolForm(forms.Form):
             del kwargs["instance"]
         super(ResourcePoolForm, self).__init__(*args, **kwargs)
         for tpl in LimitTemplates().templates:
-            if len(tpl) > 3 and self.account is not None and self.account.group != tpl[3]:
+            if len(tpl) <= 3:
+                continue
+            if self.account is not None and self.account.group != tpl[3]:
                 continue
             self.fields[tpl[0]] = forms.IntegerField(
                 label=tpl[1], help_text=tpl[2]
@@ -31,7 +37,7 @@ class ResourcePoolForm(forms.Form):
     def clean(self):
         cleaned_data = super(ResourcePoolForm, self).clean()
         for lname in self.fields.keys():
-            if not lname in self._errors and cleaned_data[lname] < -1:
+            if lname not in self._errors and cleaned_data[lname] < -1:
                 self._errors[lname] = self.error_class([_('Invalid limit')])
                 del cleaned_data[lname]
         return cleaned_data
@@ -42,7 +48,9 @@ class ResourcePoolForm(forms.Form):
             # The following lines will become useless in a near
             # future.
             if self.fields[lname].initial == -2:
-                self.fields[lname].initial = parameters.get_admin("DEFLT_%s" % lname.upper())
+                self.fields[lname].initial = parameters.get_admin(
+                    "DEFLT_%s" %
+                    lname.upper())
 
     def allocate_from_pool(self, limit, pool):
         """Allocate resource using an existing pool.
@@ -76,7 +84,7 @@ class ResourcePoolForm(forms.Form):
 
         owner = get_object_owner(self.account)
         for ltpl in LimitTemplates().templates:
-            if not ltpl[0] in self.cleaned_data:
+            if ltpl[0] not in self.cleaned_data:
                 continue
             l = self.account.limitspool.limit_set.get(name=ltpl[0])
             if not owner.is_superuser:
