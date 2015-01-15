@@ -3,9 +3,11 @@ Radicale management frontend.
 
 """
 import sys
+
 from django.contrib.auth.models import Permission, Group
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy
+
 from modoboa.lib import events, parameters
 from modoboa.lib.permissions import add_permissions_to_group
 from modoboa.core.extensions import ModoExtension, exts_pool
@@ -28,14 +30,16 @@ def init_limits_dependant_features():
 
 
 class Radicale(ModoExtension):
-    """
-    """
+
+    """Radicale extension declaration."""
+
     name = "radicale"
     label = ugettext_lazy("Radicale management")
     version = "1.0"
     url = "calendars"
     description = ugettext_lazy(
-        "Management frontend for Radicale, a simple calendar and contact server."
+        "Management frontend for Radicale, a simple calendar and contact "
+        "server."
     )
 
     def init(self):

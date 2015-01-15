@@ -2,14 +2,16 @@
 Custom template tags.
 """
 from django import template
-from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
-from modoboa.lib.web_utils import render_actions
+
 from modoboa.lib.templatetags.lib_tags import render_link
+from modoboa.lib.web_utils import render_actions
 
 
 register = template.Library()
+
 
 @register.simple_tag
 def radicale_left_menu(user):
@@ -96,7 +98,7 @@ def render_rule_fields(form):
     result = ""
     while True:
         fname = "username_%d" % cpt
-        if not fname in form.fields:
+        if fname not in form.fields:
             break
         rfieldname = "read_access_%d" % cpt
         wfieldname = "write_access_%d" % cpt

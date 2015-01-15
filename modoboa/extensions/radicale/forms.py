@@ -1,13 +1,15 @@
 """
 Radicale extension forms.
 """
+
 from django import forms
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.web_utils import render_to_json_response
-from modoboa.lib.form_utils import WizardForm, TabForms, DynamicForm
+
 from modoboa.extensions.admin.models import Domain, Mailbox
 from modoboa.extensions.radicale.models import UserCalendar, SharedCalendar
+from modoboa.lib.form_utils import WizardForm, TabForms, DynamicForm
+from modoboa.lib.web_utils import render_to_json_response
 
 
 class UserCalendarForm(forms.ModelForm):
@@ -122,7 +124,7 @@ class RightsForm(forms.Form, DynamicForm):
             pos = int(res.group(1)) if res else None
             usernames[value] = pos
         for rule in self.calendar.rules.select_related().all():
-            if not rule.mailbox.full_address in usernames:
+            if rule.mailbox.full_address not in usernames:
                 rule.delete()
         for username, pos in usernames.iteritems():
             local_part, domname = split_mailbox(username)
