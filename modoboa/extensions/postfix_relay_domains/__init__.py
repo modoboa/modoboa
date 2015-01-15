@@ -1,13 +1,16 @@
 # coding: utf-8
 import sys
+
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy
-from modoboa.lib import events, parameters
-from modoboa.core.extensions import ModoExtension, exts_pool
-from .models import RelayDomain, RelayDomainAlias, Service
 
-extension_events = [
+from .models import RelayDomain, RelayDomainAlias, Service
+from modoboa.core.extensions import ModoExtension, exts_pool
+from modoboa.lib import events, parameters
+
+
+EXTENSION_EVENTS = [
     "RelayDomainCreated",
     "RelayDomainDeleted",
     "RelayDomainModified",
@@ -66,6 +69,9 @@ def init_amavis_dependant_features():
 
 
 class PostfixRelayDomains(ModoExtension):
+
+    """Extension declaration."""
+
     name = "postfix_relay_domains"
     label = "Postfix relay domains"
     version = "1.0"
@@ -88,17 +94,18 @@ class PostfixRelayDomains(ModoExtension):
         parameters.register(
             AdminParametersForm, ugettext_lazy("Relay domains")
         )
-        events.declare(extension_events)
+        events.declare(EXTENSION_EVENTS)
         from modoboa.extensions.postfix_relay_domains import general_callbacks
-        if 'modoboa.extensions.postfix_relay_domains.general_callbacks' in sys.modules:
+        prefix = "modoboa.extensions.postfix_relay_domains."
+        if prefix + "general_callbacks" in sys.modules:
             reload(general_callbacks)
         if exts_pool.is_extension_enabled('limits'):
             import limits_callbacks
-            if 'modoboa.extensions.postfix_relay_domains.limits_callbacks' in sys.modules:
+            if prefix + "limits_callbacks" in sys.modules:
                 reload(limits_callbacks)
         if exts_pool.is_extension_enabled('amavis'):
             import amavis_callbacks
-            if 'modoboa.extensions.postfix_relay_domains.amavis_callbacks' in sys.modules:
+            if prefix + "amavis_callbacks" in sys.modules:
                 reload(amavis_callbacks)
 
     def destroy(self):

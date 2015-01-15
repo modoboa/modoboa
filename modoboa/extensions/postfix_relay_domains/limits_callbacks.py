@@ -1,8 +1,11 @@
+"""Callbacks related to limits extension."""
+
 from django.utils.translation import ugettext_lazy
+
+from .models import RelayDomainAlias
+from modoboa.extensions.limits.lib import inc_limit_usage, dec_limit_usage
 from modoboa.lib import events
 from modoboa.lib.permissions import get_object_owner
-from modoboa.extensions.limits.lib import inc_limit_usage, dec_limit_usage
-from .models import RelayDomainAlias
 
 
 @events.observe('GetExtraParameters')
@@ -16,17 +19,23 @@ def extra_parameters(app, level):
             label=ugettext_lazy("Relay domains"),
             initial=0,
             help_text=ugettext_lazy(
-                "Maximum number of allowed relay domains for a new administrator"
+                "Maximum number of allowed relay domains for a new "
+                "administrator"
             ),
-            widget=forms.widgets.TextInput(attrs={"class": "col-md-1 form-control"})
+            widget=forms.widgets.TextInput(
+                attrs={
+                    "class": "col-md-1 form-control"})
         ),
         'deflt_relay_domain_aliases_limit': forms.IntegerField(
             label=ugettext_lazy("Relay domain aliases"),
             initial=0,
             help_text=ugettext_lazy(
-                "Maximum number of allowed relay domain aliases for a new administrator"
+                "Maximum number of allowed relay domain aliases for a new "
+                "administrator"
             ),
-            widget=forms.widgets.TextInput(attrs={"class": "col-md-1 form-control"})
+            widget=forms.widgets.TextInput(
+                attrs={
+                    "class": "col-md-1 form-control"})
         )
     }
 

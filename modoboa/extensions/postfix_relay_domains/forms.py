@@ -2,14 +2,15 @@
 Postfix relay domains extension forms.
 """
 from django import forms
+from django.core.urlresolvers import reverse
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.core.urlresolvers import reverse
+
+from .models import RelayDomain, RelayDomainAlias
+from modoboa.extensions.admin.models import Domain, DomainAlias
 from modoboa.lib import events
 from modoboa.lib.form_utils import DynamicForm, DomainNameField, TabForms
 from modoboa.lib.web_utils import render_to_json_response
-from modoboa.extensions.admin.models import Domain, DomainAlias
-from .models import RelayDomain, RelayDomainAlias
 
 
 class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
@@ -113,7 +114,7 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
                     continue
                 aliases.append(v)
             for rdalias in rd.relaydomainalias_set.all():
-                if not rdalias.name in aliases:
+                if rdalias.name not in aliases:
                     rdalias.delete()
                 else:
                     aliases.remove(rdalias.name)
@@ -137,11 +138,13 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
 
 
 class RelayDomainForm(TabForms):
+
     """Specific edition form for relay domains.
 
     We use a *tabs* compatible form because extensions can add their
     own tab. (ex: amavis)
     """
+
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
         self.forms = []
