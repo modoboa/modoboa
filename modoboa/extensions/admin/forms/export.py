@@ -32,12 +32,14 @@ class ExportDataForm(forms.Form):
 
 
 class ExportDomainsForm(ExportDataForm):
+
     def __init__(self, *args, **kwargs):
         super(ExportDomainsForm, self).__init__(*args, **kwargs)
         self.fields["filename"].initial = "modoboa-domains.csv"
 
 
 class ExportIdentitiesForm(ExportDataForm):
+
     def __init__(self, *args, **kwargs):
         super(ExportIdentitiesForm, self).__init__(*args, **kwargs)
         self.fields["filename"].initial = "modoboa-identities.csv"

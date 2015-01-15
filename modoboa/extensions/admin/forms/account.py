@@ -447,8 +447,10 @@ class AccountForm(TabForms):
 
 
 class AccountWizard(WizardForm):
+
     """Account creation wizard.
     """
+
     def __init__(self, request):
         super(AccountWizard, self).__init__(request)
         self.add_step(

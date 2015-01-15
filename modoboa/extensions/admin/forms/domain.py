@@ -328,8 +328,10 @@ class DomainForm(TabForms):
 
 
 class DomainWizard(WizardForm):
+
     """Domain creation wizard.
     """
+
     def __init__(self, request):
         super(DomainWizard, self).__init__(request)
         self.add_step(

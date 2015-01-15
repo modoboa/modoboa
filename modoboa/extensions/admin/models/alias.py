@@ -15,6 +15,7 @@ from modoboa.lib.exceptions import (
 
 
 class Alias(AdminObject):
+
     """
     Mailbox alias.
     """

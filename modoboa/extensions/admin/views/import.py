@@ -136,7 +136,7 @@ def importdata(request, formclass=ImportDataForm):
                 return render(request, "admin/import_done.html", {
                     "status": "ok", "msg": msg
                 })
-            except (ModoboaException), e:
+            except (ModoboaException) as e:
                 error = str(e)
 
     return render(request, "admin/import_done.html", {

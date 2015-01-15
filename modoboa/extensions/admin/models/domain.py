@@ -27,6 +27,7 @@ class DomainManager(Manager):
 
 
 class Domain(AdminObject):
+
     """Mail domain.
     """
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
