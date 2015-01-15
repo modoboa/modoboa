@@ -18,7 +18,7 @@ def send_autoreply(sender, mailbox, armessage):
     if armessage.fromdate > timezone.now():
         return
     if armessage.untildate is not None \
-        and armessage.untildate < timezone.now():
+            and armessage.untildate < timezone.now():
         armessage.enabled = False
         armessage.save()
         return
@@ -51,7 +51,8 @@ class Command(BaseCommand, CloseConnectionMixin):
 
     def handle(self, *args, **options):
         if len(args) < 2:
-            raise CommandError("usage: ./manage.py autoreply <sender> <recipient ...>")
+            raise CommandError(
+                "usage: ./manage.py autoreply <sender> <recipient ...>")
 
         sender = args[0]
         for fulladdress in args[1:]:
