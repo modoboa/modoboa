@@ -179,7 +179,7 @@ def viewheaders(request, mail_id):
     content = ""
     for qm in get_connector().get_mail_content(mail_id):
         content += qm.mail_text
-    if type(content) is unicode:
+    if isinstance(content, unicode):
         content = content.encode("utf-8")
     msg = email.message_from_string(content)
     headers = []

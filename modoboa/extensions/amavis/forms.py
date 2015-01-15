@@ -48,7 +48,7 @@ class DomainPolicyForm(forms.ModelForm):
     def save(self, user, commit=True):
         policy = super(DomainPolicyForm, self).save(commit=False)
         for field in ['bypass_spam_checks', 'bypass_virus_checks',
-                  'bypass_banned_checks']:
+                      'bypass_banned_checks']:
             if getattr(policy, field) == '':
                 setattr(policy, field, None)
 

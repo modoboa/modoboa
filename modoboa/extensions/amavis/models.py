@@ -2,10 +2,11 @@
 # You'll have to do the following manually to clean this up:
 #     * Rearrange models' order
 #     * Make sure each model has one field with primary_key=True
-# Feel free to rename the models, but don't rename db_table values or field names.
+# Feel free to rename the models, but don't rename db_table values
+# or field names.
 #
-# Also note: You'll have to insert the output of 'django-admin.py sqlcustom [appname]'
-# into your database.
+# Also note: You'll have to insert the output of
+# 'django-admin.py sqlcustom [appname]'into your database.
 #
 # Original Amavis version : 2.6.2
 
@@ -95,42 +96,81 @@ class Policy(models.Model):
                  ('Y', ugettext_lazy('no')),
                  ('', ugettext_lazy('default'))),
         max_length=3,
-        help_text=ugettext_lazy("Bypass virus checks or not. Choose 'default' to use global settings.")
+        help_text=ugettext_lazy(
+            "Bypass virus checks or not. Choose 'default' to use global "
+            "settings."
         )
+    )
     bypass_spam_checks = models.CharField(
         ugettext_lazy("Spam filter"), default='', null=True,
         choices=(('N', ugettext_lazy('yes')),
                  ('Y', ugettext_lazy('no')),
                  ('', ugettext_lazy('default'))),
         max_length=3,
-        help_text=ugettext_lazy("Bypass spam checks or not. Choose 'default' to use global settings.")
+        help_text=ugettext_lazy(
+            "Bypass spam checks or not. Choose 'default' to use global "
+            "settings."
         )
+    )
     bypass_banned_checks = models.CharField(
         ugettext_lazy("Banned filter"), default='', null=True,
         choices=(('N', ugettext_lazy('yes')),
                  ('Y', ugettext_lazy('no')),
                  ('', ugettext_lazy('default'))),
         max_length=3,
-        help_text=ugettext_lazy("Bypass banned checks or not. Choose 'default' to use global settings.")
+        help_text=ugettext_lazy(
+            "Bypass banned checks or not. Choose 'default' to use global "
+            "settings."
         )
+    )
     bypass_header_checks = models.CharField(max_length=3, blank=True, null=True)
-    virus_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    virus_quarantine_to = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
     spam_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
-    banned_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
-    unchecked_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
-    bad_header_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
-    clean_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
-    archive_quarantine_to = models.CharField(max_length=192, blank=True, null=True)
+    banned_quarantine_to = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
+    unchecked_quarantine_to = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
+    bad_header_quarantine_to = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
+    clean_quarantine_to = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
+    archive_quarantine_to = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
     spam_tag_level = models.FloatField(null=True, blank=True)
     spam_tag2_level = models.FloatField(null=True, blank=True)
     spam_tag3_level = models.FloatField(null=True, blank=True)
     spam_kill_level = models.FloatField(null=True, blank=True)
     spam_dsn_cutoff_level = models.FloatField(null=True, blank=True)
     spam_quarantine_cutoff_level = models.FloatField(null=True, blank=True)
-    addr_extension_virus = models.CharField(max_length=192, blank=True, null=True)
-    addr_extension_spam = models.CharField(max_length=192, blank=True, null=True)
-    addr_extension_banned = models.CharField(max_length=192, blank=True, null=True)
-    addr_extension_bad_header = models.CharField(max_length=192, blank=True, null=True)
+    addr_extension_virus = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
+    addr_extension_spam = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
+    addr_extension_banned = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
+    addr_extension_bad_header = models.CharField(
+        max_length=192,
+        blank=True,
+        null=True)
     warnvirusrecip = models.CharField(max_length=3, blank=True, null=True)
     warnbannedrecip = models.CharField(max_length=3, blank=True, null=True)
     warnbadhrecip = models.CharField(max_length=3, blank=True, null=True)
@@ -143,8 +183,11 @@ class Policy(models.Model):
     spam_subject_tag2 = models.CharField(
         ugettext_lazy("Spam marker"), default=None,
         max_length=192, blank=True, null=True,
-        help_text=ugettext_lazy("Modify spam subject using the specified text. Choose 'default' to use global settings.")
+        help_text=ugettext_lazy(
+            "Modify spam subject using the specified text. Choose 'default' to "
+            "use global settings."
         )
+    )
     spam_subject_tag3 = models.CharField(max_length=192, blank=True, null=True)
     message_size_limit = models.IntegerField(null=True, blank=True)
     banned_rulenames = models.CharField(max_length=192, blank=True, null=True)
