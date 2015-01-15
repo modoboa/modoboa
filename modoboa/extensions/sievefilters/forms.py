@@ -1,10 +1,13 @@
+"""Custom forms."""
+
 from django import forms
-from django.http import QueryDict
-from django.utils.translation import ugettext as _, ugettext_lazy
 from django.forms.widgets import RadioFieldRenderer, RadioSelect, RadioInput
-from django.utils.safestring import mark_safe
-from django.utils.html import conditional_escape
+from django.http import QueryDict
 from django.utils.encoding import force_unicode
+from django.utils.html import conditional_escape
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from modoboa.extensions.admin.templatetags.admin_tags import gender
 
 
@@ -20,6 +23,7 @@ class FiltersSetForm(forms.Form):
 
 
 class CustomRadioInput(RadioInput):
+
     def __unicode__(self):
         return self.render()
 
@@ -39,13 +43,16 @@ class CustomRadioInput(RadioInput):
 
 
 class CustomRadioFieldRenderer(RadioFieldRenderer):
+
     def __iter__(self):
         for i, choice in enumerate(self.choices):
-            yield CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
+            yield CustomRadioInput(
+                self.name, self.value, self.attrs.copy(), choice, i)
 
     def __getitem__(self, idx):
         choice = self.choices[idx]
-        return CustomRadioInput(self.name, self.value, self.attrs.copy(), choice, idx)
+        return CustomRadioInput(
+            self.name, self.value, self.attrs.copy(), choice, idx)
 
     def render(self):
         return mark_safe(u'\n'.join([force_unicode(w) for w in self]))
@@ -56,6 +63,7 @@ class CustomRadioSelect(RadioSelect):
 
 
 class FilterForm(forms.Form):
+
     def __init__(self, conditions, actions, request, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)
 
@@ -80,10 +88,18 @@ class FilterForm(forms.Form):
         ]
 
         self.cond_templates = [
-            {"name": "Subject", "label": _("Subject"), "operators": self.header_operators},
-            {"name": "From", "label": _("Sender"), "operators": self.header_operators},
-            {"name": "To", "label": _("Recipient"), "operators": self.header_operators},
-            {"name": "Cc", "label": _("Cc"), "operators": self.header_operators},
+            {"name": "Subject",
+             "label": _("Subject"),
+             "operators": self.header_operators},
+            {"name": "From",
+             "label": _("Sender"),
+             "operators": self.header_operators},
+            {"name": "To",
+             "label": _("Recipient"),
+             "operators": self.header_operators},
+            {"name": "Cc",
+             "label": _("Cc"),
+             "operators": self.header_operators},
             {"name": "size", "label": _("Size"),
              "operators": [("over", _("is greater than"), "number"),
                            ("under", _("is less than"), "number")]},
@@ -160,10 +176,14 @@ class FilterForm(forms.Form):
             arg = args[cnt]
             aname = "action_arg_%d_%d" % (self.actions_cnt, cnt)
             if arg["type"] == "string":
-                self.fields[aname] = forms.CharField(max_length=255, initial=value)
+                self.fields[aname] = forms.CharField(
+                    max_length=255,
+                    initial=value)
             elif arg["type"] == "list":
                 choices = getattr(self, arg["vloader"])(request)
-                self.fields[aname] = forms.ChoiceField(initial=value, choices=choices)
+                self.fields[aname] = forms.ChoiceField(
+                    initial=value,
+                    choices=choices)
         self.actions_cnt += 1
 
     def _build_redirect_field(self, request, value):
@@ -177,7 +197,10 @@ class FilterForm(forms.Form):
         for fd in folders:
             value = fd["path"] if "path" in fd else fd["name"]
             if parentmb:
-                ret += [(value, fd["name"].replace("%s%s" % (parentmb, imapc.hdelimiter), ""))]
+                ret += [
+                    (value, fd["name"].replace(
+                        "%s%s" % (parentmb, imapc.hdelimiter), ""))
+                ]
             else:
                 ret += [(value, fd["name"])]
             if "sub" in fd:
@@ -206,7 +229,10 @@ class FilterForm(forms.Form):
             argcpt = 0
             while True:
                 try:
-                    naction += (self.cleaned_data["action_arg_%d_%d" % (cpt, argcpt)],)
+                    naction += (
+                        self.cleaned_data[
+                            "action_arg_%d_%d" %
+                            (cpt, argcpt)],)
                 except KeyError:
                     break
                 argcpt += 1
@@ -228,8 +254,12 @@ def build_filter_form_from_qdict(request):
             if cpt == int(request.POST["conds"]):
                 break
             if "cond_target_%d" % i in request.POST:
-                qdict["cond_target_%d" % cpt] = request.POST["cond_target_%d" % i]
-                qdict["cond_operator_%d" % cpt] = request.POST["cond_operator_%d" % i]
+                qdict["cond_target_%d" % cpt] = (
+                    request.POST["cond_target_%d" % i]
+                )
+                qdict["cond_operator_%d" % cpt] = (
+                    request.POST["cond_operator_%d" % i]
+                )
                 qdict["cond_value_%d" % cpt] = request.POST["cond_value_%d" % i]
                 condtarget = request.POST["cond_target_%d" % i]
                 condop = request.POST["cond_operator_%d" % i]

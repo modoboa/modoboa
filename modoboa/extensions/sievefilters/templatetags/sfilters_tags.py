@@ -34,7 +34,7 @@ def fset_menu(mode, setname):
              "img": "fa fa-plus",
              "label": _("New filter"),
              "url": reverse("sievefilters:filter_add",
-                             args=[setname]),
+                            args=[setname]),
              "modal": True,
              "autowidth": True,
              "modalcb": "filterform_cb"}
@@ -45,7 +45,7 @@ def fset_menu(mode, setname):
              "img": "fa fa-download-alt",
              "label": _("Save filters set"),
              "url": reverse("sievefilters:fs_save",
-                             args=[setname])},
+                            args=[setname])},
         ]
 
     entries += [
@@ -53,7 +53,7 @@ def fset_menu(mode, setname):
          "img": "fa fa-check",
          "label": _("Activate filters set"),
          "url": reverse("sievefilters:fs_activate",
-                         args=[setname])},
+                        args=[setname])},
         {"name": "removefs",
          "img": "fa fa-trash",
          "label": _("Remove filters set"),
