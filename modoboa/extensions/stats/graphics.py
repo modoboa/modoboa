@@ -7,10 +7,12 @@ from modoboa.lib.sysutils import exec_cmd
 
 
 class Curve(object):
+
     """Graphic curve.
 
     Simple way to represent a graphic curve.
     """
+
     def __init__(self, dsname, color, legend, cfunc="AVERAGE"):
         """Constructor.
         """
@@ -37,9 +39,11 @@ class Curve(object):
 
 
 class Graphic(object):
+
     """Graphic.
 
     """
+
     def __init__(self):
         """Constructor.
         """
@@ -76,7 +80,7 @@ class Graphic(object):
             cmdargs += curve.to_rrd_command_args(rrdfile)
         cmd = "rrdtool xport --start %s --end %s " % (str(start), str(end))
         cmd += " ".join(cmdargs)
-        if type(cmd) is unicode:
+        if isinstance(cmd, unicode):
             cmd = cmd.encode("utf-8")
         code, output = exec_cmd(cmd)
         if code:
@@ -95,6 +99,7 @@ class Graphic(object):
 
 
 class AverageTraffic(Graphic):
+
     """Average traffic.
     """
     title = ugettext_lazy('Average traffic (msgs/min)')
@@ -109,6 +114,7 @@ class AverageTraffic(Graphic):
 
 
 class AverageTrafficSize(Graphic):
+
     """Average traffic size.
     """
     title = ugettext_lazy('Average normal traffic size (bytes/min)')

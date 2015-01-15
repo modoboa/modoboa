@@ -21,9 +21,10 @@ import time
 import sys
 import os
 import re
-import rrdtool
 import string
 from optparse import make_option
+
+import rrdtool
 
 from django.core.management.base import BaseCommand
 
@@ -71,9 +72,11 @@ class LogParser(object):
         self.workdict = {}
         self.lupdates = {}
         self._s_date_expr = \
-            re.compile(r"(?P<month>\w+)\s+(?P<day>\d+)\s+(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)(?P<eol>.*)")
+            re.compile(
+                r"(?P<month>\w+)\s+(?P<day>\d+)\s+(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)(?P<eol>.*)")
         self._hp_date_expr = \
-            re.compile(r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)T(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)\.\d+\+\d+:\d+(?P<eol>.*)")
+            re.compile(
+                r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)T(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)\.\d+\+\d+:\d+(?P<eol>.*)")
         self.date_expr = None
         self.line_expr = \
             re.compile(r"\s+([-\w]+)\s+(\w+)/?\w*[[](\d+)[]]:\s+(.*)")
@@ -200,7 +203,7 @@ class LogParser(object):
             self.lupdates[fname] = self.init_rrd(fname, m)
             self._dprint("[rrd] create new RRD file %s" % fname)
         else:
-            if not fname in self.lupdates:
+            if fname not in self.lupdates:
                 self.lupdates[fname] = rrdtool.last(str(fname))
 
         if m <= self.lupdates[fname]:
@@ -250,11 +253,11 @@ class LogParser(object):
 
     def inc_counter(self, dom, counter, val=1):
         if dom is not None and dom in self.domains:
-            if not self.cur_t in self.data[dom]:
+            if self.cur_t not in self.data[dom]:
                 self.initcounters(dom)
             self.data[dom][self.cur_t][counter] += val
 
-        if not self.cur_t in self.data["global"]:
+        if self.cur_t not in self.data["global"]:
             self.initcounters("global")
         self.data["global"][self.cur_t][counter] += val
 
@@ -299,7 +302,9 @@ class LogParser(object):
             return
         (line_id, line_log) = m.groups()
         if line_id == "NOQUEUE":
-            addrto = re.match("reject: .*from=<.*> to=<[^@]+@([^>]+)>", line_log)
+            addrto = re.match(
+                "reject: .*from=<.*> to=<[^@]+@([^>]+)>",
+                line_log)
             if addrto and addrto.group(1) in self.domains:
                 self.inc_counter(addrto.group(1), 'reject')
             return
@@ -316,9 +321,9 @@ class LogParser(object):
 
         m = re.search("to=<([^>]*)>.*status=(\S+)", line_log)
         if m is not None:
-            if not line_id in self.workdict:
-                self._dprint("Inconsistent mail (%s: %s), skipping" \
-                                 % (line_id, m.group(1)))
+            if line_id not in self.workdict:
+                self._dprint("Inconsistent mail (%s: %s), skipping"
+                             % (line_id, m.group(1)))
                 return
             if not m.group(2) in variables:
                 self._dprint("Unsupported status %s, skipping" % m.group(2))
