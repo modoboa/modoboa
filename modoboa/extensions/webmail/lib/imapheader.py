@@ -13,7 +13,7 @@ __all__ = [
 def to_unicode(value):
     """Try to convert a string to unicode.
     """
-    if value is None or type(value) is unicode:
+    if value is None or isinstance(value, unicode):
         return value
     try:
         value = value.decode('utf-8')
@@ -111,4 +111,3 @@ def parse_subject(value, **kwargs):
     except UnicodeDecodeError:
         subject = value
     return to_unicode(subject)
-

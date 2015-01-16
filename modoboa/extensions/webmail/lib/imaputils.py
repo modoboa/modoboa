@@ -3,24 +3,27 @@
 :mod:`imaputils` --- Extra IMAPv4 utilities
 -------------------------------------------
 """
-import imaplib
-import ssl
 import email
+import imaplib
 import re
+import ssl
 import time
 from functools import wraps
+
 from django.utils.translation import ugettext as _
-from modoboa.lib import parameters, imap_utf7
-from modoboa.lib.exceptions import InternalError
-from modoboa.lib.connections import ConnectionsManager
-from modoboa.lib.web_utils import static_url
+
 from ..exceptions import ImapError, WebmailInternalError
 from .fetch_parser import parse_fetch_response
+from modoboa.lib import parameters
+from modoboa.lib.connections import ConnectionsManager
+from modoboa.lib.exceptions import InternalError
 
-#imaplib.Debug = 4
+
+# imaplib.Debug = 4
 
 
 class capability(object):
+
     """
     Simple decorator to check if the server presents the required
     capability. If not, a fallback method is called instead.
@@ -28,6 +31,7 @@ class capability(object):
     :param name: the capability name (upper case)
     :param fallback_method: a method's name
     """
+
     def __init__(self, name, fallback_method):
         self.name = name
         self.fallback_method = fallback_method
@@ -43,12 +47,14 @@ class capability(object):
 
 
 class BodyStructure(object):
+
     """
     BODYSTRUCTURE response parser.
 
     Just a simple class that tries to distinguish content parts from
     attachments.
     """
+
     def __init__(self, definition=None):
         self.is_multipart = False
         self.contents = {}
@@ -71,7 +77,8 @@ class BodyStructure(object):
 
         * If the MIME type is text/plain or text/html:
 
-         * If no previous part of this type has already been seen, it's a content
+         * If no previous part of this type has already been seen,
+           it's a content
          * Otherwise it's an attachment
 
         * Else, if the multipart subtype is related, we consider this
@@ -82,6 +89,7 @@ class BodyStructure(object):
         :param definition: a part definition (list)
         :param pnum: the part's number
         :param multisubtype: the multipart subtype
+
         """
         pnum = "1" if pnum is None else pnum
         params = dict(pnum=pnum, params=definition[2], cid=definition[3],
@@ -91,7 +99,7 @@ class BodyStructure(object):
         subtype = definition[1].lower()
         ftype = "%s/%s" % (definition[0].lower(), subtype)
         if ftype in ("text/plain", "text/html"):
-            if not subtype in self.contents:
+            if subtype not in self.contents:
                 self.contents[subtype] = [params]
             else:
                 self.contents[subtype].append(params)
@@ -106,24 +114,27 @@ class BodyStructure(object):
             if mtype == "text":
                 extensions = ["textlines"] + extensions
             elif ftype == "message/rfc822":
-                extensions = ["envelopestruct", "bodystruct", "textlines"] + extensions
+                extensions = [
+                    "envelopestruct",
+                    "bodystruct",
+                    "textlines"] + extensions
             for idx, value in enumerate(definition[7:]):
                 params[extensions[idx]] = value
 
         self.attachments += [params]
 
     def load_from_definition(self, definition, multisubtype=None):
-        if type(definition) == dict:
+        if isinstance(definition, dict):
             struct = definition["struct"]
             pnum = definition["partnum"]
-        elif type(definition[0]) == dict:
+        elif isinstance(definition[0], dict):
             struct = definition[0]["struct"]
             pnum = definition[0]["partnum"]
         else:
             struct = definition
             pnum = None
 
-        if type(struct[0]) == list:
+        if isinstance(struct[0], list):
             for part in struct[0]:
                 self.load_from_definition(part, struct[1])
             return
@@ -146,8 +157,11 @@ class IMAPconnector(object):
 
     __metaclass__ = ConnectionsManager
 
-    list_base_pattern = r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "?(?P<name>[^"]*)"?'
-    list_response_pattern_literal = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" \{(?P<namelen>\d+)\}')
+    list_base_pattern = (
+        r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "?(?P<name>[^"]*)"?'
+    )
+    list_response_pattern_literal = re.compile(
+        r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" \{(?P<namelen>\d+)\}')
     list_response_pattern = re.compile(list_base_pattern)
     listextended_response_pattern = \
         re.compile(list_base_pattern + r'\s*(?P<childinfo>.*)')
@@ -178,7 +192,7 @@ class IMAPconnector(object):
         if name in ['FETCH', 'SORT', 'STORE', 'COPY', 'SEARCH']:
             try:
                 typ, data = self.m.uid(name, *args)
-            except imaplib.IMAP4.error, e:
+            except imaplib.IMAP4.error as e:
                 raise ImapError(e)
             if typ == "NO":
                 raise ImapError(data)
@@ -188,17 +202,17 @@ class IMAPconnector(object):
 
         try:
             typ, data = self.m._simple_command(name, *args)
-        except imaplib.IMAP4.error, e:
+        except imaplib.IMAP4.error as e:
             raise ImapError(e)
         if typ == "NO":
             raise ImapError(data)
-        if not 'responses' in kwargs:
-            if not name in self.m.untagged_responses:
+        if 'responses' not in kwargs:
+            if name not in self.m.untagged_responses:
                 return None
             return self.m.untagged_responses.pop(name)
         res = []
         for r in kwargs['responses']:
-            if not r in self.m.untagged_responses:
+            if r not in self.m.untagged_responses:
                 return None
             res.append(self.m.untagged_responses.pop(r))
         return res
@@ -218,14 +232,20 @@ class IMAPconnector(object):
         if type(bodystruct[0]) in [list, tuple]:
             cpt = 1
             for part in bodystruct[0]:
-                nprefix = "%s" % cpt if prefix == "" else "%s.%d" % (prefix, cpt)
+                nprefix = "%s" % cpt if prefix == "" else "%s.%d" % (
+                    prefix, cpt)
                 index, encoding, size = \
-                    self.__find_content_in_bodystruct(part, mtype, stype, nprefix)
+                    self.__find_content_in_bodystruct(
+                        part,
+                        mtype,
+                        stype,
+                        nprefix)
                 if index is not None:
                     return (index, encoding, size)
                 cpt += 1
         else:
-            if bodystruct[0].lower() == mtype and bodystruct[1].lower() == stype:
+            if bodystruct[0].lower() == mtype and \
+               bodystruct[1].lower() == stype:
                 return ("1" if not len(prefix) else prefix,
                         bodystruct[5], int(bodystruct[6]))
         return (None, None, 0)
@@ -275,9 +295,9 @@ class IMAPconnector(object):
         """
         import socket
 
-        if type(user) is unicode:
+        if isinstance(user, unicode):
             user = user.encode("utf-8")
-        if type(passwd) is unicode:
+        if isinstance(passwd, unicode):
             passwd = passwd.encode("utf-8")
         try:
             secured = parameters.get_admin("IMAP_SECURED")
@@ -285,7 +305,7 @@ class IMAPconnector(object):
                 self.m = imaplib.IMAP4_SSL(self.address, self.port)
             else:
                 self.m = imaplib.IMAP4(self.address, self.port)
-        except (socket.error, imaplib.IMAP4.error, ssl.SSLError), error:
+        except (socket.error, imaplib.IMAP4.error, ssl.SSLError) as error:
             raise ImapError(_("Connection to IMAP server failed: %s" % error))
 
         data = self._cmd("LOGIN", user, passwd)
@@ -320,9 +340,9 @@ class IMAPconnector(object):
         if criterion == u"both":
             criterion = u"from_addr, subject"
         criterions = ""
-        if type(pattern) is unicode:
+        if isinstance(pattern, unicode):
             pattern = pattern.encode("utf-8")
-        if type(criterion) is unicode:
+        if isinstance(criterion, unicode):
             criterion = criterion.encode("utf-8")
         for c in criterion.split(','):
             if c == "from_addr":
@@ -418,12 +438,14 @@ class IMAPconnector(object):
         return True
 
     def _listmboxes_simple(self, topmailbox='INBOX', mailboxes=None, **kwargs):
-        #data = self._cmd("LIST", "", "*")
-        if not mailboxes: mailboxes = []
+        # data = self._cmd("LIST", "", "*")
+        if not mailboxes:
+            mailboxes = []
         (status, data) = self.m.list()
         newmboxes = []
         for mb in data:
-            flags, delimiter, name = self.list_response_pattern.match(mb).groups()
+            flags, delimiter, name = self.list_response_pattern.match(
+                mb).groups()
             name = name.strip('"').decode("imap4-utf-7")
             mdm_found = False
             for idx, mdm in enumerate(mailboxes):
@@ -437,7 +459,7 @@ class IMAPconnector(object):
 
             if re.search("\%s" % delimiter, name):
                 parts = name.split(delimiter)
-                if not "path" in descr:
+                if "path" not in descr:
                     descr["path"] = parts[0]
                     descr["sub"] = []
                 if self._parse_mailbox_name(descr["sub"], parts[0], delimiter,
@@ -480,7 +502,7 @@ class IMAPconnector(object):
                 descr = dict(name=name)
                 newmboxes += [descr]
 
-            if r'\Marked' in flags or not r'\UnMarked' in flags:
+            if r'\Marked' in flags or r'\UnMarked' not in flags:
                 descr["send_status"] = True
             if r'\HasChildren' in flags:
                 if r'\NonExistent' in flags:
@@ -529,7 +551,7 @@ class IMAPconnector(object):
 
         if unseen_messages:
             for mb in md_mailboxes:
-                if not "send_status" in mb:
+                if "send_status" not in mb:
                     continue
                 del mb["send_status"]
                 key = "path" if "path" in mb else "name"
@@ -631,7 +653,7 @@ class IMAPconnector(object):
 
         We also compute the current usage.
         """
-        if not "QUOTA" in self.capabilities:
+        if "QUOTA" not in self.capabilities:
             self.quota_limit = self.quota_current = None
             return
 
@@ -700,7 +722,7 @@ class IMAPconnector(object):
                 data[int(uid)]['BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)]']
             )
             msg['imapid'] = uid
-            if not r'\Seen' in data[int(uid)]['FLAGS']:
+            if r'\Seen' not in data[int(uid)]['FLAGS']:
                 msg['style'] = 'unseen'
             if r'\Answered' in data[int(uid)]['FLAGS']:
                 msg['answered'] = True

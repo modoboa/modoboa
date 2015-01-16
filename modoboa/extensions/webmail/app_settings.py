@@ -13,7 +13,8 @@ class ParametersForm(AdminParametersForm):
     max_attachment_size = forms.CharField(
         label=_("Maximum attachment size"),
         initial="2048",
-        help_text=_("Maximum attachment size in bytes (or KB, MB, GB if specified)")
+        help_text=_(
+            "Maximum attachment size in bytes (or KB, MB, GB if specified)")
     )
 
     sep1 = SeparatorField(label=_("IMAP settings"))

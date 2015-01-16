@@ -3,10 +3,12 @@ from modoboa.lib import parameters
 
 
 class EmailSignature(object):
+
     """User signature
 
     :param user: User object
     """
+
     def __init__(self, user):
         self._sig = u""
         dformat = parameters.get_user(user, "EDITOR")

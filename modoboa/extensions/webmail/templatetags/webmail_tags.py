@@ -36,14 +36,14 @@ def viewmail_menu(selection, folder, user, mail_id=None):
               "url": "action=forward&mbox=%s&mailid=%s" % (folder, mail_id),
               "img": "fa fa-mail-forward",
               "label": _("Forward")},
-        ]},
+         ]},
         {"name": "delete",
          "img": "fa fa-trash",
          "class": "btn-danger",
          "url": "{0}?mbox={1}&selection[]={2}".format(
              reverse("webmail:mail_delete"), folder, mail_id),
          "title": _("Delete")
-        },
+         },
         {"name": "display_options",
          "title": _("Display options"),
          "img": "fa fa-cog",
@@ -150,7 +150,8 @@ def print_mailboxes(
             extra_attrs = ' data-toggle="%d"' % mbox["unseen"]
 
         if "sub" in mbox:
-            if selected is not None and selected != name and selected.count(name):
+            if selected is not None and selected != name and selected.count(
+                    name):
                 ul_state = "visible"
                 div_state = "expanded"
             else:
@@ -171,7 +172,7 @@ def print_mailboxes(
             result += "<ul name='%s' class='nav nav-pills nav-stacked %s'>" % (
                 mbox["path"], ul_state) + print_mailboxes(
                     mbox["sub"], selected, withunseen, selectonly, hdelimiter
-                ) + "</ul>\n"
+            ) + "</ul>\n"
         result += "</li>\n"
     return result
 

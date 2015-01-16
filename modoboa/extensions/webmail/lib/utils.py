@@ -24,9 +24,11 @@ def decode_payload(encoding, payload):
 
 
 class WebmailNavigationParameters(NavigationParameters):
+
     """
     Specific NavigationParameters subclass for the webmail.
     """
+
     def __init__(self, request, defmailbox=None):
         super(WebmailNavigationParameters, self).__init__(
             request, 'webmail_navparams'

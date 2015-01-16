@@ -71,7 +71,7 @@ def getattachment(request):
 @needs_mailbox()
 def move(request):
     for arg in ["msgset", "to"]:
-        if not arg in request.GET:
+        if arg not in request.GET:
             raise BadRequest(_("Invalid request"))
     mbc = get_imapconnector(request)
     navparams = WebmailNavigationParameters(request)
@@ -291,8 +291,8 @@ def attachments(request, tplname="webmail/attachments.html"):
 @login_required
 @needs_mailbox()
 def delattachment(request):
-    if not "compose_mail" in request.session \
-            or not "name" in request.GET \
+    if "compose_mail" not in request.session \
+            or "name" not in request.GET \
             or not request.GET["name"]:
         return ajax_response(request, "ko", respmsg=_("Bad query"))
 
@@ -305,7 +305,7 @@ def delattachment(request):
             )
             try:
                 os.remove(fullpath)
-            except OSError, e:
+            except OSError as e:
                 error = _("Failed to remove attachment: ") + str(e)
                 break
             request.session.modified = True
@@ -390,11 +390,11 @@ def render_compose(request, form, posturl, email=None, insert_signature=False):
         signature = EmailSignature(request.user)
         body += unicode(signature)
     randid = None
-    if not "id" in request.GET:
+    if "id" not in request.GET:
         if "compose_mail" in request.session:
             clean_attachments(request.session["compose_mail"]["attachments"])
         randid = set_compose_session(request)
-    elif not "compose_mail" in request.session \
+    elif "compose_mail" not in request.session \
             or request.session["compose_mail"]["id"] != request.GET["id"]:
         randid = set_compose_session(request)
 
@@ -567,7 +567,7 @@ def index(request):
     """
     action = request.GET.get("action", None)
     if action is not None:
-        if not action in globals():
+        if action not in globals():
             raise UnknownAction
         response = globals()[action](request)
     else:
