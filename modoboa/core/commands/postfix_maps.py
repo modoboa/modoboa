@@ -1,18 +1,22 @@
 # coding: utf-8
+
+"""postfix_maps command."""
+
+import datetime
 import getpass
 import inspect
 import os
 import sys
-import datetime
+
 from django.template import Context, Template
+
 from . import Command
 
 
 class MapFilesGenerator(object):
 
     def __init__(self, dbinfo=None):
-        """Constructor.
-        """
+        """Constructor."""
         self.template = Template("""user = {{ dbuser }}
 password = {{ dbpass }}
 dbname = {{ dbname }}
@@ -69,7 +73,7 @@ query = {{ query|safe }}
                 continue
             if v is MapFile:
                 continue
-            if not v.category in args.categories:
+            if v.category not in args.categories:
                 continue
             self.__render_map(args, v)
 

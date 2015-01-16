@@ -9,6 +9,7 @@ from django.template import Context, Template
 
 
 class Command(object):
+
     """Base command class
 
     A valid administrative command must inherit from this class.

@@ -5,6 +5,7 @@ from django.conf.urls import include
 
 
 class ModoExtension(object):
+
     """Base extension class.
 
     Each Modoboa extension must inherit from this class to be
@@ -37,6 +38,7 @@ class ModoExtension(object):
 
 
 class ExtensionsPool(object):
+
     """The extensions manager"""
 
     def __init__(self):

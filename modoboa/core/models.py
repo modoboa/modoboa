@@ -37,6 +37,7 @@ except ImportError:
 
 
 class User(PermissionsMixin):
+
     """Custom User model.
 
     It overloads the way passwords are stored into the database. The
@@ -114,7 +115,7 @@ class User(PermissionsMixin):
             load_core_settings()
             scheme = parameters.get_admin("PASSWORD_SCHEME")
 
-        if type(raw_value) is unicode:
+        if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
@@ -146,7 +147,7 @@ class User(PermissionsMixin):
         match = self.password_expr.match(self.password)
         if match is None:
             return False
-        if type(raw_value) is unicode:
+        if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         scheme = match.group(1)
         val2 = match.group(2)

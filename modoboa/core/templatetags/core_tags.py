@@ -158,6 +158,7 @@ def get_version():
 
 
 class ConnectedUsers(template.Node):
+
     def __init__(self, varname):
         self.varname = varname
 

@@ -9,6 +9,7 @@ from modoboa.lib import parameters
 
 
 class MD5CRYPTHasher(PasswordHasher):
+
     """
     MD5-CRYPT password hasher.
 
@@ -29,6 +30,7 @@ class MD5CRYPTHasher(PasswordHasher):
 
 
 class SHA256CRYPTHasher(PasswordHasher):
+
     """
     SHA256-CRYPT password hasher.
 
@@ -51,6 +53,7 @@ class SHA256CRYPTHasher(PasswordHasher):
 
 
 class SHA512CRYPTHasher(PasswordHasher):
+
     """
     SHA512-CRYPT password hasher.
 
