@@ -1,12 +1,16 @@
-import reversion
+"""Relay domain related models."""
+
+from django.contrib.contenttypes import generic
 from django.db import models
 from django.db.models.manager import Manager
-from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _, ugettext_lazy
+
+import reversion
+
 from modoboa.core.models import ObjectAccess
+from modoboa.extensions.admin.models import AdminObject
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest, NotFound
-from modoboa.extensions.admin.models import AdminObject
 
 
 class RelayDomainManager(Manager):
@@ -46,12 +50,13 @@ class ServiceManager(Manager):
             services.append(parts[0])
         to_delete = []
         for service in self.all():
-            if not service.name in services:
+            if service.name not in services:
                 to_delete.append(service.name)
         Service.objects.filter(name__in=to_delete).delete()
 
 
 class Service(models.Model):
+
     """Postfix service.
     """
     name = models.CharField(
@@ -66,6 +71,7 @@ class Service(models.Model):
 
 
 class RelayDomain(AdminObject):
+
     """Relay domain.
 
     A relay domain differs from a usual domaine because its final
@@ -101,7 +107,7 @@ class RelayDomain(AdminObject):
     def tags(self):
         return [
             {"name": "relaydomain", "label": _("Relay Domain"), "type": "dom"},
-            {"name": self.service.name, "label": "%s:" % self.service.name, 
+            {"name": self.service.name, "label": "%s:" % self.service.name,
              "type": "srv", "color": "info"}
         ]
 
@@ -118,7 +124,7 @@ class RelayDomain(AdminObject):
         :param csvwriter:
         """
         csvwriter.writerow(
-            ["relaydomain", self.name, self.target_host, 
+            ["relaydomain", self.name, self.target_host,
              self.service.name, self.enabled, self.verify_recipients]
         )
         for rdalias in self.relaydomainalias_set.all():
@@ -134,7 +140,8 @@ class RelayDomain(AdminObject):
             raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
         self.target_host = row[2].strip()
-        self.service, created = Service.objects.get_or_create(name=row[3].strip())
+        self.service, created = Service.objects.get_or_create(
+            name=row[3].strip())
         self.enabled = (row[4].strip() == 'True')
         self.verify_recipients = (row[5].strip() == 'True')
         self.save(creator=user)
@@ -152,6 +159,7 @@ reversion.register(RelayDomain)
 
 
 class RelayDomainAlias(AdminObject):
+
     """Relay domain alias.
 
     """

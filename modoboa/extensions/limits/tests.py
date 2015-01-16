@@ -1,13 +1,16 @@
+"""Test cases for the limits extension."""
+
 from django.core.urlresolvers import reverse
-from modoboa.lib.tests import ExtTestCase
-from modoboa.lib import parameters
-from modoboa.core.models import User
+
 from modoboa.core.factories import UserFactory
+from modoboa.core.models import User
 from modoboa.extensions.admin.factories import (
     populate_database
 )
 from modoboa.extensions.admin.models import Alias, Domain
 from modoboa.extensions.limits.models import LimitTemplates
+from modoboa.lib import parameters
+from modoboa.lib.tests import ExtTestCase
 
 
 class PermissionsTestCase(ExtTestCase):
@@ -142,8 +145,8 @@ class DomainAdminTestCase(ResourceTestCase):
         resp = self._create_alias('alias3@test.com', status=403)
         self._check_limit('mailbox_aliases', 2, 2)
         self.ajax_post(
-            reverse('admin:alias_delete') + '?selection=%d' \
-                % Alias.objects.get(address='alias2', domain__name='test.com').id,
+            reverse('admin:alias_delete') + '?selection=%d'
+            % Alias.objects.get(address='alias2', domain__name='test.com').id,
             {}
         )
         self._check_limit('mailbox_aliases', 1, 2)
@@ -206,10 +209,14 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit('domain_admins', 1, 2)
         self._create_account('admin2@domain.tld', role='DomainAdmins')
         self._check_limit('domain_admins', 2, 2)
-        resp = self._create_account('admin3@domain.tld', role='DomainAdmins', status=400)
+        resp = self._create_account(
+            'admin3@domain.tld',
+            role='DomainAdmins',
+            status=400)
         self.assertEqual(
             resp['form_errors']['role'][0],
-            'Select a valid choice. DomainAdmins is not one of the available choices.'
+            'Select a valid choice. DomainAdmins is not one of the available '
+            'choices.'
         )
         self._check_limit('domain_admins', 2, 2)
 
@@ -227,7 +234,8 @@ class ResellerTestCase(ResourceTestCase):
         )
         self.assertEqual(
             resp['form_errors']['role'][0],
-            'Select a valid choice. DomainAdmins is not one of the available choices.'
+            'Select a valid choice. DomainAdmins is not one of the available '
+            'choices.'
         )
         self._check_limit('domain_admins', 2, 2)
 

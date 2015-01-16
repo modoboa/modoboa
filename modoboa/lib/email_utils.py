@@ -1,16 +1,20 @@
 # coding: utf-8
-import time
+
 import re
 import smtplib
+import time
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
-from django.template.loader import render_to_string
+
 from django.conf import settings
+from django.template.loader import render_to_string
+
 from modoboa.lib import u2u_decode
 
 
 class EmailAddress(object):
+
     def __init__(self, address):
         self.fulladdress = u2u_decode.u2u_decode(address).strip("\r\t\n")
         (self.name, self.address) = parseaddr(self.fulladdress)
@@ -22,6 +26,7 @@ class EmailAddress(object):
 
 
 class Email(object):
+
     def __init__(self, mailid, mformat="plain", dformat="plain", links=0):
         self.attached_map = {}
         self.contents = {"html": "", "plain": ""}
@@ -42,11 +47,12 @@ class Email(object):
 
     @property
     def body(self):
-        """Return email's body.
-        """
+        """Return email's body."""
         if self._body is None:
-            self._body = getattr(self, "viewmail_%s" % self.mformat) \
+            self._body = (
+                getattr(self, "viewmail_%s" % self.mformat)
                 (self.contents[self.mformat], links=self.links)
+            )
         return self._body
 
     def get_header(self, msg, hdrname):
@@ -231,19 +237,22 @@ def split_mailbox(mailbox):
     return (address, domain)
 
 
-def decode(s, encodings=('utf8', 'latin1', 'windows-1252', 'ascii'), charset=None):
+def decode(string, encodings=None, charset=None):
+    """Try to decode the given string."""
+    if encodings is None:
+        encodings = ('utf8', 'latin1', 'windows-1252', 'ascii')
     if charset is not None:
         try:
-            return s.decode(charset, 'ignore')
+            return string.decode(charset, 'ignore')
         except LookupError:
             pass
 
     for encoding in encodings:
         try:
-            return s.decode(encoding)
+            return string.decode(encoding)
         except UnicodeDecodeError:
             pass
-    return s.decode('ascii', 'ignore')
+    return string.decode('ascii', 'ignore')
 
 
 def prepare_addresses(addresses, usage="header"):
@@ -306,7 +315,8 @@ def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
     return True, None
 
 
-def sendmail_simple(sender, rcpt, subject="Sample message", content="", **kwargs):
+def sendmail_simple(
+        sender, rcpt, subject="Sample message", content="", **kwargs):
     """Simple way to send a text message
 
     Send a text/plain message with basic headers (msg-id, date).

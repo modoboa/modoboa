@@ -1,12 +1,16 @@
 # coding: utf-8
 
-from django.utils.translation import ugettext as _
+"""Internal tools."""
+
+from sievelib.factory import FiltersSet
 from sievelib.managesieve import Client, Error
 from sievelib.parser import Parser
-from sievelib.factory import FiltersSet
+
+from django.utils.translation import ugettext as _
+
 from modoboa.lib import parameters
-from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.connections import ConnectionsManager, ConnectionError
+from modoboa.lib.exceptions import ModoboaException
 
 
 class SieveClientError(ModoboaException):
@@ -19,7 +23,7 @@ class SieveClient(object):
     def __init__(self, user=None, password=None):
         try:
             ret, msg = self.login(user, password)
-        except Error, e:
+        except Error as e:
             raise ConnectionError(str(e))
         if not ret:
             raise ConnectionError(msg)
@@ -38,7 +42,10 @@ class SieveClient(object):
         except Error:
             ret = False
         if not ret:
-            return False, _("Connection to MANAGESIEVE server failed, check your configuration")
+            return False, _(
+                "Connection to MANAGESIEVE server failed, check your "
+                "configuration"
+            )
         return True, None
 
     def logout(self):
@@ -51,13 +58,13 @@ class SieveClient(object):
         if self.msc is not None:
             try:
                 self.msc.capability()
-            except Error, e:
+            except Error as e:
                 pass
             else:
                 return
         try:
             ret, msg = self.login(user, password)
-        except (Error, ssl.SSLError), e:
+        except (Error, ssl.SSLError) as e:
             raise ConnectionError(e)
         if not ret:
             raise ConnectionError(msg)
@@ -80,10 +87,11 @@ class SieveClient(object):
         return fs
 
     def pushscript(self, name, content, active=False):
-        if type(content) is unicode:
+        if isinstance(content, unicode):
             content = content.encode("utf-8")
         if not self.msc.havespace(name, len(content)):
-            error = "%s (%s)" % (_("Not enough space on server"), self.msc.errmsg)
+            error = "%s (%s)" % (
+                _("Not enough space on server"), self.msc.errmsg)
             raise SieveClientError(error)
         if not self.msc.putscript(name, content):
             raise SieveClientError(self.msc.errmsg)

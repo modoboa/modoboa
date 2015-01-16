@@ -1,21 +1,18 @@
 """
 Views available to super administrators only.
 """
-
-from django.shortcuts import render
-from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
-
 from django.contrib.auth.decorators import (
     login_required, user_passes_test
 )
-
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext as _
 
 from modoboa.core.models import Extension, Log
 from modoboa.core.utils import new_version_available
 from modoboa.lib import events, parameters
 from modoboa.lib.listing import get_sort_order, get_listing_page
-from modoboa.lib.webutils import (
+from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
 
@@ -88,12 +85,12 @@ def saveextensions(request):
         if k.startswith("select_"):
             parts = k.split("_", 1)
             dbext = Extension.objects.get(name=parts[1])
-            if not dbext in actived_exts:
+            if dbext not in actived_exts:
                 dbext.on()
             else:
                 found += [dbext]
     for ext in actived_exts:
-        if not ext in found:
+        if ext not in found:
             ext.off()
 
     return render_to_json_response(_("Modifications applied."))

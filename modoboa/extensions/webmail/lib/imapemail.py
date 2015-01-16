@@ -12,7 +12,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from modoboa.lib import parameters, u2u_decode
-from modoboa.lib.emailutils import Email, EmailAddress
+from modoboa.lib.email_utils import Email, EmailAddress
 from .imaputils import (
     get_imapconnector, BodyStructure
 )
@@ -82,7 +82,7 @@ class ImapEmail(Email):
             )
             self.bs = BodyStructure(self._msg['BODYSTRUCTURE'])
             self._find_attachments()
-            if not self.dformat in ["plain", "html"]:
+            if self.dformat not in ["plain", "html"]:
                 self.dformat = parameters.get_user(
                     self.request.user, self.dformat
                 )
@@ -312,7 +312,7 @@ class ForwardModifier(Modifier):
         return "----- %s -----" % _("Original message")
 
     def _header_begin_html(self):
-        return  "----- %s -----" % _("Original message")
+        return "----- %s -----" % _("Original message")
 
     def _header_line_plain(self, key, value):
         return "%s: %s\n" % (key, value)

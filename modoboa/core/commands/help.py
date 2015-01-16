@@ -1,9 +1,12 @@
 # coding: utf-8
+
 import sys
+
 from . import Command
 
 
 class HelpCommand(Command):
+
     help = "Display the help message associated to a specific command"
 
     def __init__(self, *args, **kwargs):
@@ -12,7 +15,7 @@ class HelpCommand(Command):
                                   help='A command name')
 
     def handle(self, parsed_args):
-        if not parsed_args.name in self._commands:
+        if parsed_args.name not in self._commands:
             print >>sys.stderr, "Unknown command: %s" % parsed_args.name
             sys.exit(1)
         cmd = self._commands[parsed_args.name](self._commands)

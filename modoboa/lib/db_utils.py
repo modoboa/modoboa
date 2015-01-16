@@ -1,7 +1,9 @@
 # coding: utf-8
-from django.db import connection
+
 from django.conf import settings
+from django.db import connection
 from django.utils.translation import ugettext as _
+
 from modoboa.lib.exceptions import InternalError
 
 
@@ -32,8 +34,9 @@ def db_type(cname="default"):
     :param str cname: connection name
     :return: a string or None
     """
-    if not cname in settings.DATABASES:
-        raise InternalError(_("Connection to database %s not configured" % cname))
+    if cname not in settings.DATABASES:
+        raise InternalError(
+            _("Connection to database %s not configured" % cname))
     for t in ['postgres', 'mysql', 'sqlite']:
         if settings.DATABASES[cname]['ENGINE'].find(t) != -1:
             return t

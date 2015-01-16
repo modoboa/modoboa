@@ -5,7 +5,7 @@ An email representation based on a database record.
 
 from django.template.loader import render_to_string
 
-from modoboa.lib.emailutils import Email
+from modoboa.lib.email_utils import Email
 
 from .sql_connector import get_connector
 

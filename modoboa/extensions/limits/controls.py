@@ -4,10 +4,10 @@
 ----------------------------------------------------------------------------
 
 """
-from modoboa.lib import events
-from modoboa.lib.permissions import get_object_owner
 from .lib import LimitReached, inc_limit_usage, dec_limit_usage
 from .models import LimitTemplates, LimitsPool
+from modoboa.lib import events
+from modoboa.lib.permissions import get_object_owner
 
 
 def check_limit(user, lname, count=1):
@@ -124,7 +124,7 @@ def can_create_new_object(user, objtype, count=1):
 @events.observe("AccountCreated")
 def create_pool(user):
     owner = get_object_owner(user)
-    if not owner.group in ['SuperAdmins', 'Resellers']:
+    if owner.group not in ['SuperAdmins', 'Resellers']:
         return
 
     if user.group == 'DomainAdmins':
@@ -177,7 +177,7 @@ def on_account_modified(old, new):
             p.save()
             p.create_limits(owner)
 
-    if not new.group in ["DomainAdmins", "Resellers"]:
+    if new.group not in ["DomainAdmins", "Resellers"]:
         move_pool_resource(owner, new)
 
     if old.oldgroup == "DomainAdmins":
@@ -193,7 +193,7 @@ def on_account_modified(old, new):
 @events.observe("AccountDeleted")
 def on_account_deleted(account, byuser, **kwargs):
     owner = get_object_owner(account)
-    if not owner.group in ["SuperAdmins", "Resellers"]:
+    if owner.group not in ["SuperAdmins", "Resellers"]:
         return
 
     move_pool_resource(owner, account)

@@ -1,30 +1,29 @@
-"""
-Identity related views.
-"""
-from django.shortcuts import render
-from django.utils.translation import ugettext as _, ungettext
+"""Identity related views."""
+
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
+from django.shortcuts import render
+from django.utils.translation import ugettext as _, ungettext
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 import reversion
 
+from modoboa.core.models import User
+from modoboa.extensions.admin.forms import (
+    AccountForm
+)
+from modoboa.extensions.admin.lib import get_identities
+from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest
 )
-from modoboa.lib.webutils import (
-    _render_to_string, render_to_json_response
-)
-from modoboa.core.models import User
-from modoboa.extensions.admin.models import Mailbox, Domain
 from modoboa.lib.listing import (
     get_sort_order, get_listing_page
 )
-from modoboa.extensions.admin.lib import get_identities
-from modoboa.extensions.admin.forms import (
-    AccountForm
+from modoboa.lib.web_utils import (
+    _render_to_string, render_to_json_response
 )
 
 
@@ -67,7 +66,7 @@ def _identities(request):
 @login_required
 @permission_required("admin.add_mailbox")
 def list_quotas(request):
-    from modoboa.lib.dbutils import db_type
+    from modoboa.lib.db_utils import db_type
 
     sort_order, sort_dir = get_sort_order(request.GET, "address")
     mboxes = Mailbox.objects.get_for_admin(
@@ -80,9 +79,15 @@ def list_quotas(request):
         where = "admin_mailbox.address||'@'||admin_domain.name"
         db_type = db_type()
         if db_type == "postgres":
-            select = '(admin_quota.bytes::float / (CAST(admin_mailbox.quota AS BIGINT) * 1048576)) * 100'
+            select = (
+                "(admin_quota.bytes::float / (CAST(admin_mailbox.quota "
+                "AS BIGINT) * 1048576)) * 100"
+            )
         else:
-            select = 'admin_quota.bytes / (admin_mailbox.quota * 1048576) * 100'
+            select = (
+                "admin_quota.bytes / (admin_mailbox.quota "
+                "* 1048576) * 100"
+            )
             if db_type == "mysql":
                 where = "CONCAT(admin_mailbox.address,'@',admin_domain.name)"
         mboxes = mboxes.extra(
@@ -191,7 +196,8 @@ def remove_permission(request):
         domain = Domain.objects.get(pk=domid)
     except (User.DoesNotExist, Domain.DoesNotExist):
         raise BadRequest(_("Invalid request"))
-    if not request.user.can_access(account) or not request.user.can_access(domain):
+    if not request.user.can_access(account) or \
+       not request.user.can_access(domain):
         raise PermDeniedException
     domain.remove_admin(account)
     return render_to_json_response({})

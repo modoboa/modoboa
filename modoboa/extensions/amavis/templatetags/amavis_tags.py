@@ -80,20 +80,23 @@ def viewm_menu(user, mail_id, rcpt):
 
 @register.simple_tag
 def viewm_menu_simple(user, mail_id, rcpt, secret_id=""):
+    release_url = "{0}?rcpt={1}".format(
+        reverse("amavis:mail_release", args=[mail_id]), rcpt)
+    delete_url = "{0}?rcpt={1}".format(
+        reverse("amavis:mail_delete", args=[mail_id]), rcpt)
+    if secret_id:
+        release_url += "&secret_id={0}".format(secret_id)
+        delete_url += "&secret_id={0}".format(secret_id)
     entries = [
         {"name": "release",
          "img": "fa fa-check",
          "class": "btn-success",
-         "url": reverse('amavis:mail_release', args=[mail_id]) \
-             + ("?rcpt=%s" % rcpt \
-                    + (("&secret_id=%s" % secret_id) if secret_id != "" else "")),
+         "url": release_url,
          "label": _("Release")},
         {"name": "delete",
          "img": "fa fa-trash",
          "class": "btn-danger",
-         "url": reverse('amavis:mail_delete', args=[mail_id]) \
-             + "?rcpt=%s" % rcpt \
-             + ("&secret_id=%s" % secret_id if secret_id != "" else ""),
+         "url": delete_url,
          "label": _("Delete")},
     ]
 

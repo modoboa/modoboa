@@ -5,8 +5,9 @@
 
 """
 from django.utils.translation import ugettext as _
-from modoboa.lib.exceptions import ModoboaException
+
 from modoboa.extensions.limits.models import LimitsPool
+from modoboa.lib.exceptions import ModoboaException
 
 
 class LimitReached(ModoboaException):

@@ -1,4 +1,7 @@
 # coding: utf-8
+
+"""Custom views."""
+
 import re
 import time
 from django.shortcuts import render
@@ -10,7 +13,7 @@ from django.contrib.auth.decorators import (
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import events
 from modoboa.lib.exceptions import BadRequest, PermDeniedException, NotFound
-from modoboa.lib.webutils import (
+from modoboa.lib.web_utils import (
     render_to_json_response
 )
 from modoboa.extensions.admin.models import (
@@ -83,7 +86,7 @@ def check_domain_access(user, pattern):
 def graphs(request):
     gset = request.GET.get("gset", None)
     gsets = events.raiseDictEvent("GetGraphSets")
-    if not gset in gsets:
+    if gset not in gsets:
         raise NotFound(_("Unknown graphic set"))
     searchq = request.GET.get("searchquery", None)
     period = request.GET.get("period", "day")
@@ -94,7 +97,7 @@ def graphs(request):
     tplvars["domain"] = domain
 
     if period == "custom":
-        if not "start" in request.GET or not "end" in request.GET:
+        if "start" not in request.GET or "end" not in request.GET:
             raise BadRequest(_("Bad custom period"))
         start = request.GET["start"]
         end = request.GET["end"]

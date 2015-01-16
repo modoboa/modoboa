@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from modoboa.lib import events
-from modoboa.lib.webutils import static_url
+from modoboa.lib.web_utils import static_url
 
 
 @events.observe("UserMenuDisplay")

@@ -1,6 +1,10 @@
 # coding: utf-8
+
+"""Core forms."""
+
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
+
 from modoboa.core.models import User
 from modoboa.lib import parameters
 
@@ -38,9 +42,9 @@ class ProfileForm(forms.ModelForm):
         model = User
         fields = ("first_name", "last_name")
         widgets = {
-                    'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-                    'last_name': forms.TextInput(attrs={'class': 'form-control'})
-                 }
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
     def __init__(self, update_password, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
@@ -61,15 +65,19 @@ class ProfileForm(forms.ModelForm):
         return self.cleaned_data["oldpassword"]
 
     def clean_confirmation(self):
-        if self.cleaned_data["newpassword"] != self.cleaned_data["confirmation"]:
+        newpassword = self.cleaned_data["newpassword"]
+        confirmation = self.cleaned_data["confirmation"]
+        if newpassword != confirmation:
             raise forms.ValidationError(_("Passwords mismatch"))
         return self.cleaned_data["confirmation"]
 
     def save(self, commit=True):
         user = super(ProfileForm, self).save(commit=False)
         if commit:
-            if self.cleaned_data.has_key("confirmation") and \
-                    self.cleaned_data["confirmation"] != "":
-                user.set_password(self.cleaned_data["confirmation"], self.cleaned_data["oldpassword"])
+            if self.cleaned_data.get("confirmation", "") != "":
+                user.set_password(
+                    self.cleaned_data["confirmation"],
+                    self.cleaned_data["oldpassword"]
+                )
             user.save()
         return user

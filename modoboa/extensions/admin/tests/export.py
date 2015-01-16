@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
-from modoboa.lib.tests import ModoTestCase
+
 from modoboa.extensions.admin import factories
+from modoboa.lib.tests import ModoTestCase
 
 
 class ExportTestCase(ModoTestCase):
@@ -12,8 +13,8 @@ class ExportTestCase(ModoTestCase):
 
     def __export_identities(self, idtfilter="", grpfilter=""):
         self.clt.get(
-            reverse("admin:_identity_list") \
-                + "?grpfilter=%s&idtfilter=%s" % (grpfilter, idtfilter)
+            reverse("admin:_identity_list")
+            + "?grpfilter=%s&idtfilter=%s" % (grpfilter, idtfilter)
         )
         return self.clt.post(
             reverse("admin:identity_export"),
@@ -39,7 +40,7 @@ class ExportTestCase(ModoTestCase):
             idtfilter="account", grpfilter="SimpleUsers"
         )
         self.assertListEqual(
-            "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10", 
+            "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10",
             response.content.strip()
         )
 

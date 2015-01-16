@@ -7,23 +7,27 @@ functionality into Postfix.
 
 """
 import sys
+
 from django.utils.translation import ugettext_lazy
-from modoboa.lib import events, parameters
+
 from modoboa.core.extensions import ModoExtension, exts_pool
 from modoboa.extensions.postfix_autoreply.models import (
     Transport, Alias
 )
+from modoboa.lib import events, parameters
 
 
 class PostfixAutoreply(ModoExtension):
+
     """
     Auto-reply (vacation) functionality using Postfix.
-    
+
     """
     name = "postfix_autoreply"
     label = "Postfix autoreply"
     version = "1.0"
-    description = ugettext_lazy("Auto-reply (vacation) functionality using Postfix")
+    description = ugettext_lazy(
+        "Auto-reply (vacation) functionality using Postfix")
 
     def init(self):
         from modoboa.extensions.admin.models import Domain
@@ -45,10 +49,14 @@ class PostfixAutoreply(ModoExtension):
                     onMailboxCreated(None, mb)
 
     def load(self):
-        from modoboa.extensions.postfix_autoreply.app_settings import ParametersForm
-        parameters.register(ParametersForm, ugettext_lazy("Automatic replies"))
+        from modoboa.extensions.postfix_autoreply.app_settings import (
+            ParametersForm
+        )
+        parameters.register(
+            ParametersForm, ugettext_lazy("Automatic replies"))
         from modoboa.extensions.postfix_autoreply import general_callbacks
-        if 'modoboa.extensions.postfix_autoreply.general_callbacks' in sys.modules:
+        modname = "modoboa.extensions.postfix_autoreply.general_callbacks"
+        if modname in sys.modules:
             reload(general_callbacks)
 
     def destroy(self):

@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy
-from modoboa.lib.formutils import YesNoField, SeparatorField
+from modoboa.lib.form_utils import YesNoField, SeparatorField
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib import parameters
 import os

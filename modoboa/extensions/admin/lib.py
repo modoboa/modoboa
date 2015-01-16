@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from modoboa.core.models import User
 from modoboa.lib import events
 from modoboa.lib.exceptions import PermDeniedException
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.extensions.admin.models import (
     Domain, Alias
 )

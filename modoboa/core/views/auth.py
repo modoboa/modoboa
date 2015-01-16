@@ -1,16 +1,19 @@
 # coding: utf-8
 import logging
-from django.views.decorators.cache import never_cache
+
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
-from modoboa.lib import events, parameters
-from modoboa.lib.webutils import _render_to_string
+from django.views.decorators.cache import never_cache
+
 from modoboa.core.forms import LoginForm
+from modoboa.lib import events, parameters
+from modoboa.lib.web_utils import _render_to_string
 
 
 def dologin(request):
+    """Try to authenticate."""
     error = None
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -43,7 +46,7 @@ def dologin(request):
             error = _(
                 "Your username and password didn't match. Please try again.")
             logger.warning(
-                "Failed connection attempt from '%(addr)s' as user '%(user)s'" \
+                "Failed connection attempt from '%(addr)s' as user '%(user)s'"
                 % {"addr": request.META["REMOTE_ADDR"],
                    "user": form.cleaned_data["username"]}
             )

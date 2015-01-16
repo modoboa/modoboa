@@ -6,7 +6,7 @@ from django import forms
 from django import template
 from django.template.loader import render_to_string
 
-from modoboa.lib.formutils import SeparatorField
+from modoboa.lib.form_utils import SeparatorField
 
 register = template.Library()
 
@@ -63,7 +63,7 @@ def render_fields_group(form, pattern):
     haserror = len(first.errors) != 0
     while True:
         fname = "%s_%d" % (pattern, cpt)
-        if not fname in form.fields:
+        if fname not in form.fields:
             break
         bfield = forms.forms.BoundField(form, form.fields[fname], fname)
         if len(bfield.errors):

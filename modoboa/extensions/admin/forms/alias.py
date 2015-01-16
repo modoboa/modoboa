@@ -1,13 +1,16 @@
+"""Forms related to aliases management."""
+
 from django import forms
-from django.utils.translation import ugettext as _, ugettext_lazy
 from django.http import QueryDict
-from modoboa.lib.exceptions import BadRequest, NotFound, Conflict
-from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.formutils import (
-    DynamicForm
-)
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from modoboa.extensions.admin.models import (
     Domain, Mailbox, Alias
+)
+from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib.exceptions import BadRequest, NotFound, Conflict
+from modoboa.lib.form_utils import (
+    DynamicForm
 )
 
 
@@ -109,7 +112,8 @@ class AliasForm(forms.ModelForm, DynamicForm):
                     rcpt = None
                 if rcpt is None:
                     try:
-                        rcpt = Mailbox.objects.get(domain=domain, address=local_part)
+                        rcpt = Mailbox.objects.get(
+                            domain=domain, address=local_part)
                     except Mailbox.DoesNotExist:
                         raise NotFound(
                             _("Local recipient %s not found" % v)

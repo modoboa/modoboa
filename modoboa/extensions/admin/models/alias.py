@@ -1,16 +1,21 @@
-import reversion
+"""Models related to aliases management."""
+
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.exceptions import (
-    PermDeniedException, BadRequest, Conflict
-)
+
+import reversion
+
 from .base import AdminObject
 from .domain import Domain
 from .mailbox import Mailbox
+from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib.exceptions import (
+    PermDeniedException, BadRequest, Conflict
+)
 
 
 class Alias(AdminObject):
+
     """
     Mailbox alias.
     """
@@ -108,16 +113,16 @@ class Alias(AdminObject):
         curmboxes = self.mboxes.all()
         for rcpt in int_rcpts:
             if isinstance(rcpt, Alias):
-                if not rcpt in curaliases:
+                if rcpt not in curaliases:
                     self.aliases.add(rcpt)
                 continue
-            if not rcpt in curmboxes:
+            if rcpt not in curmboxes:
                 self.mboxes.add(rcpt)
         for rcpt in curaliases:
-            if not rcpt in int_rcpts:
+            if rcpt not in int_rcpts:
                 self.aliases.remove(rcpt)
         for rcpt in curmboxes:
-            if not rcpt in int_rcpts:
+            if rcpt not in int_rcpts:
                 self.mboxes.remove(rcpt)
 
     def get_recipients(self, with_external=True):

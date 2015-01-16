@@ -1,25 +1,31 @@
 # coding: utf-8
-from sievelib.managesieve import Error
-from sievelib.commands import BadArgument, BadValue
+
+"""Custom views."""
+
 from rfc6266 import build_header
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template.loader import render_to_string
+from sievelib.commands import BadArgument, BadValue
+from sievelib.managesieve import Error
+
 from django.contrib.auth.decorators import login_required
-from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from modoboa.lib import parameters
-from modoboa.lib.webutils import _render_error, \
-    ajax_response, render_to_json_response
-from modoboa.lib.connections import ConnectionError
-from modoboa.lib.exceptions import BadRequest
-from modoboa.extensions.admin.lib import needs_mailbox
-from .lib import SieveClient, SieveClientError
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext as _
+
 from .forms import (
     FilterForm, build_filter_form_from_qdict, build_filter_form_from_filter,
     FiltersSetForm
 )
+from .lib import SieveClient, SieveClientError
 from .templatetags.sfilters_tags import fset_menu
+from modoboa.extensions.admin.lib import needs_mailbox
+from modoboa.lib import parameters
+from modoboa.lib.connections import ConnectionError
+from modoboa.lib.exceptions import BadRequest
+from modoboa.lib.web_utils import (
+    _render_error, ajax_response, render_to_json_response
+)
 
 
 @login_required
@@ -30,12 +36,12 @@ def index(request, tplname="sievefilters/index.html"):
     try:
         sc = SieveClient(user=request.user.username,
                          password=request.session["password"])
-    except ConnectionError, e:
+    except ConnectionError as e:
         return _render_error(request, user_context={"error": e})
 
     try:
         active_script, scripts = sc.listscripts()
-    except Error, e:
+    except Error as e:
         return _render_error(request, user_context={"error": e})
 
     if active_script is None:
@@ -73,7 +79,7 @@ def getfs(request, name):
     error = None
     try:
         content = sc.getscript(name, format=editormode)
-    except SieveClientError, e:
+    except SieveClientError as e:
         error = str(e)
     else:
         if content is None:
@@ -104,7 +110,8 @@ def build_filter_ctx(ctx, form):
     return ctx
 
 
-def submitfilter(request, setname, okmsg, tplname, tplctx, update=False, sc=None):
+def submitfilter(
+        request, setname, okmsg, tplname, tplctx, update=False, sc=None):
     form = build_filter_form_from_qdict(request)
     if form.is_valid():
         if sc is None:
@@ -169,11 +176,13 @@ def editfilter(request, setname, fname, tplname="sievefilters/filter.html"):
     sc = SieveClient(user=request.user.username,
                      password=request.session["password"])
     if request.method == "POST":
-        return submitfilter(request, setname, _("Filter modified"), tplname, ctx,
-                            update=True, sc=sc)
+        return submitfilter(
+            request, setname, _("Filter modified"), tplname, ctx,
+            update=True, sc=sc
+        )
 
     fset = sc.getscript(setname, format="fset")
-    if type(fname) is unicode:
+    if isinstance(fname, unicode):
         fname = fname.encode("utf-8")
     f = fset.getfilter(fname)
     form = build_filter_form_from_filter(request, fname, f)
@@ -199,13 +208,13 @@ def removefilter(request, setname, fname):
 @login_required
 @needs_mailbox()
 def savefs(request, name):
-    if not "scriptcontent" in request.POST:
+    if "scriptcontent" not in request.POST:
         return
     sc = SieveClient(user=request.user.username,
                      password=request.session["password"])
     try:
         sc.pushscript(name, request.POST["scriptcontent"])
-    except SieveClientError, e:
+    except SieveClientError as e:
         error = str(e)
         return ajax_response(request, "ko", respmsg=error)
     return ajax_response(request, respmsg=_("Filters set saved"))
@@ -258,7 +267,7 @@ def activate_filters_set(request, name):
                      password=request.session["password"])
     try:
         sc.activatescript(name)
-    except SieveClientError, e:
+    except SieveClientError as e:
         return ajax_response(request, "ko", respmsg=str(e))
     return ajax_response(request, respmsg=_("Filters set activated"))
 
@@ -270,7 +279,7 @@ def download_filters_set(request, name):
                      password=request.session["password"])
     try:
         script = sc.getscript(name)
-    except SieveClientError, e:
+    except SieveClientError as e:
         return ajax_response(request, "ko", respmsg=str(e))
 
     resp = HttpResponse(script)
@@ -285,7 +294,7 @@ def download_filters_set(request, name):
 def toggle_filter_state(request, setname, fname):
     sc = SieveClient(user=request.user.username,
                      password=request.session["password"])
-    if type(fname) is unicode:
+    if isinstance(fname, unicode):
         fname = fname.encode("utf-8")
     fset = sc.getscript(setname, format="fset")
     if fset.is_filter_disabled(fname):

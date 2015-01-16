@@ -81,7 +81,8 @@ def grant_access_to_objects(user, objects, ct):
     """
     for obj in objects:
         try:
-            ObjectAccess.objects.create(user=user, content_type=ct, object_id=obj.id)
+            ObjectAccess.objects.create(
+                user=user, content_type=ct, object_id=obj.id)
         except IntegrityError:
             pass
 

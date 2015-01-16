@@ -8,11 +8,14 @@ This module provides a simple way of managing events between Modoboa
 core application and additional components.
 
 """
-from functools import wraps
 import inspect
 import re
+from functools import wraps
+
 from django.conf import settings
+
 from modoboa.lib.sysutils import guess_extension_name
+
 
 events = []
 callbacks = {}
@@ -24,7 +27,7 @@ def declare(nevents):
     :param list nevents: a list of event names
     """
     for evt in nevents:
-        if not evt in events:
+        if evt not in events:
             events.append(evt)
 
 
@@ -39,10 +42,10 @@ def register(event, callback):
     # if not event in events:
     #     print "Event %s not registered" % event
     #     return 0
-    if not event in callbacks.keys():
+    if event not in callbacks.keys():
         callbacks[event] = {}
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
-    if not fullname in callbacks[event]:
+    if fullname not in callbacks[event]:
         callbacks[event][fullname] = callback
     return 1
 
@@ -93,7 +96,7 @@ class observe(object):
                 else:
                     if not ext.enabled:
                         return None
-            elif not modname in settings.MODOBOA_APPS:
+            elif modname not in settings.MODOBOA_APPS:
                 return []
             return f(*args, **kwargs)
         for evt in self.evtnames:
@@ -107,9 +110,9 @@ def unregister(event, callback):
     :param event: the targeted event
     :param callback: the callback to remove
     """
-    if not event in events:
+    if event not in events:
         return False
-    if not event in callbacks:
+    if event not in callbacks:
         return False
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
     try:
@@ -139,7 +142,7 @@ def raiseEvent(event, *args, **kwargs):
 
     :param event: the event to raise
     """
-    if not event in events or not event in callbacks:
+    if event not in events or event not in callbacks:
         return 0
     for callback in callbacks[event].values():
         callback(*args, **kwargs)
@@ -155,7 +158,7 @@ def raiseQueryEvent(event, *args, **kwargs):
     :param event: the event to raise
     """
     result = []
-    if not event in events or not event in callbacks:
+    if event not in events or event not in callbacks:
         return result
     for callback in callbacks[event].values():
         tmp = callback(*args, **kwargs)
@@ -177,7 +180,7 @@ def raiseDictEvent(event, *args):
     :return: a dictionnary
     """
     result = {}
-    if not event in events or not event in callbacks:
+    if event not in events or event not in callbacks:
         return result
     for callback in callbacks[event].values():
         tmp = callback(*args)

@@ -12,9 +12,11 @@ from django.utils.crypto import constant_time_compare
 
 
 class PasswordHasher(object):
+
     """
     Base class of all hashers.
     """
+
     def __init__(self, target='local'):
         self._target = target
 
@@ -61,6 +63,7 @@ class PasswordHasher(object):
 
 
 class PLAINHasher(PasswordHasher):
+
     """
     Plain (ie. clear) password hasher.
     """
@@ -73,6 +76,7 @@ class PLAINHasher(PasswordHasher):
 
 
 class CRYPTHasher(PasswordHasher):
+
     """
     crypt password hasher.
 
@@ -89,6 +93,7 @@ class CRYPTHasher(PasswordHasher):
 
 
 class MD5Hasher(PasswordHasher):
+
     """
     MD5 password hasher.
 
@@ -104,6 +109,7 @@ class MD5Hasher(PasswordHasher):
 
 
 class SHA256Hasher(PasswordHasher):
+
     """
     SHA256 password hasher.
 

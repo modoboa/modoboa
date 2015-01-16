@@ -2,7 +2,7 @@ if __name__ == "__main__":
     clt = ManageSieveClient("mail.koalabs.org", 2000)
     if clt.connect("tonio@ngyn.org", "aka/12;c", starttls=True):
         print clt.get_sasl_mechanisms()
-        print clt.get_sieve_capabilities()        
+        print clt.get_sieve_capabilities()
         print clt.havespace("test", 45)
 
         if not clt.putscript("myscript", """require ["fileinto", "envelope"];
@@ -40,4 +40,3 @@ InvalidSieveCommand
     else:
         print clt.errmsg
     clt.logout()
-

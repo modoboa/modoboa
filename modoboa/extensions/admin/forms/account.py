@@ -1,19 +1,22 @@
+"""Forms related to accounts management."""
+
 from django import forms
-from django.utils.translation import ugettext as _, ugettext_lazy
-from django.http import QueryDict
 from django.core.urlresolvers import reverse
-from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
-from modoboa.lib.permissions import get_account_roles
-from modoboa.lib.emailutils import split_mailbox
-from modoboa.lib.formutils import (
-    DomainNameField, DynamicForm, TabForms, WizardForm
-)
-from modoboa.lib.webutils import render_to_json_response
+from django.http import QueryDict
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from modoboa.core.models import User
 from modoboa.extensions.admin.models import (
     Domain, Mailbox, Alias
 )
+from modoboa.lib import events, parameters
+from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
+from modoboa.lib.form_utils import (
+    DomainNameField, DynamicForm, TabForms, WizardForm
+)
+from modoboa.lib.permissions import get_account_roles
+from modoboa.lib.web_utils import render_to_json_response
 
 
 class AccountFormGeneral(forms.ModelForm):
@@ -77,7 +80,8 @@ class AccountFormGeneral(forms.ModelForm):
                     del self.fields["is_active"]
             self.fields["role"].initial = account.group
             if not account.is_local \
-               and parameters.get_admin("LDAP_AUTH_METHOD", app="core") == "directbind":
+               and parameters.get_admin(
+                   "LDAP_AUTH_METHOD", app="core") == "directbind":
                 del self.fields["password1"]
                 del self.fields["password2"]
 
@@ -90,7 +94,7 @@ class AccountFormGeneral(forms.ModelForm):
         """
         if not self.instance.mailbox_set.count():
             return False
-        return self.instance.mailbox_set.all()[0].domain.enabled == False
+        return not self.instance.mailbox_set.all()[0].domain.enabled
 
     def clean_role(self):
         if self.user.group == "DomainAdmins":
@@ -101,7 +105,7 @@ class AccountFormGeneral(forms.ModelForm):
 
     def clean_username(self):
         from django.core.validators import validate_email
-        if not "role" in self.cleaned_data:
+        if "role" not in self.cleaned_data:
             return self.cleaned_data["username"]
         if self.cleaned_data["role"] != "SimpleUsers":
             return self.cleaned_data["username"]
@@ -113,7 +117,8 @@ class AccountFormGeneral(forms.ModelForm):
         password1 = self.cleaned_data.get("password1", "")
         password2 = self.cleaned_data["password2"]
         if password1 != password2:
-            raise forms.ValidationError(_("The two password fields didn't match."))
+            raise forms.ValidationError(
+                _("The two password fields didn't match."))
         return password2
 
     def save(self, commit=True):
@@ -165,7 +170,8 @@ class AccountFormMail(forms.Form, DynamicForm):
             "quota": 3
         }
         self.extra_fields = []
-        for fname, field in events.raiseQueryEvent('ExtraFormFields', 'mailform', self.mb):
+        result = events.raiseQueryEvent('ExtraFormFields', 'mailform', self.mb)
+        for fname, field in result:
             self.fields[fname] = field
             self.extra_fields.append(fname)
         if self.mb is not None:
@@ -227,7 +233,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         events.raiseEvent("CanCreate", user, "mailboxes")
         self.mb = Mailbox(address=locpart, domain=domain, user=account,
                           use_domain_quota=self.cleaned_data["quota_act"])
-        self.mb.set_quota(self.cleaned_data["quota"], 
+        self.mb.set_quota(self.cleaned_data["quota"],
                           user.has_perm("admin.add_domain"))
         self.mb.save(creator=user)
 
@@ -235,7 +241,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         newaddress = None
         if self.cleaned_data["email"] != self.mb.full_address:
             newaddress = self.cleaned_data["email"]
-        elif account.group == "SimpleUsers" and account.username != self.mb.full_address:
+        elif (account.group == "SimpleUsers" and
+              account.username != self.mb.full_address):
             newaddress = account.username
         if newaddress is not None:
             self.mb.old_full_address = self.mb.full_address
@@ -267,7 +274,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             aliases.append(value)
 
         for alias in self.mb.alias_set.all():
-            if not alias.full_address in aliases:
+            if alias.full_address not in aliases:
                 if len(alias.get_recipients()) >= 2:
                     continue
                 alias.delete()
@@ -331,9 +338,9 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
 
         if not hasattr(self, "account") or self.account is None:
             return
-        for pos, domain in enumerate(Domain.objects.get_for_admin(self.account)):
+        for pos, dom in enumerate(Domain.objects.get_for_admin(self.account)):
             name = "domains_%d" % (pos + 1)
-            self._create_field(DomainNameField, name, domain.name)
+            self._create_field(DomainNameField, name, dom.name)
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "domains", DomainNameField)
 
@@ -346,20 +353,20 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                 continue
             if value in ["", None]:
                 continue
-            if not value in current_domains:
+            if value not in current_domains:
                 domain = Domain.objects.get(name=value)
                 domain.add_admin(self.account)
 
         for domain in Domain.objects.get_for_admin(self.account):
-            if not len(filter(lambda name: self.cleaned_data[name] == domain.name,
-                              self.cleaned_data.keys())):
+            if not filter(lambda name: self.cleaned_data[name] == domain.name,
+                          self.cleaned_data.keys()):
                 domain.remove_admin(self.account)
 
 
 class AccountForm(TabForms):
-    """Account edition form.
 
-    """
+    """Account edition form."""
+
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
         self.forms = [
@@ -369,8 +376,11 @@ class AccountForm(TabForms):
                  new_args=[self.user], mandatory=True),
             dict(id="mail", title=_("Mail"), formtpl="admin/mailform.html",
                  cls=AccountFormMail),
-            dict(id="perms", title=_("Permissions"), formtpl="admin/permsform.html",
-                 cls=AccountPermissionsForm)
+            dict(
+                id="perms", title=_("Permissions"),
+                formtpl="admin/permsform.html",
+                cls=AccountPermissionsForm
+            )
         ]
         cbargs = [self.user]
         if "instances" in kwargs:
@@ -402,7 +412,9 @@ class AccountForm(TabForms):
                 return False
             return True
 
-        if False in events.raiseQueryEvent("CheckExtraAccountForm", self.account, form):
+        extra_forms = events.raiseQueryEvent(
+            "CheckExtraAccountForm", self.account, form)
+        if False in extra_forms:
             return False
         return True
 
@@ -435,8 +447,10 @@ class AccountForm(TabForms):
 
 
 class AccountWizard(WizardForm):
+
     """Account creation wizard.
     """
+
     def __init__(self, request):
         super(AccountWizard, self).__init__(request)
         self.add_step(
@@ -454,7 +468,7 @@ class AccountWizard(WizardForm):
         })
 
     def done(self):
-        from modoboa.lib.webutils import render_to_json_response
+        from modoboa.lib.web_utils import render_to_json_response
 
         account = self.first_step.form.save()
         account.post_create(self.request.user)

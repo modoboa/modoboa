@@ -9,7 +9,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import set_email_headers
+from modoboa.lib.email_utils import set_email_headers
 from .lib import (
     ImapEmail, create_mail_attachment
 )
@@ -169,8 +169,8 @@ class ComposeMailForm(forms.Form):
 
 
 class ForwardMailForm(ComposeMailForm):
-    """Forward mail form.
-    """
+
+    """Forward mail form."""
 
     def _build_msg(self, request):
         """Convert form's content to a MIME message.
@@ -203,7 +203,8 @@ class FolderForm(forms.Form):
         widget=forms.HiddenInput(attrs={"class": "form-control"}),
         required=False
     )
-    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}))
 
 
 class AttachmentForm(forms.Form):

@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.paginator import Paginator
-from modoboa.lib.webutils import (
+from modoboa.lib.web_utils import (
     getctx, render_to_json_response, _render_to_string
 )
 from modoboa.extensions.admin.models import Mailbox, Domain
@@ -179,7 +179,7 @@ def viewheaders(request, mail_id):
     content = ""
     for qm in get_connector().get_mail_content(mail_id):
         content += qm.mail_text
-    if type(content) is unicode:
+    if isinstance(content, unicode):
         content = content.encode("utf-8")
     msg = email.message_from_string(content)
     headers = []

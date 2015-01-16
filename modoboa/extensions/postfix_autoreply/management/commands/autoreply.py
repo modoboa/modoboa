@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import split_mailbox, sendmail_simple
+from modoboa.lib.email_utils import split_mailbox, sendmail_simple
 from modoboa.extensions.admin.models import Mailbox
 from modoboa.extensions.postfix_autoreply import PostfixAutoreply
 from modoboa.extensions.postfix_autoreply.models import ARmessage, ARhistoric
@@ -18,7 +18,7 @@ def send_autoreply(sender, mailbox, armessage):
     if armessage.fromdate > timezone.now():
         return
     if armessage.untildate is not None \
-        and armessage.untildate < timezone.now():
+            and armessage.untildate < timezone.now():
         armessage.enabled = False
         armessage.save()
         return
@@ -51,7 +51,8 @@ class Command(BaseCommand, CloseConnectionMixin):
 
     def handle(self, *args, **options):
         if len(args) < 2:
-            raise CommandError("usage: ./manage.py autoreply <sender> <recipient ...>")
+            raise CommandError(
+                "usage: ./manage.py autoreply <sender> <recipient ...>")
 
         sender = args[0]
         for fulladdress in args[1:]:

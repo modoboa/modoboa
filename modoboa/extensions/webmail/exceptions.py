@@ -25,6 +25,7 @@ class WebmailInternalError(InternalError):
 
 
 class UnknownAction(ModoboaException):
+
     """
     Use this exception when the webmail encounter an unknown action.
     """
@@ -35,6 +36,7 @@ class UnknownAction(ModoboaException):
 
 
 class ImapError(ModoboaException):
+
     def __init__(self, reason):
         self.reason = reason
 

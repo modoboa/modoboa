@@ -1,19 +1,21 @@
+"""Forms related to domains management."""
+
 from django import forms
+from django.core.urlresolvers import reverse
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.core.urlresolvers import reverse
 
-from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import ModoboaException, Conflict
-from modoboa.lib.formutils import (
-    DomainNameField, YesNoField, WizardForm, DynamicForm, TabForms
-)
-from modoboa.lib.webutils import render_to_json_response
 from modoboa.core.models import User
 from modoboa.extensions.admin.lib import check_if_domain_exists
 from modoboa.extensions.admin.models import (
     Domain, DomainAlias, Mailbox, Alias, Quota
 )
+from modoboa.lib import events, parameters
+from modoboa.lib.exceptions import ModoboaException, Conflict
+from modoboa.lib.form_utils import (
+    DomainNameField, YesNoField, WizardForm, DynamicForm, TabForms
+)
+from modoboa.lib.web_utils import render_to_json_response
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
@@ -153,12 +155,13 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                     continue
                 aliases.append(v)
             for dalias in d.domainalias_set.all():
-                if not dalias.name in aliases:
+                if dalias.name not in aliases:
                     dalias.delete()
                 else:
                     aliases.remove(dalias.name)
             if aliases:
-                events.raiseEvent("CanCreate", user, "domain_aliases", len(aliases))
+                events.raiseEvent(
+                    "CanCreate", user, "domain_aliases", len(aliases))
                 for alias in aliases:
                     try:
                         d.domainalias_set.get(name=alias)
@@ -207,7 +210,8 @@ class DomainFormOptions(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(DomainFormOptions, self).__init__(*args, **kwargs)
-        if False in events.raiseQueryEvent('UserCanSetRole', user, 'DomainAdmins'):
+        result = events.raiseQueryEvent('UserCanSetRole', user, 'DomainAdmins')
+        if False in result:
             self.fields = {}
             return
         if args:
@@ -324,8 +328,10 @@ class DomainForm(TabForms):
 
 
 class DomainWizard(WizardForm):
+
     """Domain creation wizard.
     """
+
     def __init__(self, request):
         super(DomainWizard, self).__init__(request)
         self.add_step(

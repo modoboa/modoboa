@@ -1,11 +1,16 @@
 # coding: utf-8
+
+"""Custom forms."""
+
 from django import forms
-from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils import timezone
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from .models import ARmessage
 
 
 class ARmessageForm(forms.ModelForm):
+
     fromdate = forms.DateTimeField(
         label=ugettext_lazy('From'),
         required=False,
@@ -23,15 +28,15 @@ class ARmessageForm(forms.ModelForm):
         )
     )
     subject = forms.CharField(
-            widget=forms.TextInput(
-                    attrs={'class': 'form-control'}
-                )
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+        )
     )
     content = forms.CharField(
-                widget=forms.Textarea(
-                        attrs={'class': 'form-control'}
-                    )
+        widget=forms.Textarea(
+            attrs={'class': 'form-control'}
         )
+    )
 
     class Meta:
         model = ARmessage
@@ -67,13 +72,14 @@ class ARmessageForm(forms.ModelForm):
         else:
             self.cleaned_data['fromdate'] = timezone.now()
         if self.cleaned_data["untildate"] is not None:
-            if self.cleaned_data["untildate"] < timezone.now():
+            untildate = self.cleaned_data["untildate"]
+            if untildate < timezone.now():
                 self._errors["untildate"] = self.error_class(
                     [_("This date is over")])
-                del self.cleaned_data['untildate']
-            elif 'fromdate' in self.cleaned_data and \
-                    self.cleaned_data['untildate'] < self.cleaned_data['fromdate']:
+                del self.cleaned_data["untildate"]
+            elif "fromdate" in self.cleaned_data and \
+                    untildate < self.cleaned_data["fromdate"]:
                 self._errors["untildate"] = \
                     self.error_class([_("Must be greater than start date")])
-                del self.cleaned_data['untildate']
+                del self.cleaned_data["untildate"]
         return self.cleaned_data

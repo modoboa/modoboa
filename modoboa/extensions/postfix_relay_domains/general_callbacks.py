@@ -1,10 +1,13 @@
-from django.core.urlresolvers import reverse
-from django.template import Template, Context
+"""General event callbacks."""
+
 from django.conf import settings
-from django.utils.translation import ugettext_lazy
+from django.core.urlresolvers import reverse
 from django.db.models import Q
-from modoboa.lib import events
+from django.template import Template, Context
+from django.utils.translation import ugettext_lazy
+
 from .models import RelayDomain, RelayDomainAlias
+from modoboa.lib import events
 
 
 @events.observe('GetStaticContent')
@@ -101,7 +104,8 @@ def extra_limit_templates():
          ugettext_lazy('Maximum number of relay domains this user can create'),
          'Resellers'),
         ("relay_domain_aliases_limit", ugettext_lazy("Relay domain aliases"),
-         ugettext_lazy('Maximum number of relay domain aliases this user can create'),
+         ugettext_lazy(
+             'Maximum number of relay domain aliases this user can create'),
          'Resellers'),
     ]
 

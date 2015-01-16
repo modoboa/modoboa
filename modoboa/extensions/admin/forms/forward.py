@@ -1,10 +1,13 @@
+"""Forms related to forwards management."""
+
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.exceptions import BadRequest, PermDeniedException
-from modoboa.lib.emailutils import split_mailbox
+
 from modoboa.extensions.admin.models import (
     Domain
 )
+from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib.exceptions import BadRequest, PermDeniedException
 
 
 class ForwardForm(forms.Form):
@@ -12,12 +15,14 @@ class ForwardForm(forms.Form):
         label=ugettext_lazy("Recipient(s)"),
         widget=forms.Textarea(attrs={"class": "form-control"}),
         required=False,
-        help_text=ugettext_lazy("Indicate one or more recipients separated by a ','")
+        help_text=ugettext_lazy(
+            "Indicate one or more recipients separated by a ','")
     )
     keepcopies = forms.BooleanField(
         label=ugettext_lazy("Keep local copies"),
         required=False,
-        help_text=ugettext_lazy("Forward messages and store copies into your local mailbox")
+        help_text=ugettext_lazy(
+            "Forward messages and store copies into your local mailbox")
     )
 
     def parse_dest(self):

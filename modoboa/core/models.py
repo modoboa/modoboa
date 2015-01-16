@@ -1,36 +1,43 @@
-import sys
+"""Core models."""
+
+import logging
 import os
 import re
-import logging
-import reversion
-from django.db import models
-from django.db.models.signals import post_delete
+import sys
+
 from django.conf import settings
-from django.dispatch import receiver
-from django.utils import timezone
-from django.utils.translation import ugettext as _, ugettext_lazy
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.auth.hashers import make_password, is_password_usable
 from django.contrib.auth.models import (
     UserManager, Group, PermissionsMixin
 )
-from django.contrib.auth.hashers import make_password, is_password_usable
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+from django.utils import timezone
+from django.utils.translation import ugettext as _, ugettext_lazy
+
+import reversion
+
+from modoboa.core.extensions import exts_pool
+from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
 from modoboa.lib.sysutils import exec_cmd
-from modoboa.core.extensions import exts_pool
-from modoboa.core.password_hashers import get_password_hasher
+
 
 try:
-    from modoboa.lib.ldaputils import LDAPAuthBackend
+    from modoboa.lib.ldap_utils import LDAPAuthBackend
     ldap_available = True
 except ImportError:
     ldap_available = False
 
 
 class User(PermissionsMixin):
+
     """Custom User model.
 
     It overloads the way passwords are stored into the database. The
@@ -108,7 +115,7 @@ class User(PermissionsMixin):
             load_core_settings()
             scheme = parameters.get_admin("PASSWORD_SCHEME")
 
-        if type(raw_value) is unicode:
+        if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
@@ -140,7 +147,7 @@ class User(PermissionsMixin):
         match = self.password_expr.match(self.password)
         if match is None:
             return False
-        if type(raw_value) is unicode:
+        if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         scheme = match.group(1)
         val2 = match.group(2)
@@ -242,7 +249,8 @@ class User(PermissionsMixin):
         """
         ct = ContentType.objects.get_for_model(obj)
         try:
-            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
+            ooentry = self.objectaccess_set.get(
+                content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
             return False
         return ooentry.is_owner
@@ -263,7 +271,8 @@ class User(PermissionsMixin):
 
         ct = ContentType.objects.get_for_model(obj)
         try:
-            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
+            ooentry = self.objectaccess_set.get(
+                content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
             pass
         else:
@@ -333,7 +342,8 @@ class User(PermissionsMixin):
         if len(row) < 7:
             raise BadRequest(_("Invalid line"))
         role = row[6].strip()
-        if not user.is_superuser and not role in ["SimpleUsers", "DomainAdmins"]:
+        allowed_roles = ["SimpleUsers", "DomainAdmins"]
+        if not user.is_superuser and role not in allowed_roles:
             raise PermDeniedException(
                 _("You can't import an account with a role greater than yours")
             )
@@ -345,13 +355,15 @@ class User(PermissionsMixin):
         else:
             raise Conflict
         if role == "SimpleUsers":
-            if (len(row) < 8 or not row[7].strip()):
+            if len(row) < 8 or not row[7].strip():
                 raise BadRequest(
-                    _("The simple user '%s' must have a valid email address" % self.username)
+                    _("The simple user '%s' must have a valid email address"
+                      % self.username)
                 )
             if self.username != row[7].strip():
                 raise BadRequest(
-                    _("username and email fields must not differ for '%s'" % self.username)
+                    _("username and email fields must not differ for '%s'"
+                      % self.username)
                 )
 
         if crypt_password:
@@ -374,9 +386,16 @@ class User(PermissionsMixin):
 
         :param csvwriter: csv object
         """
-        row = ["account", self.username.encode("utf-8"), self.password.encode("utf-8"),
-               self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
-               self.is_active, self.group, self.email.encode("utf-8")]
+        row = [
+            "account",
+            self.username.encode("utf-8"),
+            self.password.encode("utf-8"),
+            self.first_name.encode("utf-8"),
+            self.last_name.encode("utf-8"),
+            self.is_active,
+            self.group,
+            self.email.encode("utf-8")
+        ]
         row += events.raiseQueryEvent("AccountExported", self)
         csvwriter.writerow(row)
 
@@ -414,7 +433,9 @@ class ObjectAccess(models.Model):
         unique_together = (("user", "content_type", "object_id"),)
 
     def __unicode__(self):
-        return "%s => %s (%s)" % (self.user, self.content_object, self.content_type)
+        return "%s => %s (%s)" % (
+            self.user, self.content_object, self.content_type
+        )
 
 
 class Extension(models.Model):
@@ -501,7 +522,7 @@ def post_revision_commit(sender, **kwargs):
     """
     from modoboa.lib.signals import get_request
 
-    current_user = get_request().user.username 
+    current_user = get_request().user.username
     logger = logging.getLogger("modoboa.admin")
     for version in kwargs["versions"]:
         if version.object is None:

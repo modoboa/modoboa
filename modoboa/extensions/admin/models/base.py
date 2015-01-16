@@ -6,6 +6,7 @@ from modoboa.lib.permissions import (
 
 
 class ObjectDates(models.Model):
+
     """Dates recording for admin objects
 
     This table keeps creation and last modification dates for Domains,
@@ -32,6 +33,7 @@ class ObjectDates(models.Model):
 
 
 class AdminObject(models.Model):
+
     """Abstract model to support dates
 
     Inherit from this model to automatically add the "dates" feature

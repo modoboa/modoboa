@@ -41,7 +41,7 @@ from django.db import transaction
 
 import modoboa.core.models as core_models
 import modoboa.extensions.admin.models as admin_models
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.extensions.admin import grant_access_to_all_objects
 
 from modoboa.tools.pfxadmin_migrate import models as pf_models

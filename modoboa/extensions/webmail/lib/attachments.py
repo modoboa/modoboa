@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from modoboa.lib import parameters
 from modoboa.lib.exceptions import InternalError
-from modoboa.lib.webutils import size2integer
+from modoboa.lib.web_utils import size2integer
 
 
 def set_compose_session(request):
@@ -80,18 +80,19 @@ def create_mail_attachment(attdef, payload=None):
     res = MIMEBase(maintype, subtype)
     if payload is None:
         with open(os.path.join(
-            settings.MEDIA_ROOT, "webmail", attdef["tmpname"]), "rb") as fp:
+                settings.MEDIA_ROOT, "webmail", attdef["tmpname"]), "rb") as fp:
             res.set_payload(fp.read())
     else:
         res.set_payload(payload)
     Encoders.encode_base64(res)
-    if type(attdef['fname']) is str:
+    if isinstance(attdef['fname'], str):
         attdef['fname'] = attdef['fname'].decode('utf-8')
     res['Content-Disposition'] = build_header(attdef['fname'])
     return res
 
 
 class AttachmentUploadHandler(FileUploadHandler):
+
     """
     Simple upload handler to limit the size of the attachments users
     can upload.

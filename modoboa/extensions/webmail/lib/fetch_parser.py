@@ -10,16 +10,19 @@ retrieve multiple attributes of a message.
 This simple module tries to fix that *problem*.
 """
 
+
 class ParseError(Exception):
     pass
 
 
 class Token(object):
+
     def __init__(self, value):
         self.value = value
 
 
 class Literal(Token):
+
     def __init__(self, value):
         super(Literal, self).__init__(value)
         self.next_token_len = int(self.value[1:-1])
@@ -50,7 +53,8 @@ def parse_next_token(buf):
                 end = pos - 1
                 break
         if end == -1:
-            raise ParseError("End of buffer reached while looking for a token end")
+            raise ParseError(
+                "End of buffer reached while looking for a token end")
     end += 1
     token = klass(buf[:end])
     return token, end
@@ -94,7 +98,7 @@ def parse_bodystructure(buf, depth=0, prefix=""):
                 # make a difference between a content-disposition with
                 # multiple args beeing parsed and a mime part! (see
                 # the last example at the end of the file)
-                if type(ret[0]) == list or len(ret) >= 7:
+                if isinstance(ret[0], list) or len(ret) >= 7:
                     partnum = prefix
             if partnum is not None:
                 return [{"partnum": partnum, "struct": ret}], pos
@@ -111,7 +115,8 @@ def parse_bodystructure(buf, depth=0, prefix=""):
         else:
             ret.append(token.value.strip('"'))
 
-    raise ParseError("End of buffer reached while looking for a BODY/BODYSTRUCTURE end")
+    raise ParseError(
+        "End of buffer reached while looking for a BODY/BODYSTRUCTURE end")
 
 
 def parse_fetch_response(data):
@@ -128,7 +133,7 @@ def parse_fetch_response(data):
     while cpt < len(data):
         content = ()
         while cpt < len(data) and data[cpt] != ')':
-            if type(data[cpt]) == str:
+            if isinstance(data[cpt], str):
                 # FIXME : probably an unsolicited response
                 cpt += 1
                 continue
@@ -192,13 +197,13 @@ def parse_fetch_response(data):
 def dump_bodystructure(bs, depth=0):
     if depth:
         print " " * (depth * 4),
-    if type(bs[0]) == dict:
+    if isinstance(bs[0], dict):
         print "%s :" % bs[0]["partnum"],
         struct = bs[0]["struct"]
     else:
         struct = bs
 
-    if type(struct[0]) == list:
+    if isinstance(struct[0], list):
         print "multipart/%s" % struct[1]
         for part in struct[0]:
             dump_bodystructure(part, depth + 1)
@@ -209,9 +214,12 @@ def dump_bodystructure(bs, depth=0):
 if __name__ == "__main__":
 #    resp = [('855 (UID 46931 BODYSTRUCTURE ((("text" "plain" ("charset" "iso-8859-1") NIL NIL "quoted-printable" 886 32 NIL NIL NIL NIL)("text" "html" ("charset" "us-ascii") NIL NIL "quoted-printable" 1208 16 NIL NIL NIL NIL) "alternative" ("boundary" "----=_NextPart_001_0003_01CCC564.B2F64FF0") NIL NIL NIL)("application" "octet-stream" ("name" "Carte Verte_2.pdf") NIL NIL "base64" 285610 NIL ("attachment" ("filename" "Carte Verte_2.pdf")) NIL NIL) "mixed" ("boundary" "----=_NextPart_000_0002_01CCC564.B2F64FF0") NIL NIL NIL) BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)] {153}', 'From: <Service.client10@maaf.fr>\r\nTo: <TONIO@NGYN.ORG>\r\nCc: \r\nSubject: Notre contact du 28/12/2011 - 192175092\r\nDate: Wed, 28 Dec 2011 13:29:17 +0100\r\n\r\n'), ')']
 
- #    #resp = [('856 (UID 46936 BODYSTRUCTURE (("text" "plain" ("charset" "ISO-8859-1") NIL NIL "quoted-printable" 724 22 NIL NIL NIL NIL)("text" "html" ("charset" "ISO-8859-1") NIL NIL "quoted-printable" 2662 48 NIL NIL NIL NIL) "alternative" ("boundary" "----=_Part_1326887_254624357.1325083973970") NIL NIL NIL) BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)] {258}', 'Date: Wed, 28 Dec 2011 15:52:53 +0100 (CET)\r\nFrom: =?ISO-8859-1?Q?Malakoff_M=E9d=E9ric?= <communication@communication.malakoffmederic.com>\r\nTo: Antoine Nguyen <tonio@ngyn.org>\r\nSubject: =?ISO-8859-1?Q?Votre_inscription_au_grand_Jeu_Malakoff_M=E9d=E9ric?=\r\n\r\n'), ')']
+#    resp = [('856 (UID 46936 BODYSTRUCTURE (("text" "plain" ("charset" "ISO-8859-1") NIL NIL "quoted-printable" 724 22 NIL NIL NIL NIL)("text" "html" ("charset" "ISO-8859-1") NIL NIL "quoted-printable" 2662 48 NIL NIL NIL NIL) "alternative" ("boundary" "----=_Part_1326887_254624357.1325083973970") NIL NIL NIL) BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)] {258}', 'Date: Wed, 28 Dec 2011 15:52:53 +0100 (CET)\r\nFrom: =?ISO-8859-1?Q?Malakoff_M=E9d=E9ric?= <communication@communication.malakoffmederic.com>\r\nTo: Antoine Nguyen <tonio@ngyn.org>\r\nSubject: =?ISO-8859-1?Q?Votre_inscription_au_grand_Jeu_Malakoff_M=E9d=E9ric?=\r\n\r\n'), ')']
 
-    resp = [('856 (UID 11111 BODYSTRUCTURE ((("text" "plain" ("charset" "UTF-8") NIL NIL "7bit" 0 0 NIL NIL NIL NIL) "mixed" ("boundary" "----=_Part_407172_3159001.1321948277321") NIL NIL NIL)("application" "octet-stream" ("name" "26274308.pdf") NIL NIL "base64" 14906 NIL ("attachment" ("filename" "26274308.pdf")) NIL NIL) "mixed" ("boundary" "----=_Part_407171_9686991.1321948277321") NIL NIL NIL)',), ')']
+    resp = [
+        ('856 (UID 11111 BODYSTRUCTURE ((("text" "plain" ("charset" "UTF-8") NIL NIL "7bit" 0 0 NIL NIL NIL NIL) "mixed" ("boundary" "----=_Part_407172_3159001.1321948277321") NIL NIL NIL)("application" "octet-stream" ("name" "26274308.pdf") NIL NIL "base64" 14906 NIL ("attachment" ("filename" "26274308.pdf")) NIL NIL) "mixed" ("boundary" "----=_Part_407171_9686991.1321948277321") NIL NIL NIL)',
+         ),
+        ')']
 
 #    resp = [('19 (UID 19 FLAGS (\\Seen) BODYSTRUCTURE (("text" "plain" ("charset" "ISO-8859-1" "format" "flowed") NIL NIL "7bit" 2 1 NIL NIL NIL NIL)("message" "rfc822" ("name*" "ISO-8859-1\'\'%5B%49%4E%53%43%52%49%50%54%49%4F%4E%5D%20%52%E9%63%E9%70%74%69%6F%6E%20%64%65%20%76%6F%74%72%65%20%64%6F%73%73%69%65%72%20%64%27%69%6E%73%63%72%69%70%74%69%6F%6E%20%46%72%65%65%20%48%61%75%74%20%44%E9%62%69%74") NIL NIL "8bit" 3632 ("Wed, 13 Dec 2006 20:30:02 +0100" {70}',
 #  "[INSCRIPTION] R\xe9c\xe9ption de votre dossier d'inscription Free Haut D\xe9bit"),

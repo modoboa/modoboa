@@ -1,9 +1,13 @@
-import reversion
+"""Models related to domain aliases management."""
+
 from django.db import models
 from django.utils.translation import ugettext as _, ugettext_lazy
-from modoboa.lib.exceptions import BadRequest, Conflict
+
+import reversion
+
 from .base import AdminObject
 from .domain import Domain
+from modoboa.lib.exceptions import BadRequest, Conflict
 
 
 class DomainAlias(AdminObject):

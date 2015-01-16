@@ -7,7 +7,7 @@ from django import forms
 from django.utils.translation import ugettext as _
 
 from modoboa.lib import parameters
-from modoboa.lib.formutils import InlineRadioSelect
+from modoboa.lib.form_utils import InlineRadioSelect
 from .models import Policy, Users
 
 
@@ -48,7 +48,7 @@ class DomainPolicyForm(forms.ModelForm):
     def save(self, user, commit=True):
         policy = super(DomainPolicyForm, self).save(commit=False)
         for field in ['bypass_spam_checks', 'bypass_virus_checks',
-                  'bypass_banned_checks']:
+                      'bypass_banned_checks']:
             if getattr(policy, field) == '':
                 setattr(policy, field, None)
 

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import (
 )
 from modoboa.lib import events
 from modoboa.lib.exceptions import PermDeniedException
-from modoboa.lib.webutils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response
 from .models import RelayDomain, Service
 from .forms import RelayDomainForm, RelayDomainFormGeneral
 

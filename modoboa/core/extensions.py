@@ -1,8 +1,11 @@
+"""Extension management."""
+
 from django.conf import settings
 from django.conf.urls import include
 
 
 class ModoExtension(object):
+
     """Base extension class.
 
     Each Modoboa extension must inherit from this class to be
@@ -35,6 +38,7 @@ class ModoExtension(object):
 
 
 class ExtensionsPool(object):
+
     """The extensions manager"""
 
     def __init__(self):
@@ -44,9 +48,9 @@ class ExtensionsPool(object):
         self.extensions[ext.name] = dict(cls=ext, show=show)
 
     def get_extension(self, name):
-        if not name in self.extensions:
+        if name not in self.extensions:
             return None
-        if not "instance" in self.extensions[name]:
+        if "instance" not in self.extensions[name]:
             self.extensions[name]["instance"] = self.extensions[name]["cls"]()
         return self.extensions[name]["instance"]
 
@@ -54,7 +58,7 @@ class ExtensionsPool(object):
         """Check if an extension is enabled or not."""
         from modoboa.core.models import Extension
 
-        if not name in self.extensions:
+        if name not in self.extensions:
             return False
         try:
             state = Extension.objects.get(name=name).enabled

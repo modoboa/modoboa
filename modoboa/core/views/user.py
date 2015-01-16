@@ -1,12 +1,15 @@
+"""Simple user views."""
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
-from django.contrib.auth.decorators import login_required
+
+from modoboa.core.forms import ProfileForm
 from modoboa.lib import events, parameters
-from modoboa.lib.webutils import (
+from modoboa.lib.cryptutils import encrypt
+from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
-from modoboa.lib.cryptutils import encrypt
-from modoboa.core.forms import ProfileForm
 
 
 @login_required
@@ -31,7 +34,8 @@ def profile(request, tplname='core/user_profile.html'):
         if form.is_valid():
             form.save()
             if update_password and form.cleaned_data["confirmation"] != "":
-                request.session["password"] = encrypt(form.cleaned_data["confirmation"])
+                request.session["password"] = encrypt(
+                    form.cleaned_data["confirmation"])
             return render_to_json_response(_("Profile updated"))
         return render_to_json_response({'form_errors': form.errors}, status=400)
 

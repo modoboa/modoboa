@@ -1,8 +1,12 @@
 # coding: utf-8
-from django.utils.translation import ugettext_lazy
+
+"""Custom settings."""
+
 from django import forms
+from django.utils.translation import ugettext_lazy
+
+from modoboa.lib.form_utils import SeparatorField
 from modoboa.lib.parameters import AdminParametersForm
-from modoboa.lib.formutils import SeparatorField
 
 
 class ParametersForm(AdminParametersForm):
@@ -13,7 +17,9 @@ class ParametersForm(AdminParametersForm):
     autoreplies_timeout = forms.IntegerField(
         label=ugettext_lazy("Automatic reply timeout"),
         initial=86400,
-        help_text=ugettext_lazy("Timeout in seconds between two auto-replies to the same recipient"),
+        help_text=ugettext_lazy(
+            "Timeout in seconds between two auto-replies to the same recipient"
+        ),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
@@ -21,7 +27,8 @@ class ParametersForm(AdminParametersForm):
         label=ugettext_lazy("Default subject"),
         initial=ugettext_lazy("I'm off"),
         help_text=ugettext_lazy(
-            "Default subject used when an auto-reply message is created automatically"
+            "Default subject used when an auto-reply message is created "
+            "automatically"
         ),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )

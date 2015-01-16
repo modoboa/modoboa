@@ -3,7 +3,7 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-from modoboa.lib.dbutils import db_table_exists
+from modoboa.lib.db_utils import db_table_exists
 
 class Migration(SchemaMigration):
     

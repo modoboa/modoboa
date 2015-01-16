@@ -37,7 +37,8 @@ def populate_database():
     """
     dom = DomainFactory.create(name="test.com")
     admin = UserFactory(
-        username="admin@test.com", groups=('DomainAdmins', ), password='{PLAIN}toto'
+        username="admin@test.com", groups=('DomainAdmins', ),
+        password='{PLAIN}toto'
     )
     MailboxFactory(address='admin', domain=dom, user=admin)
     account = UserFactory.create(
@@ -59,7 +60,8 @@ def populate_database():
 
     dom2 = DomainFactory.create(name='test2.com', quota=0)
     admin = UserFactory.create(
-        username='admin@test2.com', groups=('DomainAdmins',), password='{PLAIN}toto'
+        username='admin@test2.com', groups=('DomainAdmins',),
+        password='{PLAIN}toto'
     )
     MailboxFactory.create(address='admin', domain=dom2, user=admin)
     u = UserFactory.create(

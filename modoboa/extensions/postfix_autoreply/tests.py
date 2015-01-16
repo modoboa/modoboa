@@ -82,7 +82,6 @@ class EventsTestCase(ExtTestCase):
             ARmessage.objects.get(
                 mbox__address='user', mbox__domain__name='test.com')
 
-
     def test_modify_mailbox_event(self):
         values = {
             'username': "leon@test.com",

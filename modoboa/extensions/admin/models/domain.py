@@ -1,12 +1,16 @@
-import reversion
+"""Models related to domains management."""
+
+from django.contrib.contenttypes import generic
 from django.db import models
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy
-from django.contrib.contenttypes import generic
+
+import reversion
+
+from .base import AdminObject
+from modoboa.core.models import User, ObjectAccess
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import BadRequest, Conflict
-from modoboa.core.models import User, ObjectAccess
-from .base import AdminObject
 
 
 class DomainManager(Manager):
@@ -23,6 +27,7 @@ class DomainManager(Manager):
 
 
 class Domain(AdminObject):
+
     """Mail domain.
     """
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
@@ -109,7 +114,7 @@ class Domain(AdminObject):
             ungrant_access_to_object(mb, account)
             ungrant_access_to_object(mb.user, account)
         for al in self.alias_set.all():
-             ungrant_access_to_object(al, account)
+            ungrant_access_to_object(al, account)
 
     def delete(self, fromuser, keepdir=False):
         """Custom delete method.
@@ -157,7 +162,8 @@ class Domain(AdminObject):
         try:
             self.quota = int(row[2].strip())
         except ValueError:
-            raise BadRequest(_("Invalid quota value for domain '%s'" % self.name))
+            raise BadRequest(
+                _("Invalid quota value for domain '%s'" % self.name))
         self.enabled = (row[3].strip() in ["True", "1", "yes", "y"])
         self.save(creator=user)
 
