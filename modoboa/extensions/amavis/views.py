@@ -205,8 +205,9 @@ def check_mail_id(request, mail_id):
 
 def get_user_valid_addresses(user):
     """Retrieve all valid addresses of a user."""
+    valid_addresses = []
     if user.group == 'SimpleUsers':
-        valid_addresses = user.email
+        valid_addresses.append(user.email)
         try:
             mb = Mailbox.objects.get(user=user)
         except Mailbox.DoesNotExist:
@@ -240,7 +241,7 @@ def delete(request, mail_id):
     valid_addresses = get_user_valid_addresses(request.user)
     for mid in mail_id:
         r, i = mid.split()
-        if valid_addresses is not None and r not in valid_addresses:
+        if valid_addresses and r not in valid_addresses:
             continue
         connector.set_msgrcpt_status(r, i, 'D')
     message = ungettext("%(count)d message deleted successfully",
@@ -290,7 +291,7 @@ def release(request, mail_id):
     valid_addresses = get_user_valid_addresses(request.user)
     for mid in mail_id:
         r, i = mid.split()
-        if valid_addresses is not None and r not in valid_addresses:
+        if valid_addresses and r not in valid_addresses:
             continue
         msgrcpts += [connector.get_recipient_message(r, i)]
     if request.user.group == "SimpleUsers" and \
