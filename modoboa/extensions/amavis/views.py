@@ -214,8 +214,6 @@ def get_user_valid_addresses(user):
             pass
         else:
             valid_addresses += mb.alias_addresses
-    else:
-        valid_addresses = None
     return valid_addresses
 
 
