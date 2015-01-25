@@ -176,11 +176,7 @@ def viewmail(request, mail_id):
 @login_required
 def viewheaders(request, mail_id):
     """Display message headers."""
-    content = ""
-    for qm in get_connector().get_mail_content(mail_id):
-        content += qm.mail_text
-    if type(content) is unicode:
-        content = content.encode("utf-8")
+    content = get_connector().get_mail_content(mail_id)
     msg = email.message_from_string(content)
     headers = []
     for name, value in msg.items():
@@ -348,9 +344,7 @@ def mark_messages(request, selection, mtype, recipient_db=None):
     saclient = SpamassassinClient(request.user, recipient_db)
     for item in selection:
         rcpt, mail_id = item.split()
-        content = "".join(
-            [msg.mail_text for msg in connector.get_mail_content(mail_id)]
-        )
+        content = connector.get_mail_content(mail_id)
         result = saclient.learn_spam(rcpt, content) if mtype == "spam" \
             else saclient.learn_ham(rcpt, content)
         if not result:
