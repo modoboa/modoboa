@@ -205,7 +205,7 @@ class Quarantine(models.Model):
     partition_tag = models.IntegerField(null=True, blank=True)
     mail = models.ForeignKey(Msgs, primary_key=True)
     chunk_ind = models.IntegerField()
-    mail_text = models.TextField()
+    mail_text = models.BinaryField()
 
     class Meta:
         db_table = u'quarantine'

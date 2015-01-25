@@ -176,11 +176,7 @@ def viewmail(request, mail_id):
 @login_required
 def viewheaders(request, mail_id):
     """Display message headers."""
-    content = ""
-    for qm in get_connector().get_mail_content(mail_id):
-        content += qm.mail_text
-    if isinstance(content, unicode):
-        content = content.encode("utf-8")
+    content = get_connector().get_mail_content(mail_id)
     msg = email.message_from_string(content)
     headers = []
     for name, value in msg.items():
@@ -205,16 +201,15 @@ def check_mail_id(request, mail_id):
 
 def get_user_valid_addresses(user):
     """Retrieve all valid addresses of a user."""
+    valid_addresses = []
     if user.group == 'SimpleUsers':
-        valid_addresses = user.email
+        valid_addresses.append(user.email)
         try:
             mb = Mailbox.objects.get(user=user)
         except Mailbox.DoesNotExist:
             pass
         else:
             valid_addresses += mb.alias_addresses
-    else:
-        valid_addresses = None
     return valid_addresses
 
 
@@ -240,7 +235,7 @@ def delete(request, mail_id):
     valid_addresses = get_user_valid_addresses(request.user)
     for mid in mail_id:
         r, i = mid.split()
-        if valid_addresses is not None and r not in valid_addresses:
+        if valid_addresses and r not in valid_addresses:
             continue
         connector.set_msgrcpt_status(r, i, 'D')
     message = ungettext("%(count)d message deleted successfully",
@@ -290,7 +285,7 @@ def release(request, mail_id):
     valid_addresses = get_user_valid_addresses(request.user)
     for mid in mail_id:
         r, i = mid.split()
-        if valid_addresses is not None and r not in valid_addresses:
+        if valid_addresses and r not in valid_addresses:
             continue
         msgrcpts += [connector.get_recipient_message(r, i)]
     if request.user.group == "SimpleUsers" and \
@@ -349,9 +344,7 @@ def mark_messages(request, selection, mtype, recipient_db=None):
     saclient = SpamassassinClient(request.user, recipient_db)
     for item in selection:
         rcpt, mail_id = item.split()
-        content = "".join(
-            [msg.mail_text for msg in connector.get_mail_content(mail_id)]
-        )
+        content = connector.get_mail_content(mail_id)
         result = saclient.learn_spam(rcpt, content) if mtype == "spam" \
             else saclient.learn_ham(rcpt, content)
         if not result:
