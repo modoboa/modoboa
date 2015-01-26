@@ -96,8 +96,14 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             if cleaned_data[k] == "":
                 del cleaned_data[k]
                 continue
+            if cleaned_data[k] == name:
+                self._errors[k] = self.error_class(
+                    [_("A %s with this name already exists") % _("domain")]
+                )
+                del cleaned_data[k]
+                continue
             label = check_if_domain_exists(
-                cleaned_data[k], [(Domain, _('domain'))])
+                cleaned_data[k], [(Domain, _("domain"))])
             if label is not None:
                 self._errors[k] = self.error_class(
                     [_("A %s with this name already exists" % unicode(label))]
