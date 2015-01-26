@@ -109,10 +109,6 @@ def check_if_domain_exists(name, extra_checks=None):
     if extra_checks is not None:
         dtypes = extra_checks + dtypes
     for dtype, label in dtypes:
-        try:
-            dtype.objects.get(name=name)
-        except dtype.DoesNotExist:
-            pass
-        else:
+        if dtype.objects.filter(name=name).exists():
             return label
     return None
