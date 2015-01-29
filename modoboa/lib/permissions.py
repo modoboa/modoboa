@@ -1,7 +1,9 @@
 # coding: utf-8
+
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _
 from django.db import IntegrityError
+from django.utils.translation import ugettext as _
+
 from modoboa.core.models import ObjectAccess, User
 from modoboa.lib import events
 

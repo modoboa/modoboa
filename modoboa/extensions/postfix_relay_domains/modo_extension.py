@@ -18,6 +18,19 @@ EXTENSION_EVENTS = [
     "FillRelayDomainInstances"
 ]
 
+RESELLERS_PERMISSIONS = [
+    ("postfix_relay_domains", "relaydomain", "add_relaydomain"),
+    ("postfix_relay_domains", "relaydomain", "change_relaydomain"),
+    ("postfix_relay_domains", "relaydomain", "delete_relaydomain"),
+    ("postfix_relay_domains", "relaydomainalias", "add_relaydomainalias"),
+    ("postfix_relay_domains", "relaydomainalias", "change_relaydomainalias"),
+    ("postfix_relay_domains", "relaydomainalias", "delete_relaydomainalias"),
+    ("postfix_relay_domains", "service", "add_service"),
+    ("postfix_relay_domains", "service", "change_service"),
+    ("postfix_relay_domains", "service", "delete_service")
+]
+
+
 class PostfixRelayDomains(ModoExtension):
 
     """Extension declaration."""

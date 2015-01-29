@@ -4,6 +4,9 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 
 from modoboa.core.extensions import exts_pool
+from modoboa.lib.migration_tools import add_permissions_to_group
+
+from ..modo_extension import RESELLERS_PERMISSIONS
 
 
 def load_initial_data(apps, schema_editor):
@@ -16,11 +19,6 @@ def load_initial_data(apps, schema_editor):
         return
 
     Group = apps.get_model("auth", "Group")
-    Permission = apps.get_model("auth", "Permission")
-    ContentType = apps.get_model("contenttypes", "ContentType")
-    RelayDomain = apps.get_model("postfix_relay_domains", "RelayDomain")
-    RelayDomainAlias = apps.get_model(
-        "postfix_relay_domains", "RelayDomainAlias")
     LimitsPool = apps.get_model("limits", "LimitsPool")
     Limit = apps.get_model("limits", "Limit")
 
@@ -33,17 +31,7 @@ def load_initial_data(apps, schema_editor):
 
     # Add new permissions to the Resellers group.
     grp = Group.objects.get(name='Resellers')
-    for model in [RelayDomain, RelayDomainAlias, Service]:
-        ct = ContentType.objects.get_for_model(model)
-        name = model.__name__.lower()
-        for action in ['add', 'change', 'delete']:
-            grp.permissions.add(
-                Permission.objects.get(
-                    content_type=ct, codename='%s_%s' % (action, name)
-                )
-            )
-    grp.save()
-
+    add_permissions_to_group(apps, grp, RESELLERS_PERMISSIONS)
 
 
 class Migration(migrations.Migration):
