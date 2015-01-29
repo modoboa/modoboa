@@ -6,6 +6,7 @@ import sys
 
 import subprocess
 
+import django
 from django.core import management
 from django.template import Context, Template
 
@@ -138,6 +139,7 @@ class DeployCommand(Command):
         return info
 
     def handle(self, parsed_args):
+        django.setup()
         management.call_command(
             'startproject', parsed_args.name, verbosity=False
         )
@@ -215,17 +217,10 @@ class DeployCommand(Command):
         os.unlink("%s/settings.pyc" % path)
         if parsed_args.dbaction == "install":
             self._exec_django_command(
-                "syncdb", parsed_args.name, '--noinput'
-            )
-            exec_cmd('sed -ri "s|^#(\s+\'south)|\\1|" %s/settings.py' % path)
-            self._exec_django_command(
-                "syncdb", parsed_args.name,
+                "migrate", parsed_args.name, '--noinput'
             )
             self._exec_django_command(
-                'migrate', parsed_args.name, '--fake'
-            )
-            self._exec_django_command(
-                "loaddata", parsed_args.name, 'initial_users.json'
+                "load_initial_data", parsed_args.name
             )
         elif parsed_args.dbaction == "upgrade":
             exec_cmd('sed -ri "s|^#(\s+\'south)|\\1|" %s/settings.py' % path)

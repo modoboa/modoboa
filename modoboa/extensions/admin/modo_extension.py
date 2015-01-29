@@ -45,6 +45,24 @@ ADMIN_EVENTS = [
     "ImportObject"
 ]
 
+PERMISSIONS = {
+    "DomainAdmins": [
+        ["admin", "domain", "view_domain"],
+        ["admin", "mailbox", "add_mailbox"],
+        ["admin", "mailbox", "change_mailbox"],
+        ["admin", "mailbox", "delete_mailbox"],
+        ["admin", "alias", "add_alias"],
+        ["admin", "alias", "change_alias"],
+        ["admin", "alias", "delete_alias"],
+        ["admin", "mailbox", "view_mailboxes"],
+        ["admin", "alias", "view_aliases"],
+        ["admin", "domainalias", "view_domainaliases"],
+        ["admin", "domainalias", "add_domainalias"],
+        ["admin", "domainalias", "change_domainalias"],
+        ["admin", "domainalias", "delete_domainalias"]
+    ]
+}
+
 
 class AdminConsole(ModoExtension):
     name = "admin"
@@ -62,6 +80,12 @@ class AdminConsole(ModoExtension):
         events.declare(ADMIN_EVENTS)
 
 exts_pool.register_extension(AdminConsole)
+
+
+@events.observe("GetExtraRolePermissions")
+def extra_permissions(rolename):
+    """Return extra permissions for :kw:`rolename`."""
+    return PERMISSIONS.get(rolename, [])
 
 
 @events.observe("ExtraUprefsRoutes")

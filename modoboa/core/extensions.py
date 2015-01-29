@@ -29,6 +29,10 @@ class ModoExtension(object):
             always_active=self.always_active
         )
 
+    def load_initial_data(self):
+        """Declare extension data in this method."""
+        pass
+
     def load(self):
         pass
 

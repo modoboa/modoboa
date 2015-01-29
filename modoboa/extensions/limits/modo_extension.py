@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy
 
 from modoboa.core.extensions import ModoExtension, exts_pool
 from modoboa.lib import events, parameters
+from .models import LimitsPool, Limit
 
 
 EVENTS = [
@@ -31,5 +32,12 @@ class Limits(ModoExtension):
         parameters.register(ParametersForm, ugettext_lazy("Limits"))
         events.declare(EVENTS)
         from modoboa.extensions.limits import general_callbacks
+
+    def load_initial_data(self):
+        """Complete existing pools with new limits."""
+        new_limits = ["relay_domains_limit", "relay_domain_aliases_limit"]
+        for pool in LimitsPool.objects.all():
+            for lname in new_limits:
+                Limit.objects.get_or_create(name=lname, pool=pool, maxvalue=0)
 
 exts_pool.register_extension(Limits)

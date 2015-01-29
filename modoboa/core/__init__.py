@@ -18,6 +18,7 @@ BASE_EVENTS = [
     "ExtraAccountActions",
     "RoleChanged",
     "GetExtraRoles",
+    "GetExtraRolePermissions",
     "PasswordChange",
     "UserCanSetRole",
 
@@ -40,6 +41,15 @@ BASE_EVENTS = [
     "ExtraFormFields",
     "SaveExtraFormFields",
 ]
+
+PERMISSIONS = {
+    "DomainAdmins": [
+        ["core", "user", "add_user"],
+        ["core", "user", "change_user"],
+        ["core", "user", "delete_user"],
+    ],
+    "SimpleUsers": []
+}
 
 
 def load_core_settings():

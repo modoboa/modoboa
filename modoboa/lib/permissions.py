@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db import IntegrityError
 from django.utils.translation import ugettext as _
@@ -147,3 +148,18 @@ def get_object_owner(obj):
     except ObjectAccess.DoesNotExist:
         return None
     return entry.user
+
+
+def add_permissions_to_group(group, permissions):
+    """Add the specified permissions to a django group."""
+    if isinstance(group, basestring):
+        group = Group.objects.get(name=group)
+
+    for appname, modelname, permname in permissions:
+        ct = ContentType.objects.get_by_natural_key(appname, modelname)
+        if group.permissions.filter(
+                content_type=ct, codename=permname).exists():
+            continue
+        group.permissions.add(
+            Permission.objects.get(content_type=ct, codename=permname)
+        )

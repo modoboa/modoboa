@@ -6,8 +6,33 @@ from django.db.models import Q
 from django.template import Template, Context
 from django.utils.translation import ugettext_lazy
 
-from .models import RelayDomain, RelayDomainAlias
+from modoboa.core.extensions import exts_pool
 from modoboa.lib import events
+from .models import RelayDomain, RelayDomainAlias
+
+PERMISSIONS = {
+    "Resellers": [
+        ("postfix_relay_domains", "relaydomain", "add_relaydomain"),
+        ("postfix_relay_domains", "relaydomain", "change_relaydomain"),
+        ("postfix_relay_domains", "relaydomain", "delete_relaydomain"),
+        ("postfix_relay_domains", "relaydomainalias", "add_relaydomainalias"),
+        ("postfix_relay_domains", "relaydomainalias",
+         "change_relaydomainalias"),
+        ("postfix_relay_domains", "relaydomainalias",
+         "delete_relaydomainalias"),
+        ("postfix_relay_domains", "service", "add_service"),
+        ("postfix_relay_domains", "service", "change_service"),
+        ("postfix_relay_domains", "service", "delete_service")
+    ]
+}
+
+
+@events.observe("GetExtraRolePermissions")
+def extra_permissions(rolename):
+    """Return extra permissions for Resellers."""
+    if not exts_pool.is_extension_installed("modoboa.extensions.limit"):
+        return []
+    return PERMISSIONS.get(rolename, [])
 
 
 @events.observe('GetStaticContent')
