@@ -6,11 +6,13 @@ from django.conf.urls import include
 
 class ModoExtension(object):
 
-    """Base extension class.
+    """
+    Base extension class.
 
     Each Modoboa extension must inherit from this class to be
     considered as valid.
     """
+
     name = None
     label = None
     version = "NA"
@@ -27,12 +29,6 @@ class ModoExtension(object):
             always_active=self.always_active
         )
 
-    def init(self):
-        pass
-
-    def destroy(self):
-        pass
-
     def load(self):
         pass
 
@@ -45,26 +41,24 @@ class ExtensionsPool(object):
         self.extensions = {}
 
     def register_extension(self, ext, show=True):
+        """Register an extension.
+
+        :param ext: a class inheriting from ``Extension``
+        :param show: list the extension or not
+        """
         self.extensions[ext.name] = dict(cls=ext, show=show)
 
     def get_extension(self, name):
+        """Retrieve the current instance of an extension."""
         if name not in self.extensions:
             return None
         if "instance" not in self.extensions[name]:
             self.extensions[name]["instance"] = self.extensions[name]["cls"]()
         return self.extensions[name]["instance"]
 
-    def is_extension_enabled(self, name):
-        """Check if an extension is enabled or not."""
-        from modoboa.core.models import Extension
-
-        if name not in self.extensions:
-            return False
-        try:
-            state = Extension.objects.get(name=name).enabled
-        except Extension.DoesNotExist:
-            state = False
-        return state
+    def is_extension_installed(self, name):
+        """Check if an extension is installed ir not."""
+        return name in settings.MODOBOA_APPS
 
     def get_extension_infos(self, name):
         instance = self.get_extension(name)
@@ -73,7 +67,7 @@ class ExtensionsPool(object):
         return instance.infos()
 
     def load_all(self):
-        """Load all enabled extensions.
+        """Load all defined extensions.
 
         Each extension must be loaded in order to integrate with
         Modoboa. Only enabled and special extensions are loaded but
@@ -83,11 +77,9 @@ class ExtensionsPool(object):
 
         :return: a list of url maps
         """
-        from modoboa.core.models import Extension
-
         result = []
         for ext in settings.MODOBOA_APPS:
-            __import__(ext)
+            __import__(ext, locals(), globals(), ["modo_extension"])
             extname = ext.split('.')[-1]
             extinstance = self.get_extension(extname)
             if extinstance is None:
@@ -97,25 +89,16 @@ class ExtensionsPool(object):
                     if extinstance.url is not None else extname
                 result += [
                     (r'^%s/' % (baseurl),
-                     include("%s.urls" % extinstance.__module__,
-                             namespace=extname))
+                     include("{0}.urls".format(ext), namespace=extname))
                 ]
             except ImportError:
                 # No urls for this extension
                 pass
-            if not extinstance.always_active:
-                try:
-                    ext = Extension.objects.get(name=extname)
-                    if not ext.enabled:
-                        continue
-                except Extension.DoesNotExist:
-                    continue
             extinstance.load()
         return result
 
     def list_all(self):
-        """List all defined extensions.
-        """
+        """List all defined extensions."""
         result = []
         for extname, extdef in self.extensions.iteritems():
             if not extdef["show"]:

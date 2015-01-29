@@ -16,20 +16,3 @@ def top_menu(target, user):
              "url": reverse('radicale:index')}
         ]
     return []
-
-
-@events.observe('ExtEnabled')
-def extension_enabled(extension):
-    """ExtEnabled event listener.
-
-    Usefull when *limits* extension is activated after *radicale*.
-
-    :param extension: enabled extension
-
-    """
-    if extension.name == 'limits':
-        from modoboa.extensions.radicale import (
-            init_limits_dependant_features
-        )
-
-        init_limits_dependant_features()

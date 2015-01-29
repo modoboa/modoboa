@@ -266,28 +266,6 @@ creator.
 * ``owner`` is the original creator
 * ``domain`` is the ``Domain`` instance being modified
 
-ExtDisabled
-===========
-
-Raised just after an extension has been disabled. 
-
-*Callback prototype*::
-
-  def callback(extension): pass
-
-* ``extension`` is an ``Extension`` instance
-
-ExtEnabled
-==========
-
-Raised just after an extension has been activated. 
-
-*Callback prototype*::
-
-  def callback(extension): pass
-
-* ``extension`` is an ``Extension`` instance
-
 ExtraAccountActions
 ===================
 

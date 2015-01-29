@@ -86,7 +86,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'modoboa.lib.middleware.AjaxLoginRedirect',
     'modoboa.lib.middleware.CommonExceptionCatcher',
-    'modoboa.lib.middleware.ExtControlMiddleware',
     'modoboa.lib.middleware.RequestCatcherMiddleware',
 )
 

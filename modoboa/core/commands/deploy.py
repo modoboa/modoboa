@@ -64,10 +64,6 @@ class DeployCommand(Command):
             '--domain', type=str, default=None,
             help='The domain under which you want to deploy modoboa')
         self._parser.add_argument(
-            '--extensions', type=str, nargs='*',
-            help='Deploy with those extensions already enabled'
-        )
-        self._parser.add_argument(
             '--lang', type=str, default="en-us",
             help="Set the default language"
         )
@@ -240,11 +236,6 @@ class DeployCommand(Command):
         if parsed_args.collectstatic:
             self._exec_django_command(
                 "collectstatic", parsed_args.name, '--noinput'
-            )
-
-        if parsed_args.extensions:
-            self._exec_django_command(
-                "manage_extensions", parsed_args.name, *parsed_args.extensions
             )
 
         self._exec_django_command(

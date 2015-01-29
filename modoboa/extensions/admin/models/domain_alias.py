@@ -11,6 +11,9 @@ from modoboa.lib.exceptions import BadRequest, Conflict
 
 
 class DomainAlias(AdminObject):
+
+    """Domain aliases."""
+
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
                             help_text=ugettext_lazy("The alias name"))
     target = models.ForeignKey(
@@ -19,7 +22,8 @@ class DomainAlias(AdminObject):
     )
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
-        help_text=ugettext_lazy("Check to activate this alias")
+        help_text=ugettext_lazy("Check to activate this alias"),
+        default=True
     )
 
     class Meta:

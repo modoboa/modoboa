@@ -127,21 +127,3 @@ def get_import_func(objtype):
     if objtype == 'relaydomainalias':
         return [import_relaydomainalias]
     return []
-
-
-@events.observe('ExtEnabled')
-def extension_enabled(extension):
-    """ExtEnabled event listener.
-
-    Usefull when *limits* or *amavis* extensions are activated after
-    *postfix_relay_domains*.
-
-    :param extension: enabled extension
-    """
-    from modoboa.extensions.postfix_relay_domains import (
-        init_limits_dependant_features, init_amavis_dependant_features
-    )
-    if extension.name == 'limits':
-        init_limits_dependant_features()
-    if extension.name == 'amavis':
-        init_amavis_dependant_features()

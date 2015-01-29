@@ -2,35 +2,13 @@
 
 """Custom middlewares."""
 
-import re
+from django.http import HttpResponseRedirect
 
-from django.http import Http404, HttpResponseRedirect
-
-from modoboa.core.extensions import exts_pool
-from modoboa.core.models import Extension
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.signals import request_accessor
 from modoboa.lib.web_utils import (
     _render_error, ajax_response, render_to_json_response
 )
-
-
-class ExtControlMiddleware(object):
-
-    def process_view(self, request, view, args, kwargs):
-        m = re.match(r"modoboa\.extensions\.(\w+)", view.__module__)
-        if m is None:
-            return None
-        try:
-            ext = Extension.objects.get(name=m.group(1))
-        except Extension.DoesNotExist:
-            extdef = exts_pool.get_extension(m.group(1))
-            if extdef.always_active:
-                return None
-            raise Http404
-        if ext.enabled:
-            return None
-        raise Http404
 
 
 class AjaxLoginRedirect(object):

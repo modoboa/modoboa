@@ -97,7 +97,8 @@ class LogParser(object):
         for dom in Domain.objects.all():
             self.domains += [str(dom.name)]
             self.data[str(dom.name)] = {}
-        if not exts_pool.is_extension_enabled("postfix_relay_domains"):
+        if not exts_pool.is_extension_installed(
+                "modoboa.extensions.postfix_relay_domains"):
             return
         from modoboa.extensions.postfix_relay_domains.models import RelayDomain
         for rdom in RelayDomain.objects.all():

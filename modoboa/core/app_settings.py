@@ -9,7 +9,7 @@ from modoboa.lib.form_utils import YesNoField, SeparatorField, InlineRadioSelect
 
 
 def enabled_applications():
-    """Return the list of currently enabled extensions
+    """Return the list of installed extensions.
 
     We check if the table exists before trying to fetch activated
     extensions because the admin module is always imported by Django,
@@ -17,19 +17,11 @@ def enabled_applications():
 
     :return: a list
     """
-    from modoboa.core.models import Extension
     from modoboa.core.extensions import exts_pool
-    from modoboa.lib.db_utils import db_table_exists
 
     result = [("user", "user")]
-    if db_table_exists("core_extension"):
-        exts = Extension.objects.filter(enabled=True)
-        for ext in exts:
-            extclass = exts_pool.get_extension(ext.name)
-            if extclass is None:
-                continue
-            if extclass.available_for_topredirection:
-                result.append((ext.name, ext.name))
+    for extension in exts_pool.list_all():
+        result.append((extension["name"], extension["name"]))
     return sorted(result, key=lambda e: e[0])
 
 

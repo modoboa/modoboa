@@ -86,14 +86,16 @@ class RelayDomain(AdminObject):
         ugettext_lazy('target host'), max_length=255,
         help_text=ugettext_lazy('Remote destination of this domain')
     )
-    service = models.ForeignKey(Service, default='relay')
+    service = models.ForeignKey(Service)
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
-        help_text=ugettext_lazy('Check to activate this domain')
+        help_text=ugettext_lazy('Check to activate this domain'),
+        default=True
     )
     verify_recipients = models.BooleanField(
         ugettext_lazy('verify recipients'),
-        help_text=ugettext_lazy('Check for valid recipients')
+        help_text=ugettext_lazy('Check for valid recipients'),
+        default=False
     )
 
     owners = generic.GenericRelation(ObjectAccess)
@@ -173,7 +175,8 @@ class RelayDomainAlias(AdminObject):
     )
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
-        help_text=ugettext_lazy("Check to activate this alias")
+        help_text=ugettext_lazy("Check to activate this alias"),
+        default=True
     )
 
     def __str__(self):
