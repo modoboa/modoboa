@@ -183,7 +183,7 @@ class DynamicForm(object):
         if pos:
             order = self.fields.keys()
             order.remove(name)
-            order.insert(post, name)
+            order.insert(pos, name)
             self.fields = OrderedDict((key, self.fields[key]) for key in order)
 
     def _load_from_qdict(self, qdict, pattern, typ):
