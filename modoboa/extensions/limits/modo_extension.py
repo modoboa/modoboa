@@ -7,8 +7,9 @@ The *limits* extension
 from django.utils.translation import ugettext_lazy
 
 from modoboa.core.extensions import ModoExtension, exts_pool
+from modoboa.core.models import User
 from modoboa.lib import events, parameters
-from .models import LimitsPool, Limit
+from .models import LimitTemplates, LimitsPool, Limit
 
 
 EVENTS = [
@@ -34,10 +35,10 @@ class Limits(ModoExtension):
         from modoboa.extensions.limits import general_callbacks
 
     def load_initial_data(self):
-        """Complete existing pools with new limits."""
-        new_limits = ["relay_domains_limit", "relay_domain_aliases_limit"]
-        for pool in LimitsPool.objects.all():
-            for lname in new_limits:
-                Limit.objects.get_or_create(name=lname, pool=pool, maxvalue=0)
+        """Create pools for existing accounts."""
+        for user in User.objects.filter(groups__name="DomainAdmins"):
+            pool, created = LimitsPool.objects.get_or_create(user=user)
+            for tpl in LimitTemplates().templates:
+                Limit.objects.get_or_create(name=tpl[0], pool=pool, maxvalue=0)
 
 exts_pool.register_extension(Limits)

@@ -2,6 +2,8 @@
 
 """Custom forms."""
 
+from collections import OrderedDict
+
 from django import forms
 from django.utils import timezone
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -44,9 +46,10 @@ class ARmessageForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ARmessageForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = [
-            'subject', 'content', 'fromdate', 'untildate', 'enabled'
-        ]
+        self.fields = OrderedDict(
+            (key, self.fields[key]) for key in
+            ['subject', 'content', 'fromdate', 'untildate', 'enabled']
+        )
         if 'instance' in kwargs and kwargs['instance'] is not None:
             self.fields['fromdate'].initial = \
                 kwargs['instance'].fromdate.replace(second=0, microsecond=0)

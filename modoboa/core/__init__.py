@@ -22,6 +22,8 @@ BASE_EVENTS = [
     "PasswordChange",
     "UserCanSetRole",
 
+    "InitialDataLoaded",
+
     "UserMenuDisplay",
     "AdminMenuDisplay",
     "GetStaticContent",

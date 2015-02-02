@@ -3,6 +3,7 @@
 """Form management utilities."""
 
 import abc
+from collections import OrderedDict
 import re
 
 from django.core.exceptions import ValidationError
@@ -180,8 +181,10 @@ class DynamicForm(object):
         if value is not None:
             self.fields[name].initial = value
         if pos:
-            self.fields.keyOrder.remove(name)
-            self.fields.keyOrder.insert(pos, name)
+            order = self.fields.keys()
+            order.remove(name)
+            order.insert(post, name)
+            self.fields = OrderedDict((key, self.fields[key]) for key in order)
 
     def _load_from_qdict(self, qdict, pattern, typ):
         """Load all instances of a field from a ``QueryDict`` object.

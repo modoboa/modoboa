@@ -30,7 +30,7 @@ PERMISSIONS = {
 @events.observe("GetExtraRolePermissions")
 def extra_permissions(rolename):
     """Return extra permissions for Resellers."""
-    if not exts_pool.is_extension_installed("modoboa.extensions.limit"):
+    if not exts_pool.is_extension_installed("modoboa.extensions.limits"):
         return []
     return PERMISSIONS.get(rolename, [])
 

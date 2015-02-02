@@ -1,27 +1,37 @@
+"""Factories for core application."""
+
 import factory
+
 from django.contrib.auth.models import Group
+
 from . import models
 
 
 class PermissionFactory(factory.DjangoModelFactory):
-    ABSTRACT_FACTORY = True
+
+    class Meta:
+        abstract = True
 
     @factory.post_generation
     def set_permission(self, create, extracted, **kwargs):
         if not create:
             return
-        self.post_create(models.User.objects.get(pk=1))
+        self.post_create(models.User.objects.filter(is_superuser=True).first())
 
 
 class GroupFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Group
+
+    class Meta:
+        model = Group
 
     name = 'DefaultGroup'
 
 
 class UserFactory(PermissionFactory):
-    FACTORY_FOR = models.User
-    FACTORY_DJANGO_GET_OR_CREATE = ("username", )
+
+    class Meta:
+        model = models.User
+        django_get_or_create = ("username", )
 
     email = factory.LazyAttribute(lambda a: a.username)
     password = '{PLAIN}toto'

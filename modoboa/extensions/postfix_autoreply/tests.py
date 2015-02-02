@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from modoboa.core.models import User
-from modoboa.lib.tests import ExtTestCase
+from modoboa.lib.tests import ModoTestCase
 from modoboa.extensions.admin import factories
 from modoboa.extensions.admin.models import (
     Domain
@@ -10,12 +10,11 @@ from modoboa.extensions.postfix_autoreply.models import (
 )
 
 
-class EventsTestCase(ExtTestCase):
+class EventsTestCase(ModoTestCase):
     fixtures = ['initial_users.json']
 
     def setUp(self):
         super(EventsTestCase, self).setUp()
-        self.activate_extensions('postfix_autoreply')
         factories.populate_database()
 
     def test_domain_created_event(self):
@@ -100,12 +99,11 @@ class EventsTestCase(ExtTestCase):
         al = Alias.objects.get(full_address='leon@test.com')
 
 
-class FormTestCase(ExtTestCase):
+class FormTestCase(ModoTestCase):
     fixtures = ['initial_users.json']
 
     def setUp(self):
         super(FormTestCase, self).setUp()
-        self.activate_extensions('postfix_autoreply')
         factories.populate_database()
 
     # def test_set_autoreply(self):

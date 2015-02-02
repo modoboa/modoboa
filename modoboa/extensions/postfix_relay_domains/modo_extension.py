@@ -41,4 +41,15 @@ class PostfixRelayDomains(ModoExtension):
         if exts_pool.is_extension_installed("modoboa.extensions.amavis"):
             import amavis_callbacks
 
+    def load_initial_data(self):
+        """Create extension data."""
+        from .models import Service
+        for service_name in ['relay', 'smtp']:
+            Service.objects.get_or_create(name=service_name)
+
+        if not exts_pool.is_extension_installed("modoboa.extensions.limits"):
+            return
+        from .limits_callbacks import create_new_limits
+        create_new_limits()
+
 exts_pool.register_extension(PostfixRelayDomains)

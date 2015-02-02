@@ -25,15 +25,17 @@ class Command(BaseCommand, CloseConnectionMixin):
     def handle(self, *args, **options):
         """Command entry point."""
 
-        if not User.objects.filter(pk=1, username="admin").exists():
+        if not User.objects.filter(is_superuser=True).count():
             admin = User(username="admin", is_superuser=True)
             admin.set_password("password")
             admin.save()
             ObjectAccess.objects.create(
                 user=admin, content_object=admin, is_owner=True)
 
+        superadmin = User.objects.filter(is_superuser=True).first()
         groups = PERMISSIONS.keys() + [
-            role[0] for role in events.raiseQueryEvent("GetExtraRoles")
+            role[0] for role
+            in events.raiseQueryEvent("GetExtraRoles", superadmin)
         ]
         for groupname in groups:
             group, created = Group.objects.get_or_create(name=groupname)
@@ -49,3 +51,4 @@ class Command(BaseCommand, CloseConnectionMixin):
         for extname in exts_pool.extensions.keys():
             extension = exts_pool.get_extension(extname)
             extension.load_initial_data()
+            events.raiseEvent("InitialDataLoaded", extname)

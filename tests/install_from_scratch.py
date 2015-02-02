@@ -66,7 +66,7 @@ class DeployTest(unittest.TestCase):
                self.dbhost, self.projname)
         cmd = (
             "modoboa-admin.py deploy --dbaction install --collectstatic "
-            "--dburl %s --extensions all --domain %s %s"
+            "--dburl %s --domain %s %s"
             % (dburl, 'localhost', self.projname)
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)

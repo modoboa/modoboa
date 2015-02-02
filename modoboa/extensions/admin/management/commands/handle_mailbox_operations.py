@@ -9,7 +9,6 @@ from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.exceptions import InternalError
-from modoboa.extensions.admin import AdminConsole
 from modoboa.extensions.admin.models import MailboxOperation
 
 
@@ -75,7 +74,6 @@ class Command(BaseCommand, CloseConnectionMixin):
         return True
 
     def handle(self, *args, **options):
-        AdminConsole().load()
         try:
             if parameters.get_admin("HANDLE_MAILBOXES") == 'no':
                 return

@@ -10,15 +10,14 @@ from modoboa.extensions.admin.factories import (
 from modoboa.extensions.admin.models import Alias, Domain
 from modoboa.extensions.limits.models import LimitTemplates
 from modoboa.lib import parameters
-from modoboa.lib.tests import ExtTestCase
+from modoboa.lib.tests import ModoTestCase
 
 
-class PermissionsTestCase(ExtTestCase):
+class PermissionsTestCase(ModoTestCase):
     fixtures = ["initial_users.json"]
 
     def setUp(self):
         super(PermissionsTestCase, self).setUp()
-        self.activate_extensions('limits')
         populate_database()
 
     def test_domainadmin_deletes_reseller(self):
@@ -42,7 +41,7 @@ class PermissionsTestCase(ExtTestCase):
         self.assertEqual(resp, "Permission denied")
 
 
-class ResourceTestCase(ExtTestCase):
+class ResourceTestCase(ModoTestCase):
     fixtures = ["initial_users.json"]
 
     def setUp(self):
@@ -52,7 +51,6 @@ class ResourceTestCase(ExtTestCase):
         provided by 'postfix_relay_domains' are properly received.
         """
         super(ResourceTestCase, self).setUp()
-        self.activate_extensions('limits')
         for tpl in LimitTemplates().templates:
             parameters.save_admin('DEFLT_%s' % tpl[0].upper(), 2, app='limits')
         populate_database()

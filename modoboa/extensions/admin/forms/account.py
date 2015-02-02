@@ -1,5 +1,7 @@
 """Forms related to accounts management."""
 
+from collections import OrderedDict
+
 from django import forms
 from django.core.urlresolvers import reverse
 from django.http import QueryDict
@@ -49,8 +51,11 @@ class AccountFormGeneral(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(AccountFormGeneral, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['role', 'username', 'first_name', 'last_name',
-                                'password1', 'password2', 'is_active']
+        self.fields = OrderedDict(
+            (key, self.fields[key]) for key in
+            ['role', 'username', 'first_name', 'last_name', 'password1',
+             'password2', 'is_active']
+        )
         self.fields["is_active"].label = _("Enabled")
         self.user = user
         if user.group == "DomainAdmins":
