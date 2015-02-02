@@ -8,7 +8,7 @@
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
-from modoboa.core import PERMISSIONS
+from modoboa.core import load_core_settings, PERMISSIONS
 from modoboa.core.extensions import exts_pool
 from modoboa.core.models import User, ObjectAccess
 from modoboa.lib import events
@@ -24,6 +24,7 @@ class Command(BaseCommand, CloseConnectionMixin):
 
     def handle(self, *args, **options):
         """Command entry point."""
+        load_core_settings()
 
         if not User.objects.filter(is_superuser=True).count():
             admin = User(username="admin", is_superuser=True)
@@ -31,6 +32,8 @@ class Command(BaseCommand, CloseConnectionMixin):
             admin.save()
             ObjectAccess.objects.create(
                 user=admin, content_object=admin, is_owner=True)
+
+        exts_pool.load_all()
 
         superadmin = User.objects.filter(is_superuser=True).first()
         groups = PERMISSIONS.keys() + [
@@ -47,7 +50,6 @@ class Command(BaseCommand, CloseConnectionMixin):
                 continue
             add_permissions_to_group(group, permissions)
 
-        exts_pool.load_all()
         for extname in exts_pool.extensions.keys():
             extension = exts_pool.get_extension(extname)
             extension.load_initial_data()
