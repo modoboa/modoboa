@@ -63,26 +63,19 @@ class ARmessageForm(forms.ModelForm):
 
         """
         super(ARmessageForm, self).clean()
-        if self._errors:
-            raise forms.ValidationError(self._errors)
         if not self.cleaned_data["enabled"]:
             return self.cleaned_data
         if self.cleaned_data["fromdate"] is not None:
             if self.cleaned_data["fromdate"] < timezone.now():
-                self._errors["fromdate"] = self.error_class(
-                    [_("This date is over")])
-                del self.cleaned_data['fromdate']
+                self.add_error("fromdate", _("This date is over"))
         else:
             self.cleaned_data['fromdate'] = timezone.now()
         if self.cleaned_data["untildate"] is not None:
             untildate = self.cleaned_data["untildate"]
             if untildate < timezone.now():
-                self._errors["untildate"] = self.error_class(
-                    [_("This date is over")])
-                del self.cleaned_data["untildate"]
+                self.add_error("untildate", _("This date is over"))
             elif "fromdate" in self.cleaned_data and \
                     untildate < self.cleaned_data["fromdate"]:
-                self._errors["untildate"] = \
-                    self.error_class([_("Must be greater than start date")])
-                del self.cleaned_data["untildate"]
+                self.add_error(
+                    "untildate", _("Must be greater than start date"))
         return self.cleaned_data

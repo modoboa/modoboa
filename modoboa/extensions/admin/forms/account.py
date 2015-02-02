@@ -208,14 +208,10 @@ class AccountFormMail(forms.Form, DynamicForm):
         Check if quota is >= 0 only when the domain value is not used.
         """
         super(AccountFormMail, self).clean()
-        if self._errors:
-            raise forms.ValidationError(self._errors)
         if not self.cleaned_data["quota_act"] \
                 and self.cleaned_data['quota'] is not None:
             if self.cleaned_data["quota"] < 0:
-                self._errors["quota"] = self.error_class(
-                    [_("Must be a positive integer")])
-                del self.cleaned_data["quota"]
+                self.add_error("quota", _("Must be a positive integer"))
         return self.cleaned_data
 
     def create_mailbox(self, user, account):

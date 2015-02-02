@@ -285,8 +285,6 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         required parameters.
         """
         super(GeneralParametersForm, self).clean()
-        if len(self._errors):
-            raise forms.ValidationError(self._errors)
         cleaned_data = self.cleaned_data
         if cleaned_data["authentication_type"] != "ldap":
             return cleaned_data
@@ -298,8 +296,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
         for f in required_fields:
             if f not in cleaned_data or cleaned_data[f] == u'':
-                self._errors[f] = self.error_class(
-                    [_("This field is required")])
+                self.add_error(f, _("This field is required"))
 
         return cleaned_data
 

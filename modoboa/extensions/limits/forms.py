@@ -37,8 +37,7 @@ class ResourcePoolForm(forms.Form):
         cleaned_data = super(ResourcePoolForm, self).clean()
         for lname in self.fields.keys():
             if lname not in self._errors and cleaned_data[lname] < -1:
-                self._errors[lname] = self.error_class([_('Invalid limit')])
-                del cleaned_data[lname]
+                self.add_error(lname, _("Invalid limit"))
         return cleaned_data
 
     def load_from_user(self, user):
