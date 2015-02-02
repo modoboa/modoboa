@@ -591,6 +591,29 @@ Raised to request extra parameters for a given parameters form.
 
 Must return a dictionary. Each entry must be a valid Django form field.
 
+.. _getextrarolepermissions:
+
+GetExtraRolePermissions
+=======================
+
+Let extensions define new permissions for a given role.
+
+*Callback prototype*::
+
+  def callback(rolename): pass
+
+* ``rolename`` is the role's name (str)
+
+Callbacks listening to this event must return a list of list. The
+second list level must contain exactly 3 strings: the application
+name, the model name and the permission name. Example::
+
+    [
+        ["core", "user", "add_user"],
+        ["core", "user", "change_user"],
+        ["core", "user", "delete_user"],
+    ]
+
 .. _getextraroles:
 
 GetExtraRoles
@@ -649,6 +672,17 @@ the following prototype::
   logged in user
 * ``row`` is a string containing the object's definition (CSV format)
 * ``formopts`` is a dictionary that may contain options
+
+InitialDataLoaded
+=================
+
+Raised a initial data has been loaded for a given extension.
+
+*Callback prototype*::
+
+  def callback(extname); pass
+
+ ``extname`` is the extension name (str)
 
 MailboxAliasCreated
 ===================
