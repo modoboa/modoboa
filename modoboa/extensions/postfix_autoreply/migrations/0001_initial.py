@@ -1,52 +1,73 @@
-# encoding: utf-8
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-class Migration(SchemaMigration):
-    
-    def forwards(self, orm):
-        
-        # Adding model 'Transport'
-        db.create_table('postfix_autoreply_transport', (
-            ('domain', self.gf('django.db.models.fields.CharField')(max_length=300)),
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('method', self.gf('django.db.models.fields.CharField')(max_length=255)),
-        ))
-        db.send_create_signal('postfix_autoreply', ['Transport'])
+from django.db import models, migrations
+import django.utils.timezone
 
-        # Adding model 'Alias'
-        db.create_table('postfix_autoreply_alias', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('full_address', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('autoreply_address', self.gf('django.db.models.fields.CharField')(max_length=255)),
-        ))
-        db.send_create_signal('postfix_autoreply', ['Alias'])
-    
-    
-    def backwards(self, orm):
-        
-        # Deleting model 'Transport'
-        db.delete_table('postfix_autoreply_transport')
 
-        # Deleting model 'Alias'
-        db.delete_table('postfix_autoreply_alias')
-    
-    
-    models = {
-        'postfix_autoreply.alias': {
-            'Meta': {'object_name': 'Alias'},
-            'autoreply_address': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'full_address': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
-        'postfix_autoreply.transport': {
-            'Meta': {'object_name': 'Transport'},
-            'domain': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'method': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        }
-    }
-    
-    complete_apps = ['postfix_autoreply']
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('admin', '__first__'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='Alias',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('full_address', models.CharField(max_length=255)),
+                ('autoreply_address', models.CharField(max_length=255)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ARhistoric',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('last_sent', models.DateTimeField(auto_now=True)),
+                ('sender', models.CharField(max_length=254)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ARmessage',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('subject', models.CharField(help_text='The subject that will appear in sent emails', max_length=255, verbose_name='subject')),
+                ('content', models.TextField(help_text='The content that will appear in sent emails', verbose_name='content')),
+                ('enabled', models.BooleanField(default=False, help_text='Activate/Deactivate your auto reply', verbose_name='enabled')),
+                ('fromdate', models.DateTimeField(default=django.utils.timezone.now)),
+                ('untildate', models.DateTimeField(null=True, blank=True)),
+                ('mbox', models.ForeignKey(to='admin.Mailbox')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Transport',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('domain', models.CharField(max_length=300)),
+                ('method', models.CharField(max_length=255)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='arhistoric',
+            name='armessage',
+            field=models.ForeignKey(to='postfix_autoreply.ARmessage'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='arhistoric',
+            unique_together=set([('armessage', 'sender')]),
+        ),
+    ]

@@ -17,8 +17,6 @@ urlpatterns = patterns(
         name="parameter_save"),
     url(r'^core/extensions/$', 'modoboa.core.views.admin.viewextensions',
         name="extension_list"),
-    url(r'^core/extensions/save/$', 'modoboa.core.views.admin.saveextensions',
-        name="extension_save"),
     url(r'^core/info/$', 'modoboa.core.views.admin.information',
         name="information"),
     url(r'^core/logs/$', 'modoboa.core.views.admin.logs', name="log_list"),

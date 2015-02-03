@@ -18,12 +18,12 @@ urlpatterns = patterns(
 
 urlpatterns += patterns(
     '',
-    *events.raiseQueryEvent("ExtraUprefsRoutes")
+    *exts_pool.load_all()
 )
 
 urlpatterns += patterns(
     '',
-    *exts_pool.load_all()
+    *events.raiseQueryEvent("ExtraUprefsRoutes")
 )
 
 parameters.apply_to_django_settings()

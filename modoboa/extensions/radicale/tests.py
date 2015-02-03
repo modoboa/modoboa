@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.core import management
 
 from modoboa.lib import parameters
-from modoboa.lib.tests import ExtTestCase
+from modoboa.lib.tests import ModoTestCase
 from modoboa.extensions.admin.factories import (
     MailboxFactory, populate_database
 )
@@ -24,12 +24,10 @@ from .factories import (
 from .models import UserCalendar, SharedCalendar, AccessRule
 
 
-class UserCalendarTestCase(ExtTestCase):
-    fixtures = ["initial_users.json"]
+class UserCalendarTestCase(ModoTestCase):
 
     def setUp(self):
         super(UserCalendarTestCase, self).setUp()
-        self.activate_extensions('radicale')
         populate_database()
 
     def assertRuleEqual(self, calname, username, read=False, write=False):
@@ -137,12 +135,11 @@ class UserCalendarTestCase(ExtTestCase):
             reverse("radicale:user_calendar_add"), values, status=400)
 
 
-class SharedCalendarTestCase(ExtTestCase):
+class SharedCalendarTestCase(ModoTestCase):
     fixtures = ["initial_users.json"]
 
     def setUp(self):
         super(SharedCalendarTestCase, self).setUp()
-        self.activate_extensions('radicale')
         populate_database()
 
     def test_add_calendar(self):
@@ -205,12 +202,11 @@ class SharedCalendarTestCase(ExtTestCase):
         )
 
 
-class AccessRuleTestCase(ExtTestCase):
+class AccessRuleTestCase(ModoTestCase):
     fixtures = ["initial_users.json"]
 
     def setUp(self):
         super(AccessRuleTestCase, self).setUp()
-        self.activate_extensions('radicale')
         populate_database()
         self.rights_file_path = tempfile.mktemp()
         parameters.save_admin(

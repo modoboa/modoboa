@@ -11,21 +11,27 @@ from . import models
 
 
 class UserCalendarFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = models.UserCalendar
+
+    class Meta:
+        model = models.UserCalendar
 
     name = factory.Sequence(lambda n: 'User calendar %s' % n)
     mailbox = factory.SubFactory(MailboxFactory)
 
 
 class SharedCalendarFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = models.SharedCalendar
+
+    class Meta:
+        model = models.SharedCalendar
 
     name = factory.Sequence(lambda n: 'Shared calendar %s' % n)
     domain = factory.SubFactory(DomainFactory)
 
 
 class AccessRuleFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = models.AccessRule
+
+    class Meta:
+        model = models.AccessRule
 
     mailbox = factory.SubFactory(MailboxFactory)
     calendar = factory.SubFactory(UserCalendarFactory)

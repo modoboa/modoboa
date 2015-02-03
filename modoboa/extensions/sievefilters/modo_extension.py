@@ -1,0 +1,24 @@
+# coding: utf-8
+"""Declare and register the sievefilters extension."""
+
+from django.utils.translation import ugettext_lazy
+
+from modoboa.core.extensions import ModoExtension, exts_pool
+from modoboa.lib import parameters
+
+
+class SieveFilters(ModoExtension):
+    name = "sievefilters"
+    label = "Sieve filters"
+    version = "1.0"
+    description = ugettext_lazy("Plugin to easily create server-side filters")
+    url = "sfilters"
+    available_for_topredirection = True
+
+    def load(self):
+        from .app_settings import ParametersForm, UserSettings
+        parameters.register(ParametersForm, ugettext_lazy("Sieve filters"))
+        parameters.register(UserSettings, ugettext_lazy("Message filters"))
+        from modoboa.extensions.sievefilters import general_callbacks
+
+exts_pool.register_extension(SieveFilters)

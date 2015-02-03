@@ -36,7 +36,7 @@ class DeployTest(unittest.TestCase):
     def test_standard(self):
         timeout = 2
         cmd = (
-            "modoboa-admin.py deploy --dbaction install --collectstatic {0}"
+            "modoboa-admin.py deploy --collectstatic {0}"
             .format(self.projname)
         )
         child = pexpect.spawn(cmd, cwd=self.workdir)
@@ -65,8 +65,8 @@ class DeployTest(unittest.TestCase):
             % (self.dbtype, self.dbuser, self.dbpassword,
                self.dbhost, self.projname)
         cmd = (
-            "modoboa-admin.py deploy --dbaction install --collectstatic "
-            "--dburl %s --extensions all --domain %s %s"
+            "modoboa-admin.py deploy --collectstatic "
+            "--dburl %s --domain %s %s"
             % (dburl, 'localhost', self.projname)
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)

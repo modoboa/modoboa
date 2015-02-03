@@ -120,6 +120,7 @@ def extra_mailform_fields(form_name, mailbox=None):
         ('autoreply', YesNoField(
             label=ugettext_lazy("Enable auto-reply"),
             initial="yes" if status else "no",
+            required=False,
             help_text=ugettext_lazy("Enable or disable Postfix auto-reply")
         ))
     ]

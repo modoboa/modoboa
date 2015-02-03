@@ -12,6 +12,29 @@ from .lib import manual_learning_enabled
 from .models import Policy, Users
 
 
+def create_relay_domains_records():
+    """Create records for existing relay domains."""
+    from modoboa.extensions.postfix_relay_domains.models import RelayDomain
+
+    for dom in RelayDomain.objects.all():
+        name = "@{0}".format(dom.name)
+        policy, created = Policy.objects.get_or_create(policy_name=name[:32])
+        Users.objects.get_or_create(
+            email=name, fullname=name, priority=7, policy=policy)
+        for rdalias in dom.relaydomainalias_set.all():
+            name = "@{0}".format(rdalias.name)
+            Users.objects.get_or_create(
+                email=name, fullname=name, priority=7, policy=policy)
+
+
+@events.observe("InitialDataLoaded")
+def load_relay_domains_dependant_data(name):
+    """Load relay domains dependant data."""
+    if name != "postfix_relay_domains":
+        return
+    create_relay_domains_records()
+
+
 @events.observe("UserMenuDisplay")
 def menu(target, user):
     if target == "top_menu":

@@ -203,7 +203,11 @@ class RelayRecipientVerification(MapFile):
     filename = "sql-relay-recipient-verification.cf"
     mysql = "SELECT 'reject_unverified_recipient' FROM postfix_relay_domains_relaydomain WHERE verify_recipients=1 AND name='%d'"
     postgres = "SELECT 'reject_unverified_recipient' FROM postfix_relay_domains_relaydomain WHERE verify_recipients AND name='%d'"
-    sqlite = "SELECT 'reject_unverified_recipient' FROM postfix_relay_domains_relaydomain WHERE verify_recipients=1 AND name='%d'"
+    sqlite = (
+        "SELECT 'reject_unverified_recipient' "
+        "FROM postfix_relay_domains_relaydomain "
+        "WHERE verify_recipients=1 AND name='%d'"
+    )
 
 
 class PostfixMapsCommand(Command):

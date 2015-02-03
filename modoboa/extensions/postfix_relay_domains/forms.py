@@ -55,8 +55,6 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
         The validation way is not very smart...
         """
         super(RelayDomainFormGeneral, self).clean()
-        if self._errors:
-            raise forms.ValidationError(self._errors)
         cleaned_data = self.cleaned_data
         for dtype, label in [(Domain, _('domain')),
                              (DomainAlias, _('domain alias')),
@@ -66,10 +64,9 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
             except dtype.DoesNotExist:
                 pass
             else:
-                self._errors["name"] = self.error_class(
-                    [_("A %s with this name already exists" % label)]
+                self.add_error(
+                    "name", _("A %s with this name already exists") % label
                 )
-                del cleaned_data["name"]
                 break
 
         for k in cleaned_data.keys():
@@ -86,10 +83,8 @@ class RelayDomainFormGeneral(forms.ModelForm, DynamicForm):
                 except dtype.DoesNotExist:
                     pass
                 else:
-                    self._errors[k] = self.error_class(
-                        [_("A %s with this name already exists" % name)]
-                    )
-                    del cleaned_data[k]
+                    self.add_error(
+                        k, _("A %s with this name already exists") % name)
                     break
 
         return cleaned_data

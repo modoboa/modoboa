@@ -58,7 +58,8 @@ def check_domain_access(user, pattern):
     :return: a domain name (str) or None.
     """
     targets = [Domain]
-    if exts_pool.is_extension_enabled("postfix_relay_domains"):
+    if exts_pool.is_extension_installed(
+            "modoboa.extensions.postfix_relay_domains"):
         from modoboa.extensions.postfix_relay_domains.models import RelayDomain
         targets.append(RelayDomain)
 
@@ -123,7 +124,8 @@ def graphs(request):
 def get_domain_list(request):
     """Get the list of domains (and relay domains) the user can see."""
     doms = [dom.name for dom in Domain.objects.get_for_admin(request.user)]
-    if exts_pool.is_extension_enabled("postfix_relay_domains"):
+    if exts_pool.is_extension_installed(
+            "modoboa.extensions.postfix_relay_domains"):
         from modoboa.extensions.postfix_relay_domains.models import RelayDomain
         doms += [
             rdom.name for rdom in

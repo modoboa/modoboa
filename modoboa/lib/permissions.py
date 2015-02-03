@@ -1,7 +1,10 @@
 # coding: utf-8
+
+from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _
 from django.db import IntegrityError
+from django.utils.translation import ugettext as _
+
 from modoboa.core.models import ObjectAccess, User
 from modoboa.lib import events
 
@@ -147,15 +150,16 @@ def get_object_owner(obj):
     return entry.user
 
 
-def add_permissions_to_group(groupname, permissions):
-    """Add the specified permissions to a django group.
-    """
-    from django.contrib.auth.models import Group, Permission
+def add_permissions_to_group(group, permissions):
+    """Add the specified permissions to a django group."""
+    if isinstance(group, basestring):
+        group = Group.objects.get(name=group)
 
-    grp = Group.objects.get(name=groupname)
     for appname, modelname, permname in permissions:
-        ct = ContentType.objects.get_by_natural_key(
-            appname, modelname)
-        grp.permissions.add(
+        ct = ContentType.objects.get_by_natural_key(appname, modelname)
+        if group.permissions.filter(
+                content_type=ct, codename=permname).exists():
+            continue
+        group.permissions.add(
             Permission.objects.get(content_type=ct, codename=permname)
         )

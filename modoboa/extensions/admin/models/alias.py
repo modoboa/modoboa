@@ -38,7 +38,8 @@ class Alias(AdminObject):
     extmboxes = models.TextField(blank=True)
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
-        help_text=ugettext_lazy("Check to activate this alias")
+        help_text=ugettext_lazy("Check to activate this alias"),
+        default=True
     )
     _objectname = 'MailboxAlias'
 

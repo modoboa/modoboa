@@ -1,34 +1,26 @@
 # -*- coding: utf-8 -*-
 
 """
-:mod:`events` --- simple events handling
+:mod:`EVENTS` --- simple EVENTS handling
 ----------------------------------------
 
-This module provides a simple way of managing events between Modoboa
+This module provides a simple way of managing EVENTS between Modoboa
 core application and additional components.
 
 """
-import inspect
-import re
-from functools import wraps
 
-from django.conf import settings
-
-from modoboa.lib.sysutils import guess_extension_name
-
-
-events = []
-callbacks = {}
+EVENTS = []
+CALLBACKS = {}
 
 
 def declare(nevents):
-    """Declare new events
+    """Declare new events.
 
     :param list nevents: a list of event names
     """
     for evt in nevents:
-        if evt not in events:
-            events.append(evt)
+        if evt not in EVENTS:
+            EVENTS.append(evt)
 
 
 def register(event, callback):
@@ -39,69 +31,32 @@ def register(event, callback):
     :param event: the event to listen to
     :param callback: a function to execute when the event is raised
     """
-    # if not event in events:
+    # if not event in EVENTS:
     #     print "Event %s not registered" % event
     #     return 0
-    if event not in callbacks.keys():
-        callbacks[event] = {}
+    if event not in CALLBACKS.keys():
+        CALLBACKS[event] = {}
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
-    if fullname not in callbacks[event]:
-        callbacks[event][fullname] = callback
+    if fullname not in CALLBACKS[event]:
+        CALLBACKS[event][fullname] = callback
     return 1
 
 
 class observe(object):
-    """Event observing decorator
+    """Event observing decorator.
 
     Automatically register the decorated function to observe the given
-    event. If the decorated function is located into an extension, we
-    check before each call if the extension is enabled or not. If
-    that's not the case, the callback is not called.
+    event.
 
-    .. note::
-
-        That's not a really optimized behaviour but I haven't found
-        another solution to achieve that feature.
-
-    :param evtname: the event's name
+    :param evtnames: a list of event names
     """
     def __init__(self, *evtnames, **kwargs):
         self.evtnames = evtnames
-        if "extname" in kwargs:
-            self.extname = kwargs["extname"]
-
-    def __guess_extension_name(self, modname):
-        if modname.startswith('modoboa.extensions'):
-            m = re.match(r'modoboa\.extensions\.([^\.]+)', modname)
-            if m:
-                return m.group(1)
-        return None
 
     def __call__(self, f):
-        modname = inspect.getmodule(inspect.stack()[1][0]).__name__
-        extname = self.extname if hasattr(self, "extname") \
-            else self.__guess_extension_name(modname)
-
-        @wraps(f)
-        def wrapped_f(*args, **kwargs):
-            if extname:
-                from modoboa.core.models import Extension
-                from modoboa.core.extensions import exts_pool
-                try:
-                    ext = Extension.objects.get(name=extname)
-                except Extension.DoesNotExist:
-                    extdef = exts_pool.get_extension(extname)
-                    if not extdef.always_active:
-                        return []
-                else:
-                    if not ext.enabled:
-                        return None
-            elif modname not in settings.MODOBOA_APPS:
-                return []
-            return f(*args, **kwargs)
         for evt in self.evtnames:
-            register(evt, wrapped_f)
-        return wrapped_f
+            register(evt, f)
+        return f
 
 
 def unregister(event, callback):
@@ -110,57 +65,44 @@ def unregister(event, callback):
     :param event: the targeted event
     :param callback: the callback to remove
     """
-    if event not in events:
+    if event not in EVENTS:
         return False
-    if event not in callbacks:
+    if event not in CALLBACKS:
         return False
     fullname = "%s.%s" % (callback.__module__, callback.__name__)
     try:
-        del callbacks[event][fullname]
+        del CALLBACKS[event][fullname]
     except KeyError:
         pass
-
-
-def unregister_extension(extension=None):
-    """Unregister all callbacks declared by an extension.
-
-    :param str extension: extension full name (ie. module name)
-    """
-    if extension is None:
-        extension = guess_extension_name()
-    for evt, values in callbacks.items():
-        for name in values.keys():
-            if extension in name:
-                del callbacks[evt][name]
 
 
 def raiseEvent(event, *args, **kwargs):
     """Raise a specific event
 
     Any additional keyword argument will be passed to registered
-    callbacks.
+    CALLBACKS.
 
     :param event: the event to raise
     """
-    if event not in events or event not in callbacks:
+    if event not in EVENTS or event not in CALLBACKS:
         return 0
-    for callback in callbacks[event].values():
+    for callback in CALLBACKS[event].values():
         callback(*args, **kwargs)
     return 1
 
 
 def raiseQueryEvent(event, *args, **kwargs):
-    """Raise a specific event and wait for answers from callbacks
+    """Raise a specific event and wait for answers from CALLBACKS
 
     Any additional keyword argument will be passed to registered
-    callbacks. Callback answers are returned as a list.
+    CALLBACKS. Callback answers are returned as a list.
 
     :param event: the event to raise
     """
     result = []
-    if event not in events or event not in callbacks:
+    if event not in EVENTS or event not in CALLBACKS:
         return result
-    for callback in callbacks[event].values():
+    for callback in CALLBACKS[event].values():
         tmp = callback(*args, **kwargs)
         if tmp is None:
             # Callback is registered but associated extension is
@@ -174,15 +116,15 @@ def raiseDictEvent(event, *args):
     """Raise a specific event and return result as a dictionnary
 
     Any additional keyword argument will be passed to registered
-    callbacks. Callback answers must be dictionnaries.
+    CALLBACKS. Callback answers must be dictionnaries.
 
     :param event: the event to raise
     :return: a dictionnary
     """
     result = {}
-    if event not in events or event not in callbacks:
+    if event not in EVENTS or event not in CALLBACKS:
         return result
-    for callback in callbacks[event].values():
+    for callback in CALLBACKS[event].values():
         tmp = callback(*args)
         if tmp is None:
             # Callback is registered but associated extension is

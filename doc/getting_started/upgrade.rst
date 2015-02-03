@@ -35,7 +35,7 @@ your instance was first deployed::
 
 Then, run ``modoboa-admin.py deploy``::
 
-  $ modoboa-admin.py deploy <modoboa_instance_dir> --dbaction upgrade --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url] [--domain hostname] [--lang lang] [--timezone timezone]
+  $ modoboa-admin.py deploy <modoboa_instance_dir> --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url] [--domain hostname] [--lang lang] [--timezone timezone]
 
 If you prefer the manual way, check if
 :ref:`specific_upgrade_instructions` are required according to the

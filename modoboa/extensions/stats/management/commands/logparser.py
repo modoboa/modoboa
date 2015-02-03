@@ -31,7 +31,6 @@ from django.core.management.base import BaseCommand
 from modoboa.core.extensions import exts_pool
 from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.extensions.admin.models import Domain
-from modoboa.extensions.stats import Stats
 from modoboa.extensions.stats.lib import date_to_timestamp
 from modoboa.lib import parameters
 
@@ -97,7 +96,8 @@ class LogParser(object):
         for dom in Domain.objects.all():
             self.domains += [str(dom.name)]
             self.data[str(dom.name)] = {}
-        if not exts_pool.is_extension_enabled("postfix_relay_domains"):
+        if not exts_pool.is_extension_installed(
+                "modoboa.extensions.postfix_relay_domains"):
             return
         from modoboa.extensions.postfix_relay_domains.models import RelayDomain
         for rdom in RelayDomain.objects.all():
@@ -372,7 +372,6 @@ class Command(BaseCommand, CloseConnectionMixin):
     )
 
     def handle(self, *args, **options):
-        Stats().load()
         if options["logfile"] is None:
             options["logfile"] = parameters.get_admin("LOGFILE", app="stats")
         p = LogParser(options, parameters.get_admin("RRD_ROOTDIR", app="stats"))

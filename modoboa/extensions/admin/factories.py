@@ -8,15 +8,21 @@ from . import models
 
 
 class DomainFactory(PermissionFactory):
-    FACTORY_FOR = models.Domain
-    FACTORY_DJANGO_GET_OR_CREATE = ("name", )
+
+    """Factory to create Domains."""
+
+    class Meta:
+        model = models.Domain
+        django_get_or_create = ("name", )
 
     quota = 10
     enabled = True
 
 
 class MailboxFactory(PermissionFactory):
-    FACTORY_FOR = models.Mailbox
+
+    class Meta:
+        model = models.Mailbox
 
     domain = factory.SubFactory(DomainFactory)
     user = factory.SubFactory(UserFactory)
@@ -25,7 +31,9 @@ class MailboxFactory(PermissionFactory):
 
 
 class AliasFactory(PermissionFactory):
-    FACTORY_FOR = models.Alias
+
+    class Meta:
+        model = models.Alias
 
     enabled = True
 
@@ -35,7 +43,7 @@ def populate_database():
 
     2 domains, 1 domain admin, 2 users
     """
-    dom = DomainFactory.create(name="test.com")
+    dom = DomainFactory(name="test.com")
     admin = UserFactory(
         username="admin@test.com", groups=('DomainAdmins', ),
         password='{PLAIN}toto'

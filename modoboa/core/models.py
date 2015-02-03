@@ -1,11 +1,8 @@
 """Core models."""
 
 import logging
-import os
 import re
-import sys
 
-from django.conf import settings
 from django.contrib.auth.hashers import make_password, is_password_usable
 from django.contrib.auth.models import (
     UserManager, Group, PermissionsMixin
@@ -20,13 +17,11 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 import reversion
 
-from modoboa.core.extensions import exts_pool
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
-from modoboa.lib.sysutils import exec_cmd
 
 
 try:
@@ -436,72 +431,6 @@ class ObjectAccess(models.Model):
         return "%s => %s (%s)" % (
             self.user, self.content_object, self.content_type
         )
-
-
-class Extension(models.Model):
-
-    """A modoboa extension."""
-
-    name = models.CharField(max_length=150)
-    enabled = models.BooleanField(
-        ugettext_lazy('enabled'),
-        help_text=ugettext_lazy("Check to enable this extension")
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(Extension, self).__init__(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.name
-
-    def __get_ext_instance(self):
-        if not self.name:
-            return None
-        if hasattr(self, "instance") and self.instance:
-            return
-        self.instance = exts_pool.get_extension(self.name)
-        if self.instance:
-            self.__get_ext_dir()
-
-    def __get_ext_dir(self):
-        modname = self.instance.__module__
-        path = os.path.realpath(sys.modules[modname].__file__)
-        self.extdir = os.path.dirname(path)
-
-    def on(self, update_db=True):
-        """Activate this extension."""
-        if update_db:
-            self.enabled = True
-            self.save()
-
-        self.__get_ext_instance()
-        self.instance.load()
-        self.instance.init()
-
-        if self.instance.needs_media:
-            path = os.path.join(settings.MEDIA_ROOT, self.name)
-            exec_cmd("mkdir %s" % path)
-
-        events.raiseEvent("ExtEnabled", self)
-
-    def off(self, update_db=True):
-        """Disable this extension."""
-        self.__get_ext_instance()
-        if self.instance is None:
-            return
-        self.instance.destroy()
-
-        if update_db:
-            self.enabled = False
-            self.save()
-
-        if self.instance.needs_media:
-            path = os.path.join(settings.MEDIA_ROOT, self.name)
-            exec_cmd("rm -r %s" % path)
-
-        events.raiseEvent("ExtDisabled", self)
-
-reversion.register(Extension)
 
 
 class Log(models.Model):

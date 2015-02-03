@@ -1,127 +1,161 @@
-# encoding: utf-8
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+from django.conf import settings
 
 
-class Migration(SchemaMigration):
-    
-    def forwards(self, orm):
-        
-        # Adding model 'Domain'
-        db.create_table('admin_domain', (
-            ('quota', self.gf('django.db.models.fields.IntegerField')()),
-            ('enabled', self.gf('django.db.models.fields.BooleanField')(default=False, blank=True)),
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-        ))
-        db.send_create_signal('admin', ['Domain'])
+class Migration(migrations.Migration):
 
-        # Adding model 'Mailbox'
-        db.create_table('admin_mailbox', (
-            ('domain', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.Domain'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('quota', self.gf('django.db.models.fields.IntegerField')()),
-            ('full_address', self.gf('django.db.models.fields.CharField')(max_length=150)),
-            ('gid', self.gf('django.db.models.fields.IntegerField')()),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('path', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('password', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('uid', self.gf('django.db.models.fields.IntegerField')()),
-        ))
-        db.send_create_signal('admin', ['Mailbox'])
+    dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
 
-        # Adding model 'Alias'
-        db.create_table('admin_alias', (
-            ('enabled', self.gf('django.db.models.fields.BooleanField')(default=False, blank=True)),
-            ('mbox', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['admin.Mailbox'])),
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('full_address', self.gf('django.db.models.fields.CharField')(max_length=150)),
-            ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
-        ))
-        db.send_create_signal('admin', ['Alias'])
-    
-    def backwards(self, orm):
-        
-        # Deleting model 'Domain'
-        db.delete_table('admin_domain')
-
-        # Deleting model 'Mailbox'
-        db.delete_table('admin_mailbox')
-
-        # Deleting model 'Alias'
-        db.delete_table('admin_alias')
-    
-    
-    models = {
-        'admin.alias': {
-            'Meta': {'object_name': 'Alias'},
-            'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'blank': 'True'}),
-            'full_address': ('django.db.models.fields.CharField', [], {'max_length': '150'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mbox': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Mailbox']"})
-        },
-        'admin.domain': {
-            'Meta': {'object_name': 'Domain'},
-            'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'quota': ('django.db.models.fields.IntegerField', [], {})
-        },
-        'admin.mailbox': {
-            'Meta': {'object_name': 'Mailbox'},
-            'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'domain': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['admin.Domain']"}),
-            'full_address': ('django.db.models.fields.CharField', [], {'max_length': '150'}),
-            'gid': ('django.db.models.fields.IntegerField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'path': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'quota': ('django.db.models.fields.IntegerField', [], {}),
-            'uid': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        },
-        'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'blank': 'True'})
-        },
-        'auth.permission': {
-            'Meta': {'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        'auth.user': {
-            'Meta': {'object_name': 'User', 'db_table': "'auth_user'"},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True', 'blank': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'blank': 'True'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'blank': 'True'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        'contenttypes.contenttype': {
-            'Meta': {'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        }
-    }
-    
-    complete_apps = ['admin']
+    operations = [
+        migrations.CreateModel(
+            name='Alias',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('address', models.CharField(help_text="The alias address (without the domain part). For a 'catch-all' address, just enter an * character.", max_length=254, verbose_name='address')),
+                ('extmboxes', models.TextField(blank=True)),
+                ('enabled', models.BooleanField(default=True, help_text='Check to activate this alias', verbose_name='enabled')),
+                ('aliases', models.ManyToManyField(help_text='The aliases this alias points to', to='admin.Alias')),
+            ],
+            options={
+                'ordering': ['domain__name', 'address'],
+                'permissions': (('view_aliases', 'View aliases'),),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Domain',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(help_text='The domain name', unique=True, max_length=100, verbose_name='name')),
+                ('quota', models.IntegerField()),
+                ('enabled', models.BooleanField(default=True, help_text='Check to activate this domain', verbose_name='enabled')),
+            ],
+            options={
+                'ordering': ['name'],
+                'permissions': (('view_domain', 'View domain'), ('view_domains', 'View domains')),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='DomainAlias',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(help_text='The alias name', unique=True, max_length=100, verbose_name='name')),
+                ('enabled', models.BooleanField(default=True, help_text='Check to activate this alias', verbose_name='enabled')),
+            ],
+            options={
+                'permissions': (('view_domaliases', 'View domain aliases'),),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Mailbox',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('address', models.CharField(help_text='Mailbox address (without the @domain.tld part)', max_length=252, verbose_name='address')),
+                ('quota', models.PositiveIntegerField()),
+                ('use_domain_quota', models.BooleanField(default=False)),
+            ],
+            options={
+                'permissions': (('view_mailboxes', 'View mailboxes'),),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='MailboxOperation',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('type', models.CharField(max_length=20, choices=[(b'rename', b'rename'), (b'delete', b'delete')])),
+                ('argument', models.TextField()),
+                ('mailbox', models.ForeignKey(blank=True, to='admin.Mailbox', null=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ObjectDates',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('creation', models.DateTimeField(auto_now_add=True)),
+                ('last_modification', models.DateTimeField(auto_now=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Quota',
+            fields=[
+                ('username', models.EmailField(max_length=254, serialize=False, primary_key=True)),
+                ('bytes', models.BigIntegerField(default=0)),
+                ('messages', models.IntegerField(default=0)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='mailbox',
+            name='dates',
+            field=models.ForeignKey(to='admin.ObjectDates'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='mailbox',
+            name='domain',
+            field=models.ForeignKey(to='admin.Domain'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='mailbox',
+            name='user',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='domainalias',
+            name='dates',
+            field=models.ForeignKey(to='admin.ObjectDates'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='domainalias',
+            name='target',
+            field=models.ForeignKey(verbose_name='target', to='admin.Domain', help_text='The domain this alias points to'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='domain',
+            name='dates',
+            field=models.ForeignKey(to='admin.ObjectDates'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='alias',
+            name='dates',
+            field=models.ForeignKey(to='admin.ObjectDates'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='alias',
+            name='domain',
+            field=models.ForeignKey(to='admin.Domain'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='alias',
+            name='mboxes',
+            field=models.ManyToManyField(help_text='The mailboxes this alias points to', to='admin.Mailbox', verbose_name='mailboxes'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='alias',
+            unique_together=set([('address', 'domain')]),
+        ),
+    ]

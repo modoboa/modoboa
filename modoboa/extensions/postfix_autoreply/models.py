@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+
 from modoboa.extensions.admin.models import Mailbox
 
 
@@ -26,7 +27,8 @@ class ARmessage(models.Model):
     )
     enabled = models.BooleanField(
         _('enabled'),
-        help_text=_("Activate/Deactivate your auto reply")
+        help_text=_("Activate/Deactivate your auto reply"),
+        default=False
     )
     fromdate = models.DateTimeField(default=timezone.now)
     untildate = models.DateTimeField(null=True, blank=True)

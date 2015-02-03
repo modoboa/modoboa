@@ -46,7 +46,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-#    'south',
     'reversion',
 )
 
@@ -86,7 +85,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'modoboa.lib.middleware.AjaxLoginRedirect',
     'modoboa.lib.middleware.CommonExceptionCatcher',
-    'modoboa.lib.middleware.ExtControlMiddleware',
     'modoboa.lib.middleware.RequestCatcherMiddleware',
 )
 
@@ -150,9 +148,6 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# South settings
-SOUTH_TESTS_MIGRATE = False
 
 # Modoboa settings
 #MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")

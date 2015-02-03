@@ -1,15 +1,20 @@
 # coding: utf-8
+"""Testing utilities."""
+
 import json
+
+from django import forms
+from django.core import management
 from django.test import TestCase
 from django.test.client import Client
-from django import forms
-from django.core.urlresolvers import reverse
+
 from modoboa.lib import parameters
 
 
 class ModoTestCase(TestCase):
 
     def setUp(self, username="admin", password="password"):
+        management.call_command("load_initial_data")
         self.clt = Client()
         self.assertEqual(
             self.clt.login(username=username, password=password), True)
@@ -33,23 +38,6 @@ class ModoTestCase(TestCase):
 
     def ajax_get(self, *args, **kwargs):
         return self.ajax_request('get', *args, **kwargs)
-
-
-class ExtTestCase(ModoTestCase):
-
-    def setUp(self, *args, **kwargs):
-        super(ExtTestCase, self).setUp(*args, **kwargs)
-        self.clt.get(reverse("core:extension_list"))
-
-    def activate_extensions(self, *names):
-        from modoboa.core.extensions import exts_pool
-
-        self.ajax_post(
-            reverse("core:extension_save"),
-            dict(("select_%s" % name, "1") for name in names)
-        )
-        for name in names:
-            exts_pool.get_extension(name).load()
 
 
 class TestParams(parameters.AdminParametersForm):

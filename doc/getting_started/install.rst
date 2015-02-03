@@ -9,8 +9,7 @@ Requirements
 ************
 
 * `Python version 2.6+ <http://python.org/>`_
-* `Django version 1.6+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
-* `south version 0.7+ <http://south.aeracode.org/>`_
+* `Django version 1.7+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
 * `lxml python module <http://lxml.de/installation.html>`_
 * `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
 * `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_
@@ -94,7 +93,7 @@ Deployment
 `modoboa-admin.py`, a command line tool, lets you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
-  $ modoboa-admin.py deploy modoboa_example --dbaction install --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
+  $ modoboa-admin.py deploy modoboa_example --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
 
 Just answer the few questions and you're done. You can now go to the
 :ref:`first_use` section.

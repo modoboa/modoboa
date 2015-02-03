@@ -78,18 +78,13 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         The validation way is not very smart...
         """
         super(DomainFormGeneral, self).clean()
-        if self._errors:
-            raise forms.ValidationError(self._errors)
-
         cleaned_data = self.cleaned_data
         name = cleaned_data["name"]
         label = check_if_domain_exists(name, [(DomainAlias, _('domain alias'))])
         if label is not None:
-            self._errors["name"] = self.error_class(
-                [_("A %s with this name already exists" % unicode(label))]
+            self.add_error(
+                "name", _("A %s with this name already exists") % unicode(label)
             )
-            del cleaned_data["name"]
-
         for k in cleaned_data.keys():
             if not k.startswith("aliases"):
                 continue
@@ -105,11 +100,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             label = check_if_domain_exists(
                 cleaned_data[k], [(Domain, _("domain"))])
             if label is not None:
-                self._errors[k] = self.error_class(
-                    [_("A %s with this name already exists" % unicode(label))]
-                )
-                del cleaned_data[k]
-
+                self.add_error(
+                    k, _("A %s with this name already exists") % unicode(label))
         return cleaned_data
 
     def update_mailbox_quotas(self, domain):

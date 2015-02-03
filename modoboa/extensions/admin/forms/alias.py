@@ -1,5 +1,7 @@
 """Forms related to aliases management."""
 
+from collections import OrderedDict
+
 from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -39,7 +41,10 @@ class AliasForm(forms.ModelForm, DynamicForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(AliasForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['email', 'recipients', 'enabled']
+        self.fields = OrderedDict(
+            (key, self.fields[key]) for key in
+            ['email', 'recipients', 'enabled']
+        )
 
         if len(args) and isinstance(args[0], QueryDict):
             if "instance" in kwargs:

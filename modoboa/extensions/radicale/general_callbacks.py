@@ -6,6 +6,26 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from modoboa.lib import events
 
+PERMISSIONS = [
+    ("radicale", "usercalendar", "add_usercalendar"),
+    ("radicale", "usercalendar", "change_usercalendar"),
+    ("radicale", "usercalendar", "delete_usercalendar"),
+    ("radicale", "sharedcalendar", "add_sharedcalendar"),
+    ("radicale", "sharedcalendar", "change_sharedcalendar"),
+    ("radicale", "sharedcalendar", "delete_sharedcalendar")
+]
+
+ROLES_PERMISSIONS = {
+    "DomainAdmins": PERMISSIONS,
+    "Resellers": PERMISSIONS
+}
+
+
+@events.observe("GetExtraRolePermissions")
+def extra_permissions(rolename):
+    """Extra permissions."""
+    return ROLES_PERMISSIONS.get(rolename, [])
+
 
 @events.observe("UserMenuDisplay")
 def top_menu(target, user):
@@ -16,20 +36,3 @@ def top_menu(target, user):
              "url": reverse('radicale:index')}
         ]
     return []
-
-
-@events.observe('ExtEnabled')
-def extension_enabled(extension):
-    """ExtEnabled event listener.
-
-    Usefull when *limits* extension is activated after *radicale*.
-
-    :param extension: enabled extension
-
-    """
-    if extension.name == 'limits':
-        from modoboa.extensions.radicale import (
-            init_limits_dependant_features
-        )
-
-        init_limits_dependant_features()

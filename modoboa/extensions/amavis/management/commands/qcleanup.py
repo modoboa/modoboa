@@ -7,7 +7,6 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 
 from modoboa.core.management.commands import CloseConnectionMixin
-from modoboa.extensions.amavis import Amavis
 from modoboa.extensions.amavis.models import (
     Msgrcpt, Msgs, Maddr
 )
@@ -41,8 +40,6 @@ class Command(BaseCommand, CloseConnectionMixin):
             l.setLevel(logging.DEBUG)
             l.addHandler(logging.StreamHandler())
         self.verbose = options["verbose"]
-
-        Amavis().load()
 
         max_messages_age = int(parameters.get_admin("MAX_MESSAGES_AGE",
                                                     app="amavis"))

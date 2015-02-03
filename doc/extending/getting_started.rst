@@ -42,7 +42,7 @@ Deploy an instance for development
 Now that you have a :ref:`running environment <venv_for_dev>`, you're
 ready to deploy a test instance::
 
-  $ modoboa-admin.py deploy --dbaction install --devel --dburl <database url> <path>
+  $ modoboa-admin.py deploy --devel --dburl <database url> <path>
   $ cd <path>
   $ python manage.py runserver
 

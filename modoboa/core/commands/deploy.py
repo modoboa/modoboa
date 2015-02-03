@@ -1,4 +1,7 @@
 # coding: utf-8
+
+"""A shortcut to deploy a fresh modoboa instance."""
+
 import getpass
 import os
 import shutil
@@ -6,12 +9,12 @@ import sys
 
 import subprocess
 
+import django
 from django.core import management
 from django.template import Context, Template
 
 import dj_database_url
 
-from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.commands import Command
 
 DBCONN_TPL = """
@@ -47,10 +50,6 @@ class DeployCommand(Command):
             help='Include amavis configuration'
         )
         self._parser.add_argument(
-            '--dbaction', type=str, default="install",
-            help='Action to take on the database (install|upgrade)'
-        )
-        self._parser.add_argument(
             '--collectstatic', action='store_true', default=False,
             help='Run django collectstatic command'
         )
@@ -63,10 +62,6 @@ class DeployCommand(Command):
         self._parser.add_argument(
             '--domain', type=str, default=None,
             help='The domain under which you want to deploy modoboa')
-        self._parser.add_argument(
-            '--extensions', type=str, nargs='*',
-            help='Deploy with those extensions already enabled'
-        )
         self._parser.add_argument(
             '--lang', type=str, default="en-us",
             help="Set the default language"
@@ -142,6 +137,7 @@ class DeployCommand(Command):
         return info
 
     def handle(self, parsed_args):
+        django.setup()
         management.call_command(
             'startproject', parsed_args.name, verbosity=False
         )
@@ -217,36 +213,16 @@ class DeployCommand(Command):
         os.mkdir("%s/media" % parsed_args.name)
 
         os.unlink("%s/settings.pyc" % path)
-        if parsed_args.dbaction == "install":
-            self._exec_django_command(
-                "syncdb", parsed_args.name, '--noinput'
-            )
-            exec_cmd('sed -ri "s|^#(\s+\'south)|\\1|" %s/settings.py' % path)
-            self._exec_django_command(
-                "syncdb", parsed_args.name,
-            )
-            self._exec_django_command(
-                'migrate', parsed_args.name, '--fake'
-            )
-            self._exec_django_command(
-                "loaddata", parsed_args.name, 'initial_users.json'
-            )
-        elif parsed_args.dbaction == "upgrade":
-            exec_cmd('sed -ri "s|^#(\s+\'south)|\\1|" %s/settings.py' % path)
-            self._exec_django_command(
-                "syncdb", parsed_args.name, "--migrate"
-            )
-
+        self._exec_django_command(
+            "migrate", parsed_args.name, '--noinput'
+        )
+        self._exec_django_command(
+            "load_initial_data", parsed_args.name
+        )
         if parsed_args.collectstatic:
             self._exec_django_command(
                 "collectstatic", parsed_args.name, '--noinput'
             )
-
-        if parsed_args.extensions:
-            self._exec_django_command(
-                "manage_extensions", parsed_args.name, *parsed_args.extensions
-            )
-
         self._exec_django_command(
             "set_default_site", parsed_args.name, allowed_host
         )

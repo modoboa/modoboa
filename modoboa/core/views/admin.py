@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
-from modoboa.core.models import Extension, Log
+from modoboa.core.models import Log
 from modoboa.core.utils import new_version_available
 from modoboa.lib import events, parameters
 from modoboa.lib.listing import get_sort_order, get_listing_page
@@ -58,42 +58,10 @@ def viewextensions(request, tplname='core/extensions.html'):
     from modoboa.core.extensions import exts_pool
 
     exts = exts_pool.list_all()
-    for ext in exts:
-        try:
-            dbext = Extension.objects.get(name=ext["id"])
-            ext["selection"] = dbext.enabled
-        except Extension.DoesNotExist:
-            dbext = Extension()
-            dbext.name = ext["id"]
-            dbext.enabled = False
-            dbext.save()
-            ext["selection"] = False
-
     return render_to_json_response({
         "callback": "extensions",
         "content": _render_to_string(request, tplname, {"extensions": exts})
     })
-
-
-@login_required
-@user_passes_test(lambda u: u.is_superuser)
-def saveextensions(request):
-    """Enable of disable extension(s)."""
-    actived_exts = Extension.objects.filter(enabled=True)
-    found = []
-    for k in request.POST.keys():
-        if k.startswith("select_"):
-            parts = k.split("_", 1)
-            dbext = Extension.objects.get(name=parts[1])
-            if dbext not in actived_exts:
-                dbext.on()
-            else:
-                found += [dbext]
-    for ext in actived_exts:
-        if ext not in found:
-            ext.off()
-
-    return render_to_json_response(_("Modifications applied."))
 
 
 @login_required
