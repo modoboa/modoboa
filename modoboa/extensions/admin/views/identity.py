@@ -73,8 +73,16 @@ def list_quotas(request):
         request.user, request.GET.get("searchquery", None)
     )
     mboxes = mboxes.exclude(quota=0)
-    if sort_order in ["address", "quota", "quota_value__bytes"]:
+    if sort_order in ["address", "quota"]:
         mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
+    elif sort_order == "quota_value__bytes":
+        where = "admin_mailbox.address||'@'||admin_domain.name"
+        mboxes = mboxes.extra(
+            select={"quota_value__bytes": "admin_quota.bytes"},
+            where=["admin_quota.username=%s" % where],
+            tables=["admin_quota", "admin_domain"],
+            order_by=["%s%s" % (sort_dir, sort_order)]
+        )
     elif sort_order == "quota_usage":
         where = "admin_mailbox.address||'@'||admin_domain.name"
         db_type = db_type()

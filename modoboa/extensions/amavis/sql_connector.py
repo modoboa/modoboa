@@ -1,6 +1,7 @@
 """
 SQL connector module.
 """
+
 import datetime
 
 from django.db.models import Q
@@ -209,9 +210,14 @@ class SQLconnector(object):
         return Msgrcpt.objects.filter(rq).count()
 
     def get_mail_content(self, mailid):
-        """Retrieve the content of a message.
-        """
-        return Quarantine.objects.filter(mail=mailid)
+        """Retrieve the content of a message."""
+        content = "".join([
+            str(qmail.mail_text)
+            for qmail in Quarantine.objects.filter(mail=mailid)
+        ])
+        if isinstance(content, unicode):
+            content = content.encode("utf-8")
+        return content
 
 
 class PgSQLconnector(SQLconnector):
@@ -229,9 +235,7 @@ class PgSQLconnector(SQLconnector):
     """
 
     def _apply_msgrcpt_filters(self, flt):
-        """Return filters based on user's role.
-
-        """
+        """Return filters based on user's role. """
         self._where = []
         if self.user.group == 'SimpleUsers':
             rcpts = [self.user.email]
@@ -248,10 +252,7 @@ class PgSQLconnector(SQLconnector):
         return flt
 
     def _apply_extra_search_filter(self, crit, pattern):
-        """Apply search filters using additional criterias.
-
-
-        """
+        """Apply search filters using additional criterias."""
         if crit == "to":
             self._where.append(
                 "convert_from(maddr.email, 'UTF8') LIKE '%%{0}%%'".format(
@@ -299,12 +300,6 @@ class PgSQLconnector(SQLconnector):
                 tables=['maddr']
             ).count()
         return Msgrcpt.objects.filter(rq).count()
-
-    def get_mail_content(self, mailid):
-        """Retrieve the content of a message."""
-        return Quarantine.objects.filter(mail=mailid).extra(
-            select={'mail_text': "convert_from(mail_text, 'UTF8')"}
-        )
 
 
 def get_connector(**kwargs):
