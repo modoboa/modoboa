@@ -9,8 +9,7 @@ Requirements
 ************
 
 * `Python version 2.6+ <http://python.org/>`_
-* `Django version 1.6+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
-* `south version 0.7+ <http://south.aeracode.org/>`_
+* `Django version 1.7+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
 * `lxml python module <http://lxml.de/installation.html>`_
 * `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
 * `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_
