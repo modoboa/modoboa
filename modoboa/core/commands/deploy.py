@@ -1,4 +1,7 @@
 # coding: utf-8
+
+"""A shortcut to deploy a fresh modoboa instance."""
+
 import getpass
 import os
 import shutil
@@ -12,7 +15,6 @@ from django.template import Context, Template
 
 import dj_database_url
 
-from modoboa.lib.sysutils import exec_cmd
 from modoboa.core.commands import Command
 
 DBCONN_TPL = """
@@ -46,10 +48,6 @@ class DeployCommand(Command):
         self._parser.add_argument(
             '--with-amavis', action='store_true', default=False,
             help='Include amavis configuration'
-        )
-        self._parser.add_argument(
-            '--dbaction', type=str, default="install",
-            help='Action to take on the database (install|upgrade)'
         )
         self._parser.add_argument(
             '--collectstatic', action='store_true', default=False,
@@ -215,24 +213,16 @@ class DeployCommand(Command):
         os.mkdir("%s/media" % parsed_args.name)
 
         os.unlink("%s/settings.pyc" % path)
-        if parsed_args.dbaction == "install":
-            self._exec_django_command(
-                "migrate", parsed_args.name, '--noinput'
-            )
-            self._exec_django_command(
-                "load_initial_data", parsed_args.name
-            )
-        elif parsed_args.dbaction == "upgrade":
-            exec_cmd('sed -ri "s|^#(\s+\'south)|\\1|" %s/settings.py' % path)
-            self._exec_django_command(
-                "syncdb", parsed_args.name, "--migrate"
-            )
-
+        self._exec_django_command(
+            "migrate", parsed_args.name, '--noinput'
+        )
+        self._exec_django_command(
+            "load_initial_data", parsed_args.name
+        )
         if parsed_args.collectstatic:
             self._exec_django_command(
                 "collectstatic", parsed_args.name, '--noinput'
             )
-
         self._exec_django_command(
             "set_default_site", parsed_args.name, allowed_host
         )

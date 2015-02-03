@@ -94,7 +94,7 @@ Deployment
 `modoboa-admin.py`, a command line tool, lets you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
-  $ modoboa-admin.py deploy modoboa_example --dbaction install --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
+  $ modoboa-admin.py deploy modoboa_example --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
 
 Just answer the few questions and you're done. You can now go to the
 :ref:`first_use` section.
