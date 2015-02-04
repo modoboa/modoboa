@@ -55,6 +55,9 @@ The following external libraries are provided with Modoboa:
 .. |latest-version| image:: https://pypip.in/v/modoboa/badge.png
    :alt: Latest version on Pypi
    :target: https://crate.io/packages/modoboa/
+.. image:: https://landscape.io/github/tonioo/modoboa/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/tonioo/modoboa/master
+   :alt: Code Health
 .. |downloads| image:: https://pypip.in/d/modoboa/badge.png
    :alt: Downloads from Pypi
    :target: https://crate.io/packages/modoboa/
