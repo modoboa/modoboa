@@ -82,7 +82,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
             raise forms.ValidationError(
                 _("You don't have access to this domain")
             )
-        return self.cleaned_data["email"]
+        return self.cleaned_data["email"].lower()
 
     def set_recipients(self):
         """Recipients dispatching

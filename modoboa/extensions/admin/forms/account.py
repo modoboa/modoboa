@@ -272,7 +272,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                 continue
             if value == "":
                 continue
-            aliases.append(value)
+            aliases.append(value.lower())
 
         for alias in self.mb.alias_set.all():
             if alias.full_address not in aliases:
