@@ -34,6 +34,30 @@ class AliasTestCase(ModoTestCase):
         )
         self.assertEqual(user.mailbox_set.all()[0].alias_set.count(), 1)
 
+    def test_upper_case_alias(self):
+        """Try to create an upper case alias."""
+        user = User.objects.get(username="user@test.com")
+        values = dict(
+            username="user@test.com", role=user.group,
+            is_active=user.is_active, email="user@test.com",
+            aliases="Toto@test.com"
+        )
+        self.ajax_post(
+            reverse("admin:account_change", args=[user.id]),
+            values
+        )
+        self.assertEqual(user.mailbox_set.first().alias_set.count(), 1)
+        self.assertEqual(
+            user.mailbox_set.first().alias_set.first(), "toto@test.com")
+
+        values = {
+            "email": "Titi@test.com", "recipient": "user@test.com",
+            "enabled": True
+        }
+        self.ajax_post(reverse("admin:alias_add"), values)
+        self.assertEqual(
+            user.mailbox_set.first().alias_set.first(), "titi@test.com")
+
     def test_dlist(self):
         values = dict(email="all@test.com",
                       recipients="user@test.com",
