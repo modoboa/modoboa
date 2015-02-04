@@ -9,11 +9,11 @@ from modoboa.lib.sysutils import exec_cmd
 
 
 class DeployTest(unittest.TestCase):
-    dbtype = "mysql"
+    dbtype = "postgres"
     dbhost = "localhost"
     projname = "modoboa_test"
     dbuser = "travis"
-    dbpassword = ""
+    dbpassword = "toto"
 
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
@@ -70,6 +70,7 @@ class DeployTest(unittest.TestCase):
             % (dburl, 'localhost', self.projname)
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)
+        print output
         self.assertEqual(code, 0)
 
 
