@@ -235,6 +235,8 @@ def create_user_and_policy(name, priority=7):
     :param str name: name
     :return: the new ``Policy`` object
     """
+    if Users.objects.filter(email=name).exists():
+        return Policy.objects.get(policy_name=name[:32])
     policy = Policy.objects.create(policy_name=name[:32])
     Users.objects.create(
         email=name, fullname=name, priority=priority, policy=policy
@@ -242,14 +244,15 @@ def create_user_and_policy(name, priority=7):
     return policy
 
 
-def create_user_and_use_policy(name, policy_name, priority=7):
+def create_user_and_use_policy(name, policy, priority=7):
     """Create a *users* record and use an existing policy.
 
     :param str name: user record name
-    :param str policy_name: policy name
+    :param str policy: string or Policy instance
     """
-    policy = Policy.objects.get(policy_name="@{0}".format(policy_name[:32]))
-    Users.objects.create(
+    if isinstance(policy, basestring):
+        policy = Policy.objects.get(policy_name=policy[:32])
+    Users.objects.get_or_create(
         email=name, fullname=name, priority=priority, policy=policy
     )
 
@@ -319,9 +322,9 @@ def setup_manual_learning_for_domain(domain):
 
     :return: True if learning has been setup, False otherwise
     """
-    if Policy.objects.filter(sa_username=domain.name).count():
+    if Policy.objects.filter(sa_username=domain.name).exists():
         return False
-    policy = Policy.objects.get(policy_name=domain.name)
+    policy = Policy.objects.get(policy_name=domain.name[:32])
     policy.sa_username = domain.name
     policy.save()
     return True
@@ -333,8 +336,9 @@ def setup_manual_learning_for_mbox(mbox):
     :return: True if learning has been setup, False otherwise
     """
     result = False
-    if not Policy.objects.filter(policy_name=mbox.full_address).exists():
-        policy = create_user_and_policy(mbox.full_address)
+    pname = mbox.full_address[:32]
+    if not Policy.objects.filter(policy_name=pname).exists():
+        policy = create_user_and_policy(pname)
         for alias in mbox.alias_addresses:
             create_user_and_use_policy(alias, policy)
         result = True

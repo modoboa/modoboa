@@ -25,7 +25,9 @@ def on_relay_domain_deleted(rdomain):
 @events.observe("RelayDomainAliasCreated")
 def on_relay_domain_alias_created(user, rdomainalias):
     create_user_and_use_policy(
-        "@{0}".format(rdomainalias.name), rdomainalias.target.name)
+        "@{0}".format(rdomainalias.name),
+        "@{0}".format(rdomainalias.target.name)
+    )
 
 
 @events.observe("RelayDomainAliasDeleted")

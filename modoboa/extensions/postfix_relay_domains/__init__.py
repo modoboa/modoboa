@@ -48,21 +48,15 @@ def init_amavis_dependant_features():
     We create records for *users* and *policy* tables for each defined
     relay domain or relay domain alias.
     """
-    from modoboa.extensions.amavis.models import Users
     from modoboa.extensions.amavis.lib import (
         create_user_and_policy, create_user_and_use_policy
     )
 
     for rdom in RelayDomain.objects.all():
-        try:
-            Users.objects.get(email="@%s" % rdom.name)
-        except Users.DoesNotExist:
-            create_user_and_policy(rdom.name)
+        policy = create_user_and_policy("@{0}".format(rdom.name))
         for rdomalias in rdom.relaydomainalias_set.all():
-            try:
-                Users.objects.get(email='@%s' % rdomalias.name)
-            except Users.DoesNotExist:
-                create_user_and_use_policy(rdomalias.name, rdom.name)
+            rdomalias_pattern = "@{0}".format(rdomalias.name)
+            create_user_and_use_policy(rdomalias_pattern, policy)
 
 
 class PostfixRelayDomains(ModoExtension):

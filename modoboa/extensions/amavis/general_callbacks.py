@@ -44,7 +44,8 @@ def on_domain_deleted(domain):
 @events.observe("DomainAliasCreated")
 def on_domain_alias_created(user, domainalias):
     create_user_and_use_policy(
-        "@{0}".format(domainalias.name), domainalias.target.name
+        "@{0}".format(domainalias.name),
+        "@{0}".format(domainalias.target.name)
     )
 
 
