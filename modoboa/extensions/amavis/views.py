@@ -156,7 +156,9 @@ def viewmail_selfservice(request, mail_id,
 
 @selfservice(viewmail_selfservice)
 def viewmail(request, mail_id):
-    rcpt = request.GET["rcpt"]
+    rcpt = request.GET.get("rcpt", None)
+    if rcpt is None:
+        raise BadRequest(_("Invalid request"))
     if request.user.email == rcpt:
         get_connector().set_msgrcpt_status(rcpt, mail_id, 'V')
     elif request.user.mailbox_set.count():
