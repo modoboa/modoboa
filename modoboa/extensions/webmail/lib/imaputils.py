@@ -14,7 +14,7 @@ from django.utils.translation import ugettext as _
 
 from ..exceptions import ImapError, WebmailInternalError
 from .fetch_parser import parse_fetch_response
-from modoboa.lib import parameters
+from modoboa.lib import parameters, imap_utf7
 from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.exceptions import InternalError
 
