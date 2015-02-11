@@ -57,14 +57,6 @@ MODOBOA_APPS = (
     'modoboa.core',
     'modoboa.lib',
     # Modoboa extensions here.
-    'modoboa.extensions.postfix_relay_domains',
-    'modoboa.extensions.limits',
-    'modoboa.extensions.postfix_autoreply',
-    'modoboa.extensions.webmail',
-    'modoboa.extensions.stats',
-    'modoboa.extensions.sievefilters',
-    'modoboa.extensions.radicale',
-    {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
 
     # Tools from here
     #'modoboa.tools.pfxadmin_migrate',
@@ -119,8 +111,6 @@ DATABASES = { {{ default_conn|safe }}
     # }{% else %}
     {{ amavis_conn|safe }}{% endif %}
 }
-
-DATABASE_ROUTERS = ["modoboa.extensions.amavis.dbrouter.AmavisRouter"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
