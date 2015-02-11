@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Olle Gustafsson <olle@dalnix.se>, 2013
 # Olle Gustafsson <olle@dalnix.se>, 2013,2015
@@ -9,177 +9,34 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 14:23+0100\n"
+"POT-Creation-Date: 2015-02-11 15:07+0100\n"
 "PO-Revision-Date: 2015-01-13 15:21+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
-"Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/sv/)\n"
+"Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/"
+"sv/)\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
 msgstr "Inga fler logg poster att visa"
-
-#: extensions/admin/static/admin/js/admin.js:102
-msgid "No more domain to show"
-msgstr "Inga fler domäner att visa"
-
-#: extensions/admin/static/admin/js/admin.js:113
-msgid "Do not delete domain directory"
-msgstr "Radera inte domän katalog"
-
-#: extensions/admin/static/admin/js/admin.js:115
-msgid "This operation will remove ALL data associated to this domain."
-msgstr "Denna åtgärd kommer radera ALL data associerad med den här domänen."
-
-#: extensions/admin/static/admin/js/admin.js:116
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr "Den här operationen raderar all data som är associerad med denna domän, förutom konton."
-
-#: extensions/admin/static/admin/js/admin.js:198
-msgid "No domain administrator defined"
-msgstr "Ingen domänadministratör definierad"
-
-#: extensions/admin/static/admin/js/admin.js:253
-#: extensions/admin/static/admin/js/admin.js:309
-msgid "No more identity to show"
-msgstr "Inga fler konton att visa"
-
-#: extensions/admin/static/admin/js/admin.js:283
-msgid "Do not delete mailbox directory"
-msgstr "Radera inte brevlådans katalog"
-
-#: extensions/admin/static/admin/js/admin.js:312
-msgid "No more quota to show"
-msgstr "Ingen mer kvota att visa"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:19
-msgid "No more message to show"
-msgstr "Inga fler meddelanden att visa"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:270
-msgid "Release this selection?"
-msgstr "Släpp markerat urval?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:274
-msgid "Delete this selection?"
-msgstr "Radera markerat urval?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:314
-msgid "Mark this selection as spam?"
-msgstr "Markera detta val som skräppost?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:329
-msgid "Mark this selection as non-spam?"
-msgstr "Markera detta val som icke-skräppost?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:354
-#: extensions/amavis/static/amavis/js/selfservice.js:17
-msgid "Release this message?"
-msgstr "Släpp detta meddelande?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:358
-#: extensions/amavis/static/amavis/js/selfservice.js:21
-msgid "Delete this message?"
-msgstr "Radera detta meddelande?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:373
-msgid "Mark as spam?"
-msgstr "Markera som skräppost?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:389
-msgid "Mark as non-spam?"
-msgstr "Markera som icke-skräppost"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:407
-msgid "View full headers"
-msgstr "Visa meddelandehuvud"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:412
-msgid "Hide full headers"
-msgstr "Göm meddelandehuvud"
-
-#: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
-msgid "Services updated"
-msgstr "Tjänster uppdaterade"
-
-#: extensions/radicale/static/radicale/js/radicale.js:19
-msgid "No more calendar to show"
-msgstr "Inga fler kalendrar att visa"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:14
-msgid "Remove this filter?"
-msgstr "Radera detta filter?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:107
-msgid "Save changes?"
-msgstr "Spara ändringar?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:129
-msgid "Remove filters set?"
-msgstr "Radera filteruppsättning?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:146
-msgid "Activate this filters set?"
-msgstr "Aktivera filteruppsättning?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:154
-#: extensions/sievefilters/static/sievefilters/js/lib.js:203
-msgid "active"
-msgstr "aktivera"
-
-#: extensions/stats/static/stats/js/stats.js:43
-msgid "Search a domain"
-msgstr "Sök domän"
-
-#: extensions/webmail/static/webmail/js/webmail.js:188
-msgid "No more message in this mailbox."
-msgstr "Inga fler meddelanden i denna brevlåda"
-
-#: extensions/webmail/static/webmail/js/webmail.js:685
-msgid "Remove the selected mailbox?"
-msgstr "Radera markerad brevlåda?"
-
-#: extensions/webmail/static/webmail/js/webmail.js:698
-msgid "Mailbox removed"
-msgstr "Brevlåda raderad"
-
-#: extensions/webmail/static/webmail/js/webmail.js:973
-msgid "Message sent"
-msgstr "Meddelande sänt"
-
-#: extensions/webmail/static/webmail/js/webmail.js:1242
-#, c-format
-msgid "Moving %s message"
-msgid_plural "Moving %s messages"
-msgstr[0] "Flyttar %s meddelande"
-msgstr[1] "Flyttar %s meddelanden"
-
 #: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Varning"
-
 #: static/js/confirmation.js:59
 msgid "Cancel"
 msgstr "Avbryt"
-
 #: static/js/global.js:329
 msgid "Internal error"
 msgstr "Internt fel"
-
 #: static/js/listing.js:21
 msgid "No more entry to show"
 msgstr "Inga fler poster att visa"
-
 #: static/js/listing.js:46
 msgid "Search"
 msgstr "Sök"
-
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Sök..."

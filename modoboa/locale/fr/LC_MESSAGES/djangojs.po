@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 14:23+0100\n"
+"POT-Creation-Date: 2015-02-11 15:07+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -16,170 +16,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
 msgstr "Plus d'entrée de journal à afficher"
-
-#: extensions/admin/static/admin/js/admin.js:102
-msgid "No more domain to show"
-msgstr "Plus de domaine à afficher"
-
-#: extensions/admin/static/admin/js/admin.js:113
-msgid "Do not delete domain directory"
-msgstr "Ne pas supprimer le répertoire du domaine"
-
-#: extensions/admin/static/admin/js/admin.js:115
-msgid "This operation will remove ALL data associated to this domain."
-msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
-
-#: extensions/admin/static/admin/js/admin.js:116
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr ""
-"Cette opération supprimera toutes les données associées à ce domaine à "
-"l'excéption des comptes."
-
-#: extensions/admin/static/admin/js/admin.js:198
-msgid "No domain administrator defined"
-msgstr "Aucun administrateur de domaine défini"
-
-#: extensions/admin/static/admin/js/admin.js:253
-#: extensions/admin/static/admin/js/admin.js:309
-msgid "No more identity to show"
-msgstr "Plus d'identité à afficher"
-
-#: extensions/admin/static/admin/js/admin.js:283
-msgid "Do not delete mailbox directory"
-msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
-
-#: extensions/admin/static/admin/js/admin.js:312
-msgid "No more quota to show"
-msgstr "Plus de quota à afficher"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:19
-msgid "No more message to show"
-msgstr "Plus de message à afficher"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:270
-msgid "Release this selection?"
-msgstr "Débloquer cette sélection?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:274
-msgid "Delete this selection?"
-msgstr "Supprimer cette sélection?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:314
-msgid "Mark this selection as spam?"
-msgstr "Marquer cette sélection comme étant du spam?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:329
-msgid "Mark this selection as non-spam?"
-msgstr "Marquer cette sélection comme n'étant pas du spam?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:354
-#: extensions/amavis/static/amavis/js/selfservice.js:17
-msgid "Release this message?"
-msgstr "Débloquer ce message?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:358
-#: extensions/amavis/static/amavis/js/selfservice.js:21
-msgid "Delete this message?"
-msgstr "Supprimer ce message?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:373
-msgid "Mark as spam?"
-msgstr "Marquer comme spam?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:389
-msgid "Mark as non-spam?"
-msgstr "Marquer comme non-spam?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:407
-msgid "View full headers"
-msgstr "Afficher tous les entêtes"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:412
-msgid "Hide full headers"
-msgstr "Cacher les entêtes complets"
-
-#: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
-msgid "Services updated"
-msgstr "Services mis à jour"
-
-#: extensions/radicale/static/radicale/js/radicale.js:19
-msgid "No more calendar to show"
-msgstr "Plus de calendrier à afficher"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:14
-msgid "Remove this filter?"
-msgstr "Supprimer ce filtre?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:107
-msgid "Save changes?"
-msgstr "Enregistrer les changements?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:129
-msgid "Remove filters set?"
-msgstr "Supprimer ce jeu de filtres?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:146
-msgid "Activate this filters set?"
-msgstr "Activer ce jeu de filtres?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:154
-#: extensions/sievefilters/static/sievefilters/js/lib.js:203
-msgid "active"
-msgstr "actif"
-
-#: extensions/stats/static/stats/js/stats.js:43
-msgid "Search a domain"
-msgstr "Checher un domaine"
-
-#: extensions/webmail/static/webmail/js/webmail.js:188
-msgid "No more message in this mailbox."
-msgstr "Plus aucun message dans cette boite aux lettres"
-
-#: extensions/webmail/static/webmail/js/webmail.js:685
-msgid "Remove the selected mailbox?"
-msgstr "Supprimer la boite sélectionnée?"
-
-#: extensions/webmail/static/webmail/js/webmail.js:698
-msgid "Mailbox removed"
-msgstr "Boite aux lettres supprimée"
-
-#: extensions/webmail/static/webmail/js/webmail.js:973
-msgid "Message sent"
-msgstr "Message envoyé"
-
-#: extensions/webmail/static/webmail/js/webmail.js:1242
-#, c-format
-msgid "Moving %s message"
-msgid_plural "Moving %s messages"
-msgstr[0] "Déplacement de %s message"
-msgstr[1] "Déplacement de %s messages"
-
 #: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Avertissement"
-
 #: static/js/confirmation.js:59
 msgid "Cancel"
 msgstr "Annuler"
-
 #: static/js/global.js:329
 msgid "Internal error"
 msgstr "Erreur interne"
-
 #: static/js/listing.js:21
 msgid "No more entry to show"
 msgstr "Plus d'entrée à afficher"
-
 #: static/js/listing.js:46
 msgid "Search"
 msgstr "Chercher"
-
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Chercher..."
