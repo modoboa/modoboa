@@ -1,8 +1,0 @@
-{% load form_tags radicale_tags %}
-<div class="form-inline access-rule" id="original_row">
-  {% render_field form.username %}
-  <label class="checkbox">{{ form.read_access }} {{ form.read_access.label }}</label>
-  <label class="checkbox">{{ form.write_access }} {{ form.write_access.label }}</label>
-  <a href="#" class="addrule"><span class="fa fa-plus"></span></a>
-</div>
-{% render_rule_fields form %}
