@@ -16,10 +16,13 @@ from modoboa.extensions.admin.models import Domain
 from modoboa.lib import parameters
 
 from . import general_callbacks
-from .models import Policy, Users
+from .lib import create_user_and_policy, create_user_and_use_policy
 
 
 class Amavis(ModoExtension):
+
+    """The Amavis extension."""
+
     name = "amavis"
     label = "Amavis frontend"
     version = "1.0"
@@ -36,15 +39,10 @@ class Amavis(ModoExtension):
     def load_initial_data(self):
         """Create records for existing domains and co."""
         for dom in Domain.objects.all():
-            name = "@{0}".format(dom.name)
-            policy, created = Policy.objects.get_or_create(
-                policy_name=name[:32])
-            Users.objects.get_or_create(
-                email=name, fullname=name, priority=7, policy=policy)
-            for dalias in dom.domainalias_set.all():
-                name = "@{0}".format(dalias.name)
-                Users.objects.get_or_create(
-                    email=name, fullname=name, priority=7, policy=policy)
+            policy = create_user_and_policy("@{0}".format(dom.name))
+            for domalias in dom.domainalias_set.all():
+                domalias_pattern = "@{0}".format(domalias.name)
+                create_user_and_use_policy(domalias_pattern, policy)
 
         if not exts_pool.is_extension_installed(
                 "modoboa.extensions.postfix_relay_domains"):

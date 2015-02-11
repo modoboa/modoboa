@@ -1,3 +1,5 @@
+"""General event callbacks."""
+
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.template import Template, Context
@@ -16,15 +18,11 @@ def create_relay_domains_records():
     """Create records for existing relay domains."""
     from modoboa.extensions.postfix_relay_domains.models import RelayDomain
 
-    for dom in RelayDomain.objects.all():
-        name = "@{0}".format(dom.name)
-        policy, created = Policy.objects.get_or_create(policy_name=name[:32])
-        Users.objects.get_or_create(
-            email=name, fullname=name, priority=7, policy=policy)
-        for rdalias in dom.relaydomainalias_set.all():
-            name = "@{0}".format(rdalias.name)
-            Users.objects.get_or_create(
-                email=name, fullname=name, priority=7, policy=policy)
+    for rdom in RelayDomain.objects.all():
+        policy = create_user_and_policy("@{0}".format(rdom.name))
+        for rdomalias in rdom.relaydomainalias_set.all():
+            rdomalias_pattern = "@{0}".format(rdomalias.name)
+            create_user_and_use_policy(rdomalias_pattern, policy)
 
 
 @events.observe("InitialDataLoaded")
@@ -67,7 +65,8 @@ def on_domain_deleted(domain):
 @events.observe("DomainAliasCreated")
 def on_domain_alias_created(user, domainalias):
     create_user_and_use_policy(
-        "@{0}".format(domainalias.name), domainalias.target.name
+        "@{0}".format(domainalias.name),
+        "@{0}".format(domainalias.target.name)
     )
 
 
