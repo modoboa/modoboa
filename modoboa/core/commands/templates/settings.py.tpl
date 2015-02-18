@@ -57,9 +57,8 @@ MODOBOA_APPS = (
     'modoboa.core',
     'modoboa.lib',
     # Modoboa extensions here.
-
-    # Tools from here
-    #'modoboa.tools.pfxadmin_migrate',
+{% for extension in extensions %}    '{{ extension }}',
+{% endfor %}
 )
 
 INSTALLED_APPS += MODOBOA_APPS
@@ -95,21 +94,8 @@ WSGI_APPLICATION = '{{ name }}.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = { {{ default_conn|safe }}
-    # "pfxadmin" : {
-    #     "ENGINE" : "django.db.backends.",
-    #     "NAME" : "",
-    #     "USER" : "",
-    #     "PASSWORD" : ""
-    # },{% if not amavis_conn %}
-    # "amavis": {
-    #	  "ENGINE" : "django.db.backends.",
-    #	  "HOST" : "",
-    #	  "NAME" : "",
-    #	  "USER" : "",
-    #	  "PASSWORD" : ""
-    # }{% else %}
-    {{ amavis_conn|safe }}{% endif %}
+DATABASES = {
+    {% for conn in db_connections.values %}{{ conn|safe }}{% endfor %}
 }
 
 # Internationalization
@@ -177,3 +163,6 @@ LOGGING = {
         }
     }
 }
+{% for extension in extra_settings %}
+import {{ extension }}.settings
+{% endfor %}
