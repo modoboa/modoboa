@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from django.template import Template, Context
 
 from modoboa.lib import events, parameters
-from modoboa.extensions.admin.models import DomainAlias
+from modoboa.extensions.admin.models import DomainAlias, Alias
 from modoboa.extensions.amavis.lib import (
     create_user_and_policy, update_user_and_policy, delete_user_and_policy,
     create_user_and_use_policy, delete_user
