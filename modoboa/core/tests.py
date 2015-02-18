@@ -49,14 +49,17 @@ class ProfileTestCase(ModoTestCase):
 
 
 class ModoboaAdminCommandTestCase(TestCase):
+
     MAP_FILES = {
-        "std": [
+        "modoboa_admin": [
             "sql-domains.cf", "sql-domain-aliases.cf", "sql-aliases.cf",
             "sql-domain-aliases-mailboxes.cf", "sql-catchall-aliases.cf",
             "sql-maintain.cf"
         ],
-        "autoreply": ["sql-autoreplies-transport.cf", "sql-autoreplies.cf"],
-        "relaydomains": [
+        "modoboa_postfix_autoreply": [
+            "sql-autoreplies-transport.cf", "sql-autoreplies.cf"
+        ],
+        "modoboa_admin_relaydomains": [
             "sql-relaydomains.cf", "sql-relaydomains-transport.cf",
             "sql-relaydomain-aliases-transport.cf",
             "sql-relay-recipient-verification.cf"
@@ -69,19 +72,22 @@ class ModoboaAdminCommandTestCase(TestCase):
     def tearDown(self):
         exec_cmd("rm -rf {0}".format(self.workdir))
 
-    def _test_maps_generation(self, engine, categories=None):
-        if categories is None:
-            categories = ["std", "autoreply", "relaydomains"]
+    def _test_maps_generation(self, engine, extensions=None):
+        if extensions is None:
+            extensions = [
+                "modoboa_admin", "modoboa_postfix_autoreply",
+                "modoboa_admin_relaydomains"
+            ]
         dburl = "{0}://user:password@localhost/testdb".format(engine)
         code, output = exec_cmd(
-            "modoboa-admin.py postfix_maps --categories {0}"
+            "modoboa-admin.py postfix_maps --extensions {0}"
             " --dburl {1} {2}".format(
-                " ".join(categories), dburl, self.workdir
+                " ".join(extensions), dburl, self.workdir
             )
         )
         self.assertEqual(code, 0)
-        for category in categories:
-            for mapfile in self.MAP_FILES[category]:
+        for extension in extensions:
+            for mapfile in self.MAP_FILES[extension]:
                 path = "{0}/{1}".format(self.workdir, mapfile)
                 self.assertTrue(os.path.exists(path))
                 with open(path) as fpo:
