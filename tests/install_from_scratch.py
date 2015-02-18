@@ -55,7 +55,7 @@ class DeployTest(unittest.TestCase):
         self.assertEqual(child.exitstatus, 0)
 
     def test_silent(self):
-        dburl = "%s://%s:%s@%s/%s" \
+        dburl = "default:%s://%s:%s@%s/%s" \
             % (self.dbtype, self.dbuser, self.dbpassword,
                self.dbhost, self.projname)
         cmd = (
