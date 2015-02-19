@@ -189,15 +189,15 @@ class ResellerTestCase(ResourceTestCase):
 
     def test_domain_aliases_limit(self):
         self._create_domain('pouet.com')
-        self._domain_alias_operation('add', 'pouet.com', 'domain_alias1.tld')
+        self._domain_alias_operation('add', 'pouet.com', 'domain-alias1.tld')
         self._check_limit('domain_aliases', 1, 2)
-        self._domain_alias_operation('add', 'pouet.com', 'domain_alias2.tld')
+        self._domain_alias_operation('add', 'pouet.com', 'domain-alias2.tld')
         self._check_limit('domain_aliases', 2, 2)
         resp = self._domain_alias_operation(
-            'add', 'pouet.com', 'domain_alias3.tld', 403
+            'add', 'pouet.com', 'domain-alias3.tld', 403
         )
         self._check_limit('domain_aliases', 2, 2)
-        self._domain_alias_operation('delete', 'pouet.com', 'domain_alias2.tld')
+        self._domain_alias_operation('delete', 'pouet.com', 'domain-alias2.tld')
         self._check_limit('domain_aliases', 1, 2)
 
     def test_domain_admins_limit(self):
