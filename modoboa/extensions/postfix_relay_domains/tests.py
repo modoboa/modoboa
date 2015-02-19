@@ -195,18 +195,18 @@ class LimitsTestCase(ExtTestCase, Operations):
     def test_relay_domain_aliases_limit(self):
         self._create_relay_domain('relaydomain1.tld')
         self._relay_domain_alias_operation(
-            'add', 'relaydomain1.tld', 'relay_domain_alias1.tld'
+            'add', 'relaydomain1.tld', 'relay-domain-alias1.tld'
         )
         self._check_limit('relay_domain_aliases', 1, 2)
         self._relay_domain_alias_operation(
-            'add', 'relaydomain1.tld', 'relay_domain_alias2.tld'
+            'add', 'relaydomain1.tld', 'relay-domain-alias2.tld'
         )
         self._check_limit('relay_domain_aliases', 2, 2)
         self._relay_domain_alias_operation(
-            'add', 'relaydomain1.tld', 'relay_domain_alias3.tld', 403
+            'add', 'relaydomain1.tld', 'relay-domain-alias3.tld', 403
         )
         self._check_limit('relay_domain_aliases', 2, 2)
         self._relay_domain_alias_operation(
-            'delete', 'relaydomain1.tld', 'relay_domain_alias2.tld'
+            'delete', 'relaydomain1.tld', 'relay-domain-alias2.tld'
         )
         self._check_limit('relay_domain_aliases', 1, 2)
