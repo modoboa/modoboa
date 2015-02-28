@@ -8,7 +8,7 @@
       <div class="form-group{% if form.errors.to %} has-error{% endif %}">
         <label class="col-sm-1 control-label" for="id_to">{% trans "To" %}</label>
         <div class="col-sm-8">
-          <input id="id_to" name="to" class="form-control" value="{% if form.to.value %}{{ form.to.value }}{% endif %}"{% if form.to.errors %} placeholder="{% for error in form.to.errors %}{{ error }}{% endfor %}"{% endif %}>
+          <input id="id_to" name="to" class="form-control" value="{% if form.to.value %}{{ form.to.value }}{% endif %}"{% if form.to.errors %} placeholder="{% for error in form.to.errors %}{{ error }}{% endfor %}" title="{% for error in form.to.errors %}{{ error }}{% endfor %}"{% endif %}>
         </div>
         {% if not form.cc.value %}
         <div class="col-sm-2">
