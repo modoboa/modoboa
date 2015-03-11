@@ -14,7 +14,8 @@ from .lib import (
     ImapEmail, create_mail_attachment
 )
 
-from validators import validate_email_list
+from .validators import validate_email_list
+
 
 def html2plaintext(content):
     """HTML to plain text translation.
