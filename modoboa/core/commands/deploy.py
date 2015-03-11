@@ -76,6 +76,10 @@ class DeployCommand(Command):
             '--extensions', type=str, nargs='*',
             help="The list of extension to deploy"
         )
+        self._parser.add_argument(
+            '--dont-install-extensions', action='store_true', default=False,
+            help='Do not install extensions using pip'
+        )
 
     def _exec_django_command(self, name, cwd, *args):
         """Run a django command for the freshly created project
@@ -196,7 +200,7 @@ class DeployCommand(Command):
                 allowed_host = "localhost"
 
         extra_settings = []
-        if parsed_args.extensions:
+        if parsed_args.dont_install_extensions and parsed_args.extensions:
             extra_settings = self.install_extensions(parsed_args.extensions)
 
         bower_components_dir = os.path.realpath(

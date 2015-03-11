@@ -28,7 +28,8 @@ class TestRunnerMixin(object):
         )
         cmd = (
             "modoboa-admin.py deploy --collectstatic "
-            "--dburl {0} --extensions {1} --domain {2} {3}"
+            "--dburl {0} --extensions {1} --dont-install-extensions "
+            "--domain {2} {3}"
             .format(dburl, self.extension, "localhost", self.projname)
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)
