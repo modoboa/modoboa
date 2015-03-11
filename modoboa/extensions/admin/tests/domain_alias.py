@@ -19,6 +19,7 @@ class DomainAliasTestCase(ModoTestCase):
         domal = DomainAlias()
         domal.name = "domalias.net"
         domal.target = dom
+        domal.enabled = True
         domal.save()
         self.assertEqual(dom.domainalias_count, 1)
 

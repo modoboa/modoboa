@@ -45,22 +45,15 @@ def grant_access_to_object(user, obj, is_owner=False):
     :param obj: an admin. object (Domain, Mailbox, ...)
     :param is_owner: the user is the unique object's owner
     """
-    ct = ContentType.objects.get_for_model(obj)
-    try:
-        entry = user.objectaccess_set.get(content_type=ct, object_id=obj.id)
-        entry.is_owner = is_owner
-        entry.save()
-    except ObjectAccess.DoesNotExist:
-        pass
-    else:
-        return
-
-    ObjectAccess.objects.create(
-        user=user, content_type=ct, object_id=obj.id, is_owner=is_owner
-    )
-    if not is_owner:
-        return
     from modoboa.core.models import User
+
+    ct = ContentType.objects.get_for_model(obj)
+    entry, created = ObjectAccess.objects.get_or_create(
+        user=user, content_type=ct, object_id=obj.id)
+    entry.is_owner = is_owner
+    entry.save()
+    if not created or not is_owner:
+        return
     for su in User.objects.filter(is_superuser=True):
         if su == user:
             continue
@@ -80,10 +73,8 @@ def grant_access_to_objects(user, objects, ct):
     :param ct: the content type
     """
     for obj in objects:
-        try:
-            ObjectAccess.objects.create(user=user, content_type=ct, object_id=obj.id)
-        except IntegrityError:
-            pass
+        ObjectAccess.objects.get_or_create(
+            user=user, content_type=ct, object_id=obj.id)
 
 
 def ungrant_access_to_object(obj, user=None):

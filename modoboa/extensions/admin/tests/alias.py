@@ -48,15 +48,19 @@ class AliasTestCase(ModoTestCase):
         )
         self.assertEqual(user.mailbox_set.first().alias_set.count(), 1)
         self.assertEqual(
-            user.mailbox_set.first().alias_set.first(), "toto@test.com")
+            user.mailbox_set.first().alias_set.first().full_address,
+            "toto@test.com"
+        )
 
         values = {
-            "email": "Titi@test.com", "recipient": "user@test.com",
+            "email": "Titi@test.com", "recipients": "user@test.com",
             "enabled": True
         }
         self.ajax_post(reverse("admin:alias_add"), values)
         self.assertEqual(
-            user.mailbox_set.first().alias_set.first(), "titi@test.com")
+            user.mailbox_set.first().alias_set.first().full_address,
+            "titi@test.com"
+        )
 
     def test_dlist(self):
         values = dict(email="all@test.com",
