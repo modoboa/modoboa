@@ -40,8 +40,29 @@ class PermissionsTestCase(ModoTestCase):
         )
         self.assertEqual(resp, "Permission denied")
 
+    def test_delete_forward(self):
+        """Delete a forward created by a user.
+
+        This test was added to help fixing #689.
+        """
+        self.clt.logout()
+        self.clt.login(username="user@test2.com", password="toto")
+
+        values = {
+            "dest": "rcpt@dest.com",
+            "keepcopies": True
+        }
+        self.ajax_post(reverse("user_forward"), values)
+
+        user = User.objects.get(username="user@test2.com")
+
+        self.clt.logout()
+        self.clt.login(username="admin", password="password")
+        self.ajax_post(reverse("admin:account_delete", args=[user.pk]))
+
 
 class ResourceTestCase(ModoTestCase):
+
     fixtures = ["initial_users.json"]
 
     def setUp(self):
