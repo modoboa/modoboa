@@ -83,9 +83,12 @@ class ComposeMailForm(forms.Form):
 
     """Compose mail form."""
 
-    to = forms.CharField(label=_("To"), validators=[validate_email_list])
-    cc = forms.CharField(label=_("Cc"), required=False, validators=[validate_email_list])
-    cci = forms.CharField(label=_("Cci"), required=False, validators=[validate_email_list])
+    to = forms.CharField(
+        label=_("To"), validators=[validate_email_list])
+    cc = forms.CharField(
+        label=_("Cc"), required=False, validators=[validate_email_list])
+    cci = forms.CharField(
+        label=_("Cci"), required=False, validators=[validate_email_list])
     subject = forms.CharField(
         label=_("Subject"),
         max_length=255,
