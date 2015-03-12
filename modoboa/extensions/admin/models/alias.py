@@ -200,7 +200,8 @@ class Alias(AdminObject):
                 except Mailbox.DoesNotExist:
                     raise BadRequest(_("Local recipient %s not found" % rcpt))
             int_rcpts += [target]
-        self.save(int_rcpts=int_rcpts, ext_rcpts=ext_rcpts, creator=user)
+        self.save(int_rcpts=int_rcpts, ext_rcpts=ext_rcpts)
+        self.post_create(user)
 
     def to_csv(self, csvwriter):
         row = [self.type, self.full_address.encode("utf-8"), self.enabled]
