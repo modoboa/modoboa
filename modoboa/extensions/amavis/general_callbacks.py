@@ -85,7 +85,7 @@ def on_mailbox_modified(mailbox):
        not hasattr(mailbox, "old_full_address") or \
        mailbox.full_address == mailbox.old_full_address:
         return
-    user = Users.objects.select_related.get(email=mailbox.old_full_address)
+    user = Users.objects.select_related().get(email=mailbox.old_full_address)
     full_address = mailbox.full_address
     user.email = full_address
     user.policy.policy_name = full_address[:32]
