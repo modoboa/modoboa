@@ -21,6 +21,7 @@ from django.template import Context, Template
 import dj_database_url
 
 from modoboa.core.commands import Command
+from modoboa.lib.api_client import ModoAPIClient
 
 DBCONN_TPL = """
     '{{ conn_name }}': {
@@ -150,12 +151,14 @@ class DeployCommand(Command):
 
         """
         if "all" in extensions:
-            # Retrieve official extension list from the API
-            return
+            official_exts = ModoAPIClient().list_extensions()
+            extensions = [extension["name"] for extension in official_exts]
+
         pip_args = ["install"] + extensions
         pip.main(pip_args)
         extra_settings = []
         for extension in extensions:
+            extension = extension.replace("-", "_")
             module = __import__(extension, locals(), globals(), [])
             basedir = os.path.dirname(module.__file__)
             if not os.path.exists("{0}/settings.py".format(basedir)):
