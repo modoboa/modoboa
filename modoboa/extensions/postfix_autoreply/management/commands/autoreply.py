@@ -53,7 +53,7 @@ class Command(BaseCommand, CloseConnectionMixin):
             raise CommandError(
                 "usage: ./manage.py autoreply <sender> <recipient ...>")
 
-        PostfixAutoreply.load()
+        PostfixAutoreply().load()
         sender = args[0]
         for fulladdress in args[1:]:
             address, domain = split_mailbox(fulladdress)

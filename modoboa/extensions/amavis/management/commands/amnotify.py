@@ -44,7 +44,7 @@ class Command(BaseCommand, CloseConnectionMixin):
     def handle(self, *args, **options):
         if options["baseurl"] is None:
             raise CommandError("You must provide the --baseurl option")
-        Amavis.load()
+        Amavis().load()
         self.options = options
         self.notify_admins_pending_requests()
 

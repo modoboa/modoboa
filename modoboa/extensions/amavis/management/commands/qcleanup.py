@@ -35,7 +35,7 @@ class Command(BaseCommand, CloseConnectionMixin):
         print msg
 
     def handle(self, *args, **options):
-        Amavis.load()
+        Amavis().load()
         if options["debug"]:
             import logging
             l = logging.getLogger("django.db.backends")

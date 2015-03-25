@@ -103,7 +103,7 @@ permission = %s
 
     def handle(self, *args, **options):
         """Command entry point."""
-        Radicale.load()
+        Radicale().load()
         path = parameters.get_admin("RIGHTS_FILE_PATH", app="radicale")
         if not options["force"]:
             try:
