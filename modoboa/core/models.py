@@ -90,6 +90,7 @@ class User(PermissionsMixin):
         for ooentry in self.objectaccess_set.filter(is_owner=True):
             if ooentry.content_object is not None:
                 grant_access_to_object(owner, ooentry.content_object, True)
+                ungrant_access_to_object(ooentry.content_object, self)
 
         events.raiseEvent("AccountDeleted", self, fromuser, **kwargs)
         ungrant_access_to_object(self)
