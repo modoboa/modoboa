@@ -7,7 +7,6 @@ This module provides support to retrieve statistics from postfix log :
 sent, received, bounced, rejected
 
 """
-import sys
 
 from django.utils.translation import ugettext_lazy
 

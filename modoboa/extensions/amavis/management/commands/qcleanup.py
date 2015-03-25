@@ -11,6 +11,7 @@ from modoboa.extensions.amavis.models import (
     Msgrcpt, Msgs, Maddr
 )
 from modoboa.lib import parameters
+from ...modo_extension import Amavis
 
 
 class Command(BaseCommand, CloseConnectionMixin):
@@ -34,6 +35,7 @@ class Command(BaseCommand, CloseConnectionMixin):
         print msg
 
     def handle(self, *args, **options):
+        Amavis.load()
         if options["debug"]:
             import logging
             l = logging.getLogger("django.db.backends")

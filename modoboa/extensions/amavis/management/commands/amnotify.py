@@ -16,10 +16,14 @@ from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.amavis.models import (
     Msgrcpt
 )
-from modoboa.extensions.amavis.sql_connector import get_connector
+from ...modo_extension import Amavis
+from ...sql_connector import get_connector
 
 
 class Command(BaseCommand, CloseConnectionMixin):
+
+    """A management command to notify admins about pending release requests."""
+
     help = 'Amavis notification tool'
 
     sender = None
@@ -40,6 +44,7 @@ class Command(BaseCommand, CloseConnectionMixin):
     def handle(self, *args, **options):
         if options["baseurl"] is None:
             raise CommandError("You must provide the --baseurl option")
+        Amavis.load()
         self.options = options
         self.notify_admins_pending_requests()
 

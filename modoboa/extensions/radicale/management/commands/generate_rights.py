@@ -8,9 +8,10 @@ from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.extensions.admin.models import Domain
-from modoboa.extensions.radicale.models import (
+from ...models import (
     AccessRule
 )
+from ...modo_extension import Radicale
 
 
 class Command(BaseCommand, CloseConnectionMixin):
@@ -102,6 +103,7 @@ permission = %s
 
     def handle(self, *args, **options):
         """Command entry point."""
+        Radicale.load()
         path = parameters.get_admin("RIGHTS_FILE_PATH", app="radicale")
         if not options["force"]:
             try:

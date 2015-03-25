@@ -33,6 +33,7 @@ from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.extensions.admin.models import Domain
 from modoboa.extensions.stats.lib import date_to_timestamp
 from modoboa.lib import parameters
+from ...modo_extension import Stats
 
 rrdstep = 60
 xpoints = 540
@@ -372,6 +373,7 @@ class Command(BaseCommand, CloseConnectionMixin):
     )
 
     def handle(self, *args, **options):
+        Stats.load()
         if options["logfile"] is None:
             options["logfile"] = parameters.get_admin("LOGFILE", app="stats")
         p = LogParser(options, parameters.get_admin("RRD_ROOTDIR", app="stats"))
