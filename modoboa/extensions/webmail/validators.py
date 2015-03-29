@@ -14,7 +14,7 @@ class EmailListValidator(object):
         value = force_text(value)
         emails = [unicode.strip(email) for email in value.split(",")]
         addresses = getaddresses(emails)
-        [validate_email(e) for r, e in addresses.values]
+        [validate_email(e) for r, e in addresses]
 
 validate_email_list = EmailListValidator()
 
