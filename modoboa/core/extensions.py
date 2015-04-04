@@ -3,6 +3,11 @@
 from django.conf import settings
 from django.conf.urls import include
 
+from versionfield.constants import DEFAULT_NUMBER_BITS
+from versionfield.version import Version
+
+from modoboa.lib.api_client import ModoAPIClient
+
 
 class ModoExtension(object):
 
@@ -101,14 +106,29 @@ class ExtensionsPool(object):
             extinstance.load()
         return result
 
-    def list_all(self):
+    def list_all(self, check_new_versions=False):
         """List all defined extensions."""
         result = []
+        if check_new_versions:
+            new_extensions = ModoAPIClient().list_extensions()
+            new_extensions = dict(
+                (ext["name"], ext["version"]) for ext in new_extensions
+            )
+        else:
+            new_extensions = {}
         for extname, extdef in self.extensions.iteritems():
             if not extdef["show"]:
                 continue
             infos = self.get_extension_infos(extname)
             infos["id"] = extname
+            local_version = Version(infos["version"], DEFAULT_NUMBER_BITS)
+            pkgname = infos["name"].replace("_", "-")
+            if pkgname in new_extensions:
+                infos["last_version"] = new_extensions[pkgname]
+                last_version = Version(
+                    new_extensions[pkgname], DEFAULT_NUMBER_BITS)
+                if last_version > local_version:
+                    infos["update"] = True
             result += [infos]
         return sorted(result, key=lambda i: i["name"])
 
