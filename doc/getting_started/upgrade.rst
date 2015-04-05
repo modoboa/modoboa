@@ -105,7 +105,7 @@ If you plan to use the Radicale extension:
 A new feature allows administrators and users to manually train
 SpamAssassin in order to customize its behaviour.
 
-Check :ref:`sa_manual_learning` to know more about this feature.
+Check :ref:`amavis:sa_manual_learning` to know more about this feature.
 
 1.1.6: Few bugfixes
 ===================
