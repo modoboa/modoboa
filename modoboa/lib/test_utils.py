@@ -3,8 +3,6 @@
 import os
 import tempfile
 
-from django.test import TestCase
-
 from .sysutils import exec_cmd
 
 
@@ -43,11 +41,13 @@ class TestRunnerMixin(object):
         self.assertEqual(code, 0)
 
 
-class MapFilesTestCase(TestCase):
+class MapFilesTestCaseMixin(object):
 
     """A generic test case to check map files generation."""
 
     MAP_FILES = None
+
+    extension = None
 
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
