@@ -93,37 +93,31 @@ Deployment
 `modoboa-admin.py`, a command line tool, lets you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
-  $ modoboa-admin.py deploy modoboa_example --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
-
-Just answer the few questions and you're done. You can now go to the
-:ref:`first_use` section.
+  $ modoboa-admin.py deploy modoboa_example --collectstatic [--dburl default:database-url] [--extensions extensions]
 
 .. note::
 
-   The `--with-amavis` option must be set only if you intend to use
-   the :ref:`amavis_frontend`.
-   
-In case you need a **silent installation** (e.g. if you're using
-Salt-Stack, Ansible or whatever), it's possible to supply the database
-credentials as commandline arguments.
-
-You can see the complete option list by running the following command::
-
-  $ modoboa-admin.py help deploy
+   By default, only the core application of Modoboa is installed. To
+   install extensions, use the ``--extensions`` option which accepts a
+   list of extension names as argument (``--extensions ext1 ext2 ...``).
+   If you want to use install all extensions, just use the ``all``
+   shortcut like this ``--extensions all``.
 
 .. note::
 
-   `--dburl database-url` for the modoboa database credentials
-   `--amavis_dburl database-url` for the amavis database credentials
+   You can specify more than one database connection using the
+   ``--dburl`` option. Multiple connections are differentiated by a
+   prefix. The primary connection must use the ``default:`` prefix (as
+   shown in the example above). For the `amavis extension
+   <http://modoboa-amavis.readthedocs.org>`_ extension, use the
+   ``amavis:`` prefix like this ``--dburl amavis:<database url>``.
 
-   Your database-url should meet the following syntax:
-   ``scheme://[user:pass@][host:port]/dbname``
+   Your database url should meet the following syntax
+   ``scheme://[user:pass@][host:port]/dbname`` **OR**
+   ``sqlite:////full/path/to/your/database/file.sqlite``.
 
-   **or**
+   Available schemes are:
 
-   ``sqlite:////full/path/to/your/database/file.sqlite``
-
-   Available `schemes` are:
    * postgres
    * postgresql
    * postgis
@@ -131,6 +125,16 @@ You can see the complete option list by running the following command::
    * mysql2
    * sqlite
 
+The command will ask you a few questions, answer them and you're
+done. You can now go to the :ref:`first_use` section.
+
+In case you need a **silent installation** (e.g. if you're using
+Salt-Stack, Ansible or whatever), it's possible to supply the database
+credentials as commandline arguments.
+
+You can see the complete option list by running the following command::
+
+  $ modoboa-admin.py help deploy
 
 .. note::
 
