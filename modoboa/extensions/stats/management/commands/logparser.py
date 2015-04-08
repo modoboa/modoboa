@@ -297,6 +297,14 @@ class LogParser(object):
         if not m:
             return
         host, prog, pid, log = m.groups()
+        m = re.search("(INFECTED|SPAMMY) .* <[^>]+> -> <[^@]+@([^>]+)>.*", log)
+        if m is not None:
+            if m.group(2) in self.domains:
+                if m.group(1) == 'INFECTED':
+                    self.inc_counter(m.group(2), 'virus')
+                elif m.group(1) == 'SPAMMY':
+                    self.inc_counter(m.group(2), 'spam')
+            return
         m = self._id_expr.match(log)
         if m is None:
             self._dprint("Unknown line format: %s" % log)

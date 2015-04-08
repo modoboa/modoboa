@@ -109,8 +109,10 @@ class AverageTraffic(Graphic):
     recv = Curve("recv", "steelblue", ugettext_lazy("received messages"))
     bounced = Curve("bounced", "yellow", ugettext_lazy("bounced messages"))
     reject = Curve("reject", "tomato", ugettext_lazy("rejected messages"))
+    virus = Curve("virus", "orange", ugettext_lazy("virus messages"))
+    spam = Curve("spam", "silver", ugettext_lazy("spam messages"))
 
-    order = ['reject', 'bounced', 'recv', 'sent']
+    order = ['reject', 'bounced', 'recv', 'sent', 'virus', 'spam']
 
 
 class AverageTrafficSize(Graphic):
