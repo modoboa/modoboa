@@ -422,7 +422,7 @@ be used by Postfix to lookup into Modoboa tables.
 To automaticaly generate the requested map files and store them in a
 directory, run the following command::
 
-  $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres|sqlite> --extensions <extension names> <directory>
+  $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres|sqlite> --extensions all <directory>
 
 ``<directory>`` is the directory where the files will be
 stored. Answer the few questions and you're done.

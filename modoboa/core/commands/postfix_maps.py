@@ -11,6 +11,7 @@ from django.template import Context, Template
 
 import dj_database_url
 
+from modoboa.lib.api_client import ModoAPIClient
 from . import Command
 
 MAP_FILE_TEMPLATE = """user = {{ dbuser }}
@@ -85,8 +86,11 @@ class MapFilesGenerator(object):
         """Load specified extensions."""
         if "all" in extensions:
             # Retrieve extension list from the API
-            return
+            official_exts = ModoAPIClient().list_extensions()
+            extensions = [extension["name"] for extension in official_exts]
+
         for extension in extensions:
+            extension = extension.replace("-", "_")
             try:
                 __import__(extension, locals(), globals(), ["postfix_maps"])
             except ImportError:
@@ -126,6 +130,9 @@ query = {{ query|safe }}
 
 
 class PostfixMapsCommand(Command):
+
+    """Base command to generate map files."""
+
     help = "Generate ready-to-use postfix map files"
 
     def __init__(self, *args, **kwargs):
