@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-11 15:06+0100\n"
+"POT-Creation-Date: 2015-04-08 15:58+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -16,49 +16,66 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: core/__init__.py:65 core/__init__.py:66
 msgid "General"
 msgstr "Général"
-#: core/__init__.py:84
-msgid "New Modoboa version available"
-msgstr "Nouvelle version de Modoboa disponible"
+
+#: core/__init__.py:85
+#, fuzzy
+#| msgid "An update is available!"
+msgid "One or more updates are available"
+msgstr "Une mise à jour est disponible!"
+
 #: core/app_settings.py:34
 msgid "Authentication"
 msgstr "Authentification"
+
 #: core/app_settings.py:37
 msgid "Authentication type"
 msgstr "Type d'authentification"
+
 #: core/app_settings.py:38
 msgid "Local"
 msgstr "Locale"
+
 #: core/app_settings.py:41
 msgid "The backend used for authentication"
 msgstr "Le backend utilisé pour l'authentification"
+
 #: core/app_settings.py:46
 msgid "Default password scheme"
 msgstr "Méthode de chiffrement par défaut"
+
 #: core/app_settings.py:49
 msgid "md5crypt (weak)"
 msgstr "md5crypt (faible)"
+
 #: core/app_settings.py:50
 msgid "sha256 (weak)"
 msgstr "sha256 (faible)"
+
 #: core/app_settings.py:51
 msgid "md5 (weak)"
 msgstr "md5 (faible)"
+
 #: core/app_settings.py:52
 msgid "crypt (weak)"
 msgstr "crypt (faible)"
+
 #: core/app_settings.py:53
 msgid "plain (weak)"
 msgstr "plain (faible)"
+
 #: core/app_settings.py:55
 msgid "Scheme used to crypt mailbox passwords"
 msgstr ""
 "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
+
 #: core/app_settings.py:60
 msgid "Rounds"
 msgstr "Tours"
+
 #: core/app_settings.py:63
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
@@ -66,48 +83,63 @@ msgid ""
 msgstr ""
 "Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit "
 "être compris entre 1000 et 999999999 inclue."
+
 #: core/app_settings.py:70
 msgid "Secret key"
 msgstr "Clé secrète"
+
 #: core/app_settings.py:72
 msgid "Key used to encrypt/decrypt passwords"
 msgstr "Clé utilisée pour chiffrer/déchiffre les mots de passe"
+
 #: core/app_settings.py:77
 msgid "LDAP settings"
 msgstr "Paramètres LDAP"
+
 #: core/app_settings.py:80
 msgid "Server address"
 msgstr "Adresse du serveur"
+
 #: core/app_settings.py:83
 msgid "The IP address of the DNS name of the LDAP server"
 msgstr "L'adresse IP ou le nom DNS du serveur LDAP"
+
 #: core/app_settings.py:88
 msgid "Server port"
 msgstr "Port utilisé par le serveur"
+
 #: core/app_settings.py:90
 msgid "The TCP port number used by the LDAP server"
 msgstr "Le port TCP utilisé par le serveur LDAP"
+
 #: core/app_settings.py:95
 msgid "Use a secured connection"
 msgstr "Utiliser une connexion sécurisée"
+
 #: core/app_settings.py:98
 msgid "Use an SSL/TLS connection to access the LDAP server"
 msgstr "Utiliser une connextion SSL/TLS pour accéder au serveur LDAP"
+
 #: core/app_settings.py:102
 msgid "Authentication method"
 msgstr "Méthode d'authentification"
+
 #: core/app_settings.py:103
 msgid "Search and bind"
 msgstr "Recherche et connexion"
+
 #: core/app_settings.py:104
 msgid "Direct bind"
 msgstr "Connexion directe"
+
 #: core/app_settings.py:106
 msgid "Choose the authentication method to use"
 msgstr "Choisir la méthode d'authentification à utiliser"
+
 #: core/app_settings.py:111
 msgid "Bind DN"
 msgstr "ND de connexion"
+
 #: core/app_settings.py:114
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
@@ -115,25 +147,31 @@ msgid ""
 msgstr ""
 "Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser "
 "vide pour une connexion anonyme"
+
 #: core/app_settings.py:122
 msgid "Bind password"
 msgstr "Mot de passe de connexion"
+
 #: core/app_settings.py:125
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de "
 "connexion')"
+
 #: core/app_settings.py:134
 msgid "Users search base"
 msgstr "Base de recherche des utilisateurs"
+
 #: core/app_settings.py:137
 msgid "The distinguished name of the search base used to find users"
 msgstr ""
 "Le nom distinctif de la base de recherche utilisée pour rechercher les "
 "utilisateurs"
+
 #: core/app_settings.py:144
 msgid "Search filter"
 msgstr "Filtre de recherche"
+
 #: core/app_settings.py:147
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
@@ -141,9 +179,11 @@ msgid ""
 msgstr ""
 "Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être "
 "valide, il doit être entouré de parenthèses."
+
 #: core/app_settings.py:155
 msgid "User DN template"
 msgstr "Modèle de nom distinctif utilisateur"
+
 #: core/app_settings.py:158
 #, python-format
 msgid ""
@@ -152,21 +192,27 @@ msgid ""
 msgstr ""
 "Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il "
 "doit contenir un espace réservé (ex. %(user)s)"
+
 #: core/app_settings.py:166
 msgid "Password attribute"
 msgstr "Attribut 'mot de passe'"
+
 #: core/app_settings.py:168
 msgid "The attribute used to store user passwords"
 msgstr "L'attribut utilisé pour stocker les mots de passe"
+
 #: core/app_settings.py:173
 msgid "Active Directory"
 msgstr "Active Directory"
+
 #: core/app_settings.py:176
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Indiquer si le serveur LDAP est un Active Directory ou pas"
+
 #: core/app_settings.py:180
 msgid "Administrator groups"
 msgstr "Groupes administrateurs"
+
 #: core/app_settings.py:183
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
@@ -175,273 +221,349 @@ msgstr ""
 "Les membres de ces groupes LDAP (Posix) seront créés en tant "
 "qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les "
 "groupes."
+
 #: core/app_settings.py:190
 msgid "Groups search base"
 msgstr "Base de recherche des groupes"
+
 #: core/app_settings.py:193
 msgid "The distinguished name of the search base used to find groups"
 msgstr ""
 "Le nom distinctif de la base de recherche utilisée pour rechercher les "
 "groupes"
+
 #: core/app_settings.py:198
 msgid "Miscellaneous"
 msgstr "Divers"
+
 #: core/app_settings.py:201
 msgid "Top notifications check interval"
 msgstr "Intervalle de vérification des notifications"
+
 #: core/app_settings.py:203
 msgid "Interval between two top notification checks"
 msgstr "Intervalle entre deux vérifications de notification"
+
 #: core/app_settings.py:208
 msgid "Check new versions"
 msgstr "Vérifier les nouvelles versions"
+
 #: core/app_settings.py:211
 msgid "Automatically checks if a newer version is available"
 msgstr "Vérifie automatiquement si une nouvelle version est disponible"
+
 #: core/app_settings.py:215
 msgid "Maximum log record age"
 msgstr "Age maximal d'un enregistrement du journal"
+
 #: core/app_settings.py:217
 msgid "The maximum age in days of a log record"
 msgstr "L'age maximal en jours d'un enregistrement du journal"
+
 #: core/app_settings.py:222
 msgid "Items per page"
 msgstr "Eléments par page"
+
 #: core/app_settings.py:224
 msgid "Number of displayed items per page"
 msgstr "Nombre d'éléments affichés par page"
+
 #: core/app_settings.py:229
 msgid "Default top redirection"
 msgstr "Redirection par défaut"
+
 #: core/app_settings.py:233
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "La redirection appliquée par défaut quand aucune application n'est spécifiée"
+
 #: core/app_settings.py:263
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "La longueur d'une clé doit être de 16, 24 ou 32 octets"
+
 #: core/app_settings.py:272
 msgid "Invalid syntax"
 msgstr "Syntaxe invalide"
+
 #: core/app_settings.py:278
 msgid "Invalid rounds number"
 msgstr "Nombre invalide de tours"
+
 #: core/app_settings.py:299
 msgid "This field is required"
 msgstr "Ce champ est requis"
+
 #: core/app_settings.py:367
 msgid "Display"
 msgstr "Afficher"
+
 #: core/app_settings.py:371
 msgid "Prefered language"
 msgstr "Langage préféré"
+
 #: core/app_settings.py:383
 msgid "Prefered language to display pages"
 msgstr "Langage préféré pour afficher les pages"
+
 #: core/forms.py:14
 msgid "Username"
 msgstr "Nom d'utilisateur"
+
 #: core/forms.py:18
 msgid "Password"
 msgstr "Mot de passe"
+
 #: core/forms.py:29
 msgid "Old password"
 msgstr "Ancien mot de passe"
+
 #: core/forms.py:33
 msgid "New password"
 msgstr "Nouveau mot de passe"
+
 #: core/forms.py:37
 msgid "Confirmation"
 msgstr "Confirmation"
+
 #: core/forms.py:64
 msgid "Old password mismatchs"
 msgstr "L'ancien mot de passe est incorrect"
+
 #: core/forms.py:71
 msgid "Passwords mismatch"
 msgstr "Les mots de passe diffèrent"
+
 #: core/models.py:52
 msgid "password"
 msgstr "mot de passe"
+
 #: core/models.py:54
 msgid "last login"
 msgstr "dernière connexion"
+
 #: core/models.py:83
 msgid "You can't delete your own account"
 msgstr "Vous ne pouvez pas supprimer votre propre compte"
-#: core/models.py:132
+
+#: core/models.py:133
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
-#: core/models.py:185
+
+#: core/models.py:186
 msgid "account"
 msgstr "compte"
-#: core/models.py:338
+
+#: core/models.py:339
 msgid "Invalid line"
 msgstr "Ligne invalide"
-#: core/models.py:343
+
+#: core/models.py:344
 msgid "You can't import an account with a role greater than yours"
 msgstr "Vous ne pouvez pas importer un compte avec un rôle supérieur au votre"
-#: core/models.py:355
+
+#: core/models.py:356
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "L'utilisateur simple '%s' doit avoir une adresse email valide"
-#: core/models.py:360
+
+#: core/models.py:361
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Les champs username et email de '%s' ne doivent pas différer"
-#: core/models.py:461
+
+#: core/models.py:462
 msgid "added"
 msgstr "ajouté"
-#: core/models.py:464
+
+#: core/models.py:465
 msgid "modified"
 msgstr "modifié"
-#: core/models.py:466 core/models.py:491
+
+#: core/models.py:467 core/models.py:492
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s par l'utilisateur %(user)s"
-#: core/models.py:493
+
+#: core/models.py:494
 msgid "deleted"
 msgstr "Supprimé"
-#: core/templates/core/extensions.html:4 core/templatetags/core_tags.py:52
-msgid "Extensions"
-msgstr "Extensions"
-#: core/templates/core/extensions.html:4
-#, fuzzy
-#| msgid "Choose the extension(s) to use"
-msgid "The extension(s) you are using"
-msgstr "Choisir les extensions à utiliser"
-#: core/templates/core/extensions.html:8
-#: core/templates/core/information.html:16
-msgid "Name"
-msgstr "Nom"
-#: core/templates/core/extensions.html:9
-msgid "Version"
-msgstr "Version"
-#: core/templates/core/extensions.html:10
-msgid "Description"
-msgstr "Description"
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:57
+
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:52
 msgid "Information"
 msgstr "Information"
+
 #: core/templates/core/information.html:2
 msgid "Various information about Modoboa"
 msgstr "Informations variées à propos de Modoboa"
+
 #: core/templates/core/information.html:5
-msgid "An update is available!"
+#, fuzzy
+#| msgid "An update is available!"
+msgid "One or more updates are available!"
 msgstr "Une mise à jour est disponible!"
+
 #: core/templates/core/information.html:6
-#, python-format
-msgid ""
-"\n"
-"  Modoboa <strong>%(version)s</strong> is available for download. The list "
-"of all changes is available <a href=\"%(changelog_url)s\" target=\"_blank"
-"\">here</a>.\n"
-"  "
+msgid "Check the following list to find the component(s) that can be updated."
 msgstr ""
-"\n"
-"  Modoboa <strong>%(version)s</strong> est disponible au téléchargement. La "
-"liste des changements est disponible <a href=\"%(changelog_url)s\" target="
-"\"_blank\">ici</a>.\n"
-"  "
-#: core/templates/core/information.html:11
-msgid "is currently in use."
-msgstr "est actuellement utilisé."
-#: core/templates/core/information.html:13
+
+#: core/templates/core/information.html:10
+#, fuzzy
+#| msgid "Authentication"
+msgid "Applications"
+msgstr "Authentification"
+
+#: core/templates/core/information.html:14
+#: core/templates/core/information.html:36
+msgid "Name"
+msgstr "Nom"
+
+#: core/templates/core/information.html:15
+msgid "Installed version"
+msgstr ""
+
+#: core/templates/core/information.html:16
+#, fuzzy
+#| msgid "Last login"
+msgid "Last version"
+msgstr "Dernière connexion"
+
+#: core/templates/core/information.html:17
+msgid "Description"
+msgstr "Description"
+
+#: core/templates/core/information.html:32
 msgid "Active users"
 msgstr "Utilisateurs actifs"
-#: core/templates/core/information.html:17
+
+#: core/templates/core/information.html:37
 msgid "Group name"
 msgstr "Nom du groupe"
-#: core/templates/core/information.html:18
+
+#: core/templates/core/information.html:38
 msgid "Last login"
 msgstr "Dernière connexion"
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:61
+
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:56
 msgid "Logs"
 msgstr "Journaux"
+
 #: core/templates/core/logs.html:2
 msgid "Previously on Modoboa..."
 msgstr "Précédemment dans Modoboa..."
+
 #: core/templates/core/logs.html:6
 msgid "Date"
 msgstr "Date"
+
 #: core/templates/core/logs.html:7
 msgid "Level"
 msgstr "Niveau"
+
 #: core/templates/core/logs.html:8
 msgid "Logger"
 msgstr "Logger"
+
 #: core/templates/core/logs.html:9
 msgid "Message"
 msgstr "Message"
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:66
+
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:61
 msgid "Parameters"
 msgstr "Paramètres"
+
 #: core/templates/core/parameters.html:2
 msgid "Configure Modoboa"
 msgstr "Configurez Modoboa"
+
 #: core/templates/core/parameters.html:6
 #: core/templates/core/user_preferences.html:8
 msgid "Save"
 msgstr "Enregistrer"
+
 #: core/templates/core/settings_header.html:5
 msgid "Modoboa settings"
 msgstr "Paramètres de Modoboa"
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:85
+
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:80
 msgid "Settings"
 msgstr "Configuration"
+
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:112
+#: core/templatetags/core_tags.py:107
 msgid "Preferences"
 msgstr "Préférences"
+
 #: core/templates/core/user_preferences.html:2
 msgid "Customize Modoboa"
 msgstr "Personnalisez Modoboa"
-#: core/templates/core/user_profile.html:2 core/templatetags/core_tags.py:108
+
+#: core/templates/core/user_profile.html:2 core/templatetags/core_tags.py:103
 msgid "Profile"
 msgstr "Profil"
+
 #: core/templates/core/user_profile.html:2
 msgid "Update your personal information"
 msgstr "Mettez à jour vos informations personnelles"
+
 #: core/templates/core/user_profile.html:8 lib/form_utils.py:333
 msgid "Update"
 msgstr "Mettre à jour"
+
 #: core/templatetags/core_tags.py:25
 msgid "Modoboa"
 msgstr "Modoboa"
-#: core/templatetags/core_tags.py:94
+
+#: core/templatetags/core_tags.py:89
 msgid "Logout"
 msgstr "Déconnexion"
-#: core/views/admin.py:51
+
+#: core/utils.py:20
+#, fuzzy
+#| msgid "Welcome to Modoboa"
+msgid "The core part of Modoboa"
+msgstr "Bienvenue dans Modoboa"
+
+#: core/views/admin.py:52
 msgid "Parameters saved"
 msgstr "Paramètres enregistrés"
+
 #: core/views/auth.py:33
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Utiliseur '%s' connecté avec succès"
+
 #: core/views/auth.py:48
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
 "réessayer."
+
 #: core/views/auth.py:76
 #, python-format
 msgid "User '%s' logged out"
 msgstr "Utilisateur '%s' déconnecté"
+
 #: core/views/user.py:39
 msgid "Profile updated"
 msgstr "Profil mis à jour"
+
 #: core/views/user.py:62
 msgid "Preferences saved"
 msgstr "Préférences enregistrées"
+
 #: demo/__init__.py:17
 msgid "Test messages"
 msgstr "Message de test"
+
 #: demo/__init__.py:22
 msgid "Send virus"
 msgstr "Envoyer un virus"
+
 #: demo/__init__.py:25
 msgid "Send spam"
 msgstr "Envoyer un spam"
+
 #: demo/templates/demo/login_announcement.html:2
 msgid ""
 "\n"
@@ -472,93 +594,151 @@ msgstr ""
 "<p>Veuillez svp rapporter toute erreur sur \n"
 "  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">la liste "
 "de diffusion</a>.</p>\n"
+
 #: demo/views.py:19 demo/views.py:45
 msgid "Message sent"
 msgstr "Message envoyé"
+
 #: lib/db_utils.py:39
 #, python-format
 msgid "Connection to database %s not configured"
 msgstr "Connexion à la base de données %s non configurée"
+
 #: lib/exceptions.py:67
 #, python-format
 msgid "Permission denied: %s"
 msgstr "Permission refusée : %s"
+
 #: lib/exceptions.py:68
 msgid "Permission denied"
 msgstr "Permission refusée"
+
 #: lib/form_utils.py:88
 msgid "Submit"
 msgstr "Soumettre"
+
 #: lib/form_utils.py:124 lib/form_utils.py:127
 msgid "Invalid request"
 msgstr "Requête invalide"
-#: lib/form_utils.py:358 lib/form_utils.py:366
+
+#: lib/form_utils.py:360 lib/form_utils.py:368
 msgid "Enter a valid domain name"
 msgstr "Entrer un nom de domaine valide"
-#: lib/form_utils.py:415
+
+#: lib/form_utils.py:417
 msgid "Yes"
 msgstr "Oui"
-#: lib/form_utils.py:415
+
+#: lib/form_utils.py:417
 msgid "No"
 msgstr "Non"
+
 #: lib/ldap_utils.py:116
 #, python-format
 msgid "Failed to update password: %s"
 msgstr "Echec de la mise à jour du mot de passe : %s"
+
 #: lib/permissions.py:22
 msgid "Simple user"
 msgstr "Utilisateur simple"
+
 #: lib/permissions.py:24
 msgid "Super administrator"
 msgstr "Super administrateur"
+
 #: lib/permissions.py:30
 msgid "Domain administrator"
 msgstr "Administrateur de domaine"
+
 #: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
 msgstr "Désolé"
+
 #: templates/404.html:5
 msgid "The requested page does not exist."
 msgstr "La page demandée n'existe pas."
+
 #: templates/500.html:5
 msgid "An internal error occured."
 msgstr "Une erreur interne est survenue"
+
 #: templates/common/email_searchbar.html:5
 msgid "Search..."
 msgstr "Chercher..."
+
 #: templates/common/email_searchbar.html:10
 msgid "From address"
 msgstr "Emetteur"
+
 #: templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "Sujet"
+
 #: templates/common/email_searchbar.html:33
 msgid "Both"
 msgstr "Tous"
+
 #: templates/common/error.html:4
 msgid "Error:"
 msgstr "Erreur :"
+
 #: templates/common/generic_field.html:11
 #: templates/common/generic_fields_group.html:8
 msgid "Help:"
 msgstr "Aide :"
+
 #: templates/common/generic_modal.html:6
 #: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
 #: templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "Fermer"
+
 #: templates/common/wizard_forms.html:31
 msgid "Previous"
 msgstr "Précédent"
+
 #: templates/common/wizard_forms.html:32
 msgid "Next"
 msgstr "Suivant"
-#: templates/registration/login.html:8
+
+#: templates/registration/login.html:10
 msgid "Welcome to Modoboa"
 msgstr "Bienvenue dans Modoboa"
-#: templates/registration/login.html:39
+
+#: templates/registration/login.html:41
 msgid "Remember me"
 msgstr "Se souvenir de moi"
-#: templates/registration/login.html:42
+
+#: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Se connecter"
+
+#~ msgid "New Modoboa version available"
+#~ msgstr "Nouvelle version de Modoboa disponible"
+
+#~ msgid "Extensions"
+#~ msgstr "Extensions"
+
+#, fuzzy
+#~| msgid "Choose the extension(s) to use"
+#~ msgid "The extension(s) you are using"
+#~ msgstr "Choisir les extensions à utiliser"
+
+#~ msgid "Version"
+#~ msgstr "Version"
+
+#~ msgid ""
+#~ "\n"
+#~ "  Modoboa <strong>%(version)s</strong> is available for download. The "
+#~ "list of all changes is available <a href=\"%(changelog_url)s\" target="
+#~ "\"_blank\">here</a>.\n"
+#~ "  "
+#~ msgstr ""
+#~ "\n"
+#~ "  Modoboa <strong>%(version)s</strong> est disponible au téléchargement. "
+#~ "La liste des changements est disponible <a href=\"%(changelog_url)s\" "
+#~ "target=\"_blank\">ici</a>.\n"
+#~ "  "
+
+#~ msgid "is currently in use."
+#~ msgstr "est actuellement utilisé."

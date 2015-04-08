@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-11 15:07+0100\n"
+"POT-Creation-Date: 2015-04-08 15:58+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -18,26 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
 msgstr ""
+
 #: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Внимание"
+
 #: static/js/confirmation.js:59
 msgid "Cancel"
 msgstr "Отмена"
+
 #: static/js/global.js:329
 msgid "Internal error"
 msgstr ""
+
 #: static/js/listing.js:21
 msgid "No more entry to show"
 msgstr ""
+
 #: static/js/listing.js:46
 msgid "Search"
 msgstr "Поиск"
+
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Поиск..."
-#, fuzzy
-#, fuzzy

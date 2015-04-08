@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-11 15:07+0100\n"
+"POT-Creation-Date: 2015-04-08 15:58+0200\n"
 "PO-Revision-Date: 2014-12-29 12:08+0000\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -23,24 +23,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
 msgstr "Não há mais entradas do registo para mostrar"
+
 #: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Aviso"
+
 #: static/js/confirmation.js:59
 msgid "Cancel"
 msgstr "Cancelar"
+
 #: static/js/global.js:329
 msgid "Internal error"
 msgstr "Erro interno"
+
 #: static/js/listing.js:21
 msgid "No more entry to show"
 msgstr "Não existem mais entradas a mostrar"
+
 #: static/js/listing.js:46
 msgid "Search"
 msgstr "Procurar"
+
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Pesquisar..."

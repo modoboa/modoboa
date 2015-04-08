@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-11 15:07+0100\n"
+"POT-Creation-Date: 2015-04-08 15:58+0200\n"
 "PO-Revision-Date: 2015-01-13 15:21+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,24 +19,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
 msgstr "Inga fler logg poster att visa"
+
 #: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Varning"
+
 #: static/js/confirmation.js:59
 msgid "Cancel"
 msgstr "Avbryt"
+
 #: static/js/global.js:329
 msgid "Internal error"
 msgstr "Internt fel"
+
 #: static/js/listing.js:21
 msgid "No more entry to show"
 msgstr "Inga fler poster att visa"
+
 #: static/js/listing.js:46
 msgid "Search"
 msgstr "Sök"
+
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Sök..."

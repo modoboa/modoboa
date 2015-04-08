@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-11 15:07+0100\n"
+"POT-Creation-Date: 2015-04-08 15:58+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -18,24 +18,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
 msgstr "Žádný další záznam logu k zobrazení"
+
 #: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Upozornění"
+
 #: static/js/confirmation.js:59
 msgid "Cancel"
 msgstr "Zrušit"
+
 #: static/js/global.js:329
 msgid "Internal error"
 msgstr "Interní chyba"
+
 #: static/js/listing.js:21
 msgid "No more entry to show"
 msgstr "Žádná další informace k zobrazení"
+
 #: static/js/listing.js:46
 msgid "Search"
 msgstr "Hledat"
+
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Hledat..."
