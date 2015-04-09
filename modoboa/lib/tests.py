@@ -13,6 +13,8 @@ from modoboa.lib import parameters
 
 class ModoTestCase(TestCase):
 
+    """All test cases must inherit from this one."""
+
     def setUp(self, username="admin", password="password"):
         management.call_command("load_initial_data")
         self.clt = Client()
