@@ -16,6 +16,8 @@ class TestRunnerMixin(object):
     dbuser = "postgres"
     dbpassword = ""
 
+    dependencies = []
+
     def setUp(self):
         """Test setup."""
         self.workdir = tempfile.mkdtemp()
@@ -30,7 +32,10 @@ class TestRunnerMixin(object):
             "modoboa-admin.py deploy --collectstatic "
             "--dburl {0} --extensions {1} --dont-install-extensions "
             "--domain {2} {3}"
-            .format(dburl, self.extension, "localhost", self.projname)
+            .format(
+                dburl, " ".join(self.dependencies + [self.extension]),
+                "localhost", self.projname
+            )
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)
         self.assertEqual(code, 0)
