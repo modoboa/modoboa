@@ -57,18 +57,8 @@ MODOBOA_APPS = (
     'modoboa.core',
     'modoboa.lib',
     # Modoboa extensions here.
-    'modoboa.extensions.admin',
-    'modoboa.extensions.postfix_relay_domains',
-    'modoboa.extensions.limits',
-    'modoboa.extensions.postfix_autoreply',
-    'modoboa.extensions.webmail',
-    'modoboa.extensions.stats',
-    'modoboa.extensions.sievefilters',
-    'modoboa.extensions.radicale',
-    {% if not amavis_conn %}#{% endif %}'modoboa.extensions.amavis',
-
-    # Tools from here
-    #'modoboa.tools.pfxadmin_migrate',
+{% for extension in extensions %}    '{{ extension }}',
+{% endfor %}
 )
 
 INSTALLED_APPS += MODOBOA_APPS
@@ -104,24 +94,9 @@ WSGI_APPLICATION = '{{ name }}.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = { {{ default_conn|safe }}
-    # "pfxadmin" : {
-    #     "ENGINE" : "django.db.backends.",
-    #     "NAME" : "",
-    #     "USER" : "",
-    #     "PASSWORD" : ""
-    # },{% if not amavis_conn %}
-    # "amavis": {
-    #	  "ENGINE" : "django.db.backends.",
-    #	  "HOST" : "",
-    #	  "NAME" : "",
-    #	  "USER" : "",
-    #	  "PASSWORD" : ""
-    # }{% else %}
-    {{ amavis_conn|safe }}{% endif %}
+DATABASES = {
+    {% for conn in db_connections.values %}{{ conn|safe }}{% endfor %}
 }
-
-DATABASE_ROUTERS = ["modoboa.extensions.amavis.dbrouter.AmavisRouter"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -188,3 +163,6 @@ LOGGING = {
         }
     }
 }
+{% for extension in extra_settings %}
+import {{ extension }}.settings
+{% endfor %}

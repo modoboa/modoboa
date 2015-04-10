@@ -45,11 +45,6 @@ BASE_EVENTS = [
 ]
 
 PERMISSIONS = {
-    "DomainAdmins": [
-        ["core", "user", "add_user"],
-        ["core", "user", "change_user"],
-        ["core", "user", "delete_user"],
-    ],
     "SimpleUsers": []
 }
 
@@ -72,15 +67,16 @@ def check_for_new_version(request, include_all):
     """
     Check if a new version of Modoboa is available.
     """
-    from modoboa.core.utils import new_version_available
+    from modoboa.core.utils import check_for_updates
 
     if not request.user.is_superuser:
         return []
-    if new_version_available(request) is None:
+    status, extensions = check_for_updates(request)
+    if not status:
         return [{"id": "newversionavailable"}] if include_all else []
     return [{
         "id": "newversionavailable",
         "url": reverse("core:index") + "#info/",
-        "text": _("New Modoboa version available"),
+        "text": _("One or more updates are available"),
         "level": "info",
     }]

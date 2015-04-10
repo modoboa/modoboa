@@ -5,9 +5,14 @@
 import getpass
 import os
 import shutil
+import subprocess
 import sys
 
-import subprocess
+try:
+    import pip
+except ImportError:
+    sys.stderr.write("Error: pip is required to install extensions.\n")
+    sys.exit(2)
 
 import django
 from django.core import management
@@ -16,6 +21,7 @@ from django.template import Context, Template
 import dj_database_url
 
 from modoboa.core.commands import Command
+from modoboa.lib.api_client import ModoAPIClient
 
 DBCONN_TPL = """
     '{{ conn_name }}': {
@@ -46,19 +52,12 @@ class DeployCommand(Command):
         self._parser.add_argument('name', type=str,
                                   help='The name of your Modoboa instance')
         self._parser.add_argument(
-            '--with-amavis', action='store_true', default=False,
-            help='Include amavis configuration'
-        )
-        self._parser.add_argument(
             '--collectstatic', action='store_true', default=False,
             help='Run django collectstatic command'
         )
         self._parser.add_argument(
-            '--dburl', type=str, nargs=1, default=None,
-            help='The database-url for your modoboa instance')
-        self._parser.add_argument(
-            '--amavis_dburl', type=str, nargs=1, default=None,
-            help='The database-url for your amavis instance')
+            '--dburl', type=str, nargs="+", default=None,
+            help='A database-url with a name')
         self._parser.add_argument(
             '--domain', type=str, default=None,
             help='The domain under which you want to deploy modoboa')
@@ -73,6 +72,14 @@ class DeployCommand(Command):
         self._parser.add_argument(
             '--devel', action='store_true', default=False,
             help='Create a development instance'
+        )
+        self._parser.add_argument(
+            '--extensions', type=str, nargs='*',
+            help="The list of extension to deploy"
+        )
+        self._parser.add_argument(
+            '--dont-install-extensions', action='store_true', default=False,
+            help='Do not install extensions using pip'
         )
 
     def _exec_django_command(self, name, cwd, *args):
@@ -136,6 +143,29 @@ class DeployCommand(Command):
         info['PASSWORD'] = getpass.getpass('Password: ')
         return info
 
+    def install_extensions(self, extensions):
+        """Install one or more extensions.
+
+        Return the list of extensions providing settings we must
+        include in the final configuration.
+
+        """
+        if "all" in extensions:
+            official_exts = ModoAPIClient().list_extensions()
+            extensions = [extension["name"] for extension in official_exts]
+
+        pip_args = ["install"] + extensions
+        pip.main(pip_args)
+        extra_settings = []
+        for extension in extensions:
+            extension = extension.replace("-", "_")
+            module = __import__(extension, locals(), globals(), [])
+            basedir = os.path.dirname(module.__file__)
+            if not os.path.exists("{0}/settings.py".format(basedir)):
+                continue
+            extra_settings.append(extension)
+        return extra_settings
+
     def handle(self, parsed_args):
         django.setup()
         management.call_command(
@@ -144,40 +174,24 @@ class DeployCommand(Command):
         path = "%(name)s/%(name)s" % {'name': parsed_args.name}
         sys.path.append(parsed_args.name)
 
-        t = Template(DBCONN_TPL)
-
+        conn_tpl = Template(DBCONN_TPL)
+        connections = {}
         if parsed_args.dburl:
-            info = dj_database_url.config(default=parsed_args.dburl[0])
-            # In case the user fails to supply a valid database url,
-            # fallback to manual mode
-            if not info:
-                print "There was a problem with your database-url. \n"
-                info = self.ask_db_info()
-            # If we set this earlier, our fallback method will never
-            # be triggered
-            info['conn_name'] = 'default'
+            for dburl in parsed_args.dburl:
+                conn_name, url = dburl.split(":", 1)
+                info = dj_database_url.config(default=url)
+                # In case the user fails to supply a valid database url,
+                # fallback to manual mode
+                if not info:
+                    print "There was a problem with your database-url. \n"
+                    info = self.ask_db_info(conn_name)
+                # If we set this earlier, our fallback method will never
+                # be triggered
+                info['conn_name'] = conn_name
+                connections[conn_name] = conn_tpl.render(Context(info))
         else:
-            info = self.ask_db_info()
-
-        default_conn = t.render(Context(info))
-
-        if parsed_args.with_amavis:
-            if parsed_args.amavis_dburl:
-                amavis_info = dj_database_url.config(
-                    default=parsed_args.amavis_dburl[0])
-                # In case the user fails to supply a valid database
-                # url, fallback to manual mode
-                if not amavis_info:
-                    amavis_info = self.ask_db_info('amavis')
-                # If we set this earlier, our fallback method will
-                # never be triggered
-                amavis_info['conn_name'] = 'amavis'
-            else:
-                amavis_info = self.ask_db_info('amavis')
-
-            amavis_conn = t.render(Context(amavis_info))
-        else:
-            amavis_conn = None
+            connections["default"] = conn_tpl.render(
+                Context(self.ask_db_info()))
 
         if parsed_args.domain:
             allowed_host = parsed_args.domain
@@ -188,6 +202,10 @@ class DeployCommand(Command):
             if not allowed_host:
                 allowed_host = "localhost"
 
+        extra_settings = []
+        if parsed_args.dont_install_extensions and parsed_args.extensions:
+            extra_settings = self.install_extensions(parsed_args.extensions)
+
         bower_components_dir = os.path.realpath(
             os.path.join(os.path.dirname(__file__), "../../bower_components")
         )
@@ -195,14 +213,16 @@ class DeployCommand(Command):
         mod = __import__(parsed_args.name, globals(), locals(), ['settings'])
         tpl = self._render_template(
             "%s/settings.py.tpl" % self._templates_dir, {
-                'default_conn': default_conn, 'amavis_conn': amavis_conn,
+                'db_connections': connections,
                 'secret_key': mod.settings.SECRET_KEY,
                 'name': parsed_args.name,
                 'allowed_host': allowed_host,
                 'lang': parsed_args.lang,
                 'timezone': parsed_args.timezone,
                 'bower_components_dir': bower_components_dir,
-                'devmode': parsed_args.devel
+                'devmode': parsed_args.devel,
+                'extensions': parsed_args.extensions,
+                'extra_settings': extra_settings
             }
         )
         with open("%s/settings.py" % path, "w") as fp:

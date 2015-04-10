@@ -3,6 +3,11 @@
 from django.conf import settings
 from django.conf.urls import include
 
+from versionfield.constants import DEFAULT_NUMBER_BITS
+from versionfield.version import Version
+
+from modoboa.lib.api_client import ModoAPIClient
+
 
 class ModoExtension(object):
 
@@ -70,6 +75,28 @@ class ExtensionsPool(object):
             return None
         return instance.infos()
 
+    def load_extension(self, name):
+        """Load a registered extension."""
+        __import__(name, locals(), globals(), ["modo_extension"])
+        extinstance = self.get_extension(name)
+        if extinstance is None:
+            return None
+        result = None
+        try:
+            baseurl = (
+                extinstance.url if extinstance.url is not None
+                else name
+            )
+            result = (
+                r'^%s/' % (baseurl),
+                include("{0}.urls".format(name), namespace=name)
+            )
+        except ImportError:
+            # No urls for this extension
+            pass
+        extinstance.load()
+        return result
+
     def load_all(self):
         """Load all defined extensions.
 
@@ -83,32 +110,34 @@ class ExtensionsPool(object):
         """
         result = []
         for ext in settings.MODOBOA_APPS:
-            __import__(ext, locals(), globals(), ["modo_extension"])
-            extname = ext.split('.')[-1]
-            extinstance = self.get_extension(extname)
-            if extinstance is None:
-                continue
-            try:
-                baseurl = extinstance.url \
-                    if extinstance.url is not None else extname
-                result += [
-                    (r'^%s/' % (baseurl),
-                     include("{0}.urls".format(ext), namespace=extname))
-                ]
-            except ImportError:
-                # No urls for this extension
-                pass
-            extinstance.load()
+            ext_urls = self.load_extension(ext)
+            if ext_urls is not None:
+                result += [ext_urls]
         return result
 
-    def list_all(self):
+    def list_all(self, check_new_versions=False):
         """List all defined extensions."""
         result = []
+        if check_new_versions:
+            new_extensions = ModoAPIClient().list_extensions()
+            new_extensions = dict(
+                (ext["name"], ext["version"]) for ext in new_extensions
+            )
+        else:
+            new_extensions = {}
         for extname, extdef in self.extensions.iteritems():
             if not extdef["show"]:
                 continue
             infos = self.get_extension_infos(extname)
             infos["id"] = extname
+            local_version = Version(infos["version"], DEFAULT_NUMBER_BITS)
+            pkgname = infos["name"].replace("_", "-")
+            if pkgname in new_extensions:
+                infos["last_version"] = new_extensions[pkgname]
+                last_version = Version(
+                    new_extensions[pkgname], DEFAULT_NUMBER_BITS)
+                if last_version > local_version:
+                    infos["update"] = True
             result += [infos]
         return sorted(result, key=lambda i: i["name"])
 

@@ -33,9 +33,8 @@ your instance was first deployed::
    If you customized your configuration file (:file:`settings.py`) with
    non-standard settings, you'll have to re-apply them.
 
-Then, run ``modoboa-admin.py deploy``::
-
-  $ modoboa-admin.py deploy <modoboa_instance_dir> --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url] [--domain hostname] [--lang lang] [--timezone timezone]
+Finally, run the ``deploy`` comamand. Make sure to consult the
+:ref:`deployment` section to know more about the available options.
 
 If you prefer the manual way, check if
 :ref:`specific_upgrade_instructions` are required according to the
@@ -49,6 +48,64 @@ you did choose. See :ref:`webservers` for more details.
 *****************************
 Specific upgrade instructions
 *****************************
+
+1.3.0
+=====
+
+This release does not bring awesome new features but it is a necessary
+bridge to the future of Modoboa. All extensions now have their own git
+repository and the deploy process has been updated to reflect this
+change.
+
+Another important update is the use of Django 1.7. Besides its new
+features, the migration system has been reworked and is now more
+robust than before.
+
+Before we begin with the procedure, here is a table showing old
+extension names and their new name:
+
++----------------------------------------+--------------------------+--------------------------+
+|Old name                                |New package name          |New module name           |
++========================================+==========================+==========================+
+|modoboa.extensions.admin                |modoboa-admin             |modoboa_admin             |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.limits               |modoboa-admin-limits      |modoboa_admin_limits      |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.postfix_autoreply    |modoboa-postfix-autoreply |modoboa_postfix_autoreply |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.postfix_relay_domains|modoboa-admin-relaydomains|modoboa_admin_relaydomains|
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.radicale             |modoboa-radicale          |modoboa_radicale          |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.sievefilters         |modoboa-sievefilters      |modoboa_sievefilters      |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.stats                |modoboa-stats             |modoboa_stats             |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.webmail              |modoboa-webmail           |modoboa_webmail           |
++----------------------------------------+--------------------------+--------------------------+
+
+Here are the required steps:
+
+#. Install the extensions using pip (look at the second column in the table above)::
+
+   $ pip install <the extensions you want>
+
+#. Remove ``south`` from ``INSTALLED_APPS``
+
+#. Rename old extension names inside ``MODOBOA_APPS`` (look at the third column in the table above)
+
+#. Remove ``modoboa.lib.middleware.ExtControlMiddleware`` from ``MIDDLEWARE_CLASSES``
+
+#. Change ``DATABASE_ROUTERS`` to::
+
+    DATABASE_ROUTERS = ["modoboa_amavis.dbrouter.AmavisRouter"]
+
+#. Run the following commands::
+
+   $ cd <modoboa_instance_dir>
+   $ python manage.py migrate
+   $ python manage.py load_initial_data
+   $ python manage.py collectstatic  
 
 1.2.0
 =====
@@ -105,7 +162,7 @@ If you plan to use the Radicale extension:
 A new feature allows administrators and users to manually train
 SpamAssassin in order to customize its behaviour.
 
-Check :ref:`sa_manual_learning` to know more about this feature.
+Check :ref:`amavis:sa_manual_learning` to know more about this feature.
 
 1.1.6: Few bugfixes
 ===================

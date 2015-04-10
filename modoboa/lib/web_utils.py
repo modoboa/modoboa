@@ -162,7 +162,8 @@ def topredirection(request):
         else:
             path = reverse("core:user_index")
     else:
-        path = reverse("admin:domain_list")
+        # FIXME
+        path = reverse("modoboa_admin:domain_list")
     return HttpResponseRedirect(path)
 
 

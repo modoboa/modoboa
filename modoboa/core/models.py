@@ -335,11 +335,14 @@ class User(PermissionsMixin):
         :param row: a list containing the expected information
         :param crypt_password:
         """
+        from modoboa.lib.permissions import get_account_roles
+
         if len(row) < 7:
             raise BadRequest(_("Invalid line"))
+        allowed_roles = get_account_roles(user)
+        allowed_roles = [role[0] for role in allowed_roles]
         role = row[6].strip()
-        allowed_roles = ["SimpleUsers", "DomainAdmins"]
-        if not user.is_superuser and role not in allowed_roles:
+        if role not in allowed_roles:
             raise PermDeniedException(
                 _("You can't import an account with a role greater than yours")
             )

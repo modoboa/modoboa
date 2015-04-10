@@ -21,14 +21,8 @@ class DeployTest(unittest.TestCase):
     def tearDown(self):
         path = os.path.join(self.workdir, self.projname)
         core_apps = ["modoboa.core", "modoboa.lib"]
-        extensions = [
-            "admin", "limits", "postfix_relay_domains", "radicale",
-            "postfix_autoreply"
-        ]
-        cmd = "python manage.py test {0} {1}".format(
+        cmd = "python manage.py test {0}".format(
             " ".join(core_apps),
-            " ".join(["modoboa.extensions.{0}".format(extension)
-                      for extension in extensions])
         )
         code, output = exec_cmd(cmd, capture_output=False, cwd=path)
         self.assertEqual(code, 0)
@@ -61,7 +55,7 @@ class DeployTest(unittest.TestCase):
         self.assertEqual(child.exitstatus, 0)
 
     def test_silent(self):
-        dburl = "%s://%s:%s@%s/%s" \
+        dburl = "default:%s://%s:%s@%s/%s" \
             % (self.dbtype, self.dbuser, self.dbpassword,
                self.dbhost, self.projname)
         cmd = (

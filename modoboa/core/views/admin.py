@@ -8,8 +8,9 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
+from modoboa.core.extensions import exts_pool
 from modoboa.core.models import Log
-from modoboa.core.utils import new_version_available
+from modoboa.core.utils import check_for_updates
 from modoboa.lib import events, parameters
 from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.lib.web_utils import (
@@ -53,23 +54,12 @@ def saveparameters(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def viewextensions(request, tplname='core/extensions.html'):
-    """List available extensions."""
-    from modoboa.core.extensions import exts_pool
-
-    exts = exts_pool.list_all()
-    return render_to_json_response({
-        "callback": "extensions",
-        "content": _render_to_string(request, tplname, {"extensions": exts})
-    })
-
-
-@login_required
-@user_passes_test(lambda u: u.is_superuser)
 def information(request, tplname="core/information.html"):
+    status, extensions = check_for_updates(request)
     return render_to_json_response({
         "content": render_to_string(tplname, {
-            "new_version": new_version_available(request)
+            "update_avail": status,
+            "extensions": extensions,
         }),
     })
 

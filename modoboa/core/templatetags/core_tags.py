@@ -46,11 +46,6 @@ def extensions_menu(selection, user):
 @register.simple_tag
 def admin_menu(selection, user):
     entries = [
-        {"name": "extensions",
-         "class": "ajaxnav",
-         "url": "extensions/",
-         "label": _("Extensions"),
-         "img": ""},
         {"name": "info",
          "class": "ajaxnav",
          "url": "info/",
@@ -151,7 +146,7 @@ def visirule(field):
         % (rule["field"], rule["value"])
 
 
-@register.simple_tag
+@register.assignment_tag
 def get_version():
     import pkg_resources
     return pkg_resources.get_distribution("modoboa").version

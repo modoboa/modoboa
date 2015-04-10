@@ -2,7 +2,6 @@
 
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from django.db import IntegrityError
 from django.utils.translation import ugettext as _
 
 from modoboa.core.models import ObjectAccess, User
@@ -22,13 +21,7 @@ def get_account_roles(user, account=None):
     std_roles = [("SimpleUsers", _("Simple user"))]
     if user.is_superuser:
         std_roles += [("SuperAdmins", _("Super administrator"))]
-    filters = events.raiseQueryEvent(
-        'UserCanSetRole', user, 'DomainAdmins', account
-    )
-    if user.has_perm("admin.add_domain") and \
-            (not filters or True in filters):
-        std_roles += [("DomainAdmins", _("Domain administrator"))]
-    std_roles += events.raiseQueryEvent("GetExtraRoles", user)
+    std_roles += events.raiseQueryEvent("GetExtraRoles", user, account)
     return sorted(std_roles, key=lambda role: role[1])
 
 
