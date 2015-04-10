@@ -45,11 +45,6 @@ BASE_EVENTS = [
 ]
 
 PERMISSIONS = {
-    "DomainAdmins": [
-        ["core", "user", "add_user"],
-        ["core", "user", "change_user"],
-        ["core", "user", "delete_user"],
-    ],
     "SimpleUsers": []
 }
 

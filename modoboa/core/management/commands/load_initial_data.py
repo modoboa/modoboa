@@ -38,7 +38,7 @@ class Command(BaseCommand, CloseConnectionMixin):
         superadmin = User.objects.filter(is_superuser=True).first()
         groups = PERMISSIONS.keys() + [
             role[0] for role
-            in events.raiseQueryEvent("GetExtraRoles", superadmin)
+            in events.raiseQueryEvent("GetExtraRoles", superadmin, None)
         ]
         for groupname in groups:
             group, created = Group.objects.get_or_create(name=groupname)

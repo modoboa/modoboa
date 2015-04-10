@@ -619,14 +619,16 @@ name, the model name and the permission name. Example::
 GetExtraRoles
 =============
 
-Let extensions define new administrative roles.
+Let extensions define new administrative roles (will be used to create
+or modify an account).
 
 *Callback prototype*::
 
-  def callback(user): pass
+  def callback(user, account): pass
 
 * ``user`` is a ``User`` instance corresponding to the currently
   logged in user
+* ``account`` is the account being modified (None on creation)
 
 Callbacks listening to this event must return a list of 2uple (two
 strings) which respect the following format: ``(value, label)``.
@@ -922,11 +924,12 @@ account.
 
 *Callback prototype*::
 
-  def callback(account, role): pass
+  def callback(user, role, account): pass
 
 * ``user`` is the ``User`` instance corresponding to the currently
   logged in user
 * ``role`` is the role ``user`` tries to set
+* ``account`` is the account being modified (None on creation)
 
 Must return a list containing ``True`` or ``False`` to indicate if
 this user can is allowed to set ``role``.

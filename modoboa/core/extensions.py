@@ -75,6 +75,28 @@ class ExtensionsPool(object):
             return None
         return instance.infos()
 
+    def load_extension(self, name):
+        """Load a registered extension."""
+        __import__(name, locals(), globals(), ["modo_extension"])
+        extinstance = self.get_extension(name)
+        if extinstance is None:
+            return None
+        result = None
+        try:
+            baseurl = (
+                extinstance.url if extinstance.url is not None
+                else name
+            )
+            result = (
+                r'^%s/' % (baseurl),
+                include("{0}.urls".format(name), namespace=name)
+            )
+        except ImportError:
+            # No urls for this extension
+            pass
+        extinstance.load()
+        return result
+
     def load_all(self):
         """Load all defined extensions.
 
@@ -88,22 +110,9 @@ class ExtensionsPool(object):
         """
         result = []
         for ext in settings.MODOBOA_APPS:
-            __import__(ext, locals(), globals(), ["modo_extension"])
-            extname = ext.split('.')[-1]
-            extinstance = self.get_extension(extname)
-            if extinstance is None:
-                continue
-            try:
-                baseurl = extinstance.url \
-                    if extinstance.url is not None else extname
-                result += [
-                    (r'^%s/' % (baseurl),
-                     include("{0}.urls".format(ext), namespace=extname))
-                ]
-            except ImportError:
-                # No urls for this extension
-                pass
-            extinstance.load()
+            ext_urls = self.load_extension(ext)
+            if ext_urls is not None:
+                result += [ext_urls]
         return result
 
     def list_all(self, check_new_versions=False):
