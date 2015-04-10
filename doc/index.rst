@@ -24,7 +24,6 @@ Plugins
 .. toctree::
    :maxdepth: 2
 
-   plugins/overview
    plugins/limits
    plugins/postfix_relay_domains
    plugins/amavis
