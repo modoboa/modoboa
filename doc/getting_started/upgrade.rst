@@ -104,8 +104,13 @@ Here are the required steps:
 
    $ cd <modoboa_instance_dir>
    $ python manage.py migrate
+
+#. Reply ``yes`` to the question
+
+#. Run the following commands::
+
    $ python manage.py load_initial_data
-   $ python manage.py collectstatic  
+   $ python manage.py collectstatic
 
 1.2.0
 =====
