@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-08 15:58+0200\n"
+"POT-Creation-Date: 2015-04-15 11:15+0200\n"
 "PO-Revision-Date: 2014-12-03 11:02+0000\n"
 "Last-Translator: Arvedui <arvedui@posteo.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
@@ -20,11 +20,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/__init__.py:65 core/__init__.py:66
+#: core/__init__.py:60 core/__init__.py:61
 msgid "General"
 msgstr "Grundsätzlich"
 
-#: core/__init__.py:85
+#: core/__init__.py:80
 #, fuzzy
 #| msgid "An update is available!"
 msgid "One or more updates are available"
@@ -346,40 +346,40 @@ msgstr "Konnte Kennwort nicht aktualisieren: LDAP-Modul nicht installiert"
 msgid "account"
 msgstr "Konto"
 
-#: core/models.py:339
+#: core/models.py:341
 msgid "Invalid line"
 msgstr "Ungültige Zeile"
 
-#: core/models.py:344
+#: core/models.py:347
 msgid "You can't import an account with a role greater than yours"
 msgstr "Sie können kein Konto einer höheren Rolle importieren"
 
-#: core/models.py:356
+#: core/models.py:359
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
 
-#: core/models.py:361
+#: core/models.py:364
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
 "Die Felder für Benutzername und E-Mail für '%s' dürfen sich nicht "
 "unterscheiden"
 
-#: core/models.py:462
+#: core/models.py:465
 msgid "added"
 msgstr "hinzugefügt"
 
-#: core/models.py:465
+#: core/models.py:468
 msgid "modified"
 msgstr "verändert"
 
-#: core/models.py:467 core/models.py:492
+#: core/models.py:470 core/models.py:495
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s der Identität %(user)s"
 
-#: core/models.py:494
+#: core/models.py:497
 msgid "deleted"
 msgstr "entfernt"
 
@@ -546,53 +546,6 @@ msgstr "Profil aktualisiert"
 msgid "Preferences saved"
 msgstr "Einstellungen gespeichert"
 
-#: demo/__init__.py:17
-msgid "Test messages"
-msgstr "Test-Nachrichten"
-
-#: demo/__init__.py:22
-msgid "Send virus"
-msgstr "Virus senden"
-
-#: demo/__init__.py:25
-msgid "Send spam"
-msgstr "Spam senden"
-
-#: demo/templates/demo/login_announcement.html:2
-msgid ""
-"\n"
-"<h3>Welcome to the online demo!</h3>\n"
-"<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
-"<p>To try the demo, the following users are available (<i>username/password</"
-"i>): </p>\n"
-"<ul>\n"
-"  <li>A super administrator : <b>admin/password</b></li>\n"
-"  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
-"  <li>A simple user : <b>user@demo.local/user</b></li>\n"
-"</ul>\n"
-"<p>Please report any issue or give any suggestion to \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
-"mailing list</a>.</p>\n"
-msgstr ""
-"\n"
-"<h1>Willkommen zur Online Demo!</h1>\n"
-"<p><b>Warnung:</b> die Inhalte dieser Demo werden alle zwei Stunden gelöscht."
-"</p>\n"
-"<p>Folgende User (<i>Benutzername/Kennwort</i>) stehen zum Testen zur "
-"Verfügung:</p>\n"
-"<ul>\n"
-"  <li>Super-Administrator : <b>admin/password</b></li>\n"
-"  <li>Domänen-Administrator : <b>admin@demo.local/admin</b></li>\n"
-"  <li>Normaler Benutzer: <b>user@demo.local/user</b></li>\n"
-"</ul>\n"
-"<p>Probleme und Anregungen bitte an die\n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users"
-"\">Mailingliste</a> berichten.</p>\n"
-
-#: demo/views.py:19 demo/views.py:45
-msgid "Message sent"
-msgstr "Nachricht gesendet"
-
 #: lib/db_utils.py:39
 #, python-format
 msgid "Connection to database %s not configured"
@@ -632,17 +585,13 @@ msgstr "Nein"
 msgid "Failed to update password: %s"
 msgstr "Konnte Kennwort nicht aktualisieren: %s"
 
-#: lib/permissions.py:22
+#: lib/permissions.py:21
 msgid "Simple user"
 msgstr "Normaler Anwender"
 
-#: lib/permissions.py:24
+#: lib/permissions.py:23
 msgid "Super administrator"
 msgstr "Super-Administrator"
-
-#: lib/permissions.py:30
-msgid "Domain administrator"
-msgstr "Domänen-Administrator"
 
 #: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
@@ -706,32 +655,3 @@ msgstr "Erinnere mich"
 #: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Anmelden"
-
-#~ msgid "New Modoboa version available"
-#~ msgstr "Neue Modoboa Version verfügbar"
-
-#~ msgid "Extensions"
-#~ msgstr "Erweiterungen"
-
-#, fuzzy
-#~| msgid "Choose the extension(s) to use"
-#~ msgid "The extension(s) you are using"
-#~ msgstr "Extension auswählen"
-
-#~ msgid "Version"
-#~ msgstr "Version"
-
-#~ msgid ""
-#~ "\n"
-#~ "  Modoboa <strong>%(version)s</strong> is available for download. The "
-#~ "list of all changes is available <a href=\"%(changelog_url)s\" target="
-#~ "\"_blank\">here</a>.\n"
-#~ "  "
-#~ msgstr ""
-#~ "\n"
-#~ "Modoboa <strong>%(version)s</strong> steht zum Download bereit. Die liste "
-#~ "der Änderungen ist <a href=\"%(changelog_url)s\" target=\"_blank\">hier</"
-#~ "a> verfügbar."
-
-#~ msgid "is currently in use."
-#~ msgstr "ist momentan in Gebrauch."

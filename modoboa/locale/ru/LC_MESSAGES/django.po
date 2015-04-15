@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-08 15:58+0200\n"
+"POT-Creation-Date: 2015-04-15 11:15+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: core/__init__.py:65 core/__init__.py:66
+#: core/__init__.py:60 core/__init__.py:61
 msgid "General"
 msgstr "Основные"
 
-#: core/__init__.py:85
+#: core/__init__.py:80
 #, fuzzy
 msgid "One or more updates are available"
 msgstr "Статистика не доступна"
@@ -344,38 +344,38 @@ msgstr "Ошибка обновления пароля: модуль LDAP не �
 msgid "account"
 msgstr "Аккаунт"
 
-#: core/models.py:339
+#: core/models.py:341
 msgid "Invalid line"
 msgstr "Ошибочная строка"
 
-#: core/models.py:344
+#: core/models.py:347
 msgid "You can't import an account with a role greater than yours"
 msgstr "Вы не можете импортировать аккаунт с ролью старше чем у вас"
 
-#: core/models.py:356
+#: core/models.py:359
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Пользователь '%s' должен иметь действительный почтовый адрес"
 
-#: core/models.py:361
+#: core/models.py:364
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Имя пользователя и адрес не должны отличатся для пользователя '%s'"
 
-#: core/models.py:462
+#: core/models.py:465
 msgid "added"
 msgstr "добавлено"
 
-#: core/models.py:465
+#: core/models.py:468
 msgid "modified"
 msgstr "изменено"
 
-#: core/models.py:467 core/models.py:492
+#: core/models.py:470 core/models.py:495
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s пользователем %(user)s"
 
-#: core/models.py:494
+#: core/models.py:497
 msgid "deleted"
 msgstr "удалено"
 
@@ -539,52 +539,6 @@ msgstr "Профиль обновлен"
 msgid "Preferences saved"
 msgstr "Параметры сохранены"
 
-#: demo/__init__.py:17
-msgid "Test messages"
-msgstr "Тестовое сообщение"
-
-#: demo/__init__.py:22
-msgid "Send virus"
-msgstr "Отправить вирус"
-
-#: demo/__init__.py:25
-msgid "Send spam"
-msgstr "Отправить спам"
-
-#: demo/templates/demo/login_announcement.html:2
-msgid ""
-"\n"
-"<h3>Welcome to the online demo!</h3>\n"
-"<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
-"<p>To try the demo, the following users are available (<i>username/password</"
-"i>): </p>\n"
-"<ul>\n"
-"  <li>A super administrator : <b>admin/password</b></li>\n"
-"  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
-"  <li>A simple user : <b>user@demo.local/user</b></li>\n"
-"</ul>\n"
-"<p>Please report any issue or give any suggestion to \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
-"mailing list</a>.</p>\n"
-msgstr ""
-"\n"
-"<h3>Добро пожаловать в онлайн демо!</h3>\n"
-"<p><b>Внимание:</b> содержание сбрасывается каждые два часа.</p>\n"
-"<p>Для входа в демоверсию  используйте следующие учетные данные(<i>логин/"
-"пароль</i>): </p>\n"
-"<ul>\n"
-"  <li>Супер администратор : <b>admin/password</b></li>\n"
-"  <li>Администратор домена : <b>admin@demo.local/admin</b></li>\n"
-"  <li>Простой пользователь : <b>user@demo.local/user</b></li>\n"
-"</ul>\n"
-"<p>По любым вопросам и с предложениями обращайтесь пожалуйста\n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">Список "
-"рассылки</a>.</p>\n"
-
-#: demo/views.py:19 demo/views.py:45
-msgid "Message sent"
-msgstr "Сообщение отправлено"
-
 #: lib/db_utils.py:39
 #, python-format
 msgid "Connection to database %s not configured"
@@ -624,17 +578,13 @@ msgstr "Нет"
 msgid "Failed to update password: %s"
 msgstr "Ошибка обновления пароля: %s"
 
-#: lib/permissions.py:22
+#: lib/permissions.py:21
 msgid "Simple user"
 msgstr "Обычный пользователь"
 
-#: lib/permissions.py:24
+#: lib/permissions.py:23
 msgid "Super administrator"
 msgstr "Супер администратор"
-
-#: lib/permissions.py:30
-msgid "Domain administrator"
-msgstr "Администратор домена"
 
 #: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
@@ -698,17 +648,3 @@ msgstr "Запомнить меня"
 #: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Войти"
-
-#~ msgid "Extensions"
-#~ msgstr "Расширения"
-
-#, fuzzy
-#~| msgid "Choose the extension(s) to use"
-#~ msgid "The extension(s) you are using"
-#~ msgstr "Выберите расширения для использования"
-
-#~ msgid "Version"
-#~ msgstr "Версия"
-
-#~ msgid "is currently in use."
-#~ msgstr "используется в настоящее время"

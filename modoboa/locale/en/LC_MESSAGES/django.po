@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-08 15:58+0200\n"
+"POT-Creation-Date: 2015-04-15 11:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/__init__.py:65 core/__init__.py:66
+#: core/__init__.py:60 core/__init__.py:61
 msgid "General"
 msgstr ""
 
-#: core/__init__.py:85
+#: core/__init__.py:80
 msgid "One or more updates are available"
 msgstr ""
 
@@ -332,38 +332,38 @@ msgstr ""
 msgid "account"
 msgstr ""
 
-#: core/models.py:339
+#: core/models.py:341
 msgid "Invalid line"
 msgstr ""
 
-#: core/models.py:344
+#: core/models.py:347
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 
-#: core/models.py:356
+#: core/models.py:359
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 
-#: core/models.py:361
+#: core/models.py:364
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
 
-#: core/models.py:462
+#: core/models.py:465
 msgid "added"
 msgstr ""
 
-#: core/models.py:465
+#: core/models.py:468
 msgid "modified"
 msgstr ""
 
-#: core/models.py:467 core/models.py:492
+#: core/models.py:470 core/models.py:495
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr ""
 
-#: core/models.py:494
+#: core/models.py:497
 msgid "deleted"
 msgstr ""
 
@@ -520,39 +520,6 @@ msgstr ""
 msgid "Preferences saved"
 msgstr ""
 
-#: demo/__init__.py:17
-msgid "Test messages"
-msgstr ""
-
-#: demo/__init__.py:22
-msgid "Send virus"
-msgstr ""
-
-#: demo/__init__.py:25
-msgid "Send spam"
-msgstr ""
-
-#: demo/templates/demo/login_announcement.html:2
-msgid ""
-"\n"
-"<h3>Welcome to the online demo!</h3>\n"
-"<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
-"<p>To try the demo, the following users are available (<i>username/password</"
-"i>): </p>\n"
-"<ul>\n"
-"  <li>A super administrator : <b>admin/password</b></li>\n"
-"  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
-"  <li>A simple user : <b>user@demo.local/user</b></li>\n"
-"</ul>\n"
-"<p>Please report any issue or give any suggestion to \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
-"mailing list</a>.</p>\n"
-msgstr ""
-
-#: demo/views.py:19 demo/views.py:45
-msgid "Message sent"
-msgstr ""
-
 #: lib/db_utils.py:39
 #, python-format
 msgid "Connection to database %s not configured"
@@ -592,16 +559,12 @@ msgstr ""
 msgid "Failed to update password: %s"
 msgstr ""
 
-#: lib/permissions.py:22
+#: lib/permissions.py:21
 msgid "Simple user"
 msgstr ""
 
-#: lib/permissions.py:24
+#: lib/permissions.py:23
 msgid "Super administrator"
-msgstr ""
-
-#: lib/permissions.py:30
-msgid "Domain administrator"
 msgstr ""
 
 #: templates/404.html:4 templates/500.html:4
