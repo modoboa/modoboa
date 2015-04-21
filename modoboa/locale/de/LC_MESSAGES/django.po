@@ -236,7 +236,7 @@ msgstr "Benachrichtigungs-Prüfintervall"
 
 #: core/app_settings.py:203
 msgid "Interval between two top notification checks"
-msgstr "Intervall zwischen Benachrichtigungs-Ptüfungen"
+msgstr "Intervall zwischen Benachrichtigungs-Prüfungen"
 
 #: core/app_settings.py:208
 msgid "Check new versions"
