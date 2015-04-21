@@ -22,13 +22,13 @@ msgstr ""
 
 #: core/__init__.py:60 core/__init__.py:61
 msgid "General"
-msgstr "Grundsätzlich"
+msgstr "Allgemein"
 
 #: core/__init__.py:80
 #, fuzzy
 #| msgid "An update is available!"
 msgid "One or more updates are available"
-msgstr "Ein Update ist Verfügbar!"
+msgstr "Ein Update ist verfügbar!"
 
 #: core/app_settings.py:34
 msgid "Authentication"
@@ -44,11 +44,11 @@ msgstr "Lokal"
 
 #: core/app_settings.py:41
 msgid "The backend used for authentication"
-msgstr "Das backend, das zur Authentifizierung genutzt wird"
+msgstr "Backend für die Authentifizierung"
 
 #: core/app_settings.py:46
 msgid "Default password scheme"
-msgstr "Standard Passwortschema"
+msgstr "Standard-Passwortschema"
 
 #: core/app_settings.py:49
 msgid "md5crypt (weak)"
@@ -136,7 +136,7 @@ msgstr "Direkter Bind"
 
 #: core/app_settings.py:106
 msgid "Choose the authentication method to use"
-msgstr "Wählen Sie die Authentifizierungsmethode aus"
+msgstr "Wählen Sie die Authentifizierungsmethode"
 
 #: core/app_settings.py:111
 msgid "Bind DN"
@@ -174,7 +174,7 @@ msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
 msgstr ""
-"Ein optionaler Filter z.B. (objectClass=person). Das Filter muss "
+"Ein optionaler Filter, z.B. '(objectClass=person)'. Der Filter muss "
 "entsprechend der LDAP-Konvention in Klammern gesetzt werden."
 
 #: core/app_settings.py:155
@@ -187,7 +187,7 @@ msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
 msgstr ""
-"Die Vorlage für einen User DN. Sie sollte einen Platzhalter z.B. %(user)s "
+"Die Vorlage für einen User DN. Sie sollte einen Platzhalter, z.B. %(user)s "
 "enthalten."
 
 #: core/app_settings.py:166
@@ -216,7 +216,7 @@ msgid ""
 "Use ';' characters to separate groups."
 msgstr ""
 "Mitglieder dieser LDAP Posix-Gruppe werden als Domain-Administratoren "
-"angelegt werden. Nutzen sie ';', um Gruppen zu separieren."
+"angelegt werden. Nutzen Sie ';', um Gruppen zu separieren."
 
 #: core/app_settings.py:190
 msgid "Groups search base"
@@ -232,11 +232,11 @@ msgstr "Verschiedenes"
 
 #: core/app_settings.py:201
 msgid "Top notifications check interval"
-msgstr "Benachrichtigungs  Prüfintervall"
+msgstr "Benachrichtigungs-Prüfintervall"
 
 #: core/app_settings.py:203
 msgid "Interval between two top notification checks"
-msgstr "Prüfintervall nach neuen Benachrichtigungen"
+msgstr "Intervall zwischen Benachrichtigungs-Ptüfungen"
 
 #: core/app_settings.py:208
 msgid "Check new versions"
@@ -248,7 +248,7 @@ msgstr "Überprüft automatisch ob eine neuere Version verfügbar ist."
 
 #: core/app_settings.py:215
 msgid "Maximum log record age"
-msgstr "Maximales Alter eines Log-Eintrags"
+msgstr "Maximales Alter für Log-Einträge"
 
 #: core/app_settings.py:217
 msgid "The maximum age in days of a log record"
@@ -264,7 +264,7 @@ msgstr "Anzahl dargestellter Einträge pro Seite"
 
 #: core/app_settings.py:229
 msgid "Default top redirection"
-msgstr "Standard Top-Redirect"
+msgstr "Standardumleitung"
 
 #: core/app_settings.py:233
 msgid "The default redirection used when no application is specified"
@@ -352,7 +352,7 @@ msgstr "Ungültige Zeile"
 
 #: core/models.py:347
 msgid "You can't import an account with a role greater than yours"
-msgstr "Sie können kein Konto einer höheren Rolle importieren"
+msgstr "Sie können kein Konto mit einer höheren Rolle als Ihrer eigenen importieren"
 
 #: core/models.py:359
 #, python-format
@@ -395,17 +395,17 @@ msgstr "Verschiedene Informationen über Modoboa"
 #, fuzzy
 #| msgid "An update is available!"
 msgid "One or more updates are available!"
-msgstr "Ein Update ist Verfügbar!"
+msgstr "Ein Update ist verfügbar!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
+msgstr "Überprüfen Sie die folgende Liste auf Komponenten, die aktualisiert werden können."
 
 #: core/templates/core/information.html:10
 #, fuzzy
 #| msgid "Authentication"
 msgid "Applications"
-msgstr "Authentifizierung"
+msgstr "Anwendungen"
 
 #: core/templates/core/information.html:14
 #: core/templates/core/information.html:36
@@ -414,13 +414,13 @@ msgstr "Name"
 
 #: core/templates/core/information.html:15
 msgid "Installed version"
-msgstr ""
+msgstr "Installierte Version"
 
 #: core/templates/core/information.html:16
 #, fuzzy
 #| msgid "Last login"
 msgid "Last version"
-msgstr "Letzte Anmeldung"
+msgstr "Letzte Version"
 
 #: core/templates/core/information.html:17
 msgid "Description"
@@ -452,7 +452,7 @@ msgstr "Datum"
 
 #: core/templates/core/logs.html:7
 msgid "Level"
-msgstr "Level"
+msgstr "Stufe"
 
 #: core/templates/core/logs.html:8
 msgid "Logger"
@@ -498,7 +498,7 @@ msgstr "Profil"
 
 #: core/templates/core/user_profile.html:2
 msgid "Update your personal information"
-msgstr "Aktualisieren sie ihre persönlichen Daten"
+msgstr "Aktualisieren Sie Ihre persönlichen Daten"
 
 #: core/templates/core/user_profile.html:8 lib/form_utils.py:333
 msgid "Update"
@@ -516,7 +516,7 @@ msgstr "Logout"
 #, fuzzy
 #| msgid "Welcome to Modoboa"
 msgid "The core part of Modoboa"
-msgstr "Willkommen zu Modoboa"
+msgstr "Der Kern von Modoboa"
 
 #: core/views/admin.py:52
 msgid "Parameters saved"
@@ -525,7 +525,7 @@ msgstr "Parameter gespeichert"
 #: core/views/auth.py:33
 #, python-format
 msgid "User '%s' successfully logged in"
-msgstr "Identität '%s' hat sich erfolgreich angemeldet"
+msgstr "Benutzer '%s' hat sich erfolgreich angemeldet"
 
 #: core/views/auth.py:48
 msgid "Your username and password didn't match. Please try again."
@@ -536,7 +536,7 @@ msgstr ""
 #: core/views/auth.py:76
 #, python-format
 msgid "User '%s' logged out"
-msgstr "Identität '%s' hat sich abgemeldet"
+msgstr "Benutzer '%s' hat sich abgemeldet"
 
 #: core/views/user.py:39
 msgid "Profile updated"
@@ -554,11 +554,11 @@ msgstr "Verbindung zu Datenbank %s nicht konfiguriert"
 #: lib/exceptions.py:67
 #, python-format
 msgid "Permission denied: %s"
-msgstr "Erlaubnis verweigert: %s"
+msgstr "Zugriff verweigert: %s"
 
 #: lib/exceptions.py:68
 msgid "Permission denied"
-msgstr "Berechtigung verweigert"
+msgstr "Zugriff verweigert"
 
 #: lib/form_utils.py:88
 msgid "Submit"
@@ -599,11 +599,11 @@ msgstr "Entschuldigung"
 
 #: templates/404.html:5
 msgid "The requested page does not exist."
-msgstr "Die angeforderte Seite existiert nicht"
+msgstr "Die angeforderte Seite existiert nicht."
 
 #: templates/500.html:5
 msgid "An internal error occured."
-msgstr "Ein interne Fehler ist aufgetreten"
+msgstr "Ein interner Fehler ist aufgetreten."
 
 #: templates/common/email_searchbar.html:5
 msgid "Search..."
@@ -611,7 +611,7 @@ msgstr "Suchen..."
 
 #: templates/common/email_searchbar.html:10
 msgid "From address"
-msgstr "From:-Adresse"
+msgstr "Absender-Adresse"
 
 #: templates/common/email_searchbar.html:17
 msgid "Subject"
@@ -634,7 +634,7 @@ msgstr "Hilfe:"
 #: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
 #: templates/common/wizard_forms.html:27
 msgid "Close"
-msgstr "Schliessen"
+msgstr "Schließen"
 
 #: templates/common/wizard_forms.html:31
 msgid "Previous"
@@ -650,7 +650,7 @@ msgstr "Willkommen zu Modoboa"
 
 #: templates/registration/login.html:41
 msgid "Remember me"
-msgstr "Erinnere mich"
+msgstr "An mich erinnern"
 
 #: templates/registration/login.html:44
 msgid "Log in"
