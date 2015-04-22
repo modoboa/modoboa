@@ -6,9 +6,6 @@ import pkg_resources
 import requests
 from requests.exceptions import RequestException
 
-from versionfield.constants import DEFAULT_NUMBER_BITS
-from versionfield.version import Version
-
 
 class ModoAPIClient(object):
 
@@ -54,6 +51,9 @@ class ModoAPIClient(object):
 
     def new_core_version(self, site):
         """Check the latest version."""
+        from versionfield.constants import DEFAULT_NUMBER_BITS
+        from versionfield.version import Version
+
         url = os.path.join(self._api_url, "current_version/")
         params = {"client_version": self.local_core_version, "site": site}
         resp = self.__send_request(url, params)
