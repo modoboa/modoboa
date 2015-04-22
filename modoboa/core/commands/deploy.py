@@ -151,7 +151,10 @@ class DeployCommand(Command):
 
         """
         if "all" in extensions:
-            official_exts = ModoAPIClient().list_extensions()
+            # We hardcode the API url here to avoid a loading of
+            # django's settings since they are not available yet...
+            url = "http://api.modoboa.org/"
+            official_exts = ModoAPIClient(url).list_extensions()
             extensions = [extension["name"] for extension in official_exts]
 
         pip_args = ["install"] + extensions
