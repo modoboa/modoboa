@@ -160,16 +160,15 @@ class DeployCommand(Command):
         include in the final configuration.
 
         """
-        pip_args = ["install"] + extensions
+        pip_args = ["install"] + [extension[0] for extension in extensions]
         pip.main(pip_args)
         extra_settings = []
         for extension in extensions:
-            extension = extension.replace("-", "_")
-            module = __import__(extension, locals(), globals(), [])
+            module = __import__(extension[1], locals(), globals(), [])
             basedir = os.path.dirname(module.__file__)
             if not os.path.exists("{0}/settings.py".format(basedir)):
                 continue
-            extra_settings.append(extension)
+            extra_settings.append(extension[1])
         return extra_settings
 
     def handle(self, parsed_args):
@@ -212,6 +211,8 @@ class DeployCommand(Command):
         extensions = parsed_args.extensions
         if "all" in extensions:
             extensions = self._get_extension_list()
+        extensions = [(extension, extension.replace("-", "_"))
+                      for extension in extensions]
         if not parsed_args.dont_install_extensions and extensions:
             extra_settings = self.install_extensions(extensions)
 
@@ -230,7 +231,7 @@ class DeployCommand(Command):
                 'timezone': parsed_args.timezone,
                 'bower_components_dir': bower_components_dir,
                 'devmode': parsed_args.devel,
-                'extensions': extensions,
+                'extensions': [extension[1] for extension in extensions],
                 'extra_settings': extra_settings
             }
         )
