@@ -164,5 +164,5 @@ LOGGING = {
     }
 }
 {% for extension in extra_settings %}
-import {{ extension }}.settings
+from {{ extension }}.settings import *
 {% endfor %}
