@@ -172,6 +172,7 @@ class DeployCommand(Command):
         return extra_settings
 
     def handle(self, parsed_args):
+        import pdb
         django.setup()
         management.call_command(
             'startproject', parsed_args.name, verbosity=False
@@ -206,15 +207,16 @@ class DeployCommand(Command):
             )
             if not allowed_host:
                 allowed_host = "localhost"
-
         extra_settings = []
         extensions = parsed_args.extensions
-        if "all" in extensions:
-            extensions = self._get_extension_list()
-        extensions = [(extension, extension.replace("-", "_"))
-                      for extension in extensions]
-        if not parsed_args.dont_install_extensions and extensions:
-            extra_settings = self.install_extensions(extensions)
+        if extensions:
+            if "all" in extensions:
+                extensions = self._get_extension_list()
+            extensions = [(extension, extension.replace("-", "_"))
+                          for extension in extensions]
+            if not parsed_args.dont_install_extensions:
+                extra_settings = self.install_extensions(extensions)
+            extensions = [extension[1] for extension in extensions]
 
         bower_components_dir = os.path.realpath(
             os.path.join(os.path.dirname(__file__), "../../bower_components")
@@ -231,7 +233,7 @@ class DeployCommand(Command):
                 'timezone': parsed_args.timezone,
                 'bower_components_dir': bower_components_dir,
                 'devmode': parsed_args.devel,
-                'extensions': [extension[1] for extension in extensions],
+                'extensions': extensions,
                 'extra_settings': extra_settings
             }
         )

@@ -14,9 +14,10 @@ class Command(object):
 
     A valid administrative command must inherit from this class.
     """
+
     help = "No help available."
 
-    def __init__(self, commands, verbose=False, **kwargs):
+    def __init__(self, commands, verbose=False):
         self._commands = commands
         self._parser = argparse.ArgumentParser()
         self._verbose = verbose
@@ -25,10 +26,10 @@ class Command(object):
         self._templates_dir = "%s/templates" % os.path.dirname(__file__)
 
     def _render_template(self, tplfile, env):
-        fp = open(tplfile)
-        t = Template(fp.read())
-        fp.close()
-        return t.render(Context(env))
+        """Render an HTML template."""
+        with open(tplfile) as fp:
+            tpl = Template(fp.read())
+        return tpl.render(Context(env))
 
     def run(self, cmdline):
         args = self._parser.parse_args(cmdline)
