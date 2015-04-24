@@ -216,6 +216,7 @@ def __is_defined(app, level, name):
 
 
 def save_admin(name, value, app=None):
+    """Set a new value for a given parameter."""
     from .models import Parameter
 
     if app is None:
