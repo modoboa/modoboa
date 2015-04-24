@@ -9,6 +9,8 @@ from . import models
 
 class PermissionFactory(factory.DjangoModelFactory):
 
+    """A base factory to handle permissions."""
+
     class Meta:
         abstract = True
 
@@ -21,6 +23,8 @@ class PermissionFactory(factory.DjangoModelFactory):
 
 class GroupFactory(factory.DjangoModelFactory):
 
+    """A factory to create Group instances."""
+
     class Meta:
         model = Group
 
@@ -28,6 +32,8 @@ class GroupFactory(factory.DjangoModelFactory):
 
 
 class UserFactory(PermissionFactory):
+
+    """A factory to create User instances."""
 
     class Meta:
         model = models.User
