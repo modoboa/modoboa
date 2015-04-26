@@ -247,12 +247,20 @@ function parse_qs(raw) {
  *
  * Ref: http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
  */
-function get_parameter_by_name(url, name) {
+function get_parameter_by_name(url, name, dont_replace_plus) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(url);
 
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    if (results === null) {
+        return "";
+    }
+
+    var result = results[1];
+    if (dont_replace_plus === undefined || !dont_replace_plus) {
+        result = result.replace("/\+/g", "");
+    }
+    return decodeURIComponent(result);
 }
 
 /**

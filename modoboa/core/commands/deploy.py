@@ -143,6 +143,16 @@ class DeployCommand(Command):
         info['PASSWORD'] = getpass.getpass('Password: ')
         return info
 
+    def _get_extension_list(self):
+        """Ask the API to get the list of all extensions.
+
+        We hardcode the API url here to avoid a loading of
+        django's settings since they are not available yet...
+        """
+        url = "http://api.modoboa.org/"
+        official_exts = ModoAPIClient(url).list_extensions()
+        return [extension["name"] for extension in official_exts]
+
     def install_extensions(self, extensions):
         """Install one or more extensions.
 
@@ -150,23 +160,19 @@ class DeployCommand(Command):
         include in the final configuration.
 
         """
-        if "all" in extensions:
-            official_exts = ModoAPIClient().list_extensions()
-            extensions = [extension["name"] for extension in official_exts]
-
-        pip_args = ["install"] + extensions
+        pip_args = ["install"] + [extension[0] for extension in extensions]
         pip.main(pip_args)
         extra_settings = []
         for extension in extensions:
-            extension = extension.replace("-", "_")
-            module = __import__(extension, locals(), globals(), [])
+            module = __import__(extension[1], locals(), globals(), [])
             basedir = os.path.dirname(module.__file__)
             if not os.path.exists("{0}/settings.py".format(basedir)):
                 continue
-            extra_settings.append(extension)
+            extra_settings.append(extension[1])
         return extra_settings
 
     def handle(self, parsed_args):
+        import pdb
         django.setup()
         management.call_command(
             'startproject', parsed_args.name, verbosity=False
@@ -201,10 +207,16 @@ class DeployCommand(Command):
             )
             if not allowed_host:
                 allowed_host = "localhost"
-
         extra_settings = []
-        if parsed_args.dont_install_extensions and parsed_args.extensions:
-            extra_settings = self.install_extensions(parsed_args.extensions)
+        extensions = parsed_args.extensions
+        if extensions:
+            if "all" in extensions:
+                extensions = self._get_extension_list()
+            extensions = [(extension, extension.replace("-", "_"))
+                          for extension in extensions]
+            if not parsed_args.dont_install_extensions:
+                extra_settings = self.install_extensions(extensions)
+            extensions = [extension[1] for extension in extensions]
 
         bower_components_dir = os.path.realpath(
             os.path.join(os.path.dirname(__file__), "../../bower_components")
@@ -221,7 +233,7 @@ class DeployCommand(Command):
                 'timezone': parsed_args.timezone,
                 'bower_components_dir': bower_components_dir,
                 'devmode': parsed_args.devel,
-                'extensions': parsed_args.extensions,
+                'extensions': extensions,
                 'extra_settings': extra_settings
             }
         )

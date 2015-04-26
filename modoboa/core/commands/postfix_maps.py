@@ -11,7 +11,6 @@ from django.template import Context, Template
 
 import dj_database_url
 
-from modoboa.lib.api_client import ModoAPIClient
 from . import Command
 
 MAP_FILE_TEMPLATE = """user = {{ dbuser }}
@@ -85,8 +84,11 @@ class MapFilesGenerator(object):
     def __load_extensions(self, extensions):
         """Load specified extensions."""
         if "all" in extensions:
+            from modoboa.lib.api_client import ModoAPIClient
+
             # Retrieve extension list from the API
-            official_exts = ModoAPIClient().list_extensions()
+            url = "http://api.modoboa.org/"
+            official_exts = ModoAPIClient(url).list_extensions()
             extensions = [extension["name"] for extension in official_exts]
 
         for extension in extensions:

@@ -6,11 +6,6 @@ import pkg_resources
 import requests
 from requests.exceptions import RequestException
 
-from django.conf import settings
-
-from versionfield.constants import DEFAULT_NUMBER_BITS
-from versionfield.version import Version
-
 
 class ModoAPIClient(object):
 
@@ -18,10 +13,11 @@ class ModoAPIClient(object):
 
     def __init__(self, api_url=None):
         """Constructor."""
-        self._api_url = (
-            settings.MODOBOA_API_URL if api_url is None
-            else api_url
-        )
+        if api_url is None:
+            from django.conf import settings
+            self._api_url = settings.MODOBOA_API_URL
+        else:
+            self._api_url = api_url
         self._local_core_version = None
         self._latest_core_version = None
         self.changelog_url = None
@@ -55,6 +51,9 @@ class ModoAPIClient(object):
 
     def new_core_version(self, site):
         """Check the latest version."""
+        from versionfield.constants import DEFAULT_NUMBER_BITS
+        from versionfield.version import Version
+
         url = os.path.join(self._api_url, "current_version/")
         params = {"client_version": self.local_core_version, "site": site}
         resp = self.__send_request(url, params)

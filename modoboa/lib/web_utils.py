@@ -12,7 +12,7 @@ from django import template
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import render_to_string
 
@@ -88,7 +88,7 @@ def ajax_response(request, status="ok", respmsg=None,
     if url is not None:
         jsonctx["url"] = url
     jsonctx["norefresh"] = norefresh
-    return HttpResponse(json.dumps(jsonctx), mimetype="application/json")
+    return JsonResponse(jsonctx)
 
 
 def render_to_json_response(context, **response_kwargs):

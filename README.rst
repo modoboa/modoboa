@@ -26,13 +26,13 @@ frameworks.
 Main features
 *************
 
-* Administration panel
-* `Amavisd-new <http://www.amavis.org>`_ frontend    
-* Webmail
-* Per-user Sieve filters
-* Autoreply messages for Postfix
-* Graphical statistics about email traffic
-* `Radicale <http://radicale.org/>`_ management frontend
+* `Administration panel <https://github.com/modoboa/modoboa-admin>`_
+* `Amavisd-new <http://www.amavis.org>`_ `frontend <https://github.com/modoboa/modoboa-amavis>`_
+* `Webmail <https://github.com/modoboa/modoboa-webmail>`_
+* `Per-user Sieve filters <https://github.com/modoboa/modoboa-sievefilters>`_
+* `Autoreply messages for Postfix <https://github.com/modoboa/modoboa-postfix-autoreply>`_
+* `Graphical statistics about email traffic <https://github.com/modoboa/modoboa-stats>`_
+* `Radicale <http://radicale.org/>`_ `management frontend <https://github.com/modoboa/modoboa-radicale>`_
 
 *************
 Documentation
