@@ -90,7 +90,8 @@
                 }
                 this.prev_dir = itfunc;
                 return;
-            } else if (!this.ctrl_pressed && (!this.last_selection || !this.last_selection.is($row))) {
+            } else if (!(this.options.keep_selection || this.ctrl_pressed) &&
+		       (!this.last_selection || !this.last_selection.is($row))) {
                 this.clear_selection();
             }
             this.last_selection = $row;
