@@ -12,7 +12,6 @@
             this.shift_pressed = false;
             this.ctrl_pressed = false;
             this.last_selection = null;
-            this.prev_dir = null;
             this.listen();
 
             this.$element.css({
@@ -55,6 +54,32 @@
             }
         },
 
+	/**
+	 * Set the row's state, cancel the change if the current state
+	 * and the new state are identical
+	 */
+	_set_select: function($row, selected) {
+	    var $input = $row.find(this.options.input_selector);
+
+	    if (this.is_selected($row) == selected)
+		return; 
+	    $input.prop('checked', selected);
+	    if (selected)
+	    {
+		$row.addClass(this.options.row_selected_class);
+                if (this.options.row_unselected_event !== undefined) {
+                    this.options.row_unselected_event($row);
+		}
+	    }
+	    else
+	    {
+		$row.removeClass(this.options.row_selected_class);
+                if (this.options.row_selected_event !== undefined) {
+                    this.options.row_selected_event($row);
+                }
+	    }
+	},
+
         /**
          * Change the selection state of a given row.
          *
@@ -68,29 +93,22 @@
             var $row = $(e.target).parents(this.options.row_selector);
 
             if (this.shift_pressed && this.last_selection) {
-                var start = this.last_selection;
-
-                this.clear_selection();
-                this.last_selection = start;
-
+		var select = !this.is_selected($row);
                 var itfunc = ($row.index() >= this.last_selection.index()) ? 
                     "next" : "prev";
-                var $cur_row = null;
-
-                if (this.prev_dir && itfunc != this.prev_dir) {
-                    $cur_row = this.last_selection;
-                } else {
-                    $cur_row = this.last_selection;
-                }
-                for (; $cur_row.length; $cur_row = $cur_row[itfunc](this.options.row_selector)) {
-                    this._toggle_select($cur_row);
+		var $cur_row = this.last_selection;
+		
+                for ($cur_row = $cur_row[itfunc](this.options.row_selector);
+		     $cur_row.length;
+		     $cur_row = $cur_row[itfunc](this.options.row_selector)) {
+                    this._set_select($cur_row, select);
                     if ($row.attr("id") == $cur_row.attr("id")) {
                         break;
                     }
                 }
-                this.prev_dir = itfunc;
+		this.last_selection = $row;
                 return;
-            } else if (!(this.options.keep_selection || this.ctrl_pressed) &&
+            } else if (!this.options.keep_selection && !this.ctrl_pressed &&
 		       (!this.last_selection || !this.last_selection.is($row))) {
                 this.clear_selection();
             }
