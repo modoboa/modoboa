@@ -223,6 +223,7 @@ class TabForms(object):
 
     def __init__(self, request, instances=None, classes=None):
         self.request = request
+        self.instances = {}
         to_remove = []
         for fd in self.forms:
             args = []
@@ -330,9 +331,12 @@ class TabForms(object):
             )
         context = {
             "tabs": self,
-            "action_label": _("Update"),
-            "action_classes": "submit",
         }
+        if self.forms:
+            context.update({
+                "action_label": _("Update"),
+                "action_classes": "submit",
+            })
         self.extra_context(context)
         active_tab_id = self.request.GET.get("active_tab", "default")
         if active_tab_id != "default":
