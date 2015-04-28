@@ -270,6 +270,7 @@ class DomainForm(TabForms):
 
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
+        self.domain = None
         self.forms = []
         if self.user.has_perm("admin.change_domain"):
             self.forms.append({
@@ -282,23 +283,24 @@ class DomainForm(TabForms):
 
         cbargs = [self.user]
         if "instances" in kwargs:
-            cbargs += [kwargs["instances"]["general"]]
+            self.domain = kwargs["instances"]["general"]
+            cbargs += [self.domain]
         self.forms += events.raiseQueryEvent("ExtraDomainForm", *cbargs)
         if not self.forms:
             self.active_id = "admins"
         super(DomainForm, self).__init__(request, *args, **kwargs)
 
     def extra_context(self, context):
-        domain = self.instances["general"]
-        domadmins = [u for u in domain.admins
+        domadmins = [u for u in self.domain.admins
                      if self.request.user.can_access(u) and not u.is_superuser]
         if not self.request.user.is_superuser:
             domadmins = [u for u in domadmins if u.group == "DomainAdmins"]
         context.update({
-            "title": domain.name,
-            "action": reverse("admin:domain_change", args=[domain.pk]),
+            "title": self.domain.name,
+            "action": reverse(
+                "admin:domain_change", args=[self.domain.pk]),
             "formid": "domform",
-            "domain": domain,
+            "domain": self.domain,
             "domadmins": domadmins
         })
 
@@ -309,7 +311,8 @@ class DomainForm(TabForms):
         modified.
 
         """
-        self.instances["general"].oldname = self.instances["general"].name
+        if "general" in self.instances:
+            self.instances["general"].oldname = self.instances["general"].name
         return super(DomainForm, self).is_valid()
 
     def save(self):
@@ -318,6 +321,8 @@ class DomainForm(TabForms):
         As forms interact with each other, it is easier to make custom
         code to save them.
         """
+        if not self.forms:
+            return
         self.forms[0]['instance'].save(
             self.request.user, domalias_post_create=True
         )
@@ -325,7 +330,8 @@ class DomainForm(TabForms):
             f["instance"].save(self.request.user)
 
     def done(self):
-        events.raiseEvent("DomainModified", self.instances["general"])
+        if "general" in self.instances:
+            events.raiseEvent("DomainModified", self.instances["general"])
         return render_to_json_response(_("Domain modified"))
 
 
