@@ -323,11 +323,11 @@ class DomainForm(TabForms):
         """
         if not self.forms:
             return
-        first_form = self.forms[0]
+        first_form = self.forms[0]["instance"]
         options = {}
         if isinstance(first_form, DomainFormGeneral):
             options.update({"domalias_post_create": True})
-        self.forms[0]['instance'].save(self.request.user, **options)
+        first_form.save(self.request.user, **options)
         for f in self.forms[1:]:
             f["instance"].save(self.request.user)
 
