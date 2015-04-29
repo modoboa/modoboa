@@ -96,9 +96,9 @@
 		var select = !this.is_selected($row);
                 var itfunc = ($row.index() >= this.last_selection.index()) ? 
                     "next" : "prev";
-		var $cur_row = this.last_selection;
+		var $cur_row;
 		
-                for ($cur_row = $cur_row[itfunc](this.options.row_selector);
+                for ($cur_row = this.last_selection;
 		     $cur_row.length;
 		     $cur_row = $cur_row[itfunc](this.options.row_selector)) {
                     this._set_select($cur_row, select);
