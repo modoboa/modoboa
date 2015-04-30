@@ -25,7 +25,7 @@ def check_for_updates(request):
     }] + extensions
     update_avail = False
     for extension in extensions:
-        if "update" in extension:
+        if extension.get("update"):
             update_avail = True
             break
     return update_avail, extensions

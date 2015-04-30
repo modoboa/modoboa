@@ -55,7 +55,9 @@ class ModoAPIClient(object):
         from versionfield.version import Version
 
         url = os.path.join(self._api_url, "current_version/")
-        params = {"client_version": self.local_core_version, "site": site}
+        params = {
+            "client_version": self.local_core_version, "client_site": site
+        }
         resp = self.__send_request(url, params)
         if resp is None:
             return None
