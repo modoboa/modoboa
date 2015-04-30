@@ -65,3 +65,14 @@ If you want to add a new dependency, just complete the
 
 It will download and store the required files into the
 :file:`<path_to_local_copy>/modoboa/bower_components` directory.
+
+FAQ
+===
+
+bower command is missing in manage.py
+-------------------------------------
+
+*bower* command missing in *manage.py* if you don't use ``--devel`` option with
+``modoboa-admin.py`` command.
+
+Fix : regenerate your instance or you can update your ``settings.py`` manually : look ``devmode`` if in https://github.com/tonioo/modoboa/blob/master/modoboa/core/commands/templates/settings.py.tpl
