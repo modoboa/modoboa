@@ -10,7 +10,7 @@ def extra_js(user):
     return ["""function autoreply_cb() {
     $('.datefield').datetimepicker({
         format: 'YYYY-MM-DD HH:mm:ss',
-        language: '%(lang)s',
+        language: '%(lang)s'
     });
 }
 """ % {'lang': parameters.get_user(user, "LANG", app="core")}
