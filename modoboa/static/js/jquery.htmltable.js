@@ -64,15 +64,12 @@
 	    if (this.is_selected($row) == selected)
 		return; 
 	    $input.prop('checked', selected);
-	    if (selected)
-	    {
+	    if (selected) {
 		$row.addClass(this.options.row_selected_class);
                 if (this.options.row_unselected_event !== undefined) {
                     this.options.row_unselected_event($row);
 		}
-	    }
-	    else
-	    {
+	    } else {
 		$row.removeClass(this.options.row_selected_class);
                 if (this.options.row_selected_event !== undefined) {
                     this.options.row_selected_event($row);
@@ -201,6 +198,7 @@
     $.fn.htmltable.defaults = {
         row_selector: 'tr',
         input_selector: "input[type=checkbox]",
-        row_selected_class: 'tr-selected'
+        row_selected_class: 'tr-selected',
+        keep_selection: false
     };
 })(jQuery);
