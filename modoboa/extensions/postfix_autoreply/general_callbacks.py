@@ -9,8 +9,8 @@ from .models import ARmessage
 def extra_js(user):
     return ["""function autoreply_cb() {
     $('.datefield').datetimepicker({
-        format: 'YYYY-MM-DD hh:mm:ss',
-        language: '%(lang)s'
+        format: 'YYYY-MM-DD HH:mm:ss',
+        language: '%(lang)s',
     });
 }
 """ % {'lang': parameters.get_user(user, "LANG", app="core")}
