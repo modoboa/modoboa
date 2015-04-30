@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 #    'south',
     'reversion',
+{% if devmode %}    'djangobower',{% endif %}
 )
 
 # A dedicated place to register Modoboa applications
