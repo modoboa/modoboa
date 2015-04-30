@@ -54,7 +54,7 @@ def read(fname):
 
 setup(
     name="modoboa",
-    version='1.2.1',
+    version='1.3.0',
     url='http://modoboa.org/',
     license='MIT',
     description="Mail hosting made simple",
@@ -67,7 +67,7 @@ setup(
     zip_safe=False,
     install_requires=parse_requirements(PIP_REQUIRES),
     dependency_links=parse_dependency_links(PIP_REQUIRES),
-    classifiers=['Development Status :: 4 - Beta',
+    classifiers=['Development Status :: 5 - Production/Stable',
                  'Framework :: Django',
                  'Intended Audience :: System Administrators',
                  'License :: OSI Approved :: MIT License',
