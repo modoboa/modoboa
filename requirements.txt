@@ -1,12 +1,8 @@
 django>=1.7,<1.8
 django-reversion==1.8.5
 dj-database-url
-lxml
 pycrypto
-sievelib
-chardet
 argparse
-rfc6266
 factory-boy>=2.4
 passlib
 django-versionfield2>=0.3.3
