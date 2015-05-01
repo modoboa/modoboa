@@ -72,7 +72,9 @@ FAQ
 bower command is missing in manage.py
 -------------------------------------
 
-*bower* command missing in *manage.py* if you don't use ``--devel`` option with
-``modoboa-admin.py`` command.
+*bower* command is missing in *manage.py* if you don't use the
+``--devel`` option of the ``modoboa-admin.py deploy`` command.
 
-Fix : regenerate your instance or you can update your ``settings.py`` manually : look ``devmode`` if in https://github.com/tonioo/modoboa/blob/master/modoboa/core/commands/templates/settings.py.tpl
+To fix it, regenerate your instance or update your ``settings.py``
+file manually. Look at ``devmode`` in
+https://github.com/tonioo/modoboa/blob/master/modoboa/core/commands/templates/settings.py.tpl
