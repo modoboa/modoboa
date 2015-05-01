@@ -110,7 +110,8 @@ Deployment
    prefix. The primary connection must use the ``default:`` prefix (as
    shown in the example above). For the `amavis extension
    <http://modoboa-amavis.readthedocs.org>`_ extension, use the
-   ``amavis:`` prefix like this ``amavis:<database url>``.
+   ``amavis:`` prefix. An example two connections: ``--dburl
+   default:<database url> amavis:<database url>``.
 
    Your database url should meet the following syntax
    ``scheme://[user:pass@][host:port]/dbname`` **OR**
