@@ -96,31 +96,36 @@ class AliasForm(forms.ModelForm, DynamicForm):
                 raise BadRequest(
                     u"%s %s" % (_("Invalid mailbox"), v)
                 )
-            try:
-                domain = Domain.objects.get(name=domname)
-            except Domain.DoesNotExist:
-                domain = None
+
+            # Support tag in recipient, see https://github.com/tonioo/modoboa/issues/713
+            local_part_with_tag = None
+            if '+' in local_part:
+                local_part_with_tag = local_part
+                local_part = local_part[0:local_part.find('+')]
+
+            domain = Domain.objects.filter(name=domname).first()
+
             if domain is not None:
-                try:
-                    rcpt = Alias.objects.get(domain=domain, address=local_part)
-                    if rcpt.full_address == self.cleaned_data["email"]:
-                        rcpt = None
-                except Alias.DoesNotExist:
+                rcpt = Alias.objects.filter(domain=domain, address=local_part).first()
+                if rcpt and (rcpt.full_address == self.cleaned_data["email"]):
                     rcpt = None
+
                 if rcpt is None:
                     try:
                         rcpt = Mailbox.objects.get(domain=domain, address=local_part)
                     except Mailbox.DoesNotExist:
                         raise NotFound(
-                            _("Local recipient %s not found" % v)
+                            _("Local recipient %s@%s not found" % (local_part, domname))
                         )
-                if rcpt in self.int_rcpts:
-                    raise Conflict(
-                        _("Recipient %s already present" % v)
-                    )
-                self.int_rcpts += [rcpt]
-                total += 1
-                continue
+
+                if local_part_with_tag is None:
+                    if rcpt in self.int_rcpts:
+                        raise Conflict(
+                            _("Recipient %s already present" % v)
+                        )
+                    self.int_rcpts += [rcpt]
+                    total += 1
+                    continue
 
             if v in self.ext_rcpts:
                 raise Conflict(
@@ -134,8 +139,8 @@ class AliasForm(forms.ModelForm, DynamicForm):
 
     def save(self, commit=True):
         alias = super(AliasForm, self).save(commit=False)
-        localpart, domname = split_mailbox(self.cleaned_data["email"])
-        alias.address = localpart
+        local_part, domname = split_mailbox(self.cleaned_data["email"])
+        alias.address = local_part
         alias.domain = Domain.objects.get(name=domname)
         if commit:
             alias.save(int_rcpts=self.int_rcpts, ext_rcpts=self.ext_rcpts)
