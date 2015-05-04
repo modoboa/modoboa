@@ -78,6 +78,7 @@ INSTALLED_APPS += MODOBOA_APPS
 AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE_CLASSES = (
+    'x_forwarded_for.middleware.XForwardedForMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
