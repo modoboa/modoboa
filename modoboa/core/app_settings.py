@@ -80,7 +80,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Server address"),
         initial="localhost",
         help_text=ugettext_lazy(
-            "The IP address of the DNS name of the LDAP server"),
+            "The IP address or the DNS name of the LDAP server"),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 

@@ -103,8 +103,8 @@ msgid "Server address"
 msgstr "Server-Adresse"
 
 #: core/app_settings.py:83
-msgid "The IP address of the DNS name of the LDAP server"
-msgstr "Die IP-Adresse des LDAP-Server Hostnamens"
+msgid "The IP address or the DNS name of the LDAP server"
+msgstr "IP-Adresse oder Hostname des LDAP-Servers"
 
 #: core/app_settings.py:88
 msgid "Server port"
@@ -363,8 +363,7 @@ msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
-"Die Felder für Benutzername und E-Mail für '%s' dürfen sich nicht "
-"unterscheiden"
+"Benutzername und E-Mail für '%s' dürfen sich nicht unterscheiden"
 
 #: core/models.py:465
 msgid "added"
@@ -638,11 +637,11 @@ msgstr "Schließen"
 
 #: templates/common/wizard_forms.html:31
 msgid "Previous"
-msgstr "Vorheriges"
+msgstr "Zurück"
 
 #: templates/common/wizard_forms.html:32
 msgid "Next"
-msgstr "Nächstes"
+msgstr "Weiter"
 
 #: templates/registration/login.html:10
 msgid "Welcome to Modoboa"

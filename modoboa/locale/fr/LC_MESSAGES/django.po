@@ -101,7 +101,7 @@ msgid "Server address"
 msgstr "Adresse du serveur"
 
 #: core/app_settings.py:83
-msgid "The IP address of the DNS name of the LDAP server"
+msgid "The IP address or the DNS name of the LDAP server"
 msgstr "L'adresse IP ou le nom DNS du serveur LDAP"
 
 #: core/app_settings.py:88
