@@ -22,7 +22,7 @@ msgstr ""
 
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
-msgstr "Keine weiteren log eintrage"
+msgstr "Keine weiteren Log-Einträge"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
