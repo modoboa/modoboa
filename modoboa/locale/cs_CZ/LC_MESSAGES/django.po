@@ -102,7 +102,7 @@ msgid "Server address"
 msgstr "Adresa serveru"
 
 #: core/app_settings.py:83
-msgid "The IP address of the DNS name of the LDAP server"
+msgid "The IP address or the DNS name of the LDAP server"
 msgstr "IP adresa DNS jména LDAP serveru"
 
 #: core/app_settings.py:88

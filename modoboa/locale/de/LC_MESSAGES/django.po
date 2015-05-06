@@ -72,7 +72,7 @@ msgstr "plain (schwach)"
 
 #: core/app_settings.py:55
 msgid "Scheme used to crypt mailbox passwords"
-msgstr "Verschlüsselungsschema der Mailbox-Passworte"
+msgstr "Verschlüsselungsschema der Mailbox-Passwörter"
 
 #: core/app_settings.py:60
 msgid "Rounds"
@@ -92,7 +92,7 @@ msgstr "Geheimer Schlüssel"
 
 #: core/app_settings.py:72
 msgid "Key used to encrypt/decrypt passwords"
-msgstr "Verwendeter Schlüssel, um Passworte zu ver-/entschlüsseln"
+msgstr "Verwendeter Schlüssel, um Passwörter zu ver-/entschlüsseln"
 
 #: core/app_settings.py:77
 msgid "LDAP settings"
@@ -103,8 +103,8 @@ msgid "Server address"
 msgstr "Server-Adresse"
 
 #: core/app_settings.py:83
-msgid "The IP address of the DNS name of the LDAP server"
-msgstr "Die IP-Adresse des LDAP-Server Hostnamens"
+msgid "The IP address or the DNS name of the LDAP server"
+msgstr "IP-Adresse oder Hostname des LDAP-Servers"
 
 #: core/app_settings.py:88
 msgid "Server port"
@@ -155,15 +155,15 @@ msgstr "Bind Passwort"
 
 #: core/app_settings.py:125
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr "Das Kennwort wenn mit dem Bind DN angemeldet wird."
+msgstr "Das Passwort wenn mit dem Bind DN angemeldet wird."
 
 #: core/app_settings.py:134
 msgid "Users search base"
-msgstr "Anwender Search Base"
+msgstr "Benutzer Search Base"
 
 #: core/app_settings.py:137
 msgid "The distinguished name of the search base used to find users"
-msgstr "Der DN der Search Base mit der Anwenderkonten gefunden werden"
+msgstr "Der DN der Search Base mit der Benutzerkonten gefunden werden"
 
 #: core/app_settings.py:144
 msgid "Search filter"
@@ -196,7 +196,7 @@ msgstr "Passwort-Attribut"
 
 #: core/app_settings.py:168
 msgid "The attribute used to store user passwords"
-msgstr "Das Attribut für Benutzerpassworte"
+msgstr "Das Attribut für Benutzerpasswörter"
 
 #: core/app_settings.py:173
 msgid "Active Directory"
@@ -340,7 +340,7 @@ msgstr "Sie können Ihr eigenes Konto nicht entfernen"
 
 #: core/models.py:133
 msgid "Failed to update password: LDAP module not installed"
-msgstr "Konnte Kennwort nicht aktualisieren: LDAP-Modul nicht installiert"
+msgstr "Konnte Passwort nicht aktualisieren: LDAP-Modul nicht installiert"
 
 #: core/models.py:186
 msgid "account"
@@ -363,8 +363,7 @@ msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
-"Die Felder für Benutzername und E-Mail für '%s' dürfen sich nicht "
-"unterscheiden"
+"Benutzername und E-Mail für '%s' dürfen sich nicht unterscheiden"
 
 #: core/models.py:465
 msgid "added"
@@ -583,11 +582,11 @@ msgstr "Nein"
 #: lib/ldap_utils.py:116
 #, python-format
 msgid "Failed to update password: %s"
-msgstr "Konnte Kennwort nicht aktualisieren: %s"
+msgstr "Konnte Passwort nicht aktualisieren: %s"
 
 #: lib/permissions.py:21
 msgid "Simple user"
-msgstr "Normaler Anwender"
+msgstr "Normaler Benutzer"
 
 #: lib/permissions.py:23
 msgid "Super administrator"
@@ -638,11 +637,11 @@ msgstr "Schließen"
 
 #: templates/common/wizard_forms.html:31
 msgid "Previous"
-msgstr "Vorheriges"
+msgstr "Zurück"
 
 #: templates/common/wizard_forms.html:32
 msgid "Next"
-msgstr "Nächstes"
+msgstr "Weiter"
 
 #: templates/registration/login.html:10
 msgid "Welcome to Modoboa"
