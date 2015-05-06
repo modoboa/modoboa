@@ -422,7 +422,7 @@ be used by Postfix to lookup into Modoboa tables.
 To automaticaly generate the requested map files and store them in a
 directory, run the following command::
 
-  $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres|sqlite> --extensions all <directory>
+  $ modoboa-admin.py postfix_maps --extensions all --dbtype <mysql|postgres|sqlite> <directory>
 
 ``<directory>`` is the directory where the files will be
 stored. Answer the few questions and you're done.
@@ -452,6 +452,15 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
         permit_mynetworks
         reject_unverified_recipient
         ...
+
+  smtpd_sender_login_maps =
+        <driver>:/etc/postfix/sql-sender-login-mailboxes.cf
+        <driver>:/etc/postfix/sql-sender-login-aliases.cf
+        <driver>:/etc/postfix/sql-sender-login-domain-aliases.cf
+        <driver>:/etc/postfix/sql-sender-login-catchall-aliases.cf
+
+  smtpd_sender_restrictions =
+        reject_sender_login_mismatch
 
   # Stuff after
 
