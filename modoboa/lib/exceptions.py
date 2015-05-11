@@ -66,3 +66,12 @@ class PermDeniedException(ModoboaException):
         if self.msg:
             return _("Permission denied: %s" % self.msg)
         return _("Permission denied")
+
+
+class ImapError(ModoboaException):
+
+    def __init__(self, reason):
+        self.reason = reason
+
+    def __str__(self):
+        return str(self.reason)
