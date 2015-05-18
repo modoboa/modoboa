@@ -15,7 +15,6 @@ from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.exceptions import InternalError
 
 from .exceptions import ImapError
-from .fetch_parser import parse_fetch_response
 
 # imaplib.Debug = 4
 
@@ -86,8 +85,6 @@ class IMAPconnector(object):
                 raise ImapError(e)
             if typ == "NO":
                 raise ImapError(data)
-            if name == 'FETCH':
-                return parse_fetch_response(data)
             return data
 
         try:
@@ -262,8 +259,7 @@ class IMAPconnector(object):
         from operator import itemgetter
         mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
-    def getmboxes(
-            self, user, topmailbox=''):
+    def getmboxes(self, user, topmailbox=""):
         """Returns a list of mailboxes for a particular user
 
         By default, only the first level of mailboxes under

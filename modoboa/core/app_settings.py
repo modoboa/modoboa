@@ -235,26 +235,6 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         widget=forms.Select(attrs={"class": "form-control"})
     )
 
-    sep4 = SeparatorField(label=_("IMAP settings"))
-
-    imap_server = forms.CharField(
-        label=_("Server address"),
-        initial="127.0.0.1",
-        help_text=_("Address of your IMAP server")
-    )
-
-    imap_secured = YesNoField(
-        label=_("Use a secured connection"),
-        initial="no",
-        help_text=_("Use a secured connection to access IMAP server")
-    )
-
-    imap_port = forms.IntegerField(
-        label=_("Server port"),
-        initial=143,
-        help_text=_("Listening port of your IMAP server")
-    )
-
     # Visibility rules
     visibility_rules = {
         "ldap_sep": "authentication_type=ldap",
