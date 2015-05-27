@@ -48,7 +48,7 @@
                         this.options.transition_callbacks[resp.stepid]();
                     }
                     $(".carousel-inner").css("overflow", "hidden");
-                    this.$element.carousel('next');
+                    this.$element.carousel(resp.stepid);
                 } else {
                     $("#modalbox").modal('hide');
                     if (this.options.success_callback !== undefined) {

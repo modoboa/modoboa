@@ -60,7 +60,12 @@ class WizardStep(object):
     def next(self, step):
         self._next = step
 
+    def check_access(self, wizard):
+        """Check if this step should be displayed or not."""
+        return True
+
     def create_form(self, data=None):
+        """Instantiate a new form."""
         args = []
         if self._new_args is not None:
             args += self._new_args
@@ -100,14 +105,11 @@ class WizardForm(object):
 
     @property
     def first_step(self):
-        """Return the first step.
-        """
+        """Return the first step."""
         return self.steps[0] if self.steps else None
 
-    def add_step(self, cls, title, formtpl=None, new_args=None):
-        """Add a new step to the wizard.
-        """
-        step = WizardStep(cls, title, formtpl, new_args)
+    def add_step(self, step):
+        """Add a new step to the wizard."""
         if self.steps:
             step.prev = self.steps[-1]
             self.steps[-1].next = step
@@ -123,16 +125,22 @@ class WizardForm(object):
         if stepid is None:
             raise BadRequest(_("Invalid request"))
         stepid = int(stepid.replace("step", ""))
-        if stepid < 0 or stepid > len(self.steps):
+        if stepid < 0:
             raise BadRequest(_("Invalid request"))
+        stepid = min(stepid, len(self.steps))
         self.create_forms(self.request.POST)
         statuses = []
         for cpt in xrange(0, stepid):
-            statuses.append(self.steps[cpt].form.is_valid())
+            if self.steps[cpt].check_access(self):
+                statuses.append(self.steps[cpt].form.is_valid())
         if False in statuses:
             return render_to_json_response({
                 'stepid': stepid, 'form_errors': self.errors
             }, status=400)
+        while stepid < len(self.steps):
+            if self.steps[stepid].check_access(self):
+                break
+            stepid += 1
         if stepid == len(self.steps):
             return self.done()
         return render_to_json_response(
