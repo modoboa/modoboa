@@ -339,13 +339,16 @@ class User(PermissionsMixin):
 
         if len(row) < 7:
             raise BadRequest(_("Invalid line"))
-        allowed_roles = get_account_roles(user)
-        allowed_roles = [role[0] for role in allowed_roles]
+
         role = row[6].strip()
-        if role not in allowed_roles:
-            raise PermDeniedException(
-                _("You can't import an account with a role greater than yours")
-            )
+        if not user.is_superuser:
+            allowed_roles = get_account_roles(user)
+            allowed_roles = [role[0] for role in allowed_roles]
+            if role not in allowed_roles:
+                raise PermDeniedException(
+                    _("You can't import an account with a role greater than yours")
+                )
+
         self.username = row[1].strip()
         try:
             User.objects.get(username=self.username)
@@ -353,6 +356,7 @@ class User(PermissionsMixin):
             pass
         else:
             raise Conflict
+
         if role == "SimpleUsers":
             if len(row) < 8 or not row[7].strip():
                 raise BadRequest(
