@@ -24,25 +24,16 @@ class WizardStep(object):
 
     """A wizard step."""
 
-    def __init__(self, cls, title, formtpl=None, new_args=None):
-        """Constructor.
-
-        """
-        self._cls = cls
-        self._title = title
+    def __init__(self, uid, formclass, title, formtpl=None, new_args=None):
+        """Constructor."""
+        self.uid = uid
+        self._cls = formclass
+        self.title = title
         self.formtpl = formtpl
         self._new_args = new_args
         self._prev = None
         self._next = None
-        self.index = None
         self.form = None
-
-    @property
-    def title(self):
-        """Return step title"""
-        if self.index is None:
-            return self._title
-        return "%d. %s" % (self.index + 1, self._title)
 
     @property
     def prev(self):
@@ -114,20 +105,40 @@ class WizardForm(object):
             step.prev = self.steps[-1]
             self.steps[-1].next = step
         self.steps += [step]
-        step.index = len(self.steps) - 1
 
     def create_forms(self, data=None):
         for step in self.steps:
             step.create_form(data)
 
-    def validate_step(self):
+    def _get_step_id(self):
+        """Retrieve the step identifier from the request."""
         stepid = self.request.POST.get("stepid", None)
         if stepid is None:
             raise BadRequest(_("Invalid request"))
         stepid = int(stepid.replace("step", ""))
         if stepid < 0:
             raise BadRequest(_("Invalid request"))
-        stepid = min(stepid, len(self.steps))
+        return min(stepid, len(self.steps))
+
+    def previous_step(self):
+        """Go back to the previous step."""
+        stepid = self._get_step_id()
+        stepid -= 2
+        self.create_forms(self.request.POST)
+        for step in self.steps:
+            step.form.is_valid()
+        while stepid >= 0:
+            if self.steps[stepid].check_access(self):
+                break
+            stepid -= 1
+        return render_to_json_response({
+            "title": self.steps[stepid].title, "id": self.steps[stepid].uid,
+            "stepid": stepid
+        })
+
+    def next_step(self):
+        """Go to the next step if previous forms are valid."""
+        stepid = self._get_step_id()
         self.create_forms(self.request.POST)
         statuses = []
         for cpt in xrange(0, stepid):
@@ -135,7 +146,8 @@ class WizardForm(object):
                 statuses.append(self.steps[cpt].form.is_valid())
         if False in statuses:
             return render_to_json_response({
-                'stepid': stepid, 'form_errors': self.errors
+                "stepid": stepid, "id": self.steps[stepid - 1].uid,
+                "form_errors": self.errors
             }, status=400)
         while stepid < len(self.steps):
             if self.steps[stepid].check_access(self):
@@ -143,9 +155,10 @@ class WizardForm(object):
             stepid += 1
         if stepid == len(self.steps):
             return self.done()
-        return render_to_json_response(
-            {'title': self.steps[stepid].title, 'stepid': stepid}
-        )
+        return render_to_json_response({
+            "title": self.steps[stepid].title, "id": self.steps[stepid].uid,
+            "stepid": stepid
+        })
 
     def extra_context(self, context):
         """Provide additional information to template's context.
@@ -153,10 +166,11 @@ class WizardForm(object):
         pass
 
     def process(self):
-        """Process the request.
-        """
+        """Process the request."""
         if self.request.method == "POST":
-            return self.validate_step()
+            if self.request.POST.get("target", "next") == "next":
+                return self.next_step()
+            return self.previous_step()
         self.create_forms()
         context = {"wizard": self}
         self.extra_context(context)

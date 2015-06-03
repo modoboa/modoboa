@@ -34,9 +34,9 @@
             $(".modal-header").find("small").html(title);
         },
 
-        post: function(last) {
+        post: function(last, target) {
             var $form = (this.options.formid) ? $('#' + this.options.formid) : $('form');
-            var data = $form.serialize() + "&stepid=" + this.get_current_step_id();
+            var data = $form.serialize() + "&stepid=" + this.get_current_step_id() + "&target=" + target;
 
             $.ajax({
                 type: 'POST', url: $form.attr("action"), data: data, global: false
@@ -44,8 +44,8 @@
                 if (!last) {
                     $('input:text:visible:first').focus();
                     this.set_current_title(resp.title);
-                    if (this.options.transition_callbacks[resp.stepid] !== undefined) {
-                        this.options.transition_callbacks[resp.stepid]();
+                    if (this.options.transition_callbacks[resp.id] !== undefined) {
+                        this.options.transition_callbacks[resp.id]();
                     }
                     $(".carousel-inner").css("overflow", "hidden");
                     this.$element.carousel(resp.stepid);
@@ -86,20 +86,23 @@
             var step_id = this.get_current_step_id();
             this.titles[step_id] = this.get_current_title();
             this.$element.on('slid.bs.carousel', this.update_buttons);
-            this.post(false);
+            this.post(false, "next");
         },
 
+        /**
+         * Go back to the previous step.
+         */
         prev: function(evt) {
+            var stepid = this.get_current_step_id();
+
             evt.preventDefault();
             this.$element.on('slid.bs.carousel', this.update_buttons);
-            $(".carousel-inner").css("overflow", "hidden");
-            this.$element.carousel('prev');
-            this.set_current_title(this.titles[this.get_current_step_id()]);
+            this.post(false, "prev", stepid);
         },
 
         submit: function(evt) {
             evt.preventDefault();
-            this.post(true);
+            this.post(true, "next");
         }
     };
 
