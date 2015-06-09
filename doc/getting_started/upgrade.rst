@@ -112,6 +112,11 @@ Here are the required steps:
    $ python manage.py load_initial_data
    $ python manage.py collectstatic
 
+#. The cleanup job has been renamed in Django, so you have to modify your crontab entry::
+
+   - 0 0 * * * <modoboa_site>/manage.py cleanup
+   + 0 0 * * * <modoboa_site>/manage.py clearsessions
+
 1.2.0
 =====
 
