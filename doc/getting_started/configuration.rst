@@ -343,7 +343,7 @@ whose ``expire_date`` is in the past.
 
 For example, you could setup a cron job to run this script every night::
 
-  0 0 * * * <modoboa_site>/manage.py cleanup
+  0 0 * * * <modoboa_site>/manage.py clearsessions
   #
   # Or like this if you use a virtual environment:
   # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py clearsessions
