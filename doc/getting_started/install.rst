@@ -103,6 +103,11 @@ Deployment
    If you want to use install all extensions, just use the ``all``
    shortcut like this ``--extensions all``.
 
+   If you choose to install extensions one at a time, you will have to
+   add their names in settings.py to ``MODOBOA_APPS``. Also ensure that
+   you have the line ``from modoboa_amavis.settings import *`` at the
+   end of this file.
+
 .. note::
 
    You can specify more than one database connection using the
