@@ -218,23 +218,32 @@ class Email(object):
         return body
 
 
-def split_mailbox(mailbox):
-    """Tries to split a mailbox in two parts (local part and domain name)
+def split_mailbox(mailbox, return_extension=False):
+    """Try to split an address into parts (local part and domain name).
 
-    :return: a 2-uple (local part, domain)
+    If return_extension is True, we also look for an address extension
+    (something foo+bar).
+
+    :return: a tuple (local part, domain<, extension>)
+
     """
-    try:
-        mailbox.index("@")
-    except ValueError:
-        return mailbox, None
-    parts = mailbox.split('@')
-    if len(parts) == 2:
-        address = parts[0]
-        domain = parts[1]
+    domain = None
+    if "@" not in mailbox:
+        localpart = mailbox
     else:
-        domain = parts[-1]
-        address = "@".join(parts[:-1])
-    return (address, domain)
+        parts = mailbox.split("@")
+        if len(parts) == 2:
+            localpart = parts[0]
+            domain = parts[1]
+        else:
+            domain = parts[-1]
+            localpart = "@".join(parts[:-1])
+    if not return_extension:
+        return (localpart, domain)
+    extension = None
+    if "+" in localpart:
+        localpart, extension = localpart.split("+", 1)
+    return (localpart, domain, extension)
 
 
 def decode(string, encodings=None, charset=None):
