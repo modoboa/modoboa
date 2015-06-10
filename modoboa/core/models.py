@@ -377,8 +377,9 @@ class User(PermissionsMixin):
         self.first_name = row[3].strip()
         self.last_name = row[4].strip()
         self.is_active = (row[5].strip() in ["True", "1", "yes", "y"])
-        self.save(creator=user)
+        self.save()
         self.set_role(desired_role)
+        self.post_create(user)
         if len(row) < 8:
             return
         events.raiseEvent("AccountImported", user, self, row[7:])
