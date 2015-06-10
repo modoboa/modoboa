@@ -31,6 +31,7 @@ DBCONN_TPL = """
         'PASSWORD': '{% if PASSWORD %}{{ PASSWORD }}{% endif %}',
         'HOST': '{% if HOST %}{{ HOST }}{% endif %}',
         'PORT': '{% if PORT %}{{ PORT }}{% endif %}',
+        'ATOMIC_REQUESTS': True,
         {% if ENGINE == 'django.db.backends.mysql' %}'OPTIONS' : {
             "init_command" : 'SET foreign_key_checks = 0;',
         },{% endif %}
