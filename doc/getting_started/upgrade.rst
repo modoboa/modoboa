@@ -49,6 +49,27 @@ you did choose. See :ref:`webservers` for more details.
 Specific upgrade instructions
 *****************************
 
+1.3.2
+=====
+
+Modoboa now uses the *atomic requests* mode to preserve database
+consistency (`reference
+<https://docs.djangoproject.com/en/1.7/topics/db/transactions/#tying-transactions-to-http-requests>`_).
+
+To enable it, update the ``DATABASES`` variable in ``settings.py`` as
+follows::
+
+  DATABASES = {
+      "default": {
+          # stuff before...
+          "ATOMIC_REQUESTS": True
+      },
+      "amavis": {
+          # stuff before...
+          "ATOMIC_REQUESTS": True
+      }
+  }
+
 1.3.0
 =====
 
@@ -111,6 +132,11 @@ Here are the required steps:
 
    $ python manage.py load_initial_data
    $ python manage.py collectstatic
+
+#. The cleanup job has been renamed in Django, so you have to modify your crontab entry::
+
+   - 0 0 * * * <modoboa_site>/manage.py cleanup
+   + 0 0 * * * <modoboa_site>/manage.py clearsessions
 
 1.2.0
 =====
