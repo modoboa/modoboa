@@ -49,6 +49,27 @@ you did choose. See :ref:`webservers` for more details.
 Specific upgrade instructions
 *****************************
 
+1.3.2
+=====
+
+Modoboa now uses the *atomic requests* mode to preserve database
+consistency (`reference
+<https://docs.djangoproject.com/en/1.7/topics/db/transactions/#tying-transactions-to-http-requests>`_).
+
+To enable it, update the ``DATABASES`` variable in ``settings.py`` as
+follows::
+
+  DATABASES = {
+      "default": {
+          # stuff before...
+          "ATOMIC_REQUESTS": True
+      },
+      "amavis": {
+          # stuff before...
+          "ATOMIC_REQUESTS": True
+      }
+  }
+
 1.3.0
 =====
 
