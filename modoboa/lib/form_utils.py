@@ -404,7 +404,7 @@ class DomainNameField(CharField):
 class CustomRadioInput(RadioInput):
     def __unicode__(self):
         if 'id' in self.attrs:
-            label_for = ' for="%s_%s"' % (self.attrs['id'], self.index)
+            label_for = ' for="%s"' % self.attrs['id']
         else:
             label_for = ''
         choice_label = conditional_escape(force_unicode(self.choice_label))
