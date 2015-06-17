@@ -49,6 +49,12 @@ class User(PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_local = models.BooleanField(default=True)
+    master_user = models.BooleanField(
+        ugettext_lazy("Allow mailboxes access"), default=False,
+        help_text=ugettext_lazy(
+            "Allow this administrator to access user mailboxes"
+        )
+    )
     password = models.CharField(ugettext_lazy('password'), max_length=256)
     last_login = models.DateTimeField(
         ugettext_lazy('last login'), default=timezone.now
