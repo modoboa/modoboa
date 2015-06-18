@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 14:23+0100\n"
+"POT-Creation-Date: 2015-06-18 21:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,38 +21,38 @@ msgstr ""
 msgid "No more log entry to show"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:102
+#: extensions/admin/static/admin/js/admin.js:126
 msgid "No more domain to show"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:113
+#: extensions/admin/static/admin/js/admin.js:145
 msgid "Do not delete domain directory"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:115
+#: extensions/admin/static/admin/js/admin.js:147
 msgid "This operation will remove ALL data associated to this domain."
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:116
+#: extensions/admin/static/admin/js/admin.js:148
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:198
+#: extensions/admin/static/admin/js/admin.js:230
 msgid "No domain administrator defined"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:253
-#: extensions/admin/static/admin/js/admin.js:309
+#: extensions/admin/static/admin/js/admin.js:285
+#: extensions/admin/static/admin/js/admin.js:353
 msgid "No more identity to show"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:283
+#: extensions/admin/static/admin/js/admin.js:327
 msgid "Do not delete mailbox directory"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:312
+#: extensions/admin/static/admin/js/admin.js:356
 msgid "No more quota to show"
 msgstr ""
 

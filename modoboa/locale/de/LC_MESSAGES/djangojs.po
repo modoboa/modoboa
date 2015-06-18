@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Arvedui <arvedui@posteo.de>, 2014
 # Patrick Koetter <p@state-of-mind.de>, 2010
@@ -9,52 +9,55 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 14:23+0100\n"
+"POT-Creation-Date: 2015-06-18 21:03+0200\n"
 "PO-Revision-Date: 2014-12-01 12:12+0000\n"
 "Last-Translator: Arvedui <arvedui@posteo.de>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/de/)\n"
+"Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
+"de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
 msgstr "Keine weiteren log eintrage"
 
-#: extensions/admin/static/admin/js/admin.js:102
+#: extensions/admin/static/admin/js/admin.js:126
 msgid "No more domain to show"
 msgstr "Keine weiteren Domains"
 
-#: extensions/admin/static/admin/js/admin.js:113
+#: extensions/admin/static/admin/js/admin.js:145
 msgid "Do not delete domain directory"
 msgstr "Verzeichnis der Domain nicht löschen"
 
-#: extensions/admin/static/admin/js/admin.js:115
+#: extensions/admin/static/admin/js/admin.js:147
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
 
-#: extensions/admin/static/admin/js/admin.js:116
+#: extensions/admin/static/admin/js/admin.js:148
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser Mailkonten."
+msgstr ""
+"Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen - ausser "
+"Mailkonten."
 
-#: extensions/admin/static/admin/js/admin.js:198
+#: extensions/admin/static/admin/js/admin.js:230
 msgid "No domain administrator defined"
 msgstr "Domain-Administrator fehlt"
 
-#: extensions/admin/static/admin/js/admin.js:253
-#: extensions/admin/static/admin/js/admin.js:309
+#: extensions/admin/static/admin/js/admin.js:285
+#: extensions/admin/static/admin/js/admin.js:353
 msgid "No more identity to show"
 msgstr "Keine weiteren Identitäten"
 
-#: extensions/admin/static/admin/js/admin.js:283
+#: extensions/admin/static/admin/js/admin.js:327
 msgid "Do not delete mailbox directory"
 msgstr "Verzeichnis der Mailbox nicht löschen"
 
-#: extensions/admin/static/admin/js/admin.js:312
+#: extensions/admin/static/admin/js/admin.js:356
 msgid "No more quota to show"
 msgstr "Keine weiteren Quotas"
 

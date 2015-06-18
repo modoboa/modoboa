@@ -1,26 +1,27 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Miroslav Abrahám <miris@kunago.com>, 2013-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-04 13:25+0100\n"
+"POT-Creation-Date: 2015-06-18 21:02+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
-"Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/modoboa/language/cs_CZ/)\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
+"modoboa/language/cs_CZ/)\n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs_CZ\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: core/__init__.py:56 core/__init__.py:57
 #: extensions/admin/forms/account.py:366 extensions/admin/forms/account.py:443
-#: extensions/admin/forms/domain.py:271 extensions/admin/forms/domain.py:332
+#: extensions/admin/forms/domain.py:278 extensions/admin/forms/domain.py:346
 #: extensions/postfix_autoreply/app_settings.py:11
 #: extensions/postfix_relay_domains/app_settings.py:18
 #: extensions/postfix_relay_domains/forms.py:150
@@ -34,267 +35,282 @@ msgstr "Obecné"
 msgid "New Modoboa version available"
 msgstr "Nové verze Modoboa je k dispozici"
 
-#: core/app_settings.py:39
+#: core/app_settings.py:41
 msgid "Authentication"
 msgstr "Ověření"
 
-#: core/app_settings.py:42
+#: core/app_settings.py:44
 msgid "Authentication type"
 msgstr "Typ ověření"
 
-#: core/app_settings.py:43
+#: core/app_settings.py:45
 msgid "Local"
 msgstr "Lokální"
 
-#: core/app_settings.py:46
+#: core/app_settings.py:48
 msgid "The backend used for authentication"
 msgstr "Rozhraní pro ověřování přístupu"
 
-#: core/app_settings.py:51
+#: core/app_settings.py:53
 msgid "Default password scheme"
 msgstr "Výchozí schéma hesel"
 
-#: core/app_settings.py:54
+#: core/app_settings.py:56
 msgid "md5crypt (weak)"
 msgstr "md5crypt (slabé)"
 
-#: core/app_settings.py:55
+#: core/app_settings.py:57
 msgid "sha256 (weak)"
 msgstr "sha256 (slabé)"
 
-#: core/app_settings.py:56
+#: core/app_settings.py:58
 msgid "md5 (weak)"
 msgstr "md5 (slabé)"
 
-#: core/app_settings.py:57
+#: core/app_settings.py:59
 msgid "crypt (weak)"
 msgstr "crypt (slabé)"
 
-#: core/app_settings.py:58
+#: core/app_settings.py:60
 msgid "plain (weak)"
 msgstr "žádné (slabé)"
 
-#: core/app_settings.py:60
+#: core/app_settings.py:62
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Použité schéma pro šifrování hesel schránek"
 
-#: core/app_settings.py:65
+#: core/app_settings.py:67
 msgid "Rounds"
 msgstr "Počet cyklů"
 
-#: core/app_settings.py:68
+#: core/app_settings.py:70
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr "Počet cyklů (použije se pouze u sha256crypt a sha512crypt). Hodnota musí být mezi 1000 a 999999999 včetně."
+msgstr ""
+"Počet cyklů (použije se pouze u sha256crypt a sha512crypt). Hodnota musí být "
+"mezi 1000 a 999999999 včetně."
 
-#: core/app_settings.py:75
+#: core/app_settings.py:77
 msgid "Secret key"
 msgstr "Tajný klíč"
 
-#: core/app_settings.py:77
+#: core/app_settings.py:79
 msgid "Key used to encrypt/decrypt passwords"
 msgstr "Klíč používaný k šifrování/dešifrování hesel"
 
-#: core/app_settings.py:82
+#: core/app_settings.py:84
 msgid "LDAP settings"
 msgstr "Nastavení LDAP"
 
-#: core/app_settings.py:85 extensions/sievefilters/app_settings.py:22
+#: core/app_settings.py:87 extensions/sievefilters/app_settings.py:22
 #: extensions/webmail/app_settings.py:22 extensions/webmail/app_settings.py:42
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: core/app_settings.py:88
+#: core/app_settings.py:90
 msgid "The IP address of the DNS name of the LDAP server"
 msgstr "IP adresa DNS jména LDAP serveru"
 
-#: core/app_settings.py:93 extensions/sievefilters/app_settings.py:29
+#: core/app_settings.py:95 extensions/sievefilters/app_settings.py:29
 #: extensions/webmail/app_settings.py:34 extensions/webmail/app_settings.py:58
 msgid "Server port"
 msgstr "Port serveru"
 
-#: core/app_settings.py:95
+#: core/app_settings.py:97
 msgid "The TCP port number used by the LDAP server"
 msgstr "Port TCP, který používá LDAP server"
 
-#: core/app_settings.py:100 extensions/webmail/app_settings.py:28
+#: core/app_settings.py:102 extensions/webmail/app_settings.py:28
 msgid "Use a secured connection"
 msgstr "Použít zabezpečené připojení"
 
-#: core/app_settings.py:103
+#: core/app_settings.py:105
 msgid "Use an SSL/TLS connection to access the LDAP server"
 msgstr "Použít připojení SSL/TLS pro přístup k LDAP serveru"
 
-#: core/app_settings.py:107
+#: core/app_settings.py:109
 msgid "Authentication method"
 msgstr "Metoda ověření"
 
-#: core/app_settings.py:108
+#: core/app_settings.py:110
 msgid "Search and bind"
 msgstr "Vyhledat a spojit"
 
-#: core/app_settings.py:109
+#: core/app_settings.py:111
 msgid "Direct bind"
 msgstr "Přímé spojení"
 
-#: core/app_settings.py:111
+#: core/app_settings.py:113
 msgid "Choose the authentication method to use"
 msgstr "Zvolte si metodu ověření, která se použije"
 
-#: core/app_settings.py:116
+#: core/app_settings.py:118
 msgid "Bind DN"
 msgstr "Spojení pomocí DN"
 
-#: core/app_settings.py:119
+#: core/app_settings.py:121
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr "Rozlišovací jméno, které se použije při spojování s LDAP serverem. Ponechejte prázdné pro anonymní spojení."
+msgstr ""
+"Rozlišovací jméno, které se použije při spojování s LDAP serverem. "
+"Ponechejte prázdné pro anonymní spojení."
 
-#: core/app_settings.py:127
+#: core/app_settings.py:129
 msgid "Bind password"
 msgstr "Heslo spojení"
 
-#: core/app_settings.py:130
+#: core/app_settings.py:132
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr "Heslo, které se použije při spojování s LDAP serverem (při výběru DN spojení)."
+msgstr ""
+"Heslo, které se použije při spojování s LDAP serverem (při výběru DN "
+"spojení)."
 
-#: core/app_settings.py:139
+#: core/app_settings.py:141
 msgid "Users search base"
 msgstr "Základna struktury uživatelů"
 
-#: core/app_settings.py:142
+#: core/app_settings.py:144
 msgid "The distinguished name of the search base used to find users"
 msgstr "Rozlišovací jméno základny struktury používané pro hledání uživatelů"
 
-#: core/app_settings.py:149
+#: core/app_settings.py:151
 msgid "Search filter"
 msgstr "Vyhledávací filtr"
 
-#: core/app_settings.py:152
+#: core/app_settings.py:154
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr "Volitelný filtr (např. '(objectClass=osoba)'). Aby byl filtr platný, je nezbytné jen uzavřít do závorek."
+msgstr ""
+"Volitelný filtr (např. '(objectClass=osoba)'). Aby byl filtr platný, je "
+"nezbytné jen uzavřít do závorek."
 
-#: core/app_settings.py:160
+#: core/app_settings.py:162
 msgid "User DN template"
 msgstr "Šablona uživatelského DN"
 
-#: core/app_settings.py:163
+#: core/app_settings.py:165
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr "Šablona použitá pro tvorbu uživatelského rozlišovacího jména (DN). Měla by obsahovat jeden zástupný řetězec (tj. %(user)s)."
+msgstr ""
+"Šablona použitá pro tvorbu uživatelského rozlišovacího jména (DN). Měla by "
+"obsahovat jeden zástupný řetězec (tj. %(user)s)."
 
-#: core/app_settings.py:171
+#: core/app_settings.py:173
 msgid "Password attribute"
 msgstr "Atribut hesla"
 
-#: core/app_settings.py:173
+#: core/app_settings.py:175
 msgid "The attribute used to store user passwords"
 msgstr "Atribut používaný pro ukládání hesel uživatelů"
 
-#: core/app_settings.py:178
+#: core/app_settings.py:180
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:181
+#: core/app_settings.py:183
 msgid "Tell if the LDAP server is an Active Directory one"
-msgstr "Volba určující, jestli je nebo není LDAP server serverem Active Directory"
+msgstr ""
+"Volba určující, jestli je nebo není LDAP server serverem Active Directory"
 
-#: core/app_settings.py:185
+#: core/app_settings.py:187
 msgid "Administrator groups"
 msgstr "Správcovské skupiny"
 
-#: core/app_settings.py:188
+#: core/app_settings.py:190
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators."
-" Use ';' characters to separate groups."
-msgstr "Členové těchto LDAP Posix skupin budou automaticky vytvořeni jako správci domény. Pro oddělení skupin použijte ';'."
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
+msgstr ""
+"Členové těchto LDAP Posix skupin budou automaticky vytvořeni jako správci "
+"domény. Pro oddělení skupin použijte ';'."
 
-#: core/app_settings.py:195
+#: core/app_settings.py:197
 msgid "Groups search base"
 msgstr "Základna struktury skupin"
 
-#: core/app_settings.py:198
+#: core/app_settings.py:200
 msgid "The distinguished name of the search base used to find groups"
 msgstr "Rozlišovací jméno základny struktury používané pro hledání skupin"
 
-#: core/app_settings.py:203
+#: core/app_settings.py:205
 #: extensions/admin/templates/admin/editdomainform.html:7
 msgid "Miscellaneous"
 msgstr "Různé"
 
-#: core/app_settings.py:206
+#: core/app_settings.py:208
 msgid "Top notifications check interval"
 msgstr "Interval aktualizací upozornění"
 
-#: core/app_settings.py:208
+#: core/app_settings.py:210
 msgid "Interval between two top notification checks"
 msgstr "Interval mezi aktualizacemi upozornění na stránce"
 
-#: core/app_settings.py:213
+#: core/app_settings.py:215
 msgid "Check new versions"
 msgstr "Zkontrolovat verzi"
 
-#: core/app_settings.py:216
+#: core/app_settings.py:218
 msgid "Automatically checks if a newer version is available"
 msgstr "Automaticky kontrolovat dostupnost nové verze"
 
-#: core/app_settings.py:220
+#: core/app_settings.py:222
 msgid "Maximum log record age"
 msgstr "Maximální stáří záznamu"
 
-#: core/app_settings.py:222
+#: core/app_settings.py:224
 msgid "The maximum age in days of a log record"
 msgstr "Maximální stáří záznamu ve dnech"
 
-#: core/app_settings.py:227
+#: core/app_settings.py:229
 msgid "Items per page"
 msgstr "Položek na stránce"
 
-#: core/app_settings.py:229
+#: core/app_settings.py:231
 msgid "Number of displayed items per page"
 msgstr "Počet zobrazených položek na stránce"
 
-#: core/app_settings.py:234
+#: core/app_settings.py:236
 msgid "Default top redirection"
 msgstr "Výchozí přesměrování aplikace"
 
-#: core/app_settings.py:238
+#: core/app_settings.py:240
 msgid "The default redirection used when no application is specified"
-msgstr "Výchozí přesměrování, které se použije, pokud není žádná aplikace specifikována"
+msgstr ""
+"Výchozí přesměrování, které se použije, pokud není žádná aplikace "
+"specifikována"
 
-#: core/app_settings.py:268
+#: core/app_settings.py:270
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Klíč musí mít délku 16, 24 nebo 32 znaků"
 
-#: core/app_settings.py:277 extensions/postfix_autoreply/app_settings.py:55
+#: core/app_settings.py:279 extensions/postfix_autoreply/app_settings.py:55
 msgid "Invalid syntax"
 msgstr "Neplatná syntaxe"
 
-#: core/app_settings.py:283
+#: core/app_settings.py:285
 msgid "Invalid rounds number"
 msgstr "Neplatný počet cyklů"
 
-#: core/app_settings.py:306
+#: core/app_settings.py:308
 msgid "This field is required"
 msgstr "Toto pole je vyžadováno"
 
-#: core/app_settings.py:368 extensions/amavis/app_settings.py:156
+#: core/app_settings.py:370 extensions/amavis/app_settings.py:156
 #: extensions/amavis/templates/amavis/main_action_bar.html:51
 #: extensions/webmail/app_settings.py:73
 msgid "Display"
 msgstr "Zobrazení"
 
-#: core/app_settings.py:372
+#: core/app_settings.py:374
 msgid "Prefered language"
 msgstr "Preferovaný jazyk"
 
-#: core/app_settings.py:378
+#: core/app_settings.py:386
 msgid "Prefered language to display pages"
 msgstr "Preferovaný jazyk pro zobrazení stránek"
 
@@ -340,36 +356,36 @@ msgstr "poslední přihlášení"
 msgid "You can't delete your own account"
 msgstr "Nemůžete smazat vlastní účet"
 
-#: core/models.py:130
+#: core/models.py:131
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Nebylo možné změnit heslo: LDAP modul není instalován"
 
-#: core/models.py:183
+#: core/models.py:184
 msgid "account"
 msgstr "účet"
 
-#: core/models.py:334 extensions/admin/models/domain.py:149
+#: core/models.py:335 extensions/admin/models/domain.py:149
 #: extensions/admin/models/domain_alias.py:39
 #: extensions/postfix_relay_domains/models.py:134
 #: extensions/postfix_relay_domains/models.py:190
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: core/models.py:338
+#: core/models.py:339
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nemůžete importvat účet s vyšším oprávněním, než máte vy sám"
 
-#: core/models.py:350
+#: core/models.py:351
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Běžný uživatel '%s' musí mít nastavenou platnou emailovou adresu"
 
-#: core/models.py:354
+#: core/models.py:355
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "pole uživatelského jména a emailu se nesmí pro '%s' lišit"
 
-#: core/models.py:426 extensions/admin/models/alias.py:35
+#: core/models.py:427 extensions/admin/models/alias.py:35
 #: extensions/admin/models/domain.py:32
 #: extensions/admin/models/domain_alias.py:17
 #: extensions/postfix_autoreply/models.py:28
@@ -378,24 +394,24 @@ msgstr "pole uživatelského jména a emailu se nesmí pro '%s' lišit"
 msgid "enabled"
 msgstr "povoleno"
 
-#: core/models.py:427
+#: core/models.py:428
 msgid "Check to enable this extension"
 msgstr "Zatrhněte pole pro povolení tohoto rozšíření"
 
-#: core/models.py:511
+#: core/models.py:512
 msgid "added"
 msgstr "přidáno"
 
-#: core/models.py:514
+#: core/models.py:515
 msgid "modified"
 msgstr "upraveno"
 
-#: core/models.py:516 core/models.py:541
+#: core/models.py:517 core/models.py:542
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s uživatelem %(user)s"
 
-#: core/models.py:543
+#: core/models.py:544
 msgid "deleted"
 msgstr "smazáno"
 
@@ -409,7 +425,7 @@ msgstr "Zvolte rozšíření, která chcete použít"
 
 #: core/templates/core/extensions.html:9
 #: core/templates/core/information.html:16 extensions/admin/tables.py:9
-#: extensions/admin/forms/domain.py:190
+#: extensions/admin/forms/domain.py:196
 #: extensions/admin/templates/admin/domains.html:25
 #: extensions/admin/templates/admin/editdomainform.html:13
 #: extensions/admin/templates/admin/identity_headers.html:2
@@ -449,9 +465,14 @@ msgstr "Je dostupná aktualizace!"
 #, python-format
 msgid ""
 "\n"
-"  Modoboa <strong>%(version)s</strong> is available for download. The list of all changes is available <a href=\"%(changelog_url)s\" target=\"_blank\">here</a>.\n"
+"  Modoboa <strong>%(version)s</strong> is available for download. The list "
+"of all changes is available <a href=\"%(changelog_url)s\" target=\"_blank"
+"\">here</a>.\n"
 "  "
-msgstr "\nModoboa <strong>%(version)s</strong> je dostupná ke stažení. Seznam všech změn je k dispozici <a href=\"%(changelog_url)s\" target=\"_blank\">zde</a>."
+msgstr ""
+"\n"
+"Modoboa <strong>%(version)s</strong> je dostupná ke stažení. Seznam všech "
+"změn je k dispozici <a href=\"%(changelog_url)s\" target=\"_blank\">zde</a>."
 
 #: core/templates/core/information.html:11
 msgid "is currently in use."
@@ -533,7 +554,7 @@ msgstr "Aktualizovat osobní informace"
 #: extensions/admin/views/alias.py:108
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
 #: extensions/sievefilters/views.py:166 extensions/webmail/views.py:186
-#: extensions/webmail/views.py:221 lib/formutils.py:322
+#: extensions/webmail/views.py:221 lib/formutils.py:326
 msgid "Update"
 msgstr "Aktualizovat"
 
@@ -560,7 +581,8 @@ msgstr "Uživatel '%s' se úspěšně přihlásil"
 
 #: core/views/auth.py:44
 msgid "Your username and password didn't match. Please try again."
-msgstr "Vaše uživatelské jméno nebo heslo se neshodují. Zkuste to prosím znovu."
+msgstr ""
+"Vaše uživatelské jméno nebo heslo se neshodují. Zkuste to prosím znovu."
 
 #: core/views/auth.py:72
 #, python-format
@@ -596,15 +618,31 @@ msgid ""
 "\n"
 "<h3>Welcome to the online demo!</h3>\n"
 "<p><b>Warning:</b> the demo's concent is resetted every two hours.</p>\n"
-"<p>To try the demo, the following users are available (<i>username/password</i>): </p>\n"
+"<p>To try the demo, the following users are available (<i>username/password</"
+"i>): </p>\n"
 "<ul>\n"
 "  <li>A super administrator : <b>admin/password</b></li>\n"
 "  <li>A domain administrator : <b>admin@demo.local/admin</b></li>\n"
 "  <li>A simple user : <b>user@demo.local/user</b></li>\n"
 "</ul>\n"
 "<p>Please report any issue or give any suggestion to \n"
-"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the mailing list</a>.</p>\n"
-msgstr "\n<h3>Vítejte v online demo verzi!</h3>\n<p><b>Upozornění:</b> obsah této demo verze je automaticky obnoven každé 2 hodiny.</p>\n<p>Pro vyzkoušení demo verze jsou dostupní tito uživatelé (<i>jméno/heslo</i>): </p>\n<ul>\n  <li>Super správce : <b>admin/password</b></li>\n  <li>Správce domény: <b>admin@demo.local/admin</b></li>\n  <li>Uživatel: <b>user@demo.local/user</b></li>\n</ul>\n<p>Nahlašte prosím jakékoli objevené problémy nebo vaše návrhy přes\n  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">emailový seznam</a>.</p>\n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">the "
+"mailing list</a>.</p>\n"
+msgstr ""
+"\n"
+"<h3>Vítejte v online demo verzi!</h3>\n"
+"<p><b>Upozornění:</b> obsah této demo verze je automaticky obnoven každé 2 "
+"hodiny.</p>\n"
+"<p>Pro vyzkoušení demo verze jsou dostupní tito uživatelé (<i>jméno/heslo</"
+"i>): </p>\n"
+"<ul>\n"
+"  <li>Super správce : <b>admin/password</b></li>\n"
+"  <li>Správce domény: <b>admin@demo.local/admin</b></li>\n"
+"  <li>Uživatel: <b>user@demo.local/user</b></li>\n"
+"</ul>\n"
+"<p>Nahlašte prosím jakékoli objevené problémy nebo vaše návrhy přes\n"
+"  <a href=\"https://groups.google.com/forum/#!forum/modoboa-users\">emailový "
+"seznam</a>.</p>\n"
 
 #: extensions/admin/__init__.py:48
 msgid "Administration console"
@@ -674,7 +712,9 @@ msgstr "Spravovat schránky v souborovém systému"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr "Přejmenovat nebo odstranit schránky v souborovém systému, pokud jsou přejmenovány nebo odstraněny v Modoboa"
+msgstr ""
+"Přejmenovat nebo odstranit schránky v souborovém systému, pokud jsou "
+"přejmenovány nebo odstraněny v Modoboa"
 
 #: extensions/admin/app_settings.py:25
 msgid "Mailboxes owner"
@@ -692,7 +732,9 @@ msgstr "Výchozí kvóta domény"
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr "Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
+msgstr ""
+"Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
+"hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
 
 #: extensions/admin/app_settings.py:42
 msgid "Automatic account removal"
@@ -707,8 +749,7 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Automatické vytvoření domény/schránky"
 
 #: extensions/admin/app_settings.py:52
-msgid ""
-"Create a domain and a mailbox when an account is automatically created."
+msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "Při založení účtu automaticky vytvořit doménu a schránku."
 
 #: extensions/admin/app_settings.py:98 extensions/admin/forms/account.py:206
@@ -724,7 +765,9 @@ msgstr "Schránka je vyžadována"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr "Název uživatele. U běžných uživatelů musí být uvedena platná e-mailová adresa nebo u administrátorů schránka."
+msgstr ""
+"Název uživatele. U běžných uživatelů musí být uvedena platná e-mailová "
+"adresa nebo u administrátorů schránka."
 
 #: extensions/admin/forms/account.py:28
 msgid "Role"
@@ -767,7 +810,10 @@ msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr "Kvóta pro tuto chránku v MB. Definujte vlastní hodnotu nebo použijte výchozí hodnotu domény. Ponechejte prázdné pro neomezenou kvótu (není povoleno správcům domény)."
+msgstr ""
+"Kvóta pro tuto chránku v MB. Definujte vlastní hodnotu nebo použijte výchozí "
+"hodnotu domény. Ponechejte prázdné pro neomezenou kvótu (není povoleno "
+"správcům domény)."
 
 #: extensions/admin/forms/account.py:148 extensions/admin/forms/domain.py:29
 #: extensions/admin/templates/admin/domains.html:26
@@ -780,7 +826,10 @@ msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
 "*@domain.tld)."
-msgstr "Alias(y) této schránky. Vložte pouze jeden alias na řádek, stiskněte ENTER pro vložení dalšího aliasu. Pro vytvoření doménového koše vložte '*' (např. *@domena.cz)."
+msgstr ""
+"Alias(y) této schránky. Vložte pouze jeden alias na řádek, stiskněte ENTER "
+"pro vložení dalšího aliasu. Pro vytvoření doménového koše vložte '*' (např. "
+"*@domena.cz)."
 
 #: extensions/admin/forms/account.py:216 extensions/admin/forms/account.py:246
 #: extensions/admin/forms/alias.py:72
@@ -823,7 +872,9 @@ msgstr "Emailová adresa"
 msgid ""
 "The distribution list address. Use the '*' character to create a 'catchall' "
 "address (ex: *@domain.tld)."
-msgstr "Distribuční seznam adres. Pro vytvoření doménového koše vložte znak '*' (např. *@domena.cz)."
+msgstr ""
+"Distribuční seznam adres. Pro vytvoření doménového koše vložte znak "
+"'*' (např. *@domena.cz)."
 
 #: extensions/admin/forms/alias.py:24
 msgid "Recipients"
@@ -833,7 +884,10 @@ msgstr "Příjemci"
 msgid ""
 "Mailbox(es) this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr "Schránka/Schránky, na kterou/které bude tento alias odkazovat. Uveďte na řádek pouze jednu adresu; pro vložení další adresy stiskněte po vložení ENTER."
+msgstr ""
+"Schránka/Schránky, na kterou/které bude tento alias odkazovat. Uveďte na "
+"řádek pouze jednu adresu; pro vložení další adresy stiskněte po vložení "
+"ENTER."
 
 #: extensions/admin/forms/alias.py:75
 msgid "You don't have access to this domain"
@@ -843,17 +897,17 @@ msgstr "Nemáte oprávnění k přístupu k této doméně"
 msgid "Invalid mailbox"
 msgstr "Neplatná schránka"
 
-#: extensions/admin/forms/alias.py:115 extensions/admin/models/alias.py:195
-#, python-format
-msgid "Local recipient %s not found"
+#: extensions/admin/forms/alias.py:118
+#, fuzzy
+msgid "Local recipient {}@{} not found"
 msgstr "Místní příjemce %s nebyl nalezen"
 
-#: extensions/admin/forms/alias.py:119 extensions/admin/forms/alias.py:127
+#: extensions/admin/forms/alias.py:124 extensions/admin/forms/alias.py:132
 #, python-format
 msgid "Recipient %s already present"
 msgstr "Příjemce %s je již vložen"
 
-#: extensions/admin/forms/alias.py:133
+#: extensions/admin/forms/alias.py:138
 msgid "No recipient defined"
 msgstr "Nebyl určen příjemce"
 
@@ -861,71 +915,77 @@ msgstr "Nebyl určen příjemce"
 msgid ""
 "Default quota in MB applied to mailboxes. Leave empty to use the default "
 "value."
-msgstr "Výchozí kvóta v MB pro schránky. Ponechejte prázdné pro výchozí nastavení kvóty."
+msgstr ""
+"Výchozí kvóta v MB pro schránky. Ponechejte prázdné pro výchozí nastavení "
+"kvóty."
 
 #: extensions/admin/forms/domain.py:32
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr "Alias(y) této domény. Uveďte na řádek pouze jeden alias; pro vložení dalšího aliasu stiskněte po vložení ENTER."
+msgstr ""
+"Alias(y) této domény. Uveďte na řádek pouze jeden alias; pro vložení dalšího "
+"aliasu stiskněte po vložení ENTER."
 
-#: extensions/admin/forms/domain.py:87 extensions/admin/forms/domain.py:101
+#: extensions/admin/forms/domain.py:87 extensions/admin/forms/domain.py:99
+#: extensions/admin/forms/domain.py:107
 #: extensions/postfix_relay_domains/forms.py:69
 #: extensions/postfix_relay_domains/forms.py:89
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "%s s tímto názvem již existuje"
 
-#: extensions/admin/forms/domain.py:98
+#: extensions/admin/forms/domain.py:99 extensions/admin/forms/domain.py:104
 #: extensions/postfix_relay_domains/forms.py:60
 #: extensions/postfix_relay_domains/forms.py:82
 msgid "domain"
 msgstr "doména"
 
-#: extensions/admin/forms/domain.py:182
+#: extensions/admin/forms/domain.py:188
 msgid "Create a domain administrator"
 msgstr "Vytvořit správce domény"
 
-#: extensions/admin/forms/domain.py:185
+#: extensions/admin/forms/domain.py:191
 msgid "Automatically create an administrator for this domain"
 msgstr "Automaticky vytvořit správce této domény"
 
-#: extensions/admin/forms/domain.py:193
+#: extensions/admin/forms/domain.py:199
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr "Jméno správce. Nevkládejte sem název domény, název bude automaticky doplněn."
+msgstr ""
+"Jméno správce. Nevkládejte sem název domény, název bude automaticky doplněn."
 
-#: extensions/admin/forms/domain.py:200
+#: extensions/admin/forms/domain.py:206
 msgid "Create aliases"
 msgstr "Vytvořit aliasy"
 
-#: extensions/admin/forms/domain.py:203
+#: extensions/admin/forms/domain.py:209
 msgid "Automatically create standard aliases for this domain"
 msgstr "Automaticky vytvořit běžné aliasy pro tuto doménu"
 
-#: extensions/admin/forms/domain.py:221
+#: extensions/admin/forms/domain.py:227
 msgid "Invalid format"
 msgstr "Neplatný formát"
 
-#: extensions/admin/forms/domain.py:236
+#: extensions/admin/forms/domain.py:242
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Uživatel '%s' již existuje"
 
-#: extensions/admin/forms/domain.py:323
+#: extensions/admin/forms/domain.py:337
 msgid "Domain modified"
 msgstr "Doména upravena"
 
-#: extensions/admin/forms/domain.py:336
+#: extensions/admin/forms/domain.py:350
 msgid "Options"
 msgstr "Možnosti"
 
-#: extensions/admin/forms/domain.py:343
+#: extensions/admin/forms/domain.py:357
 msgid "New domain"
 msgstr "Nová doména"
 
-#: extensions/admin/forms/domain.py:358
+#: extensions/admin/forms/domain.py:372
 msgid "Domain created"
 msgstr "Doména vytvořena"
 
@@ -957,7 +1017,9 @@ msgstr "Přeposílat zprávy a ukládat kopie do místní schránky"
 msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
-msgstr "Nemůžete nastavit přeposílání na místní adresu. Požádejte správce o vytvoření aliasu."
+msgstr ""
+"Nemůžete nastavit přeposílání na místní adresu. Požádejte správce o "
+"vytvoření aliasu."
 
 #: extensions/admin/forms/import_.py:6 extensions/webmail/forms.py:210
 msgid "Select a file"
@@ -985,9 +1047,11 @@ msgstr "adresa"
 
 #: extensions/admin/models/alias.py:20
 msgid ""
-"The alias address (without the domain part). For a 'catch-all' address, just"
-" enter an * character."
-msgstr "Alias adresy (bez části označující doménu). Pro vytvoření doménového koše vložte znak '*'."
+"The alias address (without the domain part). For a 'catch-all' address, just "
+"enter an * character."
+msgstr ""
+"Alias adresy (bez části označující doménu). Pro vytvoření doménového koše "
+"vložte znak '*'."
 
 #: extensions/admin/models/alias.py:26
 msgid "mailboxes"
@@ -1028,6 +1092,11 @@ msgstr "Neplatný řádek: %s"
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "Doména '%s' neexistuje"
+
+#: extensions/admin/models/alias.py:195
+#, python-format
+msgid "Local recipient %s not found"
+msgstr "Místní příjemce %s nebyl nalezen"
 
 #: extensions/admin/models/domain.py:28
 #: extensions/admin/models/domain_alias.py:10
@@ -1362,22 +1431,23 @@ msgstr "Exportovat identity"
 msgid "Export domains"
 msgstr "Exportovat domény"
 
-#: extensions/admin/views/identity.py:95
-#: extensions/admin/views/identity.py:193
-#: extensions/admin/views/identity.py:198 extensions/amavis/views.py:222
-#: extensions/amavis/views.py:226 extensions/amavis/views.py:257
-#: extensions/amavis/views.py:262 extensions/amavis/views.py:264
-#: extensions/webmail/views.py:57 extensions/webmail/views.py:75
-#: extensions/webmail/views.py:89 extensions/webmail/views.py:107
-#: extensions/webmail/views.py:126 extensions/webmail/views.py:140
-#: extensions/webmail/views.py:216 extensions/webmail/views.py:239
-#: extensions/webmail/views.py:435 extensions/webmail/views.py:485
-#: extensions/webmail/views.py:501 extensions/webmail/views.py:534
-#: extensions/webmail/views.py:574 lib/formutils.py:118 lib/formutils.py:121
+#: extensions/admin/views/identity.py:103
+#: extensions/admin/views/identity.py:196
+#: extensions/admin/views/identity.py:201 extensions/amavis/views.py:161
+#: extensions/amavis/views.py:221 extensions/amavis/views.py:225
+#: extensions/amavis/views.py:256 extensions/amavis/views.py:261
+#: extensions/amavis/views.py:263 extensions/webmail/views.py:57
+#: extensions/webmail/views.py:75 extensions/webmail/views.py:89
+#: extensions/webmail/views.py:107 extensions/webmail/views.py:126
+#: extensions/webmail/views.py:140 extensions/webmail/views.py:216
+#: extensions/webmail/views.py:239 extensions/webmail/views.py:436
+#: extensions/webmail/views.py:486 extensions/webmail/views.py:502
+#: extensions/webmail/views.py:535 extensions/webmail/views.py:575
+#: lib/formutils.py:118 lib/formutils.py:121
 msgid "Invalid request"
 msgstr "Neplatný požadavek"
 
-#: extensions/admin/views/identity.py:183
+#: extensions/admin/views/identity.py:186
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Účet smazán"
@@ -1393,9 +1463,20 @@ msgid ""
 "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
 "  %s\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of "
+"the previous values.</p>\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr "Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených formátů:\n<ul>\n<li><em>domain; název; kvóta, povoleno</em></li>\n<li><em>domainalias; název; cílová doména; povoleno</em></li>\n%s\n</ul>\n<p>První element každého řádku je povinný a musí být shodný s některou z předchozích hodnot.</p>\n<p>Můžete také použít jiný oddělovač hodnot.</p>\n"
+msgstr ""
+"Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených "
+"formátů:\n"
+"<ul>\n"
+"<li><em>domain; název; kvóta, povoleno</em></li>\n"
+"<li><em>domainalias; název; cílová doména; povoleno</em></li>\n"
+"%s\n"
+"</ul>\n"
+"<p>První element každého řádku je povinný a musí být shodný s některou z "
+"předchozích hodnot.</p>\n"
+"<p>Můžete také použít jiný oddělovač hodnot.</p>\n"
 
 #: extensions/admin/views/import.py:47
 msgid "Import domains"
@@ -1415,15 +1496,29 @@ msgstr "%d objektů úspěšně importováno"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>\n"
+"<li><em>account; loginname; password; first name; last name; enabled; group; "
+"address; quota; [, domain, ...]</em></li>\n"
 "<li><em>alias; address; enabled; internal recipient</em></li>\n"
 "<li><em>forward; address; enabled; external recipient</em></li>\n"
 "<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of "
+"the previous values.</p>\n"
 "\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr "Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených formátů:\n<ul>\n<li><em>account; přihlašovací jméno; heslo; křestní jméno; příjmení; povoleno; skupina; adresa; kvóta; [, doména, ...]</em></li>\n<li><em>alias; adresa; povoleno; interní příjemce</em></li>\n<li><em>forward; adresa; povoleno; externí příjemce</em></li>\n<li><em>dlist; adresa; povoleno; příjemce; příjemce; ...</em></li>\n</ul>\n<p>První element každého řádku je povinný a musí být shodný s některou z předchozích hodnot.</p>\n<p>Můžete také použít jiný oddělovač hodnot.</p>\n"
+msgstr ""
+"Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených "
+"formátů:\n"
+"<ul>\n"
+"<li><em>account; přihlašovací jméno; heslo; křestní jméno; příjmení; "
+"povoleno; skupina; adresa; kvóta; [, doména, ...]</em></li>\n"
+"<li><em>alias; adresa; povoleno; interní příjemce</em></li>\n"
+"<li><em>forward; adresa; povoleno; externí příjemce</em></li>\n"
+"<li><em>dlist; adresa; povoleno; příjemce; příjemce; ...</em></li>\n"
+"</ul>\n"
+"<p>První element každého řádku je povinný a musí být shodný s některou z "
+"předchozích hodnot.</p>\n"
+"<p>Můžete také použít jiný oddělovač hodnot.</p>\n"
 
 #: extensions/admin/views/import.py:161
 msgid "Import identities"
@@ -1437,7 +1532,7 @@ msgstr "Přeposílání aktualizováno"
 msgid "Simple amavis management frontend"
 msgstr "Jednoduché rozhraní pro správu amavis"
 
-#: extensions/amavis/__init__.py:52 extensions/amavis/general_callbacks.py:20
+#: extensions/amavis/__init__.py:46 extensions/amavis/general_callbacks.py:20
 msgid "Quarantine"
 msgstr "Karanténa"
 
@@ -1463,7 +1558,8 @@ msgstr "Odstranit odblokované zprávy"
 
 #: extensions/amavis/app_settings.py:31
 msgid "Remove messages marked as released while cleaning up the database"
-msgstr "Odstranit zprávy, které jsou označeny jako odblokované, při čištění databáze"
+msgstr ""
+"Odstranit zprávy, které jsou označeny jako odblokované, při čištění databáze"
 
 #: extensions/amavis/app_settings.py:36
 msgid "Amavis connection mode"
@@ -1540,7 +1636,9 @@ msgstr "Je Spamassassin lokální?"
 
 #: extensions/amavis/app_settings.py:94
 msgid "Tell if Spamassassin is running on the same server than modoboa"
-msgstr "Volba určující, jestli je Spamassassin provozován na stejném serveru jako Modoboa"
+msgstr ""
+"Volba určující, jestli je Spamassassin provozován na stejném serveru jako "
+"Modoboa"
 
 #: extensions/amavis/app_settings.py:99
 msgid "Default user"
@@ -1574,7 +1672,9 @@ msgstr "Povolit manuální účení dle jednotlivých domén"
 msgid ""
 "Allow domain administrators to train Spamassassin (within dedicated per-"
 "domain databases)"
-msgstr "Povolit správcům domén manuálně učit Spamassassin (v rámci vyhrazených databází jednotlivých domén)"
+msgstr ""
+"Povolit správcům domén manuálně učit Spamassassin (v rámci vyhrazených "
+"databází jednotlivých domén)"
 
 #: extensions/amavis/app_settings.py:128
 msgid "Enable per-user manual learning"
@@ -1584,7 +1684,8 @@ msgstr "Povolit manuální účetní dle jednotlivých uživatelů"
 msgid ""
 "Allow simple users to personally train Spamassassin (within a dedicated "
 "database)"
-msgstr "Povolit uživatelům manuálně učit Spamassassin (v rámci vyhrazené databáze)"
+msgstr ""
+"Povolit uživatelům manuálně učit Spamassassin (v rámci vyhrazené databáze)"
 
 #: extensions/amavis/app_settings.py:160 extensions/webmail/app_settings.py:91
 msgid "Number of displayed emails per page"
@@ -1606,11 +1707,11 @@ msgstr "Databáze domény"
 msgid "User's database"
 msgstr "Uživatelská databáze"
 
-#: extensions/amavis/general_callbacks.py:149
+#: extensions/amavis/general_callbacks.py:152
 msgid "Pending requests"
 msgstr "Nevyřízené požadavky"
 
-#: extensions/amavis/general_callbacks.py:159
+#: extensions/amavis/general_callbacks.py:162
 msgid "Content filter"
 msgstr "Filtr obsahu"
 
@@ -1645,7 +1746,9 @@ msgstr "výchozí"
 
 #: extensions/amavis/models.py:98
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
-msgstr "Obcházet nebo neobcházet kontrolu zpráv na viry. Pokud zvolíte 'výchozí', bude se nastavení řídit globálním nastavením."
+msgstr ""
+"Obcházet nebo neobcházet kontrolu zpráv na viry. Pokud zvolíte 'výchozí', "
+"bude se nastavení řídit globálním nastavením."
 
 #: extensions/amavis/models.py:101
 msgid "Spam filter"
@@ -1653,7 +1756,9 @@ msgstr "Filtr nevyžádané pošty"
 
 #: extensions/amavis/models.py:106
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
-msgstr "Obcházet nebo neobcházet kontrolu zpráv na nevyžádanou poštu. Pokud zvolíte 'výchozí', bude se nastavení řídit globálním nastavením."
+msgstr ""
+"Obcházet nebo neobcházet kontrolu zpráv na nevyžádanou poštu. Pokud zvolíte "
+"'výchozí', bude se nastavení řídit globálním nastavením."
 
 #: extensions/amavis/models.py:109
 msgid "Banned filter"
@@ -1661,7 +1766,9 @@ msgstr "Filtr zakázané pošty"
 
 #: extensions/amavis/models.py:114
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
-msgstr "Obcházet nebo neobcházet kontrolu zpráv na zakázanou poštu. Pokud zvolíte 'výchozí', bude se nastavení řídit globálním nastavením."
+msgstr ""
+"Obcházet nebo neobcházet kontrolu zpráv na zakázanou poštu. Pokud zvolíte "
+"'výchozí', bude se nastavení řídit globálním nastavením."
 
 #: extensions/amavis/models.py:144
 msgid "Spam marker"
@@ -1669,19 +1776,21 @@ msgstr "Označení spamu"
 
 #: extensions/amavis/models.py:146
 msgid ""
-"Modify spam subject using the specified text. Choose 'default' to use global"
-" settings."
-msgstr "Upravit předmět nevyžádané zprávy uvedeným textem. Pro zachování globálního nastavení serveru zatrhněte 'výchozí'."
+"Modify spam subject using the specified text. Choose 'default' to use global "
+"settings."
+msgstr ""
+"Upravit předmět nevyžádané zprávy uvedeným textem. Pro zachování globálního "
+"nastavení serveru zatrhněte 'výchozí'."
 
 #: extensions/amavis/views.py:38
 msgid "Empty quarantine"
 msgstr "Vyprázdnit karanténu"
 
-#: extensions/amavis/views.py:227
+#: extensions/amavis/views.py:226
 msgid "Message deleted"
 msgstr "Zpráva smazána"
 
-#: extensions/amavis/views.py:244
+#: extensions/amavis/views.py:243
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
@@ -1689,15 +1798,15 @@ msgstr[0] "%(count)d zpráva úspěšně smazána"
 msgstr[1] "%(count)d zprávy úspěšně smazány"
 msgstr[2] "%(count)d zpráv úspěšně smazáno"
 
-#: extensions/amavis/views.py:267
+#: extensions/amavis/views.py:266
 msgid "Request sent"
 msgstr "Požadavek odeslán"
 
-#: extensions/amavis/views.py:273
+#: extensions/amavis/views.py:272
 msgid "Message released"
 msgstr "Zprávy odblokována"
 
-#: extensions/amavis/views.py:300
+#: extensions/amavis/views.py:299
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
@@ -1705,7 +1814,7 @@ msgstr[0] "%(count)d požadavek odeslán"
 msgstr[1] "%(count)d požadavky odeslány"
 msgstr[2] "%(count)d požadavků odesláno"
 
-#: extensions/amavis/views.py:321
+#: extensions/amavis/views.py:320
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
@@ -1713,7 +1822,7 @@ msgstr[0] "%(count)d zpráva úspěšně odblokována"
 msgstr[1] "%(count)d zprávy úspěšně odblokovány"
 msgstr[2] "%(count)d zpráv úspěšně odblokováno"
 
-#: extensions/amavis/views.py:360
+#: extensions/amavis/views.py:357
 #, python-format
 msgid "%(count)d message processed successfully"
 msgid_plural "%(count)d messages processed successfully"
@@ -1721,11 +1830,11 @@ msgstr[0] "%(count)d zpráva úspěšně zpracována"
 msgstr[1] "%(count)d zprávy úspěšně zpracovány"
 msgstr[2] "%(count)d zpráv úspěšně zpracováno"
 
-#: extensions/amavis/views.py:394
+#: extensions/amavis/views.py:391
 msgid "Select a database"
 msgstr "Vybrat databázi"
 
-#: extensions/amavis/views.py:398
+#: extensions/amavis/views.py:395
 msgid "Validate"
 msgstr "Ověřit"
 
@@ -1879,9 +1988,15 @@ msgid ""
 msgid_plural ""
 "\n"
 "%(counter)s release requests are pending for action.\n"
-msgstr[0] "\n%(counter)s požadavek na odblokování čeká na vyřízení.\n"
-msgstr[1] "\n%(counter)s požadavky na odblokování čekají na vyřízení.\n"
-msgstr[2] "\n%(counter)s požadavků na odblokování čeká na vyřízení.\n"
+msgstr[0] ""
+"\n"
+"%(counter)s požadavek na odblokování čeká na vyřízení.\n"
+msgstr[1] ""
+"\n"
+"%(counter)s požadavky na odblokování čekají na vyřízení.\n"
+msgstr[2] ""
+"\n"
+"%(counter)s požadavků na odblokování čeká na vyřízení.\n"
 
 #: extensions/amavis/templates/amavis/notifications/pending_requests.html:6
 msgid "Sketch:"
@@ -1925,7 +2040,9 @@ msgstr "Zobrazit úplné záhlaví"
 #: extensions/limits/__init__.py:26
 msgid ""
 "Per administrator resources to limit the number of objects they can create"
-msgstr "Každému správci dostupné zdroje omezující počet objektů, které mohou správci vytvořit"
+msgstr ""
+"Každému správci dostupné zdroje omezující počet objektů, které mohou správci "
+"vytvořit"
 
 #: extensions/limits/__init__.py:59
 msgid "Limits"
@@ -1940,8 +2057,7 @@ msgid "Domain admins"
 msgstr "Správci domén"
 
 #: extensions/limits/app_settings.py:15
-msgid ""
-"Maximum number of allowed domain administrators for a new administrator"
+msgid "Maximum number of allowed domain administrators for a new administrator"
 msgstr "Maximální povolený počet správců domény (nastavení nového správce)"
 
 #: extensions/limits/app_settings.py:21
@@ -1991,7 +2107,8 @@ msgstr "Nedostatek zdrojů"
 
 #: extensions/limits/models.py:15
 msgid "Maximum number of domain administrators this user can create"
-msgstr "Maximální povolený počet správců domény, které může tento uživatel vytvořit"
+msgstr ""
+"Maximální povolený počet správců domény, které může tento uživatel vytvořit"
 
 #: extensions/limits/models.py:18
 msgid "Maximum number of domains this user can create"
@@ -1999,7 +2116,9 @@ msgstr "Maximální povolený počet domén, které může tento uživatel vytvo
 
 #: extensions/limits/models.py:21
 msgid "Maximum number of domain aliases this user can create"
-msgstr "Maximální povolený počet doménových aliasů, které může tento uživatel vytvořit"
+msgstr ""
+"Maximální povolený počet doménových aliasů, které může tento uživatel "
+"vytvořit"
 
 #: extensions/limits/models.py:24
 msgid "Maximum number of mailboxes this user can create"
@@ -2007,7 +2126,8 @@ msgstr "Maximální povolený počet schránek, které může tento uživatel vy
 
 #: extensions/limits/models.py:26
 msgid "Maximum number of mailbox aliases this user can create"
-msgstr "Maximální povolený počet aliasů chránek, které může tento uživatel vytvořit"
+msgstr ""
+"Maximální povolený počet aliasů chránek, které může tento uživatel vytvořit"
 
 #: extensions/limits/models.py:136
 msgid "undefined"
@@ -2035,7 +2155,8 @@ msgstr "Interval automatické odpovědi"
 
 #: extensions/postfix_autoreply/app_settings.py:16
 msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr "Interval v sekundách mezi dvěmi automatickými odpověďmi stejnému příjemci"
+msgstr ""
+"Interval v sekundách mezi dvěmi automatickými odpověďmi stejnému příjemci"
 
 #: extensions/postfix_autoreply/app_settings.py:21
 msgid "Default subject"
@@ -2048,7 +2169,8 @@ msgstr "Jsem nedostupný"
 #: extensions/postfix_autoreply/app_settings.py:24
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
-msgstr "Výchozí předmět, který se použije u nově vytvořených automatických odpovědí"
+msgstr ""
+"Výchozí předmět, který se použije u nově vytvořených automatických odpovědí"
 
 #: extensions/postfix_autoreply/app_settings.py:30
 msgid "Default content"
@@ -2061,14 +2183,20 @@ msgid ""
 "\n"
 "Best regards,\n"
 "%(name)s\n"
-msgstr "V současné době nejsem dostupný. Odpovím Vám ihned, jakmile se vrátím zpět.\n\nS pozdravem,\n%(name)s\n"
+msgstr ""
+"V současné době nejsem dostupný. Odpovím Vám ihned, jakmile se vrátím zpět.\n"
+"\n"
+"S pozdravem,\n"
+"%(name)s\n"
 
 #: extensions/postfix_autoreply/app_settings.py:38
 #, python-format
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
-msgstr "Výchozí obsah, který se použije u nově vytvořených automatických odpovědí. Token '%(name)s' bude automaticky nahrazen celým jménem uživatele."
+msgstr ""
+"Výchozí obsah, který se použije u nově vytvořených automatických odpovědí. "
+"Token '%(name)s' bude automaticky nahrazen celým jménem uživatele."
 
 #: extensions/postfix_autoreply/forms.py:12
 msgid "Activate your auto reply from this date"
@@ -2132,11 +2260,11 @@ msgstr "Automatická odpověď byla aktualizována."
 msgid "Define a message to automatically send when you are off"
 msgstr "Vložte zprávu, která se během vaší nepřítomnosti automaticky odešle"
 
-#: extensions/postfix_relay_domains/__init__.py:72
+#: extensions/postfix_relay_domains/__init__.py:66
 msgid "Relay domains support for Postfix"
 msgstr "Podpora relay domén v Postfix"
 
-#: extensions/postfix_relay_domains/__init__.py:89
+#: extensions/postfix_relay_domains/__init__.py:83
 #: extensions/postfix_relay_domains/general_callbacks.py:100
 #: extensions/postfix_relay_domains/limits_callbacks.py:16
 msgid "Relay domains"
@@ -2154,7 +2282,9 @@ msgstr "Cesta ke konfiguračnímu souboru master.cf"
 msgid ""
 "Alias(es) of this relay domain. Indicate only one name per input, press "
 "ENTER to add a new input."
-msgstr "Alias(y) této relay domény. Vložte pouze jeden alias na řádek, stiskněte ENTER pro vložení dalšího aliasu."
+msgstr ""
+"Alias(y) této relay domény. Vložte pouze jeden alias na řádek, stiskněte "
+"ENTER pro vložení dalšího aliasu."
 
 #: extensions/postfix_relay_domains/forms.py:62
 #: extensions/postfix_relay_domains/general_callbacks.py:93
@@ -2176,7 +2306,8 @@ msgstr "Přidat relay doménu"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:101
 msgid "Maximum number of relay domains this user can create"
-msgstr "Maximální povolený počet relay domén, které může tento uživatel vytvořit"
+msgstr ""
+"Maximální povolený počet relay domén, které může tento uživatel vytvořit"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:103
 #: extensions/postfix_relay_domains/limits_callbacks.py:24
@@ -2185,14 +2316,21 @@ msgstr "Aliasy relay domény"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:104
 msgid "Maximum number of relay domain aliases this user can create"
-msgstr "Maximální povolený počet aliasů relay domény, které může tento uživatel vytvořit"
+msgstr ""
+"Maximální povolený počet aliasů relay domény, které může tento uživatel "
+"vytvořit"
 
 #: extensions/postfix_relay_domains/general_callbacks.py:111
 msgid ""
 "\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>\n"
+"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
+"em></li>\n"
 "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
-msgstr "\n<li><em>relay doména; název; cílový server; služba; povoleno; ověřit příjemce</em></li>\n<li><em>alias relay domény; název; cíl; povoleno</em></li>\n"
+msgstr ""
+"\n"
+"<li><em>relay doména; název; cílový server; služba; povoleno; ověřit "
+"příjemce</em></li>\n"
+"<li><em>alias relay domény; název; cíl; povoleno</em></li>\n"
 
 #: extensions/postfix_relay_domains/limits_callbacks.py:19
 msgid "Maximum number of allowed relay domains for a new administrator"
@@ -2200,7 +2338,9 @@ msgstr "Maximální povolený počet relay domén, které může vytvořit nový
 
 #: extensions/postfix_relay_domains/limits_callbacks.py:27
 msgid "Maximum number of allowed relay domain aliases for a new administrator"
-msgstr "Maximální povolený počet aliasů relay domény, které může vytvořit nový správce"
+msgstr ""
+"Maximální povolený počet aliasů relay domény, které může vytvořit nový "
+"správce"
 
 #: extensions/postfix_relay_domains/models.py:59
 msgid "The service name"
@@ -2256,9 +2396,9 @@ msgid "Radicale management"
 msgstr "Nastavení serveru Radicale"
 
 #: extensions/radicale/__init__.py:38
-msgid ""
-"Management frontend for Radicale, a simple calendar and contact server."
-msgstr "Nastavení rozhraní Radicale, jednoduchého serveru pro kalendáře a kontakty."
+msgid "Management frontend for Radicale, a simple calendar and contact server."
+msgstr ""
+"Nastavení rozhraní Radicale, jednoduchého serveru pro kalendáře a kontakty."
 
 #: extensions/radicale/app_settings.py:11
 msgid "Server settings"
@@ -2271,7 +2411,8 @@ msgstr "URL adresa serveru"
 #: extensions/radicale/app_settings.py:17
 msgid ""
 "The URL of your Radicale server. It will be used to construct calendar URLs."
-msgstr "URL adresa serveru Radicale. Adresa bude použita k vytvoření adres kalendářů."
+msgstr ""
+"URL adresa serveru Radicale. Adresa bude použita k vytvoření adres kalendářů."
 
 #: extensions/radicale/app_settings.py:24
 msgid "Rights management"
@@ -2291,7 +2432,8 @@ msgstr "Povolit správu kalendářů"
 
 #: extensions/radicale/app_settings.py:39
 msgid "Allow domain administrators to manage user calendars (read and write)"
-msgstr "Povolit správcům domén spravovat kalendáře uživatelů (číst a zapisovat)"
+msgstr ""
+"Povolit správcům domén spravovat kalendáře uživatelů (číst a zapisovat)"
 
 #: extensions/radicale/forms.py:73
 #: extensions/radicale/templates/radicale/accessrule.html:6
@@ -2570,7 +2712,9 @@ msgstr "aktivní"
 #: extensions/sievefilters/templates/sievefilters/index.html:101
 msgid ""
 "No filters set defined yet. You must create one in order to define filters."
-msgstr "Dosud nebyla vytvořena žádná sada filtrů. Aby bylo možné vytvořit filtry, je nejprve potřeba vytvořit sadu filtrů."
+msgstr ""
+"Dosud nebyla vytvořena žádná sada filtrů. Aby bylo možné vytvořit filtry, je "
+"nejprve potřeba vytvořit sadu filtrů."
 
 #: extensions/sievefilters/templatetags/sfilters_tags.py:17
 msgid "New filters set"
@@ -2619,7 +2763,8 @@ msgstr "Cesta k souboru záznamů"
 
 #: extensions/stats/app_settings.py:16
 msgid "Path to log file used to collect statistics"
-msgstr "Cesta k souboru záznamů, který se používá pro sběr statistických informací"
+msgstr ""
+"Cesta k souboru záznamů, který se používá pro sběr statistických informací"
 
 #: extensions/stats/app_settings.py:21
 msgid "Directory to store RRD files"
@@ -2629,39 +2774,39 @@ msgstr "Adresář pro RRD soubory"
 msgid "Path to directory where RRD files are stored"
 msgstr "Cesta k adresáři, ve kterém budou ukládány RRD soubory"
 
-#: extensions/stats/graphics.py:98
+#: extensions/stats/graphics.py:100
 msgid "Average traffic (msgs/min)"
 msgstr "Průměrný provoz (zprávy/min)"
 
-#: extensions/stats/graphics.py:101
+#: extensions/stats/graphics.py:103
 msgid "sent messages"
 msgstr "odeslané zprávy"
 
-#: extensions/stats/graphics.py:102
+#: extensions/stats/graphics.py:104
 msgid "received messages"
 msgstr "přijaté zprávy"
 
-#: extensions/stats/graphics.py:103
+#: extensions/stats/graphics.py:105
 msgid "bounced messages"
 msgstr "nedoručené zprávy"
 
-#: extensions/stats/graphics.py:104
+#: extensions/stats/graphics.py:106
 msgid "rejected messages"
 msgstr "odmítnuté zprávy"
 
-#: extensions/stats/graphics.py:112
+#: extensions/stats/graphics.py:114
 msgid "Average normal traffic size (bytes/min)"
 msgstr "Průměrná velikost provozu (bajtů/min)"
 
-#: extensions/stats/graphics.py:115
+#: extensions/stats/graphics.py:117
 msgid "received size"
 msgstr "doručená velikost"
 
-#: extensions/stats/graphics.py:117
+#: extensions/stats/graphics.py:119
 msgid "sent size"
 msgstr "odeslaná velikost"
 
-#: extensions/stats/graphics.py:152
+#: extensions/stats/graphics.py:154
 msgid "Mail traffic"
 msgstr "Provoz emailů"
 
@@ -2715,7 +2860,8 @@ msgstr "Maximální velikost přílohy"
 
 #: extensions/webmail/app_settings.py:16
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
-msgstr "Maximální velikost přílohy v Bajtech (nebo KB, MB, GB, pokud je uvedeno)"
+msgstr ""
+"Maximální velikost přílohy v Bajtech (nebo KB, MB, GB, pokud je uvedeno)"
 
 #: extensions/webmail/app_settings.py:19
 msgid "IMAP settings"
@@ -2931,11 +3077,11 @@ msgstr "napsal/a:"
 msgid "Original message"
 msgstr "Původní zpráva"
 
-#: extensions/webmail/lib/imaputils.py:245
+#: extensions/webmail/lib/imaputils.py:246
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Nebylo možné zjistit hierarchický oddělovač"
 
-#: extensions/webmail/lib/imaputils.py:288
+#: extensions/webmail/lib/imaputils.py:289
 #, python-format
 msgid "Connection to IMAP server failed: %s"
 msgstr "Spojení se serverem IMAP selhalo: %s"
@@ -3018,15 +3164,15 @@ msgstr "Přístup zamítnut: %s"
 msgid "Permission denied"
 msgstr "Přístup zamítnut"
 
-#: lib/formutils.py:347 lib/formutils.py:355
+#: lib/formutils.py:353 lib/formutils.py:361
 msgid "Enter a valid domain name"
 msgstr "Vložte platné doménové jméno"
 
-#: lib/formutils.py:404
+#: lib/formutils.py:410
 msgid "Yes"
 msgstr "Ano"
 
-#: lib/formutils.py:404
+#: lib/formutils.py:410
 msgid "No"
 msgstr "Ne"
 
@@ -3094,14 +3240,18 @@ msgstr "Předchozí"
 msgid "Next"
 msgstr "Další"
 
-#: templates/registration/login.html:8
+#: templates/registration/login.html:10
 msgid "Welcome to Modoboa"
 msgstr "Vítejte v Modoboa"
 
-#: templates/registration/login.html:39
+#: templates/registration/login.html:41
 msgid "Remember me"
 msgstr "Zapamatovat si"
 
-#: templates/registration/login.html:42
+#: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Přihlásit"
+
+#, fuzzy
+#~ msgid "Local recipient %s@%s not found"
+#~ msgstr "Místní příjemce %s nebyl nalezen"

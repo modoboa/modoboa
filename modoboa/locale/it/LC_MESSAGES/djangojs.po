@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 14:23+0100\n"
+"POT-Creation-Date: 2015-06-18 21:03+0200\n"
 "PO-Revision-Date: 2013-12-23 00:58+0100\n"
 "Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: Italiano <LL@li.org>\n"
@@ -21,19 +21,19 @@ msgstr ""
 msgid "No more log entry to show"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:102
+#: extensions/admin/static/admin/js/admin.js:126
 msgid "No more domain to show"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:113
+#: extensions/admin/static/admin/js/admin.js:145
 msgid "Do not delete domain directory"
 msgstr "Non eliminare la cartella dei domini"
 
-#: extensions/admin/static/admin/js/admin.js:115
+#: extensions/admin/static/admin/js/admin.js:147
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "Questa operazione eliminerà TUTTI i dati associati a questo dominio."
 
-#: extensions/admin/static/admin/js/admin.js:116
+#: extensions/admin/static/admin/js/admin.js:148
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -41,20 +41,20 @@ msgstr ""
 "Questa operazione eliminerà tutti i dati associati a questo dominio tranne "
 "gli account"
 
-#: extensions/admin/static/admin/js/admin.js:198
+#: extensions/admin/static/admin/js/admin.js:230
 msgid "No domain administrator defined"
 msgstr "Non è stato definito un amministratore di dominio"
 
-#: extensions/admin/static/admin/js/admin.js:253
-#: extensions/admin/static/admin/js/admin.js:309
+#: extensions/admin/static/admin/js/admin.js:285
+#: extensions/admin/static/admin/js/admin.js:353
 msgid "No more identity to show"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:283
+#: extensions/admin/static/admin/js/admin.js:327
 msgid "Do not delete mailbox directory"
 msgstr "Non eliminare la cartella della casella posta"
 
-#: extensions/admin/static/admin/js/admin.js:312
+#: extensions/admin/static/admin/js/admin.js:356
 msgid "No more quota to show"
 msgstr ""
 

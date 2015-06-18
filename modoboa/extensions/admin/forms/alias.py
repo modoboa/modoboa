@@ -115,7 +115,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
                         rcpt = Mailbox.objects.get(domain=domain, address=local_part)
                     except Mailbox.DoesNotExist:
                         raise NotFound(
-                            _("Local recipient %s@%s not found" % (local_part, domname))
+                            _("Local recipient {}@{} not found").format(local_part, domname)
                         )
 
                 if local_part_with_tag is None:

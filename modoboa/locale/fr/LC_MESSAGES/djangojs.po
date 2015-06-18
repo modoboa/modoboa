@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 14:23+0100\n"
+"POT-Creation-Date: 2015-06-18 21:03+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -21,19 +21,19 @@ msgstr ""
 msgid "No more log entry to show"
 msgstr "Plus d'entrée de journal à afficher"
 
-#: extensions/admin/static/admin/js/admin.js:102
+#: extensions/admin/static/admin/js/admin.js:126
 msgid "No more domain to show"
 msgstr "Plus de domaine à afficher"
 
-#: extensions/admin/static/admin/js/admin.js:113
+#: extensions/admin/static/admin/js/admin.js:145
 msgid "Do not delete domain directory"
 msgstr "Ne pas supprimer le répertoire du domaine"
 
-#: extensions/admin/static/admin/js/admin.js:115
+#: extensions/admin/static/admin/js/admin.js:147
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
 
-#: extensions/admin/static/admin/js/admin.js:116
+#: extensions/admin/static/admin/js/admin.js:148
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -41,20 +41,20 @@ msgstr ""
 "Cette opération supprimera toutes les données associées à ce domaine à "
 "l'excéption des comptes."
 
-#: extensions/admin/static/admin/js/admin.js:198
+#: extensions/admin/static/admin/js/admin.js:230
 msgid "No domain administrator defined"
 msgstr "Aucun administrateur de domaine défini"
 
-#: extensions/admin/static/admin/js/admin.js:253
-#: extensions/admin/static/admin/js/admin.js:309
+#: extensions/admin/static/admin/js/admin.js:285
+#: extensions/admin/static/admin/js/admin.js:353
 msgid "No more identity to show"
 msgstr "Plus d'identité à afficher"
 
-#: extensions/admin/static/admin/js/admin.js:283
+#: extensions/admin/static/admin/js/admin.js:327
 msgid "Do not delete mailbox directory"
 msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
-#: extensions/admin/static/admin/js/admin.js:312
+#: extensions/admin/static/admin/js/admin.js:356
 msgid "No more quota to show"
 msgstr "Plus de quota à afficher"
 

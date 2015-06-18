@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-04 13:25+0100\n"
+"POT-Creation-Date: 2015-06-18 21:02+0200\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: core/__init__.py:56 core/__init__.py:57
 #: extensions/admin/forms/account.py:366 extensions/admin/forms/account.py:443
-#: extensions/admin/forms/domain.py:271 extensions/admin/forms/domain.py:332
+#: extensions/admin/forms/domain.py:278 extensions/admin/forms/domain.py:346
 #: extensions/postfix_autoreply/app_settings.py:11
 #: extensions/postfix_relay_domains/app_settings.py:18
 #: extensions/postfix_relay_domains/forms.py:150
@@ -33,56 +33,56 @@ msgstr "Général"
 msgid "New Modoboa version available"
 msgstr "Nouvelle version de Modoboa disponible"
 
-#: core/app_settings.py:39
+#: core/app_settings.py:41
 msgid "Authentication"
 msgstr "Authentification"
 
-#: core/app_settings.py:42
+#: core/app_settings.py:44
 msgid "Authentication type"
 msgstr "Type d'authentification"
 
-#: core/app_settings.py:43
+#: core/app_settings.py:45
 msgid "Local"
 msgstr "Locale"
 
-#: core/app_settings.py:46
+#: core/app_settings.py:48
 msgid "The backend used for authentication"
 msgstr "Le backend utilisé pour l'authentification"
 
-#: core/app_settings.py:51
+#: core/app_settings.py:53
 msgid "Default password scheme"
 msgstr "Méthode de chiffrement par défaut"
 
-#: core/app_settings.py:54
+#: core/app_settings.py:56
 msgid "md5crypt (weak)"
 msgstr "md5crypt (faible)"
 
-#: core/app_settings.py:55
+#: core/app_settings.py:57
 msgid "sha256 (weak)"
 msgstr "sha256 (faible)"
 
-#: core/app_settings.py:56
+#: core/app_settings.py:58
 msgid "md5 (weak)"
 msgstr "md5 (faible)"
 
-#: core/app_settings.py:57
+#: core/app_settings.py:59
 msgid "crypt (weak)"
 msgstr "crypt (faible)"
 
-#: core/app_settings.py:58
+#: core/app_settings.py:60
 msgid "plain (weak)"
 msgstr "plain (faible)"
 
-#: core/app_settings.py:60
+#: core/app_settings.py:62
 msgid "Scheme used to crypt mailbox passwords"
 msgstr ""
 "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
-#: core/app_settings.py:65
+#: core/app_settings.py:67
 msgid "Rounds"
 msgstr "Tours"
 
-#: core/app_settings.py:68
+#: core/app_settings.py:70
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -90,65 +90,65 @@ msgstr ""
 "Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit "
 "être compris entre 1000 et 999999999 inclue."
 
-#: core/app_settings.py:75
+#: core/app_settings.py:77
 msgid "Secret key"
 msgstr "Clé secrète"
 
-#: core/app_settings.py:77
+#: core/app_settings.py:79
 msgid "Key used to encrypt/decrypt passwords"
 msgstr "Clé utilisée pour chiffrer/déchiffre les mots de passe"
 
-#: core/app_settings.py:82
+#: core/app_settings.py:84
 msgid "LDAP settings"
 msgstr "Paramètres LDAP"
 
-#: core/app_settings.py:85 extensions/sievefilters/app_settings.py:22
+#: core/app_settings.py:87 extensions/sievefilters/app_settings.py:22
 #: extensions/webmail/app_settings.py:22 extensions/webmail/app_settings.py:42
 msgid "Server address"
 msgstr "Adresse du serveur"
 
-#: core/app_settings.py:88
+#: core/app_settings.py:90
 msgid "The IP address of the DNS name of the LDAP server"
 msgstr "L'adresse IP ou le nom DNS du serveur LDAP"
 
-#: core/app_settings.py:93 extensions/sievefilters/app_settings.py:29
+#: core/app_settings.py:95 extensions/sievefilters/app_settings.py:29
 #: extensions/webmail/app_settings.py:34 extensions/webmail/app_settings.py:58
 msgid "Server port"
 msgstr "Port utilisé par le serveur"
 
-#: core/app_settings.py:95
+#: core/app_settings.py:97
 msgid "The TCP port number used by the LDAP server"
 msgstr "Le port TCP utilisé par le serveur LDAP"
 
-#: core/app_settings.py:100 extensions/webmail/app_settings.py:28
+#: core/app_settings.py:102 extensions/webmail/app_settings.py:28
 msgid "Use a secured connection"
 msgstr "Utiliser une connexion sécurisée"
 
-#: core/app_settings.py:103
+#: core/app_settings.py:105
 msgid "Use an SSL/TLS connection to access the LDAP server"
 msgstr "Utiliser une connextion SSL/TLS pour accéder au serveur LDAP"
 
-#: core/app_settings.py:107
+#: core/app_settings.py:109
 msgid "Authentication method"
 msgstr "Méthode d'authentification"
 
-#: core/app_settings.py:108
+#: core/app_settings.py:110
 msgid "Search and bind"
 msgstr "Recherche et connexion"
 
-#: core/app_settings.py:109
+#: core/app_settings.py:111
 msgid "Direct bind"
 msgstr "Connexion directe"
 
-#: core/app_settings.py:111
+#: core/app_settings.py:113
 msgid "Choose the authentication method to use"
 msgstr "Choisir la méthode d'authentification à utiliser"
 
-#: core/app_settings.py:116
+#: core/app_settings.py:118
 msgid "Bind DN"
 msgstr "ND de connexion"
 
-#: core/app_settings.py:119
+#: core/app_settings.py:121
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -156,31 +156,31 @@ msgstr ""
 "Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser "
 "vide pour une connexion anonyme"
 
-#: core/app_settings.py:127
+#: core/app_settings.py:129
 msgid "Bind password"
 msgstr "Mot de passe de connexion"
 
-#: core/app_settings.py:130
+#: core/app_settings.py:132
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de "
 "connexion')"
 
-#: core/app_settings.py:139
+#: core/app_settings.py:141
 msgid "Users search base"
 msgstr "Base de recherche des utilisateurs"
 
-#: core/app_settings.py:142
+#: core/app_settings.py:144
 msgid "The distinguished name of the search base used to find users"
 msgstr ""
 "Le nom distinctif de la base de recherche utilisée pour rechercher les "
 "utilisateurs"
 
-#: core/app_settings.py:149
+#: core/app_settings.py:151
 msgid "Search filter"
 msgstr "Filtre de recherche"
 
-#: core/app_settings.py:152
+#: core/app_settings.py:154
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -188,11 +188,11 @@ msgstr ""
 "Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être "
 "valide, il doit être entouré de parenthèses."
 
-#: core/app_settings.py:160
+#: core/app_settings.py:162
 msgid "User DN template"
 msgstr "Modèle de nom distinctif utilisateur"
 
-#: core/app_settings.py:163
+#: core/app_settings.py:165
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -201,27 +201,27 @@ msgstr ""
 "Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il "
 "doit contenir un espace réservé (ex. %(user)s)"
 
-#: core/app_settings.py:171
+#: core/app_settings.py:173
 msgid "Password attribute"
 msgstr "Attribut 'mot de passe'"
 
-#: core/app_settings.py:173
+#: core/app_settings.py:175
 msgid "The attribute used to store user passwords"
 msgstr "L'attribut utilisé pour stocker les mots de passe"
 
-#: core/app_settings.py:178
+#: core/app_settings.py:180
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:181
+#: core/app_settings.py:183
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Indiquer si le serveur LDAP est un Active Directory ou pas"
 
-#: core/app_settings.py:185
+#: core/app_settings.py:187
 msgid "Administrator groups"
 msgstr "Groupes administrateurs"
 
-#: core/app_settings.py:188
+#: core/app_settings.py:190
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
@@ -230,89 +230,89 @@ msgstr ""
 "qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les "
 "groupes."
 
-#: core/app_settings.py:195
+#: core/app_settings.py:197
 msgid "Groups search base"
 msgstr "Base de recherche des groupes"
 
-#: core/app_settings.py:198
+#: core/app_settings.py:200
 msgid "The distinguished name of the search base used to find groups"
 msgstr ""
 "Le nom distinctif de la base de recherche utilisée pour rechercher les "
 "groupes"
 
-#: core/app_settings.py:203
+#: core/app_settings.py:205
 #: extensions/admin/templates/admin/editdomainform.html:7
 msgid "Miscellaneous"
 msgstr "Divers"
 
-#: core/app_settings.py:206
+#: core/app_settings.py:208
 msgid "Top notifications check interval"
 msgstr "Intervalle de vérification des notifications"
 
-#: core/app_settings.py:208
+#: core/app_settings.py:210
 msgid "Interval between two top notification checks"
 msgstr "Intervalle entre deux vérifications de notification"
 
-#: core/app_settings.py:213
+#: core/app_settings.py:215
 msgid "Check new versions"
 msgstr "Vérifier les nouvelles versions"
 
-#: core/app_settings.py:216
+#: core/app_settings.py:218
 msgid "Automatically checks if a newer version is available"
 msgstr "Vérifie automatiquement si une nouvelle version est disponible"
 
-#: core/app_settings.py:220
+#: core/app_settings.py:222
 msgid "Maximum log record age"
 msgstr "Age maximal d'un enregistrement du journal"
 
-#: core/app_settings.py:222
+#: core/app_settings.py:224
 msgid "The maximum age in days of a log record"
 msgstr "L'age maximal en jours d'un enregistrement du journal"
 
-#: core/app_settings.py:227
+#: core/app_settings.py:229
 msgid "Items per page"
 msgstr "Eléments par page"
 
-#: core/app_settings.py:229
+#: core/app_settings.py:231
 msgid "Number of displayed items per page"
 msgstr "Nombre d'éléments affichés par page"
 
-#: core/app_settings.py:234
+#: core/app_settings.py:236
 msgid "Default top redirection"
 msgstr "Redirection par défaut"
 
-#: core/app_settings.py:238
+#: core/app_settings.py:240
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "La redirection appliquée par défaut quand aucune application n'est spécifiée"
 
-#: core/app_settings.py:268
+#: core/app_settings.py:270
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "La longueur d'une clé doit être de 16, 24 ou 32 octets"
 
-#: core/app_settings.py:277 extensions/postfix_autoreply/app_settings.py:55
+#: core/app_settings.py:279 extensions/postfix_autoreply/app_settings.py:55
 msgid "Invalid syntax"
 msgstr "Syntaxe invalide"
 
-#: core/app_settings.py:283
+#: core/app_settings.py:285
 msgid "Invalid rounds number"
 msgstr "Nombre invalide de tours"
 
-#: core/app_settings.py:306
+#: core/app_settings.py:308
 msgid "This field is required"
 msgstr "Ce champ est requis"
 
-#: core/app_settings.py:368 extensions/amavis/app_settings.py:156
+#: core/app_settings.py:370 extensions/amavis/app_settings.py:156
 #: extensions/amavis/templates/amavis/main_action_bar.html:51
 #: extensions/webmail/app_settings.py:73
 msgid "Display"
 msgstr "Afficher"
 
-#: core/app_settings.py:372
+#: core/app_settings.py:374
 msgid "Prefered language"
 msgstr "Langage préféré"
 
-#: core/app_settings.py:378
+#: core/app_settings.py:386
 msgid "Prefered language to display pages"
 msgstr "Langage préféré pour afficher les pages"
 
@@ -358,37 +358,37 @@ msgstr "dernière connexion"
 msgid "You can't delete your own account"
 msgstr "Vous ne pouvez pas supprimer votre propre compte"
 
-#: core/models.py:130
+#: core/models.py:131
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
 
-#: core/models.py:183
+#: core/models.py:184
 msgid "account"
 msgstr "compte"
 
-#: core/models.py:334 extensions/admin/models/domain.py:149
+#: core/models.py:335 extensions/admin/models/domain.py:149
 #: extensions/admin/models/domain_alias.py:39
 #: extensions/postfix_relay_domains/models.py:134
 #: extensions/postfix_relay_domains/models.py:190
 msgid "Invalid line"
 msgstr "Ligne invalide"
 
-#: core/models.py:338
+#: core/models.py:339
 msgid "You can't import an account with a role greater than yours"
 msgstr "Vous ne pouvez pas importer un compte avec un rôle supérieur au votre"
 
-#: core/models.py:350
+#: core/models.py:351
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "L'utilisateur simple '%s' doit avoir une adresse email valide"
 
-#: core/models.py:354
+#: core/models.py:355
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Les champs username et email de '%s' ne doivent pas différer"
 
-#: core/models.py:426 extensions/admin/models/alias.py:35
+#: core/models.py:427 extensions/admin/models/alias.py:35
 #: extensions/admin/models/domain.py:32
 #: extensions/admin/models/domain_alias.py:17
 #: extensions/postfix_autoreply/models.py:28
@@ -397,24 +397,24 @@ msgstr "Les champs username et email de '%s' ne doivent pas différer"
 msgid "enabled"
 msgstr "Activé"
 
-#: core/models.py:427
+#: core/models.py:428
 msgid "Check to enable this extension"
 msgstr "Cocher pour activer cette extension"
 
-#: core/models.py:511
+#: core/models.py:512
 msgid "added"
 msgstr "ajouté"
 
-#: core/models.py:514
+#: core/models.py:515
 msgid "modified"
 msgstr "modifié"
 
-#: core/models.py:516 core/models.py:541
+#: core/models.py:517 core/models.py:542
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s par l'utilisateur %(user)s"
 
-#: core/models.py:543
+#: core/models.py:544
 msgid "deleted"
 msgstr "Supprimé"
 
@@ -428,7 +428,7 @@ msgstr "Choisir les extensions à utiliser"
 
 #: core/templates/core/extensions.html:9
 #: core/templates/core/information.html:16 extensions/admin/tables.py:9
-#: extensions/admin/forms/domain.py:190
+#: extensions/admin/forms/domain.py:196
 #: extensions/admin/templates/admin/domains.html:25
 #: extensions/admin/templates/admin/editdomainform.html:13
 #: extensions/admin/templates/admin/identity_headers.html:2
@@ -559,7 +559,7 @@ msgstr "Mettez à jour vos informations personnelles"
 #: extensions/admin/views/alias.py:108
 #: extensions/postfix_autoreply/templates/postfix_autoreply/autoreply.html:9
 #: extensions/sievefilters/views.py:166 extensions/webmail/views.py:186
-#: extensions/webmail/views.py:221 lib/formutils.py:322
+#: extensions/webmail/views.py:221 lib/formutils.py:326
 msgid "Update"
 msgstr "Mettre à jour"
 
@@ -906,17 +906,17 @@ msgstr "Vous n'avez pas accès à ce domaine"
 msgid "Invalid mailbox"
 msgstr "Boite aux lettres invalide"
 
-#: extensions/admin/forms/alias.py:115 extensions/admin/models/alias.py:195
-#, python-format
-msgid "Local recipient %s not found"
+#: extensions/admin/forms/alias.py:118
+#, fuzzy
+msgid "Local recipient {}@{} not found"
 msgstr "Destinataire local %s introuvable"
 
-#: extensions/admin/forms/alias.py:119 extensions/admin/forms/alias.py:127
+#: extensions/admin/forms/alias.py:124 extensions/admin/forms/alias.py:132
 #, python-format
 msgid "Recipient %s already present"
 msgstr "Destinataire %s déjà présent"
 
-#: extensions/admin/forms/alias.py:133
+#: extensions/admin/forms/alias.py:138
 msgid "No recipient defined"
 msgstr "Aucune destinataire défini"
 
@@ -936,28 +936,29 @@ msgstr ""
 "Alias de ce domaine. Indiquer seulement un nom par champ, appuyer sur ENTREE "
 "pour ajouter un nouveau champ."
 
-#: extensions/admin/forms/domain.py:87 extensions/admin/forms/domain.py:101
+#: extensions/admin/forms/domain.py:87 extensions/admin/forms/domain.py:99
+#: extensions/admin/forms/domain.py:107
 #: extensions/postfix_relay_domains/forms.py:69
 #: extensions/postfix_relay_domains/forms.py:89
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "Un %s de ce nom existe déjà"
 
-#: extensions/admin/forms/domain.py:98
+#: extensions/admin/forms/domain.py:99 extensions/admin/forms/domain.py:104
 #: extensions/postfix_relay_domains/forms.py:60
 #: extensions/postfix_relay_domains/forms.py:82
 msgid "domain"
 msgstr "domaine"
 
-#: extensions/admin/forms/domain.py:182
+#: extensions/admin/forms/domain.py:188
 msgid "Create a domain administrator"
 msgstr "Créer un administrateur de domaine"
 
-#: extensions/admin/forms/domain.py:185
+#: extensions/admin/forms/domain.py:191
 msgid "Automatically create an administrator for this domain"
 msgstr "Créer automatiquement un administrateur pour ce domaine"
 
-#: extensions/admin/forms/domain.py:193
+#: extensions/admin/forms/domain.py:199
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
@@ -965,36 +966,36 @@ msgstr ""
 "Le nom de l'administrateur. Ne pas include un nom de domaine ici, il sera "
 "ajouté automatiquement."
 
-#: extensions/admin/forms/domain.py:200
+#: extensions/admin/forms/domain.py:206
 msgid "Create aliases"
 msgstr "Créer des alias"
 
-#: extensions/admin/forms/domain.py:203
+#: extensions/admin/forms/domain.py:209
 msgid "Automatically create standard aliases for this domain"
 msgstr "Créer automatiquement des alias standard pour ce domaine"
 
-#: extensions/admin/forms/domain.py:221
+#: extensions/admin/forms/domain.py:227
 msgid "Invalid format"
 msgstr "Format invalide"
 
-#: extensions/admin/forms/domain.py:236
+#: extensions/admin/forms/domain.py:242
 #, python-format
 msgid "User '%s' already exists"
 msgstr "L'utilisateur '%s' existe déjà"
 
-#: extensions/admin/forms/domain.py:323
+#: extensions/admin/forms/domain.py:337
 msgid "Domain modified"
 msgstr "Domaine modifié"
 
-#: extensions/admin/forms/domain.py:336
+#: extensions/admin/forms/domain.py:350
 msgid "Options"
 msgstr "Options"
 
-#: extensions/admin/forms/domain.py:343
+#: extensions/admin/forms/domain.py:357
 msgid "New domain"
 msgstr "Nouveau domaine"
 
-#: extensions/admin/forms/domain.py:358
+#: extensions/admin/forms/domain.py:372
 msgid "Domain created"
 msgstr "Domaine créé"
 
@@ -1103,6 +1104,11 @@ msgstr "Ligne invalide : %s"
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "Domaine '%s' inexistant"
+
+#: extensions/admin/models/alias.py:195
+#, python-format
+msgid "Local recipient %s not found"
+msgstr "Destinataire local %s introuvable"
 
 #: extensions/admin/models/domain.py:28
 #: extensions/admin/models/domain_alias.py:10
@@ -1436,22 +1442,23 @@ msgstr "Export d'identités"
 msgid "Export domains"
 msgstr "Export de domaines"
 
-#: extensions/admin/views/identity.py:95
-#: extensions/admin/views/identity.py:193
-#: extensions/admin/views/identity.py:198 extensions/amavis/views.py:222
-#: extensions/amavis/views.py:226 extensions/amavis/views.py:257
-#: extensions/amavis/views.py:262 extensions/amavis/views.py:264
-#: extensions/webmail/views.py:57 extensions/webmail/views.py:75
-#: extensions/webmail/views.py:89 extensions/webmail/views.py:107
-#: extensions/webmail/views.py:126 extensions/webmail/views.py:140
-#: extensions/webmail/views.py:216 extensions/webmail/views.py:239
-#: extensions/webmail/views.py:435 extensions/webmail/views.py:485
-#: extensions/webmail/views.py:501 extensions/webmail/views.py:534
-#: extensions/webmail/views.py:574 lib/formutils.py:118 lib/formutils.py:121
+#: extensions/admin/views/identity.py:103
+#: extensions/admin/views/identity.py:196
+#: extensions/admin/views/identity.py:201 extensions/amavis/views.py:161
+#: extensions/amavis/views.py:221 extensions/amavis/views.py:225
+#: extensions/amavis/views.py:256 extensions/amavis/views.py:261
+#: extensions/amavis/views.py:263 extensions/webmail/views.py:57
+#: extensions/webmail/views.py:75 extensions/webmail/views.py:89
+#: extensions/webmail/views.py:107 extensions/webmail/views.py:126
+#: extensions/webmail/views.py:140 extensions/webmail/views.py:216
+#: extensions/webmail/views.py:239 extensions/webmail/views.py:436
+#: extensions/webmail/views.py:486 extensions/webmail/views.py:502
+#: extensions/webmail/views.py:535 extensions/webmail/views.py:575
+#: lib/formutils.py:118 lib/formutils.py:121
 msgid "Invalid request"
 msgstr "Requête invalide"
 
-#: extensions/admin/views/identity.py:183
+#: extensions/admin/views/identity.py:186
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Compte supprimé"
@@ -1534,7 +1541,7 @@ msgstr "Transfert mis à jour"
 msgid "Simple amavis management frontend"
 msgstr "Interface simplifiée pour la gestion d'amavis"
 
-#: extensions/amavis/__init__.py:52 extensions/amavis/general_callbacks.py:20
+#: extensions/amavis/__init__.py:46 extensions/amavis/general_callbacks.py:20
 msgid "Quarantine"
 msgstr "Quarantaine"
 
@@ -1710,11 +1717,11 @@ msgstr "Base du domaine"
 msgid "User's database"
 msgstr "Base de l'utilisateur"
 
-#: extensions/amavis/general_callbacks.py:149
+#: extensions/amavis/general_callbacks.py:152
 msgid "Pending requests"
 msgstr "Requêtes en attente"
 
-#: extensions/amavis/general_callbacks.py:159
+#: extensions/amavis/general_callbacks.py:162
 msgid "Content filter"
 msgstr "Filtrage de contenu"
 
@@ -1789,51 +1796,51 @@ msgstr ""
 msgid "Empty quarantine"
 msgstr "Quarantaine vide"
 
-#: extensions/amavis/views.py:227
+#: extensions/amavis/views.py:226
 msgid "Message deleted"
 msgstr "Message supprimé"
 
-#: extensions/amavis/views.py:244
+#: extensions/amavis/views.py:243
 #, python-format
 msgid "%(count)d message deleted successfully"
 msgid_plural "%(count)d messages deleted successfully"
 msgstr[0] "%(count)d message supprimé correctement"
 msgstr[1] "%(count)d messages supprimés correctement"
 
-#: extensions/amavis/views.py:267
+#: extensions/amavis/views.py:266
 msgid "Request sent"
 msgstr "Requête envoyée"
 
-#: extensions/amavis/views.py:273
+#: extensions/amavis/views.py:272
 msgid "Message released"
 msgstr "Message relâché"
 
-#: extensions/amavis/views.py:300
+#: extensions/amavis/views.py:299
 #, python-format
 msgid "%(count)d request sent"
 msgid_plural "%(count)d requests sent"
 msgstr[0] "%(count)d requête envoyée"
 msgstr[1] "%(count)d requêtes envoyées"
 
-#: extensions/amavis/views.py:321
+#: extensions/amavis/views.py:320
 #, python-format
 msgid "%(count)d message released successfully"
 msgid_plural "%(count)d messages released successfully"
 msgstr[0] "%(count)d message relâché correctement"
 msgstr[1] "%(count)d messages relâchés correctement"
 
-#: extensions/amavis/views.py:360
+#: extensions/amavis/views.py:357
 #, python-format
 msgid "%(count)d message processed successfully"
 msgid_plural "%(count)d messages processed successfully"
 msgstr[0] "%(count)d message traité correctement"
 msgstr[1] "%(count)d messages traités correctement"
 
-#: extensions/amavis/views.py:394
+#: extensions/amavis/views.py:391
 msgid "Select a database"
 msgstr "Sélectionner une base"
 
-#: extensions/amavis/views.py:398
+#: extensions/amavis/views.py:395
 msgid "Validate"
 msgstr "Valider"
 
@@ -2254,11 +2261,11 @@ msgstr "Message de réponse auto. mis à jour."
 msgid "Define a message to automatically send when you are off"
 msgstr "Définir un message à envoyer automatiquement quand vous êtes absent"
 
-#: extensions/postfix_relay_domains/__init__.py:72
+#: extensions/postfix_relay_domains/__init__.py:66
 msgid "Relay domains support for Postfix"
 msgstr "Support des domaines relais pour Postfix"
 
-#: extensions/postfix_relay_domains/__init__.py:89
+#: extensions/postfix_relay_domains/__init__.py:83
 #: extensions/postfix_relay_domains/general_callbacks.py:100
 #: extensions/postfix_relay_domains/limits_callbacks.py:16
 msgid "Relay domains"
@@ -2768,39 +2775,39 @@ msgstr "Répertoire où stocker les fichiers RRD"
 msgid "Path to directory where RRD files are stored"
 msgstr "Emplacement du répertoire de stockage des fichiers RRD"
 
-#: extensions/stats/graphics.py:98
+#: extensions/stats/graphics.py:100
 msgid "Average traffic (msgs/min)"
 msgstr "Trafic moyen (msgs/min)"
 
-#: extensions/stats/graphics.py:101
+#: extensions/stats/graphics.py:103
 msgid "sent messages"
 msgstr "messages envoyés"
 
-#: extensions/stats/graphics.py:102
+#: extensions/stats/graphics.py:104
 msgid "received messages"
 msgstr "messages reçus"
 
-#: extensions/stats/graphics.py:103
+#: extensions/stats/graphics.py:105
 msgid "bounced messages"
 msgstr "messages non remis"
 
-#: extensions/stats/graphics.py:104
+#: extensions/stats/graphics.py:106
 msgid "rejected messages"
 msgstr "messages rejetés"
 
-#: extensions/stats/graphics.py:112
+#: extensions/stats/graphics.py:114
 msgid "Average normal traffic size (bytes/min)"
 msgstr "Taille moyenne du trafic normal (octets/min)"
 
-#: extensions/stats/graphics.py:115
+#: extensions/stats/graphics.py:117
 msgid "received size"
 msgstr "taille reçue"
 
-#: extensions/stats/graphics.py:117
+#: extensions/stats/graphics.py:119
 msgid "sent size"
 msgstr "taille envoyée"
 
-#: extensions/stats/graphics.py:152
+#: extensions/stats/graphics.py:154
 msgid "Mail traffic"
 msgstr "Trafic messagerie"
 
@@ -3069,11 +3076,11 @@ msgstr "a écrit :"
 msgid "Original message"
 msgstr "Message original"
 
-#: extensions/webmail/lib/imaputils.py:245
+#: extensions/webmail/lib/imaputils.py:246
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Impossible de récuperer le séparateur de hiérarchie"
 
-#: extensions/webmail/lib/imaputils.py:288
+#: extensions/webmail/lib/imaputils.py:289
 #, python-format
 msgid "Connection to IMAP server failed: %s"
 msgstr "La connexion au serveur IMAP a échoué : %s"
@@ -3156,15 +3163,15 @@ msgstr "Permission refusée : %s"
 msgid "Permission denied"
 msgstr "Permission refusée"
 
-#: lib/formutils.py:347 lib/formutils.py:355
+#: lib/formutils.py:353 lib/formutils.py:361
 msgid "Enter a valid domain name"
 msgstr "Entrer un nom de domaine valide"
 
-#: lib/formutils.py:404
+#: lib/formutils.py:410
 msgid "Yes"
 msgstr "Oui"
 
-#: lib/formutils.py:404
+#: lib/formutils.py:410
 msgid "No"
 msgstr "Non"
 
@@ -3232,14 +3239,18 @@ msgstr "Précédent"
 msgid "Next"
 msgstr "Suivant"
 
-#: templates/registration/login.html:8
+#: templates/registration/login.html:10
 msgid "Welcome to Modoboa"
 msgstr "Bienvenue dans Modoboa"
 
-#: templates/registration/login.html:39
+#: templates/registration/login.html:41
 msgid "Remember me"
 msgstr "Se souvenir de moi"
 
-#: templates/registration/login.html:42
+#: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Se connecter"
+
+#, fuzzy
+#~ msgid "Local recipient %s@%s not found"
+#~ msgstr "Destinataire local %s introuvable"
