@@ -5,7 +5,9 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib import parameters
 from modoboa.lib.cryptutils import random_key
-from modoboa.lib.form_utils import YesNoField, SeparatorField, InlineRadioSelect
+from modoboa.lib.form_utils import (
+    YesNoField, SeparatorField, InlineRadioSelect
+)
 
 
 def enabled_applications():
@@ -200,7 +202,9 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     top_notifications_check_interval = forms.IntegerField(
         label=_("Top notifications check interval"),
         initial=30,
-        help_text=_("Interval between two top notification checks"),
+        help_text=_(
+            "Interval between two top notification checks (in seconds)"
+        ),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
