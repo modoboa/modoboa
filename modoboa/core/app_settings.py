@@ -200,7 +200,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
     top_notifications_check_interval = forms.IntegerField(
         label=_("Top notifications check interval"),
         initial=30,
-        help_text=_("Interval between two top notification checks"),
+        help_text=_("Interval between two top notification checks (in seconds)"),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
