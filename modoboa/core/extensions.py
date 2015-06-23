@@ -118,13 +118,16 @@ class ExtensionsPool(object):
     def list_all(self, check_new_versions=False):
         """List all defined extensions."""
         result = []
+        new_extensions = {}
         if check_new_versions:
             new_extensions = ModoAPIClient().list_extensions()
-            new_extensions = dict(
-                (ext["name"], ext["version"]) for ext in new_extensions
-            )
-        else:
-            new_extensions = {}
+            if new_extensions:
+                new_extensions = dict(
+                    (ext["name"], ext["version"]) for ext in new_extensions
+                )
+            else:
+                new_extensions = {}
+
         for extname, extdef in self.extensions.iteritems():
             if not extdef["show"]:
                 continue
