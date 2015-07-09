@@ -10,7 +10,8 @@ BOWER_INSTALLED_APPS = (
     "jquery-ui#1.11",
     "bootstrap#3.3.1",
     "bootstrap-select#1.6",
-    "d3#3.3.13",
+    "d3#3.5.0",
     "eonasdan-bootstrap-datetimepicker#3.1.3",
     "font-awesome#4.2.0",
+    "c3#0.4.10",
 )

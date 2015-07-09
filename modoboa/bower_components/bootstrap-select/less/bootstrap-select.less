@@ -7,23 +7,17 @@
 
 // Rules
 .bootstrap-select {
-  /*width: 220px\9; IE8 and below*/
-  //noinspection CssShorthandPropertyValue
   width: 220px \0; /*IE9 and below*/
 
   // The selectpicker button
-  > .btn {
+  > .dropdown-toggle {
     width: 100%;
     padding-right: 25px;
   }
 
   // Error display
-  .error & .btn {
-    border: 1px solid @color-red-error;
-  }
-
-  // Error display
-  .control-group.error & .dropdown-toggle {
+  .has-error & .dropdown-toggle,
+  .error & .dropdown-toggle {
     border-color: @color-red-error;
   }
 
@@ -35,7 +29,7 @@
     width: @width-default;
   }
 
-  .btn:focus {
+  .dropdown-toggle:focus {
     outline: thin dotted #333333 !important;
     outline: 5px auto -webkit-focus-ring-color !important;
     outline-offset: -2px;
@@ -49,6 +43,10 @@
 
   &:not([class*="col-"]) {
     width: 100%;
+  }
+
+  &.input-group-btn {
+    z-index: auto;
   }
 }
 
@@ -64,21 +62,20 @@
   // Forces the pull to the right, if necessary
   &,
   &[class*="col-"],
-  .row-fluid &[class*="col-"] {
+  .row &[class*="col-"] {
     &.dropdown-menu-right {
       float: right;
     }
   }
 
-  .form-search &,
   .form-inline &,
   .form-horizontal &,
   .form-group & {
     margin-bottom: 0;
   }
 
-  .form-group-lg  &.form-control,
-  .form-group-sm  &.form-control {
+  .form-group-lg &.form-control,
+  .form-group-sm &.form-control {
     padding: 0;
   }
 
@@ -86,14 +83,6 @@
   // see https://github.com/silviomoreto/bootstrap-select/issues/685
   .form-inline & .form-control {
     width: 100%;
-  }
-
-  .input-append & {
-    margin-left: -1px;
-  }
-
-  .input-prepend & {
-    margin-right: -1px;
   }
 
   > .disabled {
@@ -105,7 +94,7 @@
   }
 
   // The selectpicker button
-  .btn {
+  .dropdown-toggle {
     .filter-option {
       display: inline-block;
       overflow: hidden;
@@ -122,7 +111,7 @@
     }
   }
 
-  &[class*="col-"] .btn {
+  &[class*="col-"] .dropdown-toggle {
     width: 100%;
   }
 
@@ -134,6 +123,7 @@
 
     &.inner {
       position: static;
+      float: none;
       border: 0;
       padding: 0;
       margin: 0;
@@ -144,11 +134,8 @@
     li {
       position: relative;
 
-      &:not(.disabled) a:hover small,
-      &:not(.disabled) a:focus small,
-      &.active:not(.disabled) a small {
-        color: @color-blue-hover;
-        color: fade(@color-blue-hover, 40%);
+      &.active small {
+        color: #fff;
       }
 
       &.disabled a {
@@ -166,6 +153,7 @@
         span.check-mark {
           display: none;
         }
+
         span.text {
           display: inline-block;
         }
@@ -198,7 +186,7 @@
     margin: 0 5px;
   }
 
-  &.fit-width .btn {
+  &.fit-width .dropdown-toggle {
     .filter-option {
       position: static;
     }
@@ -225,8 +213,8 @@
 }
 
 .bootstrap-select.show-menu-arrow {
-  &.open > .btn {
-    z-index: @zindex-select-dropdown + 1;
+  &.open > .dropdown-toggle {
+    z-index: (@zindex-select-dropdown + 1);
   }
 
   .dropdown-toggle {
@@ -234,10 +222,7 @@
       content: '';
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
-      border-bottom-width: 7px;
-      border-bottom-style: solid;
-      border-bottom-color: @color-grey-arrow;
-      border-bottom-color: fade(@color-grey-arrow, 20%);
+      border-bottom: 7px solid @color-grey-arrow;
       position: absolute;
       bottom: -4px;
       left: 9px;
@@ -260,11 +245,8 @@
     &:before {
       bottom: auto;
       top: -3px;
+      border-top: 7px solid @color-grey-arrow;
       border-bottom: 0;
-      border-top-width: 7px;
-      border-top-style: solid;
-      border-top-color: @color-grey-arrow;
-      border-top-color: fade(@color-grey-arrow, 20%);
     }
 
     &:after {
@@ -296,7 +278,8 @@
 }
 
 .bs-searchbox,
-.bs-actionsbox {
+.bs-actionsbox,
+.bs-donebutton {
   padding: 4px 8px;
 }
 
@@ -307,6 +290,16 @@
 
   & .btn-group button {
     width: 50%;
+  }
+}
+
+.bs-donebutton {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+
+  & .btn-group button {
+    width: 100%;
   }
 }
 
@@ -322,7 +315,7 @@
 }
 
 .mobile-device {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   left: 0;
   display: block !important;
