@@ -52,13 +52,15 @@ The following external libraries are provided with Modoboa:
 * `Bootstrap, from Twitter version 3.3.1 <http://getbootstrap.com/>`_
 * `Bootstrap datetimepicker <http://eonasdan.github.io/bootstrap-datetimepicker/>`_
 
-.. |latest-version| image:: https://pypip.in/v/modoboa/badge.png
+.. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
+   :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
    :target: https://crate.io/packages/modoboa/
 .. |landscape| image:: https://landscape.io/github/tonioo/modoboa/master/landscape.svg?style=flat
    :target: https://landscape.io/github/tonioo/modoboa/master
    :alt: Code Health
-.. |downloads| image:: https://pypip.in/d/modoboa/badge.png
+.. |downloads| image:: https://img.shields.io/pypi/dm/modoboa.svg
+   :target: https://pypi.python.org/pypi/modoboa/
    :alt: Downloads from Pypi
    :target: https://crate.io/packages/modoboa/
 .. |travis| image:: https://travis-ci.org/tonioo/modoboa.png?branch=master
