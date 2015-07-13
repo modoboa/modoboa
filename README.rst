@@ -55,13 +55,11 @@ The following external libraries are provided with Modoboa:
 .. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
    :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
-   :target: https://crate.io/packages/modoboa/
 .. |landscape| image:: https://landscape.io/github/tonioo/modoboa/master/landscape.svg?style=flat
    :target: https://landscape.io/github/tonioo/modoboa/master
    :alt: Code Health
 .. |downloads| image:: https://img.shields.io/pypi/dm/modoboa.svg
    :target: https://pypi.python.org/pypi/modoboa/
    :alt: Downloads from Pypi
-   :target: https://crate.io/packages/modoboa/
 .. |travis| image:: https://travis-ci.org/tonioo/modoboa.png?branch=master
    :target: https://travis-ci.org/tonioo/modoboa
