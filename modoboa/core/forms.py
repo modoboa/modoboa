@@ -5,6 +5,8 @@
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from passwords.fields import PasswordField
+
 from modoboa.core.models import User
 from modoboa.lib import parameters
 
@@ -29,11 +31,11 @@ class ProfileForm(forms.ModelForm):
         label=ugettext_lazy("Old password"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
-    newpassword = forms.CharField(
+    newpassword = PasswordField(
         label=ugettext_lazy("New password"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
-    confirmation = forms.CharField(
+    confirmation = PasswordField(
         label=ugettext_lazy("Confirmation"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )

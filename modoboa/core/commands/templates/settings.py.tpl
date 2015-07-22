@@ -133,6 +133,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MODOBOA_API_URL = 'http://api.modoboa.org/1/'
 
+# django-passwords
+
+PASSWORD_MIN_LENGTH = 8
+
+PASSWORD_COMPLEXITY = {
+    "UPPER": 1,
+    "LOWER": 1,
+    "DIGITS": 1
+}
+
 # Logging configuration
 
 LOGGING = {
