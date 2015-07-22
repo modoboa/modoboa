@@ -23,11 +23,11 @@ class ProfileTestCase(ModoTestCase):
         """
         self.ajax_post(reverse("core:user_profile"),
                        {"oldpassword": "password",
-                        "newpassword": "titi", "confirmation": "titi"})
+                        "newpassword": "12345Toi", "confirmation": "12345Toi"})
         self.clt.logout()
 
         self.assertEqual(
-            self.clt.login(username="admin", password="titi"), True
+            self.clt.login(username="admin", password="12345Toi"), True
         )
         self.assertEqual(
             self.clt.login(username="user@test.com", password="toto"), True
@@ -36,9 +36,16 @@ class ProfileTestCase(ModoTestCase):
         self.ajax_post(
             reverse("core:user_profile"),
             {"oldpassword": "toto",
-             "newpassword": "tutu", "confirmation": "tutu"}
+             "newpassword": "tutu", "confirmation": "tutu"},
+            status=400
+        )
+
+        self.ajax_post(
+            reverse("core:user_profile"),
+            {"oldpassword": "toto",
+             "newpassword": "Toto1234", "confirmation": "Toto1234"}
         )
         self.clt.logout()
         self.assertTrue(
-            self.clt.login(username="user@test.com", password="tutu")
+            self.clt.login(username="user@test.com", password="Toto1234")
         )
