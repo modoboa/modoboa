@@ -44,11 +44,11 @@ class User(PermissionsMixin):
     username = models.CharField(max_length=254, unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    email = models.EmailField(max_length=254, blank=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    email = models.EmailField(max_length=254, blank=True, db_index=True)
+    is_staff = models.BooleanField(default=False, db_index=True)
+    is_active = models.BooleanField(default=True, db_index=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    is_local = models.BooleanField(default=True)
+    is_local = models.BooleanField(default=True, db_index=True)
     master_user = models.BooleanField(
         ugettext_lazy("Allow mailboxes access"), default=False,
         help_text=ugettext_lazy(
@@ -67,6 +67,9 @@ class User(PermissionsMixin):
 
     class Meta:
         ordering = ["username"]
+        index_together = [
+            ['email', 'is_active']
+        ]
 
     password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
 
