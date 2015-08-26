@@ -2,11 +2,7 @@ language: python
 python:
   - "2.7"
 
-env:
-  - DJANGO=1.7
-
 install:
-  - pip install -q Django==$DJANGO --use-mirrors
   - python setup.py -q install
   - pip install -q MySQL-python --use-mirrors
   - pip install -q pexpect --use-mirrors
