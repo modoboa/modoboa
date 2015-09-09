@@ -74,8 +74,7 @@
 
 /* Form */
 
-#uprefs_content input[type="checkbox"],
-.modal input[type="checkbox"]{
+#uprefs_content input[type="checkbox"] {
     margin-top: 10px;
 }
 /* Buttons */

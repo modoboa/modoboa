@@ -19,12 +19,12 @@
          buildcheckboxes: function() {
              var result = "";
 
-             if (!this.options.checkboxes || !this.options.checkboxes.length) {
+             if (!this.options.checkboxes || !Object.keys(this.options.checkboxes).length) {
                  return "";
              }
-             result = '<form class="form-inline">';
+             result = '<form class="form-horizontal">';
              $.each(this.options.checkboxes, function(key, val) {
-                 result += "<label class='checkbox'><input type='checkbox' name='{0}' value='' />{1}</label>".format(key, val);
+                 result += "<div class='form-group'><div class='col-xs-12'><div class='checkbox'><label><input type='checkbox' name='{0}' value='' />{1}</label></div></div></div>".format(key, val);
              });
              result += '</form>';
              return result;
@@ -35,7 +35,7 @@
                  id: "confirmbox",
                  'class': "modal fade"
              });
-             var question = (typeof this.options.question == 'function') ?
+             var question = (typeof this.options.question === 'function') ?
                  this.options.question.apply(this) : this.options.question;
              var checkboxes = this.buildcheckboxes();
              var body = "";
@@ -92,7 +92,7 @@
                  data: params,
                  url: this.$element.attr('href')
              }).done($.proxy(function(data) {
-                 if (this.options.success_cb != undefined) {
+                 if (this.options.success_cb !== undefined) {
                      this.options.success_cb(data);
                      return;
                  }
