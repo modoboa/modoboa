@@ -2,13 +2,21 @@ language: python
 python:
   - "2.7"
 
+before_install:
+  - pip install codecov
+  
 install:
   - python setup.py -q install
-  - pip install -q MySQL-python --use-mirrors
-  - pip install -q pexpect --use-mirrors
+  - pip install -q psycopg2
 
 before_script:
-  - mysql -e 'create database modoboa_test;'
+  - psql -c 'create database modoboa_test;' -U postgres
 
 script: 
-  - PYTHONPATH=tests python -m unittest install_from_scratch.DeployTest.test_silent
+  - python ./tests.py
+  - cd test_project
+  - coverage run --source ../modoboa manage.py test modoboa.core.tests modoboa.lib.tests
+
+after_success:
+  - codecov
+  
