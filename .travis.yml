@@ -7,7 +7,7 @@ before_install:
   - pip install codecov
   
 install:
-  - python setup.py -q install
+  - python setup.py -q develop
   - pip install -q psycopg2
 
 before_script:
