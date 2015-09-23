@@ -13,7 +13,7 @@ before_script:
   - psql -c 'create database modoboa_test;' -U postgres
 
 script: 
-  - python ./tests.py
+  # - python ./tests.py
   - cd test_project
   - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib
 
