@@ -4,6 +4,26 @@
 Installation
 ############
 
+*****************
+For the lazy ones
+*****************
+
+If you are in a hurry, you will love the `modoboa installer
+<https://github.com/modoboa/modoboa-installer>`_! It's a set of Python
+scripts to install a fully functional email server on one machine
+(modoboa, postfix, dovecot, amavis and more).
+
+To use it, just run the following commands in your terminal::
+
+  $ git clone https://github.com/modoboa/modoboa-installer
+  $ cd modoboa-installer
+  $ sudo ./run.py <mail server hostname>
+
+Wait a few minutes and you're done \o/
+
+If you have more time or if you are just curious, you can install
+Modoboa *the old way* by going to the next section.
+
 ************
 Requirements
 ************
