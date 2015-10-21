@@ -1,20 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Giancarlo Gaifas <lallo@artiemestieri.tn.it>, 2013.
-#
+# 
+# Translators:
+# Giancarlo Gaifas <lallo@artiemestieri.tn.it>, 2013
+# Rocco <mors10@hotmail.com>, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-09 10:20+0200\n"
-"PO-Revision-Date: 2013-12-23 00:56+0100\n"
-"Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
-"Language-Team: ITALIANO <LL@li.org>\n"
-"Language: it\n"
+"PO-Revision-Date: 2015-10-11 11:47+0000\n"
+"Last-Translator: Rocco <mors10@hotmail.com>\n"
+"Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: core/__init__.py:60 core/__init__.py:61
@@ -22,9 +24,8 @@ msgid "General"
 msgstr "Generale"
 
 #: core/__init__.py:80
-#, fuzzy
 msgid "One or more updates are available"
-msgstr "Non sono disponibili statistiche"
+msgstr "Sono disponibili nuovi aggiornamenti"
 
 #: core/app_settings.py:36
 msgid "Authentication"
@@ -68,8 +69,7 @@ msgstr "plain (debole)"
 
 #: core/app_settings.py:57
 msgid "Scheme used to crypt mailbox passwords"
-msgstr ""
-"Schema utilizzato per la criptazione delle password delle caselle di posta"
+msgstr "Schema utilizzato per la criptazione delle password delle caselle di posta"
 
 #: core/app_settings.py:62
 msgid "Rounds"
@@ -79,9 +79,7 @@ msgstr "Cicli"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Numero di cicli da utilizzare (valido per sha256crypt e sha512crypt). "
-"Dev'essere tra 1000 e 999999999, inclusivo."
+msgstr "Numero di cicli da utilizzare (valido per sha256crypt e sha512crypt). Dev'essere tra 1000 e 999999999, inclusivo."
 
 #: core/app_settings.py:72
 msgid "Secret key"
@@ -143,9 +141,7 @@ msgstr "collega DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"Nome particolare da usare quando ci si collega al server LDAP. Lasciare "
-"vuoto per un collegamento anonimo"
+msgstr "Nome particolare da usare quando ci si collega al server LDAP. Lasciare vuoto per un collegamento anonimo"
 
 #: core/app_settings.py:124
 msgid "Bind password"
@@ -153,9 +149,7 @@ msgstr "Password del collegamento"
 
 #: core/app_settings.py:127
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"La password da utilizzare quando ci si collega al server LDAP (con 'Collega "
-"DN')"
+msgstr "La password da utilizzare quando ci si collega al server LDAP (con 'Collega DN')"
 
 #: core/app_settings.py:136
 msgid "Users search base"
@@ -163,9 +157,7 @@ msgstr "Base ricerca per gli utenti"
 
 #: core/app_settings.py:139
 msgid "The distinguished name of the search base used to find users"
-msgstr ""
-"L'identificativo (dn:) della base di ricerca utilizzata per cercare gli "
-"utenti"
+msgstr "L'identificativo (dn:) della base di ricerca utilizzata per cercare gli utenti"
 
 #: core/app_settings.py:146
 msgid "Search filter"
@@ -175,9 +167,7 @@ msgstr "Filtro ricerca"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Stringa di filtraggio opzionale (p.es '(objectClass=person)'). Per essere "
-"valida deve essere racchiusa tra parentesi."
+msgstr "Stringa di filtraggio opzionale (p.es '(objectClass=person)'). Per essere valida deve essere racchiusa tra parentesi."
 
 #: core/app_settings.py:157
 msgid "User DN template"
@@ -188,9 +178,7 @@ msgstr "Modello DN dell'utente"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Il modello utilizzato per comporre un DN dell'utente. Deve contenere un "
-"segnaposto (p.es. %(user)s)"
+msgstr "Il modello utilizzato per comporre un DN dell'utente. Deve contenere un segnaposto (p.es. %(user)s)"
 
 #: core/app_settings.py:168
 msgid "Password attribute"
@@ -214,12 +202,9 @@ msgstr "Gruppi degli amministratori"
 
 #: core/app_settings.py:185
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Gli appartenenti a questi gruppi LDAP Posix avranno i privilegi di "
-"amministratori di dominio. Utilizza il carattere ';' per separare valori "
-"multipli."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Gli appartenenti a questi gruppi LDAP Posix avranno i privilegi di amministratori di dominio. Utilizza il carattere ';' per separare valori multipli."
 
 #: core/app_settings.py:192
 msgid "Groups search base"
@@ -227,31 +212,27 @@ msgstr "Base ricerca per i gruppi"
 
 #: core/app_settings.py:195
 msgid "The distinguished name of the search base used to find groups"
-msgstr ""
-"L'identificatore  (dn:) della base di ricerca utilizzato per trovare i gruppi"
+msgstr "L'identificatore  (dn:) della base di ricerca utilizzato per trovare i gruppi"
 
 #: core/app_settings.py:200
 msgid "Miscellaneous"
 msgstr "Miscellanea"
 
 #: core/app_settings.py:203
-#, fuzzy
 msgid "Top notifications check interval"
-msgstr "Spedizione notifiche"
+msgstr "Intervallo per nofifiche importanti"
 
 #: core/app_settings.py:206
-#, fuzzy
 msgid "Interval between two top notification checks (in seconds)"
-msgstr "Intervallo tra due controlli delle request di rilascio "
+msgstr "Intervallo tra due nuove notifiche importanti (in secondi)"
 
 #: core/app_settings.py:212
-#, fuzzy
 msgid "Check new versions"
-msgstr "Verifica validità destinatari"
+msgstr "Controlla nuove versioni"
 
 #: core/app_settings.py:215
 msgid "Automatically checks if a newer version is available"
-msgstr ""
+msgstr "Controlla automaticamente se è disponibile una nuova versione"
 
 #: core/app_settings.py:219
 msgid "Maximum log record age"
@@ -275,9 +256,7 @@ msgstr "Reindirizzamento principale predefinito"
 
 #: core/app_settings.py:237
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"Redirezione predefinita utilizzata quando non è specificata alcuna "
-"applicazione"
+msgstr "Redirezione predefinita utilizzata quando non è specificata alcuna applicazione"
 
 #: core/app_settings.py:267
 msgid "Key must be either 16, 24, or 32 bytes long"
@@ -337,11 +316,11 @@ msgstr "La password non corrisponde"
 
 #: core/models.py:53
 msgid "Allow mailboxes access"
-msgstr ""
+msgstr "Consenti l'accesso alle caselle di posta"
 
 #: core/models.py:55
 msgid "Allow this administrator to access user mailboxes"
-msgstr ""
+msgstr "Permetti agli amministratori di accedere alle caselle di posta degli utenti"
 
 #: core/models.py:58
 msgid "password"
@@ -412,19 +391,16 @@ msgid "Various information about Modoboa"
 msgstr "Informazioni varie su Modoboa"
 
 #: core/templates/core/information.html:5
-#, fuzzy
 msgid "One or more updates are available!"
-msgstr "Non sono disponibili statistiche"
+msgstr "Uno o più aggiornamenti sono disponibili!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
+msgstr "Controlla la lista di seguito per verificare se si sono componenti da poter aggiornare"
 
 #: core/templates/core/information.html:10
-#, fuzzy
-#| msgid "Authentication"
 msgid "Applications"
-msgstr "Autenticazione"
+msgstr "Applicazioni"
 
 #: core/templates/core/information.html:14
 #: core/templates/core/information.html:36
@@ -433,13 +409,11 @@ msgstr "Nome"
 
 #: core/templates/core/information.html:15
 msgid "Installed version"
-msgstr ""
+msgstr "Versione installata"
 
 #: core/templates/core/information.html:16
-#, fuzzy
-#| msgid "Last login"
 msgid "Last version"
-msgstr "Ultimo login"
+msgstr "Ultima versione"
 
 #: core/templates/core/information.html:17
 msgid "Description"
@@ -528,10 +502,8 @@ msgid "Logout"
 msgstr "Esci"
 
 #: core/utils.py:20
-#, fuzzy
-#| msgid "Welcome to Modoboa"
 msgid "The core part of Modoboa"
-msgstr "Benvenuti in Modoboa"
+msgstr "Parte centrale di Modoboa"
 
 #: core/views/admin.py:52
 msgid "Parameters saved"
@@ -575,7 +547,7 @@ msgstr "Accesso negato"
 
 #: lib/form_utils.py:84
 msgid "Submit"
-msgstr ""
+msgstr "Invia"
 
 #: lib/form_utils.py:117 lib/form_utils.py:120
 msgid "Invalid request"
