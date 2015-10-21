@@ -1,23 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Arvedui <arvedui@posteo.de>, 2014
+# Arvedui <arvedui@posteo.de>, 2014-2015
+# controlc.de, 2014-2015
+# Patrick Koetter <p@state-of-mind.de>, 2010
 # Patrick Koetter <p@state-of-mind.de>, 2010
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-09 10:20+0200\n"
-"PO-Revision-Date: 2014-12-03 11:02+0000\n"
-"Last-Translator: Arvedui <arvedui@posteo.de>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
-"de/)\n"
-"Language: de\n"
+"PO-Revision-Date: 2015-07-09 14:03+0000\n"
+"Last-Translator: controlc.de\n"
+"Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: core/__init__.py:60 core/__init__.py:61
@@ -25,10 +26,8 @@ msgid "General"
 msgstr "Allgemein"
 
 #: core/__init__.py:80
-#, fuzzy
-#| msgid "An update is available!"
 msgid "One or more updates are available"
-msgstr "Ein Update ist verfügbar!"
+msgstr "Eine oder mehrere Aktualisierungen sind verfügbar"
 
 #: core/app_settings.py:36
 msgid "Authentication"
@@ -72,7 +71,7 @@ msgstr "plain (schwach)"
 
 #: core/app_settings.py:57
 msgid "Scheme used to crypt mailbox passwords"
-msgstr "Verschlüsselungsschema der Mailbox-Passwörter"
+msgstr "Verschlüsselungsschema der Postfach-Passwörter"
 
 #: core/app_settings.py:62
 msgid "Rounds"
@@ -82,9 +81,7 @@ msgstr "Runden"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Anzahl zu verwendender Runden (nur für sha256crypt und sha512crypt). Zahl "
-"muss zwischen 1000 und 999999999 liegen."
+msgstr "Anzahl zu verwendender Runden (nur für sha256crypt und sha512crypt). Zahl muss zwischen 1000 und 999999999 liegen."
 
 #: core/app_settings.py:72
 msgid "Secret key"
@@ -146,8 +143,7 @@ msgstr "Bind DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"Der DN für einen Bind an den LDAP-Server. Nichts eingeben für anonymen Bind."
+msgstr "Der DN für einen Bind an den LDAP-Server. Nichts eingeben für anonymen Bind."
 
 #: core/app_settings.py:124
 msgid "Bind password"
@@ -173,9 +169,7 @@ msgstr "Suchfilter"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Ein optionaler Filter, z.B. '(objectClass=person)'. Der Filter muss "
-"entsprechend der LDAP-Konvention in Klammern gesetzt werden."
+msgstr "Ein optionaler Filter, z.B. '(objectClass=person)'. Der Filter muss entsprechend der LDAP-Konvention in Klammern gesetzt werden."
 
 #: core/app_settings.py:157
 msgid "User DN template"
@@ -186,9 +180,7 @@ msgstr "Vorlage für User DN"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Die Vorlage für einen User DN. Sie sollte einen Platzhalter, z.B. %(user)s "
-"enthalten."
+msgstr "Die Vorlage für einen User DN. Sie sollte einen Platzhalter, z.B. %(user)s enthalten."
 
 #: core/app_settings.py:168
 msgid "Password attribute"
@@ -212,11 +204,9 @@ msgstr "Administrator-Gruppen"
 
 #: core/app_settings.py:185
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Mitglieder dieser LDAP Posix-Gruppe werden als Domain-Administratoren "
-"angelegt werden. Nutzen Sie ';', um Gruppen zu separieren."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Mitglieder dieser LDAP Posix-Gruppe werden als Domain-Administratoren angelegt werden. Nutzen Sie ';', um Gruppen zu separieren."
 
 #: core/app_settings.py:192
 msgid "Groups search base"
@@ -235,18 +225,16 @@ msgid "Top notifications check interval"
 msgstr "Benachrichtigungs-Prüfintervall"
 
 #: core/app_settings.py:206
-#, fuzzy
-#| msgid "Interval between two top notification checks"
 msgid "Interval between two top notification checks (in seconds)"
-msgstr "Intervall zwischen Benachrichtigungs-Prüfungen"
+msgstr "Intervall zwischen zwei Benachrichtigungsprüfungen (in Sekunden)"
 
 #: core/app_settings.py:212
 msgid "Check new versions"
-msgstr "Überprüfe auf neue Versionen"
+msgstr "Prüfe auf neue Versionen"
 
 #: core/app_settings.py:215
 msgid "Automatically checks if a newer version is available"
-msgstr "Überprüft automatisch ob eine neuere Version verfügbar ist."
+msgstr "Prüft automatisch ob eine neuere Version verfügbar ist."
 
 #: core/app_settings.py:219
 msgid "Maximum log record age"
@@ -278,7 +266,7 @@ msgstr "Schlüssel muss 16, 24 oder 32 Byte lang sein"
 
 #: core/app_settings.py:276
 msgid "Invalid syntax"
-msgstr "Ungültige Syntax"
+msgstr "Ungültiger Syntax"
 
 #: core/app_settings.py:282
 msgid "Invalid rounds number"
@@ -330,11 +318,11 @@ msgstr "Passwörter stimmen nicht überein"
 
 #: core/models.py:53
 msgid "Allow mailboxes access"
-msgstr ""
+msgstr "Erlaube den Postfach-Zugriff"
 
 #: core/models.py:55
 msgid "Allow this administrator to access user mailboxes"
-msgstr ""
+msgstr "Erlaubt dem Administrator auf Benutzer-Postfächer zuzugreifen"
 
 #: core/models.py:58
 msgid "password"
@@ -362,8 +350,7 @@ msgstr "Ungültige Zeile"
 
 #: core/models.py:355
 msgid "You can't import an account with a role greater than yours"
-msgstr ""
-"Sie können kein Konto mit einer höheren Rolle als Ihrer eigenen importieren"
+msgstr "Sie können kein Konto mit einer höheren Rolle als Ihrer eigenen importieren"
 
 #: core/models.py:370
 #, python-format
@@ -406,22 +393,16 @@ msgid "Various information about Modoboa"
 msgstr "Verschiedene Informationen über Modoboa"
 
 #: core/templates/core/information.html:5
-#, fuzzy
-#| msgid "An update is available!"
 msgid "One or more updates are available!"
-msgstr "Ein Update ist verfügbar!"
+msgstr "Eine oder mehrere Aktualisierungen sind verfügbar!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Überprüfen Sie die folgende Liste auf Komponenten, die aktualisiert werden "
-"können."
+msgstr "Überprüfen Sie die folgende Liste auf Komponenten, die aktualisiert werden können."
 
 #: core/templates/core/information.html:10
-#, fuzzy
-#| msgid "Authentication"
 msgid "Applications"
-msgstr "Anwendungen"
+msgstr "Applikationen"
 
 #: core/templates/core/information.html:14
 #: core/templates/core/information.html:36
@@ -433,10 +414,8 @@ msgid "Installed version"
 msgstr "Installierte Version"
 
 #: core/templates/core/information.html:16
-#, fuzzy
-#| msgid "Last login"
 msgid "Last version"
-msgstr "Letzte Version"
+msgstr "Aktuellste Version"
 
 #: core/templates/core/information.html:17
 msgid "Description"
@@ -525,8 +504,6 @@ msgid "Logout"
 msgstr "Logout"
 
 #: core/utils.py:20
-#, fuzzy
-#| msgid "Welcome to Modoboa"
 msgid "The core part of Modoboa"
 msgstr "Der Kern von Modoboa"
 
@@ -541,9 +518,7 @@ msgstr "Benutzer '%s' hat sich erfolgreich angemeldet"
 
 #: core/views/auth.py:48
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Ihr Benutzername und Passwort stimmen nicht überein. Bitte versuchen Sie es "
-"noch einmal."
+msgstr "Ihr Benutzername und Passwort stimmen nicht überein. Bitte versuchen Sie es noch einmal."
 
 #: core/views/auth.py:76
 #, python-format
