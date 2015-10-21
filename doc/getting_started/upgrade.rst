@@ -49,6 +49,25 @@ you did choose. See :ref:`webservers` for more details.
 Specific upgrade instructions
 *****************************
 
+1.3.5
+=====
+
+To enhance security, Modoboa now checks the `strength of user
+passwords <https://github.com/dstufft/django-passwords>_`.
+
+To use this feature, add the following configuration into the ``settings.py`` file::
+
+  # django-passwords
+
+  PASSWORD_MIN_LENGTH = 8
+
+  PASSWORD_COMPLEXITY = {
+      "UPPER": 1,
+      "LOWER": 1,
+      "DIGITS": 1
+  }
+
+
 1.3.2
 =====
 

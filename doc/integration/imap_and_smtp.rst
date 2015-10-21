@@ -441,10 +441,7 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   relay_domains =
   virtual_mailbox_domains = <driver>:/etc/postfix/sql-domains.cf
   virtual_alias_domains = <driver>:/etc/postfix/sql-domain-aliases.cf
-  virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf,
-        <driver>:/etc/postfix/sql-domain-aliases-mailboxes.cf,
-        <driver>:/etc/postfix/sql-mailboxes-self-aliases.cf,
-        <driver>:/etc/postfix/sql-catchall-aliases.cf
+  virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf
 
   smtpd_recipient_restrictions =
         ...
@@ -456,8 +453,6 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   smtpd_sender_login_maps =
         <driver>:/etc/postfix/sql-sender-login-mailboxes.cf
         <driver>:/etc/postfix/sql-sender-login-aliases.cf
-        <driver>:/etc/postfix/sql-sender-login-domain-aliases.cf
-        <driver>:/etc/postfix/sql-sender-login-catchall-aliases.cf
 
   smtpd_sender_restrictions =
         reject_sender_login_mismatch
