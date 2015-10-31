@@ -11,7 +11,9 @@ from django.core.management.base import BaseCommand
 from modoboa.core import load_core_settings, PERMISSIONS
 from modoboa.core.extensions import exts_pool
 from modoboa.core.models import User, ObjectAccess
+from modoboa.lib.cryptutils import random_key
 from modoboa.lib import events
+from modoboa.lib import models as lib_models
 from modoboa.lib.permissions import add_permissions_to_group
 from . import CloseConnectionMixin
 
@@ -32,6 +34,12 @@ class Command(BaseCommand, CloseConnectionMixin):
             admin.save()
             ObjectAccess.objects.create(
                 user=admin, content_object=admin, is_owner=True)
+
+        param_name = "core.SECRET_KEY"
+        qset = lib_models.Parameter.objects.filter(name=param_name)
+        if not qset.exists():
+            lib_models.Parameter.objects.create(
+                name=param_name, value=random_key())
 
         exts_pool.load_all()
 
