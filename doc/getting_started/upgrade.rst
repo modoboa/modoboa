@@ -73,6 +73,10 @@ To use this feature, add the following configuration into the ``settings.py`` fi
       "DIGITS": 1
   }
 
+``pip`` users will need jpeg libraries in order to upgrade extensions. To install them on Debian / Ubuntu, you can run::
+
+  $ apt-get install libjpeg8-dev
+
 1.3.2
 =====
 
