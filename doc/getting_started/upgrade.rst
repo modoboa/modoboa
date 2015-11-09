@@ -49,6 +49,52 @@ you did choose. See :ref:`webservers` for more details.
 Specific upgrade instructions
 *****************************
 
+1.4.0
+=====
+
+.. warning::
+
+   Please make sure to use Modoboa 1.3.5 with an up-to-date database
+   before an upgrade to 1.4.0.
+
+.. warning::
+
+   Do not follow the regular upgrade procedure for this version.   
+
+Some extension have been moved back into the main repository. The main
+reason for that is that using Modoboa without them doesn't make sense.
+
+First of all, you must rename the following applications listed inside
+the ``MODOBOA_APPS`` variable:
+
++--------------------------+--------------------+
+|Old name                  |New name            |
++==========================+====================+
+|modoboa_admin             |modoboa.admin       |
++--------------------------+--------------------+
+|modoboa_admin_limits      |modoboa.limits      |
++--------------------------+--------------------+
+|modoboa_admin_relaydomains|modoboa.relaydomains|
++--------------------------+--------------------+
+
+Then, apply the following steps:
+
+#. Uninstall old extensions::
+
+   $ pip uninstall modoboa-admin modoboa-admin-limits modoboa-admin-relaydomains
+   
+#. Manually migrate database::
+
+   $ cd <instance_dir>
+   $ python manage.py migrate admin 0001 --fake
+   $ python manage.py migrate limits 0001 --fake
+   $ python manage.py migrate relaydomains 0001 --fake
+   $ python manage.py migrate
+
+#. Finally, update static files::
+
+   $ python manage.py collectstatic   
+
 1.3.5
 =====
 

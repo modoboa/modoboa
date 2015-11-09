@@ -57,7 +57,7 @@ def display_pool_usage(user, target, currentpage):
     if len(limits) == 0:
         return []
     return [
-        render_to_string("admin_limits/poolusage.html",
+        render_to_string("limits/poolusage.html",
                          dict(limits=limits))
     ]
 
