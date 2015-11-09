@@ -2,16 +2,13 @@
 
 from django.core.urlresolvers import reverse
 
-from modoboa.admin.app_settings import load_admin_settings
 from modoboa.admin.factories import populate_database
 from modoboa.admin.models import Alias, Domain
-from modoboa.core import load_core_settings
 from modoboa.core.factories import UserFactory
 from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
-from .app_settings import load_limits_settings
 from .models import LimitTemplates
 
 
@@ -80,15 +77,16 @@ class ResourceTestCase(ModoTestCase):
     def _create_domain(self, name, status=200, withtpl=False):
         values = {
             "name": name, "quota": 100, "create_dom_admin": "no",
-            "create_aliases": "no", "stepid": 'step2', "type": "domain"
+            "create_aliases": "no", "stepid": 'step3', "type": "domain"
         }
         if withtpl:
             values['create_dom_admin'] = 'yes'
             values['dom_admin_username'] = 'admin'
             values['create_aliases'] = 'yes'
-        return self.ajax_post(
+        response = self.ajax_post(
             reverse("admin:domain_add"), values, status
         )
+        return response
 
     def _domain_alias_operation(self, optype, domain, name, status=200):
         dom = Domain.objects.get(name=domain)
