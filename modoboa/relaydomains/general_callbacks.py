@@ -4,7 +4,6 @@ from django.conf import settings
 from django.template import Template, Context
 from django.utils.translation import ugettext_lazy, ugettext as _
 
-from modoboa.core.extensions import exts_pool
 from modoboa.lib import events
 
 from .forms import RelayDomainWizardStep, RelayDomainFormGeneral
