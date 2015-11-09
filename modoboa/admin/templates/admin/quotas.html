@@ -1,0 +1,15 @@
+{% load lib_tags admin_tags %}
+
+{% for mbox in mboxes %}
+<tr>
+  <td>{% identity_modify_link mbox.user "mail" %}</td>
+  <td>{{ mbox.get_quota }}M</td>
+  <td>{{ mbox.quota }}M</td>
+  <td name="quota">
+    <div id="quotabar" rel="tooltip" title="{{ mbox.get_quota_in_percent }}%"
+         class="progress">
+      <div class="{% progress_color mbox.get_quota_in_percent %}" style="width: {{ mbox.get_quota_in_percent }}%"></div>
+    </div>
+  </td>
+</tr>
+{% endfor %}

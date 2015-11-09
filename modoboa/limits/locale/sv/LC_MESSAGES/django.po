@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Martin Persson <martin.jens.persson@gmail.com>, 2014
+# Olle Gustafsson <olle@dalnix.se>, 2013
+# Olle Gustafsson <olle@dalnix.se>, 2013,2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"PO-Revision-Date: 2015-01-13 15:18+0000\n"
+"Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
+"Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/"
+"sv/)\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: limits/app_settings.py:18
+msgid "Default limits"
+msgstr "Standard gränser"
+
+#: limits/app_settings.py:21 limits/models.py:17
+msgid "Domain admins"
+msgstr "Domänadministratörer"
+
+#: limits/app_settings.py:24
+#, fuzzy
+#| msgid ""
+#| "Maximum number of allowed domain administrators for a new administrator"
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr "Maximalt antal domänadministratörer den här användaren kan skapa"
+
+#: limits/app_settings.py:32 limits/models.py:21
+msgid "Domains"
+msgstr "Domäner"
+
+#: limits/app_settings.py:35
+#, fuzzy
+#| msgid "Maximum number of allowed domains for a new administrator"
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maximalt antal domäner för en ny administratör"
+
+#: limits/app_settings.py:42 limits/models.py:24
+msgid "Domain aliases"
+msgstr "Domän alias"
+
+#: limits/app_settings.py:45
+#, fuzzy
+#| msgid "Maximum number of allowed domain aliases for a new administrator"
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr "Maximalt antal domän alias för en ny administratör"
+
+#: limits/app_settings.py:53 limits/models.py:28
+msgid "Mailboxes"
+msgstr "Brevlådor"
+
+#: limits/app_settings.py:56
+#, fuzzy
+#| msgid "Maximum number of allowed mailboxes for a new administrator"
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maximalt antal tillåtna brevlådor för en ny administratör"
+
+#: limits/app_settings.py:63 limits/models.py:30
+msgid "Mailbox aliases"
+msgstr "Brevlåde alias"
+
+#: limits/app_settings.py:66
+#, fuzzy
+#| msgid "Maximum number of allowed aliases for a new administrator"
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maximalt antal tillåtna alias för en ny administratör"
+
+#: limits/app_settings.py:80
+msgid "Limits"
+msgstr "Gräns"
+
+#: limits/forms.py:35 limits/forms.py:42
+msgid "Invalid limit"
+msgstr "Ogiltig gräns"
+
+#: limits/forms.py:65
+msgid "Your resources are not initialized yet"
+msgstr "Dina resurser har ännu inte initierats"
+
+#: limits/forms.py:69
+msgid "You're not allowed to define unlimited values"
+msgstr "Du har inte tillåtelse att definiera obegränsat värden"
+
+#: limits/general_callbacks.py:28
+msgid "Reseller"
+msgstr "Återförsäljare"
+
+#: limits/general_callbacks.py:75
+msgid "Resources"
+msgstr "Resurser"
+
+#: limits/lib.py:21
+#, python-format
+msgid "%s: limit reached"
+msgstr "%s: gräns uppnådd"
+
+#: limits/lib.py:31
+msgid "Not enough resources"
+msgstr "Inte tillräckligt med resurser"
+
+#: limits/models.py:18
+msgid "Maximum number of domain administrators this user can create"
+msgstr "Maximalt antal domänadministratörer den här användaren kan skapa"
+
+#: limits/models.py:22
+msgid "Maximum number of domains this user can create"
+msgstr "Maximalt antal domäner den här användaren kan skapa"
+
+#: limits/models.py:26
+msgid "Maximum number of domain aliases this user can create"
+msgstr "Maximalt antal domänen alias den här användaren kan skapa"
+
+#: limits/models.py:29
+msgid "Maximum number of mailboxes this user can create"
+msgstr "Maximalt antal brevlådor den här användaren kan skapa"
+
+#: limits/models.py:31
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "Maximalt antal brevlådealias den här användaren kan skapa"
+
+#: limits/models.py:147
+msgid "undefined"
+msgstr "odefinierad"
+
+#: limits/models.py:149
+msgid "unlimited"
+msgstr "obegränsad"
+
+#: limits/templates/limits/poolusage.html:3
+msgid "Resources usage"
+msgstr "Resurs användande"

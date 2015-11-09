@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Andrew <buddha@cryptolab.net>, 2014
+# TuxBrother <vrijwilligerswerk@wij.rs>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"PO-Revision-Date: 2014-12-31 11:37+0000\n"
+"Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
+"modoboa/language/nl_NL/)\n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: limits/app_settings.py:18
+msgid "Default limits"
+msgstr "Standaard limieten"
+
+#: limits/app_settings.py:21 limits/models.py:17
+msgid "Domain admins"
+msgstr "Domein administrators"
+
+#: limits/app_settings.py:24
+#, fuzzy
+#| msgid ""
+#| "Maximum number of allowed domain administrators for a new administrator"
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Maximum aantal toegestane domein administrators voor een nieuwe administrator"
+
+#: limits/app_settings.py:32 limits/models.py:21
+msgid "Domains"
+msgstr "Domeinen"
+
+#: limits/app_settings.py:35
+#, fuzzy
+#| msgid "Maximum number of allowed domains for a new administrator"
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maximum aantal toegestane domeinen voor een nieuwe administrator"
+
+#: limits/app_settings.py:42 limits/models.py:24
+msgid "Domain aliases"
+msgstr "Domein aliassen"
+
+#: limits/app_settings.py:45
+#, fuzzy
+#| msgid "Maximum number of allowed domain aliases for a new administrator"
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr "Maximum aantal domein aliassen voor een nieuwe administrator"
+
+#: limits/app_settings.py:53 limits/models.py:28
+msgid "Mailboxes"
+msgstr "Mailboxen"
+
+#: limits/app_settings.py:56
+#, fuzzy
+#| msgid "Maximum number of allowed mailboxes for a new administrator"
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maximum aantal toegestane mailboxen voor een nieuwe administrator"
+
+#: limits/app_settings.py:63 limits/models.py:30
+msgid "Mailbox aliases"
+msgstr "Mailbox aliassen"
+
+#: limits/app_settings.py:66
+#, fuzzy
+#| msgid "Maximum number of allowed aliases for a new administrator"
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maximum aantal aliassen voor een nieuwe administrator"
+
+#: limits/app_settings.py:80
+msgid "Limits"
+msgstr "Limieten"
+
+#: limits/forms.py:35 limits/forms.py:42
+msgid "Invalid limit"
+msgstr "Ongeldige limiet"
+
+#: limits/forms.py:65
+msgid "Your resources are not initialized yet"
+msgstr "Uw capaciteiten zijn nog niet geintialiseerd"
+
+#: limits/forms.py:69
+msgid "You're not allowed to define unlimited values"
+msgstr "U mag geen ongelimiteerde waardes opgeven"
+
+#: limits/general_callbacks.py:28
+msgid "Reseller"
+msgstr "Verkoper"
+
+#: limits/general_callbacks.py:75
+msgid "Resources"
+msgstr "Capaciteiten"
+
+#: limits/lib.py:21
+#, python-format
+msgid "%s: limit reached"
+msgstr "%s: limiet bereikt"
+
+#: limits/lib.py:31
+msgid "Not enough resources"
+msgstr "Niet genoeg capaciteit"
+
+#: limits/models.py:18
+msgid "Maximum number of domain administrators this user can create"
+msgstr "Maximum aantal domein administrators die deze gebruiker aan kan maken"
+
+#: limits/models.py:22
+msgid "Maximum number of domains this user can create"
+msgstr "Maximum aantal domeinen die deze gebruiker aan kan maken"
+
+#: limits/models.py:26
+msgid "Maximum number of domain aliases this user can create"
+msgstr "Maximum aantal domein-aliassen die deze gebruiker kan aanmaken"
+
+#: limits/models.py:29
+msgid "Maximum number of mailboxes this user can create"
+msgstr "Maximum aantal mailboxen die deze gebruiker kan aanmaken"
+
+#: limits/models.py:31
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "Maximum mailbox aliassen die deze gebruiker kan aanmken"
+
+#: limits/models.py:147
+msgid "undefined"
+msgstr "ongedefinieerd"
+
+#: limits/models.py:149
+msgid "unlimited"
+msgstr "ongelimiteerd"
+
+#: limits/templates/limits/poolusage.html:3
+msgid "Resources usage"
+msgstr "Capaciteit gebruik"

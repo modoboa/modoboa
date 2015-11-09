@@ -1,0 +1,28 @@
+{% extends "common/tabforms.html" %}{% load i18n lib_tags admin_tags %}
+{% block extratabs %}
+  <li class="{% if tabs.active_id == 'admins' %}active{% endif %}">
+    <a href="#admins" data-toggle="tab">{% trans "Administrators" %}</a>
+  </li>
+  <li class="{% if tabs.active_id == 'misc' %}active{% endif %}">
+    <a href="#misc" data-toggle="tab">{% trans "Miscellaneous" %}</a>
+  </li>
+{% endblock %}
+{% block extratabs_content %}
+<div class="tab-pane{% if tabs.active_id == 'admins' %} active{% endif %}" id="admins">{% if domadmins %}
+  <table id="domadmins" class="table table-condensed">
+    <tr><th>{% trans "Username" %}</th><th>{% trans "Name" %}</th><th></th></tr>
+    {% for da in domadmins %}<tr>
+      <td>{{ da.username }}</td>
+      <td>{{ da.fullname }}</td>
+      <td name="actions">{% if perms.admin.change_domain %}{% domadmin_actions da.id domain.id %}{% endif %}</td>
+    </tr>{% endfor %}
+  </table>{% else %}<div class="alert alert-info">{% trans "No domain administrator defined" %}</div>{% endif %}
+</div>
+<div class="tab-pane{% if tabs.active_id == 'misc' %} active{% endif %}" id="misc">
+  <div class="row"><span class="title">{% trans "Creation date" %}</span><span>{{ domain.creation }}</span></div>
+  <div class="row"><span class="title">{% trans "Last modification date" %}</span><span>{{ domain.last_modification }}</span></div>
+  <div class="row"><span class="title">{% trans "Domain aliases" %}</span><span>{{ domain.domainalias_count }}</span></div>
+  <div class="row"><span class="title">{% trans "Mailboxes" %}</span><span>{{ domain.mailbox_count }}</span></div>
+  <div class="row"><span class="title">{% trans "Mailbox aliases" %}</span><span>{{ domain.mbalias_count }}</span></div>
+</div>
+{% endblock %}

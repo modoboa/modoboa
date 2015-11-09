@@ -1,0 +1,147 @@
+# Modoboa french translation
+# Copyright (C) 2009-2013
+# This file is distributed under the same license as the Modoboa package.
+#
+# Antoine Nguyen <tonio@ngyn.org>, 2009-2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: modoboa-1.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"PO-Revision-Date: 2011-01-07 10:00+100\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: FR <tonio@ngyn.org>\n"
+"Language: Français\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: limits/app_settings.py:18
+msgid "Default limits"
+msgstr "Limites par défaut"
+
+#: limits/app_settings.py:21 limits/models.py:17
+msgid "Domain admins"
+msgstr "Admins de domaine"
+
+#: limits/app_settings.py:24
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'admins de domaine pour un nouvel administrateur. (0 pour "
+"interdire toute création, -1 pour autoriser les création illimitées)"
+
+#: limits/app_settings.py:32 limits/models.py:21
+msgid "Domains"
+msgstr "Domaines"
+
+#: limits/app_settings.py:35
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal de domaines pour un nouvel administrateur. (0 pour interdire "
+"toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:42 limits/models.py:24
+msgid "Domain aliases"
+msgstr "Alias de domaine"
+
+#: limits/app_settings.py:45
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'alias de domaine pour un nouvel administrateur. (0 pour "
+"interdire toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:53 limits/models.py:28
+msgid "Mailboxes"
+msgstr "Boites"
+
+#: limits/app_settings.py:56
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal de boites pour un nouvel administrateur. (0 pour interdire "
+"toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:63 limits/models.py:30
+msgid "Mailbox aliases"
+msgstr "Alias de boite."
+
+#: limits/app_settings.py:66
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'alias de boite pour un nouvel administrateur. (0 pour "
+"interdire toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:80
+msgid "Limits"
+msgstr "Limites"
+
+#: limits/forms.py:35 limits/forms.py:42
+msgid "Invalid limit"
+msgstr "Limite invalide"
+
+#: limits/forms.py:65
+msgid "Your resources are not initialized yet"
+msgstr "Vos ressources ne sont pas encore initialisées"
+
+#: limits/forms.py:69
+msgid "You're not allowed to define unlimited values"
+msgstr "Vous n'êtes pas autorisé à définir des valeurs illimitées"
+
+#: limits/general_callbacks.py:28
+msgid "Reseller"
+msgstr "Revendeur"
+
+#: limits/general_callbacks.py:75
+msgid "Resources"
+msgstr "Ressources"
+
+#: limits/lib.py:21
+#, python-format
+msgid "%s: limit reached"
+msgstr "%s : limite atteinte"
+
+#: limits/lib.py:31
+msgid "Not enough resources"
+msgstr "Pas assez de ressources"
+
+#: limits/models.py:18
+msgid "Maximum number of domain administrators this user can create"
+msgstr "Nombre maximal d'admins de domaine que cet utilisateur peut créer"
+
+#: limits/models.py:22
+msgid "Maximum number of domains this user can create"
+msgstr "Nombre maximal de domaines que cet utilisateur peut créer"
+
+#: limits/models.py:26
+msgid "Maximum number of domain aliases this user can create"
+msgstr "Nombre maximal d'alias de domain que cet utilisateur peut créer"
+
+#: limits/models.py:29
+msgid "Maximum number of mailboxes this user can create"
+msgstr "Nombre maximal de boites que cet utilisateur peut créer"
+
+#: limits/models.py:31
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "Nombre maximal d'alias de boite que cet utilisateur peut créer"
+
+#: limits/models.py:147
+msgid "undefined"
+msgstr "Indéfini"
+
+#: limits/models.py:149
+msgid "unlimited"
+msgstr "illimité"
+
+#: limits/templates/limits/poolusage.html:3
+msgid "Resources usage"
+msgstr "Utilisation des ressources"

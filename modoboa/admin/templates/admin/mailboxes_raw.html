@@ -1,0 +1,11 @@
+{% load i18n %}
+{% if target == "permissions" %}
+<option value="">{% trans "Choose a value" %}</option>
+{% endif %}
+{% for mb in mailboxes %}
+{% if target == "permissions" %}
+<option value='{{ mb.id }}'>{{ mb.name }}</option>
+{% else %}
+<option value='{{ mb.id }}'>{{ mb.full_address }}</option>
+{% endif %}
+{% endfor %}

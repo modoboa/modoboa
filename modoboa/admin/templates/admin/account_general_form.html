@@ -1,0 +1,14 @@
+{% load form_tags %}
+
+{% render_field form.role %}
+{% render_field form.username %}
+{% render_field form.first_name %}
+{% render_field form.last_name %}
+{% render_field form.password1 %}
+{% render_field form.password2 %}
+{% if form.master_user %}{% render_field form.master_user %}{% endif %}
+{% if form.domain_is_disabled %}
+{% include "common/generic_field.html" with field=form.is_active label_width="col-sm-4" inline_message=_("Domain is disabled") %}
+{% else %}
+{% render_field form.is_active %}
+{% endif %}

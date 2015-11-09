@@ -1,0 +1,29 @@
+{% extends "admin/listing.html" %}{% load i18n admin_tags lib_tags %}
+
+{% block pagetitle %}{% trans "Domains" %}{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+{% extra_static_content "domains" "css" user %}
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script type="text/javascript">
+$(document).ready(function() {
+    admin = new Domains({
+        load_page_url: "{% url 'admin:_domain_list' %}"
+    });
+});
+</script>
+{% extra_static_content "domains" "js" user %}
+{% endblock %}
+
+{% block actions %}{% domains_menu "domains" user %}{% endblock %}
+
+{% block table_header %}
+<th id="name" class="sortable" data-sort_order="name" width="">{% trans "Name" %}</th>
+<th id="aliases" width="">{% trans "Alias(es)" %}</th>
+<th id="tags" class="sortable" data-sort_order="tags" width="">{% trans "Tags" %}</th>
+<th id="actions" width="">{% trans "Actions" %}</th>
+{% endblock %}

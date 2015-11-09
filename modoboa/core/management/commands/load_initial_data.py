@@ -8,6 +8,7 @@
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
+from modoboa.admin.app_settings import load_admin_settings
 from modoboa.core import load_core_settings, PERMISSIONS
 from modoboa.core.extensions import exts_pool
 from modoboa.core.models import User, ObjectAccess
@@ -15,6 +16,8 @@ from modoboa.lib.cryptutils import random_key
 from modoboa.lib import events
 from modoboa.lib import models as lib_models
 from modoboa.lib.permissions import add_permissions_to_group
+from modoboa.limits.app_settings import load_limits_settings
+import modoboa.relaydomains.models as relay_models
 from . import CloseConnectionMixin
 
 
@@ -27,6 +30,8 @@ class Command(BaseCommand, CloseConnectionMixin):
     def handle(self, *args, **options):
         """Command entry point."""
         load_core_settings()
+        load_admin_settings()
+        load_limits_settings()
 
         if not User.objects.filter(is_superuser=True).count():
             admin = User(username="admin", is_superuser=True)
@@ -40,6 +45,9 @@ class Command(BaseCommand, CloseConnectionMixin):
         if not qset.exists():
             lib_models.Parameter.objects.create(
                 name=param_name, value=random_key())
+
+        for service_name in ['relay', 'smtp']:
+            relay_models.Service.objects.get_or_create(name=service_name)
 
         exts_pool.load_all()
 

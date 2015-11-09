@@ -41,8 +41,7 @@ def dologin(request):
                     if user.group == "SimpleUsers":
                         nextlocation = reverse("topredirection")
                     else:
-                        # FIXME
-                        nextlocation = reverse("modoboa_admin:domain_list")
+                        nextlocation = reverse("admin:domain_list")
                 return HttpResponseRedirect(nextlocation)
             error = _(
                 "Your username and password didn't match. Please try again.")

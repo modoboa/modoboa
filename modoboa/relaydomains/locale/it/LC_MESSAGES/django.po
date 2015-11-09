@@ -1,0 +1,109 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Giancarlo Gaifas <lallo@artiemestieri.tn.it>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"PO-Revision-Date: 2013-12-23 00:56+0100\n"
+"Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
+"Language-Team: ITALIANO <LL@li.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: relaydomains/app_settings.py:29
+msgid "General"
+msgstr "Generale"
+
+#: relaydomains/app_settings.py:32
+msgid "Postfix's master.cf path"
+msgstr "Percorso del file master.cf di Postfix"
+
+#: relaydomains/app_settings.py:34
+msgid "Path to the master.cf configuration file"
+msgstr "Percorso del file di configurazione master.cf"
+
+#: relaydomains/app_settings.py:42
+msgid "Relay domains"
+msgstr "Domini relè"
+
+#: relaydomains/forms.py:26
+msgid "Name"
+msgstr ""
+
+#: relaydomains/forms.py:27
+#, fuzzy
+#| msgid "The domain name"
+msgid "The relay domain name"
+msgstr "Il nome del dominio"
+
+#: relaydomains/general_callbacks.py:54 relaydomains/general_callbacks.py:61
+#, fuzzy
+#| msgid "Relay domains"
+msgid "Relay domain"
+msgstr "Domini relè"
+
+#: relaydomains/general_callbacks.py:74
+#, fuzzy
+#| msgid "Relay domains"
+msgid "Relay settings"
+msgstr "Domini relè"
+
+#: relaydomains/general_callbacks.py:110
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "<li><em>relaydomain; name; target host; service; enabled; verify "
+#| "recipients</em></li>\n"
+#| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+msgid ""
+"\n"
+"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
+"em></li>\n"
+msgstr ""
+"\n"
+"<li><em>dominio relè; nome; host di destinazione; servizio; abilitato; "
+"verifica caselle</em></li>\n"
+"<li><em> alias dominio relè; nome; destinazione; abilitato</em></li>\n"
+
+#: relaydomains/models.py:61
+msgid "name"
+msgstr "nome"
+
+#: relaydomains/models.py:62
+msgid "The service name"
+msgstr "Il nome del servizio"
+
+#: relaydomains/models.py:84
+msgid "target host"
+msgstr "destinazione"
+
+#: relaydomains/models.py:85
+msgid "Remote destination of this domain"
+msgstr "Destinazione remota per questo dominio"
+
+#: relaydomains/models.py:89
+msgid "verify recipients"
+msgstr "Verifica destinatari"
+
+#: relaydomains/models.py:90
+msgid "Check for valid recipients"
+msgstr "Verifica validità destinatari"
+
+#: relaydomains/models.py:103
+msgid "Relay Domain"
+msgstr "Dominio relè"
+
+#: relaydomains/models.py:130
+msgid "Invalid line"
+msgstr "Riga non valida"
+
+#: relaydomains/templates/relaydomains/service_field.html:3
+msgid "Scan"
+msgstr "Cerca"

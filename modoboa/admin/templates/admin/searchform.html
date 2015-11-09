@@ -1,0 +1,11 @@
+{% load i18n %}
+<form id="searchform" class="form-horizontal" role="form">
+  <div class="form-group has-feedback">
+    <div class="col-sm-12">
+      <input class="form-control" type="text"
+             value={% if squery %}"{{ squery }}"{% else %}"{% trans 'Search' %}"{% endif %}
+             id="searchquery" name="searchquery" />
+      <span class="fa fa-search form-control-feedback"></span>
+    </div>
+  </div>
+</form>
