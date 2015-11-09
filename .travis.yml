@@ -16,7 +16,7 @@ before_script:
 script: 
   - python ./tests.py
   - cd test_project
-  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib
+  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib modoboa.admin.tests modoboa.limits modoboa.relaydomains
 
 after_success:
   - codecov
