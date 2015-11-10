@@ -9,3 +9,5 @@ django-versionfield2>=0.3.3
 requests
 django-xforwardedfor-middleware
 django-passwords==0.3.4
+rfc6266
+progressbar==2.3
