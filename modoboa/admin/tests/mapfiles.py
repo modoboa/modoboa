@@ -9,8 +9,6 @@ class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
 
     """Test case for admin."""
 
-    extension = "admin"
-
     MAP_FILES = [
         "sql-domains.cf", "sql-domain-aliases.cf", "sql-aliases.cf",
         "sql-maintain.cf"

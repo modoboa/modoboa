@@ -245,8 +245,6 @@ class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
 
     """Test case for relaydomains."""
 
-    extension = "relaydomains"
-
     MAP_FILES = [
         "sql-relaydomains.cf",
         "sql-relaydomains-transport.cf",
