@@ -27,10 +27,6 @@ PERMISSIONS = {
         ["admin", "alias", "delete_alias"],
         ["admin", "mailbox", "view_mailboxes"],
         ["admin", "alias", "view_aliases"],
-        ["admin", "domainalias", "view_domaliases"],
-        ["admin", "domainalias", "add_domainalias"],
-        ["admin", "domainalias", "change_domainalias"],
-        ["admin", "domainalias", "delete_domainalias"]
     ]
 }
 

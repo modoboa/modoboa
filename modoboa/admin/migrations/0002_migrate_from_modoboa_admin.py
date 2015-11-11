@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 
 
-def rename_content_types(apps, schema_editor):
-    """Rename old content types if necessary."""
+def rename_and_clean(apps, schema_editor):
+    """Rename old content types if necessary, remove permissions."""
     ContentType = apps.get_model("contenttypes", "ContentType")
     for ct in ContentType.objects.filter(app_label="admin"):
         try:
@@ -17,6 +17,14 @@ def rename_content_types(apps, schema_editor):
         ct.delete()
         old_ct.save()
 
+    # Remove DomainAlias permissions from DomainAdmins group
+    Group = apps.get_model("auth", "Group")
+    Permission = apps.get_model("auth", "Permission")
+    group = Group.objects.get(name="DomainAdmins")
+    ct = ContentType.objects.get(app_label="admin", model="domainalias")
+    for permission in Permission.objects.filter(content_type=ct):
+        group.permissions.remove(permission)
+
 
 class Migration(migrations.Migration):
 
@@ -25,5 +33,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(rename_content_types),
+        migrations.RunPython(rename_and_clean),
     ]
