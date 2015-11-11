@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Arvedui <arvedui@posteo.de>, 2014
+# Patrick Koetter <p@state-of-mind.de>, 2010
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"PO-Revision-Date: 2014-12-03 11:02+0000\n"
+"Last-Translator: Arvedui <arvedui@posteo.de>\n"
+"Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
+"de/)\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: relaydomains/app_settings.py:29
+msgid "General"
+msgstr "Allgemein"
+
+#: relaydomains/app_settings.py:32
+msgid "Postfix's master.cf path"
+msgstr "Pfad zur Postfix-Datei 'master.cf'"
+
+#: relaydomains/app_settings.py:34
+msgid "Path to the master.cf configuration file"
+msgstr "Pfad zur 'master.cf' Konfigurationsdatei"
+
+#: relaydomains/app_settings.py:42
+msgid "Relay domains"
+msgstr "Relaydomain"
+
+#: relaydomains/forms.py:26
+msgid "Name"
+msgstr ""
+
+#: relaydomains/forms.py:27
+#, fuzzy
+#| msgid "The domain name"
+msgid "The relay domain name"
+msgstr "Name der Domain"
+
+#: relaydomains/general_callbacks.py:54 relaydomains/general_callbacks.py:61
+#, fuzzy
+#| msgid "Relay domains"
+msgid "Relay domain"
+msgstr "Relaydomain"
+
+#: relaydomains/general_callbacks.py:74
+#, fuzzy
+#| msgid "Relay domains"
+msgid "Relay settings"
+msgstr "Relaydomain"
+
+#: relaydomains/general_callbacks.py:110
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "<li><em>relaydomain; name; target host; service; enabled; verify "
+#| "recipients</em></li>\n"
+#| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+msgid ""
+"\n"
+"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
+"em></li>\n"
+msgstr ""
+"\n"
+"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
+"em></li>\n"
+"<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+
+#: relaydomains/models.py:61
+msgid "name"
+msgstr "Name"
+
+#: relaydomains/models.py:62
+msgid "The service name"
+msgstr "Der 'Service'-Name"
+
+#: relaydomains/models.py:84
+msgid "target host"
+msgstr "Ziel-Host"
+
+#: relaydomains/models.py:85
+msgid "Remote destination of this domain"
+msgstr "Entfernte Destination für diese Domain"
+
+#: relaydomains/models.py:89
+msgid "verify recipients"
+msgstr "Empfänger verifizieren"
+
+#: relaydomains/models.py:90
+msgid "Check for valid recipients"
+msgstr "Auf gültige Empfänger prüfen"
+
+#: relaydomains/models.py:103
+msgid "Relay Domain"
+msgstr "Relaydomain"
+
+#: relaydomains/models.py:130
+msgid "Invalid line"
+msgstr "Ungültige Zeile"
+
+#: relaydomains/templates/relaydomains/service_field.html:3
+msgid "Scan"
+msgstr "Scanne"

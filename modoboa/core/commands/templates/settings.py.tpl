@@ -57,6 +57,9 @@ MODOBOA_APPS = (
     'modoboa',
     'modoboa.core',
     'modoboa.lib',
+    'modoboa.admin',
+    'modoboa.relaydomains',
+    'modoboa.limits',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}

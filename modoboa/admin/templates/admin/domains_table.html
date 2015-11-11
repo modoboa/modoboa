@@ -1,0 +1,9 @@
+{% load i18n admin_tags lib_tags %}
+{% for domain in domains %}
+<tr id="{{ domain.id }}" class="{% if not domain.enabled %}text-muted{% endif %}" name="{{ forloop.counter }}">
+  <td name="name">{% domain_modify_link domain %}{% if not domain.enabled %} ({% trans "disabled" %}){% endif %}</td>
+  <td name="aliases">{% domain_aliases domain %} </td>
+  <td name="tags">{% render_tags domain.tags %}</td>
+  <td name="actions">{% domain_actions user domain %}</td>
+</tr>
+{% endfor %}

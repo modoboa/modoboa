@@ -1,0 +1,890 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Miroslav Abrahám <miris@kunago.com>, 2013-2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"PO-Revision-Date: 2015-01-06 10:05+0000\n"
+"Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
+"modoboa/language/cs_CZ/)\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: admin/app_settings.py:54 admin/templates/admin/editdomainform.html:25
+msgid "Mailboxes"
+msgstr "Schránky"
+
+#: admin/app_settings.py:57
+msgid "Handle mailboxes on filesystem"
+msgstr "Spravovat schránky v souborovém systému"
+
+#: admin/app_settings.py:60
+msgid ""
+"Rename or remove mailboxes on the filesystem when they get renamed or "
+"removed within Modoboa"
+msgstr ""
+"Přejmenovat nebo odstranit schránky v souborovém systému, pokud jsou "
+"přejmenovány nebo odstraněny v Modoboa"
+
+#: admin/app_settings.py:66
+msgid "Mailboxes owner"
+msgstr "Majitel schránky"
+
+#: admin/app_settings.py:69
+msgid "The UNIX account who owns mailboxes on the filesystem"
+msgstr "Účet UNIXu, který vlastní schránky v souborovém systému"
+
+#: admin/app_settings.py:74
+msgid "Default domain quota"
+msgstr "Výchozí kvóta domény"
+
+#: admin/app_settings.py:77
+msgid ""
+"Default quota (in MB) applied to freshly created domains with no value "
+"specified. A value of 0 means no quota."
+msgstr ""
+"Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
+"hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
+
+#: admin/app_settings.py:83
+msgid "Automatic account removal"
+msgstr "Automatické odstranění účtu"
+
+#: admin/app_settings.py:86
+msgid "When a mailbox is removed, also remove the associated account"
+msgstr "Když je schránka odstraněná, odstranit také přiřazený účet uživatele"
+
+#: admin/app_settings.py:90
+msgid "Automatic domain/mailbox creation"
+msgstr "Automatické vytvoření domény/schránky"
+
+#: admin/app_settings.py:93
+msgid "Create a domain and a mailbox when an account is automatically created."
+msgstr "Při založení účtu automaticky vytvořit doménu a schránku."
+
+#: admin/app_settings.py:139 admin/forms/account.py:239
+#: admin/forms/domain.py:77
+msgid "Must be a positive integer"
+msgstr "Musí se jednat o kladné číslo"
+
+#: admin/app_settings.py:149
+msgid "Administration"
+msgstr "Správa"
+
+#: admin/callbacks.py:46
+#, fuzzy
+#| msgid "Create a domain administrator"
+msgid "Domain administrator"
+msgstr "Vytvořit správce domény"
+
+#: admin/callbacks.py:75 admin/templates/admin/domain_statistics.html:30
+#: admin/templates/admin/domains.html:3
+msgid "Domains"
+msgstr "Domény"
+
+#: admin/callbacks.py:85 admin/templates/admin/domain_statistics.html:36
+#: admin/templates/admin/domain_statistics.html:50
+#: admin/templates/admin/identities.html:5
+msgid "Identities"
+msgstr "Identity"
+
+#: admin/callbacks.py:100 admin/templates/admin/forward.html:2
+msgid "Forward"
+msgstr "Přeposlat"
+
+#: admin/callbacks.py:163
+#, python-format
+msgid "Account import failed (%s): domain does not exist"
+msgstr "Import účtu nebyl úspěšný (%s): doména neexistuje"
+
+#: admin/callbacks.py:173 admin/forms/account.py:257
+#, python-format
+msgid "Mailbox %s already exists"
+msgstr "Schránka %s již existuje"
+
+#: admin/callbacks.py:181
+#, python-format
+msgid "Account import failed (%s): wrong quota value"
+msgstr "Import účtu selhal (%s): chybná hodnota kvóty"
+
+#: admin/callbacks.py:216 admin/forms/domain.py:94
+msgid "domain alias"
+msgstr "doménový alias"
+
+#: admin/forms/account.py:30 admin/templates/admin/editdomainform.html:13
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+#: admin/forms/account.py:32
+msgid ""
+"The user's name. Must be a valid e-mail address for simple users or "
+"administrators with a mailbox."
+msgstr ""
+"Název uživatele. U běžných uživatelů musí být uvedena platná e-mailová "
+"adresa nebo u administrátorů schránka."
+
+#: admin/forms/account.py:37
+msgid "Role"
+msgstr "Role"
+
+#: admin/forms/account.py:38 admin/forms/account.py:75
+msgid "Choose"
+msgstr "Vybrat"
+
+#: admin/forms/account.py:39
+msgid "What level of permission this user will have"
+msgstr "Jaká úroveň oprávnění bude tomuto uživateli nastavena"
+
+#: admin/forms/account.py:42
+msgid "Password"
+msgstr "Heslo"
+
+#: admin/forms/account.py:45
+msgid "Confirmation"
+msgstr "Potvrzení"
+
+#: admin/forms/account.py:48
+msgid "Enter the same password as above, for verification."
+msgstr "Vložte stejné heslo jako v poli výše, pro jeho ověření."
+
+#: admin/forms/account.py:66
+msgid "Enabled"
+msgstr "Povoleno"
+
+#: admin/forms/account.py:141
+msgid "Only super administrators are allowed for this mode"
+msgstr ""
+
+#: admin/forms/account.py:150
+msgid "The two password fields didn't match."
+msgstr "Obě pole s heslem se neshodují."
+
+#: admin/forms/account.py:156
+msgid "You can't disable your own account"
+msgstr "Nemůžete zakázat váš vlastní účet"
+
+#: admin/forms/account.py:170
+msgid "E-mail"
+msgstr "E-mail"
+
+#: admin/forms/account.py:172 admin/forms/domain.py:35
+msgid "Quota"
+msgstr "Kvóta"
+
+#: admin/forms/account.py:174
+msgid ""
+"Quota in MB for this mailbox. Define a custom value or use domain's default "
+"one. Leave empty to define an unlimited value (not allowed for domain "
+"administrators)."
+msgstr ""
+"Kvóta pro tuto chránku v MB. Definujte vlastní hodnotu nebo použijte výchozí "
+"hodnotu domény. Ponechejte prázdné pro neomezenou kvótu (není povoleno "
+"správcům domény)."
+
+#: admin/forms/account.py:182 admin/forms/domain.py:43
+#: admin/templates/admin/domains.html:26
+msgid "Alias(es)"
+msgstr "Alias(y)"
+
+#: admin/forms/account.py:185
+msgid ""
+"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
+"to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
+"*@domain.tld)."
+msgstr ""
+"Alias(y) této schránky. Vložte pouze jeden alias na řádek, stiskněte ENTER "
+"pro vložení dalšího aliasu. Pro vytvoření doménového koše vložte '*' (např. "
+"*@domena.cz)."
+
+#: admin/forms/account.py:248 admin/forms/account.py:279
+#: admin/forms/alias.py:72
+msgid "Domain does not exist"
+msgstr "Doména neexistuje"
+
+#: admin/forms/account.py:355
+msgid "Domain(s)"
+msgstr "Doména(y)"
+
+#: admin/forms/account.py:357
+msgid "Domain(s) that user administrates"
+msgstr "Doména(y) pod správou uživatele"
+
+#: admin/forms/account.py:401 admin/forms/account.py:487
+#: admin/forms/domain.py:300 admin/forms/domain.py:370
+msgid "General"
+msgstr "Obecné"
+
+#: admin/forms/account.py:406 admin/forms/account.py:493
+msgid "Mail"
+msgstr "Mail"
+
+#: admin/forms/account.py:409
+msgid "Permissions"
+msgstr "Oprávnění"
+
+#: admin/forms/account.py:476
+msgid "Account updated"
+msgstr "Účet aktualizován"
+
+#: admin/forms/account.py:500
+msgid "New account"
+msgstr "Nový účet"
+
+#: admin/forms/account.py:512
+msgid "Account created"
+msgstr "Účet vytvořen"
+
+#: admin/forms/alias.py:23
+msgid "Email address"
+msgstr "Emailová adresa"
+
+#: admin/forms/alias.py:25
+#, fuzzy
+#| msgid ""
+#| "The alias address (without the domain part). For a 'catch-all' address, "
+#| "just enter an * character."
+msgid ""
+"The alias address. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
+msgstr ""
+"Alias adresy (bez části označující doménu). Pro vytvoření doménového koše "
+"vložte znak '*'."
+
+#: admin/forms/alias.py:31
+msgid "Recipients"
+msgstr "Příjemci"
+
+#: admin/forms/alias.py:33
+#, fuzzy
+#| msgid ""
+#| "Mailbox(es) this alias will point to. Indicate only one address per "
+#| "input, press ENTER to add a new input."
+msgid ""
+"Addresses this alias will point to. Indicate only one address per input, "
+"press ENTER to add a new input."
+msgstr ""
+"Schránka/Schránky, na kterou/které bude tento alias odkazovat. Uveďte na "
+"řádek pouze jednu adresu; pro vložení další adresy stiskněte po vložení "
+"ENTER."
+
+#: admin/forms/alias.py:75
+msgid "You don't have access to this domain"
+msgstr "Nemáte oprávnění k přístupu k této doméně"
+
+#: admin/forms/alias.py:85
+msgid "No recipient defined"
+msgstr "Nebyl určen příjemce"
+
+#: admin/forms/domain.py:22 admin/models/domain.py:76
+#: admin/templates/admin/domain_statistics.html:49
+msgid "Domain"
+msgstr "Doména"
+
+#: admin/forms/domain.py:32 admin/templates/admin/domain_statistics.html:26
+msgid "Type"
+msgstr "Typ"
+
+#: admin/forms/domain.py:38
+msgid ""
+"Default quota in MB applied to mailboxes. Leave empty to use the default "
+"value."
+msgstr ""
+"Výchozí kvóta v MB pro schránky. Ponechejte prázdné pro výchozí nastavení "
+"kvóty."
+
+#: admin/forms/domain.py:46
+msgid ""
+"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
+"add a new input."
+msgstr ""
+"Alias(y) této domény. Uveďte na řádek pouze jeden alias; pro vložení dalšího "
+"aliasu stiskněte po vložení ENTER."
+
+#: admin/forms/domain.py:97 admin/forms/domain.py:108
+#: admin/forms/domain.py:116
+#, python-format
+msgid "A %s with this name already exists"
+msgstr "%s s tímto názvem již existuje"
+
+#: admin/forms/domain.py:108 admin/forms/domain.py:113
+msgid "domain"
+msgstr "doména"
+
+#: admin/forms/domain.py:200
+msgid "Create a domain administrator"
+msgstr "Vytvořit správce domény"
+
+#: admin/forms/domain.py:203
+msgid "Automatically create an administrator for this domain"
+msgstr "Automaticky vytvořit správce této domény"
+
+#: admin/forms/domain.py:208 admin/templates/admin/domains.html:25
+#: admin/templates/admin/editdomainform.html:13
+#: admin/templates/admin/identity_headers.html:2
+msgid "Name"
+msgstr "Jméno"
+
+#: admin/forms/domain.py:211
+msgid ""
+"The administrator's name. Don't include the domain's name here, it will be "
+"automatically appended."
+msgstr ""
+"Jméno správce. Nevkládejte sem název domény, název bude automaticky doplněn."
+
+#: admin/forms/domain.py:218
+msgid "Create aliases"
+msgstr "Vytvořit aliasy"
+
+#: admin/forms/domain.py:221
+msgid "Automatically create standard aliases for this domain"
+msgstr "Automaticky vytvořit běžné aliasy pro tuto doménu"
+
+#: admin/forms/domain.py:240
+msgid "Invalid format"
+msgstr "Neplatný formát"
+
+#: admin/forms/domain.py:257
+#, python-format
+msgid "User '%s' already exists"
+msgstr "Uživatel '%s' již existuje"
+
+#: admin/forms/domain.py:359
+msgid "Domain modified"
+msgstr "Doména upravena"
+
+#: admin/forms/domain.py:379
+msgid "Options"
+msgstr "Možnosti"
+
+#: admin/forms/domain.py:387
+msgid "New domain"
+msgstr "Nová doména"
+
+#: admin/forms/domain.py:405
+msgid "Domain created"
+msgstr "Doména vytvořena"
+
+#: admin/forms/export.py:7
+msgid "File name"
+msgstr "Název souboru"
+
+#: admin/forms/export.py:13 admin/forms/import_.py:13
+msgid "Separator"
+msgstr "Oddělovač"
+
+#: admin/forms/forward.py:14
+msgid "Recipient(s)"
+msgstr "Příjemce(i)"
+
+#: admin/forms/forward.py:18
+msgid "Indicate one or more recipients separated by a ','"
+msgstr "Uveďte jednoho nebo více příjemců oddělených pomocí ','"
+
+#: admin/forms/forward.py:21
+msgid "Keep local copies"
+msgstr "Ponechat místní kopie"
+
+#: admin/forms/forward.py:24
+msgid "Forward messages and store copies into your local mailbox"
+msgstr "Přeposílat zprávy a ukládat kopie do místní schránky"
+
+#: admin/forms/forward.py:42
+msgid ""
+"You can't define a forward to a local destination. Please ask your "
+"administrator to create an alias instead."
+msgstr ""
+"Nemůžete nastavit přeposílání na místní adresu. Požádejte správce o "
+"vytvoření aliasu."
+
+#: admin/forms/import_.py:11
+msgid "Select a file"
+msgstr "Vybrat soubor"
+
+#: admin/forms/import_.py:19
+msgid "Continue on error"
+msgstr "Při výskytu chyby pokračovat"
+
+#: admin/forms/import_.py:20
+msgid "Don't treat duplicated objects as error"
+msgstr "Nepovažovat duplikáty objektů za chybu"
+
+#: admin/forms/import_.py:38
+msgid "Crypt passwords"
+msgstr "Zašifrovat hesla"
+
+#: admin/forms/import_.py:40
+msgid "Check this option if passwords contained in your file are not crypted"
+msgstr "Zatrhněte toto pole, pokud hesla ve vašem souboru nejsou zašifrována"
+
+#: admin/lib.py:30
+msgid "A mailbox is required"
+msgstr "Schránka je vyžadována"
+
+#: admin/lib.py:120
+#, fuzzy
+#| msgid "You can't delete your own domain"
+msgid "You are not allowed to import domains"
+msgstr "Nemůžete smazat vlastní doménu"
+
+#: admin/lib.py:129
+msgid "You are not allowed to import domain aliases."
+msgstr ""
+
+#: admin/models/alias.py:26 admin/models/mailbox.py:77
+msgid "address"
+msgstr "adresa"
+
+#: admin/models/alias.py:28
+#, fuzzy
+#| msgid "The alias name"
+msgid "The alias address."
+msgstr "Název aliasu"
+
+#: admin/models/alias.py:33 admin/models/domain.py:37
+#: admin/models/domain_alias.py:24
+msgid "enabled"
+msgstr "povoleno"
+
+#: admin/models/alias.py:34 admin/models/domain_alias.py:25
+msgid "Check to activate this alias"
+msgstr "Zatrhněte pole pro povolení tohoto aliasu"
+
+#: admin/models/alias.py:79
+msgid "distribution list"
+msgstr "distribuční seznam"
+
+#: admin/models/alias.py:80
+msgid "forward"
+msgstr "přeposlat"
+
+#: admin/models/alias.py:81
+msgid "alias"
+msgstr "alias"
+
+#: admin/models/alias.py:112
+#, fuzzy
+#| msgid "Invalid request"
+msgid "Invalid address"
+msgstr "Neplatný požadavek"
+
+#: admin/models/alias.py:133
+#, fuzzy
+#| msgid "Local recipient %s not found"
+msgid "Local recipient {}@{} not found"
+msgstr "Místní příjemce %s nebyl nalezen"
+
+#: admin/models/alias.py:162
+#, python-format
+msgid "Invalid line: %s"
+msgstr "Neplatný řádek: %s"
+
+#: admin/models/alias.py:168
+#, python-format
+msgid "Domain '%s' does not exist"
+msgstr "Doména '%s' neexistuje"
+
+#: admin/models/domain.py:33 admin/models/domain_alias.py:17
+msgid "name"
+msgstr "název"
+
+#: admin/models/domain.py:34
+msgid "The domain name"
+msgstr "Doménové jméno"
+
+#: admin/models/domain.py:38
+msgid "Check to activate this domain"
+msgstr "Zatrhněte pole pro povolení této domény"
+
+#: admin/models/domain.py:160 admin/models/domain_alias.py:47
+msgid "Invalid line"
+msgstr "Neplatný řádek"
+
+#: admin/models/domain.py:168
+#, python-format
+msgid "Invalid quota value for domain '%s'"
+msgstr "Neplatná hodnota kvóty u domény '%s'"
+
+#: admin/models/domain_alias.py:18
+msgid "The alias name"
+msgstr "Název aliasu"
+
+#: admin/models/domain_alias.py:20
+msgid "target"
+msgstr "cíl"
+
+#: admin/models/domain_alias.py:21
+msgid "The domain this alias points to"
+msgstr "Doména, na kterou tento alias odkazuje"
+
+#: admin/models/domain_alias.py:56
+#, python-format
+msgid "Unknown domain %s"
+msgstr "Neznámá doména %s"
+
+#: admin/models/mailbox.py:79
+msgid "Mailbox address (without the @domain.tld part)"
+msgstr "Adresa schránky (bez části @doména.tld)"
+
+#: admin/models/mailbox.py:144
+#, python-format
+msgid "Failed to retrieve mailbox location (%s)"
+msgstr "Nebylo možné zjistit umístění schránky (%s)"
+
+#: admin/models/mailbox.py:233
+#, python-format
+msgid "Quota is greater than the allowed domain's limit (%dM)"
+msgstr "Zvolená kvóta je větší než povolené omezení domény (%dM)"
+
+#: admin/models/mailbox.py:239
+msgid "A quota is required"
+msgstr "Kvóta je vyžadována"
+
+#: admin/templates/admin/account_general_form.html:11
+#: admin/templates/admin/aliasform.html:8
+msgid "Domain is disabled"
+msgstr "Doména je zakázána"
+
+#: admin/templates/admin/domain_general_form.html:4
+#: admin/templates/admin/mailform.html:3
+#: admin/templates/admin/newdomainform.html:3
+msgid "MB"
+msgstr "MB"
+
+#: admin/templates/admin/domain_options_form.html:7
+msgid "You can't create a new domain administrator"
+msgstr "Nemůžete vytvořit nového správce domény"
+
+#: admin/templates/admin/domain_statistics.html:15
+#: admin/templatetags/admin_tags.py:45
+msgid "Statistics"
+msgstr "Statistiky"
+
+#: admin/templates/admin/domain_statistics.html:15
+msgid "Domains and identities"
+msgstr "Domény a identity"
+
+#: admin/templates/admin/domain_statistics.html:22
+msgid "Global counters"
+msgstr "Globální počitadla"
+
+#: admin/templates/admin/domain_statistics.html:27
+msgid "Quantity"
+msgstr "Počet"
+
+#: admin/templates/admin/domain_statistics.html:33
+#: admin/templates/admin/editdomainform.html:24
+msgid "Domain aliases"
+msgstr "Doménové aliasy"
+
+#: admin/templates/admin/domain_statistics.html:45
+msgid "Per-domain counters"
+msgstr "Počitadla dle domén"
+
+#: admin/templates/admin/domains.html:27
+#: admin/templates/admin/identity_headers.html:4
+msgid "Tags"
+msgstr "Značky"
+
+#: admin/templates/admin/domains.html:28
+#: admin/templates/admin/identity_headers.html:5
+msgid "Actions"
+msgstr "Akce"
+
+#: admin/templates/admin/domains_table.html:4
+msgid "disabled"
+msgstr "zákázáno"
+
+#: admin/templates/admin/editdomainform.html:4
+msgid "Administrators"
+msgstr "Správci"
+
+#: admin/templates/admin/editdomainform.html:7
+msgid "Miscellaneous"
+msgstr "Různé"
+
+#: admin/templates/admin/editdomainform.html:19
+msgid "No domain administrator defined"
+msgstr " Nebyl určen správce domény"
+
+#: admin/templates/admin/editdomainform.html:22
+msgid "Creation date"
+msgstr "Datum vytvoření"
+
+#: admin/templates/admin/editdomainform.html:23
+msgid "Last modification date"
+msgstr "Datum poslední změny"
+
+#: admin/templates/admin/editdomainform.html:26
+msgid "Mailbox aliases"
+msgstr "Aliasy schránek"
+
+#: admin/templates/admin/forward.html:2
+msgid "Automatically forward emails to another address"
+msgstr "Automaticky přesměrovat emaily na jinou adresu"
+
+#: admin/templates/admin/forward.html:9 admin/views/alias.py:113
+msgid "Update"
+msgstr "Aktualizovat"
+
+#: admin/templates/admin/identity_headers.html:3
+msgid "Fullname/Recipient"
+msgstr "Celé jméno/Příjemce"
+
+#: admin/templates/admin/importform.html:6
+msgid "Help"
+msgstr "Nápověda"
+
+#: admin/templates/admin/importform.html:13
+msgid "Importing..."
+msgstr "Importuji..."
+
+#: admin/templates/admin/mailboxes_raw.html:3
+msgid "Choose a value"
+msgstr "Zvolte hodnotu"
+
+#: admin/templates/admin/mailform.html:3
+msgid "Use domain default value"
+msgstr "Použít výchozí hodnotu domény"
+
+#: admin/templates/admin/quota_headers.html:2
+msgid "Address"
+msgstr "Adresa"
+
+#: admin/templates/admin/quota_headers.html:3
+msgid "Value"
+msgstr "Hodnota"
+
+#: admin/templates/admin/quota_headers.html:4
+msgid "Limit"
+msgstr "Omezení"
+
+#: admin/templates/admin/quota_headers.html:5
+#, python-format
+msgid "Usage (%%)"
+msgstr "Využití (%%)"
+
+#: admin/templates/admin/searchform.html:6
+msgid "Search"
+msgstr "Hledat"
+
+#: admin/templatetags/admin_tags.py:19
+msgid "enabled_m"
+msgstr "Aktivovaný"
+
+#: admin/templatetags/admin_tags.py:19
+msgid "enabled_f"
+msgstr "Aktivovaná"
+
+#: admin/templatetags/admin_tags.py:40
+msgid "List domains"
+msgstr "Seznam domén"
+
+#: admin/templatetags/admin_tags.py:53
+msgid "Add domain"
+msgstr "Přidat doménu"
+
+#: admin/templatetags/admin_tags.py:62 admin/templatetags/admin_tags.py:126
+#: admin/views/import_.py:99 admin/views/import_.py:133
+msgid "Import"
+msgstr "Import"
+
+#: admin/templatetags/admin_tags.py:68 admin/templatetags/admin_tags.py:132
+#: admin/views/export.py:41 admin/views/export.py:69
+msgid "Export"
+msgstr "Export"
+
+#: admin/templatetags/admin_tags.py:92
+msgid "List identities"
+msgstr "Seznam identit"
+
+#: admin/templatetags/admin_tags.py:97
+msgid "List quotas"
+msgstr "Seznam kvót"
+
+#: admin/templatetags/admin_tags.py:102
+msgid "Add account"
+msgstr "Přidat účet"
+
+#: admin/templatetags/admin_tags.py:108
+msgid "Add alias"
+msgstr "Přidat alias"
+
+#: admin/templatetags/admin_tags.py:114
+msgid "Add forward"
+msgstr "Přidat přeposílání"
+
+#: admin/templatetags/admin_tags.py:120
+msgid "Add distribution list"
+msgstr "Přidat distribuční seznam"
+
+#: admin/templatetags/admin_tags.py:152
+msgid "View the domain's identities"
+msgstr "Zobrazit seznam identit domény"
+
+#: admin/templatetags/admin_tags.py:159 admin/templatetags/admin_tags.py:182
+#: admin/templatetags/admin_tags.py:190
+#, python-format
+msgid "Delete %s?"
+msgstr "Smazat %s?"
+
+#: admin/templatetags/admin_tags.py:267
+msgid "Remove this permission"
+msgstr "Odstranit toto oprávnění"
+
+#: admin/views/alias.py:29
+msgid "Alias with this name already exists"
+msgstr "Alias s tímto názvem již existuje"
+
+#: admin/views/alias.py:53
+msgid "Create"
+msgstr "Vytvořit"
+
+#: admin/views/alias.py:65
+msgid "New distribution list"
+msgstr "Nový distribuční seznam"
+
+#: admin/views/alias.py:67
+msgid "Distribution list created"
+msgstr "Distribuční seznam vytvořen"
+
+#: admin/views/alias.py:76
+msgid "New alias"
+msgstr "Nový alias"
+
+#: admin/views/alias.py:77
+msgid "Alias created"
+msgstr "Alias vytvořen"
+
+#: admin/views/alias.py:86
+msgid "New forward"
+msgstr "Nové přeposílání"
+
+#: admin/views/alias.py:87
+msgid "Forward created"
+msgstr "Přeposílání vytvořeno"
+
+#: admin/views/alias.py:101
+msgid "Distribution list modified"
+msgstr "Distribuční seznam upraven"
+
+#: admin/views/alias.py:103
+msgid "Forward modified"
+msgstr "Přeposílání upraveno"
+
+#: admin/views/alias.py:105
+msgid "Alias modified"
+msgstr "Alias upraven"
+
+#: admin/views/domain.py:132
+msgid "You can't delete your own domain"
+msgstr "Nemůžete smazat vlastní doménu"
+
+#: admin/views/domain.py:135
+msgid "Domain deleted"
+msgid_plural "Domains deleted"
+msgstr[0] "Doména smazána"
+msgstr[1] "Domény smazány"
+msgstr[2] "Domén smazáno"
+
+#: admin/views/export.py:40
+msgid "Export identities"
+msgstr "Exportovat identity"
+
+#: admin/views/export.py:68
+msgid "Export domains"
+msgstr "Exportovat domény"
+
+#: admin/views/identity.py:108 admin/views/identity.py:200
+#: admin/views/identity.py:205
+msgid "Invalid request"
+msgstr "Neplatný požadavek"
+
+#: admin/views/identity.py:190
+msgid "Account deleted"
+msgid_plural "Accounts deleted"
+msgstr[0] "Účet smazán"
+msgstr[1] "Účty smazány"
+msgstr[2] "Účtů smazáno"
+
+#: admin/views/import_.py:64
+#, python-format
+msgid "Object already exists: %s"
+msgstr "Objekt již existuje: %s"
+
+#: admin/views/import_.py:68
+#, python-format
+msgid "%d objects imported successfully"
+msgstr "%d objektů úspěšně importováno"
+
+#: admin/views/import_.py:86
+#, python-format
+msgid ""
+"Provide a CSV file where lines respect one of the following formats:\n"
+"<ul>\n"
+"  <li><em>domain; name; quota; enabled</em></li>\n"
+"  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
+"  %s\n"
+"</ul>\n"
+"<p>The first element of each line is mandatory and must be equal to one of "
+"the previous values.</p>\n"
+"<p>You can use a different character as separator.</p>\n"
+msgstr ""
+"Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených "
+"formátů:\n"
+"<ul>\n"
+"<li><em>domain; název; kvóta, povoleno</em></li>\n"
+"<li><em>domainalias; název; cílová doména; povoleno</em></li>\n"
+"%s\n"
+"</ul>\n"
+"<p>První element každého řádku je povinný a musí být shodný s některou z "
+"předchozích hodnot.</p>\n"
+"<p>Můžete také použít jiný oddělovač hodnot.</p>\n"
+
+#: admin/views/import_.py:98
+msgid "Import domains"
+msgstr "Importovat domény"
+
+#: admin/views/import_.py:120
+msgid ""
+"Provide a CSV file where lines respect one of the following formats:\n"
+"<ul>\n"
+"<li><em>account; loginname; password; first name; last name; enabled; group; "
+"address; quota; [, domain, ...]</em></li>\n"
+"<li><em>alias; address; enabled; internal recipient</em></li>\n"
+"<li><em>forward; address; enabled; external recipient</em></li>\n"
+"<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
+"</ul>\n"
+"<p>The first element of each line is mandatory and must be equal to one of "
+"the previous values.</p>\n"
+"\n"
+"<p>You can use a different character as separator.</p>\n"
+msgstr ""
+"Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených "
+"formátů:\n"
+"<ul>\n"
+"<li><em>account; přihlašovací jméno; heslo; křestní jméno; příjmení; "
+"povoleno; skupina; adresa; kvóta; [, doména, ...]</em></li>\n"
+"<li><em>alias; adresa; povoleno; interní příjemce</em></li>\n"
+"<li><em>forward; adresa; povoleno; externí příjemce</em></li>\n"
+"<li><em>dlist; adresa; povoleno; příjemce; příjemce; ...</em></li>\n"
+"</ul>\n"
+"<p>První element každého řádku je povinný a musí být shodný s některou z "
+"předchozích hodnot.</p>\n"
+"<p>Můžete také použít jiný oddělovač hodnot.</p>\n"
+
+#: admin/views/import_.py:132
+msgid "Import identities"
+msgstr "Importovat identity"
+
+#: admin/views/user.py:34
+msgid "Forward updated"
+msgstr "Přeposílání aktualizováno"

@@ -23,9 +23,9 @@ class MapFilesTestCaseMixin(object):
     def _test_maps_generation(self, engine):
         dburl = "{0}://user:password@localhost/testdb".format(engine)
         code, output = exec_cmd(
-            "modoboa-admin.py postfix_maps --extensions {0}"
-            " --dburl {1} {2}".format(
-                self.extension, dburl, self.workdir
+            "modoboa-admin.py postfix_maps {0}--dburl {1} {2}".format(
+                "--extensions {} ".format(self.extension)
+                if self.extension else "", dburl, self.workdir
             )
         )
         self.assertEqual(code, 0)

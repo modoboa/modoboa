@@ -55,8 +55,9 @@ MODOBOA_APPS = (
     'modoboa',
     'modoboa.core',
     'modoboa.lib',
-    # Modoboa extensions here.
-
+    'modoboa.admin',
+    'modoboa.limits',
+    'modoboa.relaydomains',
 )
 
 INSTALLED_APPS += MODOBOA_APPS
@@ -94,7 +95,7 @@ WSGI_APPLICATION = 'test_project.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    
+
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'modoboa_test',
@@ -103,7 +104,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '',
         'ATOMIC_REQUESTS': True,
-        
+
     },
 
 }

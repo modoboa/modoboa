@@ -73,30 +73,23 @@ class MapFilesGenerator(object):
             ))
         )
         with open("%s/%s" % (args.destdir, mapobject.filename), "w") as fp:
-            print >> fp, """# This file was generated on %s by running:
-# %s %s
+            fp.write("""# This file was generated on {} by running:
+# {} {}
 # DO NOT EDIT!
-""" % (datetime.datetime.now().isoformat(),
-       os.path.basename(sys.argv[0]),
-       ' '.join(sys.argv[1:]))
-            print >> fp, content
+"""
+                     .format(datetime.datetime.now().isoformat(),
+                             os.path.basename(sys.argv[0]),
+                             ' '.join(sys.argv[1:])))
+            fp.write("{}\n".format(content))
 
-    def __load_extensions(self, extensions):
-        """Load specified extensions."""
-        if "all" in extensions:
-            from modoboa.lib.api_client import ModoAPIClient
-
-            # Retrieve extension list from the API
-            url = "http://api.modoboa.org/"
-            official_exts = ModoAPIClient(url).list_extensions()
-            extensions = [extension["name"] for extension in official_exts]
-
-        for extension in extensions:
-            extension = extension.replace("-", "_")
+    def __load_applications(self, applications):
+        """Load specified applications."""
+        for app in applications:
+            extension = app.replace("-", "_")
             try:
                 __import__(extension, locals(), globals(), ["postfix_maps"])
             except ImportError:
-                sys.stderr.write("Unknown extension {0}".format(extension))
+                sys.stderr.write("Unknown application {0}".format(extension))
 
     def render(self, args):
         """Render all map files.
@@ -107,8 +100,20 @@ class MapFilesGenerator(object):
             os.mkdir(args.destdir)
         except OSError:
             pass
+        applications = ["modoboa.admin", "modoboa.relaydomains"]
         if args.extensions:
-            self.__load_extensions(args.extensions)
+            if "all" in applications:
+                from modoboa.lib.api_client import ModoAPIClient
+
+                # Retrieve extension list from the API
+                url = "http://api.modoboa.org/"
+                official_exts = ModoAPIClient(url).list_extensions()
+                extensions = [
+                    extension["name"] for extension in official_exts]
+            else:
+                extensions = args.extensions
+            applications += [extensions]
+        self.__load_applications(applications)
         for mapfile in registry.files:
             self.__render_map(args, mapfile)
 

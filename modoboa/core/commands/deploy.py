@@ -173,7 +173,6 @@ class DeployCommand(Command):
         return extra_settings
 
     def handle(self, parsed_args):
-        import pdb
         django.setup()
         management.call_command(
             'startproject', parsed_args.name, verbosity=False

@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: limits/app_settings.py:18
+msgid "Default limits"
+msgstr ""
+
+#: limits/app_settings.py:21 limits/models.py:17
+msgid "Domain admins"
+msgstr ""
+
+#: limits/app_settings.py:24
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr ""
+
+#: limits/app_settings.py:32 limits/models.py:21
+msgid "Domains"
+msgstr ""
+
+#: limits/app_settings.py:35
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+
+#: limits/app_settings.py:42 limits/models.py:24
+msgid "Domain aliases"
+msgstr ""
+
+#: limits/app_settings.py:45
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+
+#: limits/app_settings.py:53 limits/models.py:28
+msgid "Mailboxes"
+msgstr ""
+
+#: limits/app_settings.py:56
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+
+#: limits/app_settings.py:63 limits/models.py:30
+msgid "Mailbox aliases"
+msgstr ""
+
+#: limits/app_settings.py:66
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+
+#: limits/app_settings.py:80
+msgid "Limits"
+msgstr ""
+
+#: limits/forms.py:35 limits/forms.py:42
+msgid "Invalid limit"
+msgstr ""
+
+#: limits/forms.py:65
+msgid "Your resources are not initialized yet"
+msgstr ""
+
+#: limits/forms.py:69
+msgid "You're not allowed to define unlimited values"
+msgstr ""
+
+#: limits/general_callbacks.py:28
+msgid "Reseller"
+msgstr ""
+
+#: limits/general_callbacks.py:75
+msgid "Resources"
+msgstr ""
+
+#: limits/lib.py:21
+#, python-format
+msgid "%s: limit reached"
+msgstr ""
+
+#: limits/lib.py:31
+msgid "Not enough resources"
+msgstr ""
+
+#: limits/models.py:18
+msgid "Maximum number of domain administrators this user can create"
+msgstr ""
+
+#: limits/models.py:22
+msgid "Maximum number of domains this user can create"
+msgstr ""
+
+#: limits/models.py:26
+msgid "Maximum number of domain aliases this user can create"
+msgstr ""
+
+#: limits/models.py:29
+msgid "Maximum number of mailboxes this user can create"
+msgstr ""
+
+#: limits/models.py:31
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr ""
+
+#: limits/models.py:147
+msgid "undefined"
+msgstr ""
+
+#: limits/models.py:149
+msgid "unlimited"
+msgstr ""
+
+#: limits/templates/limits/poolusage.html:3
+msgid "Resources usage"
+msgstr ""

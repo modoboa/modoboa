@@ -1,0 +1,109 @@
+# Modoboa french translation
+# Copyright (C) 2009-2013
+# This file is distributed under the same license as the Modoboa package.
+#
+# Antoine Nguyen <tonio@ngyn.org>, 2009-2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: modoboa-1.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"PO-Revision-Date: 2011-01-07 10:00+100\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: FR <tonio@ngyn.org>\n"
+"Language: Français\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: relaydomains/app_settings.py:29
+msgid "General"
+msgstr "Général"
+
+#: relaydomains/app_settings.py:32
+msgid "Postfix's master.cf path"
+msgstr "Chemin d'accès vers le fichier master.cf de Postfix"
+
+#: relaydomains/app_settings.py:34
+msgid "Path to the master.cf configuration file"
+msgstr "Chemin d'accès vers le fichier de configuration master.cf"
+
+#: relaydomains/app_settings.py:42
+msgid "Relay domains"
+msgstr "Domaines relais"
+
+#: relaydomains/forms.py:26
+msgid "Name"
+msgstr ""
+
+#: relaydomains/forms.py:27
+#, fuzzy
+#| msgid "The domain name"
+msgid "The relay domain name"
+msgstr "Le nom du domaine"
+
+#: relaydomains/general_callbacks.py:54 relaydomains/general_callbacks.py:61
+#, fuzzy
+#| msgid "Relay domains"
+msgid "Relay domain"
+msgstr "Domaines relais"
+
+#: relaydomains/general_callbacks.py:74
+#, fuzzy
+#| msgid "Relay domains"
+msgid "Relay settings"
+msgstr "Domaines relais"
+
+#: relaydomains/general_callbacks.py:110
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "<li><em>relaydomain; name; target host; service; enabled; verify "
+#| "recipients</em></li>\n"
+#| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+msgid ""
+"\n"
+"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
+"em></li>\n"
+msgstr ""
+"\n"
+"<li><em>relaydomain; nom; hôte cible; service; activé; vérification des "
+"destinataires</em></li>\n"
+"<li><em>relaydomainalias; nom; cible; activé</em></li>\n"
+
+#: relaydomains/models.py:61
+msgid "name"
+msgstr "Nom"
+
+#: relaydomains/models.py:62
+msgid "The service name"
+msgstr "Le nom du service"
+
+#: relaydomains/models.py:84
+msgid "target host"
+msgstr "hôte cible"
+
+#: relaydomains/models.py:85
+msgid "Remote destination of this domain"
+msgstr "Adresse de destination de ce domaine"
+
+#: relaydomains/models.py:89
+msgid "verify recipients"
+msgstr "Vérifier les destinataires"
+
+#: relaydomains/models.py:90
+msgid "Check for valid recipients"
+msgstr "Vérifie si les destinataires sont valides (existent)"
+
+#: relaydomains/models.py:103
+msgid "Relay Domain"
+msgstr "Domaine relais"
+
+#: relaydomains/models.py:130
+msgid "Invalid line"
+msgstr "Ligne invalide"
+
+#: relaydomains/templates/relaydomains/service_field.html:3
+msgid "Scan"
+msgstr "Scanner"

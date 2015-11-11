@@ -1,4 +1,3 @@
-import os
 
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy

@@ -1,0 +1,6 @@
+{% extends "common/generic_modal_form.html" %}{% load form_tags %}{% block formbody %}
+{% render_field form.name %}
+{% render_field form.quota appended_text=_("MB") %}
+{% render_fields_group form "aliases" %}
+{% render_field form.enabled %}
+{% endblock %}

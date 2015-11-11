@@ -1,6 +1,12 @@
-#############################
-Migrating from other software
-#############################
+###################
+Tools for migration
+###################
+
+******************************
+Migrate existing IMAP accounts
+******************************
+
+`OfflineIMAP extension <https://github.com/modoboa/modoboa-imap-migration>`_.
 
 ************
 PostfixAdmin

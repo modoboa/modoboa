@@ -1,0 +1,63 @@
+{% extends "admin/header.html" %}
+
+{% load i18n %}
+{% load admin_tags %}
+
+{% block leftcol %}
+<ul class="nav nav-sidebar">
+  {% domains_menu "statistics" user False %}
+</ul>
+
+{% get_extra_admin_content user "leftcol" selection %}
+{% endblock %}
+
+{% block apparea %}
+<h2>{% trans "Statistics" %} <small>{% trans "Domains and identities" %}</small></h2>
+<hr>
+
+<div class="row">
+  {% if user.group == "SuperAdmins" %}  
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-info">
+      <div class="panel-heading"><h3 class="panel-title">{% trans "Global counters" %}</h3></div>
+      <div class="panel-body"></div>
+      <table class="table">
+        <tr>
+          <th>{% trans "Type" %}</th>
+          <th>{% trans "Quantity" %}</th>
+        </tr>
+        <tr>
+          <td>{% trans "Domains" %}</td><td>{{ domains_counter }}</td>
+        </tr>
+        <tr>
+          <td>{% trans "Domain aliases" %}</td><td>{{ domain_aliases_counter }}</td>
+        </tr>
+        <tr>
+          <td>{% trans "Identities" %}</td><td>{{ identities_counter }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="col-xs-12 col-sm-6">
+    <div class="panel panel-info">
+      <div class="panel-heading"><h3 class="panel-title">{% trans "Per-domain counters" %}</h3></div>
+      <div class="panel-body"></div>
+      <table class="table">
+        <tr>
+          <th>{% trans "Domain" %}</th>
+          <th>{% trans "Identities" %}</th>
+        </tr>
+        {% for domain in domains %}
+        <tr>
+          <td>{{ domain.name }}</td><td>{{ domain.identities_count }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
