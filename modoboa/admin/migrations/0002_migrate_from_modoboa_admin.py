@@ -19,8 +19,11 @@ def rename_and_clean(apps, schema_editor):
 
     # Remove DomainAlias permissions from DomainAdmins group
     Group = apps.get_model("auth", "Group")
+    try:
+        group = Group.objects.get(name="DomainAdmins")
+    except Group.DoesNotExist:
+        return
     Permission = apps.get_model("auth", "Permission")
-    group = Group.objects.get(name="DomainAdmins")
     ct = ContentType.objects.get(app_label="admin", model="domainalias")
     for permission in Permission.objects.filter(content_type=ct):
         group.permissions.remove(permission)
