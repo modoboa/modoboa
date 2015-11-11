@@ -26,7 +26,7 @@ frameworks.
 Main features
 *************
 
-* `Administration panel <https://github.com/modoboa/modoboa-admin>`_
+* Administration panel
 * `Amavisd-new <http://www.amavis.org>`_ `frontend <https://github.com/modoboa/modoboa-amavis>`_
 * `Webmail <https://github.com/modoboa/modoboa-webmail>`_
 * `Per-user Sieve filters <https://github.com/modoboa/modoboa-sievefilters>`_
