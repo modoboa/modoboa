@@ -27,6 +27,9 @@ class LoginForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
+
+    """Form to update User profile."""
+
     oldpassword = forms.CharField(
         label=ugettext_lazy("Old password"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
@@ -42,7 +45,7 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name")
+        fields = ("first_name", "last_name", "language")
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'})

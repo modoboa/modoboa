@@ -4,6 +4,7 @@ import logging
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils import translation
 from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
@@ -26,8 +27,9 @@ def dologin(request):
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
 
-                request.session["django_language"] = \
-                    parameters.get_user(request.user, "LANG")
+                translation.activate(request.user.language)
+                request.session[translation.LANGUAGE_SESSION_KEY] = (
+                    request.user.language)
 
                 logger.info(
                     _("User '%s' successfully logged in" % user.username)

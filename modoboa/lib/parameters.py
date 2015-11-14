@@ -332,18 +332,18 @@ def get_admin_forms(*args, **kwargs):
 
 
 def get_user_forms(user, *args, **kwargs):
+    """Return an instance of each user-level forms."""
     kwargs["user"] = user
     sorted_apps = get_sorted_apps('U', first="general")
-
-    def realfunc():
-        for app in sorted_apps:
-            formdef = _params['U'][app]
-            if not formdef["form"].has_access(user):
-                continue
-            yield {"label": formdef["label"],
-                   "form": formdef["form"](*args, **kwargs)}
-
-    return realfunc
+    result = []
+    for app in sorted_apps:
+        formdef = _params["U"][app]
+        if not formdef["form"].has_access(user):
+            continue
+        result.append({
+            "label": formdef["label"],
+            "form": formdef["form"](*args, **kwargs)})
+    return result
 
 
 def get_parameter_form(level, name, app=None):

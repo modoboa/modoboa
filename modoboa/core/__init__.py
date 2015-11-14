@@ -54,10 +54,9 @@ def load_core_settings():
     This function must be manually called (see :file:`urls.py`) in
     order to load base settings.
     """
-    from modoboa.core.app_settings import GeneralParametersForm, UserSettings
+    from modoboa.core.app_settings import GeneralParametersForm
 
     parameters.register(GeneralParametersForm, ugettext_lazy("General"))
-    parameters.register(UserSettings, ugettext_lazy("General"))
     events.declare(BASE_EVENTS)
 
 

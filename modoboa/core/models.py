@@ -23,6 +23,8 @@ from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
 
+from . import constants
+
 
 try:
     from modoboa.lib.ldap_utils import LDAPAuthBackend
@@ -58,6 +60,13 @@ class User(PermissionsMixin):
     password = models.CharField(ugettext_lazy('password'), max_length=256)
     last_login = models.DateTimeField(
         ugettext_lazy('last login'), default=timezone.now
+    )
+
+    language = models.CharField(
+        max_length=10, default="en", choices=constants.LANGUAGES,
+        help_text=ugettext_lazy(
+            "Prefered language to display pages."
+        )
     )
 
     objects = UserManager()
