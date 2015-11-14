@@ -357,33 +357,3 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                 })
             else:
                 settings.AUTH_LDAP_GLOBAL_OPTIONS[ldap.OPT_REFERRALS] = False
-
-
-def translate_language_code(value):
-    if "-" in value:
-        return value.split("-")[0]
-    return value
-
-
-class UserSettings(parameters.UserParametersForm):
-    app = "core"
-
-    sep = SeparatorField(label=ugettext_lazy("Display"))
-
-    lang = forms.ChoiceField(
-        initial=translate_language_code(settings.LANGUAGE_CODE),
-        label=ugettext_lazy("Prefered language"),
-        choices=[("cs", "čeština"),
-                 ("de", "deutsch"),
-                 ("en", "english"),
-                 ("es", "español"),
-                 ("fr", "français"),
-                 ("it", "italiano"),
-                 ("nl", "nederlands"),
-                 ("pt_PT", "português"),
-                 ("pt_BR", "português (BR)"),
-                 ("ru", "русский"),
-                 ("sv", "svenska")],
-        help_text=ugettext_lazy("Prefered language to display pages"),
-        widget=forms.Select(attrs={"class": "form-control"})
-    )

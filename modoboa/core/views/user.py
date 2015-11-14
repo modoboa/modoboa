@@ -1,15 +1,17 @@
 """Simple user views."""
 
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.utils import translation
 from django.utils.translation import ugettext as _
 
-from modoboa.core.forms import ProfileForm
+from django.contrib.auth.decorators import login_required
+
 from modoboa.lib import events, parameters
 from modoboa.lib.cryptutils import encrypt
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
+from ..forms import ProfileForm
 
 
 @login_required
@@ -23,6 +25,7 @@ def index(request, tplname="core/user_index.html"):
 
 @login_required
 def profile(request, tplname='core/user_profile.html'):
+    """Profile detail/update view."""
     update_password = True
     if True in events.raiseQueryEvent("PasswordChange", request.user):
         update_password = False
@@ -36,8 +39,12 @@ def profile(request, tplname='core/user_profile.html'):
             if update_password and form.cleaned_data["confirmation"] != "":
                 request.session["password"] = encrypt(
                     form.cleaned_data["confirmation"])
+            translation.activate(request.user.language)
+            request.session[translation.LANGUAGE_SESSION_KEY] = (
+                request.user.language)
             return render_to_json_response(_("Profile updated"))
-        return render_to_json_response({'form_errors': form.errors}, status=400)
+        return render_to_json_response(
+            {'form_errors': form.errors}, status=400)
 
     form = ProfileForm(update_password, instance=request.user)
     return render_to_json_response({
@@ -50,7 +57,7 @@ def profile(request, tplname='core/user_profile.html'):
 @login_required
 def preferences(request):
     if request.method == "POST":
-        for formdef in parameters.get_user_forms(request.user, request.POST)():
+        for formdef in parameters.get_user_forms(request.user, request.POST):
             form = formdef["form"]
             if form.is_valid():
                 form.save()

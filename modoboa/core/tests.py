@@ -22,7 +22,7 @@ class ProfileTestCase(ModoTestCase):
         * A normal user changes his password
         """
         self.ajax_post(reverse("core:user_profile"),
-                       {"oldpassword": "password",
+                       {"language": "en", "oldpassword": "password",
                         "newpassword": "12345Toi", "confirmation": "12345Toi"})
         self.clt.logout()
 
@@ -42,7 +42,7 @@ class ProfileTestCase(ModoTestCase):
 
         self.ajax_post(
             reverse("core:user_profile"),
-            {"oldpassword": "toto",
+            {"language": "en", "oldpassword": "toto",
              "newpassword": "Toto1234", "confirmation": "Toto1234"}
         )
         self.clt.logout()
