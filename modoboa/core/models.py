@@ -68,6 +68,14 @@ class User(PermissionsMixin):
             "Prefered language to display pages."
         )
     )
+    phone_number = models.CharField(
+        ugettext_lazy("Phone number"), max_length=128, blank=True, null=True)
+    secondary_email = models.EmailField(
+        ugettext_lazy("Secondary email"), max_length=254,
+        blank=True, null=True,
+        help_text=ugettext_lazy(
+            "An alternative e-mail address, can be used for recovery needs.")
+    )
 
     objects = UserManager()
 
