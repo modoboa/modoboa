@@ -45,7 +45,8 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "language")
+        fields = ("first_name", "last_name", "language",
+                  "phone_number", "secondary_email")
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'})
