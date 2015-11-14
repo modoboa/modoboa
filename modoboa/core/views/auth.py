@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
 from modoboa.core.forms import LoginForm
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib.web_utils import _render_to_string
 
 

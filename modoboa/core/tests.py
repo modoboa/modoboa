@@ -42,7 +42,7 @@ class ProfileTestCase(ModoTestCase):
 
         self.ajax_post(
             reverse("core:user_profile"),
-            {"oldpassword": "toto",
+            {"language": "en", "oldpassword": "toto",
              "newpassword": "Toto1234", "confirmation": "Toto1234"}
         )
         self.clt.logout()
