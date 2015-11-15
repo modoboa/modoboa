@@ -9,11 +9,16 @@ from .. import factories
 
 
 class PasswordSchemesTestCase(ModoTestCase):
-    fixtures = ['initial_users.json']
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(PasswordSchemesTestCase, cls).setUpTestData()
+        factories.populate_database()
 
     def setUp(self):
+        """Test initialization."""
         super(PasswordSchemesTestCase, self).setUp()
-        factories.populate_database()
         load_core_settings()
 
     def _create_account(self):

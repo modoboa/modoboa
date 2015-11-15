@@ -11,14 +11,16 @@ class ExportTestCase(ModoTestCase):
 
     """Test case for export operations."""
 
-    def setUp(self):
-        super(ExportTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(ExportTestCase, cls).setUpTestData()
         factories.populate_database()
 
     def __export_identities(self, idtfilter="", grpfilter=""):
         self.clt.get(
-            reverse("admin:_identity_list")
-            + "?grpfilter=%s&idtfilter=%s" % (grpfilter, idtfilter)
+            reverse("admin:_identity_list") +
+            "?grpfilter=%s&idtfilter=%s" % (grpfilter, idtfilter)
         )
         return self.clt.post(
             reverse("admin:identity_export"),

@@ -57,14 +57,16 @@ class Operations(object):
 
 class RelayDomainsTestCase(ModoTestCase, Operations):
 
-    def setUp(self):
-        super(RelayDomainsTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(RelayDomainsTestCase, cls).setUpTestData()
         admin_factories.populate_database()
-        self.rdom = RelayDomainFactory(domain__name='relaydomain.tld')
+        cls.rdom = RelayDomainFactory(domain__name='relaydomain.tld')
         admin_factories.DomainAliasFactory(
-            name='relaydomainalias.tld', target=self.rdom.domain)
+            name='relaydomainalias.tld', target=cls.rdom.domain)
         admin_factories.MailboxFactory(
-            domain=self.rdom.domain, address="local",
+            domain=cls.rdom.domain, address="local",
             user__username="local@relaydomain.tld",
             user__groups=("SimpleUsers", )
         )
@@ -196,16 +198,22 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
 
 class LimitsTestCase(ModoTestCase, Operations):
 
-    def setUp(self):
-        super(LimitsTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(LimitsTestCase, cls).setUpTestData()
 
         for tpl in LimitTemplates().templates:
             parameters.save_admin(
                 "DEFLT_{0}".format(tpl[0].upper()), 2, app="limits"
             )
-        self.user = UserFactory.create(
+        cls.user = UserFactory.create(
             username='reseller', groups=('Resellers',)
         )
+
+    def setUp(self):
+        """Initialize test."""
+        super(LimitsTestCase, self).setUp()
         self.clt.logout()
         self.clt.login(username='reseller', password='toto')
 

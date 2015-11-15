@@ -11,8 +11,10 @@ from ..models import Domain, Alias, DomainAlias
 
 class ImportTestCase(ModoTestCase):
 
-    def setUp(self):
-        super(ImportTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(ImportTestCase, cls).setUpTestData()
         factories.populate_database()
 
     def test_domains_import(self):
@@ -180,7 +182,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 20
         f = ContentFile(b"""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
 """, name="identities.csv")
-        resp = self.clt.post(
+        self.clt.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )

@@ -16,8 +16,10 @@ class DomainTestCase(ModoTestCase):
 
     """Test case for Domain."""
 
-    def setUp(self):
-        super(DomainTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(DomainTestCase, cls).setUpTestData()
         factories.populate_database()
 
     def test_create(self):

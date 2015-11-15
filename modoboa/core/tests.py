@@ -8,9 +8,11 @@ from . import factories
 
 class ProfileTestCase(ModoTestCase):
 
-    def setUp(self):
-        super(ProfileTestCase, self).setUp()
-        self.account = factories.UserFactory(
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(ProfileTestCase, cls).setUpTestData()
+        cls.account = factories.UserFactory(
             username="user@test.com", groups=('SimpleUsers',)
         )
 

@@ -34,6 +34,10 @@ ALLOWED_HOSTS = [
 
 SITE_ID = 1
 
+# Security settings
+
+X_FRAME_OPTIONS = "DENY"
+
 # Application definition
 
 INSTALLED_APPS = (

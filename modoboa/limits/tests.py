@@ -14,8 +14,10 @@ from .models import LimitTemplates
 
 class PermissionsTestCase(ModoTestCase):
 
-    def setUp(self):
-        super(PermissionsTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(PermissionsTestCase, cls).setUpTestData()
         populate_database()
 
     def test_domainadmin_deletes_reseller(self):
@@ -41,13 +43,10 @@ class PermissionsTestCase(ModoTestCase):
 
 class ResourceTestCase(ModoTestCase):
 
-    def setUp(self):
-        """Custom setUp method.
-
-        The 'limits' is manually loaded to ensure extra parameters
-        provided by 'postfix_relay_domains' are properly received.
-        """
-        super(ResourceTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Custom setUpTestData method."""
+        super(ResourceTestCase, cls).setUpTestData()
         for tpl in LimitTemplates().templates:
             parameters.save_admin(
                 "DEFLT_{0}".format(tpl[0].upper()), 2,
@@ -115,11 +114,17 @@ class ResourceTestCase(ModoTestCase):
 
 class DomainAdminTestCase(ResourceTestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(DomainAdminTestCase, cls).setUpTestData()
+        cls.user = User.objects.get(username='admin@test.com')
+        cls.user.limitspool.set_maxvalue('mailboxes_limit', 2)
+        cls.user.limitspool.set_maxvalue('mailbox_aliases_limit', 2)
+
     def setUp(self):
+        """Test initialization."""
         super(DomainAdminTestCase, self).setUp()
-        self.user = User.objects.get(username='admin@test.com')
-        self.user.limitspool.set_maxvalue('mailboxes_limit', 2)
-        self.user.limitspool.set_maxvalue('mailbox_aliases_limit', 2)
         self.clt.logout()
         self.clt.login(username='admin@test.com', password='toto')
 
@@ -168,11 +173,17 @@ class DomainAdminTestCase(ResourceTestCase):
 
 class ResellerTestCase(ResourceTestCase):
 
-    def setUp(self):
-        super(ResellerTestCase, self).setUp()
-        self.user = UserFactory.create(
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(ResellerTestCase, cls).setUpTestData()
+        cls.user = UserFactory.create(
             username='reseller', groups=('Resellers',)
         )
+
+    def setUp(self):
+        """Test initialization."""
+        super(ResellerTestCase, self).setUp()
         self.clt.logout()
         self.clt.login(username='reseller', password='toto')
 
