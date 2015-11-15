@@ -9,6 +9,7 @@ from django.test import TestCase
 from django.test.client import Client
 
 from modoboa.lib import parameters
+from modoboa.core import models as core_models
 
 
 class ModoTestCase(TestCase):
@@ -73,10 +74,13 @@ class ParameterTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         super(ParameterTestCase, cls).setUpTestData()
-        from modoboa.core.models import User
+        cls.user = core_models.User.objects.create(username="tester")
+
+    def setUp(self):
+        """Initialize tests."""
+        super(ParameterTestCase, self).setUp()
         parameters.register(TestParams, "Test")
         parameters.register(TestUserParams, "TestUser")
-        cls.user = User.objects.create(username="tester")
 
     def test_register_form(self):
         self.assertIn("test", parameters._params['A'])
