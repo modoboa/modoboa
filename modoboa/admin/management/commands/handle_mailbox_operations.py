@@ -10,8 +10,8 @@ from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.exceptions import InternalError
 
+from ...app_settings import load_admin_settings
 from ...models import MailboxOperation
-from ...modo_extension import AdminConsole
 
 
 class OperationError(Exception):
@@ -76,7 +76,7 @@ class Command(BaseCommand, CloseConnectionMixin):
         return True
 
     def handle(self, *args, **options):
-        AdminConsole().load()
+        load_admin_settings()
         if parameters.get_admin("HANDLE_MAILBOXES") == 'no':
             return
         if not self.check_pidfile(options['pidfile']):
