@@ -6,11 +6,10 @@ from django.core.management.base import BaseCommand
 
 from modoboa.core import load_core_settings
 from modoboa.core.extensions import exts_pool
-from modoboa.core.management.commands import CloseConnectionMixin
 from ...models import Domain
 
 
-class Command(BaseCommand, CloseConnectionMixin):
+class Command(BaseCommand):
     help = 'Export domains and domain aliases to a csv'
 
     option_list = BaseCommand.option_list + (

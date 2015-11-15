@@ -5,12 +5,11 @@ from django.core.management.base import BaseCommand
 
 from modoboa.core import load_core_settings
 from modoboa.core.extensions import exts_pool
-from modoboa.core.management.commands import CloseConnectionMixin
 
 from ._import import import_csv
 
 
-class Command(BaseCommand, CloseConnectionMixin):
+class Command(BaseCommand):
     args = 'csvfile'
     help = 'Import domains and domain aliases from a csv file'
 

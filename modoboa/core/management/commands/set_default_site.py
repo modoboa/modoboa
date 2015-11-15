@@ -9,10 +9,8 @@ from django.core.management.base import BaseCommand, CommandError
 
 from django.contrib.sites.models import Site
 
-from . import CloseConnectionMixin
 
-
-class Command(BaseCommand, CloseConnectionMixin):
+class Command(BaseCommand):
 
     """Management command to set the default site."""
 

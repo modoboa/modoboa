@@ -10,10 +10,8 @@ from modoboa.core import load_core_settings
 from modoboa.core.models import Log
 from modoboa.lib import parameters
 
-from . import CloseConnectionMixin
 
-
-class Command(BaseCommand, CloseConnectionMixin):
+class Command(BaseCommand):
     args = ''
     help = 'Log table cleanup'
 
