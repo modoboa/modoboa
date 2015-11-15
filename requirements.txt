@@ -1,5 +1,5 @@
-django>=1.7,<1.8
-django-reversion==1.8.5
+django>=1.8,<1.9
+django-reversion==1.9.3
 dj-database-url
 pycrypto
 argparse

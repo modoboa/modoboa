@@ -22,8 +22,8 @@ class DomainManager(Manager):
         to fill ``ModelChoiceField`` objects.
         """
         if admin.is_superuser:
-            return self.get_query_set()
-        return self.get_query_set().filter(owners__user=admin)
+            return self.get_queryset()
+        return self.get_queryset().filter(owners__user=admin)
 
 
 class Domain(AdminObject):

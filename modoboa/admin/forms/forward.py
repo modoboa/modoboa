@@ -28,7 +28,7 @@ class ForwardForm(forms.Form):
         recipients = []
         rawdata = self.cleaned_data["dest"].strip()
         if not rawdata:
-            return
+            return recipients
         for rcpt in rawdata.split(","):
             local_part, domname = split_mailbox(rcpt)
             if not local_part or not domname:
