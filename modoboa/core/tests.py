@@ -26,6 +26,14 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:user_index")))
 
+        response = self.clt.post(reverse("core:logout"), {})
+        self.assertEqual(response.status_code, 302)
+
+        data = {"username": "admin", "password": "password"}
+        response = self.clt.post(reverse("core:login"), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse("admin:domain_list")))
+
 
 class ProfileTestCase(ModoTestCase):
 
