@@ -9,7 +9,8 @@ import re
 from django.core.exceptions import ValidationError
 from django.forms import ChoiceField
 from django.forms.fields import CharField, Field
-from django.forms.widgets import RadioSelect, RadioInput
+from django.forms.widgets import RadioSelect
+from django.forms.widgets import RadioChoiceInput
 from django.shortcuts import render
 from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape
@@ -401,7 +402,7 @@ class DomainNameField(CharField):
         return super(DomainNameField, self).clean(value)
 
 
-class CustomRadioInput(RadioInput):
+class CustomRadioInput(RadioChoiceInput):
     def __unicode__(self):
         if 'id' in self.attrs:
             label_for = ' for="%s"' % self.attrs['id']

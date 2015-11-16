@@ -1,3 +1,4 @@
+"""SimpleUsers views."""
 
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
@@ -38,9 +39,9 @@ def forward(request, tplname="admin/forward.html"):
         )
 
     form = ForwardForm()
-    if al is not None:
+    if al is not None and al.recipients:
         form.fields["dest"].initial = al.recipients
-        if al.aliasrecipient_set.filter(mailbox=mb.id).exists():
+        if al.aliasrecipient_set.filter(r_mailbox=mb.pk).exists():
             form.fields["keepcopies"].initial = True
     return render_to_json_response({
         "content": _render_to_string(request, tplname, {

@@ -13,8 +13,10 @@ from ..models import Alias, AliasRecipient
 
 class AliasTestCase(ModoTestCase):
 
-    def setUp(self):
-        super(AliasTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(AliasTestCase, cls).setUpTestData()
         factories.populate_database()
 
     def test_alias(self):

@@ -9,14 +9,19 @@ from django.test import TestCase
 from django.test.client import Client
 
 from modoboa.lib import parameters
+from modoboa.core import models as core_models
 
 
 class ModoTestCase(TestCase):
 
     """All test cases must inherit from this one."""
 
-    def setUp(self, username="admin", password="password"):
+    @classmethod
+    def setUpTestData(cls):
+        """Create a default user."""
         management.call_command("load_initial_data")
+
+    def setUp(self, username="admin", password="password"):
         self.clt = Client()
         self.assertEqual(
             self.clt.login(username=username, password=password), True)
@@ -66,11 +71,16 @@ class ParameterTestCase(TestCase):
     """Simple test cases for ``modoboa.lib.parameters`` module.
     """
 
+    @classmethod
+    def setUpTestData(cls):
+        super(ParameterTestCase, cls).setUpTestData()
+        cls.user = core_models.User.objects.create(username="tester")
+
     def setUp(self):
-        from modoboa.core.models import User
+        """Initialize tests."""
+        super(ParameterTestCase, self).setUp()
         parameters.register(TestParams, "Test")
         parameters.register(TestUserParams, "TestUser")
-        self.user = User.objects.create(username="tester")
 
     def test_register_form(self):
         self.assertIn("test", parameters._params['A'])

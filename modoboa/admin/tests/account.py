@@ -9,8 +9,10 @@ from .. import models
 
 class AccountTestCase(ModoTestCase):
 
-    def setUp(self):
-        super(AccountTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(AccountTestCase, cls).setUpTestData()
         factories.populate_database()
 
     def test_crud(self):
@@ -115,13 +117,15 @@ class AccountTestCase(ModoTestCase):
 
 class PermissionsTestCase(ModoTestCase):
 
-    def setUp(self):
-        super(PermissionsTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(PermissionsTestCase, cls).setUpTestData()
         factories.populate_database()
-        self.user = User.objects.get(username='user@test.com')
-        self.values = dict(
-            username=self.user.username, role="DomainAdmins",
-            is_active=self.user.is_active, email="user@test.com",
+        cls.user = User.objects.get(username='user@test.com')
+        cls.values = dict(
+            username=cls.user.username, role="DomainAdmins",
+            is_active=cls.user.is_active, email="user@test.com",
             quota_act=True
         )
 

@@ -66,7 +66,7 @@ class MailboxManager(Manager):
             qf = Q(pk__in=ids) & qf
         else:
             qf = Q(pk__in=ids)
-        return self.get_query_set().select_related().filter(qf)
+        return self.get_queryset().select_related().filter(qf)
 
 
 class Mailbox(AdminObject):

@@ -18,10 +18,9 @@ from modoboa.lib import models as lib_models
 from modoboa.lib.permissions import add_permissions_to_group
 from modoboa.limits.app_settings import load_limits_settings
 import modoboa.relaydomains.models as relay_models
-from . import CloseConnectionMixin
 
 
-class Command(BaseCommand, CloseConnectionMixin):
+class Command(BaseCommand):
 
     """Command defintion."""
 

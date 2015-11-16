@@ -7,11 +7,10 @@ from django.core.management.base import BaseCommand
 from modoboa.core import load_core_settings
 from modoboa.core.models import User
 from modoboa.core.extensions import exts_pool
-from modoboa.core.management.commands import CloseConnectionMixin
 from ...models import Alias
 
 
-class Command(BaseCommand, CloseConnectionMixin):
+class Command(BaseCommand):
     help = 'Export identities (mailbox and aliases) to a csv'
 
     option_list = BaseCommand.option_list + (

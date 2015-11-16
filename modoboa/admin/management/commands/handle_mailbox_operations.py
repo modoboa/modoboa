@@ -5,7 +5,6 @@ import os
 
 from django.core.management.base import BaseCommand
 
-from modoboa.core.management.commands import CloseConnectionMixin
 from modoboa.lib import parameters
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.exceptions import InternalError
@@ -18,7 +17,7 @@ class OperationError(Exception):
     pass
 
 
-class Command(BaseCommand, CloseConnectionMixin):
+class Command(BaseCommand):
     help = 'Handles rename and delete operations on mailboxes'
 
     option_list = BaseCommand.option_list + (

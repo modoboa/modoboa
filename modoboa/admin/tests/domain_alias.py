@@ -8,10 +8,12 @@ from ..models import Domain, DomainAlias, Alias
 
 class DomainAliasTestCase(ModoTestCase):
 
-    def setUp(self):
-        super(DomainAliasTestCase, self).setUp()
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(DomainAliasTestCase, cls).setUpTestData()
         factories.populate_database()
-        self.dom = Domain.objects.get(name='test.com')
+        cls.dom = Domain.objects.get(name='test.com')
 
     def test_model(self):
         dom = Domain.objects.get(name="test.com")

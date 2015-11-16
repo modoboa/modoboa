@@ -11,19 +11,6 @@ from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest
 
 
-class RelayDomainManager(Manager):
-
-    def get_for_admin(self, admin):
-        """Return the relay domains belonging to this admin.
-
-        The result is a ``QuerySet`` object, so this function can be used
-        to fill ``ModelChoiceField`` objects.
-        """
-        if admin.is_superuser:
-            return self.get_query_set()
-        return self.get_query_set().filter(owners__user=admin)
-
-
 class ServiceManager(Manager):
 
     def load_from_master_cf(self):
@@ -90,8 +77,6 @@ class RelayDomain(admin_models.AdminObject):
         help_text=ugettext_lazy('Check for valid recipients'),
         default=False
     )
-
-    objects = RelayDomainManager()
 
     class Meta:
         ordering = ["domain__name"]

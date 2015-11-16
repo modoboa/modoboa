@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 from logging.handlers import SysLogHandler
 
-from django.conf import global_settings
 {% if devmode %}
 from modoboa.core.dev_settings import *
 {% endif %}
@@ -29,13 +28,15 @@ SECRET_KEY = '{{ secret_key }}'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = {{ devmode }}
 
-TEMPLATE_DEBUG = {{ devmode }}
-
 ALLOWED_HOSTS = [
     '{{ allowed_host }}'
 ]
 
 SITE_ID = 1
+
+# Security settings
+
+X_FRAME_OPTIONS = "DENY"
 
 # Application definition
 
@@ -87,9 +88,27 @@ AUTHENTICATION_BACKENDS = (
     'modoboa.lib.authbackends.SimpleBackend',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    'modoboa.core.context_processors.top_notifications',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'modoboa.core.context_processors.top_notifications',
+            ],
+            'debug': {{ devmode }},
+        },
+    },
+]
 
 ROOT_URLCONF = '{{ name }}.urls'
 
