@@ -12,6 +12,9 @@ from modoboa.lib import parameters
 
 
 class LoginForm(forms.Form):
+
+    """User login form."""
+
     username = forms.CharField(
         label=ugettext_lazy("Username"),
         widget=forms.TextInput(attrs={"class": "form-control"})
