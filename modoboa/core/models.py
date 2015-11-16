@@ -59,7 +59,7 @@ class User(PermissionsMixin):
     )
     password = models.CharField(ugettext_lazy('password'), max_length=256)
     last_login = models.DateTimeField(
-        ugettext_lazy('last login'), default=timezone.now
+        ugettext_lazy('last login'), blank=True, null=True
     )
 
     language = models.CharField(

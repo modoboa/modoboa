@@ -23,6 +23,10 @@ def dologin(request):
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
+                nextlocation = None
+                if not user.last_login:
+                    # Redirect to profile on first login
+                    nextlocation = reverse("core:user_index")
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
@@ -38,12 +42,13 @@ def dologin(request):
                                   form.cleaned_data["username"],
                                   form.cleaned_data["password"])
 
-                nextlocation = request.POST.get("next", None)
-                if nextlocation is None or nextlocation == "None":
-                    if user.group == "SimpleUsers":
-                        nextlocation = reverse("topredirection")
-                    else:
-                        nextlocation = reverse("admin:domain_list")
+                if nextlocation is None:
+                    nextlocation = request.POST.get("next", None)
+                    if nextlocation is None or nextlocation == "None":
+                        if user.group == "SimpleUsers":
+                            nextlocation = reverse("topredirection")
+                        else:
+                            nextlocation = reverse("admin:domain_list")
                 return HttpResponseRedirect(nextlocation)
             error = _(
                 "Your username and password didn't match. Please try again.")
