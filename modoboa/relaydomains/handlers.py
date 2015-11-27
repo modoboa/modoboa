@@ -1,5 +1,6 @@
 """Django signal handlers for relaydomains."""
 
+from django.db.models import signals
 from django.dispatch import receiver
 
 from modoboa.admin import models as admin_models
@@ -23,3 +24,18 @@ def check_relaydomain_alias(sender, **kwargs):
             domain__name=domain, address=localpart).exists()):
         return False
     return True
+
+
+@receiver(signals.post_save, sender=admin_models.Domain)
+def clean_domain(sender, instance, **kwargs):
+    """Remove or create RelayDomain record if needed."""
+    if kwargs.get("created"):
+        return
+    has_relaydom = hasattr(instance, "relaydomain")
+    if instance.type == "domain" and has_relaydom:
+        models.RelayDomain.objects.filter(domain=instance).delete()
+    elif instance.type == "relaydomain" and not has_relaydom:
+        # Make sure to create a RelayDomain instance since we can't do it
+        # at form level...
+        models.RelayDomain.objects.create(
+            domain=instance, service=models.Service.objects.first())

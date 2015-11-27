@@ -138,6 +138,36 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         )
         RelayDomain.objects.get(domain__name='relaydomain.org')
 
+    def test_relaydomain_domain_switch(self):
+        """Check domain <-> relaydomain transitions."""
+        domain = self.rdom.domain
+        values = {
+            "name": "relaydomain.tld",
+            "type": "domain",
+            "enabled": True,
+        }
+        self.ajax_post(
+            reverse('admin:domain_change', args=[domain.pk]), values)
+        self.assertFalse(
+            RelayDomain.objects.filter(
+                domain__name="relaydomain.tld").exists())
+        self.assertEqual(
+            admin_models.Domain.objects.get(name="relaydomain.tld").type,
+            "domain")
+        values = {
+            "name": "relaydomain.tld",
+            "type": "relaydomain",
+            "enabled": True,
+        }
+        self.ajax_post(
+            reverse("admin:domain_change", args=[domain.pk]), values)
+        self.assertEqual(
+            admin_models.Domain.objects.get(name="relaydomain.tld").type,
+            "relaydomain")
+        self.assertTrue(
+            RelayDomain.objects.filter(
+                domain__name="relaydomain.tld").exists())
+
     def test_edit_relaydomainalias(self):
         """Test the modification of a relay domain alias.
 
