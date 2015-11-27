@@ -29,4 +29,6 @@ urlpatterns = patterns(
         name="user_preferences"),
     url(r'^user/profile/$', 'modoboa.core.views.user.profile',
         name="user_profile"),
+    url(r'^user/api/$', 'modoboa.core.views.user.api_access',
+        name="user_api_access"),
 )

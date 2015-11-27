@@ -106,6 +106,13 @@ def uprefs_menu(selection, user):
          "url": "preferences/",
          "label": _("Preferences")},
     ]
+    if user.is_superuser:
+        entries.append({
+            "name": "api",
+            "class": "ajaxnav",
+            "url": "api/",
+            "label": _("API"),
+        })
     entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu", user)
     entries = sorted(entries, key=lambda e: e["label"])
     return render_to_string('common/menu.html', {

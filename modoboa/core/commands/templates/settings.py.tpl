@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'reversion',
+    'rest_framework.authtoken'
 {% if devmode %}    'djangobower',{% endif %}
 )
 
@@ -147,6 +148,17 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Rest framework settings
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
 
 # Modoboa settings
 #MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")

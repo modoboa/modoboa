@@ -8,6 +8,9 @@ from django.core import management
 from django.test import TestCase
 from django.test.client import Client
 
+from rest_framework.authtoken.models import Token
+from rest_framework.test import APITestCase
+
 from modoboa.lib import parameters
 from modoboa.core import models as core_models
 
@@ -45,6 +48,23 @@ class ModoTestCase(TestCase):
 
     def ajax_get(self, *args, **kwargs):
         return self.ajax_request('get', *args, **kwargs)
+
+
+class ModoAPITestCase(APITestCase):
+
+    """All test cases must inherit from this one."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create a default user."""
+        management.call_command("load_initial_data")
+        cls.token = Token.objects.create(
+            user=core_models.User.objects.get(username="admin"))
+
+    def setUp(self):
+        """Setup."""
+        super(ModoAPITestCase, self).setUp()
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
 
 class TestParams(parameters.AdminParametersForm):

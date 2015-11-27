@@ -330,11 +330,13 @@ function activate_widget(e) {
 /*
  * Default error handler for AJAX requests.
  */
-function default_ajax_error_handler(event, jqxhr, settings) {
+function defaultAjaxErrorHandler(event, jqxhr, settings) {
+    var data;
+
     try {
-        var data = $.parseJSON(jqxhr.responseText);
+        data = $.parseJSON(jqxhr.responseText);
     } catch (x) {
-        var data = gettext("Internal error");
+        data = gettext("Internal error");
     }
     $('body').notify('error', data);
 }
@@ -353,7 +355,7 @@ String.prototype.format = function() {
 
 $(document).ready(function() {
     $(document).ajaxSuccess(function(e, xhr, settings) { ajax_login_redirect(xhr); });
-    $(document).ajaxError(default_ajax_error_handler);
+    $(document).ajaxError(defaultAjaxErrorHandler);
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
     $(document).on('click', '.activator', activate_widget);

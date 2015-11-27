@@ -1,0 +1,32 @@
+{% load i18n form_tags %}
+
+<h2>{% trans "API access" %} <small>{% trans "Control your access to Modoboa API" %}</small></h2>
+<hr>
+{% if user.auth_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{% trans "API access token" %}</h3>
+    </div>
+    <div class="panel-body">
+      {{ user.auth_token }}
+    </div>
+  </div>
+  <br>
+{% endif %}
+<form class="form-inline" method="POST" action="{% url 'core:user_api_access' %}" 
+      id="api_form">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-sm-2">
+      <div class="checkbox">
+        <label>
+          {{ form.enable_api_access }}
+          {{ form.enable_api_access.label }}
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <button type="submit" class="btn btn-primary" id="update" name="update">{% trans 'Update' %}</button>
+    </div>
+  </div>
+</form>
