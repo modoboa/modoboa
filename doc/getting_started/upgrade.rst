@@ -93,7 +93,28 @@ Then, apply the following steps:
 
 #. Finally, update static files::
 
-   $ python manage.py collectstatic   
+   $ python manage.py collectstatic
+
+This version also introduces a REST API. To enable it:
+
+#. Add ``'rest_framework.authtoken'`` to the ``INSTALLED_APPS`` variable
+
+#. Add the following configuration inside ``settings.py``::
+        
+     # Rest framework settings
+
+     REST_FRAMEWORK = {
+         'DEFAULT_AUTHENTICATION_CLASSES': (
+             'rest_framework.authentication.TokenAuthentication',
+         ),
+         'DEFAULT_PERMISSION_CLASSES': (
+             'rest_framework.permissions.IsAuthenticated',
+         )
+     }
+
+#. Run the following command::
+
+   $ python manage.py migrate
 
 1.3.5
 =====
