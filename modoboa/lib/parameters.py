@@ -207,9 +207,9 @@ def unregister(app=None):
 
 def __is_defined(app, level, name):
     not_defined = (
-        level not in ['A', 'U']
-        or app not in _params[level]
-        or name not in _params[level][app]["defaults"]
+        level not in ['A', 'U'] or
+        app not in _params[level] or
+        name not in _params[level][app]["defaults"]
     )
     if not_defined:
         raise NotDefined(app, name)

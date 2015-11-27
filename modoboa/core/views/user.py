@@ -4,14 +4,16 @@ from django.shortcuts import render
 from django.utils import translation
 from django.utils.translation import ugettext as _
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+from rest_framework.authtoken.models import Token
 
 from modoboa.lib import events, parameters
 from modoboa.lib.cryptutils import encrypt
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
-from ..forms import ProfileForm
+from ..forms import ProfileForm, APIAccessForm
 
 
 @login_required
@@ -72,4 +74,26 @@ def preferences(request):
         "content": _render_to_string(request, "core/user_preferences.html", {
             "forms": parameters.get_user_forms(request.user)
         })
+    })
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def api_access(request):
+    """A view to configure API access."""
+    if request.method == "POST":
+        form = APIAccessForm(request.POST, user=request.user)
+        if form.is_valid():
+            if form.cleaned_data.get("enable_api_access"):
+                Token.objects.get_or_create(user=request.user)
+            else:
+                Token.objects.filter(user=request.user).delete()
+            return render_to_json_response(_("Access updated"))
+        return render_to_json_response({
+            "form_errors": form.errors
+        }, status=400)
+    form = APIAccessForm(user=request.user)
+    return render_to_json_response({
+        "content": _render_to_string(
+            request, "core/api_access.html", {"form": form})
     })

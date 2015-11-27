@@ -25,8 +25,9 @@ TwocolsNav.prototype = {
     listen: function() {
         $("a.ajaxnav").click($.proxy(this.load_section, this));
         $(document).on("click", "#update", $.proxy(function(e) {
+            var $form = $("form").first();
             simple_ajax_form_post(e, {
-                formid: this.options.formid,
+                formid: $form.attr("id"),
                 modal: false,
                 reload_on_success: false,
                 success_cb: $.proxy(this.save_cb, this)

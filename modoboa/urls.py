@@ -36,6 +36,12 @@ urlpatterns += patterns(
 
 parameters.apply_to_django_settings()
 
+# API urls
+urlpatterns += patterns(
+    "",
+    ("^api/v1/", include("modoboa.urls_api", namespace="external_api")),
+)
+
 if 'modoboa.demo' in settings.INSTALLED_APPS:
     urlpatterns += patterns(
         '',

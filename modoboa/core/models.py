@@ -166,6 +166,7 @@ class User(PermissionsMixin):
         )
 
     def check_password(self, raw_value):
+        """Compare raw_value to current password."""
         match = self.password_expr.match(self.password)
         if match is None:
             return False

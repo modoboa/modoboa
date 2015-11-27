@@ -55,7 +55,7 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
                 q &= Q(is_superuser=True)
             else:
                 q &= Q(groups__name=grpfilter)
-        accounts = User.objects.select_related().filter(q)
+        accounts = User.objects.filter(q).prefetch_related("groups")
 
     aliases = []
     if idtfilter is None or not idtfilter \
@@ -63,13 +63,13 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
         alct = ContentType.objects.get_for_model(Alias)
         ids = user.objectaccess_set.filter(content_type=alct) \
             .values_list('object_id', flat=True)
-        q = Q(pk__in=ids)
+        q = Q(pk__in=ids, internal=False)
         if searchquery is not None:
             q &= (
                 Q(address__icontains=searchquery) |
                 Q(domain__name__icontains=searchquery)
             )
-        aliases = Alias.objects.select_related().filter(q)
+        aliases = Alias.objects.select_related("domain").filter(q)
         if idtfilter is not None and idtfilter:
             aliases = [al for al in aliases if al.type == idtfilter]
     return chain(accounts, aliases)
