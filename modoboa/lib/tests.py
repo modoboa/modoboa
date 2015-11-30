@@ -34,6 +34,8 @@ class ModoTestCase(TestCase):
             params = {}
         response = getattr(self.clt, method)(
             url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        if status != response.status_code:
+            print response.content
         self.assertEqual(response.status_code, status)
         return json.loads(response.content)
 

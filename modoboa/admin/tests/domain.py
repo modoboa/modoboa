@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """Domain related test cases."""
 
 import json
@@ -31,6 +33,19 @@ class DomainTestCase(ModoTestCase):
         self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
         self.assertEqual(dom.name, "pouet.com")
+        self.assertEqual(dom.quota, 100)
+        self.assertEqual(dom.enabled, False)
+        self.assertFalse(dom.admins)
+
+    def test_create_utf8(self):
+        """Test the creation of a domain with non-ASCII characters."""
+        values = {
+            "name": "pouét.com", "quota": 100, "create_dom_admin": "no",
+            "type": "domain", "stepid": "step3"
+        }
+        self.ajax_post(reverse("admin:domain_add"), values)
+        dom = Domain.objects.get(name=u"pouét.com")
+        self.assertEqual(dom.name, u"pouét.com")
         self.assertEqual(dom.quota, 100)
         self.assertEqual(dom.enabled, False)
         self.assertFalse(dom.admins)

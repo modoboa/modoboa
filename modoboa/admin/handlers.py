@@ -12,16 +12,16 @@ def create_alias_for_domainalias(sender, instance, **kwargs):
     if not kwargs.get("created"):
         return
     alias = models.Alias.objects.create(
-        address="@{}".format(instance.name), enabled=True, internal=True)
+        address=u"@{}".format(instance.name), enabled=True, internal=True)
     models.AliasRecipient.objects.create(
-        address="@{}".format(instance.target.name), alias=alias)
+        address=u"@{}".format(instance.target.name), alias=alias)
 
 
 @receiver(signals.post_delete, sender=models.DomainAlias)
 def remove_alias_for_domainalias(sender, instance, **kwargs):
     """Remove the alias associated to domain alias."""
     models.Alias.objects.filter(
-        address="@{}".format(instance.name)).delete()
+        address=u"@{}".format(instance.name)).delete()
 
 
 @receiver(signals.post_save, sender=models.Mailbox)

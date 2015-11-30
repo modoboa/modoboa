@@ -6,9 +6,8 @@ import abc
 from collections import OrderedDict
 import re
 
-from django.core.exceptions import ValidationError
 from django.forms import ChoiceField
-from django.forms.fields import CharField, Field
+from django.forms.fields import Field
 from django.forms.widgets import RadioSelect
 from django.forms.widgets import RadioChoiceInput
 from django.shortcuts import render
@@ -369,37 +368,6 @@ class TabForms(object):
 #
 # Custom fields from here
 #
-
-
-def is_valid_hostname(hostname):
-    """Domain name validaton."""
-    if len(hostname) > 255:
-        return False
-    if hostname[-1] == ".":
-        hostname = hostname[:-1]  # strip exactly one dot from the
-                                  # right, if present
-    allowed = re.compile(r"(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
-    return all(allowed.match(x) for x in hostname.split("."))
-
-
-def validate_domain_name(value):
-    if not is_valid_hostname(value):
-        raise ValidationError(_('Enter a valid domain name'), 'invalid')
-
-
-class DomainNameField(CharField):
-    """
-    A subclass of CharField that only accepts a valid domain name.
-    """
-    default_error_messages = {
-        'invalid': _('Enter a valid domain name')
-    }
-
-    default_validators = [validate_domain_name]
-
-    def clean(self, value):
-        value = self.to_python(value).strip()
-        return super(DomainNameField, self).clean(value)
 
 
 class CustomRadioInput(RadioChoiceInput):

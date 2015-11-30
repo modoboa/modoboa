@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.core.urlresolvers import reverse
 
 from modoboa.lib.tests import ModoTestCase
@@ -38,7 +40,7 @@ class DomainAliasTestCase(ModoTestCase):
         dom = Domain.objects.get(name="test.com")
         values = dict(
             name=dom.name, quota=dom.quota, enabled=dom.enabled,
-            aliases="domalias.net", aliases_1="domalias.com",
+            aliases="domalias.net", aliases_1="domaliasé.com",
             type="domain"
         )
         self.ajax_post(

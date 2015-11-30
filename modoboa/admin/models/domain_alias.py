@@ -1,6 +1,7 @@
 """Models related to domain aliases management."""
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 import reversion
@@ -10,6 +11,7 @@ from .domain import Domain
 from modoboa.lib.exceptions import BadRequest, Conflict
 
 
+@python_2_unicode_compatible
 class DomainAlias(AdminObject):
 
     """Domain aliases."""
@@ -32,8 +34,8 @@ class DomainAlias(AdminObject):
         )
         app_label = "admin"
 
-    def __unicode__(self):
-        return self.name
+    def __str__(self):
+        return smart_text(self.name)
 
     def from_csv(self, user, row):
         """Create a domain alias from a CSV row

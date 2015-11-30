@@ -13,10 +13,12 @@ from modoboa.core.models import User
 from modoboa.lib import events, parameters
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
+from modoboa.lib.fields import DomainNameField, UTF8EmailField
 from modoboa.lib.form_utils import (
-    DomainNameField, DynamicForm, TabForms, WizardForm, WizardStep
+    DynamicForm, TabForms, WizardForm, WizardStep
 )
 from modoboa.lib.permissions import get_account_roles
+from modoboa.lib.validators import validate_utf8_email
 from modoboa.lib.web_utils import render_to_json_response
 
 from ..models import Domain, Mailbox, Alias
@@ -121,13 +123,12 @@ class AccountFormGeneral(forms.ModelForm):
         return self.cleaned_data["role"]
 
     def clean_username(self):
-        from django.core.validators import validate_email
         if "role" not in self.cleaned_data:
             return self.cleaned_data["username"]
         if self.cleaned_data["role"] != "SimpleUsers":
             return self.cleaned_data["username"]
         uname = self.cleaned_data["username"].lower()
-        validate_email(uname)
+        validate_utf8_email(uname)
         return uname
 
     def clean_master_user(self):
@@ -167,7 +168,7 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     """Form to handle mail part."""
 
-    email = forms.EmailField(label=ugettext_lazy("E-mail"), required=False)
+    email = UTF8EmailField(label=ugettext_lazy("E-mail"), required=False)
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
@@ -178,7 +179,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         widget=forms.widgets.TextInput(attrs={"class": "form-control"})
     )
     quota_act = forms.BooleanField(required=False)
-    aliases = forms.EmailField(
+    aliases = UTF8EmailField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
         help_text=ugettext_lazy(
@@ -211,7 +212,8 @@ class AccountFormMail(forms.Form, DynamicForm):
                 if ralias.alias.recipients_count >= 2:
                     continue
                 name = "aliases_%d" % cpt
-                self._create_field(forms.EmailField, name, ralias.alias.address)
+                self._create_field(
+                    UTF8EmailField, name, ralias.alias.address)
                 cpt += 1
             self.fields["email"].initial = self.mb.full_address
             self.fields["quota_act"].initial = self.mb.use_domain_quota
@@ -221,7 +223,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.fields["quota_act"].initial = True
 
         if len(args) and isinstance(args[0], QueryDict):
-            self._load_from_qdict(args[0], "aliases", forms.EmailField)
+            self._load_from_qdict(args[0], "aliases", UTF8EmailField)
 
     def clean_email(self):
         """Ensure lower case emails"""
