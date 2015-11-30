@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -45,19 +45,19 @@ msgstr ""
 msgid "The relay domain name"
 msgstr "Doménové jméno"
 
-#: relaydomains/general_callbacks.py:54 relaydomains/general_callbacks.py:61
+#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay domain"
 msgstr "Relay domény"
 
-#: relaydomains/general_callbacks.py:74
+#: relaydomains/general_callbacks.py:73
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay settings"
 msgstr "Relay domény"
 
-#: relaydomains/general_callbacks.py:110
+#: relaydomains/general_callbacks.py:109
 #, fuzzy
 #| msgid ""
 #| "\n"
@@ -74,35 +74,35 @@ msgstr ""
 "příjemce</em></li>\n"
 "<li><em>alias relay domény; název; cíl; povoleno</em></li>\n"
 
-#: relaydomains/models.py:61
+#: relaydomains/models.py:48
 msgid "name"
 msgstr "název"
 
-#: relaydomains/models.py:62
+#: relaydomains/models.py:49
 msgid "The service name"
 msgstr "Název služby"
 
-#: relaydomains/models.py:84
+#: relaydomains/models.py:71
 msgid "target host"
 msgstr "cílový server"
 
-#: relaydomains/models.py:85
+#: relaydomains/models.py:72
 msgid "Remote destination of this domain"
 msgstr "Vzdálený cíl této domény"
 
-#: relaydomains/models.py:89
+#: relaydomains/models.py:76
 msgid "verify recipients"
 msgstr "ověřit příjemce"
 
-#: relaydomains/models.py:90
+#: relaydomains/models.py:77
 msgid "Check for valid recipients"
 msgstr "Kontrola platných příjemců"
 
-#: relaydomains/models.py:103
+#: relaydomains/models.py:88
 msgid "Relay Domain"
 msgstr "Relay doména"
 
-#: relaydomains/models.py:130
+#: relaydomains/models.py:115
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-09 10:20+0200\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2014-12-29 12:51+0000\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -24,11 +24,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/__init__.py:60 core/__init__.py:61
+#: core/__init__.py:59
 msgid "General"
 msgstr "Geral"
 
-#: core/__init__.py:80
+#: core/__init__.py:78
 #, fuzzy
 #| msgid "An update is available!"
 msgid "One or more updates are available"
@@ -294,115 +294,137 @@ msgstr "Número de linhas inválido"
 msgid "This field is required"
 msgstr "Este campo é obrigatório"
 
-#: core/app_settings.py:371
-msgid "Display"
-msgstr "Exibir"
-
-#: core/app_settings.py:375
-msgid "Prefered language"
-msgstr "Idioma preferido"
-
-#: core/app_settings.py:387
-msgid "Prefered language to display pages"
-msgstr "Idioma preferido para exibir páginas"
-
-#: core/forms.py:14
+#: core/forms.py:19
 msgid "Username"
 msgstr "Nome de Utilizador"
 
-#: core/forms.py:18
+#: core/forms.py:23
 msgid "Password"
 msgstr "Password"
 
-#: core/forms.py:29
+#: core/forms.py:37
 msgid "Old password"
 msgstr "Password antiga"
 
-#: core/forms.py:33
+#: core/forms.py:41
 msgid "New password"
 msgstr "Nova password"
 
-#: core/forms.py:37
+#: core/forms.py:45
 msgid "Confirmation"
 msgstr "Confirmação"
 
-#: core/forms.py:64
+#: core/forms.py:73
 msgid "Old password mismatchs"
 msgstr "Incompatibilidade da password antiga"
 
-#: core/forms.py:71
+#: core/forms.py:80
 msgid "Passwords mismatch"
 msgstr "Passwords não coincidem"
 
-#: core/models.py:53
-msgid "Allow mailboxes access"
+#: core/forms.py:100
+msgid "Enable API access"
 msgstr ""
 
 #: core/models.py:55
+msgid "Allow mailboxes access"
+msgstr ""
+
+#: core/models.py:57
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:58
+#: core/models.py:60
 msgid "password"
 msgstr "password"
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "last login"
 msgstr "último login"
 
-#: core/models.py:89
+#: core/models.py:68
+#, fuzzy
+#| msgid "Prefered language to display pages"
+msgid "Prefered language to display pages."
+msgstr "Idioma preferido para exibir páginas"
+
+#: core/models.py:72
+msgid "Phone number"
+msgstr ""
+
+#: core/models.py:74
+msgid "Secondary email"
+msgstr ""
+
+#: core/models.py:77
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr ""
+
+#: core/models.py:109
 msgid "You can't delete your own account"
 msgstr "Não pode apagar a sua própria conta"
 
-#: core/models.py:139
+#: core/models.py:159
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Falha ao actualizar password: Modulo  LDAP não instalado"
 
-#: core/models.py:192
+#: core/models.py:213
 msgid "account"
 msgstr "conta"
 
-#: core/models.py:347
+#: core/models.py:368
 msgid "Invalid line"
 msgstr "Linha inválida"
 
-#: core/models.py:355
+#: core/models.py:376
 msgid "You can't import an account with a role greater than yours"
 msgstr "Não é possível importa uma conta com permissões superiores"
 
-#: core/models.py:370
+#: core/models.py:391
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "O simple utilizador '%s' deve ter endereço de e-mail válido"
 
-#: core/models.py:375
+#: core/models.py:396
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
 "Os campos nome de utilizador e endereço de email não deve ser diferente para "
 "'%s'"
 
-#: core/models.py:477
+#: core/models.py:498
 msgid "added"
 msgstr "acrescentado"
 
-#: core/models.py:480
+#: core/models.py:501
 msgid "modified"
 msgstr "modificado"
 
-#: core/models.py:482 core/models.py:507
+#: core/models.py:503 core/models.py:528
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s pelo utilizador %(user)s"
 
-#: core/models.py:509
+#: core/models.py:530
 msgid "deleted"
 msgstr "apagado"
 
-#: core/templates/core/flycheck_settings_header.html:5
-#: core/templates/core/settings_header.html:5
-msgid "Modoboa settings"
-msgstr "Definições do Modoboa"
+#: core/templates/core/api_access.html:3
+msgid "API access"
+msgstr ""
+
+#: core/templates/core/api_access.html:3
+msgid "Control your access to Modoboa API"
+msgstr ""
+
+#: core/templates/core/api_access.html:8
+msgid "API access token"
+msgstr ""
+
+#: core/templates/core/api_access.html:29
+#: core/templates/core/user_profile.html:11 lib/form_utils.py:360
+msgid "Update"
+msgstr "Actualizar"
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:52
 msgid "Information"
@@ -492,9 +514,13 @@ msgid "Configure Modoboa"
 msgstr "Configurar Modoboa"
 
 #: core/templates/core/parameters.html:6
-#: core/templates/core/user_preferences.html:8
+#: core/templates/core/user_preferences.html:10
 msgid "Save"
 msgstr "Guardar"
+
+#: core/templates/core/settings_header.html:5
+msgid "Modoboa settings"
+msgstr "Definições do Modoboa"
 
 #: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:80
 msgid "Settings"
@@ -509,17 +535,19 @@ msgstr "Preferências"
 msgid "Customize Modoboa"
 msgstr "Personalizar Modoboa"
 
-#: core/templates/core/user_profile.html:2 core/templatetags/core_tags.py:103
+#: core/templates/core/user_preferences.html:14
+#, fuzzy
+#| msgid "Preferences saved"
+msgid "No preferences available."
+msgstr "Preferências salvas"
+
+#: core/templates/core/user_profile.html:4 core/templatetags/core_tags.py:103
 msgid "Profile"
 msgstr "Perfil"
 
-#: core/templates/core/user_profile.html:2
+#: core/templates/core/user_profile.html:4
 msgid "Update your personal information"
 msgstr "Atualizar o sua informação pessoal"
-
-#: core/templates/core/user_profile.html:8 lib/form_utils.py:359
-msgid "Update"
-msgstr "Actualizar"
 
 #: core/templatetags/core_tags.py:25
 msgid "Modoboa"
@@ -528,6 +556,10 @@ msgstr "Modoboa"
 #: core/templatetags/core_tags.py:89
 msgid "Logout"
 msgstr "Sair"
+
+#: core/templatetags/core_tags.py:114
+msgid "API"
+msgstr ""
 
 #: core/utils.py:20
 #, fuzzy
@@ -539,27 +571,33 @@ msgstr "Benvindo ao Modoboa"
 msgid "Parameters saved"
 msgstr "Parâmetros salvos"
 
-#: core/views/auth.py:33
+#: core/views/auth.py:39
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "O utilizador '%s' fez login com sucesso"
 
-#: core/views/auth.py:48
+#: core/views/auth.py:54
 msgid "Your username and password didn't match. Please try again."
 msgstr "O seu nome de utilizador"
 
-#: core/views/auth.py:76
+#: core/views/auth.py:82
 #, python-format
 msgid "User '%s' logged out"
 msgstr "O utilizador '%s' fez logout"
 
-#: core/views/user.py:39
+#: core/views/user.py:47
 msgid "Profile updated"
 msgstr "Perfil atualizado"
 
-#: core/views/user.py:62
+#: core/views/user.py:71
 msgid "Preferences saved"
 msgstr "Preferências salvas"
+
+#: core/views/user.py:91
+#, fuzzy
+#| msgid "Profile updated"
+msgid "Access updated"
+msgstr "Perfil atualizado"
 
 #: lib/db_utils.py:39
 #, python-format
@@ -575,23 +613,23 @@ msgstr "Acesso negado: %s"
 msgid "Permission denied"
 msgstr "Acesso negado"
 
-#: lib/form_utils.py:84
+#: lib/form_utils.py:85
 msgid "Submit"
 msgstr "Enviar"
 
-#: lib/form_utils.py:117 lib/form_utils.py:120
+#: lib/form_utils.py:118 lib/form_utils.py:121
 msgid "Invalid request"
 msgstr "Pedido inválido"
 
-#: lib/form_utils.py:386 lib/form_utils.py:394
+#: lib/form_utils.py:387 lib/form_utils.py:395
 msgid "Enter a valid domain name"
 msgstr "Introduzir um nome de domínio válido "
 
-#: lib/form_utils.py:443
+#: lib/form_utils.py:444
 msgid "Yes"
 msgstr "Sim"
 
-#: lib/form_utils.py:443
+#: lib/form_utils.py:444
 msgid "No"
 msgstr "Não"
 
@@ -670,3 +708,9 @@ msgstr "Lembrar-me"
 #: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Entrar"
+
+#~ msgid "Display"
+#~ msgstr "Exibir"
+
+#~ msgid "Prefered language"
+#~ msgstr "Idioma preferido"

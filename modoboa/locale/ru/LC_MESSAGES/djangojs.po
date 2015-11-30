@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 11:15+0200\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -18,6 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr ""
 
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
@@ -31,7 +35,7 @@ msgstr "Внимание"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: static/js/global.js:329
+#: static/js/global.js:339
 msgid "Internal error"
 msgstr ""
 

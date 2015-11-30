@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-09 08:20+0100\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: static/admin/js/admin.js:126
+#: admin/static/admin/js/admin.js:126
 msgid "No more domain to show"
 msgstr "Plus de domaine à afficher"
 
-#: static/admin/js/admin.js:145
+#: admin/static/admin/js/admin.js:145
 msgid "Do not delete domain directory"
 msgstr "Ne pas supprimer le répertoire du domaine"
 
-#: static/admin/js/admin.js:147
+#: admin/static/admin/js/admin.js:147
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
 
-#: static/admin/js/admin.js:148
+#: admin/static/admin/js/admin.js:148
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -37,18 +37,18 @@ msgstr ""
 "Cette opération supprimera toutes les données associées à ce domaine à "
 "l'excéption des comptes."
 
-#: static/admin/js/admin.js:231
+#: admin/static/admin/js/admin.js:231
 msgid "No domain administrator defined"
 msgstr "Aucun administrateur de domaine défini"
 
-#: static/admin/js/admin.js:286 static/admin/js/admin.js.c:354
+#: admin/static/admin/js/admin.js:286 admin/static/admin/js/admin.js:354
 msgid "No more identity to show"
 msgstr "Plus d'identité à afficher"
 
-#: static/admin/js/admin.js:328
+#: admin/static/admin/js/admin.js:328
 msgid "Do not delete mailbox directory"
 msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
-#: static/admin/js/admin.js:357
+#: admin/static/admin/js/admin.js:357
 msgid "No more quota to show"
 msgstr "Plus de quota à afficher"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -43,19 +43,19 @@ msgstr ""
 msgid "The relay domain name"
 msgstr "Le nom du domaine"
 
-#: relaydomains/general_callbacks.py:54 relaydomains/general_callbacks.py:61
+#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay domain"
 msgstr "Domaines relais"
 
-#: relaydomains/general_callbacks.py:74
+#: relaydomains/general_callbacks.py:73
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay settings"
 msgstr "Domaines relais"
 
-#: relaydomains/general_callbacks.py:110
+#: relaydomains/general_callbacks.py:109
 #, fuzzy
 #| msgid ""
 #| "\n"
@@ -72,35 +72,35 @@ msgstr ""
 "destinataires</em></li>\n"
 "<li><em>relaydomainalias; nom; cible; activé</em></li>\n"
 
-#: relaydomains/models.py:61
+#: relaydomains/models.py:48
 msgid "name"
 msgstr "Nom"
 
-#: relaydomains/models.py:62
+#: relaydomains/models.py:49
 msgid "The service name"
 msgstr "Le nom du service"
 
-#: relaydomains/models.py:84
+#: relaydomains/models.py:71
 msgid "target host"
 msgstr "hôte cible"
 
-#: relaydomains/models.py:85
+#: relaydomains/models.py:72
 msgid "Remote destination of this domain"
 msgstr "Adresse de destination de ce domaine"
 
-#: relaydomains/models.py:89
+#: relaydomains/models.py:76
 msgid "verify recipients"
 msgstr "Vérifier les destinataires"
 
-#: relaydomains/models.py:90
+#: relaydomains/models.py:77
 msgid "Check for valid recipients"
 msgstr "Vérifie si les destinataires sont valides (existent)"
 
-#: relaydomains/models.py:103
+#: relaydomains/models.py:88
 msgid "Relay Domain"
 msgstr "Domaine relais"
 
-#: relaydomains/models.py:130
+#: relaydomains/models.py:115
 msgid "Invalid line"
 msgstr "Ligne invalide"
 

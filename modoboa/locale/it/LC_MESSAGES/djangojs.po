@@ -1,22 +1,27 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Rocco <mors10@hotmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 11:15+0200\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2015-10-11 11:13+0000\n"
 "Last-Translator: Rocco <mors10@hotmail.com>\n"
-"Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/it/)\n"
+"Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/"
+"it/)\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr ""
 
 #: core/static/core/js/settings.js:14
 msgid "No more log entry to show"
@@ -30,7 +35,7 @@ msgstr "Attenzione"
 msgid "Cancel"
 msgstr "Elimina"
 
-#: static/js/global.js:329
+#: static/js/global.js:339
 msgid "Internal error"
 msgstr "Errore interno"
 

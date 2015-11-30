@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-09 10:20+0200\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: core/__init__.py:60 core/__init__.py:61
+#: core/__init__.py:59
 msgid "General"
 msgstr "Основные"
 
-#: core/__init__.py:80
+#: core/__init__.py:78
 #, fuzzy
 msgid "One or more updates are available"
 msgstr "Статистика не доступна"
@@ -284,113 +284,135 @@ msgstr ""
 msgid "This field is required"
 msgstr "Это поле обязательно для заполнеия"
 
-#: core/app_settings.py:371
-msgid "Display"
-msgstr "Отображение"
-
-#: core/app_settings.py:375
-msgid "Prefered language"
-msgstr "Предпочитаемый язык"
-
-#: core/app_settings.py:387
-msgid "Prefered language to display pages"
-msgstr "Предпочитаемый язык для отображения страниц"
-
-#: core/forms.py:14
+#: core/forms.py:19
 msgid "Username"
 msgstr "Логин пользователя"
 
-#: core/forms.py:18
+#: core/forms.py:23
 msgid "Password"
 msgstr "Пароль"
 
-#: core/forms.py:29
+#: core/forms.py:37
 msgid "Old password"
 msgstr "Старый пароль"
 
-#: core/forms.py:33
+#: core/forms.py:41
 msgid "New password"
 msgstr "Новый пароль"
 
-#: core/forms.py:37
+#: core/forms.py:45
 msgid "Confirmation"
 msgstr "Подтверждение"
 
-#: core/forms.py:64
+#: core/forms.py:73
 msgid "Old password mismatchs"
 msgstr "Старые пароли не совпадают"
 
-#: core/forms.py:71
+#: core/forms.py:80
 msgid "Passwords mismatch"
 msgstr "Пароли не совпадают"
 
-#: core/models.py:53
-msgid "Allow mailboxes access"
+#: core/forms.py:100
+msgid "Enable API access"
 msgstr ""
 
 #: core/models.py:55
+msgid "Allow mailboxes access"
+msgstr ""
+
+#: core/models.py:57
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:58
+#: core/models.py:60
 msgid "password"
 msgstr ""
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "last login"
 msgstr ""
 
-#: core/models.py:89
+#: core/models.py:68
+#, fuzzy
+#| msgid "Prefered language to display pages"
+msgid "Prefered language to display pages."
+msgstr "Предпочитаемый язык для отображения страниц"
+
+#: core/models.py:72
+msgid "Phone number"
+msgstr ""
+
+#: core/models.py:74
+msgid "Secondary email"
+msgstr ""
+
+#: core/models.py:77
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr ""
+
+#: core/models.py:109
 msgid "You can't delete your own account"
 msgstr "Вы не можете удалить собственный аккаунт"
 
-#: core/models.py:139
+#: core/models.py:159
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Ошибка обновления пароля: модуль LDAP не установлен"
 
-#: core/models.py:192
+#: core/models.py:213
 msgid "account"
 msgstr "Аккаунт"
 
-#: core/models.py:347
+#: core/models.py:368
 msgid "Invalid line"
 msgstr "Ошибочная строка"
 
-#: core/models.py:355
+#: core/models.py:376
 msgid "You can't import an account with a role greater than yours"
 msgstr "Вы не можете импортировать аккаунт с ролью старше чем у вас"
 
-#: core/models.py:370
+#: core/models.py:391
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Пользователь '%s' должен иметь действительный почтовый адрес"
 
-#: core/models.py:375
+#: core/models.py:396
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Имя пользователя и адрес не должны отличатся для пользователя '%s'"
 
-#: core/models.py:477
+#: core/models.py:498
 msgid "added"
 msgstr "добавлено"
 
-#: core/models.py:480
+#: core/models.py:501
 msgid "modified"
 msgstr "изменено"
 
-#: core/models.py:482 core/models.py:507
+#: core/models.py:503 core/models.py:528
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s пользователем %(user)s"
 
-#: core/models.py:509
+#: core/models.py:530
 msgid "deleted"
 msgstr "удалено"
 
-#: core/templates/core/flycheck_settings_header.html:5
-#: core/templates/core/settings_header.html:5
-msgid "Modoboa settings"
-msgstr "Настройки Modoboa"
+#: core/templates/core/api_access.html:3
+msgid "API access"
+msgstr ""
+
+#: core/templates/core/api_access.html:3
+msgid "Control your access to Modoboa API"
+msgstr ""
+
+#: core/templates/core/api_access.html:8
+msgid "API access token"
+msgstr ""
+
+#: core/templates/core/api_access.html:29
+#: core/templates/core/user_profile.html:11 lib/form_utils.py:360
+msgid "Update"
+msgstr "Обновление"
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:52
 msgid "Information"
@@ -479,9 +501,13 @@ msgid "Configure Modoboa"
 msgstr "Настройка Modoboa"
 
 #: core/templates/core/parameters.html:6
-#: core/templates/core/user_preferences.html:8
+#: core/templates/core/user_preferences.html:10
 msgid "Save"
 msgstr "Сохранить"
+
+#: core/templates/core/settings_header.html:5
+msgid "Modoboa settings"
+msgstr "Настройки Modoboa"
 
 #: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:80
 msgid "Settings"
@@ -496,17 +522,19 @@ msgstr "Параметры"
 msgid "Customize Modoboa"
 msgstr "Настроить Modoboa"
 
-#: core/templates/core/user_profile.html:2 core/templatetags/core_tags.py:103
+#: core/templates/core/user_preferences.html:14
+#, fuzzy
+#| msgid "Preferences saved"
+msgid "No preferences available."
+msgstr "Параметры сохранены"
+
+#: core/templates/core/user_profile.html:4 core/templatetags/core_tags.py:103
 msgid "Profile"
 msgstr "Профиль"
 
-#: core/templates/core/user_profile.html:2
+#: core/templates/core/user_profile.html:4
 msgid "Update your personal information"
 msgstr "Обновить личную информацию"
-
-#: core/templates/core/user_profile.html:8 lib/form_utils.py:359
-msgid "Update"
-msgstr "Обновление"
 
 #: core/templatetags/core_tags.py:25
 msgid "Modoboa"
@@ -515,6 +543,10 @@ msgstr "Modoboa"
 #: core/templatetags/core_tags.py:89
 msgid "Logout"
 msgstr "Завершить сеанс"
+
+#: core/templatetags/core_tags.py:114
+msgid "API"
+msgstr ""
 
 #: core/utils.py:20
 #, fuzzy
@@ -526,27 +558,33 @@ msgstr "Добро пожаловать в Modoboa!"
 msgid "Parameters saved"
 msgstr "Параметры сохранены"
 
-#: core/views/auth.py:33
+#: core/views/auth.py:39
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Пользователь '%s' успешно вошел в систему"
 
-#: core/views/auth.py:48
+#: core/views/auth.py:54
 msgid "Your username and password didn't match. Please try again."
 msgstr "Не правильное имя или пароль. Попробуйте еще раз."
 
-#: core/views/auth.py:76
+#: core/views/auth.py:82
 #, python-format
 msgid "User '%s' logged out"
 msgstr "Пользователь '%s' вышел из системы"
 
-#: core/views/user.py:39
+#: core/views/user.py:47
 msgid "Profile updated"
 msgstr "Профиль обновлен"
 
-#: core/views/user.py:62
+#: core/views/user.py:71
 msgid "Preferences saved"
 msgstr "Параметры сохранены"
+
+#: core/views/user.py:91
+#, fuzzy
+#| msgid "Profile updated"
+msgid "Access updated"
+msgstr "Профиль обновлен"
 
 #: lib/db_utils.py:39
 #, python-format
@@ -562,23 +600,23 @@ msgstr "В разрешении отказано: %s"
 msgid "Permission denied"
 msgstr "В разрешении отказано"
 
-#: lib/form_utils.py:84
+#: lib/form_utils.py:85
 msgid "Submit"
 msgstr ""
 
-#: lib/form_utils.py:117 lib/form_utils.py:120
+#: lib/form_utils.py:118 lib/form_utils.py:121
 msgid "Invalid request"
 msgstr "Ошибочный запрос"
 
-#: lib/form_utils.py:386 lib/form_utils.py:394
+#: lib/form_utils.py:387 lib/form_utils.py:395
 msgid "Enter a valid domain name"
 msgstr "Введите действительный адрес домена"
 
-#: lib/form_utils.py:443
+#: lib/form_utils.py:444
 msgid "Yes"
 msgstr "Да"
 
-#: lib/form_utils.py:443
+#: lib/form_utils.py:444
 msgid "No"
 msgstr "Нет"
 
@@ -657,3 +695,9 @@ msgstr "Запомнить меня"
 #: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Войти"
+
+#~ msgid "Display"
+#~ msgstr "Отображение"
+
+#~ msgid "Prefered language"
+#~ msgstr "Предпочитаемый язык"

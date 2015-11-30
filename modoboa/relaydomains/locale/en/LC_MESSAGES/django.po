@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,50 +41,50 @@ msgstr ""
 msgid "The relay domain name"
 msgstr ""
 
-#: relaydomains/general_callbacks.py:54 relaydomains/general_callbacks.py:61
+#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
 msgid "Relay domain"
 msgstr ""
 
-#: relaydomains/general_callbacks.py:74
+#: relaydomains/general_callbacks.py:73
 msgid "Relay settings"
 msgstr ""
 
-#: relaydomains/general_callbacks.py:110
+#: relaydomains/general_callbacks.py:109
 msgid ""
 "\n"
 "<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
 "em></li>\n"
 msgstr ""
 
-#: relaydomains/models.py:61
+#: relaydomains/models.py:48
 msgid "name"
 msgstr ""
 
-#: relaydomains/models.py:62
+#: relaydomains/models.py:49
 msgid "The service name"
 msgstr ""
 
-#: relaydomains/models.py:84
+#: relaydomains/models.py:71
 msgid "target host"
 msgstr ""
 
-#: relaydomains/models.py:85
+#: relaydomains/models.py:72
 msgid "Remote destination of this domain"
 msgstr ""
 
-#: relaydomains/models.py:89
+#: relaydomains/models.py:76
 msgid "verify recipients"
 msgstr ""
 
-#: relaydomains/models.py:90
+#: relaydomains/models.py:77
 msgid "Check for valid recipients"
 msgstr ""
 
-#: relaydomains/models.py:103
+#: relaydomains/models.py:88
 msgid "Relay Domain"
 msgstr ""
 
-#: relaydomains/models.py:130
+#: relaydomains/models.py:115
 msgid "Invalid line"
 msgstr ""
 

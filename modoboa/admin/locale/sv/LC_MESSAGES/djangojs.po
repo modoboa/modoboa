@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-09 08:20+0100\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2015-01-13 15:21+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -20,19 +20,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: static/admin/js/admin.js:126
+#: admin/static/admin/js/admin.js:126
 msgid "No more domain to show"
 msgstr "Inga fler domäner att visa"
 
-#: static/admin/js/admin.js:145
+#: admin/static/admin/js/admin.js:145
 msgid "Do not delete domain directory"
 msgstr "Radera inte domän katalog"
 
-#: static/admin/js/admin.js:147
+#: admin/static/admin/js/admin.js:147
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "Denna åtgärd kommer radera ALL data associerad med den här domänen."
 
-#: static/admin/js/admin.js:148
+#: admin/static/admin/js/admin.js:148
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -40,18 +40,18 @@ msgstr ""
 "Den här operationen raderar all data som är associerad med denna domän, "
 "förutom konton."
 
-#: static/admin/js/admin.js:231
+#: admin/static/admin/js/admin.js:231
 msgid "No domain administrator defined"
 msgstr "Ingen domänadministratör definierad"
 
-#: static/admin/js/admin.js:286 static/admin/js/admin.js.c:354
+#: admin/static/admin/js/admin.js:286 admin/static/admin/js/admin.js:354
 msgid "No more identity to show"
 msgstr "Inga fler konton att visa"
 
-#: static/admin/js/admin.js:328
+#: admin/static/admin/js/admin.js:328
 msgid "Do not delete mailbox directory"
 msgstr "Radera inte brevlådans katalog"
 
-#: static/admin/js/admin.js:357
+#: admin/static/admin/js/admin.js:357
 msgid "No more quota to show"
 msgstr "Ingen mer kvota att visa"

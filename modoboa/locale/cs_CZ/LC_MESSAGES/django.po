@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-09 10:20+0200\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: core/__init__.py:60 core/__init__.py:61
+#: core/__init__.py:59
 msgid "General"
 msgstr "Obecné"
 
-#: core/__init__.py:80
+#: core/__init__.py:78
 #, fuzzy
 #| msgid "An update is available!"
 msgid "One or more updates are available"
@@ -293,113 +293,135 @@ msgstr "Neplatný počet cyklů"
 msgid "This field is required"
 msgstr "Toto pole je vyžadováno"
 
-#: core/app_settings.py:371
-msgid "Display"
-msgstr "Zobrazení"
-
-#: core/app_settings.py:375
-msgid "Prefered language"
-msgstr "Preferovaný jazyk"
-
-#: core/app_settings.py:387
-msgid "Prefered language to display pages"
-msgstr "Preferovaný jazyk pro zobrazení stránek"
-
-#: core/forms.py:14
+#: core/forms.py:19
 msgid "Username"
 msgstr "Uživatelské jméno"
 
-#: core/forms.py:18
+#: core/forms.py:23
 msgid "Password"
 msgstr "Heslo"
 
-#: core/forms.py:29
+#: core/forms.py:37
 msgid "Old password"
 msgstr "Původní heslo"
 
-#: core/forms.py:33
+#: core/forms.py:41
 msgid "New password"
 msgstr "Nové heslo"
 
-#: core/forms.py:37
+#: core/forms.py:45
 msgid "Confirmation"
 msgstr "Potvrzení"
 
-#: core/forms.py:64
+#: core/forms.py:73
 msgid "Old password mismatchs"
 msgstr "Původní heslo se neshoduje"
 
-#: core/forms.py:71
+#: core/forms.py:80
 msgid "Passwords mismatch"
 msgstr "Hesla se neshodují"
 
-#: core/models.py:53
-msgid "Allow mailboxes access"
+#: core/forms.py:100
+msgid "Enable API access"
 msgstr ""
 
 #: core/models.py:55
+msgid "Allow mailboxes access"
+msgstr ""
+
+#: core/models.py:57
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:58
+#: core/models.py:60
 msgid "password"
 msgstr "heslo"
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "last login"
 msgstr "poslední přihlášení"
 
-#: core/models.py:89
+#: core/models.py:68
+#, fuzzy
+#| msgid "Prefered language to display pages"
+msgid "Prefered language to display pages."
+msgstr "Preferovaný jazyk pro zobrazení stránek"
+
+#: core/models.py:72
+msgid "Phone number"
+msgstr ""
+
+#: core/models.py:74
+msgid "Secondary email"
+msgstr ""
+
+#: core/models.py:77
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr ""
+
+#: core/models.py:109
 msgid "You can't delete your own account"
 msgstr "Nemůžete smazat vlastní účet"
 
-#: core/models.py:139
+#: core/models.py:159
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Nebylo možné změnit heslo: LDAP modul není instalován"
 
-#: core/models.py:192
+#: core/models.py:213
 msgid "account"
 msgstr "účet"
 
-#: core/models.py:347
+#: core/models.py:368
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: core/models.py:355
+#: core/models.py:376
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nemůžete importvat účet s vyšším oprávněním, než máte vy sám"
 
-#: core/models.py:370
+#: core/models.py:391
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Běžný uživatel '%s' musí mít nastavenou platnou emailovou adresu"
 
-#: core/models.py:375
+#: core/models.py:396
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "pole uživatelského jména a emailu se nesmí pro '%s' lišit"
 
-#: core/models.py:477
+#: core/models.py:498
 msgid "added"
 msgstr "přidáno"
 
-#: core/models.py:480
+#: core/models.py:501
 msgid "modified"
 msgstr "upraveno"
 
-#: core/models.py:482 core/models.py:507
+#: core/models.py:503 core/models.py:528
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s uživatelem %(user)s"
 
-#: core/models.py:509
+#: core/models.py:530
 msgid "deleted"
 msgstr "smazáno"
 
-#: core/templates/core/flycheck_settings_header.html:5
-#: core/templates/core/settings_header.html:5
-msgid "Modoboa settings"
-msgstr "Nastavení Modoboa"
+#: core/templates/core/api_access.html:3
+msgid "API access"
+msgstr ""
+
+#: core/templates/core/api_access.html:3
+msgid "Control your access to Modoboa API"
+msgstr ""
+
+#: core/templates/core/api_access.html:8
+msgid "API access token"
+msgstr ""
+
+#: core/templates/core/api_access.html:29
+#: core/templates/core/user_profile.html:11 lib/form_utils.py:360
+msgid "Update"
+msgstr "Aktualizovat"
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:52
 msgid "Information"
@@ -489,9 +511,13 @@ msgid "Configure Modoboa"
 msgstr "Nastavit Modoboa"
 
 #: core/templates/core/parameters.html:6
-#: core/templates/core/user_preferences.html:8
+#: core/templates/core/user_preferences.html:10
 msgid "Save"
 msgstr "Uložit"
+
+#: core/templates/core/settings_header.html:5
+msgid "Modoboa settings"
+msgstr "Nastavení Modoboa"
 
 #: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:80
 msgid "Settings"
@@ -506,17 +532,19 @@ msgstr "Možnosti"
 msgid "Customize Modoboa"
 msgstr "Nastavit Modoboa"
 
-#: core/templates/core/user_profile.html:2 core/templatetags/core_tags.py:103
+#: core/templates/core/user_preferences.html:14
+#, fuzzy
+#| msgid "Preferences saved"
+msgid "No preferences available."
+msgstr "Možnosti uloženy"
+
+#: core/templates/core/user_profile.html:4 core/templatetags/core_tags.py:103
 msgid "Profile"
 msgstr "Profil"
 
-#: core/templates/core/user_profile.html:2
+#: core/templates/core/user_profile.html:4
 msgid "Update your personal information"
 msgstr "Aktualizovat osobní informace"
-
-#: core/templates/core/user_profile.html:8 lib/form_utils.py:359
-msgid "Update"
-msgstr "Aktualizovat"
 
 #: core/templatetags/core_tags.py:25
 msgid "Modoboa"
@@ -525,6 +553,10 @@ msgstr "Modoboa"
 #: core/templatetags/core_tags.py:89
 msgid "Logout"
 msgstr "Odhlásit se"
+
+#: core/templatetags/core_tags.py:114
+msgid "API"
+msgstr ""
 
 #: core/utils.py:20
 #, fuzzy
@@ -536,28 +568,34 @@ msgstr "Vítejte v Modoboa"
 msgid "Parameters saved"
 msgstr "Parametry uloženy"
 
-#: core/views/auth.py:33
+#: core/views/auth.py:39
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Uživatel '%s' se úspěšně přihlásil"
 
-#: core/views/auth.py:48
+#: core/views/auth.py:54
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Vaše uživatelské jméno nebo heslo se neshodují. Zkuste to prosím znovu."
 
-#: core/views/auth.py:76
+#: core/views/auth.py:82
 #, python-format
 msgid "User '%s' logged out"
 msgstr "Uživatel '%s' se odhlásil"
 
-#: core/views/user.py:39
+#: core/views/user.py:47
 msgid "Profile updated"
 msgstr "Profil aktualizován"
 
-#: core/views/user.py:62
+#: core/views/user.py:71
 msgid "Preferences saved"
 msgstr "Možnosti uloženy"
+
+#: core/views/user.py:91
+#, fuzzy
+#| msgid "Profile updated"
+msgid "Access updated"
+msgstr "Profil aktualizován"
 
 #: lib/db_utils.py:39
 #, python-format
@@ -573,23 +611,23 @@ msgstr "Přístup zamítnut: %s"
 msgid "Permission denied"
 msgstr "Přístup zamítnut"
 
-#: lib/form_utils.py:84
+#: lib/form_utils.py:85
 msgid "Submit"
 msgstr "Uložit"
 
-#: lib/form_utils.py:117 lib/form_utils.py:120
+#: lib/form_utils.py:118 lib/form_utils.py:121
 msgid "Invalid request"
 msgstr "Neplatný požadavek"
 
-#: lib/form_utils.py:386 lib/form_utils.py:394
+#: lib/form_utils.py:387 lib/form_utils.py:395
 msgid "Enter a valid domain name"
 msgstr "Vložte platné doménové jméno"
 
-#: lib/form_utils.py:443
+#: lib/form_utils.py:444
 msgid "Yes"
 msgstr "Ano"
 
-#: lib/form_utils.py:443
+#: lib/form_utils.py:444
 msgid "No"
 msgstr "Ne"
 
@@ -668,3 +706,9 @@ msgstr "Zapamatovat si"
 #: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Přihlásit"
+
+#~ msgid "Display"
+#~ msgstr "Zobrazení"
+
+#~ msgid "Prefered language"
+#~ msgstr "Preferovaný jazyk"

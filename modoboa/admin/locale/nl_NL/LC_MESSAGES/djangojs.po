@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-09 08:20+0100\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2014-12-31 11:42+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -20,21 +20,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: static/admin/js/admin.js:126
+#: admin/static/admin/js/admin.js:126
 msgid "No more domain to show"
 msgstr "Geen domein meer om te weergeven"
 
-#: static/admin/js/admin.js:145
+#: admin/static/admin/js/admin.js:145
 msgid "Do not delete domain directory"
 msgstr "De map van dit domein niet verwijderen (Zal de data ervan behouden)"
 
-#: static/admin/js/admin.js:147
+#: admin/static/admin/js/admin.js:147
 msgid "This operation will remove ALL data associated to this domain."
 msgstr ""
 "Deze actie zal ALLE data verwijderen die bij dit domein hoort. Wilt u "
 "doorgaan?"
 
-#: static/admin/js/admin.js:148
+#: admin/static/admin/js/admin.js:148
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -42,18 +42,18 @@ msgstr ""
 "Deze actie zal alle data die bij dit domein hoort verwijderen, behalve de "
 "gebruikers."
 
-#: static/admin/js/admin.js:231
+#: admin/static/admin/js/admin.js:231
 msgid "No domain administrator defined"
 msgstr "Geen administrator toegewezen"
 
-#: static/admin/js/admin.js:286 static/admin/js/admin.js.c:354
+#: admin/static/admin/js/admin.js:286 admin/static/admin/js/admin.js:354
 msgid "No more identity to show"
 msgstr "Geen identiteiten meer om te weergeven"
 
-#: static/admin/js/admin.js:328
+#: admin/static/admin/js/admin.js:328
 msgid "Do not delete mailbox directory"
 msgstr "Verwijder de map van deze mailbox niet (zal de data ervan behouden)"
 
-#: static/admin/js/admin.js:357
+#: admin/static/admin/js/admin.js:357
 msgid "No more quota to show"
 msgstr "Geen quota meer om te weergeven"

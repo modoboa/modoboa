@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-09 18:24+0100\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -80,43 +80,43 @@ msgstr "Musí se jednat o kladné číslo"
 msgid "Administration"
 msgstr "Správa"
 
-#: admin/callbacks.py:46
+#: admin/callbacks.py:42
 #, fuzzy
 #| msgid "Create a domain administrator"
 msgid "Domain administrator"
 msgstr "Vytvořit správce domény"
 
-#: admin/callbacks.py:75 admin/templates/admin/domain_statistics.html:30
+#: admin/callbacks.py:71 admin/templates/admin/domain_statistics.html:30
 #: admin/templates/admin/domains.html:3
 msgid "Domains"
 msgstr "Domény"
 
-#: admin/callbacks.py:85 admin/templates/admin/domain_statistics.html:36
+#: admin/callbacks.py:81 admin/templates/admin/domain_statistics.html:36
 #: admin/templates/admin/domain_statistics.html:50
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Identity"
 
-#: admin/callbacks.py:100 admin/templates/admin/forward.html:2
+#: admin/callbacks.py:96 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Přeposlat"
 
-#: admin/callbacks.py:163
+#: admin/callbacks.py:159
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Import účtu nebyl úspěšný (%s): doména neexistuje"
 
-#: admin/callbacks.py:173 admin/forms/account.py:257
+#: admin/callbacks.py:169 admin/forms/account.py:257
 #, python-format
 msgid "Mailbox %s already exists"
 msgstr "Schránka %s již existuje"
 
-#: admin/callbacks.py:181
+#: admin/callbacks.py:177
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Import účtu selhal (%s): chybná hodnota kvóty"
 
-#: admin/callbacks.py:216 admin/forms/domain.py:94
+#: admin/callbacks.py:212 admin/forms/domain.py:94
 msgid "domain alias"
 msgstr "doménový alias"
 
@@ -885,6 +885,6 @@ msgstr ""
 msgid "Import identities"
 msgstr "Importovat identity"
 
-#: admin/views/user.py:34
+#: admin/views/user.py:35
 msgid "Forward updated"
 msgstr "Přeposílání aktualizováno"

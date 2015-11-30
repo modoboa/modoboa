@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-09 18:00+0100\n"
+"POT-Creation-Date: 2015-11-27 19:00+0100\n"
 "PO-Revision-Date: 2014-12-01 12:12+0000\n"
 "Last-Translator: Arvedui <arvedui@posteo.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
@@ -20,6 +20,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: static/relaydomains/js/relay_domains.js:45
+#: relaydomains/static/relaydomains/js/relay_domains.js:45
 msgid "Services updated"
 msgstr "'Service'-Liste aktualisiert"
