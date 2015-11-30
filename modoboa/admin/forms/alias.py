@@ -7,19 +7,19 @@ from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     DynamicForm
 )
 
 from ..models import Domain, Alias
-from .base import EmailField
 
 
 class AliasForm(forms.ModelForm, DynamicForm):
 
     """A form to create/modify an alias."""
 
-    address = EmailField(
+    address = lib_fields.UTF8AndEmptyUserEmailField(
         label=ugettext_lazy("Email address"),
         help_text=ugettext_lazy(
             "The alias address. To create a catchall alias, just enter the "
@@ -27,7 +27,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
         ),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
-    recipients = EmailField(
+    recipients = lib_fields.UTF8AndEmptyUserEmailField(
         label=ugettext_lazy("Recipients"), required=False,
         help_text=ugettext_lazy(
             "Addresses this alias will point to. Indicate only one address "

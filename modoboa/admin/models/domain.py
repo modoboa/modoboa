@@ -3,6 +3,7 @@
 from django.contrib.contenttypes import generic
 from django.db import models
 from django.db.models.manager import Manager
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 import reversion
@@ -26,6 +27,7 @@ class DomainManager(Manager):
         return self.get_queryset().filter(owners__user=admin)
 
 
+@python_2_unicode_compatible
 class Domain(AdminObject):
 
     """Mail domain."""
@@ -135,7 +137,7 @@ class Domain(AdminObject):
             events.raiseEvent("MailboxAliasDeleted", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
         if parameters.get_admin("AUTO_ACCOUNT_REMOVAL") == "yes":
-            for account in User.objects.filter(mailbox__domain__name=self.name):
+            for account in User.objects.filter(mailbox__domain=self):
                 account.delete(fromuser, keepdir)
         elif self.mailbox_set.count():
             Quota.objects.filter(username__contains='@%s' % self.name).delete()
@@ -144,7 +146,7 @@ class Domain(AdminObject):
         super(Domain, self).delete()
 
     def __str__(self):
-        return self.name
+        return smart_text(self.name)
 
     def from_csv(self, user, row):
         """Create a new domain from a CSV entry.

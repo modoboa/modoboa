@@ -13,6 +13,7 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 import reversion
@@ -33,6 +34,7 @@ except ImportError:
     ldap_available = False
 
 
+@python_2_unicode_compatible
 class User(PermissionsMixin):
 
     """Custom User model.
@@ -182,7 +184,7 @@ class User(PermissionsMixin):
         return getattr(self, self.USERNAME_FIELD)
 
     def __str__(self):
-        return self.get_username()
+        return smart_text(self.get_username())
 
     def natural_key(self):
         return (self.get_username(),)

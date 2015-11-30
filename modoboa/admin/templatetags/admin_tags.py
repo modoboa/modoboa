@@ -147,7 +147,7 @@ def identities_menu(user, selection=None):
 def domain_actions(user, domain):
     actions = [
         {"name": "listidentities",
-         "url": "{0}#list/?searchquery=@{1}".format(
+         "url": u"{0}#list/?searchquery=@{1}".format(
              reverse("admin:identity_list"), domain.name),
          "title": _("View the domain's identities"),
          "img": "fa fa-user"}

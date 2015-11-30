@@ -8,8 +8,9 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.core.models import User
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import ModoboaException, Conflict
+from modoboa.lib.fields import DomainNameField
 from modoboa.lib.form_utils import (
-    DomainNameField, YesNoField, WizardForm, WizardStep, DynamicForm, TabForms
+    YesNoField, WizardForm, WizardStep, DynamicForm, TabForms
 )
 from modoboa.lib.web_utils import render_to_json_response
 

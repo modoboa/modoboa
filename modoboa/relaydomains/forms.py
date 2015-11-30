@@ -4,7 +4,8 @@ Postfix relay domains extension forms.
 from django import forms
 from django.utils.translation import ugettext_lazy
 
-from modoboa.lib.form_utils import DomainNameField, WizardStep
+from modoboa.lib.fields import DomainNameField
+from modoboa.lib.form_utils import WizardStep
 
 from .models import RelayDomain
 

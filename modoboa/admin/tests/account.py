@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.core.urlresolvers import reverse
 
 from modoboa.core.models import User
@@ -64,6 +66,16 @@ class AccountTestCase(ModoTestCase):
                 alias__address=mb.full_address, address=mb.full_address,
                 alias__internal=True).exists()
         )
+
+    def test_utf8_username(self):
+        """Create an account with non-ASCII characters."""
+        values = dict(
+            username="téster@test.com", first_name="Tester", last_name="Toto",
+            password1="Toto1234", password2="Toto1234", role="SimpleUsers",
+            quota_act=True,
+            is_active=True, email="téster@test.com", stepid="step2"
+        )
+        self.ajax_post(reverse("admin:account_add"), values)
 
     def _set_quota(self, email, value, expected_status=200):
         account = User.objects.get(username=email)

@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.db.models.manager import Manager
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 import reversion
@@ -69,6 +70,7 @@ class MailboxManager(Manager):
         return self.get_queryset().select_related().filter(qf)
 
 
+@python_2_unicode_compatible
 class Mailbox(AdminObject):
 
     """User mailbox."""
@@ -96,7 +98,7 @@ class Mailbox(AdminObject):
         self.__mail_home = None
 
     def __str__(self):
-        return self.full_address
+        return smart_text(self.full_address)
 
     def __full_address(self, localpart):
         return "%s@%s" % (localpart, self.domain.name)

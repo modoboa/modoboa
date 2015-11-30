@@ -114,6 +114,17 @@ class AliasTestCase(ModoTestCase):
                 r_alias__isnull=True).exists()
         )
 
+    def test_utf8_alias(self):
+        """Test alias with non-ASCII characters."""
+        values = dict(address="testé@test.com",
+                      recipients="user@test.com",
+                      recipients_1="admin@test.com",
+                      recipients_2="ext@titi.com",
+                      enabled=True)
+        self.ajax_post(
+            reverse("admin:alias_add"), values
+        )
+
     def test_dlist(self):
         values = dict(address="all@test.com",
                       recipients="user@test.com",
