@@ -86,7 +86,9 @@ Then, apply the following steps:
 #. Manually migrate database::
 
    $ cd <instance_dir>
+   $ python manage.py migrate auth
    $ python manage.py migrate admin 0001 --fake
+   $ python manage.py migrate admin
    $ python manage.py migrate limits 0001 --fake
    $ python manage.py migrate relaydomains 0001 --fake
    $ python manage.py migrate

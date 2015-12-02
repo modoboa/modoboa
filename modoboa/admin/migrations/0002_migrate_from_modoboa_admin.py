@@ -33,6 +33,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('admin', '0001_initial'),
+        ('contenttypes', '0002_remove_content_type_name'),
     ]
 
     operations = [
