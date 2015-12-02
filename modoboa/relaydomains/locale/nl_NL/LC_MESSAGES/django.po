@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-27 19:00+0100\n"
+"POT-Creation-Date: 2015-12-02 15:38+0100\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -36,11 +36,11 @@ msgstr "Locatie van Postfix's master.cf"
 msgid "Relay domains"
 msgstr "Doorstuur domeinen"
 
-#: relaydomains/forms.py:26
+#: relaydomains/forms.py:27
 msgid "Name"
 msgstr ""
 
-#: relaydomains/forms.py:27
+#: relaydomains/forms.py:28
 #, fuzzy
 #| msgid "The domain name"
 msgid "The relay domain name"

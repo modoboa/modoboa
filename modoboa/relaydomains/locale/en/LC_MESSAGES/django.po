@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-27 19:00+0100\n"
+"POT-Creation-Date: 2015-12-02 15:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,11 +33,11 @@ msgstr ""
 msgid "Relay domains"
 msgstr ""
 
-#: relaydomains/forms.py:26
+#: relaydomains/forms.py:27
 msgid "Name"
 msgstr ""
 
-#: relaydomains/forms.py:27
+#: relaydomains/forms.py:28
 msgid "The relay domain name"
 msgstr ""
 

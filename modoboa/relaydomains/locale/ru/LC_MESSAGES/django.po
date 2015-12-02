@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-27 19:00+0100\n"
+"POT-Creation-Date: 2015-12-02 15:38+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -35,11 +35,11 @@ msgstr ""
 msgid "Relay domains"
 msgstr ""
 
-#: relaydomains/forms.py:26
+#: relaydomains/forms.py:27
 msgid "Name"
 msgstr ""
 
-#: relaydomains/forms.py:27
+#: relaydomains/forms.py:28
 #, fuzzy
 #| msgid "The domain name"
 msgid "The relay domain name"

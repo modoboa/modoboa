@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-27 19:00+0100\n"
+"POT-Creation-Date: 2015-12-02 15:38+0100\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -325,84 +325,84 @@ msgstr "Wachtwoorden komt niet overeen"
 msgid "Enable API access"
 msgstr ""
 
-#: core/models.py:55
+#: core/models.py:57
 msgid "Allow mailboxes access"
 msgstr ""
 
-#: core/models.py:57
+#: core/models.py:59
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "password"
 msgstr "wachtwoord"
 
-#: core/models.py:62
+#: core/models.py:64
 msgid "last login"
 msgstr "laatste login"
 
-#: core/models.py:68
+#: core/models.py:70
 #, fuzzy
 #| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
 msgstr "Voorkeurstaal om pagina's weer te geven"
 
-#: core/models.py:72
+#: core/models.py:74
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:74
+#: core/models.py:76
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:77
+#: core/models.py:79
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:109
+#: core/models.py:111
 msgid "You can't delete your own account"
 msgstr "U kunt uw eigen account niet verwijderen"
 
-#: core/models.py:159
+#: core/models.py:161
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Mislukt om wachtwoord aan te passen: LDAP module niet geinstalleerd"
 
-#: core/models.py:213
+#: core/models.py:215
 msgid "account"
 msgstr "account"
 
-#: core/models.py:368
+#: core/models.py:370
 msgid "Invalid line"
 msgstr "Verkeerde regel"
 
-#: core/models.py:376
+#: core/models.py:378
 msgid "You can't import an account with a role greater than yours"
 msgstr "U kunt geen accounts importeren met hogere rechten dan die van uzelf."
 
-#: core/models.py:391
+#: core/models.py:393
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "De gebruiker '%s' moet een geldig email adres hebben"
 
-#: core/models.py:396
+#: core/models.py:398
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "gebruikersnaam en email velden moeten niet verschillen van '%s'"
 
-#: core/models.py:498
+#: core/models.py:500
 msgid "added"
 msgstr "toegevoegd"
 
-#: core/models.py:501
+#: core/models.py:503
 msgid "modified"
 msgstr "veranderd"
 
-#: core/models.py:503 core/models.py:528
+#: core/models.py:505 core/models.py:530
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s door gebruiker %(user)s"
 
-#: core/models.py:530
+#: core/models.py:532
 msgid "deleted"
 msgstr "verwijderd"
 
@@ -419,7 +419,7 @@ msgid "API access token"
 msgstr ""
 
 #: core/templates/core/api_access.html:29
-#: core/templates/core/user_profile.html:11 lib/form_utils.py:360
+#: core/templates/core/user_profile.html:11 lib/form_utils.py:359
 msgid "Update"
 msgstr "Toepassen"
 
@@ -612,23 +612,23 @@ msgstr "Toegang geweigerd: %s"
 msgid "Permission denied"
 msgstr "Toegang geweigerd"
 
-#: lib/form_utils.py:85
-msgid "Submit"
-msgstr "Versturen"
-
-#: lib/form_utils.py:118 lib/form_utils.py:121
-msgid "Invalid request"
-msgstr "Ongeldig verzoek"
-
-#: lib/form_utils.py:387 lib/form_utils.py:395
+#: lib/fields.py:14 lib/validators.py:14
 msgid "Enter a valid domain name"
 msgstr "Vul een geledige domeinnaam in"
 
-#: lib/form_utils.py:444
+#: lib/form_utils.py:84
+msgid "Submit"
+msgstr "Versturen"
+
+#: lib/form_utils.py:117 lib/form_utils.py:120
+msgid "Invalid request"
+msgstr "Ongeldig verzoek"
+
+#: lib/form_utils.py:412
 msgid "Yes"
 msgstr "Ja"
 
-#: lib/form_utils.py:444
+#: lib/form_utils.py:412
 msgid "No"
 msgstr "Nee"
 

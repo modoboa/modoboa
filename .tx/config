@@ -12,3 +12,33 @@ file_filter = modoboa/locale/<lang>/LC_MESSAGES/django.po
 source_file = modoboa/locale/en/LC_MESSAGES/django.po
 source_lang = en
 type = PO
+
+[modoboa.modoboa-admin-relaydomains-djangopo]
+file_filter = modoboa/relaydomains/locale/<lang>/LC_MESSAGES/django.po
+source_file = modoboa/relaydomains/locale/en/LC_MESSAGES/django.po
+source_lang = en
+type = PO
+
+[modoboa.modoboa-admin-relaydomains-djangojspo]
+file_filter = modoboa/relaydomains/locale/<lang>/LC_MESSAGES/djangojs.po
+source_file = modoboa/relaydomains/locale/en/LC_MESSAGES/djangojs.po
+source_lang = en
+type = PO
+
+[modoboa.modoboa-admin-limits-djangopo]
+file_filter = modoboa/limits/locale/<lang>/LC_MESSAGES/django.po
+source_file = modoboa/limits/locale/en/LC_MESSAGES/django.po
+source_lang = en
+type = PO
+
+[modoboa.modoboa-admin-djangopo]
+file_filter = modoboa/admin/locale/<lang>/LC_MESSAGES/django.po
+source_file = modoboa/admin/locale/en/LC_MESSAGES/django.po
+source_lang = en
+type = PO
+
+[modoboa.modoboa-admin-djangojspo]
+file_filter = modoboa/admin/locale/<lang>/LC_MESSAGES/djangojs.po
+source_file = modoboa/admin/locale/en/LC_MESSAGES/djangojs.po
+source_lang = en
+type = PO

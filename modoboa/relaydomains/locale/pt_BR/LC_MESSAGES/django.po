@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-27 19:00+0100\n"
+"POT-Creation-Date: 2015-12-02 15:38+0100\n"
 "PO-Revision-Date: 2014-12-13 09:10+0000\n"
 "Last-Translator: Paulino Michelazzo <paulino@michelazzo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -37,11 +37,11 @@ msgstr "Caminho para o arquivo de configuração master.cf"
 msgid "Relay domains"
 msgstr "Domínios de relay"
 
-#: relaydomains/forms.py:26
+#: relaydomains/forms.py:27
 msgid "Name"
 msgstr ""
 
-#: relaydomains/forms.py:27
+#: relaydomains/forms.py:28
 #, fuzzy
 #| msgid "The domain name"
 msgid "The relay domain name"

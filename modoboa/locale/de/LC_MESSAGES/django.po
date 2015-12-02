@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-27 19:00+0100\n"
+"POT-Creation-Date: 2015-12-02 15:38+0100\n"
 "PO-Revision-Date: 2015-07-09 14:03+0000\n"
 "Last-Translator: controlc.de\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
@@ -317,85 +317,85 @@ msgstr "Passwörter stimmen nicht überein"
 msgid "Enable API access"
 msgstr ""
 
-#: core/models.py:55
+#: core/models.py:57
 msgid "Allow mailboxes access"
 msgstr "Erlaube den Postfach-Zugriff"
 
-#: core/models.py:57
+#: core/models.py:59
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Erlaubt dem Administrator auf Benutzer-Postfächer zuzugreifen"
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "password"
 msgstr "Passwort"
 
-#: core/models.py:62
+#: core/models.py:64
 msgid "last login"
 msgstr "Letzte Anmeldung"
 
-#: core/models.py:68
+#: core/models.py:70
 #, fuzzy
 #| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
 msgstr "Bevorzugte Sprache für Seitendarstellung"
 
-#: core/models.py:72
+#: core/models.py:74
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:74
+#: core/models.py:76
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:77
+#: core/models.py:79
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:109
+#: core/models.py:111
 msgid "You can't delete your own account"
 msgstr "Sie können Ihr eigenes Konto nicht entfernen"
 
-#: core/models.py:159
+#: core/models.py:161
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Konnte Passwort nicht aktualisieren: LDAP-Modul nicht installiert"
 
-#: core/models.py:213
+#: core/models.py:215
 msgid "account"
 msgstr "Konto"
 
-#: core/models.py:368
+#: core/models.py:370
 msgid "Invalid line"
 msgstr "Ungültige Zeile"
 
-#: core/models.py:376
+#: core/models.py:378
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 "Sie können kein Konto mit einer höheren Rolle als Ihrer eigenen importieren"
 
-#: core/models.py:391
+#: core/models.py:393
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
 
-#: core/models.py:396
+#: core/models.py:398
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Benutzername und E-Mail für '%s' dürfen sich nicht unterscheiden"
 
-#: core/models.py:498
+#: core/models.py:500
 msgid "added"
 msgstr "hinzugefügt"
 
-#: core/models.py:501
+#: core/models.py:503
 msgid "modified"
 msgstr "verändert"
 
-#: core/models.py:503 core/models.py:528
+#: core/models.py:505 core/models.py:530
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s der Identität %(user)s"
 
-#: core/models.py:530
+#: core/models.py:532
 msgid "deleted"
 msgstr "entfernt"
 
@@ -412,7 +412,7 @@ msgid "API access token"
 msgstr ""
 
 #: core/templates/core/api_access.html:29
-#: core/templates/core/user_profile.html:11 lib/form_utils.py:360
+#: core/templates/core/user_profile.html:11 lib/form_utils.py:359
 msgid "Update"
 msgstr "Aktualisieren"
 
@@ -599,23 +599,23 @@ msgstr "Zugriff verweigert: %s"
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
-#: lib/form_utils.py:85
-msgid "Submit"
-msgstr "Abschicken"
-
-#: lib/form_utils.py:118 lib/form_utils.py:121
-msgid "Invalid request"
-msgstr "Ungültige Anfrage"
-
-#: lib/form_utils.py:387 lib/form_utils.py:395
+#: lib/fields.py:14 lib/validators.py:14
 msgid "Enter a valid domain name"
 msgstr "Geben Sie einen gültigen Domain-Namen an"
 
-#: lib/form_utils.py:444
+#: lib/form_utils.py:84
+msgid "Submit"
+msgstr "Abschicken"
+
+#: lib/form_utils.py:117 lib/form_utils.py:120
+msgid "Invalid request"
+msgstr "Ungültige Anfrage"
+
+#: lib/form_utils.py:412
 msgid "Yes"
 msgstr "Ja"
 
-#: lib/form_utils.py:444
+#: lib/form_utils.py:412
 msgid "No"
 msgstr "Nein"
 
