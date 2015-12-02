@@ -32,8 +32,8 @@ class PermissionsTestCase(ModoTestCase):
         )
         self.ajax_post(reverse("admin:account_add"), values)
         account = User.objects.get(username="reseller@test.com")
-        self.clt.logout()
-        self.clt.login(username="admin@test.com", password="toto")
+        self.client.logout()
+        self.client.login(username="admin@test.com", password="toto")
         resp = self.ajax_post(
             reverse("admin:account_delete", args=[account.id]),
             {}, status=403
@@ -125,8 +125,8 @@ class DomainAdminTestCase(ResourceTestCase):
     def setUp(self):
         """Test initialization."""
         super(DomainAdminTestCase, self).setUp()
-        self.clt.logout()
-        self.clt.login(username='admin@test.com', password='toto')
+        self.client.logout()
+        self.client.login(username='admin@test.com', password='toto')
 
     def test_mailboxes_limit(self):
         self._create_account('tester1@test.com')
@@ -184,8 +184,8 @@ class ResellerTestCase(ResourceTestCase):
     def setUp(self):
         """Test initialization."""
         super(ResellerTestCase, self).setUp()
-        self.clt.logout()
-        self.clt.login(username='reseller', password='toto')
+        self.client.logout()
+        self.client.login(username='reseller', password='toto')
 
     def test_domains_limit(self):
         self._create_domain('domain1.tld')
@@ -287,8 +287,8 @@ class ResellerTestCase(ResourceTestCase):
     def test_sadmin_removes_ownership(self):
         self._create_domain('domain.tld', withtpl=True)
         dom = Domain.objects.get(name="domain.tld")
-        self.clt.logout()
-        self.clt.login(username='admin', password='password')
+        self.client.logout()
+        self.client.login(username='admin', password='password')
         self.ajax_get(
             "{0}?domid={1}&daid={2}".format(
                 reverse('admin:permission_remove'),
@@ -342,13 +342,13 @@ class ResellerTestCase(ResourceTestCase):
             values
         )
         dom.add_admin(user)
-        self.clt.logout()
-        self.clt.login(username='admin1@domain.tld', password='Toto1234')
+        self.client.logout()
+        self.client.login(username='admin1@domain.tld', password='Toto1234')
         self._create_account('user1@domain.tld')
         self._create_alias('alias1@domain.tld', 'user1@domain.tld')
         self._create_alias('alias2@domain.tld', 'user1@domain.tld')
-        self.clt.logout()
-        self.clt.login(username='reseller', password='toto')
+        self.client.logout()
+        self.client.login(username='reseller', password='toto')
         # Delete the admin -> resources should go back to the
         # reseller's pool
         self.ajax_post(

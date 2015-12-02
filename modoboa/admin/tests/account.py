@@ -92,14 +92,14 @@ class AccountTestCase(ModoTestCase):
         self._set_quota("user@test.com", 0)
 
     def test_set_nul_quota_as_domainadmin(self):
-        self.clt.logout()
+        self.client.logout()
         self.assertTrue(
-            self.clt.login(username="admin@test.com", password="toto")
+            self.client.login(username="admin@test.com", password="toto")
         )
         self._set_quota("user@test.com", 0, 400)
-        self.clt.logout()
+        self.client.logout()
         self.assertTrue(
-            self.clt.login(username="admin@test2.com", password="toto")
+            self.client.login(username="admin@test2.com", password="toto")
         )
         self._set_quota("user@test2.com", 0)
 
@@ -142,7 +142,7 @@ class PermissionsTestCase(ModoTestCase):
         )
 
     def tearDown(self):
-        self.clt.logout()
+        self.client.logout()
 
     def test_domain_admins(self):
         self.ajax_post(
@@ -177,9 +177,9 @@ class PermissionsTestCase(ModoTestCase):
             username="user@test.com").is_superuser, False)
 
     def test_self_modif(self):
-        self.clt.logout()
+        self.client.logout()
         self.assertTrue(
-            self.clt.login(username="admin@test.com", password="toto")
+            self.client.login(username="admin@test.com", password="toto")
         )
         admin = User.objects.get(username="admin@test.com")
         values = dict(
@@ -204,14 +204,14 @@ class PermissionsTestCase(ModoTestCase):
         self.assertEqual(admin.group, "DomainAdmins")
 
     def test_domadmin_access(self):
-        self.clt.logout()
+        self.client.logout()
         self.assertEqual(
-            self.clt.login(username="admin@test.com", password="toto"),
+            self.client.login(username="admin@test.com", password="toto"),
             True)
-        response = self.clt.get(reverse("admin:domain_list"))
+        response = self.client.get(reverse("admin:domain_list"))
         self.assertEqual(response.status_code, 200)
 
-        response = self.clt.get(
+        response = self.client.get(
             reverse("admin:account_change", args=[self.user.id]),
             HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response["Content-Type"], "application/json")
@@ -234,8 +234,8 @@ class PermissionsTestCase(ModoTestCase):
             values
         )
         account = User.objects.get(username="superadmin2@test.com")
-        self.clt.logout()
-        self.clt.login(username="admin@test.com", password="toto")
+        self.client.logout()
+        self.client.login(username="admin@test.com", password="toto")
         self.ajax_post(
             reverse("admin:account_delete", args=[account.id]), {}, 403
         )

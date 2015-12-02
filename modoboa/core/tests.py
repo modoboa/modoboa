@@ -21,17 +21,17 @@ class AuthenticationTestCase(ModoTestCase):
 
     def test_authentication(self):
         """Validate simple case."""
-        self.clt.logout()
+        self.client.logout()
         data = {"username": "user@test.com", "password": "toto"}
-        response = self.clt.post(reverse("core:login"), data)
+        response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:user_index")))
 
-        response = self.clt.post(reverse("core:logout"), {})
+        response = self.client.post(reverse("core:logout"), {})
         self.assertEqual(response.status_code, 302)
 
         data = {"username": "admin", "password": "password"}
-        response = self.clt.post(reverse("core:login"), data)
+        response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("admin:domain_list")))
 
@@ -56,13 +56,13 @@ class ProfileTestCase(ModoTestCase):
         self.ajax_post(reverse("core:user_profile"),
                        {"language": "en", "oldpassword": "password",
                         "newpassword": "12345Toi", "confirmation": "12345Toi"})
-        self.clt.logout()
+        self.client.logout()
 
         self.assertEqual(
-            self.clt.login(username="admin", password="12345Toi"), True
+            self.client.login(username="admin", password="12345Toi"), True
         )
         self.assertEqual(
-            self.clt.login(username="user@test.com", password="toto"), True
+            self.client.login(username="user@test.com", password="toto"), True
         )
 
         self.ajax_post(
@@ -77,9 +77,9 @@ class ProfileTestCase(ModoTestCase):
             {"language": "en", "oldpassword": "toto",
              "newpassword": "Toto1234", "confirmation": "Toto1234"}
         )
-        self.clt.logout()
+        self.client.logout()
         self.assertTrue(
-            self.clt.login(username="user@test.com", password="Toto1234")
+            self.client.login(username="user@test.com", password="Toto1234")
         )
 
 
@@ -99,9 +99,9 @@ class APIAccessFormTestCase(ModoTestCase):
         """Check access restrictions."""
         url = reverse("core:user_api_access")
         self.ajax_get(url)
-        self.clt.logout()
-        self.clt.login(username="user@test.com", password="toto")
-        response = self.clt.get(url, HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        self.client.logout()
+        self.client.login(username="user@test.com", password="toto")
+        response = self.client.get(url, HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.assertEqual(response.status_code, 278)
 
     def test_form(self):

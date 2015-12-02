@@ -14,8 +14,8 @@ class ForwardTestCase(ModoTestCase):
         populate_database()
 
     def test_forward_permissions(self):
-        self.clt.logout()
-        self.clt.login(username='user@test.com', password='toto')
+        self.client.logout()
+        self.client.login(username='user@test.com', password='toto')
         self.ajax_post(
             reverse('user_forward'),
             {'dest': 'user@extdomain.com', 'keepcopies': True}

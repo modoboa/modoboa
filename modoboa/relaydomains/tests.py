@@ -244,8 +244,8 @@ class LimitsTestCase(ModoTestCase, Operations):
     def setUp(self):
         """Initialize test."""
         super(LimitsTestCase, self).setUp()
-        self.clt.logout()
-        self.clt.login(username='reseller', password='toto')
+        self.client.logout()
+        self.client.login(username='reseller', password='toto')
 
     def test_relay_domains_limit(self):
         self._create_relay_domain('relaydomain1.tld')

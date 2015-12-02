@@ -22,7 +22,7 @@ class ImportTestCase(ModoTestCase):
 domain; domain2.com; 200; False
 domainalias; domalias1.com; domain1.com; True
 """, name="domains.csv")
-        self.clt.post(
+        self.client.post(
             reverse("admin:domain_import"), {
                 "sourcefile": f
             }
@@ -45,7 +45,7 @@ domainalias; domalias1.com; domain1.com; True
         f = ContentFile(b"""domain;test.alias;10;True
 domainalias;test.alias;test.com;True
 """, name="domains.csv")
-        resp = self.clt.post(
+        resp = self.client.post(
             reverse("admin:domain_import"), {
                 "sourcefile": f
             }
@@ -61,7 +61,7 @@ forward; alias2@test.com; True; user1+ext@test.com
 forward; fwd1@test.com; True; user@extdomain.com
 dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
 """, name="identities.csv")
-        self.clt.post(
+        self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
@@ -79,7 +79,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         self.assertTrue(admin.is_owner(mb1))
         self.assertEqual(mb1.full_address, "user1@test.com")
         self.assertTrue(
-            self.clt.login(username="user1@test.com", password="toto")
+            self.client.login(username="user1@test.com", password="toto")
         )
 
         da = User.objects.get(username="truc@test.com")
@@ -127,7 +127,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         f = ContentFile(b"""
 account; user1@nonlocal.com; toto; User; One; True; SimpleUsers; user1@nonlocal.com; 0
 """, name="identities.csv")
-        self.clt.post(
+        self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
@@ -138,7 +138,7 @@ account; user1@nonlocal.com; toto; User; One; True; SimpleUsers; user1@nonlocal.
         f = ContentFile(b"""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; test.com
 """, name="identities.csv")
-        resp = self.clt.post(
+        resp = self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
@@ -146,12 +146,12 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; t
 
     def test_import_domain_by_domainadmin(self):
         """Check if a domain admin is not allowed to import a domain."""
-        self.clt.logout()
-        self.clt.login(username="admin@test.com", password="toto")
+        self.client.logout()
+        self.client.login(username="admin@test.com", password="toto")
         f = ContentFile(b"""
 domain; domain2.com; 200; False
 """, name="identities.csv")
-        resp = self.clt.post(
+        resp = self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
@@ -159,7 +159,7 @@ domain; domain2.com; 200; False
         f = ContentFile(b"""
 domainalias; domalias1.com; test.com; True
 """, name="identities.csv")
-        resp = self.clt.post(
+        resp = self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
@@ -167,12 +167,12 @@ domainalias; domalias1.com; test.com; True
             "You are not allowed to import domain aliases", resp.content)
 
     def test_import_quota_too_big(self):
-        self.clt.logout()
-        self.clt.login(username="admin@test.com", password="toto")
+        self.client.logout()
+        self.client.login(username="admin@test.com", password="toto")
         f = ContentFile(b"""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 20
 """, name="identities.csv")
-        resp = self.clt.post(
+        resp = self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
@@ -182,7 +182,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 20
         f = ContentFile(b"""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
 """, name="identities.csv")
-        self.clt.post(
+        self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
@@ -197,7 +197,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
 account; admin@test.com; toto; Admin; ; True; DomainAdmins; admin@test.com; 0; test.com
 account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0; test.com
 """, name="identities.csv")
-        self.clt.post(
+        self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
              "continue_if_exists": True}
@@ -211,14 +211,14 @@ account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0;
 
         Expected result: no
         """
-        self.clt.logout()
+        self.client.logout()
         self.assertTrue(
-            self.clt.login(username="admin@test.com", password="toto")
+            self.client.login(username="admin@test.com", password="toto")
         )
         f = ContentFile(b"""
 account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com; 50
 """, name="identities.csv")
-        self.clt.post(
+        self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
              "continue_if_exists": True}
@@ -230,7 +230,7 @@ account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com
         f = ContentFile(b"""
 alias;user.alias@test.com;True;user@test.com;;;;;;;;;;;;;;;;
 """, name="identities.csv")
-        self.clt.post(
+        self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
              "continue_if_exists": True}

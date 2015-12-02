@@ -141,7 +141,7 @@ class DomainTestCase(ModoTestCase):
 
     def test_domain_flat_list(self):
         """Test the 'domain_flat_list' view."""
-        response = self.clt.get(reverse("admin:domain_flat_list"))
+        response = self.client.get(reverse("admin:domain_flat_list"))
         self.assertEqual(response.status_code, 200)
         content = json.loads(response.content)
         self.assertIn("test.com", content)

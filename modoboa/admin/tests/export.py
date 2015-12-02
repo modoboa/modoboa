@@ -18,11 +18,11 @@ class ExportTestCase(ModoTestCase):
         factories.populate_database()
 
     def __export_identities(self, idtfilter="", grpfilter=""):
-        self.clt.get(
+        self.client.get(
             reverse("admin:_identity_list") +
             "?grpfilter=%s&idtfilter=%s" % (grpfilter, idtfilter)
         )
-        return self.clt.post(
+        return self.client.post(
             reverse("admin:identity_export"),
             {"filename": "test.csv"}
         )

@@ -6,7 +6,6 @@ import json
 from django import forms
 from django.core import management
 from django.test import TestCase
-from django.test.client import Client
 
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
@@ -25,14 +24,13 @@ class ModoTestCase(TestCase):
         management.call_command("load_initial_data")
 
     def setUp(self, username="admin", password="password"):
-        self.clt = Client()
         self.assertEqual(
-            self.clt.login(username=username, password=password), True)
+            self.client.login(username=username, password=password), True)
 
     def ajax_request(self, method, url, params=None, status=200):
         if params is None:
             params = {}
-        response = getattr(self.clt, method)(
+        response = getattr(self.client, method)(
             url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, status)
         return json.loads(response.content)
