@@ -49,7 +49,7 @@ The following external libraries are provided with Modoboa:
 
 * `jQuery version 1.9.1 <http://www.jquery.org/>`_
 * `jQuery-UI 1.10+ <http://jqueryui.com/>`_
-* `Bootstrap version 3.3.1 <http://getbootstrap.com/>`_
+* `Bootstrap version 3.3.5 <http://getbootstrap.com/>`_
 * `Bootstrap datetimepicker <http://eonasdan.github.io/bootstrap-datetimepicker/>`_
 
 .. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
