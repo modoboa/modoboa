@@ -275,7 +275,7 @@ class DomainFormOptions(forms.Form):
            self.cleaned_data["create_aliases"] == "yes":
             events.raiseEvent("CanCreate", user, "mailbox_aliases")
             alias = Alias(
-                address="postmaster@{}".format(domain.name),
+                address=u"postmaster@{}".format(domain.name),
                 domain=domain, enabled=True
             )
             alias.save()
