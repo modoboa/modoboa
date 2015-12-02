@@ -112,7 +112,7 @@ class MapFilesGenerator(object):
                     extension["name"] for extension in official_exts]
             else:
                 extensions = args.extensions
-            applications += [extensions]
+            applications += extensions
         self.__load_applications(applications)
         for mapfile in registry.files:
             self.__render_map(args, mapfile)
