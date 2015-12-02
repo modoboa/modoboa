@@ -48,7 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'reversion',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
 {% if devmode %}    'djangobower',{% endif %}
 )
 
