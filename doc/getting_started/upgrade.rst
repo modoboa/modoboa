@@ -82,6 +82,8 @@ Then, apply the following steps:
 #. Uninstall old extensions::
 
    $ pip uninstall modoboa-admin modoboa-admin-limits modoboa-admin-relaydomains
+
+#. Install all extension updates using pip (check the *Modoboa > Information* page)
    
 #. Manually migrate database::
 
