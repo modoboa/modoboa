@@ -17,6 +17,7 @@ Getting started
    getting_started/upgrade
    getting_started/configuration
 
+
 *******
 Plugins
 *******
@@ -24,8 +25,6 @@ Plugins
 .. toctree::
    :maxdepth: 2
 
-   plugins/limits
-   plugins/postfix_relay_domains
    plugins/amavis
    plugins/statistics
    plugins/radicale
