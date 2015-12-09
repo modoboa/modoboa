@@ -117,16 +117,20 @@ Deployment
 
 .. note::
 
-   By default, only the core application of Modoboa is installed. To
-   install extensions, use the ``--extensions`` option which accepts a
-   list of extension names as argument (``--extensions ext1 ext2 ...``).
-   If you want to use install all extensions, just use the ``all``
+   By default, the core application of Modoboa and some necessary plugins
+   (admin, relaydomains and limits) are installed. To install extensions,
+   use the ``--extensions`` option which accepts a list of extension names
+   as argument (``--extensions ext1 ext2 ...``).
+   If you want to install all extensions, just use the ``all``
    shortcut like this ``--extensions all``.
 
    If you choose to install extensions one at a time, you will have to
    add their names in settings.py to ``MODOBOA_APPS``. Also ensure that
    you have the line ``from modoboa_amavis.settings import *`` at the
    end of this file.
+
+   The list of available plugins can be found on the :doc:`index page
+   <../index>`. Instructions to install them are available on each plugin page.
 
 .. note::
 
