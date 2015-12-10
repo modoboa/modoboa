@@ -14,13 +14,17 @@ class Command(BaseCommand):
 
     """Management command to set the default site."""
 
-    help = 'Set default site (see django.contrib.sites)'
+    help = "Set default site (see django.contrib.sites)"
+
+    def add_arguments(self, parser):
+        """Define command arguments."""
+        parser.add_argument("hostname", type=str)
 
     def handle(self, *args, **options):
         """Command entry point."""
-        if not args:
+        if "hostname" not in options:
             raise CommandError("You must provide a hostname")
         site = Site.objects.get(pk=1)
-        site.domain = args[0]
-        site.name = args[0]
+        site.domain = options["hostname"]
+        site.name = options["hostname"]
         site.save()
