@@ -50,17 +50,17 @@ class AliasesMap(object):
 
     filename = 'sql-aliases.cf'
     mysql = (
-        "SELECT alr.address FROM admin_aliasrecipient AS alr "
+        "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
         "WHERE al.enabled=1 AND al.address='%s'"
     )
     postgres = (
-        "SELECT alr.address FROM admin_aliasrecipient AS alr "
+        "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
         "WHERE al.enabled AND al.address='%s'"
     )
     sqlite = (
-        "SELECT alr.address FROM admin_aliasrecipient AS alr "
+        "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
         "WHERE al.enabled=1 AND al.address='%s'"
     )
