@@ -22,6 +22,12 @@ it. ``pip`` users, just run the following command::
 
 Replace ``<VERSION>`` by the appropriate value.
 
+Also upgrade your modoboa extensions. For example, you can run with ``pip``::
+
+  $ pip install --upgrade modoboa-admin==<VERSION>
+
+Replace ``<VERSION>`` by the appropriate value.
+
 As for a fresh installation, ``modoboa-admin.py`` can be used to
 upgrade your local configuration. To do so, remove the directory where
 your instance was first deployed::
@@ -33,7 +39,7 @@ your instance was first deployed::
    If you customized your configuration file (:file:`settings.py`) with
    non-standard settings, you'll have to re-apply them.
 
-Finally, run the ``deploy`` comamand. Make sure to consult the
+Finally, run the ``deploy`` command. Make sure to consult the
 :ref:`deployment` section to know more about the available options.
 
 If you prefer the manual way, check if
@@ -138,6 +144,9 @@ To use this feature, add the following configuration into the ``settings.py`` fi
       "DIGITS": 1
   }
 
+``pip`` users will need jpeg libraries in order to upgrade extensions. To install them on Debian / Ubuntu, you can run::
+
+  $ apt-get install libjpeg8-dev
 
 1.3.2
 =====
