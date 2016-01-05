@@ -49,16 +49,6 @@ def extra_permissions(rolename):
     return PERMISSIONS.get(rolename, [])
 
 
-@events.observe("ExtraUprefsRoutes")
-def extra_routes():
-    from django.conf.urls import url
-    return [
-        url(r'^user/forward/',
-            'modoboa.admin.views.user.forward',
-            name="user_forward"),
-    ]
-
-
 @events.observe("AdminMenuDisplay")
 def admin_menu(target, user):
     if target != "top_menu":

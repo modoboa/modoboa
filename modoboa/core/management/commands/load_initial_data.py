@@ -8,15 +8,13 @@
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
-from modoboa.admin.app_settings import load_admin_settings
-from modoboa.core import load_core_settings, PERMISSIONS
+from modoboa.core import PERMISSIONS
 from modoboa.core.extensions import exts_pool
 from modoboa.core.models import User, ObjectAccess
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib import events
 from modoboa.lib import models as lib_models
 from modoboa.lib.permissions import add_permissions_to_group
-from modoboa.limits.app_settings import load_limits_settings
 import modoboa.relaydomains.models as relay_models
 
 
@@ -28,10 +26,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Command entry point."""
-        load_core_settings()
-        load_admin_settings()
-        load_limits_settings()
-
         if not User.objects.filter(is_superuser=True).count():
             admin = User(username="admin", is_superuser=True)
             admin.set_password("password")

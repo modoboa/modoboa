@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
 
-from modoboa.core import load_core_settings
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
 from modoboa.lib import parameters
@@ -15,11 +14,6 @@ class PasswordSchemesTestCase(ModoTestCase):
         """Create test data."""
         super(PasswordSchemesTestCase, cls).setUpTestData()
         factories.populate_database()
-
-    def setUp(self):
-        """Test initialization."""
-        super(PasswordSchemesTestCase, self).setUp()
-        load_core_settings()
 
     def _create_account(self):
         values = dict(

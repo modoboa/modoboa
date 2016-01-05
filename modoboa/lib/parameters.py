@@ -16,6 +16,8 @@ from modoboa.lib import events
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.sysutils import guess_extension_name
 
+from . import db_utils
+
 
 _params = {'A': {}, 'U': {}}
 
@@ -91,6 +93,8 @@ class AdminParametersForm(GenericParametersForm):
     def _load_initial_values(self):
         from .models import Parameter
 
+        if not db_utils.db_table_exists("lib_parameter"):
+            return
         names = [
             "%s.%s" % (self.app, name.upper()) for name in self.fields.keys()
         ]
@@ -132,6 +136,8 @@ class UserParametersForm(GenericParametersForm):
         super(UserParametersForm, self).__init__(*args, **kwargs)
 
     def _load_initial_values(self):
+        if not db_utils.db_table_exists("lib_userparameter"):
+            return
         if self.user is None:
             return
         from .models import UserParameter

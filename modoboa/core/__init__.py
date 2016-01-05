@@ -1,63 +1,13 @@
 
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import ugettext as _
 
-from modoboa.lib import parameters, events
+from modoboa.lib import events
 
-BASE_EVENTS = [
-    "CanCreate",
-
-    "AccountCreated",
-    "AccountAutoCreated",
-    "AccountModified",
-    "AccountDeleted",
-    "AccountExported",
-    "AccountImported",
-    "PasswordUpdated",
-    "ExtraAccountActions",
-    "RoleChanged",
-    "GetExtraRoles",
-    "GetExtraRolePermissions",
-    "PasswordChange",
-    "UserCanSetRole",
-
-    "InitialDataLoaded",
-
-    "UserMenuDisplay",
-    "AdminMenuDisplay",
-    "GetStaticContent",
-
-    "UserLogin",
-    "UserLogout",
-
-    "GetAnnouncement",
-
-    "TopNotifications",
-    "ExtraAdminContent",
-
-    "ExtraUprefsRoutes",
-    "ExtraUprefsJS",
-
-    "GetExtraParameters",
-    "ExtraFormFields",
-    "SaveExtraFormFields",
-]
 
 PERMISSIONS = {
     "SimpleUsers": []
 }
-
-
-def load_core_settings():
-    """Load core settings.
-
-    This function must be manually called (see :file:`urls.py`) in
-    order to load base settings.
-    """
-    from modoboa.core.app_settings import GeneralParametersForm
-
-    parameters.register(GeneralParametersForm, ugettext_lazy("General"))
-    events.declare(BASE_EVENTS)
 
 
 @events.observe("TopNotifications")
@@ -78,3 +28,5 @@ def check_for_new_version(request, include_all):
         "text": _("One or more updates are available"),
         "level": "info",
     }]
+
+default_app_config = "modoboa.core.apps.CoreConfig"
