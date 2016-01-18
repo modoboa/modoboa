@@ -11,21 +11,20 @@ class Command(BaseCommand):
     args = 'csvfile'
     help = 'Import identities from a csv file'
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            '--sepchar', action='store_true', dest='sepchar', default=';'
-        ),
-        make_option(
-            '--continue-if-exists', action='store_true',
-            dest='continue_if_exists', default=True
-        ),
-        make_option(
-            '--crypt-password', action='store_true', dest='crypt_password',
-            default=False
-        )
-    )
+    def add_arguments(self, parser):
+        """Add extra arguments to command."""
+        parser.add_argument(
+            "--sepchar", type=str, default=";",
+            help="Separator used in file.")
+        parser.add_argument(
+            "--continue-if-exists", action="store_true",
+            dest='continue_if_exists', default=True,
+            help="Continue even if an entry already exists.")
+        parser.add_argument(
+            "--crypt-password", action="store_true", dest="crypt_password",
+            default=False, help="Encrypt provided passwords.")
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args, **options):
         exts_pool.load_all()
         for filename in args:
-            import_csv(filename, kwargs)
+            import_csv(filename, options)
