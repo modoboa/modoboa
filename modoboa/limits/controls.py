@@ -122,7 +122,6 @@ def create_pool(user):
     owner = get_object_owner(user)
     if owner.group not in ['SuperAdmins', 'Resellers']:
         return
-
     if user.group == 'DomainAdmins':
         check_limit(owner, 'domain_admins_limit')
         inc_limit_usage(owner, 'domain_admins_limit')

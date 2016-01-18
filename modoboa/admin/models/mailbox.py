@@ -262,7 +262,7 @@ class Mailbox(AdminObject):
         from modoboa.lib.permissions import grant_access_to_object
         super(Mailbox, self).post_create(creator)
         conditions = (
-            creator.is_superuser,
+            creator.has_perm("admin.add_mailbox"),
             not self.user.has_perm("admin.add_domain")
         )
         if all(conditions):
