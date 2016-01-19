@@ -266,12 +266,14 @@ class Mailbox(AdminObject):
             not self.user.has_perm("admin.add_domain")
         )
         if all(conditions):
-            # A super user is creating a new mailbox. Give
+            # An admin is creating a new mailbox. Give
             # access to that mailbox (and the associated
             # account) to the appropriate domain admins,
             # except if the new account has a more important
             # role (SuperAdmin, Reseller)
             for admin in self.domain.admins:
+                if admin == creator:
+                    continue
                 grant_access_to_object(admin, self)
                 grant_access_to_object(admin, self.user)
 
