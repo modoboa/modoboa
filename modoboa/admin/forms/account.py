@@ -13,7 +13,7 @@ from modoboa.core.models import User
 from modoboa.lib import events, parameters
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
-from modoboa.lib.fields import DomainNameField, UTF8EmailField
+from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     DynamicForm, TabForms, WizardForm, WizardStep
 )
@@ -168,7 +168,8 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     """Form to handle mail part."""
 
-    email = UTF8EmailField(label=ugettext_lazy("E-mail"), required=False)
+    email = lib_fields.UTF8EmailField(
+        label=ugettext_lazy("E-mail"), required=False)
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
@@ -179,7 +180,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         widget=forms.widgets.TextInput(attrs={"class": "form-control"})
     )
     quota_act = forms.BooleanField(required=False)
-    aliases = UTF8EmailField(
+    aliases = lib_fields.UTF8AndEmptyUserEmailField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
         help_text=ugettext_lazy(
@@ -213,7 +214,8 @@ class AccountFormMail(forms.Form, DynamicForm):
                     continue
                 name = "aliases_%d" % cpt
                 self._create_field(
-                    UTF8EmailField, name, ralias.alias.address)
+                    lib_fields.UTF8AndEmptyUserEmailField, name,
+                    ralias.alias.address)
                 cpt += 1
             self.fields["email"].initial = self.mb.full_address
             self.fields["quota_act"].initial = self.mb.use_domain_quota
@@ -223,7 +225,8 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.fields["quota_act"].initial = True
 
         if len(args) and isinstance(args[0], QueryDict):
-            self._load_from_qdict(args[0], "aliases", UTF8EmailField)
+            self._load_from_qdict(
+                args[0], "aliases", lib_fields.UTF8AndEmptyUserEmailField)
 
     def clean_email(self):
         """Ensure lower case emails"""
@@ -353,7 +356,9 @@ class AccountFormMail(forms.Form, DynamicForm):
 
 
 class AccountPermissionsForm(forms.Form, DynamicForm):
-    domains = DomainNameField(
+    """A form to assign domain(s) permission."""
+
+    domains = lib_fields.DomainNameField(
         label=ugettext_lazy("Domain(s)"),
         required=False,
         help_text=ugettext_lazy("Domain(s) that user administrates")
@@ -370,9 +375,10 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             return
         for pos, dom in enumerate(Domain.objects.get_for_admin(self.account)):
             name = "domains_%d" % (pos + 1)
-            self._create_field(DomainNameField, name, dom.name)
+            self._create_field(lib_fields.DomainNameField, name, dom.name)
         if len(args) and isinstance(args[0], QueryDict):
-            self._load_from_qdict(args[0], "domains", DomainNameField)
+            self._load_from_qdict(
+                args[0], "domains", lib_fields.DomainNameField)
 
     def save(self):
         current_domains = [
