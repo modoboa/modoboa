@@ -3,13 +3,8 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from modoboa.lib import events, parameters
 from modoboa.lib.form_utils import SeparatorField
 from modoboa.lib.parameters import AdminParametersForm
-
-EVENTS = [
-    'GetExtraLimitTemplates'
-]
 
 
 class ParametersForm(AdminParametersForm):
@@ -73,11 +68,3 @@ class ParametersForm(AdminParametersForm):
     def __init__(self, *args, **kwargs):
         super(AdminParametersForm, self).__init__(*args, **kwargs)
         self._load_extra_parameters('A')
-
-
-def load_limits_settings():
-    """Load settings."""
-    parameters.register(ParametersForm, _("Limits"))
-    events.declare(EVENTS)
-    from . import controls
-    from . import general_callbacks

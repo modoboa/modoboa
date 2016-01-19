@@ -132,7 +132,15 @@ class PermissionsTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
+        from modoboa.lib import parameters
+        from modoboa.limits.models import LimitTemplates
+
         super(PermissionsTestCase, cls).setUpTestData()
+        for tpl in LimitTemplates().templates:
+            parameters.save_admin(
+                "DEFLT_{0}".format(tpl[0].upper()), 2,
+                app="limits"
+            )
         factories.populate_database()
         cls.user = User.objects.get(username='user@test.com')
         cls.values = dict(
@@ -263,3 +271,27 @@ class PermissionsTestCase(ModoTestCase):
             reverse("admin:account_add"),
             values, status=400
         )
+
+    def test_domadmins_permissions(self):
+        """
+        Check that two domain admins in the same domains see the same
+        content.
+        """
+        dom = models.Domain.objects.get(name="test.com")
+        mb = factories.MailboxFactory(
+            domain=dom, address="admin2",
+            user__username="admin2@test.com", user__groups=('DomainAdmins', ),
+            user__password="{PLAIN}toto")
+        dom.add_admin(mb.user)
+        self.client.logout()
+        self.assertTrue(
+            self.client.login(username="admin@test.com", password="toto"))
+        values = {
+            "username": "new@test.com", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": "new@test.com", "stepid": "step2"
+        }
+        self.ajax_post(reverse("admin:account_add"), values)
+
+        new_mb = models.Mailbox.objects.get(user__username="new@test.com")
+        self.assertTrue(mb.user.can_access(new_mb))

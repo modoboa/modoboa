@@ -36,7 +36,7 @@ SITE_ID = 1
 
 # Security settings
 
-X_FRAME_OPTIONS = "DENY"
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # Application definition
 

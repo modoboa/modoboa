@@ -1,18 +1,9 @@
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 
-from modoboa.admin.app_settings import load_admin_settings
-from modoboa.core import load_core_settings
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import parameters, events
-from modoboa.limits.app_settings import load_limits_settings
-from modoboa.relaydomains.app_settings import load_relaydomains_settings
 
-
-load_core_settings()
-load_admin_settings()
-load_limits_settings()
-load_relaydomains_settings()
 
 urlpatterns = patterns(
     '',
@@ -20,8 +11,11 @@ urlpatterns = patterns(
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog',
      {'packages': ('modoboa', ), }),
     ('', include('modoboa.core.urls', namespace="core")),
-    ('', include('modoboa.admin.urls', namespace="admin")),
-    ('', include('modoboa.relaydomains.urls', namespace="relaydomains")),
+    url('^user/forward/', 'modoboa.admin.views.user.forward',
+        name='user_forward'),
+    ('admin/', include('modoboa.admin.urls', namespace="admin")),
+    ('relaydomains/',
+     include('modoboa.relaydomains.urls', namespace="relaydomains")),
 )
 
 urlpatterns += patterns(

@@ -135,7 +135,7 @@ class User(PermissionsMixin):
         try:
             scheme = parameters.get_admin("PASSWORD_SCHEME")
         except parameters.NotDefined:
-            from modoboa.core import load_core_settings
+            from modoboa.core.apps import load_core_settings
             load_core_settings()
             scheme = parameters.get_admin("PASSWORD_SCHEME")
 

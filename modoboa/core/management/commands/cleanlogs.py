@@ -6,7 +6,6 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from modoboa.core import load_core_settings
 from modoboa.core.models import Log
 from modoboa.lib import parameters
 
@@ -39,7 +38,6 @@ class Command(BaseCommand):
             l.addHandler(logging.StreamHandler())
         self.verbose = options["verbose"]
 
-        load_core_settings()
         log_maximum_age = int(parameters.get_admin("LOG_MAXIMUM_AGE"))
         self.__vprint("Deleting logs older than %d days..." % log_maximum_age)
         limit = timezone.now() - datetime.timedelta(log_maximum_age)
