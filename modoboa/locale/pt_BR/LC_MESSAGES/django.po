@@ -1,25 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # csmk, 2014
 # csmk, 2014
 # Paulino Michelazzo <paulino@michelazzo.com.br>, 2014
-# Rafael Barretto Alves <ch3yd@hotmail.com>, 2013,2015
+# Rafael Barretto Alves <ch3yd@hotmail.com>, 2013,2015-2016
+# vanderson diniz do nascimento <cyberlink1@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-12-02 15:38+0100\n"
-"PO-Revision-Date: 2015-08-10 20:36+0000\n"
+"PO-Revision-Date: 2016-01-25 18:17+0000\n"
 "Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
-"language/pt_BR/)\n"
-"Language: pt_BR\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: core/__init__.py:59
@@ -82,9 +82,7 @@ msgstr "Ciclos"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Número de ciclos a ser usado (utilizado apenas por sha256crypt e "
-"sha512crypt). Deve estar entre 1000 e 999999999, inclusive."
+msgstr "Número de ciclos a ser usado (utilizado apenas por sha256crypt e sha512crypt). Deve estar entre 1000 e 999999999, inclusive."
 
 #: core/app_settings.py:72
 msgid "Secret key"
@@ -146,9 +144,7 @@ msgstr "Vincular DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"O nome distinto para usar quando vincular ao servidor LDAP. Deixe vazio para "
-"vincular anonimamente"
+msgstr "O nome distinto para usar quando vincular ao servidor LDAP. Deixe vazio para vincular anonimamente"
 
 #: core/app_settings.py:124
 msgid "Bind password"
@@ -174,9 +170,7 @@ msgstr "Filtro de pesquisa"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Uma string opcional de filtro (por ex: '(objectClass=person)'). Para ser "
-"válida, deve estar entre parênteses."
+msgstr "Uma string opcional de filtro (por ex: '(objectClass=person)'). Para ser válida, deve estar entre parênteses."
 
 #: core/app_settings.py:157
 msgid "User DN template"
@@ -187,9 +181,7 @@ msgstr "Usar template DN"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"A template usada para construir um DN de usuário. Deve conter um placeholder "
-"(por ex: %(user)s)"
+msgstr "A template usada para construir um DN de usuário. Deve conter um placeholder (por ex: %(user)s)"
 
 #: core/app_settings.py:168
 msgid "Password attribute"
@@ -213,11 +205,9 @@ msgstr "Grupos de administradores"
 
 #: core/app_settings.py:185
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Membros dos grupos do LDAP Posix serão criados como administradores de "
-"domínio. Use o caractere ';' para separar grupos."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Membros dos grupos do LDAP Posix serão criados como administradores de domínio. Use o caractere ';' para separar grupos."
 
 #: core/app_settings.py:192
 msgid "Groups search base"
@@ -269,8 +259,7 @@ msgstr "Redirecionamento de topo padrão"
 
 #: core/app_settings.py:237
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"O redirecionamento padrão usado quando nenhuma aplicação é especificada"
+msgstr "O redirecionamento padrão usado quando nenhuma aplicação é especificada"
 
 #: core/app_settings.py:267
 msgid "Key must be either 16, 24, or 32 bytes long"
@@ -318,7 +307,7 @@ msgstr "Senhas não conferem"
 
 #: core/forms.py:100
 msgid "Enable API access"
-msgstr ""
+msgstr "Ativar acesso à API"
 
 #: core/models.py:57
 msgid "Allow mailboxes access"
@@ -326,8 +315,7 @@ msgstr "Permitir acesso a caixa de correio"
 
 #: core/models.py:59
 msgid "Allow this administrator to access user mailboxes"
-msgstr ""
-"Permitir que este administrador acesse as caixas de correio de usuários"
+msgstr "Permitir que este administrador acesse as caixas de correio de usuários"
 
 #: core/models.py:62
 msgid "password"
@@ -338,22 +326,20 @@ msgid "last login"
 msgstr "último login"
 
 #: core/models.py:70
-#, fuzzy
-#| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
-msgstr "Idioma preferido para exibir páginas"
+msgstr "Linguagem padrão para visualizar mensagens"
 
 #: core/models.py:74
 msgid "Phone number"
-msgstr ""
+msgstr "Número de Telefone"
 
 #: core/models.py:76
 msgid "Secondary email"
-msgstr ""
+msgstr "E-mail secundário"
 
 #: core/models.py:79
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr ""
+msgstr "Endereço de e-mail alternativo, use-o para recuperar a conta caso precise"
 
 #: core/models.py:111
 msgid "You can't delete your own account"
@@ -404,15 +390,15 @@ msgstr "apagado"
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
-msgstr ""
+msgstr "Acesso a API do Modoboa"
 
 #: core/templates/core/api_access.html:3
 msgid "Control your access to Modoboa API"
-msgstr ""
+msgstr "Controle seu acesso a API do Modoboa"
 
 #: core/templates/core/api_access.html:8
 msgid "API access token"
-msgstr ""
+msgstr "Token de acesso a API"
 
 #: core/templates/core/api_access.html:29
 #: core/templates/core/user_profile.html:11 lib/form_utils.py:359
@@ -433,8 +419,7 @@ msgstr "Uma ou mais atualizações disponíveis"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Checar a seguinte lista a procura de componente(s) que pode ser atualizado"
+msgstr "Checar a seguinte lista a procura de componente(s) que pode ser atualizado"
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -524,10 +509,8 @@ msgid "Customize Modoboa"
 msgstr "Customizar Modoboa"
 
 #: core/templates/core/user_preferences.html:14
-#, fuzzy
-#| msgid "Preferences saved"
 msgid "No preferences available."
-msgstr "Preferências salvas"
+msgstr "Não há preferências disponíveis."
 
 #: core/templates/core/user_profile.html:4 core/templatetags/core_tags.py:103
 msgid "Profile"
@@ -547,7 +530,7 @@ msgstr "Sair"
 
 #: core/templatetags/core_tags.py:114
 msgid "API"
-msgstr ""
+msgstr "API"
 
 #: core/utils.py:20
 msgid "The core part of Modoboa"
@@ -580,10 +563,8 @@ msgid "Preferences saved"
 msgstr "Preferências salvas"
 
 #: core/views/user.py:91
-#, fuzzy
-#| msgid "Profile updated"
 msgid "Access updated"
-msgstr "Perfil atualizado"
+msgstr "Acesso atualizado"
 
 #: lib/db_utils.py:39
 #, python-format
@@ -694,9 +675,3 @@ msgstr "Lembrar-me"
 #: templates/registration/login.html:44
 msgid "Log in"
 msgstr "Entrar"
-
-#~ msgid "Display"
-#~ msgstr "Mostrar"
-
-#~ msgid "Prefered language"
-#~ msgstr "Idioma preferido"
