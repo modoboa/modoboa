@@ -55,12 +55,17 @@ class APITestCase(ModoAPITestCase):
     def test_update_domain(self):
         """Check domain update."""
         domain = models.Domain.objects.get(name="test.com")
+        models.Mailbox.objects.filter(
+            domain__name="test.com", address="user").update(
+                use_domain_quota=True)
         url = reverse("external_api:domain-detail", args=[domain.pk])
         response = self.client.put(url, {"name": "test.com", "quota": 1000})
         self.assertEqual(response.status_code, 200)
         domain.refresh_from_db()
         self.assertEqual(domain.quota, 1000)
+        mb = models.Mailbox.objects.get(
+            domain__name="test.com", address="user")
+        self.assertEqual(mb.quota, 1000)
 
         response = self.client.put(url, {"name": "test42.com", "quota": 1000})
         self.assertEqual(response.status_code, 200)
-        

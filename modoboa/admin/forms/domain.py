@@ -142,7 +142,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             q.delete()
 
     def save(self, user, commit=True, domalias_post_create=False):
-        """Custom save method
+        """Custom save method.
 
         Updating a domain may have consequences on other objects
         (domain alias, mailbox, quota). The most tricky part concerns
@@ -150,46 +150,34 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         """
         d = super(DomainFormGeneral, self).save(commit=False)
-        if commit:
-            old_mail_homes = None
-            if self.oldname is not None and d.name != self.oldname:
-                d.name = self.oldname
-                old_mail_homes = \
-                    dict((mb.id, mb.mail_home) for mb in d.mailbox_set.all())
-                d.name = self.cleaned_data['name']
-            d.save()
-            Mailbox.objects.filter(domain=d, use_domain_quota=True) \
-                .update(quota=d.quota)
-            aliases = []
-            for k, v in self.cleaned_data.iteritems():
-                if not k.startswith("aliases"):
-                    continue
-                if v in ["", None]:
-                    continue
-                aliases.append(v)
-            for dalias in d.domainalias_set.all():
-                if dalias.name not in aliases:
-                    dalias.delete()
+        if not commit:
+            return d
+        d.save()
+        aliases = []
+        for k, v in self.cleaned_data.iteritems():
+            if not k.startswith("aliases"):
+                continue
+            if v in ["", None]:
+                continue
+            aliases.append(v)
+        for dalias in d.domainalias_set.all():
+            if dalias.name not in aliases:
+                dalias.delete()
+            else:
+                aliases.remove(dalias.name)
+        if aliases:
+            events.raiseEvent(
+                "CanCreate", user, "domain_aliases", len(aliases))
+            for alias in aliases:
+                try:
+                    d.domainalias_set.get(name=alias)
+                except DomainAlias.DoesNotExist:
+                    pass
                 else:
-                    aliases.remove(dalias.name)
-            if aliases:
-                events.raiseEvent(
-                    "CanCreate", user, "domain_aliases", len(aliases))
-                for alias in aliases:
-                    try:
-                        d.domainalias_set.get(name=alias)
-                    except DomainAlias.DoesNotExist:
-                        pass
-                    else:
-                        continue
-                    al = DomainAlias(name=alias, target=d, enabled=d.enabled)
-                    al.save(creator=user) if domalias_post_create else al.save()
-
-            if old_mail_homes is not None:
-                self.update_mailbox_quotas(d)
-                for mb in d.mailbox_set.all():
-                    mb.rename_dir(old_mail_homes[mb.id])
-
+                    continue
+                options = {"creator": user} if domalias_post_create else {}
+                DomainAlias(name=alias, target=d, enabled=d.enabled).save(
+                    **options)
         return d
 
 
