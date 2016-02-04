@@ -69,3 +69,11 @@ class APITestCase(ModoAPITestCase):
 
         response = self.client.put(url, {"name": "test42.com", "quota": 1000})
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_domain(self):
+        """Try to delete a domain."""
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("external_api:domain-detail", args=[domain.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertFalse(models.Domain.objects.filter(pk=domain.pk).exists())
