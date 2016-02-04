@@ -9,6 +9,7 @@ before_install:
 install:
   - python setup.py -q develop
   - pip install -q psycopg2
+  - pip install -q -r test-requirements.txt
 
 before_script:
   - psql -c 'create database modoboa_test;' -U postgres
