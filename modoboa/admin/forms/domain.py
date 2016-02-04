@@ -22,7 +22,6 @@ from ..models import (
 DOMAIN_TYPES = [
     ("domain", _("Domain")),
 ]
-DOMAIN_TYPES += events.raiseQueryEvent("ExtraDomainTypes")
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
@@ -30,7 +29,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     """A form to create/edit a domain."""
 
     type = forms.ChoiceField(
-        label=ugettext_lazy("Type"), choices=DOMAIN_TYPES
+        label=ugettext_lazy("Type"),
     )
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
@@ -58,6 +57,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if "instance" in kwargs:
             self.oldname = kwargs["instance"].name
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
+
+        self.fields["type"].choices = (
+            DOMAIN_TYPES + events.raiseQueryEvent("ExtraDomainTypes"))
 
         self.field_widths = {
             "quota": 3
