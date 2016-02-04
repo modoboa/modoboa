@@ -6,6 +6,29 @@ from django.dispatch import receiver
 from . import models
 
 
+@receiver(signals.post_save, sender=models.Domain)
+def update_domain_mailboxes(sender, instance, **kwargs):
+    """Update associated mailboxes."""
+    if kwargs.get("created"):
+        return
+    instance.mailbox_set.filter(use_domain_quota=True).update(
+        quota=instance.quota)
+    if instance.old_mail_homes is None:
+        return
+    qset = (
+        models.Quota.objects.filter(
+            username__contains="@{}".format(instance.oldname))
+    )
+    for q in qset:
+        username = q.username.replace(
+            "@{}".format(instance.oldname), "@{}".format(instance.name))
+        models.Quota.objects.create(
+            username=username, bytes=q.bytes, messages=q.messages)
+        q.delete()
+    for mb in instance.mailbox_set.all():
+        mb.rename_dir(instance.old_mail_homes[mb.pk])
+
+
 @receiver(signals.post_save, sender=models.DomainAlias)
 def create_alias_for_domainalias(sender, instance, **kwargs):
     """Create a dedicated alias for domain alias."""

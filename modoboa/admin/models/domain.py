@@ -29,7 +29,6 @@ class DomainManager(Manager):
 
 @python_2_unicode_compatible
 class Domain(AdminObject):
-
     """Mail domain."""
 
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
@@ -52,6 +51,12 @@ class Domain(AdminObject):
         )
         ordering = ["name"]
         app_label = "admin"
+
+    def __init__(self, *args, **kwargs):
+        """Save name for further use."""
+        super(Domain, self).__init__(*args, **kwargs)
+        self.old_mail_homes = None
+        self.oldname = self.name
 
     @property
     def domainalias_count(self):
@@ -124,9 +129,16 @@ class Domain(AdminObject):
         for al in self.alias_set.all():
             ungrant_access_to_object(al, account)
 
+    def save(self, *args, **kwargs):
+        """Store current data if domain is renamed."""
+        if self.oldname != self.name:
+            self.old_mail_homes = (
+                dict((mb.id, mb.mail_home) for mb in self.mailbox_set.all())
+            )
+        super(Domain, self).save(*args, **kwargs)
+
     def delete(self, fromuser, keepdir=False):
-        """Custom delete method.
-        """
+        """Custom delete method."""
         from modoboa.lib.permissions import ungrant_access_to_objects
         from .mailbox import Quota
 

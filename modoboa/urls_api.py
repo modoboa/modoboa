@@ -7,4 +7,5 @@ urlpatterns = patterns(
     "",
 
     ("", include("modoboa.core.urls_api")),
+    ("", include("modoboa.admin.urls_api")),
 )
