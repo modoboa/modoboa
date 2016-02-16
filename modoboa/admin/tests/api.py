@@ -1,5 +1,7 @@
 """Admin API related tests."""
 
+import json
+
 from django.core.urlresolvers import reverse
 
 from rest_framework.authtoken.models import Token
@@ -77,3 +79,66 @@ class APITestCase(ModoAPITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(models.Domain.objects.filter(pk=domain.pk).exists())
+
+    def test_get_accounts(self):
+        """Retrieve a list of accounts."""
+        url = reverse("external_api:account-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+        self.assertEqual(len(response), 5)
+
+    def test_create_account(self):
+        """Try to create a new account."""
+        data = {
+            "username": "fromapi@test.com",
+            "role": "SimpleUsers",
+            "password": "Toto1234",
+            "mailbox": {
+                "full_address": "fromapi@test.com",
+                "quota": 10
+            }
+        }
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
+        account = json.loads(response.content)
+        user = core_models.User.objects.filter(pk=account["pk"]).first()
+        self.assertIsNot(user, None)
+        self.assertIsNot(user.mailbox, None)
+
+    def test_create_account_bad_password(self):
+        """Try to create a new account."""
+        data = {
+            "username": "fromapi@test.com",
+            "role": "SimpleUsers",
+            "password": "toto",  # Bad password
+            "mailbox": {
+                "full_address": "fromapi@test.com",
+                "quota": 10
+            }
+        }
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        errors = json.loads(response.content)
+        self.assertIn("password", errors)
+
+    def test_create_account_bad_master_user(self):
+        """Try to create a new account."""
+        data = {
+            "username": "fromapi@test.com",
+            "role": "SimpleUsers",
+            "master_user": True,
+            "password": "Toto1234",
+            "mailbox": {
+                "full_address": "fromapi@test.com",
+                "quota": 10
+            }
+        }
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        errors = json.loads(response.content)
+        self.assertIn("master_user", errors)

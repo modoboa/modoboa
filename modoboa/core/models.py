@@ -234,6 +234,7 @@ class User(PermissionsMixin):
 
     @property
     def group(self):
+        """FIXME: DEPRECATED"""
         if self.is_superuser:
             return "SuperAdmins"
         try:
@@ -312,7 +313,18 @@ class User(PermissionsMixin):
                 return True
         return False
 
-    def set_role(self, role):
+    @property
+    def role(self):
+        """Return user role."""
+        if self.is_superuser:
+            return "SuperAdmins"
+        try:
+            return self.groups.all()[0].name
+        except IndexError:
+            return "---"
+
+    @role.setter
+    def role(self, role):
         """Set administrative role for this account
 
         :param string role: the role to set
@@ -407,7 +419,7 @@ class User(PermissionsMixin):
         self.last_name = row[4].strip()
         self.is_active = (row[5].strip() in ["True", "1", "yes", "y"])
         self.save()
-        self.set_role(desired_role)
+        self.role = desired_role
         self.post_create(user)
         if len(row) < 8:
             return
@@ -449,7 +461,7 @@ def populate_callback(user, group='SimpleUsers'):
     from modoboa.lib.permissions import grant_access_to_object
 
     sadmins = User.objects.filter(is_superuser=True)
-    user.set_role(group)
+    user.role = group
     user.post_create(sadmins[0])
     for su in sadmins[1:]:
         grant_access_to_object(su, user)

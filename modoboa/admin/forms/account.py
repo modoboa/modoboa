@@ -160,7 +160,7 @@ class AccountFormGeneral(forms.ModelForm):
                and self.cleaned_data["password1"] != "":
                 account.set_password(self.cleaned_data["password1"])
             account.save()
-            account.set_role(self.cleaned_data["role"])
+            account.role = self.cleaned_data["role"]
         return account
 
 

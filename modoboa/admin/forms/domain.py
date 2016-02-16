@@ -250,7 +250,7 @@ class DomainFormOptions(forms.Form):
         da = User(username=username, email=username, is_active=True)
         da.set_password("password")
         da.save()
-        da.set_role("DomainAdmins")
+        da.role = "DomainAdmins"
         da.post_create(user)
 
         mb = Mailbox(

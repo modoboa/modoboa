@@ -12,43 +12,6 @@ from .models import (
 )
 
 
-PERMISSIONS = {
-    "DomainAdmins": [
-        ["core", "user", "add_user"],
-        ["core", "user", "change_user"],
-        ["core", "user", "delete_user"],
-        ["admin", "domain", "view_domains"],
-        ["admin", "domain", "view_domain"],
-        ["admin", "mailbox", "add_mailbox"],
-        ["admin", "mailbox", "change_mailbox"],
-        ["admin", "mailbox", "delete_mailbox"],
-        ["admin", "alias", "add_alias"],
-        ["admin", "alias", "change_alias"],
-        ["admin", "alias", "delete_alias"],
-        ["admin", "mailbox", "view_mailboxes"],
-        ["admin", "alias", "view_aliases"],
-    ]
-}
-
-
-@events.observe("GetExtraRoles")
-def extra_roles(user, account):
-    """Return new roles."""
-    filters = events.raiseQueryEvent(
-        "UserCanSetRole", user, "DomainAdmins", account
-    )
-    if user.has_perm("admin.add_domain") and \
-            (not filters or True in filters):
-        return [("DomainAdmins", _("Domain administrator"))]
-    return []
-
-
-@events.observe("GetExtraRolePermissions")
-def extra_permissions(rolename):
-    """Return extra permissions for :kw:`rolename`."""
-    return PERMISSIONS.get(rolename, [])
-
-
 @events.observe("AdminMenuDisplay")
 def admin_menu(target, user):
     if target != "top_menu":

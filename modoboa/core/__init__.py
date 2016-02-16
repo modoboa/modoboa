@@ -6,7 +6,41 @@ from modoboa.lib import events
 
 
 PERMISSIONS = {
-    "SimpleUsers": []
+    "SimpleUsers": [],
+    "DomainAdmins": [
+        ["core", "user", "add_user"],
+        ["core", "user", "change_user"],
+        ["core", "user", "delete_user"],
+        ["admin", "domain", "view_domains"],
+        ["admin", "domain", "view_domain"],
+        ["admin", "mailbox", "add_mailbox"],
+        ["admin", "mailbox", "change_mailbox"],
+        ["admin", "mailbox", "delete_mailbox"],
+        ["admin", "alias", "add_alias"],
+        ["admin", "alias", "change_alias"],
+        ["admin", "alias", "delete_alias"],
+        ["admin", "mailbox", "view_mailboxes"],
+        ["admin", "alias", "view_aliases"],
+    ],
+    "Resellers": [
+        ["core", "user", "add_user"],
+        ["core", "user", "change_user"],
+        ["core", "user", "delete_user"],
+        ["admin", "domain", "view_domains"],
+        ["admin", "domain", "view_domain"],
+        ["admin", "mailbox", "add_mailbox"],
+        ["admin", "mailbox", "change_mailbox"],
+        ["admin", "mailbox", "delete_mailbox"],
+        ["admin", "alias", "add_alias"],
+        ["admin", "alias", "change_alias"],
+        ["admin", "alias", "delete_alias"],
+        ["admin", "mailbox", "view_mailboxes"],
+        ["admin", "alias", "view_aliases"],
+        ["admin", "domain", "view_domains"],
+        ["admin", "domain", "add_domain"],
+        ["admin", "domain", "change_domain"],
+        ["admin", "domain", "delete_domain"]
+    ]
 }
 
 
