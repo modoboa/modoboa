@@ -117,21 +117,21 @@ class SenderLoginAliasMap(object):
     filename = "sql-sender-login-aliases.cf"
     mysql = (
         "SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
-        "INNER JOIN admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
+        "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
         " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
         "WHERE al.enabled=1 AND al.address='%s'"
     )
     postgres = (
         "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
-        "INNER JOIN admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
+        "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
         " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
         "WHERE al.enabled AND al.address='%s'"
     )
     sqlite = (
         "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
-        "INNER JOIN admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
+        "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
         " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
         "WHERE al.enabled=1 AND al.address='%s'"
