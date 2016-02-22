@@ -15,8 +15,8 @@ import reversion
 from .base import AdminObject
 from .domain import Domain
 from modoboa.core.models import User
-from modoboa.lib import parameters
-from modoboa.lib.exceptions import BadRequest, InternalError
+from modoboa.lib import events, parameters
+from modoboa.lib.exceptions import BadRequest, Conflict, InternalError
 from modoboa.lib.sysutils import exec_cmd
 
 
@@ -96,6 +96,8 @@ class Mailbox(AdminObject):
     def __init__(self, *args, **kwargs):
         super(Mailbox, self).__init__(*args, **kwargs)
         self.__mail_home = None
+        self.old_full_address = self.full_address
+        self.old_mail_home = self.mail_home
 
     def __str__(self):
         return smart_text(self.full_address)
@@ -179,11 +181,12 @@ class Mailbox(AdminObject):
         self._quota_value = instance
 
     def rename_dir(self, old_mail_home):
+        """Rename local directory if needed."""
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
         if hm is None or hm == "no":
             return
         MailboxOperation.objects.create(
-            mailbox=self, type='rename', argument=old_mail_home
+            mailbox=self, type="rename", argument=old_mail_home
         )
 
     def rename(self, address, domain):
@@ -197,7 +200,6 @@ class Mailbox(AdminObject):
         :param Domain domain: the new mailbox's domain
 
         """
-        old_mail_home = self.mail_home
         old_qvalue = self.quota_value
         self.address = address
         self.domain = domain
@@ -206,7 +208,7 @@ class Mailbox(AdminObject):
             messages=old_qvalue.messages
         )
         old_qvalue.delete()
-        self.rename_dir(old_mail_home)
+        self.rename_dir(self.old_mail_home)
 
     def delete_dir(self):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
@@ -280,8 +282,16 @@ class Mailbox(AdminObject):
     def save(self, *args, **kwargs):
         """Custom save.
 
-        We just make sure a quota record is defined for this mailbox.
+        We check that the address is unique and we make sure a quota
+        record is defined for this mailbox.
+
         """
+        qset = Mailbox.objects.filter(address=self.address, domain=self.domain)
+        if self.pk:
+            qset = qset.exclude(pk=self.pk)
+        if qset.exists():
+            raise Conflict(
+                _("Mailbox {} already exists").format(self))
         if self.quota_value is None:
             self.quota_value, created = Quota.objects.get_or_create(
                 username=self.full_address)

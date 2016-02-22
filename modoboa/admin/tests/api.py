@@ -1,5 +1,7 @@
+# coding: utf-8
 """Admin API related tests."""
 
+import copy
 import json
 
 from django.core.urlresolvers import reverse
@@ -13,14 +15,13 @@ from .. import factories
 from .. import models
 
 
-class APITestCase(ModoAPITestCase):
-
+class DomainAPITestCase(ModoAPITestCase):
     """Check API."""
 
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        super(APITestCase, cls).setUpTestData()
+        super(DomainAPITestCase, cls).setUpTestData()
         factories.populate_database()
         cls.da_token = Token.objects.create(
             user=core_models.User.objects.get(username="admin@test.com"))
@@ -71,6 +72,9 @@ class APITestCase(ModoAPITestCase):
 
         response = self.client.put(url, {"name": "test42.com", "quota": 1000})
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            models.Mailbox.objects.filter(
+                address="user", domain__name="test42.com").exists())
 
     def test_delete_domain(self):
         """Try to delete a domain."""
@@ -79,6 +83,28 @@ class APITestCase(ModoAPITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(models.Domain.objects.filter(pk=domain.pk).exists())
+
+
+class AccountAPITestCase(ModoAPITestCase):
+    """Check Account API."""
+
+    ACCOUNT_DATA = {
+        "username": "fromapi@test.com",
+        "role": "SimpleUsers",
+        "password": "Toto1234",
+        "mailbox": {
+            "full_address": "fromapi@test.com",
+            "quota": 10
+        }
+    }
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(AccountAPITestCase, cls).setUpTestData()
+        factories.populate_database()
+        cls.da_token = Token.objects.create(
+            user=core_models.User.objects.get(username="admin@test.com"))
 
     def test_get_accounts(self):
         """Retrieve a list of accounts."""
@@ -90,17 +116,8 @@ class APITestCase(ModoAPITestCase):
 
     def test_create_account(self):
         """Try to create a new account."""
-        data = {
-            "username": "fromapi@test.com",
-            "role": "SimpleUsers",
-            "password": "Toto1234",
-            "mailbox": {
-                "full_address": "fromapi@test.com",
-                "quota": 10
-            }
-        }
         url = reverse("external_api:account-list")
-        response = self.client.post(url, data, format="json")
+        response = self.client.post(url, self.ACCOUNT_DATA, format="json")
         self.assertEqual(response.status_code, 201)
 
         account = json.loads(response.content)
@@ -108,17 +125,56 @@ class APITestCase(ModoAPITestCase):
         self.assertIsNot(user, None)
         self.assertIsNot(user.mailbox, None)
 
+        data = copy.deepcopy(self.ACCOUNT_DATA)
+        data["username"] = "fromapi_ééé@test.com"
+        data["mailbox"]["full_address"] = data["username"]
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_domainadmin_account(self):
+        """Try to create a domain admin."""
+        data = copy.deepcopy(self.ACCOUNT_DATA)
+        data["role"] = "DomainAdmins"
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
+        data["username"] = "domain_admin"
+        del data["mailbox"]
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_account_with_no_mailbox(self):
+        """Try to create a new account."""
+        data = copy.deepcopy(self.ACCOUNT_DATA)
+        del data["mailbox"]
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+        account = json.loads(response.content)
+        user = core_models.User.objects.filter(pk=account["pk"]).first()
+        self.assertIsNot(user, None)
+        self.assertIsNot(user.mailbox, None)
+        self.assertEqual(user.mailbox.quota, user.mailbox.domain.quota)
+
+    def test_create_existing_account(self):
+        """Check if unicity is respected."""
+        data = copy.deepcopy(self.ACCOUNT_DATA)
+        data["username"] = "user@test.com"
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+        data.update({"username": "domainadmin", "role": "DomainAdmins"})
+        data["mailbox"]["full_address"] = "admin@test.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 409)
+
     def test_create_account_bad_password(self):
         """Try to create a new account."""
-        data = {
-            "username": "fromapi@test.com",
-            "role": "SimpleUsers",
-            "password": "toto",  # Bad password
-            "mailbox": {
-                "full_address": "fromapi@test.com",
-                "quota": 10
-            }
-        }
+        data = copy.deepcopy(self.ACCOUNT_DATA)
+        data["password"] = "toto"
         url = reverse("external_api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
@@ -127,18 +183,23 @@ class APITestCase(ModoAPITestCase):
 
     def test_create_account_bad_master_user(self):
         """Try to create a new account."""
-        data = {
-            "username": "fromapi@test.com",
-            "role": "SimpleUsers",
-            "master_user": True,
-            "password": "Toto1234",
-            "mailbox": {
-                "full_address": "fromapi@test.com",
-                "quota": 10
-            }
-        }
+        data = copy.deepcopy(self.ACCOUNT_DATA)
+        data["master_user"] = True
         url = reverse("external_api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
         errors = json.loads(response.content)
         self.assertIn("master_user", errors)
+
+    def test_update_account(self):
+        """Try to update an account."""
+        pass
+
+    def test_delete_account(self):
+        """Try to delete an account."""
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("external_api:account-detail", args=[account.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertFalse(
+            core_models.User.objects.filter(pk=account.pk).exists())

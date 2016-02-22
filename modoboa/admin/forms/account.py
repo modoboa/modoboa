@@ -12,7 +12,7 @@ from passwords.fields import PasswordField
 from modoboa.core.models import User
 from modoboa.lib import events, parameters
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
+from modoboa.lib.exceptions import PermDeniedException, NotFound
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     DynamicForm, TabForms, WizardForm, WizardStep
@@ -43,6 +43,7 @@ class AccountFormGeneral(forms.ModelForm):
     password1 = PasswordField(
         label=ugettext_lazy("Password"), widget=forms.widgets.PasswordInput
     )
+
     password2 = PasswordField(
         label=ugettext_lazy("Confirmation"),
         widget=forms.widgets.PasswordInput,
@@ -253,14 +254,6 @@ class AccountFormMail(forms.Form, DynamicForm):
             raise NotFound(_("Domain does not exist"))
         if not user.can_access(domain):
             raise PermDeniedException
-        try:
-            Mailbox.objects.get(address=locpart, domain=domain)
-        except Mailbox.DoesNotExist:
-            pass
-        else:
-            raise Conflict(
-                _("Mailbox %s already exists" % self.cleaned_data["email"])
-            )
         events.raiseEvent("CanCreate", user, "mailboxes")
         self.mb = Mailbox(address=locpart, domain=domain, user=account,
                           use_domain_quota=self.cleaned_data["quota_act"])
@@ -276,7 +269,6 @@ class AccountFormMail(forms.Form, DynamicForm):
               account.username != self.mb.full_address):
             newaddress = account.username
         if newaddress is not None:
-            self.mb.old_full_address = self.mb.full_address
             local_part, domname = split_mailbox(newaddress)
             try:
                 domain = Domain.objects.get(name=domname)
@@ -284,15 +276,15 @@ class AccountFormMail(forms.Form, DynamicForm):
                 raise NotFound(_("Domain does not exist"))
             if not user.can_access(domain):
                 raise PermDeniedException
-            self.mb.rename(local_part, domain)
-
         self.mb.use_domain_quota = self.cleaned_data["quota_act"]
         override_rules = True \
             if not self.mb.quota or user.has_perm("admin.add_domain") \
             else False
         self.mb.set_quota(self.cleaned_data["quota"], override_rules)
         self.mb.save()
-        events.raiseEvent('MailboxModified', self.mb)
+        if newaddress:
+            self.mb.rename(local_part, domain)
+        events.raiseEvent("MailboxModified", self.mb)
 
     def _update_aliases(self, user, account):
         """Update mailbox aliases."""

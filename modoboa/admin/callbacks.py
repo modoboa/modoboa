@@ -114,12 +114,9 @@ def import_account_mailbox(user, account, row):
             )
         if not user.can_access(domain):
             raise PermDeniedException
-        try:
-            mb = Mailbox.objects.get(address=mailbox, domain=domain)
-        except Mailbox.DoesNotExist:
-            pass
-        else:
-            raise Conflict(_("Mailbox %s already exists" % account.email))
+        if Mailbox.objects.filter(address=mailbox, domain=domain).exists():
+            raise Conflict(
+                _("Mailbox {} already exists").format(account.email))
         if len(row) == 1:
             quota = None
         else:

@@ -349,6 +349,7 @@ class User(PermissionsMixin):
         self.save()
 
     def post_create(self, creator):
+        """Grant permission on this user to creator."""
         from modoboa.lib.permissions import grant_access_to_object
         grant_access_to_object(creator, self, is_owner=True)
         events.raiseEvent("AccountCreated", self)

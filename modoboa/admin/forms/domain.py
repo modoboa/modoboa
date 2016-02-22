@@ -121,28 +121,6 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 )
         return cleaned_data
 
-    def update_mailbox_quotas(self, domain):
-        """Update all quota records associated to this domain.
-
-        This method must be called only when a domain gets renamed. As
-        the primary key used for a quota is an email address, rename a
-        domain will change all associated email addresses, so it will
-        change the primary keys used for quotas. The consequence is we
-        can't issue regular UPDATE queries using the .save() method of
-        a Quota instance (it will trigger an INSERT as the primary key
-        has changed).
-
-        So, we use this ugly hack to bypass this behaviour. It is not
-        perfomant at all as it will generate one query per quota
-        record to update.
-        """
-        for q in Quota.objects.filter(username__contains="@%s" % self.oldname):
-            username = q.username.replace(
-                '@%s' % self.oldname, '@%s' % domain.name)
-            Quota.objects.create(
-                username=username, bytes=q.bytes, messages=q.messages)
-            q.delete()
-
     def save(self, user, commit=True, domalias_post_create=False):
         """Custom save method.
 

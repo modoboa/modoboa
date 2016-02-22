@@ -21,21 +21,23 @@ class AjaxLoginRedirect(object):
 
 
 class CommonExceptionCatcher(object):
+    """Modoboa exceptions catcher."""
 
     def process_exception(self, request, exception):
         if not isinstance(exception, ModoboaException):
             return None
 
-        if not request.is_ajax():
-            return _render_error(
-                request, user_context=dict(error=str(exception))
+        if request.is_ajax() or "/api/" in request.path:
+            if exception.http_code is None:
+                return ajax_response(
+                    request, status="ko", respmsg=unicode(exception),
+                    norefresh=True
+                )
+            return render_to_json_response(
+                unicode(exception), status=exception.http_code
             )
-        if exception.http_code is None:
-            return ajax_response(
-                request, status="ko", respmsg=unicode(exception), norefresh=True
-            )
-        return render_to_json_response(
-            unicode(exception), status=exception.http_code
+        return _render_error(
+            request, user_context=dict(error=str(exception))
         )
 
 

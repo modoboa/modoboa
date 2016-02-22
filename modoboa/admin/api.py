@@ -44,3 +44,7 @@ class AccountViewSet(viewsets.ModelViewSet):
             .filter(content_type=ContentType.objects.get_for_model(user)) \
             .values_list('object_id', flat=True)
         return core_models.User.objects.filter(pk__in=ids)
+
+    def perform_destroy(self, instance):
+        """Add custom args to delete call."""
+        instance.delete(self.request.user)
