@@ -8,7 +8,6 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
-from modoboa.core.extensions import exts_pool
 from modoboa.core.models import Log
 from modoboa.core.utils import check_for_updates
 from modoboa.lib import events, parameters
