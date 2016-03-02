@@ -44,11 +44,12 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
-        values["username"] = "pouet@test.com"
+        values.update({
+            "username": "pouet@test.com", "email": "pouet@test.com"})
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]), values
         )
-        mb = models.Mailbox.objects.get(pk=mb.id)
+        mb = models.Mailbox.objects.get(pk=mb.pk)
         self.assertEqual(mb.full_address, "pouet@test.com")
         self.assertEqual(mb.quota_value.username, "pouet@test.com")
         # Check if self alias has been updated

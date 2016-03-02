@@ -124,6 +124,7 @@ class AccountFormGeneral(forms.ModelForm):
         return self.cleaned_data["role"]
 
     def clean_username(self):
+        """username must be a valid email address for simple users."""
         if "role" not in self.cleaned_data:
             return self.cleaned_data["username"]
         if self.cleaned_data["role"] != "SimpleUsers":
@@ -261,31 +262,6 @@ class AccountFormMail(forms.Form, DynamicForm):
                           user.has_perm("admin.add_domain"))
         self.mb.save(creator=user)
 
-    def update_mailbox(self, user, account):
-        newaddress = None
-        if self.cleaned_data["email"] != self.mb.full_address:
-            newaddress = self.cleaned_data["email"]
-        elif (account.group == "SimpleUsers" and
-              account.username != self.mb.full_address):
-            newaddress = account.username
-        if newaddress is not None:
-            local_part, domname = split_mailbox(newaddress)
-            try:
-                domain = Domain.objects.get(name=domname)
-            except Domain.DoesNotExist:
-                raise NotFound(_("Domain does not exist"))
-            if not user.can_access(domain):
-                raise PermDeniedException
-        self.mb.use_domain_quota = self.cleaned_data["quota_act"]
-        override_rules = True \
-            if not self.mb.quota or user.has_perm("admin.add_domain") \
-            else False
-        self.mb.set_quota(self.cleaned_data["quota"], override_rules)
-        self.mb.save()
-        if newaddress:
-            self.mb.rename(local_part, domain)
-        events.raiseEvent("MailboxModified", self.mb)
-
     def _update_aliases(self, user, account):
         """Update mailbox aliases."""
         aliases = []
@@ -334,7 +310,9 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not hasattr(self, "mb") or self.mb is None:
             self.create_mailbox(user, account)
         else:
-            self.update_mailbox(user, account)
+            self.cleaned_data["use_domain_quota"] = (
+                self.cleaned_data["quota_act"])
+            self.mb.update_from_dict(user, self.cleaned_data)
         events.raiseEvent(
             'SaveExtraFormFields', 'mailform', self.mb, self.cleaned_data
         )

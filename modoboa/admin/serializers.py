@@ -107,6 +107,21 @@ class CreateAccountSerializer(AccountSerializer):
                 })
         return data
 
+    def _create_mailbox(self, creator, account, data):
+        """Create a new Mailbox instance."""
+        full_address = data.pop("full_address")
+        address, domain_name = email_utils.split_mailbox(full_address)
+        domain = get_object_or_404(
+            admin_models.Domain, name=domain_name)
+        mb = admin_models.Mailbox(
+            user=account, address=address, domain=domain, **data)
+        mb.set_quota(
+            data.get("quota"), creator.has_perm("admin.add_domain")
+        )
+        mb.save(creator=creator)
+        account.email = full_address
+        return mb
+
     def create(self, validated_data):
         """Create appropriate objects."""
         creator = self.context["request"].user
@@ -116,16 +131,24 @@ class CreateAccountSerializer(AccountSerializer):
         user.set_password(validated_data["password"])
         user.save(creator=creator)
         if mailbox_data:
-            full_address = mailbox_data.pop("full_address")
-            address, domain_name = email_utils.split_mailbox(full_address)
-            domain = get_object_or_404(
-                admin_models.Domain, name=domain_name)
-            mb = admin_models.Mailbox(
-                user=user, address=address, domain=domain, **mailbox_data)
-            mb.set_quota(
-                mailbox_data.get("quota"), creator.has_perm("admin.add_domain")
-            )
-            mb.save(creator=creator)
-            user.email = full_address
+            self._create_mailbox(creator, user, mailbox_data)
         user.role = role
         return user
+
+    def update(self, instance, validated_data):
+        """Update account and associated objects."""
+        mailbox_data = validated_data.pop("mailbox")
+        password = validated_data.pop("password")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        instance.set_password(password)
+        instance.save()
+        if mailbox_data:
+            creator = self.context["request"].user
+            if instance.mailbox:
+                # FIXME: compat, to remove.
+                mailbox_data["email"] = mailbox_data["full_address"]
+                instance.mailbox.update_from_dict(creator, mailbox_data)
+            else:
+                self._create_mailbox(creator, instance, mailbox_data)
+        return instance

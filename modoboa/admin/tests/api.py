@@ -124,6 +124,8 @@ class AccountAPITestCase(ModoAPITestCase):
         user = core_models.User.objects.filter(pk=account["pk"]).first()
         self.assertIsNot(user, None)
         self.assertIsNot(user.mailbox, None)
+        domadmin = core_models.User.objects.get(username="admin@test.com")
+        self.assertTrue(domadmin.can_access(user))
 
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["username"] = "fromapi_ééé@test.com"
@@ -193,13 +195,30 @@ class AccountAPITestCase(ModoAPITestCase):
 
     def test_update_account(self):
         """Try to update an account."""
-        pass
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("external_api:account-detail", args=[account.pk])
+        data = {
+            "username": "fromapi@test.com",
+            "role": account.role,
+            "password": "Toto1234",
+            "mailbox": {
+                "full_address": "fromapi@test.com",
+                "quota": account.mailbox.quota
+            }
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        account.refresh_from_db()
+        self.assertEqual(account.email, account.mailbox.full_address)
 
     def test_delete_account(self):
         """Try to delete an account."""
         account = core_models.User.objects.get(username="user@test.com")
+        domadmin = core_models.User.objects.get(username="admin@test.com")
+        self.assertTrue(domadmin.can_access(account))
         url = reverse("external_api:account-detail", args=[account.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(
             core_models.User.objects.filter(pk=account.pk).exists())
+        self.assertFalse(domadmin.can_access(account))

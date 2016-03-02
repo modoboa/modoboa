@@ -16,7 +16,8 @@ from .base import AdminObject
 from .domain import Domain
 from modoboa.core.models import User
 from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import BadRequest, Conflict, InternalError
+from modoboa.lib import exceptions as lib_exceptions
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.sysutils import exec_cmd
 
 
@@ -144,7 +145,7 @@ class Mailbox(AdminObject):
                 "doveadm user %s -f home" % self.full_address, **options
             )
             if code:
-                raise InternalError(
+                raise lib_exceptions.InternalError(
                     _("Failed to retrieve mailbox location (%s)" % output))
             self.__mail_home = output.strip()
         return self.__mail_home
@@ -233,14 +234,14 @@ class Mailbox(AdminObject):
             else:
                 self.quota = 0
         elif int(value) > self.domain.quota and not override_rules:
-            raise BadRequest(
+            raise lib_exceptions.BadRequest(
                 _("Quota is greater than the allowed domain's limit (%dM)"
                   % self.domain.quota)
             )
         else:
             self.quota = value
         if not self.quota and self.domain.quota and not override_rules:
-            raise BadRequest(_("A quota is required"))
+            raise lib_exceptions.BadRequest(_("A quota is required"))
 
     def get_quota(self):
         """Get quota limit.
@@ -279,6 +280,33 @@ class Mailbox(AdminObject):
                 grant_access_to_object(admin, self)
                 grant_access_to_object(admin, self.user)
 
+    def update_from_dict(self, user, values):
+        """Update mailbox from a dictionary."""
+        newaddress = None
+        if values["email"] != self.full_address:
+            newaddress = values["email"]
+        elif (self.user.group == "SimpleUsers" and
+              self.user.username != self.full_address):
+            newaddress = self.user.username
+        if newaddress is not None:
+            local_part, domname = split_mailbox(newaddress)
+            try:
+                domain = Domain.objects.get(name=domname)
+            except Domain.DoesNotExist:
+                raise lib_exceptions.NotFound(_("Domain does not exist"))
+            if not user.can_access(domain):
+                raise lib_exceptions.PermDeniedException
+        if "use_domain_quota" in values:
+            self.use_domain_quota = values["use_domain_quota"]
+        override_rules = True \
+            if not self.quota or user.has_perm("admin.add_domain") \
+            else False
+        self.set_quota(values["quota"], override_rules)
+        if newaddress:
+            self.rename(local_part, domain)
+        self.save()
+        events.raiseEvent("MailboxModified", self)
+
     def save(self, *args, **kwargs):
         """Custom save.
 
@@ -290,7 +318,7 @@ class Mailbox(AdminObject):
         if self.pk:
             qset = qset.exclude(pk=self.pk)
         if qset.exists():
-            raise Conflict(
+            raise lib_exceptions.Conflict(
                 _("Mailbox {} already exists").format(self))
         if self.quota_value is None:
             self.quota_value, created = Quota.objects.get_or_create(
