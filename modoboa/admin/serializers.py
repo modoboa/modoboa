@@ -113,6 +113,9 @@ class CreateAccountSerializer(AccountSerializer):
         address, domain_name = email_utils.split_mailbox(full_address)
         domain = get_object_or_404(
             admin_models.Domain, name=domain_name)
+        if not creator.can_access(domain):
+            raise serializers.ValidationError({
+                "domain": _("Permission denied.")})
         mb = admin_models.Mailbox(
             user=account, address=address, domain=domain, **data)
         mb.set_quota(

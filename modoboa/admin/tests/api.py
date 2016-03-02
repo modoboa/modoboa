@@ -183,6 +183,24 @@ class AccountAPITestCase(ModoAPITestCase):
         errors = json.loads(response.content)
         self.assertIn("password", errors)
 
+    def test_create_account_as_domadmin(self):
+        """As DomainAdmin, try to create a new account."""
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+        data = copy.deepcopy(self.ACCOUNT_DATA)
+        data["mailbox"]["quota"] = 20
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        data["username"] = "fromapi@test2.com"
+        data["mailbox"].update({"full_address": "fromapi@test2.com",
+                                "quota": 10})
+        url = reverse("external_api:account-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        errors = json.loads(response.content)
+        self.assertIn("domain", errors)
+
     def test_create_account_bad_master_user(self):
         """Try to create a new account."""
         data = copy.deepcopy(self.ACCOUNT_DATA)

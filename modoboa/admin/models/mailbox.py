@@ -235,8 +235,8 @@ class Mailbox(AdminObject):
                 self.quota = 0
         elif int(value) > self.domain.quota and not override_rules:
             raise lib_exceptions.BadRequest(
-                _("Quota is greater than the allowed domain's limit (%dM)"
-                  % self.domain.quota)
+                _("Quota is greater than the allowed domain's limit (%dM)")
+                  % self.domain.quota
             )
         else:
             self.quota = value
