@@ -146,7 +146,7 @@ class CreateAccountSerializer(AccountSerializer):
         if mailbox_data:
             creator = self.context["request"].user
             if instance.mailbox:
-                # FIXME: compat, to remove.
+                # FIXME: compat, to remove ASAP.
                 mailbox_data["email"] = mailbox_data["full_address"]
                 instance.mailbox.update_from_dict(creator, mailbox_data)
             else:

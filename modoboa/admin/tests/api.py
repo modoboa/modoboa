@@ -211,6 +211,22 @@ class AccountAPITestCase(ModoAPITestCase):
         account.refresh_from_db()
         self.assertEqual(account.email, account.mailbox.full_address)
 
+    def test_update_account_wrong_address(self):
+        """Try to update an account."""
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("external_api:account-detail", args=[account.pk])
+        data = {
+            "username": "fromapi@test3.com",
+            "role": account.role,
+            "password": "Toto1234",
+            "mailbox": {
+                "full_address": "fromapi@test3.com",
+                "quota": account.mailbox.quota
+            }
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+
     def test_delete_account(self):
         """Try to delete an account."""
         account = core_models.User.objects.get(username="user@test.com")

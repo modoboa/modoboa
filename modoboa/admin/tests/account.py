@@ -44,8 +44,7 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
-        values.update({
-            "username": "pouet@test.com", "email": "pouet@test.com"})
+        values.update({"username": "pouet@test.com"})
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]), values
         )

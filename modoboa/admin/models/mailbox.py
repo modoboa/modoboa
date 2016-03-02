@@ -290,9 +290,8 @@ class Mailbox(AdminObject):
             newaddress = self.user.username
         if newaddress is not None:
             local_part, domname = split_mailbox(newaddress)
-            try:
-                domain = Domain.objects.get(name=domname)
-            except Domain.DoesNotExist:
+            domain = Domain.objects.filter(name=domname).first()
+            if domain is None:
                 raise lib_exceptions.NotFound(_("Domain does not exist"))
             if not user.can_access(domain):
                 raise lib_exceptions.PermDeniedException
