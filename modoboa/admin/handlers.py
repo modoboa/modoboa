@@ -29,12 +29,6 @@ def update_domain_mailboxes(sender, instance, **kwargs):
         mb.rename_dir(instance.old_mail_homes[mb.pk])
 
 
-@receiver(signals.post_save, sender=models.Mailbox)
-def rename_mailbox(sender, instance, **kwargs):
-    """Check if mailbox must be renamed on local FS."""
-    pass
-
-
 @receiver(signals.post_save, sender=models.DomainAlias)
 def create_alias_for_domainalias(sender, instance, **kwargs):
     """Create a dedicated alias for domain alias."""
