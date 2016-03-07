@@ -29,11 +29,12 @@ class APITestCase(ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
+        domain = response.data[0]
         url = reverse(
-            "external_api:domain-detail", args=[response.data[0]["pk"]])
+            "external_api:domain-detail", args=[domain["pk"]])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["name"], "test2.com")
+        self.assertEqual(response.data["name"], domain["name"])
 
     def test_create_domain(self):
         """Check domain creation."""
