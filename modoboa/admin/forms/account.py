@@ -232,7 +232,13 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     def clean_email(self):
         """Ensure lower case emails"""
-        return self.cleaned_data["email"].lower()
+        email = self.cleaned_data["email"].lower()
+        self.locpart, domname = split_mailbox(email)
+        try:
+            self.domain = Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            raise forms.ValidationError(_("Domain does not exist"))
+        return email
 
     def clean(self):
         """Custom fields validation.
@@ -248,16 +254,12 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     def create_mailbox(self, user, account):
         """Create a mailbox associated to :kw:`account`."""
-        locpart, domname = split_mailbox(self.cleaned_data["email"])
-        try:
-            domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
-            raise NotFound(_("Domain does not exist"))
-        if not user.can_access(domain):
+        if not user.can_access(self.domain):
             raise PermDeniedException
         events.raiseEvent("CanCreate", user, "mailboxes")
-        self.mb = Mailbox(address=locpart, domain=domain, user=account,
-                          use_domain_quota=self.cleaned_data["quota_act"])
+        self.mb = Mailbox(
+            address=self.locpart, domain=self.domain, user=account,
+            use_domain_quota=self.cleaned_data["quota_act"])
         self.mb.set_quota(self.cleaned_data["quota"],
                           user.has_perm("admin.add_domain"))
         self.mb.save(creator=user)

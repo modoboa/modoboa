@@ -16,7 +16,7 @@ from modoboa.lib.web_utils import render_to_json_response
 
 from ..lib import check_if_domain_exists
 from ..models import (
-    Domain, DomainAlias, Mailbox, Alias, Quota
+    Domain, DomainAlias, Mailbox, Alias
 )
 
 DOMAIN_TYPES = [
