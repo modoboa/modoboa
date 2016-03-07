@@ -12,7 +12,7 @@ from passwords.fields import PasswordField
 from modoboa.core.models import User
 from modoboa.lib import events, parameters
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.exceptions import PermDeniedException, NotFound
+from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     DynamicForm, TabForms, WizardForm, WizardStep
@@ -234,6 +234,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         """Ensure lower case emails"""
         email = self.cleaned_data["email"].lower()
         self.locpart, domname = split_mailbox(email)
+        if not domname:
+            return email
         try:
             self.domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
