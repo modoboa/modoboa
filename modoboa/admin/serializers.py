@@ -65,7 +65,13 @@ class AccountSerializer(serializers.ModelSerializer):
         return account.group
 
 
-class CreateAccountSerializer(AccountSerializer):
+class AccountExistsSerializer(serializers.Serializer):
+    """Simple serializer used with existence checks."""
+
+    exists = serializers.BooleanField()
+
+
+class WritableAccountSerializer(AccountSerializer):
     """Serializer to create account."""
 
     class Meta(AccountSerializer.Meta):
@@ -74,7 +80,7 @@ class CreateAccountSerializer(AccountSerializer):
 
     def __init__(self, *args, **kwargs):
         """Adapt fields to current user."""
-        super(CreateAccountSerializer, self).__init__(*args, **kwargs)
+        super(WritableAccountSerializer, self).__init__(*args, **kwargs)
         user = self.context["request"].user
         self.fields["role"] = serializers.ChoiceField(
             choices=permissions.get_account_roles(user))

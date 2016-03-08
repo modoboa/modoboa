@@ -3,7 +3,10 @@
 from django.contrib.contenttypes.models import ContentType
 
 from rest_framework import viewsets
+from rest_framework.decorators import list_route
+from rest_framework.exceptions import ParseError
 from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.response import Response
 
 from modoboa.core import models as core_models
 
@@ -35,7 +38,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         """Return a serializer."""
         if self.request.method == "GET":
             return serializers.AccountSerializer
-        return serializers.CreateAccountSerializer
+        return serializers.WritableAccountSerializer
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -48,3 +51,16 @@ class AccountViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         """Add custom args to delete call."""
         instance.delete(self.request.user)
+
+    @list_route()
+    def exists(self, request):
+        """Check if account exists."""
+        email = request.GET.get("email")
+        if not email:
+            raise ParseError("email not provided")
+        if not core_models.User.objects.filter(email=email).exists():
+            data = {"exists": False}
+        else:
+            data = {"exists": True}
+        serializer = serializers.AccountExistsSerializer(data)
+        return Response(serializer.data)

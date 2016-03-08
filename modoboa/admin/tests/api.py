@@ -256,3 +256,19 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertFalse(
             core_models.User.objects.filter(pk=account.pk).exists())
         self.assertFalse(domadmin.can_access(account))
+
+    def test_account_exists(self):
+        """Validate /exists/ service."""
+        url = reverse("external_api:account-exists")
+        response = self.client.get(
+            "{}?email={}".format(url, "user@test.com"))
+        self.assertEqual(response.status_code, 200)
+        content = json.loads(response.content)
+        self.assertTrue(content["exists"])
+        response = self.client.get(
+            "{}?email={}".format(url, "pipo@test.com"))
+        self.assertEqual(response.status_code, 200)
+        content = json.loads(response.content)
+        self.assertFalse(content["exists"])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 400)
