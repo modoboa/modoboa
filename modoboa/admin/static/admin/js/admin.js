@@ -6,6 +6,11 @@
  * @classdesc This class contains utility methods used by the admin
  * application.
  */
+
+/*global
+ $ Listing
+*/
+
 var Admin = function(options) {
     Listing.call(this, options);
 };

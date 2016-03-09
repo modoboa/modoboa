@@ -12,7 +12,7 @@ from passwords.fields import PasswordField
 from modoboa.core.models import User
 from modoboa.lib import events, parameters
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.exceptions import PermDeniedException, Conflict, NotFound
+from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     DynamicForm, TabForms, WizardForm, WizardStep
@@ -43,6 +43,7 @@ class AccountFormGeneral(forms.ModelForm):
     password1 = PasswordField(
         label=ugettext_lazy("Password"), widget=forms.widgets.PasswordInput
     )
+
     password2 = PasswordField(
         label=ugettext_lazy("Confirmation"),
         widget=forms.widgets.PasswordInput,
@@ -123,6 +124,7 @@ class AccountFormGeneral(forms.ModelForm):
         return self.cleaned_data["role"]
 
     def clean_username(self):
+        """username must be a valid email address for simple users."""
         if "role" not in self.cleaned_data:
             return self.cleaned_data["username"]
         if self.cleaned_data["role"] != "SimpleUsers":
@@ -160,7 +162,7 @@ class AccountFormGeneral(forms.ModelForm):
                and self.cleaned_data["password1"] != "":
                 account.set_password(self.cleaned_data["password1"])
             account.save()
-            account.set_role(self.cleaned_data["role"])
+            account.role = self.cleaned_data["role"]
         return account
 
 
@@ -230,7 +232,15 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     def clean_email(self):
         """Ensure lower case emails"""
-        return self.cleaned_data["email"].lower()
+        email = self.cleaned_data["email"].lower()
+        self.locpart, domname = split_mailbox(email)
+        if not domname:
+            return email
+        try:
+            self.domain = Domain.objects.get(name=domname)
+        except Domain.DoesNotExist:
+            raise forms.ValidationError(_("Domain does not exist"))
+        return email
 
     def clean(self):
         """Custom fields validation.
@@ -246,53 +256,15 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     def create_mailbox(self, user, account):
         """Create a mailbox associated to :kw:`account`."""
-        locpart, domname = split_mailbox(self.cleaned_data["email"])
-        try:
-            domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
-            raise NotFound(_("Domain does not exist"))
-        if not user.can_access(domain):
+        if not user.can_access(self.domain):
             raise PermDeniedException
-        try:
-            Mailbox.objects.get(address=locpart, domain=domain)
-        except Mailbox.DoesNotExist:
-            pass
-        else:
-            raise Conflict(
-                _("Mailbox %s already exists" % self.cleaned_data["email"])
-            )
         events.raiseEvent("CanCreate", user, "mailboxes")
-        self.mb = Mailbox(address=locpart, domain=domain, user=account,
-                          use_domain_quota=self.cleaned_data["quota_act"])
+        self.mb = Mailbox(
+            address=self.locpart, domain=self.domain, user=account,
+            use_domain_quota=self.cleaned_data["quota_act"])
         self.mb.set_quota(self.cleaned_data["quota"],
                           user.has_perm("admin.add_domain"))
         self.mb.save(creator=user)
-
-    def update_mailbox(self, user, account):
-        newaddress = None
-        if self.cleaned_data["email"] != self.mb.full_address:
-            newaddress = self.cleaned_data["email"]
-        elif (account.group == "SimpleUsers" and
-              account.username != self.mb.full_address):
-            newaddress = account.username
-        if newaddress is not None:
-            self.mb.old_full_address = self.mb.full_address
-            local_part, domname = split_mailbox(newaddress)
-            try:
-                domain = Domain.objects.get(name=domname)
-            except Domain.DoesNotExist:
-                raise NotFound(_("Domain does not exist"))
-            if not user.can_access(domain):
-                raise PermDeniedException
-            self.mb.rename(local_part, domain)
-
-        self.mb.use_domain_quota = self.cleaned_data["quota_act"]
-        override_rules = True \
-            if not self.mb.quota or user.has_perm("admin.add_domain") \
-            else False
-        self.mb.set_quota(self.cleaned_data["quota"], override_rules)
-        self.mb.save()
-        events.raiseEvent('MailboxModified', self.mb)
 
     def _update_aliases(self, user, account):
         """Update mailbox aliases."""
@@ -342,7 +314,9 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not hasattr(self, "mb") or self.mb is None:
             self.create_mailbox(user, account)
         else:
-            self.update_mailbox(user, account)
+            self.cleaned_data["use_domain_quota"] = (
+                self.cleaned_data["quota_act"])
+            self.mb.update_from_dict(user, self.cleaned_data)
         events.raiseEvent(
             'SaveExtraFormFields', 'mailform', self.mb, self.cleaned_data
         )

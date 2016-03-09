@@ -4,35 +4,8 @@ from django.utils.translation import ugettext as _
 
 from modoboa.lib import events
 
-from modoboa.admin.callbacks import PERMISSIONS as ADMIN_PERMS
-
 from .forms import ResourcePoolForm
 from .models import LimitTemplates
-
-
-PERMISSIONS = {
-    "Resellers": (
-        ADMIN_PERMS.get("DomainAdmins") +
-        [["admin", "domain", "view_domains"],
-         ["admin", "domain", "add_domain"],
-         ["admin", "domain", "change_domain"],
-         ["admin", "domain", "delete_domain"]]
-    )
-}
-
-
-@events.observe("GetExtraRoles")
-def get_extra_roles(user, account):
-    """Return additional roles."""
-    if user.is_superuser:
-        return [("Resellers", _("Reseller")), ]
-    return []
-
-
-@events.observe("GetExtraRolePermissions")
-def extra_permissions(rolename):
-    """Return extra permissions for Resellers."""
-    return PERMISSIONS.get(rolename, [])
 
 
 @events.observe("ExtraAdminContent")
@@ -49,8 +22,8 @@ def display_pool_usage(user, target, currentpage):
         names = [
             tpl[0] for tpl in LimitTemplates().templates
             if tpl[0] not in ["domain_admins_limit", "mailboxes_limit",
-                              "mailbox_aliases_limit"]
-            and (len(tpl) == 3 or tpl[3] == user.group)
+                              "mailbox_aliases_limit"] and
+            (len(tpl) == 3 or tpl[3] == user.group)
         ]
 
     limits = user.limitspool.limit_set.filter(name__in=names, maxvalue__gt=0)

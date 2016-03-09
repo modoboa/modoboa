@@ -2,7 +2,7 @@
 
 from .account import AccountTestCase, PermissionsTestCase
 from .alias import AliasTestCase
-from .api import APITestCase
+from .api import DomainAPITestCase, AccountAPITestCase
 from .domain import DomainTestCase
 from .domain_alias import DomainAliasTestCase
 from .export import ExportTestCase
@@ -12,9 +12,10 @@ from .password_schemes import PasswordSchemesTestCase
 from .user import ForwardTestCase
 
 __all__ = [
+    'AccountAPITestCase',
     'AccountTestCase',
     'AliasTestCase',
-    'APITestCase',
+    'DomainAPITestCase',
     'DomainTestCase',
     'DomainAliasTestCase',
     'ExportTestCase',

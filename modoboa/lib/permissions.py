@@ -2,10 +2,15 @@
 
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy
 
 from modoboa.core.models import ObjectAccess, User
 from modoboa.lib import events
+
+SIMPLEUSERS_ROLE = ("SimpleUsers", ugettext_lazy("Simple user"))
+DOMAINADMINS_ROLE = ("DomainAdmins", ugettext_lazy("Domain administrator"))
+RESELLERS_ROLE = ("Resellers", ugettext_lazy("Reseller"))
+SUPERADMINS_ROLE = ("SuperAdmins", ugettext_lazy("Super administrator"))
 
 
 def get_account_roles(user, account=None):
@@ -18,11 +23,17 @@ def get_account_roles(user, account=None):
     :param ``User`` account: account beeing modified (None on creation)
     :return: list of strings
     """
-    std_roles = [("SimpleUsers", _("Simple user"))]
+    result = [SIMPLEUSERS_ROLE]
+    filters = events.raiseQueryEvent(
+        "UserCanSetRole", user, "DomainAdmins", account
+    )
+    if user.has_perm("admin.add_domain") and \
+            (not filters or True in filters):
+        result += [DOMAINADMINS_ROLE]
     if user.is_superuser:
-        std_roles += [("SuperAdmins", _("Super administrator"))]
-    std_roles += events.raiseQueryEvent("GetExtraRoles", user, account)
-    return sorted(std_roles, key=lambda role: role[1])
+        result += [RESELLERS_ROLE, SUPERADMINS_ROLE]
+    result += events.raiseQueryEvent("GetExtraRoles", user, account)
+    return sorted(result, key=lambda role: role[1])
 
 
 def grant_access_to_object(user, obj, is_owner=False):
