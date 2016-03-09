@@ -147,7 +147,10 @@ class Alias(AdminObject):
     @property
     def recipients(self):
         """Return the recipient list."""
-        return self.aliasrecipient_set.values_list("address", flat=True)
+        return (
+            self.aliasrecipient_set.order_by("address")
+            .values_list("address", flat=True)
+        )
 
     @property
     def recipients_count(self):
