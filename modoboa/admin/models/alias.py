@@ -213,5 +213,5 @@ class AliasRecipient(models.Model):
     def __str__(self):
         """Return alias and recipient."""
         return smart_text(
-            "{} -> {}".format(self.alias.address, self.alias)
+            "{} -> {}".format(self.alias.address, self.address)
         )

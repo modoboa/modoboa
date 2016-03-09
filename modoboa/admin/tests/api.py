@@ -272,3 +272,104 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertFalse(content["exists"])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 400)
+
+
+class AliasAPITestCase(ModoAPITestCase):
+    """Check Alias API."""
+
+    ALIAS_DATA = {
+        "address": "alias_fromapi@test.com",
+        "recipients": [
+            "user@test.com", "postmaster@test.com", "user_éé@nonlocal.com"
+        ]
+    }
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(AliasAPITestCase, cls).setUpTestData()
+        factories.populate_database()
+        cls.da_token = Token.objects.create(
+            user=core_models.User.objects.get(username="admin@test.com"))
+
+    def test_get_aliases(self):
+        """Retrieve a list of aliases."""
+        url = reverse("external_api:alias-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+        self.assertEqual(len(response), 3)
+
+    def test_get_alias(self):
+        """Retrieve an alias."""
+        al = models.Alias.objects.get(address="alias@test.com")
+        url = reverse("external_api:alias-detail", args=[al.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+        self.assertEqual(response["recipients"], ["user@test.com"])
+
+    def test_create_alias(self):
+        """Try to create a new alias."""
+        url = reverse("external_api:alias-list")
+        response = self.client.post(url, self.ALIAS_DATA, format="json")
+        self.assertEqual(response.status_code, 201)
+
+        alias = json.loads(response.content)
+        alias = models.Alias.objects.filter(pk=alias["pk"]).first()
+        domadmin = core_models.User.objects.get(username="admin@test.com")
+        self.assertTrue(domadmin.can_access(alias))
+        self.assertEqual(alias.aliasrecipient_set.count(), 3)
+        self.assertTrue(alias.aliasrecipient_set.filter(
+            address="user@test.com", r_mailbox__isnull=False).exists())
+        self.assertTrue(alias.aliasrecipient_set.filter(
+            address="postmaster@test.com", r_alias__isnull=False).exists())
+        self.assertTrue(alias.aliasrecipient_set.filter(
+            address="user_éé@nonlocal.com",
+            r_mailbox__isnull=True, r_alias__isnull=True).exists())
+
+    def test_update_alias(self):
+        """Try to update an alias."""
+        alias = models.Alias.objects.get(address="alias@test.com")
+        url = reverse("external_api:alias-detail", args=[alias.pk])
+        data = {
+            "address": "alias@test.com",
+            "recipients": ["user@test.com", "user@nonlocal.com"]
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+
+        alias.refresh_from_db()
+        self.assertEqual(alias.aliasrecipient_set.count(), 2)
+        data = {
+            "address": "alias@test.com",
+            "recipients": ["user@nonlocal.com"]
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        alias.refresh_from_db()
+        self.assertEqual(alias.aliasrecipient_set.count(), 1)
+
+        data = {
+            "address": "alias@test.com",
+            "recipients": []
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_delete_alias(self):
+        """Try to delete an existing alias."""
+        alias = models.Alias.objects.get(address="alias@test.com")
+        domadmin = core_models.User.objects.get(username="admin@test.com")
+        self.assertTrue(domadmin.can_access(alias))
+        url = reverse("external_api:alias-detail", args=[alias.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertFalse(
+            models.Alias.objects.filter(pk=alias.pk).exists())
+        self.assertFalse(domadmin.can_access(alias))
+        self.assertFalse(
+            models.AliasRecipient.objects.filter(
+                address="user@test.com", alias__address="alias@test.com")
+            .exists()
+        )

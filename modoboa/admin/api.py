@@ -64,3 +64,20 @@ class AccountViewSet(viewsets.ModelViewSet):
             data = {"exists": True}
         serializer = serializers.AccountExistsSerializer(data)
         return Response(serializer.data)
+
+
+class AliasViewSet(viewsets.ModelViewSet):
+    """ViewSet for Alias."""
+
+    permission_classes = [DjangoModelPermissions, ]
+    serializer_class = serializers.AliasSerializer
+
+    def get_queryset(self):
+        """Filter queryset based on current user."""
+        user = self.request.user
+        ids = (
+            user.objectaccess_set.filter(
+                content_type=ContentType.objects.get_for_model(models.Alias))
+            .values_list('object_id', flat=True)
+        )
+        return models.Alias.objects.filter(pk__in=ids)
