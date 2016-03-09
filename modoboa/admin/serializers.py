@@ -161,3 +161,44 @@ class WritableAccountSerializer(AccountSerializer):
             else:
                 self._create_mailbox(creator, instance, mailbox_data)
         return instance
+
+
+class AliasSerializer(serializers.ModelSerializer):
+    """Base Alias serializer."""
+
+    address = lib_fields.DRFEmailFieldUTF8AndEmptyUser()
+    recipients = serializers.ListField(
+        child=lib_fields.DRFEmailFieldUTF8AndEmptyUser(),
+        allow_empty=False)
+
+    class Meta:
+        model = admin_models.Alias
+        fields = ("pk", "address", "enabled", "internal", "recipients")
+
+    def validate_address(self, value):
+        """Check domain."""
+        local_part, domain = email_utils.split_mailbox(value)
+        self.domain = admin_models.Domain.objects.filter(name=domain).first()
+        if self.domain is None:
+            raise serializers.ValidationError(_("Domain not found."))
+        if not self.context["request"].user.can_access(self.domain):
+            raise serializers.ValidationError(_("Permission denied."))
+        return value
+
+    def create(self, validated_data):
+        """Create appropriate objects."""
+        creator = self.context["request"].user
+        recipients = validated_data.pop("recipients", None)
+        alias = admin_models.Alias(domain=self.domain, **validated_data)
+        alias.save(creator=creator)
+        alias.set_recipients(recipients)
+        return alias
+
+    def update(self, instance, validated_data):
+        """Update objects."""
+        recipients = validated_data.pop("recipients", None)
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+        instance.set_recipients(recipients)
+        return instance
