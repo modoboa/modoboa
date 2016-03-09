@@ -328,6 +328,12 @@ class AliasAPITestCase(ModoAPITestCase):
             address="user_éé@nonlocal.com",
             r_mailbox__isnull=True, r_alias__isnull=True).exists())
 
+        # Create catchall alias
+        data = copy.deepcopy(self.ALIAS_DATA)
+        data["address"] = "@test.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
     def test_update_alias(self):
         """Try to update an alias."""
         alias = models.Alias.objects.get(address="alias@test.com")

@@ -49,3 +49,17 @@ class DRFEmailFieldUTF8(serializers.CharField):
         validator = validators.UTF8EmailValidator(
             message=self.error_messages["invalid"])
         self.validators.append(validator)
+
+
+class DRFEmailFieldUTF8AndEmptyUser(serializers.CharField):
+    """Custom DRF email field to support UTF8 and empty local part."""
+
+    default_error_messages = {
+        "invalid": ugettext_lazy("Enter a valid email address.")
+    }
+
+    def __init__(self, **kwargs):
+        super(DRFEmailFieldUTF8AndEmptyUser, self).__init__(**kwargs)
+        validator = validators.UTF8AndEmptyUserEmailValidator(
+            message=self.error_messages["invalid"])
+        self.validators.append(validator)

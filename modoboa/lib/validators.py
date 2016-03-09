@@ -53,11 +53,11 @@ class UTF8EmailValidator(EmailValidator):
 validate_utf8_email = UTF8EmailValidator()
 
 
-class UT8AndEmptyUserEmailValidator(UTF8EmailValidator):
+class UTF8AndEmptyUserEmailValidator(UTF8EmailValidator):
 
     """Same as upper + allows empty local part."""
 
     user_regex = re.compile(
         ur"(^$|" + UTF8EmailValidator.user_regex_raw, re.IGNORECASE)
 
-validate_utf8_and_empty_user_email = UT8AndEmptyUserEmailValidator()
+validate_utf8_and_empty_user_email = UTF8AndEmptyUserEmailValidator()

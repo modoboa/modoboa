@@ -166,9 +166,10 @@ class WritableAccountSerializer(AccountSerializer):
 class AliasSerializer(serializers.ModelSerializer):
     """Base Alias serializer."""
 
-    address = lib_fields.DRFEmailFieldUTF8()
+    address = lib_fields.DRFEmailFieldUTF8AndEmptyUser()
     recipients = serializers.ListField(
-        child=lib_fields.DRFEmailFieldUTF8(), allow_empty=False)
+        child=lib_fields.DRFEmailFieldUTF8AndEmptyUser(),
+        allow_empty=False)
 
     class Meta:
         model = admin_models.Alias
