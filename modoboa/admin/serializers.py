@@ -180,7 +180,9 @@ class AliasSerializer(serializers.ModelSerializer):
         local_part, domain = email_utils.split_mailbox(value)
         self.domain = admin_models.Domain.objects.filter(name=domain).first()
         if self.domain is None:
-            raise serializers.ValidationError("Domain not found.")
+            raise serializers.ValidationError(_("Domain not found."))
+        if not self.context["request"].user.can_access(self.domain):
+            raise serializers.ValidationError(_("Permission denied."))
         return value
 
     def create(self, validated_data):

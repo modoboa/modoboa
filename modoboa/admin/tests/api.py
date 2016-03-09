@@ -334,6 +334,21 @@ class AliasAPITestCase(ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 
+    def test_create_alias_as_domadmin(self):
+        """As DomainAdmin, try to create a new alias."""
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+        url = reverse("external_api:alias-list")
+        response = self.client.post(url, self.ALIAS_DATA, format="json")
+        self.assertEqual(response.status_code, 201)
+
+        data = copy.deepcopy(self.ALIAS_DATA)
+        data["address"] = "alias_fromapi@test2.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        errors = json.loads(response.content)
+        self.assertIn("address", errors)
+
     def test_update_alias(self):
         """Try to update an alias."""
         alias = models.Alias.objects.get(address="alias@test.com")
