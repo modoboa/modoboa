@@ -44,11 +44,11 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
-        values["username"] = "pouet@test.com"
+        values.update({"username": "pouet@test.com"})
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]), values
         )
-        mb = models.Mailbox.objects.get(pk=mb.id)
+        mb = models.Mailbox.objects.get(pk=mb.pk)
         self.assertEqual(mb.full_address, "pouet@test.com")
         self.assertEqual(mb.quota_value.username, "pouet@test.com")
         # Check if self alias has been updated
@@ -65,6 +65,31 @@ class AccountTestCase(ModoTestCase):
             models.AliasRecipient.objects.select_related("alias").filter(
                 alias__address=mb.full_address, address=mb.full_address,
                 alias__internal=True).exists()
+        )
+
+    def test_conflicts(self):
+        """Check if unicity constraints are respected."""
+        values = {
+            "username": "user@test.com",
+            "password1": "Toto1234", "password2": "Toto1234",
+            "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": "user@test.com",
+            "stepid": "step2"
+        }
+        self.ajax_post(reverse("admin:account_add"), values, status=400)
+
+        values.update({"username": "fakeuser@test.com",
+                       "email": "fakeuser@test.com"})
+        self.ajax_post(reverse("admin:account_add"), values)
+        account = User.objects.get(username="fakeuser@test.com")
+        values = {
+            "username": "user@test.com",
+            "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": "user@test.com",
+        }
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values,
+            status=400
         )
 
     def test_utf8_username(self):

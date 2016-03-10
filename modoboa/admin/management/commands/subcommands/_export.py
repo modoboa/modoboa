@@ -36,14 +36,12 @@ class ExportCommand(BaseCommand):
             u.to_csv(self.csvwriter)
         dumped_aliases = []
         qset = (
-            models.AliasRecipient.objects.filter(r_alias__isnull=False)
-            .distinct("r_alias")
-            .select_related("r_alias")
-            .prefetch_related("r_alias__aliasrecipient_set")
+            models.Alias.objects.exclude(alias_recipient_aliases=None)
+            .distinct().prefetch_related("aliasrecipient_set")
         )
-        for alr in qset:
-            alr.r_alias.to_csv(self.csvwriter)
-            dumped_aliases += [alr.r_alias.pk]
+        for alias in qset:
+            alias.to_csv(self.csvwriter)
+            dumped_aliases += [alias.pk]
         qset = (
             models.Alias.objects.exclude(pk__in=dumped_aliases)
             .prefetch_related('aliasrecipient_set')

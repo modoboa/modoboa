@@ -147,7 +147,10 @@ class Alias(AdminObject):
     @property
     def recipients(self):
         """Return the recipient list."""
-        return self.aliasrecipient_set.values_list("address", flat=True)
+        return (
+            self.aliasrecipient_set.order_by("address")
+            .values_list("address", flat=True)
+        )
 
     @property
     def recipients_count(self):
@@ -210,5 +213,5 @@ class AliasRecipient(models.Model):
     def __str__(self):
         """Return alias and recipient."""
         return smart_text(
-            "{} -> {}".format(self.alias.address, self.alias)
+            "{} -> {}".format(self.alias.address, self.address)
         )
