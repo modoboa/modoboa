@@ -1,17 +1,19 @@
 # coding: utf-8
-
+import os
 import tempfile
 import unittest
 
 from modoboa.lib.sysutils import exec_cmd
 
+DB = os.environ.get("DB", "postgres")
+
 
 class DeployTest(unittest.TestCase):
-    dbtype = "postgres"
+    dbtype = DB.lower()
     dbhost = "localhost"
     projname = "modoboa_test"
-    dbuser = "postgres"
-    dbpassword = ""
+    dbuser = DB == "MYSQL" and "modoboa" or "postgres"
+    dbpassword = DB == "MYSQL" and "modoboa" or ""
 
     def setUp(self):
         self.workdir = tempfile.mkdtemp()

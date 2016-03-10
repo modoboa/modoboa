@@ -94,20 +94,36 @@ WSGI_APPLICATION = 'test_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
+if os.environ.get('DB') == 'MYSQL':
+    DATABASES = {
 
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'modoboa_test',
-        'USER': 'postgres',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
-        'ATOMIC_REQUESTS': True,
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'modoboa_test',
+            'USER': 'modoboa',
+            'PASSWORD': 'modoboa',
+            'HOST': 'localhost',
+            'PORT': '',
+            'ATOMIC_REQUESTS': True,
 
-    },
+        },
 
-}
+    }
+else:
+    DATABASES = {
+
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'modoboa_test',
+            'USER': 'postgres',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '',
+            'ATOMIC_REQUESTS': True,
+
+        },
+
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
