@@ -5,7 +5,7 @@ from modoboa.core.password_hashers.base import (
     PLAINHasher, CRYPTHasher, MD5Hasher, SHA256Hasher
 )
 from modoboa.core.password_hashers.advanced import (
-    MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher
+    BCRYPTHasher, MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher
 )
 
 

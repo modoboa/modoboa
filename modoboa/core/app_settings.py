@@ -48,6 +48,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Default password scheme"),
         choices=[("sha512crypt", "sha512crypt"),
                  ("sha256crypt", "sha256crypt"),
+                 ("bcrypt", "bcrypt"),
                  ("md5crypt", ugettext_lazy("md5crypt (weak)")),
                  ("sha256", ugettext_lazy("sha256 (weak)")),
                  ("md5", ugettext_lazy("md5 (weak)")),
