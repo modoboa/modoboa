@@ -86,6 +86,85 @@ class DomainAPITestCase(ModoAPITestCase):
         self.assertFalse(models.Domain.objects.filter(pk=domain.pk).exists())
 
 
+class DomainAliasAPITestCase(ModoAPITestCase):
+    """Check DomainAlias API."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(DomainAliasAPITestCase, cls).setUpTestData()
+        factories.populate_database()
+        cls.dom_alias1 = factories.DomainAliasFactory(
+            name="dalias1.com", target__name="test.com")
+        cls.dom_alias2 = factories.DomainAliasFactory(
+            name="dalias2.com", target__name="test2.com")
+        cls.da_token = Token.objects.create(
+            user=core_models.User.objects.get(username="admin@test.com"))
+
+    def test_get(self):
+        """Retrieve a list of domain aliases."""
+        url = reverse("external_api:domain_alias-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 2)
+        url = reverse(
+            "external_api:domain_alias-detail", args=[response.data[0]["pk"]])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["name"], "dalias1.com")
+
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+        response = self.client.get(reverse("external_api:domain_alias-list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 0)
+
+    def test_post(self):
+        """Try to create a new domain alias."""
+        url = reverse("external_api:domain_alias-list")
+        target = models.Domain.objects.get(name="test.com")
+        data = {
+            "name": "dalias3.com",
+            "target": target.pk
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
+        dalias = json.loads(response.content)
+        dalias = models.DomainAlias.objects.filter(
+            pk=dalias["pk"]).first()
+        self.assertEqual(dalias.target, target)
+
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+        response = self.client.post(
+            url, {"name": "dalias4.com", "target": target.pk}, format="json")
+        self.assertEqual(response.status_code, 403)
+
+    def test_put(self):
+        """Try to update a domain alias."""
+        dalias = models.DomainAlias.objects.get(name="dalias1.com")
+        url = reverse("external_api:domain_alias-detail", args=[dalias.pk])
+        data = {
+            "name": "dalias3.com", "target": dalias.target.pk
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+
+        dalias.refresh_from_db()
+        self.assertEqual(dalias.name, "dalias3.com")
+        self.assertTrue(dalias.enabled)
+
+    def test_delete(self):
+        """Try to delete an existing domain alias."""
+        dalias = models.DomainAlias.objects.get(name="dalias1.com")
+        url = reverse("external_api:domain_alias-detail", args=[dalias.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertFalse(
+            models.DomainAlias.objects.filter(pk=dalias.pk).exists())
+
+
 class AccountAPITestCase(ModoAPITestCase):
     """Check Account API."""
 

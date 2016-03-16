@@ -4,11 +4,27 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from django.contrib.contenttypes import generic
+
 import reversion
 
 from .base import AdminObject
 from .domain import Domain
+from modoboa.core import models as core_models
 from modoboa.lib.exceptions import BadRequest, Conflict
+
+
+class DomainAliasManager(models.Manager):
+
+    def get_for_admin(self, admin):
+        """Return the domain aliases belonging to this admin.
+
+        The result is a ``QuerySet`` object, so this function can be used
+        to fill ``ModelChoiceField`` objects.
+        """
+        if admin.is_superuser:
+            return self.get_queryset()
+        return self.get_queryset().filter(owners__user=admin)
 
 
 @python_2_unicode_compatible
@@ -27,6 +43,10 @@ class DomainAlias(AdminObject):
         help_text=ugettext_lazy("Check to activate this alias"),
         default=True
     )
+
+    owners = generic.GenericRelation(core_models.ObjectAccess)
+
+    objects = DomainAliasManager()
 
     class Meta:
         permissions = (
