@@ -29,6 +29,17 @@ class DomainViewSet(viewsets.ModelViewSet):
         instance.delete(self.request.user)
 
 
+class DomainAliasViewSet(viewsets.ModelViewSet):
+    """ViewSet for DomainAlias."""
+
+    permission_classes = [DjangoModelPermissions, ]
+    serializer_class = serializers.DomainAliasSerializer
+
+    def get_queryset(self):
+        """Filter queryset based on current user."""
+        return models.DomainAlias.objects.get_for_admin(self.request.user)
+
+
 class AccountViewSet(viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 

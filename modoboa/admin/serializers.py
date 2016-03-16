@@ -29,6 +29,20 @@ class DomainSerializer(serializers.ModelSerializer):
         return domain
 
 
+class DomainAliasSerializer(serializers.ModelSerializer):
+    """Base DomainAlias serializer."""
+
+    class Meta:
+        model = admin_models.DomainAlias
+        fields = ("pk", "name", "target", "enabled", )
+
+    def validate_target(self, value):
+        """Check target domain."""
+        if not self.context["request"].user.can_access(value):
+            raise serializers.ValidationError(_("Permission denied."))
+        return value
+
+
 class MailboxSerializer(serializers.ModelSerializer):
     """Base mailbox serializer."""
 
