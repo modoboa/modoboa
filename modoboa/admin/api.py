@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework import viewsets
 from rest_framework.decorators import list_route
 from rest_framework.exceptions import ParseError
-from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
 
 from modoboa.core import models as core_models
@@ -17,7 +17,7 @@ from . import serializers
 class DomainViewSet(viewsets.ModelViewSet):
     """ViewSet for Domain."""
 
-    permission_classes = [DjangoModelPermissions, ]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainSerializer
 
     def get_queryset(self):
@@ -32,18 +32,22 @@ class DomainViewSet(viewsets.ModelViewSet):
 class DomainAliasViewSet(viewsets.ModelViewSet):
     """ViewSet for DomainAlias."""
 
-    permission_classes = [DjangoModelPermissions, ]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainAliasSerializer
 
     def get_queryset(self):
         """Filter queryset based on current user."""
-        return models.DomainAlias.objects.get_for_admin(self.request.user)
+        queryset = models.DomainAlias.objects.get_for_admin(self.request.user)
+        domain = self.request.query_params.get("domain")
+        if domain:
+            queryset = queryset.filter(target__name=domain)
+        return queryset
 
 
 class AccountViewSet(viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
-    permission_classes = [DjangoModelPermissions, ]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
 
     def get_serializer_class(self):
         """Return a serializer."""
@@ -57,7 +61,11 @@ class AccountViewSet(viewsets.ModelViewSet):
         ids = user.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(user)) \
             .values_list('object_id', flat=True)
-        return core_models.User.objects.filter(pk__in=ids)
+        queryset = core_models.User.objects.filter(pk__in=ids)
+        domain = self.request.query_params.get("domain")
+        if domain:
+            queryset = queryset.filter(mailbox__domain__name=domain)
+        return queryset
 
     def perform_destroy(self, instance):
         """Add custom args to delete call."""
@@ -80,7 +88,7 @@ class AccountViewSet(viewsets.ModelViewSet):
 class AliasViewSet(viewsets.ModelViewSet):
     """ViewSet for Alias."""
 
-    permission_classes = [DjangoModelPermissions, ]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.AliasSerializer
 
     def get_queryset(self):
@@ -91,4 +99,8 @@ class AliasViewSet(viewsets.ModelViewSet):
                 content_type=ContentType.objects.get_for_model(models.Alias))
             .values_list('object_id', flat=True)
         )
-        return models.Alias.objects.filter(pk__in=ids)
+        queryset = models.Alias.objects.filter(pk__in=ids)
+        domain = self.request.query_params.get("domain")
+        if domain:
+            queryset = queryset.filter(domain__name=domain)
+        return queryset

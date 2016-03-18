@@ -113,6 +113,11 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["name"], "dalias1.com")
 
+        url = reverse("external_api:domain_alias-list")
+        response = self.client.get("{}?domain=test.com".format(url))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)
+
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
         response = self.client.get(reverse("external_api:domain_alias-list"))
@@ -193,6 +198,16 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
         self.assertEqual(len(response), 5)
+
+        response = self.client.get("{}?domain=test.com".format(url))
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+        self.assertEqual(len(response), 2)
+
+        response = self.client.get("{}?domain=pouet.com".format(url))
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+        self.assertEqual(len(response), 0)
 
     def test_create_account(self):
         """Try to create a new account."""
@@ -376,6 +391,11 @@ class AliasAPITestCase(ModoAPITestCase):
         """Retrieve a list of aliases."""
         url = reverse("external_api:alias-list")
         response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+        self.assertEqual(len(response), 3)
+
+        response = self.client.get("{}?domain=test.com".format(url))
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
         self.assertEqual(len(response), 3)

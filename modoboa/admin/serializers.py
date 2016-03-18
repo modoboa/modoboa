@@ -70,6 +70,9 @@ class AccountSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         """Adapt fields to current user."""
         super(AccountSerializer, self).__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if not request:
+            return
         user = self.context["request"].user
         if not user.is_superuser:
             del self.fields["master_user"]
@@ -95,6 +98,9 @@ class WritableAccountSerializer(AccountSerializer):
     def __init__(self, *args, **kwargs):
         """Adapt fields to current user."""
         super(WritableAccountSerializer, self).__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if not request:
+            return
         user = self.context["request"].user
         self.fields["role"] = serializers.ChoiceField(
             choices=permissions.get_account_roles(user))
