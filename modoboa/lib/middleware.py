@@ -28,7 +28,7 @@ class CommonExceptionCatcher(object):
 
         if not request.is_ajax():
             return _render_error(
-                request, user_context=dict(error=str(exception))
+                request, user_context=dict(error=unicode(exception))
             )
         if exception.http_code is None:
             return ajax_response(

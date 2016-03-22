@@ -33,6 +33,7 @@ parameters.apply_to_django_settings()
 # API urls
 urlpatterns += patterns(
     "",
+    url(r"^docs/api/", include('rest_framework_docs.urls')),
     ("^api/v1/", include("modoboa.urls_api", namespace="external_api")),
 )
 
