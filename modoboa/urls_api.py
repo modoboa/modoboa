@@ -6,6 +6,5 @@ from django.conf.urls import patterns, include
 urlpatterns = patterns(
     "",
 
-    ("", include("modoboa.core.urls_api")),
     ("", include("modoboa.admin.urls_api")),
 )

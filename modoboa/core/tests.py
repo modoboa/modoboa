@@ -2,7 +2,7 @@
 
 from django.core.urlresolvers import reverse
 
-from modoboa.lib.tests import ModoTestCase, ModoAPITestCase
+from modoboa.lib.tests import ModoTestCase
 from . import factories
 from . import models
 
@@ -113,34 +113,3 @@ class APIAccessFormTestCase(ModoTestCase):
         self.ajax_post(url, {"enable_api_access": False})
         user = models.User.objects.get(username="admin")
         self.assertFalse(hasattr(user, "auth_token"))
-
-
-class APITestCase(ModoAPITestCase):
-
-    """Check API."""
-
-    @classmethod
-    def setUpTestData(cls):
-        """Create test data."""
-        super(APITestCase, cls).setUpTestData()
-        cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers', )
-        )
-
-    def test_change_password(self):
-        """Check the change password service."""
-        url = reverse(
-            "external_api:user_password_change", args=["user@test.com"])
-        response = self.client.put(
-            url, {"password": "toto", "new_password": "pass"},
-            format="json")
-        # must fail because password is too weak
-        self.assertEqual(response.status_code, 400)
-
-        response = self.client.put(
-            url, {"password": "toto", "new_password": "Toto1234"},
-            format="json")
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(
-            models.User.objects.get(
-                pk=self.account.pk).check_password("Toto1234"))

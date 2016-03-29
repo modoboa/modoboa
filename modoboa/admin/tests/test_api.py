@@ -368,6 +368,24 @@ class AccountAPITestCase(ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 400)
 
+    def test_change_password(self):
+        """Check the change password service."""
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse(
+            "external_api:account-password", args=[account.pk])
+        response = self.client.put(
+            url, {"password": "toto", "new_password": "pass"},
+            format="json")
+        # must fail because password is too weak
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.put(
+            url, {"password": "toto", "new_password": "Toto1234"},
+            format="json")
+        self.assertEqual(response.status_code, 200)
+        account.refresh_from_db()
+        self.assertTrue(account.check_password("Toto1234"))
+
 
 class AliasAPITestCase(ModoAPITestCase):
     """Check Alias API."""

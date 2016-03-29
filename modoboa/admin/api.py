@@ -1,9 +1,11 @@
 """Admin API."""
 
+from django import http
+
 from django.contrib.contenttypes.models import ContentType
 
-from rest_framework import viewsets
-from rest_framework.decorators import list_route
+from rest_framework import status, viewsets
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
@@ -70,6 +72,21 @@ class AccountViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         """Add custom args to delete call."""
         instance.delete(self.request.user)
+
+    @detail_route(methods=["put"])
+    def password(self, request, pk=None):
+        """Change account password."""
+        try:
+            user = core_models.User.objects.get(pk=pk)
+        except core_models.User.DoesNotExist:
+            raise http.Http404
+        serializer = serializers.AccountPasswordSerializer(
+            user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response()
+        return Response(
+            serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @list_route()
     def exists(self, request):
