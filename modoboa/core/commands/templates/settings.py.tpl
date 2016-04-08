@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'reversion',
     'rest_framework.authtoken',
+    'rest_framework.swagger,
 {% if devmode %}    'djangobower',{% endif %}
 )
 
@@ -158,6 +159,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
+}
+
+SWAGGER_SETTINGS = {
+    "is_authenticated": False,
+    "api_version": "1.0",
+    "exclude_namespaces": [],
+    "info": {
+        "contact": "contact@modoboa.com",
+        "description": ("Modoboa API, requires a valid token."),
+        "title": "Modoboa API",
+    }
 }
 
 # Modoboa settings
