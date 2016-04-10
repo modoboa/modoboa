@@ -133,18 +133,6 @@ class AccountFormGeneral(forms.ModelForm):
         validate_utf8_email(uname)
         return uname
 
-    def clean_master_user(self):
-        """Check role before allowing this mode."""
-        conditions = (
-            self.cleaned_data["master_user"],
-            self.cleaned_data["role"] != "SuperAdmins"
-        )
-        if all(conditions):
-            raise forms.ValidationError(
-                _("Only super administrators are allowed for this mode")
-            )
-        return self.cleaned_data["master_user"]
-
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1", "")
         password2 = self.cleaned_data["password2"]
@@ -152,6 +140,22 @@ class AccountFormGeneral(forms.ModelForm):
             raise forms.ValidationError(
                 _("The two password fields didn't match."))
         return password2
+
+    def clean(self):
+        """Check master user mode."""
+        super(AccountFormGeneral, self).clean()
+        if self.errors:
+            return self.cleaned_data
+        condition = (
+            self.cleaned_data.get("master_user") and
+            self.cleaned_data["role"] != "SuperAdmins"
+        )
+        if condition:
+            self.add_error(
+                "master_user",
+                _("Only super administrators are allowed for this mode")
+            )
+        return self.cleaned_data
 
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)

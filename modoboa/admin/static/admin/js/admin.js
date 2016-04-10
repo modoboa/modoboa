@@ -436,7 +436,8 @@ Identities.prototype = {
         });
         $("#id_email").addClass("disabled")
             .attr("readonly", "")
-            .autocompleter("unbind");
+                .autocompleter("unbind");
+        this.toggle_master_user();
     },
 
     normal_mode: function(group) {
