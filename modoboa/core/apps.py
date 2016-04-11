@@ -66,3 +66,5 @@ class CoreConfig(AppConfig):
 
     def ready(self):
         load_core_settings()
+
+        from . import handlers

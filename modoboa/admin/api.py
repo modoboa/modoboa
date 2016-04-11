@@ -90,7 +90,13 @@ class AccountViewSet(viewsets.ModelViewSet):
 
     @list_route()
     def exists(self, request):
-        """Check if account exists."""
+        """Check if account exists.
+
+        Requires a valid email address as argument. Example:
+
+        GET /exists/?email=user@test.com
+
+        """
         email = request.GET.get("email")
         if not email:
             raise ParseError("email not provided")
