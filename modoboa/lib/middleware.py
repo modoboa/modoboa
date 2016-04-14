@@ -59,5 +59,10 @@ class RequestCatcherMiddleware(singleton.Singleton):
     def process_request(self, request):
         self._request = request
 
+    def process_response(self, request, response):
+        """Empty self._request."""
+        self._request = None
+        return response
+
     def __call__(self, **kwargs):
         return self._request

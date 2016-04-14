@@ -37,7 +37,8 @@ def create_user_limits(sender, instance, **kwargs):
         ct = ContentType.objects.get_by_natural_key(
             *definition["content_type"].split("."))
         max_value = 0
-        if creator and creator.is_superuser:
+        # creator can be None if user was created by a factory
+        if not creator or creator.is_superuser:
             max_value = int(
                 parameters.get_admin("DEFLT_{}_LIMIT".format(name.upper())))
         models.ObjectLimit.objects.create(
