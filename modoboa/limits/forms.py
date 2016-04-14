@@ -9,10 +9,11 @@ from modoboa.lib import parameters
 from modoboa.lib.permissions import get_object_owner
 
 from .lib import BadLimitValue, UnsufficientResource
-from .models import LimitTemplates
+from . import utils
 
 
 class ResourcePoolForm(forms.Form):
+    """Dynamic form to display user limits."""
 
     def __init__(self, *args, **kwargs):
         self.account = None
@@ -20,20 +21,25 @@ class ResourcePoolForm(forms.Form):
             self.account = kwargs["instance"]
             del kwargs["instance"]
         super(ResourcePoolForm, self).__init__(*args, **kwargs)
-        for tpl in LimitTemplates().templates:
-            if len(tpl) > 3:
-                if self.account is not None and self.account.group != tpl[3]:
+        for name, tpl in utils.get_limit_templates():
+            if "required_role" in tpl:
+                condition = (
+                    self.account is not None and
+                    self.account.group != tpl["required_role"]
+                )
+                if condition:
                     continue
-            self.fields[tpl[0]] = forms.IntegerField(
-                label=tpl[1], help_text=tpl[2]
+            self.fields["{}_limit".format(name)] = forms.IntegerField(
+                label=tpl["label"], help_text=tpl["help"]
             )
         if hasattr(self, "account"):
             self.load_from_user(self.account)
 
     def check_limit_value(self, lname):
-        if self.cleaned_data[lname] < -1:
+        fieldname = "{}_limit".format(lname)
+        if self.cleaned_data[fieldname] < -1:
             raise forms.ValidationError(_("Invalid limit"))
-        return self.cleaned_data[lname]
+        return self.cleaned_data[fieldname]
 
     def clean(self):
         cleaned_data = super(ResourcePoolForm, self).clean()
@@ -43,49 +49,52 @@ class ResourcePoolForm(forms.Form):
         return cleaned_data
 
     def load_from_user(self, user):
-        for lname in self.fields.keys():
-            self.fields[lname].initial = user.limitspool.getmaxvalue(lname)
+        for fieldname in self.fields.keys():
+            lname = fieldname.replace("_limit", "")
+            self.fields[fieldname].initial = (
+                user.objectlimit_set.get(name=lname).max_value)
             # The following lines will become useless in a near
             # future.
-            if self.fields[lname].initial == -2:
-                self.fields[lname].initial = parameters.get_admin(
-                    "DEFLT_%s" %
-                    lname.upper())
+            if self.fields[fieldname].initial == -2:
+                self.fields[fieldname].initial = parameters.get_admin(
+                    "DEFLT_{}_LIMIT".format(lname.upper()))
 
-    def allocate_from_pool(self, limit, pool):
-        """Allocate resource using an existing pool.
+    def allocate_from_user(self, limit, user):
+        """Allocate resource using an existing user.
 
         When a reseller creates a domain administrator, he generally
         assigns him resource to create new objetcs. As a reseller may
         also be limited, the resource he gives is taken from its own
         pool.
         """
-        ol = pool.get_limit(limit.name)
-        if ol.maxvalue == -2:
+        ol = user.objectlimit_set.get(name=limit.name)
+        if ol.max_value == -2:
             raise BadLimitValue(_("Your resources are not initialized yet"))
-        newvalue = self.cleaned_data[limit.name]
-        if newvalue == -1 and ol.maxvalue != -1:
+        fieldname = "{}_limit".format(limit.name)
+        newvalue = self.cleaned_data[fieldname]
+        if newvalue == -1 and ol.max_value != -1:
             raise BadLimitValue(
                 _("You're not allowed to define unlimited values")
             )
 
-        if limit.maxvalue > -1:
-            newvalue -= limit.maxvalue
+        if limit.max_value > -1:
+            newvalue -= limit.max_value
             if newvalue == 0:
                 return
-        remain = ol.maxvalue - ol.curvalue
+        remain = ol.max_value - ol.current_value
         if newvalue > remain:
             raise UnsufficientResource(ol)
-        ol.maxvalue -= newvalue
+        ol.max_value -= newvalue
         ol.save()
 
     def save(self):
         owner = get_object_owner(self.account)
-        for ltpl in LimitTemplates().templates:
-            if ltpl[0] not in self.cleaned_data:
+        for name, ltpl in utils.get_limit_templates():
+            fieldname = "{}_limit".format(name)
+            if fieldname not in self.cleaned_data:
                 continue
-            l = self.account.limitspool.limit_set.get(name=ltpl[0])
+            l = self.account.objectlimit_set.get(name=name)
             if not owner.is_superuser:
-                self.allocate_from_pool(l, owner.limitspool)
-            l.maxvalue = self.cleaned_data[ltpl[0]]
+                self.allocate_from_user(l, owner)
+            l.max_value = self.cleaned_data[fieldname]
             l.save()

@@ -4,8 +4,6 @@ from django.apps import AppConfig
 
 
 BASE_EVENTS = [
-    "CanCreate",
-
     "AccountCreated",
     "AccountAutoCreated",
     "AccountModified",

@@ -10,6 +10,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from passwords.fields import PasswordField
 
 from modoboa.core.models import User
+from modoboa.core import signals as core_signals
 from modoboa.lib import events, parameters
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import PermDeniedException
@@ -262,7 +263,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         """Create a mailbox associated to :kw:`account`."""
         if not user.can_access(self.domain):
             raise PermDeniedException
-        events.raiseEvent("CanCreate", user, "mailboxes")
+        core_signals.can_create_object.send(
+            self.__class__, user=user, object_type="mailboxes")
         self.mb = Mailbox(
             address=self.locpart, domain=self.domain, user=account,
             use_domain_quota=self.cleaned_data["quota_act"])
@@ -293,9 +295,9 @@ class AccountFormMail(forms.Form, DynamicForm):
                 aliases.remove(ralias.alias.address)
         if not aliases:
             return
-        events.raiseEvent(
-            "CanCreate", user, "mailbox_aliases", len(aliases)
-        )
+        core_signals.can_create_object.send(
+            self.__class__, user=user, object_type="mailbox_aliases",
+            count=len(aliases))
         for alias in aliases:
             if self.mb.aliasrecipient_set.select_related("alias").filter(
                     alias__address=alias).exists():

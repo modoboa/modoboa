@@ -6,6 +6,7 @@ from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core.models import User
+from modoboa.core import signals as core_signals
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import ModoboaException, Conflict
 from modoboa.lib.fields import DomainNameField
@@ -146,8 +147,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             else:
                 aliases.remove(dalias.name)
         if aliases:
-            events.raiseEvent(
-                "CanCreate", user, "domain_aliases", len(aliases))
+            core_signals.can_create_object.send(
+                self.__class__, user=user, object_type="domain_aliases",
+                count=len(aliases))
             for alias in aliases:
                 try:
                     d.domainalias_set.get(name=alias)
@@ -224,7 +226,8 @@ class DomainFormOptions(forms.Form):
             pass
         else:
             raise Conflict(_("User '%s' already exists" % username))
-        events.raiseEvent("CanCreate", user, "mailboxes")
+        core_signals.can_create_object.send(
+            self.__class__, user=user, object_type="mailboxes")
         da = User(username=username, email=username, is_active=True)
         da.set_password("password")
         da.save()
@@ -241,7 +244,8 @@ class DomainFormOptions(forms.Form):
 
         if domain.type == "domain" and \
            self.cleaned_data["create_aliases"] == "yes":
-            events.raiseEvent("CanCreate", user, "mailbox_aliases")
+            core_signals.can_create_object.send(
+                self.__class__, user=user, object_type="mailbox_aliases")
             alias = Alias(
                 address=u"postmaster@{}".format(domain.name),
                 domain=domain, enabled=True
