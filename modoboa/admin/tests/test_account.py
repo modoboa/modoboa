@@ -158,12 +158,12 @@ class PermissionsTestCase(ModoTestCase):
     def setUpTestData(cls):
         """Create test data."""
         from modoboa.lib import parameters
-        from modoboa.limits.models import LimitTemplates
+        from modoboa.limits import utils as limits_utils
 
         super(PermissionsTestCase, cls).setUpTestData()
-        for tpl in LimitTemplates().templates:
+        for name, tpl in limits_utils.get_limit_templates():
             parameters.save_admin(
-                "DEFLT_{0}".format(tpl[0].upper()), 2,
+                "DEFLT_{0}_LIMIT".format(name.upper()), 2,
                 app="limits"
             )
         factories.populate_database()
