@@ -180,7 +180,6 @@ class ResellerTestCase(ResourceTestCase):
         cls.user = UserFactory(
             username='reseller', groups=('Resellers',)
         )
-        cls.user.objectlimit_set.update(max_value=2)
 
     def setUp(self):
         """Test initialization."""
@@ -329,6 +328,7 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit('mailbox_aliases', 0, 2)
 
     def test_restore_resources(self):
+        """Give resource to a domain admin and restore them."""
         self._create_domain('domain.tld')
         dom = Domain.objects.get(name='domain.tld')
         self._create_account('admin1@domain.tld', role='DomainAdmins')

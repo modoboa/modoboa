@@ -10,6 +10,8 @@ from modoboa.lib.web_utils import (
     _render_error, ajax_response, render_to_json_response
 )
 
+from . import singleton
+
 
 class AjaxLoginRedirect(object):
 
@@ -41,10 +43,13 @@ class CommonExceptionCatcher(object):
         )
 
 
-class RequestCatcherMiddleware(object):
+class RequestCatcherMiddleware(singleton.Singleton):
+    """Simple middleware to store the current request.
 
-    """
-    Simple middleware to store the current request.
+    FIXME: the Singleton hack is used to make tests work. I don't know
+    why but middlewares are not dropped between test case runs so more
+    than one instance can be listening to the request_accessor signal
+    and we don't want that!
     """
 
     def __init__(self):
