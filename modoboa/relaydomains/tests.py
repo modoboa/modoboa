@@ -50,9 +50,9 @@ class Operations(object):
         )
 
     def _check_limit(self, name, curvalue, maxvalue):
-        l = self.user.limitspool.get_limit('%s_limit' % name)
-        self.assertEqual(l.curvalue, curvalue)
-        self.assertEqual(l.maxvalue, maxvalue)
+        l = self.user.objectlimit_set.get(name=name)
+        self.assertEqual(l.current_value, curvalue)
+        self.assertEqual(l.max_value, maxvalue)
 
 
 class RelayDomainsTestCase(ModoTestCase, Operations):
