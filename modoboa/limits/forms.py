@@ -35,29 +35,22 @@ class ResourcePoolForm(forms.Form):
         if hasattr(self, "account"):
             self.load_from_user(self.account)
 
-    def check_limit_value(self, lname):
-        fieldname = "{}_limit".format(lname)
-        if self.cleaned_data[fieldname] < -1:
-            raise forms.ValidationError(_("Invalid limit"))
-        return self.cleaned_data[fieldname]
-
     def clean(self):
+        """Ensure limit values are correct."""
         cleaned_data = super(ResourcePoolForm, self).clean()
+        if self.errors:
+            return cleaned_data
         for lname in self.fields.keys():
-            if lname not in self._errors and cleaned_data[lname] < -1:
+            if cleaned_data[lname] < -1:
                 self.add_error(lname, _("Invalid limit"))
         return cleaned_data
 
     def load_from_user(self, user):
+        """Load limit values from given user."""
         for fieldname in self.fields.keys():
             lname = fieldname.replace("_limit", "")
             self.fields[fieldname].initial = (
                 user.objectlimit_set.get(name=lname).max_value)
-            # The following lines will become useless in a near
-            # future.
-            if self.fields[fieldname].initial == -2:
-                self.fields[fieldname].initial = parameters.get_admin(
-                    "DEFLT_{}_LIMIT".format(lname.upper()))
 
     def allocate_from_user(self, limit, user):
         """Allocate resource using an existing user.
@@ -68,8 +61,6 @@ class ResourcePoolForm(forms.Form):
         pool.
         """
         ol = user.objectlimit_set.get(name=limit.name)
-        if ol.max_value == -2:
-            raise BadLimitValue(_("Your resources are not initialized yet"))
         fieldname = "{}_limit".format(limit.name)
         newvalue = self.cleaned_data[fieldname]
         if newvalue == -1 and ol.max_value != -1:

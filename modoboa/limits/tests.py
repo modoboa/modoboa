@@ -188,6 +188,9 @@ class ResellerTestCase(ResourceTestCase):
         self.client.login(username='reseller', password='toto')
 
     def test_domains_limit(self):
+        response = self.client.get(reverse("admin:domain_list"))
+        self.assertContains(response, "Domains (0%)")
+        self.assertContains(response, "Domain aliases (0%)")
         self._create_domain('domain1.tld')
         self._check_limit('domains', 1, 2)
         self._create_domain('domain2.tld')
@@ -216,6 +219,11 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit('domain_aliases', 1, 2)
 
     def test_domain_admins_limit(self):
+        response = self.client.get(reverse("admin:identity_list"))
+        self.assertContains(response, "Domain admins (0%)")
+        self.assertContains(response, "Mailboxes (0%)")
+        self.assertContains(response, "Mailbox aliases (0%)")
+
         self._create_domain('domain.tld')
         self._create_account('admin1@domain.tld', role='DomainAdmins')
         self._check_limit('domain_admins', 1, 2)

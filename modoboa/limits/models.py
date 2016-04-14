@@ -4,12 +4,15 @@
 
 from django.conf import settings
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext as _
 
 from modoboa.core import models as core_models
 
 from . import utils
 
 
+@python_2_unicode_compatible
 class ObjectLimit(models.Model):
     """Per-user limits on object creation."""
 
@@ -49,7 +52,7 @@ class ObjectLimit(models.Model):
         if self.max_value < 0:
             return -1
         if self.max_value == 0:
-            return 0
+            return 100
         return int(float(self.current_value) / self.max_value * 100)
 
     @property
@@ -60,3 +63,11 @@ class ObjectLimit(models.Model):
     def is_exceeded(self, count=1):
         """Check if limit will be reached if we add count object(s)."""
         return self.current_value + 1 > self.max_value
+
+    def __str__(self):
+        """Display current usage."""
+        if self.max_value == -2:
+            return _("undefined")
+        if self.max_value == -1:
+            return _("unlimited")
+        return "{}%".format(self.usage)

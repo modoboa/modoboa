@@ -9,7 +9,7 @@ DEFAULT_LIMITS = collections.OrderedDict((
     ("domains", {
         "content_type": "admin.domain", "label": _("Domains"),
         "help": _("Maximum number of domains this user can create"),
-        "required_role": "Reselles"}),
+        "required_role": "Resellers"}),
     ("domain_aliases", {
         "content_type": "admin.domainalias", "label": _("Domain aliases"),
         "help": _("Maximum number of domain aliases this user can create"),
