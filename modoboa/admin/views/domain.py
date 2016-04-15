@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import (
 import reversion
 
 from modoboa.core.models import User
+from modoboa.core import signals as core_signals
 from modoboa.lib import parameters, events
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
@@ -98,7 +99,8 @@ def domains_list(request):
 @permission_required("admin.add_domain")
 @reversion.create_revision()
 def newdomain(request):
-    events.raiseEvent("CanCreate", request.user, "domains")
+    core_signals.can_create_object.send(
+        "newdomain", user=request.user, object_type="domains")
     return DomainWizard(request).process()
 
 

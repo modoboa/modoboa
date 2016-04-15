@@ -9,7 +9,7 @@ from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
-from .models import LimitTemplates
+from . import utils
 
 
 class PermissionsTestCase(ModoTestCase):
@@ -47,9 +47,9 @@ class ResourceTestCase(ModoTestCase):
     def setUpTestData(cls):
         """Custom setUpTestData method."""
         super(ResourceTestCase, cls).setUpTestData()
-        for tpl in LimitTemplates().templates:
+        for name, tpl in utils.get_limit_templates():
             parameters.save_admin(
-                "DEFLT_{0}".format(tpl[0].upper()), 2,
+                "DEFLT_{0}_LIMIT".format(name.upper()), 2,
                 app="limits"
             )
         populate_database()
@@ -107,9 +107,9 @@ class ResourceTestCase(ModoTestCase):
         )
 
     def _check_limit(self, name, curvalue, maxvalue):
-        l = self.user.limitspool.get_limit('%s_limit' % name)
-        self.assertEqual(l.curvalue, curvalue)
-        self.assertEqual(l.maxvalue, maxvalue)
+        l = self.user.objectlimit_set.get(name=name)
+        self.assertEqual(l.current_value, curvalue)
+        self.assertEqual(l.max_value, maxvalue)
 
 
 class DomainAdminTestCase(ResourceTestCase):
@@ -119,8 +119,8 @@ class DomainAdminTestCase(ResourceTestCase):
         """Create test data."""
         super(DomainAdminTestCase, cls).setUpTestData()
         cls.user = User.objects.get(username='admin@test.com')
-        cls.user.limitspool.set_maxvalue('mailboxes_limit', 2)
-        cls.user.limitspool.set_maxvalue('mailbox_aliases_limit', 2)
+        cls.user.objectlimit_set.filter(
+            name__in=["mailboxes", "mailbox_aliases"]).update(max_value=2)
 
     def setUp(self):
         """Test initialization."""
@@ -177,7 +177,7 @@ class ResellerTestCase(ResourceTestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(ResellerTestCase, cls).setUpTestData()
-        cls.user = UserFactory.create(
+        cls.user = UserFactory(
             username='reseller', groups=('Resellers',)
         )
 
@@ -188,6 +188,9 @@ class ResellerTestCase(ResourceTestCase):
         self.client.login(username='reseller', password='toto')
 
     def test_domains_limit(self):
+        response = self.client.get(reverse("admin:domain_list"))
+        self.assertContains(response, "Domains (0%)")
+        self.assertContains(response, "Domain aliases (0%)")
         self._create_domain('domain1.tld')
         self._check_limit('domains', 1, 2)
         self._create_domain('domain2.tld')
@@ -216,6 +219,11 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit('domain_aliases', 1, 2)
 
     def test_domain_admins_limit(self):
+        response = self.client.get(reverse("admin:identity_list"))
+        self.assertContains(response, "Domain admins (0%)")
+        self.assertContains(response, "Mailboxes (0%)")
+        self.assertContains(response, "Mailbox aliases (0%)")
+
         self._create_domain('domain.tld')
         self._create_account('admin1@domain.tld', role='DomainAdmins')
         self._check_limit('domain_admins', 1, 2)
@@ -232,7 +240,7 @@ class ResellerTestCase(ResourceTestCase):
         )
         self._check_limit('domain_admins', 2, 2)
 
-        self.user.limitspool.set_maxvalue('mailboxes_limit', 3)
+        self.user.objectlimit_set.filter(name="mailboxes").update(max_value=3)
         self._create_account('user1@domain.tld')
         user = User.objects.get(username='user1@domain.tld')
         values = {
@@ -257,11 +265,11 @@ class ResellerTestCase(ResourceTestCase):
         domadmin = User.objects.get(username='admin1@domain.tld')
         for l in ['mailboxes', 'mailbox_aliases']:
             self.assertEqual(
-                domadmin.limitspool.get_limit('%s_limit' % l).maxvalue, 0
+                domadmin.objectlimit_set.get(name=l).max_value, 0
             )
 
     def test_domain_admins_limit_from_domain_tpl(self):
-        self.user.limitspool.set_maxvalue('domains_limit', 3)
+        self.user.objectlimit_set.filter(name="domains").update(max_value=3)
         self._create_domain('domain1.tld', withtpl=True)
         self._create_domain('domain2.tld', withtpl=True)
         self._check_limit('domain_admins', 2, 2)
@@ -328,6 +336,7 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit('mailbox_aliases', 0, 2)
 
     def test_restore_resources(self):
+        """Give resource to a domain admin and restore them."""
         self._create_domain('domain.tld')
         dom = Domain.objects.get(name='domain.tld')
         self._create_account('admin1@domain.tld', role='DomainAdmins')

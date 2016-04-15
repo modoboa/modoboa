@@ -4,150 +4,70 @@
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext as _
 
-from modoboa.lib import parameters, events
-from modoboa.lib.singleton import Singleton
+from modoboa.core import models as core_models
 
-
-class LimitTemplates(Singleton):
-
-    def __init__(self):
-        self.__templates = [
-            ("domain_admins_limit", ugettext_lazy("Domain admins"),
-             ugettext_lazy("Maximum number of domain administrators this user "
-                           "can create"),
-             'Resellers'),
-            ("domains_limit", ugettext_lazy("Domains"),
-             ugettext_lazy("Maximum number of domains this user can create"),
-             'Resellers'),
-            ("domain_aliases_limit", ugettext_lazy("Domain aliases"),
-             ugettext_lazy(
-                 "Maximum number of domain aliases this user can create"),
-             'Resellers'),
-            ("mailboxes_limit", ugettext_lazy("Mailboxes"),
-             ugettext_lazy("Maximum number of mailboxes this user can create")),
-            ("mailbox_aliases_limit", ugettext_lazy("Mailbox aliases"),
-             ugettext_lazy("Maximum number of mailbox aliases this user "
-                           "can create"))
-        ]
-
-    @property
-    def templates(self):
-        return self.__templates + \
-            events.raiseQueryEvent('GetExtraLimitTemplates')
+from . import utils
 
 
-class LimitsPool(models.Model):
+@python_2_unicode_compatible
+class ObjectLimit(models.Model):
+    """Per-user limits on object creation."""
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
-
-    def create_limits(self, creator):
-        """Create limits for this pool.
-
-        All limits defined into ``LimitTemplates`` will be created. If
-        the creator is a super administrator, the default maximum values
-        will be used.
-
-        :param ``User`` creator: user creating this pool
-        """
-        for ltpl in LimitTemplates().templates:
-            try:
-                Limit.objects.get(name=ltpl[0], pool=self)
-            except Limit.DoesNotExist:
-                maxvalue = (
-                    int(parameters.get_admin("DEFLT_%s" % ltpl[0].upper()))
-                    if creator.is_superuser else 0
-                )
-                Limit.objects.create(
-                    name=ltpl[0], pool=self, maxvalue=maxvalue
-                )
-
-    def getcurvalue(self, lname):
-        l = self.limit_set.get(name=lname)
-        return l.curvalue
-
-    def getmaxvalue(self, lname):
-        l = self.limit_set.get(name=lname)
-        return l.maxvalue
-
-    def set_maxvalue(self, lname, value):
-        l = self.limit_set.get(name=lname)
-        l.maxvalue = value
-        l.save()
-
-    def inc_curvalue(self, lname, nb=1):
-        l = self.limit_set.get(name=lname)
-        l.curvalue += nb
-        l.save()
-
-    def dec_curvalue(self, lname, nb=1):
-        l = self.limit_set.get(name=lname)
-        if not l.curvalue:
-            return
-        l.curvalue -= nb
-        l.save()
-
-    def dec_limit(self, lname, nb=1):
-        l = self.limit_set.get(name=lname)
-        l.curvalue -= nb
-        if l.maxvalue > -1:
-            l.maxvalue -= nb
-        l.save()
-
-    def inc_limit(self, lname, nb=1):
-        l = self.limit_set.get(name=lname)
-        l.curvalue += nb
-        if l.maxvalue > -1:
-            l.maxvalue += nb
-        l.save()
-
-    def will_be_reached(self, lname, nb=1):
-        l = self.limit_set.get(name=lname)
-        if l.maxvalue <= -1:
-            return False
-        if l.curvalue + nb > l.maxvalue:
-            return True
-        return False
-
-    def get_limit(self, lname):
-        try:
-            return self.limit_set.get(name=lname)
-        except Limit.DoesNotExist:
-            return None
-
-
-class Limit(models.Model):
-
-    name = models.CharField(max_length=255)
-    curvalue = models.IntegerField(default=0)
-    maxvalue = models.IntegerField(default=-2)
-    pool = models.ForeignKey(LimitsPool)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    name = models.CharField(max_length=254)
+    content_type = models.ForeignKey("contenttypes.ContentType")
+    max_value = models.IntegerField(default=-2)
 
     class Meta:
-        unique_together = (("name", "pool"),)
+        unique_together = (("user", "name"), )
+
+    @property
+    def definition(self):
+        """Return the definition of this limit."""
+        for name, tpl in utils.get_limit_templates():
+            if name == self.name:
+                return tpl
+        return None
+
+    @property
+    def current_value(self):
+        """Return the current number of objects."""
+        if "extra_filters" not in self.definition:
+            return core_models.ObjectAccess.objects.filter(
+                user=self.user, is_owner=True,
+                content_type=self.content_type).count()
+        id_list = core_models.ObjectAccess.objects.filter(
+            user=self.user, is_owner=True,
+            content_type=self.content_type).values_list("object_id", flat=True)
+        model_class = self.content_type.model_class()
+        return model_class.objects.filter(
+            pk__in=id_list, **self.definition["extra_filters"]).count()
 
     @property
     def usage(self):
-        if self.maxvalue < 0:
+        """Return current limit usage in %."""
+        if self.max_value < 0:
             return -1
-        if self.maxvalue == 0:
-            return 0
-        return int(float(self.curvalue) / self.maxvalue * 100)
+        if self.max_value == 0:
+            return 100
+        return int(float(self.current_value) / self.max_value * 100)
 
     @property
     def label(self):
-        for l in LimitTemplates().templates:
-            if l[0] == self.name:
-                return l[1]
-        return ""
+        """Return display name."""
+        return self.definition["label"]
+
+    def is_exceeded(self, count=1):
+        """Check if limit will be reached if we add count object(s)."""
+        return self.current_value + 1 > self.max_value
 
     def __str__(self):
-        if self.maxvalue == -2:
+        """Display current usage."""
+        if self.max_value == -2:
             return _("undefined")
-        if self.maxvalue == -1:
+        if self.max_value == -1:
             return _("unlimited")
-        if self.maxvalue == 0:
-            return "100%"
-
-        return "%d%%" % self.usage
+        return "{}%".format(self.usage)

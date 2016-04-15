@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _, ungettext
 
 import reversion
 
-from modoboa.lib import events
+from modoboa.core import signals as core_signals
 from modoboa.lib.exceptions import PermDeniedException, Conflict
 from modoboa.lib.web_utils import render_to_json_response
 
@@ -36,7 +36,8 @@ def _validate_alias(request, form, successmsg, callback=None):
 
 def _new_alias(request, title, action, successmsg,
                tplname="admin/aliasform.html"):
-    events.raiseEvent("CanCreate", request.user, "mailbox_aliases")
+    core_signals.can_create_object.send(
+        "new_alias", user=request.user, object_type="mailbox_aliases")
     if request.method == "POST":
         def callback(user, alias):
             alias.post_create(user)

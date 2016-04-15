@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from modoboa.lib import events
 
 from .forms import ResourcePoolForm
-from .models import LimitTemplates
+from . import utils
 
 
 @events.observe("ExtraAdminContent")
@@ -15,18 +15,19 @@ def display_pool_usage(user, target, currentpage):
     if target != "leftcol" or user.is_superuser:
         return []
     if currentpage == "identities":
-        names = ["mailboxes_limit", "mailbox_aliases_limit"]
+        names = ["mailboxes", "mailbox_aliases"]
         if user.has_perm("admin.add_domain"):
-            names += ["domain_admins_limit"]
+            names += ["domain_admins"]
     else:
+        exceptions = ["domain_admins", "mailboxes", "mailbox_aliases"]
         names = [
-            tpl[0] for tpl in LimitTemplates().templates
-            if tpl[0] not in ["domain_admins_limit", "mailboxes_limit",
-                              "mailbox_aliases_limit"] and
-            (len(tpl) == 3 or tpl[3] == user.group)
+            name for name, tpl in utils.get_limit_templates()
+            if name not in exceptions and
+            ("required_role" not in tpl or
+             tpl["required_role"] == user.group)
         ]
 
-    limits = user.limitspool.limit_set.filter(name__in=names, maxvalue__gt=0)
+    limits = user.objectlimit_set.filter(name__in=names, max_value__gt=0)
     if len(limits) == 0:
         return []
     return [

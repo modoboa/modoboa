@@ -29,3 +29,5 @@ class LimitsConfig(AppConfig):
 
     def ready(self):
         load_limits_settings()
+
+        from . import handlers

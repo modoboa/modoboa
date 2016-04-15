@@ -147,20 +147,6 @@ displayed. Possible values are:
 See :ref:`usermenudisplay` for a description of what callbacks that
 listen to this event must return.
 
-CanCreate
-=========
-
-Raised just before a user tries to create a new object.
-
-*Callback prototype*::
-
-  def callback(user): pass
-
-* ``user`` is a ``User`` instance
-
-Return ``True`` or ``False`` to indicate if this user can respectively
-create or not create a new ``Domain`` object.
-
 CheckDomainName
 ===============
 
