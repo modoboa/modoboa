@@ -4,7 +4,7 @@ from django.utils.translation import ugettext as _
 
 from modoboa.lib import events
 
-from .forms import ResourcePoolForm
+from . import forms
 from . import utils
 
 
@@ -21,13 +21,13 @@ def display_pool_usage(user, target, currentpage):
     else:
         exceptions = ["domain_admins", "mailboxes", "mailbox_aliases"]
         names = [
-            name for name, tpl in utils.get_limit_templates()
+            name for name, tpl in utils.get_user_limit_templates()
             if name not in exceptions and
             ("required_role" not in tpl or
              tpl["required_role"] == user.group)
         ]
 
-    limits = user.objectlimit_set.filter(name__in=names, max_value__gt=0)
+    limits = user.userobjectlimit_set.filter(name__in=names, max_value__gt=0)
     if len(limits) == 0:
         return []
     return [
@@ -44,11 +44,29 @@ def extra_account_form(user, account=None):
             account.group not in ["Resellers", "DomainAdmins"]:
         return []
 
-    return [
-        dict(
-            id="resources", title=_("Resources"), cls=ResourcePoolForm
-        )
-    ]
+    return [{
+        "id": "resources", "title": _("Resources"),
+        "cls": forms.ResourcePoolForm
+    }]
+
+
+@events.observe("ExtraDomainForm")
+def extra_domain_form(user, domain):
+    """Include domain limits form."""
+    if not user.has_perm("admin.change_domain"):
+        return []
+    return [{
+        "id": "resources", "title": _("Resources"),
+        "cls": forms.DomainLimitsForm
+    }]
+
+
+@events.observe("FillDomainInstances")
+def fill_domain_instances(user, domain, instances):
+    """Set domain instance for resources form."""
+    if not user.has_perm("admin.change_domain"):
+        return
+    instances["resources"] = domain
 
 
 @events.observe("CheckExtraAccountForm")

@@ -100,7 +100,7 @@ def domains_list(request):
 @reversion.create_revision()
 def newdomain(request):
     core_signals.can_create_object.send(
-        "newdomain", user=request.user, object_type="domains")
+        "newdomain", context=request.user, object_type="domains")
     return DomainWizard(request).process()
 
 

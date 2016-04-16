@@ -13,7 +13,7 @@ from modoboa.core.models import User
 from modoboa.core import signals as core_signals
 from modoboa.lib import events, parameters
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     DynamicForm, TabForms, WizardForm, WizardStep
@@ -161,7 +161,8 @@ class AccountFormGeneral(forms.ModelForm):
     def save(self, commit=True):
         account = super(AccountFormGeneral, self).save(commit=False)
         if self.user == account and not self.cleaned_data["is_active"]:
-            raise PermDeniedException(_("You can't disable your own account"))
+            raise lib_exceptions.PermDeniedException(
+                _("You can't disable your own account"))
         if commit:
             if "password1" in self.cleaned_data \
                and self.cleaned_data["password1"] != "":
@@ -198,11 +199,7 @@ class AccountFormMail(forms.Form, DynamicForm):
     )
 
     def __init__(self, *args, **kwargs):
-        if "instance" in kwargs:
-            self.mb = kwargs["instance"]
-            del kwargs["instance"]
-        else:
-            self.mb = None
+        self.mb = kwargs.pop("instance", None)
         super(AccountFormMail, self).__init__(*args, **kwargs)
         self.field_widths = {
             "quota": 3
@@ -245,6 +242,13 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise forms.ValidationError(_("Domain does not exist"))
+        if not self.mb:
+            try:
+                core_signals.can_create_object.send(
+                    sender=self.__class__, context=self.domain,
+                    object_type="mailboxes")
+            except lib_exceptions.ModoboaException as inst:
+                raise forms.ValidationError(inst)
         return email
 
     def clean(self):
@@ -262,9 +266,9 @@ class AccountFormMail(forms.Form, DynamicForm):
     def create_mailbox(self, user, account):
         """Create a mailbox associated to :kw:`account`."""
         if not user.can_access(self.domain):
-            raise PermDeniedException
+            raise lib_exceptions.PermDeniedException
         core_signals.can_create_object.send(
-            self.__class__, user=user, object_type="mailboxes")
+            self.__class__, context=user, object_type="mailboxes")
         self.mb = Mailbox(
             address=self.locpart, domain=self.domain, user=account,
             use_domain_quota=self.cleaned_data["quota_act"])
@@ -296,8 +300,11 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not aliases:
             return
         core_signals.can_create_object.send(
-            self.__class__, user=user, object_type="mailbox_aliases",
+            self.__class__, context=user, object_type="mailbox_aliases",
             count=len(aliases))
+        core_signals.can_create_object.send(
+            self.__class__, context=self.mb.domain,
+            object_type="mailbox_aliases", count=len(aliases))
         for alias in aliases:
             if self.mb.aliasrecipient_set.select_related("alias").filter(
                     alias__address=alias).exists():

@@ -50,7 +50,7 @@ class Operations(object):
         )
 
     def _check_limit(self, name, curvalue, maxvalue):
-        l = self.user.objectlimit_set.get(name=name)
+        l = self.user.userobjectlimit_set.get(name=name)
         self.assertEqual(l.current_value, curvalue)
         self.assertEqual(l.max_value, maxvalue)
 
@@ -233,9 +233,9 @@ class LimitsTestCase(ModoTestCase, Operations):
         """Create test data."""
         super(LimitsTestCase, cls).setUpTestData()
 
-        for name, tpl in limits_utils.get_limit_templates():
+        for name, tpl in limits_utils.get_user_limit_templates():
             parameters.save_admin(
-                "DEFLT_{0}_LIMIT".format(name.upper()), 2, app="limits"
+                "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2, app="limits"
             )
         cls.user = UserFactory.create(
             username='reseller', groups=('Resellers',)

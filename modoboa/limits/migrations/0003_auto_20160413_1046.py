@@ -8,7 +8,7 @@ from django.conf import settings
 def move_limits_to_user(apps, schema_editor):
     """Move limits from Pool to User."""
     LimitsPool = apps.get_model("limits", "LimitsPool")
-    ObjectLimit = apps.get_model("limits", "ObjectLimit")
+    UserObjectLimit = apps.get_model("limits", "UserObjectLimit")
     ContentType = apps.get_model("contenttypes", "ContentType")
 
     if not ContentType.objects.exists():
@@ -34,12 +34,12 @@ def move_limits_to_user(apps, schema_editor):
         .prefetch_related("limit_set"))
     for pool in qset:
         for limit in pool.limit_set.all():
-            objlimit = ObjectLimit(
+            objlimit = UserObjectLimit(
                 user=pool.user, max_value=limit.maxvalue,
                 name=limit.name.replace("_limit", ""),
                 content_type=name_to_content_type[limit.name])
             to_create.append(objlimit)
-    ObjectLimit.objects.bulk_create(to_create)
+    UserObjectLimit.objects.bulk_create(to_create)
 
 
 class Migration(migrations.Migration):
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ObjectLimit',
+            name='UserObjectLimit',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=254)),
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.AlterUniqueTogether(
-            name='objectlimit',
+            name='userobjectlimit',
             unique_together=set([('user', 'name')]),
         ),
         migrations.RunPython(move_limits_to_user)

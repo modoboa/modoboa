@@ -6,6 +6,8 @@ from django import forms
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from modoboa.core import signals as core_signals
+from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
@@ -74,6 +76,13 @@ class AliasForm(forms.ModelForm, DynamicForm):
             raise forms.ValidationError(
                 _("You don't have access to this domain")
             )
+        if self.instance.pk:
+            try:
+                core_signals.can_create_object.send(
+                    sender=self.__class__, context=domain,
+                    object_type="mailbox_aliases")
+            except lib_exceptions.ModoboaException as inst:
+                raise forms.ValidationError(inst)
         return self.cleaned_data["address"].lower()
 
     def clean(self):

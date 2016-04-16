@@ -10,9 +10,9 @@ from modoboa.lib.parameters import AdminParametersForm
 class ParametersForm(AdminParametersForm):
     app = "limits"
 
-    defv_sep = SeparatorField(label=_("Default limits"))
+    defv_sep = SeparatorField(label=_("Default per-admin limits"))
 
-    deflt_domain_admins_limit = forms.IntegerField(
+    deflt_user_domain_admins_limit = forms.IntegerField(
         label=_("Domain admins"),
         initial=0,
         help_text=_(
@@ -23,7 +23,7 @@ class ParametersForm(AdminParametersForm):
         widget=forms.widgets.TextInput(
             attrs={"class": "col-md-1 form-control"})
     )
-    deflt_domains_limit = forms.IntegerField(
+    deflt_user_domains_limit = forms.IntegerField(
         label=_("Domains"),
         initial=0,
         help_text=_(
@@ -33,7 +33,7 @@ class ParametersForm(AdminParametersForm):
         widget=forms.widgets.TextInput(
             attrs={"class": "col-md-1 form-control"})
     )
-    deflt_domain_aliases_limit = forms.IntegerField(
+    deflt_user_domain_aliases_limit = forms.IntegerField(
         label=_("Domain aliases"),
         initial=0,
         help_text=_(
@@ -44,7 +44,7 @@ class ParametersForm(AdminParametersForm):
         widget=forms.widgets.TextInput(
             attrs={"class": "col-md-1 form-control"})
     )
-    deflt_mailboxes_limit = forms.IntegerField(
+    deflt_user_mailboxes_limit = forms.IntegerField(
         label=_("Mailboxes"),
         initial=0,
         help_text=_(
@@ -54,11 +54,56 @@ class ParametersForm(AdminParametersForm):
         widget=forms.widgets.TextInput(
             attrs={"class": "col-md-1 form-control"})
     )
-    deflt_mailbox_aliases_limit = forms.IntegerField(
+    deflt_user_mailbox_aliases_limit = forms.IntegerField(
         label=_("Mailbox aliases"),
         initial=0,
         help_text=_(
             "Maximum number of allowed aliases for a new administrator. "
+            "(0 to deny any creation, -1 to allow unlimited creations)"
+        ),
+        widget=forms.widgets.TextInput(
+            attrs={"class": "col-md-1 form-control"})
+    )
+
+    domain_limits_sep = SeparatorField(label=_("Default per-domain limits"))
+
+    # deflt_domain_domain_admins_limit = forms.IntegerField(
+    #     label=_("Domain admins"),
+    #     initial=0,
+    #     help_text=_(
+    #         "Maximum number of allowed domain administrators for a new "
+    #         "domain. (0 to deny any creation, -1 to allow unlimited "
+    #         "creations)"
+    #     ),
+    #     widget=forms.widgets.TextInput(
+    #         attrs={"class": "col-md-1 form-control"})
+    # )
+    deflt_domain_domain_aliases_limit = forms.IntegerField(
+        label=_("Domain aliases"),
+        initial=0,
+        help_text=_(
+            "Maximum number of allowed domain aliases for a new "
+            "domain. (0 to deny any creation, -1 to allow "
+            "unlimited creations)"
+        ),
+        widget=forms.widgets.TextInput(
+            attrs={"class": "col-md-1 form-control"})
+    )
+    deflt_domain_mailboxes_limit = forms.IntegerField(
+        label=_("Mailboxes"),
+        initial=0,
+        help_text=_(
+            "Maximum number of allowed mailboxes for a new domain. "
+            "(0 to deny any creation, -1 to allow unlimited creations)"
+        ),
+        widget=forms.widgets.TextInput(
+            attrs={"class": "col-md-1 form-control"})
+    )
+    deflt_domain_mailbox_aliases_limit = forms.IntegerField(
+        label=_("Mailbox aliases"),
+        initial=0,
+        help_text=_(
+            "Maximum number of allowed aliases for a new domain. "
             "(0 to deny any creation, -1 to allow unlimited creations)"
         ),
         widget=forms.widgets.TextInput(

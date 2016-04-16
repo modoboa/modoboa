@@ -101,6 +101,7 @@ class Domain(AdminObject):
         :param User account: the administrotor to add
         """
         from modoboa.lib.permissions import grant_access_to_object
+
         grant_access_to_object(account, self)
         for mb in self.mailbox_set.all():
             if mb.user.has_perm("admin.add_domain"):

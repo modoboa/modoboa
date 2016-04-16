@@ -37,7 +37,7 @@ def _validate_alias(request, form, successmsg, callback=None):
 def _new_alias(request, title, action, successmsg,
                tplname="admin/aliasform.html"):
     core_signals.can_create_object.send(
-        "new_alias", user=request.user, object_type="mailbox_aliases")
+        "new_alias", context=request.user, object_type="mailbox_aliases")
     if request.method == "POST":
         def callback(user, alias):
             alias.post_create(user)

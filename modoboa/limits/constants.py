@@ -5,7 +5,7 @@ import collections
 from django.utils.translation import ugettext_lazy as _
 
 
-DEFAULT_LIMITS = collections.OrderedDict((
+DEFAULT_USER_LIMITS = collections.OrderedDict((
     ("domains", {
         "content_type": "admin.domain", "label": _("Domains"),
         "help": _("Maximum number of domains this user can create"),
@@ -27,4 +27,19 @@ DEFAULT_LIMITS = collections.OrderedDict((
                   "can create"),
         "required_role": "Resellers",
         "extra_filters": {"groups__name": "DomainAdmins"}})
+))
+
+
+DEFAULT_DOMAIN_LIMITS = collections.OrderedDict((
+    ("domain_aliases", {
+        "relation": "domainalias_set", "label": _("Domain aliases"),
+        "help": _("Maximum number of domain aliases allowed for this domain.")
+    }),
+    ("mailboxes", {
+        "relation": "mailbox_set", "label": _("Mailboxes"),
+        "help": _("Maximum number of mailboxes allowed for this domain.")}),
+    ("mailbox_aliases", {
+        "relation": "alias_set", "label": _("Mailbox aliases"),
+        "help": _("Maximum number of mailbox aliases allowed for this domain.")
+    })
 ))

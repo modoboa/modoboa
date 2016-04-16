@@ -101,6 +101,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 "name", _("A %s with this name already exists")
                 % unicode(label)
             )
+        self.aliases = []
         for k in cleaned_data.keys():
             if not k.startswith("aliases"):
                 continue
@@ -120,6 +121,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                     k, _("A %s with this name already exists")
                     % unicode(label)
                 )
+            self.aliases.append(cleaned_data[k])
         return cleaned_data
 
     def save(self, user, commit=True, domalias_post_create=False):
@@ -134,28 +136,20 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if not commit:
             return d
         d.save()
-        aliases = []
-        for k, v in self.cleaned_data.iteritems():
-            if not k.startswith("aliases"):
-                continue
-            if v in ["", None]:
-                continue
-            aliases.append(v)
         for dalias in d.domainalias_set.all():
-            if dalias.name not in aliases:
+            if dalias.name not in self.aliases:
                 dalias.delete()
             else:
-                aliases.remove(dalias.name)
-        if aliases:
+                self.aliases.remove(dalias.name)
+        if self.aliases:
             core_signals.can_create_object.send(
-                self.__class__, user=user, object_type="domain_aliases",
-                count=len(aliases))
-            for alias in aliases:
-                try:
-                    d.domainalias_set.get(name=alias)
-                except DomainAlias.DoesNotExist:
-                    pass
-                else:
+                self.__class__, context=user, object_type="domain_aliases",
+                count=len(self.aliases))
+            core_signals.can_create_object.send(
+                self.__class__, context=d, object_type="domain_aliases",
+                count=len(self.aliases))
+            for alias in self.aliases:
+                if d.domainalias_set.filter(name=alias).exists():
                     continue
                 options = {"creator": user} if domalias_post_create else {}
                 DomainAlias(name=alias, target=d, enabled=d.enabled).save(
@@ -225,9 +219,9 @@ class DomainFormOptions(forms.Form):
         except User.DoesNotExist:
             pass
         else:
-            raise Conflict(_("User '%s' already exists" % username))
+            raise Conflict(_("User '%s' already exists") % username)
         core_signals.can_create_object.send(
-            self.__class__, user=user, object_type="mailboxes")
+            self.__class__, context=user, object_type="mailboxes")
         da = User(username=username, email=username, is_active=True)
         da.set_password("password")
         da.save()
@@ -245,7 +239,7 @@ class DomainFormOptions(forms.Form):
         if domain.type == "domain" and \
            self.cleaned_data["create_aliases"] == "yes":
             core_signals.can_create_object.send(
-                self.__class__, user=user, object_type="mailbox_aliases")
+                self.__class__, context=user, object_type="mailbox_aliases")
             alias = Alias(
                 address=u"postmaster@{}".format(domain.name),
                 domain=domain, enabled=True
