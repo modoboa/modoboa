@@ -7,7 +7,7 @@ from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
 from modoboa.core.password_hashers.base import PasswordHasher
 from modoboa.lib import parameters
 
-class BCRYPTHasher(PasswordHasher):
+class BLFCRYPTHasher(PasswordHasher):
     """
     BLF-CRYPT password hasher.
 
