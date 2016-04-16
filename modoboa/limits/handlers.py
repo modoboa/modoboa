@@ -24,6 +24,8 @@ def check_object_limit(sender, context, object_type, **kwargs):
             return True
         limit = context.userobjectlimit_set.get(name=object_type)
     elif context.__class__.__name__ == "Domain":
+        if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+            return
         limit = context.domainobjectlimit_set.get(name=object_type)
     else:
         raise NotImplementedError

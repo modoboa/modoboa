@@ -2,7 +2,7 @@
 
 from django.utils.translation import ugettext as _
 
-from modoboa.lib import events
+from modoboa.lib import events, parameters
 
 from . import forms
 from . import utils
@@ -53,6 +53,8 @@ def extra_account_form(user, account=None):
 @events.observe("ExtraDomainForm")
 def extra_domain_form(user, domain):
     """Include domain limits form."""
+    if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+        return []
     if not user.has_perm("admin.change_domain"):
         return []
     return [{
@@ -64,6 +66,8 @@ def extra_domain_form(user, domain):
 @events.observe("FillDomainInstances")
 def fill_domain_instances(user, domain, instances):
     """Set domain instance for resources form."""
+    if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+        return
     if not user.has_perm("admin.change_domain"):
         return
     instances["resources"] = domain

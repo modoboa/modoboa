@@ -3,7 +3,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from modoboa.lib.form_utils import SeparatorField
+from modoboa.lib.form_utils import SeparatorField, YesNoField
 from modoboa.lib.parameters import AdminParametersForm
 
 
@@ -67,6 +67,12 @@ class ParametersForm(AdminParametersForm):
 
     domain_limits_sep = SeparatorField(label=_("Default per-domain limits"))
 
+    enable_domain_limits = YesNoField(
+        label=_("Enable per-domain limits"),
+        initial="no",
+        help_text=_("Enable or disable per-domain limits")
+    )
+
     # deflt_domain_domain_admins_limit = forms.IntegerField(
     #     label=_("Domain admins"),
     #     initial=0,
@@ -109,6 +115,12 @@ class ParametersForm(AdminParametersForm):
         widget=forms.widgets.TextInput(
             attrs={"class": "col-md-1 form-control"})
     )
+
+    visibility_rules = {
+        "deflt_domain_mailboxes_limit": "enable_domain_limits=yes",
+        "deflt_domain_mailbox_aliases_limit": "enable_domain_limits=yes",
+        "deflt_domain_domain_aliases_limit": "enable_domain_limits=yes",
+    }
 
     def __init__(self, *args, **kwargs):
         super(AdminParametersForm, self).__init__(*args, **kwargs)
