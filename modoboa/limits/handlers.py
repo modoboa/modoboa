@@ -60,7 +60,6 @@ def create_domain_limits(sender, instance, **kwargs):
     if not kwargs.get("created"):
         return
     for name, definition in utils.get_domain_limit_templates():
-        max_value = 0
         max_value = int(
             parameters.get_admin("DEFLT_DOMAIN_{}_LIMIT".format(name.upper())))
         models.DomainObjectLimit.objects.create(

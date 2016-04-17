@@ -426,8 +426,11 @@ class DomainLimitsTestCase(ModoTestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(DomainLimitsTestCase, cls).setUpTestData()
-        populate_database()
         parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
+        for name, tpl in utils.get_domain_limit_templates():
+            parameters.save_admin(
+                "DEFLT_DOMAIN_{}_LIMIT".format(name.upper()), 2)
+        populate_database()
 
     def test_set_limits(self):
         """Try to set limits for a given domain."""
@@ -435,8 +438,8 @@ class DomainLimitsTestCase(ModoTestCase):
         values = {
             "name": domain.name, "quota": domain.quota,
             "enabled": domain.enabled, "type": "domain",
-            "mailboxes_limit": 2, "mailbox_aliases_limit": 2,
-            "domain_aliases_limit": 2
+            "mailboxes_limit": 3, "mailbox_aliases_limit": 3,
+            "domain_aliases_limit": 3
         }
         self.ajax_post(
             reverse("admin:domain_change", args=[domain.id]),
@@ -444,10 +447,31 @@ class DomainLimitsTestCase(ModoTestCase):
         )
         domain.refresh_from_db()
         self.assertEqual(
-            domain.domainobjectlimit_set.get(name="mailboxes").max_value, 2)
+            domain.domainobjectlimit_set.get(name="mailboxes").max_value, 3)
         self.assertEqual(
             domain.domainobjectlimit_set.get(
-                name="mailbox_aliases").max_value, 2)
+                name="mailbox_aliases").max_value, 3)
         self.assertEqual(
             domain.domainobjectlimit_set.get(
-                name="domain_aliases").max_value, 2)
+                name="domain_aliases").max_value, 3)
+
+    def test_mailboxes_limit(self):
+        """Try to exceed defined limits."""
+        domain = Domain.objects.get(name="test.com")
+        domain.domainobjectlimit_set.filter(name="mailboxes").update(
+            max_value=3)
+        limit = domain.domainobjectlimit_set.get(name="mailboxes")
+        self.assertFalse(limit.is_exceeded())
+        username = "toto@test.com"
+        values = {
+            "username": username,
+            "first_name": "Tester", "last_name": "Toto",
+            "password1": "Toto1234", "password2": "Toto1234",
+            "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": username, "stepid": "step2",
+        }
+        self.ajax_post(reverse("admin:account_add"), values, 200)
+        self.assertTrue(limit.is_exceeded())
+
+        username = "titi@test.com"
+        self.ajax_post(reverse("admin:account_add"), values, 400)
