@@ -417,3 +417,37 @@ class ResellerTestCase(ResourceTestCase):
         self.assertEqual(resp, 'Not enough resources')
         self._check_limit('mailboxes', 1, 2)
         self._check_limit('mailbox_aliases', 0, 2)
+
+
+class DomainLimitsTestCase(ModoTestCase):
+    """Per-domain limits tests."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(DomainLimitsTestCase, cls).setUpTestData()
+        populate_database()
+        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
+
+    def test_set_limits(self):
+        """Try to set limits for a given domain."""
+        domain = Domain.objects.get(name="test.com")
+        values = {
+            "name": domain.name, "quota": domain.quota,
+            "enabled": domain.enabled, "type": "domain",
+            "mailboxes_limit": 2, "mailbox_aliases_limit": 2,
+            "domain_aliases_limit": 2
+        }
+        self.ajax_post(
+            reverse("admin:domain_change", args=[domain.id]),
+            values
+        )
+        domain.refresh_from_db()
+        self.assertEqual(
+            domain.domainobjectlimit_set.get(name="mailboxes").max_value, 2)
+        self.assertEqual(
+            domain.domainobjectlimit_set.get(
+                name="mailbox_aliases").max_value, 2)
+        self.assertEqual(
+            domain.domainobjectlimit_set.get(
+                name="domain_aliases").max_value, 2)
