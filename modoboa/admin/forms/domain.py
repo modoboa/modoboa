@@ -121,7 +121,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                     k, _("A %s with this name already exists")
                     % unicode(label)
                 )
-            self.aliases.append(cleaned_data[k])
+            else:
+                self.aliases.append(cleaned_data[k])
         return cleaned_data
 
     def save(self, user, commit=True, domalias_post_create=False):
