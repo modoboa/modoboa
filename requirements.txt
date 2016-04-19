@@ -3,7 +3,9 @@ django-reversion==1.9.3
 dj-database-url
 pycrypto
 argparse
-passlib
+passlib==1.6.5
+# bcrypt requires libffi-dev
+bcrypt==2.0.0
 django-versionfield2>=0.3.3
 requests
 django-xforwardedfor-middleware
