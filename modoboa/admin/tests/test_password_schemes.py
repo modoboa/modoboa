@@ -34,6 +34,9 @@ class PasswordSchemesTestCase(ModoTestCase):
         self.assertTrue(account.password.startswith(startpattern))
         self.assertTrue(account.check_password('Toto1234'))
 
+    def test_bcrypt_scheme(self):
+        self._test_scheme('blfcrypt', '{BLF-CRYPT}')
+
     def test_sha512crypt_scheme(self):
         self._test_scheme('sha512crypt', '{SHA512-CRYPT}')
 
