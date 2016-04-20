@@ -20,6 +20,8 @@ from . import utils
 def check_object_limit(sender, context, object_type, **kwargs):
     """Check if user can create a new object."""
     if context.__class__.__name__ == "User":
+        if parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no":
+            return
         if context.is_superuser:
             return True
         limit = context.userobjectlimit_set.get(name=object_type)

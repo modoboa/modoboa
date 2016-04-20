@@ -12,6 +12,12 @@ class ParametersForm(AdminParametersForm):
 
     defv_sep = SeparatorField(label=_("Default per-admin limits"))
 
+    enable_admin_limits = YesNoField(
+        label=_("Enable per-admin limits"),
+        initial="yes",
+        help_text=_("Enable or disable per-admin limits")
+    )
+
     deflt_user_domain_admins_limit = forms.IntegerField(
         label=_("Domain admins"),
         initial=0,
@@ -117,6 +123,11 @@ class ParametersForm(AdminParametersForm):
     )
 
     visibility_rules = {
+        "deflt_user_domains_limit": "enable_admin_limits=yes",
+        "deflt_user_domain_aliases_limit": "enable_admin_limits=yes",
+        "deflt_user_mailboxes_limit": "enable_admin_limits=yes",
+        "deflt_user_mailbox_aliases_limit": "enable_admin_limits=yes",
+        "deflt_user_domain_admins_limit": "enable_admin_limits=yes",
         "deflt_domain_mailboxes_limit": "enable_domain_limits=yes",
         "deflt_domain_mailbox_aliases_limit": "enable_domain_limits=yes",
         "deflt_domain_domain_aliases_limit": "enable_domain_limits=yes",

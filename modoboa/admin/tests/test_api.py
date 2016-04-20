@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from rest_framework.authtoken.models import Token
 
 from modoboa.core import models as core_models
+from modoboa.lib import parameters
 from modoboa.lib.tests import ModoAPITestCase
 
 from .. import factories
@@ -401,6 +402,7 @@ class AliasAPITestCase(ModoAPITestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(AliasAPITestCase, cls).setUpTestData()
+        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no", app="limits")
         factories.populate_database()
         cls.da_token = Token.objects.create(
             user=core_models.User.objects.get(username="admin@test.com"))
