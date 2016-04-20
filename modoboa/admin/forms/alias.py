@@ -76,7 +76,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
             raise forms.ValidationError(
                 _("You don't have access to this domain")
             )
-        if self.instance.pk:
+        if not self.instance.pk:
             try:
                 core_signals.can_create_object.send(
                     sender=self.__class__, context=domain,

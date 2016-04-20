@@ -240,7 +240,8 @@ class ResellerTestCase(ResourceTestCase):
         )
         self._check_limit('domain_admins', 2, 2)
 
-        self.user.userobjectlimit_set.filter(name="mailboxes").update(max_value=3)
+        self.user.userobjectlimit_set.filter(
+            name="mailboxes").update(max_value=3)
         self._create_account('user1@domain.tld')
         user = User.objects.get(username='user1@domain.tld')
         values = {
@@ -269,7 +270,8 @@ class ResellerTestCase(ResourceTestCase):
             )
 
     def test_domain_admins_limit_from_domain_tpl(self):
-        self.user.userobjectlimit_set.filter(name="domains").update(max_value=3)
+        self.user.userobjectlimit_set.filter(
+            name="domains").update(max_value=3)
         self._create_domain('domain1.tld', withtpl=True)
         self._create_domain('domain2.tld', withtpl=True)
         self._check_limit('domain_admins', 2, 2)
@@ -455,8 +457,36 @@ class DomainLimitsTestCase(ModoTestCase):
             domain.domainobjectlimit_set.get(
                 name="domain_aliases").max_value, 3)
 
+    def test_domain_aliases_limit(self):
+        """Try to exceed defined limit."""
+        # Import
+        # API
+        domain = Domain.objects.get(name="test.com")
+        limit = domain.domainobjectlimit_set.get(name="domain_aliases")
+        self.assertFalse(limit.is_exceeded())
+        values = {
+            "name": domain.name, "quota": domain.quota,
+            "enabled": domain.enabled, "type": "domain",
+            "mailboxes_limit": 2, "mailbox_aliases_limit": 2,
+            "domain_aliases_limit": 2,
+            "aliases": "alias1.com", "aliases_1": "alias2.com"
+        }
+        self.ajax_post(
+            reverse("admin:domain_change", args=[domain.id]),
+            values
+        )
+        self.assertTrue(limit.is_exceeded())
+        values["aliases_2"] = "alias3.com"
+        self.ajax_post(
+            reverse("admin:domain_change", args=[domain.id]),
+            values, 403
+        )
+
     def test_mailboxes_limit(self):
         """Try to exceed defined limits."""
+        # Import
+        # API
+        # LDAP ?
         domain = Domain.objects.get(name="test.com")
         domain.domainobjectlimit_set.filter(name="mailboxes").update(
             max_value=3)
@@ -475,3 +505,43 @@ class DomainLimitsTestCase(ModoTestCase):
 
         username = "titi@test.com"
         self.ajax_post(reverse("admin:account_add"), values, 400)
+
+    def test_mailbox_aliases_limit(self):
+        """Try to exceed defined limits."""
+        # Import
+        # API
+        domain = Domain.objects.get(name="test.com")
+        user = User.objects.get(username="user@test.com")
+        limit = domain.domainobjectlimit_set.get(name="mailbox_aliases")
+        limit.max_value = 4
+        limit.save()
+        self.assertFalse(limit.is_exceeded())
+        values = {
+            "username": user.username, "role": user.group,
+            "is_active": user.is_active, "email": user.email,
+            "quota_act": True,
+            "aliases": "alias@test.com", "aliases_1": "alias1@test.com"
+        }
+        self.ajax_post(
+            reverse("admin:account_change", args=[user.id]),
+            values
+        )
+        self.assertTrue(limit.is_exceeded())
+
+        values["aliases_2"] = "alias2@test.com"
+        self.ajax_post(
+            reverse("admin:account_change", args=[user.id]),
+            values, 403
+        )
+
+        limit.max_value = 5
+        limit.save()
+        values = {
+            "address": "forward2@test.com", "recipients": "user@test.com",
+            "enabled": True
+        }
+        self.ajax_post(reverse("admin:alias_add"), values)
+        self.assertTrue(limit.is_exceeded())
+
+        values["address"] = "forward3@test.com"
+        self.ajax_post(reverse("admin:alias_add"), values, 400)

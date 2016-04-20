@@ -120,6 +120,10 @@ class DomainObjectLimit(ObjectLimitMixin, models.Model):
     @property
     def current_value(self):
         """Return the current number of objects."""
-        if not self.definition:
+        definition = self.definition
+        if not definition:
             raise RuntimeError("Bad limit {}".format(self.name))
-        return getattr(self.domain, self.definition["relation"]).count()
+        relation = getattr(self.domain, definition["relation"])
+        if "extra_filters" in definition:
+            relation = relation.filter(**definition["extra_filters"])
+        return relation.count()
