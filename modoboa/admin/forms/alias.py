@@ -18,7 +18,6 @@ from ..models import Domain, Alias
 
 
 class AliasForm(forms.ModelForm, DynamicForm):
-
     """A form to create/modify an alias."""
 
     address = lib_fields.UTF8AndEmptyUserEmailField(

@@ -1,3 +1,4 @@
+# coding: utf-8
 """Test cases for the limits extension."""
 
 from django.core.urlresolvers import reverse
@@ -7,12 +8,12 @@ from modoboa.admin.models import Alias, Domain
 from modoboa.core.factories import UserFactory
 from modoboa.core.models import User
 from modoboa.lib import parameters
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib import tests as lib_tests
 
 from . import utils
 
 
-class PermissionsTestCase(ModoTestCase):
+class PermissionsTestCase(lib_tests.ModoTestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -41,7 +42,7 @@ class PermissionsTestCase(ModoTestCase):
         self.assertEqual(resp, "Permission denied")
 
 
-class ResourceTestCase(ModoTestCase):
+class ResourceTestCase(lib_tests.ModoTestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -421,7 +422,7 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit('mailbox_aliases', 0, 2)
 
 
-class DomainLimitsTestCase(ModoTestCase):
+class DomainLimitsTestCase(lib_tests.ModoTestCase):
     """Per-domain limits tests."""
 
     @classmethod
@@ -460,7 +461,6 @@ class DomainLimitsTestCase(ModoTestCase):
     def test_domain_aliases_limit(self):
         """Try to exceed defined limit."""
         # Import
-        # API
         domain = Domain.objects.get(name="test.com")
         limit = domain.domainobjectlimit_set.get(name="domain_aliases")
         self.assertFalse(limit.is_exceeded())
@@ -485,7 +485,6 @@ class DomainLimitsTestCase(ModoTestCase):
     def test_mailboxes_limit(self):
         """Try to exceed defined limits."""
         # Import
-        # API
         # LDAP ?
         domain = Domain.objects.get(name="test.com")
         domain.domainobjectlimit_set.filter(name="mailboxes").update(
@@ -509,7 +508,6 @@ class DomainLimitsTestCase(ModoTestCase):
     def test_mailbox_aliases_limit(self):
         """Try to exceed defined limits."""
         # Import
-        # API
         domain = Domain.objects.get(name="test.com")
         user = User.objects.get(username="user@test.com")
         limit = domain.domainobjectlimit_set.get(name="mailbox_aliases")
@@ -545,3 +543,66 @@ class DomainLimitsTestCase(ModoTestCase):
 
         values["address"] = "forward3@test.com"
         self.ajax_post(reverse("admin:alias_add"), values, 400)
+
+
+class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
+    """Check that limits are used also by the API."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(APIDomainLimitsTestCase, cls).setUpTestData()
+        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
+        for name, tpl in utils.get_domain_limit_templates():
+            parameters.save_admin(
+                "DEFLT_DOMAIN_{}_LIMIT".format(name.upper()), 2)
+        populate_database()
+
+    def test_mailboxes_limit(self):
+        """Check mailboxes limit."""
+        domain = Domain.objects.get(name="test.com")
+        limit = domain.domainobjectlimit_set.get(name="mailboxes")
+        self.assertTrue(limit.is_exceeded())
+        url = reverse("external_api:account-list")
+        data = {
+            "username": "fromapi@test.com",
+            "role": "SimpleUsers",
+            "password": "Toto1234",
+            "mailbox": {
+                "full_address": "fromapi@test.com",
+                "quota": 10
+            }
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_domain_aliases_limit(self):
+        """Check domain_aliases limit."""
+        domain = Domain.objects.get(name="test.com")
+        limit = domain.domainobjectlimit_set.get(name="domain_aliases")
+        url = reverse("external_api:domain_alias-list")
+        data = {"name": "dalias1.com", "target": domain.pk}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+        data["name"] = "dalias2.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(limit.is_exceeded())
+        data["name"] = "dalias3.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_mailbox_aliases_limit(self):
+        """Check mailbox_aliases limit."""
+        domain = Domain.objects.get(name="test.com")
+        limit = domain.domainobjectlimit_set.get(name="mailbox_aliases")
+        self.assertTrue(limit.is_exceeded())
+        url = reverse("external_api:alias-list")
+        data = {
+            "address": "alias_fromapi@test.com",
+            "recipients": [
+                "user@test.com", "postmaster@test.com", "user_éé@nonlocal.com"
+            ]
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
