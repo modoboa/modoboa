@@ -3,6 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from modoboa.core import signals as core_signals
 from modoboa.lib import parameters, events
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import PermDeniedException, BadRequest, Conflict
@@ -103,7 +104,6 @@ def import_account_mailbox(user, account, row):
     """
     account.email = row[0].strip()
     if account.email:
-        account.save()
         mailbox, domname = split_mailbox(account.email)
         try:
             domain = Domain.objects.get(name=domname)
@@ -114,6 +114,11 @@ def import_account_mailbox(user, account, row):
             )
         if not user.can_access(domain):
             raise PermDeniedException
+        core_signals.can_create_object.send(
+            sender="import", context=user, object_type="mailboxes")
+        core_signals.can_create_object.send(
+            sender="import", context=domain, object_type="mailboxes")
+        account.save()
         if Mailbox.objects.filter(address=mailbox, domain=domain).exists():
             raise Conflict(
                 _("Mailbox {} already exists").format(account.email))

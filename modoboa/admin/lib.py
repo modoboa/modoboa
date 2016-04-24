@@ -10,6 +10,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext as _
 
 from modoboa.core.models import User
+from modoboa.core import signals as core_signals
 from modoboa.lib import events
 from modoboa.lib.exceptions import PermDeniedException
 
@@ -118,6 +119,8 @@ def import_domain(user, row, formopts):
     """Specific code for domains import"""
     if not user.has_perm("admin.add_domain"):
         raise PermDeniedException(_("You are not allowed to import domains"))
+    core_signals.can_create_object.send(
+        sender="import", context=user, object_type="domains")
     dom = Domain()
     dom.from_csv(user, row)
 
@@ -127,6 +130,8 @@ def import_domainalias(user, row, formopts):
     if not user.has_perm("admin.add_domainalias"):
         raise PermDeniedException(
             _("You are not allowed to import domain aliases."))
+    core_signals.can_create_object.send(
+        sender="import", context=user, object_type="domain_aliases")
     domalias = DomainAlias()
     domalias.from_csv(user, row)
 
