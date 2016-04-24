@@ -39,7 +39,10 @@ PERMISSIONS = {
         ["admin", "domain", "view_domains"],
         ["admin", "domain", "add_domain"],
         ["admin", "domain", "change_domain"],
-        ["admin", "domain", "delete_domain"]
+        ["admin", "domain", "delete_domain"],
+        ["admin", "domainalias", "add_domainalias"],
+        ["admin", "domainalias", "change_domainalias"],
+        ["admin", "domainalias", "delete_domainalias"],
     ]
 }
 
