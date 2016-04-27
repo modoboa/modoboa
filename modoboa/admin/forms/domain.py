@@ -364,10 +364,5 @@ class DomainWizard(WizardForm):
         for step in self.steps[1:]:
             if not step.check_access(self):
                 continue
-            try:
-                step.form.save(user=self.request.user, domain=domain)
-            except ModoboaException:
-                from django.db import transaction
-                transaction.rollback()
-                raise
+            step.form.save(user=self.request.user, domain=domain)
         return render_to_json_response(_("Domain created"))
