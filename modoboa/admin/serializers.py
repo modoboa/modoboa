@@ -9,6 +9,8 @@ from passwords import validators
 
 from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
+from modoboa.core import signals as core_signals
+from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import permissions, email_utils, fields as lib_fields
 
 from . import models
@@ -41,6 +43,23 @@ class DomainAliasSerializer(serializers.ModelSerializer):
         if not self.context["request"].user.can_access(value):
             raise serializers.ValidationError(_("Permission denied."))
         return value
+
+    def create(self, validated_data):
+        """Custom creation."""
+        domain_alias = models.DomainAlias(**validated_data)
+        creator = self.context["request"].user
+        try:
+            core_signals.can_create_object.send(
+                sender=self.__class__, context=creator,
+                object_type="domain_aliases")
+            core_signals.can_create_object.send(
+                sender=self.__class__, context=domain_alias.target,
+                object_type="domain_aliases")
+        except lib_exceptions.ModoboaException as inst:
+            raise serializers.ValidationError({
+                "domain": unicode(inst)})
+        domain_alias.save(creator=creator)
+        return domain_alias
 
 
 class MailboxSerializer(serializers.ModelSerializer):
@@ -175,6 +194,16 @@ class WritableAccountSerializer(AccountSerializer):
         if not creator.can_access(domain):
             raise serializers.ValidationError({
                 "domain": _("Permission denied.")})
+        try:
+            core_signals.can_create_object.send(
+                sender=self.__class__, context=creator,
+                object_type="mailboxes")
+            core_signals.can_create_object.send(
+                sender=self.__class__, context=domain,
+                object_type="mailboxes")
+        except lib_exceptions.ModoboaException as inst:
+            raise serializers.ValidationError({
+                "domain": unicode(inst)})
         mb = admin_models.Mailbox(
             user=account, address=address, domain=domain, **data)
         mb.set_quota(
@@ -241,6 +270,15 @@ class AliasSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """Create appropriate objects."""
         creator = self.context["request"].user
+        try:
+            core_signals.can_create_object.send(
+                sender=self.__class__, context=creator,
+                object_type="mailbox_aliases")
+            core_signals.can_create_object.send(
+                sender=self.__class__, context=self.domain,
+                object_type="mailbox_aliases")
+        except lib_exceptions.ModoboaException as inst:
+            raise serializers.ValidationError(unicode(inst))
         recipients = validated_data.pop("recipients", None)
         alias = admin_models.Alias(domain=self.domain, **validated_data)
         alias.save(creator=creator)

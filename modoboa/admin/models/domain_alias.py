@@ -8,10 +8,12 @@ from django.contrib.contenttypes import generic
 
 import reversion
 
+from modoboa.core import models as core_models
+from modoboa.core import signals as core_signals
+from modoboa.lib.exceptions import BadRequest, Conflict
+
 from .base import AdminObject
 from .domain import Domain
-from modoboa.core import models as core_models
-from modoboa.lib.exceptions import BadRequest, Conflict
 
 
 class DomainAliasManager(models.Manager):
@@ -76,6 +78,8 @@ class DomainAlias(AdminObject):
             self.target = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise BadRequest(_("Unknown domain %s") % domname)
+        core_signals.can_create_object.send(
+            sender="import", context=self.target, object_type="domain_aliases")
         self.enabled = row[3].strip() in ["True", "1", "yes", "y"]
         self.save(creator=user)
 

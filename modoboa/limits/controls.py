@@ -5,7 +5,7 @@
 
 """
 
-from modoboa.lib import events
+from modoboa.lib import events, parameters
 from modoboa.lib.permissions import get_object_owner
 
 from . import utils
@@ -18,11 +18,11 @@ def move_pool_resource(owner, user):
     associated resource to the pool of its owner.
     """
     if not owner.is_superuser:
-        for name, ltpl in utils.get_limit_templates():
-            l = user.objectlimit_set.get(name=name)
+        for name, ltpl in utils.get_user_limit_templates():
+            l = user.userobjectlimit_set.get(name=name)
             if l.max_value < 0:
                 continue
-            ol = owner.objectlimit_set.get(name=name)
+            ol = owner.userobjectlimit_set.get(name=name)
             ol.max_value += l.max_value
             ol.save()
 
@@ -39,12 +39,15 @@ def user_can_set_role(user, role, account=None):
     :param ``User`` account: account modified (None on creation)
     :param str newrole: role to check
     """
-    if role != "DomainAdmins":
+    condition = (
+        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        role != "DomainAdmins")
+    if condition:
         return [True]
     lname = "domain_admins"
     condition = (
         user.is_superuser or
-        not user.objectlimit_set.get(name=lname).is_exceeded()
+        not user.userobjectlimit_set.get(name=lname).is_exceeded()
     )
     if condition:
         return [True]

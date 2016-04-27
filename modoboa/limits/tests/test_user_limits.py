@@ -1,3 +1,4 @@
+# coding: utf-8
 """Test cases for the limits extension."""
 
 from django.core.urlresolvers import reverse
@@ -7,12 +8,12 @@ from modoboa.admin.models import Alias, Domain
 from modoboa.core.factories import UserFactory
 from modoboa.core.models import User
 from modoboa.lib import parameters
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib import tests as lib_tests
 
-from . import utils
+from .. import utils
 
 
-class PermissionsTestCase(ModoTestCase):
+class PermissionsTestCase(lib_tests.ModoTestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -41,15 +42,15 @@ class PermissionsTestCase(ModoTestCase):
         self.assertEqual(resp, "Permission denied")
 
 
-class ResourceTestCase(ModoTestCase):
+class ResourceTestCase(lib_tests.ModoTestCase):
 
     @classmethod
     def setUpTestData(cls):
         """Custom setUpTestData method."""
         super(ResourceTestCase, cls).setUpTestData()
-        for name, tpl in utils.get_limit_templates():
+        for name, tpl in utils.get_user_limit_templates():
             parameters.save_admin(
-                "DEFLT_{0}_LIMIT".format(name.upper()), 2,
+                "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2,
                 app="limits"
             )
         populate_database()
@@ -107,7 +108,7 @@ class ResourceTestCase(ModoTestCase):
         )
 
     def _check_limit(self, name, curvalue, maxvalue):
-        l = self.user.objectlimit_set.get(name=name)
+        l = self.user.userobjectlimit_set.get(name=name)
         self.assertEqual(l.current_value, curvalue)
         self.assertEqual(l.max_value, maxvalue)
 
@@ -119,7 +120,7 @@ class DomainAdminTestCase(ResourceTestCase):
         """Create test data."""
         super(DomainAdminTestCase, cls).setUpTestData()
         cls.user = User.objects.get(username='admin@test.com')
-        cls.user.objectlimit_set.filter(
+        cls.user.userobjectlimit_set.filter(
             name__in=["mailboxes", "mailbox_aliases"]).update(max_value=2)
 
     def setUp(self):
@@ -240,7 +241,8 @@ class ResellerTestCase(ResourceTestCase):
         )
         self._check_limit('domain_admins', 2, 2)
 
-        self.user.objectlimit_set.filter(name="mailboxes").update(max_value=3)
+        self.user.userobjectlimit_set.filter(
+            name="mailboxes").update(max_value=3)
         self._create_account('user1@domain.tld')
         user = User.objects.get(username='user1@domain.tld')
         values = {
@@ -265,11 +267,12 @@ class ResellerTestCase(ResourceTestCase):
         domadmin = User.objects.get(username='admin1@domain.tld')
         for l in ['mailboxes', 'mailbox_aliases']:
             self.assertEqual(
-                domadmin.objectlimit_set.get(name=l).max_value, 0
+                domadmin.userobjectlimit_set.get(name=l).max_value, 0
             )
 
     def test_domain_admins_limit_from_domain_tpl(self):
-        self.user.objectlimit_set.filter(name="domains").update(max_value=3)
+        self.user.userobjectlimit_set.filter(
+            name="domains").update(max_value=3)
         self._create_domain('domain1.tld', withtpl=True)
         self._create_domain('domain2.tld', withtpl=True)
         self._check_limit('domain_admins', 2, 2)

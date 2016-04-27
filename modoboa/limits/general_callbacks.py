@@ -2,9 +2,9 @@
 
 from django.utils.translation import ugettext as _
 
-from modoboa.lib import events
+from modoboa.lib import events, parameters
 
-from .forms import ResourcePoolForm
+from . import forms
 from . import utils
 
 
@@ -12,7 +12,10 @@ from . import utils
 def display_pool_usage(user, target, currentpage):
     from django.template.loader import render_to_string
 
-    if target != "leftcol" or user.is_superuser:
+    condition = (
+        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        target != "leftcol" or user.is_superuser)
+    if condition:
         return []
     if currentpage == "identities":
         names = ["mailboxes", "mailbox_aliases"]
@@ -21,13 +24,13 @@ def display_pool_usage(user, target, currentpage):
     else:
         exceptions = ["domain_admins", "mailboxes", "mailbox_aliases"]
         names = [
-            name for name, tpl in utils.get_limit_templates()
+            name for name, tpl in utils.get_user_limit_templates()
             if name not in exceptions and
             ("required_role" not in tpl or
              tpl["required_role"] == user.group)
         ]
 
-    limits = user.objectlimit_set.filter(name__in=names, max_value__gt=0)
+    limits = user.userobjectlimit_set.filter(name__in=names, max_value__gt=0)
     if len(limits) == 0:
         return []
     return [
@@ -38,17 +41,41 @@ def display_pool_usage(user, target, currentpage):
 
 @events.observe("ExtraAccountForm")
 def extra_account_form(user, account=None):
+    if parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no":
+        return []
     if user.group not in ["SuperAdmins", "Resellers"]:
         return []
     if account is not None and \
             account.group not in ["Resellers", "DomainAdmins"]:
         return []
 
-    return [
-        dict(
-            id="resources", title=_("Resources"), cls=ResourcePoolForm
-        )
-    ]
+    return [{
+        "id": "resources", "title": _("Resources"),
+        "cls": forms.ResourcePoolForm
+    }]
+
+
+@events.observe("ExtraDomainForm")
+def extra_domain_form(user, domain):
+    """Include domain limits form."""
+    if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+        return []
+    if not user.has_perm("admin.change_domain"):
+        return []
+    return [{
+        "id": "resources", "title": _("Resources"),
+        "cls": forms.DomainLimitsForm
+    }]
+
+
+@events.observe("FillDomainInstances")
+def fill_domain_instances(user, domain, instances):
+    """Set domain instance for resources form."""
+    if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+        return
+    if not user.has_perm("admin.change_domain"):
+        return
+    instances["resources"] = domain
 
 
 @events.observe("CheckExtraAccountForm")
@@ -63,16 +90,21 @@ def check_form_access(account, form):
 
 @events.observe("FillAccountInstances")
 def fill_account_instances(user, account, instances):
-    if not user.is_superuser and not user.belongs_to_group("Resellers"):
+    condition = (
+        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        (not user.is_superuser and user.group != "Resellers")
+    )
+    if condition:
         return
-    if not account.belongs_to_group("Resellers") and \
-       not account.belongs_to_group("DomainAdmins"):
+    if account.group not in ["Resellers", "DomainAdmins"]:
         return
     instances["resources"] = account
 
 
 @events.observe("GetStaticContent")
 def get_static_content(caller, st_type, user):
+    if parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no":
+        return []
     if caller not in ['domains', 'identities']:
         return []
     if user.group == "SimpleUsers":

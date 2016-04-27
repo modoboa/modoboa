@@ -1,0 +1,221 @@
+# coding: utf-8
+from django.core.files.base import ContentFile
+from django.core.urlresolvers import reverse
+
+from modoboa.admin import factories as admin_factories
+from modoboa.admin import models as admin_models
+from modoboa.core import factories as core_factories
+from modoboa.core import models as core_models
+from modoboa.lib import parameters
+from modoboa.lib.tests import ModoTestCase
+
+from .. import utils
+
+
+class LimitImportTestCase(ModoTestCase):
+    """Base class to test limits."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(LimitImportTestCase, cls).setUpTestData()
+        admin_factories.populate_database()
+        cls.reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers", ))
+        cls.dadmin = core_models.User.objects.get(username="admin@test.com")
+        cls.domain = admin_models.Domain.objects.get(name="test.com")
+
+    def _test_domain_alias_import(self, limit):
+        """Check domain aliases limit."""
+        self.client.login(
+            username=self.reseller.username, password="toto")
+        self.assertFalse(limit.is_exceeded())
+        f = ContentFile(b"""domainalias; domalias1.com; {domain}; True
+domainalias; domalias2.com; {domain}; True
+""".format(domain=self.domain), name="domains.csv")
+        self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertTrue(limit.is_exceeded())
+
+        f = ContentFile(
+            "domainalias; domalias3.com; {}; True".format(self.domain),
+            name="domains.csv")
+        response = self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertContains(response, "Domain aliases: limit reached")
+
+    def _test_domain_admins_import(self, limit, initial_count=0):
+        """Check domain admins limit."""
+        self.client.login(
+            username=self.reseller.username, password="toto")
+        self.assertFalse(limit.is_exceeded())
+        content = ""
+        for cpt in xrange(initial_count, 2):
+            content += (
+                "account; admin{cpt}@{domain}; toto; User; One; True; "
+                "DomainAdmins; user{cpt}@{domain}; 5; {domain}\n"
+                .format(domain=self.domain, cpt=cpt)
+            )
+        f = ContentFile(content, name="domain_admins.csv")
+        response = self.client.post(
+            reverse("admin:identity_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertTrue(limit.is_exceeded())
+
+        f = ContentFile(b"""account; admin3@{domain}; toto; User; One; True; DomainAdmins; admin3@{domain}; 5; {domain}
+""".format(domain=self.domain), name="domain_admins.csv")
+        response = self.client.post(
+            reverse("admin:identity_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertContains(response, "Permission denied")
+
+    def _test_mailboxes_import(self, limit):
+        """Check mailboxes limit."""
+        self.client.login(
+            username=self.dadmin.username, password="toto")
+        self.assertFalse(limit.is_exceeded())
+        f = ContentFile(b"""account; user1@{domain}; toto; User; One; True; SimpleUsers; user1@{domain}; 5
+account; truc@{domain}; toto; René; Truc; True; SimpleUsers; truc@{domain}; 5
+""".format(domain=self.domain), name="domains.csv")
+        response = self.client.post(
+            reverse("admin:identity_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertTrue(limit.is_exceeded())
+
+        f = ContentFile("""
+account; user3@{domain}; toto; User; One; True; SimpleUsers; user3@{domain}; 5
+""".format(domain=self.domain), name="domains.csv")
+        response = self.client.post(
+            reverse("admin:identity_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertContains(response, "Mailboxes: limit reached")
+
+    def _test_mailbox_aliases_import(self, limit):
+        """Check mailbox aliases limit."""
+        self.client.login(
+            username=self.dadmin.username, password="toto")
+        self.assertFalse(limit.is_exceeded())
+        f = ContentFile(b"""alias; alias1@{domain}; True; user@{domain}
+alias; alias2@{domain}; True; user@{domain}
+""".format(domain=self.domain), name="aliases.csv")
+        response = self.client.post(
+            reverse("admin:identity_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertTrue(limit.is_exceeded())
+
+        f = ContentFile("""
+alias; alias3@{domain}; True; user@{domain}
+""".format(domain=self.domain), name="aliases.csv")
+        response = self.client.post(
+            reverse("admin:identity_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertContains(response, "Mailbox aliases: limit reached")
+
+
+class UserLimitImportTestCase(LimitImportTestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        for name, tpl in utils.get_user_limit_templates():
+            parameters.save_admin(
+                "DEFLT_USER_{}_LIMIT".format(name.upper()), 2)
+        super(UserLimitImportTestCase, cls).setUpTestData()
+
+    def test_domains_import(self):
+        """Check domains limit."""
+        self.client.login(
+            username=self.reseller.username, password="toto")
+        limit = self.reseller.userobjectlimit_set.get(name="domains")
+        self.assertFalse(limit.is_exceeded())
+        f = ContentFile(b"""domain; domain1.com; 100; True
+domain; domain2.com; 200; False
+""", name="domains.csv")
+        self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertTrue(limit.is_exceeded())
+
+        f = ContentFile(b"""domain; domain3.com; 100; True
+""", name="domains.csv")
+        response = self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertContains(response, "Domains: limit reached")
+
+    def test_domain_alias_import(self):
+        """Check domain aliases limit."""
+        limit = self.reseller.userobjectlimit_set.get(name="domain_aliases")
+        self._test_domain_alias_import(limit)
+
+    def test_domain_admins_import(self):
+        """Check domain admins limit."""
+        self.domain.add_admin(self.reseller)
+        limit = self.reseller.userobjectlimit_set.get(name="domain_admins")
+        self._test_domain_admins_import(limit)
+
+    def test_mailboxes_import(self):
+        """Check mailboxes limit."""
+        limit = self.dadmin.userobjectlimit_set.get(name="mailboxes")
+        self._test_mailboxes_import(limit)
+
+    def test_mailbox_aliases_import(self):
+        """Check mailbox aliases limit."""
+        limit = self.dadmin.userobjectlimit_set.get(name="mailbox_aliases")
+        self._test_mailbox_aliases_import(limit)
+
+
+class DomainLimitImportTestCase(LimitImportTestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
+        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no")
+        for name, tpl in utils.get_domain_limit_templates():
+            parameters.save_admin(
+                "DEFLT_DOMAIN_{}_LIMIT".format(name.upper()), 2)
+        super(DomainLimitImportTestCase, cls).setUpTestData()
+        mb = admin_factories.MailboxFactory(
+            user__username="user@test4.com",
+            domain__name="test4.com", address="user")
+        cls.domain = mb.domain
+
+    def test_domain_alias_import(self):
+        """Check domain aliases limit."""
+        limit = self.domain.domainobjectlimit_set.get(name="domain_aliases")
+        self._test_domain_alias_import(limit)
+
+    def test_mailboxes_import(self):
+        """Check mailboxes limit."""
+        self.domain.add_admin(self.dadmin)
+        limit = self.domain.domainobjectlimit_set.get(name="mailboxes")
+        self._test_mailboxes_import(limit)
+
+    def test_mailbox_aliases_import(self):
+        """Check mailbox aliases limit."""
+        self.domain.add_admin(self.dadmin)
+        limit = self.domain.domainobjectlimit_set.get(name="mailbox_aliases")
+        self._test_mailbox_aliases_import(limit)

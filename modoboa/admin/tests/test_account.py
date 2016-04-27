@@ -161,9 +161,9 @@ class PermissionsTestCase(ModoTestCase):
         from modoboa.limits import utils as limits_utils
 
         super(PermissionsTestCase, cls).setUpTestData()
-        for name, tpl in limits_utils.get_limit_templates():
+        for name, tpl in limits_utils.get_user_limit_templates():
             parameters.save_admin(
-                "DEFLT_{0}_LIMIT".format(name.upper()), 2,
+                "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2,
                 app="limits"
             )
         factories.populate_database()
