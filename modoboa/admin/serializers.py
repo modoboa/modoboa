@@ -77,13 +77,17 @@ class AccountSerializer(serializers.ModelSerializer):
 
     role = serializers.SerializerMethodField()
     mailbox = MailboxSerializer(required=False)
+    domains = serializers.SerializerMethodField(
+        help_text=_(
+            "List of administered domains (resellers and domain "
+            "administrators only)."))
 
     class Meta:
         model = core_models.User
         fields = (
             "pk", "username", "first_name", "last_name", "is_active",
             "master_user", "mailbox", "role", "language", "phone_number",
-            "secondary_email",
+            "secondary_email", "domains",
         )
 
     def __init__(self, *args, **kwargs):
@@ -99,6 +103,13 @@ class AccountSerializer(serializers.ModelSerializer):
     def get_role(self, account):
         """Return role."""
         return account.group
+
+    def get_domains(self, account):
+        """Return domains administered by this account."""
+        if account.role not in ["DomainAdmins", "Resellers"]:
+            return []
+        return admin_models.Domain.objects.get_for_admin(account).values_list(
+            "name", flat=True)
 
 
 class AccountExistsSerializer(serializers.Serializer):
@@ -156,6 +167,8 @@ class WritableAccountSerializer(AccountSerializer):
         user = self.context["request"].user
         self.fields["role"] = serializers.ChoiceField(
             choices=permissions.get_account_roles(user))
+        self.fields["domains"] = serializers.ListField(
+            child=serializers.CharField(), allow_empty=False, required=False)
 
     def validate_password(self, value):
         """Check password constraints."""
@@ -183,6 +196,19 @@ class WritableAccountSerializer(AccountSerializer):
                 raise serializers.ValidationError({
                     "username": _("Must be equal to mailbox full_address")
                 })
+        domain_names = data.get("domains")
+        if not domain_names:
+            return data
+        domains = []
+        for name in domain_names:
+            domain = admin_models.Domain.objects.filter(name=name).first()
+            if domain:
+                domains.append(domain)
+                continue
+            raise serializers.ValidationError({
+                "domains": _("Local domain {} does not exist").format(name)
+            })
+        data["domains"] = domains
         return data
 
     def _create_mailbox(self, creator, account, data):
@@ -213,23 +239,39 @@ class WritableAccountSerializer(AccountSerializer):
         account.email = full_address
         return mb
 
+    def set_permissions(self, account, domains):
+        """Assign permissions on domain(s)."""
+        if account.role not in ["DomainAdmins", "Resellers"]:
+            return
+        current_domains = admin_models.Domain.objects.get_for_admin(account)
+        for domain in current_domains:
+            if domain not in domains:
+                domain.remove_admin(account)
+            else:
+                domains.remove(domain)
+        for domain in domains:
+            domain.add_admin(account)
+
     def create(self, validated_data):
         """Create appropriate objects."""
         creator = self.context["request"].user
         mailbox_data = validated_data.pop("mailbox", None)
         role = validated_data.pop("role")
+        domains = validated_data.pop("domains", [])
         user = core_models.User(**validated_data)
         user.set_password(validated_data["password"])
         user.save(creator=creator)
         if mailbox_data:
             self._create_mailbox(creator, user, mailbox_data)
         user.role = role
+        self.set_permissions(user, domains)
         return user
 
     def update(self, instance, validated_data):
         """Update account and associated objects."""
         mailbox_data = validated_data.pop("mailbox")
         password = validated_data.pop("password")
+        domains = validated_data.pop("domains", [])
         for key, value in validated_data.items():
             setattr(instance, key, value)
         instance.set_password(password)
@@ -242,6 +284,7 @@ class WritableAccountSerializer(AccountSerializer):
                 instance.mailbox.update_from_dict(creator, mailbox_data)
             else:
                 self._create_mailbox(creator, instance, mailbox_data)
+        self.set_permissions(instance, domains)
         return instance
 
 

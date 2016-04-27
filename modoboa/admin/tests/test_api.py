@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 
 from rest_framework.authtoken.models import Token
 
+from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoAPITestCase
@@ -192,6 +193,12 @@ class AccountAPITestCase(ModoAPITestCase):
         cls.da_token = Token.objects.create(
             user=core_models.User.objects.get(username="admin@test.com"))
 
+    def setUp(self):
+        """Test setup."""
+        super(AccountAPITestCase, self).setUp()
+        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no", app="limits")
+        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "no", app="limits")
+
     def test_get_accounts(self):
         """Retrieve a list of accounts."""
         url = reverse("external_api:account-list")
@@ -233,10 +240,15 @@ class AccountAPITestCase(ModoAPITestCase):
     def test_create_domainadmin_account(self):
         """Try to create a domain admin."""
         data = copy.deepcopy(self.ACCOUNT_DATA)
+        data["domains"] = ["test.com"]
         data["role"] = "DomainAdmins"
         url = reverse("external_api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
+        domain = admin_models.Domain.objects.get(name="test.com")
+        admin = core_models.User.objects.get(
+            pk=json.loads(response.content)["pk"])
+        self.assertIn(admin, domain.admins)
 
         data["username"] = "domain_admin"
         del data["mailbox"]
@@ -324,6 +336,33 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         account.refresh_from_db()
         self.assertEqual(account.email, account.mailbox.full_address)
+
+    def test_update_domain_admin_account(self):
+        """Try to change administered domains."""
+        account = core_models.User.objects.get(username="admin@test.com")
+        url = reverse("external_api:account-detail", args=[account.pk])
+        data = {
+            "username": account.username,
+            "role": account.role,
+            "password": "Toto1234",
+            "mailbox": {
+                "full_address": account.mailbox.full_address,
+                "quota": account.mailbox.quota
+            },
+            "domains": ["test.com", "test2.com"]
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        domains = admin_models.Domain.objects.get_for_admin(account)
+        self.assertEqual(domains.count(), 2)
+        self.assertTrue(domains.filter(name="test2.com").exists())
+
+        data["domains"] = ["test2.com"]
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        domains = admin_models.Domain.objects.get_for_admin(account)
+        self.assertEqual(domains.count(), 1)
+        self.assertTrue(domains.filter(name="test2.com").exists())
 
     def test_update_account_wrong_address(self):
         """Try to update an account."""
