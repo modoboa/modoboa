@@ -43,5 +43,9 @@ DEFAULT_DOMAIN_LIMITS = collections.OrderedDict((
         "help": _(
             "Maximum number of mailbox aliases allowed for this domain."),
         "extra_filters": {"internal": False}
+    }),
+    ("domain_admins", {
+        "relation": "admins", "label": _("Domain admins"),
+        "help": _("Maximum number of domain admins allowed for this domain."),
     })
 ))

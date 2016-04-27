@@ -8,10 +8,12 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 import reversion
 
-from .base import AdminObject
 from modoboa.core.models import User, ObjectAccess
+from modoboa.core import signals as core_signals
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import BadRequest, Conflict
+
+from .base import AdminObject
 
 
 class DomainManager(Manager):
@@ -85,23 +87,28 @@ class Domain(AdminObject):
 
     @property
     def admins(self):
-        """Return the domain administrators of this domain
+        """Return the domain administrators of this domain.
 
         :return: a list of User objects
         """
-        return [oa.user for oa in self.owners.filter(user__is_superuser=False)]
+        return User.objects.filter(
+            is_superuser=False,
+            objectaccess__content_type__model="domain",
+            objectaccess__object_id=self.pk)
 
     @property
     def aliases(self):
         return self.domainalias_set
 
     def add_admin(self, account):
-        """Add a new administrator for this domain
+        """Add a new administrator to this domain.
 
-        :param User account: the administrotor to add
+        :param User account: the administrator
         """
         from modoboa.lib.permissions import grant_access_to_object
 
+        core_signals.can_create_object.send(
+            sender=self.__class__, context=self, object_type="domain_admins")
         grant_access_to_object(account, self)
         for mb in self.mailbox_set.all():
             if mb.user.has_perm("admin.add_domain"):

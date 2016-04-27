@@ -8,6 +8,8 @@ from modoboa.lib.parameters import AdminParametersForm
 
 
 class ParametersForm(AdminParametersForm):
+    """Available admin parameters."""
+
     app = "limits"
 
     defv_sep = SeparatorField(label=_("Default per-admin limits"))
@@ -79,17 +81,17 @@ class ParametersForm(AdminParametersForm):
         help_text=_("Enable or disable per-domain limits")
     )
 
-    # deflt_domain_domain_admins_limit = forms.IntegerField(
-    #     label=_("Domain admins"),
-    #     initial=0,
-    #     help_text=_(
-    #         "Maximum number of allowed domain administrators for a new "
-    #         "domain. (0 to deny any creation, -1 to allow unlimited "
-    #         "creations)"
-    #     ),
-    #     widget=forms.widgets.TextInput(
-    #         attrs={"class": "col-md-1 form-control"})
-    # )
+    deflt_domain_domain_admins_limit = forms.IntegerField(
+        label=_("Domain admins"),
+        initial=0,
+        help_text=_(
+            "Maximum number of allowed domain administrators for a new "
+            "domain. (0 to deny any creation, -1 to allow unlimited "
+            "creations)"
+        ),
+        widget=forms.widgets.TextInput(
+            attrs={"class": "col-md-1 form-control"})
+    )
     deflt_domain_domain_aliases_limit = forms.IntegerField(
         label=_("Domain aliases"),
         initial=0,
@@ -131,6 +133,7 @@ class ParametersForm(AdminParametersForm):
         "deflt_domain_mailboxes_limit": "enable_domain_limits=yes",
         "deflt_domain_mailbox_aliases_limit": "enable_domain_limits=yes",
         "deflt_domain_domain_aliases_limit": "enable_domain_limits=yes",
+        "deflt_domain_domain_admins_limit": "enable_domain_limits=yes",
     }
 
     def __init__(self, *args, **kwargs):

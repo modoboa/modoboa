@@ -50,15 +50,20 @@ domainalias; domalias2.com; {domain}; True
         )
         self.assertContains(response, "Domain aliases: limit reached")
 
-    def _test_domain_admins_import(self, limit):
+    def _test_domain_admins_import(self, limit, initial_count=0):
         """Check domain admins limit."""
         self.client.login(
             username=self.reseller.username, password="toto")
         self.assertFalse(limit.is_exceeded())
-        f = ContentFile(b"""account; admin1@{domain}; toto; User; One; True; DomainAdmins; user1@{domain}; 5; {domain}
-account; admin2@{domain}; toto; René; Truc; True; DomainAdmins; truc@{domain}; 5; {domain}
-""".format(domain=self.domain), name="domain_admins.csv")
-        self.client.post(
+        content = ""
+        for cpt in xrange(initial_count, 2):
+            content += (
+                "account; admin{cpt}@{domain}; toto; User; One; True; "
+                "DomainAdmins; user{cpt}@{domain}; 5; {domain}\n"
+                .format(domain=self.domain, cpt=cpt)
+            )
+        f = ContentFile(content, name="domain_admins.csv")
+        response = self.client.post(
             reverse("admin:identity_import"), {
                 "sourcefile": f
             }
@@ -197,7 +202,6 @@ class DomainLimitImportTestCase(LimitImportTestCase):
             user__username="user@test4.com",
             domain__name="test4.com", address="user")
         cls.domain = mb.domain
-        cls.domain.add_admin(cls.dadmin)
 
     def test_domain_alias_import(self):
         """Check domain aliases limit."""
@@ -206,10 +210,12 @@ class DomainLimitImportTestCase(LimitImportTestCase):
 
     def test_mailboxes_import(self):
         """Check mailboxes limit."""
+        self.domain.add_admin(self.dadmin)
         limit = self.domain.domainobjectlimit_set.get(name="mailboxes")
         self._test_mailboxes_import(limit)
 
     def test_mailbox_aliases_import(self):
         """Check mailbox aliases limit."""
+        self.domain.add_admin(self.dadmin)
         limit = self.domain.domainobjectlimit_set.get(name="mailbox_aliases")
         self._test_mailbox_aliases_import(limit)

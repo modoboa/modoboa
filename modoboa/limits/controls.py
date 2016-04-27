@@ -5,7 +5,7 @@
 
 """
 
-from modoboa.lib import events
+from modoboa.lib import events, parameters
 from modoboa.lib.permissions import get_object_owner
 
 from . import utils
@@ -39,7 +39,10 @@ def user_can_set_role(user, role, account=None):
     :param ``User`` account: account modified (None on creation)
     :param str newrole: role to check
     """
-    if role != "DomainAdmins":
+    condition = (
+        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        role != "DomainAdmins")
+    if condition:
         return [True]
     lname = "domain_admins"
     condition = (
