@@ -213,3 +213,24 @@ class AliasTestCase(ModoTestCase):
         self.ajax_post(
             reverse("admin:dlist_add"), values
         )
+
+    def test_distribution_list_deletion_on_user_update_bug(self):
+        """This test demonstrates an issue with distribution list being deleted 
+           when one of the users which belong to that list is changed."""
+        values = dict(address="list@test.com",
+                      recipients="user@test.com",
+                      recipients_1="admin@test.com",
+                      enabled=True)
+        self.ajax_post(
+            reverse("admin:dlist_add"), values
+        )
+
+        user = User.objects.get(username="user@test.com")
+        values = dict(
+            username=user.username, first_name="Tester", last_name="Toto",
+            password1="Toto1234", password2="Toto1234", role="SimpleUsers",
+            quota_act=True, is_active=True, email=user.email
+        )
+        self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
+
+        self.assertEqual(Alias.objects.filter(address="list@test.com").count(), 1)
