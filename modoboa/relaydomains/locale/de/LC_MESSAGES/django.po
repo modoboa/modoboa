@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-02 15:38+0100\n"
+"POT-Creation-Date: 2016-04-27 21:59+0200\n"
 "PO-Revision-Date: 2014-12-03 11:02+0000\n"
 "Last-Translator: Arvedui <arvedui@posteo.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
@@ -20,19 +20,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/app_settings.py:29
+#: relaydomains/app_settings.py:18
 msgid "General"
 msgstr "Allgemein"
 
-#: relaydomains/app_settings.py:32
+#: relaydomains/app_settings.py:21
 msgid "Postfix's master.cf path"
 msgstr "Pfad zur Postfix-Datei 'master.cf'"
 
-#: relaydomains/app_settings.py:34
+#: relaydomains/app_settings.py:23
 msgid "Path to the master.cf configuration file"
 msgstr "Pfad zur 'master.cf' Konfigurationsdatei"
 
-#: relaydomains/app_settings.py:42
+#: relaydomains/apps.py:23
 msgid "Relay domains"
 msgstr "Relaydomain"
 

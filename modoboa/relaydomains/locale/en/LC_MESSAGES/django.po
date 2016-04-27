@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-02 15:38+0100\n"
+"POT-Creation-Date: 2016-04-27 21:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: relaydomains/app_settings.py:29
+#: relaydomains/app_settings.py:18
 msgid "General"
 msgstr ""
 
-#: relaydomains/app_settings.py:32
+#: relaydomains/app_settings.py:21
 msgid "Postfix's master.cf path"
 msgstr ""
 
-#: relaydomains/app_settings.py:34
+#: relaydomains/app_settings.py:23
 msgid "Path to the master.cf configuration file"
 msgstr ""
 
-#: relaydomains/app_settings.py:42
+#: relaydomains/apps.py:23
 msgid "Relay domains"
 msgstr ""
 

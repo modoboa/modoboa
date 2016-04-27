@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-02 15:38+0100\n"
+"POT-Creation-Date: 2016-04-27 21:59+0200\n"
 "PO-Revision-Date: 2013-10-01 09:56+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -20,15 +20,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: limits/app_settings.py:18
-msgid "Default limits"
+#: limits/app_settings.py:15
+#, fuzzy
+#| msgid "Default limits"
+msgid "Default per-admin limits"
 msgstr "Límites por defecto"
 
-#: limits/app_settings.py:21 limits/models.py:17
+#: limits/app_settings.py:18
+msgid "Enable per-admin limits"
+msgstr ""
+
+#: limits/app_settings.py:20
+msgid "Enable or disable per-admin limits"
+msgstr ""
+
+#: limits/app_settings.py:24 limits/app_settings.py:85 limits/constants.py:25
+#: limits/constants.py:48
 msgid "Domain admins"
 msgstr "Administradores del dominio"
 
-#: limits/app_settings.py:24
+#: limits/app_settings.py:27
 #, fuzzy
 #| msgid ""
 #| "Maximum number of allowed domain administrators for a new administrator"
@@ -39,11 +50,11 @@ msgstr ""
 "Número máximo de dominios permitido de administradores para un nuevo "
 "administrador"
 
-#: limits/app_settings.py:32 limits/models.py:21
+#: limits/app_settings.py:35 limits/constants.py:10
 msgid "Domains"
 msgstr "Dominios"
 
-#: limits/app_settings.py:35
+#: limits/app_settings.py:38
 #, fuzzy
 #| msgid "Maximum number of allowed domains for a new administrator"
 msgid ""
@@ -51,11 +62,12 @@ msgid ""
 "creation, -1 to allow unlimited creations)"
 msgstr "Número máximo de dominios permitidos para un nuevo administrador"
 
-#: limits/app_settings.py:42 limits/models.py:24
+#: limits/app_settings.py:45 limits/app_settings.py:96 limits/constants.py:14
+#: limits/constants.py:35
 msgid "Domain aliases"
 msgstr "Alias del dominio"
 
-#: limits/app_settings.py:45
+#: limits/app_settings.py:48
 #, fuzzy
 #| msgid "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
@@ -64,11 +76,12 @@ msgid ""
 msgstr ""
 "Número máximo permitido de alias de dominio para un nuevo administrador"
 
-#: limits/app_settings.py:53 limits/models.py:28
+#: limits/app_settings.py:56 limits/app_settings.py:107 limits/constants.py:18
+#: limits/constants.py:39
 msgid "Mailboxes"
 msgstr "Mailboxes"
 
-#: limits/app_settings.py:56
+#: limits/app_settings.py:59
 #, fuzzy
 #| msgid "Maximum number of allowed mailboxes for a new administrator"
 msgid ""
@@ -76,11 +89,12 @@ msgid ""
 "creation, -1 to allow unlimited creations)"
 msgstr "Número máximo de mailboxes permitidas para un nuevo administrador"
 
-#: limits/app_settings.py:63 limits/models.py:30
+#: limits/app_settings.py:66 limits/app_settings.py:117 limits/constants.py:21
+#: limits/constants.py:42
 msgid "Mailbox aliases"
 msgstr "Alias del mailbox"
 
-#: limits/app_settings.py:66
+#: limits/app_settings.py:69
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
 msgid ""
@@ -88,68 +102,140 @@ msgid ""
 "creation, -1 to allow unlimited creations)"
 msgstr "Número máxido de alias permitidos para un nuevo administrador"
 
-#: limits/app_settings.py:80
+#: limits/app_settings.py:76
+#, fuzzy
+#| msgid "Default limits"
+msgid "Default per-domain limits"
+msgstr "Límites por defecto"
+
+#: limits/app_settings.py:79
+msgid "Enable per-domain limits"
+msgstr ""
+
+#: limits/app_settings.py:81
+msgid "Enable or disable per-domain limits"
+msgstr ""
+
+#: limits/app_settings.py:88
+#, fuzzy
+#| msgid ""
+#| "Maximum number of allowed domain administrators for a new administrator"
+msgid ""
+"Maximum number of allowed domain administrators for a new domain. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Número máximo de dominios permitido de administradores para un nuevo "
+"administrador"
+
+#: limits/app_settings.py:99
+#, fuzzy
+#| msgid "Maximum number of allowed domain aliases for a new administrator"
+msgid ""
+"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Número máximo permitido de alias de dominio para un nuevo administrador"
+
+#: limits/app_settings.py:110
+#, fuzzy
+#| msgid "Maximum number of allowed mailboxes for a new administrator"
+msgid ""
+"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Número máximo de mailboxes permitidas para un nuevo administrador"
+
+#: limits/app_settings.py:120
+#, fuzzy
+#| msgid "Maximum number of allowed aliases for a new administrator"
+msgid ""
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
+"-1 to allow unlimited creations)"
+msgstr "Número máxido de alias permitidos para un nuevo administrador"
+
+#: limits/apps.py:17
 msgid "Limits"
 msgstr "Límites"
 
-#: limits/forms.py:35 limits/forms.py:42
-msgid "Invalid limit"
-msgstr "Límite inválido"
+#: limits/constants.py:11
+msgid "Maximum number of domains this user can create"
+msgstr "Número máxima de dominios que este usuario puede crear"
 
-#: limits/forms.py:65
-msgid "Your resources are not initialized yet"
-msgstr "Sus recursos no han sido inicializados aún"
+#: limits/constants.py:15
+msgid "Maximum number of domain aliases this user can create"
+msgstr "Número máximo de alias de dominio que este usuario puede crear"
 
-#: limits/forms.py:69
-msgid "You're not allowed to define unlimited values"
-msgstr "No está autorizado definir valores ilimitados"
+#: limits/constants.py:19
+msgid "Maximum number of mailboxes this user can create"
+msgstr "Número máximo de mailboxes que este usuario puede crear"
 
-#: limits/general_callbacks.py:28
-msgid "Reseller"
-msgstr "Revendedor"
+#: limits/constants.py:22
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "Número máximo de alias a mailboxes que este usuario puede crear"
 
-#: limits/general_callbacks.py:75
-msgid "Resources"
-msgstr "Recursos"
-
-#: limits/lib.py:21
-#, python-format
-msgid "%s: limit reached"
-msgstr "%s: límete alcanzado"
-
-#: limits/lib.py:31
-msgid "Not enough resources"
-msgstr "No hay suficientes recursos"
-
-#: limits/models.py:18
+#: limits/constants.py:26
 msgid "Maximum number of domain administrators this user can create"
 msgstr ""
 "Número máximo de administradores de dominio que este usuario puede crear"
 
-#: limits/models.py:22
-msgid "Maximum number of domains this user can create"
-msgstr "Número máxima de dominios que este usuario puede crear"
-
-#: limits/models.py:26
-msgid "Maximum number of domain aliases this user can create"
+#: limits/constants.py:36
+#, fuzzy
+#| msgid "Maximum number of domain aliases this user can create"
+msgid "Maximum number of domain aliases allowed for this domain."
 msgstr "Número máximo de alias de dominio que este usuario puede crear"
 
-#: limits/models.py:29
-msgid "Maximum number of mailboxes this user can create"
+#: limits/constants.py:40
+#, fuzzy
+#| msgid "Maximum number of mailboxes this user can create"
+msgid "Maximum number of mailboxes allowed for this domain."
 msgstr "Número máximo de mailboxes que este usuario puede crear"
 
-#: limits/models.py:31
-msgid "Maximum number of mailbox aliases this user can create"
+#: limits/constants.py:44
+#, fuzzy
+#| msgid "Maximum number of mailbox aliases this user can create"
+msgid "Maximum number of mailbox aliases allowed for this domain."
 msgstr "Número máximo de alias a mailboxes que este usuario puede crear"
 
-#: limits/models.py:147
-msgid "undefined"
-msgstr "no definido"
+#: limits/constants.py:49
+#, fuzzy
+#| msgid "Maximum number of domain administrators this user can create"
+msgid "Maximum number of domain admins allowed for this domain."
+msgstr ""
+"Número máximo de administradores de dominio que este usuario puede crear"
 
-#: limits/models.py:149
+#: limits/forms.py:41 limits/forms.py:115
+msgid "Invalid limit"
+msgstr "Límite inválido"
+
+#: limits/forms.py:64
+msgid "You're not allowed to define unlimited values"
+msgstr "No está autorizado definir valores ilimitados"
+
+#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+msgid "Resources"
+msgstr "Recursos"
+
+#: limits/lib.py:19
+#, python-format
+msgid "%s: limit reached"
+msgstr "%s: límete alcanzado"
+
+#: limits/lib.py:29
+msgid "Not enough resources"
+msgstr "No hay suficientes recursos"
+
+#: limits/models.py:39 limits/models.py:98
 msgid "unlimited"
 msgstr "ilimitado"
 
 #: limits/templates/limits/poolusage.html:3
 msgid "Resources usage"
 msgstr "Uso de recursos"
+
+#~ msgid "Your resources are not initialized yet"
+#~ msgstr "Sus recursos no han sido inicializados aún"
+
+#~ msgid "Reseller"
+#~ msgstr "Revendedor"
+
+#~ msgid "undefined"
+#~ msgstr "no definido"

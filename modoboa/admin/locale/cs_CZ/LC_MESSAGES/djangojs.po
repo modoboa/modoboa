@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-02 15:38+0100\n"
+"POT-Creation-Date: 2016-04-27 21:59+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -19,37 +19,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: admin/static/admin/js/admin.js:126
+#: admin/static/admin/js/admin.js:131
 msgid "No more domain to show"
 msgstr "Žádná další doména k zobrazení"
 
-#: admin/static/admin/js/admin.js:145
+#: admin/static/admin/js/admin.js:150
 msgid "Do not delete domain directory"
 msgstr "Nemazat adresář domény"
 
-#: admin/static/admin/js/admin.js:147
+#: admin/static/admin/js/admin.js:152
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "Tento krok odstraní VŠECHNA data související s touto doménou."
 
-#: admin/static/admin/js/admin.js:148
+#: admin/static/admin/js/admin.js:153
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
 msgstr ""
 "Tento krok odstraní VŠECHNA data související s touto doménou, vyjma účtů."
 
-#: admin/static/admin/js/admin.js:231
+#: admin/static/admin/js/admin.js:236
 msgid "No domain administrator defined"
 msgstr "Není určen správce domény"
 
-#: admin/static/admin/js/admin.js:286 admin/static/admin/js/admin.js:354
+#: admin/static/admin/js/admin.js:291 admin/static/admin/js/admin.js:359
 msgid "No more identity to show"
 msgstr "Žádná další identita k zobrazení"
 
-#: admin/static/admin/js/admin.js:328
+#: admin/static/admin/js/admin.js:333
 msgid "Do not delete mailbox directory"
 msgstr "Nemazat adresář schránky"
 
-#: admin/static/admin/js/admin.js:357
+#: admin/static/admin/js/admin.js:362
 msgid "No more quota to show"
 msgstr "Žádná další kvóta k zobrazení"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-02 15:38+0100\n"
+"POT-Creation-Date: 2016-04-27 21:59+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -71,8 +71,8 @@ msgstr "Домен создан"
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 
-#: admin/app_settings.py:139 admin/forms/account.py:241
-#: admin/forms/domain.py:78
+#: admin/app_settings.py:139 admin/forms/account.py:261
+#: admin/forms/domain.py:81
 msgid "Must be a positive integer"
 msgstr ""
 
@@ -80,105 +80,100 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: admin/callbacks.py:42
-#, fuzzy
-#| msgid "Create a domain administrator"
-msgid "Domain administrator"
-msgstr "Создание администратора домена"
-
-#: admin/callbacks.py:71 admin/templates/admin/domain_statistics.html:30
+#: admin/callbacks.py:25 admin/templates/admin/domain_statistics.html:30
 #: admin/templates/admin/domains.html:3
 msgid "Domains"
 msgstr "Домены"
 
-#: admin/callbacks.py:81 admin/templates/admin/domain_statistics.html:36
+#: admin/callbacks.py:35 admin/templates/admin/domain_statistics.html:36
 #: admin/templates/admin/domain_statistics.html:50
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Пользователи"
 
-#: admin/callbacks.py:96 admin/templates/admin/forward.html:2
+#: admin/callbacks.py:50 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Перенаправленые"
 
-#: admin/callbacks.py:159
+#: admin/callbacks.py:112
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Ошибка импорта аккаунта (%s): домен должен существовать "
 
-#: admin/callbacks.py:169 admin/forms/account.py:259
-#, python-format
-msgid "Mailbox %s already exists"
+#: admin/callbacks.py:124 admin/models/mailbox.py:321
+#, fuzzy
+#| msgid "Mailbox %s already exists"
+msgid "Mailbox {} already exists"
 msgstr "Почтовый ящик %s существует"
 
-#: admin/callbacks.py:177
+#: admin/callbacks.py:132
 #, fuzzy, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Ошибка импорта аккаунта (%s): домен должен существовать "
 
-#: admin/callbacks.py:212 admin/forms/domain.py:95
+#: admin/callbacks.py:167 admin/forms/domain.py:98
 msgid "domain alias"
 msgstr ""
 
-#: admin/forms/account.py:32 admin/templates/admin/editdomainform.html:13
+#: admin/forms/account.py:33 admin/templates/admin/editdomainform.html:13
 msgid "Username"
 msgstr "Логин пользователя"
 
-#: admin/forms/account.py:34
+#: admin/forms/account.py:35
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
 msgstr ""
 
-#: admin/forms/account.py:39
+#: admin/forms/account.py:40
 msgid "Role"
 msgstr "Роль"
 
-#: admin/forms/account.py:40 admin/forms/account.py:77
+#: admin/forms/account.py:41 admin/forms/account.py:79
 msgid "Choose"
 msgstr "Выбрать"
 
-#: admin/forms/account.py:41
+#: admin/forms/account.py:42
 msgid "What level of permission this user will have"
 msgstr "Разрешения для этого пользователя"
 
-#: admin/forms/account.py:44
+#: admin/forms/account.py:45
 msgid "Password"
 msgstr "Пароль"
 
-#: admin/forms/account.py:47
+#: admin/forms/account.py:49
 msgid "Confirmation"
 msgstr "Подтверждение"
 
-#: admin/forms/account.py:50
+#: admin/forms/account.py:52
 msgid "Enter the same password as above, for verification."
 msgstr "Введите такой же пароль как выше. Для проверки."
 
-#: admin/forms/account.py:68
+#: admin/forms/account.py:70
 msgid "Enabled"
 msgstr "Разрешено"
 
 #: admin/forms/account.py:142
-msgid "Only super administrators are allowed for this mode"
-msgstr ""
-
-#: admin/forms/account.py:151
 msgid "The two password fields didn't match."
 msgstr "Пароли не совпадают"
 
 #: admin/forms/account.py:157
+msgid "Only super administrators are allowed for this mode"
+msgstr ""
+
+#: admin/forms/account.py:165
 msgid "You can't disable your own account"
 msgstr "Вы не можете запретить собственный аккаунт"
 
-#: admin/forms/account.py:171
+#: admin/forms/account.py:180
 msgid "E-mail"
 msgstr "Е-майл"
 
-#: admin/forms/account.py:173 admin/forms/domain.py:36
+#: admin/forms/account.py:182 admin/forms/domain.py:36
 msgid "Quota"
 msgstr "Квота"
 
-#: admin/forms/account.py:175
+#: admin/forms/account.py:184
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
@@ -189,12 +184,12 @@ msgstr ""
 "Оставьте пустым для неограниченного значения.  (Не разрешено администраторам "
 "домена)"
 
-#: admin/forms/account.py:183 admin/forms/domain.py:44
+#: admin/forms/account.py:192 admin/forms/domain.py:44
 #: admin/templates/admin/domains.html:26
 msgid "Alias(es)"
 msgstr "Синоним(ы)"
 
-#: admin/forms/account.py:186
+#: admin/forms/account.py:195
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
@@ -203,49 +198,55 @@ msgstr ""
 "Синонимы этого почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
 "добавления. Используйте '*' для создания синонима 'для всех' (*@domain.tld)"
 
-#: admin/forms/account.py:250 admin/forms/account.py:281
-#: admin/forms/alias.py:72
+#: admin/forms/account.py:242 admin/forms/alias.py:73
+#: admin/models/mailbox.py:295
 msgid "Domain does not exist"
 msgstr "Домен не существует"
 
-#: admin/forms/account.py:357
+#: admin/forms/account.py:270
+#, fuzzy
+#| msgid "Domain does not exist"
+msgid "Local domain does not exist"
+msgstr "Домен не существует"
+
+#: admin/forms/account.py:350
 msgid "Domain(s)"
 msgstr "Домен(ы)"
 
-#: admin/forms/account.py:359
+#: admin/forms/account.py:352
 msgid "Domain(s) that user administrates"
 msgstr "Домен(ы) администрируемые пользователем"
 
-#: admin/forms/account.py:403 admin/forms/account.py:489
-#: admin/forms/domain.py:301 admin/forms/domain.py:371
+#: admin/forms/account.py:397 admin/forms/account.py:483
+#: admin/forms/domain.py:268 admin/forms/domain.py:338
 msgid "General"
 msgstr "Основные"
 
-#: admin/forms/account.py:408 admin/forms/account.py:495
+#: admin/forms/account.py:402 admin/forms/account.py:489
 msgid "Mail"
 msgstr "Почта"
 
-#: admin/forms/account.py:411
+#: admin/forms/account.py:405
 msgid "Permissions"
 msgstr "Права"
 
-#: admin/forms/account.py:478
+#: admin/forms/account.py:472
 msgid "Account updated"
 msgstr "аккаунт изменен"
 
-#: admin/forms/account.py:502
+#: admin/forms/account.py:496
 msgid "New account"
 msgstr "Новый аккаунт"
 
-#: admin/forms/account.py:514
+#: admin/forms/account.py:508
 msgid "Account created"
 msgstr "Аккаунт создан"
 
-#: admin/forms/alias.py:23
+#: admin/forms/alias.py:24
 msgid "Email address"
 msgstr "Е-майл адрес"
 
-#: admin/forms/alias.py:25
+#: admin/forms/alias.py:26
 #, fuzzy
 #| msgid ""
 #| "The alias address (without the domain part). For a 'catch-all' address, "
@@ -257,11 +258,11 @@ msgstr ""
 "Адреса синонимов (без доменной части). Для указания адреса 'для всех' "
 "введите символ *"
 
-#: admin/forms/alias.py:31
+#: admin/forms/alias.py:32
 msgid "Recipients"
 msgstr "Получатели"
 
-#: admin/forms/alias.py:33
+#: admin/forms/alias.py:34
 #, fuzzy
 #| msgid ""
 #| "Mailbox(es) this alias will point to. Indicate only one address per "
@@ -273,15 +274,15 @@ msgstr ""
 "Этот синоним почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/alias.py:75
+#: admin/forms/alias.py:76
 msgid "You don't have access to this domain"
 msgstr "Вы не имеете права доступа к этому домену"
 
-#: admin/forms/alias.py:85
+#: admin/forms/alias.py:93
 msgid "No recipient defined"
 msgstr "Получатель не определен"
 
-#: admin/forms/domain.py:23 admin/models/domain.py:78
+#: admin/forms/domain.py:24 admin/models/domain.py:85
 #: admin/templates/admin/domain_statistics.html:49
 msgid "Domain"
 msgstr ""
@@ -304,31 +305,31 @@ msgstr ""
 "Синоним(ы) этого домена. Вводите одно имя за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/domain.py:98 admin/forms/domain.py:109
-#: admin/forms/domain.py:117
+#: admin/forms/domain.py:101 admin/forms/domain.py:113
+#: admin/forms/domain.py:121
 #, python-format
 msgid "A %s with this name already exists"
 msgstr ""
 
-#: admin/forms/domain.py:109 admin/forms/domain.py:114
+#: admin/forms/domain.py:113 admin/forms/domain.py:118
 msgid "domain"
 msgstr ""
 
-#: admin/forms/domain.py:201
+#: admin/forms/domain.py:166
 msgid "Create a domain administrator"
 msgstr "Создание администратора домена"
 
-#: admin/forms/domain.py:204
+#: admin/forms/domain.py:169
 msgid "Automatically create an administrator for this domain"
 msgstr "Автоматически создаст администратора для этого домена"
 
-#: admin/forms/domain.py:209 admin/templates/admin/domains.html:25
+#: admin/forms/domain.py:174 admin/templates/admin/domains.html:25
 #: admin/templates/admin/editdomainform.html:13
 #: admin/templates/admin/identity_headers.html:2
 msgid "Name"
 msgstr "Логин"
 
-#: admin/forms/domain.py:212
+#: admin/forms/domain.py:177
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
@@ -336,36 +337,36 @@ msgstr ""
 "Имя администратора. Не включайте имя домена оно будет добавлено "
 "автоматически."
 
-#: admin/forms/domain.py:219
+#: admin/forms/domain.py:184
 msgid "Create aliases"
 msgstr "Создание синонимов"
 
-#: admin/forms/domain.py:222
+#: admin/forms/domain.py:187
 msgid "Automatically create standard aliases for this domain"
 msgstr "Автоматически создает стандартные синонимы для этого домена"
 
-#: admin/forms/domain.py:241
+#: admin/forms/domain.py:206
 msgid "Invalid format"
 msgstr "Неверный формат"
 
-#: admin/forms/domain.py:258
+#: admin/forms/domain.py:223
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Пользователь  '%s' уже существует"
 
-#: admin/forms/domain.py:360
+#: admin/forms/domain.py:327
 msgid "Domain modified"
 msgstr "Домен изменен"
 
-#: admin/forms/domain.py:380
+#: admin/forms/domain.py:347
 msgid "Options"
 msgstr "Опции"
 
-#: admin/forms/domain.py:388
+#: admin/forms/domain.py:355
 msgid "New domain"
 msgstr "Новый домен"
 
-#: admin/forms/domain.py:406
+#: admin/forms/domain.py:368
 msgid "Domain created"
 msgstr "Домен создан"
 
@@ -423,128 +424,159 @@ msgstr "Шифровать пароль"
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr "Выберите эту опцию если пароль в вашем файле не зашифрован "
 
-#: admin/lib.py:30
+#: admin/lib.py:31
 msgid "A mailbox is required"
 msgstr ""
 
-#: admin/lib.py:120
+#: admin/lib.py:121
 #, fuzzy
 #| msgid "You can't delete your own domain"
 msgid "You are not allowed to import domains"
 msgstr "Вы не можете удалить собственный домен"
 
-#: admin/lib.py:129
+#: admin/lib.py:132
 msgid "You are not allowed to import domain aliases."
 msgstr ""
 
-#: admin/models/alias.py:26 admin/models/mailbox.py:79
+#: admin/models/alias.py:27 admin/models/mailbox.py:80
 msgid "address"
 msgstr "адрес"
 
-#: admin/models/alias.py:28
+#: admin/models/alias.py:29
 #, fuzzy
 #| msgid "The alias name"
 msgid "The alias address."
 msgstr "Имя синонима"
 
-#: admin/models/alias.py:33 admin/models/domain.py:39
-#: admin/models/domain_alias.py:26
+#: admin/models/alias.py:34 admin/models/domain.py:40
+#: admin/models/domain_alias.py:44
 msgid "enabled"
 msgstr "Разрешен"
 
-#: admin/models/alias.py:34 admin/models/domain_alias.py:27
+#: admin/models/alias.py:35 admin/models/domain_alias.py:45
 msgid "Check to activate this alias"
 msgstr "Отметить для активации синонима"
 
-#: admin/models/alias.py:79
+#: admin/models/alias.py:80
 msgid "distribution list"
 msgstr "Список рассылки"
 
-#: admin/models/alias.py:80
+#: admin/models/alias.py:81
 msgid "forward"
 msgstr "Перенаправление"
 
-#: admin/models/alias.py:81
+#: admin/models/alias.py:82
 msgid "alias"
 msgstr "Синоним"
 
-#: admin/models/alias.py:112
+#: admin/models/alias.py:113
 #, fuzzy
 #| msgid "Invalid request"
 msgid "Invalid address"
 msgstr "Ошибочный запрос"
 
-#: admin/models/alias.py:133
+#: admin/models/alias.py:134
 #, fuzzy
 #| msgid "Local recipient %s not found"
 msgid "Local recipient {}@{} not found"
 msgstr "Локальный получатель  %s не найден"
 
-#: admin/models/alias.py:162
+#: admin/models/alias.py:166
 #, python-format
 msgid "Invalid line: %s"
 msgstr "Неверная строка %s"
 
-#: admin/models/alias.py:168
+#: admin/models/alias.py:172
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "Домен '%s' не существует"
 
-#: admin/models/domain.py:35 admin/models/domain_alias.py:19
+#: admin/models/domain.py:36 admin/models/domain_alias.py:37
 msgid "name"
 msgstr "имя"
 
-#: admin/models/domain.py:36
+#: admin/models/domain.py:37
 msgid "The domain name"
 msgstr "Имя домена"
 
-#: admin/models/domain.py:40
+#: admin/models/domain.py:41
 msgid "Check to activate this domain"
 msgstr "Отметить для активации этого домена"
 
-#: admin/models/domain.py:162 admin/models/domain_alias.py:49
+#: admin/models/domain.py:182 admin/models/domain_alias.py:71
 msgid "Invalid line"
 msgstr "Ошибочная строка"
 
-#: admin/models/domain.py:170
+#: admin/models/domain.py:190
 #, python-format
 msgid "Invalid quota value for domain '%s'"
 msgstr ""
 
-#: admin/models/domain_alias.py:20
+#: admin/models/domain_alias.py:38
 msgid "The alias name"
 msgstr "Имя синонима"
 
-#: admin/models/domain_alias.py:22
+#: admin/models/domain_alias.py:40
 msgid "target"
 msgstr "адресат"
 
-#: admin/models/domain_alias.py:23
+#: admin/models/domain_alias.py:41
 msgid "The domain this alias points to"
 msgstr "Домен этого синонима указывает на"
 
-#: admin/models/domain_alias.py:58
+#: admin/models/domain_alias.py:80
 #, python-format
 msgid "Unknown domain %s"
 msgstr "Неизвестный домен %s"
 
-#: admin/models/mailbox.py:81
+#: admin/models/mailbox.py:82
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Адрес почтового ящика  (без @domain.tld)"
 
-#: admin/models/mailbox.py:146
+#: admin/models/mailbox.py:149
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Ошибка получения места находжения почтового ящика (%s)"
 
-#: admin/models/mailbox.py:235
+#: admin/models/mailbox.py:238
 #, python-format
 msgid "Quota is greater than the allowed domain's limit (%dM)"
 msgstr "Квота больше чем разрешено на уровне домена (%dM)"
 
-#: admin/models/mailbox.py:241
+#: admin/models/mailbox.py:244
 msgid "A quota is required"
 msgstr "Требуется квота"
+
+#: admin/serializers.py:44 admin/serializers.py:222 admin/serializers.py:310
+#, fuzzy
+#| msgid "Permissions"
+msgid "Permission denied."
+msgstr "Права"
+
+#: admin/serializers.py:82
+msgid ""
+"List of administered domains (resellers and domain administrators only)."
+msgstr ""
+
+#: admin/serializers.py:187
+msgid "Not allowed for this role."
+msgstr ""
+
+#: admin/serializers.py:197
+msgid "Must be equal to mailbox full_address"
+msgstr ""
+
+#: admin/serializers.py:209
+#, fuzzy
+#| msgid "Domain does not exist"
+msgid "Local domain {} does not exist"
+msgstr "Домен не существует"
+
+#: admin/serializers.py:308
+#, fuzzy
+#| msgid "Domain modified"
+msgid "Domain not found."
+msgstr "Домен изменен"
 
 #: admin/templates/admin/account_general_form.html:11
 #: admin/templates/admin/aliasform.html:8
@@ -633,7 +665,7 @@ msgstr "Синонимы почтового ящика"
 msgid "Automatically forward emails to another address"
 msgstr "Автоматически перенаправлять письма на другой адрес"
 
-#: admin/templates/admin/forward.html:9 admin/views/alias.py:113
+#: admin/templates/admin/forward.html:9 admin/views/alias.py:114
 msgid "Update"
 msgstr "Обновление"
 
@@ -747,51 +779,51 @@ msgstr "Удалить это разрешение"
 msgid "Alias with this name already exists"
 msgstr "Синоним с таким именем уже есть"
 
-#: admin/views/alias.py:53
+#: admin/views/alias.py:54
 msgid "Create"
 msgstr "Создать"
 
-#: admin/views/alias.py:65
+#: admin/views/alias.py:66
 msgid "New distribution list"
 msgstr "Новый список рассылки"
 
-#: admin/views/alias.py:67
+#: admin/views/alias.py:68
 msgid "Distribution list created"
 msgstr "Список рассылки создан"
 
-#: admin/views/alias.py:76
+#: admin/views/alias.py:77
 msgid "New alias"
 msgstr "Новый синоним"
 
-#: admin/views/alias.py:77
+#: admin/views/alias.py:78
 msgid "Alias created"
 msgstr "Синоним создан"
 
-#: admin/views/alias.py:86
+#: admin/views/alias.py:87
 msgid "New forward"
 msgstr "Новая пересылка"
 
-#: admin/views/alias.py:87
+#: admin/views/alias.py:88
 msgid "Forward created"
 msgstr "Пересылка создана"
 
-#: admin/views/alias.py:101
+#: admin/views/alias.py:102
 msgid "Distribution list modified"
 msgstr "Список рассылки изменен"
 
-#: admin/views/alias.py:103
+#: admin/views/alias.py:104
 msgid "Forward modified"
 msgstr "Пересылка изменена"
 
-#: admin/views/alias.py:105
+#: admin/views/alias.py:106
 msgid "Alias modified"
 msgstr "Синоним изменен"
 
-#: admin/views/domain.py:132
+#: admin/views/domain.py:134
 msgid "You can't delete your own domain"
 msgstr "Вы не можете удалить собственный домен"
 
-#: admin/views/domain.py:135
+#: admin/views/domain.py:137
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Домен удален"
@@ -869,3 +901,8 @@ msgstr "Импорт информации о пользователях"
 #: admin/views/user.py:35
 msgid "Forward updated"
 msgstr "Перенаправление обновлено"
+
+#, fuzzy
+#~| msgid "Create a domain administrator"
+#~ msgid "Domain administrator"
+#~ msgstr "Создание администратора домена"
