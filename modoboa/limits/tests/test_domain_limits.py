@@ -50,7 +50,6 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
 
     def test_domain_aliases_limit(self):
         """Try to exceed defined limit."""
-        # Import
         domain = Domain.objects.get(name="test.com")
         limit = domain.domainobjectlimit_set.get(name="domain_aliases")
         self.assertFalse(limit.is_exceeded())
@@ -74,8 +73,6 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
 
     def test_mailboxes_limit(self):
         """Try to exceed defined limits."""
-        # Import
-        # LDAP ?
         domain = Domain.objects.get(name="test.com")
         domain.domainobjectlimit_set.filter(name="mailboxes").update(
             max_value=3)
@@ -97,7 +94,6 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
 
     def test_mailbox_aliases_limit(self):
         """Try to exceed defined limits."""
-        # Import
         domain = Domain.objects.get(name="test.com")
         user = User.objects.get(username="user@test.com")
         limit = domain.domainobjectlimit_set.get(name="mailbox_aliases")
