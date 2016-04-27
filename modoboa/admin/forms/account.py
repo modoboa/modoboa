@@ -214,8 +214,6 @@ class AccountFormMail(forms.Form, DynamicForm):
             cpt = 1
             qset = self.mb.aliasrecipient_set.select_related("alias")
             for ralias in qset:
-                if ralias.alias.recipients_count >= 2:
-                    continue
                 name = "aliases_%d" % cpt
                 self._create_field(
                     lib_fields.UTF8AndEmptyUserEmailField, name,
@@ -261,6 +259,17 @@ class AccountFormMail(forms.Form, DynamicForm):
                 and self.cleaned_data['quota'] is not None:
             if self.cleaned_data["quota"] < 0:
                 self.add_error("quota", _("Must be a positive integer"))
+        self.aliases = []
+        for name, value in self.cleaned_data.iteritems():
+            if not name.startswith("aliases"):
+                continue
+            if value == "":
+                continue
+            local_part, domname = split_mailbox(value)
+            if not Domain.objects.filter(name=domname).exists():
+                self.add_error(name, _("Local domain does not exist"))
+                break
+            self.aliases.append(value.lower())
         return self.cleaned_data
 
     def create_mailbox(self, user, account):
@@ -278,34 +287,26 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     def _update_aliases(self, user, account):
         """Update mailbox aliases."""
-        aliases = []
-        for name, value in self.cleaned_data.iteritems():
-            if not name.startswith("aliases"):
-                continue
-            if value == "":
-                continue
-            aliases.append(value.lower())
-
         qset = self.mb.aliasrecipient_set.select_related("alias").filter(
             alias__internal=False)
         for ralias in qset:
-            if ralias.alias.address not in aliases:
+            if ralias.alias.address not in self.aliases:
                 alias = ralias.alias
                 ralias.delete()
-                if alias.recipients_count >= 2:
+                if alias.recipients_count > 0:
                     continue
                 alias.delete()
             else:
-                aliases.remove(ralias.alias.address)
-        if not aliases:
+                self.aliases.remove(ralias.alias.address)
+        if not self.aliases:
             return
         core_signals.can_create_object.send(
             self.__class__, context=user, object_type="mailbox_aliases",
-            count=len(aliases))
+            count=len(self.aliases))
         core_signals.can_create_object.send(
             self.__class__, context=self.mb.domain,
-            object_type="mailbox_aliases", count=len(aliases))
-        for alias in aliases:
+            object_type="mailbox_aliases", count=len(self.aliases))
+        for alias in self.aliases:
             if self.mb.aliasrecipient_set.select_related("alias").filter(
                     alias__address=alias).exists():
                 continue
