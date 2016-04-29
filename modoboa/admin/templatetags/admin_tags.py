@@ -5,6 +5,7 @@ Admin extension tags.
 from django import template
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib import events
@@ -192,7 +193,7 @@ def identity_actions(user, ident):
     return render_actions(actions)
 
 
-@register.assignment_tag
+@register.simple_tag
 def check_identity_status(identity):
     """Check if identity is enabled or not."""
     if identity.__class__.__name__ == "User":
@@ -232,7 +233,7 @@ def domain_aliases(domain):
     res = ''
     for alias in domain.aliases.all():
         res += '%s<br/>' % alias.name
-    return res
+    return mark_safe(res)
 
 
 @register.simple_tag
@@ -283,4 +284,4 @@ def get_extra_admin_content(user, target, currentpage):
     res = events.raiseQueryEvent(
         "ExtraAdminContent", user, target, currentpage
     )
-    return "".join(res)
+    return mark_safe("".join(res))
