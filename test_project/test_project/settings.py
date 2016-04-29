@@ -83,9 +83,9 @@ AUTHENTICATION_BACKENDS = (
     'modoboa.lib.authbackends.SimpleBackend',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + [
     'modoboa.core.context_processors.top_notifications',
-)
+]
 
 ROOT_URLCONF = 'test_project.urls'
 
