@@ -1,12 +1,13 @@
 """Models related to domains management."""
 
-from django.contrib.contenttypes import generic
 from django.db import models
 from django.db.models.manager import Manager
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-import reversion
+from django.contrib.contenttypes.fields import GenericRelation
+
+from reversion import revisions as reversion
 
 from modoboa.core.models import User, ObjectAccess
 from modoboa.core import signals as core_signals
@@ -41,7 +42,7 @@ class Domain(AdminObject):
         help_text=ugettext_lazy("Check to activate this domain"),
         default=True
     )
-    owners = generic.GenericRelation(ObjectAccess)
+    owners = GenericRelation(ObjectAccess)
     type = models.CharField(default="domain", max_length=20)
 
     objects = DomainManager()

@@ -69,7 +69,7 @@ TwocolsNav.prototype = {
 
     toggle_field_visibility: function($field, $parent, value) {
         if ($parent.attr("disabled") === undefined &&
-            $field.attr("data-visibility-value") == value) {
+            $field.attr("data-visibility-value") === value) {
             $field.attr("disabled", null);
             $field.show();
             this.propagate_change($field);

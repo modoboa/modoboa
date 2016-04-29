@@ -3,7 +3,7 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 
-import reversion
+from reversion import revisions as reversion
 
 from modoboa.lib.web_utils import (
     render_to_json_response, _render_to_string

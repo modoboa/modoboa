@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-import reversion
+from reversion import revisions as reversion
 
 from modoboa.admin import models as admin_models
 from modoboa.lib import parameters

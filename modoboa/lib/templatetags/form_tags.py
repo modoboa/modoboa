@@ -4,6 +4,7 @@ Form rendering tags.
 
 from django import forms
 from django import template
+from django.utils.safestring import mark_safe
 from django.template.loader import render_to_string
 
 from modoboa.lib.form_utils import SeparatorField
@@ -20,7 +21,7 @@ def render_form(form, tpl=None):
     ret = ""
     for field in form:
         ret += "%s\n" % render_field(field)
-    return ret
+    return mark_safe(ret)
 
 
 def configure_field_classes(field):

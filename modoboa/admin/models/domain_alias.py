@@ -4,9 +4,9 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation
 
-import reversion
+from reversion import revisions as reversion
 
 from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
@@ -46,7 +46,7 @@ class DomainAlias(AdminObject):
         default=True
     )
 
-    owners = generic.GenericRelation(core_models.ObjectAccess)
+    owners = GenericRelation(core_models.ObjectAccess)
 
     objects = DomainAliasManager()
 

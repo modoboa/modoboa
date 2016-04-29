@@ -2,7 +2,7 @@
 
 from django.utils.translation import ugettext as _
 
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import parameters

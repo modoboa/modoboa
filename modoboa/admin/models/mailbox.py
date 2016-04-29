@@ -10,7 +10,7 @@ from django.db.models.manager import Manager
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-import reversion
+from reversion import revisions as reversion
 
 from .base import AdminObject
 from .domain import Domain

@@ -1,6 +1,9 @@
-import reversion
+"""Modoboa Lib models."""
+
 from django.db import models
 from django.conf import settings
+
+from reversion import revisions as reversion
 
 
 class Parameter(models.Model):
