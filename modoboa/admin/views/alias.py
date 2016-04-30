@@ -1,3 +1,4 @@
+"""Alias related views."""
 
 from django.contrib.auth.decorators import (
     login_required, permission_required
@@ -7,7 +8,7 @@ from django.db import IntegrityError
 from django.shortcuts import render
 from django.utils.translation import ugettext as _, ungettext
 
-import reversion
+from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
 from modoboa.lib.exceptions import PermDeniedException, Conflict

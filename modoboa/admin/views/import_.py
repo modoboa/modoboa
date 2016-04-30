@@ -10,7 +10,7 @@ from django.db import transaction
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 
-import reversion
+from reversion import revisions as reversion
 
 from modoboa.lib import events
 from modoboa.lib.exceptions import ModoboaException, Conflict

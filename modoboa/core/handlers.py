@@ -6,7 +6,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 
-import reversion
+from reversion import revisions as reversion
 
 
 @receiver(reversion.post_revision_commit)

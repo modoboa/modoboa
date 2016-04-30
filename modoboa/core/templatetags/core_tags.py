@@ -7,6 +7,7 @@ from django.contrib.sessions.models import Session
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
 from modoboa.lib import events
@@ -149,11 +150,12 @@ def visirule(field):
             field.html_name not in field.form.visirules:
         return ""
     rule = field.form.visirules[field.html_name]
-    return " data-visibility-field='%s' data-visibility-value='%s' " \
-        % (rule["field"], rule["value"])
+    return mark_safe(
+        " data-visibility-field='{}' data-visibility-value='{}' "
+        .format(rule["field"], rule["value"]))
 
 
-@register.assignment_tag
+@register.simple_tag
 def get_version():
     import pkg_resources
     return pkg_resources.get_distribution("modoboa").version
@@ -234,10 +236,10 @@ def display_messages(msgs):
     else:
         timeout = "undefined"
 
-    return """
+    return mark_safe("""
 <script type="text/javascript">
     $(document).ready(function() {
         $('body').notify('%s', '%s', %s);
     });
 </script>
-""" % (level, text, timeout)
+""" % (level, text, timeout))

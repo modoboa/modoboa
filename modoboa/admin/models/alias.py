@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-import reversion
+from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox

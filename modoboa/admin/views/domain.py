@@ -1,6 +1,4 @@
-"""
-Domain related views.
-"""
+"""Domain related views."""
 
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, ungettext
@@ -11,7 +9,7 @@ from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
 
-import reversion
+from reversion import revisions as reversion
 
 from modoboa.core.models import User
 from modoboa.core import signals as core_signals
@@ -38,8 +36,8 @@ def index(request):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domains")
-    or u.has_perm("admin.view_mailboxes")
+    lambda u: u.has_perm("admin.view_domains") or
+    u.has_perm("admin.view_mailboxes")
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")

@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _, ungettext
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-import reversion
+from reversion import revisions as reversion
 
 from modoboa.core.models import User
 from modoboa.lib import parameters, events

@@ -7,6 +7,7 @@ import getpass
 import os
 import sys
 
+import django
 from django.template import Context, Template
 
 import dj_database_url
@@ -167,6 +168,7 @@ class PostfixMapsCommand(Command):
 
     def handle(self, parsed_args):
         """Command entry point."""
+        django.setup()
         dbinfo = None
         if parsed_args.dburl:
             dbinfo = dj_database_url.config(default=parsed_args.dburl[0])
