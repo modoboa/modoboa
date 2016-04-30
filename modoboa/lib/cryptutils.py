@@ -1,19 +1,26 @@
 # coding: utf-8
-from Crypto.Cipher import AES
+"""Crypto related utilities."""
+
 import base64
 import random
 import string
+
+from Crypto.Cipher import AES
+
 from modoboa.lib import parameters
 
 
 def random_key(l=16):
-    """Generate a random key
+    """Generate a random key.
 
     :param integer l: the key's length
     :return: a string
     """
-    char_set = string.digits + string.letters + string.punctuation
-    return ''.join(random.sample(char_set * l, l))
+    population = string.digits + string.letters + string.punctuation
+    while True:
+        key = "".join(random.sample(population * l, l))
+        if len(key) == l:
+            return key
 
 
 def encrypt(clear):
