@@ -1,8 +1,11 @@
 # coding: utf-8
+"""Custom template tags."""
+
 from datetime import datetime
 
 from django import template
 from django.template import Template, Context
+from django.utils.safestring import mark_safe
 
 from modoboa.lib import events
 
@@ -21,7 +24,7 @@ def join(items, sep=','):
 
 @register.simple_tag
 def tolist(values):
-    return "[%s]" % ",".join(['"%s"' % v for v in values])
+    return mark_safe("[%s]" % ",".join(['"%s"' % v for v in values]))
 
 
 @register.simple_tag
