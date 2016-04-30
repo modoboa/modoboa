@@ -49,6 +49,43 @@ you did choose. See :ref:`webservers` for more details.
 Specific upgrade instructions
 *****************************
 
+1.5.0
+=====
+
+The API has been greatly improved and a documentation is now
+available. To enable it, add ``'rest_framework.swagger'`` to the
+``INSTALLED_APPS`` variable in :file:`settings.py` as follows::
+
+  INSTALLED_APPS = (
+      'django.contrib.auth',
+      'django.contrib.contenttypes',
+      'django.contrib.sessions',
+      'django.contrib.messages',
+      'django.contrib.sites',
+      'django.contrib.staticfiles',
+      'reversion',
+      'rest_framework.authtoken',
+      'rest_framework.swagger',
+  )
+
+Then, add the following content into :file:`settings.py`, just after
+the ``REST_FRAMEWORK`` variable::
+
+  SWAGGER_SETTINGS = {
+      "is_authenticated": False,
+      "api_version": "1.0",
+      "exclude_namespaces": [],
+      "info": {
+          "contact": "contact@modoboa.com",
+          "description": ("Modoboa API, requires a valid token."),
+          "title": "Modoboa API",
+      }
+  }
+
+You're done. The documentation is now available at the following address:
+
+    http://<your instance address>/docs/api/
+
 1.4.0
 =====
 
