@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'reversion',
     'rest_framework.authtoken',
-    'rest_framework.swagger',
+    'rest_framework_swagger',
 {% if devmode %}    'djangobower',{% endif %}
 )
 
