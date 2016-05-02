@@ -65,7 +65,7 @@ available. To enable it, add ``'rest_framework.swagger'`` to the
       'django.contrib.staticfiles',
       'reversion',
       'rest_framework.authtoken',
-      'rest_framework.swagger',
+      'rest_framework_swagger',
   )
 
 Then, add the following content into :file:`settings.py`, just after
@@ -84,7 +84,14 @@ the ``REST_FRAMEWORK`` variable::
 
 You're done. The documentation is now available at the following address:
 
-    http://<your instance address>/docs/api/
+  http://<your instance address>/docs/api/
+
+Finally, if you find a ``TEMPLATE_CONTEXT_PROCESSORS`` variable in
+your :file:`settings.py` file, make sure it looks like this::
+
+  TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + [
+      'modoboa.core.context_processors.top_notifications',
+  ]
 
 1.4.0
 =====
