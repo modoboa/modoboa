@@ -46,6 +46,7 @@ objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
 objectClass: top
+cn: testuser2
 givenName: Test
 sn: User
 mail: testuser2@example.com
