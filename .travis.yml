@@ -2,6 +2,11 @@ sudo: false
 language: python
 python:
   - "2.7"
+addons:
+  apt:
+    packages:
+      - ldap-utils
+      - slapd
 
 env:
   - DB="POSTGRESQL"
@@ -17,6 +22,7 @@ before_install:
 install:
   - python setup.py -q develop
   - pip install -q psycopg2 mysqlclient
+  - pip install -q -r ldap-requirements.txt
   - pip install -q -r test-requirements.txt
 
 before_script:
@@ -24,6 +30,10 @@ before_script:
   - mysql -e "create database IF NOT EXISTS modoboa_test;" -uroot
   - mysql -e "CREATE USER 'modoboa'@'localhost' IDENTIFIED BY 'modoboa'" -uroot;
   - mysql -e "GRANT ALL PRIVILEGES ON * . * TO 'modoboa'@'localhost';" -uroot;
+  - mkdir /tmp/slapd
+  - slapd -f test_data/slapd.conf -h ldap://localhost:3389 &
+  - sleep 3
+  - ldapadd -h localhost:3389 -D cn=admin,dc=example,dc=com -w test -f test_data/base.ldif
 
 script:
   - python ./tests.py
@@ -32,4 +42,3 @@ script:
 
 after_success:
   - codecov
-

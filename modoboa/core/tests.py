@@ -1,8 +1,11 @@
 """Tests for core application."""
 
 from django.core.urlresolvers import reverse
+from django.test import override_settings
 
+from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
+
 from . import factories
 from . import models
 
@@ -34,6 +37,33 @@ class AuthenticationTestCase(ModoTestCase):
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("admin:domain_list")))
+
+
+@override_settings(AUTHENTICATION_BACKENDS=(
+    'modoboa.lib.authbackends.LDAPBackend',
+    'modoboa.lib.authbackends.SimpleBackend',
+))
+class LDAPAuthenticationTestCase(ModoTestCase):
+
+    """Validate LDAP authentication scenarios."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(AuthenticationTestCase, cls).setUpTestData()
+        parameters.save_admin(
+            "AUTHENTICATION_TYPE", "ldap")
+        parameters.save_admin("LDAP_SERVER_PORT", "3389")
+
+    def test_searchbind_authentication(self):
+        """Test the bind&search method."""
+        self.client.logout()
+        parameters.save_admin("LDAP_BIND_DN", "cn=admin,dc=example,dc=com")
+        parameters.save_admin("LDAP_BIND_PASSWORD", "test")
+        parameters.save_admin("LDAP_SEARCH_BASE", "ou=users,dc=example,dc=com")
+        self.assertTrue(
+            self.client.login(username="testuser@example.com", password="test")
+        )
 
 
 class ProfileTestCase(ModoTestCase):

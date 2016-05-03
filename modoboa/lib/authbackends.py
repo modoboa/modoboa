@@ -34,6 +34,11 @@ try:
 
     class LDAPBackend(orig_LDAPBackend):
 
+        def __init__(self, *args, **kwargs):
+            """Load LDAP settings."""
+            parameters.apply_to_django_settings()
+            super(LDAPBackend, self).__init__(*args, **kwargs)
+
         def get_or_create_user(self, username, ldap_user):
             """
             This must return a (User, created) 2-tuple for the given
@@ -72,7 +77,8 @@ try:
         def authenticate(self, username, password):
             auth_type = parameters.get_admin("AUTHENTICATION_TYPE", app="core")
             if auth_type == "ldap":
-                return super(LDAPBackend, self).authenticate(username, password)
+                return super(LDAPBackend, self).authenticate(
+                    username, password)
             return None
 
 except ImportError:

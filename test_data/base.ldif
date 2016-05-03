@@ -1,0 +1,16 @@
+dn: dc=example,dc=com
+objectClass: dcObject
+objectClass: organizationalUnit
+
+ou: users
+
+dn: cn=testuser,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: testuser
+givenName: Test
+sn: User
+mail: testuser@example.com
+userPassword: {SSHA}AIzygLSXlArhAMzddUriXQxf7UlkqopP
