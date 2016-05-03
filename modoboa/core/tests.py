@@ -55,15 +55,34 @@ class LDAPAuthenticationTestCase(ModoTestCase):
             "AUTHENTICATION_TYPE", "ldap")
         parameters.save_admin("LDAP_SERVER_PORT", "3389")
 
+    def check_created_user(self, username, group="SimpleUsers", with_mb=True):
+        """Check that created user is valid."""
+        user = models.User.objects.get(username=username)
+        self.assertEqual(user.email, username)
+        self.assertEqual(user.group, group)
+        if with_mb:
+            self.assertEqual(user.mailbox.domain.name, "example.com")
+            self.assertEqual(user.mailbox.full_address, username)
+
     def test_searchbind_authentication(self):
         """Test the bind&search method."""
         self.client.logout()
         parameters.save_admin("LDAP_BIND_DN", "cn=admin,dc=example,dc=com")
         parameters.save_admin("LDAP_BIND_PASSWORD", "test")
         parameters.save_admin("LDAP_SEARCH_BASE", "dc=example,dc=com")
-        self.assertTrue(
-            self.client.login(username="testuser@example.com", password="test")
-        )
+        username = "testuser@example.com"
+        self.assertTrue(self.client.login(username=username, password="test"))
+        self.check_created_user(username)
+
+    def test_directbind_authentication(self):
+        """Test the directbind method."""
+        self.client.logout()
+        parameters.save_admin("LDAP_AUTH_METHOD", "directbind")
+        parameters.save_admin(
+            "LDAP_USER_DN_TEMPLATE", "%(user)s,dc=example,dc=com")
+        username = "testuser@example.com"
+        self.assertTrue(self.client.login(username=username, password="test"))
+        self.check_created_user(username)
 
 
 class ProfileTestCase(ModoTestCase):

@@ -3,7 +3,7 @@ objectClass: dcObject
 objectClass: organizationalUnit
 ou: users
 
-dn: cn=testuser,dc=example,dc=com
+dn: mail=testuser@example.com,dc=example,dc=com
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
