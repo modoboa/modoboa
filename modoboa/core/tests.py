@@ -60,7 +60,7 @@ class LDAPAuthenticationTestCase(ModoTestCase):
         self.client.logout()
         parameters.save_admin("LDAP_BIND_DN", "cn=admin,dc=example,dc=com")
         parameters.save_admin("LDAP_BIND_PASSWORD", "test")
-        parameters.save_admin("LDAP_SEARCH_BASE", "ou=users,dc=example,dc=com")
+        parameters.save_admin("LDAP_SEARCH_BASE", "dc=example,dc=com")
         self.assertTrue(
             self.client.login(username="testuser@example.com", password="test")
         )
