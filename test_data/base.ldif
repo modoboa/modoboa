@@ -40,14 +40,3 @@ givenName: Test
 sn: User
 mail: testuser@example.com
 userPassword: {SSHA}AIzygLSXlArhAMzddUriXQxf7UlkqopP
-
-dn: mail=testuser2@example.com,ou=users,dc=example,dc=com
-objectClass: inetOrgPerson
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-cn: testuser2
-givenName: Test
-sn: User
-mail: testuser2@example.com
-userPassword: {SSHA}AIzygLSXlArhAMzddUriXQxf7UlkqopP
