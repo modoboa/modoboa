@@ -69,7 +69,7 @@ class LDAPAuthenticationTestCase(ModoTestCase):
         self.client.logout()
         parameters.save_admin("LDAP_BIND_DN", "cn=admin,dc=example,dc=com")
         parameters.save_admin("LDAP_BIND_PASSWORD", "test")
-        parameters.save_admin("LDAP_SEARCH_BASE", "ou=usersdc=example,dc=com")
+        parameters.save_admin("LDAP_SEARCH_BASE", "ou=users,dc=example,dc=com")
         username = "testuser@example.com"
         self.assertTrue(self.client.login(username=username, password="test"))
         self.check_created_user(username)
@@ -79,7 +79,7 @@ class LDAPAuthenticationTestCase(ModoTestCase):
         self.client.logout()
         parameters.save_admin("LDAP_AUTH_METHOD", "directbind")
         parameters.save_admin(
-            "LDAP_USER_DN_TEMPLATE", "%(user)s,ou=users,dc=example,dc=com")
+            "LDAP_USER_DN_TEMPLATE", "cn=%(user)s,ou=users,dc=example,dc=com")
         username = "testuser"
         self.assertTrue(self.client.login(username=username, password="test"))
         self.check_created_user(username)
