@@ -1,0 +1,2 @@
+python-ldap
+django-auth-ldap

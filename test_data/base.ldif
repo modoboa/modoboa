@@ -1,0 +1,42 @@
+dn: dc=example,dc=com
+objectClass: dcObject
+objectClass: organizationalUnit
+ou: test
+
+dn: ou=groups,dc=example,dc=com
+objectClass: organizationalUnit
+ou: groups
+
+dn: ou=users,dc=example,dc=com
+objectClass: organizationalUnit
+ou: users
+
+dn: cn=admins,ou=groups,dc=example,dc=com
+cn: admins
+gidnumber: 10001
+memberuid: mailadmin 
+objectclass: posixGroup
+objectclass: top
+
+dn: cn=mailadmin,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: mailadmin
+uid: mailadmin
+givenName: Mail
+sn: Admin
+mail: mailadmin@example.com
+userPassword: {SSHA}AIzygLSXlArhAMzddUriXQxf7UlkqopP
+
+dn: cn=testuser,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: testuser
+givenName: Test
+sn: User
+mail: testuser@example.com
+userPassword: {SSHA}AIzygLSXlArhAMzddUriXQxf7UlkqopP
