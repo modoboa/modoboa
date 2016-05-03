@@ -50,7 +50,7 @@ class LDAPAuthenticationTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        super(AuthenticationTestCase, cls).setUpTestData()
+        super(LDAPAuthenticationTestCase, cls).setUpTestData()
         parameters.save_admin(
             "AUTHENTICATION_TYPE", "ldap")
         parameters.save_admin("LDAP_SERVER_PORT", "3389")
