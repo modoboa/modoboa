@@ -80,7 +80,7 @@ class LDAPAuthenticationTestCase(ModoTestCase):
         parameters.save_admin("LDAP_AUTH_METHOD", "directbind")
         parameters.save_admin(
             "LDAP_USER_DN_TEMPLATE", "%(user)s,dc=example,dc=com")
-        username = "testuser@example.com"
+        username = "testuser2@example.com"
         self.assertTrue(self.client.login(username=username, password="test"))
         self.check_created_user(username)
 

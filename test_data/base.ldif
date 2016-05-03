@@ -3,7 +3,7 @@ objectClass: dcObject
 objectClass: organizationalUnit
 ou: users
 
-dn: mail=testuser@example.com,dc=example,dc=com
+dn: cn=testuser,dc=example,dc=com
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
@@ -12,4 +12,15 @@ cn: testuser
 givenName: Test
 sn: User
 mail: testuser@example.com
+userPassword: {SSHA}AIzygLSXlArhAMzddUriXQxf7UlkqopP
+
+dn: mail=testuser2@example.com,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: testuser
+givenName: Test
+sn: User
+mail: testuser2@example.com
 userPassword: {SSHA}AIzygLSXlArhAMzddUriXQxf7UlkqopP
