@@ -1,7 +1,6 @@
 dn: dc=example,dc=com
 objectClass: dcObject
 objectClass: organizationalUnit
-
 ou: users
 
 dn: cn=testuser,ou=users,dc=example,dc=com
