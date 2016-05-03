@@ -53,7 +53,7 @@ Specific upgrade instructions
 =====
 
 The API has been greatly improved and a documentation is now
-available. To enable it, add ``'rest_framework.swagger'`` to the
+available. To enable it, add ``'rest_framework_swagger'`` to the
 ``INSTALLED_APPS`` variable in :file:`settings.py` as follows::
 
   INSTALLED_APPS = (
