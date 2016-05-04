@@ -3,6 +3,8 @@
 from django.core.urlresolvers import reverse
 
 from modoboa.core.models import User
+from modoboa.core import tests as core_tests
+from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
@@ -150,6 +152,22 @@ class AccountTestCase(ModoTestCase):
         self.ajax_post(
             reverse("admin:account_add"), values, status=400
         )
+
+
+class LDAPAccountTestCase(core_tests.LDAPTestCaseMixin, ModoTestCase):
+    """Check LDAP related code."""
+
+    def test_autocreate_disabled(self):
+        """Check if objects are not created as expected."""
+        self.activate_ldap_authentication()
+        self.searchbind_mode()
+        parameters.save_admin("AUTO_CREATE_DOMAIN_AND_MAILBOX", "no")
+        username = "testuser@example.com"
+        self.authenticate(username, "test")
+        self.assertFalse(
+            models.Domain.objects.filter(name="example.com").exists())
+        self.assertFalse(
+            models.Mailbox.objects.filter(address="testuser").exists())
 
 
 class PermissionsTestCase(ModoTestCase):

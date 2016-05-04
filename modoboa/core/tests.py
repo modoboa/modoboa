@@ -3,6 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
+from modoboa.lib import exceptions
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
@@ -39,20 +40,65 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(response.url.endswith(reverse("admin:domain_list")))
 
 
+class LDAPTestCaseMixin(object):
+    """Set of methods used to test LDAP features."""
+
+    def activate_ldap_authentication(self):
+        """Modify settings."""
+        parameters.save_admin(
+            "AUTHENTICATION_TYPE", "ldap")
+        parameters.save_admin("LDAP_SERVER_PORT", "3389")
+
+    def restore_user_password(self, username, new_password):
+        """Restore user password to its initial state."""
+        from modoboa.lib.ldap_utils import LDAPAuthBackend
+
+        backend = LDAPAuthBackend()
+        for password in ["Toto1234", "test"]:
+            try:
+                backend.update_user_password(
+                    username, password, new_password)
+            except exceptions.InternalError as exp:
+                print exp
+                pass
+            else:
+                return
+        raise RuntimeError("Can't restore user password.")
+
+    def authenticate(self, user, password, restore_before=True):
+        """Restore password and authenticate user."""
+        self.client.logout()
+        if restore_before:
+            self.restore_user_password(user, password)
+        self.assertTrue(
+            self.client.login(username=user, password=password))
+
+    def searchbind_mode(self):
+        """Apply settings required by the searchbind mode."""
+        parameters.save_admin("LDAP_AUTH_METHOD", "searchbind")
+        parameters.save_admin("LDAP_BIND_DN", "cn=admin,dc=example,dc=com")
+        parameters.save_admin("LDAP_BIND_PASSWORD", "test")
+        parameters.save_admin("LDAP_SEARCH_BASE", "ou=users,dc=example,dc=com")
+
+    def directbind_mode(self):
+        """Apply settings required by the directbind mode."""
+        parameters.save_admin("LDAP_AUTH_METHOD", "directbind")
+        parameters.save_admin(
+            "LDAP_USER_DN_TEMPLATE", "cn=%(user)s,ou=users,dc=example,dc=com")
+
+
 @override_settings(AUTHENTICATION_BACKENDS=(
     'modoboa.lib.authbackends.LDAPBackend',
     'modoboa.lib.authbackends.SimpleBackend',
 ))
-class LDAPAuthenticationTestCase(ModoTestCase):
+class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
 
     """Validate LDAP authentication scenarios."""
 
     def setUp(self):
         """Create test data."""
         super(LDAPAuthenticationTestCase, self).setUp()
-        parameters.save_admin(
-            "AUTHENTICATION_TYPE", "ldap")
-        parameters.save_admin("LDAP_SERVER_PORT", "3389")
+        self.activate_ldap_authentication()
 
     def check_created_user(self, username, group="SimpleUsers", with_mb=True):
         """Check that created user is valid."""
@@ -66,13 +112,9 @@ class LDAPAuthenticationTestCase(ModoTestCase):
     @override_settings(AUTH_LDAP_USER_DN_TEMPLATE=None)
     def test_searchbind_authentication(self):
         """Test the bind&search method."""
-        self.client.logout()
-        parameters.save_admin("LDAP_AUTH_METHOD", "searchbind")
-        parameters.save_admin("LDAP_BIND_DN", "cn=admin,dc=example,dc=com")
-        parameters.save_admin("LDAP_BIND_PASSWORD", "test")
-        parameters.save_admin("LDAP_SEARCH_BASE", "ou=users,dc=example,dc=com")
+        self.searchbind_mode()
         username = "testuser@example.com"
-        self.assertTrue(self.client.login(username=username, password="test"))
+        self.authenticate(username, "test")
         self.check_created_user(username)
         self.client.logout()
 
@@ -80,22 +122,19 @@ class LDAPAuthenticationTestCase(ModoTestCase):
         parameters.save_admin(
             "LDAP_GROUPS_SEARCH_BASE", "ou=groups,dc=example,dc=com")
         username = "mailadmin@example.com"
-        self.assertTrue(self.client.login(username=username, password="test"))
+        self.authenticate(username, "test", False)
         self.check_created_user(username, "DomainAdmins")
 
     def test_directbind_authentication(self):
         """Test the directbind method."""
         self.client.logout()
-        parameters.save_admin("LDAP_AUTH_METHOD", "directbind")
-        parameters.save_admin(
-            "LDAP_USER_DN_TEMPLATE", "cn=%(user)s,ou=users,dc=example,dc=com")
+        self.directbind_mode()
 
         # 1: must fail because usernames of simple users must be email
         # addresses
         username = "testuser"
         with self.assertRaises(TypeError):
-            self.assertTrue(self.client.login(
-                username=username, password="test"))
+            self.client.login(username=username, password="test")
 
         # 1: must work because usernames of domain admins are not
         # always email addresses
@@ -103,11 +142,11 @@ class LDAPAuthenticationTestCase(ModoTestCase):
         parameters.save_admin(
             "LDAP_GROUPS_SEARCH_BASE", "ou=groups,dc=example,dc=com")
         username = "mailadmin"
-        self.assertTrue(self.client.login(username=username, password="test"))
+        self.authenticate(username, "test", False)
         self.check_created_user(username, "DomainAdmins", False)
 
 
-class ProfileTestCase(ModoTestCase):
+class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -152,6 +191,24 @@ class ProfileTestCase(ModoTestCase):
         self.assertTrue(
             self.client.login(username="user@test.com", password="Toto1234")
         )
+
+    @override_settings(AUTHENTICATION_BACKENDS=(
+        'modoboa.lib.authbackends.LDAPBackend',
+        'modoboa.lib.authbackends.SimpleBackend',
+    ))
+    def test_update_password_ldap(self):
+        """Update password for an LDAP user."""
+        self.activate_ldap_authentication()
+        self.searchbind_mode()
+
+        username = "testuser@example.com"
+        self.authenticate(username, "test")
+        self.ajax_post(
+            reverse("core:user_profile"),
+            {"language": "en", "oldpassword": "test",
+             "newpassword": "Toto1234", "confirmation": "Toto1234"}
+        )
+        self.authenticate(username, "Toto1234", False)
 
 
 class APIAccessFormTestCase(ModoTestCase):

@@ -46,6 +46,7 @@ from modoboa.lib.exceptions import InternalError
 class LDAPAuthBackend(object):
 
     def __init__(self):
+        parameters.apply_to_django_settings()
         self.server_uri = self._setting(
             "AUTH_LDAP_SERVER_URI", "ldap://localhost"
         )
@@ -53,7 +54,6 @@ class LDAPAuthBackend(object):
         self.ldap_ad = self._setting("LDAP_ACTIVE_DIRECTORY", False)
         self.conn = None
         self.user_filter = self._setting("LDAP_USER_FILTER", "")
-        self.user_dn = None
 
     def _setting(self, name, default):
         try:
@@ -63,6 +63,7 @@ class LDAPAuthBackend(object):
         return value
 
     def _get_conn(self, dn, password):
+        """Get a connection from the server."""
         conn = ldap.initialize(self.server_uri)
         conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
         conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
@@ -70,17 +71,21 @@ class LDAPAuthBackend(object):
         return conn
 
     def connect_to_server(self, user, password):
-        if parameters.get_admin("LDAP_AUTH_METHOD", app="core") == "searchbind":
+        """Connect to the server according to configuration."""
+        if self.conn is not None:
+            return
+        mode = parameters.get_admin("LDAP_AUTH_METHOD", app="core")
+        if mode == "searchbind":
             bind_dn = self._setting("AUTH_LDAP_BIND_DN", "")
             bind_pwd = self._setting("AUTH_LDAP_BIND_PASSWORD", "")
             self.conn = self._get_conn(bind_dn, bind_pwd)
-            self.user_dn = self._find_user_dn(user)
         else:
             tpl = self._setting("AUTH_LDAP_USER_DN_TEMPLATE", "")
             self.user_dn = tpl % {"user": user}
             self.conn = self._get_conn(self.user_dn, password)
 
     def _find_user_dn(self, user):
+        """Find the DN of the given user."""
         sbase = parameters.get_admin("LDAP_SEARCH_BASE", app="core")
         sfilter = parameters.get_admin("LDAP_SEARCH_FILTER", app="core")
         sfilter = sfilter % {"user": user}
@@ -102,15 +107,18 @@ class LDAPAuthBackend(object):
         return hasher.encrypt(clearpassword)
 
     def update_user_password(self, user, password, newpassword):
+        """Update user password."""
+        self.connect_to_server(user, password)
+        user_dn = self._find_user_dn(user)
+        if self.ldap_ad:
+            newpassword = (
+                ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
+            )
+        ldif = [(ldap.MOD_REPLACE,
+                 self.pwd_attr,
+                 self._crypt_password(newpassword))]
         try:
-            self.connect_to_server(user, password)
-            if self.ldap_ad:
-                newpassword = (
-                    ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
-                )
-            ldif = [(ldap.MOD_REPLACE,
-                     self.pwd_attr,
-                     self._crypt_password(newpassword))]
-            self.conn.modify_s(self.user_dn, ldif)
+            self.conn.modify_s(user_dn, ldif)
         except ldap.LDAPError as e:
-            raise InternalError(_("Failed to update password: %s" % str(e)))
+            raise InternalError(
+                _("Failed to update password: {}").format(e))
