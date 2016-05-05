@@ -1,6 +1,7 @@
 # coding: utf-8
 
 from django.core.urlresolvers import reverse
+from django.test import override_settings
 
 from modoboa.core.models import User
 from modoboa.core import tests as core_tests
@@ -154,6 +155,10 @@ class AccountTestCase(ModoTestCase):
         )
 
 
+@override_settings(AUTHENTICATION_BACKENDS=(
+    'modoboa.lib.authbackends.LDAPBackend',
+    'modoboa.lib.authbackends.SimpleBackend',
+))
 class LDAPAccountTestCase(core_tests.LDAPTestCaseMixin, ModoTestCase):
     """Check LDAP related code."""
 

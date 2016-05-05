@@ -58,8 +58,7 @@ class LDAPTestCaseMixin(object):
             try:
                 backend.update_user_password(
                     username, password, new_password)
-            except exceptions.InternalError as exp:
-                print exp
+            except exceptions.InternalError:
                 pass
             else:
                 return
