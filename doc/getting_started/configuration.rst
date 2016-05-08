@@ -269,6 +269,11 @@ Modoboa should connect to your LDAP server. They are described just below:
 |                    |administrators. Use ';'          |                    |
 |                    |characters to separate groups.   |                    |
 +--------------------+---------------------------------+--------------------+
+|Group type          |The type of group used by your   |PosixGroup          |
+|                    |LDAP directory.                  |                    |
+|                    |                                 |                    |
+|                    |                                 |                    |
++--------------------+---------------------------------+--------------------+
 |Groups search base  |The distinguished name of the    |                    |
 |                    |search base used to find groups  |                    |
 |                    |                                 |                    |
