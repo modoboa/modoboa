@@ -266,6 +266,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         "ldap_password_attribute": "authentication_type=ldap",
         "ldap_is_active_directory": "authentication_type=ldap",
         "ldap_admin_groups": "authentication_type=ldap",
+        "ldap_group_type": "authentication_type=ldap",
         "ldap_groups_search_base": "authentication_type=ldap",
     }
 
