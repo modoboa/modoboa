@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-27 21:59+0200\n"
+"POT-Creation-Date: 2016-05-08 15:54+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -25,55 +25,55 @@ msgstr ""
 msgid "One or more updates are available"
 msgstr "Je dostupná aktualizace!"
 
-#: core/app_settings.py:36
+#: core/app_settings.py:38
 msgid "Authentication"
 msgstr "Ověření"
 
-#: core/app_settings.py:39
+#: core/app_settings.py:41
 msgid "Authentication type"
 msgstr "Typ ověření"
 
-#: core/app_settings.py:40
+#: core/app_settings.py:42
 msgid "Local"
 msgstr "Lokální"
 
-#: core/app_settings.py:43
+#: core/app_settings.py:45
 msgid "The backend used for authentication"
 msgstr "Rozhraní pro ověřování přístupu"
 
-#: core/app_settings.py:48
+#: core/app_settings.py:50
 msgid "Default password scheme"
 msgstr "Výchozí schéma hesel"
 
-#: core/app_settings.py:52
+#: core/app_settings.py:54
 msgid "md5crypt (weak)"
 msgstr "md5crypt (slabé)"
 
-#: core/app_settings.py:53
+#: core/app_settings.py:55
 msgid "sha256 (weak)"
 msgstr "sha256 (slabé)"
 
-#: core/app_settings.py:54
+#: core/app_settings.py:56
 msgid "md5 (weak)"
 msgstr "md5 (slabé)"
 
-#: core/app_settings.py:55
+#: core/app_settings.py:57
 msgid "crypt (weak)"
 msgstr "crypt (slabé)"
 
-#: core/app_settings.py:56
+#: core/app_settings.py:58
 msgid "plain (weak)"
 msgstr "žádné (slabé)"
 
-#: core/app_settings.py:58
+#: core/app_settings.py:60
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Použité schéma pro šifrování hesel schránek"
 
-#: core/app_settings.py:63
+#: core/app_settings.py:65
 msgid "Rounds"
 msgstr "Počet cyklů"
 
-#: core/app_settings.py:66
+#: core/app_settings.py:68
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -81,63 +81,63 @@ msgstr ""
 "Počet cyklů (použije se pouze u sha256crypt a sha512crypt). Hodnota musí být "
 "mezi 1000 a 999999999 včetně."
 
-#: core/app_settings.py:73
+#: core/app_settings.py:75
 msgid "Secret key"
 msgstr "Tajný klíč"
 
-#: core/app_settings.py:75
+#: core/app_settings.py:77
 msgid "Key used to encrypt/decrypt passwords"
 msgstr "Klíč používaný k šifrování/dešifrování hesel"
 
-#: core/app_settings.py:80
+#: core/app_settings.py:82
 msgid "LDAP settings"
 msgstr "Nastavení LDAP"
 
-#: core/app_settings.py:83
+#: core/app_settings.py:85
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: core/app_settings.py:86
+#: core/app_settings.py:88
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "IP adresa DNS jména LDAP serveru"
 
-#: core/app_settings.py:91
+#: core/app_settings.py:93
 msgid "Server port"
 msgstr "Port serveru"
 
-#: core/app_settings.py:93
+#: core/app_settings.py:95
 msgid "The TCP port number used by the LDAP server"
 msgstr "Port TCP, který používá LDAP server"
 
-#: core/app_settings.py:98
+#: core/app_settings.py:100
 msgid "Use a secured connection"
 msgstr "Použít zabezpečené připojení"
 
-#: core/app_settings.py:101
+#: core/app_settings.py:103
 msgid "Use an SSL/TLS connection to access the LDAP server"
 msgstr "Použít připojení SSL/TLS pro přístup k LDAP serveru"
 
-#: core/app_settings.py:105
+#: core/app_settings.py:107
 msgid "Authentication method"
 msgstr "Metoda ověření"
 
-#: core/app_settings.py:106
+#: core/app_settings.py:108
 msgid "Search and bind"
 msgstr "Vyhledat a spojit"
 
-#: core/app_settings.py:107
+#: core/app_settings.py:109
 msgid "Direct bind"
 msgstr "Přímé spojení"
 
-#: core/app_settings.py:109
+#: core/app_settings.py:111
 msgid "Choose the authentication method to use"
 msgstr "Zvolte si metodu ověření, která se použije"
 
-#: core/app_settings.py:114
+#: core/app_settings.py:116
 msgid "Bind DN"
 msgstr "Spojení pomocí DN"
 
-#: core/app_settings.py:117
+#: core/app_settings.py:119
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -145,29 +145,29 @@ msgstr ""
 "Rozlišovací jméno, které se použije při spojování s LDAP serverem. "
 "Ponechejte prázdné pro anonymní spojení."
 
-#: core/app_settings.py:125
+#: core/app_settings.py:127
 msgid "Bind password"
 msgstr "Heslo spojení"
 
-#: core/app_settings.py:128
+#: core/app_settings.py:130
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "Heslo, které se použije při spojování s LDAP serverem (při výběru DN "
 "spojení)."
 
-#: core/app_settings.py:137
+#: core/app_settings.py:139
 msgid "Users search base"
 msgstr "Základna struktury uživatelů"
 
-#: core/app_settings.py:140
+#: core/app_settings.py:142
 msgid "The distinguished name of the search base used to find users"
 msgstr "Rozlišovací jméno základny struktury používané pro hledání uživatelů"
 
-#: core/app_settings.py:147
+#: core/app_settings.py:149
 msgid "Search filter"
 msgstr "Vyhledávací filtr"
 
-#: core/app_settings.py:150
+#: core/app_settings.py:152
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -175,11 +175,11 @@ msgstr ""
 "Volitelný filtr (např. '(objectClass=osoba)'). Aby byl filtr platný, je "
 "nezbytné jen uzavřít do závorek."
 
-#: core/app_settings.py:158
+#: core/app_settings.py:160
 msgid "User DN template"
 msgstr "Šablona uživatelského DN"
 
-#: core/app_settings.py:161
+#: core/app_settings.py:163
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -188,28 +188,28 @@ msgstr ""
 "Šablona použitá pro tvorbu uživatelského rozlišovacího jména (DN). Měla by "
 "obsahovat jeden zástupný řetězec (tj. %(user)s)."
 
-#: core/app_settings.py:169
+#: core/app_settings.py:171
 msgid "Password attribute"
 msgstr "Atribut hesla"
 
-#: core/app_settings.py:171
+#: core/app_settings.py:173
 msgid "The attribute used to store user passwords"
 msgstr "Atribut používaný pro ukládání hesel uživatelů"
 
-#: core/app_settings.py:176
+#: core/app_settings.py:178
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:179
+#: core/app_settings.py:181
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr ""
 "Volba určující, jestli je nebo není LDAP server serverem Active Directory"
 
-#: core/app_settings.py:183
+#: core/app_settings.py:185
 msgid "Administrator groups"
 msgstr "Správcovské skupiny"
 
-#: core/app_settings.py:186
+#: core/app_settings.py:188
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
@@ -217,75 +217,85 @@ msgstr ""
 "Členové těchto LDAP Posix skupin budou automaticky vytvořeni jako správci "
 "domény. Pro oddělení skupin použijte ';'."
 
-#: core/app_settings.py:193
+#: core/app_settings.py:195
+#, fuzzy
+#| msgid "Group name"
+msgid "Group type"
+msgstr "Název skupiny"
+
+#: core/app_settings.py:199
+msgid "The LDAP group type to use with your directory."
+msgstr ""
+
+#: core/app_settings.py:204
 msgid "Groups search base"
 msgstr "Základna struktury skupin"
 
-#: core/app_settings.py:196
+#: core/app_settings.py:207
 msgid "The distinguished name of the search base used to find groups"
 msgstr "Rozlišovací jméno základny struktury používané pro hledání skupin"
 
-#: core/app_settings.py:201
+#: core/app_settings.py:212
 msgid "Miscellaneous"
 msgstr "Různé"
 
-#: core/app_settings.py:204
+#: core/app_settings.py:215
 msgid "Top notifications check interval"
 msgstr "Interval aktualizací upozornění"
 
-#: core/app_settings.py:207
+#: core/app_settings.py:218
 #, fuzzy
 #| msgid "Interval between two top notification checks"
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Interval mezi aktualizacemi upozornění na stránce"
 
-#: core/app_settings.py:213
+#: core/app_settings.py:224
 msgid "Check new versions"
 msgstr "Zkontrolovat verzi"
 
-#: core/app_settings.py:216
+#: core/app_settings.py:227
 msgid "Automatically checks if a newer version is available"
 msgstr "Automaticky kontrolovat dostupnost nové verze"
 
-#: core/app_settings.py:220
+#: core/app_settings.py:231
 msgid "Maximum log record age"
 msgstr "Maximální stáří záznamu"
 
-#: core/app_settings.py:222
+#: core/app_settings.py:233
 msgid "The maximum age in days of a log record"
 msgstr "Maximální stáří záznamu ve dnech"
 
-#: core/app_settings.py:227
+#: core/app_settings.py:238
 msgid "Items per page"
 msgstr "Položek na stránce"
 
-#: core/app_settings.py:229
+#: core/app_settings.py:240
 msgid "Number of displayed items per page"
 msgstr "Počet zobrazených položek na stránce"
 
-#: core/app_settings.py:234
+#: core/app_settings.py:245
 msgid "Default top redirection"
 msgstr "Výchozí přesměrování aplikace"
 
-#: core/app_settings.py:238
+#: core/app_settings.py:249
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "Výchozí přesměrování, které se použije, pokud není žádná aplikace "
 "specifikována"
 
-#: core/app_settings.py:268
+#: core/app_settings.py:279
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Klíč musí mít délku 16, 24 nebo 32 znaků"
 
-#: core/app_settings.py:277
+#: core/app_settings.py:288
 msgid "Invalid syntax"
 msgstr "Neplatná syntaxe"
 
-#: core/app_settings.py:283
+#: core/app_settings.py:294
 msgid "Invalid rounds number"
 msgstr "Neplatný počet cyklů"
 
-#: core/app_settings.py:304
+#: core/app_settings.py:315
 msgid "This field is required"
 msgstr "Toto pole je vyžadováno"
 
@@ -419,11 +429,11 @@ msgid "API access token"
 msgstr ""
 
 #: core/templates/core/api_access.html:29
-#: core/templates/core/user_profile.html:11 lib/form_utils.py:359
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
 msgid "Update"
 msgstr "Aktualizovat"
 
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:52
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
 msgid "Information"
 msgstr "Informace"
 
@@ -478,7 +488,7 @@ msgstr "Název skupiny"
 msgid "Last login"
 msgstr "Poslední přihlášení"
 
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:56
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:57
 msgid "Logs"
 msgstr "Záznamy"
 
@@ -502,7 +512,7 @@ msgstr "Zaznamenal"
 msgid "Message"
 msgstr "Zpráva"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:61
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:62
 msgid "Parameters"
 msgstr "Parametry"
 
@@ -519,12 +529,12 @@ msgstr "Uložit"
 msgid "Modoboa settings"
 msgstr "Nastavení Modoboa"
 
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:80
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:81
 msgid "Settings"
 msgstr "Nastavení"
 
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:107
+#: core/templatetags/core_tags.py:108
 msgid "Preferences"
 msgstr "Možnosti"
 
@@ -538,23 +548,23 @@ msgstr "Nastavit Modoboa"
 msgid "No preferences available."
 msgstr "Možnosti uloženy"
 
-#: core/templates/core/user_profile.html:4 core/templatetags/core_tags.py:103
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:104
 msgid "Profile"
 msgstr "Profil"
 
-#: core/templates/core/user_profile.html:4
+#: core/templates/core/user_profile.html:3
 msgid "Update your personal information"
 msgstr "Aktualizovat osobní informace"
 
-#: core/templatetags/core_tags.py:25
+#: core/templatetags/core_tags.py:26
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: core/templatetags/core_tags.py:89
+#: core/templatetags/core_tags.py:90
 msgid "Logout"
 msgstr "Odhlásit se"
 
-#: core/templatetags/core_tags.py:114
+#: core/templatetags/core_tags.py:115
 msgid "API"
 msgstr ""
 
@@ -637,9 +647,10 @@ msgstr "Ano"
 msgid "No"
 msgstr "Ne"
 
-#: lib/ldap_utils.py:116
-#, python-format
-msgid "Failed to update password: %s"
+#: lib/ldap_utils.py:124
+#, fuzzy
+#| msgid "Failed to update password: %s"
+msgid "Failed to update password: {}"
 msgstr "Nebylo možné změnit heslo: %s"
 
 #: lib/permissions.py:10
@@ -660,7 +671,7 @@ msgstr ""
 msgid "Super administrator"
 msgstr "Super správce"
 
-#: templates/404.html:4 templates/500.html:4
+#: templates/404.html:4 templates/500.html.py:4
 msgid "Sorry"
 msgstr "Omlouváme se"
 
@@ -711,15 +722,15 @@ msgstr "Předchozí"
 msgid "Next"
 msgstr "Další"
 
-#: templates/registration/login.html:10
+#: templates/registration/login.html:9
 msgid "Welcome to Modoboa"
 msgstr "Vítejte v Modoboa"
 
-#: templates/registration/login.html:41
+#: templates/registration/login.html:40
 msgid "Remember me"
 msgstr "Zapamatovat si"
 
-#: templates/registration/login.html:44
+#: templates/registration/login.html:43
 msgid "Log in"
 msgstr "Přihlásit"
 

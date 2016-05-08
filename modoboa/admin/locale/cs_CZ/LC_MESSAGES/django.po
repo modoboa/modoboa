@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-27 21:59+0200\n"
+"POT-Creation-Date: 2016-05-08 15:54+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: admin/app_settings.py:54 admin/templates/admin/editdomainform.html:25
+#: admin/app_settings.py:54 admin/templates/admin/editdomainform.html.py:25
 msgid "Mailboxes"
 msgstr "Schránky"
 
@@ -80,18 +80,18 @@ msgstr "Musí se jednat o kladné číslo"
 msgid "Administration"
 msgstr "Správa"
 
-#: admin/callbacks.py:25 admin/templates/admin/domain_statistics.html:30
+#: admin/callbacks.py:25 admin/templates/admin/domain_statistics.html.py:30
 #: admin/templates/admin/domains.html:3
 msgid "Domains"
 msgstr "Domény"
 
-#: admin/callbacks.py:35 admin/templates/admin/domain_statistics.html:36
+#: admin/callbacks.py:35 admin/templates/admin/domain_statistics.html.py:36
 #: admin/templates/admin/domain_statistics.html:50
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Identity"
 
-#: admin/callbacks.py:50 admin/templates/admin/forward.html:2
+#: admin/callbacks.py:50 admin/templates/admin/forward.html.py:2
 msgid "Forward"
 msgstr "Přeposlat"
 
@@ -115,7 +115,7 @@ msgstr "Import účtu selhal (%s): chybná hodnota kvóty"
 msgid "domain alias"
 msgstr "doménový alias"
 
-#: admin/forms/account.py:33 admin/templates/admin/editdomainform.html:13
+#: admin/forms/account.py:33 admin/templates/admin/editdomainform.html.py:13
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -285,12 +285,12 @@ msgstr "Nemáte oprávnění k přístupu k této doméně"
 msgid "No recipient defined"
 msgstr "Nebyl určen příjemce"
 
-#: admin/forms/domain.py:24 admin/models/domain.py:85
+#: admin/forms/domain.py:24 admin/models/domain.py:86
 #: admin/templates/admin/domain_statistics.html:49
 msgid "Domain"
 msgstr "Doména"
 
-#: admin/forms/domain.py:33 admin/templates/admin/domain_statistics.html:26
+#: admin/forms/domain.py:33 admin/templates/admin/domain_statistics.html.py:26
 msgid "Type"
 msgstr "Typ"
 
@@ -328,7 +328,7 @@ msgstr "Vytvořit správce domény"
 msgid "Automatically create an administrator for this domain"
 msgstr "Automaticky vytvořit správce této domény"
 
-#: admin/forms/domain.py:174 admin/templates/admin/domains.html:25
+#: admin/forms/domain.py:174 admin/templates/admin/domains.html.py:25
 #: admin/templates/admin/editdomainform.html:13
 #: admin/templates/admin/identity_headers.html:2
 msgid "Name"
@@ -450,7 +450,7 @@ msgstr "adresa"
 msgid "The alias address."
 msgstr "Název aliasu"
 
-#: admin/models/alias.py:34 admin/models/domain.py:40
+#: admin/models/alias.py:34 admin/models/domain.py:41
 #: admin/models/domain_alias.py:44
 msgid "enabled"
 msgstr "povoleno"
@@ -493,23 +493,23 @@ msgstr "Neplatný řádek: %s"
 msgid "Domain '%s' does not exist"
 msgstr "Doména '%s' neexistuje"
 
-#: admin/models/domain.py:36 admin/models/domain_alias.py:37
+#: admin/models/domain.py:37 admin/models/domain_alias.py:37
 msgid "name"
 msgstr "název"
 
-#: admin/models/domain.py:37
+#: admin/models/domain.py:38
 msgid "The domain name"
 msgstr "Doménové jméno"
 
-#: admin/models/domain.py:41
+#: admin/models/domain.py:42
 msgid "Check to activate this domain"
 msgstr "Zatrhněte pole pro povolení této domény"
 
-#: admin/models/domain.py:182 admin/models/domain_alias.py:71
+#: admin/models/domain.py:183 admin/models/domain_alias.py:71
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: admin/models/domain.py:190
+#: admin/models/domain.py:191
 #, python-format
 msgid "Invalid quota value for domain '%s'"
 msgstr "Neplatná hodnota kvóty u domény '%s'"
@@ -596,7 +596,7 @@ msgid "You can't create a new domain administrator"
 msgstr "Nemůžete vytvořit nového správce domény"
 
 #: admin/templates/admin/domain_statistics.html:15
-#: admin/templatetags/admin_tags.py:45
+#: admin/templatetags/admin_tags.py:46
 msgid "Statistics"
 msgstr "Statistiky"
 
@@ -663,7 +663,7 @@ msgstr "Aliasy schránek"
 msgid "Automatically forward emails to another address"
 msgstr "Automaticky přesměrovat emaily na jinou adresu"
 
-#: admin/templates/admin/forward.html:9 admin/views/alias.py:114
+#: admin/templates/admin/forward.html:9 admin/views/alias.py:115
 msgid "Update"
 msgstr "Aktualizovat"
 
@@ -708,119 +708,119 @@ msgstr "Využití (%%)"
 msgid "Search"
 msgstr "Hledat"
 
-#: admin/templatetags/admin_tags.py:19
+#: admin/templatetags/admin_tags.py:20
 msgid "enabled_m"
 msgstr "Aktivovaný"
 
-#: admin/templatetags/admin_tags.py:19
+#: admin/templatetags/admin_tags.py:20
 msgid "enabled_f"
 msgstr "Aktivovaná"
 
-#: admin/templatetags/admin_tags.py:40
+#: admin/templatetags/admin_tags.py:41
 msgid "List domains"
 msgstr "Seznam domén"
 
-#: admin/templatetags/admin_tags.py:53
+#: admin/templatetags/admin_tags.py:54
 msgid "Add domain"
 msgstr "Přidat doménu"
 
-#: admin/templatetags/admin_tags.py:62 admin/templatetags/admin_tags.py:126
+#: admin/templatetags/admin_tags.py:63 admin/templatetags/admin_tags.py:127
 #: admin/views/import_.py:99 admin/views/import_.py:133
 msgid "Import"
 msgstr "Import"
 
-#: admin/templatetags/admin_tags.py:68 admin/templatetags/admin_tags.py:132
+#: admin/templatetags/admin_tags.py:69 admin/templatetags/admin_tags.py:133
 #: admin/views/export.py:41 admin/views/export.py:69
 msgid "Export"
 msgstr "Export"
 
-#: admin/templatetags/admin_tags.py:92
+#: admin/templatetags/admin_tags.py:93
 msgid "List identities"
 msgstr "Seznam identit"
 
-#: admin/templatetags/admin_tags.py:97
+#: admin/templatetags/admin_tags.py:98
 msgid "List quotas"
 msgstr "Seznam kvót"
 
-#: admin/templatetags/admin_tags.py:102
+#: admin/templatetags/admin_tags.py:103
 msgid "Add account"
 msgstr "Přidat účet"
 
-#: admin/templatetags/admin_tags.py:108
+#: admin/templatetags/admin_tags.py:109
 msgid "Add alias"
 msgstr "Přidat alias"
 
-#: admin/templatetags/admin_tags.py:114
+#: admin/templatetags/admin_tags.py:115
 msgid "Add forward"
 msgstr "Přidat přeposílání"
 
-#: admin/templatetags/admin_tags.py:120
+#: admin/templatetags/admin_tags.py:121
 msgid "Add distribution list"
 msgstr "Přidat distribuční seznam"
 
-#: admin/templatetags/admin_tags.py:152
+#: admin/templatetags/admin_tags.py:153
 msgid "View the domain's identities"
 msgstr "Zobrazit seznam identit domény"
 
-#: admin/templatetags/admin_tags.py:159 admin/templatetags/admin_tags.py:182
-#: admin/templatetags/admin_tags.py:190
+#: admin/templatetags/admin_tags.py:160 admin/templatetags/admin_tags.py:183
+#: admin/templatetags/admin_tags.py:191
 #, python-format
 msgid "Delete %s?"
 msgstr "Smazat %s?"
 
-#: admin/templatetags/admin_tags.py:267
+#: admin/templatetags/admin_tags.py:268
 msgid "Remove this permission"
 msgstr "Odstranit toto oprávnění"
 
-#: admin/views/alias.py:29
+#: admin/views/alias.py:30
 msgid "Alias with this name already exists"
 msgstr "Alias s tímto názvem již existuje"
 
-#: admin/views/alias.py:54
+#: admin/views/alias.py:55
 msgid "Create"
 msgstr "Vytvořit"
 
-#: admin/views/alias.py:66
+#: admin/views/alias.py:67
 msgid "New distribution list"
 msgstr "Nový distribuční seznam"
 
-#: admin/views/alias.py:68
+#: admin/views/alias.py:69
 msgid "Distribution list created"
 msgstr "Distribuční seznam vytvořen"
 
-#: admin/views/alias.py:77
+#: admin/views/alias.py:78
 msgid "New alias"
 msgstr "Nový alias"
 
-#: admin/views/alias.py:78
+#: admin/views/alias.py:79
 msgid "Alias created"
 msgstr "Alias vytvořen"
 
-#: admin/views/alias.py:87
+#: admin/views/alias.py:88
 msgid "New forward"
 msgstr "Nové přeposílání"
 
-#: admin/views/alias.py:88
+#: admin/views/alias.py:89
 msgid "Forward created"
 msgstr "Přeposílání vytvořeno"
 
-#: admin/views/alias.py:102
+#: admin/views/alias.py:103
 msgid "Distribution list modified"
 msgstr "Distribuční seznam upraven"
 
-#: admin/views/alias.py:104
+#: admin/views/alias.py:105
 msgid "Forward modified"
 msgstr "Přeposílání upraveno"
 
-#: admin/views/alias.py:106
+#: admin/views/alias.py:107
 msgid "Alias modified"
 msgstr "Alias upraven"
 
-#: admin/views/domain.py:134
+#: admin/views/domain.py:132
 msgid "You can't delete your own domain"
 msgstr "Nemůžete smazat vlastní doménu"
 
-#: admin/views/domain.py:137
+#: admin/views/domain.py:135
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Doména smazána"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-27 21:59+0200\n"
+"POT-Creation-Date: 2016-05-08 15:54+0200\n"
 "PO-Revision-Date: 2014-12-29 12:51+0000\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/app_settings.py:54 admin/templates/admin/editdomainform.html:25
+#: admin/app_settings.py:54 admin/templates/admin/editdomainform.html.py:25
 msgid "Mailboxes"
 msgstr "Caixas de Correio"
 
@@ -88,18 +88,18 @@ msgstr "Tem de ser um inteiro, positivo"
 msgid "Administration"
 msgstr "Administração"
 
-#: admin/callbacks.py:25 admin/templates/admin/domain_statistics.html:30
+#: admin/callbacks.py:25 admin/templates/admin/domain_statistics.html.py:30
 #: admin/templates/admin/domains.html:3
 msgid "Domains"
 msgstr "Domínios"
 
-#: admin/callbacks.py:35 admin/templates/admin/domain_statistics.html:36
+#: admin/callbacks.py:35 admin/templates/admin/domain_statistics.html.py:36
 #: admin/templates/admin/domain_statistics.html:50
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Identidades"
 
-#: admin/callbacks.py:50 admin/templates/admin/forward.html:2
+#: admin/callbacks.py:50 admin/templates/admin/forward.html.py:2
 msgid "Forward"
 msgstr "Reencaminhar"
 
@@ -123,7 +123,7 @@ msgstr "Importação da conta falhou (%s): valor para quota inválido"
 msgid "domain alias"
 msgstr "'Alias' de domínio"
 
-#: admin/forms/account.py:33 admin/templates/admin/editdomainform.html:13
+#: admin/forms/account.py:33 admin/templates/admin/editdomainform.html.py:13
 msgid "Username"
 msgstr "Nome de Utilizador"
 
@@ -290,12 +290,12 @@ msgstr "Não tem acesso a este domínio"
 msgid "No recipient defined"
 msgstr "Sem destinatário definido"
 
-#: admin/forms/domain.py:24 admin/models/domain.py:85
+#: admin/forms/domain.py:24 admin/models/domain.py:86
 #: admin/templates/admin/domain_statistics.html:49
 msgid "Domain"
 msgstr "Domínio"
 
-#: admin/forms/domain.py:33 admin/templates/admin/domain_statistics.html:26
+#: admin/forms/domain.py:33 admin/templates/admin/domain_statistics.html.py:26
 msgid "Type"
 msgstr "Tipo"
 
@@ -333,7 +333,7 @@ msgstr "Criar um administrador de domínio"
 msgid "Automatically create an administrator for this domain"
 msgstr "Criar automaticamente um administrador para este domínio"
 
-#: admin/forms/domain.py:174 admin/templates/admin/domains.html:25
+#: admin/forms/domain.py:174 admin/templates/admin/domains.html.py:25
 #: admin/templates/admin/editdomainform.html:13
 #: admin/templates/admin/identity_headers.html:2
 msgid "Name"
@@ -457,7 +457,7 @@ msgstr "endereços"
 msgid "The alias address."
 msgstr "O nome do 'alias'"
 
-#: admin/models/alias.py:34 admin/models/domain.py:40
+#: admin/models/alias.py:34 admin/models/domain.py:41
 #: admin/models/domain_alias.py:44
 msgid "enabled"
 msgstr "ativo"
@@ -500,23 +500,23 @@ msgstr "Linha inválida: %s"
 msgid "Domain '%s' does not exist"
 msgstr "O domínio '%s' não existe"
 
-#: admin/models/domain.py:36 admin/models/domain_alias.py:37
+#: admin/models/domain.py:37 admin/models/domain_alias.py:37
 msgid "name"
 msgstr "nome"
 
-#: admin/models/domain.py:37
+#: admin/models/domain.py:38
 msgid "The domain name"
 msgstr "O nome do domínio"
 
-#: admin/models/domain.py:41
+#: admin/models/domain.py:42
 msgid "Check to activate this domain"
 msgstr "Marcar para ativar este domínio"
 
-#: admin/models/domain.py:182 admin/models/domain_alias.py:71
+#: admin/models/domain.py:183 admin/models/domain_alias.py:71
 msgid "Invalid line"
 msgstr "Linha inválida"
 
-#: admin/models/domain.py:190
+#: admin/models/domain.py:191
 #, python-format
 msgid "Invalid quota value for domain '%s'"
 msgstr "Valor de quota inválido para o dominio '%s'"
@@ -603,7 +603,7 @@ msgid "You can't create a new domain administrator"
 msgstr "Não pode criar administradores de domínio"
 
 #: admin/templates/admin/domain_statistics.html:15
-#: admin/templatetags/admin_tags.py:45
+#: admin/templatetags/admin_tags.py:46
 msgid "Statistics"
 msgstr "Estatísticas"
 
@@ -670,7 +670,7 @@ msgstr "Aliases para caixas de correio"
 msgid "Automatically forward emails to another address"
 msgstr "Reenviar automaticamente e-mails para outro endereço"
 
-#: admin/templates/admin/forward.html:9 admin/views/alias.py:114
+#: admin/templates/admin/forward.html:9 admin/views/alias.py:115
 msgid "Update"
 msgstr "Actualizar"
 
@@ -715,119 +715,119 @@ msgstr "Utilização (%%)"
 msgid "Search"
 msgstr "Procurar"
 
-#: admin/templatetags/admin_tags.py:19
+#: admin/templatetags/admin_tags.py:20
 msgid "enabled_m"
 msgstr "enabled_m"
 
-#: admin/templatetags/admin_tags.py:19
+#: admin/templatetags/admin_tags.py:20
 msgid "enabled_f"
 msgstr "enabled_f"
 
-#: admin/templatetags/admin_tags.py:40
+#: admin/templatetags/admin_tags.py:41
 msgid "List domains"
 msgstr "Listar domínios"
 
-#: admin/templatetags/admin_tags.py:53
+#: admin/templatetags/admin_tags.py:54
 msgid "Add domain"
 msgstr "Adicionar domínio"
 
-#: admin/templatetags/admin_tags.py:62 admin/templatetags/admin_tags.py:126
+#: admin/templatetags/admin_tags.py:63 admin/templatetags/admin_tags.py:127
 #: admin/views/import_.py:99 admin/views/import_.py:133
 msgid "Import"
 msgstr "Importar"
 
-#: admin/templatetags/admin_tags.py:68 admin/templatetags/admin_tags.py:132
+#: admin/templatetags/admin_tags.py:69 admin/templatetags/admin_tags.py:133
 #: admin/views/export.py:41 admin/views/export.py:69
 msgid "Export"
 msgstr "Exportar"
 
-#: admin/templatetags/admin_tags.py:92
+#: admin/templatetags/admin_tags.py:93
 msgid "List identities"
 msgstr "Listar identidades"
 
-#: admin/templatetags/admin_tags.py:97
+#: admin/templatetags/admin_tags.py:98
 msgid "List quotas"
 msgstr "Listar as quotas"
 
-#: admin/templatetags/admin_tags.py:102
+#: admin/templatetags/admin_tags.py:103
 msgid "Add account"
 msgstr "Adicionar conta"
 
-#: admin/templatetags/admin_tags.py:108
+#: admin/templatetags/admin_tags.py:109
 msgid "Add alias"
 msgstr "Adicionar 'alias'"
 
-#: admin/templatetags/admin_tags.py:114
+#: admin/templatetags/admin_tags.py:115
 msgid "Add forward"
 msgstr "Adicionar reencaminhamento"
 
-#: admin/templatetags/admin_tags.py:120
+#: admin/templatetags/admin_tags.py:121
 msgid "Add distribution list"
 msgstr "Adicionar lista de distribuição"
 
-#: admin/templatetags/admin_tags.py:152
+#: admin/templatetags/admin_tags.py:153
 msgid "View the domain's identities"
 msgstr "Visualizar as identidades do domínio"
 
-#: admin/templatetags/admin_tags.py:159 admin/templatetags/admin_tags.py:182
-#: admin/templatetags/admin_tags.py:190
+#: admin/templatetags/admin_tags.py:160 admin/templatetags/admin_tags.py:183
+#: admin/templatetags/admin_tags.py:191
 #, python-format
 msgid "Delete %s?"
 msgstr "Eliminar %s?"
 
-#: admin/templatetags/admin_tags.py:267
+#: admin/templatetags/admin_tags.py:268
 msgid "Remove this permission"
 msgstr "Remover esta permissão"
 
-#: admin/views/alias.py:29
+#: admin/views/alias.py:30
 msgid "Alias with this name already exists"
 msgstr "Já existe um 'alias' com este nome"
 
-#: admin/views/alias.py:54
+#: admin/views/alias.py:55
 msgid "Create"
 msgstr "Criar"
 
-#: admin/views/alias.py:66
+#: admin/views/alias.py:67
 msgid "New distribution list"
 msgstr "Nova lista de distribuição"
 
-#: admin/views/alias.py:68
+#: admin/views/alias.py:69
 msgid "Distribution list created"
 msgstr "A lista de distribuição foi criada"
 
-#: admin/views/alias.py:77
+#: admin/views/alias.py:78
 msgid "New alias"
 msgstr "Novo 'alias'"
 
-#: admin/views/alias.py:78
+#: admin/views/alias.py:79
 msgid "Alias created"
 msgstr "Alias criado"
 
-#: admin/views/alias.py:87
+#: admin/views/alias.py:88
 msgid "New forward"
 msgstr "Novo reencaminhamento"
 
-#: admin/views/alias.py:88
+#: admin/views/alias.py:89
 msgid "Forward created"
 msgstr "Reencaminhamento criado"
 
-#: admin/views/alias.py:102
+#: admin/views/alias.py:103
 msgid "Distribution list modified"
 msgstr "Lista de distribuição modificada"
 
-#: admin/views/alias.py:104
+#: admin/views/alias.py:105
 msgid "Forward modified"
 msgstr "Reencaminhamento modificado"
 
-#: admin/views/alias.py:106
+#: admin/views/alias.py:107
 msgid "Alias modified"
 msgstr "'Alias' modificado"
 
-#: admin/views/domain.py:134
+#: admin/views/domain.py:132
 msgid "You can't delete your own domain"
 msgstr "Não é possível eliminar o seu próprio domínio"
 
-#: admin/views/domain.py:137
+#: admin/views/domain.py:135
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domínio criado"
