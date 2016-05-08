@@ -16,3 +16,9 @@ LANGUAGES = (
     ("ru", u"русский"),
     ("sv", u"svenska"),
 )
+
+
+LDAP_GROUP_TYPES = (
+    ("posixgroup", "PosixGroup"),
+    ("groupofnames", "GroupOfNames"),
+)
