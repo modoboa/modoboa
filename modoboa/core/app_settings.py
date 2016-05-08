@@ -9,6 +9,8 @@ from modoboa.lib.form_utils import (
     YesNoField, SeparatorField, InlineRadioSelect
 )
 
+from . import constants
+
 
 def enabled_applications():
     """Return the list of installed extensions.
@@ -189,6 +191,15 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         required=False
     )
 
+    ldap_group_type = forms.ChoiceField(
+        label=ugettext_lazy("Group type"),
+        initial="posixgroup",
+        choices=constants.LDAP_GROUP_TYPES,
+        help_text=ugettext_lazy(
+            "The LDAP group type to use with your directory."
+        )
+    )
+
     ldap_groups_search_base = forms.CharField(
         label=ugettext_lazy("Groups search base"),
         initial="",
@@ -312,7 +323,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         """
         try:
             import ldap
-            from django_auth_ldap.config import LDAPSearch, PosixGroupType
+            from django_auth_ldap.config import (
+                LDAPSearch, PosixGroupType, GroupOfNamesType)
             ldap_available = True
         except ImportError:
             ldap_available = False
@@ -330,10 +342,16 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         ldap_uri += "%s:%s" % (
             values["ldap_server_address"], values["ldap_server_port"])
         setattr(settings, "AUTH_LDAP_SERVER_URI", ldap_uri)
-        setattr(settings, "AUTH_LDAP_GROUP_TYPE", PosixGroupType())
+
+        if values["ldap_group_type"] == "groupofnames":
+            setattr(settings, "AUTH_LDAP_GROUP_TYPE", GroupOfNamesType())
+            searchfilter = "(objectClass=groupOfNames)"
+        else:
+            setattr(settings, "AUTH_LDAP_GROUP_TYPE", PosixGroupType())
+            searchfilter = "(objectClass=posixGroup)"
         setattr(settings, "AUTH_LDAP_GROUP_SEARCH", LDAPSearch(
             values["ldap_groups_search_base"], ldap.SCOPE_SUBTREE,
-            "(objectClass=posixGroup)"
+            searchfilter
         ))
         if values["ldap_auth_method"] == "searchbind":
             setattr(settings, "AUTH_LDAP_BIND_DN", values["ldap_bind_dn"])
