@@ -98,7 +98,6 @@ class Mailbox(AdminObject):
         super(Mailbox, self).__init__(*args, **kwargs)
         self.__mail_home = None
         self.old_full_address = self.full_address
-        self.old_mail_home = self.mail_home
 
     def __str__(self):
         return smart_text(self.full_address)
@@ -201,6 +200,7 @@ class Mailbox(AdminObject):
         :param Domain domain: the new mailbox's domain
 
         """
+        old_mail_home = self.mail_home
         old_qvalue = self.quota_value
         self.address = address
         self.domain = domain
@@ -209,7 +209,7 @@ class Mailbox(AdminObject):
             messages=old_qvalue.messages
         )
         old_qvalue.delete()
-        self.rename_dir(self.old_mail_home)
+        self.rename_dir(old_mail_home)
 
     def delete_dir(self):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
