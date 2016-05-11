@@ -60,7 +60,7 @@ def manage_alias_for_mailbox(sender, instance, **kwargs):
     old_address = getattr(instance, "old_full_address", None)
     if old_address is None or old_address == instance.full_address:
         return
-    alr = models.AliasRecipient.objects.select_related("alias").get(
+    alr = models.AliasRecipient.objects.get(
         alias__address=old_address, address=old_address,
         r_mailbox=instance, alias__internal=True)
     alr.address = instance.full_address

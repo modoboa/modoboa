@@ -212,7 +212,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         if self.mb is not None:
             self.fields["email"].required = True
             cpt = 1
-            qset = self.mb.aliasrecipient_set.select_related("alias")
+            qset = self.mb.aliasrecipient_set.filter(alias__internal=False)
             for ralias in qset:
                 name = "aliases_%d" % cpt
                 self._create_field(
