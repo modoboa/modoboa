@@ -1,4 +1,8 @@
+"""Admin urls."""
+
 from django.conf.urls import patterns, url
+
+from . import views
 
 
 urlpatterns = patterns(
@@ -6,6 +10,8 @@ urlpatterns = patterns(
 
     url(r'^$', 'index', name="index"),
     url(r'^domains/$', 'domains', name="domain_list"),
+    url(r'^domains/(?P<pk>\d+)/$', views.DomainDetailView.as_view(),
+        name="domain_detail"),
     url(r'^domains/list/$', '_domains', name="_domain_list"),
     url(r'^domains/flatlist/$', 'domains_list', name="domain_flat_list"),
     url(r'^domains/stats/$', 'domain_statistics', name="domain_statistics"),

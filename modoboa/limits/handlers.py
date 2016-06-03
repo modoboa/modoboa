@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
 
 from modoboa.admin import models as admin_models
+from modoboa.admin import signals as admin_signals
 from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
 from modoboa.lib import signals as lib_signals
@@ -66,3 +67,15 @@ def create_domain_limits(sender, instance, **kwargs):
             parameters.get_admin("DEFLT_DOMAIN_{}_LIMIT".format(name.upper())))
         models.DomainObjectLimit.objects.create(
             domain=instance, name=name, max_value=max_value)
+
+
+@receiver(admin_signals.extra_domain_dashboard_widgets)
+def display_domain_limits(sender, user, domain, **kwargs):
+    """Display resources usage for domain."""
+    return [{
+        "column": "right",
+        "template": "limits/domain_resources_widget.html",
+        "context": {
+            "limits": domain.domainobjectlimit_set.all()
+        }
+    }]

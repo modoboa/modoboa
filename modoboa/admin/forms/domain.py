@@ -256,8 +256,6 @@ class DomainForm(TabForms):
 
     """Domain edition form."""
 
-    template_name = "admin/editdomainform.html"
-
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
         self.forms = []

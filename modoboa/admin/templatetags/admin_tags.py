@@ -153,6 +153,15 @@ def domain_actions(user, domain):
          "title": _("View the domain's identities"),
          "img": "fa fa-user"}
     ]
+    if user.has_perm("admin.change_domain"):
+        actions.append({
+            "name": "editdomain",
+            "title": _("Edit {}").format(domain),
+            "url": reverse("admin:domain_change", args=[domain.pk]),
+            "modal": True,
+            "modalcb": "admin.domainform_cb",
+            "img": "fa fa-edit"
+        })
     if user.has_perm("admin.delete_domain"):
         actions.append({
             "name": "deldomain",
