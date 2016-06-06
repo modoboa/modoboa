@@ -1,10 +1,11 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # csmk, 2014
 # csmk, 2014
+# Jose Marcos Araujo <jmaraujo@avancetec.com.br>, 2016
 # Paulino Michelazzo <paulino@michelazzo.com.br>, 2014
 # Rafael Barretto Alves <ch3yd@hotmail.com>, 2013,2015-2016
 # vanderson diniz do nascimento <cyberlink1@gmail.com>, 2015
@@ -13,14 +14,13 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-08 15:54+0200\n"
-"PO-Revision-Date: 2016-01-25 18:17+0000\n"
-"Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
-"language/pt_BR/)\n"
-"Language: pt_BR\n"
+"PO-Revision-Date: 2016-05-17 12:26+0000\n"
+"Last-Translator: Jose Marcos Araujo <jmaraujo@avancetec.com.br>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: core/__init__.py:65
@@ -79,9 +79,7 @@ msgstr "Ciclos"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Número de ciclos a ser usado (utilizado apenas por sha256crypt e "
-"sha512crypt). Deve estar entre 1000 e 999999999, inclusive."
+msgstr "Número de ciclos a ser usado (utilizado apenas por sha256crypt e sha512crypt). Deve estar entre 1000 e 999999999, inclusive."
 
 #: core/app_settings.py:75
 msgid "Secret key"
@@ -143,9 +141,7 @@ msgstr "Vincular DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"O nome distinto para usar quando vincular ao servidor LDAP. Deixe vazio para "
-"vincular anonimamente"
+msgstr "O nome distinto para usar quando vincular ao servidor LDAP. Deixe vazio para vincular anonimamente"
 
 #: core/app_settings.py:127
 msgid "Bind password"
@@ -171,9 +167,7 @@ msgstr "Filtro de pesquisa"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Uma string opcional de filtro (por ex: '(objectClass=person)'). Para ser "
-"válida, deve estar entre parênteses."
+msgstr "Uma string opcional de filtro (por ex: '(objectClass=person)'). Para ser válida, deve estar entre parênteses."
 
 #: core/app_settings.py:160
 msgid "User DN template"
@@ -184,9 +178,7 @@ msgstr "Usar template DN"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"A template usada para construir um DN de usuário. Deve conter um placeholder "
-"(por ex: %(user)s)"
+msgstr "A template usada para construir um DN de usuário. Deve conter um placeholder (por ex: %(user)s)"
 
 #: core/app_settings.py:171
 msgid "Password attribute"
@@ -210,21 +202,17 @@ msgstr "Grupos de administradores"
 
 #: core/app_settings.py:188
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Membros dos grupos do LDAP Posix serão criados como administradores de "
-"domínio. Use o caractere ';' para separar grupos."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Membros dos grupos do LDAP Posix serão criados como administradores de domínio. Use o caractere ';' para separar grupos."
 
 #: core/app_settings.py:195
-#, fuzzy
-#| msgid "Group name"
 msgid "Group type"
-msgstr "Nome do grupo"
+msgstr "Tipo de Grupo"
 
 #: core/app_settings.py:199
 msgid "The LDAP group type to use with your directory."
-msgstr ""
+msgstr "Tipo de grupo LDAP para ser usado em seu Diretório:"
 
 #: core/app_settings.py:204
 msgid "Groups search base"
@@ -276,8 +264,7 @@ msgstr "Redirecionamento de topo padrão"
 
 #: core/app_settings.py:249
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"O redirecionamento padrão usado quando nenhuma aplicação é especificada"
+msgstr "O redirecionamento padrão usado quando nenhuma aplicação é especificada"
 
 #: core/app_settings.py:279
 msgid "Key must be either 16, 24, or 32 bytes long"
@@ -354,8 +341,7 @@ msgstr "Permitir acesso a caixa de correio"
 
 #: core/models.py:56
 msgid "Allow this administrator to access user mailboxes"
-msgstr ""
-"Permitir que este administrador acesse as caixas de correio de usuários"
+msgstr "Permitir que este administrador acesse as caixas de correio de usuários"
 
 #: core/models.py:59
 msgid "password"
@@ -379,8 +365,7 @@ msgstr "E-mail secundário"
 
 #: core/models.py:76
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr ""
-"Endereço de e-mail alternativo, use-o para recuperar a conta caso precise"
+msgstr "Endereço de e-mail alternativo, use-o para recuperar a conta caso precise"
 
 #: core/models.py:108
 msgid "You can't delete your own account"
@@ -443,8 +428,7 @@ msgstr "Uma ou mais atualizações disponíveis"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Checar a seguinte lista a procura de componente(s) que pode ser atualizado"
+msgstr "Checar a seguinte lista a procura de componente(s) que pode ser atualizado"
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -610,10 +594,8 @@ msgid "Enter a valid domain name"
 msgstr "Digite um nome de domínio válido"
 
 #: lib/fields.py:44 lib/fields.py:58
-#, fuzzy
-#| msgid "Enter a valid domain name"
 msgid "Enter a valid email address."
-msgstr "Digite um nome de domínio válido"
+msgstr "Digite um endereço válido de e-mail"
 
 #: lib/form_utils.py:84
 msgid "Submit"
@@ -632,24 +614,20 @@ msgid "No"
 msgstr "Não"
 
 #: lib/ldap_utils.py:124
-#, fuzzy
-#| msgid "Failed to update password: %s"
 msgid "Failed to update password: {}"
-msgstr "Falha ao atualizar senha: %s"
+msgstr "Falha ao atualizar a senha: {}"
 
 #: lib/permissions.py:10
 msgid "Simple user"
 msgstr "Usuário simples"
 
 #: lib/permissions.py:11
-#, fuzzy
-#| msgid "Super administrator"
 msgid "Domain administrator"
-msgstr "Super administrador"
+msgstr "Administrador de domínio"
 
 #: lib/permissions.py:12
 msgid "Reseller"
-msgstr ""
+msgstr "Revendedor"
 
 #: lib/permissions.py:13
 msgid "Super administrator"
