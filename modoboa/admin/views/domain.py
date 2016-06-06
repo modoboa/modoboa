@@ -1,10 +1,13 @@
 """Domain related views."""
 
-from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext as _, ungettext
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.utils.translation import ugettext as _, ungettext
+from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
+
+from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
@@ -27,6 +30,7 @@ from ..lib import get_domains
 from ..models import (
     Domain, DomainAlias, Mailbox, Alias
 )
+from .. import signals
 
 
 @login_required
@@ -43,8 +47,8 @@ def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     filters = dict(
         (flt, request.GET.get(flt, None))
-        for flt in ['domfilter', 'searchquery']
-        + events.raiseQueryEvent('ExtraDomainFilters')
+        for flt in ['domfilter', 'searchquery'] +
+        events.raiseQueryEvent('ExtraDomainFilters')
     )
     request.session['domains_filters'] = filters
     domainlist = get_domains(request.user, **filters)
@@ -151,3 +155,25 @@ def domain_statistics(request):
         })
     context.update({"domains": Domain.objects.get_for_admin(request.user)})
     return render(request, "admin/domain_statistics.html", context)
+
+
+class DomainDetailView(
+        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+    """DetailView for Domain."""
+
+    model = Domain
+    permission_required = "admin.view_domain"
+
+    def get_context_data(self, **kwargs):
+        """Include extra widgets."""
+        context = super(DomainDetailView, self).get_context_data(**kwargs)
+        result = signals.extra_domain_dashboard_widgets.send(
+            self.__class__, user=self.request.user, domain=self.object)
+        context["templates"] = {"left": [], "right": []}
+        for receiver, widgets in result:
+            for widget in widgets:
+                context["templates"][widget["column"]].append(
+                    widget["template"])
+                context.update(widget["context"])
+
+        return context

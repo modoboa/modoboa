@@ -1,0 +1,15 @@
+{% load i18n lib_tags %}
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">{% trans "Resources usage" %}</h3>
+  </div>
+  <div class="panel-body">
+    {% for l in limits %}
+      {{ l.label }} ({{ l }})
+      <div rel="tooltip" title="{{ l.current_value }}/{{ l.max_value }}" class="progress">
+        <div class="{% progress_color l.usage %}" style="width: {{ l }}" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
