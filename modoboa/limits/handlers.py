@@ -72,6 +72,8 @@ def create_domain_limits(sender, instance, **kwargs):
 @receiver(admin_signals.extra_domain_dashboard_widgets)
 def display_domain_limits(sender, user, domain, **kwargs):
     """Display resources usage for domain."""
+    if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+        return []
     return [{
         "column": "right",
         "template": "limits/domain_resources_widget.html",

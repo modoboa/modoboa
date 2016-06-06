@@ -146,3 +146,19 @@ class DomainTestCase(ModoTestCase):
         content = json.loads(response.content)
         self.assertIn("test.com", content)
         self.assertIn("test2.com", content)
+
+    def test_domain_detail_view(self):
+        """Test Domain detail view."""
+        parameters.save_admin(
+            "ENABLE_DOMAIN_LIMITS", "no", app="limits")
+        domain = Domain.objects.get(name="test.com")
+        url = reverse("admin:domain_detail", args=[domain.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Information", response.content)
+        self.assertIn("Administrators", response.content)
+        self.assertNotIn("Resources usage", response.content)
+        parameters.save_admin(
+            "ENABLE_DOMAIN_LIMITS", "yes", app="limits")
+        response = self.client.get(url)
+        self.assertIn("Resources usage", response.content)
