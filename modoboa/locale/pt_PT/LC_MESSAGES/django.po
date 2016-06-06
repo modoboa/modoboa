@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 15:54+0200\n"
+"POT-Creation-Date: 2016-06-06 17:46+0200\n"
 "PO-Revision-Date: 2014-12-29 12:51+0000\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -284,19 +284,19 @@ msgstr ""
 "O redirecionamento padrão usado quando nenhuma aplicação se encontra "
 "especificada"
 
-#: core/app_settings.py:279
+#: core/app_settings.py:280
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "A chave deve ter tamanho de 16, 24, ou 32 bytes"
 
-#: core/app_settings.py:288
+#: core/app_settings.py:289
 msgid "Invalid syntax"
 msgstr "Sintax inválida"
 
-#: core/app_settings.py:294
+#: core/app_settings.py:295
 msgid "Invalid rounds number"
 msgstr "Número de linhas inválido"
 
-#: core/app_settings.py:315
+#: core/app_settings.py:316
 msgid "This field is required"
 msgstr "Este campo é obrigatório"
 

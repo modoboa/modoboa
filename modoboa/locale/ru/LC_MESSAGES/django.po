@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 15:54+0200\n"
+"POT-Creation-Date: 2016-06-06 17:46+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -274,19 +274,19 @@ msgstr "Порог перенаправления по умолчанию"
 msgid "The default redirection used when no application is specified"
 msgstr "Если приложение не указано. Используется перенаправление по умолчанию."
 
-#: core/app_settings.py:279
+#: core/app_settings.py:280
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Ключ должен быть 16, 24 или 32 байта длинной"
 
-#: core/app_settings.py:288
+#: core/app_settings.py:289
 msgid "Invalid syntax"
 msgstr "Ошибка в написании"
 
-#: core/app_settings.py:294
+#: core/app_settings.py:295
 msgid "Invalid rounds number"
 msgstr ""
 
-#: core/app_settings.py:315
+#: core/app_settings.py:316
 msgid "This field is required"
 msgstr "Это поле обязательно для заполнеия"
 

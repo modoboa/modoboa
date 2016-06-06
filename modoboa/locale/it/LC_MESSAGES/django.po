@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 15:54+0200\n"
+"POT-Creation-Date: 2016-06-06 17:46+0200\n"
 "PO-Revision-Date: 2015-10-11 11:47+0000\n"
 "Last-Translator: Rocco <mors10@hotmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/"
@@ -284,19 +284,19 @@ msgstr ""
 "Redirezione predefinita utilizzata quando non è specificata alcuna "
 "applicazione"
 
-#: core/app_settings.py:279
+#: core/app_settings.py:280
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "La chiave può essere lunga solo 16, 24 o 32 bytes"
 
-#: core/app_settings.py:288
+#: core/app_settings.py:289
 msgid "Invalid syntax"
 msgstr "Sintassi errata"
 
-#: core/app_settings.py:294
+#: core/app_settings.py:295
 msgid "Invalid rounds number"
 msgstr "Numero di cicli non valido"
 
-#: core/app_settings.py:315
+#: core/app_settings.py:316
 msgid "This field is required"
 msgstr "Questo campo è obbligatorio"
 

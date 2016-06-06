@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 15:54+0200\n"
+"POT-Creation-Date: 2016-06-06 17:46+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: admin/app_settings.py:54 admin/templates/admin/editdomainform.html.py:25
+#: admin/app_settings.py:54 admin/templates/admin/domain_detail.html.py:25
 msgid "Mailboxes"
 msgstr "Почтовые ящики"
 
@@ -115,7 +115,7 @@ msgstr "Ошибка импорта аккаунта (%s): домен долже
 msgid "domain alias"
 msgstr ""
 
-#: admin/forms/account.py:33 admin/templates/admin/editdomainform.html.py:13
+#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:44
 msgid "Username"
 msgstr "Логин пользователя"
 
@@ -218,7 +218,7 @@ msgid "Domain(s) that user administrates"
 msgstr "Домен(ы) администрируемые пользователем"
 
 #: admin/forms/account.py:397 admin/forms/account.py:483
-#: admin/forms/domain.py:268 admin/forms/domain.py:338
+#: admin/forms/domain.py:266 admin/forms/domain.py:336
 msgid "General"
 msgstr "Основные"
 
@@ -323,8 +323,8 @@ msgstr "Создание администратора домена"
 msgid "Automatically create an administrator for this domain"
 msgstr "Автоматически создаст администратора для этого домена"
 
-#: admin/forms/domain.py:174 admin/templates/admin/domains.html.py:25
-#: admin/templates/admin/editdomainform.html:13
+#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:44
+#: admin/templates/admin/domains.html:25
 #: admin/templates/admin/identity_headers.html:2
 msgid "Name"
 msgstr "Логин"
@@ -354,19 +354,19 @@ msgstr "Неверный формат"
 msgid "User '%s' already exists"
 msgstr "Пользователь  '%s' уже существует"
 
-#: admin/forms/domain.py:327
+#: admin/forms/domain.py:325
 msgid "Domain modified"
 msgstr "Домен изменен"
 
-#: admin/forms/domain.py:347
+#: admin/forms/domain.py:345
 msgid "Options"
 msgstr "Опции"
 
-#: admin/forms/domain.py:355
+#: admin/forms/domain.py:353
 msgid "New domain"
 msgstr "Новый домен"
 
-#: admin/forms/domain.py:368
+#: admin/forms/domain.py:366
 msgid "Domain created"
 msgstr "Домен создан"
 
@@ -533,7 +533,7 @@ msgstr "Неизвестный домен %s"
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Адрес почтового ящика  (без @domain.tld)"
 
-#: admin/models/mailbox.py:149
+#: admin/models/mailbox.py:148
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Ошибка получения места находжения почтового ящика (%s)"
@@ -584,6 +584,43 @@ msgstr "Домен изменен"
 msgid "Domain is disabled"
 msgstr "Домен удален"
 
+#: admin/templates/admin/domain_detail.html:15
+msgid "Overview"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:20
+#, fuzzy
+#| msgid "Confirmation"
+msgid "Information"
+msgstr "Подтверждение"
+
+#: admin/templates/admin/domain_detail.html:22
+msgid "Creation date"
+msgstr "Дата создания"
+
+#: admin/templates/admin/domain_detail.html:23
+msgid "Last modification date"
+msgstr "Дата последней модификации"
+
+#: admin/templates/admin/domain_detail.html:24
+#: admin/templates/admin/domain_statistics.html:33
+msgid "Domain aliases"
+msgstr "Синонимы доменов"
+
+#: admin/templates/admin/domain_detail.html:26
+msgid "Mailbox aliases"
+msgstr "Синонимы почтового ящика"
+
+#: admin/templates/admin/domain_detail.html:41
+msgid "Administrators"
+msgstr "Администраторы"
+
+#: admin/templates/admin/domain_detail.html:52
+#, fuzzy
+#| msgid "No domain administrator defined"
+msgid "No domain administrator defined yet."
+msgstr "Администратор домена не определен"
+
 #: admin/templates/admin/domain_general_form.html:4
 #: admin/templates/admin/mailform.html:3
 #: admin/templates/admin/newdomainform.html:3
@@ -613,11 +650,6 @@ msgstr ""
 msgid "Quantity"
 msgstr "Карантин"
 
-#: admin/templates/admin/domain_statistics.html:33
-#: admin/templates/admin/editdomainform.html:24
-msgid "Domain aliases"
-msgstr "Синонимы доменов"
-
 #: admin/templates/admin/domain_statistics.html:45
 msgid "Per-domain counters"
 msgstr ""
@@ -632,34 +664,10 @@ msgstr "Теги"
 msgid "Actions"
 msgstr "Действие"
 
-#: admin/templates/admin/domains_table.html:4
+#: admin/templates/admin/domains_table.html:5
 #, fuzzy
 msgid "disabled"
 msgstr "Разрешен"
-
-#: admin/templates/admin/editdomainform.html:4
-msgid "Administrators"
-msgstr "Администраторы"
-
-#: admin/templates/admin/editdomainform.html:7
-msgid "Miscellaneous"
-msgstr "Прочее"
-
-#: admin/templates/admin/editdomainform.html:19
-msgid "No domain administrator defined"
-msgstr "Администратор домена не определен"
-
-#: admin/templates/admin/editdomainform.html:22
-msgid "Creation date"
-msgstr "Дата создания"
-
-#: admin/templates/admin/editdomainform.html:23
-msgid "Last modification date"
-msgstr "Дата последней модификации"
-
-#: admin/templates/admin/editdomainform.html:26
-msgid "Mailbox aliases"
-msgstr "Синонимы почтового ящика"
 
 #: admin/templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
@@ -765,13 +773,17 @@ msgstr "Добавить список рассылки"
 msgid "View the domain's identities"
 msgstr "Информация о домене"
 
-#: admin/templatetags/admin_tags.py:160 admin/templatetags/admin_tags.py:183
-#: admin/templatetags/admin_tags.py:191
+#: admin/templatetags/admin_tags.py:159
+msgid "Edit {}"
+msgstr ""
+
+#: admin/templatetags/admin_tags.py:169 admin/templatetags/admin_tags.py:192
+#: admin/templatetags/admin_tags.py:200
 #, python-format
 msgid "Delete %s?"
 msgstr "Удалить %s?"
 
-#: admin/templatetags/admin_tags.py:268
+#: admin/templatetags/admin_tags.py:277
 msgid "Remove this permission"
 msgstr "Удалить это разрешение"
 
@@ -819,11 +831,11 @@ msgstr "Пересылка изменена"
 msgid "Alias modified"
 msgstr "Синоним изменен"
 
-#: admin/views/domain.py:132
+#: admin/views/domain.py:136
 msgid "You can't delete your own domain"
 msgstr "Вы не можете удалить собственный домен"
 
-#: admin/views/domain.py:135
+#: admin/views/domain.py:139
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Домен удален"
@@ -901,6 +913,9 @@ msgstr "Импорт информации о пользователях"
 #: admin/views/user.py:35
 msgid "Forward updated"
 msgstr "Перенаправление обновлено"
+
+#~ msgid "Miscellaneous"
+#~ msgstr "Прочее"
 
 #, fuzzy
 #~| msgid "Create a domain administrator"

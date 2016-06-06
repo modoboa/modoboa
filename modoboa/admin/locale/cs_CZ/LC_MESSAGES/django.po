@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 15:54+0200\n"
+"POT-Creation-Date: 2016-06-06 17:46+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: admin/app_settings.py:54 admin/templates/admin/editdomainform.html.py:25
+#: admin/app_settings.py:54 admin/templates/admin/domain_detail.html.py:25
 msgid "Mailboxes"
 msgstr "Schránky"
 
@@ -115,7 +115,7 @@ msgstr "Import účtu selhal (%s): chybná hodnota kvóty"
 msgid "domain alias"
 msgstr "doménový alias"
 
-#: admin/forms/account.py:33 admin/templates/admin/editdomainform.html.py:13
+#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:44
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -220,7 +220,7 @@ msgid "Domain(s) that user administrates"
 msgstr "Doména(y) pod správou uživatele"
 
 #: admin/forms/account.py:397 admin/forms/account.py:483
-#: admin/forms/domain.py:268 admin/forms/domain.py:338
+#: admin/forms/domain.py:266 admin/forms/domain.py:336
 msgid "General"
 msgstr "Obecné"
 
@@ -328,8 +328,8 @@ msgstr "Vytvořit správce domény"
 msgid "Automatically create an administrator for this domain"
 msgstr "Automaticky vytvořit správce této domény"
 
-#: admin/forms/domain.py:174 admin/templates/admin/domains.html.py:25
-#: admin/templates/admin/editdomainform.html:13
+#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:44
+#: admin/templates/admin/domains.html:25
 #: admin/templates/admin/identity_headers.html:2
 msgid "Name"
 msgstr "Jméno"
@@ -358,19 +358,19 @@ msgstr "Neplatný formát"
 msgid "User '%s' already exists"
 msgstr "Uživatel '%s' již existuje"
 
-#: admin/forms/domain.py:327
+#: admin/forms/domain.py:325
 msgid "Domain modified"
 msgstr "Doména upravena"
 
-#: admin/forms/domain.py:347
+#: admin/forms/domain.py:345
 msgid "Options"
 msgstr "Možnosti"
 
-#: admin/forms/domain.py:355
+#: admin/forms/domain.py:353
 msgid "New domain"
 msgstr "Nová doména"
 
-#: admin/forms/domain.py:368
+#: admin/forms/domain.py:366
 msgid "Domain created"
 msgstr "Doména vytvořena"
 
@@ -535,7 +535,7 @@ msgstr "Neznámá doména %s"
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Adresa schránky (bez části @doména.tld)"
 
-#: admin/models/mailbox.py:149
+#: admin/models/mailbox.py:148
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Nebylo možné zjistit umístění schránky (%s)"
@@ -585,6 +585,43 @@ msgstr "Doména upravena"
 msgid "Domain is disabled"
 msgstr "Doména je zakázána"
 
+#: admin/templates/admin/domain_detail.html:15
+msgid "Overview"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:20
+#, fuzzy
+#| msgid "Confirmation"
+msgid "Information"
+msgstr "Potvrzení"
+
+#: admin/templates/admin/domain_detail.html:22
+msgid "Creation date"
+msgstr "Datum vytvoření"
+
+#: admin/templates/admin/domain_detail.html:23
+msgid "Last modification date"
+msgstr "Datum poslední změny"
+
+#: admin/templates/admin/domain_detail.html:24
+#: admin/templates/admin/domain_statistics.html:33
+msgid "Domain aliases"
+msgstr "Doménové aliasy"
+
+#: admin/templates/admin/domain_detail.html:26
+msgid "Mailbox aliases"
+msgstr "Aliasy schránek"
+
+#: admin/templates/admin/domain_detail.html:41
+msgid "Administrators"
+msgstr "Správci"
+
+#: admin/templates/admin/domain_detail.html:52
+#, fuzzy
+#| msgid "No domain administrator defined"
+msgid "No domain administrator defined yet."
+msgstr " Nebyl určen správce domény"
+
 #: admin/templates/admin/domain_general_form.html:4
 #: admin/templates/admin/mailform.html:3
 #: admin/templates/admin/newdomainform.html:3
@@ -612,11 +649,6 @@ msgstr "Globální počitadla"
 msgid "Quantity"
 msgstr "Počet"
 
-#: admin/templates/admin/domain_statistics.html:33
-#: admin/templates/admin/editdomainform.html:24
-msgid "Domain aliases"
-msgstr "Doménové aliasy"
-
 #: admin/templates/admin/domain_statistics.html:45
 msgid "Per-domain counters"
 msgstr "Počitadla dle domén"
@@ -631,33 +663,9 @@ msgstr "Značky"
 msgid "Actions"
 msgstr "Akce"
 
-#: admin/templates/admin/domains_table.html:4
+#: admin/templates/admin/domains_table.html:5
 msgid "disabled"
 msgstr "zákázáno"
-
-#: admin/templates/admin/editdomainform.html:4
-msgid "Administrators"
-msgstr "Správci"
-
-#: admin/templates/admin/editdomainform.html:7
-msgid "Miscellaneous"
-msgstr "Různé"
-
-#: admin/templates/admin/editdomainform.html:19
-msgid "No domain administrator defined"
-msgstr " Nebyl určen správce domény"
-
-#: admin/templates/admin/editdomainform.html:22
-msgid "Creation date"
-msgstr "Datum vytvoření"
-
-#: admin/templates/admin/editdomainform.html:23
-msgid "Last modification date"
-msgstr "Datum poslední změny"
-
-#: admin/templates/admin/editdomainform.html:26
-msgid "Mailbox aliases"
-msgstr "Aliasy schránek"
 
 #: admin/templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
@@ -762,13 +770,17 @@ msgstr "Přidat distribuční seznam"
 msgid "View the domain's identities"
 msgstr "Zobrazit seznam identit domény"
 
-#: admin/templatetags/admin_tags.py:160 admin/templatetags/admin_tags.py:183
-#: admin/templatetags/admin_tags.py:191
+#: admin/templatetags/admin_tags.py:159
+msgid "Edit {}"
+msgstr ""
+
+#: admin/templatetags/admin_tags.py:169 admin/templatetags/admin_tags.py:192
+#: admin/templatetags/admin_tags.py:200
 #, python-format
 msgid "Delete %s?"
 msgstr "Smazat %s?"
 
-#: admin/templatetags/admin_tags.py:268
+#: admin/templatetags/admin_tags.py:277
 msgid "Remove this permission"
 msgstr "Odstranit toto oprávnění"
 
@@ -816,11 +828,11 @@ msgstr "Přeposílání upraveno"
 msgid "Alias modified"
 msgstr "Alias upraven"
 
-#: admin/views/domain.py:132
+#: admin/views/domain.py:136
 msgid "You can't delete your own domain"
 msgstr "Nemůžete smazat vlastní doménu"
 
-#: admin/views/domain.py:135
+#: admin/views/domain.py:139
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Doména smazána"
@@ -920,6 +932,9 @@ msgstr "Importovat identity"
 #: admin/views/user.py:35
 msgid "Forward updated"
 msgstr "Přeposílání aktualizováno"
+
+#~ msgid "Miscellaneous"
+#~ msgstr "Různé"
 
 #, fuzzy
 #~| msgid "Create a domain administrator"

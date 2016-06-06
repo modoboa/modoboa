@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 15:54+0200\n"
+"POT-Creation-Date: 2016-06-06 17:46+0200\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -283,19 +283,19 @@ msgstr ""
 "De standaard omleiding die gebruikt word als er geen andere applicatie is "
 "opgegeven"
 
-#: core/app_settings.py:279
+#: core/app_settings.py:280
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Sleutelwaarde moet 16, 24 of 32 bytes lang zijn"
 
-#: core/app_settings.py:288
+#: core/app_settings.py:289
 msgid "Invalid syntax"
 msgstr "Ongeldige zinsbouw"
 
-#: core/app_settings.py:294
+#: core/app_settings.py:295
 msgid "Invalid rounds number"
 msgstr "Ongeldig nummer van rondes"
 
-#: core/app_settings.py:315
+#: core/app_settings.py:316
 msgid "This field is required"
 msgstr "Dit veld is benodigd"
 

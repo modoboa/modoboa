@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 15:54+0200\n"
+"POT-Creation-Date: 2016-06-06 17:46+0200\n"
 "PO-Revision-Date: 2016-05-08 13:56+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: core/__init__.py:65
@@ -64,7 +64,8 @@ msgstr "plain (faible)"
 
 #: core/app_settings.py:60
 msgid "Scheme used to crypt mailbox passwords"
-msgstr "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
+msgstr ""
+"Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
 #: core/app_settings.py:65
 msgid "Rounds"
@@ -74,7 +75,9 @@ msgstr "Tours"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr "Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit être compris entre 1000 et 999999999 inclue."
+msgstr ""
+"Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit "
+"être compris entre 1000 et 999999999 inclue."
 
 #: core/app_settings.py:75
 msgid "Secret key"
@@ -136,7 +139,9 @@ msgstr "ND de connexion"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr "Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser vide pour une connexion anonyme"
+msgstr ""
+"Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser "
+"vide pour une connexion anonyme"
 
 #: core/app_settings.py:127
 msgid "Bind password"
@@ -144,7 +149,9 @@ msgstr "Mot de passe de connexion"
 
 #: core/app_settings.py:130
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr "Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de connexion')"
+msgstr ""
+"Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de "
+"connexion')"
 
 #: core/app_settings.py:139
 msgid "Users search base"
@@ -152,7 +159,9 @@ msgstr "Base de recherche des utilisateurs"
 
 #: core/app_settings.py:142
 msgid "The distinguished name of the search base used to find users"
-msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les utilisateurs"
+msgstr ""
+"Le nom distinctif de la base de recherche utilisée pour rechercher les "
+"utilisateurs"
 
 #: core/app_settings.py:149
 msgid "Search filter"
@@ -162,7 +171,9 @@ msgstr "Filtre de recherche"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr "Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être valide, il doit être entouré de parenthèses."
+msgstr ""
+"Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être "
+"valide, il doit être entouré de parenthèses."
 
 #: core/app_settings.py:160
 msgid "User DN template"
@@ -173,7 +184,9 @@ msgstr "Modèle de nom distinctif utilisateur"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr "Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il doit contenir un espace réservé (ex. %(user)s)"
+msgstr ""
+"Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il "
+"doit contenir un espace réservé (ex. %(user)s)"
 
 #: core/app_settings.py:171
 msgid "Password attribute"
@@ -197,9 +210,12 @@ msgstr "Groupes administrateurs"
 
 #: core/app_settings.py:188
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators."
-" Use ';' characters to separate groups."
-msgstr "Les membres de ces groupes LDAP (Posix) seront créés en tant qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les groupes."
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
+msgstr ""
+"Les membres de ces groupes LDAP (Posix) seront créés en tant "
+"qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les "
+"groupes."
 
 #: core/app_settings.py:195
 msgid "Group type"
@@ -215,7 +231,9 @@ msgstr "Base de recherche des groupes"
 
 #: core/app_settings.py:207
 msgid "The distinguished name of the search base used to find groups"
-msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les groupes"
+msgstr ""
+"Le nom distinctif de la base de recherche utilisée pour rechercher les "
+"groupes"
 
 #: core/app_settings.py:212
 msgid "Miscellaneous"
@@ -259,21 +277,22 @@ msgstr "Redirection par défaut"
 
 #: core/app_settings.py:249
 msgid "The default redirection used when no application is specified"
-msgstr "La redirection appliquée par défaut quand aucune application n'est spécifiée"
+msgstr ""
+"La redirection appliquée par défaut quand aucune application n'est spécifiée"
 
-#: core/app_settings.py:279
+#: core/app_settings.py:280
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "La longueur d'une clé doit être de 16, 24 ou 32 octets"
 
-#: core/app_settings.py:288
+#: core/app_settings.py:289
 msgid "Invalid syntax"
 msgstr "Syntaxe invalide"
 
-#: core/app_settings.py:294
+#: core/app_settings.py:295
 msgid "Invalid rounds number"
 msgstr "Nombre invalide de tours"
 
-#: core/app_settings.py:315
+#: core/app_settings.py:316
 msgid "This field is required"
 msgstr "Ce champ est requis"
 
@@ -368,7 +387,8 @@ msgstr "Vous ne pouvez pas supprimer votre propre compte"
 
 #: core/models.py:158
 msgid "Failed to update password: LDAP module not installed"
-msgstr "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
+msgstr ""
+"Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
 
 #: core/models.py:212
 msgid "account"
@@ -423,7 +443,8 @@ msgstr "Une ou plusieurs mises à jour sont disponibles!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr "Consulter la liste suivante pour trouver le(s) composant(s) concerné(s)."
+msgstr ""
+"Consulter la liste suivante pour trouver le(s) composant(s) concerné(s)."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -551,7 +572,9 @@ msgstr "Utiliseur '%s' connecté avec succès"
 
 #: core/views/auth.py:54
 msgid "Your username and password didn't match. Please try again."
-msgstr "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez réessayer."
+msgstr ""
+"Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
+"réessayer."
 
 #: core/views/auth.py:82
 #, python-format

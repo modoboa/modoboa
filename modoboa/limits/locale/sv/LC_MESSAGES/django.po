@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Martin Persson <martin.jens.persson@gmail.com>, 2014
 # Olle Gustafsson <olle@dalnix.se>, 2013,2015-2016
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 15:54+0200\n"
+"POT-Creation-Date: 2016-06-06 17:46+0200\n"
 "PO-Revision-Date: 2016-05-30 18:08+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
-"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/sv/)\n"
+"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
+"sv/)\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: limits/app_settings.py:15
@@ -40,7 +41,9 @@ msgstr "Domänadministratörer"
 msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
-msgstr "Max antal tillåtna domän admininstratöre för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
+msgstr ""
+"Max antal tillåtna domän admininstratöre för en ny administratör. (0 för att "
+"inaktivera, -1 för obegränsat antal)"
 
 #: limits/app_settings.py:35 limits/constants.py:10
 msgid "Domains"
@@ -50,7 +53,9 @@ msgstr "Domäner"
 msgid ""
 "Maximum number of allowed domains for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Max antal tillåtna domäner för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
+msgstr ""
+"Max antal tillåtna domäner för en ny administratör. (0 för att inaktivera, "
+"-1 för obegränsat antal)"
 
 #: limits/app_settings.py:45 limits/app_settings.py:96 limits/constants.py:14
 #: limits/constants.py:35
@@ -59,9 +64,11 @@ msgstr "Domän alias"
 
 #: limits/app_settings.py:48
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
-" any creation, -1 to allow unlimited creations)"
-msgstr "Maximalt antal domän alias för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Maximalt antal domän alias för en ny administratör. (0 för att inaktivera, "
+"-1 för obegränsat antal)"
 
 #: limits/app_settings.py:56 limits/app_settings.py:107 limits/constants.py:18
 #: limits/constants.py:39
@@ -72,7 +79,9 @@ msgstr "Brevlådor"
 msgid ""
 "Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Maximalt antal brevlådor för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
+msgstr ""
+"Maximalt antal brevlådor för en ny administratör. (0 för att inaktivera, -1 "
+"för obegränsat antal)"
 
 #: limits/app_settings.py:66 limits/app_settings.py:117 limits/constants.py:21
 #: limits/constants.py:42
@@ -83,7 +92,9 @@ msgstr "Brevlåde alias"
 msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Maximalt antal alias för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
+msgstr ""
+"Maximalt antal alias för en ny administratör. (0 för att inaktivera, -1 för "
+"obegränsat antal)"
 
 #: limits/app_settings.py:76
 msgid "Default per-domain limits"
@@ -99,27 +110,34 @@ msgstr "Aktivera eller avaktivera per domän gränser"
 
 #: limits/app_settings.py:88
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny"
-" any creation, -1 to allow unlimited creations)"
-msgstr "Max antal tillåtna domänadministratörer för en ny domän. (0 för att neka skapande, -1 för oändligt antal)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Max antal tillåtna domänadministratörer för en ny domän. (0 för att neka "
+"skapande, -1 för oändligt antal)"
 
 #: limits/app_settings.py:99
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Max antal domänalias för en ny domän. (0 för att neka skapande, -1 för obegränsat)"
+msgstr ""
+"Max antal domänalias för en ny domän. (0 för att neka skapande, -1 för "
+"obegränsat)"
 
 #: limits/app_settings.py:110
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Max antal brevlådor per domän. (0 för inga alls, -1 för obegränsat antal)"
+msgstr ""
+"Max antal brevlådor per domän. (0 för inga alls, -1 för obegränsat antal)"
 
 #: limits/app_settings.py:120
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
-" -1 to allow unlimited creations)"
-msgstr "Max antal tillåtna alias för en ny domän. (0 för inga alls, -1 för obegränsat antal)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
+"-1 to allow unlimited creations)"
+msgstr ""
+"Max antal tillåtna alias för en ny domän. (0 för inga alls, -1 för "
+"obegränsat antal)"
 
 #: limits/apps.py:17
 msgid "Limits"
@@ -186,6 +204,7 @@ msgstr "Inte tillräckligt med resurser"
 msgid "unlimited"
 msgstr "obegränsad"
 
+#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
 msgid "Resources usage"
 msgstr "Resurs användande"
