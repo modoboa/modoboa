@@ -39,7 +39,10 @@ class CheckDNSBLCommand(BaseCommand):
     def check_domain(self, domain, timeout):
         """Check specified domain."""
         resolver = dns.resolver.Resolver()
-        answers = resolver.query(domain.name, "MX")
+        try:
+            answers = resolver.query(domain.name, "MX")
+        except dns.resolver.NoAnswer:
+            return
         ip_list = []
         for answer in answers:
             address = None
