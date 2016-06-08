@@ -17,3 +17,4 @@ django-rest-swagger==0.3.5
 django-subcommand2==0.1.1
 gevent==1.1.1
 ipaddress
+dnspython==1.12.0
