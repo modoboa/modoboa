@@ -6,6 +6,7 @@ import dns.resolver
 import gevent
 from gevent import socket
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from modoboa.admin import constants
@@ -54,10 +55,13 @@ class CheckDNSBLCommand(BaseCommand):
             finally:
                 if address is not None:
                     ip_list.append(address)
-
+        if not hasattr(settings, "DNSBL_PROVIDERS"):
+            providers = constants.DNSBL_PROVIDERS
+        else:
+            providers = settings.DNSBL_PROVIDERS
         jobs = [
             gevent.spawn(self.query, ip_list, provider)
-            for provider in constants.DNSBL_PROVIDERS]
+            for provider in providers]
         gevent.joinall(jobs, timeout)
         for job in jobs:
             if not job.successful():
