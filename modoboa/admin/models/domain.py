@@ -101,6 +101,10 @@ class Domain(AdminObject):
     def aliases(self):
         return self.domainalias_set
 
+    def is_in_dnsbl(self):
+        """Shortcut to DNSBL results."""
+        return self.dnsblresult_set.blacklisted().exists()
+
     def add_admin(self, account):
         """Add a new administrator to this domain.
 
@@ -207,3 +211,26 @@ class Domain(AdminObject):
             domalias.post_create(creator)
 
 reversion.register(Domain)
+
+
+class DNSBLQuerySet(models.QuerySet):
+    """Custom manager for DNSBLResultManager."""
+
+    def blacklisted(self):
+        """Return blacklisted results."""
+        return self.exclude(status="")
+
+
+class DNSBLResult(models.Model):
+    """Store a DNSBL query result."""
+
+    domain = models.ForeignKey(Domain)
+    provider = models.CharField(max_length=254)
+    mx = models.GenericIPAddressField()
+    status = models.CharField(max_length=45, blank=True)
+
+    objects = models.Manager.from_queryset(DNSBLQuerySet)()
+
+    class Meta:
+        app_label = "admin"
+        unique_together = [("domain", "provider", "mx")]

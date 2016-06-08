@@ -12,6 +12,8 @@ urlpatterns = patterns(
     url(r'^domains/$', 'domains', name="domain_list"),
     url(r'^domains/(?P<pk>\d+)/$', views.DomainDetailView.as_view(),
         name="domain_detail"),
+    url(r'^domains/(?P<pk>\d+)/dnsbl/$', views.DNSBLDomainDetailView.as_view(),
+        name="dnsbl_domain_detail"),
     url(r'^domains/list/$', '_domains', name="_domain_list"),
     url(r'^domains/flatlist/$', 'domains_list', name="domain_flat_list"),
     url(r'^domains/stats/$', 'domain_statistics', name="domain_statistics"),
