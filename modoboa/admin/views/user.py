@@ -40,9 +40,11 @@ def forward(request, tplname="admin/forward.html"):
 
     form = ForwardForm()
     if al is not None and al.recipients:
-        form.fields["dest"].initial = al.recipients
-        if al.aliasrecipient_set.filter(r_mailbox=mb.pk).exists():
+        recipients = list(al.recipients)
+        if al.aliasrecipient_set.filter(r_mailbox=mb).exists():
             form.fields["keepcopies"].initial = True
+            recipients.remove(mb.full_address)
+        form.fields["dest"].initial = "\n".join(recipients)
     return render_to_json_response({
         "content": _render_to_string(request, tplname, {
             "form": form
