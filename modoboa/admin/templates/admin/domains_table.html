@@ -7,7 +7,7 @@
   <td name="tags">{% render_tags domain.tags %}</td>
   <td name="auth">
     <small>
-      <a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal"><span class="label label-mini label-{% if domain.is_in_dnsbl %}danger{% else %}success{% endif %}">DNSBL</span></a>
+      <span class="label label-mini label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
     </small>
   </td>
   <td name="actions">{% domain_actions user domain %}</td>

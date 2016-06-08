@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block modalbody %}
-  {% if domain.is_in_dnsbl %}
+  {% if domain.dnsbl_status_color == "danger" %}
     <table class="table">
       <thead>
         <tr>
@@ -24,7 +24,12 @@
       </tbody>
     </table>
   {% else %}
+    {% if domain.dnsbl_status_color == "success" %}
     <div class="alert alert-success">
       {% trans "Everything is fine, this domain is not listed." %}</div>
+    {% else %}
+    <div class="alert alert-warning">
+      {% trans "No information available for this domain." %}</div>
+    {% endif %}
   {% endif %}
 {% endblock %}

@@ -11,6 +11,7 @@ from django.core.management.base import BaseCommand
 
 from modoboa.admin import constants
 from modoboa.admin import models
+from modoboa.lib import parameters
 
 
 class CheckDNSBLCommand(BaseCommand):
@@ -58,6 +59,9 @@ class CheckDNSBLCommand(BaseCommand):
             finally:
                 if address is not None:
                     ip_list.append(address)
+        print domain.name, ip_list
+        if len(ip_list) == 0:
+            return
         if not hasattr(settings, "DNSBL_PROVIDERS"):
             providers = constants.DNSBL_PROVIDERS
         else:
@@ -78,5 +82,7 @@ class CheckDNSBLCommand(BaseCommand):
 
     def handle(self, *args, **options):
         """Command entry point."""
+        if parameters.get_admin("ENABLE_DNSBL_CHECKS") == "no":
+            return
         for domain in models.Domain.objects.filter(enabled=True):
             self.check_domain(domain, options.get("timeout"))

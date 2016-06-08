@@ -3,6 +3,7 @@
 from django.db import models
 from django.db.models.manager import Manager
 from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from django.contrib.contenttypes.fields import GenericRelation
@@ -101,9 +102,15 @@ class Domain(AdminObject):
     def aliases(self):
         return self.domainalias_set
 
-    def is_in_dnsbl(self):
+    @cached_property
+    def dnsbl_status_color(self):
         """Shortcut to DNSBL results."""
-        return self.dnsblresult_set.blacklisted().exists()
+        if not self.dnsblresult_set.exists():
+            return "warning"
+        elif self.dnsblresult_set.blacklisted().exists():
+            return "danger"
+        else:
+            return "success"
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
