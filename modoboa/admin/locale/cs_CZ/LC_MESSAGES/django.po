@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-06 17:46+0200\n"
+"POT-Creation-Date: 2016-06-09 15:29+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -19,15 +19,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: admin/app_settings.py:54 admin/templates/admin/domain_detail.html.py:25
+#: admin/app_settings.py:54 admin/callbacks.py:25
+#: admin/templates/admin/domain_statistics.html:30
+#: admin/templates/admin/domains.html:3
+msgid "Domains"
+msgstr "Domény"
+
+#: admin/app_settings.py:57
+msgid "Enable DNSBL checks"
+msgstr ""
+
+#: admin/app_settings.py:60
+msgid "Check every domain against major DNSBL providers"
+msgstr ""
+
+#: admin/app_settings.py:64 admin/templates/admin/domain_detail.html.py:33
 msgid "Mailboxes"
 msgstr "Schránky"
 
-#: admin/app_settings.py:57
+#: admin/app_settings.py:67
 msgid "Handle mailboxes on filesystem"
 msgstr "Spravovat schránky v souborovém systému"
 
-#: admin/app_settings.py:60
+#: admin/app_settings.py:70
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -35,19 +49,19 @@ msgstr ""
 "Přejmenovat nebo odstranit schránky v souborovém systému, pokud jsou "
 "přejmenovány nebo odstraněny v Modoboa"
 
-#: admin/app_settings.py:66
+#: admin/app_settings.py:76
 msgid "Mailboxes owner"
 msgstr "Majitel schránky"
 
-#: admin/app_settings.py:69
+#: admin/app_settings.py:79
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "Účet UNIXu, který vlastní schránky v souborovém systému"
 
-#: admin/app_settings.py:74
+#: admin/app_settings.py:84
 msgid "Default domain quota"
 msgstr "Výchozí kvóta domény"
 
-#: admin/app_settings.py:77
+#: admin/app_settings.py:87
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
@@ -55,35 +69,30 @@ msgstr ""
 "Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
 "hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
 
-#: admin/app_settings.py:83
+#: admin/app_settings.py:93
 msgid "Automatic account removal"
 msgstr "Automatické odstranění účtu"
 
-#: admin/app_settings.py:86
+#: admin/app_settings.py:96
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "Když je schránka odstraněná, odstranit také přiřazený účet uživatele"
 
-#: admin/app_settings.py:90
+#: admin/app_settings.py:100
 msgid "Automatic domain/mailbox creation"
 msgstr "Automatické vytvoření domény/schránky"
 
-#: admin/app_settings.py:93
+#: admin/app_settings.py:103
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "Při založení účtu automaticky vytvořit doménu a schránku."
 
-#: admin/app_settings.py:139 admin/forms/account.py:261
+#: admin/app_settings.py:149 admin/forms/account.py:261
 #: admin/forms/domain.py:81
 msgid "Must be a positive integer"
 msgstr "Musí se jednat o kladné číslo"
 
-#: admin/app_settings.py:149
+#: admin/app_settings.py:159
 msgid "Administration"
 msgstr "Správa"
-
-#: admin/callbacks.py:25 admin/templates/admin/domain_statistics.html.py:30
-#: admin/templates/admin/domains.html:3
-msgid "Domains"
-msgstr "Domény"
 
 #: admin/callbacks.py:35 admin/templates/admin/domain_statistics.html.py:36
 #: admin/templates/admin/domain_statistics.html:50
@@ -115,7 +124,7 @@ msgstr "Import účtu selhal (%s): chybná hodnota kvóty"
 msgid "domain alias"
 msgstr "doménový alias"
 
-#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:44
+#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:52
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -285,7 +294,7 @@ msgstr "Nemáte oprávnění k přístupu k této doméně"
 msgid "No recipient defined"
 msgstr "Nebyl určen příjemce"
 
-#: admin/forms/domain.py:24 admin/models/domain.py:86
+#: admin/forms/domain.py:24 admin/models/domain.py:87
 #: admin/templates/admin/domain_statistics.html:49
 msgid "Domain"
 msgstr "Doména"
@@ -328,7 +337,7 @@ msgstr "Vytvořit správce domény"
 msgid "Automatically create an administrator for this domain"
 msgstr "Automaticky vytvořit správce této domény"
 
-#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:44
+#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:52
 #: admin/templates/admin/domains.html:25
 #: admin/templates/admin/identity_headers.html:2
 msgid "Name"
@@ -430,14 +439,18 @@ msgstr "Zatrhněte toto pole, pokud hesla ve vašem souboru nejsou zašifrována
 msgid "A mailbox is required"
 msgstr "Schránka je vyžadována"
 
-#: admin/lib.py:121
+#: admin/lib.py:122
 #, fuzzy
 #| msgid "You can't delete your own domain"
 msgid "You are not allowed to import domains"
 msgstr "Nemůžete smazat vlastní doménu"
 
-#: admin/lib.py:132
+#: admin/lib.py:133
 msgid "You are not allowed to import domain aliases."
+msgstr ""
+
+#: admin/management/commands/subcommands/_dnsbl.py:84
+msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr ""
 
 #: admin/models/alias.py:27 admin/models/mailbox.py:80
@@ -450,7 +463,7 @@ msgstr "adresa"
 msgid "The alias address."
 msgstr "Název aliasu"
 
-#: admin/models/alias.py:34 admin/models/domain.py:41
+#: admin/models/alias.py:34 admin/models/domain.py:42
 #: admin/models/domain_alias.py:44
 msgid "enabled"
 msgstr "povoleno"
@@ -493,23 +506,23 @@ msgstr "Neplatný řádek: %s"
 msgid "Domain '%s' does not exist"
 msgstr "Doména '%s' neexistuje"
 
-#: admin/models/domain.py:37 admin/models/domain_alias.py:37
+#: admin/models/domain.py:38 admin/models/domain_alias.py:37
 msgid "name"
 msgstr "název"
 
-#: admin/models/domain.py:38
+#: admin/models/domain.py:39
 msgid "The domain name"
 msgstr "Doménové jméno"
 
-#: admin/models/domain.py:42
+#: admin/models/domain.py:43
 msgid "Check to activate this domain"
 msgstr "Zatrhněte pole pro povolení této domény"
 
-#: admin/models/domain.py:183 admin/models/domain_alias.py:71
+#: admin/models/domain.py:194 admin/models/domain_alias.py:71
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: admin/models/domain.py:191
+#: admin/models/domain.py:202
 #, python-format
 msgid "Invalid quota value for domain '%s'"
 msgstr "Neplatná hodnota kvóty u domény '%s'"
@@ -585,38 +598,70 @@ msgstr "Doména upravena"
 msgid "Domain is disabled"
 msgstr "Doména je zakázána"
 
+#: admin/templates/admin/dnsbl_domain_detail.html:10
+msgid "Provider"
+msgstr ""
+
+#: admin/templates/admin/dnsbl_domain_detail.html:11
+#: admin/templates/admin/quota_headers.html:2
+msgid "Address"
+msgstr "Adresa"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:12
+#, fuzzy
+#| msgid "Statistics"
+msgid "Status"
+msgstr "Statistiky"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:21
+msgid "listed"
+msgstr ""
+
+#: admin/templates/admin/dnsbl_domain_detail.html:29
+msgid "Everything is fine, this domain is not listed."
+msgstr ""
+
+#: admin/templates/admin/dnsbl_domain_detail.html:32
+msgid "No information available for this domain."
+msgstr ""
+
 #: admin/templates/admin/domain_detail.html:15
 msgid "Overview"
 msgstr ""
 
-#: admin/templates/admin/domain_detail.html:20
+#: admin/templates/admin/domain_detail.html:21
 #, fuzzy
 #| msgid "Confirmation"
 msgid "Information"
 msgstr "Potvrzení"
 
-#: admin/templates/admin/domain_detail.html:22
+#: admin/templates/admin/domain_detail.html:25
+#: admin/templates/admin/domains.html:28
+msgid "Authentication"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:29
 msgid "Creation date"
 msgstr "Datum vytvoření"
 
-#: admin/templates/admin/domain_detail.html:23
+#: admin/templates/admin/domain_detail.html:31
 msgid "Last modification date"
 msgstr "Datum poslední změny"
 
-#: admin/templates/admin/domain_detail.html:24
+#: admin/templates/admin/domain_detail.html:32
 #: admin/templates/admin/domain_statistics.html:33
 msgid "Domain aliases"
 msgstr "Doménové aliasy"
 
-#: admin/templates/admin/domain_detail.html:26
+#: admin/templates/admin/domain_detail.html:34
 msgid "Mailbox aliases"
 msgstr "Aliasy schránek"
 
-#: admin/templates/admin/domain_detail.html:41
+#: admin/templates/admin/domain_detail.html:49
 msgid "Administrators"
 msgstr "Správci"
 
-#: admin/templates/admin/domain_detail.html:52
+#: admin/templates/admin/domain_detail.html:60
 #, fuzzy
 #| msgid "No domain administrator defined"
 msgid "No domain administrator defined yet."
@@ -658,7 +703,7 @@ msgstr "Počitadla dle domén"
 msgid "Tags"
 msgstr "Značky"
 
-#: admin/templates/admin/domains.html:28
+#: admin/templates/admin/domains.html:29
 #: admin/templates/admin/identity_headers.html:5
 msgid "Actions"
 msgstr "Akce"
@@ -695,9 +740,19 @@ msgstr "Zvolte hodnotu"
 msgid "Use domain default value"
 msgstr "Použít výchozí hodnotu domény"
 
-#: admin/templates/admin/quota_headers.html:2
-msgid "Address"
-msgstr "Adresa"
+#: admin/templates/admin/notifications/domain_in_dnsbl.html:3
+#, python-format
+msgid ""
+"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
+"providers:"
+msgstr ""
+
+#: admin/templates/admin/notifications/domain_in_dnsbl.html:11
+msgid ""
+"The domain's reputation will be affected and there is a chance that emails "
+"coming from it are considered as spam. You should contact those providers "
+"and ask them to unlist detected IP address(es)."
+msgstr ""
 
 #: admin/templates/admin/quota_headers.html:3
 msgid "Value"
@@ -827,6 +882,10 @@ msgstr "Přeposílání upraveno"
 #: admin/views/alias.py:107
 msgid "Alias modified"
 msgstr "Alias upraven"
+
+#: admin/views/dnsbl.py:30
+msgid "DNSBL summary for {}"
+msgstr ""
 
 #: admin/views/domain.py:136
 msgid "You can't delete your own domain"

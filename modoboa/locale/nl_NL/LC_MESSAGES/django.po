@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-06 17:46+0200\n"
+"POT-Creation-Date: 2016-06-09 15:29+0200\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -26,55 +26,55 @@ msgstr ""
 msgid "One or more updates are available"
 msgstr "Er is een update beschikbaar!"
 
-#: core/app_settings.py:38
+#: core/app_settings.py:39
 msgid "Authentication"
 msgstr "Authenticatie"
 
-#: core/app_settings.py:41
+#: core/app_settings.py:42
 msgid "Authentication type"
 msgstr "Authenticatie type"
 
-#: core/app_settings.py:42
+#: core/app_settings.py:43
 msgid "Local"
 msgstr "Lokaal"
 
-#: core/app_settings.py:45
+#: core/app_settings.py:46
 msgid "The backend used for authentication"
 msgstr "De backend gebruikt voor authenticatie"
 
-#: core/app_settings.py:50
+#: core/app_settings.py:51
 msgid "Default password scheme"
 msgstr "Standaard wachtwoord encryptiemethode"
 
-#: core/app_settings.py:54
+#: core/app_settings.py:55
 msgid "md5crypt (weak)"
 msgstr "md5crypt (zwak)"
 
-#: core/app_settings.py:55
+#: core/app_settings.py:56
 msgid "sha256 (weak)"
 msgstr "sha256 (zwak)"
 
-#: core/app_settings.py:56
+#: core/app_settings.py:57
 msgid "md5 (weak)"
 msgstr "md5 (zwak)"
 
-#: core/app_settings.py:57
+#: core/app_settings.py:58
 msgid "crypt (weak)"
 msgstr "crypt (zwak)"
 
-#: core/app_settings.py:58
+#: core/app_settings.py:59
 msgid "plain (weak)"
 msgstr "plain (onversleuteld!)"
 
-#: core/app_settings.py:60
+#: core/app_settings.py:61
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Schema dat gebruikt word om mailbox wachtwoorden te versleutelen"
 
-#: core/app_settings.py:65
+#: core/app_settings.py:66
 msgid "Rounds"
 msgstr "Rondes"
 
-#: core/app_settings.py:68
+#: core/app_settings.py:69
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -82,63 +82,63 @@ msgstr ""
 "Nummer van te gebruiken randomizeringsrondes (alleen bij sha256crypt en "
 "sha512crypt). Moet tussen de 1000 en 999999999 liggen."
 
-#: core/app_settings.py:75
+#: core/app_settings.py:76
 msgid "Secret key"
 msgstr "Geheime sleutel"
 
-#: core/app_settings.py:77
+#: core/app_settings.py:78
 msgid "Key used to encrypt/decrypt passwords"
 msgstr "Code die gebruikt word om wachtwoorden te versleutelen/ontsleutelen"
 
-#: core/app_settings.py:82
+#: core/app_settings.py:83
 msgid "LDAP settings"
 msgstr "LDAP instellingen"
 
-#: core/app_settings.py:85
+#: core/app_settings.py:86
 msgid "Server address"
 msgstr "Server adres"
 
-#: core/app_settings.py:88
+#: core/app_settings.py:89
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "Het IP adres of de DNS naam van LDAP server"
 
-#: core/app_settings.py:93
+#: core/app_settings.py:94
 msgid "Server port"
 msgstr "Server poort"
 
-#: core/app_settings.py:95
+#: core/app_settings.py:96
 msgid "The TCP port number used by the LDAP server"
 msgstr "Het TCP poortnummer gebruikt door de LDAP server"
 
-#: core/app_settings.py:100
+#: core/app_settings.py:101
 msgid "Use a secured connection"
 msgstr "Gebruik een beveiligde verbinding"
 
-#: core/app_settings.py:103
+#: core/app_settings.py:104
 msgid "Use an SSL/TLS connection to access the LDAP server"
 msgstr "Gebruik een SSL/TLS verbinding met de LDAP server"
 
-#: core/app_settings.py:107
+#: core/app_settings.py:108
 msgid "Authentication method"
 msgstr "Authenticatie methode"
 
-#: core/app_settings.py:108
+#: core/app_settings.py:109
 msgid "Search and bind"
 msgstr "Zoeken en koppelen"
 
-#: core/app_settings.py:109
+#: core/app_settings.py:110
 msgid "Direct bind"
 msgstr "Directe koppeling"
 
-#: core/app_settings.py:111
+#: core/app_settings.py:112
 msgid "Choose the authentication method to use"
 msgstr "Kies een authenticatie methode om te gebruiken"
 
-#: core/app_settings.py:116
+#: core/app_settings.py:117
 msgid "Bind DN"
 msgstr "Koppeling DN"
 
-#: core/app_settings.py:119
+#: core/app_settings.py:120
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -146,29 +146,29 @@ msgstr ""
 "De gedistingeerde naam om te gebruiken bij het koppeling met de LDAP server. "
 "Laat leeg voor een anonieme koppeling."
 
-#: core/app_settings.py:127
+#: core/app_settings.py:128
 msgid "Bind password"
 msgstr "Koppel wachtwoord"
 
-#: core/app_settings.py:130
+#: core/app_settings.py:131
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "Het wachtwoord om te gebruiken tijdens het koppelen met de LDAP server (met "
 "'koppel DN')"
 
-#: core/app_settings.py:139
+#: core/app_settings.py:140
 msgid "Users search base"
 msgstr "Gebruikers zoekbasis"
 
-#: core/app_settings.py:142
+#: core/app_settings.py:143
 msgid "The distinguished name of the search base used to find users"
 msgstr "De gedistingeerde naam van de zoekbasis om gebruikers te vinden"
 
-#: core/app_settings.py:149
+#: core/app_settings.py:150
 msgid "Search filter"
 msgstr "Zoek filter"
 
-#: core/app_settings.py:152
+#: core/app_settings.py:153
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -176,11 +176,11 @@ msgstr ""
 "Een optionele filter string (zoals '(objectClass=person)'). Om geldig te "
 "kunnen zijn, moet het ingesloten zijn tussen haakjes."
 
-#: core/app_settings.py:160
+#: core/app_settings.py:161
 msgid "User DN template"
 msgstr "Gebruiker DN template"
 
-#: core/app_settings.py:163
+#: core/app_settings.py:164
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -189,27 +189,27 @@ msgstr ""
 "Het template dat gebruikt word om een gebruiker zijn/haar DN op te bouwen. "
 "Het moet een placeholder bevatten (bijvoorbeeld. %(user)s)"
 
-#: core/app_settings.py:171
+#: core/app_settings.py:172
 msgid "Password attribute"
 msgstr "Wachtwoord attribuut"
 
-#: core/app_settings.py:173
+#: core/app_settings.py:174
 msgid "The attribute used to store user passwords"
 msgstr "Dit attribuut word gebruikt om wachtwoorden op te slaan"
 
-#: core/app_settings.py:178
+#: core/app_settings.py:179
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:181
+#: core/app_settings.py:182
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "De LDAP server is een Active Directory"
 
-#: core/app_settings.py:185
+#: core/app_settings.py:186
 msgid "Administrator groups"
 msgstr "Administrator groepen"
 
-#: core/app_settings.py:188
+#: core/app_settings.py:189
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
@@ -217,85 +217,101 @@ msgstr ""
 "Leden van deze LDAP POSIX groepen zullen aangemaakt worden als domein "
 "administrators. Gebruik ';' karakters om groepen te scheiden."
 
-#: core/app_settings.py:195
+#: core/app_settings.py:196
 #, fuzzy
 #| msgid "Group name"
 msgid "Group type"
 msgstr "Groep naam"
 
-#: core/app_settings.py:199
+#: core/app_settings.py:200
 msgid "The LDAP group type to use with your directory."
 msgstr ""
 
-#: core/app_settings.py:204
+#: core/app_settings.py:205
 msgid "Groups search base"
 msgstr "Groepen zoek basis"
 
-#: core/app_settings.py:207
+#: core/app_settings.py:208
 msgid "The distinguished name of the search base used to find groups"
 msgstr "De gedistingeerde naam van de zoekbasis om groepen te vinden"
 
-#: core/app_settings.py:212
+#: core/app_settings.py:213
+#, fuzzy
+#| msgid "Authentication"
+msgid "Notifications"
+msgstr "Authenticatie"
+
+#: core/app_settings.py:216
+#, fuzzy
+#| msgid "Server address"
+msgid "Sender address"
+msgstr "Server adres"
+
+#: core/app_settings.py:219
+msgid "Email address used to send notifications."
+msgstr ""
+
+#: core/app_settings.py:223
 msgid "Miscellaneous"
 msgstr "Diversen"
 
-#: core/app_settings.py:215
+#: core/app_settings.py:226
 msgid "Top notifications check interval"
 msgstr "Top notificaties controle interval"
 
-#: core/app_settings.py:218
+#: core/app_settings.py:229
 #, fuzzy
 #| msgid "Interval between two top notification checks"
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Interval tussen twee top notificatie checks"
 
-#: core/app_settings.py:224
+#: core/app_settings.py:235
 msgid "Check new versions"
 msgstr "Controleer of er een nieuwe versie beschikbaar is"
 
-#: core/app_settings.py:227
+#: core/app_settings.py:238
 msgid "Automatically checks if a newer version is available"
 msgstr "Automatische controle voor nieuwe versies"
 
-#: core/app_settings.py:231
+#: core/app_settings.py:242
 msgid "Maximum log record age"
 msgstr "Maximum bewaartijd van logs"
 
-#: core/app_settings.py:233
+#: core/app_settings.py:244
 msgid "The maximum age in days of a log record"
 msgstr "De maximum bewaartijd in dagen van een log record"
 
-#: core/app_settings.py:238
+#: core/app_settings.py:249
 msgid "Items per page"
 msgstr "Items per pagina"
 
-#: core/app_settings.py:240
+#: core/app_settings.py:251
 msgid "Number of displayed items per page"
 msgstr "Hoeveelheid items per pagina"
 
-#: core/app_settings.py:245
+#: core/app_settings.py:256
 msgid "Default top redirection"
 msgstr "Standaard top omleiding"
 
-#: core/app_settings.py:249
+#: core/app_settings.py:260
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "De standaard omleiding die gebruikt word als er geen andere applicatie is "
 "opgegeven"
 
-#: core/app_settings.py:280
+#: core/app_settings.py:291
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Sleutelwaarde moet 16, 24 of 32 bytes lang zijn"
 
-#: core/app_settings.py:289
+#: core/app_settings.py:300
 msgid "Invalid syntax"
 msgstr "Ongeldige zinsbouw"
 
-#: core/app_settings.py:295
+#: core/app_settings.py:306
 msgid "Invalid rounds number"
 msgstr "Ongeldig nummer van rondes"
 
-#: core/app_settings.py:316
+#: core/app_settings.py:327
 msgid "This field is required"
 msgstr "Dit veld is benodigd"
 

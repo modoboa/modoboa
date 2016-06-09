@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-06 17:46+0200\n"
+"POT-Creation-Date: 2016-06-09 15:29+0200\n"
 "PO-Revision-Date: 2016-05-17 12:26+0000\n"
 "Last-Translator: Jose Marcos Araujo <jmaraujo@avancetec.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
@@ -28,55 +28,55 @@ msgstr ""
 msgid "One or more updates are available"
 msgstr "Uma ou mais atualizações disponíveis"
 
-#: core/app_settings.py:38
+#: core/app_settings.py:39
 msgid "Authentication"
 msgstr "Autenticação"
 
-#: core/app_settings.py:41
+#: core/app_settings.py:42
 msgid "Authentication type"
 msgstr "Tipo de autenticação"
 
-#: core/app_settings.py:42
+#: core/app_settings.py:43
 msgid "Local"
 msgstr "Local"
 
-#: core/app_settings.py:45
+#: core/app_settings.py:46
 msgid "The backend used for authentication"
 msgstr "O backend usado para autenticação"
 
-#: core/app_settings.py:50
+#: core/app_settings.py:51
 msgid "Default password scheme"
 msgstr "Esquema padrão de senha"
 
-#: core/app_settings.py:54
+#: core/app_settings.py:55
 msgid "md5crypt (weak)"
 msgstr "md5crypt (fraca)"
 
-#: core/app_settings.py:55
+#: core/app_settings.py:56
 msgid "sha256 (weak)"
 msgstr "sha256 (fraca)"
 
-#: core/app_settings.py:56
+#: core/app_settings.py:57
 msgid "md5 (weak)"
 msgstr "md5 (fraca)"
 
-#: core/app_settings.py:57
+#: core/app_settings.py:58
 msgid "crypt (weak)"
 msgstr "crypt (fraca)"
 
-#: core/app_settings.py:58
+#: core/app_settings.py:59
 msgid "plain (weak)"
 msgstr "plain (fraca)"
 
-#: core/app_settings.py:60
+#: core/app_settings.py:61
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Esquema usado para criptografar as senhas das caixas de correio"
 
-#: core/app_settings.py:65
+#: core/app_settings.py:66
 msgid "Rounds"
 msgstr "Ciclos"
 
-#: core/app_settings.py:68
+#: core/app_settings.py:69
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -84,63 +84,63 @@ msgstr ""
 "Número de ciclos a ser usado (utilizado apenas por sha256crypt e "
 "sha512crypt). Deve estar entre 1000 e 999999999, inclusive."
 
-#: core/app_settings.py:75
+#: core/app_settings.py:76
 msgid "Secret key"
 msgstr "Chave secreta"
 
-#: core/app_settings.py:77
+#: core/app_settings.py:78
 msgid "Key used to encrypt/decrypt passwords"
 msgstr "Chave utilizada para encriptar/desencriptar senhas"
 
-#: core/app_settings.py:82
+#: core/app_settings.py:83
 msgid "LDAP settings"
 msgstr "Configurações do LDAP"
 
-#: core/app_settings.py:85
+#: core/app_settings.py:86
 msgid "Server address"
 msgstr "Endereço do servidor"
 
-#: core/app_settings.py:88
+#: core/app_settings.py:89
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "O endereço IP do nome DNS do servidor LDAP"
 
-#: core/app_settings.py:93
+#: core/app_settings.py:94
 msgid "Server port"
 msgstr "Porta do servidor"
 
-#: core/app_settings.py:95
+#: core/app_settings.py:96
 msgid "The TCP port number used by the LDAP server"
 msgstr "O número da porta TCP usada pelo servidor LDAP"
 
-#: core/app_settings.py:100
+#: core/app_settings.py:101
 msgid "Use a secured connection"
 msgstr "Usar conexão segura"
 
-#: core/app_settings.py:103
+#: core/app_settings.py:104
 msgid "Use an SSL/TLS connection to access the LDAP server"
 msgstr "Usar uma conexão SSL/TLS para acessar o servidor LDAP"
 
-#: core/app_settings.py:107
+#: core/app_settings.py:108
 msgid "Authentication method"
 msgstr "Método de autenticação"
 
-#: core/app_settings.py:108
+#: core/app_settings.py:109
 msgid "Search and bind"
 msgstr "Pesquisar e vincular"
 
-#: core/app_settings.py:109
+#: core/app_settings.py:110
 msgid "Direct bind"
 msgstr "Vinculação direta"
 
-#: core/app_settings.py:111
+#: core/app_settings.py:112
 msgid "Choose the authentication method to use"
 msgstr "Escolha o método de autenticação para usar"
 
-#: core/app_settings.py:116
+#: core/app_settings.py:117
 msgid "Bind DN"
 msgstr "Vincular DN"
 
-#: core/app_settings.py:119
+#: core/app_settings.py:120
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -148,27 +148,27 @@ msgstr ""
 "O nome distinto para usar quando vincular ao servidor LDAP. Deixe vazio para "
 "vincular anonimamente"
 
-#: core/app_settings.py:127
+#: core/app_settings.py:128
 msgid "Bind password"
 msgstr "Vincular senha"
 
-#: core/app_settings.py:130
+#: core/app_settings.py:131
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr "A senha usada quando vincular ao servidor LDAP (com 'Vincular DN')"
 
-#: core/app_settings.py:139
+#: core/app_settings.py:140
 msgid "Users search base"
 msgstr "Base de pesquisa de usuários"
 
-#: core/app_settings.py:142
+#: core/app_settings.py:143
 msgid "The distinguished name of the search base used to find users"
 msgstr "O nome distinto da base de pesquisa usada para encontrar usuários"
 
-#: core/app_settings.py:149
+#: core/app_settings.py:150
 msgid "Search filter"
 msgstr "Filtro de pesquisa"
 
-#: core/app_settings.py:152
+#: core/app_settings.py:153
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -176,11 +176,11 @@ msgstr ""
 "Uma string opcional de filtro (por ex: '(objectClass=person)'). Para ser "
 "válida, deve estar entre parênteses."
 
-#: core/app_settings.py:160
+#: core/app_settings.py:161
 msgid "User DN template"
 msgstr "Usar template DN"
 
-#: core/app_settings.py:163
+#: core/app_settings.py:164
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -189,27 +189,27 @@ msgstr ""
 "A template usada para construir um DN de usuário. Deve conter um placeholder "
 "(por ex: %(user)s)"
 
-#: core/app_settings.py:171
+#: core/app_settings.py:172
 msgid "Password attribute"
 msgstr "Atributo de senha"
 
-#: core/app_settings.py:173
+#: core/app_settings.py:174
 msgid "The attribute used to store user passwords"
 msgstr "O atributo usado para armazenar senhas de usuários"
 
-#: core/app_settings.py:178
+#: core/app_settings.py:179
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:181
+#: core/app_settings.py:182
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Informe se o servidor LDAP é um Active Directory"
 
-#: core/app_settings.py:185
+#: core/app_settings.py:186
 msgid "Administrator groups"
 msgstr "Grupos de administradores"
 
-#: core/app_settings.py:188
+#: core/app_settings.py:189
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
@@ -217,80 +217,96 @@ msgstr ""
 "Membros dos grupos do LDAP Posix serão criados como administradores de "
 "domínio. Use o caractere ';' para separar grupos."
 
-#: core/app_settings.py:195
+#: core/app_settings.py:196
 msgid "Group type"
 msgstr "Tipo de Grupo"
 
-#: core/app_settings.py:199
+#: core/app_settings.py:200
 msgid "The LDAP group type to use with your directory."
 msgstr "Tipo de grupo LDAP para ser usado em seu Diretório:"
 
-#: core/app_settings.py:204
+#: core/app_settings.py:205
 msgid "Groups search base"
 msgstr "Base de pesquisa de grupos"
 
-#: core/app_settings.py:207
+#: core/app_settings.py:208
 msgid "The distinguished name of the search base used to find groups"
 msgstr "O nome distinto da base de pesquisa usada para encontrar grupos"
 
-#: core/app_settings.py:212
+#: core/app_settings.py:213
+#, fuzzy
+#| msgid "Applications"
+msgid "Notifications"
+msgstr "Aplicações"
+
+#: core/app_settings.py:216
+#, fuzzy
+#| msgid "Server address"
+msgid "Sender address"
+msgstr "Endereço do servidor"
+
+#: core/app_settings.py:219
+msgid "Email address used to send notifications."
+msgstr ""
+
+#: core/app_settings.py:223
 msgid "Miscellaneous"
 msgstr "Diversos"
 
-#: core/app_settings.py:215
+#: core/app_settings.py:226
 msgid "Top notifications check interval"
 msgstr "Intervalo de verificação de verificações de topo"
 
-#: core/app_settings.py:218
+#: core/app_settings.py:229
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Intervalo entre checagem de notificações (em segundos)"
 
-#: core/app_settings.py:224
+#: core/app_settings.py:235
 msgid "Check new versions"
 msgstr "Verificar novas versões"
 
-#: core/app_settings.py:227
+#: core/app_settings.py:238
 msgid "Automatically checks if a newer version is available"
 msgstr "Verificar automaticamente se uma nova versão está disponível"
 
-#: core/app_settings.py:231
+#: core/app_settings.py:242
 msgid "Maximum log record age"
 msgstr "Idade máxima do registro de log"
 
-#: core/app_settings.py:233
+#: core/app_settings.py:244
 msgid "The maximum age in days of a log record"
 msgstr "A idade máxima em dias de um registro de log"
 
-#: core/app_settings.py:238
+#: core/app_settings.py:249
 msgid "Items per page"
 msgstr "Itens por página"
 
-#: core/app_settings.py:240
+#: core/app_settings.py:251
 msgid "Number of displayed items per page"
 msgstr "Número de itens exibidos por página"
 
-#: core/app_settings.py:245
+#: core/app_settings.py:256
 msgid "Default top redirection"
 msgstr "Redirecionamento de topo padrão"
 
-#: core/app_settings.py:249
+#: core/app_settings.py:260
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "O redirecionamento padrão usado quando nenhuma aplicação é especificada"
 
-#: core/app_settings.py:280
+#: core/app_settings.py:291
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "A chave deve ter 16, 24 ou 32 bytes de tamanho"
 
-#: core/app_settings.py:289
+#: core/app_settings.py:300
 msgid "Invalid syntax"
 msgstr "Sintaxe inválida"
 
-#: core/app_settings.py:295
+#: core/app_settings.py:306
 msgid "Invalid rounds number"
 msgstr "Número de ciclos inválido"
 
-#: core/app_settings.py:316
+#: core/app_settings.py:327
 msgid "This field is required"
 msgstr "Este campo é obrigatório"
 
