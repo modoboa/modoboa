@@ -17,9 +17,9 @@ class Migration(migrations.Migration):
             name='DNSBLResult',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('provider', models.CharField(max_length=254)),
+                ('provider', models.CharField(max_length=254, db_index=True)),
                 ('mx', models.GenericIPAddressField()),
-                ('status', models.CharField(blank=True, max_length=45)),
+                ('status', models.CharField(blank=True, max_length=45, db_index=True)),
                 ('domain', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='admin.Domain')),
             ],
         ),

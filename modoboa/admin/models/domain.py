@@ -232,9 +232,9 @@ class DNSBLResult(models.Model):
     """Store a DNSBL query result."""
 
     domain = models.ForeignKey(Domain)
-    provider = models.CharField(max_length=254)
+    provider = models.CharField(max_length=254, db_index=True)
     mx = models.GenericIPAddressField()
-    status = models.CharField(max_length=45, blank=True)
+    status = models.CharField(max_length=45, blank=True, db_index=True)
 
     objects = models.Manager.from_queryset(DNSBLQuerySet)()
 
