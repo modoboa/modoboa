@@ -51,6 +51,16 @@ ADMIN_EVENTS = [
 class AdminParametersForm(parameters.AdminParametersForm):
     app = "admin"
 
+    dom_sep = SeparatorField(label=ugettext_lazy("Domains"))
+
+    enable_dnsbl_checks = YesNoField(
+        label=ugettext_lazy("Enable DNSBL checks"),
+        initial="yes",
+        help_text=ugettext_lazy(
+            "Check every domain against major DNSBL providers"
+        )
+    )
+
     mbsep = SeparatorField(label=ugettext_lazy("Mailboxes"))
 
     handle_mailboxes = YesNoField(

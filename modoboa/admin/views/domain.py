@@ -164,6 +164,13 @@ class DomainDetailView(
     model = Domain
     permission_required = "admin.view_domain"
 
+    def get_queryset(self):
+        """Add some prefetching."""
+        return (
+            super(DomainDetailView, self).get_queryset()
+            .prefetch_related("domainalias_set", "mailbox_set", "alias_set")
+        )
+
     def get_context_data(self, **kwargs):
         """Include extra widgets."""
         context = super(DomainDetailView, self).get_context_data(**kwargs)

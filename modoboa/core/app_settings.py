@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib import parameters
+from modoboa.lib import fields as lib_fields
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib.form_utils import (
     YesNoField, SeparatorField, InlineRadioSelect
@@ -207,6 +208,16 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "The distinguished name of the search base used to find groups"
         ),
         required=False
+    )
+
+    notif_sep = SeparatorField(label=ugettext_lazy("Notifications"))
+
+    sender_address = lib_fields.UTF8EmailField(
+        label=_("Sender address"),
+        initial="noreply@modoboa.org",
+        help_text=_(
+            "Email address used to send notifications."
+        )
     )
 
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))

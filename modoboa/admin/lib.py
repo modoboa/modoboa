@@ -84,7 +84,8 @@ def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
     :rtype: list
     :return: a list of domains and/or relay domains
     """
-    domains = Domain.objects.get_for_admin(user)
+    domains = (
+        Domain.objects.get_for_admin(user).prefetch_related("domainalias_set"))
     if domfilter:
         domains = domains.filter(type=domfilter)
     if searchquery is not None:

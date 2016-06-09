@@ -3,6 +3,7 @@
 from django.db import models
 from django.db.models.manager import Manager
 from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from django.contrib.contenttypes.fields import GenericRelation
@@ -100,6 +101,16 @@ class Domain(AdminObject):
     @property
     def aliases(self):
         return self.domainalias_set
+
+    @cached_property
+    def dnsbl_status_color(self):
+        """Shortcut to DNSBL results."""
+        if not self.dnsblresult_set.exists():
+            return "warning"
+        elif self.dnsblresult_set.blacklisted().exists():
+            return "danger"
+        else:
+            return "success"
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
@@ -207,3 +218,26 @@ class Domain(AdminObject):
             domalias.post_create(creator)
 
 reversion.register(Domain)
+
+
+class DNSBLQuerySet(models.QuerySet):
+    """Custom manager for DNSBLResultManager."""
+
+    def blacklisted(self):
+        """Return blacklisted results."""
+        return self.exclude(status="")
+
+
+class DNSBLResult(models.Model):
+    """Store a DNSBL query result."""
+
+    domain = models.ForeignKey(Domain)
+    provider = models.CharField(max_length=254, db_index=True)
+    mx = models.GenericIPAddressField()
+    status = models.CharField(max_length=45, blank=True, db_index=True)
+
+    objects = models.Manager.from_queryset(DNSBLQuerySet)()
+
+    class Meta:
+        app_label = "admin"
+        unique_together = [("domain", "provider", "mx")]

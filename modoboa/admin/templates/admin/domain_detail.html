@@ -17,9 +17,17 @@
 
   <div class="col-xs-12 col-sm-6">
     <div class="panel panel-info">
-      <div class="panel-heading"><h3 class="panel-title">{% trans "Information" %}</h3></div>
+      <div class="panel-heading">
+        <h3 class="panel-title">{% trans "Information" %}</h3>
+      </div>
       <div class="panel-body">
-        <div class="row"><span class="title">{% trans "Creation date" %}</span><span>{{ domain.creation }}</span></div>
+        <div class="row">
+          <span class="title">{% trans "Authentication" %}</span>
+          <span class="label label-{% if domain.is_in_dnsbl %}danger{% else %}success{% endif %}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
+        </div>
+        <div class="row">
+          <span class="title">{% trans "Creation date" %}</span><span>{{ domain.creation }}</span>
+        </div>
         <div class="row"><span class="title">{% trans "Last modification date" %}</span><span>{{ domain.last_modification }}</span></div>
         <div class="row"><span class="title">{% trans "Domain aliases" %}</span><span>{{ domain.domainalias_count }}</span></div>
         <div class="row"><span class="title"><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}">{% trans "Mailboxes" %}</a></span><span>{{ domain.mailbox_count }}</span></div>
