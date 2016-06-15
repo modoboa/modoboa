@@ -18,3 +18,4 @@ django-subcommand2==0.1.1
 gevent==1.1.1
 ipaddress
 dnspython==1.12.0
+jsonfield==1.0.3
