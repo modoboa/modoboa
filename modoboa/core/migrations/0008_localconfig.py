@@ -7,13 +7,6 @@ import django.db.models.deletion
 import jsonfield.fields
 
 
-def create_local_config(apps, schema_editor):
-    """Create local config entry."""
-    Site = apps.get_model("sites", "Site")
-    LocalConfig = apps.get_model("core", "LocalConfig")
-    LocalConfig.objects.create(site=Site.objects.get_current())
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -31,5 +24,4 @@ class Migration(migrations.Migration):
                 ('site', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sites.Site')),
             ],
         ),
-        migrations.RunPython(create_local_config),
     ]
