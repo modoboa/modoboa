@@ -1,5 +1,8 @@
 """Tests for core application."""
 
+import httmock
+
+from django.core import management
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
@@ -8,6 +11,7 @@ from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
 from . import factories
+from . import mocks
 from . import models
 
 
@@ -240,3 +244,15 @@ class APIAccessFormTestCase(ModoTestCase):
         self.ajax_post(url, {"enable_api_access": False})
         user = models.User.objects.get(username="admin")
         self.assertFalse(hasattr(user, "auth_token"))
+
+
+class APICommunicationTestCase(ModoTestCase):
+    """Check communication with the API."""
+
+    def test_management_command(self):
+        """Check command."""
+        with httmock.HTTMock(
+                mocks.modo_api_instance_search,
+                mocks.modo_api_instance_create,
+                mocks.modo_api_instance_update):
+            management.call_command("communicate_with_public_api")
