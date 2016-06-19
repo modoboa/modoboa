@@ -1,6 +1,7 @@
 """Core config for admin."""
 
 from django.apps import AppConfig
+from django.db.models import signals
 
 
 BASE_EVENTS = [
@@ -66,3 +67,5 @@ class CoreConfig(AppConfig):
         load_core_settings()
 
         from . import handlers
+
+        signals.post_migrate.connect(handlers.create_local_config, sender=self)

@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+import jsonfield
 from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
@@ -489,3 +490,13 @@ class Log(models.Model):
     message = models.CharField(max_length=255)
     level = models.CharField(max_length=15)
     logger = models.CharField(max_length=30)
+
+
+class LocalConfig(models.Model):
+    """Store instance configuration here."""
+
+    api_pk = models.PositiveIntegerField(null=True)
+    site = models.ForeignKey("sites.Site")
+
+    # API results cache
+    api_versions = jsonfield.JSONField()

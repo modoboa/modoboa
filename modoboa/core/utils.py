@@ -2,30 +2,39 @@
 
 from django.utils.translation import ugettext as _
 
-from django.contrib.sites.shortcuts import get_current_site
+from versionfield.constants import DEFAULT_NUMBER_BITS
+from versionfield.version import Version
 
 from modoboa.core.extensions import exts_pool
-from modoboa.lib import parameters
 from modoboa.lib.api_client import ModoAPIClient
+
+from . import models
 
 
 def check_for_updates(request):
     """Check if a new version of Modoboa is available."""
-    if parameters.get_admin("CHECK_NEW_VERSIONS") == "no":
-        return False, []
+    local_config = models.LocalConfig.objects.first()
     client = ModoAPIClient()
-    extensions = exts_pool.list_all(True)
+    extensions = exts_pool.list_all()
     extensions = [{
         "label": "Modoboa",
+        "name": "modoboa",
         "description": _("The core part of Modoboa"),
-        "update": client.new_core_version(get_current_site(request)),
-        "last_version": client.latest_core_version,
-        "changelog_url": client.changelog_url,
         "version": client.local_core_version
     }] + extensions
     update_avail = False
     for extension in extensions:
-        if extension.get("update"):
-            update_avail = True
-            break
+        local_version = Version(extension["version"], DEFAULT_NUMBER_BITS)
+        pkgname = extension["name"].replace("_", "-")
+        for api_extension in local_config.api_versions:
+            if api_extension["name"] != pkgname:
+                continue
+            last_version = Version(
+                api_extension["version"], DEFAULT_NUMBER_BITS)
+            extension["last_version"] = api_extension["version"]
+            if last_version > local_version:
+                extension["update"] = True
+                extension["changelog_url"] = api_extension["url"]
+                update_avail = True
+                break
     return update_avail, extensions

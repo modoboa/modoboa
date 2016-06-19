@@ -220,6 +220,30 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         )
     )
 
+    api_sep = SeparatorField(label=ugettext_lazy("Public API"))
+
+    enable_api_communication = YesNoField(
+        label=ugettext_lazy("Enable communication"),
+        initial="yes",
+        help_text=ugettext_lazy(
+            "Enable communication with Modoboa public API")
+    )
+
+    check_new_versions = YesNoField(
+        label=ugettext_lazy("Check new versions"),
+        initial="yes",
+        help_text=ugettext_lazy(
+            "Automatically checks if a newer version is available")
+    )
+
+    send_statistics = YesNoField(
+        label=ugettext_lazy("Send statistics"),
+        initial="yes",
+        help_text=ugettext_lazy(
+            "Send statistics to Modoboa public API "
+            "(counters and used extensions)")
+    )
+
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
 
     top_notifications_check_interval = forms.IntegerField(
@@ -229,13 +253,6 @@ class GeneralParametersForm(parameters.AdminParametersForm):
             "Interval between two top notification checks (in seconds)"
         ),
         widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-
-    check_new_versions = YesNoField(
-        label=ugettext_lazy("Check new versions"),
-        initial="yes",
-        help_text=ugettext_lazy(
-            "Automatically checks if a newer version is available")
     )
 
     log_maximum_age = forms.IntegerField(
@@ -279,6 +296,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         "ldap_admin_groups": "authentication_type=ldap",
         "ldap_group_type": "authentication_type=ldap",
         "ldap_groups_search_base": "authentication_type=ldap",
+        "check_new_versions": "enable_api_communication=yes",
+        "send_statistics": "enable_api_communication=yes",
     }
 
     def __init__(self, *args, **kwargs):

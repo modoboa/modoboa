@@ -6,7 +6,11 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 
+from django.contrib.sites import models as sites_models
+
 from reversion import revisions as reversion
+
+from . import models
 
 
 @receiver(reversion.post_revision_commit)
@@ -63,3 +67,11 @@ def log_object_removal(sender, instance, **kwargs):
         "user": get_request().user.username
     }
     logger.critical(msg)
+
+
+def create_local_config(sender, **kwargs):
+    """Create local config if needed."""
+    if models.LocalConfig.objects.using(kwargs["using"]).exists():
+        return
+    models.LocalConfig.objects.create(
+        site=sites_models.Site.objects.get_current())

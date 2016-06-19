@@ -48,10 +48,8 @@ PERMISSIONS = {
 
 
 @events.observe("TopNotifications")
-def check_for_new_version(request, include_all):
-    """
-    Check if a new version of Modoboa is available.
-    """
+def check_for_new_versions(request, include_all):
+    """Check if new versions are available."""
     from modoboa.core.utils import check_for_updates
 
     if not request.user.is_superuser:
