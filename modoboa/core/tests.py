@@ -254,5 +254,11 @@ class APICommunicationTestCase(ModoTestCase):
         with httmock.HTTMock(
                 mocks.modo_api_instance_search,
                 mocks.modo_api_instance_create,
-                mocks.modo_api_instance_update):
+                mocks.modo_api_instance_update,
+                mocks.modo_api_versions):
             management.call_command("communicate_with_public_api")
+        self.assertEqual(models.LocalConfig.objects.first().api_pk, 100)
+
+        url = reverse("core:information")
+        response = self.ajax_request("get", url)
+        self.assertIn("9.0.0", response["content"])

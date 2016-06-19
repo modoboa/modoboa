@@ -27,3 +27,15 @@ def modo_api_instance_create(url, request):
 def modo_api_instance_update(url, request):
     """Simulate successful update."""
     return {"status_code": 200}
+
+
+@httmock.urlmatch(
+    netloc=r"api\.modoboa\.org$", path=r"^/1/versions/", method="get")
+def modo_api_versions(url, request):
+    """Simulate versions check."""
+    return {
+        "status_code": 200,
+        "content": [
+            {"name": "modoboa", "version": "9.0.0", "url": ""},
+        ]
+    }
