@@ -49,6 +49,29 @@ you did choose. See :ref:`webservers` for more details.
 Specific upgrade instructions
 *****************************
 
+1.6.0
+=====
+
+An interesting feature brougth by this version is the capability of
+querying main `DNSBL <https://en.wikipedia.org/wiki/DNSBL>`_ providers
+for every defined domain. With this, you will quickly now if one the
+you know is listed or not. To activate it, add the following line to
+you crontab::
+
+  */30 * * * * <modoboa_site>/manage.py modo check_dnsbl
+
+The communication with Modoboa public API has been reworked. Instead
+of sending direct synchronous queries (for example to check new
+versions), a cron job has been added. To activate it, add the
+following line to your crontab::
+
+  0 * * * * <modoboa_site>/manage.py communicate_with_public_api
+
+Please also note that public API is now uses TLS so you must update
+your configuration as follows::
+
+  MODOBOA_API_URL = 'https://api.modoboa.org/1/'
+
 1.5.0
 =====
 
