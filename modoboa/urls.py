@@ -1,22 +1,21 @@
-from django.conf.urls import patterns, include
 from django.conf import settings
-from modoboa.core.extensions import exts_pool
-from modoboa.lib import parameters, events
-from modoboa.core import load_core_settings
+from django.conf.urls import patterns, include, url
 
-load_core_settings()
+from modoboa.core.extensions import exts_pool
+from modoboa.lib import events
+
 
 urlpatterns = patterns(
     '',
-    (r'^$', 'modoboa.lib.webutils.topredirection'),
+    url(r'^$', 'modoboa.lib.web_utils.topredirection', name="topredirection"),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog',
      {'packages': ('modoboa', ), }),
-    ('', include('modoboa.core.urls')),
-)
-
-urlpatterns += patterns(
-    '',
-    *events.raiseQueryEvent("ExtraUprefsRoutes")
+    ('', include('modoboa.core.urls', namespace="core")),
+    url('^user/forward/', 'modoboa.admin.views.user.forward',
+        name='user_forward'),
+    ('admin/', include('modoboa.admin.urls', namespace="admin")),
+    ('relaydomains/',
+     include('modoboa.relaydomains.urls', namespace="relaydomains")),
 )
 
 urlpatterns += patterns(
@@ -24,12 +23,22 @@ urlpatterns += patterns(
     *exts_pool.load_all()
 )
 
-parameters.apply_to_django_settings()
+urlpatterns += patterns(
+    '',
+    *events.raiseQueryEvent("ExtraUprefsRoutes")
+)
+
+# API urls
+urlpatterns += patterns(
+    "",
+    ("^api/v1/", include("modoboa.urls_api", namespace="external_api")),
+    url("^docs/api/", include('rest_framework_swagger.urls')),
+)
 
 if 'modoboa.demo' in settings.INSTALLED_APPS:
     urlpatterns += patterns(
         '',
-        (r'^demo/', include('modoboa.demo.urls'))
+        (r'^demo/', include('modoboa.demo.urls', namespace="demo"))
     )
 
 if settings.DEBUG:

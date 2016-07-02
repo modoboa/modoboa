@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Miroslav Abrahám <miris@kunago.com>, 2013-2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"PO-Revision-Date: 2015-01-06 10:05+0000\n"
+"Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
+"modoboa/language/cs_CZ/)\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: relaydomains/app_settings.py:18
+msgid "General"
+msgstr "Obecné"
+
+#: relaydomains/app_settings.py:21
+msgid "Postfix's master.cf path"
+msgstr "Cesta k Postfix souboru master.cf"
+
+#: relaydomains/app_settings.py:23
+msgid "Path to the master.cf configuration file"
+msgstr "Cesta ke konfiguračnímu souboru master.cf"
+
+#: relaydomains/apps.py:23
+msgid "Relay domains"
+msgstr "Relay domény"
+
+#: relaydomains/forms.py:27
+msgid "Name"
+msgstr ""
+
+#: relaydomains/forms.py:28
+#, fuzzy
+#| msgid "The domain name"
+msgid "The relay domain name"
+msgstr "Doménové jméno"
+
+#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
+#, fuzzy
+#| msgid "Relay domains"
+msgid "Relay domain"
+msgstr "Relay domény"
+
+#: relaydomains/general_callbacks.py:73
+#, fuzzy
+#| msgid "Relay domains"
+msgid "Relay settings"
+msgstr "Relay domény"
+
+#: relaydomains/general_callbacks.py:109
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "<li><em>relaydomain; name; target host; service; enabled; verify "
+#| "recipients</em></li>\n"
+#| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+msgid ""
+"\n"
+"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
+"em></li>\n"
+msgstr ""
+"\n"
+"<li><em>relay doména; název; cílový server; služba; povoleno; ověřit "
+"příjemce</em></li>\n"
+"<li><em>alias relay domény; název; cíl; povoleno</em></li>\n"
+
+#: relaydomains/models.py:48
+msgid "name"
+msgstr "název"
+
+#: relaydomains/models.py:49
+msgid "The service name"
+msgstr "Název služby"
+
+#: relaydomains/models.py:71
+msgid "target host"
+msgstr "cílový server"
+
+#: relaydomains/models.py:72
+msgid "Remote destination of this domain"
+msgstr "Vzdálený cíl této domény"
+
+#: relaydomains/models.py:76
+msgid "verify recipients"
+msgstr "ověřit příjemce"
+
+#: relaydomains/models.py:77
+msgid "Check for valid recipients"
+msgstr "Kontrola platných příjemců"
+
+#: relaydomains/models.py:88
+msgid "Relay Domain"
+msgstr "Relay doména"
+
+#: relaydomains/models.py:115
+msgid "Invalid line"
+msgstr "Neplatný řádek"
+
+#: relaydomains/templates/relaydomains/service_field.html:3
+msgid "Scan"
+msgstr "Prohledat"

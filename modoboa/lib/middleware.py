@@ -1,36 +1,20 @@
 # coding: utf-8
-"""
-Custom middlewares.
-"""
-import re
-from django.http import Http404, HttpResponseRedirect
-from modoboa.core.models import Extension
-from modoboa.core.extensions import exts_pool
-from modoboa.lib.webutils import (
-    _render_error, ajax_response, render_to_json_response
-)
+
+"""Custom middlewares."""
+
+from django.http import HttpResponseRedirect
+
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.signals import request_accessor
+from modoboa.lib.web_utils import (
+    _render_error, ajax_response, render_to_json_response
+)
 
-
-class ExtControlMiddleware(object):
-    def process_view(self, request, view, args, kwargs):
-        m = re.match("modoboa\.extensions\.(\w+)", view.__module__)
-        if m is None:
-            return None
-        try:
-            ext = Extension.objects.get(name=m.group(1))
-        except Extension.DoesNotExist:
-            extdef = exts_pool.get_extension(m.group(1))
-            if extdef.always_active:
-                return None
-            raise Http404
-        if ext.enabled:
-            return None
-        raise Http404
+from . import singleton
 
 
 class AjaxLoginRedirect(object):
+
     def process_response(self, request, response):
         if request.is_ajax():
             if type(response) == HttpResponseRedirect:
@@ -39,26 +23,33 @@ class AjaxLoginRedirect(object):
 
 
 class CommonExceptionCatcher(object):
+    """Modoboa exceptions catcher."""
+
     def process_exception(self, request, exception):
         if not isinstance(exception, ModoboaException):
             return None
 
-        if not request.is_ajax():
-            return _render_error(
-                request, user_context=dict(error=str(exception))
+        if request.is_ajax() or "/api/" in request.path:
+            if exception.http_code is None:
+                return ajax_response(
+                    request, status="ko", respmsg=unicode(exception),
+                    norefresh=True
+                )
+            return render_to_json_response(
+                unicode(exception), status=exception.http_code
             )
-        if exception.http_code is None:
-            return ajax_response(
-                request, status="ko", respmsg=unicode(exception), norefresh=True
-            )
-        return render_to_json_response(
-            unicode(exception), status=exception.http_code
+        return _render_error(
+            request, user_context=dict(error=str(exception))
         )
 
 
-class RequestCatcherMiddleware(object):
-    """
-    Simple middleware to store the current request.
+class RequestCatcherMiddleware(singleton.Singleton):
+    """Simple middleware to store the current request.
+
+    FIXME: the Singleton hack is used to make tests work. I don't know
+    why but middlewares are not dropped between test case runs so more
+    than one instance can be listening to the request_accessor signal
+    and we don't want that!
     """
 
     def __init__(self):
@@ -67,6 +58,11 @@ class RequestCatcherMiddleware(object):
 
     def process_request(self, request):
         self._request = request
+
+    def process_response(self, request, response):
+        """Empty self._request."""
+        self._request = None
+        return response
 
     def __call__(self, **kwargs):
         return self._request

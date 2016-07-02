@@ -1,10 +1,15 @@
+"""Custom authentication backends."""
+
 from django.contrib.auth.backends import ModelBackend
+
 from modoboa.core.models import User
 from modoboa.lib import parameters
-from modoboa.lib.emailutils import split_mailbox
+from modoboa.lib.email_utils import split_mailbox
 
 
 class SimpleBackend(ModelBackend):
+
+    """Simple authentication backend."""
 
     def authenticate(self, username=None, password=None):
         try:
@@ -28,6 +33,11 @@ try:
     from modoboa.core.models import populate_callback
 
     class LDAPBackend(orig_LDAPBackend):
+
+        def __init__(self, *args, **kwargs):
+            """Load LDAP settings."""
+            parameters.apply_to_django_settings()
+            super(LDAPBackend, self).__init__(*args, **kwargs)
 
         def get_or_create_user(self, username, ldap_user):
             """
@@ -67,7 +77,8 @@ try:
         def authenticate(self, username, password):
             auth_type = parameters.get_admin("AUTHENTICATION_TYPE", app="core")
             if auth_type == "ldap":
-                return super(LDAPBackend, self).authenticate(username, password)
+                return super(LDAPBackend, self).authenticate(
+                    username, password)
             return None
 
 except ImportError:

@@ -20,6 +20,11 @@ function get_static_url(value) {
     return static_url + value;
 }
 
+/**
+ * Open a modal box and load its content using an AJAX request.
+ *
+ * @param {Object} e - event object
+ */
 function modalbox(e, css, defhref, defcb, defclosecb) {
     e.preventDefault();
     var $this = $(this);
@@ -31,50 +36,51 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         $(href).modal('open');
         return;
     }
+    if ($("#modalbox").length) {
+        return;
+    }
     $.ajax({
         type: "GET",
         url: href
     }).done(function(data) {
         var $div = $('<div />', {
-            id: "modalbox", 'class': "modal", html: data
+            id: "modalbox", 'class': "modal fade", role: "modal",
+            html: data, 'aria-hidden': true
         });
 
         $div.modal({show: false});
-        $div.one('shown', function() {
-            $(".selectpicker").selectpicker({
-                container: 'body'
-            });
+        $div.one('shown.bs.modal', function() {
+            if ($(".selectpicker").length) {
+                $(".selectpicker").selectpicker();
+            }
             $(".help").popover({
                 container: "#modalbox",
                 trigger: "hover"
             }).click(function(e) {e.preventDefault();});
-            if (modalcb != undefined) {
+            if (modalcb !== undefined) {
                 if (typeof modalcb === "function") modalcb(); else eval(modalcb + '()');
             }
-        }).on('hidden', function(e) {
+        }).on('hidden.bs.modal', function(e) {
             var $target = $(e.target);
 
             if (!$target.is($(this))) {
                 return;
             }
             $("#modalbox").remove();
-            if (closecb != undefined) {
+            if (closecb !== undefined) {
                 if (typeof closecb === "function") closecb(); else eval(closecb + '()');
             }
         });
         $div.modal('show');
 
-        if (css != undefined) {
+        if (css !== undefined) {
             $div.css(css);
         }
     });
 }
 
 function modalbox_autowidth(e) {
-    modalbox.apply(this, [e, {
-        width: 'auto',
-        'margin-left': function() { return -($(this).width() / 2); }
-    }]);
+    modalbox.apply(this, [e]);
 }
 
 /*
@@ -86,7 +92,7 @@ function build_alert_box(msg, level) {
 }
 
 function build_error_alert(msg) {
-    return build_alert_box(msg, 'error');
+    return build_alert_box(msg, 'danger');
 }
 
 function build_success_alert(msg) {
@@ -114,8 +120,8 @@ if (!Object.keys) {
  * Clean all errors in a given form.
  */
 function clean_form_errors(formid) {
-    $("#" + formid + " div.error").removeClass("error");
-    $("#" + formid + " span.help-inline").remove();
+    $("#" + formid + " div.has-error").removeClass("has-error");
+    $("#" + formid + " span.help-block").remove();
 }
 
 /*
@@ -129,16 +135,16 @@ function display_form_errors(formid, data) {
         var spanid = fullid + "-error";
         var $span = $("#" + spanid);
 
-        if (!$widget.parents(".control-group").hasClass("error")) {
-            $widget.parents(".control-group").addClass("error");
+        if (!$widget.parents(".form-group").hasClass("has-error")) {
+            $widget.parents(".form-group").addClass("has-error");
         }
         if (!$span.length) {
             $span = $("<span />", {
-                "class": "help-inline",
+                "class": "help-block",
                 "html": value[0],
                 "id": spanid
             });
-            $widget.parents(".controls").append($span);
+            $widget.parents(".form-group").append($span);
         } else {
             $span.html(value[0]);
         }
@@ -152,12 +158,12 @@ function display_form_errors(formid, data) {
  */
 function simple_ajax_form_post(e, options) {
     e.preventDefault();
-    var $form = (options.formid != undefined) ? $("#" + options.formid) : $("form");
+    var $form = (options.formid !== undefined) ? $("#" + options.formid) : $("form");
     var defaults = {reload_on_success: true, reload_mode: 'full', modal: true};
     var opts = $.extend({}, defaults, options);
     var args = $form.serialize();
 
-    if (options.extradata != undefined) {
+    if (options.extradata !== undefined) {
         args += "&" + options.extradata;
     }
     $.ajax({
@@ -169,7 +175,7 @@ function simple_ajax_form_post(e, options) {
         if (opts.modal) {
             $("#modalbox").modal('hide');
         }
-        if (opts.success_cb != undefined) {
+        if (opts.success_cb !== undefined) {
             opts.success_cb(data);
             return;
         }
@@ -210,12 +216,12 @@ function gethref(obj) {
     var re = new RegExp("^(https?):");
     var scheme = re.exec(url);
 
-    if (scheme != null) {
+    if (scheme !== null) {
         var baseurl = scheme[0] + "://" + location.host + location.pathname;
         return url.replace(baseurl, "");
     }
     return url;
-};
+}
 
 /*
  * Extract the current URL parameters into a dictionnary.
@@ -224,7 +230,7 @@ function gethref(obj) {
  * http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
  */
 function parse_qs(raw) {
-    if (raw == "") return {};
+    if (raw === "") return {};
     var res = {};
 
     for (var i = 0; i < raw.length; i++) {
@@ -241,16 +247,30 @@ function parse_qs(raw) {
  *
  * Ref: http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
  */
-function get_parameter_by_name(url, name) {
-    var name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+function get_parameter_by_name(url, name, dont_replace_plus) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(url);
 
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    if (results === null) {
+        return "";
+    }
+
+    var result = results[1];
+    if (dont_replace_plus === undefined || !dont_replace_plus) {
+        result = result.replace("/\+/g", "");
+    }
+    return decodeURIComponent(result);
 }
 
-/*
- * Return the target associated to an event object.
+/**
+ * Return the target associated to an event object. You will generally
+ * use this function within a click event handler configured on a <a/>
+ * tag containg an image. (because e.target will often point to the
+ * image...)
+ *
+ * @param {Object} e - event object
+ * @param {string} tag - desired tag
  */
 function get_target(e, tag) {
     var $target = $(e.target);
@@ -261,7 +281,7 @@ function get_target(e, tag) {
     return $target.parent();
 }
 
-/*
+/**
  * Send a simple AJAX request.
  */
 function simple_ajax_request(e, uoptions) {
@@ -269,7 +289,7 @@ function simple_ajax_request(e, uoptions) {
     var defaults = {};
     var options = $.extend({}, defaults, uoptions);
 
-    if (e != undefined) e.preventDefault();
+    if (e !== undefined) e.preventDefault();
     $.ajax({
         url: $this.attr("href"),
         dataType: 'json'
@@ -310,18 +330,32 @@ function activate_widget(e) {
 /*
  * Default error handler for AJAX requests.
  */
-function default_ajax_error_handler(event, jqxhr, settings) {
+function defaultAjaxErrorHandler(event, jqxhr, settings) {
+    var data;
+
     try {
-        var data = $.parseJSON(jqxhr.responseText);
+        data = $.parseJSON(jqxhr.responseText);
     } catch (x) {
-        var data = gettext("Internal error");
+        data = gettext("Internal error");
     }
     $('body').notify('error', data);
 }
 
+/**
+ * An equivalent of python .format() method.
+ */
+String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/\{\{|\}\}|\{(\d+)\}/g, function (m, n) {
+        if (m == "{{") { return "{"; }
+        if (m == "}}") { return "}"; }
+        return args[n];
+    });
+};
+
 $(document).ready(function() {
     $(document).ajaxSuccess(function(e, xhr, settings) { ajax_login_redirect(xhr); });
-    $(document).ajaxError(default_ajax_error_handler);
+    $(document).ajaxError(defaultAjaxErrorHandler);
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
     $(document).on('click', '.activator', activate_widget);

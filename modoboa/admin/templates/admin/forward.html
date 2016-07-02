@@ -1,0 +1,11 @@
+{% load i18n form_tags %}
+<h2>{% trans "Forward" %} <small>{% trans "Automatically forward emails to another address" %}</small></h2>
+<hr>
+<form class="form-horizontal" method="POST" action="{% url 'user_forward' %}" 
+      id="uprefs_form">
+  {% csrf_token %}
+  {% render_form form %}
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary col-lg-offset-8 col-md-offset-8 col-sm-offset-7 col-lg-1 col-md-1 col-sm-2" id="update" name="update">{% trans 'Update' %}</button>
+  </div>
+</form>

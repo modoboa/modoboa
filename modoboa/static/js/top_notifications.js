@@ -39,7 +39,7 @@ TopNotifications.prototype = {
                 data.level + "'>" + data.counter + "</span> " +
                 data.text;
         } else {
-            content = "<i class='icon-info-sign'></i> " + data.text;
+            content = "<span class='fa fa-info-circle'></span> " + data.text;
         }
         return content;
     },

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-24 12:32+0200\n"
+"POT-Creation-Date: 2016-06-09 15:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,114 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extensions/admin/static/admin/js/admin.js:32
-msgid "Search"
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:170
-msgid "Do not delete domain directory"
+#: core/static/core/js/settings.js:14
+msgid "No more log entry to show"
 msgstr ""
 
-#: extensions/admin/static/admin/js/admin.js:173
-msgid "This operation will remove ALL data associated to this domain."
-msgstr ""
-
-#: extensions/admin/static/admin/js/admin.js:174
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr ""
-
-#: extensions/admin/static/admin/js/admin.js:222
-msgid "No domain administrator defined"
-msgstr ""
-
-#: extensions/admin/static/admin/js/admin.js:291
-msgid "Do not delete mailbox directory"
-msgstr ""
-
-#: extensions/amavis/static/amavis/js/quarantine.js:180
-msgid "Release this selection?"
-msgstr ""
-
-#: extensions/amavis/static/amavis/js/quarantine.js:184
-msgid "Delete this selection?"
-msgstr ""
-
-#: extensions/amavis/static/amavis/js/quarantine.js:203
-#: extensions/amavis/static/amavis/js/selfservice.js:17
-msgid "Release this message?"
-msgstr ""
-
-#: extensions/amavis/static/amavis/js/quarantine.js:207
-#: extensions/amavis/static/amavis/js/selfservice.js:21
-msgid "Delete this message?"
-msgstr ""
-
-#: extensions/amavis/static/amavis/js/quarantine.js:224
-msgid "View full headers"
-msgstr ""
-
-#: extensions/amavis/static/amavis/js/quarantine.js:229
-msgid "Hide full headers"
-msgstr ""
-
-#: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
-msgid "Services updated"
-msgstr ""
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:14
-msgid "Remove this filter?"
-msgstr ""
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:107
-msgid "Save changes?"
-msgstr ""
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:129
-msgid "Remove filters set?"
-msgstr ""
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:146
-msgid "Activate this filters set?"
-msgstr ""
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:154
-#: extensions/sievefilters/static/sievefilters/js/lib.js:203
-msgid "active"
-msgstr ""
-
-#: extensions/stats/static/stats/js/stats.js:37
-msgid "Search a domain"
-msgstr ""
-
-#: extensions/webmail/static/webmail/js/webmail.js:491
-msgid "Remove the selected mailbox?"
-msgstr ""
-
-#: extensions/webmail/static/webmail/js/webmail.js:504
-msgid "Mailbox removed"
-msgstr ""
-
-#: extensions/webmail/static/webmail/js/webmail.js:752
-msgid "Message sent"
-msgstr ""
-
-#: extensions/webmail/static/webmail/js/webmail.js:1003
-#, c-format
-msgid "%s file"
-msgid_plural "%s files"
-msgstr[0] ""
-msgstr[1] ""
-
-#: extensions/webmail/static/webmail/js/webmail.js:1037
-#, c-format
-msgid "Moving %s message"
-msgid_plural "Moving %s messages"
-msgstr[0] ""
-msgstr[1] ""
-
-#: static/js/confirmation.js:50
+#: static/js/confirmation.js:44
 msgid "Warning"
 msgstr ""
 
@@ -132,10 +33,18 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: static/js/global.js:314
+#: static/js/global.js:339
 msgid "Internal error"
 msgstr ""
 
-#: static/js/searchbar.js:20
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr ""
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr ""
+
+#: static/js/searchbar.js:28
 msgid "Search..."
 msgstr ""

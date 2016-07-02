@@ -4,14 +4,33 @@
 Installation
 ############
 
+*****************
+For the lazy ones
+*****************
+
+If you are in a hurry, you will love the `modoboa installer
+<https://github.com/modoboa/modoboa-installer>`_! It's a set of Python
+scripts to install a fully functional email server on one machine
+(modoboa, postfix, dovecot, amavis and more).
+
+To use it, just run the following commands in your terminal::
+
+  $ git clone https://github.com/modoboa/modoboa-installer
+  $ cd modoboa-installer
+  $ sudo ./run.py <mail server hostname>
+
+Wait a few minutes and you're done \o/
+
+If you have more time or if you are just curious, you can install
+Modoboa *the old way* by going to the next section.
+
 ************
 Requirements
 ************
 
-* `Python version 2.6+ <http://python.org/>`_
-* `Django version 1.5+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
-* `south version 0.7+ <http://south.aeracode.org/>`_
-* `lxml python module <http://codespeak.net/lxml/>`_
+* `Python version 2.7+ <http://python.org/>`_
+* `Django version 1.7+ <http://docs.djangoproject.com/en/dev/intro/install/#intro-install>`_
+* `lxml python module <http://lxml.de/installation.html>`_
 * `pycrypto python module <http://www.dlitz.net/software/pycrypto/>`_
 * `rrdtool python binding <http://oss.oetiker.ch/rrdtool/>`_
 * `sievelib python module <http://pypi.python.org/pypi/sievelib>`_
@@ -94,33 +113,41 @@ Deployment
 `modoboa-admin.py`, a command line tool, lets you deploy a
 *ready-to-use* Modoboa site using only one instruction::
 
-  $ modoboa-admin.py deploy modoboa_example --syncdb --collectstatic [--with-amavis] [--dburl database-url] [--amavis_dburl database-url]
-
-Just answer the few questions and you're done. You can now go to the
-:ref:`first_use` section.
+  $ modoboa-admin.py deploy modoboa_example --collectstatic [--dburl default:database-url] [--extensions extensions]
 
 .. note::
 
-   The `--with-amavis` option must be set only if you intend to use
-   the :ref:`amavis_frontend`.
+   By default, the core application of Modoboa and some necessary plugins
+   (admin, relaydomains and limits) are installed. To install extensions,
+   use the ``--extensions`` option which accepts a list of extension names
+   as argument (``--extensions ext1 ext2 ...``).
+   If you want to install all extensions, just use the ``all``
+   shortcut like this ``--extensions all``.
 
+   If you choose to install extensions one at a time, you will have to
+   add their names in settings.py to ``MODOBOA_APPS``. Also ensure that
+   you have the line ``from modoboa_amavis.settings import *`` at the
+   end of this file.
 
-In case you need a **silent installation**, e.g. if you're using Salt-Stack.
-It's possible to supply the database credentials as commandline arguments.
+   The list of available plugins can be found on the :doc:`index page
+   <../index>`. Instructions to install them are available on each plugin page.
 
 .. note::
 
-   `--dburl database-url` for the modoboa database credentials
-   `--amavis_dburl database-url` for the amavis database credentials
+   You can specify more than one database connection using the
+   ``--dburl`` option. Multiple connections are differentiated by a
+   prefix. The primary connection must use the ``default:`` prefix (as
+   shown in the example above). For the `amavis extension
+   <http://modoboa-amavis.readthedocs.org>`_ extension, use the
+   ``amavis:`` prefix. An example two connections: ``--dburl
+   default:<database url> amavis:<database url>``.
 
-   Your database-url should meet the following syntax:
-   ``scheme://[user:pass@][host:port]/dbname``
+   Your database url should meet the following syntax
+   ``scheme://[user:pass@][host:port]/dbname`` **OR**
+   ``sqlite:////full/path/to/your/database/file.sqlite``.
 
-   **or**
+   Available schemes are:
 
-   ``sqlite:////full/path/to/your/database/file.sqlite``
-
-   Available `schemes` are:
    * postgres
    * postgresql
    * postgis
@@ -128,6 +155,16 @@ It's possible to supply the database credentials as commandline arguments.
    * mysql2
    * sqlite
 
+The command will ask you a few questions, answer them and you're
+done. You can now go to the :ref:`first_use` section.
+
+In case you need a **silent installation** (e.g. if you're using
+Salt-Stack, Ansible or whatever), it's possible to supply the database
+credentials as commandline arguments.
+
+You can see the complete option list by running the following command::
+
+  $ modoboa-admin.py help deploy
 
 .. note::
 

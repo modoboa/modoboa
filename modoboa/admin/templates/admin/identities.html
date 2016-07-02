@@ -1,0 +1,26 @@
+{% extends "admin/listing.html" %}
+{% load admin_tags lib_tags i18n %}
+{% load static %}
+
+{% block pagetitle %}{% trans "Identities" %}{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+{% extra_static_content "identities" "css" user %}
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script type="text/javascript" src="{% static 'js/autocompleter.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    admin = new Identities({
+        domain_list_url: "{% url 'admin:domain_flat_list' %}",
+        load_page_url: "{% url 'admin:identity_page' %}"
+    });
+});
+</script>
+{% extra_static_content "identities" "js" user %}
+{% endblock %}
+
+{% block actions %}{% identities_menu user "identities" %}{% endblock %}

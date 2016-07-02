@@ -1,8 +1,8 @@
 # -*- coding: iso-8859-1 -*-
 
 """
-Imap folder names are encoded using a special version of utf-7 as defined in RFC 
-2060 section 5.1.3.
+Imap folder names are encoded using a special version of utf-7 as
+defined in RFC 2060 section 5.1.3.
 
 5.1.3.  Mailbox International Naming Convention
 
@@ -56,14 +56,17 @@ import codecs
 
 # encoding
 
+
 def modified_base64(s):
     s = s.encode('utf-16be')
     return binascii.b2a_base64(s).rstrip('\n=').replace('/', ',')
+
 
 def doB64(_in, r):
     if _in:
         r.append('&%s-' % modified_base64(''.join(_in)))
         del _in[:]
+
 
 def encoder(s):
     r = []
@@ -127,11 +130,12 @@ def imap4_utf_7(name):
 codecs.register(imap4_utf_7)
 
 
-## testing methods
+# testing methods
 
 def imapUTF7Encode(ust):
     "Returns imap utf-7 encoded version of string"
     return ust.encode('imap4-utf-7')
+
 
 def imapUTF7EncodeSequence(seq):
     "Returns imap utf-7 encoded version of strings in sequence"
@@ -141,6 +145,7 @@ def imapUTF7EncodeSequence(seq):
 def imapUTF7Decode(st):
     "Returns utf7 encoded version of imap utf-7 string"
     return st.decode('imap4-utf-7')
+
 
 def imapUTF7DecodeSequence(seq):
     "Returns utf7 encoded version of imap utf-7 strings in sequence"
@@ -159,14 +164,14 @@ def utf7SequenceToUTF8(seq):
 
 __all__ = ['imapUTF7Encode', 'imapUTF7Decode', ]
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
-##    print u'bøx'.encode('imap4-utf-7')
-##    print 'expected b&APg-x'
-##
-##    print u'båx'.encode('imap4-utf-7')
-##    print 'expected b&AOU-x'
-##
+    # print u'bøx'.encode('imap4-utf-7')
+    # print 'expected b&APg-x'
+
+    # print u'båx'.encode('imap4-utf-7')
+    # print 'expected b&AOU-x'
+
     print '#######'
     print 'bøx'
     e = imapUTF7Encode(u'bøx')
@@ -191,12 +196,12 @@ if __name__=='__main__':
     print e
     print imapUTF7Decode(e).encode('latin-1')
 
-##    e = imapUTF7Decode('b&AOU-x')
-##    print e.encode('latin-1')
-##
-##    e = imapUTF7Decode('b&APg-x')
-##    print e.encode('latin-1')
-##
+    # e = imapUTF7Decode('b&AOU-x')
+    # print e.encode('latin-1')
+
+    # e = imapUTF7Decode('b&APg-x')
+    # print e.encode('latin-1')
+
     print '#######'
     print '~/Følder/mailbåx & stuff + more'
     n = u'~/Følder/mailbåx & stuff + more'
@@ -207,4 +212,3 @@ if __name__=='__main__':
     print '#######'
     print '~peter/mail/&ZeVnLIqe-/&U,BTFw-'
     print imapUTF7Decode('~peter/mail/&ZeVnLIqe-/&U,BTFw-').encode('utf-8')
-    

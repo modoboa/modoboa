@@ -1,14 +1,21 @@
-django>=1.5,<1.6
-django-reversion==1.8.0
+django>=1.9,<=1.9.99
+django-reversion==1.10.2
 dj-database-url
-south
-lxml
 pycrypto
-sievelib
-chardet
 argparse
-rfc6266
-factory-boy<2.4
-passlib
--e git+https://github.com/tonioo/django-versionfield.git#egg=django-versionfield
+passlib==1.6.5
+# bcrypt requires libffi-dev
+bcrypt==2.0.0
+django-versionfield2>=0.3.3
 requests
+django-xforwardedfor-middleware
+django-passwords==0.3.10
+rfc6266
+progressbar==2.3
+djangorestframework==3.3.1
+django-rest-swagger==0.3.5
+django-subcommand2==0.1.1
+gevent==1.1.1
+ipaddress
+dnspython==1.12.0
+jsonfield==1.0.3

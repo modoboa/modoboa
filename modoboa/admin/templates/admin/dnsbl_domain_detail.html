@@ -1,0 +1,35 @@
+{% extends "common/generic_modal.html" %}
+
+{% load i18n %}
+
+{% block modalbody %}
+  {% if domain.dnsbl_status_color == "danger" %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{% trans "Provider" %}</th>
+          <th>{% trans "Address" %}</th>
+          <th>{% trans "Status" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for result in domain.dnsblresult_set.blacklisted %}
+        <tr>
+          <td>{{ result.provider }}</td>
+          <td>{{ result.mx }}</td>
+          <td>
+            {% if result.status %}<span class="label label-danger">{% trans "listed" %}</span>{% else %}<span class="label label-success"></span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    {% if domain.dnsbl_status_color == "success" %}
+    <div class="alert alert-success">
+      {% trans "Everything is fine, this domain is not listed." %}</div>
+    {% else %}
+    <div class="alert alert-warning">
+      {% trans "No information available for this domain." %}</div>
+    {% endif %}
+  {% endif %}
+{% endblock %}

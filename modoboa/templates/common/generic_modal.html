@@ -1,12 +1,17 @@
 {% load i18n %}
-<div class="modal-header">
-  <a class="close" data-dismiss="modal">x</a>
-  <h3>{{ title }}</h3>
-</div>
-<div class="modal-body" style="overflow: visible;">
-  {% block modalbody %}{% endblock %}
-</div>
-<div class="modal-footer">
-  {% if action_label %}<a href="#" class="btn btn-primary {{ action_classes }}">{{ action_label }}</a>{% endif %}
-  <a class="btn" data-dismiss="modal">{% trans "Close" %}</a>
-</div>
+
+<div class="modal-dialog {% block modal_css_classes %}{% endblock %}">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans "Close" %}</span></button>
+      <h3 class="modal-title">{{ title }}</h3>
+    </div>
+    <div class="modal-body">    
+      {% block modalbody %}{% endblock %}
+    </div>
+    <div class="modal-footer">
+      <a class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</a>
+      {% if action_label %}<a href="#" class="btn btn-primary {{ action_classes }}">{{ action_label }}</a>{% endif %}
+    </div>
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

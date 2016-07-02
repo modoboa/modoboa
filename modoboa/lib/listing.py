@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from modoboa.lib import parameters
 
 
@@ -16,7 +17,7 @@ def get_sort_order(qdict, default, allowed_values=None):
         sort_order = sort_order[1:]
     else:
         sort_dir = ""
-    if allowed_values is not None and not sort_order in allowed_values:
+    if allowed_values is not None and sort_order not in allowed_values:
         return (default, "")
     return (sort_order, sort_dir)
 
@@ -33,10 +34,11 @@ def get_listing_page(objects, pagenum):
     :return: a ``Page`` object
     """
     paginator = Paginator(
-        objects, int(parameters.get_admin("ITEMS_PER_PAGE", app="core"))
+        objects, int(parameters.get_admin("ITEMS_PER_PAGE", app="core")),
+        allow_empty_first_page=False
     )
     try:
         page = paginator.page(int(pagenum))
     except (EmptyPage, PageNotAnInteger, ValueError):
-        page = paginator.page(paginator.num_pages)
+        page = None
     return page

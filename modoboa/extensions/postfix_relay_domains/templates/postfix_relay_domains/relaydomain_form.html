@@ -1,7 +1,0 @@
-{% load lib_tags %}
-{% render_field form.name %}
-{% render_field form.target_host %}
-{% include "postfix_relay_domains/service_field.html" with field=form.service %}
-{% render_fields_group form "aliases" %}
-{% render_field form.enabled %}
-{% render_field form.verify_recipients %}

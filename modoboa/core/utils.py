@@ -1,36 +1,40 @@
-"""
-Utility functions.
-"""
-import os
-import pkg_resources
+"""Utility functions."""
 
-import requests
-from requests.exceptions import RequestException
-
-from django.conf import settings
+from django.utils.translation import ugettext as _
 
 from versionfield.constants import DEFAULT_NUMBER_BITS
 from versionfield.version import Version
 
-from modoboa.lib import parameters
+from modoboa.core.extensions import exts_pool
+from modoboa.lib.api_client import ModoAPIClient
+
+from . import models
 
 
-def new_version_available():
+def check_for_updates(request):
     """Check if a new version of Modoboa is available."""
-    if parameters.get_admin("CHECK_NEW_VERSIONS") == "no":
-        return None
-    local_version = pkg_resources.get_distribution("modoboa").version
-    url = os.path.join(settings.MODOBOA_API_URL, "current_version/")
-    try:
-        resp = requests.get(url, params={
-            "client_version": pkg_resources.get_distribution("modoboa").version
-        })
-    except RequestException:
-        return None
-    if resp.status_code != 200:
-        return None
-    resp = resp.json()
-    version = Version(resp["version"], DEFAULT_NUMBER_BITS)
-    if version <= Version(local_version, DEFAULT_NUMBER_BITS):
-        return None
-    return resp
+    local_config = models.LocalConfig.objects.first()
+    client = ModoAPIClient()
+    extensions = exts_pool.list_all()
+    extensions = [{
+        "label": "Modoboa",
+        "name": "modoboa",
+        "description": _("The core part of Modoboa"),
+        "version": client.local_core_version
+    }] + extensions
+    update_avail = False
+    for extension in extensions:
+        local_version = Version(extension["version"], DEFAULT_NUMBER_BITS)
+        pkgname = extension["name"].replace("_", "-")
+        for api_extension in local_config.api_versions:
+            if api_extension["name"] != pkgname:
+                continue
+            last_version = Version(
+                api_extension["version"], DEFAULT_NUMBER_BITS)
+            extension["last_version"] = api_extension["version"]
+            if last_version > local_version:
+                extension["update"] = True
+                extension["changelog_url"] = api_extension["url"]
+                update_avail = True
+                break
+    return update_avail, extensions

@@ -2,7 +2,7 @@
 `Modoboa <http://modoboa.org/>`_
 ################################
 
-|travis| |latest-version| |downloads|
+|travis| |codecov| |landscape| |latest-version| |downloads|
 
 Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
@@ -19,7 +19,7 @@ easy. Actually, all current features are extensions.
 
 It is written in Python and uses the `Django
 <https://www.djangoproject.com>`_, `jQuery <http://jquery.com>`_ and
-`Bootstrap, from Twitter <http://twitter.github.com/bootstrap/>`_
+`Bootstrap <http://getbootstrap.com/>`_
 frameworks.
 
 *************
@@ -27,11 +27,12 @@ Main features
 *************
 
 * Administration panel
-* `Amavisd-new <http://www.amavis.org>`_ frontend
-* Webmail
-* Per-user Sieve filters
-* Autoreply messages for Postfix
-* Graphical statistics about email traffic
+* `Amavisd-new <http://www.amavis.org>`_ `frontend <https://github.com/modoboa/modoboa-amavis>`_
+* `Webmail <https://github.com/modoboa/modoboa-webmail>`_
+* `Per-user Sieve filters <https://github.com/modoboa/modoboa-sievefilters>`_
+* `Autoreply messages for Postfix <https://github.com/modoboa/modoboa-postfix-autoreply>`_
+* `Graphical statistics about email traffic <https://github.com/modoboa/modoboa-stats>`_
+* `Radicale <http://radicale.org/>`_ `management frontend <https://github.com/modoboa/modoboa-radicale>`_
 
 *************
 Documentation
@@ -48,18 +49,19 @@ The following external libraries are provided with Modoboa:
 
 * `jQuery version 1.9.1 <http://www.jquery.org/>`_
 * `jQuery-UI 1.10+ <http://jqueryui.com/>`_
-* `Bootstrap, from Twitter version 2.3.2 <http://twitter.github.com/bootstrap/>`_
-* `Bootstrap datetimepicker <http://www.malot.fr/bootstrap-datetimepicker/index.php>`_
+* `Bootstrap version 3.3.5 <http://getbootstrap.com/>`_
+* `Bootstrap datetimepicker <http://eonasdan.github.io/bootstrap-datetimepicker/>`_
 
-.. |latest-version| image:: https://pypip.in/v/modoboa/badge.png
+.. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
+   :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
-   :target: https://crate.io/packages/modoboa/
-.. |downloads| image:: https://pypip.in/d/modoboa/badge.png
+.. |landscape| image:: https://landscape.io/github/tonioo/modoboa/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/tonioo/modoboa/master
+   :alt: Code Health
+.. |downloads| image:: https://img.shields.io/pypi/dm/modoboa.svg
+   :target: https://pypi.python.org/pypi/modoboa/
    :alt: Downloads from Pypi
-   :target: https://crate.io/packages/modoboa/
 .. |travis| image:: https://travis-ci.org/tonioo/modoboa.png?branch=master
    :target: https://travis-ci.org/tonioo/modoboa
-
-.. image:: https://d2weczhvl823v0.cloudfront.net/tonioo/modoboa/trend.png
-   :alt: Bitdeli badge
-   :target: https://bitdeli.com/free
+.. |codecov| image:: http://codecov.io/github/tonioo/modoboa/coverage.svg?branch=master
+   :target: http://codecov.io/github/tonioo/modoboa?branch=master

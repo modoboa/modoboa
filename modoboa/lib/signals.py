@@ -1,11 +1,13 @@
-"""
-Custom signals.
-"""
-from django.dispatch import Signal
+"""Custom signals."""
 
-request_accessor = Signal()
+import django.dispatch
+
+request_accessor = django.dispatch.Signal()
+
 
 def get_request():
-    """Get the current request from anywhere.
-    """
-    return request_accessor.send(None)[0][1]
+    """Get the current request from anywhere."""
+    request = request_accessor.send(None)
+    if request:
+        return request[0][1]
+    return None

@@ -1,3 +1,8 @@
+/**
+ * Return an instance of TwocolsNav.
+ *
+ * @constructor
+ */
 var TwocolsNav = function(options) {
     Listing.call(this, options);
 };
@@ -18,10 +23,11 @@ TwocolsNav.prototype = {
     },
 
     listen: function() {
-        $("a.ajaxlink").click($.proxy(this.load_section, this));
+        $("a.ajaxnav").click($.proxy(this.load_section, this));
         $(document).on("click", "#update", $.proxy(function(e) {
+            var $form = $("form").first();
             simple_ajax_form_post(e, {
-                formid: this.options.formid,
+                formid: $form.attr("id"),
                 modal: false,
                 reload_on_success: false,
                 success_cb: $.proxy(this.save_cb, this)
@@ -33,7 +39,7 @@ TwocolsNav.prototype = {
         if (data.content) {
             $('#' + this.options.divid).html(data.content);
         }
-        this.update_listing(data);
+        this.update_listing(data, false);
         if (data.onload_cb) {
             eval(data.onload_cb + '()');
         }
@@ -63,7 +69,7 @@ TwocolsNav.prototype = {
 
     toggle_field_visibility: function($field, $parent, value) {
         if ($parent.attr("disabled") === undefined &&
-            $field.attr("data-visibility-value") == value) {
+            $field.attr("data-visibility-value") === value) {
             $field.attr("disabled", null);
             $field.show();
             this.propagate_change($field);
@@ -77,7 +83,7 @@ TwocolsNav.prototype = {
     select_change: function(e) {
         var instance = this;
         var $target = $(e.target);
-        var $parent = $target.parents("div.control-group");
+        var $parent = $target.parents("div.form-group");
 
         $('div[data-visibility-field="' + $target.attr("id") + '"]').each(function(idx) {
             instance.toggle_field_visibility($(this), $parent, $target.val());
@@ -90,7 +96,7 @@ TwocolsNav.prototype = {
     radio_clicked: function(e) {
         var instance = this;
         var $target = $(e.target);
-        var $parent = $target.parents("div.control-group");
+        var $parent = $target.parents("div.form-group");
         var realid = $target.attr("id");
 
         realid = realid.substr(0, realid.length - 2);
@@ -121,10 +127,16 @@ TwocolsNav.prototype = {
         this.navobj.parse_string($link.attr("href"), true).update();
     },
 
+    /**
+     * Select an entry in the left menu based on current url.
+     */
+    select_left_menu: function() {
+        $("a.ajaxnav").parent().removeClass("active");
+        $("a[name=" + this.navobj.getbaseurl() + "]").parent().addClass("active");
+    },
 
     default_cb: function(data) {
-        $("a.ajaxlink").parent().removeClass("active");
-        $("a[name=" + this.navobj.getbaseurl() + "]").parent().addClass("active");
+        this.select_left_menu();
         this.update_content(data);
     }
 };

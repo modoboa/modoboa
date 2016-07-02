@@ -1,25 +1,50 @@
 {% load i18n core_tags lib_tags %}
 <h2>{% trans "Information" %} <small>{% trans "Various information about Modoboa" %}</small></h2><hr>
-{% if new_version %}
+{% if update_avail %}
 <div class="alert alert-block alert-success">
-  <h4>{% trans "An update is available!" %}</h4>
-  {% blocktrans with version=new_version.version changelog_url=new_version.changelog_url %}
-  Modoboa <strong>{{ version }}</strong> is available for download. The list of all changes is available <a href="{{ changelog_url }}" target="_blank">here</a>.
-  {% endblocktrans %}
+  <h4>{% trans "One or more updates are available!" %}</h4>
+  <p>{% trans "Check the following list to find the component(s) that can be updated." %}</p>
 </div>
 {% endif %}
-<div class="alert alert-info">Modoboa <strong>{% get_version %}</strong> {% trans "is currently in use." %}</div>
+
+<h3>{% trans "Applications" %}</h3>
+<table id="extensions" class="table table-hover">
+  <thead>
+    <tr>
+      <th>{% trans "Name" %}</th>
+      <th>{% trans "Installed version" %}</th>
+      <th>{% trans "Last version" %}</th>
+      <th>{% trans "Description" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for extension in extensions %}
+    <tr{% if extension.update %} class="success"{% endif %}>
+      <td>{{ extension.label }}</td>
+      <td>{{ extension.version }}</td>
+      <td>{% if extension.update %}<strong>{% if extension.changelog_url %}<a href="{{ extension.changelog_url }}">{{ extension.last_version }}</a>{% else %}{{ extension.last_version }}{% endif %}</strong>{% else %}{{ extension.last_version }}{% endif %}</td>
+      <td>{{ extension.description }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 <h3>{% trans "Active users" %}</h3>
-<table class="table">
-  <tr>
-    <th>{% trans "Name" %}</th>
-    <th>{% trans "Group name" %}</th>
-    <th>{% trans "Last login" %}</th>
-  </tr>
-  {% connected_users as users %}{% for u in users %}<tr>
-    <td>{{ u.username }}</td>
-    <td>{{ u.group }}</td>
-    <td>{{ u.last_login }}</td>
-  </tr>{% endfor %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>{% trans "Name" %}</th>
+      <th>{% trans "Group name" %}</th>
+      <th>{% trans "Last login" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% connected_users as users %}{% for u in users %}
+    <tr>
+      <td>{{ u.username }}</td>
+      <td>{{ u.group }}</td>
+      <td>{{ u.last_login }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>

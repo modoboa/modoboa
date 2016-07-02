@@ -153,7 +153,7 @@ MySQL users
 
   password_query = SELECT email AS user, password FROM core_user WHERE email='%u' and is_active=1
 
-  user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, concat('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
+  user_query = SELECT '<mailboxes storage directory>/%Ld/%Ln' AS home, <uid> as uid, <gid> as gid, concat('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%Ln' AND dom.name='%Ld'
 
   iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
@@ -172,7 +172,7 @@ PostgreSQL users
 
   password_query = SELECT email AS user, password FROM core_user WHERE email='%u' and is_active
 
-  user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
+  user_query = SELECT '<mailboxes storage directory>/%Ld/%Ln' AS home, <uid> as uid, <gid> as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%Ln' AND dom.name='%Ld'
 
   iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
@@ -189,7 +189,7 @@ SQLite users
 
   password_query = SELECT email AS user, password FROM core_user WHERE email='%u' and is_active=1
 
-  user_query = SELECT '<mailboxes storage directory>/%d/%n' AS home, <uid> as uid, <gid> as gid, ('*:bytes=' || mb.quota || 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%n' AND dom.name='%d'
+  user_query = SELECT '<mailboxes storage directory>/%Ld/%Ln' AS home, <uid> as uid, <gid> as gid, ('*:bytes=' || mb.quota || 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%Ln' AND dom.name='%Ld'
 
   iterate_query = SELECT email AS username FROM core_user WHERE email<>''
 
@@ -422,9 +422,9 @@ be used by Postfix to lookup into Modoboa tables.
 To automaticaly generate the requested map files and store them in a
 directory, run the following command::
 
-  $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres|sqlite> mapfiles
+  $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres|sqlite> <directory>
 
-:file:`mapfiles` is the directory where the files will be
+``<directory>`` is the directory where the files will be
 stored. Answer the few questions and you're done.
 
 .. _postfix_config:
@@ -441,17 +441,29 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   relay_domains =
   virtual_mailbox_domains = <driver>:/etc/postfix/sql-domains.cf
   virtual_alias_domains = <driver>:/etc/postfix/sql-domain-aliases.cf
-  virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf,
-        <driver>:/etc/postfix/sql-domain-aliases-mailboxes.cf,
-        <driver>:/etc/postfix/sql-mailboxes-self-aliases.cf,
-        <driver>:/etc/postfix/sql-catchall-aliases.cf
+  virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf
+
+  relay_domains = <driver>:/etc/postfix/sql-relaydomains.cf
+  transport_maps =
+      <driver>:/etc/postfix/sql-spliteddomains-transport.cf
+      <driver>:/etc/postfix/sql-relaydomains-transport.cf
 
   smtpd_recipient_restrictions =
-        ...
-        check_recipient_access <driver>:/etc/postfix/sql-maintain.cf
+        # ...
+        check_recipient_access
+            <driver>:/etc/postfix/sql-maintain.cf
+            <driver>:/etc/postfix/sql-relay-recipient-verification.cf
         permit_mynetworks
+        reject_unauth_destination
         reject_unverified_recipient
-        ...
+        # ...
+
+  smtpd_sender_login_maps =
+        <driver>:/etc/postfix/sql-sender-login-mailboxes.cf
+        <driver>:/etc/postfix/sql-sender-login-aliases.cf
+
+  smtpd_sender_restrictions =
+        reject_sender_login_mismatch
 
   # Stuff after
 

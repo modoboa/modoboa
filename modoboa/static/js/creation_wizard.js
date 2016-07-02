@@ -34,9 +34,9 @@
             $(".modal-header").find("small").html(title);
         },
 
-        post: function(last) {
+        post: function(last, target) {
             var $form = (this.options.formid) ? $('#' + this.options.formid) : $('form');
-            var data = $form.serialize() + "&stepid=" + this.get_current_step_id();
+            var data = $form.serialize() + "&stepid=" + this.get_current_step_id() + "&target=" + target;
 
             $.ajax({
                 type: 'POST', url: $form.attr("action"), data: data, global: false
@@ -44,13 +44,14 @@
                 if (!last) {
                     $('input:text:visible:first').focus();
                     this.set_current_title(resp.title);
-                    if (this.options.transition_callbacks[resp.stepid] != undefined) {
-                        this.options.transition_callbacks[resp.stepid]();
+                    if (this.options.transition_callbacks[resp.id] !== undefined) {
+                        this.options.transition_callbacks[resp.id]();
                     }
-                    this.$element.carousel('next');
+                    $(".carousel-inner").css("overflow", "hidden");
+                    this.$element.carousel(resp.stepid);
                 } else {
-                    $("#modalbox").modal('hide').remove();
-                    if (this.options.success_callback != undefined) {
+                    $("#modalbox").modal('hide');
+                    if (this.options.success_callback !== undefined) {
                         this.options.success_callback(resp);
                     } else {
                         window.location.reload();
@@ -58,10 +59,10 @@
                 }
             }, this)).fail($.proxy(function(jqxhr) {
                 var resp = $.parseJSON(jqxhr.responseText);
-                if (resp.stepid != undefined) {
+                if (resp.stepid !== undefined) {
                     var stepid = resp.stepid;
                     display_form_errors("step" + stepid, resp);
-                    if (this.options.error_callbacks[stepid] != undefined) {
+                    if (this.options.error_callbacks[stepid] !== undefined) {
                         this.options.error_callbacks[stepid]();
                     }
                     $('input:text:visible:first').focus();
@@ -75,6 +76,7 @@
         },
 
         update_buttons: function() {
+            $(".carousel-inner").css("overflow", "visible");
             $('.bset.active').removeClass("active");
             $("#" + $(".item.active").attr("id") + "_buttons").addClass("active");
         },
@@ -83,20 +85,24 @@
             evt.preventDefault();
             var step_id = this.get_current_step_id();
             this.titles[step_id] = this.get_current_title();
-            this.$element.on('slid', this.update_buttons);
-            this.post(false);
+            this.$element.on('slid.bs.carousel', this.update_buttons);
+            this.post(false, "next");
         },
 
+        /**
+         * Go back to the previous step.
+         */
         prev: function(evt) {
+            var stepid = this.get_current_step_id();
+
             evt.preventDefault();
-            this.$element.on('slid', this.update_buttons);
-            this.$element.carousel('prev');
-            this.set_current_title(this.titles[this.get_current_step_id()]);
+            this.$element.on('slid.bs.carousel', this.update_buttons);
+            this.post(false, "prev", stepid);
         },
 
         submit: function(evt) {
             evt.preventDefault();
-            this.post(true);
+            this.post(true, "next");
         }
     };
 

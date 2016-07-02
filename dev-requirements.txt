@@ -1,0 +1,2 @@
+django-bower
+django-debug-toolbar

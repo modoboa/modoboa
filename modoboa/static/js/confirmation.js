@@ -13,19 +13,18 @@
 
              this.box = this.buildbox();
              this.box.modal();
-             this.box.on('hidden', $.proxy(this.hidden_callback, this));
+             this.box.on('hidden.bs.modal', $.proxy(this.hidden_callback, this));
          },
 
          buildcheckboxes: function() {
              var result = "";
 
-             if (!this.options.checkboxes) {
+             if (!this.options.checkboxes || !Object.keys(this.options.checkboxes).length) {
                  return "";
              }
-             result = '<form class="form-inline">';
+             result = '<form class="form-horizontal">';
              $.each(this.options.checkboxes, function(key, val) {
-                 result += "<label class='checkbox'><input type='checkbox' name='" + key + "' value='' />";
-	             result += val + "</label>";
+                 result += "<div class='form-group'><div class='col-xs-12'><div class='checkbox'><label><input type='checkbox' name='{0}' value='' />{1}</label></div></div></div>".format(key, val);
              });
              result += '</form>';
              return result;
@@ -34,55 +33,55 @@
          buildbox: function() {
              var box = $('<div />', {
                  id: "confirmbox",
-                 'class': "modal"
+                 'class': "modal fade"
              });
-             var question = (typeof this.options.question == 'function')
-                 ? this.options.question.apply(this) : this.options.question;
+             var question = (typeof this.options.question === 'function') ?
+                 this.options.question.apply(this) : this.options.question;
+             var checkboxes = this.buildcheckboxes();
+             var body = "";
 
-             box.append($('<div class="modal-body">'
-                 + '<h4>' + question + '</h4>'));
-             var $container = $("<div />", {"class" : "container-fluid"});
-             box.append($container);
              if (this.options.warning) {
-                 $container.append($("<div />", {"class" : "row-fluid"})
-                     .append($("<div />", {
-                         "class": "alert alert-danger",
-                         html: "<h4>" + gettext("Warning") + "</h4>" + this.options.warning
-                     }))
-                 );
+                   body += '<div class="alert alert-danger"><h4>{0}</h4>{1}</div>'.format(gettext("Warning"), this.options.warning);
+             }
+             if (checkboxes !== "") {
+                 body += "<p>{0}</p>".format(checkboxes);
              }
 
-             $container.append('<p>' + this.buildcheckboxes() + '</p>');
-             box.append("</div>");
+             var content = '<div class="modal-dialog"><div class="modal-content">';
+             var title_patten = '<div class="{0}"><h3 class="modal-title">{1}</h3></div>';
 
-             var footer = $('<div class="modal-footer" />');
-             var cancel_btn = $('<a href="#" class="btn">' + gettext("Cancel") + "</a>");
-             var ok_btn = $('<a href="#" class="btn btn-primary">Ok</a>');
+             if (body !== "") {
+                 content += title_patten.format("modal-header", question);
+                 content += '<div class="modal-body">{0}</div>'.format(body);
+             } else {
+                 content += title_patten.format("modal-body", question);
+             }
+             content += '<div class="modal-footer"><a href="#" class="btn btn-primary">Ok</a><a href="#" class="btn btn-default">{0}</a></div>'.format(gettext("Cancel"));
 
-             ok_btn.click(function(evt) {
+             box.append($(content));
+
+             box.find(".btn-primary").click(function(evt) {
                  evt.preventDefault();
                  box.data('result', true);
                  box.modal('hide');
              });
 
-             cancel_btn.click(function(evt) {
+             box.find(".btn-default").click(function(evt) {
                  evt.preventDefault();
                  box.modal('hide');
              });
 
-             footer.append(ok_btn, cancel_btn);
-             box.append(footer);
              return box;
          },
 
          hidden_callback: function() {
-             if (this.box.data('result') == undefined) {
+             if (this.box.data('result') === undefined) {
                  return;
              }
              var params = "";
 
              $('input[type=checkbox]:checked').each(function() {
-                 if (params != "") {
+                 if (params !== "") {
                      params += "&";
                  }
                  params += $(this).attr("name") + "=true";
@@ -93,7 +92,7 @@
                  data: params,
                  url: this.$element.attr('href')
              }).done($.proxy(function(data) {
-                 if (this.options.success_cb != undefined) {
+                 if (this.options.success_cb !== undefined) {
                      this.options.success_cb(data);
                      return;
                  }

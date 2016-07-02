@@ -1,10 +1,16 @@
 # coding: utf-8
+
+from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _
-from django.db import IntegrityError
+from django.utils.translation import ugettext_lazy
+
 from modoboa.core.models import ObjectAccess, User
 from modoboa.lib import events
-from modoboa.lib.exceptions import ModoboaException
+
+SIMPLEUSERS_ROLE = ("SimpleUsers", ugettext_lazy("Simple user"))
+DOMAINADMINS_ROLE = ("DomainAdmins", ugettext_lazy("Domain administrator"))
+RESELLERS_ROLE = ("Resellers", ugettext_lazy("Reseller"))
+SUPERADMINS_ROLE = ("SuperAdmins", ugettext_lazy("Super administrator"))
 
 
 def get_account_roles(user, account=None):
@@ -17,17 +23,17 @@ def get_account_roles(user, account=None):
     :param ``User`` account: account beeing modified (None on creation)
     :return: list of strings
     """
-    std_roles = [("SimpleUsers", _("Simple user"))]
-    if user.is_superuser:
-        std_roles += [("SuperAdmins",  _("Super administrator"))]
+    result = [SIMPLEUSERS_ROLE]
     filters = events.raiseQueryEvent(
-        'UserCanSetRole', user, 'DomainAdmins', account
+        "UserCanSetRole", user, "DomainAdmins", account
     )
     if user.has_perm("admin.add_domain") and \
             (not filters or True in filters):
-        std_roles += [("DomainAdmins", _("Domain administrator"))]
-    std_roles += events.raiseQueryEvent("GetExtraRoles", user)
-    return sorted(std_roles, key=lambda role: role[1])
+        result += [DOMAINADMINS_ROLE]
+    if user.is_superuser:
+        result += [RESELLERS_ROLE, SUPERADMINS_ROLE]
+    result += events.raiseQueryEvent("GetExtraRoles", user, account)
+    return sorted(result, key=lambda role: role[1])
 
 
 def grant_access_to_object(user, obj, is_owner=False):
@@ -46,22 +52,15 @@ def grant_access_to_object(user, obj, is_owner=False):
     :param obj: an admin. object (Domain, Mailbox, ...)
     :param is_owner: the user is the unique object's owner
     """
-    ct = ContentType.objects.get_for_model(obj)
-    try:
-        entry = user.objectaccess_set.get(content_type=ct, object_id=obj.id)
-        entry.is_owner = is_owner
-        entry.save()
-    except ObjectAccess.DoesNotExist:
-        pass
-    else:
-        return
-
-    ObjectAccess.objects.create(
-        user=user, content_type=ct, object_id=obj.id, is_owner=is_owner
-    )
-    if not is_owner:
-        return
     from modoboa.core.models import User
+
+    ct = ContentType.objects.get_for_model(obj)
+    entry, created = ObjectAccess.objects.get_or_create(
+        user=user, content_type=ct, object_id=obj.id)
+    entry.is_owner = is_owner
+    entry.save()
+    if not created or not is_owner:
+        return
     for su in User.objects.filter(is_superuser=True):
         if su == user:
             continue
@@ -81,10 +80,8 @@ def grant_access_to_objects(user, objects, ct):
     :param ct: the content type
     """
     for obj in objects:
-        try:
-            ObjectAccess.objects.create(user=user, content_type=ct, object_id=obj.id)
-        except IntegrityError:
-            pass
+        ObjectAccess.objects.get_or_create(
+            user=user, content_type=ct, object_id=obj.id)
 
 
 def ungrant_access_to_object(obj, user=None):
@@ -147,15 +144,16 @@ def get_object_owner(obj):
     return entry.user
 
 
-def add_permissions_to_group(groupname, permissions):
-    """Add the specified permissions to a django group.
-    """
-    from django.contrib.auth.models import Group, Permission
+def add_permissions_to_group(group, permissions):
+    """Add the specified permissions to a django group."""
+    if isinstance(group, basestring):
+        group = Group.objects.get(name=group)
 
-    grp = Group.objects.get(name=groupname)
     for appname, modelname, permname in permissions:
-        ct = ContentType.objects.get_by_natural_key(
-            appname, modelname)
-        grp.permissions.add(
+        ct = ContentType.objects.get_by_natural_key(appname, modelname)
+        if group.permissions.filter(
+                content_type=ct, codename=permname).exists():
+            continue
+        group.permissions.add(
             Permission.objects.get(content_type=ct, codename=permname)
         )

@@ -147,20 +147,6 @@ displayed. Possible values are:
 See :ref:`usermenudisplay` for a description of what callbacks that
 listen to this event must return.
 
-CanCreate
-=========
-
-Raised just before a user tries to create a new object.
-
-*Callback prototype*::
-
-  def callback(user): pass
-
-* ``user`` is a ``User`` instance
-
-Return ``True`` or ``False`` to indicate if this user can respectively
-create or not create a new ``Domain`` object.
-
 CheckDomainName
 ===============
 
@@ -175,6 +161,8 @@ event.
 
 Must return a list of 2uple, each one containing a model class and an
 associated label.
+
+.. _event_checkextraaccountform:
 
 CheckExtraAccountForm
 =====================
@@ -264,28 +252,6 @@ creator.
 * ``owner`` is the original creator
 * ``domain`` is the ``Domain`` instance being modified
 
-ExtDisabled
-===========
-
-Raised just after an extension has been disabled. 
-
-*Callback prototype*::
-
-  def callback(extension): pass
-
-* ``extension`` is an ``Extension`` instance
-
-ExtEnabled
-==========
-
-Raised just after an extension has been activated. 
-
-*Callback prototype*::
-
-  def callback(extension): pass
-
-* ``extension`` is an ``Extension`` instance
-
 ExtraAccountActions
 ===================
 
@@ -298,6 +264,8 @@ actions to act on a specific user.
 
 * ``account`` is the account being listed
 
+.. _event_extraaccountform:
+  
 ExtraAccountForm
 ================
 
@@ -370,6 +338,8 @@ entries based on service types.
   def callback(): pass
 
 Must return a list of valid filter names (string).
+
+.. _event_extradomainform:
 
 ExtraDomainForm
 ===============
@@ -465,6 +435,8 @@ each one must contain at least three keys::
    "title" : "<the title used to present the form>",
    "cls" : TheFormClassName}
 
+.. _event_fillaccountinstances:
+   
 FillAccountInstances
 ====================
 
@@ -483,6 +455,8 @@ forms.
 * ``instances`` is a dictionnary where the callback will add
   information needed to fill a specific form
 
+.. _event_filldomaininstances:
+  
 FillDomainInstances
 ===================
 
@@ -603,19 +577,44 @@ Raised to request extra parameters for a given parameters form.
 
 Must return a dictionary. Each entry must be a valid Django form field.
 
+.. _getextrarolepermissions:
+
+GetExtraRolePermissions
+=======================
+
+Let extensions define new permissions for a given role.
+
+*Callback prototype*::
+
+  def callback(rolename): pass
+
+* ``rolename`` is the role's name (str)
+
+Callbacks listening to this event must return a list of list. The
+second list level must contain exactly 3 strings: the application
+name, the model name and the permission name. Example::
+
+    [
+        ["core", "user", "add_user"],
+        ["core", "user", "change_user"],
+        ["core", "user", "delete_user"],
+    ]
+
 .. _getextraroles:
 
 GetExtraRoles
 =============
 
-Let extensions define new administrative roles.
+Let extensions define new administrative roles (will be used to create
+or modify an account).
 
 *Callback prototype*::
 
-  def callback(user): pass
+  def callback(user, account): pass
 
 * ``user`` is a ``User`` instance corresponding to the currently
   logged in user
+* ``account`` is the account being modified (None on creation)
 
 Callbacks listening to this event must return a list of 2uple (two
 strings) which respect the following format: ``(value, label)``.
@@ -629,10 +628,13 @@ template but need javascript stuff.
 
 *Callback prototype*::
 
-  def callback(caller, user): pass
+  def callback(caller, st_type, user): pass
 
 * ``caller`` is name of the application (or the location) responsible
   for the call
+
+* ``st_type`` is the expected static content type (``css`` or ``js``)
+
 * ``user`` is a ``User`` instance corresponding to the currently
   logged in user
 
@@ -658,6 +660,17 @@ the following prototype::
   logged in user
 * ``row`` is a string containing the object's definition (CSV format)
 * ``formopts`` is a dictionary that may contain options
+
+InitialDataLoaded
+=================
+
+Raised a initial data has been loaded for a given extension.
+
+*Callback prototype*::
+
+  def callback(extname); pass
+
+ ``extname`` is the extension name (str)
 
 MailboxAliasCreated
 ===================
@@ -712,10 +725,11 @@ Raised when an existing mailbox is modified.
 
 *Callback prototype*::
 
-  def callback(newmailbox, oldmailbox): pass
+  def callback(mailbox): pass
 
-* ``newmailbox`` is a ``Mailbox`` instance containing the new values
-* ``oldmailbox`` is a ``Mailbox`` instance containing the old values
+* ``mailbox`` is the ``Mailbox`` modified instance. It contains a
+  ``old_full_address`` extra field to check if the address was
+  modified.
 
 PasswordChange
 ==============
@@ -743,8 +757,7 @@ inside the top bar).
 
   def callback(user, include_all): pass
 
-* ``user`` is a ``User`` instance corresponding to the currently
-  logged in user
+* ``request`` is a ``Request`` instance
 * ``include_all`` is a boolean indicating if empty notifications must
   be included into the result or not
 
@@ -897,11 +910,12 @@ account.
 
 *Callback prototype*::
 
-  def callback(account, role): pass
+  def callback(user, role, account): pass
 
 * ``user`` is the ``User`` instance corresponding to the currently
   logged in user
 * ``role`` is the role ``user`` tries to set
+* ``account`` is the account being modified (None on creation)
 
 Must return a list containing ``True`` or ``False`` to indicate if
 this user can is allowed to set ``role``.

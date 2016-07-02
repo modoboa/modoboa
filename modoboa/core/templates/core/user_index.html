@@ -1,10 +1,16 @@
 {% extends "twocols.html" %}{% load i18n core_tags lib_tags %}
+{% load static %}
+
 {% block pagetitle %}{% trans "Settings" %}{% endblock %}
-{% block html_head %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}core/css/userprefs.css" />
-<script type="text/javascript" src="{{ STATIC_URL }}js/history.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/listing.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/twocols_nav.js"></script>
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/css/userprefs.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/twocols_nav.js' %}"></script>
 <script type="text/javascript">
 {{ extrajs|safe }}
 $(document).ready(function() {
@@ -12,10 +18,12 @@ $(document).ready(function() {
         deflocation: "profile/",
         formid: "uprefs_form",
         divid: "uprefs_content",
-        reload_exceptions: ["profile"]
+        reload_exceptions: ["profile", "api"]
     });
 });
 </script>
 {% endblock %}
-{% block leftcol %}<div class="well sidebar-nav">{% uprefs_menu left_selection user %}</div>{% endblock %}
+
+{% block leftcol %}{% uprefs_menu left_selection user %}{% endblock %}
+
 {% block apparea %}<div id="uprefs_content"></div>{% endblock %}

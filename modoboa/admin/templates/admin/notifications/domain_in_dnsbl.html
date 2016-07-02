@@ -1,0 +1,15 @@
+{% load i18n %}
+
+{% blocktrans trimmed domain=domain.name %}
+  Modoboa detected that domain {{ domain }} is listed by the following DNSBL providers:
+{% endblocktrans %}
+
+{% for provider, ip in alerts %}
+  {{ provider }}: {{ ip }}
+{% endfor %}
+
+{% blocktrans trimmed %}
+  The domain's reputation will be affected and there is a chance that
+  emails coming from it are considered as spam. You should contact
+  those providers and ask them to unlist detected IP address(es).
+{% endblocktrans %}

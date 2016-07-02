@@ -1,19 +1,23 @@
 # coding: utf-8
+
+import argparse
 import os
 import sys
-import argparse
+
 from django.conf import settings
 from django.template import Context, Template
 
 
 class Command(object):
+
     """Base command class
 
     A valid administrative command must inherit from this class.
     """
+
     help = "No help available."
 
-    def __init__(self, commands, verbose=False, **kwargs):
+    def __init__(self, commands, verbose=False):
         self._commands = commands
         self._parser = argparse.ArgumentParser()
         self._verbose = verbose
@@ -22,10 +26,10 @@ class Command(object):
         self._templates_dir = "%s/templates" % os.path.dirname(__file__)
 
     def _render_template(self, tplfile, env):
-        fp = open(tplfile)
-        t = Template(fp.read())
-        fp.close()
-        return t.render(Context(env))
+        """Render an HTML template."""
+        with open(tplfile) as fp:
+            tpl = Template(fp.read())
+        return tpl.render(Context(env))
 
     def run(self, cmdline):
         args = self._parser.parse_args(cmdline)
@@ -71,6 +75,7 @@ def scan_for_commands(dirname=""):
 
 
 def handle_command_line():
+    """Parse the command line."""
     commands = scan_for_commands()
     parser = argparse.ArgumentParser(
         description="A set of utilities to ease the installation of Modoboa.",
@@ -83,7 +88,7 @@ def handle_command_line():
                         help='A valid command name')
     (args, remaining) = parser.parse_known_args()
 
-    if not args.command in commands:
+    if args.command not in commands:
         print >> sys.stderr, "Unknown command '%s'" % args.command
         sys.exit(1)
 

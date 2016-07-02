@@ -269,6 +269,11 @@ Modoboa should connect to your LDAP server. They are described just below:
 |                    |administrators. Use ';'          |                    |
 |                    |characters to separate groups.   |                    |
 +--------------------+---------------------------------+--------------------+
+|Group type          |The type of group used by your   |PosixGroup          |
+|                    |LDAP directory.                  |                    |
+|                    |                                 |                    |
+|                    |                                 |                    |
++--------------------+---------------------------------+--------------------+
 |Groups search base  |The distinguished name of the    |                    |
 |                    |search base used to find groups  |                    |
 |                    |                                 |                    |
@@ -338,12 +343,12 @@ Django does not provide automatic purging. Therefore, it's your job to
 purge expired sessions on a regular basis.
 
 Django provides a sample clean-up script: ``django-admin.py
-cleanup``. That script deletes any session in the session table whose
-``expire_date`` is in the past.
+clearsessions``. That script deletes any session in the session table
+whose ``expire_date`` is in the past.
 
 For example, you could setup a cron job to run this script every night::
 
-  0 0 * * * <modoboa_site>/manage.py cleanup
+  0 0 * * * <modoboa_site>/manage.py clearsessions
   #
   # Or like this if you use a virtual environment:
-  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py cleanup
+  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py clearsessions

@@ -1,36 +1,40 @@
-import sys
-import os
+"""Core models."""
+
 import re
-import logging
-import reversion
-from django.db import models
-from django.db.models.signals import post_delete
-from django.conf import settings
-from django.dispatch import receiver
-from django.utils import timezone
-from django.utils.translation import ugettext as _, ugettext_lazy
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+
+from django.contrib.auth.hashers import make_password, is_password_usable
 from django.contrib.auth.models import (
     UserManager, Group, PermissionsMixin
 )
-from django.contrib.auth.hashers import make_password, is_password_usable
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
+from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.translation import ugettext as _, ugettext_lazy
+
+import jsonfield
+from reversion import revisions as reversion
+
+from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
-from modoboa.lib.sysutils import exec_cmd
-from modoboa.core.extensions import exts_pool
-from modoboa.core.password_hashers import get_password_hasher
+
+from . import constants
+
 
 try:
-    from modoboa.lib.ldaputils import LDAPAuthBackend
+    from modoboa.lib.ldap_utils import LDAPAuthBackend
     ldap_available = True
 except ImportError:
     ldap_available = False
 
 
+@python_2_unicode_compatible
 class User(PermissionsMixin):
+
     """Custom User model.
 
     It overloads the way passwords are stored into the database. The
@@ -42,14 +46,35 @@ class User(PermissionsMixin):
     username = models.CharField(max_length=254, unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    email = models.EmailField(max_length=254, blank=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    email = models.EmailField(max_length=254, blank=True, db_index=True)
+    is_staff = models.BooleanField(default=False, db_index=True)
+    is_active = models.BooleanField(default=True, db_index=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    is_local = models.BooleanField(default=True)
+    is_local = models.BooleanField(default=True, db_index=True)
+    master_user = models.BooleanField(
+        ugettext_lazy("Allow mailboxes access"), default=False,
+        help_text=ugettext_lazy(
+            "Allow this administrator to access user mailboxes"
+        )
+    )
     password = models.CharField(ugettext_lazy('password'), max_length=256)
     last_login = models.DateTimeField(
-        ugettext_lazy('last login'), default=timezone.now
+        ugettext_lazy('last login'), blank=True, null=True
+    )
+
+    language = models.CharField(
+        max_length=10, default="en", choices=constants.LANGUAGES,
+        help_text=ugettext_lazy(
+            "Prefered language to display pages."
+        )
+    )
+    phone_number = models.CharField(
+        ugettext_lazy("Phone number"), max_length=128, blank=True, null=True)
+    secondary_email = models.EmailField(
+        ugettext_lazy("Secondary email"), max_length=254,
+        blank=True, null=True,
+        help_text=ugettext_lazy(
+            "An alternative e-mail address, can be used for recovery needs.")
     )
 
     objects = UserManager()
@@ -59,6 +84,9 @@ class User(PermissionsMixin):
 
     class Meta:
         ordering = ["username"]
+        index_together = [
+            ['email', 'is_active']
+        ]
 
     password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
 
@@ -88,14 +116,28 @@ class User(PermissionsMixin):
         for ooentry in self.objectaccess_set.filter(is_owner=True):
             if ooentry.content_object is not None:
                 grant_access_to_object(owner, ooentry.content_object, True)
+                ungrant_access_to_object(ooentry.content_object, self)
 
         events.raiseEvent("AccountDeleted", self, fromuser, **kwargs)
         ungrant_access_to_object(self)
         super(User, self).delete()
 
     def _crypt_password(self, raw_value):
-        scheme = parameters.get_admin("PASSWORD_SCHEME")
-        if type(raw_value) is unicode:
+        """Crypt the local password using the appropriate scheme.
+
+        In case we don't find the scheme (for example when the
+        management framework is used), we load the parameters and try
+        one more time.
+
+        """
+        try:
+            scheme = parameters.get_admin("PASSWORD_SCHEME")
+        except parameters.NotDefined:
+            from modoboa.core.apps import load_core_settings
+            load_core_settings()
+            scheme = parameters.get_admin("PASSWORD_SCHEME")
+
+        if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
@@ -124,10 +166,11 @@ class User(PermissionsMixin):
         )
 
     def check_password(self, raw_value):
+        """Compare raw_value to current password."""
         match = self.password_expr.match(self.password)
         if match is None:
             return False
-        if type(raw_value) is unicode:
+        if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         scheme = match.group(1)
         val2 = match.group(2)
@@ -139,7 +182,7 @@ class User(PermissionsMixin):
         return getattr(self, self.USERNAME_FIELD)
 
     def __str__(self):
-        return self.get_username()
+        return smart_text(self.get_username())
 
     def natural_key(self):
         return (self.get_username(),)
@@ -189,6 +232,7 @@ class User(PermissionsMixin):
 
     @property
     def group(self):
+        """FIXME: DEPRECATED"""
         if self.is_superuser:
             return "SuperAdmins"
         try:
@@ -229,7 +273,8 @@ class User(PermissionsMixin):
         """
         ct = ContentType.objects.get_for_model(obj)
         try:
-            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
+            ooentry = self.objectaccess_set.get(
+                content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
             return False
         return ooentry.is_owner
@@ -250,7 +295,8 @@ class User(PermissionsMixin):
 
         ct = ContentType.objects.get_for_model(obj)
         try:
-            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
+            ooentry = self.objectaccess_set.get(
+                content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
             pass
         else:
@@ -265,7 +311,18 @@ class User(PermissionsMixin):
                 return True
         return False
 
-    def set_role(self, role):
+    @property
+    def role(self):
+        """Return user role."""
+        if self.is_superuser:
+            return "SuperAdmins"
+        try:
+            return self.groups.all()[0].name
+        except IndexError:
+            return "---"
+
+    @role.setter
+    def role(self, role):
         """Set administrative role for this account
 
         :param string role: the role to set
@@ -290,6 +347,7 @@ class User(PermissionsMixin):
         self.save()
 
     def post_create(self, creator):
+        """Grant permission on this user to creator."""
         from modoboa.lib.permissions import grant_access_to_object
         grant_access_to_object(creator, self, is_owner=True)
         events.raiseEvent("AccountCreated", self)
@@ -317,13 +375,21 @@ class User(PermissionsMixin):
         :param row: a list containing the expected information
         :param crypt_password:
         """
+        from modoboa.lib.permissions import get_account_roles
+
         if len(row) < 7:
             raise BadRequest(_("Invalid line"))
-        role = row[6].strip()
-        if not user.is_superuser and not role in ["SimpleUsers", "DomainAdmins"]:
-            raise PermDeniedException(
-                _("You can't import an account with a role greater than yours")
-            )
+
+        desired_role = row[6].strip()
+        if not user.is_superuser:
+            allowed_roles = get_account_roles(user)
+            allowed_roles = [role[0] for role in allowed_roles]
+            if desired_role not in allowed_roles:
+                raise PermDeniedException(_(
+                    "You can't import an account with a role greater than "
+                    "yours"
+                ))
+
         self.username = row[1].strip()
         try:
             User.objects.get(username=self.username)
@@ -331,14 +397,17 @@ class User(PermissionsMixin):
             pass
         else:
             raise Conflict
-        if role == "SimpleUsers":
-            if (len(row) < 8 or not row[7].strip()):
+
+        if desired_role == "SimpleUsers":
+            if len(row) < 8 or not row[7].strip():
                 raise BadRequest(
-                    _("The simple user '%s' must have a valid email address" % self.username)
+                    _("The simple user '%s' must have a valid email address"
+                      % self.username)
                 )
             if self.username != row[7].strip():
                 raise BadRequest(
-                    _("username and email fields must not differ for '%s'" % self.username)
+                    _("username and email fields must not differ for '%s'"
+                      % self.username)
                 )
 
         if crypt_password:
@@ -347,9 +416,10 @@ class User(PermissionsMixin):
             self.password = row[2].strip()
         self.first_name = row[3].strip()
         self.last_name = row[4].strip()
-        self.is_active = (row[5].strip() == 'True')
-        self.save(creator=user)
-        self.set_role(role)
+        self.is_active = (row[5].strip() in ["True", "1", "yes", "y"])
+        self.save()
+        self.role = desired_role
+        self.post_create(user)
         if len(row) < 8:
             return
         events.raiseEvent("AccountImported", user, self, row[7:])
@@ -361,9 +431,16 @@ class User(PermissionsMixin):
 
         :param csvwriter: csv object
         """
-        row = ["account", self.username.encode("utf-8"), self.password.encode("utf-8"),
-               self.first_name.encode("utf-8"), self.last_name.encode("utf-8"),
-               self.is_active, self.group, self.email.encode("utf-8")]
+        row = [
+            "account",
+            self.username.encode("utf-8"),
+            self.password.encode("utf-8"),
+            self.first_name.encode("utf-8"),
+            self.last_name.encode("utf-8"),
+            self.is_active,
+            self.group,
+            self.email.encode("utf-8")
+        ]
         row += events.raiseQueryEvent("AccountExported", self)
         csvwriter.writerow(row)
 
@@ -383,7 +460,7 @@ def populate_callback(user, group='SimpleUsers'):
     from modoboa.lib.permissions import grant_access_to_object
 
     sadmins = User.objects.filter(is_superuser=True)
-    user.set_role(group)
+    user.role = group
     user.post_create(sadmins[0])
     for su in sadmins[1:]:
         grant_access_to_object(su, user)
@@ -394,133 +471,32 @@ class ObjectAccess(models.Model):
     user = models.ForeignKey(User)
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
     is_owner = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (("user", "content_type", "object_id"),)
 
     def __unicode__(self):
-        return "%s => %s (%s)" % (self.user, self.content_object, self.content_type)
-
-
-class Extension(models.Model):
-    name = models.CharField(max_length=150)
-    enabled = models.BooleanField(
-        ugettext_lazy('enabled'),
-        help_text=ugettext_lazy("Check to enable this extension")
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(Extension, self).__init__(*args, **kwargs)
-
-    def __unicode__(self):
-        return self.name
-
-    def __get_ext_instance(self):
-        if not self.name:
-            return None
-        if hasattr(self, "instance") and self.instance:
-            return
-        self.instance = exts_pool.get_extension(self.name)
-        if self.instance:
-            self.__get_ext_dir()
-
-    def __get_ext_dir(self):
-        modname = self.instance.__module__
-        path = os.path.realpath(sys.modules[modname].__file__)
-        self.extdir = os.path.dirname(path)
-
-    def on(self):
-        self.enabled = True
-        self.save()
-
-        self.__get_ext_instance()
-        self.instance.load()
-        self.instance.init()
-
-        if self.instance.needs_media:
-            path = os.path.join(settings.MEDIA_ROOT, self.name)
-            exec_cmd("mkdir %s" % path)
-
-        events.raiseEvent("ExtEnabled", self)
-
-    def off(self):
-        self.__get_ext_instance()
-        if self.instance is None:
-            return
-        self.instance.destroy()
-
-        self.enabled = False
-        self.save()
-
-        if self.instance.needs_media:
-            path = os.path.join(settings.MEDIA_ROOT, self.name)
-            exec_cmd("rm -r %s" % path)
-
-        events.raiseEvent("ExtDisabled", self)
-
-reversion.register(Extension)
+        return "%s => %s (%s)" % (
+            self.user, self.content_object, self.content_type
+        )
 
 
 class Log(models.Model):
+    """Simple log in database."""
+
     date_created = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=255)
     level = models.CharField(max_length=15)
     logger = models.CharField(max_length=30)
 
 
-@receiver(reversion.post_revision_commit)
-def post_revision_commit(sender, **kwargs):
-    """Custom post-revision hook.
+class LocalConfig(models.Model):
+    """Store instance configuration here."""
 
-    We want to track all creations and modifications of admin. objects
-    (alias, mailbox, user, domain, domain alias, etc.) so we use
-    django-reversion for that.
+    api_pk = models.PositiveIntegerField(null=True)
+    site = models.ForeignKey("sites.Site")
 
-    """
-    from modoboa.lib.signals import get_request
-
-    current_user = get_request().user.username 
-    logger = logging.getLogger("modoboa.admin")
-    for version in kwargs["versions"]:
-        if version.object is None:
-            continue
-        prev_revisions = reversion.get_for_object(version.object)
-        if prev_revisions.count() == 1:
-            action = _("added")
-            level = "info"
-        else:
-            action = _("modified")
-            level = "warning"
-        message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
-            "object": unicode(version.content_type).capitalize(),
-            "name": version.object_repr, "action": action,
-            "user": current_user
-        }
-        getattr(logger, level)(message)
-
-
-@receiver(post_delete)
-def log_object_removal(sender, instance, **kwargs):
-    """Custom post-delete hook.
-
-    We want to know who was responsible for an object deletion.
-    """
-    from reversion.models import Version
-    from modoboa.lib.signals import get_request
-
-    if not reversion.is_registered(sender):
-        return
-    del_list = reversion.get_deleted(sender)
-    try:
-        version = del_list.get(object_id=instance.id)
-    except Version.DoesNotExist:
-        return
-    logger = logging.getLogger("modoboa.admin")
-    msg = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
-        "object": unicode(version.content_type).capitalize(),
-        "name": version.object_repr, "action": _("deleted"),
-        "user": get_request().user.username
-    }
-    logger.critical(msg)
+    # API results cache
+    api_versions = jsonfield.JSONField()

@@ -4,12 +4,13 @@
 #
 # Translators:
 # TuxBrother <vrijwilligerswerk@wij.rs>, 2014
+# TuxBrother <vrijwilligerswerk@wij.rs>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-24 12:33+0200\n"
-"PO-Revision-Date: 2014-04-16 12:58+0000\n"
+"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"PO-Revision-Date: 2014-12-31 11:42+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
 "modoboa/language/nl_NL/)\n"
@@ -19,118 +20,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: extensions/admin/static/admin/js/admin.js:32
-msgid "Search"
-msgstr "Zoeken"
-
-#: extensions/admin/static/admin/js/admin.js:170
-msgid "Do not delete domain directory"
-msgstr "De map van dit domein niet verwijderen (Zal de data ervan behouden)"
-
-#: extensions/admin/static/admin/js/admin.js:173
-msgid "This operation will remove ALL data associated to this domain."
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
 msgstr ""
-"Deze actie zal ALLE data verwijderen die bij dit domein hoort. Wilt u "
-"doorgaan?"
 
-#: extensions/admin/static/admin/js/admin.js:174
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr ""
-"Deze actie zal alle data die bij dit domein hoort verwijderen, behalve de "
-"gebruikers."
+#: core/static/core/js/settings.js:14
+msgid "No more log entry to show"
+msgstr "Geen log bericht meer om te weergeven"
 
-#: extensions/admin/static/admin/js/admin.js:222
-msgid "No domain administrator defined"
-msgstr "Geen administrator toegewezen"
-
-#: extensions/admin/static/admin/js/admin.js:291
-msgid "Do not delete mailbox directory"
-msgstr "Verwijder de map van deze mailbox niet (zal de data ervan behouden)"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:180
-msgid "Release this selection?"
-msgstr "Wilt u deze selectie loslaten?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:184
-msgid "Delete this selection?"
-msgstr "Selectie verwijderen?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:203
-#: extensions/amavis/static/amavis/js/selfservice.js:17
-msgid "Release this message?"
-msgstr "Dit bericht loslaten?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:207
-#: extensions/amavis/static/amavis/js/selfservice.js:21
-msgid "Delete this message?"
-msgstr "Dit bericht verwijderen?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:224
-msgid "View full headers"
-msgstr "Volledige headers weergeven"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:229
-msgid "Hide full headers"
-msgstr "Volledige headers verbergen"
-
-#: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
-msgid "Services updated"
-msgstr "Services upgedate"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:14
-msgid "Remove this filter?"
-msgstr "Dit filter verwijderen?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:107
-msgid "Save changes?"
-msgstr "Wijzigingen opslaan?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:129
-msgid "Remove filters set?"
-msgstr "Deze filterset verwijderen?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:146
-msgid "Activate this filters set?"
-msgstr "Wilt u deze filterset activeren?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:154
-#: extensions/sievefilters/static/sievefilters/js/lib.js:203
-msgid "active"
-msgstr "activeren"
-
-#: extensions/stats/static/stats/js/stats.js:37
-msgid "Search a domain"
-msgstr "Zoek een domein"
-
-#: extensions/webmail/static/webmail/js/webmail.js:491
-msgid "Remove the selected mailbox?"
-msgstr "Geselecteerde mailbox verwijderen?"
-
-#: extensions/webmail/static/webmail/js/webmail.js:504
-msgid "Mailbox removed"
-msgstr "Mailbox verwijderd"
-
-#: extensions/webmail/static/webmail/js/webmail.js:752
-msgid "Message sent"
-msgstr "Bericht verstuurd"
-
-#: extensions/webmail/static/webmail/js/webmail.js:1003
-#, c-format
-msgid "%s file"
-msgid_plural "%s files"
-msgstr[0] "%s bestanden"
-msgstr[1] "%s bestanden"
-
-#: extensions/webmail/static/webmail/js/webmail.js:1037
-#, c-format
-msgid "Moving %s message"
-msgid_plural "Moving %s messages"
-msgstr[0] "%s Berichten verplaatsen"
-msgstr[1] "%s Berichten verplaatsen"
-
-#: static/js/confirmation.js:50
+#: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Waarschuwing"
 
@@ -138,10 +36,18 @@ msgstr "Waarschuwing"
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: static/js/global.js:314
+#: static/js/global.js:339
 msgid "Internal error"
 msgstr "Interne fout"
 
-#: static/js/searchbar.js:20
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr "Geen bericht meer om te weergeven"
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "Zoeken"
+
+#: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Zoeken..."

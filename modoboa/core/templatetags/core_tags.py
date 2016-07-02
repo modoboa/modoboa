@@ -1,10 +1,15 @@
+"""Custom tags for Core application."""
+
 import re
+
 from django import template
+from django.contrib.sessions.models import Session
+from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
-from django.contrib.sessions.models import Session
+
 from modoboa.lib import events
 
 
@@ -19,7 +24,7 @@ def core_menu(selection, user):
         entries += [
             {"name": "settings",
              "label": _("Modoboa"),
-             "url": reverse("modoboa.core.views.admin.viewsettings")}
+             "url": reverse("core:index")}
         ]
 
     if not len(entries):
@@ -42,28 +47,23 @@ def extensions_menu(selection, user):
 @register.simple_tag
 def admin_menu(selection, user):
     entries = [
-        {"name": "extensions",
-         "class": "ajaxlink",
-         "url": "extensions/",
-         "label": _("Extensions"),
-         "img": ""},
         {"name": "info",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "info/",
          "label": _("Information")},
         {"name": "logs",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "logs/?sort_order=-date_created",
          "label": _("Logs")},
         {"name": "parameters",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "parameters/",
          "img": "",
          "label": _("Parameters")},
     ]
     return render_to_string('common/menu.html', {
         "entries": entries,
-        "css": "nav nav-list",
+        "css": "nav nav-sidebar",
         "selection": selection,
         "user": user
     })
@@ -73,22 +73,22 @@ def admin_menu(selection, user):
 def user_menu(user, selection):
     entries = [
         {"name": "user",
-         "img": "icon-user icon-white",
+         "img": "fa fa-user",
          "label": user.fullname,
          "menu": [
                 {"name": "settings",
-                 "img": "icon-list",
+                 "img": "fa fa-list",
                  "label": _("Settings"),
-                 "url": reverse("modoboa.core.views.user.index")}
+                 "url": reverse("core:user_index")}
          ]}
     ]
 
     entries[0]["menu"] += \
         events.raiseQueryEvent("UserMenuDisplay", "options_menu", user) \
         + [{"name": "logout",
-            "url": reverse("modoboa.core.views.auth.dologout"),
+            "url": reverse("core:logout"),
             "label": _("Logout"),
-            "img": "icon-off"}]
+            "img": "fa fa-sign-out"}]
 
     return render_to_string("common/menulist.html", {
         "selection": selection, "entries": entries, "user": user
@@ -99,19 +99,26 @@ def user_menu(user, selection):
 def uprefs_menu(selection, user):
     entries = [
         {"name": "profile",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "profile/",
          "label": _("Profile")},
         {"name": "preferences",
-         "class": "ajaxlink",
+         "class": "ajaxnav",
          "url": "preferences/",
          "label": _("Preferences")},
     ]
+    if user.is_superuser:
+        entries.append({
+            "name": "api",
+            "class": "ajaxnav",
+            "url": "api/",
+            "label": _("API"),
+        })
     entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu", user)
     entries = sorted(entries, key=lambda e: e["label"])
     return render_to_string('common/menu.html', {
         "entries": entries,
-        "css": "nav nav-list",
+        "css": "nav nav-sidebar",
         "selection": selection,
         "user": user
     })
@@ -119,30 +126,33 @@ def uprefs_menu(selection, user):
 
 @register.filter
 def colorize_level(level):
+    """A simple filter a text using a boostrap color."""
     classes = {
         "INFO": "text-info",
         "WARNING": "text-warning",
-        "CRITICAL": "text-error"
+        "CRITICAL": "text-danger"
     }
-    if not level in classes:
+    if level not in classes:
         return level
     return "<p class='%s'>%s</p>" % (classes[level], level)
 
 
 @register.filter
 def tohtml(message):
-    return re.sub("'(.*?)'", "<strong>\g<1></strong>", message)
+    """Simple tag to format a text using HTML."""
+    return re.sub(r"'(.*?)'", "<strong>\g<1></strong>", message)
 
 
 @register.simple_tag
 def visirule(field):
     if not hasattr(field, 'form') or \
             not hasattr(field.form, "visirules") or \
-            not field.html_name in field.form.visirules:
+            field.html_name not in field.form.visirules:
         return ""
     rule = field.form.visirules[field.html_name]
-    return " data-visibility-field='%s' data-visibility-value='%s' " \
-        % (rule["field"], rule["value"])
+    return mark_safe(
+        " data-visibility-field='{}' data-visibility-value='{}' "
+        .format(rule["field"], rule["value"]))
 
 
 @register.simple_tag
@@ -152,6 +162,7 @@ def get_version():
 
 
 class ConnectedUsers(template.Node):
+
     def __init__(self, varname):
         self.varname = varname
 
@@ -225,10 +236,10 @@ def display_messages(msgs):
     else:
         timeout = "undefined"
 
-    return """
+    return mark_safe("""
 <script type="text/javascript">
     $(document).ready(function() {
         $('body').notify('%s', '%s', %s);
     });
 </script>
-""" % (level, text, timeout)
+""" % (level, text, timeout))

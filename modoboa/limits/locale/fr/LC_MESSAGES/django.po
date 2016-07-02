@@ -1,0 +1,210 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Antoine Nguyen <tonio@ngyn.org>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"PO-Revision-Date: 2016-04-27 20:12+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: limits/app_settings.py:15
+msgid "Default per-admin limits"
+msgstr "Limites administrateur par défaut"
+
+#: limits/app_settings.py:18
+msgid "Enable per-admin limits"
+msgstr "Activer les limites par administrateur"
+
+#: limits/app_settings.py:20
+msgid "Enable or disable per-admin limits"
+msgstr "Activer ou désactiver les limites par administrateur"
+
+#: limits/app_settings.py:24 limits/app_settings.py:85 limits/constants.py:25
+#: limits/constants.py:48
+msgid "Domain admins"
+msgstr "Admins de domaine"
+
+#: limits/app_settings.py:27
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'admins de domaine pour un nouvel administrateur. (0 pour "
+"interdire toute création, -1 pour autoriser les création illimitées)"
+
+#: limits/app_settings.py:35 limits/constants.py:10
+msgid "Domains"
+msgstr "Domaines"
+
+#: limits/app_settings.py:38
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal de domaines pour un nouvel administrateur. (0 pour interdire "
+"toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:45 limits/app_settings.py:96 limits/constants.py:14
+#: limits/constants.py:35
+msgid "Domain aliases"
+msgstr "Alias de domaine"
+
+#: limits/app_settings.py:48
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'alias de domaine pour un nouvel administrateur. (0 pour "
+"interdire toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:56 limits/app_settings.py:107 limits/constants.py:18
+#: limits/constants.py:39
+msgid "Mailboxes"
+msgstr "Boites"
+
+#: limits/app_settings.py:59
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal de boites pour un nouvel administrateur. (0 pour interdire "
+"toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:66 limits/app_settings.py:117 limits/constants.py:21
+#: limits/constants.py:42
+msgid "Mailbox aliases"
+msgstr "Alias de boite."
+
+#: limits/app_settings.py:69
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'alias de boite pour un nouvel administrateur. (0 pour "
+"interdire toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:76
+msgid "Default per-domain limits"
+msgstr "Limites domaine par défaut"
+
+#: limits/app_settings.py:79
+msgid "Enable per-domain limits"
+msgstr "Activer les limites par domaine"
+
+#: limits/app_settings.py:81
+msgid "Enable or disable per-domain limits"
+msgstr "Activer ou désactiver les limites par domaine"
+
+#: limits/app_settings.py:88
+msgid ""
+"Maximum number of allowed domain administrators for a new domain. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'administrateurs de domaine autorisés pour un nouveau "
+"domaine (0 pour interdire toute création, -1 pour autoriser les créations "
+"illimitées)"
+
+#: limits/app_settings.py:99
+msgid ""
+"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'alias de domaine autorisés pour un nouveau domaine. (0 pour "
+"interdire toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:110
+msgid ""
+"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal de boites aux lettres autorisées pour un nouveau domaine. (0 "
+"pour interdire toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/app_settings.py:120
+msgid ""
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
+"-1 to allow unlimited creations)"
+msgstr ""
+"Nombre maximal d'alias autorisés pour un nouveau domaine. (0 pour interdire "
+"toute création, -1 pour autoriser les créations illimitées)"
+
+#: limits/apps.py:17
+msgid "Limits"
+msgstr "Limites"
+
+#: limits/constants.py:11
+msgid "Maximum number of domains this user can create"
+msgstr "Nombre maximal de domaines que cet utilisateur peut créer"
+
+#: limits/constants.py:15
+msgid "Maximum number of domain aliases this user can create"
+msgstr "Nombre maximal d'alias de domain que cet utilisateur peut créer"
+
+#: limits/constants.py:19
+msgid "Maximum number of mailboxes this user can create"
+msgstr "Nombre maximal de boites que cet utilisateur peut créer"
+
+#: limits/constants.py:22
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "Nombre maximal d'alias de boite que cet utilisateur peut créer"
+
+#: limits/constants.py:26
+msgid "Maximum number of domain administrators this user can create"
+msgstr "Nombre maximal d'admins de domaine que cet utilisateur peut créer"
+
+#: limits/constants.py:36
+msgid "Maximum number of domain aliases allowed for this domain."
+msgstr "Nombre maximal d'alias de domaine autorisés pour ce domaine."
+
+#: limits/constants.py:40
+msgid "Maximum number of mailboxes allowed for this domain."
+msgstr "Nombre maximal de boites aux lettres autorisées pour ce domaine."
+
+#: limits/constants.py:44
+msgid "Maximum number of mailbox aliases allowed for this domain."
+msgstr "Nombre maximal d'alias autorisés pour ce domaine."
+
+#: limits/constants.py:49
+msgid "Maximum number of domain admins allowed for this domain."
+msgstr "Nombre maximal d'administrateurs de domaine autorisés pour ce domaine."
+
+#: limits/forms.py:41 limits/forms.py:115
+msgid "Invalid limit"
+msgstr "Limite invalide"
+
+#: limits/forms.py:64
+msgid "You're not allowed to define unlimited values"
+msgstr "Vous n'êtes pas autorisé à définir des valeurs illimitées"
+
+#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+msgid "Resources"
+msgstr "Ressources"
+
+#: limits/lib.py:19
+#, python-format
+msgid "%s: limit reached"
+msgstr "%s : limite atteinte"
+
+#: limits/lib.py:29
+msgid "Not enough resources"
+msgstr "Pas assez de ressources"
+
+#: limits/models.py:39 limits/models.py:98
+msgid "unlimited"
+msgstr "illimité"
+
+#: limits/templates/limits/domain_resources_widget.html:5
+#: limits/templates/limits/poolusage.html:3
+msgid "Resources usage"
+msgstr "Utilisation des ressources"

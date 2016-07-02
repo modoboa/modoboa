@@ -1,4 +1,5 @@
 # coding: utf-8
+
 """
 This interface provides a simple way to declare and store parameters
 in Modoboa's database.
@@ -8,10 +9,15 @@ will be available and modifiable directly from the web interface.
 
 Only super users will be able to access this part of the web interface.
 """
+
 from django import forms
+
 from modoboa.lib import events
-from modoboa.lib.sysutils import guess_extension_name
 from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib.sysutils import guess_extension_name
+
+from . import db_utils
+
 
 _params = {'A': {}, 'U': {}}
 
@@ -83,16 +89,21 @@ class GenericParametersForm(forms.Form):
 
 
 class AdminParametersForm(GenericParametersForm):
+
     def _load_initial_values(self):
         from .models import Parameter
 
-        names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
+        if not db_utils.db_table_exists("lib_parameter"):
+            return
+        names = [
+            "%s.%s" % (self.app, name.upper()) for name in self.fields.keys()
+        ]
         for p in Parameter.objects.filter(name__in=names):
             self.fields[p.shortname].initial = self._decode_value(p.value)
 
     def save(self):
         from .models import Parameter
-        from modoboa.lib.formutils import SeparatorField
+        from modoboa.lib.form_utils import SeparatorField
 
         for name, value in self.cleaned_data.items():
             if type(self.fields[name]) is SeparatorField:
@@ -119,16 +130,21 @@ class AdminParametersForm(GenericParametersForm):
 
 
 class UserParametersForm(GenericParametersForm):
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user") if "user" in kwargs else None
         super(UserParametersForm, self).__init__(*args, **kwargs)
 
     def _load_initial_values(self):
+        if not db_utils.db_table_exists("lib_userparameter"):
+            return
         if self.user is None:
             return
         from .models import UserParameter
 
-        names = ["%s.%s" % (self.app, name.upper()) for name in self.fields.keys()]
+        names = [
+            "%s.%s" % (self.app, name.upper()) for name in self.fields.keys()
+        ]
         for p in UserParameter.objects.filter(user=self.user, name__in=names):
             self.fields[p.shortname].initial = self._decode_value(p.value)
 
@@ -138,7 +154,7 @@ class UserParametersForm(GenericParametersForm):
 
     def save(self):
         from .models import UserParameter
-        from modoboa.lib.formutils import SeparatorField
+        from modoboa.lib.form_utils import SeparatorField
 
         for name, value in self.cleaned_data.items():
             if type(self.fields[name]) is SeparatorField:
@@ -162,7 +178,7 @@ def register(formclass, label):
     :param formclass: a form class
     :param string label: the label to display in parameters or settings pages
     """
-    from modoboa.lib.formutils import SeparatorField
+    from modoboa.lib.form_utils import SeparatorField
 
     if issubclass(formclass, AdminParametersForm):
         level = 'A'
@@ -196,13 +212,17 @@ def unregister(app=None):
 
 
 def __is_defined(app, level, name):
-    if not level in ['A', 'U'] \
-        or not app in _params[level] \
-        or not name in _params[level][app]["defaults"]:
+    not_defined = (
+        level not in ['A', 'U'] or
+        app not in _params[level] or
+        name not in _params[level][app]["defaults"]
+    )
+    if not_defined:
         raise NotDefined(app, name)
 
 
 def save_admin(name, value, app=None):
+    """Set a new value for a given parameter."""
     from .models import Parameter
 
     if app is None:
@@ -318,18 +338,18 @@ def get_admin_forms(*args, **kwargs):
 
 
 def get_user_forms(user, *args, **kwargs):
+    """Return an instance of each user-level forms."""
     kwargs["user"] = user
     sorted_apps = get_sorted_apps('U', first="general")
-
-    def realfunc():
-        for app in sorted_apps:
-            formdef = _params['U'][app]
-            if not formdef["form"].has_access(user):
-                continue
-            yield {"label": formdef["label"],
-                   "form": formdef["form"](*args, **kwargs)}
-
-    return realfunc
+    result = []
+    for app in sorted_apps:
+        formdef = _params["U"][app]
+        if not formdef["form"].has_access(user):
+            continue
+        result.append({
+            "label": formdef["label"],
+            "form": formdef["form"](*args, **kwargs)})
+    return result
 
 
 def get_parameter_form(level, name, app=None):

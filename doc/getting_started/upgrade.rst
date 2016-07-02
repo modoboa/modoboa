@@ -15,38 +15,342 @@ newest versions of Modoboa.
 Latest version
 **************
 
+Fetch the latest version (see :ref:`get_modoboa`) and install
+it. ``pip`` users, just run the following command::
+
+  $ pip install modoboa==<VERSION>
+
+Replace ``<VERSION>`` by the appropriate value.
+
+As for a fresh installation, ``modoboa-admin.py`` can be used to
+upgrade your local configuration. To do so, remove the directory where
+your instance was first deployed::
+
+  $ rm -rf <modoboa_instance_dir>
+
+.. warning::
+     
+   If you customized your configuration file (:file:`settings.py`) with
+   non-standard settings, you'll have to re-apply them.
+
+Finally, run the ``deploy`` comamand. Make sure to consult the
+:ref:`deployment` section to know more about the available options.
+
+If you prefer the manual way, check if
+:ref:`specific_upgrade_instructions` are required according to the
+version you're installing.
+
+To finish, restart the web server process according to the environment
+you did choose. See :ref:`webservers` for more details.
+
+.. _specific_upgrade_instructions:
+
+*****************************
+Specific upgrade instructions
+*****************************
+
+1.6.0
+=====
+
+An interesting feature brougth by this version is the capability of
+querying main `DNSBL <https://en.wikipedia.org/wiki/DNSBL>`_ providers
+for every defined domain. With this, you will quickly now if one the
+you know is listed or not. To activate it, add the following line to
+you crontab::
+
+  */30 * * * * <modoboa_site>/manage.py modo check_dnsbl
+
+The communication with Modoboa public API has been reworked. Instead
+of sending direct synchronous queries (for example to check new
+versions), a cron job has been added. To activate it, add the
+following line to your crontab::
+
+  0 * * * * <modoboa_site>/manage.py communicate_with_public_api
+
+Please also note that public API is now uses TLS so you must update
+your configuration as follows::
+
+  MODOBOA_API_URL = 'https://api.modoboa.org/1/'
+
+1.5.0
+=====
+
+The API has been greatly improved and a documentation is now
+available. To enable it, add ``'rest_framework_swagger'`` to the
+``INSTALLED_APPS`` variable in :file:`settings.py` as follows::
+
+  INSTALLED_APPS = (
+      'django.contrib.auth',
+      'django.contrib.contenttypes',
+      'django.contrib.sessions',
+      'django.contrib.messages',
+      'django.contrib.sites',
+      'django.contrib.staticfiles',
+      'reversion',
+      'rest_framework.authtoken',
+      'rest_framework_swagger',
+  )
+
+Then, add the following content into :file:`settings.py`, just after
+the ``REST_FRAMEWORK`` variable::
+
+  SWAGGER_SETTINGS = {
+      "is_authenticated": False,
+      "api_version": "1.0",
+      "exclude_namespaces": [],
+      "info": {
+          "contact": "contact@modoboa.com",
+          "description": ("Modoboa API, requires a valid token."),
+          "title": "Modoboa API",
+      }
+  }
+
+You're done. The documentation is now available at the following address:
+
+  http://<your instance address>/docs/api/
+
+Finally, if you find a ``TEMPLATE_CONTEXT_PROCESSORS`` variable in
+your :file:`settings.py` file, make sure it looks like this::
+
+  TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + [
+      'modoboa.core.context_processors.top_notifications',
+  ]
+
+1.4.0
+=====
+
 .. warning::
 
-   If you use a version **prior to 0.9.5**, please migrate in two
-   steps:
+   Please make sure to use Modoboa 1.3.5 with an up-to-date database
+   before an upgrade to 1.4.0.
+
+.. warning::
+
+   Do not follow the regular upgrade procedure for this version.   
+
+Some extension have been moved back into the main repository. The main
+reason for that is that using Modoboa without them doesn't make sense.
+
+First of all, you must rename the following applications listed inside
+the ``MODOBOA_APPS`` variable:
+
++--------------------------+--------------------+
+|Old name                  |New name            |
++==========================+====================+
+|modoboa_admin             |modoboa.admin       |
++--------------------------+--------------------+
+|modoboa_admin_limits      |modoboa.limits      |
++--------------------------+--------------------+
+|modoboa_admin_relaydomains|modoboa.relaydomains|
++--------------------------+--------------------+
+
+Then, apply the following steps:
+
+#. Uninstall old extensions::
+
+   $ pip uninstall modoboa-admin modoboa-admin-limits modoboa-admin-relaydomains
+
+#. Install all extension updates using pip (check the *Modoboa > Information* page)
    
-   #. first migrate to 0.9.5 
-   #. then migrate to the latest version
+#. Manually migrate database::
 
-   If you try to migrate directly, the operation will fail.
+   $ cd <instance_dir>
+   $ python manage.py migrate auth
+   $ python manage.py migrate admin 0001 --fake
+   $ python manage.py migrate admin
+   $ python manage.py migrate limits 0001 --fake
+   $ python manage.py migrate relaydomains 0001 --fake
+   $ python manage.py migrate
 
-Starting with version 0.9.1, Modoboa comes as a standard django
-application. Fetch the latest version (see :ref:`get_modoboa`) and
-install it.
+#. Finally, update static files::
 
-``pip`` users, just run the following command::
+   $ python manage.py collectstatic
 
-  $ pip install --upgrade modoboa
+This version also introduces a REST API. To enable it:
 
-.. warning::
+#. Add ``'rest_framework.authtoken'`` to the ``INSTALLED_APPS`` variable
 
-   If you migrate to **1.1.0**, please follow the :ref:`dedicated migration
-   procedure <1.1.0>` and skip the usual one.
+#. Add the following configuration inside ``settings.py``::
+        
+     # Rest framework settings
 
-Then, refer to this page to check if the version you're installing
-requires specific operations. If the version you're looking for is not
-present, it means nothing special is required.
+     REST_FRAMEWORK = {
+         'DEFAULT_AUTHENTICATION_CLASSES': (
+             'rest_framework.authentication.TokenAuthentication',
+         ),
+         'DEFAULT_PERMISSION_CLASSES': (
+             'rest_framework.permissions.IsAuthenticated',
+         )
+     }
 
-Finally, follow the common procedure::
+#. Run the following command::
+
+   $ python manage.py migrate
+
+1.3.5
+=====
+
+To enhance security, Modoboa now checks the `strength of user
+passwords <https://github.com/dstufft/django-passwords>_`.
+
+To use this feature, add the following configuration into the ``settings.py`` file::
+
+  # django-passwords
+
+  PASSWORD_MIN_LENGTH = 8
+
+  PASSWORD_COMPLEXITY = {
+      "UPPER": 1,
+      "LOWER": 1,
+      "DIGITS": 1
+  }
+
+
+1.3.2
+=====
+
+Modoboa now uses the *atomic requests* mode to preserve database
+consistency (`reference
+<https://docs.djangoproject.com/en/1.7/topics/db/transactions/#tying-transactions-to-http-requests>`_).
+
+To enable it, update the ``DATABASES`` variable in ``settings.py`` as
+follows::
+
+  DATABASES = {
+      "default": {
+          # stuff before...
+          "ATOMIC_REQUESTS": True
+      },
+      "amavis": {
+          # stuff before...
+          "ATOMIC_REQUESTS": True
+      }
+  }
+
+1.3.0
+=====
+
+This release does not bring awesome new features but it is a necessary
+bridge to the future of Modoboa. All extensions now have their own git
+repository and the deploy process has been updated to reflect this
+change.
+
+Another important update is the use of Django 1.7. Besides its new
+features, the migration system has been reworked and is now more
+robust than before.
+
+Before we begin with the procedure, here is a table showing old
+extension names and their new name:
+
++----------------------------------------+--------------------------+--------------------------+
+|Old name                                |New package name          |New module name           |
++========================================+==========================+==========================+
+|modoboa.extensions.admin                |modoboa-admin             |modoboa_admin             |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.limits               |modoboa-admin-limits      |modoboa_admin_limits      |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.postfix_autoreply    |modoboa-postfix-autoreply |modoboa_postfix_autoreply |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.postfix_relay_domains|modoboa-admin-relaydomains|modoboa_admin_relaydomains|
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.radicale             |modoboa-radicale          |modoboa_radicale          |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.sievefilters         |modoboa-sievefilters      |modoboa_sievefilters      |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.stats                |modoboa-stats             |modoboa_stats             |
++----------------------------------------+--------------------------+--------------------------+
+|modoboa.extensions.webmail              |modoboa-webmail           |modoboa_webmail           |
++----------------------------------------+--------------------------+--------------------------+
+
+Here are the required steps:
+
+#. Install the extensions using pip (look at the second column in the table above)::
+
+   $ pip install <the extensions you want>
+
+#. Remove ``south`` from ``INSTALLED_APPS``
+
+#. Rename old extension names inside ``MODOBOA_APPS`` (look at the third column in the table above)
+
+#. Remove ``modoboa.lib.middleware.ExtControlMiddleware`` from ``MIDDLEWARE_CLASSES``
+
+#. Change ``DATABASE_ROUTERS`` to::
+
+    DATABASE_ROUTERS = ["modoboa_amavis.dbrouter.AmavisRouter"]
+
+#. Run the following commands::
+
+   $ cd <modoboa_instance_dir>
+   $ python manage.py migrate
+
+#. Reply ``yes`` to the question
+
+#. Run the following commands::
+
+   $ python manage.py load_initial_data
+   $ python manage.py collectstatic
+
+#. The cleanup job has been renamed in Django, so you have to modify your crontab entry::
+
+   - 0 0 * * * <modoboa_site>/manage.py cleanup
+   + 0 0 * * * <modoboa_site>/manage.py clearsessions
+
+1.2.0
+=====
+
+A new notification service let administrators know about new Modoboa
+versions. To activate it, you need to update the
+``TEMPLATE_CONTEXT_PROCESSORS`` variable like this::
+
+  from django.conf import global_settings
+  
+  TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'modoboa.core.context_processors.top_notifications',
+  )
+
+and to define the new ``MODOBOA_API_URL`` variable::
+
+  MODOBOA_API_URL = 'http://api.modoboa.org/1/'
+
+The location of external static files has changed. To use them, add a
+new path to the ``STATICFILES_DIRS``::
+
+  # Additional locations of static files
+  STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    "<path/to/modoboa/install/dir>/bower_components",
+  )
+
+Run the following commands to define the hostname of your instance::
 
   $ cd <modoboa_instance_dir>
-  $ python manage.py syncdb --migrate
-  $ python manage.py collectstatic
+  $ python manage.py set_default_site <hostname>
+
+If you plan to use the Radicale extension:
+
+#. Add ``'modoboa.extensions.radicale'`` to the ``MODOBOA_APPS`` variable
+
+#. Run the following commands::
+
+     $ cd <modoboa_instance_dir>
+     $ python manage.py syncdb
+
+.. warning::
+
+    You also have to note that the :file:`sitestatic` directory has moved from
+    ``<path to your site's dir>`` to ``<modoboa's root url>`` (it's probably
+    the parent directory). You have to adapt your web server configuration
+    to reflect this change.
+     
+1.1.7: manual learning for SpamAssassin
+=======================================
+
+A new feature allows administrators and users to manually train
+SpamAssassin in order to customize its behaviour.
+
+Check :ref:`amavis:sa_manual_learning` to know more about this feature.
 
 1.1.6: Few bugfixes
 ===================
@@ -296,356 +600,3 @@ may encounter the following issues:
    may fail. Just deactivate ``reversion`` from ``INSTALLED_APPS`` and
    run the command again. Once done, reactivate ``reversion`` and run
    the command one last time.
-
-
-0.9.4: administrative panel performance improved
-================================================
-
-#. Edit the :file:`settings.py` file and remove
-   ``'django.contrib.auth.backends.ModelBackend'`` from the
-   ``AUTHENTICATION_BACKENDS`` variable
-
-0.9.1: standard django application and more
-===========================================
-
-For this version, we recommend to install a new instance (see
-:ref:`deployment`) in a different directory.
-
-Then, copy the following content from the old installation to the new
-one:
-
-* The :file:`media` directory
-* The directory containing RRD files if you use the :ref:`stats` plugin
-
-Don't copy the old :file:`settings.py` file, just keep the new one and
-modify it (see :ref:`database` and :ref:`timezone_lang`).
-
-Migrate your database (see :ref:`latestversion`).
-
-Finally, check the :ref:`amavis_frontend`, :ref:`postfix_ar` and
-:ref:`stats` chapters (depending on those you use) because the
-provided cron scripts have been changed, you must update the way you
-call them.
-
-*********************
-Modoboa 0.9 and prior
-*********************
-
-First, decompress the new tarball at the same location than your
-current installation. Then, check if the new version you're installing
-requires a migration.
-
-0.9: global UI refactoring, new *limits* extension and more
-===========================================================
-
-.. note::
-   This version requires at least django 1.3. Make sure to update your
-   version before starting to migrate.
-
-.. note::
-   Many files have been renamed/removed for this version. I recommend
-   that you backup important files (*settings.py*, etc.) elsewhere
-   (ie. :file:`/tmp` for example). Then, remove the :file:`modoboa` directory,
-   extract the new tarball at the same place, rename the new directory
-   to :file:`modoboa` and copy the files you've just backup into it.
-
-.. note::
-   If the first super administrator you created is named ``admin``,
-   its password will be changed to ``password`` at the end of this
-   upgrade. Don't forget to modify it!
-
-#. Edit the :file:`settings.py` file and update the following variables
-   (just copy/paste their new content)::
-
-    MIDDLEWARE_CLASSES = (
-        'django.middleware.common.CommonMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.locale.LocaleMiddleware',
-        'modoboa.lib.middleware.AjaxLoginRedirect',
-        'modoboa.lib.middleware.CommonExceptionCatcher',
-        'modoboa.lib.middleware.ExtControlMiddleware',
-    )
-
-    AUTHENTICATION_BACKENDS = (
-        'modoboa.lib.authbackends.SimpleBackend',
-        'django.contrib.auth.backends.ModelBackend',
-    )
-
-#. Add ``django.contrib.staticfiles`` to ``INSTALLED_APPS``
-
-#. Add the following new variables::
-
-    STATIC_ROOT = os.path.join(MODOBOA_DIR, 'sitestatic')
-    STATIC_URL = '/sitestatic/'
-
-#. Update the following variables (just copy/paste their new values)::
-
-    MEDIA_ROOT = os.path.join(MODOBOA_DIR, 'media')
-    MEDIA_URL = '/media/'
-
-#. **For MySQL users only**, add the following option to your database
-   configuration::
-
-    DATABASES = {
-        "default" : {
-            # ...
-            # MySQL users only
-            "OPTIONS" : {
-                "init_command" : "SET foreign_key_checks = 0;",
-            },
-        }
-    }
-
-#. Add ``'modoboa.extensions.limits'`` to ``INSTALLED_APPS``
-
-#. Update your database (make sure to create a backup before launching
-   the following command)::
-
-    $ ./manage.py syncdb --migrate
-
-#. Run the following command to initialize the directory that contains
-   static files::
-
-    $ ./manage.py collectstatic
-
-#. If you are using the *stats* extension, please rename the
-   :file:`<modoboa_dir>/static/stats` directory to :file:`<modoboa_dir>/media/stats`
-   and change the value of the ``IMG_ROOTDIR`` parameter (go to the adminstration panel)
-
-#. Restart the python instance(s) that serve Modoboa
-
-#. Log into Modoboa, go to *Modoboa > Extensions*, uncheck all
-   extensions, save. Then, check the extensions you want to use and
-   save again
-
-#. Update your webserver configuration to make static files available
-   (see :ref:`webservers`)
-
-#. **For Dovecot users only**, you need to modify the
-   ``password_query`` (file :file:`/etc/dovecot/dovecot-sql.conf` by default
-   on a Debian system) like this::
-
-    password_query = SELECT email AS user, password FROM auth_user WHERE email='%u'
-
-0.8.8: CSV import feature and minor fixes
-=========================================
-
-#. Edit the :file:`settings.py` file and add
-   ``'modoboa.lib.middleware.AjaxLoginRedirect'`` to the
-   ``MIDDLEWARE_CLASSES`` variable like this::
-
-    MIDDLEWARE_CLASSES = (
-      'django.middleware.common.CommonMiddleware',
-      'django.contrib.sessions.middleware.SessionMiddleware',
-      'django.contrib.auth.middleware.AuthenticationMiddleware',
-      'django.contrib.messages.middleware.MessageMiddleware',
-      'django.middleware.locale.LocaleMiddleware',
-      'modoboa.lib.middleware.AjaxLoginRedirect',
-      'modoboa.lib.middleware.ExtControlMiddleware',
-      'modoboa.extensions.webmail.middleware.WebmailErrorMiddleware',
-    )
-
-#. Still inside :file:`settings.py`, modify the ``DATABASE_ROUTERS``
-   variable like this::
-
-    DATABASE_ROUTERS = ["modoboa.extensions.amavis_quarantine.dbrouter.AmavisRouter"]
-
-
-0.8.7: per-user language selection
-==================================
-
-#. Edit the :file:`settings.py` file and add the
-   ``'django.middleware.locale.LocaleMiddleware'`` middleware to the
-   ``MIDDLEWARE_CLASSES`` variable like this::
-
-    MIDDLEWARE_CLASSES = (
-      'django.middleware.common.CommonMiddleware',
-      'django.contrib.sessions.middleware.SessionMiddleware',
-      'django.contrib.auth.middleware.AuthenticationMiddleware',
-      'django.contrib.messages.middleware.MessageMiddleware',
-      'django.middleware.locale.LocaleMiddleware',
-      'modoboa.lib.middleware.ExtControlMiddleware',
-      'modoboa.extensions.webmail.middleware.WebmailErrorMiddleware',
-    )
-
-#. To select a custom language, go to *Options > Preferences* and
-   select the ``general`` section. Choose a value, save and disconnect
-   from Modoboa. On the next login, the desired language will be used.
-
-0.8.6.1: maintenance release
-============================
-
-#. If you have tried to create a new mailbox and if you have
-   encountered the following `issue
-   <http://dev.modoboa.org/ticket/163>`_, you must run the
-   ``dbcleanup.py`` script in order to remove orphan records::
-
-    $ cd <modoboa_dir>
-    $ PYTHONPATH=$PWD/.. DJANGO_SETTINGS_MODULE=modoboa.settings ./admin/scripts/dbcleanup.py
-
-0.8.6: Quarantine plugin refactoring (using Django's ORM)
-=========================================================
-
-#. Just update your configuration if you are using the quarantine
-   plugin. Open :file:`settings.py`, move the database configuration from
-   the ``DB_CONNECTIONS`` variable to the ``DATABASES`` variable, like
-   this::
-
-    DATABASES = {
-        "default" : {
-            # The default database configuration
-        },
-        #    ...
-        "amavis": {
-            "ENGINE" : "<your value>",
-            "HOST" : "<your value>",
-            "NAME" : "<your value>",
-            "USER" : "<your value>",
-            "PASSWORD" : "<your value>"
-        }
-    }
-
-#. Add the new following variable somewhere in the file::
-
-    DATABASE_ROUTERS = ["modoboa.extensions.amavis_quarantine.dbrouter.AmavisRouter"]
-
-#. Remove the deprecated ``DB_CONNECTIONS`` variable from :file:`settings.py`.
-
-0.8.5: new "Sieve filters" plugin, improved admin app
-=====================================================
-
-#. Migrate the ``lib`` and ``admin`` applications::
-
-    $ python manage.py migrate lib
-    $ python manage.py migrate admin
-
-#. Add ``modoboa.auth`` and ``modoboa.extensions.sievefilters`` to the
-   ``INSTALLED_APPS`` variable in :file:`settings.py`.
-
-#. Go the *Settings/Extensions* panel, deactivate and activate your
-   extensions, it will update all the symbolic links.
-
-0.8.4: folders manipulation support (webmail) and bugfixes
-==========================================================
-
-#. Update the ``MIDDLEWARE_CLASSES`` variable in :file:`settings.py`::
-
-    MIDDLEWARE_CLASSES = (
-      'django.middleware.common.CommonMiddleware',
-      'django.contrib.sessions.middleware.SessionMiddleware',
-      'django.contrib.auth.middleware.AuthenticationMiddleware',
-      'django.contrib.messages.middleware.MessageMiddleware',
-      'modoboa.lib.middleware.ExtControlMiddleware',
-      'modoboa.extensions.webmail.middleware.WebmailErrorMiddleware',
-    )
-
-#. Go the *Settings/Extensions* panel, deactivate and activate your
-   extensions, it will update all the symbolic links to the new format.
-
-#. Optional: update the ``DATABASES`` and ``TEMPLATE_LOADERS``
-   variables in :file:`settings.py` to remove warning messages (appearing with
-   Django 1.3)::
-
-    DATABASES = {
-      "default" : {
-        "ENGINE" : "<your engine>",
-        "NAME" : "modoboa",
-        "USER" : "<your user>",
-        "PASSWORD" : "<your password>",
-        "HOST" : "",
-        "PORT" : ""
-      }
-    }
-  
-    TEMPLATE_LOADERS = (
-      'django.template.loaders.filesystem.Loader',
-      'django.template.loaders.app_directories.Loader',
-    )
-
-0.8.3: admin application refactoring and more
-=============================================
-
-#. Migrate the ``admin`` application::
-
-     $ python manage.py migrate admin
-
-#. Update SQL queries used in your environment (see
-   :ref:`postfix` or :ref:`dovecot`).
-
-#. Update Postfix configuration so that it can handle domain aliases
-   (see :ref:`postfix`).
-
-
-0.8.2: ckeditor integration and more
-====================================
-
-#. Migrate the admin applicaton:: 
-
-     $ python manage.py migrate admin
-
-#. Update your config file and add all extensions to ``INSTALLED_APPS`` 
-   (even those you are not going to use).
-#. Inside the :file:`<modoboa_dir>/templates/` directory, remove all symbolic links.
-#. Download the latest release of ckeditor and extract it into :file:`<modoboa_dir>/static/js/`. It should create a new directory named ``ckeditor``.
-#. Update the following variables inside :file:`settings.py`::
-
-     MEDIA_ROOT = os.path.join(MODOBOA_DIR, 'static')
-     MEDIA_URL = '/static/'
-
-#. Then, add the following variable: ``MODOBOA_WEBPATH = 'modoboa/'``
-#. Delete the following variables: ``STATIC_ROOTDIR`` and
-   ``TEMPLATE_CONTEXT_PROCESSORS``.
-#. Finally, add ``modoboa.lib.middleware.ExtControlMiddleware`` to
-   ``MIDDLEWARE_CLASSES``.
-
-0.8.1 : project renamed
-=======================
-
-#. First, rename the ``mailng`` directory to ``modoboa`` and copy all the
-   content from ``modoboa-0.8.1`` to ``modoboa``.
-#. Edit :file:`settings.py` and replace all occurences of mailng by
-   modoboa. Make sure you don't modify the ``DATABASE`` section as you're
-   not going to rename your database.
-#. Rename the ``MAILNG_DIR`` variable to ``MODOBOA_DIR``.
-#. Add ``'django.contrib.messages.middleware.MessageMiddleware'`` to
-   ``MIDDLEWARE_CLASSES`` and ``'django.contrib.messages'`` to
-   ``INSTALLED_APPS``. Save your modifications.
-#. Run the following command::
-
-     $ python manage.py syncdb
-
-#. For all activated extensions, run the following command::
- 
-     $ export PYTHONPATH=<modoboa_dir>/..=
-     $ DJANGO_SETTINGS_MODULE=modoboa.settings <modoboa_dir>/scripts/extension.py <extension> on
-
-#. Update your webserver configuration and restart it.
-
-0.8 : SQL migration needed
-==========================
-
-Before you start the migration, make sure you have updated your
-``INSTALLED_APPS`` variable and that it contains at least::
-
-  INSTALLED_APPS = (
-     # Django's stuff before
-
-     'south',
-     'mailng',
-     'mailng.lib',
-     'mailng.admin',
-     'mailng.userprefs',
-  )
-
-Starting with 0.8, ``mailng.main`` doesn't exist anymore. You must remove
-it from your ``INSTALLED_APPS``.
-
-Finally, run the following commands::
-
-  $ python manage.py syncdb
-  $ python manage.py convert_to_south
-  $ python manage.py migrate --all 0001 --fake
-  $ python manage.py migrate --all 0002
-

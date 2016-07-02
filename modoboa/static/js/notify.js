@@ -8,10 +8,10 @@
         constructor: Notify,
 
         build_box: function(bid) {
-            if (bid == undefined) {
+            if (bid === undefined) {
                 bid = "notifybox";
             }
-            var div = $("<div class='alert' />", {
+            var div = $("<div class='alert alert-dismissible' role='alert' />", {
                 id: bid,
                 click: $.proxy(this.destroy_box, this)
             }).css({
@@ -36,7 +36,7 @@
         },
 
         set_message: function(box, value) {
-            var content = '<a class="close" data-dismiss="alert">×</a>' + value;
+            var content = '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' + value;
 
             box.html(content);
         },
@@ -50,7 +50,7 @@
             this.set_message(nbox, message);
             this.$element.append(nbox);
             this.set_position(nbox);
-            if (timer != undefined) {
+            if (timer !== undefined) {
                 window.setTimeout(function() {
                     nbox.alert('close');
                 }, timer);
@@ -67,7 +67,7 @@
         },
 
         error: function(message, timer) {
-            return this.show.apply(this, ["error", message, timer]);
+            return this.show.apply(this, ["danger", message, timer]);
         },
 
         warning: function(message, timer) {

@@ -1,16 +1,20 @@
 # coding: utf-8
 import logging
-from django.views.decorators.cache import never_cache
+
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.utils import translation
 from django.utils.translation import ugettext as _
-from modoboa.lib import events, parameters
-from modoboa.lib.webutils import _render_to_string
+from django.views.decorators.cache import never_cache
+
 from modoboa.core.forms import LoginForm
+from modoboa.lib import events
+from modoboa.lib.web_utils import _render_to_string
 
 
 def dologin(request):
+    """Try to authenticate."""
     error = None
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -19,12 +23,17 @@ def dologin(request):
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
+                nextlocation = None
+                if not user.last_login:
+                    # Redirect to profile on first login
+                    nextlocation = reverse("core:user_index")
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
 
-                request.session["django_language"] = \
-                    parameters.get_user(request.user, "LANG")
+                translation.activate(request.user.language)
+                request.session[translation.LANGUAGE_SESSION_KEY] = (
+                    request.user.language)
 
                 logger.info(
                     _("User '%s' successfully logged in" % user.username)
@@ -33,17 +42,21 @@ def dologin(request):
                                   form.cleaned_data["username"],
                                   form.cleaned_data["password"])
 
-                nextlocation = request.POST.get("next", None)
-                if nextlocation is None or nextlocation == "None":
-                    if user.group == "SimpleUsers":
-                        nextlocation = reverse("modoboa.lib.webutils.topredirection")
-                    else:
-                        nextlocation = reverse("domains")
+                if nextlocation is None:
+                    nextlocation = request.POST.get("next", None)
+                    if nextlocation is None or nextlocation == "None":
+                        if user.group == "SimpleUsers":
+                            nextlocation = reverse("topredirection")
+                        else:
+                            nextlocation = reverse("admin:domain_list")
                 return HttpResponseRedirect(nextlocation)
-            error = _("Your username and password didn't match. Please try again.")
-            logger.warning("Failed connection attempt from '%(addr)s' as user '%(user)s'" \
-                               % {"addr": request.META["REMOTE_ADDR"],
-                                  "user": form.cleaned_data["username"]})
+            error = _(
+                "Your username and password didn't match. Please try again.")
+            logger.warning(
+                "Failed connection attempt from '%(addr)s' as user '%(user)s'"
+                % {"addr": request.META["REMOTE_ADDR"],
+                   "user": form.cleaned_data["username"]}
+            )
 
         nextlocation = request.POST.get("next", None)
         httpcode = 401
@@ -68,4 +81,4 @@ def dologout(request):
         logger = logging.getLogger("modoboa.auth")
         logger.info(_("User '%s' logged out" % request.user.username))
         logout(request)
-    return HttpResponseRedirect(reverse(dologin))
+    return HttpResponseRedirect(reverse("core:login"))

@@ -1,132 +1,33 @@
-# Modoboa french translation
-# Copyright (C) 2009-2013
-# This file is distributed under the same license as the Modoboa package.
-# Antoine Nguyen <tonio@ngyn.org>, 2009-2013.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 #
+# Translators:
+# Antoine Nguyen <tonio@ngyn.org>, 2016
+# Landry MINOZA <landry.minoza@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: modoboa-1.0.0\n"
+"Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-24 12:33+0200\n"
-"PO-Revision-Date: 2011-01-07 10:00+0100\n"
+"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"PO-Revision-Date: 2016-04-27 20:14+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: FR <tonio@ngyn.org>\n"
-"Language: Français\n"
+"Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: extensions/admin/static/admin/js/admin.js:32
-msgid "Search"
-msgstr "Chercher"
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr "'"
 
-#: extensions/admin/static/admin/js/admin.js:170
-msgid "Do not delete domain directory"
-msgstr "Ne pas supprimer le répertoire du domaine"
+#: core/static/core/js/settings.js:14
+msgid "No more log entry to show"
+msgstr "Plus d'entrée de journal à afficher"
 
-#: extensions/admin/static/admin/js/admin.js:173
-msgid "This operation will remove ALL data associated to this domain."
-msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
-
-#: extensions/admin/static/admin/js/admin.js:174
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr ""
-"Cette opération supprimera toutes les données associées à ce domaine à "
-"l'excéption des comptes."
-
-#: extensions/admin/static/admin/js/admin.js:222
-msgid "No domain administrator defined"
-msgstr "Aucun administrateur de domaine défini"
-
-#: extensions/admin/static/admin/js/admin.js:291
-msgid "Do not delete mailbox directory"
-msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:180
-msgid "Release this selection?"
-msgstr "Relâcher cette sélection?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:184
-msgid "Delete this selection?"
-msgstr "Supprimer cette sélection?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:203
-#: extensions/amavis/static/amavis/js/selfservice.js:17
-msgid "Release this message?"
-msgstr "Relâcher cette message?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:207
-#: extensions/amavis/static/amavis/js/selfservice.js:21
-msgid "Delete this message?"
-msgstr "Supprimer ce message?"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:224
-msgid "View full headers"
-msgstr "Voir les entêtes complets"
-
-#: extensions/amavis/static/amavis/js/quarantine.js:229
-msgid "Hide full headers"
-msgstr "Cacher les entêtes complets"
-
-#: extensions/postfix_relay_domains/static/postfix_relay_domains/js/relay_domains.js:49
-msgid "Services updated"
-msgstr "Services mis à jour"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:14
-msgid "Remove this filter?"
-msgstr "Supprimer ce filtre?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:107
-msgid "Save changes?"
-msgstr "Enregistrer les changements?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:129
-msgid "Remove filters set?"
-msgstr "Supprimer ce jeu de filtres?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:146
-msgid "Activate this filters set?"
-msgstr "Activer ce jeu de filtres?"
-
-#: extensions/sievefilters/static/sievefilters/js/lib.js:154
-#: extensions/sievefilters/static/sievefilters/js/lib.js:203
-msgid "active"
-msgstr "actif"
-
-#: extensions/stats/static/stats/js/stats.js:37
-msgid "Search a domain"
-msgstr "Checher un domaine"
-
-#: extensions/webmail/static/webmail/js/webmail.js:491
-msgid "Remove the selected mailbox?"
-msgstr "Supprimer la boite sélectionnée?"
-
-#: extensions/webmail/static/webmail/js/webmail.js:504
-msgid "Mailbox removed"
-msgstr "Boite aux lettres supprimées"
-
-#: extensions/webmail/static/webmail/js/webmail.js:752
-msgid "Message sent"
-msgstr "Message envoyé"
-
-#: extensions/webmail/static/webmail/js/webmail.js:1003
-#, c-format
-msgid "%s file"
-msgid_plural "%s files"
-msgstr[0] "%s fichier"
-msgstr[1] "%s fichiers"
-
-#: extensions/webmail/static/webmail/js/webmail.js:1037
-#, c-format
-msgid "Moving %s message"
-msgid_plural "Moving %s messages"
-msgstr[0] "Déplacement de %s message"
-msgstr[1] "Déplacement de %s messages"
-
-#: static/js/confirmation.js:50
+#: static/js/confirmation.js:44
 msgid "Warning"
 msgstr "Avertissement"
 
@@ -134,10 +35,18 @@ msgstr "Avertissement"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: static/js/global.js:314
+#: static/js/global.js:339
 msgid "Internal error"
 msgstr "Erreur interne"
 
-#: static/js/searchbar.js:20
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr "Plus d'entrée à afficher"
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "Chercher"
+
+#: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Chercher..."
