@@ -1,0 +1,5 @@
+{% load lib_tags %}
+
+<div id="{{ id }}" rel="tooltip" title="{{ value }}%" class="progress">
+  <div class="{% progress_color value %}" style="width: {{ value }%"></div>
+</div>

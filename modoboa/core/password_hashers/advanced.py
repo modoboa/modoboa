@@ -7,6 +7,7 @@ from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
 from modoboa.core.password_hashers.base import PasswordHasher
 from modoboa.lib import parameters
 
+
 class BLFCRYPTHasher(PasswordHasher):
     """
     BLF-CRYPT password hasher.
@@ -25,7 +26,7 @@ class BLFCRYPTHasher(PasswordHasher):
         # Using the parameter for rounds will generate the error
         # ValueError: rounds too high (bcrypt requires <= 31 rounds)
         # when using the bcrypt hasher.
-        #rounds = int(parameters.get_admin('ROUNDS_NUMBER'))
+        # rounds = int(parameters.get_admin('ROUNDS_NUMBER'))
         # To get around this, I use the default of 12.
         rounds = 12
         return bcrypt.encrypt(clearvalue, rounds=rounds)

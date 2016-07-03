@@ -1,5 +1,7 @@
 {% extends "common/generic_modal.html" %}
+
 {% load i18n form_tags %}
+
 {% block modalbody %}
   <form id="{{ formid }}" class="form-horizontal" action="{{ action }}" method="POST">{% csrf_token %}
     <ul class="nav nav-pills" role="tablist">

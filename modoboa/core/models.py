@@ -2,16 +2,18 @@
 
 import re
 
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from django.contrib.auth.hashers import make_password, is_password_usable
 from django.contrib.auth.models import (
     UserManager, Group, PermissionsMixin
 )
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.db import models
-from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible, smart_text
-from django.utils.translation import ugettext as _, ugettext_lazy
 
 import jsonfield
 from reversion import revisions as reversion
@@ -208,6 +210,10 @@ class User(PermissionsMixin):
     def has_usable_password(self):
         return is_password_usable(self.password)
 
+    def get_absolute_url(self):
+        """Return detail url for this user."""
+        return reverse("admin:account_detail", args=[self.pk])
+
     @property
     def tags(self):
         return [{"name": "account", "label": _("account"), "type": "idt"},
@@ -314,12 +320,16 @@ class User(PermissionsMixin):
     @property
     def role(self):
         """Return user role."""
-        if self.is_superuser:
-            return "SuperAdmins"
-        try:
-            return self.groups.all()[0].name
-        except IndexError:
-            return "---"
+        if not hasattr(self, "_role"):
+            self._role = None
+        if self._role is None:
+            if self.is_superuser:
+                self._role = "SuperAdmins"
+            try:
+                self._role = self.groups.all()[0].name
+            except IndexError:
+                self._role = "---"
+        return self._role
 
     @role.setter
     def role(self, role):
@@ -345,6 +355,7 @@ class User(PermissionsMixin):
                 from modoboa.lib.permissions import grant_access_to_object
                 grant_access_to_object(self, self)
         self.save()
+        self._role = role
 
     def post_create(self, creator):
         """Grant permission on this user to creator."""

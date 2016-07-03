@@ -1,5 +1,6 @@
 """General event callbacks."""
 
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
 from modoboa.lib import events, parameters
@@ -10,8 +11,6 @@ from . import utils
 
 @events.observe("ExtraAdminContent")
 def display_pool_usage(user, target, currentpage):
-    from django.template.loader import render_to_string
-
     condition = (
         parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
         target != "leftcol" or user.is_superuser)
@@ -103,11 +102,12 @@ def fill_account_instances(user, account, instances):
 
 @events.observe("GetStaticContent")
 def get_static_content(caller, st_type, user):
-    if parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no":
-        return []
-    if caller not in ['domains', 'identities']:
-        return []
-    if user.group == "SimpleUsers":
+    condition = (
+        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        caller not in ["domains", "identities"] or
+        user.role in ["SuperAdmins", "SimpleUsers"]
+    )
+    if condition:
         return []
     if st_type == "css":
         return ["""<style>

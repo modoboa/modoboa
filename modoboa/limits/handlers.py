@@ -76,8 +76,27 @@ def display_domain_limits(sender, user, domain, **kwargs):
         return []
     return [{
         "column": "right",
-        "template": "limits/domain_resources_widget.html",
+        "template": "limits/resources_widget.html",
         "context": {
             "limits": domain.domainobjectlimit_set.all()
+        }
+    }]
+
+
+@receiver(admin_signals.extra_account_dashboard_widgets)
+def display_admin_limits(sender, user, account, **kwargs):
+    """Display resources usage for admin."""
+    condition = (
+        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "yes" and
+        account.role in ["DomainAdmins", "Resellers"]
+    )
+    if not condition:
+        return []
+    return [{
+        "column": "right",
+        "template": "limits/resources_widget.html",
+        "context": {
+            "limits": (
+                account.userobjectlimit_set.select_related("content_type"))
         }
     }]

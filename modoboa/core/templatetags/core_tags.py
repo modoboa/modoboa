@@ -26,7 +26,6 @@ def core_menu(selection, user):
              "label": _("Modoboa"),
              "url": reverse("core:index")}
         ]
-
     if not len(entries):
         return ""
     return render_to_string("common/menulist.html", {

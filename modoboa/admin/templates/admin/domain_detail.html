@@ -12,13 +12,13 @@
 {% endblock %}
 
 {% block apparea %}
-  <h2>{{ object }} <small>{% trans "Overview" %}</small></h2>
+  <h2>{{ object }} {% if not object.enabled %} <small>{% trans "(disabled)" %}</small>{% endif %}</h2>
   <hr>
 
   <div class="col-xs-12 col-sm-6">
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">{% trans "Information" %}</h3>
+        <h3 class="panel-title">{% trans "Summary" %}</h3>
       </div>
       <div class="panel-body">
         <div class="row">
@@ -35,12 +35,21 @@
       </div>
     </div>
 
-    {% for template in templates.left %}
-      <div class="panel panel-info">
-        <div class="panel-body">
-          {% include template %}
-        </div>
+    {% if object.domainalias_set.exists %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">{% trans "Domain aliases" %}</h3>
       </div>
+      <table class="table">
+        {% for domainalias in object.domainalias_set.all %}
+          <tr><td>{{ domainalias }}</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endif %}
+
+    {% for template in templates.left %}
+      {% include template %}
     {% endfor %}
   </div>
 
@@ -54,7 +63,11 @@
             <tr>
               <td>{{ da.username }}</td>
               <td>{{ da.fullname }}</td>
-              <td name="actions">{% if perms.admin.change_domain %}{% domadmin_actions da.id domain.id %}{% endif %}</td>
+              <td name="actions">
+                {% if perms.admin.change_domain %}
+                  <a name="removeperm" href="{% url 'admin:permission_remove' %}?domid={{ domain.id }}&daid={{ da.id }}" title="{% trans 'Remove this permission' %}"><span class="fa fa-trash"></span></a>
+                {% endif %}
+              </td>
             </tr>
           {% empty %}
             <tr><td colspan="3">{% trans "No domain administrator defined yet." %}</td></tr>
