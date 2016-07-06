@@ -40,10 +40,10 @@
           <tr>
             <th>{% trans "Phone number" %}</th><td>{{ object.phone_number|default:_("Not defined") }}</td>
           </tr>
-          {% if user.mailbox %}
+          {% if object.mailbox %}
             <tr>
               <th>{% trans "Quota" %}</th>
-              <td>{% include "common/progressbar.html" with id='quotabar' value=user.mailbox.get_quota_in_percent %}</td>
+              <td>{% include "common/progressbar.html" with id='quotabar' value=object.mailbox.get_quota_in_percent %}</td>
             </tr>
           {% endif %}
         </table>
@@ -69,13 +69,13 @@
       {% endfor %}
     </div>
     <div class="col-sm-6">
-      {% if user.mailbox %}
+      {% if object.mailbox %}
         <div class="panel panel-info">
           <div class="panel-heading">
             <h3 class="panel-title">{% trans "Aliases" %}</h3>
           </div>
           <table class="table">
-            {% for alias in user.mailbox.alias_addresses %}
+            {% for alias in object.mailbox.alias_addresses %}
               <tr><td>{{ alias }}</td></tr>
             {% empty %}
               <tr><td>{% trans "No alias defined" %}</td></tr>

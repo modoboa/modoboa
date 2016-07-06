@@ -48,9 +48,6 @@ urlpatterns += patterns(
 urlpatterns += patterns(
     'modoboa.admin.views.alias',
 
-    url(r'^distriblists/new/$', 'newdlist', name="dlist_add"),
-    url(r'^forwards/new/$', 'newforward', name="forward_add"),
-
     url(r'^aliases/new/$', 'newalias', name="alias_add"),
     url(r'^aliases/(?P<pk>\d+)/$', views.AliasDetailView.as_view(),
         name="alias_detail"),

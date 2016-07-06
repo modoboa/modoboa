@@ -254,10 +254,10 @@ History.prototype = {
     check: function() {
         var rawhash = this.get_raw_hash();
 
-        if (this.serialized == rawhash && this.force === undefined) {
+        if (this.serialized === rawhash && this.force === undefined) {
             return;
         }
-        delete(this.force);
+        delete this.force;
         this.from_string(rawhash);
 
         if (!this.serialized) {

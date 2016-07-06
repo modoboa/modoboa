@@ -1,6 +1,4 @@
-"""
-Admin extension tags.
-"""
+"""Admin extension tags."""
 
 from django import template
 from django.core.urlresolvers import reverse
@@ -107,30 +105,6 @@ def identities_menu(user, selection=None, ajax_mode=True):
          "img": "fa fa-hdd-o",
          "class": nav_classes,
          "url": quota_list_url},
-        {"name": "newaccount",
-         "label": _("Add account"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.newaccount_cb",
-         "url": reverse("admin:account_add")},
-        {"name": "newalias",
-         "label": _("Add alias"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:alias_add")},
-        {"name": "newforward",
-         "label": _("Add forward"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:forward_add")},
-        {"name": "newdlist",
-         "label": _("Add distribution list"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:dlist_add")},
         {"name": "import",
          "label": _("Import"),
          "img": "fa fa-folder-open",
@@ -142,8 +116,7 @@ def identities_menu(user, selection=None, ajax_mode=True):
          "img": "fa fa-share-alt",
          "url": reverse("admin:identity_export"),
          "modal": True,
-         "modalcb": "admin.exportform_cb"
-         }
+         "modalcb": "admin.exportform_cb"}
     ]
 
     return render_to_string('common/menulist.html', {

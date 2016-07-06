@@ -65,31 +65,10 @@ def _new_alias(request, title, action, successmsg,
 @login_required
 @permission_required("admin.add_alias")
 @reversion.create_revision()
-def newdlist(request):
-    return _new_alias(
-        request, _("New distribution list"),
-        reverse("admin:dlist_add"),
-        _("Distribution list created")
-    )
-
-
-@login_required
-@permission_required("admin.add_alias")
-@reversion.create_revision()
 def newalias(request):
     return _new_alias(
         request, _("New alias"), reverse("admin:alias_add"),
         _("Alias created")
-    )
-
-
-@login_required
-@permission_required("admin.add_alias")
-@reversion.create_revision()
-def newforward(request):
-    return _new_alias(
-        request, _("New forward"), reverse("admin:forward_add"),
-        _("Forward created")
     )
 
 
