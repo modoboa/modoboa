@@ -305,7 +305,7 @@ class PermissionsTestCase(ModoTestCase):
             recipients_1="user@test2.com",
             enabled=True
         )
-        self.ajax_post(reverse("admin:dlist_add"), values)
+        self.ajax_post(reverse("admin:alias_add"), values)
 
     def test_domainadmin_master_user(self):
         """Check domain administrator is not allowed to access this feature."""

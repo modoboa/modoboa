@@ -55,7 +55,7 @@ class AliasTestCase(ModoTestCase):
             "enabled": True
         }
         self.ajax_post(
-            reverse("admin:dlist_add"), values
+            reverse("admin:alias_add"), values
         )
         alias = Alias.objects.get(address="badalias@test.com")
         self.assertEqual(alias.recipients_count, 1)
@@ -132,7 +132,7 @@ class AliasTestCase(ModoTestCase):
                       recipients_2="ext@titi.com",
                       enabled=True)
         self.ajax_post(
-            reverse("admin:dlist_add"), values
+            reverse("admin:alias_add"), values
         )
         user = User.objects.get(username="user@test.com")
         mb = user.mailbox
@@ -164,7 +164,7 @@ class AliasTestCase(ModoTestCase):
     def test_forward(self):
         values = dict(address="forward2@test.com", recipients="rcpt@dest.com")
         self.ajax_post(
-            reverse("admin:forward_add"), values
+            reverse("admin:alias_add"), values
         )
         fwd = Alias.objects.get(address="forward2@test.com")
         self.assertEqual(fwd.recipients_count, 1)
@@ -187,7 +187,7 @@ class AliasTestCase(ModoTestCase):
     def test_forward_and_local_copies(self):
         values = dict(address="user@test.com", recipients="rcpt@dest.com")
         self.ajax_post(
-            reverse("admin:forward_add"), values
+            reverse("admin:alias_add"), values
         )
         fwd = Alias.objects.get(address="user@test.com", internal=False)
         self.assertEqual(fwd.recipients_count, 1)
@@ -211,18 +211,21 @@ class AliasTestCase(ModoTestCase):
             "enabled": True
         }
         self.ajax_post(
-            reverse("admin:dlist_add"), values
+            reverse("admin:alias_add"), values
         )
 
     def test_distribution_list_deletion_on_user_update_bug(self):
-        """This test demonstrates an issue with distribution list being deleted 
-           when one of the users which belong to that list is changed."""
+        """This test demonstrates an issue with distribution list being
+           deleted when one of the users which belong to that list is
+           changed.
+
+        """
         values = dict(address="list@test.com",
                       recipients="user@test.com",
                       recipients_1="admin@test.com",
                       enabled=True)
         self.ajax_post(
-            reverse("admin:dlist_add"), values
+            reverse("admin:alias_add"), values
         )
 
         user = User.objects.get(username="user@test.com")
