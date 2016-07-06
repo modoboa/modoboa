@@ -61,7 +61,7 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
                 return tpl
         return None
 
-    @cached_property
+    @property
     def current_value(self):
         """Return the current number of objects."""
         if "extra_filters" not in self.definition:
@@ -118,7 +118,7 @@ class DomainObjectLimit(ObjectLimitMixin, models.Model):
                 return tpl
         return None
 
-    @cached_property
+    @property
     def current_value(self):
         """Return the current number of objects."""
         definition = self.definition
