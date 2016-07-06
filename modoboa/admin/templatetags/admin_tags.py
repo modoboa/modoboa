@@ -88,22 +88,24 @@ def identities_menu(user, selection=None, ajax_mode=True):
     :rtype: str
     :return: the rendered menu
     """
+    nav_classes = "navigation"
     if ajax_mode:
         identity_list_url = "list/"
-        quota_list_url = "quota/"
+        quota_list_url = "quotas/"
+        nav_classes += " ajaxnav"
     else:
         identity_list_url = reverse("admin:identity_list")
-        quota_list_url = reverse("admin:quota_list")
+        quota_list_url = identity_list_url + "#quotas/"
     entries = [
         {"name": "identities",
          "label": _("List identities"),
          "img": "fa fa-user",
-         "class": "ajaxnav navigation",
+         "class": nav_classes,
          "url": identity_list_url},
         {"name": "quotas",
          "label": _("List quotas"),
          "img": "fa fa-hdd-o",
-         "class": "ajaxnav navigation",
+         "class": nav_classes,
          "url": quota_list_url},
         {"name": "newaccount",
          "label": _("Add account"),
