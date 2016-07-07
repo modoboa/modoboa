@@ -336,6 +336,26 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         account.refresh_from_db()
         self.assertEqual(account.email, account.mailbox.full_address)
+        self.assertTrue(account.check_password("Toto1234"))
+
+        del data["password"]
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        account.refresh_from_db()
+        self.assertTrue(account.check_password("Toto1234"))
+
+    def test_patch_account(self):
+        """Try to patch an account."""
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("external_api:account-detail", args=[account.pk])
+        data = {
+            "username": "fromapi@test.com",
+            "mailbox": {
+                "full_address": "fromapi@test.com",
+            }
+        }
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, 405)
 
     def test_update_domain_admin_account(self):
         """Try to change administered domains."""

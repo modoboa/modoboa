@@ -21,6 +21,7 @@ class DomainViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainSerializer
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -36,6 +37,7 @@ class DomainAliasViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainAliasSerializer
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -50,6 +52,7 @@ class AccountViewSet(viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_serializer_class(self):
         """Return a serializer."""
@@ -142,6 +145,7 @@ class AliasViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.AliasSerializer
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""

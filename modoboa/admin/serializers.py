@@ -169,6 +169,8 @@ class WritableAccountSerializer(AccountSerializer):
             choices=permissions.get_account_roles(user))
         self.fields["domains"] = serializers.ListField(
             child=serializers.CharField(), allow_empty=False, required=False)
+        if request.method == "PUT":
+            self.fields["password"].required = False
 
     def validate_password(self, value):
         """Check password constraints."""
@@ -270,11 +272,12 @@ class WritableAccountSerializer(AccountSerializer):
     def update(self, instance, validated_data):
         """Update account and associated objects."""
         mailbox_data = validated_data.pop("mailbox")
-        password = validated_data.pop("password")
+        password = validated_data.pop("password", None)
         domains = validated_data.pop("domains", [])
         for key, value in validated_data.items():
             setattr(instance, key, value)
-        instance.set_password(password)
+        if password:
+            instance.set_password(password)
         instance.save()
         if mailbox_data:
             creator = self.context["request"].user
