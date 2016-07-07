@@ -1,12 +1,15 @@
 """Alias related views."""
 
-from django.contrib.auth.decorators import (
-    login_required, permission_required
-)
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.utils.translation import ugettext as _, ungettext
+from django.views import generic
+
+from django.contrib.auth import mixins as auth_mixins
+from django.contrib.auth.decorators import (
+    login_required, permission_required
+)
 
 from reversion import revisions as reversion
 
@@ -62,31 +65,10 @@ def _new_alias(request, title, action, successmsg,
 @login_required
 @permission_required("admin.add_alias")
 @reversion.create_revision()
-def newdlist(request):
-    return _new_alias(
-        request, _("New distribution list"),
-        reverse("admin:dlist_add"),
-        _("Distribution list created")
-    )
-
-
-@login_required
-@permission_required("admin.add_alias")
-@reversion.create_revision()
 def newalias(request):
     return _new_alias(
         request, _("New alias"), reverse("admin:alias_add"),
         _("Alias created")
-    )
-
-
-@login_required
-@permission_required("admin.add_alias")
-@reversion.create_revision()
-def newforward(request):
-    return _new_alias(
-        request, _("New forward"), reverse("admin:forward_add"),
-        _("Forward created")
     )
 
 
@@ -140,3 +122,24 @@ def delalias(request):
 
     msg = ungettext(msg, msgs, len(selection))
     return render_to_json_response(msg)
+
+
+class AliasDetailView(
+        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+    """DetailView for Alias."""
+
+    model = Alias
+    permission_required = "admin.add_alias"
+
+    def has_permission(self):
+        """Check object-level access."""
+        result = super(AliasDetailView, self).has_permission()
+        if not result:
+            return result
+        return self.request.user.can_access(self.get_object())
+
+    def get_context_data(self, **kwargs):
+        """Add information to context."""
+        context = super(AliasDetailView, self).get_context_data(**kwargs)
+        context["selection"] = "identities"
+        return context

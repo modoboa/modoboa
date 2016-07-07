@@ -1,6 +1,4 @@
-"""
-Admin extension tags.
-"""
+"""Admin extension tags."""
 
 from django import template
 from django.core.urlresolvers import reverse
@@ -81,48 +79,32 @@ def domains_menu(selection, user, ajax_mode=True):
 
 
 @register.simple_tag
-def identities_menu(user, selection=None):
+def identities_menu(user, selection=None, ajax_mode=True):
     """Menu specific to the Identities page.
 
     :param ``User`` user: the connecter user
     :rtype: str
     :return: the rendered menu
     """
+    nav_classes = "navigation"
+    if ajax_mode:
+        identity_list_url = "list/"
+        quota_list_url = "quotas/"
+        nav_classes += " ajaxnav"
+    else:
+        identity_list_url = reverse("admin:identity_list")
+        quota_list_url = identity_list_url + "#quotas/"
     entries = [
         {"name": "identities",
          "label": _("List identities"),
          "img": "fa fa-user",
-         "class": "ajaxnav navigation",
-         "url": "list/"},
+         "class": nav_classes,
+         "url": identity_list_url},
         {"name": "quotas",
          "label": _("List quotas"),
          "img": "fa fa-hdd-o",
-         "class": "ajaxnav navigation",
-         "url": "quotas/"},
-        {"name": "newaccount",
-         "label": _("Add account"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.newaccount_cb",
-         "url": reverse("admin:account_add")},
-        {"name": "newalias",
-         "label": _("Add alias"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:alias_add")},
-        {"name": "newforward",
-         "label": _("Add forward"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:forward_add")},
-        {"name": "newdlist",
-         "label": _("Add distribution list"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:dlist_add")},
+         "class": nav_classes,
+         "url": quota_list_url},
         {"name": "import",
          "label": _("Import"),
          "img": "fa fa-folder-open",
@@ -134,8 +116,7 @@ def identities_menu(user, selection=None):
          "img": "fa fa-share-alt",
          "url": reverse("admin:identity_export"),
          "modal": True,
-         "modalcb": "admin.exportform_cb"
-         }
+         "modalcb": "admin.exportform_cb"}
     ]
 
     return render_to_string('common/menulist.html', {
@@ -185,7 +166,17 @@ def identity_actions(user, ident):
     objid = ident.id
     if name == "User":
         actions = events.raiseQueryEvent("ExtraAccountActions", ident)
+        url = (
+            reverse("admin:account_change", args=[objid]) +
+            "?active_tab=default"
+        )
         actions += [
+            {"name": "changeaccount",
+             "url": url,
+             "img": "fa fa-edit",
+             "modal": True,
+             "modalcb": "admin.editaccount_cb",
+             "title": _("Edit {}").format(ident.username)},
             {"name": "delaccount",
              "url": reverse("admin:account_delete", args=[objid]),
              "img": "fa fa-trash",
@@ -193,6 +184,12 @@ def identity_actions(user, ident):
         ]
     else:
         actions = [
+            {"name": "changealias",
+             "url": reverse("admin:alias_change", args=[objid]),
+             "img": "fa fa-edit",
+             "modal": True,
+             "modalcb": "admin.aliasform_cb",
+             "title": _("Edit {}").format(ident)},
             {"name": "delalias",
              "url": "{}?selection={}".format(
                  reverse("admin:alias_delete"), objid),
@@ -214,20 +211,6 @@ def check_identity_status(identity):
     elif not identity.enabled or not identity.domain.enabled:
         return False
     return True
-
-
-@register.simple_tag
-def domain_modify_link(domain):
-    linkdef = {"label": domain.name, "modal": True}
-    if domain.__class__.__name__ == "Domain":
-        linkdef["url"] = reverse(
-            "admin:domain_change", args=[domain.id])
-        linkdef["modalcb"] = "admin.domainform_cb"
-    else:
-        tmp = events.raiseDictEvent('GetDomainModifyLink', domain)
-        for key in ['url', 'modalcb']:
-            linkdef[key] = tmp[key]
-    return render_link(linkdef)
 
 
 @register.simple_tag

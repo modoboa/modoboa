@@ -155,7 +155,7 @@ class DomainTestCase(ModoTestCase):
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Information", response.content)
+        self.assertIn("Summary", response.content)
         self.assertIn("Administrators", response.content)
         self.assertNotIn("Resources usage", response.content)
         parameters.save_admin(

@@ -1,5 +1,6 @@
 """Models related to aliases management."""
 
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -83,6 +84,10 @@ class Alias(AdminObject):
         }
         altype = self.type
         return [{"name": altype, "label": labels[altype], "type": "idt"}]
+
+    def get_absolute_url(self):
+        """Return detail url for this alias."""
+        return reverse("admin:alias_detail", args=[self.pk])
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object

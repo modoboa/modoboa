@@ -37,20 +37,21 @@ urlpatterns += patterns(
 
     url(r'^accounts/list/$', 'accounts_list', name="account_list"),
     url(r'^accounts/new/$', 'newaccount', name="account_add"),
-    url(r'^accounts/edit/(?P<accountid>\d+)/$', 'editaccount',
+    url(r'^accounts/(?P<pk>\d+)/$', views.AccountDetailView.as_view(),
+        name="account_detail"),
+    url(r'^accounts/(?P<pk>\d+)/edit/$', 'editaccount',
         name="account_change"),
-    url(r'^accounts/delete/(?P<accountid>\d+)/$', 'delaccount',
+    url(r'^accounts/(?P<pk>\d+)/delete/$', 'delaccount',
         name="account_delete"),
 )
 
 urlpatterns += patterns(
     'modoboa.admin.views.alias',
 
-    url(r'^distriblists/new/$', 'newdlist', name="dlist_add"),
-    url(r'^forwards/new/$', 'newforward', name="forward_add"),
-
     url(r'^aliases/new/$', 'newalias', name="alias_add"),
-    url(r'^aliases/edit/(?P<alid>\d+)/$', 'editalias', name="alias_change"),
+    url(r'^aliases/(?P<pk>\d+)/$', views.AliasDetailView.as_view(),
+        name="alias_detail"),
+    url(r'^aliases/(?P<alid>\d+)/edit/$', 'editalias', name="alias_change"),
     url(r'^aliases/delete/$', 'delalias', name="alias_delete"),
 )
 

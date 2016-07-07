@@ -1,11 +1,14 @@
 """Identity related views."""
 
+from django.shortcuts import render
+from django.utils.translation import ugettext as _, ungettext
+from django.views import generic
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.shortcuts import render
-from django.utils.translation import ugettext as _, ungettext
-from django.views.decorators.csrf import ensure_csrf_cookie
 
 from reversion import revisions as reversion
 
@@ -24,6 +27,7 @@ from modoboa.lib.web_utils import (
 from ..forms import AccountForm, AccountWizard
 from ..lib import get_identities
 from ..models import Mailbox, Domain
+from .. import signals
 
 
 @login_required
@@ -170,8 +174,8 @@ def newaccount(request):
 @login_required
 @permission_required("core.change_user")
 @reversion.create_revision()
-def editaccount(request, accountid, tplname="common/tabforms.html"):
-    account = User.objects.get(pk=accountid)
+def editaccount(request, pk, tplname="common/tabforms.html"):
+    account = User.objects.get(pk=pk)
     if not request.user.can_access(account):
         raise PermDeniedException
     mb = account.mailbox if hasattr(account, "mailbox") else None
@@ -183,9 +187,9 @@ def editaccount(request, accountid, tplname="common/tabforms.html"):
 
 @login_required
 @permission_required("core.delete_user")
-def delaccount(request, accountid):
+def delaccount(request, pk):
     keepdir = True if request.POST.get("keepdir", "false") == "true" else False
-    User.objects.get(pk=accountid).delete(request.user, keep_mb_dir=keepdir)
+    User.objects.get(pk=pk).delete(request.user, keep_mb_dir=keepdir)
     return render_to_json_response(
         ungettext("Account deleted", "Accounts deleted", 1)
     )
@@ -208,3 +212,36 @@ def remove_permission(request):
         raise PermDeniedException
     domain.remove_admin(account)
     return render_to_json_response({})
+
+
+class AccountDetailView(
+        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+    """DetailView for Account."""
+
+    model = User
+    permission_required = "core.add_user"
+    template_name = "admin/account_detail.html"
+
+    def has_permission(self):
+        """Check object-level access."""
+        result = super(AccountDetailView, self).has_permission()
+        if not result:
+            return result
+        return self.request.user.can_access(self.get_object())
+
+    def get_context_data(self, **kwargs):
+        """Add information to context."""
+        context = super(AccountDetailView, self).get_context_data(**kwargs)
+        del context["user"]
+        result = signals.extra_account_dashboard_widgets.send(
+            self.__class__, user=self.request.user, account=self.object)
+        context["templates"] = {"left": [], "right": []}
+        for receiver, widgets in result:
+            for widget in widgets:
+                context["templates"][widget["column"]].append(
+                    widget["template"])
+                context.update(widget["context"])
+        if self.object.role in ["Resellers", "DomainAdmins"]:
+            context["domains"] = Domain.objects.get_for_admin(self.object)
+        context["selection"] = "identities"
+        return context

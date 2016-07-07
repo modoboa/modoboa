@@ -5,6 +5,7 @@
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 
 from modoboa.core import models as core_models
@@ -79,7 +80,7 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
         """Return display name."""
         return self.definition["label"]
 
-    @property
+    @cached_property
     def usage(self):
         """Return current limit usage in %."""
         if self.max_value < 0:

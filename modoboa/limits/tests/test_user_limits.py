@@ -48,6 +48,8 @@ class ResourceTestCase(lib_tests.ModoTestCase):
     def setUpTestData(cls):
         """Custom setUpTestData method."""
         super(ResourceTestCase, cls).setUpTestData()
+        parameters.save_admin("ENABLE_ADMIN_LIMITS", "yes")
+        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "no")
         for name, tpl in utils.get_user_limit_templates():
             parameters.save_admin(
                 "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2,

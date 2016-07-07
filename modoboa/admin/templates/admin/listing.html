@@ -30,7 +30,10 @@ var admin;
   <div class="col-sm-5">
     {% include "admin/searchform.html" %}
   </div>
-  <div id="taglist" class="col-sm-5"> </div>
+  <div class="col-sm-3">
+    {% block toolbar_right %}{% endblock %}
+  </div>
+  <div id="taglist" class="col-sm-4"> </div>
 </div>
 
 <div id="listing">
