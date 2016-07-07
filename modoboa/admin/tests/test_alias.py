@@ -236,4 +236,14 @@ class AliasTestCase(ModoTestCase):
         )
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
 
-        self.assertEqual(Alias.objects.filter(address="list@test.com").count(), 1)
+        self.assertEqual(
+            Alias.objects.filter(address="list@test.com").count(), 1)
+
+    def test_alias_detail_view(self):
+        """Test alias detail view."""
+        account = Alias.objects.get(address="postmaster@test.com")
+        url = reverse("admin:alias_detail", args=[account.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Summary", response.content)
+        self.assertIn("Recipients", response.content)

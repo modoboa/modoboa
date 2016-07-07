@@ -154,6 +154,22 @@ class AccountTestCase(ModoTestCase):
             reverse("admin:account_add"), values, status=400
         )
 
+    def test_account_detail_view(self):
+        """Test account detail view."""
+        parameters.save_admin(
+            "ENABLE_ADMIN_LIMITS", "no", app="limits")
+        account = User.objects.get(username="admin@test.com")
+        url = reverse("admin:account_detail", args=[account.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Summary", response.content)
+        self.assertIn("Administered domains", response.content)
+        self.assertNotIn("Resources usage", response.content)
+        parameters.save_admin(
+            "ENABLE_ADMIN_LIMITS", "yes", app="limits")
+        response = self.client.get(url)
+        self.assertIn("Resources usage", response.content)
+
 
 @override_settings(AUTHENTICATION_BACKENDS=(
     'modoboa.lib.authbackends.LDAPBackend',
