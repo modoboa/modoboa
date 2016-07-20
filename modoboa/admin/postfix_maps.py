@@ -52,17 +52,17 @@ class AliasesMap(object):
     mysql = (
         "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND al.address='%s'"
+        "WHERE al.enabled=1 AND al.address='%s' AND al.expire_at>now()"
     )
     postgres = (
         "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
-        "WHERE al.enabled AND al.address='%s'"
+        "WHERE al.enabled AND al.address='%s' AND al.expire_at>now()"
     )
     sqlite = (
         "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND al.address='%s'"
+        "WHERE al.enabled=1 AND al.address='%s' AND al.expire_at>now()"
     )
 
 

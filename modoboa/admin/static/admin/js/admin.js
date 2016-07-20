@@ -552,6 +552,15 @@ Identities.prototype = {
     },
 
     aliasform_cb: function() {
+        $("#id_random_address").click(function(evt) {
+            if ($(this).prop("checked")) {
+                $("#id_address").parents(".form-group").hide();
+                $("#id_domain").parents(".form-group").show();
+            } else {
+                $("#id_address").parents(".form-group").show();
+                $("#id_domain").parents(".form-group").hide();
+            }
+        });
         $("#id_address").autocompleter({
             from_character: "@",
             choices: $.proxy(this.get_domain_list, this)
@@ -564,6 +573,9 @@ Identities.prototype = {
                 $input.parents(".form-group").remove();
                 return true;
             }
+        });
+        $("#id_expire_at").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
         });
         $(".submit").on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {
