@@ -228,6 +228,10 @@ class AliasTestCase(ModoTestCase):
         self.ajax_post(reverse("admin:alias_add"), values)
         self.assertEqual(Alias.objects.count(), alias_count + 1)
 
+        del values["domain"]
+        content = self.ajax_post(reverse("admin:alias_add"), values, 400)
+        self.assertIn("domain", content["form_errors"])
+
     def test_distribution_list_deletion_on_user_update_bug(self):
         """This test demonstrates an issue with distribution list being
            deleted when one of the users which belong to that list is

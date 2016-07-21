@@ -56,7 +56,7 @@ class Alias(AdminObject):
         return smart_text(self.address)
 
     @classmethod
-    def generate_random_address(self):
+    def generate_random_address(cls):
         """Generate a random address (local part)."""
         m = hashlib.md5()
         for x in random.sample(xrange(10000000), 60):
