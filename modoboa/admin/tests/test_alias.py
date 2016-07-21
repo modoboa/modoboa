@@ -8,7 +8,7 @@ from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
-from ..models import Alias, AliasRecipient
+from ..models import Alias, AliasRecipient, Domain
 
 
 class AliasTestCase(ModoTestCase):
@@ -126,11 +126,13 @@ class AliasTestCase(ModoTestCase):
         )
 
     def test_dlist(self):
-        values = dict(address="all@test.com",
-                      recipients="user@test.com",
-                      recipients_1="admin@test.com",
-                      recipients_2="ext@titi.com",
-                      enabled=True)
+        values = {
+            "address": "all@test.com",
+            "recipients": "user@test.com",
+            "recipients_1": "admin@test.com",
+            "recipients_2": "ext@titi.com",
+            "enabled": True
+        }
         self.ajax_post(
             reverse("admin:alias_add"), values
         )
@@ -213,6 +215,22 @@ class AliasTestCase(ModoTestCase):
         self.ajax_post(
             reverse("admin:alias_add"), values
         )
+
+    def test_random_alias(self):
+        """Test creation of a random alias."""
+        alias_count = Alias.objects.count()
+        values = {
+            "random_address": True,
+            "domain": Domain.objects.get(name="test.com").pk,
+            "recipients": "user@test.com",
+            "enabled": True
+        }
+        self.ajax_post(reverse("admin:alias_add"), values)
+        self.assertEqual(Alias.objects.count(), alias_count + 1)
+
+        del values["domain"]
+        content = self.ajax_post(reverse("admin:alias_add"), values, 400)
+        self.assertIn("domain", content["form_errors"])
 
     def test_distribution_list_deletion_on_user_update_bug(self):
         """This test demonstrates an issue with distribution list being

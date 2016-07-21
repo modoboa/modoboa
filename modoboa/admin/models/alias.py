@@ -1,5 +1,8 @@
 """Models related to aliases management."""
 
+import hashlib
+import random
+
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible, smart_text
@@ -37,6 +40,8 @@ class Alias(AdminObject):
         default=True
     )
     internal = models.BooleanField(default=False)
+    description = models.TextField(blank=True)
+    expire_at = models.DateTimeField(blank=True, null=True)
     _objectname = 'MailboxAlias'
 
     class Meta:
@@ -49,6 +54,14 @@ class Alias(AdminObject):
 
     def __str__(self):
         return smart_text(self.address)
+
+    @classmethod
+    def generate_random_address(cls):
+        """Generate a random address (local part)."""
+        m = hashlib.md5()
+        for x in random.sample(xrange(10000000), 60):
+            m.update(str(x))
+        return m.hexdigest()[:20]
 
     @property
     def identity(self):

@@ -25,6 +25,12 @@
           <dl class="dl-horizontal">
             <dt>{% trans "Created" %}</dt><dd>{{ alias.creation|date:"SHORT_DATETIME_FORMAT" }}</dd>
             <dt>{% trans "Modified" %}</dt><dd>{{ alias.last_modification|date:"SHORT_DATETIME_FORMAT" }}</dd>
+            {% if alias.expire_at %}
+              <dt>{% trans "Expire at" %}</dt><dd>{{ alias.expire_at|date:"SHORT_DATETIME_FORMAT" }}</dd>
+            {% endif %}
+            {% if alias.description %}
+              <dt>{% trans "Description" %}</dt><dd>{{ alias.description }}</dd>
+            {% endif %}
           </dl>
         </div>
         <table class="table">
