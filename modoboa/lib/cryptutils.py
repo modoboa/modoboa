@@ -16,7 +16,8 @@ def random_key(l=16):
     :param integer l: the key's length
     :return: a string
     """
-    population = string.digits + string.letters + string.punctuation
+    punctuation = """!#$%&'()*+,-./:;<=>?@[]^_`{|}~"""
+    population = string.digits + string.letters + punctuation
     while True:
         key = "".join(random.sample(population * l, l))
         if len(key) == l:
