@@ -30,7 +30,7 @@ $(document).ready(function() {
     </button>
     <ul class="dropdown-menu">
       <li><a data-toggle="ajaxmodal" modalcb="admin.newaccount_cb" href="{% url 'admin:account_add' %}"><span class="fa fa-user"></span> {% trans "Account" %}</a></li>
-      <li><a data-toggle="ajaxmodal" modalcb="admin.aliasform_cb" href="{% url 'admin:alias_add' %}">{% trans "Alias" %}</a></li>
+      <li><a data-toggle="ajaxmodal" modalcb="admin.aliasform_cb" href="{% url 'admin:alias_add' %}"><span class="fa fa-mail-forward"></span> {% trans "Alias" %}</a></li>
     </ul>
   </div>
 {% endblock %}
