@@ -80,13 +80,7 @@ def editalias(request, alid, tplname="admin/aliasform.html"):
     if not request.user.can_access(alias):
         raise PermDeniedException
     if request.method == "POST":
-        altype = alias.type
-        if altype == "dlist":
-            successmsg = _("Distribution list modified")
-        elif altype == "forward":
-            successmsg = _("Forward modified")
-        else:
-            successmsg = _("Alias modified")
+        successmsg = _("Alias modified")
         form = AliasForm(request.user, request.POST, instance=alias)
         return _validate_alias(request, form, successmsg)
 
@@ -109,18 +103,8 @@ def delalias(request):
         alias = Alias.objects.get(pk=alid)
         if not request.user.can_access(alias):
             raise PermDeniedException
-        if alias.type == 'dlist':
-            msg = "Distribution list deleted"
-            msgs = "Distribution lists deleted"
-        elif alias.type == 'forward':
-            msg = "Forward deleted"
-            msgs = "Forwards deleted"
-        else:
-            msg = "Alias deleted"
-            msgs = "Aliases deleted"
         alias.delete()
-
-    msg = ungettext(msg, msgs, len(selection))
+    msg = ungettext("Alias deleted", "Aliases deleted", len(selection))
     return render_to_json_response(msg)
 
 

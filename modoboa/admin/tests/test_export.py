@@ -37,7 +37,7 @@ class ExportTestCase(ModoTestCase):
     def test_export_identities(self):
         response = self.__export_identities()
         self.assertListEqual(
-            "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nforward;forward@test.com;True;user@external.com\r\ndlist;postmaster@test.com;True;test@truc.fr;toto@titi.com\r\n",
+            "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nalias;forward@test.com;True;user@external.com\r\nalias;postmaster@test.com;True;test@truc.fr;toto@titi.com\r\n",
             response.content.strip()
         )
 
@@ -78,19 +78,5 @@ class ExportTestCase(ModoTestCase):
         response = self.__export_identities(idtfilter="alias")
         self.assertEqual(
             response.content.strip(),
-            "alias;alias@test.com;True;user@test.com"
-        )
-
-    def test_export_forwards(self):
-        response = self.__export_identities(idtfilter="forward")
-        self.assertEqual(
-            response.content.strip(),
-            "forward;forward@test.com;True;user@external.com"
-        )
-
-    def test_export_dlists(self):
-        response = self.__export_identities(idtfilter="dlist")
-        self.assertEqual(
-            response.content.strip(),
-            "dlist;postmaster@test.com;True;test@truc.fr;toto@titi.com"
+            "alias;alias@test.com;True;user@test.com\r\nalias;forward@test.com;True;user@external.com\r\nalias;postmaster@test.com;True;test@truc.fr;toto@titi.com"
         )

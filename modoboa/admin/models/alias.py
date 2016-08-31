@@ -79,24 +79,11 @@ class Alias(AdminObject):
 
     @property
     def type(self):
-        cpt = self.recipients_count
-        if cpt > 1:
-            return "dlist"
-        qset = self.aliasrecipient_set.filter(
-            r_mailbox__isnull=True, r_alias__isnull=True)
-        if qset.exists():
-            return "forward"
         return "alias"
 
     @property
     def tags(self):
-        labels = {
-            "dlist": _("distribution list"),
-            "forward": _("forward"),
-            "alias": _("alias")
-        }
-        altype = self.type
-        return [{"name": altype, "label": labels[altype], "type": "idt"}]
+        return [{"name": "alias", "label": _("alias"), "type": "idt"}]
 
     def get_absolute_url(self):
         """Return detail url for this alias."""
@@ -177,9 +164,7 @@ class Alias(AdminObject):
         return self.aliasrecipient_set.count()
 
     def from_csv(self, user, row, expected_elements=5):
-        """Create a new alias from a CSV file entry
-
-        """
+        """Create a new alias from a CSV file entry."""
         if len(row) < expected_elements:
             raise BadRequest(_("Invalid line: %s" % row))
         address = row[1].strip()
@@ -204,7 +189,7 @@ class Alias(AdminObject):
         self.post_create(user)
 
     def to_csv(self, csvwriter):
-        row = [self.type, self.address.encode("utf-8"), self.enabled]
+        row = ["alias", self.address.encode("utf-8"), self.enabled]
         row += self.recipients
         csvwriter.writerow(row)
 
