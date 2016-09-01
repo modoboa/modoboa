@@ -79,6 +79,7 @@ class Alias(AdminObject):
 
     @property
     def type(self):
+        """FIXME: deprecated."""
         return "alias"
 
     @property

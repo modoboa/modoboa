@@ -214,7 +214,6 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         }
         self.ajax_post(reverse("admin:alias_add"), values)
         alias = admin_models.Alias.objects.get(address="alias@relaydomain.tld")
-        self.assertEqual(alias.type, "forward")
         values = {
             "address": "alias2@relaydomain.tld",
             "recipients": "local@relaydomain.tld",
@@ -223,7 +222,6 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         self.ajax_post(reverse("admin:alias_add"), values)
         alias = admin_models.Alias.objects.get(
             address="alias2@relaydomain.tld")
-        self.assertEqual(alias.type, "alias")
 
 
 class LimitsTestCase(ModoTestCase, Operations):
