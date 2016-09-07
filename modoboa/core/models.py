@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from django.contrib.auth.hashers import make_password, is_password_usable
@@ -321,14 +322,13 @@ class User(PermissionsMixin):
     def role(self):
         """Return user role."""
         if not hasattr(self, "_role"):
-            self._role = None
-        if self._role is None:
             if self.is_superuser:
                 self._role = "SuperAdmins"
-            try:
-                self._role = self.groups.all()[0].name
-            except IndexError:
-                self._role = "---"
+            else:
+                try:
+                    self._role = self.groups.all()[0].name
+                except IndexError:
+                    self._role = "---"
         return self._role
 
     @role.setter
@@ -356,6 +356,11 @@ class User(PermissionsMixin):
                 grant_access_to_object(self, self)
         self.save()
         self._role = role
+
+    @cached_property
+    def is_admin(self):
+        """Shortcut to check if user is administrator."""
+        return self.role in constants.ADMIN_GROUPS
 
     def post_create(self, creator):
         """Grant permission on this user to creator."""

@@ -12,6 +12,8 @@ from modoboa.core.forms import LoginForm
 from modoboa.lib import events
 from modoboa.lib.web_utils import _render_to_string
 
+logger = logging.getLogger("modoboa.auth")
+
 
 def dologin(request):
     """Try to authenticate."""
@@ -45,10 +47,7 @@ def dologin(request):
                 if nextlocation is None:
                     nextlocation = request.POST.get("next", None)
                     if nextlocation is None or nextlocation == "None":
-                        if user.group == "SimpleUsers":
-                            nextlocation = reverse("topredirection")
-                        else:
-                            nextlocation = reverse("admin:domain_list")
+                        nextlocation = reverse("topredirection")
                 return HttpResponseRedirect(nextlocation)
             error = _(
                 "Your username and password didn't match. Please try again.")

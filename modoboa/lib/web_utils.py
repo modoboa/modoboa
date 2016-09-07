@@ -154,7 +154,7 @@ def topredirection(request):
     from modoboa.lib import parameters
     from modoboa.core.extensions import exts_pool
 
-    if request.user.group == 'SimpleUsers':
+    if request.user.role == "SimpleUsers":
         topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="core")
         if topredir != "user":
             infos = exts_pool.get_extension_infos(topredir)
@@ -162,8 +162,7 @@ def topredirection(request):
         else:
             path = reverse("core:user_index")
     else:
-        # FIXME
-        path = reverse("admin:domain_list")
+        path = reverse("core:dashboard")
     return HttpResponseRedirect(path)
 
 

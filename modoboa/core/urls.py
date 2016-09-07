@@ -1,8 +1,12 @@
 from django.conf.urls import patterns, url
 
+from . import views
 
 urlpatterns = patterns(
     '',
+
+    url(r'^dashboard/$', views.DashboardView.as_view(),
+        name="dashboard"),
 
     url(r'^accounts/login/$', 'modoboa.core.views.auth.dologin',
         name="login"),
