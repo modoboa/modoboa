@@ -41,7 +41,7 @@ class AuthenticationTestCase(ModoTestCase):
         data = {"username": "admin", "password": "password"}
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith(reverse("admin:domain_list")))
+        self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
 
 class LDAPTestCaseMixin(object):
