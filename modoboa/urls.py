@@ -7,7 +7,6 @@ from modoboa.lib import events
 
 urlpatterns = patterns(
     '',
-    url(r'^$', 'modoboa.lib.web_utils.topredirection', name="topredirection"),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog',
      {'packages': ('modoboa', ), }),
     ('', include('modoboa.core.urls', namespace="core")),
