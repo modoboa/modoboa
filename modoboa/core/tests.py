@@ -74,6 +74,13 @@ class DashboardTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
 
+    def test_root_dispatch(self):
+        """Check root dispatching."""
+        url = reverse("core:root")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+
 
 class LDAPTestCaseMixin(object):
     """Set of methods used to test LDAP features."""
