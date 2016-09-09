@@ -44,6 +44,37 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
 
+class DashboardTestCase(ModoTestCase):
+    """Dashboard tests."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create some data."""
+        super(DashboardTestCase, cls).setUpTestData()
+        cls.dadmin = factories.UserFactory(
+            username="admin@test.com", groups=("DomainAdmins",)
+        )
+        cls.user = factories.UserFactory(
+            username="user@test.com", groups=("SimpleUsers",)
+        )
+
+    def test_access(self):
+        """Load dashboard."""
+        url = reverse("core:dashboard")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Latest news", response.content)
+        self.client.logout()
+        self.client.login(username=self.dadmin.username, password="toto")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Latest news", response.content)
+        self.client.logout()
+        self.client.login(username=self.user.username, password="toto")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
+
 class LDAPTestCaseMixin(object):
     """Set of methods used to test LDAP features."""
 
