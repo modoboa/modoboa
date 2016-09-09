@@ -1,4 +1,6 @@
 # coding: utf-8
+"""Core authentication views."""
+
 import logging
 
 from django.contrib.auth import authenticate, login, logout
@@ -12,6 +14,10 @@ from modoboa.core.forms import LoginForm
 from modoboa.lib import events
 from modoboa.lib.web_utils import _render_to_string
 
+from .base import find_nextlocation
+
+logger = logging.getLogger("modoboa.auth")
+
 
 def dologin(request):
     """Try to authenticate."""
@@ -23,10 +29,6 @@ def dologin(request):
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
-                nextlocation = None
-                if not user.last_login:
-                    # Redirect to profile on first login
-                    nextlocation = reverse("core:user_index")
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
@@ -41,15 +43,7 @@ def dologin(request):
                 events.raiseEvent("UserLogin", request,
                                   form.cleaned_data["username"],
                                   form.cleaned_data["password"])
-
-                if nextlocation is None:
-                    nextlocation = request.POST.get("next", None)
-                    if nextlocation is None or nextlocation == "None":
-                        if user.group == "SimpleUsers":
-                            nextlocation = reverse("topredirection")
-                        else:
-                            nextlocation = reverse("admin:domain_list")
-                return HttpResponseRedirect(nextlocation)
+                return HttpResponseRedirect(find_nextlocation(request, user))
             error = _(
                 "Your username and password didn't match. Please try again.")
             logger.warning(

@@ -2,6 +2,11 @@
 
 """Core application constants."""
 
+ADMIN_GROUPS = [
+    "SuperAdmins",
+    "Resellers",
+    "DomainAdmins",
+]
 
 LANGUAGES = (
     ("cs", u"čeština"),
