@@ -1,3 +1,5 @@
+"""Core urls."""
+
 from django.conf.urls import patterns, url
 
 from . import views
@@ -5,8 +7,8 @@ from . import views
 urlpatterns = patterns(
     '',
 
-    url(r'^dashboard/$', views.DashboardView.as_view(),
-        name="dashboard"),
+    url(r'^$', views.RootDispatchView.as_view(), name="root"),
+    url(r'^dashboard/$', views.DashboardView.as_view(), name="dashboard"),
 
     url(r'^accounts/login/$', 'modoboa.core.views.auth.dologin',
         name="login"),

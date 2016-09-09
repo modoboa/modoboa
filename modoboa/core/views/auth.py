@@ -1,4 +1,6 @@
 # coding: utf-8
+"""Core authentication views."""
+
 import logging
 
 from django.contrib.auth import authenticate, login, logout
@@ -9,31 +11,12 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
 from modoboa.core.forms import LoginForm
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib.web_utils import _render_to_string
 
-from ..extensions import exts_pool
+from .base import find_nextlocation
 
 logger = logging.getLogger("modoboa.auth")
-
-
-def find_nextlocation(request, user):
-    """Find next location for given user after login."""
-    if not user.last_login:
-        # Redirect to profile on first login
-        return reverse("core:user_index")
-    nextlocation = request.POST.get("next", None)
-    if nextlocation is None or nextlocation == "None":
-        if request.user.role == "SimpleUsers":
-            topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION")
-            if topredir != "user":
-                infos = exts_pool.get_extension_infos(topredir)
-                nextlocation = infos["url"] if infos["url"] else infos["name"]
-            else:
-                nextlocation = reverse("core:user_index")
-        else:
-            nextlocation = reverse("core:dashboard")
-    return nextlocation
 
 
 def dologin(request):
